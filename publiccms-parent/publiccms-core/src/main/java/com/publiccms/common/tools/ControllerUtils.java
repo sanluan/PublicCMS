@@ -56,7 +56,7 @@ public class ControllerUtils {
      * @param model
      * @return value是否为空
      */
-    public static boolean verifyNotEmpty(String field, String value, Map<String, Object> model) {
+    public static boolean errorNotEmpty(String field, String value, Map<String, Object> model) {
         if (CommonUtils.empty(value)) {
             model.put(CommonConstants.ERROR, "verify.notEmpty." + field);
             return true;
@@ -70,7 +70,7 @@ public class ControllerUtils {
      * @param model
      * @return value是否为true
      */
-    public static boolean verifyCustom(String field, boolean value, Map<String, Object> model) {
+    public static boolean errorCustom(String field, boolean value, Map<String, Object> model) {
         if (value) {
             model.put(CommonConstants.ERROR, "verify.custom." + field);
             return true;
@@ -84,7 +84,7 @@ public class ControllerUtils {
      * @param model
      * @return value是否为空
      */
-    public static boolean verifyNotEmpty(String field, Object value, Map<String, Object> model) {
+    public static boolean errorNotEmpty(String field, Object value, Map<String, Object> model) {
         if (null == value) {
             model.put(CommonConstants.ERROR, "verify.notEmpty." + field);
             return true;
@@ -99,7 +99,7 @@ public class ControllerUtils {
      * @param model
      * @return value是否为空或是否大于等于specific
      */
-    public static boolean verifyNotGreaterThen(String field, Integer value, int specific, Map<String, Object> model) {
+    public static boolean errorNotGreaterThen(String field, Integer value, int specific, Map<String, Object> model) {
         if (null == value) {
             model.put(CommonConstants.ERROR, "verify.notEmpty." + field);
             return true;
@@ -117,7 +117,7 @@ public class ControllerUtils {
      * @param model
      * @return value是否为空或是否大于等于specific
      */
-    public static boolean verifyNotGreaterThen(String field, Long value, long specific, Map<String, Object> model) {
+    public static boolean errorNotGreaterThen(String field, Long value, long specific, Map<String, Object> model) {
         if (null == value) {
             model.put(CommonConstants.ERROR, "verify.notEmpty." + field);
             return true;
@@ -135,7 +135,7 @@ public class ControllerUtils {
      * @param model
      * @return value是否为空或长度大于specific
      */
-    public static boolean verifyNotLongThen(String field, String value, int specific, Map<String, Object> model) {
+    public static boolean errorNotLongThen(String field, String value, int specific, Map<String, Object> model) {
         if (null == value) {
             model.put(CommonConstants.ERROR, "verify.notEmpty." + field);
             return true;
@@ -153,7 +153,7 @@ public class ControllerUtils {
      * @param model
      * @return value是否为空或长度小于specific
      */
-    public static boolean verifyNotLessThen(String field, Integer value, int specific, Map<String, Object> model) {
+    public static boolean errorNotLessThen(String field, Integer value, int specific, Map<String, Object> model) {
         if (null == value) {
             model.put(CommonConstants.ERROR, "verify.notEmpty." + field);
             return true;
@@ -170,7 +170,7 @@ public class ControllerUtils {
      * @param model
      * @return value是否为空
      */
-    public static boolean verifyNotExist(String field, Object value, Map<String, Object> model) {
+    public static boolean errorNotExist(String field, Object value, Map<String, Object> model) {
         if (null == value) {
             model.put(CommonConstants.ERROR, "verify.notExist." + field);
             return true;
@@ -184,7 +184,7 @@ public class ControllerUtils {
      * @param model
      * @return value是否不为空
      */
-    public static boolean verifyHasExist(String field, Object value, Map<String, Object> model) {
+    public static boolean errorHasExist(String field, Object value, Map<String, Object> model) {
         if (null != value) {
             model.put(CommonConstants.ERROR, "verify.hasExist." + field);
             return true;
@@ -199,7 +199,7 @@ public class ControllerUtils {
      * @param model
      * @return value1是否不为空并等于value2
      */
-    public static boolean verifyEquals(String field, Long value, Long value2, ModelMap model) {
+    public static boolean errorEquals(String field, Long value, Long value2, ModelMap model) {
         if (CommonUtils.notEmpty(value) && value.equals(value2)) {
             model.addAttribute(CommonConstants.ERROR, "verify.equals." + field);
             return true;
@@ -214,7 +214,7 @@ public class ControllerUtils {
      * @param model
      * @return value1是否不为空并不等于value2
      */
-    public static boolean verifyNotEquals(String field, String value1, String value2, Map<String, Object> model) {
+    public static boolean errorNotEquals(String field, String value1, String value2, Map<String, Object> model) {
         if (CommonUtils.notEmpty(value1) && !value1.equals(value2)) {
             model.put(CommonConstants.ERROR, "verify.notEquals." + field);
             return true;
@@ -229,7 +229,7 @@ public class ControllerUtils {
      * @param model
      * @return value1是否不为空并不等于value2
      */
-    public static boolean verifyNotEquals(String field, Integer value1, Integer value2, Map<String, Object> model) {
+    public static boolean errorNotEquals(String field, Integer value1, Integer value2, Map<String, Object> model) {
         if (CommonUtils.notEmpty(value1) && !value1.equals(value2)) {
             model.put(CommonConstants.ERROR, "verify.notEquals." + field);
             return true;
@@ -244,7 +244,7 @@ public class ControllerUtils {
      * @param model
      * @return value1是否不为空并不等于value2
      */
-    public static boolean verifyNotEquals(String field, Long value1, Long value2, Map<String, Object> model) {
+    public static boolean errorNotEquals(String field, Long value1, Long value2, Map<String, Object> model) {
         if (CommonUtils.notEmpty(value1) && !value1.equals(value2)) {
             model.put(CommonConstants.ERROR, "verify.notEquals." + field);
             return true;
@@ -259,7 +259,7 @@ public class ControllerUtils {
      * @param model
      * @return value1是否不为空并不等于value2
      */
-    public static boolean verifyNotEquals(String field, Short value1, Short value2, Map<String, Object> model) {
+    public static boolean errorNotEquals(String field, Short value1, Short value2, Map<String, Object> model) {
         if (CommonUtils.notEmpty(value1) && !value1.equals(value2)) {
             model.put(CommonConstants.ERROR, "verify.notEquals." + field);
             return true;
@@ -344,7 +344,7 @@ public class ControllerUtils {
 
     /**
      * @param contextPath
-     * @param scheme 
+     * @param scheme
      * @param session
      * @param response
      */
@@ -381,6 +381,10 @@ public class ControllerUtils {
                         && (null != content.getDeptId() && content.getDeptId().equals(user.getDeptId()));
     }
 
+    public static boolean ipNotEquals(String ip, SysUser user) {
+        return null == ip || !ip.equalsIgnoreCase(user.getLastLoginIp());
+    }
+
     /**
      * @param request
      * @param cookiesName
@@ -404,7 +408,7 @@ public class ControllerUtils {
      * @param value
      * @return boolean
      */
-    public static boolean verifyNotValid(String value) {
+    public static boolean notValid(String value) {
         Matcher m = UNVALID_CHARS.matcher(value);
         if (null == value || 0 == value.length() || m.matches()) {
             return true;
@@ -418,8 +422,8 @@ public class ControllerUtils {
      * @param model
      * @return boolean
      */
-    public static boolean verifyNotEMail(String field, String value, Map<String, Object> model) {
-        if (verifyNotEMail(value)) {
+    public static boolean errorNotEMail(String field, String value, Map<String, Object> model) {
+        if (notEMail(value)) {
             model.put(CommonConstants.ERROR, "verify.notEmail." + field);
             return true;
         }
@@ -432,8 +436,8 @@ public class ControllerUtils {
      * @param model
      * @return boolean
      */
-    public static boolean verifyNotUserName(String field, String value, Map<String, Object> model) {
-        if (verifyNotValid(value)) {
+    public static boolean errorNotUserName(String field, String value, Map<String, Object> model) {
+        if (notValid(value)) {
             model.put(CommonConstants.ERROR, "verify.notUserName." + field);
             return true;
         }
@@ -446,8 +450,8 @@ public class ControllerUtils {
      * @param model
      * @return boolean
      */
-    public static boolean verifyNotNickName(String field, String value, Map<String, Object> model) {
-        if (verifyNotValid(value)) {
+    public static boolean errorNotNickName(String field, String value, Map<String, Object> model) {
+        if (notValid(value)) {
             model.put(CommonConstants.ERROR, "verify.notNickName." + field);
             return true;
         }
@@ -458,7 +462,7 @@ public class ControllerUtils {
      * @param value
      * @return boolean
      */
-    public static boolean verifyNotEMail(String value) {
+    public static boolean notEMail(String value) {
         Matcher m = EMAIL_PATTERN.matcher(value);
         if (!m.matches()) {
             return true;
@@ -470,7 +474,7 @@ public class ControllerUtils {
      * @param value
      * @return boolean
      */
-    public static boolean verifyNotNumber(String value) {
+    public static boolean notNumber(String value) {
         Matcher m = NUMBER_PATTERN.matcher(value);
         if (!m.matches()) {
             return true;

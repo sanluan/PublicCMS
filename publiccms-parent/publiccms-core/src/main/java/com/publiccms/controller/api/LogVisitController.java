@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.publiccms.common.tools.RequestUtils;
-import com.publiccms.entities.log.LogVisit;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.entities.visit.VisitHistory;
 import com.publiccms.logic.component.site.VisitComponent;
 
 @Controller
@@ -43,7 +43,7 @@ public class LogVisitController {
             String itemId, HttpServletRequest request) {
         Calendar now = Calendar.getInstance();
         Date date = now.getTime();
-        LogVisit entity = new LogVisit(site.getId(), sessionId, date, (byte) now.get(Calendar.HOUR_OF_DAY),
+        VisitHistory entity = new VisitHistory(site.getId(), sessionId, date, (byte) now.get(Calendar.HOUR_OF_DAY),
                 RequestUtils.getIpAddress(request), userAgent, url, title, screenw, screenh, referer, itemType, itemId, date);
         visitComponent.add(entity);
     }

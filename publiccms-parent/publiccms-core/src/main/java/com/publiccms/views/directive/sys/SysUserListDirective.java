@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.RenderHandler;
-import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.sys.SysUserService;
 
@@ -35,7 +35,7 @@ public class SysUserListDirective extends AbstractTemplateDirective {
                 handler.getString("orderField"), handler.getString("orderType"), handler.getInteger("pageIndex", 1),
                 handler.getInteger("pageSize", handler.getInteger("count", 30)));
         @SuppressWarnings("unchecked")
-        List<CmsContent> list = (List<CmsContent>) page.getList();
+        List<SysUser> list = (List<SysUser>) page.getList();
         if (null != list) {
             boolean absoluteURL = handler.getBoolean("absoluteURL", true);
             list.forEach(e -> {

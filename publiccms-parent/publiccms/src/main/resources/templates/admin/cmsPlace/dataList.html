@@ -78,7 +78,14 @@
     <#list page.list as a>
         <@t.merge 'userIds' a.userId!/>
         <@t.merge 'userIds' a.checkUserId!/>
+        <@t.merge 'ids' a.id/>
     </#list>
+    <@_sysLock itemType='place' itemIds=t.ids><#assign lockMap=map!/></@_sysLock>
+    <#if lockMap?has_content>
+        <#list lockMap as k,lock>
+            <#if lock.userId?has_content><@t.merge 'userIds' lock.userId/></#if>
+        </#list>
+    </#if>
 
     <@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
     <#list page.list as a>
@@ -92,7 +99,9 @@
                         </div>
                     </#if>
                     <div class="box">
-                        <h3><a href="cmsPlace/view.html?id=${a.id}" target="dialog" rel="viewContent${a.id}">${a.title}</a></h3>
+                        <h3 <#if lockMap[a.id?string]?has_content><#assign lockUser=(userMap[lockMap[a.id?string].userId?string].nickName)!''/>title="<@t.page 'lock.message' lockUser/> ${lockMap[a.id?string].createDate}"</#if>>
+                           <#if lockMap[a.id?string]?has_content><i class="icon-lock icon-large"></i> </#if><a href="cmsPlace/view.html?id=${a.id}" target="dialog" rel="viewContent${a.id}">${a.title}</a>
+                        </h3>
                     </div>
                 </td>
                 <td>${a.publishDate}</td>

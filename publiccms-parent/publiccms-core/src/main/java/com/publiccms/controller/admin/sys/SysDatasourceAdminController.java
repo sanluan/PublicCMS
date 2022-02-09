@@ -81,8 +81,8 @@ public class SysDatasourceAdminController {
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, SysDatasource entity, String url,
             String driverClassName, String username, String password, Integer minPoolSize, Integer maxPoolSize,
             boolean initDatabase, Short[] siteIds, HttpServletRequest request, ModelMap model) {
-        if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)
-                || ControllerUtils.verifyCustom("needAuthorizationEdition", !CmsVersion.isAuthorizationEdition(), model)) {
+        if (ControllerUtils.errorCustom("noright", !siteComponent.isMaster(site.getId()), model)
+                || ControllerUtils.errorCustom("needAuthorizationEdition", !CmsVersion.isAuthorizationEdition(), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         try (Connection connection = DatabaseUtils.getConnection(driverClassName, url, username, password)) {
@@ -132,8 +132,8 @@ public class SysDatasourceAdminController {
     @Csrf
     public String sync(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String id, HttpServletRequest request,
             ModelMap model) {
-        if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)
-                || ControllerUtils.verifyCustom("needAuthorizationEdition", !CmsVersion.isAuthorizationEdition(), model)) {
+        if (ControllerUtils.errorCustom("noright", !siteComponent.isMaster(site.getId()), model)
+                || ControllerUtils.errorCustom("needAuthorizationEdition", !CmsVersion.isAuthorizationEdition(), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         SysDatasource entity = service.getEntity(id);
@@ -165,8 +165,8 @@ public class SysDatasourceAdminController {
     @Csrf
     public String disable(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String id, HttpServletRequest request,
             ModelMap model) {
-        if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)
-                || ControllerUtils.verifyCustom("needAuthorizationEdition", !CmsVersion.isAuthorizationEdition(), model)) {
+        if (ControllerUtils.errorCustom("noright", !siteComponent.isMaster(site.getId()), model)
+                || ControllerUtils.errorCustom("needAuthorizationEdition", !CmsVersion.isAuthorizationEdition(), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         SysDatasource entity = service.getEntity(id);

@@ -169,10 +169,10 @@ echarts.init(document.getElementById('comment')).setOption({
             </ul>
         </div>
 <script>
-<@_logVisitDayList startVisitDate=(.now?long-30*86400000)?number_to_date>
+<@_visitDayList startVisitDate=(.now?long-30*86400000)?number_to_date>
 echarts.init(document.getElementById('visit')).setOption({
     title: {
-        text: '<@t.page 'log.visit'/>',
+        text: '<@t.page 'visit'/>',
         x:'center'
     },
     tooltip : {
@@ -216,7 +216,7 @@ echarts.init(document.getElementById('visit')).setOption({
            areaStyle: {}
        }]
 });
-</@_logVisitDayList>
+</@_visitDayList>
 </script>
     </fieldset>
 </@_sysAuthorized>

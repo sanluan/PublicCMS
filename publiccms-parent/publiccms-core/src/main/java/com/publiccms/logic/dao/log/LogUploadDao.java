@@ -1,7 +1,5 @@
 package com.publiccms.logic.dao.log;
 
-import java.util.Date;
-
 import org.springframework.stereotype.Repository;
 
 import com.publiccms.common.base.BaseDao;
@@ -70,25 +68,6 @@ public class LogUploadDao extends BaseDao<LogUpload> {
             queryHandler.order("bean.id").append(orderType);
         }
         return getPage(queryHandler, pageIndex, pageSize);
-    }
-
-    /**
-     * @param siteId
-     * @param createDate
-     * @return number of data deleted
-     */
-    public int delete(Short siteId, Date createDate) {
-        if (CommonUtils.notEmpty(siteId) || null != createDate) {
-            QueryHandler queryHandler = getQueryHandler("delete from LogUpload bean");
-            if (CommonUtils.notEmpty(siteId)) {
-                queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
-            }
-            if (null != createDate) {
-                queryHandler.condition("bean.createDate <= :createDate").setParameter("createDate", createDate);
-            }
-            return delete(queryHandler);
-        }
-        return 0;
     }
 
     @Override

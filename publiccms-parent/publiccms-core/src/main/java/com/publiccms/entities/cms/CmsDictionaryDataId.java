@@ -68,6 +68,7 @@ public class CmsDictionaryDataId implements java.io.Serializable {
 
         return ((this.getDictionaryId() == castOther.getDictionaryId()) || (this.getDictionaryId() != null
                 && castOther.getDictionaryId() != null && this.getDictionaryId().equals(castOther.getDictionaryId())))
+                && (this.getSiteId()==castOther.getSiteId())
                 && ((this.getValue() == castOther.getValue()) || (this.getValue() != null && castOther.getValue() != null
                         && this.getValue().equals(castOther.getValue())));
     }
@@ -76,6 +77,7 @@ public class CmsDictionaryDataId implements java.io.Serializable {
         int result = 17;
 
         result = 37 * result + (getDictionaryId() == null ? 0 : this.getDictionaryId().hashCode());
+         result = 37 * result + this.getSiteId();
         result = 37 * result + (getValue() == null ? 0 : this.getValue().hashCode());
         return result;
     }

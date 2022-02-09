@@ -60,7 +60,7 @@ public class DictAdminController {
     @Csrf
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String dict, String skipWord,
             HttpServletRequest request, ModelMap model) {
-        if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
+        if (ControllerUtils.errorCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         try {

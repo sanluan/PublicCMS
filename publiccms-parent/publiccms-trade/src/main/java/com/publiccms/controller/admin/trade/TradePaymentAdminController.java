@@ -44,16 +44,16 @@ public class TradePaymentAdminController {
     public String refund(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long id, BigDecimal refundAmount,
             String reply, ModelMap model) {
         TradeRefund entity = service.getEntity(id);
-        if (ControllerUtils.verifyNotEmpty("refund", entity, model)) {
+        if (ControllerUtils.errorNotEmpty("refund", entity, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         TradePayment payment = paymentService.getEntity(entity.getPaymentId());
-        if (ControllerUtils.verifyNotEmpty("payment", payment, model)) {
+        if (ControllerUtils.errorNotEmpty("payment", payment, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         PaymentGateway paymentGateway = gatewayComponent.get(payment.getAccountType());
-        if (ControllerUtils.verifyNotEmpty("paymentGateway", paymentGateway, model) || ControllerUtils
-                .verifyCustom("refundStatus", !service.updateResund(site.getId(), id, refundAmount, reply), model)) {
+        if (ControllerUtils.errorNotEmpty("paymentGateway", paymentGateway, model) || ControllerUtils
+                .errorCustom("refundStatus", !service.updateResund(site.getId(), id, refundAmount, reply), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         entity = service.getEntity(id);
@@ -78,7 +78,7 @@ public class TradePaymentAdminController {
     @Csrf
     public String refuse(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long id, String reply, ModelMap model) {
         TradeRefund entity = service.getEntity(id);
-        if (ControllerUtils.verifyNotEmpty("refund", entity, model)) {
+        if (ControllerUtils.errorNotEmpty("refund", entity, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         service.refuseResund(site.getId(), id, admin.getId(), reply);

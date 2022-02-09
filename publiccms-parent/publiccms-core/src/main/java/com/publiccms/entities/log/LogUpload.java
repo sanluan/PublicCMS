@@ -141,12 +141,12 @@ public class LogUpload implements java.io.Serializable {
         this.fileType = fileType;
     }
 
-    @Column(name = "file_size", nullable = false)
-    public long getFileSize() {
+    @Column(name = "file_size")
+    public Long getFileSize() {
         return this.fileSize;
     }
 
-    public void setFileSize(long fileSize) {
+    public void setFileSize(Long fileSize) {
         this.fileSize = fileSize;
     }
 

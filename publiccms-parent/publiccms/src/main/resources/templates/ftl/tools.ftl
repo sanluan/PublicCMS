@@ -1,8 +1,7 @@
 <#ftl>
-<#macro message code>${springMacroRequestContext.getMessage(code)}</#macro>
-<#macro ma code args><#if args?is_enumerable>${springMacroRequestContext.getMessage(code, args)}<#else>${springMacroRequestContext.getMessage(code, [args])}</#if></#macro>
-<#macro menu code args=''><#if args?is_enumerable>${springMacroRequestContext.getMessage('menu.'+code)}<#elseif args?has_content>${springMacroRequestContext.getMessage('menu.'+code, [args])}<#else>${springMacroRequestContext.getMessage('menu.'+code)}</#if></#macro>
-<#macro page code args=''><#if args?is_enumerable>${springMacroRequestContext.getMessage('page.'+code)}<#elseif args?has_content>${springMacroRequestContext.getMessage('page.'+code, [args])}<#else>${springMacroRequestContext.getMessage('page.'+code)}</#if></#macro>
+<#macro message code args=[]><#if args?has_content><#if args?is_sequence>${springMacroRequestContext.getMessage(code, args)}<#else>${springMacroRequestContext.getMessage(code)}</#if><#else>${springMacroRequestContext.getMessage(code)}</#if></#macro>
+<#macro menu code args...><@message 'menu.'+code args/></#macro>
+<#macro page code args...><@message 'page.'+code args/></#macro>
 <#macro cut string l=50 append=''>${string[0..*l]}<#if string?length gt l>${append}</#if></#macro>
 <#macro merge name value><#if !.vars[name]??><@"<#assign ${name}=''>"?interpret /></#if><#if value??><@"<#assign ${name}=${name}+'${value},'>"?interpret /></#if></#macro>
 <#macro compare sequence=[] string='' output1='' output2=''>${(sequence?is_sequence&&sequence?seq_contains(string)||sequence?is_string&&sequence=string)?then(output1,output2)?no_esc}</#macro>

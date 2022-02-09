@@ -1,0 +1,78 @@
+<@_visitHistory id=id>
+    <#assign a=object/>
+</@_visitHistory>
+<div class="pageFormContent" layoutH>
+    <dl>
+        <dt><@t.page 'visit.session'/>:</dt>
+        <dd>
+            ${a.sessionId!}
+        </dd>
+    </dl>
+    <dl>
+        <dt><@t.page 'url'/>:</dt>
+        <dd>
+            ${a.url}
+        </dd>
+    </dl>
+    <dl>
+        <dt><@t.page 'title'/>:</dt>
+        <dd class="exclude-translate">
+            ${a.title!}
+        </dd>
+    </dl>
+    <dl>
+        <dt><@t.page 'visit.screen'/>:</dt>
+        <dd>
+            ${a.screenWidth!}*${a.screenHeight!}
+        </dd>
+    </dl>
+    <dl>
+        <dt><@t.page 'visit.referer'/>:</dt>
+        <dd>
+            ${a.refererUrl!}
+        </dd>
+    </dl>
+    <dl>
+        <dt><@t.page 'visit.ip'/>:</dt>
+        <dd>
+            ${a.ip!}
+        </dd>
+    </dl>
+    <dl>
+        <dt><@t.page 'visit.item'/>:</dt>
+        <dd>
+            ${a.itemType!}:${a.itemId!}
+        </dd>
+    </dl>
+    <dl class="nowrap">
+        <dt>UserAgent:</dt>
+        <dd>
+            <textarea name="content" cols="80" rows="5">${a.userAgent!}</textarea>
+        </dd>
+    </dl>
+    <@_userAgent userAgent=a.userAgent>
+    <dl>
+        <dt>${object.browserType!}:</dt>
+        <dd>
+            ${object.browserGroup!}:${object.browserVersion!}
+        </dd>
+    </dl>
+    <dl>
+        <dt>${object.deviceType!}:</dt>
+        <dd>
+            ${object.operatingSystemGroup}:${object.operatingSystem!}
+        </dd>
+    </dl>
+    </@_userAgent>
+    <dl>
+        <dt><@t.page 'visit.visit_date'/>:</dt>
+        <dd>
+            ${a.createDate!}
+        </dd>
+    </dl>
+</div>
+<div class="formBar">
+    <ul>
+        <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+    </ul>
+</div>

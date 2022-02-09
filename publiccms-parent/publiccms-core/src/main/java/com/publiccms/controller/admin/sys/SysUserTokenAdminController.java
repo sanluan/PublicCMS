@@ -50,7 +50,7 @@ public class SysUserTokenAdminController {
             HttpServletRequest request, ModelMap model) {
         SysUserToken entity = service.getEntity(authToken);
         if (null != entity) {
-            if (ControllerUtils.verifyNotEquals("userId", admin.getId(), entity.getUserId(), model)) {
+            if (ControllerUtils.errorNotEquals("userId", admin.getId(), entity.getUserId(), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             service.delete(authToken);

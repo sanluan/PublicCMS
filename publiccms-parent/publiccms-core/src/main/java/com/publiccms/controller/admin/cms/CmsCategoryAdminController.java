@@ -30,6 +30,7 @@ import com.publiccms.entities.cms.CmsCategoryAttribute;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
+import com.publiccms.logic.component.site.LockComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.ModelComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
@@ -37,6 +38,7 @@ import com.publiccms.logic.service.cms.CmsCategoryService;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
+import com.publiccms.logic.service.sys.SysLockService;
 import com.publiccms.views.pojo.model.CmsCategoryParameters;
 import com.publiccms.views.pojo.query.CmsCategoryQuery;
 
@@ -62,6 +64,8 @@ public class CmsCategoryAdminController {
     @Autowired
     protected LogOperateService logOperateService;
     @Autowired
+    protected LockComponent lockComponent;
+    @Autowired
     protected SiteComponent siteComponent;
 
     private String[] ignoreProperties = new String[] { "id", "siteId", "childIds", "tagTypeIds", "url", "disabled", "extendId",
@@ -84,7 +88,7 @@ public class CmsCategoryAdminController {
             ModelMap model) {
         if (null != entity.getId()) {
             CmsCategory oldEntity = service.getEntity(entity.getId());
-            if (null == oldEntity || ControllerUtils.verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
+            if (null == oldEntity || ControllerUtils.errorNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             entity = service.update(entity.getId(), entity, ignoreProperties);
@@ -95,6 +99,7 @@ public class CmsCategoryAdminController {
                 } else if (null != entity.getParentId() && null == oldEntity.getParentId()) {
                     service.generateChildIds(site.getId(), entity.getParentId());
                 }
+                lockComponent.unLock(site.getId(), SysLockService.ITEM_TYPE_CATEGORY, String.valueOf(entity.getId()), admin.getId());
                 logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, "update.category", RequestUtils.getIpAddress(request),
                         CommonUtils.getDate(), JsonUtils.getString(entity)));
@@ -111,7 +116,7 @@ public class CmsCategoryAdminController {
         try {
             publish(site, entity.getId(), null);
         } catch (IOException | TemplateException e) {
-            ControllerUtils.verifyCustom("static", true, model);
+            ControllerUtils.errorCustom("static", true, model);
             log.error(e.getMessage(), e);
         }
         return CommonConstants.TEMPLATE_DONE;
@@ -177,7 +182,7 @@ public class CmsCategoryAdminController {
                     publish(site, id, max);
                 }
             } catch (IOException | TemplateException e) {
-                ControllerUtils.verifyCustom("static", true, model);
+                ControllerUtils.errorCustom("static", true, model);
                 log.error(e.getMessage(), e);
                 return CommonConstants.TEMPLATE_ERROR;
             }

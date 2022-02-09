@@ -61,7 +61,7 @@ public class SysAppTokenAdminController {
             ModelMap model) {
         SysApp entity = appService.getEntity(id);
         if (null != entity) {
-            if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
+            if (ControllerUtils.errorNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             Date now = CommonUtils.getDate();
@@ -88,7 +88,7 @@ public class SysAppTokenAdminController {
         if (null != entity) {
             SysApp app = appService.getEntity(entity.getAppId());
             if (null != app) {
-                if (ControllerUtils.verifyNotEquals("siteId", site.getId(), app.getSiteId(), model)) {
+                if (ControllerUtils.errorNotEquals("siteId", site.getId(), app.getSiteId(), model)) {
                     return CommonConstants.TEMPLATE_ERROR;
                 }
                 service.delete(authToken);

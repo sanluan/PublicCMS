@@ -1,0 +1,61 @@
+<#if !startVisitDate?has_content>
+    <#assign startVisitDate=(.now?long-7*24*3600*1000)?number_to_date/>
+</#if>
+<@_visitDayList startVisitDate=startVisitDate endVisitDate=endVisitDate hourAnalytics=hourAnalytics pageIndex=pageNum pageSize=numPerPage>
+<div class="pageHeader">
+    <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
+        <#include "../include_page/parameters.html"/>
+        <div class="searchBar">
+            <ul class="searchContent">
+                <li>
+                    <label><@t.page 'visit.visit_date'/>:</label>
+                    <input type="text" name="startVisitDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startVisitDate!}" />
+                    <span>-</span>
+                    <input type="text" name="endVisitDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endVisitDate!}" />
+                </li>
+                <li>
+                    <label><@t.page 'analytics.type'/>:</label>
+                    <select class="combox" name="hourAnalytics">
+                        <option value="false"${(!(hourAnalytics?has_content)||"false"=hourAnalytics)?then(' selected="true"','')?no_esc}><@t.page 'visit.hour_analytics.day'/></option>
+                        <option value="true"${(hourAnalytics?has_content&&"true"=hourAnalytics)?then(' selected="true"','')?no_esc}><@t.page 'visit.hour_analytics.hour'/></option>
+                    </select>
+                </li>
+            </ul>
+            <div class="subBar">
+                <ul>
+                    <li>
+                        <button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="pageContent">
+    <div class="panelBar">
+        <ul class="toolBar">
+        </ul>
+    </div>
+    <table class="table" width="100%" layoutH="92">
+        <thead>
+            <tr>
+                <th><@t.page 'visit.visit_date'/></th>
+                <th>PV</th>
+                <th>UV</th>
+                <th>IP Views</th>
+            </tr>
+        </thead>
+        <tbody>
+            <#list page.list as a>
+            <tr>
+                <td><a href="visit/history.html?startCreateDate=${a.id.visitDate!}" target="navTab" rel="visit/history" title="<@t.page 'visit.hisotry'/>" icon="<i class='icon-bolt icon-large'></i>">${a.id.visitDate?date}<#if hourAnalytics?has_content && 'true'=hourAnalytics> ${a.id.visitHour!}:00:00</#if></a></td>
+                <td class="center">${a.pv!}</td>
+                <td class="center">${a.uv!}</td>
+                <td class="center">${a.ipviews!}</td>
+            </tr>
+            </#list>
+        </tbody>
+    </table>
+    <#include "../include_page/page.html"/>
+</div>
+</@_visitDayList>

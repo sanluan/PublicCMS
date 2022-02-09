@@ -13,19 +13,20 @@ import com.publiccms.common.constants.CmsVersion;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.logic.component.cache.CacheComponent;
 import com.publiccms.logic.component.site.DatasourceComponent;
+import com.publiccms.logic.component.site.LockComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.component.site.VisitComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.log.LogTaskService;
-import com.publiccms.logic.service.log.LogVisitDayService;
-import com.publiccms.logic.service.log.LogVisitItemService;
-import com.publiccms.logic.service.log.LogVisitService;
-import com.publiccms.logic.service.log.LogVisitSessionService;
-import com.publiccms.logic.service.log.LogVisitUrlService;
 import com.publiccms.logic.service.sys.SysAppTokenService;
 import com.publiccms.logic.service.sys.SysEmailTokenService;
 import com.publiccms.logic.service.sys.SysUserTokenService;
+import com.publiccms.logic.service.visit.VisitDayService;
+import com.publiccms.logic.service.visit.VisitHistoryService;
+import com.publiccms.logic.service.visit.VisitItemService;
+import com.publiccms.logic.service.visit.VisitSessionService;
+import com.publiccms.logic.service.visit.VisitUrlService;
 
 /**
  *
@@ -43,15 +44,15 @@ public class ScheduledTaskComponent {
     @Autowired
     private SysUserTokenService userTokenService;
     @Autowired
-    private LogVisitService logVisitService;
+    private VisitHistoryService visitHistoryService;
     @Autowired
-    private LogVisitSessionService logVisitSessionService;
+    private VisitSessionService visitSessionService;
     @Autowired
-    private LogVisitDayService logVisitDayService;
+    private VisitDayService visitDayService;
     @Autowired
-    private LogVisitItemService logVisitItemService;
+    private VisitItemService visitItemService;
     @Autowired
-    private LogVisitUrlService logVisitUrlService;
+    private VisitUrlService visitUrlService;
     @Autowired
     private LogLoginService logLoginService;
     @Autowired
@@ -66,6 +67,8 @@ public class ScheduledTaskComponent {
     private StatisticsComponent statisticsComponent;
     @Autowired
     private DatasourceComponent datasourceComponent;
+    @Autowired
+    private LockComponent lockComponent;
 
     /**
      * 10分钟清理过期token
@@ -77,6 +80,7 @@ public class ScheduledTaskComponent {
             appTokenService.delete(now);
             emailTokenService.delete(now);
             userTokenService.delete(now);
+            lockComponent.clear();
         }
     }
 
@@ -176,12 +180,12 @@ public class ScheduledTaskComponent {
             logLoginService.delete(null, date);
             logOperateService.delete(null, date);
             logTaskService.delete(null, date);
-            logVisitDayService.delete(date);
+            visitDayService.delete(date);
             date = DateUtils.addMonths(CommonUtils.getDate(), -3);
-            logVisitSessionService.delete(date);
-            logVisitService.delete(date);
-            logVisitItemService.delete(date);
-            logVisitUrlService.delete(date);
+            visitSessionService.delete(date);
+            visitHistoryService.delete(date);
+            visitItemService.delete(date);
+            visitUrlService.delete(date);
         }
     }
 }

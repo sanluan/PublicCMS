@@ -54,6 +54,7 @@ fieldset legend:before{background-color:#b52e31;}
 
 button.buttonActive{color:#fff;background-color:#D8403D;border-color:#D8403D;}
 button.buttonActive:hover{background-color:#5d7298;border-color:#5d7298;}
+button.buttonDisabled{color:#8f0006;background-color:#eee;border-color:#dde2ec;}
 a.button,button.button{color:#8f0006;background-color:#fff;border-color:#dde2ec;}
 a.button:hover,button.button:hover{background-color:#eceff3;border-color:#dde2ec;}
 .pagination li.jumpto .textInput,.textInput,input.disabled,input.error,input.focus,input.readonly,input.required,textarea.disabled,textarea.error,textarea.focus,textarea.readonly,textarea.required{border-color:#dde2ec;}

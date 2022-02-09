@@ -87,8 +87,8 @@ public class ContentController {
         returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         CmsCategoryModel categoryModel = categoryModelService
                 .getEntity(new CmsCategoryModelId(entity.getCategoryId(), entity.getModelId()));
-        if (ControllerUtils.verifyNotEmpty("categoryModel", categoryModel, model)
-                || ControllerUtils.verifyCustom("contribute", null == user, model)) {
+        if (ControllerUtils.errorNotEmpty("categoryModel", categoryModel, model)
+                || ControllerUtils.errorCustom("contribute", null == user, model)) {
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
         }
         CmsCategory category = categoryService.getEntity(entity.getCategoryId());
@@ -96,14 +96,14 @@ public class ContentController {
             category = null;
         }
         CmsModel cmsModel = modelComponent.getModelMap(site).get(entity.getModelId());
-        if (ControllerUtils.verifyNotEmpty("category", category, model)
-                || ControllerUtils.verifyNotEmpty("model", cmsModel, model)) {
+        if (ControllerUtils.errorNotEmpty("category", category, model)
+                || ControllerUtils.errorNotEmpty("model", cmsModel, model)) {
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
         }
         CmsContentAdminController.initContent(entity, cmsModel, draft, false, attribute, false, CommonUtils.getDate());
         if (null != entity.getId()) {
             CmsContent oldEntity = service.getEntity(entity.getId());
-            if (null != oldEntity && ControllerUtils.verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)
+            if (null != oldEntity && ControllerUtils.errorNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)
                     && (oldEntity.getUserId() == user.getId() || user.isSuperuser())) {
                 entity = service.update(entity.getId(), entity, entity.isOnlyUrl() ? CmsContentAdminController.ignoreProperties
                         : CmsContentAdminController.ignorePropertiesWithUrl);

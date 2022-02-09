@@ -98,20 +98,20 @@ public class PlaceController {
             String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
             CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filePath);
             SysUser user = ControllerUtils.getUserFromSession(session);
-            if (ControllerUtils.verifyCustom("contribute",
+            if (ControllerUtils.errorCustom("contribute",
                     null == metadata || !metadata.isAllowContribute() || 0 >= metadata.getSize(), model)
-                    || ControllerUtils.verifyCustom("anonymousContribute", null == user && !metadata.isAllowAnonymous(), model)) {
+                    || ControllerUtils.errorCustom("anonymousContribute", null == user && !metadata.isAllowAnonymous(), model)) {
                 return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
             }
             if (!metadata.isAllowAnonymous()
-                    && ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getWebToken(request), _csrf, model)) {
+                    && ControllerUtils.errorNotEquals("_csrf", ControllerUtils.getWebToken(request), _csrf, model)) {
                 return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
             }
             if (null != entity.getId()) {
                 CmsPlace oldEntity = service.getEntity(entity.getId());
                 if (null == oldEntity || CommonUtils.empty(oldEntity.getUserId()) || null == user
-                        || ControllerUtils.verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)
-                        || ControllerUtils.verifyNotEquals("siteId", user.getId(), oldEntity.getUserId(), model)) {
+                        || ControllerUtils.errorNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)
+                        || ControllerUtils.errorNotEquals("siteId", user.getId(), oldEntity.getUserId(), model)) {
                     return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
                 }
                 entity = service.update(entity.getId(), entity, ignoreProperties);
@@ -155,9 +155,9 @@ public class PlaceController {
         if (null != entity) {
             String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
             CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filePath);
-            if (ControllerUtils.verifyCustom("manage",
+            if (ControllerUtils.errorCustom("manage",
                     CommonUtils.empty(metadata.getAdminIds()) || !ArrayUtils.contains(metadata.getAdminIds(), user.getId()),
-                    model) || ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
+                    model) || ControllerUtils.errorNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
             } else {
                 service.delete(id);
                 logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB, "delete.place",
@@ -194,9 +194,9 @@ public class PlaceController {
         if (null != entity) {
             String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
             CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filePath);
-            if (ControllerUtils.verifyCustom("manage",
+            if (ControllerUtils.errorCustom("manage",
                     CommonUtils.empty(metadata.getAdminIds()) || !ArrayUtils.contains(metadata.getAdminIds(), user.getId()),
-                    model) || ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
+                    model) || ControllerUtils.errorNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
             } else {
                 service.check(id, user.getId());
                 logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB, "check.place",
@@ -233,10 +233,10 @@ public class PlaceController {
         if (null != entity) {
             String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
             CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filePath);
-            if (ControllerUtils.verifyCustom("manage",
+            if (ControllerUtils.errorCustom("manage",
                     null == entity || null == user || CommonUtils.empty(metadata.getAdminIds())
                             || !ArrayUtils.contains(metadata.getAdminIds(), user.getId()),
-                    model) || ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
+                    model) || ControllerUtils.errorNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
             } else {
                 service.uncheck(id);
                 logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB, "check.place",

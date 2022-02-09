@@ -53,7 +53,7 @@ public class SysAppClientAdminController {
             ModelMap model) {
         SysAppClient entity = service.getEntity(id);
         if (null != entity) {
-            if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
+            if (ControllerUtils.errorNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             service.updateStatus(id, false);
@@ -77,7 +77,7 @@ public class SysAppClientAdminController {
             ModelMap model) {
         SysAppClient entity = service.getEntity(id);
         if (null != entity) {
-            if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
+            if (ControllerUtils.errorNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             service.updateStatus(id, true);

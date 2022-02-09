@@ -82,12 +82,12 @@ public class SysModuleAdminController {
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, SysModule entity,
             @ModelAttribute SysModuleParameters moduleParameters, String oldId, HttpServletRequest request, HttpSession session,
             ModelMap model) {
-        if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
+        if (ControllerUtils.errorCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (CommonUtils.notEmpty(oldId)) {
             if (!entity.getId().equals(oldId)
-                    && ControllerUtils.verifyHasExist("module", service.getEntity(entity.getId()), model)) {
+                    && ControllerUtils.errorHasExist("module", service.getEntity(entity.getId()), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             entity = service.update(oldId, entity);
@@ -140,7 +140,7 @@ public class SysModuleAdminController {
     @Csrf
     public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String id, HttpServletRequest request,
             ModelMap model) {
-        if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
+        if (ControllerUtils.errorCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         SysModule entity = service.getEntity(id);

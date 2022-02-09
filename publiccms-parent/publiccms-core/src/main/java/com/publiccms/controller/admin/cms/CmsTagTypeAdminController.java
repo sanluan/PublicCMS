@@ -54,7 +54,7 @@ public class CmsTagTypeAdminController {
             HttpServletRequest request, ModelMap model) {
         if (null != entity.getId()) {
             CmsTagType oldEntity = service.getEntity(entity.getId());
-            if (null == oldEntity || ControllerUtils.verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
+            if (null == oldEntity || ControllerUtils.errorNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             entity = service.update(entity.getId(), entity, ignoreProperties);
@@ -86,7 +86,7 @@ public class CmsTagTypeAdminController {
             ModelMap model) {
         CmsTagType entity = service.getEntity(id);
         if (null != entity) {
-            if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
+            if (ControllerUtils.errorNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             service.delete(id);

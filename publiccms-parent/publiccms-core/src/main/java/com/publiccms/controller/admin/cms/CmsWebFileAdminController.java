@@ -28,10 +28,12 @@ import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.log.LogUpload;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
+import com.publiccms.logic.component.site.LockComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.log.LogUploadService;
+import com.publiccms.logic.service.sys.SysLockService;
 import com.publiccms.views.pojo.entities.FileSize;
 
 /**
@@ -47,6 +49,8 @@ public class CmsWebFileAdminController {
     protected LogUploadService logUploadService;
     @Autowired
     protected LogOperateService logOperateService;
+    @Autowired
+    protected LockComponent lockComponent;
     @Autowired
     protected SiteComponent siteComponent;
 
@@ -73,6 +77,7 @@ public class CmsWebFileAdminController {
                 } else {
                     String historyFilePath = siteComponent.getWebHistoryFilePath(site, path);
                     CmsFileUtils.updateFile(filePath, historyFilePath, content);
+                    lockComponent.unLock(site.getId(), SysLockService.ITEM_TYPE_FILE, path, admin.getId());
                     logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                             "update.web.webfile", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
                 }
@@ -166,7 +171,7 @@ public class CmsWebFileAdminController {
             for (String path : paths) {
                 String filePath = siteComponent.getWebFilePath(site, path);
                 String backupFilePath = siteComponent.getWebBackupFilePath(site, path);
-                if (ControllerUtils.verifyCustom("notExist.webfile", !CmsFileUtils.moveFile(filePath, backupFilePath), model)) {
+                if (ControllerUtils.errorCustom("notExist.webfile", !CmsFileUtils.moveFile(filePath, backupFilePath), model)) {
                     return CommonConstants.TEMPLATE_ERROR;
                 }
             }

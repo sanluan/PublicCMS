@@ -57,7 +57,7 @@ public class CmsCategoryTypeAdminController {
     @Csrf
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, @ModelAttribute CmsCategoryType entity,
             String categoryTypeId, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyCustom("noright", null != site.getParentId(), model)) {
+        if (ControllerUtils.errorCustom("noright", null != site.getParentId(), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         modelComponent.clear(site.getId());
@@ -95,7 +95,7 @@ public class CmsCategoryTypeAdminController {
     @Csrf
     public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String id, HttpServletRequest request,
             ModelMap model) {
-        if (ControllerUtils.verifyCustom("noright", null != site.getParentId(), model)) {
+        if (ControllerUtils.errorCustom("noright", null != site.getParentId(), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         Map<String, CmsCategoryType> categoryTypeMap = modelComponent.getCategoryTypeMap(site);

@@ -38,7 +38,7 @@ public class SysRoleModuleId implements java.io.Serializable {
         this.roleId = roleId;
     }
 
-    @Column(name = "module_id", nullable = false, length = 20)
+    @Column(name = "module_id", nullable = false, length = 30)
     public String getModuleId() {
         return this.moduleId;
     }

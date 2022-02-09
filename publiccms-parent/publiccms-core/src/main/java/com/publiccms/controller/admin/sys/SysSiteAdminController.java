@@ -92,10 +92,10 @@ public class SysSiteAdminController {
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, SysSite entity, String domain,
             Boolean wild, Boolean multiple, String roleName, String deptName, String userName, String password, String encoding,
             HttpServletRequest request, ModelMap model) {
-        if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)
-                || ControllerUtils.verifyCustom("needAuthorizationEdition", !CmsVersion.isAuthorizationEdition(), model)
+        if (ControllerUtils.errorCustom("noright", !siteComponent.isMaster(site.getId()), model)
+                || ControllerUtils.errorCustom("needAuthorizationEdition", !CmsVersion.isAuthorizationEdition(), model)
                 || (null != domain
-                        && ControllerUtils.verifyCustom("unauthorizedDomain", !CmsVersion.verifyDomain(domain), model))) {
+                        && ControllerUtils.errorCustom("unauthorizedDomain", !CmsVersion.verifyDomain(domain), model))) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (null == entity.getDynamicPath()) {
@@ -116,9 +116,9 @@ public class SysSiteAdminController {
                         CommonUtils.getDate(), JsonUtils.getString(entity)));
             }
         } else {
-            if (ControllerUtils.verifyNotEmpty("userName", userName, model)
-                    || ControllerUtils.verifyNotEmpty("password", password, model)
-                    || ControllerUtils.verifyHasExist("domain", domainService.getEntity(domain), model)) {
+            if (ControllerUtils.errorNotEmpty("userName", userName, model)
+                    || ControllerUtils.errorNotEmpty("password", password, model)
+                    || ControllerUtils.errorHasExist("domain", domainService.getEntity(domain), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             service.save(entity, domain, null == wild ? false : wild, null == multiple ? false : multiple, roleName, deptName,
@@ -149,7 +149,7 @@ public class SysSiteAdminController {
     @Csrf
     public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Short id, HttpServletRequest request,
             ModelMap model) {
-        if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
+        if (ControllerUtils.errorCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         SysSite entity = service.getEntity(id);
@@ -178,7 +178,7 @@ public class SysSiteAdminController {
     @Csrf
     public String execSql(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String command, String[] parameters,
             HttpServletRequest request, ModelMap model) {
-        if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
+        if (ControllerUtils.errorCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if ("update_url".contains(command)) {
@@ -222,7 +222,7 @@ public class SysSiteAdminController {
     @Csrf
     public String execScript(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String command, String[] parameters,
             HttpServletRequest request, ModelMap model) {
-        if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
+        if (ControllerUtils.errorCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         String log = null;
@@ -288,7 +288,7 @@ public class SysSiteAdminController {
     @Csrf
     public String upload(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile file,
             HttpServletRequest request, ModelMap model) {
-        if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
+        if (ControllerUtils.errorCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (null != file && !file.isEmpty()) {

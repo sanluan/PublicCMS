@@ -38,7 +38,7 @@ public class SysDeptConfigId implements java.io.Serializable {
         this.deptId = deptId;
     }
 
-    @Column(name = "config", nullable = false)
+    @Column(name = "config", nullable = false, length = 100)
     public String getConfig() {
         return this.config;
     }

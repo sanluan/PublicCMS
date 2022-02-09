@@ -238,5 +238,47 @@ DELETE FROM `sys_extend` WHERE id NOT IN (SELECT `extend_id` FROM `sys_extend_fi
 UPDATE `cms_category` SET extend_id = NULL WHERE extend_id NOT IN (SELECT `id` FROM `sys_extend`);
 ALTER TABLE `sys_user`
     CHANGE COLUMN `superuser_access` `superuser` tinyint(1) NOT NULL COMMENT '是否管理员' after `email_checked`,
-    CHANGE COLUMN `owns_all_content` `content_permissions`  int(11) NOT NULL COMMENT '内容权限(0仅自己,1所有人,2本部门)' after `dept_id`;
+    CHANGE COLUMN `owns_all_content` `content_permissions` int(11) NOT NULL COMMENT '内容权限(0仅自己,1所有人,2本部门)' after `dept_id`;
 UPDATE `cms_content` a SET `dept_id` = (SELECT `dept_id` FROM `sys_user` WHERE `id`=a.`user_id`) WHERE `dept_id` is NULL;
+-- 2022-02-09 --
+CREATE TABLE `sys_lock` (
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
+  `item_type` varchar(50) NOT NULL COMMENT '类型',
+  `item_id` varchar(130) NOT NULL COMMENT '项目',
+  `user_id` bigint(20) DEFAULT NULL COMMENT '用户',
+  `count` int(11) NOT NULL COMMENT '锁定次数',
+  `create_date` datetime NOT NULL COMMENT '创建日期',
+  PRIMARY KEY (`site_id`,`item_type`,`item_id`),
+  KEY `sys_lock_item_type` (`site_id`,`item_type`,`create_date`)
+) COMMENT='锁';
+ALTER TABLE `log_visit` RENAME `visit_history`;
+ALTER TABLE `log_visit_day` RENAME `visit_day`;
+ALTER TABLE `log_visit_item` RENAME `visit_item`;
+ALTER TABLE `log_visit_session` RENAME `visit_session`;
+ALTER TABLE `log_visit_url` RENAME `visit_url`;
+DELETE FROM `sys_module` WHERE `id` in ('log_visit','log_visit_day','log_visit_item','log_visit_session','log_visit_url');
+DELETE FROM `sys_module_lang` WHERE `module_id` in ('log_visit','log_visit_day','log_visit_item','log_visit_session','log_visit_url');
+INSERT INTO `sys_module` VALUES ('visit_day', 'visit/day', NULL, 'icon-calendar', 'visit_menu', 1, 3);
+INSERT INTO `sys_module` VALUES ('visit_history', 'visit/history', 'log/view', 'icon-bolt', 'visit_menu', 1, 1);
+INSERT INTO `sys_module` VALUES ('visit_menu', , NULL, NULL, 'icon-bolt', 'maintenance', 1, 5);
+INSERT INTO `sys_module` VALUES ('visit_item', 'visit/item', NULL, 'icon-flag-checkered', 'visit_menu', 1, 5);
+INSERT INTO `sys_module` VALUES ('visit_session', 'visit/session', NULL, 'icon-comment-alt', 'visit_menu', 1, 2);
+INSERT INTO `sys_module` VALUES ('visit_url', 'visit/url', NULL, 'icon-link', 'visit_menu', 1, 4);
+INSERT INTO `sys_module_lang` VALUES ('visit_day', 'en', 'Daily visit log');
+INSERT INTO `sys_module_lang` VALUES ('visit_day', 'ja', '毎日の訪問ログ');
+INSERT INTO `sys_module_lang` VALUES ('visit_day', 'zh', '日访问日志');
+INSERT INTO `sys_module_lang` VALUES ('visit_history', 'en', 'Visit log');
+INSERT INTO `sys_module_lang` VALUES ('visit_history', 'ja', 'アクセスログ');
+INSERT INTO `sys_module_lang` VALUES ('visit_history', 'zh', '访问日志');
+INSERT INTO `sys_module_lang` VALUES ('visit_menu', 'en', 'Visit data');
+INSERT INTO `sys_module_lang` VALUES ('visit_menu', 'ja', 'データにアクセス');
+INSERT INTO `sys_module_lang` VALUES ('visit_menu', 'zh', '访问数据');
+INSERT INTO `sys_module_lang` VALUES ('visit_item', 'en', 'Item visit log');
+INSERT INTO `sys_module_lang` VALUES ('visit_item', 'ja', 'アイテム訪問ログ');
+INSERT INTO `sys_module_lang` VALUES ('visit_item', 'zh', '项目访问日志');
+INSERT INTO `sys_module_lang` VALUES ('visit_session', 'en', 'Visit session');
+INSERT INTO `sys_module_lang` VALUES ('visit_session', 'ja', 'アクセスセッション');
+INSERT INTO `sys_module_lang` VALUES ('visit_session', 'zh', '访问日志会话');
+INSERT INTO `sys_module_lang` VALUES ('visit_url', 'en', 'Page visit log');
+INSERT INTO `sys_module_lang` VALUES ('visit_url', 'ja', 'ページアクセスログ');
+INSERT INTO `sys_module_lang` VALUES ('visit_url', 'zh', '页面访问日志');

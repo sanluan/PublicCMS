@@ -54,7 +54,7 @@ public class CmsContentProductAdminController {
             HttpServletRequest request, ModelMap model) {
         if (null != entity.getId()) {
             CmsContentProduct oldEntity = service.getEntity(entity.getId());
-            if (null == oldEntity || ControllerUtils.verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
+            if (null == oldEntity || ControllerUtils.errorNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             entity = service.update(entity.getId(), entity, ignoreProperties);

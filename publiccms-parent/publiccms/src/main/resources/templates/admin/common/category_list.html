@@ -79,14 +79,24 @@
             <#list page.list as a>
                 <@t.merge 'parentIds' a.parentId!/>
                 <@t.merge 'typeIds' a.typeId!/>
+                <@t.merge 'ids' a.id/>
             </#list>
+            <@_sysLock itemType='category' itemIds=t.ids><#assign lockMap=map!/></@_sysLock>
+            <#if lockMap?has_content>
+                <#list lockMap as k,lock>
+                    <#if lock.userId?has_content><@t.merge 'userIds' lock.userId/></#if>
+                </#list>
+            </#if>
+            <@_sysUser ids=t.userIds><#assign userMap=map!/></@_sysUser>
             <@_category ids=t.parentIds!><#assign parentMap=map!/></@_category>
             <@_categoryType ids=t.typeIds!><#assign typeMap=map!/></@_categoryType>
             <#list page.list as a>
             <tr target="sid" rel="${a.id}">
                 <td><input name="ids" value="${a.id}" type="checkbox"></td>
                 <td>${a.id!}</td>
-                <td><a href="${a.url!}" class="exclude-translate" target="_blank">${(a.name)!}</a>${(a.onlyUrl?then('['+t.pageMessage('url')+']',''))!}</td>
+                <td <#if lockMap[a.id?string]?has_content><#assign lockUser=(userMap[lockMap[a.id?string].userId?string].nickName)!''/>title="<@t.page 'lock.message' lockUser/> ${lockMap[a.id?string].createDate}"</#if>>
+                    <#if lockMap[a.id?string]?has_content><i class="icon-lock icon-large"></i> </#if><a href="${a.url!}" class="exclude-translate" target="_blank">${(a.name)!}</a>${(a.onlyUrl?then('['+t.pageMessage('url')+']',''))!}
+                </td>
                 <td class="exclude-translate">${a.code!}</td>
                 <td class="exclude-translate">${(typeMap[a.typeId?string].name)!}</td>
                 <td class="exclude-translate">${(parentMap[a.parentId?string].name)!}</td>

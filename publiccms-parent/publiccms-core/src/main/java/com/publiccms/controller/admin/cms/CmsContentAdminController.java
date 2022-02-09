@@ -53,6 +53,7 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.config.ConfigComponent;
 import com.publiccms.logic.component.config.SiteConfigComponent;
+import com.publiccms.logic.component.site.LockComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.ModelComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
@@ -65,6 +66,7 @@ import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.sys.SysDeptCategoryService;
 import com.publiccms.logic.service.sys.SysDeptService;
+import com.publiccms.logic.service.sys.SysLockService;
 import com.publiccms.logic.service.sys.SysSiteService;
 import com.publiccms.logic.service.sys.SysUserService;
 import com.publiccms.views.pojo.entities.CmsModel;
@@ -106,6 +108,8 @@ public class CmsContentAdminController {
     @Autowired
     protected ConfigComponent configComponent;
     @Autowired
+    protected LockComponent lockComponent;
+    @Autowired
     private SysSiteService siteService;
 
     public static final String[] ignoreProperties = new String[] { "siteId", "userId", "deptId", "categoryId", "tagIds", "sort",
@@ -133,15 +137,15 @@ public class CmsContentAdminController {
             CmsContentAttribute attribute, @ModelAttribute CmsContentParameters contentParameters, Boolean draft, Boolean checked,
             HttpServletRequest request, ModelMap model) {
         SysDept dept = sysDeptService.getEntity(admin.getDeptId());
-        if (ControllerUtils.verifyNotEmpty("deptId", admin.getDeptId(), model)
-                || ControllerUtils.verifyNotEmpty("deptId", dept, model)
-                || ControllerUtils.verifyCustom("noright", !(dept.isOwnsAllCategory() || null != sysDeptCategoryService
+        if (ControllerUtils.errorNotEmpty("deptId", admin.getDeptId(), model)
+                || ControllerUtils.errorNotEmpty("deptId", dept, model)
+                || ControllerUtils.errorCustom("noright", !(dept.isOwnsAllCategory() || null != sysDeptCategoryService
                         .getEntity(new SysDeptCategoryId(admin.getDeptId(), entity.getCategoryId()))), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         CmsCategoryModel categoryModel = categoryModelService
                 .getEntity(new CmsCategoryModelId(entity.getCategoryId(), entity.getModelId()));
-        if (ControllerUtils.verifyNotEmpty("categoryModel", categoryModel, model)) {
+        if (ControllerUtils.errorNotEmpty("categoryModel", categoryModel, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         CmsCategory category = categoryService.getEntity(entity.getCategoryId());
@@ -150,21 +154,22 @@ public class CmsContentAdminController {
         }
 
         CmsModel cmsModel = modelComponent.getModelMap(site).get(entity.getModelId());
-        if (ControllerUtils.verifyNotEmpty("category", category, model)
-                || ControllerUtils.verifyNotEmpty("model", cmsModel, model)) {
+        if (ControllerUtils.errorNotEmpty("category", category, model)
+                || ControllerUtils.errorNotEmpty("model", cmsModel, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         Date now = CommonUtils.getDate();
         initContent(entity, cmsModel, draft, checked, attribute, true, now);
         if (null != entity.getId()) {
             CmsContent oldEntity = service.getEntity(entity.getId());
-            if (null == oldEntity || ControllerUtils.verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)
-                    || ControllerUtils.verifyCustom("noright", !ControllerUtils.hasContentPermissions(admin, oldEntity), model)) {
+            if (null == oldEntity || ControllerUtils.errorNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)
+                    || ControllerUtils.errorCustom("noright", !ControllerUtils.hasContentPermissions(admin, oldEntity), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             entity.setUpdateDate(now);
             entity = service.update(entity.getId(), entity, entity.isOnlyUrl() ? ignoreProperties : ignorePropertiesWithUrl);
             if (null != entity) {
+                lockComponent.unLock(site.getId(), SysLockService.ITEM_TYPE_CONTENT, String.valueOf(entity.getId()), admin.getId());
                 logOperateService
                         .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                                 "update.content", RequestUtils.getIpAddress(request), now, JsonUtils.getString(entity)));
@@ -359,9 +364,9 @@ public class CmsContentAdminController {
         CmsContent content = service.getEntity(entity.getContentId());
         CmsContent related = service.getEntity(entity.getRelatedContentId());
         if (null != content && null != related) {
-            if (ControllerUtils.verifyNotEquals("siteId", site.getId(), content.getSiteId(), model)
-                    || ControllerUtils.verifyNotEquals("siteId", site.getId(), related.getSiteId(), model)
-                    || ControllerUtils.verifyCustom("noright", !ControllerUtils.hasContentPermissions(admin, content), model)) {
+            if (ControllerUtils.errorNotEquals("siteId", site.getId(), content.getSiteId(), model)
+                    || ControllerUtils.errorNotEquals("siteId", site.getId(), related.getSiteId(), model)
+                    || ControllerUtils.errorCustom("noright", !ControllerUtils.hasContentPermissions(admin, content), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             if (CommonUtils.empty(entity.getTitle())) {
@@ -396,7 +401,7 @@ public class CmsContentAdminController {
         if (null != entity) {
             CmsContent content = service.getEntity(entity.getContentId());
             if (null == content || site.getId() == content.getSiteId()) {
-                if (ControllerUtils.verifyCustom("noright", !ControllerUtils.hasContentPermissions(admin, content), model)) {
+                if (ControllerUtils.errorCustom("noright", !ControllerUtils.hasContentPermissions(admin, content), model)) {
                     return CommonConstants.TEMPLATE_ERROR;
                 }
                 cmsContentRelatedService.delete(id);
@@ -424,10 +429,10 @@ public class CmsContentAdminController {
             HttpServletRequest request, ModelMap model) {
         SysDept dept = sysDeptService.getEntity(admin.getDeptId());
         CmsCategory category = categoryService.getEntity(categoryId);
-        if (ControllerUtils.verifyNotEquals("siteId", site.getId(), category.getSiteId(), model)
-                || ControllerUtils.verifyNotEmpty("deptId", admin.getDeptId(), model)
-                || ControllerUtils.verifyNotEmpty("deptId", dept, model)
-                || ControllerUtils.verifyCustom("noright", !(dept.isOwnsAllCategory()
+        if (ControllerUtils.errorNotEquals("siteId", site.getId(), category.getSiteId(), model)
+                || ControllerUtils.errorNotEmpty("deptId", admin.getDeptId(), model)
+                || ControllerUtils.errorNotEmpty("deptId", dept, model)
+                || ControllerUtils.errorCustom("noright", !(dept.isOwnsAllCategory()
                         || null != sysDeptCategoryService.getEntity(new SysDeptCategoryId(admin.getDeptId(), category.getId()))),
                         model)) {
             return CommonConstants.TEMPLATE_ERROR;
@@ -495,15 +500,13 @@ public class CmsContentAdminController {
         SysDept dept = sysDeptService.getEntity(admin.getDeptId());
         CmsContent content = service.getEntity(id);
         if (null != content && CommonUtils.notEmpty(modelId)) {
-            if (ControllerUtils.verifyNotEmpty("deptId", admin.getDeptId(), model)
-                    || ControllerUtils.verifyNotEmpty("deptId", dept, model)
-                    || ControllerUtils.verifyCustom("noright",
+            if (ControllerUtils.errorNotEmpty("deptId", admin.getDeptId(), model)
+                    || ControllerUtils.errorNotEmpty("deptId", dept, model)
+                    || ControllerUtils.errorCustom("noright",
                             !(dept.isOwnsAllCategory() || null != sysDeptCategoryService
                                     .getEntity(new SysDeptCategoryId(admin.getDeptId(), content.getCategoryId()))),
                             model)
-                    || ControllerUtils.verifyCustom("noright",
-                            !ControllerUtils.hasContentPermissions(admin, content),
-                            model)) {
+                    || ControllerUtils.errorCustom("noright", !ControllerUtils.hasContentPermissions(admin, content), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             service.changeModel(site.getId(), id, modelId);
@@ -530,13 +533,13 @@ public class CmsContentAdminController {
         SysDept dept = sysDeptService.getEntity(admin.getDeptId());
         CmsContent content = service.getEntity(id);
         if (null != content) {
-            if (ControllerUtils.verifyNotEmpty("deptId", admin.getDeptId(), model)
-                    || ControllerUtils.verifyNotEmpty("deptId", dept, model)
-                    || ControllerUtils.verifyCustom("noright",
+            if (ControllerUtils.errorNotEmpty("deptId", admin.getDeptId(), model)
+                    || ControllerUtils.errorNotEmpty("deptId", dept, model)
+                    || ControllerUtils.errorCustom("noright",
                             !(dept.isOwnsAllCategory() || null != sysDeptCategoryService
                                     .getEntity(new SysDeptCategoryId(admin.getDeptId(), content.getCategoryId()))),
                             model)
-                    || ControllerUtils.verifyCustom("noright", !ControllerUtils.hasContentPermissions(admin, content), model)) {
+                    || ControllerUtils.errorCustom("noright", !ControllerUtils.hasContentPermissions(admin, content), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             CmsContent entity = service.sort(site.getId(), id, sort);
@@ -575,7 +578,7 @@ public class CmsContentAdminController {
                     LogLoginService.CHANNEL_WEB_MANAGER, "static.content", RequestUtils.getIpAddress(request),
                     CommonUtils.getDate(), StringUtils.join(ids, CommonConstants.COMMA)));
             if (flag) {
-                ControllerUtils.verifyCustom("static", true, model);
+                ControllerUtils.errorCustom("static", true, model);
                 return CommonConstants.TEMPLATE_ERROR;
             }
         }

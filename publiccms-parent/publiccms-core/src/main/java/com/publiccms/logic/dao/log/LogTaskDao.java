@@ -61,14 +61,12 @@ public class LogTaskDao extends BaseDao<LogTask> {
      * @return number of data deleted
      */
     public int delete(Short siteId, Date begintime) {
-        if (CommonUtils.notEmpty(siteId) || null != begintime) {
+        if (null != begintime) {
             QueryHandler queryHandler = getQueryHandler("delete from LogTask bean");
             if (CommonUtils.notEmpty(siteId)) {
                 queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
             }
-            if (null != begintime) {
-                queryHandler.condition("bean.begintime <= :begintime").setParameter("begintime", begintime);
-            }
+            queryHandler.condition("bean.begintime <= :begintime").setParameter("begintime", begintime);
             return delete(queryHandler);
         }
         return 0;

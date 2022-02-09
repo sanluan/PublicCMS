@@ -97,9 +97,9 @@ public class UserController {
             HttpSession session, HttpServletResponse response, ModelMap model) {
         returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         user = service.getEntity(user.getId());
-        if (ControllerUtils.verifyNotEmpty("user", user, model) || ControllerUtils.verifyNotEmpty("password", password, model)
-                || ControllerUtils.verifyNotEquals("repassword", password, repassword, model)
-                || null != user.getPassword() && ControllerUtils.verifyNotEquals("password", user.getPassword(),
+        if (ControllerUtils.errorNotEmpty("user", user, model) || ControllerUtils.errorNotEmpty("password", password, model)
+                || ControllerUtils.errorNotEquals("repassword", password, repassword, model)
+                || null != user.getPassword() && ControllerUtils.errorNotEquals("password", user.getPassword(),
                         UserPasswordUtils.passwordEncode(oldpassword, user.getSalt(), encoding), model)) {
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
         } else {
@@ -161,12 +161,12 @@ public class UserController {
         String emailTitle = config.get(EmailTemplateConfigComponent.CONFIG_EMAIL_TITLE);
         String emailPath = config.get(EmailTemplateConfigComponent.CONFIG_EMAIL_PATH);
         PageHandler page = sysEmailTokenService.getPage(user.getId(), null, null);
-        if (ControllerUtils.verifyNotEmpty("email", email, model)
-                || ControllerUtils.verifyNotEmpty("email.config", emailTitle, model)
-                || ControllerUtils.verifyNotEmpty("email.config", emailPath, model)
-                || ControllerUtils.verifyNotEMail("email", email, model)
-                || ControllerUtils.verifyNotGreaterThen("email.token", page.getTotalCount(), 2, model)
-                || ControllerUtils.verifyHasExist("email", service.findByEmail(site.getId(), email), model)) {
+        if (ControllerUtils.errorNotEmpty("email", email, model)
+                || ControllerUtils.errorNotEmpty("email.config", emailTitle, model)
+                || ControllerUtils.errorNotEmpty("email.config", emailPath, model)
+                || ControllerUtils.errorNotEMail("email", email, model)
+                || ControllerUtils.errorNotGreaterThen("email.token", page.getTotalCount(), 2, model)
+                || ControllerUtils.errorHasExist("email", service.findByEmail(site.getId(), email), model)) {
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
         } else {
             int expiryMinutes = ConfigComponent.getInt(config.get(EmailTemplateConfigComponent.CONFIG_EXPIRY_MINUTES),
@@ -218,8 +218,8 @@ public class UserController {
         if (null != sysEmailToken && CommonUtils.getDate().after(sysEmailToken.getExpiryDate())) {
             sysEmailToken = null;
         }
-        if (ControllerUtils.verifyNotEmpty("verifyEmail.authToken", authToken, model)
-                || ControllerUtils.verifyNotExist("verifyEmail.authToken", sysEmailToken, model)) {
+        if (ControllerUtils.errorNotEmpty("verifyEmail.authToken", authToken, model)
+                || ControllerUtils.errorNotExist("verifyEmail.authToken", sysEmailToken, model)) {
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
         } else {
             sysEmailTokenService.delete(sysEmailToken.getAuthToken());
@@ -246,7 +246,7 @@ public class UserController {
         returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         SysUserToken entity = sysUserTokenService.getEntity(authToken);
         if (null != entity) {
-            if (ControllerUtils.verifyNotEquals("userId", user.getId(), entity.getUserId(), model)) {
+            if (ControllerUtils.errorNotEquals("userId", user.getId(), entity.getUserId(), model)) {
                 return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
             }
             sysUserTokenService.delete(authToken);

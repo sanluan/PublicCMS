@@ -91,7 +91,7 @@ public class SysDeptAdminController {
             String[] pages, String[] configs, HttpServletRequest request, ModelMap model) {
         if (null != entity.getId()) {
             SysDept oldEntity = service.getEntity(entity.getId());
-            if (null == oldEntity || ControllerUtils.verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
+            if (null == oldEntity || ControllerUtils.errorNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             entity = service.update(entity.getId(), entity, ignoreProperties);
@@ -154,20 +154,20 @@ public class SysDeptAdminController {
         entity.setPassword(StringUtils.trim(entity.getPassword()));
         repassword = StringUtils.trim(repassword);
         SysDept dept = service.getEntity(entity.getDeptId());
-        if (ControllerUtils.verifyNotEmpty("username", entity.getName(), model)
-                || ControllerUtils.verifyNotEmpty("deptId", dept, model)
-                || ControllerUtils.verifyNotEquals("userId", dept.getUserId(), admin.getId(), model)
-                || ControllerUtils.verifyNotEquals("siteId", site.getId(), dept.getSiteId(), model)
-                || ControllerUtils.verifyNotEmpty("nickname", entity.getNickName(), model)
-                || ControllerUtils.verifyNotUserName("username", entity.getName(), model)
-                || ControllerUtils.verifyNotNickName("nickname", entity.getNickName(), model)) {
+        if (ControllerUtils.errorNotEmpty("username", entity.getName(), model)
+                || ControllerUtils.errorNotEmpty("deptId", dept, model)
+                || ControllerUtils.errorNotEquals("userId", dept.getUserId(), admin.getId(), model)
+                || ControllerUtils.errorNotEquals("siteId", site.getId(), dept.getSiteId(), model)
+                || ControllerUtils.errorNotEmpty("nickname", entity.getNickName(), model)
+                || ControllerUtils.errorNotUserName("username", entity.getName(), model)
+                || ControllerUtils.errorNotNickName("nickname", entity.getNickName(), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         entity.setSuperuser(true);
         entity.setRoles(arrayToCommaDelimitedString(roleIds));
         if (null != entity.getId()) {
             SysUser oldEntity = userService.getEntity(entity.getId());
-            if (null == oldEntity || ControllerUtils.verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
+            if (null == oldEntity || ControllerUtils.errorNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             if (SysUserService.CONTENT_PERMISSIONS_ALL == entity.getContentPermissions()
@@ -176,12 +176,12 @@ public class SysDeptAdminController {
                 entity.setContentPermissions(SysUserService.CONTENT_PERMISSIONS_DEPT);
             }
             SysUser user = userService.getEntity(entity.getId());
-            if ((!user.getName().equals(entity.getName()) && ControllerUtils.verifyHasExist("username",
+            if ((!user.getName().equals(entity.getName()) && ControllerUtils.errorHasExist("username",
                     userService.findByName(site.getId(), entity.getName()), model))) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             if (CommonUtils.notEmpty(entity.getPassword())) {
-                if (ControllerUtils.verifyNotEquals("repassword", entity.getPassword(), repassword, model)) {
+                if (ControllerUtils.errorNotEquals("repassword", entity.getPassword(), repassword, model)) {
                     return CommonConstants.TEMPLATE_ERROR;
                 }
                 entity.setSalt(UserPasswordUtils.getSalt());
@@ -200,9 +200,9 @@ public class SysDeptAdminController {
                         CommonUtils.getDate(), JsonUtils.getString(entity)));
             }
         } else {
-            if (ControllerUtils.verifyNotEmpty("password", entity.getPassword(), model)
-                    || ControllerUtils.verifyNotEquals("repassword", entity.getPassword(), repassword, model) || ControllerUtils
-                            .verifyHasExist("username", userService.findByName(site.getId(), entity.getName()), model)) {
+            if (ControllerUtils.errorNotEmpty("password", entity.getPassword(), model)
+                    || ControllerUtils.errorNotEquals("repassword", entity.getPassword(), repassword, model) || ControllerUtils
+                            .errorHasExist("username", userService.findByName(site.getId(), entity.getName()), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             if (SysUserService.CONTENT_PERMISSIONS_ALL != admin.getContentPermissions()
@@ -281,15 +281,15 @@ public class SysDeptAdminController {
     @Csrf
     public String enable(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long id, HttpServletRequest request,
             ModelMap model) {
-        if (ControllerUtils.verifyEquals("admin.operate", admin.getId(), id, model)) {
+        if (ControllerUtils.errorEquals("admin.operate", admin.getId(), id, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         SysUser entity = userService.getEntity(id);
         if (null != entity) {
             SysDept dept = service.getEntity(entity.getDeptId());
-            if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)
-                    || ControllerUtils.verifyNotEmpty("deptId", dept, model)
-                    || ControllerUtils.verifyNotEquals("userId", dept.getUserId(), admin.getId(), model)) {
+            if (ControllerUtils.errorNotEquals("siteId", site.getId(), entity.getSiteId(), model)
+                    || ControllerUtils.errorNotEmpty("deptId", dept, model)
+                    || ControllerUtils.errorNotEquals("userId", dept.getUserId(), admin.getId(), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             userService.updateStatus(id, false);
@@ -312,15 +312,15 @@ public class SysDeptAdminController {
     @Csrf
     public String disable(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long id, HttpServletRequest request,
             ModelMap model) {
-        if (ControllerUtils.verifyEquals("admin.operate", admin.getId(), id, model)) {
+        if (ControllerUtils.errorEquals("admin.operate", admin.getId(), id, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         SysUser entity = userService.getEntity(id);
         if (null != entity) {
             SysDept dept = service.getEntity(entity.getDeptId());
-            if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)
-                    || ControllerUtils.verifyNotEmpty("deptId", dept, model)
-                    || ControllerUtils.verifyNotEquals("userId", dept.getUserId(), admin.getId(), model)) {
+            if (ControllerUtils.errorNotEquals("siteId", site.getId(), entity.getSiteId(), model)
+                    || ControllerUtils.errorNotEmpty("deptId", dept, model)
+                    || ControllerUtils.errorNotEquals("userId", dept.getUserId(), admin.getId(), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             userService.updateStatus(id, true);

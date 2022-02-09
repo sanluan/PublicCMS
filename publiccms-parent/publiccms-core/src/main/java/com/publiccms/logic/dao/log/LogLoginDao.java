@@ -72,14 +72,12 @@ public class LogLoginDao extends BaseDao<LogLogin> {
      * @return number of data deleted
      */
     public int delete(Short siteId, Date createDate) {
-        if (CommonUtils.notEmpty(siteId) || null != createDate) {
+        if (null != createDate) {
             QueryHandler queryHandler = getQueryHandler("delete from LogLogin bean");
             if (CommonUtils.notEmpty(siteId)) {
                 queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
             }
-            if (null != createDate) {
-                queryHandler.condition("bean.createDate <= :createDate").setParameter("createDate", createDate);
-            }
+            queryHandler.condition("bean.createDate <= :createDate").setParameter("createDate", createDate);
             return delete(queryHandler);
         }
         return 0;

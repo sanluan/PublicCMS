@@ -88,7 +88,7 @@ public class CmsUserSurveyQuestion implements java.io.Serializable {
         this.surveyId = surveyId;
     }
 
-    @Column(name = "answer", nullable = false)
+    @Column(name = "answer")
     public String getAnswer() {
         return this.answer;
     }

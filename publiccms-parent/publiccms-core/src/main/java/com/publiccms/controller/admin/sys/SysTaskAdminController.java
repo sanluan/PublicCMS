@@ -58,7 +58,7 @@ public class SysTaskAdminController {
         entity.setUpdateDate(CommonUtils.getDate());
         if (null != entity.getId()) {
             SysTask oldEntity = service.getEntity(entity.getId());
-            if (null == oldEntity || ControllerUtils.verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
+            if (null == oldEntity || ControllerUtils.errorNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             entity = service.update(entity.getId(), entity, ignoreProperties);
@@ -91,7 +91,7 @@ public class SysTaskAdminController {
             ModelMap model) {
         SysTask entity = service.getEntity(id);
         if (null != entity) {
-            if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
+            if (ControllerUtils.errorNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             scheduledTask.runOnce(site, id);
@@ -115,7 +115,7 @@ public class SysTaskAdminController {
             ModelMap model) {
         SysTask entity = service.getEntity(id);
         if (null != entity) {
-            if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
+            if (ControllerUtils.errorNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             service.updateStatus(id, ScheduledTask.TASK_STATUS_PAUSE);
@@ -140,7 +140,7 @@ public class SysTaskAdminController {
             HttpServletRequest request, ModelMap model) {
         SysTask entity = service.getEntity(id);
         if (null != entity) {
-            if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
+            if (ControllerUtils.errorNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             service.updateStatus(id, ScheduledTask.TASK_STATUS_READY);
@@ -165,7 +165,7 @@ public class SysTaskAdminController {
             ModelMap model) {
         SysTask entity = service.getEntity(id);
         if (null != entity) {
-            if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
+            if (ControllerUtils.errorNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             service.updateStatus(id, ScheduledTask.TASK_STATUS_READY);
@@ -190,7 +190,7 @@ public class SysTaskAdminController {
             HttpServletRequest request, ModelMap model) {
         SysTask entity = service.getEntity(id);
         if (null != entity) {
-            if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
+            if (ControllerUtils.errorNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             service.updateStatus(id, ScheduledTask.TASK_STATUS_READY);
@@ -215,7 +215,7 @@ public class SysTaskAdminController {
             ModelMap model) {
         SysTask entity = service.getEntity(id);
         if (null != entity) {
-            if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
+            if (ControllerUtils.errorNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             service.delete(id);

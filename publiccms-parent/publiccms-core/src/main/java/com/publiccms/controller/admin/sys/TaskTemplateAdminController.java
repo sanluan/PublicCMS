@@ -162,7 +162,7 @@ public class TaskTemplateAdminController {
         if (CommonUtils.notEmpty(path)) {
             String filePath = siteComponent.getTaskTemplateFilePath(site, path);
             String backupFilePath = siteComponent.getTaskTemplateBackupFilePath(site, path);
-            if (ControllerUtils.verifyCustom("notExist.template", !CmsFileUtils.moveFile(filePath, backupFilePath), model)) {
+            if (ControllerUtils.errorCustom("notExist.template", !CmsFileUtils.moveFile(filePath, backupFilePath), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             templateComponent.clearTaskTemplateCache();

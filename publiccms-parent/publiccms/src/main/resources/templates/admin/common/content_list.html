@@ -146,8 +146,14 @@
                 <@t.merge 'userIds' a.checkUserId!/>
                 <@t.merge 'categoryIds' a.categoryId!/>
                 <@t.merge 'modelIds' a.modelId!/>
+                <@t.merge 'ids' a.id/>
             </#list>
-
+            <@_sysLock itemType='content' itemIds=t.ids><#assign lockMap=map!/></@_sysLock>
+            <#if lockMap?has_content>
+                <#list lockMap as k,lock>
+                    <#if lock.userId?has_content><@t.merge 'userIds' lock.userId/></#if>
+                </#list>
+            </#if>
             <@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
             <@_category ids=t.categoryIds!><#assign categoryMap=map!/></@_category>
             <@_model ids=t.modelIds!><#assign modelMap=map!/></@_model>
@@ -162,7 +168,9 @@
                         </div>
                     </#if>
                     <div class="box">
-                        <h3>[<span class="exclude-translate">${(categoryMap[a.categoryId?string].name)!}</span>] ${(a.copied?then('['+t.pageMessage('copied')+']',''))!}<a href="cmsContent/view.html?id=${a.id}" class="exclude-translate" target="dialog" rel="viewContent${a.id}">${(a.title)!}</a></h3>
+                        <h3 <#if lockMap[a.id?string]?has_content><#assign lockUser=(userMap[lockMap[a.id?string].userId?string].nickName)!''/>title="<@t.page 'lock.message' lockUser/> ${lockMap[a.id?string].createDate}"</#if>>
+                            <#if lockMap[a.id?string]?has_content><i class="icon-lock icon-large"></i> </#if>[<span class="exclude-translate">${(categoryMap[a.categoryId?string].name)!}</span>] ${(a.copied?then('['+t.pageMessage('copied')+']',''))!}<a href="cmsContent/view.html?id=${a.id}" class="exclude-translate" target="dialog" rel="viewContent${a.id}">${(a.title)!}</a>
+                        </h3>
                         <p>
                             <#if modelMap[a.modelId]?has_content&&modelMap[a.modelId].hasChild>
                                 <label><a href="cmsContent/list.html?parentId=${a.id}&categoryId=${a.categoryId!}" class="btnText" target="navTab" rel="cmsContent/list"><@t.page 'content.child_management'/></a></label>

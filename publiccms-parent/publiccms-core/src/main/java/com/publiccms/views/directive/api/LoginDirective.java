@@ -24,7 +24,9 @@ import com.publiccms.entities.sys.SysUser;
 import com.publiccms.entities.sys.SysUserToken;
 import com.publiccms.logic.component.config.ConfigComponent;
 import com.publiccms.logic.component.config.SiteConfigComponent;
+import com.publiccms.logic.component.site.LockComponent;
 import com.publiccms.logic.service.log.LogLoginService;
+import com.publiccms.logic.service.sys.SysLockService;
 import com.publiccms.logic.service.sys.SysUserService;
 import com.publiccms.logic.service.sys.SysUserTokenService;
 
@@ -44,14 +46,17 @@ public class LoginDirective extends AbstractAppDirective {
         boolean result = false;
         if (CommonUtils.notEmpty(username) && CommonUtils.notEmpty(password)) {
             SysSite site = getSite(handler);
-            if (ControllerUtils.verifyNotEMail(username)) {
+            if (ControllerUtils.notEMail(username)) {
                 user = service.findByName(site.getId(), username);
             } else {
                 user = service.findByEmail(site.getId(), username);
             }
             String ip = RequestUtils.getIpAddress(handler.getRequest());
-            if (null != user && !user.isDisabled()
+            boolean locked = lockComponent.isLocked(site.getId(), SysLockService.ITEM_TYPE_IP_LOGIN, ip, null);
+            if (null != user && (!locked || !ControllerUtils.ipNotEquals(ip, user)) && !user.isDisabled()
                     && user.getPassword().equals(UserPasswordUtils.passwordEncode(password, user.getSalt(), encoding))) {
+                lockComponent.unLock(site.getId(), SysLockService.ITEM_TYPE_IP_LOGIN, String.valueOf(user.getId()), null);
+                lockComponent.unLock(site.getId(), SysLockService.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null);
                 if (UserPasswordUtils.needUpdate(user.getSalt())) {
                     String salt = UserPasswordUtils.getSalt();
                     service.updatePassword(user.getId(), UserPasswordUtils.passwordEncode(password, salt, encoding), salt);
@@ -74,6 +79,10 @@ public class LoginDirective extends AbstractAppDirective {
                 result = true;
                 handler.put("authToken", authToken).put("expiryDate", expiryDate).put("user", user);
             } else {
+                if (null != user) {
+                    lockComponent.lock(site.getId(), SysLockService.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null, true);
+                }
+                lockComponent.lock(site.getId(), SysLockService.ITEM_TYPE_IP_LOGIN, ip, null, true);
                 LogLogin log = new LogLogin();
                 log.setSiteId(site.getId());
                 log.setName(username);
@@ -94,6 +103,8 @@ public class LoginDirective extends AbstractAppDirective {
     private LogLoginService logLoginService;
     @Autowired
     private ConfigComponent configComponent;
+    @Autowired
+    private LockComponent lockComponent;
 
     @Override
     public boolean needUserToken() {

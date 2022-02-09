@@ -36,9 +36,11 @@ import com.publiccms.entities.sys.SysUser;
 import com.publiccms.entities.sys.SysUserToken;
 import com.publiccms.logic.component.config.ConfigComponent;
 import com.publiccms.logic.component.config.SiteConfigComponent;
+import com.publiccms.logic.component.site.LockComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.sys.SysAppClientService;
+import com.publiccms.logic.service.sys.SysLockService;
 import com.publiccms.logic.service.sys.SysUserService;
 import com.publiccms.logic.service.sys.SysUserTokenService;
 
@@ -59,6 +61,8 @@ public class LoginController {
     @Autowired
     private LogLoginService logLoginService;
     @Autowired
+    private LockComponent lockComponent;
+    @Autowired
     protected SiteComponent siteComponent;
     @Autowired
     protected ConfigComponent configComponent;
@@ -70,7 +74,7 @@ public class LoginController {
      * @param username
      * @param password
      * @param returnUrl
-     * @param encode
+     * @param encoding
      * @param clientId
      * @param uuid
      * @param request
@@ -79,7 +83,7 @@ public class LoginController {
      * @return view name
      */
     @RequestMapping(value = "doLogin", method = RequestMethod.POST)
-    public String login(@RequestAttribute SysSite site, String username, String password, String returnUrl, String encode,
+    public String login(@RequestAttribute SysSite site, String username, String password, String returnUrl, String encoding,
             Long clientId, String uuid, HttpServletRequest request, HttpServletResponse response, ModelMap model) {
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
         String loginPath = config.get(SiteConfigComponent.CONFIG_LOGIN_PATH);
@@ -89,33 +93,41 @@ public class LoginController {
         returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         username = StringUtils.trim(username);
         password = StringUtils.trim(password);
-        if (ControllerUtils.verifyNotEmpty("username", username, model)
-                || ControllerUtils.verifyNotEmpty("password", password, model)) {
+        if (ControllerUtils.errorNotEmpty("username", username, model)
+                || ControllerUtils.errorNotEmpty("password", password, model)) {
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + loginPath;
         } else {
             SysUser user;
-            if (ControllerUtils.verifyNotEMail(username)) {
+            if (ControllerUtils.notEMail(username)) {
                 user = service.findByName(site.getId(), username);
             } else {
                 user = service.findByEmail(site.getId(), username);
             }
             String ip = RequestUtils.getIpAddress(request);
             Date now = CommonUtils.getDate();
-            if (ControllerUtils.verifyCustom("password",
-                    null == user
-                            || !UserPasswordUtils.passwordEncode(password, user.getSalt(), encode).equals(user.getPassword()),
-                    model) || verifyNotEnablie(user, model)) {
-                Long userId = null;
-                if (null != user) {
-                    userId = user.getId();
-                }
+            boolean locked = lockComponent.isLocked(site.getId(), SysLockService.ITEM_TYPE_IP_LOGIN, ip, null);
+            if (ControllerUtils.errorNotExist("username", user, model)
+                    || ControllerUtils.errorCustom("locked.ip", locked && ControllerUtils.ipNotEquals(ip, user), model)) {
+                lockComponent.lock(site.getId(), SysLockService.ITEM_TYPE_IP_LOGIN, ip, null, true);
+                return UrlBasedViewResolver.REDIRECT_URL_PREFIX + loginPath;
+            }
+            locked = lockComponent.isLocked(site.getId(), SysLockService.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null);
+            if (ControllerUtils.errorCustom("locked.user", locked, model)
+                    || ControllerUtils.errorNotEquals("password",
+                            UserPasswordUtils.passwordEncode(password, user.getSalt(), encoding), user.getPassword(), model)
+                    || verifyNotEnablie(user, model)) {
+                Long userId = user.getId();
+                lockComponent.lock(site.getId(), SysLockService.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null, true);
+                lockComponent.lock(site.getId(), SysLockService.ITEM_TYPE_IP_LOGIN, ip, null, true);
                 logLoginService.save(
                         new LogLogin(site.getId(), username, userId, ip, LogLoginService.CHANNEL_WEB, false, now, password));
                 return UrlBasedViewResolver.REDIRECT_URL_PREFIX + loginPath;
             } else {
+                lockComponent.unLock(site.getId(), SysLockService.ITEM_TYPE_IP_LOGIN, String.valueOf(user.getId()), null);
+                lockComponent.unLock(site.getId(), SysLockService.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null);
                 if (UserPasswordUtils.needUpdate(user.getSalt())) {
                     String salt = UserPasswordUtils.getSalt();
-                    service.updatePassword(user.getId(), UserPasswordUtils.passwordEncode(password, salt, encode), salt);
+                    service.updatePassword(user.getId(), UserPasswordUtils.passwordEncode(password, salt, encoding), salt);
                 }
                 if (!user.isWeakPassword() && UserPasswordUtils.isWeek(username, password)) {
                     service.updateWeekPassword(user.getId(), true);
@@ -185,24 +197,28 @@ public class LoginController {
         if (CommonUtils.empty(registerPath)) {
             registerPath = site.getDynamicPath();
         }
-
+        String ip = RequestUtils.getIpAddress(request);
+        boolean locked = lockComponent.isLocked(site.getId(), SysLockService.ITEM_TYPE_REGISTER, ip, null);
+        if (ControllerUtils.errorCustom("locked.ip", locked, model)) {
+            lockComponent.lock(site.getId(), SysLockService.ITEM_TYPE_REGISTER, ip, null, true);
+            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + registerPath;
+        }
         entity.setName(StringUtils.trim(entity.getName()));
         entity.setNickName(StringUtils.trim(entity.getNickName()));
         entity.setPassword(StringUtils.trim(entity.getPassword()));
         repassword = StringUtils.trim(repassword);
         returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
-        if (ControllerUtils.verifyNotEmpty("username", entity.getName(), model)
-                || ControllerUtils.verifyNotEmpty("nickname", entity.getNickName(), model)
-                || ControllerUtils.verifyNotEmpty("password", entity.getPassword(), model)
-                || ControllerUtils.verifyNotUserName("username", entity.getName(), model)
-                || ControllerUtils.verifyNotNickName("nickname", entity.getNickName(), model)
-                || ControllerUtils.verifyNotEquals("repassword", entity.getPassword(), repassword, model)
-                || ControllerUtils.verifyHasExist("username", service.findByName(site.getId(), entity.getName()), model)) {
+        if (ControllerUtils.errorNotEmpty("username", entity.getName(), model)
+                || ControllerUtils.errorNotEmpty("nickname", entity.getNickName(), model)
+                || ControllerUtils.errorNotEmpty("password", entity.getPassword(), model)
+                || ControllerUtils.errorNotUserName("username", entity.getName(), model)
+                || ControllerUtils.errorNotNickName("nickname", entity.getNickName(), model)
+                || ControllerUtils.errorNotEquals("repassword", entity.getPassword(), repassword, model)
+                || ControllerUtils.errorHasExist("username", service.findByName(site.getId(), entity.getName()), model)) {
             model.addAttribute("name", entity.getName());
             model.addAttribute("nickname", entity.getNickName());
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + registerPath;
         } else {
-            String ip = RequestUtils.getIpAddress(request);
             String salt = UserPasswordUtils.getSalt();
             entity.setPassword(UserPasswordUtils.passwordEncode(entity.getPassword(), salt, encode));
             entity.setSalt(salt);
@@ -215,7 +231,7 @@ public class LoginController {
             entity.setLoginCount(0);
             entity.setDeptId(null);
             service.save(entity);
-
+            lockComponent.lock(site.getId(), SysLockService.ITEM_TYPE_REGISTER, ip, null, true);
             if (null != clientId && null != uuid) {
                 SysAppClient appClient = appClientService.getEntity(clientId);
                 if (null != appClient && appClient.getSiteId() == site.getId() && appClient.getUuid().equals(uuid)

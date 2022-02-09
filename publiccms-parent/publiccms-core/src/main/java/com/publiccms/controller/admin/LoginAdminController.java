@@ -36,9 +36,11 @@ import com.publiccms.entities.sys.SysUserToken;
 import com.publiccms.logic.component.cache.CacheComponent;
 import com.publiccms.logic.component.config.ConfigComponent;
 import com.publiccms.logic.component.config.SiteConfigComponent;
+import com.publiccms.logic.component.site.LockComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
+import com.publiccms.logic.service.sys.SysLockService;
 import com.publiccms.logic.service.sys.SysUserService;
 import com.publiccms.logic.service.sys.SysUserTokenService;
 
@@ -62,6 +64,8 @@ public class LoginAdminController {
     @Autowired
     private ConfigComponent configComponent;
     @Autowired
+    private LockComponent lockComponent;
+    @Autowired
     protected SiteComponent siteComponent;
 
     /**
@@ -81,28 +85,41 @@ public class LoginAdminController {
             HttpServletRequest request, HttpSession session, HttpServletResponse response, ModelMap model) {
         username = StringUtils.trim(username);
         password = StringUtils.trim(password);
-        if (ControllerUtils.verifyNotEmpty("username", username, model)
-                || ControllerUtils.verifyNotEmpty("password", password, model)) {
+        if (ControllerUtils.errorNotEmpty("username", username, model)
+                || ControllerUtils.errorNotEmpty("password", password, model)) {
             model.addAttribute("username", username);
             model.addAttribute("returnUrl", returnUrl);
             return "login";
         }
         String ip = RequestUtils.getIpAddress(request);
         SysUser user = service.findByName(site.getId(), username);
-        if (ControllerUtils.verifyNotExist("username", user, model)
-                || ControllerUtils.verifyNotEquals("password",
-                        UserPasswordUtils.passwordEncode(password, user.getSalt(), encoding), user.getPassword(), model)
-                || verifyNotAdmin(user, model) || verifyNotEnablie(user, model)) {
+        boolean locked = lockComponent.isLocked(site.getId(), SysLockService.ITEM_TYPE_IP_LOGIN, ip, null);
+        if (ControllerUtils.errorNotExist("username", user, model)
+                || ControllerUtils.errorCustom("locked.ip", locked && ControllerUtils.ipNotEquals(ip, user), model)) {
             model.addAttribute("username", username);
             model.addAttribute("returnUrl", returnUrl);
-            Long userId = null;
-            if (null != user) {
-                userId = user.getId();
-            }
-            logLoginService.save(new LogLogin(site.getId(), username, userId, ip, LogLoginService.CHANNEL_WEB_MANAGER, false,
+            lockComponent.lock(site.getId(), SysLockService.ITEM_TYPE_IP_LOGIN, ip, null, true);
+            logLoginService.save(new LogLogin(site.getId(), username, null, ip, LogLoginService.CHANNEL_WEB_MANAGER, false,
                     CommonUtils.getDate(), password));
             return "login";
+        } else {
+            locked = lockComponent.isLocked(site.getId(), SysLockService.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null);
+            if (ControllerUtils.errorCustom("locked.user", locked, model)
+                    || ControllerUtils.errorNotEquals("password",
+                            UserPasswordUtils.passwordEncode(password, user.getSalt(), encoding), user.getPassword(), model)
+                    || verifyNotAdmin(user, model) || verifyNotEnablie(user, model)) {
+                model.addAttribute("username", username);
+                model.addAttribute("returnUrl", returnUrl);
+                Long userId = user.getId();
+                lockComponent.lock(site.getId(), SysLockService.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null, true);
+                lockComponent.lock(site.getId(), SysLockService.ITEM_TYPE_IP_LOGIN, ip, null, true);
+                logLoginService.save(new LogLogin(site.getId(), username, userId, ip, LogLoginService.CHANNEL_WEB_MANAGER, false,
+                        CommonUtils.getDate(), password));
+                return "login";
+            }
         }
+        lockComponent.unLock(site.getId(), SysLockService.ITEM_TYPE_IP_LOGIN, String.valueOf(user.getId()), null);
+        lockComponent.unLock(site.getId(), SysLockService.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null);
 
         ControllerUtils.setAdminToSession(session, user);
         if (UserPasswordUtils.needUpdate(user.getSalt())) {
@@ -173,10 +190,10 @@ public class LoginAdminController {
         SysUser user = service.getEntity(admin.getId());
         String encodedOldPassword = UserPasswordUtils.passwordEncode(oldpassword, user.getSalt(), encoding);
         if (null != user.getPassword()
-                && ControllerUtils.verifyNotEquals("password", user.getPassword(), encodedOldPassword, model)) {
+                && ControllerUtils.errorNotEquals("password", user.getPassword(), encodedOldPassword, model)) {
             return CommonConstants.TEMPLATE_ERROR;
-        } else if (ControllerUtils.verifyNotEmpty("password", password, model)
-                || ControllerUtils.verifyNotEquals("repassword", password, repassword, model)) {
+        } else if (ControllerUtils.errorNotEmpty("password", password, model)
+                || ControllerUtils.errorNotEquals("repassword", password, repassword, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         } else {
             ControllerUtils.clearAdminToSession(request.getContextPath(), request.getScheme(), request.getSession(), response);

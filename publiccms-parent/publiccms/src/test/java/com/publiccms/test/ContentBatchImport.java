@@ -80,8 +80,8 @@ public class ContentBatchImport {
             List<Company> list = CommonConstants.objectMapper.readValue(new File("D://a.txt"),
                     CommonConstants.objectMapper.getTypeFactory().constructCollectionLikeType(List.class, Company.class));
             for (Company c : list) {
-                CmsContent entity = new CmsContent((short) 1, c.getName(), 1, 18, "company", false, false, true, false, false,
-                        false, 0, 0, 0, 0, new Date(), new Date(), 0, 1, false);
+                CmsContent entity = new CmsContent((short) 1, c.getName(), 1, 18, "company", false, false, false, true, false,
+                        false, false, 0, 0, 0, 0, new Date(), new Date(), 0, 1, false);
                 entity.setDescription(c.getDescription());
                 if (CommonUtils.notEmpty(c.getImages())) {
                     entity.setCover(getUrl(c.getImages().get(0)));
@@ -98,8 +98,8 @@ public class ContentBatchImport {
                 }
                 if (CommonUtils.notEmpty(c.getProducts())) {
                     for (Product p : c.getProducts()) {
-                        CmsContent product = new CmsContent((short) 1, p.getName(), 1, 18, "product", false, false, true, false,
-                                false, false, 0, 0, 0, 0, new Date(), new Date(), 0, 1, false);
+                        CmsContent product = new CmsContent((short) 1, p.getName(), 1, 18, "product", false, false, false, true,
+                                false, false, false, 0, 0, 0, 0, new Date(), new Date(), 0, 1, false);
                         product.setParentId(entity.getId());
                         if (CommonUtils.notEmpty(p.getImages())) {
                             product.setCover(getUrl(p.getImages().iterator().next()));
@@ -155,7 +155,7 @@ public class ContentBatchImport {
             EntityUtils.consume(entity);
         } catch (IOException e) {
             System.out.println(e.getMessage());
-            return getUrl(url) ;
+            return getUrl(url);
         }
         return fileName;
 
@@ -242,7 +242,7 @@ public class ContentBatchImport {
                         p.setBaseAddress(p.getBaseAddress() + "," + getCellValue(row.getCell(17)));
                     }
                     String images = getCellValue(row.getCell(9));
-                    if(p.getName().equals("西林红茶")) {
+                    if (p.getName().equals("西林红茶")) {
                         System.out.println(images);
                     }
                     if (CommonUtils.notEmpty(images)) {

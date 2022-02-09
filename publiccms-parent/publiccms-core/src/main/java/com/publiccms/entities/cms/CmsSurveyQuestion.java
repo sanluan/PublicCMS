@@ -128,7 +128,7 @@ public class CmsSurveyQuestion implements java.io.Serializable {
         this.answer = answer;
     }
 
-    @Column(name = "sort")
+    @Column(name="sort", nullable=false)
     public int getSort() {
         return this.sort;
     }

@@ -52,17 +52,27 @@
             </tr>
         </#if>
         <#list list as a>
+            <#if !a.directory><@t.merge 'paths' path?has_content?then(path+'/','/')+a.fileName/></#if>
+        </#list>
+        <@_sysLock itemType='file' itemIds=t.paths><#assign lockMap=map!/></@_sysLock>
+        <#if lockMap?has_content>
+            <#list lockMap as k,lock>
+                <#if lock.userId?has_content><@t.merge 'userIds' lock.userId/></#if>
+            </#list>
+        </#if>
+        <@_sysUser ids=t.userIds><#assign userMap=map!/></@_sysUser>
+        <#list list as a>
             <#assign filePath=path?has_content?then(path+'/','/')+a.fileName/>
             <tr>
                 <td><input name="paths" value="${filePath}" type="checkbox"></td>
                 <td class="tree"><div class="${a.directory?then('folder_expandable','file')}" style="width:30px;"></div></td>
-                <td>
+                <td <#if !a.directory&&lockMap[filePath]?has_content><#assign lockUser=(userMap[lockMap[filePath].userId?string].nickName)!''/>title="<@t.page 'lock.message' lockUser/> ${lockMap[filePath].createDate}"</#if>>
                     <#if a.directory>
                         <a href="cmsWebFile/list.html?path=${filePath?url}" target="navTab" rel="cmsWebFile/list">
                             ${a.fileName}
                         </a>
                     <#else>
-                    ${a.fileName}
+                        <#if lockMap[filePath]?has_content><i class="icon-lock icon-large"></i> </#if>${a.fileName}
                     </#if>
                 </td>
                 <td>${a.lastModifiedTime?datetime}</td>

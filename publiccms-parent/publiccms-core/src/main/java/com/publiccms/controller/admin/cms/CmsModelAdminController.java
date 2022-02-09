@@ -59,7 +59,7 @@ public class CmsModelAdminController {
     @Csrf
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, @ModelAttribute CmsModel entity,
             String modelId, HttpServletRequest request, ModelMap model) {
-        if (ControllerUtils.verifyCustom("noright", null != site.getParentId(), model)) {
+        if (ControllerUtils.errorCustom("noright", null != site.getParentId(), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         modelComponent.clear(site.getId());
@@ -105,7 +105,7 @@ public class CmsModelAdminController {
     @Csrf
     public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String id, HttpServletRequest request,
             ModelMap model) {
-        if (ControllerUtils.verifyCustom("noright", null != site.getParentId(), model)) {
+        if (ControllerUtils.errorCustom("noright", null != site.getParentId(), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         Map<String, CmsModel> modelMap = modelComponent.getModelMap(site);

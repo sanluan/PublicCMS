@@ -17,7 +17,21 @@
                 <label><input type="checkbox" name="showAdvancedOptions" onclick="if($(this).is(':checked')){$('.advanced',navTab.getCurrentPanel()).show();checkCategoryModel();}else{$('.advanced',navTab.getCurrentPanel()).hide();checkCategoryModel();}"/><@t.page 'show_advanced_options'/></label>
             </li>
         <@_sysAuthorized roleIds=admin.roles url='cmsCategory/save'>
+            <@_createLock itemType='category' itemId=id userId=admin.id>
+                <#if object?has_content||!id?has_content>
             <li><button type="submit" class="buttonActive"><@t.page 'button.save'/></button></li>
+            <#if id?has_content>
+                <li><a target="ajaxTodo" href="common/lock?itemType=category&itemId=${id}&lock=false" callback="(function(){navTab.reloadFlag('cmsCategory/list');navTab.closeCurrentTab();})" class="button"><@t.page 'button.close'/></a></li>
+            </#if>
+                <#else>
+            <li>
+                <@_sysLock itemType='category' itemId=id>
+                    <@_sysUser id=(object.userId)!''><#assign lockUser=object.nickName/></@_sysUser>
+                <button type="button" class="buttonDisabled" title="${lock.createDate}"><@t.page 'lock.message' lockUser/></button>
+                </@_sysLock>
+            </li>
+                </#if>
+            </@_createLock>
         </@_sysAuthorized>
             <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
         </ul>

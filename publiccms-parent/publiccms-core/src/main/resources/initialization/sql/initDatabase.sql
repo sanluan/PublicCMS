@@ -482,95 +482,6 @@ CREATE TABLE `log_upload` (
   KEY `log_upload_file_type` (`file_type`),
   KEY `log_upload_file_size` (`file_size`)
 ) COMMENT='上传日志';
-
--- ----------------------------
--- Table structure for log_visit
--- ----------------------------
-DROP TABLE IF EXISTS `log_visit`;
-CREATE TABLE `log_visit` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `site_id` smallint(6) NOT NULL COMMENT '站点',
-  `session_id` varchar(50) NOT NULL COMMENT '会话',
-  `visit_date` date NOT NULL COMMENT '访问日期',
-  `visit_hour` tinyint(4) NOT NULL COMMENT '访问小时',
-  `ip` varchar(130) NOT NULL COMMENT 'IP',
-  `user_agent` varchar(500) DEFAULT NULL COMMENT 'User Agent',
-  `url` varchar(2048) NOT NULL COMMENT '访问路径',
-  `title` varchar(255) DEFAULT NULL COMMENT '标题',
-  `screen_width` int(11) DEFAULT NULL COMMENT '屏幕宽度',
-  `screen_height` int(11) DEFAULT NULL COMMENT '屏幕高度',
-  `referer_url` varchar(2048) DEFAULT NULL COMMENT '来源URL',
-  `item_type` varchar(50) DEFAULT NULL COMMENT '项目类型',
-  `item_id` varchar(50) DEFAULT NULL COMMENT '项目',
-  `create_date` datetime NOT NULL COMMENT '创建日期',
-  PRIMARY KEY (`id`),
-  KEY `log_visit_visit_date` (`site_id`,`visit_date`,`visit_hour`),
-  KEY `log_visit_session_id` (`site_id`,`session_id`,`visit_date`,`create_date`,`ip`)
-) COMMENT='访问日志';
-
--- ----------------------------
--- Table structure for log_visit_day
--- ----------------------------
-DROP TABLE IF EXISTS `log_visit_day`;
-CREATE TABLE `log_visit_day` (
-  `site_id` smallint(6) NOT NULL COMMENT '站点',
-  `visit_date` date NOT NULL COMMENT '日期',
-  `visit_hour` tinyint(4) NOT NULL COMMENT '小时',
-  `pv` bigint(20) NOT NULL COMMENT 'Page Views',
-  `uv` bigint(20) DEFAULT NULL COMMENT 'User Views',
-  `ipviews` bigint(20) DEFAULT NULL COMMENT 'IP数',
-  PRIMARY KEY (`site_id`,`visit_date`,`visit_hour`),
-  KEY `log_visit_session_id` (`site_id`,`visit_date`)
-) COMMENT = '访问汇总';
-
--- ----------------------------
--- Table structure for log_visit_item
--- ----------------------------
-DROP TABLE IF EXISTS `log_visit_item`;
-CREATE TABLE `log_visit_item` (
-  `site_id` smallint(6) NOT NULL COMMENT '站点',
-  `visit_date` date NOT NULL COMMENT '日期',
-  `item_type` varchar(50) NOT NULL COMMENT '项目类型',
-  `item_id` varchar(50) NOT NULL COMMENT '项目',
-  `pv` bigint(20) NOT NULL COMMENT 'Page Views',
-  `uv` bigint(20) DEFAULT NULL COMMENT 'User Views',
-  `ipviews` bigint(20) DEFAULT NULL COMMENT 'IP数',
-  PRIMARY KEY (`site_id`,`visit_date`,`item_type`,`item_id`),
-  KEY `log_visit_session_id` (`site_id`,`visit_date`,`item_type`, `item_id`, `pv`)
-) COMMENT='项目访问汇总';
-
--- ----------------------------
--- Table structure for log_visit_session
--- ----------------------------
-DROP TABLE IF EXISTS `log_visit_session`;
-CREATE TABLE `log_visit_session` (
-  `site_id` smallint(6) NOT NULL COMMENT '站点',
-  `session_id` varchar(50) NOT NULL COMMENT '会话',
-  `visit_date` date NOT NULL COMMENT '日期',
-  `last_visit_date` datetime DEFAULT NULL COMMENT '上次访问日期',
-  `first_visit_date` datetime DEFAULT NULL COMMENT '首次访问日期',
-  `ip` varchar(130) NOT NULL COMMENT 'IP',
-  `pv` bigint(20) NOT NULL COMMENT 'PV',
-  PRIMARY KEY (`site_id`,`session_id`,`visit_date`),
-  KEY `log_visit_visit_date` (`site_id`,`visit_date`,`ip`)
-) COMMENT = '访问会话';
-
--- ----------------------------
--- Table structure for log_visit_url
--- ----------------------------
-DROP TABLE IF EXISTS `log_visit_url`;
-CREATE TABLE `log_visit_url` (
-  `site_id` smallint(6) NOT NULL COMMENT '站点',
-  `visit_date` date NOT NULL COMMENT '日期',
-  `url_md5` varchar(50) NOT NULL COMMENT 'URL MD5',
-  `url_sha` varchar(100) NOT NULL COMMENT 'URL SHA',
-  `url` varchar(2048) NOT NULL COMMENT 'URL',
-  `pv` bigint(20) NOT NULL COMMENT 'Page Views',
-  `uv` bigint(20) DEFAULT NULL COMMENT 'User Views',
-  `ipviews` bigint(20) DEFAULT NULL COMMENT 'IP数',
-  PRIMARY KEY (`site_id`,`visit_date`,`url_md5`,`url_sha`),
-  KEY `log_visit_session_id` (`site_id`,`visit_date`,`pv`)
-) COMMENT='页面访问汇总';
 -- ----------------------------
 -- Table structure for sys_app
 -- ----------------------------
@@ -787,7 +698,19 @@ CREATE TABLE `sys_extend_field` (
   KEY `sys_extend_field_input_type` (`extend_id`, `input_type`,`searchable`),
   KEY `sys_extend_field_sort` (`sort`)
 ) COMMENT='扩展字段';
-
+-- ----------------------------
+-- Table structure for sys_lock
+-- ----------------------------
+CREATE TABLE `sys_lock` (
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
+  `item_type` varchar(50) NOT NULL COMMENT '类型',
+  `item_id` varchar(130) NOT NULL COMMENT '项目',
+  `user_id` bigint(20) DEFAULT NULL COMMENT '用户',
+  `count` int(11) NOT NULL COMMENT '锁定次数',
+  `create_date` datetime NOT NULL COMMENT '创建日期',
+  PRIMARY KEY (`site_id`,`item_type`,`item_id`),
+  KEY `sys_lock_item_type` (`site_id`,`item_type`,`create_date`)
+) COMMENT='锁';
 -- ----------------------------
 -- Table structure for sys_module
 -- ----------------------------
@@ -896,11 +819,6 @@ INSERT INTO `sys_module` VALUES ('log_task', 'log/task', NULL, 'icon-time', 'log
 INSERT INTO `sys_module` VALUES ('log_task_delete', NULL, 'logTask/delete', NULL, 'log_task', 0, 0);
 INSERT INTO `sys_module` VALUES ('log_task_view', 'log/taskView', NULL, NULL, 'log_task', 0, 0);
 INSERT INTO `sys_module` VALUES ('log_upload', 'log/upload', 'sysUser/lookup,sysUser/lookup_list', 'icon-list-alt', 'log_menu', 1, 1);
-INSERT INTO `sys_module` VALUES ('log_visit', 'log/visit', 'log/visitView', 'icon-bolt', 'log_menu', 1, 5);
-INSERT INTO `sys_module` VALUES ('log_visit_day', 'log/visitDay', NULL, 'icon-calendar', 'log_menu', 1, 7);
-INSERT INTO `sys_module` VALUES ('log_visit_item', 'log/visitItem', NULL, 'icon-flag-checkered', 'log_menu', 1, 9);
-INSERT INTO `sys_module` VALUES ('log_visit_session', 'log/visitSession', NULL, 'icon-comment-alt', 'log_menu', 1, 6);
-INSERT INTO `sys_module` VALUES ('log_visit_url', 'log/visitUrl', NULL, 'icon-link', 'log_menu', 1, 8);
 INSERT INTO `sys_module` VALUES ('log_workload', 'log/workload', NULL, 'icon-truck', 'log_menu', 1, 0);
 INSERT INTO `sys_module` VALUES ('maintenance', NULL, NULL, 'icon-cogs', NULL, 1, 6);
 INSERT INTO `sys_module` VALUES ('model_add', 'cmsModel/add', 'cmsModel/save,cmsTemplate/lookup,cmsModel/rebuildSearchText,cmsDictionary/lookup', NULL, 'model_list', 0, 0);
@@ -1010,6 +928,12 @@ INSERT INTO `sys_module` VALUES ('user_disable', NULL, 'sysUser/disable', NULL, 
 INSERT INTO `sys_module` VALUES ('user_enable', NULL, 'sysUser/enable', NULL, 'user_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('user_list', 'sysUser/list', NULL, 'icon-user', 'user_menu', 1, 1);
 INSERT INTO `sys_module` VALUES ('user_menu', NULL, NULL, 'icon-user', 'maintenance', 1, 1);
+INSERT INTO `sys_module` VALUES ('visit_day', 'visit/day', NULL, 'icon-calendar', 'visit_menu', 1, 3);
+INSERT INTO `sys_module` VALUES ('visit_history', 'visit/history', 'log/view', 'icon-bolt', 'visit_menu', 1, 1);
+INSERT INTO `sys_module` VALUES ('visit_menu', , NULL, NULL, 'icon-bolt', 'maintenance', 1, 5);
+INSERT INTO `sys_module` VALUES ('visit_item', 'visit/item', NULL, 'icon-flag-checkered', 'visit_menu', 1, 5);
+INSERT INTO `sys_module` VALUES ('visit_session', 'visit/session', NULL, 'icon-comment-alt', 'visit_menu', 1, 2);
+INSERT INTO `sys_module` VALUES ('visit_url', 'visit/url', NULL, 'icon-link', 'visit_menu', 1, 4);
 INSERT INTO `sys_module` VALUES ('webfile_content', 'cmsWebFile/content', 'cmsWebFile/save', NULL, 'webfile_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('webfile_directory', 'cmsWebFile/directory', 'cmsWebFile/createDirectory', NULL, 'webfile_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('webfile_list', 'cmsWebFile/list', NULL, 'icon-globe', 'file_menu', 1, 4);
@@ -1297,21 +1221,6 @@ INSERT INTO `sys_module_lang` VALUES ('log_task_view', 'zh', '查看');
 INSERT INTO `sys_module_lang` VALUES ('log_upload', 'en', 'Upload log');
 INSERT INTO `sys_module_lang` VALUES ('log_upload', 'ja', 'ファイルアップロードログ');
 INSERT INTO `sys_module_lang` VALUES ('log_upload', 'zh', '文件上传日志');
-INSERT INTO `sys_module_lang` VALUES ('log_visit', 'en', 'Visit log');
-INSERT INTO `sys_module_lang` VALUES ('log_visit', 'ja', 'アクセスログ');
-INSERT INTO `sys_module_lang` VALUES ('log_visit', 'zh', '访问日志');
-INSERT INTO `sys_module_lang` VALUES ('log_visit_day', 'en', 'Daily visit log');
-INSERT INTO `sys_module_lang` VALUES ('log_visit_day', 'ja', '毎日の訪問ログ');
-INSERT INTO `sys_module_lang` VALUES ('log_visit_day', 'zh', '日访问日志');
-INSERT INTO `sys_module_lang` VALUES ('log_visit_item', 'en', 'Item visit log');
-INSERT INTO `sys_module_lang` VALUES ('log_visit_item', 'ja', 'アイテム訪問ログ');
-INSERT INTO `sys_module_lang` VALUES ('log_visit_item', 'zh', '项目访问日志');
-INSERT INTO `sys_module_lang` VALUES ('log_visit_session', 'en', 'Visit session');
-INSERT INTO `sys_module_lang` VALUES ('log_visit_session', 'ja', 'アクセスセッション');
-INSERT INTO `sys_module_lang` VALUES ('log_visit_session', 'zh', '访问日志会话');
-INSERT INTO `sys_module_lang` VALUES ('log_visit_url', 'en', 'Page visit log');
-INSERT INTO `sys_module_lang` VALUES ('log_visit_url', 'ja', 'ページアクセスログ');
-INSERT INTO `sys_module_lang` VALUES ('log_visit_url', 'zh', '页面访问日志');
 INSERT INTO `sys_module_lang` VALUES ('log_workload', 'en', 'Workload');
 INSERT INTO `sys_module_lang` VALUES ('log_workload', 'ja', 'ワークロード');
 INSERT INTO `sys_module_lang` VALUES ('log_workload', 'zh', '工作量统计');
@@ -1639,6 +1548,24 @@ INSERT INTO `sys_module_lang` VALUES ('user_list', 'zh', '用户管理');
 INSERT INTO `sys_module_lang` VALUES ('user_menu', 'en', 'User maintenance');
 INSERT INTO `sys_module_lang` VALUES ('user_menu', 'ja', 'ユーザー管理');
 INSERT INTO `sys_module_lang` VALUES ('user_menu', 'zh', '用户管理');
+INSERT INTO `sys_module_lang` VALUES ('visit_day', 'en', 'Daily visit log');
+INSERT INTO `sys_module_lang` VALUES ('visit_day', 'ja', '毎日の訪問ログ');
+INSERT INTO `sys_module_lang` VALUES ('visit_day', 'zh', '日访问日志');
+INSERT INTO `sys_module_lang` VALUES ('visit_history', 'en', 'Visit log');
+INSERT INTO `sys_module_lang` VALUES ('visit_history', 'ja', 'アクセスログ');
+INSERT INTO `sys_module_lang` VALUES ('visit_history', 'zh', '访问日志');
+INSERT INTO `sys_module_lang` VALUES ('visit_menu', 'en', 'Visit report');
+INSERT INTO `sys_module_lang` VALUES ('visit_menu', 'ja', 'アクセス監視');
+INSERT INTO `sys_module_lang` VALUES ('visit_menu', 'zh', '用户访问监控');
+INSERT INTO `sys_module_lang` VALUES ('visit_item', 'en', 'Item visit log');
+INSERT INTO `sys_module_lang` VALUES ('visit_item', 'ja', 'アイテム訪問ログ');
+INSERT INTO `sys_module_lang` VALUES ('visit_item', 'zh', '项目访问日志');
+INSERT INTO `sys_module_lang` VALUES ('visit_session', 'en', 'Visit session');
+INSERT INTO `sys_module_lang` VALUES ('visit_session', 'ja', 'アクセスセッション');
+INSERT INTO `sys_module_lang` VALUES ('visit_session', 'zh', '访问日志会话');
+INSERT INTO `sys_module_lang` VALUES ('visit_url', 'en', 'Page visit log');
+INSERT INTO `sys_module_lang` VALUES ('visit_url', 'ja', 'ページアクセスログ');
+INSERT INTO `sys_module_lang` VALUES ('visit_url', 'zh', '页面访问日志');
 INSERT INTO `sys_module_lang` VALUES ('webfile_content', 'en', 'Edit file');
 INSERT INTO `sys_module_lang` VALUES ('webfile_content', 'ja', 'ファイルの変更');
 INSERT INTO `sys_module_lang` VALUES ('webfile_content', 'zh', '修改文件');
@@ -1998,4 +1925,92 @@ CREATE TABLE `trade_refund` (
   KEY `trade_refund_user_id` (`user_id`,`payment_id`,`status`)
 ) COMMENT='退款申请';
 
+-- ----------------------------
+-- Table structure for visit_day
+-- ----------------------------
+DROP TABLE IF EXISTS `visit_day`;
+CREATE TABLE `visit_day` (
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
+  `visit_date` date NOT NULL COMMENT '日期',
+  `visit_hour` tinyint(4) NOT NULL COMMENT '小时',
+  `pv` bigint(20) NOT NULL COMMENT 'Page Views',
+  `uv` bigint(20) DEFAULT NULL COMMENT 'User Views',
+  `ipviews` bigint(20) DEFAULT NULL COMMENT 'IP数',
+  PRIMARY KEY (`site_id`,`visit_date`,`visit_hour`),
+  KEY `visit_session_id` (`site_id`,`visit_date`)
+) COMMENT = '访问汇总';
+
+-- ----------------------------
+-- Table structure for visit_history
+-- ----------------------------
+DROP TABLE IF EXISTS `visit_history`;
+CREATE TABLE `visit_history` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
+  `session_id` varchar(50) NOT NULL COMMENT '会话',
+  `visit_date` date NOT NULL COMMENT '访问日期',
+  `visit_hour` tinyint(4) NOT NULL COMMENT '访问小时',
+  `ip` varchar(130) NOT NULL COMMENT 'IP',
+  `user_agent` varchar(500) DEFAULT NULL COMMENT 'User Agent',
+  `url` varchar(2048) NOT NULL COMMENT '访问路径',
+  `title` varchar(255) DEFAULT NULL COMMENT '标题',
+  `screen_width` int(11) DEFAULT NULL COMMENT '屏幕宽度',
+  `screen_height` int(11) DEFAULT NULL COMMENT '屏幕高度',
+  `referer_url` varchar(2048) DEFAULT NULL COMMENT '来源URL',
+  `item_type` varchar(50) DEFAULT NULL COMMENT '项目类型',
+  `item_id` varchar(50) DEFAULT NULL COMMENT '项目',
+  `create_date` datetime NOT NULL COMMENT '创建日期',
+  PRIMARY KEY (`id`),
+  KEY `visit_visit_date` (`site_id`,`visit_date`,`visit_hour`),
+  KEY `visit_session_id` (`site_id`,`session_id`,`visit_date`,`create_date`,`ip`)
+) COMMENT='访问日志';
+
+-- ----------------------------
+-- Table structure for visit_item
+-- ----------------------------
+DROP TABLE IF EXISTS `visit_item`;
+CREATE TABLE `visit_item` (
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
+  `visit_date` date NOT NULL COMMENT '日期',
+  `item_type` varchar(50) NOT NULL COMMENT '项目类型',
+  `item_id` varchar(50) NOT NULL COMMENT '项目',
+  `pv` bigint(20) NOT NULL COMMENT 'Page Views',
+  `uv` bigint(20) DEFAULT NULL COMMENT 'User Views',
+  `ipviews` bigint(20) DEFAULT NULL COMMENT 'IP数',
+  PRIMARY KEY (`site_id`,`visit_date`,`item_type`,`item_id`),
+  KEY `visit_session_id` (`site_id`,`visit_date`,`item_type`, `item_id`, `pv`)
+) COMMENT='项目访问汇总';
+
+-- ----------------------------
+-- Table structure for visit_session
+-- ----------------------------
+DROP TABLE IF EXISTS `visit_session`;
+CREATE TABLE `visit_session` (
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
+  `session_id` varchar(50) NOT NULL COMMENT '会话',
+  `visit_date` date NOT NULL COMMENT '日期',
+  `last_visit_date` datetime DEFAULT NULL COMMENT '上次访问日期',
+  `first_visit_date` datetime DEFAULT NULL COMMENT '首次访问日期',
+  `ip` varchar(130) NOT NULL COMMENT 'IP',
+  `pv` bigint(20) NOT NULL COMMENT 'PV',
+  PRIMARY KEY (`site_id`,`session_id`,`visit_date`),
+  KEY `visit_visit_date` (`site_id`,`visit_date`,`ip`)
+) COMMENT = '访问会话';
+
+-- ----------------------------
+-- Table structure for visit_url
+-- ----------------------------
+DROP TABLE IF EXISTS `visit_url`;
+CREATE TABLE `visit_url` (
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
+  `visit_date` date NOT NULL COMMENT '日期',
+  `url_md5` varchar(50) NOT NULL COMMENT 'URL MD5',
+  `url_sha` varchar(100) NOT NULL COMMENT 'URL SHA',
+  `url` varchar(2048) NOT NULL COMMENT 'URL',
+  `pv` bigint(20) NOT NULL COMMENT 'Page Views',
+  `uv` bigint(20) DEFAULT NULL COMMENT 'User Views',
+  `ipviews` bigint(20) DEFAULT NULL COMMENT 'IP数',
+  PRIMARY KEY (`site_id`,`visit_date`,`url_md5`,`url_sha`),
+  KEY `visit_session_id` (`site_id`,`visit_date`,`pv`)
+) COMMENT='页面访问汇总';
 SET FOREIGN_KEY_CHECKS = 1;

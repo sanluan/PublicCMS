@@ -70,7 +70,7 @@ public class TradePaymentController {
         TradePayment entity = service.getEntity(paymentId);
         PaymentGateway paymentGateway = gatewayComponent.get(entity.getAccountType());
         if (null == paymentGateway || null == entity
-                || ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
+                || ControllerUtils.errorNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
             log.info("pay parameter error");
             response.sendRedirect(returnUrl);
         } else if (!paymentGateway.pay(site, entity, returnUrl, response)) {
@@ -95,7 +95,7 @@ public class TradePaymentController {
             HttpServletResponse response, ModelMap model) throws Exception {
         returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         TradePayment entity = service.getEntity(paymentId);
-        if (null == entity || ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
+        if (null == entity || ControllerUtils.errorNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
         }
         TradePaymentProcessor paymentProcessor = paymentProcessorComponent.get(entity.getTradeType());
@@ -296,7 +296,7 @@ public class TradePaymentController {
     public String refund(@RequestAttribute SysSite site, @SessionAttribute SysUser user, TradeRefund entity, String returnUrl,
             HttpServletRequest request, HttpSession session, ModelMap model) {
         returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
-        if (null != user && ControllerUtils.verifyCustom("tradePaymentStatus",
+        if (null != user && ControllerUtils.errorCustom("tradePaymentStatus",
                 !service.pendingRefund(site.getId(), entity.getPaymentId()), model)) {
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
         }

@@ -12,7 +12,19 @@
     </@_sysAuthorized>
             <li><a class="button" href="cmsTemplate/content.html?path=${(path?url)!}" target="ajax" rel="cmsTemplateBox"><@t.page 'template.content'/></a></li>
         </#if>
+            <@_createLock itemType='template' itemId=path userId=admin.id>
+                <#if object?has_content>
             <li><button type="submit" class="buttonActive"><@t.page 'button.save'/></button></li>
+            <li><a target="ajaxTodo" href="common/lock?itemType=template&itemId=${path}&lock=false" callback="(function(){navTab.reload();})" class="button"><@t.page 'button.close'/></a></li>
+                <#else>
+            <li>
+                <@_sysLock itemType='template' itemId=path>
+                    <@_sysUser id=(object.userId)!''><#assign lockUser=object.nickName/></@_sysUser>
+                <button type="button" class="buttonDisabled" title="${lock.createDate}"><@t.page 'lock.message' lockUser/></button>
+                </@_sysLock>
+            </li>
+                </#if>
+            </@_createLock>
         </ul>
     </div>
     <div class="pageFormContent" layoutH>

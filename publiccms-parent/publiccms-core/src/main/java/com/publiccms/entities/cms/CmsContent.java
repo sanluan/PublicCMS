@@ -140,7 +140,7 @@ public class CmsContent implements java.io.Serializable {
     public CmsContent() {
     }
 
-    public CmsContent(short siteId, String title, long userId, int categoryId, String modelId, boolean copied, boolean onlyUrl,
+    public CmsContent(short siteId, String title, long userId, int categoryId, String modelId, boolean copied, boolean contribute, boolean onlyUrl,
             boolean hasImages, boolean hasFiles, boolean hasProducts, boolean hasStatic, int childs, int scores, int comments,
             int clicks, Date publishDate, Date createDate, int sort, int status, boolean disabled) {
         this.siteId = siteId;
@@ -149,6 +149,7 @@ public class CmsContent implements java.io.Serializable {
         this.categoryId = categoryId;
         this.modelId = modelId;
         this.copied = copied;
+        this.contribute = contribute;
         this.onlyUrl = onlyUrl;
         this.hasImages = hasImages;
         this.hasFiles = hasFiles;
@@ -166,7 +167,7 @@ public class CmsContent implements java.io.Serializable {
     }
 
     public CmsContent(short siteId, String title, long userId, Integer deptId, Long checkUserId, int categoryId, String modelId,
-            Long parentId, Long quoteContentId, boolean contribute, boolean copied, String author, String editor, boolean onlyUrl,
+            Long parentId, Long quoteContentId, boolean copied, boolean contribute, String author, String editor, boolean onlyUrl,
             boolean hasImages, boolean hasFiles, boolean hasProducts, boolean hasStatic, String url, String description,
             String tagIds, String dictionaryValues, String cover, int childs, int scores, int comments, int clicks,
             Date publishDate, Date expiryDate, Date checkDate, Date updateDate, Date createDate, int sort, int status,
@@ -180,8 +181,8 @@ public class CmsContent implements java.io.Serializable {
         this.modelId = modelId;
         this.parentId = parentId;
         this.quoteContentId = quoteContentId;
-        this.contribute = contribute;
         this.copied = copied;
+        this.contribute = contribute;
         this.author = author;
         this.editor = editor;
         this.onlyUrl = onlyUrl;
@@ -299,14 +300,6 @@ public class CmsContent implements java.io.Serializable {
         this.quoteContentId = quoteContentId;
     }
 
-    @Column(name = "contribute", nullable = false)
-    public boolean isContribute() {
-        return this.contribute;
-    }
-
-    public void setContribute(boolean contribute) {
-        this.contribute = contribute;
-    }
 
     @Column(name = "copied", nullable = false)
     public boolean isCopied() {
@@ -317,6 +310,14 @@ public class CmsContent implements java.io.Serializable {
         this.copied = copied;
     }
 
+    @Column(name = "contribute", nullable = false)
+    public boolean isContribute() {
+        return this.contribute;
+    }
+
+    public void setContribute(boolean contribute) {
+        this.contribute = contribute;
+    }
     @Column(name = "author", length = 50)
     public String getAuthor() {
         return this.author;

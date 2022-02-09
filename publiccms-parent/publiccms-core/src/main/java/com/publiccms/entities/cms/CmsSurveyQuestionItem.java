@@ -84,8 +84,8 @@ public class CmsSurveyQuestionItem implements java.io.Serializable {
     public void setTitle(String title) {
         this.title = title;
     }
-
-    @Column(name = "sort")
+    
+    @Column(name="sort", nullable=false)
     public int getSort() {
         return this.sort;
     }

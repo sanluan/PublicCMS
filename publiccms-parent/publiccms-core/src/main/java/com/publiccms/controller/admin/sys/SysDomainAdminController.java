@@ -56,14 +56,14 @@ public class SysDomainAdminController {
     @Csrf
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, SysDomain entity, String oldName,
             HttpServletRequest request, ModelMap model) {
-        if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)
-                || ControllerUtils.verifyCustom("needAuthorizationEdition", !CmsVersion.isAuthorizationEdition(), model)
-                || ControllerUtils.verifyCustom("unauthorizedDomain", !CmsVersion.verifyDomain(entity.getName()), model)) {
+        if (ControllerUtils.errorCustom("noright", !siteComponent.isMaster(site.getId()), model)
+                || ControllerUtils.errorCustom("needAuthorizationEdition", !CmsVersion.isAuthorizationEdition(), model)
+                || ControllerUtils.errorCustom("unauthorizedDomain", !CmsVersion.verifyDomain(entity.getName()), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (CommonUtils.notEmpty(oldName)) {
             if (!entity.getName().equals(oldName)
-                    && ControllerUtils.verifyHasExist("domain", service.getEntity(entity.getName()), model)) {
+                    && ControllerUtils.errorHasExist("domain", service.getEntity(entity.getName()), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             entity = service.update(oldName, entity);
@@ -72,7 +72,7 @@ public class SysDomainAdminController {
                         "update.domain", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
             }
         } else {
-            if (ControllerUtils.verifyHasExist("domain", service.getEntity(entity.getName()), model)) {
+            if (ControllerUtils.errorHasExist("domain", service.getEntity(entity.getName()), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             if (0 == entity.getSiteId()) {
@@ -104,7 +104,7 @@ public class SysDomainAdminController {
             HttpServletRequest request, ModelMap model) {
         if (CommonUtils.notEmpty(entity.getName())) {
             SysDomain oldEntity = service.getEntity(entity.getName());
-            if (null == oldEntity || ControllerUtils.verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
+            if (null == oldEntity || ControllerUtils.errorNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             entity = service.update(entity.getName(), entity, ignoreProperties);
@@ -149,7 +149,7 @@ public class SysDomainAdminController {
     @RequestMapping("delete")
     public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String id, HttpServletRequest request,
             ModelMap model) {
-        if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
+        if (ControllerUtils.errorCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         SysDomain entity = service.getEntity(id);

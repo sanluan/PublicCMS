@@ -495,9 +495,9 @@ public class CmsContentService extends BaseService<CmsContent> {
             for (CmsCategory c : categoryList) {
                 if (null != c && !category.getId().equals(c.getId())) {
                     CmsContent quote = new CmsContent(entity.getSiteId(), entity.getTitle(), entity.getUserId(), c.getId(),
-                            entity.getModelId(), entity.isCopied(), true, entity.isHasImages(), entity.isHasFiles(),
-                            entity.isHasProducts(), entity.isHasStatic(), 0, 0, 0, 0, entity.getPublishDate(),
-                            entity.getCreateDate(), 0, entity.getStatus(), false);
+                            entity.getModelId(), entity.isCopied(), entity.isContribute(), true, entity.isHasImages(),
+                            entity.isHasFiles(), entity.isHasProducts(), entity.isHasStatic(), 0, 0, 0, 0,
+                            entity.getPublishDate(), entity.getCreateDate(), 0, entity.getStatus(), false);
                     quote.setUrl(entity.getUrl());
                     quote.setDescription(entity.getDescription());
                     quote.setAuthor(entity.getAuthor());

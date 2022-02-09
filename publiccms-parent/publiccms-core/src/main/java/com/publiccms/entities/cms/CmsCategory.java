@@ -156,7 +156,7 @@ public class CmsCategory implements java.io.Serializable {
         this.parentId = parentId;
     }
 
-    @Column(name = "type_id")
+    @Column(name="type_id", length=20)
     public String getTypeId() {
         return this.typeId;
     }

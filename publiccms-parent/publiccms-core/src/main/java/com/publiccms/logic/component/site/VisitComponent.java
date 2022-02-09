@@ -13,16 +13,16 @@ import org.springframework.stereotype.Component;
 import com.publiccms.common.api.Cache;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.VerificationUtils;
-import com.publiccms.entities.log.LogVisit;
-import com.publiccms.entities.log.LogVisitDay;
-import com.publiccms.entities.log.LogVisitItem;
-import com.publiccms.entities.log.LogVisitSession;
-import com.publiccms.entities.log.LogVisitUrl;
-import com.publiccms.logic.service.log.LogVisitDayService;
-import com.publiccms.logic.service.log.LogVisitItemService;
-import com.publiccms.logic.service.log.LogVisitService;
-import com.publiccms.logic.service.log.LogVisitSessionService;
-import com.publiccms.logic.service.log.LogVisitUrlService;
+import com.publiccms.entities.visit.VisitHistory;
+import com.publiccms.entities.visit.VisitDay;
+import com.publiccms.entities.visit.VisitItem;
+import com.publiccms.entities.visit.VisitSession;
+import com.publiccms.entities.visit.VisitUrl;
+import com.publiccms.logic.service.visit.VisitDayService;
+import com.publiccms.logic.service.visit.VisitItemService;
+import com.publiccms.logic.service.visit.VisitHistoryService;
+import com.publiccms.logic.service.visit.VisitSessionService;
+import com.publiccms.logic.service.visit.VisitUrlService;
 
 /**
  *
@@ -31,59 +31,59 @@ import com.publiccms.logic.service.log.LogVisitUrlService;
  */
 @Component
 public class VisitComponent implements Cache {
-    private BlockingQueue<LogVisit> blockingQueue = new LinkedBlockingQueue<>();
+    private BlockingQueue<VisitHistory> blockingQueue = new LinkedBlockingQueue<>();
 
     @Autowired
-    private LogVisitDayService logVisitDayService;
+    private VisitDayService visitDayService;
     @Autowired
-    private LogVisitItemService logVisitItemService;
+    private VisitItemService visitItemService;
     @Autowired
-    private LogVisitUrlService logVisitUrlService;
+    private VisitUrlService visitUrlService;
     @Autowired
-    private LogVisitService logVisitService;
+    private VisitHistoryService visitHistoryService;
     @Autowired
-    private LogVisitSessionService logVisitSessionService;
+    private VisitSessionService visitSessionService;
 
     public void dealLastMinuteVisitLog() {
         Date now = CommonUtils.getMinuteDate();
-        List<LogVisitSession> entityList = logVisitService.getSessionList(null, DateUtils.addMinutes(now, -2),
+        List<VisitSession> entityList = visitHistoryService.getSessionList(null, DateUtils.addMinutes(now, -2),
                 DateUtils.addMinutes(now, -1));
-        logVisitSessionService.save(entityList);
+        visitSessionService.save(entityList);
     }
 
     public void dealLastHourVisitLog() {
         Calendar now = Calendar.getInstance();
         now.add(Calendar.HOUR_OF_DAY, -1);
-        List<LogVisitDay> entityList = logVisitService.getHourList(null, now.getTime(), (byte) now.get(Calendar.HOUR_OF_DAY));
-        logVisitDayService.save(entityList);
+        List<VisitDay> entityList = visitHistoryService.getHourList(null, now.getTime(), (byte) now.get(Calendar.HOUR_OF_DAY));
+        visitDayService.save(entityList);
     }
 
     public void dealLastDayItemVisitLog() {
         Calendar now = Calendar.getInstance();
         now.add(Calendar.HOUR_OF_DAY, -1);
-        List<LogVisitItem> entityList = logVisitService.getItemList(null, now.getTime(), null, null);
-        logVisitItemService.save(entityList);
+        List<VisitItem> entityList = visitHistoryService.getItemList(null, now.getTime(), null, null);
+        visitItemService.save(entityList);
     }
 
     public void dealLastDayUrlVisitLog() {
         Calendar now = Calendar.getInstance();
         now.add(Calendar.HOUR_OF_DAY, -1);
-        List<LogVisitUrl> entityList = logVisitService.getUrlList(null, now.getTime());
-        for (LogVisitUrl entity : entityList) {
+        List<VisitUrl> entityList = visitHistoryService.getUrlList(null, now.getTime());
+        for (VisitUrl entity : entityList) {
             entity.getId().setUrlMd5(VerificationUtils.md5Encode(entity.getUrl()));
             entity.getId().setUrlSha(VerificationUtils.sha1Encode(entity.getUrl()));
         }
-        logVisitUrlService.save(entityList);
+        visitUrlService.save(entityList);
     }
 
     public void dealLastDayVisitLog() {
         Calendar now = Calendar.getInstance();
         now.add(Calendar.DAY_OF_MONTH, -1);
-        List<LogVisitDay> entityList = logVisitSessionService.getDayList(null, now.getTime());
-        logVisitDayService.save(entityList);
+        List<VisitDay> entityList = visitSessionService.getDayList(null, now.getTime());
+        visitDayService.save(entityList);
     }
 
-    public void add(LogVisit entity) {
+    public void add(VisitHistory entity) {
         if (null != entity.getSessionId() && null != entity.getUrl() && null != entity.getIp()) {
             Calendar now = Calendar.getInstance();
             entity.setCreateDate(now.getTime());
@@ -95,7 +95,7 @@ public class VisitComponent implements Cache {
 
     @Override
     public void clear() {
-        logVisitService.save(blockingQueue);
+        visitHistoryService.save(blockingQueue);
     }
 
 }

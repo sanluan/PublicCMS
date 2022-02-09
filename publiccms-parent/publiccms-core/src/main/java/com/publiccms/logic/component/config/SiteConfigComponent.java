@@ -68,6 +68,7 @@ public class SiteConfigComponent implements Config {
      *
      */
     public static final String CONFIG_DEFAULT_CONTENT_USER = "default_content_user";
+    
     /**
      * default expiry minutes
      */

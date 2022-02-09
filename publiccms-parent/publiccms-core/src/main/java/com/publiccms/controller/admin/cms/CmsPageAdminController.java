@@ -68,10 +68,10 @@ public class CmsPageAdminController {
             @ModelAttribute ExtendDataParameters extendDataParameters, HttpServletRequest request, HttpSession session,
             ModelMap model) {
         SysDept dept = sysDeptService.getEntity(admin.getDeptId());
-        if (ControllerUtils.verifyNotEmpty("deptId", admin.getDeptId(), model)
-                || ControllerUtils.verifyNotEmpty("deptId", dept, model)
+        if (ControllerUtils.errorNotEmpty("deptId", admin.getDeptId(), model)
+                || ControllerUtils.errorNotEmpty("deptId", dept, model)
                 || ControllerUtils
-                        .verifyCustom("noright",
+                        .errorCustom("noright",
                                 !(dept.isOwnsAllPage()
                                         || null != sysDeptPageService.getEntity(new SysDeptPageId(admin.getDeptId(), path))),
                                 model)) {
@@ -101,10 +101,10 @@ public class CmsPageAdminController {
     public String clearCache(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path,
             HttpServletRequest request, ModelMap model) {
         SysDept dept = sysDeptService.getEntity(admin.getDeptId());
-        if (ControllerUtils.verifyNotEmpty("deptId", admin.getDeptId(), model)
-                || ControllerUtils.verifyNotEmpty("deptId", dept, model)
+        if (ControllerUtils.errorNotEmpty("deptId", admin.getDeptId(), model)
+                || ControllerUtils.errorNotEmpty("deptId", dept, model)
                 || ControllerUtils
-                        .verifyCustom("noright",
+                        .errorCustom("noright",
                                 !(dept.isOwnsAllPage()
                                         || null != sysDeptPageService.getEntity(new SysDeptPageId(admin.getDeptId(), path))),
                                 model)) {
