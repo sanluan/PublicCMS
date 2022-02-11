@@ -83,18 +83,26 @@ public class FreeMarkerUtils {
             if (Files.exists(parent)) {
                 Files.createDirectories(parent);
             }
-            Path tempFile = Files.createTempFile("static_", ".tmp");
-            try (OutputStream outputStream = Files.newOutputStream(tempFile, StandardOpenOption.APPEND);) {
+            Path tempFile = null;
+            if (!append) {
+                tempFile = Files.createTempFile("static_", ".tmp");
+            }
+            try (OutputStream outputStream = Files.newOutputStream(append ? Paths.get(destFilePath) : tempFile,
+                    append ? StandardOpenOption.APPEND : StandardOpenOption.WRITE);) {
                 Writer out = new OutputStreamWriter(outputStream, Constants.DEFAULT_CHARSET);
                 t.process(model, out);
                 try {
-                    Files.move(tempFile, destPath, StandardCopyOption.REPLACE_EXISTING);
+                    if (!append) {
+                        Files.move(tempFile, destPath, StandardCopyOption.REPLACE_EXISTING);
+                    }
                     log.info(String.format("%s saved!", destFilePath));
                 } catch (IOException e) {
                     log.error(e.getMessage());
                 }
             }
-        } else {
+        } else
+
+        {
             log.error(String.format("%s already exists!", destFilePath));
         }
     }
