@@ -1,11 +1,15 @@
 package com.publiccms.common.tools;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.nio.file.StandardOpenOption;
 import java.util.Collections;
 import java.util.Map;
 
@@ -73,19 +77,25 @@ public class FreeMarkerUtils {
             Map<String, Object> model, boolean override, boolean append)
             throws MalformedTemplateNameException, ParseException, IOException, TemplateException {
         Template t = configuration.getTemplate(templateFilePath);
-        File destFile = new File(destFilePath);
-        if (override || append || !destFile.exists()) {
-            File parent = destFile.getParentFile();
-            if (null != parent) {
-                parent.mkdirs();
+        Path destPath = Paths.get(destFilePath);
+        if (override || append || !Files.exists(destPath)) {
+            Path parent = destPath.getParent();
+            if (Files.exists(parent)) {
+                Files.createDirectories(parent);
             }
-            try (FileOutputStream outputStream = new FileOutputStream(destFile, append);) {
+            Path tempFile = Files.createTempFile("static_", ".tmp");
+            try (OutputStream outputStream = Files.newOutputStream(tempFile, StandardOpenOption.APPEND);) {
                 Writer out = new OutputStreamWriter(outputStream, Constants.DEFAULT_CHARSET);
                 t.process(model, out);
-                log.info(String.format("%s saved!", destFilePath));
+                try {
+                    Files.move(tempFile, destPath, StandardCopyOption.REPLACE_EXISTING);
+                    log.info(String.format("%s saved!", destFilePath));
+                } catch (IOException e) {
+                    log.error(e.getMessage());
+                }
             }
         } else {
-            log.error(destFilePath + " already exists!");
+            log.error(String.format("%s already exists!", destFilePath));
         }
     }
 

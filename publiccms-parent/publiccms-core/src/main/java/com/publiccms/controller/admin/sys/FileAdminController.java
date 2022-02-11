@@ -226,6 +226,7 @@ public class FileAdminController {
 
                         }));
                     }
+                    dest.delete();
                 } catch (Exception e) {
                     log.error(e.getMessage(), e);
                     result.put("text", e.getMessage());
