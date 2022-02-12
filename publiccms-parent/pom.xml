@@ -22,47 +22,49 @@
         <version.publiccms>V4.0.202107.e</version.publiccms>
         <!-- http://mvnrepository.com/artifact/org.springframework/spring-core -->
         <!-- http://projects.spring.io/spring-framework/ -->
-        <version.spring>5.3.13</version.spring>
+        <version.spring>5.3.15</version.spring>
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
         <!-- https://projects.spring.io/spring-boot/ -->
-        <version.springBoot>2.6.1</version.springBoot>
+        <version.springBoot>2.6.3</version.springBoot>
         <!-- https://mvnrepository.com/artifact/org.aspectj/aspectjweaver -->
         <version.aspectj>1.9.7</version.aspectj>
         <!-- http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
         <!-- http://hc.apache.org/downloads.cgi -->
         <version.httpclient>4.5.13</version.httpclient>
         <!-- http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
-        <version.jackson>2.12.5</version.jackson>
+        <version.jackson>2.13.1</version.jackson>
         <!-- http://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
         <!-- http://hibernate.org/orm/releases/ -->
-        <version.hibernate>5.4.32.Final</version.hibernate>
+        <version.hibernate>5.6.5.Final</version.hibernate>
+        <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-tools -->
+        <version.hibernateTools>5.6.2.Final</version.hibernateTools>
         <!-- https://mvnrepository.com/artifact/org.hibernate.search/hibernate-search-mapper-orm/ -->
         <!-- http://hibernate.org/search/releases/ -->
-        <version.hibernateSearch>6.0.7.Final</version.hibernateSearch>
+        <version.hibernateSearch>6.1.1.Final</version.hibernateSearch>
         <!-- https://mvnrepository.com/artifact/org.ehcache/ehcache -->
-        <version.ehcache>3.9.6</version.ehcache>
+        <version.ehcache>3.9.9</version.ehcache>
         <!-- http://mvnrepository.com/artifact/org.freemarker/freemarker -->
         <version.freemarker>2.3.31</version.freemarker>
         <!-- http://mvnrepository.com/artifact/org.mybatis/mybatis -->
-        <version.mybatis>3.5.7</version.mybatis>
+        <version.mybatis>3.5.9</version.mybatis>
         <!-- http://mvnrepository.com/artifact/org.mybatis/mybatis-spring -->
-        <version.mybatisSpring>2.0.6</version.mybatisSpring>
+        <version.mybatisSpring>2.0.7</version.mybatisSpring>
         <!-- http://mvnrepository.com/artifact/org.mybatis.generator/mybatis-generator-core -->
         <version.mybatisGenerator>1.4.0</version.mybatisGenerator>
         <!-- https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper -->
-        <version.pagehelper>5.2.1</version.pagehelper>
+        <version.pagehelper>5.3.0</version.pagehelper>
         <!-- https://mvnrepository.com/artifact/org.mybatis.dynamic-sql/mybatis-dynamic-sql -->
         <version.dynamicSql>1.2.1</version.dynamicSql>
         <!-- https://mvnrepository.com/artifact/org.apache.lucene/lucene-core -->
         <version.lucene>8.7.0</version.lucene>
         <!-- http://mvnrepository.com/artifact/redis.clients/jedis -->
-        <version.jedis>3.7.0</version.jedis>
+        <version.jedis>4.1.1</version.jedis>
         <!-- http://mvnrepository.com/artifact/org.quartz-scheduler/quartz -->
         <version.quartz>2.3.2</version.quartz>
         <!-- https://mvnrepository.com/artifact/com.zaxxer/HikariCP -->
-        <version.hikariCP>4.0.3</version.hikariCP>
+        <version.hikariCP>5.0.1</version.hikariCP>
         <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
-        <version.mysql>8.0.27</version.mysql>
+        <version.mysql>8.0.28</version.mysql>
         <!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
         <version.poi>4.1.2</version.poi>
         <!-- http://mvnrepository.com/artifact/commons-fileupload/commons-fileupload -->
@@ -88,7 +90,7 @@
         <!-- https://mvnrepository.com/artifact/jakarta.mail/jakarta.mail-api -->
         <version.mail>1.6.7</version.mail>
         <!-- http://mvnrepository.com/artifact/org.apache.ant/ant -->
-        <version.ant>1.10.11</version.ant>
+        <version.ant>1.10.12</version.ant>
         <!-- http://mvnrepository.com/artifact/javax.transaction/jta -->
         <version.jta>1.1</version.jta>
         <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
@@ -226,7 +228,7 @@
             <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-tools</artifactId>
-                <version>${version.hibernate}</version>
+                <version>${version.hibernateTools}</version>
             </dependency>
             <dependency>
                 <groupId>org.hibernate.search</groupId>

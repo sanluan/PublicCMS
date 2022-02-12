@@ -9,7 +9,7 @@ dependencies {
     implementation project(':publiccms-common')
 
     // https://mvnrepository.com/artifact/net.oschina.j2cache/j2cache-core
-    implementation "net.oschina.j2cache:j2cache-core:2.8.2-release"
+    implementation "net.oschina.j2cache:j2cache-core:2.8.4-release"
     implementation "redis.clients:jedis:${jedisVersion}"
     implementation "org.mybatis:mybatis:${mybatisVersion}"
 }

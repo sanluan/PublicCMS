@@ -20,26 +20,20 @@ if "%BRANCH%"=="" (
 cd ..
 echo "current directory %cd%"
 if not exist ".git" (
-  if "%BRANCH%"=="" (
+  if "%REPO%"=="" (
     echo "repo not config!"
     goto :eof
-  ) else (
-    echo
   )
   echo "init %REPO%"
   git init
   git checkout -b %BRANCH%
   git remote add origin %REPO%
-  git add template/site_%SITEID%
-  git add task/site_%SITEID%
-  git add web/site_%SITEID%
-  git commit -m "init %BRANCH%"
 ) else (
   git pull origin %BRANCH%
-  git add template/site_%SITEID%
-  git add task/site_%SITEID%
-  git add web/site_%SITEID%
-  git commit -m "sync"
 )
+git add template/site_%SITEID%
+git add task/site_%SITEID%
+git add web/site_%SITEID%
+git commit -m "sync"
 git push origin %BRANCH%
 echo "complete!"
