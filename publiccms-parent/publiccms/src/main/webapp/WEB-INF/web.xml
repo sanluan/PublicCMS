@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns="http://java.sun.com/xml/ns/javaee"
-    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
-    id="WebApp_ID" version="3.0">
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+    id="WebApp_ID" version="4.0">
     <!-- PublicCMS使用Servlet3.0技术，Web.xml不再是整个工程的入口，config.initializer.*Initializer为工程的入口类，config.spring.*Config为Spring配置 -->
     <!-- PublicCMS uses Servlet3.0 technology, Web.xml is no longer the entrance of the entire project, config.initializer.*Initializer is the project's entry class, config.spring.*Config is configured for Spring. -->
     <display-name>PublicCMS</display-name>

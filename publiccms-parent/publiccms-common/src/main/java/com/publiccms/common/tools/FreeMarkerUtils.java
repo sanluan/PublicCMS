@@ -8,7 +8,6 @@ import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
 import java.util.Collections;
 import java.util.Map;
@@ -83,22 +82,11 @@ public class FreeMarkerUtils {
             if (Files.exists(parent)) {
                 Files.createDirectories(parent);
             }
-            Path tempFile = null;
-            if (!append) {
-                tempFile = Files.createTempFile("static_", ".tmp");
-            }
-            try (OutputStream outputStream = Files.newOutputStream(append ? Paths.get(destFilePath) : tempFile,
-                    append ? StandardOpenOption.APPEND : StandardOpenOption.WRITE);) {
+            try (OutputStream outputStream = Files.newOutputStream(Paths.get(destFilePath),
+                    append ? StandardOpenOption.APPEND : StandardOpenOption.CREATE);) {
                 Writer out = new OutputStreamWriter(outputStream, Constants.DEFAULT_CHARSET);
                 t.process(model, out);
-                try {
-                    if (!append) {
-                        Files.move(tempFile, destPath, StandardCopyOption.REPLACE_EXISTING);
-                    }
-                    log.info(String.format("%s saved!", destFilePath));
-                } catch (IOException e) {
-                    log.error(e.getMessage());
-                }
+                log.info(String.format("%s saved!", destFilePath));
             }
         } else
 
