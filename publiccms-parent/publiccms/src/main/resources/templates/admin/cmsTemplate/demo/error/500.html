@@ -23,7 +23,7 @@
         <div style="background-color:#f0f0f0;" onclick="dokeydown()">Server Error</div>
         <div>An error has occurred. Please go back and try again or check out the other content!<br /><a href="${site.useStatic?then(site.sitePath,base)}">Return home</a></div>
         <div style="display: none;" id="divexception">
-            <textarea rows="40" style="width:100%"><@_exception>${object}</@_exception></textarea>
+            <textarea rows="40" style="width:100%"><@_exception>${object!}</@_exception></textarea>
         </div>
     </div>
 </body>

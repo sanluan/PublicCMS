@@ -27,19 +27,25 @@ public class ExceptionDirective extends AbstractTemplateDirective {
     }
 
     private static String exceptionMsgForInner(java.lang.Throwable e) {
-        String errorMessage = e.getLocalizedMessage();
-        if (null == errorMessage) {
-            errorMessage = "";
-        }
-        errorMessage += "\r\n";
-        if (null != e.getCause()) {
-            errorMessage += exceptionMsgForInner(e.getCause());
-        } else {
-            for (StackTraceElement stackTraceElement : e.getStackTrace()) {
-                errorMessage += stackTraceElement.toString() + "\r\n";
+        if (null != e) {
+            String errorMessage = e.getLocalizedMessage();
+            if (null != errorMessage) {
+                StringBuilder sb = new StringBuilder();
+                sb.append(errorMessage).append("\r\n");
+                if (null != e.getCause()) {
+                    String result = exceptionMsgForInner(e.getCause());
+                    if (null != result) {
+                        sb.append(result);
+                    }
+                } else {
+                    for (StackTraceElement stackTraceElement : e.getStackTrace()) {
+                        sb.append(stackTraceElement.toString()).append("\r\n");
+                    }
+                }
+                return sb.toString();
             }
         }
-        return errorMessage.trim();
+        return null;
     }
 
     @Override

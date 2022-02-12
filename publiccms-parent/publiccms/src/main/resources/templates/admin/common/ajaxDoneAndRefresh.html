@@ -2,7 +2,7 @@
 <#escape x as x?json_string>
 {
     "statusCode":"201",
-    "message":"<#if message?has_content><@t.message message?replace('\n','')?replace('\\','\\\\')/><#else><@t.message 'message.doneAndRefresh'/></#if>",
+    "message":"<#if message?has_content><@t.message message?replace('\r','')?replace('\n','')?replace('\\','\\\\')/><#else><@t.message 'message.doneAndRefresh'/></#if>",
     "navTabId":"${navTabId!}",
     "rel":"${rel!}",
     "callbackType":"${callbackType!}",
