@@ -32,13 +32,22 @@ public class SysLockAdminController {
      */
     @RequestMapping("lock")
     @ResponseBody
-    public boolean lock(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, boolean lock, String itemType,
-            String itemId) {
-        if (lock) {
-            return null != lockComponent.lock(site.getId(), itemType, itemId, admin.getId(), false);
-        } else {
-            lockComponent.unLock(site.getId(), itemType, itemId, admin.getId());
-            return true;
-        }
+    public boolean lock(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String itemType, String itemId) {
+        return null != lockComponent.lock(site.getId(), itemType, itemId, admin.getId(), false);
+    }
+
+    /**
+     * @param site
+     * @param admin
+     * @param lock
+     * @param itemType
+     * @param itemId
+     * @return result
+     */
+    @RequestMapping("unlock")
+    @ResponseBody
+    public boolean unlock(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String itemType, String itemId) {
+        lockComponent.unLock(site.getId(), itemType, itemId, admin.getId());
+        return true;
     }
 }

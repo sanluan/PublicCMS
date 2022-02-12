@@ -29,7 +29,7 @@
         </@_sysAuthorized>
             <@_createLock itemType='content' itemId=id userId=admin.id>
                 <#if object?has_content||!id?has_content>
-            <li><button type="submit" class="buttonActive<#if id?has_content> lock</#if>" url="common/lock?itemType=content&itemId=${id!}&lock=false"><@t.page 'button.save'/></button></li>
+            <li><button type="submit" class="buttonActive"<#if id?has_content> close-url="common/unlock?itemType=content&itemId=${id!}"</#if>><@t.page 'button.save'/></button></li>
                 <#else>
             <li>
                 <@_sysLock userId=admin.id itemType='content' itemId=id>

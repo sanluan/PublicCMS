@@ -14,7 +14,7 @@
         <@_sysAuthorized roleIds=admin.roles url='cmsModel/save'>
             <@_createLock itemType='model' itemId=id userId=admin.id>
                 <#if object?has_content||!id?has_content>
-            <li><button type="submit" class="buttonActive<#if id?has_content> lock</#if>" url="common/lock?itemType=model&itemId=${id!}&lock=false"><@t.page 'button.save'/></button></li>
+            <li><button type="submit" class="buttonActive"<#if id?has_content> close-url="common/unlock?itemType=model&itemId=${id!}"</#if>><@t.page 'button.save'/></button></li>
                 <#else>
             <li>
                 <@_sysLock userId=admin.id itemType='model' itemId=id>

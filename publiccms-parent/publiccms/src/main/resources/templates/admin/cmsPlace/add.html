@@ -21,10 +21,7 @@
         <ul>
             <@_createLock itemType='place' itemId=id userId=admin.id>
                 <#if object?has_content||!id?has_content>
-            <li><button type="submit" class="buttonActive"><@t.page 'button.save'/></button></li>
-            <#if id?has_content>
-                <li><a target="ajaxTodo" href="common/lock?itemType=place&itemId=${id}&lock=false" callback="(function(){navTab.reloadFlag('cmsPlace/dataList');navTab.closeCurrentTab();})" class="button"><@t.page 'button.close'/></a></li>
-            </#if>
+            <li><button type="submit" class="buttonActive" <#if id?has_content>close-url="common/unlock?itemType=place&itemId=${id}"</#if>><@t.page 'button.save'/></button></li>
                 <#else>
             <li>
                 <@_sysLock userId=admin.id itemType='place' itemId=id>

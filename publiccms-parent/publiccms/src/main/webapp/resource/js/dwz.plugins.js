@@ -25,16 +25,6 @@ DWZ.regPlugins.push(function($p){
     });
 });
 DWZ.regPlugins.push(function($p){
-    $p.bind(DWZ.eventType.pageClear, function(event) {
-       var box = event.target;
-        $('.lock',box).each(function (){
-            var $lock = $(this);
-            var url = $lock.attr("url");
-            $.getJSON(url, function(data) {});
-        });
-    });
-});
-DWZ.regPlugins.push(function($p){
     if($('.cmsVersion',$p).length ) {
         var fullVersion=$('.cmsVersion a',$p).eq(0).text();
         $.getJSON(Base64.decode('Ly9jbXMucHVibGljY21zLmNvbS9hcGkvZGlyZWN0aXZlL3ZlcnNpb24=')+"?version="+fullVersion, function(data) {

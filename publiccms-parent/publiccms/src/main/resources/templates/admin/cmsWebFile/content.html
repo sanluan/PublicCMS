@@ -10,7 +10,7 @@
             <li><a class="button" href="cmsWebFile/delete?paths=${(path?url)!}&callbackType=closeCurrent&navTabId=cmsWebFile/list&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete_file'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i> <@t.page 'button.delete'/></a></li>
             <@_createLock itemType='file' itemId=path userId=admin.id>
                 <#if object?has_content>
-            <li><button type="submit" class="buttonActive lock" url="common/lock?itemType=file&itemId=${(path?url)!}&lock=false"><@t.page 'button.save'/></button></li>
+            <li><button type="submit" class="buttonActive" close-url="common/unlock?itemType=file&itemId=${(path?url)!}"><@t.page 'button.save'/></button></li>
                 <#else>
             <li>
                 <@_sysLock userId=admin.id itemType='file' itemId=path>

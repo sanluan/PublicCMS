@@ -19,7 +19,7 @@
         <@_sysAuthorized roleIds=admin.roles url='cmsCategory/save'>
             <@_createLock itemType='category' itemId=id userId=admin.id>
                 <#if object?has_content||!id?has_content>
-            <li><button type="submit" class="buttonActive<#if id?has_content> lock</#if>" url="common/lock?itemType=category&itemId=${id!}&lock=false"><@t.page 'button.save'/></button></li>
+            <li><button type="submit" class="buttonActive"<#if id?has_content> close-url="common/unlock?itemType=category&itemId=${id!}"</#if>><@t.page 'button.save'/></button></li>
                 <#else>
             <li>
                 <@_sysLock userId=admin.id itemType='category' itemId=id>
