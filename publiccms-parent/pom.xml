@@ -62,7 +62,7 @@
         <!-- http://mvnrepository.com/artifact/org.quartz-scheduler/quartz -->
         <version.quartz>2.3.2</version.quartz>
         <!-- https://mvnrepository.com/artifact/com.zaxxer/HikariCP -->
-        <version.hikariCP>5.0.1</version.hikariCP>
+        <version.hikariCP>4.0.3</version.hikariCP>
         <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
         <version.mysql>8.0.28</version.mysql>
         <!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
