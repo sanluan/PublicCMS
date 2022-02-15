@@ -82,8 +82,9 @@ public class FreeMarkerUtils {
             if (Files.exists(parent)) {
                 Files.createDirectories(parent);
             }
-            try (OutputStream outputStream = Files.newOutputStream(Paths.get(destFilePath),
-                    append ? StandardOpenOption.APPEND : StandardOpenOption.CREATE);) {
+            try (OutputStream outputStream = append ? Files.newOutputStream(Paths.get(destFilePath), StandardOpenOption.APPEND,
+                    StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)
+                    : Files.newOutputStream(Paths.get(destFilePath));) {
                 Writer out = new OutputStreamWriter(outputStream, Constants.DEFAULT_CHARSET);
                 t.process(model, out);
                 log.info(String.format("%s saved!", destFilePath));

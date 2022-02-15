@@ -7,8 +7,8 @@
             <li><a class="button" href="taskTemplate/delete?path=${path?url}&navTabId=taskTemplate/list&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete_file'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i> <@t.page 'button.delete'/></a></li>
         </#if>
             <@_createLock itemType='taskTemplate' itemId=path userId=admin.id>
-                <#if object?has_content>
-            <li><button type="submit" class="buttonActive" close-url="common/unlock?itemType=taskTemplate&itemId=${(path?url)!}"><@t.page 'button.save'/></button></li>
+                <#if object?has_content||!path?has_content>
+            <li><button type="submit" class="buttonActive"<#if path?has_content> close-url="common/unlock?itemType=taskTemplate&itemId=${(path?url)!}"</#if>><@t.page 'button.save'/></button></li>
                 <#else>
             <li>
                 <@_sysLock userId=admin.id itemType='taskTemplate' itemId=path>
