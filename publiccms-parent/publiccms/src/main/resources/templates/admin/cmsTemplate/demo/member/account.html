@@ -32,7 +32,7 @@
         </form>
     </@_tradeAccount>
     <#macro message code>${springMacroRequestContext.getMessage(code)}</#macro>
-    <#macro merge name value><#if !.vars[name]?has_content><@"<#assign ${name}=''>"?interpret /></#if><#if value?has_content><@"<#assign ${name}=${name}+'${value},'>"?interpret /></#if></#macro>
+    <#macro merge name value><#if !.vars[name]??><@"<#assign ${name}=''>"?interpret /></#if><#if value?has_content><@"<#assign ${name}=${name}+'${value},'>"?interpret /></#if></#macro>
     <@_tradeAccountHistoryList accountId=user.id pageIndex=pageIndex pageSize=10>
         <h3>My account history</h3>
         <ul>

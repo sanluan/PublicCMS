@@ -224,7 +224,7 @@ public class LockComponent implements Config, SiteCache {
         return extendFieldList;
     }
 
-    private static final String[] ITEM_TYPE_LOGIN = new String[] { SysLockService.ITEM_TYPE_LOGIN };
+    private static final String[] ITEM_TYPE_LOGIN = new String[] { SysLockService.ITEM_TYPE_LOGIN,SysLockService.ITEM_TYPE_IP_LOGIN };
     private static final String[] ITEM_TYPE_REGISTER = new String[] { SysLockService.ITEM_TYPE_REGISTER };
 
     @Override

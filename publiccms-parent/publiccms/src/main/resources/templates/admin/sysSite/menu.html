@@ -19,7 +19,7 @@
             <li>
                 <a href="sysSite/script.html" target="navTab" rel="sysSite/script"><i class="icon-terminal icon-large"></i> <@t.menu 'site_script'/></a>
             </li>
-        <#if getDictEnable?has_content && getDictEnable?is_method && getDictEnable()>
+        <#if getDictEnable?? && getDictEnable?is_method && getDictEnable()>
             <li>
                 <a href="sysSite/dict.html" target="navTab" rel="sysSite/dict"><i class="icon-book icon-large"></i> <@t.menu 'dict'/></a>
             </li>

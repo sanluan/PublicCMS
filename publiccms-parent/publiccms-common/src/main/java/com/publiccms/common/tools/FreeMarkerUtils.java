@@ -79,7 +79,7 @@ public class FreeMarkerUtils {
         Path destPath = Paths.get(destFilePath);
         if (override || append || !Files.exists(destPath)) {
             Path parent = destPath.getParent();
-            if (Files.exists(parent)) {
+            if (!Files.exists(parent)) {
                 Files.createDirectories(parent);
             }
             try (OutputStream outputStream = append ? Files.newOutputStream(Paths.get(destFilePath), StandardOpenOption.APPEND,
