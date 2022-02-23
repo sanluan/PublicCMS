@@ -28,6 +28,7 @@ import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.FreeMarkerUtils;
+import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.common.tools.UserPasswordUtils;
 import com.publiccms.entities.log.LogOperate;
@@ -140,6 +141,34 @@ public class UserController {
             result.put("weak", UserPasswordUtils.isWeek(user.getName(), password));
         }
         return result;
+    }
+
+    /**
+     * @param site
+     * @param user
+     * @param nickName
+     * @param cover
+     * @param returnUrl
+     * @param request
+     * @param model
+     * @return view name
+     */
+    @RequestMapping("update")
+    @Csrf
+    public String update(@RequestAttribute SysSite site, @SessionAttribute SysUser user, String nickName, String cover,
+            String returnUrl, HttpServletRequest request, ModelMap model) {
+        returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
+        if (ControllerUtils.errorNotEmpty("nickname", nickName, model)
+                || ControllerUtils.errorNotNickName("nickname", nickName, model)) {
+            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
+        }
+        SysUser entity = service.updateProfile(user.getId(), nickName, cover, null);
+        if (null != entity) {
+            ControllerUtils.setUserToSession(request.getSession(), entity);
+            logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
+                    "update.user", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+        }
+        return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
     }
 
     /**

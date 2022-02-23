@@ -1,0 +1,29 @@
+<form action="sysUser/update?callbackType=closeCurrent" method="post" autocomplete="off" class="pageForm required-validate" onsubmit="return validateCallback(this, ${(target?has_content&&'dialog'=target)?then('dialogAjaxDone','navTabAjaxDone')});">
+    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <div class="formBar">
+        <ul>
+            <li><button type="submit" class="buttonActive"><@t.page 'button.save'/></button></li>
+            <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+        </ul>
+    </div>
+    <div class="pageFormContent" layoutH>
+        <dl class="nowrap">
+            <dt><@t.page 'user.nickname'/>:</dt>
+            <dd><input class="required" name="nickName" type="text" size="20" maxlength="30" value="${(a.nickName)!}"/></dd>
+        </dl>
+        <dl class="nowrap">
+            <dt><@t.page 'cover'/>:</dt>
+            <dd>
+                <input name="cover" value="${(a.cover)!}" maxlength="300" size="50" type="text"/>
+                <a class="btnAttach" href="common/upload.html?field=cover&fileTypes=image" lookupGroup="" width="1000" height="600"><@t.page 'cover'/></a>
+                <a class="view icon-eye-open" ref="cover" data-prefix="${site.sitePath}" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
+                <#include "../include_page/preview.html"/>
+                <@preview 'user' 'input[name=cover]'/>
+            </dd>
+        </dl>
+        <dl class="nowrap">
+            <dt><@t.page 'email'/>:</dt>
+            <dd><input name="email" type="text" size="30" maxlength="50" value="${(a.email)!}"/></dd>
+        </dl>
+    </div>
+</form>

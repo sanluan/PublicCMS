@@ -59,7 +59,7 @@ public class SysUserService extends BaseService<SysUser> {
     /**
      * @param siteId
      * @param name
-     * @return
+     * @return entity
      */
     public SysUser findByName(short siteId, String name) {
         return dao.findByName(siteId, name);
@@ -68,10 +68,29 @@ public class SysUserService extends BaseService<SysUser> {
     /**
      * @param siteId
      * @param email
-     * @return
+     * @return entity
      */
     public SysUser findByEmail(short siteId, String email) {
         return dao.findByEmail(siteId, email);
+    }
+
+    /**
+     * @param id
+     * @param nickName
+     * @param cover
+     * @param email
+     * @return entity
+     */
+    public SysUser updateProfile(Serializable id, String nickName, String cover, String email) {
+        SysUser entity = getEntity(id);
+        if (null != entity) {
+            entity.setNickName(nickName);
+            entity.setCover(cover);
+            if (null != email) {
+                entity.setEmail(email);
+            }
+        }
+        return entity;
     }
 
     /**

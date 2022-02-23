@@ -836,6 +836,7 @@ INSERT INTO `sys_module` VALUES ('myself_log_login', 'myself/logLogin', NULL, 'i
 INSERT INTO `sys_module` VALUES ('myself_log_operate', 'myself/logOperate', NULL, 'icon-list-alt', 'myself_menu', 1, 3);
 INSERT INTO `sys_module` VALUES ('myself_menu', NULL, NULL, 'icon-user', 'myself', 1, 0);
 INSERT INTO `sys_module` VALUES ('myself_password', 'myself/password', 'changePassword', 'icon-key', 'myself_menu', 1, 1);
+INSERT INTO `sys_module` VALUES ('myself_profile', 'myself/profile', 'sysUser/update,file/doUpload', 'icon-user', 'myself_menu', 1, 0);
 INSERT INTO `sys_module` VALUES ('myself_token', 'myself/userTokenList', 'sysUserToken/delete', 'icon-unlock-alt', 'myself_menu', 1, 5);
 INSERT INTO `sys_module` VALUES ('order_confirm', 'tradeOrder/confirmParameters', 'tradeOrder/confirm', NULL, 'order_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('order_history_list', 'tradeOrderHistory/list', NULL, 'icon-calendar', 'trade_menu', 1, 2);
@@ -1272,6 +1273,9 @@ INSERT INTO `sys_module_lang` VALUES ('myself_menu', 'zh', '与我相关');
 INSERT INTO `sys_module_lang` VALUES ('myself_password', 'en', 'Change password');
 INSERT INTO `sys_module_lang` VALUES ('myself_password', 'ja', 'パスワードを変更');
 INSERT INTO `sys_module_lang` VALUES ('myself_password', 'zh', '修改密码');
+INSERT INTO `sys_module_lang` VALUES ('myself_profile', 'en', 'Modify personal information');
+INSERT INTO `sys_module_lang` VALUES ('myself_profile', 'ja', '個人情報を変更する');
+INSERT INTO `sys_module_lang` VALUES ('myself_profile', 'zh', '修改个人信息');
 INSERT INTO `sys_module_lang` VALUES ('myself_token', 'en', 'My login token');
 INSERT INTO `sys_module_lang` VALUES ('myself_token', 'ja', '私のログイン授権');
 INSERT INTO `sys_module_lang` VALUES ('myself_token', 'zh', '我的登录授权');

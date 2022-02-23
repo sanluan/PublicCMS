@@ -134,6 +134,19 @@ public class SysUserAdminController {
         return CommonConstants.TEMPLATE_DONE;
     }
 
+    @RequestMapping("update")
+    @Csrf
+    public String update(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String nickName, String cover,
+            String email, HttpServletRequest request, ModelMap model) {
+        SysUser entity = service.updateProfile(admin.getId(), nickName, cover, email);
+        if (null != entity) {
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "update.user", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
+                    JsonUtils.getString(entity)));
+        }
+        return CommonConstants.TEMPLATE_DONE;
+    }
+
     /**
      * @param site
      * @param admin

@@ -282,3 +282,5 @@ INSERT INTO `sys_module_lang` VALUES ('visit_session', 'zh', '访问日志会话
 INSERT INTO `sys_module_lang` VALUES ('visit_url', 'en', 'Page visit log');
 INSERT INTO `sys_module_lang` VALUES ('visit_url', 'ja', 'ページアクセスログ');
 INSERT INTO `sys_module_lang` VALUES ('visit_url', 'zh', '页面访问日志');
+-- 2022-02-23 --
+INSERT INTO `sys_module` VALUES ('myself_profile', 'myself/profile', 'sysUser/update,file/doUpload', 'icon-user', 'myself_menu', 1, 0);
