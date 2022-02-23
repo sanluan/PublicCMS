@@ -106,7 +106,7 @@ public class LoginController {
             String ip = RequestUtils.getIpAddress(request);
             Date now = CommonUtils.getDate();
             boolean locked = lockComponent.isLocked(site.getId(), SysLockService.ITEM_TYPE_IP_LOGIN, ip, null);
-            if (ControllerUtils.errorNotExist("username", user, model)
+            if (ControllerUtils.errorNotEquals("username", user, model)
                     || ControllerUtils.errorCustom("locked.ip", locked && ControllerUtils.ipNotEquals(ip, user), model)) {
                 lockComponent.lock(site.getId(), SysLockService.ITEM_TYPE_IP_LOGIN, ip, null, true);
                 return UrlBasedViewResolver.REDIRECT_URL_PREFIX + loginPath;

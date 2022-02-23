@@ -170,6 +170,20 @@ public class ControllerUtils {
      * @param model
      * @return value是否为空
      */
+    public static boolean errorNotEquals(String field, Object value, Map<String, Object> model) {
+        if (null == value) {
+            model.put(CommonConstants.ERROR, "verify.notEquals." + field);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param field
+     * @param value
+     * @param model
+     * @return value是否为空
+     */
     public static boolean errorNotExist(String field, Object value, Map<String, Object> model) {
         if (null == value) {
             model.put(CommonConstants.ERROR, "verify.notExist." + field);
