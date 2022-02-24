@@ -20,6 +20,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.annotation.CopyToDatasource;
@@ -224,7 +225,7 @@ public class CmsContentService extends BaseService<CmsContent> {
                     map = categoryMap;
                 }
             }
-            dealAttribute(entity, categoryExtendList, categoryExtendList, map, cmsModel,
+            dealAttribute(entity, modelExtendList, categoryExtendList, map, cmsModel,
                     entity.isHasFiles() ? contentParameters.getFiles() : null,
                     entity.isHasImages() ? contentParameters.getImages() : null,
                     entity.isHasProducts() ? contentParameters.getProducts() : null, attribute);
@@ -253,9 +254,9 @@ public class CmsContentService extends BaseService<CmsContent> {
         }
     }
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void rebuildSearchText(short siteId, CmsModel cmsModel, List<CmsContent> list) {
-        for (CmsContent e : list) {
-            CmsContent entity = getEntity(e.getId());
+        for (CmsContent entity : list) {
             CmsContentAttribute attribute = attributeService.getEntity(entity.getId());
             Integer extendId = null;
             CmsCategory category = categoryService.getEntity(entity.getCategoryId());
@@ -281,6 +282,8 @@ public class CmsContentService extends BaseService<CmsContent> {
             }
             dealAttribute(entity, modelExtendList, categoryExtendList, ExtendUtils.getExtendMap(attribute.getData()), cmsModel,
                     files, images, products, attribute);
+            attributeService.updateAttribute(entity.getId(), attribute);
+            update(entity.getId(), entity);
         }
     }
 
