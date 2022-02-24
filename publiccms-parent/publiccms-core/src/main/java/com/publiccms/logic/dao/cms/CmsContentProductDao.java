@@ -55,8 +55,8 @@ public class CmsContentProductDao extends BaseDao<CmsContentProduct> {
         if (null != title) {
             queryHandler.condition("bean.title like :title").setParameter("title", like(title));
         }
-        if (!ORDERTYPE_ASC.equalsIgnoreCase(orderType)) {
-            orderType = ORDERTYPE_DESC;
+        if (!ORDERTYPE_DESC.equalsIgnoreCase(orderType)) {
+            orderType = ORDERTYPE_ASC;
         }
         if (null == orderField) {
             orderField = CommonConstants.BLANK;

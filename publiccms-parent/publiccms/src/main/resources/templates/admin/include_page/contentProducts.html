@@ -19,7 +19,7 @@
                 <td>
                     <#if !copy><input type="hidden" name="products[${product?index}].id" value="${product.id}"/></#if>
                     <input type="text" name="products[${product?index}].cover" value="${(product.cover)!}" size="50"/>
-                    <a class="btnAttach" lookupGroup="products[${product?index}]" href="common/upload.html?field=cover&productTypes=image" width="1000" height="600"><@t.page 'cover'/></a>
+                    <a class="btnAttach" lookupGroup="products[${product?index}]" href="common/upload.html?field=cover&fileTypes=image" width="1000" height="600"><@t.page 'cover'/></a>
                 </td>
                 <td>
                     <input type="text" name="products[${product?index}].title" class="required" maxlength="100" size="50" value="${(product.title)!}">
