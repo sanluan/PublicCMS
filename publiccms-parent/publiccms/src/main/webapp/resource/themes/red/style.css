@@ -143,6 +143,7 @@ footer a{color:#4d84ff;}
 .accordionContent .tree div.selected div{color:#fff;}
 .tree a{color:#333;}
 .tree a:hover,.tree .selected a{color:#8f0006;}
+.treeForm{border-color:#f2f6f9;}
 /* 右键菜单 */
 #contextmenu ul{border-color:#dde2ec;}
 #contextmenu li{color:#333;}

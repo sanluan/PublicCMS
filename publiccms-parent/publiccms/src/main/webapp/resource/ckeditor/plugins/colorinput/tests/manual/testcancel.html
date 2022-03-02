@@ -1,0 +1,93 @@
+<textarea id="editor1">
+    <div data-expandedcolor="#333" data-compactcolor="#444" data-minimalcolor="#555">Click Me</div>
+    <div>No color data in me</div>
+    <div>Another div</div>
+</textarea>
+
+<script>
+    if ( bender.tools.env.mobile ) {
+        bender.ignore();
+    } else {
+        CKEDITOR.replace( 'editor1', {
+            colorInputLayout: 'minimal',
+            allowedContent: true,
+            on: {
+                pluginsLoaded: function(evt) {
+                    this.addCommand( 'testDialog', new CKEDITOR.dialogCommand( 'testDialog' ));
+                    this.ui.addButton && this.ui.addButton( 'ColorInput', {
+                        label: 'Color Input',
+                        icon: 'image',
+                        command: 'testDialog',
+                        toolbar: 'insert,10'
+                    });
+                    CKEDITOR.dialog.add( 'testDialog' , function(editor) {
+                        return {
+                            title: 'Color Input View',
+                            contents: [{
+                                id: 'info',
+                                label: 'Info',
+                                elements: [{
+                                    id: 'expandedpreview',
+                                    type: 'color',
+                                    label: 'Expanded Color Input',
+                                    layout: 'expanded', // default layout
+                                    'default': 'chartreuse',
+                                    setup: function(el) {
+                                        if (el.data('expandedcolor'))
+                                            this.setValue(el.data('expandedcolor'));
+                                    },
+                                    commit: function(el) {
+                                        el.data('expandedcolor', this.getValue());
+                                    }
+                                },{
+                                    id: 'compactpreview',
+                                    type: 'color',
+                                    label: 'Compact Color Input',
+                                    layout: 'compact',
+                                    'default': '#f93',
+                                    setup: function(el) {
+                                        if (el.data('compactcolor'))
+                                            this.setValue(el.data('compactcolor'));
+                                    },
+                                    commit: function(el) {
+                                        el.data('compactcolor', this.getValue());
+                                    }
+                                },{
+                                    id: 'minimalpreview',
+                                    type: 'color',
+                                    label: 'Minimal Color Input (popup on click)',
+                                    layout: 'minimal',
+                                    'default': '#909',
+                                    setup: function(el) {
+                                        if (el.data('minimalcolor'))
+                                            this.setValue(el.data('minimalcolor'));
+                                    },
+                                    commit: function(el) {
+                                        el.data('minimalcolor', this.getValue());
+                                    }
+                                },{
+                                    id: 'defaultpreview',
+                                    type: 'color',
+                                    label: 'Default Color Input',
+                                    setup: function(el) {
+                                        if (el.data('defaultcolor'))
+                                            this.setValue(el.data('defaultcolor'));
+                                    },
+                                    commit: function(el) {
+                                        el.data('defaultcolor', this.getValue());
+                                    }
+                                }]
+                            }],
+                            onShow: function() {
+                                this.setupContent(editor.getSelection().getStartElement());
+                            },
+                            onOk: function() {
+                                this.commitContent(editor.getSelection().getStartElement());
+                            }
+                        }
+                    } );
+                }
+            }
+        });
+    }
+</script>

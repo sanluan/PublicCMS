@@ -132,7 +132,7 @@ function apiRequest(base,api,apisArray,authorizedApis){
             });
             if(++apiCounter==apisArray.length){
                 for(i=0; i<authorizedApis.length; i++ ){
-                    $(".authorizedApis li a[tname=apis][tvalue=\""+authorizedApis[i]+"\"]",navTab.getCurrentPanel()).prop('checked',true);
+                    $(".authorizedApis li a[tname=apis][tvalue=\""+authorizedApis[i]+"\"]",navTab.getCurrentPanel()).attr('checked','true');
                 }
                 $(".authorizedApis", navTab.getCurrentPanel()).addClass('tree').jTree();
                 apiCounter=0;

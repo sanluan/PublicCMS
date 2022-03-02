@@ -9,8 +9,8 @@ CKEDITOR.editorConfig = function( config ) {
   // config.language = 'fr';
 	// config.uiColor = '#AADC6E';
 	// http://docs.ckeditor.com/#!/api/CKEDITOR.config
-    config.extraPlugins = 'codesnippet,lineheight';
-    odeSnippet_theme: 'zenburn';
+   // config.extraPlugins = 'audio';
+  //  odeSnippet_theme: 'zenburn';
 
     config.filebrowserUploadUrl = base + '/ckeditor/upload?1=1';//定义图片上传的地址
     config.filebrowserBrowseUrl = base + '/cmsWebFile/browse.html?type=image';  //定义图片的浏览服务器窗口.

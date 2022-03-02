@@ -242,22 +242,24 @@ public class CmsContentService extends BaseService<CmsContent> {
     @Transactional(readOnly = true)
     public void rebuildSearchText(short siteId, CmsModel cmsModel) {
         PageHandler page = dao.getPageByModelId(siteId, cmsModel.getId(), null, PageHandler.MAX_PAGE_SIZE);
-        boolean first = true;
-        while (first || !page.isLastPage()) {
+        while (!page.isLastPage()) {
             @SuppressWarnings("unchecked")
             List<CmsContent> list = (List<CmsContent>) page.getList();
             BeanComponent.getContentService().rebuildSearchText(siteId, cmsModel, list);
             page = dao.getPageByModelId(siteId, cmsModel.getId(), page.getNextPage(), PageHandler.MAX_PAGE_SIZE);
-            if (first) {
-                first = false;
-            }
         }
+        @SuppressWarnings("unchecked")
+        List<CmsContent> list = (List<CmsContent>) page.getList();
+        BeanComponent.getContentService().rebuildSearchText(siteId, cmsModel, list);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void rebuildSearchText(short siteId, CmsModel cmsModel, List<CmsContent> list) {
         for (CmsContent entity : list) {
             CmsContentAttribute attribute = attributeService.getEntity(entity.getId());
+            if (null == attribute) {
+                attribute = new CmsContentAttribute(entity.getId(), 0);
+            }
             Integer extendId = null;
             CmsCategory category = categoryService.getEntity(entity.getCategoryId());
             if (null != category) {
@@ -291,7 +293,7 @@ public class CmsContentService extends BaseService<CmsContent> {
             List<SysExtendField> categoryExtendList, Map<String, String> map, CmsModel cmsModel, List<CmsContentFile> files,
             List<CmsContentFile> images, List<CmsContentProduct> products, CmsContentAttribute attribute) {
         StringBuilder searchTextBuilder = new StringBuilder();
-        String text = HtmlUtils.removeHtmlTag(attribute.getText());
+        String text = HtmlUtils.removeHtmlTag(null == attribute ? null : attribute.getText());
         if (null != text) {
             attribute.setWordCount(text.length());
             if (cmsModel.isSearchable()) {

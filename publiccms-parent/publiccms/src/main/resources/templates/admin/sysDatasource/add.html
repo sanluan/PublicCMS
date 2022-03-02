@@ -62,7 +62,7 @@
            <script>
         <@_sysSiteDatasourceList>
         <#list list as a>
-    $('.tree li a[tname=siteIds][tvalue=${a.id.siteId?js_string}]',navTab.getCurrentPanel()).prop('checked',true);
+    $('.tree li a[tname=siteIds][tvalue=${a.id.siteId?js_string}]',navTab.getCurrentPanel()).attr('checked','true');
         </#list>
         </@_sysSiteDatasourceList>
             </script>

@@ -284,3 +284,11 @@ INSERT INTO `sys_module_lang` VALUES ('visit_url', 'ja', 'ページアクセス�
 INSERT INTO `sys_module_lang` VALUES ('visit_url', 'zh', '页面访问日志');
 -- 2022-02-23 --
 INSERT INTO `sys_module` VALUES ('myself_profile', 'myself/profile', 'sysUser/update,file/doUpload', 'icon-user', 'myself_menu', 1, 0);
+-- 2022-03-02 --
+ALTER TABLE `cms_dictionary_data`
+    ADD COLUMN `parent_value` varchar(50) NULL COMMENT '父值' AFTER `site_id`,
+    ADD INDEX `cms_dictionary_parent_value`(`dictionary_id`, `site_id`, `parent_value`);
+ALTER TABLE `cms_dictionary` 
+    ADD COLUMN `child_depth` int(10) NOT NULL DEFAULT 0 COMMENT '子级深度' AFTER `name`;
+UPDATE `sys_module` SET `authorized_url` = 'cmsDictionary/addChild,cmsDictionary/save,cmsDictionary/virify' WHERE `id` ='dictionary_add';
+    

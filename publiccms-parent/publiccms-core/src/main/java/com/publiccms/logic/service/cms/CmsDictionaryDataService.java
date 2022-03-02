@@ -43,8 +43,9 @@ public class CmsDictionaryDataService extends BaseService<CmsDictionaryData> {
      * @param siteId
      * @param dictionaryId
      * @param dataList
+     * @param parentValue
      */
-    public void update(short siteId, String dictionaryId, List<CmsDictionaryData> dataList) {
+    public void update(short siteId, String dictionaryId, List<CmsDictionaryData> dataList, String parentValue) {
         Set<CmsDictionaryDataId> idSet = new HashSet<>();
         if (CommonUtils.notEmpty(dataList)) {
             for (CmsDictionaryData entity : dataList) {
@@ -53,6 +54,7 @@ public class CmsDictionaryDataService extends BaseService<CmsDictionaryData> {
                     entity.getId().setDictionaryId(dictionaryId);
                     CmsDictionaryData oldEntity = getEntity(entity.getId());
                     if (null == oldEntity) {
+                        entity.setParentValue(parentValue);
                         save(entity);
                     } else {
                         oldEntity.setText(entity.getText());
@@ -61,10 +63,11 @@ public class CmsDictionaryDataService extends BaseService<CmsDictionaryData> {
                 }
             }
         }
-        List<CmsDictionaryData> list = getList(siteId, dictionaryId);
+        List<CmsDictionaryData> list = getList(siteId, dictionaryId, parentValue);
         for (CmsDictionaryData entity : list) {
             if (!idSet.contains(entity.getId())) {
                 delete(entity.getId());
+                dao.deleteByParentValue(siteId, entity.getId().getDictionaryId(), entity.getId().getValue());
             }
         }
     }
@@ -72,16 +75,18 @@ public class CmsDictionaryDataService extends BaseService<CmsDictionaryData> {
     /**
      * @param siteId
      * @param dictionaryId
+     * @param parentValue
      * @return data list
      */
     @Transactional(readOnly = true)
-    public List<CmsDictionaryData> getList(short siteId, String dictionaryId) {
-        return dao.getList(siteId, dictionaryId);
+    public List<CmsDictionaryData> getList(short siteId, String dictionaryId, String parentValue) {
+        return dao.getList(siteId, dictionaryId, parentValue);
     }
 
     /**
      * @param siteId
      * @param dictionaryIds
+     * @param parentValue
      * @return the number of entities deleted
      */
     public int delete(short siteId, String[] dictionaryIds) {

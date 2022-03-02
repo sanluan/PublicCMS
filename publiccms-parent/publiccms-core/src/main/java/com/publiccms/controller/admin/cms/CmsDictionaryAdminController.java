@@ -48,6 +48,7 @@ public class CmsDictionaryAdminController {
      * @param admin
      * @param entity
      * @param oldId
+     * @param parentValue
      * @param dictionaryParameters
      * @param request
      * @param model
@@ -56,13 +57,15 @@ public class CmsDictionaryAdminController {
     @RequestMapping("save")
     @Csrf
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, CmsDictionary entity, String oldId,
-            CmsDictionaryParameters dictionaryParameters, HttpServletRequest request, ModelMap model) {
+            String parentValue, CmsDictionaryParameters dictionaryParameters, HttpServletRequest request, ModelMap model) {
         if (null != entity && null != entity.getId()) {
             entity.getId().setSiteId(site.getId());
-            if (CommonUtils.notEmpty(oldId)) {
+            if (CommonUtils.notEmpty(parentValue)) {
+                dataService.update(site.getId(), entity.getId().getId(), dictionaryParameters.getDataList(), parentValue);
+            } else if (CommonUtils.notEmpty(oldId)) {
                 if (entity.getId().getId().equals(oldId)) {
                     entity = service.update(entity.getId(), entity, ignoreProperties);
-                    dataService.update(site.getId(), entity.getId().getId(), dictionaryParameters.getDataList());
+                    dataService.update(site.getId(), entity.getId().getId(), dictionaryParameters.getDataList(), parentValue);
                 } else {
                     CmsDictionaryId id = new CmsDictionaryId(oldId, site.getId());
                     service.delete(id);
@@ -70,15 +73,15 @@ public class CmsDictionaryAdminController {
                     service.save(entity);
                     dataService.save(site.getId(), entity.getId().getId(), dictionaryParameters.getDataList());
                 }
-                logOperateService.save(
-                        new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER, "update.cmsDictionary",
-                                RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+                logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
+                        LogLoginService.CHANNEL_WEB_MANAGER, "update.cmsDictionary", RequestUtils.getIpAddress(request),
+                        CommonUtils.getDate(), JsonUtils.getString(entity)));
             } else {
                 service.save(entity);
                 dataService.save(site.getId(), entity.getId().getId(), dictionaryParameters.getDataList());
-                logOperateService.save(
-                        new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER, "save.cmsDictionary",
-                                RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+                logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
+                        LogLoginService.CHANNEL_WEB_MANAGER, "save.cmsDictionary", RequestUtils.getIpAddress(request),
+                        CommonUtils.getDate(), JsonUtils.getString(entity)));
             }
         }
         return CommonConstants.TEMPLATE_DONE;
@@ -108,13 +111,14 @@ public class CmsDictionaryAdminController {
      * @param site
      * @param admin
      * @param ids
+     * @param parentValue
      * @param request
      * @param model
      * @return view name
      */
     @RequestMapping("delete")
     @Csrf
-    public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String[] ids,
+    public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String[] ids, String parentValue,
             HttpServletRequest request, ModelMap model) {
         if (CommonUtils.notEmpty(ids)) {
             CmsDictionaryId[] entityIds = new CmsDictionaryId[ids.length];
@@ -123,9 +127,9 @@ public class CmsDictionaryAdminController {
             }
             service.delete(entityIds);
             dataService.delete(site.getId(), ids);
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                    "delete.cmsDictionary", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
-                    StringUtils.join(ids, CommonConstants.COMMA)));
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.cmsDictionary", RequestUtils.getIpAddress(request),
+                    CommonUtils.getDate(), StringUtils.join(ids, CommonConstants.COMMA)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }

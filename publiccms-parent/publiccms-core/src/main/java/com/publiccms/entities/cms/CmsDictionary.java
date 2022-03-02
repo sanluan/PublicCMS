@@ -27,15 +27,18 @@ public class CmsDictionary implements java.io.Serializable {
     private CmsDictionaryId id;
     @GeneratorColumn(title = "名称")
     private String name;
+    @GeneratorColumn(title = "子级深度")
+    private int childDepth;
     @GeneratorColumn(title = "允许多选", condition = true)
     private boolean multiple;
 
     public CmsDictionary() {
     }
 
-    public CmsDictionary(CmsDictionaryId id, String name, boolean multiple) {
+    public CmsDictionary(CmsDictionaryId id, String name, int childDepth, boolean multiple) {
         this.id = id;
         this.name = name;
+        this.childDepth = childDepth;
         this.multiple = multiple;
     }
 
@@ -57,6 +60,15 @@ public class CmsDictionary implements java.io.Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Column(name = "child_depth", nullable = false)
+    public int getChildDepth() {
+        return this.childDepth;
+    }
+
+    public void setChildDepth(int childDepth) {
+        this.childDepth = childDepth;
     }
 
     @Column(name = "multiple", nullable = false)

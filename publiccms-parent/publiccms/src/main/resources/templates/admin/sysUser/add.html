@@ -85,7 +85,7 @@
     $('input[name=superuser]',navTab.getCurrentPanel()).click();
 <#if a.roles?has_content>
     <#list a.roles?split(',') as role>
-        $('.tree li a[tname=roleIds][tvalue=${role?js_string}]',navTab.getCurrentPanel()).prop('checked',true);
+        $('.tree li a[tname=roleIds][tvalue=${role?js_string}]',navTab.getCurrentPanel()).attr('checked','true');
     </#list>
 </#if>
 </script>

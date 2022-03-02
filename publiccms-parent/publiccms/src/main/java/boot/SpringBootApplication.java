@@ -58,9 +58,7 @@ public class SpringBootApplication {
             TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory();
             String initProto = System.getProperty("cms.initProto");
             if (CommonUtils.notEmpty(initProto) && "false".equalsIgnoreCase(initProto)) {
-                RemoteIpValve valve = new RemoteIpValve();
-                valve.setProtocolHeader("X-Forwarded-Proto");
-                tomcat.addEngineValves(valve);
+                tomcat.addEngineValves(new RemoteIpValve());
             }
             factory = tomcat;
         }

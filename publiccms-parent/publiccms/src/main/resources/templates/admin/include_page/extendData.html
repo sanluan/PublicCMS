@@ -1,3 +1,19 @@
+<#macro dictionaryTree dictionaryId inputName parentValue depth values>
+<#if depth gt 0>
+    <@_dictionaryDataList dictionaryId=dictionaryId parentValue=parentValue>
+        <#if list?has_content>
+        <ul>
+            <#list list as d>
+                <li>
+                    <a tname="${inputName}" tvalue="${d.id.value}"${(values?has_content&&values?seq_contains(d.id.value))?then(' checked="true"','')?no_esc}>${d.text}</a>
+                    <@dictionaryTree dictionaryId=dictionaryId inputName=inputName parentValue=d.id.value depth=depth-1 values=values/>
+                </li>
+            </#list>
+        </ul>
+        </#if>
+    </@_dictionaryDataList>
+</#if>
+</#macro>
 <#macro input name extend index value='' type='form' safe=true>
     <#local inputName=name+'['+index+'].value'/>
     <input name="${name}[${index}].name" type="hidden" value="${extend.id.code}"/>
@@ -188,28 +204,66 @@
             <#if site.parentId?has_content&&!dictionary?has_content><@_dictionary id=extend.dictionaryId siteId=site.parentId><#assign dictionary=object/></@_dictionary></#if>
             <#if dictionary?has_content>
                 <#if 'view'=type>
-                    <#if dictionary.multiple><@_dictionaryData dictionaryId=extend.dictionaryId values=value><#list map as k,data>${data.text}<#sep>,</#list></@_dictionaryData><#else><@_dictionaryData dictionaryId=extend.dictionaryId value=value>${object.text}</@_dictionaryData></#if>
+                    <@_dictionaryData dictionaryId=extend.dictionaryId values=value><#list map as k,data>${data.text}<#sep>,</#list></@_dictionaryData>
                 <#else>
-                    <#if dictionary.multiple>
+                    <#if dictionary.childDepth gt 0>
                         <#if value?has_content>
                             <#local values=value?split(',')/>
                         </#if>
-                        <@_dictionaryDataList dictionaryId=extend.dictionaryId>
-                            <#list list as d>
-                                <label>
-                                    <input name="${name}[${index}].values" type="checkbox" value="${d.id.value}"${(values?has_content&&values?seq_contains(d.id.value))?then(' checked="true"','')?no_esc}/>
-                                    ${d.text}
-                                </label>
+                        <#if dictionary.multiple>
+                            <div class="treeForm">
+                                <ul class="tree treeFolder treeCheck expand">
+                                <@_dictionaryDataList dictionaryId=extend.dictionaryId>
+                                    <#list list as d>
+                                        <li>
+                                            <a tname="${name}[${index}].values" tvalue="${d.id.value}"${(values?has_content&&values?seq_contains(d.id.value))?then(' checked="true"','')?no_esc}>${d.text}</a>
+                                            <@dictionaryTree dictionaryId=extend.dictionaryId inputName=name+'['+index+'].values' parentValue=d.id.value depth=dictionary.childDepth values=values/>
+                                        </li>
+                                    </#list>
+                                </@_dictionaryDataList>
+                                </ul>
+                            </div>
+                        <#else>
+                            <#list 0..dictionary.childDepth as i>
+                                <select class="combox" name="${name}[${index}].values" <#if 'customform'!=type> ref="${name}[${index}].values" index="${i+1}"<#if i lt dictionary.childDepth> refUrl="common/dictionarySuggest.html?dictionaryId=${extend.dictionaryId}&parentValue={value}"</#if> class="<#if extend.required> required</#if>"</#if>>
+                                <#if 0=i || parentValue?has_content>
+                                <@_dictionaryDataList dictionaryId=extend.dictionaryId parentValue=parentValue>
+                                    <#local parentValue=''/>
+                                    <#list list as d>
+                                        <#if values?has_content&&values?seq_contains(d.id.value)>
+                                            <#local parentValue=d.id.value/>
+                                            <option value="${d.id.value}" selected="true">${d.text}</option>
+                                        <#else>
+                                            <option value="${d.id.value}">${d.text}</option>
+                                        </#if>
+                                    </#list>
+                                </@_dictionaryDataList>
+                                </#if>
+                                </select>
                             </#list>
-                        </@_dictionaryDataList>
+                        </#if>
                     <#else>
-                        <select class="combox" name="${inputName}"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>>
-                        <@_dictionaryDataList dictionaryId=extend.dictionaryId>
-                            <#list list as d>
-                            <option value="${d.id.value}"${(value?has_content&&d.id.value=value)?then(' selected="true"','')?no_esc}>${d.text}</option>
-                            </#list>
-                        </@_dictionaryDataList>
-                        </select>
+                        <#if dictionary.multiple>
+                            <#if value?has_content>
+                                <#local values=value?split(',')/>
+                            </#if>
+                            <@_dictionaryDataList dictionaryId=extend.dictionaryId>
+                                <#list list as d>
+                                    <label>
+                                        <input name="${name}[${index}].values" type="checkbox" value="${d.id.value}"${(values?has_content&&values?seq_contains(d.id.value))?then(' checked="true"','')?no_esc}/>
+                                        ${d.text}
+                                    </label>
+                                </#list>
+                            </@_dictionaryDataList>
+                        <#else>
+                            <select class="combox" name="${inputName}"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>>
+                            <@_dictionaryDataList dictionaryId=extend.dictionaryId>
+                                <#list list as d>
+                                <option value="${d.id.value}"${(value?has_content&&d.id.value=value)?then(' selected="true"','')?no_esc}>${d.text}</option>
+                                </#list>
+                            </@_dictionaryDataList>
+                            </select>
+                        </#if>
                     </#if>
                 </#if>
             </#if>

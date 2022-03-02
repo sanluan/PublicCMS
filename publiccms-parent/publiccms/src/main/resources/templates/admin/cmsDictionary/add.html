@@ -1,6 +1,5 @@
 <@_dictionary id=id><#assign a=object/></@_dictionary>
 <form method="post" autocomplete="off" action="cmsDictionary/save?callbackType=closeCurrent&navTabId=cmsDictionary/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
-    <input name="oldId" type="hidden" value="${(a.id.id)!}" />
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
@@ -10,9 +9,25 @@
     </div>
     <div class="pageContent">
         <div class="pageFormContent" layoutH>
+        <#if a?has_content && parentValue?has_content>
+            <dl class="nowrap">
+                <dt><@t.page 'dictionary'/>:</dt>
+                <dd>
+                    ${a.name!}
+                    <input name="id.id" type="hidden" value="${(a.id.id)!}"/>
+                </dd>
+            </dl>
+            <dl class="nowrap">
+                <dt><@t.page 'value'/>:</dt>
+                <dd>
+                    <input name="parentValue" type="hidden" value="${(parentValue)!}"/>${(parentValue)!}
+                </dd>
+            </dl>
+        <#else>
             <dl class="nowrap">
                 <dt><@t.page 'id'/>:</dt>
                 <dd>
+                    <input name="oldId" type="hidden" value="${(a.id.id)!}" />
                     <input class="required" name="id.id" remote="cmsDictionary/virify<#if id?has_content>?oldId=${(a.id.id)!}</#if>" data-msg-remote="<@t.message 'verify.hasExist.code'/>" type="text" size="20" maxlength="20" value="${(a.id.id)!}"/>
                 </dd>
             </dl>
@@ -23,6 +38,13 @@
                     <label><input name="multiple" type="checkbox"${((a.multiple)?has_content&&a.multiple)?then(' checked="true"','')?no_esc}/><@t.page 'multiple_select'/></label>
                 </dd>
             </dl>
+            <dl class="nowrap">
+                <dt><@t.page 'dictionary.childDepth'/>:</dt>
+                <dd>
+                    <input class="required" name="childDepth" type="number" size="20" max="5" value="${(a.childDepth)!0}"/>
+                </dd>
+            </dl>
+        </#if>
             <table class="list nowrap itemDetail" addButton="<@t.page 'button.new_line'/>" width="100%">
                 <thead>
                     <tr>
@@ -32,8 +54,8 @@
                     </tr>
                 </thead>
                 <tbody>
-            <#if id?has_content>
-                <@_dictionaryDataList dictionaryId=id>
+            <#if a?has_content>
+                <@_dictionaryDataList dictionaryId=a.id.id parentValue=parentValue>
                     <#list list as d>
                         <tr>
                             <td>

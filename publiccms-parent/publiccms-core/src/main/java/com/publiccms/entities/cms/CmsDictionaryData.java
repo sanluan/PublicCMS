@@ -25,6 +25,8 @@ public class CmsDictionaryData implements java.io.Serializable {
      */
     private static final long serialVersionUID = 1L;
     private CmsDictionaryDataId id;
+    @GeneratorColumn(title = "父值", condition = true)
+    private String parentValue;
     @GeneratorColumn(title = "文字")
     private String text;
 
@@ -48,6 +50,15 @@ public class CmsDictionaryData implements java.io.Serializable {
 
     public void setId(CmsDictionaryDataId id) {
         this.id = id;
+    }
+
+    @Column(name = "parent_value", length = 50)
+    public String getParentValue() {
+        return this.parentValue;
+    }
+
+    public void setParentValue(String parentValue) {
+        this.parentValue = parentValue;
     }
 
     @Column(name = "text", nullable = false, length = 100)

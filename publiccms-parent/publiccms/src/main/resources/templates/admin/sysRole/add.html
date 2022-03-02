@@ -63,7 +63,7 @@
     </#if>
     <@_sysRoleModuleList roleId=a.id>
         <#list page.list as a>
-    $('.tree li a[tname=moduleIds][tvalue=${a.id.moduleId?js_string}]',navTab.getCurrentPanel()).prop('checked',true);
+    $('.tree li a[tname=moduleIds][tvalue=${a.id.moduleId?js_string}]',navTab.getCurrentPanel()).attr('checked','true');
         </#list>
     </@_sysRoleModuleList>
 </script>

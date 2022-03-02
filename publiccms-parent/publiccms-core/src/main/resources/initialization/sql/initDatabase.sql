@@ -143,6 +143,7 @@ CREATE TABLE `cms_dictionary` (
   `id` varchar(20) NOT NULL,
   `site_id` smallint(6) NOT NULL COMMENT '站点',
   `name` varchar(100) NOT NULL COMMENT '名称',
+  `child_depth` int(10) NOT NULL COMMENT '子级深度',
   `multiple` tinyint(1) NOT NULL COMMENT '允许多选',
   PRIMARY KEY (`id`,`site_id`),
   KEY `cms_dictionary_site_id` (`site_id`,`multiple`)
@@ -155,9 +156,11 @@ DROP TABLE IF EXISTS `cms_dictionary_data`;
 CREATE TABLE `cms_dictionary_data` (
   `dictionary_id` varchar(20) NOT NULL COMMENT '字典',
   `site_id` smallint(6) NOT NULL COMMENT '站点',
+  `parent_value` varchar(50) NULL COMMENT '父值',
   `value` varchar(50) NOT NULL COMMENT '值',
   `text` varchar(100) NOT NULL COMMENT '文字',
-  PRIMARY KEY  (`dictionary_id`,`site_id`,`value`)
+  PRIMARY KEY  (`dictionary_id`,`site_id`,`value`),
+  KEY `cms_dictionary_parent_value`(`dictionary_id`, `site_id`, `parent_value`)
 ) COMMENT='字典数据';
 
 -- ----------------------------
@@ -803,7 +806,7 @@ INSERT INTO `sys_module` VALUES ('dept_delete', NULL, 'sysDept/delete', NULL, 'd
 INSERT INTO `sys_module` VALUES ('dept_list', 'sysDept/list', 'sysDept/lookup,sysUser/lookup,sysUser/lookup_list', 'icon-group', 'user_menu', 1, 2);
 INSERT INTO `sys_module` VALUES ('dept_user_list', 'sysDept/userList', 'sysDept/addUser,sysDept/saveUser,sysDept/enableUser,sysDept/disableUser', NULL, 'dept_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('develop', NULL, NULL, 'icon-puzzle-piece', NULL, 1, 7);
-INSERT INTO `sys_module` VALUES ('dictionary_add', 'cmsDictionary/add', 'cmsDictionary/save,cmsDictionary/virify', NULL, 'dictionary_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('dictionary_add', 'cmsDictionary/add', 'cmsDictionary/addChild,cmsDictionary/save,cmsDictionary/virify', NULL, 'dictionary_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('dictionary_delete', NULL, 'cmsDictionary/delete', NULL, 'dictionary_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('dictionary_list', 'cmsDictionary/list', NULL, 'icon-book', 'system_menu', 1, 4);
 INSERT INTO `sys_module` VALUES ('domain_config', 'sysDomain/config', 'sysDomain/saveConfig,cmsTemplate/directoryLookup,cmsTemplate/lookup', NULL, 'domain_list', 0, 0);

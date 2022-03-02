@@ -3,10 +3,23 @@
 <head>
     <meta charset="utf-8">
     <title><@t.page 'file.view'/></title>
-    <link href="${base}/resource/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen"/>
-    <link href="${base}/resource/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" media="screen"/>
+    <style>
+.container{width:95%;}
+.row{display: flex;}
+.col-md-1{width:8.33%;}
+.col-md-2{width:16.66%;}
+.col-md-3{width:24.99%;}
+.col-md-4{width:33.32%;}
+.col-md-5{width:41.65%;}
+.col-md-6{width:50%;}
+.col-md-7{width:58.34%;}
+.col-md-8{width:66.66%;}
+.col-md-9{width:75%;}
+.col-md-10{width:83.33%;}
+.col-md-11{width:91.66%;}
+.col-md-12{width:100%;}
+    </style>
     <script src="${base}/resource/js/jquery-1.12.4.min.js"></script>
-    <script src="${base}/resource/bootstrap/js/bootstrap.min.js"></script>
 <script>  
 function callback(fileUrl){  
     var parentWindow = ( window.parent == window ) ? window.opener : window.parent;  

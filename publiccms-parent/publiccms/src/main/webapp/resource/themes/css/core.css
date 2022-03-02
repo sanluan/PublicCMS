@@ -97,7 +97,7 @@ header .nav .selected ul{display:block;}
 .tree .folder_expandable:before{content:"\e60f";}
 .tree .file:before{content:"\e686";}
 .tree .end_expandable:before,.tree .expandable:before,.tree .last_expandable:before, .tree .first_expandable:before{content:"\e603";}
-
+.treeForm{height: 200px;border: 1px solid;overflow: auto;width: 200px;}
 /* Accordion */
 .accordion{display:block;}
 .accordion .accordionHeader{display:block;overflow:hidden;cursor:pointer;}

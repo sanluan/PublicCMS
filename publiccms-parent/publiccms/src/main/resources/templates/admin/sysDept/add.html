@@ -139,7 +139,7 @@
     </#if>
     <@_sysDeptPageList deptId=a.id>
         <#list page.list as a>
-    $('.ownsAllPage .tree li a[tname=pages][tvalue="${a.id.page?js_string}"]',navTab.getCurrentPanel()).prop('checked',true);
+    $('.ownsAllPage .tree li a[tname=pages][tvalue="${a.id.page?js_string}"]',navTab.getCurrentPanel()).attr('checked','true');
         </#list>
     </@_sysDeptPageList>
     <#if a.ownsAllCategory>
@@ -147,7 +147,7 @@
     </#if>
     <@_sysDeptCategoryList deptId=a.id>
         <#list page.list as a>
-    $('.ownsAllCategory .tree li a[tname=categoryIds][tvalue=${a.id.categoryId}]',navTab.getCurrentPanel()).prop('checked',true);
+    $('.ownsAllCategory .tree li a[tname=categoryIds][tvalue=${a.id.categoryId}]',navTab.getCurrentPanel()).attr('checked','true');
         </#list>
     </@_sysDeptCategoryList>
     <#if a.ownsAllConfig>
@@ -155,7 +155,7 @@
     </#if>
     <@_sysDeptConfigList deptId=a.id>
         <#list page.list as a>
-    $('.ownsAllConfig .tree li a[tname=configs][tvalue=${a.id.config?js_string}]',navTab.getCurrentPanel()).prop('checked',true);
+    $('.ownsAllConfig .tree li a[tname=configs][tvalue=${a.id.config?js_string}]',navTab.getCurrentPanel()).attr('checked','true');
         </#list>
     </@_sysDeptConfigList>
 </script>

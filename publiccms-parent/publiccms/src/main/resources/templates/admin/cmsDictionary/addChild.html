@@ -1,0 +1,42 @@
+<#macro dictionaryTree dictionaryId parentValue depth>
+<#if depth gte 0>
+    <@_dictionaryDataList dictionaryId=dictionaryId parentValue=parentValue>
+        <#if list?has_content>
+        <ul>
+            <#list list as d>
+                <li>
+                    <#if depth = 0>
+                        <a href="javascript:void(0)">${d.id.value}:${d.text}</a>
+                    <#else>
+                        <a href="cmsDictionary/add.html?id=${dictionaryId}&parentValue=${d.id.value}" target="navTab" rel="cmsDictionary/add" icon="<i class='icon-plus-sign-alt icon-large'></i>" title="<@t.page 'dictionary.addChild'/>">${d.id.value}:${d.text}</a>
+                        <@dictionaryTree dictionaryId=dictionaryId parentValue=d.id.value depth=depth-1/>
+                    </#if>
+                </li>
+            </#list>
+        </ul>
+        </#if>
+    </@_dictionaryDataList>
+</#if>
+</#macro>
+<div class="pageFormContent" layoutH>
+    <ul class="tree treeFolder expand">
+<@_dictionaryDataList dictionaryId=id>
+    <#list list as d>
+        <li>
+            <a href="cmsDictionary/add.html?id=${id!}&parentValue=${d.id.value}" target="navTab" rel="cmsDictionary/add" icon="<i class='icon-plus-sign-alt icon-large'></i>" title="<@t.page 'dictionary.addChild'/>">${d.id.value}:${d.text}</a>
+            <@dictionaryTree dictionaryId=id parentValue=d.id.value depth=depth?number-1/>
+        </li>
+    </#list>
+</@_dictionaryDataList>
+    </ul>
+</div>
+<div class="formBar">
+    <ul>
+        <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+    </ul>
+</div>
+<script>
+$('ul li a',$.pdialog.getCurrent()).click(function(){
+    $.pdialog.closeCurrent();
+});
+</script>
