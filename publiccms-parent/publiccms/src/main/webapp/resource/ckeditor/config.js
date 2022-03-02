@@ -21,7 +21,7 @@ CKEDITOR.on('instanceReady', function(event){
     editor.addCommand("save", { readOnly: 1, modes: { wysiwyg: 1,source: 1 }, exec: function (editor) {
         if ( editor.fire( 'save' ) ) {
             var $form = editor.element.$.form;
-            if ( $form && $form.fireEvent('onsubmit') ) {
+            if ( $form && $form.onsubmit() ) {
                 try {
                     $form.submit();
                 } catch ( e ) {
