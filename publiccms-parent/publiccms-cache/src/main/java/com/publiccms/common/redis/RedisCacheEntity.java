@@ -63,10 +63,8 @@ public class RedisCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Serial
     public V remove(K key) {
         Jedis jedis = jedisPool.getResource();
         byte[] byteKey = getKey(key);
-        V value = null;
-        if (0 < jedis.del(byteKey)) {
-            value = valueSerializer.deserialize(jedis.get(byteKey));
-        }
+        V value = valueSerializer.deserialize(jedis.get(byteKey));
+        jedis.del(byteKey);
         jedis.close();
         return value;
     }
@@ -77,9 +75,9 @@ public class RedisCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Serial
         Jedis jedis = jedisPool.getResource();
         Set<String> keyList = jedis.keys(region + Constants.DOT + "*");
         for (String key : keyList) {
+            byte[] byteKey = stringSerializer.serialize(key);
+            V value = valueSerializer.deserialize(jedis.get(byteKey));
             if (0 < jedis.del(key)) {
-                byte[] byteKey = stringSerializer.serialize(key);
-                V value = valueSerializer.deserialize(jedis.get(byteKey));
                 list.add(value);
             }
         }
