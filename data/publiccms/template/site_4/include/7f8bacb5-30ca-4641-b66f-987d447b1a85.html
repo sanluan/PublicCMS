@@ -1,0 +1,137 @@
+<footer id="g-footer" class="container-fluid g-0 pt-5 fs-7">
+    <div class="container gx-4 g-lg-0">
+        <div class="row justify-content-between text-white text-opacity-75">
+            <div class="col-md-3 mb-5 mb-md-4">
+                <div class="mb-4 fs-6">
+                    <img src="${site.sitePath}assets/img/logo.png" alt="LOGO" class="w-50 me-2">
+                    与先进同行
+                </div>
+                <p>
+                    PublicCMS 是采用2020年主流技术开发的开源 JAVA CMS 产品。</p>
+
+                <p>    架构科学，轻松支撑千万数据、千万 PV。支持全站静态化，SSI，动态页面局部静态化，多站点，自动安装等为您快速建站，建设大规模站点提供强大驱动，也是企业级项目产品原型的良好选择。
+                </p>
+
+            </div>
+            <div class="col-auto mb-5 mb-md-4">
+                <dl>
+                    <dt class="fs-5 mb-4">联系方式</dt>
+                    <dd class="d-flex">
+                        <span class="flex-shrink-0">售前咨询：</span>
+                        <div>
+                            <a href="#" class="text-white" data-bs-toggle="modal" data-bs-target="#wechatModal1">
+                                <img src="${site.sitePath}assets/img/icon-wx.svg" alt="wechat"> kerneler
+                            </a>
+                            <a href="http://wpa.qq.com/msgrd?v=3&amp;uin=315415433&amp;site=PublicCMS&amp;Menu=yes"  class="text-white"target="_blank"><img src="${site.sitePath}assets/img/icon-qq.svg"  alt="qq" class="ms-4"> 315415433</a>
+                        </div>
+                    </dd>
+                    <dd class="d-flex">
+                        <span class="flex-shrink-0">产品购买：</span>
+                        <div>
+                            <a href="#"  class="text-white"data-bs-toggle="modal" data-bs-target="#wechatModal2">
+                                <img src="${site.sitePath}assets/img/icon-wx.svg" alt="wechat"> ttyghxqnana
+                            </a>
+                        </div>
+                    </dd>
+                    <dd class="d-flex">
+                        <span class="flex-shrink-0">联系电话：</span>
+                        <div><a href="tel:18600980373" class="text-white"><img src="${site.sitePath}assets/img/icon-tel.svg"  alt="wechat"> 18600980373</a></div>
+                    </dd>
+                    <dd class="d-flex">
+                        <span class="flex-shrink-0">技术咨询：</span>
+                        <div><a href="https://qm.qq.com/cgi-bin/qm/qr?k=xoxCUvv7bDCFQ8AAqaoWB1JsLz0L90qn" class="text-white" title="里面个个都是人才">一群191381542</a>、<a href="https://qm.qq.com/cgi-bin/qm/qr?k=x15JZdCp8vWlxV1mMoMTyrHzMqw3dmI1" class="text-white" title="说话又好听">二群481589563</a>、<a href="https://qm.qq.com/cgi-bin/qm/qr?k=VogNtcpFOLxvjtvzUcAElZOK-KC4To_u" class="text-white" title="超喜欢在里面">三群638756883</a>、<a href="https://qm.qq.com/cgi-bin/qm/qr?k=lsFbfVpj3yqWuY92GYkOG1esbyPNS7O3" class="text-white" title="!">四群930992232</a></div>
+                    </dd>
+                    <dd class="d-flex">
+                        <span class="flex-shrink-0">文档工具：</span>
+                        <div><a href="https://www.sanluan.com/freemarker_test.html" class="text-white" target="_blank">FreeMarker在线测试</a>、<a href="http://www.kerneler.com/freemarker2.3.23/" class="text-white" target="_blank">FreeMarker文档</a></div>
+                    </dd>
+                </dl>
+            </div>
+            <div class="col-md-3 mb-5 mb-md-4">
+                <dl>
+                    <dt class="fs-5 mb-4">关于我们</dt>
+                    <dd class="mb-3">
+                        <img src="${site.sitePath}assets/img/logo-heycore.png" alt="company" class="img-fluid">
+                    </dd>
+                    <dd>
+                        <p>
+                            我们专注提供专业的软件产品和技术。为合作伙伴提供安全可靠的软件产品与解决方案，共同帮助终端用户实现业务创新、快速发展。
+                        </p>
+                        <p>
+                            科技型中小企业编号：202112010200008165
+                        </p>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+    <footer class="container-fluid g-3 g-lg-0 py-3 text-white text-opacity-50">
+        <div class="container">
+            <div class="row justify-content-between">
+                <div class="col-md-auto">
+                    2021 PublicCMS.com All Rights Reserved.
+                    <span class="d-block d-lg-inline"><a href="https://beian.miit.gov.cn/" class="text-white" target="_blank">津ICP备19003922号-2</a></span>
+                </div>
+                <div class="col-md-auto">
+                    <@_includePlace path="/cfdc226d-8abc-48ec-810d-f3941b175b20.html"/> <#-- 友情链接 -->
+                </div>
+            </div>
+        </div>
+    </footer>
+</footer>
+<!-- 搜索 -->
+<div class="modal fade" id="searchModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content bg-transparent border-0">
+            <form action="${siteAttribute.searchPath!}" method="get">
+                <div class="input-group mb-3">
+                    <input type="search" name="word" class="form-control fs-3" placeholder="您想搜索什么？">
+                    <button class="btn btn-primary flex-shrink-0 px-2 px-md-5 fs-4" type="submit">立即搜索</button>
+                </div>
+            </form>
+            <div class="text-center mt-3 text-white">
+                <h5>热门搜索</h5>
+                <@_wordList count=6>
+                <div class="keywords mt-2">
+                    <#list page.list as a>
+                    <a href="${siteAttribute.searchPath!}?word=${a.name?url}">${a.name}</a>
+                    </#list>
+                </div>
+                </@_wordList>
+            </div>
+            <button type="button" class="btn-close position-absolute" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+<!-- 微信1 -->
+<div class="modal fade  wechat-modal" id="wechatModal1" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="text-center bg-transparent border-0">
+            <img src="${site.sitePath}assets/images/wechat_account_1.jpg" alt="微信">
+            <button type="button" class="btn-close position-absolute" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+<!-- 微信2 -->
+<div class="modal fade wechat-modal" id="wechatModal2" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="text-center bg-transparent border-0">
+            <img src="${site.sitePath}assets/images/wechat_account_2.jpg" alt="微信">
+            <button type="button" class="btn-close position-absolute" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+<script src="${site.sitePath}assets/js/bootstrap.bundle.min.js"></script>
+<script src="${site.sitePath}assets/js/jquery-1.12.4.min.js"></script>
+<script>var CMS_PATH='${site.dynamicPath}';</script>
+<script src="${site.sitePath}assets/js/main.js"></script>
+<script src="${site.sitePath}assets/js/cms.analytics.js"></script>
+<script>
+    <@_sysConfigData code="site">${(object.statistics?no_esc)!}</@_sysConfigData>
+    var ca = cmsAnalytics();
+    var url='${site.dynamicPath}api/visit/record';
+    if("string" ==typeof itemString){
+        url=url+"?"+itemString;
+    }
+    ca.report(url);
+</script>

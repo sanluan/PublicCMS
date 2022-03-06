@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>New PublicCMS Template</title>
+</head>
+<body>
+    <main>New PublicCMS Template</main>
+    <footer>
+		<@include path="/ftl/tools.ftl"/><#-- 工具 -->
+		<#assign attribute=getContentAttribute(1)/>
+		<p>dump attribute:<@dump attribute/></p>
+		<p>dump content:<@_content id=1><@dump object/></@_content></p>
+       <p>Powered by <a href="http://www.publiccms.com/">PublicCMS</a></p>
+    </footer>
+    <script src="${site.dynamicPath}resource/js/cms.analytics.js"></script>
+    <script>
+        var ca = cmsAnalytics();
+        var url='${site.dynamicPath}api/visit/record';
+        if("string" ==typeof itemString){
+            url=url+"?"+itemString;
+        }
+        ca.report(url);
+    </script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+        <title>${content.title} - ${category.name}</title>
+        <meta name="keywords" content="<#list getKeywords(content.title) as a>${a}<#sep>,</#list>"/>
+        <meta name="description" content="${content.description}"/>
+        <@_includePlace path="/8ddab9ba-a8aa-4745-86c6-66bf1c2c976c.html"/> <#-- header -->
+    <style>
+        article .cover{float:left;}
+        article .cover img{width:144px;height:192px;}
+        article .info{margin-left:155px;}
+        article ul.chapter-list li{float:left;width:280px;margin:2px 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    </style>
+    </head>
+    <body>
+        <@_includePlace path="/c32a4f4a-ff5d-49cf-bb59-5d9784539174.html"/> <#-- 导航 -->
+        <div class="banner-l3 position-relative d-flex align-items-center justify-content-center" style="background:#22407c url(${site.sitePath}assets/img/banner-l3-bg-1.png) 50% 50% no-repeat;">
+            <div class="container text-center position-relative py-3 py-md-4 text-white">
+                <div class="breadcrumbs fs-7 text-white d-inline-flex align-items-center text-opacity-50">
+                    <@include path="/ftl/bread.ftl"/><#-- 面包屑导航 -->
+                </div>
+                <h1 class="my-4"><a href="${url!}" class="text-white">${content.title}</a></h1>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-12">
+                    <article class="article-cont my-5">
+                        <header class="mt-4">
+                            <div class="row">
+                                <#if content.cover?has_content>
+                                <div class="col-md-3">
+                                    <img src="${content.cover!}" alt="${content.cover!}">
+                                </div>
+                                </#if>
+                                <div class="col-md-9">
+                                    <h3><a href="${url!}">${content.title}</a></h3>
+                                    <div class="tags">
+                                        <#if content.tagIds?has_content>标签：
+                                            <@_tag ids=content.tagIds>
+                                                <#list map?keys as key>
+                                                    <a href="${siteAttribute.searchPath!}?tagId=${map[key].id}" target="_blank"><em>${map[key].name}</em></a>
+                                                </#list>
+                                            </@_tag>
+                                        </#if>
+                                    </div>
+                                    <p>${content.description}</p>
+                                </div>
+                            </div>
+                        </header>
+                        <div id="content" class="clearfix">
+                            ${text?no_esc!}
+                        </div>
+            <@_contentList parentId=content.id pageIndex=1 count=100>
+                <#list 1..page.totalPage as n>
+                    <@_contentList parentId=content.id orderType='asc' pageIndex=n count=100>
+                        <#list page.list as a>
+                        <h4>${a.title}</h4>
+            <@_contentList parentId=a.id endPublishDate=.now pageIndex=1 count=100>
+                <#list 1..page.totalPage as n>
+                    <@_contentList parentId=a.id orderType='asc' pageIndex=n count=100>
+                        <div class="row mt-4">
+                        <#list page.list as a>
+                            <div class="col-md-3 text-truncate"><a href="${a.url!}">${a.title}</a></div>
+                        </#list>
+                        </div>
+                    </@_contentList>
+                </#list>
+            </@_contentList>
+                        </#list>
+                    </@_contentList>
+                </#list>
+            </@_contentList>
+                    </article>
+                    <@include path="/ftl/comment.ftl"/><#-- 评论 -->
+                </div>
+            </div>
+        </div>
+        <script>
+            var itemString="itemType=content&itemId=${content.id}";
+        </script>
+        <@_includePlace path="/7f8bacb5-30ca-4641-b66f-987d447b1a85.html"/> <#-- footer -->
+        <script src="${site.sitePath!}assets/ueditor/ueditor.parse.min.js"></script>
+        <script>
+            uParse('#content',{rootPath: '${site.sitePath!}assets/ueditor'});
+            $.getJSON('${site.dynamicPath!}api/contentClick?id=${content.id}', function(data){});
+        </script>
+    </body>
+</html>

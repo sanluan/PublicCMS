@@ -1,0 +1,18 @@
+<@_category code='guide'>
+    <@_categoryList parentId=object.id>
+<div class="list-group mb-5">
+    <#list page.list as a>
+    <h5 class="list-group-title d-flex align-items-center<#if !a?is_first> mt-4</#if> mb-2">
+        <#assign attribute=getCategoryAttribute(a.id)/>
+        <img src="${getAbsoluteUrl(site.sitePath,attribute.cover)!}" class="me-2">
+        ${a.name}
+    </h5>
+    <@_contentList categoryId=a.id containChild=a.containChild pageSize=100 orderType='asc'>
+        <#list page.list as a>
+    <a class="list-group-item" data-id="${a.id}" href="${a.url}#content">${a.title}</a>
+        </#list>
+    </@_contentList>
+    </#list>
+</div>
+    </@_categoryList>
+</@_category>

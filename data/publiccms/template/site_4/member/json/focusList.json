@@ -1,0 +1,11 @@
+<#ftl auto_esc=false/>
+[<@_placeList path='/94fe86e5-45b3-4896-823a-37c6d7d6c578.html' pageSize=5>
+    <#list page.list as a>
+        {
+            "id":"${a.id}",
+            "title":"${a.title?json_string}",
+            "url":"${a.url!}",
+            "cover":"${a.cover!}"
+        }<#sep>,
+    </#list>
+</@_placeList>]

@@ -1,0 +1,20 @@
+<#assign dealCount=0/>
+<#assign maxPage=100/>
+<#macro deal parentId>
+	<@_categoryList advanced=true parentId=parentId count=100>
+		<#list page.list as a>
+			<#if a.pageSize gt 500>
+				<@_publishCategory id=a.id totalPage=1><#assign dealCount++/></@_publishCategory>
+			<#else>
+				<@_contentList categoryId=a.id containChild=a.containChild endPublishDate=.now count=a.pageSize>
+					<#assign totalPage=page.totalPage/>
+					<#if totalPage gt maxPage><#assign totalPage=maxPage/></#if>
+					<@_publishCategory id=a.id totalPage=totalPage><#assign dealCount++/></@_publishCategory>
+				</@_contentList>
+			</#if>
+			<#if a.childIds?has_content><@deal a.id/></#if>
+		</#list>
+	</@_categoryList>
+</#macro>
+<@deal ''/>
+共生成${dealCount}个分类静态页面

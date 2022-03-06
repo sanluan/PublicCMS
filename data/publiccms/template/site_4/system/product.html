@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+        <title>${content.title} - ${category.name}</title>
+        <meta name="keywords" content="<#list getKeywords(content.title) as a>${a}<#sep>,</#list>"/>
+        <meta name="description" content="${content.description!}"/>
+        <@_includePlace path="/8ddab9ba-a8aa-4745-86c6-66bf1c2c976c.html"/> <#-- header -->
+        <link href="${site.sitePath}assets/swiper/swiper.min.css" rel="stylesheet"/>
+    </head>
+    <body>
+        <@_includePlace path="/c32a4f4a-ff5d-49cf-bb59-5d9784539174.html"/> <#-- 导航 -->
+        <div class="banner-l3 position-relative d-flex align-items-center justify-content-center" style="background:#22407c url(${site.sitePath}assets/img/banner-l3-bg-1.png) 50% 50% no-repeat;">
+            <div class="container text-center position-relative py-3 py-md-4 text-white">
+                <div class="breadcrumbs fs-7 text-white d-inline-flex align-items-center text-opacity-50">
+                    <@include path="/ftl/bread.ftl"/><#-- 面包屑导航 -->
+                </div>
+                <h1 class="my-4"><a href="${url!}" class="text-white">${content.title}</a></h1>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row my-4">
+                <#if content.hasProducts>
+                <div class="col-md-4">
+                    <@_contentProductList contentId=content.id fileTypes='video,audio,other'>
+                    <div class="gallery">
+                        <div class="product-gallery swiper-container">
+                            <div class="swiper-wrapper">
+                                <#if content.cover?has_content>
+                                <div class="swiper-slide"><img class="preview" src="${content.cover!}" alt="${content.title}"></div>
+                                </#if>
+                                <#list page.list as product>
+                                <#if product.cover?has_content><div class="swiper-slide"><img class="preview" src="${product.cover!}" alt="${product.title}"></div></#if>
+                                </#list>
+                            </div>
+                        </div>
+                        <div class="thumb-list swiper-container">
+                            <div class="swiper-wrapper">
+                                <#if content.cover?has_content>
+                                <div class="swiper-slide"><a href="javascript:void(0);"><img  src="${content.cover!}" alt="${content.title}"></a></div>
+                                </#if>
+                                <#list page.list as product>
+                                <#if product.cover?has_content>
+                                <div class="swiper-slide" data-id="${product.id!}"><a href="javascript:void(0);"><img  src="${product.cover!}" alt="${product.title}"></a></div>
+                                </#if>
+                                </#list>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <header>
+                        <h1><a href="${url!}">${content.title}</a></h1>
+                        <p><label>价格</label> <span class="price">${(page.list[0].price)!}</span></p>
+                        <p><label>库存</label> <span class="inventory">${(page.list[0].inventory)!}</span></p>
+                    </header>
+                    <form action="${site.dynamicPath}order.html">
+                        <p><label>型号</label>
+                            <#list page.list as product>
+                            <label><input type="radio" name="productId" value="${product.id}"/><#if product.cover?has_content><img src="<@_thumb path=product.cover width=30 height=30/>" title="${product.title}" alt="${product.title}" style="max-width:30px;max-height30px;border:1px solid;"/><#else>${product.title}</#if></label>
+                        </#list>
+                        </p>
+                        <p><label>数量</label><input type="number" name="quantity" value="1" min="1" size="4"/></p>
+                        <input type="submit" value="立刻购买"/>
+                    </form>
+                </div>
+                </@_contentProductList>
+            </div>
+            </#if>
+            <div class="row">
+                <aside class="col-md-2">
+                    <h3 class="circle">相关推荐</h3>
+                    <ul>
+                        <#if content.tagIds?has_content>
+                        <@_search tagId=content.tagIds modelId=content.modelId count=10>
+                            <#list page.list as a>
+                            <li>
+                                <#if a.cover?has_content>
+                                    <p><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect?id=${a.id}<#else>${a.url}</#if>" title="${a.title}"><img class="w-100" src="${a.cover!}" alt="${a.title!}"/></a></p>
+                                </#if>
+                                <p><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect?id=${a.id}<#else>${a.url}</#if>" title="${a.title}">${a.title}</a></p>
+                            </li>
+                            </#list>
+                            </@_search>
+                        <#else>
+                        <@_contentList categoryId=content.categoryId modelId=content.modelId pageSize=10>
+                            <#list page.list as a>
+                            <li>
+                                <#if a.cover?has_content>
+                                    <p><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect?id=${a.id}<#else>${a.url}</#if>" title="${a.title}"><img class="w-100" src="${a.cover!}" alt="${a.title!}"/></a></p>
+                                </#if>
+                                <p><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect?id=${a.id}<#else>${a.url}</#if>" title="${a.title}">${a.title}</a>></p>
+                            </li>
+                            </#list>
+                        </@_contentList>
+                        </#if>
+                    </ul>
+                </aside>
+                <div class="col-md-10">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item"><a class="nav-link active" href="#content" data-bs-toggle="tab">产品详情</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#comment" data-bs-toggle="tab">评论(${(content.comments)!})</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <article class="tab-pane fade clearfix  show active" id="content">
+                            ${text?no_esc!}
+                        </article>
+                        <div class="tab-pane fade py-4" id="comment">
+                            <@include path="/ftl/comment.ftl"/><#-- 评论 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            var itemString="itemType=content&itemId=${content.id}";
+        </script>
+        <@_includePlace path="/7f8bacb5-30ca-4641-b66f-987d447b1a85.html"/> <#-- footer -->
+        <script src="${site.sitePath!}assets/ueditor/ueditor.parse.min.js"></script>
+        <script src="${site.sitePath!}assets/swiper/swiper.min.js"></script>
+        <script>
+            var thumbSwiper = new Swiper('.thumb-list', {
+                spaceBetween: 10,
+                slidesPerView: 5,
+                freeMode: true,
+                watchSlidesVisibility: true,
+                watchSlidesProgress: true,
+            });
+            var gallerySwiper = new Swiper('.product-gallery', {
+                mousewheel: true,
+                effect: 'coverflow',
+                speed: 300,
+                thumbs: {
+                    swiper: thumbSwiper,
+                }
+            });
+            $('input[name=productId]').change(function(){
+                var selectedProductId=this.value;
+                if(selectedProductId){
+                    $.getJSON('${site.dynamicPath!}api/directive/contentProduct?id='+selectedProductId, function(data){
+                        if($('input[name=productId]:checked').val() == selectedProductId){
+                            $('.price').text(data.object.price);
+                            $('.inventory').text(data.object.inventory);
+                            if(data.object.minQuantity){
+                                $('input[name=quantity]').attr('min', data.object.minQuantity);
+                                if(parseInt($('input[name=quantity]').val()) < data.object.minQuantity){
+                                    $('input[name=quantity]').val(data.object.minQuantity);
+                                }
+                            }
+                            if(data.object.maxQuantity && data.object.maxQuantity<data.object.inventory){
+                                $('input[name=quantity]').attr('max', data.object.maxQuantity);
+                            }else{
+                                $('input[name=quantity]').attr('max', data.object.inventory);
+                            }
+                            if(parseInt($('input[name=quantity]').val()) > parseInt($('input[name=quantity]').attr('max'))){
+                                $('input[name=quantity]').val($('input[name=quantity]').attr('max'));
+                            }
+                        }
+                    });
+                    var index= $('.thumb-list .swiper-slide[data-id='+selectedProductId+']').index();
+                    if(0<=index){
+                        gallerySwiper.slideTo(index);
+                    }
+                }
+            });
+            $.getJSON('${site.dynamicPath!}api/contentClick?id=${content.id}', function(data){});
+            uParse('#content',{rootPath: '${site.sitePath!}assets/ueditor'});
+        </script>
+    </body>
+</html>

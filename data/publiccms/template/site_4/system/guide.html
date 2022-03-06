@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+    <head>
+        <title>${content.title} - ${category.name}</title>
+        <meta name="keywords" content="<#list getKeywords(content.title) as a>${a}<#sep>,</#list>"/>
+        <meta name="description" content="${content.description!}"/>
+        <@_includePlace path="/8ddab9ba-a8aa-4745-86c6-66bf1c2c976c.html"/> <#-- header -->
+    </head>
+    <body>
+        <@_includePlace path="/c32a4f4a-ff5d-49cf-bb59-5d9784539174.html"/> <#-- 导航 -->
+
+          <div class="banner-l2 position-relative d-flex align-items-center justify-content-center">
+            <div class="container text-center position-relative py-3 py-md-4">
+                <div class="display-3 fw-bolder">手册</div>
+                <p class="text-secondary m-0">PublicCMS 的在线手册</p>
+                <img src="${site.sitePath}assets/img/banner-guide-1.svg" class="position-absolute bottom-0" style="left: 8%;height: 69%;">
+                <img src="${site.sitePath}assets/img/banner-guide-2.svg" class="position-absolute bottom-0" style="right: 0%;height: 97%;">
+            </div>
+        </div>
+        <div class="container">
+            <div class="row gx-5 justify-content-between my-5">
+                <div class="col-md-3" style="border-right: 1px solid #ddd;">
+                    <div class="guide-side fs-7 pe-4">
+                        <@_includePlace path="/bf958d96-710f-4430-b0e6-3be398f0d155.html"/> <#-- 使用手册导航 -->
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="ps-4">
+                        <div class="mb-4 d-flex justify-content-between align-items-start">
+                            <div class="d-flex align-items-center me-4">
+                                <@_contentList modelId=content.modelId endPublishDate=content.publishDate orderField='publishDate' pageIndex=2 count=1>
+                                    <#if 2=page.pageIndex>
+                                        <#list page.list as a>
+                                <svg width="17" height="32" viewBox="0 0 17 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.148 16.296l14.42-14.574c.474-.478.573-1.154.22-1.509-.35-.355-1.02-.256-1.492.221L.459 15.43a1.568 1.568 0 0 0-.218.272.915.915 0 0 0 .023 1.263L14.88 31.734a.901.901 0 0 0 .636.266.895.895 0 0 0 .832-.562.917.917 0 0 0-.196-.992L2.15 16.294v.002z" fill="#E6E6E6"/></svg>
+                                <a href="${a.url!}#content" class="d-flex flex-column align-items-start ms-3">
+                                    <span class="fs-6p">上一篇</span>
+                                    <span class="text-secondary text-opacity-50 fs-7">${a.title!}</span>
+                                </a>
+                                        </#list>
+                                    </#if>
+                                </@_contentList>
+                            </div>
+                            <div class="d-flex align-items-center ms-4">
+                                <@_contentList modelId=content.modelId startPublishDate=content.publishDate orderField='publishDate' orderType='asc' pageIndex=1 count=1><#list page.list as a>
+                                <a href="${a.url!}#content" class="d-flex flex-column align-items-end text-end me-3">
+                                    <span class="fs-6p">下一篇</span>
+                                    <span class="text-secondary text-opacity-50 fs-7">${a.title}</span>
+                                </a>
+                                <svg width="17" height="32" viewBox="0 0 17 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15.625 17.19L1.205 2.614C.73 2.138.632 1.462.985 1.107c.351-.355 1.02-.257 1.493.22l14.836 14.997c.085.084.158.176.218.271a.915.915 0 0 1-.023 1.264L2.894 32.627a.898.898 0 0 1-.981.197.9.9 0 0 1-.488-.493.919.919 0 0 1 .196-.991l14.003-14.152.001.001z" fill="#E6E6E6"/></svg>
+                                </#list></@_contentList>
+                            </div>
+                        </div>
+                        <div class="fade show active" id="content">
+							<h1>${content.title}</h1>
+                            ${text?no_esc!}
+                        </div>
+                        <#if page?? && page.totalCount gt 1>
+                            <ul class="pagination mt-5">
+                                <li class="page-item">
+                                    <a class="page-link" href="${getPage(url,page.prePage)}#content" aria-label="Previous">
+                                        <span aria-hidden="true">«</span>
+                                    </a>
+                                </li>
+                                <#list 1..page.totalCount as a>
+                                    <li class="page-item<#if a=page.pageIndex> active</#if>"><a class="page-link" href="${getPage(url,a)}#content">${a}</a></li>
+                                </#list>
+                                <li class="page-item">
+                                    <a class="page-link" href="${getPage(url,page.nextPage)}#content" aria-label="Next">
+                                        <span aria-hidden="true">»</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </#if>
+                        <div class="my-4 py-4 d-flex justify-content-between align-items-start">
+                            <div class="d-flex align-items-center me-4">
+                                <@_contentList modelId=content.modelId endPublishDate=content.publishDate orderField='publishDate' pageIndex=2 count=1>
+                                    <#if 2=page.pageIndex>
+                                        <#list page.list as a>
+                                <svg width="17" height="32" viewBox="0 0 17 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.148 16.296l14.42-14.574c.474-.478.573-1.154.22-1.509-.35-.355-1.02-.256-1.492.221L.459 15.43a1.568 1.568 0 0 0-.218.272.915.915 0 0 0 .023 1.263L14.88 31.734a.901.901 0 0 0 .636.266.895.895 0 0 0 .832-.562.917.917 0 0 0-.196-.992L2.15 16.294v.002z" fill="#E6E6E6"/></svg>
+                                <a href="${a.url!}#content" class="d-flex flex-column align-items-start ms-3">
+                                    <span class="fs-6p">上一篇</span>
+                                    <span class="text-secondary text-opacity-50 fs-7">${a.title!}</span>
+                                </a>
+                                        </#list>
+                                    </#if>
+                                </@_contentList>
+                            </div>
+                            <div class="d-flex align-items-center ms-4">
+                                <@_contentList modelId=content.modelId startPublishDate=content.publishDate orderField='publishDate' orderType='asc' pageIndex=1 count=1><#list page.list as a>
+                                <a href="${a.url!}#content" class="d-flex flex-column align-items-end text-end me-3">
+                                    <span class="fs-6p">下一篇</span>
+                                    <span class="text-secondary text-opacity-50 fs-7">${a.title}</span>
+                                </a>
+                                <svg width="17" height="32" viewBox="0 0 17 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15.625 17.19L1.205 2.614C.73 2.138.632 1.462.985 1.107c.351-.355 1.02-.257 1.493.22l14.836 14.997c.085.084.158.176.218.271a.915.915 0 0 1-.023 1.264L2.894 32.627a.898.898 0 0 1-.981.197.9.9 0 0 1-.488-.493.919.919 0 0 1 .196-.991l14.003-14.152.001.001z" fill="#E6E6E6"/></svg>
+                                </#list></@_contentList>
+                            </div>
+                        </div>
+						<p class="text-center">
+							<a href="javascript:void(0)" class="download btn btn-primary rounded-pill"><img src="${site.sitePath}assets/img/icon-download.svg" class="me-2"> 保存页面</a>
+						</p>
+                        <@include path="/ftl/comment.ftl"/><#-- 评论 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <@_includePlace path="/7f8bacb5-30ca-4641-b66f-987d447b1a85.html"/> <#-- footer -->
+        <script src="${site.sitePath!}assets/ueditor/ueditor.parse.min.js"></script>
+		<script src="${site.sitePath}assets/js/html2canvas.min.js"></script>
+		<script src="${site.sitePath}assets/js/jspdf.umd.min.js"></script>
+		<script>
+			$('a.download').click(function(){
+				const { jsPDF } = window.jspdf;
+				html2canvas(document.body,{allowTaint:true,useCORS:true}).then(function (canvas) {
+					var contentWidth = canvas.width;
+					var contentHeight = canvas.height;
+					var pageHeight = contentWidth / 592.28 * 841.89;
+					var leftHeight = contentHeight;
+					var position = 0;
+					var imgWidth = 595.28;
+					var imgHeight = 592.28 / contentWidth * contentHeight;
+					var pageData = canvas.toDataURL('image/jpeg', 1.0)
+					var PDF = new jsPDF('', 'pt', 'a4')
+					if (leftHeight < pageHeight) {
+						PDF.addImage(pageData, 'JPEG', 0, 0, imgWidth, imgHeight)
+					} else {
+						while (leftHeight > 0) {
+							PDF.addImage(pageData, 'JPEG', 0, position, imgWidth, imgHeight)
+							leftHeight -= pageHeight
+							position -= 841.89
+							if (leftHeight > 0) {
+								PDF.addPage()
+							}
+						}
+					}
+					PDF.save(document.title + '.pdf');
+				});
+				return false;
+			});
+		</script>
+        <script>
+            $('.list-group a.list-group-item[data-id=${content.id}]').addClass('active');
+            $.getJSON('${site.dynamicPath!}api/contentClick?id=${content.id}', function(data){});
+            uParse('#content',{rootPath: '${site.sitePath!}assets/ueditor'});
+        </script>
+    </body>
+</html>

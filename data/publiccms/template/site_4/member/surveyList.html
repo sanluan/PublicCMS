@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <title>${metadata.alias!}</title>
+        <@_includePlace path="/8ddab9ba-a8aa-4745-86c6-66bf1c2c976c.html"/> <#-- header -->
+    </head>
+    <body>
+        <@_includePlace path="/c32a4f4a-ff5d-49cf-bb59-5d9784539174.html"/> <#-- 导航 -->
+
+        <div class="banner-l3 position-relative d-flex align-items-center justify-content-center" style="background:#22407c url(${site.sitePath}assets/img/banner-l3-bg-1.png) 50% 50% no-repeat;">
+            <div class="container text-center position-relative py-3 py-md-4 text-white">
+                <div class="breadcrumbs fs-7 text-white d-inline-flex align-items-center text-opacity-50">
+                    <a href="${site.sitePath}">首页</a>
+                    &gt; <a href="${site.dynamicPath}surveyList.html" data-id="survey">调查问卷</a>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <h3>调查问卷列表</h3>
+    <#macro message code>${springMacroRequestContext.getMessage(code)}</#macro>
+    <@_surveyList pageIndex=pageIndex pageSize=10>
+            <ul>
+        <#list page.list as a>
+                <li>
+                    <h3>[<@message 'page.survey.type.'+a.surveyType/>] <a href="survey.html?id=${a.id}">${a.title!}</a></h3>
+                    <p>${a.votes!} 人参与,截止日期:${(a.endDate)!}</p>
+                    <p>${a.description!}</p>
+                </li>
+        </#list>
+            </ul>
+            <ul class="pagination mt-5">
+                <#assign
+                    url=site.dynamicPath+'surveyList.html'
+                    start=1
+                    end=page.totalPage
+                />
+                <#if (page.pageIndex-5) gt start>
+                    <#assign start=page.pageIndex-4/>
+                </#if>
+                <#if (page.pageIndex+5) lt end>
+                    <#assign end=page.pageIndex+4/>
+                </#if>
+                <li class="page-item">
+                    <a class="page-link" href="${getPage(url,page.prePage,'pageIndex')}" aria-label="Previous">
+                        <span aria-hidden="true">«</span>
+                    </a>
+                </li>
+                <#if start gt 1>
+                    <a href="${url}">1</a> ...
+                </#if>
+                <#list start..end as n>
+                    <#if n=page.pageIndex>
+                        ${n}
+                    <#else>
+                        <a href="${getPage(url,n,'pageIndex')}">${n}</a>
+                    </#if>
+                </#list>
+                <#if end lt page.totalPage>
+                    ... <a href="${getPage(url,page.totalPage,'pageIndex')}">${page.totalPage}</a>
+                </#if>
+                <#if !page.lastPage>
+                    <a href="${getPage(url,page.nextPage,'pageIndex')}">下一页</a>
+                <#else>
+                    <span>下一页</span>
+                </#if>
+            </div>
+    </@_surveyList>
+        </div>
+        <@_includePlace path="/7f8bacb5-30ca-4641-b66f-987d447b1a85.html"/> <#-- footer -->
+    </body>
+</html>

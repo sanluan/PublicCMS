@@ -1,0 +1,18 @@
+<@_surveyList endStartDate=.now  pageSize=5>
+    <#if page.totalCount gt 0>
+	<header class="tab-header fs-5">
+		<a href="${site.dynamicPath}surveyList.html"><b class="pb-2">最新问卷调查</b></a>
+	</header>
+	<div class="list-group list-group-flush article-list-side py-2 fs-7 mb-4">
+		<#list page.list as a>
+		<div class="list-group-item">
+			<p class="text-body"><a href="${site.dynamicPath}survey.html?id=${a.id}">${a.title!}</a></p>
+			<p class="fs-7 text-secondary">${a.description!}</p>
+			<footer class="fs-8 text-secondary text-opacity-50 d-flex align-items-center">
+				<span class="me-4 d-inline-flex align-items-center"><#if .now gt a.endDate>已截止<#else>截止:${(a.endDate)?string('yyyy-MM-dd')}</#if></span>
+			</footer>
+		</div>
+		</#list>
+	</div>
+    </#if>
+</@_surveyList>

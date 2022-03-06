@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+        <title>${(attribute.title)!category.name}</title>
+        <meta name="keywords" content="${(attribute.keywords)!}"/>
+        <meta name="description" content="${(attribute.description)!}"/>
+        <@_includePlace path="/8ddab9ba-a8aa-4745-86c6-66bf1c2c976c.html"/> <#-- header -->
+    </head>
+    <body>
+        <@_includePlace path="/c32a4f4a-ff5d-49cf-bb59-5d9784539174.html"/> <#-- 导航 -->
+        <div class="banner-l2 position-relative d-flex align-items-center justify-content-center">
+            <div class="container text-center position-relative py-3 py-md-4">
+                <div class="display-3 fw-bolder">${category.name}</div>
+                <p class="text-secondary m-0">${(attribute.description)!}</p>
+                <#if category.parentId?has_content>
+                    <#assign attribute=getCategoryAttribute(category.parentId)/>
+                </#if>
+                <img src="${getAbsoluteUrl(site.sitePath,attribute.left_image)!}" class="position-absolute bottom-0" style="left: 8%;height: ${attribute.left_height!}%;">
+                <img src="${getAbsoluteUrl(site.sitePath,attribute.right_image)!}" class="position-absolute bottom-0" style="right: 0%;height: ${attribute.right_height!}%;">
+            </div>
+        </div>
+
+        <@import path="/ftl/tools.ftl" namespace="t"/><#-- 工具 -->
+        <div class="container">
+            <div class="row">
+                <div class="col-12 d-flex justify-content-center my-5">
+                    <ul class="nav nav-pills nav-l2">
+                    <@_category id=category.parentId!category.id>
+                        <li class="nav-item">
+                            <a class="nav-link<#if object.id=category.id> active</#if>" aria-current="page" href="${object.url!}">全部</a>
+                        </li>
+                    </@_category>
+                    <@_categoryList parentId=category.parentId!category.id>
+                        <#list page.list as a>
+                        <li class="nav-item">
+                            <a class="nav-link<#if a.id=category.id> active</#if>" href="${a.url}">${a.name!}</a>
+                        </li>
+                        </#list>
+                    </@_categoryList>
+                    </ul>
+                </div>
+            </div>
+        <@_contentList categoryId=category.id hasCover=true containChild=category.containChild pageIndex=pageIndex pageSize=category.pageSize>
+            <div class="row row-cols-2 row-cols-md-3 gx-3 gx-md-5 gy-1 gy-md-4 case-list">
+                <#list page.list as a>
+                <a class="col" href="${a.url}" title="${a.title}">
+                    <figure class="d-flex justify-content-center align-items-center">
+                        <img src="${a.cover!}" alt="${a.title}">
+                    </figure>
+                </a>
+                </#list>
+            </div>
+			
+            <#if 1=pageIndex>
+				<#if  !page.lastPage>
+            <div class="text-center position-relative mt-5">
+                <div class="w-100 position-absolute top-50" style="border-bottom: 1px dashed #ddd;"></div>
+                <a href="${getPage(url,page.nextPage)}" class="bg-white px-3 pt-3 position-relative d-inline-block text-center lh-1">
+                    查看更多<br/><svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="16" height="16"><path d="M510.92 801.245a22.6 22.6 0 0 1-12.623-3.847L73.47 511.923c-10.37-6.972-13.13-21.032-6.158-31.406 6.972-10.375 21.032-13.135 31.406-6.163l412.2 276.993 412.198-276.993c10.37-6.972 24.43-4.217 31.407 6.163 6.971 10.374 4.212 24.434-6.162 31.406L523.536 797.398a22.577 22.577 0 0 1-12.617 3.847zm0-253.84c-4.404 0-8.81-1.283-12.623-3.846L73.47 258.082c-10.37-6.972-13.13-21.031-6.158-31.406 6.972-10.38 21.032-13.133 31.406-6.162l412.2 276.993 412.198-276.993c10.37-6.977 24.43-4.212 31.407 6.162 6.971 10.375 4.212 24.434-6.162 31.406L523.536 543.559a22.593 22.593 0 0 1-12.617 3.846zm0 0" fill="#ccc"/></svg>
+                </a>
+            </div>
+				</#if>
+            <#else>
+            <ul class="pagination mt-5">
+                <li class="page-item">
+                    <a class="page-link" href="${getPage(url,page.prePage)}" aria-label="Previous">
+                        <span aria-hidden="true">«</span>
+                    </a>
+                </li>
+                <#assign start=1/>
+                <#if (page.pageIndex-5) gt start>
+                <#assign start=page.pageIndex-4/>
+                </#if>
+                <#assign end=page.totalPage/>
+                <#if (page.pageIndex+5) lt end>
+                <#assign end=page.pageIndex+4/>
+                </#if>
+                <#list start..end as a>
+                <li class="page-item<#if a=page.pageIndex> active</#if>"><a class="page-link" href="${getPage(url,a)}">${a}</a></li>
+                </#list>
+                <li class="page-item">
+                    <a class="page-link" href="${getPage(url,page.nextPage)}" aria-label="Next">
+                        <span aria-hidden="true">»</span>
+                    </a>
+                </li>
+            </ul>
+            </#if>
+        </@_contentList>
+        </div>
+        <script>
+            var itemString="itemType=category&itemId=${category.id}";
+        </script>
+        <@_includePlace path="/7f8bacb5-30ca-4641-b66f-987d447b1a85.html"/> <#-- footer -->
+    </body>
+</html>

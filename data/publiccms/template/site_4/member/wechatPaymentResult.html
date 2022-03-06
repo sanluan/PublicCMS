@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <title>${(metadata.alias)!}</title>
+        <meta name="keywords" content="${(metadata.extendData.keywords)!}"/>
+        <meta name="description" content="${(metadata.extendData.description)!}"/>
+        <@_includePlace path="/8ddab9ba-a8aa-4745-86c6-66bf1c2c976c.html"/> <#-- header -->
+    </head>
+    <body>
+        <@_includePlace path="/c32a4f4a-ff5d-49cf-bb59-5d9784539174.html"/> <#-- 导航 -->
+
+        <div class="container">
+            <h3 class="text-center">${payment.description!}</h3>
+            <p class="text-center"><label>Amount:</label>${payment.amount!}</p>
+            <div class="text-center qr"></div>
+            <p class="text-center">WeChat scan and pay</p>
+            <p class="text-center"><a href="${returnUrl!site.dynamicPath!}">Return</a></p>
+        </div>
+
+        <@_includePlace path="/7f8bacb5-30ca-4641-b66f-987d447b1a85.html"/> <#-- footer -->
+        <script src="${site.dynamicPath!}resource/js/jquery.qrcode.min.js"></script>
+        <script>
+            $('.qr').qrcode({width: 200,height: 200,text: "${code_url!}"});
+        </script>
+    </body>
+</html>

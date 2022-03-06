@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <title>${(metadata.extendData.title)!} </title>
+        <meta name="keywords" content="${(metadata.extendData.keywords)!}"/>
+        <meta name="description" content="${(metadata.extendData.description)!}"/>
+        <@_includePlace path="/8ddab9ba-a8aa-4745-86c6-66bf1c2c976c.html"/> <#-- header -->
+    </head>
+    <body>
+        <@_includePlace path="/c32a4f4a-ff5d-49cf-bb59-5d9784539174.html"/> <#-- 导航 -->
+
+        <div id="index-header" class="position-relative">
+            <div class="container text-white">
+                <div class="row position-relative">
+                    <div class="col-lg-7 pt-4 pt-md-5 px-4 px-md-0 d-flex flex-column align-items-center align-items-lg-start animate__animated animate__fadeInLeft">
+                        <div class="col-9 col-md-12">
+                            <img src="${site.sitePath}assets/img/index-publiccms-logo.svg" class="img-fluid">
+                        </div>
+                        <div class="fs-64 fw-bolder lh-sm">
+                            更先进的内容管理系统
+                        </div>
+                        <div class="col-md-9 mt-2 mb-5">
+                            PublicCMS 是采用2022年主流技术开发的开源 Java CMS 产品，为您的网站建设提供强大驱动，也是企业级项目产品原型的良好选择。
+                        </div>
+                        <div>
+							<@_category code='admin'>
+                            <a href="${object.url}" target="_blank" class="d-inline-flex btn rounded-pill bg-white py-2 px-4 me-3 align-items-center">
+                                <img src="${site.sitePath}assets/img/icon-demo.svg" class="me-2"> 查看演示
+                            </a>
+							</@_category>
+							<@_category code="download">
+                            <a href="${object.url}" target="_blank" class="d-inline-flex btn btn-outline-light rounded-pill py-2 px-4 bg-transparent align-items-center">
+                                <img src="${site.sitePath}assets/img/icon-download.svg" class="me-2"> 下载试用
+                            </a>
+							</@_category>
+                        </div>
+                    </div>
+                    <div class="col-lg-5 py-4 py-md-2">
+                        <div class="row justify-content-center">
+                            <div class="col-8 col-md-6 col-lg-11">
+                                <div class="position-relative animate__animated animate__fadeInRight">
+                                    <img src="${site.sitePath}assets/img/index-header-img.svg" class="w-100">
+                                    <img src="${site.sitePath}assets/img/index-header-img-gear-1.svg" class="position-absolute animate__animated animate__rotateIn animate__infinite animate__slower animate__delay-1s" style="left:60.6%;top: 12.79%;width: 6.277%;">
+                                    <img src="${site.sitePath}assets/img/index-header-img-cloud.svg" class="position-absolute animate__animated animate__fadeInDown animate__infinite animate__slower" style="left:20.13%;top: 13.94%;width: 9.86%;">
+                                    <img src="${site.sitePath}assets/img/index-header-img-heart.svg" class="position-absolute animate__animated animate__heartBeat animate__infinite animate__slow animate__delay-2s" style="left:35.06%;top: 77.89%;width: 5.3%;">
+                                    <img src="${site.sitePath}assets/img/index-header-img-arm.svg" class="position-absolute animate__arm" style="left:35.86%;top: 44.73%;width: 24.675%;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container bg-white position-relative text-center p-5 rounded-3" id="index-intro">
+                <div class="mb-5 pb-3">
+                    <div class="fs-0 text-black fw-bold">产品优势</div>
+                    <p class="text-black-50">我们的产品具有强大的功能，以满足您的业务需求和项目。</p>
+                </div>
+                <div class="row g-5">
+                    <div class="col-md-4">
+                        <img src="${site.sitePath}assets/img/index-intro-1.svg">
+                        <h1 class="mt-4">高性能架构</h1>
+                        <p class="text-black-50 px-2 mt-3">轻松支撑千万数据、千万 PV，为海量数据访问提供低消耗、高性能、高可用的轻量级解决方案。</p>
+                    </div>
+                    <div class="col-md-4">
+                        <img src="${site.sitePath}assets/img/index-intro-2.svg">
+                        <h1 class="mt-4">完整可定制化</h1>
+                        <p class="text-black-50 px-2 mt-3">提供多维度扩展机制，全文搜索、自定义字段搜索，前台站点一切可见元素均可自定义维护。</p>
+                    </div>
+                    <div class="col-md-4">
+                        <img src="${site.sitePath}assets/img/index-intro-3.svg">
+                        <h1 class="mt-4">静态化服务</h1>
+                        <p class="text-black-50 px-2 mt-3">支持全站静态化，SSI，动态页面局部静态化，提高网站并发访问能力和 SEO友好性。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="index-case" class="container-fluid">
+            <div class="container text-center">
+				<@_category code="case">
+                <div class="mb-5 pb-2">
+                    <div class="fs-0 text-black fw-bold">应用案例</div>
+                    <p class="text-black-50">${(getCategoryAttribute(object.id).description)!}</p>
+                </div>                
+                    <@_contentList categoryId=object.id containChild=true hasCover=true pageSize=20>
+                <div class="row row-cols-2 row-cols-md-5 gx-4 gy-2 case-list">
+                    <#list page.list as a>
+                    <a class="col" href="${a.url}" title="${a.title!}">
+                        <figure class="d-flex justify-content-center align-items-center">
+                            <img src="${a.cover}" alt="${a.title}">
+                        </figure>
+                    </a>
+                    </#list>
+                </div>
+                    </@_contentList>
+                <div class="py-4">
+                    <a href="${object.url}" class="d-inline-flex align-items-center">查看更多案例 <img src="${site.sitePath}assets/img/icon-more.svg"></a>
+                </div>
+                </@_category>
+            </div>
+        </div>
+
+        <div id="index-pricing" class="container-fluid mt-5">
+            <div class="container text-center">
+                <div class="mb-5">
+                    <div class="fs-0 text-black fw-bold">价格与服务</div>
+                    <p class="text-black-50">V4.0(及后续版本)个人免费使用，企事业单位使用需要付费。</p>
+                </div>
+                
+                <@_category code='price'>
+                <div class="row gx-lg-5 mt-4 px-0 px-lg-5 mx-0 mx-lg-4 align-items-center">
+                    <div class="col-md-4">
+                        <div class="card card-pricing border-0 rounded-3 mx-0 mx-md-2 py-4 align-items-center">
+                            <div class="fs-1 fw-bolder">
+                                <img src="${site.sitePath}assets/img/icon-plan-lite.svg">
+                                <div>精简方案</div>
+                            </div>
+                            <ul class="p-0 my-3 fs-6p">
+                                <li class="my-1 my-lg-3">商业授权</li>
+                                <li class="my-1 my-lg-3">永久</li>
+                                <li class="my-1 my-lg-3 text-secondary">单个域名 / 局域网</li>
+                                <li class="my-1 my-lg-3">普票、专票、电子发票</li>
+                                <li class="my-1 my-lg-3 text-secondary">7天专家技术支持</li>
+                            </ul>
+                            <div class="price mb-4">
+								<b><span class="fs-4 me-1">&#165;</span><span>1980</span></b>
+                            </div>
+                            <a href="${object.url}" class="btn btn-primary w-50">查看详细方案 <img src="${site.sitePath}assets/img/icon-more-white.svg"></a>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card card-pricing card-pricing-c border-0 rounded-3 py-5 my-5 my-lg-0 align-items-center">
+                            <div class="fs-1 fw-bold">
+                                <img src="${site.sitePath}assets/img/icon-plan-premium.svg">
+                                <div style="color: #E1C1A8;">高级方案</div>
+                            </div>
+                            <ul class="p-0 my-3 fs-6p">
+                                <li class="my-1 my-lg-3">商业授权</li>
+                                <li class="my-1 my-lg-3">永久</li>
+                                <li class="my-1 my-lg-3">不限域名</li>
+                                <li class="my-1 my-lg-3">普票、专票、电子发票</li>
+                                <li class="my-1 my-lg-3">30天专家技术支持</li>
+                            </ul>
+                            <div class="price mb-4">
+								<b><span class="fs-4 me-1">&#165;</span><span>7580</span></b>
+                            </div>
+                            <a href="${object.url}" class="btn btn-white w-50">查看详细方案 <img src="${site.sitePath}assets/img/icon-more.svg"></a>
+                            <div class="tag position-absolute">
+                                多数选择
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card card-pricing border-0 rounded-3 mx-0 mx-md-2 py-4 align-items-center">
+                            <div class="fs-1 fw-bold">
+                                <img src="${site.sitePath}assets/img/icon-plan-pro.svg">
+                                <div>持续订阅</div>
+                            </div>
+                            <ul class="p-0 my-3 fs-6p">
+                                <li class="my-1 my-lg-3">商业授权</li>
+                                <li class="my-1 my-lg-3 text-secondary">3年</li>
+                                <li class="my-1 my-lg-3">不限域名</li>
+                                <li class="my-1 my-lg-3">普票、专票、电子发票</li>
+                                <li class="my-1 my-lg-3">30天专家技术支持</li>
+                            </ul>
+                            <div class="price mb-4">
+                                <b><span class="fs-4 me-1">&#165;</span><span>1980</span></b>
+                            </div>
+                            <a href="${object.url}" class="btn btn-primary w-50">查看详细方案 <img src="${site.sitePath}assets/img/icon-more-white.svg"></a>
+                        </div>
+                    </div>
+                </div>
+                </@_category>
+				
+				<div class="btn-group my-4 pt-4" role="group" aria-label="Basic radio toggle button group">
+                    <input type="radio" class="btn-check" name="btnradio" id="price-basic" value="1980,7580,1980" autocomplete="off" checked>
+                    <label class="btn btn-outline-primary btn-price-tab" for="price-basic">
+                        <span class="fs-5 text-nowrap">基础价格</span>
+                        <div class="fs-8">一次性采购1-4套</div>
+                    </label>
+
+                    <input type="radio" class="btn-check" name="btnradio" id="price-off-20" value="1584,6064,1584" autocomplete="off">
+                    <label class="btn btn-outline-primary btn-price-tab" for="price-off-20">
+                        <span class="fs-5 text-nowrap">8折价格</span>
+                        <div class="fs-8">一次性采购5-9套<br>/2年内累计采购5套及以上</div>
+                    </label>
+
+                    <input type="radio" class="btn-check" name="btnradio" id="price-off-30" value="1386,5306,1386" autocomplete="off">
+                    <label class="btn btn-outline-primary btn-price-tab" for="price-off-30">
+                        <span class="fs-5 text-nowrap">7折价格</span>
+                        <div class="fs-8">一次性采购10套及以上</div>
+                    </label>
+                </div>
+
+                <div class="row justify-content-center my-5">
+                    <div class="col-10 col-md-8 fs-8 text-body text-opacity-50">
+                        <p class="mb-2">授权升级更高版本，之前版本金额可以全额抵扣。</p>
+                        <p class="mb-2">单域名商业授权为顶级域名，如 publiccms.com 授权，也可以在其二级域名下使用。</p>
+                        <p class="mb-2">授权单位为网站主办者，单域名商业授权、不限域名商业授权单位可以将自己购买的授权授予下属不具备法人资格的分支机构，如分公司，子部门使用，无权将自己购买的授权授予子公司及其他单位使用。</p>
+                        <p class="mb-2">所有用户均可通过社区、QQ交流群等方式获得长期的免费技术支持。</p>
+                    </div>
+                </div>
+
+                <div class="row gx-3 justify-content-center mt-5 px-0 px-md-5 mx-0 mx-md-5">
+                    <div class="col-md-4">
+                        <div class="card border-0">
+                            <div>
+                                <img src="${site.sitePath}assets/img/index-service-1.svg" class="img-fluid">
+                            </div>
+                            <div class="card-body px-0">
+                                <h3>模板制作(可包含切图)</h3>
+                                <div class="text-secondary fs-6 mb-1">15000元起(20页面左右)</div>
+                                <p class="text-body text-opacity-25 fs-8">含3%税率<br/>普票、专票、电子发票</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card border-0">
+                            <div>
+                                <img src="${site.sitePath}assets/img/index-service-2.svg" class="img-fluid">
+                            </div>
+                            <div class="card-body px-0">
+                                <h3>一对一远程技术支持</h3>
+                                <div class="text-secondary fs-6 mb-1">2000元/年(不超过两位工程师)<br/>1000元/年/位工程师</div>
+                                <p class="text-body text-opacity-25 fs-8">含3%税率<br/>普票、专票、电子发票</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card border-0">
+                            <div>
+                                <img src="${site.sitePath}assets/img/index-service-3.svg" class="img-fluid">
+                            </div>
+                            <div class="card-body px-0">
+                                <h3>等保(二级、三级)技术支持</h3>
+                                <div class="text-secondary fs-6 mb-1">5000元/次</div>
+                                <p class="text-body text-opacity-25 fs-8">含3%税率<br/>普票、专票、电子发票</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-11 col-md-9 mt-3">
+                        <p class="fs-8 text-body text-opacity-50">为避免与使用本产品的其他技术团队产生直接竞争，我们只提供网站制作过程中的模板制作（可包含切图）部分服务，不承接含有二次开发、网站设计的项目。如果您没有设计或技术团队，或以上报价超出您的预算，请选择其他服务商提供网站制作服务。</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <@_includePlace path="/7f8bacb5-30ca-4641-b66f-987d447b1a85.html"/> <#-- footer -->
+		<@_includePlace path="/ff78be16-6f75-42b3-b115-d9d9cf578f1c.html"/> <#-- 首页置灰控制 -->
+		<script>
+			$('input[name=btnradio]').change(function(){
+				var prices=$(this).val().split(',');
+				$('.price').each(function(index,value){
+					$({ counter: parseInt($('span:eq(1)',$(value)).text()) }).animate({ counter: prices[index] }, {
+					speed: 2000,
+					easing: 'swing',
+					step: function (now) {
+					  $('span:eq(1)',$(value)).text(Math.ceil(now));
+					}
+				  });
+				});
+			});
+		</script>
+    </body>
+</html>
