@@ -1,1 +1,0 @@
-<#if callback?has_content&&!callback?contains('(')>${callback}({<@_version>cms:"${cms}"</@_version>})<#else>{<@_version>cms:"${cms}"</@_version>}</#if>
