@@ -1,5 +1,7 @@
 package config.spring;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +9,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
@@ -110,5 +115,16 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(csrfInterceptor());
         registry.addInterceptor(webInterceptor);
         registry.addInterceptor(siteInterceptor);
+    }
+
+    @Override
+    public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
+        for (HttpMessageConverter<?> converter : converters) {
+            if (converter instanceof MappingJackson2HttpMessageConverter) {
+                List<MediaType> list = new ArrayList<>();
+                list.add(MediaType.TEXT_PLAIN);
+                ((MappingJackson2HttpMessageConverter) converter).setSupportedMediaTypes(list);
+            }
+        }
     }
 }

@@ -1,8 +1,14 @@
 package config.spring;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -23,6 +29,21 @@ import com.publiccms.common.interceptor.SiteInterceptor;
 public class ApiConfig implements WebMvcConfigurer {
     @Autowired
     private SiteInterceptor siteInterceptor;
+
+    /**
+     * json、Jsonp消息转换适配器，用于支持RequestBody、ResponseBody
+     *
+     * @return json、jsonp message converter , support for
+     *         requestbody、responsebody
+     */
+    @Bean
+    public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter() {
+        MappingJackson2HttpMessageConverter bean = new MappingJackson2HttpMessageConverter();
+        List<MediaType> list = new ArrayList<>();
+        list.add(MediaType.TEXT_PLAIN);
+        bean.setSupportedMediaTypes(list);
+        return bean;
+    }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {

@@ -3,9 +3,7 @@ package config.spring;
 import java.beans.PropertyVetoException;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -29,8 +27,6 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
-import org.springframework.http.MediaType;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -273,21 +269,6 @@ public class ApplicationConfig {
         bean.setDefaultEncoding(CommonConstants.DEFAULT_CHARSET_NAME);
         bean.setMaxUploadSize(Long.parseLong(env.getProperty("cms.multipart.maxUploadSize")) * 1024 * 1024);
         bean.setUploadTempDir(new FileSystemResource(getDirPath("/tmp/")));
-        return bean;
-    }
-
-    /**
-     * json、Jsonp消息转换适配器，用于支持RequestBody、ResponseBody
-     *
-     * @return json、jsonp message converter , support for
-     *         requestbody、responsebody
-     */
-    @Bean
-    public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter() {
-        MappingJackson2HttpMessageConverter bean = new MappingJackson2HttpMessageConverter();
-        List<MediaType> list = new ArrayList<>();
-        list.add(MediaType.TEXT_PLAIN);
-        bean.setSupportedMediaTypes(list);
         return bean;
     }
 
