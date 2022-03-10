@@ -150,3 +150,8 @@ function commandParameter(command,parametersName){
         }
     }
 }
+$(document).keydown(function(e){
+    if(e.keyCode==27 && $.pdialog.getCurrent()){
+        $.pdialog.closeCurrent();
+    }
+});
