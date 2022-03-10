@@ -75,7 +75,7 @@ echarts.init(document.getElementById('todayVisit')).setOption({
 <@_visitDayList startVisitDate=(.now?long-2*86400000)?number_to_date endVisitDate=(.now?long-86400000)?number_to_date hourAnalytics=true>
 echarts.init(document.getElementById('yestodayVisit')).setOption({
     title: {
-        text: '${(.now?long-86400000)?number_to_date?date} <@t.page 'visit.hisotry'/>',
+        text: '${(.now?long-86400000)?number_to_date?date} <@t.page 'visit.history'/>',
         x:'center'
     },
     tooltip : {
@@ -128,7 +128,7 @@ echarts.init(document.getElementById('yestodayVisit')).setOption({
 <@_visitDayList startVisitDate=(.now?long-30*86400000)?number_to_date>
 echarts.init(document.getElementById('allVisit')).setOption({
     title: {
-        text: '<@t.page 'visit.hisotry'/>',
+        text: '<@t.page 'visit.history'/>',
         x:'center'
     },
     tooltip : {

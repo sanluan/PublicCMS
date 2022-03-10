@@ -65,11 +65,11 @@ header .nav .selected ul{display:block;}
 .tabsPage .tabsPageHeaderMargin{margin:0 60px 0 30px;}
 .tabsPage .tabsPageHeader ul{display:block;width:10000px;z-index:1;position:absolute;}
 .tabsPage .tabsPageHeader li{float:left;display:block;height:100%;position:relative;}
-.tabsPage .tabsPageHeader li a{font-size:12px;display:inline-block;max-width:112px;padding:0 12px;line-height:35px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.tabsPage .tabsPageHeader li a{font-size:12px;display:inline-block;max-width:112px;padding:0 8px;line-height:35px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .tabsPage .tabsPageHeader li a>i{margin-right:5px;}
 .tabsPage .tabsPageHeader li a:hover{text-decoration:none;}
 .tabsPage .tabsPageHeader li.selected a, .tabsPage .tabsPageHeader li:hover a{font-weight:400;}
-.tabsPage .tabsPageHeader li .close{padding:0;padding-right:10px;opacity:0.4;}
+.tabsPage .tabsPageHeader li .close{padding:0;padding-right:5px;opacity:0.4;}
 .tabsPage .tabsPageHeader li:hover .close,.tabsPage .tabsPageHeader li.selected .close{opacity:1;}
 .tabsPage .tabsMove{height:100%;position:absolute;top:0;right:0;z-index:2;}
 .tabsPage .tabsLeft, .tabsPage .tabsRight, .tabsPage .tabsMore{text-decoration:none;display:block;overflow:hidden;width:30px;text-align:center;height:100%;line-height:35px;position:absolute;z-index:2;}
@@ -152,9 +152,8 @@ header .nav .selected ul{display:block;}
 .grid .gridHeader th.order,.grid .gridHeader th.asc,.grid .gridHeader th.desc{cursor:pointer;position:relative;}
 .grid .gridHeader th.asc:before,.grid .gridHeader th.desc:before,.grid .gridHeader th.order:before{position:absolute;right:0px;top:50%;margin-top:-13px;}
 .grid .gridTbody td { border-right:solid 1px #ededed;overflow:hidden;padding:4px 3px;border-bottom:solid 1px #ededed;vertical-align:middle;line-height:26px;}
-.grid .gridTbody td div { display:block;overflow:hidden;white-space:nowrap;text-overflow: ellipsis;line-height:26px;}
+.grid .gridTbody td div { display:block;line-height:26px;}
 .grid .gridTbody td.wrap div{white-space:normal;word-break: break-all;}
-.grid .gridTbody td div a{line-height:26px;}
 .grid .gridTbody td div a:hover{text-decoration:underline;}
 .grid .gridCol { width:100%;display:block;overflow:hidden;height:26px;line-height:26px;white-space:nowrap;}
 .grid .gridTbody .selected td { border-bottom-style:dotted;border-bottom-width:1px;}
@@ -228,13 +227,13 @@ a.button,button.button{border-width:1px;border-style:solid;-moz-box-shadow: 0px 
 #leftside{position:absolute;top:0;left:0;height:100%;}
 #sidebar{position:absolute;left:0px;z-index:20;display:block;top:0;bottom:0;width:202px;}
 #sidebar #menu{overflow:auto;}
-#sidebar_s{display:none;width:14px;line-height:40px;height:100%;position:absolute;cursor:pointer;top:0;left:0;z-index:21;text-align:center;}
+#sidebar_s{display:none;width:18px;line-height:40px;height:100%;position:absolute;cursor:pointer;top:0;left:0;z-index:21;text-align:center;}
 #splitBar{display:block;overflow:hidden;width:2px;cursor:col-resize;position:absolute;top:70px;left:200px;z-index:20;}
 #splitBarProxy{display:none;overflow:hidden;width:2px;border-style:solid;border-width:1px;cursor:col-resize;position:absolute;left:200px;z-index:20;}
 #splitBar,#splitBarProxy{top:60px;}
 
 .langList{position:absolute;right:0px;}
-.langList li{float:right;padding:0px 10px;}
+.langList li{float:right;padding:0px 8px;}
 .langList a,.langList a:hover,.langList li.current-lang a{text-decoration:none;}
 .langList a img{height:18px;position:relative;top:5px;border-radius:50%;margin-right:5px;}
 

@@ -42,7 +42,7 @@
         <tbody>
             <#list page.list as a>
             <tr>
-                <td><a href="visit/history.html?startCreateDate=${a.id.visitDate!}" target="navTab" rel="visit/history" title="<@t.page 'visit.hisotry'/>" icon="<i class='icon-bolt icon-large'></i>">${a.id.visitDate?date}</a></td>
+                <td><a href="visit/history.html?startCreateDate=${a.id.visitDate!}" target="navTab" rel="visit/history" title="<@t.page 'visit.history'/>" icon="<i class='icon-bolt icon-large'></i>">${a.id.visitDate?date}</a></td>
                 <td>
                     <div class="box">
                     <a href="${a.url}" target="_blank">${a.url!}</a>

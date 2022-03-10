@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>Comment - ${content.title}</title>
     <meta name="keywords" content="<#list getKeywords(content.title) as a>${a}<#sep>,</#list>"/>
-    <meta name="description" content="${content.description}"/>
+    <meta name="description" content="${content.description!}"/>
     <style type="text/css">
         .right{float:right;}
         .gray{color:gray;}
