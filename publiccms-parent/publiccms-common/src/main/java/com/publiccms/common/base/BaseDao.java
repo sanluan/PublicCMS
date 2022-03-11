@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.concurrent.CompletionStage;
 import java.util.function.Function;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.analysis.Analyzer;
@@ -16,7 +18,6 @@ import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.search.highlight.Highlighter;
 import org.apache.lucene.search.highlight.QueryScorer;
 import org.apache.lucene.search.highlight.SimpleHTMLFormatter;
-import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -41,23 +42,23 @@ import com.publiccms.common.tools.IdWorker;
 
 /**
  * DAO基类
- * 
+ *
  * Base DAO
- * 
+ *
  * @param <E>
- * 
+ *
  */
 public abstract class BaseDao<E> {
     protected final Log log = LogFactory.getLog(getClass());
     /**
      * 倒序
-     * 
+     *
      * order type desc
      */
     public final static String ORDERTYPE_DESC = "desc";
     /**
      * 顺序
-     * 
+     *
      * order type desc
      */
     public final static String ORDERTYPE_ASC = "asc";
@@ -65,7 +66,7 @@ public abstract class BaseDao<E> {
 
     /**
      * 查询处理器
-     * 
+     *
      * @param hql
      * @return queryhandler
      */
@@ -75,7 +76,7 @@ public abstract class BaseDao<E> {
 
     /**
      * 查询处理器
-     * 
+     *
      * @return queryhandler
      */
     public static QueryHandler getQueryHandler() {
@@ -84,7 +85,7 @@ public abstract class BaseDao<E> {
 
     /**
      * Like查询
-     * 
+     *
      * @param var
      * @return like query
      */
@@ -94,7 +95,7 @@ public abstract class BaseDao<E> {
 
     /**
      * 右Like查询
-     * 
+     *
      * @param var
      * @return right like query
      */
@@ -104,7 +105,7 @@ public abstract class BaseDao<E> {
 
     /**
      * 获取实体
-     * 
+     *
      * @param id
      * @return entity
      */
@@ -118,7 +119,7 @@ public abstract class BaseDao<E> {
 
     /**
      * 获取实体
-     * 
+     *
      * @param id
      * @param primaryKeyName
      * @return entity
@@ -135,7 +136,7 @@ public abstract class BaseDao<E> {
 
     /**
      * 获取实体集合
-     * 
+     *
      * @param ids
      * @return entity list
      */
@@ -145,7 +146,7 @@ public abstract class BaseDao<E> {
 
     /**
      * 获取实体集合
-     * 
+     *
      * @param ids
      * @param primaryKeyName
      * @return entity list
@@ -162,7 +163,7 @@ public abstract class BaseDao<E> {
 
     /**
      * 保存
-     * 
+     *
      * @param entity
      * @return id
      */
@@ -172,11 +173,11 @@ public abstract class BaseDao<E> {
 
     /**
      * 删除
-     * 
+     *
      * Delete
-     * 
+     *
      * @param entity
-     * 
+     *
      */
     public void delete(E entity) {
         if (null != entity) {
@@ -186,9 +187,9 @@ public abstract class BaseDao<E> {
 
     /**
      * 删除
-     * 
+     *
      * Delete
-     * 
+     *
      * @param id
      */
     public void delete(Serializable id) {
@@ -200,7 +201,7 @@ public abstract class BaseDao<E> {
 
     /**
      * 获取实体
-     * 
+     *
      * @param queryHandler
      * @return entity
      */
@@ -216,7 +217,7 @@ public abstract class BaseDao<E> {
 
     /**
      * 更新
-     * 
+     *
      * @param queryHandler
      * @return number of data affected
      */
@@ -228,7 +229,7 @@ public abstract class BaseDao<E> {
 
     /**
      * 刪除
-     * 
+     *
      * @param queryHandler
      * @return number of data deleted
      */
@@ -238,7 +239,7 @@ public abstract class BaseDao<E> {
 
     /**
      * 获取列表
-     * 
+     *
      * @param <T>
      * @param query
      * @param queryHandler
@@ -248,14 +249,14 @@ public abstract class BaseDao<E> {
         queryHandler.initQuery(query);
         try {
             return query.list();
-        } catch (ObjectNotFoundException e) {
+        } catch (EntityNotFoundException e) {
             return query.setCacheable(false).list();
         }
     }
 
     /**
      * 获取列表
-     * 
+     *
      * @param queryHandler
      * @return results list
      */
@@ -266,7 +267,7 @@ public abstract class BaseDao<E> {
 
     /**
      * 获取列表
-     * 
+     *
      * @param queryHandler
      * @return results list
      */

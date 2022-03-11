@@ -35,6 +35,7 @@ function siteDefaultConfig${id!}(type){
 <form method="post" autocomplete="off" action="sysSite/save?callbackType=closeCurrent&navTabId=sysSite/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input name="id" type="hidden" value="${id!}" />
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <input type="hidden" name="encoding" value="sha512"/>
     <div class="formBar">
         <ul>
             <li><button type="submit" class="buttonActive"><@t.page 'button.save'/></button></li>
@@ -119,7 +120,7 @@ function siteDefaultConfig${id!}(type){
                 <dl class="nowrap">
                     <dt><@t.page 'password'/>:</dt>
                     <dd>
-                        <input class="required" name="password" type="password" maxlength="255" size="20" value=""/>
+                        <input class="required" name="password" type="password" escape="true" maxlength="255" size="20" value=""/>
                     </dd>
                 </dl>
             </fieldset>

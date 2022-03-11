@@ -226,6 +226,7 @@
                         <#else>
                             <#list 0..dictionary.childDepth as i>
                                 <select class="combox" name="${name}[${index}].values" <#if 'customform'!=type> ref="${name}[${index}].values" index="${i+1}"<#if i lt dictionary.childDepth> refUrl="common/dictionarySuggest.html?dictionaryId=${extend.dictionaryId}&parentValue={value}"</#if> class="<#if extend.required> required</#if>"</#if>>
+                                	<option></option>
                                 <#if 0=i || parentValue?has_content>
                                 <@_dictionaryDataList dictionaryId=extend.dictionaryId parentValue=parentValue>
                                     <#local parentValue=''/>
@@ -257,6 +258,7 @@
                             </@_dictionaryDataList>
                         <#else>
                             <select class="combox" name="${inputName}"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>>
+                            	<option></option>
                             <@_dictionaryDataList dictionaryId=extend.dictionaryId>
                                 <#list list as d>
                                 <option value="${d.id.value}"${(value?has_content&&d.id.value=value)?then(' selected="true"','')?no_esc}>${d.text}</option>

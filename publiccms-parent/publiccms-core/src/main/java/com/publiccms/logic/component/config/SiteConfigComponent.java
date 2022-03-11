@@ -68,7 +68,7 @@ public class SiteConfigComponent implements Config {
      *
      */
     public static final String CONFIG_DEFAULT_CONTENT_USER = "default_content_user";
-    
+
     /**
      * default expiry minutes
      */
@@ -118,7 +118,7 @@ public class SiteConfigComponent implements Config {
         String fixedUrl = url.substring(url.indexOf("://") + 1);
         if (url.startsWith(site.getDynamicPath()) || url.startsWith(site.getSitePath())
                 || fixedUrl.startsWith(site.getDynamicPath()) || fixedUrl.startsWith(site.getSitePath())
-                || CommonUtils.notEmpty(contextPath) && url.startsWith(contextPath + "/")) {
+                || url.startsWith(contextPath + "/")) {
             return false;
         } else {
             return true;

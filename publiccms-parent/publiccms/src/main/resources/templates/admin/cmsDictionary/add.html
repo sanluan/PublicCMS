@@ -60,7 +60,7 @@
                         <tr>
                             <td>
                                 <input type="hidden" name="dataList[${d?index}].id.dictionaryId" value="${(d.id.dictionaryId)!}"/>
-                                <input type="text" name="dataList[${d?index}].id.value" value="${d.id.value}" size="20"<#if d.id.value?has_content> class="required"</#if> maxlength="50"/>
+                                <input type="text" name="dataList[${d?index}].id.value" value="${d.id.value}" size="20" class="required" maxlength="50"/>
                             </td>
                             <td>
                                 <input type="text" name="dataList[${d?index}].text" value="${d.text}" size="50" class="required" maxlength="100"/>
@@ -71,18 +71,6 @@
                         </tr>
                     </#list>
                 </@_dictionaryDataList>
-            <#else>
-            <tr>
-                <td>
-                    <input type="text" name="dataList[0].id.value" value="" size="20" maxlength="50"/>
-                </td>
-                <td>
-                    <input type="text" name="dataList[0].text" value="None" size="50" class="required" maxlength="100"/>
-                </td>
-                <td>
-                    <a href="javascript:void(0)" class="btnDel "><@t.page 'button.delete'/></a>
-                </td>
-            </tr>
             </#if>
                 </tbody>
             </table>

@@ -11,7 +11,7 @@
     <link href="${base}/resource/font-awesome/css/font-awesome-ie7.min.css" rel="stylesheet" >
     <![endif]-->
 	<link href="${base}/resource/bootstrap-icons/bootstrap-icons.css" rel="stylesheet"/>
-    <link href="${base}/resource/themes/css/core.css?version=202202" rel="stylesheet" media="screen"/>
+    <link href="${base}/resource/themes/css/core.css?version=202203" rel="stylesheet" media="screen"/>
     <link href="${base}/resource/themes/css/print.css" rel="stylesheet" media="print"/>
     <link href="${base}/resource/themes/css/cms.css" rel="stylesheet" media="screen"/>
     <!--[if lte IE 9]>
@@ -132,8 +132,9 @@
 <script src="${base}/resource/js/jquery.validate.js"></script>
 <script src="${base}/resource/js/jquery.bgiframe.js"></script>
 <script src="${base}/resource/js/base64.js"></script>
-<script src="${base}/resource/js/dwz.min.js?version=2022021214"></script>
-<script src="${base}/resource/js/dwz.plugins.js?version=2022021214"></script>
+<script src="${base}/resource/js/sha512.min.js"></script>
+<script src="${base}/resource/js/dwz.min.js?version=202203"></script>
+<script src="${base}/resource/js/dwz.plugins.js?version=202203"></script>
 <script src="${base}/resource/js/<@t.page 'dwz_regional_js'/>"></script>
 <script src="${base}/resource/js/cms.js"></script>
 <script>
@@ -181,7 +182,7 @@
             $("#themeList").theme({themeBase:"${base}/resource/themes",defaultTheme:"toptry"});
     <@_sysAuthorized roleIds=admin.roles url='changePassword'>
         <#if admin.weakPassword>
-            $.pdialog.open("myself/password.html?target=dialog", "login", "<@t.page 'user.new_password'/>", {mask: true, width: 430, height: 320});
+            $.pdialog.open("myself/password.html?target=dialog", "login", "<@t.page 'user.new_password'/>", {mask: true, width: 450, height: 320});
         </#if>
     </@_sysAuthorized>
             $('#navMenu li a[parentId=${parentId!0}]').parent().addClass("selected");
