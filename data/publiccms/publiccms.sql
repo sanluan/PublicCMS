@@ -247,6 +247,7 @@ INSERT INTO `sys_config_data` VALUES (3, 'siteAttribute', '{\"logo\":\"\",\"squa
 -- ----------------------------
 INSERT INTO `sys_dept` VALUES (2, 2, '技术部', '2', NULL, '', 2, 1000, 1, 1, 1);
 INSERT INTO `sys_dept` VALUES (3, 3, '技术部', '3', NULL, '', 3, 1000, 1, 1, 1);
+INSERT INTO `sys_dept` VALUES (4, 4, '技术部', '4', NULL, '', 4, 1000, 1, 1, 1);
 
 -- ----------------------------
 -- Records of sys_domain
@@ -254,6 +255,8 @@ INSERT INTO `sys_dept` VALUES (3, 3, '技术部', '3', NULL, '', 3, 1000, 1, 1, 
 INSERT INTO `sys_domain` VALUES ('search.site3.dev.publiccms.com', 3, 0, 0, '/search/');
 INSERT INTO `sys_domain` VALUES ('site2.dev.publiccms.com', 2, 1, 0, '');
 INSERT INTO `sys_domain` VALUES ('site3.dev.publiccms.com', 3, 0, 0, '/member/');
+INSERT INTO `sys_domain` VALUES ('site4.dev.publiccms.com', 4, 0, 0, '/member/');
+INSERT INTO `sys_domain` VALUES ('search.site4.dev.publiccms.com', 4, 0, 0, '/search/');
 
 -- ----------------------------
 -- Records of sys_extend
@@ -270,18 +273,21 @@ INSERT INTO `sys_extend_field` VALUES (1, 'article', 1, 0, NULL, '内容', '', '
 -- ----------------------------
 INSERT INTO `sys_role` VALUES (2, 2, '站长', 1, 0);
 INSERT INTO `sys_role` VALUES (3, 3, '站长', 1, 1);
+INSERT INTO `sys_role` VALUES (4, 4, '站长', 1, 1);
 
 -- ----------------------------
 -- Records of sys_role_user
 -- ----------------------------
 INSERT INTO `sys_role_user` VALUES (2, 2);
 INSERT INTO `sys_role_user` VALUES (3, 3);
+INSERT INTO `sys_role_user` VALUES (4, 4);
 
 -- ----------------------------
 -- Records of sys_site
 -- ----------------------------
 INSERT INTO `sys_site` VALUES (2, NULL, NULL, '企业中英文站点', 0, '//site2.dev.publiccms.com:8080/publiccms/webfile/', 0, '//site2.dev.publiccms.com:8080/publiccms/', 0);
 INSERT INTO `sys_site` VALUES (3, NULL, NULL, 'PublicCMS官网', 1, '//site3.dev.publiccms.com:8080/publiccms/webfile/', 0, '//site3.dev.publiccms.com:8080/publiccms/', 0);
+INSERT INTO `sys_site` VALUES (4, NULL, NULL, 'PublicCMS官网2022年新版', 1, '//site4.dev.publiccms.com:8080/publiccms/webfile/', 0, '//site4.dev.publiccms.com:8080/publiccms/', 0);
 
 -- ----------------------------
 -- Records of sys_task
@@ -293,10 +299,15 @@ INSERT INTO `sys_task` VALUES (4, 3, '重新生成内容页面', 0, '0 0 1 1 ? 2
 INSERT INTO `sys_task` VALUES (5, 3, '重新生成所有分类页面', 0, '0 * * * ?', '每小时执行', '/publishCategory.task', NULL);
 INSERT INTO `sys_task` VALUES (7, 3, '重新生成全站', 0, '0 0 1 1 ? 2099', '手动执行', '/publishAll.task', NULL);
 INSERT INTO `sys_task` VALUES (8, 3, '重新生成昨天文章的上一篇文章', 0, '	1 0 * * ?', '	每天凌晨0:1执行', '/nextContent.task', NULL);
-
+INSERT INTO `sys_task` VALUES (9, 4, '重新生成所有页面', 0, '0/20 * * * ?', '每20分钟执行', '/publishPage.task', NULL);
+INSERT INTO `sys_task` VALUES (10, 4, '重新生成内容页面', 0, '0 0 1 1 ? 2099', '手动执行', '/publishContent.task', NULL);
+INSERT INTO `sys_task` VALUES (11, 4, '重新生成所有分类页面', 0, '0 * * * ?', '每小时执行', '/publishCategory.task', NULL);
+INSERT INTO `sys_task` VALUES (12, 4, '重新生成全站', 0, '0 0 1 1 ? 2099', '手动执行', '/publishAll.task', NULL);
+INSERT INTO `sys_task` VALUES (13, 4, '重新生成昨天文章的上一篇文章', 0, '	1 0 * * ?', '	每天凌晨0:1执行', '/nextContent.task', NULL);
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
 INSERT INTO `sys_user` VALUES (2, 2, 'admin', '2134b56595c73a647716b0a8e33f9d50243fb1c1a088597ba5aa6d9ccadacbd8fc8307bda2adfc8362abe611420bd48263bdcfd91c1c26566ad3a29d79cffd9c', '0123456789', 1, 'admin',NULL , 2, 1, '2', '', 0, 1, 0, '2020-01-01 00:00:00', '127.0.0.1', 0, '2020-01-01 00:00:00');
 INSERT INTO `sys_user` VALUES (3, 3, 'admin', '2134b56595c73a647716b0a8e33f9d50243fb1c1a088597ba5aa6d9ccadacbd8fc8307bda2adfc8362abe611420bd48263bdcfd91c1c26566ad3a29d79cffd9c', '0123456789', 1, 'admin',NULL , 3, 1, '3', '', 0, 1, 0, '2020-01-01 00:00:00', '127.0.0.1', 0, '2020-01-01 00:00:00');
+INSERT INTO `sys_user` VALUES (4, 4, 'admin', '2134b56595c73a647716b0a8e33f9d50243fb1c1a088597ba5aa6d9ccadacbd8fc8307bda2adfc8362abe611420bd48263bdcfd91c1c26566ad3a29d79cffd9c', '0123456789', 1, 'admin',NULL , 4, 1, '4', '', 0, 1, 0, '2022-01-01 00:00:00', '127.0.0.1', 0, '2022-01-01 00:00:00');

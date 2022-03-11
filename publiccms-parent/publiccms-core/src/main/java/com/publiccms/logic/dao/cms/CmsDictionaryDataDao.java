@@ -56,7 +56,6 @@ public class CmsDictionaryDataDao extends BaseDao<CmsDictionaryData> {
     /**
      * @param siteId
      * @param dictionaryIds
-     * @param parentValue
      * @return the number of entities deleted
      */
     public int delete(short siteId, String[] dictionaryIds) {
