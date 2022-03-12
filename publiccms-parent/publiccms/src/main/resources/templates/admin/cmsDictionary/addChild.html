@@ -1,34 +1,36 @@
 <#macro dictionaryTree dictionaryId parentValue depth>
 <#if depth gte 0>
     <@_dictionaryDataList dictionaryId=dictionaryId parentValue=parentValue>
-        <#if list?has_content>
         <ul>
+            <li>
+                <a href="cmsDictionary/add.html?id=${dictionaryId}&parentValue=${parentValue}" target="navTab" rel="cmsDictionary/add"><i class="icon-plus-sign-alt"></i> <@t.page 'dictionary.add'/></a>
+            </li>
             <#list list as d>
                 <li>
-                    <#if depth = 0>
-                        <a href="javascript:void(0)">${d.id.value}:${d.text}</a>
-                    <#else>
-                        <a href="cmsDictionary/add.html?id=${dictionaryId}&parentValue=${d.id.value}" target="navTab" rel="cmsDictionary/add" icon="<i class='icon-plus-sign-alt icon-large'></i>" title="<@t.page 'dictionary.addChild'/>">${d.id.value}:${d.text}</a>
-                        <@dictionaryTree dictionaryId=dictionaryId parentValue=d.id.value depth=depth-1/>
-                    </#if>
+                    <a href="javascript:void(0)">${d.id.value}:${d.text}</a>
+                    <@dictionaryTree dictionaryId=dictionaryId parentValue=d.id.value depth=depth-1/>
                 </li>
             </#list>
         </ul>
-        </#if>
     </@_dictionaryDataList>
 </#if>
 </#macro>
 <div class="pageFormContent" layoutH>
+<@_dictionary id=id>
     <ul class="tree treeFolder expand">
-<@_dictionaryDataList dictionaryId=id>
+        <li><a href="cmsDictionary/add.html?id=${object.id.id}" target="navTab" rel="cmsDictionary/edit"><i class="icon-edit"></i> <@t.page 'dictionary.edit'/></a></li>
+        <#if object.childDepth gt 0>
+<@_dictionaryDataList dictionaryId=object.id.id>
     <#list list as d>
         <li>
-            <a href="cmsDictionary/add.html?id=${id!}&parentValue=${d.id.value}" target="navTab" rel="cmsDictionary/add" icon="<i class='icon-plus-sign-alt icon-large'></i>" title="<@t.page 'dictionary.addChild'/>">${d.id.value}:${d.text}</a>
-            <@dictionaryTree dictionaryId=id parentValue=d.id.value depth=depth?number-1/>
+            <a href="javascript:void(0)"> ${d.id.value}:${d.text}</a>
+            <@dictionaryTree dictionaryId=id parentValue=d.id.value depth=object.childDepth-1/>
         </li>
     </#list>
 </@_dictionaryDataList>
+        </#if>
     </ul>
+</@_dictionary>
 </div>
 <div class="formBar">
     <ul>

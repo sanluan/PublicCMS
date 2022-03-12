@@ -1,7 +1,8 @@
 <#ftl auto_esc=false/>
 <#escape x as x?json_string>
 [
-<#if parentValue?has_content>
+    ["",""]
+<#if parentValue?has_content>,
 <@_dictionaryDataList dictionaryId=dictionaryId parentValue=parentValue>
     <#list list as a>
         ["${a.id.value}","${a.text}"]<#sep>,

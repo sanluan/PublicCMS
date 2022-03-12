@@ -267,6 +267,13 @@
                             </select>
                         </#if>
                     </#if>
+                    <@_sysAuthorized roleIds=admin.roles url='cmsDictionary/add'>
+                        <#if dictionary.childDepth gt 0>
+                            <a href="cmsDictionary/addChild.html?id=${dictionary.id.id}" target="dialog" mask="true" icon="<i class='icon-edit'></i>"><@t.page 'dictionary.edit'/></a>
+                        <#else>
+                            <a href="cmsDictionary/add.html?id=${dictionary.id.id}" target="navTab" rel="cmsDictionary/edit" icon="<i class='icon-edit'></i>"><@t.page 'dictionary.edit'/></a>
+                        </#if>
+                    </@_sysAuthorized>
                 </#if>
             </#if>
             <#break>

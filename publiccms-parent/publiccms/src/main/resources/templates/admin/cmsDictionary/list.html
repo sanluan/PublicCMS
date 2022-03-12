@@ -54,9 +54,10 @@
                 <td>${a.multiple?then(t.pageMessage('multiple_select'),t.pageMessage('single_select'))}</td>
                 <td>${a.childDepth}</td>
                 <td class="wrap">
-                    <a href="cmsDictionary/add.html?id=${a.id.id}" class="edit btnText blue" target="navTab" rel="cmsDictionary/edit"><i class="icon-edit"></i> <@t.page 'button.edit'/></a>
                 <#if a.childDepth gt 0>
-                    <a href="cmsDictionary/addChild.html?id=${a.id.id}&depth=${a.childDepth}" class="btnText" target="dialog" mask="true"><i class="icon-plus-sign-alt"></i> <@t.page 'dictionary.addChild'/></a>
+                    <a href="cmsDictionary/addChild.html?id=${a.id.id}" class="btnText" target="dialog" mask="true"><i class="icon-edit"></i> <@t.page 'button.edit'/></a>
+                <#else>
+                    <a href="cmsDictionary/add.html?id=${a.id.id}" class="edit btnText blue" target="navTab" rel="cmsDictionary/edit"><i class="icon-edit"></i> <@t.page 'button.edit'/></a>
                 </#if>
                 <#if authorizedMap['cmsDictionary/delete']>
                     <a href="cmsDictionary/delete?ids=${a.id.id}&_csrf=<@_csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i> <@t.page 'button.delete'/></a>
