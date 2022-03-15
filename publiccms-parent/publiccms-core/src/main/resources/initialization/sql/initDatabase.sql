@@ -164,6 +164,7 @@ CREATE TABLE `cms_dictionary_data` (
 -- ----------------------------
 -- Table structure for cms_dictionary_exclude
 -- ----------------------------
+DROP TABLE IF EXISTS `cms_dictionary_exclude`;
 CREATE TABLE `cms_dictionary_exclude` (
   `dictionary_id` varchar(20) NOT NULL COMMENT '字典',
   `site_id` smallint(6) NOT NULL COMMENT '站点',
@@ -174,6 +175,7 @@ CREATE TABLE `cms_dictionary_exclude` (
 -- ----------------------------
 -- Table structure for cms_dictionary_exclude_value
 -- ----------------------------
+DROP TABLE IF EXISTS `cms_dictionary_exclude_value`;
 CREATE TABLE `cms_dictionary_exclude_value` (
   `dictionary_id` varchar(20) NOT NULL COMMENT '字典',
   `site_id` smallint(6) NOT NULL COMMENT '站点',
@@ -725,6 +727,7 @@ CREATE TABLE `sys_extend_field` (
 -- ----------------------------
 -- Table structure for sys_lock
 -- ----------------------------
+DROP TABLE IF EXISTS `sys_lock`;
 CREATE TABLE `sys_lock` (
   `site_id` smallint(6) NOT NULL COMMENT '站点',
   `item_type` varchar(50) NOT NULL COMMENT '类型',

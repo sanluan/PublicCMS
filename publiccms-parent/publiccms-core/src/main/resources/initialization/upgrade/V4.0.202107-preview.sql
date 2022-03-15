@@ -241,6 +241,7 @@ ALTER TABLE `sys_user`
     CHANGE COLUMN `owns_all_content` `content_permissions` int(11) NOT NULL COMMENT '内容权限(0仅自己,1所有人,2本部门)' after `dept_id`;
 UPDATE `cms_content` a SET `dept_id` = (SELECT `dept_id` FROM `sys_user` WHERE `id`=a.`user_id`) WHERE `dept_id` is NULL;
 -- 2022-02-09 --
+DROP TABLE IF EXISTS `sys_lock`;
 CREATE TABLE `sys_lock` (
   `site_id` smallint(6) NOT NULL COMMENT '站点',
   `item_type` varchar(50) NOT NULL COMMENT '类型',
@@ -296,6 +297,7 @@ ALTER TABLE `sys_user` ADD COLUMN `cover` varchar(255) default NULL COMMENT '封
 -- ----------------------------
 -- Table structure for cms_dictionary_exclude
 -- ----------------------------
+DROP TABLE IF EXISTS `cms_dictionary_exclude`;
 CREATE TABLE `cms_dictionary_exclude` (
   `dictionary_id` varchar(20) NOT NULL COMMENT '字典',
   `site_id` smallint(6) NOT NULL COMMENT '站点',
@@ -306,6 +308,7 @@ CREATE TABLE `cms_dictionary_exclude` (
 -- ----------------------------
 -- Table structure for cms_dictionary_exclude_value
 -- ----------------------------
+DROP TABLE IF EXISTS `cms_dictionary_exclude_value`;
 CREATE TABLE `cms_dictionary_exclude_value` (
   `dictionary_id` varchar(20) NOT NULL COMMENT '字典',
   `site_id` smallint(6) NOT NULL COMMENT '站点',
