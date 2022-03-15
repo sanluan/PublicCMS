@@ -290,5 +290,33 @@ ALTER TABLE `cms_dictionary_data`
     ADD INDEX `cms_dictionary_parent_value`(`dictionary_id`, `site_id`, `parent_value`);
 ALTER TABLE `cms_dictionary` 
     ADD COLUMN `child_depth` int(10) NOT NULL DEFAULT 0 COMMENT '子级深度' AFTER `name`;
-UPDATE `sys_module` SET `authorized_url` = 'cmsDictionary/addChild,cmsDictionary/save,cmsDictionary/virify' WHERE `id` ='dictionary_add';
-    
+UPDATE `sys_module` SET `authorized_url` = 'cmsDictionary/addChild,cmsDictionary/exclude,cmsDictionary/excludeTree,cmsDictionary/excludeValue,cmsDictionaryExclude/save,cmsDictionaryExcludeValue/save,cmsDictionary/save,cmsDictionary/virify' WHERE `id` ='dictionary_add';
+-- 2022-03-15 --
+ALTER TABLE `sys_user` ADD COLUMN `cover` varchar(255) default NULL COMMENT '封面' AFTER `nick_name`;
+-- ----------------------------
+-- Table structure for cms_dictionary_exclude
+-- ----------------------------
+CREATE TABLE `cms_dictionary_exclude` (
+  `dictionary_id` varchar(20) NOT NULL COMMENT '字典',
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
+  `exclude_dictionary_id` varchar(20) NOT NULL COMMENT '排除的数据字典',
+  PRIMARY KEY (`dictionary_id`,`site_id`,`exclude_dictionary_id`),
+  KEY `cms_dictionary_parent_value` (`dictionary_id`,`site_id`)
+) COMMENT='字典数据排除规则';
+-- ----------------------------
+-- Table structure for cms_dictionary_exclude_value
+-- ----------------------------
+CREATE TABLE `cms_dictionary_exclude_value` (
+  `dictionary_id` varchar(20) NOT NULL COMMENT '字典',
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
+  `exclude_dictionary_id` varchar(20) NOT NULL COMMENT '排除的数据字典',
+  `value` varchar(50) NOT NULL COMMENT '值',
+  `exclude_values` text NOT NULL COMMENT '排除的值',
+  PRIMARY KEY (`dictionary_id`,`site_id`,`exclude_dictionary_id`,`value`),
+  KEY `cms_dictionary_parent_value` (`dictionary_id`,`site_id`)
+)COMMENT='字典数据排除规则值';
+ALTER TABLE `cms_dictionary`
+    DROP COLUMN `multiple`,
+    DROP INDEX `cms_dictionary_site_id`,
+    ADD INDEX `cms_dictionary_site_id`(`site_id`);
+ALTER TABLE `sys_extend_field` ADD COLUMN `multiple` tinyint(1) NOT NULL COMMENT '多选' AFTER `dictionary_id`;

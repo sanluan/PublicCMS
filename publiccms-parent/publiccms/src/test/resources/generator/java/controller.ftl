@@ -1,6 +1,6 @@
 package ${base}.${controllerPack};
 
-// Generated ${.now} by com.publiccms.common.generator.SourceGenerator
+// Generated ${.now?date} by com.publiccms.common.generator.SourceGenerator
 
 import javax.servlet.http.HttpServletRequest;
 

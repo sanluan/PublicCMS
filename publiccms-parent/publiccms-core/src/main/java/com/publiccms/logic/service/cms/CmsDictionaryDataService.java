@@ -68,6 +68,7 @@ public class CmsDictionaryDataService extends BaseService<CmsDictionaryData> {
             if (!idSet.contains(entity.getId())) {
                 delete(entity.getId());
                 dao.deleteByParentValue(siteId, entity.getId().getDictionaryId(), entity.getId().getValue());
+                excludeValueService.deleteByValue(siteId, dictionaryId, entity.getId().getValue());
             }
         }
     }
@@ -86,14 +87,15 @@ public class CmsDictionaryDataService extends BaseService<CmsDictionaryData> {
     /**
      * @param siteId
      * @param dictionaryIds
-     * @param parentValue
      * @return the number of entities deleted
      */
     public int delete(short siteId, String[] dictionaryIds) {
         return dao.delete(siteId, dictionaryIds);
     }
-
+    
     @Autowired
     private CmsDictionaryDataDao dao;
+    @Autowired
+    private CmsDictionaryExcludeValueService excludeValueService;
 
 }

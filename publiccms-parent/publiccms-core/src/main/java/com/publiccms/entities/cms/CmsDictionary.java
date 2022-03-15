@@ -29,17 +29,14 @@ public class CmsDictionary implements java.io.Serializable {
     private String name;
     @GeneratorColumn(title = "子级深度")
     private int childDepth;
-    @GeneratorColumn(title = "允许多选", condition = true)
-    private boolean multiple;
 
     public CmsDictionary() {
     }
 
-    public CmsDictionary(CmsDictionaryId id, String name, int childDepth, boolean multiple) {
+    public CmsDictionary(CmsDictionaryId id, String name, int childDepth) {
         this.id = id;
         this.name = name;
         this.childDepth = childDepth;
-        this.multiple = multiple;
     }
 
     @EmbeddedId
@@ -69,15 +66,6 @@ public class CmsDictionary implements java.io.Serializable {
 
     public void setChildDepth(int childDepth) {
         this.childDepth = childDepth;
-    }
-
-    @Column(name = "multiple", nullable = false)
-    public boolean isMultiple() {
-        return this.multiple;
-    }
-
-    public void setMultiple(boolean multiple) {
-        this.multiple = multiple;
     }
 
 }

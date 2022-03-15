@@ -4,6 +4,7 @@ package com.publiccms.entities.cms;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.publiccms.common.generator.annotation.GeneratorColumn;
 
 /**
@@ -18,7 +19,10 @@ public class CmsDictionaryDataId implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
     @GeneratorColumn(title = "数据字典")
     private String dictionaryId;
+    @GeneratorColumn(title = "站点", condition = true)
+    @JsonIgnore
     private short siteId;
+    @GeneratorColumn(title = "值")
     private String value;
 
     public CmsDictionaryDataId() {

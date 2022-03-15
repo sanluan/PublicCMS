@@ -1,0 +1,52 @@
+<@_dictionary id=id>
+    <#assign a=object/>
+<form method="post" autocomplete="off" action="cmsDictionaryExclude/save?callbackType=closeCurrent&navTabId=cmsDictionary/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <div class="formBar">
+        <ul>
+            <li><button type="submit" class="buttonActive"><@t.page 'button.save'/></button></li>
+            <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+        </ul>
+    </div>
+    <div class="pageContent">
+        <div class="pageFormContent" layoutH>
+            <dl class="nowrap">
+                <dt><@t.page 'dictionary'/>:</dt>
+                <dd>
+                    ${a.name!}
+                    <input name="id" type="hidden" value="${(a.id.id)!}"/>
+                </dd>
+            </dl>
+            <fieldset>
+                <legend><@t.page 'dictionary.exclude'/></legend>
+                <table class="list nowrap itemDetail" addButton="<@t.page 'button.new_line'/>" width="100%">
+                    <thead>
+                        <tr>
+                            <th type="lookup" name="excludeList[#index#].id.dictionaryName" lookupPk="excludeDictionaryId" lookupUrl="cmsDictionary/lookup.html?field=excludeDictionaryId" lookupGroup="excludeList[#index#].id" fieldAttrs="{'readonly':'readonly'}" size="10"><a href="cmsDictionary/list.html" target="navTab" rel="cmsDictionary/list" icon="<i class='icon-book icon-large'></i>"><@t.page 'dictionary'/></a></th>
+                            <th type="del" width="100"><@t.page 'operate'/></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <@_dictionaryExcludeList dictionaryId=a.id.id>
+                        <#list list as d>
+                            <tr>
+                                <td>
+                                    <@_dictionary id=d.id.excludeDictionaryId><#assign dictionary=object/></@_dictionary>
+                                    <#if site.parentId?has_content&&!dictionary?has_content><@_dictionary id=d.id.excludeDictionaryId siteId=site.parentId><#assign dictionary=object/></@_dictionary></#if>
+                                    <input type="hidden" name="excludeList[${d?index}].id.excludeDictionaryId" value="${(d.id.excludeDictionaryId)!}"/>
+                                    <input type="text" name="excludeList[${d?index}].id.dictionaryName" readonly="readonly" size="10" value="${(dictionary.name)!}"/>
+                                    <a class="btnLook" href="cmsDictionary/lookup.html?field=excludeDictionaryId" lookupGroup="excludeList[${d?index}].id" width="1000" height="500"><@t.page 'dictionary.select'/></a>
+                                </td>
+                                <td>
+                                    <a href="javascript:void(0)" class="btnDel "><@t.page 'button.delete'/></a>
+                                </td>
+                            </tr>
+                        </#list>
+                    </@_dictionaryExcludeList>
+                    </tbody>
+                </table>
+            </fieldset>
+        </div>
+    </div>
+</form>
+</@_dictionary>

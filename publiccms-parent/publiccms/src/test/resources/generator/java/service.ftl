@@ -1,6 +1,7 @@
 package ${base}.${servicePack};
 
-// Generated ${.now} by com.publiccms.common.generator.SourceGenerator
+// Generated ${.now?date} by com.publiccms.common.generator.SourceGenerator
+
 <#include "../include_imports/field_type.ftl">
 
 import org.springframework.beans.factory.annotation.Autowired;

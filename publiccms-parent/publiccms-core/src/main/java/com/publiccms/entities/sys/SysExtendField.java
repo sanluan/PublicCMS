@@ -49,6 +49,8 @@ public class SysExtendField implements java.io.Serializable {
     private String defaultValue;
     @GeneratorColumn(title = "数据字典")
     private String dictionaryId;
+    @GeneratorColumn(title = "多选")
+    private boolean multiple;
     @GeneratorColumn(title = "顺序", order = true)
     private int sort;
 
@@ -82,7 +84,7 @@ public class SysExtendField implements java.io.Serializable {
 
     public SysExtendField(SysExtendFieldId id, boolean required, boolean searchable, Integer maxlength, Integer width,
             Integer height, String name, String description, String inputType, String defaultValue, String dictionaryId,
-            int sort) {
+            boolean multiple, int sort) {
         this.id = id;
         this.required = required;
         this.searchable = searchable;
@@ -94,6 +96,7 @@ public class SysExtendField implements java.io.Serializable {
         this.inputType = inputType;
         this.defaultValue = defaultValue;
         this.dictionaryId = dictionaryId;
+        this.multiple = multiple;
         this.sort = sort;
     }
 
@@ -196,6 +199,15 @@ public class SysExtendField implements java.io.Serializable {
 
     public void setDictionaryId(String dictionaryId) {
         this.dictionaryId = dictionaryId;
+    }
+
+    @Column(name = "multiple", nullable = false)
+    public boolean isMultiple() {
+        return this.multiple;
+    }
+
+    public void setMultiple(boolean multiple) {
+        this.multiple = multiple;
     }
 
     @Column(name = "sort", nullable = false)

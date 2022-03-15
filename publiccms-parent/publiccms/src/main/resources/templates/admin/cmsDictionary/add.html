@@ -35,7 +35,6 @@
                 <dt><@t.page 'name'/>:</dt>
                 <dd>
                     <input class="required" name="name" type="text" size="20" maxlength="100" value="${(a.name)!}"/>
-                    <label><input name="multiple" type="checkbox"${((a.multiple)?has_content&&a.multiple)?then(' checked="true"','')?no_esc}/><@t.page 'multiple_select'/></label>
                 </dd>
             </dl>
             <dl class="nowrap">
@@ -45,35 +44,38 @@
                 </dd>
             </dl>
         </#if>
-            <table class="list nowrap itemDetail" addButton="<@t.page 'button.new_line'/>" width="100%">
-                <thead>
-                    <tr>
-                        <th type="text" name="dataList[#index#].id.value" size="20" fieldClass="required" fieldAttrs="{maxlength:50}"><@t.page 'value'/></th>
-                        <th type="text" name="dataList[#index#].text" size="50" fieldClass="required" fieldAttrs="{maxlength:100}"><@t.page 'text'/></th>
-                        <th type="del" width="100"><@t.page 'operate'/></th>
-                    </tr>
-                </thead>
-                <tbody>
-            <#if a?has_content>
-                <@_dictionaryDataList dictionaryId=a.id.id parentValue=parentValue>
-                    <#list list as d>
+            <fieldset>
+                <legend><@t.page 'value'/></legend>
+                <table class="list nowrap itemDetail" addButton="<@t.page 'button.new_line'/>" width="100%">
+                    <thead>
                         <tr>
-                            <td>
-                                <input type="hidden" name="dataList[${d?index}].id.dictionaryId" value="${(d.id.dictionaryId)!}"/>
-                                <input type="text" name="dataList[${d?index}].id.value" value="${d.id.value}" size="20" class="required" maxlength="50"/>
-                            </td>
-                            <td>
-                                <input type="text" name="dataList[${d?index}].text" value="${d.text}" size="50" class="required" maxlength="100"/>
-                            </td>
-                            <td>
-                                <a href="javascript:void(0)" class="btnDel "><@t.page 'button.delete'/></a>
-                            </td>
+                            <th type="text" name="dataList[#index#].id.value" size="20" fieldClass="required" fieldAttrs="{maxlength:50}"><@t.page 'value'/></th>
+                            <th type="text" name="dataList[#index#].text" size="50" fieldClass="required" fieldAttrs="{maxlength:100}"><@t.page 'text'/></th>
+                            <th type="del" width="100"><@t.page 'operate'/></th>
                         </tr>
-                    </#list>
-                </@_dictionaryDataList>
-            </#if>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                <#if a?has_content>
+                    <@_dictionaryDataList dictionaryId=a.id.id parentValue=parentValue>
+                        <#list list as d>
+                            <tr>
+                                <td>
+                                    <input type="hidden" name="dataList[${d?index}].id.dictionaryId" value="${(d.id.dictionaryId)!}"/>
+                                    <input type="text" name="dataList[${d?index}].id.value" value="${d.id.value}" size="20" class="required" maxlength="50"/>
+                                </td>
+                                <td>
+                                    <input type="text" name="dataList[${d?index}].text" value="${d.text}" size="50" class="required" maxlength="100"/>
+                                </td>
+                                <td>
+                                    <a href="javascript:void(0)" class="btnDel "><@t.page 'button.delete'/></a>
+                                </td>
+                            </tr>
+                        </#list>
+                    </@_dictionaryDataList>
+                </#if>
+                    </tbody>
+                </table>
+            </fieldset>
         </div>
     </div>
 </form>

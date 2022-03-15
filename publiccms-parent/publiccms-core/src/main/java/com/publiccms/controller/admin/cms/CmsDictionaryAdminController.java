@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -23,6 +24,8 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.cms.CmsDictionaryDataService;
+import com.publiccms.logic.service.cms.CmsDictionaryExcludeService;
+import com.publiccms.logic.service.cms.CmsDictionaryExcludeValueService;
 import com.publiccms.logic.service.cms.CmsDictionaryService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
@@ -57,7 +60,8 @@ public class CmsDictionaryAdminController {
     @RequestMapping("save")
     @Csrf
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, CmsDictionary entity, String oldId,
-            String parentValue, CmsDictionaryParameters dictionaryParameters, HttpServletRequest request, ModelMap model) {
+            String parentValue, @ModelAttribute CmsDictionaryParameters dictionaryParameters, HttpServletRequest request,
+            ModelMap model) {
         if (null != entity && null != entity.getId()) {
             entity.getId().setSiteId(site.getId());
             if (CommonUtils.notEmpty(parentValue)) {
@@ -127,6 +131,8 @@ public class CmsDictionaryAdminController {
             }
             service.delete(entityIds);
             dataService.delete(site.getId(), ids);
+            excludeService.delete(site.getId(), ids);
+            excludeValueService.delete(site.getId(), ids);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.cmsDictionary", RequestUtils.getIpAddress(request),
                     CommonUtils.getDate(), StringUtils.join(ids, CommonConstants.COMMA)));
@@ -138,4 +144,8 @@ public class CmsDictionaryAdminController {
     private CmsDictionaryService service;
     @Autowired
     private CmsDictionaryDataService dataService;
+    @Autowired
+    private CmsDictionaryExcludeService excludeService;
+    @Autowired
+    private CmsDictionaryExcludeValueService excludeValueService;
 }

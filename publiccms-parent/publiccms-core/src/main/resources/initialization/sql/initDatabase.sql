@@ -144,9 +144,8 @@ CREATE TABLE `cms_dictionary` (
   `site_id` smallint(6) NOT NULL COMMENT '站点',
   `name` varchar(100) NOT NULL COMMENT '名称',
   `child_depth` int(10) NOT NULL COMMENT '子级深度',
-  `multiple` tinyint(1) NOT NULL COMMENT '允许多选',
   PRIMARY KEY (`id`,`site_id`),
-  KEY `cms_dictionary_site_id` (`site_id`,`multiple`)
+  KEY `cms_dictionary_site_id` (`site_id`)
 ) COMMENT='字典';
 
 -- ----------------------------
@@ -162,7 +161,28 @@ CREATE TABLE `cms_dictionary_data` (
   PRIMARY KEY  (`dictionary_id`,`site_id`,`value`),
   KEY `cms_dictionary_parent_value`(`dictionary_id`, `site_id`, `parent_value`)
 ) COMMENT='字典数据';
-
+-- ----------------------------
+-- Table structure for cms_dictionary_exclude
+-- ----------------------------
+CREATE TABLE `cms_dictionary_exclude` (
+  `dictionary_id` varchar(20) NOT NULL COMMENT '字典',
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
+  `exclude_dictionary_id` varchar(20) NOT NULL COMMENT '排除的数据字典',
+  PRIMARY KEY (`dictionary_id`,`site_id`,`exclude_dictionary_id`),
+  KEY `cms_dictionary_parent_value` (`dictionary_id`,`site_id`)
+) COMMENT='字典数据排除规则';
+-- ----------------------------
+-- Table structure for cms_dictionary_exclude_value
+-- ----------------------------
+CREATE TABLE `cms_dictionary_exclude_value` (
+  `dictionary_id` varchar(20) NOT NULL COMMENT '字典',
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
+  `exclude_dictionary_id` varchar(20) NOT NULL COMMENT '排除的数据字典',
+  `value` varchar(50) NOT NULL COMMENT '值',
+  `exclude_values` text NOT NULL COMMENT '排除的值',
+  PRIMARY KEY (`dictionary_id`,`site_id`,`exclude_dictionary_id`,`value`),
+  KEY `cms_dictionary_parent_value` (`dictionary_id`,`site_id`)
+)COMMENT='字典数据排除规则值';
 -- ----------------------------
 -- Table structure for cms_place
 -- ----------------------------
@@ -696,6 +716,7 @@ CREATE TABLE `sys_extend_field` (
   `input_type` varchar(20) NOT NULL COMMENT '表单类型',
   `default_value` varchar(50) default NULL COMMENT '默认值',
   `dictionary_id` varchar(20) default NULL COMMENT '数据字典',
+  `multiple` tinyint(1) NOT NULL COMMENT '多选',
   `sort` int(11) NOT NULL default '0' COMMENT '顺序',
   PRIMARY KEY  (`extend_id`,`code`),
   KEY `sys_extend_field_input_type` (`extend_id`, `input_type`,`searchable`),
@@ -806,7 +827,7 @@ INSERT INTO `sys_module` VALUES ('dept_delete', NULL, 'sysDept/delete', NULL, 'd
 INSERT INTO `sys_module` VALUES ('dept_list', 'sysDept/list', 'sysDept/lookup,sysUser/lookup,sysUser/lookup_list', 'icon-group', 'user_menu', 1, 2);
 INSERT INTO `sys_module` VALUES ('dept_user_list', 'sysDept/userList', 'sysDept/addUser,sysDept/saveUser,sysDept/enableUser,sysDept/disableUser', NULL, 'dept_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('develop', NULL, NULL, 'icon-puzzle-piece', NULL, 1, 7);
-INSERT INTO `sys_module` VALUES ('dictionary_add', 'cmsDictionary/add', 'cmsDictionary/addChild,cmsDictionary/save,cmsDictionary/virify', NULL, 'dictionary_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('dictionary_add', 'cmsDictionary/add', 'cmsDictionary/addChild,cmsDictionary/exclude,cmsDictionary/excludeTree,cmsDictionary/excludeValue,cmsDictionaryExclude/save,cmsDictionaryExcludeValue/save,cmsDictionary/save,cmsDictionary/virify', NULL, 'dictionary_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('dictionary_delete', NULL, 'cmsDictionary/delete', NULL, 'dictionary_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('dictionary_list', 'cmsDictionary/list', NULL, 'icon-book', 'system_menu', 1, 4);
 INSERT INTO `sys_module` VALUES ('domain_config', 'sysDomain/config', 'sysDomain/saveConfig,cmsTemplate/directoryLookup,cmsTemplate/lookup', NULL, 'domain_list', 0, 0);

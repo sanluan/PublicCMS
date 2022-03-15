@@ -1,0 +1,53 @@
+<#macro dictionaryTree dictionaryId excludeDictionaryId parentValue depth>
+<#if depth gte 0>
+    <@_dictionaryDataList dictionaryId=dictionaryId parentValue=parentValue>
+        <ul>
+            <#list list as d>
+                <li>
+                    <a href="cmsDictionary/excludeValue.html?id=${dictionaryId}&excludeDictionaryId=${excludeDictionaryId}&value=${d.id.value}" target="navTab" rel="cmsDictionary/excludeValue" icon="<i class='bi bi-exclude'></i>" title="<@t.page 'dictionary.exclude'/>">${d.id.value}:${d.text}</a>
+                    <@dictionaryTree dictionaryId=dictionaryId excludeDictionaryId=excludeDictionaryId parentValue=d.id.value depth=depth-1/>
+                </li>
+            </#list>
+        </ul>
+    </@_dictionaryDataList>
+</#if>
+</#macro>
+<div class="pageFormContent" layoutH>
+<@_dictionary id=id>
+    <ul class="tree treeFolder expand">
+    <#if excludeDictionaryId?has_content>
+        <#if object.childDepth gt 0>
+            <@_dictionaryDataList dictionaryId=object.id.id>
+                <#list list as d>
+        <li>
+            <a href="cmsDictionary/excludeValue.html?id=${object.id.id}&excludeDictionaryId=${excludeDictionaryId}&value=${d.id.value}" target="navTab" rel="cmsDictionary/excludeValue" icon="<i class='bi bi-exclude'></i>" title="<@t.page 'dictionary.exclude'/>"> ${d.id.value}:${d.text}</a>
+            <@dictionaryTree dictionaryId=id excludeDictionaryId=excludeDictionaryId parentValue=d.id.value depth=object.childDepth-1/>
+        </li>
+                </#list>
+            </@_dictionaryDataList>
+        </#if>
+    <#else>
+        <li>
+            <a href="cmsDictionary/exclude.html?id=${object.id.id}" target="navTab" rel="cmsDictionary/exclude"><i class="icon-edit"></i> <@t.page 'dictionary.exclude'/></a>
+        </li>
+        <@_dictionaryExcludeList dictionaryId=object.id.id>
+            <#list list as d>
+        <li>
+            <a href="cmsDictionary/excludeTree.html?id=${object.id.id}&excludeDictionaryId=${d.id.excludeDictionaryId}" target="dialog" mask="true" icon="<i class='bi bi-exclude'></i>"> <@_dictionary id=d.id.excludeDictionaryId>${object.name}</@_dictionary></a>
+        </li>
+            </#list>
+        </@_dictionaryExcludeList>
+    </#if>
+    </ul>
+</@_dictionary>
+</div>
+<div class="formBar">
+    <ul>
+        <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+    </ul>
+</div>
+<script>
+$('ul li a',$.pdialog.getCurrent()).click(function(){
+    $.pdialog.closeCurrent();
+});
+</script>

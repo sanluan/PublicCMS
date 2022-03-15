@@ -428,3 +428,79 @@ DWZ.regPlugins.push(function($p){
         });
     });
 });
+
+DWZ.regPlugins.push(function($p){
+    function initDictionary($dictionary,$exclude,url){
+        var valuearray=[];
+        $dictionary.find('select,input[checked]').each(function(){
+            if($(this).val()){
+                valuearray.push($(this).val());
+            }
+        });
+        $.ajax({
+            type: 'POST', dataType: "json", url: url+'?id='+$dictionary.data('id')+'&excludeDictionaryId='+$exclude.data('id')+'&values='+valuearray.join(), cache: false, data: {} ,
+            success: function(json) {
+                if (!json ) {
+                    return;
+                }
+                combox = $exclude.find('.combox');
+                tree = $exclude.find('.tree');
+                checkbox = $exclude.find('[type=checkbox]');
+                if(combox.length) {
+                    combox.each(function(){
+                        var $combox = $("#op_" + $(this).find('.select').attr('id'));
+                        $combox.find("li.disabled").removeClass('disabled').show();
+                        $.each(json, function(i) {
+                            $combox.find("li a[value="+json[i]+"]").parent().addClass('disabled').hide();
+                            if($combox.find("li a[value="+json[i]+"]").hasClass('selected')){
+                                $combox.find("li:visible:eq(0) a").click();
+                            }
+                        });
+                    });
+                } else if (tree.length) {
+                    tree.each(function(){
+                        $tree=$(this);
+                        $tree.find('li').show();
+                        $.each(json, function(i) {
+                            $tree.find("li a[tvalue="+json[i]+"]").parent().parent().addClass('disabled').hide();
+                            if($tree.find("li a[tvalue="+json[i]+"]").parent().find('[type=checkbox]').is(':checked')){
+                                $tree.find("li a[tvalue="+json[i]+"]").click();
+                            }
+                        });
+                    });
+                } else if (checkbox.length) {
+                    checkbox.each(function(){
+                        $checkbox=$(this);
+                        $checkbox.parent().show();
+                        $.each(json, function(i) {
+                            if($checkbox.val()==json[i]){
+                                $checkbox.parent().hide();
+                                if($checkbox.is(':checked')){
+                                    $checkbox.click();
+                                }
+                            }
+                        });
+                    });
+                }
+            }, error: DWZ.ajaxError
+        });
+    }
+    $(".dictionary", $p).each(function(){
+        if($(this).data('ref')){
+            var refArray = $(this).data('ref').split(',');
+            var url=$(this).data('url');
+            var $dictionary=$(this);
+            for (var index=0; index<refArray.length; index++) {
+                (function($dictionary,index,$box,url){
+                    var $exclude=$('.dictionary[data-id='+refArray[index]+']',$box);
+                    if($exclude.length){
+                        $dictionary.find('select,input').change(function(){
+                            initDictionary($dictionary,$exclude,url);
+                        });
+                    }
+                    initDictionary($dictionary,$exclude,url);
+                })($dictionary,index,$p,url);
+            }
+        }
+    });
+});

@@ -1,15 +1,14 @@
-<@_dictionaryList multiple=multiple pageIndex=pageNum pageSize=numPerPage>
+<@_dictionaryList name=name pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
     <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
         <div class="searchBar">
             <ul class="searchContent">
                 <li>
-                    <select class="combox" name="multiple">
-                        <option value=""${(!multiple?has_content)?then(' selected="true"','')?no_esc}><@t.page 'dictionary.type'/></option>
-                        <option value="false"${(multiple?has_content&&"false"=multiple)?then(' selected="true"','')?no_esc}><@t.page 'single_select'/></option>
-                        <option value="true"${(multiple?has_content&&"true"=multiple)?then(' selected="true"','')?no_esc}><@t.page 'multiple_select'/></option>
-                    </select>
+                    <li>
+                        <label><@t.page 'name'/>:</label>
+                        <input type="text" name="name" value="${name!}" />
+                    </li>
                 </li>
             </ul>
             <div class="subBar">
@@ -40,7 +39,6 @@
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
                 <th><@t.page 'id'/></th>
                 <th><@t.page 'name'/></th>
-                <th><@t.page 'dictionary.type'/></th>
                 <th><@t.page 'dictionary.childDepth'/></th>
                 <th><@t.page 'operate'/></th>
             </tr>
@@ -51,14 +49,14 @@
                 <td class="center"><input name="ids" value="${a.id.id}" type="checkbox"></td>
                 <td>${a.id.id}</td>
                 <td class="exclude-translate">${a.name!}</td>
-                <td>${a.multiple?then(t.pageMessage('multiple_select'),t.pageMessage('single_select'))}</td>
                 <td>${a.childDepth}</td>
                 <td class="wrap">
                 <#if a.childDepth gt 0>
-                    <a href="cmsDictionary/addChild.html?id=${a.id.id}" class="btnText" target="dialog" mask="true"><i class="icon-edit"></i> <@t.page 'button.edit'/></a>
+                    <a href="cmsDictionary/addChild.html?id=${a.id.id}" class="edit btnText blue" target="dialog" mask="true"><i class="icon-edit"></i> <@t.page 'button.edit'/></a>
                 <#else>
                     <a href="cmsDictionary/add.html?id=${a.id.id}" class="edit btnText blue" target="navTab" rel="cmsDictionary/edit"><i class="icon-edit"></i> <@t.page 'button.edit'/></a>
                 </#if>
+                <a href="cmsDictionary/excludeTree.html?id=${a.id.id}" class="btnText blue" target="dialog" mask="true"><i class="bi bi-exclude"></i> <@t.page 'dictionary.exclude'/></a>
                 <#if authorizedMap['cmsDictionary/delete']>
                     <a href="cmsDictionary/delete?ids=${a.id.id}&_csrf=<@_csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i> <@t.page 'button.delete'/></a>
                 </#if>
