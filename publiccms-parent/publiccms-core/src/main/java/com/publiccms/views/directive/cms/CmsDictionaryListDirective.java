@@ -22,7 +22,7 @@ public class CmsDictionaryListDirective extends AbstractTemplateDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
-        PageHandler page = service.getPage(getSite(handler).getId(), handler.getBoolean("multiple"),
+        PageHandler page = service.getPage(getSite(handler).getId(), handler.getString("name"),
                 handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", handler.getInteger("count", 30)));
         handler.put("page", page).render();
     }

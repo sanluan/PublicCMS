@@ -12,7 +12,7 @@
             <th type="number" name="${name}[#index#].width" size="10" fieldAttrs="{'min':1,'style':'display:none'}"><@t.page 'width'/></th>
             <th type="number" name="${name}[#index#].height" size="10" fieldAttrs="{'min':1,'style':'display:none'}"><@t.page 'height'/></th>
             <th type="lookup" name="${name}[#index#].dictionaryName" lookupPk="dictionaryId" lookupUrl="cmsDictionary/lookup.html" lookupGroup="${name}[#index#]" fieldAttrs="{'readonly':'readonly','style':'display:none'}" size="10"><a href="cmsDictionary/list.html" target="navTab" rel="cmsDictionary/list" icon="<i class='icon-book icon-large'></i>"><@t.page 'dictionary'/></a></th>
-            <th type="checkbox" name="${name}[#index#].multiple" size="10"><@t.page 'multiple_select'/></th>
+            <th type="checkbox" name="${name}[#index#].multiple" size="10" fieldAttrs="{'style':'display:none'}"><@t.page 'multiple_select'/></th>
             <th type="textarea" name="${name}[#index#].description" fieldAttrs="{'maxlength':50,'rows':2,'cols':30}"><@t.page 'description'/></th>
             <#if searchable><th type="checkbox" name="${name}[#index#].searchable" size="10"><@t.page 'searchable'/></th></#if>
             <th type="number" name="${name}[#index#].sort"  size="10" fieldClass="required digits" defaultVal="0"><@t.page 'sort'/></th>
@@ -53,7 +53,7 @@
                     <@_dictionary id=extend.dictionaryId><#assign dictionary=object/></@_dictionary>
                     <#if site.parentId?has_content&&!dictionary?has_content><@_dictionary id=extend.dictionaryId siteId=site.parentId><#assign dictionary=object/></@_dictionary></#if>
                     <input type="hidden" name="${name}[${extend?index}].dictionaryId" value="${(extend.dictionaryId)!}"/>
-                    <input type="text" name="${name}[${extend?index}].dictionaryName" readonly="readonly" size="10" value="${(dictionary.name)!}"<#if 'dictionary'!=extend.inputType> style="display:none"</#if>/>
+                    <input type="text" name="${name}[${extend?index}].dictionaryName" readonly="readonly" size="10" value="${(dictionary.name)!}"<#if 'dictionary'=extend.inputType> class="required"<#else> style="display:none"</#if>/>
                     <a class="btnLook" href="cmsDictionary/lookup.html" lookupGroup="${name}[${extend?index}]" width="1000" height="500"<#if 'dictionary'!=extend.inputType> style="display:none"</#if>><@t.page 'dictionary.select'/></a>
                 </td>
                 <td>

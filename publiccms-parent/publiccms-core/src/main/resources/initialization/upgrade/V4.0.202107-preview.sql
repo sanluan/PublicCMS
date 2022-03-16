@@ -323,3 +323,6 @@ ALTER TABLE `cms_dictionary`
     DROP INDEX `cms_dictionary_site_id`,
     ADD INDEX `cms_dictionary_site_id`(`site_id`);
 ALTER TABLE `sys_extend_field` ADD COLUMN `multiple` tinyint(1) NOT NULL COMMENT '多选' AFTER `dictionary_id`;
+INSERT INTO `sys_module_lang` VALUES ('myself_profile', 'en', 'Modify personal information');
+INSERT INTO `sys_module_lang` VALUES ('myself_profile', 'ja', '個人情報を変更する');
+INSERT INTO `sys_module_lang` VALUES ('myself_profile', 'zh', '修改个人信息');

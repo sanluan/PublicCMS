@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import com.publiccms.common.base.BaseDao;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
+import com.publiccms.common.tools.CommonUtils;
 
 /**
  *
@@ -16,19 +17,19 @@ import com.publiccms.common.handler.QueryHandler;
 public class CmsDictionaryDao extends BaseDao<CmsDictionary> {
 
     /**
-     * @param siteId 
-     * @param multiple
+     * @param siteId
+     * @param name
      * @param pageIndex
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(Short siteId, Boolean multiple, Integer pageIndex, Integer pageSize) {
+    public PageHandler getPage(Short siteId, String name, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from CmsDictionary bean");
         if (null != siteId) {
             queryHandler.condition("bean.id.siteId = :siteId").setParameter("siteId", siteId);
         }
-        if (null != multiple) {
-            queryHandler.condition("bean.multiple = :multiple").setParameter("multiple", multiple);
+        if (CommonUtils.notEmpty(name)) {
+            queryHandler.condition("bean.name like :name").setParameter("name", like(name));
         }
         queryHandler.order("bean.id.id desc");
         return getPage(queryHandler, pageIndex, pageSize);

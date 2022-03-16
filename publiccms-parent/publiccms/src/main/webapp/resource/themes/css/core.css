@@ -162,7 +162,7 @@ header .nav .selected ul{display:block;}
 .grid .right { text-align:right;}
 .grid .center { text-align:center;}
 table.table td .thumbnail,.grid .gridTbody td div .thumbnail{float:left;width:80px;}
-table.table td .thumbnail img,.grid .gridTbody td div .thumbnail img{max-width:80px;max-height:80px;}
+table.table td .thumbnail img,.grid .gridTbody td div .thumbnail img{max-width:80px;max-height:80px;background-image: url(../images/png-bg.png);}
 .grid .gridTbody td div .box{padding:5px;}
 
 /* CSS Table */

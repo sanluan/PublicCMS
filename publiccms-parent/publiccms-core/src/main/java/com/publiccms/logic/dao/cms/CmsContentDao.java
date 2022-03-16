@@ -348,7 +348,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
             }
         }
         if (CommonUtils.notEmpty(queryEntitry.getTitle())) {
-            queryHandler.condition("(bean.title like :title)").setParameter("title", like(queryEntitry.getTitle()));
+            queryHandler.condition("bean.title like :title ").setParameter("title", like(queryEntitry.getTitle()));
         }
         if (null != queryEntitry.getStartPublishDate()) {
             queryHandler.condition("bean.publishDate > :startPublishDate").setParameter("startPublishDate",

@@ -12,9 +12,11 @@
 <script>
 $('.combox_${flag}').on('change',function(){
     if($(this).val()=='dictionary') {
-        $(this).closest('tr').find('a.btnLook').show().prev().addClass('required').show();
+        $(this).closest('tr').find('input[name$=dictionaryName]').addClass('required').show().next().show();
+        $(this).closest('tr').find('input[name$=multiple]').show();
     }else{
-        $(this).closest('tr').find('a.btnLook').hide().prev().removeClass('required').hide();
+        $(this).closest('tr').find('input[name$=dictionaryName]').removeClass('required').hide().next().hide();
+        $(this).closest('tr').find('input[name$=multiple]').hide();
     }
     if(-1<$.inArray($(this).val(), [<#list maxlengthDisableTypes as t>'${t}'<#sep>,</#list>])){
         $(this).closest('tr').find('input[name$=maxlength]').hide();
