@@ -14,8 +14,9 @@
     </@_dictionaryDataList>
 </#if>
 </#macro>
-<@_dictionaryExcludeValue dictionaryId=id excludeDictionaryId=excludeDictionaryId value=value;a></@_dictionaryExcludeValue>
-<form method="post" autocomplete="off" action="cmsDictionaryExcludeValue/save?callbackType=closeCurrent&navTabId=cmsDictionary/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+<@_dictionaryExcludeValue dictionaryId=id excludeDictionaryId=excludeDictionaryId value=value><#assign a=object/></@_dictionaryExcludeValue>
+<#if !a?has_content><@_dictionaryExcludeValue dictionaryId=id excludeDictionaryId=excludeDictionaryId value=parentValue><#assign a=object/></@_dictionaryExcludeValue></#if>
+<form method="post" autocomplete="off" action="cmsDictionaryExcludeValue/save?callbackType=closeCurrent&navTabId=cmsDictionary/excludeTree" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
@@ -47,10 +48,13 @@
                 </dd>
             </dl>
             <fieldset>
-                <legend><@t.page 'dictionary.exclude'/></legend>
+                <legend><@t.page 'dictionary.exclude_value'/></legend>
                 <ul class="tree treeFolder treeCheck excludeParent expand">
                 <#assign values=((a.excludeValues)!'')?split(',')/>
                 <@_dictionary id=id;dictionary>
+                    <li>
+                        <a tname="excludeValues" tvalue="">${dictionary.name}</a>
+                        <ul>
                     <@_dictionaryDataList dictionaryId=excludeDictionaryId>
                         <#list list as d>
                             <li>
@@ -59,6 +63,8 @@
                             </li>
                         </#list>
                     </@_dictionaryDataList>
+                        </ul>
+                    </li>
                 </@_dictionary>
                 </ul>
             </fieldset>

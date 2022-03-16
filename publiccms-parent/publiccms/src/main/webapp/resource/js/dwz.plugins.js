@@ -499,7 +499,7 @@ DWZ.regPlugins.push(function($p){
                         });
                     }
                     initDictionary($dictionary,$exclude,url);
-                })($dictionary,index,$p,url);
+                })($dictionary,index,( !$.pdialog.getCurrent() ) ? navTab.getCurrentPanel(): $.pdialog.getCurrent(),url);
             }
         }
     });

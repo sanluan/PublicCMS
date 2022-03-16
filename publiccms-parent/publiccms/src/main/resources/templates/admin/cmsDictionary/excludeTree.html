@@ -3,8 +3,12 @@
     <@_dictionaryDataList dictionaryId=dictionaryId parentValue=parentValue>
         <ul>
             <#list list as d>
+                <@t.merge 'values' d.id.value!/>
+            </#list>
+            <@_dictionaryExcludeValue dictionaryId=id excludeDictionaryId=excludeDictionaryId values=t.values><#assign excludeValueMap=map/></@_dictionaryExcludeValue>
+            <#list list as d>
                 <li>
-                    <a href="cmsDictionary/excludeValue.html?id=${dictionaryId}&excludeDictionaryId=${excludeDictionaryId}&value=${d.id.value}" target="navTab" rel="cmsDictionary/excludeValue" icon="<i class='bi bi-exclude'></i>" title="<@t.page 'dictionary.exclude'/>">${d.id.value}:${d.text}</a>
+                    <a href="cmsDictionary/excludeValue.html?id=${dictionaryId}&excludeDictionaryId=${excludeDictionaryId}&value=${d.id.value}&parentValue=${parentValue}" target="navTab" rel="cmsDictionary/excludeValue" icon="<i class='bi bi-exclude'></i>" title="<@t.page 'dictionary.exclude'/>">${d.id.value}:${d.text} <#if excludeValueMap[d.id.value]?has_content>(<@t.page 'dictionary.exclude_value'/>:<@_dictionaryData dictionaryId=excludeDictionaryId values=excludeValueMap[d.id.value].excludeValues><#list map as k,v>${v.text!}<#sep>,</#list></@_dictionaryData>)</#if></a>
                     <@dictionaryTree dictionaryId=dictionaryId excludeDictionaryId=excludeDictionaryId parentValue=d.id.value depth=depth-1/>
                 </li>
             </#list>
@@ -12,20 +16,34 @@
     </@_dictionaryDataList>
 </#if>
 </#macro>
+<div class="formBar">
+    <ul>
+        <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+    </ul>
+</div>
 <div class="pageFormContent" layoutH>
 <@_dictionary id=id>
     <ul class="tree treeFolder expand">
     <#if excludeDictionaryId?has_content>
-        <#if object.childDepth gt 0>
-            <@_dictionaryDataList dictionaryId=object.id.id>
-                <#list list as d>
         <li>
-            <a href="cmsDictionary/excludeValue.html?id=${object.id.id}&excludeDictionaryId=${excludeDictionaryId}&value=${d.id.value}" target="navTab" rel="cmsDictionary/excludeValue" icon="<i class='bi bi-exclude'></i>" title="<@t.page 'dictionary.exclude'/>"> ${d.id.value}:${d.text}</a>
-            <@dictionaryTree dictionaryId=id excludeDictionaryId=excludeDictionaryId parentValue=d.id.value depth=object.childDepth-1/>
+            <a href="cmsDictionary/excludeTree.html?id=${object.id.id}" target="navTab" rel="cmsDictionary/excludeTree" title="<@t.page 'button.return'/>">
+                <@t.page 'button.return'/>
+            </a>
         </li>
-                </#list>
-            </@_dictionaryDataList>
-        </#if>
+        <@_dictionaryDataList dictionaryId=object.id.id>
+            <#list list as d>
+                <@t.merge 'values' d.id.value!/>
+            </#list>
+            <@_dictionaryExcludeValue dictionaryId=id excludeDictionaryId=excludeDictionaryId values=t.values><#assign excludeValueMap=map/></@_dictionaryExcludeValue>
+            <#list list as d>
+        <li>
+            <a href="cmsDictionary/excludeValue.html?id=${object.id.id}&excludeDictionaryId=${excludeDictionaryId}&value=${d.id.value}" target="navTab" rel="cmsDictionary/excludeValue" icon="<i class='bi bi-exclude'></i>" title="<@t.page 'dictionary.exclude'/>"> ${d.id.value}:${d.text} <#if excludeValueMap[d.id.value]?has_content>(<@t.page 'dictionary.exclude_value'/>:<@_dictionaryData dictionaryId=excludeDictionaryId values=excludeValueMap[d.id.value].excludeValues><#list map as k,v>${v.text!}<#sep>,</#list></@_dictionaryData>)</#if></a>
+            <#if object.childDepth gt 0>
+            <@dictionaryTree dictionaryId=id excludeDictionaryId=excludeDictionaryId parentValue=d.id.value depth=object.childDepth-1/>
+            </#if>
+        </li>
+            </#list>
+        </@_dictionaryDataList>
     <#else>
         <li>
             <a href="cmsDictionary/exclude.html?id=${object.id.id}" target="navTab" rel="cmsDictionary/exclude"><i class="icon-edit"></i> <@t.page 'dictionary.exclude'/></a>
@@ -33,7 +51,7 @@
         <@_dictionaryExcludeList dictionaryId=object.id.id>
             <#list list as d>
         <li>
-            <a href="cmsDictionary/excludeTree.html?id=${object.id.id}&excludeDictionaryId=${d.id.excludeDictionaryId}" target="dialog" mask="true" icon="<i class='bi bi-exclude'></i>"> <@_dictionary id=d.id.excludeDictionaryId>${object.name}</@_dictionary></a>
+            <a href="cmsDictionary/excludeTree.html?id=${object.id.id}&excludeDictionaryId=${d.id.excludeDictionaryId}"  target="navTab" rel="cmsDictionary/excludeTree"> <@_dictionary id=d.id.excludeDictionaryId>${object.name}</@_dictionary></a>
         </li>
             </#list>
         </@_dictionaryExcludeList>
@@ -41,13 +59,3 @@
     </ul>
 </@_dictionary>
 </div>
-<div class="formBar">
-    <ul>
-        <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
-    </ul>
-</div>
-<script>
-$('ul li a',$.pdialog.getCurrent()).click(function(){
-    $.pdialog.closeCurrent();
-});
-</script>

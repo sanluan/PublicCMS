@@ -181,7 +181,7 @@ CREATE TABLE `cms_dictionary_exclude_value` (
   `site_id` smallint(6) NOT NULL COMMENT '站点',
   `exclude_dictionary_id` varchar(20) NOT NULL COMMENT '排除的数据字典',
   `value` varchar(50) NOT NULL COMMENT '值',
-  `exclude_values` text NOT NULL COMMENT '排除的值',
+  `exclude_values` text default NULL COMMENT '排除的值',
   PRIMARY KEY (`dictionary_id`,`site_id`,`exclude_dictionary_id`,`value`),
   KEY `cms_dictionary_parent_value` (`dictionary_id`,`site_id`)
 )COMMENT='字典数据排除规则值';

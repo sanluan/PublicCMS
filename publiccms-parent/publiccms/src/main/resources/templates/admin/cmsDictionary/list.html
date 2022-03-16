@@ -56,7 +56,7 @@
                 <#else>
                     <a href="cmsDictionary/add.html?id=${a.id.id}" class="edit btnText blue" target="navTab" rel="cmsDictionary/edit"><i class="icon-edit"></i> <@t.page 'button.edit'/></a>
                 </#if>
-                <a href="cmsDictionary/excludeTree.html?id=${a.id.id}" class="btnText blue" target="dialog" mask="true"><i class="bi bi-exclude"></i> <@t.page 'dictionary.exclude'/></a>
+                <a href="cmsDictionary/excludeTree.html?id=${a.id.id}" class="btnText blue" target="navTab" rel="cmsDictionary/excludeTree" title="${a.name!}" icon="<i class='bi bi-exclude'></i>"><i class="bi bi-exclude"></i> <@t.page 'dictionary.exclude'/></a>
                 <#if authorizedMap['cmsDictionary/delete']>
                     <a href="cmsDictionary/delete?ids=${a.id.id}&_csrf=<@_csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i> <@t.page 'button.delete'/></a>
                 </#if>
