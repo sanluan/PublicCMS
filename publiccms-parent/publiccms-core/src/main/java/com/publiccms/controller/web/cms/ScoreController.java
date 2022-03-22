@@ -76,6 +76,13 @@ public class ScoreController {
                 Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
                 boolean needStatic = ConfigComponent.getBoolean(config.get(SiteConfigComponent.CONFIG_STATIC_AFTER_SCORE), false);
                 if ("content".equals(itemType)) {
+                    int maxScores = ConfigComponent.getInt(config.get(SiteConfigComponent.CONFIG_MAX_SCORES),
+                            SiteConfigComponent.DEFAULT_MAX_SCORES);
+                    if (scores > maxScores) {
+                        scores = maxScores;
+                    } else if (0 > scores) {
+                        scores = 1;
+                    }
                     CmsContent content = contentService.updateScores(site.getId(), itemId, score ? 1 : -1,
                             score ? scores : -scores);
                     if (null != content) {

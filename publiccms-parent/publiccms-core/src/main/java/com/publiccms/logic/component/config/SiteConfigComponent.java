@@ -61,6 +61,10 @@ public class SiteConfigComponent implements Config {
      */
     public static final String CONFIG_STATIC_AFTER_SCORE = "static_after_score";
     /**
+    *
+    */
+    public static final String CONFIG_MAX_SCORES = "max_scores";
+    /**
      *
      */
     public static final String CONFIG_DEFAULT_CONTENT_STATUS = "default_content_status";
@@ -73,6 +77,11 @@ public class SiteConfigComponent implements Config {
      * default expiry minutes
      */
     public static final int DEFAULT_EXPIRY_MINUTES = 30 * 24 * 60;
+
+    /**
+     * default max scores
+     */
+    public static final int DEFAULT_MAX_SCORES = 5;
 
     public String getSafeUrl(String returnUrl, SysSite site, String contextPath) {
         Map<String, String> config = BeanComponent.getConfigComponent().getConfigData(site.getId(), CONFIG_CODE_SITE);
@@ -152,6 +161,9 @@ public class SiteConfigComponent implements Config {
                         String.valueOf(CmsContentService.STATUS_PEND)));
         extendFieldList.add(new SysExtendField(CONFIG_DEFAULT_CONTENT_USER, INPUTTYPE_USER, CONFIG_DEFAULT_CONTENT_USER,
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_DEFAULT_CONTENT_USER)));
+        extendFieldList.add(new SysExtendField(CONFIG_MAX_SCORES, INPUTTYPE_NUMBER, false, CONFIG_MAX_SCORES,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_MAX_SCORES),
+                String.valueOf(DEFAULT_MAX_SCORES)));
         if (site.isUseStatic()) {
             extendFieldList.add(new SysExtendField(CONFIG_STATIC_AFTER_COMMENT, INPUTTYPE_BOOLEAN, false,
                     CONFIG_STATIC_AFTER_COMMENT,
