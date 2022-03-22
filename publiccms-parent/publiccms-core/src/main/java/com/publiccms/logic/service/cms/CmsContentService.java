@@ -501,7 +501,7 @@ public class CmsContentService extends BaseService<CmsContent> {
                 if (null != c && !category.getId().equals(c.getId())) {
                     CmsContent quote = new CmsContent(entity.getSiteId(), entity.getTitle(), entity.getUserId(), c.getId(),
                             entity.getModelId(), entity.isCopied(), entity.isContribute(), true, entity.isHasImages(),
-                            entity.isHasFiles(), entity.isHasProducts(), entity.isHasStatic(), 0, 0, 0, 0,
+                            entity.isHasFiles(), entity.isHasProducts(), entity.isHasStatic(), 0, 0, 0, 0, 0, 0,
                             entity.getPublishDate(), entity.getCreateDate(), 0, entity.getStatus(), false);
                     quote.setUrl(entity.getUrl());
                     quote.setDescription(entity.getDescription());
@@ -617,15 +617,18 @@ public class CmsContentService extends BaseService<CmsContent> {
     /**
      * @param siteId
      * @param id
+     * @param scoreUsers 
      * @param scores
      * @return
      */
     @CopyToDatasource
     @Transactional(isolation = Isolation.SERIALIZABLE)
-    public CmsContent updateScores(short siteId, Serializable id, int scores) {
+    public CmsContent updateScores(short siteId, Serializable id, int scoreUsers, int scores) {
         CmsContent entity = getEntity(id);
         if (null != entity && siteId == entity.getSiteId()) {
-            entity.setScores(entity.getScores() + scores);
+            entity.setTotalScores(entity.getTotalScores() + scores);
+            entity.setScoreUsers(entity.getScoreUsers() + scores);
+            entity.setScores(entity.getTotalScores() / entity.getScoreUsers());
         }
         return entity;
     }

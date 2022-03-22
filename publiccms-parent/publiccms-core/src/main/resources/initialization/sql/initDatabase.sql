@@ -315,6 +315,7 @@ CREATE TABLE `cms_user_score`  (
   `user_id` bigint(20) NOT NULL COMMENT '用户',
   `item_type` varchar(50) NOT NULL COMMENT '类型',
   `item_id` bigint(20) NOT NULL COMMENT '项目',
+  `scores` int(11) NOT NULL COMMENT '分数',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   PRIMARY KEY (`user_id`, `item_type`, `item_id`),
   KEY `cms_user_score_item_type`(`item_type`, `item_id`, `create_date`),

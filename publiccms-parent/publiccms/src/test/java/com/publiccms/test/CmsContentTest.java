@@ -44,8 +44,8 @@ public class CmsContentTest {
     public void searchTest() {
         Date now = CommonUtils.getDate();
         String text = "你好天津黑核科技有限公司";
-        CmsContent entity = new CmsContent((short) 1, text, 1, 1, "1", false, false, false, false, false, false, false, 0, 0, 0, 0, now,
-                now, 0, CmsContentService.STATUS_NORMAL, false);
+        CmsContent entity = new CmsContent((short) 1, text, 1, 1, "1", false, false, false, false, 0, now, now, 0,
+                CmsContentService.STATUS_NORMAL);
         entity.setDescription(text);
         contentService.save(entity);
         HighLighterQuery highLighterQuery = new HighLighterQuery(true);

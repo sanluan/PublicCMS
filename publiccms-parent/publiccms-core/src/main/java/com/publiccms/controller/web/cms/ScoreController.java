@@ -42,13 +42,15 @@ public class ScoreController {
      * @param userId
      * @param itemType
      * @param itemId
+     * @param scores
      * @return
      */
     @RequestMapping("score")
     @Csrf
     @ResponseBody
-    public boolean score(@RequestAttribute SysSite site, @SessionAttribute SysUser user, String itemType, long itemId) {
-        return score(site, user.getId(), itemType, itemId, true);
+    public boolean score(@RequestAttribute SysSite site, @SessionAttribute SysUser user, String itemType, long itemId,
+            int scores) {
+        return score(site, user.getId(), itemType, itemId, true, scores);
     }
 
     /**
@@ -63,10 +65,10 @@ public class ScoreController {
     @Csrf
     @ResponseBody
     public boolean unscore(@RequestAttribute SysSite site, @SessionAttribute SysUser user, String itemType, long itemId) {
-        return score(site, user.getId(), itemType, itemId, false);
+        return score(site, user.getId(), itemType, itemId, false, 0);
     }
 
-    private boolean score(SysSite site, long userId, String itemType, long itemId, boolean score) {
+    private boolean score(SysSite site, long userId, String itemType, long itemId, boolean score, int scores) {
         if (CommonUtils.notEmpty(itemType)) {
             CmsUserScoreId id = new CmsUserScoreId(userId, itemType, itemId);
             CmsUserScore entity = service.getEntity(id);
@@ -74,11 +76,13 @@ public class ScoreController {
                 Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
                 boolean needStatic = ConfigComponent.getBoolean(config.get(SiteConfigComponent.CONFIG_STATIC_AFTER_SCORE), false);
                 if ("content".equals(itemType)) {
-                    CmsContent content = contentService.updateScores(site.getId(), itemId, score ? 1 : -1);
+                    CmsContent content = contentService.updateScores(site.getId(), itemId, score ? 1 : -1,
+                            score ? scores : -scores);
                     if (null != content) {
                         if (score) {
                             entity = new CmsUserScore();
                             entity.setId(id);
+                            entity.setScores(scores);
                             service.save(entity);
                         } else {
                             service.delete(id);
@@ -94,6 +98,7 @@ public class ScoreController {
                         if (score) {
                             entity = new CmsUserScore();
                             entity.setId(id);
+                            entity.setScores(1);
                             service.save(entity);
                         } else {
                             service.delete(id);

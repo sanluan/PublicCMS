@@ -80,8 +80,8 @@ public class ContentBatchImport {
             List<Company> list = CommonConstants.objectMapper.readValue(new File("D://a.txt"),
                     CommonConstants.objectMapper.getTypeFactory().constructCollectionLikeType(List.class, Company.class));
             for (Company c : list) {
-                CmsContent entity = new CmsContent((short) 1, c.getName(), 1, 18, "company", false, false, false, true, false,
-                        false, false, 0, 0, 0, 0, new Date(), new Date(), 0, 1, false);
+                CmsContent entity = new CmsContent((short) 1, c.getName(), 1, 18, "company", false, true, false, false, 0,
+                        new Date(), new Date(), 0, 1);
                 entity.setDescription(c.getDescription());
                 if (CommonUtils.notEmpty(c.getImages())) {
                     entity.setCover(getUrl(c.getImages().get(0)));
@@ -98,8 +98,8 @@ public class ContentBatchImport {
                 }
                 if (CommonUtils.notEmpty(c.getProducts())) {
                     for (Product p : c.getProducts()) {
-                        CmsContent product = new CmsContent((short) 1, p.getName(), 1, 18, "product", false, false, false, true,
-                                false, false, false, 0, 0, 0, 0, new Date(), new Date(), 0, 1, false);
+                        CmsContent product = new CmsContent((short) 1, p.getName(), 1, 18, "product", false, true, false, false,
+                                0, new Date(), new Date(), 0, 1);
                         product.setParentId(entity.getId());
                         if (CommonUtils.notEmpty(p.getImages())) {
                             product.setCover(getUrl(p.getImages().iterator().next()));

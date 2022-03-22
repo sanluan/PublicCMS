@@ -54,6 +54,8 @@ CREATE TABLE `cms_content` (
   `cover` varchar(255) default NULL COMMENT '封面',
   `childs` int(11) NOT NULL COMMENT '子内容数',
   `scores` int(11) NOT NULL COMMENT '分数',
+  `score_users` int(11) NOT NULL COMMENT '评分人数',
+  `total_scores` int(11) NOT NULL COMMENT '总分数',
   `comments` int(11) NOT NULL COMMENT '评论数',
   `clicks` int(11) NOT NULL COMMENT '点击数',
   `publish_date` datetime NOT NULL COMMENT '发布日期',

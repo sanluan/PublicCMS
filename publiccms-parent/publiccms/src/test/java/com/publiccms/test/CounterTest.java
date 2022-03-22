@@ -75,7 +75,7 @@ class CounterTestTask implements Runnable {
     @Override
     public void run() {
         for (int i = 1; i <= 1000; i++) {
-            contentService.updateScores((short) 1, contentId, 1);
+            contentService.updateScores((short) 1, contentId, 1, 1);
         }
     }
 
