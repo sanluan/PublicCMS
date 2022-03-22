@@ -1,5 +1,6 @@
 package com.publiccms.entities.cms;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -108,12 +109,12 @@ public class CmsContent implements java.io.Serializable {
     private String cover;
     @GeneratorColumn(title = "子内容数")
     private int childs;
-    @GeneratorColumn(title = "分数", order = true)
+    @GeneratorColumn(title = "总分数")
     private int scores;
     @GeneratorColumn(title = "评分用户数")
     private int scoreUsers;
-    @GeneratorColumn(title = "总分数")
-    private int totalScores;
+    @GeneratorColumn(title = "分数", order = true)
+    private BigDecimal score;
     @GeneratorColumn(title = "评论数", order = true)
     private int comments;
     @GeneratorColumn(title = "点击数", order = true)
@@ -147,12 +148,12 @@ public class CmsContent implements java.io.Serializable {
     public CmsContent(short siteId, String title, long userId, int categoryId, String modelId, boolean onlyUrl, boolean hasImages,
             boolean hasFiles, boolean hasProducts, int childs, Date publishDate, Date createDate, int sort, int status) {
         this(siteId, title, userId, categoryId, modelId, false, false, onlyUrl, hasImages, hasFiles, hasProducts, false, childs,
-                0, 0, 0, 0, 0, publishDate, createDate, sort, status, false);
+                0, 0, BigDecimal.ZERO, 0, 0, publishDate, createDate, sort, status, false);
     }
 
     public CmsContent(short siteId, String title, long userId, int categoryId, String modelId, boolean copied, boolean contribute,
             boolean onlyUrl, boolean hasImages, boolean hasFiles, boolean hasProducts, boolean hasStatic, int childs, int scores,
-            int scoreUsers, int totalScores, int comments, int clicks, Date publishDate, Date createDate, int sort, int status,
+            int scoreUsers, BigDecimal score, int comments, int clicks, Date publishDate, Date createDate, int sort, int status,
             boolean disabled) {
         this.siteId = siteId;
         this.title = title;
@@ -169,7 +170,7 @@ public class CmsContent implements java.io.Serializable {
         this.childs = childs;
         this.scores = scores;
         this.scoreUsers = scoreUsers;
-        this.totalScores = totalScores;
+        this.score = score;
         this.comments = comments;
         this.clicks = clicks;
         this.publishDate = publishDate;
@@ -182,7 +183,7 @@ public class CmsContent implements java.io.Serializable {
     public CmsContent(short siteId, String title, long userId, Integer deptId, Long checkUserId, int categoryId, String modelId,
             Long parentId, Long quoteContentId, boolean copied, boolean contribute, String author, String editor, boolean onlyUrl,
             boolean hasImages, boolean hasFiles, boolean hasProducts, boolean hasStatic, String url, String description,
-            String tagIds, String dictionaryValues, String cover, int childs, int scores, int scoreUsers, int totalScores,
+            String tagIds, String dictionaryValues, String cover, int childs, int scores, int scoreUsers, BigDecimal score,
             int comments, int clicks, Date publishDate, Date expiryDate, Date checkDate, Date updateDate, Date createDate,
             int sort, int status, boolean disabled) {
         this.siteId = siteId;
@@ -211,7 +212,7 @@ public class CmsContent implements java.io.Serializable {
         this.childs = childs;
         this.scores = scores;
         this.scoreUsers = scoreUsers;
-        this.totalScores = totalScores;
+        this.score = score;
         this.comments = comments;
         this.clicks = clicks;
         this.publishDate = publishDate;
@@ -468,13 +469,13 @@ public class CmsContent implements java.io.Serializable {
         this.scoreUsers = scoreUsers;
     }
 
-    @Column(name = "total_scores", nullable = false)
-    public int getTotalScores() {
-        return this.totalScores;
+    @Column(name = "score", nullable = false)
+    public BigDecimal getScore() {
+        return this.score;
     }
 
-    public void setTotalScores(int totalScores) {
-        this.totalScores = totalScores;
+    public void setScore(BigDecimal score) {
+        this.score = score;
     }
 
     @Column(name = "comments", nullable = false)

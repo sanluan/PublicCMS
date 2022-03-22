@@ -328,7 +328,10 @@ INSERT INTO `sys_module_lang` VALUES ('myself_profile', 'ja', '個人情報を�
 INSERT INTO `sys_module_lang` VALUES ('myself_profile', 'zh', '修改个人信息');
 -- 2022-03-22 --
 ALTER TABLE `cms_content`
+    CHANGE COLUMN `scores` int(11) NOT NULL COMMENT '总分数' after `childs`,
     ADD COLUMN `score_users` int(11) NOT NULL COMMENT '评分人数' after `scores`,
-    ADD COLUMN `total_scores` int(11) NOT NULL COMMENT '总分数'  after `scoreUsers`;
+    ADD COLUMN `score` decimal(10, 2) NOT NULL COMMENT '分数'  after `scoreUsers`,
+    DROP INDEX `cms_content_scores` ,
+    ADD INDEX `cms_content_score` (`score`,`comments`,`clicks`);
 ALTER TABLE `cms_user_score`
     ADD COLUMN `scores` int(11) NOT NULL COMMENT '分数' after `item_id`;

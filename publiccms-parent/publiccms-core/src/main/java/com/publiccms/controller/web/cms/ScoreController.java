@@ -49,8 +49,8 @@ public class ScoreController {
     @Csrf
     @ResponseBody
     public boolean score(@RequestAttribute SysSite site, @SessionAttribute SysUser user, String itemType, long itemId,
-            int scores) {
-        return score(site, user.getId(), itemType, itemId, true, scores);
+            Integer scores) {
+        return score(site, user.getId(), itemType, itemId, true, null == scores ? 1 : scores);
     }
 
     /**

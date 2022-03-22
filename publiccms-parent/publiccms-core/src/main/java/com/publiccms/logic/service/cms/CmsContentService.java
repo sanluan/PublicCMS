@@ -3,6 +3,7 @@ package com.publiccms.logic.service.cms;
 import static org.springframework.util.StringUtils.arrayToDelimitedString;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -501,7 +502,7 @@ public class CmsContentService extends BaseService<CmsContent> {
                 if (null != c && !category.getId().equals(c.getId())) {
                     CmsContent quote = new CmsContent(entity.getSiteId(), entity.getTitle(), entity.getUserId(), c.getId(),
                             entity.getModelId(), entity.isCopied(), entity.isContribute(), true, entity.isHasImages(),
-                            entity.isHasFiles(), entity.isHasProducts(), entity.isHasStatic(), 0, 0, 0, 0, 0, 0,
+                            entity.isHasFiles(), entity.isHasProducts(), entity.isHasStatic(), 0, 0, 0, BigDecimal.ZERO, 0, 0,
                             entity.getPublishDate(), entity.getCreateDate(), 0, entity.getStatus(), false);
                     quote.setUrl(entity.getUrl());
                     quote.setDescription(entity.getDescription());
@@ -617,7 +618,7 @@ public class CmsContentService extends BaseService<CmsContent> {
     /**
      * @param siteId
      * @param id
-     * @param scoreUsers 
+     * @param scoreUsers
      * @param scores
      * @return
      */
@@ -626,9 +627,13 @@ public class CmsContentService extends BaseService<CmsContent> {
     public CmsContent updateScores(short siteId, Serializable id, int scoreUsers, int scores) {
         CmsContent entity = getEntity(id);
         if (null != entity && siteId == entity.getSiteId()) {
-            entity.setTotalScores(entity.getTotalScores() + scores);
+            entity.setScores(entity.getScores() + scores);
             entity.setScoreUsers(entity.getScoreUsers() + scores);
-            entity.setScores(entity.getTotalScores() / entity.getScoreUsers());
+            if (0 < entity.getScoreUsers()) {
+                entity.setScore(new BigDecimal(entity.getScores()).divide(new BigDecimal(entity.getScoreUsers())));
+            } else {
+                entity.setScore(BigDecimal.ZERO);
+            }
         }
         return entity;
     }

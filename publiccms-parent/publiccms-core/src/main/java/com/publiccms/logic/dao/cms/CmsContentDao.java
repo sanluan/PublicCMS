@@ -370,7 +370,8 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         }
         switch (orderField) {
         case "scores":
-            queryHandler.order("bean.scores").append(orderType);
+        case "score":
+            queryHandler.order("bean.score").append(orderType);
             break;
         case "comments":
             queryHandler.order("bean.comments").append(orderType);
