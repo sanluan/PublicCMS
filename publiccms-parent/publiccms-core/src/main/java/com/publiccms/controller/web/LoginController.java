@@ -214,7 +214,6 @@ public class LoginController {
             entity.setLoginCount(0);
             entity.setDeptId(null);
             service.save(entity);
-            service.save(entity);
 
             if (null != clientId && null != uuid) {
                 SysAppClient appClient = appClientService.getEntity(clientId);
