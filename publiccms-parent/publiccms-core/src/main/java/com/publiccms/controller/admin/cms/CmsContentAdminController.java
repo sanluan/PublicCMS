@@ -109,7 +109,7 @@ public class CmsContentAdminController {
     private SysSiteService siteService;
 
     public static final String[] ignoreProperties = new String[] { "siteId", "userId", "deptId", "categoryId", "tagIds", "sort",
-            "createDate", "updateDate", "clicks", "comments", "scores", "childs", "checkUserId", "disabled" };
+            "createDate", "updateDate", "clicks", "comments", "scores", "scoreUsers", "score", "childs", "checkUserId", "disabled" };
 
     public static final String[] ignorePropertiesWithUrl = ArrayUtils.addAll(ignoreProperties, new String[] { "url" });
 

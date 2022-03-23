@@ -1,5 +1,7 @@
 package com.publiccms.controller.web.cms;
 
+import java.math.BigDecimal;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -122,6 +124,8 @@ public class ContentController {
             entity.setComments(0);
             entity.setChilds(0);
             entity.setScores(0);
+            entity.setScoreUsers(0);
+            entity.setScore(BigDecimal.ZERO);
             service.save(entity);
             if (CommonUtils.notEmpty(entity.getParentId())) {
                 service.updateChilds(site.getId(), entity.getParentId(), 1);

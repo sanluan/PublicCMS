@@ -257,6 +257,9 @@
 </div>
 <div class="formBar">
     <ul>
+        <#if model?has_content&&model.hasChild>
+            <li><a href="cmsContent/list.html?parentId=${a.id}&categoryId=${a.categoryId!}" class="button" target="navTab" rel="cmsContent/list" icon="<i class='icon-book icon-large'></i>"><@t.page 'content.child_management'/></a></li>
+        </#if>
         <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
     </ul>
 </div>
