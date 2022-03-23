@@ -42,7 +42,6 @@
                 <th><@t.page 'content.promulgator'/></th>
                 <th><@t.page 'category'/></th>
                 <th><@t.page 'model'/></th>
-                <th width="30" orderField="scores" class="<#if orderField?has_content&&'scores'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'content.score'/></th>
                 <th width="30" orderField="comments" class="<#if orderField?has_content&&'comments'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'content.comments'/></th>
                 <th width="30" orderField="clicks" class="<#if orderField?has_content&&'clicks'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'clicks'/></th>
                 <th width="70" orderField="publishDate" class="<#if orderField?has_content&&'publishDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'publish_date'/></th>
@@ -88,7 +87,6 @@
                         ${(modelMap[a.modelId].name)!}
                     </a>
                 </td>
-                <td>${a.scores!}</td>
                 <td>${a.comments!}</td>
                 <td>${a.clicks!}</td>
                 <td>${a.publishDate!}</td>
