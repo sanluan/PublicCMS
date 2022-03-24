@@ -53,51 +53,51 @@ public class SourceGenerator {
     }
 
     /**
-     * 
+     *
      */
     public static final String ENTITY_BASE_PACKAGE = "entities";
     /**
-     * 
+     *
      */
     public static final String DAO_BASE_PACKAGE = "logic.dao";
     /**
-     * 
+     *
      */
     public static final String DAO_SUFFIX = "Dao";
     /**
-     * 
+     *
      */
     public static final String SERVICE_BASE_PACKAGE = "logic.service";
     /**
-     * 
+     *
      */
     public static final String SERVICE_SUFFIX = "Service";
     /**
-     * 
+     *
      */
     public static final String DIRECTIVE_BASE_PACKAGE = "views.directive";
     /**
-     * 
+     *
      */
     public static final String DIRECTIVE_SUFFIX = "Directive";
     /**
-     * 
+     *
      */
     public static final String CONTROLLER_BASE_PACKAGE = "controller.admin";
     /**
-     * 
+     *
      */
     public static final String CONTROLLER_SUFFIX = "AdminController";
     /**
-     * 
+     *
      */
     public static final String JAVA_BASE_PATH = "src/main/java/";
     /**
-     * 
+     *
      */
     public static final String WEB_BASE_PATH = "src/main/resources/";
     /**
-     * 
+     *
      */
     public static final String TEMPLATE_BASE_PATH = WEB_BASE_PATH + "templates/admin/";
 
@@ -264,7 +264,7 @@ public class SourceGenerator {
         } catch (TemplateException e) {
             System.out.println(e.getMessage());
         }
-        System.out.println("-------------------------------");
+        System.out.println("file path: " + new File("").getAbsolutePath());
     }
 
     private Configuration config;
