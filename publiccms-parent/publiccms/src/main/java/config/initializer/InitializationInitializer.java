@@ -80,10 +80,10 @@ public class InitializationInitializer implements WebApplicationInitializer {
 
     /**
      * 检查CMS路径变量
-     * 
+     *
      * @param filePath
      * @param defaultPath
-     * 
+     *
      */
     public static void initFilePath(String filePath, String defaultPath) {
         File file = new File(System.getProperty("cms.filePath", filePath));
@@ -107,13 +107,13 @@ public class InitializationInitializer implements WebApplicationInitializer {
 
     /**
      * 字符集配置
-     * 
+     *
      * @param config
      * @throws IOException
      */
     public static void initEncoding() {
         String initCharset = System.getProperty("cms.initCharset");
-        if (CommonUtils.notEmpty(initCharset) && "false".equalsIgnoreCase(initCharset)) {
+        if (CommonUtils.empty(initCharset) || "false".equalsIgnoreCase(initCharset)) {
             Charset old = Charset.defaultCharset();
             if (!old.equals(CommonConstants.DEFAULT_CHARSET)) {
                 log.info(String.format("old file.encoding = %s", old));
@@ -138,7 +138,7 @@ public class InitializationInitializer implements WebApplicationInitializer {
 
     /**
      * 代理配置
-     * 
+     *
      * @param config
      * @throws IOException
      */
