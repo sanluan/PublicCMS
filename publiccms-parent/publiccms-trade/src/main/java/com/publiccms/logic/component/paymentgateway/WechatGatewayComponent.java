@@ -1,7 +1,9 @@
 package com.publiccms.logic.component.paymentgateway;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.security.GeneralSecurityException;
 import java.security.PrivateKey;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,12 +25,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.api.Config;
-import com.publiccms.common.api.SiteCache;
 import com.publiccms.common.api.TradePaymentProcessor;
 import com.publiccms.common.base.AbstractFreemarkerView;
 import com.publiccms.common.base.AbstractPaymentGateway;
-import com.publiccms.common.cache.CacheEntity;
-import com.publiccms.common.cache.CacheEntityFactory;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.JsonUtils;
@@ -44,16 +43,19 @@ import com.publiccms.logic.component.trade.PaymentProcessorComponent;
 import com.publiccms.logic.service.trade.TradePaymentHistoryService;
 import com.publiccms.logic.service.trade.TradePaymentService;
 import com.wechat.pay.contrib.apache.httpclient.WechatPayHttpClientBuilder;
-import com.wechat.pay.contrib.apache.httpclient.auth.AutoUpdateCertificatesVerifier;
 import com.wechat.pay.contrib.apache.httpclient.auth.PrivateKeySigner;
+import com.wechat.pay.contrib.apache.httpclient.auth.Verifier;
 import com.wechat.pay.contrib.apache.httpclient.auth.WechatPay2Credentials;
 import com.wechat.pay.contrib.apache.httpclient.auth.WechatPay2Validator;
+import com.wechat.pay.contrib.apache.httpclient.cert.CertificatesManager;
+import com.wechat.pay.contrib.apache.httpclient.exception.HttpCodeException;
+import com.wechat.pay.contrib.apache.httpclient.exception.NotFoundException;
 import com.wechat.pay.contrib.apache.httpclient.util.PemUtil;
 
 import freemarker.template.Template;
 
 @Component
-public class WechatGatewayComponent extends AbstractPaymentGateway implements Config, SiteCache {
+public class WechatGatewayComponent extends AbstractPaymentGateway implements Config {
     /**
      * 
      */
@@ -103,7 +105,7 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
     @Autowired
     private PaymentProcessorComponent tradePaymentProcessorComponent;
 
-    private CacheEntity<Short, AutoUpdateCertificatesVerifier> cache;
+    private CertificatesManager certificatesManager = CertificatesManager.getInstance();
     protected final Log log = LogFactory.getLog(getClass());
 
     /**
@@ -112,7 +114,7 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
      * @param apiV3Key
      * @return verifier
      */
-    public AutoUpdateCertificatesVerifier getVerifier(short siteId, Map<String, String> config, byte[] apiV3Key) {
+    public Verifier getVerifier(short siteId, Map<String, String> config, byte[] apiV3Key) {
         return getVerifier(siteId, config, apiV3Key, null);
     }
 
@@ -123,21 +125,21 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
      * @param merchantPrivateKey
      * @return verifier
      */
-    public AutoUpdateCertificatesVerifier getVerifier(short siteId, Map<String, String> config, byte[] apiV3Key,
-            PrivateKey merchantPrivateKey) {
-        AutoUpdateCertificatesVerifier verifier = cache.get(siteId);
-        if (null == verifier) {
-            synchronized (cache) {
-                verifier = cache.get(siteId);
-                if (null == verifier) {
-                    if (null == merchantPrivateKey) {
-                        byte[] privateKey = config.get(CONFIG_PRIVATEKEY).getBytes(CommonConstants.DEFAULT_CHARSET);
-                        merchantPrivateKey = PemUtil.loadPrivateKey(new ByteArrayInputStream(privateKey));
-                    }
-                    verifier = new AutoUpdateCertificatesVerifier(new WechatPay2Credentials(config.get(CONFIG_MCHID),
-                            new PrivateKeySigner(config.get(CONFIG_SERIALNO), merchantPrivateKey)), apiV3Key);
-                    cache.put(siteId, verifier);
-                }
+    public Verifier getVerifier(short siteId, Map<String, String> config, byte[] apiV3Key, PrivateKey merchantPrivateKey) {
+        Verifier verifier = null;
+        try {
+            verifier = certificatesManager.getVerifier(config.get(CONFIG_MCHID));
+        } catch (NotFoundException e) {
+            if (null == merchantPrivateKey) {
+                byte[] privateKey = config.get(CONFIG_PRIVATEKEY).getBytes(CommonConstants.DEFAULT_CHARSET);
+                merchantPrivateKey = PemUtil.loadPrivateKey(new ByteArrayInputStream(privateKey));
+            }
+            try {
+                certificatesManager.putMerchant(config.get(CONFIG_MCHID), new WechatPay2Credentials(config.get(CONFIG_MCHID),
+                        new PrivateKeySigner(config.get(CONFIG_SERIALNO), merchantPrivateKey)), apiV3Key);
+                verifier = certificatesManager.getVerifier(config.get(CONFIG_MCHID));
+            } catch (HttpCodeException | IOException | GeneralSecurityException | NotFoundException e1) {
+                e1.printStackTrace();
             }
         }
         return verifier;
@@ -167,7 +169,7 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
                     byte[] privateKey = config.get(CONFIG_PRIVATEKEY).getBytes(CommonConstants.DEFAULT_CHARSET);
                     PrivateKey merchantPrivateKey = PemUtil.loadPrivateKey(new ByteArrayInputStream(privateKey));
 
-                    AutoUpdateCertificatesVerifier verifier = getVerifier(site.getId(), config, apiV3Key, merchantPrivateKey);
+                    Verifier verifier = getVerifier(site.getId(), config, apiV3Key, merchantPrivateKey);
 
                     WechatPayHttpClientBuilder builder = WechatPayHttpClientBuilder.create()
                             .withMerchant(config.get(CONFIG_MCHID), config.get(CONFIG_SERIALNO), merchantPrivateKey)
@@ -238,7 +240,7 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
                 byte[] privateKey = config.get(CONFIG_PRIVATEKEY).getBytes(CommonConstants.DEFAULT_CHARSET);
                 PrivateKey merchantPrivateKey = PemUtil.loadPrivateKey(new ByteArrayInputStream(privateKey));
 
-                AutoUpdateCertificatesVerifier verifier = getVerifier(siteId, config, apiV3Key, merchantPrivateKey);
+                Verifier verifier = getVerifier(siteId, config, apiV3Key, merchantPrivateKey);
 
                 WechatPayHttpClientBuilder builder = WechatPayHttpClientBuilder.create()
                         .withMerchant(config.get(CONFIG_MCHID), config.get(CONFIG_SERIALNO), merchantPrivateKey)
@@ -338,18 +340,6 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
         return extendFieldList;
     }
 
-    /**
-     * @param cacheEntityFactory
-     * @throws IllegalAccessException
-     * @throws InstantiationException
-     * @throws ClassNotFoundException
-     */
-    @Autowired
-    public void initCache(CacheEntityFactory cacheEntityFactory)
-            throws ClassNotFoundException, InstantiationException, IllegalAccessException {
-        cache = cacheEntityFactory.createCacheEntity(CONFIG_CODE, CacheEntityFactory.MEMORY_CACHE_ENTITY);
-    }
-
     @Override
     public boolean enable(short siteId) {
         Map<String, String> config = BeanComponent.getConfigComponent().getConfigData(siteId, CONFIG_CODE);
@@ -357,16 +347,6 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
             return true;
         }
         return false;
-    }
-
-    @Override
-    public void clear(short siteId) {
-        cache.remove(siteId);
-    }
-
-    @Override
-    public void clear() {
-        cache.clear();
     }
 
 }

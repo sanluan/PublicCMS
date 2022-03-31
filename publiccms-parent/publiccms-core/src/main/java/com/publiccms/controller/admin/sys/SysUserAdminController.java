@@ -134,6 +134,16 @@ public class SysUserAdminController {
         return CommonConstants.TEMPLATE_DONE;
     }
 
+    /**
+     * @param site
+     * @param admin
+     * @param nickName
+     * @param cover
+     * @param email
+     * @param request
+     * @param model
+     * @return
+     */
     @RequestMapping("update")
     @Csrf
     public String update(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String nickName, String cover,

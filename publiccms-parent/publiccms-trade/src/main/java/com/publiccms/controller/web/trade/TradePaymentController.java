@@ -45,7 +45,7 @@ import com.publiccms.logic.component.trade.PaymentProcessorComponent;
 import com.publiccms.logic.service.trade.TradePaymentHistoryService;
 import com.publiccms.logic.service.trade.TradePaymentService;
 import com.publiccms.logic.service.trade.TradeRefundService;
-import com.wechat.pay.contrib.apache.httpclient.auth.AutoUpdateCertificatesVerifier;
+import com.wechat.pay.contrib.apache.httpclient.auth.Verifier;
 import com.wechat.pay.contrib.apache.httpclient.util.AesUtil;
 
 @Controller
@@ -179,7 +179,7 @@ public class TradePaymentController {
         resultMap.put("message", "error");
         if (CommonUtils.notEmpty(config) && CommonUtils.notEmpty(config.get(WechatGatewayComponent.CONFIG_KEY))) {
             byte[] apiV3Key = config.get(WechatGatewayComponent.CONFIG_KEY).getBytes(CommonConstants.DEFAULT_CHARSET);
-            AutoUpdateCertificatesVerifier verifier = wechatGatewayComponent.getVerifier(site.getId(), config, apiV3Key);
+            Verifier verifier = wechatGatewayComponent.getVerifier(site.getId(), config, apiV3Key);
             try {
                 StringBuilder sb = new StringBuilder();
                 sb.append(timestamp).append("\n").append(nonce).append("\n").append(body).append("\n");
