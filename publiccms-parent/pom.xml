@@ -22,7 +22,7 @@
         <version.publiccms>V4.0.202107.e</version.publiccms>
         <!-- http://mvnrepository.com/artifact/org.springframework/spring-core -->
         <!-- http://projects.spring.io/spring-framework/ -->
-        <version.spring>5.3.8</version.spring>
+        <version.spring>5.3.18</version.spring>
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
         <!-- https://projects.spring.io/spring-boot/ -->
         <version.springBoot>2.5.2</version.springBoot>
