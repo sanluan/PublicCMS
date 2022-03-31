@@ -13,7 +13,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.CompletionStage;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -153,13 +152,6 @@ public class CmsContentService extends BaseService<CmsContent> {
      */
     public void index(short siteId, Serializable[] ids) {
         dao.index(siteId, ids);
-    }
-
-    /**
-     * @return results page
-     */
-    public CompletionStage<?> reCreateIndex() {
-        return dao.reCreateIndex();
     }
 
     /**

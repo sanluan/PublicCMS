@@ -34,13 +34,13 @@ import com.publiccms.entities.log.LogUpload;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.site.SiteComponent;
-import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.log.LogUploadService;
 import com.publiccms.logic.service.sys.SysDomainService;
 import com.publiccms.logic.service.sys.SysSiteDatasourceService;
 import com.publiccms.logic.service.sys.SysSiteService;
+import com.publiccms.logic.service.tools.HqlService;
 import com.publiccms.logic.service.tools.SqlService;
 
 /**
@@ -57,9 +57,9 @@ public class SysSiteAdminController {
     @Autowired
     private SysDomainService domainService;
     @Autowired
-    private CmsContentService contentService;
-    @Autowired
     private SqlService sqlService;
+    @Autowired
+    private HqlService hqlService;
     @Autowired
     protected LogUploadService logUploadService;
     @Autowired
@@ -316,7 +316,7 @@ public class SysSiteAdminController {
     @Csrf
     public String reCreateIndex(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, HttpServletRequest request,
             ModelMap model) {
-        contentService.reCreateIndex();
+        hqlService.reCreateIndex();
         logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                 "reCreateIndex", RequestUtils.getIpAddress(request), CommonUtils.getDate(), CommonConstants.BLANK));
         return CommonConstants.TEMPLATE_DONE;

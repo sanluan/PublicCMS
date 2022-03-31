@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.annotation.PreDestroy;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
@@ -349,4 +350,8 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
         return false;
     }
 
+    @PreDestroy
+    public void destroy() {
+        certificatesManager.stop();
+    }
 }

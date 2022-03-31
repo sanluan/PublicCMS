@@ -5,6 +5,7 @@ import java.io.StringReader;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CompletionStage;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
@@ -83,6 +84,13 @@ public class HqlService extends BaseService<Object> {
             }
         }
         return list;
+    }
+
+    /**
+     * @return results page
+     */
+    public CompletionStage<?> reCreateIndex() {
+        return dao.reCreateIndex();
     }
 
     /**
