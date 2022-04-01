@@ -298,9 +298,7 @@ public class DatasourceComponent implements SiteCache {
 
     @PreDestroy
     public void destroy() {
-        if (pool.isShutdown()) {
-            pool.shutdown();
-        }
+        pool.shutdown();
     }
 
     public void cleanDisabledDatasource(int length) {

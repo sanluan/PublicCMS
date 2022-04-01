@@ -325,9 +325,7 @@ public class EmailComponent implements SiteCache, Config {
 
     @PreDestroy
     public void destroy() {
-        if (pool.isShutdown()) {
-            pool.shutdown();
-        }
+        pool.shutdown();
     }
 }
 
