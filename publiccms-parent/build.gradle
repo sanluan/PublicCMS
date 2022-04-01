@@ -23,16 +23,16 @@ subprojects {
     apply plugin: "eclipse-wtp"
 
     group = 'com.publiccms'
-    version = 'V4.0.202107.e'
+    version = 'V4.0.202107.f'
     
     test.enabled = false
     
     ext {
         // http://mvnrepository.com/artifact/org.springframework/spring-core
-        // http://projects.spring.io/spring-framework/
+        // https://spring.io/projects/spring-framework
         springVersion = "5.3.15"
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
-        // https://projects.spring.io/spring-boot/
+        // https://spring.io/projects/spring-boot
         springBootVersion = "2.6.3"
         // https://mvnrepository.com/artifact/org.aspectj/aspectjweaver
         aspectjVersion = "1.9.7"
