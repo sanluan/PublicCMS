@@ -24,7 +24,7 @@
       // If we're not in Markdown mode, fall back to normal newlineAndIndent
       var eolState = cm.getStateAfter(pos.line);
       var inner = CodeMirror.innerMode(cm.getMode(), eolState);
-      if (inner.mode.name !== "markdown") {
+      if (inner.mode.name !== "markdown" && inner.mode.helperType !== "markdown") {
         cm.execCommand("newlineAndIndent");
         return;
       } else {
@@ -90,7 +90,7 @@
           });
         } else {
           if (startIndent.length > nextIndent.length) return;
-          // This doesn't run if the next line immediatley indents, as it is
+          // This doesn't run if the next line immediately indents, as it is
           // not clear of the users intention (new indented item or same level)
           if ((startIndent.length < nextIndent.length) && (lookAhead === 1)) return;
           skipCount += 1;

@@ -443,22 +443,26 @@
       aligners[i].clear();
     aligners.length = 0;
 
-    var cm = [dv.edit, dv.orig], scroll = [];
+    var cm = [dv.edit, dv.orig], scroll = [], offset = []
     if (other) cm.push(other.orig);
-    for (var i = 0; i < cm.length; i++)
+    for (var i = 0; i < cm.length; i++) {
       scroll.push(cm[i].getScrollInfo().top);
+      offset.push(-cm[i].getScrollerElement().getBoundingClientRect().top)
+    }
 
+    if (offset[0] != offset[1] || cm.length == 3 && offset[1] != offset[2])
+      alignLines(cm, offset, [0, 0, 0], aligners)
     for (var ln = 0; ln < linesToAlign.length; ln++)
-      alignLines(cm, linesToAlign[ln], aligners);
+      alignLines(cm, offset, linesToAlign[ln], aligners);
 
     for (var i = 0; i < cm.length; i++)
       cm[i].scrollTo(null, scroll[i]);
   }
 
-  function alignLines(cm, lines, aligners) {
-    var maxOffset = 0, offset = [];
+  function alignLines(cm, cmOffset, lines, aligners) {
+    var maxOffset = -1e8, offset = [];
     for (var i = 0; i < cm.length; i++) if (lines[i] != null) {
-      var off = cm[i].heightAtLine(lines[i], "local");
+      var off = cm[i].heightAtLine(lines[i], "local") - cmOffset[i];
       offset[i] = off;
       maxOffset = Math.max(maxOffset, off);
     }
@@ -504,6 +508,7 @@
       copy.title = dv.edit.phrase(editOriginals ? "Push to left" : "Revert chunk");
       copy.chunk = chunk;
       copy.style.top = (chunk.origTo > chunk.origFrom ? top : dv.edit.heightAtLine(chunk.editFrom, "local") - sTopEdit) + "px";
+      copy.setAttribute("role", "button");
 
       if (editOriginals) {
         var topReverse = dv.edit.heightAtLine(chunk.editFrom, "local") - sTopEdit;
@@ -514,6 +519,7 @@
                              origFrom: chunk.editFrom, origTo: chunk.editTo};
         copyReverse.style.top = topReverse + "px";
         dv.type == "right" ? copyReverse.style.left = "2px" : copyReverse.style.right = "2px";
+        copyReverse.setAttribute("role", "button");
       }
     }
   }
@@ -595,6 +601,7 @@
 
   function buildGap(dv) {
     var lock = dv.lockButton = elt("div", null, "CodeMirror-merge-scrolllock");
+    lock.setAttribute("role", "button");
     var lockWrap = elt("div", [lock], "CodeMirror-merge-scrolllock-wrap");
     CodeMirror.on(lock, "click", function() { setScrollLock(dv, !dv.lockScroll); });
     var gapElts = [lockWrap];

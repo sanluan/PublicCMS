@@ -50,7 +50,7 @@
   }
 
   function getTagRegexp(tagName, anchored) {
-    return new RegExp((anchored ? "^" : "") + "<\/\s*" + tagName + "\s*>", "i");
+    return new RegExp((anchored ? "^" : "") + "<\/\\s*" + tagName + "\\s*>", "i");
   }
 
   function addTags(from, to) {
@@ -74,7 +74,8 @@
       name: "xml",
       htmlMode: true,
       multilineTagIndentFactor: parserConfig.multilineTagIndentFactor,
-      multilineTagIndentPastTag: parserConfig.multilineTagIndentPastTag
+      multilineTagIndentPastTag: parserConfig.multilineTagIndentPastTag,
+      allowMissingTagName: parserConfig.allowMissingTagName,
     });
 
     var tags = {};
