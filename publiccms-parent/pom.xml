@@ -340,7 +340,6 @@
                 <artifactId>poi-ooxml</artifactId>
                 <version>${version.poi}</version>
             </dependency>
-            <!-- https://mvnrepository.com/artifact/org.apache.poi/poi-scratchpad -->
             <dependency>
                 <groupId>org.apache.poi</groupId>
                 <artifactId>poi-scratchpad</artifactId>

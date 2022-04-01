@@ -6,7 +6,7 @@ import java.util.Map;
 
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.xmlbeans.XmlException;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTPPrBase;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTPPr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTRPr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTblPrBase;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTcPr;
@@ -30,7 +30,7 @@ public class CustomCSSStylesDocument extends CSSStylesDocument {
     }
 
     @Override
-    public CSSStyle createCSSStyle(CTPPrBase pPr, String className) {
+    public CSSStyle createCSSStyle(CTPPr pPr, String className) {
         CSSStyle style = super.createCSSStyle(pPr, className);
         putStyle(className, style);
         return style;

@@ -305,7 +305,7 @@ fieldset:first-child .unit:first-of-type p:last-child{padding:0;}
 
 .formBar{clear:both;padding:10px;height:30px;}
 .formBar ul{float:right;}
-.formBar li{float:left;margin-left:10px;}
+.formBar li{float:left;line-height:30px;margin-left:10px;}
 .divider{clear:both;display:block;overflow:hidden;width:auto;height:1px;padding:4px 0 0 0;margin-bottom:5px;border-style:dashed;border-width:0 0 1px 0;}
 
 .tagsBox{line-height:25px;float:left;}
