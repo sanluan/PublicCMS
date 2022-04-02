@@ -27,6 +27,7 @@ $(".pageFormContent",$.pdialog.getCurrent()).on("change","input[type=file]",func
         $.ajax({
             url:'cmsWebFile/check',
             type: 'POST',
+            dataType: "json",
             async: false,
             data: {
                 fileNames : fileNames,
