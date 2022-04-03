@@ -22,7 +22,7 @@ gradle(使用以下文件：gradle,build.gradle,settings.gradle,gradlew,gradlew.
 
 其中clean可以替换为以下任务：
 清空 ：clean
-打包 ：war
+打包 ：war、bootWar
 清空eclipse配置 ：cleanEclipse
 配置eclipse工程 ：eclipse (在eclipse中运行时，请保持publiccms-parent的子工程关闭)
 清空idea配置 ：cleanIdea

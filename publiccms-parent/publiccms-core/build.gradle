@@ -20,7 +20,7 @@ dependencies {
     implementation "org.mybatis.dynamic-sql:mybatis-dynamic-sql:${dynamicSqlVersion}"
     implementation "com.github.pagehelper:pagehelper:${pageHelperVersion}"
     
-    implementation "jakarta.mail:jakarta.mail-api:${mailVersion}"
+    implementation "jakarta.mail:jakarta.mail-api:${mailApiVersion}"
     implementation "com.sun.mail:jakarta.mail:${mailVersion}"
     implementation "jakarta.servlet:jakarta.servlet-api:${servletVersion}"
 }
