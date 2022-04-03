@@ -25,7 +25,7 @@ dependencies {
     implementation "org.hibernate.search:hibernate-search-mapper-orm-jakarta:${hibernateSearchVersion}"
     implementation "org.hibernate.search:hibernate-search-backend-lucene:${hibernateSearchVersion}"
     implementation "org.hibernate.search:hibernate-search-backend-elasticsearch:${hibernateSearchVersion}"
-    implementation "org.hibernate:hibernate-jcache:${hibernateVersion}") {
+    implementation ("org.hibernate:hibernate-jcache:${hibernateVersion}") {
         exclude group:"org.hibernate", module:"hibernate-core"
     }
     implementation "org.hibernate:hibernate-core-jakarta:${hibernateVersion}"
@@ -45,7 +45,7 @@ dependencies {
     implementation "org.mybatis:mybatis:${mybatisVersion}"
 
 
-    implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonDatabindVersion}"
+    implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
 
     implementation "jakarta.annotation:jakarta.annotation-api:${annotationVersion}"
     implementation "com.sun.xml.bind:jaxb-impl:${jaxbVersion}"
@@ -55,6 +55,6 @@ dependencies {
 
     implementation ("org.quartz-scheduler:quartz:${quartzVersion}") {
         exclude group:"com.mchange"
-        exclude group:"com.zaxxer" 
+        exclude group:"com.zaxxer"
     }
 }
