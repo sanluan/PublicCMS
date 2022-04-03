@@ -3,9 +3,7 @@ package com.publiccms.logic.component.site;
 import java.util.Date;
 import java.util.List;
 
-import javax.annotation.PreDestroy;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +13,8 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysCluster;
 import com.publiccms.logic.component.task.ScheduledTask;
 import com.publiccms.logic.service.sys.SysClusterService;
+
+import jakarta.annotation.PreDestroy;
 
 /**
  *
@@ -28,9 +28,9 @@ public class ClusterComponent {
      */
     public static final long THEARTBEAT_INTERVAL = 60 * 1000L;
 
-    @Autowired
+    @Resource
     private SysClusterService service;
-    @Autowired
+    @Resource
     private ScheduledTask scheduledTask;
 
     private void upgrade() {

@@ -4,9 +4,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import jakarta.transaction.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.tools.CommonUtils;
@@ -58,7 +58,7 @@ public class CmsDictionaryExcludeService extends BaseService<CmsDictionaryExclud
      * @param excludeDictionaryId
      * @return data list
      */
-    @Transactional(readOnly = true)
+    @Transactional
     public List<CmsDictionaryExclude> getList(short siteId, String dictionaryId, String excludeDictionaryId) {
         return dao.getList(siteId, dictionaryId, excludeDictionaryId);
     }
@@ -72,9 +72,9 @@ public class CmsDictionaryExcludeService extends BaseService<CmsDictionaryExclud
         return dao.delete(siteId, dictionaryIds);
     }
 
-    @Autowired
+    @Resource
     private CmsDictionaryExcludeDao dao;
-    @Autowired
+    @Resource
     private CmsDictionaryExcludeValueService excludeValueService;
 
 }

@@ -5,9 +5,9 @@ import java.util.Date;
 
 // Generated 2020-7-1 21:06:19 by com.publiccms.common.generator.SourceGenerator
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import jakarta.transaction.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
@@ -41,7 +41,7 @@ public class CmsSurveyService extends BaseService<CmsSurvey> {
      * @param pageSize
      * @return results page
      */
-    @Transactional(readOnly = true)
+    @Transactional
     public PageHandler getPage(Short siteId, Long userId, String surveyType, Date startStartDate, Date endStartDate,
             Date startEndDate, Date endEndDate, String title, Boolean disabled, String orderField, String orderType,
             Integer pageIndex, Integer pageSize) {
@@ -63,7 +63,7 @@ public class CmsSurveyService extends BaseService<CmsSurvey> {
         return entity;
     }
 
-    @Autowired
+    @Resource
     private CmsSurveyDao dao;
 
 }

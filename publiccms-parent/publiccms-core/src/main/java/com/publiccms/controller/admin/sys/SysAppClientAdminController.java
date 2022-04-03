@@ -1,7 +1,7 @@
 package com.publiccms.controller.admin.sys;
 
-import javax.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -32,11 +32,11 @@ import com.publiccms.logic.service.sys.SysAppClientService;
 @Controller
 @RequestMapping("sysAppClient")
 public class SysAppClientAdminController {
-    @Autowired
+    @Resource
     private SysAppClientService service;
-    @Autowired
+    @Resource
     protected LogOperateService logOperateService;
-    @Autowired
+    @Resource
     protected SiteComponent siteComponent;
 
     /**

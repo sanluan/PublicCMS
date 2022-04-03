@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import jakarta.transaction.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
@@ -38,7 +38,7 @@ public class CmsVoteService extends BaseService<CmsVote> {
      * @param pageSize
      * @return results page
      */
-    @Transactional(readOnly = true)
+    @Transactional
     public PageHandler getPage(Short siteId, Date startStartDate, Date endStartDate, Date startEndDate, Date endEndDate,
             String title, Boolean disabled, String orderField, String orderType, Integer pageIndex, Integer pageSize) {
         return dao.getPage(siteId, startStartDate, endStartDate, startEndDate, endEndDate, title, disabled, orderField, orderType,
@@ -70,7 +70,7 @@ public class CmsVoteService extends BaseService<CmsVote> {
         return entityList;
     }
 
-    @Autowired
+    @Resource
     private CmsVoteDao dao;
 
 }

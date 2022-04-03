@@ -4,9 +4,9 @@ import java.io.Serializable;
 
 // Generated 2020-7-1 21:06:19 by com.publiccms.common.generator.SourceGenerator
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import jakarta.transaction.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
@@ -37,7 +37,7 @@ public class CmsSurveyQuestionService extends BaseService<CmsSurveyQuestion> {
      * @param pageSize
      * @return results page
      */
-    @Transactional(readOnly = true)
+    @Transactional
     public PageHandler getPage(Long surveyId, String[] questionTypes, String orderType, Integer pageIndex, Integer pageSize) {
         return dao.getPage(surveyId, questionTypes, orderType, pageIndex, pageSize);
     }
@@ -55,7 +55,7 @@ public class CmsSurveyQuestionService extends BaseService<CmsSurveyQuestion> {
         return entity;
     }
 
-    @Autowired
+    @Resource
     private CmsSurveyQuestionDao dao;
 
 }

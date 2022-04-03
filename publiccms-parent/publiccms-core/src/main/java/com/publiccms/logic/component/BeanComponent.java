@@ -1,6 +1,6 @@
 package com.publiccms.logic.component;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.logic.component.config.ConfigComponent;
@@ -98,7 +98,7 @@ public class BeanComponent {
      * @param siteComponent
      *            the siteComponent to set
      */
-    @Autowired
+    @Resource
     public void setSiteComponent(SiteComponent siteComponent) {
         BeanComponent.siteComponent = siteComponent;
     }
@@ -107,7 +107,7 @@ public class BeanComponent {
      * @param configComponent
      *            the configComponent to set
      */
-    @Autowired
+    @Resource
     public void setConfigComponent(ConfigComponent configComponent) {
         BeanComponent.configComponent = configComponent;
     }
@@ -116,7 +116,7 @@ public class BeanComponent {
      * @param sysTaskService
      *            the sysTaskService to set
      */
-    @Autowired
+    @Resource
     public void setSysTaskService(SysTaskService sysTaskService) {
         BeanComponent.sysTaskService = sysTaskService;
     }
@@ -125,7 +125,7 @@ public class BeanComponent {
      * @param logTaskService
      *            the logTaskService to set
      */
-    @Autowired
+    @Resource
     public void setLogTaskService(LogTaskService logTaskService) {
         BeanComponent.logTaskService = logTaskService;
     }
@@ -134,7 +134,7 @@ public class BeanComponent {
      * @param siteService
      *            the siteService to set
      */
-    @Autowired
+    @Resource
     public void setSiteService(SysSiteService siteService) {
         BeanComponent.siteService = siteService;
     }
@@ -143,7 +143,7 @@ public class BeanComponent {
      * @param scheduledTask
      *            the scheduledTask to set
      */
-    @Autowired
+    @Resource
     public void setScheduledTask(ScheduledTask scheduledTask) {
         BeanComponent.scheduledTask = scheduledTask;
     }
@@ -152,7 +152,7 @@ public class BeanComponent {
      * @param contentAttributeService
      *            the contentAttributeService to set
      */
-    @Autowired
+    @Resource
     public void setContentAttributeService(CmsContentAttributeService contentAttributeService) {
         BeanComponent.contentAttributeService = contentAttributeService;
     }
@@ -161,7 +161,7 @@ public class BeanComponent {
      * @param contentService
      *            the contentService to set
      */
-    @Autowired
+    @Resource
     public void setContentService(CmsContentService contentService) {
         BeanComponent.contentService = contentService;
     }
@@ -170,7 +170,7 @@ public class BeanComponent {
      * @param templateComponent
      *            the templateComponent to set
      */
-    @Autowired
+    @Resource
     public void setTemplateComponent(TemplateComponent templateComponent) {
         BeanComponent.templateComponent = templateComponent;
     }

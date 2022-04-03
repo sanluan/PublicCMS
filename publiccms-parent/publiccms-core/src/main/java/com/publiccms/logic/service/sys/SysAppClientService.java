@@ -5,9 +5,9 @@ package com.publiccms.logic.service.sys;
 import java.io.Serializable;
 import java.util.Date;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import jakarta.transaction.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
@@ -39,7 +39,7 @@ public class SysAppClientService extends BaseService<SysAppClient> {
      * @param pageSize
      * @return
      */
-    @Transactional(readOnly = true)
+    @Transactional
     public PageHandler getPage(Short siteId, String channel, Long userId, Date startLastLoginDate, Date endLastLoginDate,
             Date startCreateDate, Date endCreateDate, Boolean disabled, String orderField, String orderType, Integer pageIndex,
             Integer pageSize) {
@@ -99,7 +99,7 @@ public class SysAppClientService extends BaseService<SysAppClient> {
         return entity;
     }
 
-    @Autowired
+    @Resource
     private SysAppClientDao dao;
 
 }

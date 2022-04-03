@@ -5,9 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +19,10 @@ import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.HttpParameterHandler;
 import com.publiccms.logic.component.site.DirectiveComponent;
 
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 /**
  *
  * AppController 接口指令统一分发
@@ -32,7 +33,7 @@ public class ApiController {
     protected final Log log = LogFactory.getLog(getClass());
     private Map<String, AbstractAppDirective> appDirectiveMap = new HashMap<>();
     private List<Map<String, String>> appList = new ArrayList<>();
-    @Autowired
+    @Resource
     protected MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter;
     /**
      *

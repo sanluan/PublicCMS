@@ -6,7 +6,7 @@ import java.util.List;
 import com.publiccms.entities.cms.CmsContentAttribute;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import jakarta.transaction.Transactional;
 
 import com.publiccms.common.base.BaseService;
 

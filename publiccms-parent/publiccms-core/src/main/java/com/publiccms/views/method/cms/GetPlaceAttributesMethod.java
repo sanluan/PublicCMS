@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.BaseMethod;
@@ -48,7 +48,7 @@ public class GetPlaceAttributesMethod extends BaseMethod {
         return 1;
     }
 
-    @Autowired
+    @Resource
     private CmsPlaceAttributeService service;
     
 }

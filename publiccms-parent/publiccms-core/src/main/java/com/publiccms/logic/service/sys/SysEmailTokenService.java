@@ -4,9 +4,9 @@ import java.util.Date;
 
 import com.publiccms.entities.sys.SysEmailToken;
 import com.publiccms.logic.dao.sys.SysEmailTokenDao;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import jakarta.transaction.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
@@ -26,7 +26,7 @@ public class SysEmailTokenService extends BaseService<SysEmailToken> {
      * @param pageSize
      * @return results page
      */
-    @Transactional(readOnly = true)
+    @Transactional
     public PageHandler getPage(Long userId, Integer pageIndex, Integer pageSize) {
         return dao.getPage(userId, pageIndex, pageSize);
     }
@@ -39,7 +39,7 @@ public class SysEmailTokenService extends BaseService<SysEmailToken> {
         return dao.delete(now);
     }
     
-    @Autowired
+    @Resource
     private SysEmailTokenDao dao;
     
 }

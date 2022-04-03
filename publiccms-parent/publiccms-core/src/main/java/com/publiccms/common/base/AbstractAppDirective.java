@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.directive.BaseHttpDirective;
@@ -100,12 +100,12 @@ public abstract class AbstractAppDirective extends BaseHttpDirective {
      */
     public abstract boolean needUserToken();
 
-    @Autowired
+    @Resource
     private SysUserTokenService sysUserTokenService;
-    @Autowired
+    @Resource
     private SysUserService sysUserService;
-    @Autowired
+    @Resource
     private SysAppTokenService appTokenService;
-    @Autowired
+    @Resource
     private SysAppService appService;
 }

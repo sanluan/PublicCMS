@@ -5,9 +5,9 @@ import java.util.Date;
 
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.logic.dao.log.LogOperateDao;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import jakarta.transaction.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
@@ -35,7 +35,7 @@ public class LogOperateService extends BaseService<LogOperate> {
      * @param pageSize
      * @return
      */
-    @Transactional(readOnly = true)
+    @Transactional
     public PageHandler getPage(Short siteId, String channel, String operate, Long userId, Date startCreateDate,
             Date endCreateDate, String content, String ip, String orderType, Integer pageIndex, Integer pageSize) {
         return dao.getPage(siteId, channel, operate, userId, startCreateDate, endCreateDate, content, ip, orderType, pageIndex,
@@ -53,7 +53,7 @@ public class LogOperateService extends BaseService<LogOperate> {
      * @param pageSize
      * @return
      */
-    @Transactional(readOnly = true)
+    @Transactional
     public PageHandler getWorkLoadPage(Short siteId, String channel, String operate, Date startCreateDate, Date endCreateDate,
             String workloadType, Integer pageIndex, Integer pageSize) {
         return dao.getWorkLoadPage(siteId, channel, operate, startCreateDate, endCreateDate, workloadType, pageIndex, pageSize);
@@ -80,7 +80,7 @@ public class LogOperateService extends BaseService<LogOperate> {
         }
     }
 
-    @Autowired
+    @Resource
     private LogOperateDao dao;
 
 }

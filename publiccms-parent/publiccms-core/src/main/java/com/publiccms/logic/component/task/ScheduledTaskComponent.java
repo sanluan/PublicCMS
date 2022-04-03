@@ -5,7 +5,7 @@ import java.util.Date;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -37,37 +37,37 @@ import com.publiccms.logic.service.visit.VisitUrlService;
 public class ScheduledTaskComponent {
     protected final Log log = LogFactory.getLog(getClass());
 
-    @Autowired
+    @Resource
     private SysAppTokenService appTokenService;
-    @Autowired
+    @Resource
     private SysEmailTokenService emailTokenService;
-    @Autowired
+    @Resource
     private SysUserTokenService userTokenService;
-    @Autowired
+    @Resource
     private VisitHistoryService visitHistoryService;
-    @Autowired
+    @Resource
     private VisitSessionService visitSessionService;
-    @Autowired
+    @Resource
     private VisitDayService visitDayService;
-    @Autowired
+    @Resource
     private VisitItemService visitItemService;
-    @Autowired
+    @Resource
     private VisitUrlService visitUrlService;
-    @Autowired
+    @Resource
     private LogLoginService logLoginService;
-    @Autowired
+    @Resource
     private LogOperateService logOperateService;
-    @Autowired
+    @Resource
     private LogTaskService logTaskService;
-    @Autowired
+    @Resource
     private CacheComponent cacheComponent;
-    @Autowired
+    @Resource
     private VisitComponent visitComponent;
-    @Autowired
+    @Resource
     private StatisticsComponent statisticsComponent;
-    @Autowired
+    @Resource
     private DatasourceComponent datasourceComponent;
-    @Autowired
+    @Resource
     private LockComponent lockComponent;
 
     /**

@@ -1,5 +1,7 @@
 package com.publiccms.common.generator;
 
+import static com.publiccms.common.constants.Constants.DEFAULT_CHARSET_NAME;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -12,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.persistence.Entity;
+import jakarta.persistence.Entity;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -25,8 +27,6 @@ import com.publiccms.common.tools.ScanClassUtils;
 
 import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
-
-import static com.publiccms.common.constants.Constants.DEFAULT_CHARSET_NAME;
 
 /**
  *

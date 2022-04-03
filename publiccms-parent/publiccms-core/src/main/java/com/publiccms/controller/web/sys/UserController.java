@@ -5,14 +5,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import javax.mail.MessagingException;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import jakarta.mail.MessagingException;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.time.DateUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -58,23 +58,23 @@ import freemarker.template.TemplateException;
 @Controller
 @RequestMapping("user")
 public class UserController {
-    @Autowired
+    @Resource
     private SysUserService service;
-    @Autowired
+    @Resource
     private SysUserTokenService sysUserTokenService;
-    @Autowired
+    @Resource
     private EmailComponent emailComponent;
-    @Autowired
+    @Resource
     private TemplateComponent templateComponent;
-    @Autowired
+    @Resource
     private SysEmailTokenService sysEmailTokenService;
-    @Autowired
+    @Resource
     private ConfigComponent configComponent;
-    @Autowired
+    @Resource
     protected SiteConfigComponent siteConfigComponent;
-    @Autowired
+    @Resource
     protected LogOperateService logOperateService;
-    @Autowired
+    @Resource
     protected SiteComponent siteComponent;
 
     /**

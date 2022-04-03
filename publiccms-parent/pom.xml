@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.publiccms</groupId>
     <artifactId>publiccms-parent</artifactId>
@@ -17,15 +15,18 @@
         <module>publiccms-analyzer</module>
     </modules>
     <properties>
+        <java.version>17</java.version>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
         <version.publiccms>V4.0.202107.f</version.publiccms>
         <!-- http://mvnrepository.com/artifact/org.springframework/spring-core -->
         <!-- https://spring.io/projects/spring-framework -->
-        <version.spring>5.3.18</version.spring>
+        <version.spring>6.0.0-M2</version.spring>
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
         <!-- https://spring.io/projects/spring-boot -->
-        <version.springBoot>2.6.6</version.springBoot>
+        <version.springBoot>3.0.0-M1</version.springBoot>
         <!-- https://mvnrepository.com/artifact/org.aspectj/aspectjweaver -->
         <version.aspectj>1.9.7</version.aspectj>
         <!-- http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
@@ -35,14 +36,14 @@
         <version.jackson>2.13.2.1</version.jackson>
         <!-- http://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
         <!-- http://hibernate.org/orm/releases/ -->
-        <version.hibernate>5.6.5.Final</version.hibernate>
+        <version.hibernate>5.6.7.Final</version.hibernate>
         <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-tools -->
         <version.hibernateTools>5.6.2.Final</version.hibernateTools>
         <!-- https://mvnrepository.com/artifact/org.hibernate.search/hibernate-search-mapper-orm/ -->
         <!-- http://hibernate.org/search/releases/ -->
-        <version.hibernateSearch>6.1.1.Final</version.hibernateSearch>
+        <version.hibernateSearch>6.1.3.Final</version.hibernateSearch>
         <!-- https://mvnrepository.com/artifact/org.ehcache/ehcache -->
-        <version.ehcache>3.9.9</version.ehcache>
+        <version.ehcache>3.10.0</version.ehcache>
         <!-- http://mvnrepository.com/artifact/org.freemarker/freemarker -->
         <version.freemarker>2.3.31</version.freemarker>
         <!-- http://mvnrepository.com/artifact/org.mybatis/mybatis -->
@@ -56,7 +57,7 @@
         <!-- https://mvnrepository.com/artifact/org.mybatis.dynamic-sql/mybatis-dynamic-sql -->
         <version.dynamicSql>1.2.1</version.dynamicSql>
         <!-- https://mvnrepository.com/artifact/org.apache.lucene/lucene-core -->
-        <version.lucene>8.7.0</version.lucene>
+        <version.lucene>8.11.1</version.lucene>
         <!-- http://mvnrepository.com/artifact/redis.clients/jedis -->
         <version.jedis>4.1.1</version.jedis>
         <!-- http://mvnrepository.com/artifact/org.quartz-scheduler/quartz -->
@@ -78,7 +79,7 @@
         <!-- http://mvnrepository.com/artifact/commons-codec/commons-codec -->
         <version.codec>1.15</version.codec>
         <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
-        <version.log4j>2.17.1</version.log4j>
+        <version.log4j>2.17.2</version.log4j>
         <!-- https://mvnrepository.com/artifact/com.drewnoakes/metadata-extractor -->
         <version.extractor>2.17.0</version.extractor>
         <!-- https://mvnrepository.com/artifact/org.sejda.imageio/webp-imageio -->
@@ -86,15 +87,23 @@
         <!-- http://mvnrepository.com/artifact/eu.bitwalker/UserAgentUtils -->
         <version.userAgentUtils>1.21</version.userAgentUtils>
         <!-- https://mvnrepository.com/artifact/jakarta.annotation/jakarta.annotation-api -->
-        <version.annotation>1.3.5</version.annotation>
+        <version.annotation>2.1.0</version.annotation>
         <!-- https://mvnrepository.com/artifact/jakarta.mail/jakarta.mail-api -->
-        <version.mail>1.6.7</version.mail>
+        <version.mailApi>2.1.0</version.mailApi>
+        <!-- https://mvnrepository.com/artifact/com.sun.mail/jakarta.mail -->
+        <version.mail>2.0.1</version.mail>
+        <!-- https://mvnrepository.com/artifact/com.sun.xml.bind/jaxb-impl -->
+        <version.jaxb>2.3.6</version.jaxb>
+        <!-- https://mvnrepository.com/artifact/jakarta.xml.bind/jakarta.xml.bind-api -->
+        <version.jaxbApi>3.0.1</version.jaxbApi>
+        <!-- https://mvnrepository.com/artifact/javax.xml.bind/javax.xml.bind-api -->
+        <version.javaxJaxbApi>2.3.1</version.javaxJaxbApi>
         <!-- http://mvnrepository.com/artifact/org.apache.ant/ant -->
         <version.ant>1.10.12</version.ant>
-        <!-- http://mvnrepository.com/artifact/javax.transaction/jta -->
-        <version.jta>1.1</version.jta>
-        <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
-        <version.servlet>4.0.1</version.servlet>
+        <!-- http://mvnrepository.com/artifact/jakarta.transaction/jakarta.transaction-api -->
+        <version.jta>2.0.0</version.jta>
+        <!-- https://mvnrepository.com/artifact/jakarta.servlet/jakarta.servlet-api -->
+        <version.servlet>5.0.0</version.servlet>
         <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine -->
         <version.juint>5.8.2</version.juint>
     </properties>
@@ -214,10 +223,16 @@
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-jcache</artifactId>
                 <version>${version.hibernate}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.hibernate</groupId>
+                        <artifactId>hibernate-core</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>org.hibernate</groupId>
-                <artifactId>hibernate-core</artifactId>
+                <artifactId>hibernate-core-jakarta</artifactId>
                 <version>${version.hibernate}</version>
             </dependency>
             <dependency>
@@ -227,7 +242,7 @@
             </dependency>
             <dependency>
                 <groupId>org.hibernate.search</groupId>
-                <artifactId>hibernate-search-mapper-orm</artifactId>
+                <artifactId>hibernate-search-mapper-orm-jakarta</artifactId>
                 <version>${version.hibernateSearch}</version>
             </dependency>
             <dependency>
@@ -311,14 +326,34 @@
                 <version>${version.httpclient}</version>
             </dependency>
             <dependency>
-                <groupId>javax.transaction</groupId>
-                <artifactId>jta</artifactId>
+                <groupId>jakarta.transaction</groupId>
+                <artifactId>jakarta.transaction-api</artifactId>
                 <version>${version.jta}</version>
             </dependency>
             <dependency>
                 <groupId>com.sun.mail</groupId>
                 <artifactId>jakarta.mail</artifactId>
                 <version>${version.mail}</version>
+            </dependency>
+            <dependency>
+                <groupId>jakarta.mail</groupId>
+                <artifactId>jakarta.mail-api</artifactId>
+                <version>${version.mailApi}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.sun.xml.bind</groupId>
+                <artifactId>jaxb-impl</artifactId>
+                <version>${version.jaxb}</version>
+            </dependency>
+            <dependency>
+                <groupId>jakarta.xml.bind</groupId>
+                <artifactId>jakarta.xml.bind-api</artifactId>
+                <version>${version.jaxbApi}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.xml.bind</groupId>
+                <artifactId>jaxb-api</artifactId>
+                <version>${version.javaxJaxbApi}</version>
             </dependency>
             <dependency>
                 <groupId>jakarta.annotation</groupId>
@@ -365,8 +400,8 @@
                 </exclusions>
             </dependency>
             <dependency>
-                <groupId>javax.servlet</groupId>
-                <artifactId>javax.servlet-api</artifactId>
+                <groupId>jakarta.servlet</groupId>
+                <artifactId>jakarta.servlet-api</artifactId>
                 <version>${version.servlet}</version>
             </dependency>
             <dependency>
@@ -399,6 +434,14 @@
     </dependencyManagement>
     <repositories>
         <repository>
+            <id>spring-milestone</id>
+            <url>https://repo.spring.io/milestone/</url>
+        </repository>
+        <repository>
+            <id>spring-libs-milestone</id>
+            <url>https://repo.spring.io/libs-milestone/</url>
+        </repository>
+        <repository>
             <id>nexus-aliyun</id>
             <url>https://maven.aliyun.com/nexus/content/repositories/central/</url>
         </repository>
@@ -411,6 +454,14 @@
         <pluginRepository>
             <id>nexus-aliyun</id>
             <url>https://maven.aliyun.com/nexus/content/repositories/central/</url>
+        </pluginRepository>
+        <pluginRepository>
+            <id>spring-milestone</id>
+            <url>https://repo.spring.io/milestone/</url>
+        </pluginRepository>
+        <pluginRepository>
+            <id>spring-libs-milestone</id>
+            <url>https://repo.spring.io/libs-milestone/</url>
         </pluginRepository>
         <pluginRepository>
             <id>jcenter</id>
@@ -444,15 +495,18 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
+                <version>3.10.1</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                    <encoding>UTF-8</encoding>
                     <compilerArguments>
                         <extdirs>src\main\webapp\WEB-INF\lib</extdirs>
                     </compilerArguments>
                 </configuration>
+            </plugin>
+            <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-war-plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.3.2</version>
             </plugin>
             <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-eclipse-plugin -->
             <plugin>

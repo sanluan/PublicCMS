@@ -6,9 +6,9 @@ import java.util.List;
 
 import com.publiccms.entities.sys.SysRole;
 import com.publiccms.logic.dao.sys.SysRoleDao;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import jakarta.transaction.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
@@ -28,7 +28,7 @@ public class SysRoleService extends BaseService<SysRole> {
      * @param pageSize
      * @return
      */
-    @Transactional(readOnly = true)
+    @Transactional
     public PageHandler getPage(Short siteId, Integer pageIndex, Integer pageSize) {
         return dao.getPage(siteId, pageIndex, pageSize);
     }
@@ -37,7 +37,7 @@ public class SysRoleService extends BaseService<SysRole> {
      * @param roleIds
      * @return
      */
-    @Transactional(readOnly = true)
+    @Transactional
     public boolean showAllModule(Integer[] roleIds) {
         List<SysRole> list = getEntitys(roleIds);
         for (SysRole role : list) {
@@ -52,7 +52,7 @@ public class SysRoleService extends BaseService<SysRole> {
      * @param roleIds
      * @return
      */
-    @Transactional(readOnly = true)
+    @Transactional
     public boolean ownsAllRight(Integer[] roleIds) {
         List<SysRole> list = getEntitys(roleIds);
         for (SysRole role : list) {
@@ -63,7 +63,7 @@ public class SysRoleService extends BaseService<SysRole> {
         return false;
     }
 
-    @Autowired
+    @Resource
     private SysRoleDao dao;
     
 }

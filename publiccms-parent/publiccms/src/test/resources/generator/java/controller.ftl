@@ -2,8 +2,6 @@ package ${base}.${controllerPack};
 
 // Generated ${.now?date} by com.publiccms.common.generator.SourceGenerator
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,6 +24,8 @@ import com.publiccms.entities.log.LogOperate;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 <#include "../include_imports/service.ftl">
+
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  *

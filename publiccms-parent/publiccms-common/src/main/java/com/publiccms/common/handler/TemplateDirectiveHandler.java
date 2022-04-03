@@ -11,21 +11,20 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.servlet.http.HttpServletRequest;
-
 import com.publiccms.common.base.BaseHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.TemplateModelUtils;
+import com.publiccms.common.view.HttpRequestHashModel;
 
 import freemarker.core.Environment;
 import freemarker.core.Environment.Namespace;
-import freemarker.ext.servlet.HttpRequestHashModel;
 import freemarker.template.ObjectWrapper;
 import freemarker.template.TemplateDirectiveBody;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateHashModelEx;
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  *

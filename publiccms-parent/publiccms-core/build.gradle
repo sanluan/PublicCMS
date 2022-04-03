@@ -13,12 +13,15 @@ dependencies {
     implementation "com.zaxxer:HikariCP:${hikariCPVersion}"
     implementation "mysql:mysql-connector-java:${mysqlVersion}"
     implementation "eu.bitwalker:UserAgentUtils:${userAgentUtilsVersion}"
-    implementation "jakarta.annotation:jakarta.annotation-api:${annotationVersion}"
-    implementation "javax.servlet:javax.servlet-api:${servletVersion}"
     
     implementation "com.drewnoakes:metadata-extractor:${extractorVersion}"
 
     implementation "org.mybatis:mybatis-spring:${mybatisSpringVersion}"
     implementation "org.mybatis.dynamic-sql:mybatis-dynamic-sql:${dynamicSqlVersion}"
     implementation "com.github.pagehelper:pagehelper:${pageHelperVersion}"
+    
+    implementation "jakarta.persistence:jakarta.persistence-api:${jpaVersion}"
+    implementation "jakarta.mail:jakarta.mail-api:${mailVersion}"
+    implementation "com.sun.mail:jakarta.mail:${mailVersion}"
+    implementation "jakarta.servlet:jakarta.servlet-api:${servletVersion}"
 }

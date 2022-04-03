@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractAppDirective;
@@ -49,23 +49,23 @@ import com.publiccms.views.pojo.entities.CmsModel;
  */
 @Component
 public class ContentCreateDirective extends AbstractAppDirective {
-    @Autowired
+    @Resource
     private CmsContentService service;
-    @Autowired
+    @Resource
     private CmsTagService tagService;
-    @Autowired
+    @Resource
     private CmsContentAttributeService attributeService;
-    @Autowired
+    @Resource
     private CmsCategoryModelService categoryModelService;
-    @Autowired
+    @Resource
     private CmsCategoryService categoryService;
-    @Autowired
+    @Resource
     private ModelComponent modelComponent;
-    @Autowired
+    @Resource
     protected LogOperateService logOperateService;
-    @Autowired
+    @Resource
     private CmsContentFileService contentFileService;
-    @Autowired
+    @Resource
     private TemplateComponent templateComponent;
 
     @Override

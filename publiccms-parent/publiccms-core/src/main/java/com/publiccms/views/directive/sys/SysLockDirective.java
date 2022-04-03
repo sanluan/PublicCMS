@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.time.DateUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
@@ -62,9 +62,9 @@ public class SysLockDirective extends AbstractTemplateDirective {
         }
     }
 
-    @Autowired
+    @Resource
     private SysLockService service;
-    @Autowired
+    @Resource
     private LockComponent lockComponent;
 
 }

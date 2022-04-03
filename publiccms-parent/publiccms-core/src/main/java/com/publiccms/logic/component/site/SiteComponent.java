@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 
 import com.publiccms.common.api.Cache;
 import com.publiccms.common.cache.CacheEntity;
@@ -83,9 +83,9 @@ public class SiteComponent implements Cache {
     private boolean dictEnable = false;
 
     private Set<Short> masterSiteIdSet = new HashSet<>();
-    @Autowired
+    @Resource
     private SysDomainService sysDomainService;
-    @Autowired
+    @Resource
     private SysSiteService sysSiteService;
 
     /**
@@ -478,7 +478,7 @@ public class SiteComponent implements Cache {
      * @throws InstantiationException
      * @throws ClassNotFoundException
      */
-    @Autowired
+    @Resource
     public void initCache(CacheEntityFactory cacheEntityFactory)
             throws ClassNotFoundException, InstantiationException, IllegalAccessException {
         domainCache = cacheEntityFactory.createCacheEntity("domain");

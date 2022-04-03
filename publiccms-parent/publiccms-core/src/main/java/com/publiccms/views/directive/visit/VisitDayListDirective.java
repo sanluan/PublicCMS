@@ -3,7 +3,7 @@ package com.publiccms.views.directive.visit;
 // Generated 2021-1-14 22:44:12 by com.publiccms.common.generator.SourceGenerator
 import java.io.IOException;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
@@ -32,7 +32,7 @@ public class VisitDayListDirective extends AbstractTemplateDirective {
         return true;
     }
 
-    @Autowired
+    @Resource
     private VisitDayService service;
 
 }

@@ -2,7 +2,7 @@ package com.publiccms.logic.component.site;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.api.Cache;
@@ -32,13 +32,13 @@ public class StatisticsComponent implements Cache {
     private CacheEntity<Long, ClickStatistics> placeCache;
     private CacheEntity<Long, ClickStatistics> wordCache;
     private CacheEntity<Long, ClickStatistics> tagCache;
-    @Autowired
+    @Resource
     private CmsContentService contentService;
-    @Autowired
+    @Resource
     private CmsPlaceService placeService;
-    @Autowired
+    @Resource
     private CmsWordService wordService;
-    @Autowired
+    @Resource
     private CmsTagService tagService;
 
     /**
@@ -187,7 +187,7 @@ public class StatisticsComponent implements Cache {
      * @throws InstantiationException
      * @throws ClassNotFoundException
      */
-    @Autowired
+    @Resource
     public void initCache(CacheEntityFactory cacheEntityFactory)
             throws ClassNotFoundException, InstantiationException, IllegalAccessException {
         contentCache = cacheEntityFactory.createCacheEntity("content");

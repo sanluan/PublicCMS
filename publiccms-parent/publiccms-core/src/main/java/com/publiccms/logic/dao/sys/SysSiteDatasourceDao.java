@@ -23,7 +23,6 @@ public class SysSiteDatasourceDao extends BaseDao<SysSiteDatasource> {
      * @param datasource
      * @return results list
      */
-    @SuppressWarnings("unchecked")
     public List<SysSiteDatasource> getList(Short siteId, String datasource) {
         QueryHandler queryHandler = getQueryHandler("from SysSiteDatasource bean");
         if (CommonUtils.notEmpty(siteId)) {
@@ -55,7 +54,6 @@ public class SysSiteDatasourceDao extends BaseDao<SysSiteDatasource> {
      * @param datasources
      * @return entitys list
      */
-    @SuppressWarnings("unchecked")
     public List<SysSiteDatasource> getEntitys(Short[] siteIds, String[] datasources) {
         if (CommonUtils.notEmpty(siteIds) && CommonUtils.notEmpty(datasources)) {
             QueryHandler queryHandler = getQueryHandler("from SysSiteDatasource bean");

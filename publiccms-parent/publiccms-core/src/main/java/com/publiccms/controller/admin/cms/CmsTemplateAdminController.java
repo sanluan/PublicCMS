@@ -6,15 +6,15 @@ import java.net.URLEncoder;
 import java.nio.file.Paths;
 import java.util.Comparator;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.tools.zip.ZipOutputStream;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -59,21 +59,21 @@ import freemarker.template.TemplateException;
 @RequestMapping("cmsTemplate")
 public class CmsTemplateAdminController {
     protected final Log log = LogFactory.getLog(getClass());
-    @Autowired
+    @Resource
     private TemplateComponent templateComponent;
-    @Autowired
+    @Resource
     private TemplateCacheComponent templateCacheComponent;
-    @Autowired
+    @Resource
     private CacheComponent cacheComponent;
-    @Autowired
+    @Resource
     private MetadataComponent metadataComponent;
-    @Autowired
+    @Resource
     private CmsPlaceService cmsPlaceService;
-    @Autowired
+    @Resource
     private SysDeptPageService sysDeptPageService;
-    @Autowired
+    @Resource
     protected LogOperateService logOperateService;
-    @Autowired
+    @Resource
     protected SiteComponent siteComponent;
 
     /**

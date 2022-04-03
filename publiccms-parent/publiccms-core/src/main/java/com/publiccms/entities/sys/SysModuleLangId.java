@@ -1,8 +1,8 @@
 package com.publiccms.entities.sys;
 // Generated 2018-6-5 18:18:57 by Hibernate Tools 5.1.6.Final
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
 
 import com.publiccms.common.generator.annotation.GeneratorColumn;
 

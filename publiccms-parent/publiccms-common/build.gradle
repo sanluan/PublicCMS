@@ -22,10 +22,13 @@ dependencies {
     implementation "org.springframework:spring-orm:${springVersion}"
     implementation "org.springframework:spring-webmvc:${springVersion}"
 
-    implementation "org.hibernate.search:hibernate-search-mapper-orm:${hibernateSearchVersion}"
+    implementation "org.hibernate.search:hibernate-search-mapper-orm-jakarta:${hibernateSearchVersion}"
     implementation "org.hibernate.search:hibernate-search-backend-lucene:${hibernateSearchVersion}"
     implementation "org.hibernate.search:hibernate-search-backend-elasticsearch:${hibernateSearchVersion}"
-    implementation "org.hibernate:hibernate-jcache:${hibernateVersion}"
+    implementation "org.hibernate:hibernate-jcache:${hibernateVersion}") {
+        exclude group:"org.hibernate", module:"hibernate-core"
+    }
+    implementation "org.hibernate:hibernate-core-jakarta:${hibernateVersion}"
 
     implementation "org.ehcache:ehcache:${ehcacheVersion}"
 
@@ -44,9 +47,11 @@ dependencies {
 
     implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonDatabindVersion}"
 
-    implementation "javax.transaction:jta:${jtaVersion}"
-    implementation "com.sun.mail:jakarta.mail:${mailVersion}"
-    implementation "javax.servlet:javax.servlet-api:${servletVersion}"
+    implementation "jakarta.annotation:jakarta.annotation-api:${annotationVersion}"
+    implementation "com.sun.xml.bind:jaxb-impl:${jaxbVersion}"
+    implementation "jakarta.xml.bind:jakarta.xml.bind-api:${jaxbApiVersion}"
+    implementation "jakarta.transaction:jakarta.transaction-api:${jtaVersion}"
+    implementation "jakarta.servlet:jakarta.servlet-api:${servletVersion}"
 
     implementation ("org.quartz-scheduler:quartz:${quartzVersion}") {
         exclude group:"com.mchange"

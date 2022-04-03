@@ -12,9 +12,9 @@ import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.hibernate.search.backend.lucene.LuceneBackend;
 import org.hibernate.search.engine.backend.Backend;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import jakarta.transaction.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.constants.CommonConstants;
@@ -54,7 +54,7 @@ public class HqlService extends BaseService<Object> {
      * @param pageSize
      * @return
      */
-    @Transactional(readOnly = true)
+    @Transactional
     public PageHandler getPage(String hql, Map<String, Object> parameters, Integer pageIndex, Integer pageSize) {
         return dao.getPage(hql, parameters, pageIndex, pageSize);
     }
@@ -100,7 +100,7 @@ public class HqlService extends BaseService<Object> {
         dao.clear();
     }
 
-    @Autowired
+    @Resource
     private HqlDao dao;
 
 }

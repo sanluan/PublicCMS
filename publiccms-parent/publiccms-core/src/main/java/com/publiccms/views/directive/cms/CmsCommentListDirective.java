@@ -3,7 +3,7 @@ package com.publiccms.views.directive.cms;
 // Generated 2018-11-7 16:25:07 by com.publiccms.common.generator.SourceGenerator
 import java.io.IOException;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.logic.component.site.DatasourceComponent;
@@ -53,9 +53,9 @@ public class CmsCommentListDirective extends AbstractTemplateDirective {
         return true;
     }
 
-    @Autowired
+    @Resource
     private CmsCommentService service;
-    @Autowired
+    @Resource
     private DatasourceComponent datasourceComponent;
 
 }

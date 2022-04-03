@@ -1,6 +1,6 @@
 package com.publiccms.controller.admin.trade;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -87,8 +87,8 @@ public class TradeOrderAdminController {
         return CommonConstants.TEMPLATE_DONE;
     }
 
-    @Autowired
+    @Resource
     private TradeOrderService service;
-    @Autowired
+    @Resource
     private TradeRefundService refundService;
 }

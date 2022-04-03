@@ -5,9 +5,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import jakarta.transaction.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
@@ -37,7 +37,7 @@ public class VisitHistoryService extends BaseService<VisitHistory> {
      * @param pageSize
      * @return results page
      */
-    @Transactional(readOnly = true)
+    @Transactional
     public PageHandler getPage(Short siteId, String sessionId, Date startCreateDate, Date endCreateDate, String orderType,
             Integer pageIndex, Integer pageSize) {
         return dao.getPage(siteId, sessionId, startCreateDate, endCreateDate, orderType, pageIndex, pageSize);
@@ -49,7 +49,7 @@ public class VisitHistoryService extends BaseService<VisitHistory> {
      * @param endCreateDate
      * @return results page
      */
-    @Transactional(readOnly = true)
+    @Transactional
     public List<VisitSession> getSessionList(Short siteId, Date startCreateDate, Date endCreateDate) {
         return dao.getSessionList(siteId, startCreateDate, endCreateDate);
     }
@@ -60,7 +60,7 @@ public class VisitHistoryService extends BaseService<VisitHistory> {
      * @param visitHour
      * @return results page
      */
-    @Transactional(readOnly = true)
+    @Transactional
     public List<VisitDay> getHourList(Short siteId, Date visitDate, Byte visitHour) {
         return dao.getHourList(siteId, visitDate, visitHour);
     }
@@ -72,7 +72,7 @@ public class VisitHistoryService extends BaseService<VisitHistory> {
      * @param itemId
      * @return results page
      */
-    @Transactional(readOnly = true)
+    @Transactional
     public List<VisitItem> getItemList(Short siteId, Date visitDate, String itemType, String itemId) {
         return dao.getItemList(siteId, visitDate, itemType, itemId);
     }
@@ -83,7 +83,7 @@ public class VisitHistoryService extends BaseService<VisitHistory> {
      * @param visitHour
      * @return results page
      */
-    @Transactional(readOnly = true)
+    @Transactional
     public List<VisitUrl> getUrlList(Short siteId, Date visitDate) {
         return dao.getUrlList(siteId, visitDate);
     }
@@ -106,7 +106,7 @@ public class VisitHistoryService extends BaseService<VisitHistory> {
         }
     }
 
-    @Autowired
+    @Resource
     private VisitHistoryDao dao;
 
 }

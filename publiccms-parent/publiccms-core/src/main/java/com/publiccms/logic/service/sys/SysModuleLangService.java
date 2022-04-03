@@ -4,9 +4,9 @@ import java.util.List;
 
 // Generated 2018-6-5 18:21:28 by com.publiccms.common.generator.SourceGenerator
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import jakarta.transaction.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.tools.CommonUtils;
@@ -29,7 +29,7 @@ public class SysModuleLangService extends BaseService<SysModuleLang> {
      * @param lang
      * @return results page
      */
-    @Transactional(readOnly = true)
+    @Transactional
     public List<?> getList(String moduleId, String lang) {
         return dao.getList(moduleId, lang);
     }
@@ -69,7 +69,7 @@ public class SysModuleLangService extends BaseService<SysModuleLang> {
         }
     }
 
-    @Autowired
+    @Resource
     private SysModuleLangDao dao;
 
 }

@@ -97,7 +97,7 @@ public class ZipUtils {
     /**
      * <code>
        &#64;RequestMapping("export")
-       public void export(javax.servlet.http.HttpServletResponse response) {
+       public void export(jakarta.servlet.http.HttpServletResponse response) {
            try (ZipOutputStream zipOutputStream = new ZipOutputStream(response.getOutputStream())) {
               response.setHeader("content-disposition", "attachment;fileName=" + URLEncoder.encode("filename.zip", "utf-8")); 
               ZipUtils.compressFile(new File("filename.txt"), zipOutputStream, "dir/filename.txt"); 

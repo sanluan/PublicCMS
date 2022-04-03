@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import jakarta.transaction.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.constants.CommonConstants;
@@ -36,15 +36,15 @@ import com.publiccms.views.pojo.query.CmsCategoryQuery;
 @Service
 @Transactional
 public class CmsCategoryService extends BaseService<CmsCategory> {
-    @Autowired
+    @Resource
     private CmsTagTypeService tagTypeService;
-    @Autowired
+    @Resource
     private CmsCategoryAttributeService attributeService;
-    @Autowired
+    @Resource
     private CmsCategoryModelService categoryModelService;
-    @Autowired
+    @Resource
     private SysExtendService extendService;
-    @Autowired
+    @Resource
     private SysExtendFieldService extendFieldService;
 
     /**
@@ -53,7 +53,7 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
      * @param pageSize
      * @return results page
      */
-    @Transactional(readOnly = true)
+    @Transactional
     public PageHandler getPage(CmsCategoryQuery queryEntity, Integer pageIndex, Integer pageSize) {
         return dao.getPage(queryEntity, pageIndex, pageSize);
     }
@@ -87,7 +87,9 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
             }
             if (CommonUtils.notEmpty(categoryParameters.getContentExtends()) || CommonUtils.notEmpty(entity.getExtendId())) {
                 if (null == extendService.getEntity(entity.getExtendId())) {
-                    entity.setExtendId((Integer) extendService.save(new SysExtend("category", id)));
+                    SysExtend extend = new SysExtend("category", id);
+                    extendService.save(extend);
+                    entity.setExtendId(extend.getId());
                 }
                 extendFieldService.update(entity.getExtendId(), categoryParameters.getContentExtends());// 修改或增加内容扩展字段
             }
@@ -114,15 +116,13 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
 
     /**
      * @param entity
-     * @return
      */
-    public CmsCategory save(CmsCategory entity) {
+    public void save(CmsCategory entity) {
         if (entity.isOnlyUrl()) {
             entity.setUrl(entity.getPath());
         }
         super.save(entity);
         addChildIds(entity.getParentId(), entity.getId());
-        return entity;
     }
 
     /**
@@ -256,6 +256,6 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
         }
     }
 
-    @Autowired
+    @Resource
     private CmsCategoryDao dao;
 }

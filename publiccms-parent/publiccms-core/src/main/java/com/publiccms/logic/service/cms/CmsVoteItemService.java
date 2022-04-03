@@ -5,9 +5,9 @@ import java.util.List;
 
 // Generated 2020-3-26 11:46:48 by com.publiccms.common.generator.SourceGenerator
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import jakarta.transaction.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
@@ -32,7 +32,7 @@ public class CmsVoteItemService extends BaseService<CmsVoteItem> {
      * @param pageSize
      * @return results page
      */
-    @Transactional(readOnly = true)
+    @Transactional
     public PageHandler getPage(Long voteId, String orderField, String orderType, Integer pageIndex, Integer pageSize) {
         return dao.getPage(voteId, orderField, orderType, pageIndex, pageSize);
     }
@@ -78,7 +78,7 @@ public class CmsVoteItemService extends BaseService<CmsVoteItem> {
         dao.deleteByVoteId(voteId);
     }
 
-    @Autowired
+    @Resource
     private CmsVoteItemDao dao;
 
 }

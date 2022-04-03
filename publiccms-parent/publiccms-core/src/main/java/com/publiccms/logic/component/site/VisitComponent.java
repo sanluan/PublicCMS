@@ -7,7 +7,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import org.apache.commons.lang3.time.DateUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.api.Cache;
@@ -33,15 +33,15 @@ import com.publiccms.logic.service.visit.VisitUrlService;
 public class VisitComponent implements Cache {
     private BlockingQueue<VisitHistory> blockingQueue = new LinkedBlockingQueue<>();
 
-    @Autowired
+    @Resource
     private VisitDayService visitDayService;
-    @Autowired
+    @Resource
     private VisitItemService visitItemService;
-    @Autowired
+    @Resource
     private VisitUrlService visitUrlService;
-    @Autowired
+    @Resource
     private VisitHistoryService visitHistoryService;
-    @Autowired
+    @Resource
     private VisitSessionService visitSessionService;
 
     public void dealLastMinuteVisitLog() {

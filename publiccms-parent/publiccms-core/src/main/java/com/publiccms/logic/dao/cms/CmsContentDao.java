@@ -426,7 +426,6 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         return getPage(queryHandler, pageIndex, pageSize);
     }
 
-    @SuppressWarnings("unchecked")
     public List<CmsContent> getListByQuoteId(Short siteId, Long quoteId) {
         QueryHandler queryHandler = getQueryHandler("from CmsContent bean");
         if (CommonUtils.notEmpty(siteId)) {

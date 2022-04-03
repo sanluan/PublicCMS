@@ -4,10 +4,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -47,23 +47,23 @@ import com.publiccms.views.pojo.model.SysModuleParameters;
 @Controller
 @RequestMapping("sysModule")
 public class SysModuleAdminController {
-    @Autowired
+    @Resource
     private SysModuleService service;
-    @Autowired
+    @Resource
     private SysModuleLangService sysModuleLangService;
-    @Autowired
+    @Resource
     private SysRoleService roleService;
-    @Autowired
+    @Resource
     private SysModuleService moduleService;
-    @Autowired
+    @Resource
     private SysRoleModuleService roleModuleService;
-    @Autowired
+    @Resource
     private SysRoleAuthorizedService roleAuthorizedService;
-    @Autowired
+    @Resource
     private MenuMessageComponent menuMessageComponent;
-    @Autowired
+    @Resource
     protected LogOperateService logOperateService;
-    @Autowired
+    @Resource
     protected SiteComponent siteComponent;
 
     /**

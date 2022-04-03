@@ -4,9 +4,9 @@ import java.util.Date;
 
 // Generated 2015-7-3 16:18:22 by com.publiccms.common.source.SourceGenerator
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import jakarta.transaction.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
@@ -30,7 +30,7 @@ public class SysTaskService extends BaseService<SysTask> {
      * @param pageSize
      * @return
      */
-    @Transactional(readOnly = true)
+    @Transactional
     public PageHandler getPage(Short siteId, Integer status, Date beginUpdateDate, Integer pageIndex, Integer pageSize) {
         return dao.getPage(siteId, status, beginUpdateDate, pageIndex, pageSize);
     }
@@ -46,7 +46,7 @@ public class SysTaskService extends BaseService<SysTask> {
         }
     }
 
-    @Autowired
+    @Resource
     private SysTaskDao dao;
     
 }

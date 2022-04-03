@@ -2,12 +2,12 @@ package com.publiccms.common.base;
 
 import java.io.IOException;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 
@@ -73,10 +73,10 @@ public abstract class AbstractTaskDirective extends BaseTemplateDirective {
         return true;
     }
 
-    @Autowired
+    @Resource
     private SysAppTokenService appTokenService;
-    @Autowired
+    @Resource
     private SysAppService appService;
-    @Autowired
+    @Resource
     protected SiteComponent siteComponent;
 }

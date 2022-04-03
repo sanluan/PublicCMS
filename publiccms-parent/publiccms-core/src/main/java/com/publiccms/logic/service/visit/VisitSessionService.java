@@ -7,9 +7,9 @@ import org.springframework.beans.BeanUtils;
 
 // Generated 2021-1-14 22:44:06 by com.publiccms.common.generator.SourceGenerator
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import jakarta.transaction.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
@@ -37,7 +37,7 @@ public class VisitSessionService extends BaseService<VisitSession> {
      * @param pageSize
      * @return results page
      */
-    @Transactional(readOnly = true)
+    @Transactional
     public PageHandler getPage(short siteId, String sessionId, Date startVisitDate, Date endVisitDate, String orderType,
             Integer pageIndex, Integer pageSize) {
         return dao.getPage(siteId, sessionId, startVisitDate, endVisitDate, orderType, pageIndex, pageSize);
@@ -48,7 +48,7 @@ public class VisitSessionService extends BaseService<VisitSession> {
      * @param visitDate
      * @return results page
      */
-    @Transactional(readOnly = true)
+    @Transactional
     public List<VisitDay> getDayList(Short siteId, Date visitDate) {
         return dao.getDayList(siteId, visitDate);
     }
@@ -76,7 +76,7 @@ public class VisitSessionService extends BaseService<VisitSession> {
         }
     }
 
-    @Autowired
+    @Resource
     private VisitSessionDao dao;
 
 }

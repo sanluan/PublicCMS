@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
@@ -50,7 +50,7 @@ public class SysConfigDataDirective extends AbstractTemplateDirective {
         }
     }
 
-    @Autowired
+    @Resource
     private SysConfigDataService service;
 
 }

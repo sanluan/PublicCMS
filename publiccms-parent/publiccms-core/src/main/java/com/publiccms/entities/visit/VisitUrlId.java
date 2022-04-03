@@ -2,8 +2,8 @@ package com.publiccms.entities.visit;
 // Generated 2021-8-6 14:20:45 by Hibernate Tools 5.4.32.Final
 
 import java.util.Date;
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
 
 import com.publiccms.common.generator.annotation.GeneratorColumn;
 

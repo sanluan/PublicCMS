@@ -3,8 +3,8 @@ package com.publiccms.entities.visit;
 
 
 import java.util.Date;
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
 
 import com.publiccms.common.generator.annotation.GeneratorColumn;
 

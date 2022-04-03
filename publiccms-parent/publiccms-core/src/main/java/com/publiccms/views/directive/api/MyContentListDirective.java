@@ -5,7 +5,7 @@ package com.publiccms.views.directive.api;
 import java.io.IOException;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractAppDirective;
@@ -53,9 +53,9 @@ public class MyContentListDirective extends AbstractAppDirective {
         handler.put("page", page);
     }
 
-    @Autowired
+    @Resource
     private CmsContentService service;
-    @Autowired
+    @Resource
     private StatisticsComponent statisticsComponent;
 
     @Override

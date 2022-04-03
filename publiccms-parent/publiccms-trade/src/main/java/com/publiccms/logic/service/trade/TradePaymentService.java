@@ -3,10 +3,8 @@ package com.publiccms.logic.service.trade;
 // Generated 2019-6-15 18:52:24 by com.publiccms.common.generator.SourceGenerator
 import java.util.Date;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
@@ -15,6 +13,8 @@ import com.publiccms.entities.trade.TradePayment;
 import com.publiccms.entities.trade.TradePaymentHistory;
 import com.publiccms.logic.dao.trade.TradePaymentDao;
 import com.publiccms.logic.dao.trade.TradePaymentHistoryDao;
+
+import jakarta.transaction.Transactional;
 
 /**
  *
@@ -61,7 +61,7 @@ public class TradePaymentService extends BaseService<TradePayment> {
      * @param pageSize
      * @return results page
      */
-    @Transactional(readOnly = true)
+    @Transactional
     public PageHandler getPage(Short siteId, Long userId, String tradeType, String serialNumber, String accountType,
             String accountSerialNumber, Integer[] status, Date startCreateDate, Date endCreateDate, String paymentType,
             Integer pageIndex, Integer pageSize) {
@@ -69,7 +69,7 @@ public class TradePaymentService extends BaseService<TradePayment> {
                 endCreateDate, paymentType, pageIndex, pageSize);
     }
 
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional
     public boolean create(short siteId, TradePayment entity) {
         if (null != entity && siteId == entity.getSiteId()) {
             entity.setStatus(STATUS_PENDING_PAY);
@@ -82,7 +82,7 @@ public class TradePaymentService extends BaseService<TradePayment> {
         return false;
     }
 
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional
     public boolean processed(short siteId, long paymentId, long userId) {
         TradePayment entity = getEntity(paymentId);
         if (null != entity && siteId == entity.getSiteId() && !entity.isProcessed()) {
@@ -99,7 +99,7 @@ public class TradePaymentService extends BaseService<TradePayment> {
         return false;
     }
 
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional
     public boolean paid(short siteId, long paymentId, String accountSerialNumber) {
         TradePayment entity = getEntity(paymentId);
         if (null != entity && siteId == entity.getSiteId() && entity.getStatus() == STATUS_PENDING_PAY) {
@@ -115,7 +115,7 @@ public class TradePaymentService extends BaseService<TradePayment> {
         return false;
     }
 
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional
     public boolean cancel(short siteId, long paymentId) {
         TradePayment entity = getEntity(paymentId);
         if (null != entity && siteId == entity.getSiteId() && entity.getStatus() == STATUS_PENDING_PAY) {
@@ -130,7 +130,7 @@ public class TradePaymentService extends BaseService<TradePayment> {
         return false;
     }
 
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional
     public boolean pendingRefund(short siteId, long paymentId) {
         TradePayment entity = getEntity(paymentId);
         if (null != entity && siteId == entity.getSiteId()
@@ -146,7 +146,7 @@ public class TradePaymentService extends BaseService<TradePayment> {
         return false;
     }
 
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional
     public boolean refunded(short siteId, long paymentId) {
         TradePayment entity = getEntity(paymentId);
         if (null != entity && siteId == entity.getSiteId() && (entity.getStatus() == STATUS_PENDING_REFUND)) {
@@ -161,7 +161,7 @@ public class TradePaymentService extends BaseService<TradePayment> {
         return false;
     }
 
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional
     public boolean close(short siteId, long paymentId) {
         TradePayment entity = getEntity(paymentId);
         if (null != entity && siteId == entity.getSiteId() && (entity.getStatus() == STATUS_REFUNDED)) {
@@ -176,9 +176,9 @@ public class TradePaymentService extends BaseService<TradePayment> {
         return false;
     }
 
-    @Autowired
+    @Resource
     private TradePaymentDao dao;
-    @Autowired
+    @Resource
     private TradePaymentHistoryDao historyDao;
 
 }

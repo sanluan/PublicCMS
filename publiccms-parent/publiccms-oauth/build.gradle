@@ -8,5 +8,5 @@ dependencies {
     implementation project(path:':publiccms-core', configuration: 'instrumentedJars')
     implementation project(':publiccms-core')
 
-    runtimeOnly "javax.servlet:javax.servlet-api:${servletVersion}"
+    runtimeOnly "jakarta.servlet:jakarta.servlet-api:${servletVersion}"
 }

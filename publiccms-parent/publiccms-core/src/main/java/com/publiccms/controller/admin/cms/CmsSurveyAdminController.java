@@ -2,10 +2,10 @@ package com.publiccms.controller.admin.cms;
 
 // Generated 2020-7-1 21:06:19 by com.publiccms.common.generator.SourceGenerator
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -88,8 +88,8 @@ public class CmsSurveyAdminController {
         return CommonConstants.TEMPLATE_DONE;
     }
 
-    @Autowired
+    @Resource
     private CmsSurveyService service;
-    @Autowired
+    @Resource
     protected LogOperateService logOperateService;
 }

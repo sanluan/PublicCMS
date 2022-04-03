@@ -4,16 +4,16 @@ import java.math.BigDecimal;
 
 // Generated 2019-6-15 20:08:45 by com.publiccms.common.generator.SourceGenerator
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.trade.TradeRefund;
 import com.publiccms.logic.dao.trade.TradeRefundDao;
+
+import jakarta.transaction.Transactional;
 
 /**
  *
@@ -56,7 +56,7 @@ public class TradeRefundService extends BaseService<TradeRefund> {
      * @param pageSize
      * @return results page
      */
-    @Transactional(readOnly = true)
+    @Transactional
     public PageHandler getPage(Short siteId, Long userId, Long paymentId, Long refundUserId, Integer status, String paymentType,
             Integer pageIndex, Integer pageSize) {
         return dao.getPage(siteId, userId, paymentId, refundUserId, status, paymentType, pageIndex, pageSize);
@@ -69,7 +69,7 @@ public class TradeRefundService extends BaseService<TradeRefund> {
      * @param reason
      * @return
      */
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional
     public boolean updateAmound(long refundId, long userId, BigDecimal amount, String reason) {
         TradeRefund entity = getEntity(refundId);
         if (null != entity && entity.getUserId() == userId && entity.getStatus() == STATUS_PENDING
@@ -90,7 +90,7 @@ public class TradeRefundService extends BaseService<TradeRefund> {
      * @param reply
      * @return
      */
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional
     public boolean refuseResund(short siteId, long refundId, Long refundUserId, String reply) {
         TradeRefund entity = getEntity(refundId);
         if (null != entity && entity.getSiteId() == siteId
@@ -110,7 +110,7 @@ public class TradeRefundService extends BaseService<TradeRefund> {
      * @param reply
      * @return
      */
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional
     public boolean updateResund(short siteId, long refundId, BigDecimal refundAmount, String reply) {
         TradeRefund entity = getEntity(refundId);
         if (null != entity && entity.getSiteId() == siteId
@@ -133,7 +133,7 @@ public class TradeRefundService extends BaseService<TradeRefund> {
      * @param status
      * @return
      */
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional
     public boolean updateStatus(short siteId, long refundId, Long refundUserId, int status) {
         TradeRefund entity = getEntity(refundId);
         if (null != entity && entity.getSiteId() == siteId && entity.getStatus() != status
@@ -149,7 +149,7 @@ public class TradeRefundService extends BaseService<TradeRefund> {
         return false;
     }
 
-    @Autowired
+    @Resource
     private TradeRefundDao dao;
 
 }

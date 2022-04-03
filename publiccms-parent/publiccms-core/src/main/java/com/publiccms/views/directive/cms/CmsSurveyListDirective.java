@@ -3,7 +3,7 @@ package com.publiccms.views.directive.cms;
 // Generated 2020-7-1 21:06:19 by com.publiccms.common.generator.SourceGenerator
 import java.io.IOException;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.logic.service.cms.CmsSurveyService;
@@ -29,7 +29,7 @@ public class CmsSurveyListDirective extends AbstractTemplateDirective {
         handler.put("page", page).render();
     }
 
-    @Autowired
+    @Resource
     private CmsSurveyService service;
 
 }

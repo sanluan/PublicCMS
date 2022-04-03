@@ -1,6 +1,6 @@
 package com.publiccms.common.base;
 
-import javax.servlet.Filter;
+import jakarta.servlet.Filter;
 
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.context.WebApplicationContext;

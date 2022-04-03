@@ -3,9 +3,9 @@ package com.publiccms.logic.service.tools;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import jakarta.transaction.Transactional;
 
 import com.publiccms.logic.mapper.tools.SqlMapper;
 
@@ -85,11 +85,11 @@ public class SqlService {
      * @param sql
      * @return
      */
-    @Transactional(readOnly = true)
+    @Transactional
     public List<Map<String, Object>> select(String sql) {
         return mapper.select(sql);
     }
 
-    @Autowired
+    @Resource
     private SqlMapper mapper;
 }

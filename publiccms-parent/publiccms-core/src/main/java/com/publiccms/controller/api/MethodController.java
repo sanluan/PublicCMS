@@ -6,11 +6,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -117,7 +117,7 @@ public class MethodController {
      * @param directiveComponent
      *
      */
-    @Autowired
+    @Resource
     public void init(DirectiveComponent directiveComponent) {
         methodMap = directiveComponent.getMethodMap();
         for (Entry<String, BaseMethod> entry : methodMap.entrySet()) {
@@ -139,10 +139,10 @@ public class MethodController {
         return objectWrapper;
     }
 
-    @Autowired
+    @Resource
     private SysAppTokenService appTokenService;
-    @Autowired
+    @Resource
     private SysAppService appService;
-    @Autowired
+    @Resource
     private TemplateComponent templateComponent;
 }

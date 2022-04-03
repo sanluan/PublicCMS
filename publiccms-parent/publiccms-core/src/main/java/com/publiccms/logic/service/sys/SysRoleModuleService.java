@@ -3,9 +3,9 @@ package com.publiccms.logic.service.sys;
 import java.util.List;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import jakarta.transaction.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
@@ -30,7 +30,7 @@ public class SysRoleModuleService extends BaseService<SysRoleModule> {
      * @param pageSize
      * @return
      */
-    @Transactional(readOnly = true)
+    @Transactional
     public PageHandler getPage(Integer roleId, String moduleId, Integer pageIndex, Integer pageSize) {
         return dao.getPage(roleId, moduleId, pageIndex, pageSize);
     }
@@ -63,7 +63,7 @@ public class SysRoleModuleService extends BaseService<SysRoleModule> {
      * @param moduleIds
      * @return
      */
-    @Transactional(readOnly = true)
+    @Transactional
     public List<SysRoleModule> getEntitys(Integer[] roleIds, String[] moduleIds) {
         return dao.getEntitys(roleIds, moduleIds);
     }
@@ -73,7 +73,7 @@ public class SysRoleModuleService extends BaseService<SysRoleModule> {
      * @param moduleId
      * @return
      */
-    @Transactional(readOnly = true)
+    @Transactional
     public SysRoleModule getEntity(Integer[] roleIds, String moduleId) {
         return dao.getEntity(roleIds, moduleId);
     }
@@ -94,7 +94,7 @@ public class SysRoleModuleService extends BaseService<SysRoleModule> {
         return dao.deleteByModuleId(moduleId);
     }
 
-    @Autowired
+    @Resource
     private SysRoleModuleDao dao;
     
 }

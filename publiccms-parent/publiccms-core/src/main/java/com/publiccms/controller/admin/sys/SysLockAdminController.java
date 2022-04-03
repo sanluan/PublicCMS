@@ -1,6 +1,6 @@
 package com.publiccms.controller.admin.sys;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +19,7 @@ import com.publiccms.logic.component.site.LockComponent;
 @Controller
 @RequestMapping("common")
 public class SysLockAdminController {
-    @Autowired
+    @Resource
     private LockComponent lockComponent;
 
     /**

@@ -45,7 +45,7 @@ public class ImageUtils {
     /**
      * <code>
      * &#64;RequestMapping(value = "getCaptchaImage")
-       public void getCaptchaImage(javax.servlet.http.HttpSession session,javax.servlet.http.HttpServletResponse response){
+       public void getCaptchaImage(jakarta.servlet.http.HttpSession session,jakarta.servlet.http.HttpServletResponse response){
            try{
                String captcha = VerificationUtils.getRandomString("ABCDEFGHJKMNPQRSTUVWXYZ23456789", 4);
                session.setAttribute("captcha", captcha);
@@ -55,8 +55,8 @@ public class ImageUtils {
        }
      * </code> <code>
        &#64;RequestMapping(value = "doLogin", method = RequestMethod.POST)
-       public String login(@RequestAttribute SysSite site, javax.servlet.http.HttpSession session, String username, String password, String captcha,String returnUrl, Long clientId, String uuid,
-            javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response, ModelMap model) {
+       public String login(@RequestAttribute SysSite site, jakarta.servlet.http.HttpSession session, String username, String password, String captcha,String returnUrl, Long clientId, String uuid,
+            jakarta.servlet.http.HttpServletRequest request, jakarta.servlet.http.HttpServletResponse response, ModelMap model) {
            String sessionCaptcha = (String)session.getAttribute("captcha");
            session.removeAttribute("captcha");
            if(null!=sessionCaptcha &amp;&amp; sessionCaptcha.equals(captcha)) {

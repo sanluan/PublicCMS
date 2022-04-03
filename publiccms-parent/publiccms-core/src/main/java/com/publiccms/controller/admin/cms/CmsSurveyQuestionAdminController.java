@@ -4,11 +4,11 @@ import java.util.List;
 
 // Generated 2020-7-1 21:06:19 by com.publiccms.common.generator.SourceGenerator
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -117,10 +117,10 @@ public class CmsSurveyQuestionAdminController {
         return CommonConstants.TEMPLATE_DONE;
     }
 
-    @Autowired
+    @Resource
     private CmsSurveyQuestionService service;
-    @Autowired
+    @Resource
     private CmsSurveyQuestionItemService itemService;
-    @Autowired
+    @Resource
     protected LogOperateService logOperateService;
 }

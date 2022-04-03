@@ -11,9 +11,9 @@ import java.util.stream.Collectors;
 
 // Generated 2021-8-2 11:31:34 by com.publiccms.common.generator.SourceGenerator
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -53,11 +53,11 @@ import com.publiccms.logic.service.sys.SysSiteDatasourceService;
 @RequestMapping("sysDatasource")
 public class SysDatasourceAdminController {
     private String[] ignoreProperties = new String[] { "name" };
-    @Autowired
+    @Resource
     protected SiteComponent siteComponent;
-    @Autowired
+    @Resource
     protected DatasourceComponent datasourceComponent;
-    @Autowired
+    @Resource
     private SysSiteDatasourceService siteDatasourceService;
 
     /**
@@ -181,8 +181,8 @@ public class SysDatasourceAdminController {
         return CommonConstants.TEMPLATE_DONE;
     }
 
-    @Autowired
+    @Resource
     private SysDatasourceService service;
-    @Autowired
+    @Resource
     protected LogOperateService logOperateService;
 }

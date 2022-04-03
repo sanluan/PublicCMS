@@ -4,9 +4,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import jakarta.transaction.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.tools.CommonUtils;
@@ -79,7 +79,7 @@ public class CmsDictionaryDataService extends BaseService<CmsDictionaryData> {
      * @param parentValue
      * @return data list
      */
-    @Transactional(readOnly = true)
+    @Transactional
     public List<CmsDictionaryData> getList(short siteId, String dictionaryId, String parentValue) {
         return dao.getList(siteId, dictionaryId, parentValue);
     }
@@ -93,9 +93,9 @@ public class CmsDictionaryDataService extends BaseService<CmsDictionaryData> {
         return dao.delete(siteId, dictionaryIds);
     }
     
-    @Autowired
+    @Resource
     private CmsDictionaryDataDao dao;
-    @Autowired
+    @Resource
     private CmsDictionaryExcludeValueService excludeValueService;
 
 }

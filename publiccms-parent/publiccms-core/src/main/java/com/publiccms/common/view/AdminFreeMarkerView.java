@@ -2,7 +2,7 @@ package com.publiccms.common.view;
 
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import com.publiccms.common.base.AbstractFreemarkerView;
 

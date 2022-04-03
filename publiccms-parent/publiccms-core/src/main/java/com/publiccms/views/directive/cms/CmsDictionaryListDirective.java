@@ -6,7 +6,7 @@ import java.io.IOException;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.logic.service.cms.CmsDictionaryService;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.handler.PageHandler;
@@ -27,7 +27,7 @@ public class CmsDictionaryListDirective extends AbstractTemplateDirective {
         handler.put("page", page).render();
     }
 
-    @Autowired
+    @Resource
     private CmsDictionaryService service;
 
 }

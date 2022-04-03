@@ -1,4 +1,4 @@
-# PublicCMS V4.0
+# PublicCMS V5 jakarta版
 
 <a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=xoxCUvv7bDCFQ8AAqaoWB1JsLz0L90qn">交流群1群 191381542</a>
 <a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=x15JZdCp8vWlxV1mMoMTyrHzMqw3dmI1">交流群2群 481589563</a>
@@ -8,7 +8,7 @@
 
 ## 简介
 
-PublicCMS是采用2022年主流技术开发的开源JAVACMS系统。由天津黑核科技有限公司开发，架构科学，轻松支持上千万数据、千万PV；支持全站静态化，SSI，动态页面局部静态化等为您快速建站，建设大规模站点提供强大驱动，也是企业级项目产品原型的良好选择。
+PublicCMS V5 jakarta版 是采用2022年主流技术开发的开源JAVACMS系统。由天津黑核科技有限公司开发，架构科学，轻松支持上千万数据、千万PV；支持全站静态化，SSI，动态页面局部静态化等为您快速建站，建设大规模站点提供强大驱动，也是企业级项目产品原型的良好选择。
 
 ## 获取源码
 
@@ -21,13 +21,19 @@ https://github.com/sanluan/PublicCMS
 
 ## 授权协议
 
-* 版本:V4.0 商用付费授权协议:详情参见LICENSE
+* 版本:V4.0,V5 商用付费授权协议:详情参见LICENSE
 * 版本:V1.0,V2016,V2017,V2019 完全免费授权协议:MIT
 
 ## 环境要求
 
-* jdk或jre 1.8 及以上
+* jdk或jre 17 及以上
 * mysql 5.5 及以上
+* [可选]tomcat 10及以上
+
+## 开发环境要求
+
+* Idea 2021.2.1 及以上
+* eclipse 2021-09 及以上
 
 ## 目录说明
 
@@ -39,7 +45,7 @@ https://github.com/sanluan/PublicCMS
 
 * 编译运行
 
-保证操作系统中有jdk1.8及以上
+保证操作系统中有jdk17及以上
 ```
 cd publiccms-parent
 mvnw clean package

@@ -11,9 +11,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.annotation.PreDestroy;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpEntity;
@@ -22,7 +19,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.util.EntityUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.api.Config;
@@ -54,6 +51,8 @@ import com.wechat.pay.contrib.apache.httpclient.exception.NotFoundException;
 import com.wechat.pay.contrib.apache.httpclient.util.PemUtil;
 
 import freemarker.template.Template;
+import jakarta.annotation.PreDestroy;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Component
 public class WechatGatewayComponent extends AbstractPaymentGateway implements Config {
@@ -97,13 +96,13 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
      * 
      */
     public static final String CONFIG_RESULTPAGE = "resultPage";
-    @Autowired
+    @Resource
     private TemplateComponent templateComponent;
-    @Autowired
+    @Resource
     private TradePaymentService service;
-    @Autowired
+    @Resource
     private TradePaymentHistoryService historyService;
-    @Autowired
+    @Resource
     private PaymentProcessorComponent tradePaymentProcessorComponent;
 
     private CertificatesManager certificatesManager = CertificatesManager.getInstance();

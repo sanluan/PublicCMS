@@ -11,6 +11,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import jakarta.annotation.Resource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -36,12 +38,12 @@ import com.publiccms.views.pojo.entities.SysConfig;
  */
 @Component
 public class ConfigComponent implements SiteCache {
-    @Autowired
+    @Resource
     private SysConfigDataService service;
     @Autowired(required = false)
     private List<Config> configPluginList;
 
-    @Autowired
+    @Resource
     private SiteComponent siteComponent;
     private CacheEntity<Short, Map<String, Map<String, String>>> cache;
 
@@ -255,7 +257,7 @@ public class ConfigComponent implements SiteCache {
      * @throws InvocationTargetException
      * @throws IllegalArgumentException
      */
-    @Autowired
+    @Resource
     public void initCache(CacheEntityFactory cacheEntityFactory)
             throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException,
             InvocationTargetException, NoSuchMethodException, SecurityException {

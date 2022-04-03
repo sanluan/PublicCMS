@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractAppDirective;
@@ -40,15 +40,15 @@ import com.publiccms.logic.service.log.LogOperateService;
 @Component
 public class ContentCheckDirective extends AbstractAppDirective {
 
-    @Autowired
+    @Resource
     private CmsContentService service;
-    @Autowired
+    @Resource
     private CmsCategoryService categoryService;
-    @Autowired
+    @Resource
     protected LogOperateService logOperateService;
-    @Autowired
+    @Resource
     private CmsCategoryModelService categoryModelService;
-    @Autowired
+    @Resource
     private TemplateComponent templateComponent;
 
     @Override

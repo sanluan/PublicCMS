@@ -2,7 +2,7 @@ package com.publiccms.common.api;
 
 import java.util.function.Supplier;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.trade.TradePayment;

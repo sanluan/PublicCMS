@@ -9,5 +9,5 @@ dependencies {
     implementation project(':publiccms-core')
 
     implementation "org.apache.lucene:lucene-analyzers-smartcn:${luceneVersion}"
-    implementation "javax.servlet:javax.servlet-api:${servletVersion}"
+    implementation "jakarta.servlet:jakarta.servlet-api:${servletVersion}"
 }

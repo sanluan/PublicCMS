@@ -7,10 +7,8 @@ import java.util.Date;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.constants.CommonConstants;
@@ -18,6 +16,8 @@ import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.dao.sys.SysUserDao;
+
+import jakarta.transaction.Transactional;
 
 /**
  *
@@ -48,7 +48,7 @@ public class SysUserService extends BaseService<SysUser> {
      * @param pageSize
      * @return
      */
-    @Transactional(readOnly = true)
+    @Transactional
     public PageHandler getPage(Short siteId, Integer deptId, Date startRegisteredDate, Date endRegisteredDate,
             Date startLastLoginDate, Date endLastLoginDate, Boolean superuserAccess, Boolean emailChecked, Boolean disabled,
             String name, String orderField, String orderType, Integer pageIndex, Integer pageSize) {
@@ -122,7 +122,7 @@ public class SysUserService extends BaseService<SysUser> {
      * @param ip
      * @return
      */
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional
     public SysUser updateLoginStatus(Serializable id, String ip) {
         SysUser entity = getEntity(id);
         if (null != entity) {
@@ -185,7 +185,7 @@ public class SysUserService extends BaseService<SysUser> {
         return entity;
     }
 
-    @Autowired
+    @Resource
     private SysUserDao dao;
 
 }

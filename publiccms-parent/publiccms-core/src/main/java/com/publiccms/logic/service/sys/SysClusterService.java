@@ -8,9 +8,9 @@ import java.util.Date;
 
 import com.publiccms.entities.sys.SysCluster;
 import com.publiccms.logic.dao.sys.SysClusterDao;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import jakarta.transaction.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
@@ -34,7 +34,7 @@ public class SysClusterService extends BaseService<SysCluster> {
      * @param pageSize
      * @return
      */
-    @Transactional(readOnly = true)
+    @Transactional
     public PageHandler getPage(Date startHeartbeatDate, Date endHeartbeatDate, Boolean master, String orderField,
             String orderType, Integer pageIndex, Integer pageSize) {
         return dao.getPage(startHeartbeatDate, endHeartbeatDate, master, orderField, orderType, pageIndex, pageSize);
@@ -62,7 +62,7 @@ public class SysClusterService extends BaseService<SysCluster> {
         }
     }
 
-    @Autowired
+    @Resource
     private SysClusterDao dao;
     
 }

@@ -3,8 +3,6 @@ package com.publiccms.logic.component.task;
 import java.util.Date;
 import java.util.List;
 
-import javax.annotation.PreDestroy;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.quartz.CronScheduleBuilder;
@@ -28,6 +26,9 @@ import com.publiccms.entities.sys.SysTask;
 import com.publiccms.logic.service.log.LogTaskService;
 import com.publiccms.logic.service.sys.SysSiteService;
 import com.publiccms.logic.service.sys.SysTaskService;
+
+import jakarta.annotation.PreDestroy;
+import jakarta.annotation.Resource;
 
 /**
  * 
@@ -62,13 +63,13 @@ public class ScheduledTask {
      */
     public static final int TASK_STATUS_ERROR = 3;
 
-    @Autowired
+    @Resource
     private SysTaskService sysTaskService;
     @Autowired(required = false)
     private Scheduler scheduler;
-    @Autowired
+    @Resource
     private LogTaskService logTaskService;
-    @Autowired
+    @Resource
     private SysSiteService siteService;
 
     /**

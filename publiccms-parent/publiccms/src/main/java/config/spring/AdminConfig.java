@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -44,9 +44,9 @@ public class AdminConfig implements WebMvcConfigurer {
      */
     public static final String ADMIN_CONTEXT_PATH = "/admin";
 
-    @Autowired
+    @Resource
     private CacheComponent cacheComponent;
-    @Autowired
+    @Resource
     private AdminContextInterceptor adminInterceptor;
 
     @Bean
@@ -73,6 +73,7 @@ public class AdminConfig implements WebMvcConfigurer {
         bean.setViewClass(AdminFreeMarkerView.class);
         bean.setPrefix("/admin/");
         bean.setSuffix(".html");
+        bean.setExposeSessionAttributes(true);
         bean.setExposeSpringMacroHelpers(false);
         bean.setContentType("text/html;charset=UTF-8");
         cacheComponent.registerCachingViewResolverList(bean);

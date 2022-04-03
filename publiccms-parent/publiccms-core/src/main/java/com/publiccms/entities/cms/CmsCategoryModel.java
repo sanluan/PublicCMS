@@ -1,14 +1,14 @@
 package com.publiccms.entities.cms;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
+import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.AttributeOverrides;
 
 // Generated 2016-1-19 11:28:06 by Hibernate Tools 4.3.1
 
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
 import org.hibernate.annotations.DynamicUpdate;
 

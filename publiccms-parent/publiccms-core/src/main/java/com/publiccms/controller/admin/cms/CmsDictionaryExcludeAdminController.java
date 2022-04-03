@@ -1,8 +1,8 @@
 package com.publiccms.controller.admin.cms;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -32,9 +32,9 @@ import com.publiccms.views.pojo.model.CmsDictionaryExcludeParameters;
 @Controller
 @RequestMapping("cmsDictionaryExclude")
 public class CmsDictionaryExcludeAdminController {
-    @Autowired
+    @Resource
     protected LogOperateService logOperateService;
-    @Autowired
+    @Resource
     protected SiteComponent siteComponent;
 
     /**
@@ -59,6 +59,6 @@ public class CmsDictionaryExcludeAdminController {
         return CommonConstants.TEMPLATE_DONE;
     }
 
-    @Autowired
+    @Resource
     private CmsDictionaryExcludeService service;
 }

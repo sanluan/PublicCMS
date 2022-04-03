@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -41,11 +41,11 @@ import com.publiccms.logic.component.template.TemplateComponent;
 @ComponentScan(basePackages = "com.publiccms.controller.web", useDefaultFilters = false, includeFilters = {
         @ComponentScan.Filter(value = { Controller.class }) }, nameGenerator = FullBeanNameGenerator.class)
 public class WebConfig implements WebMvcConfigurer {
-    @Autowired
+    @Resource
     private WebContextInterceptor webInterceptor;
-    @Autowired
+    @Resource
     private SiteInterceptor siteInterceptor;
-    @Autowired
+    @Resource
     private CacheComponent cacheComponent;
 
     @Bean

@@ -3,8 +3,8 @@ package com.publiccms.common.servlet;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.web.HttpRequestHandler;
 import org.springframework.web.context.WebApplicationContext;

@@ -4,9 +4,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import jakarta.transaction.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
@@ -36,7 +36,7 @@ public class CmsContentFileService extends BaseService<CmsContentFile> {
      * @param pageSize
      * @return results page
      */
-    @Transactional(readOnly = true)
+    @Transactional
     public PageHandler getPage(Long contentId, Long userId, String[] fileTypes, String orderField, String orderType,
             Integer pageIndex, Integer pageSize) {
         return dao.getPage(contentId, userId, fileTypes, orderField, orderType, pageIndex, pageSize);
@@ -47,7 +47,7 @@ public class CmsContentFileService extends BaseService<CmsContentFile> {
      * @param fileTypes
      * @return results list
      */
-    @Transactional(readOnly = true)
+    @Transactional
     public List<CmsContentFile> getList(long contentId, String[] fileTypes) {
         return dao.getList(contentId, fileTypes);
     }
@@ -97,7 +97,7 @@ public class CmsContentFileService extends BaseService<CmsContentFile> {
         }
     }
 
-    @Autowired
+    @Resource
     private CmsContentFileDao dao;
 
 }

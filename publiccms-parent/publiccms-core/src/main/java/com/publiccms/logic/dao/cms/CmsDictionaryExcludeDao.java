@@ -25,7 +25,6 @@ public class CmsDictionaryExcludeDao extends BaseDao<CmsDictionaryExclude> {
      * @param excludeDictionaryId
      * @return results page
      */
-    @SuppressWarnings("unchecked")
     public List<CmsDictionaryExclude> getList(short siteId, String dictionaryId, String excludeDictionaryId) {
         QueryHandler queryHandler = getQueryHandler("from CmsDictionaryExclude bean");
         queryHandler.condition("bean.id.siteId = :siteId").setParameter("siteId", siteId);

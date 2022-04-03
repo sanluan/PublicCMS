@@ -15,7 +15,6 @@ import org.hibernate.SessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.FactoryBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -24,7 +23,6 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
@@ -33,7 +31,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
 import com.github.pagehelper.PageInterceptor;
@@ -51,6 +49,7 @@ import com.publiccms.logic.component.site.SiteComponent;
 
 import config.initializer.InitializationInitializer;
 import freemarker.cache.FileTemplateLoader;
+import jakarta.annotation.Resource;
 
 /**
  *
@@ -68,7 +67,7 @@ import freemarker.cache.FileTemplateLoader;
 @EnableScheduling
 public class ApplicationConfig {
 
-    @Autowired
+    @Resource
     private Environment env;
 
     /**
@@ -264,11 +263,8 @@ public class ApplicationConfig {
      * @throws IOException
      */
     @Bean
-    public CommonsMultipartResolver multipartResolver() throws IOException {
-        CommonsMultipartResolver bean = new CommonsMultipartResolver();
-        bean.setDefaultEncoding(CommonConstants.DEFAULT_CHARSET_NAME);
-        bean.setMaxUploadSize(Long.parseLong(env.getProperty("cms.multipart.maxUploadSize")) * 1024 * 1024);
-        bean.setUploadTempDir(new FileSystemResource(getDirPath("/tmp/")));
+    public StandardServletMultipartResolver multipartResolver() throws IOException {
+        StandardServletMultipartResolver bean = new StandardServletMultipartResolver();
         return bean;
     }
 

@@ -5,10 +5,8 @@ import java.util.Date;
 
 // Generated 2019-6-16 9:47:27 by com.publiccms.common.generator.SourceGenerator
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
@@ -19,6 +17,8 @@ import com.publiccms.entities.trade.TradeAccountHistory;
 import com.publiccms.logic.dao.trade.TradeAccountDao;
 import com.publiccms.logic.dao.trade.TradeAccountHistoryDao;
 import com.publiccms.logic.service.sys.SysUserService;
+
+import jakarta.transaction.Transactional;
 
 /**
  *
@@ -36,12 +36,12 @@ public class TradeAccountService extends BaseService<TradeAccount> {
      * @param pageSize
      * @return results page
      */
-    @Transactional(readOnly = true)
+    @Transactional
     public PageHandler getPage(Short siteId, Integer pageIndex, Integer pageSize) {
         return dao.getPage(siteId, pageIndex, pageSize);
     }
 
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional
     public TradeAccount getOrCreate(short siteId, long accountId) {
         TradeAccount entity = getEntity(accountId);
         if (null == entity) {
@@ -56,7 +56,7 @@ public class TradeAccountService extends BaseService<TradeAccount> {
         return null;
     }
 
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional
     public TradeAccountHistory change(short siteId, String serialNumber, long accountId, Long userId, int status,
             BigDecimal change, String description) {
         if (null != change) {
@@ -77,11 +77,11 @@ public class TradeAccountService extends BaseService<TradeAccount> {
         return null;
     }
 
-    @Autowired
+    @Resource
     private TradeAccountDao dao;
-    @Autowired
+    @Resource
     private TradeAccountHistoryDao historyDao;
-    @Autowired
+    @Resource
     private SysUserService userService;
 
 }

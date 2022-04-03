@@ -2,9 +2,9 @@ package com.publiccms.logic.service.log;
 
 import java.io.Serializable;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import jakarta.transaction.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
@@ -33,7 +33,7 @@ public class LogUploadService extends BaseService<LogUpload> {
      * @param pageSize
      * @return
      */
-    @Transactional(readOnly = true)
+    @Transactional
     public PageHandler getPage(Short siteId, Long userId, String channel, String[] fileTypes, String originalName, String filePath, String orderField,
             String orderType, Integer pageIndex, Integer pageSize) {
         return dao.getPage(siteId, userId, channel, fileTypes, originalName, filePath, orderField, orderType, pageIndex, pageSize);
@@ -51,7 +51,7 @@ public class LogUploadService extends BaseService<LogUpload> {
         }
     }
 
-    @Autowired
+    @Resource
     private LogUploadDao dao;
 
 }

@@ -24,6 +24,7 @@ import com.publiccms.logic.component.template.TemplateComponent;
 import freemarker.template.Configuration;
 import freemarker.template.SimpleHash;
 import freemarker.template.TemplateModelException;
+import jakarta.annotation.Resource;
 
 /**
  * 
@@ -40,9 +41,9 @@ public class DirectiveComponent {
     private Map<String, AbstractTaskDirective> taskDirectiveMap = new HashMap<>();
     private Map<String, BaseMethod> methodMap = new HashMap<>();
 
-    @Autowired
+    @Resource
     private TemplateComponent templateComponent;
-    @Autowired
+    @Resource
     private SiteComponent siteComponent;
 
     public String getDirectiveName(String className) {

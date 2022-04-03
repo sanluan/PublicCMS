@@ -4,9 +4,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import jakarta.transaction.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
@@ -35,7 +35,7 @@ public class CmsContentRelatedService extends BaseService<CmsContentRelated> {
      * @param pageSize
      * @return results page
      */
-    @Transactional(readOnly = true)
+    @Transactional
     public PageHandler getPage(Long contentId, Long relatedContentId, Long userId, String orderField, String orderType,
             Integer pageIndex, Integer pageSize) {
         return dao.getPage(contentId, relatedContentId, userId, orderField, orderType, pageIndex, pageSize);
@@ -69,7 +69,7 @@ public class CmsContentRelatedService extends BaseService<CmsContentRelated> {
         }
     }
 
-    @Autowired
+    @Resource
     private CmsContentRelatedDao dao;
 
 }

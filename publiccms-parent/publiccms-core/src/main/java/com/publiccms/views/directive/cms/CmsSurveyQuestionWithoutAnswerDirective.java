@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
@@ -56,6 +56,6 @@ public class CmsSurveyQuestionWithoutAnswerDirective extends AbstractTemplateDir
         }
     }
 
-    @Autowired
+    @Resource
     private CmsSurveyQuestionService service;
 }

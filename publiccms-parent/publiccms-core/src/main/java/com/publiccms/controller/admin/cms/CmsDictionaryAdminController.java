@@ -1,9 +1,9 @@
 package com.publiccms.controller.admin.cms;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -39,9 +39,9 @@ import com.publiccms.views.pojo.model.CmsDictionaryParameters;
 @Controller
 @RequestMapping("cmsDictionary")
 public class CmsDictionaryAdminController {
-    @Autowired
+    @Resource
     protected LogOperateService logOperateService;
-    @Autowired
+    @Resource
     protected SiteComponent siteComponent;
 
     private String[] ignoreProperties = new String[] { "id", "siteId" };
@@ -140,12 +140,12 @@ public class CmsDictionaryAdminController {
         return CommonConstants.TEMPLATE_DONE;
     }
 
-    @Autowired
+    @Resource
     private CmsDictionaryService service;
-    @Autowired
+    @Resource
     private CmsDictionaryDataService dataService;
-    @Autowired
+    @Resource
     private CmsDictionaryExcludeService excludeService;
-    @Autowired
+    @Resource
     private CmsDictionaryExcludeValueService excludeValueService;
 }

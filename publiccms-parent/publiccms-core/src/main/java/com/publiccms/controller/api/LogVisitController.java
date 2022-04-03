@@ -3,9 +3,9 @@ package com.publiccms.controller.api;
 import java.util.Calendar;
 import java.util.Date;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -20,7 +20,7 @@ import com.publiccms.logic.component.site.VisitComponent;
 @Controller
 @RequestMapping("visit")
 public class LogVisitController {
-    @Autowired
+    @Resource
     private VisitComponent visitComponent;
 
     /**

@@ -8,10 +8,8 @@ import java.util.Map;
 
 // Generated 2021-6-26 22:16:13 by com.publiccms.common.generator.SourceGenerator
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
@@ -22,6 +20,8 @@ import com.publiccms.entities.trade.TradeOrderProduct;
 import com.publiccms.logic.dao.trade.TradeOrderProductDao;
 import com.publiccms.logic.service.cms.CmsContentProductService;
 import com.publiccms.logic.service.cms.CmsContentService;
+
+import jakarta.transaction.Transactional;
 
 /**
  *
@@ -39,7 +39,7 @@ public class TradeOrderProductService extends BaseService<TradeOrderProduct> {
      * @param pageSize
      * @return results page
      */
-    @Transactional(readOnly = true)
+    @Transactional
     public PageHandler getPage(Short siteId, Long orderId, Integer pageIndex, Integer pageSize) {
         return dao.getPage(siteId, orderId, pageIndex, pageSize);
     }
@@ -51,12 +51,12 @@ public class TradeOrderProductService extends BaseService<TradeOrderProduct> {
      * @param pageSize
      * @return results page
      */
-    @Transactional(readOnly = true)
+    @Transactional
     public List<TradeOrderProduct> getList(Short siteId, Long orderId) {
         return dao.getList(siteId, orderId);
     }
 
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional
     public BigDecimal create(short siteId, long orderId, List<TradeOrderProduct> tradeOrderProductList) {
         BigDecimal amount = BigDecimal.ZERO;
         if (null != tradeOrderProductList && 0 < tradeOrderProductList.size()) {
@@ -100,10 +100,10 @@ public class TradeOrderProductService extends BaseService<TradeOrderProduct> {
         return null;
     }
 
-    @Autowired
+    @Resource
     private TradeOrderProductDao dao;
-    @Autowired
+    @Resource
     private CmsContentService contentService;
-    @Autowired
+    @Resource
     private CmsContentProductService productService;
 }

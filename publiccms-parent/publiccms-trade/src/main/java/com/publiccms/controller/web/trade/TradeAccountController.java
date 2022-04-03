@@ -6,10 +6,10 @@ import java.util.UUID;
 
 // Generated 2019-6-16 9:47:27 by com.publiccms.common.generator.SourceGenerator
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -78,14 +78,14 @@ public class TradeAccountController {
         return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
     }
 
-    @Autowired
+    @Resource
     private AccountGatewayComponent accountGatewayComponent;
-    @Autowired
+    @Resource
     private PaymentGatewayComponent gatewayComponent;
-    @Autowired
+    @Resource
     protected SiteConfigComponent siteConfigComponent;
-    @Autowired
+    @Resource
     private TradePaymentService paymentService;
-    @Autowired
+    @Resource
     private TradeAccountHistoryService historyService;
 }

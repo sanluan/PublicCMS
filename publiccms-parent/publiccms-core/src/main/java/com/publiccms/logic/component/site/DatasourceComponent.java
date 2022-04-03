@@ -13,8 +13,6 @@ import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import javax.annotation.PreDestroy;
-
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -23,7 +21,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -46,6 +44,8 @@ import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.sys.SysDatasourceService;
 import com.publiccms.logic.service.sys.SysSiteDatasourceService;
 
+import jakarta.annotation.PreDestroy;
+
 /**
  *
  * DatasourceComponent
@@ -58,15 +58,15 @@ public class DatasourceComponent implements SiteCache {
 
     protected final Log log = LogFactory.getLog(getClass());
     private static ExecutorService pool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-    @Autowired
+    @Resource
     private SysDatasourceService service;
-    @Autowired
+    @Resource
     private SysSiteDatasourceService siteDatasourceService;
-    @Autowired
+    @Resource
     private CmsContentService contentService;
-    @Autowired
+    @Resource
     private CmsCommentService commentService;
-    @Autowired
+    @Resource
     private CmsDataSource dataSource;
     private CacheEntity<Short, List<String>> cache;
 
@@ -251,7 +251,7 @@ public class DatasourceComponent implements SiteCache {
      * @throws InstantiationException
      * @throws ClassNotFoundException
      */
-    @Autowired
+    @Resource
     public void initCache(CacheEntityFactory cacheEntityFactory)
             throws ClassNotFoundException, InstantiationException, IllegalAccessException {
         cache = cacheEntityFactory.createCacheEntity("datasource");

@@ -1,9 +1,9 @@
 package com.publiccms.controller.admin.cms;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -39,17 +39,17 @@ import com.publiccms.views.pojo.model.ExtendDataParameters;
 @Controller
 @RequestMapping("cmsPage")
 public class CmsPageAdminController {
-    @Autowired
+    @Resource
     private MetadataComponent metadataComponent;
-    @Autowired
+    @Resource
     private SysDeptPageService sysDeptPageService;
-    @Autowired
+    @Resource
     private SysDeptService sysDeptService;
-    @Autowired
+    @Resource
     private TemplateCacheComponent templateCacheComponent;
-    @Autowired
+    @Resource
     protected LogOperateService logOperateService;
-    @Autowired
+    @Resource
     protected SiteComponent siteComponent;
 
     /**

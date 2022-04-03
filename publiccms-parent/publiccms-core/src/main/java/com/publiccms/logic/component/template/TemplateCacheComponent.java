@@ -5,12 +5,12 @@ import java.util.Locale;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.ModelMap;
 
@@ -44,9 +44,9 @@ public class TemplateCacheComponent implements Cache {
      */
     public static final String CACHE_FILE_DIRECTORY = "/cache";
     private final Lock lock = new ReentrantLock();
-    @Autowired
+    @Resource
     private SiteComponent siteComponent;
-    @Autowired
+    @Resource
     private TemplateComponent templateComponent;
 
     /**

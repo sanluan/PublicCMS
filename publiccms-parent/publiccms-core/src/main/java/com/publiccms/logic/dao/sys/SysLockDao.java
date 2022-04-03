@@ -25,13 +25,12 @@ public class SysLockDao extends BaseDao<SysLock> {
      * @param createDate
      * @return number of data deleted
      */
-    @SuppressWarnings("unchecked")
     public List<Short> getSiteIdList(String[] itemTypes) {
         if (CommonUtils.notEmpty(itemTypes)) {
             QueryHandler queryHandler = getQueryHandler("select bean.id.siteId from SysLock bean");
             queryHandler.condition("bean.id.itemType in(:itemTypes)").setParameter("itemTypes", itemTypes);
             queryHandler.group("bean.id.siteId");
-            return (List<Short>) getList(queryHandler);
+            return getList(queryHandler, Short.class);
         }
         return null;
     }

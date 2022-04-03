@@ -3,12 +3,12 @@ package com.publiccms.entities.sys;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -105,12 +105,12 @@ public class SysCluster implements java.io.Serializable {
     public void setCmsVersion(String cmsVersion) {
         this.cmsVersion = cmsVersion;
     }
-    
+
     @Column(name = "revision", length = 20)
     public String getRevision() {
         return this.revision;
     }
-    
+
     public void setRevision(String revision) {
         this.revision = revision;
     }

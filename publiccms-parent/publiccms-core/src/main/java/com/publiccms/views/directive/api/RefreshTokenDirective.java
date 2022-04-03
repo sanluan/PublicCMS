@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.Date;
 
 import org.apache.commons.lang3.time.DateUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractAppDirective;
@@ -37,7 +37,7 @@ public class RefreshTokenDirective extends AbstractAppDirective {
         }
     }
 
-    @Autowired
+    @Resource
     private SysAppTokenService service;
 
     @Override

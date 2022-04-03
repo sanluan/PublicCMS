@@ -2,9 +2,9 @@ package com.publiccms.logic.service.sys;
 
 // Generated 2015-7-3 16:18:22 by com.publiccms.common.source.SourceGenerator
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import jakarta.transaction.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
@@ -27,15 +27,15 @@ import com.publiccms.logic.dao.sys.SysSiteDao;
 @Service
 @Transactional
 public class SysSiteService extends BaseService<SysSite> {
-    @Autowired
+    @Resource
     private SysRoleService roleService;
-    @Autowired
+    @Resource
     private SysUserService userService;
-    @Autowired
+    @Resource
     private SysDeptService deptService;
-    @Autowired
+    @Resource
     private SysDomainService domainService;
-    @Autowired
+    @Resource
     private SysRoleUserService roleUserService;
 
     /**
@@ -46,7 +46,7 @@ public class SysSiteService extends BaseService<SysSite> {
      * @param pageSize
      * @return
      */
-    @Transactional(readOnly = true)
+    @Transactional
     public PageHandler getPage(Boolean disabled, Short parentId, String name, Integer pageIndex, Integer pageSize) {
         return dao.getPage(disabled, parentId, name, pageIndex, pageSize);
     }
@@ -87,7 +87,7 @@ public class SysSiteService extends BaseService<SysSite> {
      * @param directory
      * @return entity
      */
-    @Transactional(readOnly = true)
+    @Transactional
     public SysSite getEntity(short parentId, String directory) {
         return dao.getEntity(parentId, directory);
     }
@@ -104,7 +104,7 @@ public class SysSiteService extends BaseService<SysSite> {
         return entity;
     }
 
-    @Autowired
+    @Resource
     private SysSiteDao dao;
 
 }

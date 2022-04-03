@@ -8,7 +8,7 @@ import java.util.Collection;
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.logic.component.config.ConfigComponent;
 import com.publiccms.logic.component.config.ConfigComponent.ConfigInfo;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.handler.RenderHandler;
@@ -33,6 +33,6 @@ public class SysConfigListDirective extends AbstractTemplateDirective {
         return true;
     }
 
-    @Autowired
+    @Resource
     private ConfigComponent configComponent;
 }

@@ -4,9 +4,9 @@ import java.math.BigDecimal;
 
 // Generated 2019-6-16 9:47:27 by com.publiccms.common.generator.SourceGenerator
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -78,8 +78,8 @@ public class TradeAccountAdminController {
         return CommonConstants.TEMPLATE_ERROR;
     }
 
-    @Autowired
+    @Resource
     private TradeAccountService service;
-    @Autowired
+    @Resource
     protected LogOperateService logOperateService;
 }

@@ -18,7 +18,7 @@ public class ExceptionDirective extends AbstractTemplateDirective {
     public void execute(RenderHandler handler) throws IOException, Exception {
         Throwable throwable;
         try {
-            throwable = (Throwable) handler.getRequest().getAttribute("javax.servlet.error.exception");
+            throwable = (Throwable) handler.getRequest().getAttribute("jakarta.servlet.error.exception");
         } catch (Exception e) {
             throwable = e;
         }

@@ -7,7 +7,7 @@ import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.api.Config;
@@ -95,15 +95,15 @@ public class LoginDirective extends AbstractAppDirective {
         handler.put("result", result);
     }
 
-    @Autowired
+    @Resource
     private SysUserService service;
-    @Autowired
+    @Resource
     private SysUserTokenService sysUserTokenService;
-    @Autowired
+    @Resource
     private LogLoginService logLoginService;
-    @Autowired
+    @Resource
     private ConfigComponent configComponent;
-    @Autowired
+    @Resource
     private LockComponent lockComponent;
 
     @Override

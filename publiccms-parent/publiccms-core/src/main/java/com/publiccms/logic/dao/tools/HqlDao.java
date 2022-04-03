@@ -62,7 +62,7 @@ public class HqlDao extends BaseDao<Object> {
      * 
      */
     public void clear() {
-        sessionFactory.getCache().evictAllRegions();
+        sessionFactory.getCache().evictAll();
     }
 
 }

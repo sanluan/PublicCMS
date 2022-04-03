@@ -2,7 +2,7 @@ package com.publiccms.controller.web.cms;
 
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,7 +33,7 @@ import com.publiccms.logic.service.cms.CmsUserScoreService;
 @Controller
 @RequestMapping("score")
 public class ScoreController {
-    @Autowired
+    @Resource
     protected ConfigComponent configComponent;
 
     /**
@@ -122,13 +122,13 @@ public class ScoreController {
         return false;
     }
 
-    @Autowired
+    @Resource
     private CmsUserScoreService service;
-    @Autowired
+    @Resource
     private CmsCommentService commentService;
-    @Autowired
+    @Resource
     private CmsContentService contentService;
-    @Autowired
+    @Resource
     private TemplateComponent templateComponent;
 
 }

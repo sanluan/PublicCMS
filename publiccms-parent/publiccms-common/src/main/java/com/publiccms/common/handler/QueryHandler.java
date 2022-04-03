@@ -1,9 +1,11 @@
 package com.publiccms.common.handler;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.hibernate.query.Query;
+import jakarta.persistence.Query;
+import jakarta.persistence.TypedQuery;
 
 import com.publiccms.common.constants.Constants;
 
@@ -36,10 +38,8 @@ public class QueryHandler {
     boolean groupFlag = true;
     private StringBuilder sqlBuilder;
     private Map<String, Object> map;
-    private Map<String, Object[]> arrayMap;
     private Integer firstResult;
     private Integer maxResults;
-    private Boolean cacheable;
 
     /**
      * @param sql
@@ -130,15 +130,6 @@ public class QueryHandler {
     }
 
     /**
-     * @param cacheable
-     * @return query handler
-     */
-    public QueryHandler setCacheable(boolean cacheable) {
-        this.cacheable = cacheable;
-        return this;
-    }
-
-    /**
      * @param key
      * @param value
      * @return query handler
@@ -153,30 +144,25 @@ public class QueryHandler {
 
     /**
      * @param key
-     * @param value
+     * @param values 
      * @return query handler
      */
-    public QueryHandler setParameter(String key, Object[] value) {
-        if (null == arrayMap) {
-            arrayMap = new HashMap<>();
+    public QueryHandler setParameter(String key, Object[] values) {
+        if (null == map) {
+            map = new HashMap<>();
         }
-        arrayMap.put(key, value);
+        map.put(key, Arrays.asList(values));
         return this;
     }
 
-    public <T> Query<T> initQuery(Query<T> query) {
+    public <T> TypedQuery<T> initQuery(TypedQuery<T> query) {
         return initQuery(query, true);
     }
 
-    public <T> Query<T> initQuery(Query<T> query, boolean pageable) {
+    public <T> TypedQuery<T> initQuery(TypedQuery<T> query, boolean pageable) {
         if (null != map) {
             for (String key : map.keySet()) {
                 query.setParameter(key, map.get(key));
-            }
-        }
-        if (null != arrayMap) {
-            for (String key : arrayMap.keySet()) {
-                query.setParameterList(key, arrayMap.get(key));
             }
         }
         if (pageable) {
@@ -187,10 +173,26 @@ public class QueryHandler {
                 query.setMaxResults(maxResults);
             }
         }
-        if (null != cacheable) {
-            query.setCacheable(cacheable);
-        } else {
-            query.setCacheable(true);
+        return query;
+    }
+
+    public Query initQuery(Query query) {
+        return initQuery(query, true);
+    }
+
+    public Query initQuery(Query query, boolean pageable) {
+        if (null != map) {
+            for (String key : map.keySet()) {
+                query.setParameter(key, map.get(key));
+            }
+        }
+        if (pageable) {
+            if (null != firstResult) {
+                query.setFirstResult(firstResult);
+            }
+            if (null != maxResults) {
+                query.setMaxResults(maxResults);
+            }
         }
         return query;
     }

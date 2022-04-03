@@ -12,7 +12,7 @@ import java.util.function.Consumer;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.api.Cache;
@@ -67,25 +67,25 @@ public class TemplateComponent implements Cache {
     private Configuration webConfiguration;
     private Configuration taskConfiguration;
 
-    @Autowired
+    @Resource
     private CmsContentAttributeService contentAttributeService;
-    @Autowired
+    @Resource
     private CmsCategoryAttributeService categoryAttributeService;
-    @Autowired
+    @Resource
     private CmsContentService contentService;
-    @Autowired
+    @Resource
     private CmsCategoryModelService categoryModelService;
-    @Autowired
+    @Resource
     private CmsCategoryService categoryService;
-    @Autowired
+    @Resource
     protected DatasourceComponent datasourceComponent;
-    @Autowired
+    @Resource
     private SiteComponent siteComponent;
-    @Autowired
+    @Resource
     private MetadataComponent metadataComponent;
-    @Autowired
+    @Resource
     private CmsPlaceService placeService;
-    @Autowired
+    @Resource
     private StatisticsComponent statisticsComponent;
 
     /**

@@ -3,12 +3,12 @@ package com.publiccms.common.base;
 import java.io.IOException;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 
@@ -130,14 +130,14 @@ public abstract class AbstractTemplateDirective extends BaseTemplateDirective {
         return null;
     }
 
-    @Autowired
+    @Resource
     private SysAppTokenService appTokenService;
-    @Autowired
+    @Resource
     private SysAppService appService;
-    @Autowired
+    @Resource
     private SysUserTokenService sysUserTokenService;
-    @Autowired
+    @Resource
     private SysUserService sysUserService;
-    @Autowired
+    @Resource
     protected SiteComponent siteComponent;
 }

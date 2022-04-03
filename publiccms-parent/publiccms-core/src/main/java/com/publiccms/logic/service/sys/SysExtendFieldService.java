@@ -4,9 +4,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import jakarta.transaction.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.tools.CommonUtils;
@@ -30,7 +30,7 @@ public class SysExtendFieldService extends BaseService<SysExtendField> {
      * @param searchable
      * @return result list
      */
-    @Transactional(readOnly = true)
+    @Transactional
     public List<SysExtendField> getList(Integer extendId, String[] inputType, Boolean searchable) {
         return dao.getList(extendId, inputType, searchable);
     }
@@ -65,7 +65,7 @@ public class SysExtendFieldService extends BaseService<SysExtendField> {
         }
     }
 
-    @Autowired
+    @Resource
     private SysExtendFieldDao dao;
 
 }

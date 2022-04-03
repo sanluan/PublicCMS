@@ -3,9 +3,9 @@ package com.publiccms.logic.service.sys;
 import java.util.List;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import jakarta.transaction.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.tools.CommonUtils;
@@ -29,7 +29,7 @@ public class SysSiteDatasourceService extends BaseService<SysSiteDatasource> {
      * @param pageSize
      * @return
      */
-    @Transactional(readOnly = true)
+    @Transactional
     public List<SysSiteDatasource> getList(Short siteId, String datasource) {
         return dao.getList(siteId, datasource);
     }
@@ -71,7 +71,7 @@ public class SysSiteDatasourceService extends BaseService<SysSiteDatasource> {
         return dao.deleteByDatasource(datasource);
     }
 
-    @Autowired
+    @Resource
     private SysSiteDatasourceDao dao;
 
 }

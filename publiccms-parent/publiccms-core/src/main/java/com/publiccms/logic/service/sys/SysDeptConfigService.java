@@ -5,9 +5,9 @@ package com.publiccms.logic.service.sys;
 import java.util.List;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import jakarta.transaction.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
@@ -32,7 +32,7 @@ public class SysDeptConfigService extends BaseService<SysDeptConfig> {
      * @param pageSize
      * @return
      */
-    @Transactional(readOnly = true)
+    @Transactional
     public PageHandler getPage(Integer deptId, String config, Integer pageIndex, Integer pageSize) {
         return dao.getPage(deptId, config, pageIndex, pageSize);
     }
@@ -75,7 +75,7 @@ public class SysDeptConfigService extends BaseService<SysDeptConfig> {
         }
     }
 
-    @Autowired
+    @Resource
     private SysDeptConfigDao dao;
     
 }

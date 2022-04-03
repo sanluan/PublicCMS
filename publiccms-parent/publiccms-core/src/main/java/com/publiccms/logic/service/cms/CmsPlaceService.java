@@ -4,9 +4,9 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import jakarta.transaction.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
@@ -70,7 +70,7 @@ public class CmsPlaceService extends BaseService<CmsPlace> {
      * @param pageSize
      * @return results page
      */
-    @Transactional(readOnly = true)
+    @Transactional
     public PageHandler getPage(Short siteId, Long userId, String path, String itemType, Long itemId, Date startPublishDate,
             Date endPublishDate, Date expiryDate, Integer[] status, Boolean disabled, String orderField, String orderType,
             Integer pageIndex, Integer pageSize) {
@@ -186,7 +186,7 @@ public class CmsPlaceService extends BaseService<CmsPlace> {
         return dao.delete(siteId, path);
     }
 
-    @Autowired
+    @Resource
     private CmsPlaceDao dao;
 
 }

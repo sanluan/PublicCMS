@@ -9,10 +9,8 @@ import java.util.Set;
 
 // Generated 2018-11-7 16:25:07 by com.publiccms.common.generator.SourceGenerator
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.annotation.CopyToDatasource;
 import com.publiccms.common.base.BaseService;
@@ -21,6 +19,8 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsComment;
 import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.logic.dao.cms.CmsCommentDao;
+
+import jakarta.transaction.Transactional;
 
 /**
  *
@@ -56,7 +56,7 @@ public class CmsCommentService extends BaseService<CmsComment> {
      * @param pageSize
      * @return results page
      */
-    @Transactional(readOnly = true)
+    @Transactional
     public PageHandler getPage(Short siteId, Long userId, Long replyId, Boolean emptyReply, Long replyUserId, Long contentId,
             Long checkUserId, Integer status, Boolean disabled, String orderField, String orderType, Integer pageIndex,
             Integer pageSize) {
@@ -70,7 +70,7 @@ public class CmsCommentService extends BaseService<CmsComment> {
      * @param pageSize
      * @return results page
      */
-    @Transactional(readOnly = true)
+    @Transactional
     public PageHandler getPage(Short[] siteIds, Integer pageIndex, Integer pageSize) {
         return dao.getPage(siteIds, pageIndex, pageSize);
     }
@@ -78,11 +78,10 @@ public class CmsCommentService extends BaseService<CmsComment> {
     /**
      * @param siteId
      * @param entity
-     * @return
      */
     @CopyToDatasource
-    public Serializable save(short siteId, CmsComment entity) {
-        return save(entity);
+    public void save(short siteId, CmsComment entity) {
+        save(entity);
     }
 
     /**
@@ -142,7 +141,7 @@ public class CmsCommentService extends BaseService<CmsComment> {
      * @return
      */
     @CopyToDatasource
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional
     public CmsComment updateReplies(short siteId, Serializable id, int replies) {
         CmsComment entity = getEntity(id);
         if (null != entity && siteId == entity.getSiteId()) {
@@ -158,7 +157,7 @@ public class CmsCommentService extends BaseService<CmsComment> {
      * @return
      */
     @CopyToDatasource
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional
     public CmsComment updateScores(short siteId, Serializable id, int scores) {
         CmsComment entity = getEntity(id);
         if (null != entity && siteId == entity.getSiteId()) {
@@ -202,8 +201,8 @@ public class CmsCommentService extends BaseService<CmsComment> {
         return resultList;
     }
 
-    @Autowired
+    @Resource
     private CmsCommentDao dao;
-    @Autowired
+    @Resource
     private CmsContentService contentService;
 }

@@ -2,9 +2,9 @@ package com.publiccms.logic.component.paymentgateway;
 
 import java.io.IOException;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractPaymentGateway;
@@ -21,9 +21,9 @@ public class AccountGatewayComponent extends AbstractPaymentGateway {
     /**
      * 
      */
-    @Autowired
+    @Resource
     private TradePaymentService service;
-    @Autowired
+    @Resource
     private TradeAccountService accountService;
 
     @Override

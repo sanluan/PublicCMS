@@ -3,7 +3,7 @@ package com.publiccms.views.directive.sys;
 // Generated 2021-8-2 11:31:34 by com.publiccms.common.generator.SourceGenerator
 import java.io.IOException;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.logic.service.sys.SysDatasourceService;
@@ -31,7 +31,7 @@ public class SysDatasourceListDirective extends AbstractTemplateDirective {
         return true;
     }
 
-    @Autowired
+    @Resource
     private SysDatasourceService service;
 
 }

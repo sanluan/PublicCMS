@@ -2,9 +2,9 @@ package com.publiccms.logic.service.sys;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import jakarta.transaction.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
@@ -29,7 +29,7 @@ public class SysDeptService extends BaseService<SysDept> {
      * @param pageSize
      * @return
      */
-    @Transactional(readOnly = true)
+    @Transactional
     public PageHandler getPage(Short siteId, Integer parentId, Long userId, String name, Integer pageIndex, Integer pageSize) {
         return dao.getPage(siteId, parentId, userId, name, pageIndex, pageSize);
     }
@@ -61,7 +61,7 @@ public class SysDeptService extends BaseService<SysDept> {
         return entity;
     }
 
-    @Autowired
+    @Resource
     private SysDeptDao dao;
 
 }

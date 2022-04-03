@@ -9,8 +9,6 @@ import java.util.Map;
 import java.util.concurrent.CompletionStage;
 import java.util.function.Function;
 
-import javax.persistence.EntityNotFoundException;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.analysis.Analyzer;
@@ -29,7 +27,6 @@ import org.hibernate.search.engine.search.query.dsl.SearchQueryOptionsStep;
 import org.hibernate.search.mapper.orm.Search;
 import org.hibernate.search.mapper.orm.session.SearchSession;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.web.util.HtmlUtils;
 
@@ -39,6 +36,12 @@ import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.IdWorker;
+
+import jakarta.annotation.Resource;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.NonUniqueResultException;
+import jakarta.persistence.TypedQuery;
 
 /**
  * DAO基类
@@ -56,6 +59,12 @@ public abstract class BaseDao<E> {
      * order type desc
      */
     public final static String ORDERTYPE_DESC = "desc";
+    /**
+     * 只读
+     *
+     * READONLY
+     */
+    public final static String READONLY = "org.hibernate.readOnly";
     /**
      * 顺序
      *
@@ -110,7 +119,7 @@ public abstract class BaseDao<E> {
      * @return entity
      */
     public E getEntity(Serializable id) {
-        return null == id ? null : getSession().get(getEntityClass(), id);
+        return null == id ? null : getSession().find(getEntityClass(), id);
     }
 
     public long getId() {
@@ -129,7 +138,7 @@ public abstract class BaseDao<E> {
             return null;
         } else {
             QueryHandler queryHandler = getQueryHandler("from").append(getEntityClass().getSimpleName()).append("bean");
-            queryHandler.condition(String.format("bean.%s",primaryKeyName)).append("= :id").setParameter("id", id);
+            queryHandler.condition(String.format("bean.%s", primaryKeyName)).append("= :id").setParameter("id", id);
             return getEntity(queryHandler);
         }
     }
@@ -154,8 +163,8 @@ public abstract class BaseDao<E> {
     public List<E> getEntitys(Serializable[] ids, String primaryKeyName) {
         if (CommonUtils.notEmpty(ids)) {
             QueryHandler queryHandler = getQueryHandler("from").append(getEntityClass().getSimpleName()).append("bean");
-            queryHandler.condition(String.format("bean.%s",primaryKeyName)).append("in (:ids)").setParameter("ids", ids);
-            Query<E> query = getSession().createQuery(queryHandler.getSql(), getEntityClass());
+            queryHandler.condition(String.format("bean.%s", primaryKeyName)).append("in (:ids)").setParameter("ids", ids);
+            TypedQuery<E> query = getSession().createQuery(queryHandler.getSql(), getEntityClass());
             return getList(query, queryHandler);
         }
         return Collections.emptyList();
@@ -165,10 +174,9 @@ public abstract class BaseDao<E> {
      * 保存
      *
      * @param entity
-     * @return id
      */
-    public Serializable save(E entity) {
-        return getSession().save(init(entity));
+    public void save(E entity) {
+        getSession().persist(init(entity));
     }
 
     /**
@@ -181,7 +189,7 @@ public abstract class BaseDao<E> {
      */
     public void delete(E entity) {
         if (null != entity) {
-            getSession().delete(entity);
+            getSession().remove(entity);
         }
     }
 
@@ -195,7 +203,7 @@ public abstract class BaseDao<E> {
     public void delete(Serializable id) {
         E entity = getEntity(id);
         if (null != entity) {
-            getSession().delete(entity);
+            getSession().remove(entity);
         }
     }
 
@@ -203,15 +211,30 @@ public abstract class BaseDao<E> {
      * 获取实体
      *
      * @param queryHandler
+     * @param readonly
      * @return entity
      */
     protected E getEntity(QueryHandler queryHandler) {
-        Query<E> query = getSession().createQuery(queryHandler.getSql(), getEntityClass());
+        return getEntity(queryHandler, false);
+    }
+
+    /**
+     * 获取实体
+     *
+     * @param queryHandler
+     * @param readonly
+     * @return entity
+     */
+    protected E getEntity(QueryHandler queryHandler, boolean readonly) {
+        TypedQuery<E> query = getSession().createQuery(queryHandler.getSql(), getEntityClass());
         queryHandler.initQuery(query);
+        query.setHint(READONLY, readonly);
         try {
-            return query.uniqueResult();
-        } catch (Exception e) {
-            return query.list().get(0);
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        } catch (NonUniqueResultException e) {
+            return query.getResultList().get(0);
         }
     }
 
@@ -222,7 +245,7 @@ public abstract class BaseDao<E> {
      * @return number of data affected
      */
     protected int update(QueryHandler queryHandler) {
-        Query<?> query = getSession().createQuery(queryHandler.getSql());
+        jakarta.persistence.Query query = getSession().createQuery(queryHandler.getSql());
         queryHandler.initQuery(query);
         return query.executeUpdate();
     }
@@ -235,6 +258,19 @@ public abstract class BaseDao<E> {
      */
     protected int delete(QueryHandler queryHandler) {
         return update(queryHandler);
+    }
+
+    /**
+     * 获取列表
+     *
+     * @param <T>
+     * @param query
+     * @param queryHandler
+     * @return results list
+     */
+    protected <T> List<T> getList(TypedQuery<T> query, QueryHandler queryHandler) {
+        queryHandler.initQuery(query);
+        return query.getResultList();
     }
 
     /**
@@ -261,7 +297,18 @@ public abstract class BaseDao<E> {
      * @return results list
      */
     protected List<E> getEntityList(QueryHandler queryHandler) {
-        Query<E> query = getSession().createQuery(queryHandler.getSql(), getEntityClass());
+        return getEntityList(queryHandler, false);
+    }
+
+    /**
+     * 获取列表
+     *
+     * @param queryHandler
+     * @return results list
+     */
+    protected List<E> getEntityList(QueryHandler queryHandler, boolean readonly) {
+        TypedQuery<E> query = getSession().createQuery(queryHandler.getSql(), getEntityClass());
+        query.setHint(READONLY, readonly);
         return getList(query, queryHandler);
     }
 
@@ -271,8 +318,41 @@ public abstract class BaseDao<E> {
      * @param queryHandler
      * @return results list
      */
-    protected List<?> getList(QueryHandler queryHandler) {
-        Query<?> query = getSession().createQuery(queryHandler.getSql());
+    protected <R> List<R> getList(QueryHandler queryHandler, Class<R> resultClass) {
+        return getList(queryHandler, resultClass, true);
+    }
+
+    /**
+     * 获取列表
+     *
+     * @param queryHandler
+     * @return results list
+     */
+    protected <R> List<R> getList(QueryHandler queryHandler, Class<R> resultClass, boolean readonly) {
+        TypedQuery<R> query = getSession().createQuery(queryHandler.getSql(), resultClass);
+        query.setHint(READONLY, readonly);
+        return getList(query, queryHandler);
+    }
+
+    /**
+     * 获取列表
+     *
+     * @param queryHandler
+     * @return results list
+     */
+    protected List<E> getList(QueryHandler queryHandler) {
+        return getList(queryHandler, true);
+    }
+
+    /**
+     * 获取列表
+     *
+     * @param queryHandler
+     * @return results list
+     */
+    protected List<E> getList(QueryHandler queryHandler, boolean readonly) {
+        TypedQuery<E> query = getSession().createQuery(queryHandler.getSql(), getEntityClass());
+        query.setHint(READONLY, readonly);
         return getList(query, queryHandler);
     }
 
@@ -283,8 +363,9 @@ public abstract class BaseDao<E> {
      * @param maxResults
      * @return results page
      */
-    protected PageHandler getPage(QueryHandler queryHandler, Integer pageIndex, Integer pageSize, Integer maxResults) {
-        return getPage(queryHandler, null, pageIndex, pageSize, maxResults);
+    protected PageHandler getPage(QueryHandler queryHandler, Integer pageIndex, Integer pageSize, Integer maxResults,
+            boolean readonly) {
+        return getPage(queryHandler, null, pageIndex, pageSize, maxResults, readonly);
     }
 
     /**
@@ -294,7 +375,17 @@ public abstract class BaseDao<E> {
      * @return page
      */
     protected PageHandler getPage(QueryHandler queryHandler, Integer pageIndex, Integer pageSize) {
-        return getPage(queryHandler, pageIndex, pageSize, Integer.MAX_VALUE);
+        return getPage(queryHandler, pageIndex, pageSize, Integer.MAX_VALUE, true);
+    }
+
+    /**
+     * @param queryHandler
+     * @param pageIndex
+     * @param pageSize
+     * @return page
+     */
+    protected PageHandler getPage(QueryHandler queryHandler, Integer pageIndex, Integer pageSize, boolean readonly) {
+        return getPage(queryHandler, pageIndex, pageSize, Integer.MAX_VALUE, readonly);
     }
 
     /**
@@ -306,18 +397,18 @@ public abstract class BaseDao<E> {
      * @return results page
      */
     protected PageHandler getPage(QueryHandler queryHandler, String countHql, Integer pageIndex, Integer pageSize,
-            Integer maxResults) {
+            Integer maxResults, boolean readonly) {
         PageHandler page = new PageHandler(pageIndex, pageSize);
         if (null == pageSize) {
             queryHandler.setMaxResults(maxResults);
-            List<?> list = getList(queryHandler);
+            List<?> list = getList(queryHandler, readonly);
             page.setList(list);
             page.setTotalCount(list.size());
         } else {
             page.setTotalCount(countResult(queryHandler, countHql));
             if (0 != pageSize) {
                 queryHandler.setFirstResult(page.getFirstResult()).setMaxResults(page.getPageSize());
-                page.setList(getList(queryHandler));
+                page.setList(getList(queryHandler, readonly));
             }
             if (null != maxResults && page.getTotalCount() > maxResults) {
                 page.setTotalCount(maxResults);
@@ -489,7 +580,7 @@ public abstract class BaseDao<E> {
             countHql = queryHandler.getCountSql();
         }
         Query<?> query = getSession().createQuery(countHql);
-        List<?> list = queryHandler.initQuery(query, false).list();
+        List<?> list = queryHandler.initQuery(query, false).getResultList();
         if (list.isEmpty()) {
             return 0;
         } else {
@@ -507,8 +598,8 @@ public abstract class BaseDao<E> {
      * @return number of data
      */
     protected long count(QueryHandler queryHandler) {
-        Query<?> query = getSession().createQuery(queryHandler.getSql());
-        List<?> list = queryHandler.initQuery(query, false).list();
+        TypedQuery<Long> query = getSession().createQuery(queryHandler.getSql(), Long.class);
+        List<Long> list = queryHandler.initQuery(query, false).getResultList();
         if (list.isEmpty()) {
             return 0;
         } else {
@@ -573,8 +664,8 @@ public abstract class BaseDao<E> {
 
     protected abstract E init(E entity);
 
-    @Autowired
+    @Resource
     protected SessionFactory sessionFactory;
-    @Autowired
+    @Resource
     protected IdWorker idWorker;
 }

@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.alipay.easysdk.factory.MultipleFactory;
@@ -72,11 +72,11 @@ public class AlipayGatewayComponent extends AbstractPaymentGateway implements co
      * 
      */
     public static final String CONFIG_ENCRYPTKEY = "encryptKey";
-    @Autowired
+    @Resource
     private TradePaymentService service;
-    @Autowired
+    @Resource
     private TradePaymentHistoryService historyService;
-    @Autowired
+    @Resource
     private PaymentProcessorComponent tradePaymentProcessorComponent;
 
     private CacheEntity<Short, MultipleFactory> cache;
@@ -226,7 +226,7 @@ public class AlipayGatewayComponent extends AbstractPaymentGateway implements co
      * @throws InstantiationException
      * @throws ClassNotFoundException
      */
-    @Autowired
+    @Resource
     public void initCache(CacheEntityFactory cacheEntityFactory)
             throws ClassNotFoundException, InstantiationException, IllegalAccessException {
         cache = cacheEntityFactory.createCacheEntity(CONFIG_CODE, CacheEntityFactory.MEMORY_CACHE_ENTITY);

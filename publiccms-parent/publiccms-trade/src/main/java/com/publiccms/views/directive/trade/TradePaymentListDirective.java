@@ -3,7 +3,7 @@ package com.publiccms.views.directive.trade;
 // Generated 2019-6-15 18:52:24 by com.publiccms.common.generator.SourceGenerator
 import java.io.IOException;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.logic.service.trade.TradePaymentService;
@@ -33,7 +33,7 @@ public class TradePaymentListDirective extends AbstractTemplateDirective {
         return true;
     }
 
-    @Autowired
+    @Resource
     private TradePaymentService service;
 
 }

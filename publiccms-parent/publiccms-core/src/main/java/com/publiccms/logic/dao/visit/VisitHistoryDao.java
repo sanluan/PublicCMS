@@ -12,8 +12,8 @@ import com.publiccms.common.base.BaseDao;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
 import com.publiccms.common.tools.CommonUtils;
-import com.publiccms.entities.visit.VisitHistory;
 import com.publiccms.entities.visit.VisitDay;
+import com.publiccms.entities.visit.VisitHistory;
 import com.publiccms.entities.visit.VisitItem;
 import com.publiccms.entities.visit.VisitSession;
 import com.publiccms.entities.visit.VisitUrl;
@@ -65,7 +65,6 @@ public class VisitHistoryDao extends BaseDao<VisitHistory> {
      * @param itemId
      * @return results page
      */
-    @SuppressWarnings("unchecked")
     public List<VisitItem> getItemList(Short siteId, Date visitDate, String itemType, String itemId) {
         QueryHandler queryHandler = getQueryHandler(
                 "select new VisitItem(bean.siteId,bean.visitDate,bean.itemType,bean.itemId,count(*),count(distinct bean.sessionId),count(distinct bean.ip)) from VisitHistory bean");
@@ -89,7 +88,7 @@ public class VisitHistoryDao extends BaseDao<VisitHistory> {
         queryHandler.group("bean.itemType");
         queryHandler.group("bean.itemId");
         queryHandler.order("count(*) desc");
-        return (List<VisitItem>) getList(queryHandler);
+        return getList(queryHandler, VisitItem.class);
     }
 
     /**
@@ -97,7 +96,6 @@ public class VisitHistoryDao extends BaseDao<VisitHistory> {
      * @param visitDate
      * @return results page
      */
-    @SuppressWarnings("unchecked")
     public List<VisitUrl> getUrlList(Short siteId, Date visitDate) {
         QueryHandler queryHandler = getQueryHandler(
                 "select new VisitUrl(bean.siteId,bean.visitDate,bean.url,count(*),count(distinct bean.sessionId),count(distinct bean.ip)) from VisitHistory bean");
@@ -110,7 +108,7 @@ public class VisitHistoryDao extends BaseDao<VisitHistory> {
         queryHandler.group("bean.visitDate");
         queryHandler.group("bean.url");
         queryHandler.order("count(*) desc");
-        return (List<VisitUrl>) getList(queryHandler);
+        return getList(queryHandler, VisitUrl.class);
     }
 
     /**
@@ -119,7 +117,6 @@ public class VisitHistoryDao extends BaseDao<VisitHistory> {
      * @param visitHour
      * @return results page
      */
-    @SuppressWarnings("unchecked")
     public List<VisitDay> getHourList(Short siteId, Date visitDate, byte visitHour) {
         QueryHandler queryHandler = getQueryHandler(
                 "select new VisitDay(bean.siteId,bean.visitDate,bean.visitHour,count(*),count(distinct bean.sessionId),count(distinct bean.ip)) from VisitHistory bean");
@@ -132,7 +129,7 @@ public class VisitHistoryDao extends BaseDao<VisitHistory> {
         queryHandler.group("bean.siteId");
         queryHandler.group("bean.visitDate");
         queryHandler.group("bean.visitHour");
-        return (List<VisitDay>) getList(queryHandler);
+        return getList(queryHandler, VisitDay.class);
     }
 
     /**
@@ -141,7 +138,6 @@ public class VisitHistoryDao extends BaseDao<VisitHistory> {
      * @param endCreateDate
      * @return results page
      */
-    @SuppressWarnings("unchecked")
     public List<VisitSession> getSessionList(Short siteId, Date startCreateDate, Date endCreateDate) {
         QueryHandler queryHandler = getQueryHandler(
                 "select new VisitSession(bean.siteId,bean.sessionId,bean.visitDate,max(bean.createDate), min(bean.createDate), bean.ip, count(*)) from VisitHistory bean");
@@ -158,7 +154,7 @@ public class VisitHistoryDao extends BaseDao<VisitHistory> {
         queryHandler.group("bean.sessionId");
         queryHandler.group("bean.visitDate");
         queryHandler.group("bean.ip");
-        return (List<VisitSession>) getList(queryHandler);
+        return getList(queryHandler, VisitSession.class);
     }
 
     /**

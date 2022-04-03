@@ -6,9 +6,9 @@ import java.util.List;
 
 // Generated 2021-8-2 11:31:34 by com.publiccms.common.generator.SourceGenerator
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import jakarta.transaction.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
@@ -32,7 +32,7 @@ public class SysDatasourceService extends BaseService<SysDatasource> {
      * @param pageSize
      * @return results page
      */
-    @Transactional(readOnly = true)
+    @Transactional
     public PageHandler getPage(Boolean disabled, String orderType, Integer pageIndex, Integer pageSize) {
         return dao.getPage(disabled, orderType, pageIndex, pageSize);
     }
@@ -58,7 +58,7 @@ public class SysDatasourceService extends BaseService<SysDatasource> {
         return entity;
     }
 
-    @Autowired
+    @Resource
     private SysDatasourceDao dao;
 
 }

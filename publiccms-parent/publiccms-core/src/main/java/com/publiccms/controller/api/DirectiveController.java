@@ -6,12 +6,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,9 +37,9 @@ public class DirectiveController {
     protected final Log log = LogFactory.getLog(getClass());
     private Map<String, BaseTemplateDirective> actionMap = new HashMap<>();
     private List<Map<String, String>> actionList = new ArrayList<>();
-    @Autowired
+    @Resource
     protected MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter;
-    @Autowired
+    @Resource
     protected SiteComponent siteComponent;
 
     /**
@@ -89,7 +89,7 @@ public class DirectiveController {
      * @param directiveComponent
      * 
      */
-    @Autowired
+    @Resource
     public void init(DirectiveComponent directiveComponent) {
         for (Entry<String, AbstractTemplateDirective> entry : directiveComponent.getTemplateDirectiveMap().entrySet()) {
             if (entry.getValue().httpEnabled()) {

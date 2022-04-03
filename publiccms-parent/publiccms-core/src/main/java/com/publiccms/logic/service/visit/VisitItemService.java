@@ -7,9 +7,9 @@ import org.apache.commons.lang3.time.DateUtils;
 
 // Generated 2021-1-14 22:44:12 by com.publiccms.common.generator.SourceGenerator
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import jakarta.transaction.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
@@ -25,7 +25,7 @@ import com.publiccms.logic.dao.visit.VisitItemDao;
 @Service
 @Transactional
 public class VisitItemService extends BaseService<VisitItem> {
-    @Autowired
+    @Resource
     private VisitHistoryService visitHistoryService;
 
     /**
@@ -39,7 +39,7 @@ public class VisitItemService extends BaseService<VisitItem> {
      * @return results page
      */
     @SuppressWarnings("unchecked")
-    @Transactional(readOnly = true)
+    @Transactional
     public PageHandler getPage(short siteId, Date startVisitDate, Date endVisitDate, String itemType, String itemId,
             Integer pageIndex, Integer pageSize) {
         PageHandler page = dao.getPage(siteId, startVisitDate, endVisitDate, itemType, itemId, pageIndex, pageSize);
@@ -58,7 +58,7 @@ public class VisitItemService extends BaseService<VisitItem> {
         return dao.delete(begintime);
     }
 
-    @Autowired
+    @Resource
     private VisitItemDao dao;
 
 }

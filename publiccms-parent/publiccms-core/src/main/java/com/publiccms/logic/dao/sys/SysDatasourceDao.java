@@ -44,7 +44,6 @@ public class SysDatasourceDao extends BaseDao<SysDatasource> {
      * @param startUpdateDate
      * @return results list
      */
-    @SuppressWarnings("unchecked")
     public List<SysDatasource> getList(Date startUpdateDate) {
         QueryHandler queryHandler = getQueryHandler("from SysDatasource bean");
         queryHandler.condition("bean.disabled = :disabled").setParameter("disabled", true);

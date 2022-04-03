@@ -1,12 +1,12 @@
 package com.publiccms.entities.cms;
 // Generated 2022-3-15 17:51:34 by Hibernate Tools 5.6.2.Final
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.AttributeOverrides;
+import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
 import com.publiccms.common.generator.annotation.GeneratorColumn;
 

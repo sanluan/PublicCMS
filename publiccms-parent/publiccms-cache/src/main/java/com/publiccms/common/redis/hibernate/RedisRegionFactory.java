@@ -23,8 +23,8 @@ import org.hibernate.cache.spi.support.StorageAccess;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 
-import com.publiccms.common.redis.RedisClient;
 import com.publiccms.common.redis.RedisCacheEntity;
+import com.publiccms.common.redis.RedisClient;
 import com.publiccms.common.tools.RedisUtils;
 
 /**

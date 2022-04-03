@@ -25,7 +25,6 @@ public class CmsDictionaryDataDao extends BaseDao<CmsDictionaryData> {
      * @param parentValue
      * @return results page
      */
-    @SuppressWarnings("unchecked")
     public List<CmsDictionaryData> getList(short siteId, String dictionaryId, String parentValue) {
         QueryHandler queryHandler = getQueryHandler("from CmsDictionaryData bean");
         queryHandler.condition("bean.id.siteId = :siteId").setParameter("siteId", siteId);

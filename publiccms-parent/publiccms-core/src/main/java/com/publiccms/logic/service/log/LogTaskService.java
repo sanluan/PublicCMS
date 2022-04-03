@@ -8,9 +8,9 @@ import java.util.Date;
 
 import com.publiccms.entities.log.LogTask;
 import com.publiccms.logic.dao.log.LogTaskDao;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import jakarta.transaction.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
@@ -35,7 +35,7 @@ public class LogTaskService extends BaseService<LogTask> {
      * @param pageSize
      * @return
      */
-    @Transactional(readOnly = true)
+    @Transactional
     public PageHandler getPage(Short siteId, Integer taskId, Date startBegintime, Date endBegintime, Boolean success,
             String orderType, Integer pageIndex, Integer pageSize) {
         return dao.getPage(siteId, taskId, startBegintime, endBegintime, success, orderType, pageIndex, pageSize);
@@ -62,7 +62,7 @@ public class LogTaskService extends BaseService<LogTask> {
         }
     }
 
-    @Autowired
+    @Resource
     private LogTaskDao dao;
 
 }

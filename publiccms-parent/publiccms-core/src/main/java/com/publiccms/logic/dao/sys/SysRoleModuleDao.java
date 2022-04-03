@@ -57,7 +57,6 @@ public class SysRoleModuleDao extends BaseDao<SysRoleModule> {
      * @param moduleIds
      * @return entitys list
      */
-    @SuppressWarnings("unchecked")
     public List<SysRoleModule> getEntitys(Integer[] roleIds, String[] moduleIds) {
         if (CommonUtils.notEmpty(roleIds) && CommonUtils.notEmpty(moduleIds)) {
             QueryHandler queryHandler = getQueryHandler("from SysRoleModule bean");
