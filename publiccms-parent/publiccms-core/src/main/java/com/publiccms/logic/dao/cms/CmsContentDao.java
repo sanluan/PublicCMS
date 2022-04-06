@@ -1,6 +1,7 @@
 package com.publiccms.logic.dao.cms;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 // Generated 2015-5-8 16:50:23 by com.publiccms.common.source.SourceGenerator
 
@@ -458,6 +459,9 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         }
         if (CommonUtils.empty(entity.getCover())) {
             entity.setCover(null);
+        }
+        if (null == entity.getScore()) {
+            entity.setScore(BigDecimal.ZERO);
         }
         if (CommonUtils.notEmpty(entity.getTitle()) && entity.getTitle().length() > 255) {
             entity.setTitle(entity.getTitle().substring(0, 255));
