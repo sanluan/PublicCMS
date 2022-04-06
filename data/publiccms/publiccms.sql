@@ -10,6 +10,15 @@ INSERT INTO `cms_category` VALUES (12, 3, '文章', 1, NULL, NULL, '', 'article'
 INSERT INTO `cms_category` VALUES (15, 3, '小说', 1, NULL, NULL, '', 'novel', '/category/list.html', '${category.code}/index.html', 0, 1, 'novel/index.html', '${category.code}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', 1, 20, 0, 0, 0, 0, NULL);
 INSERT INTO `cms_category` VALUES (17, 3, '科技', 1, NULL, NULL, '', 'science', '/category/list.html', '${category.code}/index.html', 0, 1, 'science/index.html', '${category.code}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', 1, 20, 0, 0, 0, 0, NULL);
 INSERT INTO `cms_category` VALUES (19, 3, '案例', NULL, NULL, NULL, '', 'case', '/category/parent.html', '${category.code}/index.html', 0, 1, 'case/index.html', '${content.publishDate?string(\'yyyy/MM/dd\')}/${content.id}.html', 1, 20, 0, 0, 0, 0, NULL);
+INSERT INTO `cms_category` VALUES (20, 4, '演示', NULL, NULL, '17,15,12,9,8,7,6,18', '', 'demonstrate', '/category/parent.html', '${category.code}/index.html', 0, 1, 'demonstrate/index.html', '${content.publishDate?string(\'yyyy/MM/dd\')}/${content.id}.html', 1, 10, 0, 0, 0, 0, NULL);
+INSERT INTO `cms_category` VALUES (21, 4, '汽车', 1, NULL, NULL, '', 'car', '/category/list.html', '${category.code}/index.html', 0, 1, 'car/index.html', '${category.code}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', 1, 10, 0, 0, 0, 0, NULL);
+INSERT INTO `cms_category` VALUES (22, 4, '社会', 1, NULL, NULL, '', 'social', '/category/list.html', '${category.code}/index.html', 0, 1, 'social/index.html', '${category.code}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', 1, 10, 0, 0, 0, 0, NULL);
+INSERT INTO `cms_category` VALUES (23, 4, '美图', 1, NULL, NULL, '', 'picture', '/category/list.html', '${category.code}/index.html', 0, 1, 'picture/index.html', '${category.code}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', 1, 10, 0, 0, 0, 0, NULL);
+INSERT INTO `cms_category` VALUES (24, 4, '系统介绍', 1, NULL, NULL, '', 'introduction', '/category/list.html', '${category.code}/index.html', 0, 1, 'introduction/index.html', '${category.code}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', 1, 10, 0, 0, 0, 0, NULL);
+INSERT INTO `cms_category` VALUES (25, 4, '文章', 1, NULL, NULL, '', 'article', '/category/list.html', '${category.code}/index.html', 0, 1, 'article/index.html', '${category.code}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', 1, 20, 0, 0, 0, 0, NULL);
+INSERT INTO `cms_category` VALUES (26, 4, '小说', 1, NULL, NULL, '', 'novel', '/category/list.html', '${category.code}/index.html', 0, 1, 'novel/index.html', '${category.code}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', 1, 20, 0, 0, 0, 0, NULL);
+INSERT INTO `cms_category` VALUES (27, 4, '科技', 1, NULL, NULL, '', 'science', '/category/list.html', '${category.code}/index.html', 0, 1, 'science/index.html', '${category.code}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', 1, 20, 0, 0, 0, 0, NULL);
+INSERT INTO `cms_category` VALUES (28, 4, '案例', NULL, NULL, NULL, '', 'case', '/category/parent.html', '${category.code}/index.html', 0, 1, 'case/index.html', '${content.publishDate?string(\'yyyy/MM/dd\')}/${content.id}.html', 1, 20, 0, 0, 0, 0, NULL);
 INSERT INTO `cms_category` VALUES (71, 2, '中文栏目', NULL, NULL, '73,75,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,120', '', 'zh', NULL, '#', 1, 0, '#', '', 0, 20, 0, 0, 1, 0, NULL);
 INSERT INTO `cms_category` VALUES (72, 2, '英文栏目', NULL, NULL, '74,76,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,121', '', 'en', NULL, '#', 1, 0, '#', '', 0, 20, 0, 0, 1, 0, NULL);
 INSERT INTO `cms_category` VALUES (73, 2, '集团简介', 71, NULL, '75,77,78,79,80,81', '', 'about', NULL, '<@_categoryList parentId=category.id><#if page.totalCount gt 0>category/${page.list[0].id}</#if></@_categoryList>', 0, 0, 'category/75', '', 0, 20, 0, 0, 0, 0, NULL);
@@ -73,6 +82,15 @@ INSERT INTO `cms_category_attribute` VALUES (12, '文章', '文章', '文章', N
 INSERT INTO `cms_category_attribute` VALUES (15, '小说', '小说,在线阅读', '小说,在线阅读', NULL);
 INSERT INTO `cms_category_attribute` VALUES (17, '科技', '科技', '科技频道', NULL);
 INSERT INTO `cms_category_attribute` VALUES (19, '案例', 'PublicCMS案例', 'PublicCMS案例', NULL);
+INSERT INTO `cms_category_attribute` VALUES (20, '演示', 'PublicCMS,如何使用', 'PublicCMS如何使用', NULL);
+INSERT INTO `cms_category_attribute` VALUES (21, '汽车 - PublicCMS', '汽车,car', '汽车', NULL);
+INSERT INTO `cms_category_attribute` VALUES (22, '社会', '社会', '社会', NULL);
+INSERT INTO `cms_category_attribute` VALUES (23, '美图', '美图,美女', '美图美女', NULL);
+INSERT INTO `cms_category_attribute` VALUES (24, '系统介绍', 'PublicCMS,系统介绍', 'PublicCMS系统介绍', NULL);
+INSERT INTO `cms_category_attribute` VALUES (25, '文章', '文章', '文章', NULL);
+INSERT INTO `cms_category_attribute` VALUES (26, '小说', '小说,在线阅读', '小说,在线阅读', NULL);
+INSERT INTO `cms_category_attribute` VALUES (27, '科技', '科技', '科技频道', NULL);
+INSERT INTO `cms_category_attribute` VALUES (28, '案例', 'PublicCMS案例', 'PublicCMS案例', NULL);
 INSERT INTO `cms_category_attribute` VALUES (71, '', '', '', NULL);
 INSERT INTO `cms_category_attribute` VALUES (72, '', '', '', NULL);
 INSERT INTO `cms_category_attribute` VALUES (73, '', '', '', NULL);
@@ -131,65 +149,62 @@ INSERT INTO `cms_category_attribute` VALUES (121, '', '', '', '{\"article\":\"<p
 INSERT INTO `cms_category_model` VALUES (6, '1', '/system/article.html');
 INSERT INTO `cms_category_model` VALUES (6, '2', '');
 INSERT INTO `cms_category_model` VALUES (6, '3', '/system/picture.html');
-INSERT INTO `cms_category_model` VALUES (6, '5', '');
-INSERT INTO `cms_category_model` VALUES (6, '6', '/system/chapter.html');
 INSERT INTO `cms_category_model` VALUES (7, '1', '/system/article.html');
 INSERT INTO `cms_category_model` VALUES (7, '2', '');
 INSERT INTO `cms_category_model` VALUES (7, '3', '/system/picture.html');
-INSERT INTO `cms_category_model` VALUES (7, '5', '');
-INSERT INTO `cms_category_model` VALUES (7, '6', '/system/chapter.html');
 INSERT INTO `cms_category_model` VALUES (8, '3', '/system/picture.html');
-INSERT INTO `cms_category_model` VALUES (8, '5', '');
-INSERT INTO `cms_category_model` VALUES (8, '6', '/system/chapter.html');
 INSERT INTO `cms_category_model` VALUES (9, '1', '/system/article.html');
 INSERT INTO `cms_category_model` VALUES (9, '2', '');
 INSERT INTO `cms_category_model` VALUES (9, '3', '/system/picture.html');
-INSERT INTO `cms_category_model` VALUES (9, '5', '');
-INSERT INTO `cms_category_model` VALUES (9, '6', '/system/chapter.html');
 INSERT INTO `cms_category_model` VALUES (12, '1', '/system/article.html');
 INSERT INTO `cms_category_model` VALUES (12, '2', '');
 INSERT INTO `cms_category_model` VALUES (12, '5', '');
 INSERT INTO `cms_category_model` VALUES (12, '6', '/system/chapter.html');
-INSERT INTO `cms_category_model` VALUES (14, '5', '');
-INSERT INTO `cms_category_model` VALUES (14, '6', '/system/chapter.html');
 INSERT INTO `cms_category_model` VALUES (15, '4', '/system/book.html');
 INSERT INTO `cms_category_model` VALUES (15, '5', '');
 INSERT INTO `cms_category_model` VALUES (15, '6', '/system/chapter.html');
-INSERT INTO `cms_category_model` VALUES (16, '5', '');
-INSERT INTO `cms_category_model` VALUES (16, '6', '/system/chapter.html');
 INSERT INTO `cms_category_model` VALUES (17, '1', '/system/article.html');
 INSERT INTO `cms_category_model` VALUES (17, '2', '');
 INSERT INTO `cms_category_model` VALUES (17, '3', '/system/picture.html');
-INSERT INTO `cms_category_model` VALUES (17, '5', '');
-INSERT INTO `cms_category_model` VALUES (17, '6', '/system/chapter.html');
-INSERT INTO `cms_category_model` VALUES (18, '5', '');
-INSERT INTO `cms_category_model` VALUES (18, '6', '/system/chapter.html');
-INSERT INTO `cms_category_model` VALUES (18, '7', '');
-INSERT INTO `cms_category_model` VALUES (18, '8', '');
 INSERT INTO `cms_category_model` VALUES (19, '2', '');
-INSERT INTO `cms_category_model` VALUES (19, '5', '');
-INSERT INTO `cms_category_model` VALUES (19, '6', '/system/chapter.html');
+INSERT INTO `cms_category_model` VALUES (21, 'article', '/system/article.html');
+INSERT INTO `cms_category_model` VALUES (21, 'link', '');
+INSERT INTO `cms_category_model` VALUES (21, 'picture', '/system/picture.html');
+INSERT INTO `cms_category_model` VALUES (22, 'article', '/system/article.html');
+INSERT INTO `cms_category_model` VALUES (22, 'link', '');
+INSERT INTO `cms_category_model` VALUES (22, 'picture', '/system/picture.html');
+INSERT INTO `cms_category_model` VALUES (23, 'picture', '/system/picture.html');
+INSERT INTO `cms_category_model` VALUES (24, 'article', '/system/article.html');
+INSERT INTO `cms_category_model` VALUES (24, 'link', '');
+INSERT INTO `cms_category_model` VALUES (24, 'picture', '/system/picture.html');
+INSERT INTO `cms_category_model` VALUES (25, 'article', '/system/article.html');
+INSERT INTO `cms_category_model` VALUES (25, 'link', '');
+INSERT INTO `cms_category_model` VALUES (26, 'book', '/system/book.html');
+INSERT INTO `cms_category_model` VALUES (26, 'volume', '');
+INSERT INTO `cms_category_model` VALUES (26, 'chapter', '/system/chapter.html');
+INSERT INTO `cms_category_model` VALUES (27, 'article', '/system/article.html');
+INSERT INTO `cms_category_model` VALUES (27, 'link', '');
+INSERT INTO `cms_category_model` VALUES (27, 'picture', '/system/picture.html');
+INSERT INTO `cms_category_model` VALUES (28, 'article', '/system/article.html');
+INSERT INTO `cms_category_model` VALUES (28, 'link', '');
 INSERT INTO `cms_category_model` VALUES (76, 'article', NULL);
 INSERT INTO `cms_category_model` VALUES (83, 'article', NULL);
 INSERT INTO `cms_category_model` VALUES (84, 'article', NULL);
 INSERT INTO `cms_category_model` VALUES (93, 'article', NULL);
 
--- ----------------------------
--- Records of cms_category_type
--- ----------------------------
-INSERT INTO `cms_category_type` VALUES (1, 2, '带文章的分类', 0, 1);
 
 -- ----------------------------
 -- Records of cms_content
 -- ----------------------------
-INSERT INTO `cms_content` VALUES (1, 3, 'PublicCMS官网模板使用说明', 3, 3, 3, 12, '1', NULL, NULL, 0, 0, NULL, '', 0, 0, 0,0,0, 0, 1, 'article/2020/01-01/1.html', 'PublicCMS官网模板是一组静态化模板', '', NULL, NULL, 0, 1, 0, 79, '2020-01-01 00:00:00', NULL, '2020-01-01 00:00:00', NULL, '2020-01-01 00:00:00', 0, 1, 0);
-INSERT INTO `cms_content` VALUES (2, 2, '企业中英文站点模板使用说明', 2, 2, 2, 84, 'article', NULL, NULL, 0, 0, NULL, NULL, 0, 0, 0, 0,0,0, 0, 'content/2', '企业中英文站点模板中主要有首页模板index.html,文章模板content.html，分类单页模板category.html，分类内容列表页news.html\n\n分为中英文两套模板\n\n所有模板均为动态模板，文章，分类模板接受参数为id,pageIndex等，既支持rest风格url如 news/1_12,又支持传统参数类型如news.html?id=1&pageIndex=12\n\n在分类中对带有文章的分类可以使用category.html，对内容列表可以使用news.html，填写分类访问路径为 模板名/${category.id} 或 模板名.html?id=${category.id}', '', NULL, NULL, 0, 0, 0, 1, '2020-01-01 00:00:00', NULL, '2020-01-01 00:00:00', NULL, '2020-01-01 00:00:00', 0, 1, 0);
-INSERT INTO `cms_content` VALUES (3, 4, 'PublicCMS官网模板使用说明', 3, 3, 3, 12, '1', NULL, NULL, 0, 0, NULL, '', 0, 0, 0,0,0, 0, 1, 'article/2020/01-01/1.html', 'PublicCMS官网模板是一组静态化模板', '', NULL, NULL, 0, 1, 0, 79, '2020-01-01 00:00:00', NULL, '2020-01-01 00:00:00', NULL, '2020-01-01 00:00:00', 0, 1, 0);
+INSERT INTO `cms_content` VALUES (1, 2, '企业中英文站点模板使用说明', 2, 2, 2, 84, 'article', NULL, NULL, 0, 0, NULL, NULL, 0, 0, 0, 0, 0, 'content/2', '企业中英文站点模板中主要有首页模板index.html,文章模板content.html，分类单页模板category.html，分类内容列表页news.html\n\n分为中英文两套模板\n\n所有模板均为动态模板，文章，分类模板接受参数为id,pageIndex等，既支持rest风格url如 news/1_12,又支持传统参数类型如news.html?id=1&pageIndex=12\n\n在分类中对带有文章的分类可以使用category.html，对内容列表可以使用news.html，填写分类访问路径为 模板名/${category.id} 或 模板名.html?id=${category.id}', '', NULL, NULL, 0, 0, 0, 0, 0, 0, '2020-01-01 00:00:00', NULL, '2020-01-01 00:00:00', NULL, '2020-01-01 00:00:00', 0, 1, 0);
+INSERT INTO `cms_content` VALUES (2, 3, 'PublicCMS官网模板使用说明', 3, 3, 3, 12, '1', NULL, NULL, 0, 0, NULL, '', 0, 0, 0, 0, 1, 'article/2020/01-01/1.html', 'PublicCMS官网模板是一组静态化模板', '', NULL, NULL, 0, 0, 0, 0, 0, 0, '2020-01-01 00:00:00', NULL, '2020-01-01 00:00:00', NULL, '2020-01-01 00:00:00', 0, 1, 0);
+INSERT INTO `cms_content` VALUES (3, 4, 'PublicCMS官网模板使用说明', 4, 4, 4, 25, 'article', NULL, NULL, 0, 0, NULL, '', 0, 0, 0, 0, 1, 'article/2020/01-01/1.html', 'PublicCMS官网模板是一组静态化模板', '', NULL, NULL, 0, 0, 0, 0, 0, 0, '2020-01-01 00:00:00', NULL, '2020-01-01 00:00:00', NULL, '2020-01-01 00:00:00', 0, 1, 0);
+
 -- ----------------------------
 -- Records of cms_content_attribute
 -- ----------------------------
-INSERT INTO `cms_content_attribute` VALUES (1, NULL, NULL, NULL, '    PublicCMS官网模板是一组静态化模板，它是现在PublicCMS官网所采用的模板category目录下为分类模板，ftl目录下为模板片段，member下是动态模板有登录、注册、评论、个人页面等search是搜索模板，system下是四种内容的模板，index.html是首页模板即支持动态也可以静态化，sitemap.xml是站点地图模板当您新建一个分类时，分类静态化模板可以再category下面选择其中一个，并设置静态化的访问路径内容模板可以再system下面选择一个，并设置静态化访问路径。其中article.html 为文章，picture.html为图集，book.html、chapter.html为图书、章节', '<p>&nbsp;&nbsp;&nbsp;&nbsp;PublicCMS官网模板是一组静态化模板，它是现在PublicCMS官网所采用的模板</p><p><img src=\"//site3.dev.publiccms.com:8080/publiccms/webfile/upload/2020/03-24/12-28-500720-90407063.png\" title=\"1.png\" alt=\"1.png\"/></p><p>category目录下为分类模板，ftl目录下为模板片段，member下是动态模板有登录、注册、评论、个人页面等</p><p>search是搜索模板，system下是四种内容的模板，index.html是首页模板即支持动态也可以静态化，sitemap.xml是站点地图模板</p><p>当您新建一个分类时，分类静态化模板可以再category下面选择其中一个，并设置静态化的访问路径</p><p><img src=\"//site3.dev.publiccms.com:8080/publiccms/webfile/upload/2020/03-24/12-32-2905711856271141.png\" title=\"2.png\" alt=\"2.png\"/></p><p>内容模板可以再system下面选择一个，并设置静态化访问路径。其中article.html 为文章，picture.html为图集，book.html、chapter.html为图书、章节</p><p><img src=\"//site3.dev.publiccms.com:8080/publiccms/webfile/upload/2020/03-24/12-32-36030545988429.png\" title=\"3.png\" alt=\"3.png\"/></p>', 318);
-INSERT INTO `cms_content_attribute` VALUES (2, NULL, NULL, NULL, NULL, '<p>企业中英文站点模板中主要有首页模板index.html,文章模板content.html，分类单页模板category.html，分类内容列表页news.html</p>\n\n<p>分为中英文两套模板</p>\n\n<p>所有模板均为动态模板，文章，分类模板接受参数为id,pageIndex等，既支持rest风格url如 news/1_12,又支持传统参数类型如news.html?id=1&amp;pageIndex=12</p>\n\n<p>在分类中对带有文章的分类可以使用category.html，对内容列表可以使用news.html，填写分类访问路径为 模板名/${category.id} 或 模板名.html?id=${category.id}</p>\n', 301);
+INSERT INTO `cms_content_attribute` VALUES (1, NULL, NULL, NULL, NULL, '<p>企业中英文站点模板中主要有首页模板index.html,文章模板content.html，分类单页模板category.html，分类内容列表页news.html</p>\n\n<p>分为中英文两套模板</p>\n\n<p>所有模板均为动态模板，文章，分类模板接受参数为id,pageIndex等，既支持rest风格url如 news/1_12,又支持传统参数类型如news.html?id=1&amp;pageIndex=12</p>\n\n<p>在分类中对带有文章的分类可以使用category.html，对内容列表可以使用news.html，填写分类访问路径为 模板名/${category.id} 或 模板名.html?id=${category.id}</p>\n', 301);
+INSERT INTO `cms_content_attribute` VALUES (2, NULL, NULL, NULL, '    PublicCMS官网模板是一组静态化模板，它是现在PublicCMS官网所采用的模板category目录下为分类模板，ftl目录下为模板片段，member下是动态模板有登录、注册、评论、个人页面等search是搜索模板，system下是四种内容的模板，index.html是首页模板即支持动态也可以静态化，sitemap.xml是站点地图模板当您新建一个分类时，分类静态化模板可以再category下面选择其中一个，并设置静态化的访问路径内容模板可以再system下面选择一个，并设置静态化访问路径。其中article.html 为文章，picture.html为图集，book.html、chapter.html为图书、章节', '<p>&nbsp;&nbsp;&nbsp;&nbsp;PublicCMS官网模板是一组静态化模板，它是现在PublicCMS官网所采用的模板</p><p><img src=\"//site3.dev.publiccms.com:8080/publiccms/webfile/upload/2020/03-24/12-28-500720-90407063.png\" title=\"1.png\" alt=\"1.png\"/></p><p>category目录下为分类模板，ftl目录下为模板片段，member下是动态模板有登录、注册、评论、个人页面等</p><p>search是搜索模板，system下是四种内容的模板，index.html是首页模板即支持动态也可以静态化，sitemap.xml是站点地图模板</p><p>当您新建一个分类时，分类静态化模板可以再category下面选择其中一个，并设置静态化的访问路径</p><p><img src=\"//site3.dev.publiccms.com:8080/publiccms/webfile/upload/2020/03-24/12-32-2905711856271141.png\" title=\"2.png\" alt=\"2.png\"/></p><p>内容模板可以再system下面选择一个，并设置静态化访问路径。其中article.html 为文章，picture.html为图集，book.html、chapter.html为图书、章节</p><p><img src=\"//site3.dev.publiccms.com:8080/publiccms/webfile/upload/2020/03-24/12-32-36030545988429.png\" title=\"3.png\" alt=\"3.png\"/></p>', 318);
 INSERT INTO `cms_content_attribute` VALUES (3, NULL, NULL, NULL, '    PublicCMS官网模板是一组静态化模板，它是现在PublicCMS官网所采用的模板category目录下为分类模板，ftl目录下为模板片段，member下是动态模板有登录、注册、评论、个人页面等search是搜索模板，system下是四种内容的模板，index.html是首页模板即支持动态也可以静态化，sitemap.xml是站点地图模板当您新建一个分类时，分类静态化模板可以再category下面选择其中一个，并设置静态化的访问路径内容模板可以再system下面选择一个，并设置静态化访问路径。其中article.html 为文章，picture.html为图集，book.html、chapter.html为图书、章节', '<p>&nbsp;&nbsp;&nbsp;&nbsp;PublicCMS官网模板是一组静态化模板，它是现在PublicCMS官网所采用的模板</p><p><img src=\"//site4.dev.publiccms.com:8080/publiccms/webfile/upload/2020/03-24/12-28-500720-90407063.png\" title=\"1.png\" alt=\"1.png\"/></p><p>category目录下为分类模板，ftl目录下为模板片段，member下是动态模板有登录、注册、评论、个人页面等</p><p>search是搜索模板，system下是四种内容的模板，index.html是首页模板即支持动态也可以静态化，sitemap.xml是站点地图模板</p><p>当您新建一个分类时，分类静态化模板可以再category下面选择其中一个，并设置静态化的访问路径</p><p><img src=\"//site4.dev.publiccms.com:8080/publiccms/webfile/upload/2020/03-24/12-32-2905711856271141.png\" title=\"2.png\" alt=\"2.png\"/></p><p>内容模板可以再system下面选择一个，并设置静态化访问路径。其中article.html 为文章，picture.html为图集，book.html、chapter.html为图书、章节</p><p><img src=\"//site4.dev.publiccms.com:8080/publiccms/webfile/upload/2020/03-24/12-32-36030545988429.png\" title=\"3.png\" alt=\"3.png\"/></p>', 318);
 -- ----------------------------
 -- Records of cms_place
@@ -256,20 +271,10 @@ INSERT INTO `sys_dept` VALUES (4, 4, '技术部', '4', NULL, '', 4, 1000, 1, 1, 
 -- Records of sys_domain
 -- ----------------------------
 INSERT INTO `sys_domain` VALUES ('search.site3.dev.publiccms.com', 3, 0, 0, '/search/');
+INSERT INTO `sys_domain` VALUES ('search.site4.dev.publiccms.com', 4, 0, 0, '/search/');
 INSERT INTO `sys_domain` VALUES ('site2.dev.publiccms.com', 2, 1, 0, '');
 INSERT INTO `sys_domain` VALUES ('site3.dev.publiccms.com', 3, 0, 0, '/member/');
 INSERT INTO `sys_domain` VALUES ('site4.dev.publiccms.com', 4, 0, 0, '/member/');
-INSERT INTO `sys_domain` VALUES ('search.site4.dev.publiccms.com', 4, 0, 0, '/search/');
-
--- ----------------------------
--- Records of sys_extend
--- ----------------------------
-INSERT INTO `sys_extend` VALUES (1, 'categoryType', 1);
-
--- ----------------------------
--- Records of sys_extend_field
--- ----------------------------
-INSERT INTO `sys_extend_field` VALUES (1, 'article', 1, 0, NULL, '内容', '', 'editor', '', NULL, 0);
 
 -- ----------------------------
 -- Records of sys_role

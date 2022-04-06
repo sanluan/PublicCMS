@@ -236,7 +236,7 @@ CREATE TABLE `cms_survey` (
   `title` varchar(100) NOT NULL COMMENT '标题',
   `description` varchar(300) NOT NULL COMMENT '描述',
   `votes` int(11) NOT NULL COMMENT '投票数',
-  `start_date` datetime NOT NULL COMMENT '开始日期',    
+  `start_date` datetime NOT NULL COMMENT '开始日期',
   `end_date` datetime DEFAULT NULL COMMENT '结束日期',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   `disabled` tinyint(1) NOT NULL COMMENT '是否禁用',
@@ -959,7 +959,7 @@ INSERT INTO `sys_module` VALUES ('user_list', 'sysUser/list', NULL, 'icon-user',
 INSERT INTO `sys_module` VALUES ('user_menu', NULL, NULL, 'icon-user', 'maintenance', 1, 1);
 INSERT INTO `sys_module` VALUES ('visit_day', 'visit/day', NULL, 'icon-calendar', 'visit_menu', 1, 3);
 INSERT INTO `sys_module` VALUES ('visit_history', 'visit/history', 'log/view', 'icon-bolt', 'visit_menu', 1, 1);
-INSERT INTO `sys_module` VALUES ('visit_menu', , NULL, NULL, 'icon-bolt', 'maintenance', 1, 5);
+INSERT INTO `sys_module` VALUES ('visit_menu', NULL, NULL, 'icon-bolt', 'maintenance', 1, 5);
 INSERT INTO `sys_module` VALUES ('visit_item', 'visit/item', NULL, 'icon-flag-checkered', 'visit_menu', 1, 5);
 INSERT INTO `sys_module` VALUES ('visit_session', 'visit/session', NULL, 'icon-comment-alt', 'visit_menu', 1, 2);
 INSERT INTO `sys_module` VALUES ('visit_url', 'visit/url', NULL, 'icon-link', 'visit_menu', 1, 4);

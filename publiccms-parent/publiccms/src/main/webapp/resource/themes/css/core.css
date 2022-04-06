@@ -271,7 +271,7 @@ a.button,button.button{border-width:1px;border-style:solid;-moz-box-shadow: 0px 
 
 /* Pages Form */
 .pageForm{display:block;overflow:auto;}
-.pageFormContent{display:block;overflow:auto;padding:15px;position:relative;height:100%;box-sizing:border-box;}
+.pageFormContent{display:block;padding:15px;position:relative;height:100%;width:100%;overflow:auto;box-sizing:border-box;}
 .pageFormContent div.unit{display:block;margin:0;padding:5px 0;position:relative;clear:both;}
 .pageFormContent p{float:left;display:block;min-width:380px;min-height:16px;margin:0;padding:5px 0;position:relative;}
 .pageFormContent p.nowrap{width:100%;}

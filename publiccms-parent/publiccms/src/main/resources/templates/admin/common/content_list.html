@@ -35,22 +35,22 @@
                     <span>-</span>
                     <input type="text" name="endPublishDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" value="${endPublishDate!}" />
                 </li>
-                <li>
-                    <label><@t.page 'model'/>:</label>
-                    <#include "../include_page/modelId.html"/>
-                </li>
-            <#if 1=admin.contentPermissions||2=admin.contentPermissions>
-                <li>
-                    <label><@t.page 'content.promulgator'/>:</label>
-                    <#include "../include_page/userId.html"/>
-                </li>
-            </#if>
             <#if 1=admin.contentPermissions>
                 <li>
                     <label><@t.page 'dept'/>:</label>
                     <#include "../include_page/deptId.html"/>
                 </li>
             </#if>
+            <#if 1=admin.contentPermissions||2=admin.contentPermissions>
+                <li>
+                    <label><@t.page 'content.promulgator'/>:</label>
+                    <#include "../include_page/userId.html"/>
+                </li>
+            </#if>
+                <li>
+                    <label><@t.page 'model'/>:</label>
+                    <#include "../include_page/modelId.html"/>
+                </li>
             </ul>
             <div class="subBar">
                 <ul>
