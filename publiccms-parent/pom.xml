@@ -35,15 +35,15 @@
         <!-- http://hc.apache.org/downloads.cgi -->
         <version.httpclient>4.5.13</version.httpclient>
         <!-- http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
-        <version.jackson>2.13.2.1</version.jackson>
+        <version.jackson>2.13.2.2</version.jackson>
         <!-- http://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
         <!-- http://hibernate.org/orm/releases/ -->
-        <version.hibernate>5.6.5.Final</version.hibernate>
+        <version.hibernate>5.6.7.Final</version.hibernate>
         <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-tools -->
         <version.hibernateTools>5.6.2.Final</version.hibernateTools>
         <!-- https://mvnrepository.com/artifact/org.hibernate.search/hibernate-search-mapper-orm/ -->
         <!-- http://hibernate.org/search/releases/ -->
-        <version.hibernateSearch>6.1.1.Final</version.hibernateSearch>
+        <version.hibernateSearch>6.1.3.Final</version.hibernateSearch>
         <!-- https://mvnrepository.com/artifact/org.ehcache/ehcache -->
         <version.ehcache>3.9.9</version.ehcache>
         <!-- http://mvnrepository.com/artifact/org.freemarker/freemarker -->
@@ -53,13 +53,13 @@
         <!-- http://mvnrepository.com/artifact/org.mybatis/mybatis-spring -->
         <version.mybatisSpring>2.0.7</version.mybatisSpring>
         <!-- http://mvnrepository.com/artifact/org.mybatis.generator/mybatis-generator-core -->
-        <version.mybatisGenerator>1.4.0</version.mybatisGenerator>
+        <version.mybatisGenerator>1.4.1</version.mybatisGenerator>
         <!-- https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper -->
         <version.pagehelper>5.3.0</version.pagehelper>
         <!-- https://mvnrepository.com/artifact/org.mybatis.dynamic-sql/mybatis-dynamic-sql -->
         <version.dynamicSql>1.2.1</version.dynamicSql>
         <!-- https://mvnrepository.com/artifact/org.apache.lucene/lucene-core -->
-        <version.lucene>8.7.0</version.lucene>
+        <version.lucene>8.11.1</version.lucene>
         <!-- http://mvnrepository.com/artifact/redis.clients/jedis -->
         <version.jedis>4.1.1</version.jedis>
         <!-- http://mvnrepository.com/artifact/org.quartz-scheduler/quartz -->
