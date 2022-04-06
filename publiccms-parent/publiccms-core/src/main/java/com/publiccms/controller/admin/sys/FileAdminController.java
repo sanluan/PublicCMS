@@ -293,6 +293,7 @@ public class FileAdminController {
 				}
             }
         } else {
+            Map<String, Object> result = new HashMap<>();
             result.put("statusCode", 300);
             result.put("message",
                     LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(), "verify.notEmpty.file"));
