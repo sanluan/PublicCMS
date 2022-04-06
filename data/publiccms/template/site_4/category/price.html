@@ -19,6 +19,25 @@
         </div>
 
         <div class="container mt-5">
+			 <div class="row">
+                <div class="col-12 d-flex justify-content-center my-5">
+                    <ul class="nav nav-pills nav-l2">
+                    <@_category id=category.parentId!category.id>
+                        <li class="nav-item">
+                            <a class="nav-link<#if object.id=category.id> active</#if>" aria-current="page" href="${object.url!}">全部</a>
+                        </li>
+                    </@_category>
+                    <@_categoryList parentId=category.parentId!category.id>
+                        <#list page.list as a>
+                        <li class="nav-item">
+                            <a class="nav-link<#if a.id=category.id> active</#if>"<#if a.onlyUrl> target="_blank"</#if> href="${a.url}">${a.name!}</a>
+                        </li>
+                        </#list>
+                    </@_categoryList>
+                    </ul>
+                </div>
+            </div>
+			
             <div class="row">
                 <div class="col-12">
                     <div class="text-center">
@@ -41,7 +60,7 @@
                                     <td>个人授权</td>
                                     <td>单域名商业授权</td>
                                     <td>3年商业授权</td>
-                                    <td>单域名商业授权</td>
+                                    <td>不限域名商业授权</td>
                                 </tr>
                                 <tr>
                                     <th scope="row">域名限制</th>

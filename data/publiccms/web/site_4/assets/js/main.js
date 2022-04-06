@@ -22,17 +22,19 @@ $(function(){
 				$('.user-login').hide();
 				$('.nickname').text(data.nickname);
 				$('.user-logout').show();
+				$('.user-login').hide();
 				if(data.superuser&&true==data.superuser){
 					$('.user-logout .master').show();
 				}
 			}else{
 				$('.user-login').show();
+				$('.user-logout').hide();
 			}
 		});
 	}
 	// 登陆链接增加返回地址
 	if(0>window.location.href.indexOf('returnUrl')){
-		$('a.user-login,a.user-logout,.user-login a').each(function(){
+		$('a.user-login,.user-login a').each(function(){
 			$(this).prop('href',$(this).prop('href')+'?returnUrl='+encodeURIComponent(window.location.href));
 		});		
 	}

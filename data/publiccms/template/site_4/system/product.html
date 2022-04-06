@@ -18,22 +18,21 @@
             </div>
         </div>
         <div class="container">
+			<#if content.hasProducts>
             <div class="row my-4">
-                <#if content.hasProducts>
-                <div class="col-md-4">
-                    <@_contentProductList contentId=content.id fileTypes='video,audio,other'>
-                    <div class="gallery">
-                        <div class="product-gallery swiper-container">
+				<@_contentProductList contentId=content.id orderType='asc'>
+                <div class="col-md-5">
+                        <div class="product-gallery swiper-container mb-3">
                             <div class="swiper-wrapper">
                                 <#if content.cover?has_content>
-                                <div class="swiper-slide"><img class="preview" src="${content.cover!}" alt="${content.title}"></div>
+                                <div class="swiper-slide"><img src="${content.cover!}" alt="${content.title}"></div>
                                 </#if>
                                 <#list page.list as product>
-                                <#if product.cover?has_content><div class="swiper-slide"><img class="preview" src="${product.cover!}" alt="${product.title}"></div></#if>
+                                <#if product.cover?has_content><div class="swiper-slide"><img src="${product.cover!}" alt="${product.title}"></div></#if>
                                 </#list>
                             </div>
                         </div>
-                        <div class="thumb-list swiper-container">
+                        <div class="thumb-list swiper-container mb-3">
                             <div class="swiper-wrapper">
                                 <#if content.cover?has_content>
                                 <div class="swiper-slide"><a href="javascript:void(0);"><img  src="${content.cover!}" alt="${content.title}"></a></div>
@@ -45,57 +44,52 @@
                                 </#list>
                             </div>
                         </div>
-                    </div>
                 </div>
-                <div class="col-md-8">
+                <div class="col-md-7">
                     <header>
                         <h1><a href="${url!}">${content.title}</a></h1>
-                        <p><label>价格</label> <span class="price">${(page.list[0].price)!}</span></p>
-                        <p><label>库存</label> <span class="inventory">${(page.list[0].inventory)!}</span></p>
+                        <p class="fs-1"><label>价格</label> <span class="price text-danger"></span></p>
+                        <p><label>库存</label> <span class="inventory"></span></p>
                     </header>
                     <form action="${site.dynamicPath}order.html">
-                        <p><label>型号</label>
+                        <p>
                             <#list page.list as product>
-                            <label><input type="radio" name="productId" value="${product.id}"/><#if product.cover?has_content><img src="<@_thumb path=product.cover width=30 height=30/>" title="${product.title}" alt="${product.title}" style="max-width:30px;max-height30px;border:1px solid;"/><#else>${product.title}</#if></label>
-                        </#list>
+								<label class="pe-4"><input type="radio" name="productId" value="${product.id}"/>${product.title}</label>
+							</#list>
                         </p>
                         <p><label>数量</label><input type="number" name="quantity" value="1" min="1" size="4"/></p>
-                        <input type="submit" value="立刻购买"/>
+                        <input type="submit" class="btn btn-primary" value="立刻购买"/>
                     </form>
                 </div>
                 </@_contentProductList>
             </div>
             </#if>
             <div class="row">
-                <aside class="col-md-2">
+                <aside class="col-md-3">
                     <h3 class="circle">相关推荐</h3>
-                    <ul>
+                    <div>
                         <#if content.tagIds?has_content>
                         <@_search tagId=content.tagIds modelId=content.modelId count=10>
                             <#list page.list as a>
-                            <li>
                                 <#if a.cover?has_content>
                                     <p><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect?id=${a.id}<#else>${a.url}</#if>" title="${a.title}"><img class="w-100" src="${a.cover!}" alt="${a.title!}"/></a></p>
                                 </#if>
                                 <p><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect?id=${a.id}<#else>${a.url}</#if>" title="${a.title}">${a.title}</a></p>
-                            </li>
                             </#list>
                             </@_search>
                         <#else>
                         <@_contentList categoryId=content.categoryId modelId=content.modelId pageSize=10>
                             <#list page.list as a>
-                            <li>
                                 <#if a.cover?has_content>
                                     <p><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect?id=${a.id}<#else>${a.url}</#if>" title="${a.title}"><img class="w-100" src="${a.cover!}" alt="${a.title!}"/></a></p>
                                 </#if>
-                                <p><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect?id=${a.id}<#else>${a.url}</#if>" title="${a.title}">${a.title}</a>></p>
-                            </li>
+                                <p><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect?id=${a.id}<#else>${a.url}</#if>" title="${a.title}">${a.title}</a></p>
                             </#list>
                         </@_contentList>
                         </#if>
-                    </ul>
+                    </div>
                 </aside>
-                <div class="col-md-10">
+                <div class="col-md-9">
                     <ul class="nav nav-tabs" role="tablist">
                         <li class="nav-item"><a class="nav-link active" href="#content" data-bs-toggle="tab">产品详情</a></li>
                         <li class="nav-item"><a class="nav-link" href="#comment" data-bs-toggle="tab">评论(${(content.comments)!})</a></li>
@@ -138,8 +132,18 @@
                 if(selectedProductId){
                     $.getJSON('${site.dynamicPath!}api/directive/contentProduct?id='+selectedProductId, function(data){
                         if($('input[name=productId]:checked').val() == selectedProductId){
-                            $('.price').text(data.object.price);
-                            $('.inventory').text(data.object.inventory);
+							$({ counter: parseInt($('.price').text()) }).animate({ counter: data.object.price }, {
+								speed: 2000,
+								easing: 'swing',
+								step: function (now) {
+								  $('.price').text(Math.ceil(now));
+								}
+							  });
+							if(data.object.inventory>5){
+								 $('.inventory').text('充足');
+							}else{
+								 $('.inventory').text('低');
+							}                           
                             if(data.object.minQuantity){
                                 $('input[name=quantity]').attr('min', data.object.minQuantity);
                                 if(parseInt($('input[name=quantity]').val()) < data.object.minQuantity){
@@ -162,6 +166,7 @@
                     }
                 }
             });
+			$('input[name=productId]').eq(0).click();
             $.getJSON('${site.dynamicPath!}api/contentClick?id=${content.id}', function(data){});
             uParse('#content',{rootPath: '${site.sitePath!}assets/ueditor'});
         </script>

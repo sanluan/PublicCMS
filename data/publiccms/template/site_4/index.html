@@ -6,6 +6,7 @@
         <meta name="keywords" content="${(metadata.extendData.keywords)!}"/>
         <meta name="description" content="${(metadata.extendData.description)!}"/>
         <@_includePlace path="/8ddab9ba-a8aa-4745-86c6-66bf1c2c976c.html"/> <#-- header -->
+		<link href="${site.sitePath}assets/swiper/swiper.min.css" rel="stylesheet">
     </head>
     <body>
         <@_includePlace path="/c32a4f4a-ff5d-49cf-bb59-5d9784539174.html"/> <#-- 导航 -->
@@ -56,25 +57,11 @@
                     <div class="fs-0 text-black fw-bold">产品优势</div>
                     <p class="text-black-50">我们的产品具有强大的功能，以满足您的业务需求和项目。</p>
                 </div>
-                <div class="row g-5">
-                    <div class="col-md-4">
-                        <img src="${site.sitePath}assets/img/index-intro-1.svg">
-                        <h1 class="mt-4">高性能架构</h1>
-                        <p class="text-black-50 px-2 mt-3">轻松支撑千万数据、千万 PV，为海量数据访问提供低消耗、高性能、高可用的轻量级解决方案。</p>
-                    </div>
-                    <div class="col-md-4">
-                        <img src="${site.sitePath}assets/img/index-intro-2.svg">
-                        <h1 class="mt-4">完整可定制化</h1>
-                        <p class="text-black-50 px-2 mt-3">提供多维度扩展机制，全文搜索、自定义字段搜索，前台站点一切可见元素均可自定义维护。</p>
-                    </div>
-                    <div class="col-md-4">
-                        <img src="${site.sitePath}assets/img/index-intro-3.svg">
-                        <h1 class="mt-4">静态化服务</h1>
-                        <p class="text-black-50 px-2 mt-3">支持全站静态化，SSI，动态页面局部静态化，提高网站并发访问能力和 SEO友好性。</p>
-                    </div>
-                </div>
+                <@_includePlace path="/3fccf48a-3b30-4aa1-80f0-0b860eebe7d4.html"/> <#-- 产品优势 -->
             </div>
-        </div>
+        </div>		
+		
+		<@_includePlace path="/8c6844d3-5c59-4ef9-b7fe-895937e66e29.html"/> <#-- 首页推荐分类 -->
 
         <div id="index-case" class="container-fluid">
             <div class="container text-center">
@@ -88,14 +75,14 @@
                     <#list page.list as a>
                     <a class="col" href="${a.url}" title="${a.title!}">
                         <figure class="d-flex justify-content-center align-items-center">
-                            <img src="${a.cover}" alt="${a.title}">
+                            <img loading="lazy" src="${a.cover}" alt="${a.title}">
                         </figure>
                     </a>
                     </#list>
                 </div>
                     </@_contentList>
                 <div class="py-4">
-                    <a href="${object.url}" class="d-inline-flex align-items-center">查看更多案例 <img src="${site.sitePath}assets/img/icon-more.svg"></a>
+                    <a href="${object.url}" class="d-inline-flex align-items-center">查看更多案例 <img src="${site.sitePath}assets/img/icon-more.svg" alt="more"></a>
                 </div>
                 </@_category>
             </div>
@@ -113,7 +100,7 @@
                     <div class="col-md-4">
                         <div class="card card-pricing border-0 rounded-3 mx-0 mx-md-2 py-4 align-items-center">
                             <div class="fs-1 fw-bolder">
-                                <img src="${site.sitePath}assets/img/icon-plan-lite.svg">
+                                <img loading="lazy" src="${site.sitePath}assets/img/icon-plan-lite.svg" alt="单域名授权">
                                 <div>精简方案</div>
                             </div>
                             <ul class="p-0 my-3 fs-6p">
@@ -126,13 +113,13 @@
                             <div class="price mb-4">
 								<b><span class="fs-4 me-1">&#165;</span><span>1980</span></b>
                             </div>
-                            <a href="${object.url}" class="btn btn-primary w-50">查看详细方案 <img src="${site.sitePath}assets/img/icon-more-white.svg"></a>
+                            <a href="${object.url}" class="btn btn-primary w-50">查看详细方案 <img src="${site.sitePath}assets/img/icon-more-white.svg" alt="more"></a>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="card card-pricing card-pricing-c border-0 rounded-3 py-5 my-5 my-lg-0 align-items-center">
                             <div class="fs-1 fw-bold">
-                                <img src="${site.sitePath}assets/img/icon-plan-premium.svg">
+                                <img loading="lazy" src="${site.sitePath}assets/img/icon-plan-premium.svg" alt="不限域名授权">
                                 <div style="color: #E1C1A8;">高级方案</div>
                             </div>
                             <ul class="p-0 my-3 fs-6p">
@@ -145,7 +132,7 @@
                             <div class="price mb-4">
 								<b><span class="fs-4 me-1">&#165;</span><span>7580</span></b>
                             </div>
-                            <a href="${object.url}" class="btn btn-white w-50">查看详细方案 <img src="${site.sitePath}assets/img/icon-more.svg"></a>
+                            <a href="${object.url}" class="btn btn-white w-50">查看详细方案 <img src="${site.sitePath}assets/img/icon-more.svg" alt="more"></a>
                             <div class="tag position-absolute">
                                 多数选择
                             </div>
@@ -154,7 +141,7 @@
                     <div class="col-md-4">
                         <div class="card card-pricing border-0 rounded-3 mx-0 mx-md-2 py-4 align-items-center">
                             <div class="fs-1 fw-bold">
-                                <img src="${site.sitePath}assets/img/icon-plan-pro.svg">
+                                <img loading="lazy" src="${site.sitePath}assets/img/icon-plan-pro.svg" alt="不限域名授权">
                                 <div>持续订阅</div>
                             </div>
                             <ul class="p-0 my-3 fs-6p">
@@ -206,7 +193,7 @@
                     <div class="col-md-4">
                         <div class="card border-0">
                             <div>
-                                <img src="${site.sitePath}assets/img/index-service-1.svg" class="img-fluid">
+                                <img loading="lazy" src="${site.sitePath}assets/img/index-service-1.svg" class="img-fluid">
                             </div>
                             <div class="card-body px-0">
                                 <h3>模板制作(可包含切图)</h3>
@@ -218,7 +205,7 @@
                     <div class="col-md-4">
                         <div class="card border-0">
                             <div>
-                                <img src="${site.sitePath}assets/img/index-service-2.svg" class="img-fluid">
+                                <img loading="lazy" src="${site.sitePath}assets/img/index-service-2.svg" class="img-fluid">
                             </div>
                             <div class="card-body px-0">
                                 <h3>一对一远程技术支持</h3>
@@ -230,7 +217,7 @@
                     <div class="col-md-4">
                         <div class="card border-0">
                             <div>
-                                <img src="${site.sitePath}assets/img/index-service-3.svg" class="img-fluid">
+                                <img loading="lazy" src="${site.sitePath}assets/img/index-service-3.svg" class="img-fluid">
                             </div>
                             <div class="card-body px-0">
                                 <h3>等保(二级、三级)技术支持</h3>
@@ -246,9 +233,30 @@
 
             </div>
         </div>
+						
         <@_includePlace path="/7f8bacb5-30ca-4641-b66f-987d447b1a85.html"/> <#-- footer -->
 		<@_includePlace path="/ff78be16-6f75-42b3-b115-d9d9cf578f1c.html"/> <#-- 首页置灰控制 -->
+		<script src="${site.sitePath}assets/swiper/swiper.min.js"></script>
 		<script>
+			var swiper_index = new Swiper('#index-focus', {
+				loop: true,
+				pagination: {
+					el: '#index-focus .swiper-pagination',
+					clickable: true,
+				},
+				slidesPerView: 3,
+				spaceBetween: 0,
+				breakpoints: {
+					768: {
+						slidesPerView: 1,
+						spaceBetween: 0,
+					}
+				},
+				autoplay: {
+					delay: 5000,
+					disableOnInteraction: false,
+				}
+			});
 			$('input[name=btnradio]').change(function(){
 				var prices=$(this).val().split(',');
 				$('.price').each(function(index,value){

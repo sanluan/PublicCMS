@@ -59,13 +59,13 @@
 	<div class="user-login">
 		<div class="form-control text-center" style="line-height:5;"><a href="${site.dynamicPath}login.html">登录后发布评论</a></div>
 	</div>
-	<div class="user-logout">
+	<div class="user-logout comment-text-box">
 		<form method="post" action="${site.dynamicPath}comment/save" onsubmit="return comment();">
 			<input type="hidden" name="replyId" value=""/>
 			<input type="hidden" name="_csrf" value=""/>
 			<input type="hidden" name="contentId" value="${content.id}"/>
 			<input name="returnUrl" type="hidden" value="${site.dynamicPath}comment.html?contentId=${content.id!}" />
-			<textarea class="form-control" rows="3" maxlength="1000"></textarea>
+			<textarea name="text" class="form-control" rows="3" maxlength="1000"></textarea>
 			<button type="submit" class="btn btn-primary mt-3">提交</button>
 		</form>
 	</div>

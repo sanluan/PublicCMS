@@ -17,11 +17,7 @@
         </div>
         <div class="container">
             <div class="row gx-5 justify-content-between my-5">
-                <div class="col-md-3" style="border-right: 1px solid #ddd;">
-                    <div class="guide-side fs-7 pe-4">
-                        <@_includePlace path="/c936c718-5f19-426f-b3ff-13a5a8d63044.html"/> <#-- 个人中心导航 -->
-                    </div>
-                </div>
+                <@_includePlace path="/c936c718-5f19-426f-b3ff-13a5a8d63044.html"/> <#-- 个人中心导航 -->
                 <div class="col-md-9">
                     <div class="ps-4">
                         <h3>修改邮箱</h3>
@@ -33,7 +29,7 @@
                             <input type="hidden" name="returnUrl" value="${site.dynamicPath}myEmail.html"/>
                             <p><input type="email" class="input-text" name="email" placeholder="邮箱地址" title="邮箱地址" value="${user.email!}"/></p>
                             <p>
-                                <input type="submit" class="button" value="发送验证邮件"/>
+                                <input type="submit" class="btn btn-primary" value="发送验证邮件"/>
                             </p>
                             </#if>
                             <@import path="/ftl/tools.ftl" namespace="t"/>

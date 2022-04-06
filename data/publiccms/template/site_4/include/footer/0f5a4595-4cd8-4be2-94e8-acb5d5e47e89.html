@@ -1,0 +1,8 @@
+<dd class="d-flex">
+	<span class="flex-shrink-0">技术咨询：</span>
+	<div>
+<#list page.list as a>
+	<a href="${site.dynamicPath}place/redirect?id=${a.id!}" class="text-white">${a.title}</a><#sep>、
+</#list>
+	</div>
+</dd>

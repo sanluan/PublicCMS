@@ -1,0 +1,5 @@
+<span class="d-block d-lg-inline">
+	<#list page.list as a>
+	<a href="${site.dynamicPath}place/redirect?id=${a.id!}" class="text-white" target="_blank">${a.title}</a> 
+	</#list>
+</span>
