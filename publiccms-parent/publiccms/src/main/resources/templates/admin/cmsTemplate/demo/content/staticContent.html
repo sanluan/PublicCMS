@@ -5,6 +5,12 @@
     <title>${content.title} - ${(category.name)!}</title>
     <meta name="keywords" content="<#list getKeywords(content.title) as a>${a}<#sep>,</#list>"/>
     <meta name="description" content="${(content.description)!}"/>
+	<style>
+		.text-center{text-align:center;}
+		.clearfix::after{display: block;clear: both;content: "";}
+		article #content img,article #content table,article figure img{max-width:100%;}
+		article #content,{width:100%;overflow: auto;}
+	</style>
 </head>
 <body>
     <header>
@@ -22,7 +28,7 @@
         <article>
             <h1><a href="${url!}">${content.title}</a></h1>
             <p><#if content.copied>Source:<a href="${(attribute.sourceUrl)!}" target="_blank">${(attribute.source)!}</a></#if> ${content.author!} ${content.editor!} ${content.publishDate?datetime} Views:<em>loading...</em></p>
-            <div>${(text?no_esc)!}</div>
+            <div id="content" class="clearfix">${(text?no_esc)!}</div>
         <#if content.hasProducts>
             <div>
                 <form action="${site.dynamicPath}member/order.html">
@@ -32,9 +38,8 @@
                             <input type="radio" name="productId" value="${product.id}"/>
                             <#if product.cover?has_content>
                                 <img src="<@_thumb path=product.cover width=30 height=30/>" title="${product.title}" alt="${product.title}" style="max-width:30px;max-height30px;border:1px solid;"/>
-                            <#else>
-                                ${product.title}
                             </#if>
+                            ${product.title}
                         </label>
                     </#list>
                 </@_contentProductList>
@@ -45,32 +50,31 @@
             </div>
         </#if>
         <#if content.hasFiles>
-            <div>
-                <@_contentFileList contentId=content.id fileTypes='video,audio,other'>
-                    <#list page.list as file>
-                        <a href="${(file.filePath)!}" target="_blank">${(file.filePath)!}</a>
-                    </#list>
-                </@_contentFileList>
-            </div>
+			<@_contentFileList contentId=content.id fileTypes='video,audio,other'>
+				<#list page.list as file>
+					<p><a href="${(file.filePath)!}" target="_blank">${(file.filePath)!}</a></p>
+				</#list>
+			</@_contentFileList>
         </#if>
         <#if content.hasImages>
-            <div>
+			<figure class="text-center">
              <@_contentFileList contentId=content.id fileTypes='image'>
                  <#list page.list as file>
-                     <img src="${(file.filePath)!}" style="max-width:200px;max-height:200px;border:1px solid;"/>
+                     <img src="${(file.filePath)!}" alt="${(file.description)!}"/>
+					 <p>ͼ${file?counter} ${(file.description)!}</p>
                  </#list>
              </@_contentFileList>
-            </div>
+            </figure>
         </#if>
         <#if content.tagIds?has_content>
-            <div>
+            <p>
                 Tags:
                 <@_tag ids=content.tagIds>
                     <#list map as key,tag>
                         <em>${tag.name}</em>
                     </#list>
                 </@_tag>
-            </div>
+            </p>
         </#if>
             <div>
                 <#if !page.firstPage>
@@ -103,7 +107,7 @@
             </#list>
             <@_sysUser ids=userIds!><#assign userMap=map!/></@_sysUser>
             <#list page.list as a>
-                <dl class="nowrap">
+                <dl>
                     <dt>${(userMap[a.userId?string].nickName)!}<#if a.replyUserId?has_content> reply ${(userMap[a.replyUserId?string].nickName)!}</#if>:</dt>
                     <dd>
                         <div>${a.text!}</div>

@@ -121,7 +121,7 @@ public class FileAdminController {
                 }
             } else {
                 result.put("statusCode", 300);
-                result.put("error", LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
+                result.put("message", LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
                         "verify.custom.fileType"));
                 result.put(field, "");
                 if (CommonUtils.notEmpty(originalField)) {
@@ -130,7 +130,7 @@ public class FileAdminController {
             }
         } else {
             result.put("statusCode", 300);
-            result.put("error",
+            result.put("message",
                     LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(), "verify.notEmpty.file"));
             result.put(field, "");
             if (CommonUtils.notEmpty(originalField)) {
@@ -281,9 +281,28 @@ public class FileAdminController {
                     } catch (IllegalStateException | IOException e) {
                         log.error(e.getMessage(), e);
                     }
-                }
+                } else {
+					result.put("statusCode", 300);
+					result.put("message", LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
+                        "verify.custom.fileType"));
+					result.put(field, "");
+					if (CommonUtils.notEmpty(originalField)) {
+						result.put(originalField, null);
+					}
+					resultList.add(result);
+				}
             }
+        } else {
+            result.put("statusCode", 300);
+            result.put("message",
+                    LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(), "verify.notEmpty.file"));
+            result.put(field, "");
+            if (CommonUtils.notEmpty(originalField)) {
+                result.put(originalField, null);
+            }
+			resultList.add(result);
         }
+
         return resultList;
     }
 }
