@@ -19,7 +19,6 @@
         <script src="${base}/resource/js/html5shiv.min.js"></script>
         <script src="${base}/resource/js/respond.min.js"></script>
     <![endif]-->
-    <script src="${base}/resource/js/echarts.common.min.js"></script>
 </head>
 <body>
 <header>
@@ -186,6 +185,13 @@
         </#if>
     </@_sysAuthorized>
             $('#navMenu li a[parentId=${parentId!0}]').parent().addClass("selected");
+            loadScripts(["${base}/resource/js/echarts.common.min.js"],function(){
+                if(echartsList){
+                    for(var i=0;i<echartsList.length;i++){
+                        echartsList[i](echarts);
+                    }
+                }
+            });
         }
     });
 </script>

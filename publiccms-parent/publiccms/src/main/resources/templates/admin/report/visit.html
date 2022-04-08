@@ -152,7 +152,7 @@ echarts.init(document.getElementById('allVisit')).setOption({
     xAxis: {
         type: 'category',
         boundaryGap: false,
-        data: [<#list page.list?reverse as a>'${a.id.visitDate?date}'<#sep>,</#list>]
+        data: [<#list page.list?reverse as a>'${a.id.visitDate?string('MM-dd')}'<#sep>,</#list>]
     },
     yAxis: {
         type: 'value'

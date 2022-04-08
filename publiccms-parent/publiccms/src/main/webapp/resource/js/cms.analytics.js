@@ -43,16 +43,22 @@ if (typeof window.cmsAnalytics !== 'object') {
             script.async = true;
             script.type = "text/javascript";
             url = url+( /\?/.test( url ) ? "&" : "?" )+ "_=" +(new Date()).getTime();
-            script.src = url;
-            head.insertBefore(script, head.firstChild);
             if(callback){
-                document.addEventListener ? script.addEventListener("load", callback, false) : script.onreadystatechange = function() {
-                    if (/loaded|complete/.test(script.readyState)) {
-                        script.onreadystatechange = null
-                        callback()
+                if (script.readyState) {
+                    script.onreadystatechange = function() {
+                        if (script.readyState == "loaded" || script.readyState == "complete"){
+                            script.onreadystatechange = null
+                            callback()
+                        }
                     }
+                } else {
+                    script.onload = function(){
+                        callback();
+                    };
                 }
             }
+            script.src = url;
+            head.appendChild(script);
         }
         function getReferrer() {
             return window.document.referrer || document.referrer;

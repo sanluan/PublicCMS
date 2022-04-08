@@ -44,6 +44,7 @@ DWZ.regPlugins.push(function($p){
 });
 function loadScripts(urls, callback) {
     function loadScript(url, callback){
+        var head = document.head || document.getElementsByTagName("head")[0] || document.documentElement;
         var script = document.createElement("script")
         script.type = "text/javascript";
         if (script.readyState){
@@ -59,7 +60,7 @@ function loadScripts(urls, callback) {
             };
         }
         script.src = url;
-        document.getElementsByTagName("head")[0].appendChild(script);
+        head.appendChild(script);
     }
     var i = 0,count = urls.length-1;
     var loadOrCallback=function(){

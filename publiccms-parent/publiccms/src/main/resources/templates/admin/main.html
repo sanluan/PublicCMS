@@ -94,35 +94,38 @@
             <div id="comment" style="height:350px;width:98%;"></div>
         </div>
 <script>
-echarts.init(document.getElementById('comment')).setOption({
-    title: {
-        text: '<@t.page 'comment'/>',
-        x:'center'
-    },
-    tooltip : {
-        trigger: 'axis'
-    },
-    grid: {
-        left: '3%',
-        right: '4%',
-        bottom: '3%',
-        containLabel: true
-    },
-    xAxis: {
-        type: 'category',
-        boundaryGap: false,
-        data: [<#list 30..0 as a>'${(.now?long-a*86400000)?number_to_date}'<#sep>,</#list>]
-    },
-    yAxis: {
-        type: 'value'
-    },
-    series: [
-    {
-        name:'<@t.page 'operate'/>',
-        type:'line',
-        data:[<#list 30..0 as a><@_logOperateList operate='save.cmsComment' startCreateDate=(.now?long-a*86400000)?number_to_date?string endCreateDate=(.now?long-(a-1)*86400000)?number_to_date?string>${page.totalCount}</@_logOperateList><#sep>,</#list>],
-        areaStyle: {}
-    }]
+var echartsList=[];
+echartsList.push(function(echarts){
+    echarts.init(document.getElementById('comment')).setOption({
+        title: {
+            text: '<@t.page 'comment'/>',
+            x:'center'
+        },
+        tooltip : {
+            trigger: 'axis'
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            data: [<#list 30..0 as a>'${(.now?long-a*86400000)?number_to_date?string('MM-dd')}'<#sep>,</#list>]
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [
+        {
+            name:'<@t.page 'operate'/>',
+            type:'line',
+            data:[<#list 30..0 as a><@_logOperateList operate='save.cmsComment' startCreateDate=(.now?long-a*86400000)?number_to_date?string endCreateDate=(.now?long-(a-1)*86400000)?number_to_date?string>${page.totalCount}</@_logOperateList><#sep>,</#list>],
+            areaStyle: {}
+        }]
+    });
 });
 </script>
    </fieldset>
@@ -170,51 +173,53 @@ echarts.init(document.getElementById('comment')).setOption({
         </div>
 <script>
 <@_visitDayList startVisitDate=(.now?long-30*86400000)?number_to_date>
-echarts.init(document.getElementById('visit')).setOption({
-    title: {
-        text: '<@t.page 'visit'/>',
-        x:'center'
-    },
-    tooltip : {
-        trigger: 'axis'
-    },
-    grid: {
-        left: '3%',
-        right: '4%',
-        bottom: '3%',
-        containLabel: true
-    },
-    legend: {
-        data: ['PV', 'UV', 'IP Views'],
-        top:30
-    },
-    xAxis: {
-        type: 'category',
-        boundaryGap: false,
-        data: [<#list page.list?reverse as a>'${a.id.visitDate?date}'<#sep>,</#list>]
-    },
-    yAxis: {
-        type: 'value'
-    },
-    series: [
-    {
-           name:'PV',
-           type:'line',
-           data:[<#list page.list?reverse as a>${a.pv!}<#sep>,</#list>],
-           areaStyle: {}
-       },
-       {
-           name:'UV',
-           type:'line',
-           data:[<#list page.list?reverse as a>${a.uv!}<#sep>,</#list>],
-           areaStyle: {}
-       },
-       {
-           name:'IP Views',
-           type:'line',
-           data:[<#list page.list?reverse as a>${a.ipviews!}<#sep>,</#list>],
-           areaStyle: {}
-       }]
+echartsList.push(function(echarts){
+    echarts.init(document.getElementById('visit')).setOption({
+        title: {
+            text: '<@t.page 'visit'/>',
+            x:'center'
+        },
+        tooltip : {
+            trigger: 'axis'
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        legend: {
+            data: ['PV', 'UV', 'IP Views'],
+            top:30
+        },
+        xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            data: [<#list page.list?reverse as a>'${a.id.visitDate?string('MM-dd')}'<#sep>,</#list>]
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [
+        {
+               name:'PV',
+               type:'line',
+               data:[<#list page.list?reverse as a>${a.pv!}<#sep>,</#list>],
+               areaStyle: {}
+           },
+           {
+               name:'UV',
+               type:'line',
+               data:[<#list page.list?reverse as a>${a.uv!}<#sep>,</#list>],
+               areaStyle: {}
+           },
+           {
+               name:'IP Views',
+               type:'line',
+               data:[<#list page.list?reverse as a>${a.ipviews!}<#sep>,</#list>],
+               areaStyle: {}
+           }]
+    });
 });
 </@_visitDayList>
 </script>
