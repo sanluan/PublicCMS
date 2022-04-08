@@ -21,6 +21,7 @@
 </div>
 <script src="${base}/resource/js/jquery-1.12.4.min.js"></script>
 <script src="${base}/resource/js/echarts.common.min.js"></script>
+<@_disk>
 <script>
 document.getElementById('memory_count').style.height=document.getElementById('memory_count').offsetWidth*0.4+'px';
 document.getElementById('disk').style.height=document.getElementById('disk').offsetWidth*0.4+'px';
@@ -45,10 +46,10 @@ var memoryChart={
 };
 memoryChart.chart.setOption({
     title: {
-        text: '<@t.page 'report.memory.history'/>'
+        text: "<@t.page 'report.memory.history'/>"
     },
     tooltip : {
-        trigger: 'axis'
+        trigger: "axis"
     },
     toolbox: {
         feature: {
@@ -56,44 +57,44 @@ memoryChart.chart.setOption({
         }
     },
     xAxis: {
-        type: 'category',
+        type: "category",
         boundaryGap: false,
         data: memoryChart.time
     },
     yAxis: {
-        type: 'value'
+        type: "value"
     },
     series: [
         {
-            name:'<@t.page 'report.used'/>',
-            type:'line',
-            stack: 'temp',
+            name:"<@t.page 'report.used'/>",
+            type:"line",
+            stack: "temp",
             areaStyle: {normal: {}},
             data:memoryChart.data.usedMemory
        },
        {
-           name:'<@t.page 'report.unused'/>',
-           type:'line',
-           stack: 'temp',
+           name:"<@t.page 'report.unused'/>",
+           type:"line",
+           stack: "temp",
            areaStyle: {normal: {}},
            data:memoryChart.data.unUsedMemory
        },
        {
-           name:'<@t.page 'report.memory.free'/>',
-           type:'line',
-           stack: 'temp',
+           name:"<@t.page 'report.memory.free'/>",
+           type:"line",
+           stack: "temp",
            areaStyle: {normal: {}},
            data:memoryChart.data.freeMemory
       }]
 });
 memoryChart.countChart.setOption({
     title : {
-        text: '<@t.page 'report.memory'/>',
-        subtext: '<@t.page 'report.memory.use'/>',
-        x:'center'
+        text: "<@t.page 'report.memory'/>",
+        subtext: "<@t.page 'report.memory.use'/>",
+        x:"center"
     },
     tooltip : {
-        trigger: 'item',
+        trigger: "item",
         formatter: "{a} <br/>{b} : {c} ({d}%)",
         position: [10, 10]
     },
@@ -104,26 +105,26 @@ memoryChart.countChart.setOption({
     },
     series : [
         {
-            name: '<@t.page 'report.memory.use'/>',
-            type: 'pie',
-            radius : '55%',
-            center: ['50%', '60%'],
+            name: "<@t.page 'report.memory.use'/>",
+            type: "pie",
+            radius : "55%",
+            center: ["50%", "60%"],
             data:[
-                {value:0, name:'<@t.page 'report.used'/>'},
-                {value:0, name:'<@t.page 'report.unused'/>'}
+                {value:0, name:"<@t.page 'report.used'/>"},
+                {value:0, name:"<@t.page 'report.unused'/>"}
             ]
         }
     ]
 });
-<@_disk>
-echarts.init(document.getElementById('disk')).setOption({
+
+echarts.init(document.getElementById("disk")).setOption({
     title : {
-        text: '<@t.page 'report.disk'/>:<@t.fileSize totalSpace/>',
-        subtext: '${(rootPath?js_string)!}',
-        x:'center'
+        text: "<@t.page 'report.disk'/>:<@t.fileSize totalSpace/>",
+        subtext: "${(rootPath?js_string)!}",
+        x:"center"
     },
     tooltip : {
-        trigger: 'item',
+        trigger: "item",
         formatter: "{a} <br/>{b} : {c} ({d}%)",
         position: [10, 10]
     },
@@ -134,20 +135,20 @@ echarts.init(document.getElementById('disk')).setOption({
     },
     series : [
         {
-            name: '<@t.page 'report.disk.space'/>',
-            type: 'pie',
-            radius : '55%',
-            center: ['50%', '60%'],
+            name: "<@t.page 'report.disk.space'/>",
+            type: "pie",
+            radius : "55%",
+            center: ["50%", "60%"],
             data:[
-                {value:${(totalSpace-freeSpace)/1024/1024}, name:'<@t.page 'report.used'/>'},
-                {value:${freeSpace/1024/1024}, name:'<@t.page 'report.unused'/>'}
+                {value:"${(totalSpace-freeSpace)/1024/1024}", name:"<@t.page 'report.used'/>"},
+                {value:"${freeSpace/1024/1024}", name:"<@t.page 'report.unused'/>"}
             ]
         }
     ]
 });
-</@_disk>
+
 function refreshMemory(){
-    if(document.getElementById('memory')){
+    if(document.getElementById("memory")){
         $.getJSON("../sysSite/memory.html", function(data) {
             memoryChart.time.push(data.time);
             memoryChart.data.usedMemory.push(memoryChart.toDecimal((data.totalMemory-data.freeMemory)/1048576));
@@ -161,16 +162,16 @@ function refreshMemory(){
             }
             memoryChart.countChart.setOption({
                 title:{
-                    subtext: '<@t.page 'report.memory.use'/>:'+memoryChart.toDecimal(data.totalMemory/1048576)+'MB'
+                    subtext: "<@t.page 'report.memory.use'/>:"+memoryChart.toDecimal(data.totalMemory/1048576)+"MB"
                 },
                 series: [{
-                     name: '<@t.page 'report.memory.use'/>',
-                     type: 'pie',
-                     radius : '55%',
-                     center: ['50%', '60%'],
+                     name: "<@t.page 'report.memory.use'/>",
+                     type: "pie",
+                     radius : "55%",
+                     center: ["50%", "60%"],
                      data:[
-                         {value:memoryChart.toDecimal((data.totalMemory-data.freeMemory)/1048576), name:'<@t.page 'report.used'/>'},
-                         {value:memoryChart.toDecimal(data.freeMemory/1048576), name:'<@t.page 'report.unused'/>'}
+                         {value:memoryChart.toDecimal((data.totalMemory-data.freeMemory)/1048576), name:"<@t.page 'report.used'/>"},
+                         {value:memoryChart.toDecimal(data.freeMemory/1048576), name:"<@t.page 'report.unused'/>"}
                      ]
                  }]
             });
@@ -180,23 +181,23 @@ function refreshMemory(){
                 },
                 series: [
                      {
-                        name:'<@t.page 'report.used'/>',
-                        type:'line',
-                        stack: 'temp',
+                        name:"<@t.page 'report.used'/>",
+                        type:"line",
+                        stack: "temp",
                         areaStyle: {normal: {}},
                         data:memoryChart.data.usedMemory
                     },
                     {
-                        name:'<@t.page 'report.unused'/>',
-                        type:'line',
-                        stack: 'temp',
+                        name:"<@t.page 'report.unused'/>",
+                        type:"line",
+                        stack: "temp",
                         areaStyle: {normal: {}},
                         data:memoryChart.data.unUsedMemory
                     },
                     {
-                        name:'<@t.page 'report.memory.free'/>',
-                        type:'line',
-                        stack: 'temp',
+                        name:"<@t.page 'report.memory.free'/>",
+                        type:"line",
+                        stack: "temp",
                         areaStyle: {normal: {}},
                         data:memoryChart.data.freeMemory
                     }]
@@ -213,5 +214,6 @@ window.memoryInterval=setInterval(function () {
 }, 10000);
 refreshMemory();
 </script>
+</@_disk>
 </body>
 </html>
