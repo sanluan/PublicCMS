@@ -90,27 +90,6 @@ public class LogAdminController {
 
     /**
      * @param site
-     * @param admin
-     * @param ids
-     * @param request
-     * @param model
-     * @return view name
-     */
-    @RequestMapping("logOperate/delete")
-    @Csrf
-    public String logOperateDelete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids,
-            HttpServletRequest request, ModelMap model) {
-        if (CommonUtils.notEmpty(ids)) {
-            logOperateService.delete(site.getId(), ids);
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.logOperate", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), StringUtils.join(ids, CommonConstants.COMMA)));
-        }
-        return CommonConstants.TEMPLATE_DONE;
-    }
-
-    /**
-     * @param site
      * @param channel
      * @param operate
      * @param startCreateDate
