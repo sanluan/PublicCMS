@@ -90,7 +90,7 @@
 
             <#list page.list as a>
                 <#assign contentId=(a.quoteContentId?has_content)?then(a.quoteContentId,a.id)/>
-            <tr target="sid" rel="${contentId}">
+            <tr>
                 <td><input name="ids" value="${contentId}" type="checkbox"></td>
                 <td>${a.id}</td>
                 <td class="wrap">

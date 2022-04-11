@@ -42,7 +42,7 @@
         </thead>
         <tbody>
             <#list page.list as a>
-            <tr target="sid" rel="${a.id?url}">
+            <tr>
                 <td>${a.id!}</td>
                 <td><@t.menu a.id/></td>
                 <td>${a.menu?then(t.pageMessage('module.menu'),t.pageMessage('module.not_menu'))}</td>

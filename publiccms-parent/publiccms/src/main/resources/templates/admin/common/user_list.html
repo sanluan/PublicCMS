@@ -75,7 +75,7 @@
             
             <@_sysDept ids=t.deptIds!><#assign deptMap=map!/></@_sysDept>
             <#list page.list as a>
-            <tr target="sid" rel="${a.id}">
+            <tr>
                 <td>${a.id!}</td>
                 <td class="wrap">
                     <#if a.cover?has_content>

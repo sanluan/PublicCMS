@@ -23,7 +23,7 @@
         </thead>
         <tbody>
             <#list page.list as a>
-            <tr target="sid" rel="${a.authToken}">
+            <tr>
                 <td>${a.authToken!}</td>
                 <td>${a.expiryDate!}</td>
                 <td>${a.createDate!}</td>

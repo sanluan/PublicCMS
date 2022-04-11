@@ -60,7 +60,7 @@
             <@_model ids=t.modelIds!><#assign modelMap=map!/></@_model>
 
             <#list page.list as a>
-            <tr target="sid" rel="${a.id}">
+            <tr>
                 <td>
                     <a href="javascript:;" class="btnText green" onclick="$.bringBack({'${field!'relatedContentId'}':'${a.id}', url:'${a.url!}', title:'${a.title?js_string}', description:'${(a.description!)?js_string}'}); return false;"><i class="icon-ok"></i> <@t.page 'select'/></a>
                 </td>

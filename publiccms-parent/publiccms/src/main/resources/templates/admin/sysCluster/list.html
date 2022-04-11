@@ -44,7 +44,7 @@
         </thead>
         <tbody>
             <#list page.list as a>
-            <tr target="sid" rel="${a.uuid}">
+            <tr>
                 <td>${a.uuid!}<#if a.master>[<@t.page 'cluster.master'/>]</#if></td>
                 <td>${a.createDate!}</td>
                 <td>${a.heartbeatDate!}</td>

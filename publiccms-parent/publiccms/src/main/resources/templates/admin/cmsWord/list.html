@@ -37,11 +37,13 @@
     <div class="panelBar">
         <ul class="toolBar">
             <li><a href="cmsWord/add.html" target="dialog" rel="cmsWord_add" ><i class="icon-plus-sign-alt icon-large"></i> <@t.page 'search_word.add'/></a></li>
+            <li><a href="cmsWord/delete?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> <@t.page 'button.batch_delete'/></a></li>
         </ul>
     </div>
     <table class="table" width="100%" layoutH>
         <thead>
             <tr>
+                <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
                 <th><@t.page 'id'/></th>
                 <th><@t.page 'name'/></th>
                 <th orderField="searchCount" class="<#if orderField?has_content&&'searchCount'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'tag.search_count'/></th>
@@ -52,8 +54,8 @@
         </thead>
         <tbody>
             <#list page.list as a>
-            <tr target="sid" rel="${a.id}">
-                <td>${a.id!}</td>
+            <tr>
+                <td><input name="ids" value="${a.id}" type="checkbox"></td>
                 <td class="exclude-translate">${(a.name)!}</td>
                 <td>${a.searchCount!}</td>
                 <td>${a.hidden?then(t.pageMessage('hidden'),t.pageMessage('show'))}</td>
@@ -65,7 +67,6 @@
                     <#else>
                         <a href="cmsWord/hidden?id=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText red" title="<@t.page 'confirm.hide'/>" target="ajaxTodo"><i class="icon-eye-close"></i> <@t.page 'button.hide'/></a>
                     </#if>
-                    <a href="cmsWord/delete?id=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i> <@t.page 'button.delete'/></a>
                 </td>
             </tr>
             </#list>

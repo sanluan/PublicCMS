@@ -75,7 +75,7 @@
             <@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
 
             <#list page.list as a>
-            <tr target="sid" rel="${a.id}">
+            <tr>
                 <td class="center"><input name="ids" value="${a.id}" type="checkbox"></td>
                 <td class="center">${a.id!}</td>
                 <td class="center"><@t.page 'survey.type.'+a.surveyType/></td>

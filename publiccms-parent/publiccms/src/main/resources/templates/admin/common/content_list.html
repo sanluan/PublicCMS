@@ -159,7 +159,7 @@
             <@_model ids=t.modelIds!><#assign modelMap=map!/></@_model>
 
             <#list page.list as a>
-            <tr target="sid" rel="${a.id}">
+            <tr>
                 <td class="center" title="${a.id}"><input name="ids" value="${a.id}" type="checkbox"></td>
                 <td class="wrap">
                     <#if a.cover?has_content>

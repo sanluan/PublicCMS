@@ -91,7 +91,7 @@
             <@_category ids=t.parentIds!><#assign parentMap=map!/></@_category>
             <@_categoryType ids=t.typeIds!><#assign typeMap=map!/></@_categoryType>
             <#list page.list as a>
-            <tr target="sid" rel="${a.id}">
+            <tr>
                 <td><input name="ids" value="${a.id}" type="checkbox"></td>
                 <td>${a.id!}</td>
                 <td <#if lockMap[a.id?string]?has_content><#assign lockUser=(userMap[lockMap[a.id?string].userId?string].nickName)!''/>title="<@t.page 'lock.message' lockUser/> ${lockMap[a.id?string].createDate}"</#if>>

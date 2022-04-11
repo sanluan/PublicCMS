@@ -58,7 +58,7 @@
             </#list>
             <@_sysTask ids=t.taskIds!><#assign taskMap=map!/></@_sysTask>
             <#list page.list as a>
-            <tr target="sid" rel="${a.id}">
+            <tr>
                 <td><input name="ids" value="${a.id}" type="checkbox"></td>
                 <td>
                     ${(taskMap[a.taskId?string].name)!}

@@ -50,7 +50,7 @@
         </thead>
         <tbody>
             <#list page.list as a>
-            <tr target="sid" rel="${a.id}">
+            <tr>
                 <td>${a.id}</td>
                 <td class="exclude-translate">${a.name!} <#if site.id=a.id>[<@t.page 'site.current_site'/>]</#if></td>
             <#if parentId?has_content>

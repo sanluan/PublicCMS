@@ -66,6 +66,18 @@ public class CmsWordService extends BaseService<CmsWord> {
     }
 
     /**
+     * @param siteId
+     * @param ids
+     */
+    public void delete(short siteId, Serializable[] ids) {
+        for (CmsWord entity : getEntitys(ids)) {
+            if (siteId == entity.getSiteId()) {
+                delete(entity.getId());
+            }
+        }
+    }
+
+    /**
      * @param id
      * @param status
      * @return

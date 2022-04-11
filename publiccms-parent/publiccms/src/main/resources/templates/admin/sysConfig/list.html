@@ -15,7 +15,7 @@
         </thead>
         <tbody>
             <#list list as a>
-            <tr target="sid" rel="${a.code}">
+            <tr>
                 <td>${(a.code)!} ${a.customed?then('','['+t.pageMessage('config.system_item')+']')}</td>
                 <td>${(a.description)!}</td>
                 <td class="wrap">

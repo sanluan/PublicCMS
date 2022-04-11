@@ -57,7 +57,7 @@
 
             <@_sysSite ids=t.siteIds!><#assign siteMap=map!/></@_sysSite>
             <#list page.list as a>
-            <tr target="sid" rel="${a.name}">
+            <tr>
                 <td>${(a.name)!} ${a.wild?then('['+t.pageMessage('domain.wild')+']','')} ${a.multiple?then('['+t.pageMessage('domain.multiple')+']','')}</td>
                 <td>${a.siteId!}</td>
                 <td class="exclude-translate">${(siteMap[a.siteId?string].name)!}</td>

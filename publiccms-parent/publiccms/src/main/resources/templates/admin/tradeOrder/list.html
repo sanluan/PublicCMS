@@ -66,7 +66,7 @@
             </#list>
             <@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
             <#list page.list as a>
-            <tr target="sid" rel="${a.id}">
+            <tr>
                 <td class="center"><input name="ids" value="${a.id}" type="checkbox"></td>
                 <td>${a.id!}</td>
                 <td class="exclude-translate">

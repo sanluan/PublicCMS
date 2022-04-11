@@ -52,7 +52,7 @@
             <@_survey ids=t.surveyIds!><#assign surveyMap=map!/></@_survey>
         
             <#list page.list as a>
-            <tr target="sid" rel="${a.id}">
+            <tr>
                 <td class="center"><input name="ids" value="${a.id}" type="checkbox"></td>
                 <td class="center">${a.id!}</td>
                 <td><a href="cmsSurvey/view.html?id=${a.surveyId}" class="exclude-translate" target="dialog" rel="viewSurvey${a.surveyId}">${(surveyMap[a.surveyId?string].title)!}</a></td>
