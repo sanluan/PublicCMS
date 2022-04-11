@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
-import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.publiccms.common.annotation.Csrf;
@@ -35,6 +34,7 @@ import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.DateFormatUtils;
+import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.LanguagesUtils;
 import com.publiccms.common.tools.RequestUtils;
@@ -49,6 +49,7 @@ import com.publiccms.entities.cms.CmsContentRelated;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysDept;
 import com.publiccms.entities.sys.SysDeptCategoryId;
+import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.config.ConfigComponent;
@@ -65,6 +66,7 @@ import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.sys.SysDeptCategoryService;
 import com.publiccms.logic.service.sys.SysDeptService;
+import com.publiccms.logic.service.sys.SysExtendFieldService;
 import com.publiccms.logic.service.sys.SysSiteService;
 import com.publiccms.logic.service.sys.SysUserService;
 import com.publiccms.views.pojo.entities.CmsModel;
@@ -85,6 +87,8 @@ public class CmsContentAdminController {
     private CmsContentAttributeService attributeService;
     @Autowired
     private SysUserService sysUserService;
+    @Autowired
+    private SysExtendFieldService extendFieldService;
     @Autowired
     private SysDeptCategoryService sysDeptCategoryService;
     @Autowired
@@ -109,7 +113,8 @@ public class CmsContentAdminController {
     private SysSiteService siteService;
 
     public static final String[] ignoreProperties = new String[] { "siteId", "userId", "deptId", "categoryId", "tagIds", "sort",
-            "createDate", "updateDate", "clicks", "comments", "scores", "scoreUsers", "score", "childs", "checkUserId", "disabled" };
+            "createDate", "updateDate", "clicks", "comments", "scores", "scoreUsers", "score", "childs", "checkUserId",
+            "disabled" };
 
     public static final String[] ignorePropertiesWithUrl = ArrayUtils.addAll(ignoreProperties, new String[] { "url" });
 
@@ -604,7 +609,8 @@ public class CmsContentAdminController {
         queryEntity.setSiteId(site.getId());
         queryEntity.setDisabled(false);
         queryEntity.setEmptyParent(true);
-        LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
+        Locale locale = RequestContextUtils.getLocale(request);
+
         PageHandler page = service.getPage(queryEntity, null, orderField, orderType, 1, PageHandler.MAX_PAGE_SIZE);
         @SuppressWarnings("unchecked")
         List<CmsContent> entityList = (List<CmsContent>) page.getList();
@@ -656,17 +662,28 @@ public class CmsContentAdminController {
                 contentAttributeMap.put(entity.getContentId(), entity);
             }
         }
-        DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.FULL_DATE_FORMAT_STRING);
+
         ExcelView view = new ExcelView(workbook -> {
+            List<SysExtendField> categoryExtendList = null;
+            if (CommonUtils.notEmpty(queryEntity.getCategoryId())) {
+                CmsCategory category = categoryService.getEntity(queryEntity.getCategoryId());
+                if (null != category && null != category.getExtendId()) {
+                    categoryExtendList = extendFieldService.getList(category.getExtendId(), null, null);
+                }
+            }
+            List<SysExtendField> modelExtendList = null;
+            if (CommonUtils.notEmpty(queryEntity.getModelIds()) && 1 == queryEntity.getModelIds().length) {
+                CmsModel cmsModel = modelComponent.getModelMap(site).get(queryEntity.getModelIds()[0]);
+                if (null != cmsModel) {
+                    modelExtendList = cmsModel.getExtendList();
+                }
+            }
+
             Sheet sheet = workbook.createSheet(
                     LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(), "page.content"));
             int i = 0, j = 0;
             Row row = sheet.createRow(i++);
 
-            Locale locale = request.getLocale();
-            if (null != localeResolver) {
-                locale = localeResolver.resolveLocale(request);
-            }
             row.createCell(j++).setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.id"));
             row.createCell(j++).setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.title"));
             row.createCell(j++).setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.url"));
@@ -698,12 +715,23 @@ public class CmsContentAdminController {
                     LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content.source_url"));
             row.createCell(j++)
                     .setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content.text"));
+            if (CommonUtils.notEmpty(categoryExtendList)) {
+                for (SysExtendField extend : categoryExtendList) {
+                    row.createCell(j++).setCellValue(extend.getName());
+                }
+            }
+            if (CommonUtils.notEmpty(modelExtendList)) {
+                for (SysExtendField extend : modelExtendList) {
+                    row.createCell(j++).setCellValue(extend.getName());
+                }
+            }
 
             SysUser user;
             SysDept dept;
             CmsCategory category;
             CmsModel cmsModel;
             CmsContentAttribute attribute;
+            DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.FULL_DATE_FORMAT_STRING);
             for (CmsContent entity : entityList) {
                 row = sheet.createRow(i++);
                 j = 0;
@@ -731,6 +759,17 @@ public class CmsContentAdminController {
                 attribute = contentAttributeMap.get(entity.getId());
                 row.createCell(j++).setCellValue(null == attribute ? null : attribute.getSource());
                 row.createCell(j++).setCellValue(null == attribute ? null : attribute.getSourceUrl());
+                Map<String, String> map = ExtendUtils.getExtendMap(null == attribute ? null : attribute.getData());
+                if (CommonUtils.notEmpty(categoryExtendList) && entity.getCategoryId() == queryEntity.getCategoryId()) {
+                    for (SysExtendField extend : categoryExtendList) {
+                        row.createCell(j++).setCellValue(map.get(extend.getId().getCode()));
+                    }
+                }
+                if (CommonUtils.notEmpty(modelExtendList)) {
+                    for (SysExtendField extend : modelExtendList) {
+                        row.createCell(j++).setCellValue(map.get(extend.getId().getCode()));
+                    }
+                }
                 row.createCell(j++).setCellValue(null == attribute ? null : StringUtils.substring(attribute.getText(), 0, 32767));
                 if (null != attribute && null != attribute.getText() && attribute.getText().length() > 32767) {
                     long length = attribute.getText().length();
@@ -740,10 +779,11 @@ public class CmsContentAdminController {
                         row.createCell(j++).setCellValue(StringUtils.substring(attribute.getText(), m * 32767, (m + 1) * 32767));
                     }
                 }
-
             }
         });
-        view.setFilename(LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(), "page.content"));
+        DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.SHORT_DATE_FORMAT_STRING);
+        view.setFilename(LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(), "page.content") + "_"
+                + dateFormat.format(new Date()));
         return view;
     }
 

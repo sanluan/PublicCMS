@@ -1,5 +1,7 @@
 package com.publiccms.logic.dao.trade;
 
+import java.util.Date;
+
 // Generated 2021-6-26 20:16:25 by com.publiccms.common.generator.SourceGenerator
 
 import org.springframework.stereotype.Repository;
@@ -22,15 +24,17 @@ public class TradeOrderDao extends BaseDao<TradeOrder> {
      * @param siteId
      * @param userId
      * @param paymentId
-     * @param status 
+     * @param status
      * @param processed
+     * @param startCreateDate
+     * @param endCreateDate
      * @param orderType
      * @param pageIndex
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(Short siteId, Long userId, Long paymentId, Integer[] status, Boolean processed, String orderType,
-            Integer pageIndex, Integer pageSize) {
+    public PageHandler getPage(Short siteId, Long userId, Long paymentId, Integer[] status, Boolean processed,
+            Date startCreateDate, Date endCreateDate, String orderType, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from TradeOrder bean");
         if (null != siteId) {
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
@@ -46,6 +50,12 @@ public class TradeOrderDao extends BaseDao<TradeOrder> {
         }
         if (null != processed) {
             queryHandler.condition("bean.processed = :processed").setParameter("processed", processed);
+        }
+        if (null != startCreateDate) {
+            queryHandler.condition("bean.createDate > :startCreateDate").setParameter("startCreateDate", startCreateDate);
+        }
+        if (null != endCreateDate) {
+            queryHandler.condition("bean.createDate <= :endCreateDate").setParameter("endCreateDate", endCreateDate);
         }
         if (!ORDERTYPE_ASC.equalsIgnoreCase(orderType)) {
             orderType = ORDERTYPE_DESC;

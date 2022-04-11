@@ -27,7 +27,6 @@ import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttribute;
-import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.publiccms.common.annotation.Csrf;
@@ -43,9 +42,11 @@ import com.publiccms.common.tools.LanguagesUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.common.view.ExcelView;
 import com.publiccms.entities.cms.CmsPlace;
+import com.publiccms.entities.cms.CmsPlaceAttribute;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysDept;
 import com.publiccms.entities.sys.SysDeptPageId;
+import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.site.SiteComponent;
@@ -310,7 +311,11 @@ public class CmsPlaceAdminController {
         if (CommonUtils.notEmpty(path)) {
             path = path.replace("//", CommonConstants.SEPARATOR);
         }
-        LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
+        Locale locale = RequestContextUtils.getLocale(request);
+
+        String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
+        CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filePath);
+
         PageHandler page = service.getPage(site.getId(), userId, path, itemType, itemId, startPublishDate, endPublishDate,
                 CommonUtils.getMinuteDate(), status, false, orderField, orderType, 1, PageHandler.MAX_PAGE_SIZE);
         @SuppressWarnings("unchecked")
@@ -329,16 +334,12 @@ public class CmsPlaceAdminController {
                 userMap.put(entity.getId(), entity);
             }
         }
+
         ExcelView view = new ExcelView(workbook -> {
-            Sheet sheet = workbook.createSheet(
-                    LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(), "page.content"));
+            Sheet sheet = workbook
+                    .createSheet(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content"));
             int i = 0, j = 0;
             Row row = sheet.createRow(i++);
-
-            Locale locale = request.getLocale();
-            if (null != localeResolver) {
-                locale = localeResolver.resolveLocale(request);
-            }
 
             row.createCell(j++).setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.id"));
             row.createCell(j++).setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.title"));
@@ -355,8 +356,14 @@ public class CmsPlaceAdminController {
                     .setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.status"));
             row.createCell(j++)
                     .setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.inspector"));
+            if (CommonUtils.notEmpty(metadata.getExtendList())) {
+                for (SysExtendField extend : metadata.getExtendList()) {
+                    row.createCell(j++).setCellValue(extend.getName());
+                }
+            }
 
             SysUser user;
+            CmsPlaceAttribute attribute;
             DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.FULL_DATE_FORMAT_STRING);
             for (CmsPlace entity : entityList) {
                 row = sheet.createRow(i++);
@@ -369,14 +376,23 @@ public class CmsPlaceAdminController {
                 row.createCell(j++).setCellValue(String.valueOf(entity.getClicks()));
                 row.createCell(j++).setCellValue(dateFormat.format(entity.getPublishDate()));
                 row.createCell(j++).setCellValue(dateFormat.format(entity.getCreateDate()));
+                
                 row.createCell(j++).setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale,
                         "page.status.place.data." + entity.getStatus()));
                 user = userMap.get(entity.getCheckUserId());
                 row.createCell(j++).setCellValue(null == user ? null : user.getNickName());
+                if (CommonUtils.notEmpty(metadata.getExtendList())) {
+                    attribute = attributeService.getEntity(entity.getId());
+                    Map<String, String> map = ExtendUtils.getExtendMap(null == attribute ? null : attribute.getData());
+                    for (SysExtendField extend : metadata.getExtendList()) {
+                        row.createCell(j++).setCellValue(map.get(extend.getId().getCode()));
+                    }
+                }
             }
         });
+        DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.SHORT_DATE_FORMAT_STRING);
         String filepath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
-        view.setFilename(metadataComponent.getPlaceMetadata(filepath).getAlias());
+        view.setFilename(metadataComponent.getPlaceMetadata(filepath).getAlias()+"_"+dateFormat.format(new Date()));
         return view;
     }
 

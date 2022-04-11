@@ -22,8 +22,9 @@ public class TradeOrderListDirective extends AbstractTemplateDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
         PageHandler page = service.getPage(getSite(handler).getId(), handler.getLong("userId"), handler.getLong("paymentId"),
-                handler.getIntegerArray("status"), handler.getBoolean("processed"), handler.getString("orderType"),
-                handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", 30));
+                handler.getIntegerArray("status"), handler.getBoolean("processed"), handler.getDate("startCreateDate"),
+                handler.getDate("endCreateDate"), handler.getString("orderType"), handler.getInteger("pageIndex", 1),
+                handler.getInteger("pageSize", 30));
         handler.put("page", page).render();
     }
 

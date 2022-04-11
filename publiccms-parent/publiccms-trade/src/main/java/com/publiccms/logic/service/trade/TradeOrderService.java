@@ -56,15 +56,18 @@ public class TradeOrderService extends BaseService<TradeOrder> {
      * @param paymentId
      * @param status
      * @param processed
+     * @param startCreateDate
+     * @param endCreateDate
      * @param orderType
      * @param pageIndex
      * @param pageSize
-     * @return results page
+     * @return
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(Short siteId, Long userId, Long paymentId, Integer[] status, Boolean processed, String orderType,
-            Integer pageIndex, Integer pageSize) {
-        return dao.getPage(siteId, userId, paymentId, status, processed, orderType, pageIndex, pageSize);
+    public PageHandler getPage(Short siteId, Long userId, Long paymentId, Integer[] status, Boolean processed,
+            Date startCreateDate, Date endCreateDate, String orderType, Integer pageIndex, Integer pageSize) {
+        return dao.getPage(siteId, userId, paymentId, status, processed, startCreateDate, endCreateDate, orderType, pageIndex,
+                pageSize);
     }
 
     @Transactional(isolation = Isolation.SERIALIZABLE)

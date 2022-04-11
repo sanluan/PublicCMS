@@ -336,3 +336,5 @@ ALTER TABLE `cms_content`
 ALTER TABLE `cms_user_score`
     ADD COLUMN `scores` int(11) NOT NULL COMMENT '分数' after `item_id`;
 UPDATE `cms_content` SET `score_users` = `scores`,`score`=1 WHERE `scores` > 0;
+-- 2022-04-11 --
+UPDATE `sys_module` SET `authorized_url` = 'tradeOrder/process,tradeOrder/export' WHERE `id` ='order_process';
