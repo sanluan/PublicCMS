@@ -18,7 +18,6 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
 import org.apache.lucene.queryparser.classic.ParseException;
-import org.apache.lucene.search.PhraseQuery;
 import org.hibernate.search.backend.lucene.LuceneBackend;
 import org.hibernate.search.engine.backend.Backend;
 import org.hibernate.search.engine.search.aggregation.AggregationKey;
@@ -49,7 +48,7 @@ import com.publiccms.views.pojo.query.CmsContentQuery;
 @Repository
 public class CmsContentDao extends BaseDao<CmsContent> {
     private static final String[] textFields = new String[] { "title", "author", "editor", "description", "text" };
-    private static final String[] highLighterTextFields = new String[] { "title", "description" };
+    private static final String[] highLighterTextFields = new String[] { "title", "author", "editor", "description" };
     private static final String titleField = "title";
     private static final String descriptionField = "description";
     private static final String[] tagFields = new String[] { "tagIds" };
@@ -88,7 +87,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         } else {
             fields = textFields;
         }
-        initHighLighterQuery(highLighterQuery, phrase, text);
+        initHighLighterQuery(highLighterQuery, text);
         SearchQueryOptionsStep<?, CmsContent, ?, ?, ?> optionsStep = getOptionsStep(siteId, projection, phrase, categoryIds,
                 modelIds, text, fields, tagIds, dictionaryValues, startPublishDate, endPublishDate, expiryDate, orderField);
         return getPage(optionsStep, highLighterQuery, pageIndex, pageSize);
@@ -125,7 +124,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         } else {
             fields = textFields;
         }
-        initHighLighterQuery(highLighterQuery, phrase, text);
+        initHighLighterQuery(highLighterQuery, text);
         SearchQueryOptionsStep<?, CmsContent, ?, ?, ?> optionsStep = getOptionsStep(siteId, projection, phrase, categoryIds,
                 modelIds, text, fields, tagIds, dictionaryValues, startPublishDate, endPublishDate, expiryDate, orderField);
 
@@ -154,24 +153,20 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         return getFacetPage(optionsStep, facetFieldKeys, facetFieldResult, highLighterQuery, pageIndex, pageSize);
     }
 
-    private void initHighLighterQuery(HighLighterQuery highLighterQuery, boolean phrase, String text) {
+    private void initHighLighterQuery(HighLighterQuery highLighterQuery, String text) {
         if (highLighterQuery.isHighlight() && CommonUtils.notEmpty(text)) {
             highLighterQuery.setFields(highLighterTextFields);
-            if (phrase) {
-                highLighterQuery.setQuery(new PhraseQuery(titleField, text));
+            Backend backend = getSearchBackend();
+            Analyzer analyzer;
+            if (backend instanceof LuceneBackend) {
+                analyzer = backend.unwrap(LuceneBackend.class).analyzer("cms").get();
             } else {
-                Backend backend = getSearchBackend();
-                Analyzer analyzer;
-                if (backend instanceof LuceneBackend) {
-                    analyzer = backend.unwrap(LuceneBackend.class).analyzer("cms").get();
-                } else {
-                    analyzer = new StandardAnalyzer();
-                }
-                MultiFieldQueryParser queryParser = new MultiFieldQueryParser(highLighterTextFields, analyzer);
-                try {
-                    highLighterQuery.setQuery(queryParser.parse(text));
-                } catch (ParseException e) {
-                }
+                analyzer = new StandardAnalyzer();
+            }
+            MultiFieldQueryParser queryParser = new MultiFieldQueryParser(highLighterTextFields, analyzer);
+            try {
+                highLighterQuery.setQuery(queryParser.parse(text));
+            } catch (ParseException e) {
             }
         }
     }
@@ -183,23 +178,22 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         Consumer<? super BooleanPredicateClausesStep<?>> clauseContributor = b -> {
             b.must(t -> t.match().field("siteId").matching(siteId));
             if (CommonUtils.notEmpty(text)) {
-                if (phrase) {
-                    b.must(t -> t.phrase().field(titleField).matching(text));
-                } else {
-                    Consumer<? super BooleanPredicateClausesStep<?>> keywordFiledsContributor = c -> {
-                        if (ArrayUtils.contains(fields, titleField)) {
-                            c.should(t -> t.match().field(titleField).matching(text).boost(2.0f));
-                        }
-                        if (ArrayUtils.contains(fields, descriptionField)) {
-                            c.should(t -> t.match().field(descriptionField).matching(text).boost(1.5f));
-                        }
-                        String[] tempFields = ArrayUtils.removeElements(fields, titleField, descriptionField);
-                        if (CommonUtils.notEmpty(tempFields)) {
-                            c.should(t -> t.match().fields(tempFields).matching(text));
-                        }
-                    };
-                    b.must(f -> f.bool(keywordFiledsContributor));
-                }
+                Consumer<? super BooleanPredicateClausesStep<?>> keywordFiledsContributor = c -> {
+                    if (ArrayUtils.contains(fields, titleField)) {
+                        c.should(phrase ? t -> t.phrase().field(titleField).matching(text).boost(2.0f)
+                                : t -> t.match().field(titleField).matching(text).boost(2.0f));
+                    }
+                    if (ArrayUtils.contains(fields, descriptionField)) {
+                        c.should(phrase ? t -> t.phrase().field(descriptionField).matching(text).boost(1.5f)
+                                : t -> t.match().field(descriptionField).matching(text).boost(1.5f));
+                    }
+                    String[] tempFields = ArrayUtils.removeElements(fields, titleField, descriptionField);
+                    if (CommonUtils.notEmpty(tempFields)) {
+                        c.should(phrase ? t -> t.phrase().fields(tempFields).matching(text)
+                                : t -> t.match().fields(tempFields).matching(text));
+                    }
+                };
+                b.must(f -> f.bool(keywordFiledsContributor));
             }
             if (CommonUtils.notEmpty(tagIds)) {
                 Consumer<? super BooleanPredicateClausesStep<?>> tagIdsFiledsContributor = c -> {
