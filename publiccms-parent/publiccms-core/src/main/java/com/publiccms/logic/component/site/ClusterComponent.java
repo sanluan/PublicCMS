@@ -65,15 +65,19 @@ public class ClusterComponent {
                 for (SysCluster cluster : (List<SysCluster>) page.getList()) {
                     service.delete(cluster.getUuid());
                 }
+                if (0 < page.getTotalCount()) {
+                    scheduledTask.dealNotEndTask(lastHeartbeatDate);
+                }
             } else {
                 PageHandler page = service.getPage(null, null, true, "heartbeatDate", "desc", null, null);
                 if (page.getTotalCount() == 0) {
                     upgrade();
-                } else if (page.getTotalCount() == 1) {
+                } else if (1 == page.getTotalCount()) {
                     SysCluster master = (SysCluster) page.getList().get(0);
                     if (acceptTeartbeatDate.after(master.getHeartbeatDate())) {
                         upgrade();
                         service.delete(master.getUuid());
+                        scheduledTask.dealNotEndTask(lastHeartbeatDate);
                     }
                 } else {
                     boolean skip = false;

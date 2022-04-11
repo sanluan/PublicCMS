@@ -5,6 +5,7 @@ import java.io.Serializable;
 // Generated 2015-7-3 16:15:25 by com.publiccms.common.source.SourceGenerator
 
 import java.util.Date;
+import java.util.List;
 
 import com.publiccms.entities.log.LogTask;
 import com.publiccms.logic.dao.log.LogTaskDao;
@@ -39,6 +40,16 @@ public class LogTaskService extends BaseService<LogTask> {
     public PageHandler getPage(Short siteId, Integer taskId, Date startBegintime, Date endBegintime, Boolean success,
             String orderType, Integer pageIndex, Integer pageSize) {
         return dao.getPage(siteId, taskId, startBegintime, endBegintime, success, orderType, pageIndex, pageSize);
+    }
+
+    /**
+     * @param siteId
+     * @param endBegintime
+     * @return
+     */
+    @Transactional(readOnly = true)
+    public List<LogTask> getNotEndList(Short siteId, Date endBegintime) {
+        return dao.getNotEndList(siteId, endBegintime);
     }
 
     /**

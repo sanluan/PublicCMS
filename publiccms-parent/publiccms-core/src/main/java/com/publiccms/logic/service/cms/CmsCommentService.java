@@ -78,11 +78,10 @@ public class CmsCommentService extends BaseService<CmsComment> {
     /**
      * @param siteId
      * @param entity
-     * @return
      */
     @CopyToDatasource
-    public Serializable save(short siteId, CmsComment entity) {
-        return save(entity);
+    public void save(short siteId, CmsComment entity) {
+        save(entity);
     }
 
     /**

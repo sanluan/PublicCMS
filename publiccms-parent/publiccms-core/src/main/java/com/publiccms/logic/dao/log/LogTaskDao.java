@@ -1,6 +1,7 @@
 package com.publiccms.logic.dao.log;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
@@ -53,6 +54,25 @@ public class LogTaskDao extends BaseDao<LogTask> {
         }
         queryHandler.order("bean.begintime").append(orderType);
         return getPage(queryHandler, pageIndex, pageSize);
+    }
+
+    /**
+     * @param siteId
+     * @param endBegintime
+     * @return results list
+     */
+    @SuppressWarnings("unchecked")
+    public List<LogTask> getNotEndList(Short siteId, Date endBegintime) {
+        QueryHandler queryHandler = getQueryHandler(
+                "select new LogTask(id, siteId, taskId, begintime, endtime, success) from LogTask bean");
+        if (CommonUtils.notEmpty(siteId)) {
+            queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
+        }
+        if (null != endBegintime) {
+            queryHandler.condition("bean.begintime <= :endBegintime").setParameter("endBegintime", endBegintime);
+        }
+        queryHandler.condition("bean.endtime is null");
+        return (List<LogTask>) getList(queryHandler);
     }
 
     /**

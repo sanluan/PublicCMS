@@ -43,10 +43,11 @@ public class SysTaskService extends BaseService<SysTask> {
         SysTask entity = getEntity(id);
         if (null != entity) {
             entity.setStatus(status);
+            entity.setUpdateDate(new Date());
         }
     }
 
     @Autowired
     private SysTaskDao dao;
-    
+
 }

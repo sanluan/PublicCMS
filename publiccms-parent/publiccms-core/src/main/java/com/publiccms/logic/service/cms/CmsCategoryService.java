@@ -87,7 +87,9 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
             }
             if (CommonUtils.notEmpty(categoryParameters.getContentExtends()) || CommonUtils.notEmpty(entity.getExtendId())) {
                 if (null == extendService.getEntity(entity.getExtendId())) {
-                    entity.setExtendId((Integer) extendService.save(new SysExtend("category", id)));
+                    SysExtend extend = new SysExtend("category", id);
+                    extendService.save(extend);
+                    entity.setExtendId(extend.getId());
                 }
                 extendFieldService.update(entity.getExtendId(), categoryParameters.getContentExtends());// 修改或增加内容扩展字段
             }
@@ -114,15 +116,13 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
 
     /**
      * @param entity
-     * @return
      */
-    public CmsCategory save(CmsCategory entity) {
+    public void save(CmsCategory entity) {
         if (entity.isOnlyUrl()) {
             entity.setUrl(entity.getPath());
         }
         super.save(entity);
         addChildIds(entity.getParentId(), entity.getId());
-        return entity;
     }
 
     /**

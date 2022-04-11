@@ -555,11 +555,10 @@ public class CmsContentService extends BaseService<CmsContent> {
     /**
      * @param siteId
      * @param entity
-     * @return
      */
     @CopyToDatasource
-    public Serializable save(short siteId, CmsContent entity) {
-        return save(entity);
+    public void save(short siteId, CmsContent entity) {
+        save(entity);
     }
 
     /**
