@@ -4,6 +4,7 @@ import static org.springframework.util.StringUtils.arrayToCommaDelimitedString;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -183,6 +184,25 @@ public class SysUserService extends BaseService<SysUser> {
             entity.setDisabled(status);
         }
         return entity;
+    }
+
+    /**
+     * @param siteId
+     * @param ids
+     * @param operateId
+     * @param status
+     * @return
+     */
+    public List<SysUser> updateStatus(short siteId, Serializable[] ids, Serializable operateId, boolean status) {
+        List<SysUser> entityList = getEntitys(ids);
+        if (null != entityList) {
+            for (SysUser entity : entityList) {
+                if (siteId == entity.getSiteId() && null != operateId && !operateId.equals(entity.getId())) {
+                    entity.setDisabled(status);
+                }
+            }
+        }
+        return entityList;
     }
 
     @Autowired

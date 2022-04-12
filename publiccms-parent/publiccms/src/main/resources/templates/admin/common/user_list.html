@@ -53,11 +53,14 @@
     <div class="panelBar">
         <ul class="toolBar">
             <li><a href="sysUser/add.html" target="navTab" rel="sysUser/add"><i class="icon-plus-sign-alt icon-large"></i> <@t.page 'user.add'/></a></li>
+            <li><a href="sysUser/enable?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.enable'/>" target="selectedTodo" rel="ids"><i class="icon-circle icon-large"></i> <@t.page 'button.enable'/></a></li>
+            <li><a href="sysUser/disable?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.disable'/>" target="selectedTodo" rel="ids"><i class="icon-ban-circle icon-large"></i> <@t.page 'button.disable'/></a></li>
         </ul>
     </div>
     <table class="table" width="100%" layoutH targetType="ajax" rel="userBox">
         <thead>
             <tr>
+                <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
                 <th width="30"><@t.page 'id'/></th>
                 <th width="200"><@t.page 'user.username'/>/<@t.page 'user.nickname'/></th>
                 <th><@t.page 'dept'/></th>
@@ -76,6 +79,7 @@
             <@_sysDept ids=t.deptIds!><#assign deptMap=map!/></@_sysDept>
             <#list page.list as a>
             <tr>
+                <td><input name="ids" value="${a.id}" type="checkbox"></td>
                 <td>${a.id!}</td>
                 <td class="wrap">
                     <#if a.cover?has_content>
@@ -106,11 +110,6 @@
                 <td>${a.registeredDate!}</td>
                 <td class="wrap">
                     <a href="sysUser/add.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="sysUser/edit"><i class="icon-edit"></i> <@t.page 'user.edit'/></a>
-                    <#if a.disabled>
-                        <a href="sysUser/enable?id=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText green" title="<@t.page 'confirm.enable'/>" target="ajaxTodo"><i class="icon-circle"></i> <@t.page 'button.enable'/></a>
-                    <#else>
-                        <a href="sysUser/disable?id=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText red" title="<@t.page 'confirm.disable'/>" target="ajaxTodo"><i class="icon-ban-circle"></i> <@t.page 'button.disable'/></a>
-                    </#if>
                     <a href="log/login.html?userId=${a.id}" class="btnText" target="navTab" rel="log/login">
                         <@t.page 'log.login'/>
                     </a>

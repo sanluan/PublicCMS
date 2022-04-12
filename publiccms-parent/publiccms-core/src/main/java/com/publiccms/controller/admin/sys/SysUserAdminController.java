@@ -33,7 +33,7 @@ import com.publiccms.logic.service.sys.SysUserService;
 /**
  *
  * SysUserAdminController
- * 
+ *
  */
 @Controller
 @RequestMapping("sysUser")
@@ -160,27 +160,20 @@ public class SysUserAdminController {
     /**
      * @param site
      * @param admin
-     * @param id
+     * @param ids 
      * @param request
      * @param model
      * @return view name
      */
     @RequestMapping(value = "enable", method = RequestMethod.POST)
     @Csrf
-    public String enable(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long id, HttpServletRequest request,
+    public String enable(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids, HttpServletRequest request,
             ModelMap model) {
-        if (ControllerUtils.errorEquals("admin.operate", admin.getId(), id, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
-        SysUser entity = service.getEntity(id);
-        if (null != entity) {
-            if (ControllerUtils.errorNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
-                return CommonConstants.TEMPLATE_ERROR;
-            }
-            service.updateStatus(id, false);
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "enable.user", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
-                    JsonUtils.getString(entity)));
+        if (CommonUtils.notEmpty(ids)) {
+            service.updateStatus(site.getId(), ids, admin.getId(), false);
+            logOperateService
+                    .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                            "enable.user", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(ids)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -188,27 +181,20 @@ public class SysUserAdminController {
     /**
      * @param site
      * @param admin
-     * @param id
+     * @param ids
      * @param request
      * @param model
      * @return view name
      */
     @RequestMapping(value = "disable", method = RequestMethod.POST)
     @Csrf
-    public String disable(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long id, HttpServletRequest request,
+    public String disable(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids, HttpServletRequest request,
             ModelMap model) {
-        if (ControllerUtils.errorEquals("admin.operate", admin.getId(), id, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
-        SysUser entity = service.getEntity(id);
-        if (null != entity) {
-            if (ControllerUtils.errorNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
-                return CommonConstants.TEMPLATE_ERROR;
-            }
-            service.updateStatus(id, true);
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "disable.user", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), JsonUtils.getString(entity)));
+        if (CommonUtils.notEmpty(ids)) {
+            service.updateStatus(site.getId(), ids, admin.getId(), true);
+            logOperateService
+                    .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                            "disable.user", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(ids)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
