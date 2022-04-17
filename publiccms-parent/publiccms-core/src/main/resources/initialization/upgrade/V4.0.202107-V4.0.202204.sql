@@ -4,7 +4,7 @@ UPDATE `sys_module` SET `authorized_url` = 'file/doUpload,file/doImport,cmsConte
 -- 2021-08-02 --
 DROP TABLE IF EXISTS `sys_site_datasource`;
 CREATE TABLE `sys_site_datasource` (
-  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
   `datasource` varchar(50) NOT NULL COMMENT '数据源名称',
   PRIMARY KEY (`site_id`,`datasource`),
   KEY `sys_site_datasource_datasource` (`datasource`)
@@ -334,7 +334,28 @@ ALTER TABLE `cms_content`
     DROP INDEX `cms_content_scores` ,
     ADD INDEX `cms_content_score` (`score`,`comments`,`clicks`);
 ALTER TABLE `cms_user_score`
-    ADD COLUMN `scores` int(11) NOT NULL COMMENT '分数' after `item_id`;
+    ADD COLUMN `scores` int(11) NOT NULL COMMENT '分数' after `item_id`,
+    CHANGE COLUMN `create_date` `create_date` datetime(0) NOT NULL COMMENT '创建日期' after `scores`;
 UPDATE `cms_content` SET `score_users` = `scores`,`score`=1 WHERE `scores` > 0;
 -- 2022-04-11 --
 UPDATE `sys_module` SET `authorized_url` = 'tradeOrder/process,tradeOrder/export' WHERE `id` ='order_process';
+-- 2022-04-17 --
+ALTER TABLE `cms_vote`
+    CHANGE COLUMN `create_date` `create_date` datetime(0) NOT NULL COMMENT '创建日期' after `description`;
+ALTER TABLE `visit_day`
+    DROP INDEX `log_visit_session_id`,
+    ADD INDEX `visit_session_id`(`site_id`, `visit_date`);
+ALTER TABLE `visit_history`
+    DROP INDEX `log_visit_visit_date`,
+    DROP INDEX `log_visit_session_id`,
+    ADD INDEX `visit_visit_date`(`site_id`, `visit_date`, `visit_hour`),
+    ADD INDEX `visit_session_id`(`site_id`, `session_id`, `visit_date`, `create_date`, `ip`);
+ALTER TABLE `visit_item`
+    DROP INDEX `log_visit_session_id`,
+    ADD INDEX `visit_session_id`(`site_id`, `visit_date`, `item_type`, `item_id`, `pv`);
+ALTER TABLE `visit_session`
+    DROP INDEX `log_visit_visit_date`,
+    ADD INDEX `visit_visit_date`(`site_id`, `visit_date`, `ip`);
+ALTER TABLE `visit_url`
+    DROP INDEX `log_visit_session_id`,
+    ADD INDEX `visit_session_id`(`site_id`, `visit_date`, `pv`);

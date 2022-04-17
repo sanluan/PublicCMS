@@ -614,6 +614,7 @@ CREATE TABLE `sys_dept` (
   `owns_all_page` tinyint(1) NOT NULL COMMENT '拥有全部页面权限',
   `owns_all_config` tinyint(1) NOT NULL DEFAULT '1' COMMENT '拥有全部配置权限',
   PRIMARY KEY  (`id`),
+  UNIQUE KEY `sys_dept_code`(`site_id`, `code`),
   KEY `sys_dept_site_id` (`site_id`)
 ) AUTO_INCREMENT=2 COMMENT='部门';
 
@@ -1712,7 +1713,7 @@ INSERT INTO `sys_site` VALUES ('1', null ,null ,'PublicCMS', '0', '//dev.publicc
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_site_datasource`;
 CREATE TABLE `sys_site_datasource` (
-  `site_id` smallint(11) NOT NULL COMMENT '站点',
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
   `datasource` varchar(50) NOT NULL COMMENT '数据源名称',
   PRIMARY KEY (`site_id`,`datasource`),
   KEY `sys_site_datasource_datasource` (`datasource`)
@@ -1750,7 +1751,7 @@ CREATE TABLE `sys_user` (
   `nick_name` varchar(45) NOT NULL COMMENT '昵称',
   `cover` varchar(255) default NULL COMMENT '封面',
   `dept_id` int(11) default NULL COMMENT '部门',
-  `content_permissions` int(11) NOT NULL COMMENT '内容权限(0尽自己,1所有人,2本部门)',
+  `content_permissions` int(11) NOT NULL COMMENT '内容权限(0仅自己,1所有人,2本部门)',
   `roles` text COMMENT '角色',
   `email` varchar(100) default NULL COMMENT '邮箱地址',
   `email_checked` tinyint(1) NOT NULL COMMENT '已验证邮箱',
