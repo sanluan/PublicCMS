@@ -841,11 +841,18 @@ public class CmsContentAdminController {
             List<CmsCategory> categoryList = categoryService.getEntitys(categoryIds);
             if (null != categoryList) {
                 for (CmsCategory category : categoryList) {
+
                     Map<String, String> config = configComponent.getConfigData(category.getSiteId(),
                             SiteConfigComponent.CONFIG_CODE_SITE);
                     int status = ConfigComponent.getInt(config.get(SiteConfigComponent.CONFIG_DEFAULT_CONTENT_STATUS),
                             CmsContentService.STATUS_PEND);
-                    long userId = ConfigComponent.getLong(config.get(SiteConfigComponent.CONFIG_DEFAULT_CONTENT_USER), 0);
+                    long userId;
+                    if (category.getSiteId() == site.getId()) {
+                        userId = entity.getUserId();
+                    } else {
+                        userId = ConfigComponent.getLong(config.get(SiteConfigComponent.CONFIG_DEFAULT_CONTENT_USER), 0);
+                    }
+
                     if (0 != userId) {
                         TemplateComponent.initContentUrl(site, entity);
                         CmsContent content = service.copy(site, entity, category, status, userId);
