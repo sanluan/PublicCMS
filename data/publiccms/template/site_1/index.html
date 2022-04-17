@@ -8,7 +8,7 @@
 <body>
     <header>
         <h1>Sites list</h1>
-    </header>    
+    </header>
     <main>
 <@_sysSiteList pageSize=10>
         <ul>
@@ -23,7 +23,7 @@
                         <#list page.list as a>
                     <p>${a.name}<#if a.wild>[Wild domain]</#if> <#if a.path?has_content>Template root path:${(a.path)!}</#if></p>
                         </#list>
-                    </@_sysDomainList>                    
+                    </@_sysDomainList>
                 </div>
             </div>
         </li>
@@ -42,5 +42,16 @@
         </#if>
         Copyright &copy; ${.now?string('yyyy')}
     </footer>
+	<script src="${site.sitePath}assets/js/cms.analytics.js"></script>
+	<script>
+		var ca = cmsAnalytics();
+		var url='${site.dynamicPath}api/visit/record';
+		if("string" ==typeof itemString){
+			url=url+"?"+itemString;
+		}
+		ca.setDomain('${site.dynamicPath?keep_after('//')?keep_before('/')?keep_before(':')}');
+		ca.setPath('/');
+		ca.report(url);
+	</script>
 </body>
 </html>

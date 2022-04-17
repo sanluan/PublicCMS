@@ -8,7 +8,7 @@
 <body>
     <header>
         <h1>站点列表</h1>
-    </header>    
+    </header>
     <main>
 <@_sysSiteList pageSize=10>
         <ul>
@@ -24,7 +24,7 @@
                     <p>${a.name}<#if a.wild>[通配域名]</#if> <#if a.path?has_content>模板根目录:${(a.path)!}</#if></p>
                         </#list>
                     </@_sysDomainList>
-                    
+
                 </div>
             </div>
         </li>
@@ -42,6 +42,17 @@
             <a href="?locale=en">English</a>
         </#if>
         Copyright &copy; ${.now?string('yyyy')}
-    </footer> 
+    </footer>
+	<script src="${site.sitePath}assets/js/cms.analytics.js"></script>
+	<script>
+		var ca = cmsAnalytics();
+		var url='${site.dynamicPath}api/visit/record';
+		if("string" ==typeof itemString){
+			url=url+"?"+itemString;
+		}
+		ca.setDomain('${site.dynamicPath?keep_after('//')?keep_before('/')?keep_before(':')}');
+		ca.setPath('/');
+		ca.report(url);
+	</script>
 </body>
 </html>

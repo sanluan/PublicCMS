@@ -16,9 +16,9 @@
                 </div>
             </div>
         </div>
-        <div class="container clearfix">
-            <h1><a href="${site.dynamicPath}user.html?id=${user.id}">${user.nickName!}的个人页面</a><#if user.superuser>[管理员]</#if></h1>
-            <div class="comment-box">
+        <div class="container">
+            <h1 class="mt-5"><a href="${site.dynamicPath}user.html?id=${user.id}">${user.nickName!}的个人页面</a><#if user.superuser>[管理员]</#if></h1>
+            <div class="comment">
                 <@_commentList contentId=contentId userId=user.id pageIndex=pageIndex pageSize=10>
                     <@import path="/ftl/tools.ftl" namespace="t"/><#-- 工具 -->
                     <#list page.list as a>
@@ -28,14 +28,14 @@
                     <@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
                     <@_content ids=t.contentIds!><#assign contentMap=map!/></@_content>
                     <#if page.totalCount gt 0>
-                        <h3>内容评论</h3>
-                        <ul>
+                        <h3 class="mt-4">内容评论</h3>
+                        <ul class="article-list">
                             <#list page.list as a>
-                            <li class="underline">
-                                <p>${a.createDate?string('yyyy-MM-dd hh:mm')} 评论《<a href="${contentMap[a.contentId?string].url}" target="_blank">${contentMap[a.contentId?string].title}</a>》</p>
+                            <li class="card py-2 mb-2">
+                                <p><a href="${contentMap[a.contentId?string].url}" target="_blank">${contentMap[a.contentId?string].title}</a><span class="float-end text-secondary">${a.createDate?string('yyyy-MM-dd hh:mm')}</span></p>
                                 <#if a.replyId?has_content>
                                     <@_comment id=a.replyId>
-                                        <p class="reply"><a href="${site.dynamicPath}user.html?id=${a.replyUserId!}" target="_blank">@${userMap[a.replyUserId?string].nickName}</a> : ${object.text!}</p>
+                                        <p class="ms-5"><a href="${site.dynamicPath}user.html?id=${a.replyUserId!}" target="_blank">@${userMap[a.replyUserId?string].nickName}</a> : ${object.text!}</p>
                                     </@_comment>
                                 </#if>
                                 <p>${a.text!}</p>
@@ -44,7 +44,7 @@
                         </ul>
                     </#if>
 					<#assign url=site.dynamicPath+'user.html?id='+user.id/>
-					<ul class="pagination mt-5">
+					<ul class="pagination mt-5 overflow-auto pb-3">
 						<li class="page-item">
 							<a class="page-link" href="${getPage(url,page.prePage,'pageIndex')}" aria-label="Previous">
 								<span aria-hidden="true">«</span>

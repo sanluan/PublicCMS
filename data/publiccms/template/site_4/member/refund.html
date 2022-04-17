@@ -26,56 +26,63 @@
                         <#macro message code>${springMacroRequestContext.getMessage(code)}</#macro>
                         <@_tradeRefundList userId=user.id pageIndex=pageIndex pageSize=10>
                             <h3>我的退款记录</h3>
-                            <ul>
+                            <ul class="article-list">
                             <#list page.list as a>
-                                <li class="underline">
-                                    <p><@message 'page.status.refund.'+a.status/><span class="right">${a.createDate!}</span></p>
-                                    <p class="gray"><label>订单号:</label>${a.orderId!} <label>申请退款金额:</label>${a.amount!} <label>实际退款金额:</label>${a.refundAmount!}</p>
-                                    <p>${a.reason!}<span class="right"><label>回复:</label>${a.reply!}</span></p>
+                                <li class="card py-2 mb-2">
+                                    <p><@message 'page.status.refund.'+a.status/><span class="float-end text-secondary">${a.createDate!}</span></p>
+                                    <p>
+										<label class="text-secondary">订单号:</label> ${a.orderId!}
+										<label class="ms-4 text-secondary">申请退款金额:</label> ${a.amount!}
+										<label class="ms-4 text-secondary">实际退款金额:</label> ${a.refundAmount!}
+									</p>
+                                    <p>${a.reason!}<#if a.reply?has_content><span class="float-end"><label class="ms-4 text-secondary">回复:</label> ${a.reply!}</span></#if></p>
                                     <#if 0=a.status||3=a.status>
                                         <form action="${site.dynamicPath}tradePayment/refund" method="POST">
                                             <input type="hidden" name="_csrf" value="<@_csrfToken/>"/>
                                             <input type="hidden" name="id" value="${a.id}"/>
                                             <input type="hidden" name="returnUrl" value="${site.dynamicPath}paymentList.html"/>
                                             <input type="hidden" name="paymentId" value="${a.id}"/>
-                                            <label class="input-label">金额:</label><input type="text" name="amount" required="required" value="${a.amount!}" max="${a.amount}"/>
-                                            <label class="input-label">原因:</label><input type="text" name="reason" required="required" value="${a.reason!}"/>
-                                            <input class="button" type="submit" value="修改退款申请"/>
+                                            <label class="ms-4 text-secondary">金额:</label><input type="text" name="amount" required="required" value="${a.amount!}" max="${a.amount}"/>
+                                            <label class="ms-4 text-secondary">原因:</label><input type="text" name="reason" required="required" value="${a.reason!}"/>
+                                            <input class="ms-5 btn btn-primary" type="submit" value="修改退款申请"/>
                                         </form>
                                     </#if>
                                 </li>
                             </#list>
                             </ul>
-                            <ul class="pagination mt-5">
+                            <ul class="pagination mt-5 overflow-auto pb-3">
                                 <#assign
-                                    start=1
-                                    end=page.totalPage
-                                />
-                                <#if (page.pageIndex-5) gt start>
-                                    <#assign start=page.pageIndex-4/>
-                                </#if>
-                                <#if (page.pageIndex+5) lt end>
-                                    <#assign end=page.pageIndex+4/>
-                                </#if>
-                                <#if !page.firstPage>
-                                    <a href="${getPage('refund.html',page.prePage,'pageIndex')}">上一页</a>
-                                <#else>
-                                    <span>上一页</span>
-                                </#if>
-                                <#if start gt 1>
-                                    <a href="${'refund.html'}">1</a> ...
-                                </#if>
-                                <#list start..end as n>
-                                    <a href="${getPage('refund.html',n,'pageIndex')}"${(n=page.pageIndex)?then(' class="selected"'?no_esc,'')}>${n}</a>
-                                </#list>
-                                <#if end lt page.totalPage>
-                                    ... <a href="${getPage('refund.html',page.totalPage,'pageIndex')}">${page.totalPage}</a>
-                                </#if>
-                                <#if !page.lastPage>
-                                    <a href="${getPage('refund.html',page.nextPage,'pageIndex')}">下一页</a>
-                                <#else>
-                                    <span>下一页</span>
-                                </#if>
+								url='refund.html'
+								start=1
+								end=page.totalPage
+								/>
+								<#if (page.pageIndex-5) gt start>
+								<#assign start=page.pageIndex-4/>
+								</#if>
+								<#if (page.pageIndex+5) lt end>
+								<#assign end=page.pageIndex+4/>
+								</#if>
+								<li class="page-item">
+									<a class="page-link" href="${getPage(url,page.prePage,'pageIndex')}" aria-label="Previous">
+										<span aria-hidden="true">«</span>
+									</a>
+								</li>
+								<#if start gt 1>
+									<li class="page-item"><a class="page-link" href="${getPage(url,1,'pageIndex')}">1</a></li>
+									<li class="page-item"><span>...</span></li>
+								</#if>
+								<#list start..end as n>
+									<li class="page-item<#if n=page.pageIndex> active</#if>"><a class="page-link" href="${getPage(url,n,'pageIndex')}">${n}</a></li>
+								</#list>
+								<#if end lt page.totalPage>
+									<li class="page-item"><span>...</span></li>
+									<li class="page-item"><a class="page-link" href="${getPage(url,page.totalPage,'pageIndex')}">${page.totalPage}</a></li>
+								</#if>
+								<li class="page-item">
+									<a class="page-link" href="${getPage(url,page.nextPage,'pageIndex')}" aria-label="Next">
+										<span aria-hidden="true">»</span>
+									</a>
+								</li>
                             </ul>
                         </@_tradeRefundList>
                     </div>

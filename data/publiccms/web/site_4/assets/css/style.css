@@ -1,5 +1,5 @@
 @font-face {font-family:'latoregular';src:url('fonts/lato-regular-webfont.woff2') format('woff2'),url('fonts/lato-regular-webfont.woff') format('woff');font-weight:normal;font-style:normal;}
-body{overflow-x:hidden;}
+body{overflow-x:hidden;padding-top:80px;}
 ul,li{list-style:none;}
 .fs-0{font-size:3.5rem !important;}
 .fs-6p {font-size:1.125rem !important;}
@@ -124,33 +124,38 @@ ol.vote>li:nth-child(3n+2) .progress-bar {background-color:green;}
 ol.vote>li:nth-child(3n) .progress-bar {background-color:blue;}
 
 @keyframes animate__arm{
-  0%{transform:rotate(-10deg);}
-  8%{transform:rotate(-10deg);}
-  90%{transform:rotate(10deg);}
-  100%{transform:rotate(10deg);}
+	0%{transform:rotate(-10deg);}
+	8%{transform:rotate(-10deg);}
+	90%{transform:rotate(10deg);}
+	100%{transform:rotate(10deg);}
 }
 .animate__arm{animation:animate__arm 3s;transform-origin:91.8% 92.31%;animation-iteration-count:infinite;animation-direction:alternate;}
 
 @media screen and (max-width:1200px) {
-  #index-header .fs-00{font-size:52px;}
+	#index-header .fs-00{font-size:52px;}
+	.navbar .nav-item{padding:0 .5rem;}
 }
 @media screen and (max-width:992px) {
-  #index-header{text-align:center;}
-  .navbar .navbar-brand{height:36px;}
-  .navbar-collapse{padding:1rem 0;}
-  .navbar-collapse a{font-size:20px;}
-  .fs-7 .navbar-collapse a{font-size:0.875rem !important;}
-  .fs-64{font-size:3rem!important;}
+	#index-header{text-align:center;background-position-y: -76px;}
+	body{padding-top:76px;}
+	.navbar .nav-item{text-align:center;padding:0 0rem;}
+	.navbar .navbar-brand{height:36px;}
+	.navbar-collapse{padding:0 0;}
+	.navbar-collapse a{font-size:20px;}
+	.fs-7 .navbar-collapse a{font-size:0.875rem !important;}
+	.fs-64{font-size:3rem!important;}
 
 }
 @media screen and (max-width:768px) {
-  #index-intro{margin-top:0;}
-  #index-case{margin:60px auto;}
-  .navbar .navbar-brand{height:36px;}
-  .fs-64{font-size:2.5rem!important;}
-  .btn-price-tab span{font-size:0.875rem!important;}
-  .btn-price-tab div{font-size:0.625rem!important;}
-  .banner-l2 img{opacity:0.2;}
-  .download-list dt img{width:32px;}
-  .download-list dd{margin-left:0rem;}
+	#index-intro{margin-top:0;}
+	#index-case{margin:60px auto;}
+	#index-header{background-position-y: -66px;}
+	body{padding-top:66px;}
+	.navbar .navbar-brand{height:36px;}
+	.fs-64{font-size:2.5rem!important;}
+	.btn-price-tab span{font-size:0.875rem!important;}
+	.btn-price-tab div{font-size:0.625rem!important;}
+	.banner-l2 img{opacity:0.2;}
+	.download-list dt img{width:32px;}
+	.download-list dd{margin-left:0rem;}
 }

@@ -25,7 +25,7 @@
                         <div class="comment-box">
                             <h3>我的评论</h3>
                             <@_commentList advanced=true userId=user.id pageIndex=pageIndex pageSize=10>
-                            <ul>
+                            <ul class="article-list">
                                 <#list page.list as a>
                                     <@t.merge 'userIds' a.replyUserId!/>
                                     <@t.merge 'contentIds' a.contentId!/>
@@ -33,49 +33,52 @@
                                 <@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
                                 <@_content ids=t.contentIds!><#assign contentMap=map!/></@_content>
                                 <#list page.list as a>
-                                    <li class="underline">
-                                        <p>${a.createDate} 评论《<a href="${contentMap[a.contentId?string].url}" target="_blank">${contentMap[a.contentId?string].title}</a>》<span class="float-right">[<@t.m 'page.status.content.'+a.status/>]<a href="comment.html?id=${a.id}&contentId=${a.contentId}">编辑</a></span></p>
+                                    <li class="card py-2 mb-2">
+										<p>[<@t.m 'page.status.content.'+a.status/>]<a href="${contentMap[a.contentId?string].url}" class="ms-2" target="_blank">${contentMap[a.contentId?string].title}</a><span class="float-end"><span class="me-2 text-secondary">${a.createDate?date}</span><a href="comment.html?id=${a.id}&contentId=${a.contentId}" class="ms-2">编辑</a></span></p>
                                         <#if a.replyId?has_content>
                                             <@_comment id=a.replyId>
-                                        <p class="reply"><a href="${site.dynamicPath}user.html?id=${a.replyUserId!}" target="_blank">@${(userMap[a.replyUserId?string].nickName)!}</a> : ${object.text!}</p>
+                                        <p class="ps-5">回复: <a href="${site.dynamicPath}user.html?id=${a.replyUserId!}" target="_blank">@${(userMap[a.replyUserId?string].nickName)!}</a> : ${object.text!}</p>
                                             </@_comment>
                                         </#if>
                                         <p>${a.text!}</p>
                                     </li>
                                 <#else>
-                                <li class="underline"><p>没有数据</p></li>
+                                <li class="card py-2 mb-2"><p>没有数据</p></li>
                                 </#list>
                             </ul>
-                            <ul class="pagination mt-5">
+                            <ul class="pagination mt-5 overflow-auto pb-3">
                                 <#assign
-                                start=1
-                                end=page.totalPage
-                                />
-                                <#if (page.pageIndex-5) gt start>
-                                <#assign start=page.pageIndex-4/>
-                                </#if>
-                                <#if (page.pageIndex+5) lt end>
-                                <#assign end=page.pageIndex+4/>
-                                </#if>
-                                <#if !page.firstPage>
-                                <a href="${getPage('myComment.html',page.prePage,'pageIndex')}">上一页</a>
-                                <#else>
-                                <span>上一页</span>
-                                </#if>
-                                <#if start gt 1>
-                                <a href="${'myComment.html'}">1</a> ...
-                                </#if>
-                                <#list start..end as n>
-                                <a href="${getPage('myComment.html',n,'pageIndex')}"${(n=page.pageIndex)?then(' class="selected"'?no_esc,'')}>${n}</a>
-                                </#list>
-                                <#if end lt page.totalPage>
-                                ... <a href="${getPage('myComment.html',page.totalPage,'pageIndex')}">${page.totalPage}</a>
-                                </#if>
-                                <#if !page.lastPage>
-                                <a href="${getPage('myComment.html',page.nextPage,'pageIndex')}">下一页</a>
-                                <#else>
-                                <span>下一页</span>
-                                </#if>
+								url='myComment.html'
+								start=1
+								end=page.totalPage
+								/>
+								<#if (page.pageIndex-5) gt start>
+								<#assign start=page.pageIndex-4/>
+								</#if>
+								<#if (page.pageIndex+5) lt end>
+								<#assign end=page.pageIndex+4/>
+								</#if>
+								<li class="page-item">
+									<a class="page-link" href="${getPage(url,page.prePage,'pageIndex')}" aria-label="Previous">
+										<span aria-hidden="true">«</span>
+									</a>
+								</li>
+								<#if start gt 1>
+									<li class="page-item"><a class="page-link" href="${getPage(url,1,'pageIndex')}">1</a></li>
+									<li class="page-item"><span>...</span></li>
+								</#if>
+								<#list start..end as n>
+									<li class="page-item<#if n=page.pageIndex> active</#if>"><a class="page-link" href="${getPage(url,n,'pageIndex')}">${n}</a></li>
+								</#list>
+								<#if end lt page.totalPage>
+									<li class="page-item"><span>...</span></li>
+									<li class="page-item"><a class="page-link" href="${getPage(url,page.totalPage,'pageIndex')}">${page.totalPage}</a></li>
+								</#if>
+								<li class="page-item">
+									<a class="page-link" href="${getPage(url,page.nextPage,'pageIndex')}" aria-label="Next">
+										<span aria-hidden="true">»</span>
+									</a>
+								</li>
                             </ul>
                             </@_commentList>
                         </div>

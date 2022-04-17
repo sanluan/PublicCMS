@@ -114,6 +114,8 @@
     if("string" ==typeof itemString){
         url=url+"?"+itemString;
     }
+	ca.setDomain('publiccms.com');//${site.dynamicPath?keep_after('//')?keep_before('/')?keep_before(':')}
+	ca.setPath('/');
     ca.report(url);
 	<@_sysConfigData code="site">${(object.statistics?no_esc)!}</@_sysConfigData>
 </script>

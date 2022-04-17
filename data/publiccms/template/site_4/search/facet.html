@@ -147,7 +147,7 @@
                         </a>
                         </#list>
                     </div>
-                    <ul class="pagination mt-5">
+                    <ul class="pagination mt-5 overflow-auto pb-3">
                         <#assign url='./facet.html?word='+(word?url)!/>
                         <#if phrase?has_content>
                             <#assign url+='&phrase='+phrase?url/>

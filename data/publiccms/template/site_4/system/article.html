@@ -51,7 +51,7 @@
 						<p><@_tag ids=content.tagIds><#if map?has_content>标签:</#if><#list map?keys as k><a href="${siteAttribute.searchPath!}?tagIds=${k}" target="_blank">${map[k].name}</a><#sep>,</#list></@_tag></p>
                     </article>
                     <#if page?? && page.totalCount gt 1>
-                        <ul class="pagination mt-5">
+                        <ul class="pagination mt-5 overflow-auto pb-3">
                             <li class="page-item">
                                 <a class="page-link" href="${getPage(url,page.prePage)}" aria-label="Previous">
                                     <span aria-hidden="true">«</span>

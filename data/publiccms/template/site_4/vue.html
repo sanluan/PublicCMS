@@ -12,7 +12,7 @@
     </head>
     <body>
         <div id="app">
-			<nav class="navbar navbar-expand-lg">
+			<nav class="navbar navbar-expand-md  fixed-top">
 				<div class="container-fluid g-0">
 					<a v-bind:href="sitePath+'vue.html'" class="navbar-brand p-0 text-white fs-7 ms-3 ms-lg-4"><img v-bind:src="sitePath+'assets/img/logo.png'" class="h-100 me-2" alt="Public CMS"></a>
 					<div class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -24,7 +24,7 @@
 								<a v-bind:href="category.url" class="nav-link">{{ category.name }}</a>
 							</li>
 						</ul>
-						<div class="pe-2 mt-3 mt-lg-0">
+						<div class="pe-2 mt-3 mt-md-0">
 							<a class="px-2" href="#" data-bs-toggle="modal" data-bs-target="#searchModal">
 								<img v-bind:src="sitePath+'assets/img/icon-search.svg'" alt="search">
 							</a>

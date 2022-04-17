@@ -11,8 +11,8 @@
 		<#list page.list as a>
 		<li class="comment">
 			<div class="d-flex align-items-center">
-				<figure>
-					<img class="rounded-circle" alt="${userMap[a.userId?string].nickName}" src="${userMap[a.userId?string].cover!(site.sitePath+'assets/img/logo-graphic.png')}">
+				<figure class="rounded-circle">
+					<img alt="${userMap[a.userId?string].nickName}" src="${userMap[a.userId?string].cover!(site.sitePath+'assets/img/logo-graphic.png')}">
 				</figure>
 				<div>
 					<a href="${site.dynamicPath}user.html?id=${a.userId}" class="fw-bold me-2">${userMap[a.userId?string].nickName}</a><span><#if userMap[a.userId?string].superuser>[管理员]</#if></span>
