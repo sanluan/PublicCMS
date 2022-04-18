@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 import com.publiccms.common.handler.RenderHandler;
 
 /**
- * 
- * VersionDirective 技术框架版本指令
+ *
+ * MemoryDirective 内存指令
  *
  */
 @Component

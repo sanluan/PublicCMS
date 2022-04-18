@@ -94,7 +94,7 @@ a:hover {color:#0a58ca;}
 .comment figure img{width:100%;}
 .comment p{color:#8492a6;margin:0.5rem 0 0;}
 #content{overflow:auto;max-width:100%;}
-#content img,#content table{max-width:100%;}
+#content img,#content table{max-width:99%;}
 #comments ul.child{padding:30px 0 0 50px;}
 #comments ul.child li.comment::before{height:30px;width:20px;border-radius:0 0 0 10px;border-left:1px solid #eee;border-bottom:1px solid #eee;display:block;content:"";position:absolute;left:-30px;top:-10px;}
 .wechat-modal  img,#searchModal .input-group{border-radius:10px;padding:10px;background-color:rgba(255,255,255,.2);}

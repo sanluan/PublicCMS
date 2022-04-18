@@ -1,12 +1,12 @@
 <@_contentList advanced=true status=status categoryId=categoryId containChild=containChild disabled=true
-            modelId=modelId parentId=parentId title=title userId=userId
+            modelId=modelIds parentId=parentId title=title userId=userId
             startPublishDate=startPublishDate endPublishDate=endPublishDate
             orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <#macro modelList parentId=''>
 <@_modelList parentId=parentId>
     <#list page.list as a>
         <label style="width:auto">
-            <input <@t.compare modelId!'' a.id?string 'checked="checked"'/> name="modelId" value="${a.id}" type="checkbox"/>
+            <input <@t.compare modelIds!'' a.id?string 'checked="checked"'/> name="modelIds" value="${a.id}" type="checkbox"/>
             ${(a.name)!}
         </label>
         <#if a.hasChild>

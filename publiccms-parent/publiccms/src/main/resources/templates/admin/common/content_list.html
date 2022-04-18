@@ -12,7 +12,7 @@
     <#if 0=admin.contentPermissions><#assign userId=admin.id/></#if>
     <#if 2=admin.contentPermissions><#assign deptId=admin.deptId/></#if>
 <@_contentList advanced=true status=status categoryId=categoryId containChild=containChild
-            modelId=modelId parentId=parentId emptyParent=true title=title userId=userId deptId=deptId
+            modelId=modelIds parentId=parentId emptyParent=true title=title userId=userId deptId=deptId
             startPublishDate=startPublishDate endPublishDate=endPublishDate absoluteId=false
             orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <@_sysAuthorized roleIds=admin.roles urls='cmsContent/add,cmsContent/delete,cmsContent/check,cmsContent/reject,cmsContent/uncheck,cmsContent/push,cmsCategory/lookupBySiteId,cmsContent/refresh,cmsContent/publish,cmsContent/moveParameters,cmsContent/changeModelParameters,cmsContent/export,cmsComment/list,cmsContent/sortParameters,cmsCategory/add'><#assign authorizedMap=map/></@_sysAuthorized>
