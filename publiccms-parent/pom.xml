@@ -25,7 +25,7 @@
         <version.publiccms>V4.0.202204.a</version.publiccms>
         <!-- http://mvnrepository.com/artifact/org.springframework/spring-core -->
         <!-- https://spring.io/projects/spring-framework -->
-        <version.spring>5.3.18</version.spring>
+        <version.spring>5.3.19</version.spring>
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
         <!-- https://spring.io/projects/spring-boot -->
         <version.springBoot>2.6.6</version.springBoot>
@@ -43,7 +43,7 @@
         <version.hibernateTools>5.6.2.Final</version.hibernateTools>
         <!-- https://mvnrepository.com/artifact/org.hibernate.search/hibernate-search-mapper-orm/ -->
         <!-- http://hibernate.org/search/releases/ -->
-        <version.hibernateSearch>6.1.3.Final</version.hibernateSearch>
+        <version.hibernateSearch>6.1.4.Final</version.hibernateSearch>
         <!-- https://mvnrepository.com/artifact/org.ehcache/ehcache -->
         <version.ehcache>3.9.9</version.ehcache>
         <!-- http://mvnrepository.com/artifact/org.freemarker/freemarker -->
@@ -61,7 +61,7 @@
         <!-- https://mvnrepository.com/artifact/org.apache.lucene/lucene-core -->
         <version.lucene>8.11.1</version.lucene>
         <!-- http://mvnrepository.com/artifact/redis.clients/jedis -->
-        <version.jedis>4.1.1</version.jedis>
+        <version.jedis>4.2.2</version.jedis>
         <!-- http://mvnrepository.com/artifact/org.quartz-scheduler/quartz -->
         <version.quartz>2.3.2</version.quartz>
         <!-- https://mvnrepository.com/artifact/com.zaxxer/HikariCP -->
@@ -81,7 +81,7 @@
         <!-- http://mvnrepository.com/artifact/commons-codec/commons-codec -->
         <version.codec>1.15</version.codec>
         <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
-        <version.log4j>2.17.1</version.log4j>
+        <version.log4j>2.17.2</version.log4j>
         <!-- https://mvnrepository.com/artifact/com.drewnoakes/metadata-extractor -->
         <version.extractor>2.17.0</version.extractor>
         <!-- https://mvnrepository.com/artifact/org.sejda.imageio/webp-imageio -->
