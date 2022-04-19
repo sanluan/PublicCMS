@@ -1,0 +1,12 @@
+<div id="index-focus" class="swiper-container">
+	<div class="swiper-wrapper">
+		<#list page.list as a>
+		<div class="swiper-slide">
+			<img src="${a.cover}">
+			<h1 class="mt-4">${a.title}</h1>
+			<p class="text-black-50 px-2 pb-3 mt-3">${(getPlaceAttribute(a.id).description)!}</p>
+		</div>
+		</#list>
+	</div>
+	<div class="swiper-pagination"></div>
+</div>

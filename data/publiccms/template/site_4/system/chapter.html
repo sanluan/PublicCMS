@@ -15,6 +15,14 @@
                     <@include path="/ftl/bread.ftl"/><#-- 面包屑导航 --> / <@_content id=parent.parentId  absoluteURL=true><a href="${object.url}">《${object.title}》</a></@_content>
                 </div>
                 <h1 class="my-4"><a href="${url!}" class="text-white">${content.title}</a></h1>
+				 <footer class="fs-8 text-white text-opacity-50 d-flex align-items-center justify-content-center">
+					<@_createContentFile id=content.id templatePath='/system/chapter.txt' filePath="/txt/${content.id}.txt" pageIndex=pageIndex>
+						<a href="${site.sitePath+url}" class="text-white">
+							<img src="${site.sitePath}assets/img/icon-txt.svg" alt="icon-txt.svg">
+							文本文件
+					 	</a>
+					</@_createContentFile>
+				</footer>
             </div>
         </div>
         <div class="container">
@@ -23,7 +31,7 @@
                     ${text?no_esc!}
                 </div>
             </article>
-            <div class="my-5 py-4 d-flex justify-content-between align-items-start">
+            <div class="my-4 py-4 d-flex justify-content-between align-items-start">
                 <div class="d-flex align-items-center me-4">
                     <@_contentList parentId=content.parentId endPublishDate=content.publishDate orderField='publishDate' pageIndex=2 count=1>
                     <#if 2=page.pageIndex>
@@ -45,7 +53,7 @@
                     </a>
                     <svg width="17" height="32" viewBox="0 0 17 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15.625 17.19L1.205 2.614C.73 2.138.632 1.462.985 1.107c.351-.355 1.02-.257 1.493.22l14.836 14.997c.085.084.158.176.218.271a.915.915 0 0 1-.023 1.264L2.894 32.627a.898.898 0 0 1-.981.197.9.9 0 0 1-.488-.493.919.919 0 0 1 .196-.991l14.003-14.152.001.001z" fill="#E6E6E6"/></svg>
                     </#list></@_contentList>
-                </div>
+                </div>							
             </div>
         </div>
         <script>

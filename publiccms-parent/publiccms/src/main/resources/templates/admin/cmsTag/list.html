@@ -51,7 +51,7 @@
 
             <@_tagType ids=t.typeIds!><#assign typeMap=map!/></@_tagType>
             <#list page.list as a>
-            <tr target="sid" rel="${a.id}">
+            <tr>
                 <td><input name="ids" value="${a.id}" type="checkbox"></td>
                 <td>${a.id}</td>
                 <td class="exclude-translate">${(a.name)!}</td>

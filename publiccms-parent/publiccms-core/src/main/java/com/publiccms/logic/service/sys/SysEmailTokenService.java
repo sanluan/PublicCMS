@@ -6,7 +6,7 @@ import com.publiccms.entities.sys.SysEmailToken;
 import com.publiccms.logic.dao.sys.SysEmailTokenDao;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
@@ -26,7 +26,7 @@ public class SysEmailTokenService extends BaseService<SysEmailToken> {
      * @param pageSize
      * @return results page
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public PageHandler getPage(Long userId, Integer pageIndex, Integer pageSize) {
         return dao.getPage(userId, pageIndex, pageSize);
     }

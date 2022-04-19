@@ -7,7 +7,7 @@ import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.constants.CommonConstants;
@@ -34,7 +34,7 @@ public class SysRoleAuthorizedService extends BaseService<SysRoleAuthorized> {
      * @param pageSize
      * @return
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public PageHandler getPage(Integer roleId, String url, Integer pageIndex, Integer pageSize) {
         return dao.getPage(roleId, url, pageIndex, pageSize);
     }
@@ -96,7 +96,7 @@ public class SysRoleAuthorizedService extends BaseService<SysRoleAuthorized> {
      * @param url
      * @return
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public long count(String roleIds, String url) {
         String[] roleIdArray = StringUtils.split(roleIds, CommonConstants.COMMA);
         if (CommonUtils.notEmpty(roleIds) && 0 < roleIdArray.length) {

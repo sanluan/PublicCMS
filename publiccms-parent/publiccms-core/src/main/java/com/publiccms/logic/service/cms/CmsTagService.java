@@ -8,7 +8,7 @@ import java.util.Set;
 
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
@@ -36,7 +36,7 @@ public class CmsTagService extends BaseService<CmsTag> {
      * @param pageSize
      * @return results page
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public PageHandler getPage(Short siteId, Integer typeId, String name, String orderField, String orderType, Integer pageIndex,
             Integer pageSize) {
         return dao.getPage(siteId, typeId, name, orderField, orderType, pageIndex, pageSize);

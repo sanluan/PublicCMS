@@ -4,7 +4,7 @@ package com.publiccms.logic.service.sys;
 
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
@@ -46,7 +46,7 @@ public class SysSiteService extends BaseService<SysSite> {
      * @param pageSize
      * @return
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public PageHandler getPage(Boolean disabled, Short parentId, String name, Integer pageIndex, Integer pageSize) {
         return dao.getPage(disabled, parentId, name, pageIndex, pageSize);
     }
@@ -87,7 +87,7 @@ public class SysSiteService extends BaseService<SysSite> {
      * @param directory
      * @return entity
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public SysSite getEntity(short parentId, String directory) {
         return dao.getEntity(parentId, directory);
     }

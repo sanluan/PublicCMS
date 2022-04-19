@@ -6,7 +6,7 @@ import java.util.Set;
 
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.tools.CommonUtils;
@@ -30,7 +30,7 @@ public class SysExtendFieldService extends BaseService<SysExtendField> {
      * @param searchable
      * @return result list
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public List<SysExtendField> getList(Integer extendId, String[] inputType, Boolean searchable) {
         return dao.getList(extendId, inputType, searchable);
     }

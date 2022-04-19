@@ -25,11 +25,7 @@
 
         <div class="container">
             <div class="row gx-5 justify-content-between my-5">
-                <div class="col-md-3" style="border-right: 1px solid #ddd;">
-                    <div class="guide-side fs-7 pe-4">
-                        <@_includePlace path="/c936c718-5f19-426f-b3ff-13a5a8d63044.html"/> <#-- 个人中心导航 -->
-                    </div>
-                </div>
+                <@_includePlace path="/c936c718-5f19-426f-b3ff-13a5a8d63044.html"/> <#-- 个人中心导航 -->
                 <div class="col-md-9">
                     <div class="ps-4">
                         <h1><a href="${content.url!}">${content.title}</a></h1>
@@ -49,23 +45,23 @@
                         <p style="color:red"><@t.m error/></p>
                         </#if>
                         <div id="comments">
-							<#if !pageIndex?has_content || pageIndex=1>       
+							<#if !pageIndex?has_content || pageIndex=1>
 								<div class="user-login">
 									<div class="form-control text-center" style="line-height:5;"><a href="${site.dynamicPath}login.html">登录后发布评论</a></div>
 								</div>
-                            	<#if user?has_content>                        
+                            	<#if user?has_content>
                                     <div class="comment-text-box user-logout">
-                                        <form method="post" action="${site.dynamicPath}comment/save">
+                                        <form method="post" action="${site.dynamicPath}comment/save" onsubmit="check">
                                             <input type="hidden" name="id" value="${id!}"/>
                                             <#if replyId?has_content>
 												<ul class="child">
 													<li>
 												<@_comment id=replyId>
-													<p><span class="text-muted">回复</span> <a class="fw-bold me-2" href="${site.dynamicPath}user.html?id=${a.replyUserId!}" target="_blank">@<@_sysUser id=object.userId>${object.nickName}</@_sysUser></a> : </p>
+													<p><span class="text-muted">回复</span> <a class="fw-bold me-2" href="${site.dynamicPath}user.html?id=${object.replyUserId!}" target="_blank">@<@_sysUser id=object.userId>${object.nickName}</@_sysUser></a> : </p>
 													<p class="mt-2">
 														${object.text!}
 													</p>
-												</@_comment>												
+												</@_comment>
 													</li>
 												</ul>
 												<input type="hidden" name="replyId" value="${replyId!}"/>
@@ -120,7 +116,7 @@
 																</p>
 															</li>
 															</@_comment>
-														</ul>                                                        
+														</ul>
                                                     </#if>
                                                 </li>
                                                 </#list>
@@ -183,9 +179,9 @@
 										</#if>
 										</li>
 										</#list>
-                                    </ol>                                
+                                    </ol>
 									<#assign url=site.dynamicPath+'comment.html?contentId='+content.id/>
-									<ul class="pagination mt-5">
+									<ul class="pagination mt-5 overflow-auto pb-3">
 										<li class="page-item">
 											<a class="page-link" href="${getPage(url,page.prePage,'pageIndex')}" aria-label="Previous">
 												<span aria-hidden="true">«</span>
@@ -219,7 +215,7 @@
         <script type="text/javascript">
             $(function(){$('.login-form input').eq(0).focus();});
             function check(){
-                if(!$('input[name=text]').val()){
+                if(!$('textarea[name=text]').val()){
                     alert('评论不能为空');
                     return false;
                 }

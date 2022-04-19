@@ -7,7 +7,7 @@ import java.util.Set;
 
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
@@ -31,7 +31,7 @@ public class SysModuleService extends BaseService<SysModule> {
      * @param pageSize
      * @return
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public PageHandler getPage(String parentId, Boolean menu, Integer pageIndex, Integer pageSize) {
         return dao.getPage(parentId, menu, pageIndex, pageSize);
     }

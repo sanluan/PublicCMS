@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 <#include "../include_imports/entity.ftl">
@@ -16,6 +15,8 @@ import org.springframework.stereotype.Component;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.RenderHandler;
+
+import jakarta.annotation.Resource;
 
 /**
  *
@@ -43,7 +44,7 @@ public class ${entityName}${directiveSuffix} extends AbstractTemplateDirective {
         }
     }
 
-    @Autowired
+    @Resource
     private ${entityName}Service service;
 
 }

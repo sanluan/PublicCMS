@@ -48,7 +48,7 @@ subprojects {
         // http://hc.apache.org/downloads.cgi
         httpclientVersion = "4.5.13"
         // http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
-        jacksonVersion = "2.13.2.1"
+        jacksonVersion = "2.13.2.2"
         // http://mvnrepository.com/artifact/org.hibernate/hibernate-core
         // http://hibernate.org/orm/downloads/
         hibernateVersion = "5.6.7.Final"
@@ -66,7 +66,7 @@ subprojects {
         // http://mvnrepository.com/artifact/org.mybatis/mybatis-spring
         mybatisSpringVersion = "2.0.7"
         // http://mvnrepository.com/artifact/org.mybatis.generator/mybatis-generator-core
-        mybatisGenerator = "1.4.0"
+        mybatisGenerator = "1.4.1"
         // https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper
         pageHelperVersion = "5.3.0"
         // https://mvnrepository.com/artifact/org.mybatis.dynamic-sql/mybatis-dynamic-sql
@@ -113,8 +113,6 @@ subprojects {
         jaxbApiVersion = "3.0.1"
         // http://mvnrepository.com/artifact/org.apache.ant/ant
         antVersion = "1.10.12"
-        // http://mvnrepository.com/artifact/jakarta.transaction/jakarta.transaction-api
-        jtaVersion = "2.0.0"
         // https://mvnrepository.com/artifact/jakarta.servlet/jakarta.servlet-api
         servletVersion = "5.0.0"
         // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine

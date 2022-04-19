@@ -20,7 +20,7 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
-        <version.publiccms>V4.0.202107.f</version.publiccms>
+        <version.publiccms>V4.0.202204.a</version.publiccms>
         <!-- http://mvnrepository.com/artifact/org.springframework/spring-core -->
         <!-- https://spring.io/projects/spring-framework -->
         <version.spring>6.0.0-M2</version.spring>
@@ -33,7 +33,7 @@
         <!-- http://hc.apache.org/downloads.cgi -->
         <version.httpclient>4.5.13</version.httpclient>
         <!-- http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
-        <version.jackson>2.13.2.1</version.jackson>
+        <version.jackson>2.13.2.2</version.jackson>
         <!-- http://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
         <!-- http://hibernate.org/orm/releases/ -->
         <version.hibernate>5.6.7.Final</version.hibernate>
@@ -51,7 +51,7 @@
         <!-- http://mvnrepository.com/artifact/org.mybatis/mybatis-spring -->
         <version.mybatisSpring>2.0.7</version.mybatisSpring>
         <!-- http://mvnrepository.com/artifact/org.mybatis.generator/mybatis-generator-core -->
-        <version.mybatisGenerator>1.4.0</version.mybatisGenerator>
+        <version.mybatisGenerator>1.4.1</version.mybatisGenerator>
         <!-- https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper -->
         <version.pagehelper>5.3.0</version.pagehelper>
         <!-- https://mvnrepository.com/artifact/org.mybatis.dynamic-sql/mybatis-dynamic-sql -->
@@ -100,8 +100,6 @@
         <version.javaxJaxbApi>2.3.1</version.javaxJaxbApi>
         <!-- http://mvnrepository.com/artifact/org.apache.ant/ant -->
         <version.ant>1.10.12</version.ant>
-        <!-- http://mvnrepository.com/artifact/jakarta.transaction/jakarta.transaction-api -->
-        <version.jta>2.0.0</version.jta>
         <!-- https://mvnrepository.com/artifact/jakarta.servlet/jakarta.servlet-api -->
         <version.servlet>5.0.0</version.servlet>
         <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine -->
@@ -324,11 +322,6 @@
                 <groupId>org.apache.httpcomponents</groupId>
                 <artifactId>httpclient-cache</artifactId>
                 <version>${version.httpclient}</version>
-            </dependency>
-            <dependency>
-                <groupId>jakarta.transaction</groupId>
-                <artifactId>jakarta.transaction-api</artifactId>
-                <version>${version.jta}</version>
             </dependency>
             <dependency>
                 <groupId>com.sun.mail</groupId>

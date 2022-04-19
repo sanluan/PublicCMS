@@ -25,7 +25,7 @@
     <@_sysUser ids=t.userIds><#assign userMap=map!/></@_sysUser>
     <#list list as a>
         <#if (deptConfigMap[a.code])?has_content&&deptConfigMap[a.code]>
-            <tr target="sid" rel="${a.code!}">
+            <tr>
                 <td <#if lockMap[a.code]?has_content><#assign lockUser=(userMap[lockMap[a.code].userId?string].nickName)!''/>title="<@t.page 'lock.message' lockUser/> ${lockMap[a.code].createDate!}"</#if>>
                     <#if lockMap[a.code]?has_content><i class="icon-lock icon-large"></i> </#if>${(a.code)!}
                 </td>

@@ -57,7 +57,7 @@
                     <a class="btnLook" href="cmsDictionary/lookup.html" lookupGroup="${name}[${extend?index}]" width="1000" height="500"<#if 'dictionary'!=extend.inputType> style="display:none"</#if>><@t.page 'dictionary.select'/></a>
                 </td>
                 <td>
-                    <input type="checkbox" name="${name}[${extend?index}].multiple" ${extend.multiple?then(' checked="true"','')?no_esc}/>
+                    <input type="checkbox" name="${name}[${extend?index}].multiple" ${extend.multiple?then(' checked="true"','')?no_esc} <#if 'dictionary'!=extend.inputType> style="display:none"</#if>/>
                 </td>
                 <td>
                     <textarea type="text" name="${name}[${extend?index}].description" rows="2" cols="30" maxlength="50">${(extend.description)!}</textarea>

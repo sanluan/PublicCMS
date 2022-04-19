@@ -6,7 +6,7 @@ import java.util.Date;
 
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
@@ -30,7 +30,7 @@ public class SysTaskService extends BaseService<SysTask> {
      * @param pageSize
      * @return
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public PageHandler getPage(Short siteId, Integer status, Date beginUpdateDate, Integer pageIndex, Integer pageSize) {
         return dao.getPage(siteId, status, beginUpdateDate, pageIndex, pageSize);
     }
@@ -43,10 +43,11 @@ public class SysTaskService extends BaseService<SysTask> {
         SysTask entity = getEntity(id);
         if (null != entity) {
             entity.setStatus(status);
+            entity.setUpdateDate(new Date());
         }
     }
 
     @Resource
     private SysTaskDao dao;
-    
+
 }

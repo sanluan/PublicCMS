@@ -7,10 +7,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.tools.CommonUtils;
-
-import jakarta.transaction.Transactional;
 
 /**
  *
@@ -108,6 +107,7 @@ public abstract class BaseService<E> {
     public void save(E entity) {
         dao.save(entity);
     }
+
     /**
      * @param entityList
      */

@@ -17,41 +17,59 @@
         </div>
         <div class="container">
             <div class="row gx-5 justify-content-between my-5">
-                <div class="col-md-3" style="border-right: 1px solid #ddd;">
-                    <div class="guide-side fs-7 pe-4">
-                        <@_includePlace path="/c936c718-5f19-426f-b3ff-13a5a8d63044.html"/> <#-- 个人中心导航 -->
-                    </div>
-                </div>
+                <@_includePlace path="/c936c718-5f19-426f-b3ff-13a5a8d63044.html"/> <#-- 个人中心导航 -->
                 <div class="col-md-9">
                     <div class="ps-4">
                         <@_tradeAccount id=user.id>
                         <h3>我的账户</h3>
-                        <p><label class="input-label">余额:</label><label class="input-label">${object.amount}</label><span class="float-right"><label class="input-label">更新日期:</label>${object.updateDate!}</span></p>
+                        <p><label class="text-secondary">余额:</label>${object.amount}<label class="ms-5 text-secondary">更新日期:</label>${object.updateDate!}</p>
                         <form action="${site.dynamicPath}tradeAccount/recharge" method="post">
                             <input type="hidden" name="_csrf" value="<@_csrfToken/>"/>
                             <input type="hidden" name="returnUrl" value="${site.dynamicPath}account.html"/>
-                            <p><label class="input-label">充值:</label><input type="text" name="change" min="0.01" required="required"/> <label class="input-label">付款方式:</label><label><input type="radio" name="accountType" value="alipay"/>Alipay</label><label><input type="radio" name="accountType" value="wechat"/>Wechat</label> <input type="submit" class="button" value="支付"/></p>
+                            <p>
+								<label class="text-secondary">充值:</label>
+								<input type="text" name="change" min="0.01" required="required"/>
+							</p>
+							<p>
+								<label  class="text-secondary">付款方式:</label>
+								<label class="ms-2"><input type="radio" name="accountType" value="alipay"/>支付宝</label>
+								<label class="ms-2"><input type="radio" name="accountType" value="wechat"/>微信</label>
+								<input type="submit" class="ms-2 btn btn-primary" value="支付"/>
+							</p>
                         </form>
                         </@_tradeAccount>
                         <#macro message code>${springMacroRequestContext.getMessage(code)}</#macro>
                         <#macro merge name value><#if !.vars[name]??><@"<#assign ${name}=''>"?interpret /></#if><#if value??><@"<#assign ${name}=${name}+'${value},'>"?interpret /></#if></#macro>
                         <@_tradeAccountHistoryList accountId=user.id pageIndex=pageIndex pageSize=10>
                         <h3>我的账户历史</h3>
-                        <ul>
+                        <ul class="article-list">
                             <#list page.list as a>
                             <@merge 'userIds' a.userId!/>
                             </#list>
                             <@_sysUser ids=userIds!><#assign userMap=map!/></@_sysUser>
                             <#list page.list as a>
-                            <li class="underline">
-                                <p><@message 'page.status.accountHistory.'+a.status/><span class="right">${a.createDate!} <label>操作人员:</label>${(userMap[a.userId?string].nickName)!}</span></p>
-                                <p class="gray"><label>原始金额:</label>${a.amount!} <label>变化:</label>${a.amountChange!} <label>余额:</label>${a.balance!} </p>
-                                <p>${a.description!}</p>
+                            <li class="card py-2 mb-2 comment">
+								<div class="d-flex align-items-center">
+									<figure class="rounded-circle">
+										<img alt="${(userMap[a.userId?string].nickName)!}" src="${userMap[a.userId?string].cover!(site.sitePath+'assets/img/logo-graphic.png')}">
+									</figure>
+									<div>
+										<a href="${site.dynamicPath}user.html?id=${a.userId}" class="fw-bold me-2">${(userMap[a.userId?string].nickName)!}</a><span><#if userMap[a.userId?string].superuser>[管理员]</#if></span>
+										<div class="text-secondary text-opacity-50 fs-8">${a.createDate!} </div>
+									</div>
+								</div>
+                                <p>
+									<label class="ms-4 text-secondary"><@message 'page.status.accountHistory.'+a.status/>:</label>${a.amountChange!}
+									<label class="ms-4 text-secondary">原始金额:</label>${a.amount!}									
+									<label class="ms-4 text-secondary">余额:</label>${a.balance!} 
+									<#if a.description?has_content><label class="ms-4 text-secondary">描述:</label>${a.description!}</#if>
+								</p>                                
                             </li>
                             </#list>
                         </ul>
-                        <ul class="pagination mt-5">
+                        <ul class="pagination mt-5 overflow-auto pb-3">
                             <#assign
+							url='account.html'
                             start=1
                             end=page.totalPage
                             />
@@ -61,25 +79,27 @@
                             <#if (page.pageIndex+5) lt end>
                             <#assign end=page.pageIndex+4/>
                             </#if>
-                            <#if !page.firstPage>
-                            <a href="${getPage('account.html',page.prePage,'pageIndex')}">上一页</a>
-                            <#else>
-                            <span>上一页</span>
-                            </#if>
+                            <li class="page-item">
+								<a class="page-link" href="${getPage(url,page.prePage,'pageIndex')}" aria-label="Previous">
+									<span aria-hidden="true">«</span>
+								</a>
+							</li>
                             <#if start gt 1>
-                            <a href="${'account.html'}">1</a> ...
+								<li class="page-item"><a class="page-link" href="${getPage(url,1,'pageIndex')}">1</a></li>
+								<li class="page-item"><span>...</span></li>
                             </#if>
                             <#list start..end as n>
-                            <a href="${getPage('account.html',n,'pageIndex')}"${(n=page.pageIndex)?then(' class="selected"'?no_esc,'')}>${n}</a>
+                            	<li class="page-item<#if n=page.pageIndex> active</#if>"><a class="page-link" href="${getPage(url,n,'pageIndex')}">${n}</a></li>
                             </#list>
                             <#if end lt page.totalPage>
-                            ... <a href="${getPage('account.html',page.totalPage,'pageIndex')}">${page.totalPage}</a>
+								<li class="page-item"><span>...</span></li>
+								<li class="page-item"><a class="page-link" href="${getPage(url,page.totalPage,'pageIndex')}">${page.totalPage}</a></li>
                             </#if>
-                            <#if !page.lastPage>
-                            <a href="${getPage('account.html',page.nextPage,'pageIndex')}">下一页</a>
-                            <#else>
-                            <span>下一页</span>
-                            </#if>
+                            <li class="page-item">
+								<a class="page-link" href="${getPage(url,page.nextPage,'pageIndex')}" aria-label="Next">
+									<span aria-hidden="true">»</span>
+								</a>
+							</li>
                         </ul>
                         </@_tradeAccountHistoryList>
                     </div>

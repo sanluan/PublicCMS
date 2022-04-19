@@ -9,7 +9,7 @@ import java.util.Date;
 
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
@@ -38,7 +38,7 @@ public class CmsWordService extends BaseService<CmsWord> {
      * @param pageSize
      * @return
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public PageHandler getPage(Short siteId, Boolean hidden, Date startCreateDate, Date endCreateDate, String name,
             String orderField, String orderType, Integer pageIndex, Integer pageSize) {
         return dao.getPage(siteId, hidden, startCreateDate, endCreateDate, name, orderField, orderType, pageIndex, pageSize);
@@ -63,6 +63,18 @@ public class CmsWordService extends BaseService<CmsWord> {
      */
     public CmsWord getEntity(short siteId, String name) {
         return dao.getEntity(siteId, name);
+    }
+
+    /**
+     * @param siteId
+     * @param ids
+     */
+    public void delete(short siteId, Serializable[] ids) {
+        for (CmsWord entity : getEntitys(ids)) {
+            if (siteId == entity.getSiteId()) {
+                delete(entity.getId());
+            }
+        }
     }
 
     /**

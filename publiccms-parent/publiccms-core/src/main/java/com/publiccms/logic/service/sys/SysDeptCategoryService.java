@@ -7,7 +7,7 @@ import java.util.List;
 import org.apache.commons.lang3.ArrayUtils;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
@@ -32,7 +32,7 @@ public class SysDeptCategoryService extends BaseService<SysDeptCategory> {
      * @param pageSize
      * @return
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public PageHandler getPage(Integer deptId, Integer categoryId, Integer pageIndex, Integer pageSize) {
         return dao.getPage(deptId, categoryId, pageIndex, pageSize);
     }

@@ -5,7 +5,7 @@ import java.util.List;
 import org.apache.commons.lang3.ArrayUtils;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
@@ -30,7 +30,7 @@ public class SysRoleModuleService extends BaseService<SysRoleModule> {
      * @param pageSize
      * @return
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public PageHandler getPage(Integer roleId, String moduleId, Integer pageIndex, Integer pageSize) {
         return dao.getPage(roleId, moduleId, pageIndex, pageSize);
     }
@@ -63,7 +63,7 @@ public class SysRoleModuleService extends BaseService<SysRoleModule> {
      * @param moduleIds
      * @return
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public List<SysRoleModule> getEntitys(Integer[] roleIds, String[] moduleIds) {
         return dao.getEntitys(roleIds, moduleIds);
     }
@@ -73,7 +73,7 @@ public class SysRoleModuleService extends BaseService<SysRoleModule> {
      * @param moduleId
      * @return
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public SysRoleModule getEntity(Integer[] roleIds, String moduleId) {
         return dao.getEntity(roleIds, moduleId);
     }

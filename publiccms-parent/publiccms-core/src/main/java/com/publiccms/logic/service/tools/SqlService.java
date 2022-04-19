@@ -5,7 +5,7 @@ import java.util.Map;
 
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.logic.mapper.tools.SqlMapper;
 
@@ -85,7 +85,7 @@ public class SqlService {
      * @param sql
      * @return
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Map<String, Object>> select(String sql) {
         return mapper.select(sql);
     }

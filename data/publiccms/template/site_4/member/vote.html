@@ -18,7 +18,7 @@
         </div>
         <div class="container">
             <article>
-                <header>
+                <header class="mt-4">
                     <h1>${vote.title!}</h1>
                     <p>${vote.description}</p>
                     <p class="text-center text-secondary">开始日期:${(vote.startDate)!},截止日期:${(vote.endDate)!}</p>
@@ -66,11 +66,11 @@
 					<#list page.list as a>
 					<div class="card py-2 mb-2 comment">
 						<div class="d-flex align-items-center">
-							<figure>
-								<img class="rounded-circle" alt="${userMap[a.id.userId?string].nickName}" src="${userMap[a.id.userId?string].cover!(site.sitePath+'assets/img/logo-graphic.png')}">
+							<figure class="rounded-circle">
+								<img alt="${userMap[a.id.userId?string].nickName}" src="${userMap[a.id.userId?string].cover!(site.sitePath+'assets/img/logo-graphic.png')}">
 							</figure>
 							<div>
-								<a href="${site.dynamicPath}user.html?id=${a.id.userId}" class="fw-bold me-2">${userMap[a.id.userId?string].nickName}</a><span></span>
+								<a href="${site.dynamicPath}userVoteList.html?id=${a.id.userId}" class="fw-bold me-2">${userMap[a.id.userId?string].nickName}</a><span></span>
 								<div class="text-secondary text-opacity-50 fs-8"> ${a.createDate?date} </div>
 							</div>
 						</div>
@@ -83,7 +83,7 @@
 					</#list>
 				</div>
 				<#assign url=site.dynamicPath+'vote.html?id='+vote.id/>
-				<ul class="pagination mt-5">
+				<ul class="pagination mt-5 overflow-auto pb-3">
 					<li class="page-item">
 						<a class="page-link" href="${getPage(url,page.prePage,'pageIndex')}" aria-label="Previous">
 							<span aria-hidden="true">«</span>

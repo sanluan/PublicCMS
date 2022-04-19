@@ -60,12 +60,6 @@ public abstract class BaseDao<E> {
      */
     public final static String ORDERTYPE_DESC = "desc";
     /**
-     * 只读
-     *
-     * READONLY
-     */
-    public final static String READONLY = "org.hibernate.readOnly";
-    /**
      * 顺序
      *
      * order type desc
@@ -215,20 +209,8 @@ public abstract class BaseDao<E> {
      * @return entity
      */
     protected E getEntity(QueryHandler queryHandler) {
-        return getEntity(queryHandler, false);
-    }
-
-    /**
-     * 获取实体
-     *
-     * @param queryHandler
-     * @param readonly
-     * @return entity
-     */
-    protected E getEntity(QueryHandler queryHandler, boolean readonly) {
         TypedQuery<E> query = getSession().createQuery(queryHandler.getSql(), getEntityClass());
         queryHandler.initQuery(query);
-        query.setHint(READONLY, readonly);
         try {
             return query.getSingleResult();
         } catch (NoResultException e) {
@@ -297,18 +279,7 @@ public abstract class BaseDao<E> {
      * @return results list
      */
     protected List<E> getEntityList(QueryHandler queryHandler) {
-        return getEntityList(queryHandler, false);
-    }
-
-    /**
-     * 获取列表
-     *
-     * @param queryHandler
-     * @return results list
-     */
-    protected List<E> getEntityList(QueryHandler queryHandler, boolean readonly) {
         TypedQuery<E> query = getSession().createQuery(queryHandler.getSql(), getEntityClass());
-        query.setHint(READONLY, readonly);
         return getList(query, queryHandler);
     }
 
@@ -319,18 +290,7 @@ public abstract class BaseDao<E> {
      * @return results list
      */
     protected <R> List<R> getList(QueryHandler queryHandler, Class<R> resultClass) {
-        return getList(queryHandler, resultClass, true);
-    }
-
-    /**
-     * 获取列表
-     *
-     * @param queryHandler
-     * @return results list
-     */
-    protected <R> List<R> getList(QueryHandler queryHandler, Class<R> resultClass, boolean readonly) {
         TypedQuery<R> query = getSession().createQuery(queryHandler.getSql(), resultClass);
-        query.setHint(READONLY, readonly);
         return getList(query, queryHandler);
     }
 
@@ -341,18 +301,7 @@ public abstract class BaseDao<E> {
      * @return results list
      */
     protected List<E> getList(QueryHandler queryHandler) {
-        return getList(queryHandler, true);
-    }
-
-    /**
-     * 获取列表
-     *
-     * @param queryHandler
-     * @return results list
-     */
-    protected List<E> getList(QueryHandler queryHandler, boolean readonly) {
         TypedQuery<E> query = getSession().createQuery(queryHandler.getSql(), getEntityClass());
-        query.setHint(READONLY, readonly);
         return getList(query, queryHandler);
     }
 
@@ -363,9 +312,8 @@ public abstract class BaseDao<E> {
      * @param maxResults
      * @return results page
      */
-    protected PageHandler getPage(QueryHandler queryHandler, Integer pageIndex, Integer pageSize, Integer maxResults,
-            boolean readonly) {
-        return getPage(queryHandler, null, pageIndex, pageSize, maxResults, readonly);
+    protected PageHandler getPage(QueryHandler queryHandler, Integer pageIndex, Integer pageSize, Integer maxResults) {
+        return getPage(queryHandler, null, pageIndex, pageSize, maxResults);
     }
 
     /**
@@ -375,17 +323,7 @@ public abstract class BaseDao<E> {
      * @return page
      */
     protected PageHandler getPage(QueryHandler queryHandler, Integer pageIndex, Integer pageSize) {
-        return getPage(queryHandler, pageIndex, pageSize, Integer.MAX_VALUE, true);
-    }
-
-    /**
-     * @param queryHandler
-     * @param pageIndex
-     * @param pageSize
-     * @return page
-     */
-    protected PageHandler getPage(QueryHandler queryHandler, Integer pageIndex, Integer pageSize, boolean readonly) {
-        return getPage(queryHandler, pageIndex, pageSize, Integer.MAX_VALUE, readonly);
+        return getPage(queryHandler, pageIndex, pageSize, Integer.MAX_VALUE);
     }
 
     /**
@@ -397,18 +335,18 @@ public abstract class BaseDao<E> {
      * @return results page
      */
     protected PageHandler getPage(QueryHandler queryHandler, String countHql, Integer pageIndex, Integer pageSize,
-            Integer maxResults, boolean readonly) {
+            Integer maxResults) {
         PageHandler page = new PageHandler(pageIndex, pageSize);
         if (null == pageSize) {
             queryHandler.setMaxResults(maxResults);
-            List<?> list = getList(queryHandler, readonly);
+            List<?> list = getList(queryHandler);
             page.setList(list);
             page.setTotalCount(list.size());
         } else {
             page.setTotalCount(countResult(queryHandler, countHql));
             if (0 != pageSize) {
                 queryHandler.setFirstResult(page.getFirstResult()).setMaxResults(page.getPageSize());
-                page.setList(getList(queryHandler, readonly));
+                page.setList(getList(queryHandler));
             }
             if (null != maxResults && page.getTotalCount() > maxResults) {
                 page.setTotalCount(maxResults);

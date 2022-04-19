@@ -9,11 +9,7 @@
 
         <div class="container">
             <div class="row gx-5 justify-content-between my-5">
-                <div class="col-md-3" style="border-right: 1px solid #ddd;">
-                    <div class="guide-side fs-7 pe-4">
-                        <@_includePlace path="/c936c718-5f19-426f-b3ff-13a5a8d63044.html"/> <#-- 个人中心导航 -->
-                    </div>
-                </div>
+                <@_includePlace path="/c936c718-5f19-426f-b3ff-13a5a8d63044.html"/> <#-- 个人中心导航 -->
                 <div class="col-md-9">
                     <div class="ps-4">
                         <h3>请先加好本站链接</h3>
@@ -27,10 +23,11 @@
                         <#else>
                             <form method="post" action="${site.dynamicPath}place/save" onsubmit="return check();">
                                 <input name="path" type="hidden" value="${path}" />
+								<input type="hidden" name="_csrf" value="<@_csrfToken/>"/>
                                 <input name="returnUrl" type="hidden" value="${site.dynamicPath}friendlink.html?result=true" />
                                 <p><label class="input-label">友链标题:</label><input name="title" type="text" size="60" maxlength="60" value=""/></p>
                                 <p><label class="input-label">网站地址:</label><input name="url" type="text" size="60"  maxlength="60" value=""/></p>
-                                <p><input class="button" type="submit" value="提交"/></p>
+                                <p><input class="btn btn-primary" type="submit" value="提交"/></p>
                             </form>
                         </#if>
 

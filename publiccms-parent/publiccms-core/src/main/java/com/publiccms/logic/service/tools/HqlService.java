@@ -14,7 +14,7 @@ import org.hibernate.search.backend.lucene.LuceneBackend;
 import org.hibernate.search.engine.backend.Backend;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.constants.CommonConstants;
@@ -54,7 +54,7 @@ public class HqlService extends BaseService<Object> {
      * @param pageSize
      * @return
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public PageHandler getPage(String hql, Map<String, Object> parameters, Integer pageIndex, Integer pageSize) {
         return dao.getPage(hql, parameters, pageIndex, pageSize);
     }

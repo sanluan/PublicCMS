@@ -7,7 +7,7 @@ import com.publiccms.logic.dao.cms.CmsDictionaryDao;
 
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
@@ -28,7 +28,7 @@ public class CmsDictionaryService extends BaseService<CmsDictionary> {
      * @param pageSize
      * @return results page
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public PageHandler getPage(Short siteId, String name, Integer pageIndex, Integer pageSize) {
         return dao.getPage(siteId, name, pageIndex, pageSize);
     }

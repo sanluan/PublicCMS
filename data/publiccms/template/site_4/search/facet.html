@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
     <head>
-        <title>高级搜索 - PublicCMS</title>
+        <title>高级搜索 ${(word)!} - PublicCMS</title>
         <meta name="keywords" content="高级搜索,分面搜索,智能搜索"/>
         <meta name="description" content="高级搜索  ${word!}"/>
         <@_includePlace path="/8ddab9ba-a8aa-4745-86c6-66bf1c2c976c.html"/> <#-- header -->
@@ -147,8 +147,8 @@
                         </a>
                         </#list>
                     </div>
-                    <ul class="pagination mt-5">
-                        <#assign url='./facet.html?word='+word?url/>
+                    <ul class="pagination mt-5 overflow-auto pb-3">
+                        <#assign url='./facet.html?word='+(word?url)!/>
                         <#if phrase?has_content>
                             <#assign url+='&phrase='+phrase?url/>
                         </#if>

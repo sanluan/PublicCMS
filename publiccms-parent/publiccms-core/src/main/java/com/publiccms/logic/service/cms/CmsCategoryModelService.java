@@ -4,7 +4,7 @@ import java.util.List;
 
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.entities.cms.CmsCategoryModel;
@@ -26,7 +26,7 @@ public class CmsCategoryModelService extends BaseService<CmsCategoryModel> {
      * @param categoryId
      * @return results page
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public List<CmsCategoryModel> getList(String modelId, Integer categoryId) {
         return dao.getList(modelId, categoryId);
     }

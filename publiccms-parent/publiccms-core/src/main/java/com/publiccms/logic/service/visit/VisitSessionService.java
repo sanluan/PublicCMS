@@ -9,7 +9,7 @@ import org.springframework.beans.BeanUtils;
 
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
@@ -37,7 +37,7 @@ public class VisitSessionService extends BaseService<VisitSession> {
      * @param pageSize
      * @return results page
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public PageHandler getPage(short siteId, String sessionId, Date startVisitDate, Date endVisitDate, String orderType,
             Integer pageIndex, Integer pageSize) {
         return dao.getPage(siteId, sessionId, startVisitDate, endVisitDate, orderType, pageIndex, pageSize);
@@ -48,7 +48,7 @@ public class VisitSessionService extends BaseService<VisitSession> {
      * @param visitDate
      * @return results page
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public List<VisitDay> getDayList(Short siteId, Date visitDate) {
         return dao.getDayList(siteId, visitDate);
     }

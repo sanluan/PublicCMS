@@ -50,7 +50,6 @@ dependencies {
     implementation "jakarta.annotation:jakarta.annotation-api:${annotationVersion}"
     implementation "com.sun.xml.bind:jaxb-impl:${jaxbVersion}"
     implementation "jakarta.xml.bind:jakarta.xml.bind-api:${jaxbApiVersion}"
-    implementation "jakarta.transaction:jakarta.transaction-api:${jtaVersion}"
     implementation "jakarta.servlet:jakarta.servlet-api:${servletVersion}"
 
     implementation ("org.quartz-scheduler:quartz:${quartzVersion}") {

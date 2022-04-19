@@ -26,7 +26,7 @@
 
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-md-9">
+                <div class="col-md-9 pe-4">
                     <article class="article-cont mt-5">
                         <div class="clearfix" id="content">
                             ${(text?no_esc)!}
@@ -48,9 +48,10 @@
                              </#list>
                          </@_contentFileList>
                     </#if>
+						<p><@_tag ids=content.tagIds><#if map?has_content>标签:</#if><#list map?keys as k><a href="${siteAttribute.searchPath!}?tagIds=${k}" target="_blank">${map[k].name}</a><#sep>,</#list></@_tag></p>
                     </article>
                     <#if page?? && page.totalCount gt 1>
-                        <ul class="pagination mt-5">
+                        <ul class="pagination mt-5 overflow-auto pb-3">
                             <li class="page-item">
                                 <a class="page-link" href="${getPage(url,page.prePage)}" aria-label="Previous">
                                     <span aria-hidden="true">«</span>
@@ -66,7 +67,7 @@
                             </li>
                         </ul>
                     </#if>
-                    <div class="my-5 py-4 d-flex justify-content-between align-items-start">
+                    <div class="my-4 py-4 d-flex justify-content-between align-items-start">
                         <div class="d-flex align-items-center me-4">
                             <@_contentList categoryId=content.categoryId endPublishDate=content.publishDate orderField='publishDate' pageIndex=2 count=1>
                                 <#if 2=page.pageIndex>
@@ -92,6 +93,37 @@
                     </div>
                     <@include path="/ftl/comment.ftl"/><#-- 评论 -->
                 </div>
+				<aside class="col-md-3 px-2 mt-5">
+					<header class="tab-header fs-5">
+						<b class="pb-2">相关推荐</b>
+					</header>
+					<div class="list-group list-group-flush article-list-side py-2 fs-7 mb-4">
+		<@_contentRelatedList contentId=content.id pageSize=10>
+			<#list page.list as a>
+						<a href="${a.url!}" class="list-group-item" title="${a.title}">${a.title}</a>
+			</#list>
+		</@_contentRelatedList>
+		<#if content.tagIds?has_content>
+			<@_search tagId=content.tagIds count=10>
+				<#list page.list as a>
+						<#if content.id!=a.id>
+							<a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect?id=${a.id}<#else>${a.url}</#if>" class="list-group-item" title="${a.title}">${a.title}</a>
+						</#if>
+				</#list>
+			</@_search>
+		<#else>
+				<@_contentList categoryId=content.categoryId endPublishDate=content.publishDate pageSize=10>
+					<#list page.list as a>
+						<#if !a?is_first>
+							<a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect?id=${a.id}<#else>${a.url}</#if>" class="list-group-item" title="${a.title}">${a.title}</a>
+						</#if>
+					</#list>
+				</@_contentList>
+		</#if>
+					</div>
+					<@_includePlace path="/17fbfe62-4fbe-4987-93d5-85383ebc5aa4.html"/> <#-- 最新投票 -->
+					<@_includePlace path="/3fefc879-2ef2-448d-909f-dc31849bcf29.html"/> <#-- 最新调查问卷 -->
+				</aside>
             </div>
         </div>
 
@@ -102,7 +134,13 @@
         <script src="${site.sitePath!}assets/ueditor/ueditor.parse.min.js"></script>
         <script>
         $.getJSON('${site.dynamicPath!}api/contentClick?id=${content.id}', function(data){
-            $('#clicks').text(data.clicks);
+			if(data.clicks > 100000){
+               $('#clicks').text("10万+");
+			} else if(data.clicks <10000){
+                $('#clicks').text(data.clicks);
+			} else {
+				 $('#clicks').text(((data.clicks/10000)|0)+"万+");
+            }
         });
         uParse('#content',{rootPath: '${site.sitePath!}assets/ueditor'});
         </script>

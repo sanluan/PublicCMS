@@ -7,7 +7,7 @@ import com.publiccms.entities.log.LogLogin;
 import com.publiccms.logic.dao.log.LogLoginDao;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
@@ -44,7 +44,7 @@ public class LogLoginService extends BaseService<LogLogin> {
      * @param pageSize
      * @return
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public PageHandler getPage(Short siteId, Long userId, Date startCreateDate, Date endCreateDate, String channel,
             Boolean result, String name, String ip, String orderType, Integer pageIndex, Integer pageSize) {
         return dao.getPage(siteId, userId, startCreateDate, endCreateDate, channel, result, name, ip, orderType, pageIndex,

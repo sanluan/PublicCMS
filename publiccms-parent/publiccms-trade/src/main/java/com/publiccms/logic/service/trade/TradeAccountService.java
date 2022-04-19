@@ -7,6 +7,8 @@ import java.util.Date;
 
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
@@ -17,8 +19,6 @@ import com.publiccms.entities.trade.TradeAccountHistory;
 import com.publiccms.logic.dao.trade.TradeAccountDao;
 import com.publiccms.logic.dao.trade.TradeAccountHistoryDao;
 import com.publiccms.logic.service.sys.SysUserService;
-
-import jakarta.transaction.Transactional;
 
 /**
  *
@@ -36,12 +36,12 @@ public class TradeAccountService extends BaseService<TradeAccount> {
      * @param pageSize
      * @return results page
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public PageHandler getPage(Short siteId, Integer pageIndex, Integer pageSize) {
         return dao.getPage(siteId, pageIndex, pageSize);
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public TradeAccount getOrCreate(short siteId, long accountId) {
         TradeAccount entity = getEntity(accountId);
         if (null == entity) {
@@ -56,7 +56,7 @@ public class TradeAccountService extends BaseService<TradeAccount> {
         return null;
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public TradeAccountHistory change(short siteId, String serialNumber, long accountId, Long userId, int status,
             BigDecimal change, String description) {
         if (null != change) {

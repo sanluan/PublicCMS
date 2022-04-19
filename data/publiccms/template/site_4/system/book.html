@@ -6,10 +6,7 @@
         <meta name="description" content="${content.description}"/>
         <@_includePlace path="/8ddab9ba-a8aa-4745-86c6-66bf1c2c976c.html"/> <#-- header -->
     <style>
-        article .cover{float:left;}
-        article .cover img{width:144px;height:192px;}
-        article .info{margin-left:155px;}
-        article ul.chapter-list li{float:left;width:280px;margin:2px 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+        article .cover img{max-width:200px;}
     </style>
     </head>
     <body>
@@ -26,10 +23,10 @@
             <div class="row justify-content-center">
                 <div class="col-md-12">
                     <article class="article-cont my-5">
-                        <header class="mt-4">
+                        <header class="my-4">
                             <div class="row">
                                 <#if content.cover?has_content>
-                                <div class="col-md-3">
+                                <div class="col-md-3 cover">
                                     <img src="${content.cover!}" alt="${content.cover!}">
                                 </div>
                                 </#if>
@@ -39,7 +36,7 @@
                                         <#if content.tagIds?has_content>标签：
                                             <@_tag ids=content.tagIds>
                                                 <#list map?keys as key>
-                                                    <a href="${siteAttribute.searchPath!}?tagId=${map[key].id}" target="_blank"><em>${map[key].name}</em></a>
+                                                    <a href="${siteAttribute.searchPath!}?tagIds=${map[key].id}" target="_blank"><em>${map[key].name}</em></a>
                                                 </#list>
                                             </@_tag>
                                         </#if>
@@ -56,9 +53,9 @@
                     <@_contentList parentId=content.id orderType='asc' pageIndex=n count=100>
                         <#list page.list as a>
                         <h4>${a.title}</h4>
-            <@_contentList parentId=a.id endPublishDate=.now pageIndex=1 count=100>
+            <@_contentList parentId=a.id endPublishDate=.now pageIndex=1 count=20>
                 <#list 1..page.totalPage as n>
-                    <@_contentList parentId=a.id orderType='asc' pageIndex=n count=100>
+                    <@_contentList parentId=a.id orderType='asc' pageIndex=n count=20>
                         <div class="row mt-4">
                         <#list page.list as a>
                             <div class="col-md-3 text-truncate"><a href="${a.url!}">${a.title}</a></div>

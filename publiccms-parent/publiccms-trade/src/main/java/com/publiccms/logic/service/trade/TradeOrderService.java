@@ -8,6 +8,8 @@ import java.util.List;
 
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
@@ -18,8 +20,6 @@ import com.publiccms.entities.trade.TradeOrderProduct;
 import com.publiccms.logic.dao.trade.TradeOrderDao;
 import com.publiccms.logic.dao.trade.TradeOrderHistoryDao;
 import com.publiccms.logic.service.cms.CmsContentProductService;
-
-import jakarta.transaction.Transactional;
 
 /**
  *
@@ -56,18 +56,21 @@ public class TradeOrderService extends BaseService<TradeOrder> {
      * @param paymentId
      * @param status
      * @param processed
+     * @param startCreateDate
+     * @param endCreateDate
      * @param orderType
      * @param pageIndex
      * @param pageSize
-     * @return results page
+     * @return
      */
-    @Transactional
-    public PageHandler getPage(Short siteId, Long userId, Long paymentId, Integer[] status, Boolean processed, String orderType,
-            Integer pageIndex, Integer pageSize) {
-        return dao.getPage(siteId, userId, paymentId, status, processed, orderType, pageIndex, pageSize);
+    @Transactional(readOnly = true)
+    public PageHandler getPage(Short siteId, Long userId, Long paymentId, Integer[] status, Boolean processed,
+            Date startCreateDate, Date endCreateDate, String orderType, Integer pageIndex, Integer pageSize) {
+        return dao.getPage(siteId, userId, paymentId, status, processed, startCreateDate, endCreateDate, orderType, pageIndex,
+                pageSize);
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public Long create(short siteId, long userId, TradeOrder entity, String ip, List<TradeOrderProduct> tradeOrderProductList) {
         if (null != entity) {
             entity.setId(null);
@@ -101,7 +104,7 @@ public class TradeOrderService extends BaseService<TradeOrder> {
 
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public boolean confirm(short siteId, long orderId) {
         TradeOrder entity = getEntity(orderId);
         if (null != entity && siteId == entity.getSiteId() && !entity.isConfirmed()
@@ -117,7 +120,7 @@ public class TradeOrderService extends BaseService<TradeOrder> {
         return false;
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public boolean invalid(short siteId, long orderId) {
         TradeOrder entity = getEntity(orderId);
         if (null != entity && siteId == entity.getSiteId()
@@ -132,7 +135,7 @@ public class TradeOrderService extends BaseService<TradeOrder> {
         return false;
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public boolean pay(short siteId, long orderId, long paymentId) {
         TradeOrder entity = getEntity(orderId);
         if (null != entity && siteId == entity.getSiteId()) {
@@ -146,7 +149,7 @@ public class TradeOrderService extends BaseService<TradeOrder> {
         return false;
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public boolean cancelPayment(short siteId, long orderId) {
         TradeOrder entity = getEntity(orderId);
         if (null != entity && siteId == entity.getSiteId()) {
@@ -160,7 +163,7 @@ public class TradeOrderService extends BaseService<TradeOrder> {
         return false;
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public boolean processed(short siteId, long orderId, long userId, String processInfo) {
         TradeOrder entity = getEntity(orderId);
         if (null != entity && siteId == entity.getSiteId() && entity.isConfirmed() && !entity.isProcessed()) {
@@ -177,7 +180,7 @@ public class TradeOrderService extends BaseService<TradeOrder> {
         return false;
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public boolean paid(short siteId, long orderId) {
         TradeOrder entity = getEntity(orderId);
         if (null != entity && siteId == entity.getSiteId() && entity.getStatus() == STATUS_PENDING) {
@@ -192,7 +195,7 @@ public class TradeOrderService extends BaseService<TradeOrder> {
         return false;
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public boolean refunded(short siteId, long orderId) {
         TradeOrder entity = getEntity(orderId);
         if (null != entity && siteId == entity.getSiteId() && (entity.getStatus() == STATUS_PAID)) {
@@ -206,7 +209,7 @@ public class TradeOrderService extends BaseService<TradeOrder> {
         return false;
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public boolean close(short siteId, long orderId) {
         TradeOrder entity = getEntity(orderId);
         if (null != entity && siteId == entity.getSiteId()

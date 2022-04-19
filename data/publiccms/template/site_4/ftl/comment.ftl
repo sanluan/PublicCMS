@@ -11,8 +11,8 @@
 		<#list page.list as a>
 		<li class="comment">
 			<div class="d-flex align-items-center">
-				<figure>
-					<img class="rounded-circle" alt="${userMap[a.userId?string].nickName}" src="${userMap[a.userId?string].cover!(site.sitePath+'assets/img/logo-graphic.png')}">
+				<figure class="rounded-circle">
+					<img alt="${userMap[a.userId?string].nickName}" src="${userMap[a.userId?string].cover!(site.sitePath+'assets/img/logo-graphic.png')}">
 				</figure>
 				<div>
 					<a href="${site.dynamicPath}user.html?id=${a.userId}" class="fw-bold me-2">${userMap[a.userId?string].nickName}</a><span><#if userMap[a.userId?string].superuser>[管理员]</#if></span>
@@ -59,13 +59,13 @@
 	<div class="user-login">
 		<div class="form-control text-center" style="line-height:5;"><a href="${site.dynamicPath}login.html">登录后发布评论</a></div>
 	</div>
-	<div class="user-logout">
+	<div class="user-logout comment-text-box">
 		<form method="post" action="${site.dynamicPath}comment/save" onsubmit="return comment();">
 			<input type="hidden" name="replyId" value=""/>
 			<input type="hidden" name="_csrf" value=""/>
 			<input type="hidden" name="contentId" value="${content.id}"/>
 			<input name="returnUrl" type="hidden" value="${site.dynamicPath}comment.html?contentId=${content.id!}" />
-			<textarea class="form-control" rows="3" maxlength="1000"></textarea>
+			<textarea name="text" class="form-control" rows="3" maxlength="1000"></textarea>
 			<button type="submit" class="btn btn-primary mt-3">提交</button>
 		</form>
 	</div>

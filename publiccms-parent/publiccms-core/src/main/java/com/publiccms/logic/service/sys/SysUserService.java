@@ -4,11 +4,14 @@ import static org.springframework.util.StringUtils.arrayToCommaDelimitedString;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.constants.CommonConstants;
@@ -16,8 +19,6 @@ import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.dao.sys.SysUserDao;
-
-import jakarta.transaction.Transactional;
 
 /**
  *
@@ -48,7 +49,7 @@ public class SysUserService extends BaseService<SysUser> {
      * @param pageSize
      * @return
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public PageHandler getPage(Short siteId, Integer deptId, Date startRegisteredDate, Date endRegisteredDate,
             Date startLastLoginDate, Date endLastLoginDate, Boolean superuserAccess, Boolean emailChecked, Boolean disabled,
             String name, String orderField, String orderType, Integer pageIndex, Integer pageSize) {
@@ -122,7 +123,7 @@ public class SysUserService extends BaseService<SysUser> {
      * @param ip
      * @return
      */
-    @Transactional
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public SysUser updateLoginStatus(Serializable id, String ip) {
         SysUser entity = getEntity(id);
         if (null != entity) {
@@ -183,6 +184,25 @@ public class SysUserService extends BaseService<SysUser> {
             entity.setDisabled(status);
         }
         return entity;
+    }
+
+    /**
+     * @param siteId
+     * @param ids
+     * @param operateId
+     * @param status
+     * @return
+     */
+    public List<SysUser> updateStatus(short siteId, Serializable[] ids, Serializable operateId, boolean status) {
+        List<SysUser> entityList = getEntitys(ids);
+        if (null != entityList) {
+            for (SysUser entity : entityList) {
+                if (siteId == entity.getSiteId() && null != operateId && !operateId.equals(entity.getId())) {
+                    entity.setDisabled(status);
+                }
+            }
+        }
+        return entityList;
     }
 
     @Resource

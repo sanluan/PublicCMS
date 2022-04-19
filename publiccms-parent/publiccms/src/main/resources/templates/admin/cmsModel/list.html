@@ -51,7 +51,7 @@
             </#if>
             <@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
             <#list page.list as a>
-            <tr target="sid" rel="${a.id?url}">
+            <tr>
                 <td>${a.id!}</td>
                 <td class="exclude-translate" <#if lockMap[a.id?string]?has_content><#assign lockUser=(userMap[lockMap[a.id?string].userId?string].nickName)!''/>title="<@t.page 'lock.message' lockUser/> ${lockMap[a.id?string].createDate}"</#if>>
                     <#if lockMap[a.id?string]?has_content><i class="icon-lock icon-large"></i> </#if>${(a.name)!}

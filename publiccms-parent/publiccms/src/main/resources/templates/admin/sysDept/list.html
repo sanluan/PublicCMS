@@ -69,7 +69,7 @@
             <@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
 
             <#list page.list as a>
-            <tr target="sid" rel="${a.id}">
+            <tr>
                 <td>${a.id!}</td>
                 <td class="exclude-translate">${(a.name)!}</td>
                 <td class="exclude-translate">${(a.code)!}</td>

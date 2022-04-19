@@ -10,7 +10,7 @@ import org.apache.commons.lang3.time.DateUtils;
 
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
@@ -41,7 +41,7 @@ public class VisitDayService extends BaseService<VisitDay> {
      * @return results page
      */
     @SuppressWarnings("unchecked")
-    @Transactional
+    @Transactional(readOnly = true)
     public PageHandler getPage(short siteId, Date startVisitDate, Date endVisitDate, boolean hourAnalytics, Integer pageIndex,
             Integer pageSize) {
         PageHandler page = dao.getPage(siteId, startVisitDate, endVisitDate, hourAnalytics, pageIndex, pageSize);

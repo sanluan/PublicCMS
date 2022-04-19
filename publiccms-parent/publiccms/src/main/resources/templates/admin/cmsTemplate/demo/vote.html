@@ -136,6 +136,8 @@ function unvote(itemId){
         if("string" ==typeof itemString){
             url=url+"?"+itemString;
         }
+        ca.setDomain('${domain.name}');
+        ca.setPath('/');
         ca.report(url);
     </script>
 </body>

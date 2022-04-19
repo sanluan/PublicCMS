@@ -6,7 +6,7 @@ import java.util.List;
 
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.tools.CommonUtils;
@@ -29,7 +29,7 @@ public class SysModuleLangService extends BaseService<SysModuleLang> {
      * @param lang
      * @return results page
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public List<?> getList(String moduleId, String lang) {
         return dao.getList(moduleId, lang);
     }

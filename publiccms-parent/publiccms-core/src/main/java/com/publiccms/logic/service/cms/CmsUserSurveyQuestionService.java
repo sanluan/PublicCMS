@@ -4,7 +4,7 @@ import java.util.List;
 
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
@@ -32,7 +32,7 @@ public class CmsUserSurveyQuestionService extends BaseService<CmsUserSurveyQuest
      * @param pageSize
      * @return results page
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public PageHandler getPage(Short siteId, Long userId, Long questionId, Long surveyId, String orderField, String orderType,
             Integer pageIndex, Integer pageSize) {
         return dao.getPage(siteId, userId, questionId, surveyId, orderField, orderType, pageIndex, pageSize);

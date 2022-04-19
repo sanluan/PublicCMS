@@ -6,13 +6,13 @@ import java.util.List;
 
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysLock;
 import com.publiccms.logic.dao.sys.SysLockDao;
-
-import jakarta.transaction.Transactional;
 
 /**
  *
@@ -58,7 +58,7 @@ public class SysLockService extends BaseService<SysLock> {
      * @param id
      * @return entity
      */
-    @Transactional
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public SysLock updateCount(Serializable id) {
         SysLock entity = getEntity(id);
         if (null != entity) {
@@ -73,7 +73,7 @@ public class SysLockService extends BaseService<SysLock> {
      * @param userId
      * @return entity
      */
-    @Transactional
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public SysLock updateCreateDate(Serializable id, int count, Long userId) {
         SysLock entity = getEntity(id);
         if (null != entity) {

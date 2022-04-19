@@ -26,7 +26,7 @@ import freemarker.template.TemplateException;
  *
  */
 public class ScheduledJob extends QuartzJobBean {
-    private static String[] ignoreProperties = new String[] { "id", "begintime", "taskId", "siteId" };
+    public static String[] ignoreProperties = new String[] { "id", "begintime", "taskId", "siteId" };
 
     @Override
     public void executeInternal(JobExecutionContext context) throws JobExecutionException {

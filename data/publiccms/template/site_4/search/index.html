@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
     <head>
-        <title>搜索 - PublicCMS</title>
-        <meta name="keywords" content="搜索"/>
+        <title>搜索 ${(word)!} - PublicCMS</title>
+        <meta name="keywords" content="搜索,${(word)!}"/>
         <meta name="description" content="搜索  ${(word)!}"/>
         <@_includePlace path="/8ddab9ba-a8aa-4745-86c6-66bf1c2c976c.html"/> <#-- header -->
     </head>
@@ -57,8 +57,8 @@
                         </a>
                         </#list>
                     </div>
-                    <ul class="pagination mt-5">
-                        <#assign url='./?word='+word?url/>
+                    <ul class="pagination mt-5 overflow-auto pb-3">
+                        <#assign url='./?word='+(word?url)!/>
                         <#if phrase?has_content>
                             <#assign url+='&phrase='+phrase?url/>
                         </#if>

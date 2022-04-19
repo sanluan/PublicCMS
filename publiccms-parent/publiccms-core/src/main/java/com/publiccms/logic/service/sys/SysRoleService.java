@@ -8,7 +8,7 @@ import com.publiccms.entities.sys.SysRole;
 import com.publiccms.logic.dao.sys.SysRoleDao;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
@@ -28,7 +28,7 @@ public class SysRoleService extends BaseService<SysRole> {
      * @param pageSize
      * @return
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public PageHandler getPage(Short siteId, Integer pageIndex, Integer pageSize) {
         return dao.getPage(siteId, pageIndex, pageSize);
     }
@@ -37,7 +37,7 @@ public class SysRoleService extends BaseService<SysRole> {
      * @param roleIds
      * @return
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public boolean showAllModule(Integer[] roleIds) {
         List<SysRole> list = getEntitys(roleIds);
         for (SysRole role : list) {
@@ -52,7 +52,7 @@ public class SysRoleService extends BaseService<SysRole> {
      * @param roleIds
      * @return
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public boolean ownsAllRight(Integer[] roleIds) {
         List<SysRole> list = getEntitys(roleIds);
         for (SysRole role : list) {

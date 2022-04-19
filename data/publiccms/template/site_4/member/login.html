@@ -18,11 +18,7 @@
         <div class="container ">
             <#if user?has_content>
 				<div class="row gx-5 justify-content-between my-5">
-					<div class="col-md-3" style="border-right: 1px solid #ddd;">
-						<div class="guide-side fs-7 pe-4">
-							<@_includePlace path="/c936c718-5f19-426f-b3ff-13a5a8d63044.html"/> <#-- 个人中心导航 -->
-						</div>
-                	</div>
+					<@_includePlace path="/c936c718-5f19-426f-b3ff-13a5a8d63044.html"/> <#-- 个人中心导航 -->
                 	<div class="col-md-9">
                     	<div class="ps-4">
 							<h3>登录</h3>
@@ -43,10 +39,10 @@
                     <p><input type="password" name="password" class="input-text" placeholder="密码" title="密码"/></p>
                     <p>
                         <input type="hidden" name="returnUrl" value="${returnUrl!site.sitePath!}"/>
-                        <input type="submit" class="button" value="登录"/>
+                        <input type="submit" class="btn btn-primary" value="登录"/>
                         <input type="hidden" name="clientId" value="${clientId!}"/>
                         <input type="hidden" name="uuid" value="${uuid!}"/>
-                        <a href="javascript:$('input[name=username]').val('test');$('input[name=password]').val('test');$('form#login').submit();">登录演示账号</a>
+                        <a class="btn" href="javascript:$('input[name=username]').val('test');$('input[name=password]').val('test');$('form#login').submit();">登录演示账号</a>
                     </p>
                     <#if false &&  _oauthList??&&_oauthList?is_directive>
                         <@_oauthList>

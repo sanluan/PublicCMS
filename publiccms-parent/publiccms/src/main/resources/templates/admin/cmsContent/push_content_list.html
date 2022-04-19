@@ -1,4 +1,4 @@
-<@_contentList advanced=true status=1 endPublishDate=.now categoryId=categoryId modelId=modelId parentId=parentId containChild=true title=title userId=userId startPublishDate=startPublishDate orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
+<@_contentList advanced=true status=1 endPublishDate=.now categoryId=categoryId modelId=modelIds parentId=parentId containChild=true title=title userId=userId startPublishDate=startPublishDate orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
     <form class="pagerForm" autocomplete="off" action="cmsContent/push_content_list.html?contentId=${contentId}" onsubmit="return divSearch(this, 'push_content_list');" method="post">
         <input type="hidden" name="categoryId" value="${categoryId!}"/>
@@ -64,7 +64,7 @@
             <@_model ids=t.modelIds!><#assign modelMap=map!/></@_model>
 
             <#list page.list as a>
-            <tr target="sid" rel="${a.id}">
+            <tr>
                 <td>
                     <a href="cmsContent/push_to_content.html?contentId=${a.id}&relatedContentId=${contentId!}" target="dialog" mask="true"><i class="icon-ok icon-large"></i> <@t.page 'button.push'/></a>
                 </td>

@@ -92,6 +92,20 @@ public class ScheduledTask {
         }
     }
 
+    // 结束一天以前执行但是没有结果的任务，可以误杀,误杀任务后续会被修复
+    public void dealNotEndTask(Date startDate) {
+        List<LogTask> runingTaskList = (List<LogTask>) logTaskService.getNotEndList(null, startDate);
+        for (LogTask logTask : runingTaskList) {
+            SysTask task = sysTaskService.getEntity(logTask.getTaskId());
+            if (null != task && TASK_STATUS_RUNNING == task.getStatus()) {
+                sysTaskService.updateStatus(task.getId(), TASK_STATUS_READY);
+                logTask.setEndtime(new Date());
+                logTask.setSuccess(false);
+                logTaskService.update(logTask.getId(), logTask, ScheduledJob.ignoreProperties);
+            }
+        }
+    }
+
     /**
      * 创建任务计划
      * 
@@ -166,7 +180,7 @@ public class ScheduledTask {
     }
 
     /**
-     * 暂停任务计划
+     * 打断任务计划
      * 
      * @param site
      * @param id

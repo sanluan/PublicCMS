@@ -1,7 +1,7 @@
 -- ----------------------------
 -- Records of cms_category
 -- ----------------------------
-INSERT INTO `cms_category` VALUES (1, 3, '演示', NULL, NULL, '17,15,12,9,8,7,6,18', '', 'demonstrate', '/category/parent.html', '${category.code}/index.html', 0, 1, 'demonstrate/index.html', '${content.publishDate?string(\'yyyy/MM/dd\')}/${content.id}.html', 1, 10, 0, 0, 0, 0, NULL);
+INSERT INTO `cms_category` VALUES (1, 3, '演示', NULL, NULL, '6,7,8,9,12,15,17', '', 'demonstrate', '/category/parent.html', '${category.code}/index.html', 0, 1, 'demonstrate/index.html', '${category.code}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', 1, 10, 0, 0, 0, 0, NULL);
 INSERT INTO `cms_category` VALUES (6, 3, '汽车', 1, NULL, NULL, '', 'car', '/category/list.html', '${category.code}/index.html', 0, 1, 'car/index.html', '${category.code}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', 1, 10, 0, 0, 0, 0, NULL);
 INSERT INTO `cms_category` VALUES (7, 3, '社会', 1, NULL, NULL, '', 'social', '/category/list.html', '${category.code}/index.html', 0, 1, 'social/index.html', '${category.code}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', 1, 10, 0, 0, 0, 0, NULL);
 INSERT INTO `cms_category` VALUES (8, 3, '美图', 1, NULL, NULL, '', 'picture', '/category/list.html', '${category.code}/index.html', 0, 1, 'picture/index.html', '${category.code}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', 1, 10, 0, 0, 0, 0, NULL);
@@ -9,7 +9,22 @@ INSERT INTO `cms_category` VALUES (9, 3, '系统介绍', 1, NULL, NULL, '', 'int
 INSERT INTO `cms_category` VALUES (12, 3, '文章', 1, NULL, NULL, '', 'article', '/category/list.html', '${category.code}/index.html', 0, 1, 'article/index.html', '${category.code}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', 1, 20, 0, 0, 0, 0, NULL);
 INSERT INTO `cms_category` VALUES (15, 3, '小说', 1, NULL, NULL, '', 'novel', '/category/list.html', '${category.code}/index.html', 0, 1, 'novel/index.html', '${category.code}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', 1, 20, 0, 0, 0, 0, NULL);
 INSERT INTO `cms_category` VALUES (17, 3, '科技', 1, NULL, NULL, '', 'science', '/category/list.html', '${category.code}/index.html', 0, 1, 'science/index.html', '${category.code}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', 1, 20, 0, 0, 0, 0, NULL);
-INSERT INTO `cms_category` VALUES (19, 3, '案例', NULL, NULL, NULL, '', 'case', '/category/parent.html', '${category.code}/index.html', 0, 1, 'case/index.html', '${content.publishDate?string(\'yyyy/MM/dd\')}/${content.id}.html', 1, 20, 0, 0, 0, 0, NULL);
+INSERT INTO `cms_category` VALUES (19, 3, '案例', NULL, NULL, NULL, '', 'case', '/category/parent.html', '${category.code}/index.html', 0, 1, 'case/index.html', '${category.code}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', 1, 20, 0, 0, 0, 0, NULL);
+INSERT INTO `cms_category` VALUES (20, 4, '功能演示', NULL, 'banner', '21,22,23,24,25,26,27', '', 'demonstrate', '/category/list.html', '${category.code}/index.html', 0, 1, 'demonstrate/index.html', '${category.code}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', 1, 10, 0, 0, 0, 0, NULL);
+INSERT INTO `cms_category` VALUES (21, 4, '汽车', 20, NULL, NULL, '', 'car', '/category/list.html', '${category.code}/index.html', 0, 1, 'car/index.html', '${category.code}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', 1, 10, 0, 0, 0, 0, NULL);
+INSERT INTO `cms_category` VALUES (22, 4, '商品', 20, NULL, NULL, '', 'social', '/category/list.html', '${category.code}/index.html', 0, 1, 'social/index.html', '${category.code}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', 1, 10, 0, 0, 0, 0, NULL);
+INSERT INTO `cms_category` VALUES (23, 4, '美图', 20, NULL, NULL, '', 'picture', '/category/list.html', '${category.code}/index.html', 0, 1, 'picture/index.html', '${category.code}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', 1, 10, 0, 0, 0, 0, NULL);
+INSERT INTO `cms_category` VALUES (24, 4, '介绍', 20, NULL, NULL, '', 'introduction', '/category/list.html', '${category.code}/index.html', 0, 1, 'introduction/index.html', '${category.code}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', 1, 10, 0, 0, 0, 0, NULL);
+INSERT INTO `cms_category` VALUES (25, 4, '文章', 20, NULL, NULL, '', 'article', '/category/list.html', '${category.code}/index.html', 0, 1, 'article/index.html', '${category.code}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', 1, 20, 0, 0, 0, 0, NULL);
+INSERT INTO `cms_category` VALUES (26, 4, '小说', 20, NULL, NULL, '', 'novel', '/category/list.html', '${category.code}/index.html', 0, 1, 'novel/index.html', '${category.code}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', 1, 20, 0, 0, 0, 0, NULL);
+INSERT INTO `cms_category` VALUES (27, 4, '手册', 20, NULL, NULL, '', 'science', '', '<@_contentList categoryId=category.id pageSize=1 orderType=\'asc\'><#list page.list as a>${a.url}</#list></@_contentList>', 0, 1, '', '${category.code}/${content.id}.html', 1, 20, 0, 0, 0, 0, NULL);
+INSERT INTO `cms_category` VALUES (28, 4, '案例', NULL, 'banner', NULL, '', 'case', '/category/case.html', '${category.code}/index.html', 0, 1, 'case/index.html', '${category.code}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', 1, 20, 0, 0, 0, 0, NULL);
+INSERT INTO `cms_category` VALUES (29, 4, '问答', NULL, 'banner', '33', '', 'support', '/category/qa.html', '${category.code}/', 0, 1, 'support/', '${category.code}/${content.publishDate?string(\'yyyy-MM-dd\')}/${content.id}.html', 0, 20, 0, 7, 0, 0, NULL);
+INSERT INTO `cms_category` VALUES (30, 4, '演示', NULL, 'banner', '34', '', 'demo', '/category/demo.html', '${category.code}/', 0, 1, 'demo/', '', 0, 20, 0, 6, 0, 0, NULL);
+INSERT INTO `cms_category` VALUES (31, 4, '下载', NULL, 'banner', NULL, '', 'download', '/category/download.html', 'download.html', 0, 1, 'download.html', '#', 0, 20, 0, 3, 0, 0, NULL);
+INSERT INTO `cms_category` VALUES (32, 4, '价格', NULL, 'banner', NULL, '', 'price', '/category/price.html', '${category.code}.html', 0, 1, 'price.html', '${category.code}/${content.publishDate?string(\'yyyy-MM-dd\')}/${content.id}.html', 0, 20, 0, 4, 0, 0, NULL);
+INSERT INTO `cms_category` VALUES (33, 4, 'GITEE', 29, 'cover', NULL, '', 'gitee', '', 'https://gitee.com/sanluan/PublicCMS/issues', 1, 0, 'https://gitee.com/sanluan/PublicCMS/issues', '', 0, 20, 0, 3, 0, 0, NULL);
+INSERT INTO `cms_category` VALUES (34, 4, '后台功能演示', 30, 'cover', NULL, '', 'admin', '', 'https://cms.publiccms.com/admin/', 1, 0, 'https://cms.publiccms.com/admin/', '', 0, 20, 0, 1, 0, 0, NULL);
 INSERT INTO `cms_category` VALUES (71, 2, '中文栏目', NULL, NULL, '73,75,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,120', '', 'zh', NULL, '#', 1, 0, '#', '', 0, 20, 0, 0, 1, 0, NULL);
 INSERT INTO `cms_category` VALUES (72, 2, '英文栏目', NULL, NULL, '74,76,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,121', '', 'en', NULL, '#', 1, 0, '#', '', 0, 20, 0, 0, 1, 0, NULL);
 INSERT INTO `cms_category` VALUES (73, 2, '集团简介', 71, NULL, '75,77,78,79,80,81', '', 'about', NULL, '<@_categoryList parentId=category.id><#if page.totalCount gt 0>category/${page.list[0].id}</#if></@_categoryList>', 0, 0, 'category/75', '', 0, 20, 0, 0, 0, 0, NULL);
@@ -72,7 +87,22 @@ INSERT INTO `cms_category_attribute` VALUES (9, '系统介绍', 'PublicCMS,系�
 INSERT INTO `cms_category_attribute` VALUES (12, '文章', '文章', '文章', NULL);
 INSERT INTO `cms_category_attribute` VALUES (15, '小说', '小说,在线阅读', '小说,在线阅读', NULL);
 INSERT INTO `cms_category_attribute` VALUES (17, '科技', '科技', '科技频道', NULL);
-INSERT INTO `cms_category_attribute` VALUES (19, '案例', 'PublicCMS案例', 'PublicCMS案例', NULL);
+INSERT INTO `cms_category_attribute` VALUES (19, '案例', 'PublicCMS案例', '全球不同规模的企事业单位都在使用 PublicCMS', '{"left_height":"69","left_image":"assets/img/banner-case-1.svg","right_height":"79","right_image":"assets/img/banner-case-2.svg"}');
+INSERT INTO `cms_category_attribute` VALUES (20, '功能演示', 'PublicCMS,如何使用', 'PublicCMS如何使用', '{\"left_height\":\"75\",\"left_image\":\"assets/img/banner-intro-1.svg\",\"right_height\":\"80\",\"right_image\":\"assets/img/banner-intro-2.svg\"}');
+INSERT INTO `cms_category_attribute` VALUES (21, '汽车 - PublicCMS', '汽车,car', '汽车', NULL);
+INSERT INTO `cms_category_attribute` VALUES (22, '商品', '商品', '商品', NULL);
+INSERT INTO `cms_category_attribute` VALUES (23, '美图', '美图,美女', '美图美女', NULL);
+INSERT INTO `cms_category_attribute` VALUES (24, '介绍', 'PublicCMS,系统介绍', 'PublicCMS系统介绍', NULL);
+INSERT INTO `cms_category_attribute` VALUES (25, '文章', '文章', '文章', NULL);
+INSERT INTO `cms_category_attribute` VALUES (26, '小说', '小说,在线阅读', '小说,在线阅读', NULL);
+INSERT INTO `cms_category_attribute` VALUES (27, '手册', '手册', '手册', NULL);
+INSERT INTO `cms_category_attribute` VALUES (28, '案例', 'PublicCMS案例', 'PublicCMS案例', NULL);
+INSERT INTO `cms_category_attribute` VALUES (29, '问答', '问答', '更多 PublicCMS 的技术文章，欢迎各平台创作者贡献PublicCMS文章、视频、模版等', '{\"left_height\":\"79\",\"left_image\":\"assets/img/banner-qa-1.svg\",\"right_height\":\"86\",\"right_image\":\"assets/img/banner-qa-2.svg\"}');
+INSERT INTO `cms_category_attribute` VALUES (30, 'PublicCMS 的演示', 'PublicCMS 的演示', 'PublicCMS 的演示', '{\"left_height\":\"52\",\"left_image\":\"assets/img/banner-demo-1.svg\",\"right_height\":\"88\",\"right_image\":\"assets/img/banner-demo-2.svg\"}');
+INSERT INTO `cms_category_attribute` VALUES (31, 'PublicCMS下载', 'PublicCMS下载,PublicCMS价格,PublicCMS购买', 'PublicCMS 的应用程序、源码等', '{\"left_height\":\"77\",\"left_image\":\"assets/img/banner-download-1.svg\",\"right_height\":\"83\",\"right_image\":\"assets/img/banner-download-2.svg\"}');
+INSERT INTO `cms_category_attribute` VALUES (32, 'PublicCMS价格', 'PublicCMS价格,PublicCMS购买,制作网站价格,软件定制开发', 'PublicCMS产品价格', '{\"left_height\":\"85\",\"left_image\":\"assets/img/banner-price-1.svg\",\"right_height\":\"94\",\"right_image\":\"assets/img/banner-price-2.svg\"}');
+INSERT INTO `cms_category_attribute` VALUES (33, '', '', '', '{\"cover\":\"assets/img/qa-gitee.png\"}');
+INSERT INTO `cms_category_attribute` VALUES (34, '', '', '', '{\"cover\":\"assets/img/logo-original.png\"}');
 INSERT INTO `cms_category_attribute` VALUES (71, '', '', '', NULL);
 INSERT INTO `cms_category_attribute` VALUES (72, '', '', '', NULL);
 INSERT INTO `cms_category_attribute` VALUES (73, '', '', '', NULL);
@@ -131,84 +161,102 @@ INSERT INTO `cms_category_attribute` VALUES (121, '', '', '', '{\"article\":\"<p
 INSERT INTO `cms_category_model` VALUES (6, '1', '/system/article.html');
 INSERT INTO `cms_category_model` VALUES (6, '2', '');
 INSERT INTO `cms_category_model` VALUES (6, '3', '/system/picture.html');
-INSERT INTO `cms_category_model` VALUES (6, '5', '');
-INSERT INTO `cms_category_model` VALUES (6, '6', '/system/chapter.html');
 INSERT INTO `cms_category_model` VALUES (7, '1', '/system/article.html');
 INSERT INTO `cms_category_model` VALUES (7, '2', '');
 INSERT INTO `cms_category_model` VALUES (7, '3', '/system/picture.html');
-INSERT INTO `cms_category_model` VALUES (7, '5', '');
-INSERT INTO `cms_category_model` VALUES (7, '6', '/system/chapter.html');
 INSERT INTO `cms_category_model` VALUES (8, '3', '/system/picture.html');
-INSERT INTO `cms_category_model` VALUES (8, '5', '');
-INSERT INTO `cms_category_model` VALUES (8, '6', '/system/chapter.html');
 INSERT INTO `cms_category_model` VALUES (9, '1', '/system/article.html');
 INSERT INTO `cms_category_model` VALUES (9, '2', '');
 INSERT INTO `cms_category_model` VALUES (9, '3', '/system/picture.html');
-INSERT INTO `cms_category_model` VALUES (9, '5', '');
-INSERT INTO `cms_category_model` VALUES (9, '6', '/system/chapter.html');
 INSERT INTO `cms_category_model` VALUES (12, '1', '/system/article.html');
 INSERT INTO `cms_category_model` VALUES (12, '2', '');
 INSERT INTO `cms_category_model` VALUES (12, '5', '');
 INSERT INTO `cms_category_model` VALUES (12, '6', '/system/chapter.html');
-INSERT INTO `cms_category_model` VALUES (14, '5', '');
-INSERT INTO `cms_category_model` VALUES (14, '6', '/system/chapter.html');
 INSERT INTO `cms_category_model` VALUES (15, '4', '/system/book.html');
 INSERT INTO `cms_category_model` VALUES (15, '5', '');
 INSERT INTO `cms_category_model` VALUES (15, '6', '/system/chapter.html');
-INSERT INTO `cms_category_model` VALUES (16, '5', '');
-INSERT INTO `cms_category_model` VALUES (16, '6', '/system/chapter.html');
 INSERT INTO `cms_category_model` VALUES (17, '1', '/system/article.html');
 INSERT INTO `cms_category_model` VALUES (17, '2', '');
 INSERT INTO `cms_category_model` VALUES (17, '3', '/system/picture.html');
-INSERT INTO `cms_category_model` VALUES (17, '5', '');
-INSERT INTO `cms_category_model` VALUES (17, '6', '/system/chapter.html');
-INSERT INTO `cms_category_model` VALUES (18, '5', '');
-INSERT INTO `cms_category_model` VALUES (18, '6', '/system/chapter.html');
-INSERT INTO `cms_category_model` VALUES (18, '7', '');
-INSERT INTO `cms_category_model` VALUES (18, '8', '');
 INSERT INTO `cms_category_model` VALUES (19, '2', '');
-INSERT INTO `cms_category_model` VALUES (19, '5', '');
-INSERT INTO `cms_category_model` VALUES (19, '6', '/system/chapter.html');
+INSERT INTO `cms_category_model` VALUES (21, 'article', '/system/article.html');
+INSERT INTO `cms_category_model` VALUES (21, 'link', '');
+INSERT INTO `cms_category_model` VALUES (21, 'picture', '/system/picture.html');
+INSERT INTO `cms_category_model` VALUES (22, 'product', '/system/product.html');
+INSERT INTO `cms_category_model` VALUES (22, 'link', '');
+INSERT INTO `cms_category_model` VALUES (23, 'picture', '/system/picture.html');
+INSERT INTO `cms_category_model` VALUES (24, 'article', '/system/article.html');
+INSERT INTO `cms_category_model` VALUES (24, 'link', '');
+INSERT INTO `cms_category_model` VALUES (24, 'picture', '/system/picture.html');
+INSERT INTO `cms_category_model` VALUES (25, 'article', '/system/article.html');
+INSERT INTO `cms_category_model` VALUES (25, 'link', '');
+INSERT INTO `cms_category_model` VALUES (26, 'book', '/system/book.html');
+INSERT INTO `cms_category_model` VALUES (26, 'volume', '');
+INSERT INTO `cms_category_model` VALUES (26, 'chapter', '/system/chapter.html');
+INSERT INTO `cms_category_model` VALUES (27, 'guide', '/system/guide.html');
+INSERT INTO `cms_category_model` VALUES (28, 'article', '/system/article.html');
+INSERT INTO `cms_category_model` VALUES (28, 'link', '');
+INSERT INTO `cms_category_model` VALUES (31, 'dir', '');
+
 INSERT INTO `cms_category_model` VALUES (76, 'article', NULL);
 INSERT INTO `cms_category_model` VALUES (83, 'article', NULL);
 INSERT INTO `cms_category_model` VALUES (84, 'article', NULL);
 INSERT INTO `cms_category_model` VALUES (93, 'article', NULL);
 
--- ----------------------------
--- Records of cms_category_type
--- ----------------------------
-INSERT INTO `cms_category_type` VALUES (1, 2, '带文章的分类', 0, 1);
 
 -- ----------------------------
 -- Records of cms_content
 -- ----------------------------
-INSERT INTO `cms_content` VALUES (1, 3, 'PublicCMS官网模板使用说明', 3, 3, 3, 12, '1', NULL, NULL, 0, 0, NULL, '', 0, 0, 0,0,0, 0, 1, 'article/2020/01-01/1.html', 'PublicCMS官网模板是一组静态化模板', '', NULL, NULL, 0, 1, 0, 79, '2020-01-01 00:00:00', NULL, '2020-01-01 00:00:00', NULL, '2020-01-01 00:00:00', 0, 1, 0);
-INSERT INTO `cms_content` VALUES (2, 2, '企业中英文站点模板使用说明', 2, 2, 2, 84, 'article', NULL, NULL, 0, 0, NULL, NULL, 0, 0, 0, 0,0,0, 0, 'content/2', '企业中英文站点模板中主要有首页模板index.html,文章模板content.html，分类单页模板category.html，分类内容列表页news.html\n\n分为中英文两套模板\n\n所有模板均为动态模板，文章，分类模板接受参数为id,pageIndex等，既支持rest风格url如 news/1_12,又支持传统参数类型如news.html?id=1&pageIndex=12\n\n在分类中对带有文章的分类可以使用category.html，对内容列表可以使用news.html，填写分类访问路径为 模板名/${category.id} 或 模板名.html?id=${category.id}', '', NULL, NULL, 0, 0, 0, 1, '2020-01-01 00:00:00', NULL, '2020-01-01 00:00:00', NULL, '2020-01-01 00:00:00', 0, 1, 0);
-INSERT INTO `cms_content` VALUES (3, 4, 'PublicCMS官网模板使用说明', 3, 3, 3, 12, '1', NULL, NULL, 0, 0, NULL, '', 0, 0, 0,0,0, 0, 1, 'article/2020/01-01/1.html', 'PublicCMS官网模板是一组静态化模板', '', NULL, NULL, 0, 1, 0, 79, '2020-01-01 00:00:00', NULL, '2020-01-01 00:00:00', NULL, '2020-01-01 00:00:00', 0, 1, 0);
+INSERT INTO `cms_content` VALUES (1, 2, '企业中英文站点模板使用说明', 2, 2, 2, 84, 'article', NULL, NULL, 0, 0, NULL, NULL, 0, 0, 0, 0, 0, 'content/2', '企业中英文站点模板中主要有首页模板index.html,文章模板content.html，分类单页模板category.html，分类内容列表页news.html\n\n分为中英文两套模板\n\n所有模板均为动态模板，文章，分类模板接受参数为id,pageIndex等，既支持rest风格url如 news/1_12,又支持传统参数类型如news.html?id=1&pageIndex=12\n\n在分类中对带有文章的分类可以使用category.html，对内容列表可以使用news.html，填写分类访问路径为 模板名/${category.id} 或 模板名.html?id=${category.id}', '', NULL, NULL, 0, 0, 0, 0, 0, 0, '2020-01-01 00:00:00', NULL, '2020-01-01 00:00:00', NULL, '2020-01-01 00:00:00', 0, 1, 0);
+INSERT INTO `cms_content` VALUES (2, 3, 'PublicCMS官网模板使用说明', 3, 3, 3, 12, '1', NULL, NULL, 0, 0, NULL, '', 0, 0, 0, 0, 1, 'article/2020/01-01/1.html', 'PublicCMS官网模板是一组静态化模板', '', NULL, NULL, 0, 0, 0, 0, 0, 0, '2020-01-01 00:00:00', NULL, '2020-01-01 00:00:00', NULL, '2020-01-01 00:00:00', 0, 1, 0);
+INSERT INTO `cms_content` VALUES (3, 4, 'PublicCMS官网模板使用说明', 4, 4, 4, 25, 'article', NULL, NULL, 0, 0, NULL, '', 0, 0, 0, 0, 1, 'article/2020/01-01/1.html', 'PublicCMS官网模板是一组静态化模板', '', NULL, NULL, 0, 0, 0, 0, 0, 0, '2020-01-01 00:00:00', NULL, '2020-01-01 00:00:00', NULL, '2020-01-01 00:00:00', 0, 1, 0);
+INSERT INTO `cms_content` VALUES (4, 4, '应用程序', 4, 4, 4, 31, 'dir', NULL, NULL, 0, 0, NULL, NULL, 0, 0, 0, 0, 0, '#', 'PublicCMS 的应用程序', '', NULL, 'assets/img/icon-download-program.svg', 0, 0, 0, 0.00, 0, 0, '2022-01-08 18:23:59', NULL, '2022-01-09 11:48:07', NULL, '2022-01-08 18:23:55', 0, 1, 0);
+
 -- ----------------------------
 -- Records of cms_content_attribute
 -- ----------------------------
-INSERT INTO `cms_content_attribute` VALUES (1, NULL, NULL, NULL, '    PublicCMS官网模板是一组静态化模板，它是现在PublicCMS官网所采用的模板category目录下为分类模板，ftl目录下为模板片段，member下是动态模板有登录、注册、评论、个人页面等search是搜索模板，system下是四种内容的模板，index.html是首页模板即支持动态也可以静态化，sitemap.xml是站点地图模板当您新建一个分类时，分类静态化模板可以再category下面选择其中一个，并设置静态化的访问路径内容模板可以再system下面选择一个，并设置静态化访问路径。其中article.html 为文章，picture.html为图集，book.html、chapter.html为图书、章节', '<p>&nbsp;&nbsp;&nbsp;&nbsp;PublicCMS官网模板是一组静态化模板，它是现在PublicCMS官网所采用的模板</p><p><img src=\"//site3.dev.publiccms.com:8080/publiccms/webfile/upload/2020/03-24/12-28-500720-90407063.png\" title=\"1.png\" alt=\"1.png\"/></p><p>category目录下为分类模板，ftl目录下为模板片段，member下是动态模板有登录、注册、评论、个人页面等</p><p>search是搜索模板，system下是四种内容的模板，index.html是首页模板即支持动态也可以静态化，sitemap.xml是站点地图模板</p><p>当您新建一个分类时，分类静态化模板可以再category下面选择其中一个，并设置静态化的访问路径</p><p><img src=\"//site3.dev.publiccms.com:8080/publiccms/webfile/upload/2020/03-24/12-32-2905711856271141.png\" title=\"2.png\" alt=\"2.png\"/></p><p>内容模板可以再system下面选择一个，并设置静态化访问路径。其中article.html 为文章，picture.html为图集，book.html、chapter.html为图书、章节</p><p><img src=\"//site3.dev.publiccms.com:8080/publiccms/webfile/upload/2020/03-24/12-32-36030545988429.png\" title=\"3.png\" alt=\"3.png\"/></p>', 318);
-INSERT INTO `cms_content_attribute` VALUES (2, NULL, NULL, NULL, NULL, '<p>企业中英文站点模板中主要有首页模板index.html,文章模板content.html，分类单页模板category.html，分类内容列表页news.html</p>\n\n<p>分为中英文两套模板</p>\n\n<p>所有模板均为动态模板，文章，分类模板接受参数为id,pageIndex等，既支持rest风格url如 news/1_12,又支持传统参数类型如news.html?id=1&amp;pageIndex=12</p>\n\n<p>在分类中对带有文章的分类可以使用category.html，对内容列表可以使用news.html，填写分类访问路径为 模板名/${category.id} 或 模板名.html?id=${category.id}</p>\n', 301);
+INSERT INTO `cms_content_attribute` VALUES (1, NULL, NULL, NULL, NULL, '<p>企业中英文站点模板中主要有首页模板index.html,文章模板content.html，分类单页模板category.html，分类内容列表页news.html</p>\n\n<p>分为中英文两套模板</p>\n\n<p>所有模板均为动态模板，文章，分类模板接受参数为id,pageIndex等，既支持rest风格url如 news/1_12,又支持传统参数类型如news.html?id=1&amp;pageIndex=12</p>\n\n<p>在分类中对带有文章的分类可以使用category.html，对内容列表可以使用news.html，填写分类访问路径为 模板名/${category.id} 或 模板名.html?id=${category.id}</p>\n', 301);
+INSERT INTO `cms_content_attribute` VALUES (2, NULL, NULL, NULL, '    PublicCMS官网模板是一组静态化模板，它是现在PublicCMS官网所采用的模板category目录下为分类模板，ftl目录下为模板片段，member下是动态模板有登录、注册、评论、个人页面等search是搜索模板，system下是四种内容的模板，index.html是首页模板即支持动态也可以静态化，sitemap.xml是站点地图模板当您新建一个分类时，分类静态化模板可以再category下面选择其中一个，并设置静态化的访问路径内容模板可以再system下面选择一个，并设置静态化访问路径。其中article.html 为文章，picture.html为图集，book.html、chapter.html为图书、章节', '<p>&nbsp;&nbsp;&nbsp;&nbsp;PublicCMS官网模板是一组静态化模板，它是现在PublicCMS官网所采用的模板</p><p><img src=\"//site3.dev.publiccms.com:8080/publiccms/webfile/upload/2020/03-24/12-28-500720-90407063.png\" title=\"1.png\" alt=\"1.png\"/></p><p>category目录下为分类模板，ftl目录下为模板片段，member下是动态模板有登录、注册、评论、个人页面等</p><p>search是搜索模板，system下是四种内容的模板，index.html是首页模板即支持动态也可以静态化，sitemap.xml是站点地图模板</p><p>当您新建一个分类时，分类静态化模板可以再category下面选择其中一个，并设置静态化的访问路径</p><p><img src=\"//site3.dev.publiccms.com:8080/publiccms/webfile/upload/2020/03-24/12-32-2905711856271141.png\" title=\"2.png\" alt=\"2.png\"/></p><p>内容模板可以再system下面选择一个，并设置静态化访问路径。其中article.html 为文章，picture.html为图集，book.html、chapter.html为图书、章节</p><p><img src=\"//site3.dev.publiccms.com:8080/publiccms/webfile/upload/2020/03-24/12-32-36030545988429.png\" title=\"3.png\" alt=\"3.png\"/></p>', 318);
 INSERT INTO `cms_content_attribute` VALUES (3, NULL, NULL, NULL, '    PublicCMS官网模板是一组静态化模板，它是现在PublicCMS官网所采用的模板category目录下为分类模板，ftl目录下为模板片段，member下是动态模板有登录、注册、评论、个人页面等search是搜索模板，system下是四种内容的模板，index.html是首页模板即支持动态也可以静态化，sitemap.xml是站点地图模板当您新建一个分类时，分类静态化模板可以再category下面选择其中一个，并设置静态化的访问路径内容模板可以再system下面选择一个，并设置静态化访问路径。其中article.html 为文章，picture.html为图集，book.html、chapter.html为图书、章节', '<p>&nbsp;&nbsp;&nbsp;&nbsp;PublicCMS官网模板是一组静态化模板，它是现在PublicCMS官网所采用的模板</p><p><img src=\"//site4.dev.publiccms.com:8080/publiccms/webfile/upload/2020/03-24/12-28-500720-90407063.png\" title=\"1.png\" alt=\"1.png\"/></p><p>category目录下为分类模板，ftl目录下为模板片段，member下是动态模板有登录、注册、评论、个人页面等</p><p>search是搜索模板，system下是四种内容的模板，index.html是首页模板即支持动态也可以静态化，sitemap.xml是站点地图模板</p><p>当您新建一个分类时，分类静态化模板可以再category下面选择其中一个，并设置静态化的访问路径</p><p><img src=\"//site4.dev.publiccms.com:8080/publiccms/webfile/upload/2020/03-24/12-32-2905711856271141.png\" title=\"2.png\" alt=\"2.png\"/></p><p>内容模板可以再system下面选择一个，并设置静态化访问路径。其中article.html 为文章，picture.html为图集，book.html、chapter.html为图书、章节</p><p><img src=\"//site4.dev.publiccms.com:8080/publiccms/webfile/upload/2020/03-24/12-32-36030545988429.png\" title=\"3.png\" alt=\"3.png\"/></p>', 318);
+INSERT INTO `cms_content_attribute` VALUES (4, NULL, NULL, '{\"dir\":\"download/software\"}', NULL, NULL, 0);
+
 -- ----------------------------
 -- Records of cms_place
 -- ----------------------------
-INSERT INTO `cms_place` VALUES (1, 3, '/94fe86e5-45b3-4896-823a-37c6d7d6c578.html', 3, 3, 'custom', NULL, 'Public CMS启动流程图', '//www.publiccms.com/version/2016/11-24/252.html', '//www.publiccms.com/2016/11/29/15-25-440266448369330.jpg', '2020-01-01 00:00:00', '2020-01-01 00:00:00', NULL, 1, 6, 0);
-INSERT INTO `cms_place` VALUES (2, 3, '/94fe86e5-45b3-4896-823a-37c6d7d6c578.html', 3, 3, 'custom', NULL, '美食', '//www.publiccms.com/picture/2015/08-13/159.html', '//www.publiccms.com/2015/11/15/17-35-150887-240130090.jpg', '2020-01-01 00:00:00', '2020-01-01 00:00:00', NULL, 1, 4, 0);
-INSERT INTO `cms_place` VALUES (3, 3, '/94fe86e5-45b3-4896-823a-37c6d7d6c578.html', 3, 3, 'custom', NULL, '昂科拉', '//www.publiccms.com/car/2015/08-06/9.html', '//www.publiccms.com/2015/11/15/17-35-0606061972977756.jpg', '2020-01-01 00:00:00', '2020-01-01 00:00:00', NULL, 1, 8, 0);
-INSERT INTO `cms_place` VALUES (4, 3, '/94fe86e5-45b3-4896-823a-37c6d7d6c578.html', 3, 3, 'custom', NULL, 'PublicCMS系统使用手册下载', '//www.publiccms.com/help/2015/10-09/179.html', '//www.publiccms.com/2015/11/15/17-34-560426-203327271.jpg', '2020-01-01 00:00:00', '2020-01-01 00:00:00', NULL, 1, 18, 0);
-INSERT INTO `cms_place` VALUES (6, 3, '/3435e9a7-565a-4f93-8670-9c272a1d51cc.html', 3, 3, 'custom', NULL, '唯美动漫图片', '//www.publiccms.com/picture/2015/08-06/4.html', '//www.publiccms.com/2015/08/07/11-24-1308292097994334.jpg', '2020-01-01 00:00:00', '2020-01-01 00:00:00', NULL, 1, 4, 0);
-INSERT INTO `cms_place` VALUES (7, 3, '/3435e9a7-565a-4f93-8670-9c272a1d51cc.html', 3, 3, 'custom', NULL, '昂科拉', '//www.publiccms.com/car/2015/08-06/9.html', '//www.publiccms.com/2015/08/07/11-24-3602801209954489.jpg', '2020-01-01 00:00:00', '2020-01-01 00:00:00', NULL, 1, 2, 0);
-INSERT INTO `cms_place` VALUES (13, 2, '/ab53b388-be0e-4674-b631-e1de625c74ac.html', 2, 2, 'custom', NULL, '投资管理', '#', 'assets/images/201210310952338421.gif', '2020-01-01 00:00:00', '2020-01-01 00:00:00', NULL, 1, 0, 0);
-INSERT INTO `cms_place` VALUES (14, 2, '/ab53b388-be0e-4674-b631-e1de625c74ac.html', 2, 2, 'custom', NULL, '置业建设', '#', 'assets/images/201210310953075326.gif', '2020-01-01 00:00:00', '2020-01-01 00:00:00', NULL, 1, 0, 0);
-INSERT INTO `cms_place` VALUES (15, 2, '/ab53b388-be0e-4674-b631-e1de625c74ac.html', 2, 2, 'custom', NULL, '能源光电', '#', 'assets/images/201210310953287112.gif', '2020-01-01 00:00:00', '2020-01-01 00:00:00', NULL, 1, 0, 0);
-INSERT INTO `cms_place` VALUES (16, 2, '/ab53b388-be0e-4674-b631-e1de625c74ac.html', 2, 2, 'custom', NULL, '现代物流', '#', 'assets/images/201210310953526760.gif', '2020-01-01 00:00:00', '2020-01-01 00:00:00', NULL, 1, 0, 0);
-INSERT INTO `cms_place` VALUES (17, 2, '/ab53b388-be0e-4674-b631-e1de625c74ac.html', 2, 2, 'custom', NULL, '生物制药', '#', 'assets/images/201209291145162884.gif', '2020-01-01 00:00:00', '2020-01-01 00:00:00', NULL, 1, 21, 0);
-INSERT INTO `cms_place` VALUES (18, 2, '/ab53b388-be0e-4674-b631-e1de625c74ac.html', 2, 2, 'custom', NULL, '现代农业', '#', 'assets/images/201210091631452563.gif', '2020-01-01 00:00:00', '2020-01-01 00:00:00', NULL, 1, 0, 0);
-INSERT INTO `cms_place` VALUES (19, 2, '/505ddbed-f6ff-4a53-b5a8-0b2d7479a2ec.html', 2, 2, 'custom', NULL, 'PublicCMS', 'http://www.publiccms.com/', '', '2020-01-01 00:00:00', '2020-01-01 00:00:00', NULL, 1, 3, 0);
-INSERT INTO `cms_place` VALUES (20, 2, '/e2ef0223-ddd3-4a95-bc65-c7eb796c911a.html', 2, 2, 'custom', NULL, 'OA', '#', 'assets/images/l_1.gif', '2020-01-01 00:00:00', '2020-01-01 00:00:00', NULL, 1, 0, 0);
-INSERT INTO `cms_place` VALUES (21, 2, '/e2ef0223-ddd3-4a95-bc65-c7eb796c911a.html', 2, 2, 'custom', NULL, '联系我们', '#', 'assets/images/l_2.gif', '2020-01-01 00:00:00', '2020-01-01 00:00:00', NULL, 1, 0, 0);
+INSERT INTO `cms_place` VALUES (1, 2, '/ab53b388-be0e-4674-b631-e1de625c74ac.html', 2, 2, 'custom', NULL, '投资管理', '#', 'assets/images/201210310952338421.gif', '2020-01-01 00:00:00', '2020-01-01 00:00:00', NULL, 1, 0, 0);
+INSERT INTO `cms_place` VALUES (2, 2, '/ab53b388-be0e-4674-b631-e1de625c74ac.html', 2, 2, 'custom', NULL, '置业建设', '#', 'assets/images/201210310953075326.gif', '2020-01-01 00:00:00', '2020-01-01 00:00:00', NULL, 1, 0, 0);
+INSERT INTO `cms_place` VALUES (3, 2, '/ab53b388-be0e-4674-b631-e1de625c74ac.html', 2, 2, 'custom', NULL, '能源光电', '#', 'assets/images/201210310953287112.gif', '2020-01-01 00:00:00', '2020-01-01 00:00:00', NULL, 1, 0, 0);
+INSERT INTO `cms_place` VALUES (4, 2, '/ab53b388-be0e-4674-b631-e1de625c74ac.html', 2, 2, 'custom', NULL, '现代物流', '#', 'assets/images/201210310953526760.gif', '2020-01-01 00:00:00', '2020-01-01 00:00:00', NULL, 1, 0, 0);
+INSERT INTO `cms_place` VALUES (5, 2, '/ab53b388-be0e-4674-b631-e1de625c74ac.html', 2, 2, 'custom', NULL, '生物制药', '#', 'assets/images/201209291145162884.gif', '2020-01-01 00:00:00', '2020-01-01 00:00:00', NULL, 1, 0, 0);
+INSERT INTO `cms_place` VALUES (6, 2, '/ab53b388-be0e-4674-b631-e1de625c74ac.html', 2, 2, 'custom', NULL, '现代农业', '#', 'assets/images/201210091631452563.gif', '2020-01-01 00:00:00', '2020-01-01 00:00:00', NULL, 1, 0, 0);
+INSERT INTO `cms_place` VALUES (7, 2, '/505ddbed-f6ff-4a53-b5a8-0b2d7479a2ec.html', 2, 2, 'custom', NULL, 'PublicCMS', 'http://www.publiccms.com/', '', '2020-01-01 00:00:00', '2020-01-01 00:00:00', NULL, 1, 0, 0);
+INSERT INTO `cms_place` VALUES (8, 2, '/e2ef0223-ddd3-4a95-bc65-c7eb796c911a.html', 2, 2, 'custom', NULL, 'OA', '#', 'assets/images/l_1.gif', '2020-01-01 00:00:00', '2020-01-01 00:00:00', NULL, 1, 0, 0);
+INSERT INTO `cms_place` VALUES (9, 2, '/e2ef0223-ddd3-4a95-bc65-c7eb796c911a.html', 2, 2, 'custom', NULL, '联系我们', '#', 'assets/images/l_2.gif', '2020-01-01 00:00:00', '2020-01-01 00:00:00', NULL, 1, 0, 0);
+INSERT INTO `cms_place` VALUES (10, 3, '/94fe86e5-45b3-4896-823a-37c6d7d6c578.html', 3, 3, 'custom', NULL, 'Public CMS启动流程图', '//www.publiccms.com/version/2016/11-24/252.html', '//www.publiccms.com/2016/11/29/15-25-440266448369330.jpg', '2020-01-01 00:00:00', '2020-01-01 00:00:00', NULL, 1, 0, 0);
+INSERT INTO `cms_place` VALUES (11, 3, '/94fe86e5-45b3-4896-823a-37c6d7d6c578.html', 3, 3, 'custom', NULL, '美食', '//www.publiccms.com/picture/2015/08-13/159.html', '//www.publiccms.com/2015/11/15/17-35-150887-240130090.jpg', '2020-01-01 00:00:00', '2020-01-01 00:00:00', NULL, 1, 0, 0);
+INSERT INTO `cms_place` VALUES (12, 3, '/94fe86e5-45b3-4896-823a-37c6d7d6c578.html', 3, 3, 'custom', NULL, '昂科拉', '//www.publiccms.com/car/2015/08-06/9.html', '//www.publiccms.com/2015/11/15/17-35-0606061972977756.jpg', '2020-01-01 00:00:00', '2020-01-01 00:00:00', NULL, 1, 8, 0);
+INSERT INTO `cms_place` VALUES (13, 3, '/94fe86e5-45b3-4896-823a-37c6d7d6c578.html', 3, 3, 'custom', NULL, 'PublicCMS系统使用手册下载', '//www.publiccms.com/help/2015/10-09/179.html', '//www.publiccms.com/2015/11/15/17-34-560426-203327271.jpg', '2020-01-01 00:00:00', '2020-01-01 00:00:00', NULL, 1, 0, 0);
+INSERT INTO `cms_place` VALUES (14, 3, '/3435e9a7-565a-4f93-8670-9c272a1d51cc.html', 3, 3, 'custom', NULL, '唯美动漫图片', '//www.publiccms.com/picture/2015/08-06/4.html', '//www.publiccms.com/2015/08/07/11-24-1308292097994334.jpg', '2020-01-01 00:00:00', '2020-01-01 00:00:00', NULL, 1, 0, 0);
+INSERT INTO `cms_place` VALUES (15, 3, '/3435e9a7-565a-4f93-8670-9c272a1d51cc.html', 3, 3, 'custom', NULL, '昂科拉', '//www.publiccms.com/car/2015/08-06/9.html', '//www.publiccms.com/2015/08/07/11-24-3602801209954489.jpg', '2020-01-01 00:00:00', '2020-01-01 00:00:00', NULL, 1, 0, 0);
+INSERT INTO `cms_place` VALUES (16, 3, '/d0e3dd81-02e5-45d6-a1da-1e652c3ec882.html', 3, 3, 'category', 12, '文章', NULL, NULL, '2022-04-01 00:00:00', '2022-04-01 00:00:00', NULL, 1, 0, 0);
+INSERT INTO `cms_place` VALUES (17, 4, '/8c6844d3-5c59-4ef9-b7fe-895937e66e29.html', 4, 4, 'category', 24, '介绍', NULL, NULL, '2022-04-01 00:00:00', '2022-04-01 00:00:00', NULL, 1, 0, 0);
+INSERT INTO `cms_place` VALUES (18, 4, '/8c6844d3-5c59-4ef9-b7fe-895937e66e29.html', 4, 4, 'category', 25, '文章', NULL, NULL, '2022-04-01 00:00:00', '2022-04-01 00:00:00', NULL, 1, 0, 0);
+INSERT INTO `cms_place` VALUES (19, 4, '/cfdc226d-8abc-48ec-810d-f3941b175b20.html', 1, NULL, 'custom', NULL, 'PublicCMS', 'http://www.publiccms.com/', NULL, '2022-04-01 00:00:00', '2022-04-01 00:00:00', NULL, 1, 0, 0);
+INSERT INTO `cms_place` VALUES (20, 4, '/3fccf48a-3b30-4aa1-80f0-0b860eebe7d4.html', 1, 1, 'custom', NULL, '静态化服务', NULL, 'assets/img/index-intro-3.svg', '2022-02-15 12:40:07', '2022-02-15 12:39:45', NULL, 1, 0, 0);
+INSERT INTO `cms_place` VALUES (21, 4, '/3fccf48a-3b30-4aa1-80f0-0b860eebe7d4.html', 1, 1, 'custom', NULL, '完整可定制化', NULL, 'assets/img/index-intro-2.svg', '2022-02-15 12:40:28', '2022-02-15 12:40:11', NULL, 1, 0, 0);
+INSERT INTO `cms_place` VALUES (22, 4, '/3fccf48a-3b30-4aa1-80f0-0b860eebe7d4.html', 1, 1, 'custom', NULL, '高性能架构', NULL, 'assets/img/index-intro-1.svg', '2022-02-15 12:40:46', '2022-02-15 12:40:30', NULL, 1, 0, 0);
+INSERT INTO `cms_place` VALUES (23, 4, '/footer/0f5a4595-4cd8-4be2-94e8-acb5d5e47e89.html', 1, 1, 'custom', NULL, '一群191381542', 'https://qm.qq.com/cgi-bin/qm/qr?k=xoxCUvv7bDCFQ8AAqaoWB1JsLz0L90qn', NULL, '2022-02-24 18:11:58', '2022-02-24 18:11:39', NULL, 1, 131, 0);
+INSERT INTO `cms_place` VALUES (24, 4, '/footer/0f5a4595-4cd8-4be2-94e8-acb5d5e47e89.html', 1, 1, 'custom', NULL, '二群481589563', 'https://qm.qq.com/cgi-bin/qm/qr?k=x15JZdCp8vWlxV1mMoMTyrHzMqw3dmI1', NULL, '2022-02-24 18:12:15', '2022-02-24 18:11:39', NULL, 1, 122, 0);
+INSERT INTO `cms_place` VALUES (25, 4, '/footer/0f5a4595-4cd8-4be2-94e8-acb5d5e47e89.html', 1, 1, 'custom', NULL, '三群638756883', 'https://qm.qq.com/cgi-bin/qm/qr?k=VogNtcpFOLxvjtvzUcAElZOK-KC4To_u', NULL, '2022-02-24 18:12:35', '2022-02-24 18:11:39', NULL, 1, 121, 0);
+INSERT INTO `cms_place` VALUES (26, 4, '/footer/0f5a4595-4cd8-4be2-94e8-acb5d5e47e89.html', 1, 1, 'custom', NULL, '四群930992232', 'https://qm.qq.com/cgi-bin/qm/qr?k=lsFbfVpj3yqWuY92GYkOG1esbyPNS7O3', NULL, '2022-02-24 18:12:56', '2022-02-24 18:11:39', NULL, 1, 120, 0);
+INSERT INTO `cms_place` VALUES (27, 4, '/footer/21c06930-d5ad-4727-87bb-005104dff25e.html', 1, 1, 'custom', NULL, '18600980373', NULL, NULL, '2022-02-24 18:16:10', '2022-02-24 18:16:07', NULL, 1, 0, 0);
+INSERT INTO `cms_place` VALUES (28, 4, '/footer/4afbbf15-b77e-4ab6-ab21-44b82c096230.html', 1, NULL, 'custom', NULL, '数据结构', 'https://www.publiccms.com/upload/data-dictionary.html', NULL, '2022-02-24 18:18:14', '2022-02-24 18:17:56', NULL, 1, 78, 0);
+INSERT INTO `cms_place` VALUES (29, 4, '/footer/4afbbf15-b77e-4ab6-ab21-44b82c096230.html', 1, 1, 'custom', NULL, 'Java API', 'https://www.publiccms.com/upload/api/overview-summary.html', NULL, '2022-02-24 18:19:21', '2022-02-24 18:17:56', NULL, 1, 61, 0);
+INSERT INTO `cms_place` VALUES (30, 4, '/footer/4afbbf15-b77e-4ab6-ab21-44b82c096230.html', 1, 1, 'custom', NULL, 'FreeMarker在线测试', 'https://www.sanluan.com/freemarker_test.html', NULL, '2022-02-24 18:19:39', '2022-02-24 18:17:56', NULL, 1, 77, 0);
+INSERT INTO `cms_place` VALUES (31, 4, '/footer/4afbbf15-b77e-4ab6-ab21-44b82c096230.html', 1, 1, 'custom', NULL, 'FreeMarker文档', 'http://www.kerneler.com/freemarker2.3.23/', NULL, '2022-02-24 18:19:55', '2022-02-24 18:17:56', NULL, 1, 75, 0);
+INSERT INTO `cms_place` VALUES (32, 4, '/footer/4afbbf15-b77e-4ab6-ab21-44b82c096230.html', 1, 1, 'custom', NULL, 'SEO效果体验', 'https://tongji.baidu.com/web/welcome/ico?s=bd81f02e5329554415de9ee15f916a98', NULL, '2022-02-24 18:20:11', '2022-02-24 18:17:56', NULL, 1, 83, 0);
+INSERT INTO `cms_place` VALUES (33, 4, '/footer/9eedb96c-4f47-422e-8020-81a4b362e0a6.html', 1, 1, 'custom', NULL, '津ICP备19003922号-2', 'https://beian.miit.gov.cn/', NULL, '2022-02-24 18:23:15', '2022-02-24 18:22:56', NULL, 1, 109, 0);
+
 -- ----------------------------
 -- Records of cms_place_attribute
 -- ----------------------------
@@ -233,7 +281,19 @@ INSERT INTO `cms_place_attribute` VALUES (18, '{}');
 INSERT INTO `cms_place_attribute` VALUES (19, '{}');
 INSERT INTO `cms_place_attribute` VALUES (20, '{}');
 INSERT INTO `cms_place_attribute` VALUES (21, '{}');
-
+INSERT INTO `cms_place_attribute` VALUES (22, '{}');
+INSERT INTO `cms_place_attribute` VALUES (23, '{}');
+INSERT INTO `cms_place_attribute` VALUES (24, '{}');
+INSERT INTO `cms_place_attribute` VALUES (25, '{}');
+INSERT INTO `cms_place_attribute` VALUES (26, '{}');
+INSERT INTO `cms_place_attribute` VALUES (27, '{}');
+INSERT INTO `cms_place_attribute` VALUES (28, '{}');
+INSERT INTO `cms_place_attribute` VALUES (29, '{}');
+INSERT INTO `cms_place_attribute` VALUES (30, '{}');
+INSERT INTO `cms_place_attribute` VALUES (31, '{}');
+INSERT INTO `cms_place_attribute` VALUES (32, '{}');
+INSERT INTO `cms_place_attribute` VALUES (33, '{}');
+INSERT INTO `cms_place_attribute` VALUES (34, '{}');
 -- ----------------------------
 -- Records of sys_config_data
 -- ----------------------------
@@ -256,20 +316,10 @@ INSERT INTO `sys_dept` VALUES (4, 4, '技术部', '4', NULL, '', 4, 1000, 1, 1, 
 -- Records of sys_domain
 -- ----------------------------
 INSERT INTO `sys_domain` VALUES ('search.site3.dev.publiccms.com', 3, 0, 0, '/search/');
+INSERT INTO `sys_domain` VALUES ('search.site4.dev.publiccms.com', 4, 0, 0, '/search/');
 INSERT INTO `sys_domain` VALUES ('site2.dev.publiccms.com', 2, 1, 0, '');
 INSERT INTO `sys_domain` VALUES ('site3.dev.publiccms.com', 3, 0, 0, '/member/');
 INSERT INTO `sys_domain` VALUES ('site4.dev.publiccms.com', 4, 0, 0, '/member/');
-INSERT INTO `sys_domain` VALUES ('search.site4.dev.publiccms.com', 4, 0, 0, '/search/');
-
--- ----------------------------
--- Records of sys_extend
--- ----------------------------
-INSERT INTO `sys_extend` VALUES (1, 'categoryType', 1);
-
--- ----------------------------
--- Records of sys_extend_field
--- ----------------------------
-INSERT INTO `sys_extend_field` VALUES (1, 'article', 1, 0, NULL, '内容', '', 'editor', '', NULL, 0);
 
 -- ----------------------------
 -- Records of sys_role

@@ -1,7 +1,7 @@
 package com.publiccms.logic.service.cms;
 
 import org.springframework.stereotype.Service;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.tools.CommonUtils;

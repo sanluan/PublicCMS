@@ -13,7 +13,7 @@
         </thead>
         <tbody>
             <#list page.list as a>
-            <tr target="sid" rel="${a.name!}">
+            <tr>
                 <td><a href="http://${(a.name)!}">${(a.name)!}</a></td>
                 <td>${(a.path)!}</td>
                 <td class="wrap">

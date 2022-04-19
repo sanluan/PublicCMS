@@ -8,7 +8,7 @@ import java.util.List;
 
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
@@ -38,7 +38,7 @@ public class CmsVoteService extends BaseService<CmsVote> {
      * @param pageSize
      * @return results page
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public PageHandler getPage(Short siteId, Date startStartDate, Date endStartDate, Date startEndDate, Date endEndDate,
             String title, Boolean disabled, String orderField, String orderType, Integer pageIndex, Integer pageSize) {
         return dao.getPage(siteId, startStartDate, endStartDate, startEndDate, endEndDate, title, disabled, orderField, orderType,

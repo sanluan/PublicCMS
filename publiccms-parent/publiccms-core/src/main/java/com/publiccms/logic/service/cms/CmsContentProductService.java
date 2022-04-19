@@ -8,6 +8,8 @@ import java.util.Set;
 
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
@@ -15,8 +17,6 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsContentProduct;
 import com.publiccms.entities.trade.TradeOrderProduct;
 import com.publiccms.logic.dao.cms.CmsContentProductDao;
-
-import jakarta.transaction.Transactional;
 
 /**
  *
@@ -42,7 +42,7 @@ public class CmsContentProductService extends BaseService<CmsContentProduct> {
      * @param pageSize
      * @return results page
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public PageHandler getPage(Short siteId, Long contentId, Long userId, String title, BigDecimal startPrice,
             BigDecimal endPrice, String orderField, String orderType, Integer pageIndex, Integer pageSize) {
         return dao.getPage(siteId, contentId, userId, title, startPrice, endPrice, orderField, orderType, pageIndex, pageSize);
@@ -53,7 +53,7 @@ public class CmsContentProductService extends BaseService<CmsContentProduct> {
      * @param contentId
      * @return results list
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public List<CmsContentProduct> getList(Short siteId, Long contentId) {
         return dao.getList(siteId, contentId);
     }
@@ -92,7 +92,7 @@ public class CmsContentProductService extends BaseService<CmsContentProduct> {
      * @param siteId
      * @param tradeOrderProductList
      */
-    @Transactional
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public void deduction(short siteId, List<TradeOrderProduct> tradeOrderProductList) {
         if (null != tradeOrderProductList) {
             for (TradeOrderProduct orderProduct : tradeOrderProductList) {

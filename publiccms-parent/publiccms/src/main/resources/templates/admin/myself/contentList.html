@@ -3,7 +3,7 @@
         <#assign parent=object/>
     </@_content>
 </#if>
-<@_contentList advanced=true status=status modelId=modelId parentId=parentId emptyParent=true title=title userId=admin.id
+<@_contentList advanced=true status=status modelId=modelIds parentId=parentId emptyParent=true title=title userId=admin.id
             startPublishDate=startPublishDate endPublishDate=endPublishDate
             orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <@_sysAuthorized roleIds=admin.roles urls='cmsContent/add,cmsContent/delete,cmsContent/uncheck,cmsContent/push,cmsContent/refresh,cmsContent/publish,cmsContent/export,cmsComment/list'><#assign authorizedMap=map/></@_sysAuthorized>
@@ -90,7 +90,7 @@
 
             <#list page.list as a>
                 <#assign contentId=(a.quoteContentId?has_content)?then(a.quoteContentId,a.id)/>
-            <tr target="sid" rel="${contentId}">
+            <tr>
                 <td><input name="ids" value="${contentId}" type="checkbox"></td>
                 <td>${a.id}</td>
                 <td class="wrap">

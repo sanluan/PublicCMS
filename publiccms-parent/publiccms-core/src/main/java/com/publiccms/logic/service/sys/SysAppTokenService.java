@@ -8,7 +8,7 @@ import com.publiccms.entities.sys.SysAppToken;
 import com.publiccms.logic.dao.sys.SysAppTokenDao;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
@@ -28,7 +28,7 @@ public class SysAppTokenService extends BaseService<SysAppToken> {
      * @param pageSize
      * @return results page
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public PageHandler getPage(Integer appId, Integer pageIndex, Integer pageSize) {
         return dao.getPage(appId, pageIndex, pageSize);
     }

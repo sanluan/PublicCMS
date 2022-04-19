@@ -13,6 +13,7 @@ import jakarta.persistence.TemporalType;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.search.engine.backend.analysis.AnalyzerNames;
 import org.hibernate.search.engine.backend.types.Aggregable;
+import org.hibernate.search.engine.backend.types.Projectable;
 import org.hibernate.search.engine.backend.types.Sortable;
 import org.hibernate.search.mapper.pojo.bridge.mapping.annotation.RoutingBinderRef;
 import org.hibernate.search.mapper.pojo.bridge.mapping.annotation.TypeBinderRef;
@@ -48,7 +49,7 @@ public class CmsContent implements java.io.Serializable {
     @JsonIgnore
     private short siteId;
     @GeneratorColumn(title = "标题", condition = true, like = true, or = true)
-    @FullTextField(analyzer = "cms")
+    @FullTextField(analyzer = "cms", projectable = Projectable.YES)
     private String title;
     @GeneratorColumn(title = "发布用户", condition = true)
     private long userId;
@@ -57,29 +58,29 @@ public class CmsContent implements java.io.Serializable {
     @GeneratorColumn(title = "审核用户", condition = true)
     private Long checkUserId;
     @GeneratorColumn(title = "分类", condition = true)
-    @GenericField(aggregable = Aggregable.YES)
+    @GenericField(aggregable = Aggregable.YES, projectable = Projectable.YES)
     private int categoryId;
     @GeneratorColumn(title = "模型", condition = true)
-    @GenericField(aggregable = Aggregable.YES)
+    @GenericField(aggregable = Aggregable.YES, projectable = Projectable.YES)
     private String modelId;
     @GeneratorColumn(title = "父内容", condition = true)
-    @GenericField
+    @GenericField(projectable = Projectable.YES)
     private Long parentId;
     @GeneratorColumn(title = "引用内容", condition = true)
-    @GenericField
+    @GenericField(projectable = Projectable.YES)
     private Long quoteContentId;
     @GeneratorColumn(title = "是否转载")
     private boolean copied;
     @GeneratorColumn(title = "是否投稿")
     private boolean contribute;
     @GeneratorColumn(title = "作者")
-    @GenericField
+    @GenericField(projectable = Projectable.YES)
     private String author;
     @GeneratorColumn(title = "编辑")
-    @GenericField
+    @GenericField(projectable = Projectable.YES)
     private String editor;
     @GeneratorColumn(title = "外链")
-    @GenericField
+    @GenericField(projectable = Projectable.YES)
     private boolean onlyUrl;
     @GeneratorColumn(title = "有图片列表", condition = true)
     @GenericField
@@ -93,10 +94,10 @@ public class CmsContent implements java.io.Serializable {
     @GeneratorColumn(title = "有静态化")
     private boolean hasStatic;
     @GeneratorColumn(title = "地址")
-    @GenericField
+    @GenericField(projectable = Projectable.YES)
     private String url;
     @GeneratorColumn(title = "描述")
-    @FullTextField
+    @FullTextField(projectable = Projectable.YES)
     private String description;
     @GeneratorColumn(title = "标签")
     @FullTextField(analyzer = AnalyzerNames.WHITESPACE)
@@ -118,11 +119,11 @@ public class CmsContent implements java.io.Serializable {
     @GeneratorColumn(title = "评论数", order = true)
     private int comments;
     @GeneratorColumn(title = "点击数", order = true)
-    @GenericField(sortable = Sortable.YES)
+    @GenericField(sortable = Sortable.YES, projectable = Projectable.YES)
     private int clicks;
     @GeneratorColumn(title = "发布日期", condition = true, order = true)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @GenericField(sortable = Sortable.YES)
+    @GenericField(sortable = Sortable.YES, projectable = Projectable.YES)
     private Date publishDate;
     @GeneratorColumn(title = "过期日期", condition = true, order = true)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")

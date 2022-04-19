@@ -7,7 +7,7 @@ import com.publiccms.entities.log.LogOperate;
 import com.publiccms.logic.dao.log.LogOperateDao;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
@@ -35,7 +35,7 @@ public class LogOperateService extends BaseService<LogOperate> {
      * @param pageSize
      * @return
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public PageHandler getPage(Short siteId, String channel, String operate, Long userId, Date startCreateDate,
             Date endCreateDate, String content, String ip, String orderType, Integer pageIndex, Integer pageSize) {
         return dao.getPage(siteId, channel, operate, userId, startCreateDate, endCreateDate, content, ip, orderType, pageIndex,
@@ -53,7 +53,7 @@ public class LogOperateService extends BaseService<LogOperate> {
      * @param pageSize
      * @return
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public PageHandler getWorkLoadPage(Short siteId, String channel, String operate, Date startCreateDate, Date endCreateDate,
             String workloadType, Integer pageIndex, Integer pageSize) {
         return dao.getWorkLoadPage(siteId, channel, operate, startCreateDate, endCreateDate, workloadType, pageIndex, pageSize);

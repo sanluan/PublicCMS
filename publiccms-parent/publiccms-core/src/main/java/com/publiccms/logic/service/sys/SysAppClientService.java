@@ -7,7 +7,7 @@ import java.util.Date;
 
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
@@ -39,7 +39,7 @@ public class SysAppClientService extends BaseService<SysAppClient> {
      * @param pageSize
      * @return
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public PageHandler getPage(Short siteId, String channel, Long userId, Date startLastLoginDate, Date endLastLoginDate,
             Date startCreateDate, Date endCreateDate, Boolean disabled, String orderField, String orderType, Integer pageIndex,
             Integer pageSize) {

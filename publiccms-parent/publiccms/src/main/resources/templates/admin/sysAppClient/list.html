@@ -62,7 +62,7 @@
             </#list>
             <@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
             <#list page.list as a>
-            <tr target="sid" rel="${a.id}">
+            <tr>
                 <td>${a.id!}</td>
                 <td>${a.channel!}</td>
                 <td>${a.uuid!}</td>

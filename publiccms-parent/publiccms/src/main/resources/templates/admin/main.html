@@ -111,7 +111,7 @@ echarts.init(document.getElementById('comment')).setOption({
     xAxis: {
         type: 'category',
         boundaryGap: false,
-        data: [<#list 30..0 as a>'${(.now?long-a*86400000)?number_to_date}'<#sep>,</#list>]
+        data: [<#list 30..0 as a>'${(.now?long-a*86400000)?number_to_date?string('MM-dd')}'<#sep>,</#list>]
     },
     yAxis: {
         type: 'value'
@@ -191,7 +191,7 @@ echarts.init(document.getElementById('visit')).setOption({
     xAxis: {
         type: 'category',
         boundaryGap: false,
-        data: [<#list page.list?reverse as a>'${a.id.visitDate?date}'<#sep>,</#list>]
+        data: [<#list page.list?reverse as a>'${a.id.visitDate?string('MM-dd')}'<#sep>,</#list>]
     },
     yAxis: {
         type: 'value'

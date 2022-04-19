@@ -1,12 +1,12 @@
 <@_contentList advanced=true status=status categoryId=categoryId containChild=containChild disabled=true
-            modelId=modelId parentId=parentId title=title userId=userId
+            modelId=modelIds parentId=parentId title=title userId=userId
             startPublishDate=startPublishDate endPublishDate=endPublishDate
             orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <#macro modelList parentId=''>
 <@_modelList parentId=parentId>
     <#list page.list as a>
         <label style="width:auto">
-            <input <@t.compare modelId!'' a.id?string 'checked="checked"'/> name="modelId" value="${a.id}" type="checkbox"/>
+            <input <@t.compare modelIds!'' a.id?string 'checked="checked"'/> name="modelIds" value="${a.id}" type="checkbox"/>
             ${(a.name)!}
         </label>
         <#if a.hasChild>
@@ -95,7 +95,7 @@
             <@_model ids=t.modelIds!><#assign modelMap=map!/></@_model>
 
             <#list page.list as a>
-            <tr target="sid" rel="${a.id}">
+            <tr>
                 <td><input name="ids" value="${a.id}" type="checkbox"></td>
                 <td>${a.id}</td>
                 <td>${(a.copied?then('['+t.pageMessage('copied')+']',''))!}<a href="cmsContent/view.html?id=${a.id}" class="exclude-translate" target="dialog" rel="viewContent${a.id}">${(a.title)!}</a></td>

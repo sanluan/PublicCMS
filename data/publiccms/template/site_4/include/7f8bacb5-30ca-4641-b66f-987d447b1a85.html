@@ -6,12 +6,7 @@
                     <img src="${site.sitePath}assets/img/logo.png" alt="LOGO" class="w-50 me-2">
                     与先进同行
                 </div>
-                <p>
-                    PublicCMS 是采用2020年主流技术开发的开源 JAVA CMS 产品。</p>
-
-                <p>    架构科学，轻松支撑千万数据、千万 PV。支持全站静态化，SSI，动态页面局部静态化，多站点，自动安装等为您快速建站，建设大规模站点提供强大驱动，也是企业级项目产品原型的良好选择。
-                </p>
-
+                <p><@_metadata path='index.html';metadata>${(metadata.extendData.description)!}</@_metadata></p>
             </div>
             <div class="col-auto mb-5 mb-md-4">
                 <dl>
@@ -33,18 +28,9 @@
                             </a>
                         </div>
                     </dd>
-                    <dd class="d-flex">
-                        <span class="flex-shrink-0">联系电话：</span>
-                        <div><a href="tel:18600980373" class="text-white"><img src="${site.sitePath}assets/img/icon-tel.svg"  alt="wechat"> 18600980373</a></div>
-                    </dd>
-                    <dd class="d-flex">
-                        <span class="flex-shrink-0">技术咨询：</span>
-                        <div><a href="https://qm.qq.com/cgi-bin/qm/qr?k=xoxCUvv7bDCFQ8AAqaoWB1JsLz0L90qn" class="text-white" title="里面个个都是人才">一群191381542</a>、<a href="https://qm.qq.com/cgi-bin/qm/qr?k=x15JZdCp8vWlxV1mMoMTyrHzMqw3dmI1" class="text-white" title="说话又好听">二群481589563</a>、<a href="https://qm.qq.com/cgi-bin/qm/qr?k=VogNtcpFOLxvjtvzUcAElZOK-KC4To_u" class="text-white" title="超喜欢在里面">三群638756883</a>、<a href="https://qm.qq.com/cgi-bin/qm/qr?k=lsFbfVpj3yqWuY92GYkOG1esbyPNS7O3" class="text-white" title="!">四群930992232</a></div>
-                    </dd>
-                    <dd class="d-flex">
-                        <span class="flex-shrink-0">文档工具：</span>
-                        <div><a href="https://www.sanluan.com/freemarker_test.html" class="text-white" target="_blank">FreeMarker在线测试</a>、<a href="http://www.kerneler.com/freemarker2.3.23/" class="text-white" target="_blank">FreeMarker文档</a></div>
-                    </dd>
+                    <@_includePlace path="/footer/21c06930-d5ad-4727-87bb-005104dff25e.html"/> <#-- 咨询电话 -->
+                    <@_includePlace path="/footer/0f5a4595-4cd8-4be2-94e8-acb5d5e47e89.html"/> <#-- 技术咨询群 -->
+                    <@_includePlace path="/footer/4afbbf15-b77e-4ab6-ab21-44b82c096230.html"/> <#-- 文档工具 -->
                 </dl>
             </div>
             <div class="col-md-3 mb-5 mb-md-4">
@@ -54,12 +40,8 @@
                         <img src="${site.sitePath}assets/img/logo-heycore.png" alt="company" class="img-fluid">
                     </dd>
                     <dd>
-                        <p>
-                            我们专注提供专业的软件产品和技术。为合作伙伴提供安全可靠的软件产品与解决方案，共同帮助终端用户实现业务创新、快速发展。
-                        </p>
-                        <p>
-                            科技型中小企业编号：202112010200008165
-                        </p>
+                        <p>我们专注提供专业的软件产品和技术。为合作伙伴提供安全可靠的软件产品与解决方案，共同帮助终端用户实现业务创新、快速发展。</p>
+                        <p>科技型中小企业编号：202112010200008165</p>
                     </dd>
                 </dl>
             </div>
@@ -69,8 +51,8 @@
         <div class="container">
             <div class="row justify-content-between">
                 <div class="col-md-auto">
-                    2021 PublicCMS.com All Rights Reserved.
-                    <span class="d-block d-lg-inline"><a href="https://beian.miit.gov.cn/" class="text-white" target="_blank">津ICP备19003922号-2</a></span>
+                    ${.now?string('yyyy')} PublicCMS.com All Rights Reserved.
+                    <@_includePlace path="/footer/9eedb96c-4f47-422e-8020-81a4b362e0a6.html"/> <#-- 备案链接 -->
                 </div>
                 <div class="col-md-auto">
                     <@_includePlace path="/cfdc226d-8abc-48ec-810d-f3941b175b20.html"/> <#-- 友情链接 -->
@@ -91,13 +73,21 @@
             </form>
             <div class="text-center mt-3 text-white">
                 <h5>热门搜索</h5>
-                <@_wordList count=6>
+                <@_wordList count=20>
                 <div class="keywords mt-2">
                     <#list page.list as a>
                     <a href="${siteAttribute.searchPath!}?word=${a.name?url}">${a.name}</a>
                     </#list>
                 </div>
                 </@_wordList>
+				<h5>热门标签</h5>
+                <@_tagList orderField='searchCount' count=20>
+                <div class="keywords mt-2">
+                    <#list page.list as a>
+                    <a href="${siteAttribute.searchPath!}?tagIds=${a.id?url}">${a.name}</a>
+                    </#list>
+                </div>
+                </@_tagList>
             </div>
             <button type="button" class="btn-close position-absolute" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
@@ -123,15 +113,17 @@
 </div>
 <script src="${site.sitePath}assets/js/bootstrap.bundle.min.js"></script>
 <script src="${site.sitePath}assets/js/jquery-1.12.4.min.js"></script>
+<script src="${site.sitePath}assets/js/cms.analytics.js"></script>
 <script>var CMS_PATH='${site.dynamicPath}';</script>
 <script src="${site.sitePath}assets/js/main.js"></script>
-<script src="${site.sitePath}assets/js/cms.analytics.js"></script>
-<script>
-    <@_sysConfigData code="site">${(object.statistics?no_esc)!}</@_sysConfigData>
+<script>    
     var ca = cmsAnalytics();
     var url='${site.dynamicPath}api/visit/record';
     if("string" ==typeof itemString){
         url=url+"?"+itemString;
     }
+	ca.setDomain('publiccms.com');//${site.dynamicPath?keep_after('//')?keep_before('/')?keep_before(':')}
+	ca.setPath('/');
     ca.report(url);
+	<@_sysConfigData code="site">${(object.statistics?no_esc)!}</@_sysConfigData>
 </script>

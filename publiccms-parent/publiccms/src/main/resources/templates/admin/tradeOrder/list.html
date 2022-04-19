@@ -1,5 +1,6 @@
-<@_tradeOrderList userId=userId paymentId=paymentId processed=processed status=status
+<@_tradeOrderList userId=userId paymentId=paymentId processed=processed status=status startCreateDate=startCreateDate endCreateDate=endCreateDate 
             orderType=orderType pageIndex=pageNum pageSize=numPerPage>
+<@_sysAuthorized roleIds=admin.roles urls='tradeOrder/confirm,tradeOrder/invalid,tradeOrder/process,tradeOrder/close,tradeOrder/export,tradeOrderHistory/list'><#assign authorizedMap=map/></@_sysAuthorized>
 <div class="pageHeader">
     <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
@@ -30,18 +31,28 @@
                         <option value="true"${(processed?has_content&&"true"=processed)?then(' selected="true"','')?no_esc}><@t.page 'yes'/></option>
                     </select>
                 </li>
+                <li>
+                    <label><@t.page 'createDate'/>:</label>
+                    <input type="text" name="startCreateDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startCreateDate!}" />
+                    <span>-</span>
+                    <input type="text" name="endCreateDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endCreateDate!}" />
+                </li>
             </ul>
             <div class="subBar">
                 <ul>
                     <li>
                         <button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
                     </li>
+                <#if authorizedMap['tradeOrder/export']>
+                    <li>
+                        <a class="button" href="tradeOrder/export?_csrf=<@_csrfToken admin=true/>" target="dwzExport" targetType="navTab"><i class="icon-download-alt icon-large"></i> <@t.page 'button.export'/></a>
+                    </li>
+                </#if>
                 </ul>
             </div>
         </div>
     </form>
 </div>
-<@_sysAuthorized roleIds=admin.roles urls='tradeOrder/confirm,tradeOrder/invalid,tradeOrder/process,tradeOrder/close,tradeOrderHistory/list'><#assign authorizedMap=map/></@_sysAuthorized>
 <div class="pageContent">
     <table class="table" width="100%" layoutH="92">
         <thead>
@@ -66,7 +77,7 @@
             </#list>
             <@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
             <#list page.list as a>
-            <tr target="sid" rel="${a.id}">
+            <tr>
                 <td class="center"><input name="ids" value="${a.id}" type="checkbox"></td>
                 <td>${a.id!}</td>
                 <td class="exclude-translate">

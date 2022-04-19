@@ -33,7 +33,7 @@
                     <@_categoryList parentId=category.parentId!category.id>
                         <#list page.list as a>
                         <li class="nav-item">
-                            <a class="nav-link<#if a.id=category.id> active</#if>" href="${a.url}">${a.name!}</a>
+                            <a class="nav-link<#if a.id=category.id> active</#if>" <#if a.onlyUrl> target="_blank"</#if> href="${a.url}">${a.name!}</a>
                         </li>
                         </#list>
                     </@_categoryList>
@@ -53,7 +53,7 @@
                         </#list>
                         <@_category ids=t.categoryIds!><#assign categoryMap=map!/></@_category>
                         <#list page.list as a>
-                        <a href="${a.url}" class="d-block">
+                        <a href="${a.url}" <#if a.onlyUrl> target="_blank"</#if> class="d-block">
                             <div class="card flex-md-row align-items-start">
                                 <div class="text-white bg-${['primary','purple','success'][a.categoryId%3]} fs-8 px-2 py-1 flex-shrink-0">
                                     ${categoryMap[a.categoryId?string].name}
@@ -71,7 +71,7 @@
                         </a>
                         </#list>
                     </div>
-                    <ul class="pagination mt-5">
+                    <ul class="pagination mt-5 overflow-auto pb-3">
                         <li class="page-item">
                             <a class="page-link" href="${getPage(url,page.prePage)}" aria-label="Previous">
                                 <span aria-hidden="true">«</span>
@@ -85,9 +85,17 @@
                         <#if (page.pageIndex+5) lt end>
                             <#assign end=page.pageIndex+4/>
                         </#if>
+						<#if start gt 1>
+							<li class="page-item"><a class="page-link" href="${getPage(url,1)}">1</a></li>
+							<li class="page-item"><span>...</span></li>
+						</#if>
                         <#list start..end as a>
                         <li class="page-item<#if a=page.pageIndex> active</#if>"><a class="page-link" href="${getPage(url,a)}">${a}</a></li>
                         </#list>
+						<#if end lt page.totalPage>
+						<li class="page-item"><span>...</span></li>
+						<li class="page-item"><a class="page-link" href="${getPage(url,page.totalPage)}">${page.totalPage}</a></li>
+						</#if>
                         <li class="page-item">
                             <a class="page-link" href="${getPage(url,page.nextPage)}" aria-label="Next">
                                 <span aria-hidden="true">»</span>

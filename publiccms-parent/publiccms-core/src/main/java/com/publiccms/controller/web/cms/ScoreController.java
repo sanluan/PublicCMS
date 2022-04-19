@@ -97,6 +97,8 @@ public class ScoreController {
                         if (needStatic) {
                             templateComponent.createContentFile(site, content, null, null);
                         }
+                    } else if (!score) {
+                        service.delete(id);
                     }
                     return true;
                 } else if ("comment".equals(itemType)) {
@@ -114,6 +116,8 @@ public class ScoreController {
                             templateComponent.createContentFile(site, contentService.getEntity(comment.getContentId()), null,
                                     null);
                         }
+                    } else if (!score) {
+                        service.delete(id);
                     }
                     return true;
                 }

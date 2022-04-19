@@ -9,7 +9,7 @@
             "publishDate":"${a.publishDate?date}",
             "cover":"${a.cover!}",
 			"comments":"${a.comments}",
-			"scores":"${a.scores}"
+			"clicks":"${a.clicks}"
         }<#sep>,
     </#list>
 </@_contentList>]

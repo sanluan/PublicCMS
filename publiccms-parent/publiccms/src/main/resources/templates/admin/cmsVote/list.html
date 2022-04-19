@@ -62,7 +62,7 @@
         </thead>
         <tbody>
             <#list page.list as a>
-            <tr target="sid" rel="${a.id}">
+            <tr>
                 <td class="center"><input name="ids" value="${a.id}" type="checkbox"></td>
                 <td class="center">${a.id!}</td>
                 <td><a href="cmsVote/view.html?id=${a.id}" class="exclude-translate" target="dialog" rel="viewVote${a.id}">${a.title!}</a></td>

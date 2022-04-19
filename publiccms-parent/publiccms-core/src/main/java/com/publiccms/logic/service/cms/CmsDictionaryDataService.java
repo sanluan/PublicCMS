@@ -6,7 +6,7 @@ import java.util.Set;
 
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.tools.CommonUtils;
@@ -79,7 +79,7 @@ public class CmsDictionaryDataService extends BaseService<CmsDictionaryData> {
      * @param parentValue
      * @return data list
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public List<CmsDictionaryData> getList(short siteId, String dictionaryId, String parentValue) {
         return dao.getList(siteId, dictionaryId, parentValue);
     }

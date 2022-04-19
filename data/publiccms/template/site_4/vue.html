@@ -4,79 +4,76 @@
         <meta charset="utf-8">
         <title>PublicCMS VUE Template</title>
         <meta name="viewport" content="width=device-width,initial-scale=1.0">
+		<link href="${site.sitePath}assets/css/bootstrap.css" rel="stylesheet">
+		<link href="${site.sitePath}assets/css/animate.min.css" rel="stylesheet" >
         <link href="${site.sitePath}assets/css/style.css" rel="stylesheet">
-        <script src="https://unpkg.com/vue"></script>
-        <script src="https://unpkg.com/vue-resource"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/vue-resource/dist/vue-resource.min.js"></script>
     </head>
     <body>
         <div id="app">
-            <header class="header">
-                <div class="top-bar">
-                    <div class="container">
-                        <a>{{ message }}</a>
-                    </div>
-                </div>
-                <div class="container clearfix-after">
-                    <a href="#" class="nav-icon"></a>
-                    <div class="logo">
-                        <a v-bind:href="sitePath+'vue.html'"><img v-bind:src="sitePath+'assets/images/logo.png'" v-if="sitePath !== ''" alt="Public CMS"></a>
-                    </div>
-                </div>
-                <nav>
-                    <ul class="container clearfix-after">
-                        <li>
-                            <a v-bind:href="sitePath+'vue.html'">Home</a>
-                        </li>
-                        <li v-for="category in categoryList">
-                            <a v-bind:href="category.url">{{ category.name }}</a>
-                        </li>
-                    </ul>
-                </nav>
-            </header>
-            <main>
-                <div class="container">
-                    <div id="index-focus" class="swiper-container">
-                        <div class="swiper-wrapper">
-                            <div class="swiper-slide"  v-for="focus in focusList"><a v-bind:href="focus.url"><img  v-bind:src="focus.cover" v-bind:alt="focus.title"></a></div>
-                        </div>
-                        <div class="swiper-pagination swiper-pagination-white"></div>
-                    </div>
-                    <div class="data-list">
-                        <ul>
-                            <li v-for="content in contentList" class="clearfix-after">
-                                <a v-if="content.cover !== ''" v-bind:href="content.url">
-                                    <figure><img v-bind:src="content.cover" v-bind:alt=" content.title "/></figure>
-                                </a>
-                                <div class="article-title">
-                                    <h3><a v-bind:href="content.url">{{ content.title }}</a></h3>
-                                    <p>{{ content.description }}</p>
-                                    <p class="info">
-                                        <span><a v-bind:href="content.url+'#comments'">{{ content.comments}}评论</a></span>
-                                        <span><a v-bind:href="dynamicPath+'comment.html?contentId='+content.id">{{ content.scores}}赞</a></span>
-                                        <span>{{ content.publishDate}}</span>
-                                    </p>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </main>
+			<nav class="navbar navbar-expand-md  fixed-top">
+				<div class="container-fluid g-0">
+					<a v-bind:href="sitePath+'vue.html'" class="navbar-brand p-0 text-white fs-7 ms-3 ms-lg-4"><img v-bind:src="sitePath+'assets/img/logo.png'" class="h-100 me-2" alt="Public CMS"></a>
+					<div class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+						<svg width="20" height="14" viewBox="0 0 20 14" xmlns="http://www.w3.org/2000/svg"><path d="M0 0v2h20V0H0zm0 6v2h20V6H0zm0 6v2h20v-2H0z" fill="#fff" fill-rule="nonzero"/></svg>
+					</div>
+					<div class="collapse navbar-collapse" id="navbarCollapse">
+						<ul class="navbar-nav ms-auto fs-6p">
+							<li class="nav-item" v-for="category in categoryList">
+								<a v-bind:href="category.url" class="nav-link">{{ category.name }}</a>
+							</li>
+						</ul>
+						<div class="pe-2 mt-3 mt-md-0">
+							<a class="px-2" href="#" data-bs-toggle="modal" data-bs-target="#searchModal">
+								<img v-bind:src="sitePath+'assets/img/icon-search.svg'" alt="search">
+							</a>
+						</div>
+					</div>
+				</div>
+			</nav>
+			<div class="container">
+				{{ message }}
+			</div>
+            <div class="container pt-5">
+				<div class="mb-5 pb-2 text-center">
+					<div class="fs-0 text-black fw-bold">最新内容</div>
+				</div>
+				<div class="row justify-content-between">
+					<div class="col-md-12 mb-5 mb-md-0 px-4">
+						<div class="article-list" v-for="content in contentList" >
+							<a v-bind:href="content.url" class="d-block">
+								<div class="card flex-md-row align-items-start">
+									<div class="card-body py-3 py-md-0 px-0 px-md-3">
+										<h5 class="text-body">{{ content.title }}</h5>
+										<p class="fs-7 text-secondary text-break">{{ content.description }}</p>
+										<footer class="fs-8 text-secondary text-opacity-50 d-flex align-items-center">
+											<span class="me-4 d-inline-flex align-items-center"><img v-bind:src="sitePath+'assets/img/icon-calendar.svg'" alt="publish date">{{ content.publishDate}}</span>
+											<span class="me-4 d-inline-flex align-items-center"><img v-bind:src="sitePath+'assets/img/icon-view.svg'" alt="clicks">{{ content.clicks}}</span>
+											<span class="me-4 d-inline-flex align-items-center"><img v-bind:src="sitePath+'assets/img/icon-comment.svg'" alt="comments">{{ content.comments}}</span>
+										</footer>
+									</div>
+								</div>
+							</a>
+						</div>
+					</div>				
+				</div>
+			</div>
             <footer>
                 <div class="container">
                     <div class="footer-bottom">
-                        <p>Powered by <a href="http://www.publiccms.com/">Public CMS</a> </p>
+                        <p>Powered by <a v-bind:href="sitePath">Public CMS</a> </p>
                     </div>
                 </div>
             </footer>
         </div>
-        <script src="${site.sitePath}assets/swiper/swiper.min.js"></script>
+		<script src="${site.sitePath}assets/js/bootstrap.bundle.min.js"></script>
         <script src="${site.sitePath}assets/js/cms.analytics.js"></script>
         <script>
             var app = new Vue({
                 el: '#app',
                 data: {
                     message: 'Hello Vue.js!',
-                    title:'',
                     sitePath:'',
                     dynamicPath:'',
                     categoryList: [],

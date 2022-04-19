@@ -45,7 +45,7 @@
         </thead>
         <tbody>
             <#list page.list as a>
-            <tr target="sid" rel="${a.id.id}">
+            <tr>
                 <td class="center"><input name="ids" value="${a.id.id}" type="checkbox"></td>
                 <td>${a.id.id}</td>
                 <td class="exclude-translate">${a.name!}</td>

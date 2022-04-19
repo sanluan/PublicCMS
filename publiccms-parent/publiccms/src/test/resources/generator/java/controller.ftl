@@ -3,7 +3,6 @@ package ${base}.${controllerPack};
 // Generated ${.now?date} by com.publiccms.common.generator.SourceGenerator
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -25,6 +24,7 @@ import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 <#include "../include_imports/service.ftl">
 
+import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**
@@ -82,8 +82,8 @@ public class ${entityName}${controllerSuffix} {
         return CommonConstants.TEMPLATE_DONE;
     }
 
-    @Autowired
+    @Resource
     private ${entityName}Service service;
-    @Autowired
+    @Resource
     protected LogOperateService logOperateService;
 }

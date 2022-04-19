@@ -271,7 +271,7 @@ a.button,button.button{border-width:1px;border-style:solid;-moz-box-shadow: 0px 
 
 /* Pages Form */
 .pageForm{display:block;overflow:auto;}
-.pageFormContent{display:block;overflow:auto;padding:15px;position:relative;height:100%;box-sizing:border-box;}
+.pageFormContent{display:block;padding:15px;position:relative;height:100%;width:100%;overflow:auto;box-sizing:border-box;}
 .pageFormContent div.unit{display:block;margin:0;padding:5px 0;position:relative;clear:both;}
 .pageFormContent p{float:left;display:block;min-width:380px;min-height:16px;margin:0;padding:5px 0;position:relative;}
 .pageFormContent p.nowrap{width:100%;}
@@ -305,7 +305,7 @@ fieldset:first-child .unit:first-of-type p:last-child{padding:0;}
 
 .formBar{clear:both;padding:10px;height:30px;}
 .formBar ul{float:right;}
-.formBar li{float:left;line-height:30px;margin-left:10px;}
+.formBar li{float:left;line-height:30px;height: 32px;margin-left:10px;}
 .divider{clear:both;display:block;overflow:hidden;width:auto;height:1px;padding:4px 0 0 0;margin-bottom:5px;border-style:dashed;border-width:0 0 1px 0;}
 
 .tagsBox{line-height:25px;float:left;}

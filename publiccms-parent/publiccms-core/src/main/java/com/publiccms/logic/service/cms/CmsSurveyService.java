@@ -7,7 +7,7 @@ import java.util.Date;
 
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
@@ -41,7 +41,7 @@ public class CmsSurveyService extends BaseService<CmsSurvey> {
      * @param pageSize
      * @return results page
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public PageHandler getPage(Short siteId, Long userId, String surveyType, Date startStartDate, Date endStartDate,
             Date startEndDate, Date endEndDate, String title, Boolean disabled, String orderField, String orderType,
             Integer pageIndex, Integer pageSize) {

@@ -17,18 +17,14 @@
         </div>
         <div class="container">
             <div class="row gx-5 justify-content-between my-5">
-                <div class="col-md-3" style="border-right: 1px solid #ddd;">
-                    <div class="guide-side fs-7 pe-4">
-                        <@_includePlace path="/c936c718-5f19-426f-b3ff-13a5a8d63044.html"/> <#-- 个人中心导航 -->
-                    </div>
-                </div>
+                <@_includePlace path="/c936c718-5f19-426f-b3ff-13a5a8d63044.html"/> <#-- 个人中心导航 -->
                 <div class="col-md-9">
-                    <div class="ps-4">
+                    <div class="ps-4 row">
                         <@import path="/ftl/tools.ftl" namespace="t"/><#-- 工具 -->
-                        <div class="comment-box column">
+                        <div class="col-md-6">
                             <h3><a href="${site.dynamicPath}myReply.html">回复我的评论</a></h3>
                             <@_commentList replyUserId=user.id pageSize=3>
-                            <ul>
+                            <ul class="article-list">
                                 <#list page.list as a>
                                     <@t.merge 'userIds' a.userId!/>
                                     <@t.merge 'contentIds' a.contentId!/>
@@ -36,25 +32,28 @@
                                 <@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
                                 <@_content ids=t.contentIds! absoluteURL=true><#assign contentMap=map!/></@_content>
                                 <#list page.list as a>
-                                    <li class="underline">
-                                        <p><a href="${site.dynamicPath}user.html?id=${a.userId!}" target="_blank">${userMap[a.userId?string].nickName}</a> ${a.createDate} 评论《<a href="${contentMap[a.contentId?string].url}" target="_blank">${contentMap[a.contentId?string].title}</a>》</p>
+                                    <li class="card py-2 mb-2">
+                                        <p>
+											<a href="${site.dynamicPath}user.html?id=${a.userId!}" target="_blank">${userMap[a.userId?string].nickName}</a>
+											评论 <a href="${contentMap[a.contentId?string].url}" target="_blank">${contentMap[a.contentId?string].title}</a>
+											<span class="float-end text-secondary">${a.createDate?date}</span></p>
                                         <#if a.replyId?has_content>
                                             <@_comment id=a.replyId>
-                                        <p class="reply"><a href="${site.dynamicPath}user.html?id=${user.id!}" target="_blank">@${user.nickName}</a> : ${object.text!}</p>
+                                        <p class="ms-5"><a href="${site.dynamicPath}user.html?id=${user.id!}" target="_blank">@${user.nickName}</a> : ${object.text!}</p>
                                             </@_comment>
                                         </#if>
                                         <p>${a.text!}</p>
                                     </li>
                                 <#else>
-                                <li class="underline"><p>没有数据</p></li>
+                                <li class="card py-2 mb-2"><p>没有数据</p></li>
                                 </#list>
                             </ul>
                             </@_commentList>
                         </div>
-                        <div class="comment-box column">
+                        <div class="col-md-6">
                             <h3><a href="${site.dynamicPath}myComment.html">我的待审核评论</a></h3>
                             <@_commentList advanced=true userId=user.id status=2 pageSize=5>
-                            <ul>
+                            <ul class="article-list">
                                 <#list page.list as a>
                                     <@t.merge 'userIds' a.replyUserId!/>
                                     <@t.merge 'contentIds' a.contentId!/>
@@ -62,52 +61,55 @@
                                 <@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
                                 <@_content ids=t.contentIds!><#assign contentMap=map!/></@_content>
                                 <#list page.list as a>
-                                    <li class="underline">
-                                        <p>${a.createDate} 评论《<a href="${contentMap[a.contentId?string].url}" target="_blank">${contentMap[a.contentId?string].title}</a>》</p>
+                                    <li class="card py-2 mb-2">
+                                        <p><a href="${contentMap[a.contentId?string].url}" target="_blank">${contentMap[a.contentId?string].title}</a><span class="float-end text-secondary">${a.createDate}</span></p>
                                         <#if a.replyId?has_content>
                                             <@_comment id=a.replyId>
-                                        <p class="reply"><a href="${site.dynamicPath}user.html?id=${a.replyUserId!}" target="_blank">@${(userMap[a.replyUserId?string].nickName)!}</a> : ${object.text!}</p>
+                                        <p class="ms-5"><a href="${site.dynamicPath}user.html?id=${a.replyUserId!}" target="_blank">@${(userMap[a.replyUserId?string].nickName)!}</a> : ${object.text!}</p>
                                             </@_comment>
                                         </#if>
-                                        <p>${a.text!} <span class="float-right"><a href="comment.html?id=${a.id}&contentId=${a.contentId}">编辑</a></span></p>
+                                        <p>${a.text!}</p>
                                     </li>
                                 <#else>
-                                <li class="underline"><p>没有数据</p></li>
+                                <li class="card py-2 mb-2"><p>没有数据</p></li>
                                 </#list>
                             </ul>
                             </@_commentList>
                         </div>
-                        <div class="clearfix-before"></div>
-                        <div class="column">
-                            <h3>我的内容投稿</h3>
+                        <div class="col-md-6">
+							<h3><a href="${site.dynamicPath}myContentContribute.html">我的内容投稿</a></h3>
                             <@_contentList advanced=true userId=user.id pageSize=5>
-                            <ul>
+                            <ul class="article-list">
                                 <#list page.list as a>
                                 <@t.merge 'categoryIds' a.categoryId!/>
                                 </#list>
                                 <@_category ids=t.categoryIds!><#assign categoryMap=map!/></@_category>
                                 <#list page.list as a>
-                                <li class="underline">
-                                    <p><label>投稿栏目:</label>${(categoryMap[a.categoryId?string].name)!} <span class="float-right"><label>投稿日期:</label>${a.createDate?date} [<@t.m 'page.status.content.'+a.status/>]</span></p>
-                                    <p>《<#if a.status=1><a href="${a.url}" target="_blank">${(a.title)!}</a><#else>${(a.title)!}</#if>》</p>
+                                <li class="card py-2 mb-2">
+                                    <p>[<@t.m 'page.status.content.'+a.status/>]<label class="text-secondary">投稿栏目:</label> ${(categoryMap[a.categoryId?string].name)!} <span class="float-end">${a.createDate?date}</span></p>
+                                    <p><#if a.status=1><a href="${a.url}" target="_blank">${(a.title)!}</a><#else>${(a.title)!}</#if></p>
                                 </li>
                                 <#else>
-                                <li class="underline"><p>没有数据</p></li>
+                                <li class="card py-2 mb-2"><p>没有数据</p></li>
                                 </#list>
                             </ul>
                             </@_contentList>
                         </div>
-                        <div class="column">
-                            <h3>我的其他投稿</h3>
+                        <div class="col-md-6">
+							<h3><a href="${site.dynamicPath}myOtherContribute.html">我的其他投稿</a></h3>
                             <@_placeList advanced=true userId=user.id pageSize=5>
-                            <ul>
+                            <ul class="article-list">
                                 <#list page.list as a>
-                                <li class="underline">
-                                    <p><label>投稿类型:</label><@_placeMetadata path=a.path>${object.alias!}</@_placeMetadata><span class="float-right"><label>投稿日期:</label>${a.createDate?date} [<@t.m 'page.status.place.data.'+a.status/>]</span></p>
-                                    <p>《${(a.title)!}》</p>
+                                <li class="card py-2 mb-2">
+                                    <p>
+										[<@t.m 'page.status.place.data.'+a.status/>]
+										<label class="text-secondary">投稿类型:</label> <@_placeMetadata path=a.path>${object.alias!}</@_placeMetadata>
+										<span class="float-end text-secondary">${a.createDate?date}</span>
+									</p>
+                                    <p>${(a.title)!}</p>
                                 </li>
                                 <#else>
-                                <li class="underline"><p>没有数据</p></li>
+                                <li class="card py-2 mb-2"><p>没有数据</p></li>
                                 </#list>
                             </ul>
                             </@_placeList>

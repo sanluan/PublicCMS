@@ -5,7 +5,7 @@ import java.util.Date;
 
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
@@ -68,7 +68,7 @@ public class TradeOrderHistoryService extends BaseService<TradeOrderHistory> {
      * @param pageSize
      * @return results page
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public PageHandler getPage(Short siteId, Long orderId, Date startCreateDate, Date endCreateDate, String orderType,
             Integer pageIndex, Integer pageSize) {
         return dao.getPage(siteId, orderId, startCreateDate, endCreateDate, orderType, pageIndex, pageSize);

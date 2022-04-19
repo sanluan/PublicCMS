@@ -5,7 +5,7 @@ import java.util.List;
 import org.apache.commons.lang3.ArrayUtils;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.tools.CommonUtils;
@@ -29,7 +29,7 @@ public class SysSiteDatasourceService extends BaseService<SysSiteDatasource> {
      * @param pageSize
      * @return
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public List<SysSiteDatasource> getList(Short siteId, String datasource) {
         return dao.getList(siteId, datasource);
     }

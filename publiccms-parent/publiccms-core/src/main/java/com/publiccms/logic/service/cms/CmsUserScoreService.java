@@ -4,7 +4,7 @@ package com.publiccms.logic.service.cms;
 
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.entities.cms.CmsUserScore;
 import com.publiccms.logic.dao.cms.CmsUserScoreDao;
@@ -28,7 +28,7 @@ public class CmsUserScoreService extends BaseService<CmsUserScore> {
      * @param pageSize
      * @return results page
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public PageHandler getPage(Long userId, String itemType, Long itemId, Integer pageIndex, Integer pageSize) {
         return dao.getPage(userId, itemType, itemId, pageIndex, pageSize);
     }

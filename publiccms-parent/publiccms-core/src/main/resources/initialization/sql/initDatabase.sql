@@ -236,7 +236,7 @@ CREATE TABLE `cms_survey` (
   `title` varchar(100) NOT NULL COMMENT '标题',
   `description` varchar(300) NOT NULL COMMENT '描述',
   `votes` int(11) NOT NULL COMMENT '投票数',
-  `start_date` datetime NOT NULL COMMENT '开始日期',    
+  `start_date` datetime NOT NULL COMMENT '开始日期',
   `end_date` datetime DEFAULT NULL COMMENT '结束日期',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   `disabled` tinyint(1) NOT NULL COMMENT '是否禁用',
@@ -614,6 +614,7 @@ CREATE TABLE `sys_dept` (
   `owns_all_page` tinyint(1) NOT NULL COMMENT '拥有全部页面权限',
   `owns_all_config` tinyint(1) NOT NULL DEFAULT '1' COMMENT '拥有全部配置权限',
   PRIMARY KEY  (`id`),
+  UNIQUE KEY `sys_dept_code`(`site_id`, `code`),
   KEY `sys_dept_site_id` (`site_id`)
 ) AUTO_INCREMENT=2 COMMENT='部门';
 
@@ -869,7 +870,7 @@ INSERT INTO `sys_module` VALUES ('myself_token', 'myself/userTokenList', 'sysUse
 INSERT INTO `sys_module` VALUES ('order_confirm', 'tradeOrder/confirmParameters', 'tradeOrder/confirm', NULL, 'order_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('order_history_list', 'tradeOrderHistory/list', NULL, 'icon-calendar', 'trade_menu', 1, 2);
 INSERT INTO `sys_module` VALUES ('order_list', 'tradeOrder/list', 'sysUser/lookup,sysUser/lookup_list', 'icon-barcode', 'trade_menu', 1, 1);
-INSERT INTO `sys_module` VALUES ('order_process', 'tradeOrder/processParameters', 'tradeOrder/process', NULL, 'order_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('order_process', 'tradeOrder/processParameters', 'tradeOrder/process,tradeOrder/export', NULL, 'order_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('order_view', 'tradeOrder/view', NULL, NULL, 'order_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('page', NULL, NULL, 'icon-tablet', NULL, 1, 3);
 INSERT INTO `sys_module` VALUES ('page_list', 'cmsPage/list', 'cmsPage/metadata,cmsContent/lookup,cmsContent/lookup_list,cmsCategory/lookup', 'icon-globe', 'page_menu', 1, 1);
@@ -959,7 +960,7 @@ INSERT INTO `sys_module` VALUES ('user_list', 'sysUser/list', NULL, 'icon-user',
 INSERT INTO `sys_module` VALUES ('user_menu', NULL, NULL, 'icon-user', 'maintenance', 1, 1);
 INSERT INTO `sys_module` VALUES ('visit_day', 'visit/day', NULL, 'icon-calendar', 'visit_menu', 1, 3);
 INSERT INTO `sys_module` VALUES ('visit_history', 'visit/history', 'log/view', 'icon-bolt', 'visit_menu', 1, 1);
-INSERT INTO `sys_module` VALUES ('visit_menu', , NULL, NULL, 'icon-bolt', 'maintenance', 1, 5);
+INSERT INTO `sys_module` VALUES ('visit_menu', NULL, NULL, 'icon-bolt', 'maintenance', 1, 5);
 INSERT INTO `sys_module` VALUES ('visit_item', 'visit/item', NULL, 'icon-flag-checkered', 'visit_menu', 1, 5);
 INSERT INTO `sys_module` VALUES ('visit_session', 'visit/session', NULL, 'icon-comment-alt', 'visit_menu', 1, 2);
 INSERT INTO `sys_module` VALUES ('visit_url', 'visit/url', NULL, 'icon-link', 'visit_menu', 1, 4);
@@ -1712,7 +1713,7 @@ INSERT INTO `sys_site` VALUES ('1', null ,null ,'PublicCMS', '0', '//dev.publicc
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_site_datasource`;
 CREATE TABLE `sys_site_datasource` (
-  `site_id` smallint(11) NOT NULL COMMENT '站点',
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
   `datasource` varchar(50) NOT NULL COMMENT '数据源名称',
   PRIMARY KEY (`site_id`,`datasource`),
   KEY `sys_site_datasource_datasource` (`datasource`)
@@ -1750,7 +1751,7 @@ CREATE TABLE `sys_user` (
   `nick_name` varchar(45) NOT NULL COMMENT '昵称',
   `cover` varchar(255) default NULL COMMENT '封面',
   `dept_id` int(11) default NULL COMMENT '部门',
-  `content_permissions` int(11) NOT NULL COMMENT '内容权限(0尽自己,1所有人,2本部门)',
+  `content_permissions` int(11) NOT NULL COMMENT '内容权限(0仅自己,1所有人,2本部门)',
   `roles` text COMMENT '角色',
   `email` varchar(100) default NULL COMMENT '邮箱地址',
   `email_checked` tinyint(1) NOT NULL COMMENT '已验证邮箱',

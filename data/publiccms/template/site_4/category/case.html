@@ -61,7 +61,7 @@
             </div>
 				</#if>
             <#else>
-            <ul class="pagination mt-5">
+            <ul class="pagination mt-5 overflow-auto pb-3">
                 <li class="page-item">
                     <a class="page-link" href="${getPage(url,page.prePage)}" aria-label="Previous">
                         <span aria-hidden="true">«</span>
@@ -75,9 +75,17 @@
                 <#if (page.pageIndex+5) lt end>
                 <#assign end=page.pageIndex+4/>
                 </#if>
-                <#list start..end as a>
-                <li class="page-item<#if a=page.pageIndex> active</#if>"><a class="page-link" href="${getPage(url,a)}">${a}</a></li>
-                </#list>
+                <#if start gt 1>
+				<li class="page-item"><a class="page-link" href="${getPage(url,1)}">1</a></li>
+				<li class="page-item"><span>...</span></li>
+				</#if>
+				<#list start..end as a>
+				<li class="page-item<#if a=page.pageIndex> active</#if>"><a class="page-link" href="${getPage(url,a)}">${a}</a></li>
+				</#list>
+				<#if end lt page.totalPage>
+				<li class="page-item"><span>...</span></li>
+				<li class="page-item"><a class="page-link" href="${getPage(url,page.totalPage)}">${page.totalPage}</a></li>
+				</#if>
                 <li class="page-item">
                     <a class="page-link" href="${getPage(url,page.nextPage)}" aria-label="Next">
                         <span aria-hidden="true">»</span>

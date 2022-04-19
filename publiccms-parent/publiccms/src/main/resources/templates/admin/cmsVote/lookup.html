@@ -52,7 +52,7 @@
         </thead>
         <tbody>
             <#list page.list as a>
-            <tr target="sid" rel="${a.id}">
+            <tr>
                 <td>
                     <a href="javascript:;" class="btnText green" onclick="$.bringBack({'${field!'voteId'}':'${a.id}','${titleField!'title'}':'${(a.title?js_string)!}'});return false;"><i class="icon-ok"></i> <@t.page 'select'/></a>
                 </td>
