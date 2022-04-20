@@ -11,7 +11,7 @@
             <li><a class="button" href="cmsTemplate/metadata.html?path=${(path?url)!}" target="ajax" rel="cmsTemplateBox"><@t.page 'metadata'/></a></li>
             <@_createLock itemType='template' itemId=path userId=admin.id>
                 <#if object?has_content||!path?has_content>
-            <li><button type="submit" class="buttonActive"<#if path?has_content> close-url="common/unlock?itemType=template&itemId=${(path?url)!}"</#if>><@t.page 'button.save'/></button></li>
+            <li><button type="submit" class="buttonActive" title="ctrl+s"<#if path?has_content> close-url="common/unlock?itemType=template&itemId=${(path?url)!}"</#if>><@t.page 'button.save'/></button></li>
                 <#else>
             <li>
                 <@_sysLock userId=admin.id itemType='template' itemId=path>
