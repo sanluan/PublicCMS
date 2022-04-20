@@ -15,7 +15,7 @@
         <#if authorizedMap['sysConfigData/save']>
             <@_createLock itemType='config' itemId=code userId=admin.id>
                 <#if object?has_content>
-            <li><button type="submit" class="buttonActive" close-url="common/unlock?itemType=config&itemId=${code!}"><@t.page 'button.save'/></button></li>
+            <li><button type="submit" class="buttonActive" title="ctrl+s" close-url="common/unlock?itemType=config&itemId=${code!}"><@t.page 'button.save'/></button></li>
                 <#else>
             <li>
                 <@_sysLock userId=admin.id itemType='content' itemId=id>

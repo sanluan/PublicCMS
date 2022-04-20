@@ -1707,7 +1707,7 @@ CREATE TABLE `sys_site` (
 -- ----------------------------
 -- Records of sys_site
 -- ----------------------------
-INSERT INTO `sys_site` VALUES ('1', null ,null ,'PublicCMS', '0', '//dev.publiccms.com:8080/publiccms/webfile/', '0', '//dev.publiccms.com:8080/publiccms/', '0');
+INSERT INTO `sys_site` VALUES ('1', null ,null ,'PublicCMS', '0', '//dev.publiccms.com:8080/webfile/', '0', '//dev.publiccms.com:8080/', '0');
 -- ----------------------------
 -- Table structure for sys_site_datasource
 -- ----------------------------

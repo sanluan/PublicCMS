@@ -21,7 +21,7 @@
         <ul>
             <@_createLock itemType='place' itemId=id userId=admin.id>
                 <#if object?has_content||!id?has_content>
-            <li><button type="submit" class="buttonActive" <#if id?has_content>close-url="common/unlock?itemType=place&itemId=${id}"</#if>><@t.page 'button.save'/></button></li>
+            <li><button type="submit" class="buttonActive" title="ctrl+s" <#if id?has_content>close-url="common/unlock?itemType=place&itemId=${id}"</#if>><@t.page 'button.save'/></button></li>
                 <#else>
             <li>
                 <@_sysLock userId=admin.id itemType='place' itemId=id>

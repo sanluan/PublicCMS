@@ -9,7 +9,7 @@
     </div>
 <#if usersql?has_content&&usersql>
     <div class="wrapper" id="useSimple"<#if fromVersion?has_content> style="display:none"</#if>>
-        <input type="checkbox" name="useSimple" value="true"/>导入示例数据(数据目录中的publiccms.sql)
+        <input type="checkbox" name="useSimple" checked="checked" value="true"/>导入示例数据(数据目录中的publiccms.sql)
     </div>
 </#if>
     <div class="wrapper" id="useUpdate"<#if !fromVersion?has_content> style="display:none"</#if>>

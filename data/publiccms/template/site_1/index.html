@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>${metadata.alias!}</title>
-    <link href="${site.sitePath}assets/style.css" rel="stylesheet"/>
+    <link href="${site.sitePath}assets/css/style.css" rel="stylesheet"/>
 </head>
 <body>
     <header>
@@ -11,24 +11,26 @@
     </header>
     <main>
 <@_sysSiteList pageSize=10>
+		<#list page.list?chunk(2) as row>
         <ul>
-    <#list page.list?reverse as a><#if a.id!=site.id>
-        <li>
-            <div class="site-box">
-                <h3><a href="${a.dynamicPath!}" target="_blank">${a.name}</a><#if a.useStatic>[Enable static]</#if></h3>
-                <div>
-                    <p><a href="${a.dynamicPath!}admin/" target="_blank">Management system</a></p>
-                    Domains list:
-                    <@_sysDomainList advanced=true siteId=a.id>
-                        <#list page.list as a>
-                    <p>${a.name}<#if a.wild>[Wild domain]</#if> <#if a.path?has_content>Template root path:${(a.path)!}</#if></p>
-                        </#list>
-                    </@_sysDomainList>
-                </div>
-            </div>
-        </li>
-    </#if></#list>
+    		<#list row as a>
+			<li>
+				<div class="site-box">
+					<h3><a href="${a.dynamicPath!}" target="_blank">${a.name}</a><#if a.useStatic>[Enable static]</#if></h3>
+					<div>
+						<p><a href="${a.dynamicPath!}admin/" target="_blank">Management system</a></p>
+						Domains list:
+						<@_sysDomainList advanced=true siteId=a.id>
+							<#list page.list as a>
+						<p>${a.name}<#if a.wild>[Wild domain]</#if> <#if a.path?has_content>Template root path:${(a.path)!}</#if></p>
+							</#list>
+						</@_sysDomainList>
+					</div>
+				</div>
+			</li>
+    		</#list>
         </ul>
+		 </#list>
 </@_sysSiteList>
         <div class="clear"></div>
         <p>The default user name / password for all sites: admin / admin</p>

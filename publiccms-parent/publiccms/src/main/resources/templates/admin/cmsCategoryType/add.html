@@ -9,7 +9,7 @@
                 <li><button type="button" class="buttonDisabled"><@t.page 'site.parent_maintain'/></button></li>
             <#else>
             <@_sysAuthorized roleIds=admin.roles url='cmsCategoryType/save'>
-                <li><button type="submit" class="buttonActive"><@t.page 'button.save'/></button></li>
+                <li><button type="submit" class="buttonActive" title="ctrl+s"><@t.page 'button.save'/></button></li>
             </@_sysAuthorized>
             </#if>
                 <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>

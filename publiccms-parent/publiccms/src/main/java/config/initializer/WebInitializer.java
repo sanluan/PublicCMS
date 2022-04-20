@@ -23,7 +23,6 @@ import jakarta.servlet.ServletRegistration;
  *
  */
 public class WebInitializer extends BaseServletInitializer implements WebApplicationInitializer {
-
     @Override
     protected DispatcherServlet createDispatcherServlet(WebApplicationContext servletAppContext) {
         return new WebDispatcherServlet(servletAppContext, InitializationInitializer.INSTALL_HTTPREQUEST_HANDLER);
