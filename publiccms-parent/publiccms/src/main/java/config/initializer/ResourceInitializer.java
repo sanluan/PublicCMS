@@ -27,6 +27,7 @@ public class ResourceInitializer implements WebApplicationInitializer {
 
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
+        servletContext.setInitParameter("fileEncoding", CommonConstants.DEFAULT_CHARSET_NAME);
         Dynamic registration = servletContext.addServlet("defaultServlet", new HttpRequestHandlerServlet());
         registration.setLoadOnStartup(1);
         registration.addMapping(new String[] { "/resource/*" });

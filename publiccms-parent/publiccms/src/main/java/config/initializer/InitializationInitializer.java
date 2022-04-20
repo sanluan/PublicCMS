@@ -2,9 +2,7 @@ package config.initializer;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.net.Authenticator;
-import java.nio.charset.Charset;
 import java.util.Properties;
 
 import javax.servlet.ServletContext;
@@ -25,7 +23,6 @@ import com.publiccms.common.database.CmsDataSource;
 import com.publiccms.common.proxy.UsernamePasswordAuthenticator;
 import com.publiccms.common.servlet.InstallHttpRequestHandler;
 import com.publiccms.common.servlet.InstallServlet;
-import com.publiccms.common.tools.CommonUtils;
 
 /**
  *
@@ -44,8 +41,8 @@ public class InitializationInitializer implements WebApplicationInitializer {
     public final static HttpRequestHandler INSTALL_HTTPREQUEST_HANDLER = new InstallHttpRequestHandler(INSTALL_SERVLET_MAPPING);
 
     @Override
-    public void onStartup(ServletContext servletcontext) throws ServletException {
-        initEncoding();
+    public void onStartup(ServletContext servletContext) throws ServletException {
+        servletContext.setInitParameter("fileEncoding", CommonConstants.DEFAULT_CHARSET_NAME);
         initLogManager();
         try {
             Properties config = PropertiesLoaderUtils.loadAllProperties(CommonConstants.CMS_CONFIG_FILE);
@@ -62,12 +59,12 @@ public class InitializationInitializer implements WebApplicationInitializer {
                     log.info(String.format("PublicCMS %s will start normally in %s", CmsVersion.getVersion(),
                             CommonConstants.CMS_FILEPATH));
                 } else {
-                    createInstallServlet(servletcontext, InstallServlet.STEP_CHECKDATABASE, version);
+                    createInstallServlet(servletContext, InstallServlet.STEP_CHECKDATABASE, version);
                     log.warn(String.format("PublicCMS %s installer will start in %s, please upgrade your database!",
                             CmsVersion.getVersion(), CommonConstants.CMS_FILEPATH));
                 }
             } else {
-                createInstallServlet(servletcontext, null, null);
+                createInstallServlet(servletContext, null, null);
                 log.warn(String.format(
                         "PublicCMS %s installer will start in %s, please configure your database information and initialize the database!",
                         CmsVersion.getVersion(), CommonConstants.CMS_FILEPATH));
@@ -75,7 +72,7 @@ public class InitializationInitializer implements WebApplicationInitializer {
         } catch (IOException e) {
             throw new ServletException(e);
         }
-        servletcontext.addListener(IntrospectorCleanupListener.class);
+        servletContext.addListener(IntrospectorCleanupListener.class);
     }
 
     /**
@@ -103,30 +100,6 @@ public class InitializationInitializer implements WebApplicationInitializer {
         Dynamic registration = servletcontext.addServlet("install", new InstallServlet(startStep, version));
         registration.setLoadOnStartup(1);
         registration.addMapping(new String[] { INSTALL_SERVLET_MAPPING });
-    }
-
-    /**
-     * 字符集配置
-     *
-     * @param config
-     * @throws IOException
-     */
-    public static void initEncoding() {
-        String initCharset = System.getProperty("cms.initCharset");
-        if (CommonUtils.empty(initCharset) || "false".equalsIgnoreCase(initCharset)) {
-            Charset old = Charset.defaultCharset();
-            if (!old.equals(CommonConstants.DEFAULT_CHARSET)) {
-                log.info(String.format("old file.encoding = %s", old));
-                try {
-                    Field field = Charset.class.getDeclaredField("defaultCharset");
-                    field.setAccessible(true);
-                    System.setProperty("file.encoding", CommonConstants.DEFAULT_CHARSET_NAME);
-                    field.set(null, null);
-                } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
-                }
-                log.info(String.format("new file.encoding = %s", Charset.defaultCharset()));
-            }
-        }
     }
 
     /**
