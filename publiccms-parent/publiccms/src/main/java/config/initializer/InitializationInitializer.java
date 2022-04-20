@@ -42,7 +42,6 @@ public class InitializationInitializer implements WebApplicationInitializer {
 
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
-        servletContext.setInitParameter("fileEncoding", CommonConstants.DEFAULT_CHARSET_NAME);
         initLogManager();
         try {
             Properties config = PropertiesLoaderUtils.loadAllProperties(CommonConstants.CMS_CONFIG_FILE);

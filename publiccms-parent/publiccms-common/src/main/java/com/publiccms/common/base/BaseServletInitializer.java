@@ -1,8 +1,6 @@
 package com.publiccms.common.base;
 
 import javax.servlet.Filter;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.context.WebApplicationContext;
@@ -20,11 +18,6 @@ import com.publiccms.common.servlet.CommonDispatcherServlet;
  *
  */
 public abstract class BaseServletInitializer extends AbstractDispatcherServletInitializer {
-    @Override
-    public void onStartup(ServletContext servletContext) throws ServletException {
-        servletContext.setInitParameter("fileEncoding", Constants.DEFAULT_CHARSET_NAME);
-        super.onStartup(servletContext);
-    }
 
     @Override
     protected WebApplicationContext createServletApplicationContext() {

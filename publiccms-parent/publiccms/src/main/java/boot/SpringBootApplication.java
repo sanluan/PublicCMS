@@ -69,7 +69,7 @@ public class SpringBootApplication {
         errorPageSet.add(new ErrorPage(HttpStatus.FORBIDDEN, "/error/403.html"));
         errorPageSet.add(new ErrorPage(HttpStatus.BAD_REQUEST, "/error/400.html"));
         factory.setPort(Integer.valueOf(System.getProperty("cms.port", "8080")));
-        factory.setContextPath(System.getProperty("cms.contextPath", "/publiccms"));
+        factory.setContextPath(System.getProperty("cms.contextPath", ""));
         factory.setDisplayName("PublicCMS");
         factory.setRegisterDefaultServlet(true);
         factory.getSession().setTimeout(Duration.ofMinutes(20));

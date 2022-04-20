@@ -10,7 +10,7 @@
 		<@_contentList categoryId=category.id containChild=true pageSize=3>
 		<div class="col-md-6 mb-5 mb-md-0 px-4">
 			<header class="tab-header fs-5">
-				<a href="${a.url}"><b class="pb-2">${category.name}</b></a>
+				<a href="${category.url}"><b class="pb-2">${category.name}</b></a>
 			</header>
 			<#list page.list as a>
 			<@t.merge 'categoryIds' a.categoryId/>
