@@ -43,27 +43,30 @@ public class ImageUtils {
     }
 
     /**
-     * <code>
+     * <pre>
      * &#64;RequestMapping(value = "getCaptchaImage")
-       public void getCaptchaImage(javax.servlet.http.HttpSession session,javax.servlet.http.HttpServletResponse response){
-           try{
-               String captcha = VerificationUtils.getRandomString("ABCDEFGHJKMNPQRSTUVWXYZ23456789", 4);
-               session.setAttribute("captcha", captcha);
-               ImageUtils.drawImage(100, 20, captcha, response.getOutputStream());
-           } catch(IOException e) {
-           }
-       }
-     * </code> <code>
-       &#64;RequestMapping(value = "doLogin", method = RequestMethod.POST)
-       public String login(@RequestAttribute SysSite site, javax.servlet.http.HttpSession session, String username, String password, String captcha,String returnUrl, Long clientId, String uuid,
-            javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response, ModelMap model) {
-           String sessionCaptcha = (String)session.getAttribute("captcha");
-           session.removeAttribute("captcha");
-           if(null!=sessionCaptcha &amp;&amp; sessionCaptcha.equals(captcha)) {
-               // login code
-           }
-       }
-     * </code>
+     * public void getCaptchaImage(javax.servlet.http.HttpSession session, javax.servlet.http.HttpServletResponse response) {
+     *     try {
+     *         String captcha = VerificationUtils.getRandomString("ABCDEFGHJKMNPQRSTUVWXYZ23456789", 4);
+     *         session.setAttribute("captcha", captcha);
+     *         ImageUtils.drawImage(100, 20, captcha, response.getOutputStream());
+     *     } catch (IOException e) {
+     *     }
+     * }
+     * </pre>
+     * 
+     * <pre>
+     * &#64;RequestMapping(value = "doLogin", method = RequestMethod.POST)
+     * public String login(@RequestAttribute SysSite site, javax.servlet.http.HttpSession session, String username,
+     *         String password, String captcha, String returnUrl, Long clientId, String uuid,
+     *         javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response, ModelMap model) {
+     *     String sessionCaptcha = (String) session.getAttribute("captcha");
+     *     session.removeAttribute("captcha");
+     *     if (null != sessionCaptcha &amp;&amp; sessionCaptcha.equals(captcha)) {
+     *         // login code
+     *     }
+     * }
+     * </pre>
      * 
      * @param width
      * @param height
@@ -114,7 +117,8 @@ public class ImageUtils {
         return font[Constants.random.nextInt(4)];
     }
 
-    public static void webp2Image(InputStream webpInputStream, boolean png, File imageFile) throws FileNotFoundException, IOException {
+    public static void webp2Image(InputStream webpInputStream, boolean png, File imageFile)
+            throws FileNotFoundException, IOException {
         ImageReader reader = ImageIO.getImageReadersByMIMEType("image/webp").next();
         WebPReadParam readParam = new WebPReadParam();
         readParam.setBypassFiltering(true);

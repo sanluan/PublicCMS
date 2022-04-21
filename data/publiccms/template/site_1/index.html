@@ -16,7 +16,7 @@
     		<#list row as a>
 			<li>
 				<div class="site-box">
-					<h3><a href="${a.dynamicPath!}" target="_blank">${a.name}</a><#if a.useStatic>[Enable static]</#if></h3>
+					<h3><a href="${a.dynamicPath!}" target="_blank">${a.name}</a><#if a.useStatic>[Static site]</#if><#if a.id=site.id>[Current site]</#if></h3>
 					<div>
 						<p><a href="${a.dynamicPath!}admin/" target="_blank">Management system</a></p>
 						Domains list:
@@ -39,7 +39,7 @@
         <p>For testing purposes, we have pointed dev.publiccms.com and all its subdomains to 127.0.0.1, which can be used to test local services in the same way as localhost and loopback when you are connected to the Internet.</p>
     </main>
     <footer>
-        <#if base?has_content>
+        <#if base??>
             <a href="?locale=zh_CN">中文</a>
         </#if>
         Copyright &copy; ${.now?string('yyyy')}

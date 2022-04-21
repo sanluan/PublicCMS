@@ -16,7 +16,7 @@
     		<#list row as a>
 			<li>
 				<div class="site-box">
-					<h3><a href="${a.dynamicPath!}" target="_blank">${a.name}</a><#if a.useStatic>[已启用静态化]</#if></h3>
+					<h3><a href="${a.dynamicPath!}" target="_blank">${a.name}</a><#if a.useStatic>[静态化站点]</#if><#if a.id=site.id>[当前站点]</#if></h3>
 					<div>
 						<p><a href="${a.dynamicPath!}admin/" target="_blank">管理后台</a></p>
 						域名列表:
@@ -40,7 +40,7 @@
         <p>为方便测试，我们已经将dev.publiccms.com及其所有子域名解析指向了127.0.0.1,它在您联网的情况下可以与localhost,loopback一样用来测试本地服务</p>
     </main>
     <footer>
-        <#if base?has_content>
+        <#if base??>
             <a href="?locale=en">English</a>
         </#if>
         Copyright &copy; ${.now?string('yyyy')}

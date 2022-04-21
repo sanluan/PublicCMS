@@ -323,15 +323,23 @@ public class CmsPlaceAdminController {
         Map<String, List<Serializable>> pksMap = new HashMap<>();
         for (CmsPlace entity : entityList) {
             List<Serializable> userIds = pksMap.computeIfAbsent("userIds", k -> new ArrayList<>());
+            List<Serializable> ids = pksMap.computeIfAbsent("ids", k -> new ArrayList<>());
             userIds.add(entity.getUserId());
             userIds.add(entity.getCheckUserId());
+            ids.add(entity.getId());
         }
-        Map<Long, SysUser> userMap = new HashMap<>();
+        Map<Serializable, SysUser> userMap = new HashMap<>();
+        Map<Serializable, CmsPlaceAttribute> attributeMap = new HashMap<>();
         if (null != pksMap.get("userIds")) {
             List<Serializable> userIds = pksMap.get("userIds");
             List<SysUser> entitys = sysUserService.getEntitys(userIds.toArray(new Serializable[userIds.size()]));
             for (SysUser entity : entitys) {
                 userMap.put(entity.getId(), entity);
+            }
+            List<Serializable> ids = pksMap.get("ids");
+            List<CmsPlaceAttribute> attributes = attributeService.getEntitys(ids.toArray(new Serializable[ids.size()]));
+            for (CmsPlaceAttribute attribute : attributes) {
+                attributeMap.put(attribute.getPlaceId(), attribute);
             }
         }
 
@@ -356,6 +364,7 @@ public class CmsPlaceAdminController {
                     .setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.status"));
             row.createCell(j++)
                     .setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.inspector"));
+
             if (CommonUtils.notEmpty(metadata.getExtendList())) {
                 for (SysExtendField extend : metadata.getExtendList()) {
                     row.createCell(j++).setCellValue(extend.getName());
@@ -376,13 +385,15 @@ public class CmsPlaceAdminController {
                 row.createCell(j++).setCellValue(String.valueOf(entity.getClicks()));
                 row.createCell(j++).setCellValue(dateFormat.format(entity.getPublishDate()));
                 row.createCell(j++).setCellValue(dateFormat.format(entity.getCreateDate()));
-                
+
                 row.createCell(j++).setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale,
                         "page.status.place.data." + entity.getStatus()));
+
                 user = userMap.get(entity.getCheckUserId());
                 row.createCell(j++).setCellValue(null == user ? null : user.getNickName());
+
                 if (CommonUtils.notEmpty(metadata.getExtendList())) {
-                    attribute = attributeService.getEntity(entity.getId());
+                    attribute = attributeMap.get(entity.getId());
                     Map<String, String> map = ExtendUtils.getExtendMap(null == attribute ? null : attribute.getData());
                     for (SysExtendField extend : metadata.getExtendList()) {
                         row.createCell(j++).setCellValue(map.get(extend.getId().getCode()));
@@ -391,8 +402,7 @@ public class CmsPlaceAdminController {
             }
         });
         DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.SHORT_DATE_FORMAT_STRING);
-        String filepath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
-        view.setFilename(metadataComponent.getPlaceMetadata(filepath).getAlias()+"_"+dateFormat.format(new Date()));
+        view.setFilename(metadata.getAlias() + "_" + dateFormat.format(new Date()));
         return view;
     }
 
