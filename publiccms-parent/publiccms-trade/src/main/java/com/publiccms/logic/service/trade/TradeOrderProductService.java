@@ -47,9 +47,7 @@ public class TradeOrderProductService extends BaseService<TradeOrderProduct> {
     /**
      * @param siteId
      * @param orderId
-     * @param pageIndex
-     * @param pageSize
-     * @return results page
+     * @return results list
      */
     @Transactional(readOnly = true)
     public List<TradeOrderProduct> getList(Short siteId, Long orderId) {

@@ -120,7 +120,7 @@ public class CmsContentAdminController {
 
     /**
      * 保存内容
-     * 
+     *
      * @param site
      * @param admin
      * @param entity
@@ -713,8 +713,7 @@ public class CmsContentAdminController {
                     .setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content.source"));
             row.createCell(j++).setCellValue(
                     LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content.source_url"));
-            row.createCell(j++)
-                    .setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content.text"));
+
             if (CommonUtils.notEmpty(categoryExtendList)) {
                 for (SysExtendField extend : categoryExtendList) {
                     row.createCell(j++).setCellValue(extend.getName());
@@ -725,6 +724,8 @@ public class CmsContentAdminController {
                     row.createCell(j++).setCellValue(extend.getName());
                 }
             }
+            row.createCell(j++)
+                    .setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content.text"));
 
             SysUser user;
             SysDept dept;
@@ -756,9 +757,11 @@ public class CmsContentAdminController {
                         "page.status.content." + entity.getStatus()));
                 user = userMap.get(entity.getCheckUserId());
                 row.createCell(j++).setCellValue(null == user ? null : user.getNickName());
+
                 attribute = contentAttributeMap.get(entity.getId());
                 row.createCell(j++).setCellValue(null == attribute ? null : attribute.getSource());
                 row.createCell(j++).setCellValue(null == attribute ? null : attribute.getSourceUrl());
+
                 Map<String, String> map = ExtendUtils.getExtendMap(null == attribute ? null : attribute.getData());
                 if (CommonUtils.notEmpty(categoryExtendList) && entity.getCategoryId() == queryEntity.getCategoryId()) {
                     for (SysExtendField extend : categoryExtendList) {
@@ -770,6 +773,7 @@ public class CmsContentAdminController {
                         row.createCell(j++).setCellValue(map.get(extend.getId().getCode()));
                     }
                 }
+
                 row.createCell(j++).setCellValue(null == attribute ? null : StringUtils.substring(attribute.getText(), 0, 32767));
                 if (null != attribute && null != attribute.getText() && attribute.getText().length() > 32767) {
                     long length = attribute.getText().length();

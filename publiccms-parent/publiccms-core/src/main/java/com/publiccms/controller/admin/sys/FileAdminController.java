@@ -145,7 +145,6 @@ public class FileAdminController {
      * @param admin
      * @param file
      * @param request
-     * @param model
      * @return view name
      */
     @RequestMapping(value = "doImport", method = RequestMethod.POST)

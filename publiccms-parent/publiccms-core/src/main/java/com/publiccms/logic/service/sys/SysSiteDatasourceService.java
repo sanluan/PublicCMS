@@ -25,9 +25,7 @@ public class SysSiteDatasourceService extends BaseService<SysSiteDatasource> {
     /**
      * @param siteId
      * @param datasource
-     * @param pageIndex
-     * @param pageSize
-     * @return
+     * @return data list
      */
     @Transactional(readOnly = true)
     public List<SysSiteDatasource> getList(Short siteId, String datasource) {

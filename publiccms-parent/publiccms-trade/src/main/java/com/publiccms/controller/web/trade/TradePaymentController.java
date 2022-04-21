@@ -55,7 +55,6 @@ public class TradePaymentController {
 
     /**
      * @param site
-     * @param accountType
      * @param paymentId
      * @param returnUrl
      * @param request

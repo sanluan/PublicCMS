@@ -83,7 +83,6 @@ public class InstallServlet extends HttpServlet {
     private AbstractCmsUpgrader cmsUpgrader;
 
     /**
-     * @param config
      * @param startStep
      * @param fromVersion
      */

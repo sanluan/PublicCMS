@@ -22,7 +22,6 @@ public class SysLockDao extends BaseDao<SysLock> {
 
     /**
      * @param itemTypes
-     * @param createDate
      * @return number of data deleted
      */
     public List<Short> getSiteIdList(String[] itemTypes) {

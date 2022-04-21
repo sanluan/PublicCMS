@@ -128,7 +128,6 @@ public class TradeRefundService extends BaseService<TradeRefund> {
     /**
      * @param siteId
      * @param refundId
-     * @param userId
      * @param refundUserId
      * @param status
      * @return

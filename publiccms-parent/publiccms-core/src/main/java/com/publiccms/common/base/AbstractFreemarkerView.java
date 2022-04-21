@@ -78,7 +78,6 @@ public abstract class AbstractFreemarkerView extends FreeMarkerView {
 
     /**
      * @param model
-     * @param admin
      * @param request
      */
     public static void exposeAttribute(Map<String, Object> model, HttpServletRequest request) {
@@ -96,7 +95,6 @@ public abstract class AbstractFreemarkerView extends FreeMarkerView {
 
     /**
      * @param model
-     * @param admin
      * @param site
      */
     public static void exposeSite(Map<String, Object> model, SysSite site) {

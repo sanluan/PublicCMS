@@ -196,8 +196,6 @@ public class TradeOrderAdminController {
     }
 
     /**
-     * @param ids
-     * @param request
      * @param site
      * @param admin
      * @param id

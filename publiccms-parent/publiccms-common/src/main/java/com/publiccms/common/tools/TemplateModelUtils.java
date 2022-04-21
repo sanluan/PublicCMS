@@ -285,7 +285,6 @@ public class TemplateModelUtils {
      * @param model
      * @return data value
      * @throws TemplateModelException
-     * @throws ParseException
      */
     public static Date converDate(TemplateModel model) throws TemplateModelException {
         if (null != model) {

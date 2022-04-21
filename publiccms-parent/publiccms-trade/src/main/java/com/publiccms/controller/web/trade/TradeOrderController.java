@@ -45,7 +45,6 @@ public class TradeOrderController {
      * @param site
      * @param accountType
      * @param orderId
-     * @param paymentId
      * @param returnUrl
      * @param request
      * @param response

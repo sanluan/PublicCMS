@@ -18,23 +18,23 @@ public class ExcelView extends AbstractXlsxStreamingView {
     private String filename;
 
     /**
-     * <code>
-       &#64;RequestMapping("export")
-       public ExcelView export() {
-           ExcelView view = new ExcelView(workbook -&gt; {
-               Sheet sheet = workbook.createSheet("sheetname");
-               int i = 0, j = 0;
-               Row row = sheet.createRow(i++);
-               row.createCell(j++).setCellValue("id");
-               row.createCell(j++).setCellValue("title");
-               row = sheet.createRow(i++);
-               row.createCell(j++).setCellValue("id");
-               row.createCell(j++).setCellValue("title");
-           });
-           view.setFilename("filename");
-           return view;
-       }
-     * </code>
+     * <pre>
+     * &#64;RequestMapping("export")
+     * public ExcelView export() {
+     *     ExcelView view = new ExcelView(workbook -&gt; {
+     *         Sheet sheet = workbook.createSheet("sheetname");
+     *         int i = 0, j = 0;
+     *         Row row = sheet.createRow(i++);
+     *         row.createCell(j++).setCellValue("id");
+     *         row.createCell(j++).setCellValue("title");
+     *         row = sheet.createRow(i++);
+     *         row.createCell(j++).setCellValue("id");
+     *         row.createCell(j++).setCellValue("title");
+     *     });
+     *     view.setFilename("filename");
+     *     return view;
+     * }
+     * </pre>
      * 
      * @param filename
      * @param consumer
