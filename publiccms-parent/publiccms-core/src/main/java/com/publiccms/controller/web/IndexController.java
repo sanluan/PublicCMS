@@ -76,7 +76,7 @@ public class IndexController {
     /**
      * METADATA页面请求统一分发
      * 
-     * @param response
+     * @param response 响应
      */
     @RequestMapping({ "/**/" + MetadataComponent.DATA_FILE, "/**/" + MetadataComponent.METADATA_FILE })
     public void rest(HttpServletResponse response) {
@@ -89,13 +89,13 @@ public class IndexController {
     /**
      * REST页面请求统一分发
      * 
-     * @param site
-     * @param id
-     * @param body
-     * @param request
-     * @param response
-     * @param model
-     * @return view name
+     * @param site 站点
+     * @param id ID
+     * @param body 消息体
+     * @param request 请求
+     * @param response 响应
+     * @param model 模型
+     * @return view name 视图名
      */
     @RequestMapping({ "/**/{id:[0-9]+}" })
     public String rest(@RequestAttribute SysSite site, @PathVariable("id") long id, @RequestBody(required = false) String body,
@@ -106,14 +106,14 @@ public class IndexController {
     /**
      * REST页面请求统一分发
      * 
-     * @param site
-     * @param id
-     * @param pageIndex
-     * @param body
-     * @param request
-     * @param response
-     * @param model
-     * @return view name
+     * @param site 站点
+     * @param id ID
+     * @param pageIndex 分页
+     * @param body 消息体
+     * @param request 请求
+     * @param response 响应
+     * @param model 模型
+     * @return view name 视图名
      */
     @RequestMapping({ "/**/{id:[0-9]+}_{pageIndex:[0-9]+}" })
     public String restPage(@RequestAttribute SysSite site, @PathVariable("id") long id,

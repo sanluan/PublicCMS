@@ -25,7 +25,6 @@ public class SysLockAdminController {
     /**
      * @param site
      * @param admin
-     * @param lock
      * @param itemType
      * @param itemId
      * @return result
@@ -39,7 +38,6 @@ public class SysLockAdminController {
     /**
      * @param site
      * @param admin
-     * @param lock
      * @param itemType
      * @param itemId
      * @return result

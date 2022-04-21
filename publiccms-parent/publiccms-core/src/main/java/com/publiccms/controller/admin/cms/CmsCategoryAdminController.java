@@ -291,7 +291,6 @@ public class CmsCategoryAdminController {
     /**
      * @param site
      * @param admin
-     * @param request
      * @return view name
      */
     @SuppressWarnings("unchecked")

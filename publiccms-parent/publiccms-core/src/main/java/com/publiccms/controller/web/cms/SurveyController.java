@@ -53,7 +53,6 @@ public class SurveyController {
      * @param surveyId
      * @param userQuestionParameters
      * @param returnUrl
-     * @param itemId
      * @param request
      * @return
      */

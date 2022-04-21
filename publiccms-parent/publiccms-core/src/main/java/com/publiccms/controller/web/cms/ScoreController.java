@@ -39,7 +39,6 @@ public class ScoreController {
     /**
      * @param site
      * @param user
-     * @param userId
      * @param itemType
      * @param itemId
      * @param scores
@@ -56,7 +55,6 @@ public class ScoreController {
     /**
      * @param site
      * @param user
-     * @param userId
      * @param itemType
      * @param itemId
      * @return

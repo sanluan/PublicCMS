@@ -80,7 +80,6 @@ public class VisitHistoryService extends BaseService<VisitHistory> {
     /**
      * @param siteId
      * @param visitDate
-     * @param visitHour
      * @return results page
      */
     @Transactional(readOnly = true)

@@ -334,7 +334,6 @@ public class CmsFileUtils {
      * 移动文件或目录
      *
      * @param filePath
-     * @param backupFilePath
      * @return whether to move successfully
      */
     public static boolean delete(String filePath) {
