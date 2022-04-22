@@ -43,7 +43,7 @@ public class GetContentAttributesMethod extends BaseMethod {
     
     @Override
     public boolean needAppToken() {
-        return false;
+        return true;
     }
 
     @Override

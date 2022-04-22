@@ -6,10 +6,10 @@ import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.publiccms.logic.service.trade.TradeRefundService;
 import com.publiccms.common.base.AbstractTemplateDirective;
-import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.handler.PageHandler;
+import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.logic.service.trade.TradeRefundService;
 
 /**
  *
@@ -21,7 +21,7 @@ public class TradeRefundListDirective extends AbstractTemplateDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
-        PageHandler page = service.getPage(getSite(handler).getId(), handler.getLong("userId"), handler.getLong("paymentId"),
+        PageHandler page = service.getPage(getSite(handler).getId(), getUserId(handler, "userId"), handler.getLong("paymentId"),
                 handler.getLong("refundUserId"), handler.getInteger("status"), handler.getString("paymentType"),
                 handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", 30));
         handler.put("page", page).render();
@@ -34,5 +34,4 @@ public class TradeRefundListDirective extends AbstractTemplateDirective {
 
     @Autowired
     private TradeRefundService service;
-
 }

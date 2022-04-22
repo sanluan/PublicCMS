@@ -52,6 +52,6 @@ public class AppClientDirective extends AbstractAppDirective {
 
     @Override
     public boolean needAppToken() {
-        return true;
+        return false;
     }
 }
