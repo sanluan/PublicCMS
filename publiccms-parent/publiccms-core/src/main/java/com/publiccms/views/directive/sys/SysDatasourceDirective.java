@@ -45,6 +45,11 @@ public class SysDatasourceDirective extends AbstractTemplateDirective {
         }
     }
 
+    @Override
+    public boolean needAppToken() {
+        return true;
+    }
+
     @Autowired
     private SysDatasourceService service;
 
