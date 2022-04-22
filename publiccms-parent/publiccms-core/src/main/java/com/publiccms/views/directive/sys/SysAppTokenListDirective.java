@@ -26,10 +26,10 @@ public class SysAppTokenListDirective extends AbstractTemplateDirective {
                 handler.getInteger("pageSize", handler.getInteger("count", 30)));
         handler.put("page", page).render();
     }
-    
+
     @Override
-    public boolean needAppToken() {
-        return true;
+    public boolean httpEnabled() {
+        return false;
     }
 
     @Resource

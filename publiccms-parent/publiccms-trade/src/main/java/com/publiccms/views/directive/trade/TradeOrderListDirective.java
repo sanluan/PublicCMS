@@ -21,7 +21,7 @@ public class TradeOrderListDirective extends AbstractTemplateDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
-        PageHandler page = service.getPage(getSite(handler).getId(), handler.getLong("userId"), handler.getLong("paymentId"),
+        PageHandler page = service.getPage(getSite(handler).getId(), getUserId(handler, "userId"), handler.getLong("paymentId"),
                 handler.getIntegerArray("status"), handler.getBoolean("processed"), handler.getDate("startCreateDate"),
                 handler.getDate("endCreateDate"), handler.getString("orderType"), handler.getInteger("pageIndex", 1),
                 handler.getInteger("pageSize", 30));
@@ -29,7 +29,7 @@ public class TradeOrderListDirective extends AbstractTemplateDirective {
     }
 
     @Override
-    public boolean needAppToken() {
+    public boolean needUserToken() {
         return true;
     }
 

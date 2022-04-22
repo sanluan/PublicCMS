@@ -22,7 +22,7 @@ public class SysUserTokenListDirective extends AbstractTemplateDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
-        PageHandler page = service.getPage(getSite(handler).getId(), handler.getLong("userId"), handler.getString("channel"),
+        PageHandler page = service.getPage(getSite(handler).getId(), getUserId(handler, "userId"), handler.getString("channel"),
                 handler.getString("orderField"), handler.getString("orderType"), handler.getInteger("pageIndex", 1),
                 handler.getInteger("pageSize", handler.getInteger("count", 30)));
         handler.put("page", page).render();

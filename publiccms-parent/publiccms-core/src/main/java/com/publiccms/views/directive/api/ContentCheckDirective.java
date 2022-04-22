@@ -75,9 +75,9 @@ public class ContentCheckDirective extends AbstractAppDirective {
         for (CmsCategory category : categoryService.getEntitys(categoryIdSet.toArray(new Integer[categoryIdSet.size()]))) {
             templateComponent.createCategoryFile(site, category, null, null);
         }
-        logOperateService
-                .save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), app.getChannel(), uncheck ? "uncheck.content" : "check.content",
-                        RequestUtils.getIpAddress(handler.getRequest()), CommonUtils.getDate(), StringUtils.join(ids, CommonConstants.COMMA)));
+        logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), app.getChannel(),
+                uncheck ? "uncheck.content" : "check.content", RequestUtils.getIpAddress(handler.getRequest()),
+                CommonUtils.getDate(), StringUtils.join(ids, CommonConstants.COMMA)));
     }
 
     private boolean publish(SysSite site, CmsContent entity, SysUser user) {

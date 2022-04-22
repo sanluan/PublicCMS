@@ -11,6 +11,7 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysApp;
 import com.publiccms.entities.sys.SysAppClient;
 import com.publiccms.entities.sys.SysUser;
+import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.sys.SysAppClientService;
 
 /**
@@ -24,9 +25,10 @@ public class BindingUserDirective extends AbstractAppDirective {
     @Override
     public void execute(RenderHandler handler, SysApp app, SysUser user) throws IOException, Exception {
         String uuid = handler.getString("uuid");
+        String channel = handler.getString("channel", LogLoginService.CHANNEL_WEB);
         boolean result = false;
         if (CommonUtils.notEmpty(uuid)) {
-            SysAppClient sysAppClien = appClientService.getEntity(getSite(handler).getId(), app.getChannel(), uuid);
+            SysAppClient sysAppClien = appClientService.getEntity(getSite(handler).getId(), channel, uuid);
             if (null != sysAppClien) {
                 appClientService.updateUser(sysAppClien.getId(), user.getId());
                 result = true;
@@ -45,6 +47,6 @@ public class BindingUserDirective extends AbstractAppDirective {
 
     @Override
     public boolean needAppToken() {
-        return true;
+        return false;
     }
 }

@@ -39,10 +39,11 @@ public class AutoLoginDirective extends AbstractAppDirective {
     public void execute(RenderHandler handler, SysApp app, SysUser user) throws IOException, Exception {
         String uuid = handler.getString("uuid");
         String username = handler.getString("username");
+        String channel = handler.getString("channel", LogLoginService.CHANNEL_WEB);
         boolean result = false;
         if (CommonUtils.notEmpty(uuid) && CommonUtils.notEmpty(username)) {
             SysSite site = getSite(handler);
-            SysAppClient appClient = appClientService.getEntity(site.getId(), app.getChannel(), uuid);
+            SysAppClient appClient = appClientService.getEntity(site.getId(), channel, uuid);
             if (null != appClient && null != appClient.getUserId()) {
                 user = service.getEntity(appClient.getUserId());
                 if (null != user && !user.isDisabled() && username.equals(user.getName())) {
@@ -54,9 +55,9 @@ public class AutoLoginDirective extends AbstractAppDirective {
                             SiteConfigComponent.DEFAULT_EXPIRY_MINUTES);
                     Date expiryDate = DateUtils.addMinutes(now, expiryMinutes);
                     sysUserTokenService
-                            .save(new SysUserToken(authToken, site.getId(), user.getId(), app.getChannel(), now, expiryDate, ip));
+                            .save(new SysUserToken(authToken, site.getId(), user.getId(), channel, now, expiryDate, ip));
                     service.updateLoginStatus(user.getId(), ip);
-                    logLoginService.save(new LogLogin(site.getId(), uuid, user.getId(), ip, app.getChannel(), true, now, null));
+                    logLoginService.save(new LogLogin(site.getId(), uuid, user.getId(), ip, channel, true, now, null));
                     user.setPassword(null);
                     result = true;
                     handler.put("authToken", authToken).put("expiryDate", expiryDate).put("user", user);
@@ -84,6 +85,6 @@ public class AutoLoginDirective extends AbstractAppDirective {
 
     @Override
     public boolean needAppToken() {
-        return true;
+        return false;
     }
 }

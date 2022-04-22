@@ -35,6 +35,9 @@ import com.publiccms.logic.service.sys.SysUserTokenService;
  *
  */
 public abstract class AbstractTemplateDirective extends BaseTemplateDirective {
+    public static final String AUTH_TOKEN = "authToken";
+    public static final String AUTH_USER_ID = "authUserId";
+
     /**
      * @param handler
      * @return site
@@ -52,6 +55,21 @@ public abstract class AbstractTemplateDirective extends BaseTemplateDirective {
      */
     protected void expose(RenderHandler handler, Map<String, Object> model) throws IOException, Exception {
         AbstractFreemarkerView.exposeSite(model, getSite(handler));
+    }
+
+    protected Long getUserId(RenderHandler handler, String name) throws Exception {
+        if (needUserToken()) {
+            Long authUserId = handler.getLong(AUTH_USER_ID);
+            Long userId = null;
+            if (null != authUserId) {
+                userId = authUserId;
+            } else {
+                userId = handler.getLong(name);
+            }
+            return userId;
+        } else {
+            return handler.getLong(name);
+        }
     }
 
     @Override
@@ -80,8 +98,8 @@ public abstract class AbstractTemplateDirective extends BaseTemplateDirective {
      * @throws Exception
      */
     private SysUser getUser(RenderHandler handler) throws Exception {
-        String authToken = handler.getString("authToken");
-        Long authUserId = handler.getLong("authUserId");
+        String authToken = handler.getString(AUTH_TOKEN);
+        Long authUserId = handler.getLong(AUTH_USER_ID);
         if (CommonUtils.notEmpty(authToken) && null != authUserId) {
             SysUserToken sysUserToken = sysUserTokenService.getEntity(authToken);
             if (null != sysUserToken

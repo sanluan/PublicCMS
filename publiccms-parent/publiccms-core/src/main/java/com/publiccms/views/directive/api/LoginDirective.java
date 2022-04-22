@@ -43,6 +43,7 @@ public class LoginDirective extends AbstractAppDirective {
         String username = StringUtils.trim(handler.getString("username"));
         String password = StringUtils.trim(handler.getString("password"));
         String encoding = StringUtils.trim(handler.getString("encoding"));
+        String channel = handler.getString("channel", LogLoginService.CHANNEL_WEB);
         boolean result = false;
         if (CommonUtils.notEmpty(username) && CommonUtils.notEmpty(password)) {
             SysSite site = getSite(handler);
@@ -71,10 +72,9 @@ public class LoginDirective extends AbstractAppDirective {
                 int expiryMinutes = ConfigComponent.getInt(config.get(SiteConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
                         SiteConfigComponent.DEFAULT_EXPIRY_MINUTES);
                 Date expiryDate = DateUtils.addMinutes(now, expiryMinutes);
-                sysUserTokenService
-                        .save(new SysUserToken(authToken, site.getId(), user.getId(), app.getChannel(), now, expiryDate, ip));
-                logLoginService.save(new LogLogin(site.getId(), username, user.getId(), ip, app.getChannel(), true,
-                        CommonUtils.getDate(), null));
+                sysUserTokenService.save(new SysUserToken(authToken, site.getId(), user.getId(), channel, now, expiryDate, ip));
+                logLoginService
+                        .save(new LogLogin(site.getId(), username, user.getId(), ip, channel, true, CommonUtils.getDate(), null));
                 user.setPassword(null);
                 result = true;
                 handler.put("authToken", authToken).put("expiryDate", expiryDate).put("user", user);
@@ -88,7 +88,7 @@ public class LoginDirective extends AbstractAppDirective {
                 log.setName(username);
                 log.setErrorPassword(password);
                 log.setIp(ip);
-                log.setChannel(app.getChannel());
+                log.setChannel(channel);
                 logLoginService.save(log);
             }
         }
@@ -113,6 +113,6 @@ public class LoginDirective extends AbstractAppDirective {
 
     @Override
     public boolean needAppToken() {
-        return true;
+        return false;
     }
 }

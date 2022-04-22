@@ -39,6 +39,7 @@ import com.publiccms.logic.service.cms.CmsContentAttributeService;
 import com.publiccms.logic.service.cms.CmsContentFileService;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.cms.CmsTagService;
+import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.views.pojo.entities.CmsModel;
 
@@ -71,6 +72,7 @@ public class ContentCreateDirective extends AbstractAppDirective {
     @Override
     public void execute(RenderHandler handler, SysApp app, SysUser user) throws IOException, Exception {
         SysSite site = getSite(handler);
+        String channel = handler.getString("channel", LogLoginService.CHANNEL_WEB);
         CmsContent entity = new CmsContent();
         entity.setCategoryId(handler.getInteger("categoryId"));
         entity.setModelId(handler.getString("modelId"));
@@ -136,7 +138,7 @@ public class ContentCreateDirective extends AbstractAppDirective {
                                         : CmsContentAdminController.ignorePropertiesWithUrl);
                     }
                     if (null != entity.getId()) {
-                        logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), app.getChannel(),
+                        logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), channel,
                                 "update.content", RequestUtils.getIpAddress(handler.getRequest()), CommonUtils.getDate(),
                                 JsonUtils.getString(entity)));
                     }
@@ -148,9 +150,8 @@ public class ContentCreateDirective extends AbstractAppDirective {
                     if (CommonUtils.notEmpty(entity.getParentId())) {
                         service.updateChilds(site.getId(), entity.getParentId(), 1);
                     }
-                    logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), app.getChannel(),
-                            "save.content", RequestUtils.getIpAddress(handler.getRequest()), CommonUtils.getDate(),
-                            JsonUtils.getString(entity)));
+                    logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), channel, "save.content",
+                            RequestUtils.getIpAddress(handler.getRequest()), CommonUtils.getDate(), JsonUtils.getString(entity)));
                 }
                 String text = HtmlUtils.removeHtmlTag(attribute.getText());
                 attribute.setWordCount(text.length());
@@ -218,7 +219,7 @@ public class ContentCreateDirective extends AbstractAppDirective {
 
     @Override
     public boolean needAppToken() {
-        return true;
+        return false;
     }
 
 }
