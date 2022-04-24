@@ -16,6 +16,7 @@ import com.publiccms.common.tools.CmsFileUtils.FileInfo;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
+import com.publiccms.views.pojo.entities.CmsPageData;
 import com.publiccms.views.pojo.entities.CmsPlaceMetadata;
 
 import freemarker.template.TemplateException;
@@ -37,7 +38,8 @@ public class PublishPlaceDirective extends AbstractTaskDirective {
             Map<String, Boolean> map = new LinkedHashMap<>();
             try {
                 CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filePath);
-                templateComponent.staticPlace(site, path, metadata);
+                CmsPageData data = metadataComponent.getTemplateData(filePath);
+                templateComponent.staticPlace(site, path, metadata, data);
                 map.put(path, true);
             } catch (IOException | TemplateException e) {
                 map.put(path, false);
@@ -59,9 +61,10 @@ public class PublishPlaceDirective extends AbstractTaskDirective {
                 map.putAll(dealDir(site, filePath + CommonConstants.SEPARATOR));
             } else {
                 try {
-                    CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(
-                            siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + filePath));
-                    templateComponent.staticPlace(site, filePath, metadata);
+                    String realfilePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + filePath);
+                    CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(realfilePath);
+                    CmsPageData data = metadataComponent.getTemplateData(realfilePath);
+                    templateComponent.staticPlace(site, filePath, metadata, data);
                     map.put(filePath, true);
                 } catch (IOException | TemplateException e) {
                     map.put(filePath, false);

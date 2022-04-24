@@ -39,10 +39,9 @@ public class SendEmailDirective extends AbstractTemplateDirective {
             if (CommonUtils.notEmpty(templatePath)) {
                 Map<String, Object> model = new HashMap<>();
                 expose(handler, model);
-                CmsPageMetadata metadata = metadataComponent
-                        .getTemplateMetadata(siteComponent.getWebTemplateFilePath(site, templatePath));
-                CmsPageData data = metadataComponent
-                        .getTemplateData(siteComponent.getWebTemplateFilePath(site, templatePath));
+                String filepath = siteComponent.getWebTemplateFilePath(site, templatePath);
+                CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(filepath);
+                CmsPageData data = metadataComponent.getTemplateData(filepath);
                 model.put("metadata", metadata.getAsMap(data));
                 String content = FreeMarkerUtils.generateStringByFile(SiteComponent.getFullTemplatePath(site, templatePath),
                         templateComponent.getWebConfiguration(), model);

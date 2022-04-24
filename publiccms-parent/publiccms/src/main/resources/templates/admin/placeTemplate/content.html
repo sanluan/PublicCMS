@@ -7,10 +7,11 @@
             <li><a class="button" href="cmsTemplate/publishPlace?path=${(path?url)!}&_csrf=<@_csrfToken admin=true/>" target="ajaxTodo"><@t.page 'button.publish'/></a></li>
         </#if>
             <li><a class="button" href="cmsTemplate/deletePlace?path=${(path?url)!}&navTabId=placeTemplate/list&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete_file'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i> <@t.page 'button.delete'/></a></li>
+            <li><a class="button" href="cmsPlace/publish_place.html?path=${(path?url)!}" target="ajax" rel="cmsTemplatePlace"><@t.page 'place.management'/></a></li>
         <#if a?has_content&&a.size gt 0>
     <@_sysAuthorized roleIds=admin.roles url='cmsPlace/dataList'>
         <@_sysDeptPage deptId=admin.deptId!'' pages='/include'+path>
-            <li><a class="button" href="cmsPlace/dataList.html?path=${(path?url)!}" target="navTab" rel="cmsPlace/dataList" title="<@t.page 'place_data.place'/>:${(a.alias)!}"><@t.page 'place.management'/></a></li>
+            <li><a class="button" href="cmsPlace/dataList.html?path=${(path?url)!}" target="navTab" rel="cmsPlace/dataList" title="<@t.page 'place_data.place'/>:${(a.alias)!}"><@t.page 'place_data'/>(${a.size})</a></li>
         </@_sysDeptPage>
     </@_sysAuthorized>
             <#if a.allowContribute>
@@ -38,7 +39,7 @@
          <a class="button" href="cmsTemplate/ftlLookup.html" target="dialog" mask="true"><@t.page 'template.fragment'/></a>
          <a class="button" href="placeTemplate/lookup.html" target="dialog" mask="true"><@t.page 'place'/></a>
          <a class="button" href="cmsWebFile/lookup.html" target="dialog" mask="true"><@t.page 'webfile'/></a>
-        <a class="button" href="cmsTemplate/help.html?type=place" target="dialog" mask="true"><@t.page 'template.help'/></a>
+        <a class="button" href="cmsTemplate/help.html?type=place&path=${(path?url)!}" target="dialog" mask="true"><@t.page 'template.help'/></a>
     </h2>
     <div class="pageFormContent" layoutH>
            <div>

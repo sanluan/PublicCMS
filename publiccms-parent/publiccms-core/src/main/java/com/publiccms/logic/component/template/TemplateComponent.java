@@ -296,7 +296,7 @@ public class TemplateComponent implements Cache {
         }
         String realTemplatePath = siteComponent.getWebTemplateFilePath(site, templatePath);
         CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(realTemplatePath);
-        CmsPageData data = metadataComponent.getTemplateData(siteComponent.getWebTemplateFilePath(site, templatePath));
+        CmsPageData data = metadataComponent.getTemplateData(realTemplatePath);
         Map<String, Object> metadataMap = metadata.getAsMap(data);
         String fullTemplatePath = SiteComponent.getFullTemplatePath(site, templatePath);
         if (null != attribute && CommonUtils.notEmpty(filePath) && CommonUtils.notEmpty(attribute.getText())) {
@@ -408,7 +408,7 @@ public class TemplateComponent implements Cache {
         }
         String realTemplatePath = siteComponent.getWebTemplateFilePath(site, templatePath);
         CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(realTemplatePath);
-        CmsPageData data = metadataComponent.getTemplateData(siteComponent.getWebTemplateFilePath(site, templatePath));
+        CmsPageData data = metadataComponent.getTemplateData(realTemplatePath);
         Map<String, Object> metadataMap = metadata.getAsMap(data);
         String fullTemplatePath = SiteComponent.getFullTemplatePath(site, templatePath);
         if (CommonUtils.notEmpty(totalPage) && pageIndex + 1 <= totalPage) {
@@ -428,7 +428,8 @@ public class TemplateComponent implements Cache {
         });
     }
 
-    private void exposePlace(SysSite site, String templatePath, CmsPlaceMetadata metadata, Map<String, Object> model) {
+    private void exposePlace(SysSite site, String templatePath, CmsPlaceMetadata metadata, CmsPageData data,
+            Map<String, Object> model) {
         if (null != metadata.getSize() && 0 < metadata.getSize()) {
             Date now = CommonUtils.getMinuteDate();
             PageHandler page = placeService.getPage(site.getId(), null, templatePath, null, null, null, now, now,
@@ -446,7 +447,7 @@ public class TemplateComponent implements Cache {
             }
             model.put("page", page);
         }
-        model.put("metadata", metadata);
+        model.put("metadata", metadata.getAsMap(data));
         AbstractFreemarkerView.exposeSite(model, site);
     }
 
@@ -456,13 +457,15 @@ public class TemplateComponent implements Cache {
      * @param site
      * @param templatePath
      * @param metadata
+     * @param data
      * @throws IOException
      * @throws TemplateException
      */
-    public void staticPlace(SysSite site, String templatePath, CmsPlaceMetadata metadata) throws IOException, TemplateException {
+    public void staticPlace(SysSite site, String templatePath, CmsPlaceMetadata metadata, CmsPageData data)
+            throws IOException, TemplateException {
         if (CommonUtils.notEmpty(templatePath)) {
             Map<String, Object> model = new HashMap<>();
-            exposePlace(site, templatePath, metadata, model);
+            exposePlace(site, templatePath, metadata, data, model);
             String placeTemplatePath = INCLUDE_DIRECTORY + templatePath;
             String templateFullPath = SiteComponent.getFullTemplatePath(site, placeTemplatePath);
             FreeMarkerUtils.generateFileByFile(templateFullPath, siteComponent.getWebFilePath(site, placeTemplatePath),
@@ -476,13 +479,15 @@ public class TemplateComponent implements Cache {
      * @param site
      * @param templatePath
      * @param metadata
+     * @param data 
      * @return place content
      * @throws IOException
      * @throws TemplateException
      */
-    public String printPlace(SysSite site, String templatePath, CmsPlaceMetadata metadata) throws IOException, TemplateException {
+    public String printPlace(SysSite site, String templatePath, CmsPlaceMetadata metadata, CmsPageData data)
+            throws IOException, TemplateException {
         StringWriter writer = new StringWriter();
-        printPlace(writer, site, templatePath, metadata);
+        printPlace(writer, site, templatePath, metadata, data);
         return writer.toString();
     }
 
@@ -493,14 +498,15 @@ public class TemplateComponent implements Cache {
      * @param site
      * @param templatePath
      * @param metadata
+     * @param data
      * @throws IOException
      * @throws TemplateException
      */
-    public void printPlace(Writer writer, SysSite site, String templatePath, CmsPlaceMetadata metadata)
+    public void printPlace(Writer writer, SysSite site, String templatePath, CmsPlaceMetadata metadata, CmsPageData data)
             throws IOException, TemplateException {
         if (CommonUtils.notEmpty(templatePath)) {
             Map<String, Object> model = new HashMap<>();
-            exposePlace(site, templatePath, metadata, model);
+            exposePlace(site, templatePath, metadata, data, model);
             String templateFullPath = SiteComponent.getFullTemplatePath(site, INCLUDE_DIRECTORY + templatePath);
             FreeMarkerUtils.generateStringByFile(writer, templateFullPath, webConfiguration, model);
         }

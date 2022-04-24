@@ -4,6 +4,8 @@
     <div class="formBar">
         <ul>
         <#if a?has_content>
+            <li><a class="button" href="cmsTemplate/deletePlace?path=${(path?url)!}&navTabId=placeTemplate/list&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete_file'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i> <@t.page 'button.delete'/></a></li>
+            <li><a class="button" href="cmsPlace/publish_place.html?path=${(path?url)!}" target="ajax" rel="cmsTemplatePlace"><@t.page 'place.management'/></a></li>
             <li><a class="button" href="placeTemplate/content.html?path=${(path?url)!}" target="ajax" rel="cmsTemplatePlace"><@t.page 'template.content'/></a></li>
         </#if>
             <@_createLock itemType='placeTemplate' itemId=path userId=admin.id>
@@ -108,6 +110,12 @@
                     <label><@t.page 'height'/></label><input name="coverHeight" type="number" size="5" value="${(a.coverHeight)!}"/>
                 </dd>
             </dl>
+        </fieldset>
+        <fieldset>
+            <legend><@t.page 'metadata.extend_field'/></legend>
+            <#include '../include_page/extends.html'/>
+            <#assign metadataExtendList=(a.metadataExtendList)![]/>
+            <@extends 'metadataExtendList' metadataExtendList/>
         </fieldset>
         <fieldset class="placeExtend">
             <legend><@t.page 'place_data.extend_field'/>(<@t.page 'metadata.default_value_description'/>)</legend>
