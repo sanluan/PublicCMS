@@ -16,7 +16,6 @@ import org.apache.poi.hwpf.converter.PicturesManager;
 import org.apache.poi.hwpf.usermodel.PictureType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -66,15 +65,13 @@ public class FileAdminController {
      * @param field
      * @param originalField
      * @param request
-     * @param model
      * @return view name
      */
     @RequestMapping(value = "doUpload", method = RequestMethod.POST)
     @Csrf
     @ResponseBody
     public Map<String, Object> upload(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile file,
-            String base64File, String originalFilename, String field, String originalField, HttpServletRequest request,
-            ModelMap model) {
+            String base64File, String originalFilename, String field, String originalField, HttpServletRequest request) {
         Map<String, Object> result = new HashMap<>();
         if (null != file && !file.isEmpty() || CommonUtils.notEmpty(base64File)) {
             String originalName;
@@ -242,14 +239,13 @@ public class FileAdminController {
      * @param field
      * @param originalField
      * @param request
-     * @param model
      * @return view name
      */
     @RequestMapping(value = "doBatchUpload", method = RequestMethod.POST)
     @Csrf
     @ResponseBody
     public List<Map<String, Object>> batchUpload(@RequestAttribute SysSite site, @SessionAttribute SysUser admin,
-            MultipartFile[] files, String field, String originalField, HttpServletRequest request, ModelMap model) {
+            MultipartFile[] files, String field, String originalField, HttpServletRequest request) {
         List<Map<String, Object>> resultList = new ArrayList<>();
         if (CommonUtils.notEmpty(files)) {
             for (MultipartFile file : files) {

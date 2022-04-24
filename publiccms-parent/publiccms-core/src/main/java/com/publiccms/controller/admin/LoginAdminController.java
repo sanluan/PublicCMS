@@ -213,12 +213,11 @@ public class LoginAdminController {
     /**
      * @param admin
      * @param password
-     * @param session
      * @return result
      */
     @RequestMapping("isWeak")
     @ResponseBody
-    public boolean isWeak(@SessionAttribute SysUser admin, String password, HttpSession session) {
+    public boolean isWeak(@SessionAttribute SysUser admin, String password) {
         return !UserPasswordUtils.isWeek(admin.getName(), password);
     }
 

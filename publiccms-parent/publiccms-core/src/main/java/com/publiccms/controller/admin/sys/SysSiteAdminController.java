@@ -309,13 +309,11 @@ public class SysSiteAdminController {
      * @param site
      * @param admin
      * @param request
-     * @param model
      * @return view name
      */
     @RequestMapping("reCreateIndex")
     @Csrf
-    public String reCreateIndex(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, HttpServletRequest request,
-            ModelMap model) {
+    public String reCreateIndex(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, HttpServletRequest request) {
         hqlService.reCreateIndex();
         logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                 "reCreateIndex", RequestUtils.getIpAddress(request), CommonUtils.getDate(), CommonConstants.BLANK));

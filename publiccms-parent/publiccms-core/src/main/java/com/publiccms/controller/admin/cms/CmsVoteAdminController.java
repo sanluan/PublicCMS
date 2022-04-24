@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,18 +46,18 @@ public class CmsVoteAdminController {
      * @param entity
      * @param voteParameters
      * @param request
-     * @param model
      * @return operate result
      */
     @RequestMapping("save")
     @Csrf
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, CmsVote entity,
-            @ModelAttribute CmsVoteParameters voteParameters, HttpServletRequest request, ModelMap model) {
+            @ModelAttribute CmsVoteParameters voteParameters, HttpServletRequest request) {
         if (null != entity.getId()) {
             entity = service.update(entity.getId(), entity, ignoreProperties);
             voteItemService.update(entity.getId(), voteParameters.getItemList(), itemIgnoreProperties);
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                    "update.cmsVote", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "update.cmsVote", RequestUtils.getIpAddress(request),
+                    CommonUtils.getDate(), JsonUtils.getString(entity)));
         } else {
             entity.setSiteId(site.getId());
             service.save(entity);
@@ -66,8 +65,9 @@ public class CmsVoteAdminController {
                 item.setVoteId(entity.getId());
             }
             voteItemService.save(voteParameters.getItemList());
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                    "save.cmsVote", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "save.cmsVote", RequestUtils.getIpAddress(request),
+                    CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -77,20 +77,18 @@ public class CmsVoteAdminController {
      * @param request
      * @param site
      * @param admin
-     * @param _csrf
-     * @param model
      * @return operate result
      */
     @RequestMapping("delete")
     @Csrf
-    public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids, String _csrf,
-            HttpServletRequest request, ModelMap model) {
+    public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids, HttpServletRequest request) {
         if (CommonUtils.notEmpty(ids)) {
             for (CmsVote entity : service.delete(site.getId(), ids)) {
                 voteItemService.deleteByVoteId(entity.getId());
             }
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                    "delete.cmsVote", RequestUtils.getIpAddress(request), CommonUtils.getDate(), StringUtils.join(ids, ',')));
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.cmsVote", RequestUtils.getIpAddress(request),
+                    CommonUtils.getDate(), StringUtils.join(ids, ',')));
         }
         return CommonConstants.TEMPLATE_DONE;
     }

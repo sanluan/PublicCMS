@@ -78,8 +78,9 @@ public class CmsCommentAdminController {
             }
             entity.setUpdateDate(CommonUtils.getDate());
             entity = service.update(entity.getId(), entity, ignoreProperties);
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                    "update.cmsComment", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "update.cmsComment", RequestUtils.getIpAddress(request),
+                    CommonUtils.getDate(), JsonUtils.getString(entity)));
         } else {
             Date now = CommonUtils.getDate();
             entity.setSiteId(site.getId());
@@ -102,8 +103,9 @@ public class CmsCommentAdminController {
                 entity.setReplyUserId(null);
             }
             service.save(site.getId(), entity);
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                    "save.cmsComment", RequestUtils.getIpAddress(request), now, JsonUtils.getString(entity)));
+            logOperateService
+                    .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                            "save.cmsComment", RequestUtils.getIpAddress(request), now, JsonUtils.getString(entity)));
         }
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
         boolean needStatic = ConfigComponent.getBoolean(config.get(SiteConfigComponent.CONFIG_STATIC_AFTER_COMMENT), false);
@@ -121,13 +123,11 @@ public class CmsCommentAdminController {
      * @param admin
      * @param ids
      * @param request
-     * @param model
      * @return view name
      */
     @RequestMapping("check")
     @Csrf
-    public String check(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids, HttpServletRequest request,
-            ModelMap model) {
+    public String check(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids, HttpServletRequest request) {
         if (CommonUtils.notEmpty(ids)) {
             Set<CmsContent> contentSet = service.check(site.getId(), ids, admin.getId());
             Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
@@ -137,9 +137,9 @@ public class CmsCommentAdminController {
                     templateComponent.createContentFile(site, content, null, null);// 静态化
                 }
             }
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                    "check.cmsComment", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
-                    StringUtils.join(ids, CommonConstants.COMMA)));
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "check.cmsComment", RequestUtils.getIpAddress(request),
+                    CommonUtils.getDate(), StringUtils.join(ids, CommonConstants.COMMA)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -149,13 +149,12 @@ public class CmsCommentAdminController {
      * @param admin
      * @param ids
      * @param request
-     * @param model
      * @return view name
      */
     @RequestMapping("uncheck")
     @Csrf
-    public String uncheck(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids, HttpServletRequest request,
-            ModelMap model) {
+    public String uncheck(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids,
+            HttpServletRequest request) {
         if (CommonUtils.notEmpty(ids)) {
             Set<CmsContent> contentSet = service.uncheck(site.getId(), ids);
             Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
@@ -165,9 +164,9 @@ public class CmsCommentAdminController {
                     templateComponent.createContentFile(site, content, null, null);// 静态化
                 }
             }
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                    "uncheck.cmsComment", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
-                    StringUtils.join(ids, CommonConstants.COMMA)));
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "uncheck.cmsComment", RequestUtils.getIpAddress(request),
+                    CommonUtils.getDate(), StringUtils.join(ids, CommonConstants.COMMA)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -177,13 +176,12 @@ public class CmsCommentAdminController {
      * @param admin
      * @param ids
      * @param request
-     * @param model
      * @return operate result
      */
     @RequestMapping("delete")
     @Csrf
-    public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids, HttpServletRequest request,
-            ModelMap model) {
+    public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids,
+            HttpServletRequest request) {
         if (CommonUtils.notEmpty(ids)) {
             Set<CmsContent> contentSet = service.delete(site.getId(), ids);
             Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
@@ -193,9 +191,9 @@ public class CmsCommentAdminController {
                     templateComponent.createContentFile(site, content, null, null);// 静态化
                 }
             }
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                    "delete.cmsComment", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
-                    StringUtils.join(ids, CommonConstants.COMMA)));
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.cmsComment", RequestUtils.getIpAddress(request),
+                    CommonUtils.getDate(), StringUtils.join(ids, CommonConstants.COMMA)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }

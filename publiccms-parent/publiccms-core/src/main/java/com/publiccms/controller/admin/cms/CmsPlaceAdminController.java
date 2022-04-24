@@ -11,7 +11,6 @@ import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
@@ -101,15 +100,13 @@ public class CmsPlaceAdminController {
      * @param entity
      * @param extendDataParameters
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping(value = "save", method = RequestMethod.POST)
     @Csrf
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, CmsPlace entity,
-            @ModelAttribute ExtendDataParameters extendDataParameters, HttpServletRequest request, HttpSession session,
-            ModelMap model) {
+            @ModelAttribute ExtendDataParameters extendDataParameters, HttpServletRequest request, ModelMap model) {
         if (null != entity && CommonUtils.notEmpty(entity.getPath())) {
             if (!entity.getPath().startsWith(CommonConstants.SEPARATOR)) {
                 entity.setPath(CommonConstants.SEPARATOR + entity.getPath());
@@ -299,7 +296,6 @@ public class CmsPlaceAdminController {
      * @param orderField
      * @param orderType
      * @param request
-     * @param model
      * @return view name
      */
     @RequestMapping("export")
@@ -307,7 +303,7 @@ public class CmsPlaceAdminController {
     public ExcelView export(@RequestAttribute SysSite site, String path, Long userId, Integer[] status, String itemType,
             Long itemId, @DateTimeFormat(pattern = "yyyy-MM-dd") Date startPublishDate,
             @DateTimeFormat(pattern = "yyyy-MM-dd") Date endPublishDate, String orderField, String orderType,
-            HttpServletRequest request, ModelMap model) {
+            HttpServletRequest request) {
         if (CommonUtils.notEmpty(path)) {
             path = path.replace("//", CommonConstants.SEPARATOR);
         }

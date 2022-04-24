@@ -4,8 +4,6 @@ import java.util.Date;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -50,15 +48,13 @@ public class SysAppTokenAdminController {
      * @param id
      * @param expiryDate
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("issue")
     @Csrf
     public String issue(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Integer id,
-            @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date expiryDate, HttpServletRequest request, HttpSession session,
-            ModelMap model) {
+            @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date expiryDate, HttpServletRequest request, ModelMap model) {
         SysApp entity = appService.getEntity(id);
         if (null != entity) {
             if (ControllerUtils.errorNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
@@ -66,8 +62,9 @@ public class SysAppTokenAdminController {
             }
             Date now = CommonUtils.getDate();
             service.save(new SysAppToken(UUID.randomUUID().toString(), entity.getId(), now, expiryDate));
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                    "issue.apptoken", RequestUtils.getIpAddress(request), CommonUtils.getDate(), entity.getId().toString()));
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "issue.apptoken", RequestUtils.getIpAddress(request),
+                    CommonUtils.getDate(), entity.getId().toString()));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -92,9 +89,9 @@ public class SysAppTokenAdminController {
                     return CommonConstants.TEMPLATE_ERROR;
                 }
                 service.delete(authToken);
-                logOperateService
-                        .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER, "delete.apptoken",
-                                RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+                logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
+                        LogLoginService.CHANNEL_WEB_MANAGER, "delete.apptoken", RequestUtils.getIpAddress(request),
+                        CommonUtils.getDate(), JsonUtils.getString(entity)));
             }
         }
         return CommonConstants.TEMPLATE_DONE;

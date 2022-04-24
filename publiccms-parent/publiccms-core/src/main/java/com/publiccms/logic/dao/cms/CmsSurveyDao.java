@@ -47,6 +47,9 @@ public class CmsSurveyDao extends BaseDao<CmsSurvey> {
         if (CommonUtils.notEmpty(userId)) {
             queryHandler.condition("bean.userId = :userId").setParameter("userId", userId);
         }
+        if (CommonUtils.notEmpty(surveyType)) {
+            queryHandler.condition("bean.surveyType = :surveyType").setParameter("surveyType", surveyType);
+        }
         if (null != startStartDate) {
             queryHandler.condition("bean.startDate > :startStartDate").setParameter("startStartDate", startStartDate);
         }

@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,12 +46,11 @@ public class SysConfigAdminController {
      * @param entity
      * @param configCode
      * @param request
-     * @param model
      * @return view name
      */
     @RequestMapping("save")
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, @ModelAttribute SysConfig entity,
-            String configCode, HttpServletRequest request, ModelMap model) {
+            String configCode, HttpServletRequest request) {
         if (CommonUtils.notEmpty(configCode)) {
             Map<String, SysConfig> map = configComponent.getMap(site);
             map.remove(configCode);
@@ -75,13 +73,11 @@ public class SysConfigAdminController {
      * @param admin
      * @param code
      * @param request
-     * @param model
      * @return view name
      */
     @RequestMapping("delete")
     @Csrf
-    public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String code, HttpServletRequest request,
-            ModelMap model) {
+    public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String code, HttpServletRequest request) {
         Map<String, SysConfig> modelMap = configComponent.getMap(site);
         SysConfig entity = modelMap.remove(code);
         if (null != entity) {

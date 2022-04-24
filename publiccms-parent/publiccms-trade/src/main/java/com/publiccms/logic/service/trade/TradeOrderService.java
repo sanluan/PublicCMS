@@ -70,7 +70,7 @@ public class TradeOrderService extends BaseService<TradeOrder> {
                 pageSize);
     }
 
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public Long create(short siteId, long userId, TradeOrder entity, String ip, List<TradeOrderProduct> tradeOrderProductList) {
         if (null != entity) {
             entity.setId(null);
@@ -104,7 +104,7 @@ public class TradeOrderService extends BaseService<TradeOrder> {
 
     }
 
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public boolean confirm(short siteId, long orderId) {
         TradeOrder entity = getEntity(orderId);
         if (null != entity && siteId == entity.getSiteId() && !entity.isConfirmed()
@@ -120,7 +120,7 @@ public class TradeOrderService extends BaseService<TradeOrder> {
         return false;
     }
 
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public boolean invalid(short siteId, long orderId) {
         TradeOrder entity = getEntity(orderId);
         if (null != entity && siteId == entity.getSiteId()
@@ -135,7 +135,7 @@ public class TradeOrderService extends BaseService<TradeOrder> {
         return false;
     }
 
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public boolean pay(short siteId, long orderId, long paymentId) {
         TradeOrder entity = getEntity(orderId);
         if (null != entity && siteId == entity.getSiteId()) {
@@ -149,7 +149,7 @@ public class TradeOrderService extends BaseService<TradeOrder> {
         return false;
     }
 
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public boolean cancelPayment(short siteId, long orderId) {
         TradeOrder entity = getEntity(orderId);
         if (null != entity && siteId == entity.getSiteId()) {
@@ -163,7 +163,7 @@ public class TradeOrderService extends BaseService<TradeOrder> {
         return false;
     }
 
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public boolean processed(short siteId, long orderId, long userId, String processInfo) {
         TradeOrder entity = getEntity(orderId);
         if (null != entity && siteId == entity.getSiteId() && entity.isConfirmed() && !entity.isProcessed()) {
@@ -180,7 +180,7 @@ public class TradeOrderService extends BaseService<TradeOrder> {
         return false;
     }
 
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public boolean paid(short siteId, long orderId) {
         TradeOrder entity = getEntity(orderId);
         if (null != entity && siteId == entity.getSiteId() && entity.getStatus() == STATUS_PENDING) {
@@ -195,7 +195,7 @@ public class TradeOrderService extends BaseService<TradeOrder> {
         return false;
     }
 
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public boolean refunded(short siteId, long orderId) {
         TradeOrder entity = getEntity(orderId);
         if (null != entity && siteId == entity.getSiteId() && (entity.getStatus() == STATUS_PAID)) {
@@ -209,10 +209,10 @@ public class TradeOrderService extends BaseService<TradeOrder> {
         return false;
     }
 
-    @Transactional(isolation = Isolation.SERIALIZABLE)
-    public boolean close(short siteId, long orderId) {
+    @Transactional(isolation = Isolation.READ_COMMITTED)
+    public boolean close(short siteId, long orderId, Long userId) {
         TradeOrder entity = getEntity(orderId);
-        if (null != entity && siteId == entity.getSiteId()
+        if (null != entity && siteId == entity.getSiteId() && (null == userId || entity.getUserId() == userId)
                 && (entity.getStatus() == STATUS_PENDING || entity.getStatus() == STATUS_INVALID)) {
             entity.setStatus(STATUS_CLOSE);
             Date now = CommonUtils.getDate();

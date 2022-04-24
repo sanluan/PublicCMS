@@ -9,8 +9,6 @@ import java.util.Comparator;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.tools.zip.ZipOutputStream;
@@ -95,16 +93,18 @@ public class CmsTemplateAdminController {
                 CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(filePath);
                 content = new String(VerificationUtils.base64Decode(content), CommonConstants.DEFAULT_CHARSET);
                 if (CmsFileUtils.createFile(filePath, content)) {
-                    logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                            "save.web.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
+                    logOperateService.save(
+                            new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                                    "save.web.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
                 } else {
                     String historyFilePath = siteComponent.getWebTemplateHistoryFilePath(site, path);
                     CmsFileUtils.updateFile(filePath, historyFilePath, content);
                     if (CommonUtils.notEmpty(metadata.getCacheTime()) && 0 < metadata.getCacheTime()) {
                         templateCacheComponent.deleteCachedFile(SiteComponent.getFullTemplatePath(site, path));
                     }
-                    logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                            "update.web.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
+                    logOperateService.save(
+                            new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                                    "update.web.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
                 }
                 templateComponent.clearTemplateCache();
                 cacheComponent.clearViewCache();
@@ -138,14 +138,16 @@ public class CmsTemplateAdminController {
                 String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
                 content = new String(VerificationUtils.base64Decode(content), CommonConstants.DEFAULT_CHARSET);
                 if (CmsFileUtils.createFile(filePath, content)) {
-                    logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                            "save.place.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
+                    logOperateService.save(
+                            new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                                    "save.place.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
                 } else {
                     String historyFilePath = siteComponent.getWebTemplateHistoryFilePath(site,
                             TemplateComponent.INCLUDE_DIRECTORY + path);
                     CmsFileUtils.updateFile(filePath, historyFilePath, content);
-                    logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                            "update.place.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
+                    logOperateService.save(
+                            new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                                    "update.place.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
                 }
                 templateComponent.clearTemplateCache();
                 if (site.isUseSsi()
@@ -191,8 +193,9 @@ public class CmsTemplateAdminController {
                         metadata.setUseDynamic(true);
                         metadataComponent.updateTemplateMetadata(filePath, metadata);
                     }
-                    logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                            "upload.web.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), filePath));
+                    logOperateService.save(
+                            new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                                    "upload.web.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), filePath));
                 }
                 templateComponent.clearTemplateCache();
                 cacheComponent.clearViewCache();
@@ -253,8 +256,9 @@ public class CmsTemplateAdminController {
             sysDeptPageService.delete(null, path);
             templateComponent.clearTemplateCache();
             cacheComponent.clearViewCache();
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                    "delete.web.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
+            logOperateService
+                    .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                            "delete.web.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -280,8 +284,9 @@ public class CmsTemplateAdminController {
             metadataComponent.deletePlaceMetadata(filePath);
             cmsPlaceService.delete(site.getId(), path);
             templateComponent.clearTemplateCache();
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                    "delete.web.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
+            logOperateService
+                    .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                            "delete.web.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -293,15 +298,13 @@ public class CmsTemplateAdminController {
      * @param metadata
      * @param content
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("savePlaceMetaData")
     @Csrf
     public String savePlaceMetaData(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path,
-            @ModelAttribute CmsPlaceMetadata metadata, String content, HttpServletRequest request, HttpSession session,
-            ModelMap model) {
+            @ModelAttribute CmsPlaceMetadata metadata, String content, HttpServletRequest request, ModelMap model) {
         if (CommonUtils.notEmpty(path)) {
             String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
             try {
@@ -310,8 +313,9 @@ public class CmsTemplateAdminController {
                     metadata.getExtendList().sort(Comparator.comparing(e -> e.getSort()));
                 }
                 metadataComponent.updatePlaceMetadata(filePath, metadata);
-                logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                        "update.template.meta", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
+                logOperateService
+                        .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                                "update.template.meta", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
                 templateComponent.clearTemplateCache();
                 if (site.isUseSsi()
                         || CmsFileUtils.exists(siteComponent.getWebFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path))) {
@@ -333,15 +337,13 @@ public class CmsTemplateAdminController {
      * @param metadata
      * @param content
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("saveMetaData")
     @Csrf
     public String saveMetadata(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path,
-            @ModelAttribute CmsPageMetadata metadata, String content, HttpServletRequest request, HttpSession session,
-            ModelMap model) {
+            @ModelAttribute CmsPageMetadata metadata, String content, HttpServletRequest request, ModelMap model) {
         if (CommonUtils.notEmpty(path)) {
             if (path.endsWith(CommonConstants.SEPARATOR) || CommonUtils.empty(path)) {
                 path += CommonConstants.getDefaultPage();
@@ -359,8 +361,9 @@ public class CmsTemplateAdminController {
                 if (CommonUtils.notEmpty(metadata.getPublishPath())) {
                     publish(site, path);
                 }
-                logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                        "update.template.meta", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
+                logOperateService
+                        .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                                "update.template.meta", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
             } catch (IOException | TemplateException e) {
                 model.addAttribute(CommonConstants.ERROR, e.getMessage());
                 log.error(e.getMessage(), e);
@@ -388,8 +391,9 @@ public class CmsTemplateAdminController {
                 CmsPlaceMetadata metadata = metadataComponent
                         .getPlaceMetadata(siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path));
                 templateComponent.staticPlace(site, path, metadata);
-                logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER, "static",
-                        RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
+                logOperateService
+                        .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                                "static", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
             }
             return CommonConstants.TEMPLATE_DONE;
         } catch (IOException | TemplateException e) {
@@ -402,13 +406,12 @@ public class CmsTemplateAdminController {
     /**
      * @param site
      * @param path
-     * @param request
      * @param model
      * @return view name
      */
     @RequestMapping("publish")
     @Csrf
-    public String publish(@RequestAttribute SysSite site, String path, HttpServletRequest request, ModelMap model) {
+    public String publish(@RequestAttribute SysSite site, String path, ModelMap model) {
         try {
             publish(site, path);
             return CommonConstants.TEMPLATE_DONE;

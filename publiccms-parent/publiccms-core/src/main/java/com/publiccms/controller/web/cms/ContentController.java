@@ -143,11 +143,10 @@ public class ContentController {
      * 
      * @param site
      * @param id
-     * @param request
      * @return view name
      */
     @RequestMapping("redirect")
-    public String contentRedirect(@RequestAttribute SysSite site, Long id, HttpServletRequest request) {
+    public String contentRedirect(@RequestAttribute SysSite site, Long id) {
         ClickStatistics contentStatistics = statisticsComponent.contentClicks(site, id);
         if (null != contentStatistics && null != contentStatistics.getUrl()
                 && site.getId().equals(contentStatistics.getSiteId())) {

@@ -69,7 +69,7 @@ public class TradeRefundService extends BaseService<TradeRefund> {
      * @param reason
      * @return
      */
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public boolean updateAmound(long refundId, long userId, BigDecimal amount, String reason) {
         TradeRefund entity = getEntity(refundId);
         if (null != entity && entity.getUserId() == userId && entity.getStatus() == STATUS_PENDING
@@ -86,11 +86,11 @@ public class TradeRefundService extends BaseService<TradeRefund> {
     /**
      * @param siteId
      * @param refundId
-     * @param refundUserId 
+     * @param refundUserId
      * @param reply
      * @return
      */
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public boolean refuseResund(short siteId, long refundId, Long refundUserId, String reply) {
         TradeRefund entity = getEntity(refundId);
         if (null != entity && entity.getSiteId() == siteId
@@ -110,7 +110,7 @@ public class TradeRefundService extends BaseService<TradeRefund> {
      * @param reply
      * @return
      */
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public boolean updateResund(short siteId, long refundId, BigDecimal refundAmount, String reply) {
         TradeRefund entity = getEntity(refundId);
         if (null != entity && entity.getSiteId() == siteId
@@ -129,14 +129,16 @@ public class TradeRefundService extends BaseService<TradeRefund> {
      * @param siteId
      * @param refundId
      * @param refundUserId
+     * @param userId
      * @param status
      * @return
      */
-    @Transactional(isolation = Isolation.SERIALIZABLE)
-    public boolean updateStatus(short siteId, long refundId, Long refundUserId, int status) {
+    @Transactional(isolation = Isolation.READ_COMMITTED)
+    public boolean updateStatus(short siteId, long refundId, Long refundUserId, Long userId, int status) {
         TradeRefund entity = getEntity(refundId);
         if (null != entity && entity.getSiteId() == siteId && entity.getStatus() != status
-                && entity.getStatus() != STATUS_CANCELLED && entity.getStatus() != STATUS_REFUNDED) {
+                && (null == userId || entity.getUserId() == userId) && entity.getStatus() != STATUS_CANCELLED
+                && entity.getStatus() != STATUS_REFUNDED) {
             entity.setStatus(status);
             if (status == STATUS_REFUNDED || status == STATUS_FAIL) {
                 entity.setRefundUserId(refundUserId);

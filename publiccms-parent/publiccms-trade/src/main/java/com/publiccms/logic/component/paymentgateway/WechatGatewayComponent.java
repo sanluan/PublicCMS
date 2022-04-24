@@ -110,23 +110,21 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
     protected final Log log = LogFactory.getLog(getClass());
 
     /**
-     * @param siteId
      * @param config
      * @param apiV3Key
      * @return verifier
      */
-    public Verifier getVerifier(short siteId, Map<String, String> config, byte[] apiV3Key) {
-        return getVerifier(siteId, config, apiV3Key, null);
+    public Verifier getVerifier(Map<String, String> config, byte[] apiV3Key) {
+        return getVerifier(config, apiV3Key, null);
     }
 
     /**
-     * @param siteId
      * @param config
      * @param apiV3Key
      * @param merchantPrivateKey
      * @return verifier
      */
-    public Verifier getVerifier(short siteId, Map<String, String> config, byte[] apiV3Key, PrivateKey merchantPrivateKey) {
+    public Verifier getVerifier(Map<String, String> config, byte[] apiV3Key, PrivateKey merchantPrivateKey) {
         Verifier verifier = null;
         try {
             verifier = certificatesManager.getVerifier(config.get(CONFIG_MCHID));
@@ -170,7 +168,7 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
                     byte[] privateKey = config.get(CONFIG_PRIVATEKEY).getBytes(CommonConstants.DEFAULT_CHARSET);
                     PrivateKey merchantPrivateKey = PemUtil.loadPrivateKey(new ByteArrayInputStream(privateKey));
 
-                    Verifier verifier = getVerifier(site.getId(), config, apiV3Key, merchantPrivateKey);
+                    Verifier verifier = getVerifier(config, apiV3Key, merchantPrivateKey);
 
                     WechatPayHttpClientBuilder builder = WechatPayHttpClientBuilder.create()
                             .withMerchant(config.get(CONFIG_MCHID), config.get(CONFIG_SERIALNO), merchantPrivateKey)
@@ -241,7 +239,7 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
                 byte[] privateKey = config.get(CONFIG_PRIVATEKEY).getBytes(CommonConstants.DEFAULT_CHARSET);
                 PrivateKey merchantPrivateKey = PemUtil.loadPrivateKey(new ByteArrayInputStream(privateKey));
 
-                Verifier verifier = getVerifier(siteId, config, apiV3Key, merchantPrivateKey);
+                Verifier verifier = getVerifier(config, apiV3Key, merchantPrivateKey);
 
                 WechatPayHttpClientBuilder builder = WechatPayHttpClientBuilder.create()
                         .withMerchant(config.get(CONFIG_MCHID), config.get(CONFIG_SERIALNO), merchantPrivateKey)

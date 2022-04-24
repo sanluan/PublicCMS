@@ -3,8 +3,6 @@ package com.publiccms.controller.admin.cms;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -49,14 +47,13 @@ public class CmsCategoryTypeAdminController {
      * @param entity
      * @param categoryTypeId
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("save")
     @Csrf
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, @ModelAttribute CmsCategoryType entity,
-            String categoryTypeId, HttpServletRequest request, HttpSession session, ModelMap model) {
+            String categoryTypeId, HttpServletRequest request, ModelMap model) {
         if (ControllerUtils.errorCustom("noright", null != site.getParentId(), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }

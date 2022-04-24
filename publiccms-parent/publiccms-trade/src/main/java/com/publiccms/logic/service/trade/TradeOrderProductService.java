@@ -54,7 +54,7 @@ public class TradeOrderProductService extends BaseService<TradeOrderProduct> {
         return dao.getList(siteId, orderId);
     }
 
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public BigDecimal create(short siteId, long orderId, List<TradeOrderProduct> tradeOrderProductList) {
         BigDecimal amount = BigDecimal.ZERO;
         if (null != tradeOrderProductList && 0 < tradeOrderProductList.size()) {

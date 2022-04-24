@@ -258,21 +258,19 @@ public class PlaceController {
     /**
      * @param site
      * @param id
-     * @param request
      */
     @RequestMapping("click")
-    public void click(@RequestAttribute SysSite site, Long id, HttpServletRequest request) {
+    public void click(@RequestAttribute SysSite site, Long id) {
         statisticsComponent.placeClicks(site.getId(), id);
     }
 
     /**
      * @param site
      * @param id
-     * @param request
      * @param response
      */
     @RequestMapping("redirect")
-    public void redirect(@RequestAttribute SysSite site, Long id, HttpServletRequest request, HttpServletResponse response) {
+    public void redirect(@RequestAttribute SysSite site, Long id, HttpServletResponse response) {
         ClickStatistics clickStatistics = statisticsComponent.placeClicks(site.getId(), id);
         if (null != clickStatistics && CommonUtils.notEmpty(clickStatistics.getUrl())
                 && site.getId().equals(clickStatistics.getSiteId())) {

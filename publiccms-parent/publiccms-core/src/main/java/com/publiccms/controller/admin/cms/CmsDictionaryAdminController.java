@@ -5,7 +5,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -54,14 +53,12 @@ public class CmsDictionaryAdminController {
      * @param parentValue
      * @param dictionaryParameters
      * @param request
-     * @param model
      * @return view name
      */
     @RequestMapping("save")
     @Csrf
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, CmsDictionary entity, String oldId,
-            String parentValue, @ModelAttribute CmsDictionaryParameters dictionaryParameters, HttpServletRequest request,
-            ModelMap model) {
+            String parentValue, @ModelAttribute CmsDictionaryParameters dictionaryParameters, HttpServletRequest request) {
         if (null != entity && null != entity.getId()) {
             entity.getId().setSiteId(site.getId());
             if (CommonUtils.notEmpty(parentValue)) {
@@ -93,14 +90,13 @@ public class CmsDictionaryAdminController {
 
     /**
      * @param site
-     * @param request
      * @param entity
      * @param oldId
      * @return view name
      */
     @RequestMapping("virify")
     @ResponseBody
-    public boolean virify(@RequestAttribute SysSite site, HttpServletRequest request, CmsDictionary entity, String oldId) {
+    public boolean virify(@RequestAttribute SysSite site, CmsDictionary entity, String oldId) {
         if (null != entity && null != entity.getId() && CommonUtils.notEmpty(entity.getId().getId())) {
             entity.getId().setSiteId(site.getId());
             if (CommonUtils.notEmpty(oldId) && !entity.getId().getId().equals(oldId) && null != service.getEntity(entity.getId())
@@ -115,15 +111,13 @@ public class CmsDictionaryAdminController {
      * @param site
      * @param admin
      * @param ids
-     * @param parentValue
      * @param request
-     * @param model
      * @return view name
      */
     @RequestMapping("delete")
     @Csrf
-    public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String[] ids, String parentValue,
-            HttpServletRequest request, ModelMap model) {
+    public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String[] ids,
+            HttpServletRequest request) {
         if (CommonUtils.notEmpty(ids)) {
             CmsDictionaryId[] entityIds = new CmsDictionaryId[ids.length];
             for (int i = 0; i < ids.length; i++) {

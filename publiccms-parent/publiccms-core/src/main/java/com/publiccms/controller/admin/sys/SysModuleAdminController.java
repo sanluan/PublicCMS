@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -73,15 +71,13 @@ public class SysModuleAdminController {
      * @param moduleParameters
      * @param oldId
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("save")
     @Csrf
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, SysModule entity,
-            @ModelAttribute SysModuleParameters moduleParameters, String oldId, HttpServletRequest request, HttpSession session,
-            ModelMap model) {
+            @ModelAttribute SysModuleParameters moduleParameters, String oldId, HttpServletRequest request, ModelMap model) {
         if (ControllerUtils.errorCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
@@ -99,13 +95,15 @@ public class SysModuleAdminController {
                     .getList();
             dealRoleAuthorized(roleModuleList);
             sysModuleLangService.save(oldId, entity.getId(), moduleParameters.getLangList());
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                    "update.module", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "update.module", RequestUtils.getIpAddress(request),
+                    CommonUtils.getDate(), JsonUtils.getString(entity)));
         } else {
             service.save(entity);
             sysModuleLangService.save(null, entity.getId(), moduleParameters.getLangList());
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER, "save.module",
-                    RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "save.module", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
+                    JsonUtils.getString(entity)));
         }
         menuMessageComponent.clear();
         return CommonConstants.TEMPLATE_DONE;

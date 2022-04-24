@@ -12,7 +12,6 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -193,12 +192,11 @@ public class CmsContentAdminController {
         }
         templateComponent.createContentFile(site, entity, category, categoryModel);// 静态化
         if (null == entity.getParentId() && null == entity.getQuoteContentId()) {
-            Set<Integer> categoryIdsSet = service.updateQuote(site.getId(), entity.getId(), contentParameters, cmsModel, category,
-                    attribute);
+            Set<Integer> categoryIdsSet = service.updateQuote(entity.getId(), contentParameters);
             if (CommonUtils.notEmpty(contentParameters.getCategoryIds())) {
                 List<CmsCategory> categoryList = categoryService.getEntitys(
                         contentParameters.getCategoryIds().toArray(new Integer[contentParameters.getCategoryIds().size()]));
-                service.saveQuote(site.getId(), entity.getId(), contentParameters, categoryList, cmsModel, category, attribute);
+                service.saveQuote(entity.getId(), categoryList, category);
                 if (null != checked && checked) {
                     if (!categoryIdsSet.isEmpty()) {
                         categoryList
@@ -324,13 +322,12 @@ public class CmsContentAdminController {
      * @param admin
      * @param ids
      * @param request
-     * @param model
      * @return view name
      */
     @RequestMapping("refresh")
     @Csrf
-    public String refresh(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids, HttpServletRequest request,
-            ModelMap model) {
+    public String refresh(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids,
+            HttpServletRequest request) {
         if (CommonUtils.notEmpty(ids)) {
             Set<Integer> categoryIdSet = new HashSet<>();
             for (CmsContent entity : service.refresh(site.getId(), admin, ids)) {
@@ -598,14 +595,12 @@ public class CmsContentAdminController {
      * @param orderField
      * @param orderType
      * @param request
-     * @param response
-     * @param model
      * @return view name
      */
     @RequestMapping("export")
     @Csrf
     public ExcelView export(@RequestAttribute SysSite site, CmsContentQuery queryEntity, String orderField, String orderType,
-            HttpServletRequest request, HttpServletResponse response, ModelMap model) {
+            HttpServletRequest request) {
         queryEntity.setSiteId(site.getId());
         queryEntity.setDisabled(false);
         queryEntity.setEmptyParent(true);
@@ -796,13 +791,12 @@ public class CmsContentAdminController {
      * @param admin
      * @param ids
      * @param request
-     * @param model
      * @return view name
      */
     @RequestMapping("delete")
     @Csrf
-    public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids, HttpServletRequest request,
-            ModelMap model) {
+    public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids,
+            HttpServletRequest request) {
         if (CommonUtils.notEmpty(ids)) {
             Set<Integer> categoryIdSet = new HashSet<>();
             for (CmsContent entity : service.delete(site.getId(), admin, ids)) {

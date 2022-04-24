@@ -141,13 +141,12 @@ public class SysUserAdminController {
      * @param cover
      * @param email
      * @param request
-     * @param model
      * @return
      */
     @RequestMapping("update")
     @Csrf
     public String update(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String nickName, String cover,
-            String email, HttpServletRequest request, ModelMap model) {
+            String email, HttpServletRequest request) {
         SysUser entity = service.updateProfile(admin.getId(), nickName, cover, email);
         if (null != entity) {
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
@@ -162,13 +161,11 @@ public class SysUserAdminController {
      * @param admin
      * @param ids 
      * @param request
-     * @param model
      * @return view name
      */
     @RequestMapping(value = "enable", method = RequestMethod.POST)
     @Csrf
-    public String enable(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids, HttpServletRequest request,
-            ModelMap model) {
+    public String enable(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids, HttpServletRequest request) {
         if (CommonUtils.notEmpty(ids)) {
             service.updateStatus(site.getId(), ids, admin.getId(), false);
             logOperateService
@@ -183,13 +180,11 @@ public class SysUserAdminController {
      * @param admin
      * @param ids
      * @param request
-     * @param model
      * @return view name
      */
     @RequestMapping(value = "disable", method = RequestMethod.POST)
     @Csrf
-    public String disable(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids, HttpServletRequest request,
-            ModelMap model) {
+    public String disable(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids, HttpServletRequest request) {
         if (CommonUtils.notEmpty(ids)) {
             service.updateStatus(site.getId(), ids, admin.getId(), true);
             logOperateService

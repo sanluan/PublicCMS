@@ -126,16 +126,12 @@ public class CmsModelAdminController {
 
     /**
      * @param site
-     * @param admin
      * @param id
-     * @param request
-     * @param model
      * @return view name
      */
     @RequestMapping("rebuildSearchText")
     @Csrf
-    public String rebuildSearchText(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String id,
-            HttpServletRequest request, ModelMap model) {
+    public String rebuildSearchText(@RequestAttribute SysSite site, String id) {
         Map<String, CmsModel> modelMap = modelComponent.getModelMap(site);
         CmsModel entity = modelMap.get(id);
         if (null != entity) {

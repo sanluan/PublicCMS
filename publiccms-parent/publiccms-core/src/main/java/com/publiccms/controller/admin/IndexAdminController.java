@@ -33,13 +33,12 @@ public class IndexAdminController {
 
     /**
      * 页面请求统一分发
-     * @param site 
      * 
      * @param request
      * @return view name
      */
     @RequestMapping("/**")
-    public String page(@RequestAttribute SysSite site, HttpServletRequest request) {
+    public String page(HttpServletRequest request) {
         String path = UrlPathHelper.defaultInstance.getLookupPathForRequest(request);
         if (CommonUtils.notEmpty(path)) {
             if (CommonConstants.SEPARATOR.equals(path) || path.endsWith(CommonConstants.SEPARATOR)) {
@@ -53,7 +52,8 @@ public class IndexAdminController {
 
     /**
      * 修改语言
-     * @param site 
+     * 
+     * @param site
      * @param lang
      * @param returnUrl
      * @param request
@@ -61,7 +61,8 @@ public class IndexAdminController {
      * @return view name
      */
     @RequestMapping("changeLocale")
-    public String changeLocale(@RequestAttribute SysSite site, String lang, String returnUrl, HttpServletRequest request, HttpServletResponse response) {
+    public String changeLocale(@RequestAttribute SysSite site, String lang, String returnUrl, HttpServletRequest request,
+            HttpServletResponse response) {
         if (null != lang) {
             LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
             if (null != localeResolver) {
