@@ -37,15 +37,12 @@
             <dd>
                 <#list list as a>
                     <@_placeMetadata path=a>
-                <#if 0=((object.size)!0)>
                     <p>
-                        <a href="cmsPlace/publish_place.html?path=${a?url}" target="dialog" mask="true">${(object.alias)!a}</a>
+                        <a href="cmsPlace/metadata.html?path=${a?url}" target="ajax" rel="pageBox">${(object.alias)!a}</a>
+                    <#if 0 lt ((object.size)!0)>
+                       : <a href="cmsPlace/dataList.html?path=${a?url}" target="navTab" rel="cmsPlace/dataList:${a!}" title="<@t.page 'place_data.place'/>:${(object.alias)!a}"><@t.page 'place_data'/>(${object.size})</a>
+                    </#if>
                     </p>
-                <#else>
-                    <p>
-                        <a href="cmsPlace/dataList.html?path=${a?url}" target="navTab" rel="cmsPlace/dataList:${a!}"><@t.page 'place_data.place'/>:${(object.alias)!a}</a>
-                    </p>
-                </#if>
                     </@_placeMetadata>
                 </#list>
             </dd>
