@@ -3,10 +3,9 @@
     <#list page.list as a>
         <@t.merge 'categoryIds' a.id!/>
     </#list>
-    <@_categoryModel modelId=modelId categoryIds=t.categoryIds><#assign categoryModelMap=map/></@_categoryModel>
     <#list page.list as a>
-        <li<#if a.childIds?has_content> _src="cmsCategory/lookupBySiteId?siteId=${siteId!}&modelId=${modelId!}&currentCategoryId=${currentCategoryId!}&parentId=${a.id}&field=${field!'categoryId'}"</#if>>
-            <a<#if (!currentCategoryId?has_content||a.id?string!=currentCategoryId)&&categoryModelMap?has_content&&categoryModelMap[a.id?string]?has_content> tname="categoryIds" tvalue="${a.id}"</#if> class="exclude-translate">${a.name!}</a>
+        <li<#if a.childIds?has_content> _src="cmsCategory/lookupBySiteId?siteId=${siteId!}&currentCategoryId=${currentCategoryId!}&parentId=${a.id}&field=${field!'categoryId'}"</#if>>
+            <a<#if (!currentCategoryId?has_content||a.id?string!=currentCategoryId)> tname="categoryIds" tvalue="${a.id}"</#if> class="exclude-translate">${a.name!}</a>
         </li>
     <#else>
         <li><a><@t.page 'empty_directory'/></a></li>
@@ -19,12 +18,12 @@
     <div class="pageFormContent" layoutH>
         <ul class="tree treeFolder treeCheck excludeParent">
             <#if site.parentId?has_content>
-                <li _src="cmsCategory/lookupBySiteId?siteId=${site.parentId}&currentCategoryId=${currentCategoryId!}&modelId=${modelId!}&field=${field!'categoryId'}">
+                <li _src="cmsCategory/lookupBySiteId?siteId=${site.parentId}&currentCategoryId=${currentCategoryId!}&field=${field!'categoryId'}">
                     <a href="javascript:;" class="exclude-translate"><@_sysSite id=site.parentId>${object.name!}</@_sysSite></a>
                 </li>
                 <@_sysSiteList parentId=site.parentId pageSize=500>
                     <#list page.list as a>
-                        <li _src="cmsCategory/lookupBySiteId?siteId=${a.id}&currentCategoryId=${currentCategoryId!}&modelId=${modelId!}&field=${field!'categoryId'}">
+                        <li _src="cmsCategory/lookupBySiteId?siteId=${a.id}&currentCategoryId=${currentCategoryId!}&field=${field!'categoryId'}">
                             <a href="javascript:;" class="exclude-translate">${a.name!}<#if site.id=a.id>[<@t.page 'site.current_site'/>]</#if></a>
                         </li>
                     </#list>
@@ -32,7 +31,7 @@
             <#else>
                 <@_sysSiteList pageSize=500>
                     <#list page.list as a>
-                        <li _src="cmsCategory/lookupBySiteId?siteId=${a.id}&currentCategoryId=${currentCategoryId!}&modelId=${modelId!}&field=${field!'categoryId'}">
+                        <li _src="cmsCategory/lookupBySiteId?siteId=${a.id}&currentCategoryId=${currentCategoryId!}&field=${field!'categoryId'}">
                             <a href="javascript:;" class="exclude-translate">${a.name!}<#if site.id=a.id>[<@t.page 'site.current_site'/>]</#if></a>
                         </li>
                     </#list>
