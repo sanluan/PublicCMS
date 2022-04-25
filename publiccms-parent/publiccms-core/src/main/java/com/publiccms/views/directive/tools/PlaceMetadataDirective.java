@@ -11,6 +11,8 @@ import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
+import com.publiccms.views.pojo.entities.CmsPageData;
+import com.publiccms.views.pojo.entities.CmsPlaceMetadata;
 
 /**
  *
@@ -24,10 +26,10 @@ public class PlaceMetadataDirective extends AbstractTemplateDirective {
     public void execute(RenderHandler handler) throws IOException, Exception {
         String path = handler.getString("path");
         if (CommonUtils.notEmpty(path) && !path.endsWith(CommonConstants.SEPARATOR)) {
-            handler.put("object",
-                    metadataComponent.getPlaceMetadata(
-                            siteComponent.getWebTemplateFilePath(getSite(handler), TemplateComponent.INCLUDE_DIRECTORY + path)))
-                    .render();
+            String filePath = siteComponent.getWebTemplateFilePath(getSite(handler), TemplateComponent.INCLUDE_DIRECTORY + path);
+            CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filePath);
+            CmsPageData data = metadataComponent.getTemplateData(filePath);
+            handler.put("object", metadata.getAsMap(data)).render();
         }
     }
 

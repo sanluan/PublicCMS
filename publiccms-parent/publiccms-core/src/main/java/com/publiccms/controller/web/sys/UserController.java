@@ -177,14 +177,13 @@ public class UserController {
      * @param email
      * @param returnUrl
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping(value = "saveEmail", method = RequestMethod.POST)
     @Csrf
     public String saveEmail(@RequestAttribute SysSite site, @SessionAttribute SysUser user, String email, String returnUrl,
-            HttpServletRequest request, HttpSession session, ModelMap model) {
+            HttpServletRequest request, ModelMap model) {
         returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         Map<String, String> config = configComponent.getConfigData(site.getId(), EmailTemplateConfigComponent.CONFIG_CODE);
         String emailTitle = config.get(EmailTemplateConfigComponent.CONFIG_EMAIL_TITLE);
@@ -235,13 +234,12 @@ public class UserController {
      * @param authToken
      * @param returnUrl
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping(value = "verifyEmail")
     public String verifyEmail(@RequestAttribute SysSite site, String authToken, String returnUrl, HttpServletRequest request,
-            HttpSession session, ModelMap model) {
+            ModelMap model) {
         returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         SysEmailToken sysEmailToken = sysEmailTokenService.getEntity(authToken);
         if (null != sysEmailToken && CommonUtils.getDate().after(sysEmailToken.getExpiryDate())) {
@@ -264,14 +262,13 @@ public class UserController {
      * @param authToken
      * @param returnUrl
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping(value = "deleteToken")
     @Csrf
     public String deleteToken(@RequestAttribute SysSite site, @SessionAttribute SysUser user, String authToken, String returnUrl,
-            HttpServletRequest request, HttpSession session, ModelMap model) {
+            HttpServletRequest request, ModelMap model) {
         returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         SysUserToken entity = sysUserTokenService.getEntity(authToken);
         if (null != entity) {

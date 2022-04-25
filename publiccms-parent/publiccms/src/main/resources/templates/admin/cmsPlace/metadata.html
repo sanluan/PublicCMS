@@ -1,0 +1,54 @@
+<@_placeMetadata path=path><#assign a=object/></@_placeMetadata>
+<form method="post" autocomplete="off" action="cmsPage/save?rel=placeBox" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <div class="formBar">
+        <ul>
+            <li>
+                <#if (a.metadataExtendList)?has_content><button type="submit" class="buttonActive" title="ctrl+s"><@t.page 'button.save'/></button></#if>
+            </li>
+        </ul>
+    </div>
+    <div class="pageFormContent" layoutH>
+        <input name="path" type="hidden" value="include${path}"/>
+        <dl class="nowrap">
+            <dt><@t.page 'alias'/>:</dt>
+            <dd>
+                ${(a.alias)!}
+            </dd>
+        </dl>
+        <dl class="nowrap">
+            <dt><@t.page 'operate'/>:</dt>
+            <dd>
+                <#if site.useSsi>
+                    <a class="button" href="cmsTemplate/publishPlace?path=${(path?url)!}&_csrf=<@_csrfToken admin=true/>" target="ajaxTodo"><@t.page 'button.publish'/></a>
+                </#if>
+                <#if (a.size?has_content) && 0 lt a.size>
+                    <a class="button" href="cmsPlace/dataList.html?path=${path?url}" target="navTab" rel="cmsPlace/dataList" title="<@t.page 'place_data.place'/>:${(a.alias)!}"><@t.page 'place_data'/>(${a.size})</a>
+                </#if>
+            </dd>
+        </dl>
+    <@_templatePlaceList path='include'+path>
+        <#if list?has_content>
+        <dl class="nowrap">
+            <dt><@t.page 'place'/>:</dt>
+            <dd>
+                <#list list as a>
+                    <@_placeMetadata path=a>
+                    <p>
+                        <a href="cmsPlace/metadata.html?path=${a?url}" target="ajax" rel="placeBox">${(object.alias)!a}</a>
+                        <#if 0 lt ((object.size)!0)>
+                           : <a href="cmsPlace/dataList.html?path=${a?url}" target="navTab" rel="cmsPlace/dataList:${a!}" title="<@t.page 'place_data.place'/>:${(object.alias)!a}"><@t.page 'place_data'/>(${object.size})</a>
+                        </#if>
+                    </p>
+                    </@_placeMetadata>
+                </#list>
+            </dd>
+        </dl>
+        </#if>
+    </@_templatePlaceList>
+        <#include "../include_page/extendData.html"/>
+        <#assign extendList=(a.metadataExtendList)![]/>
+        <#assign attribute=(a.extendData)!{}/>
+        <@extendData 'extendDataList' extendList attribute/>
+    </div>
+</form>

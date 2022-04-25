@@ -4,7 +4,6 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,13 +42,12 @@ public class CmsDictionaryExcludeAdminController {
      * @param id
      * @param parameters
      * @param request
-     * @param model
      * @return view name
      */
     @RequestMapping("save")
     @Csrf
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String id,
-            @ModelAttribute CmsDictionaryExcludeParameters parameters, HttpServletRequest request, ModelMap model) {
+            @ModelAttribute CmsDictionaryExcludeParameters parameters, HttpServletRequest request) {
         if (null != id) {
             service.update(site.getId(), id, parameters.getExcludeList());
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),

@@ -5,7 +5,6 @@ package com.publiccms.controller.admin.sys;
 import java.util.Map;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
@@ -62,15 +61,13 @@ public class SysConfigDataAdminController {
      * @param entity
      * @param sysConfigParameters
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("save")
     @Csrf
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, SysConfigData entity,
-            @ModelAttribute SysConfigParameters sysConfigParameters, HttpServletRequest request, HttpSession session,
-            ModelMap model) {
+            @ModelAttribute SysConfigParameters sysConfigParameters, HttpServletRequest request, ModelMap model) {
         if (null != entity.getId()) {
             SysDept dept = sysDeptService.getEntity(admin.getDeptId());
             if (ControllerUtils.errorNotEmpty("deptId", admin.getDeptId(), model)

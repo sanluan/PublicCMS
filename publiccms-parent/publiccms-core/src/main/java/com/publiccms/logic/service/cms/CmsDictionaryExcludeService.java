@@ -47,7 +47,7 @@ public class CmsDictionaryExcludeService extends BaseService<CmsDictionaryExclud
         for (CmsDictionaryExclude entity : list) {
             if (!idSet.contains(entity.getId())) {
                 delete(entity.getId());
-                excludeValueService.delete(siteId, entity.getId());
+                excludeValueService.delete(entity.getId());
             }
         }
     }

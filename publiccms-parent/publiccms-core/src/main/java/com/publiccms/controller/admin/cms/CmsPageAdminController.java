@@ -1,7 +1,6 @@
 package com.publiccms.controller.admin.cms;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
@@ -58,14 +57,13 @@ public class CmsPageAdminController {
      * @param path
      * @param extendDataParameters
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("save")
     @Csrf
     public String saveMetadata(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path,
-            @ModelAttribute ExtendDataParameters extendDataParameters, HttpServletRequest request, HttpSession session,
+            @ModelAttribute ExtendDataParameters extendDataParameters, HttpServletRequest request,
             ModelMap model) {
         SysDept dept = sysDeptService.getEntity(admin.getDeptId());
         if (ControllerUtils.errorNotEmpty("deptId", admin.getDeptId(), model)

@@ -19,10 +19,10 @@ public class CmsDictionaryExcludeValueDao extends BaseDao<CmsDictionaryExcludeVa
 
     /**
      * @param siteId
-     * @param excludeId 
+     * @param excludeId
      * @return the number of entities deleted
      */
-    public int delete(short siteId, CmsDictionaryExcludeId excludeId) {
+    public int delete(CmsDictionaryExcludeId excludeId) {
         QueryHandler queryHandler = getQueryHandler("delete from CmsDictionaryExcludeValue bean");
         queryHandler.condition("bean.id.siteId = :siteId").setParameter("siteId", excludeId.getSiteId());
         queryHandler.condition("bean.id.dictionaryId = :dictionaryId").setParameter("dictionaryId", excludeId.getDictionaryId());

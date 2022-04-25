@@ -6,7 +6,6 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,13 +42,12 @@ public class CmsUserSurveyAdminController {
      * @param entity
      * @param userQuestionParameters
      * @param request
-     * @param model
      * @return operate result
      */
     @RequestMapping("save")
     @Csrf
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, CmsUserSurvey entity,
-            @ModelAttribute CmsUserSurveyQuestionParameters userQuestionParameters, HttpServletRequest request, ModelMap model) {
+            @ModelAttribute CmsUserSurveyQuestionParameters userQuestionParameters, HttpServletRequest request) {
         int socre = 0;
         if (CommonUtils.notEmpty(userQuestionParameters.getAnswerList())) {
             for (CmsUserSurveyQuestion answer : userQuestionParameters.getAnswerList()) {

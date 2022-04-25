@@ -7,11 +7,9 @@ import java.util.UUID;
 // Generated 2019-6-16 9:47:27 by com.publiccms.common.generator.SourceGenerator
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
@@ -48,14 +46,12 @@ public class TradeAccountController {
      * @param accountType
      * @param returnUrl
      * @param request
-     * @param session
-     * @param model
      * @return operate result
      */
     @RequestMapping("recharge")
     @Csrf
     public String recharge(@RequestAttribute SysSite site, @SessionAttribute SysUser user, BigDecimal change, String accountType,
-            String returnUrl, HttpServletRequest request, HttpSession session, ModelMap model) {
+            String returnUrl, HttpServletRequest request) {
         returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         PaymentGateway paymentGateway = gatewayComponent.get(accountType);
         if (null != paymentGateway && !accountType.equalsIgnoreCase(accountGatewayComponent.getAccountType())

@@ -11,7 +11,6 @@ import java.util.Locale;
 import java.util.Map;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
@@ -59,6 +58,7 @@ import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.sys.SysDeptPageService;
 import com.publiccms.logic.service.sys.SysDeptService;
 import com.publiccms.logic.service.sys.SysUserService;
+import com.publiccms.views.pojo.entities.CmsPageData;
 import com.publiccms.views.pojo.entities.CmsPlaceMetadata;
 import com.publiccms.views.pojo.model.ExtendDataParameters;
 
@@ -101,15 +101,13 @@ public class CmsPlaceAdminController {
      * @param entity
      * @param extendDataParameters
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping(value = "save", method = RequestMethod.POST)
     @Csrf
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, CmsPlace entity,
-            @ModelAttribute ExtendDataParameters extendDataParameters, HttpServletRequest request, HttpSession session,
-            ModelMap model) {
+            @ModelAttribute ExtendDataParameters extendDataParameters, HttpServletRequest request, ModelMap model) {
         if (null != entity && CommonUtils.notEmpty(entity.getPath())) {
             if (!entity.getPath().startsWith(CommonConstants.SEPARATOR)) {
                 entity.setPath(CommonConstants.SEPARATOR + entity.getPath());
@@ -156,13 +154,7 @@ public class CmsPlaceAdminController {
                     metadata.getExtendList());
             String extentString = ExtendUtils.getExtendString(map);
             attributeService.updateAttribute(entity.getId(), extentString);
-            if (CmsFileUtils.exists(siteComponent.getWebFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + entity.getPath()))) {
-                try {
-                    templateComponent.staticPlace(site, entity.getPath(), metadata);
-                } catch (IOException | TemplateException e) {
-                    log.error(e.getMessage(), e);
-                }
-            }
+            staticPlace(site, entity.getPath());
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -194,15 +186,7 @@ public class CmsPlaceAdminController {
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "refresh.place", RequestUtils.getIpAddress(request),
                     CommonUtils.getDate(), StringUtils.join(ids, CommonConstants.COMMA)));
-            if (CmsFileUtils.exists(siteComponent.getWebFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path))) {
-                try {
-                    String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
-                    CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filePath);
-                    templateComponent.staticPlace(site, path, metadata);
-                } catch (IOException | TemplateException e) {
-                    log.error(e.getMessage(), e);
-                }
-            }
+            staticPlace(site, path);
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -234,15 +218,7 @@ public class CmsPlaceAdminController {
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "check.place", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
                     StringUtils.join(ids, CommonConstants.COMMA)));
-            if (CmsFileUtils.exists(siteComponent.getWebFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path))) {
-                try {
-                    String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
-                    CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filePath);
-                    templateComponent.staticPlace(site, path, metadata);
-                } catch (IOException | TemplateException e) {
-                    log.error(e.getMessage(), e);
-                }
-            }
+            staticPlace(site, path);
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -274,15 +250,7 @@ public class CmsPlaceAdminController {
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "check.place", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
                     StringUtils.join(ids, CommonConstants.COMMA)));
-            if (CmsFileUtils.exists(siteComponent.getWebFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path))) {
-                try {
-                    String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
-                    CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filePath);
-                    templateComponent.staticPlace(site, path, metadata);
-                } catch (IOException | TemplateException e) {
-                    log.error(e.getMessage(), e);
-                }
-            }
+            staticPlace(site, path);
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -299,7 +267,6 @@ public class CmsPlaceAdminController {
      * @param orderField
      * @param orderType
      * @param request
-     * @param model
      * @return view name
      */
     @RequestMapping("export")
@@ -307,7 +274,7 @@ public class CmsPlaceAdminController {
     public ExcelView export(@RequestAttribute SysSite site, String path, Long userId, Integer[] status, String itemType,
             Long itemId, @DateTimeFormat(pattern = "yyyy-MM-dd") Date startPublishDate,
             @DateTimeFormat(pattern = "yyyy-MM-dd") Date endPublishDate, String orderField, String orderType,
-            HttpServletRequest request, ModelMap model) {
+            HttpServletRequest request) {
         if (CommonUtils.notEmpty(path)) {
             path = path.replace("//", CommonConstants.SEPARATOR);
         }
@@ -432,15 +399,7 @@ public class CmsPlaceAdminController {
             logOperateService
                     .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                             "clear.place", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
-            if (CmsFileUtils.exists(siteComponent.getWebFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path))) {
-                try {
-                    String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
-                    CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filePath);
-                    templateComponent.staticPlace(site, path, metadata);
-                } catch (IOException | TemplateException e) {
-                    log.error(e.getMessage(), e);
-                }
-            }
+            staticPlace(site, path);
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -472,16 +431,21 @@ public class CmsPlaceAdminController {
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.place", RequestUtils.getIpAddress(request),
                     CommonUtils.getDate(), StringUtils.join(ids, CommonConstants.COMMA)));
-            if (CmsFileUtils.exists(siteComponent.getWebFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path))) {
-                try {
-                    String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
-                    CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filePath);
-                    templateComponent.staticPlace(site, path, metadata);
-                } catch (IOException | TemplateException e) {
-                    log.error(e.getMessage(), e);
-                }
-            }
+            staticPlace(site, path);
         }
         return CommonConstants.TEMPLATE_DONE;
+    }
+
+    private void staticPlace(SysSite site, String path) {
+        if (CmsFileUtils.exists(siteComponent.getWebFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path))) {
+            try {
+                String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
+                CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filePath);
+                CmsPageData data = metadataComponent.getTemplateData(filePath);
+                templateComponent.staticPlace(site, path, metadata, data);
+            } catch (IOException | TemplateException e) {
+                log.error(e.getMessage(), e);
+            }
+        }
     }
 }

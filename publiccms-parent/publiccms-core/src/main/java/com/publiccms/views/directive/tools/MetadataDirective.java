@@ -25,10 +25,9 @@ public class MetadataDirective extends AbstractTemplateDirective {
     public void execute(RenderHandler handler) throws IOException, Exception {
         String path = handler.getString("path");
         if (CommonUtils.notEmpty(path) && !path.endsWith(CommonConstants.SEPARATOR)) {
-            CmsPageMetadata metadata = metadataComponent
-                    .getTemplateMetadata(siteComponent.getWebTemplateFilePath(getSite(handler), path));
-            CmsPageData data = metadataComponent
-                    .getTemplateData(siteComponent.getWebTemplateFilePath(getSite(handler), path));
+            String filePath = siteComponent.getWebTemplateFilePath(getSite(handler), path);
+            CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(filePath);
+            CmsPageData data = metadataComponent.getTemplateData(filePath);
             handler.put("object", metadata.getAsMap(data)).render();
         }
     }

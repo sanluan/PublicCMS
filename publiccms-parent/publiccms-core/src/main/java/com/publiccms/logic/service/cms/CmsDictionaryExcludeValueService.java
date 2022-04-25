@@ -23,8 +23,8 @@ public class CmsDictionaryExcludeValueService extends BaseService<CmsDictionaryE
      * @param excludeId
      * @return the number of entities deleted
      */
-    public int delete(short siteId, CmsDictionaryExcludeId excludeId) {
-        return dao.delete(siteId, excludeId);
+    public int delete(CmsDictionaryExcludeId excludeId) {
+        return dao.delete(excludeId);
     }
 
     /**

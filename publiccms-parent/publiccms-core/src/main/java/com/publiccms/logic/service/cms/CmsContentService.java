@@ -19,7 +19,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -479,15 +478,11 @@ public class CmsContentService extends BaseService<CmsContent> {
     /**
      * @param siteId
      * @param id
-     * @param contentParameters
      * @param categoryList
-     * @param cmsModel
      * @param category
-     * @param attribute
      */
     @CopyToDatasource
-    public void saveQuote(short siteId, Serializable id, CmsContentParameters contentParameters, List<CmsCategory> categoryList,
-            CmsModel cmsModel, CmsCategory category, CmsContentAttribute attribute) {
+    public void saveQuote(Serializable id, List<CmsCategory> categoryList, CmsCategory category) {
         CmsContent entity = getEntity(id);
         if (CommonUtils.notEmpty(categoryList) && null != entity) {
             for (CmsCategory c : categoryList) {
@@ -513,21 +508,16 @@ public class CmsContentService extends BaseService<CmsContent> {
     }
 
     /**
-     * @param siteId
      * @param id
      * @param contentParameters
-     * @param cmsModel
-     * @param category
-     * @param attribute
      * @return categoryIds set
      */
     @CopyToDatasource
-    public Set<Integer> updateQuote(short siteId, Serializable id, CmsContentParameters contentParameters, CmsModel cmsModel,
-            CmsCategory category, CmsContentAttribute attribute) {
+    public Set<Integer> updateQuote(Serializable id, CmsContentParameters contentParameters) {
         CmsContent entity = getEntity(id);
         Set<Integer> categoryIds = new HashSet<>();
         if (null != entity) {
-            for (CmsContent quote : getListByQuoteId(siteId, entity.getId())) {
+            for (CmsContent quote : getListByQuoteId(entity.getSiteId(), entity.getId())) {
                 if (null != contentParameters.getContentIds() && contentParameters.getContentIds().contains(quote.getId())) {
                     quote.setUrl(entity.getUrl());
                     quote.setTitle(entity.getTitle());
@@ -597,7 +587,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @return
      */
     @CopyToDatasource
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional
     public CmsContent updateComments(short siteId, Serializable id, int comments) {
         CmsContent entity = getEntity(id);
         if (null != entity && siteId == entity.getSiteId()) {
@@ -614,12 +604,12 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @return
      */
     @CopyToDatasource
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional
     public CmsContent updateScores(short siteId, Serializable id, int scoreUsers, int scores) {
         CmsContent entity = getEntity(id);
         if (null != entity && siteId == entity.getSiteId()) {
             entity.setScores(entity.getScores() + scores);
-            entity.setScoreUsers(entity.getScoreUsers() + scores);
+            entity.setScoreUsers(entity.getScoreUsers() + scoreUsers);
             if (0 < entity.getScoreUsers()) {
                 entity.setScore(new BigDecimal(entity.getScores()).divide(new BigDecimal(entity.getScoreUsers())));
             } else {

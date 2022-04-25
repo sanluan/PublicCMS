@@ -1,8 +1,10 @@
 package com.publiccms.views.pojo.entities;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.publiccms.entities.sys.SysExtendField;
 
@@ -30,6 +32,7 @@ public class CmsPlaceMetadata implements java.io.Serializable {
     private List<String> requiredFieldList;
     private Map<String, String> fieldTextMap;
     private List<SysExtendField> extendList;
+    private List<SysExtendField> metadataExtendList;
 
     /**
      * @return
@@ -81,6 +84,13 @@ public class CmsPlaceMetadata implements java.io.Serializable {
     }
 
     /**
+     * @param allowAnonymous
+     */
+    public void setAllowAnonymous(boolean allowAnonymous) {
+        this.allowAnonymous = allowAnonymous;
+    }
+
+    /**
      * @return the coverWidth
      */
     public Integer getCoverWidth() {
@@ -123,27 +133,6 @@ public class CmsPlaceMetadata implements java.io.Serializable {
      */
     public void setAcceptItemTypes(List<String> acceptItemTypes) {
         this.acceptItemTypes = acceptItemTypes;
-    }
-
-    /**
-     * @param allowAnonymous
-     */
-    public void setAllowAnonymous(boolean allowAnonymous) {
-        this.allowAnonymous = allowAnonymous;
-    }
-
-    /**
-     * @return
-     */
-    public List<SysExtendField> getExtendList() {
-        return extendList;
-    }
-
-    /**
-     * @param extendList
-     */
-    public void setExtendList(List<SysExtendField> extendList) {
-        this.extendList = extendList;
     }
 
     /**
@@ -203,5 +192,54 @@ public class CmsPlaceMetadata implements java.io.Serializable {
      */
     public void setFieldTextMap(Map<String, String> fieldTextMap) {
         this.fieldTextMap = fieldTextMap;
+    }
+
+    /**
+     * @return
+     */
+    public List<SysExtendField> getExtendList() {
+        return extendList;
+    }
+
+    /**
+     * @param extendList
+     */
+    public void setExtendList(List<SysExtendField> extendList) {
+        this.extendList = extendList;
+    }
+
+    /**
+     * @return the metadataExtendList
+     */
+    public List<SysExtendField> getMetadataExtendList() {
+        return metadataExtendList;
+    }
+
+    /**
+     * @param metadataExtendList
+     *            the metadataExtendList to set
+     */
+    public void setMetadataExtendList(List<SysExtendField> metadataExtendList) {
+        this.metadataExtendList = metadataExtendList;
+    }
+
+    @JsonIgnore
+    public Map<String, Object> getAsMap(CmsPageData data) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("alias", getAlias());
+        map.put("size", getSize());
+        map.put("allowContribute", isAllowContribute());
+        map.put("allowAnonymous", isAllowAnonymous());
+        map.put("coverWidth", getCoverWidth());
+        map.put("coverHeight", getCoverHeight());
+        map.put("acceptItemTypes", getAcceptItemTypes());
+        map.put("extendList", getExtendList());
+        map.put("adminIds", getAdminIds());
+        map.put("extendData", data.getExtendData());
+        map.put("fieldList", getFieldList());
+        map.put("requiredFieldList", getRequiredFieldList());
+        map.put("fieldTextMap", getFieldTextMap());
+        map.put("metadataExtendList", getMetadataExtendList());
+        return map;
     }
 }

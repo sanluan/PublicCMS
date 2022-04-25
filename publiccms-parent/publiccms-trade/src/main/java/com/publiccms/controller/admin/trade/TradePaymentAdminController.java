@@ -52,16 +52,16 @@ public class TradePaymentAdminController {
             return CommonConstants.TEMPLATE_ERROR;
         }
         PaymentGateway paymentGateway = gatewayComponent.get(payment.getAccountType());
-        if (ControllerUtils.errorNotEmpty("paymentGateway", paymentGateway, model) || ControllerUtils
-                .errorCustom("refundStatus", !service.updateResund(site.getId(), id, refundAmount, reply), model)) {
+        if (ControllerUtils.errorNotEmpty("paymentGateway", paymentGateway, model) || ControllerUtils.errorCustom("refundStatus",
+                !service.updateResund(site.getId(), id, refundAmount, reply), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         entity = service.getEntity(id);
         if (paymentGateway.refund(site.getId(), payment, entity)) {
-            service.updateStatus(site.getId(), entity.getId(), admin.getId(), TradeRefundService.STATUS_REFUNDED);
+            service.updateStatus(site.getId(), entity.getId(), admin.getId(), null, TradeRefundService.STATUS_REFUNDED);
         } else {
             paymentService.pendingRefund(site.getId(), payment.getId());
-            service.updateStatus(site.getId(), entity.getId(), admin.getId(), TradeRefundService.STATUS_FAIL);
+            service.updateStatus(site.getId(), entity.getId(), admin.getId(), null, TradeRefundService.STATUS_FAIL);
         }
         return CommonConstants.TEMPLATE_DONE;
     }

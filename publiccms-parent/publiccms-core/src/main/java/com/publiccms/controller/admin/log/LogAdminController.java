@@ -9,7 +9,6 @@ import java.util.Locale;
 import java.util.Map;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Row;
@@ -17,7 +16,6 @@ import org.apache.poi.ss.usermodel.Sheet;
 import jakarta.annotation.Resource;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
@@ -72,13 +70,12 @@ public class LogAdminController {
      * @param admin
      * @param ids
      * @param request
-     * @param model
      * @return view name
      */
     @RequestMapping("logLogin/delete")
     @Csrf
     public String logLoginDelete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids,
-            HttpServletRequest request, ModelMap model) {
+            HttpServletRequest request) {
         if (CommonUtils.notEmpty(ids)) {
             logLoginService.delete(site.getId(), ids);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
@@ -96,16 +93,13 @@ public class LogAdminController {
      * @param endCreateDate
      * @param workloadType
      * @param request
-     * @param response
-     * @param model
      * @return view name
      */
     @RequestMapping("logOperate/export")
     @Csrf
     public ExcelView export(@RequestAttribute SysSite site, String channel, String operate,
             @DateTimeFormat(pattern = "yyyy-MM-dd") Date startCreateDate,
-            @DateTimeFormat(pattern = "yyyy-MM-dd") Date endCreateDate, String workloadType, HttpServletRequest request,
-            HttpServletResponse response, ModelMap model) {
+            @DateTimeFormat(pattern = "yyyy-MM-dd") Date endCreateDate, String workloadType, HttpServletRequest request) {
         LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
         PageHandler page = logOperateService.getWorkLoadPage(site.getId(), channel, operate, startCreateDate, endCreateDate,
                 workloadType, 1, PageHandler.MAX_PAGE_SIZE);
@@ -170,13 +164,12 @@ public class LogAdminController {
      * @param admin
      * @param ids
      * @param request
-     * @param model
      * @return view name
      */
     @RequestMapping("logTask/delete")
     @Csrf
     public String logTaskDelete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids,
-            HttpServletRequest request, ModelMap model) {
+            HttpServletRequest request) {
         if (CommonUtils.notEmpty(ids)) {
             logTaskService.delete(site.getId(), ids);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
@@ -191,13 +184,12 @@ public class LogAdminController {
      * @param admin
      * @param ids
      * @param request
-     * @param model
      * @return view name
      */
     @RequestMapping("logUpload/delete")
     @Csrf
     public String logUploadDelete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids,
-            HttpServletRequest request, ModelMap model) {
+            HttpServletRequest request) {
         if (CommonUtils.notEmpty(ids)) {
             logUploadService.delete(site.getId(), ids);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),

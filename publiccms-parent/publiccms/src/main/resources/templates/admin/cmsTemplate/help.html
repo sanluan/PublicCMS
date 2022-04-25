@@ -1,5 +1,9 @@
 <#if path?has_content>
-    <@_metadata path=path><#assign metadata=object/></@_metadata>
+    <#if type?has_content>
+        <@_placeMetadata path=path><#assign placeMetadata=object/></@_placeMetadata>
+    <#else>
+        <@_metadata path=path><#assign metadata=object/></@_metadata>
+    </#if>
 </#if>
 <#macro getAction code description=''>onclick="DWZ.instances[$('textarea.code',navTab.getCurrentPanel()).data('id')].replaceSelection('<#if description?has_content>${r'<#--'} ${description} ${r'-->'}\n</#if>${code?js_string}${description?has_content?then('\\n','')}');$.pdialog.closeCurrent();return false;"</#macro>
 <div class="tabs">
@@ -16,6 +20,19 @@
     <div class="tabsContent">
         <div class="pageFormContent" layoutH>
             <ul class="tree treeFolder">
+            <#if placeMetadata?has_content>
+                <li>
+                    <a href="javascript:;" onclick="return false;"><@t.page 'help.template_attribute'/></a>
+                    <ul>
+                        <li><a href="javascript:;" <@getAction r'${(metadata.alias)!}'/>><@t.page 'template.name'/></a></li>
+                <#if placeMetadata.metadataExtendList?has_content>
+                    <#list placeMetadata.metadataExtendList as extend>
+                        <li><a href="javascript:;" <@getAction r'${(metadata.extendData.'+extend.id.code+r')!}'/>><@t.page 'extend_field'/>:${extend.name}</a></li>
+                    </#list>
+                </#if>
+                    </ul>
+                </li>
+            </#if>
             <#if metadata?has_content>
                 <li>
                     <a href="javascript:;" onclick="return false;"><@t.page 'help.template_attribute'/></a>
@@ -38,25 +55,34 @@
                 </#if>
                     </ul>
                 </li>
-                <#if metadata.useStatic?has_content&&site.useStatic>
-                <li>
-                    <a href="javascript:;" onclick="return false;"><@t.page 'help.static_content_data'/></a>
-                    <ul>
-                        <li><a href="javascript:;" <@getAction r'${(content.title)!}'/>><@t.page 'title'/></a></li>
-                        <li><a href="javascript:;" <@getAction r'${(content.url)!}'/>><@t.page 'url'/></a></li>
-                        <li><a href="javascript:;" <@getAction r'${text?no_esc!}'/>><@t.page 'content.text'/></a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="javascript:;" onclick="return false;"><@t.page 'help.static_category_data'/></a>
-                    <ul>
-                        <li><a href="javascript:;" <@getAction r'${(category.title)!}'/>><@t.page 'name'/></a></li>
-                        <li><a href="javascript:;" <@getAction r'${(category.url)!}'/>><@t.page 'url'/></a></li>
-                    </ul>
-                </li>
-                <li>
+                <#if site.useStatic>
                     <li><a href="javascript:;" <@getAction r'${url!}'/>><@t.page 'help.page_url'/></a></li>
-                </li>
+                    <li>
+                        <a href="javascript:;" onclick="return false;"><@t.page 'help.static_content_data'/>(<@t.page 'static_content_page'/>)</a>
+                        <ul>
+                            <li><a href="javascript:;" <@getAction r'${(content.title)!}'/>><@t.page 'title'/></a></li>
+                            <li><a href="javascript:;" <@getAction r'${(content.description)!}'/>><@t.page 'description'/></a></li>
+                            <li><a href="javascript:;" <@getAction r'${(content.url)!}'/>><@t.page 'url'/></a></li>
+                            <li><a href="javascript:;" <@getAction r'${(content.cover)!}'/>><@t.page 'cover'/></a></li>
+                            <li><a href="javascript:;" <@getAction r'${(content.publishDate)!}'/>><@t.page 'publish_date'/></a></li>
+                            <li><a href="javascript:;" <@getAction r'<@_tag ids=content.tagIds><#list map?keys as k>${map[k].name}</a><#sep>,</#list></@_tag>'/>><@t.page 'tag'/></a></li>
+                            <li><a href="javascript:;" <@getAction r'${(attribute.source)!}'/>><@t.page 'content.source'/></a></li>
+                            <li><a href="javascript:;" <@getAction r'${(attribute.sourceUrl)!}'/>><@t.page 'content.source_url'/></a></li>
+                            <li><a href="javascript:;" <@getAction r'${text?no_esc!}'/>><@t.page 'content.text'/></a></li>
+                            <li><a href="javascript:;" <@getAction r'${(attribute.your_extend_field_code)!}'/>><@t.page 'extend_field'/></a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="javascript:;" onclick="return false;"><@t.page 'help.static_category_data'/>(<@t.page 'static_content_page'/>,<@t.page 'static_category_page'/>)</a>
+                        <ul>
+                            <li><a href="javascript:;" <@getAction r'${(category.title)!}'/>><@t.page 'name'/></a></li>
+                            <li><a href="javascript:;" <@getAction r'${(category.url)!}'/>><@t.page 'url'/></a></li>
+                            <li><a href="javascript:;" <@getAction r'${(attribute.title)!}'/>><@t.page 'title'/>(<@t.page 'static_category_page'/>)</a></li>
+                            <li><a href="javascript:;" <@getAction r'${(attribute.keywords)!}'/>><@t.page 'keywords'/>(<@t.page 'static_category_page'/>)</a></li>
+                            <li><a href="javascript:;" <@getAction r'${(attribute.description)!}'/>><@t.page 'description'/>(<@t.page 'static_category_page'/>)</a></li>
+                            <li><a href="javascript:;" <@getAction r'${(attribute.your_extend_field_code)!}'/>><@t.page 'extend_field'/>(<@t.page 'static_category_page'/>)</a></li>
+                        </ul>
+                    </li>
                 </#if>
                 <#if metadata.useDynamic?has_content&&metadata.useDynamic>
                     <li><a href="javascript:;" <@getAction r'${(user.nickName)!}'/>><@t.page 'current_user'/></a></li>

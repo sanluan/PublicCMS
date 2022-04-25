@@ -242,14 +242,13 @@ public class CmsCategoryAdminController {
 
     /**
      * @param site
-     * @param request
      * @param code
      * @param oldCode
      * @return view name
      */
     @RequestMapping("virify")
     @ResponseBody
-    public boolean virify(@RequestAttribute SysSite site, HttpServletRequest request, String code, String oldCode) {
+    public boolean virify(@RequestAttribute SysSite site, String code, String oldCode) {
         if (CommonUtils.notEmpty(code)) {
             if (CommonUtils.notEmpty(oldCode) && !code.equals(oldCode) && null != service.getEntityByCode(site.getId(), code)
                     || CommonUtils.empty(oldCode) && null != service.getEntityByCode(site.getId(), code)) {
@@ -289,14 +288,12 @@ public class CmsCategoryAdminController {
     }
 
     /**
-     * @param site
-     * @param admin
      * @return view name
      */
     @SuppressWarnings("unchecked")
     @RequestMapping("rebuildChildIds")
     @Csrf
-    public String rebuildChildIds(@RequestAttribute SysSite site, @SessionAttribute SysUser admin) {
+    public String rebuildChildIds() {
         CmsCategoryQuery query = new CmsCategoryQuery();
         query.setQueryAll(true);
         PageHandler page = service.getPage(query, null, null);

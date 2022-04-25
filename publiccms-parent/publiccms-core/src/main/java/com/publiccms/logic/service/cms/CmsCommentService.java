@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.annotation.CopyToDatasource;
@@ -142,7 +141,7 @@ public class CmsCommentService extends BaseService<CmsComment> {
      * @return
      */
     @CopyToDatasource
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional
     public CmsComment updateReplies(short siteId, Serializable id, int replies) {
         CmsComment entity = getEntity(id);
         if (null != entity && siteId == entity.getSiteId()) {
@@ -158,7 +157,7 @@ public class CmsCommentService extends BaseService<CmsComment> {
      * @return
      */
     @CopyToDatasource
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional
     public CmsComment updateScores(short siteId, Serializable id, int scores) {
         CmsComment entity = getEntity(id);
         if (null != entity && siteId == entity.getSiteId()) {

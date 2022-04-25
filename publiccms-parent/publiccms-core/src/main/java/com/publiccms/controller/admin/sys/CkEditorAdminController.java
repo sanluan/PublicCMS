@@ -9,7 +9,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.ArrayUtils;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -56,13 +55,12 @@ public class CkEditorAdminController {
      * @param ckCsrfToken
      * @param csrfToken
      * @param request
-     * @param model
      * @return view name
      */
     @RequestMapping("upload")
     @ResponseBody
     public Map<String, Object> upload(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile upload,
-            String ckCsrfToken, @CookieValue("ckCsrfToken") String csrfToken, HttpServletRequest request, ModelMap model) {
+            String ckCsrfToken, @CookieValue("ckCsrfToken") String csrfToken, HttpServletRequest request) {
         Map<String, Object> map = new HashMap<>();
         int uploaded = 0;
         if (null != upload && !upload.isEmpty() && csrfToken.equals(ckCsrfToken)) {

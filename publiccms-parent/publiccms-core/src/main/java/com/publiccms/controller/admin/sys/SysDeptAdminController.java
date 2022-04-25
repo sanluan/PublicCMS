@@ -228,14 +228,13 @@ public class SysDeptAdminController {
 
     /**
      * @param site
-     * @param request
      * @param code
      * @param oldCode
      * @return view name
      */
     @RequestMapping("virify")
     @ResponseBody
-    public boolean virify(@RequestAttribute SysSite site, HttpServletRequest request, String code, String oldCode) {
+    public boolean virify(@RequestAttribute SysSite site, String code, String oldCode) {
         if (CommonUtils.notEmpty(code)) {
             if (CommonUtils.notEmpty(oldCode) && !code.equals(oldCode) && null != service.getEntityByCode(site.getId(), code)
                     || CommonUtils.empty(oldCode) && null != service.getEntityByCode(site.getId(), code)) {
@@ -250,13 +249,11 @@ public class SysDeptAdminController {
      * @param admin
      * @param id
      * @param request
-     * @param model
      * @return view name
      */
     @RequestMapping("delete")
     @Csrf
-    public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Integer id, HttpServletRequest request,
-            ModelMap model) {
+    public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Integer id, HttpServletRequest request) {
         SysDept entity = service.delete(site.getId(), id);
         if (null != entity) {
             sysDeptCategoryService.delete(entity.getId(), null);

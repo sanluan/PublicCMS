@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.logging.Log;
@@ -22,7 +21,6 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -76,12 +74,11 @@ public class UeditorAdminController {
 
     /**
      * @param site
-     * @param request
      * @return view name
      */
     @RequestMapping(params = "action=" + ACTION_CONFIG)
     @ResponseBody
-    public UeditorConfig config(@RequestAttribute SysSite site, HttpServletRequest request) {
+    public UeditorConfig config(@RequestAttribute SysSite site) {
         String urlPrefix = site.getSitePath();
         UeditorConfig config = new UeditorConfig();
         config.setImageActionName(ACTION_UPLOAD);
@@ -119,13 +116,12 @@ public class UeditorAdminController {
      * @param admin
      * @param file
      * @param request
-     * @param model
      * @return view name
      */
     @RequestMapping(params = "action=" + ACTION_UPLOAD)
     @ResponseBody
     public Map<String, Object> upload(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile file,
-            HttpServletRequest request, ModelMap model) {
+            HttpServletRequest request) {
         if (null != file) {
             String originalName = file.getOriginalFilename();
             String suffix = CmsFileUtils.getSuffix(originalName);
@@ -158,13 +154,12 @@ public class UeditorAdminController {
      * @param admin
      * @param file
      * @param request
-     * @param session
      * @return view name
      */
     @RequestMapping(params = "action=" + ACTION_UPLOAD_SCRAW)
     @ResponseBody
     public Map<String, Object> uploadScraw(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String file,
-            HttpServletRequest request, HttpSession session) {
+            HttpServletRequest request) {
         if (CommonUtils.notEmpty(file)) {
             byte[] data = VerificationUtils.base64Decode(file);
             String fileName = CmsFileUtils.getUploadFileName(SCRAW_TYPE);
@@ -194,13 +189,12 @@ public class UeditorAdminController {
      * @param site
      * @param admin
      * @param request
-     * @param session
      * @return view name
      */
     @RequestMapping(params = "action=" + ACTION_CATCHIMAGE)
     @ResponseBody
     public Map<String, Object> catchimage(@RequestAttribute SysSite site, @SessionAttribute SysUser admin,
-            HttpServletRequest request, HttpSession session) {
+            HttpServletRequest request) {
         try (CloseableHttpClient httpclient = HttpClients.custom().setDefaultRequestConfig(CommonConstants.defaultRequestConfig)
                 .build();) {
             String[] files = request.getParameterValues(FIELD_NAME + "[]");
@@ -263,20 +257,19 @@ public class UeditorAdminController {
      * @param admin
      * @param action
      * @param start
-     * @param request
-     * @param session
      * @return view name
      */
     @SuppressWarnings("unchecked")
     @RequestMapping(params = { "action=" + ACTION_LISTIMAGE, "action=" + ACTION_LISTFILE })
     @ResponseBody
     public Map<String, Object> listfile(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String action,
-            Integer start, HttpServletRequest request, HttpSession session) {
+            Integer start) {
         if (CommonUtils.empty(start)) {
             start = 0;
         }
         PageHandler page = logUploadService.getPage(site.getId(), admin.getId(), null,
-                ACTION_LISTIMAGE.equalsIgnoreCase(action) ? CmsFileUtils.IMAGE_FILETYPES : null, null, null, null, null, start / 20 + 1, 20);
+                ACTION_LISTIMAGE.equalsIgnoreCase(action) ? CmsFileUtils.IMAGE_FILETYPES : null, null, null, null, null,
+                start / 20 + 1, 20);
 
         Map<String, Object> map = getResultMap(true);
         List<Map<String, Object>> list = new ArrayList<>();

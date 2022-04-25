@@ -10,7 +10,6 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,13 +49,12 @@ public class CmsSurveyQuestionAdminController {
      * @param entity
      * @param questionParameters
      * @param request
-     * @param model
      * @return operate result
      */
     @RequestMapping("save")
     @Csrf
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, CmsSurveyQuestion entity,
-            @ModelAttribute CmsSurveyQuestionParameters questionParameters, HttpServletRequest request, ModelMap model) {
+            @ModelAttribute CmsSurveyQuestionParameters questionParameters, HttpServletRequest request) {
         List<QuestionItem> itemList = questionParameters.getItemList();
         if (null != entity.getId()) {
             entity = service.update(entity.getId(), entity, ignoreProperties);
@@ -97,17 +95,16 @@ public class CmsSurveyQuestionAdminController {
     }
 
     /**
-     * @param ids
-     * @param request
      * @param site
      * @param admin
-     * @param model
+     * @param ids
+     * @param request
      * @return operate result
      */
     @RequestMapping("delete")
     @Csrf
-    public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids, HttpServletRequest request,
-            ModelMap model) {
+    public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids,
+            HttpServletRequest request) {
         if (CommonUtils.notEmpty(ids)) {
             service.delete(ids);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),

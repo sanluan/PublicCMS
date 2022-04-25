@@ -69,7 +69,7 @@ public class TradePaymentService extends BaseService<TradePayment> {
                 endCreateDate, paymentType, pageIndex, pageSize);
     }
 
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public boolean create(short siteId, TradePayment entity) {
         if (null != entity && siteId == entity.getSiteId()) {
             entity.setStatus(STATUS_PENDING_PAY);
@@ -82,7 +82,7 @@ public class TradePaymentService extends BaseService<TradePayment> {
         return false;
     }
 
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public boolean processed(short siteId, long paymentId, long userId) {
         TradePayment entity = getEntity(paymentId);
         if (null != entity && siteId == entity.getSiteId() && !entity.isProcessed()) {
@@ -99,7 +99,7 @@ public class TradePaymentService extends BaseService<TradePayment> {
         return false;
     }
 
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public boolean paid(short siteId, long paymentId, String accountSerialNumber) {
         TradePayment entity = getEntity(paymentId);
         if (null != entity && siteId == entity.getSiteId() && entity.getStatus() == STATUS_PENDING_PAY) {
@@ -115,7 +115,7 @@ public class TradePaymentService extends BaseService<TradePayment> {
         return false;
     }
 
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public boolean cancel(short siteId, long paymentId) {
         TradePayment entity = getEntity(paymentId);
         if (null != entity && siteId == entity.getSiteId() && entity.getStatus() == STATUS_PENDING_PAY) {
@@ -130,7 +130,7 @@ public class TradePaymentService extends BaseService<TradePayment> {
         return false;
     }
 
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public boolean pendingRefund(short siteId, long paymentId) {
         TradePayment entity = getEntity(paymentId);
         if (null != entity && siteId == entity.getSiteId()
@@ -146,7 +146,7 @@ public class TradePaymentService extends BaseService<TradePayment> {
         return false;
     }
 
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public boolean refunded(short siteId, long paymentId) {
         TradePayment entity = getEntity(paymentId);
         if (null != entity && siteId == entity.getSiteId() && (entity.getStatus() == STATUS_PENDING_REFUND)) {
@@ -161,7 +161,7 @@ public class TradePaymentService extends BaseService<TradePayment> {
         return false;
     }
 
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public boolean close(short siteId, long paymentId) {
         TradePayment entity = getEntity(paymentId);
         if (null != entity && siteId == entity.getSiteId() && (entity.getStatus() == STATUS_REFUNDED)) {

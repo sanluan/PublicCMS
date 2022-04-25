@@ -13,7 +13,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
@@ -40,7 +39,6 @@ import com.publiccms.logic.service.trade.TradeRefundService;
 
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 /**
  *
@@ -61,16 +59,13 @@ public class TradeOrderAdminController {
      * @param endCreateDate
      * @param orderType
      * @param request
-     * @param response
-     * @param model
      * @return
      */
     @RequestMapping("export")
     @Csrf
     public ExcelView export(@RequestAttribute SysSite site, Long userId, Long paymentId, Integer[] status, Boolean processed,
             @DateTimeFormat(pattern = "yyyy-MM-dd") Date startCreateDate,
-            @DateTimeFormat(pattern = "yyyy-MM-dd") Date endCreateDate, String orderType, HttpServletRequest request,
-            HttpServletResponse response, ModelMap model) {
+            @DateTimeFormat(pattern = "yyyy-MM-dd") Date endCreateDate, String orderType, HttpServletRequest request) {
         Locale locale = RequestContextUtils.getLocale(request);
         PageHandler page = service.getPage(site.getId(), userId, paymentId, status, processed, startCreateDate, endCreateDate,
                 orderType, 1, PageHandler.MAX_PAGE_SIZE);
@@ -164,26 +159,24 @@ public class TradeOrderAdminController {
 
     /**
      * @param site
-     * @param admin
      * @param id
      * @return operate result
      */
     @RequestMapping("confirm")
     @Csrf
-    public String confirm(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, long id) {
+    public String confirm(@RequestAttribute SysSite site, long id) {
         service.confirm(site.getId(), id);
         return CommonConstants.TEMPLATE_DONE;
     }
 
     /**
      * @param site
-     * @param admin
      * @param id
      * @return operate result
      */
     @RequestMapping("invalid")
     @Csrf
-    public String invalid(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, long id) {
+    public String invalid(@RequestAttribute SysSite site, long id) {
         TradeOrder entity = service.getEntity(id);
         if (null != entity && service.invalid(site.getId(), id)) {
             if (null != entity.getPaymentId()) {
@@ -211,14 +204,13 @@ public class TradeOrderAdminController {
 
     /**
      * @param site
-     * @param admin
      * @param id
      * @return operate result
      */
     @RequestMapping("close")
     @Csrf
-    public String close(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, long id) {
-        service.close(site.getId(), id);
+    public String close(@RequestAttribute SysSite site, long id) {
+        service.close(site.getId(), id, null);
         return CommonConstants.TEMPLATE_DONE;
     }
 

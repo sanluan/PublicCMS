@@ -6,11 +6,9 @@ import java.util.Date;
 // Generated 2021-6-26 20:16:25 by com.publiccms.common.generator.SourceGenerator
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -47,14 +45,11 @@ public class TradeOrderController {
      * @param orderId
      * @param returnUrl
      * @param request
-     * @param response
-     * @param model
      * @return
-     * @throws Exception
      */
     @RequestMapping(value = "pay/{accountType}")
     public String pay(@RequestAttribute SysSite site, @PathVariable("accountType") String accountType, long orderId,
-            String returnUrl, HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
+            String returnUrl, HttpServletRequest request) {
         returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         PaymentGateway paymentGateway = gatewayComponent.get(accountType);
         TradeOrder order = service.getEntity(orderId);
@@ -120,7 +115,7 @@ public class TradeOrderController {
     public String close(@RequestAttribute SysSite site, @SessionAttribute SysUser user, long orderId, String returnUrl,
             HttpServletRequest request) {
         returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
-        service.close(site.getId(), orderId);
+        service.close(site.getId(), orderId, user.getId());
         return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
     }
 
