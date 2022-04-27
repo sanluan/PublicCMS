@@ -70,6 +70,8 @@ public class UeditorAdminController {
     protected static final String ACTION_CATCHIMAGE = "catchimage";
     protected static final String ACTION_LISTIMAGE = "listimage";
     protected static final String ACTION_LISTFILE = "listfile";
+    protected static final String ACTION_LISTVIDEO = "listvideo";
+    protected static final String ACTION_LISTAUDIO = "listaudio";
 
     protected static final String FIELD_NAME = "file";
     protected static final String SCRAW_TYPE = ".jpg";
@@ -261,22 +263,60 @@ public class UeditorAdminController {
     /**
      * @param site
      * @param admin
-     * @param action
      * @param start
-     * @param request
-     * @param session
      * @return view name
      */
-    @SuppressWarnings("unchecked")
-    @RequestMapping(params = { "action=" + ACTION_LISTIMAGE, "action=" + ACTION_LISTFILE })
+    @RequestMapping(params = { "action=" + ACTION_LISTIMAGE })
     @ResponseBody
-    public Map<String, Object> listfile(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String action,
-            Integer start, HttpServletRequest request, HttpSession session) {
+    public Map<String, Object> listimage(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Integer start) {
+        return listfile(site, admin, CmsFileUtils.IMAGE_FILETYPES, start);
+    }
+
+    /**
+     * @param site
+     * @param admin
+     * @param start
+     * @return view name
+     */
+    @RequestMapping(params = { "action=" + ACTION_LISTFILE })
+    @ResponseBody
+    public Map<String, Object> listfile(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Integer start) {
+        return listfile(site, admin, null, start);
+    }
+
+    /**
+     * @param site
+     * @param admin
+     * @param action
+     * @param start
+     * @return view name
+     */
+    @RequestMapping(params = { "action=" + ACTION_LISTVIDEO })
+    @ResponseBody
+    public Map<String, Object> listvideo(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Integer start) {
+        return listfile(site, admin, CmsFileUtils.VIDEO_FILETYPES, start);
+    }
+
+    /**
+     * @param site
+     * @param admin
+     * @param action
+     * @param start
+     * @return view name
+     */
+    @RequestMapping(params = { "action=" + ACTION_LISTAUDIO })
+    @ResponseBody
+    public Map<String, Object> listaudio(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Integer start) {
+        return listfile(site, admin, CmsFileUtils.AUDIO_FILETYPES, start);
+    }
+
+    @SuppressWarnings("unchecked")
+    public Map<String, Object> listfile(SysSite site, SysUser admin, String[] fileTyps, Integer start) {
         if (CommonUtils.empty(start)) {
             start = 0;
         }
-        PageHandler page = logUploadService.getPage(site.getId(), admin.getId(), null,
-                ACTION_LISTIMAGE.equalsIgnoreCase(action) ? CmsFileUtils.IMAGE_FILETYPES : null, null, null, null, null, start / 20 + 1, 20);
+        PageHandler page = logUploadService.getPage(site.getId(), admin.getId(), null, fileTyps, null, null, null, null,
+                start / 20 + 1, 20);
 
         Map<String, Object> map = getResultMap(true);
         List<Map<String, Object>> list = new ArrayList<>();
