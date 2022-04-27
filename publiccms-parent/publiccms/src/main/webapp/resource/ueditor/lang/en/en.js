@@ -347,21 +347,21 @@ UE.I18N['en'] = {
     'insertvideo':{
         'static':{
             'lang_tab_insertV':"Video",
-            'lang_tab_searchV':"Search",
+            'lang_tab_uploadI':"Upload Image",
             'lang_tab_uploadV':"Upload",
+            'lang_tab_online':"Manager",
+            'lang_tab_onlineImage':"Image manager",
             'lang_video_url':" URL ",
+            'lang_image_url':"Image URL",
             'lang_video_size':"Video Size",
             'lang_videoW':"Width",
             'lang_videoH':"Height",
             'lang_alignment':"Alignment",
-            'videoSearchTxt':{'value':"Enter the search keyword!"},
-            'videoType':{'options':["All", "Hot", "Entertainment", "Funny", "Sports", "Science", "variety"]},
-            'videoSearchBtn':{'value':"Search in Baidu"},
-            'videoSearchReset':{'value':"Clear result"},
 
             'lang_input_fileStatus':' No file uploaded!',
             'startUpload':{'style':"background:url(upload.png) no-repeat;"},
-
+            'lang_videoLoading':"　Loading...",
+            'lang_imgLoading':"　Loading...",
             'lang_upload_size':"Video Size",
             'lang_upload_width':"Width",
             'lang_upload_height':"Height",
@@ -439,7 +439,7 @@ UE.I18N['en'] = {
         'blog':"Blog",
         'resume':"Resume",
         'richText':"Rich Text",
-        'scrPapers':"Scientific Papers"
+        'scPapers':"Scientific Papers"
     },
     'scrawl':{
         'static':{

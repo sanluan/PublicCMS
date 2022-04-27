@@ -94,11 +94,6 @@ public class CmsFileUtils {
      * 
      */
     public static final String[] VIDEO_FILETYPES = new String[] { CmsFileUtils.FILE_TYPE_VIDEO };
-
-    /**
-     * 
-     */
-    public static final String[] AUDIO_FILETYPES = new String[] { CmsFileUtils.FILE_TYPE_AUDIO };
     /**
      * 
      */

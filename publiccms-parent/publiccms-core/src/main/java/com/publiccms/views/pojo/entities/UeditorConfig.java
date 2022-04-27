@@ -19,6 +19,7 @@ public class UeditorConfig implements java.io.Serializable {
     private String catcherActionName;
     private String imageManagerActionName;
     private String fileManagerActionName;
+    private String videoManagerActionName;
     private String imageFieldName;
     private String scrawlFieldName;
     private String catcherFieldName;
@@ -31,6 +32,7 @@ public class UeditorConfig implements java.io.Serializable {
     private String videoUrlPrefix;
     private String fileUrlPrefix;
     private String imageManagerUrlPrefix;
+    private String videoManagerUrlPrefix;
     private String fileManagerUrlPrefix;
     private String[] imageAllowFiles;
     private String[] catcherAllowFiles;
@@ -138,6 +140,20 @@ public class UeditorConfig implements java.io.Serializable {
     }
 
     /**
+     * @return the videoManagerUrlPrefix
+     */
+    public String getVideoManagerUrlPrefix() {
+        return videoManagerUrlPrefix;
+    }
+
+    /**
+     * @param videoManagerUrlPrefix the videoManagerUrlPrefix to set
+     */
+    public void setVideoManagerUrlPrefix(String videoManagerUrlPrefix) {
+        this.videoManagerUrlPrefix = videoManagerUrlPrefix;
+    }
+
+    /**
      * @return
      */
     public String getFileManagerActionName() {
@@ -149,6 +165,20 @@ public class UeditorConfig implements java.io.Serializable {
      */
     public void setFileManagerActionName(String fileManagerActionName) {
         this.fileManagerActionName = fileManagerActionName;
+    }
+
+    /**
+     * @return the videoManagerActionName
+     */
+    public String getVideoManagerActionName() {
+        return videoManagerActionName;
+    }
+
+    /**
+     * @param videoManagerActionName the videoManagerActionName to set
+     */
+    public void setVideoManagerActionName(String videoManagerActionName) {
+        this.videoManagerActionName = videoManagerActionName;
     }
 
     /**

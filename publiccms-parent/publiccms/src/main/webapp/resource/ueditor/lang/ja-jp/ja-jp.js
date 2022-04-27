@@ -341,21 +341,20 @@ UE.I18N['ja-jp'] = {
     'insertvideo':{
         'static':{
             'lang_tab_insertV':"動画を挿入",
-            'lang_tab_searchV':"動画を検索",
+            'lang_tab_uploadI':"画像をアップロード",
             'lang_tab_uploadV':"動画をアップロード",
+            'lang_tab_online':"オンラインビデオ",
+            'lang_tab_onlineImage':"オンライン写真",    
             'lang_video_url':"動画URL",
+            'lang_image_url':"画像URL",
             'lang_video_size':"動画サイズ",
             'lang_videoW':"幅",
             'lang_videoH':"高さ",
             'lang_alignment':"配置",
-            'videoSearchTxt':{'value':"検索キーワードを入力してください！"},
-            'videoType':{'options':["すべて", "人気", "娯楽", "お笑い", "スポーツ", "科学技術", "バラエティ"]},
-            'videoSearchBtn':{'value':"baidu"},
-            'videoSearchReset':{'value':"結果をクリア"},
-
             'lang_input_fileStatus':' ファイルをアップロードしていません',
             'startUpload':{'style':"background:url(upload.png) no-repeat;"},
-
+            'lang_videoLoading':"　ビデオの読み込み...",
+            'lang_imgLoading':"　画像読み込み中...",
             'lang_upload_size':"動画サイズ",
             'lang_upload_width':"幅",
             'lang_upload_height':"高さ",
@@ -506,7 +505,6 @@ UE.I18N['ja-jp'] = {
             'lang_input_about':'UEditorについて',
             'lang_input_shortcuts':'ショートカットキー',
             'lang_input_introduction':'UEditorは、Baidu WebフロントエンドのR＆D部門によって開発された豊富なテキストWebエディタです。軽量で、カスタマイズ可能で、ユーザ優先などの特長が持っています。オープンソースはBSDプロトコルに基づいており、コードの自由な使用と変更が可能です。',
-
             'lang_Txt_shortcuts':'ショートカットキー',
             'lang_Txt_func':'機能',
             'lang_Txt_bold':'選択された文字列を太字にします',

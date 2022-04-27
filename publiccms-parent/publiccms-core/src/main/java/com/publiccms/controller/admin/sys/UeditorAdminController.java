@@ -69,7 +69,6 @@ public class UeditorAdminController {
     protected static final String ACTION_LISTIMAGE = "listimage";
     protected static final String ACTION_LISTFILE = "listfile";
     protected static final String ACTION_LISTVIDEO = "listvideo";
-    protected static final String ACTION_LISTAUDIO = "listaudio";
 
     protected static final String FIELD_NAME = "file";
     protected static final String SCRAW_TYPE = ".jpg";
@@ -91,6 +90,7 @@ public class UeditorAdminController {
         config.setCatcherActionName(ACTION_CATCHIMAGE);
         config.setImageManagerActionName(ACTION_LISTIMAGE);
         config.setFileManagerActionName(ACTION_LISTFILE);
+        config.setVideoManagerActionName(ACTION_LISTVIDEO);
         config.setImageFieldName(FIELD_NAME);
         config.setScrawlFieldName(FIELD_NAME);
         config.setCatcherFieldName(FIELD_NAME);
@@ -103,6 +103,7 @@ public class UeditorAdminController {
         config.setVideoUrlPrefix(urlPrefix);
         config.setFileUrlPrefix(urlPrefix);
         config.setImageManagerUrlPrefix(urlPrefix);
+        config.setVideoManagerUrlPrefix(urlPrefix);
         config.setFileManagerUrlPrefix(urlPrefix);
         config.setImageAllowFiles(CmsFileUtils.IMAGE_ALLOW_FILES);
         config.setCatcherAllowFiles(CmsFileUtils.IMAGE_ALLOW_FILES);
@@ -291,19 +292,6 @@ public class UeditorAdminController {
         return listfile(site, admin, CmsFileUtils.VIDEO_FILETYPES, start);
     }
 
-    /**
-     * @param site
-     * @param admin
-     * @param action
-     * @param start
-     * @return view name
-     */
-    @RequestMapping(params = { "action=" + ACTION_LISTAUDIO })
-    @ResponseBody
-    public Map<String, Object> listaudio(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Integer start) {
-        return listfile(site, admin, CmsFileUtils.AUDIO_FILETYPES, start);
-    }
-
     @SuppressWarnings("unchecked")
     public Map<String, Object> listfile(SysSite site, SysUser admin, String[] fileTyps, Integer start) {
         if (CommonUtils.empty(start)) {
@@ -317,6 +305,7 @@ public class UeditorAdminController {
         for (LogUpload logUpload : ((List<LogUpload>) page.getList())) {
             Map<String, Object> tempMap = getResultMap(true);
             tempMap.put("url", logUpload.getFilePath());
+            tempMap.put("name", logUpload.getOriginalName());
             list.add(tempMap);
         }
         map.put("list", list);

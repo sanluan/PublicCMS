@@ -346,21 +346,20 @@ UE.I18N['zh-cn'] = {
     'insertvideo':{
         'static':{
             'lang_tab_insertV':"插入视频",
-            'lang_tab_searchV':"搜索视频",
+            'lang_tab_uploadI':"上传图片",
             'lang_tab_uploadV':"上传视频",
+            'lang_tab_online':"在线视频",
+            'lang_tab_onlineImage':"在线图片",
             'lang_video_url':"视频网址",
+            'lang_image_url':"图片网址",
             'lang_video_size':"视频尺寸",
             'lang_videoW':"宽度",
             'lang_videoH':"高度",
             'lang_alignment':"对齐方式",
-            'videoSearchTxt':{'value':"请输入搜索关键字！"},
-            'videoType':{'options':["全部", "热门", "娱乐", "搞笑", "体育", "科技", "综艺"]},
-            'videoSearchBtn':{'value':"百度一下"},
-            'videoSearchReset':{'value':"清空结果"},
-
             'lang_input_fileStatus':' 当前未上传文件',
             'startUpload':{'style':"background:url(upload.png) no-repeat;"},
-
+            'lang_videoLoading':"　视频加载中……",
+            'lang_imgLoading':"　图片加载中……",
             'lang_upload_size':"视频尺寸",
             'lang_upload_width':"宽度",
             'lang_upload_height':"高度",
