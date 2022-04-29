@@ -676,7 +676,7 @@ function _formatUrl(url, mode, host, pathname) {
 		if (match[1] !== host) {
 			return url;
 		}
-	} else if (/^\w+:/.test(url)) {
+	} else if (/^\w+:/.test(url)||/^\/\//.test(url)) {
 		return url;
 	}
 	function getRealPath(path) {
@@ -693,9 +693,9 @@ function _formatUrl(url, mode, host, pathname) {
 		}
 		return '/' + paths.join('/');
 	}
-	if (/^\//.test(url)) {
+	if (/^\//.test(url) ) {
 		url = host + getRealPath(url.substr(1));
-	} else if (!/^\w+:\/\//.test(url)) {
+	} else if (!/^\w+:\/\//.test(url) ) {
 		url = host + getRealPath(pathname + '/' + url);
 	}
 	function getRelativePath(path, depth) {

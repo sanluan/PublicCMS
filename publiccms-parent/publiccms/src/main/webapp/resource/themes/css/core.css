@@ -152,7 +152,7 @@ header .nav .selected ul{display:block;}
 .grid .gridHeader th.order,.grid .gridHeader th.asc,.grid .gridHeader th.desc{cursor:pointer;position:relative;}
 .grid .gridHeader th.asc:before,.grid .gridHeader th.desc:before,.grid .gridHeader th.order:before{position:absolute;right:0px;top:50%;margin-top:-13px;}
 .grid .gridTbody td { border-right:solid 1px #ededed;overflow:hidden;padding:4px 3px;border-bottom:solid 1px #ededed;vertical-align:middle;line-height:26px;}
-.grid .gridTbody td div { display:block;line-height:26px;}
+.grid .gridTbody td div { display:block;line-height:26px;max-width: 600px;word-break: break-all;}
 .grid .gridTbody td.wrap div{white-space:normal;word-break: break-all;}
 .grid .gridTbody td div a:hover{text-decoration:underline;}
 .grid .gridCol { width:100%;display:block;overflow:hidden;height:26px;line-height:26px;white-space:nowrap;}
