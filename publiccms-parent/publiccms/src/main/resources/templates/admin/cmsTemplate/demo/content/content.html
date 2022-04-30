@@ -193,6 +193,10 @@ function unscore(contentId){
     });
 }
     </script>
+	<script src="${site.dynamicPath}resource/ueditor/ueditor.parse.min.js"></script>
+	<script>
+	uParse('#content',{rootPath: '${site.dynamicPath}resource/ueditor/'});
+	</script>
     <script>
     var itemString="itemType=content&itemId=${content.id}";
     </script>
