@@ -76,7 +76,7 @@ public interface Config {
      * 
      */
     String INPUTTYPE_USER = "user";
-    
+
     /**
      * 
      */
@@ -126,6 +126,10 @@ public interface Config {
      * 
      */
     String INPUTTYPE_EMAIL = "email";
+    /**
+     * 
+     */
+    String INPUTTYPE_COLOR = "color";
 
     /**
      * @param site

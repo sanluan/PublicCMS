@@ -221,6 +221,20 @@
                 <input name="${inputName}" <#if 'customform'!=type>class="date<#if extend.required> required</#if>" autocomplete="off" dateFmt="yyyy-MM-dd HH:mm:ss" </#if>type="text" size="20" value="${(value)!}"/>
             </#if>
             <#break>
+        <#case 'color'>
+            <#if 'view'=type>
+                ${(value)!}
+            <#else>
+                <input name="${inputName}" <#if 'customform'!=type>class="color<#if extend.required> required</#if>" autocomplete="off" </#if>type="text" size="20" value="${(value)!}"/>
+            </#if>
+            <#break>
+        <#case 'alphaColor'>
+            <#if 'view'=type>
+                ${(value)!}
+            <#else>
+                <input name="${inputName}" <#if 'customform'!=type>class="color<#if extend.required> required</#if>" autocomplete="off" showAlpha="true" </#if>type="text" size="20" value="${(value)!}"/>
+            </#if>
+            <#break>
         <#default>
             <#if 'view'=type>
                 ${(value)!}
