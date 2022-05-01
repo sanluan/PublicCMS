@@ -9,7 +9,9 @@ dependencies {
     implementation project(':publiccms-common')
 
     // https://mvnrepository.com/artifact/net.oschina.j2cache/j2cache-core
-    implementation "net.oschina.j2cache:j2cache-core:2.8.5-release"
+    implementation ("net.oschina.j2cache:j2cache-core:2.8.5-release") {
+        exclude group:"org.slf4j", module: 'slf4j-simple'
+    }
     implementation "redis.clients:jedis:${jedisVersion}"
     implementation "org.mybatis:mybatis:${mybatisVersion}"
 }

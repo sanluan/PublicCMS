@@ -475,3 +475,14 @@ DWZ.regPlugins.push(function($p){
         }
     });
 });
+DWZ.regPlugins.push(function($p){
+    $("[lock-url]", $p).each(function(){
+        var $this=$(this);
+        $.getJSON($this.attr("lock-url"), function(data) {
+            if(data && $this.hasClass("buttonActive")){
+                $this.removeClass("buttonActive").addClass("buttonDisabled").prop("disabled",true).attr("title",data.nickName + "-" + new Date(data.createDate).toLocaleString());
+                $('<i class="icon-lock icon-large"></i>').prependTo($this);
+            }
+        });
+    });
+});

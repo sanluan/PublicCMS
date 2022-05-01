@@ -24,33 +24,25 @@ public class SysLockService extends BaseService<SysLock> {
     public static final String ITEM_TYPE_LOGIN = "userLogin";
     public static final String ITEM_TYPE_IP_LOGIN = "ipLogin";
     public static final String ITEM_TYPE_REGISTER = "register";
-    public static final String ITEM_TYPE_CATEGORY = "category";
-    public static final String ITEM_TYPE_MODEL = "model";
-    public static final String ITEM_TYPE_CONTENT = "content";
-    public static final String ITEM_TYPE_FILE = "file";
-    public static final String ITEM_TYPE_TEMPLATE = "template";
-    public static final String ITEM_TYPE_PLACE_TEMPLATE = "placeTemplate";
-    public static final String ITEM_TYPE_TASK_TEMPLATE = "taskTemplate";
-    public static final String ITEM_TYPE_PLACE = "place";
-    public static final String ITEM_TYPE_CONFIG = "config";
-    public static final String[] COMMON_ITEM_TYPES = { ITEM_TYPE_CATEGORY, ITEM_TYPE_MODEL, ITEM_TYPE_CONTENT, ITEM_TYPE_FILE,
-            ITEM_TYPE_TEMPLATE, ITEM_TYPE_PLACE_TEMPLATE, ITEM_TYPE_TASK_TEMPLATE, ITEM_TYPE_PLACE, ITEM_TYPE_CONFIG };
+    public static final String[] SYSTEM_ITEM_TYPES = { ITEM_TYPE_LOGIN, ITEM_TYPE_IP_LOGIN, ITEM_TYPE_REGISTER };
 
     /**
      * @param itemTypes
+     * @param excludeItemTypes
      * @return list of site id
      */
-    public List<Short> getSiteIdList(String[] itemTypes) {
-        return dao.getSiteIdList(itemTypes);
+    public List<Short> getSiteIdList(String[] itemTypes, String[] excludeItemTypes) {
+        return dao.getSiteIdList(itemTypes, excludeItemTypes);
     }
 
     /**
      * @param itemTypes
+     * @param excludeItemTypes
      * @param createDate
      * @return number of data deleted
      */
-    public int delete(String[] itemTypes, Date createDate) {
-        return dao.delete(itemTypes, createDate);
+    public int delete(String[] itemTypes, String[] excludeItemTypes, Date createDate) {
+        return dao.delete(itemTypes, excludeItemTypes, createDate);
     }
 
     /**

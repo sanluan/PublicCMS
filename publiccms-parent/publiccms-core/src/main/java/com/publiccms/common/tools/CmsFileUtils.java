@@ -148,7 +148,7 @@ public class CmsFileUtils {
                     if (!useFilter
                             || !fileName.endsWith(".data") && !TemplateComponent.INCLUDE_DIRECTORY.equalsIgnoreCase(fileName)) {
                         BasicFileAttributes attrs = Files.readAttributes(entry, BasicFileAttributes.class);
-                        fileList.add(new FileInfo(fileName, attrs.isDirectory(), attrs));
+                        fileList.add(new FileInfo(fileName, attrs.isDirectory(), attrs, dirPath));
                     }
                 }
             }
@@ -525,19 +525,22 @@ public class CmsFileUtils {
         private Date lastAccessTime;
         private Date creationTime;
         private long size;
+        private String dirPath;
 
         /**
          * @param fileName
          * @param directory
          * @param attrs
+         * @param dirPath
          */
-        public FileInfo(String fileName, boolean directory, BasicFileAttributes attrs) {
+        public FileInfo(String fileName, boolean directory, BasicFileAttributes attrs, String dirPath) {
             this.fileName = fileName;
             this.directory = directory;
             this.lastModifiedTime = new Date(attrs.lastModifiedTime().toMillis());
             this.lastAccessTime = new Date(attrs.lastAccessTime().toMillis());
             this.creationTime = new Date(attrs.creationTime().toMillis());
             this.size = attrs.size();
+            this.dirPath = dirPath;
         }
 
         /**
@@ -552,6 +555,20 @@ public class CmsFileUtils {
          */
         public void setFileName(String fileName) {
             this.fileName = fileName;
+        }
+
+        /**
+         * @return directory
+         */
+        public boolean isDirectory() {
+            return directory;
+        }
+
+        /**
+         * @param directory
+         */
+        public void setDirectory(boolean directory) {
+            this.directory = directory;
         }
 
         /**
@@ -611,17 +628,18 @@ public class CmsFileUtils {
         }
 
         /**
-         * @return directory
+         * @return the dirPath
          */
-        public boolean isDirectory() {
-            return directory;
+        public String getDirPath() {
+            return dirPath;
         }
 
         /**
-         * @param directory
+         * @param dirPath
+         *            the dirPath to set
          */
-        public void setDirectory(boolean directory) {
-            this.directory = directory;
+        public void setDirPath(String dirPath) {
+            this.dirPath = dirPath;
         }
     }
 }
