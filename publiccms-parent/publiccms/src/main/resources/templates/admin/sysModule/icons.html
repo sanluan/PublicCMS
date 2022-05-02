@@ -1,10 +1,10 @@
 <div class="pageFormContent icons" layoutH>
-	<dl class="nowrap">
-		<dt><@t.page 'button.search'/>:</dt>
-		<dd>
-			<input type="text" name="name" size="30"/>
-		</dd>
-	</dl>
+    <dl class="nowrap">
+        <dt><@t.page 'button.search'/>:</dt>
+        <dd>
+            <input type="text" name="name" size="30"/>
+        </dd>
+    </dl>
     <fieldset>
         <legend><@t.page 'icons.web'/></legend>
         <div class="unit">
@@ -2093,15 +2093,15 @@
     </fieldset>
 <script>
 $('input[name=name]',$.pdialog.getCurrent()).bind('keydown change',function(){
-	if($(this).val()){
-		$('.icons label',$.pdialog.getCurrent()).hide().find('a:contains('+$(this).val()+')').parent().show();
-	}else{
-		$('.icons label',$.pdialog.getCurrent()).show();
-	}
+    if($(this).val()){
+        $('.icons label',$.pdialog.getCurrent()).hide().find('a:contains('+$(this).val()+')').parent().show();
+    }else{
+        $('.icons label',$.pdialog.getCurrent()).show();
+    }
 });
 $('.icons a',$.pdialog.getCurrent()).click(function(){
-	$.bringBack({'${field}':$('i',$(this)).prop("className").replace(' icon-large','')});
-	return false;
+    $.bringBack({'${field}':$('i',$(this)).prop("className").replace(' icon-large','')});
+    return false;
 });
 </script>
 </div>

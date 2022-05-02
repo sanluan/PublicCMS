@@ -12,12 +12,12 @@
     <title>${content.title} - ${(category.name)!}</title>
     <meta name="keywords" content="<#list getKeywords(content.title) as a>${a}<#sep>,</#list>"/>
     <meta name="description" content="${(content.description)!}"/>
-	<style>
-		.text-center{text-align:center;}
-		.clearfix::after{display: block;clear: both;content: "";}
-		article #content img,article #content table,article figure img{max-width:100%;}
-		article #content,{width:100%;overflow: auto;}
-	</style>
+    <style>
+        .text-center{text-align:center;}
+        .clearfix::after{display: block;clear: both;content: "";}
+        article #content img,article #content table,article figure img{max-width:100%;}
+        article #content,{width:100%;overflow: auto;}
+    </style>
 </head>
 <body>
     <header>
@@ -57,18 +57,18 @@
             </div>
         </#if>
         <#if content.hasFiles>
-			<@_contentFileList contentId=content.id fileTypes='video,audio,other'>
-				<#list page.list as file>
-					<p><a href="${(file.filePath)!}" target="_blank">${(file.filePath)!}</a></p>
-				</#list>
-			</@_contentFileList>
+            <@_contentFileList contentId=content.id fileTypes='video,audio,other'>
+                <#list page.list as file>
+                    <p><a href="${(file.filePath)!}" target="_blank">${(file.filePath)!}</a></p>
+                </#list>
+            </@_contentFileList>
         </#if>
         <#if content.hasImages>
-			<figure class="text-center">
+            <figure class="text-center">
              <@_contentFileList contentId=content.id fileTypes='image'>
                  <#list page.list as file>
                      <img src="${(file.filePath)!}" alt="${(file.description)!}"/>
-					 <p>ͼ${file?counter} ${(file.description)!}</p>
+                     <p>ͼ${file?counter} ${(file.description)!}</p>
                  </#list>
              </@_contentFileList>
             </figure>
@@ -191,10 +191,10 @@ function unscore(contentId){
     });
 }
     </script>
-	<script src="${site.dynamicPath}resource/ueditor/ueditor.parse.min.js"></script>
-	<script>
-	uParse('#content',{rootPath: '${site.dynamicPath}resource/ueditor/'});
-	</script>
+    <script src="${site.dynamicPath}resource/ueditor/ueditor.parse.min.js"></script>
+    <script>
+    uParse('#content',{rootPath: '${site.dynamicPath}resource/ueditor/'});
+    </script>
     <script>
     var itemString="itemType=content&itemId=${content.id}";
     </script>

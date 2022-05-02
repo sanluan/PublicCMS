@@ -277,15 +277,15 @@ public class FileAdminController {
                         log.error(e.getMessage(), e);
                     }
                 } else {
-					result.put("statusCode", 300);
-					result.put("message", LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
+                    result.put("statusCode", 300);
+                    result.put("message", LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
                         "verify.custom.fileType"));
-					result.put(field, "");
-					if (CommonUtils.notEmpty(originalField)) {
-						result.put(originalField, null);
-					}
-					resultList.add(result);
-				}
+                    result.put(field, "");
+                    if (CommonUtils.notEmpty(originalField)) {
+                        result.put(originalField, null);
+                    }
+                    resultList.add(result);
+                }
             }
         } else {
             Map<String, Object> result = new HashMap<>();
@@ -296,7 +296,7 @@ public class FileAdminController {
             if (CommonUtils.notEmpty(originalField)) {
                 result.put(originalField, null);
             }
-			resultList.add(result);
+            resultList.add(result);
         }
 
         return resultList;
