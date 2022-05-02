@@ -112,7 +112,7 @@ public class TradeOrderAdminController {
                 j = 0;
                 row.createCell(j++).setCellValue(entity.getId().toString());
                 user = userMap.get(entity.getUserId());
-                row.createCell(j++).setCellValue(null == user ? null : user.getNickName() + "\r\n" + entity.getIp());
+                row.createCell(j++).setCellValue(null == user ? null : user.getNickname() + "\r\n" + entity.getIp());
                 row.createCell(j++).setCellValue(entity.getTitle());
                 row.createCell(j++)
                         .setCellValue(entity.getAddressee() + " " + entity.getTelephone() + "\r\n"

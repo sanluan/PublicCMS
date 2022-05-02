@@ -84,18 +84,18 @@ public class FileAdminController {
             suffix = CmsFileUtils.getSuffix(originalName);
             if (ArrayUtils.contains(siteConfigComponent.getSafeSuffix(site), suffix)) {
                 String fileName = CmsFileUtils.getUploadFileName(suffix);
-                String filePath = siteComponent.getWebFilePath(site, fileName);
+                String filepath = siteComponent.getWebFilePath(site, fileName);
                 try {
                     if (CommonUtils.notEmpty(base64File)) {
-                        CmsFileUtils.upload(VerificationUtils.base64Decode(base64File), filePath);
+                        CmsFileUtils.upload(VerificationUtils.base64Decode(base64File), filepath);
                     } else {
-                        CmsFileUtils.upload(file, filePath);
+                        CmsFileUtils.upload(file, filepath);
                     }
                     result.put("field", field);
                     result.put(field, fileName);
                     String fileType = CmsFileUtils.getFileType(suffix);
                     result.put("fileType", fileType);
-                    FileSize fileSize = CmsFileUtils.getFileSize(filePath, suffix);
+                    FileSize fileSize = CmsFileUtils.getFileSize(filepath, suffix);
                     result.put("width", fileSize.getWidth());
                     result.put("height", fileSize.getHeight());
                     result.put("fileSize", fileSize.getFileSize());
@@ -170,11 +170,11 @@ public class FileAdminController {
                             public void extract(String imagePath, byte[] imageData) throws IOException {
                                 String imagesuffix = CmsFileUtils.getSuffix(imagePath);
                                 fileName = CmsFileUtils.getUploadFileName(imagesuffix);
-                                String filePath = siteComponent.getWebFilePath(site, fileName);
+                                String filepath = siteComponent.getWebFilePath(site, fileName);
                                 try {
-                                    CmsFileUtils.upload(imageData, filePath);
+                                    CmsFileUtils.upload(imageData, filepath);
                                     String fileType = CmsFileUtils.getFileType(imagesuffix);
-                                    FileSize fileSize = CmsFileUtils.getFileSize(filePath, imagesuffix);
+                                    FileSize fileSize = CmsFileUtils.getFileSize(filepath, imagesuffix);
                                     logUploadService.save(new LogUpload(site.getId(), admin.getId(),
                                             LogLoginService.CHANNEL_WEB_MANAGER, new File(imagePath).getName(), fileType,
                                             imageData.length, fileSize.getWidth(), fileSize.getHeight(),
@@ -204,11 +204,11 @@ public class FileAdminController {
                                     imagesuffix = CommonConstants.DOT + imagesuffix;
                                 }
                                 String fileName = CmsFileUtils.getUploadFileName(imagesuffix);
-                                String filePath = siteComponent.getWebFilePath(site, fileName);
+                                String filepath = siteComponent.getWebFilePath(site, fileName);
                                 try {
-                                    CmsFileUtils.upload(content, filePath);
+                                    CmsFileUtils.upload(content, filepath);
                                     String fileType = CmsFileUtils.getFileType(imagesuffix);
-                                    FileSize fileSize = CmsFileUtils.getFileSize(filePath, imagesuffix);
+                                    FileSize fileSize = CmsFileUtils.getFileSize(filepath, imagesuffix);
                                     logUploadService.save(new LogUpload(site.getId(), admin.getId(),
                                             LogLoginService.CHANNEL_WEB_MANAGER, suggestedName, fileType, content.length,
                                             fileSize.getWidth(), fileSize.getHeight(), RequestUtils.getIpAddress(request),
@@ -254,15 +254,15 @@ public class FileAdminController {
                 String suffix = CmsFileUtils.getSuffix(originalName);
                 if (ArrayUtils.contains(siteConfigComponent.getSafeSuffix(site), suffix)) {
                     String fileName = CmsFileUtils.getUploadFileName(suffix);
-                    String filePath = siteComponent.getWebFilePath(site, fileName);
+                    String filepath = siteComponent.getWebFilePath(site, fileName);
                     try {
-                        CmsFileUtils.upload(file, filePath);
+                        CmsFileUtils.upload(file, filepath);
                         result.put("field", field);
                         result.put(field, fileName);
                         String fileType = CmsFileUtils.getFileType(suffix);
                         result.put("fileType", fileType);
                         result.put("fileSize", file.getSize());
-                        FileSize fileSize = CmsFileUtils.getFileSize(filePath, suffix);
+                        FileSize fileSize = CmsFileUtils.getFileSize(filepath, suffix);
                         result.put("width", fileSize.getWidth());
                         result.put("height", fileSize.getHeight());
                         if (CommonUtils.notEmpty(originalField)) {

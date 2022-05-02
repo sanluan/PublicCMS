@@ -68,14 +68,14 @@ public class TaskTemplateAdminController {
             HttpServletRequest request, ModelMap model) {
         if (CommonUtils.notEmpty(path)) {
             try {
-                String filePath = siteComponent.getTaskTemplateFilePath(site, path);
+                String filepath = siteComponent.getTaskTemplateFilePath(site, path);
                 content = new String(VerificationUtils.base64Decode(content), CommonConstants.DEFAULT_CHARSET);
-                if (CmsFileUtils.createFile(filePath, content)) {
+                if (CmsFileUtils.createFile(filepath, content)) {
                     logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                             "save.task.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
                 } else {
                     String historyFilePath = siteComponent.getTaskTemplateHistoryFilePath(site, path);
-                    CmsFileUtils.updateFile(filePath, historyFilePath, content);
+                    CmsFileUtils.updateFile(filepath, historyFilePath, content);
                     logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                             "update.task.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
                 }
@@ -106,8 +106,8 @@ public class TaskTemplateAdminController {
         if (null != files) {
             try {
                 for (MultipartFile file : files) {
-                    String filePath = path + CommonConstants.SEPARATOR + file.getOriginalFilename();
-                    String destFullFileName = siteComponent.getTaskTemplateFilePath(site, filePath);
+                    String filepath = path + CommonConstants.SEPARATOR + file.getOriginalFilename();
+                    String destFullFileName = siteComponent.getTaskTemplateFilePath(site, filepath);
                     CmsFileUtils.upload(file, destFullFileName);
                     if (destFullFileName.endsWith(".zip") && CmsFileUtils.isFile(destFullFileName)) {
                         ZipUtils.unzipHere(destFullFileName, encoding);
@@ -115,7 +115,7 @@ public class TaskTemplateAdminController {
                     }
                     templateComponent.clearTaskTemplateCache();
                     logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                            "upload.task.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), filePath));
+                            "upload.task.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), filepath));
                 }
             } catch (IOException e) {
                 model.addAttribute(CommonConstants.ERROR, e.getMessage());
@@ -133,7 +133,7 @@ public class TaskTemplateAdminController {
     @RequestMapping("export")
     @Csrf
     public void export(@RequestAttribute SysSite site, HttpServletResponse response) {
-        String filePath = siteComponent.getTaskTemplateFilePath(site, CommonConstants.SEPARATOR);
+        String filepath = siteComponent.getTaskTemplateFilePath(site, CommonConstants.SEPARATOR);
         try {
             response.setHeader("content-disposition",
                     "attachment;fileName=" + URLEncoder.encode(site.getName() + "_tasktemplate.zip", "utf-8"));
@@ -142,7 +142,7 @@ public class TaskTemplateAdminController {
         try (ServletOutputStream outputStream = response.getOutputStream();
                 ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream);) {
             zipOutputStream.setEncoding(Constants.DEFAULT_CHARSET_NAME);
-            ZipUtils.compress(Paths.get(filePath), zipOutputStream, Constants.BLANK);
+            ZipUtils.compress(Paths.get(filepath), zipOutputStream, Constants.BLANK);
         } catch (IOException e) {
         }
     }
@@ -160,9 +160,9 @@ public class TaskTemplateAdminController {
     public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path, HttpServletRequest request,
             ModelMap model) {
         if (CommonUtils.notEmpty(path)) {
-            String filePath = siteComponent.getTaskTemplateFilePath(site, path);
+            String filepath = siteComponent.getTaskTemplateFilePath(site, path);
             String backupFilePath = siteComponent.getTaskTemplateBackupFilePath(site, path);
-            if (ControllerUtils.errorCustom("notExist.template", !CmsFileUtils.moveFile(filePath, backupFilePath), model)) {
+            if (ControllerUtils.errorCustom("notExist.template", !CmsFileUtils.moveFile(filepath, backupFilePath), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             templateComponent.clearTaskTemplateCache();

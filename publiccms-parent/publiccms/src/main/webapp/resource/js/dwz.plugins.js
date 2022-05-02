@@ -480,7 +480,7 @@ DWZ.regPlugins.push(function($p){
         var $this=$(this);
         $.getJSON($this.attr("lock-url"), function(data) {
             if(data && $this.hasClass("buttonActive")){
-                $this.removeClass("buttonActive").addClass("buttonDisabled").prop("disabled",true).attr("title",data.nickName + "-" + new Date(data.createDate).toLocaleString());
+                $this.removeClass("buttonActive").addClass("buttonDisabled").prop("disabled",true).attr("title",data.nickname + "-" + new Date(data.createDate).toLocaleString());
                 $('<i class="icon-lock icon-large"></i>').prependTo($this);
             }
         });

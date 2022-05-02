@@ -121,7 +121,7 @@
                 <td class="center">${a.publishDate!}</td>
                 <td>
                     <@t.page 'status.content.'+a.status/>
-                    <#if 1==a.status>/${(checkUserMap[a.checkUserId?string].nickName)!}</#if>
+                    <#if 1==a.status>/${(checkUserMap[a.checkUserId?string].nickname)!}</#if>
                 </td>
                 <td class="wrap">
                     <#if authorizedMap['cmsContent/add']>

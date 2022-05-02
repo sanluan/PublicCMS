@@ -93,7 +93,7 @@ public class TemplateComponent implements Cache {
      * 
      * @param site
      * @param fullTemplatePath
-     * @param filePath
+     * @param filepath
      * @param pageIndex
      * @param metadataMap
      * @param model
@@ -102,30 +102,30 @@ public class TemplateComponent implements Cache {
      * @throws IOException
      * @throws TemplateException
      */
-    public String createStaticFile(SysSite site, String fullTemplatePath, String filePath, Integer pageIndex,
+    public String createStaticFile(SysSite site, String fullTemplatePath, String filepath, Integer pageIndex,
             Map<String, Object> metadataMap, Map<String, Object> model, Consumer<String> urlConsumer)
             throws IOException, TemplateException {
-        if (CommonUtils.notEmpty(filePath)) {
+        if (CommonUtils.notEmpty(filepath)) {
             if (null == model) {
                 model = new HashMap<>();
             }
             model.put("metadata", metadataMap);
             model.put("pageIndex", pageIndex);
             AbstractFreemarkerView.exposeSite(model, site);
-            filePath = FreeMarkerUtils.generateStringByString(filePath, webConfiguration, model);
-            if (filePath.startsWith(CommonConstants.SEPARATOR)) {
-                filePath = filePath.substring(1);
+            filepath = FreeMarkerUtils.generateStringByString(filepath, webConfiguration, model);
+            if (filepath.startsWith(CommonConstants.SEPARATOR)) {
+                filepath = filepath.substring(1);
             }
-            String fullPath = site.getSitePath() + filePath;
+            String fullPath = site.getSitePath() + filepath;
             model.put("url", fullPath);
             if (null != urlConsumer) {
                 urlConsumer.accept(fullPath);
             }
             String staticFilePath;
-            if (filePath.endsWith(CommonConstants.SEPARATOR)) {
-                staticFilePath = filePath + CommonConstants.getDefaultPage();
+            if (filepath.endsWith(CommonConstants.SEPARATOR)) {
+                staticFilePath = filepath + CommonConstants.getDefaultPage();
             } else {
-                staticFilePath = filePath;
+                staticFilePath = filepath;
             }
             if (CommonUtils.notEmpty(pageIndex) && 1 < pageIndex) {
                 int index = staticFilePath.lastIndexOf(CommonConstants.DOT);
@@ -135,7 +135,7 @@ public class TemplateComponent implements Cache {
             FreeMarkerUtils.generateFileByFile(fullTemplatePath, siteComponent.getWebFilePath(site, staticFilePath),
                     webConfiguration, model);
         }
-        return filePath;
+        return filepath;
     }
 
     /**
@@ -160,20 +160,20 @@ public class TemplateComponent implements Cache {
                 if (null != categoryModel && null != category) {
                     try {
                         if (site.isUseStatic() && CommonUtils.notEmpty(categoryModel.getTemplatePath())) {
-                            String filePath = createContentFile(site, entity, category, true, categoryModel.getTemplatePath(),
+                            String filepath = createContentFile(site, entity, category, true, categoryModel.getTemplatePath(),
                                     null, null);
-                            if (!entity.isHasStatic() || null == entity.getUrl() || !entity.getUrl().equals(filePath)) {
-                                contentService.updateUrl(site.getId(), entity.getId(), filePath, true);
+                            if (!entity.isHasStatic() || null == entity.getUrl() || !entity.getUrl().equals(filepath)) {
+                                contentService.updateUrl(site.getId(), entity.getId(), filepath, true);
                             }
                         } else {
                             Map<String, Object> model = new HashMap<>();
                             model.put("content", entity);
                             model.put("category", category);
                             model.put(AbstractFreemarkerView.CONTEXT_SITE, site);
-                            String filePath = FreeMarkerUtils.generateStringByString(category.getContentPath(), webConfiguration,
+                            String filepath = FreeMarkerUtils.generateStringByString(category.getContentPath(), webConfiguration,
                                     model);
-                            if (entity.isHasStatic() || null == entity.getUrl() || !entity.getUrl().equals(filePath)) {
-                                contentService.updateUrl(site.getId(), entity.getId(), filePath, false);
+                            if (entity.isHasStatic() || null == entity.getUrl() || !entity.getUrl().equals(filepath)) {
+                                contentService.updateUrl(site.getId(), entity.getId(), filepath, false);
                             }
                         }
                         return true;
@@ -263,14 +263,14 @@ public class TemplateComponent implements Cache {
      * @param category
      * @param createMultiContentPage
      * @param templatePath
-     * @param filePath
+     * @param filepath
      * @param pageIndex
      * @return content static file path
      * @throws IOException
      * @throws TemplateException
      */
     public String createContentFile(SysSite site, CmsContent entity, CmsCategory category, boolean createMultiContentPage,
-            String templatePath, String filePath, Integer pageIndex) throws IOException, TemplateException {
+            String templatePath, String filepath, Integer pageIndex) throws IOException, TemplateException {
         Map<String, Object> model = new HashMap<>();
 
         initContentUrl(site, entity);
@@ -291,15 +291,15 @@ public class TemplateComponent implements Cache {
         } else {
             model.put("attribute", attribute);
         }
-        if (CommonUtils.empty(filePath)) {
-            filePath = category.getContentPath();
+        if (CommonUtils.empty(filepath)) {
+            filepath = category.getContentPath();
         }
         String realTemplatePath = siteComponent.getWebTemplateFilePath(site, templatePath);
         CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(realTemplatePath);
         CmsPageData data = metadataComponent.getTemplateData(realTemplatePath);
         Map<String, Object> metadataMap = metadata.getAsMap(data);
         String fullTemplatePath = SiteComponent.getFullTemplatePath(site, templatePath);
-        if (null != attribute && CommonUtils.notEmpty(filePath) && CommonUtils.notEmpty(attribute.getText())) {
+        if (null != attribute && CommonUtils.notEmpty(filepath) && CommonUtils.notEmpty(attribute.getText())) {
             String pageBreakTag = null;
             if (-1 < attribute.getText().indexOf(CommonConstants.getCkeditorPageBreakTag())) {
                 pageBreakTag = CommonConstants.getCkeditorPageBreakTag();
@@ -315,7 +315,7 @@ public class TemplateComponent implements Cache {
                     page.setTotalCount(texts.length);
                     model.put("text", texts[i]);
                     model.put("page", page);
-                    createStaticFile(site, fullTemplatePath, filePath, i + 1, metadataMap, model, url -> {
+                    createStaticFile(site, fullTemplatePath, filepath, i + 1, metadataMap, model, url -> {
                         if (null == entity.getUrl()) {
                             entity.setUrl(url);
                         }
@@ -328,7 +328,7 @@ public class TemplateComponent implements Cache {
             model.put("page", page);
             model.put("text", texts[page.getPageIndex() - 1]);
         }
-        return createStaticFile(site, fullTemplatePath, filePath, pageIndex, metadataMap, model, url -> {
+        return createStaticFile(site, fullTemplatePath, filepath, pageIndex, metadataMap, model, url -> {
             if (null == entity.getUrl()) {
                 entity.setUrl(url);
             }
@@ -350,19 +350,19 @@ public class TemplateComponent implements Cache {
         } else if (CommonUtils.notEmpty(entity.getPath())) {
             try {
                 if (site.isUseStatic() && CommonUtils.notEmpty(entity.getTemplatePath())) {
-                    String filePath = createCategoryFile(site, entity, entity.getTemplatePath(), entity.getPath(), pageIndex,
+                    String filepath = createCategoryFile(site, entity, entity.getTemplatePath(), entity.getPath(), pageIndex,
                             totalPage);
-                    if (!entity.isHasStatic() || null == entity.getUrl() || !entity.getUrl().equals(filePath)) {
-                        categoryService.updateUrl(entity.getId(), filePath, true);
+                    if (!entity.isHasStatic() || null == entity.getUrl() || !entity.getUrl().equals(filepath)) {
+                        categoryService.updateUrl(entity.getId(), filepath, true);
                     }
                 } else {
                     Map<String, Object> model = new HashMap<>();
                     initCategoryUrl(site, entity);
                     model.put("category", entity);
                     model.put(AbstractFreemarkerView.CONTEXT_SITE, site);
-                    String filePath = FreeMarkerUtils.generateStringByString(entity.getPath(), webConfiguration, model);
-                    if (entity.isHasStatic() || null == entity.getUrl() || !entity.getUrl().equals(filePath)) {
-                        categoryService.updateUrl(entity.getId(), filePath, false);
+                    String filepath = FreeMarkerUtils.generateStringByString(entity.getPath(), webConfiguration, model);
+                    if (entity.isHasStatic() || null == entity.getUrl() || !entity.getUrl().equals(filepath)) {
+                        categoryService.updateUrl(entity.getId(), filepath, false);
                     }
                 }
             } catch (IOException | TemplateException e) {
@@ -381,14 +381,14 @@ public class TemplateComponent implements Cache {
      * @param site
      * @param entity
      * @param templatePath
-     * @param filePath
+     * @param filepath
      * @param pageIndex
      * @param totalPage
      * @return category static file path
      * @throws IOException
      * @throws TemplateException
      */
-    public String createCategoryFile(SysSite site, CmsCategory entity, String templatePath, String filePath, Integer pageIndex,
+    public String createCategoryFile(SysSite site, CmsCategory entity, String templatePath, String filepath, Integer pageIndex,
             Integer totalPage) throws IOException, TemplateException {
         Map<String, Object> model = new HashMap<>();
         if (CommonUtils.empty(pageIndex)) {
@@ -413,7 +413,7 @@ public class TemplateComponent implements Cache {
         String fullTemplatePath = SiteComponent.getFullTemplatePath(site, templatePath);
         if (CommonUtils.notEmpty(totalPage) && pageIndex + 1 <= totalPage) {
             for (int i = pageIndex + 1; i <= totalPage; i++) {
-                createStaticFile(site, fullTemplatePath, filePath, i, metadataMap, model, url -> {
+                createStaticFile(site, fullTemplatePath, filepath, i, metadataMap, model, url -> {
                     if (null == entity.getUrl()) {
                         entity.setUrl(url);
                     }
@@ -421,7 +421,7 @@ public class TemplateComponent implements Cache {
             }
         }
 
-        return createStaticFile(site, fullTemplatePath, filePath, pageIndex, metadataMap, model, url -> {
+        return createStaticFile(site, fullTemplatePath, filepath, pageIndex, metadataMap, model, url -> {
             if (null == entity.getUrl()) {
                 entity.setUrl(url);
             }

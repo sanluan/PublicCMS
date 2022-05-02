@@ -66,15 +66,15 @@ public class CmsWebFileAdminController {
             HttpServletRequest request, ModelMap model) {
         if (CommonUtils.notEmpty(path)) {
             try {
-                String filePath = siteComponent.getWebFilePath(site, path);
+                String filepath = siteComponent.getWebFilePath(site, path);
                 content = new String(VerificationUtils.base64Decode(content), CommonConstants.DEFAULT_CHARSET);
-                if (CmsFileUtils.createFile(filePath, content)) {
+                if (CmsFileUtils.createFile(filepath, content)) {
                     logOperateService.save(
                             new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                                     "save.web.webfile", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
                 } else {
                     String historyFilePath = siteComponent.getWebHistoryFilePath(site, path);
-                    CmsFileUtils.updateFile(filePath, historyFilePath, content);
+                    CmsFileUtils.updateFile(filepath, historyFilePath, content);
                     logOperateService.save(
                             new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                                     "update.web.webfile", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
@@ -107,15 +107,15 @@ public class CmsWebFileAdminController {
                 for (MultipartFile file : files) {
                     String originalName = file.getOriginalFilename();
                     String suffix = CmsFileUtils.getSuffix(originalName);
-                    String filePath = path + CommonConstants.SEPARATOR + originalName;
-                    String fuleFilePath = siteComponent.getWebFilePath(site, filePath);
+                    String filepath = path + CommonConstants.SEPARATOR + originalName;
+                    String fuleFilePath = siteComponent.getWebFilePath(site, filepath);
                     if (null != override && override || !CmsFileUtils.exists(fuleFilePath)) {
                         CmsFileUtils.upload(file, fuleFilePath);
                         FileSize fileSize = CmsFileUtils.getFileSize(fuleFilePath, suffix);
                         logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                                 originalName, CmsFileUtils.getFileType(CmsFileUtils.getSuffix(originalName)), file.getSize(),
                                 fileSize.getWidth(), fileSize.getHeight(), RequestUtils.getIpAddress(request),
-                                CommonUtils.getDate(), filePath));
+                                CommonUtils.getDate(), filepath));
                     }
                 }
             } catch (IOException e) {
@@ -140,8 +140,8 @@ public class CmsWebFileAdminController {
     public boolean check(@RequestAttribute SysSite site, @RequestParam("fileNames[]") String[] fileNames, String path) {
         if (null != fileNames) {
             for (String fileName : fileNames) {
-                String filePath = path + CommonConstants.SEPARATOR + fileName;
-                if (CmsFileUtils.exists(siteComponent.getWebFilePath(site, filePath))) {
+                String filepath = path + CommonConstants.SEPARATOR + fileName;
+                if (CmsFileUtils.exists(siteComponent.getWebFilePath(site, filepath))) {
                     return true;
                 }
             }
@@ -164,9 +164,9 @@ public class CmsWebFileAdminController {
             HttpServletRequest request, ModelMap model) {
         if (CommonUtils.notEmpty(paths)) {
             for (String path : paths) {
-                String filePath = siteComponent.getWebFilePath(site, path);
+                String filepath = siteComponent.getWebFilePath(site, path);
                 String backupFilePath = siteComponent.getWebBackupFilePath(site, path);
-                if (ControllerUtils.errorCustom("notExist.webfile", !CmsFileUtils.moveFile(filePath, backupFilePath), model)) {
+                if (ControllerUtils.errorCustom("notExist.webfile", !CmsFileUtils.moveFile(filepath, backupFilePath), model)) {
                     return CommonConstants.TEMPLATE_ERROR;
                 }
             }
@@ -190,16 +190,16 @@ public class CmsWebFileAdminController {
     public String doZip(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path, HttpServletRequest request,
             ModelMap model) {
         if (CommonUtils.notEmpty(path)) {
-            String filePath = siteComponent.getWebFilePath(site, path);
-            if (CmsFileUtils.isDirectory(filePath)) {
+            String filepath = siteComponent.getWebFilePath(site, path);
+            if (CmsFileUtils.isDirectory(filepath)) {
                 try {
                     String zipFileName = null;
                     if (path.endsWith("/") || path.endsWith("\\")) {
-                        zipFileName = filePath + "files.zip";
+                        zipFileName = filepath + "files.zip";
                     } else {
-                        zipFileName = filePath + ".zip";
+                        zipFileName = filepath + ".zip";
                     }
-                    ZipUtils.zip(filePath, zipFileName);
+                    ZipUtils.zip(filepath, zipFileName);
                 } catch (IOException e) {
                     model.addAttribute(CommonConstants.ERROR, e.getMessage());
                     log.error(e.getMessage(), e);
@@ -227,13 +227,13 @@ public class CmsWebFileAdminController {
     public String doUnzip(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path, String encoding,
             boolean here, HttpServletRequest request, ModelMap model) {
         if (CommonUtils.notEmpty(path) && path.toLowerCase().endsWith(".zip")) {
-            String filePath = siteComponent.getWebFilePath(site, path);
-            if (CmsFileUtils.isFile(filePath)) {
+            String filepath = siteComponent.getWebFilePath(site, path);
+            if (CmsFileUtils.isFile(filepath)) {
                 try {
                     if (here) {
-                        ZipUtils.unzipHere(filePath, encoding);
+                        ZipUtils.unzipHere(filepath, encoding);
                     } else {
-                        ZipUtils.unzip(filePath, filePath.substring(0, filePath.length() - 4), encoding, true);
+                        ZipUtils.unzip(filepath, filepath.substring(0, filepath.length() - 4), encoding, true);
                     }
                 } catch (IOException e) {
                     model.addAttribute(CommonConstants.ERROR, e.getMessage());
@@ -261,8 +261,8 @@ public class CmsWebFileAdminController {
             HttpServletRequest request) {
         if (null != path && CommonUtils.notEmpty(fileName)) {
             path = path + CommonConstants.SEPARATOR + fileName;
-            String filePath = siteComponent.getWebFilePath(site, path);
-            CmsFileUtils.mkdirs(filePath);
+            String filepath = siteComponent.getWebFilePath(site, path);
+            CmsFileUtils.mkdirs(filepath);
             logOperateService
                     .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                             "createDirectory.web.webfile", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));

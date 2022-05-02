@@ -5,7 +5,7 @@
     <form class="pagerForm" action="sysUser/lookup_list.html" autocomplete="off" onsubmit="return divSearch(this, 'user_list');" method="post">
         <#include "../include_page/parameters.html"/>
         <input type="hidden" name="field" value="${field!'userId'}"/>
-        <input type="hidden" name="nickNameField" value="${nickNameField!'nickName'}"/>
+        <input type="hidden" name="nicknameField" value="${nicknameField!'nickname'}"/>
         <div class="searchBar">
             <ul class="searchContent">
                 <li>
@@ -71,7 +71,7 @@
             <#list page.list as a>
             <tr>
                 <td>
-                    <a href="javascript:;" onclick="$.bringBack({'${field!'userId'}':'${a.id}','${nickNameField!'nickName'}':'${(a.nickName?js_string)!}'});return false;"><i class="icon-ok icon-large"></i> <@t.page 'select'/></a>
+                    <a href="javascript:;" onclick="$.bringBack({'${field!'userId'}':'${a.id}','${nicknameField!'nickname'}':'${(a.nickname?js_string)!}'});return false;"><i class="icon-ok icon-large"></i> <@t.page 'select'/></a>
                 </td>
                 <td class="wrap">
                     <#if a.cover?has_content>
@@ -81,7 +81,7 @@
                     </#if>
                     <div class="box">
                         <p class="exclude-translate"><@t.page 'user.username'/>:${(a.name)!}</p>
-                        <p class="exclude-translate"><@t.page 'user.nickname'/>:${(a.nickName)!}</p>
+                        <p class="exclude-translate"><@t.page 'user.nickname'/>:${(a.nickname)!}</p>
                         <p>${(a.superuser)?then('[<font color="red">'+t.pageMessage('admin')+'</font>]','')?no_esc} <font color="red"><@t.page 'user.content_permissions.'+a.contentPermissions/></font></p>
                     </div>
                 </td>

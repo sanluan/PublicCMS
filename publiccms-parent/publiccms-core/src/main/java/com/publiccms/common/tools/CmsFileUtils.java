@@ -202,21 +202,21 @@ public class CmsFileUtils {
     }
 
     /**
-     * @param filePath
+     * @param filepath
      * @param data
      * @throws IOException
      */
-    public static void writeByteArrayToFile(String filePath, byte[] data) throws IOException {
-        FileUtils.writeByteArrayToFile(new File(filePath), data);
+    public static void writeByteArrayToFile(String filepath, byte[] data) throws IOException {
+        FileUtils.writeByteArrayToFile(new File(filepath), data);
     }
 
     /**
-     * @param filePath
+     * @param filepath
      * @param suffix
      * @return fileSize
      */
-    public static FileSize getFileSize(String filePath, String suffix) {
-        return getFileSize(new File(filePath), suffix);
+    public static FileSize getFileSize(String filepath, String suffix) {
+        return getFileSize(new File(filepath), suffix);
     }
 
     /**
@@ -258,49 +258,49 @@ public class CmsFileUtils {
     }
 
     /**
-     * @param filePath
+     * @param filepath
      */
-    public static void mkdirs(String filePath) {
-        File file = new File(filePath);
+    public static void mkdirs(String filepath) {
+        File file = new File(filepath);
         file.mkdirs();
     }
 
     /**
-     * @param filePath
+     * @param filepath
      * @return
      */
-    public static boolean isDirectory(String filePath) {
-        File file = new File(filePath);
+    public static boolean isDirectory(String filepath) {
+        File file = new File(filepath);
         return CommonUtils.notEmpty(file) && file.isDirectory();
     }
 
     /**
-     * @param filePath
+     * @param filepath
      * @return
      */
-    public static boolean isFile(String filePath) {
-        File file = new File(filePath);
+    public static boolean isFile(String filepath) {
+        File file = new File(filepath);
         return CommonUtils.notEmpty(file) && file.isFile();
     }
 
     /**
-     * @param filePath
+     * @param filepath
      * @return
      */
-    public static boolean exists(String filePath) {
-        return CommonUtils.notEmpty(new File(filePath));
+    public static boolean exists(String filepath) {
+        return CommonUtils.notEmpty(new File(filepath));
     }
 
     /**
      * 写入文件
      *
-     * @param filePath
+     * @param filepath
      * @param content
      * @return whether to create successfully
      * @throws IOException
      */
-    public static boolean createFile(String filePath, String content) throws IOException {
-        File file = new File(filePath);
+    public static boolean createFile(String filepath, String content) throws IOException {
+        File file = new File(filepath);
         if (CommonUtils.empty(file)) {
             FileUtils.writeStringToFile(file, content, CommonConstants.DEFAULT_CHARSET_NAME);
             return true;
@@ -311,12 +311,12 @@ public class CmsFileUtils {
     /**
      * 移动文件或目录
      *
-     * @param filePath
+     * @param filepath
      * @param backupFilePath
      * @return whether to move successfully
      */
-    public static boolean moveFile(String filePath, String backupFilePath) {
-        File file = new File(filePath);
+    public static boolean moveFile(String filepath, String backupFilePath) {
+        File file = new File(filepath);
         if (CommonUtils.notEmpty(file)) {
             File backupFile = new File(backupFilePath);
             try {
@@ -338,11 +338,11 @@ public class CmsFileUtils {
     /**
      * 移动文件或目录
      *
-     * @param filePath
+     * @param filepath
      * @return whether to move successfully
      */
-    public static boolean delete(String filePath) {
-        File file = new File(filePath);
+    public static boolean delete(String filepath) {
+        File file = new File(filepath);
         if (CommonUtils.notEmpty(file)) {
             FileUtils.deleteQuietly(file);
             return true;
@@ -353,14 +353,14 @@ public class CmsFileUtils {
     /**
      * 修改文件内容
      * 
-     * @param filePath
+     * @param filepath
      * @param historyFilePath
      * @param content
      * @return whether to modify successfully
      * @throws IOException
      */
-    public static boolean updateFile(String filePath, String historyFilePath, String content) throws IOException {
-        File file = new File(filePath);
+    public static boolean updateFile(String filepath, String historyFilePath, String content) throws IOException {
+        File file = new File(filepath);
         if (CommonUtils.notEmpty(file) && null != content) {
             File history = new File(historyFilePath);
             if (null != history.getParentFile()) {
@@ -378,11 +378,11 @@ public class CmsFileUtils {
     /**
      * 获取文件内容
      *
-     * @param filePath
+     * @param filepath
      * @return file content
      */
-    public static String getFileContent(String filePath) {
-        File file = new File(filePath);
+    public static String getFileContent(String filepath) {
+        File file = new File(filepath);
         try {
             if (file.isFile()) {
                 return FileUtils.readFileToString(file, CommonConstants.DEFAULT_CHARSET_NAME);

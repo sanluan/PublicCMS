@@ -29,14 +29,14 @@
     <@_sysUser id=a.userId>
         <dl>
             <dt><@t.page 'content.promulgator'/>:</dt>
-            <dd>${object.nickName!}</dd>
+            <dd>${object.nickname!}</dd>
         </dl>
     </@_sysUser>
         <dl>
             <dt><@t.page 'status'/>/<@t.page 'inspector'/>:</dt>
             <dd>
                 <@t.page 'status.content.'+a.status/>
-                <#if 1=a.status>/ <@_sysUser id=a.checkUserId>${object.nickName!}</@_sysUser></#if>
+                <#if 1=a.status>/ <@_sysUser id=a.checkUserId>${object.nickname!}</@_sysUser></#if>
             </dd>
         </dl>
         <dl>

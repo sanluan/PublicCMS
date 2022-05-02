@@ -130,10 +130,10 @@ public class UeditorAdminController {
             String suffix = CmsFileUtils.getSuffix(originalName);
             if (ArrayUtils.contains(siteConfigComponent.getSafeSuffix(site), suffix)) {
                 String fileName = CmsFileUtils.getUploadFileName(suffix);
-                String filePath = siteComponent.getWebFilePath(site, fileName);
+                String filepath = siteComponent.getWebFilePath(site, fileName);
                 try {
-                    CmsFileUtils.upload(file, filePath);
-                    FileSize fileSize = CmsFileUtils.getFileSize(filePath, suffix);
+                    CmsFileUtils.upload(file, filepath);
+                    FileSize fileSize = CmsFileUtils.getFileSize(filepath, suffix);
                     logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                             originalName, CmsFileUtils.getFileType(suffix), file.getSize(), fileSize.getWidth(),
                             fileSize.getHeight(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
@@ -166,10 +166,10 @@ public class UeditorAdminController {
         if (CommonUtils.notEmpty(file)) {
             byte[] data = VerificationUtils.base64Decode(file);
             String fileName = CmsFileUtils.getUploadFileName(SCRAW_TYPE);
-            String filePath = siteComponent.getWebFilePath(site, fileName);
+            String filepath = siteComponent.getWebFilePath(site, fileName);
             try {
-                CmsFileUtils.writeByteArrayToFile(filePath, data);
-                FileSize fileSize = CmsFileUtils.getFileSize(filePath, SCRAW_TYPE);
+                CmsFileUtils.writeByteArrayToFile(filepath, data);
+                FileSize fileSize = CmsFileUtils.getFileSize(filepath, SCRAW_TYPE);
                 logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                         CommonConstants.BLANK, CmsFileUtils.FILE_TYPE_IMAGE, data.length, fileSize.getWidth(),
                         fileSize.getHeight(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
@@ -217,13 +217,13 @@ public class UeditorAdminController {
                             FileSize fileSize;
                             if (fileType.equals(FileType.WebP)) {
                                 fileName = CmsFileUtils.getUploadFileName("jpg");
-                                String filePath = siteComponent.getWebFilePath(site, fileName);
-                                ImageUtils.webp2Image(inputStream, false, new File(filePath));
-                                fileSize = CmsFileUtils.getFileSize(filePath, suffix);
+                                String filepath = siteComponent.getWebFilePath(site, fileName);
+                                ImageUtils.webp2Image(inputStream, false, new File(filepath));
+                                fileSize = CmsFileUtils.getFileSize(filepath, suffix);
                             } else {
                                 fileName = CmsFileUtils.getUploadFileName(suffix);
-                                String filePath = siteComponent.getWebFilePath(site, fileName);
-                                fileSize = CmsFileUtils.copyInputStreamToFile(inputStream, filePath, suffix);
+                                String filepath = siteComponent.getWebFilePath(site, fileName);
+                                fileSize = CmsFileUtils.copyInputStreamToFile(inputStream, filepath, suffix);
                             }
                             logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                                     CommonConstants.BLANK, CmsFileUtils.getFileType(suffix), fileSize.getFileSize(),

@@ -100,7 +100,7 @@
                 <td>${a.id}</td>
                 <td>${(a.copied?then('['+t.pageMessage('copied')+']',''))!}<a href="cmsContent/view.html?id=${a.id}" class="exclude-translate" target="dialog" rel="viewContent${a.id}">${(a.title)!}</a></td>
                 <td>
-                    ${(userMap[a.userId?string].nickName)!}
+                    ${(userMap[a.userId?string].nickname)!}
                 </td>
                 <td>
                     ${(categoryMap[a.categoryId?string].name)!}
@@ -114,7 +114,7 @@
                 <td>${a.createDate!}</td>
                 <td>
                     <@t.page 'status.content.'+a.status/>
-                    <#if 1=a.status>/ ${(checkUserMap[a.checkUserId?string].nickName)!}</#if>
+                    <#if 1=a.status>/ ${(checkUserMap[a.checkUserId?string].nickname)!}</#if>
                 </td>
                 <td class="wrap">
                     <#if authorizedMap['cmsContent/recycle']>

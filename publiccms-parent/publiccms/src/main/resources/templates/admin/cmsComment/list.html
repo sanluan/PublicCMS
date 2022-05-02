@@ -77,7 +77,7 @@
                 <td class="center"><input name="ids" value="${a.id}" type="checkbox"></td>
                 <td>${a.id!}</td>
                 <td class="center exclude-translate">
-                    ${(userMap[a.userId?string].nickName)!}
+                    ${(userMap[a.userId?string].nickname)!}
                 </td>
                 <td class="exclude-translate">
                     <a href="cmsContent/view.html?id=${a.contentId}" target="dialog" rel="viewContent${a.contentId}">${(contentMap[a.contentId?string].title)!}</a>
@@ -88,7 +88,7 @@
                 <td>${a.createDate!}</td>
                 <td>
                     <@t.page 'status.content.'+a.status/>
-                    <#if 1=a.status>/ ${(userMap[a.checkUserId?string].nickName)!}</#if>
+                    <#if 1=a.status>/ ${(userMap[a.checkUserId?string].nickname)!}</#if>
                 </td>
                 <td><textarea rows="3" cols="50">${a.text!}</textarea></td>
                 <td class="wrap">

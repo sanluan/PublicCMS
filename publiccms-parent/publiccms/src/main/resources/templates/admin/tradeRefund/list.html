@@ -13,7 +13,7 @@
                     <label><@t.page 'operate_user'/>:</label>
                     <#if refundUserId?has_content><@_sysUser id=refundUserId><#assign u=object/></@_sysUser></#if>
                     <input name="refundUserId" value="${(u.id)!}" type="hidden"/>
-                    <input name="nickName" readonly="readonly" size="10" value="${(u.nickName)!}" type="text"/>
+                    <input name="nickname" readonly="readonly" size="10" value="${(u.nickname)!}" type="text"/>
                     <a class="btnLook" href="sysUser/lookup.html?field=refundUserId" width="920" lookupGroup=""><@t.page 'user.select'/></a>
                 </li>
                 <li>

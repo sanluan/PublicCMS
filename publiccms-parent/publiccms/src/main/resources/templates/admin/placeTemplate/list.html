@@ -17,7 +17,7 @@
                     <a href="placeTemplate/directory.html?path=${(path?url)!}" target="ajax" rel="cmsTemplatePlace">${a.fileName}</a>
                     <ul><@placeTree path/></ul>
                 <#else>
-                    <a href="placeTemplate/content.html?path=${(path?url)!}" <#if lockMap[path]?has_content><#assign lockUser=(userMap[lockMap[path].userId?string].nickName)!''/>title="<@t.page 'lock.message' lockUser/> ${lockMap[path].createDate}"</#if> target="ajax" rel="cmsTemplatePlace">
+                    <a href="placeTemplate/content.html?path=${(path?url)!}" <#if lockMap[path]?has_content><#assign lockUser=(userMap[lockMap[path].userId?string].nickname)!''/>title="<@t.page 'lock.message' lockUser/> ${lockMap[path].createDate}"</#if> target="ajax" rel="cmsTemplatePlace">
                         <@_placeMetadata path=path>
                             <#if lockMap[path]?has_content><i class="icon-lock icon-large"></i> </#if><#if 0 lt ((object.size)!0)><@t.page 'place_data.place'/>:</#if>
                             ${(object.alias)!a.fileName}

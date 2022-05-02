@@ -9,14 +9,14 @@
     <#list page.list as a>
         {
             "userId":"${a.userId}",
-            "userNickName":"${userMap[a.userId?string].nickName}",
+            "userNickname":"${userMap[a.userId?string].nickname}",
             "createDate":"${a.createDate}",
             "replies":"${a.replies}",
             <#if a.replyId?has_content>
                 "replay":{
                 <@_comment id=a.replyId>
                     "userId":"${a.userId}",
-                    "userNickName":"${userMap[a.replyUserId?string].nickName}",
+                    "userNickname":"${userMap[a.replyUserId?string].nickname}",
                     "text":"${object.text!}"
                 </@_comment>
                 },

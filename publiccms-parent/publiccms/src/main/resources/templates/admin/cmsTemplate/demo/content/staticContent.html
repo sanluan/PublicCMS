@@ -108,7 +108,7 @@
             <@_sysUser ids=userIds!><#assign userMap=map!/></@_sysUser>
             <#list page.list as a>
                 <dl>
-                    <dt>${(userMap[a.userId?string].nickName)!}<#if a.replyUserId?has_content> reply ${(userMap[a.replyUserId?string].nickName)!}</#if>:</dt>
+                    <dt>${(userMap[a.userId?string].nickname)!}<#if a.replyUserId?has_content> reply ${(userMap[a.replyUserId?string].nickname)!}</#if>:</dt>
                     <dd>
                         <div>${a.text!}</div>
                     </dd>

@@ -309,21 +309,21 @@ public class SiteComponent implements Cache {
 
     /**
      * @param site
-     * @param filePath
+     * @param filepath
      * @return web file path
      */
-    public String getWebFilePath(SysSite site, String filePath) {
-        return webFilePath + getFullFileName(site.getId(), filePath);
+    public String getWebFilePath(SysSite site, String filepath) {
+        return webFilePath + getFullFileName(site.getId(), filepath);
     }
 
     /**
      * @param site
-     * @param filePath
+     * @param filepath
      * @return web history file path
      */
-    public String getWebHistoryFilePath(SysSite site, String filePath) {
+    public String getWebHistoryFilePath(SysSite site, String filepath) {
         StringBuilder sb = new StringBuilder(webHistoryFilePath);
-        sb.append(getFullFileName(site.getId(), filePath));
+        sb.append(getFullFileName(site.getId(), filepath));
         sb.append(CommonConstants.SEPARATOR);
         sb.append(DateFormatUtils.getDateFormat(FILE_NAME_FORMAT_STRING).format(CommonUtils.getDate()));
         return sb.toString();
@@ -331,11 +331,11 @@ public class SiteComponent implements Cache {
 
     /**
      * @param site
-     * @param filePath
+     * @param filepath
      * @return web backup file path
      */
-    public String getWebBackupFilePath(SysSite site, String filePath) {
-        return webBackupFilePath + getFullFileName(site.getId(), filePath);
+    public String getWebBackupFilePath(SysSite site, String filepath) {
+        return webBackupFilePath + getFullFileName(site.getId(), filepath);
     }
 
     /**

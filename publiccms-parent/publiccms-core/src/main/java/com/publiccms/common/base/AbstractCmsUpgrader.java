@@ -98,10 +98,10 @@ public abstract class AbstractCmsUpgrader {
         try (Statement statement = connection.createStatement();
                 ResultSet rs = statement.executeQuery("select * from sys_site");) {
             while (rs.next()) {
-                String filePath = CommonConstants.CMS_FILEPATH + CommonConstants.SEPARATOR + SiteComponent.TEMPLATE_PATH
+                String filepath = CommonConstants.CMS_FILEPATH + CommonConstants.SEPARATOR + SiteComponent.TEMPLATE_PATH
                         + CommonConstants.SEPARATOR + SiteComponent.SITE_PATH_PREFIX + rs.getString("id")
                         + CommonConstants.SEPARATOR + MetadataComponent.METADATA_FILE;
-                File file = new File(filePath);
+                File file = new File(filepath);
                 try {
                     Map<String, CmsPageData> dataMap = CommonConstants.objectMapper.readValue(file, CommonConstants.objectMapper
                             .getTypeFactory().constructMapLikeType(HashMap.class, String.class, CmsPageData.class));
@@ -131,10 +131,10 @@ public abstract class AbstractCmsUpgrader {
             while (rs.next()) {
                 try {
                     CmsCategoryType entity = new CmsCategoryType();
-                    String filePath = CommonConstants.CMS_FILEPATH + CommonConstants.SEPARATOR + SiteComponent.TEMPLATE_PATH
+                    String filepath = CommonConstants.CMS_FILEPATH + CommonConstants.SEPARATOR + SiteComponent.TEMPLATE_PATH
                             + CommonConstants.SEPARATOR + SiteComponent.SITE_PATH_PREFIX + rs.getString("site_id")
                             + CommonConstants.SEPARATOR + SiteComponent.CATEGORY_TYPE_FILE;
-                    File file = new File(filePath);
+                    File file = new File(filepath);
                     file.getParentFile().mkdirs();
                     Map<String, CmsCategoryType> categoryTypeMap;
                     try {

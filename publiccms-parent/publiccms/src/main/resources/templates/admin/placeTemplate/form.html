@@ -42,7 +42,7 @@
             <@_sysUser ids=userIds!><#assign userMap=map!/></@_sysUser>
             <#list page.list as a>
                     <p>
-                        <a href="${a.url}" target="_blank">${a.title}</a> ${a.clicks} [${(userMap[a.userId?string].nickName)!}]
+                        <a href="${a.url}" target="_blank">${a.title}</a> ${a.clicks} [${(userMap[a.userId?string].nickname)!}]
                     <#if 2=a.status>
                         <a href="${site.dynamicPath}place/check?id=${a.id}&returnUrl=${site.dynamicPath}&_csrf=<@_csrfToken/>">Check</a> 
                     <#elseif 1=a.status>

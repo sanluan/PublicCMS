@@ -167,7 +167,7 @@ public class LoginController {
         if (null != user) {
             result.put("id", user.getId());
             result.put("name", user.getName());
-            result.put("nickname", user.getNickName());
+            result.put("nickname", user.getNickname());
             result.put("weakPassword", user.isWeakPassword());
             result.put("email", user.getEmail());
             result.put("emailChecked", user.isEmailChecked());
@@ -204,19 +204,19 @@ public class LoginController {
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + registerPath;
         }
         entity.setName(StringUtils.trim(entity.getName()));
-        entity.setNickName(StringUtils.trim(entity.getNickName()));
+        entity.setNickname(StringUtils.trim(entity.getNickname()));
         entity.setPassword(StringUtils.trim(entity.getPassword()));
         repassword = StringUtils.trim(repassword);
         returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         if (ControllerUtils.errorNotEmpty("username", entity.getName(), model)
-                || ControllerUtils.errorNotEmpty("nickname", entity.getNickName(), model)
+                || ControllerUtils.errorNotEmpty("nickname", entity.getNickname(), model)
                 || ControllerUtils.errorNotEmpty("password", entity.getPassword(), model)
                 || ControllerUtils.errorNotUserName("username", entity.getName(), model)
-                || ControllerUtils.errorNotNickName("nickname", entity.getNickName(), model)
+                || ControllerUtils.errorNotNickname("nickname", entity.getNickname(), model)
                 || ControllerUtils.errorNotEquals("repassword", entity.getPassword(), repassword, model)
                 || ControllerUtils.errorHasExist("username", service.findByName(site.getId(), entity.getName()), model)) {
             model.addAttribute("name", entity.getName());
-            model.addAttribute("nickname", entity.getNickName());
+            model.addAttribute("nickname", entity.getNickname());
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + registerPath;
         } else {
             String salt = UserPasswordUtils.getSalt();

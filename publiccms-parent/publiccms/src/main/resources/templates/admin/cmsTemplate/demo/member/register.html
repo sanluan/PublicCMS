@@ -22,7 +22,7 @@
     </nav>
     <main>
         <#if user?has_content>
-            <p>${user.nickName},You are already logged in!<a href="javascript:logout();">You can logout</a></p>
+            <p>${user.nickname},You are already logged in!<a href="javascript:logout();">You can logout</a></p>
             <form action="${site.dynamicPath}doLogout" method="post">
                 <input type="hidden" name="userId" value="${(user.id)!}"/>
                 <input type="hidden" name="returnUrl" value="${returnUrl!site.sitePath!}"/>
@@ -33,7 +33,7 @@
                     <p class="red">${springMacroRequestContext.getMessage(error,error)}</p>
                 </#if>
                 <p><input type="text" name="name" placeholder="User name" title="User name" value="${name!}"/></p>
-                <p><input type="text" name="nickName" placeholder="Nickname" title="Nickname" value="${nickname!}"/></p>
+                <p><input type="text" name="nickname" placeholder="Nickname" title="Nickname" value="${nickname!}"/></p>
                 <p><input type="password" name="password" placeholder="Password" title="Password"/></p>
                 <p><input type="password" name="repassword" placeholder="Repeat password" title="Repeat password"/></p>
                 <p>

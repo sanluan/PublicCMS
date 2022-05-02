@@ -85,7 +85,7 @@
                     </li>
                 </#if>
                 <#if metadata.useDynamic?has_content&&metadata.useDynamic>
-                    <li><a href="javascript:;" <@getAction r'${(user.nickName)!}'/>><@t.page 'current_user'/></a></li>
+                    <li><a href="javascript:;" <@getAction r'${(user.nickname)!}'/>><@t.page 'current_user'/></a></li>
                 </#if>
             </#if>
                 <li>
@@ -135,7 +135,7 @@
                     <ul>
                         <li><a href="javascript:;" <@getAction r'<@_contentList categoryId=categoryId containChild=containChild modelId=modelId parentId=parentId onlyUrl=onlyUrl hasImages=hasImages hasFiles=hasFiles hasCover=hasCover orderField=orderField orderType=orderType pageIndex=pageIndex pageSize=pageSize>'+'\n    '+r'<#list page.list as a>'+'\n        '+r'<a href="${a.url!}">${a.title}</a>'+'\n    '+r'</#list>'+'\n'+r'</@_contentList>' t.pageMessage('help.directive.content_list.description')/>><@t.page 'content'/></a></li>
                         <li><a href="javascript:;" <@getAction r'<@_contentFileList contentId=contentId fileTypes=fileTypes orderField=orderField orderType=orderType pageIndex=pageIndex pageSize=pageSize>'+'\n    '+r'<#list page.list as a>${a.filePath}</#list>'+'\n'+r'</@_contentFileList>' t.pageMessage('help.directive.content_file_list.description')/>><@t.page 'content_file'/></a></li>
-                        <li><a href="javascript:;" <@getAction r'<@_commentList contentId=contentId orderField=orderField orderType=orderType pageIndex=pageIndex pageSize=pageSize>'+'\n    '+r'<#list page.list as a>'+'\n        '+r'${a.createDate} <@_sysUser id=a.userId>${object.nickName} : </@_sysUser>'+'\n        '+r'${a.text!}</#list>'+'\n'+r'</@_commentList>' t.pageMessage('help.directive.comment_list.description')/>><@t.page 'comment'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'<@_commentList contentId=contentId orderField=orderField orderType=orderType pageIndex=pageIndex pageSize=pageSize>'+'\n    '+r'<#list page.list as a>'+'\n        '+r'${a.createDate} <@_sysUser id=a.userId>${object.nickname} : </@_sysUser>'+'\n        '+r'${a.text!}</#list>'+'\n'+r'</@_commentList>' t.pageMessage('help.directive.comment_list.description')/>><@t.page 'comment'/></a></li>
                         <li><a href="javascript:;" <@getAction r'<@_categoryList parentId=parentId typeId=typeId allowContribute=allowContribute pageIndex=pageIndex pageSize=pageSize>'+'\n    '+r'<#list page.list as a>'+'\n        '+r'<a href="${a.url!}">${a.name}</a>'+'\n    '+r'</#list>'+'\n'+r'</@_categoryList>' t.pageMessage('help.directive.category_list.description')/>><@t.page 'category'/></a></li>
                         <li><a href="javascript:;" <@getAction r'<@_categoryTypeList pageIndex=pageIndex pageSize=pageSize>'+'\n    '+r'<#list page.list as a>'+'\n        '+r'<a href="${a.url!}">${a.name}</a>'+'\n    '+r'</#list>'+'\n'+r'</@_categoryTypeList>' t.pageMessage('help.directive.category_type_list.description')/>><@t.page 'category_type'/></a></li>
                         <li><a href="javascript:;" <@getAction r'<@_placeList path=path orderField=orderField orderType=orderType pageIndex=pageIndex pageSize=pageSize>'+'\n    '+r'<#list page.list as a>'+'\n        '+r'<a href="${a.url!}">${a.title}</a>'+'\n    '+r'</#list>'+'\n'+r'</@_placeList>' t.pageMessage('help.directive.place_list.description')/>><@t.page 'place_data'/></a></li>
@@ -154,8 +154,8 @@
                         <li><a href="javascript:;" <@getAction r'<@_category ids=ids>'+'\n    '+r'<#list map as k,category><a href="${category.url!}">${category.name}</a><#sep>,</#list>'+'\n'+r'</@_category>' 'ids:'+t.pageMessage('category.multiple_id')/>><@t.page 'category.multiple'/></a></li>
                         <li><a href="javascript:;" <@getAction r'<@_tag id=id>${object.name}</@_tag>' 'id:'+t.pageMessage('tag.id')/>><@t.page 'tag'/></a></li>
                         <li><a href="javascript:;" <@getAction r'<@_tag ids=ids>'+'\n    '+r'<#list map as k,tag>${tag.name}<#sep>,</#list>'+'\n'+r'</@_tag>' 'ids'+t.pageMessage('tag.multiple_id')/>><@t.page 'tag.multiple'/></a></li>
-                        <li><a href="javascript:;" <@getAction r'<@_sysUser id=id>${object.nickName}</@_sysUser>' 'id:'+t.pageMessage('user.id')/>><@t.page 'user'/></a></li>
-                        <li><a href="javascript:;" <@getAction r'<@_sysUser ids=ids>'+'\n    '+r'<#list map as k,user>${user.nickName}<#sep>,</#list>'+'\n'+r'</@_sysUser>' 'ids:'+t.pageMessage('user.multiple_id')/>><@t.page 'user.multiple'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'<@_sysUser id=id>${object.nickname}</@_sysUser>' 'id:'+t.pageMessage('user.id')/>><@t.page 'user'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'<@_sysUser ids=ids>'+'\n    '+r'<#list map as k,user>${user.nickname}<#sep>,</#list>'+'\n'+r'</@_sysUser>' 'ids:'+t.pageMessage('user.multiple_id')/>><@t.page 'user.multiple'/></a></li>
                     </ul>
                 </li>
                 <li>

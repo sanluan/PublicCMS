@@ -14,6 +14,7 @@ dependencies {
     implementation "mysql:mysql-connector-java:${mysqlVersion}"
     implementation "eu.bitwalker:UserAgentUtils:${userAgentUtilsVersion}"
     implementation "jakarta.annotation:jakarta.annotation-api:${annotationVersion}"
+    implementation "org.hibernate.validator:hibernate-validator:${hibernateValidatorVersion}"
     implementation "javax.servlet:javax.servlet-api:${servletVersion}"
     
     implementation "com.drewnoakes:metadata-extractor:${extractorVersion}"
@@ -21,4 +22,6 @@ dependencies {
     implementation "org.mybatis:mybatis-spring:${mybatisSpringVersion}"
     implementation "org.mybatis.dynamic-sql:mybatis-dynamic-sql:${dynamicSqlVersion}"
     implementation "com.github.pagehelper:pagehelper:${pageHelperVersion}"
+    implementation "jakarta.el:jakarta.el-api:${elVersion}"
+    implementation "org.glassfish:jakarta.el:${elImplVersion}"
 }

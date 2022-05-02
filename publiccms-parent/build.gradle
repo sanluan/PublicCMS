@@ -49,6 +49,8 @@ subprojects {
         // https://mvnrepository.com/artifact/org.hibernate.search/hibernate-search-mapper-orm
         // http://hibernate.org/search/downloads/
         hibernateSearchVersion = "6.1.4.Final"
+        // https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator
+        hibernateValidatorVersion = "7.0.4.Final"
         // https://mvnrepository.com/artifact/org.ehcache/ehcache
         ehcacheVersion = "3.9.9"
         // http://mvnrepository.com/artifact/org.freemarker/freemarker
@@ -101,6 +103,10 @@ subprojects {
         antVersion = "1.10.12"
         // http://mvnrepository.com/artifact/javax.transaction/jta
         jtaVersion = "1.1"
+        // https://mvnrepository.com/artifact/jakarta.el/jakarta.el-api
+        elVersion = "4.0.0"
+        //  https://mvnrepository.com/artifact/org.glassfish/jakarta.el
+        elImplVersion = "4.0.2"
         // https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api
         servletVersion = "4.0.1"
         // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine

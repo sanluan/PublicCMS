@@ -34,7 +34,7 @@
             <ul>
             <#list page.list as a>
                 <li class="underline">
-                    <p>${user.nickName} <span class="gray">under review</span><span class="right">${a.createDate}</span></p>
+                    <p>${user.nickname} <span class="gray">under review</span><span class="right">${a.createDate}</span></p>
                     <p>${a.text!}<span class="right"><a href="comment.html?contentId=${content.id}&id=${a.id}">Edit</a></span></p>
                 </li>
             </#list>
@@ -69,10 +69,10 @@
     <ul>
     <#list page.list as a>
         <li class="underline">
-            <p>${userMap[a.userId?string].nickName}<span class="right">${a.createDate}</span></p>
+            <p>${userMap[a.userId?string].nickname}<span class="right">${a.createDate}</span></p>
             <#if a.replyId?has_content>
                 <@_comment id=a.replyId>
-                    <p class="border gray">${userMap[a.replyUserId?string].nickName} : ${object.text!}</p>
+                    <p class="border gray">${userMap[a.replyUserId?string].nickname} : ${object.text!}</p>
                 </@_comment>
             </#if>
             <p>${a.text!}<span class="right"><a href="comment.html?contentId=${content.id!}&replyId=${a.id}">Reply</a></span></p>

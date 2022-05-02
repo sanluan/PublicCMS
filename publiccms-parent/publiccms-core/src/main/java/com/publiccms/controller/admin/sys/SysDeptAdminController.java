@@ -150,7 +150,7 @@ public class SysDeptAdminController {
     public String saveUser(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, SysUser entity, String repassword,
             String encoding, Integer[] roleIds, HttpServletRequest request, ModelMap model) {
         entity.setName(StringUtils.trim(entity.getName()));
-        entity.setNickName(StringUtils.trim(entity.getNickName()));
+        entity.setNickname(StringUtils.trim(entity.getNickname()));
         entity.setPassword(StringUtils.trim(entity.getPassword()));
         repassword = StringUtils.trim(repassword);
         SysDept dept = service.getEntity(entity.getDeptId());
@@ -158,9 +158,9 @@ public class SysDeptAdminController {
                 || ControllerUtils.errorNotEmpty("deptId", dept, model)
                 || ControllerUtils.errorNotEquals("userId", dept.getUserId(), admin.getId(), model)
                 || ControllerUtils.errorNotEquals("siteId", site.getId(), dept.getSiteId(), model)
-                || ControllerUtils.errorNotEmpty("nickname", entity.getNickName(), model)
+                || ControllerUtils.errorNotEmpty("nickname", entity.getNickname(), model)
                 || ControllerUtils.errorNotUserName("username", entity.getName(), model)
-                || ControllerUtils.errorNotNickName("nickname", entity.getNickName(), model)) {
+                || ControllerUtils.errorNotNickname("nickname", entity.getNickname(), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         entity.setSuperuser(true);

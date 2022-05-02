@@ -44,11 +44,11 @@ public class MetadataComponent implements Cache {
     /**
      * 获取推荐位元数据
      *
-     * @param filePath
+     * @param filepath
      * @return place metadata
      */
-    public CmsPlaceMetadata getPlaceMetadata(String filePath) {
-        File file = new File(filePath);
+    public CmsPlaceMetadata getPlaceMetadata(String filepath) {
+        File file = new File(filepath);
         CmsPlaceMetadata pageMetadata = getPlaceMetadataMap(file.getParent()).get(file.getName());
         if (null != pageMetadata) {
             return pageMetadata;
@@ -59,11 +59,11 @@ public class MetadataComponent implements Cache {
     /**
      * 获取模板元数据
      *
-     * @param filePath
+     * @param filepath
      * @return template metadata
      */
-    public CmsPageMetadata getTemplateMetadata(String filePath) {
-        File file = new File(filePath);
+    public CmsPageMetadata getTemplateMetadata(String filepath) {
+        File file = new File(filepath);
         CmsPageMetadata pageMetadata = getTemplateMetadataMap(file.getParent()).get(file.getName());
         if (null == pageMetadata) {
             pageMetadata = new CmsPageMetadata();
@@ -75,11 +75,11 @@ public class MetadataComponent implements Cache {
     /**
      * 获取模板元数据
      *
-     * @param filePath
+     * @param filepath
      * @return template metadata
      */
-    public CmsPageData getTemplateData(String filePath) {
-        File file = new File(filePath);
+    public CmsPageData getTemplateData(String filepath) {
+        File file = new File(filepath);
         CmsPageData pageMetadata = getTemplateDataMap(file.getParent()).get(file.getName());
         if (null == pageMetadata) {
             pageMetadata = new CmsPageData();
@@ -90,12 +90,12 @@ public class MetadataComponent implements Cache {
     /**
      * 更新模板元数据
      *
-     * @param filePath
+     * @param filepath
      * @param metadata
      * @return whether the update is successful
      */
-    public boolean updateTemplateMetadata(String filePath, CmsPageMetadata metadata) {
-        File file = new File(filePath);
+    public boolean updateTemplateMetadata(String filepath, CmsPageMetadata metadata) {
+        File file = new File(filepath);
         String dirPath = file.getParent();
         Map<String, CmsPageMetadata> metadataMap = getTemplateMetadataMap(dirPath);
         metadataMap.put(file.getName(), metadata);
@@ -110,12 +110,12 @@ public class MetadataComponent implements Cache {
     /**
      * 更新模板元数据
      *
-     * @param filePath
+     * @param filepath
      * @param data
      * @return whether the update is successful
      */
-    public boolean updateTemplateData(String filePath, CmsPageData data) {
-        File file = new File(filePath);
+    public boolean updateTemplateData(String filepath, CmsPageData data) {
+        File file = new File(filepath);
         String dirPath = file.getParent();
         Map<String, CmsPageData> dataMap = getTemplateDataMap(dirPath);
         dataMap.put(file.getName(), data);
@@ -130,12 +130,12 @@ public class MetadataComponent implements Cache {
     /**
      * 更新推荐位元数据
      *
-     * @param filePath
+     * @param filepath
      * @param metadata
      * @return whether the update is successful
      */
-    public boolean updatePlaceMetadata(String filePath, CmsPlaceMetadata metadata) {
-        File file = new File(filePath);
+    public boolean updatePlaceMetadata(String filepath, CmsPlaceMetadata metadata) {
+        File file = new File(filepath);
         String dirPath = file.getParent();
         Map<String, CmsPlaceMetadata> metadataMap = getPlaceMetadataMap(dirPath);
         metadataMap.put(file.getName(), metadata);
@@ -150,11 +150,11 @@ public class MetadataComponent implements Cache {
     /**
      * 删除模板数据
      *
-     * @param filePath
+     * @param filepath
      * @return whether the delete is successful
      */
-    public boolean deleteTemplateData(String filePath) {
-        File file = new File(filePath);
+    public boolean deleteTemplateData(String filepath) {
+        File file = new File(filepath);
         String dirPath = file.getParent();
         Map<String, CmsPageData> dataMap = getTemplateDataMap(dirPath);
         dataMap.remove(file.getName());
@@ -169,11 +169,11 @@ public class MetadataComponent implements Cache {
     /**
      * 删除模板元数据
      *
-     * @param filePath
+     * @param filepath
      * @return whether the delete is successful
      */
-    public boolean deleteTemplateMetadata(String filePath) {
-        File file = new File(filePath);
+    public boolean deleteTemplateMetadata(String filepath) {
+        File file = new File(filepath);
         String dirPath = file.getParent();
         Map<String, CmsPageMetadata> metadataMap = getTemplateMetadataMap(dirPath);
         metadataMap.remove(file.getName());
@@ -188,11 +188,11 @@ public class MetadataComponent implements Cache {
     /**
      * 删除推荐位元数据
      *
-     * @param filePath
+     * @param filepath
      * @return whether the delete is successful
      */
-    public boolean deletePlaceMetadata(String filePath) {
-        File file = new File(filePath);
+    public boolean deletePlaceMetadata(String filepath) {
+        File file = new File(filepath);
         String dirPath = file.getParent();
         Map<String, CmsPlaceMetadata> metadataMap = getPlaceMetadataMap(dirPath);
         metadataMap.remove(file.getName());

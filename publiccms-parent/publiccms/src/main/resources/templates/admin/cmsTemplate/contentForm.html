@@ -15,7 +15,7 @@
     <input name="categoryId" type="hidden" value="${category.id!}"/>
     <input name="modelId" type="hidden" value="${model.id!}"/>
 <#if fieldList?seq_contains('author')>
-    <input name="author" type="hidden" value="<#noparse>${(user.nickName)!}</#noparse>"/>
+    <input name="author" type="hidden" value="<#noparse>${(user.nickname)!}</#noparse>"/>
 </#if>
     <p><label>${(model.fieldTextMap['title'])!}:</label><input name="title" type="text" size="60" maxlength="255"/></p>
 <#if model.onlyUrl>

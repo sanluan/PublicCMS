@@ -2,11 +2,11 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>${user.nickName},Please verify your email address [${site.name}]</title>
+<title>${user.nickname},Please verify your email address [${site.name}]</title>
 </head>
 <body>
     <div style="border:1px #f0f0f0 solid;margin:5px;padding:0px 10px;height:auto;">
-        <h2>${user.nickName}:</h2>
+        <h2>${user.nickname}:</h2>
         <p>You just initiated a verification email request in ${site.name}[${site.sitePath}]</p>
         <p>Please verify your email address by visiting the link below</p>
         <p><a href="${site.dynamicPath}user/verifyEmail?authToken=${authToken}&returnUrl=${site.dynamicPath}email.html">${site.dynamicPath}user/verifyEmail?authToken=${authToken}&returnUrl=${site.dynamicPath}email.html</a></p>

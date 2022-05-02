@@ -33,19 +33,19 @@ public class PublishPlaceDirective extends AbstractTaskDirective {
     public void execute(RenderHandler handler) throws IOException, Exception {
         String path = handler.getString("path", CommonConstants.SEPARATOR);
         SysSite site = getSite(handler);
-        String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
-        if (CmsFileUtils.isFile(filePath)) {
+        String filepath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
+        if (CmsFileUtils.isFile(filepath)) {
             Map<String, Boolean> map = new LinkedHashMap<>();
             try {
-                CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filePath);
-                CmsPageData data = metadataComponent.getTemplateData(filePath);
+                CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);
+                CmsPageData data = metadataComponent.getTemplateData(filepath);
                 templateComponent.staticPlace(site, path, metadata, data);
                 map.put(path, true);
             } catch (IOException | TemplateException e) {
                 map.put(path, false);
             }
             handler.put("map", map).render();
-        } else if (CmsFileUtils.isDirectory(filePath)) {
+        } else if (CmsFileUtils.isDirectory(filepath)) {
             handler.put("map", dealDir(site, path)).render();
         }
     }
@@ -56,18 +56,18 @@ public class PublishPlaceDirective extends AbstractTaskDirective {
         String realPath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
         List<FileInfo> list = CmsFileUtils.getFileList(realPath, null);
         for (FileInfo fileInfo : list) {
-            String filePath = path + fileInfo.getFileName();
+            String filepath = path + fileInfo.getFileName();
             if (fileInfo.isDirectory()) {
-                map.putAll(dealDir(site, filePath + CommonConstants.SEPARATOR));
+                map.putAll(dealDir(site, filepath + CommonConstants.SEPARATOR));
             } else {
                 try {
-                    String realfilePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + filePath);
-                    CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(realfilePath);
-                    CmsPageData data = metadataComponent.getTemplateData(realfilePath);
-                    templateComponent.staticPlace(site, filePath, metadata, data);
-                    map.put(filePath, true);
+                    String realfilepath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + filepath);
+                    CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(realfilepath);
+                    CmsPageData data = metadataComponent.getTemplateData(realfilepath);
+                    templateComponent.staticPlace(site, filepath, metadata, data);
+                    map.put(filepath, true);
                 } catch (IOException | TemplateException e) {
-                    map.put(filePath, false);
+                    map.put(filepath, false);
                 }
             }
         }

@@ -26,14 +26,14 @@
     <@_sysUser id=a.userId>
         <dl>
             <dt><@t.page 'content.promulgator'/>:</dt>
-            <dd>${object.nickName!}</dd>
+            <dd>${object.nickname!}</dd>
         </dl>
     </@_sysUser>
         <dl>
             <dt><@t.page 'status'/>/<@t.page 'inspector'/>:</dt>
             <dd>
                 <@t.page 'status.content.'+a.status/>
-                <#if 1=a.status>/ <@_sysUser id=a.checkUserId>${object.nickName!}</@_sysUser></#if>
+                <#if 1=a.status>/ <@_sysUser id=a.checkUserId>${object.nickname!}</@_sysUser></#if>
             </dd>
         </dl>
         <dl>
@@ -73,9 +73,9 @@
                 <@_sysAuthorized roleIds=admin.roles urls='cmsComment/check,cmsComment/uncheck,cmsComment/delete,cmsComment/edit'><#assign authorizedMap=map/></@_sysAuthorized>
                 <#list page.list as a>
                 <dl class="nowrap">
-                    <dt>${(userMap[a.userId?string].nickName)!}:</dt>
+                    <dt>${(userMap[a.userId?string].nickname)!}:</dt>
                     <dd>
-                        <div><@t.page 'reply'/> ${(userMap[a.replyUserId?string].nickName)!} : ${a.text!}</div>
+                        <div><@t.page 'reply'/> ${(userMap[a.replyUserId?string].nickname)!} : ${a.text!}</div>
                         <p><label><@t.page 'status'/>:</label><@t.page 'status.content.'+a.status/></p>
                         <p>
                             <label><@t.page 'operate'/>:</label>

@@ -75,10 +75,10 @@ public class CmsPageAdminController {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (CommonUtils.notEmpty(path)) {
-            String filePath = siteComponent.getWebTemplateFilePath(site, path);
+            String filepath = siteComponent.getWebTemplateFilePath(site, path);
             CmsPageData pageDate = new CmsPageData();
             pageDate.setExtendDataList(extendDataParameters.getExtendDataList());
-            metadataComponent.updateTemplateData(filePath, pageDate);
+            metadataComponent.updateTemplateData(filepath, pageDate);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                     "update.template.data", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
         }

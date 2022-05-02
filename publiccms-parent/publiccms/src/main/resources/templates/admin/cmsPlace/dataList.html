@@ -99,7 +99,7 @@
                         </div>
                     </#if>
                     <div class="box">
-                        <h3 <#if lockMap[a.id?string]?has_content><#assign lockUser=(userMap[lockMap[a.id?string].userId?string].nickName)!''/>title="<@t.page 'lock.message' lockUser/> ${lockMap[a.id?string].createDate}"</#if>>
+                        <h3 <#if lockMap[a.id?string]?has_content><#assign lockUser=(userMap[lockMap[a.id?string].userId?string].nickname)!''/>title="<@t.page 'lock.message' lockUser/> ${lockMap[a.id?string].createDate}"</#if>>
                            <#if lockMap[a.id?string]?has_content><i class="icon-lock icon-large"></i> </#if><a href="cmsPlace/view.html?id=${a.id}" target="dialog" rel="viewContent${a.id}">${a.title}</a>
                         </h3>
                     </div>
@@ -107,11 +107,11 @@
                 <td>${a.publishDate}</td>
                 <td>${a.expiryDate!}</td>
                 <td>${a.createDate}</td>
-                <td>${(userMap[a.userId?string].nickName)!}</td>
+                <td>${(userMap[a.userId?string].nickname)!}</td>
                 <td>${a.clicks}</td>
                 <td>
                     <@t.page 'status.place.data.'+a.status/>
-                    <#if 1=a.status&&a.checkUserId?has_content>/ ${(userMap[a.checkUserId?string].nickName)!}</#if>
+                    <#if 1=a.status&&a.checkUserId?has_content>/ ${(userMap[a.checkUserId?string].nickname)!}</#if>
                 </td>
                 <td class="wrap">
                     <a href="cmsPlace/add.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="cmsPlace/edit"><i class="icon-edit"></i> <@t.page 'button.edit'/></a>

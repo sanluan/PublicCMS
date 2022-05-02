@@ -26,7 +26,7 @@
     <#list list as a>
         <#if (deptConfigMap[a.code])?has_content&&deptConfigMap[a.code]>
             <tr>
-                <td <#if lockMap[a.code]?has_content><#assign lockUser=(userMap[lockMap[a.code].userId?string].nickName)!''/>title="<@t.page 'lock.message' lockUser/> ${lockMap[a.code].createDate!}"</#if>>
+                <td <#if lockMap[a.code]?has_content><#assign lockUser=(userMap[lockMap[a.code].userId?string].nickname)!''/>title="<@t.page 'lock.message' lockUser/> ${lockMap[a.code].createDate!}"</#if>>
                     <#if lockMap[a.code]?has_content><i class="icon-lock icon-large"></i> </#if>${(a.code)!}
                 </td>
                 <td>${(a.description)!}</td>

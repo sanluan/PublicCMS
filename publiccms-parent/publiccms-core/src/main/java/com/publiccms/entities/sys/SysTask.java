@@ -44,7 +44,7 @@ public class SysTask implements java.io.Serializable {
     @GeneratorColumn(title = "描述")
     private String description;
     @GeneratorColumn(title = "任务内容")
-    private String filePath;
+    private String filepath;
     @GeneratorColumn(title = "更新日期", condition = true)
     private Date updateDate;
 
@@ -58,14 +58,14 @@ public class SysTask implements java.io.Serializable {
         this.cronExpression = cronExpression;
     }
 
-    public SysTask(short siteId, String name, int status, String cronExpression, String description, String filePath,
+    public SysTask(short siteId, String name, int status, String cronExpression, String description, String filepath,
             Date updateDate) {
         this.siteId = siteId;
         this.name = name;
         this.status = status;
         this.cronExpression = cronExpression;
         this.description = description;
-        this.filePath = filePath;
+        this.filepath = filepath;
         this.updateDate = updateDate;
     }
 
@@ -128,11 +128,11 @@ public class SysTask implements java.io.Serializable {
 
     @Column(name = "file_path")
     public String getFilePath() {
-        return this.filePath;
+        return this.filepath;
     }
 
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
+    public void setFilePath(String filepath) {
+        this.filepath = filepath;
     }
 
     @Temporal(TemporalType.TIMESTAMP)

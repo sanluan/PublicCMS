@@ -240,20 +240,20 @@ public class SysSiteAdminController {
                     }
                 }
                 if (command.toLowerCase().endsWith(".sh")) {
-                    String filePath = String.format("%s/sync.sh", dir);
-                    File script = new File(filePath);
+                    String filepath = String.format("%s/sync.sh", dir);
+                    File script = new File(filepath);
                     if (!script.exists()) {
                         FileUtils.copyInputStreamToFile(this.getClass().getResourceAsStream("/script/sync.sh"), script);
                     }
-                    cmdarray = ArrayUtils.insert(0, cmdarray, filePath);
+                    cmdarray = ArrayUtils.insert(0, cmdarray, filepath);
                     cmdarray = ArrayUtils.insert(0, cmdarray, "sh");
                 } else {
-                    String filePath = String.format("%s/sync.bat", dir);
-                    File script = new File(filePath);
+                    String filepath = String.format("%s/sync.bat", dir);
+                    File script = new File(filepath);
                     if (!script.exists()) {
                         FileUtils.copyInputStreamToFile(this.getClass().getResourceAsStream("/script/sync.bat"), script);
                     }
-                    cmdarray = ArrayUtils.insert(0, cmdarray, filePath);
+                    cmdarray = ArrayUtils.insert(0, cmdarray, filepath);
                 }
                 Process ps = Runtime.getRuntime().exec(cmdarray, null, new File(dir));
                 ps.waitFor();

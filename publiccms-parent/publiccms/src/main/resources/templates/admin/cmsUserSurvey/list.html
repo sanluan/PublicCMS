@@ -47,7 +47,7 @@
             <#list page.list as a>
             <tr>
                 <td><a href="cmsSurvey/view.html?id=${a.id.surveyId}" class="exclude-translate" target="dialog" rel="viewSurvey${a.id.surveyId}">${(surveyMap[a.id.surveyId?string].title)!}</a></td>
-                <td class="exclude-translate">${(userMap[a.id.userId?string].nickName)!}</td>
+                <td class="exclude-translate">${(userMap[a.id.userId?string].nickname)!}</td>
                 <td>${a.score!}</td>
                 <td>${a.createDate!}</td>
                 <td>

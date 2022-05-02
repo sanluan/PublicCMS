@@ -76,7 +76,7 @@
                 </td>
                 <td>
                     <a href="cmsContent/push_content_list.html?contentId=${contentId!}&categoryId=${categoryId!}&userId=${a.userId}" target="ajax" rel="push_content_list">
-                        ${(userMap[a.userId?string].nickName)!}
+                        ${(userMap[a.userId?string].nickname)!}
                     </a>
                 </td>
                 <td>
@@ -93,7 +93,7 @@
                 <td>${a.createDate!}<#if a.updateDate?has_content>/${a.updateDate}</#if></td>
                 <td>
                     <@t.page 'status.content.'+a.status/>
-                    <#if 2==a.status>/${(checkUserMap[a.checkUserId?string].nickName)!}</#if>
+                    <#if 2==a.status>/${(checkUserMap[a.checkUserId?string].nickname)!}</#if>
                 </td>
                 <td>
                     <#if modelMap[a.modelId]?has_content&&modelMap[a.modelId].hasChild>

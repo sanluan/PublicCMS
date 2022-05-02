@@ -62,7 +62,7 @@
             <dt><@t.page 'place_data.master'/>:</dt>
             <dd>
                 <input name="userId" type="hidden"/>
-                <input name="nickName" type="hidden"/>
+                <input name="nickname" type="hidden"/>
                 <a class="btnLook" href="sysUser/lookup.html" width="920" lookupGroup=""><@t.page 'user.select'/></a>
                 <div class="tagsBox adminIds"></div>
             </dd>
@@ -137,7 +137,7 @@ $('.systemField dt [type=checkbox]',navTab.getCurrentPanel()).each(function(){
 $('input[name=size]',navTab.getCurrentPanel()).on('change',function(){
     checkPageSize();
 });
-$('input[name=nickName]',navTab.getCurrentPanel()).on('change',function(){
+$('input[name=nickname]',navTab.getCurrentPanel()).on('change',function(){
     addUser($('input[name=\'userId\']',navTab.getCurrentPanel()).val(),$(this).val());
 });
 $('.adminIds',navTab.getCurrentPanel()).on('click','span>a',function(){
@@ -148,7 +148,7 @@ checkPageSize();
 <#if (a.adminIds)?has_content>
     <@_sysUser ids=a.adminIds>
         <#list map as k,user>
-        addUser('${k}','${user.nickName}');
+        addUser('${k}','${user.nickname}');
         </#list>
     </@_sysUser>
 </#if>

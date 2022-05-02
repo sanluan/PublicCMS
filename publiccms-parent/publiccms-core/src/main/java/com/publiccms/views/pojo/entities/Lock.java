@@ -13,25 +13,25 @@ public class Lock extends SysLock {
     public Lock(SysLock lock, SysUser user) {
         super(lock.getId(), lock.getUserId(), lock.getCount(), lock.getCreateDate());
         if (null != user) {
-            setNickName(user.getNickName());
+            setNickname(user.getNickname());
         }
     }
 
-    private String nickName;
+    private String nickname;
 
     /**
-     * @return the nickName
+     * @return the nickname
      */
-    public String getNickName() {
-        return nickName;
+    public String getNickname() {
+        return nickname;
     }
 
     /**
-     * @param nickName
-     *            the nickName to set
+     * @param nickname
+     *            the nickname to set
      */
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
 }

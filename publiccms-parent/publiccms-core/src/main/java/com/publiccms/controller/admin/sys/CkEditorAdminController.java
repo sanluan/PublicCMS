@@ -68,10 +68,10 @@ public class CkEditorAdminController {
             String suffix = CmsFileUtils.getSuffix(originalName);
             if (ArrayUtils.contains(siteConfigComponent.getSafeSuffix(site), suffix)) {
                 String fileName = CmsFileUtils.getUploadFileName(suffix);
-                String filePath = siteComponent.getWebFilePath(site, fileName);
+                String filepath = siteComponent.getWebFilePath(site, fileName);
                 try {
-                    CmsFileUtils.upload(upload, filePath);
-                    FileSize fileSize = CmsFileUtils.getFileSize(filePath, suffix);
+                    CmsFileUtils.upload(upload, filepath);
+                    FileSize fileSize = CmsFileUtils.getFileSize(filepath, suffix);
                     logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                             originalName, CmsFileUtils.getFileType(suffix), upload.getSize(), fileSize.getWidth(),
                             fileSize.getHeight(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));

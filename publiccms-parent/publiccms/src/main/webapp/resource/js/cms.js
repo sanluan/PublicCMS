@@ -112,7 +112,7 @@ function addUser(id,name){
         $('.adminIds',navTab.getCurrentPanel()).append($box);
     }
     $('input[name=\'userId\']',navTab.getCurrentPanel()).val('');
-    $('input[name=\'nickName\']',navTab.getCurrentPanel()).val('');
+    $('input[name=\'nickname\']',navTab.getCurrentPanel()).val('');
 }
 var apiCounter=0;
 function getApi(base,apisArray,authorizedApis){

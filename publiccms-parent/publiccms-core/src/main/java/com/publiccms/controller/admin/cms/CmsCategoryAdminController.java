@@ -272,10 +272,10 @@ public class CmsCategoryAdminController {
         if (CommonUtils.notEmpty(ids)) {
             for (CmsCategory entity : service.delete(site.getId(), ids)) {
                 if (entity.isHasStatic()) {
-                    String filePath = siteComponent.getWebFilePath(site, entity.getUrl());
-                    if (CmsFileUtils.exists(filePath)) {
-                        String backupFilePath = siteComponent.getWebBackupFilePath(site, filePath);
-                        CmsFileUtils.moveFile(filePath, backupFilePath);
+                    String filepath = siteComponent.getWebFilePath(site, entity.getUrl());
+                    if (CmsFileUtils.exists(filepath)) {
+                        String backupFilePath = siteComponent.getWebBackupFilePath(site, filepath);
+                        CmsFileUtils.moveFile(filepath, backupFilePath);
                     }
                 }
             }

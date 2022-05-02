@@ -82,7 +82,7 @@
                     </#if>
                     <div class="box">
                         <p class="exclude-translate"><@t.page 'user.username'/>:${(a.name)!}</p>
-                        <p class="exclude-translate"><@t.page 'user.nickname'/>:${(a.nickName)!} ${(a.superuser)?then('[<font color="red">'+t.pageMessage('admin')+'</font>]','')?no_esc}</p>
+                        <p class="exclude-translate"><@t.page 'user.nickname'/>:${(a.nickname)!} ${(a.superuser)?then('[<font color="red">'+t.pageMessage('admin')+'</font>]','')?no_esc}</p>
                         <p><font color="red"><@t.page 'user.content_permissions.'+a.contentPermissions/></font></p>
                     </div>
                 </td>

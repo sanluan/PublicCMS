@@ -27,7 +27,7 @@
             <p class="message"><@message "message."+message/></p>
         <#else>
             <#if user?has_content>
-                <p>${user.nickName},You are already logged in!<a href="javascript:logout();">You can logout</a></p>
+                <p>${user.nickname},You are already logged in!<a href="javascript:logout();">You can logout</a></p>
                 <form name="logout" action="${site.dynamicPath}doLogout" method="post">
                     <input type="hidden" name="userId" value="${(user.id)!}"/>
                     <input type="hidden" name="returnUrl" value="${returnUrl!site.sitePath!}"/>
