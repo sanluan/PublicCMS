@@ -35,6 +35,7 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.cache.CacheComponent;
 import com.publiccms.logic.component.site.SiteComponent;
+import com.publiccms.logic.component.template.DiyComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateCacheComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
@@ -73,6 +74,8 @@ public class CmsTemplateAdminController {
     protected LogOperateService logOperateService;
     @Autowired
     protected SiteComponent siteComponent;
+    @Autowired
+    private DiyComponent diyComponent;
 
     /**
      * @param site
@@ -252,6 +255,7 @@ public class CmsTemplateAdminController {
             if (ControllerUtils.errorCustom("notExist.template", !CmsFileUtils.moveFile(filepath, backupFilePath), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
+            diyComponent.deleteDiyData(site, path);
             metadataComponent.deleteTemplateMetadata(filepath);
             metadataComponent.deleteTemplateData(filepath);
             sysDeptPageService.delete(null, path);
@@ -435,8 +439,8 @@ public class CmsTemplateAdminController {
             if (site.isUseStatic() && CommonUtils.notEmpty(metadata.getPublishPath())) {
                 String templatePath = SiteComponent.getFullTemplatePath(site, path);
                 CmsPageData data = metadataComponent.getTemplateData(filepath);
-                templateComponent.createStaticFile(site, templatePath, metadata.getPublishPath(), null, metadata.getAsMap(data),
-                        null, null);
+                templateComponent.createStaticFile(site, templatePath, metadata.getPublishPath(), null,
+                        metadata.getAsMap(data, diyComponent.getDiyData(site, path)), null, null);
             }
         }
     }

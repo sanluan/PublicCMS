@@ -26,3 +26,16 @@ ol.vote>li {line-height: 30px;height: 30px;width:400px;margin:5px 0 0 0;max-widt
 ol.vote>li:nth-child(3n+1) .progress-bar {background-color:red;}
 ol.vote>li:nth-child(3n+2) .progress-bar {background-color:green;}
 ol.vote>li:nth-child(3n) .progress-bar {background-color:blue;}
+
+.diy-box-margin,.diy-box-border,.diy-box-padding{position:relative;padding:40px;text-align:center;}
+.diy-box-margin span,.diy-box-border span,.diy-box-padding span{float:left;margin-top:-40px;margin-left:-20px;line-height:40px;}
+.diy-box-margin{margin:20px;border:1px dashed #000;background-color:#FDCEA2;}
+.diy-box-border{border:1px solid #000;background-color:#FEE1A2;}
+.diy-box-padding{border:1px dashed #000;background-color:#BDD692;}
+.diy-box-content{height:150px;line-height: 150px;text-align: center;border:1px solid #000;background-color:#86B6BF;}
+.diy-box-margin input{position:absolute;width:40px;height:40px;text-align: center;outline:unset;border:0px;background-color: unset;background-image: none;}
+.diy-box-margin input:focus{background-color:#fff;}
+.diy-box-margin input[name=top]{top:0;margin-left:-20px;}
+.diy-box-margin input[name=bottom]{bottom:0;margin-left:-20px;}
+.diy-box-margin input[name=left]{left:0;top: 50%;margin-top: -13px;}
+.diy-box-margin input[name=right]{right:0;top: 50%;margin-top: -13px;}

@@ -1,30 +1,30 @@
-<@_metadata path=path><#assign a=object/></@_metadata>
+<@_metadata path=path><#assign metadata=object/></@_metadata><@_templateRegionList path=path><#assign regionList=list/></@_templateRegionList>
 <form method="post" autocomplete="off" action="cmsPage/save?rel=pageBox" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
             <li>
-                <#if (a.extendList)?has_content><button type="submit" class="buttonActive" title="ctrl+s"><@t.page 'button.save'/></button></#if>
+                <#if (metadata.extendList)?has_content || regionList?has_content><button type="submit" class="buttonActive" title="ctrl+s"><@t.page 'button.save'/></button></#if>
             </li>
         </ul>
     </div>
     <div class="pageFormContent" layoutH>
         <input name="path" type="hidden" value="${path}"/>
-        <#if site.useStatic&&(a.publishPath)?has_content>
+        <#if site.useStatic&&(metadata.publishPath)?has_content>
             <dl class="nowrap">
                 <dt><@t.page 'static_page'/>:</dt>
                 <dd>
                     <label><a class="button" href="cmsTemplate/publish?path=${path}&_csrf=<@_csrfToken admin=true/>" target="ajaxTodo"><@t.page 'publish_page'/></a></label>
-                    <label><a class="button" href="${site.sitePath+(a.publishPath?starts_with('/'))?then(a.publishPath?keep_after('/'),a.publishPath)}" target="_blank"><@t.page 'button.view_page'/></a></label>
+                    <label><a class="button" href="${site.sitePath+(metadata.publishPath?starts_with('/'))?then(metadata.publishPath?keep_after('/'),metadata.publishPath)}" target="_blank"><@t.page 'button.view_page'/></a></label>
                 </dd>
             </dl>
         </#if>
-        <#if !a?has_content||a.useDynamic?has_content&&a.useDynamic>
+        <#if !metadata?has_content||metadata.useDynamic?has_content&&metadata.useDynamic>
             <dl class="nowrap">
                 <dt><@t.page 'dynamic_page'/>:</dt>
                 <dd>
-                    <label><a class="button" href="${site.dynamicPath+(path?starts_with('/'))?then(path?keep_after('/'),path)}<#if a.acceptParameters?has_content>?<#list a.acceptParameters?split(',') as p>${p}=<#if 'content'=(a.parameterTypeMap[p].type)!><@_contentList pageSize=1><#list page.list as a>${a.id}</#list></@_contentList><#elseif 'category'=(a.parameterTypeMap[p].type)!><@_categoryList pageSize=1><#list page.list as a>${a.id}</#list></@_categoryList></#if><#sep>&</#list></#if>" target="_blank"><@t.page 'button.view_page'/></a></label>
-                    <#if 0 lte (a.cacheTime)!0>
+                    <label><a class="button" href="${site.dynamicPath+(path?starts_with('/'))?then(path?keep_after('/'),path)}<#if metadata.acceptParameters?has_content>?<#list metadata.acceptParameters?split(',') as p>${p}=<#if 'content'=(metadata.parameterTypeMap[p].type)!><@_contentList pageSize=1><#list page.list as a>${metadata.id}</#list></@_contentList><#elseif 'category'=(metadata.parameterTypeMap[p].type)!><@_categoryList pageSize=1><#list page.list as a>${metadata.id}</#list></@_categoryList></#if><#sep>&</#list></#if>" target="_blank"><@t.page 'button.view_page'/></a></label>
+                    <#if 0 lte (metadata.cacheTime)!0>
                         <label><a class="button" href="cmsPage/clearCache?path=${path}&_csrf=<@_csrfToken admin=true/>" target="ajaxTodo"><@t.page 'button.clear_cache'/></a></label>
                     </#if>
                 </dd>
@@ -53,5 +53,97 @@
         <#assign extendList=(a.extendList)![]/>
         <#assign attribute=(a.extendData)!{}/>
         <@extendData 'extendDataList' extendList attribute/>
+    <#if regionList?has_content>
+        <div class="unit"><span class="bi bi-palette"></span> <@t.page 'diy'/></div>
+        <dl class="miscSortDrag nowrap" data-result="textarea[name=diydata]" drag-rel="dd .sortDrag" data-duplicate="1">
+            <dt>
+                <fieldset>
+                    <legend><@t.page 'layout'/></legend>
+                    <@_diyMetadataList itemType="layout">
+                    <div class="itemBox">
+                        <#assign layoutlist=list/>
+                        <#list list as a>
+                            <div class="dragItem" data-id="${a.id}" data-type="layout">
+                                ${a.name!}<span class="close">X</span>
+                                <div class="dragContent">
+                                    <@_diyLayout id=a.id><div class="sortDrag" data-over-sort="true" data-accept="module"><@t.page 'drag_module_here'/></div></@_diyLayout>
+                                </div>
+                            </div>
+                        </#list>
+                    </div>
+                    </@_diyMetadataList>
+                </fieldset>
+                <fieldset>
+                    <legend><@t.page 'module'/></legend>
+                <@_diyMetadataList itemType="module">
+                    <div class="itemBox">
+                        <#list list as a>
+                    <div class="dragItem" data-id="${a.id}" data-type="module" >
+                        ${a.name!}<span class="close">X</span>
+                        <div class="ctl-label">
+                            <input data-name="name" type="text" value="${a.name}"/>
+                        </div>
+                        <#if a.cover?has_content>
+                        <div class="dragContent">
+                            <img src="${(getAbsoluteUrl(site.sitePath,a.cover))!}"/>
+                        </div>
+                        </#if>
+                    </div>
+                        </#list>
+                    </div>
+                </@_diyMetadataList>
+                </fieldset>
+            </dt>
+            <dd>
+                <#if layoutlist?has_content>
+                    <style>
+                    <#list layoutlist as a>
+                        <#if a.style?has_content>${getLayoutStyle(a.style,'.diy-layout')!}</#if>
+                    </#list>
+                    </style>
+                </#if>
+                <#list regionList as a>
+                    <div class="sortDrag diy-layout" data-over-sort="true" data-accept="layout" data-id="${a}">
+                        <@t.page 'drag_layout_here'/>
+                        <#if (metadata.diydata.regionMap[a].layoutList)?has_content>
+                            <#list metadata.diydata.regionMap[a].layoutList as layoutdata>
+                                <@_diyMetadata itemType="layout" itemId=layoutdata.id>
+                                    <div class="dragItem" data-id="${object.id}" data-type="layout">
+                                        ${object.name!}<span class="close">X</span>
+                                        <div class="dragContent" data-parent="${object.id}" >
+                                            <@_diyLayout id=object.id>
+                                                <div class="sortDrag" data-over-sort="true" data-accept="module">
+                                                    <@t.page 'drag_module_here'/>${index},${layoutdata.moduleList[index]?size}
+                                                    <#if layoutdata.moduleList[index]?has_content>
+                                                        <#list layoutdata.moduleList[index] as moduleData>
+                                                            <@_diyMetadata itemType="module" itemId=moduleData.id>
+                                                                <div class="dragItem" data-id="${object.id}" data-type="module" >
+                                                                    ${moduleData.name}<span class="close">X</span>
+                                                                    <div class="ctl-label">
+                                                                        <input data-name="name" type="hidden" value="${moduleData.name}"/>
+                                                                        <input data-name="path" type="hidden" value="${moduleData.path}"/>
+                                                                    </div>
+                                                                    <#if object.cover?has_content>
+                                                                        <div class="ctl-label">
+                                                                            <img src="${(getAbsoluteUrl(site.sitePath,object.cover))!}"/>
+                                                                        </div>
+                                                                    </#if>
+                                                                </div>
+                                                            </@_diyMetadata>
+                                                        </#list>
+                                                    </#if>
+                                                </div>
+                                            </@_diyLayout>
+                                        </div>
+                                    </div>
+                                </@_diyMetadata>
+                            </#list>
+                        </#if>
+                    </div>
+                </#list>
+                <textarea name="diydata" class="hide"></textarea>
+            </dd>
+        </dl>
+    </#if>
     </div>
 </form>

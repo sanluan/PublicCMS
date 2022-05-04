@@ -109,6 +109,12 @@
                 </@_sysConfigFieldList>
                     </ul>
                 </li>
+                <li>
+                    <a href="javascript:;" onclick="return false;"><@t.page 'diy'/></a>
+                    <ul>
+                        <li><a href="javascript:;" <@getAction r'<@_diyRegion id="'+getUUID()+'"/>><@t.page 'region'/></a></li>
+                    </ul>
+                </li>
                 <li><a href="javascript:;" <@getAction r'<#list .dataModel?keys as k>${k}<#sep>,</#list>' t.pageMessage('help.echo_data_model')/>><@t.page 'help.echo_data_model'/></a></li>
                 <li><a href="javascript:;" <@getAction r'<#list .namespace?keys as k>${k}<#sep>,</#list>' t.pageMessage('help.echo_namespace')/>><@t.page 'help.echo_namespace'/></a></li>
             </ul>

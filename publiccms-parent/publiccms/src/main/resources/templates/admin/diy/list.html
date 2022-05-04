@@ -1,0 +1,30 @@
+<div class="pageContent">
+    <div layoutH class="leftPageContent">
+        <ul class="tree treeFolder expand">
+            <li>
+                <a href="javascript:;" onclick="return false;"><@t.page 'layout'/></a>
+                <ul>
+                    <li><a href="diy/layout.html" target="ajax" rel="diyBox"><@t.page 'button.add'/></a></li>
+                    <@_diyMetadataList itemType="layout">
+                        <#list list as a>
+                    <li><a href="diy/layout.html?id=${(a.id?url)!}" target="ajax" rel="diyBox">${a.name!} (${a.count})</a></li>
+                        </#list>
+                    </@_diyMetadataList>
+                </ul>
+            </li>
+            <li>
+                <a href="javascript:;" onclick="return false;"><@t.page 'module'/></a>
+                <ul>
+                    <li><a href="diy/module.html" target="ajax" rel="diyBox"><@t.page 'button.add'/></a></li>
+                    <@_diyMetadataList itemType="module">
+                        <#list list as a>
+                    <li><a href="diy/module.html?id=${(a.id?url)!}" target="ajax" rel="diyBox">${a.name!}</a></li>
+                        </#list>
+                    </@_diyMetadataList>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div id="diyBox" class="unitBox rightPageContent">
+    </div>
+</div>

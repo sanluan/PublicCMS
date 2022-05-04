@@ -87,6 +87,8 @@ public class TemplateComponent implements Cache {
     private CmsPlaceService placeService;
     @Autowired
     private StatisticsComponent statisticsComponent;
+    @Autowired
+    private DiyComponent diyComponent;
 
     /**
      * 创建静态化页面
@@ -297,7 +299,7 @@ public class TemplateComponent implements Cache {
         String realTemplatePath = siteComponent.getWebTemplateFilePath(site, templatePath);
         CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(realTemplatePath);
         CmsPageData data = metadataComponent.getTemplateData(realTemplatePath);
-        Map<String, Object> metadataMap = metadata.getAsMap(data);
+        Map<String, Object> metadataMap = metadata.getAsMap(data, diyComponent.getDiyData(site, templatePath));
         String fullTemplatePath = SiteComponent.getFullTemplatePath(site, templatePath);
         if (null != attribute && CommonUtils.notEmpty(filepath) && CommonUtils.notEmpty(attribute.getText())) {
             String pageBreakTag = null;
@@ -409,7 +411,7 @@ public class TemplateComponent implements Cache {
         String realTemplatePath = siteComponent.getWebTemplateFilePath(site, templatePath);
         CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(realTemplatePath);
         CmsPageData data = metadataComponent.getTemplateData(realTemplatePath);
-        Map<String, Object> metadataMap = metadata.getAsMap(data);
+        Map<String, Object> metadataMap = metadata.getAsMap(data, diyComponent.getDiyData(site, templatePath));
         String fullTemplatePath = SiteComponent.getFullTemplatePath(site, templatePath);
         if (CommonUtils.notEmpty(totalPage) && pageIndex + 1 <= totalPage) {
             for (int i = pageIndex + 1; i <= totalPage; i++) {
@@ -479,7 +481,7 @@ public class TemplateComponent implements Cache {
      * @param site
      * @param templatePath
      * @param metadata
-     * @param data 
+     * @param data
      * @return place content
      * @throws IOException
      * @throws TemplateException

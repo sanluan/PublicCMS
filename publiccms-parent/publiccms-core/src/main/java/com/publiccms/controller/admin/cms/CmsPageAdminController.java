@@ -1,6 +1,7 @@
 package com.publiccms.controller.admin.cms;
 
 import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -20,6 +21,7 @@ import com.publiccms.entities.sys.SysDeptPageId;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.site.SiteComponent;
+import com.publiccms.logic.component.template.DiyComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateCacheComponent;
 import com.publiccms.logic.service.log.LogLoginService;
@@ -49,11 +51,14 @@ public class CmsPageAdminController {
     protected LogOperateService logOperateService;
     @Autowired
     protected SiteComponent siteComponent;
+    @Autowired
+    protected DiyComponent diyComponent;
 
     /**
      * @param site
      * @param admin
      * @param path
+     * @param diydata
      * @param extendDataParameters
      * @param request
      * @param model
@@ -61,9 +66,8 @@ public class CmsPageAdminController {
      */
     @RequestMapping("save")
     @Csrf
-    public String saveMetadata(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path,
-            @ModelAttribute ExtendDataParameters extendDataParameters, HttpServletRequest request,
-            ModelMap model) {
+    public String saveMetadata(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path, String diydata,
+            @ModelAttribute ExtendDataParameters extendDataParameters, HttpServletRequest request, ModelMap model) {
         SysDept dept = sysDeptService.getEntity(admin.getDeptId());
         if (ControllerUtils.errorNotEmpty("deptId", admin.getDeptId(), model)
                 || ControllerUtils.errorNotEmpty("deptId", dept, model)
@@ -79,8 +83,10 @@ public class CmsPageAdminController {
             CmsPageData pageDate = new CmsPageData();
             pageDate.setExtendDataList(extendDataParameters.getExtendDataList());
             metadataComponent.updateTemplateData(filepath, pageDate);
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                    "update.template.data", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
+            diyComponent.updateDiyData(site, diyComponent.getDiyData(site, path, diydata));
+            logOperateService
+                    .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                            "update.template.data", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -109,8 +115,9 @@ public class CmsPageAdminController {
         }
         if (CommonUtils.notEmpty(path)) {
             templateCacheComponent.deleteCachedFile(SiteComponent.getFullTemplatePath(site, path));
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                    "clear.pageCache", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
+            logOperateService
+                    .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                            "clear.pageCache", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
         }
         return CommonConstants.TEMPLATE_DONE;
     }

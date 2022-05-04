@@ -34,7 +34,7 @@
     <@_webFileList path=path>
         <#if path?has_content>
             <div class="image-list">
-                <a href="cmsWebFile/lookup.html?path=${path?keep_before_last('/')?url}&editor=${editor!'cmsTemplateEditor'}&fullPath=${(fullPath?url)!}" target="dialog" mask="true" title="${path?keep_before_last('/')}">
+                <a href="cmsWebFile/lookup.html?path=${path?keep_before_last('/')?url}&fullPath=${(fullPath?url)!}" target="dialog" mask="true" title="${path?keep_before_last('/')}">
                     <i class="thumb icon-folder-open-alt icon-large"></i>
                     <p><@t.page 'button.return'/></p>
                 </a>

@@ -3,6 +3,7 @@ package com.publiccms.common.base;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -12,7 +13,6 @@ import org.apache.commons.logging.LogFactory;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.TemplateModelUtils;
 
-import freemarker.template.TemplateHashModelEx;
 import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
@@ -39,7 +39,7 @@ public abstract class BaseMethod implements TemplateMethodModelEx {
      * @return map value
      * @throws TemplateModelException
      */
-    public static TemplateHashModelEx getMap(int index, List<TemplateModel> arguments) throws TemplateModelException {
+    public static Map<?, ?> getMap(int index, List<TemplateModel> arguments) throws TemplateModelException {
         return TemplateModelUtils.converMap(getModel(index, arguments));
     }
 

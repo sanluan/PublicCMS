@@ -25,14 +25,14 @@
         </ul>
     </div>
     <h2 class="contentTitle">
-         <a class="button" href="cmsTemplate/ftlLookup.html" target="dialog" mask="true"><@t.page 'template.fragment'/></a>
-         <a class="button" href="placeTemplate/lookup.html" target="dialog" mask="true"><@t.page 'place'/></a>
-         <a class="button" href="cmsWebFile/lookup.html" target="dialog" mask="true"><@t.page 'webfile'/></a>
+        <a class="button" href="cmsTemplate/ftlLookup.html" target="dialog" mask="true"><@t.page 'template.fragment'/></a>
+        <a class="button" href="placeTemplate/lookup.html" target="dialog" mask="true"><@t.page 'place'/></a>
+        <a class="button" href="cmsWebFile/lookup.html" target="dialog" mask="true"><@t.page 'webfile'/></a>
         <a class="button" href="cmsTemplate/help.html?type=place&path=${(path?url)!}" target="dialog" mask="true"><@t.page 'template.help'/></a>
         <a class="button" href="<@t.page 'template.manual.url'/>" target="_blank"><@t.page 'template.manual'/></a>
     </h2>
     <div class="pageFormContent" layoutH>
-           <div>
+        <div>
             <input name="path" type="hidden" value="${path}"/>
             <textarea name="content" class="code" escape="true" mode="freemarkermixed"><@_templateContent path='/include'+path>${(object)!}</@_templateContent></textarea>
         </div>

@@ -3,15 +3,16 @@ package com.publiccms.common.tools;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
 import com.publiccms.common.constants.Constants;
 
 import freemarker.ext.beans.BeanModel;
+import freemarker.template.SimpleHash;
 import freemarker.template.TemplateBooleanModel;
 import freemarker.template.TemplateDateModel;
-import freemarker.template.TemplateHashModelEx;
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 import freemarker.template.TemplateNumberModel;
@@ -38,6 +39,9 @@ public class TemplateModelUtils {
             }
             if (model instanceof BeanModel) {
                 return ((BeanModel) model).getWrappedObject();
+            }
+            if (model instanceof SimpleHash ) {
+                return ((SimpleHash ) model).toMap();
             }
         }
         return null;
@@ -67,10 +71,10 @@ public class TemplateModelUtils {
      * @return map value
      * @throws TemplateModelException
      */
-    public static TemplateHashModelEx converMap(TemplateModel model) throws TemplateModelException {
+    public static Map<?,?> converMap(TemplateModel model) throws TemplateModelException {
         if (null != model) {
-            if (model instanceof TemplateHashModelEx) {
-                return (TemplateHashModelEx) model;
+            if (model instanceof SimpleHash ) {
+                return ((SimpleHash ) model).toMap();
             }
         }
         return null;

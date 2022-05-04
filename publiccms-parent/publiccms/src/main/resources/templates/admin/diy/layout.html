@@ -1,0 +1,41 @@
+<@_diyMetadata itemType='layout' itemId=id><#assign a=object/></@_diyMetadata>
+<form method="post" action="cmsDiy/saveLayout?navTabId=diy/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <div class="formBar">
+        <ul>
+        <#if a?has_content>
+             <li><a class="button" href="cmsDiy/delete?itemType=layout&id=${(id?url)!}&navTabId=diy/list&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i> <@t.page 'button.delete'/></a></li>
+        </#if>
+            <li><button type="submit" class="buttonActive" title="ctrl+s"<#if id?has_content> lock-url="common/lock?itemType=layout&itemId=${(id?url)!}" close-url="common/unlock?itemType=layout&itemId=${(id?url)!}"</#if>><@t.page 'button.save'/></button></li>
+        </ul>
+    </div>
+    <div class="pageFormContent" layoutH>
+        <dl class="nowrap">
+            <dt><@t.page 'id'/>:</dt></dt>
+            <dd>
+                <input name="id" class="required" type="text" size="50" value="${(a.id)!getUUID()}"/>
+            </dd>
+        </dl>
+        <dl class="nowrap">
+            <dt><@t.page 'name'/>:</dt></dt>
+            <dd>
+                <input name="name" class="required" type="text" maxlength="40" size="20" value="${(a.name)!}"/>
+            </dd>
+        </dl>
+        <dl class="nowrap">
+            <dt><@t.page 'template.content'/></dt>
+            <dd>
+                <a class="button" href="cmsWebFile/lookup.html" target="dialog" mask="true"><@t.page 'webfile'/></a>
+                <a class="button" href="javascript:;" onclick="DWZ.instances[$('textarea[name=template]',navTab.getCurrentPanel()).data('id')].replaceSelection('${r'<#-- position -->'}');return false;"><@t.page 'layout.insert'/></a>
+                <textarea name="template" class="code" escape="true" mode="freemarkermixed">${(a.template)!}</textarea>
+            </dd>
+        </dl>
+        <dl class="nowrap">
+            <dt><@t.page 'style'/></dt>
+            <dd>
+                <a class="button" href="javascript:;" onclick="DWZ.instances[$('textarea[name=style]',navTab.getCurrentPanel()).data('id')].replaceSelection('${r'/* selecter */'}');return false;"><@t.page 'style.insert'/></a>
+                <textarea name="style" class="code" mode="css">${(a.style)!}</textarea>
+            </dd>
+        </dl>
+    </div>
+</form>

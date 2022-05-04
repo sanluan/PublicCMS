@@ -175,10 +175,6 @@ public class SysUser implements java.io.Serializable {
         return this.nickname;
     }
 
-    public String getNickName() {
-        return getNickname();
-    }
-
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }

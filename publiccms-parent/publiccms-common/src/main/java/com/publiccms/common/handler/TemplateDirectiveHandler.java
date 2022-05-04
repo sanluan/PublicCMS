@@ -23,7 +23,6 @@ import freemarker.ext.servlet.HttpRequestHashModel;
 import freemarker.template.ObjectWrapper;
 import freemarker.template.TemplateDirectiveBody;
 import freemarker.template.TemplateException;
-import freemarker.template.TemplateHashModelEx;
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 
@@ -56,14 +55,11 @@ public class TemplateDirectiveHandler extends BaseHandler {
 
     @Override
     public void render() throws TemplateException, IOException {
-        if (!renderd) {
-            Map<String, TemplateModel> reduceMap = reduce();
-            if (null != templateDirectiveBody) {
-                templateDirectiveBody.render(environment.getOut());
-            }
-            reduce(reduceMap);
-            renderd = true;
+        Map<String, TemplateModel> reduceMap = reduce();
+        if (null != templateDirectiveBody) {
+            templateDirectiveBody.render(environment.getOut());
         }
+        reduce(reduceMap);
     }
 
     @Override
@@ -106,7 +102,7 @@ public class TemplateDirectiveHandler extends BaseHandler {
      * @return map value
      * @throws TemplateModelException
      */
-    public TemplateHashModelEx getMap(String name) throws TemplateModelException {
+    public Map<?, ?> getMap(String name) throws TemplateModelException {
         return TemplateModelUtils.converMap(parameters.get(name));
     }
 
@@ -119,7 +115,7 @@ public class TemplateDirectiveHandler extends BaseHandler {
     public Integer getIntegerWithoutRegister(String name) throws TemplateModelException {
         return TemplateModelUtils.converInteger(parameters.get(name));
     }
-    
+
     @Override
     public Byte getByteWithoutRegister(String name) throws TemplateModelException {
         return TemplateModelUtils.converByte(parameters.get(name));
@@ -142,7 +138,7 @@ public class TemplateDirectiveHandler extends BaseHandler {
         regristerParameter(PARAMETER_TYPE_DOUBLE, name);
         return TemplateModelUtils.converDouble(parameters.get(name));
     }
-    
+
     @Override
     public BigDecimal getBigDecimal(String name) throws TemplateModelException {
         regristerParameter(PARAMETER_TYPE_DOUBLE, name);

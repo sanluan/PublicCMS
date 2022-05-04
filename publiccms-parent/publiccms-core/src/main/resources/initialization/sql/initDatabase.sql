@@ -835,6 +835,7 @@ INSERT INTO `sys_module` VALUES ('develop', NULL, NULL, 'icon-puzzle-piece', NUL
 INSERT INTO `sys_module` VALUES ('dictionary_add', 'cmsDictionary/add', 'cmsDictionary/addChild,cmsDictionary/exclude,cmsDictionary/excludeTree,cmsDictionary/excludeValue,cmsDictionaryExclude/save,cmsDictionaryExcludeValue/save,cmsDictionary/save,cmsDictionary/virify', NULL, 'dictionary_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('dictionary_delete', NULL, 'cmsDictionary/delete', NULL, 'dictionary_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('dictionary_list', 'cmsDictionary/list', NULL, 'icon-book', 'system_menu', 1, 4);
+INSERT INTO `sys_module` VALUES ('diy_list', 'diy/list', 'diy/layout,diy/module,placeTemplate/lookupPlace', 'icon-dashboard', 'file_menu', 1, 5);
 INSERT INTO `sys_module` VALUES ('domain_config', 'sysDomain/config', 'sysDomain/saveConfig,cmsTemplate/directoryLookup,cmsTemplate/lookup', NULL, 'domain_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('domain_list', 'sysDomain/domainList', NULL, 'icon-qrcode', 'config_menu', 1, 4);
 INSERT INTO `sys_module` VALUES ('file_menu', NULL, NULL, 'icon-folder-close-alt', 'develop', 1, 1);
@@ -1212,6 +1213,9 @@ INSERT INTO `sys_module_lang` VALUES ('dictionary_delete', 'zh', '删除');
 INSERT INTO `sys_module_lang` VALUES ('dictionary_list', 'en', 'Dictionary management');
 INSERT INTO `sys_module_lang` VALUES ('dictionary_list', 'ja', 'データ辞書');
 INSERT INTO `sys_module_lang` VALUES ('dictionary_list', 'zh', '数据字典');
+INSERT INTO `sys_module_lang` VALUES ('diy_list', 'en', 'Page visualization management');
+INSERT INTO `sys_module_lang` VALUES ('diy_list', 'ja', 'ページ視覚化管理');
+INSERT INTO `sys_module_lang` VALUES ('diy_list', 'zh', '页面可视化管理');
 INSERT INTO `sys_module_lang` VALUES ('domain_config', 'en', 'Edit');
 INSERT INTO `sys_module_lang` VALUES ('domain_config', 'ja', '変更');
 INSERT INTO `sys_module_lang` VALUES ('domain_config', 'zh', '修改');

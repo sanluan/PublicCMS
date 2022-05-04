@@ -1,0 +1,44 @@
+<@_diyMetadata itemType='module' itemId=id><#assign a=object/></@_diyMetadata>
+<form method="post" action="cmsDiy/saveModule?navTabId=diy/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <div class="formBar">
+        <ul>
+        <#if a?has_content>
+             <li><a class="button" href="cmsDiy/delete?itemType=module&id=${(id?url)!}&navTabId=diy/list&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i> <@t.page 'button.delete'/></a></li>
+        </#if>
+            <li><button type="submit" class="buttonActive" title="ctrl+s"<#if id?has_content> lock-url="common/lock?itemType=module&itemId=${(id?url)!}" close-url="common/unlock?itemType=module&itemId=${(id?url)!}"</#if>><@t.page 'button.save'/></button></li>
+        </ul>
+    </div>
+    <div class="pageFormContent" layoutH>
+        <dl class="nowrap">
+            <dt><@t.page 'id'/>:</dt></dt>
+            <dd>
+                <input name="id" class="required" type="text" size="50" value="${(a.id)!getUUID()}"/>
+            </dd>
+        </dl>
+        <dl class="nowrap">
+            <dt><@t.page 'name'/>:</dt></dt>
+            <dd>
+                <input name="name" class="required" type="text" maxlength="40" size="20" value="${(a.name)!}"/>
+            </dd>
+        </dl>
+        <dl class="nowrap">
+            <dt><@t.page 'cover'/>:</dt>
+            <dd>
+                <input name="cover" value="${(a.cover)!}" maxlength="300" size="50" type="text"/>
+                <a class="btnAttach" href="common/upload.html?field=cover&fileTypes=image" lookupGroup="" width="1000" height="600"><@t.page 'cover'/></a>
+                <a class="view icon-eye-open" ref="cover" data-prefix="${site.sitePath}" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
+                <#include "../include_page/preview.html"/>
+                <@preview 'module' 'input[name=cover]'/>
+            </dd>
+        </dl>
+        <dl class="nowrap">
+            <dt><@t.page 'path'/>:</dt></dt>
+            <dd>
+                <input name="path" type="text" maxlength="255" size="50" value="${(a.path)!}" class="required"/>
+                <a class="btnLook" href="placeTemplate/lookupPlace?field=path" lookupGroup=""><@t.page 'template.select'/></a>
+                <label><input name="clone" type="checkbox"<#if (a.clone)?has_content && a.clone> checked="checked"</#if>/><@t.page 'button.copy'/></label>
+            </dd>
+        </dl>
+    </div>
+</form>

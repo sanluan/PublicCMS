@@ -1,0 +1,28 @@
+<#macro chipTree field filepath>
+    <@_templateList path='include'+filepath orderField='createDate'>
+        <#list list as a>
+            <li>
+                <#local path=filepath+'/'+a.fileName>
+            <#if a.directory>
+                <a href="javascript:;" onclick="return false;">${a.fileName} </a>
+                <ul>
+                    <@chipTree field path/>
+                </ul>
+            <#else>
+                <@_placeMetadata path=path>
+                    <a href="javascript:;" onclick="$.bringBack({'${field!'path'}':'${path}'});return false;">
+                        ${(object.alias)?has_content?then(object.alias+' ('+a.fileName+')',a.fileName)}
+                    </a>
+                </@_placeMetadata>
+            </#if>
+            </li>
+        <#else>
+            <li><a><@t.page 'empty_directory'/></a></li>
+        </#list>
+    </@_templateList>
+</#macro>
+<div class="pageFormContent" layoutH>
+    <ul class="tree treeFolder">
+<@chipTree field ''/>
+    </ul>
+</div>

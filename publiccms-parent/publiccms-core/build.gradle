@@ -22,6 +22,4 @@ dependencies {
     implementation "org.mybatis:mybatis-spring:${mybatisSpringVersion}"
     implementation "org.mybatis.dynamic-sql:mybatis-dynamic-sql:${dynamicSqlVersion}"
     implementation "com.github.pagehelper:pagehelper:${pageHelperVersion}"
-    implementation "jakarta.el:jakarta.el-api:${elVersion}"
-    implementation "org.glassfish:jakarta.el:${elImplVersion}"
 }

@@ -91,7 +91,7 @@
             <#if 'view'=type>
                 ${(value)!}
             <#else>
-                <input name="${inputName}"<#if extend.maxlength?has_content> maxlength="${extend.maxlength}"</#if> type="text" maxlength="255" size="40" value="${(value)!}"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>/>
+                <input name="${inputName}"<#if extend.maxlength?has_content> maxlength="${extend.maxlength}"</#if> type="text" maxlength="255" size="50" value="${(value)!}"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>/>
                 <a class="btnLook" href="cmsTemplate/lookup.html?field=${inputName?url}" lookupGroup=""><@t.page 'template.select'/></a>
             </#if>
             <#break>

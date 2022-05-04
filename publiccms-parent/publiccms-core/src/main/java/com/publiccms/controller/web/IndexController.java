@@ -36,6 +36,7 @@ import com.publiccms.logic.component.config.ConfigComponent;
 import com.publiccms.logic.component.config.SiteConfigComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
+import com.publiccms.logic.component.template.DiyComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateCacheComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
@@ -72,11 +73,14 @@ public class IndexController {
     private SysUserService userService;
     @Autowired
     private StatisticsComponent statisticsComponent;
+    @Autowired
+    private DiyComponent diyComponent;
 
     /**
      * METADATA页面请求统一分发
      * 
-     * @param response 响应
+     * @param response
+     *            响应
      */
     @RequestMapping({ "/**/" + MetadataComponent.DATA_FILE, "/**/" + MetadataComponent.METADATA_FILE })
     public void rest(HttpServletResponse response) {
@@ -89,12 +93,18 @@ public class IndexController {
     /**
      * REST页面请求统一分发
      * 
-     * @param site 站点
-     * @param id ID
-     * @param body 消息体
-     * @param request 请求
-     * @param response 响应
-     * @param model 模型
+     * @param site
+     *            站点
+     * @param id
+     *            ID
+     * @param body
+     *            消息体
+     * @param request
+     *            请求
+     * @param response
+     *            响应
+     * @param model
+     *            模型
      * @return view name 视图名
      */
     @RequestMapping({ "/**/{id:[0-9]+}" })
@@ -106,13 +116,20 @@ public class IndexController {
     /**
      * REST页面请求统一分发
      * 
-     * @param site 站点
-     * @param id ID
-     * @param pageIndex 分页
-     * @param body 消息体
-     * @param request 请求
-     * @param response 响应
-     * @param model 模型
+     * @param site
+     *            站点
+     * @param id
+     *            ID
+     * @param pageIndex
+     *            分页
+     * @param body
+     *            消息体
+     * @param request
+     *            请求
+     * @param response
+     *            响应
+     * @param model
+     *            模型
      * @return view name 视图名
      */
     @RequestMapping({ "/**/{id:[0-9]+}_{pageIndex:[0-9]+}" })
@@ -191,7 +208,7 @@ public class IndexController {
                 }
             }
             CmsPageData data = metadataComponent.getTemplateData(templatePath);
-            model.addAttribute("metadata", metadata.getAsMap(data));
+            model.addAttribute("metadata", metadata.getAsMap(data, diyComponent.getDiyData(site, requestPath)));
             if (metadata.isNeedBody()) {
                 model.addAttribute("body", body);
             }

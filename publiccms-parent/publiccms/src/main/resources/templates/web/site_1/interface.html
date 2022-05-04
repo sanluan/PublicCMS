@@ -133,14 +133,12 @@ $(function(){
             <label><input type="radio" name="api" value="0"/>指令接口Directive interface</label>
             <label><input type="radio" name="api" value="1"/>函数接口Function interface</label>
             <label><input type="radio" name="api" value="2"/>自定义接口Custom interface</label>
+            <a href="javascript:;" onclick="$(this).hide().next().show();$('#interfaes').css('height','20px');$('.description').show();return false;">↑↑↑↑</a>
+            <a href="javascript:;" style="display:none;" onclick="$(this).hide().prev().show();$('#interfaes').css('height','auto');$('.description').hide();return false;">↓↓↓↓</a>
         </p>
         <p class="description"><em>红色字体接口需要使用AppToken才能访问，后台添加应用然后用appKey和appSecret通过自定义接口appToken获取appToken，绿色框体接口需要登录信息authToken，authUserId才能访问,通过普通接口login获取</em></p>
         <p class="description"><em>The red font interface needs to use the AppToken to access, add the application in the management, and then use the appKey and appSecret to obtain the appToken through the custom interface appToken. The green frame interface requires the login information authToken and authUserId to access, and the common interface login.</em></p>
         <p id="interfaes"></p>
-        <p>
-            <a href="javascript:;" onclick="$(this).hide().next().show();$('#interfaes').css('height','20px');$('.description').show();return false;">↑↑↑↑</a>
-            <a href="javascript:;" style="display:none;" onclick="$(this).hide().prev().show();$('#interfaes').css('height','auto');$('.description').hide();return false;">↓↓↓↓</a>
-        </p>
     </fieldset>
     <fieldset>
         <legend>Result</legend>

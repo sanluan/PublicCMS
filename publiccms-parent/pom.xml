@@ -45,7 +45,7 @@
         <!-- http://hibernate.org/search/releases/ -->
         <version.hibernateSearch>6.1.4.Final</version.hibernateSearch>
         <!-- https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator -->
-        <version.hibernateValidator>7.0.4.Final</version.hibernateValidator>
+        <version.hibernateValidator>6.0.23.Final</version.hibernateValidator>
         <!-- https://mvnrepository.com/artifact/org.ehcache/ehcache -->
         <version.ehcache>3.9.9</version.ehcache>
         <!-- http://mvnrepository.com/artifact/org.freemarker/freemarker -->
@@ -98,10 +98,6 @@
         <version.ant>1.10.12</version.ant>
         <!-- http://mvnrepository.com/artifact/javax.transaction/jta -->
         <version.jta>1.1</version.jta>
-        <!-- https://mvnrepository.com/artifact/jakarta.el/jakarta.el-api -->
-        <version.el>4.0.0</version.el>
-        <!--  https://mvnrepository.com/artifact/org.glassfish/jakarta.el -->
-        <version.elImpl>4.0.2</version.elImpl>
         <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
         <version.servlet>4.0.1</version.servlet>
         <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine -->
@@ -328,16 +324,6 @@
                 <groupId>javax.transaction</groupId>
                 <artifactId>jta</artifactId>
                 <version>${version.jta}</version>
-            </dependency>
-            <dependency>
-                <groupId>jakarta.el</groupId>
-                <artifactId>jakarta.el-api</artifactId>
-                <version>${version.el}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.glassfish</groupId>
-                <artifactId>jakarta.el</artifactId>
-                <version>${version.elImpl}</version>
             </dependency>
             <dependency>
                 <groupId>com.sun.mail</groupId>
