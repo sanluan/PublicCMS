@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
-import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.handler.TemplateDirectiveHandler;
 import com.publiccms.common.tools.CommonUtils;
@@ -57,31 +56,26 @@ public class DiyRegionDirective extends AbstractTemplateDirective {
                                     Matcher matcher = CmsLayout.PLACE_PATTERN.matcher(template);
                                     StringBuffer sb = new StringBuffer();
                                     List<List<CmsModuleData>> moduleListList = layoutData.getModuleList();
-                                    StringBuffer moduleSb = new StringBuffer();
-                                    for (int i = 0; matcher.find(); i++) {
+                                    int end = 0, i = 0;
+                                    while (matcher.find()) {
+                                        sb.append(template.substring(end, matcher.start()));
                                         if (null != moduleListList && moduleListList.size() > i) {
                                             List<CmsModuleData> moduleList = moduleListList.get(i);
                                             if (null != moduleList) {
                                                 for (CmsModuleData moduleData : moduleList) {
-                                                    moduleSb.append("<@_includePlace path=\"").append(moduleData.getPath())
+                                                    sb.append("<@_includePlace path=\"").append(moduleData.getPath())
                                                             .append("\"/>");
                                                 }
-                                                matcher.appendReplacement(sb, moduleSb.toString());
-                                                moduleSb.setLength(0);
-                                            } else {
-                                                matcher.appendReplacement(sb, CommonConstants.BLANK);
                                             }
-                                        } else {
-                                            matcher.appendReplacement(sb, CommonConstants.BLANK);
                                         }
+                                        i++;
+                                        end = matcher.end();
                                     }
-                                    if (0 == sb.length()) {
-                                        environment.include(
-                                                new Template(layout.getName(), template, environment.getConfiguration()));
-                                    } else {
-                                        environment.include(
-                                                new Template(layout.getName(), sb.toString(), environment.getConfiguration()));
+                                    if (end < template.length()) {
+                                        sb.append(template.substring(end, template.length()));
                                     }
+                                    environment.include(
+                                            new Template(layout.getName(), sb.toString(), environment.getConfiguration()));
                                 }
                             }
                         }
