@@ -487,13 +487,12 @@ table.list th.order:before{content:"\e623"}
 table.list th.desc:before{content:"\e668"}
 
 .miscSortDrag dt {width:160px;}
-.miscSortDrag dt fieldset .itemBox{max-height:300px;min-height:100px;overflow-y:auto;}
+.miscSortDrag dt fieldset .itemBox{max-height:50%;min-height:100px;overflow-y:auto;}
 .miscSortDrag dt .sortDragPlaceholder, .miscSortDrag dt .dragItem .close, .miscSortDrag dt .dragItem .ctl-label,.miscSortDrag dt .dragItem .dragContent{display:none}
 .miscSortDrag dt .dragItem {border:1px solid #B8D0D6;height:26px;overflow: hidden;padding:2px;margin:3px;display:block;cursor:move;}
 .miscSortDrag dt:after{content:" ";display:block;clear:both;}
 .miscSortDrag dd {margin-left:170px;}
-.miscSortDrag dd fieldset, .miscSortDrag dd fieldset legend {border:4px dashed red;background:#00050e;color:#fff;padding:8px 20px;}
-.miscSortDrag dd .sortDrag{width:100%;min-height:50px;max-height:250px;margin-bottom:10px;text-align:center;box-sizing:border-box;border:1px solid #e66;overflow-y:auto}
+.miscSortDrag dd .sortDrag{width:100%;min-height:100px;margin-bottom:10px;text-align:center;box-sizing:border-box;border:1px solid #d66;overflow-y:auto}
 .miscSortDrag dd .sortDrag .dragItem {border:1px solid #B8D0D6;box-sizing:border-box;padding:5px;margin:3px;line-height:20px;display:block;position:relative;text-align:left;cursor:move;}
 .miscSortDrag dd .sortDrag .sortDrag{min-height:50px;margin-bottom:0px;border:1px dashed #6d6;}
 .miscSortDrag dd .sortDrag .dragItem img{width:100%;max-height:100px;}

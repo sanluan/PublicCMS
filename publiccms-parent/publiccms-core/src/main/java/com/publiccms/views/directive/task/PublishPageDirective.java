@@ -12,11 +12,10 @@ import com.publiccms.common.base.AbstractTaskDirective;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CmsFileUtils;
-import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.CmsFileUtils.FileInfo;
+import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.site.SiteComponent;
-import com.publiccms.logic.component.template.DiyComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.views.pojo.entities.CmsPageData;
@@ -44,8 +43,7 @@ public class PublishPageDirective extends AbstractTaskDirective {
                 try {
                     CmsPageData data = metadataComponent.getTemplateData(filepath);
                     templateComponent.createStaticFile(site, SiteComponent.getFullTemplatePath(site, path),
-                            metadata.getPublishPath(), null, metadata.getAsMap(data, diyComponent.getDiyData(site, path)), null,
-                            null);
+                            metadata.getPublishPath(), null, metadata.getAsMap(data), null, null);
                     map.put(path, true);
                 } catch (IOException | TemplateException e) {
                     map.put(path, false);
@@ -73,7 +71,7 @@ public class PublishPageDirective extends AbstractTaskDirective {
                         String templatePath = SiteComponent.getFullTemplatePath(site, filepath);
                         CmsPageData data = metadataComponent.getTemplateData(realTemplatePath);
                         templateComponent.createStaticFile(site, templatePath, metadata.getPublishPath(), null,
-                                metadata.getAsMap(data, diyComponent.getDiyData(site, path)), null, null);
+                                metadata.getAsMap(data), null, null);
                         map.put(filepath, true);
                     } catch (IOException | TemplateException e) {
                         map.put(filepath, false);
@@ -88,7 +86,5 @@ public class PublishPageDirective extends AbstractTaskDirective {
     private TemplateComponent templateComponent;
     @Autowired
     private MetadataComponent metadataComponent;
-    @Autowired
-    private DiyComponent diyComponent;
 
 }

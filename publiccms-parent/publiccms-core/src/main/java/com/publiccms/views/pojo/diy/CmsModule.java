@@ -17,7 +17,8 @@ public class CmsModule implements java.io.Serializable {
     private String name;
     private boolean clone;
     private String cover;
-    private String path;
+    private String place;
+    private String filePath;
 
     /**
      * @return the id
@@ -80,17 +81,31 @@ public class CmsModule implements java.io.Serializable {
     }
 
     /**
-     * @return the path
+     * @return the place
      */
-    public String getPath() {
-        return path;
+    public String getPlace() {
+        return place;
     }
 
     /**
-     * @param path
-     *            the path to set
+     * @param place the place to set
      */
-    public void setPath(String path) {
-        this.path = path;
+    public void setPlace(String place) {
+        this.place = place;
+    }
+
+    /**
+     * @return the filePath
+     */
+    public String getFilePath() {
+        return filePath;
+    }
+
+    /**
+     * @param filePath
+     *            the filePath to set
+     */
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
     }
 }

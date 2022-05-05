@@ -1,10 +1,10 @@
 <@_diyMetadata itemType='module' itemId=id><#assign a=object/></@_diyMetadata>
-<form method="post" action="cmsDiy/saveModule?navTabId=diy/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+<form method="post" action="cmsDiy/saveModule?navTabId=cmsDiy/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
         <#if a?has_content>
-             <li><a class="button" href="cmsDiy/delete?itemType=module&id=${(id?url)!}&navTabId=diy/list&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i> <@t.page 'button.delete'/></a></li>
+             <li><a class="button" href="cmsDiy/delete?itemType=module&id=${(id?url)!}&navTabId=cmsDiy/list&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i> <@t.page 'button.delete'/></a></li>
         </#if>
             <li><button type="submit" class="buttonActive" title="ctrl+s"<#if id?has_content> lock-url="common/lock?itemType=module&itemId=${(id?url)!}" close-url="common/unlock?itemType=module&itemId=${(id?url)!}"</#if>><@t.page 'button.save'/></button></li>
         </ul>
@@ -33,12 +33,32 @@
             </dd>
         </dl>
         <dl class="nowrap">
-            <dt><@t.page 'path'/>:</dt></dt>
+            <dt><@t.page 'place'/>:</dt></dt>
             <dd>
-                <input name="path" type="text" maxlength="255" size="50" value="${(a.path)!}" class="required"/>
-                <a class="btnLook" href="placeTemplate/lookupPlace?field=path" lookupGroup=""><@t.page 'template.select'/></a>
-                <label><input name="clone" type="checkbox"<#if (a.clone)?has_content && a.clone> checked="checked"</#if>/><@t.page 'button.copy'/></label>
+                <input name="place" type="text" maxlength="255" size="50" value="${(a.place)!}" class="required"/>
+                <a class="btnLook" href="placeTemplate/lookupPlace?field=place" lookupGroup=""><@t.page 'template.select'/></a>
+                <label><input name="clone" type="checkbox"/><@t.page 'button.copy'/></label>
             </dd>
         </dl>
+        <dl class="nowrap clone hide">
+            <dt><@t.page 'file_path'/>:</dt></dt>
+            <dd>
+                <input name="filePath" type="text" maxlength="255" size="50" value="${(a.filePath)!r"/${(category.code)!'diy'}/${getUUID()}.html"}"/>
+            </dd>
+        </dl>
+        <script>
+        $('input[name=clone]',navTab.getCurrentPanel()).click(function(){
+            if($(this).is(':checked')) {
+                $('.clone',navTab.getCurrentPanel()).show();
+                $('.clone input[type=text]',navTab.getCurrentPanel()).addClass('required');
+            } else {
+                $('.clone',navTab.getCurrentPanel()).hide();
+                $('.clone input[type=text]',navTab.getCurrentPanel()).removeClass('required');
+            }
+        });
+        <#if (a.clone)?has_content && a.clone>
+            $('input[name=clone]',navTab.getCurrentPanel()).click();
+        </#if>
+        </script>
     </div>
 </form>

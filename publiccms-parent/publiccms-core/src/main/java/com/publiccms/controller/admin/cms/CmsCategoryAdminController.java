@@ -211,7 +211,7 @@ public class CmsCategoryAdminController {
     }
 
     /**
-     * @param siteId
+     * @param site
      * @param id
      * @param max
      * @throws IOException

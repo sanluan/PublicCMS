@@ -14,7 +14,6 @@ import com.publiccms.common.tools.FreeMarkerUtils;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.site.EmailComponent;
 import com.publiccms.logic.component.site.SiteComponent;
-import com.publiccms.logic.component.template.DiyComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.views.pojo.entities.CmsPageData;
@@ -43,7 +42,7 @@ public class SendEmailDirective extends AbstractTemplateDirective {
                 String filepath = siteComponent.getWebTemplateFilePath(site, templatePath);
                 CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(filepath);
                 CmsPageData data = metadataComponent.getTemplateData(filepath);
-                model.put("metadata", metadata.getAsMap(data, diyComponent.getDiyData(site, templatePath)));
+                model.put("metadata", metadata.getAsMap(data));
                 String content = FreeMarkerUtils.generateStringByFile(SiteComponent.getFullTemplatePath(site, templatePath),
                         templateComponent.getWebConfiguration(), model);
                 handler.put("result", emailComponent.sendHtml(site.getId(), email, cc, bcc, title, content)).render();
@@ -68,6 +67,4 @@ public class SendEmailDirective extends AbstractTemplateDirective {
     private TemplateComponent templateComponent;
     @Autowired
     private MetadataComponent metadataComponent;
-    @Autowired
-    private DiyComponent diyComponent;
 }

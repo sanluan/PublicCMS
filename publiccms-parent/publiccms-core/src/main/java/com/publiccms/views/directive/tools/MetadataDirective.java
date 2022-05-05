@@ -10,7 +10,6 @@ import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.component.template.DiyComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.views.pojo.entities.CmsPageData;
 import com.publiccms.views.pojo.entities.CmsPageMetadata;
@@ -31,7 +30,7 @@ public class MetadataDirective extends AbstractTemplateDirective {
             String filepath = siteComponent.getWebTemplateFilePath(site, path);
             CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(filepath);
             CmsPageData data = metadataComponent.getTemplateData(filepath);
-            handler.put("object", metadata.getAsMap(data, diyComponent.getDiyData(site, path))).render();
+            handler.put("object", metadata.getAsMap(data)).render();
         }
     }
 
@@ -42,6 +41,4 @@ public class MetadataDirective extends AbstractTemplateDirective {
 
     @Autowired
     private MetadataComponent metadataComponent;
-    @Autowired
-    private DiyComponent diyComponent;
 }

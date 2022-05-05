@@ -476,7 +476,6 @@ public class CmsContentService extends BaseService<CmsContent> {
     }
 
     /**
-     * @param siteId
      * @param id
      * @param categoryList
      * @param category

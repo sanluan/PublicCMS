@@ -58,7 +58,6 @@ public class CmsPageAdminController {
      * @param site
      * @param admin
      * @param path
-     * @param diydata
      * @param extendDataParameters
      * @param request
      * @param model
@@ -66,7 +65,7 @@ public class CmsPageAdminController {
      */
     @RequestMapping("save")
     @Csrf
-    public String saveMetadata(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path, String diydata,
+    public String saveMetadata(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path,
             @ModelAttribute ExtendDataParameters extendDataParameters, HttpServletRequest request, ModelMap model) {
         SysDept dept = sysDeptService.getEntity(admin.getDeptId());
         if (ControllerUtils.errorNotEmpty("deptId", admin.getDeptId(), model)
@@ -83,7 +82,6 @@ public class CmsPageAdminController {
             CmsPageData pageDate = new CmsPageData();
             pageDate.setExtendDataList(extendDataParameters.getExtendDataList());
             metadataComponent.updateTemplateData(filepath, pageDate);
-            diyComponent.updateDiyData(site, diyComponent.getDiyData(site, path, diydata));
             logOperateService
                     .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                             "update.template.data", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));

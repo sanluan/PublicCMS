@@ -1,0 +1,34 @@
+<@_diyMetadata itemType='region' itemId=id><#assign a=object/></@_diyMetadata>
+<form method="post" action="cmsDiy/saveRegion?navTabId=cmsDiy/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <div class="formBar">
+        <ul>
+        <#if a?has_content>
+             <li><a class="button" href="cmsDiy/delete?itemType=region&id=${(id?url)!}&navTabId=cmsDiy/list&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i> <@t.page 'button.delete'/></a></li>
+        </#if>
+            <li><button type="submit" class="buttonActive" title="ctrl+s"<#if id?has_content> lock-url="common/lock?itemType=region&itemId=${(id?url)!}" close-url="common/unlock?itemType=region&itemId=${(id?url)!}"</#if>><@t.page 'button.save'/></button></li>
+        </ul>
+    </div>
+    <div class="pageFormContent" layoutH>
+        <dl class="nowrap">
+            <dt><@t.page 'id'/>:</dt></dt>
+            <dd>
+                <input name="id" class="required" type="text" size="50" value="${(a.id)!getUUID()}"/>
+            </dd>
+        </dl>
+        <dl class="nowrap">
+            <dt><@t.page 'name'/>:</dt></dt>
+            <dd>
+                <input name="name" type="text" maxlength="40" size="20" value="${(a.name)!}"/>
+            </dd>
+        </dl>
+        <dl class="nowrap">
+            <dt><@t.page 'category_type'/>:</dt></dt>
+            <dd>
+                <input name="categoryType" type="hidden" value="${(a.categoryType)!}"/>
+                <input name="categoryTypeName" type="text" maxlength="40" size="20" value="${(a.categoryType)!}"/>
+                <a class="btnLook" href="cmsCategoryType/lookup.html?field=categoryType" lookupGroup="" width="1000" height="500"><@t.page 'select'/></a>
+            </dd>
+        </dl>
+    </div>
+</form>

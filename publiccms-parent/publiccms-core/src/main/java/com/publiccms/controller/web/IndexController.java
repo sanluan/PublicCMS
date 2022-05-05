@@ -36,7 +36,6 @@ import com.publiccms.logic.component.config.ConfigComponent;
 import com.publiccms.logic.component.config.SiteConfigComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
-import com.publiccms.logic.component.template.DiyComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateCacheComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
@@ -73,8 +72,6 @@ public class IndexController {
     private SysUserService userService;
     @Autowired
     private StatisticsComponent statisticsComponent;
-    @Autowired
-    private DiyComponent diyComponent;
 
     /**
      * METADATA页面请求统一分发
@@ -208,7 +205,7 @@ public class IndexController {
                 }
             }
             CmsPageData data = metadataComponent.getTemplateData(templatePath);
-            model.addAttribute("metadata", metadata.getAsMap(data, diyComponent.getDiyData(site, requestPath)));
+            model.addAttribute("metadata", metadata.getAsMap(data));
             if (metadata.isNeedBody()) {
                 model.addAttribute("body", body);
             }

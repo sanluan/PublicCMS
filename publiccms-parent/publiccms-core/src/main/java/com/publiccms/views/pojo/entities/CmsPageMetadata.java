@@ -7,7 +7,6 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.publiccms.entities.sys.SysExtendField;
-import com.publiccms.views.pojo.diy.CmsDiyData;
 
 /**
  *
@@ -181,7 +180,7 @@ public class CmsPageMetadata implements java.io.Serializable {
     }
 
     @JsonIgnore
-    public Map<String, Object> getAsMap(CmsPageData data,CmsDiyData diydata) {
+    public Map<String, Object> getAsMap(CmsPageData data) {
         Map<String, Object> map = new HashMap<>();
         map.put("alias", getAlias());
         map.put("publishPath", getPublishPath());
@@ -194,7 +193,6 @@ public class CmsPageMetadata implements java.io.Serializable {
         map.put("extendList", getExtendList());
         map.put("extendData", data.getExtendData());
         map.put("parameterTypeMap", getParameterTypeMap());
-        map.put("diydata", diydata);
         return map;
     }
 }

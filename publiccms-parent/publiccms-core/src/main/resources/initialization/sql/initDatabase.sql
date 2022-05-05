@@ -835,7 +835,7 @@ INSERT INTO `sys_module` VALUES ('develop', NULL, NULL, 'icon-puzzle-piece', NUL
 INSERT INTO `sys_module` VALUES ('dictionary_add', 'cmsDictionary/add', 'cmsDictionary/addChild,cmsDictionary/exclude,cmsDictionary/excludeTree,cmsDictionary/excludeValue,cmsDictionaryExclude/save,cmsDictionaryExcludeValue/save,cmsDictionary/save,cmsDictionary/virify', NULL, 'dictionary_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('dictionary_delete', NULL, 'cmsDictionary/delete', NULL, 'dictionary_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('dictionary_list', 'cmsDictionary/list', NULL, 'icon-book', 'system_menu', 1, 4);
-INSERT INTO `sys_module` VALUES ('diy_list', 'diy/list', 'diy/layout,diy/module,placeTemplate/lookupPlace', 'icon-dashboard', 'file_menu', 1, 5);
+INSERT INTO `sys_module` VALUES ('diy_list', 'cmsDiy/list', 'cmsDiy/region,cmsDiy/layout,cmsDiy/module,placeTemplate/lookupPlace,cmsCategoryType/lookup', 'icon-dashboard', 'file_menu', 1, 5);
 INSERT INTO `sys_module` VALUES ('domain_config', 'sysDomain/config', 'sysDomain/saveConfig,cmsTemplate/directoryLookup,cmsTemplate/lookup', NULL, 'domain_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('domain_list', 'sysDomain/domainList', NULL, 'icon-qrcode', 'config_menu', 1, 4);
 INSERT INTO `sys_module` VALUES ('file_menu', NULL, NULL, 'icon-folder-close-alt', 'develop', 1, 1);
@@ -874,6 +874,7 @@ INSERT INTO `sys_module` VALUES ('order_list', 'tradeOrder/list', 'sysUser/looku
 INSERT INTO `sys_module` VALUES ('order_process', 'tradeOrder/processParameters', 'tradeOrder/process,tradeOrder/export', NULL, 'order_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('order_view', 'tradeOrder/view', NULL, NULL, 'order_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('page', NULL, NULL, 'icon-tablet', NULL, 1, 3);
+INSERT INTO `sys_module` VALUES ('page_diy', 'cmsPage/diy', 'cmsPage/region,cmsPage/style,cmsDiy/save', 'bi bi-palette', 'page_menu', 1, 3);
 INSERT INTO `sys_module` VALUES ('page_list', 'cmsPage/list', 'cmsPage/metadata,cmsContent/lookup,cmsContent/lookup_list,cmsCategory/lookup', 'icon-globe', 'page_menu', 1, 1);
 INSERT INTO `sys_module` VALUES ('page_menu', NULL, NULL, 'icon-globe', 'page', 1, 0);
 INSERT INTO `sys_module` VALUES ('page_metadata', 'cmsPage/metadata', 'cmsPage/save', NULL, 'page_list', 0, 0);
@@ -1330,6 +1331,9 @@ INSERT INTO `sys_module_lang` VALUES ('order_view', 'zh', '查看');
 INSERT INTO `sys_module_lang` VALUES ('page', 'en', 'Page');
 INSERT INTO `sys_module_lang` VALUES ('page', 'ja', 'ページ');
 INSERT INTO `sys_module_lang` VALUES ('page', 'zh', '页面');
+INSERT INTO `sys_module_lang` VALUES ('page_diy', 'en', 'Visualized page');
+INSERT INTO `sys_module_lang` VALUES ('page_diy', 'ja', '視覚化されたページ');
+INSERT INTO `sys_module_lang` VALUES ('page_diy', 'zh', '页面可视化');
 INSERT INTO `sys_module_lang` VALUES ('page_list', 'en', 'Page management');
 INSERT INTO `sys_module_lang` VALUES ('page_list', 'ja', 'ページ管理');
 INSERT INTO `sys_module_lang` VALUES ('page_list', 'zh', '页面管理');

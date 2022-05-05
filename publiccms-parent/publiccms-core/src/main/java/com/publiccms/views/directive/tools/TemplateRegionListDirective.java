@@ -1,6 +1,7 @@
 package com.publiccms.views.directive.tools;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -12,15 +13,16 @@ import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.logic.component.template.TemplateComponent;
 
 /**
  *
- * TemplateListDirective
+ * TemplateRegionListDirective
  * 
  */
 @Component
 public class TemplateRegionListDirective extends AbstractTemplateDirective {
-    public static final Pattern PLACE_PATTERN = Pattern.compile("<@_diyRegion[ ]+.*id=[\"|\']([^\"\']*)[\"|\'].*>");
+    public static final Pattern REGION_PATTERN = Pattern.compile("<@_includeRegion[ ]+.*id=[\"|\']([^\"\']*)[\"|\'].*>");
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
@@ -29,9 +31,26 @@ public class TemplateRegionListDirective extends AbstractTemplateDirective {
         if (CommonUtils.notEmpty(path)) {
             String fileContent = CmsFileUtils.getFileContent(siteComponent.getWebTemplateFilePath(getSite(handler), path));
             if (CommonUtils.notEmpty(fileContent)) {
-                Matcher matcher = PLACE_PATTERN.matcher(fileContent);
+                if (CommonUtils.notEmpty(fileContent)) {
+                    Matcher matcher = REGION_PATTERN.matcher(fileContent);
+                    while (matcher.find()) {
+                        regionList.add(matcher.group(1));
+                    }
+                }
+                Set<String> placeSet = new HashSet<>();
+                Matcher matcher = TemplatePlaceListDirective.PLACE_PATTERN.matcher(fileContent);
                 while (matcher.find()) {
-                    regionList.add(matcher.group(1));
+                    placeSet.add(matcher.group(1));
+                }
+                for (String place : placeSet) {
+                    String placeContent = CmsFileUtils.getFileContent(
+                            siteComponent.getWebTemplateFilePath(getSite(handler), TemplateComponent.INCLUDE_DIRECTORY + place));
+                    if (CommonUtils.notEmpty(placeContent)) {
+                        Matcher placeMatcher = REGION_PATTERN.matcher(placeContent);
+                        while (placeMatcher.find()) {
+                            regionList.add(placeMatcher.group(1));
+                        }
+                    }
                 }
             }
         }

@@ -3,19 +3,20 @@ package com.publiccms.views.pojo.diy;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
- * CmsModuleData diy组件数据
+ * CmsRegion diy区域
  * 
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CmsModuleData implements java.io.Serializable {
+public class CmsRegion implements java.io.Serializable {
 
     /**
      * 
      */
     private static final long serialVersionUID = 1L;
+
     private String id;
+    private String categoryType;
     private String name;
-    private String place;
 
     /**
      * @return the id
@@ -33,6 +34,21 @@ public class CmsModuleData implements java.io.Serializable {
     }
 
     /**
+     * @return the categoryType
+     */
+    public String getCategoryType() {
+        return categoryType;
+    }
+
+    /**
+     * @param categoryType
+     *            the categoryType to set
+     */
+    public void setCategoryType(String categoryType) {
+        this.categoryType = categoryType;
+    }
+
+    /**
      * @return the name
      */
     public String getName() {
@@ -46,20 +62,4 @@ public class CmsModuleData implements java.io.Serializable {
     public void setName(String name) {
         this.name = name;
     }
-
-    /**
-     * @return the place
-     */
-    public String getPlace() {
-        return place;
-    }
-
-    /**
-     * @param place
-     *            the place to set
-     */
-    public void setPlace(String place) {
-        this.place = place;
-    }
-
 }

@@ -467,7 +467,7 @@ public class CmsContentAdminController {
     }
 
     /**
-     * @param siteId
+     * @param site
      * @param entity
      * @param categoryId
      */

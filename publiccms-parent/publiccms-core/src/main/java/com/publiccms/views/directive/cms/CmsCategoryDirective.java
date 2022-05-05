@@ -21,7 +21,12 @@ import com.publiccms.logic.service.cms.CmsCategoryService;
 
 /**
  *
- * CmsCategoryDirective
+ * CmsCategoryDirective 分类查询指令
+ *  参数列表：
+ *  id 分类id，结果返回object
+ *  code 分类编码，当id不存在时生效，结果返回object
+ *  absoluteURL url处理为绝对路径 默认为true
+ *  ids 多个分类id，逗号或空格间隔，当id或code不存在时生效，结果返回map(id,分类)
  * 
  */
 @Component

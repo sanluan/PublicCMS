@@ -282,7 +282,6 @@ public class UeditorAdminController {
     /**
      * @param site
      * @param admin
-     * @param action
      * @param start
      * @return view name
      */

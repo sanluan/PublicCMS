@@ -18,7 +18,6 @@ import com.publiccms.entities.cms.CmsDictionaryExcludeValue;
 public class CmsDictionaryExcludeValueDao extends BaseDao<CmsDictionaryExcludeValue> {
 
     /**
-     * @param siteId
      * @param excludeId
      * @return the number of entities deleted
      */

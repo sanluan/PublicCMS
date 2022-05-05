@@ -26,7 +26,7 @@ import freemarker.template.TemplateModel;
  * 
  */
 @Component
-public class DiyLayoutDirective extends AbstractTemplateDirective {
+public class IncludeLayoutDirective extends AbstractTemplateDirective {
 
     @SuppressWarnings("unchecked")
     @Override

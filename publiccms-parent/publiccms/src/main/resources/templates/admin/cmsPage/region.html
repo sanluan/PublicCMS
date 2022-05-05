@@ -1,0 +1,104 @@
+<@_diyMetadata itemType='region' itemId=id><#assign a=object/></@_diyMetadata>
+<@_diyRegionData id=id categoryId=categoryId><#assign data=object/></@_diyRegionData>
+<form method="post" autocomplete="off" action="cmsDiy/save?rel=diyConfigBox&navTabId=cmsPage/diy" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <input type="hidden" name="categoryId" value="${categoryId!}"/>
+    <div class="formBar">
+        <ul>
+            <li><button type="submit" class="buttonActive" title="ctrl+s"<#if id?has_content> lock-url="common/lock?itemType=region&itemId=${(id?url)!}" close-url="common/unlock?itemType=region&itemId=${(id?url)!}"</#if>><@t.page 'button.save'/></button></li>
+        </ul>
+    </div>
+    <div class="pageFormContent" layoutH>
+        <dl class="miscSortDrag nowrap" data-result="textarea[name=diydata]" drag-rel="dd .sortDrag" data-id="region" data-duplicate="1">
+            <dt>
+                <fieldset>
+                    <legend><@t.page 'layout'/></legend>
+                    <@_diyMetadataList itemType="layout">
+                    <div class="itemBox">
+                        <#list list as a>
+                            <div class="dragItem" data-id="${a.id}" data-type="layout">
+                                ${a.name!}<span class="close">X</span>
+                                <div class="dragContent">
+                                    <@_includeLayout id=a.id>
+                                        <div class="sortDrag" data-over-sort="true" data-accept="module"><@t.page 'drag_module_here'/></div>
+                                    </@_includeLayout>
+                                </div>
+                            </div>
+                        </#list>
+                    </div>
+                        <#if list?has_content>
+                            <style>
+                            <#list list as a>
+                                <#if a.style?has_content>${getLayoutStyle(a.style,'.diy-layout')!}</#if>
+                            </#list>
+                            </style>
+                        </#if>
+                    </@_diyMetadataList>
+                </fieldset>
+                <fieldset>
+                    <legend><@t.page 'module'/></legend>
+                <@_diyMetadataList itemType="module">
+                    <div class="itemBox">
+                        <#list list as a>
+                    <div class="dragItem" data-id="${a.id}" data-type="module" >
+                        ${a.name!}<span class="close">X</span>
+                        <div class="ctl-label">
+                            <input data-name="name" type="text" class="required" value="<@_category id=categoryId>${object.name}-</@_category>${a.name}"/>
+                        </div>
+                        <#if a.cover?has_content>
+                        <div class="dragContent">
+                            <img src="${(getAbsoluteUrl(site.sitePath,a.cover))!}"/>
+                        </div>
+                        </#if>
+                    </div>
+                        </#list>
+                    </div>
+                </@_diyMetadataList>
+                </fieldset>
+            </dt>
+            <dd>
+                <fieldset>
+                    <legend><@_category id=categoryId>${object.name}-</@_category>${a.name}</legend>
+                    <div class="sortDrag diy-layout" data-over-sort="true" data-accept="layout" data-id="${a.id}" data-parent="region">
+                        <@t.page 'drag_layout_here'/>
+                        <#if (data.layoutList)?has_content>
+                            <#list data.layoutList as layoutdata>
+                                <@_diyMetadata itemType="layout" itemId=layoutdata.id>
+                                    <div class="dragItem" data-id="${object.id}" data-type="layout">
+                                        ${object.name!}<span class="close">X</span>
+                                        <div class="dragContent" data-parent="${object.id}" >
+                                            <@_includeLayout id=object.id>
+                                                <div class="sortDrag" data-over-sort="true" data-accept="module">
+                                                    <@t.page 'drag_module_here'/>
+                                                    <#if layoutdata.moduleList[index]?has_content>
+                                                        <#list layoutdata.moduleList[index] as moduleData>
+                                                            <@_diyMetadata itemType="module" itemId=moduleData.id>
+                                                                <div class="dragItem" data-id="${object.id}" data-type="module" >
+                                                                    ${moduleData.name}<span class="close">X</span>
+                                                                    <div class="ctl-label">
+                                                                        <input data-name="name" type="hidden" value="${moduleData.name}"/>
+                                                                        <input data-name="place" type="hidden" value="${moduleData.place}"/>
+                                                                    </div>
+                                                                    <#if object.cover?has_content>
+                                                                        <div class="ctl-label">
+                                                                            <img src="${(getAbsoluteUrl(site.sitePath,object.cover))!}"/>
+                                                                        </div>
+                                                                    </#if>
+                                                                </div>
+                                                            </@_diyMetadata>
+                                                        </#list>
+                                                    </#if>
+                                                </div>
+                                            </@_includeLayout>
+                                        </div>
+                                    </div>
+                                </@_diyMetadata>
+                            </#list>
+                        </#if>
+                    </div>
+                    <textarea name="diydata" class="hide"></textarea>
+                </fieldset>
+            </dd>
+        </dl>
+    </div>
+</form>

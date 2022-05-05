@@ -7,9 +7,9 @@
                     <@_categoryList advanced=true parentId=parentId pageSize=500>
                         <#list page.list as a>
                             <#if a.childIds?has_content>
-                            <li _src="common/categoryTree.html?parentId=${a.id}">
-                                <a href="common/category_list.html?categoryId=${a.id}" class="exclude-translate" target="ajax" rel="categoryBox">${(a.name)!}</a>
-                            </li>
+                                <li _src="common/categoryTree.html?parentId=${a.id}">
+                                    <a href="common/category_list.html?categoryId=${a.id}" class="exclude-translate" target="ajax" rel="categoryBox">${(a.name)!}</a>
+                                </li>
                             </#if>
                         </#list>
                     </@_categoryList>

@@ -16,7 +16,7 @@ import com.publiccms.logic.component.template.TemplateComponent;
 
 /**
  *
- * TemplateListDirective
+ * TemplatePlaceListDirective
  * 
  */
 @Component

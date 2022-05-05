@@ -22,10 +22,13 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.DiyComponent;
+import com.publiccms.logic.service.cms.CmsCategoryService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.views.pojo.diy.CmsLayout;
 import com.publiccms.views.pojo.diy.CmsModule;
+import com.publiccms.views.pojo.diy.CmsRegion;
+import com.publiccms.views.pojo.diy.CmsRegionData;
 
 /**
  * 
@@ -36,11 +39,60 @@ import com.publiccms.views.pojo.diy.CmsModule;
 @RequestMapping("cmsDiy")
 public class CmsDiyAdminController {
     @Autowired
+    private CmsCategoryService categoryService;
+    @Autowired
     private DiyComponent diyComponent;
     @Autowired
     protected LogOperateService logOperateService;
     @Autowired
     protected SiteComponent siteComponent;
+
+    /**
+     * @param site
+     * @param admin
+     * @param categoryId
+     * @param diydata
+     * @param request
+     * @param model
+     * @return view name
+     */
+    @RequestMapping("save")
+    @Csrf
+    public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Integer categoryId, String diydata,
+            HttpServletRequest request, ModelMap model) {
+        if (ControllerUtils.errorCustom("noright", null != site.getParentId(), model)) {
+            return CommonConstants.TEMPLATE_ERROR;
+        }
+        CmsRegionData entity = diyComponent.getRegionData(site, categoryService.getEntity(categoryId), diydata);
+        if (null != entity) {
+            diyComponent.updateRegionData(site, entity);
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "save.diydata", RequestUtils.getIpAddress(request),
+                    CommonUtils.getDate(), JsonUtils.getString(entity)));
+        }
+        return CommonConstants.TEMPLATE_DONE;
+    }
+
+    /**
+     * @param site
+     * @param admin
+     * @param entity
+     * @param request
+     * @param model
+     * @return view name
+     */
+    @RequestMapping("saveRegion")
+    @Csrf
+    public String saveRegion(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, @ModelAttribute CmsRegion entity,
+            HttpServletRequest request, ModelMap model) {
+        if (ControllerUtils.errorCustom("noright", null != site.getParentId(), model)) {
+            return CommonConstants.TEMPLATE_ERROR;
+        }
+        diyComponent.updateRegion(site, entity);
+        logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                "save.region", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+        return CommonConstants.TEMPLATE_DONE;
+    }
 
     /**
      * @param site
@@ -101,7 +153,15 @@ public class CmsDiyAdminController {
         if (ControllerUtils.errorCustom("noright", null != site.getParentId(), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        if ("layout".equalsIgnoreCase(itemType)) {
+        if ("region".equalsIgnoreCase(itemType)) {
+            CmsRegion entity = diyComponent.deleteRegion(site, id);
+            if (null != entity) {
+                diyComponent.deleteRegionData(site, id);
+                logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
+                        LogLoginService.CHANNEL_WEB_MANAGER, "delete.region", RequestUtils.getIpAddress(request),
+                        CommonUtils.getDate(), JsonUtils.getString(entity)));
+            }
+        } else if ("layout".equalsIgnoreCase(itemType)) {
             CmsLayout entity = diyComponent.deleteLayout(site, id);
             if (null != entity) {
                 logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),

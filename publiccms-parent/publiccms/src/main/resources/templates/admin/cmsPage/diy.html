@@ -1,0 +1,27 @@
+<div class="pageContent">
+    <div layoutH class="leftPageContent">
+        <ul class="tree treeFolder expand">
+    <@_diyMetadataList itemType="region">
+        <#list list as a>
+            <li>
+                <a href="cmsPage/region.html?id=${(a.id?url)!}" target="ajax" rel="diyConfigBox">${a.name!}</a>
+                <#if a.categoryType?has_content>
+                    <@_categoryList queryAll=true typeId=a.categoryType pageSize=100>
+                        <#if page.totalCount gt 0 >
+                            <ul>
+                                <#list page.list as c>
+                                    <li><a href="cmsPage/region.html?id=${(a.id?url)!}&categoryId=${c.id}" target="ajax" rel="diyConfigBox">${c.name!}</a></li>
+                                </#list>
+                            </ul>
+                        </#if>
+                    </@_categoryList>
+                </#if>
+            </li>
+        </#list>
+    </@_diyMetadataList>
+        </ul>
+    </div>
+    <div id="diyConfigBox" class="unitBox rightPageContent">
+        <#if id?has_content><#include 'region.html'/></#if>
+    </div>
+</div>

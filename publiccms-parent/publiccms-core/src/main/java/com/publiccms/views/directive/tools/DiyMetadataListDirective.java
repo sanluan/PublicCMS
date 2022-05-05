@@ -13,7 +13,9 @@ import com.publiccms.logic.component.template.DiyComponent;
 
 /**
  *
- * DiyMetadataListDirective
+ * DiyMetadataListDirective diy元数据列表获取
+ * 参数列表：
+ * itemType 元数据类型 可选值 region,layout,module 结果项 list 为diy元数据列表
  * 
  */
 @Component
@@ -24,7 +26,9 @@ public class DiyMetadataListDirective extends AbstractTemplateDirective {
         SysSite site = getSite(handler);
         String itemType = handler.getString("itemType");
         if (CommonUtils.notEmpty(itemType)) {
-            if ("layout".equalsIgnoreCase(itemType)) {
+            if ("region".equalsIgnoreCase(itemType)) {
+                handler.put("list", diyComponent.getRegionList(site)).render();
+            } else if ("layout".equalsIgnoreCase(itemType)) {
                 handler.put("list", diyComponent.getLayoutList(site)).render();
             } else if ("module".equalsIgnoreCase(itemType)) {
                 handler.put("list", diyComponent.getModuleList(site)).render();
