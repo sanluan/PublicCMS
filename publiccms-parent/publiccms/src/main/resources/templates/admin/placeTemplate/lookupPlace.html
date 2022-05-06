@@ -10,7 +10,7 @@
                 </ul>
             <#else>
                 <@_placeMetadata path=path>
-                    <a href="javascript:;" onclick="$.bringBack({'${field!'path'}':'${path}'});return false;">
+                    <a href="javascript:;" onclick="$.bringBack({'${field!'path'}':'${path}','${fieldName!'name'}':'${object.alias!}'});return false;">
                         ${(object.alias)?has_content?then(object.alias+' ('+a.fileName+')',a.fileName)}
                     </a>
                 </@_placeMetadata>

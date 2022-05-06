@@ -3476,7 +3476,7 @@ var navTab = {
                     $selector.unbind('mousedown');
                 }
                 $selector.mousedown(function (event) {
-                    if (!$sortBox.hasClass('disabled') && !$(event.target).is('input')) {
+                    if (!$sortBox.hasClass('disabled') && !$(event.target).is('input')&& !$(event.target).is('a')) {
                         DWZ.sortDrag.start($sortBox, $item, event, op);
                         event.preventDefault();
                     }

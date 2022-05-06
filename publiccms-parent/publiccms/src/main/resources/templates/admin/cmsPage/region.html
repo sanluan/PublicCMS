@@ -42,9 +42,17 @@
                         <#list list as a>
                     <div class="dragItem" data-id="${a.id}" data-type="module" >
                         ${a.name!}<span class="close">X</span>
-                        <div class="ctl-label">
+                        <span class="ctl-label">
                             <input data-name="name" type="text" class="required" value="<@_category id=categoryId>${object.name}-</@_category>${a.name}"/>
-                        </div>
+                            <#if !a.clone>
+                            <@_placeMetadata path=a.place>
+                                <a href="cmsPlace/metadata.html?path=${a.place?url}" target="ajax" rel="diyConfigBox">${(object.alias)!a.place}</a>
+                                <#if 0 lt ((object.size)!0)>
+                                   : <a href="cmsPlace/dataList.html?path=${a.place?url}" target="navTab" rel="cmsPlace/dataList" title="<@t.page 'place_data.place'/>:${(object.alias)!}"><@t.page 'place_data'/>(${object.size})</a>
+                                </#if>
+                            </@_placeMetadata>
+                            </#if>
+                        </span>
                         <#if a.cover?has_content>
                         <div class="dragContent">
                             <img src="${(getAbsoluteUrl(site.sitePath,a.cover))!}"/>
@@ -72,16 +80,22 @@
                                                     <@t.page 'drag_module_here'/>
                                                     <#if layoutdata.moduleList[index]?has_content>
                                                         <#list layoutdata.moduleList[index] as moduleData>
-                                                            <@_diyMetadata itemType="module" itemId=moduleData.id>
-                                                                <div class="dragItem" data-id="${object.id}" data-type="module" >
+                                                            <@_diyMetadata itemType="module" itemId=moduleData.id;module>
+                                                                <div class="dragItem" data-id="${module.id}" data-type="module" >
                                                                     ${moduleData.name}<span class="close">X</span>
-                                                                    <div class="ctl-label">
+                                                                    <span class="ctl-label">
+                                                                        <@_placeMetadata path=module.place>
+                                                                            <a href="cmsPlace/metadata.html?path=${module.place?url}" target="ajax" rel="diyConfigBox">${(object.alias)!module.place}</a>
+                                                                            <#if 0 lt ((object.size)!0)>
+                                                                            : <a href="cmsPlace/dataList.html?path=${module.place?url}" target="navTab" rel="cmsPlace/dataList" title="<@t.page 'place_data.place'/>:${(object.alias)!}"><@t.page 'place_data'/>(${object.size})</a>
+                                                                            </#if>
+                                                                        </@_placeMetadata>
                                                                         <input data-name="name" type="hidden" value="${moduleData.name}"/>
                                                                         <input data-name="place" type="hidden" value="${moduleData.place}"/>
-                                                                    </div>
-                                                                    <#if object.cover?has_content>
+                                                                    </span>
+                                                                    <#if module.cover?has_content>
                                                                         <div class="ctl-label">
-                                                                            <img src="${(getAbsoluteUrl(site.sitePath,object.cover))!}"/>
+                                                                            <img src="${(getAbsoluteUrl(site.sitePath,module.cover))!}"/>
                                                                         </div>
                                                                     </#if>
                                                                 </div>

@@ -46,6 +46,22 @@
         </dl>
         </#if>
     </@_templatePlaceList>
+    <@_templateRegionList path='include'+path>
+        <#if list?has_content>
+        <dl class="nowrap">
+            <dt><@t.page 'diy'/>:</dt>
+            <dd>
+                <#list list as a>
+                    <@_diyMetadata itemType='region' itemId=a>
+                    <p>
+                        <a href="cmsPage/diy.html?id=${(object.id?url)!}" target="navTab" rel="cmsPage/diy" title="<@t.page 'diy'/>" icon="<i class='bi bi-palette'></i>">${(object.name)!}</a>
+                    </p>
+                    </@_diyMetadata>
+                </#list>
+            </dd>
+        </dl>
+        </#if>
+    </@_templateRegionList>
         <#include "../include_page/extendData.html"/>
         <#assign extendList=(a.metadataExtendList)![]/>
         <#assign attribute=(a.extendData)!{}/>

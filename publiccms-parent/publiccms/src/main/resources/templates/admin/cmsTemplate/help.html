@@ -89,6 +89,20 @@
                 </#if>
             </#if>
                 <li>
+                    <a href="javascript:;" onclick="return false;"><@t.page 'diy'/></a>
+                    <ul>
+            <@_diyMetadataList itemType="region">
+                <#list list as a>
+                    <#if a.categoryType?has_content>
+                        <li><a href="javascript:;" <@getAction r'<@_includeRegion id="'+a.id+'" categoryId=category.id/> <#-- '+a.name+' -->'/>>${a.name}(<@t.page 'category_page'/>)</a></li>
+                    <#else>
+                        <li><a href="javascript:;" <@getAction r'<@_includeRegion id="'+a.id+'"/> <#-- '+a.name+' -->'/>>${a.name}</a></li>
+                    </#if> 
+                </#list>
+            </@_diyMetadataList>
+                    </ul>
+                </li>
+                <li>
                     <a href="javascript:;" onclick="return false;"><@t.page 'help.site_attribute'/></a>
                     <ul>
                         <li><a href="javascript:;" <@getAction r'${site.id!}'/>><@t.page 'site.id'/></a></li>
@@ -107,20 +121,6 @@
                         <li><a href="javascript:;" <@getAction r'${siteAttribute.'+extend.id.code+r'!}'/>>${extend.name}</a></li>
                     </#list>
                 </@_sysConfigFieldList>
-                    </ul>
-                </li>
-                <li>
-                    <a href="javascript:;" onclick="return false;"><@t.page 'diy'/></a>
-                    <ul>
-            <@_diyMetadataList itemType="region">
-                <#list list as a>
-                    <#if a.categoryType?has_content>
-                        <li><a href="javascript:;" <@getAction r'<@_includeRegion id="'+a.id+'" categoryId=category.id/>'/>>${a.name}(<@t.page 'category_page'/>)</a></li>
-                    <#else>
-                        <li><a href="javascript:;" <@getAction r'<@_includeRegion id="'+a.id+'"/>'/>>${a.name}</a></li>
-                    </#if> 
-                </#list>
-            </@_diyMetadataList>
                     </ul>
                 </li>
                 <li><a href="javascript:;" <@getAction r'<#list .dataModel?keys as k>${k}<#sep>,</#list>' t.pageMessage('help.echo_data_model')/>><@t.page 'help.echo_data_model'/></a></li>
