@@ -209,6 +209,7 @@ public class ContentCreateDirective extends AbstractAppDirective {
                 handler.put("contentId", entity.getId());
                 handler.put("result", "success");
             }
+            handler.render();
         }
     }
 

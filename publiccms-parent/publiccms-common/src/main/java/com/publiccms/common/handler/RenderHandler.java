@@ -220,4 +220,9 @@ public interface RenderHandler {
      */
     Object getAttribute(String name) throws IOException, Exception;
 
+    /**
+     * @return if renderd
+     */
+    boolean getRenderd();
+
 }

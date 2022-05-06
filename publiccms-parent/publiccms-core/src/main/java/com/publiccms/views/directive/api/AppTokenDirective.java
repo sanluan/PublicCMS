@@ -46,6 +46,7 @@ public class AppTokenDirective extends AbstractAppDirective {
         } else {
             handler.put("error", KEY_NOT_EXISTS);
         }
+        handler.render();
     }
 
     @Autowired

@@ -88,7 +88,9 @@ public abstract class AbstractTemplateDirective extends BaseTemplateDirective {
             handler.put("error", ApiController.NEED_LOGIN).render();
         } else {
             execute(handler);
-            handler.render();
+            if (!handler.renderd) {
+                handler.render();
+            }
         }
     }
 

@@ -19,8 +19,10 @@ import com.publiccms.views.pojo.query.CmsCategoryQuery;
 
 /**
  *
- * CmsCategoryListDirective 分类列表查询指令
+ * CmsCategoryListDirective categoryList分类列表查询指令
+ * <p>
  * 参数列表
+ * <p>
  * 
  */
 @Component

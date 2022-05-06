@@ -21,13 +21,24 @@ import com.publiccms.logic.service.cms.CmsCategoryService;
 
 /**
  *
- * CmsCategoryDirective 分类查询指令
- *  参数列表：
- *  id 分类id，结果返回object
- *  code 分类编码，当id不存在时生效，结果返回object
- *  absoluteURL url处理为绝对路径 默认为true
- *  ids 多个分类id，逗号或空格间隔，当id或code不存在时生效，结果返回map(id,分类)
- * 
+ *  category 分类查询指令<p>
+ *  参数列表
+ *  <ul>
+ *  <li><code>id</code> 分类id，结果返回<code>object</code>
+ *  <li><code>code</code> 分类编码，当id不存在时生效，结果返回<code>object</code>
+ *  <li><code>absoluteURL</code> url处理为绝对路径 默认为<code> true</code>
+ *  <li><code>ids</code> 多个分类id，逗号或空格间隔，当id或code不存在时生效，结果返回<code>map</code>(id,分类)
+ *  </ul>
+ *  使用示例<p>
+ *  &lt;@_category id=1&gt;${object.name}&lt;/@_category&gt;<p>
+ *  &lt;@_category ids=1,2,3&gt;&lt;#list map as k,v&gt;${v.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@_category&gt;
+ *  <pre>
+ *  &lt;script&gt;
+    $.getJSON('//cms.publiccms.com/api/directive/category?id=1', function(data){    
+      console.log(data.name);
+    });
+    &lt;/script&gt;
+    </pre>
  */
 @Component
 public class CmsCategoryDirective extends AbstractTemplateDirective {

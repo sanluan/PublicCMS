@@ -52,7 +52,9 @@ public abstract class AbstractAppDirective extends BaseHttpDirective {
             handler.put("error", ApiController.NEED_LOGIN).render();
         } else {
             execute(handler, app, user);
-            handler.render();
+            if (!handler.getRenderd()) {
+                handler.render();
+            }
         }
     }
 

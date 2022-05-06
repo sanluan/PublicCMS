@@ -50,7 +50,7 @@ public class MyContentListDirective extends AbstractAppDirective {
             TemplateComponent.initContentUrl(site, e);
             TemplateComponent.initContentCover(site, e);
         });
-        handler.put("page", page);
+        handler.put("page", page).render();;
     }
 
     @Autowired

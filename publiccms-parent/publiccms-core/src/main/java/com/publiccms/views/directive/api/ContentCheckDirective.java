@@ -78,6 +78,7 @@ public class ContentCheckDirective extends AbstractAppDirective {
         logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), app.getChannel(),
                 uncheck ? "uncheck.content" : "check.content", RequestUtils.getIpAddress(handler.getRequest()),
                 CommonUtils.getDate(), StringUtils.join(ids, CommonConstants.COMMA)));
+        handler.render();
     }
 
     private boolean publish(SysSite site, CmsContent entity, SysUser user) {

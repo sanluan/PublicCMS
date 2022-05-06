@@ -40,6 +40,7 @@ public class AppClientDirective extends AbstractAppDirective {
                         RequestUtils.getIpAddress(handler.getRequest()));
             }
         }
+        handler.render();
     }
 
     @Autowired

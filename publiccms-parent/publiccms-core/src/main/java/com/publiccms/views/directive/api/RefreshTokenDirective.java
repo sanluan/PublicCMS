@@ -35,6 +35,7 @@ public class RefreshTokenDirective extends AbstractAppDirective {
         } else {
             handler.put("error", NEED_NOT_REFRESH);
         }
+        handler.render();
     }
 
     @Autowired

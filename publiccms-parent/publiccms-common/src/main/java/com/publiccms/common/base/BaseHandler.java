@@ -137,6 +137,7 @@ public abstract class BaseHandler implements RenderHandler {
     protected Map<String, Object> map = new LinkedHashMap<>();
     protected List<Map<String, Object>> parameterList;
     protected boolean regristerParameters;
+    protected boolean renderd = false;
 
     /**
      * 注册参数
@@ -351,5 +352,10 @@ public abstract class BaseHandler implements RenderHandler {
     public String[] getStringArray(String name) throws Exception {
         regristerParameter(PARAMETER_TYPE_STRINGARRAY, name);
         return getStringArrayWithoutRegister(name);
+    }
+
+    @Override
+    public boolean getRenderd() {
+        return this.renderd;
     }
 }

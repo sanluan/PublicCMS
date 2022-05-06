@@ -52,6 +52,7 @@ public class HttpParameterHandler extends BaseHandler {
     @Override
     public void render() throws HttpMessageNotWritableException, IOException {
         httpMessageConverter.write(map, mediaType, new ServletServerHttpResponse(response));
+        renderd = true;
     }
 
     @Override

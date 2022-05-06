@@ -64,7 +64,7 @@ public class AutoLoginDirective extends AbstractAppDirective {
                 }
             }
         }
-        handler.put("result", result);
+        handler.put("result", result).render();
     }
 
     @Autowired

@@ -51,7 +51,9 @@ public abstract class AbstractTaskDirective extends BaseTemplateDirective {
             handler.put("error", ApiController.UN_AUTHORIZED).render();
         } else {
             execute(handler);
-            handler.render();
+            if (!handler.getRenderd()) {
+                handler.render();
+            }
         }
     }
 
