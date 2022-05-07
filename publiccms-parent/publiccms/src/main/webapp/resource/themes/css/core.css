@@ -489,7 +489,7 @@ table.list th.desc:before{content:"\e668"}
 .miscSortDrag dt {width:160px;position:sticky;z-index:999;top:5px;}
 .miscSortDrag dt fieldset .itemBox{max-height:360px;min-height:100px;overflow-y:auto;}
 .miscSortDrag dt .sortDragPlaceholder, .miscSortDrag dt .dragItem .close, .miscSortDrag dt .dragItem .ctl-label,.miscSortDrag dt .dragItem .dragContent{display:none}
-.miscSortDrag dt .dragItem {border:1px solid #B8D0D6;height:24px;line-height:24px;overflow: hidden;padding:2px;margin:3px 0px;display:block;cursor:move;}
+.miscSortDrag dt .dragItem {border:1px solid #B8D0D6;height:24px;line-height:24px;overflow: hidden;padding:2px;margin:3px 0px;display:block;cursor:move;user-select:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;}
 .miscSortDrag dt .dragItem.icon-move:before{float:right;}
 .miscSortDrag dt:after{content:" ";display:block;clear:both;}
 .miscSortDrag dd {margin-left:175px;}

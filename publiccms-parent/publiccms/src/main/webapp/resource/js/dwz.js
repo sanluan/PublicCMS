@@ -1160,6 +1160,10 @@ function Map() {
     };
     $.rwdrag = {
         start: function(e) {
+            document.onselectstart = function(e) {
+                return false
+            };// 禁止选择
+
             var data = $.data(this, 'pp-rwdrag');
             var el = data.options.el[0];
             $.data(el, 'pp-rwdrag', {
@@ -1215,6 +1219,9 @@ function Map() {
                 data.options.stop.apply(current.el, [ current.el, e ]);
             }
             $.rwdrag.current = null;
+            document.onselectstart = function(e) {
+                return true
+            };// 启用选择
             return $.rwdrag.preventEvent(e);
         }, preventEvent: function(e) {
             if (e.stopPropagation ) {
