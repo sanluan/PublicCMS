@@ -1125,7 +1125,6 @@ function Map() {
 ( function($) {
     $.scrollPosParents = function(el){
         var $el = $(el);
-        // var scrollPos = {top:$el.scrollTop(), left:$el.scrollLeft()};
         var scrollPos = {top:0, left:0};
         $el.parents().each(function(){
             var $p = $(this);
@@ -3379,7 +3378,7 @@ var navTab = {
             var scrollPosParents = $.scrollPosParents($sortBox);
             $helper.data('$sortBox', $sortBox).data('op', op).data('$item', $item).data('$placeholder', $placeholder);
             $helper.addClass('sortDragHelper').css({
-                position: 'absolute', top: position.top + scrollPosParents.top, left: position.left, zIndex: op.zIndex, width: $item.width() + 'px',
+                position: 'absolute', top: position.top , left: position.left, zIndex: op.zIndex, width: $item.width() + 'px',
                 height: $item.height() + 'px'
             }).jDrag({
                 selector: op.selector, drag: this.drag, stop: this.stop, event: event
@@ -3413,7 +3412,7 @@ var navTab = {
             var scrollPosParents = $.scrollPosParents($sortBox);
             var position = $placeholder.position();
             $helper.animate({
-                    top: (position.top + scrollPosParents.top) + "px",
+                    top: (position.top ) + "px",
                     left: position.left + "px"
                 }, {
                     complete: function () {
@@ -3599,7 +3598,11 @@ var navTab = {
             for (var i = 0; i < $dragList.length; i++) {
                 var $overBox = DWZ.miscDrag._getOverSortBox($dragList.eq(i), $helper);
                 if ($overBox.length > 0 && $overBox[0] != $sortBox[0] && (!$overBox.data("accept") || -1 < $overBox.data("accept").split(",").indexOf($helper.data("type")) )) { //移动到其他容器
-                    $placeholder.appendTo($overBox);
+                    if($helper.offset().top < ($overBox.offset().top + $overBox.height()/2)) {
+                        $placeholder.prependTo($overBox);
+                    } else {
+                        $placeholder.appendTo($overBox);
+                    }
                 }
             }
 
@@ -3612,8 +3615,12 @@ var navTab = {
                 //复制到目标容器
                 var $destBox = $placeholder.parents(".sortDrag:first");
                 var html = $helper.html();
-
-                $destBox.append('<div class="dragItem" data-id="' + $helper.data('id') + '" data-type="' + $helper.data('type') + '">' + html + '</div>');
+                var $result = $('<div class="dragItem" data-id="' + $helper.data('id') + '" data-type="' + $helper.data('type') + '">' + html + '</div>');
+                if($helper.offset().top < ($destBox.offset().top + $destBox.height()/2)) {
+                    $destBox.prepend($result);
+                }else{
+                    $destBox.append($result);
+                }
 
                 $placeholder.remove();
                 $helper.remove();
