@@ -486,17 +486,17 @@ table.list th.asc:before{content:"\e654"}
 table.list th.order:before{content:"\e623"}
 table.list th.desc:before{content:"\e668"}
 
-.miscSortDrag dt {width:160px;}
+.miscSortDrag dt {width:160px;position:sticky;z-index:999;top:5px;}
 .miscSortDrag dt fieldset .itemBox{max-height:360px;min-height:100px;overflow-y:auto;}
 .miscSortDrag dt .sortDragPlaceholder, .miscSortDrag dt .dragItem .close, .miscSortDrag dt .dragItem .ctl-label,.miscSortDrag dt .dragItem .dragContent{display:none}
-.miscSortDrag dt .dragItem {border:1px solid #B8D0D6;height:26px;overflow: hidden;padding:2px;margin:3px;display:block;cursor:move;}
+.miscSortDrag dt .dragItem {border:1px solid #B8D0D6;height:24px;overflow: hidden;padding:2px;margin:3px 0px;display:block;cursor:move;}
 .miscSortDrag dt:after{content:" ";display:block;clear:both;}
-.miscSortDrag dd {margin-left:170px;}
+.miscSortDrag dd {margin-left:175px;}
 .miscSortDrag dd .sortDrag{width:100%;min-height:100px;margin-bottom:10px;color:#ccc;text-align:center;box-sizing:border-box;border:1px dashed #d66;overflow-y:auto}
-.miscSortDrag dd .sortDrag .dragItem {border:1px solid #B8D0D6;max-height:400px;overflow:auto;box-sizing:border-box;color:#666;padding:5px;margin:3px;line-height:20px;display:block;position:relative;text-align:left;cursor:move;}
+.miscSortDrag dd .sortDrag .dragItem {border:1px solid #B8D0D6;box-sizing:border-box;color:#666;padding:5px;margin:3px;line-height:20px;display:block;position:relative;text-align:left;cursor:move;}
 .miscSortDrag dd .sortDrag .sortDrag{min-height:50px;margin-bottom:0px;border:1px dashed #6d6;}
 .miscSortDrag dd .sortDrag .sortDrag .dragItem{color:#333;}
-.miscSortDrag dd .sortDrag .dragItem img{width:100%;max-height:220px;}
+.miscSortDrag dd .sortDrag .dragItem img{width:100%;}
 .miscSortDrag dd .sortDrag .dragItem .close{width:16px;height:16px;line-height:16px;font-size:14px;display:block;cursor:pointer;border:1px solid #CCC;text-align:center;position:absolute;top:2px;right:2px;}
 .miscSortDrag dd .sortDrag .dragItem .ctl-label input{float:none;}
 

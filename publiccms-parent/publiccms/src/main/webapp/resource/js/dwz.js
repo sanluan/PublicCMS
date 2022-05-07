@@ -1161,10 +1161,6 @@ function Map() {
     };
     $.rwdrag = {
         start: function(e) {
-            document.onselectstart = function(e) {
-                return false
-            };// 禁止选择
-
             var data = $.data(this, 'pp-rwdrag');
             var el = data.options.el[0];
             $.data(el, 'pp-rwdrag', {
@@ -1220,9 +1216,6 @@ function Map() {
                 data.options.stop.apply(current.el, [ current.el, e ]);
             }
             $.rwdrag.current = null;
-            document.onselectstart = function(e) {
-                return true
-            };// 启用选择
             return $.rwdrag.preventEvent(e);
         }, preventEvent: function(e) {
             if (e.stopPropagation ) {
@@ -2532,7 +2525,7 @@ var navTab = {
     } ,
     _switchTab: function(iTabIndex) {
         var $tab = this._getTabs().removeClass("selected").eq(iTabIndex).addClass("selected");
-        this._getPanels().hide().eq(iTabIndex).show();
+        this._getPanels().css("visibility","hidden").height(0).eq(iTabIndex).css("visibility","visible").css('height','auto');
         this._getMoreLi().removeClass("selected").eq(iTabIndex).addClass("selected");
         this._currentIndex = iTabIndex;
         this._scrollCurrent();

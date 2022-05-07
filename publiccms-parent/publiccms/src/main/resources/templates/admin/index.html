@@ -72,7 +72,7 @@
     </header>
     <main>
         <div id="leftside">
-            <div id="sidebar_s"><i class="icon-caret-right icon-large"></i></div>
+            <div id="sidebar_s"><i class="icon-reorder icon-large"></i></div>
             <div id="sidebar">
                 <div id="menu">
                     <#include "menus.html"/>
@@ -185,11 +185,11 @@
             callback:function(){
                 initEnv();
                 $("#themeList").theme({themeBase:"${base}/resource/themes",defaultTheme:"toptry"});
-        <@_sysAuthorized roleIds=admin.roles url='changePassword'>
-            <#if admin.weakPassword>
+            <#if admin.weakPassword && admin.loginCount lte 3 >
+                <@_sysAuthorized roleIds=admin.roles url='changePassword'>
                 $.pdialog.open("myself/password.html?target=dialog", "login", "<@t.page 'user.new_password'/>", {mask: true, width: 450, height: 320});
+                </@_sysAuthorized>
             </#if>
-        </@_sysAuthorized>
                 $('#navMenu li a[parentId=${parentId!0}]').parent().addClass("selected");
                 loadScripts(["${base}/resource/js/echarts.common.min.js"],function(){
                     echartsProxy(echarts);
