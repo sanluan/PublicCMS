@@ -6097,9 +6097,12 @@ $.fn.extend({
                     var optionlist=$('ul',options);
                     if (options.is(":hidden") ) {
                         box.children('a').addClass('expand');
+                        if (options.height() > 600 ) {
+                            options.addClass('lot');
+                        }
                         if (options.height() > 300 ) {
                             optionlist.css({
-                                height: "300px", overflow: "scroll"
+                                height: "300px"
                             });
                         }
                         var top = box.offset().top + box[0].offsetHeight + 1;
@@ -6110,7 +6113,7 @@ $.fn.extend({
                             top: top, left: box.offset().left
                         }).show();
                         if($('a.selected',options).length && 0 == optionlist.scrollTop()){
-                            optionlist.stop().animate({scrollTop:$('a.selected',optionlist).offset().top + 70 - options.height() -optionlist.offset().top},500);
+                            optionlist.stop().animate({scrollTop:$('a.selected',optionlist).offset().top + 60 - options.height() -optionlist.offset().top},500);
                         }
                         $('.search input',options).focus().keyup(function(){
                             var val = $(this).val();
