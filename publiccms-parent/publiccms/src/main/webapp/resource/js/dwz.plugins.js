@@ -60,6 +60,19 @@ DWZ.regPlugins.push(function($p){
                 CKEDITOR.replace(dataId);
                 $this.attr("data-id",dataId);
             }
+        } else if("tinymce"==$this.attr("editorType")) {
+            if(!window.editor.tinymceInitd){
+                loadScripts(window.editor.tinymceResources,function(){
+                    window.editor.tinymceInitd=true;
+                    $this.attr("id",dataId);
+                    tinymce.init($.extend(true, {selector:'#'+dataId}, window.TINYMCE_OPTIONS));
+                    $this.attr("data-id",dataId);
+                });
+            } else {
+                $this.attr("id",dataId);
+                tinymce.init($.extend(true, {selector:'#'+dataId}, window.TINYMCE_OPTIONS));
+                $this.attr("data-id",dataId);
+            }
         } else if("kindeditor"==$this.attr("editorType")) {
             if(!window.editor.kindeditorInitd){
                 loadScripts(window.editor.kindeditorResources,function(){

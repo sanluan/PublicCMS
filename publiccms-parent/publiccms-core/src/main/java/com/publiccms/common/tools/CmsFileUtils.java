@@ -33,7 +33,7 @@ import com.publiccms.views.pojo.entities.FileSize;
 
 /**
  *
- * FileComponent 文件操作组件
+ * CmsFileUtils 文件操作组件
  *
  */
 public class CmsFileUtils {

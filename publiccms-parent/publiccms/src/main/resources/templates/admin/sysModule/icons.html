@@ -2092,7 +2092,7 @@
         </div>
     </fieldset>
 <script>
-$('input[name=name]',$.pdialog.getCurrent()).bind('keydown change',function(){
+$('input[name=name]',$.pdialog.getCurrent()).keyup('keyup change',function(){
     if($(this).val()){
         $('.icons label',$.pdialog.getCurrent()).hide().find('a:contains('+$(this).val()+')').parent().show();
     }else{

@@ -141,6 +141,8 @@ public class FileAdminController {
      * @param site
      * @param admin
      * @param file
+     * @param field 
+     * @param titleField 
      * @param request
      * @return view name
      */
@@ -148,7 +150,7 @@ public class FileAdminController {
     @Csrf
     @ResponseBody
     public Map<String, Object> doImport(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile file,
-            HttpServletRequest request) {
+            String field, String titleField, HttpServletRequest request) {
         Map<String, Object> result = new HashMap<>();
         if (null != file && !file.isEmpty()) {
             String originalName = file.getOriginalFilename();
@@ -159,7 +161,7 @@ public class FileAdminController {
                     if (0 < index) {
                         originalName = originalName.substring(0, index);
                     }
-                    result.put("title", originalName);
+                    result.put(titleField, originalName);
                     File dest = File.createTempFile("temp_", suffix);
                     file.transferTo(dest);
                     if (".docx".equalsIgnoreCase(suffix) || ".xlsx".equalsIgnoreCase(suffix) || ".xls".equalsIgnoreCase(suffix)) {
@@ -190,12 +192,12 @@ public class FileAdminController {
                             }
                         };
                         if (".docx".equalsIgnoreCase(suffix)) {
-                            result.put("text", DocToHtmlUtils.docxToHtml(dest, imageManager));
+                            result.put(field, DocToHtmlUtils.docxToHtml(dest, imageManager));
                         } else {
-                            result.put("text", DocToHtmlUtils.excelToHtml(dest, imageManager));
+                            result.put(field, DocToHtmlUtils.excelToHtml(dest, imageManager));
                         }
                     } else if (".doc".equalsIgnoreCase(suffix)) {
-                        result.put("text", DocToHtmlUtils.docToHtml(dest, new PicturesManager() {
+                        result.put(field, DocToHtmlUtils.docToHtml(dest, new PicturesManager() {
                             @Override
                             public String savePicture(byte[] content, PictureType pictureType, String suggestedName,
                                     float widthInches, float heightInches) {
@@ -225,7 +227,7 @@ public class FileAdminController {
                     dest.delete();
                 } catch (Exception e) {
                     log.error(e.getMessage(), e);
-                    result.put("text", e.getMessage());
+                    result.put(field, e.getMessage());
                 }
             }
         }
@@ -279,7 +281,7 @@ public class FileAdminController {
                 } else {
                     result.put("statusCode", 300);
                     result.put("message", LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
-                        "verify.custom.fileType"));
+                            "verify.custom.fileType"));
                     result.put(field, "");
                     if (CommonUtils.notEmpty(originalField)) {
                         result.put(originalField, null);

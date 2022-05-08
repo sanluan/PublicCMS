@@ -1,7 +1,6 @@
 <#include "dictionary.html"/>
 <#macro input name extend index value='' type='form' safe=true>
     <#local inputName=name+'['+index+'].value'/>
-    <#local inputValuesName=name+'['+index+'].values'/>
     <input name="${name}[${index}].name" type="hidden" value="${extend.id.code}"/>
     <#switch extend.inputType>
         <#case 'number'>
@@ -17,7 +16,7 @@
             <#else>
                 <input name="${inputName}" <#if 'customform'!=type>class="<#if extend.required>required</#if>" type="text" maxlength="300" size="50" <#else>type="file" </#if>value="${(value)!}"/>
                 <#if 'customform'!=type>
-                    <a class="btnAttach" href="common/upload.html?field=${inputName?url}" lookupGroup="" width="1000" height="600"><@t.page 'attach'/></a>
+                    <a class="btnAttach" href="common/upload.html?field=value" lookupGroup="${name}[${index}]" width="1000" height="600"><@t.page 'attach'/></a>
                     <a class="view icon-eye-open" ref="${inputName}" data-prefix="${site.sitePath}" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
                 </#if>
             </#if>
@@ -30,7 +29,7 @@
             <#else>
                 <input name="${inputName}" size="50" <#if 'customform'!=type>class="<#if extend.required>required</#if>" type="text" maxlength="300" size="50" <#else>type="file" accept="image/*" </#if>value="${(value)!}"/>
                 <#if 'customform'!=type>
-                    <a class="btnAttach" href="common/upload.html?field=${inputName?url}&fileTypes=image&width=${extend.width!}&height=${extend.height!}" lookupGroup="" width="1000" height="600"><@t.page 'image'/></a>
+                    <a class="btnAttach" href="common/upload.html?field=value&fileTypes=image&width=${extend.width!}&height=${extend.height!}" lookupGroup="${name}[${index}]" width="1000" height="600"><@t.page 'image'/></a>
                     <a class="view icon-eye-open" ref="${inputName}" data-prefix="${site.sitePath}" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
                     <#if !preview?has_content>
                         <#include "../include_page/preview.html"/>
@@ -47,7 +46,7 @@
             <#else>
                 <input name="${inputName}" <#if 'customform'!=type>class="<#if extend.required>required</#if>" type="text" maxlength="300" size="50" <#else>type="file" accept="video/*"</#if>value="${(value)!}"/>
                 <#if 'customform'!=type>
-                    <a class="btnAttach" href="common/upload.html?field=${inputName?url}&fileTypes=video" lookupGroup="" width="1000" height="600"><@t.page 'video'/></a>
+                    <a class="btnAttach" href="common/upload.html?field=value&fileTypes=video" lookupGroup="${name}[${index}]" width="1000" height="600"><@t.page 'video'/></a>
                     <a class="view icon-eye-open" ref="${inputName}" data-prefix="${site.sitePath}" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
                 </#if>
             </#if>
@@ -67,24 +66,14 @@
             </#if>
             <#break>
         <#case 'editor'>
-            <#if 'view'=type>
-                <#if safe>${(value?no_esc)!}<#else>${value!}</#if>
-            <#else>
-                <textarea name="${inputName}"<#if extend.maxlength?has_content> maxlength="${extend.maxlength}"</#if> <#if 'customform'!=type>class="editor<#if extend.required> required</#if>" </#if>cols="80" rows="20">${(value)!}</textarea>
-            </#if>
-            <#break>
         <#case 'ckeditor'>
-            <#if 'view'=type>
-                <#if safe>${(value?no_esc)!}<#else>${value!}</#if>
-            <#else>
-                <textarea name="${inputName}"<#if extend.maxlength?has_content> maxlength="${extend.maxlength}"</#if> <#if 'customform'!=type>class="editor<#if extend.required> required</#if>" editorType="ckeditor" </#if>cols="80" rows="20">${(value)!}</textarea>
-            </#if>
-            <#break>
+        <#case 'tinymce'>
         <#case 'kindeditor'>
             <#if 'view'=type>
                 <#if safe>${(value?no_esc)!}<#else>${value!}</#if>
             <#else>
-                <textarea name="${inputName}"<#if extend.maxlength?has_content> maxlength="${extend.maxlength}"</#if> <#if 'customform'!=type>class="editor<#if extend.required> required</#if>" editorType="kindeditor" </#if>cols="80" rows="20">${(value)!}</textarea>
+                <div><a class="button" href="common/import.html?field=value" lookupGroup="${name}[${index}]" width="500" height="200"><@t.page 'import_doc'/></a></div>
+                <textarea name="${inputName}"<#if extend.maxlength?has_content> maxlength="${extend.maxlength}"</#if> <#if 'customform'!=type>class="editor<#if extend.required> required</#if>" editorType="${extend.inputType}" </#if>cols="80" rows="20">${(value)!}</textarea>
             </#if>
             <#break>
         <#case 'template'>
@@ -92,7 +81,7 @@
                 ${(value)!}
             <#else>
                 <input name="${inputName}"<#if extend.maxlength?has_content> maxlength="${extend.maxlength}"</#if> type="text" maxlength="255" size="50" value="${(value)!}"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>/>
-                <a class="btnLook" href="cmsTemplate/lookup.html?field=${inputName?url}" lookupGroup=""><@t.page 'template.select'/></a>
+                <a class="btnLook" href="cmsTemplate/lookup.html?field=value" lookupGroup="${name}[${index}]"><@t.page 'template.select'/></a>
             </#if>
             <#break>
         <#case 'boolean'>
@@ -192,6 +181,7 @@
                 <#if 'view'=type>
                     <@_dictionaryData dictionaryId=extend.dictionaryId values=value><#list map as k,data>${data.text}<#sep>,</#list></@_dictionaryData>
                 <#else>
+                    <#local inputValuesName=name+'['+index+'].values'/>
                     <#local dictionaryId='dictionary_'+.now?long/>
                     <div class="dictionary" data-id="${dictionary.id.id}" data-ref="<@_dictionaryExcludeList dictionaryId=dictionary.id.id><#list list as a>${a.id.excludeDictionaryId}<#sep>,</#list></@_dictionaryExcludeList>" data-url="common/dictionaryExclude.html" id="${dictionaryId}">
                        <@dictionaryElement extend.dictionaryId inputValuesName extend.required dictionary.childDepth extend.multiple type value/>
