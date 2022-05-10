@@ -395,19 +395,6 @@ var DWZ = {
         isBind: function(type) {
             var _events = $(this).data("events");
             return _events && type && _events[type];
-        },
-        /**
-         * 输出firebug日志
-         *
-         * @param {Object}
-         *            msg
-         */
-        log: function(msg) {
-            return this.each(function() {
-                if (console ) {
-                    console.log("%s: %o", msg, this);
-                }
-            });
         }
     });
 
@@ -3705,8 +3692,7 @@ var navTab = {
     var _op = {
         cursor: 'move', // selector 的鼠标手势
         sortBoxs: 'div.sortDrag', //拖动排序项父容器
-        replace: false, //2个sortBox之间拖动替换
-        items: '> div, >dl, >p', //拖动排序项选择器
+        items: '>.dragItem', //拖动排序项选择器
         selector: '', //拖动排序项用于拖动的子元素的选择器，为空时等于item
         zIndex: 1000
     };
@@ -3739,15 +3725,15 @@ var navTab = {
         drag: function (el, event) {
             var $helper = $(arguments[0]), $sortBox = $helper.data('$sortBox'), $placeholder = $helper.data('$placeholder');
             var $items = $sortBox.find($helper.data('op')['items']).filter(':visible').filter(':not(.sortDragPlaceholder, .sortDragHelper)');
-            var helperPos = $helper.position(), firstPos = $items.eq(0).position();
-            var $overBox = DWZ.sortDrag._getOverSortBox($helper, event);
-            if ($sortBox.data('over-sort') == true && $overBox.length > 0 && $overBox[0] != $sortBox[0] && (!$overBox.data("accept") || -1 < $overBox.data("accept").split(",").indexOf($helper.data("type")) )) { //移动到其他容器
+            var helperPos = $helper.position();
+            var $overBox = DWZ.sortDrag._getOverSortBox($helper);
+            if ($sortBox.data('over-sort') == true && $overBox.length > 0 && $overBox[0] != $sortBox[0] ) { //移动到其他容器
                 $placeholder.appendTo($overBox);
                 $helper.data('$sortBox', $overBox);
-            } else {
+            } else if($items.length){
                 for (var i = 0; i < $items.length; i++) {
                     var $this = $items.eq(i), position = $this.position();
-                    if (helperPos.top > position.top + 10 || helperPos.left > position.left + 10) {
+                    if (helperPos.top > position.top + 10) {
                         $this.after($placeholder);
                     } else if (helperPos.top <= position.top || helperPos.left <= position.left) {
                         $this.before($placeholder);
@@ -3757,32 +3743,10 @@ var navTab = {
             }
         },
         stop: function () {
-            var $helper = $(arguments[0]), $sortBox = $helper.data('$sortBox'), $item = $helper.data('$item'), $placeholder = $helper.data('$placeholder');
-            var op = $.extend({}, _op, $helper.data('op'));
-            var scrollPosParents = $.scrollPosParents($sortBox);
-            var position = $placeholder.position();
-            $helper.animate({
-                    top: (position.top ) + "px",
-                    left: position.left + "px"
-                }, {
-                    complete: function () {
-                        if ($helper.data('op')['replace']) { //2个sortBox之间替换处理
-                            var $srcBox = $item.parents(op.sortBoxs + ":first");
-                            var $destBox = $placeholder.parents(op.sortBoxs + ":first");
-                            if ($srcBox[0] != $destBox[0]) { //判断是否移动到其他容器中
-                                var $replaceItem = $placeholder.next();
-                                if ($replaceItem.length > 0) {
-                                    $replaceItem.insertAfter($item);
-                                }
-                            }
-                        }
-                        $item.insertAfter($placeholder).show();
-                        $placeholder.remove();
-                        $helper.remove();
-                    },
-                    duration: 300
-                });
-
+            var $helper = $(arguments[0]), $item = $helper.data('$item'), $placeholder = $helper.data('$placeholder');
+            $item.insertAfter($placeholder).show();
+            $placeholder.remove();
+            $helper.remove();
             DWZ.sortDrag._onDrag = false;
         },
         _createPlaceholder: function ($item) {
@@ -3791,12 +3755,14 @@ var navTab = {
                 marginBottom: $item.css('marginBottom'), marginLeft: $item.css('marginLeft')
             });
         },
-        _getOverSortBox: function ($item, e) {
-            var itemPos = $item.position(),
-                y = itemPos.top, x = itemPos.left + ($item.width() / 2);
+        _getOverSortBox: function ($item) {
+            var itemPos = $item.offset(),y = itemPos.top, x = itemPos.left + ($item.width() / 2);
             var op = $.extend({}, _op, $item.data('op'));
-            return $(op.sortBoxs).filter(':visible').filter(function () {
-                var $sortBox = $(this), sortBoxPos = $sortBox.position(), sortBoxH = $sortBox.height(), sortBoxW = $sortBox.width();
+            return $(op.sortBoxs).filter(':visible').filter(function(){
+                var $sortBox = $(this);
+                return !$sortBox.data("accept") || -1 < $sortBox.data("accept").split(",").indexOf($item.data("type"));
+            }).filter(function () {
+                var $sortBox = $(this), sortBoxPos = $sortBox.offset(), sortBoxH = $sortBox.height(), sortBoxW = $sortBox.width();
                 return DWZ.isOver(y, x, sortBoxPos.top, sortBoxPos.left, sortBoxH, sortBoxW);
             });
         }
@@ -3863,29 +3829,24 @@ var navTab = {
         stop: function (el, event) {
             var $helper = $(arguments[0]),
                 $sortBox = $helper.data('$sortBox'),
-                $overBox = DWZ.miscDrag._getOverSortBox($sortBox.find($sortBox.attr('drag-rel')), $helper);
+                $overBox = DWZ.miscDrag._getOverSortBox($helper);
 
             if ($overBox.length > 0) { //移动到指定容器
-
                 var $dragBox = $helper.appendTo($overBox).mousedown(function (event) {
                     $(this).jDrag({event: event});
                 });
-
                 var txt = $dragBox.html(),
                     icon = $dragBox.data('icon'),
                     id = $dragBox.data('id'),
                     sequence = $overBox.find('> div').length;
-
                 var overBoxPos = $overBox.position(),
                     dragBoxPos = $dragBox.position();
-
                 var content = icon ? '<img src="' + icon + '" />' : txt;
                 $dragBox.css({
                     height: 'auto',
                     top: (dragBoxPos.top - overBoxPos.top) + 'px',
                     left: (dragBoxPos.left - overBoxPos.left) + 'px'
                 });
-
                 var rel = $sortBox.attr('rel');
                 if (rel) {
                     $('<div class="sortDrag" data-id="' + id + '"><h2>' + sequence + '</h2></div>').appendTo(rel);
@@ -3895,10 +3856,13 @@ var navTab = {
             }
         },
 
-        _getOverSortBox: function ($sortBox, $item) {
-            var itemPos = $item.offset();
-            var y = itemPos.top + ($item.height() / 2), x = itemPos.left + ($item.width() / 2);
-            return $sortBox.filter(':visible').filter(function () {
+        _getOverSortBox: function ($item) {
+            var itemPos = $item.offset(), y = itemPos.top + ($item.height() / 2), x = itemPos.left + ($item.width() / 2);
+            var op = $item.data('op');
+            return $(op.sortBoxs).filter(':visible').filter(function(){
+                var $sortBox = $(this);
+                return !$sortBox.data("accept") || -1 < $sortBox.data("accept").split(",").indexOf($item.data("type"));
+            }).filter(function () {
                 var $sortBox = $(this), sortBoxPos = $sortBox.offset(),
                     sortBoxH = $sortBox.height(), sortBoxW = $sortBox.width();
                 return DWZ.isOver(y, x, sortBoxPos.top, sortBoxPos.left, sortBoxH, sortBoxW);
@@ -3937,47 +3901,47 @@ var navTab = {
         dragSortDrag: function (el, event) {
             var $helper = $(arguments[0]), $sortBox = $helper.data('$sortBox'),
                 $placeholder = $helper.data('$placeholder');
-
             // 修复出现滚动条拖拽位置
             var $unitBox = $helper.parents(".unitBox:first"),
                 position = $helper.position();
             $helper.css({
                 top: position.top + $unitBox.scrollTop()
             });
-            var $dragList = $($sortBox.attr('drag-rel'));
-            for (var i = 0; i < $dragList.length; i++) {
-                var $overBox = DWZ.miscDrag._getOverSortBox($dragList.eq(i), $helper);
-                if ($overBox.length > 0 && $overBox[0] != $sortBox[0] && (!$overBox.data("accept") || -1 < $overBox.data("accept").split(",").indexOf($helper.data("type")) )) { //移动到其他容器
-                    if($helper.offset().top < ($overBox.offset().top + $overBox.height()/2)) {
-                        $placeholder.prependTo($overBox);
-                    } else {
-                        $placeholder.appendTo($overBox);
+            var $overBox = DWZ.miscDrag._getOverSortBox($helper);
+            if ($overBox.length > 0 && $overBox[0] != $sortBox[0]) { //移动到其他容器
+                var $items = $overBox.find(">.dragItem").filter(':visible').filter(':not(.sortDragPlaceholder, .sortDragHelper)');
+                if($items.length) {
+                    helperPos = $helper.offset();
+                    for (var i = 0; i < $items.length; i++) {
+                        var $this = $items.eq(i), position = $this.offset();
+                        if (helperPos.top > position.top + 10 ) {
+                            $this.after($placeholder);
+                        } else if (helperPos.top <= position.top || helperPos.left <= position.left) {
+                            $this.before($placeholder);
+                            break;
+                        }
                     }
+                } else {
+                    $placeholder.appendTo($overBox);
                 }
             }
-
         },
         stopSortDrag: function () {
             var $helper = $(arguments[0]), $sortBox = $helper.data('$sortBox'),
                 $placeholder = $helper.data('$placeholder'), $item = $helper.data('$item');
-
             if ($placeholder && $placeholder.is(':visible')) {
                 //复制到目标容器
                 var $destBox = $placeholder.parents(".sortDrag:first");
                 var html = $helper.html();
-                var $result = $('<div class="dragItem" data-id="' + $helper.data('id') + '" data-type="' + $helper.data('type') + '">' + html + '</div>');
-                if($helper.offset().top < ($destBox.offset().top + $destBox.height()/2)) {
-                    $destBox.prepend($result);
-                }else{
-                    $destBox.append($result);
-                }
-
+                var $result = $('<div class="dragItem">' + html + '</div>');
+                $result.attr("data-id",$helper.data("id"));
+                $result.attr("data-type",$helper.data("type"));
+                $result.insertAfter($placeholder).show();
                 $placeholder.remove();
                 $helper.remove();
                 if ($sortBox.data('duplicate') != 1) {
                     $item.remove();
                 }
-
                 //从新绑定sortDrag
                 if ($.fn.sortDrag) {
                     $destBox.sortDrag({refresh: true});
@@ -3994,7 +3958,6 @@ var navTab = {
             var op = $.extend({
                 cursor: 'move', // selector 的鼠标手势
                 sortBoxs: 'div.miscDrag', //拖动排序项父容器
-                replace: false, //2个sortBox之间拖动替换
                 items: '> dt .dragBox', //拖动排序项选择器
                 zIndex: 1000
             }, options);
@@ -4020,14 +3983,12 @@ var navTab = {
             for (var i = 0; i < $dragBoxList.length; i++) {
                 var $dragBox = $dragBoxList.eq(i), $sortDrag = $sortDragList.eq(i),
                     $dragBoxPos = $dragBox.position();
-
                 var dataItem = {
                     id: $dragBox.data('id'),
                     top: parseInt($dragBoxPos.top),
                     left: parseInt($dragBoxPos.left),
                     items: []
                 };
-
                 $sortDrag.find('.dragItem').each(function (index) {
                     var $dragItem = $(this),
                         $dragItemPos = $dragItem.position();
@@ -4035,10 +3996,8 @@ var navTab = {
                         id: $dragItem.data('id')
                     });
                 });
-
                 data.push(dataItem)
             }
-
             return data;
         },
 
@@ -4052,17 +4011,14 @@ var navTab = {
                     var dataItem = {
                         items: []
                     };
-
                     if($sortDrag.data('id')){
                         dataItem.id=$sortDrag.data('id');
                     }
-
                     $sortDrag.find('>.dragItem').each(function () {
                         var $dragItem = $(this);
                         var itemData = {
                             id: $dragItem.data('id')
                         };
-
                         $dragItem.find('.ctl-label :input').each(function () {
                             var $lable = $(this), lableName = $lable.data('name');
                             if (lableName) {
@@ -4090,14 +4046,12 @@ var navTab = {
         miscSortDrag: function (options) {
             var op = $.extend({
                 cursor: 'move', // selector 的鼠标手势
-                sortBoxs: 'dl.miscSortDrag', //拖动排序项父容器
-                replace: true, //2个sortBox之间拖动替换
+                sortBoxs: 'dl.miscSortDrag .sortDrag', //拖动排序项父容器
                 items: '> dt .dragItem', //拖动排序项选择器
                 zIndex: 1000
             }, options);
 
             return this.each(function () {
-
                 var $sortBox = $(this);
                 $sortBox.find(op.items).each(function (i) {
                     var $item = $(this);
@@ -4106,7 +4060,6 @@ var navTab = {
                         event.preventDefault();
                     });
                 });
-
             });
         }
     });
@@ -4794,7 +4747,7 @@ function validateCallback(form, callback, confirmMsg) {
     $(".miscSortDrag", $form).each(function() {
         var $sortBox=$(this);
         if($sortBox.data("result")){
-            $sortBox.find($sortBox.data("result")).val(DWZ.obj2str($sortBox.miscSortDragData()));
+            $sortBox.find($sortBox.data("result")).val(DWZ.obj2str($sortBox.miscSortDragData($sortBox)));
         }
     });
 
