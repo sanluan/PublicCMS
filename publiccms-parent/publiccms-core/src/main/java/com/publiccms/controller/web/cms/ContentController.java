@@ -34,7 +34,7 @@ import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.component.template.ModelComponent;
 import com.publiccms.logic.service.cms.CmsCategoryModelService;
 import com.publiccms.logic.service.cms.CmsCategoryService;
-import com.publiccms.logic.service.cms.CmsContentService;
+import com.publiccms.logic.service.cms.CmsContentTextService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.views.pojo.entities.ClickStatistics;
@@ -50,7 +50,7 @@ import com.publiccms.views.pojo.model.CmsContentParameters;
 @RequestMapping("content")
 public class ContentController {
     @Autowired
-    private CmsContentService service;
+    private CmsContentTextService service;
     @Autowired
     private StatisticsComponent statisticsComponent;
     @Autowired
@@ -103,8 +103,9 @@ public class ContentController {
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
         }
         CmsContentAdminController.initContent(entity, cmsModel, draft, false, attribute, false, CommonUtils.getDate());
+        CmsContent oldEntity = null;
         if (null != entity.getId()) {
-            CmsContent oldEntity = service.getEntity(entity.getId());
+            oldEntity = service.getEntity(entity.getId());
             if (null != oldEntity && ControllerUtils.errorNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)
                     && (oldEntity.getUserId() == user.getId() || user.isSuperuser())) {
                 entity = service.update(entity.getId(), entity, entity.isOnlyUrl() ? CmsContentAdminController.ignoreProperties
@@ -133,7 +134,7 @@ public class ContentController {
             logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
                     "save.content", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
-        service.saveTagAndAttribute(site.getId(), user.getId(), entity.getId(), contentParameters, cmsModel,
+        service.saveTagAndAttribute(site.getId(), user.getId(), entity, oldEntity, contentParameters, cmsModel,
                 category.getExtendId(), attribute);
         return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
     }

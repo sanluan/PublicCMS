@@ -15,3 +15,18 @@ INSERT INTO `sys_module` VALUES ('page_diy', 'cmsPage/diy', 'cmsPage/region,cmsP
 INSERT INTO `sys_module_lang` VALUES ('page_diy', 'en', 'Visualized page');
 INSERT INTO `sys_module_lang` VALUES ('page_diy', 'ja', '視覚化されたページ');
 INSERT INTO `sys_module_lang` VALUES ('page_diy', 'zh', '页面可视化');
+-- 2022-05-10 --
+CREATE TABLE `cms_content_text_history` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `content_id` bigint(20) NOT NULL COMMENT '内容',
+  `field_name` varchar(100) NOT NULL COMMENT '字段名',
+  `create_date` datetime NOT NULL COMMENT '创建日期',
+  `user_id` bigint(20) NOT NULL COMMENT '修改用户',
+  `text` longtext NOT NULL COMMENT '文本',
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `cms_content_history_content_id` (`content_id`,`field_name`,`create_date`,`user_id`)
+) COMMENT='内容扩展';
+INSERT INTO `sys_module` VALUES ('content_text_history', 'cmsContentTextHistory/lookup', 'cmsContentTextHistory/use', NULL, 'content_add', 0, 0);
+INSERT INTO `sys_module_lang` VALUES ('content_text_history', 'en', 'Modify records');
+INSERT INTO `sys_module_lang` VALUES ('content_text_history', 'ja', 'レコードを変更する');
+INSERT INTO `sys_module_lang` VALUES ('content_text_history', 'zh', '修改记录');

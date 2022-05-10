@@ -60,7 +60,7 @@ import com.publiccms.logic.service.cms.CmsCategoryModelService;
 import com.publiccms.logic.service.cms.CmsCategoryService;
 import com.publiccms.logic.service.cms.CmsContentAttributeService;
 import com.publiccms.logic.service.cms.CmsContentRelatedService;
-import com.publiccms.logic.service.cms.CmsContentService;
+import com.publiccms.logic.service.cms.CmsContentTextService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.sys.SysDeptCategoryService;
@@ -81,7 +81,7 @@ import com.publiccms.views.pojo.query.CmsContentQuery;
 @RequestMapping("cmsContent")
 public class CmsContentAdminController {
     @Autowired
-    private CmsContentService service;
+    private CmsContentTextService service;
     @Autowired
     private CmsContentAttributeService attributeService;
     @Autowired
@@ -160,13 +160,15 @@ public class CmsContentAdminController {
         }
         Date now = CommonUtils.getDate();
         initContent(entity, cmsModel, draft, checked, attribute, true, now);
+        CmsContent oldEntity = null;
         if (null != entity.getId()) {
-            CmsContent oldEntity = service.getEntity(entity.getId());
+            oldEntity = service.getEntity(entity.getId());
             if (null == oldEntity || ControllerUtils.errorNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)
                     || ControllerUtils.errorCustom("noright", !ControllerUtils.hasContentPermissions(admin, oldEntity), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             entity.setUpdateDate(now);
+            entity.setUpdateUserId(admin.getId());
             entity = service.update(entity.getId(), entity, entity.isOnlyUrl() ? ignoreProperties : ignorePropertiesWithUrl);
             if (null != entity) {
                 logOperateService
@@ -185,7 +187,7 @@ public class CmsContentAdminController {
                     .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                             "save.content", RequestUtils.getIpAddress(request), now, JsonUtils.getString(entity)));
         }
-        entity = service.saveTagAndAttribute(site.getId(), admin.getId(), entity.getId(), contentParameters, cmsModel,
+        entity = service.saveTagAndAttribute(site.getId(), admin.getId(), entity, oldEntity, contentParameters, cmsModel,
                 category.getExtendId(), attribute);
         if (null != checked && checked) {
             entity = service.check(site.getId(), admin, entity.getId());
@@ -226,9 +228,9 @@ public class CmsContentAdminController {
         entity.setHasProducts(cmsModel.isHasProducts());
         entity.setOnlyUrl(cmsModel.isOnlyUrl());
         if ((null == checked || !checked) && null != draft && draft) {
-            entity.setStatus(CmsContentService.STATUS_DRAFT);
+            entity.setStatus(CmsContentTextService.STATUS_DRAFT);
         } else {
-            entity.setStatus(CmsContentService.STATUS_PEND);
+            entity.setStatus(CmsContentTextService.STATUS_PEND);
         }
         if (null == entity.getPublishDate()) {
             entity.setPublishDate(now);
@@ -843,7 +845,7 @@ public class CmsContentAdminController {
                     Map<String, String> config = configComponent.getConfigData(category.getSiteId(),
                             SiteConfigComponent.CONFIG_CODE_SITE);
                     int status = ConfigComponent.getInt(config.get(SiteConfigComponent.CONFIG_DEFAULT_CONTENT_STATUS),
-                            CmsContentService.STATUS_PEND);
+                            CmsContentTextService.STATUS_PEND);
                     long userId;
                     if (category.getSiteId() == site.getId()) {
                         userId = entity.getUserId();

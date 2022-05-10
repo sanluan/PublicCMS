@@ -18,7 +18,7 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsContentAttributeService;
-import com.publiccms.logic.service.cms.CmsContentService;
+import com.publiccms.logic.service.cms.CmsContentTextService;
 import com.publiccms.views.pojo.entities.ClickStatistics;
 
 /**
@@ -99,7 +99,7 @@ public class CmsContentDirective extends AbstractTemplateDirective {
     }
 
     @Autowired
-    private CmsContentService service;
+    private CmsContentTextService service;
     @Autowired
     private CmsContentAttributeService attributeService;
     @Autowired

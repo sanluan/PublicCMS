@@ -134,7 +134,19 @@ CREATE TABLE `cms_content_related` (
   KEY `cms_content_related_content_id`(`content_id`, `sort`),
   KEY `cms_content_related_related_content_id` (`related_content_id`)
 ) COMMENT='推荐推荐';
-
+-- ----------------------------
+-- Table structure for cms_content_text_history
+-- ----------------------------
+CREATE TABLE `cms_content_text_history` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `content_id` bigint(20) NOT NULL COMMENT '内容',
+  `field_name` varchar(100) NOT NULL COMMENT '字段名',
+  `create_date` datetime NOT NULL COMMENT '创建日期',
+  `user_id` bigint(20) NOT NULL COMMENT '修改用户',
+  `text` longtext NOT NULL COMMENT '文本',
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `cms_content_history_content_id` (`content_id`,`field_name`,`create_date`,`user_id`)
+) COMMENT='内容扩展';
 -- ----------------------------
 -- Table structure for cms_dictionary
 -- ----------------------------
@@ -821,6 +833,7 @@ INSERT INTO `sys_module` VALUES ('content_select_template', 'cmsTemplate/lookup'
 INSERT INTO `sys_module` VALUES ('content_select_user', 'sysUser/lookup', 'sysUser/lookup_list', NULL, 'content_add', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_select_vote', 'cmsVote/lookup', NULL, NULL, 'content_add', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_sort', 'cmsContent/sortParameters', 'cmsContent/sort', '', 'content_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('content_text_history', 'cmsContentTextHistory/lookup', 'cmsContentTextHistory/use', NULL, 'content_add', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_uncheck', NULL, 'cmsContent/uncheck', '', 'content_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_view', 'cmsContent/view', NULL, '', 'content_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_vote', 'cmsVote/list', NULL, 'icon-ticket', 'content_menu', 1, 5);
@@ -1172,6 +1185,9 @@ INSERT INTO `sys_module_lang` VALUES ('content_select_vote', 'zh', '选择投票
 INSERT INTO `sys_module_lang` VALUES ('content_sort', 'en', 'Sort');
 INSERT INTO `sys_module_lang` VALUES ('content_sort', 'ja', 'トッピング');
 INSERT INTO `sys_module_lang` VALUES ('content_sort', 'zh', '置顶');
+INSERT INTO `sys_module_lang` VALUES ('content_text_history', 'en', 'Modify records');
+INSERT INTO `sys_module_lang` VALUES ('content_text_history', 'ja', 'レコードを変更する');
+INSERT INTO `sys_module_lang` VALUES ('content_text_history', 'zh', '修改记录');
 INSERT INTO `sys_module_lang` VALUES ('content_uncheck', 'en', 'Uncheck');
 INSERT INTO `sys_module_lang` VALUES ('content_uncheck', 'ja', '審査を取り消す');
 INSERT INTO `sys_module_lang` VALUES ('content_uncheck', 'zh', '撤销审核');

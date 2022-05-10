@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import com.publiccms.common.base.AbstractTaskDirective;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
-import com.publiccms.logic.service.cms.CmsContentService;
+import com.publiccms.logic.service.cms.CmsContentTextService;
 
 /**
  *
@@ -30,6 +30,6 @@ public class IndexContentDirective extends AbstractTaskDirective {
     }
 
     @Autowired
-    private CmsContentService service;
+    private CmsContentTextService service;
     
 }

@@ -42,7 +42,7 @@ import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.sys.SysDatasource;
 import com.publiccms.entities.sys.SysSiteDatasource;
 import com.publiccms.logic.service.cms.CmsCommentService;
-import com.publiccms.logic.service.cms.CmsContentService;
+import com.publiccms.logic.service.cms.CmsContentTextService;
 import com.publiccms.logic.service.sys.SysDatasourceService;
 import com.publiccms.logic.service.sys.SysSiteDatasourceService;
 
@@ -63,7 +63,7 @@ public class DatasourceComponent implements SiteCache {
     @Autowired
     private SysSiteDatasourceService siteDatasourceService;
     @Autowired
-    private CmsContentService contentService;
+    private CmsContentTextService contentService;
     @Autowired
     private CmsCommentService commentService;
     @Autowired

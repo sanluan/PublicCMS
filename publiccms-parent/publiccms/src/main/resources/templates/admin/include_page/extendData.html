@@ -72,7 +72,9 @@
             <#if 'view'=type>
                 <#if safe>${(value?no_esc)!}<#else>${value!}</#if>
             <#else>
-                <div><a class="button" href="common/import.html?field=value" lookupGroup="${name}[${index}]" width="500" height="200"><@t.page 'import_doc'/></a></div>
+                <div>
+                    <a class="button" href="common/import.html?fieldName=extend.${extend.id.code}&field=value" lookupGroup="${name}[${index}]" width="500" height="200"><@t.page 'import_doc'/></a>
+                </div>
                 <textarea name="${inputName}"<#if extend.maxlength?has_content> maxlength="${extend.maxlength}"</#if> <#if 'customform'!=type>class="editor<#if extend.required> required</#if>" editorType="${extend.inputType}" </#if>cols="80" rows="20">${(value)!}</textarea>
             </#if>
             <#break>

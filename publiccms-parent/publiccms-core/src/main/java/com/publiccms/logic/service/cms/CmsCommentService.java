@@ -203,5 +203,5 @@ public class CmsCommentService extends BaseService<CmsComment> {
     @Autowired
     private CmsCommentDao dao;
     @Autowired
-    private CmsContentService contentService;
+    private CmsContentTextService contentService;
 }

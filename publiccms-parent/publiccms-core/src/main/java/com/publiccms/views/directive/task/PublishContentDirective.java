@@ -14,7 +14,7 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.template.TemplateComponent;
-import com.publiccms.logic.service.cms.CmsContentService;
+import com.publiccms.logic.service.cms.CmsContentTextService;
 
 /**
  *
@@ -46,6 +46,6 @@ public class PublishContentDirective extends AbstractTaskDirective {
     @Autowired
     private TemplateComponent templateComponent;
     @Autowired
-    private CmsContentService service;
+    private CmsContentTextService service;
     
 }

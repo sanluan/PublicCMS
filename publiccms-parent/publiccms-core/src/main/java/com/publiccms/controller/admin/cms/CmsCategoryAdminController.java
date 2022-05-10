@@ -34,7 +34,7 @@ import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.ModelComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsCategoryService;
-import com.publiccms.logic.service.cms.CmsContentService;
+import com.publiccms.logic.service.cms.CmsContentTextService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.views.pojo.model.CmsCategoryParameters;
@@ -54,7 +54,7 @@ public class CmsCategoryAdminController {
     @Autowired
     private CmsCategoryService service;
     @Autowired
-    private CmsContentService contentService;
+    private CmsContentTextService contentService;
     @Autowired
     private TemplateComponent templateComponent;
     @Autowired

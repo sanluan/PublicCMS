@@ -38,6 +38,7 @@ import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.cms.CmsContentAttribute;
 import com.publiccms.entities.cms.CmsContentFile;
+import com.publiccms.entities.cms.CmsContentTextHistory;
 import com.publiccms.entities.cms.CmsContentProduct;
 import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
@@ -58,7 +59,7 @@ import com.publiccms.views.pojo.query.CmsContentQuery;
  */
 @Service
 @Transactional
-public class CmsContentService extends BaseService<CmsContent> {
+public class CmsContentTextService extends BaseService<CmsContent> {
     private static String[] DICTIONARY_INPUT_TYPES = { Config.INPUTTYPE_NUMBER, Config.INPUTTYPE_BOOLEAN, Config.INPUTTYPE_USER,
             Config.INPUTTYPE_DEPT, Config.INPUTTYPE_CONTENT, Config.INPUTTYPE_CATEGORY, Config.INPUTTYPE_DICTIONARY,
             Config.INPUTTYPE_CATEGORYTYPE, Config.INPUTTYPE_TAGTYPE };
@@ -190,9 +191,8 @@ public class CmsContentService extends BaseService<CmsContent> {
         return dao.getListByQuoteId(siteId, quoteId);
     }
 
-    public CmsContent saveTagAndAttribute(short siteId, Long userId, Long id, CmsContentParameters contentParameters,
-            CmsModel cmsModel, Integer extendId, CmsContentAttribute attribute) {
-        CmsContent entity = getEntity(id);
+    public CmsContent saveTagAndAttribute(short siteId, Long userId, CmsContent entity, CmsContent oldEntity,
+            CmsContentParameters contentParameters, CmsModel cmsModel, Integer extendId, CmsContentAttribute attribute) {
         if (null != entity) {
             Long[] tagIds = tagService.update(siteId, contentParameters.getTags());
             entity.setTagIds(arrayToDelimitedString(tagIds, CommonConstants.BLANK_SPACE));
@@ -221,8 +221,18 @@ public class CmsContentService extends BaseService<CmsContent> {
                     entity.isHasFiles() ? contentParameters.getFiles() : null,
                     entity.isHasImages() ? contentParameters.getImages() : null,
                     entity.isHasProducts() ? contentParameters.getProducts() : null, attribute);
-            attributeService.updateAttribute(id, attribute);// 更新保存扩展字段，文本字段
-            cmsContentRelatedService.update(id, userId, contentParameters.getContentRelateds());// 更新保存推荐内容
+            if (null != oldEntity) {
+                CmsContentAttribute oldAttribute = attributeService.getEntity(entity.getId());
+                if (null != oldAttribute && null != oldAttribute.getText()
+                        && !oldAttribute.getText().equals(attribute.getText())) {
+                    CmsContentTextHistory history = new CmsContentTextHistory(entity.getId(), "text",
+                            null == oldEntity.getUpdateDate() ? entity.getCreateDate() : entity.getUpdateDate(),
+                            null == oldEntity.getUpdateUserId() ? userId : oldEntity.getUpdateUserId(), oldAttribute.getText());
+                    contentHistoryService.save(history);
+                }
+            }
+            attributeService.updateAttribute(entity.getId(), attribute);// 更新保存扩展字段，文本字段
+            cmsContentRelatedService.update(entity.getId(), userId, contentParameters.getContentRelateds());// 更新保存推荐内容
         }
         return entity;
     }
@@ -879,6 +889,8 @@ public class CmsContentService extends BaseService<CmsContent> {
     private CmsTagService tagService;
     @Autowired
     private CmsContentFileService contentFileService;
+    @Autowired
+    private CmsContentHistoryService contentHistoryService;
     @Autowired
     private CmsContentProductService contentProductService;
     @Autowired

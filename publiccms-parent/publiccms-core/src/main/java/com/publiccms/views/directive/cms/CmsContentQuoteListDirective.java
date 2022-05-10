@@ -14,7 +14,7 @@ import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.site.DatasourceComponent;
-import com.publiccms.logic.service.cms.CmsContentService;
+import com.publiccms.logic.service.cms.CmsContentTextService;
 
 /**
  *
@@ -37,7 +37,7 @@ public class CmsContentQuoteListDirective extends AbstractTemplateDirective {
     }
 
     @Autowired
-    private CmsContentService service;
+    private CmsContentTextService service;
     @Autowired
     private DatasourceComponent datasourceComponent;
 }

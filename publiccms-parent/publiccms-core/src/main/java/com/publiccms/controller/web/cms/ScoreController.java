@@ -22,7 +22,7 @@ import com.publiccms.logic.component.config.ConfigComponent;
 import com.publiccms.logic.component.config.SiteConfigComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsCommentService;
-import com.publiccms.logic.service.cms.CmsContentService;
+import com.publiccms.logic.service.cms.CmsContentTextService;
 import com.publiccms.logic.service.cms.CmsUserScoreService;
 
 /**
@@ -129,7 +129,7 @@ public class ScoreController {
     @Autowired
     private CmsCommentService commentService;
     @Autowired
-    private CmsContentService contentService;
+    private CmsContentTextService contentService;
     @Autowired
     private TemplateComponent templateComponent;
 

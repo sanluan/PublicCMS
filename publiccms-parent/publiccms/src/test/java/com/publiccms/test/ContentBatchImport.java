@@ -48,7 +48,7 @@ import com.publiccms.entities.cms.CmsContentAttribute;
 import com.publiccms.entities.cms.CmsContentFile;
 import com.publiccms.logic.service.cms.CmsContentAttributeService;
 import com.publiccms.logic.service.cms.CmsContentFileService;
-import com.publiccms.logic.service.cms.CmsContentService;
+import com.publiccms.logic.service.cms.CmsContentTextService;
 
 import config.spring.ApplicationConfig;
 
@@ -57,7 +57,7 @@ import config.spring.ApplicationConfig;
 @ContextConfiguration(classes = ApplicationConfig.class)
 public class ContentBatchImport {
     @Autowired
-    private CmsContentService contentService;
+    private CmsContentTextService contentService;
     @Autowired
     private CmsContentAttributeService contentAttributeService;
     @Autowired

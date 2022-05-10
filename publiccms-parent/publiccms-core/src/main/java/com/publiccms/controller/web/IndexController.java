@@ -40,7 +40,7 @@ import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateCacheComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsCategoryService;
-import com.publiccms.logic.service.cms.CmsContentService;
+import com.publiccms.logic.service.cms.CmsContentTextService;
 import com.publiccms.logic.service.sys.SysUserService;
 import com.publiccms.views.pojo.entities.ClickStatistics;
 import com.publiccms.views.pojo.entities.CmsPageData;
@@ -65,7 +65,7 @@ public class IndexController {
     @Autowired
     protected SiteComponent siteComponent;
     @Autowired
-    private CmsContentService contentService;
+    private CmsContentTextService contentService;
     @Autowired
     private CmsCategoryService categoryService;
     @Autowired

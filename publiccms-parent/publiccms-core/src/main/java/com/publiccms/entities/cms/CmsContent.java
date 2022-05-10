@@ -131,6 +131,8 @@ public class CmsContent implements java.io.Serializable {
     private Date expiryDate;
     @GeneratorColumn(title = "审核日期", order = true)
     private Date checkDate;
+    @GeneratorColumn(title = "更新用户")
+    private Long updateUserId;
     @GeneratorColumn(title = "更新日期", order = true)
     private Date updateDate;
     @GeneratorColumn(title = "创建日期")
@@ -175,51 +177,6 @@ public class CmsContent implements java.io.Serializable {
         this.comments = comments;
         this.clicks = clicks;
         this.publishDate = publishDate;
-        this.createDate = createDate;
-        this.sort = sort;
-        this.status = status;
-        this.disabled = disabled;
-    }
-
-    public CmsContent(short siteId, String title, long userId, Integer deptId, Long checkUserId, int categoryId, String modelId,
-            Long parentId, Long quoteContentId, boolean copied, boolean contribute, String author, String editor, boolean onlyUrl,
-            boolean hasImages, boolean hasFiles, boolean hasProducts, boolean hasStatic, String url, String description,
-            String tagIds, String dictionaryValues, String cover, int childs, int scores, int scoreUsers, BigDecimal score,
-            int comments, int clicks, Date publishDate, Date expiryDate, Date checkDate, Date updateDate, Date createDate,
-            int sort, int status, boolean disabled) {
-        this.siteId = siteId;
-        this.title = title;
-        this.userId = userId;
-        this.deptId = deptId;
-        this.checkUserId = checkUserId;
-        this.categoryId = categoryId;
-        this.modelId = modelId;
-        this.parentId = parentId;
-        this.quoteContentId = quoteContentId;
-        this.copied = copied;
-        this.contribute = contribute;
-        this.author = author;
-        this.editor = editor;
-        this.onlyUrl = onlyUrl;
-        this.hasImages = hasImages;
-        this.hasFiles = hasFiles;
-        this.hasProducts = hasProducts;
-        this.hasStatic = hasStatic;
-        this.url = url;
-        this.description = description;
-        this.tagIds = tagIds;
-        this.dictionaryValues = dictionaryValues;
-        this.cover = cover;
-        this.childs = childs;
-        this.scores = scores;
-        this.scoreUsers = scoreUsers;
-        this.score = score;
-        this.comments = comments;
-        this.clicks = clicks;
-        this.publishDate = publishDate;
-        this.expiryDate = expiryDate;
-        this.checkDate = checkDate;
-        this.updateDate = updateDate;
         this.createDate = createDate;
         this.sort = sort;
         this.status = status;
@@ -525,6 +482,15 @@ public class CmsContent implements java.io.Serializable {
 
     public void setCheckDate(Date checkDate) {
         this.checkDate = checkDate;
+    }
+
+    @Column(name = "update_user_id")
+    public Long getUpdateUserId() {
+        return this.updateUserId;
+    }
+
+    public void setUpdateUserId(Long updateUserId) {
+        this.updateUserId = updateUserId;
     }
 
     @Temporal(TemporalType.TIMESTAMP)

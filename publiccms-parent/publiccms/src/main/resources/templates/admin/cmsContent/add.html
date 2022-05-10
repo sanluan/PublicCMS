@@ -204,7 +204,7 @@ $('input[name=timing]',navTab.getCurrentPanel()).click();
                  <@_sysExtendFieldList extendId=category.extendId>
                     <#assign extendList=list![]/>
                     <#assign extendValue=attribute!{}/>
-                    <@extendData 'categoryExtendDataList' extendList extendValue/>
+                    <@extendData 'categoryExtendDataList' extendList extendValue 'contentForm'/>
                  </@_sysExtendFieldList>
             </#if>
             <#assign
@@ -216,7 +216,10 @@ $('input[name=timing]',navTab.getCurrentPanel()).click();
                 <dl class="nowrap">
                     <dt>${(model.fieldTextMap['content'])!}:</dt>
                     <dd>
-                        <div><a class="button" href="common/import.html" lookupGroup="" width="500" height="200"><@t.page 'import_doc'/></a></div>
+                        <div>
+                            <a class="button" href="common/import.html" lookupGroup="" width="500" height="200"><@t.page 'import_doc'/></a>
+                            <a class="button" href="cmsContentHistory/lookup.html?fieldName=text" lookupGroup=""><@t.page 'content.history'/></a>
+                        </div>
                         <textarea name="text" class="editor<#if requiredFieldList?seq_contains('content')> required</#if>" escape="true" editorType="${model.editorType!}">${(attribute.text)!}</textarea>
                     </dd>
                 </dl>

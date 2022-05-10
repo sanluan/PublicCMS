@@ -26,7 +26,7 @@ import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsContent;
-import com.publiccms.logic.service.cms.CmsContentService;
+import com.publiccms.logic.service.cms.CmsContentTextService;
 import com.publiccms.views.pojo.query.CmsContentQuery;
 
 import config.spring.ApplicationConfig;
@@ -36,7 +36,7 @@ import config.spring.ApplicationConfig;
 @ContextConfiguration(classes = ApplicationConfig.class)
 public class ContentCoverCatch {
     @Autowired
-    private CmsContentService contentService;
+    private CmsContentTextService contentService;
 
     @BeforeAll
     public static void init() {

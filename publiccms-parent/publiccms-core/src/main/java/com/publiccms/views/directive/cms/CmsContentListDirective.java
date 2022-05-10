@@ -19,7 +19,7 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.site.DatasourceComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
-import com.publiccms.logic.service.cms.CmsContentService;
+import com.publiccms.logic.service.cms.CmsContentTextService;
 import com.publiccms.views.pojo.entities.ClickStatistics;
 import com.publiccms.views.pojo.query.CmsContentQuery;
 
@@ -43,7 +43,7 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
             queryEntity.setEmptyParent(handler.getBoolean("emptyParent"));
             queryEntity.setTitle(handler.getString("title"));
         } else {
-            queryEntity.setStatus(CmsContentService.STATUS_NORMAL_ARRAY);
+            queryEntity.setStatus(CmsContentTextService.STATUS_NORMAL_ARRAY);
             queryEntity.setDisabled(false);
             queryEntity.setEmptyParent(true);
             Date now = CommonUtils.getMinuteDate();
@@ -96,7 +96,7 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
     }
 
     @Autowired
-    private CmsContentService service;
+    private CmsContentTextService service;
     @Autowired
     private DatasourceComponent datasourceComponent;
     @Autowired
