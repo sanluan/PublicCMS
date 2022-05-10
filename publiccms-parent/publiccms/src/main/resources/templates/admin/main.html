@@ -1,4 +1,5 @@
 <div class="pageFormContent card" layoutH>
+	<a class="button float" href="main.html" target="navTab" rel="main"><i class="icon-refresh"></i><@t.page 'button.refresh'/></a>
     <fieldset>
         <legend><@t.page 'my_account'/></legend>
         <div class="unit">
@@ -45,18 +46,23 @@
                 </li>
                 <li>
                     <div class="card">
-                        <p>
-                            <label><@t.page 'user.last_login_date'/>:</label>${admin.lastLoginDate!}
+						<i class="icon-calendar-empty icon-large icon"></i>
+                        <p class="label">
+                            <@t.page 'user.last_login_date'/>
                         </p>
                         <p>
-                            <label><@t.page 'user.last_login_ip'/>:</label>${admin.lastLoginIp!}
+                            ${admin.lastLoginDate!}
                         </p>
                     </div>
                 </li>
-                <li>
+				<li>
                     <div class="card">
+						<i class="bi bi-cloudy-fill icon-large icon"></i>
+                        <p class="label">
+                            <@t.page 'user.last_login_ip'/>
+                        </p>
                         <p>
-                            <a class="button" href="main.html" target="navTab" rel="main"><i class="icon-refresh"></i><@t.page 'button.refresh'/></a>
+							${admin.lastLoginIp!}
                         </p>
                     </div>
                 </li>
@@ -91,7 +97,7 @@
                     </div>
                 </li>
             </ul>
-            <div id="comment" style="height:350px;width:96%;"></div>
+            <div id="comment" style="height:350px;"></div>
         </div>
 <script>
 echarts.init(document.getElementById('comment')).setOption({
@@ -131,7 +137,7 @@ echarts.init(document.getElementById('comment')).setOption({
     <fieldset>
         <legend><@t.page 'report.user'/></legend>
         <div class="unit">
-            <div id="visit" style="height:350px;width:96%;"></div>
+            <div id="visit" style="height:350px;"></div>
             <ul>
                 <li>
                     <div class="card">

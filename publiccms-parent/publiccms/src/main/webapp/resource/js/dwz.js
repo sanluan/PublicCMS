@@ -2158,7 +2158,7 @@ function initEnv() {
     }, 10);
 }
 function initLayout() {
-    var iContentW = $(window).width() - (DWZ.ui.sbar ? $("#sidebar").width() : $("#sidebar_s").width());
+    var iContentW = $(window).width() - (DWZ.ui.sbar ? $("#sidebar").width() : 0);
     var iContentH = $(window).height() - $('header').outerHeight(true) - $('footer').outerHeight(true);
     $("#navTab").css({"width":iContentW});
     $("main .tabsPageContent").height(iContentH - $('.tabsPageHeader').outerHeight(true)).find("[layoutH]").layoutH();
@@ -2265,7 +2265,7 @@ function initUI(_box) {
     if ($.fn.miscSortDrag) {
         $(".miscSortDrag", $p).miscSortDrag();
     }
-    
+
     // dwz.ajax.js
     if ($.fn.multLookup ) {
         $("[multLookup]:button", $p).multLookup();
@@ -4797,7 +4797,7 @@ function validateCallback(form, callback, confirmMsg) {
             $sortBox.find($sortBox.data("result")).val(DWZ.obj2str($sortBox.miscSortDragData()));
         }
     });
-    
+
     if (!$form.valid() ) {
         return false;
     }
