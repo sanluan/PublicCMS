@@ -114,6 +114,7 @@ public class CmsUpgrader extends AbstractCmsUpgrader {
             }
         }
         dbconfig.setProperty("jdbc.url", sb.toString());
+        dbconfig.setProperty("database", database);
         dbconfig.setProperty("jdbc.driverClassName", "com.mysql.cj.jdbc.Driver");
     }
 

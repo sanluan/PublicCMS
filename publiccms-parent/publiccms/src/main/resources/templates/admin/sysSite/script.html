@@ -11,7 +11,12 @@
             <dt>Script:</dt>
             <dd>
                 <input name="command" type="text" readonly="readonly" class="required"/>
-                <span class="info"><button type="button" class="button" onclick="commandParameter('sync.bat','siteId,batch,repo')"><@t.page 'repo_sync'/>(sync.bat)</button><button type="button" class="button" onclick="commandParameter('sync.sh','siteId,batch,repo')"><@t.page 'repo_sync'/>(sync.sh)</button></span>
+                <span class="info">
+                    <button type="button" class="button" onclick="commandParameter('sync.bat','siteId')"><@t.page 'repo_sync'/>(sync.bat)</button>
+                    <button type="button" class="button" onclick="commandParameter('sync.sh','siteId')"><@t.page 'repo_sync'/>(sync.sh)</button>
+                    <button type="button" class="button" onclick="commandParameter('backupDB.bat')"><@t.page 'backup_database'/>(backupDB.bat)</button>
+                    <button type="button" class="button" onclick="commandParameter('backupDB.sh')"><@t.page 'backup_database'/>(backupDB.sh)</button>
+                </span>
             </dd>
         </dl>
         <dl class="nowrap">
