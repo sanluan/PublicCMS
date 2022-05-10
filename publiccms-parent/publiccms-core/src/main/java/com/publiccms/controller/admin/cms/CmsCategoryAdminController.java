@@ -143,7 +143,7 @@ public class CmsCategoryAdminController {
     }
 
     /**
-     * @param siteId
+     * @param site
      * @param id
      * @param parentId
      */

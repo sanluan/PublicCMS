@@ -42,63 +42,146 @@ public class CmsContent implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
+    /**
+     * id
+     */
     @GeneratorColumn(title = "ID")
     private Long id;
     @GeneratorColumn(title = "站点", condition = true)
     @GenericField
     @JsonIgnore
     private short siteId;
+    /**
+     * title<p>
+     * 标题
+     */
     @GeneratorColumn(title = "标题", condition = true, like = true, or = true)
     @FullTextField(analyzer = "cms", projectable = Projectable.YES)
     private String title;
+    /**
+     * user id<p>
+     * 发布用户ID
+     */
     @GeneratorColumn(title = "发布用户", condition = true)
     private long userId;
+    /**
+     * dept id<p>
+     * 发布用户部门ID
+     */
     @GeneratorColumn(title = "发布部门", condition = true)
     private Integer deptId;
+    /**
+     * check user id<p>
+     * 审核用户ID
+     */
     @GeneratorColumn(title = "审核用户", condition = true)
     private Long checkUserId;
+    /**
+     * category id<p>
+     * 分类ID
+     */
     @GeneratorColumn(title = "分类", condition = true)
     @GenericField(aggregable = Aggregable.YES, projectable = Projectable.YES)
     private int categoryId;
+    /**
+     * model id<p>
+     * 模型ID
+     */
     @GeneratorColumn(title = "模型", condition = true)
     @GenericField(aggregable = Aggregable.YES, projectable = Projectable.YES)
     private String modelId;
+    /**
+     * parent id<p>
+     * 父内容ID
+     */
     @GeneratorColumn(title = "父内容", condition = true)
     @GenericField(projectable = Projectable.YES)
     private Long parentId;
+    /**
+     * quote content id<p>
+     * 引用内容ID
+     */
     @GeneratorColumn(title = "引用内容", condition = true)
     @GenericField(projectable = Projectable.YES)
     private Long quoteContentId;
+    /**
+     * copied<p>
+     * 转载
+     */
     @GeneratorColumn(title = "是否转载")
     private boolean copied;
+    /**
+     * contribute<p>
+     * 转载
+     */
     @GeneratorColumn(title = "是否投稿")
     private boolean contribute;
+    /**
+     * author<p>
+     * 作者
+     */
     @GeneratorColumn(title = "作者")
     @GenericField(projectable = Projectable.YES)
     private String author;
+    /**
+     * editor<p>
+     * 编辑
+     */
     @GeneratorColumn(title = "编辑")
     @GenericField(projectable = Projectable.YES)
     private String editor;
+    /**
+     * external link<p>
+     * 外链
+     */
     @GeneratorColumn(title = "外链")
     @GenericField(projectable = Projectable.YES)
     private boolean onlyUrl;
+    /**
+     * has images<p>
+     * 拥有图片列表
+     */
     @GeneratorColumn(title = "有图片列表", condition = true)
     @GenericField
     private boolean hasImages;
+    /**
+     * has files<p>
+     * 拥有附件列表
+     */
     @GeneratorColumn(title = "有附件列表", condition = true)
     @GenericField
     private boolean hasFiles;
+    /**
+     * has products<p>
+     * 拥有产品列表
+     */
     @GeneratorColumn(title = "有产品列表", condition = true)
     @GenericField
     private boolean hasProducts;
+    /**
+     * has static file<p>
+     * 静态化
+     */
     @GeneratorColumn(title = "有静态化")
     private boolean hasStatic;
+    /**
+     * url<p>
+     * 链接地址
+     */
     @GeneratorColumn(title = "地址")
     @GenericField(projectable = Projectable.YES)
     private String url;
+    /**
+     * description<p>
+     * 描述
+     */
     @GeneratorColumn(title = "描述")
     @FullTextField(projectable = Projectable.YES)
     private String description;
+    /**
+     * tag ids<p>
+     * 标签id
+     */
     @GeneratorColumn(title = "标签")
     @FullTextField(analyzer = AnalyzerNames.WHITESPACE)
     private String tagIds;
@@ -106,39 +189,100 @@ public class CmsContent implements java.io.Serializable {
     @FullTextField(analyzer = AnalyzerNames.WHITESPACE)
     @JsonIgnore
     private String dictionaryValues;
+    /**
+     * cover<p>
+     * 封面图
+     */
     @GeneratorColumn(title = "封面")
     private String cover;
+    /**
+     * childs<p>
+     * 子内容数
+     */
     @GeneratorColumn(title = "子内容数")
     private int childs;
+    /**
+     * total scores<p>
+     * 总分数
+     */
     @GeneratorColumn(title = "总分数")
     private int scores;
+    /**
+     * score users<p>
+     * 评分用户数
+     */
     @GeneratorColumn(title = "评分用户数")
     private int scoreUsers;
+    /**
+     * score<p>
+     * 分数
+     */
     @GeneratorColumn(title = "分数", order = true)
     private BigDecimal score;
+    /**
+     * comments<p>
+     * 评论数
+     */
     @GeneratorColumn(title = "评论数", order = true)
     private int comments;
+    /**
+     * clicks<p>
+     * 点击数
+     */
     @GeneratorColumn(title = "点击数", order = true)
     @GenericField(sortable = Sortable.YES, projectable = Projectable.YES)
     private int clicks;
+    /**
+     * publish date<p>
+     * 发布日期
+     */
     @GeneratorColumn(title = "发布日期", condition = true, order = true)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @GenericField(sortable = Sortable.YES, projectable = Projectable.YES)
     private Date publishDate;
+    /**
+     * expiry date<p>
+     * 过期日期
+     * 
+     */
     @GeneratorColumn(title = "过期日期", condition = true, order = true)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @GenericField
     private Date expiryDate;
+    /**
+     * check date<p>
+     * 审核日期
+     */
     @GeneratorColumn(title = "审核日期", order = true)
     private Date checkDate;
+    /**
+     * update user id<p>
+     * 更新用户id
+     */
     @GeneratorColumn(title = "更新用户")
     private Long updateUserId;
+    /**
+     * update date<p>
+     * 更新日期
+     */
     @GeneratorColumn(title = "更新日期", order = true)
     private Date updateDate;
+    /**
+     * create date<p>
+     * 创建日期
+     */
     @GeneratorColumn(title = "创建日期")
     private Date createDate;
+    /**
+     * top<p>
+     * 置顶级别
+     */
     @GeneratorColumn(title = "排序")
     private int sort;
+    /**
+     * status(0:Draft,1:Published,2:Pending,3:Rejected)<p>
+     * 状态(0:草稿,1:已发布,2:待审核,3:驳回)
+     */
     @GeneratorColumn(title = "状态", condition = true)
     private int status;
     @GeneratorColumn(title = "已删除", condition = true)

@@ -206,8 +206,6 @@ public class InstallServlet extends HttpServlet {
      * 检查数据库
      *
      * @param map
-     * @throws ServletException
-     * @throws IOException
      */
     private void checkDatabse(Map<String, Object> map) {
         String databaseConfiFile = CommonConstants.CMS_FILEPATH + CmsDataSource.DATABASE_CONFIG_FILENAME;

@@ -22,10 +22,31 @@ import com.publiccms.logic.service.cms.CmsContentTextService;
 import com.publiccms.views.pojo.entities.ClickStatistics;
 
 /**
- *
- * CmsContentDirective
- * 
- */
+*
+* content 内容查询指令
+* <p>
+* 参数列表
+* <ul>
+* <li><code>id</code> 内容id，结果返回<code>object</code>{@link com.publiccms.entities.cms.CmsContent} 
+* <li><code>absoluteURL</code> url处理为绝对路径 默认为<code> true</code>
+* <li><code>absoluteId</code> id处理为引用内容的ID 默认为<code> true</code>
+* <li><code>ids</code> 多个内容id，逗号或空格间隔，当id不存在时生效，结果返回<code>map</code>(id,内容){@link com.publiccms.entities.cms.CmsContent} 
+* </ul>
+* 使用示例
+* <p>
+* &lt;@_content id=1&gt;${object.title}&lt;/@_content&gt;
+* <p>
+* &lt;@_content ids=1,2,3&gt;&lt;#list map as
+* k,v&gt;${v.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@_content&gt;
+* 
+* <pre>
+*  &lt;script&gt;
+   $.getJSON('//cms.publiccms.com/api/directive/content?id=1', function(data){    
+     console.log(data.title);
+   });
+   &lt;/script&gt;
+* </pre>
+*/
 @Component
 public class CmsContentDirective extends AbstractTemplateDirective {
 

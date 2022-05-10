@@ -259,7 +259,6 @@ public class DatasourceComponent implements SiteCache {
 
     /**
      * @param siteId
-     * @param config
      * @return datasource list
      */
     private List<String> getDatasourceList(short siteId) {

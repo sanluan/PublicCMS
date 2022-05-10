@@ -11,6 +11,10 @@ import java.util.Map;
 import org.apache.lucene.analysis.cn.smart.SmartChineseAnalyzer;
 import org.apache.lucene.analysis.cn.smart.hhmm.DictionaryReloader;
 
+/**
+ * AnalyzerDictUtils
+ * 
+ */
 public class AnalyzerDictUtils {
     public static final String TXT_DICT = "dict.txt";
     public static final String TXT_SKIPWORD = "skipWord.txt";

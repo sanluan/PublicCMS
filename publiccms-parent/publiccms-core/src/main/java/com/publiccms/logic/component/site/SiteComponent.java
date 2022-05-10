@@ -113,7 +113,7 @@ public class SiteComponent implements Cache {
     }
 
     /**
-     * @param site
+     * @param siteId
      * @param path
      * @return full file name
      */

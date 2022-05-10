@@ -518,7 +518,7 @@ public class DiyComponent implements SiteCache {
     /**
      * 获取DIY数据
      *
-     * @param dirPath
+     * @param site
      * @return template metadata map
      */
     private Map<String, CmsRegionData> getRegionDataMap(SysSite site) {

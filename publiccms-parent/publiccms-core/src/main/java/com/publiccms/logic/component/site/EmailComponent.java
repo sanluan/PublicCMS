@@ -215,15 +215,6 @@ public class EmailComponent implements SiteCache, Config {
         return send(siteId, toAddress, cc, bcc, title, html, true, fileName, file);
     }
 
-    /**
-     * @param toAddress
-     * @param fromAddress
-     * @param title
-     * @param content
-     * @param isHtml
-     * @return whether to send successfully
-     * @throws MessagingException
-     */
     private boolean send(short siteId, String[] toAddress, String[] cc, String[] bcc, String title, String content,
             boolean isHtml, String fileName, File file) throws MessagingException {
         Map<String, String> config = BeanComponent.getConfigComponent().getConfigData(siteId, CONFIG_CODE);

@@ -91,7 +91,6 @@ public class TinymceAdminController {
     /**
      * @param site
      * @param admin
-     * @param start
      * @return view name
      */
     @SuppressWarnings("unchecked")
