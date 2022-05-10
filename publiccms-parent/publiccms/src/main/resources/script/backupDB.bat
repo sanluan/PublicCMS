@@ -1,6 +1,6 @@
 @echo off
 
-set backup_date=%date%_%time%
+set backup_date=%date%_%time:~0,2%_%time:~3,2%_%time:~6,2%
 
 set DATABASE=%1
 set USERNAME=%2
@@ -20,5 +20,5 @@ if "%USERNAME%"=="" (
 )
 
 :exec
-mysqldump --add-drop-table -u%USERNAME% -p%PASSWORD% %DATABASE% --single-transaction > ../backup/publiccms-%backup_date%.sql
+mysqldump --add-drop-table --single-transaction -u%USERNAME% -p%PASSWORD% %DATABASE%>../backup/"publiccms-%backup_date%.sql"
 echo complete!
