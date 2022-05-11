@@ -21,6 +21,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.publiccms.common.handler.FullBeanNameGenerator;
 import com.publiccms.common.interceptor.AdminContextInterceptor;
 import com.publiccms.common.interceptor.CsrfInterceptor;
@@ -117,6 +119,9 @@ public class AdminConfig implements WebMvcConfigurer {
                 List<MediaType> list = new ArrayList<>();
                 list.add(MediaType.TEXT_PLAIN);
                 ((MappingJackson2HttpMessageConverter) converter).setSupportedMediaTypes(list);
+                SimpleModule module = new SimpleModule();
+                module.addSerializer(Long.class, ToStringSerializer.instance);
+                ((MappingJackson2HttpMessageConverter) converter).getObjectMapper().registerModule(module);
             }
         }
     }

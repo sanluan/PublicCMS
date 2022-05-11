@@ -14,6 +14,8 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.publiccms.common.handler.FullBeanNameGenerator;
 import com.publiccms.common.interceptor.SiteInterceptor;
 
@@ -41,6 +43,9 @@ public class ApiConfig implements WebMvcConfigurer {
         MappingJackson2HttpMessageConverter bean = new MappingJackson2HttpMessageConverter();
         List<MediaType> list = new ArrayList<>();
         list.add(MediaType.TEXT_PLAIN);
+        SimpleModule module = new SimpleModule();
+        module.addSerializer(Long.class, ToStringSerializer.instance);
+        bean.getObjectMapper().registerModule(module);
         bean.setSupportedMediaTypes(list);
         return bean;
     }
