@@ -54,7 +54,7 @@ import com.publiccms.views.pojo.query.CmsContentQuery;
  * <li><code>pageSize</code> 每页条数
  * </ul>
  * <p>
- * 返回结果
+ * 返回结果page子属性:
  * <ul>
  * <li><code>totalCount</code> int类型 数据总数
  * <li><code>pageIndex</code> int类型 当前页码

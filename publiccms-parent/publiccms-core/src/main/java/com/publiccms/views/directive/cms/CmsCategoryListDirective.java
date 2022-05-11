@@ -34,11 +34,12 @@ import com.publiccms.views.pojo.query.CmsCategoryQuery;
  * <li><code>pageSize</code> 每页条数
  * </ul>
  * <p>
- * 返回结果
+ * 返回结果page子属性:
  * <ul>
  * <li><code>totalCount</code> int类型 数据总数
  * <li><code>pageIndex</code> int类型 当前页码
- * <li><code>list</code> List类型 查询结果实体列表 {@link com.publiccms.entities.cms.CmsCategory} 
+ * <li><code>list</code> List类型 查询结果实体列表
+ * {@link com.publiccms.entities.cms.CmsCategory}
  * <li><code>totalPage</code> int类型 总页数
  * <li><code>firstResult</code> int类型 第一条序号
  * <li><code>firstPage</code> boolean类型 是否第一页
@@ -48,10 +49,11 @@ import com.publiccms.views.pojo.query.CmsCategoryQuery;
  * </ul>
  * 使用示例
  * <p>
- * &lt;@_categoryList pageSize=10&gt;&lt;#list page.list as a&gt;${a.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@_categoryList&gt;
+ * &lt;@_categoryList pageSize=10&gt;&lt;#list page.list as
+ * a&gt;${a.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@_categoryList&gt;
  * 
  * <pre>
- *  &lt;script&gt;
+   &lt;script&gt;
     $.getJSON('//cms.publiccms.com/api/directive/categoryList?pageSize=10', function(data){    
       console.log(data.totalCount);
     });

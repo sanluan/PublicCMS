@@ -16,8 +16,30 @@ import com.publiccms.views.pojo.entities.CmsCategoryType;
 
 /**
  *
- * CmsCategoryTypeDirective
+ * categoryType 分类类型查询指令
+ * <p>
+ * 参数列表
+ * <ul>
+ * <li><code>id</code> 分类id，结果返回<code>object</code>
+ * {@link com.publiccms.entities.cms.CmsCategoryType}
+ * <li><code>ids</code>
+ * 多个分类id，逗号或空格间隔，当id或code为空时生效，结果返回<code>map</code>(id,分类)
+ * {@link com.publiccms.entities.cms.CmsCategoryType}
+ * </ul>
+ * 使用示例
+ * <p>
+ * &lt;@_categoryType id=1&gt;${object.name}&lt;/@_categoryType&gt;
+ * <p>
+ * &lt;@_categoryType ids=1,2,3&gt;&lt;#list map as
+ * k,v&gt;${v.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@_categoryType&gt;
  * 
+ * <pre>
+  &lt;script&gt;
+   $.getJSON('//cms.publiccms.com/api/directive/categoryType?id=banner', function(data){    
+     console.log(data.name);
+   });
+   &lt;/script&gt;
+ * </pre>
  */
 @Component
 public class CmsCategoryTypeDirective extends AbstractTemplateDirective {

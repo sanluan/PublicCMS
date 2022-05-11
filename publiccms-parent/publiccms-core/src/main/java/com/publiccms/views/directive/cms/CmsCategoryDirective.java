@@ -25,10 +25,13 @@ import com.publiccms.logic.service.cms.CmsCategoryService;
  * <p>
  * 参数列表
  * <ul>
- * <li><code>id</code> 分类id，结果返回<code>object</code> {@link com.publiccms.entities.cms.CmsCategory} 
- * <li><code>code</code> 分类编码，当id不存在时生效，结果返回<code>object</code> 
+ * <li><code>id</code> 分类id，结果返回<code>object</code>
+ * {@link com.publiccms.entities.cms.CmsCategory}
+ * <li><code>code</code> 分类编码，当id为空时生效，结果返回<code>object</code>
  * <li><code>absoluteURL</code> url处理为绝对路径 默认为<code> true</code>
- * <li><code>ids</code> 多个分类id，逗号或空格间隔，当id或code不存在时生效，结果返回<code>map</code>(id,分类) {@link com.publiccms.entities.cms.CmsCategory} 
+ * <li><code>ids</code>
+ * 多个分类id，逗号或空格间隔，当id或code为空时生效，结果返回<code>map</code>(id,分类)
+ * {@link com.publiccms.entities.cms.CmsCategory}
  * </ul>
  * 使用示例
  * <p>
@@ -38,7 +41,7 @@ import com.publiccms.logic.service.cms.CmsCategoryService;
  * k,v&gt;${v.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@_category&gt;
  * 
  * <pre>
- *  &lt;script&gt;
+   &lt;script&gt;
     $.getJSON('//cms.publiccms.com/api/directive/category?id=1', function(data){    
       console.log(data.name);
     });
