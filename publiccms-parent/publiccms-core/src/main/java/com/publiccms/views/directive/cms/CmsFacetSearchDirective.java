@@ -57,8 +57,9 @@ public class CmsFacetSearchDirective extends AbstractTemplateDirective {
         }
         try {
             page = service.facetQuery(site.getId(), handler.getBoolean("projection", false), handler.getBoolean("phrase", false),
-                    highLighterQuery, word, handler.getStringArray("field"), tagIds, handler.getIntegerArray("categoryId"),
-                    handler.getStringArray("modelId"), dictionaryValues, handler.getDate("startPublishDate"),
+                    highLighterQuery, word, handler.getStringArray("fields"), tagIds, handler.getInteger("categoryId"),
+                    handler.getBoolean("containChild"), handler.getIntegerArray("categoryIds"),
+                    handler.getStringArray("modelIds"), dictionaryValues, handler.getDate("startPublishDate"),
                     handler.getDate("endPublishDate", currentDate), currentDate, handler.getString("orderField"), pageIndex,
                     count);
             @SuppressWarnings("unchecked")

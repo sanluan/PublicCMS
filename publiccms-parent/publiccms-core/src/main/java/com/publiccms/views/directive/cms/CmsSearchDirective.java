@@ -57,7 +57,7 @@ public class CmsSearchDirective extends AbstractTemplateDirective {
         }
         try {
             page = service.query(site.getId(), handler.getBoolean("projection", false), handler.getBoolean("phrase", false),
-                    highLighterQuery, word, handler.getStringArray("field"), tagIds, handler.getInteger("categoryId"),
+                    highLighterQuery, word, handler.getStringArray("fields"), tagIds, handler.getInteger("categoryId"),
                     handler.getBoolean("containChild"), handler.getIntegerArray("categoryIds"),
                     handler.getStringArray("modelIds"), dictionaryValues, handler.getDate("startPublishDate"), currentDate,
                     currentDate, handler.getString("orderField"), pageIndex, count);
