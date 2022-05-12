@@ -16,7 +16,7 @@ import com.publiccms.common.constants.CmsVersion;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsContent;
-import com.publiccms.logic.service.cms.CmsContentTextService;
+import com.publiccms.logic.service.cms.CmsContentService;
 
 import config.spring.ApplicationConfig;
 
@@ -45,7 +45,7 @@ public class CmsContentTest {
         Date now = CommonUtils.getDate();
         String text = "你好天津黑核科技有限公司";
         CmsContent entity = new CmsContent((short) 1, text, 1, 1, "1", false, false, false, false, 0, now, now, 0,
-                CmsContentTextService.STATUS_NORMAL);
+                CmsContentService.STATUS_NORMAL);
         entity.setDescription(text);
         contentService.save(entity);
         HighLighterQuery highLighterQuery = new HighLighterQuery(true);
@@ -60,5 +60,5 @@ public class CmsContentTest {
     }
 
     @Autowired
-    private CmsContentTextService contentService;
+    private CmsContentService contentService;
 }

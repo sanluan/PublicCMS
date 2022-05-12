@@ -17,7 +17,7 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
-import com.publiccms.logic.service.cms.CmsContentTextService;
+import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.views.pojo.entities.ClickStatistics;
 import com.publiccms.views.pojo.query.CmsContentQuery;
 
@@ -54,7 +54,7 @@ public class MyContentListDirective extends AbstractAppDirective {
     }
 
     @Autowired
-    private CmsContentTextService service;
+    private CmsContentService service;
     @Autowired
     private StatisticsComponent statisticsComponent;
 

@@ -21,7 +21,7 @@ import com.publiccms.entities.cms.CmsContentProduct;
 import com.publiccms.entities.trade.TradeOrderProduct;
 import com.publiccms.logic.dao.trade.TradeOrderProductDao;
 import com.publiccms.logic.service.cms.CmsContentProductService;
-import com.publiccms.logic.service.cms.CmsContentTextService;
+import com.publiccms.logic.service.cms.CmsContentService;
 
 /**
  *
@@ -75,7 +75,7 @@ public class TradeOrderProductService extends BaseService<TradeOrderProduct> {
             for (TradeOrderProduct entity : tradeOrderProductList) {
                 CmsContent content = contentMap.get(entity.getContentId());
                 CmsContentProduct product = productMap.get(entity.getProductId());
-                if (null != content && !content.isDisabled() && CmsContentTextService.STATUS_NORMAL == content.getStatus()
+                if (null != content && !content.isDisabled() && CmsContentService.STATUS_NORMAL == content.getStatus()
                         && now.after(content.getPublishDate())
                         && (null == content.getExpiryDate() || now.before(content.getExpiryDate())) && null != product
                         && product.getContentId() == content.getId() && 0 < product.getInventory() && 0 < entity.getQuantity()
@@ -101,7 +101,7 @@ public class TradeOrderProductService extends BaseService<TradeOrderProduct> {
     @Autowired
     private TradeOrderProductDao dao;
     @Autowired
-    private CmsContentTextService contentService;
+    private CmsContentService contentService;
     @Autowired
     private CmsContentProductService productService;
 }

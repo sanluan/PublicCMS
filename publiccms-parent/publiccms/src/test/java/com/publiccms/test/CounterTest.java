@@ -15,7 +15,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.publiccms.common.constants.CmsVersion;
-import com.publiccms.logic.service.cms.CmsContentTextService;
+import com.publiccms.logic.service.cms.CmsContentService;
 
 import config.spring.ApplicationConfig;
 
@@ -60,14 +60,14 @@ public class CounterTest {
     }
 
     @Autowired
-    private CmsContentTextService contentService;
+    private CmsContentService contentService;
 }
 
 class CounterTestTask implements Runnable {
-    CmsContentTextService contentService;
+    CmsContentService contentService;
     Long contentId;
 
-    public CounterTestTask(Long contentId, CmsContentTextService contentService) {
+    public CounterTestTask(Long contentId, CmsContentService contentService) {
         this.contentId = contentId;
         this.contentService = contentService;
     }

@@ -41,7 +41,7 @@ import com.publiccms.logic.service.cms.CmsCategoryModelService;
  * 
  * <pre>
   &lt;script&gt;
-   $.getJSON('//cms.publiccms.com/api/directive/categoryModel?categoryId=1&modelId=article', function(data){    
+   $.getJSON('//cms.publiccms.com/api/directive/categoryModel?categoryId=1&amp;modelId=article', function(data){    
      console.log(data.templatePath);
    });
    &lt;/script&gt;

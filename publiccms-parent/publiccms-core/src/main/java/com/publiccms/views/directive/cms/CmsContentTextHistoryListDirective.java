@@ -7,7 +7,7 @@ import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.publiccms.logic.service.cms.CmsContentHistoryService;
+import com.publiccms.logic.service.cms.CmsContentTextHistoryService;
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.handler.PageHandler;
@@ -29,6 +29,6 @@ public class CmsContentTextHistoryListDirective extends AbstractTemplateDirectiv
     }
 
     @Autowired
-    private CmsContentHistoryService service;
+    private CmsContentTextHistoryService service;
 
 }

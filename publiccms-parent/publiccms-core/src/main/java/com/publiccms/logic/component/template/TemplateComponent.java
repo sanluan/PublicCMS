@@ -37,7 +37,7 @@ import com.publiccms.logic.service.cms.CmsCategoryAttributeService;
 import com.publiccms.logic.service.cms.CmsCategoryModelService;
 import com.publiccms.logic.service.cms.CmsCategoryService;
 import com.publiccms.logic.service.cms.CmsContentAttributeService;
-import com.publiccms.logic.service.cms.CmsContentTextService;
+import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.cms.CmsPlaceService;
 import com.publiccms.views.pojo.entities.CmsPageData;
 import com.publiccms.views.pojo.entities.CmsPageMetadata;
@@ -72,7 +72,7 @@ public class TemplateComponent implements Cache {
     @Autowired
     private CmsCategoryAttributeService categoryAttributeService;
     @Autowired
-    private CmsContentTextService contentService;
+    private CmsContentService contentService;
     @Autowired
     private CmsCategoryModelService categoryModelService;
     @Autowired

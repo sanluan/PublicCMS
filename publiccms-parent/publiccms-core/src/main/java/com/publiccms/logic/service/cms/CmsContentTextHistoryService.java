@@ -14,12 +14,12 @@ import com.publiccms.common.handler.PageHandler;
 
 /**
  *
- * CmsContentHistoryService
+ * CmsContentTextHistoryService
  * 
  */
 @Service
 @Transactional
-public class CmsContentHistoryService extends BaseService<CmsContentTextHistory> {
+public class CmsContentTextHistoryService extends BaseService<CmsContentTextHistory> {
 
     /**
      * @param contentId

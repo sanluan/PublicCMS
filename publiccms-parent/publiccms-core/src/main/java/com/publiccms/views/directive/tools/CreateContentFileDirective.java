@@ -13,7 +13,7 @@ import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsCategoryService;
-import com.publiccms.logic.service.cms.CmsContentTextService;
+import com.publiccms.logic.service.cms.CmsContentService;
 
 import freemarker.template.TemplateException;
 
@@ -56,6 +56,6 @@ public class CreateContentFileDirective extends AbstractTemplateDirective {
     @Autowired
     private CmsCategoryService categoryService;
     @Autowired
-    private CmsContentTextService contentService;
+    private CmsContentService contentService;
 
 }

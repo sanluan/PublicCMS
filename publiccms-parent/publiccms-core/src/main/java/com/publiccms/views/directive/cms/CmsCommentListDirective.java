@@ -56,7 +56,7 @@ import com.publiccms.common.handler.PageHandler;
  * 
  * <pre>
   &lt;script&gt;
-   $.getJSON('//cms.publiccms.com/api/directive/commentList?contentId=1&pageSize=10&appToken=接口访问授权Token', function(data){    
+   $.getJSON('//cms.publiccms.com/api/directive/commentList?contentId=1&amp;pageSize=10&amp;appToken=接口访问授权Token', function(data){    
      console.log(data.totalCount);
    });
    &lt;/script&gt;

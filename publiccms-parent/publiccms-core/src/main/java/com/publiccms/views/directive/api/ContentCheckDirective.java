@@ -29,7 +29,7 @@ import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsCategoryModelService;
 import com.publiccms.logic.service.cms.CmsCategoryService;
-import com.publiccms.logic.service.cms.CmsContentTextService;
+import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.log.LogOperateService;
 
 /**
@@ -41,7 +41,7 @@ import com.publiccms.logic.service.log.LogOperateService;
 public class ContentCheckDirective extends AbstractAppDirective {
 
     @Autowired
-    private CmsContentTextService service;
+    private CmsContentService service;
     @Autowired
     private CmsCategoryService categoryService;
     @Autowired

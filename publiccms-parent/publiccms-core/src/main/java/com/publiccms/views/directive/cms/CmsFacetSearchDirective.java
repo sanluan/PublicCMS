@@ -18,7 +18,7 @@ import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
-import com.publiccms.logic.service.cms.CmsContentTextService;
+import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.views.pojo.entities.ClickStatistics;
 
 /**
@@ -83,6 +83,6 @@ public class CmsFacetSearchDirective extends AbstractTemplateDirective {
     @Autowired
     private StatisticsComponent statisticsComponent;
     @Autowired
-    private CmsContentTextService service;
+    private CmsContentService service;
 
 }

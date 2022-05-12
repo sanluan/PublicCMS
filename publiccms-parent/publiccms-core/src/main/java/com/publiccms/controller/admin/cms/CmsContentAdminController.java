@@ -60,7 +60,7 @@ import com.publiccms.logic.service.cms.CmsCategoryModelService;
 import com.publiccms.logic.service.cms.CmsCategoryService;
 import com.publiccms.logic.service.cms.CmsContentAttributeService;
 import com.publiccms.logic.service.cms.CmsContentRelatedService;
-import com.publiccms.logic.service.cms.CmsContentTextService;
+import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.sys.SysDeptCategoryService;
@@ -81,7 +81,7 @@ import com.publiccms.views.pojo.query.CmsContentQuery;
 @RequestMapping("cmsContent")
 public class CmsContentAdminController {
     @Autowired
-    private CmsContentTextService service;
+    private CmsContentService service;
     @Autowired
     private CmsContentAttributeService attributeService;
     @Autowired
@@ -228,9 +228,9 @@ public class CmsContentAdminController {
         entity.setHasProducts(cmsModel.isHasProducts());
         entity.setOnlyUrl(cmsModel.isOnlyUrl());
         if ((null == checked || !checked) && null != draft && draft) {
-            entity.setStatus(CmsContentTextService.STATUS_DRAFT);
+            entity.setStatus(CmsContentService.STATUS_DRAFT);
         } else {
-            entity.setStatus(CmsContentTextService.STATUS_PEND);
+            entity.setStatus(CmsContentService.STATUS_PEND);
         }
         if (null == entity.getPublishDate()) {
             entity.setPublishDate(now);
@@ -845,7 +845,7 @@ public class CmsContentAdminController {
                     Map<String, String> config = configComponent.getConfigData(category.getSiteId(),
                             SiteConfigComponent.CONFIG_CODE_SITE);
                     int status = ConfigComponent.getInt(config.get(SiteConfigComponent.CONFIG_DEFAULT_CONTENT_STATUS),
-                            CmsContentTextService.STATUS_PEND);
+                            CmsContentService.STATUS_PEND);
                     long userId;
                     if (category.getSiteId() == site.getId()) {
                         userId = entity.getUserId();

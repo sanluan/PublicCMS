@@ -14,7 +14,7 @@ import com.publiccms.entities.cms.CmsPlace;
 import com.publiccms.entities.cms.CmsWord;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.template.TemplateComponent;
-import com.publiccms.logic.service.cms.CmsContentTextService;
+import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.cms.CmsPlaceService;
 import com.publiccms.logic.service.cms.CmsTagService;
 import com.publiccms.logic.service.cms.CmsWordService;
@@ -33,7 +33,7 @@ public class StatisticsComponent implements Cache {
     private CacheEntity<Long, ClickStatistics> wordCache;
     private CacheEntity<Long, ClickStatistics> tagCache;
     @Autowired
-    private CmsContentTextService contentService;
+    private CmsContentService contentService;
     @Autowired
     private CmsPlaceService placeService;
     @Autowired

@@ -34,7 +34,7 @@ import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.component.template.ModelComponent;
 import com.publiccms.logic.service.cms.CmsCategoryModelService;
 import com.publiccms.logic.service.cms.CmsCategoryService;
-import com.publiccms.logic.service.cms.CmsContentTextService;
+import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.views.pojo.entities.ClickStatistics;
@@ -50,7 +50,7 @@ import com.publiccms.views.pojo.model.CmsContentParameters;
 @RequestMapping("content")
 public class ContentController {
     @Autowired
-    private CmsContentTextService service;
+    private CmsContentService service;
     @Autowired
     private StatisticsComponent statisticsComponent;
     @Autowired

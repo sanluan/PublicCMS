@@ -24,7 +24,7 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.ModelComponent;
-import com.publiccms.logic.service.cms.CmsContentTextService;
+import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.views.pojo.entities.CmsModel;
@@ -40,7 +40,7 @@ public class CmsModelAdminController {
     @Autowired
     private ModelComponent modelComponent;
     @Autowired
-    protected CmsContentTextService contentService;
+    protected CmsContentService contentService;
     @Autowired
     protected LogOperateService logOperateService;
     @Autowired

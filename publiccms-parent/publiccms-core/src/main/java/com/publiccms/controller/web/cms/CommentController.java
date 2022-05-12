@@ -27,7 +27,7 @@ import com.publiccms.logic.component.config.SiteConfigComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsCommentService;
-import com.publiccms.logic.service.cms.CmsContentTextService;
+import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 
@@ -48,7 +48,7 @@ public class CommentController {
     @Autowired
     protected ConfigComponent configComponent;
     @Autowired
-    private CmsContentTextService contentService;
+    private CmsContentService contentService;
     @Autowired
     private TemplateComponent templateComponent;
 
