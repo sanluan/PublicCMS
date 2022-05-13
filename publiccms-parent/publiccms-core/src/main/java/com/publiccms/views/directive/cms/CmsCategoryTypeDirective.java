@@ -23,7 +23,7 @@ import com.publiccms.views.pojo.entities.CmsCategoryType;
  * <li><code>id</code> 分类id，结果返回<code>object</code>
  * {@link com.publiccms.views.pojo.entities.CmsCategoryType}
  * <li><code>ids</code>
- * 多个分类id，逗号或空格间隔，当id或code为空时生效，结果返回<code>map</code>(id,分类)
+ * 多个分类id，逗号或空格间隔，当id或code为空时生效，结果返回<code>map</code>(id,分类类型)
  * {@link com.publiccms.views.pojo.entities.CmsCategoryType}
  * </ul>
  * 使用示例

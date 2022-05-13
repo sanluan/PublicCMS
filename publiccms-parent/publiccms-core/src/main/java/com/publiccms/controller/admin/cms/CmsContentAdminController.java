@@ -160,9 +160,8 @@ public class CmsContentAdminController {
         }
         Date now = CommonUtils.getDate();
         initContent(entity, cmsModel, draft, checked, attribute, true, now);
-        CmsContent oldEntity = null;
         if (null != entity.getId()) {
-            oldEntity = service.getEntity(entity.getId());
+            CmsContent oldEntity = service.getEntity(entity.getId());
             if (null == oldEntity || ControllerUtils.errorNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)
                     || ControllerUtils.errorCustom("noright", !ControllerUtils.hasContentPermissions(admin, oldEntity), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
@@ -187,7 +186,7 @@ public class CmsContentAdminController {
                     .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                             "save.content", RequestUtils.getIpAddress(request), now, JsonUtils.getString(entity)));
         }
-        entity = service.saveTagAndAttribute(site.getId(), admin.getId(), entity, oldEntity, contentParameters, cmsModel,
+        entity = service.saveTagAndAttribute(site.getId(), admin.getId(), entity, contentParameters, cmsModel,
                 category.getExtendId(), attribute);
         if (null != checked && checked) {
             entity = service.check(site.getId(), admin, entity.getId());

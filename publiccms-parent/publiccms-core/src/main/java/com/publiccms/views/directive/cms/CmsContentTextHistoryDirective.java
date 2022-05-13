@@ -16,10 +16,32 @@ import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.RenderHandler;
 
 /**
- *
- * CmsContentHistoryDirective
- * 
- */
+*
+* contentTextHistory 正文历史查询指令
+* <p>
+* 参数列表
+* <ul>
+* <li><code>id</code> 分类id，结果返回<code>object</code>
+* {@link com.publiccms.entities.cms.CmsContentTextHistory}
+* <li><code>ids</code>
+* 多个评论id，逗号或空格间隔，当id为空时生效，结果返回<code>map</code>(id,正文历史)
+* {@link com.publiccms.entities.cms.CmsContentTextHistory}
+* </ul>
+* 使用示例
+* <p>
+* &lt;@_contentTextHistory id=1&gt;${object.text}&lt;/@_contentTextHistory&gt;
+* <p>
+* &lt;@_contentTextHistory ids=1,2,3&gt;&lt;#list map as
+* k,v&gt;${v.text}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@_contentTextHistory&gt;
+* 
+* <pre>
+  &lt;script&gt;
+   $.getJSON('//cms.publiccms.com/api/directive/contentTextHistory?id=1&amp;appToken=接口访问授权Token', function(data){    
+     console.log(data.text);
+   });
+   &lt;/script&gt;
+* </pre>
+*/
 @Component
 public class CmsContentTextHistoryDirective extends AbstractTemplateDirective {
 
@@ -39,6 +61,11 @@ public class CmsContentTextHistoryDirective extends AbstractTemplateDirective {
                 handler.put("map", map).render();
             }
         }
+    }
+
+    @Override
+    public boolean needAppToken() {
+        return true;
     }
 
     @Autowired

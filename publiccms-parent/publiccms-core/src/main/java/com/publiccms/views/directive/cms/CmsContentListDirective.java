@@ -48,23 +48,16 @@ import com.publiccms.views.pojo.query.CmsContentQuery;
  * <li><code>title</code> 高级选项:标题
  * <li><code>absoluteURL</code> url处理为绝对路径 默认为<code>true</code>
  * <li><code>absoluteId</code> id处理为引用内容的ID 默认为<code>true</code>
- * <li><code>orderField</code> 排序字段,【score,comments,clicks,publishDate,updateDate,checkDate】,默认置顶级别倒叙、发布日期按orderType排序
- * <li><code>orderType</code> 排序类型,【asc,desc】，默认为倒叙
+ * <li><code>orderField</code> 排序字段,【score:评分,comments:评论数,clicks:点击数,publishDate:发布日期,updateDate:更新日期,checkDate:审核日期】,默认置顶级别倒叙、发布日期按orderType排序
+ * <li><code>orderType</code> 排序类型,【asc:正序,desc:倒叙】，默认为倒叙
  * <li><code>pageIndex</code> 页码
  * <li><code>pageSize</code> 每页条数
  * </ul>
  * <p>
- * 返回结果page子属性:
+ * 返回结果
  * <ul>
- * <li><code>totalCount</code> int类型 数据总数
- * <li><code>pageIndex</code> int类型 当前页码
- * <li><code>list</code> List类型 查询结果实体列表 {@link com.publiccms.entities.cms.CmsContent} 
- * <li><code>totalPage</code> int类型 总页数
- * <li><code>firstResult</code> int类型 第一条序号
- * <li><code>firstPage</code> boolean类型 是否第一页
- * <li><code>lastPage</code> boolean类型 是否最后一页
- * <li><code>nextPage</code> int类型 下一页页码
- * <li><code>prePage</code> int类型 上一页页码
+ * <li><code>page</code> {@link com.publiccms.common.handler.PageHandler}
+ * <li><code>page.list</code> List类型 查询结果实体列表 {@link com.publiccms.entities.cms.CmsContent} 
  * </ul>
  * 使用示例
  * <p>

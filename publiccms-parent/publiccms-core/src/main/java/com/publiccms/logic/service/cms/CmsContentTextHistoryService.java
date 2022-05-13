@@ -2,7 +2,6 @@ package com.publiccms.logic.service.cms;
 
 // Generated 2022-5-10 by com.publiccms.common.generator.SourceGenerator
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,15 +30,12 @@ public class CmsContentTextHistoryService extends BaseService<CmsContentTextHist
      * @return results page
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(Long contentId, String fieldName, 
-                Long userId, 
-                String orderType, Integer pageIndex, Integer pageSize) {
-        return dao.getPage(contentId, fieldName, 
-                userId, 
-                orderType, pageIndex, pageSize);
+    public PageHandler getPage(Long contentId, String fieldName, Long userId, String orderType, Integer pageIndex,
+            Integer pageSize) {
+        return dao.getPage(contentId, fieldName, userId, orderType, pageIndex, pageSize);
     }
-    
+
     @Autowired
     private CmsContentTextHistoryDao dao;
-    
+
 }

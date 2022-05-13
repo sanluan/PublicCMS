@@ -88,7 +88,8 @@ public class TemplateComponent implements Cache {
     @Autowired
     private StatisticsComponent statisticsComponent;
 
-    public String generatePlaceFilePath(String filepath, CmsCategory category, Map<String, Object> model) throws IOException, TemplateException {
+    public String generatePlaceFilePath(String filepath, CmsCategory category, Map<String, Object> model)
+            throws IOException, TemplateException {
         if (null == model) {
             model = new HashMap<>();
         }
@@ -311,6 +312,8 @@ public class TemplateComponent implements Cache {
             String pageBreakTag = null;
             if (-1 < attribute.getText().indexOf(CommonConstants.getCkeditorPageBreakTag())) {
                 pageBreakTag = CommonConstants.getCkeditorPageBreakTag();
+            } else if (-1 < attribute.getText().indexOf(CommonConstants.getTinyMCEPageBreakTag())) {
+                pageBreakTag = CommonConstants.getTinyMCEPageBreakTag();
             } else if (-1 < attribute.getText().indexOf(CommonConstants.getKindEditorPageBreakTag())) {
                 pageBreakTag = CommonConstants.getKindEditorPageBreakTag();
             } else {

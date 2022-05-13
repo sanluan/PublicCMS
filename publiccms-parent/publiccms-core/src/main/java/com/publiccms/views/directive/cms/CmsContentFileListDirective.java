@@ -19,47 +19,42 @@ import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsContentFileService;
 
 /**
-*
-* contentList 内容列表查询指令
-* <p>
-* 参数列表
-* <ul>
-* <li><code>fileTypes</code> 文件类型,【image:图片,video:视频,audio:音频,other:其他】
-* <li><code>image</code> 是否图片,当fileTypes为空时有效,【true,false】
-* <li><code>contentId</code> 内容id
-* <li><code>userId</code> 用户id
-* <li><code>absoluteURL</code> url处理为绝对路径 默认为<code>true</code>
-* <li><code>orderField</code> 排序字段,【size,clicks】,默认排序正序、id正序
-* <li><code>orderType</code> 排序类型,【asc,desc】，默认为倒叙
-* <li><code>pageIndex</code> 页码
-* <li><code>pageSize</code> 每页条数
-* </ul>
-* <p>
-* 返回结果page子属性:
-* <ul>
-* <li><code>totalCount</code> int类型 数据总数
-* <li><code>pageIndex</code> int类型 当前页码
-* <li><code>list</code> List类型 查询结果实体列表 {@link com.publiccms.entities.cms.CmsContentFile} 
-* <li><code>totalPage</code> int类型 总页数
-* <li><code>firstResult</code> int类型 第一条序号
-* <li><code>firstPage</code> boolean类型 是否第一页
-* <li><code>lastPage</code> boolean类型 是否最后一页
-* <li><code>nextPage</code> int类型 下一页页码
-* <li><code>prePage</code> int类型 上一页页码
-* </ul>
-* 使用示例
-* <p>
-* &lt;@_contentFileList contentId=1 pageSize=10&gt;&lt;#list page.list as a&gt;${a.filePath}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@_contentFileList&gt;
-* 
-* <pre>
+ *
+ * categoryFileList 内容附件列表查询指令
+ * <p>
+ * 参数列表
+ * <ul>
+ * <li><code>fileTypes</code> 文件类型,【image:图片,video:视频,audio:音频,other:其他】
+ * <li><code>image</code> 是否图片,当fileTypes为空时有效,【true,false】
+ * <li><code>contentId</code> 内容id
+ * <li><code>userId</code> 用户id
+ * <li><code>absoluteURL</code> url处理为绝对路径 默认为<code>true</code>
+ * <li><code>orderField</code> 排序字段,【size:文件大小,clicks:点击数】,默认排序正序、id正序
+ * <li><code>orderType</code> 排序类型,【asc:正序,desc:倒叙】，默认为倒叙
+ * <li><code>pageIndex</code> 页码
+ * <li><code>pageSize</code> 每页条数
+ * </ul>
+ * <p>
+ * 返回结果
+ * <ul>
+ * <li><code>page</code> {@link com.publiccms.common.handler.PageHandler}
+ * <li><code>page.list</code> List类型 查询结果实体列表
+ * {@link com.publiccms.entities.cms.CmsContentFile}
+ * </ul>
+ * 使用示例
+ * <p>
+ * &lt;@_contentFileList contentId=1 pageSize=10&gt;&lt;#list page.list as
+ * a&gt;${a.filePath}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@_contentFileList&gt;
+ * 
+ * <pre>
 *  &lt;script&gt;
-   $.getJSON('//cms.publiccms.com/api/directive/contentFileList?pageSize=10', function(data){    
+   $.getJSON('//cms.publiccms.com/api/directive/contentFileList?contentId=1&amp;pageSize=10', function(data){    
      console.log(data.totalCount);
    });
    &lt;/script&gt;
-* </pre>
-* 
-*/
+ * </pre>
+ * 
+ */
 @Component
 public class CmsContentFileListDirective extends AbstractTemplateDirective {
 

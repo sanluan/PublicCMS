@@ -64,7 +64,7 @@ public class CmsContentService extends BaseService<CmsContent> {
             Config.INPUTTYPE_DEPT, Config.INPUTTYPE_CONTENT, Config.INPUTTYPE_CATEGORY, Config.INPUTTYPE_DICTIONARY,
             Config.INPUTTYPE_CATEGORYTYPE, Config.INPUTTYPE_TAGTYPE };
 
-    public static final String[] FULLTEXT_SEARCHABLE_EDITOR = { "kindeditor", "ckeditor", "editor" };
+    public static final String[] FULLTEXT_SEARCHABLE_EDITOR = { "kindeditor", "ckeditor", "tinymce", "editor" };
     public static final String[] ignoreProperties = new String[] { "id", "siteId" };
     /**
      * 
@@ -195,8 +195,8 @@ public class CmsContentService extends BaseService<CmsContent> {
         return dao.getListByQuoteId(siteId, quoteId);
     }
 
-    public CmsContent saveTagAndAttribute(short siteId, Long userId, CmsContent entity, CmsContent oldEntity,
-            CmsContentParameters contentParameters, CmsModel cmsModel, Integer extendId, CmsContentAttribute attribute) {
+    public CmsContent saveTagAndAttribute(short siteId, Long userId, CmsContent entity, CmsContentParameters contentParameters,
+            CmsModel cmsModel, Integer extendId, CmsContentAttribute attribute) {
         if (null != entity) {
             Long[] tagIds = tagService.update(siteId, contentParameters.getTags());
             entity.setTagIds(arrayToDelimitedString(tagIds, CommonConstants.BLANK_SPACE));
@@ -225,15 +225,11 @@ public class CmsContentService extends BaseService<CmsContent> {
                     entity.isHasFiles() ? contentParameters.getFiles() : null,
                     entity.isHasImages() ? contentParameters.getImages() : null,
                     entity.isHasProducts() ? contentParameters.getProducts() : null, attribute);
-            if (null != oldEntity) {
-                CmsContentAttribute oldAttribute = attributeService.getEntity(entity.getId());
-                if (null != oldAttribute && null != oldAttribute.getText()
-                        && !oldAttribute.getText().equals(attribute.getText())) {
-                    CmsContentTextHistory history = new CmsContentTextHistory(entity.getId(), "text",
-                            null == oldEntity.getUpdateDate() ? entity.getCreateDate() : entity.getUpdateDate(),
-                            null == oldEntity.getUpdateUserId() ? userId : oldEntity.getUpdateUserId(), oldAttribute.getText());
-                    contentHistoryService.save(history);
-                }
+            CmsContentAttribute oldAttribute = attributeService.getEntity(entity.getId());
+            if (null != oldAttribute && null != oldAttribute.getText() && !oldAttribute.getText().equals(attribute.getText())) {
+                CmsContentTextHistory history = new CmsContentTextHistory(entity.getId(), "text", CommonUtils.getDate(), userId,
+                        oldAttribute.getText());
+                contentHistoryService.save(history);
             }
             attributeService.updateAttribute(entity.getId(), attribute);// 更新保存扩展字段，文本字段
             cmsContentRelatedService.update(entity.getId(), userId, contentParameters.getContentRelateds());// 更新保存推荐内容

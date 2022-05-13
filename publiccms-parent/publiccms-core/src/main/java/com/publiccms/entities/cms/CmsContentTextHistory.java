@@ -26,16 +26,39 @@ import com.publiccms.common.generator.annotation.GeneratorColumn;
 public class CmsContentTextHistory implements java.io.Serializable {
 
     private static final long serialVersionUID = 1L;
+    /**
+     * id
+     */
     @GeneratorColumn(title = "ID")
     private Long id;
+    /**
+     * content id<p>
+     * 内容id
+     */
     @GeneratorColumn(title = "内容", condition = true)
     private long contentId;
+    /**
+     * field name<p>
+     * 字段名
+     */
     @GeneratorColumn(title = "字段名", condition = true)
     private String fieldName;
+    /**
+     * create date<p>
+     * 创建日期
+     */
     @GeneratorColumn(title = "创建日期", order = true)
     private Date createDate;
+    /**
+     * user id<p>
+     * 用户
+     */
     @GeneratorColumn(title = "用户", condition = true)
     private long userId;
+    /**
+     * content text<p>
+     * 正文内容
+     */
     @GeneratorColumn(title = "内容")
     private String text;
 

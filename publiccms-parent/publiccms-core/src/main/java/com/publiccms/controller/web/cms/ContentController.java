@@ -103,9 +103,8 @@ public class ContentController {
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
         }
         CmsContentAdminController.initContent(entity, cmsModel, draft, false, attribute, false, CommonUtils.getDate());
-        CmsContent oldEntity = null;
         if (null != entity.getId()) {
-            oldEntity = service.getEntity(entity.getId());
+            CmsContent oldEntity = service.getEntity(entity.getId());
             if (null != oldEntity && ControllerUtils.errorNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)
                     && (oldEntity.getUserId() == user.getId() || user.isSuperuser())) {
                 entity = service.update(entity.getId(), entity, entity.isOnlyUrl() ? CmsContentAdminController.ignoreProperties
@@ -134,8 +133,8 @@ public class ContentController {
             logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
                     "save.content", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
-        service.saveTagAndAttribute(site.getId(), user.getId(), entity, oldEntity, contentParameters, cmsModel,
-                category.getExtendId(), attribute);
+        service.saveTagAndAttribute(site.getId(), user.getId(), entity, contentParameters, cmsModel, category.getExtendId(),
+                attribute);
         return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
     }
 

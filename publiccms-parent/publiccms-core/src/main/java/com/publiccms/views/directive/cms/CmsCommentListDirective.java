@@ -16,7 +16,7 @@ import com.publiccms.common.handler.PageHandler;
 
 /**
  *
- * categoryList 分类列表查询指令
+ * commentList 评论列表查询指令
  * <p>
  * 参数列表
  * <ul>
@@ -30,24 +30,17 @@ import com.publiccms.common.handler.PageHandler;
  * <li><code>checkUserId</code> 高级选项:审核用户id
  * <li><code>disabled</code> 高级选项:评论已删除,【true,false】
  * <li><code>orderField</code>
- * 排序字段,【replies,scores,checkDate,updateDate,createDate】,默认置顶id按orderType排序
- * <li><code>orderType</code> 排序类型,【asc,desc】，默认为倒叙
+ * 排序字段,【replies:回复数,scores:评分,checkDate:审核日期,updateDate:更新日期,createDate:创建日期】,默认置顶id按orderType排序
+ * <li><code>orderType</code> 排序类型,【asc:正序,desc:倒叙】，默认为倒叙
  * <li><code>pageIndex</code> 页码
  * <li><code>pageSize</code> 每页条数
  * </ul>
  * <p>
- * 返回结果page子属性:
+ * 返回结果
  * <ul>
- * <li><code>totalCount</code> int类型 数据总数
- * <li><code>pageIndex</code> int类型 当前页码
- * <li><code>list</code> List类型 查询结果实体列表
+ * <li><code>page</code> {@link com.publiccms.common.handler.PageHandler}
+ * <li><code>page.list</code> List类型 查询结果实体列表
  * {@link com.publiccms.entities.cms.CmsComment}
- * <li><code>totalPage</code> int类型 总页数
- * <li><code>firstResult</code> int类型 第一条序号
- * <li><code>firstPage</code> boolean类型 是否第一页
- * <li><code>lastPage</code> boolean类型 是否最后一页
- * <li><code>nextPage</code> int类型 下一页页码
- * <li><code>prePage</code> int类型 上一页页码
  * </ul>
  * 使用示例
  * <p>

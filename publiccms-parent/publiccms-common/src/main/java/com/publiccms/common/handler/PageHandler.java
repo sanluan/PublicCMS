@@ -5,6 +5,8 @@ import java.util.List;
 /**
  *
  * PageHandler
+ * <p>
+ * 分页结果处理器
  * 
  */
 public class PageHandler implements java.io.Serializable {
@@ -23,10 +25,35 @@ public class PageHandler implements java.io.Serializable {
      */
     public static final int MAX_PAGE_SIZE = 500;
 
+    /**
+     * total count
+     * <p>
+     * 总数量
+     */
     private int totalCount;
+    /**
+     * page size
+     * <p>
+     * 每页数量
+     */
     private int pageSize;
+    /**
+     * current page index
+     * <p>
+     * 当前页面
+     */
     private int pageIndex;
+    /**
+     * total page
+     * <p>
+     * 总页数
+     */
     private int totalPage;
+    /**
+     * result list
+     * <p>
+     * 结果列表
+     */
     private List<?> list;
 
     /**

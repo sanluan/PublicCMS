@@ -34,18 +34,11 @@ import com.publiccms.views.pojo.query.CmsCategoryQuery;
  * <li><code>pageSize</code> 每页条数
  * </ul>
  * <p>
- * 返回结果page子属性:
+ * 返回结果
  * <ul>
- * <li><code>totalCount</code> int类型 数据总数
- * <li><code>pageIndex</code> int类型 当前页码
- * <li><code>list</code> List类型 查询结果实体列表
+ * <li><code>page</code> {@link com.publiccms.common.handler.PageHandler}
+ * <li><code>page.list</code> List类型 查询结果实体列表,顺序排序正序,id倒叙
  * {@link com.publiccms.entities.cms.CmsCategory}
- * <li><code>totalPage</code> int类型 总页数
- * <li><code>firstResult</code> int类型 第一条序号
- * <li><code>firstPage</code> boolean类型 是否第一页
- * <li><code>lastPage</code> boolean类型 是否最后一页
- * <li><code>nextPage</code> int类型 下一页页码
- * <li><code>prePage</code> int类型 上一页页码
  * </ul>
  * 使用示例
  * <p>

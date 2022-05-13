@@ -29,7 +29,8 @@ public class CmsContentTextHistoryDao extends BaseDao<CmsContentTextHistory> {
      */
     public PageHandler getPage(Long contentId, String fieldName, Long userId, String orderType, Integer pageIndex,
             Integer pageSize) {
-        QueryHandler queryHandler = getQueryHandler("select new CmsContentTextHistory(id, contentId, fieldName, createDate, userId) from CmsContentTextHistory bean");
+        QueryHandler queryHandler = getQueryHandler(
+                "select new CmsContentTextHistory(id, contentId, fieldName, createDate, userId) from CmsContentTextHistory bean");
         if (CommonUtils.notEmpty(contentId)) {
             queryHandler.condition("bean.contentId = :contentId").setParameter("contentId", contentId);
         }

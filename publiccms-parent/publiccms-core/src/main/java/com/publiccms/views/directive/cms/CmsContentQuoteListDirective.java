@@ -17,10 +17,32 @@ import com.publiccms.logic.component.site.DatasourceComponent;
 import com.publiccms.logic.service.cms.CmsContentService;
 
 /**
- *
- * CmsContentFileListDirective
- * 
- */
+*
+* contentQuoteList 分类列表查询指令
+* <p>
+* 参数列表
+* <ul>
+* <li><code>quoteId</code> 发布评论用户id
+* </ul>
+* <p>
+* 返回结果:
+* <ul>
+* <li><code>list</code> List类型 查询结果实体列表
+* {@link com.publiccms.entities.cms.CmsContent}
+* </ul>
+* 使用示例
+* <p>
+* &lt;@_contentQuoteList contentId=1 pageSize=10&gt;&lt;#list list as
+* a&gt;${a.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@_contentQuoteList&gt;
+* 
+* <pre>
+ &lt;script&gt;
+  $.getJSON('//cms.publiccms.com/api/directive/contentQuoteList?contentId=1', function(data){    
+    console.log(data);
+  });
+  &lt;/script&gt;
+* </pre>
+*/
 @Component
 public class CmsContentQuoteListDirective extends AbstractTemplateDirective {
 

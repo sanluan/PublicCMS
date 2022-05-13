@@ -27,27 +27,66 @@ public class CmsContentProduct implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
+    /**
+     * id
+     */
     @GeneratorColumn(title = "ID")
     private Long id;
     @GeneratorColumn(title = "站点", condition = true)
     @JsonIgnore
     private short siteId;
+    /**
+     * content<p>
+     * 内容
+     */
     @GeneratorColumn(title = "内容", condition = true)
     private long contentId;
+    /**
+     * upload user id<p>
+     * 上传用户id
+     */
     @GeneratorColumn(title = "上传用户", condition = true)
     private long userId;
+    /**
+     * cover<p>
+     * 封面图
+     */
     @GeneratorColumn(title = "封面")
     private String cover;
+    /**
+     * title<p>
+     * 标题
+     */
     @GeneratorColumn(title = "标题")
     private String title;
+    /**
+     * price<p>
+     * 价格
+     */
     @GeneratorColumn(title = "价格", condition = true, order = true)
     private BigDecimal price;
+    /**
+     * min quantity<p>
+     * 最小购买数量
+     */
     @GeneratorColumn(title = "最小购买数量")
     private Integer minQuantity;
+    /**
+     * max quantity<p>
+     * 最大购买数量
+     */
     @GeneratorColumn(title = "最大购买数量")
     private Integer maxQuantity;
+    /**
+     * inventory<p>
+     * 库存
+     */
     @GeneratorColumn(title = "库存", order = true)
     private int inventory;
+    /**
+     * sales<p>
+     * 销量
+     */
     @GeneratorColumn(title = "销量", order = true)
     private int sales;
 
