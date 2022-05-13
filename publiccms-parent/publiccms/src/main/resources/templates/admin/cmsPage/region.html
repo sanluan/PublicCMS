@@ -17,7 +17,7 @@
                     <div class="itemBox">
                         <#list list as a>
                             <div class="dragItem icon-move icon-large" data-id="${a.id}" data-type="layout">
-                                ${a.name!}<span class="close">X</span>
+                                ${a.name!} (${a.count})<span class="close">X</span>
                                 <div class="dragContent">
                                     <@_includeLayout id=a.id>
                                         <div class="sortDrag" data-over-sort="true" data-accept="module"><@t.page 'drag_module_here'/></div>
