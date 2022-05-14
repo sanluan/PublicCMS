@@ -74,7 +74,7 @@ public class CmsCategoryListDirective extends AbstractTemplateDirective {
         queryEntity.setAllowContribute(handler.getBoolean("allowContribute"));
 
         PageHandler page = service.getPage(queryEntity, handler.getInteger("pageIndex", 1),
-                handler.getInteger("pageSize", handler.getInteger("count", 30)));
+                handler.getInteger("pageSize", 30));
         @SuppressWarnings("unchecked")
         List<CmsCategory> list = (List<CmsCategory>) page.getList();
         if (null != list && handler.getBoolean("absoluteURL", true)) {

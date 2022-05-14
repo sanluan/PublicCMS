@@ -17,11 +17,19 @@ public class CmsDictionaryDataId implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
+    /**
+     * dictionary id<p>
+     * 数据字典id
+     */
     @GeneratorColumn(title = "数据字典")
     private String dictionaryId;
     @GeneratorColumn(title = "站点", condition = true)
     @JsonIgnore
     private short siteId;
+    /**
+     * value<p>
+     * 值
+     */
     @GeneratorColumn(title = "值")
     private String value;
 

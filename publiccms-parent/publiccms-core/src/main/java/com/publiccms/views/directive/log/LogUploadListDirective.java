@@ -30,7 +30,7 @@ public class LogUploadListDirective extends AbstractTemplateDirective {
         }
         PageHandler page = service.getPage(getSite(handler).getId(), handler.getLong("userId"), handler.getString("channel"),
                 fileTypes, handler.getString("originalName"), handler.getString("filepath"), handler.getString("orderField"),
-                handler.getString("orderType"), handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", handler.getInteger("count", 30)));
+                handler.getString("orderType"), handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", 30));
         handler.put("page", page).render();
     }
 

@@ -4,7 +4,8 @@ import java.util.Map;
 
 /**
  *
- * FacetPageHandler
+ * FacetPageHandler<p>
+ * 分面结果分页处理器
  * 
  */
 public class FacetPageHandler extends PageHandler {
@@ -13,6 +14,10 @@ public class FacetPageHandler extends PageHandler {
      */
     private static final long serialVersionUID = 1L;
 
+    /**
+     * facet result map<field,<value,count>><p>
+     * 分面搜索结果<字段名,<值,结果总数>>
+     */
     private Map<String, Map<String, Long>> facetMap;
 
     /**

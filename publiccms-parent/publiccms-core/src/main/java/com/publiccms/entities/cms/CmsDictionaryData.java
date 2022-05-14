@@ -25,8 +25,16 @@ public class CmsDictionaryData implements java.io.Serializable {
      */
     private static final long serialVersionUID = 1L;
     private CmsDictionaryDataId id;
+    /**
+     * parent value<p>
+     * 父节点值
+     */
     @GeneratorColumn(title = "父值", condition = true)
     private String parentValue;
+    /**
+     * text<p>
+     * 文本
+     */
     @GeneratorColumn(title = "文字")
     private String text;
 

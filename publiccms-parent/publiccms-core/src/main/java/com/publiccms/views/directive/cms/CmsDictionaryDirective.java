@@ -15,10 +15,29 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.service.cms.CmsDictionaryService;
 
 /**
- *
- * CmsDictionaryDirective
- * 
- */
+*
+* dictionary 数据字典查询指令
+* <p>
+* 参数列表
+* <ul>
+* <li><code>id</code> 值，结果返回<code>object</code>{@link com.publiccms.entities.cms.CmsDictionary} 
+* <li><code>ids</code> 多个值，逗号或空格间隔，当id为空时生效，结果返回<code>map</code>(id,数据字典){@link com.publiccms.entities.cms.CmsDictionary} 
+* </ul>
+* 使用示例
+* <p>
+* &lt;@_dictionary id='data'&gt;${object.name}&lt;/@_dictionary&gt;
+* <p>
+* &lt;@_dictionary values='data,data2'&gt;&lt;#list map as
+* k,v&gt;${v.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@_dictionary&gt;
+* 
+* <pre>
+*  &lt;script&gt;
+   $.getJSON('//cms.publiccms.com/api/directive/dictionary?dictionaryId=data&amp;value=1', function(data){    
+     console.log(data.name);
+   });
+   &lt;/script&gt;
+* </pre>
+*/
 @Component
 public class CmsDictionaryDirective extends AbstractTemplateDirective {
 

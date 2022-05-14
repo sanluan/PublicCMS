@@ -113,7 +113,7 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
             }
             PageHandler page = service.getPage(queryEntity, handler.getBoolean("containChild"), handler.getString("orderField"),
                     handler.getString("orderType"), handler.getInteger("pageIndex", 1),
-                    handler.getInteger("pageSize", handler.getInteger("count", 30)));
+                    handler.getInteger("pageSize", 30));
             @SuppressWarnings("unchecked")
             List<CmsContent> list = (List<CmsContent>) page.getList();
             if (null != list) {

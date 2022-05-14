@@ -29,28 +29,76 @@ public class SysExtendField implements java.io.Serializable {
      */
     private static final long serialVersionUID = 1L;
     private SysExtendFieldId id;
+    /**
+     * required<p>
+     * 必填
+     */
     @GeneratorColumn(title = "必填")
     private boolean required;
+    /**
+     * searchable<p>
+     * 可搜索
+     */
     @GeneratorColumn(title = "可搜索")
     private boolean searchable;
+    /**
+     * max length<p>
+     * 最大长度
+     */
     @GeneratorColumn(title = "最大长度")
     private Integer maxlength;
-    @GeneratorColumn(title = "高度")
-    private Integer width;
+    /**
+     * image width<p>
+     * 图片宽度
+     */
     @GeneratorColumn(title = "宽度")
+    private Integer width;
+    /**
+     * image height<p>
+     * 图片高度
+     */
+    @GeneratorColumn(title = "高度")
     private Integer height;
+    /**
+     * name<p>
+     * 名称
+     */
     @GeneratorColumn(title = "名称")
     private String name;
+    /**
+     * description<p>
+     * 描述
+     */
     @GeneratorColumn(title = "描述")
     private String description;
+    /**
+     * input type<p>
+     * 表单类型
+     */
     @GeneratorColumn(title = "表单类型")
     private String inputType;
+    /**
+     * default value<p>
+     * 默认值
+     */
     @GeneratorColumn(title = "默认值")
     private String defaultValue;
+    /**
+     * dictionary id<p>
+     * 数据字典
+     */
     @GeneratorColumn(title = "数据字典")
     private String dictionaryId;
+    /**
+     * multiple<p>
+     * 多选
+     */
     @GeneratorColumn(title = "多选")
     private boolean multiple;
+    /**
+     * sort<p>
+     * 排序
+     */
     @GeneratorColumn(title = "顺序", order = true)
     private int sort;
 

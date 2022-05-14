@@ -25,8 +25,16 @@ public class CmsDictionary implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
     @GeneratorColumn(title = "ID")
     private CmsDictionaryId id;
+    /**
+     * name<p>
+     * 名称
+     */
     @GeneratorColumn(title = "名称")
     private String name;
+    /**
+     * child depth<p>
+     * 子级深度
+     */
     @GeneratorColumn(title = "子级深度")
     private int childDepth;
 
