@@ -27,12 +27,12 @@ import com.publiccms.views.pojo.entities.ClickStatistics;
  * <p>
  * 参数列表
  * <ul>
- * <li><code>word</code> 搜索词
- * <li><code>tagId</code> 多个标签id
+ * <li><code>word</code> 搜索词,多个搜索词时取并集结果
+ * <li><code>tagId</code> 多个标签id,多个标签时取并集结果
  * <li><code>categoryId</code> 分类id
  * <li><code>containChild</code> 包含子分类，当categoryId不为空时有效
  * <li><code>categoryIds</code> 多个分类id，当categoryId为空时有效
- * <li><code>dictionaryValues</code> 多个数据字典值,格式：[字段编码]_{字段值],例如:extend1_value1
+ * <li><code>dictionaryValues</code> 多个数据字典值,多个值取交集结果,只有父级值时包含所有子级结果,格式：[字段编码]_{字段值],例如:dictionaryValues='extend1_value1,extend1_value1'
  * <li><code>highlight</code> 高亮关键词,【true,false】,默认为false,启用高亮后台
  * 标题、作者、编辑、描述字段应该加?no_esc以使高亮html生效,cms会自动对原值有进行html安全转义
  * <li><code>preTag</code> 高亮前缀,启用高亮时有效,默认为"&lt;B&gt;"
