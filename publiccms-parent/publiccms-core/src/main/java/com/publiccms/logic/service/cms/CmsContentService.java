@@ -101,6 +101,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param fields
      * @param tagIds
      * @param dictionaryValues
+     * @param dictionaryUnion
      * @param startPublishDate
      * @param endPublishDate
      * @param expiryDate
@@ -112,11 +113,11 @@ public class CmsContentService extends BaseService<CmsContent> {
     @Transactional(readOnly = true)
     public PageHandler query(Short siteId, boolean projection, boolean phrase, HighLighterQuery highLighterQuery, String text,
             String[] fields, Long[] tagIds, Integer categoryId, Boolean containChild, Integer[] categoryIds, String[] modelIds,
-            String[] dictionaryValues, Date startPublishDate, Date endPublishDate, Date expiryDate, String orderField,
-            Integer pageIndex, Integer pageSize) {
+            String[] dictionaryValues, Boolean dictionaryUnion, Date startPublishDate, Date endPublishDate, Date expiryDate,
+            String orderField, Integer pageIndex, Integer pageSize) {
         return dao.query(siteId, projection, phrase, highLighterQuery, getCategoryIds(containChild, categoryId, categoryIds),
-                modelIds, text, fields, tagIds, dictionaryValues, startPublishDate, endPublishDate, expiryDate, orderField,
-                pageIndex, pageSize);
+                modelIds, text, fields, tagIds, dictionaryValues, dictionaryUnion, startPublishDate, endPublishDate, expiryDate,
+                orderField, pageIndex, pageSize);
     }
 
     /**
@@ -132,6 +133,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param categoryIds
      * @param modelIds
      * @param dictionaryValues
+     * @param dictionaryUnion
      * @param startPublishDate
      * @param endPublishDate
      * @param expiryDate
@@ -143,11 +145,11 @@ public class CmsContentService extends BaseService<CmsContent> {
     @Transactional(readOnly = true)
     public FacetPageHandler facetQuery(Short siteId, boolean projection, boolean phrase, HighLighterQuery highLighterQuery,
             String text, String[] fields, Long[] tagIds, Integer categoryId, Boolean containChild, Integer[] categoryIds,
-            String[] modelIds, String[] dictionaryValues, Date startPublishDate, Date endPublishDate, Date expiryDate,
-            String orderField, Integer pageIndex, Integer pageSize) {
+            String[] modelIds, String[] dictionaryValues, Boolean dictionaryUnion, Date startPublishDate, Date endPublishDate,
+            Date expiryDate, String orderField, Integer pageIndex, Integer pageSize) {
         return dao.facetQuery(siteId, projection, phrase, highLighterQuery, getCategoryIds(containChild, categoryId, categoryIds),
-                modelIds, text, fields, tagIds, dictionaryValues, startPublishDate, endPublishDate, expiryDate, orderField,
-                pageIndex, pageSize);
+                modelIds, text, fields, tagIds, dictionaryValues, dictionaryUnion, startPublishDate, endPublishDate, expiryDate,
+                orderField, pageIndex, pageSize);
     }
 
     /**

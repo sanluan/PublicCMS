@@ -32,7 +32,10 @@ import com.publiccms.views.pojo.entities.ClickStatistics;
  * <li><code>categoryId</code> 分类id
  * <li><code>containChild</code> 包含子分类，当categoryId不为空时有效
  * <li><code>categoryIds</code> 多个分类id，当categoryId为空时有效
- * <li><code>dictionaryValues</code> 多个数据字典值,多个值取交集结果,只有父级值时包含所有子级结果,格式：[字段编码]_{字段值],例如:dictionaryValues='extend1_value1,extend1_value1'
+ * <li><code>dictionaryValues</code>
+ * 多个数据字典值,只有父级值时包含所有子级结果,格式：[字段编码]_{字段值],例如:dictionaryValues='extend1_value1,extend1_value1'
+ * <li><code>dictionaryUnion</code>
+ * 取数据字典并集结果,dictionaryUnion不为空时有效,【true,false】,默认为交集结果
  * <li><code>highlight</code> 高亮关键词,【true,false】,默认为false,启用高亮后台
  * 标题、作者、编辑、描述字段应该加?no_esc以使高亮html生效,cms会自动对原值有进行html安全转义
  * <li><code>preTag</code> 高亮前缀,启用高亮时有效,默认为"&lt;B&gt;"
@@ -85,7 +88,6 @@ public class CmsFacetSearchDirective extends AbstractTemplateDirective {
         if (null == tagIds) {
             tagIds = handler.getLongArray("tagId");
         }
-        String[] dictionaryValues = handler.getStringArray("dictionaryValues");
         SysSite site = getSite(handler);
         if (CommonUtils.notEmpty(word)) {
             if (word.length() > 200) {
@@ -111,7 +113,8 @@ public class CmsFacetSearchDirective extends AbstractTemplateDirective {
             page = service.facetQuery(site.getId(), handler.getBoolean("projection", false), handler.getBoolean("phrase", false),
                     highLighterQuery, word, handler.getStringArray("fields"), tagIds, handler.getInteger("categoryId"),
                     handler.getBoolean("containChild"), handler.getIntegerArray("categoryIds"),
-                    handler.getStringArray("modelIds"), dictionaryValues, handler.getDate("startPublishDate"),
+                    handler.getStringArray("modelIds"), handler.getStringArray("dictionaryValues"),
+                    handler.getBoolean("dictionaryUnion"), handler.getDate("startPublishDate"),
                     handler.getDate("endPublishDate", currentDate), currentDate, handler.getString("orderField"), pageIndex,
                     pageSize);
             @SuppressWarnings("unchecked")
