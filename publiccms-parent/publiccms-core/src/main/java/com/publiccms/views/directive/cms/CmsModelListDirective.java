@@ -14,7 +14,7 @@ import com.publiccms.logic.component.template.ModelComponent;
 
 /**
  *
- * modelList 分类类型列表查询指令
+ * modelList 内容模型列表查询指令
  * <p>
  * 参数列表
  * <ul>

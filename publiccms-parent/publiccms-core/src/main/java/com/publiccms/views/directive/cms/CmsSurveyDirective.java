@@ -16,10 +16,32 @@ import com.publiccms.entities.cms.CmsSurvey;
 import com.publiccms.logic.service.cms.CmsSurveyService;
 
 /**
- *
- * CmsSurveyDirective
- * 
- */
+*
+* survey 调查问卷查询指令
+* <p>
+* 参数列表
+* <ul>
+* <li><code>id</code> 调查问卷id，结果返回<code>object</code>
+* {@link com.publiccms.entities.cms.CmsSurvey}
+* <li><code>ids</code>
+* 多个调查问卷id，逗号或空格间隔，当id为空时生效，结果返回<code>map</code>(id,调查问卷)
+* {@link com.publiccms.entities.cms.CmsSurvey}
+* </ul>
+* 使用示例
+* <p>
+* &lt;@_survey id=1&gt;${object.title}&lt;/@_survey&gt;
+* <p>
+* &lt;@_survey ids='1,2,3'&gt;&lt;#list map as
+* k,v&gt;${v.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@_survey&gt;
+* 
+* <pre>
+&lt;script&gt;
+ $.getJSON('//cms.publiccms.com/api/directive/survey?id=1', function(data){    
+   console.log(data.title);
+ });
+ &lt;/script&gt;
+* </pre>
+*/
 @Component
 public class CmsSurveyDirective extends AbstractTemplateDirective {
 

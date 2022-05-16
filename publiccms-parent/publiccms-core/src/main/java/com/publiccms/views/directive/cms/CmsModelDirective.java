@@ -16,7 +16,7 @@ import com.publiccms.views.pojo.entities.CmsModel;
 
 /**
  *
- * model 分类查询指令
+ * model 页面片段数据查询指令
  * <p>
  * 参数列表
  * <ul>

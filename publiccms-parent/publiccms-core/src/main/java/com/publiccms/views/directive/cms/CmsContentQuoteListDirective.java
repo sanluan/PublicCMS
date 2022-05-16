@@ -18,11 +18,11 @@ import com.publiccms.logic.service.cms.CmsContentService;
 
 /**
 *
-* contentQuoteList 分类列表查询指令
+* contentQuoteList 内容引用列表查询指令
 * <p>
 * 参数列表
 * <ul>
-* <li><code>quoteId</code> 发布评论用户id
+* <li><code>quoteId</code> 引用内容id
 * </ul>
 * <p>
 * 返回结果:

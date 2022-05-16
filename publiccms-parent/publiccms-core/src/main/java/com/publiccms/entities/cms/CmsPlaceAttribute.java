@@ -23,8 +23,16 @@ public class CmsPlaceAttribute implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
+    /**
+     * place id<p>
+     * 推荐位id
+     */
     @GeneratorColumn(title = "分类")
     private long placeId;
+    /**
+     * extend data<p>
+     * 扩展数据
+     */
     @GeneratorColumn(title = "扩展数据")
     private String data;
 

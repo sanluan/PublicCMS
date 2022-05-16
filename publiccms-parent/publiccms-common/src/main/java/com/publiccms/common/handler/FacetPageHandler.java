@@ -15,8 +15,8 @@ public class FacetPageHandler extends PageHandler {
     private static final long serialVersionUID = 1L;
 
     /**
-     * facet result map<field,<value,count>><p>
-     * 分面搜索结果<字段名,<值,结果总数>>
+     * facet result map(field,(value,count))<p>
+     * 分面搜索结果(字段名,(值,结果总数))
      */
     private Map<String, Map<String, Long>> facetMap;
 

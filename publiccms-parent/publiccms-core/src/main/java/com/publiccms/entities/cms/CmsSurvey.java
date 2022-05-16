@@ -1,6 +1,7 @@
 package com.publiccms.entities.cms;
 // Generated 2020-7-1 18:53:08 by Hibernate Tools 6.0.0-SNAPSHOT
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.publiccms.common.database.CmsUpgrader;
 import com.publiccms.common.generator.annotation.GeneratorColumn;
 
@@ -30,29 +31,66 @@ public class CmsSurvey implements java.io.Serializable {
     */
     private static final long serialVersionUID = 1L;
 
+    /**
+     * id
+     */
     @GeneratorColumn(title = "ID")
     private Long id;
     @GeneratorColumn(title = "站点", condition = true)
+    @JsonIgnore
     private short siteId;
+    /**
+     * user id<p>
+     * 发布用户id
+     */
     @GeneratorColumn(title = "发布用户", condition = true)
     private long userId;
+    /**
+     * survey type(survey,exam)<p>
+     * 问卷类型(survey:问卷,exam:考试)
+     */
     @GeneratorColumn(title = "问卷类型", condition = true)
     private String surveyType;
+    /**
+     * title<p>
+     * 标题
+     */
     @GeneratorColumn(title = "标题", condition = true, like = true)
     private String title;
+    /**
+     * description<p>
+     * 描述
+     */
     @GeneratorColumn(title = "描述")
     private String description;
+    /**
+     * votes<p>
+     * 投票次数
+     */
     @GeneratorColumn(title = "投票次数", order = true)
     private int votes;
+    /**
+     * start date<p>
+     * 开始日期
+     */
     @GeneratorColumn(title = "开始日期", condition = true, order = true)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startDate;
+    /**
+     * end date<p>
+     * 结束日期
+     */
     @GeneratorColumn(title = "结束日期", condition = true, order = true)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endDate;
+    /**
+     * create date<p>
+     * 创建日期
+     */
     @GeneratorColumn(title = "创建日期", order = true)
     private Date createDate;
     @GeneratorColumn(title = "已禁用", condition = true)
+    @JsonIgnore
     private boolean disabled;
 
     public CmsSurvey() {
