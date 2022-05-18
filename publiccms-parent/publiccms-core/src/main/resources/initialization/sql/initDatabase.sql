@@ -2019,8 +2019,7 @@ CREATE TABLE `visit_history` (
   `create_date` datetime NOT NULL COMMENT '创建日期',
   PRIMARY KEY (`id`),
   KEY `visit_history_visit_date` (`site_id`,`visit_date`,`visit_hour`),
-  KEY `visit_history_session_id` (`site_id`,`session_id`,`visit_date`,`create_date`),
-  KEY `visit_history_url` (`site_id`,`url`,`create_date`)
+  KEY `visit_history_session_id` (`site_id`,`session_id`,`visit_date`,`create_date`)
 ) COMMENT='访问日志';
 
 -- ----------------------------
