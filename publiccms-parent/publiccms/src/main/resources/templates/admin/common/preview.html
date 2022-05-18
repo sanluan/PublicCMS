@@ -1,6 +1,6 @@
 <div class="pageContent">
     <#assign url=url?has_content?then(url,site.useStatic?then(site.sitePath,site.dynamicPath))/>
-    <form method="post" action="cmsPage/buttons.html" onsubmit="return divSearch(this, 'buttonBox');">
+    <form method="post" action="common/buttons.html" onsubmit="return divSearch(this, 'buttonBox');">
         <input type="hidden" name="templatePath" value=""/>
         <input type="hidden" name="itemType" value=""/>
         <input type="hidden" name="itemId" value=""/>
