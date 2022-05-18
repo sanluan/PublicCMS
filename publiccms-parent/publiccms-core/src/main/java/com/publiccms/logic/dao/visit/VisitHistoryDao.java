@@ -29,6 +29,7 @@ public class VisitHistoryDao extends BaseDao<VisitHistory> {
     /**
      * @param siteId
      * @param sessionId
+     * @param url
      * @param startCreateDate
      * @param endCreateDate
      * @param orderType
@@ -36,14 +37,17 @@ public class VisitHistoryDao extends BaseDao<VisitHistory> {
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(Short siteId, String sessionId, Date startCreateDate, Date endCreateDate, String orderType,
-            Integer pageIndex, Integer pageSize) {
+    public PageHandler getPage(Short siteId, String sessionId, String url, Date startCreateDate, Date endCreateDate,
+            String orderType, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from VisitHistory bean");
         if (null != siteId) {
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
         }
         if (CommonUtils.notEmpty(sessionId)) {
             queryHandler.condition("bean.sessionId = :sessionId").setParameter("sessionId", sessionId);
+        }
+        if (CommonUtils.notEmpty(url)) {
+            queryHandler.condition("bean.url = :url").setParameter("url", url);
         }
         if (null != startCreateDate) {
             queryHandler.condition("bean.createDate > :startCreateDate").setParameter("startCreateDate", startCreateDate);

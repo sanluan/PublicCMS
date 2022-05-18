@@ -4,7 +4,7 @@
     <div class="formBar">
         <ul>
         <#if a?has_content>
-             <li><a class="button" href="cmsTemplate/delete?path=${(path?url)!}&navTabId=cmsTemplate/list&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete_file'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i> <@t.page 'button.delete'/></a></li>
+             <li><a class="button" href="cmsTemplate/delete?path=${(path?url)!}&navTabId=cmsTemplate/list&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete_file'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i><@t.page 'button.delete'/></a></li>
     <@_sysAuthorized roleIds=admin.roles url='cmsPage/metadata'>
         <@_sysDeptPage deptId=admin.deptId!'' pages=path>
             <li><a class="button" href="cmsPage/metadata.html?path=${(path?url)!}" target="ajax" rel="cmsTemplateBox"><@t.page 'page.management'/></a></li>
@@ -56,7 +56,7 @@
                 <dt><@t.page 'dynamic_config.need_login'/>:</dt>
                 <dd>
                     <label><input name="needLogin" type="checkbox"/></label>
-                    <span class="info"><@t.page 'dynamic_config.need_login.description'/>:<a href="sysConfigData/edit.html?code=site" target="navTab" rel="sysConfigData/edit" icon="<i class='icon-edit icon-large'></i> "><@t.page 'server_config.site'/></a></span>
+                    <span class="info"><@t.page 'dynamic_config.need_login.description'/>:<a href="sysConfigData/edit.html?code=site" target="navTab" rel="sysConfigData/edit" icon="<i class='icon-edit icon-large'></i>"><@t.page 'server_config.site'/></a></span>
                 </dd>
             </dl>
             <dl class="nowrap">
@@ -75,7 +75,7 @@
                         <label><@t.page 'required'/>:<input name="required" type="checkbox"/></label>
                         <label><@t.page 'alias'/>:</label><input name="parameterAlias" type="text" autocomplete="on" size="8"/>
                         <label><@t.page 'array'/>:<input name="array" type="checkbox"/></label>
-                        <a href="javascript:;" class="btnText green" onclick="addParameter($('input[name=\'parameterName\']',navTab.getCurrentPanel()).val(),$('input[name=\'array\']',navTab.getCurrentPanel()).prop('checked'),$('input[name=\'required\']',navTab.getCurrentPanel()).prop('checked'),$('select[name=\'parameterType\']',navTab.getCurrentPanel()).val(),$('select[name=\'parameterType\'] option:selected',navTab.getCurrentPanel()).text(),$('input[name=\'parameterAlias\']',navTab.getCurrentPanel()).val());return false;"><i class="icon-ok"></i> <@t.page 'button.add'/></a>
+                        <a href="javascript:;" class="btnText green" onclick="addParameter($('input[name=\'parameterName\']',navTab.getCurrentPanel()).val(),$('input[name=\'array\']',navTab.getCurrentPanel()).prop('checked'),$('input[name=\'required\']',navTab.getCurrentPanel()).prop('checked'),$('select[name=\'parameterType\']',navTab.getCurrentPanel()).val(),$('select[name=\'parameterType\'] option:selected',navTab.getCurrentPanel()).text(),$('input[name=\'parameterAlias\']',navTab.getCurrentPanel()).val());return false;"><i class="icon-ok"></i><@t.page 'button.add'/></a>
                     </div>
                 </dd>
             </dl>

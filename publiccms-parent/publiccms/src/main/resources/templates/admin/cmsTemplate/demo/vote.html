@@ -19,7 +19,7 @@ ol.vote>li:nth-child(3n) .progress-bar {background-color:blue;}
         <h1>${(site.name)!}</h1>
     </header>
     <nav>
-        <a href="${base}">Home</a>
+        <a href="${site.dynamicPath}">Home</a>
 <@_categoryList>
     <#list page.list as a>
         <a href="${a.url!}" target="_blank">${a.name}</a>
@@ -114,6 +114,7 @@ ol.vote>li:nth-child(3n) .progress-bar {background-color:blue;}
 
     <script src="${site.dynamicPath!}resource/js/jquery-1.12.4.min.js"></script>
     <script src="${site.dynamicPath}resource/js/cms.analytics.js"></script>
+    <script src="${site.dynamicPath}resource/js/cms.diy.js"></script>
 <#if user?has_content>
 <script>
 function vote(itemId){

@@ -36,8 +36,8 @@
 <div class="pageContent">
     <div class="panelBar">
         <ul class="toolBar">
-            <li><a href="cmsWord/add.html" target="dialog" rel="cmsWord_add" ><i class="icon-plus-sign-alt icon-large"></i> <@t.page 'search_word.add'/></a></li>
-            <li><a href="cmsWord/delete?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> <@t.page 'button.batch_delete'/></a></li>
+            <li><a href="cmsWord/add.html" target="dialog" rel="cmsWord_add" ><i class="icon-plus-sign-alt icon-large"></i><@t.page 'search_word.add'/></a></li>
+            <li><a href="cmsWord/delete?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i><@t.page 'button.batch_delete'/></a></li>
         </ul>
     </div>
     <table class="table" width="100%" layoutH>
@@ -60,11 +60,11 @@
                 <td>${a.hidden?then(t.pageMessage('hidden'),t.pageMessage('show'))}</td>
                 <td>${a.createDate!}</td>
                 <td class="wrap">
-                    <a href="cmsWord/add.html?id=${a.id}" class="edit btnText blue" target="dialog" rel="cmsWord_edit" title="<@t.page 'search_word.edit'/>"><i class="icon-edit"></i> <@t.page 'button.edit'/></a>
+                    <a href="cmsWord/add.html?id=${a.id}" class="edit btnText blue" target="dialog" rel="cmsWord_edit" title="<@t.page 'search_word.edit'/>"><i class="icon-edit"></i><@t.page 'button.edit'/></a>
                     <#if a.hidden>
-                        <a href="cmsWord/show?id=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText green" title="<@t.page 'confirm.show'/>" target="ajaxTodo"><i class="icon-eye-open"></i> <@t.page 'button.show'/></a>
+                        <a href="cmsWord/show?id=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText green" title="<@t.page 'confirm.show'/>" target="ajaxTodo"><i class="icon-eye-open"></i><@t.page 'button.show'/></a>
                     <#else>
-                        <a href="cmsWord/hidden?id=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText red" title="<@t.page 'confirm.hide'/>" target="ajaxTodo"><i class="icon-eye-close"></i> <@t.page 'button.hide'/></a>
+                        <a href="cmsWord/hidden?id=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText red" title="<@t.page 'confirm.hide'/>" target="ajaxTodo"><i class="icon-eye-close"></i><@t.page 'button.hide'/></a>
                     </#if>
                 </td>
             </tr>

@@ -1,7 +1,7 @@
 <#if !startCreateDate?has_content>
     <#assign startCreateDate=(.now?long-7*24*3600*1000)?number_to_date/>
 </#if>
-<@_visitHistoryList sessionId=sessionId  startCreateDate=startCreateDate endCreateDate=endCreateDate
+<@_visitHistoryList sessionId=sessionId url=url startCreateDate=startCreateDate endCreateDate=endCreateDate
             orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
     <form class="pagerForm" action="visit/history.html" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">

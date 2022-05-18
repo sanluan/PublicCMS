@@ -15,7 +15,7 @@
                 <dt><@t.page 'static_page'/>:</dt>
                 <dd>
                     <label><a class="button" href="cmsTemplate/publish?path=${path}&_csrf=<@_csrfToken admin=true/>" target="ajaxTodo"><@t.page 'publish_page'/></a></label>
-                    <label><a class="button" href="${site.sitePath+(metadata.publishPath?starts_with('/'))?then(metadata.publishPath?keep_after('/'),metadata.publishPath)}" target="_blank"><@t.page 'button.view_page'/></a></label>
+                    <label><a class="button" href="common/preview.html?url=${(site.sitePath+(metadata.publishPath?starts_with('/'))?then(metadata.publishPath?keep_after('/'),metadata.publishPath))?url}" target="navTab" rel="cmsPage/preview"><@t.page 'button.view_page'/></a></label>
                 </dd>
             </dl>
         </#if>
@@ -23,7 +23,7 @@
             <dl class="nowrap">
                 <dt><@t.page 'dynamic_page'/>:</dt>
                 <dd>
-                    <label><a class="button" href="${site.dynamicPath+(path?starts_with('/'))?then(path?keep_after('/'),path)}<#if metadata.acceptParameters?has_content>?<#list metadata.acceptParameters?split(',') as p>${p}=<#if 'content'=(metadata.parameterTypeMap[p].type)!><@_contentList pageSize=1><#list page.list as a>${metadata.id}</#list></@_contentList><#elseif 'category'=(metadata.parameterTypeMap[p].type)!><@_categoryList pageSize=1><#list page.list as a>${a.id}</#list></@_categoryList></#if><#sep>&</#list></#if>" target="_blank"><@t.page 'button.view_page'/></a></label>
+                    <label><a class="button" href="common/preview.html?url=${(site.dynamicPath+(path?starts_with('/'))?then(path?keep_after('/'),path))?url}<#if metadata.acceptParameters?has_content>%3F<#list metadata.acceptParameters?split(',') as p>${p}=<#if 'content'=(metadata.parameterTypeMap[p].type)!><@_contentList pageSize=1><#list page.list as a>${a.id}</#list></@_contentList><#elseif 'category'=(metadata.parameterTypeMap[p].type)!><@_categoryList pageSize=1><#list page.list as a>${a.id}</#list></@_categoryList></#if><#sep>%26</#list></#if>" target="navTab" rel="cmsPage/preview"><@t.page 'button.view_page'/></a></label>
                     <#if 0 lte (metadata.cacheTime)!0>
                         <label><a class="button" href="cmsPage/clearCache?path=${path}&_csrf=<@_csrfToken admin=true/>" target="ajaxTodo"><@t.page 'button.clear_cache'/></a></label>
                     </#if>

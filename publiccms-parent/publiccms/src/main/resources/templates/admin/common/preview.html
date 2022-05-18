@@ -1,0 +1,14 @@
+<div class="pageContent">
+    <#assign url=url?has_content?then(url,site.useStatic?then(site.sitePath,site.dynamicPath))/>
+    <form method="post" action="cmsPage/buttons.html" onsubmit="return divSearch(this, 'buttonBox');">
+        <input type="hidden" name="templatePath" value=""/>
+        <input type="hidden" name="itemType" value=""/>
+        <input type="hidden" name="itemId" value=""/>
+        <input type="hidden" name="url" value="${url+url?contains('?')?then('&diy','?diy')}"/>
+    </form>
+    <iframe layoutH></iframe>
+    <div class="buttons float" id="buttonBox"></div>
+    <script>
+    diyIframeRefresh();
+    </script>
+</div>

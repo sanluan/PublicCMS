@@ -52,7 +52,7 @@
 <div class="pageContent">
     <div class="panelBar">
         <ul class="toolBar">
-            <li><a href="sysDept/addUser.html?deptId=${deptId!}" target="navTab" rel="sysUser/add"><i class="icon-plus-sign-alt icon-large"></i> <@t.page 'user.add'/></a></li>
+            <li><a href="sysDept/addUser.html?deptId=${deptId!}" target="navTab" rel="sysUser/add"><i class="icon-plus-sign-alt icon-large"></i><@t.page 'user.add'/></a></li>
         </ul>
     </div>
     <table class="table" width="100%" layoutH>
@@ -94,11 +94,11 @@
                 <td>${a.loginCount!}</td>
                 <td>${a.registeredDate!}</td>
                 <td class="wrap">
-                    <a href="sysDept/addUser.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="sysUser/edit"><i class="icon-edit"></i> <@t.page 'user.edit'/></a>
+                    <a href="sysDept/addUser.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="sysUser/edit"><i class="icon-edit"></i><@t.page 'user.edit'/></a>
                     <#if a.disabled>
-                        <a href="sysDept/enableUser?id=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText green" title="<@t.page 'confirm.enable'/>" target="ajaxTodo"><i class="icon-circle"></i> <@t.page 'button.enable'/></a>
+                        <a href="sysDept/enableUser?id=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText green" title="<@t.page 'confirm.enable'/>" target="ajaxTodo"><i class="icon-circle"></i><@t.page 'button.enable'/></a>
                     <#else>
-                        <a href="sysDept/disableUser?id=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText red" title="<@t.page 'confirm.disable'/>" target="ajaxTodo"><i class="icon-ban-circle"></i> <@t.page 'button.disable'/></a>
+                        <a href="sysDept/disableUser?id=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText red" title="<@t.page 'confirm.disable'/>" target="ajaxTodo"><i class="icon-ban-circle"></i><@t.page 'button.disable'/></a>
                     </#if>
                     <a href="log/login.html?userId=${a.id}" class="btnText" target="navTab" rel="log/login"><@t.page 'log.login'/></a>
                     <a href="log/operate.html?userId=${a.id}" class="btnText" target="navTab" rel="log/operate"><@t.page 'log.operate'/></a>

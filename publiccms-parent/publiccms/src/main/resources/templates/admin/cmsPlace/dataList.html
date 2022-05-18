@@ -35,7 +35,7 @@
                         <button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
                     </li>
                     <li>
-                        <a class="button" href="cmsPlace/export?path=${(path?url)!}&_csrf=<@_csrfToken admin=true/>" target="dwzExport" targetType="navTab"><i class="icon-download-alt icon-large"></i> <@t.page 'button.export'/></a>
+                        <a class="button" href="cmsPlace/export?path=${(path?url)!}&_csrf=<@_csrfToken admin=true/>" target="dwzExport" targetType="navTab"><i class="icon-download-alt icon-large"></i><@t.page 'button.export'/></a>
                     </li>
                 </ul>
             </div>
@@ -45,18 +45,18 @@
 <div class="pageContent">
     <div class="panelBar">
         <ul class="toolBar">
-            <li><a href="cmsPlace/add.html?path=${(path?url)!}" target="navTab" rel="cmsPlace/add"><i class="icon-plus-sign-alt icon-large"></i> <@t.page 'place_data.add'/></a></li>
-            <li><a href="cmsPlace/refresh?_csrf=<@_csrfToken admin=true/>&path=${(path?url)!}" title="<@t.page 'confirm.batch_refresh'/>" target="selectedTodo" rel="ids"><i class="icon-refresh icon-large"></i> <@t.page 'button.batch_refresh'/></a></li>
-            <li><a href="cmsPlace/check?_csrf=<@_csrfToken admin=true/>&path=${(path?url)!}" title="<@t.page 'confirm.batch_check'/>" target="selectedTodo" rel="ids"><i class="icon-check icon-large"></i> <@t.page 'button.batch_check'/></a></li>
-            <li><a href="cmsPlace/uncheck?_csrf=<@_csrfToken admin=true/>&path=${(path?url)!}" title="<@t.page 'confirm.batch_uncheck'/>" target="selectedTodo" rel="ids"><i class="icon-check icon-large"></i> <@t.page 'button.batch_uncheck'/></a></li>
+            <li><a href="cmsPlace/add.html?path=${(path?url)!}" target="navTab" rel="cmsPlace/add"><i class="icon-plus-sign-alt icon-large"></i><@t.page 'place_data.add'/></a></li>
+            <li><a href="cmsPlace/refresh?_csrf=<@_csrfToken admin=true/>&path=${(path?url)!}" title="<@t.page 'confirm.batch_refresh'/>" target="selectedTodo" rel="ids"><i class="icon-refresh icon-large"></i><@t.page 'button.batch_refresh'/></a></li>
+            <li><a href="cmsPlace/check?_csrf=<@_csrfToken admin=true/>&path=${(path?url)!}" title="<@t.page 'confirm.batch_check'/>" target="selectedTodo" rel="ids"><i class="icon-check icon-large"></i><@t.page 'button.batch_check'/></a></li>
+            <li><a href="cmsPlace/uncheck?_csrf=<@_csrfToken admin=true/>&path=${(path?url)!}" title="<@t.page 'confirm.batch_uncheck'/>" target="selectedTodo" rel="ids"><i class="icon-check icon-large"></i><@t.page 'button.batch_uncheck'/></a></li>
             <#if site.useSsi>
                 <li class="line">line</li>
-                <li><a href="cmsTemplate/publishPlace?path=${(path?url)!}&_csrf=<@_csrfToken admin=true/>" target="ajaxTodo"><i class="icon-file-text-alt icon-large"></i> <@t.page 'button.publish'/></a></li>
+                <li><a href="cmsTemplate/publishPlace?path=${(path?url)!}&_csrf=<@_csrfToken admin=true/>" target="ajaxTodo"><i class="icon-file-text-alt icon-large"></i><@t.page 'button.publish'/></a></li>
             </#if>
             <li class="line">line</li>
-            <li><a href="cmsPlace/delete?_csrf=<@_csrfToken admin=true/>&path=${(path?url)!}" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> <@t.page 'button.batch_delete'/></a></li>
+            <li><a href="cmsPlace/delete?_csrf=<@_csrfToken admin=true/>&path=${(path?url)!}" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i><@t.page 'button.batch_delete'/></a></li>
             <li class="line">line</li>
-            <li><a href="cmsPlace/clear?path=${(path?url)!}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.clear_all'/>" target="ajaxTodo"><i class="icon-wrench icon-large"></i> <@t.page 'button.clear_all'/></a></li>
+            <li><a href="cmsPlace/clear?path=${(path?url)!}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.clear_all'/>" target="ajaxTodo"><i class="icon-wrench icon-large"></i><@t.page 'button.clear_all'/></a></li>
         </ul>
     </div>
     <table class="table" width="100%" layoutH>
@@ -100,7 +100,7 @@
                     </#if>
                     <div class="box">
                         <h3 <#if lockMap[a.id?string]?has_content><#assign lockUser=(userMap[lockMap[a.id?string].userId?string].nickname)!''/>title="<@t.page 'lock.message' lockUser/> ${lockMap[a.id?string].createDate}"</#if>>
-                           <#if lockMap[a.id?string]?has_content><i class="icon-lock icon-large"></i> </#if><a href="cmsPlace/view.html?id=${a.id}" target="dialog" rel="viewContent${a.id}">${a.title}</a>
+                           <#if lockMap[a.id?string]?has_content><i class="icon-lock icon-large"></i></#if><a href="cmsPlace/view.html?id=${a.id}" target="dialog" rel="viewContent${a.id}">${a.title}</a>
                         </h3>
                     </div>
                 </td>
@@ -114,14 +114,14 @@
                     <#if 1=a.status&&a.checkUserId?has_content>/ ${(userMap[a.checkUserId?string].nickname)!}</#if>
                 </td>
                 <td class="wrap">
-                    <a href="cmsPlace/add.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="cmsPlace/edit"><i class="icon-edit"></i> <@t.page 'button.edit'/></a>
+                    <a href="cmsPlace/add.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="cmsPlace/edit"><i class="icon-edit"></i><@t.page 'button.edit'/></a>
                     <a href="cmsPlace/add.html?copyId=${a.id}" class="btnText blue" target="navTab" rel="cmsPlace/add" icon="<i class='icon-plus-sign-alt icon-large'></i>" title="<@t.page 'place_data.add'/>"><@t.page 'button.copy'/></a>
                     <#if 2=a.status>
-                        <a href="cmsPlace/check?ids=${a.id}&_csrf=<@_csrfToken admin=true/>&path=${(path?url)!}" class="btnText green" title="<@t.page 'confirm.check'/>" target="ajaxTodo"><i class="icon-check"></i> <@t.page 'button.check'/></a>
+                        <a href="cmsPlace/check?ids=${a.id}&_csrf=<@_csrfToken admin=true/>&path=${(path?url)!}" class="btnText green" title="<@t.page 'confirm.check'/>" target="ajaxTodo"><i class="icon-check"></i><@t.page 'button.check'/></a>
                     <#elseif 1=a.status>
-                        <a href="cmsPlace/uncheck?ids=${a.id}&_csrf=<@_csrfToken admin=true/>&path=${(path?url)!}" class="btnText red" title="<@t.page 'confirm.check'/>" target="ajaxTodo"><i class="icon-eraser"></i> <@t.page 'button.uncheck'/></a>
+                        <a href="cmsPlace/uncheck?ids=${a.id}&_csrf=<@_csrfToken admin=true/>&path=${(path?url)!}" class="btnText red" title="<@t.page 'confirm.check'/>" target="ajaxTodo"><i class="icon-eraser"></i><@t.page 'button.uncheck'/></a>
                     </#if>
-                    <a href="cmsPlace/delete?ids=${a.id}&_csrf=<@_csrfToken admin=true/>&path=${(path?url)!}" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i> <@t.page 'button.delete'/></a>
+                    <a href="cmsPlace/delete?ids=${a.id}&_csrf=<@_csrfToken admin=true/>&path=${(path?url)!}" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i><@t.page 'button.delete'/></a>
                 </td>
             </tr>
     </#list>

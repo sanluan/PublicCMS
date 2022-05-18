@@ -71,7 +71,7 @@
             <#list page.list as a>
             <tr>
                 <td>
-                    <a href="javascript:;" onclick="$.bringBack({'${field!'userId'}':'${a.id}','${nicknameField!'nickname'}':'${(a.nickname?js_string)!}'});return false;"><i class="icon-ok icon-large"></i> <@t.page 'select'/></a>
+                    <a href="javascript:;" onclick="$.bringBack({'${field!'userId'}':'${a.id}','${nicknameField!'nickname'}':'${(a.nickname?js_string)!}'});return false;"><i class="icon-ok icon-large"></i><@t.page 'select'/></a>
                 </td>
                 <td class="wrap">
                     <#if a.cover?has_content>

@@ -52,9 +52,9 @@
 <div class="pageContent">
     <div class="panelBar">
         <ul class="toolBar">
-            <li><a href="sysUser/add.html" target="navTab" rel="sysUser/add"><i class="icon-plus-sign-alt icon-large"></i> <@t.page 'user.add'/></a></li>
-            <li><a href="sysUser/enable?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.enable'/>" target="selectedTodo" rel="ids"><i class="icon-circle icon-large"></i> <@t.page 'button.enable'/></a></li>
-            <li><a href="sysUser/disable?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.disable'/>" target="selectedTodo" rel="ids"><i class="icon-ban-circle icon-large"></i> <@t.page 'button.disable'/></a></li>
+            <li><a href="sysUser/add.html" target="navTab" rel="sysUser/add"><i class="icon-plus-sign-alt icon-large"></i><@t.page 'user.add'/></a></li>
+            <li><a href="sysUser/enable?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.enable'/>" target="selectedTodo" rel="ids"><i class="icon-circle icon-large"></i><@t.page 'button.enable'/></a></li>
+            <li><a href="sysUser/disable?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.disable'/>" target="selectedTodo" rel="ids"><i class="icon-ban-circle icon-large"></i><@t.page 'button.disable'/></a></li>
         </ul>
     </div>
     <table class="table" width="100%" layoutH targetType="ajax" rel="userBox">
@@ -109,7 +109,7 @@
                 <td>${a.loginCount!}</td>
                 <td>${a.registeredDate!}</td>
                 <td class="wrap">
-                    <a href="sysUser/add.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="sysUser/edit"><i class="icon-edit"></i> <@t.page 'user.edit'/></a>
+                    <a href="sysUser/add.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="sysUser/edit"><i class="icon-edit"></i><@t.page 'user.edit'/></a>
                     <a href="log/login.html?userId=${a.id}" class="btnText" target="navTab" rel="log/login">
                         <@t.page 'log.login'/>
                     </a>

@@ -19,7 +19,7 @@
                 <#else>
                     <a href="placeTemplate/content.html?path=${(path?url)!}" <#if lockMap[path]?has_content><#assign lockUser=(userMap[lockMap[path].userId?string].nickname)!''/>title="<@t.page 'lock.message' lockUser/> ${lockMap[path].createDate}"</#if> target="ajax" rel="cmsTemplatePlace">
                         <@_placeMetadata path=path>
-                            <#if lockMap[path]?has_content><i class="icon-lock icon-large"></i> </#if><#if 0 lt ((object.size)!0)><@t.page 'place_data.place'/>:</#if>
+                            <#if lockMap[path]?has_content><i class="icon-lock icon-large"></i></#if><#if 0 lt ((object.size)!0)><@t.page 'place_data.place'/>:</#if>
                             ${(object.alias)!a.fileName}
                         </@_placeMetadata>
                     </a>

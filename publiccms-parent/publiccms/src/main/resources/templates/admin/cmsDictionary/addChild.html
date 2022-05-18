@@ -3,7 +3,7 @@
     <@_dictionaryDataList dictionaryId=dictionaryId parentValue=parentValue>
         <ul>
             <li>
-                <a href="cmsDictionary/add.html?id=${dictionaryId}&parentValue=${parentValue}" target="navTab" rel="cmsDictionary/add"><i class="icon-plus-sign-alt"></i> <@t.page 'dictionary.add'/></a>
+                <a href="cmsDictionary/add.html?id=${dictionaryId}&parentValue=${parentValue}" target="navTab" rel="cmsDictionary/add"><i class="icon-plus-sign-alt"></i><@t.page 'dictionary.add'/></a>
             </li>
             <#list list as d>
                 <li>
@@ -18,7 +18,7 @@
 <div class="pageFormContent" layoutH>
 <@_dictionary id=id>
     <ul class="tree treeFolder expand">
-        <li><a href="cmsDictionary/add.html?id=${object.id.id}" target="navTab" rel="cmsDictionary/edit"><i class="icon-edit"></i> <@t.page 'dictionary.edit'/></a></li>
+        <li><a href="cmsDictionary/add.html?id=${object.id.id}" target="navTab" rel="cmsDictionary/edit"><i class="icon-edit"></i><@t.page 'dictionary.edit'/></a></li>
         <#if object.childDepth gt 0>
 <@_dictionaryDataList dictionaryId=object.id.id>
     <#list list as d>

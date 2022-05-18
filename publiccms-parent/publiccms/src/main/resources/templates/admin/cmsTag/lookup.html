@@ -42,7 +42,7 @@
             <#list page.list as a>
             <tr>
                 <td>
-                    <a href="javascript:;" class="btnText green" onclick="$.bringBack({'${field!'tagId'}':'${a.id}','${nameField!'tagName'}':'${(a.name?js_string)!}'});return false;"><i class="icon-ok"></i> <@t.page 'select'/></a>
+                    <a href="javascript:;" class="btnText green" onclick="$.bringBack({'${field!'tagId'}':'${a.id}','${nameField!'tagName'}':'${(a.name?js_string)!}'});return false;"><i class="icon-ok"></i><@t.page 'select'/></a>
                 </td>
                 <td>${a.id}</td>
                 <td class="exclude-translate">${(a.name)!}</td>

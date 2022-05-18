@@ -20,10 +20,10 @@
     <div class="panelBar">
         <ul class="toolBar">
             <#if parent?has_content>
-                <li><a href="cmsModel/list.html?parentId=${(parent.parentId?url)!}" target="navTab" rel="cmsModel/list"><i class="icon-circle-arrow-up icon-large"></i> <@t.page 'button.return'/></a></li>
+                <li><a href="cmsModel/list.html?parentId=${(parent.parentId?url)!}" target="navTab" rel="cmsModel/list"><i class="icon-circle-arrow-up icon-large"></i><@t.page 'button.return'/></a></li>
                 <li class="line">line</li>
             </#if>
-            <li><a href="cmsModel/add.html?parentId=${(parent.id?url)!}" target="navTab" rel="cmsModel/add"><i class="icon-plus-sign-alt icon-large"></i> <@t.page 'model.add'/></a></li>
+            <li><a href="cmsModel/add.html?parentId=${(parent.id?url)!}" target="navTab" rel="cmsModel/add"><i class="icon-plus-sign-alt icon-large"></i><@t.page 'model.add'/></a></li>
         </ul>
     </div>
 <@_modelList parentId=parentId hasChild=hasChild>
@@ -54,23 +54,23 @@
             <tr>
                 <td>${a.id!}</td>
                 <td class="exclude-translate" <#if lockMap[a.id?string]?has_content><#assign lockUser=(userMap[lockMap[a.id?string].userId?string].nickname)!''/>title="<@t.page 'lock.message' lockUser/> ${lockMap[a.id?string].createDate}"</#if>>
-                    <#if lockMap[a.id?string]?has_content><i class="icon-lock icon-large"></i> </#if>${(a.name)!}
+                    <#if lockMap[a.id?string]?has_content><i class="icon-lock icon-large"></i></#if>${(a.name)!}
                 </td>
                 <td>${a.onlyUrl?then(t.pageMessage('yes'),'')}</td>
                 <td>${a.hasImages?then(t.pageMessage('yes'),'')}</td>
                 <td>${a.hasFiles?then(t.pageMessage('yes'),'')}</td>
                 <td>${a.hasProducts?then(t.pageMessage('yes'),'')}</td>
                 <td class="wrap">
-                    <a href="cmsModel/add.html?id=${a.id?url}" class="edit btnText blue" target="navTab" rel="cmsModel/edit"><i class="icon-edit"></i> <@t.page 'model.edit'/></a>
+                    <a href="cmsModel/add.html?id=${a.id?url}" class="edit btnText blue" target="navTab" rel="cmsModel/edit"><i class="icon-edit"></i><@t.page 'model.edit'/></a>
                     <@_sysAuthorized roleIds=admin.roles url='cmsModel/rebuildSearchText'>
-                        <a href="cmsModel/rebuildSearchText?id=${a.id?url}&_csrf=<@_csrfToken admin=true/>" class="btnText" title="<@t.page 'confirm.do'/>" target="ajaxTodo"><i class="icon-refresh"></i> <@t.page 'button.rebuild_search_text'/></a>
+                        <a href="cmsModel/rebuildSearchText?id=${a.id?url}&_csrf=<@_csrfToken admin=true/>" class="btnText" title="<@t.page 'confirm.do'/>" target="ajaxTodo"><i class="icon-refresh"></i><@t.page 'button.rebuild_search_text'/></a>
                     </@_sysAuthorized>
                     <#if a.hasChild>
                         <a href="cmsModel/list.html?parentId=${a.id?url}" class="btnText" target="navTab" rel="cmsModel/list"><@t.page 'model.child_management'/></a>
                     </#if>
                     <#if !site.parentId?has_content>
                         <@_sysAuthorized roleIds=admin.roles url='cmsModel/delete'>
-                            <a href="cmsModel/delete?id=${a.id?url}&_csrf=<@_csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i> <@t.page 'button.delete'/></a>
+                            <a href="cmsModel/delete?id=${a.id?url}&_csrf=<@_csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i><@t.page 'button.delete'/></a>
                         </@_sysAuthorized>
                     </#if>
                 </td>

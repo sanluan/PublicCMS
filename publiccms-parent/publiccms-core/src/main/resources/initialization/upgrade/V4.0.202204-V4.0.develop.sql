@@ -30,3 +30,20 @@ INSERT INTO `sys_module` VALUES ('content_text_history', 'cmsContentTextHistory/
 INSERT INTO `sys_module_lang` VALUES ('content_text_history', 'en', 'Modify records');
 INSERT INTO `sys_module_lang` VALUES ('content_text_history', 'ja', 'レコードを変更する');
 INSERT INTO `sys_module_lang` VALUES ('content_text_history', 'zh', '修改记录');
+-- 2022-05-18 --
+ALTER TABLE `visit_history`
+    DROP INDEX `visit_history_visit_date`,
+    DROP INDEX `visit_history_session_id`,
+    DROP INDEX `visit_history_visit_date`,
+    ADD INDEX `visit_history_visit_date` (`site_id`,`visit_date`,`visit_hour`),
+    ADD INDEX `visit_history_session_id` (`site_id`,`session_id`,`visit_date`,`create_date`),
+    ADD INDEX `visit_history_url` (`site_id`,`url`,`create_date`);
+ALTER TABLE `visit_item`
+    DROP INDEX `visit_session_id`,
+    ADD INDEX `visit_item_session_id` (`site_id`,`visit_date`,`item_type`, `item_id`, `pv`);
+ALTER TABLE `visit_session`
+    DROP INDEX `visit_visit_date`,
+    ADD INDEX `visit_session_visit_date` (`site_id`,`visit_date`,`session_id`,`last_visit_date`);
+ALTER TABLE `visit_url`
+    DROP INDEX `visit_session_id`,
+    ADD INDEX `visit_url_pv`(`site_id`, `visit_date`, `pv`);

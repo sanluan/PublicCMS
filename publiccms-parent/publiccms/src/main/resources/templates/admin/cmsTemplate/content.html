@@ -2,7 +2,7 @@
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
-            <li><a class="button" href="cmsTemplate/delete?path=${(path?url)!}&navTabId=cmsTemplate/list&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete_file'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i> <@t.page 'button.delete'/></a></li>
+            <li><a class="button" href="cmsTemplate/delete?path=${(path?url)!}&navTabId=cmsTemplate/list&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete_file'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i><@t.page 'button.delete'/></a></li>
     <@_sysAuthorized roleIds=admin.roles url='cmsPage/metadata'>
         <@_sysDeptPage deptId=admin.deptId!'' pages=path>
             <li><a class="button" href="cmsPage/metadata.html?path=${(path?url)!}" target="ajax" rel="cmsTemplateBox"><@t.page 'page.management'/></a></li>
@@ -17,7 +17,7 @@
          <a class="button" href="placeTemplate/lookup.html" target="dialog" mask="true"><@t.page 'place'/></a>
          <a class="button" href="cmsWebFile/lookup.html" target="dialog" mask="true"><@t.page 'webfile'/></a>
          <a class="button" href="cmsTemplate/help.html?path=${(path?url)!}" target="dialog" mask="true"><@t.page 'template.help'/></a>
-         <a class="button" href="<@t.page 'template.manual.url'/>" target="_blank"><@t.page 'template.manual'/></a>
+         <a class="button" href="<@t.page 'template.manual.url'/>" target="navTab" rel="templateManual"><@t.page 'template.manual'/></a>
     </h2>
     <div class="pageFormContent" layoutH>
         <div class="exclude-translate">

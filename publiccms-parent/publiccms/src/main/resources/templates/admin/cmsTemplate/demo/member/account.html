@@ -12,7 +12,7 @@
         <h1>${(site.name)!}</h1>
     </header>
     <nav>
-        <a href="${base}">Home</a>
+        <a href="${site.dynamicPath}">Home</a>
 <@_categoryList>
     <#list page.list as a>
         <a href="${a.url!}" target="_blank">${a.name}</a>
@@ -93,6 +93,7 @@
     var itemString="itemType=user&itemId=${user.id}";
     </script>
     <script src="${site.dynamicPath}resource/js/cms.analytics.js"></script>
+    <script src="${site.dynamicPath}resource/js/cms.diy.js"></script>
     <script>
         var ca = cmsAnalytics();
         var url='${site.dynamicPath}api/visit/record';

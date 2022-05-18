@@ -150,3 +150,16 @@ function commandParameter(command,parametersName){
         }
     }
 }
+window.addEventListener('message', function(event) {
+    var op = event.data;
+    if (op.url) {
+        $('input[name=url]',navTab.getCurrentPanel()).val(op.url);
+        $('input[name=templatePath]',navTab.getCurrentPanel()).val(op.templatePath);
+        $('input[name=itemType]',navTab.getCurrentPanel()).val(op.itemType);
+        $('input[name=itemId]',navTab.getCurrentPanel()).val(op.itemId);
+        $('form',navTab.getCurrentPanel()).submit();
+    }
+});
+function diyIframeRefresh(){
+    $('iframe',navTab.getCurrentPanel()).attr('src',$('input[name=url]',navTab.getCurrentPanel()).val());
+}

@@ -54,7 +54,7 @@
             <#list page.list as a>
             <tr>
                 <td>
-                    <a href="javascript:;" class="btnText green" onclick="$.bringBack({'${field!'voteId'}':'${a.id}','${titleField!'title'}':'${(a.title?js_string)!}'});return false;"><i class="icon-ok"></i> <@t.page 'select'/></a>
+                    <a href="javascript:;" class="btnText green" onclick="$.bringBack({'${field!'voteId'}':'${a.id}','${titleField!'title'}':'${(a.title?js_string)!}'});return false;"><i class="icon-ok"></i><@t.page 'select'/></a>
                 </td>
                 <td class="center">${a.id!}</td>
                 <td class="center exclude-translate" >${a.title!}</td>

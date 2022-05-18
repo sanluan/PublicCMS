@@ -27,11 +27,11 @@
         <#if (deptConfigMap[a.code])?has_content&&deptConfigMap[a.code]>
             <tr>
                 <td <#if lockMap[a.code]?has_content><#assign lockUser=(userMap[lockMap[a.code].userId?string].nickname)!''/>title="<@t.page 'lock.message' lockUser/> ${lockMap[a.code].createDate!}"</#if>>
-                    <#if lockMap[a.code]?has_content><i class="icon-lock icon-large"></i> </#if>${(a.code)!}
+                    <#if lockMap[a.code]?has_content><i class="icon-lock icon-large"></i></#if>${(a.code)!}
                 </td>
                 <td>${(a.description)!}</td>
                 <td class="wrap">
-                    <a href="sysConfigData/edit.html?code=${a.code!}" class="edit btnText blue" target="navTab" rel="sysConfigData/edit"><i class="icon-edit"></i> <@t.page 'config_data.edit'/></a>
+                    <a href="sysConfigData/edit.html?code=${a.code!}" class="edit btnText blue" target="navTab" rel="sysConfigData/edit"><i class="icon-edit"></i><@t.page 'config_data.edit'/></a>
                 </td>
             </tr>
         </#if>

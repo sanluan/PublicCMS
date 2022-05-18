@@ -67,10 +67,10 @@
                 <td>${a.createDate!}</td>
                 <td class="wrap">
                 <#if authorizedMap['tradeRefund/refundParameters'] && (0=a.status || 4=a.status)>
-                    <a href="tradeRefund/refundParameters.html?id=${a.id}" class="btnText green" target="dialog" mask="true"><i class="icon-plus-sign-alt"></i> <@t.page 'refund'/></a>
+                    <a href="tradeRefund/refundParameters.html?id=${a.id}" class="btnText green" target="dialog" mask="true"><i class="icon-plus-sign-alt"></i><@t.page 'refund'/></a>
                 </#if>
                 <#if authorizedMap['tradeRefund/refuseParameters'] && (0=a.status || 4=a.status)>
-                    <a href="tradeRefund/refuseParameters.html?id=${a.id}" class="btnText red" target="dialog" mask="true"><i class="icon-plus-sign-alt"></i> <@t.page 'button.refuse'/></a>
+                    <a href="tradeRefund/refuseParameters.html?id=${a.id}" class="btnText red" target="dialog" mask="true"><i class="icon-plus-sign-alt"></i><@t.page 'button.refuse'/></a>
                 </#if>
                 </td>
             </tr>

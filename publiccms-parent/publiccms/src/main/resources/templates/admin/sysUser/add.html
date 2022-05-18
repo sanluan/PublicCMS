@@ -72,7 +72,7 @@
             <dd><input name="email" type="text" size="30" maxlength="50" value="${(a.email)!}"/></dd>
         </dl>
         <fieldset class="superuser hide">
-            <legend><i class="icon-user-md icon-large"></i> <@t.page 'role'/></legend>
+            <legend><i class="icon-user-md icon-large"></i><@t.page 'role'/></legend>
             <ul class="tree treeFolder treeCheck expand">
         <@_sysRoleList>
             <#list page.list as a>

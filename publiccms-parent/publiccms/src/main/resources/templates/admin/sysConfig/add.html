@@ -7,7 +7,7 @@
         <ul>
     <#if code?has_content>
         <@_sysAuthorized roleIds=admin.roles url='sysConfigData/edit'>
-            <li><a class="button" href="sysConfigData/edit.html?code=${code!}" target="navTab" rel="sysConfigData/edit"><i class="icon-edit icon-large"></i> <@t.page 'config_data.edit'/></a></li>
+            <li><a class="button" href="sysConfigData/edit.html?code=${code!}" target="navTab" rel="sysConfigData/edit"><i class="icon-edit icon-large"></i><@t.page 'config_data.edit'/></a></li>
         </@_sysAuthorized>
     </#if>
             <li><button type="submit" class="buttonActive" title="ctrl+s"><@t.page 'button.save'/></button></li>

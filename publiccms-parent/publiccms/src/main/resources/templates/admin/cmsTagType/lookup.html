@@ -36,7 +36,7 @@
             <#list page.list as a>
             <tr>
                 <td>
-                    <a href="javascript:;" class="btnText green" onclick="$.bringBack({'${field!'typeId'}':'${a.id}','${nameField!'tagTypeName'}':'${(a.name?js_string)!}'});return false;"><i class="icon-ok"></i> <@t.page 'select'/></a>
+                    <a href="javascript:;" class="btnText green" onclick="$.bringBack({'${field!'typeId'}':'${a.id}','${nameField!'tagTypeName'}':'${(a.name?js_string)!}'});return false;"><i class="icon-ok"></i><@t.page 'select'/></a>
                 </td>
                 <td>${a.id}</td>
                 <td class="exclude-translate">${(a.name)!}</td>

@@ -59,7 +59,7 @@
                     </li>
                 <#if authorizedMap['cmsContent/export']>
                     <li>
-                        <a class="button" href="cmsContent/export?_csrf=<@_csrfToken admin=true/>" target="dwzExport" targetType="navTab"><i class="icon-download-alt icon-large"></i> <@t.page 'button.export'/></a>
+                        <a class="button" href="cmsContent/export?_csrf=<@_csrfToken admin=true/>" target="dwzExport" targetType="navTab"><i class="icon-download-alt icon-large"></i><@t.page 'button.export'/></a>
                     </li>
                 </#if>
                 </ul>
@@ -71,7 +71,7 @@
     <div class="panelBar">
         <ul class="toolBar">
             <#if parent?has_content>
-                <li><a href="cmsContent/list.html?parentId=${(parent.parentId)!}&categoryId=${categoryId!}" target="navTab" rel="cmsContent/list"><i class="icon-circle-arrow-up icon-large"></i> <@t.page 'button.return'/></a></li>
+                <li><a href="cmsContent/list.html?parentId=${(parent.parentId)!}&categoryId=${categoryId!}" target="navTab" rel="cmsContent/list"><i class="icon-circle-arrow-up icon-large"></i><@t.page 'button.return'/></a></li>
                 <li class="line">line</li>
             </#if>
 <#if authorizedMap['cmsContent/add'] && categoryId?has_content>
@@ -81,22 +81,22 @@
             </#list>
             <#assign size=0/>
             <li>
-                <a href="cmsContent/addMore.html?categoryId=${(parent.categoryId)!categoryId!}&parentId=${parentId!}" target="dialog" mask="true" class="addMore"><i class="icon-double-angle-down icon-large"></i> <@t.page 'content.add'/></a>
+                <a href="cmsContent/addMore.html?categoryId=${(parent.categoryId)!categoryId!}&parentId=${parentId!}" target="dialog" mask="true" class="addMore"><i class="icon-double-angle-down icon-large"></i><@t.page 'content.add'/></a>
                 <ul>
             <@_category id=categoryId>
                 <#if object.typeId?has_content && authorizedMap['cmsCategory/add']>
-                    <li><a href="cmsCategory/add.html?id=${categoryId!}" target="navTab" rel="cmsCategory/edit"><i class="icon-edit icon-large"></i> <@t.page 'category.edit'/></a></li>
+                    <li><a href="cmsCategory/add.html?id=${categoryId!}" target="navTab" rel="cmsCategory/edit"><i class="icon-edit icon-large"></i><@t.page 'category.edit'/></a></li>
                </#if>
             </@_category>
             <@_categoryModel modelIds=t.tempModelIds categoryId=categoryId><#assign categoryModelMap=map/></@_categoryModel>
             <#list page.list as a>
                 <#if categoryModelMap?has_content&&categoryModelMap[a.id]?has_content>
                     <#assign size++/>
-                    <li><a href="cmsContent/add.html?categoryId=${(parent.categoryId)!categoryId!}&modelId=${a.id}&parentId=${parentId!}" target="navTab" rel="cmsContent/add"><i class="icon-plus icon-large"></i> <@t.page 'button.add_some_things' a.name/></a></li>
+                    <li><a href="cmsContent/add.html?categoryId=${(parent.categoryId)!categoryId!}&modelId=${a.id}&parentId=${parentId!}" target="navTab" rel="cmsContent/add"><i class="icon-plus icon-large"></i><@t.page 'button.add_some_things' a.name/></a></li>
                 </#if>
             </#list>
             <#if size=0 && authorizedMap['cmsCategory/add']>
-                    <li><a href="cmsCategory/add.html?id=${categoryId!}&showAdvancedOptions=true" target="navTab" rel="cmsCategory/edit" title="<@t.page 'category.edit'/>"><i class="icon-edit icon-large"></i> <@t.page 'content.no_model'/></a></li>
+                    <li><a href="cmsCategory/add.html?id=${categoryId!}&showAdvancedOptions=true" target="navTab" rel="cmsCategory/edit" title="<@t.page 'category.edit'/>"><i class="icon-edit icon-large"></i><@t.page 'content.no_model'/></a></li>
             </#if>
                 </ul>
             </li>
@@ -104,26 +104,26 @@
             <li class="line">line</li>
 </#if>
         <#if authorizedMap['cmsContent/check']>
-            <li><a href="cmsContent/check?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_check'/>" target="selectedTodo" rel="ids"><i class="icon-check icon-large"></i> <@t.page 'button.batch_check'/></a></li>
+            <li><a href="cmsContent/check?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_check'/>" target="selectedTodo" rel="ids"><i class="icon-check icon-large"></i><@t.page 'button.batch_check'/></a></li>
         </#if>
         <#if authorizedMap['cmsContent/reject']>
-            <li><a href="cmsContent/reject?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_reject'/>" target="selectedTodo" rel="ids"><i class="icon-exclamation icon-large"></i> <@t.page 'button.batch_reject'/></a></li>
+            <li><a href="cmsContent/reject?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_reject'/>" target="selectedTodo" rel="ids"><i class="icon-exclamation icon-large"></i><@t.page 'button.batch_reject'/></a></li>
         </#if>
         <#if authorizedMap['cmsContent/uncheck']>
-            <li><a href="cmsContent/uncheck?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_uncheck'/>" target="selectedTodo" rel="ids"><i class="icon-check icon-large"></i> <@t.page 'button.batch_uncheck'/></a></li>
+            <li><a href="cmsContent/uncheck?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_uncheck'/>" target="selectedTodo" rel="ids"><i class="icon-check icon-large"></i><@t.page 'button.batch_uncheck'/></a></li>
         </#if>
         <#if authorizedMap['cmsContent/refresh'] && !site.useStatic>
-            <li><a href="cmsContent/refresh?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_refresh'/>" target="selectedTodo" rel="ids"><i class="icon-refresh icon-large"></i> <@t.page 'button.batch_refresh'/></a></li>
+            <li><a href="cmsContent/refresh?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_refresh'/>" target="selectedTodo" rel="ids"><i class="icon-refresh icon-large"></i><@t.page 'button.batch_refresh'/></a></li>
         </#if>
         <#if authorizedMap['cmsContent/publish']>
-            <li><a href="cmsContent/publish?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_publish'/>" target="selectedTodo" rel="ids"><i class="icon-file-text-alt icon-large"></i> <@t.page 'button.batch_publish'/></a></li>
+            <li><a href="cmsContent/publish?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_publish'/>" target="selectedTodo" rel="ids"><i class="icon-file-text-alt icon-large"></i><@t.page 'button.batch_publish'/></a></li>
         </#if>
         <#if !parentId?has_content&&authorizedMap['cmsContent/moveParameters']>
-            <li><a href="cmsContent/moveParameters.html" target="dialog" mask="true"><i class="icon-move icon-large"></i> <@t.page 'button.batch_move'/></a></li>
+            <li><a href="cmsContent/moveParameters.html" target="dialog" mask="true"><i class="icon-move icon-large"></i><@t.page 'button.batch_move'/></a></li>
         </#if>
         <#if authorizedMap['cmsContent/delete']>
             <li class="line">line</li>
-            <li><a href="cmsContent/delete?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> <@t.page 'button.batch_delete'/></a></li>
+            <li><a href="cmsContent/delete?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i><@t.page 'button.batch_delete'/></a></li>
         </#if>
         </ul>
     </div>
@@ -169,7 +169,7 @@
                     </#if>
                     <div class="box">
                         <h3 <#if lockMap[a.id?string]?has_content><#assign lockUser=(userMap[lockMap[a.id?string].userId?string].nickname)!''/>title="<@t.page 'lock.message' lockUser/> ${lockMap[a.id?string].createDate}"</#if>>
-                            <#if lockMap[a.id?string]?has_content><i class="icon-lock icon-large"></i> </#if>[<span class="exclude-translate">${(categoryMap[a.categoryId?string].name)!}</span>] ${(a.copied?then('['+t.pageMessage('copied')+']',''))!}<a href="cmsContent/view.html?id=${a.id}" class="exclude-translate" target="dialog" rel="viewContent${a.id}">${(a.title)!}</a>
+                            <#if lockMap[a.id?string]?has_content><i class="icon-lock icon-large"></i></#if>[<span class="exclude-translate">${(categoryMap[a.categoryId?string].name)!}</span>] ${(a.copied?then('['+t.pageMessage('copied')+']',''))!}<a href="cmsContent/view.html?id=${a.id}" class="exclude-translate" target="dialog" rel="viewContent${a.id}">${(a.title)!}</a>
                         </h3>
                         <p>
                             <#if modelMap[a.modelId]?has_content&&modelMap[a.modelId].hasChild>
@@ -196,7 +196,7 @@
                     <#if 1=a.status || 3=a.status>/ <span class="exclude-translate">${(userMap[a.checkUserId?string].nickname)!}</span></#if>
                 </td>
                 <td class="wrap">
-                    <a href="cmsContent/add.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="cmsContent/edit"><i class="icon-edit"></i> <@t.page 'content.edit'/></a>
+                    <a href="cmsContent/add.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="cmsContent/edit"><i class="icon-edit"></i><@t.page 'content.edit'/></a>
                     <#if 1=a.status>
                         <#if authorizedMap['cmsContent/sortParameters']>
                             <#if dept?has_content>
@@ -204,24 +204,24 @@
                             </#if>
                         </#if>
                         <#if authorizedMap['cmsContent/add']>
-                            <a href="cmsContent/add.html?copyId=${a.id}" class="btnText blue" target="navTab" rel="cmsContent/add" icon="<i class='icon-plus'></i>" title="<@t.page 'content.add'/>"><i class="icon-copy"></i> <@t.page 'button.copy'/></a>
+                            <a href="cmsContent/add.html?copyId=${a.id}" class="btnText blue" target="navTab" rel="cmsContent/add" icon="<i class='icon-plus'></i>" title="<@t.page 'content.add'/>"><i class="icon-copy"></i><@t.page 'button.copy'/></a>
                         </#if>
                         <#if authorizedMap['cmsCategory/lookupBySiteId']>
-                            <a href="cmsCategory/lookupBySiteId.html?id=${a.id}&modelId=${a.modelId!}&currentCategoryId=${a.categoryId!}" class="btnText blue" target="dialog" mask="true"><i class="icon-asterisk"></i> <@t.page 'button.distribute'/></a>
+                            <a href="cmsCategory/lookupBySiteId.html?id=${a.id}&modelId=${a.modelId!}&currentCategoryId=${a.categoryId!}" class="btnText blue" target="dialog" mask="true"><i class="icon-asterisk"></i><@t.page 'button.distribute'/></a>
                         </#if>
                         <#if authorizedMap['cmsContent/push']>
                             <a href="cmsContent/push.html?contentId=${a.id}" class="btnText blue" target="dialog" mask="true"><@t.page 'button.push'/></a>
                         </#if>
                     <#elseif 2=a.status>
                         <#if authorizedMap['cmsContent/check']>
-                            <a href="cmsContent/check?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText green" title="<@t.page 'confirm.check'/>" target="ajaxTodo"><i class="icon-check"></i> <@t.page 'button.check'/></a>
+                            <a href="cmsContent/check?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText green" title="<@t.page 'confirm.check'/>" target="ajaxTodo"><i class="icon-check"></i><@t.page 'button.check'/></a>
                         </#if>
                         <#if authorizedMap['cmsContent/reject']>
-                            <a href="cmsContent/reject?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText red" title="<@t.page 'confirm.reject'/>" target="ajaxTodo"><i class="icon-exclamation"></i> <@t.page 'button.reject'/></a>
+                            <a href="cmsContent/reject?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText red" title="<@t.page 'confirm.reject'/>" target="ajaxTodo"><i class="icon-exclamation"></i><@t.page 'button.reject'/></a>
                         </#if>
                     </#if>
                     <#if authorizedMap['cmsContent/changeModelParameters']>
-                        <a href="cmsContent/changeModelParameters.html?id=${a.id}&parentId=${(modelMap[a.modelId].parentId?url)!}" class="btnText red" target="dialog" mask="true"><i class="icon-list-alt"></i> <@t.page 'content.change_model'/></a>
+                        <a href="cmsContent/changeModelParameters.html?id=${a.id}&parentId=${(modelMap[a.modelId].parentId?url)!}" class="btnText red" target="dialog" mask="true"><i class="icon-list-alt"></i><@t.page 'content.change_model'/></a>
                     </#if>
                 </td>
             </tr>

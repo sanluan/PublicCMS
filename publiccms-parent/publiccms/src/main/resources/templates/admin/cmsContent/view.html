@@ -61,7 +61,7 @@
             <dl class="nowrap">
                 <dt><#if model.onlyUrl>${(model.fieldTextMap['url'])!}<#else><@t.page 'url'/></#if>:</dt>
                 <dd class="exclude-translate">
-                    <a href="${(a.url)!}" target="_blank">${(a.url)!}</a>
+                    <a href="common/preview.html?url=${((a.url)?url)!}" target="navTab" rel="cmsPage/preview" title="<@t.page 'button.view_page'/>">${(a.url)!}</a>
                 </dd>
             </dl>
         <#if a?has_content&&a.copied>
@@ -227,7 +227,7 @@
                 <dt><@t.page 'recommend_info'/>:</dt>
                 <dd class="exclude-translate">
                     <#list page.list as a>
-                        <a href="${(a.url)!}" target="_blank">${(a.title)!}</a>
+                        <a href="common/preview.html?url=${((a.url)?url)!}" target="navTab" rel="cmsPage/preview" title="<@t.page 'button.view_page'/>">${(a.title)!}</a>
                     </#list>
                 </dd>
             </dl>

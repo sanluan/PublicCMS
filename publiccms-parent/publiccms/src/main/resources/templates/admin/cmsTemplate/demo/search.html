@@ -14,7 +14,7 @@
         </form>
     </header>
     <nav>
-        <a href="${base}">Home</a>
+        <a href="${site.dynamicPath}">Home</a>
 <@_categoryList>
     <#list page.list as a>
         <a href="${a.url!}" target="_blank">${a.name}</a>
@@ -91,6 +91,7 @@
         Copyright &copy; ${.now?string('yyyy')}
     </footer>
     <script src="${site.dynamicPath}resource/js/cms.analytics.js"></script>
+    <script src="${site.dynamicPath}resource/js/cms.diy.js"></script>
     <script>
         var ca = cmsAnalytics();
         var url='${site.dynamicPath}api/visit/record';

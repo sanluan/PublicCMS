@@ -89,9 +89,7 @@ public class FreeMarkerUtils {
                 t.process(model, out);
                 log.info(String.format("%s saved!", destFilePath));
             }
-        } else
-
-        {
+        } else {
             log.error(String.format("%s already exists!", destFilePath));
         }
     }

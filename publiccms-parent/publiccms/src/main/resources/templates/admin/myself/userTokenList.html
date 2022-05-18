@@ -38,7 +38,7 @@
                 <td>${a.expiryDate!}</td>
                 <td>${a.loginIp!}</td>
                 <td class="wrap">
-                    <a href="sysUserToken/delete?authToken=${a.authToken}&_csrf=<@_csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i> <@t.page 'button.delete'/></a>
+                    <a href="sysUserToken/delete?authToken=${a.authToken}&_csrf=<@_csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i><@t.page 'button.delete'/></a>
                 </td>
             </tr>
             </#list>

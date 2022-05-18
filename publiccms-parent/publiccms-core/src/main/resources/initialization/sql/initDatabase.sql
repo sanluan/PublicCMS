@@ -2018,8 +2018,9 @@ CREATE TABLE `visit_history` (
   `item_id` varchar(50) DEFAULT NULL COMMENT '项目',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   PRIMARY KEY (`id`),
-  KEY `visit_visit_date` (`site_id`,`visit_date`,`visit_hour`),
-  KEY `visit_session_id` (`site_id`,`session_id`,`visit_date`,`create_date`,`ip`)
+  KEY `visit_history_visit_date` (`site_id`,`visit_date`,`visit_hour`),
+  KEY `visit_history_session_id` (`site_id`,`session_id`,`visit_date`,`create_date`),
+  KEY `visit_history_url` (`site_id`,`url`,`create_date`)
 ) COMMENT='访问日志';
 
 -- ----------------------------
@@ -2035,7 +2036,7 @@ CREATE TABLE `visit_item` (
   `uv` bigint(20) DEFAULT NULL COMMENT 'User Views',
   `ipviews` bigint(20) DEFAULT NULL COMMENT 'IP数',
   PRIMARY KEY (`site_id`,`visit_date`,`item_type`,`item_id`),
-  KEY `visit_session_id` (`site_id`,`visit_date`,`item_type`, `item_id`, `pv`)
+  KEY `visit_item_session_id` (`site_id`,`visit_date`,`item_type`, `item_id`, `pv`)
 ) COMMENT='项目访问汇总';
 
 -- ----------------------------
@@ -2051,7 +2052,7 @@ CREATE TABLE `visit_session` (
   `ip` varchar(130) NOT NULL COMMENT 'IP',
   `pv` bigint(20) NOT NULL COMMENT 'PV',
   PRIMARY KEY (`site_id`,`session_id`,`visit_date`),
-  KEY `visit_visit_date` (`site_id`,`visit_date`,`ip`)
+  KEY `visit_session_visit_date` (`site_id`,`visit_date`,`session_id`,`last_visit_date`)
 ) COMMENT = '访问会话';
 
 -- ----------------------------
@@ -2068,6 +2069,6 @@ CREATE TABLE `visit_url` (
   `uv` bigint(20) DEFAULT NULL COMMENT 'User Views',
   `ipviews` bigint(20) DEFAULT NULL COMMENT 'IP数',
   PRIMARY KEY (`site_id`,`visit_date`,`url_md5`,`url_sha`),
-  KEY `visit_session_id` (`site_id`,`visit_date`,`pv`)
+  KEY `visit_url_pv` (`site_id`,`visit_date`,`pv`)
 ) COMMENT='页面访问汇总';
 SET FOREIGN_KEY_CHECKS = 1;

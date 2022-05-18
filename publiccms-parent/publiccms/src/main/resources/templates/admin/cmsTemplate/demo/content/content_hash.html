@@ -26,7 +26,7 @@
         <h1>${(site.name)!}</h1>
     </header>
     <nav>
-        <a href="${base}">Home page</a>
+        <a href="${site.dynamicPath}">Home page</a>
 <@_categoryList>
     <#list page.list as a>
         <a href="${a.url!}" target="_blank">${a.name}</a>
@@ -201,6 +201,7 @@ function unscore(contentId){
     var itemString="itemType=content&itemId=${content.id}";
     </script>
     <script src="${site.dynamicPath}resource/js/cms.analytics.js"></script>
+    <script src="${site.dynamicPath}resource/js/cms.diy.js"></script>
     <script>
         var ca = cmsAnalytics();
         var url='${site.dynamicPath}api/visit/record';

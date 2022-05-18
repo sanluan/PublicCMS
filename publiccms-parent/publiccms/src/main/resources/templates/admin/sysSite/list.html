@@ -28,10 +28,10 @@
     <div class="panelBar">
         <ul class="toolBar">
         <#if parentId?has_content>
-            <li><a href="sysSite/list.html" target="navTab" rel="sysSite/list"><i class="icon-circle-arrow-up icon-large"></i> <@t.page 'button.return'/></a></li>
+            <li><a href="sysSite/list.html" target="navTab" rel="sysSite/list"><i class="icon-circle-arrow-up icon-large"></i><@t.page 'button.return'/></a></li>
             <li class="line">line</li>
         </#if>
-            <li><a href="sysSite/add.html?parentId=${parentId!}" target="navTab" rel="sysSite/add"><i class="icon-plus-sign-alt icon-large"></i> <@t.page 'site.add'/></a></li>
+            <li><a href="sysSite/add.html?parentId=${parentId!}" target="navTab" rel="sysSite/add"><i class="icon-plus-sign-alt icon-large"></i><@t.page 'site.add'/></a></li>
         </ul>
     </div>
     <table class="table" width="100%" layoutH>
@@ -60,14 +60,14 @@
                 <td>${a.useStatic?then(t.pageMessage('yes'),t.pageMessage('no'))} ${a.useSsi?then('['+t.pageMessage('ssi_enabled')+']','')}</td>
                 <td><a href="${a.sitePath!}" target="_blank">${a.sitePath!}</a></td>
                 <td class="wrap">
-                    <a href="sysSite/add.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="sysSite/edit"><i class="icon-edit"></i> <@t.page 'site.edit'/></a>
+                    <a href="sysSite/add.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="sysSite/edit"><i class="icon-edit"></i><@t.page 'site.edit'/></a>
                     <a href="sysDomain/add.html?siteId=${a.id!}" class="btnText blue" target="navTab" rel="sysDomain/add"><@t.page 'domain.add'/></a>
                     <a href="sysDomain/list.html?siteId=${a.id!}" class="btnText" target="navTab" rel="sysDomain/list"><@t.page 'domain.list'/></a>
                 <#if !a.parentId?has_content>
                     <a href="sysSite/list.html?parentId=${a.id!}" class="btnText" target="navTab" rel="sysSite/list"><@t.page 'site.child_management'/></a>
                 </#if>
                     <a href="sysSite/configTemplate.html?siteId=${a.id!}" class="btnText" target="dialog" rel="config_${a.id!}"><@t.page 'server_config'/></a>
-                    <a href="sysSite/delete?id=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i> <@t.page 'button.delete'/></a>
+                    <a href="sysSite/delete?id=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i><@t.page 'button.delete'/></a>
                 </td>
             </tr>
             </#list>

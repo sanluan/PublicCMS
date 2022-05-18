@@ -56,11 +56,11 @@
     <div class="panelBar">
         <ul class="toolBar">
         <#if authorizedMap['cmsContent/recycle']>
-            <li><a href="cmsContent/recycle?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_recycle'/>" target="selectedTodo" rel="ids"><i class="icon-reply-all icon-large"></i> <@t.page 'button.batch_recycle'/></a></li>
+            <li><a href="cmsContent/recycle?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_recycle'/>" target="selectedTodo" rel="ids"><i class="icon-reply-all icon-large"></i><@t.page 'button.batch_recycle'/></a></li>
         </#if>
         <#if authorizedMap['cmsContent/realDelete']>
             <li class="line">line</li>
-            <li><a href="cmsContent/realDelete?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> <@t.page 'button.batch_delete'/></a></li>
+            <li><a href="cmsContent/realDelete?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i><@t.page 'button.batch_delete'/></a></li>
         </#if>
         </ul>
     </div>
@@ -121,7 +121,7 @@
                         <a href="cmsContent/recycle?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText green" title="<@t.page 'confirm.recycle'/>" target="ajaxTodo"><@t.page 'button.recycle'/></a>
                     </#if>
                     <#if authorizedMap['cmsContent/realDelete']>
-                        <a href="cmsContent/realDelete?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i> <@t.page 'button.delete'/></a>
+                        <a href="cmsContent/realDelete?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i><@t.page 'button.delete'/></a>
                     </#if>
                 </td>
             </tr>

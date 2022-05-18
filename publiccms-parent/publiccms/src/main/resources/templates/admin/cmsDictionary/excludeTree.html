@@ -46,7 +46,7 @@
         </@_dictionaryDataList>
     <#else>
         <li>
-            <a href="cmsDictionary/exclude.html?id=${object.id.id}" target="navTab" rel="cmsDictionary/exclude"><i class="icon-edit"></i> <@t.page 'dictionary.exclude'/></a>
+            <a href="cmsDictionary/exclude.html?id=${object.id.id}" target="navTab" rel="cmsDictionary/exclude"><i class="icon-edit"></i><@t.page 'dictionary.exclude'/></a>
         </li>
         <@_dictionaryExcludeList dictionaryId=object.id.id>
             <#list list as d>

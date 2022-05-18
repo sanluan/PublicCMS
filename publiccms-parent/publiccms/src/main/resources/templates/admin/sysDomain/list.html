@@ -36,7 +36,7 @@
     <div class="panelBar">
         <ul class="toolBar">
             <#if sysSite?has_content>
-                <li><a href="sysDomain/add.html?siteId=${siteId!}" target="navTab" rel="sysDomain/add"><i class="icon-plus-sign-alt icon-large"></i> <@t.page 'domain.add'/></a></li>
+                <li><a href="sysDomain/add.html?siteId=${siteId!}" target="navTab" rel="sysDomain/add"><i class="icon-plus-sign-alt icon-large"></i><@t.page 'domain.add'/></a></li>
             </#if>
         </ul>
     </div>
@@ -63,8 +63,8 @@
                 <td class="exclude-translate">${(siteMap[a.siteId?string].name)!}</td>
                 <td>${(a.path)!}</td>
                 <td class="wrap">
-                    <a href="sysDomain/add.html?id=${a.name}" class="edit btnText blue" target="navTab" rel="sysDomain/edit"><i class="icon-edit"></i> <@t.page 'domain.edit'/></a>
-                    <a href="sysDomain/delete?id=${a.name}&_csrf=<@_csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i> <@t.page 'button.delete'/></a>
+                    <a href="sysDomain/add.html?id=${a.name}" class="edit btnText blue" target="navTab" rel="sysDomain/edit"><i class="icon-edit"></i><@t.page 'domain.edit'/></a>
+                    <a href="sysDomain/delete?id=${a.name}&_csrf=<@_csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i><@t.page 'button.delete'/></a>
                 </td>
             </tr>
             </#list>

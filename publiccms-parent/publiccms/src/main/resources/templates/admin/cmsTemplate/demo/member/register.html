@@ -3,7 +3,6 @@
 <head>
     <meta charset="utf-8">
     <title>${metadata.alias!}</title>
-    <script src="${site.dynamicPath!}resource/js/jquery-1.12.4.min.js"></script>
     <style>
         .red{color:#f00;}
     </style>
@@ -13,7 +12,7 @@
         <h1>${(site.name)!}</h1>
     </header>
     <nav>
-        <a href="${base}">Home</a>
+        <a href="${site.dynamicPath}">Home</a>
 <@_categoryList>
     <#list page.list as a>
         <a href="${a.url!}" target="_blank">${a.name}</a>
@@ -49,12 +48,14 @@
     <footer>
         Copyright &copy; ${.now?string('yyyy')}
     </footer>
-<script>
-function logout(){
-    $("form").submit();
-}
-</script>
+    <script src="${site.dynamicPath!}resource/js/jquery-1.12.4.min.js"></script>
+    <script>
+    function logout(){
+        $("form").submit();
+    }
+    </script>
     <script src="${site.dynamicPath}resource/js/cms.analytics.js"></script>
+    <script src="${site.dynamicPath}resource/js/cms.diy.js"></script>
     <script>
         var ca = cmsAnalytics();
         var url='${site.dynamicPath}api/visit/record';

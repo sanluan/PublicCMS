@@ -38,10 +38,10 @@
     <div class="panelBar">
         <ul class="toolBar">
             <#if parent?has_content>
-                <li><a href="sysDept/list.html?parentId=${(parent.parentId)!}" target="navTab" rel="sysDept/list"><i class="icon-circle-arrow-up icon-large"></i> <@t.page 'button.return'/></a></li>
+                <li><a href="sysDept/list.html?parentId=${(parent.parentId)!}" target="navTab" rel="sysDept/list"><i class="icon-circle-arrow-up icon-large"></i><@t.page 'button.return'/></a></li>
                 <li class="line">line</li>
             </#if>
-            <li><a href="sysDept/add.html?parentId=${parentId!}" target="navTab" rel="sysDept/add"><i class="icon-plus-sign-alt icon-large"></i> <@t.page 'dept.add'/></a></li>
+            <li><a href="sysDept/add.html?parentId=${parentId!}" target="navTab" rel="sysDept/add"><i class="icon-plus-sign-alt icon-large"></i><@t.page 'dept.add'/></a></li>
         </ul>
     </div>
     <table class="table" width="100%" layoutH>
@@ -80,12 +80,12 @@
                 <td>${a.maxSort}</td>
                 <td>${a.ownsAllPage?then(t.pageMessage('yes'),'')}</td>
                 <td class="wrap">
-                    <a href="sysDept/add.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="sysDept/edit"><i class="icon-edit"></i> <@t.page 'dept.edit'/></a>
+                    <a href="sysDept/add.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="sysDept/edit"><i class="icon-edit"></i><@t.page 'dept.edit'/></a>
                     <a href="sysDept/list.html?parentId=${a.id}" class="btnText" target="navTab" rel="sysDept/list"><@t.page 'dept.child_management'/></a>
                 <#if a.userId?has_content&&a.userId=admin.id>
                     <a href="sysDept/userList.html?deptId=${a.id}" class="btnText" target="navTab" rel="sysDept/userList" icon="<i class='icon-user icon-large'></i>"><@t.page 'dept.user_list'/></a>
                 </#if>
-                    <a href="sysDept/delete?id=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i> <@t.page 'button.delete'/></a>
+                    <a href="sysDept/delete?id=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i><@t.page 'button.delete'/></a>
                 </td>
             </tr>
             </#list>
