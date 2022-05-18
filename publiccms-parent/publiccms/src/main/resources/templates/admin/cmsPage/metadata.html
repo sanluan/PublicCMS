@@ -38,7 +38,7 @@
                 <#list list as a>
                     <@_diyMetadata itemType='region' itemId=a>
                     <p>
-                        <a href="cmsPage/diy.html?id=${(object.id?url)!}" target="navTab" rel="cmsPage/diy" title="<@t.page 'diy'/>" icon="<i class='bi bi-palette'></i>">${(object.name)!}</a>
+                        <a href="cmsPage/diy.html?id=${(object.id?url)!}" target="navTab" class="button" rel="cmsPage/diy" title="<@t.page 'diy'/>" icon="<i class='bi bi-palette'></i>">${(object.name)!}</a>
                     </p>
                     </@_diyMetadata>
                 </#list>
@@ -54,9 +54,9 @@
                 <#list list as a>
                     <@_placeMetadata path=a>
                     <p>
-                        <a href="cmsPlace/metadata.html?path=${a?url}" target="ajax" rel="pageBox">${(object.alias)!a}</a>
+                        <a href="cmsPlace/metadata.html?path=${a?url}" target="ajax" class="button" rel="pageBox">${(object.alias)!a}</a>
                     <#if 0 lt ((object.size)!0)>
-                       : <a href="cmsPlace/dataList.html?path=${a?url}" target="navTab" rel="cmsPlace/dataList" title="<@t.page 'place_data.place'/>:${(object.alias)!}"><@t.page 'place_data'/>(${object.size})</a>
+                        <a href="cmsPlace/dataList.html?path=${a?url}" target="navTab" class="button" rel="cmsPlace/dataList" title="<@t.page 'place_data'/>:${(object.alias)!}"><@t.page 'place_data'/>(${object.size})</a>
                     </#if>
                     </p>
                     </@_placeMetadata>

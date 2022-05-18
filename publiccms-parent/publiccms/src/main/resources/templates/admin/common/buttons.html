@@ -88,8 +88,9 @@
                         <#if list?has_content>
                         <#list list as a>
                             <@_placeMetadata path=a>
+                            <li><a href="cmsPlace/list.html?path=${a?url}" target="navTab" rel="cmsPlace/list" title="<@t.page 'place.management'/>">${(object.alias)!}</a></li>
                             <#if object.size gt 0>
-                             <li><a href="cmsPlace/dataList.html?path=${a?url}" target="navTab" rel="cmsPlace/dataList" title="<@t.page 'place_data.place'/>:${(object.alias)!}">${(object.alias)!} <@t.page 'place_data'/>(${object.size})</a></li>
+                             <li><a href="cmsPlace/dataList.html?path=${a?url}" target="navTab" rel="cmsPlace/dataList" title="<@t.page 'place_data'/>:${(object.alias)!}"><@t.page 'place_data'/>:${(object.alias)!}(${object.size})</a></li>
                              </#if>
                             </@_placeMetadata>
                         </#list>

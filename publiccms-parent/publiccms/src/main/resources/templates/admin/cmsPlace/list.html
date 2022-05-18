@@ -13,7 +13,7 @@
                         <a href="javascript:;" onclick="return false;">${a.fileName}</a>
                         <ul><@placeTree path/></ul>
                     <#else>
-                        <a href="cmsPlace/metadata.html?path=${path?url}" target="ajax" rel="placeBox"><#if 0 lt ((object.size)!0)><@t.page 'place_data.place'/>:</#if>${(object.alias)!a.fileName}</a>
+                        <a href="cmsPlace/metadata.html?path=${path?url}" target="ajax" rel="placeBox">${(object.alias)!a.fileName}<#if 0 lt ((object.size)!0)> <@t.page 'place_data'/>(${object.size})</#if></a>
                     </#if>
                 </@_placeMetadata>
                 </li>
@@ -30,5 +30,8 @@
         </ul>
     </div>
     <div id="placeBox" class="unitBox rightPageContent">
+        <#if path?has_content>
+            <#include "metadata.html"/>
+        </#if>
     </div>
 </div>

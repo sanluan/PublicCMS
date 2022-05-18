@@ -11,7 +11,7 @@
         <#if a?has_content&&a.size?has_content&&a.size gt 0>
     <@_sysAuthorized roleIds=admin.roles url='cmsPlace/dataList'>
         <@_sysDeptPage deptId=admin.deptId!'' pages='/include'+path>
-            <li><a class="button" href="cmsPlace/dataList.html?path=${(path?url)!}" target="navTab" rel="cmsPlace/dataList" title="<@t.page 'place_data.place'/>:${(a.alias)!}"><@t.page 'place_data'/>(${a.size!})</a></li>
+            <li><a class="button" href="cmsPlace/dataList.html?path=${(path?url)!}" target="navTab" rel="cmsPlace/dataList" title="<@t.page 'place_data'/>:${(a.alias)!}"><@t.page 'place_data'/>(${a.size!})</a></li>
         </@_sysDeptPage>
     </@_sysAuthorized>
             <#if a.allowContribute>

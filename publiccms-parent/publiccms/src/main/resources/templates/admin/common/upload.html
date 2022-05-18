@@ -17,7 +17,7 @@
                 <div class="pageContent">
                     <#if fileTypes?has_content&&'image'=fileTypes>
                         <p class="nowrap">
-                            <label><@t.page 'width'/></label><input name="width" type="number" value="${width!10}"/><label><@t.page 'height'/></label><input name="height" type="number" value="${height!10}"/>
+                            <label><@t.page 'width'/></label><input name="width" type="number" value="${width!50}"/><label><@t.page 'height'/></label><input name="height" type="number" value="${height!50}"/>
                         </p>
                         <div class="upload-wrap">
                             <input type="file" name="file" accept="image/*" class="valid" style="left: 0px;">

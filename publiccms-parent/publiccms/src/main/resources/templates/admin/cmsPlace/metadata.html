@@ -23,7 +23,7 @@
                     <a class="button" href="cmsTemplate/publishPlace?path=${(path?url)!}&_csrf=<@_csrfToken admin=true/>" target="ajaxTodo"><@t.page 'button.publish'/></a>
                 </#if>
                 <#if (a.size?has_content) && 0 lt a.size>
-                    <a class="button" href="cmsPlace/dataList.html?path=${path?url}" target="navTab" rel="cmsPlace/dataList" title="<@t.page 'place_data.place'/>:${(a.alias)!}"><@t.page 'place_data'/>(${a.size})</a>
+                    <a class="button" href="cmsPlace/dataList.html?path=${path?url}" target="navTab" rel="cmsPlace/dataList" title="<@t.page 'place_data'/>:${(a.alias)!}"><@t.page 'place_data'/>(${a.size})</a>
                 </#if>
             </dd>
         </dl>
@@ -35,9 +35,9 @@
                 <#list list as a>
                     <@_placeMetadata path=a>
                     <p>
-                        <a href="cmsPlace/metadata.html?path=${a?url}" target="ajax" rel="placeBox">${(object.alias)!a}</a>
+                        <a class="button" href="cmsPlace/metadata.html?path=${a?url}" target="ajax" rel="placeBox">${(object.alias)!a}</a>
                         <#if 0 lt ((object.size)!0)>
-                           : <a href="cmsPlace/dataList.html?path=${a?url}" target="navTab" rel="cmsPlace/dataList:${a!}" title="<@t.page 'place_data.place'/>:${(object.alias)!a}"><@t.page 'place_data'/>(${object.size})</a>
+                           <a class="button" href="cmsPlace/dataList.html?path=${a?url}" target="navTab" rel="cmsPlace/dataList:${a!}" title="<@t.page 'place_data'/>:${(object.alias)!a}"><@t.page 'place_data'/>(${object.size})</a>
                         </#if>
                     </p>
                     </@_placeMetadata>
@@ -54,7 +54,7 @@
                 <#list list as a>
                     <@_diyMetadata itemType='region' itemId=a>
                     <p>
-                        <a href="cmsPage/diy.html?id=${(object.id?url)!}" target="navTab" rel="cmsPage/diy" title="<@t.page 'diy'/>" icon="<i class='bi bi-palette'></i>">${(object.name)!}</a>
+                        <a class="button" href="cmsPage/diy.html?id=${(object.id?url)!}" target="navTab" rel="cmsPage/diy" title="<@t.page 'diy'/>" icon="<i class='bi bi-palette'></i>">${(object.name)!}</a>
                     </p>
                     </@_diyMetadata>
                 </#list>

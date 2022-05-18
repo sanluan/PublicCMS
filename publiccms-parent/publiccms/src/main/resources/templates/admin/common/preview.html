@@ -1,4 +1,5 @@
 <div class="pageContent">
+    <div id="buttonBox"><#include "buttons.html"/></div>
     <#assign url=url?has_content?then(url,site.useStatic?then(site.sitePath,site.dynamicPath))/>
     <form method="post" action="common/buttons.html" onsubmit="return divSearch(this, 'buttonBox');">
         <input type="hidden" name="templatePath" value=""/>
@@ -7,7 +8,6 @@
         <input type="hidden" name="url" value="${url+url?contains('?')?then('&diy','?diy')}"/>
     </form>
     <iframe layoutH></iframe>
-    <div class="buttons float" id="buttonBox"></div>
     <script>
     diyIframeRefresh();
     </script>

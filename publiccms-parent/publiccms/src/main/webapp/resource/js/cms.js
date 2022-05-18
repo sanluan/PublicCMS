@@ -158,9 +158,6 @@ window.addEventListener('message', function(event) {
         $('input[name=itemType]',navTab.getCurrentPanel()).val(op.itemType);
         $('input[name=itemId]',navTab.getCurrentPanel()).val(op.itemId);
         $('form',navTab.getCurrentPanel()).submit();
-        if(!$('#buttonBox').hasClass('disapper')){
-            setTimeout("$('#buttonBox').addClass('disapper')",3000);
-        }
     }
 });
 function diyIframeRefresh(){
