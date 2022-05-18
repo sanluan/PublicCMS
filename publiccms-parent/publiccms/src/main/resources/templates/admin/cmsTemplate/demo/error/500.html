@@ -26,6 +26,9 @@
             <textarea rows="40" style="width:100%"><@_exception>${object!}</@_exception></textarea>
         </div>
     </div>
+    <script>
+    var templatePath='${.current_template_name?keep_after('/')}';
+    </script>
     <script src="${site.dynamicPath}resource/js/cms.analytics.js"></script>
     <script src="${site.dynamicPath}resource/js/cms.diy.js"></script>
     <script>

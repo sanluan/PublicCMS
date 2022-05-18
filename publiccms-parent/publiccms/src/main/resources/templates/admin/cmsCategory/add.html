@@ -27,7 +27,7 @@
             <div class="tabsHeaderContent">
                 <ul>
                     <li><a href="javascript:;" onclick="return false;"><@t.page 'base_info'/></a></li>
-                    <li class="onlyUrl"><a href="javascript:;" onclick="return false;"><@t.page 'seo'/></a></li>
+                    <li class="onlyUrl seo"><a href="javascript:;" onclick="return false;"><@t.page 'seo'/></a></li>
                     <li class="categoryModelControl"><a href="javascript:;" onclick="return false;"><@t.page 'category.model'/></a></li>
                     <li class="categoryModelContent"><a href="javascript:;" onclick="return false;"><@t.page 'content.extend_field'/></a></li>
                 </ul>
@@ -227,6 +227,11 @@ checkCategoryModel();
     <script>
     $('input[name=showAdvancedOptions]',navTab.getCurrentPanel()).click();
     $('.tabs',navTab.getCurrentPanel()).attr('currentIndex',$('li.categoryModelControl').index('.tabsHeaderContent ul li')); 
+    </script>
+</#if>
+<#if seo?has_content && 'true' = seo>
+    <script>
+    $('.tabs',navTab.getCurrentPanel()).attr('currentIndex',$('li.seo').index('.tabsHeaderContent ul li')); 
     </script>
 </#if>
 </form>

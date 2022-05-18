@@ -1,7 +1,7 @@
 <div class="panelBar">
     <#if itemType?has_content>
         <#if 'content'=itemType><@_content id=itemId><#assign content=object/><@_model id=object.modelId><#assign model=object/></@_model></@_content></#if>
-        <#if 'category'=itemType||content?has_content><@_category id=itemId!content.categoryId><#assign category=object/></@_category></#if>
+        <#if 'category'=itemType||content?has_content><@_category id=('category'=itemType)?then(itemId,content.categoryId)><#assign category=object/></@_category></#if>
     </#if>
     <@_metadata path=templatePath><#assign metadata=object/></@_metadata>
     <@_sysAuthorized roleIds=admin.roles urls='cmsContent/list,cmsContent/addMore,cmsContent/publish,cmsModel/add,cmsCategory/list,cmsCategory/add,cmsCategory/addMore,cmsCategory/publishParameters,cmsTemplate/content,cmsPlace/metadata,cmsPlace/dataList,cmsPage/list,cmsPage/diy,cmsTemplate/publish'><#assign authorizedMap=map/></@_sysAuthorized>
@@ -10,7 +10,7 @@
             <a href="javascript:diyIframeRefresh();"><i class="icon-refresh"></i><@t.page 'button.refresh'/></a>
         </li>
         <#if url?has_content>
-            <li><a href="${url}" target="_blank"><i class="icon-external-link"></i><@t.page 'button.view'/></a></li>
+            <li><a href="${url?keep_before('?diy')?keep_before('&diy')}" target="_blank"><i class="icon-external-link"></i><@t.page 'button.view'/></a></li>
         </#if>
         <#if authorizedMap['cmsContent/list'] && content?has_content||category?has_content>
         <li>
@@ -45,6 +45,7 @@
                 <#if category?has_content>
                     <#if authorizedMap['cmsCategory/add']>
                         <li><a href="cmsCategory/add.html?id=${category.id}" class="edit btnText blue" target="navTab" rel="cmsCategory/edit"><i class="icon-edit"></i><@t.page 'category.edit'/></a></li>
+                        <li><a href="cmsCategory/add.html?id=${category.id}&seo=true" class="edit btnText blue" target="navTab" rel="cmsCategory/edit"><i class="icon-edit"></i><@t.page 'seo'/></a></li>
                         <li><a href="cmsCategory/add.html?copyId=${category.id}" class="btnText blue" target="navTab" rel="cmsCategory/add" icon="<i class='icon-plus-sign-alt'></i>" title="<@t.page 'category.add'/>"><i class="icon-copy"></i><@t.page 'button.copy'/></a></li>
                     </#if>
                     <#if authorizedMap['cmsCategory/addMore']>
@@ -65,11 +66,11 @@
             <li>
                 <a href="cmsPage/list.html?path=${(templatePath)?url}" class="addMore" target="navTab" rel="sysConfigData/list"><i class="icon-file-text-alt icon-large"></i><@t.page 'page.management'/></a>
                 <ul>
-                <#if url?has_content>
-                    <li><a href="visit/history.html?url=${url?url}" target="navTab" rel="visit/history"><i class='icon-bolt icon-large'></i><@t.page 'visit.history'/></a></li>
-                </#if>
                 <#if site.useStatic&&(metadata.publishPath)?has_content>
                     <li><a href="cmsTemplate/publish?path=${(templatePath?url)!}&_csrf=<@_csrfToken admin=true/>" target="ajaxTodo"><i class="icon-file-text-alt icon-large"></i><@t.page 'publish_page'/></a></li>
+                </#if>
+                <#if url?has_content>
+                    <li><a href="visit/history.html?url=${url?keep_before('?diy')?keep_before('&diy')?url}" target="navTab" rel="visit/history"><i class='icon-bolt icon-large'></i><@t.page 'visit.history'/></a></li>
                 </#if>
                 <#if authorizedMap['cmsPage/diy']>
                     <@_templateRegionList path=templatePath>
@@ -87,7 +88,9 @@
                         <#if list?has_content>
                         <#list list as a>
                             <@_placeMetadata path=a>
+                            <#if object.size gt 0>
                              <li><a href="cmsPlace/dataList.html?path=${a?url}" target="navTab" rel="cmsPlace/dataList" title="<@t.page 'place_data.place'/>:${(object.alias)!}">${(object.alias)!} <@t.page 'place_data'/>(${object.size})</a></li>
+                             </#if>
                             </@_placeMetadata>
                         </#list>
                         </#if>

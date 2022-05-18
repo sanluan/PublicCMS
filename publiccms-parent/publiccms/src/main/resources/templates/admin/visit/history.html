@@ -13,6 +13,10 @@
                     <input type="text" name="sessionId" value="${sessionId!}" size="40"/>
                 </li>
                 <li>
+                    <label><@t.page 'url'/>:</label>
+                    <input type="text" name="url" value="${url!}" size="40"/>
+                </li>
+                <li>
                     <label><@t.page 'visit.visit_date'/>:</label>
                     <input type="text" name="startCreateDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startCreateDate!}" />
                     <span>-</span>
@@ -55,7 +59,7 @@
                 <td>
                     <div class="box">
                         <p>${a.title!}</p>
-                        <p><a href="${a.url}" target="_blank">${a.url!}</a></p>
+                        <p><a href="common/preview.html?url=${((a.url)?url)!}" target="navTab" rel="cmsPage/preview" title="<@t.page 'button.view_page'/>">${a.url!}</a></p>
                     </div>
                 </td>
                 <td class="exclude-translate">

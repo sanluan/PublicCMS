@@ -5,6 +5,8 @@ a.btnText i{margin-right:3px;}
 .grid .gridTbody td div a.btnText:hover,table.list a.btnText:hover{text-decoration:none;}
 
 .button.float,.buttons.float{position:absolute;right:30px;z-index:10;top:24px;}
+.buttons.float.disapper{top:-22px;transition:0.4s;}
+.buttons.float,.buttons.float.disapper:hover{top:2px;}
 .unit ul{padding:0;margin:0;list-style:none;}
 .unit ul li{min-width:195px;width:20%;float:left;}
 .unit ul li .card{padding:10px;height:75px;margin:10px;border-radius:5px;border-style:solid;border-width:1px;font-size:16px;-moz-box-shadow:0px 0px 5px 1px #DDE4EF;box-shadow:0px 0px 5px 1px #DDE4EF;-ms-box-shadow:0px 0px 5px 1px #DDE4EF;-o-box-shadow:0px 0px 5px 1px #DDE4EF;-webkit-box-shadow:0px 0px 5px 1px #DDE4EF;}

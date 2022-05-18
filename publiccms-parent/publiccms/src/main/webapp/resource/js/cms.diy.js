@@ -19,6 +19,16 @@ if(window.parent!=window && "string" === typeof templatePath ){
                 links[i].href += (-1 === links[i].href.indexOf("?") )?"?diy":"&diy";
             }
         }
+        var forms=document.getElementsByTagName("form");
+        for (var i=0; i<forms.length; i++) {
+            if("post" == forms[i].method||"POST" == forms[i].method){
+                forms[i].method="get";
+            }
+            var input = document.createElement("input");
+            input.type="hidden";
+            input.name="diy";
+            forms[i].appendChild(input);
+        }
         var itemType,itemId;
         if("string" === typeof itemString ) {
             var parameters = itemString.split("&");

@@ -120,7 +120,8 @@ header .nav .selected ul{display:block;}
 .panelBar .toolBar li a>i{margin-right:6px;}
 .panelBar .toolBar li.line{display:block;overflow:hidden;text-indent:-1000px;height:26px;width:1px;padding:0px;margin-top:2px;}
 .panelBar .toolBar li>ul{display:none;position:absolute;z-index:10;padding:0px;background-color:#FFF;border-width:0px 1px 1px 1px;border-bottom-left-radius:2px;border-bottom-right-radius:2px;border-style:solid;}
-.panelBar .toolBar li>ul>li{float:none;padding:5px 0 0 0;}
+.panelBar .toolBar li:last-child>ul{right:0px;}
+.panelBar .toolBar li>ul>li{float:none;padding:5px 0 0 0;white-space:nowrap;}
 .panelBar .toolBar li:hover>ul{display:block;}
 
 .panelBar .pages{float:left;overflow:hidden;height:100%;padding:0 5px;}
@@ -153,7 +154,7 @@ header .nav .selected ul{display:block;}
 .grid .gridHeader th.order,.grid .gridHeader th.asc,.grid .gridHeader th.desc{cursor:pointer;position:relative;}
 .grid .gridHeader th.asc:before,.grid .gridHeader th.desc:before,.grid .gridHeader th.order:before{position:absolute;right:0px;top:50%;margin-top:-13px;}
 .grid .gridTbody td { border-right:solid 1px #ededed;overflow:hidden;padding:4px 3px;border-bottom:solid 1px #ededed;vertical-align:middle;line-height:26px;}
-.grid .gridTbody td div { display:block;line-height:26px;max-width:600px;word-break:break-all;}
+.grid .gridTbody td div { display:block;line-height:26px;word-break:break-all;}
 .grid .gridTbody td.wrap div{white-space:normal;word-break:break-all;}
 .grid .gridTbody td div a:hover{text-decoration:underline;}
 .grid .gridCol { width:100%;display:block;overflow:hidden;height:26px;line-height:26px;white-space:nowrap;}
@@ -162,6 +163,7 @@ header .nav .selected ul{display:block;}
 .grid .left { text-align:left;}
 .grid .right { text-align:right;}
 .grid .center { text-align:center;}
+table.table td{max-width:600px;}
 table.table td .thumbnail,.grid .gridTbody td div .thumbnail{float:left;width:80px;}
 table.table td .thumbnail img,.grid .gridTbody td div .thumbnail img{max-width:80px;max-height:80px;background-image:url(../images/png-bg.png);}
 .grid .gridTbody td div .box{padding:5px;}

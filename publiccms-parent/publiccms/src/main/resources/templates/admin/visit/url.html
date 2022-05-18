@@ -45,7 +45,7 @@
                 <td><a href="visit/history.html?startCreateDate=${a.id.visitDate!}" target="navTab" rel="visit/history" title="<@t.page 'visit.history'/>" icon="<i class='icon-bolt icon-large'></i>">${a.id.visitDate?date}</a></td>
                 <td>
                     <div class="box">
-                    <a href="${a.url}" target="_blank">${a.url!}</a>
+                    <a href="common/preview.html?url=${((a.url)?url)!}" target="navTab" rel="cmsPage/preview" title="<@t.page 'button.view_page'/>">${a.url!}</a>
                     </div>
                 </td>
                 <td class="center">${a.pv!}</td>
