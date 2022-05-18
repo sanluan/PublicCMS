@@ -4,7 +4,7 @@
     <div class="formBar">
         <ul>
             <li>
-                <#if (metadata.extendList)?has_content><button type="submit" class="buttonActive" title="ctrl+s"><@t.page 'button.save'/></button></#if>
+                <#if (metadata.extendList)?has_content><button type="submit" class="buttonActive" title="ctrl+s" lock-url="common/lock?itemType=page&itemId=${path}" close-url="common/unlock?itemType=page&itemId=${path}"><@t.page 'button.save'/></button></#if>
             </li>
         </ul>
     </div>
