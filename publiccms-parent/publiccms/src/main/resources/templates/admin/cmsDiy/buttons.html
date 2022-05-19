@@ -48,29 +48,29 @@
             </ul>
         </li>
         </#if>
-        <#if authorizedMap['cmsCategory/list']>
-            <li>
-                <a href="cmsCategory/list" target="navTab" rel="cmsCategory/list" class="addMore"><@t.page 'category.management'/></a>
-                <ul>
-                <#if category?has_content>
-                    <#if authorizedMap['cmsCategory/add']>
-                        <li><a href="cmsCategory/add.html?id=${category.id}" class="edit btnText blue" target="navTab" rel="cmsCategory/edit"><i class="icon-edit"></i><@t.page 'category.edit'/></a></li>
-                        <li><a href="cmsCategory/add.html?id=${category.id}&seo=true" class="edit btnText blue" target="navTab" rel="cmsCategory/edit"><i class="icon-edit"></i><@t.page 'seo'/></a></li>
-                        <li><a href="cmsCategory/add.html?copyId=${category.id}" class="btnText blue" target="navTab" rel="cmsCategory/add" icon="<i class='icon-plus-sign-alt'></i>" title="<@t.page 'category.add'/>"><i class="icon-copy"></i><@t.page 'button.copy'/></a></li>
-                    </#if>
-                    <#if authorizedMap['cmsCategory/addMore']>
-                        <li><a href="cmsCategory/addMore.html?parentId=${category.id}" class="btnText blue" target="dialog" mask="true"><i class="icon-plus"></i><@t.page 'category.add_child'/></a></li>
-                    </#if>
-                    <#if authorizedMap['cmsCategory/publishParameters']&&site.useStatic&&!category.onlyUrl>
-                        <li><a href="cmsCategory/publishParameters.html?id=${category.id}&pageSize=${category.pageSize}&containChild=${category.containChild?then('true','false')}" target="dialog" width="450" height="180" mask="true"><i class="icon-file-text-alt icon-large"></i><@t.page 'button.publish'/></a></li>
-                    </#if>
-                <#else>
-                    <#if authorizedMap['cmsCategory/addMore']>
-                        <li><a href="cmsCategory/addMore.html" target="navTab" rel="cmsCategory/add"><i class="icon-plus icon-large"></i><@t.page 'category.add'/></a></li>
-                    </#if>
-                </#if>
-                </ul>
-            </li>
+        <#if category?has_content>
+            <#if authorizedMap['cmsCategory/list']>
+                <li>
+                    <a href="cmsCategory/list" target="navTab" rel="cmsCategory/list" class="addMore"><@t.page 'category.management'/></a>
+                    <ul>
+                        <#if authorizedMap['cmsCategory/add']>
+                            <li><a href="cmsCategory/add.html?id=${category.id}" class="edit btnText blue" target="navTab" rel="cmsCategory/edit"><i class="icon-edit"></i><@t.page 'category.edit'/></a></li>
+                            <li><a href="cmsCategory/add.html?id=${category.id}&seo=true" class="edit btnText blue" target="navTab" rel="cmsCategory/edit"><i class="icon-edit"></i><@t.page 'seo'/></a></li>
+                            <li><a href="cmsCategory/add.html?copyId=${category.id}" class="btnText blue" target="navTab" rel="cmsCategory/add" icon="<i class='icon-plus-sign-alt'></i>" title="<@t.page 'category.add'/>"><i class="icon-copy"></i><@t.page 'button.copy'/></a></li>
+                        </#if>
+                        <#if authorizedMap['cmsCategory/addMore']>
+                            <li><a href="cmsCategory/addMore.html?parentId=${category.id}" class="btnText blue" target="dialog" mask="true"><i class="icon-plus"></i><@t.page 'category.add_child'/></a></li>
+                        </#if>
+                        <#if authorizedMap['cmsCategory/publishParameters']&&site.useStatic&&!category.onlyUrl>
+                            <li><a href="cmsCategory/publishParameters.html?id=${category.id}&pageSize=${category.pageSize}&containChild=${category.containChild?then('true','false')}" target="dialog" width="450" height="180" mask="true"><i class="icon-file-text-alt icon-large"></i><@t.page 'button.publish'/></a></li>
+                        </#if>
+                    </ul>
+                </li>
+            </#if>
+         <#else>
+            <#if authorizedMap['cmsCategory/addMore']>
+                <li><a href="cmsCategory/addMore.html" target="navTab" rel="cmsCategory/add"><i class="icon-plus icon-large"></i><@t.page 'category.add'/></a></li>
+            </#if>
         </#if>
         <#if metadata?has_content && authorizedMap['cmsPage/list']>
             <li>

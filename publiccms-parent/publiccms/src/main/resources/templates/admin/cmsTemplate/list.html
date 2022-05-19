@@ -41,10 +41,10 @@
     </div>
     <div id="cmsTemplateBox" class="unitBox rightPageContent">
         <#if path?has_content>
-            <#if 'metadata'=editType>
-                <#include "content"/>
-            <#else>
+            <#if editType?has_content&&'metadata'=editType>
                 <#include "metadata.html"/>
+            <#else>
+                <#include "content.html"/>
             </#if>
         <#else>
             <#include "directory.html"/>
