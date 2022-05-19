@@ -51,7 +51,7 @@
                             <@t.page 'user.last_login_date'/>
                         </p>
                         <p>
-                            ${admin.lastLoginDate!}
+                            ${(admin.lastLoginDate?string('yyyy-MM-dd HH:mm'))!}
                         </p>
                     </div>
                 </li>

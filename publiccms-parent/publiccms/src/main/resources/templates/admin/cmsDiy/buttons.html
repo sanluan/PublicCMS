@@ -68,7 +68,7 @@
 		</#if>
 	 <#else>
 		<#if authorizedMap['cmsCategory/addMore']>
-			<li><a href="cmsCategory/addMore.html" target="navTab" rel="cmsCategory/add"><i class="icon-plus icon-large"></i><@t.page 'category.add'/></a></li>
+			<li><a href="cmsCategory/addMore.html" target="dialog" mask="true"><i class="icon-plus icon-large"></i><@t.page 'category.add'/></a></li>
 		</#if>
 	</#if>
 	<#if metadata?has_content && authorizedMap['cmsPage/list']>
