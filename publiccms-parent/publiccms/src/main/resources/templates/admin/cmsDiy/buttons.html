@@ -24,7 +24,7 @@
         <#if url?has_content>
             <li><a href="${url?keep_before('?diy')?keep_before('&diy')}" target="_blank"><i class="icon-external-link"></i><@t.page 'button.view'/></a></li>
         </#if>
-        <#if authorizedMap['cmsContent/addMore'] && 'category'=itemType && category?has_content>
+        <#if authorizedMap['cmsContent/addMore'] && category?has_content && 'category'=itemType>
             <li><a href="cmsContent/addMore.html?categoryId=${(category.id)!content.categoryId!}" target="dialog" mask="true"><i class="icon-plus icon-large"></i><@t.page 'content.add'/></a></li>
         </#if>
         <#if authorizedMap['cmsContent/list'] && content?has_content>
@@ -112,7 +112,7 @@
                 </ul>
             </li>
         </#if>
-        <#if 'user'=itemType&&authorizedMap['sysUser/list']>
+        <#if authorizedMap['sysUser/list'] && itemType?has_content &&'user'=itemType >
             <li>
                 <a href="sysUser/list.html"<#if itemId?has_content> class="addMore"</#if> target="navTab" rel="sysUser/list"><i class="icon-user icon-large"></i><@t.page 'user.management'/></a>
                 <#if itemId?has_content>
@@ -122,13 +122,13 @@
                 </#if>
             </li>
         </#if>
-        <li><a href="cmsDiy/preview.html?path=${(site.dynamicPath)?url}" target="navTab" rel="cmsDiy/preview"><i class="icon-home icon-large"></i><@t.page 'site.dynamic_path'/></a></li>
+        <li><a href="cmsDiy/preview.html?url=${(site.dynamicPath)?url}" target="navTab" rel="cmsDiy/preview"><i class="icon-home icon-large"></i><@t.page 'site.dynamic_path'/></a></li>
         <#if site.useStatic>
-            <li><a href="cmsDiy/preview.html?path=${(site.sitePath)?url}" target="navTab" rel="cmsDiy/preview"><i class="icon-home icon-large"></i><@t.page 'website'/></a></li>
+            <li><a href="cmsDiy/preview.html?url=${(site.sitePath)?url}" target="navTab" rel="cmsDiy/preview"><i class="icon-home icon-large"></i><@t.page 'website'/></a></li>
         </#if>
         <#if authorizedMap['sysConfigData/list']>
         <li>
-            <a href="sysConfigData/list.html" target="navTab" rel="sysConfigData/list"><i class='icon-cog icon-large'></i><@t.page 'server_config.site'/></a>
+            <a href="sysConfigData/list.html"<#if site.useStatic> class="addMore"</#if> target="navTab" rel="sysConfigData/list"><i class='icon-cog icon-large'></i><@t.page 'server_config.site'/></a>
             <ul>
             <#if site.useStatic&&authorizedMap['sysTask/list']>
                 <li><a  href="sysTask/list" target="navTab" rel="sysTask/list"><i class="icon-time icon-large"></i><@t.page 'task'/></a>
