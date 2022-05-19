@@ -42,7 +42,7 @@ dependencies {
     implementation "org.mybatis:mybatis:${mybatisVersion}"
 
 
-    implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonDatabindVersion}"
+    implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
 
     implementation "javax.transaction:jta:${jtaVersion}"
     implementation "com.sun.mail:jakarta.mail:${mailVersion}"

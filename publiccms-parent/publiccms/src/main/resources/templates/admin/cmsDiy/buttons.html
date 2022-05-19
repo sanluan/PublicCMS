@@ -121,10 +121,6 @@
 			</#if>
 		</li>
 	</#if>
-	<li><a href="cmsDiy/preview.html?url=${(site.dynamicPath)?url}" target="navTab" rel="cmsDiy/preview"><i class="icon-home icon-large"></i><@t.page 'site.dynamic_path'/></a></li>
-	<#if site.useStatic>
-		<li><a href="cmsDiy/preview.html?url=${(site.sitePath)?url}" target="navTab" rel="cmsDiy/preview"><i class="icon-home icon-large"></i><@t.page 'website'/></a></li>
-	</#if>
 	<#if authorizedMap['sysConfigData/list']>
 	<li>
 		<a href="sysConfigData/list.html"<#if site.useStatic> class="addMore"</#if> target="navTab" rel="sysConfigData/list"><i class='icon-cog icon-large'></i><@t.page 'server_config.site'/></a>
