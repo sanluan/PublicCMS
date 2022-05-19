@@ -40,6 +40,14 @@
         </ul>
     </div>
     <div id="cmsTemplateBox" class="unitBox rightPageContent">
-        <#include "directory.html"/>
+        <#if path?has_content>
+            <#if 'metadata'=editType>
+                <#include "content"/>
+            <#else>
+                <#include "metadata.html"/>
+            </#if>
+        <#else>
+            <#include "directory.html"/>
+        </#if>
     </div>
 </div>

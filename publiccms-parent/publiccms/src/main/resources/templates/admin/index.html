@@ -26,9 +26,9 @@
     <header>
         <a class="logo" href="./"><img src="<#if siteAttribute.logo?has_content>${getAbsoluteUrl(site.sitePath,siteAttribute.logo)}<#else>${base}/resource/logo.png</#if>" alt="LOGO"/></a>
         <ul class="nav">
-            <li><a href="common/preview.html?url=${((site.dynamicPath)?url)!}" target="navTab" rel="cmsPage/preview" title="<@t.page 'button.view_page'/>"><i class="icon-home icon-large"></i></a></li>
+            <li><a href="${site.dynamicPath!}" target="_blank"><i class="icon-home icon-large"></i></a></li>
         <#if site.useStatic>
-            <li><a href="common/preview.html?url=${((site.sitePath)?url)!}" target="navTab" rel="cmsPage/preview" title="<@t.page 'button.view_page'/>"><@t.page 'website'/></a></li>
+            <li><a href="${site.sitePath!}" target="_blank"><@t.page 'website'/></a></li>
         </#if>
         <@_sysAuthorized roleIds=admin.roles url='clearCache'>
             <li>

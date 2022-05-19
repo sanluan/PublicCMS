@@ -90,7 +90,7 @@
                           <a href="cmsWebFile/content.html?path=${filePath?url}" class="edit btnText blue" target="navTab" rel="cmsWebFile/content:${filePath}" icon="<i class='icon-edit'></i>" title="${a.fileName}"><i class="icon-edit"></i><@t.page 'button.edit'/></a>
                         </#if>
                         <#if pageSubfix?seq_contains(a.fileName?keep_after_last('.')?lower_case)>
-                        <a href="common/preview.html?url=${((a.url)?url)!}" class="btnText" target="navTab" rel="cmsPage/preview" title="<@t.page 'button.view_page'/>"><@t.page 'button.view'/></a>
+                        <a href="cmsDiy/preview.html?url=${((a.url)?url)!}" class="btnText" target="navTab" rel="cmsDiy/preview"  icon="<i class='bi bi-palette2 icon-large'></i>" title="<@t.page 'diy.preview'/>"><@t.page 'button.view'/></a>
                         <#else>
                         <a href="${site.sitePath+filePath?keep_after('/')}" class="btnText" target="_blank"><i class="icon-external-link"></i><@t.page 'button.view'/></a>
                         </#if>

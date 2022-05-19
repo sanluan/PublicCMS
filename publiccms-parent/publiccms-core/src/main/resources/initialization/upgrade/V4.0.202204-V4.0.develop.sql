@@ -11,10 +11,11 @@ INSERT INTO `sys_module_lang` VALUES ('diy_list', 'zh', '页面可视化管理')
 ALTER TABLE `sys_user`
     CHANGE COLUMN `nick_name` `nickname` varchar(45) NOT NULL COMMENT '昵称' AFTER `weak_password`;
 -- 2022-05-05 --
-INSERT INTO `sys_module` VALUES ('page_diy', 'cmsPage/diy', 'cmsPage/region,cmsPage/style,cmsDiy/save', 'bi bi-palette', 'page_menu', 1, 3);
+INSERT INTO `sys_module` VALUES ('page_diy', 'cmsPage/diy', 'cmsPage/style,cmsDiy/save', 'bi bi-palette', 'page_menu', 1, 3);
 INSERT INTO `sys_module_lang` VALUES ('page_diy', 'en', 'Visualized page');
 INSERT INTO `sys_module_lang` VALUES ('page_diy', 'ja', '視覚化されたページ');
 INSERT INTO `sys_module_lang` VALUES ('page_diy', 'zh', '页面可视化');
+
 -- 2022-05-10 --
 CREATE TABLE `cms_content_text_history` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -45,3 +46,16 @@ ALTER TABLE `visit_session`
 ALTER TABLE `visit_url`
     DROP INDEX `visit_session_id`,
     ADD INDEX `visit_url_pv`(`site_id`, `visit_date`, `pv`);
+-- 2022-05-19 --
+INSERT INTO `sys_module` VALUES ('page_diy_buttons', 'cmsDiy/buttons', NULL, NULL, 'page_diy', 0, 3);
+INSERT INTO `sys_module` VALUES ('page_diy_preview', 'cmsDiy/preview', NULL, NULL, 'page_diy', 0, 2);
+INSERT INTO `sys_module` VALUES ('page_diy_region', 'cmsPage/region', NULL, NULL, 'page_diy', 0, 1);
+INSERT INTO `sys_module_lang` VALUES ('page_diy_buttons', 'en', 'Button');
+INSERT INTO `sys_module_lang` VALUES ('page_diy_buttons', 'ja', 'ボタン');
+INSERT INTO `sys_module_lang` VALUES ('page_diy_buttons', 'zh', '按钮');
+INSERT INTO `sys_module_lang` VALUES ('page_diy_preview', 'en', 'Quick Maintenance');
+INSERT INTO `sys_module_lang` VALUES ('page_diy_preview', 'ja', 'クイックメンテナンス');
+INSERT INTO `sys_module_lang` VALUES ('page_diy_preview', 'zh', '快捷维护');
+INSERT INTO `sys_module_lang` VALUES ('page_diy_region', 'en', 'Region');
+INSERT INTO `sys_module_lang` VALUES ('page_diy_region', 'ja', '領域');
+INSERT INTO `sys_module_lang` VALUES ('page_diy_region', 'zh', '区域');
