@@ -14,7 +14,7 @@ import com.publiccms.entities.visit.VisitUrl;
 /**
  *
  * VisitUrlDao
- * 
+ *
  */
 @Repository
 public class VisitUrlDao extends BaseDao<VisitUrl> {
@@ -37,7 +37,7 @@ public class VisitUrlDao extends BaseDao<VisitUrl> {
             queryHandler.condition("bean.id.visitDate <= :endVisitDate").setParameter("endVisitDate", endVisitDate);
         }
         queryHandler.order("bean.id.visitDate").append(ORDERTYPE_DESC);
-        queryHandler.order("bean.pv").append(ORDERTYPE_ASC);
+        queryHandler.order("bean.pv").append(ORDERTYPE_DESC);
         return getPage(queryHandler, pageIndex, pageSize);
     }
 

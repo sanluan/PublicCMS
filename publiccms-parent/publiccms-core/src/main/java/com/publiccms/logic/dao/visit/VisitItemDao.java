@@ -15,7 +15,7 @@ import com.publiccms.entities.visit.VisitItem;
 /**
  *
  * VisitItemDao
- * 
+ *
  */
 @Repository
 public class VisitItemDao extends BaseDao<VisitItem> {
@@ -47,7 +47,7 @@ public class VisitItemDao extends BaseDao<VisitItem> {
             queryHandler.condition("bean.id.itemId <= :itemId").setParameter("itemId", itemId);
         }
         queryHandler.order("bean.id.visitDate").append(ORDERTYPE_DESC);
-        queryHandler.order("bean.pv").append(ORDERTYPE_ASC);
+        queryHandler.order("bean.pv").append(ORDERTYPE_DESC);
         return getPage(queryHandler, pageIndex, pageSize);
     }
 

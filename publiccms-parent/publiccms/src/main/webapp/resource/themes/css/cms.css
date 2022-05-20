@@ -8,7 +8,7 @@ a.btnText i{margin-right:3px;}
 .unit ul{padding:0;margin:0;list-style:none;}
 .unit ul li{min-width:195px;width:20%;float:left;}
 .unit ul li .card{padding:10px;height:75px;margin:10px;border-radius:5px;border-style:solid;border-width:1px;font-size:16px;-moz-box-shadow:0px 0px 5px 1px #DDE4EF;box-shadow:0px 0px 5px 1px #DDE4EF;-ms-box-shadow:0px 0px 5px 1px #DDE4EF;-o-box-shadow:0px 0px 5px 1px #DDE4EF;-webkit-box-shadow:0px 0px 5px 1px #DDE4EF;}
-.unit ul li .card p{line-height:26px;float:none;color:#333;min-width:unset;}
+.unit ul li .card p{line-height:26px;float:none;color:#333;min-width:unset;word-break:break-all;}
 .unit ul li .card p.label{color:#aaa;}
 .unit ul li .card a{color:#333;}
 .unit ul li .card .button{margin:15px;}
@@ -56,6 +56,6 @@ ol.vote>li:nth-child(3n) .progress-bar {background-color:blue;}
 .unit ul li{width:33.3%;}
 }
 
-@media screen and (min-width:1200px) and (max-width:1400px) {
+@media screen and (min-width:1025px) and (max-width:1400px) {
 .unit ul li{width:25%;}
 }
