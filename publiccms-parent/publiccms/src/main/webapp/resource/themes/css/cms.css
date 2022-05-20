@@ -50,9 +50,9 @@ ol.vote>li:nth-child(3n) .progress-bar {background-color:blue;}
 
 .iframe-box{position:relative;}
 .diy-border{visibility:hidden;}
-.diy-border-top,.diy-border-right,.diy-border-bottom,.diy-border-left{position:absolute;border-width:0px;border-style:dashed;border-color:#FEE1A2;}
-.diy-border-top,.diy-border-bottom{border-top-width:1px;height:0px;}
-.diy-border-right,.diy-border-left{border-left-width:1px;width:0px;}
+.diy-border-top,.diy-border-right,.diy-border-bottom,.diy-border-left{box-sizing:border-box;position:absolute;border-width:0px;border-style:dashed;border-color:#666;background-color:#fff;}
+.diy-border-top,.diy-border-bottom{border-top-width:1px;height:1px;}
+.diy-border-right,.diy-border-left{border-left-width:1px;width:1px;}
 .diy-border.noborder .diy-border-top,.diy-border.noborder .diy-border-right,.diy-border.noborder .diy-border-bottom,.diy-border.noborder .diy-border-left{border-top-width:0px;border-left-width:0px;}
 .diy-menu{position:absolute;top:0px;height:32px;left:50%;margin-top:-32px;}
 .diy-border-bottom .diy-menu{bottom:-32px;top:auto;}

@@ -153,58 +153,75 @@ function commandParameter(command,parametersName){
 var diytimer;
 window.addEventListener('message', function(event) {
     var op = event.data;
-    if (op.url&&op.diyevent) {
-        if('load' === op.diyevent ) {
-            if( op.templatePath) {
-                $('input[name=url]',navTab.getCurrentPanel()).val(op.url);
-                $('input[name=templatePath]',navTab.getCurrentPanel()).val(op.templatePath);
-                $('input[name=itemType]',navTab.getCurrentPanel()).val(op.itemType);
-                $('input[name=itemId]',navTab.getCurrentPanel()).val(op.itemId);
-                $('form',navTab.getCurrentPanel()).submit();
-            }
-        } else if('enter' === op.diyevent ) {
-            if(op.url == $('input[name=url]',navTab.getCurrentPanel()).val()) {
-                diyShowMenu(op.itemType,op.itemId,op.x,op.y,op.width,op.height,op.noborder);
-            }
-        } else if('leave' === op.diyevent ) {
-            if(op.url == $('input[name=url]',navTab.getCurrentPanel()).val()) {
-                diytimer = setTimeout('diyHideMenu()',50);
-            }
+    if (op.diyevent ) {
+        if(op.url ) {
+            if('load' === op.diyevent ) {
+                if( op.templatePath) {
+                    $('input[name=url]',navTab.getCurrentPanel()).val(op.url);
+                    $('input[name=templatePath]',navTab.getCurrentPanel()).val(op.templatePath);
+                    $('input[name=itemType]',navTab.getCurrentPanel()).val(op.itemType);
+                    $('input[name=itemId]',navTab.getCurrentPanel()).val(op.itemId);
+                    $('form',navTab.getCurrentPanel()).submit();
+                }
+            } else if('enter' === op.diyevent ) {
+                if(op.url === $('input[name=url]',navTab.getCurrentPanel()).val()) {
+                    if(diyShowMenu(op.itemType, op.itemId, op.noborder) ) {
+                        moveMenu(op.x, op.y, op.width, op.height);
+                    }
+                }
+            } else if('leave' === op.diyevent ) {
+                if(op.url == $('input[name=url]',navTab.getCurrentPanel()).val()) {
+                    diytimer = setTimeout('diyHideMenu()',100);
+                }
+            } 
+        }
+        if('scroll' === op.diyevent ) {
+            moveMenu(op.x, op.y, op.width, op.height);
         }
     }
 });
 function diyHideMenu(){
     if(!$('.diy-menu',navTab.getCurrentPanel()).is(':hover')){
         $('.diy-border',navTab.getCurrentPanel()).css("visibility", "hidden");
+        diytimer=null;
     }
 }
-function diyShowMenu(itemType,itemId,x,y,width,height,noborder){
+function moveMenu(x,y,width,height){
+    var boxWidth = $('iframe', navTab.getCurrentPanel()).width();
+    var boxHeight = $('iframe', navTab.getCurrentPanel()).height();
+    var menuHeight = $('.diy-menu',navTab.getCurrentPanel()).height();
+    if ( 0 > y && boxHeight - menuHeight < y + height ) {
+        boxHeight -= menuHeight;
+    }
+    $('.diy-border-top',navTab.getCurrentPanel()).css({
+        top:0 > y ? 0 : y,left:0 > x ? 0 : x,width:width
+    });
+    $('.diy-border-bottom',navTab.getCurrentPanel()).css({
+        top: boxHeight < (y + height) ? (boxHeight - 1) : (y + height - 1),left:x,width:width
+    });
+    $('.diy-border-left',navTab.getCurrentPanel()).css({
+        top:0 > y ? 0 : y,left:0 > x ? 0 : x,height:height
+    });
+    $('.diy-border-right',navTab.getCurrentPanel()).css({
+        top:0 > y ? 0 : y,left:boxWidth < (x+width) ? (boxWidth - 1) : (x + width - 1),height:height
+    });
+    if(menuHeight > y){
+        $('.diy-menu',navTab.getCurrentPanel()).appendTo($('.diy-border-bottom',navTab.getCurrentPanel()));
+    } else {
+        $('.diy-menu',navTab.getCurrentPanel()).appendTo($('.diy-border-top',navTab.getCurrentPanel()));
+    }
+}
+function diyShowMenu(itemType,itemId,noborder){
     var buttons;
     if(itemId ) {
-        buttons=$('#buttonBox a[data-diy='+escapeJquery(itemType)+'][data-diy-id='+escapeJquery(itemId)+'],#buttonBox a[data-diy='+escapeJquery(itemType)+'] :not([data-diy-id])');
+        buttons=$('#buttonBox a[data-diy='+escapeJquery(itemType)+'][data-diy-id='+escapeJquery(itemId)+'],#buttonBox a[data-diy='+escapeJquery(itemType)+']:not([data-diy-id])');
     } else {
-        buttons=$('#buttonBox a[data-diy='+escapeJquery(itemType)+'] :not([data-diy-id])');
+        buttons=$('#buttonBox a[data-diy='+escapeJquery(itemType)+']:not([data-diy-id])');
     }
     if(buttons.length ) {
       if(diytimer){
           clearTimeout(diytimer);
-      }
-      $('.diy-border-top',navTab.getCurrentPanel()).css({
-          top:y,left:x,width:width
-      });
-      $('.diy-border-bottom',navTab.getCurrentPanel()).css({
-          top:y+height-1,left:x,width:width
-      });
-      $('.diy-border-left',navTab.getCurrentPanel()).css({
-          top:y,left:x,height:height
-      });
-      $('.diy-border-right',navTab.getCurrentPanel()).css({
-          top:y,left:x+width-1,height:height
-      });
-      if(30 > y){
-          $('.diy-menu',navTab.getCurrentPanel()).appendTo($('.diy-border-bottom',navTab.getCurrentPanel()));
-      } else {
-          $('.diy-menu',navTab.getCurrentPanel()).appendTo($('.diy-border-top',navTab.getCurrentPanel()));
+          diytimer=null;
       }
       if(noborder){
           $('.diy-border',navTab.getCurrentPanel()).addClass('noborder');
@@ -215,16 +232,20 @@ function diyShowMenu(itemType,itemId,x,y,width,height,noborder){
       $('.diy-menu',navTab.getCurrentPanel()).css({marginLeft:-$('.diy-menu',navTab.getCurrentPanel()).width()/2});
       initLink($('.diy-menu',navTab.getCurrentPanel()));
       $('.diy-border',navTab.getCurrentPanel()).css("visibility", "visible");
+      return true;
     }
+    return false;
 }
 DWZ.regPlugins.push(function($p){
     $('.diy-menu',$p).each(function (){
         $(this).hover(function(){
             if(diytimer){
                 clearTimeout(diytimer);
+                diytimer=null;
             }
         },function(){
             $('.diy-border',navTab.getCurrentPanel()).css("visibility", "hidden");
+            diytimer=null;
         });
     });
 });

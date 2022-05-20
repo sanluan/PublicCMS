@@ -31,9 +31,9 @@
 		<a href="cmsContent/list" target="navTab" rel="cmsContent/list" class="addMore"><@t.page 'content.management'/></a>
 		<ul>
 		<#if model?has_content && model.hasChild>
-			<li><a href="cmsContent/list.html?parentId=${content.id}&categoryId=${content.categoryId!}" class="btnText" target="navTab" rel="cmsContent/list"><@t.page 'content.child_management'/></a></li>
+			<li><a href="cmsContent/list.html?parentId=${content.id}&categoryId=${content.categoryId!}" target="navTab" rel="cmsContent/list"><@t.page 'content.child_management'/></a></li>
 		</#if>
-			<li><a href="cmsContent/add.html?id=${content.id}" class="edit btnText blue" target="navTab" rel="cmsContent/edit" data-diy="content" data-diy-id="${content.id}"><i class="icon-edit"></i><@t.page 'content.edit'/></a></li>
+			<li><a href="cmsContent/add.html?id=${content.id}" target="navTab" rel="cmsContent/edit" data-diy="content" data-diy-id="${content.id}"><i class="icon-edit"></i><@t.page 'content.edit'/></a></li>
 			<#if model?has_content>
 				<li><a href="cmsContent/add.html?categoryId=${(content.categoryId)!}&modelId=${model.id}&parentId=${(content.parentId)!}" target="navTab" rel="cmsContent/add" data-diy="content" data-diy-id="${content.id}"><i class="icon-plus icon-large"></i><@t.page 'content.add'/></a></li>
 			</#if>
@@ -53,12 +53,12 @@
 				<a href="cmsCategory/list" target="navTab" rel="cmsCategory/list" class="addMore" data-diy="category"><@t.page 'category.management'/></a>
 				<ul>
 					<#if authorizedMap['cmsCategory/add']>
-						<li><a href="cmsCategory/add.html?id=${category.id}" class="edit btnText blue" target="navTab" rel="cmsCategory/edit" data-diy="category" data-diy-id="${category.id}"><i class="icon-edit"></i><@t.page 'category.edit'/></a></li>
-						<li><a href="cmsCategory/add.html?id=${category.id}&seo=true" class="edit btnText blue" target="navTab" rel="cmsCategory/edit"  data-diy="category" data-diy-id="${category.id}"><i class="icon-edit"></i><@t.page 'seo'/></a></li>
-						<li><a href="cmsCategory/add.html?copyId=${category.id}" class="btnText blue" target="navTab" rel="cmsCategory/add" icon="<i class='icon-plus-sign-alt'></i>" title="<@t.page 'category.add'/>" data-diy="category" data-diy-id="${category.id}"><i class="icon-copy"></i><@t.page 'button.copy'/></a></li>
+						<li><a href="cmsCategory/add.html?id=${category.id}" target="navTab" rel="cmsCategory/edit" data-diy="category" data-diy-id="${category.id}"><i class="icon-edit"></i><@t.page 'category.edit'/></a></li>
+						<li><a href="cmsCategory/add.html?id=${category.id}&seo=true" target="navTab" rel="cmsCategory/edit"  data-diy="category" data-diy-id="${category.id}"><i class="icon-edit"></i><@t.page 'seo'/></a></li>
+						<li><a href="cmsCategory/add.html?copyId=${category.id}" target="navTab" rel="cmsCategory/add" icon="<i class='icon-plus-sign-alt'></i>" title="<@t.page 'category.add'/>" data-diy="category" data-diy-id="${category.id}"><i class="icon-copy"></i><@t.page 'button.copy'/></a></li>
 					</#if>
 					<#if authorizedMap['cmsCategory/addMore']>
-						<li><a href="cmsCategory/addMore.html?parentId=${category.id}" class="btnText blue" target="dialog" mask="true" data-diy="category"><i class="icon-plus"></i><@t.page 'category.add_child'/></a></li>
+						<li><a href="cmsCategory/addMore.html?parentId=${category.id}" target="dialog" mask="true" data-diy="category"><i class="icon-plus"></i><@t.page 'category.add_child'/></a></li>
 					</#if>
 					<#if authorizedMap['cmsCategory/publishParameters']&&site.useStatic&&!category.onlyUrl>
 						<li><a href="cmsCategory/publishParameters.html?id=${category.id}&pageSize=${category.pageSize}&containChild=${category.containChild?then('true','false')}" target="dialog" width="450" height="180" mask="true"  data-diy="category" data-diy-id="${category.id}"><i class="icon-file-text-alt icon-large"></i><@t.page 'button.publish'/></a></li>
@@ -88,7 +88,7 @@
 					<#if list?has_content>
 					<#list list as a>
 						<@_diyMetadata itemType='region' itemId=a>
-						<li><a href="cmsPage/diy.html?id=${(object.id?url)!}" target="navTab" rel="cmsPage/diy" title="<@t.page 'diy'/>" data-diy="region" id="${(object.id)!}"><i class='bi bi-palette'></i>${(object.name)!}</a></li>
+						<li><a href="cmsPage/diy.html?id=${(object.id?url)!}" target="navTab" rel="cmsPage/diy" title="<@t.page 'diy'/>" data-diy="region" data-diy-id="${(object.id)!}"><i class='bi bi-palette'></i>${(object.name)!}</a></li>
 						</@_diyMetadata>
 					</#list>
 					</#if>

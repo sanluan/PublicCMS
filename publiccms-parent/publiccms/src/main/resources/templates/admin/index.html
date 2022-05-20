@@ -26,6 +26,9 @@
     <header>
         <a class="logo" href="./"><img src="<#if siteAttribute.logo?has_content>${getAbsoluteUrl(site.sitePath,siteAttribute.logo)}<#else>${base}/resource/logo.png</#if>" alt="LOGO"/></a>
         <ul class="nav">
+            <@_sysAuthorized roleIds=admin.roles url='cmsDiy/preview'>
+            <li><a href="cmsDiy/preview.html" target="navTab" rel="cmsDiy/preview"><i class='bi bi-palette2 icon-large'></i> <@t.page 'diy.preview'/></a></li>
+            </@_sysAuthorized>
             <li><a href="${site.dynamicPath!}" target="_blank"><i class="icon-home icon-large"></i></a></li>
         <#if site.useStatic>
             <li><a href="${site.sitePath!}" target="_blank"><@t.page 'website'/></a></li>
@@ -36,7 +39,7 @@
             </li>
         </@_sysAuthorized>
             <li>
-                <a href="javascript:"><i class="icon-user icon-large"></i>${(admin.nickname)!}</a>
+                <a href="javascript:"><i class="icon-user icon-large"></i> ${(admin.nickname)!}</a>
             </li>
             <li>
                 <a href="logout?userId=${admin.id}" title="<@t.page 'logout'/>"><i class="icon-signout icon-large"></i></a>
