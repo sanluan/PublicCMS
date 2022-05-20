@@ -5,10 +5,10 @@
     <title>${metadata.alias!}</title>
 </head>
 <body>
-    <header>
+    <header data-diy="page">
         <h1>${(site.name)!}</h1>
     </header>
-    <nav>
+    <nav data-diy="category">
         <a href="${site.useStatic?then(site.sitePath,site.dynamicPath)}">ホームページ</a>
 <@_categoryList>
     <#list page.list as a>

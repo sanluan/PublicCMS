@@ -20,11 +20,11 @@
     </style>
 </head>
 <body>
-    <header>
+    <header data-diy="page">
         <h1>${(site.name)!}</h1>
     </header>
-    <nav>
-        <a href="${site.dynamicPath}">Home page</a>
+    <nav data-diy="category">
+        <a href="${site.dynamicPath}">Home</a>
 <@_categoryList>
     <#list page.list as a>
         <a href="${a.url!}" target="_blank">${a.name}</a>
@@ -33,7 +33,7 @@
     </nav>
     <main>
         <article>
-            <h1><a href="${content.url!}">${content.title}</a></h1>
+            <h1 data-diy="content" data-diy-id="${(content.id)!}"><a href="${content.url!}">${content.title}</a></h1>
             <p><#if content.copied>Source:<a href="${(attribute.sourceUrl)!}" target="_blank">${(attribute.source)!}</a></#if> ${content.author!} ${content.editor!} ${content.publishDate?datetime} Views:<em>loading...</em></p>
             <div id="content" class="clearfix">${(text?no_esc)!}</div>
         <#if content.hasProducts>
@@ -68,7 +68,7 @@
              <@_contentFileList contentId=content.id fileTypes='image'>
                  <#list page.list as file>
                      <img src="${(file.filePath)!}" alt="${(file.description)!}"/>
-                     <p>ͼ${file?counter} ${(file.description)!}</p>
+                     <p>${file?counter} ${(file.description)!}</p>
                  </#list>
              </@_contentFileList>
             </figure>

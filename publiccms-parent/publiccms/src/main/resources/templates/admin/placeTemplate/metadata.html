@@ -154,9 +154,9 @@ checkPageSize();
 </#if>
 </script>
         <textarea name="content" class="hide"></textarea>
-        <textarea class="content hide"><#noparse>
+        <textarea class="placeContent hide"><#noparse>
 <#list page.list>
-    <ul>
+    <ul data-diy="place" data-diy-id="${path}">
     <#items as a>
         <li>
             <figure>
@@ -169,6 +169,10 @@ checkPageSize();
     </#items>
     </ul>
 </#list>
+</#noparse></textarea>
+<textarea class="content hide"><#noparse>
+    <div data-diy="place" data-diy-id="${path}">
+    </div>
 </#noparse></textarea>
     </div>
 </form>

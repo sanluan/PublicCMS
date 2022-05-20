@@ -8,11 +8,11 @@
     <meta name="description" content="${(attribute.description)!}"/>
 </head>
 <body>
-    <header>
+    <header data-diy="page">
         <h1>${(site.name)!}</h1>
     </header>
-    <nav>
-        <a href="${site.dynamicPath!}">Home</a>
+    <nav data-diy="category">
+        <a href="${site.dynamicPath}">Home</a>
 <@_categoryList>
     <#list page.list as a>
         <a href="${a.url!}" target="_blank">${a.name}</a>
@@ -20,9 +20,9 @@
 </@_categoryList>
     </nav>
     <main>
-        <h1>Latest content</h1>
+        <h1 data-diy="category" data-diy-id="${(category.id)!}">${(category.name)!}</h1>
 <@_contentList categoryId=category.id containChild=category.containChild pageIndex=pageIndex pageSize=category.pageSize>
-        <ul>
+        <ul data-diy="content">
     <#list page.list as a>
             <li>
                 <h3><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect?id=${a.id}<#else>${a.url!}</#if>" target="_blank">${a.title}</a></h3>

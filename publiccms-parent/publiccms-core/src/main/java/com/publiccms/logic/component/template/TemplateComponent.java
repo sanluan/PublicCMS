@@ -99,7 +99,7 @@ public class TemplateComponent implements Cache {
 
     /**
      * 创建静态化页面
-     * 
+     *
      * @param site
      * @param fullTemplatePath
      * @param filepath
@@ -149,7 +149,7 @@ public class TemplateComponent implements Cache {
 
     /**
      * 内容页面静态化
-     * 
+     *
      * @param site
      * @param entity
      * @param category
@@ -266,7 +266,7 @@ public class TemplateComponent implements Cache {
 
     /**
      * 内容页面静态化
-     * 
+     *
      * @param site
      * @param entity
      * @param category
@@ -348,7 +348,7 @@ public class TemplateComponent implements Cache {
 
     /**
      * 分类页面静态化
-     * 
+     *
      * @param site
      * @param entity
      * @param pageIndex
@@ -388,7 +388,7 @@ public class TemplateComponent implements Cache {
 
     /**
      * 分类页面静态化
-     * 
+     *
      * @param site
      * @param entity
      * @param templatePath
@@ -458,13 +458,14 @@ public class TemplateComponent implements Cache {
             }
             model.put("page", page);
         }
+		model.put("path", templatePath);
         model.put("metadata", metadata.getAsMap(data));
         AbstractFreemarkerView.exposeSite(model, site);
     }
 
     /**
      * 静态化页面片段
-     * 
+     *
      * @param site
      * @param templatePath
      * @param metadata
@@ -486,7 +487,7 @@ public class TemplateComponent implements Cache {
 
     /**
      * 输出页面片段
-     * 
+     *
      * @param site
      * @param templatePath
      * @param metadata
@@ -504,7 +505,7 @@ public class TemplateComponent implements Cache {
 
     /**
      * 输出页面片段
-     * 
+     *
      * @param writer
      * @param site
      * @param templatePath
@@ -539,7 +540,7 @@ public class TemplateComponent implements Cache {
 
     /**
      * 清理模板缓存
-     * 
+     *
      * Clear Template Cache
      */
     public void clearTemplateCache() {
@@ -548,7 +549,7 @@ public class TemplateComponent implements Cache {
 
     /**
      * 清理任务计划模板缓存
-     * 
+     *
      * Clear Template Cache
      */
     public void clearTaskTemplateCache() {
@@ -581,7 +582,7 @@ public class TemplateComponent implements Cache {
 
     /**
      * 获取FreeMarker管理后台配置
-     * 
+     *
      * @return FreeMarker admin config
      */
     public Configuration getAdminConfiguration() {
@@ -590,7 +591,7 @@ public class TemplateComponent implements Cache {
 
     /**
      * 获取FreeMarker前台配置
-     * 
+     *
      * @return FreeMarker web config
      */
     public Configuration getWebConfiguration() {
@@ -599,7 +600,7 @@ public class TemplateComponent implements Cache {
 
     /**
      * 获取FreeMarker任务计划配置
-     * 
+     *
      * @return FreeMarker task config
      */
     public Configuration getTaskConfiguration() {

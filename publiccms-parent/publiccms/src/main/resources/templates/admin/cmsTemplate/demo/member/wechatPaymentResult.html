@@ -9,10 +9,10 @@
     </style>
 </head>
 <body>
-    <header>
+    <header data-diy="page">
         <h1>${(site.name)!}</h1>
     </header>
-    <nav>
+    <nav data-diy="category">
         <a href="${site.useStatic?then(site.sitePath,site.dynamicPath)}">Home</a>
 <@_categoryList>
     <#list page.list as a>
@@ -20,7 +20,7 @@
     </#list>
 </@_categoryList>
     </nav>
-    <main>
+    <main data-diy="config" data-diy-id="wechat">
         <h3 class="text-center">${payment.description!}</h3>
         <p class="text-center"><label>Amount:</label>${payment.amount!}</p>
         <div class="text-center qr"></div>

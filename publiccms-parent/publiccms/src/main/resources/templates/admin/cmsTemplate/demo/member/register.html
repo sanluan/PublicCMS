@@ -8,10 +8,10 @@
     </style>
 </head>
 <body>
-    <header>
+    <header data-diy="page">
         <h1>${(site.name)!}</h1>
     </header>
-    <nav>
+    <nav data-diy="category">
         <a href="${site.dynamicPath}">Home</a>
 <@_categoryList>
     <#list page.list as a>
@@ -19,7 +19,7 @@
     </#list>
 </@_categoryList>
     </nav>
-    <main>
+    <main data-diy="config" data-diy-id="site">
         <#if user?has_content>
             <p>${user.nickname},You are already logged in!<a href="javascript:logout();">You can logout</a></p>
             <form action="${site.dynamicPath}doLogout" method="post">

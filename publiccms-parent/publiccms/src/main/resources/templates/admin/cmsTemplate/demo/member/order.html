@@ -5,10 +5,10 @@
     <title>${metadata.alias!}</title>
 </head>
 <body>
-    <header>
+    <header data-diy="page">
         <h1>${(site.name)!}</h1>
     </header>
-    <nav>
+    <nav data-diy="category">
         <a href="${site.dynamicPath}">Home</a>
 <@_categoryList>
     <#list page.list as a>
@@ -66,8 +66,8 @@
                             </#if>
                         </@_tradePayment>
                     <#else>
-                    <a href="${site.dynamicPath}tradeOrder/pay/alipay?orderId=${orderId!}&returnUrl=https:${(site.dynamicPath+'order.html?orderId='+orderId)?url}">Alipay</a>
-                    <a href="${site.dynamicPath}tradeOrder/pay/wechat?orderId=${orderId!}&returnUrl=https:${(site.dynamicPath+'order.html?orderId='+orderId)?url}">Wechat</a>
+                    <a href="${site.dynamicPath}tradeOrder/pay/alipay?orderId=${orderId!}&returnUrl=https:${(site.dynamicPath+'order.html?orderId='+orderId)?url}" data-diy="config" data-diy-id="alipay">Alipay</a>
+                    <a href="${site.dynamicPath}tradeOrder/pay/wechat?orderId=${orderId!}&returnUrl=https:${(site.dynamicPath+'order.html?orderId='+orderId)?url}" data-diy="config" data-diy-id="wechat">Wechat</a>
                     <@_tradeAccount id=object.userId;account>
                         <#if account.amount gte object.amount>
                             <a href="${site.dynamicPath}tradeOrder/pay/account?orderId=${orderId!}&returnUrl=https:${(site.dynamicPath+'order.html?orderId='+orderId)?url}">Account balance payment(${account.amount!})</a>

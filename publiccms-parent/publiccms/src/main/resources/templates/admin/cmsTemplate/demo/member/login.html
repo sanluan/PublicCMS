@@ -8,10 +8,10 @@
     </style>
 </head>
 <body>
-    <header>
+    <header data-diy="page">
         <h1>${(site.name)!}</h1>
     </header>
-    <nav>
+    <nav data-diy="category">
         <a href="${site.dynamicPath}">Home</a>
 <@_categoryList>
     <#list page.list as a>
@@ -19,7 +19,7 @@
     </#list>
 </@_categoryList>
     </nav>
-    <main>
+    <main data-diy="config" data-diy-id="site">
         <#macro message code>${springMacroRequestContext.getMessage(code)}</#macro>
         <#if error?has_content>
             <p class="message red"><@message 'message.'+error/></p>
@@ -56,9 +56,11 @@
                         <input type="submit" value="Login"/>
                     </p>
                     <#if _oauthList?has_content&&_oauthList?is_directive>
+                    <div data-diy="config" data-diy-id="oauth">
                         <@_oauthList>
                             <p><#list list as o><a href="${site.dynamicPath}oauth/login/${o}">Login by ${o}</a><#sep> </#list></p>
                         </@_oauthList>
+                    </div>
                     </#if>
                     <p>No account?<a href="register.html?clientId=${clientId!}&uuid=${uuid!}&returnUrl=${returnUrl!}">Please register</a></p>
                 </form>

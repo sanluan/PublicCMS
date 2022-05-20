@@ -7,13 +7,13 @@
     <meta name="description" content="${site.name} - Search"/>
 </head>
 <body>
-    <header>
+    <header data-diy="config" data-diy-id="siteAttribute">
         <form method="get">
             <input type="text" name="word" value="${word!}"/>
             <input type="submit" value="Search"/>
         </form>
     </header>
-    <nav>
+    <nav data-diy="category">
         <a href="${site.dynamicPath}">Home</a>
 <@_categoryList>
     <#list page.list as a>
