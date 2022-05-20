@@ -23,7 +23,7 @@
                     <a class="button" href="cmsTemplate/publishPlace?path=${(path?url)!}&_csrf=<@_csrfToken admin=true/>" target="ajaxTodo"><@t.page 'button.publish'/></a>
                 </#if>
                 <#if (a.size?has_content) && 0 lt a.size>
-                    <a class="button" href="cmsPlace/dataList.html?path=${path?url}" target="navTab" rel="cmsPlace/dataList" title="<@t.page 'place_data'/>:${(a.alias)!}"><@t.page 'place_data'/>(${a.size})</a>
+                    <a class="button" href="cmsPlace/dataList.html?path=${path?url}" target="navTab" rel="cmsPlace/dataList" title="<@t.page 'place_data'/>:${(a.alias)!}"><i class="bi bi-layout-text-sidebar-reverse"></i><@t.page 'place_data'/>(${a.size})</a>
                 </#if>
             </dd>
         </dl>

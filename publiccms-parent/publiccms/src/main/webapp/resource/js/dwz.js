@@ -15,7 +15,7 @@ var DWZ = {
     } ,
     isOverAxis: function(x, reference, size) {
         // Determines when x coordinate is over "b" element axis
-        return ( x > reference ) && ( x < ( reference + size ) );
+        return (x > reference ) && (x < (reference + size ) );
     } ,
     isOver: function(y, x, top, left, height, width) {
         // Determines when x, y coordinates is over "b" element
@@ -54,7 +54,7 @@ var DWZ = {
     } ,
     debug: function(msg) {
         if (this._set.debug ) {
-            if (typeof ( console ) != "undefined" ) {
+            if (typeof (console ) != "undefined" ) {
                 console.log(msg);
             } else {
                 alert(msg);
@@ -81,7 +81,7 @@ var DWZ = {
         }
         if (typeof o == "object" ) {
             if (!o.sort ) {
-                for ( var i in o)
+                for (var i in o)
                     r.push("\""+i + "\":" + DWZ.obj2str(o[i]));
                 if (!!document.all && !/^\n?function\s*toString\(\)\s*\{\n?\s*\[native code\]\n?\s*\}\n?\s*$/.test(o.toString) ) {
                     r.push("toString:" + o.toString.toString());

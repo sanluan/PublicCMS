@@ -56,28 +56,31 @@ public class IncludeRegionDirective extends AbstractTemplateDirective {
                     if (null != layoutList) {
                         for (CmsLayoutData layoutData : layoutList) {
                             CmsLayout layout = diyComponent.getLayout(site, layoutData.getId());
-                            String template = layout.getTemplate();
-                            Matcher matcher = CmsLayout.PLACE_PATTERN.matcher(template);
-                            StringBuffer sb = new StringBuffer();
-                            List<List<CmsModuleData>> moduleListList = layoutData.getModuleList();
-                            int end = 0, i = 0;
-                            while (matcher.find()) {
-                                sb.append(template.substring(end, matcher.start()));
-                                if (null != moduleListList && moduleListList.size() > i) {
-                                    List<CmsModuleData> moduleList = moduleListList.get(i);
-                                    if (null != moduleList) {
-                                        for (CmsModuleData moduleData : moduleList) {
-                                            sb.append("<@_includePlace path=\"").append(moduleData.getPlace()).append("\"/>");
+                            if (null != layout) {
+                                String template = layout.getTemplate();
+                                Matcher matcher = CmsLayout.PLACE_PATTERN.matcher(template);
+                                StringBuffer sb = new StringBuffer();
+                                List<List<CmsModuleData>> moduleListList = layoutData.getModuleList();
+                                int end = 0, i = 0;
+                                while (matcher.find()) {
+                                    sb.append(template.substring(end, matcher.start()));
+                                    if (null != moduleListList && moduleListList.size() > i) {
+                                        List<CmsModuleData> moduleList = moduleListList.get(i);
+                                        if (null != moduleList) {
+                                            for (CmsModuleData moduleData : moduleList) {
+                                                sb.append("<@_includePlace path=\"").append(moduleData.getPlace()).append("\"/>");
+                                            }
                                         }
                                     }
+                                    i++;
+                                    end = matcher.end();
                                 }
-                                i++;
-                                end = matcher.end();
+                                if (end < template.length()) {
+                                    sb.append(template.substring(end, template.length()));
+                                }
+                                environment
+                                        .include(new Template(layout.getName(), sb.toString(), environment.getConfiguration()));
                             }
-                            if (end < template.length()) {
-                                sb.append(template.substring(end, template.length()));
-                            }
-                            environment.include(new Template(layout.getName(), sb.toString(), environment.getConfiguration()));
                         }
                     }
                 }

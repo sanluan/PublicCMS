@@ -101,9 +101,9 @@
 					<#if list?has_content>
 					<#list list as a>
 						<@_placeMetadata path=a>
-						<li><a href="cmsPlace/list.html?path=${a?url}" target="navTab" rel="cmsPlace/list" title="<@t.page 'place.management'/>" data-diy="place" data-diy-id="${a}">${(object.alias)!}</a></li>
+						<li><a href="cmsPlace/list.html?path=${a?url}" target="navTab" rel="cmsPlace/list" title="<@t.page 'place.management'/>" data-diy="place" data-diy-id="${a}"><i class="bi bi-layout-sidebar"></i>${(object.alias)!}</a></li>
 						<#if object.size gt 0>
-						 <li><a href="cmsPlace/dataList.html?path=${a?url}" target="navTab" rel="cmsPlace/dataList" title="<@t.page 'place_data'/>:${(object.alias)!}" data-diy="place" data-diy-id="${a}"><@t.page 'place_data'/>:${(object.alias)!}(${object.size})</a></li>
+						 <li><a href="cmsPlace/dataList.html?path=${a?url}" target="navTab" rel="cmsPlace/dataList" title="<@t.page 'place_data'/>:${(object.alias)!}" data-diy="place" data-diy-id="${a}"><i class="bi bi-layout-text-sidebar-reverse"></i><@t.page 'place_data'/>:${(object.alias)!}(${object.size})</a></li>
 						 </#if>
 						</@_placeMetadata>
 					</#list>

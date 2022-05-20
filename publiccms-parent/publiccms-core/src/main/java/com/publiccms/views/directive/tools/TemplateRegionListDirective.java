@@ -18,11 +18,12 @@ import com.publiccms.logic.component.template.TemplateComponent;
 /**
  *
  * TemplateRegionListDirective
- * 
+ *
  */
 @Component
 public class TemplateRegionListDirective extends AbstractTemplateDirective {
-    public static final Pattern REGION_PATTERN = Pattern.compile("<@_includeRegion[ ]+.*id=[\"|\']([^\"\']*)[\"|\'].*>");
+    public static final Pattern REGION_PATTERN = Pattern.compile("<@_includeRegion[ ]+(.*)id=[\"|\']([^\"\']*)[\"|\'](.*)>");
+	public static final Pattern CATEGORY_ID_PATTERN = Pattern.compile(".*categoryId=[\"|\']([^\"\']*)[\"|\'].*");
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
@@ -34,7 +35,7 @@ public class TemplateRegionListDirective extends AbstractTemplateDirective {
                 if (CommonUtils.notEmpty(fileContent)) {
                     Matcher matcher = REGION_PATTERN.matcher(fileContent);
                     while (matcher.find()) {
-                        regionList.add(matcher.group(1));
+                        regionList.add(matcher.group(2));
                     }
                 }
                 Set<String> placeSet = new HashSet<>();
@@ -46,9 +47,9 @@ public class TemplateRegionListDirective extends AbstractTemplateDirective {
                     String placeContent = CmsFileUtils.getFileContent(
                             siteComponent.getWebTemplateFilePath(getSite(handler), TemplateComponent.INCLUDE_DIRECTORY + place));
                     if (CommonUtils.notEmpty(placeContent)) {
-                        Matcher placeMatcher = REGION_PATTERN.matcher(placeContent);
-                        while (placeMatcher.find()) {
-                            regionList.add(placeMatcher.group(1));
+                        matcher = REGION_PATTERN.matcher(placeContent);
+                        while (matcher.find()) {
+                            regionList.add(matcher.group(2));
                         }
                     }
                 }
