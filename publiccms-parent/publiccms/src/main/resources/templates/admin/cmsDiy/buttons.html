@@ -51,15 +51,16 @@
 	<#if category?has_content>
 		<#if authorizedMap['cmsCategory/list']>
 			<li>
-				<a href="cmsCategory/list" target="navTab" rel="cmsCategory/list" class="addMore" data-diy="category"><@t.page 'category.management'/></a>
+				<a href="cmsCategory/list?categoryId=${category.parentId!}" target="navTab" rel="cmsCategory/list" class="addMore" data-diy="category"><@t.page 'category.management'/></a>
 				<ul>
 					<#if authorizedMap['cmsCategory/add']>
 						<li><a href="cmsCategory/add.html?id=${category.id}" target="navTab" rel="cmsCategory/edit" data-diy="category" data-diy-id="${category.id}"><i class="icon-edit"></i><@t.page 'category.edit'/></a></li>
 						<li><a href="cmsCategory/add.html?id=${category.id}&seo=true" target="navTab" rel="cmsCategory/edit"  data-diy="category" data-diy-id="${category.id}"><i class="icon-edit"></i><@t.page 'seo'/></a></li>
 						<li><a href="cmsCategory/add.html?copyId=${category.id}" target="navTab" rel="cmsCategory/add" icon="<i class='icon-plus-sign-alt'></i>" title="<@t.page 'category.add'/>" data-diy="category" data-diy-id="${category.id}"><i class="icon-copy"></i><@t.page 'button.copy'/></a></li>
 					</#if>
+                    <li><a href="cmsCategory/list?categoryId=${category.id!}" target="navTab" rel="cmsCategory/list" data-diy="child-category"><@t.page 'category.child_management'/></a></li>
 					<#if authorizedMap['cmsCategory/addMore']>
-						<li><a href="cmsCategory/addMore.html?parentId=${category.id}" target="dialog" mask="true" data-diy="category"><i class="icon-plus"></i><@t.page 'category.add_child'/></a></li>
+						<li><a href="cmsCategory/addMore.html?parentId=${category.id}" target="dialog" mask="true" data-diy="child-category"><i class="icon-plus"></i><@t.page 'category.add_child'/></a></li>
 					</#if>
 					<#if authorizedMap['cmsCategory/publishParameters']&&site.useStatic&&!category.onlyUrl>
 						<li><a href="cmsCategory/publishParameters.html?id=${category.id}&pageSize=${category.pageSize}&containChild=${category.containChild?then('true','false')}" target="dialog" width="450" height="180" mask="true"  data-diy="category" data-diy-id="${category.id}"><i class="icon-file-text-alt icon-large"></i><@t.page 'button.publish'/></a></li>
