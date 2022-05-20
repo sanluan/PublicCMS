@@ -149,8 +149,18 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
      * @param showAll
      * @return config code or null
      */
+    @Override
     public String getCode(SysSite site, boolean showAll) {
         return CONFIG_CODE;
+    }
+
+    /**
+     * @param locale
+     * @return description
+     */
+    @Override
+    public String getCodeDescription(Locale locale) {
+        return getMessage(locale, CONFIG_CODE_DESCRIPTION);
     }
 
     @Override

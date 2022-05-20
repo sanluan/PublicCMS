@@ -168,11 +168,16 @@ window.addEventListener('message', function(event) {
             }
         } else if('leave' === op.diyevent ) {
             if(op.url == $('input[name=url]',navTab.getCurrentPanel()).val()) {
-                diytimer = setTimeout('diyHideMenu()',500);
+                diytimer = setTimeout('diyHideMenu()',50);
             }
         }
     }
 });
+function diyHideMenu(){
+    if(!$('.diy-menu',navTab.getCurrentPanel()).is(':hover')){
+        $('.diy-border',navTab.getCurrentPanel()).css("visibility", "hidden");
+    }
+}
 function diyShowMenu(itemType,itemId,x,y,width,height,noborder){
     var buttons;
     if(itemId ) {
@@ -212,11 +217,6 @@ function diyShowMenu(itemType,itemId,x,y,width,height,noborder){
       $('.diy-border',navTab.getCurrentPanel()).css("visibility", "visible");
     }
 }
-function diyHideMenu(){
-    if(!$('.diy-menu',navTab.getCurrentPanel()).is(':hover')){
-        $('.diy-border',navTab.getCurrentPanel()).css("visibility", "hidden");
-    }
-}
 DWZ.regPlugins.push(function($p){
     $('.diy-menu',$p).each(function (){
         $(this).hover(function(){
@@ -224,7 +224,7 @@ DWZ.regPlugins.push(function($p){
                 clearTimeout(diytimer);
             }
         },function(){
-            diyHideMenu();
+            $('.diy-border',navTab.getCurrentPanel()).css("visibility", "hidden");
         });
     });
 });
