@@ -193,19 +193,24 @@ function moveMenu(x,y,width,height){
     if ( 0 > y && boxHeight - menuHeight < y + height ) {
         boxHeight -= menuHeight;
     }
-    $('.diy-border-top',navTab.getCurrentPanel()).css({
-        top:0 > y ? 0 : y,left:0 > x ? 0 : x,width:width
+    var bottom = boxHeight < (y + height ) ? boxHeight : (y + height );
+    var right = boxWidth < (x + width ) ? boxWidth : (x + width );
+    var height = 0 > y ? (boxHeight  < y + height) ? boxHeight  : (y + height ) : height;
+    var width = 0 > x ? (width + x ) : width; 
+
+    $('.diy-border-top',navTab.getCurrentPanel() ).css({
+        top: 0 > y ? 0 : y, left: 0 > x ? 0 : x, width: width
     });
-    $('.diy-border-bottom',navTab.getCurrentPanel()).css({
-        top: boxHeight < (y + height) ? (boxHeight - 1) : (y + height - 1),left:x,width:width
+    $('.diy-border-bottom', navTab.getCurrentPanel() ).css({
+        top: bottom - 1 , left: x, width: width
     });
-    $('.diy-border-left',navTab.getCurrentPanel()).css({
-        top:0 > y ? 0 : y,left:0 > x ? 0 : x,height:height
+    $('.diy-border-left', navTab.getCurrentPanel() ).css({
+        top: 0 > y ? 0 : y, left: 0 > x ? 0 : x, height: height
     });
-    $('.diy-border-right',navTab.getCurrentPanel()).css({
-        top:0 > y ? 0 : y,left:boxWidth < (x+width) ? (boxWidth - 1) : (x + width - 1),height:height
+    $('.diy-border-right', navTab.getCurrentPanel() ).css({
+        top: 0 > y ? 0 : y, left: right - 1, height: height
     });
-    if(menuHeight > y){
+    if(0 > y ) {
         $('.diy-menu',navTab.getCurrentPanel()).appendTo($('.diy-border-bottom',navTab.getCurrentPanel()));
     } else {
         $('.diy-menu',navTab.getCurrentPanel()).appendTo($('.diy-border-top',navTab.getCurrentPanel()));
