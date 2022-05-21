@@ -186,7 +186,7 @@ public class CmsContentAdminController {
                     .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                             "save.content", RequestUtils.getIpAddress(request), now, JsonUtils.getString(entity)));
         }
-        entity = service.saveTagAndAttribute(site.getId(), admin.getId(), entity, contentParameters, cmsModel,
+        entity = service.saveTagAndAttribute(site.getId(), admin.getId(), entity.getId(), contentParameters, cmsModel,
                 category.getExtendId(), attribute);
         if (null != checked && checked) {
             entity = service.check(site.getId(), admin, entity.getId());

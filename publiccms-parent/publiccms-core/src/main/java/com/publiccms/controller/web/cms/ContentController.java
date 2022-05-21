@@ -133,8 +133,8 @@ public class ContentController {
             logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
                     "save.content", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
-        service.saveTagAndAttribute(site.getId(), user.getId(), entity, contentParameters, cmsModel, category.getExtendId(),
-                attribute);
+        service.saveTagAndAttribute(site.getId(), user.getId(), entity.getId(), contentParameters, cmsModel,
+                category.getExtendId(), attribute);
         return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
     }
 

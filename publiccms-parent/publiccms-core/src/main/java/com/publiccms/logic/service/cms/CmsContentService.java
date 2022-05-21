@@ -197,8 +197,9 @@ public class CmsContentService extends BaseService<CmsContent> {
         return dao.getListByQuoteId(siteId, quoteId);
     }
 
-    public CmsContent saveTagAndAttribute(short siteId, Long userId, CmsContent entity, CmsContentParameters contentParameters,
+    public CmsContent saveTagAndAttribute(short siteId, Long userId, Long id, CmsContentParameters contentParameters,
             CmsModel cmsModel, Integer extendId, CmsContentAttribute attribute) {
+        CmsContent entity = getEntity(id);
         if (null != entity) {
             Long[] tagIds = tagService.update(siteId, contentParameters.getTags());
             entity.setTagIds(arrayToDelimitedString(tagIds, CommonConstants.BLANK_SPACE));
