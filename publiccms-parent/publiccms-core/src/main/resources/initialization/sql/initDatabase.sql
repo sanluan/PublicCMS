@@ -224,7 +224,7 @@ CREATE TABLE `cms_place` (
   KEY `cms_place_item_type` (`item_type`,`item_id`),
   KEY `cms_place_user_id` (`user_id`,`check_user_id`),
   KEY `cms_place_publish_date` (`publish_date`,`create_date`,`expiry_date`)
-) COMMENT='页面数据';
+) COMMENT='推荐位数据';
 
 -- ----------------------------
 -- Table structure for cms_place_attribute
