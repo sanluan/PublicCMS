@@ -147,7 +147,6 @@ public abstract class AbstractCmsUpgrader {
                     entity.setName(rs.getString("name"));
                     entity.setSort(rs.getInt("sort"));
                     entity.setOnlyUrl(false);
-                    entity.setTemplatePath((String) rs.getString("template_path"));
                     if (null != rs.getString("extend_id")) {
                         List<SysExtendField> extendList = new ArrayList<>();
                         try (Statement extendFieldStatement = connection.createStatement();
