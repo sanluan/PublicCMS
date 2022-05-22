@@ -29,16 +29,16 @@ import com.publiccms.logic.service.cms.CmsDictionaryExcludeService;
  * </ul>
  * 使用示例
  * <p>
- * &lt;@_dictionaryExclude dictionaryId='data'
- * excludeDictionaryId='data1'&gt;${object.id.excludeDictionaryId}&lt;/@_dictionaryExclude&gt;
+ * &lt;@cms.dictionaryExclude dictionaryId='data'
+ * excludeDictionaryId='data1'&gt;${object.id.excludeDictionaryId}&lt;/@cms.dictionaryExclude&gt;
  * <p>
- * &lt;@_dictionaryExclude dictionaryId='data'
+ * &lt;@cms.dictionaryExclude dictionaryId='data'
  * excludeDictionaryIds='data1,data2'&gt;&lt;#list map as
- * k,v&gt;${v.id.excludeDictionaryId}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@_dictionaryExclude&gt;
+ * k,v&gt;${v.id.excludeDictionaryId}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.dictionaryExclude&gt;
  * 
  * <pre>
 *  &lt;script&gt;
-   $.getJSON('//cms.publiccms.com/api/directive/dictionaryExclude?dictionaryId=data&amp;value=1', function(data){    
+   $.getJSON('//cms.publiccms.com/api/directive/cms/dictionaryExclude?dictionaryId=data&amp;value=1', function(data){    
      console.log(data.id.excludeDictionaryId);
    });
    &lt;/script&gt;

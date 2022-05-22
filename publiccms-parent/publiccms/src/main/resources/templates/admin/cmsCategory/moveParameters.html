@@ -1,12 +1,12 @@
 <#if parentId?has_content>
 <ul>
-    <@_categoryList advanced=true parentId=parentId pageSize=500>
+    <@cms.categoryList advanced=true parentId=parentId pageSize=500>
         <#list page.list as a>
             <li<#if a.childIds?has_content> _src="cmsCategory/moveParameters.html?parentId=${a.id}"</#if>>
                 <a href="javascript:;" class="exclude-translate" onclick="$('input[name=parentId]',$.pdialog.getCurrent()).val('${a.id}');$('form',$.pdialog.getCurrent()).submit();">${a.name!}</a>
             </li>
         </#list>
-    </@_categoryList>
+    </@cms.categoryList>
 </ul>
 <#else>
 <script>
@@ -23,13 +23,13 @@ if(0==$('.idsToMove input',$.pdialog.getCurrent()).length){
 <div class="pageFormContent" layoutH>
     <form action="cmsCategory/move?callbackType=closeCurrent&navTabId=cmsCategory/list&rel=page" method="post" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
         <input type="hidden" name="parentId" value=""/>
-        <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+        <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
         <div class="idsToMove"></div>
         <ul class="tree treeFolder expand">
             <li>
                 <a href="javascript:;" onclick="return false;"><@t.page 'category.parent.select'/></a>
                 <ul>
-                    <@_categoryList advanced=true pageSize=500>
+                    <@cms.categoryList advanced=true pageSize=500>
                         <#list page.list as a>
                             <li<#if a.childIds?has_content> _src="cmsCategory/moveParameters.html?parentId=${a.id}"</#if>>
                                 <a href="javascript:;" class="exclude-translate" onclick="$('input[name=parentId]',$.pdialog.getCurrent()).val('${a.id}');$('form',$.pdialog.getCurrent()).submit();">${a.name!}</a>
@@ -37,7 +37,7 @@ if(0==$('.idsToMove input',$.pdialog.getCurrent()).length){
                         <#else>
                             <li><a><@t.page 'empty_directory'/></a></li>
                         </#list>
-                    </@_categoryList>
+                    </@cms.categoryList>
                 </ul>
             </li>
         </ul>

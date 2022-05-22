@@ -4,13 +4,13 @@
         <li>
         <#if site.useStatic>
             <a href="javascript:;" onclick="$.bringBack({path:'<#noparse>category/${category.code}.html</#noparse>'});return false;"><@t.page 'static_path'/>:category/{<@t.page 'category.code'/>}.html</a>
-            <a href="javascript:;" onclick="$.bringBack({path:'<#noparse><@_category id=category.parentId>${object.code}/</@_category>${category.code}/</#noparse>'});return false;"><@t.page 'static_path'/>:{<@t.page 'category.parent'/>}/{<@t.page 'category.code'/>}/</a>
+            <a href="javascript:;" onclick="$.bringBack({path:'<#noparse><@cms.category id=category.parentId>${object.code}/</@cms.category>${category.code}/</#noparse>'});return false;"><@t.page 'static_path'/>:{<@t.page 'category.parent'/>}/{<@t.page 'category.code'/>}/</a>
             <a href="javascript:;" onclick="$.bringBack({path:'<#noparse>${category.code}/</#noparse>'});return false;"><@t.page 'static_path'/>:{<@t.page 'category.code'/>}/</a>
             <a href="javascript:;" onclick="$.bringBack({path:'<#noparse>category/${category.id}.html</#noparse>'});return false;"><@t.page 'static_path'/>:category/{<@t.page 'category.id'/>}.html</a>
         </#if>
             <a href="javascript:;" onclick="$.bringBack({path:'<#noparse>category.html?id=${category.id}</#noparse>',templatePath:''});return false;"><@t.page 'dynamic_path'/>:<@t.page 'template_path'/>?id={<@t.page 'category.id'/>}</a>
-            <a href="javascript:;" onclick="$.bringBack({path:'<#noparse><@_categoryList parentId=category.id pageSize=1><#list page.list as a>${a.url}</#list></@_categoryList></#noparse>',templatePath:''});return false;"><@t.page 'dynamic_path'/>:<@t.page 'category.first_child'/></a>
-            <a href="javascript:;" onclick="$.bringBack({path:'<#noparse><@_contentList categoryId=category.id pageSize=1><#list page.list as a>${a.url}</#list></@_contentList></#noparse>',templatePath:''});return false;"><@t.page 'dynamic_path'/>:<@t.page 'category.first_content'/></a>
+            <a href="javascript:;" onclick="$.bringBack({path:'<#noparse><@cms.categoryList parentId=category.id pageSize=1><#list page.list as a>${a.url}</#list></@cms.categoryList></#noparse>',templatePath:''});return false;"><@t.page 'dynamic_path'/>:<@t.page 'category.first_child'/></a>
+            <a href="javascript:;" onclick="$.bringBack({path:'<#noparse><@cms.contentList categoryId=category.id pageSize=1><#list page.list as a>${a.url}</#list></@cms.contentList></#noparse>',templatePath:''});return false;"><@t.page 'dynamic_path'/>:<@t.page 'category.first_content'/></a>
             <a href="javascript:;" onclick="$.bringBack({path:'<#noparse>category/${category.id}</#noparse>',templatePath:''});return false;"><@t.page 'dynamic_path'/>:<@t.page 'template.name'/>/{<@t.page 'category.id'/>}</a>
         </li>
     </ul>

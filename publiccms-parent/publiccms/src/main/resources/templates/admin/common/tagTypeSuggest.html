@@ -1,10 +1,10 @@
 <#ftl auto_esc=false/>
 <#escape x as x?json_string>
 [
-<@_tagTypeList name=name pageSize=10>
+<@cms.tagTypeList name=name pageSize=10>
     <#list page.list as a>
         {"id":"${a.id}","name":"${a.name}"}<#sep>,
     </#list>
-</@_tagTypeList>
+</@cms.tagTypeList>
 ]
 </#escape>

@@ -14,28 +14,28 @@
 <#else>
 <form action="cmsContent/distribute?callbackType=closeCurrent" method="post" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
     <input type="hidden" name="id" value="${id!}"/>
-    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <div class="pageFormContent" layoutH>
         <ul class="tree treeFolder treeCheck excludeParent">
             <#if site.parentId?has_content>
                 <li _src="cmsCategory/lookupBySiteId?siteId=${site.parentId}&currentCategoryId=${currentCategoryId!}&field=${field!'categoryId'}">
-                    <a href="javascript:;" class="exclude-translate"><@_sysSite id=site.parentId>${object.name!}</@_sysSite></a>
+                    <a href="javascript:;" class="exclude-translate"><@sys.site id=site.parentId>${object.name!}</@sys.site></a>
                 </li>
-                <@_sysSiteList parentId=site.parentId pageSize=500>
+                <@sys.siteList parentId=site.parentId pageSize=500>
                     <#list page.list as a>
                         <li _src="cmsCategory/lookupBySiteId?siteId=${a.id}&currentCategoryId=${currentCategoryId!}&field=${field!'categoryId'}">
                             <a href="javascript:;" class="exclude-translate">${a.name!}<#if site.id=a.id>[<@t.page 'site.current_site'/>]</#if></a>
                         </li>
                     </#list>
-                </@_sysSiteList>
+                </@sys.siteList>
             <#else>
-                <@_sysSiteList pageSize=500>
+                <@sys.siteList pageSize=500>
                     <#list page.list as a>
                         <li _src="cmsCategory/lookupBySiteId?siteId=${a.id}&currentCategoryId=${currentCategoryId!}&field=${field!'categoryId'}">
                             <a href="javascript:;" class="exclude-translate">${a.name!}<#if site.id=a.id>[<@t.page 'site.current_site'/>]</#if></a>
                         </li>
                     </#list>
-                </@_sysSiteList>
+                </@sys.siteList>
             </#if>
         </ul>
     </div>

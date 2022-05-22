@@ -36,14 +36,14 @@ import com.publiccms.logic.service.cms.CmsPlaceService;
  * </ul>
  * 使用示例
  * <p>
- * &lt;@_place id=1&gt;${object.title}&lt;/@_place&gt;
+ * &lt;@cms.place id=1&gt;${object.title}&lt;/@cms.place&gt;
  * <p>
- * &lt;@_place ids='1,2,3'&gt;&lt;#list map as
- * k,v&gt;${v.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@_place&gt;
+ * &lt;@cms.place ids='1,2,3'&gt;&lt;#list map as
+ * k,v&gt;${v.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.place&gt;
  * 
  * <pre>
  &lt;script&gt;
-  $.getJSON('//cms.publiccms.com/api/directive/place?id=1&amp;appToken=接口访问授权Token', function(data){    
+  $.getJSON('//cms.publiccms.com/api/directive/cms/place?id=1&amp;appToken=接口访问授权Token', function(data){    
     console.log(data.title);
   });
   &lt;/script&gt;

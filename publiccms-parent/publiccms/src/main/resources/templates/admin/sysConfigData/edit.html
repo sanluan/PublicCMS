@@ -1,16 +1,16 @@
-<@_sysConfig code=code><#assign a=object/></@_sysConfig>
-<@_sysConfigData code=code><#assign attribute=object/></@_sysConfigData>
-<@_sysAuthorized roleIds=admin.roles urls='sysConfigData/delete,sysConfigData/save,sysConfig/add'><#assign authorizedMap=map/></@_sysAuthorized>
+<@sys.config code=code><#assign a=object/></@sys.config>
+<@sys.configData code=code><#assign attribute=object/></@sys.configData>
+<@sys.authorized roleIds=admin.roles urls='sysConfigData/delete,sysConfigData/save,sysConfig/add'><#assign authorizedMap=map/></@sys.authorized>
 <form method="post" autocomplete="off" action="sysConfigData/save?callbackType=closeCurrent&navTabId=sysConfigData/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input name="id.code" type="hidden" value="${code!}" />
-    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
         <#if authorizedMap['sysConfig/add']>
             <li><a class="button" href="sysConfig/add.html?code=${code}" target="navTab" rel="sysConfig/edit"><i class="icon-edit icon-large"></i><@t.page 'config.edit'/></a></li>
         </#if>
         <#if authorizedMap['sysConfigData/delete']>
-            <li><a class="button" href="sysConfigData/delete?code=${code}&navTabId=sysConfigData/edit&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.clear_config'/>" target="ajaxTodo"><@t.page 'button.clear_config'/></a></li>
+            <li><a class="button" href="sysConfigData/delete?code=${code}&navTabId=sysConfigData/edit&_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.clear_config'/>" target="ajaxTodo"><@t.page 'button.clear_config'/></a></li>
         </#if>
         <#if authorizedMap['sysConfigData/save']>
             <li><button type="submit" class="buttonActive" title="ctrl+s" lock-url="common/lock?itemType=config&itemId=${code!}" close-url="common/unlock?itemType=config&itemId=${code!}"><@t.page 'button.save'/></button></li>
@@ -26,8 +26,8 @@
             </dd>
         </dl>
 <#include "../include_page/extendData.html"/>
-<@_sysConfigFieldList code=code>
+<@sys.configFieldList code=code>
     <@extendData name='extendDataList' extendList=list extendValues=(attribute!{}) htmlSafe=true/>
-</@_sysConfigFieldList>
+</@sys.configFieldList>
     </div>
 </form>

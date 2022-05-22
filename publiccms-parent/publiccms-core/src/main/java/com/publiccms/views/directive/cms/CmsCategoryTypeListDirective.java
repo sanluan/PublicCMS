@@ -26,12 +26,12 @@ import com.publiccms.logic.component.template.ModelComponent;
  * </ul>
  * 使用示例
  * <p>
- * &lt;@_categoryTypeList&gt;&lt;#list page.list as
- * a&gt;${a.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@_categoryTypeList&gt;
+ * &lt;@cms.categoryTypeList&gt;&lt;#list page.list as
+ * a&gt;${a.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.categoryTypeList&gt;
  * 
  * <pre>
   &lt;script&gt;
-   $.getJSON('//cms.publiccms.com/api/directive/categoryTypeList', function(data){    
+   $.getJSON('//cms.publiccms.com/api/directive/cms/categoryTypeList', function(data){    
      console.log(data.totalCount);
    });
    &lt;/script&gt;

@@ -1,4 +1,4 @@
-<@_categoryList advanced=true parentId=categoryId allowContribute=allowContribute pageIndex=pageNum pageSize=numPerPage>
+<@cms.categoryList advanced=true parentId=categoryId allowContribute=allowContribute pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
     <form autocomplete="off" class="pagerForm" action="common/category_list.html" onsubmit="return divSearch(this,'categoryBox');" method="post">
         <#include "../include_page/parameters.html"/>
@@ -23,7 +23,7 @@
         </div>
     </form>
 </div>
-<@_sysAuthorized roleIds=admin.roles urls='cmsCategory/add,cmsCategory/delete,cmsCategory/publish,cmsCategory/rebuildChildIds,cmsCategory/contributeForm,cmsCategory/static,cmsCategory/moveParameters,cmsCategory/changeTypeParameters,cmsCategory/publishParameters,cmsPlace/push'><#assign authorizedMap=map/></@_sysAuthorized>
+<@sys.authorized roleIds=admin.roles urls='cmsCategory/add,cmsCategory/delete,cmsCategory/publish,cmsCategory/rebuildChildIds,cmsCategory/contributeForm,cmsCategory/static,cmsCategory/moveParameters,cmsCategory/changeTypeParameters,cmsCategory/publishParameters,cmsPlace/push'><#assign authorizedMap=map/></@sys.authorized>
 <div class="pageContent">
     <div class="panelBar">
         <ul class="toolBar">
@@ -31,31 +31,31 @@
             <li>
                 <a href="cmsCategory/add.html?parentId=${categoryId!}" class="addMore" target="navTab" rel="cmsCategory/add"><i class="icon-plus icon-large"></i><@t.page 'category.add'/></a>
                 <ul>
-    <@_categoryTypeList pageSize=10>
+    <@cms.categoryTypeList pageSize=10>
         <#list page.list as a>
             <li><a href="cmsCategory/add.html?parentId=${categoryId!}&typeId=${a.id}" target="navTab" rel="cmsCategory/add"><i class="icon-plus icon-large"></i><@t.page 'button.add_some_things' a.name/></a></li>
         </#list>
         <#if page.totalCount gt 10>
             <li><a href="cmsCategory/addMore.html?parentId=${categoryId!}" target="dialog" mask="true"><i class="icon-plus icon-large"></i><@t.page 'category.add_more'/></a></li>
         </#if>
-    </@_categoryTypeList>
+    </@cms.categoryTypeList>
                 </ul>
             </li>
             <li class="line">line</li>
 </#if>
         <#if authorizedMap['cmsCategory/publish']>
-            <li><a href="cmsCategory/publish?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_publish'/>" target="selectedTodo" rel="ids"><i class="icon-file-text-alt icon-large"></i><@t.page 'button.batch_publish'/></a></li>
+            <li><a href="cmsCategory/publish?_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.batch_publish'/>" target="selectedTodo" rel="ids"><i class="icon-file-text-alt icon-large"></i><@t.page 'button.batch_publish'/></a></li>
         </#if>
         <#if authorizedMap['cmsCategory/moveParameters']>
             <li><a href="cmsCategory/moveParameters.html" target="dialog" mask="true"><i class="icon-move icon-large"></i><@t.page 'button.batch_move'/></a></li>
         </#if>
         <#if authorizedMap['cmsCategory/delete']>
             <li class="line">line</li>
-            <li><a href="cmsCategory/delete?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i><@t.page 'button.batch_delete'/></a></li>
+            <li><a href="cmsCategory/delete?_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i><@t.page 'button.batch_delete'/></a></li>
         </#if>
         <#if authorizedMap['cmsCategory/rebuildChildIds']>
             <li class="line">line</li>
-            <li><a href="cmsCategory/rebuildChildIds?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.do'/>" target="ajaxTodo"><i class="icon-refresh icon-large"></i><@t.page 'button.rebuild_childs'/></a></li>
+            <li><a href="cmsCategory/rebuildChildIds?_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.do'/>" target="ajaxTodo"><i class="icon-refresh icon-large"></i><@t.page 'button.rebuild_childs'/></a></li>
         </#if>
         </ul>
     </div>
@@ -81,15 +81,15 @@
                 <@t.merge 'typeIds' a.typeId!/>
                 <@t.merge 'ids' a.id/>
             </#list>
-            <@_sysLock userId=admin.id itemType='category' itemIds=t.ids><#assign lockMap=map!/></@_sysLock>
+            <@sys.lock userId=admin.id itemType='category' itemIds=t.ids><#assign lockMap=map!/></@sys.lock>
             <#if lockMap?has_content>
                 <#list lockMap as k,lock>
                     <#if lock.userId?has_content><@t.merge 'userIds' lock.userId/></#if>
                 </#list>
             </#if>
-            <@_sysUser ids=t.userIds><#assign userMap=map!/></@_sysUser>
-            <@_category ids=t.parentIds!><#assign parentMap=map!/></@_category>
-            <@_categoryType ids=t.typeIds!><#assign typeMap=map!/></@_categoryType>
+            <@sys.user ids=t.userIds><#assign userMap=map!/></@sys.user>
+            <@cms.category ids=t.parentIds!><#assign parentMap=map!/></@cms.category>
+            <@cms.categoryType ids=t.typeIds!><#assign typeMap=map!/></@cms.categoryType>
             <#list page.list as a>
             <tr>
                 <td><input name="ids" value="${a.id}" type="checkbox"></td>
@@ -135,4 +135,4 @@
     <#assign rel='categoryBox'/>
     <#include "../include_page/page.html"/>
 </div>
-</@_categoryList>
+</@cms.categoryList>

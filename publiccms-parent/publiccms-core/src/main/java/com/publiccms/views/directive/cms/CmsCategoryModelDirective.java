@@ -33,15 +33,15 @@ import com.publiccms.logic.service.cms.CmsCategoryModelService;
  * </ul>
  * 使用示例
  * <p>
- * &lt;@_categoryModel categoryId=1
- * modelId='article'&gt;${object.templatePath}&lt;/@_categoryModel&gt;
+ * &lt;@cms.categoryModel categoryId=1
+ * modelId='article'&gt;${object.templatePath}&lt;/@cms.categoryModel&gt;
  * <p>
- * &lt;@_categoryModel categoryIds=1,2,3 modelId='article'&gt;&lt;#list map as
- * k,v&gt;${v.templatePath}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@_categoryModel&gt;
+ * &lt;@cms.categoryModel categoryIds=1,2,3 modelId='article'&gt;&lt;#list map as
+ * k,v&gt;${v.templatePath}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.categoryModel&gt;
  * 
  * <pre>
   &lt;script&gt;
-   $.getJSON('//cms.publiccms.com/api/directive/categoryModel?categoryId=1&amp;modelId=article', function(data){    
+   $.getJSON('//cms.publiccms.com/api/directive/cms/categoryModel?categoryId=1&amp;modelId=article', function(data){    
      console.log(data.templatePath);
    });
    &lt;/script&gt;

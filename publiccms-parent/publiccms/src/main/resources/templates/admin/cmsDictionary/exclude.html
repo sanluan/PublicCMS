@@ -1,7 +1,7 @@
-<@_dictionary id=id>
+<@cms.dictionary id=id>
     <#assign a=object/>
 <form method="post" autocomplete="off" action="cmsDictionaryExclude/save?callbackType=closeCurrent&navTabId=cmsDictionary/excludeTree" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
-    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
             <li><button type="submit" class="buttonActive" title="ctrl+s"><@t.page 'button.save'/></button></li>
@@ -27,12 +27,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                    <@_dictionaryExcludeList dictionaryId=a.id.id>
+                    <@cms.dictionaryExcludeList dictionaryId=a.id.id>
                         <#list list as d>
                             <tr>
                                 <td>
-                                    <@_dictionary id=d.id.excludeDictionaryId><#assign dictionary=object/></@_dictionary>
-                                    <#if site.parentId?has_content&&!dictionary?has_content><@_dictionary id=d.id.excludeDictionaryId siteId=site.parentId><#assign dictionary=object/></@_dictionary></#if>
+                                    <@cms.dictionary id=d.id.excludeDictionaryId><#assign dictionary=object/></@cms.dictionary>
+                                    <#if site.parentId?has_content&&!dictionary?has_content><@cms.dictionary id=d.id.excludeDictionaryId siteId=site.parentId><#assign dictionary=object/></@cms.dictionary></#if>
                                     <input type="hidden" name="excludeList[${d?index}].id.excludeDictionaryId" value="${(d.id.excludeDictionaryId)!}"/>
                                     <input type="text" name="excludeList[${d?index}].id.dictionaryName" readonly="readonly" size="10" value="${(dictionary.name)!}"/>
                                     <a class="btnLook" href="cmsDictionary/lookup.html?field=excludeDictionaryId" lookupGroup="excludeList[${d?index}].id" width="1000" height="500"><@t.page 'dictionary.select'/></a>
@@ -42,11 +42,11 @@
                                 </td>
                             </tr>
                         </#list>
-                    </@_dictionaryExcludeList>
+                    </@cms.dictionaryExcludeList>
                     </tbody>
                 </table>
             </fieldset>
         </div>
     </div>
 </form>
-</@_dictionary>
+</@cms.dictionary>

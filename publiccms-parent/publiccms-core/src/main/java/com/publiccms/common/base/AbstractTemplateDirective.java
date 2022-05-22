@@ -114,13 +114,6 @@ public abstract class AbstractTemplateDirective extends BaseTemplateDirective {
     }
 
     /**
-     * @return whether to enable http
-     */
-    public boolean httpEnabled() {
-        return true;
-    }
-
-    /**
      * @return whether need the app token
      */
     public boolean needAppToken() {

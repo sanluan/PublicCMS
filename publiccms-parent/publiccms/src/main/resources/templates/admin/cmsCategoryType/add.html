@@ -1,16 +1,16 @@
-<@_categoryType id=id><#assign a=object/></@_categoryType>
+<@cms.categoryType id=id><#assign a=object/></@cms.categoryType>
 <div class="pageContent">
     <form method="post" autocomplete="off" action="cmsCategoryType/save?callbackType=closeCurrent&navTabId=cmsCategoryType/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
         <input name="categoryTypeId" type="hidden" value="${id!}" />
-        <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+        <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
         <div class="formBar">
             <ul>
                <#if site.parentId?has_content>
                 <li><button type="button" class="buttonDisabled"><@t.page 'site.parent_maintain'/></button></li>
             <#else>
-            <@_sysAuthorized roleIds=admin.roles url='cmsCategoryType/save'>
+            <@sys.authorized roleIds=admin.roles url='cmsCategoryType/save'>
                 <li><button type="submit" class="buttonActive" title="ctrl+s"><@t.page 'button.save'/></button></li>
-            </@_sysAuthorized>
+            </@sys.authorized>
             </#if>
                 <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
             </ul>

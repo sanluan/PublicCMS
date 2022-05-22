@@ -4,33 +4,33 @@
             <li>
                 <a href="javascript:;" onclick="return false;"><@t.page 'region'/></a>
                 <ul>
-            <@_diyMetadataList itemType="region">
+            <@tools.diyMetadataList itemType="region">
                 <#list list as a>
                     <li><a href="cmsDiy/region.html?id=${(a.id?url)!}" target="ajax" rel="diyBox">${a.name!}</a></li>
                 </#list>
-            </@_diyMetadataList>
+            </@tools.diyMetadataList>
                 </ul>
             </li>
             <li><a href="cmsDiy/region.html" target="ajax" rel="diyBox"><@t.page 'button.add'/></a></li>
             <li>
                 <a href="javascript:;" onclick="return false;"><@t.page 'layout'/></a>
                 <ul>
-            <@_diyMetadataList itemType="layout">
+            <@tools.diyMetadataList itemType="layout">
                 <#list list as a>
                     <li><a href="cmsDiy/layout.html?id=${(a.id?url)!}" target="ajax" rel="diyBox">${a.name!} (${a.count})</a></li>
                 </#list>
-            </@_diyMetadataList>
+            </@tools.diyMetadataList>
                 </ul>
             </li>
             <li><a href="cmsDiy/layout.html" target="ajax" rel="diyBox"><@t.page 'button.add'/></a></li>
             <li>
                 <a href="javascript:;" onclick="return false;"><@t.page 'module'/></a>
                 <ul>
-            <@_diyMetadataList itemType="module">
+            <@tools.diyMetadataList itemType="module">
                 <#list list as a>
                     <li><a href="cmsDiy/module.html?id=${(a.id?url)!}" target="ajax" rel="diyBox">${a.name!}</a></li>
                 </#list>
-            </@_diyMetadataList>
+            </@tools.diyMetadataList>
                 </ul>
             </li>
             <li><a href="cmsDiy/module.html" target="ajax" rel="diyBox"><@t.page 'button.add'/></a></li>

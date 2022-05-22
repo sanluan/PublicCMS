@@ -42,12 +42,12 @@ import com.publiccms.logic.service.cms.CmsContentProductService;
 * </ul>
 * 使用示例
 * <p>
-* &lt;@_contentProductList contentId=1 pageSize=10&gt;&lt;#list page.list as
-* a&gt;${a.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@_contentProductList&gt;
+* &lt;@cms.contentProductList contentId=1 pageSize=10&gt;&lt;#list page.list as
+* a&gt;${a.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.contentProductList&gt;
 * 
 * <pre>
  &lt;script&gt;
-  $.getJSON('//cms.publiccms.com/api/directive/contentProductList?contentId=1&amp;pageSize=10', function(data){    
+  $.getJSON('//cms.publiccms.com/api/directive/cms/contentProductList?contentId=1&amp;pageSize=10', function(data){    
     console.log(data.totalCount);
   });
   &lt;/script&gt;

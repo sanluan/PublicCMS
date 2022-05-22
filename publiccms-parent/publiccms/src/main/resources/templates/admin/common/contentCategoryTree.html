@@ -1,9 +1,9 @@
-<@_categoryList advanced=true parentId=parentId pageSize=500>
+<@cms.categoryList advanced=true parentId=parentId pageSize=500>
 <ul>
     <#list page.list as a>
         <@t.merge 'categoryIds' a.id!/>
     </#list>
-    <@_sysDeptCategory deptId=(admin.deptId)!'' categoryIds=t.categoryIds!><#assign deptCategoryMap=map!/></@_sysDeptCategory>
+    <@sys.deptCategory deptId=(admin.deptId)!'' categoryIds=t.categoryIds!><#assign deptCategoryMap=map!/></@sys.deptCategory>
     <#list page.list as a>
         <#if (deptCategoryMap[a.id?string])?has_content&&deptCategoryMap[a.id?string]>
             <li<#if a.childIds?has_content> _src="common/contentCategoryTree.html?parentId=${a.id}"</#if>>
@@ -14,4 +14,4 @@
         <li><a><@t.page 'empty_directory'/></a></li>
     </#list>
 </ul>
-</@_categoryList>
+</@cms.categoryList>

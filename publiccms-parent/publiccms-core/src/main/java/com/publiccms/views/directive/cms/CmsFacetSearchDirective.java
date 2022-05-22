@@ -62,16 +62,16 @@ import com.publiccms.views.pojo.entities.ClickStatistics;
  * 使用示例
  * 
  * <pre>
-  &lt;@_facetSearch word='cms' pageSize=10&gt; 
-  &lt;p&gt; category: &lt;#list page.facetMap.categoryId as k,v&gt;&lt;@_category id=k&gt;${object.name}&lt;/@_category&gt;(${v})&lt;/#list&gt;&lt;/p&gt;
-  &lt;p&gt; model: &lt;#list page.facetMap.modelId as k,v&gt;&lt;@_model id=k&gt;${object.name}&lt;/@_model&gt;(${v})&lt;/#list&gt;&lt;/p&gt;
+  &lt;@cms.facetSearch word='cms' pageSize=10&gt; 
+  &lt;p&gt; category: &lt;#list page.facetMap.categoryId as k,v&gt;&lt;@cms.category id=k&gt;${object.name}&lt;/@cms.category&gt;(${v})&lt;/#list&gt;&lt;/p&gt;
+  &lt;p&gt; model: &lt;#list page.facetMap.modelId as k,v&gt;&lt;@cms.model id=k&gt;${object.name}&lt;/@cms.model&gt;(${v})&lt;/#list&gt;&lt;/p&gt;
   &lt;#list page.list as a&gt;&lt;p&gt;${a.title}&lt;/p&gt;&lt;/#list&gt;
-  &lt;/@_facetSearch&gt;
+  &lt;/@cms.facetSearch&gt;
  * </pre>
  * 
  * <pre>
   &lt;script&gt;
-   $.getJSON('//cms.publiccms.com/api/directive/facetSearch?word=cms&amp;pageSize=10', function(data){    
+   $.getJSON('//cms.publiccms.com/api/directive/cms/facetSearch?word=cms&amp;pageSize=10', function(data){    
      console.log(data.totalCount);
    });
    &lt;/script&gt;

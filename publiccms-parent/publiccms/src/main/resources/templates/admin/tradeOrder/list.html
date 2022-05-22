@@ -1,6 +1,6 @@
-<@_tradeOrderList userId=userId paymentId=paymentId processed=processed status=status startCreateDate=startCreateDate endCreateDate=endCreateDate 
+<@trade.orderList userId=userId paymentId=paymentId processed=processed status=status startCreateDate=startCreateDate endCreateDate=endCreateDate 
             orderType=orderType pageIndex=pageNum pageSize=numPerPage>
-<@_sysAuthorized roleIds=admin.roles urls='tradeOrder/confirm,tradeOrder/invalid,tradeOrder/process,tradeOrder/close,tradeOrder/export,tradeOrderHistory/list'><#assign authorizedMap=map/></@_sysAuthorized>
+<@sys.authorized roleIds=admin.roles urls='tradeOrder/confirm,tradeOrder/invalid,tradeOrder/process,tradeOrder/close,tradeOrder/export,tradeOrderHistory/list'><#assign authorizedMap=map/></@sys.authorized>
 <div class="pageHeader">
     <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
@@ -45,7 +45,7 @@
                     </li>
                 <#if authorizedMap['tradeOrder/export']>
                     <li>
-                        <a class="button" href="tradeOrder/export?_csrf=<@_csrfToken admin=true/>" target="dwzExport" targetType="navTab"><i class="icon-download-alt icon-large"></i><@t.page 'button.export'/></a>
+                        <a class="button" href="tradeOrder/export?_csrf=<@tools.csrfToken admin=true/>" target="dwzExport" targetType="navTab"><i class="icon-download-alt icon-large"></i><@t.page 'button.export'/></a>
                     </li>
                 </#if>
                 </ul>
@@ -75,7 +75,7 @@
                 <@t.merge 'userIds' a.userId!/>
                 <@t.merge 'userIds' a.processUserId!/>
             </#list>
-            <@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
+            <@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
             <#list page.list as a>
             <tr>
                 <td class="center"><input name="ids" value="${a.id}" type="checkbox"></td>
@@ -115,14 +115,14 @@
                     <a href="tradeOrder/confirmParameters.html?id=${a.id}" class="btnText green" target="dialog" mask="true"><@t.page 'order.confirm'/></a>
                     </#if>
                     <#if authorizedMap['tradeOrder/invalid']>
-                    <a href="tradeOrder/invalid?id=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText red" title="<@t.page 'confirm.invalid_order'/>" target="ajaxTodo"><@t.page 'order.invalid'/></a>
+                    <a href="tradeOrder/invalid?id=${a.id}&_csrf=<@tools.csrfToken admin=true/>" class="btnText red" title="<@t.page 'confirm.invalid_order'/>" target="ajaxTodo"><@t.page 'order.invalid'/></a>
                     </#if>
                 </#if>
                 <#if 2=a.status && a.confirmed && !a.processed && authorizedMap['tradeOrder/process']>
                     <a href="tradeOrder/processParameters.html?id=${a.id}" class="btnText green" target="dialog" mask="true"><@t.page 'order.process'/></a>
                 </#if>
                 <#if (0=a.status || 1=a.status || 3=a.status ) && authorizedMap['tradeOrder/close']>
-                    <a href="tradeOrder/close?id=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.close_order'/>" target="ajaxTodo"><@t.page 'button.close'/></a>
+                    <a href="tradeOrder/close?id=${a.id}&_csrf=<@tools.csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.close_order'/>" target="ajaxTodo"><@t.page 'button.close'/></a>
                 </#if>
                 <#if authorizedMap['tradeOrderHistory/list']>
                     <a href="tradeOrderHistory/list.html?orderId=${a.id}" class="btnText" target="navTab" rel="tradeOrderHistory/list"><@t.page 'order.history'/></a>
@@ -134,4 +134,4 @@
     </table>
     <#include "../include_page/page.html"/>
 </div>
-</@_tradeOrderList>
+</@trade.orderList>

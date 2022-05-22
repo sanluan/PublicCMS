@@ -44,12 +44,12 @@ import com.publiccms.common.handler.PageHandler;
  * </ul>
  * 使用示例
  * <p>
- * &lt;@_commentList contentId=1 pageSize=10&gt;&lt;#list page.list as
- * a&gt;${a.text}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@_commentList&gt;
+ * &lt;@cms.commentList contentId=1 pageSize=10&gt;&lt;#list page.list as
+ * a&gt;${a.text}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.commentList&gt;
  * 
  * <pre>
   &lt;script&gt;
-   $.getJSON('//cms.publiccms.com/api/directive/commentList?contentId=1&amp;pageSize=10&amp;appToken=接口访问授权Token', function(data){    
+   $.getJSON('//cms.publiccms.com/api/directive/cms/commentList?contentId=1&amp;pageSize=10&amp;appToken=接口访问授权Token', function(data){    
      console.log(data.totalCount);
    });
    &lt;/script&gt;

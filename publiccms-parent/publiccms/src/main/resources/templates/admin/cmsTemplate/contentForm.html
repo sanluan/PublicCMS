@@ -1,6 +1,6 @@
-<@_category id=categoryId!>
+<@cms.category id=categoryId!>
     <#assign category=object/>
-    <@_model id=modelId!>
+    <@cms.model id=modelId!>
         <#assign
             model=object
             fieldList=model.fieldList![]
@@ -10,7 +10,7 @@
     <#if category.allowContribute>
 <#noparse><#if user?has_content></#noparse>
 <form method="post" action="<#noparse>${site.dynamicPath}</#noparse>content/save">
-    <input type="hidden" name="_csrf" value="<#noparse><@_csrfToken/></#noparse>"/>
+    <input type="hidden" name="_csrf" value="<#noparse><@tools.csrfToken/></#noparse>"/>
     <input name="returnUrl" type="hidden" value="${site.dynamicPath}" />
     <input name="categoryId" type="hidden" value="${category.id!}"/>
     <input name="modelId" type="hidden" value="${model.id!}"/>
@@ -25,11 +25,11 @@
     <p><label>${(model.fieldTextMap['content'])!}:</label><textarea name="text" cols="80" rows="20"></textarea></p>
 </#if>
     <#include "../include_page/extendData.html"/>
-    <@_sysExtendFieldList extendId=category.extendId>
+    <@sys.extendFieldList extendId=category.extendId>
         <#assign extendList=list![]/>
         <#assign extendValue=attribute!{}/>
         <@extendData 'categoryExtendDataList' extendList extendValue 'customform'/>
-    </@_sysExtendFieldList>
+    </@sys.extendFieldList>
     <#assign extendList=model.extendList![]/>
     <#assign extendValue=attribute!{}/>
     <@extendData 'modelExtendDataList' extendList extendValue 'customform'/>
@@ -43,8 +43,8 @@ please <a href="${site.dynamicPath}login.html">login</a>
 <@t.message 'verify.custom.contribute'/>
     </#if>
 </#assign>
-    </@_model>
-</@_category>
+    </@cms.model>
+</@cms.category>
 <div class="pageFormContent" layoutH>
     <dl>
         <dt><@t.page 'category'/>:</dt>

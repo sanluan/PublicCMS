@@ -15,7 +15,7 @@
     </thead>
     <tbody>
 <#if contentId?has_content>
-    <@_contentFileList contentId=contentId fileTypes=fileTypes absoluteURL=false pageSize=500>
+    <@cms.contentFileList contentId=contentId fileTypes=fileTypes absoluteURL=false pageSize=500>
         <#list page.list as file>
             <tr>
                 <td>
@@ -43,7 +43,7 @@
                 </td>
             </tr>
         </#list>
-    </@_contentFileList>
+    </@cms.contentFileList>
 </#if>
     </tbody>
 </table>

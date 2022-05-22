@@ -1,4 +1,4 @@
-<@_logOperateList content=content operate=operate channel=channel ip=ip
+<@log.operateList content=content operate=operate channel=channel ip=ip
             userId=userId startCreateDate=startCreateDate endCreateDate=endCreateDate
             orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
@@ -61,7 +61,7 @@
             <#list page.list as a>
                 <@t.merge 'userIds' a.userId!/>
             </#list>
-            <@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
+            <@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
 
             <#list page.list as a>
             <tr>
@@ -89,4 +89,4 @@
     </table>
     <#include "../include_page/page.html"/>
 </div>
-</@_logOperateList>
+</@log.operateList>

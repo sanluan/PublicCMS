@@ -2,20 +2,20 @@
     <div layoutH class="leftPageContent">
         <ul class="tree treeFolder">
             <li>
-                <@_sysDept id=admin.deptId>
+                <@sys.dept id=admin.deptId>
                     <#assign  dept=object/>
-                </@_sysDept>
+                </@sys.dept>
                 <#if dept?has_content&&dept.ownsAllCategory>
                     <a href="common/content_list.html" target="ajax" rel="contentBox"><@t.page 'category'/></a>
                 <#else>
                     <a href="javascript:;" onclick="return false;"><@t.page 'category'/></a>
                 </#if>
                 <ul>
-                    <@_categoryList advanced=true pageSize=500>
+                    <@cms.categoryList advanced=true pageSize=500>
                         <#list page.list as a>
                             <@t.merge 'categoryIds' a.id!/>
                         </#list>
-                        <@_sysDeptCategory deptId=admin.deptId!'' categoryIds=t.categoryIds!><#assign deptCategoryMap=map!/></@_sysDeptCategory>
+                        <@sys.deptCategory deptId=admin.deptId!'' categoryIds=t.categoryIds!><#assign deptCategoryMap=map!/></@sys.deptCategory>
                         <#list page.list as a>
                             <#if (deptCategoryMap[a.id?string])?has_content&&deptCategoryMap[a.id?string]>
                                 <li<#if a.childIds?has_content> _src="common/contentCategoryTree.html?parentId=${a.id}"</#if>>
@@ -25,7 +25,7 @@
                         <#else>
                             <li><a><@t.page 'empty_directory'/></a></li>
                         </#list>
-                    </@_categoryList>
+                    </@cms.categoryList>
                 </ul>
             </li>
         </ul>

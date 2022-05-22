@@ -1,5 +1,5 @@
 <form action="file/doImport" method="post" autocomplete="off" enctype="multipart/form-data" class="pageForm required-validate" onsubmit="return iframeCallback(this, $.bringBack)">
-    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <input type="hidden" name="titleField" value="${titleField!'title'}"/>
     <input type="hidden" name="field" value="${field!'text'}"/>
     <div class="pageFormContent layoutBox" layoutH>

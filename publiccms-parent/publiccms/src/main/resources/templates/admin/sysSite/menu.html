@@ -25,7 +25,7 @@
             </li>
         </#if>
             <li>
-                <a href="sysSite/reCreateIndex?_csrf=<@_csrfToken admin=true/>" target="ajaxTodo" title="<@t.page 'confirm.recreate_index'/>"><i class="icon-refresh icon-large"></i><@t.menu 'site_recreate_index'/></a>
+                <a href="sysSite/reCreateIndex?_csrf=<@tools.csrfToken admin=true/>" target="ajaxTodo" title="<@t.page 'confirm.recreate_index'/>"><i class="icon-refresh icon-large"></i><@t.menu 'site_recreate_index'/></a>
             </li>
             <li>
                 <a href="sysSite/monitor.html" target="navTab" rel="sysSite/monitor" external="true"><i class="icon-suitcase icon-large"></i><@t.menu 'monitor'/></a>

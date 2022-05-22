@@ -1,9 +1,9 @@
-<@_contentList advanced=true status=status categoryId=categoryId containChild=containChild disabled=true
+<@cms.contentList advanced=true status=status categoryId=categoryId containChild=containChild disabled=true
             modelId=modelIds parentId=parentId title=title userId=userId
             startPublishDate=startPublishDate endPublishDate=endPublishDate
             orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <#macro modelList parentId=''>
-<@_modelList parentId=parentId>
+<@cms.modelList parentId=parentId>
     <#list page.list as a>
         <label style="width:auto">
             <input <@t.compare modelIds!'' a.id?string 'checked="checked"'/> name="modelIds" value="${a.id}" type="checkbox"/>
@@ -13,7 +13,7 @@
             <@modelList a.id/>
         </#if>
     </#list>
-</@_modelList>
+</@cms.modelList>
 </#macro>
 <div class="pageHeader">
     <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
@@ -51,16 +51,16 @@
         </div>
     </form>
 </div>
-<@_sysAuthorized roleIds=admin.roles urls='cmsContent/realDelete,cmsContent/recycle'><#assign authorizedMap=map/></@_sysAuthorized>
+<@sys.authorized roleIds=admin.roles urls='cmsContent/realDelete,cmsContent/recycle'><#assign authorizedMap=map/></@sys.authorized>
 <div class="pageContent">
     <div class="panelBar">
         <ul class="toolBar">
         <#if authorizedMap['cmsContent/recycle']>
-            <li><a href="cmsContent/recycle?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_recycle'/>" target="selectedTodo" rel="ids"><i class="icon-reply-all icon-large"></i><@t.page 'button.batch_recycle'/></a></li>
+            <li><a href="cmsContent/recycle?_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.batch_recycle'/>" target="selectedTodo" rel="ids"><i class="icon-reply-all icon-large"></i><@t.page 'button.batch_recycle'/></a></li>
         </#if>
         <#if authorizedMap['cmsContent/realDelete']>
             <li class="line">line</li>
-            <li><a href="cmsContent/realDelete?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i><@t.page 'button.batch_delete'/></a></li>
+            <li><a href="cmsContent/realDelete?_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i><@t.page 'button.batch_delete'/></a></li>
         </#if>
         </ul>
     </div>
@@ -89,10 +89,10 @@
                 <@t.merge 'modelIds' a.modelId!/>
             </#list>
 
-            <@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
-            <@_sysUser ids=t.checkUserIds!><#assign checkUserMap=map!/></@_sysUser>
-            <@_category ids=t.categoryIds!><#assign categoryMap=map!/></@_category>
-            <@_model ids=t.modelIds!><#assign modelMap=map!/></@_model>
+            <@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
+            <@sys.user ids=t.checkUserIds!><#assign checkUserMap=map!/></@sys.user>
+            <@cms.category ids=t.categoryIds!><#assign categoryMap=map!/></@cms.category>
+            <@cms.model ids=t.modelIds!><#assign modelMap=map!/></@cms.model>
 
             <#list page.list as a>
             <tr>
@@ -118,10 +118,10 @@
                 </td>
                 <td class="wrap">
                     <#if authorizedMap['cmsContent/recycle']>
-                        <a href="cmsContent/recycle?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText green" title="<@t.page 'confirm.recycle'/>" target="ajaxTodo"><@t.page 'button.recycle'/></a>
+                        <a href="cmsContent/recycle?ids=${a.id}&_csrf=<@tools.csrfToken admin=true/>" class="btnText green" title="<@t.page 'confirm.recycle'/>" target="ajaxTodo"><@t.page 'button.recycle'/></a>
                     </#if>
                     <#if authorizedMap['cmsContent/realDelete']>
-                        <a href="cmsContent/realDelete?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i><@t.page 'button.delete'/></a>
+                        <a href="cmsContent/realDelete?ids=${a.id}&_csrf=<@tools.csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i><@t.page 'button.delete'/></a>
                     </#if>
                 </td>
             </tr>
@@ -130,4 +130,4 @@
     </table>
     <#include "../include_page/page.html"/>
 </div>
-</@_contentList>
+</@cms.contentList>

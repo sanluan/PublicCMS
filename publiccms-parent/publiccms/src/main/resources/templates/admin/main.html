@@ -9,9 +9,9 @@
                         <i class="icon-book icon-large icon"></i>
                         <p><@t.page 'myself.my_pending_content'/></p>
                         <a href="myself/contentList.html?status=2" icon="<i class='icon-book icon-large'></i>" title="<@t.page 'my_content'/>" target="navTab" rel="myself/contentList">
-                            <@_contentList advanced=true status=2 userId=admin.id pageSize=0>
+                            <@cms.contentList advanced=true status=2 userId=admin.id pageSize=0>
                                 <h3>${page.totalCount}</h3>
-                            </@_contentList>
+                            </@cms.contentList>
                         </a>
                     </div>
                 </li>
@@ -20,9 +20,9 @@
                         <i class="icon-edit icon-large icon"></i>
                         <p><@t.page 'myself.my_draft'/></p>
                         <a href="myself/contentList.html?status=0" icon="<i class='icon-book icon-large'></i>" title="<@t.page 'my_content'/>" target="navTab" rel="myself/contentList">
-                            <@_contentList advanced=true status=0 userId=admin.id pageSize=0>
+                            <@cms.contentList advanced=true status=0 userId=admin.id pageSize=0>
                                 <h3>${page.totalCount}</h3>
-                            </@_contentList>
+                            </@cms.contentList>
                         </a>
                     </div>
                 </li>
@@ -40,7 +40,7 @@
                         <i class="icon-unlock-alt icon-large icon"></i>
                         <p><@t.page 'my_login_token'/></p>
                         <a href="myself/userTokenList.html" icon="<i class='icon-unlock-alt icon-large'></i>" title="<@t.page 'my_login_token'/>" target="navTab" rel="myself/userTokenList">
-                            <h3><@_sysUserTokenList userId=admin.id pageSize=0>${page.totalCount}</@_sysUserTokenList></h3>
+                            <h3><@sys.userTokenList userId=admin.id pageSize=0>${page.totalCount}</@sys.userTokenList></h3>
                         </a>
                     </div>
                 </li>
@@ -69,7 +69,7 @@
             </ul>
         </div>
     </fieldset>
-<@_sysAuthorized roleIds=admin.roles url='cmsComment/list'>
+<@sys.authorized roleIds=admin.roles url='cmsComment/list'>
     <fieldset>
         <legend><@t.page 'comment.management'/></legend>
         <div class="unit">
@@ -79,9 +79,9 @@
                         <i class="icon-comment icon-large icon"></i>
                         <p><@t.page 'comment.uncheck'/></p>
                         <a href="cmsComment/list.html?status=2" icon="<i class='icon-comment icon-large'></i>" title="<@t.page 'comment.management'/>" target="navTab" rel="cmsComment/list">
-                            <@_commentList advanced=true status=2 pageSize=0>
+                            <@cms.commentList advanced=true status=2 pageSize=0>
                                 <h3>${page.totalCount}</h3>
-                            </@_commentList>
+                            </@cms.commentList>
                         </a>
                     </div>
                 </li>
@@ -90,9 +90,9 @@
                         <i class="icon-comments icon-large icon"></i>
                         <p><@t.page 'content.comments'/></p>
                         <a href="cmsComment/list.html?status=1&status=2" icon="<i class='icon-comment icon-large'></i>" title="<@t.page 'comment.management'/>" target="navTab" rel="cmsComment/list">
-                            <@_commentList advanced=true status='1,2' pageSize=0>
+                            <@cms.commentList advanced=true status='1,2' pageSize=0>
                                 <h3>${page.totalCount}</h3>
-                            </@_commentList>
+                            </@cms.commentList>
                         </a>
                     </div>
                 </li>
@@ -126,14 +126,14 @@ echarts.init(document.getElementById('comment')).setOption({
     {
         name:'<@t.page 'operate'/>',
         type:'line',
-        data:[<#list 30..0 as a><@_logOperateList operate='save.cmsComment' startCreateDate=(.now?long-a*86400000)?number_to_date?string endCreateDate=(.now?long-(a-1)*86400000)?number_to_date?string>${page.totalCount}</@_logOperateList><#sep>,</#list>],
+        data:[<#list 30..0 as a><@log.operateList operate='save.cmsComment' startCreateDate=(.now?long-a*86400000)?number_to_date?string endCreateDate=(.now?long-(a-1)*86400000)?number_to_date?string>${page.totalCount}</@log.operateList><#sep>,</#list>],
         areaStyle: {}
     }]
 });
 </script>
    </fieldset>
-</@_sysAuthorized>
-<@_sysAuthorized roleIds=admin.roles url='report/user'>
+</@sys.authorized>
+<@sys.authorized roleIds=admin.roles url='report/user'>
     <fieldset>
         <legend><@t.page 'report.user'/></legend>
         <div class="unit">
@@ -144,9 +144,9 @@ echarts.init(document.getElementById('comment')).setOption({
                         <i class="icon-signal icon-large icon"></i>
                         <p><@t.page 'register'/></p>
                         <a href="report/user.html" icon="<i class='icon-male icon-large'></i>" title="<@t.page 'report.user'/>" target="navTab" rel="report/user">
-                            <@_sysUserList startRegisteredDate=.now?long?number_to_date?string>
+                            <@sys.userList startRegisteredDate=.now?long?number_to_date?string>
                                <h3>${page.totalCount}</h3>
-                            </@_sysUserList>
+                            </@sys.userList>
                         </a>
                     </div>
                 </li>
@@ -155,9 +155,9 @@ echarts.init(document.getElementById('comment')).setOption({
                         <i class="icon-ticket icon-large icon"></i>
                         <p><@t.page 'login'/></p>
                         <a href="report/user.html" icon="<i class='icon-male icon-large'></i>" title="<@t.page 'report.user'/>" target="navTab" rel="report/user">
-                            <@_logLoginList startCreateDate=.now?long?number_to_date?string>
+                            <@log.loginList startCreateDate=.now?long?number_to_date?string>
                                <h3>${page.totalCount}</h3>
-                            </@_logLoginList>
+                            </@log.loginList>
                         </a>
                     </div>
                 </li>
@@ -166,16 +166,16 @@ echarts.init(document.getElementById('comment')).setOption({
                         <i class="icon-list-alt icon-large icon"></i>
                         <p><@t.page 'operate'/></p>
                         <a href="report/user.html" icon="<i class='icon-male icon-large'></i>" title="<@t.page 'report.user'/>" target="navTab" rel="report/user">
-                            <@_logOperateList startCreateDate=.now?long?number_to_date?string>
+                            <@log.operateList startCreateDate=.now?long?number_to_date?string>
                                <h3>${page.totalCount}</h3>
-                            </@_logOperateList>
+                            </@log.operateList>
                         </a>
                     </div>
                 </li>
             </ul>
         </div>
 <script>
-<@_visitDayList startVisitDate=(.now?long-30*86400000)?number_to_date>
+<@visit.dayList startVisitDate=(.now?long-30*86400000)?number_to_date>
 echarts.init(document.getElementById('visit')).setOption({
     title: {
         text: '<@t.page 'visit'/>',
@@ -222,11 +222,11 @@ echarts.init(document.getElementById('visit')).setOption({
            areaStyle: {}
        }]
 });
-</@_visitDayList>
+</@visit.dayList>
 </script>
     </fieldset>
-</@_sysAuthorized>
-<@_version>
+</@sys.authorized>
+<@tools.version>
     <fieldset>
         <legend><@t.page 'system'/></legend>
         <div class="unit">
@@ -234,17 +234,17 @@ echarts.init(document.getElementById('visit')).setOption({
                 <label><@t.page 'publiccms'/>:</label>
                 <a href="//www.publiccms.com/" target="navTab" rel="publiccms.com" icon="<i class='icon-home icon-large'></i>" title="<@t.page 'publiccms_website'/>">${cms}.${revision}</a> <span class="new hide" style="color:green">[<@t.page 'version.new'/>]</span><span class="old hide" style="color:red">[<@t.page 'version.old'/>]</span>
             </p>
-    <@_systemProperties>
+    <@tools.systemProperties>
             <p>
                 <label><@t.page 'os.timezone'/>:</label>${.vars['user.timezone']!}
             </p>
-    </@_systemProperties>
-    <@_masterSite>
+    </@tools.systemProperties>
+    <@tools.masterSite>
             <p>
                 <label>${master?then(t.pageMessage('cluster.master'),t.pageMessage('cluster.normal'))}:</label>
                 <a href="sysCluster/list.html" icon="<i class='icon-code-fork icon-large'></i>" title="<@t.menu 'cluster'/>" target="navTab" rel="sysCluster/list">${cluster}</a>
             </p>
-        <@_disk>
+        <@tools.disk>
             <p>
                 <label><@t.page 'data.directory'/>:</label>
                 <a href="sysSite/monitor.html" icon="<i class='icon-suitcase icon-large'></i>" title="<@t.page 'system_monitor'/>" target="navTab" rel="sysSite/monitor" external="true">${(rootPath)!}</a>
@@ -252,22 +252,22 @@ echarts.init(document.getElementById('visit')).setOption({
             <p>
                 <label><@t.page 'disk_space'/>:</label><@t.fileSize totalSpace/>
             </p>
-        </@_disk>
-    </@_masterSite>
+        </@tools.disk>
+    </@tools.masterSite>
         </div>
-    <@_masterSite>
+    <@tools.masterSite>
         <div class="divider"></div>
         <div class="unit">
             <p>
                 <label><@t.page 'site.count'/>:</label>
-                <a href="sysSite/list.html" icon="<i class='icon-sitemap icon-large'></i>" title="<@t.menu 'site_list'/>" target="navTab" rel="sysSite/list"><@_sysSiteList pageSize=0>${page.totalCount}</@_sysSiteList></a>
+                <a href="sysSite/list.html" icon="<i class='icon-sitemap icon-large'></i>" title="<@t.menu 'site_list'/>" target="navTab" rel="sysSite/list"><@sys.siteList pageSize=0>${page.totalCount}</@sys.siteList></a>
             </p>
             <p>
                 <label><@t.page 'domain.count'/>:</label>
-                <a href="sysDomain/list.html" icon="<i class='icon-qrcode icon-large'></i>" title="<@t.menu 'site_domain_list'/>" target="navTab" rel="sysDomain/list"><@_sysDomainList advanced=true pageSize=0>${page.totalCount}</@_sysDomainList></a>
+                <a href="sysDomain/list.html" icon="<i class='icon-qrcode icon-large'></i>" title="<@t.menu 'site_domain_list'/>" target="navTab" rel="sysDomain/list"><@sys.domainList advanced=true pageSize=0>${page.totalCount}</@sys.domainList></a>
             </p>
         </div>
-    </@_masterSite>
+    </@tools.masterSite>
     </fieldset>
-</@_version>
+</@tools.version>
 </div>

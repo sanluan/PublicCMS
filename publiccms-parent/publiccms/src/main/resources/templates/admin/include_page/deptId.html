@@ -1,4 +1,4 @@
-<#if deptId?has_content><@_sysDept id=deptId><#assign d=object/></@_sysDept></#if>
+<#if deptId?has_content><@sys.dept id=deptId><#assign d=object/></@sys.dept></#if>
 <input name="deptId" value="${(d.id)!}" type="hidden"/>
 <input name="deptName" readonly="readonly" size="10" value="${(d.name)!}" type="text"/>
 <a class="btnLook" href="sysDept/lookup.html" width="920" lookupGroup=""><@t.page 'dept.select'/></a>

@@ -1,6 +1,6 @@
-<@_place id=id>
+<@cms.place id=id>
     <#assign a=object/>
-</@_place>
+</@cms.place>
 <div class="pageFormContent" layoutH>
     <dl class="nowrap">
         <dt><@t.page 'title'/>:</dt>
@@ -30,7 +30,7 @@
         </dd>
     </dl>
 </#if>
-    <@_placeMetadata path=(a.path)!><#assign metadata=object/></@_placeMetadata>
+    <@tools.placeMetadata path=(a.path)!><#assign metadata=object/></@tools.placeMetadata>
 <#if (metadata.extendList)?has_content>
     <#include "../include_page/extendData.html"/>
     <#assign attribute=getPlaceAttribute((a.id)!)!{}/>

@@ -1,12 +1,12 @@
 <#if parentId?has_content>
-    <@_content id=parentId>
+    <@cms.content id=parentId>
         <#assign parent=object/>
-    </@_content>
+    </@cms.content>
 </#if>
-<@_contentList advanced=true status=status modelId=modelIds parentId=parentId emptyParent=true title=title userId=admin.id
+<@cms.contentList advanced=true status=status modelId=modelIds parentId=parentId emptyParent=true title=title userId=admin.id
             startPublishDate=startPublishDate endPublishDate=endPublishDate
             orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
-<@_sysAuthorized roleIds=admin.roles urls='cmsContent/add,cmsContent/delete,cmsContent/uncheck,cmsContent/push,cmsContent/refresh,cmsContent/publish,cmsContent/export,cmsComment/list'><#assign authorizedMap=map/></@_sysAuthorized>
+<@sys.authorized roleIds=admin.roles urls='cmsContent/add,cmsContent/delete,cmsContent/uncheck,cmsContent/push,cmsContent/refresh,cmsContent/publish,cmsContent/export,cmsComment/list'><#assign authorizedMap=map/></@sys.authorized>
 <div class="pageHeader">
     <form class="pagerForm" action="myself/contentList.html" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
@@ -37,7 +37,7 @@
                     </li>
                 <#if authorizedMap['cmsContent/export']>
                     <li>
-                        <a class="button" href="cmsContent/export?categoryId=${(parent.categoryId)!categoryId!}&_csrf=<@_csrfToken admin=true/>" target="dwzExport" targetType="navTab"><i class="icon-download-alt icon-large"></i><@t.page 'button.export'/></a>
+                        <a class="button" href="cmsContent/export?categoryId=${(parent.categoryId)!categoryId!}&_csrf=<@tools.csrfToken admin=true/>" target="dwzExport" targetType="navTab"><i class="icon-download-alt icon-large"></i><@t.page 'button.export'/></a>
                     </li>
                 </#if>
                 </ul>
@@ -53,14 +53,14 @@
                 <li class="line">line</li>
             </#if>
             <#if authorizedMap['cmsContent/uncheck']>
-                <li><a href="cmsContent/uncheck?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_uncheck'/>" target="selectedTodo" rel="ids"><i class="icon-check icon-large"></i><@t.page 'button.batch_uncheck'/></a></li>
+                <li><a href="cmsContent/uncheck?_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.batch_uncheck'/>" target="selectedTodo" rel="ids"><i class="icon-check icon-large"></i><@t.page 'button.batch_uncheck'/></a></li>
             </#if>
             <#if authorizedMap['cmsContent/publish']>
-                <li><a href="cmsContent/publish?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_publish'/>" target="selectedTodo" rel="ids"><i class="icon-file-text-alt icon-large"></i><@t.page 'button.batch_publish'/></a></li>
+                <li><a href="cmsContent/publish?_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.batch_publish'/>" target="selectedTodo" rel="ids"><i class="icon-file-text-alt icon-large"></i><@t.page 'button.batch_publish'/></a></li>
             </#if>
             <#if authorizedMap['cmsContent/delete']>
             <li class="line">line</li>
-                <li><a href="cmsContent/delete?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i><@t.page 'button.batch_delete'/></a></li>
+                <li><a href="cmsContent/delete?_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i><@t.page 'button.batch_delete'/></a></li>
             </#if>
         </ul>
     </div>
@@ -84,9 +84,9 @@
                 <@t.merge 'modelIds' a.modelId!/>
             </#list>
 
-            <@_sysUser ids=t.checkUserIds!><#assign checkUserMap=map!/></@_sysUser>
-            <@_category ids=t.categoryIds!><#assign categoryMap=map!/></@_category>
-            <@_model ids=t.modelIds!><#assign modelMap=map!/></@_model>
+            <@sys.user ids=t.checkUserIds!><#assign checkUserMap=map!/></@sys.user>
+            <@cms.category ids=t.categoryIds!><#assign categoryMap=map!/></@cms.category>
+            <@cms.model ids=t.modelIds!><#assign modelMap=map!/></@cms.model>
 
             <#list page.list as a>
                 <#assign contentId=(a.quoteContentId?has_content)?then(a.quoteContentId,a.id)/>
@@ -139,4 +139,4 @@
     </table>
     <#include "../include_page/page.html"/>
 </div>
-</@_contentList>
+</@cms.contentList>

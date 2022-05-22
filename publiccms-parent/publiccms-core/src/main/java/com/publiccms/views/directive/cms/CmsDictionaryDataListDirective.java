@@ -31,12 +31,12 @@ import com.publiccms.logic.service.cms.CmsDictionaryDataService;
  * </ul>
  * 使用示例
  * <p>
- * &lt;@_dictionaryDataList dictionaryId='data'&gt;&lt;#list page.list as
- * a&gt;${a.text}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@_dictionaryDataList&gt;
+ * &lt;@cms.dictionaryDataList dictionaryId='data'&gt;&lt;#list page.list as
+ * a&gt;${a.text}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.dictionaryDataList&gt;
  * 
  * <pre>
 &lt;script&gt;
- $.getJSON('//cms.publiccms.com/api/directive/dictionaryDataList?dictionaryId=1&amp;parentValue=text', function(data){    
+ $.getJSON('//cms.publiccms.com/api/directive/cms/dictionaryDataList?dictionaryId=1&amp;parentValue=text', function(data){    
    console.log(data);
  });
  &lt;/script&gt;

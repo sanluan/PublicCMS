@@ -62,11 +62,11 @@ import com.publiccms.views.pojo.query.CmsContentQuery;
  * </ul>
  * 使用示例
  * <p>
- * &lt;@_contentList pageSize=10&gt;&lt;#list page.list as a&gt;${a.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@_contentList&gt;
+ * &lt;@cms.contentList pageSize=10&gt;&lt;#list page.list as a&gt;${a.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.contentList&gt;
  * 
  * <pre>
  *  &lt;script&gt;
-    $.getJSON('//cms.publiccms.com/api/directive/contentList?pageSize=10', function(data){    
+    $.getJSON('//cms.publiccms.com/api/directive/cms/contentList?pageSize=10', function(data){    
       console.log(data.totalCount);
     });
     &lt;/script&gt;

@@ -21,7 +21,7 @@
 </div>
 <script src="${base}/resource/js/jquery-1.12.4.min.js"></script>
 <script src="${base}/resource/js/echarts.common.min.js"></script>
-<@_disk>
+<@tools.disk>
 <script>
 document.getElementById('memory_count').style.height=document.getElementById('memory_count').offsetWidth*0.4+'px';
 document.getElementById('disk').style.height=document.getElementById('disk').offsetWidth*0.4+'px';
@@ -214,6 +214,6 @@ window.memoryInterval=setInterval(function () {
 }, 10000);
 refreshMemory();
 </script>
-</@_disk>
+</@tools.disk>
 </body>
 </html>

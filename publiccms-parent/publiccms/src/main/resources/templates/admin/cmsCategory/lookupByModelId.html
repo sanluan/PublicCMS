@@ -1,16 +1,16 @@
 <#if parentId?has_content>
 <ul>
-     <@_categoryList advanced=true parentId=parentId pageSize=500>
+     <@cms.categoryList advanced=true parentId=parentId pageSize=500>
     <#list page.list as a>
         <@t.merge 'categoryIds' a.id!/>
     </#list>
-    <@_categoryModel modelId=modelId categoryIds=t.categoryIds><#assign categoryModelMap=map/></@_categoryModel>
+    <@cms.categoryModel modelId=modelId categoryIds=t.categoryIds><#assign categoryModelMap=map/></@cms.categoryModel>
     <#list page.list as a>
         <li<#if a.childIds?has_content> _src="cmsCategory/lookupByModelId.html?currentCategoryId=${currentCategoryId!}&modelId=${modelId!}&parentId=${a.id}&field=${field!'categoryId'}"</#if>>
             <a href="javascript:;" class="exclude-translate"<#if (!currentCategoryId?has_content||a.id?string!=currentCategoryId)&&categoryModelMap?has_content&&categoryModelMap[a.id?string]?has_content> onclick="$.bringBack({${field!'categoryId'}:'${a.id}', categoryName:'${a.name}'});return false;"</#if>>${a.name!}</a>
         </li>
     </#list>
-    </@_categoryList>
+    </@cms.categoryList>
 </ul>
 <#else>
 <div class="pageFormContent" layoutH>
@@ -18,17 +18,17 @@
         <li>
             <a href="javascript:;" onclick="$.bringBack({${field!'categoryId'}:'',categoryId:'', categoryName:'',parentId:''});return false;"><@t.page 'button.clear_select'/></a>
         </li>
-        <@_categoryList advanced=true parentId=parentId pageSize=500>
+        <@cms.categoryList advanced=true parentId=parentId pageSize=500>
         <#list page.list as a>
             <@t.merge 'categoryIds' a.id!/>
         </#list>
-        <@_categoryModel modelId=modelId categoryIds=t.categoryIds><#assign categoryModelMap=map/></@_categoryModel>
+        <@cms.categoryModel modelId=modelId categoryIds=t.categoryIds><#assign categoryModelMap=map/></@cms.categoryModel>
         <#list page.list as a>
             <li<#if a.childIds?has_content> _src="cmsCategory/lookupByModelId.html?currentCategoryId=${currentCategoryId!}&modelId=${modelId!}&parentId=${a.id}&field=${field!'categoryId'}"</#if>>
                 <a href="javascript:;" class="exclude-translate"<#if (!currentCategoryId?has_content||a.id?string!=currentCategoryId)&&categoryModelMap?has_content&&categoryModelMap[a.id?string]?has_content> onclick="$.bringBack({${field!'categoryId'}:'${a.id}', categoryName:'${a.name}'});return false;"</#if>>${a.name!}</a>
             </li>
         </#list>
-        </@_categoryList>
+        </@cms.categoryList>
     </ul>
 </div>
 <div class="formBar">

@@ -68,13 +68,6 @@ public abstract class AbstractTaskDirective extends BaseTemplateDirective {
         return null;
     }
 
-    /**
-     * @return whether to enable http
-     */
-    public boolean httpEnabled() {
-        return true;
-    }
-
     @Autowired
     private SysAppTokenService appTokenService;
     @Autowired

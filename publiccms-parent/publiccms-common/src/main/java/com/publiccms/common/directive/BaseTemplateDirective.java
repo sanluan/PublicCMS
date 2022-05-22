@@ -38,6 +38,13 @@ public abstract class BaseTemplateDirective implements TemplateDirectiveModel, D
         }
     }
 
+    /**
+     * @return whether to enable http
+     */
+    public boolean httpEnabled() {
+        return true;
+    }
+
     @Override
     public String getName() {
         return this.name;

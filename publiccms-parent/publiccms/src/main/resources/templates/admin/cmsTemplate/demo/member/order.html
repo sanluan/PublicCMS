@@ -10,16 +10,16 @@
     </header>
     <nav data-diy="category">
         <a href="${site.dynamicPath}">Home</a>
-<@_categoryList>
+<@cms.categoryList>
     <#list page.list as a>
         <a href="${a.url!}" target="_blank">${a.name}</a>
     </#list>
-</@_categoryList>
+</@cms.categoryList>
     </nav>
     <main>
         <#macro message code>${springMacroRequestContext.getMessage(code)}</#macro>
         <#if orderId?has_content>
-            <@_tradeOrder id=orderId>
+            <@trade.order id=orderId>
                 <p><label>Status:</label>:<@message 'page.status.order.'+object.status/></p>
                 <p><label>Confirmed:</label>:${object.confirmed?then('Yes','No')}</p>
                 <p><label>Processed:</label>:${object.processed?then('Yes','No')}</p>
@@ -28,35 +28,35 @@
                 <p><label>Telephone:</label>:${object.telephone!}</p>
                 <p><label>Remark:</label>:${object.remark!}</p>
                 <p><label>Amount:</label>:${object.amount!}</p>
-                <@_tradeOrderProductList orderId=orderId>
+                <@trade.orderProductList orderId=orderId>
                     <#list page.list as op>
-                    <@_content id=op.contentId>
+                    <@cms.content id=op.contentId>
                         <p>
                             <#if object.cover?has_content><img src="${object.cover}" style="max-width:200px;max-height:200px;border:1px solid;"/><br></#if>
                             <a href="${object.url}" target="_blank">${object.title}</a>
                         </p>
-                    </@_content>
-                    <@_contentProduct id=op.productId>
+                    </@cms.content>
+                    <@cms.contentProduct id=op.productId>
     
                         <p>
                             <#if object.cover?has_content><img src="${object.cover}" style="max-width:200px;max-height:200px;border:1px solid;"/><br></#if>
                             product:${object.title} <label>price::</label>:${op.price} Remark:${op.remark!}
                             <label>Quantity:</label>${op.quantity!}
                         </p>
-                    </@_contentProduct>
+                    </@cms.contentProduct>
                     </#list>
-                </@_tradeOrderProductList>
+                </@trade.orderProductList>
                 <#if 0=object.status>
                     <#if object.paymentId?has_content>
-                        <@_tradePayment id=object.paymentId>
+                        <@trade.payment id=object.paymentId>
                             <p><label>Payment status:</label>:<@message 'page.status.payment.'+object.status/></p>
                             <#if 0=object.status>
                                 <a href="${site.dynamicPath}tradePayment/pay?paymentId=${object.id}&returnUrl=https:${(site.dynamicPath+'order.html?orderId='+orderId)?url}">Continue to pay</a> 
-                                <a href="${site.dynamicPath}tradePayment/cancel?paymentId=${object.id}&returnUrl=https:${(site.dynamicPath+'order.html?orderId='+orderId)?url}&_csrf=<@_csrfToken/>">Change payment method</a>
-                                <a href="${site.dynamicPath}tradeOrder/close?orderId=${orderId}&returnUrl=https:${(site.dynamicPath+'order.html?orderId='+orderId)?url}&_csrf=<@_csrfToken/>">Close order</a>
+                                <a href="${site.dynamicPath}tradePayment/cancel?paymentId=${object.id}&returnUrl=https:${(site.dynamicPath+'order.html?orderId='+orderId)?url}&_csrf=<@tools.csrfToken/>">Change payment method</a>
+                                <a href="${site.dynamicPath}tradeOrder/close?orderId=${orderId}&returnUrl=https:${(site.dynamicPath+'order.html?orderId='+orderId)?url}&_csrf=<@tools.csrfToken/>">Close order</a>
                             <#elseif 1=object.status>
                                 <form action="${site.dynamicPath}tradePayment/refund" method="POST">
-                                    <input type="hidden" name="_csrf" value="<@_csrfToken/>"/>
+                                    <input type="hidden" name="_csrf" value="<@tools.csrfToken/>"/>
                                     <input type="hidden" name="returnUrl" value="${site.dynamicPath}order.html?orderId=${orderId}"/>
                                     <input type="hidden" name="paymentId" value="${object.id}"/>
                                     <label>Amount:</label><input type="text" name="amount" required="required" value="${object.amount}" max="${object.amount}"/>
@@ -64,22 +64,22 @@
                                     <input type="submit" value="Apply refund"/>
                                 </form>
                             </#if>
-                        </@_tradePayment>
+                        </@trade.payment>
                     <#else>
                     <a href="${site.dynamicPath}tradeOrder/pay/alipay?orderId=${orderId!}&returnUrl=https:${(site.dynamicPath+'order.html?orderId='+orderId)?url}" data-diy="config" data-diy-id="alipay">Alipay</a>
                     <a href="${site.dynamicPath}tradeOrder/pay/wechat?orderId=${orderId!}&returnUrl=https:${(site.dynamicPath+'order.html?orderId='+orderId)?url}" data-diy="config" data-diy-id="wechat">Wechat</a>
-                    <@_tradeAccount id=object.userId;account>
+                    <@trade.account id=object.userId;account>
                         <#if account.amount gte object.amount>
                             <a href="${site.dynamicPath}tradeOrder/pay/account?orderId=${orderId!}&returnUrl=https:${(site.dynamicPath+'order.html?orderId='+orderId)?url}">Account balance payment(${account.amount!})</a>
                         </#if>
-                    </@_tradeAccount>
+                    </@trade.account>
                     </#if>
                 </#if>
-            </@_tradeOrder>
+            </@trade.order>
         <#else>
             <#if productId?has_content && quantity?has_content && productId?size=quantity?size>
                 <form action="${site.dynamicPath}tradeOrder/create" method="POST">
-                    <input type="hidden" name="_csrf" value="<@_csrfToken/>"/>
+                    <input type="hidden" name="_csrf" value="<@tools.csrfToken/>"/>
                     <input type="hidden" name="returnUrl" value="${site.dynamicPath}order.html"/>
                     <input type="hidden" name="orderIdField" value="orderId"/>
                     <p><label>Shipping address:</label><input type="text" name="address" required="required"></p>
@@ -87,13 +87,13 @@
                     <p><label>Telephone:</label><input type="text" name="telephone" required="required"></p>
                     <p><label>Remark:</label><input type="text" name="remark" required="required"></p>           
                     <#list productId as p>
-                        <@_contentProduct id=p;product>
-                            <@_content id=product.contentId>
+                        <@cms.contentProduct id=p;product>
+                            <@cms.content id=product.contentId>
                                 <p>
                                     <#if object.cover?has_content><img src="${object.cover}" style="max-width:200px;max-height:200px;border:1px solid;"/></#if> <a href="${object.url}" target="_blank">${object.title}</a>
                                 </p>
                                 <#if p?is_first><input type="hidden" name="title" value="${object.title} - ${product.title}"/></#if>
-                            </@_content>                
+                            </@cms.content>                
                             <p>
                                 <#if product.cover?has_content><img src="${product.cover}" style="max-width:200px;max-height:200px;border:1px solid;"/><br></#if>
                                 product:${product.title} <label>price::</label>${product.price} <label>inventory::</label>${product.inventory}
@@ -102,7 +102,7 @@
                             <input type="hidden" name="tradeOrderProductList[${p?index}].productId" value="${product.id}"/>
                             <label>Quantity:</label><input type="text" name="tradeOrderProductList[${p?index}].quantity" value="${quantity[p?index]}" required="required"/>
                             <label>Remark:</label><input type="text" name="tradeOrderProductList[${p?index}].remark"/>
-                        </@_contentProduct>
+                        </@cms.contentProduct>
                     </#list>
                     <input type="submit" value="Submit"/>
                 </form>

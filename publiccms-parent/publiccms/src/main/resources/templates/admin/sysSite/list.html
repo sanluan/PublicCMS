@@ -1,4 +1,4 @@
-<@_sysSiteList parentId=parentId name=name pageIndex=pageNum pageSize=numPerPage>
+<@sys.siteList parentId=parentId name=name pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
     <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
@@ -6,7 +6,7 @@
             <ul class="searchContent">
             <#if parentId?has_content>
                 <li>
-                    <label><@t.page 'site.parent'/>:</label><label><@_sysSite id=parentId>${object.name!}</@_sysSite></label>
+                    <label><@t.page 'site.parent'/>:</label><label><@sys.site id=parentId>${object.name!}</@sys.site></label>
                 </li>
             </#if>
                 <li>
@@ -67,7 +67,7 @@
                     <a href="sysSite/list.html?parentId=${a.id!}" class="btnText" target="navTab" rel="sysSite/list"><@t.page 'site.child_management'/></a>
                 </#if>
                     <a href="sysSite/configTemplate.html?siteId=${a.id!}" class="btnText" target="dialog" rel="config_${a.id!}"><@t.page 'server_config'/></a>
-                    <a href="sysSite/delete?id=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i><@t.page 'button.delete'/></a>
+                    <a href="sysSite/delete?id=${a.id}&_csrf=<@tools.csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i><@t.page 'button.delete'/></a>
                 </td>
             </tr>
             </#list>
@@ -75,4 +75,4 @@
     </table>
     <#include "../include_page/page.html"/>
 </div>
-</@_sysSiteList>
+</@sys.siteList>

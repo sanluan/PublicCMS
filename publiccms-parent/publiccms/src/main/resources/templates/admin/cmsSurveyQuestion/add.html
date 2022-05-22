@@ -1,8 +1,8 @@
-<@_surveyQuestion id=id absoluteURL=false><#assign q=object/></@_surveyQuestion>
+<@cms.surveyQuestion id=id absoluteURL=false><#assign q=object/></@cms.surveyQuestion>
 <form method="post" autocomplete="off" action="cmsSurveyQuestion/save?callbackType=closeCurrent&navTabId=cmsSurveyQuestion/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input name="id" type="hidden" value="${id!}"/>
     <input name="surveyId" type="hidden" value="${(q.surveyId)!surveyId}"/>
-    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
             <li><button type="submit" class="buttonActive" title="ctrl+s"><@t.page 'button.save'/></button></li>
@@ -12,7 +12,7 @@
     <div class="pageFormContent" layoutH>
         <dl class="nowrap">
             <dt><@t.page 'survey'/>:</dt>
-            <dd><@_survey id=(q.surveyId)!surveyId>${object.title!}</@_survey></dd>
+            <dd><@cms.survey id=(q.surveyId)!surveyId>${object.title!}</@cms.survey></dd>
         </dl>
         <dl class="nowrap">
             <dt><@t.page 'title'/>:</dt>
@@ -28,7 +28,7 @@
                 </select>
             </dd>
         </dl>
-<@_survey id=(q.surveyId)!surveyId>
+<@cms.survey id=(q.surveyId)!surveyId>
     <#if 'exam'=object.surveyType>
         <dl>
             <dt><@t.page 'content.score'/>:</dt>
@@ -51,7 +51,7 @@
         </dl>
         <dl class="nowrap">
             <dt><@t.page 'sort'/></dt>
-            <dd><input class="required digits" name="sort" type="text" size="5" value="<@_surveyQuestionList surveyId=(q.surveyId)!surveyId pageSize=0>${(q.sort)!page.totalCount+1}</@_surveyQuestionList>"/></dd>
+            <dd><input class="required digits" name="sort" type="text" size="5" value="<@cms.surveyQuestionList surveyId=(q.surveyId)!surveyId pageSize=0>${(q.sort)!page.totalCount+1}</@cms.surveyQuestionList>"/></dd>
         </dl>
         <fieldset class="itemList">
             <legend><@t.page 'question.item'/></legend>
@@ -68,7 +68,7 @@
                 </thead>
                 <tbody>
         <#if q?has_content && ['radio','select','checkbox']?seq_contains(q.questionType)>
-            <@_surveyQuestionItemList questionId=q.id pageSize=500>
+            <@cms.surveyQuestionItemList questionId=q.id pageSize=500>
                 <#list page.list as a>
                     <tr>
                         <td>
@@ -88,12 +88,12 @@
                         </td>
                     </tr>
                 </#list>
-            </@_surveyQuestionItemList>
+            </@cms.surveyQuestionItemList>
         </#if>
                 </tbody>
             </table>
         </fieldset>
-</@_survey>
+</@cms.survey>
         <script>
         $('select[name=\'questionType\']',navTab.getCurrentPanel()).on('change',function(){
             if(-1 != $.inArray($(this).val(), ["radio","select","checkbox"])){

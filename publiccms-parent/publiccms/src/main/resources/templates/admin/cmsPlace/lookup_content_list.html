@@ -1,4 +1,4 @@
-<@_contentList advanced=true status=1 endPublishDate=.now categoryId=categoryId modelId=modelIds title=title
+<@cms.contentList advanced=true status=1 endPublishDate=.now categoryId=categoryId modelId=modelIds title=title
     parentId=parentId containChild=true userId=userId startPublishDate=startPublishDate 
     orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
@@ -54,9 +54,9 @@
                 <@t.merge 'modelIds' a.modelId!/>
             </#list>
 
-            <@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
-            <@_category ids=t.categoryIds!><#assign categoryMap=map!/></@_category>
-            <@_model ids=t.modelIds!><#assign modelMap=map!/></@_model>
+            <@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
+            <@cms.category ids=t.categoryIds!><#assign categoryMap=map!/></@cms.category>
+            <@cms.model ids=t.modelIds!><#assign modelMap=map!/></@cms.model>
 
             <#list page.list as a>
             <tr>
@@ -87,4 +87,4 @@
     <#assign rel='lookup_content_list'/>
     <#include "../include_page/pageDialog.html"/>
 </div>
-</@_contentList>
+</@cms.contentList>

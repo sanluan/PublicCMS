@@ -1,7 +1,7 @@
 <#if !startCreateDate?has_content>
     <#assign startCreateDate=(.now?long-7*24*3600*1000)?number_to_date/>
 </#if>
-<@_visitHistoryList sessionId=sessionId url=url startCreateDate=startCreateDate endCreateDate=endCreateDate
+<@visit.historyList sessionId=sessionId url=url startCreateDate=startCreateDate endCreateDate=endCreateDate
             orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
     <form class="pagerForm" action="visit/history.html" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
@@ -64,10 +64,10 @@
                 </td>
                 <td class="exclude-translate">
                     <div class="box">
-                    <@_userAgent userAgent=a.userAgent>
+                    <@tools.userAgent userAgent=a.userAgent>
                         <p>${object.browserType!}:${object.browserGroup!} ${object.browserVersion!}</p>
                         <p>${object.deviceType!}:${a.screenWidth!}*${a.screenHeight!}</p>
-                    </@_userAgent>
+                    </@tools.userAgent>
                     </div>
                 </td>
                 <td>${a.refererUrl!}</td>
@@ -82,4 +82,4 @@
     </table>
     <#include "../include_page/page.html"/>
 </div>
-</@_visitHistoryList>
+</@visit.historyList>

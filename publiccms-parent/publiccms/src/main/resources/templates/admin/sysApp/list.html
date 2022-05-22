@@ -1,4 +1,4 @@
-<@_sysAppList channel=channel pageIndex=pageNum pageSize=numPerPage>
+<@sys.appList channel=channel pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
     <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
@@ -19,7 +19,7 @@
         </div>
     </form>
 </div>
-<@_sysAuthorized roleIds=admin.roles urls='sysApp/add,sysApp/delete,sysAppToken/list,sysApp/view,sysApp/issueParameters'><#assign authorizedMap=map/></@_sysAuthorized>
+<@sys.authorized roleIds=admin.roles urls='sysApp/add,sysApp/delete,sysAppToken/list,sysApp/view,sysApp/issueParameters'><#assign authorizedMap=map/></@sys.authorized>
 <div class="pageContent">
     <div class="panelBar">
         <ul class="toolBar">
@@ -58,7 +58,7 @@
                         <a href="sysAppToken/list.html?appId=${a.id}" class="btnText" target="navTab" rel="sysAppToken/list"><@t.page 'app.token'/></a>
                     </#if>
                     <#if authorizedMap['sysApp/delete']>
-                        <a href="sysApp/delete?id=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i><@t.page 'button.delete'/></a></li>
+                        <a href="sysApp/delete?id=${a.id}&_csrf=<@tools.csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i><@t.page 'button.delete'/></a></li>
                     </#if>
                 </td>
             </tr>
@@ -67,4 +67,4 @@
     </table>
     <#include "../include_page/page.html"/>
 </div>
-</@_sysAppList>
+</@sys.appList>

@@ -2,45 +2,45 @@
     <div layoutH class="leftPageContent">
         <ul class="tree treeFolder expand">
             <li><a href="cmsDiy/preview.html" target="navTab" rel="cmsDiy/preview"><i class='bi bi-palette2 icon-large'></i><@t.page 'diy.preview'/></a></li>
-    <@_diyMetadataList itemType="region">
+    <@tools.diyMetadataList itemType="region">
         <#list list as a>
             <@t.merge 'ids' a.id/>
         </#list>
-        <@_sysLock userId=admin.id itemType='region' itemIds=t.ids><#assign lockMap=map!/></@_sysLock>
+        <@sys.lock userId=admin.id itemType='region' itemIds=t.ids><#assign lockMap=map!/></@sys.lock>
         <#if lockMap?has_content>
             <#list lockMap as k,lock>
                 <#if lock.userId?has_content><@t.merge 'userIds' lock.userId/></#if>
             </#list>
         </#if>
-        <@_sysUser ids=t.userIds><#assign userMap=map!/></@_sysUser>
+        <@sys.user ids=t.userIds><#assign userMap=map!/></@sys.user>
         <#list list as a>
             <li>
                 <a href="cmsPage/region.html?id=${(a.id?url)!}" target="ajax" rel="diyConfigBox"<#if lockMap?has_content && lockMap[a.id]?has_content><#assign lockUser=(userMap[lockMap[a.id].userId?string].nickname)!''/> title="<@t.page 'lock.message' lockUser/> ${lockMap[a.id].createDate}"</#if>><#if lockMap[a.id]?has_content><i class="icon-lock icon-large"></i></#if>${a.name!}</a>
                 <#if a.categoryType?has_content>
-                    <@_categoryList queryAll=true typeId=a.categoryType pageSize=100>
+                    <@cms.categoryList queryAll=true typeId=a.categoryType pageSize=100>
                         <#if page.totalCount gt 0 >
                             <@t.clear 'ids'/>
                             <#list page.list as c>
                                 <@t.merge 'ids' a.id+'_'+c.id/>
                             </#list>
-                            <@_sysLock userId=admin.id itemType='region' itemIds=t.ids><#assign categoryLockMap=map!/></@_sysLock>
+                            <@sys.lock userId=admin.id itemType='region' itemIds=t.ids><#assign categoryLockMap=map!/></@sys.lock>
                             <#if categoryLockMap?has_content>
                                 <#list categoryLockMap as k,lock>
                                     <#if lock.userId?has_content><@t.merge 'userIds' lock.userId/></#if>
                                 </#list>
                             </#if>
-                            <@_sysUser ids=t.userIds><#assign categoryUserMap=map!/></@_sysUser>
+                            <@sys.user ids=t.userIds><#assign categoryUserMap=map!/></@sys.user>
                             <ul>
                                 <#list page.list as c>
                                     <li><a href="cmsPage/region.html?id=${(a.id?url)!}&categoryId=${c.id}" target="ajax" rel="diyConfigBox"<#if categoryLockMap?has_content && categoryLockMap[a.id+'_'+c.id]?has_content><#assign lockUser=(categoryUserMap[categoryLockMap[a.id+'_'+c.id].userId?string].nickname)!''/> title="<@t.page 'lock.message' lockUser/> ${categoryLockMap[a.id+'_'+c.id].createDate}"</#if>><#if categoryLockMap[a.id+'_'+c.id]?has_content><i class="icon-lock icon-large"></i></#if>${c.name!}</a></li>
                                 </#list>
                             </ul>
                         </#if>
-                    </@_categoryList>
+                    </@cms.categoryList>
                 </#if>
             </li>
         </#list>
-    </@_diyMetadataList>
+    </@tools.diyMetadataList>
         </ul>
     </div>
     <div id="diyConfigBox" class="unitBox rightPageContent">

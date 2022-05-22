@@ -1,10 +1,10 @@
-<@_placeMetadata path=path><#assign a=object/></@_placeMetadata>
+<@tools.placeMetadata path=path><#assign a=object/></@tools.placeMetadata>
 <form method="post" autocomplete="off" action="cmsTemplate/savePlaceMetaData?navTabId=placeTemplate/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
-    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
         <#if a?has_content>
-            <li><a class="button" href="cmsTemplate/deletePlace?path=${(path?url)!}&navTabId=placeTemplate/list&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete_file'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i><@t.page 'button.delete'/></a></li>
+            <li><a class="button" href="cmsTemplate/deletePlace?path=${(path?url)!}&navTabId=placeTemplate/list&_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.delete_file'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i><@t.page 'button.delete'/></a></li>
             <li><a class="button" href="cmsPlace/metadata.html?path=${(path?url)!}" target="ajax" rel="cmsTemplatePlace"><@t.page 'place.management'/></a></li>
             <li><a class="button" href="placeTemplate/content.html?path=${(path?url)!}" target="ajax" rel="cmsTemplatePlace"><@t.page 'template.content'/></a></li>
         </#if>
@@ -146,11 +146,11 @@ $('.adminIds',navTab.getCurrentPanel()).on('click','span>a',function(){
 });
 checkPageSize();
 <#if (a.adminIds)?has_content>
-    <@_sysUser ids=a.adminIds>
+    <@sys.user ids=a.adminIds>
         <#list map as k,user>
         addUser('${k}','${user.nickname}');
         </#list>
-    </@_sysUser>
+    </@sys.user>
 </#if>
 </script>
         <textarea name="content" class="hide"></textarea>

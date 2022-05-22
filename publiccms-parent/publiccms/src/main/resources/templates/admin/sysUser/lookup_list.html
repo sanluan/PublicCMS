@@ -1,4 +1,4 @@
-<@_sysUserList deptId=deptId startRegisteredDate=startRegisteredDate endRegisteredDate=endRegisteredDate startLastLoginDate=startLastLoginDate endLastLoginDate=endLastLoginDate
+<@sys.userList deptId=deptId startRegisteredDate=startRegisteredDate endRegisteredDate=endRegisteredDate startLastLoginDate=startLastLoginDate endLastLoginDate=endLastLoginDate
             superuser=superuser emailChecked=emailChecked name=name disable=false
             orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
@@ -67,7 +67,7 @@
                 <@t.merge 'deptIds' a.deptId!/>
             </#list>
             
-            <@_sysDept ids=t.deptIds!><#assign deptMap=map!/></@_sysDept>
+            <@sys.dept ids=t.deptIds!><#assign deptMap=map!/></@sys.dept>
             <#list page.list as a>
             <tr>
                 <td>
@@ -107,4 +107,4 @@
     <#assign rel='user_list'/>
     <#include "../include_page/pageDialog.html"/>
 </div>
-</@_sysUserList>
+</@sys.userList>

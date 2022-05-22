@@ -29,14 +29,14 @@ import com.publiccms.logic.service.cms.CmsSurveyService;
 * </ul>
 * 使用示例
 * <p>
-* &lt;@_survey id=1&gt;${object.title}&lt;/@_survey&gt;
+* &lt;@cms.survey id=1&gt;${object.title}&lt;/@cms.survey&gt;
 * <p>
-* &lt;@_survey ids='1,2,3'&gt;&lt;#list map as
-* k,v&gt;${v.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@_survey&gt;
+* &lt;@cms.survey ids='1,2,3'&gt;&lt;#list map as
+* k,v&gt;${v.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.survey&gt;
 * 
 * <pre>
 &lt;script&gt;
- $.getJSON('//cms.publiccms.com/api/directive/survey?id=1', function(data){    
+ $.getJSON('//cms.publiccms.com/api/directive/cms/survey?id=1', function(data){    
    console.log(data.title);
  });
  &lt;/script&gt;

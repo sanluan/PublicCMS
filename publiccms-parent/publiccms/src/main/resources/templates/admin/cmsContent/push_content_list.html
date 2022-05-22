@@ -1,4 +1,4 @@
-<@_contentList advanced=true status=1 endPublishDate=.now categoryId=categoryId modelId=modelIds parentId=parentId containChild=true title=title userId=userId startPublishDate=startPublishDate orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
+<@cms.contentList advanced=true status=1 endPublishDate=.now categoryId=categoryId modelId=modelIds parentId=parentId containChild=true title=title userId=userId startPublishDate=startPublishDate orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
     <form class="pagerForm" autocomplete="off" action="cmsContent/push_content_list.html?contentId=${contentId}" onsubmit="return divSearch(this, 'push_content_list');" method="post">
         <input type="hidden" name="categoryId" value="${categoryId!}"/>
@@ -58,10 +58,10 @@
                 <@t.merge 'modelIds' a.modelId!/>
             </#list>
 
-            <@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
-            <@_sysUser ids=t.checkUserIds!><#assign checkUserMap=map!/></@_sysUser>
-            <@_category ids=t.categoryIds!><#assign categoryMap=map!/></@_category>
-            <@_model ids=t.modelIds!><#assign modelMap=map!/></@_model>
+            <@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
+            <@sys.user ids=t.checkUserIds!><#assign checkUserMap=map!/></@sys.user>
+            <@cms.category ids=t.categoryIds!><#assign categoryMap=map!/></@cms.category>
+            <@cms.model ids=t.modelIds!><#assign modelMap=map!/></@cms.model>
 
             <#list page.list as a>
             <tr>
@@ -107,4 +107,4 @@
     <#assign rel='push_content_list'/>
     <#include "../include_page/pageDialog.html"/>
 </div>
-</@_contentList>
+</@cms.contentList>

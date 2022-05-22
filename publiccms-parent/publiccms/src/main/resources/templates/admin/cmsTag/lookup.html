@@ -1,4 +1,4 @@
-<@_tagList advanced=true name=name orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
+<@cms.tagList advanced=true name=name orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
     <form class="pagerForm" autocomplete="off" onsubmit="return dialogSearch(this);" action="cmsTag/lookup.html" method="post">
         <#include "../include_page/parameters.html"/>
@@ -38,7 +38,7 @@
                 <@t.merge 'typeIds' a.typeId!/>
             </#list>
 
-            <@_tagType ids=t.typeIds!><#assign typeMap=map!/></@_tagType>
+            <@cms.tagType ids=t.typeIds!><#assign typeMap=map!/></@cms.tagType>
             <#list page.list as a>
             <tr>
                 <td>
@@ -54,4 +54,4 @@
     </table>
     <#include "../include_page/pageDialog.html"/>
 </div>
-</@_tagList>
+</@cms.tagList>

@@ -30,14 +30,14 @@ import com.publiccms.logic.service.cms.CmsCommentService;
 * </ul>
 * 使用示例
 * <p>
-* &lt;@_comment id=1&gt;${object.text}&lt;/@_comment&gt;
+* &lt;@cms.comment id=1&gt;${object.text}&lt;/@cms.comment&gt;
 * <p>
-* &lt;@_comment ids=1,2,3&gt;&lt;#list map as
-* k,v&gt;${v.text}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@_comment&gt;
+* &lt;@cms.comment ids=1,2,3&gt;&lt;#list map as
+* k,v&gt;${v.text}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.comment&gt;
 * 
 * <pre>
   &lt;script&gt;
-   $.getJSON('//cms.publiccms.com/api/directive/comment?id=1&amp;appToken=接口访问授权Token', function(data){    
+   $.getJSON('//cms.publiccms.com/api/directive/cms/comment?id=1&amp;appToken=接口访问授权Token', function(data){    
      console.log(data.text);
    });
    &lt;/script&gt;

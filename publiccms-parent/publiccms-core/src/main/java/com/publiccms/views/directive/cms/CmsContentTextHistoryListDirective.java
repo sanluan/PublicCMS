@@ -34,12 +34,12 @@ import com.publiccms.common.handler.PageHandler;
  * </ul>
  * 使用示例
  * <p>
- * &lt;@_contentTextHistoryList contentId=1 fieldName='text' pageSize=10&gt;&lt;#list page.list as
- * a&gt;${a.text}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@_contentTextHistoryList&gt;
+ * &lt;@cms.contentTextHistoryList contentId=1 fieldName='text' pageSize=10&gt;&lt;#list page.list as
+ * a&gt;${a.text}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.contentTextHistoryList&gt;
  * 
  * <pre>
  &lt;script&gt;
-  $.getJSON('//cms.publiccms.com/api/directive/contentTextHistoryList?contentId=1&amp;fieldName='text'&amp;pageSize=10&amp;appToken=接口访问授权Token', function(data){    
+  $.getJSON('//cms.publiccms.com/api/directive/cms/contentTextHistoryList?contentId=1&amp;fieldName='text'&amp;pageSize=10&amp;appToken=接口访问授权Token', function(data){    
     console.log(data.totalCount);
   });
   &lt;/script&gt;

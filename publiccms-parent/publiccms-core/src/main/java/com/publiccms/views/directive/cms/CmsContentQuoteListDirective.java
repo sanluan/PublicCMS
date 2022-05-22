@@ -32,12 +32,12 @@ import com.publiccms.logic.service.cms.CmsContentService;
 * </ul>
 * 使用示例
 * <p>
-* &lt;@_contentQuoteList contentId=1 pageSize=10&gt;&lt;#list list as
-* a&gt;${a.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@_contentQuoteList&gt;
+* &lt;@cms.contentQuoteList contentId=1 pageSize=10&gt;&lt;#list list as
+* a&gt;${a.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.contentQuoteList&gt;
 * 
 * <pre>
  &lt;script&gt;
-  $.getJSON('//cms.publiccms.com/api/directive/contentQuoteList?contentId=1', function(data){    
+  $.getJSON('//cms.publiccms.com/api/directive/cms/contentQuoteList?contentId=1', function(data){    
     console.log(data);
   });
   &lt;/script&gt;

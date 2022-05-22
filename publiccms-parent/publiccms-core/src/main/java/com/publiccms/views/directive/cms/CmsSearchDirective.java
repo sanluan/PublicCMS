@@ -60,12 +60,12 @@ import com.publiccms.views.pojo.entities.ClickStatistics;
  * </ul>
  * 使用示例
  * <p>
- * &lt;@_search word='cms' pageSize=10&gt;&lt;#list page.list as
- * a&gt;${a.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@_search&gt;
+ * &lt;@cms.search word='cms' pageSize=10&gt;&lt;#list page.list as
+ * a&gt;${a.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.search&gt;
  * 
  * <pre>
 *  &lt;script&gt;
-  $.getJSON('//cms.publiccms.com/api/directive/search?word=cms&amp;pageSize=10', function(data){    
+  $.getJSON('//cms.publiccms.com/api/directive/cms/search?word=cms&amp;pageSize=10', function(data){    
     console.log(data.totalCount);
   });
   &lt;/script&gt;

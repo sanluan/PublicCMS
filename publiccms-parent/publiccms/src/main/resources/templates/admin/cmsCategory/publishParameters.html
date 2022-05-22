@@ -1,12 +1,12 @@
 <form action="cmsCategory/publish?callbackType=closeCurrent" method="post" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
     <input type="hidden" name="ids" value="${id!}"/>
-    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <div class="pageFormContent" layoutH>
         <dl class="nowrap">
             <dt><@t.page 'category.publish_page_count'/>:</dt>
-            <@_contentList categoryId=id containChild=containChild pageSize=pageSize>
+            <@cms.contentList categoryId=id containChild=containChild pageSize=pageSize>
             <dd><input class="required digits" type="number" name="max" max="${page.totalPage}" min="1" value="<#if pageSize?number gt 500>1<#else>${page.totalPage}</#if>"/></dd>
-            </@_contentList>
+            </@cms.contentList>
         </dl>
     </div>
     <div class="formBar">

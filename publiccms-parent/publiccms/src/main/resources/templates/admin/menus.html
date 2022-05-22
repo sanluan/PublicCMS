@@ -1,9 +1,9 @@
 <div class="accordion">
-<@_sysModuleList parentId=parentId>
+<@sys.moduleList parentId=parentId>
     <#list page.list as a>
         <@t.merge 'moduleIds' a.id!/>
     </#list>
-    <@_sysRoleModule roleIds=admin.roles moduleIds=t.moduleIds!><#assign roleModuleMap=map!/></@_sysRoleModule>
+    <@sys.roleModule roleIds=admin.roles moduleIds=t.moduleIds!><#assign roleModuleMap=map!/></@sys.roleModule>
     
     <#list page.list as a>
         <#if (roleModuleMap[a.id?string])?has_content&&roleModuleMap[a.id?string]>
@@ -12,20 +12,20 @@
     </div>
     <div class="accordionContent">
         <ul class="tree">
-        <@_sysModuleList parentId=a.id>
+        <@sys.moduleList parentId=a.id>
             <#list page.list as a>
                 <@t.merge 'childModuleIds' a.id!/>
             </#list>
-            <@_sysRoleModule roleIds=admin.roles moduleIds=t.childModuleIds!><#assign childRoleModuleMap=map!/></@_sysRoleModule>
+            <@sys.roleModule roleIds=admin.roles moduleIds=t.childModuleIds!><#assign childRoleModuleMap=map!/></@sys.roleModule>
             <#list page.list as a>
                 <#if (childRoleModuleMap[a.id?string])?has_content&&childRoleModuleMap[a.id?string]>
             <li><a href="${(a.url)!}" target="navTab" rel="${(a.url)!}"><#if (a.attached)?has_content><i class="${a.attached} icon-large"></i></#if> <@t.menu a.id/></a></li>
                 </#if>
             </#list>
-        </@_sysModuleList>
+        </@sys.moduleList>
         </ul>
     </div>
         </#if>
     </#list>
-</@_sysModuleList>
+</@sys.moduleList>
 </div>

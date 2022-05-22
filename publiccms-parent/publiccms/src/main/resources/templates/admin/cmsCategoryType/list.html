@@ -1,4 +1,4 @@
-<@_categoryTypeList>
+<@cms.categoryTypeList>
 <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
 </form>
 <div class="pageContent">
@@ -24,11 +24,11 @@
                 <td>${a.sort!}</td>
                 <td class="wrap">
                     <a href="cmsCategoryType/add.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="cmsCategoryType/edit"><i class="icon-edit"></i><@t.page 'category_type.edit'/></a>
-                    <a href="cmsCategoryType/delete?id=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i><@t.page 'button.delete'/></a>
+                    <a href="cmsCategoryType/delete?id=${a.id}&_csrf=<@tools.csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i><@t.page 'button.delete'/></a>
                 </td>
             </tr>
             </#list>
         </tbody>
     </table>
 </div>
-</@_categoryTypeList>
+</@cms.categoryTypeList>

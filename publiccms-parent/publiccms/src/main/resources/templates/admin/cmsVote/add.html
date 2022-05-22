@@ -1,7 +1,7 @@
-<@_vote id=id><#assign a=object/></@_vote>
+<@cms.vote id=id><#assign a=object/></@cms.vote>
 <form method="post" autocomplete="off" action="cmsVote/save?callbackType=closeCurrent&navTabId=cmsVote/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input name="id" type="hidden" value="${id!}" />
-    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
             <li><button type="submit" class="buttonActive" title="ctrl+s"><@t.page 'button.save'/></button></li>
@@ -43,7 +43,7 @@
                 </thead>
                 <tbody>
     <#if a?has_content>
-        <@_voteItemList voteId=a.id pageSize=500>
+        <@cms.voteItemList voteId=a.id pageSize=500>
             <#list page.list as v>
                     <tr>
                         <td>
@@ -58,7 +58,7 @@
                         </td>
                     </tr>
             </#list>
-        </@_voteItemList>
+        </@cms.voteItemList>
     </#if>
                 </tbody>
             </table>

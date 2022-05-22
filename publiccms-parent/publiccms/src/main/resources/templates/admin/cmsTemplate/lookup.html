@@ -1,5 +1,5 @@
 <#macro templateTree field filepath=''>
-    <@_templateList path=filepath>
+    <@tools.templateList path=filepath>
         <#list list as a>
             <li>
                 <#local path=filepath+'/'+a.fileName/>
@@ -7,17 +7,17 @@
                     <a href="javascript:;" onclick="return false;">${a.fileName}</a>
                     <ul><@templateTree field path/></ul>
                 <#else>
-                    <@_metadata path=path>
+                    <@tools.metadata path=path>
                         <a href="javascript:;" data="${path!}" onclick="$.bringBack({'${field}':'${path}'});return false;">
                             ${(object.alias)?has_content?then(object.alias+' ('+a.fileName+')',a.fileName)}
                         </a>
-                    </@_metadata>
+                    </@tools.metadata>
                 </#if>
             </li>
         <#else>
             <li><a><@t.page 'empty_directory'/></a></li>
         </#list>
-    </@_templateList>
+    </@tools.templateList>
 </#macro>
 <div class="pageFormContent" layoutH>
     <ul class="tree treeFolder">

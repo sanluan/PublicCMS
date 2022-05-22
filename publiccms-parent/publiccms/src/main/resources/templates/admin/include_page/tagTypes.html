@@ -9,10 +9,10 @@
     </dd>
 </dl>
 <script>
-    <@_tagType ids=typeIds>
+    <@cms.tagType ids=typeIds>
         <#list map as k,tagType>
         addTagType('${k}','${tagType.name?js_string}');
         </#list>
-    </@_tagType>
+    </@cms.tagType>
 </script>
 </#macro>

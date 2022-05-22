@@ -1,6 +1,6 @@
-<@_placeMetadata path=path><#assign a=object/></@_placeMetadata>
+<@tools.placeMetadata path=path><#assign a=object/></@tools.placeMetadata>
 <form method="post" autocomplete="off" action="cmsPage/save?rel=placeBox" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
-    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
             <li>
@@ -20,48 +20,48 @@
             <dt><@t.page 'operate'/>:</dt>
             <dd>
                 <#if site.useSsi>
-                    <a class="button" href="cmsTemplate/publishPlace?path=${(path?url)!}&_csrf=<@_csrfToken admin=true/>" target="ajaxTodo"><@t.page 'button.publish'/></a>
+                    <a class="button" href="cmsTemplate/publishPlace?path=${(path?url)!}&_csrf=<@tools.csrfToken admin=true/>" target="ajaxTodo"><@t.page 'button.publish'/></a>
                 </#if>
                 <#if (a.size?has_content) && 0 lt a.size>
                     <a class="button" href="cmsPlace/dataList.html?path=${path?url}" target="navTab" rel="cmsPlace/dataList" title="<@t.page 'place_data'/>:${(a.alias)!}"><i class="bi bi-layout-text-sidebar-reverse"></i><@t.page 'place_data'/>(${a.size})</a>
                 </#if>
             </dd>
         </dl>
-    <@_templatePlaceList path='include'+path>
+    <@tools.templatePlaceList path='include'+path>
         <#if list?has_content>
         <dl class="nowrap">
             <dt><@t.page 'place'/>:</dt>
             <dd>
                 <#list list as a>
-                    <@_placeMetadata path=a>
+                    <@tools.placeMetadata path=a>
                     <p>
                         <a class="button" href="cmsPlace/metadata.html?path=${a?url}" target="ajax" rel="placeBox">${(object.alias)!a}</a>
                         <#if 0 lt ((object.size)!0)>
                            <a class="button" href="cmsPlace/dataList.html?path=${a?url}" target="navTab" rel="cmsPlace/dataList:${a!}" title="<@t.page 'place_data'/>:${(object.alias)!a}"><@t.page 'place_data'/>(${object.size})</a>
                         </#if>
                     </p>
-                    </@_placeMetadata>
+                    </@tools.placeMetadata>
                 </#list>
             </dd>
         </dl>
         </#if>
-    </@_templatePlaceList>
-    <@_templateRegionList path='include'+path>
+    </@tools.templatePlaceList>
+    <@tools.templateRegionList path='include'+path>
         <#if list?has_content>
         <dl class="nowrap">
             <dt><@t.page 'diy'/>:</dt>
             <dd>
                 <#list list as a>
-                    <@_diyMetadata itemType='region' itemId=a>
+                    <@tools.diyMetadata itemType='region' itemId=a>
                     <p>
                         <a class="button" href="cmsPage/diy.html?id=${(object.id?url)!}" target="navTab" rel="cmsPage/diy" title="<@t.page 'diy'/>" icon="<i class='bi bi-palette'></i>">${(object.name)!}</a>
                     </p>
-                    </@_diyMetadata>
+                    </@tools.diyMetadata>
                 </#list>
             </dd>
         </dl>
         </#if>
-    </@_templateRegionList>
+    </@tools.templateRegionList>
         <#include "../include_page/extendData.html"/>
         <#assign extendList=(a.metadataExtendList)![]/>
         <#assign attribute=(a.extendData)!{}/>

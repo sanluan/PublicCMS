@@ -33,7 +33,8 @@ import com.publiccms.views.pojo.diy.CmsRegionData;
  */
 @Component
 public class TemplatePlaceListDirective extends AbstractTemplateDirective {
-    public static final Pattern PLACE_PATTERN = Pattern.compile("<@_includePlace[ ]+path=[\"|\']([^\"\']*)[\"|\'][ ]*/>");
+    public static final Pattern PLACE_PATTERN = Pattern
+            .compile("<@[_a-z\\.]*includePlace[ ]+path=[\"|\']([^\"\']*)[\"|\'][ ]*/>");
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {

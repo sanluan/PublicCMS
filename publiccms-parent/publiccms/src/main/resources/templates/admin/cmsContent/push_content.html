@@ -1,5 +1,5 @@
 <#macro categoryTree parentId=''>
-    <@_categoryList advanced=true parentId=parentId pageSize=500>
+    <@cms.categoryList advanced=true parentId=parentId pageSize=500>
         <#list page.list as a>
             <li>
                 <a href="cmsContent/push_content_list.html?categoryId=${a.id}&contentId=${contentId!}" class="exclude-translate" target="ajax" rel="push_content_list">${a.name!}</a>
@@ -12,7 +12,7 @@
         <#else>
             <li><a><@t.page 'empty_directory'/></a></li>
         </#list>
-    </@_categoryList>
+    </@cms.categoryList>
 </#macro>
 <div class="pageContent">
     <div class="unitBox leftPageContent" layoutH>

@@ -27,14 +27,14 @@ import com.publiccms.logic.service.cms.CmsDictionaryDataService;
 * </ul>
 * 使用示例
 * <p>
-* &lt;@_dictionaryData dictionaryId='data' value='1'&gt;${object.text}&lt;/@_dictionaryData&gt;
+* &lt;@cms.dictionaryData dictionaryId='data' value='1'&gt;${object.text}&lt;/@cms.dictionaryData&gt;
 * <p>
-* &lt;@_dictionaryData dictionaryId values='1,2,3'&gt;&lt;#list map as
-* k,v&gt;${v.text}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@_dictionaryData&gt;
+* &lt;@cms.dictionaryData dictionaryId values='1,2,3'&gt;&lt;#list map as
+* k,v&gt;${v.text}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.dictionaryData&gt;
 * 
 * <pre>
 *  &lt;script&gt;
-   $.getJSON('//cms.publiccms.com/api/directive/dictionaryData?dictionaryId=data&amp;value=1', function(data){    
+   $.getJSON('//cms.publiccms.com/api/directive/cms/dictionaryData?dictionaryId=data&amp;value=1', function(data){    
      console.log(data.text);
    });
    &lt;/script&gt;

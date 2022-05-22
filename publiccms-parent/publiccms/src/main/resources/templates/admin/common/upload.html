@@ -1,5 +1,5 @@
 <form action="file/doUpload" method="post" autocomplete="off" enctype="multipart/form-data" class="pageForm required-validate" onsubmit="return iframeCallback(this, $.bringBack)">
-    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <input type="hidden" name="field" value="${field!'fileName'}"/>
     <input type="hidden" name="originalField" value="${originalField!}"/>
     <div class="pageFormContent layoutBox" layoutH>
@@ -29,7 +29,7 @@
                     </#if>
                 </div>
                 <div class="pageContent">
-            <@_logUploadList userId=admin.id fileTypes=fileTypes pageIndex=1 pageSize=21>
+            <@log.uploadList userId=admin.id fileTypes=fileTypes pageIndex=1 pageSize=21>
                 <#list page.list as a>
                     <div class="image-list">
                         <#if 'image'=t.fileType(a.filePath)>
@@ -45,7 +45,7 @@
                         </p>
                     </div>
                 </#list>
-            </@_logUploadList>
+            </@log.uploadList>
                 </div>
                 <div id="fileBox">
                 </div>

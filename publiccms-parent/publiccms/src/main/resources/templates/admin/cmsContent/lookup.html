@@ -1,12 +1,12 @@
 <#if parentId?has_content>
     <ul>
-    <@_categoryList advanced=true parentId=parentId pageSize=500>
+    <@cms.categoryList advanced=true parentId=parentId pageSize=500>
         <#list page.list as a>
             <li<#if a.childIds?has_content> _src="cmsContent/lookup.html?parentId=${a.id}&field=${field!'relatedContentId'}"</#if>>
                 <a href="cmsContent/lookup_list.html?categoryId=${a.id}&field=${field!'relatedContentId'}" class="exclude-translate" target="ajax" rel="content_list">${a.name!}</a>
             </li>
         </#list>
-    </@_categoryList>
+    </@cms.categoryList>
     </ul>
 <#else>
 <div class="pageContent">
@@ -15,7 +15,7 @@
             <li>
                 <a href="cmsContent/lookup_list.html" target="ajax" rel="content_list"><@t.page 'category'/></a>
                 <ul>
-                    <@_categoryList advanced=true parentId=parentId pageSize=500>
+                    <@cms.categoryList advanced=true parentId=parentId pageSize=500>
                         <#list page.list as a>
                             <li<#if a.childIds?has_content> _src="cmsContent/lookup.html?parentId=${a.id}&field=${field!'relatedContentId'}"</#if>>
                                 <a href="cmsContent/lookup_list.html?categoryId=${a.id}&field=${field!'relatedContentId'}" class="exclude-translate" target="ajax" rel="content_list">${a.name!}</a>
@@ -23,7 +23,7 @@
                         <#else>
                             <li><a><@t.page 'empty_directory'/></a></li>
                         </#list>
-                    </@_categoryList>
+                    </@cms.categoryList>
                 </ul>
             </li>
          </ul>

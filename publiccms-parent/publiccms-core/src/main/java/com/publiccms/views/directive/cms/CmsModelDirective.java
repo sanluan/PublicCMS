@@ -27,14 +27,14 @@ import com.publiccms.views.pojo.entities.CmsModel;
  * </ul>
  * 使用示例
  * <p>
- * &lt;@_model id='article'&gt;${object.name}&lt;/@_model&gt;
+ * &lt;@cms.model id='article'&gt;${object.name}&lt;/@cms.model&gt;
  * <p>
- * &lt;@_model ids='article,link,picture'&gt;&lt;#list map as
- * k,v&gt;${v.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@_model&gt;
+ * &lt;@cms.model ids='article,link,picture'&gt;&lt;#list map as
+ * k,v&gt;${v.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.model&gt;
  * 
  * <pre>
   &lt;script&gt;
-   $.getJSON('//cms.publiccms.com/api/directive/model?id=article', function(data){    
+   $.getJSON('//cms.publiccms.com/api/directive/cms/model?id=article', function(data){    
      console.log(data.name);
    });
    &lt;/script&gt;

@@ -10,15 +10,15 @@
     </header>
     <nav data-diy="category">
         <a href="${site.useStatic?then(site.sitePath,site.dynamicPath)}">Home</a>
-<@_categoryList>
+<@cms.categoryList>
     <#list page.list as a>
         <a href="${a.url!}" target="_blank">${a.name}</a>
     </#list>
-</@_categoryList>
+</@cms.categoryList>
     </nav>
     <main>
-<@_contentList pageSize=10>
-    <@_contentList pageIndex=getRandom(page.totalPage) pageSize=10>
+<@cms.contentList pageSize=10>
+    <@cms.contentList pageIndex=getRandom(page.totalPage) pageSize=10>
         <ul>
         <#list page.list as a>
             <li>
@@ -30,8 +30,8 @@
             </li>
         </#list>
         </ul>
-    </@_contentList>
-</@_contentList>
+    </@cms.contentList>
+</@cms.contentList>
     </main>
     <footer>
         Copyright &copy; ${.now?string('yyyy')}

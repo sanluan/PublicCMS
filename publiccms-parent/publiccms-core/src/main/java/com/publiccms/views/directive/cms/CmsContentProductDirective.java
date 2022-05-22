@@ -30,14 +30,14 @@ import com.publiccms.logic.service.cms.CmsContentProductService;
 * </ul>
 * 使用示例
 * <p>
-* &lt;@_contentProduct id=1&gt;${object.title}&lt;/@_contentProduct&gt;
+* &lt;@cms.contentProduct id=1&gt;${object.title}&lt;/@cms.contentProduct&gt;
 * <p>
-* &lt;@_contentProduct ids=1,2,3&gt;&lt;#list map as
-* k,v&gt;${v.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@_contentProduct&gt;
+* &lt;@cms.contentProduct ids=1,2,3&gt;&lt;#list map as
+* k,v&gt;${v.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.contentProduct&gt;
 * 
 * <pre>
 *  &lt;script&gt;
-   $.getJSON('//cms.publiccms.com/api/directive/contentProduct?id=1', function(data){    
+   $.getJSON('//cms.publiccms.com/api/directive/cms/contentProduct?id=1', function(data){    
      console.log(data.title);
    });
    &lt;/script&gt;

@@ -12,15 +12,15 @@
     </header>
     <nav data-diy="category">
         <a href="${site.sitePath}">Home</a>
-<@_categoryList>
+<@cms.categoryList>
     <#list page.list as a>
         <a href="${a.url!}" target="_blank">${a.name}</a>
     </#list>
-</@_categoryList>
+</@cms.categoryList>
     </nav>
     <main>
         <h1 data-diy="category" data-diy-id="${(category.id)!}">${(category.name)!}</h1>
-<@_contentList categoryId=category.id containChild=category.containChild pageIndex=pageIndex pageSize=category.pageSize>
+<@cms.contentList categoryId=category.id containChild=category.containChild pageIndex=pageIndex pageSize=category.pageSize>
         <ul data-diy="content">
     <#list page.list as a>
             <li>
@@ -67,15 +67,15 @@
                 <span>Next page</span>
             </#if>
         </div>
-</@_contentList>
+</@cms.contentList>
         <aside>
             <h3>Popular content</h3>
             <ul>
-<@_contentList categoryId=category.id containChild=true orderField='clicks' pageSize=10>
+<@cms.contentList categoryId=category.id containChild=true orderField='clicks' pageSize=10>
     <#list page.list as a>
                 <li><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect?id=${a.id}<#else>${a.url!}</#if>" target="_blank">${a.title}</a><span>${a.clicks}</span></li>
     </#list>
-</@_contentList>
+</@cms.contentList>
             </ul>
         </aside>
     </main>

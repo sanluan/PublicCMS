@@ -1,5 +1,5 @@
 <#macro chipTree filepath>
-    <@_templateList path=filepath>
+    <@tools.templateList path=filepath>
         <#list list as a>
             <li>
                 <#local path=filepath+'/'+a.fileName>
@@ -9,17 +9,17 @@
                     <@chipTree path/>
                 </ul>
             <#else>
-                <@_metadata path=path>
+                <@tools.metadata path=path>
                     <a href="javascript:;" onclick="use('${path}','${(object.alias)?has_content?then('<#-- '+object.alias+' -->','')?js_string}');$.pdialog.closeCurrent();return false;">
                         ${(object.alias)?has_content?then(object.alias+' ('+a.fileName+')',a.fileName)}
                     </a>
-                </@_metadata>
+                </@tools.metadata>
             </#if>
             </li>
         <#else>
             <li><a><@t.page 'empty_directory'/></a></li>
         </#list>
-    </@_templateList>
+    </@tools.templateList>
 </#macro>
 <script>
 function use(path,description){

@@ -13,7 +13,7 @@
     </thead>
     <tbody>
 <#if contentId?has_content>
-    <@_contentProductList contentId=contentId absoluteURL=false pageSize=100>
+    <@cms.contentProductList contentId=contentId absoluteURL=false pageSize=100>
         <#list page.list as product>
             <tr>
                 <td>
@@ -41,7 +41,7 @@
                 </td>
             </tr>
         </#list>
-    </@_contentProductList>
+    </@cms.contentProductList>
 </#if>
     </tbody>
 </table>

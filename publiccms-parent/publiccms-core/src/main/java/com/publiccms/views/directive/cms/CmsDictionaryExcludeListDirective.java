@@ -31,12 +31,12 @@ import com.publiccms.logic.service.cms.CmsDictionaryExcludeService;
 * </ul>
 * 使用示例
 * <p>
-* &lt;@_dictionaryExcludeList dictionaryId='data'&gt;&lt;#list page.list as
-* a&gt;${a.id.excludeDictionaryId}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@_dictionaryExcludeList&gt;
+* &lt;@cms.dictionaryExcludeList dictionaryId='data'&gt;&lt;#list page.list as
+* a&gt;${a.id.excludeDictionaryId}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.dictionaryExcludeList&gt;
 * 
 * <pre>
 &lt;script&gt;
-$.getJSON('//cms.publiccms.com/api/directive/dictionaryExcludeList?dictionaryId=1&amp;parentValue=text', function(data){    
+$.getJSON('//cms.publiccms.com/api/directive/cms/dictionaryExcludeList?dictionaryId=1&amp;parentValue=text', function(data){    
   console.log(data);
 });
 &lt;/script&gt;

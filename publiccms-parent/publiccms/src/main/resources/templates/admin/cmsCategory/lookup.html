@@ -1,6 +1,6 @@
 <#if parentId?has_content>
 <ul>
-    <@_categoryList advanced=true parentId=parentId pageSize=500>
+    <@cms.categoryList advanced=true parentId=parentId pageSize=500>
         <#list page.list as a>
             <li<#if a.childIds?has_content> _src="cmsCategory/lookup.html?currentCategoryId=${currentCategoryId!}&parentId=${a.id}&field=${field!'categoryId'}"</#if>>
                 <#if !(currentCategoryId?has_content) || !(a.id?string=currentCategoryId)>
@@ -10,7 +10,7 @@
                 </#if>
             </li>
         </#list>
-    </@_categoryList>
+    </@cms.categoryList>
 </ul>
 <#else>
 <div class="pageFormContent" layoutH>
@@ -18,7 +18,7 @@
         <li>
             <a href="javascript:;" onclick="$.bringBack({${field!'categoryId'}:'',categoryId:'', categoryName:'',parentId:''});return false;"><@t.page 'button.clear_select'/></a>
         </li>
-        <@_categoryList advanced=true parentId=parentId pageSize=500>
+        <@cms.categoryList advanced=true parentId=parentId pageSize=500>
         <#list page.list as a>
             <li<#if a.childIds?has_content> _src="cmsCategory/lookup.html?currentCategoryId=${currentCategoryId!}&parentId=${a.id}&field=${field!'categoryId'}"</#if>>
                 <#if !(currentCategoryId?has_content) || !(a.id?string=currentCategoryId)>
@@ -28,7 +28,7 @@
                 </#if>
             </li>
         </#list>
-    </@_categoryList>
+    </@cms.categoryList>
     </ul>
 </div>
 <div class="formBar">

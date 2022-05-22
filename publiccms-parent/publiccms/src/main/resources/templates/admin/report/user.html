@@ -18,7 +18,7 @@ document.getElementById("userComment").style.height=document.getElementById("use
 echarts.init(document.getElementById("register")).setOption({
     title: {
         text: "<@t.page 'register'/>",
-        subtext: "<@t.page 'total'/>:<@_sysUserList pageSize=0>${page.totalCount}</@_sysUserList>",
+        subtext: "<@t.page 'total'/>:<@sys.userList pageSize=0>${page.totalCount}</@sys.userList>",
         x:"center"
     },
     tooltip : {
@@ -47,7 +47,7 @@ echarts.init(document.getElementById("register")).setOption({
     {
            name:"<@t.page 'register'/>",
            type:"line",
-           data:[<#list 30..0 as a><@_sysUserList startRegisteredDate=(.now?long-a*86400000)?number_to_date?string endRegisteredDate=(.now?long-(a-1)*86400000)?number_to_date?string>${page.totalCount}</@_sysUserList><#sep>,</#list>],
+           data:[<#list 30..0 as a><@sys.userList startRegisteredDate=(.now?long-a*86400000)?number_to_date?string endRegisteredDate=(.now?long-(a-1)*86400000)?number_to_date?string>${page.totalCount}</@sys.userList><#sep>,</#list>],
            areaStyle: {}
        }]
 });
@@ -82,7 +82,7 @@ echarts.init(document.getElementById("login")).setOption({
     {
         name:"<@t.page 'login'/>",
         type:"line",
-        data:[<#list 30..0 as a><@_logLoginList startCreateDate=(.now?long-a*86400000)?number_to_date?string endCreateDate=(.now?long-(a-1)*86400000)?number_to_date?string>${page.totalCount}</@_logLoginList><#sep>,</#list>],
+        data:[<#list 30..0 as a><@log.loginList startCreateDate=(.now?long-a*86400000)?number_to_date?string endCreateDate=(.now?long-(a-1)*86400000)?number_to_date?string>${page.totalCount}</@log.loginList><#sep>,</#list>],
         areaStyle: {}
     }]
 });
@@ -117,14 +117,14 @@ echarts.init(document.getElementById("operate")).setOption({
     {
         name:"<@t.page 'operate'/>",
         type:"line",
-        data:[<#list 30..0 as a><@_logOperateList channel='web_manager' startCreateDate=(.now?long-a*86400000)?number_to_date?string endCreateDate=(.now?long-(a-1)*86400000)?number_to_date?string>${page.totalCount}</@_logOperateList><#sep>,</#list>],
+        data:[<#list 30..0 as a><@log.operateList channel='web_manager' startCreateDate=(.now?long-a*86400000)?number_to_date?string endCreateDate=(.now?long-(a-1)*86400000)?number_to_date?string>${page.totalCount}</@log.operateList><#sep>,</#list>],
         areaStyle: {}
     }]
 });
 echarts.init(document.getElementById("userComment")).setOption({
     title: {
         text: "<@t.page 'comment'/>",
-        subtext: "<@t.page 'total'/>:<@_commentList pageSize=0>${page.totalCount}</@_commentList>",
+        subtext: "<@t.page 'total'/>:<@cms.commentList pageSize=0>${page.totalCount}</@cms.commentList>",
         x:"center"
     },
     tooltip : {
@@ -153,7 +153,7 @@ echarts.init(document.getElementById("userComment")).setOption({
     {
         name:"<@t.page 'operate'/>",
         type:"line",
-        data:[<#list 30..0 as a><@_logOperateList operate='save.cmsComment' startCreateDate=(.now?long-a*86400000)?number_to_date?string endCreateDate=(.now?long-(a-1)*86400000)?number_to_date?string>${page.totalCount}</@_logOperateList><#sep>,</#list>],
+        data:[<#list 30..0 as a><@log.operateList operate='save.cmsComment' startCreateDate=(.now?long-a*86400000)?number_to_date?string endCreateDate=(.now?long-(a-1)*86400000)?number_to_date?string>${page.totalCount}</@log.operateList><#sep>,</#list>],
         areaStyle: {}
     }]
 });

@@ -16,15 +16,15 @@
     </header>
     <nav data-diy="category">
         <a href="${site.dynamicPath}">Home</a>
-<@_categoryList>
+<@cms.categoryList>
     <#list page.list as a>
         <a href="${a.url!}" target="_blank">${a.name}</a>
     </#list>
-</@_categoryList>
+</@cms.categoryList>
     </nav>
     <main>
         <#macro message code>${springMacroRequestContext.getMessage(code)}</#macro>
-    <@_tradeOrderList userId=user.id pageIndex=pageIndex pageSize=10>
+    <@trade.orderList userId=user.id pageIndex=pageIndex pageSize=10>
         <h3>Orders</h3>
         <ul>
         <#list page.list as a>
@@ -70,7 +70,7 @@
                 <span>Next page</span>
             </#if>
         </div>
-    </@_tradeOrderList>
+    </@trade.orderList>
     </main>
     <footer>
         Copyright &copy; ${.now?string('yyyy')}

@@ -35,14 +35,14 @@ import com.publiccms.views.pojo.entities.ClickStatistics;
 * </ul>
 * 使用示例
 * <p>
-* &lt;@_content id=1&gt;${object.title}&lt;/@_content&gt;
+* &lt;@cms.content id=1&gt;${object.title}&lt;/@cms.content&gt;
 * <p>
-* &lt;@_content ids=1,2,3&gt;&lt;#list map as
-* k,v&gt;${v.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@_content&gt;
+* &lt;@cms.content ids=1,2,3&gt;&lt;#list map as
+* k,v&gt;${v.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.content&gt;
 * 
 * <pre>
 *  &lt;script&gt;
-   $.getJSON('//cms.publiccms.com/api/directive/content?id=1', function(data){    
+   $.getJSON('//cms.publiccms.com/api/directive/cms/content?id=1', function(data){    
      console.log(data.title);
    });
    &lt;/script&gt;

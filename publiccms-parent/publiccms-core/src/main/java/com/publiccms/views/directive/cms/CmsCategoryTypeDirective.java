@@ -28,14 +28,14 @@ import com.publiccms.views.pojo.entities.CmsCategoryType;
  * </ul>
  * 使用示例
  * <p>
- * &lt;@_categoryType id=1&gt;${object.name}&lt;/@_categoryType&gt;
+ * &lt;@cms.categoryType id=1&gt;${object.name}&lt;/@cms.categoryType&gt;
  * <p>
- * &lt;@_categoryType ids=1,2,3&gt;&lt;#list map as
- * k,v&gt;${v.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@_categoryType&gt;
+ * &lt;@cms.categoryType ids=1,2,3&gt;&lt;#list map as
+ * k,v&gt;${v.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.categoryType&gt;
  * 
  * <pre>
   &lt;script&gt;
-   $.getJSON('//cms.publiccms.com/api/directive/categoryType?id=banner', function(data){    
+   $.getJSON('//cms.publiccms.com/api/directive/cms/categoryType?id=banner', function(data){    
      console.log(data.name);
    });
    &lt;/script&gt;

@@ -1,4 +1,4 @@
-<@_content id=id!copyId absoluteURL=false>
+<@cms.content id=id!copyId absoluteURL=false>
     <#assign
         a=object
         parentId=a.parentId!''
@@ -6,13 +6,13 @@
         modelId=a.modelId!''
         attribute=getContentAttribute(a.id)!{}
     />
-</@_content>
-<@_category id=categoryId!><#assign category=object/></@_category>
-<@_model id=modelId!><#assign model=object/></@_model>
+</@cms.content>
+<@cms.category id=categoryId!><#assign category=object/></@cms.category>
+<@cms.model id=modelId!><#assign model=object/></@cms.model>
 <form method="post" autocomplete="off" action="cmsContent/save?callbackType=closeCurrent&navTabId=cmsContent/list" class="pageForm required-validate" onsubmit="clickAddTag(); return validateCallback(this,navTabAjaxDone);">
     <input name="id" type="hidden" value="${id!}" />
     <input name="parentId" type="hidden" value="${parentId!}" />
-    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
             <#if a?has_content && model?has_content && model.hasChild>
@@ -21,7 +21,7 @@
             <li>
                 <label><input type="checkbox" name="draft"/><@t.page 'draft'/></label>
             </li>
-        <@_sysAuthorized roleIds=admin.roles url='cmsContent/check'>
+        <@sys.authorized roleIds=admin.roles url='cmsContent/check'>
             <li>
                 <label>
                     <input type="checkbox" name="checked" onclick="if($(this).is(':checked')){$('input[name=draft]',navTab.getCurrentPanel()).parent().parent().hide();}else{$('input[name=draft]',navTab.getCurrentPanel()).parent().parent().show();}"/>
@@ -29,7 +29,7 @@
                 </label>
             </li>
             <#if a?has_content&&1=a.status><script>$('input[name=checked]',navTab.getCurrentPanel()).click();</script></#if>
-        </@_sysAuthorized>
+        </@sys.authorized>
             <li><button type="submit" class="buttonActive" title="ctrl+s"<#if id?has_content> lock-url="common/lock?itemType=content&itemId=${id!}" close-url="common/unlock?itemType=content&itemId=${id!}"</#if>><@t.page 'button.save'/></button></li>
             <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
         </ul>
@@ -48,14 +48,14 @@
         <#if model?has_content>
             <#assign fieldList=model.fieldList![]/>
             <#assign requiredFieldList=model.requiredFieldList![]/>
-            <@_content id=parentId>
+            <@cms.content id=parentId>
                 <dl class="nowrap">
                     <dt><@t.page 'content.parent'/>:</dt>
                     <dd>
                         ${(object.title)!}
                     </dd>
                 </dl>
-            </@_content>
+            </@cms.content>
                 <dl class="nowrap">
                     <dt><@t.page 'category'/>:</dt>
                     <dd>
@@ -76,13 +76,13 @@ $('input[name=\'categoryName\']',navTab.getCurrentPanel()).on('change',function(
 });
 <#assign copy=false/>
 <#if a?has_content>
-<@_contentQuoteList quoteId=a.id>
+<@cms.contentQuoteList quoteId=a.id>
     <#list list as a>
-    <@_category id=a.categoryId>
+    <@cms.category id=a.categoryId>
     addCategory('${a.categoryId}','${object.name}','${a.id}');
-    </@_category>
+    </@cms.category>
     </#list>
-</@_contentQuoteList>
+</@cms.contentQuoteList>
 <#if copyId?has_content && !id?has_content><#assign copy=true/></#if>
 </#if>
 </script>
@@ -201,11 +201,11 @@ $('input[name=timing]',navTab.getCurrentPanel()).click();
             </#if>
             <#include "../include_page/extendData.html"/>
             <#if category?has_content&&category.extendId?has_content>
-                 <@_sysExtendFieldList extendId=category.extendId>
+                 <@sys.extendFieldList extendId=category.extendId>
                     <#assign extendList=list![]/>
                     <#assign extendValue=attribute!{}/>
                     <@extendData 'categoryExtendDataList' extendList extendValue 'contentForm'/>
-                 </@_sysExtendFieldList>
+                 </@sys.extendFieldList>
             </#if>
             <#assign
                 extendList=model.extendList![]
@@ -264,7 +264,7 @@ $('input[name=timing]',navTab.getCurrentPanel()).click();
                     </thead>
                     <tbody>
         <#if id?has_content>
-            <@_contentRelatedList contentId=id>
+            <@cms.contentRelatedList contentId=id>
                 <#list page.list as related>
                         <tr>
                             <td>
@@ -287,7 +287,7 @@ $('input[name=timing]',navTab.getCurrentPanel()).click();
                             </td>
                         </tr>
                 </#list>
-            </@_contentRelatedList>
+            </@cms.contentRelatedList>
         </#if>
                     </tbody>
                 </table>

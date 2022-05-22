@@ -42,12 +42,12 @@ import com.publiccms.views.pojo.query.CmsCategoryQuery;
  * </ul>
  * 使用示例
  * <p>
- * &lt;@_categoryList pageSize=10&gt;&lt;#list page.list as
- * a&gt;${a.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@_categoryList&gt;
+ * &lt;@cms.categoryList pageSize=10&gt;&lt;#list page.list as
+ * a&gt;${a.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.categoryList&gt;
  * 
  * <pre>
    &lt;script&gt;
-    $.getJSON('//cms.publiccms.com/api/directive/categoryList?pageSize=10', function(data){    
+    $.getJSON('//cms.publiccms.com/api/directive/cms/categoryList?pageSize=10', function(data){    
       console.log(data.totalCount);
     });
     &lt;/script&gt;

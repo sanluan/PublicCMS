@@ -1,4 +1,4 @@
-<@_sysRoleList pageIndex=pageNum pageSize=numPerPage>
+<@sys.roleList pageIndex=pageNum pageSize=numPerPage>
 <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
 </form>
@@ -27,7 +27,7 @@
                 <td>${a.showAllModule?then(t.pageMessage('yes'),'')}</td>
                 <td>
                     <a href="sysRole/add.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="sysRole/edit"><i class="icon-edit"></i><@t.page 'role.edit'/></a>
-                    <a href="sysRole/delete?id=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i><@t.page 'button.delete'/></a>
+                    <a href="sysRole/delete?id=${a.id}&_csrf=<@tools.csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i><@t.page 'button.delete'/></a>
                 </td>
             </tr>
             </#list>
@@ -35,4 +35,4 @@
     </table>
     <#include "../include_page/page.html"/>
 </div>
-</@_sysRoleList>
+</@sys.roleList>

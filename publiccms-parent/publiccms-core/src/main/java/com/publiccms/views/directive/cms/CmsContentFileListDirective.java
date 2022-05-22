@@ -43,12 +43,12 @@ import com.publiccms.logic.service.cms.CmsContentFileService;
  * </ul>
  * 使用示例
  * <p>
- * &lt;@_contentFileList contentId=1 pageSize=10&gt;&lt;#list page.list as
- * a&gt;${a.filePath}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@_contentFileList&gt;
+ * &lt;@cms.contentFileList contentId=1 pageSize=10&gt;&lt;#list page.list as
+ * a&gt;${a.filePath}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.contentFileList&gt;
  * 
  * <pre>
 *  &lt;script&gt;
-   $.getJSON('//cms.publiccms.com/api/directive/contentFileList?contentId=1&amp;pageSize=10', function(data){    
+   $.getJSON('//cms.publiccms.com/api/directive/cms/contentFileList?contentId=1&amp;pageSize=10', function(data){    
      console.log(data.totalCount);
    });
    &lt;/script&gt;

@@ -97,11 +97,11 @@ public class ApiController {
             HttpParameterHandler handler = new HttpParameterHandler(mappingJackson2HttpMessageConverter,
                     CommonConstants.jsonMediaType, request, response);
             try {
-                handler.put(CommonConstants.ERROR, EXCEPTION).render();
+                log.error(e.getMessage(), e);
+                handler.put(CommonConstants.ERROR, e.getMessage()).render();
             } catch (Exception renderException) {
                 log.error(renderException.getMessage());
             }
-            log.error(e.getMessage(), e);
         }
     }
 

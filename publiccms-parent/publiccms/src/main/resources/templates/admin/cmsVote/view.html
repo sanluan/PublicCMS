@@ -1,5 +1,5 @@
 <div class="pageFormContent" layoutH>
-<@_vote id=id>
+<@cms.vote id=id>
     <dl class="nowrap">
         <dt><@t.page 'title'/>:</dt>
         <dd class="exclude-translate">
@@ -25,7 +25,7 @@
         </dd>
     </dl>
 <#if !pageIndex?has_content || '1' != pageIndex>
-    <@_voteItemList voteId=object.id pageSize=500>
+    <@cms.voteItemList voteId=object.id pageSize=500>
         <#if page.totalCount gt 0>
     <fieldset>
         <legend><@t.page 'vote_item'/></legend>
@@ -45,9 +45,9 @@
         </div>
     </fieldset>
         </#if>
-    </@_voteItemList>
+    </@cms.voteItemList>
 </#if>
-<@_userVoteList voteId=object.id pageIndex=pageIndex>
+<@cms.userVoteList voteId=object.id pageIndex=pageIndex>
     <#if page.totalCount gt 0>
     <fieldset>
         <legend><@t.page 'vote'/></legend>
@@ -55,8 +55,8 @@
             <@t.merge 'userIds' u.id.userId!/>
             <@t.merge 'itemIds' u.itemId!/>
         </#list>
-        <@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
-        <@_voteItem ids=t.itemIds!><#assign itemMap=map!/></@_voteItem>
+        <@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
+        <@cms.voteItem ids=t.itemIds!><#assign itemMap=map!/></@cms.voteItem>
         <#list page.list as u>
         <dl class="nowrap">
             <dt>
@@ -79,8 +79,8 @@
         </#if>
     </fieldset>
     </#if>
-</@_userVoteList>
-</@_vote>
+</@cms.userVoteList>
+</@cms.vote>
 </div>
 <div class="formBar">
     <ul>

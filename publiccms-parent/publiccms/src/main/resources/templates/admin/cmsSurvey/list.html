@@ -1,4 +1,4 @@
-<@_surveyList userId=userId startStartDate=startStartDate endStartDate=endStartDate 
+<@cms.surveyList userId=userId startStartDate=startStartDate endStartDate=endStartDate 
             startEndDate=startEndDate endEndDate=endEndDate 
             title=title disabled=disabled 
             orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
@@ -39,7 +39,7 @@
         </div>
     </form>
 </div>
-<@_sysAuthorized roleIds=admin.roles urls='cmsSurvey/add,cmsSurvey/delete,cmsSurvey/view,cmsSurveyQuestion/list,cmsUserSurvey/list'><#assign authorizedMap=map/></@_sysAuthorized>
+<@sys.authorized roleIds=admin.roles urls='cmsSurvey/add,cmsSurvey/delete,cmsSurvey/view,cmsSurveyQuestion/list,cmsUserSurvey/list'><#assign authorizedMap=map/></@sys.authorized>
 <div class="pageContent">
     <div class="panelBar">
         <ul class="toolBar">
@@ -47,7 +47,7 @@
             <li><a href="cmsSurvey/add.html" target="navTab" rel="cmsSurvey/add"><i class="icon-plus-sign-alt icon-large"></i><@t.page 'button.add'/></a></li>
         </#if>
         <#if authorizedMap['cmsSurvey/delete']>
-            <li><a href="cmsSurvey/delete?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i><@t.page 'button.batch_delete'/></a></li>
+            <li><a href="cmsSurvey/delete?_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i><@t.page 'button.batch_delete'/></a></li>
         </#if>
         </ul>
     </div>
@@ -72,7 +72,7 @@
                 <@t.merge 'userIds' a.userId!/>
             </#list>
 
-            <@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
+            <@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
 
             <#list page.list as a>
             <tr>
@@ -98,7 +98,7 @@
                         <a href="cmsUserSurvey/list.html?surveyId=${a.id}" class="edit btnText green" target="navTab" rel="cmsUserSurvey/list"><i class="icon-umbrella"></i><@t.page 'answer'/></a>
                     </#if>
                     <#if authorizedMap['cmsSurvey/delete']>
-                        <a href="cmsSurvey/delete?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i><@t.page 'button.delete'/></a>
+                        <a href="cmsSurvey/delete?ids=${a.id}&_csrf=<@tools.csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i><@t.page 'button.delete'/></a>
                     </#if>
                 </#if>
                 </td>
@@ -108,4 +108,4 @@
     </table>
     <#include "../include_page/page.html"/>
 </div>
-</@_surveyList>
+</@cms.surveyList>

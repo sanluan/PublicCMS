@@ -1,9 +1,9 @@
-<@_logTask id=id><#assign a=object/></@_logTask>
+<@log.task id=id><#assign a=object/></@log.task>
 <div class="pageFormContent" layoutH>
     <dl>
         <dt><@t.page 'task'/>:</dt>
         <dd>
-            <@_sysTask id=a.taskId>${(object.name)!}</@_sysTask>
+            <@sys.task id=a.taskId>${(object.name)!}</@sys.task>
         </dd>
     </dl>
     <dl>

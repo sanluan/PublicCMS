@@ -29,14 +29,14 @@ import com.publiccms.common.handler.RenderHandler;
 * </ul>
 * 使用示例
 * <p>
-* &lt;@_contentTextHistory id=1&gt;${object.text}&lt;/@_contentTextHistory&gt;
+* &lt;@cms.contentTextHistory id=1&gt;${object.text}&lt;/@cms.contentTextHistory&gt;
 * <p>
-* &lt;@_contentTextHistory ids=1,2,3&gt;&lt;#list map as
-* k,v&gt;${v.text}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@_contentTextHistory&gt;
+* &lt;@cms.contentTextHistory ids=1,2,3&gt;&lt;#list map as
+* k,v&gt;${v.text}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.contentTextHistory&gt;
 * 
 * <pre>
   &lt;script&gt;
-   $.getJSON('//cms.publiccms.com/api/directive/contentTextHistory?id=1&amp;appToken=接口访问授权Token', function(data){    
+   $.getJSON('//cms.publiccms.com/api/directive/cms/contentTextHistory?id=1&amp;appToken=接口访问授权Token', function(data){    
      console.log(data.text);
    });
    &lt;/script&gt;

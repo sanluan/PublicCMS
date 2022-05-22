@@ -1,4 +1,4 @@
-<@_sysUserList deptId=deptId startRegisteredDate=startRegisteredDate endRegisteredDate=endRegisteredDate startLastLoginDate=startLastLoginDate endLastLoginDate=endLastLoginDate
+<@sys.userList deptId=deptId startRegisteredDate=startRegisteredDate endRegisteredDate=endRegisteredDate startLastLoginDate=startLastLoginDate endLastLoginDate=endLastLoginDate
             superuser=superuser emailChecked=emailChecked name=name
             advanced=true disabled=disabled
             orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
@@ -96,9 +96,9 @@
                 <td class="wrap">
                     <a href="sysDept/addUser.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="sysUser/edit"><i class="icon-edit"></i><@t.page 'user.edit'/></a>
                     <#if a.disabled>
-                        <a href="sysDept/enableUser?id=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText green" title="<@t.page 'confirm.enable'/>" target="ajaxTodo"><i class="icon-circle"></i><@t.page 'button.enable'/></a>
+                        <a href="sysDept/enableUser?id=${a.id}&_csrf=<@tools.csrfToken admin=true/>" class="btnText green" title="<@t.page 'confirm.enable'/>" target="ajaxTodo"><i class="icon-circle"></i><@t.page 'button.enable'/></a>
                     <#else>
-                        <a href="sysDept/disableUser?id=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText red" title="<@t.page 'confirm.disable'/>" target="ajaxTodo"><i class="icon-ban-circle"></i><@t.page 'button.disable'/></a>
+                        <a href="sysDept/disableUser?id=${a.id}&_csrf=<@tools.csrfToken admin=true/>" class="btnText red" title="<@t.page 'confirm.disable'/>" target="ajaxTodo"><i class="icon-ban-circle"></i><@t.page 'button.disable'/></a>
                     </#if>
                     <a href="log/login.html?userId=${a.id}" class="btnText" target="navTab" rel="log/login"><@t.page 'log.login'/></a>
                     <a href="log/operate.html?userId=${a.id}" class="btnText" target="navTab" rel="log/operate"><@t.page 'log.operate'/></a>
@@ -109,4 +109,4 @@
     </table>
     <#include "../include_page/page.html"/>
 </div>
-</@_sysUserList>
+</@sys.userList>

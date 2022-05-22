@@ -33,12 +33,12 @@ import com.publiccms.logic.component.template.ModelComponent;
  * </ul>
  * 使用示例
  * <p>
- * &lt;@_modelList&gt;&lt;#list page.list as
- * a&gt;${a.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@_modelList&gt;
+ * &lt;@cms.modelList&gt;&lt;#list page.list as
+ * a&gt;${a.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.modelList&gt;
  * 
  * <pre>
  &lt;script&gt;
-  $.getJSON('//cms.publiccms.com/api/directive/modelList', function(data){    
+  $.getJSON('//cms.publiccms.com/api/directive/cms/modelList', function(data){    
     console.log(data.totalCount);
   });
   &lt;/script&gt;

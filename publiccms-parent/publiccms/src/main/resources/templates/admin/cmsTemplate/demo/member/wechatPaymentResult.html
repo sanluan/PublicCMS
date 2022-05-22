@@ -14,11 +14,11 @@
     </header>
     <nav data-diy="category">
         <a href="${site.useStatic?then(site.sitePath,site.dynamicPath)}">Home</a>
-<@_categoryList>
+<@cms.categoryList>
     <#list page.list as a>
         <a href="${a.url!}" target="_blank">${a.name}</a>
     </#list>
-</@_categoryList>
+</@cms.categoryList>
     </nav>
     <main data-diy="config" data-diy-id="wechat">
         <h3 class="text-center">${payment.description!}</h3>

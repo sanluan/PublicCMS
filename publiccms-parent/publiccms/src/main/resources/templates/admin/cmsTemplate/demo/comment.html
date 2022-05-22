@@ -18,17 +18,17 @@
     </header>
     <nav data-diy="category">
         <a href="${site.useStatic?then(site.sitePath,site.dynamicPath)}">Home</a>
-<@_categoryList>
+<@cms.categoryList>
     <#list page.list as a>
         <a href="${a.url!}" target="_blank">${a.name}</a>
     </#list>
-</@_categoryList>
+</@cms.categoryList>
     </nav>
     <main>
         <h1 data-diy="content" data-diy-id="${(content.id)!}"><a href="${content.url!}">${content.title}</a></h1>
         <p>${content.description!}</p>
 <#if user?has_content>
-    <@_commentList advanced=true userId=user.id contentId=content.id status=2>
+    <@cms.commentList advanced=true userId=user.id contentId=content.id status=2>
         <#if page.totalCount gt 0>
             <h3>My Comments</h3>
             <ul>
@@ -40,14 +40,14 @@
             </#list>
             </ul>
         </#if>
-    </@_commentList>
+    </@cms.commentList>
         <form method="post" action="${site.dynamicPath}comment/save">
-            <@_comment id=id>
+            <@cms.comment id=id>
                 <input type="hidden" name="id" value="${object.id}"/>
                 <#assign text=object.text!/>
-            </@_comment>
+            </@cms.comment>
             <input type="hidden" name="replyId" value="${replyId!}"/>
-            <input type="hidden" name="_csrf" value="<@_csrfToken/>"/>
+            <input type="hidden" name="_csrf" value="<@tools.csrfToken/>"/>
             <input type="hidden" name="contentId" value="${content.id}"/>
             <input name="returnUrl" type="hidden" value="${content.url!}" />
             <p><label>Comment:</label></p>
@@ -59,21 +59,21 @@
         <a href="register.html?returnUrl=${(site.dynamicPath+'comment.html?contentId='+content.id)?url}">Register</a>
 </#if>
 <#macro merge name value><#if !.vars[name]??><@"<#assign ${name}=''>"?interpret /></#if><#if value?has_content><@"<#assign ${name}=${name}+'${value},'>"?interpret /></#if></#macro>
-<@_commentList contentId=content.id pageIndex=pageIndex>
+<@cms.commentList contentId=content.id pageIndex=pageIndex>
     <#list page.list as a>
         <@merge 'userIds' a.userId!/>
         <@merge 'userIds' a.replyUserId!/>
     </#list>
-    <@_sysUser ids=userIds!><#assign userMap=map!/></@_sysUser>
+    <@sys.user ids=userIds!><#assign userMap=map!/></@sys.user>
     <h3>Comments</h3>
     <ul>
     <#list page.list as a>
         <li class="underline">
             <p>${userMap[a.userId?string].nickname}<span class="right">${a.createDate}</span></p>
             <#if a.replyId?has_content>
-                <@_comment id=a.replyId>
+                <@cms.comment id=a.replyId>
                     <p class="border gray">${userMap[a.replyUserId?string].nickname} : ${object.text!}</p>
-                </@_comment>
+                </@cms.comment>
             </#if>
             <p>${a.text!}<span class="right"><a href="comment.html?contentId=${content.id!}&replyId=${a.id}">Reply</a></span></p>
         </li>
@@ -114,7 +114,7 @@
             <span>Next page</span>
         </#if>
     </div>
-</@_commentList>
+</@cms.commentList>
     </main>
     <footer>
         Copyright &copy; ${.now?string('yyyy')}

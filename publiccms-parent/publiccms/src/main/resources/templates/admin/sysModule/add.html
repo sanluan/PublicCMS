@@ -1,12 +1,12 @@
-<@_sysModule id=id>
+<@sys.module id=id>
     <#assign a=object/>
     <#if (object.parentId)?has_content><#assign parentId=(object.parentId)/></#if>
-</@_sysModule>
-<@_sysModule id=parentId!><#assign module=object/></@_sysModule>
+</@sys.module>
+<@sys.module id=parentId!><#assign module=object/></@sys.module>
 <#if !deep?has_content><#assign deep=0/><#else><#assign deep=deep?number/></#if>
 <form method="post" autocomplete="off" action="sysModule/save?callbackType=closeCurrent&navTabId=sysModule/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input name="oldId" type="hidden" value="${id!}" />
-    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
             <li><button type="submit" class="buttonActive" title="ctrl+s"><@t.page 'button.save'/></button></li>
@@ -38,7 +38,7 @@
                 <dt>${v}:</dt>
                 <dd>
                     <input type="hidden" name="langList[${index}].id.lang" value="${k}"/>
-                    <input class="required" name="langList[${index}].value" type="text" size="20" maxlength="100" value="<@_sysModuleLang moduleId=id lang=k>${object.value!}</@_sysModuleLang>"/>
+                    <input class="required" name="langList[${index}].value" type="text" size="20" maxlength="100" value="<@sys.moduleLang moduleId=id lang=k>${object.value!}</@sys.moduleLang>"/>
                 </dd>
             </dl>
             <#assign index++/>

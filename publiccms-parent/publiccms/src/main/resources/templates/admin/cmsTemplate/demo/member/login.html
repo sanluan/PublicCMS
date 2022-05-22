@@ -13,11 +13,11 @@
     </header>
     <nav data-diy="category">
         <a href="${site.dynamicPath}">Home</a>
-<@_categoryList>
+<@cms.categoryList>
     <#list page.list as a>
         <a href="${a.url!}" target="_blank">${a.name}</a>
     </#list>
-</@_categoryList>
+</@cms.categoryList>
     </nav>
     <main data-diy="config" data-diy-id="site">
         <#macro message code>${springMacroRequestContext.getMessage(code)}</#macro>
@@ -34,7 +34,7 @@
                 </form>
                 <#if !user.emailChecked>
                     <form action="${site.dynamicPath}user/saveEmail" method="post" class="center login-form">
-                        <input type="hidden" name="_csrf" value="<@_csrfToken/>"/>
+                        <input type="hidden" name="_csrf" value="<@tools.csrfToken/>"/>
                         <input type="hidden" name="returnUrl" value="${site.dynamicPath}login.html"/>
                         <p>
                             <input type="email" class="input-text" name="email" placeholder="Email" title="Email" value="${user.email!}"/>
@@ -57,9 +57,9 @@
                     </p>
                     <#if _oauthList?has_content&&_oauthList?is_directive>
                     <div data-diy="config" data-diy-id="oauth">
-                        <@_oauthList>
+                        <@oauth.list>
                             <p><#list list as o><a href="${site.dynamicPath}oauth/login/${o}">Login by ${o}</a><#sep> </#list></p>
-                        </@_oauthList>
+                        </@oauth.list>
                     </div>
                     </#if>
                     <p>No account?<a href="register.html?clientId=${clientId!}&uuid=${uuid!}&returnUrl=${returnUrl!}">Please register</a></p>

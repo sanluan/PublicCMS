@@ -1,4 +1,4 @@
-<@_tradeAccountHistoryList userId=userId status=status startCreateDate=startCreateDate endCreateDate=endCreateDate 
+<@trade.accountHistoryList userId=userId status=status startCreateDate=startCreateDate endCreateDate=endCreateDate 
             orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
     <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
@@ -52,7 +52,7 @@
                 <@t.merge 'userIds' a.accountId!/>
                 <@t.merge 'userIds' a.userId!/>
             </#list>
-            <@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
+            <@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
             <#list page.list as a>
             <tr>
                 <td>${a.id!}</td>
@@ -76,4 +76,4 @@
     </table>
     <#include "../include_page/page.html"/>
 </div>
-</@_tradeAccountHistoryList>
+</@trade.accountHistoryList>

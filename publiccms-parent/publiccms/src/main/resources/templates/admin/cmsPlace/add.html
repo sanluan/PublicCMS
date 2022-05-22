@@ -1,22 +1,22 @@
-<@_place id=id!copyId absoluteURL=false>
+<@cms.place id=id!copyId absoluteURL=false>
     <#assign a=object/>
-</@_place>
-<@_placeMetadata path=(a.path)!path!><#assign metadata=object/></@_placeMetadata>
+</@cms.place>
+<@tools.placeMetadata path=(a.path)!path!><#assign metadata=object/></@tools.placeMetadata>
 <#if metadata?has_content>
 <#if !a?has_content&&itemType?has_content>
 <#switch itemType>
     <#case 'content'>
-        <@_content id=itemId absoluteURL=false><#assign content=object/></@_content>
+        <@cms.content id=itemId absoluteURL=false><#assign content=object/></@cms.content>
     <#break>
     <#case 'category'>
-        <@_category id=itemId absoluteURL=false><#assign category=object/></@_category>
+        <@cms.category id=itemId absoluteURL=false><#assign category=object/></@cms.category>
     <#break>
 </#switch>
 </#if>
 <form method="post" autocomplete="off" action="cmsPlace/save?callbackType=closeCurrent&navTabId=cmsPlace/dataList" class="pageForm required-validate" onsubmit="return validateCallback(this,navTabAjaxDone);">
     <input name="id" type="hidden" value="${id!}"/>
     <input name="path" type="hidden" value="${(a.path)!(path)!}"/>
-    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
             <li><button type="submit" class="buttonActive" title="ctrl+s"<#if id?has_content> lock-url="common/lock?itemType=place&itemId=${id}" close-url="common/unlock?itemType=place&itemId=${id}"</#if>><@t.page 'button.save'/></button></li>
@@ -79,7 +79,7 @@
         </dl>
     </#if>
         <#include "../include_page/extendData.html"/>
-        <@_placeMetadata path=(a.path)!path!''><#assign metadata=object/></@_placeMetadata>
+        <@tools.placeMetadata path=(a.path)!path!''><#assign metadata=object/></@tools.placeMetadata>
         <#assign
             extendList=(metadata.extendList)![]
             attribute=getPlaceAttribute((a.id)!)!{}

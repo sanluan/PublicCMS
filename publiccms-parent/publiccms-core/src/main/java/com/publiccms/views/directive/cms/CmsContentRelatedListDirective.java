@@ -35,12 +35,12 @@ import com.publiccms.common.handler.RenderHandler;
  * </ul>
  * 使用示例
  * <p>
- * &lt;@_contentRelatedList contentId=1 pageSize=10&gt;&lt;#list page.list as
- * a&gt;${a.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@_contentRelatedList&gt;
+ * &lt;@cms.contentRelatedList contentId=1 pageSize=10&gt;&lt;#list page.list as
+ * a&gt;${a.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.contentRelatedList&gt;
  * 
  * <pre>
  &lt;script&gt;
-  $.getJSON('//cms.publiccms.com/api/directive/contentRelatedList?contentId=1&amp;pageSize=10', function(data){    
+  $.getJSON('//cms.publiccms.com/api/directive/cms/contentRelatedList?contentId=1&amp;pageSize=10', function(data){    
     console.log(data.totalCount);
   });
   &lt;/script&gt;

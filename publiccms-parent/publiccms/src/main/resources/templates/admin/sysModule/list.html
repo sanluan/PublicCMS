@@ -1,6 +1,6 @@
 <#if !deep?has_content><#assign deep=0/><#else><#assign deep=deep?number/></#if>
-<@_sysModule id=parentId><#assign parent=object/></@_sysModule>
-<@_sysModuleList advanced=true parentId=parentId pageIndex=pageNum pageSize=numPerPage>
+<@sys.module id=parentId><#assign parent=object/></@sys.module>
+<@sys.moduleList advanced=true parentId=parentId pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
     <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
@@ -51,7 +51,7 @@
                 <td>${a.sort!}</td>
                 <td class="wrap">
                     <a href="sysModule/add.html?id=${a.id}&deep=${deep}" class="edit btnText blue" target="navTab" rel="sysModule/edit"><i class="icon-edit"></i><@t.page 'module.edit'/></a></li>
-                    <a href="sysModule/delete?id=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i><@t.page 'button.delete'/></a></li>
+                    <a href="sysModule/delete?id=${a.id}&_csrf=<@tools.csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i><@t.page 'button.delete'/></a></li>
                     <#if deep lte 3>
                         <a href="sysModule/list.html?parentId=${a.id}&deep=${(deep!'0')?number+1}" class="btnText" target="navTab" rel="sysModule/list"><@t.page 'module.child_management'/></a>
                     </#if>
@@ -62,4 +62,4 @@
     </table>
     <#include "../include_page/page.html"/>
 </div>
-</@_sysModuleList>
+</@sys.moduleList>

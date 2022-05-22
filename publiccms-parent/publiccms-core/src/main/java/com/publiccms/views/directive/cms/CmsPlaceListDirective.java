@@ -50,12 +50,12 @@ import com.publiccms.logic.service.cms.CmsPlaceService;
  * </ul>
  * 使用示例
  * <p>
- * &lt;@_placeList path='/1.html' pageSize=10&gt;&lt;#list page.list as
- * a&gt;${a.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@_placeList&gt;
+ * &lt;@cms.placeList path='/1.html' pageSize=10&gt;&lt;#list page.list as
+ * a&gt;${a.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.placeList&gt;
  * 
  * <pre>
  &lt;script&gt;
-  $.getJSON('//cms.publiccms.com/api/directive/placeList?path=/1.html&amp;pageSize=10&amp;appToken=接口访问授权Token', function(data){    
+  $.getJSON('//cms.publiccms.com/api/directive/cms/placeList?path=/1.html&amp;pageSize=10&amp;appToken=接口访问授权Token', function(data){    
     console.log(data.totalCount);
   });
   &lt;/script&gt;

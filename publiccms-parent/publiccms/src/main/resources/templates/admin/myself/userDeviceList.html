@@ -1,4 +1,4 @@
-<@_sysAppClientList channel=channel advanced=true
+<@sys.appClientList channel=channel advanced=true
             userId=admin.id startLastLoginDate=startLastLoginDate endLastLoginDate=endLastLoginDate
             startCreateDate=startCreateDate endCreateDate=endCreateDate disabled=disabled
             orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
@@ -48,7 +48,7 @@
             <#list page.list as a>
                 <@t.merge 'userIds' a.userId!/>
             </#list>
-            <@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
+            <@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
             <#list page.list as a>
             <tr>
                 <td>${a.id!}</td>
@@ -61,9 +61,9 @@
                 <td>${(a.disabled)?then('<font color="red">'+t.pageMessage('disabled')+'</font>',t.pageMessage('normal'))?no_esc}</td>
                 <td class="wrap">
                     <#if a.disabled>
-                        <a href="sysAppClient/enable?id=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText blue" title="<@t.page 'confirm.enable'/>" target="ajaxTodo"><i class="icon-circle"></i><@t.page 'button.enable'/></a>
+                        <a href="sysAppClient/enable?id=${a.id}&_csrf=<@tools.csrfToken admin=true/>" class="btnText blue" title="<@t.page 'confirm.enable'/>" target="ajaxTodo"><i class="icon-circle"></i><@t.page 'button.enable'/></a>
                     <#else>
-                        <a href="sysAppClient/disable?id=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText red" title="<@t.page 'confirm.disable'/>" target="ajaxTodo"><i class="icon-ban-circle"></i><@t.page 'button.disable'/></a>
+                        <a href="sysAppClient/disable?id=${a.id}&_csrf=<@tools.csrfToken admin=true/>" class="btnText red" title="<@t.page 'confirm.disable'/>" target="ajaxTodo"><i class="icon-ban-circle"></i><@t.page 'button.disable'/></a>
                     </#if>
                 </td>
             </tr>
@@ -72,4 +72,4 @@
     </table>
     <#include "../include_page/page.html"/>
 </div>
-</@_sysAppClientList>
+</@sys.appClientList>

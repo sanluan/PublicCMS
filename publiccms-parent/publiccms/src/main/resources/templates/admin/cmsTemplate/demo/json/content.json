@@ -1,8 +1,8 @@
 <#ftl auto_esc=false/>
 {<#assign attribute=getContentAttribute(content.id)/>
-    <@_category id=content.categoryId>
+    <@cms.category id=content.categoryId>
         <#assign category=object/>
-    </@_category>
+    </@cms.category>
     "id":"${content.id}",
     "cover":"${content.cover!}"
     "title":"${content.title?json_string}",
@@ -16,10 +16,10 @@
     "text":"${(attribute.text?json_string)!}",
     "sourceUrl":"${(attribute.sourceUrl)!}",
     "source":"${(attribute.source)!}"<#if content.hasFiles>
-    ,"files:[<@_contentFileList contentId=content.id fileTypes='video,audio,other'><#list page.list as file>
-        {"filePath":"${(file.filePath)!}"}<#sep>,</#list></@_contentFileList>
+    ,"files:[<@cms.contentFileList contentId=content.id fileTypes='video,audio,other'><#list page.list as file>
+        {"filePath":"${(file.filePath)!}"}<#sep>,</#list></@cms.contentFileList>
     ]</#if><#if content.hasImages>
-    ,"images":[<@_contentFileList contentId=content.id fileTypes='image'><#list page.list as file>
-        {"filePath":"${(file.filePath)!}"}<#sep>,</#list></@_contentFileList>
+    ,"images":[<@cms.contentFileList contentId=content.id fileTypes='image'><#list page.list as file>
+        {"filePath":"${(file.filePath)!}"}<#sep>,</#list></@cms.contentFileList>
     ]</#if>
 }

@@ -1,10 +1,10 @@
-<@_diyMetadata itemType='layout' itemId=id><#assign a=object/></@_diyMetadata>
+<@tools.diyMetadata itemType='layout' itemId=id><#assign a=object/></@tools.diyMetadata>
 <form method="post" action="cmsDiy/saveLayout?navTabId=cmsDiy/list" autocomplete="off" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
-    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
         <#if a?has_content>
-             <li><a class="button" href="cmsDiy/delete?itemType=layout&id=${(id?url)!}&navTabId=cmsDiy/list&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i><@t.page 'button.delete'/></a></li>
+             <li><a class="button" href="cmsDiy/delete?itemType=layout&id=${(id?url)!}&navTabId=cmsDiy/list&_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i><@t.page 'button.delete'/></a></li>
         </#if>
             <li><button type="submit" class="buttonActive" title="ctrl+s"<#if id?has_content> lock-url="common/lock?itemType=layout&itemId=${(id?url)!}" close-url="common/unlock?itemType=layout&itemId=${(id?url)!}"</#if>><@t.page 'button.save'/></button></li>
         </ul>

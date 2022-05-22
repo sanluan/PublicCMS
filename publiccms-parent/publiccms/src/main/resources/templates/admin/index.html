@@ -26,18 +26,18 @@
     <header>
         <a class="logo" href="./"><img src="<#if siteAttribute.logo?has_content>${getAbsoluteUrl(site.sitePath,siteAttribute.logo)}<#else>${base}/resource/logo.png</#if>" alt="LOGO"/></a>
         <ul class="nav">
-            <@_sysAuthorized roleIds=admin.roles url='cmsDiy/preview'>
+            <@sys.authorized roleIds=admin.roles url='cmsDiy/preview'>
             <li><a href="cmsDiy/preview.html" target="navTab" rel="cmsDiy/preview"><i class='bi bi-palette2'></i> <@t.page 'diy.preview'/></a></li>
-            </@_sysAuthorized>
+            </@sys.authorized>
             <li><a href="${site.dynamicPath!}" target="_blank"><i class="icon-home icon-large"></i></a></li>
         <#if site.useStatic>
             <li><a href="${site.sitePath!}" target="_blank"><@t.page 'website'/></a></li>
         </#if>
-        <@_sysAuthorized roleIds=admin.roles url='clearCache'>
+        <@sys.authorized roleIds=admin.roles url='clearCache'>
             <li>
                 <a href="clearCache" target="ajaxTodo" title="<@t.page 'button.clear_cache'/>"><i class="icon-rubbish icon-large"></i></a>
             </li>
-        </@_sysAuthorized>
+        </@sys.authorized>
             <li>
                 <a href="javascript:"><i class="icon-user icon-large"></i> ${(admin.nickname)!}</a>
             </li>
@@ -49,11 +49,11 @@
             <li>
                 <a href="javascript:;" onclick="return false;" class="toggleCollapse"><i class="icon icon-chevron-sign-left icon-large"></i></a>
             </li>
-    <@_sysModuleList>
+    <@sys.moduleList>
         <#list page.list as a>
             <@t.merge 'moduleIds' a.id!/>
         </#list>
-        <@_sysRoleModule roleIds=admin.roles moduleIds=t.moduleIds!><#assign roleModuleMap=map!/></@_sysRoleModule>
+        <@sys.roleModule roleIds=admin.roles moduleIds=t.moduleIds!><#assign roleModuleMap=map!/></@sys.roleModule>
     
         <#list page.list as a>
             <#if (roleModuleMap[a.id?string])?has_content&&roleModuleMap[a.id?string]>
@@ -63,14 +63,14 @@
                 </li>
             </#if>
         </#list>
-    </@_sysModuleList>
-    <@_masterSite>
-        <@_sysAuthorized roleIds=admin.roles url='sysSite/menu'>
+    </@sys.moduleList>
+    <@tools.masterSite>
+        <@sys.authorized roleIds=admin.roles url='sysSite/menu'>
             <li>
                 <a href="sysSite/menu.html" parentId="site"><i class="icon-sitemap icon-large"></i><@t.menu 'site'/></a>
             </li>
-        </@_sysAuthorized>
-    </@_masterSite>
+        </@sys.authorized>
+    </@tools.masterSite>
         </ul>
     </header>
     <main>
@@ -113,18 +113,18 @@
             </li>
         </#list>
         </ul>
-    <@_version>
+    <@tools.version>
         <#if authorizationEdition>
             <a href="common/license.html" target="dialog" mask="true"><@t.page 'license'/>: ${getLicense().authorization!}</a>
         <#else>
             <@t.page 'license.no'/>
-            <@_masterSite>
-                <@_sysAuthorized roleIds=admin.roles url='sysSite/uploadLicense'>
+            <@tools.masterSite>
+                <@sys.authorized roleIds=admin.roles url='sysSite/uploadLicense'>
             <a href="sysSite/uploadLicense.html" target="navTab" rel="sysSite/uploadLicense" icon="<i class='icon-archive icon-large'></i>" title="<@t.menu 'license'/>"><@t.page 'license.upgrade'/></a>
-                </@_sysAuthorized>
-            </@_masterSite>
+                </@sys.authorized>
+            </@tools.masterSite>
         </#if>
-    </@_version>
+    </@tools.version>
         Copyright &copy; ${.now?string('yyyy')}
         <ul class="themeList" id="themeList">
             <li theme="toptry"><div></div></li>
@@ -181,7 +181,7 @@
             image_list: '${base+adminContextPath}/tinymce/imageList',
             image_prepend_url:"${site.sitePath}",
             file_picker_callback: function (callback, value, meta) {
-                var filetype='<@_sysConfigData code="site">${object.allow_files!}</@_sysConfigData>';
+                var filetype='<@sys.configData code="site">${object.allow_files!}</@sys.configData>';
                 switch(meta.filetype){
                     case 'image':
                         filetype='.png,.jpg,.jpeg,.gif,.bmp';
@@ -267,9 +267,9 @@
                 initEnv();
                 $("#themeList").theme({themeBase:"${base}/resource/themes",defaultTheme:"toptry"});
             <#if admin.weakPassword && admin.loginCount lte 3 >
-                <@_sysAuthorized roleIds=admin.roles url='changePassword'>
+                <@sys.authorized roleIds=admin.roles url='changePassword'>
                 $.pdialog.open("myself/password.html?target=dialog", "login", "<@t.page 'user.new_password'/>", {mask: true, width: 450, height: 320});
-                </@_sysAuthorized>
+                </@sys.authorized>
             </#if>
                 $('#navMenu li a[parentId=${parentId!0}]').parent().addClass("selected");
                 loadScripts(["${base}/resource/js/echarts.common.min.js"],function(){

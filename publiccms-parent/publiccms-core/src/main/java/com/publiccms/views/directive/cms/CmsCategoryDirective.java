@@ -35,14 +35,14 @@ import com.publiccms.logic.service.cms.CmsCategoryService;
  * </ul>
  * 使用示例
  * <p>
- * &lt;@_category id=1&gt;${object.name}&lt;/@_category&gt;
+ * &lt;@cms.category id=1&gt;${object.name}&lt;/@cms.category&gt;
  * <p>
- * &lt;@_category ids=1,2,3&gt;&lt;#list map as
- * k,v&gt;${v.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@_category&gt;
+ * &lt;@cms.category ids=1,2,3&gt;&lt;#list map as
+ * k,v&gt;${v.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.category&gt;
  * 
  * <pre>
    &lt;script&gt;
-    $.getJSON('//cms.publiccms.com/api/directive/category?id=1', function(data){    
+    $.getJSON('//cms.publiccms.com/api/directive/cms/category?id=1', function(data){    
       console.log(data.name);
     });
     &lt;/script&gt;

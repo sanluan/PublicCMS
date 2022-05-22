@@ -30,16 +30,16 @@ import com.publiccms.logic.service.cms.CmsDictionaryExcludeValueService;
  * </ul>
  * 使用示例
  * <p>
- * &lt;@_dictionaryExcludeValue dictionaryId='data' excludeDictionaryId='data1'
- * value='data1'&gt;${object.excludeValues}&lt;/@_dictionaryExcludeValue&gt;
+ * &lt;@cms.dictionaryExcludeValue dictionaryId='data' excludeDictionaryId='data1'
+ * value='data1'&gt;${object.excludeValues}&lt;/@cms.dictionaryExcludeValue&gt;
  * <p>
- * &lt;@_dictionaryExcludeValue dictionaryId='data' excludeDictionaryId='data1'
+ * &lt;@cms.dictionaryExcludeValue dictionaryId='data' excludeDictionaryId='data1'
  * values='1,2'&gt;&lt;#list map as
- * k,v&gt;${v.excludeValues}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@_dictionaryExcludeValue&gt;
+ * k,v&gt;${v.excludeValues}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.dictionaryExcludeValue&gt;
  * 
  * <pre>
 *  &lt;script&gt;
-   $.getJSON('//cms.publiccms.com/api/directive/dictionaryExcludeValue?dictionaryId=data&amp;excludeDictionaryId=data1&amp;value=1', function(data){    
+   $.getJSON('//cms.publiccms.com/api/directive/cms/dictionaryExcludeValue?dictionaryId=data&amp;excludeDictionaryId=data1&amp;value=1', function(data){    
      console.log(data.excludeValues);
    });
    &lt;/script&gt;

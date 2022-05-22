@@ -1,9 +1,9 @@
 <#if parentId?has_content>
-    <@_sysDept id=parentId!>
+    <@sys.dept id=parentId!>
         <#assign parent=object/>
-    </@_sysDept>
+    </@sys.dept>
 </#if>
-<@_sysDeptList parentId=parentId userId=userId name=name
+<@sys.deptList parentId=parentId userId=userId name=name
             pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
     <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
@@ -65,8 +65,8 @@
                 <@t.merge 'parentIds' a.parentId!/>
             </#list>
             
-            <@_sysDept ids=t.parentIds!><#assign parentMap=map!/></@_sysDept>
-            <@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
+            <@sys.dept ids=t.parentIds!><#assign parentMap=map!/></@sys.dept>
+            <@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
 
             <#list page.list as a>
             <tr>
@@ -85,7 +85,7 @@
                 <#if a.userId?has_content&&a.userId=admin.id>
                     <a href="sysDept/userList.html?deptId=${a.id}" class="btnText" target="navTab" rel="sysDept/userList" icon="<i class='icon-user icon-large'></i>"><@t.page 'dept.user_list'/></a>
                 </#if>
-                    <a href="sysDept/delete?id=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i><@t.page 'button.delete'/></a>
+                    <a href="sysDept/delete?id=${a.id}&_csrf=<@tools.csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i><@t.page 'button.delete'/></a>
                 </td>
             </tr>
             </#list>
@@ -93,4 +93,4 @@
     </table>
     <#include "../include_page/page.html"/>
 </div>
-</@_sysDeptList>
+</@sys.deptList>

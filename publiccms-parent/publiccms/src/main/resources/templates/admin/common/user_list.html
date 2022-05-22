@@ -1,4 +1,4 @@
-<@_sysUserList deptId=deptId startRegisteredDate=startRegisteredDate endRegisteredDate=endRegisteredDate startLastLoginDate=startLastLoginDate endLastLoginDate=endLastLoginDate
+<@sys.userList deptId=deptId startRegisteredDate=startRegisteredDate endRegisteredDate=endRegisteredDate startLastLoginDate=startLastLoginDate endLastLoginDate=endLastLoginDate
             superuser=superuser emailChecked=emailChecked name=name
             advanced=true disabled=disabled
             orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
@@ -53,8 +53,8 @@
     <div class="panelBar">
         <ul class="toolBar">
             <li><a href="sysUser/add.html" target="navTab" rel="sysUser/add"><i class="icon-plus-sign-alt icon-large"></i><@t.page 'user.add'/></a></li>
-            <li><a href="sysUser/enable?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.enable'/>" target="selectedTodo" rel="ids"><i class="icon-circle icon-large"></i><@t.page 'button.enable'/></a></li>
-            <li><a href="sysUser/disable?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.disable'/>" target="selectedTodo" rel="ids"><i class="icon-ban-circle icon-large"></i><@t.page 'button.disable'/></a></li>
+            <li><a href="sysUser/enable?_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.enable'/>" target="selectedTodo" rel="ids"><i class="icon-circle icon-large"></i><@t.page 'button.enable'/></a></li>
+            <li><a href="sysUser/disable?_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.disable'/>" target="selectedTodo" rel="ids"><i class="icon-ban-circle icon-large"></i><@t.page 'button.disable'/></a></li>
         </ul>
     </div>
     <table class="table" width="100%" layoutH targetType="ajax" rel="userBox">
@@ -76,7 +76,7 @@
                 <@t.merge 'deptIds' a.deptId!/>
             </#list>
             
-            <@_sysDept ids=t.deptIds!><#assign deptMap=map!/></@_sysDept>
+            <@sys.dept ids=t.deptIds!><#assign deptMap=map!/></@sys.dept>
             <#list page.list as a>
             <tr>
                 <td><input name="ids" value="${a.id}" type="checkbox"></td>
@@ -126,4 +126,4 @@
     <#assign rel='userBox'/>
     <#include "../include_page/page.html"/>
 </div>
-</@_sysUserList>
+</@sys.userList>

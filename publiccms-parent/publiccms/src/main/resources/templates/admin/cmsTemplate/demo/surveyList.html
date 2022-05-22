@@ -10,16 +10,16 @@
     </header>
     <nav data-diy="category">
         <a href="${site.dynamicPath}">Home</a>
-<@_categoryList>
+<@cms.categoryList>
     <#list page.list as a>
         <a href="${a.url!}" target="_blank">${a.name}</a>
     </#list>
-</@_categoryList>
+</@cms.categoryList>
     </nav>
     <main>
         <h1>Survey</h1>
 <#macro message code>${springMacroRequestContext.getMessage(code)}</#macro>
-<@_surveyList pageIndex=pageIndex pageSize=10>
+<@cms.surveyList pageIndex=pageIndex pageSize=10>
         <ul>
     <#list page.list as a>
             <li>
@@ -65,7 +65,7 @@
                 <span>Next page</span>
             </#if>
         </div>
-</@_surveyList>
+</@cms.surveyList>
     </main>
     <footer>
         Copyright &copy; ${.now?string('yyyy')}

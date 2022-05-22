@@ -1,7 +1,7 @@
-<@_contentProduct id=id><#assign a=object/></@_contentProduct>
+<@cms.contentProduct id=id><#assign a=object/></@cms.contentProduct>
 <form method="post" autocomplete="off" action="cmsContentProduct/save?callbackType=closeCurrent" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
     <input name="id" type="hidden" value="${id!}" />
-    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <div class="pageFormContent" layoutH>
         <dl class="nowrap">
             <dt><@t.page 'title'/>:</dt>

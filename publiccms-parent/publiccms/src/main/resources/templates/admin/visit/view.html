@@ -1,6 +1,6 @@
-<@_visitHistory id=id>
+<@visit.history id=id>
     <#assign a=object/>
-</@_visitHistory>
+</@visit.history>
 <div class="pageFormContent" layoutH>
     <dl>
         <dt><@t.page 'visit.session'/>:</dt>
@@ -50,7 +50,7 @@
             <textarea name="content" cols="80" rows="5">${a.userAgent!}</textarea>
         </dd>
     </dl>
-    <@_userAgent userAgent=a.userAgent>
+    <@tools.userAgent userAgent=a.userAgent>
     <dl>
         <dt>${object.browserType!}:</dt>
         <dd>
@@ -63,7 +63,7 @@
             ${object.operatingSystemGroup}:${object.operatingSystem!}
         </dd>
     </dl>
-    </@_userAgent>
+    </@tools.userAgent>
     <dl>
         <dt><@t.page 'visit.visit_date'/>:</dt>
         <dd>

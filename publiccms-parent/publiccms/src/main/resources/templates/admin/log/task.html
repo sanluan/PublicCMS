@@ -1,4 +1,4 @@
-<@_logTaskList taskId=taskId startCreateDate=startCreateDate endCreateDate=endCreateDate success=success pageIndex=pageNum pageSize=numPerPage>
+<@log.taskList taskId=taskId startCreateDate=startCreateDate endCreateDate=endCreateDate success=success pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
     <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
@@ -7,7 +7,7 @@
             <#if taskId?has_content>
                 <li>
                     <label><@t.page 'task'/>:</label>
-                    <@_sysTask id=taskId>${object.name}</@_sysTask>
+                    <@sys.task id=taskId>${object.name}</@sys.task>
                 </li>
             </#if>
                 <li>
@@ -38,7 +38,7 @@
 <div class="pageContent">
     <div class="panelBar">
         <ul class="toolBar">
-            <li><a href="logTask/delete?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i><@t.page 'button.batch_delete'/></a></li>
+            <li><a href="logTask/delete?_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i><@t.page 'button.batch_delete'/></a></li>
         </ul>
     </div>
     <table class="table" width="100%" layoutH>
@@ -56,7 +56,7 @@
             <#list page.list as a>
                 <@t.merge 'taskIds' a.taskId!/>
             </#list>
-            <@_sysTask ids=t.taskIds!><#assign taskMap=map!/></@_sysTask>
+            <@sys.task ids=t.taskIds!><#assign taskMap=map!/></@sys.task>
             <#list page.list as a>
             <tr>
                 <td><input name="ids" value="${a.id}" type="checkbox"></td>
@@ -75,4 +75,4 @@
     </table>
     <#include "../include_page/page.html"/>
 </div>
-</@_logTaskList>
+</@log.taskList>

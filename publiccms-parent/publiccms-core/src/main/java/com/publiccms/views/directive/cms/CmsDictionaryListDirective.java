@@ -31,12 +31,12 @@ import com.publiccms.common.handler.RenderHandler;
  * </ul>
  * 使用示例
  * <p>
- * &lt;@_dictionaryList name='data'&gt;&lt;#list page.list as
- * a&gt;${a.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@_dictionaryList&gt;
+ * &lt;@cms.dictionaryList name='data'&gt;&lt;#list page.list as
+ * a&gt;${a.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.dictionaryList&gt;
  * 
  * <pre>
 &lt;script&gt;
- $.getJSON('//cms.publiccms.com/api/directive/dictionaryList?name=data', function(data){    
+ $.getJSON('//cms.publiccms.com/api/directive/cms/dictionaryList?name=data', function(data){    
    console.log(data.totalCount);
  });
  &lt;/script&gt;

@@ -1,7 +1,7 @@
-<@_diyMetadata itemType='region' itemId=id><#assign a=object/></@_diyMetadata>
-<@_diyRegionData id=id categoryId=categoryId><#assign data=object/></@_diyRegionData>
+<@tools.diyMetadata itemType='region' itemId=id><#assign a=object/></@tools.diyMetadata>
+<@tools.diyRegionData id=id categoryId=categoryId><#assign data=object/></@tools.diyRegionData>
 <form method="post" autocomplete="off" action="cmsDiy/save?rel=diyConfigBox&navTabId=cmsPage/diy" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
-    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <input type="hidden" name="categoryId" value="${categoryId!}"/>
     <div class="formBar">
         <ul>
@@ -13,15 +13,15 @@
             <dt>
                 <fieldset>
                     <legend><@t.page 'layout'/></legend>
-                    <@_diyMetadataList itemType="layout">
+                    <@tools.diyMetadataList itemType="layout">
                     <div class="itemBox">
                         <#list list as a>
                             <div class="dragItem icon-move icon-large" data-id="${a.id}" data-type="layout">
                                 ${a.name!} (${a.count})<span class="close">X</span>
                                 <div class="dragContent">
-                                    <@_includeLayout id=a.id>
+                                    <@tools.includeLayout id=a.id>
                                         <div class="sortDrag" data-over-sort="true" data-accept="module"><@t.page 'drag_module_here'/></div>
-                                    </@_includeLayout>
+                                    </@tools.includeLayout>
                                 </div>
                             </div>
                         </#list>
@@ -33,24 +33,24 @@
                             </#list>
                             </style>
                         </#if>
-                    </@_diyMetadataList>
+                    </@tools.diyMetadataList>
                 </fieldset>
                 <fieldset>
                     <legend><@t.page 'module'/></legend>
-                <@_diyMetadataList itemType="module">
+                <@tools.diyMetadataList itemType="module">
                     <div class="itemBox">
                         <#list list as a>
                     <div class="dragItem icon-move icon-large" data-id="${a.id}" data-type="module" >
                         ${a.name!}<span class="close">X</span>
                         <span class="ctl-label">
-                            <input data-name="name" type="text" class="required" value="<@_category id=categoryId>${object.name}-</@_category>${a.name}"/>
+                            <input data-name="name" type="text" class="required" value="<@cms.category id=categoryId>${object.name}-</@cms.category>${a.name}"/>
                             <#if !a.clone>
-                            <@_placeMetadata path=a.place>
+                            <@tools.placeMetadata path=a.place>
                                 <a class="button" href="cmsPlace/metadata.html?path=${a.place?url}" target="ajax" rel="diyConfigBox">${(object.alias)!a.place}</a>
                                 <#if 0 lt ((object.size)!0)>
                                    <a class="button" href="cmsPlace/dataList.html?path=${a.place?url}" target="navTab" rel="cmsPlace/dataList" title="<@t.page 'place_data'/>:${(object.alias)!}"><@t.page 'place_data'/>(${object.size})</a>
                                 </#if>
-                            </@_placeMetadata>
+                            </@tools.placeMetadata>
                             </#if>
                         </span>
                         <#if a.cover?has_content>
@@ -61,35 +61,35 @@
                     </div>
                         </#list>
                     </div>
-                </@_diyMetadataList>
+                </@tools.diyMetadataList>
                 </fieldset>
             </dt>
             <dd>
                 <fieldset>
-                    <legend><@_category id=categoryId>${object.name}-</@_category>${a.name}</legend>
+                    <legend><@cms.category id=categoryId>${object.name}-</@cms.category>${a.name}</legend>
                     <div class="sortDrag diy-layout" data-over-sort="true" data-accept="layout" data-id="${a.id}" data-parent="region">
                         <@t.page 'drag_layout_here'/>
                         <#if (data.layoutList)?has_content>
                             <#list data.layoutList as layoutdata>
-                                <@_diyMetadata itemType="layout" itemId=layoutdata.id>
+                                <@tools.diyMetadata itemType="layout" itemId=layoutdata.id>
                                     <div class="dragItem" data-id="${object.id}" data-type="layout">
                                         ${object.name!}<span class="close">X</span>
                                         <div class="dragContent" data-parent="${object.id}" >
-                                            <@_includeLayout id=object.id>
+                                            <@tools.includeLayout id=object.id>
                                                 <div class="sortDrag" data-over-sort="true" data-accept="module">
                                                     <@t.page 'drag_module_here'/>
                                                     <#if layoutdata.moduleList[index]?has_content>
                                                         <#list layoutdata.moduleList[index] as moduleData>
-                                                            <@_diyMetadata itemType="module" itemId=moduleData.id;module>
+                                                            <@tools.diyMetadata itemType="module" itemId=moduleData.id;module>
                                                                 <div class="dragItem" data-id="${module.id}" data-type="module" >
                                                                     ${moduleData.name}<span class="close">X</span>
                                                                     <span class="ctl-label">
-                                                                        <@_placeMetadata path=module.place>
+                                                                        <@tools.placeMetadata path=module.place>
                                                                             <a class="button" href="cmsPlace/metadata.html?path=${module.place?url}" target="ajax" rel="diyConfigBox">${(object.alias)!module.place}</a>
                                                                             <#if 0 lt ((object.size)!0)>
                                                                              <a class="button" href="cmsPlace/dataList.html?path=${module.place?url}" target="navTab" rel="cmsPlace/dataList" title="<@t.page 'place_data'/>:${(object.alias)!}"><@t.page 'place_data'/>(${object.size})</a>
                                                                             </#if>
-                                                                        </@_placeMetadata>
+                                                                        </@tools.placeMetadata>
                                                                         <input data-name="name" type="hidden" value="${moduleData.name}"/>
                                                                         <input data-name="place" type="hidden" value="${moduleData.place}"/>
                                                                     </span>
@@ -99,14 +99,14 @@
                                                                         </div>
                                                                     </#if>
                                                                 </div>
-                                                            </@_diyMetadata>
+                                                            </@tools.diyMetadata>
                                                         </#list>
                                                     </#if>
                                                 </div>
-                                            </@_includeLayout>
+                                            </@tools.includeLayout>
                                         </div>
                                     </div>
-                                </@_diyMetadata>
+                                </@tools.diyMetadata>
                             </#list>
                         </#if>
                     </div>

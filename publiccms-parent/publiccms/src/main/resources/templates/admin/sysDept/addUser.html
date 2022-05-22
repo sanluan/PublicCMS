@@ -1,10 +1,10 @@
-<@_sysUser id=id>
+<@sys.user id=id>
     <#assign a=object/>
-</@_sysUser>
-<@_sysDept id=(a.deptId)!deptId><#assign dept=object/></@_sysDept>
+</@sys.user>
+<@sys.dept id=(a.deptId)!deptId><#assign dept=object/></@sys.dept>
 <form method="post" autocomplete="off" action="sysDept/saveUser?callbackType=closeCurrent&navTabId=sysDept/userList" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input name="id" type="hidden" value="${id!}" />
-    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <input type="hidden" name="encoding" value="sha512"/>
     <div class="formBar">
         <ul>
@@ -69,11 +69,11 @@
         <fieldset class="superuser hide">
             <legend><i class="icon-user-md icon-large"></i><@t.page 'role'/>(<@t.page 'dept.role.description'/>)</legend>
             <ul class="tree treeFolder treeCheck expand">
-        <@_sysRole ids=admin.roles>
+        <@sys.role ids=admin.roles>
             <#list map as k,role>
                 <li><a tname="roleIds" tvalue="${k}">${role.name}</a></li>
             </#list>
-        </@_sysRole>
+        </@sys.role>
             </ul>
         </fieldset>
 <#if a?has_content&&a.superuser>

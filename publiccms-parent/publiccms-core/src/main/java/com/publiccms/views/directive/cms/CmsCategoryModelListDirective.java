@@ -30,12 +30,12 @@ import com.publiccms.logic.service.cms.CmsCategoryModelService;
  * </ul>
  * 使用示例
  * <p>
- * &lt;@_categoryModelList modelId='article'&gt;&lt;#list page.list as
- * a&gt;${a.templatePath}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@_categoryModelList&gt;
+ * &lt;@cms.categoryModelList modelId='article'&gt;&lt;#list page.list as
+ * a&gt;${a.templatePath}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.categoryModelList&gt;
  * 
  * <pre>
   &lt;script&gt;
-   $.getJSON('//cms.publiccms.com/api/directive/categoryModelList?modelId=article', function(data){    
+   $.getJSON('//cms.publiccms.com/api/directive/cms/categoryModelList?modelId=article', function(data){    
      console.log(data[0].totalCount);
    });
    &lt;/script&gt;
