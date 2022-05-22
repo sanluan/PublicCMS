@@ -187,7 +187,7 @@ public class BeanComponent {
     /**
      * @param metadataComponent the metadataComponent to set
      */
-    @Autowired
+    @Resource
     public void setMetadataComponent(MetadataComponent metadataComponent) {
         BeanComponent.metadataComponent = metadataComponent;
     }

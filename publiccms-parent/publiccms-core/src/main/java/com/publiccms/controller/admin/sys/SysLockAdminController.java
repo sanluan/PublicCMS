@@ -24,7 +24,7 @@ import com.publiccms.views.pojo.entities.Lock;
 public class SysLockAdminController {
     @Resource
     private LockComponent lockComponent;
-    @Autowired
+    @Resource
     private SysUserService userService;
 
     /**
