@@ -1,9 +1,9 @@
-<@_sysRole id=id>
+<@sys.role id=id>
     <#assign a=object/>
-</@_sysRole>
+</@sys.role>
 <form method="post" autocomplete="off" action="sysRole/save?callbackType=closeCurrent&navTabId=sysRole/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input name="id" type="hidden" value="${id!}" />
-    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
             <li><button type="submit" class="buttonActive" title="ctrl+s"><@t.page 'button.save'/></button></li>
@@ -24,7 +24,7 @@
             </dd>
         </dl>
 <#macro moduleTree parentId='' deep=0>
-    <@_sysModuleList parentId=parentId advanced=true>
+    <@sys.moduleList parentId=parentId advanced=true>
         <#if page.totalCount gt 0>
             <ul>
             <#list page.list as a>
@@ -37,7 +37,7 @@
             </#list>
             </ul>
         </#if>
-    </@_sysModuleList>
+    </@sys.moduleList>
 </#macro>
         <fieldset class="ownsAllRight">
             <legend><@t.page 'module'/></legend>
@@ -61,11 +61,11 @@
     <#if a.showAllModule>
     $('input[name=showAllModule]',navTab.getCurrentPanel()).click();
     </#if>
-    <@_sysRoleModuleList roleId=a.id>
+    <@sys.roleModuleList roleId=a.id>
         <#list page.list as a>
     $('.tree li a[tname=moduleIds][tvalue=${a.id.moduleId?js_string}]',navTab.getCurrentPanel()).attr('checked','true');
         </#list>
-    </@_sysRoleModuleList>
+    </@sys.roleModuleList>
 </script>
 </#if>
         </fieldset>

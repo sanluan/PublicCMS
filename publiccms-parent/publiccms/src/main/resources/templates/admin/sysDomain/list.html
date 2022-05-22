@@ -1,9 +1,9 @@
 <#if siteId?has_content>
-    <@_sysSite id=siteId>
+    <@sys.site id=siteId>
         <#assign sysSite=object/>
-    </@_sysSite>
+    </@sys.site>
 </#if>
-<@_sysDomainList advanced=true siteId=siteId wild=wild pageIndex=pageNum pageSize=numPerPage>
+<@sys.domainList advanced=true siteId=siteId wild=wild pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
     <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
@@ -36,7 +36,7 @@
     <div class="panelBar">
         <ul class="toolBar">
             <#if sysSite?has_content>
-                <li><a href="sysDomain/add.html?siteId=${siteId!}" target="navTab" rel="sysDomain/add"><i class="icon-plus-sign-alt icon-large"></i> <@t.page 'domain.add'/></a></li>
+                <li><a href="sysDomain/add.html?siteId=${siteId!}" target="navTab" rel="sysDomain/add"><i class="icon-plus-sign-alt icon-large"></i><@t.page 'domain.add'/></a></li>
             </#if>
         </ul>
     </div>
@@ -55,7 +55,7 @@
                 <@t.merge 'siteIds' a.siteId!/>
             </#list>
 
-            <@_sysSite ids=t.siteIds!><#assign siteMap=map!/></@_sysSite>
+            <@sys.site ids=t.siteIds!><#assign siteMap=map!/></@sys.site>
             <#list page.list as a>
             <tr>
                 <td>${(a.name)!} ${a.wild?then('['+t.pageMessage('domain.wild')+']','')} ${a.multiple?then('['+t.pageMessage('domain.multiple')+']','')}</td>
@@ -63,8 +63,8 @@
                 <td class="exclude-translate">${(siteMap[a.siteId?string].name)!}</td>
                 <td>${(a.path)!}</td>
                 <td class="wrap">
-                    <a href="sysDomain/add.html?id=${a.name}" class="edit btnText blue" target="navTab" rel="sysDomain/edit"><i class="icon-edit"></i> <@t.page 'domain.edit'/></a>
-                    <a href="sysDomain/delete?id=${a.name}&_csrf=<@_csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i> <@t.page 'button.delete'/></a>
+                    <a href="sysDomain/add.html?id=${a.name}" class="edit btnText blue" target="navTab" rel="sysDomain/edit"><i class="icon-edit"></i><@t.page 'domain.edit'/></a>
+                    <a href="sysDomain/delete?id=${a.name}&_csrf=<@tools.csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i><@t.page 'button.delete'/></a>
                 </td>
             </tr>
             </#list>
@@ -72,4 +72,4 @@
     </table>
     <#include "../include_page/page.html"/>
 </div>
-</@_sysDomainList>
+</@sys.domainList>

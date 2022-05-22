@@ -84,8 +84,8 @@ public class CmsUpgrader extends AbstractCmsUpgrader {
     public void updateDatasource(StringWriter stringWriter, Connection connection, String fromVersion)
             throws SQLException, IOException {
         switch (fromVersion) {
-        case VERSION_202107:
-            runScript(stringWriter, connection, "datasource-" + VERSION_202107, CmsVersion.getVersion());
+        case VERSION_202204:
+            runScript(stringWriter, connection, "datasource-" + VERSION_202204, CmsVersion.getVersion());
         }
     }
 
@@ -114,6 +114,7 @@ public class CmsUpgrader extends AbstractCmsUpgrader {
             }
         }
         dbconfig.setProperty("jdbc.url", sb.toString());
+        dbconfig.setProperty("database", database);
         dbconfig.setProperty("jdbc.driverClassName", "com.mysql.cj.jdbc.Driver");
     }
 

@@ -18,8 +18,34 @@ import com.publiccms.logic.service.cms.CmsCategoryModelService;
 
 /**
  *
- * CmsCategoryModelListDirective
+ * categoryModel 分类内容模型映射查询指令
+ * <p>
+ * 参数列表
+ * <ul>
+ * <li><code>categoryId</code> 分类id，结果返回<code>object</code>
+ * {@link com.publiccms.entities.cms.CmsCategoryModel}
+ * <li><code>modelId</code> 内容模型id，当id为空时生效，结果返回<code>object</code>
+ * <li><code>modelIds</code>
+ * 多个内容模型id，当分类id存在，且内容模型id为空时生效，结果返回<code>map</code>(内容模型id,分类内容模型映射)
+ * {@link com.publiccms.entities.cms.CmsCategoryModel}
+ * <li><code>categoryIds</code>
+ * 多个分类id,当分类id不存在，且内容模型id存在时生效，结果返回<code>map</code>(分类id,分类内容模型映射)
+ * </ul>
+ * 使用示例
+ * <p>
+ * &lt;@cms.categoryModel categoryId=1
+ * modelId='article'&gt;${object.templatePath}&lt;/@cms.categoryModel&gt;
+ * <p>
+ * &lt;@cms.categoryModel categoryIds=1,2,3 modelId='article'&gt;&lt;#list map as
+ * k,v&gt;${v.templatePath}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.categoryModel&gt;
  * 
+ * <pre>
+  &lt;script&gt;
+   $.getJSON('//cms.publiccms.com/api/directive/cms/categoryModel?categoryId=1&amp;modelId=article', function(data){    
+     console.log(data.templatePath);
+   });
+   &lt;/script&gt;
+ * </pre>
  */
 @Component
 public class CmsCategoryModelDirective extends AbstractTemplateDirective {

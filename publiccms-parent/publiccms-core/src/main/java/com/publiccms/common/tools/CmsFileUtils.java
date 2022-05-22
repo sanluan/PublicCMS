@@ -33,7 +33,7 @@ import com.publiccms.views.pojo.entities.FileSize;
 
 /**
  *
- * FileComponent 文件操作组件
+ * CmsFileUtils 文件操作组件
  *
  */
 public class CmsFileUtils {
@@ -89,6 +89,11 @@ public class CmsFileUtils {
      */
     public static final String[] OTHER_FILETYPES = new String[] { CmsFileUtils.FILE_TYPE_VIDEO, CmsFileUtils.FILE_TYPE_AUDIO,
             CmsFileUtils.FILE_TYPE_OTHER };
+
+    /**
+     * 
+     */
+    public static final String[] VIDEO_FILETYPES = new String[] { CmsFileUtils.FILE_TYPE_VIDEO };
     /**
      * 
      */
@@ -143,7 +148,7 @@ public class CmsFileUtils {
                     if (!useFilter
                             || !fileName.endsWith(".data") && !TemplateComponent.INCLUDE_DIRECTORY.equalsIgnoreCase(fileName)) {
                         BasicFileAttributes attrs = Files.readAttributes(entry, BasicFileAttributes.class);
-                        fileList.add(new FileInfo(fileName, attrs.isDirectory(), attrs));
+                        fileList.add(new FileInfo(fileName, attrs.isDirectory(), attrs, dirPath));
                     }
                 }
             }
@@ -197,21 +202,21 @@ public class CmsFileUtils {
     }
 
     /**
-     * @param filePath
+     * @param filepath
      * @param data
      * @throws IOException
      */
-    public static void writeByteArrayToFile(String filePath, byte[] data) throws IOException {
-        FileUtils.writeByteArrayToFile(new File(filePath), data);
+    public static void writeByteArrayToFile(String filepath, byte[] data) throws IOException {
+        FileUtils.writeByteArrayToFile(new File(filepath), data);
     }
 
     /**
-     * @param filePath
+     * @param filepath
      * @param suffix
      * @return fileSize
      */
-    public static FileSize getFileSize(String filePath, String suffix) {
-        return getFileSize(new File(filePath), suffix);
+    public static FileSize getFileSize(String filepath, String suffix) {
+        return getFileSize(new File(filepath), suffix);
     }
 
     /**
@@ -253,49 +258,49 @@ public class CmsFileUtils {
     }
 
     /**
-     * @param filePath
+     * @param filepath
      */
-    public static void mkdirs(String filePath) {
-        File file = new File(filePath);
+    public static void mkdirs(String filepath) {
+        File file = new File(filepath);
         file.mkdirs();
     }
 
     /**
-     * @param filePath
+     * @param filepath
      * @return
      */
-    public static boolean isDirectory(String filePath) {
-        File file = new File(filePath);
+    public static boolean isDirectory(String filepath) {
+        File file = new File(filepath);
         return CommonUtils.notEmpty(file) && file.isDirectory();
     }
 
     /**
-     * @param filePath
+     * @param filepath
      * @return
      */
-    public static boolean isFile(String filePath) {
-        File file = new File(filePath);
+    public static boolean isFile(String filepath) {
+        File file = new File(filepath);
         return CommonUtils.notEmpty(file) && file.isFile();
     }
 
     /**
-     * @param filePath
+     * @param filepath
      * @return
      */
-    public static boolean exists(String filePath) {
-        return CommonUtils.notEmpty(new File(filePath));
+    public static boolean exists(String filepath) {
+        return CommonUtils.notEmpty(new File(filepath));
     }
 
     /**
      * 写入文件
      *
-     * @param filePath
+     * @param filepath
      * @param content
      * @return whether to create successfully
      * @throws IOException
      */
-    public static boolean createFile(String filePath, String content) throws IOException {
-        File file = new File(filePath);
+    public static boolean createFile(String filepath, String content) throws IOException {
+        File file = new File(filepath);
         if (CommonUtils.empty(file)) {
             FileUtils.writeStringToFile(file, content, CommonConstants.DEFAULT_CHARSET_NAME);
             return true;
@@ -306,12 +311,12 @@ public class CmsFileUtils {
     /**
      * 移动文件或目录
      *
-     * @param filePath
+     * @param filepath
      * @param backupFilePath
      * @return whether to move successfully
      */
-    public static boolean moveFile(String filePath, String backupFilePath) {
-        File file = new File(filePath);
+    public static boolean moveFile(String filepath, String backupFilePath) {
+        File file = new File(filepath);
         if (CommonUtils.notEmpty(file)) {
             File backupFile = new File(backupFilePath);
             try {
@@ -333,11 +338,11 @@ public class CmsFileUtils {
     /**
      * 移动文件或目录
      *
-     * @param filePath
+     * @param filepath
      * @return whether to move successfully
      */
-    public static boolean delete(String filePath) {
-        File file = new File(filePath);
+    public static boolean delete(String filepath) {
+        File file = new File(filepath);
         if (CommonUtils.notEmpty(file)) {
             FileUtils.deleteQuietly(file);
             return true;
@@ -348,14 +353,14 @@ public class CmsFileUtils {
     /**
      * 修改文件内容
      * 
-     * @param filePath
+     * @param filepath
      * @param historyFilePath
      * @param content
      * @return whether to modify successfully
      * @throws IOException
      */
-    public static boolean updateFile(String filePath, String historyFilePath, String content) throws IOException {
-        File file = new File(filePath);
+    public static boolean updateFile(String filepath, String historyFilePath, String content) throws IOException {
+        File file = new File(filepath);
         if (CommonUtils.notEmpty(file) && null != content) {
             File history = new File(historyFilePath);
             if (null != history.getParentFile()) {
@@ -373,11 +378,11 @@ public class CmsFileUtils {
     /**
      * 获取文件内容
      *
-     * @param filePath
+     * @param filepath
      * @return file content
      */
-    public static String getFileContent(String filePath) {
-        File file = new File(filePath);
+    public static String getFileContent(String filepath) {
+        File file = new File(filepath);
         try {
             if (file.isFile()) {
                 return FileUtils.readFileToString(file, CommonConstants.DEFAULT_CHARSET_NAME);
@@ -520,19 +525,22 @@ public class CmsFileUtils {
         private Date lastAccessTime;
         private Date creationTime;
         private long size;
+        private String dirPath;
 
         /**
          * @param fileName
          * @param directory
          * @param attrs
+         * @param dirPath
          */
-        public FileInfo(String fileName, boolean directory, BasicFileAttributes attrs) {
+        public FileInfo(String fileName, boolean directory, BasicFileAttributes attrs, String dirPath) {
             this.fileName = fileName;
             this.directory = directory;
             this.lastModifiedTime = new Date(attrs.lastModifiedTime().toMillis());
             this.lastAccessTime = new Date(attrs.lastAccessTime().toMillis());
             this.creationTime = new Date(attrs.creationTime().toMillis());
             this.size = attrs.size();
+            this.dirPath = dirPath;
         }
 
         /**
@@ -547,6 +555,20 @@ public class CmsFileUtils {
          */
         public void setFileName(String fileName) {
             this.fileName = fileName;
+        }
+
+        /**
+         * @return directory
+         */
+        public boolean isDirectory() {
+            return directory;
+        }
+
+        /**
+         * @param directory
+         */
+        public void setDirectory(boolean directory) {
+            this.directory = directory;
         }
 
         /**
@@ -606,17 +628,18 @@ public class CmsFileUtils {
         }
 
         /**
-         * @return directory
+         * @return the dirPath
          */
-        public boolean isDirectory() {
-            return directory;
+        public String getDirPath() {
+            return dirPath;
         }
 
         /**
-         * @param directory
+         * @param dirPath
+         *            the dirPath to set
          */
-        public void setDirectory(boolean directory) {
-            this.directory = directory;
+        public void setDirPath(String dirPath) {
+            this.dirPath = dirPath;
         }
     }
 }

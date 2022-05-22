@@ -1,5 +1,5 @@
 <form method="post" autocomplete="off" action="sysSite/execSql?navTabId=sysSite/sql" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
-    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
             <li><button type="submit" class="buttonActive" title="ctrl+s"><@t.page 'button.exec'/></button></li>
@@ -20,16 +20,16 @@
                 <p class="commandBox"></p>
             </dd>
         </dl>
-<@_logOperateList operate='execSql.site' pageSize=10>
+<@log.operateList operate='execSql.site' pageSize=10>
     <#list page.list as a>
         <@t.merge 'userIds' a.userId!/>
     </#list>
-    <@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
+    <@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
     <#list page.list as a>
         <dl>
             <dt><@t.page 'user'/>:</dt>
             <dd>
-                ${(userMap[a.userId?string].nickName)!}
+                ${(userMap[a.userId?string].nickname)!}
             </dd>
         </dl>
         <dl>
@@ -53,6 +53,6 @@
         </dl>
         <div class="divider"></div>
     </#list>
-</@_logOperateList>
+</@log.operateList>
     </div>
 </form>

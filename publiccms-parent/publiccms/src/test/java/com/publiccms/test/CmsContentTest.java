@@ -52,7 +52,7 @@ public class CmsContentTest {
         highLighterQuery.setPreTag("<em>");
         highLighterQuery.setPostTag("</em>");
         PageHandler page = contentService.query((short) 1, false, true, highLighterQuery, "天津黑核科技有限公司",
-                new String[] { "title", "description" }, null, 1, false, null, new String[] { "1" }, null, null, null,
+                new String[] { "title", "description" }, null, 1, false, null, new String[] { "1" }, null, null, null, null,
                 CommonUtils.getMinuteDate(), null, null, null);
         for (CmsContent content : (List<CmsContent>) page.getList()) {
             System.out.println(content.getTitle() + "\t" + content.getDescription());

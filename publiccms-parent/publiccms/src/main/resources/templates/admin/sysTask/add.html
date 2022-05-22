@@ -1,7 +1,7 @@
-<@_sysTask id=id><#assign a=object/></@_sysTask>
+<@sys.task id=id><#assign a=object/></@sys.task>
 <form method="post" autocomplete="off" action="sysTask/save?callbackType=closeCurrent&navTabId=sysTask/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input name="id" type="hidden" value="${id!}" />
-    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
             <li><button type="submit" class="buttonActive" title="ctrl+s"><@t.page 'button.save'/></button></li>
@@ -48,7 +48,7 @@
         <dl class="nowrap">
             <dt><@t.page 'task_template'/>:</dt>
             <dd>
-                <input name="filePath" type="text" class="required" maxlength="255" size="40" value="${(a.filePath)!}"/>
+                <input name="filePath" type="text" class="required" maxlength="255" size="50" value="${(a.filePath)!}"/>
                 <a class="btnLook" href="taskTemplate/lookup.html?field=filePath" lookupGroup=""><@t.page 'task_template.select'/></a>
             </dd>
         </dl>

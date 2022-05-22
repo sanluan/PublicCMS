@@ -60,6 +60,19 @@ DWZ.regPlugins.push(function($p){
                 CKEDITOR.replace(dataId);
                 $this.attr("data-id",dataId);
             }
+        } else if("tinymce"==$this.attr("editorType")) {
+            if(!window.editor.tinymceInitd){
+                loadScripts(window.editor.tinymceResources,function(){
+                    window.editor.tinymceInitd=true;
+                    $this.attr("id",dataId);
+                    tinymce.init($.extend(true, {selector:'#'+dataId}, window.TINYMCE_OPTIONS));
+                    $this.attr("data-id",dataId);
+                });
+            } else {
+                $this.attr("id",dataId);
+                tinymce.init($.extend(true, {selector:'#'+dataId}, window.TINYMCE_OPTIONS));
+                $this.attr("data-id",dataId);
+            }
         } else if("kindeditor"==$this.attr("editorType")) {
             if(!window.editor.kindeditorInitd){
                 loadScripts(window.editor.kindeditorResources,function(){
@@ -474,4 +487,76 @@ DWZ.regPlugins.push(function($p){
             }
         }
     });
+});
+DWZ.regPlugins.push(function($p){
+    $("[lock-url]", $p).each(function(){
+        var $this=$(this);
+        $.getJSON($this.attr("lock-url"), function(data) {
+            if(data && $this.hasClass("buttonActive")){
+                $this.removeClass("buttonActive").addClass("buttonDisabled").prop("disabled",true).attr("title",data.nickname + "-" + new Date(data.createDate).toLocaleString());
+                $('<i class="icon-lock icon-large"></i>').prependTo($this);
+            }
+        });
+    });
+});
+DWZ.regPlugins.push(function($p){
+    $('input.color', $p).each(function() {
+        var $this = $(this);
+        var opts = {
+            color: $this.val(),
+            showInput: true,
+            showInitial: true,
+            allowEmpty: true,
+            showPalette: true,
+            showSelectionPalette: true,
+            preferredFormat: "hex",
+            localStorageKey: "spectrum",
+            showButtons: true,
+            palette: [
+                ["#000000", "#434343", "#666666", "#999999", "#b7b7b7", "#cccccc", "#d9d9d9", "#efefef", "#f3f3f3", "#ffffff"],
+                ["#980000", "#ff0000", "#ff9900", "#ffff00", "#00ff00", "#00ffff", "#4a86e8", "#0000ff", "#9900ff", "#ff00ff"],
+                ["#e6b8af", "#f4cccc", "#fce5cd", "#fff2cc", "#d9ead3", "#d0e0e3", "#c9daf8", "#cfe2f3", "#d9d2e9", "#ead1dc"],
+                ["#dd7e6b", "#ea9999", "#f9cb9c", "#ffe599", "#b6d7a8", "#a2c4c9", "#a4c2f4", "#9fc5e8", "#b4a7d6", "#d5a6bd"],
+                ["#cc4125", "#e06666", "#f6b26b", "#ffd966", "#93c47d", "#76a5af", "#6d9eeb", "#6fa8dc", "#8e7cc3", "#c27ba0"],
+                ["#a61c00", "#cc0000", "#e69138", "#f1c232", "#6aa84f", "#45818e", "#3c78d8", "#3d85c6", "#674ea7", "#a64d79"],
+                ["#85200c", "#990000", "#b45f06", "#bf9000", "#38761d", "#134f5c", "#1155cc", "#0b5394", "#351c75", "#741b47"],
+                ["#5b0f00", "#660000", "#783f04", "#7f6000", "#274e13", "#0c343d", "#1c4587", "#073763", "#20124d", "#4c1130"]
+            ]
+        };
+        if ($this.attr("showButtons") ) {
+            opts.showButtons = $this.attr("showButtons");
+        }
+        if ($this.attr("showAlpha") ) {
+            opts.showAlpha = $this.attr("showAlpha");
+            opts.localStorageKey = "spectrum.alpha";
+            opts.preferredFormat="hex8";
+        }
+        if ($this.attr("preferredFormat") ) {
+            opts.preferredFormat = $this.attr("preferredFormat");
+        }
+        if ($this.attr("showInitial") ) {
+            opts.showInitial = $this.attr("showInitial");
+        }
+        if ($this.attr("showPalette") ) {
+            opts.showPalette = $this.attr("showPalette");
+        }
+        if ($this.attr("showSelectionPalette") ) {
+            opts.showSelectionPalette = $this.attr("showSelectionPalette");
+        }
+        if ($this.attr("showPaletteOnly") ) {
+            opts.showPaletteOnly = $this.attr("showPaletteOnly");
+        }
+        $this.spectrum(opts);
+    });
+});
+$(document).keydown(function(e){
+    if(e.keyCode == DWZ.keyCode.ESC && $.pdialog.getCurrent()){
+        $.pdialog.closeCurrent();
+    } else if(e.keyCode == DWZ.keyCode.CHAR_S && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+        var formSubmit=$('form',!$.pdialog.getCurrent() ? navTab.getCurrentPanel(): $.pdialog.getCurrent()).not('.pagerForm').find('[type=submit]:eq(0)');
+        if(formSubmit.length){
+          formSubmit.click();
+          e.preventDefault();
+        }
+    }
 });

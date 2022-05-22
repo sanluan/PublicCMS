@@ -30,37 +30,92 @@ public class CmsPlace implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
+    /**
+     * id
+     */
     @GeneratorColumn(title = "ID")
     private Long id;
     @GeneratorColumn(title = "站点", condition = true)
     @JsonIgnore
     private short siteId;
+    /**
+     * place path<p>
+     * 推荐位路径
+     */
     @GeneratorColumn(title = "路径", condition = true)
     private String path;
+    /**
+     * user id<p>
+     * 创建用户id
+     */
     @GeneratorColumn(title = "推荐用户", condition = true)
     private Long userId;
+    /**
+     * check user id<p>
+     * 审核用户id
+     */
     @GeneratorColumn(title = "审核用户", condition = true)
     private Long checkUserId;
+    /**
+     * item type<p>
+     * 数据项类型
+     */
     @GeneratorColumn(title = "项目类型", condition = true)
     private String itemType;
+    /**
+     * item id<p>
+     * 数据项id
+     */
     @GeneratorColumn(title = "项目", condition = true)
     private Long itemId;
+    /**
+     * title<p>
+     * 标题
+     */
     @GeneratorColumn(title = "标题")
     private String title;
+    /**
+     * url<p>
+     * 地址
+     */
     @GeneratorColumn(title = "地址")
     private String url;
+    /**
+     * cover<p>
+     * 封面图
+     */
     @GeneratorColumn(title = "封面图")
     private String cover;
+    /**
+     * create date<p>
+     * 创建日期
+     */
     @GeneratorColumn(title = "创建日期", order = true)
     private Date createDate;
+    /**
+     * publish date<p>
+     * 发布日期
+     */
     @GeneratorColumn(title = "发布日期", condition = true, order = true)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date publishDate;
+    /**
+     * expiry date<p>
+     * 过期日期
+     */
     @GeneratorColumn(title = "过期日期", condition = true, order = true)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date expiryDate;
+    /**
+     * status(0:Draft,1:Published,2:Pending)<p>
+     * 状态(0:草稿,1:已发布,2:待审核)
+     */
     @GeneratorColumn(title = "状态", condition = true)
     private int status;
+    /**
+     * clicks<p>
+     * 点击数
+     */
     @GeneratorColumn(title = "点击数", order = true)
     private int clicks;
     @GeneratorColumn(title = "已删除", condition = true)

@@ -71,7 +71,7 @@ public class SysUserDao extends BaseDao<SysUser> {
             queryHandler.condition("bean.disabled = :disabled").setParameter("disabled", disabled);
         }
         if (CommonUtils.notEmpty(name)) {
-            queryHandler.condition("(bean.name like :name or bean.nickName like :name or bean.email like :name)")
+            queryHandler.condition("(bean.name like :name or bean.nickname like :name or bean.email like :name)")
                     .setParameter("name", like(name));
         }
         if (!ORDERTYPE_ASC.equalsIgnoreCase(orderType)) {
@@ -113,10 +113,10 @@ public class SysUserDao extends BaseDao<SysUser> {
      * @param nickname
      * @return entity
      */
-    public SysUser findByNickName(short siteId, String nickname) {
+    public SysUser findByNickname(short siteId, String nickname) {
         QueryHandler queryHandler = getQueryHandler("from SysUser bean");
         queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
-        queryHandler.condition("bean.nickName = :nickname").setParameter("nickname", nickname);
+        queryHandler.condition("bean.nickname = :nickname").setParameter("nickname", nickname);
         return getEntity(queryHandler);
     }
 

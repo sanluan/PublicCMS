@@ -11,9 +11,19 @@ import com.publiccms.common.handler.RenderHandler;
  */
 public interface Directive {
     /**
+     * @return namespace
+     */
+    String getNamespace();
+
+    /**
      * @return name
      */
     String getName();
+
+    /**
+     * @return short name
+     */
+    String getShortName();
 
     /**
      * @param handler

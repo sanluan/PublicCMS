@@ -1,7 +1,6 @@
 <#include "dictionary.html"/>
 <#macro input name extend index value='' type='form' safe=true>
     <#local inputName=name+'['+index+'].value'/>
-    <#local inputValuesName=name+'['+index+'].values'/>
     <input name="${name}[${index}].name" type="hidden" value="${extend.id.code}"/>
     <#switch extend.inputType>
         <#case 'number'>
@@ -17,7 +16,7 @@
             <#else>
                 <input name="${inputName}" <#if 'customform'!=type>class="<#if extend.required>required</#if>" type="text" maxlength="300" size="50" <#else>type="file" </#if>value="${(value)!}"/>
                 <#if 'customform'!=type>
-                    <a class="btnAttach" href="common/upload.html?field=${inputName?url}" lookupGroup="" width="1000" height="600"><@t.page 'attach'/></a>
+                    <a class="btnAttach" href="common/upload.html?field=value" lookupGroup="${name}[${index}]" width="1000" height="600"><@t.page 'attach'/></a>
                     <a class="view icon-eye-open" ref="${inputName}" data-prefix="${site.sitePath}" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
                 </#if>
             </#if>
@@ -30,7 +29,7 @@
             <#else>
                 <input name="${inputName}" size="50" <#if 'customform'!=type>class="<#if extend.required>required</#if>" type="text" maxlength="300" size="50" <#else>type="file" accept="image/*" </#if>value="${(value)!}"/>
                 <#if 'customform'!=type>
-                    <a class="btnAttach" href="common/upload.html?field=${inputName?url}&fileTypes=image&width=${extend.width!}&height=${extend.height!}" lookupGroup="" width="1000" height="600"><@t.page 'image'/></a>
+                    <a class="btnAttach" href="common/upload.html?field=value&fileTypes=image&width=${extend.width!}&height=${extend.height!}" lookupGroup="${name}[${index}]" width="1000" height="600"><@t.page 'image'/></a>
                     <a class="view icon-eye-open" ref="${inputName}" data-prefix="${site.sitePath}" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
                     <#if !preview?has_content>
                         <#include "../include_page/preview.html"/>
@@ -47,7 +46,7 @@
             <#else>
                 <input name="${inputName}" <#if 'customform'!=type>class="<#if extend.required>required</#if>" type="text" maxlength="300" size="50" <#else>type="file" accept="video/*"</#if>value="${(value)!}"/>
                 <#if 'customform'!=type>
-                    <a class="btnAttach" href="common/upload.html?field=${inputName?url}&fileTypes=video" lookupGroup="" width="1000" height="600"><@t.page 'video'/></a>
+                    <a class="btnAttach" href="common/upload.html?field=value&fileTypes=video" lookupGroup="${name}[${index}]" width="1000" height="600"><@t.page 'video'/></a>
                     <a class="view icon-eye-open" ref="${inputName}" data-prefix="${site.sitePath}" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
                 </#if>
             </#if>
@@ -67,32 +66,24 @@
             </#if>
             <#break>
         <#case 'editor'>
-            <#if 'view'=type>
-                <#if safe>${(value?no_esc)!}<#else>${value!}</#if>
-            <#else>
-                <textarea name="${inputName}"<#if extend.maxlength?has_content> maxlength="${extend.maxlength}"</#if> <#if 'customform'!=type>class="editor<#if extend.required> required</#if>" </#if>cols="80" rows="20">${(value)!}</textarea>
-            </#if>
-            <#break>
         <#case 'ckeditor'>
-            <#if 'view'=type>
-                <#if safe>${(value?no_esc)!}<#else>${value!}</#if>
-            <#else>
-                <textarea name="${inputName}"<#if extend.maxlength?has_content> maxlength="${extend.maxlength}"</#if> <#if 'customform'!=type>class="editor<#if extend.required> required</#if>" editorType="ckeditor" </#if>cols="80" rows="20">${(value)!}</textarea>
-            </#if>
-            <#break>
+        <#case 'tinymce'>
         <#case 'kindeditor'>
             <#if 'view'=type>
                 <#if safe>${(value?no_esc)!}<#else>${value!}</#if>
             <#else>
-                <textarea name="${inputName}"<#if extend.maxlength?has_content> maxlength="${extend.maxlength}"</#if> <#if 'customform'!=type>class="editor<#if extend.required> required</#if>" editorType="kindeditor" </#if>cols="80" rows="20">${(value)!}</textarea>
+                <div>
+                    <a class="button" href="common/import.html?fieldName=extend.${extend.id.code}&field=value" lookupGroup="${name}[${index}]" width="500" height="200"><@t.page 'import_doc'/></a>
+                </div>
+                <textarea name="${inputName}"<#if extend.maxlength?has_content> maxlength="${extend.maxlength}"</#if> <#if 'customform'!=type>class="editor<#if extend.required> required</#if>" editorType="${extend.inputType}" </#if>cols="80" rows="20">${(value)!}</textarea>
             </#if>
             <#break>
         <#case 'template'>
             <#if 'view'=type>
                 ${(value)!}
             <#else>
-                <input name="${inputName}"<#if extend.maxlength?has_content> maxlength="${extend.maxlength}"</#if> type="text" maxlength="255" size="40" value="${(value)!}"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>/>
-                <a class="btnLook" href="cmsTemplate/lookup.html?field=${inputName?url}" lookupGroup=""><@t.page 'template.select'/></a>
+                <input name="${inputName}"<#if extend.maxlength?has_content> maxlength="${extend.maxlength}"</#if> type="text" maxlength="255" size="50" value="${(value)!}"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>/>
+                <a class="btnLook" href="cmsTemplate/lookup.html?field=value" lookupGroup="${name}[${index}]"><@t.page 'template.select'/></a>
             </#if>
             <#break>
         <#case 'boolean'>
@@ -106,17 +97,17 @@
             </#if>
             <#break>
         <#case 'user'>
-            <@_sysUser id=value><#local u=object/></@_sysUser>
+            <@sys.user id=value><#local u=object/></@sys.user>
             <#if 'view'=type>
-                ${(value)!}:${(u.nickName)!}
+                ${(value)!}:${(u.nickname)!}
             <#else>
                 <input name="${inputName}" value="${(value)!}" type="hidden"/>
-                <input name="${name}[${index}].nickName" readonly="readonly" size="30" value="${(u.nickName)!}" type="text"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>/>
+                <input name="${name}[${index}].nickname" readonly="readonly" size="30" value="${(u.nickname)!}" type="text"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>/>
                 <a class="btnLook" href="sysUser/lookup.html?field=value" width="1200" height="580" lookupGroup="${name}[${index}]"><@t.page 'user.select'/></a>
             </#if>
             <#break>
         <#case 'dept'>
-            <@_sysDept id=value><#local d=object/></@_sysDept>
+            <@sys.dept id=value><#local d=object/></@sys.dept>
             <#if 'view'=type>
                 ${(value)!}:${(d.name)!}
             <#else>
@@ -126,7 +117,7 @@
             </#if>
             <#break>
         <#case 'content'>
-            <@_content id=value><#local tempContent=object/></@_content>
+            <@cms.content id=value><#local tempContent=object/></@cms.content>
             <#if 'view'=type>
                 ${(value)!}:${(tempContent.title)!}
             <#else>
@@ -136,7 +127,7 @@
             </#if>
             <#break>
         <#case 'category'>
-            <@_category id=value><#local tempCategory=object/></@_category>
+            <@cms.category id=value><#local tempCategory=object/></@cms.category>
             <#if 'view'=type>
                 ${(value)!}:${(tempCategory=object.name)!}
             <#else>
@@ -146,7 +137,7 @@
             </#if>
             <#break>
         <#case 'categoryType'>
-            <@_categoryType id=value><#local categoryType=object/></@_categoryType>
+            <@cms.categoryType id=value><#local categoryType=object/></@cms.categoryType>
             <#if 'view'=type>
                 ${(value)!}:${(categoryType.name)!}
             <#else>
@@ -156,7 +147,7 @@
             </#if>
             <#break>
         <#case 'tagType'>
-            <@_tagType id=value><#local tagType=object/></@_tagType>
+            <@cms.tagType id=value><#local tagType=object/></@cms.tagType>
             <#if 'view'=type>
                 ${(value)!}:${(tagType.name)!}
             <#else>
@@ -166,7 +157,7 @@
             </#if>
             <#break>
         <#case 'tag'>
-            <@_tag id=value><#local tag=object/></@_tag>
+            <@cms.tag id=value><#local tag=object/></@cms.tag>
             <#if 'view'=type>
                 ${(value)!}:${(tag.name)!}
             <#else>
@@ -176,7 +167,7 @@
             </#if>
             <#break>
         <#case 'vote'>
-            <@_vote id=value><#local vote=object/></@_vote>
+            <@cms.vote id=value><#local vote=object/></@cms.vote>
             <#if 'view'=type>
                 ${(value)!}:${(vote.title)!}
             <#else>
@@ -186,24 +177,25 @@
             </#if>
             <#break>
         <#case 'dictionary'>
-            <@_dictionary id=extend.dictionaryId><#local dictionary=object/></@_dictionary>
-            <#if site.parentId?has_content&&!dictionary?has_content><@_dictionary id=extend.dictionaryId siteId=site.parentId><#local dictionary=object/></@_dictionary></#if>
+            <@cms.dictionary id=extend.dictionaryId><#local dictionary=object/></@cms.dictionary>
+            <#if site.parentId?has_content&&!dictionary?has_content><@cms.dictionary id=extend.dictionaryId siteId=site.parentId><#local dictionary=object/></@cms.dictionary></#if>
             <#if dictionary?has_content>
                 <#if 'view'=type>
-                    <@_dictionaryData dictionaryId=extend.dictionaryId values=value><#list map as k,data>${data.text}<#sep>,</#list></@_dictionaryData>
+                    <@cms.dictionaryData dictionaryId=extend.dictionaryId values=value><#list map as k,data>${data.text}<#sep>,</#list></@cms.dictionaryData>
                 <#else>
+                    <#local inputValuesName=name+'['+index+'].values'/>
                     <#local dictionaryId='dictionary_'+.now?long/>
-                    <div class="dictionary" data-id="${dictionary.id.id}" data-ref="<@_dictionaryExcludeList dictionaryId=dictionary.id.id><#list list as a>${a.id.excludeDictionaryId}<#sep>,</#list></@_dictionaryExcludeList>" data-url="common/dictionaryExclude.html" id="${dictionaryId}">
+                    <div class="dictionary" data-id="${dictionary.id.id}" data-ref="<@cms.dictionaryExcludeList dictionaryId=dictionary.id.id><#list list as a>${a.id.excludeDictionaryId}<#sep>,</#list></@cms.dictionaryExcludeList>" data-url="common/dictionaryExclude.html" id="${dictionaryId}">
                        <@dictionaryElement extend.dictionaryId inputValuesName extend.required dictionary.childDepth extend.multiple type value/>
                     </div>
-                    <@_sysAuthorized roleIds=admin.roles url='cmsDictionary/add'>
-                        <a href="common/dictionary.html?id=${dictionary.id.id}&inputName=inputValuesName&required=${extend.required!}&multiple=${extend.multiple!}&value=${value!}" target="ajax" rel="${dictionaryId}"><i class="icon-refresh"></i> <@t.page 'button.refresh'/></a>
+                    <@sys.authorized roleIds=admin.roles url='cmsDictionary/add'>
+                        <a href="common/dictionary.html?id=${dictionary.id.id}&inputName=inputValuesName&required=${extend.required!}&multiple=${extend.multiple!}&value=${value!}" target="ajax" rel="${dictionaryId}"><i class="icon-refresh"></i><@t.page 'button.refresh'/></a>
                         <#if dictionary.childDepth gt 0>
                             <a href="cmsDictionary/addChild.html?id=${dictionary.id.id}" target="dialog" mask="true" icon="<i class='icon-edit'></i>"><@t.page 'dictionary.edit'/></a>
                         <#else>
                             <a href="cmsDictionary/add.html?id=${dictionary.id.id}" target="navTab" rel="cmsDictionary/edit" icon="<i class='icon-edit'></i>"><@t.page 'dictionary.edit'/></a>
                         </#if>
-                    </@_sysAuthorized>
+                    </@sys.authorized>
                 </#if>
             </#if>
             <#break>
@@ -219,6 +211,20 @@
                 ${(value)!}
             <#else>
                 <input name="${inputName}" <#if 'customform'!=type>class="date<#if extend.required> required</#if>" autocomplete="off" dateFmt="yyyy-MM-dd HH:mm:ss" </#if>type="text" size="20" value="${(value)!}"/>
+            </#if>
+            <#break>
+        <#case 'color'>
+            <#if 'view'=type>
+                ${(value)!}
+            <#else>
+                <input name="${inputName}" <#if 'customform'!=type>class="color<#if extend.required> required</#if>" autocomplete="off" </#if>type="text" size="20" value="${(value)!}"/>
+            </#if>
+            <#break>
+        <#case 'alphaColor'>
+            <#if 'view'=type>
+                ${(value)!}
+            <#else>
+                <input name="${inputName}" <#if 'customform'!=type>class="color<#if extend.required> required</#if>" autocomplete="off" showAlpha="true" </#if>type="text" size="20" value="${(value)!}"/>
             </#if>
             <#break>
         <#default>

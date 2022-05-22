@@ -39,7 +39,7 @@ public class MyContentListDirective extends AbstractAppDirective {
                         handler.getBoolean("hasImages"), handler.getBoolean("hasCover"), handler.getBoolean("hasFiles"), null,
                         user.getId(), null, handler.getDate("endPublishDate"), null),
                 handler.getBoolean("containChild"), null, null, handler.getInteger("pageIndex", 1),
-                handler.getInteger("pageSize", handler.getInteger("count", 30)));
+                handler.getInteger("pageSize", 30));
         @SuppressWarnings("unchecked")
         List<CmsContent> list = (List<CmsContent>) page.getList();
         list.forEach(e -> {
@@ -50,7 +50,7 @@ public class MyContentListDirective extends AbstractAppDirective {
             TemplateComponent.initContentUrl(site, e);
             TemplateComponent.initContentCover(site, e);
         });
-        handler.put("page", page);
+        handler.put("page", page).render();;
     }
 
     @Resource

@@ -76,15 +76,15 @@ public class SysUserService extends BaseService<SysUser> {
 
     /**
      * @param id
-     * @param nickName
+     * @param nickname
      * @param cover
      * @param email
      * @return entity
      */
-    public SysUser updateProfile(Serializable id, String nickName, String cover, String email) {
+    public SysUser updateProfile(Serializable id, String nickname, String cover, String email) {
         SysUser entity = getEntity(id);
         if (null != entity) {
-            entity.setNickName(nickName);
+            entity.setNickname(nickname);
             entity.setCover(cover);
             if (null != email) {
                 entity.setEmail(email);
@@ -167,7 +167,7 @@ public class SysUserService extends BaseService<SysUser> {
     public SysUser updateNickname(Serializable id, String nickname) {
         SysUser entity = getEntity(id);
         if (null != entity) {
-            entity.setNickName(nickname);
+            entity.setNickname(nickname);
         }
         return entity;
     }

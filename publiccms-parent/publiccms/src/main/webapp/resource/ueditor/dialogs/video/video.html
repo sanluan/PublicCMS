@@ -13,10 +13,16 @@
         <div id="tabHeads" class="tabhead">
             <span tabSrc="video" class="focus" data-content-id="video"><var id="lang_tab_insertV"></var></span>
             <span tabSrc="upload" data-content-id="upload"><var id="lang_tab_uploadV"></var></span>
+			<span tabSrc="onlineVideo" data-content-id="onlineVideo"><var id="lang_tab_online"></var></span>
+			<span tabSrc="uploadImage" data-content-id="uploadImage"><var id="lang_tab_uploadI"></var></span>
+			<span tabSrc="onlineImage" data-content-id="onlineImage"><var id="lang_tab_onlineImage"></var></span>
         </div>
         <div id="tabBodys" class="tabbody">
             <div id="video" class="panel focus">
-               <table><tr><td><label for="videoUrl" class="url"><var id="lang_video_url"></var></label></td><td><input id="videoUrl" type="text"></td></tr></table>
+               <table>
+					<tr><td><label for="videoUrl" class="url"><var id="lang_video_url"></var></label></td><td><input id="videoUrl" type="text"></td></tr>
+					<tr><td><label for="posterUrl" class="url"><var id="lang_image_url"></var></label></td><td><input id="posterUrl" type="text"></td></tr>
+			   </table>
                <div id="preview"></div>
                <div id="videoInfo">
                    <fieldset>
@@ -32,7 +38,8 @@
                   </fieldset>
                </div>
             </div>
-            <div id="upload" class="panel">
+			<!-- 上传视频 -->
+            <div id="upload" class="upload panel">
                 <div id="upload_left">
                     <div id="queueList" class="queueList">
                         <div class="statusBar element-invisible">
@@ -69,6 +76,39 @@
                     </fieldset>
                 </div>
             </div>
+
+			<!-- 在线视频 -->
+            <div id="onlineVideo" class="online panel">
+                <div id="videoList"><var id="lang_videoLoading"></var></div>
+            </div>
+
+			<!-- 上传图片 -->
+            <div id="uploadImage" class="upload panel">
+                <div id="imageQueueList" class="queueList">
+                    <div class="statusBar element-invisible">
+                        <div class="progress">
+                            <span class="text">0%</span>
+                            <span class="percentage"></span>
+                        </div><div class="info"></div>
+                        <div class="btns">
+                            <div class="uploadBtn"><var id="lang_start_upload"></var></div>
+                        </div>
+                    </div>
+                    <div id="dndArea" class="placeholder">
+                        <div class="filePickerContainer">
+                            <div id="imagePickerReady"></div>
+                        </div>
+                    </div>
+                    <ul class="filelist element-invisible">
+                        <li id="imagePickerBlock" class="filePickerBlock"></li>
+                    </ul>
+                </div>
+            </div>
+
+			<!-- 在线图片 -->
+            <div id="onlineImage" class="online panel">
+                <div id="imageList"><var id="lang_imgLoading"></var></div>
+            </div>
         </div>
     </div>
 </div>
@@ -77,8 +117,8 @@
 <script type="text/javascript" src="../../third-party/jquery-1.10.2.min.js"></script>
 
 <!-- webuploader -->
-<script type="text/javascript" src="../../third-party/webuploader/webuploader.min.js"></script>
 <link rel="stylesheet" type="text/css" href="../../third-party/webuploader/webuploader.css">
+<script type="text/javascript" src="../../third-party/webuploader/webuploader.min.js"></script>
 
 <!-- video -->
 <script type="text/javascript" src="video.js"></script>

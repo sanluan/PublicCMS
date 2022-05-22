@@ -1,0 +1,118 @@
+<@tools.diyMetadata itemType='region' itemId=id><#assign a=object/></@tools.diyMetadata>
+<@tools.diyRegionData id=id categoryId=categoryId><#assign data=object/></@tools.diyRegionData>
+<form method="post" autocomplete="off" action="cmsDiy/save?rel=diyConfigBox&navTabId=cmsPage/diy" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+    <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
+    <input type="hidden" name="categoryId" value="${categoryId!}"/>
+    <div class="formBar">
+        <ul>
+            <li><button type="submit" class="buttonActive" title="ctrl+s"<#if id?has_content> lock-url="common/lock?itemType=region&itemId=${(id?url)!}<#if categoryId?has_content>_${categoryId}</#if>" close-url="common/unlock?itemType=region&itemId=${(id?url)!}<#if categoryId?has_content>_${categoryId}</#if>"</#if>><@t.page 'button.save'/></button></li>
+        </ul>
+    </div>
+    <div class="pageFormContent" layoutH>
+        <dl class="miscSortDrag nowrap" data-result="textarea[name=diydata]" drag-rel="dd .sortDrag" data-id="region" data-duplicate="1">
+            <dt>
+                <fieldset>
+                    <legend><@t.page 'layout'/></legend>
+                    <@tools.diyMetadataList itemType="layout">
+                    <div class="itemBox">
+                        <#list list as a>
+                            <div class="dragItem icon-move icon-large" data-id="${a.id}" data-type="layout">
+                                ${a.name!} (${a.count})<span class="close">X</span>
+                                <div class="dragContent">
+                                    <@tools.includeLayout id=a.id>
+                                        <div class="sortDrag" data-over-sort="true" data-accept="module"><@t.page 'drag_module_here'/></div>
+                                    </@tools.includeLayout>
+                                </div>
+                            </div>
+                        </#list>
+                    </div>
+                        <#if list?has_content>
+                            <style>
+                            <#list list as a>
+                                <#if a.style?has_content>${getLayoutStyle(a.style,'.diy-layout')!}</#if>
+                            </#list>
+                            </style>
+                        </#if>
+                    </@tools.diyMetadataList>
+                </fieldset>
+                <fieldset>
+                    <legend><@t.page 'module'/></legend>
+                <@tools.diyMetadataList itemType="module">
+                    <div class="itemBox">
+                        <#list list as a>
+                    <div class="dragItem icon-move icon-large" data-id="${a.id}" data-type="module" >
+                        ${a.name!}<span class="close">X</span>
+                        <span class="ctl-label">
+                            <input data-name="name" type="text" class="required" value="<@cms.category id=categoryId>${object.name}-</@cms.category>${a.name}"/>
+                            <#if !a.clone>
+                            <@tools.placeMetadata path=a.place>
+                                <a class="button" href="cmsPlace/metadata.html?path=${a.place?url}" target="ajax" rel="diyConfigBox">${(object.alias)!a.place}</a>
+                                <#if 0 lt ((object.size)!0)>
+                                   <a class="button" href="cmsPlace/dataList.html?path=${a.place?url}" target="navTab" rel="cmsPlace/dataList" title="<@t.page 'place_data'/>:${(object.alias)!}"><@t.page 'place_data'/>(${object.size})</a>
+                                </#if>
+                            </@tools.placeMetadata>
+                            </#if>
+                        </span>
+                        <#if a.cover?has_content>
+                        <div class="dragContent">
+                            <img src="${(getAbsoluteUrl(site.sitePath,a.cover))!}"/>
+                        </div>
+                        </#if>
+                    </div>
+                        </#list>
+                    </div>
+                </@tools.diyMetadataList>
+                </fieldset>
+            </dt>
+            <dd>
+                <fieldset>
+                    <legend><@cms.category id=categoryId>${object.name}-</@cms.category>${a.name}</legend>
+                    <div class="sortDrag diy-layout" data-over-sort="true" data-accept="layout" data-id="${a.id}" data-parent="region">
+                        <@t.page 'drag_layout_here'/>
+                        <#if (data.layoutList)?has_content>
+                            <#list data.layoutList as layoutdata>
+                                <@tools.diyMetadata itemType="layout" itemId=layoutdata.id>
+                                    <div class="dragItem" data-id="${object.id}" data-type="layout">
+                                        ${object.name!}<span class="close">X</span>
+                                        <div class="dragContent" data-parent="${object.id}" >
+                                            <@tools.includeLayout id=object.id>
+                                                <div class="sortDrag" data-over-sort="true" data-accept="module">
+                                                    <@t.page 'drag_module_here'/>
+                                                    <#if layoutdata.moduleList[index]?has_content>
+                                                        <#list layoutdata.moduleList[index] as moduleData>
+                                                            <@tools.diyMetadata itemType="module" itemId=moduleData.id;module>
+                                                                <div class="dragItem" data-id="${module.id}" data-type="module" >
+                                                                    ${moduleData.name}<span class="close">X</span>
+                                                                    <span class="ctl-label">
+                                                                        <@tools.placeMetadata path=module.place>
+                                                                            <a class="button" href="cmsPlace/metadata.html?path=${module.place?url}" target="ajax" rel="diyConfigBox">${(object.alias)!module.place}</a>
+                                                                            <#if 0 lt ((object.size)!0)>
+                                                                             <a class="button" href="cmsPlace/dataList.html?path=${module.place?url}" target="navTab" rel="cmsPlace/dataList" title="<@t.page 'place_data'/>:${(object.alias)!}"><@t.page 'place_data'/>(${object.size})</a>
+                                                                            </#if>
+                                                                        </@tools.placeMetadata>
+                                                                        <input data-name="name" type="hidden" value="${moduleData.name}"/>
+                                                                        <input data-name="place" type="hidden" value="${moduleData.place}"/>
+                                                                    </span>
+                                                                    <#if module.cover?has_content>
+                                                                        <div class="ctl-label">
+                                                                            <img src="${(getAbsoluteUrl(site.sitePath,module.cover))!}"/>
+                                                                        </div>
+                                                                    </#if>
+                                                                </div>
+                                                            </@tools.diyMetadata>
+                                                        </#list>
+                                                    </#if>
+                                                </div>
+                                            </@tools.includeLayout>
+                                        </div>
+                                    </div>
+                                </@tools.diyMetadata>
+                            </#list>
+                        </#if>
+                    </div>
+                    <textarea name="diydata" class="hide"></textarea>
+                </fieldset>
+            </dd>
+        </dl>
+    </div>
+</form>

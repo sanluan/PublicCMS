@@ -1,152 +1,182 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <title>Interface testing</title>
-    <meta charset="utf-8">
-    <link href="${base}/resource/interface/code-formatter.css" rel="stylesheet"/>
-    <script src="${base}/resource/interface/code-formatter.js"></script>
-    <script src="${base}/resource/interface/json2.js"></script>
-    <script src="${base}/resource/js/jquery-1.12.4.min.js"></script>
+<title>Interface testing</title>
+<meta charset="utf-8">
+<link href="${base}/resource/interface/code-formatter.css" rel="stylesheet" />
 <style>
-#rawJson{width:100%; height: 50px;}
-#interfaes{overflow: hidden;}
-#interfaes a{padding: 0 5px;}
+#rawJson{width:100%;height:50px;}
+#interfaes{overflow:hidden;}
+#interfaes a{padding:0 5px;}
 </style>
-<script>
-var i=0;
-var sitePath = '${site.dynamicPath}/';
-var apiArray=['api/directive/','api/method/','api/']
-var apisArray=['api/directives','api/methods','api/apis'];
-var supportShowParametersArray=[true,false,true];
-
-function invoke(){
-    $('#rawJson').val('loading...');
-    $.ajax({
-        url: $('#sendData').val(),
-        type: 'GET',
-        contentType:'application/json; charset=UTF-8',
-        success: function (data) {
-            $('#rawJson').val(JSON.stringify(data));
-            process(JSON.stringify(data),$('.code-canvas'));
-        },
-        error: function (XMLHttpRequest, textStatus, errorThrown) {
-            console.log(XMLHttpRequest);
-            console.log(errorThrown);
-            $('#rawJson').val('http code:'+XMLHttpRequest.status+',error:'+textStatus);
-        }
-    });
-}
-function getSymbol(value){
-    if(value.charAt(value.length-1)=='&'||value.charAt(value.length-1)=='?'){
-        return '';
-    }else{
-        if(value&&value.indexOf('?')>0){
-            return '&';
-        }else{
-            return '?';
-        }
-    }
-}
-function use(action,needAppToken,needUserToken,minParameters){
-    $('#sendData').val(sitePath+apiArray[i]+action);
-    if('true'==needAppToken){
-        $('#sendData').val($('#sendData').val()+getSymbol($('#sendData').val())+'appToken=_AppToken_');
-    }
-    if('true'==needUserToken){
-        $('#sendData').val($('#sendData').val()+getSymbol($('#sendData').val())+'authToken=_UserToken_&authUserId=_UserID_');
-    }
-    if(minParameters != 'undefined'){
-        for (var j = 1; j <= minParameters; j++) {
-            $('#sendData').val($('#sendData').val() + getSymbol($('#sendData').val()) + 'parameters=_value' + j+'_');
-        }
-    }else if($('input[name=showParameters]').is(':checked')&&$('input[name=showParameters]').is(':visible')){
-        $('#sendData').val($('#sendData').val()+getSymbol($('#sendData').val())+'showParameters=true');
-    }
-    $('#buttons').show();
-    return false;
-}
-function init(){
-    i=$('input:radio[name=api]:checked').val();
-    if(supportShowParametersArray[i]){
-        $('input[name=showParameters]').parent().show();
-    }else{
-        $('input[name=showParameters]').parent().hide();
-    }
-    $('#interfaes').empty();
-    $.ajax({
-        url:apisArray[i],type: 'GET',
-        contentType:'application/json; charset=UTF-8',
-        dataType: 'json',
-        success: function (dataList) {
-            $(dataList).each(function(index,data){
-                var style='';
-                if('true'==data.needAppToken){
-                    style+='color:#f00;';
-                }
-                if('true'==data.needUserToken){
-                    style+='border:1px solid #0f0;';
-                }
-                $('#interfaes').append(' <a href="javascript:;" style="'+style+'" onclick="return use(\''+data.name+'\',\''+data.needAppToken+'\',\''+data.needUserToken+'\',\''+data.minParameters+'\');">'+data.name+'</a> ');
-            });
-        }
-    });
-}
-$(function(){
-    $('input[name=showParameters]').click(function(){
-        if($(this).is(':checked')){
-            $('#sendData').val($('#sendData').val()+getSymbol($('#sendData').val())+'showParameters=true');
-        }else{
-            $('#sendData').val($('#sendData').val().replace('&showParameters=true','').replace('?showParameters=true&','?').replace('?showParameters=true',''));
-        }
-    });
-    $('input:radio[name=api]').eq(0).click();
-    $('input[name=api]').click(function(){
-        init();
-    });
-    init();
-    $('#siteList').on('change',function(){
-        $('#sendData').val($('#sendData').val().replace(sitePath,$(this).val()));
-        sitePath=$(this).val(); 
-    });
-});
-</script>
 </head>
 <body>
     <fieldset>
         <legend>Interface testing</legend>
         <p>
-            <label>URL：</label>
+            <label>URL:</label>
             <textarea cols="100" rows="2" id="sendData"></textarea>
-            <label><input name="showParameters" type="checkbox" checked="checked"/>Show Parameters</label>
+            <label><input name="showParameters" type="checkbox" checked="checked" />Show Parameters</label>
         </p>
-        <p id="buttons" style="display:none"><input type="button" value="Send" onclick="invoke()"/></p>
+        <p id="buttons">
+            <input type="button" value="Send" onclick="invoke()" />
+        </p>
         <p>
-            <label>Site switch
-                <select id="siteList">
-            <@_sysSiteList pageSize=500>
-                <#list page.list as a>
-                    <option value ="${a.dynamicPath!}" <#if site.id=a.id>selected="selected"</#if>>${a.name!}<#if site.id=a.id>[Current site]</#if></option>
-                </#list>
-            </@_sysSiteList>
-                </select>
+            <label>Site switch 
+            <select id="siteList">
+                <@_sysSiteList pageSize=500>
+                    <#list page.list as a>
+                    <option value="${a.dynamicPath!}"<#if site.id=a.id>selected="selected"</#if>>
+                        ${a.name!} <#if site.id=a.id>[Current site]</#if>
+                    </option>
+                    </#list>
+                </@_sysSiteList>
+            </select>
             </label>
-            <label><input type="radio" name="api" value="0"/>指令接口Directive interface</label>
-            <label><input type="radio" name="api" value="1"/>函数接口Function interface</label>
-            <label><input type="radio" name="api" value="2"/>自定义接口Custom interface</label>
+            <label><input type="radio" name="api" value="0" />指令接口Directive interface</label>
+            <label><input type="radio" name="api" value="1" />函数接口Function interface</label>
+            <label><input type="radio" name="api" value="2" />自定义接口Custom interface</label>
+            <a href="javascript:;" onclick="$(this).hide().next().show();$('#interfaes').css('height','20px');return false;">↑↑↑↑</a>
+            <a href="javascript:;" style="display: none;" onclick="$(this).hide().prev().show();$('#interfaes').css('height','auto');return false;">↓↓↓↓</a>
         </p>
-        <p class="description"><em>红色字体接口需要使用AppToken才能访问，后台添加应用然后用appKey和appSecret通过自定义接口appToken获取appToken，绿色框体接口需要登录信息authToken，authUserId才能访问,通过普通接口login获取</em></p>
-        <p class="description"><em>The red font interface needs to use the AppToken to access, add the application in the management, and then use the appKey and appSecret to obtain the appToken through the custom interface appToken. The green frame interface requires the login information authToken and authUserId to access, and the common interface login.</em></p>
         <p id="interfaes"></p>
-        <p>
-            <a href="javascript:;" onclick="$(this).hide().next().show();$('#interfaes').css('height','20px');$('.description').show();return false;">↑↑↑↑</a>
-            <a href="javascript:;" style="display:none;" onclick="$(this).hide().prev().show();$('#interfaes').css('height','auto');$('.description').hide();return false;">↓↓↓↓</a>
-        </p>
     </fieldset>
     <fieldset>
         <legend>Result</legend>
         <textarea id="rawJson"></textarea>
-        <p><input type="button" value="Format" onclick="process($('#rawJson').val(),$('.code-canvas'))"/></p>
+        <p>
+            <input type="button" value="Format"
+                onclick="process($('#rawJson').val(),$('.code-canvas'))" />
+        </p>
         <div class="code-canvas"></div>
+        <p class="description">
+            <em>红色字体接口需要使用AppToken才能访问，后台添加应用然后用appKey和appSecret通过自定义接口appToken获取appToken，绿色框体接口需要登录信息authToken，authUserId才能访问,通过普通接口login获取</em>
+        </p>
+        <p class="description">
+            <em>The red font interface needs to use the AppToken to
+                access, add the application in the management, and then
+                use the appKey and appSecret to obtain the appToken
+                through the custom interface appToken. The green frame
+                interface requires the login information authToken and
+                authUserId to access, and the common interface login.</em>
+        </p>
     </fieldset>
+    <script src="${base}/resource/interface/code-formatter.js"></script>
+    <script src="${base}/resource/interface/json2.js"></script>
+    <script src="${base}/resource/js/jquery-1.12.4.min.js"></script>
+    <script>
+    var i=0;
+    var sitePath = '${site.dynamicPath}/';
+    var apiArray=['api/directive/','api/method/','api/']
+    var apisArray=['api/namespaces','api/methods','api/apis'];
+    var supportShowParametersArray=[true,false,true];
+    
+    function invoke(){
+        $('#rawJson').val('loading...');
+        $.ajax({
+            url: $('#sendData').val(),
+            type: 'GET',
+            contentType:'application/json; charset=UTF-8',
+            success: function (data) {
+                $('#rawJson').val(JSON.stringify(data));
+                process(JSON.stringify(data),$('.code-canvas'));
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log(XMLHttpRequest);
+                console.log(errorThrown);
+                $('#rawJson').val('http code:'+XMLHttpRequest.status+',error:'+textStatus);
+            }
+        });
+    }
+    function getSymbol(value){
+        if(value.charAt(value.length-1)=='&'||value.charAt(value.length-1)=='?'){
+            return '';
+        }else{
+            if(value&&value.indexOf('?')>0){
+                return '&';
+            }else{
+                return '?';
+            }
+        }
+    }
+    function use(action,needAppToken,needUserToken,minParameters){
+        $('#sendData').val(sitePath+apiArray[i]+action);
+        if('true'==needAppToken){
+            $('#sendData').val($('#sendData').val()+getSymbol($('#sendData').val())+'appToken=_AppToken_');
+        }
+        if('true'==needUserToken){
+            $('#sendData').val($('#sendData').val()+getSymbol($('#sendData').val())+'authToken=_UserToken_&authUserId=_UserID_');
+        }
+        if(minParameters != 'undefined'){
+            for (var j = 1; j <= minParameters; j++) {
+                $('#sendData').val($('#sendData').val() + getSymbol($('#sendData').val()) + 'parameters=_value' + j+'_');
+            }
+        }else if($('input[name=showParameters]').is(':checked')&&$('input[name=showParameters]').is(':visible')){
+            $('#sendData').val($('#sendData').val()+getSymbol($('#sendData').val())+'showParameters=true');
+        }
+        return false;
+    }
+    function init(){
+        i=$('input:radio[name=api]:checked').val();
+        if(supportShowParametersArray[i]){
+            $('input[name=showParameters]').parent().show();
+        }else{
+            $('input[name=showParameters]').parent().hide();
+        }
+        $('#interfaes').empty();
+        $.ajax({
+            url:apisArray[i],type: 'GET',
+            contentType:'application/json; charset=UTF-8',
+            dataType: 'json',
+            success: function (dataList) {
+                if(dataList instanceof Array) {
+                    $(dataList).each(function(index,data){
+                        var style='';
+                        if('true'==data.needAppToken){
+                            style+='color:#f00;';
+                        }
+                        if('true'==data.needUserToken){
+                            style+='border:1px solid #0f0;';
+                        }
+                        $('#interfaes').append(' <a href="javascript:;" style="'+style+'" onclick="return use(\''+data.name+'\',\''+data.needAppToken+'\',\''+data.needUserToken+'\',\''+data.minParameters+'\');">'+data.name+'</a> ');
+                    });
+                } else {
+                    $.each(dataList,function(key,data){
+                        $('#interfaes').append('<label>'+key+'</label>:');
+                        $(data).each(function(index,directive){
+                            var style='';
+                            if(directive.needAppToken){
+                                style+='color:#f00;';
+                            }
+                            if(directive.needUserToken){
+                                style+='border:1px solid #0f0;';
+                            }
+                            $('#interfaes').append(' <a href="javascript:;" style="'+style+'" onclick="return use(\''+directive.namespace+'/'+directive.name+'\',\''+directive.needAppToken+'\',\''+directive.needUserToken+'\');">'+directive.name+'</a> ');
+                        });
+                        $('#interfaes').append('<br/>');
+                    });
+                }
+            }
+        });
+    }
+    $(function(){
+        $('input[name=showParameters]').click(function(){
+            if($(this).is(':checked')){
+                $('#sendData').val($('#sendData').val()+getSymbol($('#sendData').val())+'showParameters=true');
+            }else{
+                $('#sendData').val($('#sendData').val().replace('&showParameters=true','').replace('?showParameters=true&','?').replace('?showParameters=true',''));
+            }
+        });
+        $('input:radio[name=api]').eq(0).click();
+        $('input[name=api]').click(function(){
+            init();
+        });
+        init();
+        $('#siteList').on('change',function(){
+            $('#sendData').val($('#sendData').val().replace(sitePath,$(this).val()));
+            sitePath=$(this).val(); 
+        });
+    });
+    </script>
 </body>
 </html>

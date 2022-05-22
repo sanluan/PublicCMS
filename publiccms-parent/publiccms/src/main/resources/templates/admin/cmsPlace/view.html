@@ -1,6 +1,6 @@
-<@_place id=id>
+<@cms.place id=id>
     <#assign a=object/>
-</@_place>
+</@cms.place>
 <div class="pageFormContent" layoutH>
     <dl class="nowrap">
         <dt><@t.page 'title'/>:</dt>
@@ -11,7 +11,7 @@
     <dl class="nowrap">
         <dt><@t.page 'url'/>:</dt>
         <dd>
-            <a href="${(a.url)!}" target="_blank">${(a.url)!}</a>
+            <a href="cmsDiy/preview.html?url=${((a.url)?url)!}" target="navTab" rel="cmsDiy/preview"  icon="<i class='bi bi-palette2 icon-large'></i>" title="<@t.page 'diy.preview'/>">${(a.url)!}</a>
         </dd>
     </dl>
     <dl>
@@ -30,7 +30,7 @@
         </dd>
     </dl>
 </#if>
-    <@_placeMetadata path=(a.path)!><#assign metadata=object/></@_placeMetadata>
+    <@tools.placeMetadata path=(a.path)!><#assign metadata=object/></@tools.placeMetadata>
 <#if (metadata.extendList)?has_content>
     <#include "../include_page/extendData.html"/>
     <#assign attribute=getPlaceAttribute((a.id)!)!{}/>

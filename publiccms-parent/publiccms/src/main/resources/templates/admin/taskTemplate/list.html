@@ -1,20 +1,20 @@
 <#macro templateTree filepath>
-    <@_taskTemplateList path=filepath>
+    <@tools.taskTemplateList path=filepath>
         <#list list as a>
             <#if !a.directory><@t.merge 'paths' filepath+'/'+a.fileName/></#if>
         </#list>
-        <@_sysLock userId=admin.id itemType='taskTemplate' itemIds=t.paths><#assign lockMap=map!/></@_sysLock>
+        <@sys.lock userId=admin.id itemType='taskTemplate' itemIds=t.paths><#assign lockMap=map!/></@sys.lock>
         <#if lockMap?has_content>
             <#list lockMap as k,lock>
                 <#if lock.userId?has_content><@t.merge 'userIds' lock.userId/></#if>
             </#list>
         </#if>
-        <@_sysUser ids=t.userIds><#assign userMap=map!/></@_sysUser>
+        <@sys.user ids=t.userIds><#assign userMap=map!/></@sys.user>
         <#list list as a>
             <li>
                 <#local path=filepath+'/'+a.fileName>
-                <a href="taskTemplate/${a.directory?then('directory','content')}.html?path=${(path?url)!}" <#if !a.directory&&lockMap[path]?has_content><#assign lockUser=(userMap[lockMap[path].userId?string].nickName)!''/>title="<@t.page 'lock.message' lockUser/> ${lockMap[path].createDate}"</#if> target="ajax" rel="taskTemplateBox">
-                    <#if !a.directory&&lockMap[path]?has_content><i class="icon-lock icon-large"></i> </#if>${a.fileName}
+                <a href="taskTemplate/${a.directory?then('directory','content')}.html?path=${(path?url)!}" <#if !a.directory&&lockMap[path]?has_content><#assign lockUser=(userMap[lockMap[path].userId?string].nickname)!''/>title="<@t.page 'lock.message' lockUser/> ${lockMap[path].createDate}"</#if> target="ajax" rel="taskTemplateBox">
+                    <#if !a.directory&&lockMap[path]?has_content><i class="icon-lock icon-large"></i></#if>${a.fileName}
                 </a>
             <#if a.directory>
                 <ul>
@@ -25,7 +25,7 @@
         <#else>
             <li><a><@t.page 'empty_directory'/></a></li>
         </#list>
-    </@_taskTemplateList>
+    </@tools.taskTemplateList>
 </#macro>
 <div class="pageContent">
     <div layoutH class="leftPageContent">

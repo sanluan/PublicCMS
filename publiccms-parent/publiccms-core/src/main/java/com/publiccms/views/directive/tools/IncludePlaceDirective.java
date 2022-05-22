@@ -29,8 +29,8 @@ public class IncludePlaceDirective extends AbstractTemplateDirective {
         String path = handler.getString("path");
         if (CommonUtils.notEmpty(path)) {
             SysSite site = getSite(handler);
-            String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
-            CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filePath);
+            String filepath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
+            CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);
             if (site.isUseSsi()) {
                 StringBuilder sb = new StringBuilder("<!--#include virtual=\"/");
                 if (null != site.getParentId() && CommonUtils.notEmpty(site.getDirectory())) {
@@ -39,11 +39,11 @@ public class IncludePlaceDirective extends AbstractTemplateDirective {
                 sb.append(TemplateComponent.INCLUDE_DIRECTORY).append(path).append("\"-->");
                 handler.print(sb.toString());
             } else {
-                String webfilePath = siteComponent.getWebFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
-                if (CmsFileUtils.exists(webfilePath)) {
-                    handler.print(CmsFileUtils.getFileContent(webfilePath));
+                String webfilepath = siteComponent.getWebFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
+                if (CmsFileUtils.exists(webfilepath)) {
+                    handler.print(CmsFileUtils.getFileContent(webfilepath));
                 } else {
-                    CmsPageData data = metadataComponent.getTemplateData(filePath);
+                    CmsPageData data = metadataComponent.getTemplateData(filepath);
                     templateComponent.printPlace(handler.getWriter(), site, path, metadata, data);
                 }
             }

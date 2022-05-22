@@ -134,7 +134,19 @@ CREATE TABLE `cms_content_related` (
   KEY `cms_content_related_content_id`(`content_id`, `sort`),
   KEY `cms_content_related_related_content_id` (`related_content_id`)
 ) COMMENT='推荐推荐';
-
+-- ----------------------------
+-- Table structure for cms_content_text_history
+-- ----------------------------
+CREATE TABLE `cms_content_text_history` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `content_id` bigint(20) NOT NULL COMMENT '内容',
+  `field_name` varchar(100) NOT NULL COMMENT '字段名',
+  `create_date` datetime NOT NULL COMMENT '创建日期',
+  `user_id` bigint(20) NOT NULL COMMENT '修改用户',
+  `text` longtext NOT NULL COMMENT '文本',
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `cms_content_history_content_id` (`content_id`,`field_name`,`create_date`,`user_id`)
+) COMMENT='内容扩展';
 -- ----------------------------
 -- Table structure for cms_dictionary
 -- ----------------------------
@@ -821,6 +833,7 @@ INSERT INTO `sys_module` VALUES ('content_select_template', 'cmsTemplate/lookup'
 INSERT INTO `sys_module` VALUES ('content_select_user', 'sysUser/lookup', 'sysUser/lookup_list', NULL, 'content_add', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_select_vote', 'cmsVote/lookup', NULL, NULL, 'content_add', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_sort', 'cmsContent/sortParameters', 'cmsContent/sort', '', 'content_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('content_text_history', 'cmsContentTextHistory/lookup', 'cmsContentTextHistory/use', NULL, 'content_add', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_uncheck', NULL, 'cmsContent/uncheck', '', 'content_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_view', 'cmsContent/view', NULL, '', 'content_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_vote', 'cmsVote/list', NULL, 'icon-ticket', 'content_menu', 1, 5);
@@ -835,6 +848,7 @@ INSERT INTO `sys_module` VALUES ('develop', NULL, NULL, 'icon-puzzle-piece', NUL
 INSERT INTO `sys_module` VALUES ('dictionary_add', 'cmsDictionary/add', 'cmsDictionary/addChild,cmsDictionary/exclude,cmsDictionary/excludeTree,cmsDictionary/excludeValue,cmsDictionaryExclude/save,cmsDictionaryExcludeValue/save,cmsDictionary/save,cmsDictionary/virify', NULL, 'dictionary_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('dictionary_delete', NULL, 'cmsDictionary/delete', NULL, 'dictionary_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('dictionary_list', 'cmsDictionary/list', NULL, 'icon-book', 'system_menu', 1, 4);
+INSERT INTO `sys_module` VALUES ('diy_list', 'cmsDiy/list', 'cmsDiy/region,cmsDiy/layout,cmsDiy/module,placeTemplate/lookupPlace,cmsCategoryType/lookup', 'icon-dashboard', 'file_menu', 1, 5);
 INSERT INTO `sys_module` VALUES ('domain_config', 'sysDomain/config', 'sysDomain/saveConfig,cmsTemplate/directoryLookup,cmsTemplate/lookup', NULL, 'domain_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('domain_list', 'sysDomain/domainList', NULL, 'icon-qrcode', 'config_menu', 1, 4);
 INSERT INTO `sys_module` VALUES ('file_menu', NULL, NULL, 'icon-folder-close-alt', 'develop', 1, 1);
@@ -873,6 +887,10 @@ INSERT INTO `sys_module` VALUES ('order_list', 'tradeOrder/list', 'sysUser/looku
 INSERT INTO `sys_module` VALUES ('order_process', 'tradeOrder/processParameters', 'tradeOrder/process,tradeOrder/export', NULL, 'order_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('order_view', 'tradeOrder/view', NULL, NULL, 'order_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('page', NULL, NULL, 'icon-tablet', NULL, 1, 3);
+INSERT INTO `sys_module` VALUES ('page_diy', 'cmsPage/diy', 'cmsPage/region,cmsPage/style,cmsDiy/save', 'bi bi-palette', 'page_menu', 1, 3);
+INSERT INTO `sys_module` VALUES ('page_diy_buttons', 'cmsDiy/buttons', NULL, NULL, 'page_diy', 0, 3);
+INSERT INTO `sys_module` VALUES ('page_diy_preview', 'cmsDiy/preview', NULL, NULL, 'page_diy', 0, 2);
+INSERT INTO `sys_module` VALUES ('page_diy_region', 'cmsPage/region', NULL, NULL, 'page_diy', 0, 1);
 INSERT INTO `sys_module` VALUES ('page_list', 'cmsPage/list', 'cmsPage/metadata,cmsContent/lookup,cmsContent/lookup_list,cmsCategory/lookup', 'icon-globe', 'page_menu', 1, 1);
 INSERT INTO `sys_module` VALUES ('page_menu', NULL, NULL, 'icon-globe', 'page', 1, 0);
 INSERT INTO `sys_module` VALUES ('page_metadata', 'cmsPage/metadata', 'cmsPage/save', NULL, 'page_list', 0, 0);
@@ -891,7 +909,7 @@ INSERT INTO `sys_module` VALUES ('place_check', NULL, 'cmsPlace/check,cmsPlace/u
 INSERT INTO `sys_module` VALUES ('place_clear', NULL, 'cmsPlace/clear', NULL, 'place_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('place_data_list', 'cmsPlace/dataList', 'cmsPlace/export', NULL, 'place_list', 0, 1);
 INSERT INTO `sys_module` VALUES ('place_delete', NULL, 'cmsPlace/delete', NULL, 'place_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('place_list', 'cmsPlace/list', 'sysUser/lookup,sysUser/lookup_list', 'icon-list-alt', 'page_menu', 1, 1);
+INSERT INTO `sys_module` VALUES ('place_list', 'cmsPlace/list', 'sysUser/lookup,sysUser/lookup_list', 'icon-list-alt', 'page_menu', 1, 2);
 INSERT INTO `sys_module` VALUES ('place_publish', 'cmsPlace/metadata', 'cmsTemplate/publishPlace', NULL, 'place_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('place_refresh', NULL, 'cmsPlace/refresh', NULL, 'place_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('place_template_content', 'placeTemplate/content', 'cmsTemplate/help,cmsTemplate/savePlace,cmsTemplate/chipLookup,cmsWebFile/lookup,cmsWebFile/contentForm,placeTemplate/form', NULL, 'place_template_list', 0, 0);
@@ -937,7 +955,7 @@ INSERT INTO `sys_module` VALUES ('task_template_content', 'taskTemplate/content'
 INSERT INTO `sys_module` VALUES ('task_template_delete', NULL, 'taskTemplate/delete', NULL, 'task_template_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('task_template_fragment', 'taskTemplate/chipLookup', NULL, NULL, 'task_template_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('task_template_help', 'cmsTemplate/help', NULL, NULL, 'task_template_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('task_template_list', 'taskTemplate/list', NULL, 'icon-time', 'file_menu', 1, 3);
+INSERT INTO `sys_module` VALUES ('task_template_list', 'taskTemplate/list', NULL, 'icon-time', 'file_menu', 1, 4);
 INSERT INTO `sys_module` VALUES ('template_content', 'cmsTemplate/content', 'cmsTemplate/save,cmsTemplate/chipLookup,cmsWebFile/lookup,placeTemplate/form,cmsTemplate/contentForm,cmsCategory/contributeForm,cmsTemplate/demo,cmsTemplate/help,cmsTemplate/upload,cmsTemplate/doUpload,cmsTemplate/export', NULL, 'template_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('template_content-type', 'cmsTemplate/contentTypeLookup', NULL, NULL, 'template_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('template_content_form', 'cmsTemplate/contentForm', NULL, NULL, 'template_list', 0, 0);
@@ -966,7 +984,7 @@ INSERT INTO `sys_module` VALUES ('visit_session', 'visit/session', NULL, 'icon-c
 INSERT INTO `sys_module` VALUES ('visit_url', 'visit/url', NULL, 'icon-link', 'visit_menu', 1, 4);
 INSERT INTO `sys_module` VALUES ('webfile_content', 'cmsWebFile/content', 'cmsWebFile/save', NULL, 'webfile_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('webfile_directory', 'cmsWebFile/directory', 'cmsWebFile/createDirectory', NULL, 'webfile_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('webfile_list', 'cmsWebFile/list', NULL, 'icon-globe', 'file_menu', 1, 4);
+INSERT INTO `sys_module` VALUES ('webfile_list', 'cmsWebFile/list', NULL, 'icon-globe', 'file_menu', 1, 5);
 INSERT INTO `sys_module` VALUES ('webfile_unzip', 'cmsWebFile/unzipParameters', 'cmsWebFile/unzip', NULL, 'webfile_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('webfile_upload', 'cmsWebFile/upload', 'cmsWebFile/doUpload,cmsWebFile/check', NULL, 'webfile_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('webfile_zip', NULL, 'cmsWebFile/zip', NULL, 'webfile_list', 0, 0);
@@ -1170,6 +1188,9 @@ INSERT INTO `sys_module_lang` VALUES ('content_select_vote', 'zh', '选择投票
 INSERT INTO `sys_module_lang` VALUES ('content_sort', 'en', 'Sort');
 INSERT INTO `sys_module_lang` VALUES ('content_sort', 'ja', 'トッピング');
 INSERT INTO `sys_module_lang` VALUES ('content_sort', 'zh', '置顶');
+INSERT INTO `sys_module_lang` VALUES ('content_text_history', 'en', 'Modify records');
+INSERT INTO `sys_module_lang` VALUES ('content_text_history', 'ja', 'レコードを変更する');
+INSERT INTO `sys_module_lang` VALUES ('content_text_history', 'zh', '修改记录');
 INSERT INTO `sys_module_lang` VALUES ('content_uncheck', 'en', 'Uncheck');
 INSERT INTO `sys_module_lang` VALUES ('content_uncheck', 'ja', '審査を取り消す');
 INSERT INTO `sys_module_lang` VALUES ('content_uncheck', 'zh', '撤销审核');
@@ -1212,6 +1233,9 @@ INSERT INTO `sys_module_lang` VALUES ('dictionary_delete', 'zh', '删除');
 INSERT INTO `sys_module_lang` VALUES ('dictionary_list', 'en', 'Dictionary management');
 INSERT INTO `sys_module_lang` VALUES ('dictionary_list', 'ja', 'データ辞書');
 INSERT INTO `sys_module_lang` VALUES ('dictionary_list', 'zh', '数据字典');
+INSERT INTO `sys_module_lang` VALUES ('diy_list', 'en', 'Page visualization management');
+INSERT INTO `sys_module_lang` VALUES ('diy_list', 'ja', 'ページ視覚化管理');
+INSERT INTO `sys_module_lang` VALUES ('diy_list', 'zh', '页面可视化管理');
 INSERT INTO `sys_module_lang` VALUES ('domain_config', 'en', 'Edit');
 INSERT INTO `sys_module_lang` VALUES ('domain_config', 'ja', '変更');
 INSERT INTO `sys_module_lang` VALUES ('domain_config', 'zh', '修改');
@@ -1326,6 +1350,18 @@ INSERT INTO `sys_module_lang` VALUES ('order_view', 'zh', '查看');
 INSERT INTO `sys_module_lang` VALUES ('page', 'en', 'Page');
 INSERT INTO `sys_module_lang` VALUES ('page', 'ja', 'ページ');
 INSERT INTO `sys_module_lang` VALUES ('page', 'zh', '页面');
+INSERT INTO `sys_module_lang` VALUES ('page_diy', 'en', 'Visualized page');
+INSERT INTO `sys_module_lang` VALUES ('page_diy', 'ja', '視覚化されたページ');
+INSERT INTO `sys_module_lang` VALUES ('page_diy', 'zh', '页面可视化');
+INSERT INTO `sys_module_lang` VALUES ('page_diy_buttons', 'en', 'Button');
+INSERT INTO `sys_module_lang` VALUES ('page_diy_buttons', 'ja', 'ボタン');
+INSERT INTO `sys_module_lang` VALUES ('page_diy_buttons', 'zh', '按钮');
+INSERT INTO `sys_module_lang` VALUES ('page_diy_preview', 'en', 'Quick Maintenance');
+INSERT INTO `sys_module_lang` VALUES ('page_diy_preview', 'ja', 'クイックメンテナンス');
+INSERT INTO `sys_module_lang` VALUES ('page_diy_preview', 'zh', '快捷维护');
+INSERT INTO `sys_module_lang` VALUES ('page_diy_region', 'en', 'Region');
+INSERT INTO `sys_module_lang` VALUES ('page_diy_region', 'ja', '領域');
+INSERT INTO `sys_module_lang` VALUES ('page_diy_region', 'zh', '区域');
 INSERT INTO `sys_module_lang` VALUES ('page_list', 'en', 'Page management');
 INSERT INTO `sys_module_lang` VALUES ('page_list', 'ja', 'ページ管理');
 INSERT INTO `sys_module_lang` VALUES ('page_list', 'zh', '页面管理');
@@ -1748,7 +1784,7 @@ CREATE TABLE `sys_user` (
   `password` varchar(128) NOT NULL COMMENT '密码',
   `salt` varchar(20) DEFAULT NULL COMMENT '混淆码,为空时则密码为md5,为10位时sha512(sha512(password)+salt)',
   `weak_password` tinyint(1) NOT NULL DEFAULT '0' COMMENT '弱密码',
-  `nick_name` varchar(45) NOT NULL COMMENT '昵称',
+  `nickname` varchar(45) NOT NULL COMMENT '昵称',
   `cover` varchar(255) default NULL COMMENT '封面',
   `dept_id` int(11) default NULL COMMENT '部门',
   `content_permissions` int(11) NOT NULL COMMENT '内容权限(0仅自己,1所有人,2本部门)',
@@ -1994,8 +2030,8 @@ CREATE TABLE `visit_history` (
   `item_id` varchar(50) DEFAULT NULL COMMENT '项目',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   PRIMARY KEY (`id`),
-  KEY `visit_visit_date` (`site_id`,`visit_date`,`visit_hour`),
-  KEY `visit_session_id` (`site_id`,`session_id`,`visit_date`,`create_date`,`ip`)
+  KEY `visit_history_visit_date` (`site_id`,`visit_date`,`visit_hour`),
+  KEY `visit_history_session_id` (`site_id`,`session_id`,`visit_date`,`create_date`)
 ) COMMENT='访问日志';
 
 -- ----------------------------
@@ -2011,7 +2047,7 @@ CREATE TABLE `visit_item` (
   `uv` bigint(20) DEFAULT NULL COMMENT 'User Views',
   `ipviews` bigint(20) DEFAULT NULL COMMENT 'IP数',
   PRIMARY KEY (`site_id`,`visit_date`,`item_type`,`item_id`),
-  KEY `visit_session_id` (`site_id`,`visit_date`,`item_type`, `item_id`, `pv`)
+  KEY `visit_item_session_id` (`site_id`,`visit_date`,`item_type`, `item_id`, `pv`)
 ) COMMENT='项目访问汇总';
 
 -- ----------------------------
@@ -2027,7 +2063,7 @@ CREATE TABLE `visit_session` (
   `ip` varchar(130) NOT NULL COMMENT 'IP',
   `pv` bigint(20) NOT NULL COMMENT 'PV',
   PRIMARY KEY (`site_id`,`session_id`,`visit_date`),
-  KEY `visit_visit_date` (`site_id`,`visit_date`,`ip`)
+  KEY `visit_session_visit_date` (`site_id`,`visit_date`,`session_id`,`last_visit_date`)
 ) COMMENT = '访问会话';
 
 -- ----------------------------
@@ -2044,6 +2080,6 @@ CREATE TABLE `visit_url` (
   `uv` bigint(20) DEFAULT NULL COMMENT 'User Views',
   `ipviews` bigint(20) DEFAULT NULL COMMENT 'IP数',
   PRIMARY KEY (`site_id`,`visit_date`,`url_md5`,`url_sha`),
-  KEY `visit_session_id` (`site_id`,`visit_date`,`pv`)
+  KEY `visit_url_pv` (`site_id`,`visit_date`,`pv`)
 ) COMMENT='页面访问汇总';
 SET FOREIGN_KEY_CHECKS = 1;

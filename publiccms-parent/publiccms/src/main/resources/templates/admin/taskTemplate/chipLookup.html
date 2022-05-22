@@ -1,5 +1,5 @@
 <#macro chipTree filepath prefix suffix>
-    <@_taskTemplateList path=filepath>
+    <@tools.taskTemplateList path=filepath>
         <#list list as a>
             <li>
                 <#local path=filepath+'/'+a.fileName>
@@ -17,7 +17,7 @@
         <#else>
             <li><a><@t.page 'empty_directory'/></a></li>
         </#list>
-    </@_taskTemplateList>
+    </@tools.taskTemplateList>
 </#macro>
 <div class="pageFormContent" layoutH>
     <ul class="tree treeFolder">

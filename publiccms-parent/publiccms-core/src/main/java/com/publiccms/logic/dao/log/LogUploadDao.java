@@ -23,14 +23,14 @@ public class LogUploadDao extends BaseDao<LogUpload> {
      * @param channel
      * @param fileTypes
      * @param originalName
-     * @param filePath
+     * @param filepath
      * @param orderField
      * @param orderType
      * @param pageIndex
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(Short siteId, Long userId, String channel, String[] fileTypes, String originalName, String filePath,
+    public PageHandler getPage(Short siteId, Long userId, String channel, String[] fileTypes, String originalName, String filepath,
             String orderField, String orderType, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from LogUpload bean");
         if (CommonUtils.notEmpty(siteId)) {
@@ -48,8 +48,8 @@ public class LogUploadDao extends BaseDao<LogUpload> {
         if (CommonUtils.notEmpty(originalName)) {
             queryHandler.condition("bean.originalName like :originalName").setParameter("originalName", like(originalName));
         }
-        if (CommonUtils.notEmpty(filePath)) {
-            queryHandler.condition("bean.filePath like :filePath").setParameter("filePath", like(filePath));
+        if (CommonUtils.notEmpty(filepath)) {
+            queryHandler.condition("bean.filepath like :filepath").setParameter("filepath", like(filepath));
         }
         if (!ORDERTYPE_ASC.equalsIgnoreCase(orderType)) {
             orderType = ORDERTYPE_DESC;

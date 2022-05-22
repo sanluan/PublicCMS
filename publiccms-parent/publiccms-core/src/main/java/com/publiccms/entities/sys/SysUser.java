@@ -46,7 +46,7 @@ public class SysUser implements java.io.Serializable {
     @JsonIgnore
     private boolean weakPassword;
     @GeneratorColumn(title = "用户昵称", condition = true, like = true, or = true, name = "name")
-    private String nickName;
+    private String nickname;
     @GeneratorColumn(title = "封面图")
     private String cover;
     @GeneratorColumn(title = "部门", condition = true)
@@ -76,13 +76,13 @@ public class SysUser implements java.io.Serializable {
     public SysUser() {
     }
 
-    public SysUser(short siteId, String name, String password, boolean weakPassword, String nickName, int contentPermissions,
+    public SysUser(short siteId, String name, String password, boolean weakPassword, String nickname, int contentPermissions,
             boolean emailChecked, boolean superuser, boolean disabled, int loginCount) {
         this.siteId = siteId;
         this.name = name;
         this.password = password;
         this.weakPassword = weakPassword;
-        this.nickName = nickName;
+        this.nickname = nickname;
         this.contentPermissions = contentPermissions;
         this.emailChecked = emailChecked;
         this.superuser = superuser;
@@ -90,7 +90,7 @@ public class SysUser implements java.io.Serializable {
         this.loginCount = loginCount;
     }
 
-    public SysUser(short siteId, String name, String password, String salt, boolean weakPassword, String nickName, String cover,
+    public SysUser(short siteId, String name, String password, String salt, boolean weakPassword, String nickname, String cover,
             Integer deptId, int contentPermissions, String roles, String email, boolean emailChecked, boolean superuser,
             boolean disabled, Date lastLoginDate, String lastLoginIp, int loginCount, Date registeredDate) {
         this.siteId = siteId;
@@ -98,7 +98,7 @@ public class SysUser implements java.io.Serializable {
         this.password = password;
         this.salt = salt;
         this.weakPassword = weakPassword;
-        this.nickName = nickName;
+        this.nickname = nickname;
         this.cover = cover;
         this.deptId = deptId;
         this.contentPermissions = contentPermissions;
@@ -170,13 +170,13 @@ public class SysUser implements java.io.Serializable {
         this.weakPassword = weakPassword;
     }
 
-    @Column(name = "nick_name", nullable = false, length = 45)
-    public String getNickName() {
-        return this.nickName;
+    @Column(name = "nickname", nullable = false, length = 45)
+    public String getNickname() {
+        return this.nickname;
     }
 
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     @Column(name = "cover")

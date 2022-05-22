@@ -1,4 +1,4 @@
-<@_sysTaskList status=status pageIndex=pageNum pageSize=numPerPage>
+<@sys.taskList status=status pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
     <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
@@ -27,7 +27,7 @@
 <div class="pageContent">
     <div class="panelBar">
         <ul class="toolBar">
-            <li><a href="sysTask/add.html" target="navTab" rel="sysTask/add"><i class="icon-plus-sign-alt icon-large"></i> <@t.page 'task.add'/></a></li>
+            <li><a href="sysTask/add.html" target="navTab" rel="sysTask/add"><i class="icon-plus-sign-alt icon-large"></i><@t.page 'task.add'/></a></li>
         </ul>
     </div>
     <table class="table" width="100%" layoutH>
@@ -52,20 +52,20 @@
                 <td>${(a.filePath)!}</td>
                 <td><@t.page 'status.task.'+a.status/></td>
                 <td class="wrap">
-                    <a href="sysTask/add.html?id=${a.id}" class="edit btnText" target="navTab" rel="sysTask/edit"><i class="icon-edit"></i> <@t.page 'task.edit'/></a>
+                    <a href="sysTask/add.html?id=${a.id}" class="edit btnText" target="navTab" rel="sysTask/edit"><i class="icon-edit"></i><@t.page 'task.edit'/></a>
                     <#if a.status=0>
-                        <a href="sysTask/runOnce?id=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText green" title="<@t.page 'confirm.exec'/>" target="ajaxTodo"><@t.page 'button.exec'/></a>
-                        <a href="sysTask/pause?id=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText red" title="<@t.page 'confirm.pause'/>" target="ajaxTodo"><@t.page 'button.pause'/></a>
+                        <a href="sysTask/runOnce?id=${a.id}&_csrf=<@tools.csrfToken admin=true/>" class="btnText green" title="<@t.page 'confirm.exec'/>" target="ajaxTodo"><@t.page 'button.exec'/></a>
+                        <a href="sysTask/pause?id=${a.id}&_csrf=<@tools.csrfToken admin=true/>" class="btnText red" title="<@t.page 'confirm.pause'/>" target="ajaxTodo"><@t.page 'button.pause'/></a>
                     <#elseif a.status=1>
-                        <a href="sysTask/recreate?id=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText red" title="<@t.page 'confirm.reinitialize'/>" target="ajaxTodo"><@t.page 'button.reinitialize'/></a>
-                        <a href="sysTask/interrupt?id=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText red" title="<@t.page 'confirm.interrupt'/>" target="ajaxTodo"><@t.page 'button.interrupt'/></a>
+                        <a href="sysTask/recreate?id=${a.id}&_csrf=<@tools.csrfToken admin=true/>" class="btnText red" title="<@t.page 'confirm.reinitialize'/>" target="ajaxTodo"><@t.page 'button.reinitialize'/></a>
+                        <a href="sysTask/interrupt?id=${a.id}&_csrf=<@tools.csrfToken admin=true/>" class="btnText red" title="<@t.page 'confirm.interrupt'/>" target="ajaxTodo"><@t.page 'button.interrupt'/></a>
                     <#elseif a.status=2>
-                        <a href="sysTask/resume?id=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText green" title="<@t.page 'confirm.resume'/>" target="ajaxTodo"><@t.page 'button.resume'/></a>
+                        <a href="sysTask/resume?id=${a.id}&_csrf=<@tools.csrfToken admin=true/>" class="btnText green" title="<@t.page 'confirm.resume'/>" target="ajaxTodo"><@t.page 'button.resume'/></a>
                     <#elseif a.status=3>
-                        <a href="sysTask/recreate?id=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText blue" title="<@t.page 'confirm.reinitialize'/>" target="ajaxTodo"><@t.page 'button.reinitialize'/></a>
+                        <a href="sysTask/recreate?id=${a.id}&_csrf=<@tools.csrfToken admin=true/>" class="btnText blue" title="<@t.page 'confirm.reinitialize'/>" target="ajaxTodo"><@t.page 'button.reinitialize'/></a>
                     </#if>
                     <a href="log/task.html?taskId=${a.id}" class="btnText" target="navTab" rel="logTask" title="<@t.page 'log.task'/>"><@t.page 'button.view_log'/></a>
-                    <a href="sysTask/delete?id=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i> <@t.page 'button.delete'/></a>
+                    <a href="sysTask/delete?id=${a.id}&_csrf=<@tools.csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i><@t.page 'button.delete'/></a>
                 </td>
             </tr>
             </#list>
@@ -73,4 +73,4 @@
     </table>
     <#include "../include_page/page.html"/>
 </div>
-</@_sysTaskList>
+</@sys.taskList>

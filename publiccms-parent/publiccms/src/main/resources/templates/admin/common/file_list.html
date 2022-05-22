@@ -1,5 +1,5 @@
 <div class="pageContent">
-    <@_webFileList path=path>
+    <@tools.webFileList path=path>
         <#if path?has_content>
             <div class="image-list">
                 <a href="common/file_list.html?path=${path?keep_before_last('/')?url}&field=${(field?url)!}&originalField=${(originalField?url)!}&fileTypes=${fileTypes!}" target="ajax" rel="fileBox" title="${path?keep_before_last('/')}">
@@ -34,5 +34,5 @@
                 </#if>
             </div>
         </#list>
-    </@_webFileList>
+    </@tools.webFileList>
 </div>

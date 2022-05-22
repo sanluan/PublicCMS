@@ -39,14 +39,14 @@ public class VisitSessionDao extends BaseDao<VisitSession> {
             Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from VisitSession bean");
         queryHandler.condition("bean.id.siteId = :siteId").setParameter("siteId", siteId);
-        if (CommonUtils.notEmpty(sessionId)) {
-            queryHandler.condition("bean.id.sessionId = :sessionId").setParameter("sessionId", sessionId);
-        }
         if (null != startVisitDate) {
             queryHandler.condition("bean.id.visitDate > :startVisitDate").setParameter("startVisitDate", startVisitDate);
         }
         if (null != endVisitDate) {
             queryHandler.condition("bean.id.visitDate <= :endVisitDate").setParameter("endVisitDate", endVisitDate);
+        }
+        if (CommonUtils.notEmpty(sessionId)) {
+            queryHandler.condition("bean.id.sessionId = :sessionId").setParameter("sessionId", sessionId);
         }
         if (!ORDERTYPE_ASC.equalsIgnoreCase(orderType)) {
             orderType = ORDERTYPE_DESC;

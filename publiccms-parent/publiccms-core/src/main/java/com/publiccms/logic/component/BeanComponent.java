@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import com.publiccms.logic.component.config.ConfigComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.task.ScheduledTask;
+import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsContentAttributeService;
 import com.publiccms.logic.service.cms.CmsContentService;
@@ -31,6 +32,7 @@ public class BeanComponent {
     private static CmsContentAttributeService contentAttributeService;
     private static CmsContentService contentService;
     private static TemplateComponent templateComponent;
+    private static MetadataComponent metadataComponent;
 
     /**
      * @return the siteComponent
@@ -173,5 +175,20 @@ public class BeanComponent {
     @Resource
     public void setTemplateComponent(TemplateComponent templateComponent) {
         BeanComponent.templateComponent = templateComponent;
+    }
+
+    /**
+     * @return the metadataComponent
+     */
+    public static MetadataComponent getMetadataComponent() {
+        return metadataComponent;
+    }
+
+    /**
+     * @param metadataComponent the metadataComponent to set
+     */
+    @Autowired
+    public void setMetadataComponent(MetadataComponent metadataComponent) {
+        BeanComponent.metadataComponent = metadataComponent;
     }
 }

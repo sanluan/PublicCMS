@@ -19,10 +19,12 @@ import freemarker.template.TemplateModel;
  * BaseTemplateDirective 模板自定义指令基类
  *
  */
-public abstract class BaseTemplateDirective implements TemplateDirectiveModel, Directive , HttpDirective {
+public abstract class BaseTemplateDirective implements TemplateDirectiveModel, Directive, HttpDirective {
     protected final Log log = LogFactory.getLog(getClass());
     private String name;
-    
+    private String shortName;
+    private String namespace;
+
     @SuppressWarnings("unchecked")
     @Override
     public void execute(Environment environment, @SuppressWarnings("rawtypes") Map parameters, TemplateModel[] loopVars,
@@ -35,7 +37,14 @@ public abstract class BaseTemplateDirective implements TemplateDirectiveModel, D
             throw new TemplateException(e, environment);
         }
     }
-    
+
+    /**
+     * @return whether to enable http
+     */
+    public boolean httpEnabled() {
+        return true;
+    }
+
     @Override
     public String getName() {
         return this.name;
@@ -46,5 +55,31 @@ public abstract class BaseTemplateDirective implements TemplateDirectiveModel, D
      */
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String getNamespace() {
+        return namespace;
+    }
+
+    /**
+     * @param namespace
+     *            the namespace to set
+     */
+    public void setNamespace(String namespace) {
+        this.namespace = namespace;
+    }
+
+    @Override
+    public String getShortName() {
+        return shortName;
+    }
+
+    /**
+     * @param shortName
+     *            the shortName to set
+     */
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
     }
 }

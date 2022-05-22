@@ -1,4 +1,4 @@
-<@_tradeRefundList paymentId=paymentId refundUserId=refundUserId status=status 
+<@trade.refundList paymentId=paymentId refundUserId=refundUserId status=status 
             orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
     <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
@@ -11,9 +11,9 @@
                 </li>
                 <li>
                     <label><@t.page 'operate_user'/>:</label>
-                    <#if refundUserId?has_content><@_sysUser id=refundUserId><#assign u=object/></@_sysUser></#if>
+                    <#if refundUserId?has_content><@sys.user id=refundUserId><#assign u=object/></@sys.user></#if>
                     <input name="refundUserId" value="${(u.id)!}" type="hidden"/>
-                    <input name="nickName" readonly="readonly" size="10" value="${(u.nickName)!}" type="text"/>
+                    <input name="nickname" readonly="readonly" size="10" value="${(u.nickname)!}" type="text"/>
                     <a class="btnLook" href="sysUser/lookup.html?field=refundUserId" width="920" lookupGroup=""><@t.page 'user.select'/></a>
                 </li>
                 <li>
@@ -36,7 +36,7 @@
         </div>
     </form>
 </div>
-<@_sysAuthorized roleIds=admin.roles urls='tradeRefund/refundParameters,tradeRefund/refuseParameters'><#assign authorizedMap=map/></@_sysAuthorized>
+<@sys.authorized roleIds=admin.roles urls='tradeRefund/refundParameters,tradeRefund/refuseParameters'><#assign authorizedMap=map/></@sys.authorized>
 <div class="pageContent">
     <table class="table" width="100%" layoutH>
         <thead>
@@ -67,10 +67,10 @@
                 <td>${a.createDate!}</td>
                 <td class="wrap">
                 <#if authorizedMap['tradeRefund/refundParameters'] && (0=a.status || 4=a.status)>
-                    <a href="tradeRefund/refundParameters.html?id=${a.id}" class="btnText green" target="dialog" mask="true"><i class="icon-plus-sign-alt"></i> <@t.page 'refund'/></a>
+                    <a href="tradeRefund/refundParameters.html?id=${a.id}" class="btnText green" target="dialog" mask="true"><i class="icon-plus-sign-alt"></i><@t.page 'refund'/></a>
                 </#if>
                 <#if authorizedMap['tradeRefund/refuseParameters'] && (0=a.status || 4=a.status)>
-                    <a href="tradeRefund/refuseParameters.html?id=${a.id}" class="btnText red" target="dialog" mask="true"><i class="icon-plus-sign-alt"></i> <@t.page 'button.refuse'/></a>
+                    <a href="tradeRefund/refuseParameters.html?id=${a.id}" class="btnText red" target="dialog" mask="true"><i class="icon-plus-sign-alt"></i><@t.page 'button.refuse'/></a>
                 </#if>
                 </td>
             </tr>
@@ -79,4 +79,4 @@
     </table>
     <#include "../include_page/page.html"/>
 </div>
-</@_tradeRefundList>
+</@trade.refundList>

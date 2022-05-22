@@ -60,7 +60,7 @@ function callback(fileUrl){
     imageSuffix=["png","gif","jpg","jpeg","bmp"]
     flashSuffix=["swf","fla"]
 />
-<@_webFileList path=path>
+<@tools.webFileList path=path>
     <#list list as a>
     <div class="row">
         <#assign filePath=path?has_content?then(path+'/','/')+a.fileName/>
@@ -89,7 +89,7 @@ function callback(fileUrl){
         </div>
     </div>
     </#list>
-</@_webFileList>
+</@tools.webFileList>
 </div>
 </body>
 </html>

@@ -27,15 +27,15 @@ public class CreateCategoryFileDirective extends AbstractTemplateDirective {
     public void execute(RenderHandler handler) throws IOException, Exception {
         Integer id = handler.getInteger("id");
         String templatePath = handler.getString("templatePath");
-        String filePath = handler.getString("filePath");
+        String filepath = handler.getString("filePath");
         Integer pageIndex = handler.getInteger("pageIndex");
-        if (CommonUtils.notEmpty(id) && CommonUtils.notEmpty(templatePath) && CommonUtils.notEmpty(filePath)) {
+        if (CommonUtils.notEmpty(id) && CommonUtils.notEmpty(templatePath) && CommonUtils.notEmpty(filepath)) {
             SysSite site = getSite(handler);
             try {
                 CmsCategory category = categoryService.getEntity(id);
                 if (null != category && site.getId() == category.getSiteId()) {
                     handler.put("url",
-                            templateComponent.createCategoryFile(site, category, templatePath, filePath, pageIndex, null))
+                            templateComponent.createCategoryFile(site, category, templatePath, filepath, pageIndex, null))
                             .render();
                 }
             } catch (IOException | TemplateException e) {

@@ -5,14 +5,14 @@
         <div class="tagsBox" callback="reIndexTagType()"></div>
         <input name="type[].id" type="hidden"/>
         <input name="type[].name" type="text" size="20" postField="name" suggestfields="id,name" lookupgroup="type[]" suggestUrl="common/tagTypeSuggest.html"/>
-        <a class="suggestButton" href="javascript:;" onclick="addTagType($('input[name=\'type[].id\']',navTab.getCurrentPanel()).val(),$('input[name=\'type[].name\']',navTab.getCurrentPanel()).val());return false;"><i class="icon-ok icon-large"></i> <@t.page 'button.add'/></a>
+        <a class="suggestButton" href="javascript:;" onclick="addTagType($('input[name=\'type[].id\']',navTab.getCurrentPanel()).val(),$('input[name=\'type[].name\']',navTab.getCurrentPanel()).val());return false;"><i class="icon-ok icon-large"></i><@t.page 'button.add'/></a>
     </dd>
 </dl>
 <script>
-    <@_tagType ids=typeIds>
+    <@cms.tagType ids=typeIds>
         <#list map as k,tagType>
         addTagType('${k}','${tagType.name?js_string}');
         </#list>
-    </@_tagType>
+    </@cms.tagType>
 </script>
 </#macro>

@@ -1,4 +1,4 @@
-<@_tagList advanced=true name=name typeId=typeId orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
+<@cms.tagList advanced=true name=name typeId=typeId orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
     <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
@@ -10,7 +10,7 @@
                 </li>
                 <li>
                     <label><@t.page 'tag_type'/>:</label>
-                    <#if typeId?has_content><@_tagType id=typeId><#assign tagTypeName=object.name/></@_tagType></#if>
+                    <#if typeId?has_content><@cms.tagType id=typeId><#assign tagTypeName=object.name/></@cms.tagType></#if>
                     <input type="hidden" name="typeId" value="${typeId!}" />
                     <input readonly="readonly" name="tagTypeName" type="text" size="10" value="${(tagTypeName)!}"/>
                     <a class="btnLook" href="cmsTagType/lookup.html?typeId=${typeId!}" width="920" lookupGroup=""><@t.page 'tag_type.select'/></a>
@@ -29,8 +29,8 @@
 <div class="pageContent">
     <div class="panelBar">
         <ul class="toolBar">
-            <li><a href="cmsTag/add.html" target="navTab" rel="cmsTag/add"><i class="icon-plus-sign-alt icon-large"></i> <@t.page 'tag.add'/></a></li>
-            <li><a href="cmsTag/delete?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> <@t.page 'button.batch_delete'/></a></li>
+            <li><a href="cmsTag/add.html" target="navTab" rel="cmsTag/add"><i class="icon-plus-sign-alt icon-large"></i><@t.page 'tag.add'/></a></li>
+            <li><a href="cmsTag/delete?_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i><@t.page 'button.batch_delete'/></a></li>
         </ul>
     </div>
     <table class="table" width="100%" layoutH>
@@ -49,7 +49,7 @@
                 <@t.merge 'typeIds' a.typeId!/>
             </#list>
 
-            <@_tagType ids=t.typeIds!><#assign typeMap=map!/></@_tagType>
+            <@cms.tagType ids=t.typeIds!><#assign typeMap=map!/></@cms.tagType>
             <#list page.list as a>
             <tr>
                 <td><input name="ids" value="${a.id}" type="checkbox"></td>
@@ -58,8 +58,8 @@
                 <td class="exclude-translate">${(typeMap[a.typeId?string].name)!}</td>
                 <td>${a.searchCount!}</td>
                 <td class="wrap">
-                    <a href="cmsTag/add.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="cmsTag/edit" icon="<i class='icon-edit'></i>" title="<@t.page 'tag.edit'/>"><i class="icon-edit"></i> <@t.page 'button.edit'/></a>
-                    <a href="cmsTag/delete?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i> <@t.page 'button.delete'/></a>
+                    <a href="cmsTag/add.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="cmsTag/edit" icon="<i class='icon-edit'></i>" title="<@t.page 'tag.edit'/>"><i class="icon-edit"></i><@t.page 'button.edit'/></a>
+                    <a href="cmsTag/delete?ids=${a.id}&_csrf=<@tools.csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i><@t.page 'button.delete'/></a>
                 </td>
             </tr>
             </#list>
@@ -67,4 +67,4 @@
     </table>
     <#include "../include_page/page.html"/>
 </div>
-</@_tagList>
+</@cms.tagList>

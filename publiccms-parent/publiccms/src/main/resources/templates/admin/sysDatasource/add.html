@@ -1,6 +1,6 @@
-<@_sysDatasource id=id><#assign a=object/><#assign p=properties/></@_sysDatasource>
+<@sys.datasource id=id><#assign a=object/><#assign p=properties/></@sys.datasource>
 <form method="post" autocomplete="off" action="sysDatasource/save?callbackType=closeCurrent&navTabId=sysDatasource/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
-    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
             <li><button type="submit" class="buttonActive" title="ctrl+s"><@t.page 'button.save'/></button></li>
@@ -39,13 +39,13 @@
             </dl>
             <div class="clearfix"></div>
             <fieldset>
-                <legend><i class="icon-sitemap icon-large"></i> <@t.page 'site'/></legend>
+                <legend><i class="icon-sitemap icon-large"></i><@t.page 'site'/></legend>
                 <ul class="tree treeFolder treeCheck">
-            <@_sysSiteList>
+            <@sys.siteList>
                 <#list page.list as a>
                     <li>
                         <a tname="siteIds" tvalue="${a.id}">${a.name}</a>
-                        <@_sysSiteList parentId=a.id>
+                        <@sys.siteList parentId=a.id>
                             <#if page.totalCount gt 0>
                                 <ul>
                             <#list page.list as a>
@@ -53,18 +53,18 @@
                             </#list>
                                 </ul>
                             </#if>
-                        </@_sysSiteList>
+                        </@sys.siteList>
                     </li>
                 </#list>
-            </@_sysSiteList>
+            </@sys.siteList>
                 </ul>
          <#if a?has_content>
            <script>
-        <@_sysSiteDatasourceList>
+        <@sys.siteDatasourceList>
         <#list list as a>
     $('.tree li a[tname=siteIds][tvalue=${a.id.siteId?js_string}]',navTab.getCurrentPanel()).attr('checked','true');
         </#list>
-        </@_sysSiteDatasourceList>
+        </@sys.siteDatasourceList>
             </script>
         </#if>
             </fieldset>

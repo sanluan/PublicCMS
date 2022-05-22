@@ -11,20 +11,20 @@
     </style>
 </head>
 <body>
-    <header>
+    <header data-diy="page">
         <h1>${(site.name)!}</h1>
     </header>
-    <nav>
-        <a href="${base}">Home</a>
-<@_categoryList>
+    <nav data-diy="category">
+        <a href="${site.dynamicPath}">Home</a>
+<@cms.categoryList>
     <#list page.list as a>
         <a href="${a.url!}" target="_blank">${a.name}</a>
     </#list>
-</@_categoryList>
+</@cms.categoryList>
     </nav>
     <main>
         <#macro message code>${springMacroRequestContext.getMessage(code)}</#macro>
-    <@_tradePaymentList userId=user.id pageIndex=pageIndex pageSize=10>
+    <@trade.paymentList userId=user.id pageIndex=pageIndex pageSize=10>
         <h3>Orders</h3>
         <ul>
         <#list page.list as a>
@@ -35,12 +35,12 @@
                 <#if 0=a.status>
                     <p>
                         <a href="${site.dynamicPath}tradePayment/pay?paymentId=${a.id}&returnUrl=https:${(site.dynamicPath+'paymentList.html')?url}">Continue to pay</a> 
-                        <a href="${site.dynamicPath}tradePayment/cancel?paymentId=${a.id}&returnUrl=https:${(site.dynamicPath+'paymentList.html')?url}&_csrf=<@_csrfToken/>">Cancel payment</a>
+                        <a href="${site.dynamicPath}tradePayment/cancel?paymentId=${a.id}&returnUrl=https:${(site.dynamicPath+'paymentList.html')?url}&_csrf=<@tools.csrfToken/>">Cancel payment</a>
                     </p>
                 <#elseif 1=a.status>
                     <form action="${site.dynamicPath}tradePayment/refund" method="POST">
                         <p>
-                            <input type="hidden" name="_csrf" value="<@_csrfToken/>"/>
+                            <input type="hidden" name="_csrf" value="<@tools.csrfToken/>"/>
                             <input type="hidden" name="returnUrl" value="${site.dynamicPath}paymentList.html"/>
                             <input type="hidden" name="paymentId" value="${a.id}"/>
                             <label>Amount:</label><input type="text" name="amount" required="required" value="${a.amount}" max="${a.amount}"/>
@@ -87,16 +87,17 @@
                 <span>Next page</span>
             </#if>
         </div>
-    </@_tradePaymentList>
+    </@trade.paymentList>
     </main>
     <footer>
         Copyright &copy; ${.now?string('yyyy')}
     </footer>
-    <script src="${site.dynamicPath!}resource/js/jquery-1.12.4.min.js"></script>
     <script>
     var itemString="itemType=user&itemId=${user.id}";
+    var templatePath='${.current_template_name?keep_after('/')}';
     </script>
     <script src="${site.dynamicPath}resource/js/cms.analytics.js"></script>
+    <script src="${site.dynamicPath}resource/js/cms.diy.js"></script>
     <script>
         var ca = cmsAnalytics();
         var url='${site.dynamicPath}api/visit/record';

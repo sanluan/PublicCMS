@@ -5,11 +5,18 @@
     <title>New PublicCMS Template</title>
 </head>
 <body>
-    <main>New PublicCMS Template</main>
+    <header data-diy="page">
+        <h1>${(site.name)!}</h1>
+    </header>
+    <main data-diy="page" data-diy-noborder="true">New PublicCMS Template</main>
     <footer>
        <p>Powered by <a href="http://www.publiccms.com/">PublicCMS</a></p>
     </footer>
+    <script>
+    var templatePath='${.current_template_name?keep_after('/')}';
+    </script>
     <script src="${site.dynamicPath}resource/js/cms.analytics.js"></script>
+    <script src="${site.dynamicPath}resource/js/cms.diy.js"></script>
     <script>
         var ca = cmsAnalytics();
         var url='${site.dynamicPath}api/visit/record';

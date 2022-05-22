@@ -1,5 +1,5 @@
 <form action="sysSite/doUploadLicense?callbackType=closeCurrent" method="post" enctype="multipart/form-data" class="pageForm required-validate" onsubmit="return iframeCallback(this,navTabAjaxDone);">
-    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
             <li><button type="submit" class="buttonActive" title="ctrl+s"><@t.page 'upload'/></button></li>
@@ -10,19 +10,19 @@
         <dl class="nowrap">
             <dt><@t.page 'license.award'/>:</dt>
             <dd>
-                <a href="//www.publiccms.com" target="navTab" rel="publiccms.com"><i class="icon-globe icon-large"></i> <@t.menu 'official_website'/></a>
+                <a href="//www.publiccms.com" target="navTab" rel="publiccms.com"><i class="icon-globe icon-large"></i><@t.menu 'official_website'/></a>
             </dd>
         </dl>
         <dl class="nowrap">
             <dt><@t.page 'license.status'/>:</dt>
             <dd>
-                <@_version>
+                <@tools.version>
                     <#if authorizationEdition>
                         <a href="common/license.html" target="dialog" mask="true"><@t.page 'license'/>: ${getLicense().authorization!}</a>
                     <#else>
                         <@t.page 'license.no'/>
                     </#if>
-                </@_version>
+                </@tools.version>
             </dd>
         </dl>
         <dl class="nowrap">

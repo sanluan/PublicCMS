@@ -1,7 +1,7 @@
-<@_sysDomain id=id><#assign a=object/></@_sysDomain>
+<@sys.domain id=id><#assign a=object/></@sys.domain>
 <form method="post" autocomplete="off" action="sysDomain/save?callbackType=closeCurrent&navTabId=sysDomain/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input name="oldName" type="hidden" value="${id!}" />
-    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
             <li><button type="submit" class="buttonActive" title="ctrl+s"><@t.page 'button.save'/></button></li>
@@ -13,7 +13,7 @@
             <dt><@t.page 'site'/>:</dt>
             <dd>
                 <input name="siteId" type="hidden" value="${(a.siteId)!siteId!site.id}" />
-                <@_sysSite id=(a.siteId)!siteId!site.id>${(object.name)!}</@_sysSite>
+                <@sys.site id=(a.siteId)!siteId!site.id>${(object.name)!}</@sys.site>
             </dd>
         </dl>
         <dl class="nowrap">

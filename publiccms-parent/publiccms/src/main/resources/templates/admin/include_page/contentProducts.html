@@ -1,5 +1,5 @@
 <#macro contentProducts contentId='' copy=false>
-<table class="list nowrap itemDetail products" addButton="<@t.page 'button.new_line'/>" batchUploadUrl="common/batchUpload.html?field=cover&fileTypes=image" width="100%">
+<table class="list nowrap itemDetail products" addButton="<@t.page 'button.new_line'/>" batchButton="<@t.page 'button.batch_upload'/>" batchUploadUrl="common/batchUpload.html?field=cover&fileTypes=image" width="100%">
     <thead>
         <tr>
             <th type="attach" name="products[#index#].cover" size="50" lookupGroup="products[#index#]" lookupUrl="common/upload.html?field=cover&fileTypes=image"><@t.page 'cover'/></th>
@@ -13,7 +13,7 @@
     </thead>
     <tbody>
 <#if contentId?has_content>
-    <@_contentProductList contentId=contentId absoluteURL=false pageSize=100>
+    <@cms.contentProductList contentId=contentId absoluteURL=false pageSize=100>
         <#list page.list as product>
             <tr>
                 <td>
@@ -41,7 +41,7 @@
                 </td>
             </tr>
         </#list>
-    </@_contentProductList>
+    </@cms.contentProductList>
 </#if>
     </tbody>
 </table>

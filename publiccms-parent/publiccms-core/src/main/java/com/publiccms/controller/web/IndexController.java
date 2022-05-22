@@ -76,7 +76,8 @@ public class IndexController {
     /**
      * METADATA页面请求统一分发
      * 
-     * @param response 响应
+     * @param response
+     *            响应
      */
     @RequestMapping({ "/**/" + MetadataComponent.DATA_FILE, "/**/" + MetadataComponent.METADATA_FILE })
     public void rest(HttpServletResponse response) {
@@ -89,12 +90,18 @@ public class IndexController {
     /**
      * REST页面请求统一分发
      * 
-     * @param site 站点
-     * @param id ID
-     * @param body 消息体
-     * @param request 请求
-     * @param response 响应
-     * @param model 模型
+     * @param site
+     *            站点
+     * @param id
+     *            ID
+     * @param body
+     *            消息体
+     * @param request
+     *            请求
+     * @param response
+     *            响应
+     * @param model
+     *            模型
      * @return view name 视图名
      */
     @RequestMapping({ "/**/{id:[0-9]+}" })
@@ -106,13 +113,20 @@ public class IndexController {
     /**
      * REST页面请求统一分发
      * 
-     * @param site 站点
-     * @param id ID
-     * @param pageIndex 分页
-     * @param body 消息体
-     * @param request 请求
-     * @param response 响应
-     * @param model 模型
+     * @param site
+     *            站点
+     * @param id
+     *            ID
+     * @param pageIndex
+     *            分页
+     * @param body
+     *            消息体
+     * @param request
+     *            请求
+     * @param response
+     *            响应
+     * @param model
+     *            模型
      * @return view name 视图名
      */
     @RequestMapping({ "/**/{id:[0-9]+}_{pageIndex:[0-9]+}" })

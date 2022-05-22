@@ -25,14 +25,14 @@ public class CreateTemplateFileDirective extends AbstractTemplateDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
         String templatePath = handler.getString("templatePath");
-        String filePath = handler.getString("filePath");
+        String filepath = handler.getString("filePath");
         Integer pageIndex = handler.getInteger("pageIndex");
-        if (CommonUtils.notEmpty(templatePath) && CommonUtils.notEmpty(filePath)) {
+        if (CommonUtils.notEmpty(templatePath) && CommonUtils.notEmpty(filepath)) {
             SysSite site = getSite(handler);
             String templateFullPath = SiteComponent.getFullTemplatePath(site, templatePath);
             try {
                 handler.put("url",
-                        templateComponent.createStaticFile(site, templateFullPath, filePath, pageIndex, null, null, null))
+                        templateComponent.createStaticFile(site, templateFullPath, filepath, pageIndex, null, null, null))
                         .render();
             } catch (IOException | TemplateException e) {
                 handler.print(e.getMessage());

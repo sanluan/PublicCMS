@@ -16,8 +16,31 @@ import com.publiccms.logic.service.cms.CmsDictionaryDataService;
 
 /**
  *
- * CmsDictionaryDataListDirective
+ * dictionaryDataList 数据字典数据列表
+ * <p>
+ * 参数列表
+ * <ul>
+ * <li><code>dictionaryId</code> 字典id，为空时返回空结果
+ * <li><code>parentValue</code> 父节点值
+ * </ul>
+ * <p>
+ * 返回结果
+ * <ul>
+ * <li><code>list</code> List类型 查询结果实体列表
+ * {@link com.publiccms.entities.cms.CmsDictionaryData}
+ * </ul>
+ * 使用示例
+ * <p>
+ * &lt;@cms.dictionaryDataList dictionaryId='data'&gt;&lt;#list page.list as
+ * a&gt;${a.text}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.dictionaryDataList&gt;
  * 
+ * <pre>
+&lt;script&gt;
+ $.getJSON('//cms.publiccms.com/api/directive/cms/dictionaryDataList?dictionaryId=1&amp;parentValue=text', function(data){    
+   console.log(data);
+ });
+ &lt;/script&gt;
+ * </pre>
  */
 @Component
 public class CmsDictionaryDataListDirective extends AbstractTemplateDirective {

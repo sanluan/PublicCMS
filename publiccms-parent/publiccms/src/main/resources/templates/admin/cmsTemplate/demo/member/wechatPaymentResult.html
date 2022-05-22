@@ -9,18 +9,18 @@
     </style>
 </head>
 <body>
-    <header>
+    <header data-diy="page">
         <h1>${(site.name)!}</h1>
     </header>
-    <nav>
+    <nav data-diy="category">
         <a href="${site.useStatic?then(site.sitePath,site.dynamicPath)}">Home</a>
-<@_categoryList>
+<@cms.categoryList>
     <#list page.list as a>
         <a href="${a.url!}" target="_blank">${a.name}</a>
     </#list>
-</@_categoryList>
+</@cms.categoryList>
     </nav>
-    <main>
+    <main data-diy="config" data-diy-id="wechat">
         <h3 class="text-center">${payment.description!}</h3>
         <p class="text-center"><label>Amount:</label>${payment.amount!}</p>
         <div class="text-center qr"></div>
@@ -34,7 +34,11 @@
     <script>
     $('.qr').qrcode({width: 200,height: 200,text: "${code_url!}"});
     </script>
+    <script>
+    var templatePath='${.current_template_name?keep_after('/')}';
+    </script>
     <script src="${site.dynamicPath}resource/js/cms.analytics.js"></script>
+    <script src="${site.dynamicPath}resource/js/cms.diy.js"></script>
     <script>
         var ca = cmsAnalytics();
         var url='${site.dynamicPath}api/visit/record';

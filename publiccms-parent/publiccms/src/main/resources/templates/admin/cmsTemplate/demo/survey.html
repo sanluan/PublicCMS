@@ -1,4 +1,4 @@
-<@_survey id=id;survey>
+<@cms.survey id=id;survey>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,16 +7,16 @@
     <meta name="description" content="${survey.description!}"/>
 </head>
 <body>
-    <header>
+    <header data-diy="page">
         <h1>${(site.name)!}</h1>
     </header>
-    <nav>
-        <a href="${base}">Home</a>
-<@_categoryList>
+    <nav data-diy="category">
+        <a href="${site.dynamicPath}">Home</a>
+<@cms.categoryList>
     <#list page.list as a>
         <a href="${a.url!}" target="_blank">${a.name}</a>
     </#list>
-</@_categoryList>
+</@cms.categoryList>
     </nav>
     <main>
         <h1>${survey.title!}</h1>
@@ -29,20 +29,20 @@
         <p>server time : ${.now} <#if available>working</#if></p>
         <#macro message code>${springMacroRequestContext.getMessage(code)}</#macro>
         <#if user?has_content>
-            <@_userSurvey userId=user.id surveyId=survey.id>
+            <@cms.userSurvey userId=user.id surveyId=survey.id>
                 <#assign available=false/>
                 <p>You have already participated!</p>
-            </@_userSurvey>
+            </@cms.userSurvey>
         <#else>
             <#assign available=false/>
             <p>Please <a href="${site.dynamicPath}login.html?returnUrl=${(site.dynamicPath+'survey.html?id='+survey.id)?url}">login</a></p>
         </#if>
         <form action="${site.dynamicPath}survey/save" method="POST">
-            <input name="_csrf" type="hidden" value="<@_csrfToken/>"/>
+            <input name="_csrf" type="hidden" value="<@tools.csrfToken/>"/>
             <input name="surveyId" type="hidden" value="${survey.id}"/>
             <input name="returnUrl" type="hidden" value="${site.dynamicPath}survey.html?id=${survey.id}"/>
             <ul>
-        <@_surveyQuestionList surveyId=survey.id pageSize=500>
+        <@cms.surveyQuestionList surveyId=survey.id pageSize=500>
             <#list page.list as a>
                 <li>
                     <h3>[<@message 'page.question.type.'+a.questionType/>] ${a.title!} <#if 'exam'=survey.surveyType>(${a.score!})</#if></h3>
@@ -55,27 +55,27 @@
                         <input name="answerList[${a?index}].id.questionId" type="hidden" value="${a.id}">
                     <#switch a.questionType>
                         <#case 'radio'>
-                            <@_surveyQuestionItemList questionId=a.id pageSize=500>
+                            <@cms.surveyQuestionItemList questionId=a.id pageSize=500>
                                 <#list page.list as i>
                                     <label><input name="answerList[${a?index}].answer" type="radio" value="${i.id}"<#if a?is_first> required="required"</#if><#if !available> disabled="true"</#if>/>${i.title}</label>
                                 </#list>
-                            </@_surveyQuestionItemList>
+                            </@cms.surveyQuestionItemList>
                         <#break>
                         <#case 'select'>
-                            <@_surveyQuestionItemList questionId=a.id pageSize=500>
+                            <@cms.surveyQuestionItemList questionId=a.id pageSize=500>
                                 <select name="answerList[${a?index}].answer"<#if !available> disabled="true"</#if>>
                                     <#list page.list as i>
                                         <option value="${i.id}">${i.title}</option>
                                     </#list>
                                 </select>
-                            </@_surveyQuestionItemList>
+                            </@cms.surveyQuestionItemList>
                         <#break>
                         <#case 'checkbox'>
-                            <@_surveyQuestionItemList questionId=a.id pageSize=500>
+                            <@cms.surveyQuestionItemList questionId=a.id pageSize=500>
                                 <#list page.list as i>
                                     <label><input name="answerList[${a?index}].answer" type="checkbox" value="${i.id}"<#if !available> disabled="true"</#if>/>${i.title}</label>
                                 </#list>
-                            </@_surveyQuestionItemList>
+                            </@cms.surveyQuestionItemList>
                         <#break>
                         <#case 'text'>
                             <textarea name="answerList[${a?index}].answer" maxlength="150" cols="80" rows="4" required="required"<#if !available> disabled="true"</#if>></textarea>
@@ -90,7 +90,7 @@
                     </p>
                 </li>
             </#list>
-        </@_surveyQuestionList>
+        </@cms.surveyQuestionList>
             </ul>
             <p><input type="submit" value="Submit"<#if !available> disabled="true"</#if>/></p>
         </form>
@@ -100,10 +100,10 @@
     </footer>
     <script>
     var itemString="itemType=survey&itemId=${survey.id}";
+    var templatePath='${.current_template_name?keep_after('/')}';
     </script>
-    
-    <script src="${site.dynamicPath!}resource/js/jquery-1.12.4.min.js"></script>
     <script src="${site.dynamicPath}resource/js/cms.analytics.js"></script>
+    <script src="${site.dynamicPath}resource/js/cms.diy.js"></script>
     <script>
         var ca = cmsAnalytics();
         var url='${site.dynamicPath}api/visit/record';
@@ -116,4 +116,4 @@
     </script>
 </body>
 </html>
-</@_survey>
+</@cms.survey>

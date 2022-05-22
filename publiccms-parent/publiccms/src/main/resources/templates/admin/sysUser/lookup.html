@@ -1,31 +1,31 @@
 <#if parentId?has_content>
 <ul>
-    <@_sysDeptList parentId=parentId pageSize=500>
+    <@sys.deptList parentId=parentId pageSize=500>
         <#list page.list as a>
             <li>
-                <a href="sysUser/lookup_list.html?deptId=${a.id}&field=${field!'userId'}&nickNameField=${nickNameField!'nickName'}" class="exclude-translate" target="ajax" rel="user_list">${a.name!}</a>
+                <a href="sysUser/lookup_list.html?deptId=${a.id}&field=${field!'userId'}&nicknameField=${nicknameField!'nickname'}" class="exclude-translate" target="ajax" rel="user_list">${a.name!}</a>
             </li>
         <#else>
             <li><a><@t.page 'empty_directory'/></a></li>
         </#list>
-    </@_sysDeptList>
+    </@sys.deptList>
 </ul>
 <#else>
 <div class="pageContent">
     <div class="unitBox leftPageContent" layoutH>
         <ul class="tree treeFolder">
             <li>
-                <a href="sysUser/lookup_list.html?field=${field!'userId'}&nickNameField=${nickNameField!'nickName'}" class="exclude-translate" target="ajax" rel="user_list"><@t.page 'dept.parent'/></a>
+                <a href="sysUser/lookup_list.html?field=${field!'userId'}&nicknameField=${nicknameField!'nickname'}" class="exclude-translate" target="ajax" rel="user_list"><@t.page 'dept.parent'/></a>
                 <ul>
-            <@_sysDeptList pageSize=500>
+            <@sys.deptList pageSize=500>
                 <#list page.list as a>
                     <li>
-                        <a href="sysUser/lookup_list.html?deptId=${a.id}&field=${field!'userId'}&nickNameField=${nickNameField!'nickName'}" class="exclude-translate" target="ajax" rel="user_list">${a.name!}</a>
+                        <a href="sysUser/lookup_list.html?deptId=${a.id}&field=${field!'userId'}&nicknameField=${nicknameField!'nickname'}" class="exclude-translate" target="ajax" rel="user_list">${a.name!}</a>
                     </li>
                 <#else>
                     <li><a><@t.page 'empty_directory'/></a></li>
                 </#list>
-            </@_sysDeptList>
+            </@sys.deptList>
                 </ul>
             </li>
          </ul>
@@ -35,7 +35,7 @@
     </div>
     <div class="formBar">
         <ul>
-            <li><button type="button" class="button" onclick="$.bringBack({'${field!'userId'}':'','${nickNameField!'nickName'}':''});return false;"><@t.page 'button.clear_select'/></button></li>
+            <li><button type="button" class="button" onclick="$.bringBack({'${field!'userId'}':'','${nicknameField!'nickname'}':''});return false;"><@t.page 'button.clear_select'/></button></li>
             <li><button class="close button" type="button"><@t.page 'button.close'/></li>
         </ul>
     </div>

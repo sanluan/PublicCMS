@@ -1,7 +1,7 @@
 <#if parentId?has_content>
-    <@_model id=parentId>
+    <@cms.model id=parentId>
         <#assign parent=object/>
-    </@_model>
+    </@cms.model>
 </#if>
 <div class="pageHeader">
     <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
@@ -20,13 +20,13 @@
     <div class="panelBar">
         <ul class="toolBar">
             <#if parent?has_content>
-                <li><a href="cmsModel/list.html?parentId=${(parent.parentId?url)!}" target="navTab" rel="cmsModel/list"><i class="icon-circle-arrow-up icon-large"></i> <@t.page 'button.return'/></a></li>
+                <li><a href="cmsModel/list.html?parentId=${(parent.parentId?url)!}" target="navTab" rel="cmsModel/list"><i class="icon-circle-arrow-up icon-large"></i><@t.page 'button.return'/></a></li>
                 <li class="line">line</li>
             </#if>
-            <li><a href="cmsModel/add.html?parentId=${(parent.id?url)!}" target="navTab" rel="cmsModel/add"><i class="icon-plus-sign-alt icon-large"></i> <@t.page 'model.add'/></a></li>
+            <li><a href="cmsModel/add.html?parentId=${(parent.id?url)!}" target="navTab" rel="cmsModel/add"><i class="icon-plus-sign-alt icon-large"></i><@t.page 'model.add'/></a></li>
         </ul>
     </div>
-<@_modelList parentId=parentId hasChild=hasChild>
+<@cms.modelList parentId=parentId hasChild=hasChild>
     <table class="table" width="100%" layoutH>
         <thead>
             <tr>
@@ -43,40 +43,40 @@
             <#list page.list as a>
                 <@t.merge 'ids' a.id/>
             </#list>
-            <@_sysLock userId=admin.id itemType='model' itemIds=t.ids><#assign lockMap=map!/></@_sysLock>
+            <@sys.lock userId=admin.id itemType='model' itemIds=t.ids><#assign lockMap=map!/></@sys.lock>
             <#if lockMap?has_content>
                 <#list lockMap as k,lock>
                     <#if lock.userId?has_content><@t.merge 'userIds' lock.userId/></#if>
                 </#list>
             </#if>
-            <@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
+            <@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
             <#list page.list as a>
             <tr>
                 <td>${a.id!}</td>
-                <td class="exclude-translate" <#if lockMap[a.id?string]?has_content><#assign lockUser=(userMap[lockMap[a.id?string].userId?string].nickName)!''/>title="<@t.page 'lock.message' lockUser/> ${lockMap[a.id?string].createDate}"</#if>>
-                    <#if lockMap[a.id?string]?has_content><i class="icon-lock icon-large"></i> </#if>${(a.name)!}
+                <td class="exclude-translate" <#if lockMap[a.id?string]?has_content><#assign lockUser=(userMap[lockMap[a.id?string].userId?string].nickname)!''/>title="<@t.page 'lock.message' lockUser/> ${lockMap[a.id?string].createDate}"</#if>>
+                    <#if lockMap[a.id?string]?has_content><i class="icon-lock icon-large"></i></#if>${(a.name)!}
                 </td>
                 <td>${a.onlyUrl?then(t.pageMessage('yes'),'')}</td>
                 <td>${a.hasImages?then(t.pageMessage('yes'),'')}</td>
                 <td>${a.hasFiles?then(t.pageMessage('yes'),'')}</td>
                 <td>${a.hasProducts?then(t.pageMessage('yes'),'')}</td>
                 <td class="wrap">
-                    <a href="cmsModel/add.html?id=${a.id?url}" class="edit btnText blue" target="navTab" rel="cmsModel/edit"><i class="icon-edit"></i> <@t.page 'model.edit'/></a>
-                    <@_sysAuthorized roleIds=admin.roles url='cmsModel/rebuildSearchText'>
-                        <a href="cmsModel/rebuildSearchText?id=${a.id?url}&_csrf=<@_csrfToken admin=true/>" class="btnText" title="<@t.page 'confirm.do'/>" target="ajaxTodo"><i class="icon-refresh"></i> <@t.page 'button.rebuild_search_text'/></a>
-                    </@_sysAuthorized>
+                    <a href="cmsModel/add.html?id=${a.id?url}" class="edit btnText blue" target="navTab" rel="cmsModel/edit"><i class="icon-edit"></i><@t.page 'model.edit'/></a>
+                    <@sys.authorized roleIds=admin.roles url='cmsModel/rebuildSearchText'>
+                        <a href="cmsModel/rebuildSearchText?id=${a.id?url}&_csrf=<@tools.csrfToken admin=true/>" class="btnText" title="<@t.page 'confirm.do'/>" target="ajaxTodo"><i class="icon-refresh"></i><@t.page 'button.rebuild_search_text'/></a>
+                    </@sys.authorized>
                     <#if a.hasChild>
                         <a href="cmsModel/list.html?parentId=${a.id?url}" class="btnText" target="navTab" rel="cmsModel/list"><@t.page 'model.child_management'/></a>
                     </#if>
                     <#if !site.parentId?has_content>
-                        <@_sysAuthorized roleIds=admin.roles url='cmsModel/delete'>
-                            <a href="cmsModel/delete?id=${a.id?url}&_csrf=<@_csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i> <@t.page 'button.delete'/></a>
-                        </@_sysAuthorized>
+                        <@sys.authorized roleIds=admin.roles url='cmsModel/delete'>
+                            <a href="cmsModel/delete?id=${a.id?url}&_csrf=<@tools.csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i><@t.page 'button.delete'/></a>
+                        </@sys.authorized>
                     </#if>
                 </td>
             </tr>
             </#list>
         </tbody>
     </table>
-</@_modelList>
+</@cms.modelList>
 </div>

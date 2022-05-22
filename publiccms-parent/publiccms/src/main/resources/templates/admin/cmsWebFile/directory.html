@@ -1,5 +1,5 @@
 <form action="cmsWebFile/createDirectory?callbackType=closeCurrent&navTabId=cmsWebFile/list" method="post" autocomplete="off" class="pageForm required-validate" onsubmit="return iframeCallback(this, dialogAjaxDone)">
-    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <div class="pageFormContent" layoutH>
         <dl>
             <dt><@t.page 'name'/>:</dt>

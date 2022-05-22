@@ -1,5 +1,5 @@
 <#ftl auto_esc=false/>
-[<@_categoryList parentId=parentId allowContribute=allowContribute pageIndex=pageIndex pageSize=pageSize>
+[<@cms.categoryList parentId=parentId allowContribute=allowContribute pageIndex=pageIndex pageSize=pageSize>
     <#list page.list as a>
         {
             "name":"${a.name?json_string}",
@@ -8,4 +8,4 @@
             "pageSize":${a.pageSize}
         }<#sep>,
     </#list>
-</@_categoryList>]
+</@cms.categoryList>]

@@ -1,4 +1,4 @@
-<@_logUploadList userId=userId channel=channel fileTypes=fileTypes originalName=originalName filePath=filePath orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
+<@log.uploadList userId=userId channel=channel fileTypes=fileTypes originalName=originalName filePath=filePath orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
     <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
@@ -43,7 +43,7 @@
 <div class="pageContent">
     <div class="panelBar">
         <ul class="toolBar">
-            <li><a href="logUpload/delete?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> <@t.page 'button.batch_delete'/></a></li>
+            <li><a href="logUpload/delete?_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i><@t.page 'button.batch_delete'/></a></li>
         </ul>
     </div>
     <table class="table" width="100%" layoutH>
@@ -65,13 +65,13 @@
             <#list page.list as a>
                 <@t.merge 'userIds' a.userId!/>
             </#list>
-            <@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
+            <@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
             <#list page.list as a>
             <tr>
                 <td><input name="ids" value="${a.id}" type="checkbox"></td>
                 <td>${a.userId!}</td>
                 <td>
-                    ${(userMap[a.userId?string].nickName)!}
+                    ${(userMap[a.userId?string].nickname)!}
                 </td>
                 <td>
                     ${a.channel!}
@@ -90,4 +90,4 @@
     </table>
     <#include "../include_page/page.html"/>
 </div>
-</@_logUploadList>
+</@log.uploadList>

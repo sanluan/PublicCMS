@@ -1,26 +1,15 @@
 <form method="post" action="cmsTemplate/save" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
-    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
-            <li><a class="button" href="cmsTemplate/delete?path=${(path?url)!}&navTabId=cmsTemplate/list&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete_file'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i> <@t.page 'button.delete'/></a></li>
-    <@_sysAuthorized roleIds=admin.roles url='cmsPage/metadata'>
-        <@_sysDeptPage deptId=admin.deptId!'' pages=path>
+            <li><a class="button" href="cmsTemplate/delete?path=${(path?url)!}&navTabId=cmsTemplate/list&_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.delete_file'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i><@t.page 'button.delete'/></a></li>
+    <@sys.authorized roleIds=admin.roles url='cmsPage/metadata'>
+        <@sys.deptPage deptId=admin.deptId!'' pages=path>
             <li><a class="button" href="cmsPage/metadata.html?path=${(path?url)!}" target="ajax" rel="cmsTemplateBox"><@t.page 'page.management'/></a></li>
-        </@_sysDeptPage>
-    </@_sysAuthorized>
+        </@sys.deptPage>
+    </@sys.authorized>
             <li><a class="button" href="cmsTemplate/metadata.html?path=${(path?url)!}" target="ajax" rel="cmsTemplateBox"><@t.page 'metadata'/></a></li>
-            <@_createLock itemType='template' itemId=path userId=admin.id>
-                <#if object?has_content||!path?has_content>
-            <li><button type="submit" class="buttonActive" title="ctrl+s"<#if path?has_content> close-url="common/unlock?itemType=template&itemId=${(path?url)!}"</#if>><@t.page 'button.save'/></button></li>
-                <#else>
-            <li>
-                <@_sysLock userId=admin.id itemType='template' itemId=path>
-                    <@_sysUser id=(object.userId)!''><#assign lockUser=object.nickName/></@_sysUser>
-                <button type="button" class="buttonDisabled" title="${object.createDate}"><@t.page 'lock.message' lockUser/></button>
-                </@_sysLock>
-            </li>
-                </#if>
-            </@_createLock>
+            <li><button type="submit" class="buttonActive" title="ctrl+s"<#if path?has_content> lock-url="common/lock?itemType=template&itemId=${(path?url)!}" close-url="common/unlock?itemType=template&itemId=${(path?url)!}"</#if>><@t.page 'button.save'/></button></li>
         </ul>
     </div>
     <h2 class="contentTitle">
@@ -28,12 +17,12 @@
          <a class="button" href="placeTemplate/lookup.html" target="dialog" mask="true"><@t.page 'place'/></a>
          <a class="button" href="cmsWebFile/lookup.html" target="dialog" mask="true"><@t.page 'webfile'/></a>
          <a class="button" href="cmsTemplate/help.html?path=${(path?url)!}" target="dialog" mask="true"><@t.page 'template.help'/></a>
-         <a class="button" href="<@t.page 'template.manual.url'/>" target="_blank"><@t.page 'template.manual'/></a>
+         <a class="button" href="<@t.page 'template.manual.url'/>" target="navTab" rel="templateManual"><@t.page 'template.manual'/></a>
     </h2>
     <div class="pageFormContent" layoutH>
         <div class="exclude-translate">
             <input name="path" type="hidden" value="${path}"/>
-            <textarea name="content" class="code" escape="true" mode="freemarkermixed"><@_templateContent path=path>${(object)!}</@_templateContent></textarea>
+            <textarea name="content" class="code" escape="true" mode="freemarkermixed"><@tools.templateContent path=path>${(object)!}</@tools.templateContent></textarea>
         </div>
     </div>
 </form>

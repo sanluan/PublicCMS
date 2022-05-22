@@ -148,8 +148,8 @@ public class CmsPlaceAdminController {
                         LogLoginService.CHANNEL_WEB_MANAGER, "save.place", RequestUtils.getIpAddress(request),
                         CommonUtils.getDate(), JsonUtils.getString(entity)));
             }
-            String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
-            CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filePath);
+            String filepath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
+            CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);
             Map<String, String> map = ExtendUtils.getExtentDataMap(extendDataParameters.getExtendDataList(),
                     metadata.getExtendList());
             String extentString = ExtendUtils.getExtendString(map);
@@ -280,8 +280,8 @@ public class CmsPlaceAdminController {
         }
         Locale locale = RequestContextUtils.getLocale(request);
 
-        String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
-        CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filePath);
+        String filepath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
+        CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);
 
         PageHandler page = service.getPage(site.getId(), userId, path, itemType, itemId, startPublishDate, endPublishDate,
                 CommonUtils.getMinuteDate(), status, false, orderField, orderType, 1, PageHandler.MAX_PAGE_SIZE);
@@ -348,7 +348,7 @@ public class CmsPlaceAdminController {
                 row.createCell(j++).setCellValue(entity.getTitle());
                 row.createCell(j++).setCellValue(entity.getUrl());
                 user = userMap.get(entity.getUserId());
-                row.createCell(j++).setCellValue(null == user ? null : user.getNickName());
+                row.createCell(j++).setCellValue(null == user ? null : user.getNickname());
                 row.createCell(j++).setCellValue(String.valueOf(entity.getClicks()));
                 row.createCell(j++).setCellValue(dateFormat.format(entity.getPublishDate()));
                 row.createCell(j++).setCellValue(dateFormat.format(entity.getCreateDate()));
@@ -357,7 +357,7 @@ public class CmsPlaceAdminController {
                         "page.status.place.data." + entity.getStatus()));
 
                 user = userMap.get(entity.getCheckUserId());
-                row.createCell(j++).setCellValue(null == user ? null : user.getNickName());
+                row.createCell(j++).setCellValue(null == user ? null : user.getNickname());
 
                 if (CommonUtils.notEmpty(metadata.getExtendList())) {
                     attribute = attributeMap.get(entity.getId());
@@ -439,9 +439,9 @@ public class CmsPlaceAdminController {
     private void staticPlace(SysSite site, String path) {
         if (CmsFileUtils.exists(siteComponent.getWebFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path))) {
             try {
-                String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
-                CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filePath);
-                CmsPageData data = metadataComponent.getTemplateData(filePath);
+                String filepath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
+                CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);
+                CmsPageData data = metadataComponent.getTemplateData(filepath);
                 templateComponent.staticPlace(site, path, metadata, data);
             } catch (IOException | TemplateException e) {
                 log.error(e.getMessage(), e);

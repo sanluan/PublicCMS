@@ -1,51 +1,40 @@
-<@_placeMetadata path=path><#assign a=object/></@_placeMetadata>
+<@tools.placeMetadata path=path><#assign a=object/></@tools.placeMetadata>
 <form method="post" autocomplete="off" action="cmsTemplate/savePlace" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
-    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
         <#if site.useSsi>
-            <li><a class="button" href="cmsTemplate/publishPlace?path=${(path?url)!}&_csrf=<@_csrfToken admin=true/>" target="ajaxTodo"><@t.page 'button.publish'/></a></li>
+            <li><a class="button" href="cmsTemplate/publishPlace?path=${(path?url)!}&_csrf=<@tools.csrfToken admin=true/>" target="ajaxTodo"><@t.page 'button.publish'/></a></li>
         </#if>
-            <li><a class="button" href="cmsTemplate/deletePlace?path=${(path?url)!}&navTabId=placeTemplate/list&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete_file'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i> <@t.page 'button.delete'/></a></li>
+            <li><a class="button" href="cmsTemplate/deletePlace?path=${(path?url)!}&navTabId=placeTemplate/list&_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.delete_file'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i><@t.page 'button.delete'/></a></li>
             <li><a class="button" href="cmsPlace/metadata.html?path=${(path?url)!}" target="ajax" rel="cmsTemplatePlace"><@t.page 'place.management'/></a></li>
-        <#if a?has_content&&a.size gt 0>
-    <@_sysAuthorized roleIds=admin.roles url='cmsPlace/dataList'>
-        <@_sysDeptPage deptId=admin.deptId!'' pages='/include'+path>
-            <li><a class="button" href="cmsPlace/dataList.html?path=${(path?url)!}" target="navTab" rel="cmsPlace/dataList" title="<@t.page 'place_data.place'/>:${(a.alias)!}"><@t.page 'place_data'/>(${a.size})</a></li>
-        </@_sysDeptPage>
-    </@_sysAuthorized>
+        <#if a?has_content&&a.size?has_content&&a.size gt 0>
+    <@sys.authorized roleIds=admin.roles url='cmsPlace/dataList'>
+        <@sys.deptPage deptId=admin.deptId!'' pages='/include'+path>
+            <li><a class="button" href="cmsPlace/dataList.html?path=${(path?url)!}" target="navTab" rel="cmsPlace/dataList" title="<@t.page 'place_data'/>:${(a.alias)!}"><@t.page 'place_data'/>(${a.size!})</a></li>
+        </@sys.deptPage>
+    </@sys.authorized>
             <#if a.allowContribute>
-        <@_sysAuthorized roleIds=admin.roles url='cmsTemplate/content'>
+        <@sys.authorized roleIds=admin.roles url='cmsTemplate/content'>
             <li><a class="button"href="placeTemplate/form.html?path=${(path?url)!}" target="dialog" mask="true"><@t.page 'help.contribute_form'/></a></li>
-        </@_sysAuthorized>
+        </@sys.authorized>
             </#if>
         </#if>
             <li><a class="button" href="placeTemplate/metadata.html?path=${(path?url)!}" target="ajax" rel="cmsTemplatePlace"><@t.page 'metadata'/></a></li>
-            <@_createLock itemType='placeTemplate' itemId=path userId=admin.id>
-                <#if object?has_content||!path?has_content>
-            <li><button type="submit" class="buttonActive" title="ctrl+s"<#if path?has_content> close-url="common/unlock?itemType=placeTemplate&itemId=${(path?url)!}"</#if>><@t.page 'button.save'/></button></li>
-                <#else>
-            <li>
-                <@_sysLock userId=admin.id itemType='placeTemplate' itemId=path>
-                    <@_sysUser id=(object.userId)!''><#assign lockUser=object.nickName/></@_sysUser>
-                <button type="button" class="buttonDisabled" title="${object.createDate}"><@t.page 'lock.message' lockUser/></button>
-                </@_sysLock>
-            </li>
-                </#if>
-            </@_createLock>
+            <li><button type="submit" class="buttonActive" title="ctrl+s"<#if path?has_content> lock-url="common/lock?itemType=placeTemplate&itemId=${(path?url)!}" close-url="common/unlock?itemType=placeTemplate&itemId=${(path?url)!}"</#if>><@t.page 'button.save'/></button></li>
         </ul>
     </div>
     <h2 class="contentTitle">
-         <a class="button" href="cmsTemplate/ftlLookup.html" target="dialog" mask="true"><@t.page 'template.fragment'/></a>
-         <a class="button" href="placeTemplate/lookup.html" target="dialog" mask="true"><@t.page 'place'/></a>
-         <a class="button" href="cmsWebFile/lookup.html" target="dialog" mask="true"><@t.page 'webfile'/></a>
+        <a class="button" href="cmsTemplate/ftlLookup.html" target="dialog" mask="true"><@t.page 'template.fragment'/></a>
+        <a class="button" href="placeTemplate/lookup.html" target="dialog" mask="true"><@t.page 'place'/></a>
+        <a class="button" href="cmsWebFile/lookup.html" target="dialog" mask="true"><@t.page 'webfile'/></a>
         <a class="button" href="cmsTemplate/help.html?type=place&path=${(path?url)!}" target="dialog" mask="true"><@t.page 'template.help'/></a>
-        <a class="button" href="<@t.page 'template.manual.url'/>" target="_blank"><@t.page 'template.manual'/></a>
+        <a class="button" href="<@t.page 'template.manual.url'/>" target="navTab" rel="templateManual"><@t.page 'template.manual'/></a>
     </h2>
     <div class="pageFormContent" layoutH>
-           <div>
+        <div>
             <input name="path" type="hidden" value="${path}"/>
-            <textarea name="content" class="code" escape="true" mode="freemarkermixed"><@_templateContent path='/include'+path>${(object)!}</@_templateContent></textarea>
+            <textarea name="content" class="code" escape="true" mode="freemarkermixed"><@tools.templateContent path='/include'+path>${(object)!}</@tools.templateContent></textarea>
         </div>
     </div>
 </form>

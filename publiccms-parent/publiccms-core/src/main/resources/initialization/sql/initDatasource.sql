@@ -60,6 +60,7 @@ CREATE TABLE `cms_content` (
   `clicks` int(11) NOT NULL COMMENT '点击数',
   `publish_date` datetime NOT NULL COMMENT '发布日期',
   `expiry_date` datetime default NULL COMMENT '过期日期',
+  `update_user_id` bigint(20) DEFAULT NULL COMMENT '更新用户',
   `check_date` datetime default NULL COMMENT '审核日期',
   `update_date` datetime default NULL COMMENT '更新日期',
   `create_date` datetime NOT NULL COMMENT '创建日期',

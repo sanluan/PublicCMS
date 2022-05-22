@@ -1,0 +1,41 @@
+<div class="pageContent">
+    <div layoutH class="leftPageContent">
+        <ul class="tree treeFolder">
+            <li>
+                <a href="javascript:;" onclick="return false;"><@t.page 'region'/></a>
+                <ul>
+            <@tools.diyMetadataList itemType="region">
+                <#list list as a>
+                    <li><a href="cmsDiy/region.html?id=${(a.id?url)!}" target="ajax" rel="diyBox">${a.name!}</a></li>
+                </#list>
+            </@tools.diyMetadataList>
+                </ul>
+            </li>
+            <li><a href="cmsDiy/region.html" target="ajax" rel="diyBox"><@t.page 'button.add'/></a></li>
+            <li>
+                <a href="javascript:;" onclick="return false;"><@t.page 'layout'/></a>
+                <ul>
+            <@tools.diyMetadataList itemType="layout">
+                <#list list as a>
+                    <li><a href="cmsDiy/layout.html?id=${(a.id?url)!}" target="ajax" rel="diyBox">${a.name!} (${a.count})</a></li>
+                </#list>
+            </@tools.diyMetadataList>
+                </ul>
+            </li>
+            <li><a href="cmsDiy/layout.html" target="ajax" rel="diyBox"><@t.page 'button.add'/></a></li>
+            <li>
+                <a href="javascript:;" onclick="return false;"><@t.page 'module'/></a>
+                <ul>
+            <@tools.diyMetadataList itemType="module">
+                <#list list as a>
+                    <li><a href="cmsDiy/module.html?id=${(a.id?url)!}" target="ajax" rel="diyBox">${a.name!}</a></li>
+                </#list>
+            </@tools.diyMetadataList>
+                </ul>
+            </li>
+            <li><a href="cmsDiy/module.html" target="ajax" rel="diyBox"><@t.page 'button.add'/></a></li>
+        </ul>
+    </div>
+    <div id="diyBox" class="unitBox rightPageContent">
+    </div>
+</div>

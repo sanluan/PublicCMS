@@ -1,7 +1,7 @@
 <#if !startVisitDate?has_content>
     <#assign startVisitDate=(.now?long-7*24*3600*1000)?number_to_date/>
 </#if>
-<@_visitDayList startVisitDate=startVisitDate endVisitDate=endVisitDate hourAnalytics=hourAnalytics pageIndex=pageNum pageSize=numPerPage>
+<@visit.dayList startVisitDate=startVisitDate endVisitDate=endVisitDate hourAnalytics=hourAnalytics pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
     <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
@@ -58,4 +58,4 @@
     </table>
     <#include "../include_page/page.html"/>
 </div>
-</@_visitDayList>
+</@visit.dayList>

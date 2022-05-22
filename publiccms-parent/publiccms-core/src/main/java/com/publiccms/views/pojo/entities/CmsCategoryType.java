@@ -14,15 +14,54 @@ public class CmsCategoryType implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
+    /**
+     * id
+     */
     private String id;
+    /**
+     * name<p>
+     * 名称
+     */
     private String name;
+    /**
+     * extend link<p>
+     * 外链
+     */
     private boolean onlyUrl;
+    /**
+     * sort<p>
+     * 排序
+     */
     private int sort;
+    /**
+     * static template path<p>
+     * 静态化模板路径
+     */
     private String templatePath;
+    /**
+     * path<p>
+     * 访问路径
+     */
     private String path;
+    /**
+     * content path<p>
+     * 内容访问路径
+     */
     private String contentPath;
+    /**
+     * contain child category's content<p>
+     * 包含子分类内容
+     */
     private boolean containChild;
+    /**
+     * page size<p>
+     * 分页大小
+     */
     private Integer pageSize;
+    /**
+     * extend field list<p>
+     * 扩展字段列表
+     */
     private List<SysExtendField> extendList;
 
     /**

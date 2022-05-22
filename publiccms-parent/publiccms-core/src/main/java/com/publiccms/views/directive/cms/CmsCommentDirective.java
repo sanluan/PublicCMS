@@ -17,10 +17,32 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.service.cms.CmsCommentService;
 
 /**
- *
- * CmsCommentDirective
- * 
- */
+*
+* comment 评论查询指令
+* <p>
+* 参数列表
+* <ul>
+* <li><code>id</code> 分类id，结果返回<code>object</code>
+* {@link com.publiccms.entities.cms.CmsComment}
+* <li><code>ids</code>
+* 多个评论id，逗号或空格间隔，当id为空时生效，结果返回<code>map</code>(id,评论)
+* {@link com.publiccms.entities.cms.CmsComment}
+* </ul>
+* 使用示例
+* <p>
+* &lt;@cms.comment id=1&gt;${object.text}&lt;/@cms.comment&gt;
+* <p>
+* &lt;@cms.comment ids=1,2,3&gt;&lt;#list map as
+* k,v&gt;${v.text}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.comment&gt;
+* 
+* <pre>
+  &lt;script&gt;
+   $.getJSON('//cms.publiccms.com/api/directive/cms/comment?id=1&amp;appToken=接口访问授权Token', function(data){    
+     console.log(data.text);
+   });
+   &lt;/script&gt;
+* </pre>
+*/
 @Component
 public class CmsCommentDirective extends AbstractTemplateDirective {
 

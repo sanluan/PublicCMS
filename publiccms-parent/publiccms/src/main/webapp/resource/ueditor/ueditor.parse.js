@@ -1,7 +1,7 @@
 /*!
  * UEditor
  * version: ueditor
- * build: Mon Apr 18 2022 08:55:36 GMT+0800 (中国标准时间)
+ * build: Wed Apr 27 2022 18:45:51 GMT+0800 (中国标准时间)
  */
 
 (function(){
@@ -906,7 +906,7 @@ UE.parse.register('list',function(utils){
 
     utils.extend(this,{
         liiconpath : 'http://bs.baidu.com/listicon/',
-        listDefaultPaddingLeft : '20'
+        listDefaultPaddingLeft : '40'
     });
 
     var root = this.root,
@@ -923,7 +923,7 @@ UE.parse.register('list',function(utils){
     }
 
     if(ols.length || uls.length){
-        customCss.push(selector +' .list-paddingleft-1{padding-left:0}');
+        customCss.push(selector +' .list-paddingleft-1{padding-left:20px}');
         customCss.push(selector +' .list-paddingleft-2{padding-left:'+ this.listDefaultPaddingLeft+'px}');
         customCss.push(selector +' .list-paddingleft-3{padding-left:'+ this.listDefaultPaddingLeft*2+'px}');
 

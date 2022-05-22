@@ -32,6 +32,7 @@ public class ContentClickDirective extends AbstractAppDirective {
         if (null != contentStatistics) {
             handler.put("clicks", contentStatistics.getOldClicks() + contentStatistics.getClicks());
         }
+        handler.render();
     }
 
     @Override

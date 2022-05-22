@@ -5,22 +5,22 @@
         <div class="tagsBox tags_${typeId!}" callback="reIndexTag()"></div>
         <input name="tag[${typeId!}].id" type="hidden"/>
         <input name="tag[${typeId!}].name" type="text" size="20" postField="name" suggestfields="id,name" lookupgroup="tag[${typeId!}]" suggestUrl="common/tagSuggest.html?typeId=${typeId!}"/>
-        <a class="suggestButton" href="javascript:;" onclick="addTag('${typeId}',$('input[name=\'tag[${typeId!}].id\']',navTab.getCurrentPanel()).val(),$('input[name=\'tag[${typeId!}].name\']',navTab.getCurrentPanel()).val());return false;"><i class="icon-ok icon-large"></i> <@t.page 'button.add'/></a>
+        <a class="suggestButton" href="javascript:;" onclick="addTag('${typeId}',$('input[name=\'tag[${typeId!}].id\']',navTab.getCurrentPanel()).val(),$('input[name=\'tag[${typeId!}].name\']',navTab.getCurrentPanel()).val());return false;"><i class="icon-ok icon-large"></i><@t.page 'button.add'/></a>
     </dd>
 </dl>
 </#macro>
 <#macro tags tagText typeIds='' tagIds=''>
     <#if typeIds?has_content>
-        <@_tagType ids=typeIds>
+        <@cms.tagType ids=typeIds>
             <#list map as k,tagType>
 <@tagsRow tagText k tagType.name/>
             </#list>
-        </@_tagType>
+        </@cms.tagType>
     <#else>
 <@tagsRow tagText/>
     </#if>
 <script>
-    <@_tag ids=tagIds>
+    <@cms.tag ids=tagIds>
         <#list map as k,tag>
             <#if typeIds?has_content>
 addTag('${tag.typeId!}','${k}','${tag.name?js_string}','${tag.typeId!}');
@@ -28,6 +28,6 @@ addTag('${tag.typeId!}','${k}','${tag.name?js_string}','${tag.typeId!}');
 addTag('','${k}','${tag.name?js_string}','${tag.typeId!}');
             </#if>
         </#list>
-    </@_tag>
+    </@cms.tag>
 </script>
 </#macro>

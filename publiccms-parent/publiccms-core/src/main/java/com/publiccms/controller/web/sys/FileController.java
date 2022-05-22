@@ -66,15 +66,15 @@ public class FileController {
             String suffix = CmsFileUtils.getSuffix(originalName);
             if (ArrayUtils.contains(siteConfigComponent.getSafeSuffix(site), suffix)) {
                 String fileName = CmsFileUtils.getUploadFileName(suffix);
-                String filePath = siteComponent.getWebFilePath(site, fileName);
+                String filepath = siteComponent.getWebFilePath(site, fileName);
                 try {
-                    CmsFileUtils.upload(file, filePath);
+                    CmsFileUtils.upload(file, filepath);
                     result.put("success", true);
                     result.put("fileName", fileName);
                     String fileType = CmsFileUtils.getFileType(suffix);
                     result.put("fileType", fileType);
                     result.put("fileSize", file.getSize());
-                    FileSize fileSize = CmsFileUtils.getFileSize(filePath, suffix);
+                    FileSize fileSize = CmsFileUtils.getFileSize(filepath, suffix);
                     logUploadService.save(new LogUpload(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, originalName,
                             fileType, file.getSize(), fileSize.getWidth(), fileSize.getHeight(),
                             RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));

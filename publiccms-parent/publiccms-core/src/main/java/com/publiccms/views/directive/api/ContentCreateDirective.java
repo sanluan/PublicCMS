@@ -166,13 +166,13 @@ public class ContentCreateDirective extends AbstractAppDirective {
                     List<CmsContentFile> files = null;
                     if (entity.isHasFiles()) {
                         files = new ArrayList<>();
-                        String[] filePaths = handler.getStringArray("filePaths");
+                        String[] filepaths = handler.getStringArray("filePaths");
                         String[] fileDescriptions = handler.getStringArray("fileDescriptions");
-                        if (null != filePaths) {
+                        if (null != filepaths) {
                             int i = 0;
-                            for (String filePath : filePaths) {
+                            for (String filepath : filepaths) {
                                 CmsContentFile e = new CmsContentFile();
-                                e.setFilePath(filePath);
+                                e.setFilePath(filepath);
                                 if (null != fileDescriptions && fileDescriptions.length > i) {
                                     e.setDescription(fileDescriptions[i]);
                                 }
@@ -188,9 +188,9 @@ public class ContentCreateDirective extends AbstractAppDirective {
                         String[] imageDescriptions = handler.getStringArray("imageDescriptions");
                         if (null != imagePaths) {
                             int i = 0;
-                            for (String filePath : imagePaths) {
+                            for (String filepath : imagePaths) {
                                 CmsContentFile e = new CmsContentFile();
-                                e.setFilePath(filePath);
+                                e.setFilePath(filepath);
                                 if (null != imageDescriptions && imageDescriptions.length > i) {
                                     e.setDescription(imageDescriptions[i]);
                                 }
@@ -209,6 +209,7 @@ public class ContentCreateDirective extends AbstractAppDirective {
                 handler.put("contentId", entity.getId());
                 handler.put("result", "success");
             }
+            handler.render();
         }
     }
 

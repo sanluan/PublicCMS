@@ -1,7 +1,7 @@
 <#if !startCreateDate?has_content>
     <#assign startCreateDate=(.now?long-7*24*3600*1000)?number_to_date/>
 </#if>
-<@_workload channel='web_manager' operate='save.content' startCreateDate=startCreateDate endCreateDate=endCreateDate workloadType=workloadType pageIndex=pageNum pageSize=numPerPage>
+<@log.workload channel='web_manager' operate='save.content' startCreateDate=startCreateDate endCreateDate=endCreateDate workloadType=workloadType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
     <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
@@ -27,7 +27,7 @@
                         <button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
                     </li>
                     <li>
-                        <a class="button" href="logOperate/export?channel=web_manager&operate=save.content&_csrf=<@_csrfToken admin=true/>" target="dwzExport" targetType="navTab"><i class="icon-download-alt icon-large"></i> <@t.page 'button.export'/></a>
+                        <a class="button" href="logOperate/export?channel=web_manager&operate=save.content&_csrf=<@tools.csrfToken admin=true/>" target="dwzExport" targetType="navTab"><i class="icon-download-alt icon-large"></i><@t.page 'button.export'/></a>
                     </li>
                 </ul>
             </div>
@@ -53,8 +53,8 @@
                 <@t.merge 'deptIds' a.deptId!/>
             </#list>
 
-            <@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
-            <@_sysDept ids=t.deptIds!><#assign deptMap=map!/></@_sysDept>
+            <@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
+            <@sys.dept ids=t.deptIds!><#assign deptMap=map!/></@sys.dept>
 
             <#list page.list as a>
             <tr>
@@ -62,7 +62,7 @@
                     ${(deptMap[a.deptId?string].name)!}
                 </td>
                 <td class="center exclude-translate">
-                    ${(userMap[a.userId?string].nickName)!}
+                    ${(userMap[a.userId?string].nickname)!}
                 </td>
                 <td class="center">${a.count!}</td>
             </tr>
@@ -71,4 +71,4 @@
     </table>
     <#include "../include_page/page.html"/>
 </div>
-</@_workload>
+</@log.workload>

@@ -1,4 +1,4 @@
-<@_sysAppTokenList appId=appId pageIndex=pageNum pageSize=numPerPage>
+<@sys.appTokenList appId=appId pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
     <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
@@ -28,7 +28,7 @@
                 <td>${a.expiryDate!}</td>
                 <td>${a.createDate!}</td>
                 <td class="wrap">
-                    <a href="sysAppToken/delete?authToken=${a.authToken}&_csrf=<@_csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i> <@t.page 'button.delete'/></a>
+                    <a href="sysAppToken/delete?authToken=${a.authToken}&_csrf=<@tools.csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i><@t.page 'button.delete'/></a>
                 </td>
             </tr>
             </#list>
@@ -36,4 +36,4 @@
     </table>
     <#include "../include_page/page.html"/>
 </div>
-</@_sysAppTokenList>
+</@sys.appTokenList>

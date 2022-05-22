@@ -17,22 +17,107 @@ public class CmsModel implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
+    /**
+     * id
+     */
     private String id;
+    /**
+     * parent id
+     * <p>
+     * 父id
+     */
     private String parentId;
+    /**
+     * name
+     * <p>
+     * 名称
+     * 
+     */
     private String name;
+    /**
+     * static template path
+     * <p>
+     * 静态化模型路径
+     * 
+     */
     private String templatePath;
+    /**
+     * editor type
+     * <p>
+     * 编辑器类型
+     */
     private String editorType;
+    /**
+     * cover width
+     * <p>
+     * 封面图宽度
+     */
     private Integer coverWidth;
+    /**
+     * cover height
+     * <p>
+     * 封面图高度
+     */
     private Integer coverHeight;
+    /**
+     * has child
+     * <p>
+     * 外链
+     */
     private boolean hasChild;
+    /**
+     * extend link
+     * <p>
+     */
     private boolean onlyUrl;
+    /**
+     * has image list
+     * <p>
+     * 有用图片列表
+     */
     private boolean hasImages;
+    /**
+     * has file list
+     * <p>
+     * 拥有文件列表
+     * 
+     */
     private boolean hasFiles;
+    /**
+     * has product list
+     * <p>
+     * 拥有图片列表
+     */
     private boolean hasProducts;
+    /**
+     * searchable
+     * <p>
+     * 可搜索
+     */
     private boolean searchable;
+    /**
+     * field list
+     * <p>
+     * 字段列表
+     */
     private List<String> fieldList;
+    /**
+     * required field list
+     * <p>
+     * 必填字段列表
+     */
     private List<String> requiredFieldList;
+    /**
+     * field text map
+     * <p>
+     * 字段文本
+     */
     private Map<String, String> fieldTextMap;
+    /**
+     * extend field list
+     * <p>
+     * 扩展字段列表
+     */
     private List<SysExtendField> extendList;
 
     /**
@@ -99,7 +184,8 @@ public class CmsModel implements java.io.Serializable {
     }
 
     /**
-     * @param coverWidth the coverWidth to set
+     * @param coverWidth
+     *            the coverWidth to set
      */
     public void setCoverWidth(Integer coverWidth) {
         this.coverWidth = coverWidth;
@@ -113,7 +199,8 @@ public class CmsModel implements java.io.Serializable {
     }
 
     /**
-     * @param coverHeight the coverHeight to set
+     * @param coverHeight
+     *            the coverHeight to set
      */
     public void setCoverHeight(Integer coverHeight) {
         this.coverHeight = coverHeight;
@@ -183,7 +270,8 @@ public class CmsModel implements java.io.Serializable {
     }
 
     /**
-     * @param hasProducts the hasProducts to set
+     * @param hasProducts
+     *            the hasProducts to set
      */
     public void setHasProducts(boolean hasProducts) {
         this.hasProducts = hasProducts;

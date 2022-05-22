@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Properties;
 import java.util.regex.Pattern;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,11 +25,13 @@ import org.springframework.web.multipart.MultipartFile;
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CmsVersion;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.database.CmsDataSource;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
+import com.publiccms.common.tools.VerificationUtils;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.log.LogUpload;
 import com.publiccms.entities.sys.SysSite;
@@ -204,7 +207,7 @@ public class SysSiteAdminController {
         return CommonConstants.TEMPLATE_DONE;
     }
 
-    private static final Pattern PARAMETER_PATTERN = Pattern.compile("^[a-zA-Z][a-zA-Z0-9_\\-\\.]{1,191}$");
+    private static final Pattern PARAMETER_PATTERN = Pattern.compile("^[a-zA-Z0-9][a-zA-Z0-9_\\-\\.]{1,191}$");
 
     /**
      * @author Qicz
@@ -226,34 +229,48 @@ public class SysSiteAdminController {
             return CommonConstants.TEMPLATE_ERROR;
         }
         String log = null;
-        if ("sync.bat".equalsIgnoreCase(command) || "sync.sh".equalsIgnoreCase(command)) {
+        if ("sync.bat".equalsIgnoreCase(command) || "sync.sh".equalsIgnoreCase(command)
+                || "backupDB.bat".equalsIgnoreCase(command) || "backupDB.sh".equalsIgnoreCase(command)) {
             try {
                 String dir = CommonConstants.CMS_FILEPATH + "/script";
-                String[] cmdarray = parameters;
-                if (null != cmdarray) {
-                    int i = 0;
-                    for (String c : cmdarray) {
-                        if (!PARAMETER_PATTERN.matcher(c).matches()) {
-                            cmdarray[i] = "";
+                String[] cmdarray;
+                if ("backupDB.bat".equalsIgnoreCase(command) || "backupDB.sh".equalsIgnoreCase(command)) {
+                    String databaseConfiFile = CommonConstants.CMS_FILEPATH + CmsDataSource.DATABASE_CONFIG_FILENAME;
+                    Properties dbconfigProperties = CmsDataSource.loadDatabaseConfig(databaseConfiFile);
+                    String userName = dbconfigProperties.getProperty("jdbc.username");
+                    String database = dbconfigProperties.getProperty("database", "publiccms");
+                    String password = dbconfigProperties.getProperty("jdbc.password");
+                    String encryptPassword = dbconfigProperties.getProperty("jdbc.encryptPassword");
+                    if (null != encryptPassword) {
+                        password = VerificationUtils.decrypt(VerificationUtils.base64Decode(encryptPassword),
+                                CommonConstants.ENCRYPT_KEY);
+                    }
+                    cmdarray = new String[] { database, userName, password };
+                } else {
+                    cmdarray = new String[parameters.length];
+                    if (null != parameters) {
+                        int i = 0;
+                        for (String c : parameters) {
+                            if (!PARAMETER_PATTERN.matcher(c).matches()) {
+                                cmdarray[i] = "";
+                            } else {
+                                cmdarray[i] = c;
+                            }
+                            i++;
                         }
-                        i++;
                     }
                 }
+                String filepath = String.format("%s/%s", dir, command);
+                File script = new File(filepath);
+                if (!script.exists()) {
+                    FileUtils.copyInputStreamToFile(this.getClass().getResourceAsStream(String.format("/script/%s", command)),
+                            script);
+                }
                 if (command.toLowerCase().endsWith(".sh")) {
-                    String filePath = String.format("%s/sync.sh", dir);
-                    File script = new File(filePath);
-                    if (!script.exists()) {
-                        FileUtils.copyInputStreamToFile(this.getClass().getResourceAsStream("/script/sync.sh"), script);
-                    }
-                    cmdarray = ArrayUtils.insert(0, cmdarray, filePath);
+                    cmdarray = ArrayUtils.insert(0, cmdarray, filepath);
                     cmdarray = ArrayUtils.insert(0, cmdarray, "sh");
                 } else {
-                    String filePath = String.format("%s/sync.bat", dir);
-                    File script = new File(filePath);
-                    if (!script.exists()) {
-                        FileUtils.copyInputStreamToFile(this.getClass().getResourceAsStream("/script/sync.bat"), script);
-                    }
-                    cmdarray = ArrayUtils.insert(0, cmdarray, filePath);
+                    cmdarray = ArrayUtils.insert(0, cmdarray, filepath);
                 }
                 Process ps = Runtime.getRuntime().exec(cmdarray, null, new File(dir));
                 ps.waitFor();
@@ -265,6 +282,7 @@ public class SysSiteAdminController {
                 }
                 log = sb.toString();
             } catch (Exception e) {
+                e.printStackTrace();
                 log = e.toString();
             } finally {
                 logOperateService

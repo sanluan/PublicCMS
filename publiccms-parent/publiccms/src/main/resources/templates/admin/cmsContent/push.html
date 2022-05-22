@@ -1,7 +1,7 @@
 <div class="pageFormContent" layoutH>
     <h2 class="contentTitle"><@t.page 'recommended_to'/></h2>
     <div class="unit">
-<@_contentRelatedList relatedContentId=contentId>
+<@cms.contentRelatedList relatedContentId=contentId>
         <p>
             <label><@t.page 'content'/>:</label><label><@t.page 'total_count' page.totalCount/></label>
             <a class="button" href="cmsContent/push_content.html?contentId=${contentId}" target="dialog" mask="true"><@t.page 'button.push'/></a>
@@ -10,26 +10,26 @@
     <#list page.list as a>
         <@t.merge 'contentIds' a.contentId!/>
     </#list>
-    <@_content ids=t.contentIds!><#assign contentMap=map!/></@_content>
+    <@cms.content ids=t.contentIds!><#assign contentMap=map!/></@cms.content>
     <#list page.list as a>
-            <a href="${(contentMap[a.contentId?string].url)!}" target="_blank">${(contentMap[a.contentId?string].title)!}</a> <a href="cmsContent/unrelated?id=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo" callback="$.pdialog.closeCurrent()"><@t.page 'button.delete'/></a><br/>
+            <a href="cmsDiy/preview.html?url=${((contentMap[a.contentId?string].url)?url)!}" target="navTab" rel="cmsDiy/preview"  icon="<i class='bi bi-palette2 icon-large'></i>" title="<@t.page 'diy.preview'/>">${(contentMap[a.contentId?string].title)!}</a> <a href="cmsContent/unrelated?id=${a.id}&_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo" callback="$.pdialog.closeCurrent()"><@t.page 'button.delete'/></a><br/>
     </#list>
         </p>
-</@_contentRelatedList>
+</@cms.contentRelatedList>
     </div>
     <div class="divider"></div>
     <div class="unit">
-<@_placeList itemType='content' itemId=contentId>
+<@cms.placeList itemType='content' itemId=contentId>
         <p>
             <label><@t.page 'place'/>:</label><label><@t.page 'total_count' page.totalCount/></label>
             <a class="button" href="cmsPlace/push.html?itemType=content&itemId=${contentId}" target="dialog" mask="true"><@t.page 'button.push'/></a>
         </p>
         <p>
     <#list page.list as a>
-        ${a.path[0..a.path?last_index_of('/')]}<@_placeMetadata path=a.path>${(object.alias)!}</@_placeMetadata> (${a.clicks}) <a href="cmsPlace/delete?ids=${a.id}&_csrf=<@_csrfToken admin=true/>&path=${(a.path?url)!}" title="<@t.page 'confirm.delete'/>" target="ajaxTodo" callback="$.pdialog.closeCurrent()"><@t.page 'button.delete'/></a><br/>
+        ${a.path[0..a.path?last_index_of('/')]}<@tools.placeMetadata path=a.path>${(object.alias)!}</@tools.placeMetadata> (${a.clicks}) <a href="cmsPlace/delete?ids=${a.id}&_csrf=<@tools.csrfToken admin=true/>&path=${(a.path?url)!}" title="<@t.page 'confirm.delete'/>" target="ajaxTodo" callback="$.pdialog.closeCurrent()"><@t.page 'button.delete'/></a><br/>
     </#list>
         </p>
-</@_placeList>
+</@cms.placeList>
     </div>
     <div class="divider"></div>
 </div>

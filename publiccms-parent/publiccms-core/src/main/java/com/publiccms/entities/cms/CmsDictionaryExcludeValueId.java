@@ -17,13 +17,25 @@ public class CmsDictionaryExcludeValueId implements java.io.Serializable {
     * 
     */
     private static final long serialVersionUID = 1L;
+    /**
+     * dictionary id<p>
+     * 数据字典id
+     */
     @GeneratorColumn(title = "数据字典", condition = true)
     private String dictionaryId;
     @GeneratorColumn(title = "站点", condition = true)
     @JsonIgnore
     private short siteId;
+    /**
+     * exclude dictionary id<p>
+     * 排除数据字典id
+     */
     @GeneratorColumn(title = "排除数据字典", condition = true)
     private String excludeDictionaryId;
+    /**
+     * value<p>
+     * 字典值
+     */
     @GeneratorColumn(title = "值")
     private String value;
 

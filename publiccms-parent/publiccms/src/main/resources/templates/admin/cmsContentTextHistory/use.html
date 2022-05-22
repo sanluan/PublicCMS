@@ -1,0 +1,17 @@
+<@cms.contentTextHistory id=id><#assign a=object/></@cms.contentTextHistory>
+<div class="pageFormContent" layoutH>
+    <dl class="nowrap">
+        <dt><@t.page 'content'/>:</dt>
+        <textarea name="content">
+            ${(a.text)!}
+        </textarea>
+    </dl>
+    <script>
+    $.bringBack({"${field!'text'}":$('textarea[name=content]',$.pdialog.getCurrent()).val()});
+    </script>
+</div>
+<div class="formBar">
+    <ul>
+        <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+    </ul>
+</div>

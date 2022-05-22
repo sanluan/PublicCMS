@@ -4,14 +4,6 @@
     <meta charset="UTF-8">
     <title>ueditor图片对话框</title>
     <script type="text/javascript" src="../internal.js"></script>
-
-    <!-- jquery -->
-    <script type="text/javascript" src="../../third-party/jquery-1.10.2.min.js"></script>
-
-    <!-- webuploader -->
-    <script src="../../third-party/webuploader/webuploader.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="../../third-party/webuploader/webuploader.css">
-
     <!-- image dialog -->
     <link rel="stylesheet" href="image.css" type="text/css" />
 </head>
@@ -19,9 +11,9 @@
 
     <div class="wrapper">
         <div id="tabhead" class="tabhead">
-            <span class="tab" data-content-id="remote"><var id="lang_tab_remote"></var></span>
-            <span class="tab focus" data-content-id="upload"><var id="lang_tab_upload"></var></span>
-            <span class="tab" data-content-id="online"><var id="lang_tab_online"></var></span>
+            <span data-content-id="remote"><var id="lang_tab_remote"></var></span>
+            <span class="focus" data-content-id="upload"><var id="lang_tab_upload"></var></span>
+            <span data-content-id="online"><var id="lang_tab_online"></var></span>
         </div>
         <div class="alignBar">
             <label class="algnLabel"><var id="lang_input_align"></var></label>
@@ -96,6 +88,13 @@
             </div>
         </div>
     </div>
+	 <!-- jquery -->
+    <script type="text/javascript" src="../../third-party/jquery-1.10.2.min.js"></script>
+
+    <!-- webuploader -->
+	<link rel="stylesheet" type="text/css" href="../../third-party/webuploader/webuploader.css">
+    <script src="../../third-party/webuploader/webuploader.min.js"></script>
+
     <script type="text/javascript" src="image.js"></script>
 
 </body>

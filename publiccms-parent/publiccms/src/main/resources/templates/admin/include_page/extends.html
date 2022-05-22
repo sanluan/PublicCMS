@@ -50,8 +50,8 @@
                     <input type="number" name="${name}[${extend?index}].height" min="1" value="${(extend.height)!}"<#if !sizeEnableTypes?seq_contains(extend.inputType)> style="display:none"</#if> size="10"/>
                 </td>
                 <td>
-                    <@_dictionary id=extend.dictionaryId><#assign dictionary=object/></@_dictionary>
-                    <#if site.parentId?has_content&&!dictionary?has_content><@_dictionary id=extend.dictionaryId siteId=site.parentId><#assign dictionary=object/></@_dictionary></#if>
+                    <@cms.dictionary id=extend.dictionaryId><#assign dictionary=object/></@cms.dictionary>
+                    <#if site.parentId?has_content&&!dictionary?has_content><@cms.dictionary id=extend.dictionaryId siteId=site.parentId><#assign dictionary=object/></@cms.dictionary></#if>
                     <input type="hidden" name="${name}[${extend?index}].dictionaryId" value="${(extend.dictionaryId)!}"/>
                     <input type="text" name="${name}[${extend?index}].dictionaryName" readonly="readonly" size="10" value="${(dictionary.name)!}"<#if 'dictionary'=extend.inputType> class="required"<#else> style="display:none"</#if>/>
                     <a class="btnLook" href="cmsDictionary/lookup.html" lookupGroup="${name}[${extend?index}]" width="1000" height="500"<#if 'dictionary'!=extend.inputType> style="display:none"</#if>><@t.page 'dictionary.select'/></a>

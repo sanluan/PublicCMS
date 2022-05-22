@@ -7,9 +7,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
+import com.publiccms.entities.sys.SysLock;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.site.LockComponent;
+import com.publiccms.logic.service.sys.SysUserService;
+import com.publiccms.views.pojo.entities.Lock;
 
 /**
  *
@@ -21,6 +24,8 @@ import com.publiccms.logic.component.site.LockComponent;
 public class SysLockAdminController {
     @Resource
     private LockComponent lockComponent;
+    @Autowired
+    private SysUserService userService;
 
     /**
      * @param site
@@ -31,8 +36,13 @@ public class SysLockAdminController {
      */
     @RequestMapping("lock")
     @ResponseBody
-    public boolean lock(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String itemType, String itemId) {
-        return null != lockComponent.lock(site.getId(), itemType, itemId, admin.getId(), false);
+    public Lock lock(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String itemType, String itemId) {
+        SysLock lock = lockComponent.lock(site.getId(), itemType, itemId, admin.getId(), false);
+        if (null == lock || admin.getId().equals(lock.getUserId())) {
+            return null;
+        } else {
+            return new Lock(lock, userService.getEntity(lock.getUserId()));
+        }
     }
 
     /**

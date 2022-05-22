@@ -19,7 +19,6 @@ import com.publiccms.logic.dao.cms.CmsDictionaryExcludeValueDao;
 public class CmsDictionaryExcludeValueService extends BaseService<CmsDictionaryExcludeValue> {
 
     /**
-     * @param siteId
      * @param excludeId
      * @return the number of entities deleted
      */

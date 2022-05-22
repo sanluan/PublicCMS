@@ -1,4 +1,4 @@
-<@_sysDatasourceList disabled=disabled orderType=orderType pageIndex=pageNum pageSize=numPerPage>
+<@sys.datasourceList disabled=disabled orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
     <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
@@ -16,11 +16,11 @@
         </div>
     </form>
 </div>
-<@_sysAuthorized roleIds=admin.roles urls='sysDatasource/add,sysDatasource/delete'><#assign authorizedMap=map/></@_sysAuthorized>
+<@sys.authorized roleIds=admin.roles urls='sysDatasource/add,sysDatasource/delete'><#assign authorizedMap=map/></@sys.authorized>
 <div class="pageContent">
     <div class="panelBar">
         <ul class="toolBar">
-            <li><a href="sysDatasource/add.html" target="navTab" rel="sysDatasource/add"><i class="icon-plus-sign-alt icon-large"></i> <@t.page 'button.add'/></a></li>
+            <li><a href="sysDatasource/add.html" target="navTab" rel="sysDatasource/add"><i class="icon-plus-sign-alt icon-large"></i><@t.page 'button.add'/></a></li>
         </ul>
     </div>
     <table class="table" width="100%" layoutH="92">
@@ -41,10 +41,10 @@
                 <td>${a.updateDate!}</td>
                 <td>${(a.disabled)?then('<font color="red">'+t.pageMessage('disabled')+'</font>',t.pageMessage('normal'))?no_esc}</td>
                 <td>
-                    <a href="sysDatasource/add.html?id=${a.name}" class="edit btnText blue" target="navTab" rel="sysDatasource/edit"><i class="icon-edit"></i> <@t.page 'button.edit'/></a>
+                    <a href="sysDatasource/add.html?id=${a.name}" class="edit btnText blue" target="navTab" rel="sysDatasource/edit"><i class="icon-edit"></i><@t.page 'button.edit'/></a>
                     <#if !a.disabled>
-                        <a href="sysDatasource/sync?id=${a.name}&_csrf=<@_csrfToken admin=true/>" class="btnText green" target="ajaxTodo"><i class="icon-refresh"></i> <@t.page 'data_sync'/></a>
-                        <a href="sysDatasource/disable?id=${a.name}&_csrf=<@_csrfToken admin=true/>" class="btnText red" title="<@t.page 'confirm.disable'/>" target="ajaxTodo"><i class="icon-ban-circle"></i> <@t.page 'button.disable'/></a>
+                        <a href="sysDatasource/sync?id=${a.name}&_csrf=<@tools.csrfToken admin=true/>" class="btnText green" target="ajaxTodo"><i class="icon-refresh"></i><@t.page 'data_sync'/></a>
+                        <a href="sysDatasource/disable?id=${a.name}&_csrf=<@tools.csrfToken admin=true/>" class="btnText red" title="<@t.page 'confirm.disable'/>" target="ajaxTodo"><i class="icon-ban-circle"></i><@t.page 'button.disable'/></a>
                     </#if>
                 </td>
             </tr>
@@ -53,4 +53,4 @@
     </table>
     <#include "../include_page/page.html"/>
 </div>
-</@_sysDatasourceList>
+</@sys.datasourceList>

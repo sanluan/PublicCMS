@@ -7,5 +7,20 @@
 </head>
 <body>
     <p>Sorry, the page you requested is not found!</p>
+    <script>
+    var templatePath='${.current_template_name?keep_after('/')}';
+    </script>
+    <script src="${site.dynamicPath}resource/js/cms.analytics.js"></script>
+    <script src="${site.dynamicPath}resource/js/cms.diy.js"></script>
+    <script>
+        var ca = cmsAnalytics();
+        var url='${site.dynamicPath}api/visit/record';
+        if("string" ==typeof itemString){
+            url=url+"?"+itemString;
+        }
+        ca.setDomain('${domain.name}');
+        ca.setPath('/');
+        ca.report(url);
+    </script>
 </body>
 </html>

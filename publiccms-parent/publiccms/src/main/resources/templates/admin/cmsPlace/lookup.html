@@ -1,5 +1,5 @@
 <#macro categoryTree parentId=''>
-    <@_categoryList advanced=true parentId=parentId pageSize=500>
+    <@cms.categoryList advanced=true parentId=parentId pageSize=500>
         <#list page.list as a>
             <li>
                 <a href="cmsPlace/lookup_content_list.html?categoryId=${a.id}" class="exclude-translate" target="ajax" rel="lookup_content_list">${a.name!}</a>
@@ -10,10 +10,10 @@
             </#if>
             </li>
         </#list>
-    </@_categoryList>
+    </@cms.categoryList>
 </#macro>
 <#macro lookupTree parentId=''>
-    <@_categoryList advanced=true parentId=parentId>
+    <@cms.categoryList advanced=true parentId=parentId>
         <#list page.list as a>
             <li>
                 <a href="javascript:;" class="exclude-translate" onclick="$.bringBack({itemType:'category',itemId:'${a.id}',title:'${(a.name?js_string)!}',url:'${a.url!}'});return false;">${a.name!}</a>
@@ -24,14 +24,14 @@
             </#if>
             </li>
         </#list>
-    </@_categoryList>
+    </@cms.categoryList>
 </#macro>
 <#macro pageTree filepath=''>
-    <@_templateList path=filepath orderField='createDate'>
+    <@tools.templateList path=filepath orderField='createDate'>
         <#list list as a>
             <#local path=filepath+'/'+a.fileName>
             <li>
-            <@_metadata path=path>
+            <@tools.metadata path=path>
                 <#if a.directory>
                     <a href="javascript:;" onclick="return false;">
                         ${(object.alias)?has_content?then(object.alias+' ('+a.fileName+')',a.fileName)}
@@ -46,17 +46,17 @@
                         </a>
                     </#if>
                     <#if (object.useDynamic)?has_content&&object.useDynamic>
-                        <a href="javascript:;" onclick="$.bringBack({itemType:'page',title:'${(object.alias)!}',url:'${site.dynamicPath+(path?starts_with('/'))?then(path?keep_after('/'),path)}<#if (object.acceptParameters)?has_content>?<#list object.acceptParameters?split(',') as a>${a}=<#if 'content'=(object.parameterTypeMap[a].type)!><@_contentList pageSize=1><#list page.list as a>${a.id}</#list></@_contentList><#elseif 'category'=(object.parameterTypeMap[a].type)!><@_categoryList pageSize=1><#list page.list as a>${a.id}</#list></@_categoryList></#if><#sep>&</#list></#if>'});return false;">
+                        <a href="javascript:;" onclick="$.bringBack({itemType:'page',title:'${(object.alias)!}',url:'${site.dynamicPath+(path?starts_with('/'))?then(path?keep_after('/'),path)}<#if (object.acceptParameters)?has_content>?<#list object.acceptParameters?split(',') as a>${a}=<#if 'content'=(object.parameterTypeMap[a].type)!><@cms.contentList pageSize=1><#list page.list as a>${a.id}</#list></@cms.contentList><#elseif 'category'=(object.parameterTypeMap[a].type)!><@cms.categoryList pageSize=1><#list page.list as a>${a.id}</#list></@cms.categoryList></#if><#sep>&</#list></#if>'});return false;">
                             [<@t.page 'dynamic_page'/>] ${(object.alias)?has_content?then(object.alias+' ('+a.fileName+')',a.fileName)}
                         </a>
                     </#if>
                 </#if>
-            </@_metadata>
+            </@tools.metadata>
             </li>
         <#else>
             <li><a><@t.page 'empty_directory'/></a></li>
         </#list>
-    </@_templateList>
+    </@tools.templateList>
 </#macro>
 <#assign itemTypes=acceptItemTypes?has_content?then(acceptItemTypes?split(','),['page','content','category'])/>
 <div class="tabs">

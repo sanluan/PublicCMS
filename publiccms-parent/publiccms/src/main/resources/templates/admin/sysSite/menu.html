@@ -1,53 +1,53 @@
 <div class="accordion">
     <div class="accordionHeader">
-        <h2><i class="icon-sitemap icon-large"></i> <@t.menu 'site_menu'/> <i class="icon icon-chevron-up"></i></h2>
+        <h2><i class="icon-sitemap icon-large"></i><@t.menu 'site_menu'/> <i class="icon icon-chevron-up"></i></h2>
     </div>
     <div class="accordionContent">
         <ul class="tree">
             <li>
-                <a href="sysSite/list.html" target="navTab" rel="sysSite/list"><i class="icon-sitemap icon-large"></i> <@t.menu 'site_list'/></a>
+                <a href="sysSite/list.html" target="navTab" rel="sysSite/list"><i class="icon-sitemap icon-large"></i><@t.menu 'site_list'/></a>
             </li>
             <li>
-                <a href="sysDomain/list.html" target="navTab" rel="sysDomain/list"><i class="icon-qrcode icon-large"></i> <@t.menu 'site_domain_list'/></a>
+                <a href="sysDomain/list.html" target="navTab" rel="sysDomain/list"><i class="icon-qrcode icon-large"></i><@t.menu 'site_domain_list'/></a>
             </li>
             <li>
-                <a href="sysModule/list.html" target="navTab" rel="sysModule/list"><i class="icon-th icon-large"></i> <@t.menu 'module_list'/></a>
+                <a href="sysModule/list.html" target="navTab" rel="sysModule/list"><i class="icon-th icon-large"></i><@t.menu 'module_list'/></a>
             </li>
             <li>
-                <a href="sysSite/sql.html" target="navTab" rel="sysSite/sql"><i class="icon-bug icon-large"></i> <@t.menu 'site_sql'/></a>
+                <a href="sysSite/sql.html" target="navTab" rel="sysSite/sql"><i class="icon-bug icon-large"></i><@t.menu 'site_sql'/></a>
             </li>
             <li>
-                <a href="sysSite/script.html" target="navTab" rel="sysSite/script"><i class="icon-terminal icon-large"></i> <@t.menu 'site_script'/></a>
+                <a href="sysSite/script.html" target="navTab" rel="sysSite/script"><i class="icon-terminal icon-large"></i><@t.menu 'site_script'/></a>
             </li>
         <#if getDictEnable?? && getDictEnable?is_method && getDictEnable()>
             <li>
-                <a href="sysSite/dict.html" target="navTab" rel="sysSite/dict"><i class="icon-book icon-large"></i> <@t.menu 'dict'/></a>
+                <a href="sysSite/dict.html" target="navTab" rel="sysSite/dict"><i class="icon-book icon-large"></i><@t.menu 'dict'/></a>
             </li>
         </#if>
             <li>
-                <a href="sysSite/reCreateIndex?_csrf=<@_csrfToken admin=true/>" target="ajaxTodo" title="<@t.page 'confirm.recreate_index'/>"><i class="icon-refresh icon-large"></i> <@t.menu 'site_recreate_index'/></a>
+                <a href="sysSite/reCreateIndex?_csrf=<@tools.csrfToken admin=true/>" target="ajaxTodo" title="<@t.page 'confirm.recreate_index'/>"><i class="icon-refresh icon-large"></i><@t.menu 'site_recreate_index'/></a>
             </li>
             <li>
-                <a href="sysSite/monitor.html" target="navTab" rel="sysSite/monitor" external="true"><i class="icon-suitcase icon-large"></i> <@t.menu 'monitor'/></a>
+                <a href="sysSite/monitor.html" target="navTab" rel="sysSite/monitor" external="true"><i class="icon-suitcase icon-large"></i><@t.menu 'monitor'/></a>
             </li>
             <li>
-                <a href="sysDatasource/list.html" target="navTab" rel="sysDatasource/list"><i class="icon-tasks icon-large"></i> <@t.menu 'datasource'/></a>
+                <a href="sysDatasource/list.html" target="navTab" rel="sysDatasource/list"><i class="icon-tasks icon-large"></i><@t.menu 'datasource'/></a>
             </li>
             <li>
-                <a href="sysCluster/list.html" target="navTab" rel="sysCluster/list"><i class="icon-code-fork icon-large"></i> <@t.menu 'cluster'/></a>
+                <a href="sysCluster/list.html" target="navTab" rel="sysCluster/list"><i class="icon-code-fork icon-large"></i><@t.menu 'cluster'/></a>
             </li>
             <li>
-                <a href="sysSite/uploadLicense.html" target="navTab" rel="sysSite/uploadLicense"><i class="icon-archive icon-large"></i> <@t.menu 'license'/></a>
+                <a href="sysSite/uploadLicense.html" target="navTab" rel="sysSite/uploadLicense"><i class="icon-archive icon-large"></i><@t.menu 'license'/></a>
             </li>
         </ul>
     </div>
     <div class="accordionHeader">
-        <h2><i class="icon-home icon-large"></i> <@t.menu 'official'/> <i class="icon icon-chevron-up"></i></h2>
+        <h2><i class="icon-home icon-large"></i><@t.menu 'official'/> <i class="icon icon-chevron-up"></i></h2>
     </div>
     <div class="accordionContent">
         <ul class="tree">
             <li>
-                <a href="//www.publiccms.com" target="navTab" rel="publiccms.com"><i class="icon-globe icon-large"></i> <@t.menu 'official_website'/></a>
+                <a href="//www.publiccms.com" target="navTab" rel="publiccms.com"><i class="icon-globe icon-large"></i><@t.menu 'official_website'/></a>
             </li>
         </ul>
     </div>

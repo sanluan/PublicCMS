@@ -33,15 +33,17 @@
         <!-- http://hc.apache.org/downloads.cgi -->
         <version.httpclient>4.5.13</version.httpclient>
         <!-- http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
-        <version.jackson>2.13.2.2</version.jackson>
+        <version.jackson>2.13.3</version.jackson>
         <!-- http://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
         <!-- http://hibernate.org/orm/releases/ -->
-        <version.hibernate>5.6.7.Final</version.hibernate>
+        <version.hibernate>5.6.8.Final</version.hibernate>
         <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-tools -->
         <version.hibernateTools>5.6.2.Final</version.hibernateTools>
         <!-- https://mvnrepository.com/artifact/org.hibernate.search/hibernate-search-mapper-orm/ -->
         <!-- http://hibernate.org/search/releases/ -->
-        <version.hibernateSearch>6.1.4.Final</version.hibernateSearch>
+        <version.hibernateSearch>6.1.5.Final</version.hibernateSearch>
+        <!-- https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator -->
+        <version.hibernateValidator>6.0.23.Final</version.hibernateValidator>
         <!-- https://mvnrepository.com/artifact/org.ehcache/ehcache -->
         <version.ehcache>3.10.0</version.ehcache>
         <!-- http://mvnrepository.com/artifact/org.freemarker/freemarker -->
@@ -252,6 +254,11 @@
                 <groupId>org.hibernate.search</groupId>
                 <artifactId>hibernate-search-backend-lucene</artifactId>
                 <version>${version.hibernateSearch}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate.validator</groupId>
+                <artifactId>hibernate-validator</artifactId>
+                <version>${version.hibernateValidator}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.lucene</groupId>

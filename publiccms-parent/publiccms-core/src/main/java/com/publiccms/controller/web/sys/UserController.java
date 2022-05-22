@@ -146,7 +146,7 @@ public class UserController {
     /**
      * @param site
      * @param user
-     * @param nickName
+     * @param nickname
      * @param cover
      * @param returnUrl
      * @param request
@@ -155,14 +155,14 @@ public class UserController {
      */
     @RequestMapping("update")
     @Csrf
-    public String update(@RequestAttribute SysSite site, @SessionAttribute SysUser user, String nickName, String cover,
+    public String update(@RequestAttribute SysSite site, @SessionAttribute SysUser user, String nickname, String cover,
             String returnUrl, HttpServletRequest request, ModelMap model) {
         returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
-        if (ControllerUtils.errorNotEmpty("nickname", nickName, model)
-                || ControllerUtils.errorNotNickName("nickname", nickName, model)) {
+        if (ControllerUtils.errorNotEmpty("nickname", nickname, model)
+                || ControllerUtils.errorNotNickname("nickname", nickname, model)) {
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
         }
-        SysUser entity = service.updateProfile(user.getId(), nickName, cover, null);
+        SysUser entity = service.updateProfile(user.getId(), nickname, cover, null);
         if (null != entity) {
             ControllerUtils.setUserToSession(request.getSession(), entity);
             logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,

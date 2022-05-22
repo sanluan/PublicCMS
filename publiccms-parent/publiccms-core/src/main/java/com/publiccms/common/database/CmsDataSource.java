@@ -43,10 +43,10 @@ public class CmsDataSource extends MultiDataSource {
     private Map<Object, Object> dataSources = new HashMap<>();
 
     /**
-     * @param filePath
+     * @param filepath
      */
-    public CmsDataSource(String filePath) {
-        dbconfigFilePath = filePath;
+    public CmsDataSource(String filepath) {
+        dbconfigFilePath = filepath;
         cmsDataSource = this;
     }
 

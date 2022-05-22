@@ -1,27 +1,27 @@
 <#macro placeTree filepath=''>
-    <@_templateList path='/include'+filepath orderField='createDate'>
+    <@tools.templateList path='/include'+filepath orderField='createDate'>
         <#list list as a>
             <@t.merge 'pages' '/include'+filepath+'/'+a.fileName/>
         </#list>
-        <@_sysDeptPage deptId=admin.deptId!'' pages=t.pages!><#assign deptPageMap=map!/></@_sysDeptPage>
+        <@sys.deptPage deptId=admin.deptId!'' pages=t.pages!><#assign deptPageMap=map!/></@sys.deptPage>
         <#list list as a>
             <#local path=filepath+'/'+a.fileName>
             <#if (deptPageMap['/include'+path])?has_content&&deptPageMap['/include'+path]>
                 <li>
-                <@_placeMetadata path=path>
+                <@tools.placeMetadata path=path>
                     <#if a.directory>
                         <a href="javascript:;" onclick="return false;">${a.fileName}</a>
                         <ul><@placeTree path/></ul>
                     <#else>
-                        <a href="cmsPlace/metadata.html?path=${path?url}" target="ajax" rel="placeBox"><#if 0 lt ((object.size)!0)><@t.page 'place_data.place'/>:</#if>${(object.alias)!a.fileName}</a>
+                        <a href="cmsPlace/metadata.html?path=${path?url}" target="ajax" rel="placeBox">${(object.alias)!a.fileName}<#if 0 lt ((object.size)!0)> <@t.page 'place_data'/>(${object.size})</#if></a>
                     </#if>
-                </@_placeMetadata>
+                </@tools.placeMetadata>
                 </li>
             </#if>
         <#else>
             <li><a><@t.page 'empty_directory'/></a></li>
         </#list>
-    </@_templateList>
+    </@tools.templateList>
 </#macro>
 <div class="pageContent">
     <div layoutH class="leftPageContent">
@@ -30,5 +30,8 @@
         </ul>
     </div>
     <div id="placeBox" class="unitBox rightPageContent">
+        <#if path?has_content>
+            <#include "metadata.html"/>
+        </#if>
     </div>
 </div>

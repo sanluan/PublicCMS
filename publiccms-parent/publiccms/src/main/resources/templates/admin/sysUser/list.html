@@ -1,12 +1,12 @@
 <#if parentId?has_content>
 <ul>
-    <@_sysDeptList parentId=parentId pageSize=500>
+    <@sys.deptList parentId=parentId pageSize=500>
         <#list page.list as a>
             <li _src="sysUser/list.html?parentId=${a.id}">
                 <a href="common/user_list.html?deptId=${a.id}" class="exclude-translate" target="ajax" rel="userBox">${a.name!}</a>
             </li>
         </#list>
-    </@_sysDeptList>
+    </@sys.deptList>
 </ul>
 <#else>
 <div class="pageContent">
@@ -15,7 +15,7 @@
             <li>
                 <a href="common/user_list.html" target="ajax" rel="userBox"><@t.page 'dept.parent'/></a>
                 <ul>
-            <@_sysDeptList pageSize=500>
+            <@sys.deptList pageSize=500>
                 <#list page.list as a>
                     <li _src="sysUser/list.html?parentId=${a.id}">
                         <a href="common/user_list.html?deptId=${a.id}" class="exclude-translate" target="ajax" rel="userBox">${(a.name)!}</a>
@@ -23,7 +23,7 @@
                 <#else>
                     <li><a><@t.page 'empty_directory'/></a></li>
                 </#list>
-            </@_sysDeptList>
+            </@sys.deptList>
                 </ul>
             </li>
         </ul>

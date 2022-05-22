@@ -1,4 +1,4 @@
-<@_tradePaymentList userId=userId tradeType=tradeType serialNumber=serialNumber accountType=accountType 
+<@trade.paymentList userId=userId tradeType=tradeType serialNumber=serialNumber accountType=accountType 
             accountSerialNumber=accountSerialNumber status=status startCreateDate=startCreateDate endCreateDate=endCreateDate 
             orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
@@ -52,7 +52,7 @@
         </div>
     </form>
 </div>
-<@_sysAuthorized roleIds=admin.roles urls='tradePaymentHistory/list'><#assign authorizedMap=map/></@_sysAuthorized>
+<@sys.authorized roleIds=admin.roles urls='tradePaymentHistory/list'><#assign authorizedMap=map/></@sys.authorized>
 <div class="pageContent">
     <table class="table" width="100%" layoutH>
         <thead>
@@ -74,13 +74,13 @@
             <#list page.list as a>
                 <@t.merge 'userIds' a.userId!/>
             </#list>
-            <@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
+            <@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
             <#list page.list as a>
             <tr>
                 <td>${a.id!}</td>
                 <td class="exclude-translate">
                     <div class="box">
-                        <p>${(userMap[a.userId?string].nickName)!}</p>
+                        <p>${(userMap[a.userId?string].nickname)!}</p>
                         <p>${a.ip!}</p>
                     </div>
                 </td>
@@ -110,4 +110,4 @@
     </table>
     <#include "../include_page/page.html"/>
 </div>
-</@_tradePaymentList>
+</@trade.paymentList>

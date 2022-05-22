@@ -46,7 +46,6 @@ public interface RenderHandler {
      */
     RenderHandler put(String key, Object value);
 
-
     /**
      * @param name
      * @param defaultValue
@@ -94,7 +93,7 @@ public interface RenderHandler {
      * @throws Exception
      */
     Byte getByte(String name) throws Exception;
-    
+
     /**
      * @param name
      * @param defaultValue
@@ -126,6 +125,7 @@ public interface RenderHandler {
      * @throws Exception
      */
     Double getDouble(String name) throws Exception;
+
     /**
      * @param name
      * 
@@ -221,8 +221,8 @@ public interface RenderHandler {
     Object getAttribute(String name) throws IOException, Exception;
 
     /**
-     * set renderd
+     * @return if renderd
      */
-    void setRenderd();
+    boolean getRenderd();
 
 }

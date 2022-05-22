@@ -1,10 +1,10 @@
-<@_tradeAccountList pageIndex=pageNum pageSize=numPerPage>
-<@_sysAuthorized roleIds=admin.roles urls='tradeAccount/add,tradeAccount/rechargeParameters,tradeAccountHistory/list'><#assign authorizedMap=map/></@_sysAuthorized>
+<@trade.accountList pageIndex=pageNum pageSize=numPerPage>
+<@sys.authorized roleIds=admin.roles urls='tradeAccount/add,tradeAccount/rechargeParameters,tradeAccountHistory/list'><#assign authorizedMap=map/></@sys.authorized>
 <div class="pageContent">
     <div class="panelBar">
         <ul class="toolBar">
         <#if authorizedMap['tradeAccount/add']>
-            <li><a href="tradeAccount/add.html" target="navTab" rel="tradeAccount/add"><i class="icon-plus-sign-alt icon-large"></i> <@t.page 'account.add'/></a></li>
+            <li><a href="tradeAccount/add.html" target="navTab" rel="tradeAccount/add"><i class="icon-plus-sign-alt icon-large"></i><@t.page 'account.add'/></a></li>
         </#if>
         </ul>
     </div>
@@ -22,12 +22,12 @@
             <#list page.list as a>
                 <@t.merge 'userIds' a.id!/>
             </#list>
-            <@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
+            <@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
             <#list page.list as a>
             <tr>
                 <td>${a.id!}</td>
                 <td class="exclude-translate center">
-                    ${(userMap[a.id?string].nickName)!}
+                    ${(userMap[a.id?string].nickname)!}
                 </td>
                 <td>${a.amount!}</td>
                 <td>${a.updateDate!}</td>
@@ -45,4 +45,4 @@
     </table>
     <#include "../include_page/page.html"/>
 </div>
-</@_tradeAccountList>
+</@trade.accountList>

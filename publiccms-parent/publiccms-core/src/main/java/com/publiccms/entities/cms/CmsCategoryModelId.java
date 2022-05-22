@@ -16,8 +16,16 @@ public class CmsCategoryModelId implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
+    /**
+     * category id<p>
+     * 分类id
+     */
     @GeneratorColumn(title = "分类", condition = true)
     private int categoryId;
+    /**
+     * model id<p>
+     * 模型id
+     */
     @GeneratorColumn(title = "模型", condition = true)
     private String modelId;
 

@@ -1,28 +1,28 @@
 <#if parentId?has_content>
-    <@_content id=parentId>
+    <@cms.content id=parentId>
         <#assign parent=object/>
-    </@_content>
+    </@cms.content>
 </#if>
-<@_sysAuthorized roleIds=admin.roles urls='cmsCategory/add'><#assign authorizedMap=map/></@_sysAuthorized>
+<@sys.authorized roleIds=admin.roles urls='cmsCategory/add'><#assign authorizedMap=map/></@sys.authorized>
 <div class="pageFormContent" layoutH>
     <ul class="tree treeFolder expand">
 <#if categoryId?has_content>
-    <@_category id=categoryId>
+    <@cms.category id=categoryId>
         <#if object.typeId?has_content && authorizedMap['cmsCategory/add']>
-            <li><a href="cmsCategory/add.html?id=${categoryId!}" target="navTab" rel="cmsCategory/edit"><i class="icon-edit icon-large"></i> <@t.page 'category.edit'/></a></li>
+            <li><a href="cmsCategory/add.html?id=${categoryId!}" target="navTab" rel="cmsCategory/edit"><i class="icon-edit icon-large"></i><@t.page 'category.edit'/></a></li>
         </#if>
-    </@_category>
+    </@cms.category>
     <#assign size=0/>
-    <@_modelList parentId=(parent.modelId)!''>
+    <@cms.modelList parentId=(parent.modelId)!''>
         <#list page.list as a>
-            <@_categoryModel modelId=a.id categoryId=categoryId>
+            <@cms.categoryModel modelId=a.id categoryId=categoryId>
                 <#assign size++/>
         <li><a href="cmsContent/add.html?categoryId=${(parent.categoryId)!categoryId!}&modelId=${a.id}&parentId=${parentId!}" target="navTab" rel="cmsContent/add"><@t.page 'button.add_some_things' a.name/></a></li>
-            </@_categoryModel>
+            </@cms.categoryModel>
         </#list>
-    </@_modelList>
+    </@cms.modelList>
     <#if size=0 && authorizedMap['cmsCategory/add']>
-        <li><a href="cmsCategory/add.html?id=${categoryId!}&showAdvancedOptions=true" target="navTab" rel="cmsCategory/edit" title="<@t.page 'category.edit'/>"><i class="icon-edit icon-large"></i> <@t.page 'content.no_model'/></a></li>
+        <li><a href="cmsCategory/add.html?id=${categoryId!}&showAdvancedOptions=true" target="navTab" rel="cmsCategory/edit" title="<@t.page 'category.edit'/>"><i class="icon-edit icon-large"></i><@t.page 'content.no_model'/></a></li>
     </#if>
 </#if>
     </ul>

@@ -49,7 +49,7 @@ public class SourceGenerator {
         // 生成某个包所有实体类的代码
         // sourceGenerator.generate(basePackage, "cms", overwrite);
         // 生成某个实体类的代码
-        sourceGenerator.generate(Class.forName("com.publiccms.entities.sys.SysDatasource"), basePackage, overwrite);
+        sourceGenerator.generate(Class.forName("com.publiccms.entities.cms.CmsContentHistory"), basePackage, overwrite);
     }
 
     /**

@@ -92,7 +92,7 @@ public class LoginDirective extends AbstractAppDirective {
                 logLoginService.save(log);
             }
         }
-        handler.put("result", result);
+        handler.put("result", result).render();
     }
 
     @Resource

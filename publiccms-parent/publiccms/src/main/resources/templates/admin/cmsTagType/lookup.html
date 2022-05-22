@@ -1,4 +1,4 @@
-<@_tagTypeList advanced=true name=name orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
+<@cms.tagTypeList advanced=true name=name orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
     <form class="pagerForm" autocomplete="off" onsubmit="return dialogSearch(this);" action="cmsTagType/lookup.html" method="post">
         <#include "../include_page/parameters.html"/>
@@ -36,7 +36,7 @@
             <#list page.list as a>
             <tr>
                 <td>
-                    <a href="javascript:;" class="btnText green" onclick="$.bringBack({'${field!'typeId'}':'${a.id}','${nameField!'tagTypeName'}':'${(a.name?js_string)!}'});return false;"><i class="icon-ok"></i> <@t.page 'select'/></a>
+                    <a href="javascript:;" class="btnText green" onclick="$.bringBack({'${field!'typeId'}':'${a.id}','${nameField!'tagTypeName'}':'${(a.name?js_string)!}'});return false;"><i class="icon-ok"></i><@t.page 'select'/></a>
                 </td>
                 <td>${a.id}</td>
                 <td class="exclude-translate">${(a.name)!}</td>
@@ -47,4 +47,4 @@
     </table>
     <#include "../include_page/pageDialog.html"/>
 </div>
-</@_tagTypeList>
+</@cms.tagTypeList>

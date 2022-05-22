@@ -1,6 +1,6 @@
-<@_dictionary id=id><#assign a=object/></@_dictionary>
+<@cms.dictionary id=id><#assign a=object/></@cms.dictionary>
 <form method="post" autocomplete="off" action="cmsDictionary/save?callbackType=closeCurrent&navTabId=cmsDictionary/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
-    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
             <li><button type="submit" class="buttonActive" title="ctrl+s"><@t.page 'button.save'/></button></li>
@@ -56,7 +56,7 @@
                     </thead>
                     <tbody>
                 <#if a?has_content>
-                    <@_dictionaryDataList dictionaryId=a.id.id parentValue=parentValue>
+                    <@cms.dictionaryDataList dictionaryId=a.id.id parentValue=parentValue>
                         <#list list as d>
                             <tr>
                                 <td>
@@ -71,7 +71,7 @@
                                 </td>
                             </tr>
                         </#list>
-                    </@_dictionaryDataList>
+                    </@cms.dictionaryDataList>
                 </#if>
                     </tbody>
                 </table>

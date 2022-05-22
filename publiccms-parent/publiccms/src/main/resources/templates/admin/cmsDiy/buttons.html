@@ -1,0 +1,141 @@
+<#if itemType?has_content>
+	<@sys.dept id=admin.deptId><#assign dept=object/></@sys.dept>
+	<#if 'content'=itemType>
+		<@cms.content id=itemId>
+			<#if 0=admin.contentPermissions && content.userId=admin.id  || 1=admin.contentPermissions || 2=admin.contentPermissions && content.deptId=admin.deptId>
+				<#assign content=object/><@cms.model id=object.modelId><#assign model=object/></@cms.model>
+			</#if>
+		</@cms.content>
+	</#if>
+	<#if 'category'=itemType||content?has_content>
+		<@sys.deptCategory deptId=admin.deptId!'' categoryId=('category'=itemType)?then(itemId,content.categoryId)><#assign deptCategory=object!/></@sys.deptCategory>
+		<#if deptCategory?has_content&&deptCategory || dept?has_content && dept.ownsAllCategory>
+			<@cms.category id=('category'=itemType)?then(itemId,content.categoryId)><#assign category=object/></@cms.category>
+		</#if>
+	</#if>
+</#if>
+<@tools.metadata path=templatePath><#assign metadata=object/></@tools.metadata>
+<@sys.authorized roleIds=admin.roles urls='cmsContent/list,cmsContent/addMore,cmsContent/publish,cmsModel/add,cmsCategory/list,cmsCategory/add,cmsCategory/addMore,cmsCategory/publishParameters,cmsTemplate/content,cmsPlace/metadata,cmsPlace/dataList,cmsPage/list,cmsPage/diy,cmsTemplate/publish,sysConfigData/list,sysTask/list,sysUser/list'><#assign authorizedMap=map/></@sys.authorized>
+<ul class="toolBar">
+	<li>
+		<a href="javascript:diyIframeRefresh();"><i class="icon-refresh"></i><@t.page 'button.refresh'/></a>
+	</li>
+	<#if url?has_content>
+		<li><a href="${url?keep_before('?diy')?keep_before('&diy')}" target="_blank"><i class="icon-external-link"></i><@t.page 'button.view'/></a></li>
+	</#if>
+	<#if authorizedMap['cmsContent/list'] && (content?has_content || category?has_content)>
+	<li>
+		<a href="cmsContent/list?categoryId=${(category.id)!}" target="navTab" rel="cmsContent/list" class="addMore" data-diy="content"><@t.page 'content.management'/></a>
+		<ul>
+            <#if content?has_content>
+        		<#if model?has_content && model.hasChild>
+        			<li><a href="cmsContent/list.html?parentId=${content.id}&categoryId=${content.categoryId!}" target="navTab" rel="cmsContent/list" data-diy="content"><@t.page 'content.child_management'/></a></li>
+        		</#if>
+    			<li><a href="cmsContent/add.html?id=${content.id}" target="navTab" rel="cmsContent/edit" data-diy="content" data-diy-id="${content.id}"><i class="icon-edit"></i><@t.page 'content.edit'/></a></li>
+    			<#if model?has_content>
+    				<li><a href="cmsContent/add.html?categoryId=${(content.categoryId)!}&modelId=${model.id}&parentId=${(content.parentId)!}" target="navTab" rel="cmsContent/add" data-diy="content" data-diy-id="${content.id}"><i class="icon-plus icon-large"></i><@t.page 'content.add'/></a></li>
+    			</#if>
+    			<#if authorizedMap['cmsContent/publish']&&site.useStatic&&!content.onlyUrl>
+    				<li><a href="cmsContent/publish?_csrf=<@tools.csrfToken admin=true/>&ids=${content.id}" target="ajaxTodo" data-diy="content" data-diy-id="${content.id}"><i class="icon-file-text-alt icon-large"></i><@t.page 'button.publish'/></a></li>
+    			</#if>
+    			<#if model?has_content && authorizedMap['cmsModel/add']>
+    				<li><a href="cmsModel/add.html?id=${model.id?url}" target="navTab" rel="cmsModel/edit"><i class="icon-edit"></i><@t.page 'model.edit'/></a></li>
+    			</#if>
+    			<li><a href="cmsComment/list.html?contentId=${content.id}" target="navTab" rel="cmsComment/list" data-diy="comment"><i class='icon-comment icon-large'></i><@t.page 'comment.management'/></a></li>
+            <#elseif authorizedMap['cmsContent/addMore']  && 'category'=itemType>
+                <li><a href="cmsContent/addMore.html?categoryId=${(category.id)!}" target="dialog" mask="true" data-diy="content"><i class="icon-plus icon-large"></i><@t.page 'content.add'/></a></li>
+            </#if>
+		</ul>
+	</li>
+	</#if>
+	<#if category?has_content>
+		<#if authorizedMap['cmsCategory/list']>
+			<li>
+				<a href="cmsCategory/list?categoryId=${category.parentId!}" target="navTab" rel="cmsCategory/list" class="addMore" data-diy="category"><@t.page 'category.management'/></a>
+				<ul>
+					<#if authorizedMap['cmsCategory/add']>
+						<li><a href="cmsCategory/add.html?id=${category.id}" target="navTab" rel="cmsCategory/edit" data-diy="category" data-diy-id="${category.id}"><i class="icon-edit"></i><@t.page 'category.edit'/></a></li>
+						<li><a href="cmsCategory/add.html?id=${category.id}&seo=true" target="navTab" rel="cmsCategory/edit"  data-diy="category" data-diy-id="${category.id}"><i class="icon-edit"></i><@t.page 'seo'/></a></li>
+						<li><a href="cmsCategory/add.html?copyId=${category.id}" target="navTab" rel="cmsCategory/add" icon="<i class='icon-plus-sign-alt'></i>" title="<@t.page 'category.add'/>" data-diy="category" data-diy-id="${category.id}"><i class="icon-copy"></i><@t.page 'button.copy'/></a></li>
+					</#if>
+                    <li><a href="cmsCategory/list?categoryId=${category.id!}" target="navTab" rel="cmsCategory/list" data-diy="child-category"><@t.page 'category.child_management'/></a></li>
+					<#if authorizedMap['cmsCategory/addMore']>
+						<li><a href="cmsCategory/addMore.html?parentId=${category.id}" target="dialog" mask="true" data-diy="child-category"><i class="icon-plus"></i><@t.page 'category.add_child'/></a></li>
+					</#if>
+					<#if authorizedMap['cmsCategory/publishParameters']&&site.useStatic&&!category.onlyUrl>
+						<li><a href="cmsCategory/publishParameters.html?id=${category.id}&pageSize=${category.pageSize}&containChild=${category.containChild?then('true','false')}" target="dialog" width="450" height="180" mask="true"  data-diy="category" data-diy-id="${category.id}"><i class="icon-file-text-alt icon-large"></i><@t.page 'button.publish'/></a></li>
+					</#if>
+				</ul>
+			</li>
+		</#if>
+	 <#else>
+		<#if authorizedMap['cmsCategory/addMore']>
+			<li><a href="cmsCategory/addMore.html" target="dialog" mask="true" data-diy="category"><i class="icon-plus icon-large"></i><@t.page 'category.add'/></a></li>
+		</#if>
+	</#if>
+	<#if metadata?has_content && authorizedMap['cmsPage/list']>
+		<li>
+			<a href="cmsPage/list.html?path=${(templatePath)?url}" class="addMore" target="navTab" rel="sysConfigData/list" data-diy="page"><i class="icon-file-text-alt icon-large"></i><@t.page 'page.management'/></a>
+			<ul>
+			<#if site.useStatic&&(metadata.publishPath)?has_content>
+				<li><a href="cmsTemplate/publish?path=${(templatePath?url)!}&_csrf=<@tools.csrfToken admin=true/>" target="ajaxTodo" data-diy="page"><i class="icon-file-text-alt icon-large"></i><@t.page 'publish_page'/></a></li>
+			</#if>
+			<#if url?has_content>
+				<li><a href="visit/history.html?url=${url?keep_before('?diy')?keep_before('&diy')?url}" target="navTab" rel="visit/history" data-diy="page"><i class='icon-bolt icon-large'></i><@t.page 'visit.history'/></a></li>
+			</#if>
+			<li><a href="cmsTemplate/list.html?path=${(templatePath?url)!}&editType=metadata" target="navTab" rel="cmsTemplate/list" data-diy="page"><i class="icon-edit"></i><@t.page 'metadata'/></a></li>
+			<li><a href="cmsTemplate/list.html?path=${(templatePath?url)!}" target="navTab" rel="cmsTemplate/list" data-diy="page"><i class="icon-edit"></i><@t.page 'template.content'/></a></li>
+			<#if authorizedMap['cmsPage/diy']>
+				<@tools.templateRegionList path=templatePath>
+					<#if list?has_content>
+					<#list list as a>
+						<@tools.diyMetadata itemType='region' itemId=a>
+						<li><a href="cmsPage/diy.html?id=${(object.id?url)!}" target="navTab" rel="cmsPage/diy" title="<@t.page 'diy'/>" data-diy="region" data-diy-id="${(object.id)!}"><i class='bi bi-palette'></i>${(object.name)!}</a></li>
+						</@tools.diyMetadata>
+					</#list>
+					</#if>
+				</@tools.templateRegionList>
+			</#if>
+			<#if authorizedMap['cmsPlace/dataList']>
+				<@tools.templatePlaceList path=templatePath>
+					<#if list?has_content>
+					<#list list as a>
+						<@tools.placeMetadata path=a>
+						<li><a href="cmsPlace/list.html?path=${a?url}" target="navTab" rel="cmsPlace/list" title="<@t.page 'place.management'/>" data-diy="place" data-diy-id="${a}"><i class="bi bi-layout-sidebar"></i>${(object.alias)!}</a></li>
+						<#if object.size gt 0>
+						 <li><a href="cmsPlace/dataList.html?path=${a?url}" target="navTab" rel="cmsPlace/dataList" title="<@t.page 'place_data'/>:${(object.alias)!}" data-diy="place" data-diy-id="${a}"><i class="bi bi-layout-text-sidebar-reverse"></i><@t.page 'place_data'/>:${(object.alias)!}(${object.size})</a></li>
+						 </#if>
+						</@tools.placeMetadata>
+					</#list>
+					</#if>
+				</@tools.templatePlaceList>
+			</#if>
+			</ul>
+		</li>
+	</#if>
+	<#if authorizedMap['sysUser/list'] && itemType?has_content &&'user'=itemType >
+		<li>
+			<a href="sysUser/list.html"<#if itemId?has_content> class="addMore"</#if> target="navTab" rel="sysUser/list" data-diy="user"><i class="icon-user icon-large"></i><@t.page 'user.management'/></a>
+			<#if itemId?has_content>
+			<ul>
+				<li><a href="sysUser/add.html?id=${itemId}" target="navTab" rel="sysUser/edit" data-diy="user" data-diy-id="${itemId}"><i class="icon-edit"></i><@t.page 'user.edit'/></a></li>
+			</ul>
+			</#if>
+		</li>
+	</#if>
+	<#if authorizedMap['sysConfigData/list']>
+	<li>
+		<a href="sysConfigData/list.html" class="addMore" target="navTab" rel="sysConfigData/list" data-diy="config"><i class='icon-cog icon-large'></i><@t.page 'server_config.site'/></a>
+		<@sys.configList>
+		<ul>
+		<#if site.useStatic&&authorizedMap['sysTask/list']>
+			<li><a  href="sysTask/list" target="navTab" rel="sysTask/list" data-diy="task"><i class="icon-time icon-large"></i><@t.page 'task'/></a></li>
+		</#if>
+			<#list list as a>
+			<li><a href="sysConfigData/edit.html?code=${a.code!}" target="navTab" rel="sysConfigData/edit" title="<@t.page 'config_data.edit'/>" data-diy="config" data-diy-id="${a.code!}"><i class="icon-edit"></i>${(a.description)!}</a></li>
+			</#list>
+		</ul>
+		</@sys.configList>
+	</li>
+	</#if>
+</ul>

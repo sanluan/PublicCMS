@@ -1,6 +1,6 @@
 <#if !deep?has_content><#assign deep=0/><#else><#assign deep=deep?number/></#if>
-<@_sysModule id=parentId><#assign parent=object/></@_sysModule>
-<@_sysModuleList advanced=true parentId=parentId pageIndex=pageNum pageSize=numPerPage>
+<@sys.module id=parentId><#assign parent=object/></@sys.module>
+<@sys.moduleList advanced=true parentId=parentId pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
     <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
@@ -20,11 +20,11 @@
     <div class="panelBar">
         <ul class="toolBar">
             <#if parent?has_content>
-                <li><a href="sysModule/list.html?parentId=${parent.parentId!}&deep=${deep-1}" target="navTab" rel="sysModule/list"><i class="icon-circle-arrow-up icon-large"></i> <@t.page 'button.return'/></a></li>
+                <li><a href="sysModule/list.html?parentId=${parent.parentId!}&deep=${deep-1}" target="navTab" rel="sysModule/list"><i class="icon-circle-arrow-up icon-large"></i><@t.page 'button.return'/></a></li>
                 <li class="line">line</li>
             </#if>
             <#if deep lte 4>
-                <li><a href="sysModule/add.html?parentId=${parentId!}&deep=${deep}" target="navTab" rel="sysModule/add"><i class="icon-plus-sign-alt icon-large"></i> <@t.page 'module.add'/></a></li>
+                <li><a href="sysModule/add.html?parentId=${parentId!}&deep=${deep}" target="navTab" rel="sysModule/add"><i class="icon-plus-sign-alt icon-large"></i><@t.page 'module.add'/></a></li>
             </#if>
         </ul>
     </div>
@@ -50,8 +50,8 @@
                 <td><#if a.parentId?has_content><@t.menu a.parentId/></#if></td>
                 <td>${a.sort!}</td>
                 <td class="wrap">
-                    <a href="sysModule/add.html?id=${a.id}&deep=${deep}" class="edit btnText blue" target="navTab" rel="sysModule/edit"><i class="icon-edit"></i> <@t.page 'module.edit'/></a></li>
-                    <a href="sysModule/delete?id=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i> <@t.page 'button.delete'/></a></li>
+                    <a href="sysModule/add.html?id=${a.id}&deep=${deep}" class="edit btnText blue" target="navTab" rel="sysModule/edit"><i class="icon-edit"></i><@t.page 'module.edit'/></a></li>
+                    <a href="sysModule/delete?id=${a.id}&_csrf=<@tools.csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i><@t.page 'button.delete'/></a></li>
                     <#if deep lte 3>
                         <a href="sysModule/list.html?parentId=${a.id}&deep=${(deep!'0')?number+1}" class="btnText" target="navTab" rel="sysModule/list"><@t.page 'module.child_management'/></a>
                     </#if>
@@ -62,4 +62,4 @@
     </table>
     <#include "../include_page/page.html"/>
 </div>
-</@_sysModuleList>
+</@sys.moduleList>

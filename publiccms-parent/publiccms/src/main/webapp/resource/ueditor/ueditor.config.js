@@ -407,9 +407,9 @@
 			header: [],
 			hr:     ['class', 'noshade', 'size', 'style'],
 			i:      ['class', 'style'],
-			img:    ['src', 'alt', 'title', 'width', 'height', 'id', '_src', '_url', 'loadingclass', 'class', 'data-latex' ,'word_img', 'style'],
+			img:    ['src', 'alt', 'poster', 'title', 'width', 'height', 'id', '_src', '_url', 'loadingclass', 'class', 'data-latex' ,'word_img', 'style'],
 			ins:    ['datetime'],
-			li:     ['class', 'style'],
+			li:     ['class', 'style' , '_src'],
 			mark:   [],
 			nav:    [],
 			ol:     ['class', 'style'],
@@ -432,7 +432,7 @@
 			tt:     [],
 			u:      [],
 			ul:     ['class', 'style'],
-			video:  ['autoplay', 'controls', 'loop', 'preload', 'src', 'height', 'width', 'class', 'style'],
+			video:  ['poster', 'autoplay', 'controls', 'loop', 'preload', 'src', 'height', 'width', 'class', 'style'],
 			embed:  ['type', 'class', 'width', 'height', 'allowscriptaccess', 'loop', 'play', 'menu', 'wmode', 'src', 'pluginspage', 'allowfullscreen'],
 			iframe: ['frameborder','border','marginwidth','marginheight','width','height','src','id']
 		}

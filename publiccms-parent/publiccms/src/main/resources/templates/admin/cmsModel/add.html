@@ -1,30 +1,19 @@
-<@_model id=id>
+<@cms.model id=id>
     <#assign a=object/>
     <#if (object.parentId)?has_content><#assign parentId=object.parentId/></#if>
-</@_model>
+</@cms.model>
 <form method="post" autocomplete="off" action="cmsModel/save?callbackType=closeCurrent&navTabId=cmsModel/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input name="modelId" type="hidden" value="${id!}" />
     <input name="parentId" type="hidden" value="${parentId!}" />
-    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
         <#if site.parentId?has_content>
             <li><button type="button" class="buttonDisabled"><@t.page 'site.parent_maintain'/></button></li>
         <#else>
-        <@_sysAuthorized roleIds=admin.roles url='cmsModel/save'>
-            <@_createLock itemType='model' itemId=id userId=admin.id>
-                <#if object?has_content||!id?has_content>
-            <li><button type="submit" class="buttonActive" title="ctrl+s"<#if id?has_content> close-url="common/unlock?itemType=model&itemId=${id!}"</#if>><@t.page 'button.save'/></button></li>
-                <#else>
-            <li>
-                <@_sysLock userId=admin.id itemType='model' itemId=id>
-                    <@_sysUser id=(object.userId)!''><#assign lockUser=object.nickName/></@_sysUser>
-                <button type="button" class="buttonDisabled" title="${object.createDate}"><@t.page 'lock.message' lockUser/></button>
-                </@_sysLock>
-            </li>
-                </#if>
-            </@_createLock>
-        </@_sysAuthorized>
+        <@sys.authorized roleIds=admin.roles url='cmsModel/save'>
+            <li><button type="submit" class="buttonActive" title="ctrl+s"<#if id?has_content> lock-url="common/lock?itemType=model&itemId=${id!} close-url="common/unlock?itemType=model&itemId=${id!}"</#if>><@t.page 'button.save'/></button></li>
+        </@sys.authorized>
         </#if>
             <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
         </ul>
@@ -166,7 +155,7 @@
                     <label><input name="requiredFieldList" type="checkbox" value="content"/><@t.page 'required'/></label>
                     <label><input name="searchable" type="checkbox" ${(!a?has_content||a.searchable)?then(' checked="true"','')?no_esc}/><@t.page 'searchable'/></label>
                     <label><@t.page 'editor_type'/>:</label>
-                    <#assign editorTypes={'ueditor':t.pageMessage('ueditor'),'ckeditor':t.pageMessage('ckeditor'),'kindeditor':t.pageMessage('kindeditor')}/>
+                    <#assign editorTypes={'ueditor':t.pageMessage('ueditor'),'ckeditor':t.pageMessage('ckeditor'),'tinymce':t.pageMessage('tinymce'),'kindeditor':t.pageMessage('kindeditor')}/>
                     <select class="combox" name="editorType">
                         <#list editorTypes as k,v>
                         <option value="${k}"${(k=(a.editorType)!)?then(' selected="true"','')?no_esc}>${v}</option>

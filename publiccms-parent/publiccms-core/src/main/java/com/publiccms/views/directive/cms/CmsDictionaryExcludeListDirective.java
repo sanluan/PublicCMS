@@ -15,10 +15,33 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.service.cms.CmsDictionaryExcludeService;
 
 /**
- *
- * CmsDictionaryExcludeListDirective
- * 
- */
+*
+* dictionaryExcludeList 数据字典数据列表
+* <p>
+* 参数列表
+* <ul>
+* <li><code>dictionaryId</code> 字典id
+* <li><code>excludeDictionaryId</code> 排除数据字典id
+* </ul>
+* <p>
+* 返回结果
+* <ul>
+* <li><code>list</code> List类型 查询结果实体列表
+* {@link com.publiccms.entities.cms.CmsDictionaryExclude}
+* </ul>
+* 使用示例
+* <p>
+* &lt;@cms.dictionaryExcludeList dictionaryId='data'&gt;&lt;#list page.list as
+* a&gt;${a.id.excludeDictionaryId}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.dictionaryExcludeList&gt;
+* 
+* <pre>
+&lt;script&gt;
+$.getJSON('//cms.publiccms.com/api/directive/cms/dictionaryExcludeList?dictionaryId=1&amp;parentValue=text', function(data){    
+  console.log(data);
+});
+&lt;/script&gt;
+* </pre>
+*/
 @Component
 public class CmsDictionaryExcludeListDirective extends AbstractTemplateDirective {
 

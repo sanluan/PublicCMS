@@ -1,5 +1,5 @@
-<@_sysSite id=siteId><#assign a=object/></@_sysSite>
-<@_disk>
+<@sys.site id=siteId><#assign a=object/></@sys.site>
+<@tools.disk>
 <#assign
     realRootPath=rootPath?replace('\\','/')
     dynamicPath=a.dynamicPath?keep_after('//')?keep_before('/')?keep_before(':')
@@ -9,7 +9,7 @@
     siteLocation=a.sitePath?keep_after('//')?keep_after('/')
     sitePort=a.sitePath?keep_after('//')?keep_before('/')?keep_after(':')
 />
-</@_disk>
+</@tools.disk>
 <div class="pageFormContent" layoutH>
     <dl class="nowrap">
         <dt><@t.page 'site'/>:</dt>
@@ -22,7 +22,7 @@
         <dt><@t.page 'server_config.nginx'/>:</dt>
         <dd>
             <textarea class="code" mode="nginx">
-<@_sysDomainList advanced=true siteId=siteId>
+<@sys.domainList advanced=true siteId=siteId>
 #${a.name} <@t.page 'server_config.site'/>
 server {
     listen       ${dynamicPort?has_content?then(dynamicPort,80)};
@@ -66,7 +66,7 @@ server {
         index  index.html;
     }
             <#if multipleDomain?has_content>
-                <@_sysSiteList parentId=multipleDomain.siteId pageSize=100>
+                <@sys.siteList parentId=multipleDomain.siteId pageSize=100>
                     <#list page.list as a>
                         <#if a.directory?has_content>
     #${a.name} <@t.page 'server_config.static'/>
@@ -76,7 +76,7 @@ server {
     }
                         </#if>
                     </#list>
-                </@_sysSiteList>
+                </@sys.siteList>
             </#if>
         <#else>
     location ${dynamicLocation?has_content?then('/'+dynamicLocation,'/')}webfile/ {
@@ -85,7 +85,7 @@ server {
     }
     
             <#if multipleDomain?has_content>
-                <@_sysSiteList parentId=multipleDomain.siteId pageSize=100>
+                <@sys.siteList parentId=multipleDomain.siteId pageSize=100>
                     <#list page.list as a>
                         <#if a.directory?has_content>
     location ${dynamicLocation?has_content?then('/'+dynamicLocation,'/')}webfile/${a.directory}/ {
@@ -94,11 +94,11 @@ server {
     }
                         </#if>
                     </#list>
-                </@_sysSiteList>
+                </@sys.siteList>
             </#if>
         </#if>
 }
-</@_sysDomainList>
+</@sys.domainList>
 <#if dynamicPath!=sitePath||dynamicPort!=sitePort||!(dynamicPath=sitePath&&dynamicLocation!=siteLocation)>
 #${a.name} <@t.page 'server_config.static'/>
 server {
@@ -123,7 +123,7 @@ server {
     }
     
     <#if multipleDomain?has_content>
-        <@_sysSiteList parentId=multipleDomain.siteId pageSize=100>
+        <@sys.siteList parentId=multipleDomain.siteId pageSize=100>
             <#list page.list as a>
                 <#if a.directory?has_content>
     location ${siteLocation?has_content?then('/'+siteLocation,'/')}${a.directory}/ {
@@ -132,7 +132,7 @@ server {
     }
                 </#if>
             </#list>
-        </@_sysSiteList>
+        </@sys.siteList>
     </#if>
 }
 </#if></textarea>
@@ -163,11 +163,11 @@ upstream cms {
 
 <VirtualHost *:${dynamicPort?has_content?then(dynamicPort,80)}>
    ServerName ${dynamicPath}
-<@_sysDomainList advanced=true siteId=siteId>
+<@sys.domainList advanced=true siteId=siteId>
   <#if page.totalCount gt 0>
    ServerAlias <#list page.list as d><#if d.name!=dynamicPath&&d.name!=sitePath>${d.name}</#if><#if d.wild> *.${d.name}</#if><#sep> </#list>
   </#if>
-</@_sysDomainList>
+</@sys.domainList>
   <#if a.useSsi>
    alias /include/ "${realRootPath}/web/site_${siteId}/include/"
    AddType text/html .html .shtml
@@ -179,13 +179,13 @@ upstream cms {
    ProxyPassReverse ${dynamicLocation?has_content?then('/'+dynamicLocation,'/')} http://localhost:8080${dynamicLocation?has_content?then('/'+dynamicLocation,'/')}
    
    <#if multipleDomain?has_content>
-        <@_sysSiteList parentId=multipleDomain.siteId pageSize=100>
+        <@sys.siteList parentId=multipleDomain.siteId pageSize=100>
             <#list page.list as a>
                 <#if a.directory?has_content>
     Alias ${siteLocation?has_content?then('/'+siteLocation,'/')}${a.directory}/ "${realRootPath}/web/site_${a.id}/webfile/"
                 </#if>
             </#list>
-        </@_sysSiteList>
+        </@sys.siteList>
     </#if>
    <#if dynamicPath=sitePath&&dynamicLocation!=siteLocation>
    #${a.name} <@t.page 'server_config.static'/>
@@ -207,14 +207,14 @@ upstream cms {
         </#if>
     </#if>
     <#if multipleDomain?has_content>
-        <@_sysSiteList parentId=multipleDomain.siteId pageSize=100>
+        <@sys.siteList parentId=multipleDomain.siteId pageSize=100>
             <#list page.list as a>
                 <#if a.directory?has_content>
     #${a.name} <@t.page 'server_config.static'/>
     alias ${siteLocation?has_content?then('/'+siteLocation,'/')}${a.directory}/ "${realRootPath}/web/site_${a.id}/"
                 </#if>
             </#list>
-        </@_sysSiteList>
+        </@sys.siteList>
     </#if>
     <#if siteLocation?has_content>
     Alias "/${siteLocation}/" "${realRootPath}/web/site_${siteId}/"

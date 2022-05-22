@@ -1,4 +1,4 @@
-<@_contentList advanced=true status=1 endPublishDate=.now categoryId=categoryId modelId=modelIds title=title
+<@cms.contentList advanced=true status=1 endPublishDate=.now categoryId=categoryId modelId=modelIds title=title
     parentId=parentId containChild=true userId=userId startPublishDate=startPublishDate 
     orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
@@ -54,21 +54,21 @@
                 <@t.merge 'modelIds' a.modelId!/>
             </#list>
 
-            <@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
-            <@_category ids=t.categoryIds!><#assign categoryMap=map!/></@_category>
-            <@_model ids=t.modelIds!><#assign modelMap=map!/></@_model>
+            <@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
+            <@cms.category ids=t.categoryIds!><#assign categoryMap=map!/></@cms.category>
+            <@cms.model ids=t.modelIds!><#assign modelMap=map!/></@cms.model>
 
             <#list page.list as a>
             <tr>
                 <td>
-                    <a href="javascript:;" class="btnText green" onclick="$.bringBack({itemId:'${a.id}', itemType:'content', url:'${a.url!}', title:'${(a.title?js_string)!}', description:'${(a.description?js_string)!}',cover:'${(a.cover?js_string)!}',publishDate:'${(a.publishDate)!}'}); return false;"><i class="icon-ok"></i> <@t.page 'select'/></a>
+                    <a href="javascript:;" class="btnText green" onclick="$.bringBack({itemId:'${a.id}', itemType:'content', url:'${a.url!}', title:'${(a.title?js_string)!}', description:'${(a.description?js_string)!}',cover:'${(a.cover?js_string)!}',publishDate:'${(a.publishDate)!}'}); return false;"><i class="icon-ok"></i><@t.page 'select'/></a>
                 </td>
                 <td>${a.id}</td>
                 <td>
                     <div class="box">
                         <h3>[<span class="exclude-translate">${(categoryMap[a.categoryId?string].name)!}</span>] ${(a.copied?then('['+t.pageMessage('copied')+']',''))!}<a href="cmsContent/view.html?id=${a.id}" class="exclude-translate" target="dialog" rel="viewContent${a.id}">${(a.title)!}</a></h3>
                         <p>
-                            <label><@t.page 'content.promulgator'/>:</label><span class="exclude-translate">${(userMap[a.userId?string].nickName)!}</span>
+                            <label><@t.page 'content.promulgator'/>:</label><span class="exclude-translate">${(userMap[a.userId?string].nickname)!}</span>
                             <label><@t.page 'model'/>:</label><span class="exclude-translate">${(modelMap[a.modelId].name)!}</span>
                             <#if modelMap[a.modelId]?has_content&&modelMap[a.modelId].hasChild>
                                 <label><a href="cmsContent/lookup_list.html?parentId=${a.id}&categoryId=${a.categoryId}&field=${field!'relatedContentId'}" target="ajax" rel="content_list"><@t.page 'content.child_management'/></a></label>
@@ -87,4 +87,4 @@
     <#assign rel='lookup_content_list'/>
     <#include "../include_page/pageDialog.html"/>
 </div>
-</@_contentList>
+</@cms.contentList>

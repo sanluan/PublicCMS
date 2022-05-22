@@ -1,4 +1,4 @@
-<@_category code=code containsAttribute=true;category>
+<@cms.category code=code containsAttribute=true;category>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,21 +8,21 @@
     <meta name="description" content="${(attribute.description)!}"/>
 </head>
 <body>
-    <header>
+    <header data-diy="page">
         <h1>${(site.name)!}</h1>
     </header>
-    <nav>
-        <a href="${base!}">Home</a>
-<@_categoryList>
+    <nav data-diy="category">
+        <a href="${site.dynamicPath}">Home</a>
+<@cms.categoryList>
     <#list page.list as a>
         <a href="${a.url!}" target="_blank">${a.name}</a>
     </#list>
-</@_categoryList>
+</@cms.categoryList>
     </nav>
     <main>
-        <h1>Latest content</h1>
-<@_contentList categoryId=category.id containChild=category.containChild pageIndex=pageIndex pageSize=category.pageSize>
-        <ul>
+        <h1 data-diy="category" data-diy-id="${(category.id)!}">${(category.name)!}</h1>
+<@cms.contentList categoryId=category.id containChild=category.containChild pageIndex=pageIndex pageSize=category.pageSize>
+        <ul data-diy="content">
     <#list page.list as a>
             <li>
                 <h3><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect?id=${a.id}<#else>${a.url!}</#if>" target="_blank">${a.title}</a></h3>
@@ -68,15 +68,15 @@
                 <span>Next page</span>
             </#if>
         </div>
-</@_contentList>
+</@cms.contentList>
         <aside>
             <h3>Popular content</h3>
             <ul>
-<@_contentList categoryId=category.id containChild=true orderField='clicks' pageSize=10>
+<@cms.contentList categoryId=category.id containChild=true orderField='clicks' pageSize=10>
     <#list page.list as a>
                 <li><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect?id=${a.id}<#else>${a.url!}</#if>" target="_blank">${a.title}</a><span>${a.clicks}</span></li>
     </#list>
-</@_contentList>
+</@cms.contentList>
             </ul>
         </aside>
     </main>
@@ -85,9 +85,11 @@
     </footer>
     <script>
     var itemString="itemType=category&itemId=${category.id}";
+    var templatePath='${.current_template_name?keep_after('/')}';
     </script>
     
     <script src="${site.dynamicPath}resource/js/cms.analytics.js"></script>
+    <script src="${site.dynamicPath}resource/js/cms.diy.js"></script>
     <script>
         var ca = cmsAnalytics();
         var url='${site.dynamicPath}api/visit/record';
@@ -100,4 +102,4 @@
     </script>
 </body>
 </html>
-</@_category>
+</@cms.category>

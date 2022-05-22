@@ -1,4 +1,4 @@
-<@_userSurveyList userId=userId surveyId=surveyId orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
+<@cms.userSurveyList userId=userId surveyId=surveyId orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
     <form class="pagerForm" action="cmsUserSurvey/list.html" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
@@ -7,7 +7,7 @@
             <ul class="searchContent">
                 <li>
                     <label><@t.page 'survey'/>:</label>
-                    <label><@_survey id=surveyId>${object.title!}</@_survey></label>
+                    <label><@cms.survey id=surveyId>${object.title!}</@cms.survey></label>
                 </li>
                 <li>
                     <label><@t.page 'content.promulgator'/>:</label>
@@ -41,17 +41,17 @@
                 <@t.merge 'userIds' a.id.userId!/>
             </#list>
 
-            <@_survey ids=t.surveyIds!><#assign surveyMap=map!/></@_survey>
-            <@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
+            <@cms.survey ids=t.surveyIds!><#assign surveyMap=map!/></@cms.survey>
+            <@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
         
             <#list page.list as a>
             <tr>
                 <td><a href="cmsSurvey/view.html?id=${a.id.surveyId}" class="exclude-translate" target="dialog" rel="viewSurvey${a.id.surveyId}">${(surveyMap[a.id.surveyId?string].title)!}</a></td>
-                <td class="exclude-translate">${(userMap[a.id.userId?string].nickName)!}</td>
+                <td class="exclude-translate">${(userMap[a.id.userId?string].nickname)!}</td>
                 <td>${a.score!}</td>
                 <td>${a.createDate!}</td>
                 <td>
-                    <a href="cmsUserSurvey/add.html?userId=${a.id.userId}&surveyId=${a.id.surveyId!}" class="edit btnText blue" target="navTab" rel="cmsuserSurvey/edit"><i class="icon-eye-open"></i> <@t.page 'button.view'/></a>
+                    <a href="cmsUserSurvey/add.html?userId=${a.id.userId}&surveyId=${a.id.surveyId!}" class="edit btnText blue" target="navTab" rel="cmsuserSurvey/edit"><i class="icon-eye-open"></i><@t.page 'button.view'/></a>
                 </td>
             </tr>
             </#list>
@@ -59,4 +59,4 @@
     </table>
     <#include "../include_page/page.html"/>
 </div>
-</@_userSurveyList>
+</@cms.userSurveyList>

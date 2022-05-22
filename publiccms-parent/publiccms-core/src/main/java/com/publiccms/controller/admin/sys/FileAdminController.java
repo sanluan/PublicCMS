@@ -84,18 +84,18 @@ public class FileAdminController {
             suffix = CmsFileUtils.getSuffix(originalName);
             if (ArrayUtils.contains(siteConfigComponent.getSafeSuffix(site), suffix)) {
                 String fileName = CmsFileUtils.getUploadFileName(suffix);
-                String filePath = siteComponent.getWebFilePath(site, fileName);
+                String filepath = siteComponent.getWebFilePath(site, fileName);
                 try {
                     if (CommonUtils.notEmpty(base64File)) {
-                        CmsFileUtils.upload(VerificationUtils.base64Decode(base64File), filePath);
+                        CmsFileUtils.upload(VerificationUtils.base64Decode(base64File), filepath);
                     } else {
-                        CmsFileUtils.upload(file, filePath);
+                        CmsFileUtils.upload(file, filepath);
                     }
                     result.put("field", field);
                     result.put(field, fileName);
                     String fileType = CmsFileUtils.getFileType(suffix);
                     result.put("fileType", fileType);
-                    FileSize fileSize = CmsFileUtils.getFileSize(filePath, suffix);
+                    FileSize fileSize = CmsFileUtils.getFileSize(filepath, suffix);
                     result.put("width", fileSize.getWidth());
                     result.put("height", fileSize.getHeight());
                     result.put("fileSize", fileSize.getFileSize());
@@ -141,6 +141,8 @@ public class FileAdminController {
      * @param site
      * @param admin
      * @param file
+     * @param field 
+     * @param titleField 
      * @param request
      * @return view name
      */
@@ -148,7 +150,7 @@ public class FileAdminController {
     @Csrf
     @ResponseBody
     public Map<String, Object> doImport(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile file,
-            HttpServletRequest request) {
+            String field, String titleField, HttpServletRequest request) {
         Map<String, Object> result = new HashMap<>();
         if (null != file && !file.isEmpty()) {
             String originalName = file.getOriginalFilename();
@@ -159,7 +161,7 @@ public class FileAdminController {
                     if (0 < index) {
                         originalName = originalName.substring(0, index);
                     }
-                    result.put("title", originalName);
+                    result.put(titleField, originalName);
                     File dest = File.createTempFile("temp_", suffix);
                     file.transferTo(dest);
                     if (".docx".equalsIgnoreCase(suffix) || ".xlsx".equalsIgnoreCase(suffix) || ".xls".equalsIgnoreCase(suffix)) {
@@ -170,11 +172,11 @@ public class FileAdminController {
                             public void extract(String imagePath, byte[] imageData) throws IOException {
                                 String imagesuffix = CmsFileUtils.getSuffix(imagePath);
                                 fileName = CmsFileUtils.getUploadFileName(imagesuffix);
-                                String filePath = siteComponent.getWebFilePath(site, fileName);
+                                String filepath = siteComponent.getWebFilePath(site, fileName);
                                 try {
-                                    CmsFileUtils.upload(imageData, filePath);
+                                    CmsFileUtils.upload(imageData, filepath);
                                     String fileType = CmsFileUtils.getFileType(imagesuffix);
-                                    FileSize fileSize = CmsFileUtils.getFileSize(filePath, imagesuffix);
+                                    FileSize fileSize = CmsFileUtils.getFileSize(filepath, imagesuffix);
                                     logUploadService.save(new LogUpload(site.getId(), admin.getId(),
                                             LogLoginService.CHANNEL_WEB_MANAGER, new File(imagePath).getName(), fileType,
                                             imageData.length, fileSize.getWidth(), fileSize.getHeight(),
@@ -190,12 +192,12 @@ public class FileAdminController {
                             }
                         };
                         if (".docx".equalsIgnoreCase(suffix)) {
-                            result.put("text", DocToHtmlUtils.docxToHtml(dest, imageManager));
+                            result.put(field, DocToHtmlUtils.docxToHtml(dest, imageManager));
                         } else {
-                            result.put("text", DocToHtmlUtils.excelToHtml(dest, imageManager));
+                            result.put(field, DocToHtmlUtils.excelToHtml(dest, imageManager));
                         }
                     } else if (".doc".equalsIgnoreCase(suffix)) {
-                        result.put("text", DocToHtmlUtils.docToHtml(dest, new PicturesManager() {
+                        result.put(field, DocToHtmlUtils.docToHtml(dest, new PicturesManager() {
                             @Override
                             public String savePicture(byte[] content, PictureType pictureType, String suggestedName,
                                     float widthInches, float heightInches) {
@@ -204,11 +206,11 @@ public class FileAdminController {
                                     imagesuffix = CommonConstants.DOT + imagesuffix;
                                 }
                                 String fileName = CmsFileUtils.getUploadFileName(imagesuffix);
-                                String filePath = siteComponent.getWebFilePath(site, fileName);
+                                String filepath = siteComponent.getWebFilePath(site, fileName);
                                 try {
-                                    CmsFileUtils.upload(content, filePath);
+                                    CmsFileUtils.upload(content, filepath);
                                     String fileType = CmsFileUtils.getFileType(imagesuffix);
-                                    FileSize fileSize = CmsFileUtils.getFileSize(filePath, imagesuffix);
+                                    FileSize fileSize = CmsFileUtils.getFileSize(filepath, imagesuffix);
                                     logUploadService.save(new LogUpload(site.getId(), admin.getId(),
                                             LogLoginService.CHANNEL_WEB_MANAGER, suggestedName, fileType, content.length,
                                             fileSize.getWidth(), fileSize.getHeight(), RequestUtils.getIpAddress(request),
@@ -225,7 +227,7 @@ public class FileAdminController {
                     dest.delete();
                 } catch (Exception e) {
                     log.error(e.getMessage(), e);
-                    result.put("text", e.getMessage());
+                    result.put(field, e.getMessage());
                 }
             }
         }
@@ -254,15 +256,15 @@ public class FileAdminController {
                 String suffix = CmsFileUtils.getSuffix(originalName);
                 if (ArrayUtils.contains(siteConfigComponent.getSafeSuffix(site), suffix)) {
                     String fileName = CmsFileUtils.getUploadFileName(suffix);
-                    String filePath = siteComponent.getWebFilePath(site, fileName);
+                    String filepath = siteComponent.getWebFilePath(site, fileName);
                     try {
-                        CmsFileUtils.upload(file, filePath);
+                        CmsFileUtils.upload(file, filepath);
                         result.put("field", field);
                         result.put(field, fileName);
                         String fileType = CmsFileUtils.getFileType(suffix);
                         result.put("fileType", fileType);
                         result.put("fileSize", file.getSize());
-                        FileSize fileSize = CmsFileUtils.getFileSize(filePath, suffix);
+                        FileSize fileSize = CmsFileUtils.getFileSize(filepath, suffix);
                         result.put("width", fileSize.getWidth());
                         result.put("height", fileSize.getHeight());
                         if (CommonUtils.notEmpty(originalField)) {
@@ -277,15 +279,15 @@ public class FileAdminController {
                         log.error(e.getMessage(), e);
                     }
                 } else {
-					result.put("statusCode", 300);
-					result.put("message", LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
-                        "verify.custom.fileType"));
-					result.put(field, "");
-					if (CommonUtils.notEmpty(originalField)) {
-						result.put(originalField, null);
-					}
-					resultList.add(result);
-				}
+                    result.put("statusCode", 300);
+                    result.put("message", LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
+                            "verify.custom.fileType"));
+                    result.put(field, "");
+                    if (CommonUtils.notEmpty(originalField)) {
+                        result.put(originalField, null);
+                    }
+                    resultList.add(result);
+                }
             }
         } else {
             Map<String, Object> result = new HashMap<>();
@@ -296,7 +298,7 @@ public class FileAdminController {
             if (CommonUtils.notEmpty(originalField)) {
                 result.put(originalField, null);
             }
-			resultList.add(result);
+            resultList.add(result);
         }
 
         return resultList;

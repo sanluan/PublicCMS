@@ -88,7 +88,9 @@ public abstract class AbstractTemplateDirective extends BaseTemplateDirective {
             handler.put("error", ApiController.NEED_LOGIN).render();
         } else {
             execute(handler);
-            handler.render();
+            if (!handler.renderd) {
+                handler.render();
+            }
         }
     }
 
@@ -109,13 +111,6 @@ public abstract class AbstractTemplateDirective extends BaseTemplateDirective {
             }
         }
         return null;
-    }
-
-    /**
-     * @return whether to enable http
-     */
-    public boolean httpEnabled() {
-        return true;
     }
 
     /**

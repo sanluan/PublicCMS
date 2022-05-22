@@ -16,7 +16,6 @@ import java.util.Set;
 
 /**
  * 原始dict文件工具类 https://github.com/Kerwin23/smartcn-dict
- * 
  * @author Kerwin
  *
  */

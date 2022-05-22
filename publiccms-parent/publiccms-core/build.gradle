@@ -13,6 +13,7 @@ dependencies {
     implementation "com.zaxxer:HikariCP:${hikariCPVersion}"
     implementation "mysql:mysql-connector-java:${mysqlVersion}"
     implementation "eu.bitwalker:UserAgentUtils:${userAgentUtilsVersion}"
+    implementation "org.hibernate.validator:hibernate-validator:${hibernateValidatorVersion}"
     
     implementation "com.drewnoakes:metadata-extractor:${extractorVersion}"
 

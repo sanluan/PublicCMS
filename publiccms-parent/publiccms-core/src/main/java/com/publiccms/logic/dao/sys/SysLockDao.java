@@ -22,12 +22,19 @@ public class SysLockDao extends BaseDao<SysLock> {
 
     /**
      * @param itemTypes
+     * @param excludeItemTypes 
      * @return number of data deleted
      */
-    public List<Short> getSiteIdList(String[] itemTypes) {
-        if (CommonUtils.notEmpty(itemTypes)) {
+    public List<Short> getSiteIdList(String[] itemTypes, String[] excludeItemTypes) {
+        if (CommonUtils.notEmpty(itemTypes) || CommonUtils.notEmpty(excludeItemTypes)) {
             QueryHandler queryHandler = getQueryHandler("select bean.id.siteId from SysLock bean");
-            queryHandler.condition("bean.id.itemType in(:itemTypes)").setParameter("itemTypes", itemTypes);
+            if (CommonUtils.notEmpty(itemTypes)) {
+                queryHandler.condition("bean.id.itemType in(:itemTypes)").setParameter("itemTypes", itemTypes);
+            }
+            if (CommonUtils.notEmpty(excludeItemTypes)) {
+                queryHandler.condition("bean.id.itemType not in(:excludeItemTypes)").setParameter("excludeItemTypes",
+                        excludeItemTypes);
+            }
             queryHandler.group("bean.id.siteId");
             return getList(queryHandler, Short.class);
         }
@@ -36,13 +43,20 @@ public class SysLockDao extends BaseDao<SysLock> {
 
     /**
      * @param itemTypes
+     * @param excludeItemTypes
      * @param createDate
      * @return number of data deleted
      */
-    public int delete(String[] itemTypes, Date createDate) {
-        if (CommonUtils.notEmpty(itemTypes) && null != createDate) {
+    public int delete(String[] itemTypes, String[] excludeItemTypes, Date createDate) {
+        if ((CommonUtils.notEmpty(itemTypes) || CommonUtils.notEmpty(excludeItemTypes)) && null != createDate) {
             QueryHandler queryHandler = getQueryHandler("delete from SysLock bean");
-            queryHandler.condition("bean.id.itemType in(:itemTypes)").setParameter("itemTypes", itemTypes);
+            if (CommonUtils.notEmpty(itemTypes)) {
+                queryHandler.condition("bean.id.itemType in(:itemTypes)").setParameter("itemTypes", itemTypes);
+            }
+            if (CommonUtils.notEmpty(excludeItemTypes)) {
+                queryHandler.condition("bean.id.itemType not in(:excludeItemTypes)").setParameter("excludeItemTypes",
+                        excludeItemTypes);
+            }
             queryHandler.condition("bean.createDate <= :createDate").setParameter("createDate", createDate);
             return delete(queryHandler);
         }

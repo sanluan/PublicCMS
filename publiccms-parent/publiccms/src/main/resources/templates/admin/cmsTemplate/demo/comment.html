@@ -13,41 +13,41 @@
     </style>
 </head>
 <body>
-    <header>
+    <header data-diy="page">
         <h1>${(site.name)!}</h1>
     </header>
-    <nav>
-        <a href="${site.useStatic?then(site.sitePath,base)}">Home page</a>
-<@_categoryList>
+    <nav data-diy="category">
+        <a href="${site.useStatic?then(site.sitePath,site.dynamicPath)}">Home</a>
+<@cms.categoryList>
     <#list page.list as a>
         <a href="${a.url!}" target="_blank">${a.name}</a>
     </#list>
-</@_categoryList>
+</@cms.categoryList>
     </nav>
     <main>
-        <h1><a href="${content.url!}">${content.title}</a></h1>
+        <h1 data-diy="content" data-diy-id="${(content.id)!}"><a href="${content.url!}">${content.title}</a></h1>
         <p>${content.description!}</p>
 <#if user?has_content>
-    <@_commentList advanced=true userId=user.id contentId=content.id status=2>
+    <@cms.commentList advanced=true userId=user.id contentId=content.id status=2>
         <#if page.totalCount gt 0>
             <h3>My Comments</h3>
             <ul>
             <#list page.list as a>
                 <li class="underline">
-                    <p>${user.nickName} <span class="gray">under review</span><span class="right">${a.createDate}</span></p>
+                    <p>${user.nickname} <span class="gray">under review</span><span class="right">${a.createDate}</span></p>
                     <p>${a.text!}<span class="right"><a href="comment.html?contentId=${content.id}&id=${a.id}">Edit</a></span></p>
                 </li>
             </#list>
             </ul>
         </#if>
-    </@_commentList>
+    </@cms.commentList>
         <form method="post" action="${site.dynamicPath}comment/save">
-            <@_comment id=id>
+            <@cms.comment id=id>
                 <input type="hidden" name="id" value="${object.id}"/>
                 <#assign text=object.text!/>
-            </@_comment>
+            </@cms.comment>
             <input type="hidden" name="replyId" value="${replyId!}"/>
-            <input type="hidden" name="_csrf" value="<@_csrfToken/>"/>
+            <input type="hidden" name="_csrf" value="<@tools.csrfToken/>"/>
             <input type="hidden" name="contentId" value="${content.id}"/>
             <input name="returnUrl" type="hidden" value="${content.url!}" />
             <p><label>Comment:</label></p>
@@ -59,21 +59,21 @@
         <a href="register.html?returnUrl=${(site.dynamicPath+'comment.html?contentId='+content.id)?url}">Register</a>
 </#if>
 <#macro merge name value><#if !.vars[name]??><@"<#assign ${name}=''>"?interpret /></#if><#if value?has_content><@"<#assign ${name}=${name}+'${value},'>"?interpret /></#if></#macro>
-<@_commentList contentId=content.id pageIndex=pageIndex>
+<@cms.commentList contentId=content.id pageIndex=pageIndex>
     <#list page.list as a>
         <@merge 'userIds' a.userId!/>
         <@merge 'userIds' a.replyUserId!/>
     </#list>
-    <@_sysUser ids=userIds!><#assign userMap=map!/></@_sysUser>
+    <@sys.user ids=userIds!><#assign userMap=map!/></@sys.user>
     <h3>Comments</h3>
     <ul>
     <#list page.list as a>
         <li class="underline">
-            <p>${userMap[a.userId?string].nickName}<span class="right">${a.createDate}</span></p>
+            <p>${userMap[a.userId?string].nickname}<span class="right">${a.createDate}</span></p>
             <#if a.replyId?has_content>
-                <@_comment id=a.replyId>
-                    <p class="border gray">${userMap[a.replyUserId?string].nickName} : ${object.text!}</p>
-                </@_comment>
+                <@cms.comment id=a.replyId>
+                    <p class="border gray">${userMap[a.replyUserId?string].nickname} : ${object.text!}</p>
+                </@cms.comment>
             </#if>
             <p>${a.text!}<span class="right"><a href="comment.html?contentId=${content.id!}&replyId=${a.id}">Reply</a></span></p>
         </li>
@@ -114,16 +114,18 @@
             <span>Next page</span>
         </#if>
     </div>
-</@_commentList>
+</@cms.commentList>
     </main>
     <footer>
         Copyright &copy; ${.now?string('yyyy')}
     </footer>
     <script>
     var itemString="itemType=content&itemId=${content.id}";
+    var templatePath='${.current_template_name?keep_after('/')}';
     </script>
 
     <script src="${site.dynamicPath}resource/js/cms.analytics.js"></script>
+    <script src="${site.dynamicPath}resource/js/cms.diy.js"></script>
     <script>
         var ca = cmsAnalytics();
         var url='${site.dynamicPath}api/visit/record';

@@ -2,11 +2,11 @@
 <#escape x as x?json_string>
 [
     ["",""]
-<@_dictionaryDataList dictionaryId=dictionaryId parentValue=parentValue>
-	<#if list?has_content>,</#if>
+<@cms.dictionaryDataList dictionaryId=dictionaryId parentValue=parentValue>
+    <#if list?has_content>,</#if>
     <#list list as a>
         ["${a.id.value}","${a.text}"]<#sep>,
     </#list>
-</@_dictionaryDataList>
+</@cms.dictionaryDataList>
 ]
 </#escape>

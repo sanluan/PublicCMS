@@ -1,18 +1,18 @@
-<@_tradeOrder id=id><#assign a=object/></@_tradeOrder>
+<@trade.order id=id><#assign a=object/></@trade.order>
 <form action="tradeOrder/confirm?callbackType=closeCurrent" method="post" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
     <input type="hidden" name="id" value="${id!}"/>
-    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <div class="pageFormContent" layoutH>
         <dl class="nowrap">
             <dt><@t.page 'product_list'/>:</dt>
             <dd class="exclude-translate" >
-                <@_tradeOrderProductList orderId=a.id>
+                <@trade.orderProductList orderId=a.id>
                 <#list page.list as op>
                     <@t.merge 'contentIds' op.contentId!/>
                     <@t.merge 'productIds' op.productId!/>
                 </#list>
-                <@_content ids=t.contentIds!><#assign contentMap=map!/></@_content>
-                <@_contentProduct ids=t.productIds!><#assign productMap=map!/></@_contentProduct>
+                <@cms.content ids=t.contentIds!><#assign contentMap=map!/></@cms.content>
+                <@cms.contentProduct ids=t.productIds!><#assign productMap=map!/></@cms.contentProduct>
                 <#list page.list as op>
                     <div class="unit">
                         <#if (productMap[op.productId?string].cover)?has_content || (contentMap[op.contentId?string].cover)?has_content>
@@ -28,7 +28,7 @@
                     </div>
                     <div class="divider"></div>
                 </#list>
-            </@_tradeOrderProductList>
+            </@trade.orderProductList>
             </dd>
         </dl>
         <dl class="nowrap">

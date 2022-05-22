@@ -4,7 +4,7 @@
     <#assign accept=' accept="video/*"'/>
 </#if>
 <form action="file/doBatchUpload" method="post" autocomplete="off" enctype="multipart/form-data" class="pageForm required-validate" onsubmit="return iframeCallback(this, $.batchBringBack)">
-    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <div class="pageFormContent" layoutH>
         <div class="preview" style="position:relative;"><div style="position:absolute;top:0px;right:0;z-index:1000;"><img style="max-height:200px;max-width:300px;"/></div></div>
         <dl class="nowrap">
@@ -17,11 +17,11 @@
         </dl>
         <ul class="tree" style="height:200px">
         <#if admin?has_content>
-    <@_logUploadList userId=admin.id fileTypes=fileTypes pageIndex=1 pageSize=10>
+    <@log.uploadList userId=admin.id fileTypes=fileTypes pageIndex=1 pageSize=10>
         <#list page.list as a>
             <li><a href="javascript:;" data-src="${a.filePath!}" onclick="$.batchBringBack([{'${field!'fileName'}':'${a.filePath!}','fileType':'${a.fileType!}','fileSize':'${a.fileSize!}','width':'${width!}','height':'${height!}','${originalField!'originalName'}':'${a.originalName!}'}]);return false;">${(a.originalName?has_content)?then(a.originalName,a.filePath!)}</a></li>
         </#list>
-    </@_logUploadList>
+    </@log.uploadList>
         </ul>
         <script>
             var imagesSuffix=["png","gif","jpg","jpeg","bmp"];

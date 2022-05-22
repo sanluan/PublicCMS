@@ -355,7 +355,7 @@ public abstract class BaseHandler implements RenderHandler {
     }
 
     @Override
-    public void setRenderd() {
-        this.renderd = true;
+    public boolean getRenderd() {
+        return this.renderd;
     }
 }

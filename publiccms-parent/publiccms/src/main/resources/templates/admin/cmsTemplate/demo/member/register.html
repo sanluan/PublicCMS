@@ -3,26 +3,25 @@
 <head>
     <meta charset="utf-8">
     <title>${metadata.alias!}</title>
-    <script src="${site.dynamicPath!}resource/js/jquery-1.12.4.min.js"></script>
     <style>
         .red{color:#f00;}
     </style>
 </head>
 <body>
-    <header>
+    <header data-diy="page">
         <h1>${(site.name)!}</h1>
     </header>
-    <nav>
-        <a href="${base}">Home</a>
-<@_categoryList>
+    <nav data-diy="category">
+        <a href="${site.dynamicPath}">Home</a>
+<@cms.categoryList>
     <#list page.list as a>
         <a href="${a.url!}" target="_blank">${a.name}</a>
     </#list>
-</@_categoryList>
+</@cms.categoryList>
     </nav>
-    <main>
+    <main data-diy="config" data-diy-id="site">
         <#if user?has_content>
-            <p>${user.nickName},You are already logged in!<a href="javascript:logout();">You can logout</a></p>
+            <p>${user.nickname},You are already logged in!<a href="javascript:logout();">You can logout</a></p>
             <form action="${site.dynamicPath}doLogout" method="post">
                 <input type="hidden" name="userId" value="${(user.id)!}"/>
                 <input type="hidden" name="returnUrl" value="${returnUrl!site.sitePath!}"/>
@@ -33,7 +32,7 @@
                     <p class="red">${springMacroRequestContext.getMessage(error,error)}</p>
                 </#if>
                 <p><input type="text" name="name" placeholder="User name" title="User name" value="${name!}"/></p>
-                <p><input type="text" name="nickName" placeholder="Nickname" title="Nickname" value="${nickname!}"/></p>
+                <p><input type="text" name="nickname" placeholder="Nickname" title="Nickname" value="${nickname!}"/></p>
                 <p><input type="password" name="password" placeholder="Password" title="Password"/></p>
                 <p><input type="password" name="repassword" placeholder="Repeat password" title="Repeat password"/></p>
                 <p>
@@ -49,12 +48,17 @@
     <footer>
         Copyright &copy; ${.now?string('yyyy')}
     </footer>
-<script>
-function logout(){
-    $("form").submit();
-}
-</script>
+    <script src="${site.dynamicPath!}resource/js/jquery-1.12.4.min.js"></script>
+    <script>
+    function logout(){
+        $("form").submit();
+    }
+    </script>
+    <script>
+    var templatePath='${.current_template_name?keep_after('/')}';
+    </script>
     <script src="${site.dynamicPath}resource/js/cms.analytics.js"></script>
+    <script src="${site.dynamicPath}resource/js/cms.diy.js"></script>
     <script>
         var ca = cmsAnalytics();
         var url='${site.dynamicPath}api/visit/record';

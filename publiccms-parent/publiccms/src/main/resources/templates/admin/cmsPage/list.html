@@ -1,21 +1,29 @@
 <#macro pageTree filepath=''>
-    <@_templateList path=filepath>
+    <@tools.templateList path=filepath>
         <#list list as a>
             <@t.merge 'pages' filepath+'/'+a.fileName/>
+            <#if !a.directory><@t.merge 'paths' filepath+'/'+a.fileName/></#if>
         </#list>
-        <@_sysDeptPage deptId=admin.deptId!'' pages=t.pages!><#assign deptPageMap=map!/></@_sysDeptPage>
+        <@sys.lock userId=admin.id itemType='page' itemIds=t.paths><#assign lockMap=map!/></@sys.lock>
+        <#if lockMap?has_content>
+            <#list lockMap as k,lock>
+                <#if lock.userId?has_content><@t.merge 'userIds' lock.userId/></#if>
+            </#list>
+        </#if>
+        <@sys.deptPage deptId=admin.deptId!'' pages=t.pages!><#assign deptPageMap=map!/></@sys.deptPage>
+        <@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
         <#list list as a>
             <#local path=filepath+'/'+a.fileName>
             <#if (deptPageMap[path])?has_content&&deptPageMap[path]>
                 <li>
                 <#if a.directory>
-                    <a href="javascript:;" onclick="return false;">${a.fileName}</a>
+                    <a href="javascript:;" onclick="return false;"<#if lockMap?has_content && lockMap[path]?has_content><#assign lockUser=(userMap[lockMap[path].userId?string].nickname)!''/> title="<@t.page 'lock.message' lockUser/> ${lockMap[path].createDate}"</#if>><#if lockMap[path]?has_content><i class="icon-lock icon-large"></i></#if>${a.fileName}</a>
                     <ul><@pageTree path/></ul>
                 <#else>
                     <a href="cmsPage/metadata.html?path=${(path?url)!}" target="ajax" rel="pageBox">
-                        <@_metadata path=path>
+                        <@tools.metadata path=path>
                             ${(object.alias)?has_content?then(object.alias+' ('+a.fileName+')',a.fileName)}
-                        </@_metadata>
+                        </@tools.metadata>
                     </a>
                 </#if>
                 </li>
@@ -23,14 +31,17 @@
         <#else>
             <li><a><@t.page 'empty_directory'/></a></li>
         </#list>
-    </@_templateList>
+    </@tools.templateList>
 </#macro>
 <div class="pageContent">
     <div layoutH class="leftPageContent">
         <ul class="tree treeFolder">
             <@pageTree/>
-         </ul>
+        </ul>
     </div>
     <div id="pageBox" class="unitBox rightPageContent">
+        <#if path?has_content>
+            <#include "metadata.html"/>
+        </#if>
     </div>
 </div>

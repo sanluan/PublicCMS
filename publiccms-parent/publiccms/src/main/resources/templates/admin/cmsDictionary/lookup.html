@@ -1,4 +1,4 @@
-<@_dictionaryList name=name pageIndex=pageNum pageSize=numPerPage>
+<@cms.dictionaryList name=name pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
     <form class="pagerForm" autocomplete="off" onsubmit="return dialogSearch(this);" action="cmsDictionary/lookup.html" method="post">
         <#include "../include_page/parameters.html"/>
@@ -35,7 +35,7 @@
             <#list page.list as a>
             <tr>
                 <td>
-                    <a href="javascript:;" onclick="$.bringBack({'${field!'dictionaryId'}':'${a.id.id}','dictionaryName':'${(a.name?js_string)!}'});return false;"><i class="icon-ok icon-large"></i> <@t.page 'select'/></a>
+                    <a href="javascript:;" onclick="$.bringBack({'${field!'dictionaryId'}':'${a.id.id}','dictionaryName':'${(a.name?js_string)!}'});return false;"><i class="icon-ok icon-large"></i><@t.page 'select'/></a>
                 </td>
                 <td class="exclude-translate">${a.name!}</td>
                 <td>${a.childDepth}</td>
@@ -45,4 +45,4 @@
     </table>
     <#include "../include_page/pageDialog.html"/>
 </div>
-</@_dictionaryList>
+</@cms.dictionaryList>

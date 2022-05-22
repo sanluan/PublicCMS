@@ -1,5 +1,5 @@
 <div class="pageFormContent" layoutH>
-<@_survey id=id>
+<@cms.survey id=id>
     <dl class="nowrap">
         <dt><@t.page 'title'/>:</dt>
         <dd class="exclude-translate">
@@ -36,7 +36,7 @@
             ${(object.createDate)!}
         </dd>
     </dl>
-    <@_surveyQuestionList surveyId=object.id pageSize=500>
+    <@cms.surveyQuestionList surveyId=object.id pageSize=500>
         <#if page.totalCount gt 0>
     <fieldset>
         <legend><@t.page 'question'/></legend>
@@ -51,7 +51,7 @@
             </div>
             <div class="unit">
                 <#if ['radio','select','checkbox']?seq_contains(q.questionType)>
-                <@_surveyQuestionItemList questionId=q.id pageSize=500>
+                <@cms.surveyQuestionItemList questionId=q.id pageSize=500>
                     <ol class="vote">
                 <#list page.list as v>
                         <li>
@@ -64,21 +64,21 @@
                         </li>
                 </#list>
                     </ol>
-                </@_surveyQuestionItemList>
+                </@cms.surveyQuestionItemList>
                 <#elseif 'text'=q.questionType>
-                    <@_userSurveyQuestionList questionId=q.id>
+                    <@cms.userSurveyQuestionList questionId=q.id>
                         <#list page.list as a>
                             <p>${a?counter}.${(a.answer)!}</p>
                         </#list>
-                    </@_userSurveyQuestionList>
+                    </@cms.userSurveyQuestionList>
                 </#if>
             </div>
             <div class="divider"></div>
         </#list>
     </fieldset>
         </#if>
-    </@_surveyQuestionList>
-</@_survey>
+    </@cms.surveyQuestionList>
+</@cms.survey>
 </div>
 <div class="formBar">
     <ul>

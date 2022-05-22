@@ -15,20 +15,20 @@ ol.vote>li:nth-child(3n) .progress-bar {background-color:blue;}
     </style>
 </head>
 <body>
-    <header>
+    <header data-diy="page">
         <h1>${(site.name)!}</h1>
     </header>
-    <nav>
-        <a href="${base}">Home</a>
-<@_categoryList>
+    <nav data-diy="category">
+        <a href="${site.dynamicPath}">Home</a>
+<@cms.categoryList>
     <#list page.list as a>
         <a href="${a.url!}" target="_blank">${a.name}</a>
     </#list>
-</@_categoryList>
+</@cms.categoryList>
     </nav>
     <main>
         <h1>Vote</h1>
-<@_voteList pageIndex=pageIndex pageSize=10>
+<@cms.voteList pageIndex=pageIndex pageSize=10>
         <ul>
     <#list page.list as a>
             <li>
@@ -37,11 +37,11 @@ ol.vote>li:nth-child(3n) .progress-bar {background-color:blue;}
                 <p>${a.description}</p>
                 <#if a.startDate lt .now && .now lt a.endDate><#assign available=true/><#else><#assign available=false/></#if>
                 <#if available && user?has_content>
-                    <@_userVote userId=user.id voteId=a.id>
+                    <@cms.userVote userId=user.id voteId=a.id>
                         <#assign myvote=object/>
-                    </@_userVote>
+                    </@cms.userVote>
                 </#if>
-                <@_voteItemList voteId=a.id pageSize=10>
+                <@cms.voteItemList voteId=a.id pageSize=10>
                     <ol class="vote">
                     <#list page.list as v>
                         <li>
@@ -66,7 +66,7 @@ ol.vote>li:nth-child(3n) .progress-bar {background-color:blue;}
                         </li>
                     </#list>
                     </ol>
-                </@_voteItemList>
+                </@cms.voteItemList>
             </li>
     </#list>
         </ul>
@@ -106,24 +106,27 @@ ol.vote>li:nth-child(3n) .progress-bar {background-color:blue;}
                 <span>Next page</span>
             </#if>
         </div>
-</@_voteList>
+</@cms.voteList>
     </main>
     <footer>
         Copyright &copy; ${.now?string('yyyy')}
     </footer>
-
+    <script>
+    var templatePath='${.current_template_name?keep_after('/')}';
+    </script>
     <script src="${site.dynamicPath!}resource/js/jquery-1.12.4.min.js"></script>
     <script src="${site.dynamicPath}resource/js/cms.analytics.js"></script>
+    <script src="${site.dynamicPath}resource/js/cms.diy.js"></script>
 <#if user?has_content>
 <script>
 function vote(itemId){
-    $.getJSON('${site.dynamicPath!}vote/vote?itemId='+itemId+'&_csrf=<@_csrfToken/>', function(data){
+    $.getJSON('${site.dynamicPath!}vote/vote?itemId='+itemId+'&_csrf=<@tools.csrfToken/>', function(data){
         alert("Vote ok!");
         location.reload();
     });
 }
 function unvote(itemId){
-    $.getJSON('${site.dynamicPath!}vote/unvote?itemId='+itemId+'&_csrf=<@_csrfToken/>', function(data){
+    $.getJSON('${site.dynamicPath!}vote/unvote?itemId='+itemId+'&_csrf=<@tools.csrfToken/>', function(data){
         alert("Cancel ok!");
         location.reload();
     });

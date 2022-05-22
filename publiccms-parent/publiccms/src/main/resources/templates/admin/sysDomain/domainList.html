@@ -1,4 +1,4 @@
-<@_sysDomainList pageIndex=pageNum pageSize=numPerPage>
+<@sys.domainList pageIndex=pageNum pageSize=numPerPage>
 <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
     <#include "../include_page/parameters.html"/>
 </form>
@@ -17,7 +17,7 @@
                 <td><a href="http://${(a.name)!}">${(a.name)!}</a></td>
                 <td>${(a.path)!}</td>
                 <td class="wrap">
-                    <a href="sysDomain/config.html?id=${a.name!}" class="edit btnText blue" target="navTab" rel="sysDomain/config"><i class="icon-edit"></i> <@t.page 'domain.edit'/></a>
+                    <a href="sysDomain/config.html?id=${a.name!}" class="edit btnText blue" target="navTab" rel="sysDomain/config"><i class="icon-edit"></i><@t.page 'domain.edit'/></a>
                 </td>
             </tr>
             </#list>
@@ -25,4 +25,4 @@
     </table>
     <#include "../include_page/page.html"/>
 </div>
-</@_sysDomainList>
+</@sys.domainList>

@@ -1,25 +1,14 @@
-<@_placeMetadata path=path><#assign a=object/></@_placeMetadata>
+<@tools.placeMetadata path=path><#assign a=object/></@tools.placeMetadata>
 <form method="post" autocomplete="off" action="cmsTemplate/savePlaceMetaData?navTabId=placeTemplate/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
-    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
         <#if a?has_content>
-            <li><a class="button" href="cmsTemplate/deletePlace?path=${(path?url)!}&navTabId=placeTemplate/list&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete_file'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i> <@t.page 'button.delete'/></a></li>
+            <li><a class="button" href="cmsTemplate/deletePlace?path=${(path?url)!}&navTabId=placeTemplate/list&_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.delete_file'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i><@t.page 'button.delete'/></a></li>
             <li><a class="button" href="cmsPlace/metadata.html?path=${(path?url)!}" target="ajax" rel="cmsTemplatePlace"><@t.page 'place.management'/></a></li>
             <li><a class="button" href="placeTemplate/content.html?path=${(path?url)!}" target="ajax" rel="cmsTemplatePlace"><@t.page 'template.content'/></a></li>
         </#if>
-            <@_createLock itemType='placeTemplate' itemId=path userId=admin.id>
-                <#if object?has_content||!path?has_content>
-            <li><button type="submit" class="buttonActive" title="ctrl+s"<#if path?has_content> close-url="common/unlock?itemType=placeTemplate&itemId=${(path?url)!}"</#if>><@t.page 'button.save'/></button></li>
-                <#else>
-            <li>
-                <@_sysLock userId=admin.id itemType='placeTemplate' itemId=path>
-                    <@_sysUser id=(object.userId)!''><#assign lockUser=object.nickName/></@_sysUser>
-                <button type="button" class="buttonDisabled" title="${object.createDate}"><@t.page 'lock.message' lockUser/></button>
-                </@_sysLock>
-            </li>
-                </#if>
-            </@_createLock>
+            <li><button type="submit" class="buttonActive" title="ctrl+s"<#if path?has_content> lock-url="common/lock?itemType=placeTemplate&itemId=${(path?url)!}" close-url="common/unlock?itemType=placeTemplate&itemId=${(path?url)!}"</#if>><@t.page 'button.save'/></button></li>
         </ul>
     </div>
     <div class="pageFormContent" layoutH>
@@ -73,7 +62,7 @@
             <dt><@t.page 'place_data.master'/>:</dt>
             <dd>
                 <input name="userId" type="hidden"/>
-                <input name="nickName" type="hidden"/>
+                <input name="nickname" type="hidden"/>
                 <a class="btnLook" href="sysUser/lookup.html" width="920" lookupGroup=""><@t.page 'user.select'/></a>
                 <div class="tagsBox adminIds"></div>
             </dd>
@@ -148,7 +137,7 @@ $('.systemField dt [type=checkbox]',navTab.getCurrentPanel()).each(function(){
 $('input[name=size]',navTab.getCurrentPanel()).on('change',function(){
     checkPageSize();
 });
-$('input[name=nickName]',navTab.getCurrentPanel()).on('change',function(){
+$('input[name=nickname]',navTab.getCurrentPanel()).on('change',function(){
     addUser($('input[name=\'userId\']',navTab.getCurrentPanel()).val(),$(this).val());
 });
 $('.adminIds',navTab.getCurrentPanel()).on('click','span>a',function(){
@@ -157,17 +146,17 @@ $('.adminIds',navTab.getCurrentPanel()).on('click','span>a',function(){
 });
 checkPageSize();
 <#if (a.adminIds)?has_content>
-    <@_sysUser ids=a.adminIds>
+    <@sys.user ids=a.adminIds>
         <#list map as k,user>
-        addUser('${k}','${user.nickName}');
+        addUser('${k}','${user.nickname}');
         </#list>
-    </@_sysUser>
+    </@sys.user>
 </#if>
 </script>
         <textarea name="content" class="hide"></textarea>
-        <textarea class="content hide"><#noparse>
+        <textarea class="placeContent hide"><#noparse>
 <#list page.list>
-    <ul>
+    <ul data-diy="place" data-diy-id="${path}">
     <#items as a>
         <li>
             <figure>
@@ -180,6 +169,10 @@ checkPageSize();
     </#items>
     </ul>
 </#list>
+</#noparse></textarea>
+<textarea class="content hide"><#noparse>
+    <div data-diy="place" data-diy-id="${path}">
+    </div>
 </#noparse></textarea>
     </div>
 </form>

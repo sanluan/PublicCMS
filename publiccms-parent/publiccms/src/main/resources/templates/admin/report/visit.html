@@ -1,11 +1,7 @@
+<a class="button float" href="report/visit.html" target="navTab" rel="report/visit"><i class="icon-refresh"></i><@t.page 'button.refresh'/></a>
 <div class="pageFormContent card" layoutH>
     <fieldset>
         <legend><@t.page 'visit'/></legend>
-        <div class="unit">
-            <p>
-                <a class="button" href="report/visit.html" target="navTab" rel="report/visit"><i class="icon-refresh"></i> <@t.page 'button.refresh'/></a>
-            </p>
-        </div>
         <div class="unit clearfix">
             <div id="todayVisit" style="width:50%;min-width:400px;float:left;"></div>
             <div id="yestodayVisit" style="width:50%;min-width:400px;float:left;"></div>
@@ -19,7 +15,7 @@
 document.getElementById('todayVisit').style.height=document.getElementById('todayVisit').offsetWidth*0.5+'px';
 document.getElementById('yestodayVisit').style.height=document.getElementById('yestodayVisit').offsetWidth*0.5+'px';
 document.getElementById('allVisit').style.height='450px';
-<@_visitDayList startVisitDate=(.now?long-86400000)?number_to_date hourAnalytics=true>
+<@visit.dayList startVisitDate=(.now?long-86400000)?number_to_date hourAnalytics=true>
 echarts.init(document.getElementById('todayVisit')).setOption({
     title: {
         text: '${.now?date} <@t.page 'visit'/>',
@@ -71,8 +67,8 @@ echarts.init(document.getElementById('todayVisit')).setOption({
        areaStyle: {}
     }]
 });
-</@_visitDayList>
-<@_visitDayList startVisitDate=(.now?long-2*86400000)?number_to_date endVisitDate=(.now?long-86400000)?number_to_date hourAnalytics=true>
+</@visit.dayList>
+<@visit.dayList startVisitDate=(.now?long-2*86400000)?number_to_date endVisitDate=(.now?long-86400000)?number_to_date hourAnalytics=true>
 echarts.init(document.getElementById('yestodayVisit')).setOption({
     title: {
         text: '${(.now?long-86400000)?number_to_date?date} <@t.page 'visit.history'/>',
@@ -124,8 +120,8 @@ echarts.init(document.getElementById('yestodayVisit')).setOption({
        areaStyle: {}
    }]
 });
-</@_visitDayList>
-<@_visitDayList startVisitDate=(.now?long-30*86400000)?number_to_date>
+</@visit.dayList>
+<@visit.dayList startVisitDate=(.now?long-30*86400000)?number_to_date>
 echarts.init(document.getElementById('allVisit')).setOption({
     title: {
         text: '<@t.page 'visit.history'/>',
@@ -177,5 +173,5 @@ echarts.init(document.getElementById('allVisit')).setOption({
        areaStyle: {}
     }]
 });
-</@_visitDayList>
+</@visit.dayList>
 </script>

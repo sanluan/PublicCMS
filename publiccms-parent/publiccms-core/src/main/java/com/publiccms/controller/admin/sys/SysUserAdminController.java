@@ -66,13 +66,13 @@ public class SysUserAdminController {
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, SysUser entity, String repassword,
             String encoding, Integer[] roleIds, HttpServletRequest request, ModelMap model) {
         entity.setName(StringUtils.trim(entity.getName()));
-        entity.setNickName(StringUtils.trim(entity.getNickName()));
+        entity.setNickname(StringUtils.trim(entity.getNickname()));
         entity.setPassword(StringUtils.trim(entity.getPassword()));
         repassword = StringUtils.trim(repassword);
         if (ControllerUtils.errorNotEmpty("username", entity.getName(), model)
-                || ControllerUtils.errorNotEmpty("nickname", entity.getNickName(), model)
+                || ControllerUtils.errorNotEmpty("nickname", entity.getNickname(), model)
                 || ControllerUtils.errorNotUserName("username", entity.getName(), model)
-                || ControllerUtils.errorNotNickName("nickname", entity.getNickName(), model)) {
+                || ControllerUtils.errorNotNickname("nickname", entity.getNickname(), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (entity.isSuperuser()) {
@@ -137,7 +137,7 @@ public class SysUserAdminController {
     /**
      * @param site
      * @param admin
-     * @param nickName
+     * @param nickname
      * @param cover
      * @param email
      * @param request
@@ -145,9 +145,9 @@ public class SysUserAdminController {
      */
     @RequestMapping("update")
     @Csrf
-    public String update(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String nickName, String cover,
+    public String update(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String nickname, String cover,
             String email, HttpServletRequest request) {
-        SysUser entity = service.updateProfile(admin.getId(), nickName, cover, email);
+        SysUser entity = service.updateProfile(admin.getId(), nickname, cover, email);
         if (null != entity) {
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "update.user", RequestUtils.getIpAddress(request), CommonUtils.getDate(),

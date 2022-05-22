@@ -1,7 +1,7 @@
 <#assign attribute=getContentAttribute(content.id)/>
-<@_category id=content.categoryId>
+<@cms.category id=content.categoryId>
     <#assign category=object/>
-</@_category>
+</@cms.category>
 <#assign
     temp=getContentPage(attribute.text!'',pageIndex)
     page=temp.page
@@ -14,44 +14,44 @@
     <title>${content.title} - ${(category.name)!}</title>
     <meta name="keywords" content="<#list getKeywords(content.title) as a>${a}<#sep>,</#list>"/>
     <meta name="description" content="${(content.description)!}"/>
-	<style>
-		.text-center{text-align:center;}
-		.clearfix::after{display: block;clear: both;content: "";}
-		article #content img,article #content table,article figure img{max-width:100%;}
-		article #content,{width:100%;overflow: auto;}
-	</style>
+    <style>
+        .text-center{text-align:center;}
+        .clearfix::after{display: block;clear: both;content: "";}
+        article #content img,article #content table,article figure img{max-width:100%;}
+        article #content,{width:100%;overflow: auto;}
+    </style>
 </head>
 <body>
-    <header>
+    <header data-diy="page">
         <h1>${(site.name)!}</h1>
     </header>
-    <nav>
-        <a href="${base}">Home page</a>
-<@_categoryList>
+    <nav data-diy="category">
+        <a href="${site.dynamicPath}">Home</a>
+<@cms.categoryList>
     <#list page.list as a>
         <a href="${a.url!}" target="_blank">${a.name}</a>
     </#list>
-</@_categoryList>
+</@cms.categoryList>
     </nav>
     <main>
         <article>
-            <h1><a href="${content.url!}">${content.title}</a></h1>
+            <h1 data-diy="content" data-diy-id="${(content.id)!}"><a href="${content.url!}">${content.title}</a></h1>
             <p><#if content.copied>Source:<a href="${(attribute.sourceUrl)!}" target="_blank">${(attribute.source)!}</a></#if> ${content.author!} ${content.editor!} ${content.publishDate?datetime} Views:<em>loading...</em></p>
             <div id="content" class="clearfix">${(text?no_esc)!}</div>
         <#if content.hasProducts>
             <div>
                 <form action="${site.dynamicPath}member/order.html">
-                <@_contentProductList contentId=content.id fileTypes='video,audio,other'>
+                <@cms.contentProductList contentId=content.id fileTypes='video,audio,other'>
                     <#list page.list as product>
                         <label>
                             <input type="radio" name="productId" value="${product.id}"/>
                             <#if product.cover?has_content>
-                                <img src="<@_thumb path=product.cover width=30 height=30/>" title="${product.title}" alt="${product.title}" style="max-width:30px;max-height30px;border:1px solid;"/>
+                                <img src="<@tools.thumb path=product.cover width=30 height=30/>" title="${product.title}" alt="${product.title}" style="max-width:30px;max-height30px;border:1px solid;"/>
                             </#if>
                             ${product.title}
                         </label>
                     </#list>
-                </@_contentProductList>
+                </@cms.contentProductList>
                     <label>Price:</label><span class="price">0</span>
                     <input type="number" name="quantity" value="1"/>
                     <input type="submit" value="Buy"/>
@@ -59,39 +59,39 @@
             </div>
         </#if>
         <#if content.hasFiles>
-			<@_contentFileList contentId=content.id fileTypes='video,audio,other'>
-				<#list page.list as file>
-					<p><a href="${(file.filePath)!}" target="_blank">${(file.filePath)!}</a></p>
-				</#list>
-			</@_contentFileList>
+            <@cms.contentFileList contentId=content.id fileTypes='video,audio,other'>
+                <#list page.list as file>
+                    <p><a href="${(file.filePath)!}" target="_blank">${(file.filePath)!}</a></p>
+                </#list>
+            </@cms.contentFileList>
         </#if>
         <#if content.hasImages>
-			<figure class="text-center">
-             <@_contentFileList contentId=content.id fileTypes='image'>
+            <figure class="text-center">
+             <@cms.contentFileList contentId=content.id fileTypes='image'>
                  <#list page.list as file>
                      <img src="${(file.filePath)!}" alt="${(file.description)!}"/>
-					 <p>图${file?counter} ${(file.description)!}</p>
+                     <p>${file?counter} ${(file.description)!}</p>
                  </#list>
-             </@_contentFileList>
+             </@cms.contentFileList>
             </figure>
         </#if>
         <#if content.tagIds?has_content>
             <p>
                 Tags:
-                <@_tag ids=content.tagIds>
+                <@cms.tag ids=content.tagIds>
                     <#list map as key,tag>
                         <em>${tag.name}</em>
                     </#list>
-                </@_tag>
+                </@cms.tag>
             </p>
         </#if>
             <div>
                 ${content.scores!} scores
                 <#if user?has_content>
-                    <@_userScore userId=user.id itemType='content' itemId=content.id>
+                    <@cms.userScore userId=user.id itemType='content' itemId=content.id>
                         <a href="javascript:unscore(${content.id});">Cancel rating</a>
                         <#assign stared=true/>
-                    </@_userScore>
+                    </@cms.userScore>
                     <#if !stared?has_content><a href="javascript:score(${content.id});">Score</a></#if>
                 </#if>
             </div>
@@ -115,36 +115,36 @@
                 </#if>
             </div>
             <div>
-                <@_contentList categoryId=category.id endPublishDate=content.publishDate orderField='publishDate' pageIndex=2 pageSize=1><#if 2=page.pageIndex><#list page.list as a><a href="${a.url!}">Previous:${a.title}</a></#list></#if></@_contentList>
-                <@_contentList categoryId=category.id startPublishDate=content.publishDate orderField='publishDate' orderType='asc' pageIndex=1 pageSize=1><#list page.list as a><a href="${a.url!}">Next:${a.title}</a></#list></@_contentList>
+                <@cms.contentList categoryId=category.id endPublishDate=content.publishDate orderField='publishDate' pageIndex=2 pageSize=1><#if 2=page.pageIndex><#list page.list as a><a href="${a.url!}">Previous:${a.title}</a></#list></#if></@cms.contentList>
+                <@cms.contentList categoryId=category.id startPublishDate=content.publishDate orderField='publishDate' orderType='asc' pageIndex=1 pageSize=1><#list page.list as a><a href="${a.url!}">Next:${a.title}</a></#list></@cms.contentList>
             </div>
             <div>
          <#macro merge name value><#if !.vars[name]??><@"<#assign ${name}=''>"?interpret /></#if><#if value?has_content><@"<#assign ${name}=${name}+'${value},'>"?interpret /></#if></#macro>
-         <@_commentList contentId=content.id pageSize=10>
+         <@cms.commentList contentId=content.id pageSize=10>
             <#list page.list as a>
                 <@merge 'userIds' a.userId!/>
                 <@merge 'userIds' a.replyUserId!/>
             </#list>
-            <@_sysUser ids=userIds!><#assign userMap=map!/></@_sysUser>
+            <@sys.user ids=userIds!><#assign userMap=map!/></@sys.user>
             <#list page.list as a>
                 <dl>
-                    <dt>${(userMap[a.userId?string].nickName)!}<#if a.replyUserId?has_content> reply ${(userMap[a.replyUserId?string].nickName)!}</#if>:</dt>
+                    <dt>${(userMap[a.userId?string].nickname)!}<#if a.replyUserId?has_content> reply ${(userMap[a.replyUserId?string].nickname)!}</#if>:</dt>
                     <dd>
                         <div>${a.text!}</div>
                     </dd>
                 </dl>
             </#list>
-        </@_commentList>
+        </@cms.commentList>
             </div>
         </article>
         <aside>
             <h3>Popular content</h3>
             <ul>
-<@_contentList categoryId=category.id containChild=true orderField='clicks' pageSize=10>
+<@cms.contentList categoryId=category.id containChild=true orderField='clicks' pageSize=10>
     <#list page.list as a>
                 <li><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect?id=${a.id}<#else>${a.url!}</#if>" target="_blank">${a.title}</a><span>${a.clicks}</span></li>
     </#list>
-</@_contentList>
+</@cms.contentList>
             </ul>
         </aside>
     </main>
@@ -181,22 +181,28 @@
     </script>
     <script>
 function score(contentId){
-    $.getJSON('${site.dynamicPath!}score/score?itemId='+contentId+'&itemType=content&_csrf=<@_csrfToken/>', function(data){
+    $.getJSON('${site.dynamicPath!}score/score?itemId='+contentId+'&itemType=content&_csrf=<@tools.csrfToken/>', function(data){
         alert("Score ok!");
         location.reload();
     });
 }
 function unscore(contentId){
-    $.getJSON('${site.dynamicPath!}score/unscore?itemId='+contentId+'&itemType=content&_csrf=<@_csrfToken/>', function(data){
+    $.getJSON('${site.dynamicPath!}score/unscore?itemId='+contentId+'&itemType=content&_csrf=<@tools.csrfToken/>', function(data){
         alert("Cancel ok!");
         location.reload();
     });
 }
     </script>
+    <script src="${site.dynamicPath}resource/ueditor/ueditor.parse.min.js"></script>
+    <script>
+    uParse('#content',{rootPath: '${site.dynamicPath}resource/ueditor/'});
+    </script>
     <script>
     var itemString="itemType=content&itemId=${content.id}";
+    var templatePath='${.current_template_name?keep_after('/')}';
     </script>
     <script src="${site.dynamicPath}resource/js/cms.analytics.js"></script>
+    <script src="${site.dynamicPath}resource/js/cms.diy.js"></script>
     <script>
         var ca = cmsAnalytics();
         var url='${site.dynamicPath}api/visit/record';

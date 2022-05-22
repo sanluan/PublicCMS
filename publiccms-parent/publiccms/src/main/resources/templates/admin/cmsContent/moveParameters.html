@@ -1,10 +1,10 @@
 <#if parentId?has_content>
 <ul>
-    <@_categoryList advanced=true parentId=parentId pageSize=500>
+    <@cms.categoryList advanced=true parentId=parentId pageSize=500>
         <#list page.list as a>
             <@t.merge 'categoryIds' a.id!/>
         </#list>
-        <@_sysDeptCategory deptId=admin.deptId!'' categoryIds=t.categoryIds!><#assign deptCategoryMap=map!/></@_sysDeptCategory>
+        <@sys.deptCategory deptId=admin.deptId!'' categoryIds=t.categoryIds!><#assign deptCategoryMap=map!/></@sys.deptCategory>
         <#list page.list as a>
             <#if (deptCategoryMap[a.id?string])?has_content&&deptCategoryMap[a.id?string]>
                 <li <#if a.childIds?has_content>_src="cmsContent/moveParameters.html?parentId=${a.id}"</#if>>
@@ -12,7 +12,7 @@
                 </li>
             </#if>
         </#list>
-    </@_categoryList>
+    </@cms.categoryList>
 </ul>
 <#else>
 <script>
@@ -28,18 +28,18 @@ if(0==$('.idsToMove input',$.pdialog.getCurrent()).length){
 </script>
 <form action="cmsContent/move?callbackType=closeCurrent" method="post" autocomplete="off" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
     <input type="hidden" name="categoryId" value=""/>
-    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <div class="idsToMove"></div>
     <div class="pageFormContent" layoutH>
         <ul class="tree treeFolder expand">
             <li>
                 <a href="javascript:;" onclick="return false;"><@t.page 'category.select'/></a>
                 <ul>
-                <@_categoryList advanced=true pageSize=500>
+                <@cms.categoryList advanced=true pageSize=500>
                     <#list page.list as a>
                         <@t.merge 'categoryIds' a.id!/>
                     </#list>
-                    <@_sysDeptCategory deptId=admin.deptId!'' categoryIds=t.categoryIds!><#assign deptCategoryMap=map!/></@_sysDeptCategory>
+                    <@sys.deptCategory deptId=admin.deptId!'' categoryIds=t.categoryIds!><#assign deptCategoryMap=map!/></@sys.deptCategory>
                     <#list page.list as a>
                         <#if (deptCategoryMap[a.id?string])?has_content&&deptCategoryMap[a.id?string]>
                             <li<#if a.childIds?has_content> _src="cmsContent/moveParameters.html?parentId=${a.id}"</#if>>
@@ -49,7 +49,7 @@ if(0==$('.idsToMove input',$.pdialog.getCurrent()).length){
                     <#else>
                         <li><a><@t.page 'empty_directory'/></a></li>
                     </#list>
-                </@_categoryList>
+                </@cms.categoryList>
                 </ul>
             </li>
         </ul>

@@ -20,6 +20,10 @@ public class SysExtendFieldId implements java.io.Serializable {
     @GeneratorColumn(title = "扩展", condition = true)
     @JsonIgnore
     private int extendId;
+    /**
+     * code<p>
+     * 字段编码
+     */
     @GeneratorColumn(title = "字段")
     private String code;
 

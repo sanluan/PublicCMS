@@ -1,29 +1,18 @@
-<@_metadata path=path><#assign a=object/></@_metadata>
+<@tools.metadata path=path><#assign a=object/></@tools.metadata>
 <form method="post" action="cmsTemplate/saveMetaData?navTabId=cmsTemplate/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
-    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
         <#if a?has_content>
-             <li><a class="button" href="cmsTemplate/delete?path=${(path?url)!}&navTabId=cmsTemplate/list&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete_file'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i> <@t.page 'button.delete'/></a></li>
-    <@_sysAuthorized roleIds=admin.roles url='cmsPage/metadata'>
-        <@_sysDeptPage deptId=admin.deptId!'' pages=path>
+             <li><a class="button" href="cmsTemplate/delete?path=${(path?url)!}&navTabId=cmsTemplate/list&_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.delete_file'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i><@t.page 'button.delete'/></a></li>
+    <@sys.authorized roleIds=admin.roles url='cmsPage/metadata'>
+        <@sys.deptPage deptId=admin.deptId!'' pages=path>
             <li><a class="button" href="cmsPage/metadata.html?path=${(path?url)!}" target="ajax" rel="cmsTemplateBox"><@t.page 'page.management'/></a></li>
-        </@_sysDeptPage>
-    </@_sysAuthorized>
+        </@sys.deptPage>
+    </@sys.authorized>
             <li><a class="button" href="cmsTemplate/content.html?path=${(path?url)!}" target="ajax" rel="cmsTemplateBox"><@t.page 'template.content'/></a></li>
         </#if>
-            <@_createLock itemType='template' itemId=path userId=admin.id>
-                <#if object?has_content||!path?has_content>
-            <li><button type="submit" class="buttonActive" title="ctrl+s"<#if path?has_content> close-url="common/unlock?itemType=template&itemId=${(path?url)!}"</#if>><@t.page 'button.save'/></button></li>
-                <#else>
-            <li>
-                <@_sysLock userId=admin.id itemType='template' itemId=path>
-                    <@_sysUser id=(object.userId)!''><#assign lockUser=object.nickName/></@_sysUser>
-                <button type="button" class="buttonDisabled" title="${object.createDate}"><@t.page 'lock.message' lockUser/></button>
-                </@_sysLock>
-            </li>
-                </#if>
-            </@_createLock>
+            <li><button type="submit" class="buttonActive" title="ctrl+s"<#if path?has_content> lock-url="common/lock?itemType=template&itemId=${(path?url)!}" close-url="common/unlock?itemType=template&itemId=${(path?url)!}"</#if>><@t.page 'button.save'/></button></li>
         </ul>
     </div>
     <div class="pageFormContent" layoutH>
@@ -67,7 +56,7 @@
                 <dt><@t.page 'dynamic_config.need_login'/>:</dt>
                 <dd>
                     <label><input name="needLogin" type="checkbox"/></label>
-                    <span class="info"><@t.page 'dynamic_config.need_login.description'/>:<a href="sysConfigData/edit.html?code=site" target="navTab" rel="sysConfigData/edit" icon="<i class='icon-edit icon-large'></i> "><@t.page 'server_config.site'/></a></span>
+                    <span class="info"><@t.page 'dynamic_config.need_login.description'/>:<a href="sysConfigData/edit.html?code=site" target="navTab" rel="sysConfigData/edit" icon="<i class='icon-edit icon-large'></i>"><@t.page 'server_config.site'/></a></span>
                 </dd>
             </dl>
             <dl class="nowrap">
@@ -86,7 +75,7 @@
                         <label><@t.page 'required'/>:<input name="required" type="checkbox"/></label>
                         <label><@t.page 'alias'/>:</label><input name="parameterAlias" type="text" autocomplete="on" size="8"/>
                         <label><@t.page 'array'/>:<input name="array" type="checkbox"/></label>
-                        <a href="javascript:;" class="btnText green" onclick="addParameter($('input[name=\'parameterName\']',navTab.getCurrentPanel()).val(),$('input[name=\'array\']',navTab.getCurrentPanel()).prop('checked'),$('input[name=\'required\']',navTab.getCurrentPanel()).prop('checked'),$('select[name=\'parameterType\']',navTab.getCurrentPanel()).val(),$('select[name=\'parameterType\'] option:selected',navTab.getCurrentPanel()).text(),$('input[name=\'parameterAlias\']',navTab.getCurrentPanel()).val());return false;"><i class="icon-ok"></i> <@t.page 'button.add'/></a>
+                        <a href="javascript:;" class="btnText green" onclick="addParameter($('input[name=\'parameterName\']',navTab.getCurrentPanel()).val(),$('input[name=\'array\']',navTab.getCurrentPanel()).prop('checked'),$('input[name=\'required\']',navTab.getCurrentPanel()).prop('checked'),$('select[name=\'parameterType\']',navTab.getCurrentPanel()).val(),$('select[name=\'parameterType\'] option:selected',navTab.getCurrentPanel()).text(),$('input[name=\'parameterAlias\']',navTab.getCurrentPanel()).val());return false;"><i class="icon-ok"></i><@t.page 'button.add'/></a>
                     </div>
                 </dd>
             </dl>
@@ -193,7 +182,7 @@ $('.parametersBox',navTab.getCurrentPanel()).on('click','span>a',function(){
 </#if>
 </script>
 <#if a?has_content>
-        <textarea name="content" class="hide"><@_templateContent path=path>${(object)!}</@_templateContent></textarea>
+        <textarea name="content" class="hide"><@tools.templateContent path=path>${(object)!}</@tools.templateContent></textarea>
         <script>
     <#if site.useStatic&&(a.publishPath)?has_content>
             $('input[name=useStatic]',navTab.getCurrentPanel()).click();

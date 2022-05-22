@@ -12,8 +12,8 @@ import com.publiccms.common.base.AbstractTaskDirective;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CmsFileUtils;
-import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.CmsFileUtils.FileInfo;
+import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
@@ -35,13 +35,13 @@ public class PublishPageDirective extends AbstractTaskDirective {
     public void execute(RenderHandler handler) throws IOException, Exception {
         String path = handler.getString("path", CommonConstants.SEPARATOR);
         SysSite site = getSite(handler);
-        String filePath = siteComponent.getWebTemplateFilePath(site, path);
-        if (CmsFileUtils.isFile(filePath)) {
+        String filepath = siteComponent.getWebTemplateFilePath(site, path);
+        if (CmsFileUtils.isFile(filepath)) {
             Map<String, Boolean> map = new LinkedHashMap<>();
-            CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(filePath);
+            CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(filepath);
             if (CommonUtils.notEmpty(metadata.getPublishPath())) {
                 try {
-                    CmsPageData data = metadataComponent.getTemplateData(filePath);
+                    CmsPageData data = metadataComponent.getTemplateData(filepath);
                     templateComponent.createStaticFile(site, SiteComponent.getFullTemplatePath(site, path),
                             metadata.getPublishPath(), null, metadata.getAsMap(data), null, null);
                     map.put(path, true);
@@ -50,7 +50,7 @@ public class PublishPageDirective extends AbstractTaskDirective {
                 }
                 handler.put("map", map).render();
             }
-        } else if (CmsFileUtils.isDirectory(filePath)) {
+        } else if (CmsFileUtils.isDirectory(filepath)) {
             handler.put("map", deal(site, path)).render();
         }
     }
@@ -60,21 +60,21 @@ public class PublishPageDirective extends AbstractTaskDirective {
         Map<String, Boolean> map = new LinkedHashMap<>();
         List<FileInfo> list = CmsFileUtils.getFileList(siteComponent.getWebTemplateFilePath(site, path), null);
         for (FileInfo fileInfo : list) {
-            String filePath = path + fileInfo.getFileName();
+            String filepath = path + fileInfo.getFileName();
             if (fileInfo.isDirectory()) {
-                map.putAll(deal(site, filePath + CommonConstants.SEPARATOR));
+                map.putAll(deal(site, filepath + CommonConstants.SEPARATOR));
             } else {
-                String realTemplatePath = siteComponent.getWebTemplateFilePath(site, filePath);
+                String realTemplatePath = siteComponent.getWebTemplateFilePath(site, filepath);
                 CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(realTemplatePath);
                 if (null != metadata && CommonUtils.notEmpty(metadata.getPublishPath())) {
                     try {
-                        String templatePath = SiteComponent.getFullTemplatePath(site, filePath);
+                        String templatePath = SiteComponent.getFullTemplatePath(site, filepath);
                         CmsPageData data = metadataComponent.getTemplateData(realTemplatePath);
                         templateComponent.createStaticFile(site, templatePath, metadata.getPublishPath(), null,
                                 metadata.getAsMap(data), null, null);
-                        map.put(filePath, true);
+                        map.put(filepath, true);
                     } catch (IOException | TemplateException e) {
-                        map.put(filePath, false);
+                        map.put(filepath, false);
                     }
                 }
             }

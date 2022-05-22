@@ -1,14 +1,14 @@
-<@_sysConfig code=code>
+<@sys.config code=code>
     <#assign a=object/>
-</@_sysConfig>
+</@sys.config>
 <form method="post" autocomplete="off" action="sysConfig/save?callbackType=${closeCurrent!'closeCurrent'}&navTabId=sysConfig/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
-    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
     <#if code?has_content>
-        <@_sysAuthorized roleIds=admin.roles url='sysConfigData/edit'>
-            <li><a class="button" href="sysConfigData/edit.html?code=${code!}" target="navTab" rel="sysConfigData/edit"><i class="icon-edit icon-large"></i> <@t.page 'config_data.edit'/></a></li>
-        </@_sysAuthorized>
+        <@sys.authorized roleIds=admin.roles url='sysConfigData/edit'>
+            <li><a class="button" href="sysConfigData/edit.html?code=${code!}" target="navTab" rel="sysConfigData/edit"><i class="icon-edit icon-large"></i><@t.page 'config_data.edit'/></a></li>
+        </@sys.authorized>
     </#if>
             <li><button type="submit" class="buttonActive" title="ctrl+s"><@t.page 'button.save'/></button></li>
             <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
@@ -37,9 +37,9 @@
             </dd>
         </dl>
 <#if a?has_content>
-    <@_sysConfigFieldList code=code customed=true>
+    <@sys.configFieldList code=code customed=true>
         <#assign extendList=list>
-    </@_sysConfigFieldList>
+    </@sys.configFieldList>
 </#if>
         <fieldset>
             <legend><@t.page 'extend_field'/>(<@t.page 'metadata.default_value_description'/>)</legend>

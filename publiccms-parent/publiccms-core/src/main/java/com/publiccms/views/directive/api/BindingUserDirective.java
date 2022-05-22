@@ -34,7 +34,7 @@ public class BindingUserDirective extends AbstractAppDirective {
                 result = true;
             }
         }
-        handler.put("result", result);
+        handler.put("result", result).render();
     }
 
     @Resource

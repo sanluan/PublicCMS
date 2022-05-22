@@ -170,8 +170,6 @@ public class LockComponent implements Config, SiteCache {
                     if (counter) {
                         entity = service.updateCount(id);
                     }
-                } else {
-                    entity = null;
                 }
             }
             return entity;
@@ -224,31 +222,32 @@ public class LockComponent implements Config, SiteCache {
         return extendFieldList;
     }
 
-    private static final String[] ITEM_TYPE_LOGIN = new String[] { SysLockService.ITEM_TYPE_LOGIN,SysLockService.ITEM_TYPE_IP_LOGIN };
+    private static final String[] ITEM_TYPE_LOGIN = new String[] { SysLockService.ITEM_TYPE_LOGIN,
+            SysLockService.ITEM_TYPE_IP_LOGIN };
     private static final String[] ITEM_TYPE_REGISTER = new String[] { SysLockService.ITEM_TYPE_REGISTER };
 
     @Override
     public void clear() {
         Date now = CommonUtils.getDate();
-        List<Short> list1 = service.getSiteIdList(ITEM_TYPE_LOGIN);
+        List<Short> list1 = service.getSiteIdList(ITEM_TYPE_LOGIN, null);
         if (CommonUtils.notEmpty(list1)) {
             for (Short siteId : list1) {
                 int expriy = getExpriy(siteId, SysLockService.ITEM_TYPE_LOGIN);
-                service.delete(ITEM_TYPE_LOGIN, DateUtils.addMinutes(now, -expriy));
+                service.delete(ITEM_TYPE_LOGIN, null, DateUtils.addMinutes(now, -expriy));
             }
         }
-        List<Short> list2 = service.getSiteIdList(ITEM_TYPE_REGISTER);
+        List<Short> list2 = service.getSiteIdList(ITEM_TYPE_REGISTER, null);
         if (CommonUtils.notEmpty(list2)) {
             for (Short siteId : list2) {
                 int expriy = getExpriy(siteId, SysLockService.ITEM_TYPE_REGISTER);
-                service.delete(ITEM_TYPE_REGISTER, DateUtils.addMinutes(now, -expriy));
+                service.delete(ITEM_TYPE_REGISTER, null, DateUtils.addMinutes(now, -expriy));
             }
         }
-        List<Short> list3 = service.getSiteIdList(SysLockService.COMMON_ITEM_TYPES);
+        List<Short> list3 = service.getSiteIdList(null, SysLockService.SYSTEM_ITEM_TYPES);
         if (CommonUtils.notEmpty(list3)) {
             for (Short siteId : list3) {
-                int expriy = getExpriy(siteId, SysLockService.COMMON_ITEM_TYPES[0]);
-                service.delete(SysLockService.COMMON_ITEM_TYPES, DateUtils.addMinutes(now, -expriy));
+                int expriy = getExpriy(siteId, null);
+                service.delete(null, SysLockService.SYSTEM_ITEM_TYPES, DateUtils.addMinutes(now, -expriy));
             }
         }
     }
@@ -257,11 +256,11 @@ public class LockComponent implements Config, SiteCache {
     public void clear(short siteId) {
         Date now = CommonUtils.getDate();
         int expriy = getExpriy(siteId, SysLockService.ITEM_TYPE_LOGIN);
-        service.delete(ITEM_TYPE_LOGIN, DateUtils.addMinutes(now, -expriy));
+        service.delete(ITEM_TYPE_LOGIN, null, DateUtils.addMinutes(now, -expriy));
         expriy = getExpriy(siteId, SysLockService.ITEM_TYPE_LOGIN);
-        service.delete(ITEM_TYPE_REGISTER, DateUtils.addMinutes(now, -expriy));
-        expriy = getExpriy(siteId, SysLockService.COMMON_ITEM_TYPES[0]);
-        service.delete(SysLockService.COMMON_ITEM_TYPES, DateUtils.addMinutes(now, -expriy));
+        service.delete(ITEM_TYPE_REGISTER, null, DateUtils.addMinutes(now, -expriy));
+        expriy = getExpriy(siteId, null);
+        service.delete(null, SysLockService.SYSTEM_ITEM_TYPES, DateUtils.addMinutes(now, -expriy));
     }
 
 }

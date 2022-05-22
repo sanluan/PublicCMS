@@ -313,14 +313,12 @@ public class TradePaymentController {
     }
 
     /**
-     * @param site
-     * @param user
-     * @param refundId
-     * @param returnUrl
+     * @param site 站点
+     * @param user 用户
+     * @param refundId 退款id
+     * @param returnUrl 重定向页面地址
      * @param request
-     * @param session
-     * @param model
-     * @return
+     * @return 重定向页面地址
      */
     @RequestMapping(value = "cancelRefund")
     @Csrf

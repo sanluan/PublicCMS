@@ -53,24 +53,24 @@ public class LogUpload implements java.io.Serializable {
     @GeneratorColumn(title = "操作日期", order = true)
     private Date createDate;
     @GeneratorColumn(title = "文件路径", condition = true, like = true)
-    private String filePath;
+    private String filepath;
 
     public LogUpload() {
     }
 
     public LogUpload(short siteId, long userId, String channel, String fileType, long fileSize, Date createDate,
-            String filePath) {
+            String filepath) {
         this.siteId = siteId;
         this.userId = userId;
         this.channel = channel;
         this.fileType = fileType;
         this.fileSize = fileSize;
         this.createDate = createDate;
-        this.filePath = filePath;
+        this.filepath = filepath;
     }
 
     public LogUpload(short siteId, long userId, String channel, String originalName, String fileType, long fileSize,
-            Integer width, Integer height, String ip, Date createDate, String filePath) {
+            Integer width, Integer height, String ip, Date createDate, String filepath) {
         this.siteId = siteId;
         this.userId = userId;
         this.channel = channel;
@@ -81,7 +81,7 @@ public class LogUpload implements java.io.Serializable {
         this.height = height;
         this.ip = ip;
         this.createDate = createDate;
-        this.filePath = filePath;
+        this.filepath = filepath;
     }
 
     @Id
@@ -189,11 +189,11 @@ public class LogUpload implements java.io.Serializable {
 
     @Column(name = "file_path", nullable = false, length = 500)
     public String getFilePath() {
-        return this.filePath;
+        return this.filepath;
     }
 
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
+    public void setFilePath(String filepath) {
+        this.filepath = filepath;
     }
 
 }

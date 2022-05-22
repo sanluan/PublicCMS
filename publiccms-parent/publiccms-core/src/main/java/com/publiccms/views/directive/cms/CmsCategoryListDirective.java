@@ -19,8 +19,39 @@ import com.publiccms.views.pojo.query.CmsCategoryQuery;
 
 /**
  *
- * CmsCategoryListDirective
+ * categoryList 分类列表查询指令
+ * <p>
+ * 参数列表
+ * <ul>
+ * <li><code>parentId</code> 父分类id
+ * <li><code>typeId</code> 分类类型id
+ * <li><code>absoluteURL</code> url处理为绝对路径 默认为<code> true</code>
+ * <li><code>queryAll</code> 查询全部,【true,false】，parentId为空时有效
+ * <li><code>advanced</code> 开启高级选项， 默认为<code> false</code>
+ * <li><code>disabled</code> 高级选项:禁用状态， 默认为<code> false</code>
+ * <li><code>hidden</code> 高级选项:隐藏，【true,false】
+ * <li><code>pageIndex</code> 页码
+ * <li><code>pageSize</code> 每页条数
+ * </ul>
+ * <p>
+ * 返回结果
+ * <ul>
+ * <li><code>page</code> {@link com.publiccms.common.handler.PageHandler}
+ * <li><code>page.list</code> List类型 查询结果实体列表,顺序排序正序,id倒叙
+ * {@link com.publiccms.entities.cms.CmsCategory}
+ * </ul>
+ * 使用示例
+ * <p>
+ * &lt;@cms.categoryList pageSize=10&gt;&lt;#list page.list as
+ * a&gt;${a.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.categoryList&gt;
  * 
+ * <pre>
+   &lt;script&gt;
+    $.getJSON('//cms.publiccms.com/api/directive/cms/categoryList?pageSize=10', function(data){    
+      console.log(data.totalCount);
+    });
+    &lt;/script&gt;
+ * </pre>
  */
 @Component
 public class CmsCategoryListDirective extends AbstractTemplateDirective {
@@ -43,7 +74,7 @@ public class CmsCategoryListDirective extends AbstractTemplateDirective {
         queryEntity.setAllowContribute(handler.getBoolean("allowContribute"));
 
         PageHandler page = service.getPage(queryEntity, handler.getInteger("pageIndex", 1),
-                handler.getInteger("pageSize", handler.getInteger("count", 30)));
+                handler.getInteger("pageSize", 30));
         @SuppressWarnings("unchecked")
         List<CmsCategory> list = (List<CmsCategory>) page.getList();
         if (null != list && handler.getBoolean("absoluteURL", true)) {

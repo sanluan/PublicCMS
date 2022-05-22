@@ -1,13 +1,13 @@
 <#macro placeTree filepath=''>
-    <@_templateList path='/include'+filepath orderField='createDate'>
+    <@tools.templateList path='/include'+filepath orderField='createDate'>
         <#list list as a>
             <@t.merge 'pages' '/include'+filepath+'/'+a.fileName/>
         </#list>
-        <@_sysDeptPage deptId=admin.deptId!'' pages=t.pages!><#assign deptPageMap=map!/></@_sysDeptPage>
+        <@sys.deptPage deptId=admin.deptId!'' pages=t.pages!><#assign deptPageMap=map!/></@sys.deptPage>
         <#list list as a>
             <#local path=filepath+'/'+a.fileName>
             <#if (deptPageMap['/include'+path])?has_content&&deptPageMap['/include'+path]>
-                <@_placeMetadata path=path>
+                <@tools.placeMetadata path=path>
                     <#if a.directory>
                         <li>
                             <a href="javascript:;" onclick="return false;">${a.fileName}</a>
@@ -18,12 +18,12 @@
                             <a href="cmsPlace/add.html?path=${path?url}&itemType=${itemType}&itemId=${itemId!}" target="navTab" rel="cmsPlace/add">${(object.alias)!a.fileName}</a>
                         </li>
                     </#if>
-                </@_placeMetadata>
+                </@tools.placeMetadata>
             </#if>
         <#else>
             <li><a><@t.page 'empty_directory'/></a></li>
         </#list>
-    </@_templateList>
+    </@tools.templateList>
 </#macro>
 <script>
 $('ul li a',$.pdialog.getCurrent()).click(function(){

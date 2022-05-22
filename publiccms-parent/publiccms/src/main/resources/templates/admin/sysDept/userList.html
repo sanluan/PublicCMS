@@ -1,4 +1,4 @@
-<@_sysUserList deptId=deptId startRegisteredDate=startRegisteredDate endRegisteredDate=endRegisteredDate startLastLoginDate=startLastLoginDate endLastLoginDate=endLastLoginDate
+<@sys.userList deptId=deptId startRegisteredDate=startRegisteredDate endRegisteredDate=endRegisteredDate startLastLoginDate=startLastLoginDate endLastLoginDate=endLastLoginDate
             superuser=superuser emailChecked=emailChecked name=name
             advanced=true disabled=disabled
             orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
@@ -52,7 +52,7 @@
 <div class="pageContent">
     <div class="panelBar">
         <ul class="toolBar">
-            <li><a href="sysDept/addUser.html?deptId=${deptId!}" target="navTab" rel="sysUser/add"><i class="icon-plus-sign-alt icon-large"></i> <@t.page 'user.add'/></a></li>
+            <li><a href="sysDept/addUser.html?deptId=${deptId!}" target="navTab" rel="sysUser/add"><i class="icon-plus-sign-alt icon-large"></i><@t.page 'user.add'/></a></li>
         </ul>
     </div>
     <table class="table" width="100%" layoutH>
@@ -82,7 +82,7 @@
                     </#if>
                     <div class="box">
                         <p class="exclude-translate"><@t.page 'user.username'/>:${(a.name)!}</p>
-                        <p class="exclude-translate"><@t.page 'user.nickname'/>:${(a.nickName)!} ${(a.superuser)?then('[<font color="red">'+t.pageMessage('admin')+'</font>]','')?no_esc}</p>
+                        <p class="exclude-translate"><@t.page 'user.nickname'/>:${(a.nickname)!} ${(a.superuser)?then('[<font color="red">'+t.pageMessage('admin')+'</font>]','')?no_esc}</p>
                         <p><font color="red"><@t.page 'user.content_permissions.'+a.contentPermissions/></font></p>
                     </div>
                 </td>
@@ -94,11 +94,11 @@
                 <td>${a.loginCount!}</td>
                 <td>${a.registeredDate!}</td>
                 <td class="wrap">
-                    <a href="sysDept/addUser.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="sysUser/edit"><i class="icon-edit"></i> <@t.page 'user.edit'/></a>
+                    <a href="sysDept/addUser.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="sysUser/edit"><i class="icon-edit"></i><@t.page 'user.edit'/></a>
                     <#if a.disabled>
-                        <a href="sysDept/enableUser?id=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText green" title="<@t.page 'confirm.enable'/>" target="ajaxTodo"><i class="icon-circle"></i> <@t.page 'button.enable'/></a>
+                        <a href="sysDept/enableUser?id=${a.id}&_csrf=<@tools.csrfToken admin=true/>" class="btnText green" title="<@t.page 'confirm.enable'/>" target="ajaxTodo"><i class="icon-circle"></i><@t.page 'button.enable'/></a>
                     <#else>
-                        <a href="sysDept/disableUser?id=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText red" title="<@t.page 'confirm.disable'/>" target="ajaxTodo"><i class="icon-ban-circle"></i> <@t.page 'button.disable'/></a>
+                        <a href="sysDept/disableUser?id=${a.id}&_csrf=<@tools.csrfToken admin=true/>" class="btnText red" title="<@t.page 'confirm.disable'/>" target="ajaxTodo"><i class="icon-ban-circle"></i><@t.page 'button.disable'/></a>
                     </#if>
                     <a href="log/login.html?userId=${a.id}" class="btnText" target="navTab" rel="log/login"><@t.page 'log.login'/></a>
                     <a href="log/operate.html?userId=${a.id}" class="btnText" target="navTab" rel="log/operate"><@t.page 'log.operate'/></a>
@@ -109,4 +109,4 @@
     </table>
     <#include "../include_page/page.html"/>
 </div>
-</@_sysUserList>
+</@sys.userList>

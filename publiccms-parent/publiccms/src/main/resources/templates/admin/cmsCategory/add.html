@@ -1,35 +1,24 @@
-<@_category id=id!copyId>
+<@cms.category id=id!copyId>
     <#assign
         a=object
         parentId=object.parentId!''
         typeId=object.typeId!''
         attribute=getCategoryAttribute(a.id)!{}
     />
-</@_category>
-<@_category id=parentId><#assign category=object/></@_category>
-<@_categoryType id=typeId><#assign categoryType=object/></@_categoryType>
+</@cms.category>
+<@cms.category id=parentId><#assign category=object/></@cms.category>
+<@cms.categoryType id=typeId><#assign categoryType=object/></@cms.categoryType>
 <form method="post" autocomplete="off" action="cmsCategory/save?callbackType=closeCurrent&navTabId=cmsCategory/list&rel=page" class="pageForm required-validate" onsubmit="clickAddTagType();return validateCallback(this, navTabAjaxDone);">
     <input name="id" type="hidden" value="${id!}" />
-    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
             <li>
                 <label><input type="checkbox" name="showAdvancedOptions" onclick="if($(this).is(':checked')){$('.advanced',navTab.getCurrentPanel()).show();checkCategoryModel();}else{$('.advanced',navTab.getCurrentPanel()).hide();checkCategoryModel();}"/><@t.page 'show_advanced_options'/></label>
             </li>
-        <@_sysAuthorized roleIds=admin.roles url='cmsCategory/save'>
-            <@_createLock itemType='category' itemId=id userId=admin.id>
-                <#if object?has_content||!id?has_content>
-            <li><button type="submit" class="buttonActive" title="ctrl+s"<#if id?has_content> close-url="common/unlock?itemType=category&itemId=${id!}"</#if>><@t.page 'button.save'/></button></li>
-                <#else>
-            <li>
-                <@_sysLock userId=admin.id itemType='category' itemId=id>
-                    <@_sysUser id=(object.userId)!''><#assign lockUser=object.nickName/></@_sysUser>
-                <button type="button" class="buttonDisabled" title="${object.createDate}"><@t.page 'lock.message' lockUser/></button>
-                </@_sysLock>
-            </li>
-                </#if>
-            </@_createLock>
-        </@_sysAuthorized>
+        <@sys.authorized roleIds=admin.roles url='cmsCategory/save'>
+            <li><button type="submit" class="buttonActive" title="ctrl+s"<#if id?has_content> lock-url="common/lock?itemType=category&itemId=${id!} close-url="common/unlock?itemType=category&itemId=${id!}"</#if>><@t.page 'button.save'/></button></li>
+        </@sys.authorized>
             <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
         </ul>
     </div>
@@ -38,7 +27,7 @@
             <div class="tabsHeaderContent">
                 <ul>
                     <li><a href="javascript:;" onclick="return false;"><@t.page 'base_info'/></a></li>
-                    <li class="onlyUrl"><a href="javascript:;" onclick="return false;"><@t.page 'seo'/></a></li>
+                    <li class="onlyUrl seo"><a href="javascript:;" onclick="return false;"><@t.page 'seo'/></a></li>
                     <li class="categoryModelControl"><a href="javascript:;" onclick="return false;"><@t.page 'category.model'/></a></li>
                     <li class="categoryModelContent"><a href="javascript:;" onclick="return false;"><@t.page 'content.extend_field'/></a></li>
                 </ul>
@@ -83,7 +72,7 @@
                 <dl class="nowrap onlyUrl advanced">
                     <dt><@t.page 'category.template_path'/>:</dt>
                     <dd>
-                        <input name="templatePath" type="text" autocomplete="on" maxlength="255" size="30" value="${(a.templatePath)!(categoryType.templatePath)!}"/>
+                        <input name="templatePath" type="text" autocomplete="on" maxlength="255" size="50" value="${(a.templatePath)!(categoryType.templatePath)!}"/>
                         <a class="btnLook" href="cmsTemplate/lookup.html?field=templatePath" lookupGroup=""><@t.page 'template.select'/></a>
                         <span class="info"><@t.page 'category.template_path.description'/></span>
                     </dd>
@@ -134,19 +123,19 @@
                 </dl>
             </div>
             <div class="pageFormContent categoryModel" layoutH>
-                <@_sysAuthorized roleIds=admin.roles url='cmsModel/list'>
+                <@sys.authorized roleIds=admin.roles url='cmsModel/list'>
                 <dl class="nowrap">
                     <dt><@t.page 'model.management'/></dt>
                     <dd>
-                        <a href="cmsModel/list.html" target="navTab" rel="cmsModel/list"><i class="icon-th-large icon-large"></i> <@t.page 'model.management'/></a>
+                        <a href="cmsModel/list.html" target="navTab" rel="cmsModel/list"><i class="icon-th-large icon-large"></i><@t.page 'model.management'/></a>
                     </dd>
                 </dl>
-                </@_sysAuthorized>
+                </@sys.authorized>
                 <div class="divider"></div>
 <#assign modelIndex=-1/>
 <#macro childModel parent index=1>
     <#if parent.hasChild>
-        <@_modelList parentId=parent.id>
+        <@cms.modelList parentId=parent.id>
     <ul>
             <#list page.list as a>
                 <#assign modelIndex++/>
@@ -162,10 +151,10 @@
         </li>
             </#list>
     </ul>
-        </@_modelList>
+        </@cms.modelList>
     </#if>
 </#macro>
-<@_modelList>
+<@cms.modelList>
     <#list page.list as a>
         <#assign modelIndex++/>
                 <dl class="nowrap">
@@ -187,7 +176,7 @@
                     </dd>
                 </dl>
     </#list>
-</@_modelList>
+</@cms.modelList>
                 <dl class="nowrap categoryModelContentPath">
                     <dt><@t.page 'category.content_path'/>:</dt>
                     <dd>
@@ -198,12 +187,12 @@
                 </dl>
 <script>
 <#if a?has_content>
-    <@_categoryModelList categoryId=id!copyId>
+    <@cms.categoryModelList categoryId=id!copyId>
         <#list list as a>
             $('input[name$=\\.categoryModel\\.id\\.modelId][value=${a.id.modelId}]',navTab.getCurrentPanel()).parent().find('input[type=checkbox]').click();
             $('input[data-model=${a.id.modelId}]',navTab.getCurrentPanel()).val('${(a.templatePath)!}');
         </#list>
-    </@_categoryModelList>
+    </@cms.categoryModelList>
     <#if a.onlyUrl>
         $('input[name=onlyUrl]',navTab.getCurrentPanel()).click();
     </#if>
@@ -221,9 +210,9 @@ checkCategoryModel();
 <#assign contentExtendList=[]/>
 <#assign copy=false/>
 <#if a?has_content&&a.extendId?has_content>
-    <@_sysExtendFieldList extendId=a.extendId>
+    <@sys.extendFieldList extendId=a.extendId>
         <#assign contentExtendList=list>
-    </@_sysExtendFieldList>
+    </@sys.extendFieldList>
     <#if copyId?has_content && !id?has_content><#assign copy=true/></#if>
 </#if>
 <#include "../include_page/extends.html"/>
@@ -238,6 +227,11 @@ checkCategoryModel();
     <script>
     $('input[name=showAdvancedOptions]',navTab.getCurrentPanel()).click();
     $('.tabs',navTab.getCurrentPanel()).attr('currentIndex',$('li.categoryModelControl').index('.tabsHeaderContent ul li')); 
+    </script>
+</#if>
+<#if seo?has_content && 'true' = seo>
+    <script>
+    $('.tabs',navTab.getCurrentPanel()).attr('currentIndex',$('li.seo').index('.tabsHeaderContent ul li')); 
     </script>
 </#if>
 </form>

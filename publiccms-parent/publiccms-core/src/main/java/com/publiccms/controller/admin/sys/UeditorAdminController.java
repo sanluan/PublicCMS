@@ -68,6 +68,7 @@ public class UeditorAdminController {
     protected static final String ACTION_CATCHIMAGE = "catchimage";
     protected static final String ACTION_LISTIMAGE = "listimage";
     protected static final String ACTION_LISTFILE = "listfile";
+    protected static final String ACTION_LISTVIDEO = "listvideo";
 
     protected static final String FIELD_NAME = "file";
     protected static final String SCRAW_TYPE = ".jpg";
@@ -89,6 +90,7 @@ public class UeditorAdminController {
         config.setCatcherActionName(ACTION_CATCHIMAGE);
         config.setImageManagerActionName(ACTION_LISTIMAGE);
         config.setFileManagerActionName(ACTION_LISTFILE);
+        config.setVideoManagerActionName(ACTION_LISTVIDEO);
         config.setImageFieldName(FIELD_NAME);
         config.setScrawlFieldName(FIELD_NAME);
         config.setCatcherFieldName(FIELD_NAME);
@@ -101,6 +103,7 @@ public class UeditorAdminController {
         config.setVideoUrlPrefix(urlPrefix);
         config.setFileUrlPrefix(urlPrefix);
         config.setImageManagerUrlPrefix(urlPrefix);
+        config.setVideoManagerUrlPrefix(urlPrefix);
         config.setFileManagerUrlPrefix(urlPrefix);
         config.setImageAllowFiles(CmsFileUtils.IMAGE_ALLOW_FILES);
         config.setCatcherAllowFiles(CmsFileUtils.IMAGE_ALLOW_FILES);
@@ -127,10 +130,10 @@ public class UeditorAdminController {
             String suffix = CmsFileUtils.getSuffix(originalName);
             if (ArrayUtils.contains(siteConfigComponent.getSafeSuffix(site), suffix)) {
                 String fileName = CmsFileUtils.getUploadFileName(suffix);
-                String filePath = siteComponent.getWebFilePath(site, fileName);
+                String filepath = siteComponent.getWebFilePath(site, fileName);
                 try {
-                    CmsFileUtils.upload(file, filePath);
-                    FileSize fileSize = CmsFileUtils.getFileSize(filePath, suffix);
+                    CmsFileUtils.upload(file, filepath);
+                    FileSize fileSize = CmsFileUtils.getFileSize(filepath, suffix);
                     logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                             originalName, CmsFileUtils.getFileType(suffix), file.getSize(), fileSize.getWidth(),
                             fileSize.getHeight(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
@@ -163,10 +166,10 @@ public class UeditorAdminController {
         if (CommonUtils.notEmpty(file)) {
             byte[] data = VerificationUtils.base64Decode(file);
             String fileName = CmsFileUtils.getUploadFileName(SCRAW_TYPE);
-            String filePath = siteComponent.getWebFilePath(site, fileName);
+            String filepath = siteComponent.getWebFilePath(site, fileName);
             try {
-                CmsFileUtils.writeByteArrayToFile(filePath, data);
-                FileSize fileSize = CmsFileUtils.getFileSize(filePath, SCRAW_TYPE);
+                CmsFileUtils.writeByteArrayToFile(filepath, data);
+                FileSize fileSize = CmsFileUtils.getFileSize(filepath, SCRAW_TYPE);
                 logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                         CommonConstants.BLANK, CmsFileUtils.FILE_TYPE_IMAGE, data.length, fileSize.getWidth(),
                         fileSize.getHeight(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
@@ -214,13 +217,13 @@ public class UeditorAdminController {
                             FileSize fileSize;
                             if (fileType.equals(FileType.WebP)) {
                                 fileName = CmsFileUtils.getUploadFileName("jpg");
-                                String filePath = siteComponent.getWebFilePath(site, fileName);
-                                ImageUtils.webp2Image(inputStream, false, new File(filePath));
-                                fileSize = CmsFileUtils.getFileSize(filePath, suffix);
+                                String filepath = siteComponent.getWebFilePath(site, fileName);
+                                ImageUtils.webp2Image(inputStream, false, new File(filepath));
+                                fileSize = CmsFileUtils.getFileSize(filepath, suffix);
                             } else {
                                 fileName = CmsFileUtils.getUploadFileName(suffix);
-                                String filePath = siteComponent.getWebFilePath(site, fileName);
-                                fileSize = CmsFileUtils.copyInputStreamToFile(inputStream, filePath, suffix);
+                                String filepath = siteComponent.getWebFilePath(site, fileName);
+                                fileSize = CmsFileUtils.copyInputStreamToFile(inputStream, filepath, suffix);
                             }
                             logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                                     CommonConstants.BLANK, CmsFileUtils.getFileType(suffix), fileSize.getFileSize(),
@@ -255,20 +258,45 @@ public class UeditorAdminController {
     /**
      * @param site
      * @param admin
-     * @param action
      * @param start
      * @return view name
      */
-    @SuppressWarnings("unchecked")
-    @RequestMapping(params = { "action=" + ACTION_LISTIMAGE, "action=" + ACTION_LISTFILE })
+    @RequestMapping(params = { "action=" + ACTION_LISTIMAGE })
     @ResponseBody
-    public Map<String, Object> listfile(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String action,
-            Integer start) {
+    public Map<String, Object> listimage(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Integer start) {
+        return listfile(site, admin, CmsFileUtils.IMAGE_FILETYPES, start);
+    }
+
+    /**
+     * @param site
+     * @param admin
+     * @param start
+     * @return view name
+     */
+    @RequestMapping(params = { "action=" + ACTION_LISTFILE })
+    @ResponseBody
+    public Map<String, Object> listfile(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Integer start) {
+        return listfile(site, admin, null, start);
+    }
+
+    /**
+     * @param site
+     * @param admin
+     * @param start
+     * @return view name
+     */
+    @RequestMapping(params = { "action=" + ACTION_LISTVIDEO })
+    @ResponseBody
+    public Map<String, Object> listvideo(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Integer start) {
+        return listfile(site, admin, CmsFileUtils.VIDEO_FILETYPES, start);
+    }
+
+    @SuppressWarnings("unchecked")
+    public Map<String, Object> listfile(SysSite site, SysUser admin, String[] fileTyps, Integer start) {
         if (CommonUtils.empty(start)) {
             start = 0;
         }
-        PageHandler page = logUploadService.getPage(site.getId(), admin.getId(), null,
-                ACTION_LISTIMAGE.equalsIgnoreCase(action) ? CmsFileUtils.IMAGE_FILETYPES : null, null, null, null, null,
+        PageHandler page = logUploadService.getPage(site.getId(), admin.getId(), null, fileTyps, null, null, null, null,
                 start / 20 + 1, 20);
 
         Map<String, Object> map = getResultMap(true);
@@ -276,6 +304,7 @@ public class UeditorAdminController {
         for (LogUpload logUpload : ((List<LogUpload>) page.getList())) {
             Map<String, Object> tempMap = getResultMap(true);
             tempMap.put("url", logUpload.getFilePath());
+            tempMap.put("name", logUpload.getOriginalName());
             list.add(tempMap);
         }
         map.put("list", list);

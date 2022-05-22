@@ -22,6 +22,10 @@ public class CmsDictionaryExcludeValue implements java.io.Serializable {
     */
     private static final long serialVersionUID = 1L;
     private CmsDictionaryExcludeValueId id;
+    /**
+     * exclude values<p>
+     * 排除的值
+     */
     @GeneratorColumn(title = "排除的值")
     private String excludeValues;
 

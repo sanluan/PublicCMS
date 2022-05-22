@@ -38,6 +38,7 @@ import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.cms.CmsContentAttribute;
 import com.publiccms.entities.cms.CmsContentFile;
+import com.publiccms.entities.cms.CmsContentTextHistory;
 import com.publiccms.entities.cms.CmsContentProduct;
 import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
@@ -63,7 +64,7 @@ public class CmsContentService extends BaseService<CmsContent> {
             Config.INPUTTYPE_DEPT, Config.INPUTTYPE_CONTENT, Config.INPUTTYPE_CATEGORY, Config.INPUTTYPE_DICTIONARY,
             Config.INPUTTYPE_CATEGORYTYPE, Config.INPUTTYPE_TAGTYPE };
 
-    public static final String[] FULLTEXT_SEARCHABLE_EDITOR = { "kindeditor", "ckeditor", "editor" };
+    public static final String[] FULLTEXT_SEARCHABLE_EDITOR = { "kindeditor", "ckeditor", "tinymce", "editor" };
     public static final String[] ignoreProperties = new String[] { "id", "siteId" };
     /**
      * 
@@ -100,6 +101,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param fields
      * @param tagIds
      * @param dictionaryValues
+     * @param dictionaryUnion
      * @param startPublishDate
      * @param endPublishDate
      * @param expiryDate
@@ -111,11 +113,11 @@ public class CmsContentService extends BaseService<CmsContent> {
     @Transactional(readOnly = true)
     public PageHandler query(Short siteId, boolean projection, boolean phrase, HighLighterQuery highLighterQuery, String text,
             String[] fields, Long[] tagIds, Integer categoryId, Boolean containChild, Integer[] categoryIds, String[] modelIds,
-            String[] dictionaryValues, Date startPublishDate, Date endPublishDate, Date expiryDate, String orderField,
-            Integer pageIndex, Integer pageSize) {
+            String[] dictionaryValues, Boolean dictionaryUnion, Date startPublishDate, Date endPublishDate, Date expiryDate,
+            String orderField, Integer pageIndex, Integer pageSize) {
         return dao.query(siteId, projection, phrase, highLighterQuery, getCategoryIds(containChild, categoryId, categoryIds),
-                modelIds, text, fields, tagIds, dictionaryValues, startPublishDate, endPublishDate, expiryDate, orderField,
-                pageIndex, pageSize);
+                modelIds, text, fields, tagIds, dictionaryValues, dictionaryUnion, startPublishDate, endPublishDate, expiryDate,
+                orderField, pageIndex, pageSize);
     }
 
     /**
@@ -123,12 +125,15 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param projection
      * @param phrase
      * @param highLighterQuery
-     * @param categoryIds
-     * @param modelIds
      * @param text
      * @param fields
      * @param tagIds
+     * @param categoryId
+     * @param containChild
+     * @param categoryIds
+     * @param modelIds
      * @param dictionaryValues
+     * @param dictionaryUnion
      * @param startPublishDate
      * @param endPublishDate
      * @param expiryDate
@@ -139,10 +144,12 @@ public class CmsContentService extends BaseService<CmsContent> {
      */
     @Transactional(readOnly = true)
     public FacetPageHandler facetQuery(Short siteId, boolean projection, boolean phrase, HighLighterQuery highLighterQuery,
-            String text, String[] fields, Long[] tagIds, Integer[] categoryIds, String[] modelIds, String[] dictionaryValues,
-            Date startPublishDate, Date endPublishDate, Date expiryDate, String orderField, Integer pageIndex, Integer pageSize) {
-        return dao.facetQuery(siteId, projection, phrase, highLighterQuery, categoryIds, modelIds, text, fields, tagIds,
-                dictionaryValues, startPublishDate, endPublishDate, expiryDate, orderField, pageIndex, pageSize);
+            String text, String[] fields, Long[] tagIds, Integer categoryId, Boolean containChild, Integer[] categoryIds,
+            String[] modelIds, String[] dictionaryValues, Boolean dictionaryUnion, Date startPublishDate, Date endPublishDate,
+            Date expiryDate, String orderField, Integer pageIndex, Integer pageSize) {
+        return dao.facetQuery(siteId, projection, phrase, highLighterQuery, getCategoryIds(containChild, categoryId, categoryIds),
+                modelIds, text, fields, tagIds, dictionaryValues, dictionaryUnion, startPublishDate, endPublishDate, expiryDate,
+                orderField, pageIndex, pageSize);
     }
 
     /**
@@ -221,8 +228,14 @@ public class CmsContentService extends BaseService<CmsContent> {
                     entity.isHasFiles() ? contentParameters.getFiles() : null,
                     entity.isHasImages() ? contentParameters.getImages() : null,
                     entity.isHasProducts() ? contentParameters.getProducts() : null, attribute);
-            attributeService.updateAttribute(id, attribute);// 更新保存扩展字段，文本字段
-            cmsContentRelatedService.update(id, userId, contentParameters.getContentRelateds());// 更新保存推荐内容
+            CmsContentAttribute oldAttribute = attributeService.getEntity(entity.getId());
+            if (null != oldAttribute && null != oldAttribute.getText() && !oldAttribute.getText().equals(attribute.getText())) {
+                CmsContentTextHistory history = new CmsContentTextHistory(entity.getId(), "text", CommonUtils.getDate(), userId,
+                        oldAttribute.getText());
+                contentHistoryService.save(history);
+            }
+            attributeService.updateAttribute(entity.getId(), attribute);// 更新保存扩展字段，文本字段
+            cmsContentRelatedService.update(entity.getId(), userId, contentParameters.getContentRelateds());// 更新保存推荐内容
         }
         return entity;
     }
@@ -476,7 +489,6 @@ public class CmsContentService extends BaseService<CmsContent> {
     }
 
     /**
-     * @param siteId
      * @param id
      * @param categoryList
      * @param category
@@ -880,6 +892,8 @@ public class CmsContentService extends BaseService<CmsContent> {
     private CmsTagService tagService;
     @Resource
     private CmsContentFileService contentFileService;
+    @Resource
+    private CmsContentTextHistoryService contentHistoryService;
     @Resource
     private CmsContentProductService contentProductService;
     @Resource

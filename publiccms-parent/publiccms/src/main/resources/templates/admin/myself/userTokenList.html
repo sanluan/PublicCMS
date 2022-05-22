@@ -1,4 +1,4 @@
-<@_sysUserTokenList userId=admin.id channel=channel orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
+<@sys.userTokenList userId=admin.id channel=channel orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
     <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
@@ -38,16 +38,16 @@
                 <td>${a.expiryDate!}</td>
                 <td>${a.loginIp!}</td>
                 <td class="wrap">
-                    <a href="sysUserToken/delete?authToken=${a.authToken}&_csrf=<@_csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i> <@t.page 'button.delete'/></a>
+                    <a href="sysUserToken/delete?authToken=${a.authToken}&_csrf=<@tools.csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i><@t.page 'button.delete'/></a>
                 </td>
             </tr>
             </#list>
         </tbody>
     </table>
     <script>
-        $('table>tbody>tr[rel="<@_csrfToken admin=true/>"]>td:eq(0)',navTab.getCurrentPanel()).append('[<@t.page 'current_token'/>]');
-        $('table>tbody>tr[rel="<@_csrfToken/>"]>td:eq(0)',navTab.getCurrentPanel()).append('[<@t.page 'current_token'/>]');
+        $('table>tbody>tr[rel="<@tools.csrfToken admin=true/>"]>td:eq(0)',navTab.getCurrentPanel()).append('[<@t.page 'current_token'/>]');
+        $('table>tbody>tr[rel="<@tools.csrfToken/>"]>td:eq(0)',navTab.getCurrentPanel()).append('[<@t.page 'current_token'/>]');
     </script>
     <#include "../include_page/page.html"/>
 </div>
-</@_sysUserTokenList>
+</@sys.userTokenList>

@@ -5,21 +5,21 @@
     <title>${metadata.alias!}</title>
 </head>
 <body>
-    <header>
+    <header data-diy="page">
         <h1>${(site.name)!}</h1>
     </header>
-    <nav>
-        <a href="${base}">Home</a>
-<@_categoryList>
+    <nav data-diy="category">
+        <a href="${site.dynamicPath}">Home</a>
+<@cms.categoryList>
     <#list page.list as a>
         <a href="${a.url!}" target="_blank">${a.name}</a>
     </#list>
-</@_categoryList>
+</@cms.categoryList>
     </nav>
     <main>
         <h1>Survey</h1>
 <#macro message code>${springMacroRequestContext.getMessage(code)}</#macro>
-<@_surveyList pageIndex=pageIndex pageSize=10>
+<@cms.surveyList pageIndex=pageIndex pageSize=10>
         <ul>
     <#list page.list as a>
             <li>
@@ -65,13 +65,16 @@
                 <span>Next page</span>
             </#if>
         </div>
-</@_surveyList>
+</@cms.surveyList>
     </main>
     <footer>
         Copyright &copy; ${.now?string('yyyy')}
     </footer>
-    <script src="${site.dynamicPath!}resource/js/jquery-1.12.4.min.js"></script>
+    <script>
+    var templatePath='${.current_template_name?keep_after('/')}';
+    </script>
     <script src="${site.dynamicPath}resource/js/cms.analytics.js"></script>
+    <script src="${site.dynamicPath}resource/js/cms.diy.js"></script>
     <script>
         var ca = cmsAnalytics();
         var url='${site.dynamicPath}api/visit/record';

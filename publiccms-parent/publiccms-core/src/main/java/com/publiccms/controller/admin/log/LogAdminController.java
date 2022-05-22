@@ -151,7 +151,7 @@ public class LogAdminController {
                 dept = deptMap.get(entity.getDeptId());
                 row.createCell(j++).setCellValue(null == dept ? null : dept.getName());
                 user = userMap.get(entity.getUserId());
-                row.createCell(j++).setCellValue(null == user ? null : user.getNickName());
+                row.createCell(j++).setCellValue(null == user ? null : user.getNickname());
                 row.createCell(j++).setCellValue(entity.getCount());
             }
         });

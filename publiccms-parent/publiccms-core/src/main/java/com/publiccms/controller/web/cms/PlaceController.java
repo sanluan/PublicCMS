@@ -96,8 +96,8 @@ public class PlaceController {
             }
             entity.setPath(entity.getPath().replace("//", CommonConstants.SEPARATOR));
             entity.setStatus(CmsPlaceService.STATUS_PEND);
-            String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
-            CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filePath);
+            String filepath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
+            CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);
             SysUser user = ControllerUtils.getUserFromSession(session);
             if (ControllerUtils.errorCustom("contribute",
                     null == metadata || !metadata.isAllowContribute() || 0 >= metadata.getSize(), model)
@@ -131,7 +131,7 @@ public class PlaceController {
                         "save.place", RequestUtils.getIpAddress(request), CommonUtils.getDate(), entity.getPath()));
             }
             Map<String, String> map = ExtendUtils.getExtentDataMap(placeParameters.getExtendDataList(),
-                    metadataComponent.getPlaceMetadata(filePath).getExtendList());
+                    metadataComponent.getPlaceMetadata(filepath).getExtendList());
             String extentString = ExtendUtils.getExtendString(map);
             attributeService.updateAttribute(entity.getId(), extentString);
         }
@@ -154,8 +154,8 @@ public class PlaceController {
         returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         CmsPlace entity = service.getEntity(id);
         if (null != entity) {
-            String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
-            CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filePath);
+            String filepath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
+            CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);
             if (ControllerUtils.errorCustom("manage",
                     CommonUtils.empty(metadata.getAdminIds()) || !ArrayUtils.contains(metadata.getAdminIds(), user.getId()),
                     model) || ControllerUtils.errorNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
@@ -166,7 +166,7 @@ public class PlaceController {
                 if (site.isUseSsi() || CmsFileUtils
                         .exists(siteComponent.getWebFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + entity.getPath()))) {
                     try {
-                        CmsPageData data = metadataComponent.getTemplateData(filePath);
+                        CmsPageData data = metadataComponent.getTemplateData(filepath);
                         templateComponent.staticPlace(site, entity.getPath(), metadata, data);
                     } catch (IOException | TemplateException e) {
                         model.addAttribute(CommonConstants.ERROR, e.getMessage());
@@ -194,8 +194,8 @@ public class PlaceController {
         returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         CmsPlace entity = service.getEntity(id);
         if (null != entity) {
-            String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
-            CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filePath);
+            String filepath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
+            CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);
             if (ControllerUtils.errorCustom("manage",
                     CommonUtils.empty(metadata.getAdminIds()) || !ArrayUtils.contains(metadata.getAdminIds(), user.getId()),
                     model) || ControllerUtils.errorNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
@@ -206,7 +206,7 @@ public class PlaceController {
                 if (site.isUseSsi() || CmsFileUtils
                         .exists(siteComponent.getWebFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + entity.getPath()))) {
                     try {
-                        CmsPageData data = metadataComponent.getTemplateData(filePath);
+                        CmsPageData data = metadataComponent.getTemplateData(filepath);
                         templateComponent.staticPlace(site, entity.getPath(), metadata, data);
                     } catch (IOException | TemplateException e) {
                         model.addAttribute(CommonConstants.ERROR, e.getMessage());
@@ -234,8 +234,8 @@ public class PlaceController {
         returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         CmsPlace entity = service.getEntity(id);
         if (null != entity) {
-            String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
-            CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filePath);
+            String filepath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
+            CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);
             if (ControllerUtils.errorCustom("manage",
                     null == entity || null == user || CommonUtils.empty(metadata.getAdminIds())
                             || !ArrayUtils.contains(metadata.getAdminIds(), user.getId()),
@@ -247,7 +247,7 @@ public class PlaceController {
                 if (site.isUseSsi() || CmsFileUtils
                         .exists(siteComponent.getWebFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + entity.getPath()))) {
                     try {
-                        CmsPageData data = metadataComponent.getTemplateData(filePath);
+                        CmsPageData data = metadataComponent.getTemplateData(filepath);
                         templateComponent.staticPlace(site, entity.getPath(), metadata, data);
                     } catch (IOException | TemplateException e) {
                         model.addAttribute(CommonConstants.ERROR, e.getMessage());

@@ -167,6 +167,7 @@ public class CmsContentAdminController {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             entity.setUpdateDate(now);
+            entity.setUpdateUserId(admin.getId());
             entity = service.update(entity.getId(), entity, entity.isOnlyUrl() ? ignoreProperties : ignorePropertiesWithUrl);
             if (null != entity) {
                 logOperateService
@@ -467,7 +468,7 @@ public class CmsContentAdminController {
     }
 
     /**
-     * @param siteId
+     * @param site
      * @param entity
      * @param categoryId
      */
@@ -736,7 +737,7 @@ public class CmsContentAdminController {
                 row.createCell(j++).setCellValue(entity.getUrl());
                 user = userMap.get(entity.getUserId());
                 dept = deptMap.get(entity.getDeptId());
-                row.createCell(j++).setCellValue(null == user ? null : user.getNickName());
+                row.createCell(j++).setCellValue(null == user ? null : user.getNickname());
                 row.createCell(j++).setCellValue(null == dept ? null : dept.getName());
                 category = categoryMap.get(entity.getCategoryId());
                 row.createCell(j++).setCellValue(null == category ? null : category.getName());
@@ -751,7 +752,7 @@ public class CmsContentAdminController {
                 row.createCell(j++).setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale,
                         "page.status.content." + entity.getStatus()));
                 user = userMap.get(entity.getCheckUserId());
-                row.createCell(j++).setCellValue(null == user ? null : user.getNickName());
+                row.createCell(j++).setCellValue(null == user ? null : user.getNickname());
 
                 attribute = contentAttributeMap.get(entity.getId());
                 row.createCell(j++).setCellValue(null == attribute ? null : attribute.getSource());
@@ -802,10 +803,10 @@ public class CmsContentAdminController {
             for (CmsContent entity : service.delete(site.getId(), admin, ids)) {
                 categoryIdSet.add(entity.getCategoryId());
                 if (entity.isHasStatic()) {
-                    String filePath = siteComponent.getWebFilePath(site, entity.getUrl());
-                    if (CmsFileUtils.exists(filePath)) {
-                        String backupFilePath = siteComponent.getWebBackupFilePath(site, filePath);
-                        CmsFileUtils.moveFile(filePath, backupFilePath);
+                    String filepath = siteComponent.getWebFilePath(site, entity.getUrl());
+                    if (CmsFileUtils.exists(filepath)) {
+                        String backupFilePath = siteComponent.getWebBackupFilePath(site, filepath);
+                        CmsFileUtils.moveFile(filepath, backupFilePath);
                     }
                 }
             }

@@ -1,4 +1,4 @@
-<@_contentProductList title=title userId=userId startPrice=startPrice endPrice=endPrice orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
+<@cms.contentProductList title=title userId=userId startPrice=startPrice endPrice=endPrice orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
     <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
@@ -27,7 +27,7 @@
         </div>
     </form>
 </div>
-<@_sysAuthorized roleIds=admin.roles urls='cmsContentProduct/add'><#assign authorizedMap=map/></@_sysAuthorized>
+<@sys.authorized roleIds=admin.roles urls='cmsContentProduct/add'><#assign authorizedMap=map/></@sys.authorized>
 <div class="pageContent">
     <table class="table" width="100%" layoutH="92">
         <thead>
@@ -48,8 +48,8 @@
                 <@t.merge 'userIds' a.userId!/>
                 <@t.merge 'contentIds' a.contentId!/>
             </#list>
-            <@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
-            <@_content ids=t.contentIds!><#assign contentMap=map!/></@_content>
+            <@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
+            <@cms.content ids=t.contentIds!><#assign contentMap=map!/></@cms.content>
             <#list page.list as a>
             <tr>
                 <td class="center"><input name="ids" value="${a.id}" type="checkbox"></td>
@@ -67,13 +67,13 @@
                         </p>
                     </div>
                 </td>
-                <td>${(userMap[a.userId?string].nickName)!}</td>
+                <td>${(userMap[a.userId?string].nickname)!}</td>
                 <td>${a.price!}</td>
                 <td>${a.minQuantity!} - ${a.maxQuantity!}</td>
                 <td>${a.inventory!}</td>
                 <td>${a.sales!}</td>
                 <td class="wrap">
-                    <a href="cmsContentProduct/add.html?id=${a.id}" class="edit btnText blue" target="dialog" rel="cmsContentProduct_edit"><i class="icon-edit"></i> <@t.page 'button.edit'/></a>
+                    <a href="cmsContentProduct/add.html?id=${a.id}" class="edit btnText blue" target="dialog" rel="cmsContentProduct_edit"><i class="icon-edit"></i><@t.page 'button.edit'/></a>
                 </td>
             </tr>
             </#list>
@@ -81,4 +81,4 @@
     </table>
     <#include "../include_page/page.html"/>
 </div>
-</@_contentProductList>
+</@cms.contentProductList>

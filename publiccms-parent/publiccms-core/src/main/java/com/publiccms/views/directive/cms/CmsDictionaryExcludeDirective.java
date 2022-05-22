@@ -17,8 +17,32 @@ import com.publiccms.logic.service.cms.CmsDictionaryExcludeService;
 
 /**
  *
- * CmsDictionaryExcludeDirective
+ * dictionaryExclude 数据字典排除规则查询指令
+ * <p>
+ * 参数列表
+ * <ul>
+ * <li><code>dictionaryId</code> 数据字典id
+ * <li><code>excludeDictionaryId</code>
+ * 排除的字典，结果返回<code>object</code>{@link com.publiccms.entities.cms.CmsDictionaryExclude}
+ * <li><code>excludeDictionaryIds</code>
+ * 多个排除的字典，逗号或空格间隔，当excludeDictionaryId为空时生效，结果返回<code>map</code>(id,数据字典排除规则){@link com.publiccms.entities.cms.CmsDictionaryExclude}
+ * </ul>
+ * 使用示例
+ * <p>
+ * &lt;@cms.dictionaryExclude dictionaryId='data'
+ * excludeDictionaryId='data1'&gt;${object.id.excludeDictionaryId}&lt;/@cms.dictionaryExclude&gt;
+ * <p>
+ * &lt;@cms.dictionaryExclude dictionaryId='data'
+ * excludeDictionaryIds='data1,data2'&gt;&lt;#list map as
+ * k,v&gt;${v.id.excludeDictionaryId}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.dictionaryExclude&gt;
  * 
+ * <pre>
+*  &lt;script&gt;
+   $.getJSON('//cms.publiccms.com/api/directive/cms/dictionaryExclude?dictionaryId=data&amp;value=1', function(data){    
+     console.log(data.id.excludeDictionaryId);
+   });
+   &lt;/script&gt;
+ * </pre>
  */
 @Component
 public class CmsDictionaryExcludeDirective extends AbstractTemplateDirective {

@@ -24,46 +24,89 @@ public class CmsContentFile implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
+    /**
+     * id
+     */
     @GeneratorColumn(title = "ID")
     private Long id;
+    /**
+     * content id<p>
+     * 内容id
+     */
     @GeneratorColumn(title = "内容", condition = true)
     private long contentId;
+    /**
+     * upload user id<p>
+     * 上传用户id
+     */
     @GeneratorColumn(title = "上传用户", condition = true)
     private long userId;
+    /**
+     * file path<p>
+     * 文件路径
+     */
     @GeneratorColumn(title = "文件路径")
-    private String filePath;
-    @GeneratorColumn(title = "图片类型", condition = true)
+    private String filepath;
+    /**
+     * file type<p>
+     * 文件类型
+     */
+    @GeneratorColumn(title = "文件类型", condition = true)
     private String fileType;
+    /**
+     * file size<p>
+     * 文件大小
+     */
     @GeneratorColumn(title = "文件大小", order = true)
     private Long fileSize;
+    /**
+     * width<p>
+     * 宽
+     */
     @GeneratorColumn(title = "宽度")
     private Integer width;
+    /**
+     * height<p>
+     * 高
+     */
     @GeneratorColumn(title = "高度")
     private Integer height;
+    /**
+     * clicks<p>
+     * 点击数
+     */
     @GeneratorColumn(title = "点击", order = true)
     private int clicks;
+    /**
+     * sort<p>
+     * 排序
+     */
     @GeneratorColumn(title = "排序")
     private int sort;
+    /**
+     * description<p>
+     * 描述
+     */
     @GeneratorColumn(title = "描述")
     private String description;
 
     public CmsContentFile() {
     }
 
-    public CmsContentFile(long contentId, long userId, String filePath, String fileType, int clicks, int sort) {
+    public CmsContentFile(long contentId, long userId, String filepath, String fileType, int clicks, int sort) {
         this.contentId = contentId;
         this.userId = userId;
-        this.filePath = filePath;
+        this.filepath = filepath;
         this.fileType = fileType;
         this.clicks = clicks;
         this.sort = sort;
     }
 
-    public CmsContentFile(long contentId, long userId, String filePath, String fileType, Long fileSize, Integer width,
+    public CmsContentFile(long contentId, long userId, String filepath, String fileType, Long fileSize, Integer width,
             Integer height, int clicks, int sort, String description) {
         this.contentId = contentId;
         this.userId = userId;
-        this.filePath = filePath;
+        this.filepath = filepath;
         this.fileType = fileType;
         this.fileSize = fileSize;
         this.width = width;
@@ -105,11 +148,11 @@ public class CmsContentFile implements java.io.Serializable {
 
     @Column(name = "file_path", nullable = false)
     public String getFilePath() {
-        return this.filePath;
+        return this.filepath;
     }
 
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
+    public void setFilePath(String filepath) {
+        this.filepath = filepath;
     }
 
     @Column(name = "file_type", nullable = false, length = 20)

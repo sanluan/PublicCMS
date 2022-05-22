@@ -464,9 +464,9 @@ public class ControllerUtils {
      * @param model
      * @return boolean
      */
-    public static boolean errorNotNickName(String field, String value, Map<String, Object> model) {
+    public static boolean errorNotNickname(String field, String value, Map<String, Object> model) {
         if (notValid(value)) {
-            model.put(CommonConstants.ERROR, "verify.notNickName." + field);
+            model.put(CommonConstants.ERROR, "verify.notNickname." + field);
             return true;
         }
         return false;

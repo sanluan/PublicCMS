@@ -1,5 +1,5 @@
-<@_dictionary id=id><#assign dictionary=object/></@_dictionary>
-<#if site.parentId?has_content&&!dictionary?has_content><@_dictionary id=id siteId=site.parentId><#assign dictionary=object/></@_dictionary></#if>
+<@cms.dictionary id=id><#assign dictionary=object/></@cms.dictionary>
+<#if site.parentId?has_content&&!dictionary?has_content><@cms.dictionary id=id siteId=site.parentId><#assign dictionary=object/></@cms.dictionary></#if>
 <#assign required=(required?has_content&&'true'=required)/>
 <#assign multiple=(multiple?has_content&&'true'=multiple)/>
 <#if dictionary?has_content>

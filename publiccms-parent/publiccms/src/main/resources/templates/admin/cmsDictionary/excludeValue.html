@@ -1,6 +1,6 @@
 <#macro dictionaryTree dictionaryId inputName parentValue depth values>
 <#if depth gt 0>
-    <@_dictionaryDataList dictionaryId=dictionaryId parentValue=parentValue>
+    <@cms.dictionaryDataList dictionaryId=dictionaryId parentValue=parentValue>
         <#if list?has_content>
         <ul>
             <#list list as d>
@@ -11,13 +11,13 @@
             </#list>
         </ul>
         </#if>
-    </@_dictionaryDataList>
+    </@cms.dictionaryDataList>
 </#if>
 </#macro>
-<@_dictionaryExcludeValue dictionaryId=id excludeDictionaryId=excludeDictionaryId value=value><#assign a=object/></@_dictionaryExcludeValue>
-<#if !a?has_content><@_dictionaryExcludeValue dictionaryId=id excludeDictionaryId=excludeDictionaryId value=parentValue><#assign a=object/></@_dictionaryExcludeValue></#if>
+<@cms.dictionaryExcludeValue dictionaryId=id excludeDictionaryId=excludeDictionaryId value=value><#assign a=object/></@cms.dictionaryExcludeValue>
+<#if !a?has_content><@cms.dictionaryExcludeValue dictionaryId=id excludeDictionaryId=excludeDictionaryId value=parentValue><#assign a=object/></@cms.dictionaryExcludeValue></#if>
 <form method="post" autocomplete="off" action="cmsDictionaryExcludeValue/save?callbackType=closeCurrent&navTabId=cmsDictionary/excludeTree" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
-    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
             <li><button type="submit" class="buttonActive" title="ctrl+s"><@t.page 'button.save'/></button></li>
@@ -29,21 +29,21 @@
             <dl class="nowrap">
                 <dt><@t.page 'dictionary'/>:</dt>
                 <dd>
-                    <@_dictionary id=id;dictionary>${dictionary.name!}</@_dictionary>
+                    <@cms.dictionary id=id;dictionary>${dictionary.name!}</@cms.dictionary>
                     <input name="id.dictionaryId" type="hidden" value="${id!}"/>
                 </dd>
             </dl>
             <dl class="nowrap">
                 <dt><@t.page 'value'/>:</dt>
                 <dd>
-                    ${value!}:<@_dictionaryData dictionaryId=id value=value>${object.text}</@_dictionaryData>
+                    ${value!}:<@cms.dictionaryData dictionaryId=id value=value>${object.text}</@cms.dictionaryData>
                     <input name="id.value" type="hidden" value="${value!}"/>
                 </dd>
             </dl>
             <dl class="nowrap">
                 <dt><@t.page 'dictionary.exclude'/>:</dt>
                 <dd>
-                    <@_dictionary id=excludeDictionaryId;exclude>${exclude.name!}</@_dictionary>
+                    <@cms.dictionary id=excludeDictionaryId;exclude>${exclude.name!}</@cms.dictionary>
                     <input name="id.excludeDictionaryId" type="hidden" value="${excludeDictionaryId!}"/>
                 </dd>
             </dl>
@@ -51,21 +51,21 @@
                 <legend><@t.page 'dictionary.exclude_value'/></legend>
                 <ul class="tree treeFolder treeCheck excludeParent expand">
                 <#assign values=((a.excludeValues)!'')?split(',')/>
-                <@_dictionary id=id;dictionary>
+                <@cms.dictionary id=id;dictionary>
                     <li>
                         <a tname="excludeValues" tvalue="">${dictionary.name}</a>
                         <ul>
-                    <@_dictionaryDataList dictionaryId=excludeDictionaryId>
+                    <@cms.dictionaryDataList dictionaryId=excludeDictionaryId>
                         <#list list as d>
                             <li>
                                 <a tname="excludeValues" tvalue="${d.id.value}" ${(values?has_content&&values?seq_contains(d.id.value))?then(' checked="true"','')?no_esc}>${d.text}</a>
                                 <@dictionaryTree dictionaryId=excludeDictionaryId inputName='excludeValues' parentValue=d.id.value depth=dictionary.childDepth values=values/>
                             </li>
                         </#list>
-                    </@_dictionaryDataList>
+                    </@cms.dictionaryDataList>
                         </ul>
                     </li>
-                </@_dictionary>
+                </@cms.dictionary>
                 </ul>
             </fieldset>
         </div>

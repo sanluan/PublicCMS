@@ -1,23 +1,23 @@
 <#macro templateTree filepath>
-    <@_templateList path=filepath>
+    <@tools.templateList path=filepath>
         <#list list as a>
             <#if !a.directory><@t.merge 'paths' filepath+'/'+a.fileName/></#if>
         </#list>
-        <@_sysLock userId=admin.id itemType='template' itemIds=t.paths><#assign lockMap=map!/></@_sysLock>
+        <@sys.lock userId=admin.id itemType='template' itemIds=t.paths><#assign lockMap=map!/></@sys.lock>
         <#if lockMap?has_content>
             <#list lockMap as k,lock>
                 <#if lock.userId?has_content><@t.merge 'userIds' lock.userId/></#if>
             </#list>
         </#if>
-        <@_sysUser ids=t.userIds><#assign userMap=map!/></@_sysUser>
+        <@sys.user ids=t.userIds><#assign userMap=map!/></@sys.user>
         <#list list as a>
             <li>
                 <#local path=filepath+'/'+a.fileName>
-                <@_metadata path=path>
-                    <a href="cmsTemplate/${a.directory?then('directory','content')}.html?path=${(path?url)!}"<#if lockMap[path]?has_content><#assign lockUser=(userMap[lockMap[path].userId?string].nickName)!''/>title="<@t.page 'lock.message' lockUser/> ${lockMap[path].createDate}"</#if> target="ajax" rel="cmsTemplateBox">
-                        <#if lockMap[path]?has_content><i class="icon-lock icon-large"></i> </#if>${(object.alias)?has_content?then(object.alias+' ('+a.fileName+')',a.fileName)}
+                <@tools.metadata path=path>
+                    <a href="cmsTemplate/${a.directory?then('directory','content')}.html?path=${(path?url)!}"<#if lockMap?has_content && lockMap[path]?has_content><#assign lockUser=(userMap[lockMap[path].userId?string].nickname)!''/>title="<@t.page 'lock.message' lockUser/> ${lockMap[path].createDate}"</#if> target="ajax" rel="cmsTemplateBox">
+                        <#if lockMap?has_content && lockMap[path]?has_content><i class="icon-lock icon-large"></i></#if>${(object.alias)?has_content?then(object.alias+' ('+a.fileName+')',a.fileName)}
                     </a>
-                </@_metadata>
+                </@tools.metadata>
             <#if a.directory>
                 <ul>
                     <@templateTree path/>
@@ -27,7 +27,7 @@
         <#else>
             <li><a><@t.page 'empty_directory'/></a></li>
         </#list>
-    </@_templateList>
+    </@tools.templateList>
 </#macro>
 <div class="pageContent">
     <div class="leftPageContent">
@@ -40,6 +40,14 @@
         </ul>
     </div>
     <div id="cmsTemplateBox" class="unitBox rightPageContent">
-        <#include "directory.html"/>
+        <#if path?has_content>
+            <#if editType?has_content&&'metadata'=editType>
+                <#include "metadata.html"/>
+            <#else>
+                <#include "content.html"/>
+            </#if>
+        <#else>
+            <#include "directory.html"/>
+        </#if>
     </div>
 </div>

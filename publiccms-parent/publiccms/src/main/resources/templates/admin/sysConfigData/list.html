@@ -1,5 +1,5 @@
 <div class="pageContent">
-<@_sysConfigList>
+<@sys.configList>
     <table class="table" width="100%" layoutH>
         <thead>
             <tr>
@@ -12,31 +12,31 @@
             <#list list as a>
                 <@t.merge 'configs' a.code/>
             </#list>
-            <@_sysDeptConfig deptId=admin.deptId!'' configs=t.configs!><#assign deptConfigMap=map!/></@_sysDeptConfig>
+            <@sys.deptConfig deptId=admin.deptId!'' configs=t.configs!><#assign deptConfigMap=map!/></@sys.deptConfig>
     <#list list as a>
         <#if (deptConfigMap[a.code])?has_content&&deptConfigMap[a.code]><@t.merge 'codes' a.code/></#if>
     </#list>
-    <@_sysLock userId=admin.id itemType='config' itemIds=t.codes><#assign lockMap=map!/></@_sysLock>
+    <@sys.lock userId=admin.id itemType='config' itemIds=t.codes><#assign lockMap=map!/></@sys.lock>
     <#if lockMap?has_content>
         <#list lockMap as k,lock>
             <#if lock.userId?has_content><@t.merge 'userIds' lock.userId/></#if>
         </#list>
     </#if>
-    <@_sysUser ids=t.userIds><#assign userMap=map!/></@_sysUser>
+    <@sys.user ids=t.userIds><#assign userMap=map!/></@sys.user>
     <#list list as a>
         <#if (deptConfigMap[a.code])?has_content&&deptConfigMap[a.code]>
             <tr>
-                <td <#if lockMap[a.code]?has_content><#assign lockUser=(userMap[lockMap[a.code].userId?string].nickName)!''/>title="<@t.page 'lock.message' lockUser/> ${lockMap[a.code].createDate!}"</#if>>
-                    <#if lockMap[a.code]?has_content><i class="icon-lock icon-large"></i> </#if>${(a.code)!}
+                <td <#if lockMap[a.code]?has_content><#assign lockUser=(userMap[lockMap[a.code].userId?string].nickname)!''/>title="<@t.page 'lock.message' lockUser/> ${lockMap[a.code].createDate!}"</#if>>
+                    <#if lockMap[a.code]?has_content><i class="icon-lock icon-large"></i></#if>${(a.code)!}
                 </td>
                 <td>${(a.description)!}</td>
                 <td class="wrap">
-                    <a href="sysConfigData/edit.html?code=${a.code!}" class="edit btnText blue" target="navTab" rel="sysConfigData/edit"><i class="icon-edit"></i> <@t.page 'config_data.edit'/></a>
+                    <a href="sysConfigData/edit.html?code=${a.code!}" class="edit btnText blue" target="navTab" rel="sysConfigData/edit"><i class="icon-edit"></i><@t.page 'config_data.edit'/></a>
                 </td>
             </tr>
         </#if>
     </#list>
         </tbody>
     </table>
-</@_sysConfigList>
+</@sys.configList>
 </div>

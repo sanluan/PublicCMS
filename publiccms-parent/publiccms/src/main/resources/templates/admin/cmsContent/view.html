@@ -1,4 +1,4 @@
-<@_content id=id>
+<@cms.content id=id>
     <#assign
         a=object
         parentId=a.parentId!''
@@ -8,20 +8,20 @@
         attribute=getContentAttribute(a.id)!{}
     />
     <#if a.contribute && a.status != 1><#assign safe=false/></#if>
-</@_content>
-<@_category id=categoryId!><#assign category=object/></@_category>
-<@_model id=modelId!><#assign model=object/></@_model>
+</@cms.content>
+<@cms.category id=categoryId!><#assign category=object/></@cms.category>
+<@cms.model id=modelId!><#assign model=object/></@cms.model>
 <div class="pageFormContent" layoutH>
     <#if model?has_content>
         <#assign fieldList=model.fieldList![]/>
-        <@_content id=parentId>
+        <@cms.content id=parentId>
             <dl class="nowrap">
                 <dt><@t.page 'content.parent'/>:</dt>
                 <dd>
                     ${(object.title)!}
                 </dd>
             </dl>
-        </@_content>
+        </@cms.content>
             <dl>
                 <dt><@t.page 'category'/>:</dt>
                 <dd class="exclude-translate">
@@ -54,7 +54,7 @@
             <dl>
                 <dt><@t.page 'inspector'/>:</dt>
                 <dd class="exclude-translate">
-                     <@_sysUser id=a.checkUserId>${(object.nickName)!}</@_sysUser>
+                     <@sys.user id=a.checkUserId>${(object.nickname)!}</@sys.user>
                 </dd>
             </dl>
         </#if>
@@ -90,31 +90,31 @@
         </#if>
         <#if category?has_content && (a.tagIds)?has_content>
 <#if category.tagTypeIds?has_content>
-    <@_tagType ids=category.tagTypeIds>
+    <@cms.tagType ids=category.tagTypeIds>
         <#list map as k,tagType>
             <dl class="nowrap">
                 <dt>${tagType.name}:</dt>
                 <dd class="exclude-translate">
-                    <@_tag ids=a.tagIds>
+                    <@cms.tag ids=a.tagIds>
                         <#list map as j,tag>
                             <#if tag.typeId?string=k>
                                 ${tag.name},
                             </#if>
                         </#list>
-                    </@_tag>
+                    </@cms.tag>
                 </dd>
             </dl>
         </#list>
-    </@_tagType>
+    </@cms.tagType>
 <#else>
             <dl class="nowrap">
                 <dt>${(model.fieldTextMap['tag'])!}:</dt>
                 <dd class="exclude-translate">
-                    <@_tag ids=a.tagIds>
+                    <@cms.tag ids=a.tagIds>
                         <#list map as j,tag>
                             ${tag.name}<#sep>,
                         </#list>
-                    </@_tag>
+                    </@cms.tag>
                 </dd>
             </dl>
 </#if>
@@ -145,13 +145,13 @@
         </#if>
         <#include "../include_page/extendData.html"/>
         <#if category?has_content&&category.extendId?has_content>
-            <@_sysExtendFieldList extendId=category.extendId>
+            <@sys.extendFieldList extendId=category.extendId>
                 <#assign
                     extendList=list![]
                     extendValue=attribute!{}
                 />
                 <@extendData 'categoryExtendDataList' extendList extendValue 'view' safe/>
-            </@_sysExtendFieldList>
+            </@sys.extendFieldList>
         </#if>
         <#if model?has_content>
             <#assign
@@ -165,13 +165,13 @@
             <dl class="nowrap">
                 <dt><@t.page 'image_list'/>:</dt>
                 <dd>
-            <@_contentFileList contentId=a.id fileTypes='image'>
+            <@cms.contentFileList contentId=a.id fileTypes='image'>
                 <#list page.list as file>
                     <div class="thumbnail">
                         <img src="${(file.filePath)!}"/>
                     </div>
                 </#list>
-            </@_contentFileList>
+            </@cms.contentFileList>
                 </dd>
             </dl>
             </#if>
@@ -179,11 +179,11 @@
                 <dl class="nowrap">
                     <dt><@t.page 'attach_list'/>:</dt>
                     <dd>
-                <@_contentFileList contentId=a.id fileTypes='video,audio,other'>
+                <@cms.contentFileList contentId=a.id fileTypes='video,audio,other'>
                     <#list page.list as file>
                         <a href="${(file.filePath)!}" target="_blank">${(file.filePath)!}</a>
                     </#list>
-                </@_contentFileList>
+                </@cms.contentFileList>
                     </dd>
                 </dl>
             </#if>
@@ -192,7 +192,7 @@
             <dl class="nowrap">
                 <dt><@t.page 'product_list'/>:</dt>
                 <dd>
-            <@_contentProductList contentId=a.id>
+            <@cms.contentProductList contentId=a.id>
                 <#list page.list as product>
                     <div class="unit">
                         <#if product.cover?has_content>
@@ -207,7 +207,7 @@
                     </div>
                     <div class="divider"></div>
                 </#list>
-            </@_contentProductList>
+            </@cms.contentProductList>
                 </dd>
             </dl>
         </#if>
@@ -221,20 +221,20 @@
         </#if>
     </#if>
     <#if a?has_content>
-        <@_contentRelatedList contentId=a.id>
+        <@cms.contentRelatedList contentId=a.id>
             <#if page.totalCount gt 0>
             <dl class="nowrap">
                 <dt><@t.page 'recommend_info'/>:</dt>
                 <dd class="exclude-translate">
                     <#list page.list as a>
-                        <a href="${(a.url)!}" target="_blank">${(a.title)!}</a>
+                        <a href="cmsDiy/preview.html?url=${((a.url)?url)!}" target="navTab" rel="cmsDiy/preview"  icon="<i class='bi bi-palette2 icon-large'></i>" title="<@t.page 'diy.preview'/>">${(a.title)!}</a>
                     </#list>
                 </dd>
             </dl>
             </#if>
-        </@_contentRelatedList>
-        <@_sysAuthorized roleIds=admin.roles urls='cmsComment/list,cmsComment/edit'><#assign authorizedMap=map/></@_sysAuthorized>
-        <@_commentList advanced=true contentId=a.id pageSize=0>
+        </@cms.contentRelatedList>
+        <@sys.authorized roleIds=admin.roles urls='cmsComment/list,cmsComment/edit'><#assign authorizedMap=map/></@sys.authorized>
+        <@cms.commentList advanced=true contentId=a.id pageSize=0>
             <dl class="nowrap">
                 <dt>
                     <#if authorizedMap['cmsComment/edit']>
@@ -252,7 +252,7 @@
                     </#if>
                 </dd>
             </dl>
-        </@_commentList>
+        </@cms.commentList>
     </#if>
 </div>
 <div class="formBar">
