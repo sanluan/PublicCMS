@@ -59,3 +59,5 @@ INSERT INTO `sys_module_lang` VALUES ('page_diy_preview', 'zh', '快捷维护');
 INSERT INTO `sys_module_lang` VALUES ('page_diy_region', 'en', 'Region');
 INSERT INTO `sys_module_lang` VALUES ('page_diy_region', 'ja', '領域');
 INSERT INTO `sys_module_lang` VALUES ('page_diy_region', 'zh', '区域');
+-- 2022-05-22 --
+ALTER TABLE `cms_place` COMMENT = '推荐位数据';
