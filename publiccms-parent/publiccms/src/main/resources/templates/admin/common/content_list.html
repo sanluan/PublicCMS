@@ -145,7 +145,7 @@
                 <@t.merge 'userIds' a.userId!/>
                 <@t.merge 'userIds' a.checkUserId!/>
                 <@t.merge 'categoryIds' a.categoryId!/>
-                <@t.merge 'modelIds' a.modelId!/>
+                <@t.merge 'modelId' a.modelId!/>
                 <@t.merge 'ids' a.id/>
             </#list>
             <@_sysLock userId=admin.id itemType='content' itemIds=t.ids><#assign lockMap=map!/></@_sysLock>
@@ -156,7 +156,7 @@
             </#if>
             <@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
             <@_category ids=t.categoryIds!><#assign categoryMap=map!/></@_category>
-            <@_model ids=t.modelIds!><#assign modelMap=map!/></@_model>
+            <@_model ids=t.modelId!><#assign modelMap=map!/></@_model>
 
             <#list page.list as a>
             <tr>

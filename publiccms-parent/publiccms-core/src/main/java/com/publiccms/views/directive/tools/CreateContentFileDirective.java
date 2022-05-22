@@ -29,7 +29,7 @@ public class CreateContentFileDirective extends AbstractTemplateDirective {
     public void execute(RenderHandler handler) throws IOException, Exception {
         Long id = handler.getLong("id");
         String templatePath = handler.getString("templatePath");
-        String filepath = handler.getString("filepath");
+        String filepath = handler.getString("filePath");
         Integer pageIndex = handler.getInteger("pageIndex");
         if (CommonUtils.notEmpty(id) && CommonUtils.notEmpty(templatePath) && CommonUtils.notEmpty(filepath)) {
             SysSite site = getSite(handler);

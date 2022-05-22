@@ -166,7 +166,7 @@ public class ContentCreateDirective extends AbstractAppDirective {
                     List<CmsContentFile> files = null;
                     if (entity.isHasFiles()) {
                         files = new ArrayList<>();
-                        String[] filepaths = handler.getStringArray("filepaths");
+                        String[] filepaths = handler.getStringArray("filePaths");
                         String[] fileDescriptions = handler.getStringArray("fileDescriptions");
                         if (null != filepaths) {
                             int i = 0;

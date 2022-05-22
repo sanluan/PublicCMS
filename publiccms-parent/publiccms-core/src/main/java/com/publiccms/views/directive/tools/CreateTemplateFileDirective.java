@@ -25,7 +25,7 @@ public class CreateTemplateFileDirective extends AbstractTemplateDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
         String templatePath = handler.getString("templatePath");
-        String filepath = handler.getString("filepath");
+        String filepath = handler.getString("filePath");
         Integer pageIndex = handler.getInteger("pageIndex");
         if (CommonUtils.notEmpty(templatePath) && CommonUtils.notEmpty(filepath)) {
             SysSite site = getSite(handler);
