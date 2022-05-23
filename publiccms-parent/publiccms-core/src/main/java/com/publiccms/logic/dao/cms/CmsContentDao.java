@@ -270,6 +270,9 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         if ("clicks".equals(orderField)) {
             optionsStep.sort(f -> f.field("clicks").desc());
         }
+        if ("score".equals(orderField)) {
+            optionsStep.sort(f -> f.field("score").desc());
+        }
         return optionsStep;
     }
 
