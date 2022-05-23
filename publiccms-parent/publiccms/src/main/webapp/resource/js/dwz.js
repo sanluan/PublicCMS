@@ -2378,7 +2378,7 @@ function initLink($p) {
             var op = $.extend({
                 themeBase: "themes", defaultTheme: "default"
             }, options);
-            var _themeHref = op.themeBase + "/#theme#/style.css";
+            var _themeHref = op.themeBase + "#theme#.css";
             var $themeItem = $("<link href=\"" + _themeHref.replace("#theme#", op.defaultTheme) + "\" rel=\"stylesheet\" media=\"screen\"/>");
             var setTheme = function(themeName) {
                 $themeItem.attr("href", _themeHref.replace("#theme#", themeName));
