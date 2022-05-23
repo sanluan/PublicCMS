@@ -7,7 +7,7 @@
     <@cms.categoryModel modelId=modelId categoryIds=t.categoryIds><#assign categoryModelMap=map/></@cms.categoryModel>
     <#list page.list as a>
         <li<#if a.childIds?has_content> _src="cmsCategory/lookupByModelId.html?currentCategoryId=${currentCategoryId!}&modelId=${modelId!}&parentId=${a.id}&field=${field!'categoryId'}"</#if>>
-            <a href="javascript:;" class="exclude-translate"<#if (!currentCategoryId?has_content||a.id?string!=currentCategoryId)&&categoryModelMap?has_content&&categoryModelMap[a.id?string]?has_content> onclick="$.bringBack({${field!'categoryId'}:'${a.id}', categoryName:'${a.name}'});return false;"</#if>>${a.name!}</a>
+            <a href="javascript:;"<#if (!currentCategoryId?has_content||a.id?string!=currentCategoryId)&&categoryModelMap?has_content&&categoryModelMap[a.id?string]?has_content> onclick="$.bringBack({${field!'categoryId'}:'${a.id}', categoryName:'${a.name}'});return false;" class="disabled exclude-translate"<#else> class="exclude-translate"</#if>>${a.name!}</a>
         </li>
     </#list>
     </@cms.categoryList>

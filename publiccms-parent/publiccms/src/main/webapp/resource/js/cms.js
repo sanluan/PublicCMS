@@ -164,15 +164,11 @@ window.addEventListener('message', function(event) {
                     $('form',navTab.getCurrentPanel()).submit();
                 }
             } else if('enter' === op.diyevent) {
-                if(op.url === $('input[name=url]',navTab.getCurrentPanel()).val()) {
-                    if(diyShowMenu(op.itemType, op.itemId, op.noborder)) {
-                        moveMenu(op.x, op.y, op.width, op.height);
-                    }
+                if(diyShowMenu(op.itemType, op.itemId, op.noborder)) {
+                    moveMenu(op.x, op.y, op.width, op.height);
                 }
             } else if('leave' === op.diyevent) {
-                if(op.url == $('input[name=url]',navTab.getCurrentPanel()).val()) {
-                    diytimer = setTimeout('diyHideMenu()',100);
-                }
+                diytimer = setTimeout('diyHideMenu()',100);
             } 
         }
         if('scroll' === op.diyevent) {

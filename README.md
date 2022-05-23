@@ -1,14 +1,13 @@
 # PublicCMS V4.0
 
-<a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=xoxCUvv7bDCFQ8AAqaoWB1JsLz0L90qn">交流群1群 191381542</a>
-<a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=x15JZdCp8vWlxV1mMoMTyrHzMqw3dmI1">交流群2群 481589563</a>
-<a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=VogNtcpFOLxvjtvzUcAElZOK-KC4To_u">交流群3群 638756883</a>
-<a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=lsFbfVpj3yqWuY92GYkOG1esbyPNS7O3">交流群4群 930992232</a>
-
+<a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=xoxCUvv7bDCFQ8AAqaoWB1JsLz0L90qn">交流1群</a> 191381542
+<a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=x15JZdCp8vWlxV1mMoMTyrHzMqw3dmI1">交流2群</a> 481589563
+<a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=VogNtcpFOLxvjtvzUcAElZOK-KC4To_u">交流3群</a> 638756883
+<a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=lsFbfVpj3yqWuY92GYkOG1esbyPNS7O3">交流4群</a> 930992232
 
 ## 简介
 
-PublicCMS是采用2022年主流技术开发的开源JAVACMS系统。由天津黑核科技有限公司开发，架构科学，轻松支持上千万数据、千万PV；支持全站静态化，SSI，动态页面局部静态化等为您快速建站，建设大规模站点提供强大驱动，也是企业级项目产品原型的良好选择。
+PublicCMS是采用2022年主流技术开发的开源JAVACMS系统。由天津黑核科技有限公司开发，架构科学，轻松支撑上千万数据、千万PV；支持可视化编辑，多维扩展，全文搜索，全站静态化，SSI，动态页面局部静态化，URL规则完全自定义等为您快速建站，建设大规模站点提供强大驱动，也是企业级项目产品原型的良好选择。
 
 ## 获取源码
 
@@ -21,8 +20,8 @@ https://github.com/sanluan/PublicCMS
 
 ## 授权协议
 
-* 版本:V4.0 商用付费授权协议:详情参见LICENSE
-* 版本:V1.0,V2016,V2017,V2019 完全免费授权协议:MIT
+* 版本:V4.0,V5 个人免费,企事业单位付费 授权协议:详情参见LICENSE
+* 版本:V1.0,V2016,V2017,V2019 完全免费 授权协议:MIT
 
 ## 环境要求
 
