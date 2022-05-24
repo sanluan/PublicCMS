@@ -22,7 +22,7 @@ import com.publiccms.logic.component.template.TemplateComponent;
  */
 @Component
 public class TemplateRegionListDirective extends AbstractTemplateDirective {
-    public static final Pattern REGION_PATTERN = Pattern.compile("<@[_a-z\\.]includeRegion[ ]+(.*)id=[\"|\']([^\"\']*)[\"|\'](.*)>");
+    public static final Pattern REGION_PATTERN = Pattern.compile("<@[_a-z\\.]*includeRegion[ ]+(.*)id=[\"|\']([^\"\']*)[\"|\'](.*)>");
 	public static final Pattern CATEGORY_ID_PATTERN = Pattern.compile(".*categoryId=[\"|\']([^\"\']*)[\"|\'].*");
 
     @Override

@@ -27,13 +27,13 @@
         <p>
             <label>Site switch
             <select id="siteList">
-                <@_sysSiteList pageSize=500>
+                <@sys.siteList pageSize=500>
                     <#list page.list as a>
                     <option value="${a.dynamicPath!}"<#if site.id=a.id>selected="selected"</#if>>
                         ${a.name!} <#if site.id=a.id>[Current site]</#if>
                     </option>
                     </#list>
-                </@_sysSiteList>
+                </@sys.siteList>
             </select>
             </label>
             <label><input type="radio" name="api" value="0" />指令接口Directive interface</label>
