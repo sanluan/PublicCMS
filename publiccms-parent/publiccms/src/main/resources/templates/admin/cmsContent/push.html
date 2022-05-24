@@ -12,7 +12,7 @@
     </#list>
     <@cms.content ids=t.contentIds!><#assign contentMap=map!/></@cms.content>
     <#list page.list as a>
-            <a href="cmsDiy/preview.html?url=${((contentMap[a.contentId?string].url)?url)!}" target="navTab" rel="cmsDiy/preview"  icon="<i class='bi bi-palette2 icon-large'></i>" title="<@t.page 'diy.preview'/>">${(contentMap[a.contentId?string].title)!}</a> <a href="cmsContent/unrelated?id=${a.id}&_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo" callback="$.pdialog.closeCurrent()"><@t.page 'button.delete'/></a><br/>
+            <a href="cmsContent/view.html?id=${a.id}" class="exclude-translate" target="dialog" rel="viewContent${a.id}">${(contentMap[a.contentId?string].title)!}</a> <a href="cmsContent/unrelated?id=${a.id}&_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo" callback="$.pdialog.closeCurrent()"><@t.page 'button.delete'/></a><br/>
     </#list>
         </p>
 </@cms.contentRelatedList>

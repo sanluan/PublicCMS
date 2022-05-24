@@ -95,7 +95,9 @@
                 <td><input name="ids" value="${a.id}" type="checkbox"></td>
                 <td>${a.id!}</td>
                 <td <#if lockMap[a.id?string]?has_content><#assign lockUser=(userMap[lockMap[a.id?string].userId?string].nickname)!''/>title="<@t.page 'lock.message' lockUser/> ${lockMap[a.id?string].createDate}"</#if>>
-                    <#if lockMap[a.id?string]?has_content><i class="icon-lock icon-large"></i></#if><a class="exclude-translate" href="cmsDiy/preview.html?url=${((a.url)?url)!}" target="navTab" rel="cmsDiy/preview"  icon="<i class='bi bi-palette2 icon-large'></i>" title="<@t.page 'diy.preview'/>">${(a.name)!}</a>${(a.onlyUrl?then('['+t.pageMessage('url')+']',''))!}
+                    <#if lockMap[a.id?string]?has_content><i class="icon-lock icon-large"></i></#if>
+                    <a class="exclude-translate" href="cmsDiy/preview.html?url=${((a.url)?url)!}" target="navTab" rel="cmsDiy/preview"  icon="<i class='bi bi-palette2 icon-large'></i>" title="<@t.page 'diy.preview'/>">${(a.name)!}</a>
+                    ${(a.onlyUrl?then('['+t.pageMessage('url')+']',''))!}
                 </td>
                 <td class="exclude-translate">${a.code!}</td>
                 <td class="exclude-translate">${(typeMap[a.typeId?string].name)!}</td>

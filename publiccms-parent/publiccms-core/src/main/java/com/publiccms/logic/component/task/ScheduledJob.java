@@ -21,7 +21,7 @@ import com.publiccms.logic.component.site.SiteComponent;
 import freemarker.template.TemplateException;
 
 /**
- * 
+ *
  * ScheduledJob 任务计划实现类
  *
  */
@@ -45,7 +45,7 @@ public class ScheduledJob extends QuartzJobBean {
                 String result;
                 try {
                     Map<String, Object> map = new HashMap<>();
-                    map.put("task", task);
+                    map.put("object", task);
                     SysSite site = BeanComponent.getSiteService().getEntity(task.getSiteId());
                     AbstractFreemarkerView.exposeSite(map, site);
                     String templatePath = SiteComponent.getFullTemplatePath(site, task.getFilePath());

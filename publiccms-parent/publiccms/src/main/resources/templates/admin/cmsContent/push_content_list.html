@@ -70,7 +70,7 @@
                 </td>
                 <td>${a.id}</td>
                 <td>
-                    <a href="cmsDiy/preview.html?url=${((a.url)?url)!}" target="navTab" rel="cmsDiy/preview" icon="<i class='bi bi-palette2 icon-large'></i>" title="<@t.page 'diy.preview'/>">
+                    <a href="cmsContent/view.html?id=${a.id}" class="exclude-translate" target="dialog" rel="viewContent${a.id}">
                         ${(a.copied?then('['+t.pageMessage('copied')+']',''))!}${a.title!}
                     </a>
                 </td>

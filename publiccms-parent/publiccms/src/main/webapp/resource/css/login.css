@@ -11,7 +11,7 @@ body:before{content:"";height:100%;right:0;left:50%;position:absolute;background
 
 /** Login **/
 .login_body{height:400px;width:680px;position:absolute;margin-top:-200px;top:50%;left:50%;margin-left:-340px;}
-.login_body_left{width:220px;height:100%;float:left;background:url(../cms.png) no-repeat -114px 138%;background-color:#354052;background-size:auto 50%;}
+.login_body_left{width:220px;height:100%;float:left;background:url(../images/cms.png) no-repeat -114px 138%;background-color:#354052;background-size:auto 50%;}
 .login_body_left img{position:relative;top:50%;left:50%;max-width: 90%;height: auto;-webkit-transform:translate(-50%,-50%);-moz-transform:translate(-50%,-50%);-o-transform:translate(-50%,-50%);transform:translate(-50%,-50%);}
 .login_form{margin:0px auto;width:460px;float:left;padding:50px 80px;box-sizing:border-box;background:#fff;height:100%}
 .login_form>form{position:relative;}

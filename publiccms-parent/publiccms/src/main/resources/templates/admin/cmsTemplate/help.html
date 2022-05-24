@@ -88,6 +88,9 @@
                     <li><a href="javascript:;" <@getAction r'${(user.nickname)!}'/>><@t.page 'current_user'/></a></li>
                 </#if>
             </#if>
+			<#if type?has_content&&'task'=type>
+				<li><a href="javascript:;" <@getAction r'${object.name}'/>><@t.page 'task'/></a></li>
+			</#if>
                 <li>
                     <a href="javascript:;" onclick="return false;"><@t.page 'help.site_attribute'/></a>
                     <ul>
@@ -119,13 +122,13 @@
                 <li>
                     <a href="javascript:;" onclick="return false;"><@t.page 'help.task_directive'/></a>
                     <ul>
-                        <li><a href="javascript:;" <@getAction r'<@tools.clearLog clearDate=clearDate>'+'\n    '+r'Login log cleaning:${result.loginLog},Operate log cleaning:${result.operateLog},Task log cleaning:${result.taskLog}'+'\n'+r'</@tools.clearLog>'/>><@t.page 'help.clear_log'/></a></li>
-                        <li><a href="javascript:;" <@getAction r'<@tools.indexContent id=id ids=ids/>'/>><@t.page 'help.rebuild_index'/></a></li>
-                        <li><a href="javascript:;" <@getAction r'<@tools.publishCategory id=id ids=ids pageIndex=pageIndex totalPage=totalPage>'+'\n    '+r'Publish failed category ids:<#list map?keys as k><#if !map[k]>${k},</#if></#list>'+'\n'+r'</@tools.publishCategory>'/>><@t.page 'help.publish_category'/></a></li>
-                        <li><a href="javascript:;" <@getAction r'<@tools.publishCategory id=id ids=ids>'+'\n    '+r'Publish failed content ids:<#list map?keys as k><#if !map[k]>${k},</#if></#list>'+'\n'+r'</@tools.publishCategory>'/>><@t.page 'help.publish_category'/></a></li>
-                        <li><a href="javascript:;" <@getAction r'<@tools.publishPage path=path>'+'\n    '+r'Publish failed templates:<#list map?keys as k><#if !map[k]>${k},</#if></#list>'+'\n'+r'</@tools.publishPage>'/>><@t.page 'publish_page'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'<@task.clearLog clearDate=clearDate>'+'\n    '+r'Login log cleaning:${result.loginLog},Operate log cleaning:${result.operateLog},Task log cleaning:${result.taskLog}'+'\n'+r'</@task.clearLog>'/>><@t.page 'help.clear_log'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'<@task.indexContent id=id ids=ids/>'/>><@t.page 'help.rebuild_index'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'<@task.publishCategory id=id ids=ids pageIndex=pageIndex totalPage=totalPage>'+'\n    '+r'Publish failed category ids:<#list map?keys as k><#if !map[k]>${k},</#if></#list>'+'\n'+r'</@task.publishCategory>'/>><@t.page 'help.publish_category'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'<@task.publishCategory id=id ids=ids>'+'\n    '+r'Publish failed content ids:<#list map?keys as k><#if !map[k]>${k},</#if></#list>'+'\n'+r'</@task.publishCategory>'/>><@t.page 'help.publish_category'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'<@task.publishPage path=path>'+'\n    '+r'Publish failed templates:<#list map?keys as k><#if !map[k]>${k},</#if></#list>'+'\n'+r'</@task.publishPage>'/>><@t.page 'publish_page'/></a></li>
                     <#if site.useSsi>
-                        <li><a href="javascript:;" <@getAction r'<@tools.publishPlace path=path>'+'\n    '+r'Publish failed page fragments:<#list map?keys as k><#if !map[k]>${k},</#if></#list>'+'\n'+r'</@tools.publishPlace>'/>><@t.page 'publish_place'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'<@task.publishPlace path=path>'+'\n    '+r'Publish failed page fragments:<#list map?keys as k><#if !map[k]>${k},</#if></#list>'+'\n'+r'</@task.publishPlace>'/>><@t.page 'publish_place'/></a></li>
                     </#if>
                     </ul>
                 </li>
