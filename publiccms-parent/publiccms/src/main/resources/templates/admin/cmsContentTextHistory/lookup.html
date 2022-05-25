@@ -1,14 +1,15 @@
-<@cms.contentTextHistoryList contentId=contentId fieldName=fieldName orderType=orderType pageIndex=pageNum pageSize=numPerPage>
+<@cms.contentTextHistoryList contentId=contentId fieldName=fieldName userId=userId orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
     <form class="pagerForm" autocomplete="off" onsubmit="return dialogSearch(this);" action="cmsContentTextHistory/lookup.html" method="post">
         <#include "../include_page/parameters.html"/>
         <input type="hidden" name="field" value="${field!'text'}"/>
         <input type="hidden" name="fieldName" value="${fieldName!'text'}"/>
+		<input type="hidden" name="contentId" value="${contentId!}"/>
         <div class="searchBar">
             <ul class="searchContent">
                 <li>
                     <label><@t.page 'my_content'/>:</label>
-                    <input type="checkbox" name="myself"<#if myself?has_content> checked="checked"</#if>/>
+                    <input type="checkbox" name="userId"<#if userId?has_content> checked="checked"</#if> value="${admin.id}"/>
                 </li>
             </ul>
             <div class="subBar">

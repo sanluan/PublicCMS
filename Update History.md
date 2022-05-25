@@ -17,7 +17,7 @@ BUG与缺陷修复
 
 模板相关修改
 
-1. 用户昵称由nickName改为nickname
+1. 用户昵称由nickName改为nickname,管理员标识由superuserAccess改为superuser
 1. 所有列表查询指令分页大小 目前只有pageSize有效，不再兼容count参数
 
 ### V4.0.202204.b

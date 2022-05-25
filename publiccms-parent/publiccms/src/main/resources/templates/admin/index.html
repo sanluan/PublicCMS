@@ -4,14 +4,14 @@
     <meta charset="utf-8">
     <title>${site.name} - <@t.page 'management_system'/></title>
     <meta name="viewport" content="width=device-width,initial-scale=0.6">
-    <link href="${base}/resource/codemirror/lib/codemirror.css" rel="stylesheet"/>
-    <link href="${base}/resource/codemirror/addon/hint/show-hint.css" rel="stylesheet"/>
-    <link href="${base}/resource/font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="${base}/resource/plugins/codemirror/lib/codemirror.css" rel="stylesheet"/>
+    <link href="${base}/resource/plugins/codemirror/addon/hint/show-hint.css" rel="stylesheet"/>
+    <link href="${base}/resource/fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
     <!--[if IE 7]>
-        <link href="${base}/resource/font-awesome/css/font-awesome-ie7.min.css" rel="stylesheet"/>
+        <link href="${base}/resource/fonts/font-awesome/css/font-awesome-ie7.min.css" rel="stylesheet"/>
     <![endif]-->
-    <link href="${base}/resource/bootstrap-icons/bootstrap-icons.css" rel="stylesheet"/>
-    <link href="${base}/resource/spectrum/spectrum.min.css" rel="stylesheet"/>
+    <link href="${base}/resource/fonts/bootstrap-icons/bootstrap-icons.css" rel="stylesheet"/>
+    <link href="${base}/resource/plugins/spectrum/spectrum.min.css" rel="stylesheet"/>
     <link href="${base}/resource/css/core.css?version=202205" rel="stylesheet" media="screen"/>
     <link href="${base}/resource/css/print.css" rel="stylesheet" media="print"/>
     <link href="${base}/resource/css/cms.css?version=202205" rel="stylesheet" media="screen"/>
@@ -137,22 +137,22 @@
     <script src="${base}/resource/js/jquery.bgiframe.js"></script>
     <script src="${base}/resource/js/base64.js"></script>
     <script src="${base}/resource/js/sha512.min.js"></script>
-    <script src="${base}/resource/js/dwz.min.js?version=202205"></script>
+    <script src="${base}/resource/js/dwz.min.js?version=20220524"></script>
     <script src="${base}/resource/js/loadscripts.js"></script>
-    <script src="${base}/resource/spectrum/spectrum.min.js"></script>
-    <script src="${base}/resource/spectrum/<@t.page 'spectrum.lang_js'/>"></script>
+    <script src="${base}/resource/plugins/spectrum/spectrum.min.js"></script>
+    <script src="${base}/resource/plugins/spectrum/<@t.page 'spectrum.lang_js'/>"></script>
     <script src="${base}/resource/js/dwz.plugins.js?version=202205"></script>
     <script src="${base}/resource/js/<@t.page 'dwz_regional_js'/>"></script>
     <script src="${base}/resource/js/cms.js?version=202205"></script>
     <script>
         var base="${base+adminContextPath}";
-        window.UEDITOR_HOME_URL="${(parentSite!site).dynamicPath}resource/ueditor/";
-        window.CKEDITOR_BASEPATH="${(parentSite!site).dynamicPath}resource/ckeditor/";
+        window.UEDITOR_HOME_URL="${(parentSite!site).dynamicPath}resource/plugins/ueditor/";
+        window.CKEDITOR_BASEPATH="${(parentSite!site).dynamicPath}resource/plugins/ckeditor/";
         window.CKEDITOR_LANGUAGE="<@t.page 'ckeditor.lang'/>";
         window.KINDEDITOR_OPTIONS = {
                 width:'60%',
                 height:'400px',
-                basePath:'${(parentSite!site).dynamicPath}resource/kindeditor/',
+                basePath:'${(parentSite!site).dynamicPath}resource/plugins/kindeditor/',
                 uploadJson : '${base+adminContextPath}/kindeditor/upload',
                 fileManagerJson : '${base+adminContextPath}/cmsWebFile/fileList.html',
                 allowFileManager : true,
@@ -160,7 +160,7 @@
         };
         window.TINYMCE_OPTIONS = {
             language:'<@t.page 'tinymce.lang'/>',
-            base_url:'${(parentSite!site).dynamicPath}resource/tinymce/',
+            base_url:'${(parentSite!site).dynamicPath}resource/plugins/tinymce/',
             plugins: 'preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help charmap quickbars emoticons',
             editimage_cors_hosts: ['picsum.photos'],
             menubar: 'file edit view insert format tools table help',
@@ -237,25 +237,25 @@
           content_css: 'default',
         };
         window.editor = {
-            ckeditorResources: ["${base}/resource/ckeditor/ckeditor.js"],
-            ueditorResources: ["${base}/resource/ueditor/ueditor.config.js","${base}/resource/ueditor/ueditor.all.min.js","${base}/resource/ueditor/lang/<@t.page 'ueditor.lang_js'/>"],
-            tinymceResources: ["${base}/resource/tinymce/tinymce.min.js"],
-            kindeditorResources: ["${base}/resource/kindeditor/kindeditor-all-min.js","${base}/resource/kindeditor/<@t.page 'kindeditor.lang_js'/>"],
+            ckeditorResources: ["${base}/resource/plugins/ckeditor/ckeditor.js"],
+            ueditorResources: ["${base}/resource/plugins/ueditor/ueditor.config.js","${base}/resource/plugins/ueditor/ueditor.all.min.js","${base}/resource/plugins/ueditor/lang/<@t.page 'ueditor.lang_js'/>"],
+            tinymceResources: ["${base}/resource/plugins/tinymce/tinymce.min.js"],
+            kindeditorResources: ["${base}/resource/plugins/kindeditor/kindeditor-all-min.js","${base}/resource/plugins/kindeditor/<@t.page 'kindeditor.lang_js'/>"],
             ckeditorInitd: false,
             ueditorInitd: false,
             kindeditorInitd: false,
             index: 0
         };
         window.codemirror = {
-            resources: ['${base}/resource/codemirror/lib/codemirror.js','${base}/resource/codemirror/mode/xml/xml.js','${base}/resource/codemirror/mode/javascript/javascript.js','${base}/resource/codemirror/mode/css/css.js',
-                '${base}/resource/codemirror/mode/htmlmixed/htmlmixed.js','${base}/resource/codemirror/mode/freemarker/freemarker.js','${base}/resource/codemirror/mode/freemarkermixed/freemarkermixed.js',
-                '${base}/resource/codemirror/mode/nginx/nginx.js','${base}/resource/codemirror/addon/hint/show-hint.js','${base}/resource/codemirror/addon/hint/javascript-hint.js','${base}/resource/codemirror/addon/hint/html-hint.js',
-                '${base}/resource/codemirror/addon/hint/css-hint.js','${base}/resource/codemirror/addon/hint/xml-hint.js'],
+            resources: ['${base}/resource/plugins/codemirror/lib/codemirror.js','${base}/resource/plugins/codemirror/mode/xml/xml.js','${base}/resource/plugins/codemirror/mode/javascript/javascript.js','${base}/resource/plugins/codemirror/mode/css/css.js',
+                '${base}/resource/plugins/codemirror/mode/htmlmixed/htmlmixed.js','${base}/resource/plugins/codemirror/mode/freemarker/freemarker.js','${base}/resource/plugins/codemirror/mode/freemarkermixed/freemarkermixed.js',
+                '${base}/resource/plugins/codemirror/mode/nginx/nginx.js','${base}/resource/plugins/codemirror/addon/hint/show-hint.js','${base}/resource/plugins/codemirror/addon/hint/javascript-hint.js','${base}/resource/plugins/codemirror/addon/hint/html-hint.js',
+                '${base}/resource/plugins/codemirror/addon/hint/css-hint.js','${base}/resource/plugins/codemirror/addon/hint/xml-hint.js'],
             initd: false,
             index: 0
         };
         window.photoclip = {
-            resources: ['${base}/resource/photoclip/hammer.min.js','${base}/resource/photoclip/iscroll-zoom-min.js','${base}/resource/photoclip/lrz.all.bundle.js','${base}/resource/photoclip/PhotoClip.min.js'],
+            resources: ['${base}/resource/plugins/photoclip/hammer.min.js','${base}/resource/plugins/photoclip/iscroll-zoom-min.js','${base}/resource/plugins/photoclip/lrz.all.bundle.js','${base}/resource/plugins/photoclip/PhotoClip.min.js'],
             initd: false,
             index: 0
         };
@@ -265,7 +265,7 @@
             debug:false,
             callback:function(){
                 initEnv();
-                $("#themeList").theme({themeBase:"${base}/resource/themes",defaultTheme:"toptry"});
+                $("#themeList").theme({themeBase:"${base}/resource/css/theme-",defaultTheme:"toptry"});
             <#if admin.weakPassword && admin.loginCount lte 3 >
                 <@sys.authorized roleIds=admin.roles url='changePassword'>
                 $.pdialog.open("myself/password.html?target=dialog", "login", "<@t.page 'user.new_password'/>", {mask: true, width: 450, height: 320});

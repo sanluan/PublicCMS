@@ -3,7 +3,7 @@
 <head>
 <title>Interface testing</title>
 <meta charset="utf-8">
-<link href="${base}/resource/interface/code-formatter.css" rel="stylesheet" />
+<link href="${base}/resource/plugins/json-formatter/code-formatter.css" rel="stylesheet" />
 <style>
 #rawJson{width:100%;height:50px;}
 #interfaes{overflow:hidden;}
@@ -11,26 +11,29 @@
 </style>
 </head>
 <body>
-    <fieldset>
+    <fieldset data-diy="page">
         <legend>Interface testing</legend>
         <p>
             <label>URL:</label>
             <textarea cols="100" rows="2" id="sendData"></textarea>
-            <label><input name="showParameters" type="checkbox" checked="checked" />Show Parameters</label>
-        </p>
-        <p id="buttons">
-            <input type="button" value="Send" onclick="invoke()" />
-        </p>
+            <label>appToken:<input name="appToken" type="text" /></label>
+		</p>
+		<p>
+			<input type="button" value="Send" onclick="invoke()"/>
+			<label><input name="showParameters" type="checkbox" checked="checked"/>Show Parameters</label>
+			<label>authToken:<input name="authToken" type="text" /></label>
+			<label>authUserId:<input name="authUserId" type="text" /></label>
+		</p>
         <p>
-            <label>Site switch 
+            <label>Site switch
             <select id="siteList">
-                <@_sysSiteList pageSize=500>
+                <@sys.siteList pageSize=500>
                     <#list page.list as a>
                     <option value="${a.dynamicPath!}"<#if site.id=a.id>selected="selected"</#if>>
                         ${a.name!} <#if site.id=a.id>[Current site]</#if>
                     </option>
                     </#list>
-                </@_sysSiteList>
+                </@sys.siteList>
             </select>
             </label>
             <label><input type="radio" name="api" value="0" />指令接口Directive interface</label>
@@ -61,16 +64,16 @@
                 authUserId to access, and the common interface login.</em>
         </p>
     </fieldset>
-    <script src="${base}/resource/interface/code-formatter.js"></script>
-    <script src="${base}/resource/interface/json2.js"></script>
+    <script src="${base}/resource/plugins/json-formatter/code-formatter.js"></script>
+    <script src="${base}/resource/plugins/json-formatter/json2.js"></script>
     <script src="${base}/resource/js/jquery-1.12.4.min.js"></script>
     <script>
     var i=0;
-    var sitePath = '${site.dynamicPath}/';
+    var sitePath = '${site.dynamicPath}';
     var apiArray=['api/directive/','api/method/','api/']
     var apisArray=['api/namespaces','api/methods','api/apis'];
     var supportShowParametersArray=[true,false,true];
-    
+
     function invoke(){
         $('#rawJson').val('loading...');
         $.ajax({
@@ -102,11 +105,11 @@
     function use(action,needAppToken,needUserToken,minParameters){
         $('#sendData').val(sitePath+apiArray[i]+action);
         if('true'==needAppToken){
-            $('#sendData').val($('#sendData').val()+getSymbol($('#sendData').val())+'appToken=_AppToken_');
-        }
-        if('true'==needUserToken){
-            $('#sendData').val($('#sendData').val()+getSymbol($('#sendData').val())+'authToken=_UserToken_&authUserId=_UserID_');
-        }
+			$('#sendData').val($('#sendData').val()+getSymbol($('#sendData').val())+'appToken='+$('input[name=appToken]').val());
+		}
+		if('true'==needUserToken){
+			$('#sendData').val($('#sendData').val()+getSymbol($('#sendData').val())+'authToken='+$('input[name=authToken]').val()+'&authUserId='+$('input[name=authUserId]').val());
+		}
         if(minParameters != 'undefined'){
             for (var j = 1; j <= minParameters; j++) {
                 $('#sendData').val($('#sendData').val() + getSymbol($('#sendData').val()) + 'parameters=_value' + j+'_');
@@ -125,39 +128,44 @@
         }
         $('#interfaes').empty();
         $.ajax({
-            url:apisArray[i],type: 'GET',
-            contentType:'application/json; charset=UTF-8',
-            dataType: 'json',
-            success: function (dataList) {
-                if(dataList instanceof Array) {
-                    $(dataList).each(function(index,data){
-                        var style='';
-                        if('true'==data.needAppToken){
-                            style+='color:#f00;';
-                        }
-                        if('true'==data.needUserToken){
-                            style+='border:1px solid #0f0;';
-                        }
-                        $('#interfaes').append(' <a href="javascript:;" style="'+style+'" onclick="return use(\''+data.name+'\',\''+data.needAppToken+'\',\''+data.needUserToken+'\',\''+data.minParameters+'\');">'+data.name+'</a> ');
-                    });
-                } else {
-                    $.each(dataList,function(key,data){
-                        $('#interfaes').append('<label>'+key+'</label>:');
-                        $(data).each(function(index,directive){
-                            var style='';
-                            if(directive.needAppToken){
-                                style+='color:#f00;';
-                            }
-                            if(directive.needUserToken){
-                                style+='border:1px solid #0f0;';
-                            }
-                            $('#interfaes').append(' <a href="javascript:;" style="'+style+'" onclick="return use(\''+directive.namespace+'/'+directive.name+'\',\''+directive.needAppToken+'\',\''+directive.needUserToken+'\');">'+directive.name+'</a> ');
-                        });
-                        $('#interfaes').append('<br/>');
-                    });
-                }
-            }
-        });
+			url:apisArray[i],type: 'GET',
+			contentType:'application/json; charset=UTF-8',
+			dataType: 'json',
+			success: function (dataList) {
+				if(dataList instanceof Array) {
+					if(i==1){
+						$('#interfaes').append('<label><a style="color:#f0f" href="https://www.publiccms.com/upload/api/com/publiccms/views/method/cms/package-summary.html" target="_blank">getAttributes文档</a><a style="color:#f0f" href="https://www.publiccms.com/upload/api/com/publiccms/views/method/tools/package-summary.html" target="_blank">其他函数文档</a></label>:');
+					}else{
+						$('#interfaes').append('<label><a style="color:#f0f" href="https://www.publiccms.com/upload/api/com/publiccms/views/directive/api/package-summary.html" target="_blank">帮助文档</a></label>:');
+					}
+					$(dataList).each(function(index,data){
+						var style='';
+						if('true'==data.needAppToken){
+							style+='color:#f00;';
+						}
+						if('true'==data.needUserToken){
+							style+='border:1px solid #0f0;';
+						}
+						$('#interfaes').append(' <a href="javascript:;" style="'+style+'" onclick="return use(\''+data.name+'\',\''+data.needAppToken+'\',\''+data.needUserToken+'\',\''+data.minParameters+'\');">'+data.name+'</a> ');
+					});
+				} else {
+					$.each(dataList,function(key,data){
+						$('#interfaes').append('<label>'+key+'<a style="color:#f0f" href="https://www.publiccms.com/upload/api/com/publiccms/views/directive/'+key+'/package-summary.html" target="_blank">帮助文档</a></label>:');
+						$(data).each(function(index,directive){
+							var style='';
+							if(directive.needAppToken){
+								style+='color:#f00;';
+							}
+							if(directive.needUserToken){
+								style+='border:1px solid #0f0;';
+							}
+							$('#interfaes').append(' <a href="javascript:;" style="'+style+'" onclick="return use(\''+directive.namespace+'/'+directive.name+'\',\''+directive.needAppToken+'\',\''+directive.needUserToken+'\',\''+data.minParameters+'\');">'+directive.name+'</a> ');
+						});
+						$('#interfaes').append('<br/>');
+					});
+				}
+			}
+		});
     }
     $(function(){
         $('input[name=showParameters]').click(function(){
@@ -174,9 +182,24 @@
         init();
         $('#siteList').on('change',function(){
             $('#sendData').val($('#sendData').val().replace(sitePath,$(this).val()));
-            sitePath=$(this).val(); 
+            sitePath=$(this).val();
         });
     });
+    </script>
+	<script>
+    var templatePath='${.current_template_name?keep_after('/')}';
+    </script>
+    <script src="${base}/resource/js/cms.analytics.js"></script>
+    <script src="${base}/resource/js/cms.diy.js"></script>
+    <script>
+        var ca = cmsAnalytics();
+        var url='${base}/api/visit/record';
+        if("string" ==typeof itemString){
+            url=url+"?"+itemString;
+        }
+        ca.setDomain("${(domain.name)!site.sitePath?keep_after('//')?keep_before('/')?keep_before(':')}");
+        ca.setPath('/');
+        ca.report(url);
     </script>
 </body>
 </html>

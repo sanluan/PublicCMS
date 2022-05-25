@@ -20,7 +20,7 @@ header a{color:#afc5f6;}
 .accordion .accordionContent{background-color:#2c3343;}
 #splitBarProxy{border-color:#c0c0c0;background-color:#CCC;}
 
-#sidebar_s,.accordion .accordionHeader,.accordion .accordionContent,.accordionContent .tree a,.accordionContent .tree div:hover{color:#8d95a7;}
+#sidebar_s,.accordion .accordionHeader,.accordion .accordionContent,.accordionContent .tree a,.accordionContent .tree div:hover{color:#9ab;}
 .accordionContent .tree div:hover a{background-color:#19202f;color:#8d95a7;}
 .accordionContent .tree div.selected a{background-color:#667ea7;color:#fff;}
 

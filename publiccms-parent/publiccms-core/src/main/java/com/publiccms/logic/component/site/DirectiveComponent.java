@@ -91,8 +91,6 @@ public class DirectiveComponent {
             directiveMap.put(directive.getShortName(), directive);
             templateDirectiveMap.put(directive.getName(), directive);
         }
-        log.info(new StringBuilder().append(templateDirectiveMap.size()).append(" template directives created:")
-                .append(templateDirectiveMap.keySet()).toString());
         for (AbstractTaskDirective directive : taskDirectiveList) {
             if (null == directive.getName()) {
                 directive.setName(getDirectiveName(directive.getClass().getSimpleName()));
@@ -108,8 +106,6 @@ public class DirectiveComponent {
             directiveMap.put(directive.getShortName(), directive);
             taskDirectiveMap.put(directive.getName(), directive);
         }
-        log.info(new StringBuilder().append(taskDirectiveMap.size()).append(" task directives created : ")
-                .append(taskDirectiveMap.keySet()).toString());
         log.info(new StringBuilder().append(namespaceMap.size()).append(" namespace created :").append(namespaceMap.keySet())
                 .toString());
         for (Entry<String, Map<String, BaseTemplateDirective>> entry : namespaceMap.entrySet()) {

@@ -68,7 +68,7 @@ public class IncludeRegionDirective extends AbstractTemplateDirective {
                                         List<CmsModuleData> moduleList = moduleListList.get(i);
                                         if (null != moduleList) {
                                             for (CmsModuleData moduleData : moduleList) {
-                                                sb.append("<@_includePlace path=\"").append(moduleData.getPlace()).append("\"/>");
+                                                sb.append("<@tools.includePlace path=\"").append(moduleData.getPlace()).append("\"/>");
                                             }
                                         }
                                     }

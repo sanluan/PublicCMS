@@ -113,12 +113,14 @@
 			</ul>
 		</li>
 	</#if>
-	<#if authorizedMap['sysUser/list'] && itemType?has_content &&'user'=itemType >
+	<#if authorizedMap['sysUser/list']>
 		<li>
-			<a href="sysUser/list.html"<#if itemId?has_content> class="addMore"</#if> target="navTab" rel="sysUser/list" data-diy="user"><i class="icon-user icon-large"></i><@t.page 'user.management'/></a>
-			<#if itemId?has_content>
+			<a href="sysUser/list.html"<#if itemType?has_content &&'user'=itemType && itemId?has_content> class="addMore"</#if> target="navTab" rel="sysUser/list" data-diy="user"><i class="icon-user icon-large"></i><@t.page 'user.management'/></a>
+			<#if itemType?has_content &&'user'=itemType && itemId?has_content>
 			<ul>
 				<li><a href="sysUser/add.html?id=${itemId}" target="navTab" rel="sysUser/edit" data-diy="user" data-diy-id="${itemId}"><i class="icon-edit"></i><@t.page 'user.edit'/></a></li>
+				<li><a href="sysUser/enable?_csrf=<@tools.csrfToken admin=true/>&ids=${itemId}" title="<@t.page 'confirm.enable'/>" target="ajaxTodo" data-diy="user" data-diy-id="${itemId}"><i class="icon-circle icon-large"></i><@t.page 'button.enable'/></a></li>
+				<li><a href="sysUser/disable?_csrf=<@tools.csrfToken admin=true/>&ids=${itemId}" title="<@t.page 'confirm.disable'/>" target="ajaxTodo" data-diy="user" data-diy-id="${itemId}"><i class="icon-ban-circle icon-large"></i><@t.page 'button.disable'/></a></li>
 			</ul>
 			</#if>
 		</li>

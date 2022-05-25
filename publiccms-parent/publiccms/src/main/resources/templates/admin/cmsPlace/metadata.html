@@ -4,6 +4,10 @@
     <div class="formBar">
         <ul>
             <li>
+				<@sys.authorized roleIds=admin.roles url='placeTemplate/list'>
+					<li><a class="button" href="placeTemplate/list.html?path=${(path?url)!}&editType=metadata" target="navTab" rel="placeTemplate/list"><@t.page 'metadata'/></a></li>
+					<li><a class="button" href="placeTemplate/list.html?path=${(path?url)!}" target="navTab" rel="placeTemplate/list"><@t.page 'template.content'/></a></li>
+				</@sys.authorized>
                 <#if (a.metadataExtendList)?has_content><button type="submit" class="buttonActive" title="ctrl+s"><@t.page 'button.save'/></button></#if>
             </li>
         </ul>

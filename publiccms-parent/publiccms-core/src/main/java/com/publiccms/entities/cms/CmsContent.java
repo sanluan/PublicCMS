@@ -218,6 +218,7 @@ public class CmsContent implements java.io.Serializable {
      * 分数
      */
     @GeneratorColumn(title = "分数", order = true)
+    @GenericField(sortable = Sortable.YES, projectable = Projectable.YES)
     private BigDecimal score;
     /**
      * comments<p>

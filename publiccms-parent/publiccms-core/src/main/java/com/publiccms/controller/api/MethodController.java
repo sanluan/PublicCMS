@@ -8,6 +8,8 @@ import java.util.Map.Entry;
 
 import jakarta.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import jakarta.annotation.Resource;
@@ -69,7 +71,9 @@ public class MethodController {
                         return NEED_APP_TOKEN_MAP;
                     }
                     SysApp app = appService.getEntity(token.getAppId());
-                    if (null == app) {
+                    if (null == app || CommonUtils.empty(app.getAuthorizedApis())
+                            || !ArrayUtils.contains(StringUtils.split(app.getAuthorizedApis(), CommonConstants.COMMA_DELIMITED),
+                                    method.getName())) {
                         return NEED_APP_TOKEN_MAP;
                     }
                 }

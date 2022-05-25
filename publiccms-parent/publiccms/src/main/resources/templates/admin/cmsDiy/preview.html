@@ -6,6 +6,8 @@
 	<input type="hidden" name="itemId" value=""/>
 	<input type="hidden" name="url" value="${url+url?contains('?')?then('&diy','?diy')}"/>
 </form>
+<audio id="audioPopPlay" src="${base}/resource/sounds/jia.mp3" preload="auto" class="hide"></audio>
+<audio id="audioLoadPlay" src="${base}/resource/sounds/ria.mp3" preload="auto" class="hide"></audio>
 <div class="iframe-box">
 	<iframe layoutH></iframe>
 	<div class="diy-border diy-border-top"><div class="diy-menu"></div></div>
