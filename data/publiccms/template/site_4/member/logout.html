@@ -14,6 +14,9 @@
                 <input type="hidden" name="returnUrl" value="${returnUrl!site.sitePath!}"/>
             </form>
         </div>
+		<script>
+			var templatePath='${.current_template_name?keep_after('/')}';
+		</script>
         <@_includePlace path="/7f8bacb5-30ca-4641-b66f-987d447b1a85.html"/> <#-- footer -->
         <script>
             $('form[name=logout]').submit();

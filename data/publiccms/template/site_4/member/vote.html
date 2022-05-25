@@ -1,12 +1,12 @@
-<@_vote id=id;vote>
+<@cms.vote id=id;vote>
 <!DOCTYPE html>
 <html lang="zh-CN">
     <head>
         <title>${vote.title!} - ${metadata.alias!}</title>
-        <@_includePlace path="/8ddab9ba-a8aa-4745-86c6-66bf1c2c976c.html"/> <#-- header -->
+        <@tools.includePlace path="/8ddab9ba-a8aa-4745-86c6-66bf1c2c976c.html"/> <#-- header -->
     </head>
     <body>
-        <@_includePlace path="/c32a4f4a-ff5d-49cf-bb59-5d9784539174.html"/> <#-- 导航 -->
+        <@tools.includePlace path="/c32a4f4a-ff5d-49cf-bb59-5d9784539174.html"/> <#-- 导航 -->
 
         <div class="banner-l3 position-relative d-flex align-items-center justify-content-center" style="background:#22407c url(${site.sitePath}assets/img/banner-l3-bg-1.png) 50% 50% no-repeat;">
             <div class="container text-center position-relative py-3 py-md-4 text-white">
@@ -25,8 +25,8 @@
                 </header>
                 <div id="content">
                     <#if vote.startDate lt .now && .now lt vote.endDate><#assign available=true/><#else><#assign available=false/></#if>
-                    <#if available && user?has_content><@_userVote userId=user.id voteId=vote.id><#assign myvote=object/></@_userVote></#if>
-                    <@_voteItemList voteId=vote.id pageSize=500>
+                    <#if available && user?has_content><@cms.userVote userId=user.id voteId=vote.id><#assign myvote=object/></@cms.userVote></#if>
+                    <@cms.voteItemList voteId=vote.id pageSize=500>
                     <ol class="vote">
                         <#list page.list as v>
                         <li>
@@ -52,25 +52,25 @@
                         </#list>
                     </ol>
                     <p class="text-center text-secondary">${vote.scores!} 人投票</div>
-                </@_voteItemList>
+                </@cms.voteItemList>
                 <h3>投票记录</h3>
 				<@import path="/ftl/tools.ftl" namespace="t"/><#-- 工具 -->
-				<@_userVoteList voteId=vote.id pageIndex=pageIndex pageSize=10>
+				<@cms.userVoteList voteId=vote.id pageIndex=pageIndex pageSize=10>
 				<div class="article-list">
 					<#list page.list as a>
 						<@t.merge 'itemIds' a.itemId!/>
 						<@t.merge 'userIds' a.id.userId!/>
 					</#list>
-					<@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
-					<@_voteItem ids=t.itemIds! ><#assign voteItemMap=map!/></@_voteItem>
+					<@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
+					<@cms.voteItem ids=t.itemIds! ><#assign voteItemMap=map!/></@cms.voteItem>
 					<#list page.list as a>
 					<div class="card py-2 mb-2 comment">
 						<div class="d-flex align-items-center">
 							<figure class="rounded-circle">
-								<img alt="${userMap[a.id.userId?string].nickName}" src="${userMap[a.id.userId?string].cover!(site.sitePath+'assets/img/logo-graphic.png')}">
+								<img alt="${userMap[a.id.userId?string].nickname}" src="${userMap[a.id.userId?string].cover!(site.sitePath+'assets/img/logo-graphic.png')}">
 							</figure>
 							<div>
-								<a href="${site.dynamicPath}userVoteList.html?id=${a.id.userId}" class="fw-bold me-2">${userMap[a.id.userId?string].nickName}</a><span></span>
+								<a href="${site.dynamicPath}userVoteList.html?id=${a.id.userId}" class="fw-bold me-2">${userMap[a.id.userId?string].nickname}</a><span></span>
 								<div class="text-secondary text-opacity-50 fs-8"> ${a.createDate?date} </div>
 							</div>
 						</div>
@@ -106,23 +106,24 @@
 						</a>
 					</li>
 				</ul>
-				</@_userVoteList>
+				</@cms.userVoteList>
             </article>
         </div>
         <script>
             var itemString="itemType=vote&itemId=${vote.id}";
-        </script>
-        <@_includePlace path="/7f8bacb5-30ca-4641-b66f-987d447b1a85.html"/> <#-- footer -->
+			var templatePath='${.current_template_name?keep_after('/')}';
+		</script>
+        <@tools.includePlace path="/7f8bacb5-30ca-4641-b66f-987d447b1a85.html"/> <#-- footer -->
         <script>
             <#if user?has_content>
         function vote(itemId){
-            $.getJSON('${site.dynamicPath!}vote/vote?itemId='+itemId+'&_csrf=<@_csrfToken/>', function(data){
+            $.getJSON('${site.dynamicPath!}vote/vote?itemId='+itemId+'&_csrf=<@tools.csrfToken/>', function(data){
                 alert("投票成功!");
                 location.reload();
             });
         }
         function unvote(itemId){
-            $.getJSON('${site.dynamicPath!}vote/unvote?itemId='+itemId+'&_csrf=<@_csrfToken/>', function(data){
+            $.getJSON('${site.dynamicPath!}vote/unvote?itemId='+itemId+'&_csrf=<@tools.csrfToken/>', function(data){
                 alert("取消投票成功!");
                 location.reload();
             });
@@ -131,4 +132,4 @@
         </script>
     </body>
 </html>
-</@_vote>
+</@cms.vote>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>New PublicCMS Template</title>
+</head>
+<body>
+    <main><#list RequestParameters as k,v>${k},</#list>
+	
+	<@_facetSearch word='cms' pageSize=10> 
+  <p> category: <#list page.facetMap.categoryId as k,v><@_category id=k>${object.name}</@_category>(${v})</#list></p>
+  <p> model: <#list page.facetMap.modelId as k,v><@_model id=k>${object.name}</@_model>(${v})</#list></p>
+  <#list page.list as a><p>${a.title}</p></#list>
+  </@_facetSearch>
+
+	</main>
+    <footer>
+       <p>Powered by <a href="http://www.publiccms.com/">PublicCMS</a></p>
+    </footer>
+    <script src="${site.dynamicPath}resource/js/cms.analytics.js"></script>
+    <script>
+        var ca = cmsAnalytics();
+        var url='${site.dynamicPath}api/visit/record';
+        if("string" ==typeof itemString){
+            url=url+"?"+itemString;
+        }
+        ca.setDomain("${(domain.name)!site.sitePath?keep_after('//')?keep_before('/')?keep_before(':')}");
+        ca.setPath('/');
+        ca.report(url);
+    </script>
+</body>
+</html>

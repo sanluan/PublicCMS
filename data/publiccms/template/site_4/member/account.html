@@ -51,19 +51,19 @@
                             <li class="card py-2 mb-2 comment">
 								<div class="d-flex align-items-center">
 									<figure class="rounded-circle">
-										<img alt="${(userMap[a.userId?string].nickName)!}" src="${userMap[a.userId?string].cover!(site.sitePath+'assets/img/logo-graphic.png')}">
+										<img alt="${(userMap[a.userId?string].nickname)!}" src="${userMap[a.userId?string].cover!(site.sitePath+'assets/img/logo-graphic.png')}">
 									</figure>
 									<div>
-										<a href="${site.dynamicPath}user.html?id=${a.userId}" class="fw-bold me-2">${(userMap[a.userId?string].nickName)!}</a><span><#if userMap[a.userId?string].superuser>[管理员]</#if></span>
+										<a href="${site.dynamicPath}user.html?id=${a.userId}" class="fw-bold me-2">${(userMap[a.userId?string].nickname)!}</a><span><#if userMap[a.userId?string].superuser>[管理员]</#if></span>
 										<div class="text-secondary text-opacity-50 fs-8">${a.createDate!} </div>
 									</div>
 								</div>
                                 <p>
 									<label class="ms-4 text-secondary"><@message 'page.status.accountHistory.'+a.status/>:</label>${a.amountChange!}
-									<label class="ms-4 text-secondary">原始金额:</label>${a.amount!}									
-									<label class="ms-4 text-secondary">余额:</label>${a.balance!} 
+									<label class="ms-4 text-secondary">原始金额:</label>${a.amount!}
+									<label class="ms-4 text-secondary">余额:</label>${a.balance!}
 									<#if a.description?has_content><label class="ms-4 text-secondary">描述:</label>${a.description!}</#if>
-								</p>                                
+								</p>
                             </li>
                             </#list>
                         </ul>
@@ -105,10 +105,11 @@
                     </div>
                 </div>
             </div>
-            </div>
-        <script>
-            var itemString="itemType=user&itemId=${user.id}";
-        </script>
-        <@_includePlace path="/7f8bacb5-30ca-4641-b66f-987d447b1a85.html"/> <#-- footer -->
+		</div>
+		<script>
+			var itemString="itemType=user&itemId=${user.id}";
+			var templatePath='${.current_template_name?keep_after('/')}';
+		</script>
+		<@_includePlace path="/7f8bacb5-30ca-4641-b66f-987d447b1a85.html"/> <#-- footer -->
     </body>
 </html>

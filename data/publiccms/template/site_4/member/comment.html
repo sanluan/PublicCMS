@@ -1,7 +1,7 @@
 <#if id?has_content>
-<@_comment id=id>
+<@cms.comment id=id>
     <#assign text=object.text!/>
-</@_comment>
+</@cms.comment>
 </#if>
 <!DOCTYPE html>
 <html lang="zh-CN">
@@ -9,10 +9,10 @@
         <title>评论 - ${content.title}</title>
         <meta name="keywords" content="<#list getKeywords(content.title) as a>${a}<#sep>,</#list>"/>
         <meta name="description" content="${content.description}"/>
-        <@_includePlace path="/8ddab9ba-a8aa-4745-86c6-66bf1c2c976c.html"/> <#-- header -->
+        <@tools.includePlace path="/8ddab9ba-a8aa-4745-86c6-66bf1c2c976c.html"/> <#-- header -->
     </head>
     <body>
-        <@_includePlace path="/c32a4f4a-ff5d-49cf-bb59-5d9784539174.html"/> <#-- 导航 -->
+        <@tools.includePlace path="/c32a4f4a-ff5d-49cf-bb59-5d9784539174.html"/> <#-- 导航 -->
 
         <div class="banner-l3 position-relative d-flex align-items-center justify-content-center" style="background:#22407c url(${site.sitePath}assets/img/banner-l3-bg-1.png) 50% 50% no-repeat;">
             <div class="container text-center position-relative py-3 py-md-4 text-white">
@@ -25,7 +25,7 @@
 
         <div class="container">
             <div class="row gx-5 justify-content-between my-5">
-                <@_includePlace path="/c936c718-5f19-426f-b3ff-13a5a8d63044.html"/> <#-- 个人中心导航 -->
+                <@tools.includePlace path="/c936c718-5f19-426f-b3ff-13a5a8d63044.html"/> <#-- 个人中心导航 -->
                 <div class="col-md-9">
                     <div class="ps-4">
                         <h1><a href="${content.url!}">${content.title}</a></h1>
@@ -33,10 +33,10 @@
                         <h6 class="mb-1 pb-2">
                             ${content.scores!} 赞
                             <#if user?has_content>
-                                <@_userScore userId=user.id itemType='content' itemId=content.id>
+                                <@cms.userScore userId=user.id itemType='content' itemId=content.id>
                                     <a href="javascript:unstar('${content.id}');">取消点赞</a>
                                     <#assign stared=true/>
-                                </@_userScore>
+                                </@cms.userScore>
                                 <#if !stared?has_content><a href="javascript:star('${content.id}');">点赞</a></#if>
                             </#if>
                         </h6>
@@ -56,37 +56,37 @@
                                             <#if replyId?has_content>
 												<ul class="child">
 													<li>
-												<@_comment id=replyId>
-													<p><span class="text-muted">回复</span> <a class="fw-bold me-2" href="${site.dynamicPath}user.html?id=${object.replyUserId!}" target="_blank">@<@_sysUser id=object.userId>${object.nickName}</@_sysUser></a> : </p>
+												<@cms.comment id=replyId>
+													<p><span class="text-muted">回复</span> <a class="fw-bold me-2" href="${site.dynamicPath}user.html?id=${object.replyUserId!}" target="_blank">@<@sys.user id=object.userId>${object.nickname}</@sys.user></a> : </p>
 													<p class="mt-2">
 														${object.text!}
 													</p>
-												</@_comment>
+												</@cms.comment>
 													</li>
 												</ul>
 												<input type="hidden" name="replyId" value="${replyId!}"/>
                                             </#if>
-                                            <input type="hidden" name="_csrf" value="<@_csrfToken/>"/>
+                                            <input type="hidden" name="_csrf" value="<@tools.csrfToken/>"/>
                                             <input type="hidden" name="contentId" value="${content.id!}"/>
                                             <input name="returnUrl" type="hidden" value="${site.dynamicPath}comment.html?contentId=${content.id!}" />
-											<p class="pt-4"><a href="${site.dynamicPath}login.html?returnUrl=${content.url?url}">${(user.nickName)!}</a>:</p>
+											<p class="pt-4"><a href="${site.dynamicPath}login.html?returnUrl=${content.url?url}">${(user.nickname)!}</a>:</p>
                                             <textarea class="form-control" rows="3" name="text" maxlength="1000">${text!}</textarea>
                                             <input type="submit" class="btn btn-primary mt-3" value="提交"/>
                                         </form>
                                     </div>
-                                    <@_commentList advanced=true userId=user.id contentId=content.id status=2>
+                                    <@cms.commentList advanced=true userId=user.id contentId=content.id status=2>
                                         <#if page.totalCount gt 0>
                                             <h3 class="pt-4">我的待审核评论</h3>
-                                            <ol class="comments-list px-0 pt-4">
+                                            <ul class="comments-list px-0 pt-4">
                                                 <#list page.list as a>
 													<@t.merge 'userIds' a.replyUserId!/>
                                                 </#list>
-                                                <@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
+                                                <@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
                                                 <#list page.list as a>
                                                 <li class="comment">
 													<div class="d-flex align-items-center">
 														<figure>
-															<img class="rounded-circle" alt="${user.nickName}" src="${user.cover!(site.sitePath+'assets/img/logo-graphic.png')}">
+															<img class="rounded-circle" alt="${user.nickname}" src="${user.cover!(site.sitePath+'assets/img/logo-graphic.png')}">
 														</figure>
 														<div>
 															<a href="${site.dynamicPath}user.html?id=${a.userId}" class="fw-bold me-2">我</a>
@@ -99,14 +99,14 @@
 													</p>
                                                     <#if a.replyId?has_content>
 														<ul class="child">
-															<@_comment id=a.replyId>
+															<@cms.comment id=a.replyId>
 															<li class="comment">
 																<div class="d-flex align-items-center">
 																	<figure>
-																		<img class="rounded-circle" alt="${userMap[a.userId?string].nickName}" src="${userMap[a.replyUserId?string].cover!(site.sitePath+'assets/img/logo-graphic.png')}">
+																		<img class="rounded-circle" alt="${userMap[a.userId?string].nickname}" src="${userMap[a.replyUserId?string].cover!(site.sitePath+'assets/img/logo-graphic.png')}">
 																	</figure>
 																	<div>
-																		<span class="text-muted">回复</span> <a href="${site.dynamicPath}user.html?id=${a.replyUserId!}" class=" fw-bold">${userMap[a.replyUserId?string].nickName}</a>
+																		<span class="text-muted">回复</span> <a href="${site.dynamicPath}user.html?id=${a.replyUserId!}" class=" fw-bold">${userMap[a.replyUserId?string].nickname}</a>
 																		<div class="text-secondary text-opacity-50 fs-8">${object.createDate?string('yyyy-MM-dd HH:mm')}</div>
 																	</div>
 																	<a href="${site.dynamicPath}comment.html?contentId=${content.id!}&replyId=${object.id}" class="reply d-inline-flex align-items-center ms-auto fs-8 text-muted"><img src="${site.sitePath}assets/img/icon-comment-reply.svg" alt="reply"> 回复</a>
@@ -115,33 +115,33 @@
 																	${object.text!}
 																</p>
 															</li>
-															</@_comment>
+															</@cms.comment>
 														</ul>
                                                     </#if>
                                                 </li>
                                                 </#list>
-                                            </ol>
+                                            </ul>
                                         </#if>
-                                    </@_commentList>
+                                    </@cms.commentList>
 								</#if>
                             </#if>
-                            <@_commentList contentId=content.id emptyReply=true pageIndex=pageIndex pageSize=10>
+                            <@cms.commentList contentId=content.id emptyReply=true pageIndex=pageIndex pageSize=10>
                                 <#if page.totalCount gt 0>
                                     <h3 class="pt-4">内容评论</h3>
-                                    <ol class="comments-list px-0 pt-4">
+                                    <ul class="comments-list px-0 pt-4">
 										<#list page.list as a>
 											<@t.merge 'userIds' a.userId!/>
 											<@t.merge 'userIds' a.replyUserId!/>
 										</#list>
-										<@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
+										<@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
 										<#list page.list as a>
                                         <li class="comment">
 											<div class="d-flex align-items-center">
 												<figure>
-													<img class="rounded-circle" alt="${userMap[a.userId?string].nickName}" src="${userMap[a.userId?string].cover!(site.sitePath+'assets/img/logo-graphic.png')}">
+													<img class="rounded-circle" alt="${userMap[a.userId?string].nickname}" src="${userMap[a.userId?string].cover!(site.sitePath+'assets/img/logo-graphic.png')}">
 												</figure>
 												<div>
-													<a href="${site.dynamicPath}user.html?id=${a.userId}" class="fw-bold me-2">${userMap[a.userId?string].nickName}</a><span><#if userMap[a.userId?string].superuser>[管理员]</#if></span>
+													<a href="${site.dynamicPath}user.html?id=${a.userId}" class="fw-bold me-2">${userMap[a.userId?string].nickname}</a><span><#if userMap[a.userId?string].superuser>[管理员]</#if></span>
 													<div class="text-secondary text-opacity-50 fs-8">${a.createDate?string('yyyy-MM-dd HH:mm')}</div>
 												</div>
 												<a href="${site.dynamicPath}comment.html?contentId=${content.id!}&replyId=${a.id}" class="reply d-inline-flex align-items-center ms-auto fs-8 text-muted"><img src="${site.sitePath}assets/img/icon-comment-reply.svg" alt="reply"> 回复<#if a.replies gt 0> (${a.replies})</#if></a>
@@ -150,21 +150,21 @@
 												${a.text!}
 											</p>
 											<#if a.replies gt 0>
-												<@_commentList contentId=content.id replyId=a.id orderType='asc' pageSize=10>
+												<@cms.commentList contentId=content.id replyId=a.id orderType='asc' pageSize=10>
 												<ul class="child">
 													<#list page.list as a>
 													<@t.merge 'userIds' a.userId!/>
 													<@t.merge 'userIds' a.replyUserId!/>
 													</#list>
-													<@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
+													<@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
 													<#list page.list as a>
 													<li class="comment">
 														<div class="d-flex align-items-center">
 															<figure>
-																<img class="rounded-circle" alt="${userMap[a.userId?string].nickName}" src="${a.cover!(site.sitePath+'assets/img/logo-graphic.png')}">
+																<img class="rounded-circle" alt="${userMap[a.userId?string].nickname}" src="${a.cover!(site.sitePath+'assets/img/logo-graphic.png')}">
 															</figure>
 															<div>
-																<a href="${site.dynamicPath}user.html?id=${a.userId}" class=" fw-bold  me-2">${userMap[a.userId?string].nickName}</a><span class="me-2"><#if userMap[a.userId?string].superuser>[管理员]</#if></span> <span class="text-muted">回复</span><a href="${site.dynamicPath}user.html?id=${a.userId}" class=" fw-bold">${userMap[a.replyUserId?string].nickName}</a>
+																<a href="${site.dynamicPath}user.html?id=${a.userId}" class=" fw-bold  me-2">${userMap[a.userId?string].nickname}</a><span class="me-2"><#if userMap[a.userId?string].superuser>[管理员]</#if></span> <span class="text-muted">回复</span><a href="${site.dynamicPath}user.html?id=${a.userId}" class=" fw-bold">${userMap[a.replyUserId?string].nickname}</a>
 																<div class="text-secondary text-opacity-50 fs-8">${a.createDate?string('yyyy-MM-dd HH:mm')}</div>
 															</div>
 															<a href="${site.dynamicPath}comment.html?contentId=${content.id!}&replyId=${a.id}" class="reply d-inline-flex align-items-center ms-auto fs-8 text-muted"><img src="${site.sitePath}assets/img/icon-comment-reply.svg" alt="reply"> 回复</a>
@@ -175,11 +175,11 @@
 													</li>
 													</#list>
 												</ul>
-											</@_commentList>
+											</@cms.commentList>
 										</#if>
 										</li>
 										</#list>
-                                    </ol>
+                                    </ul>
 									<#assign url=site.dynamicPath+'comment.html?contentId='+content.id/>
 									<ul class="pagination mt-5 overflow-auto pb-3">
 										<li class="page-item">
@@ -205,13 +205,16 @@
 										</li>
 									</ul>
 								</#if>
-                            </@_commentList>
+                            </@cms.commentList>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <@_includePlace path="/7f8bacb5-30ca-4641-b66f-987d447b1a85.html"/> <#-- footer -->
+		<script>
+			var templatePath='${.current_template_name?keep_after('/')}';
+		</script>
+        <@tools.includePlace path="/7f8bacb5-30ca-4641-b66f-987d447b1a85.html"/> <#-- footer -->
         <script type="text/javascript">
             $(function(){$('.login-form input').eq(0).focus();});
             function check(){
@@ -224,12 +227,12 @@
         </script>
          <script>
     function star(contentId){
-        $.ajax({url:'${site.dynamicPath!}score/score?itemId='+contentId+'&itemType=content&_csrf=<@_csrfToken/>', success:function(data){
+        $.ajax({url:'${site.dynamicPath!}score/score?itemId='+contentId+'&itemType=content&_csrf=<@tools.csrfToken/>', success:function(data){
             location.reload();
         }});
     }
     function unstar(contentId){
-        $.ajax({url:'${site.dynamicPath!}score/unscore?itemId='+contentId+'&itemType=content&_csrf=<@_csrfToken/>', success:function(data){
+        $.ajax({url:'${site.dynamicPath!}score/unscore?itemId='+contentId+'&itemType=content&_csrf=<@tools.csrfToken/>', success:function(data){
             location.reload();
         }});
     }
