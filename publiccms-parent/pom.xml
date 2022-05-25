@@ -294,6 +294,12 @@
                 <groupId>redis.clients</groupId>
                 <artifactId>jedis</artifactId>
                 <version>${version.jedis}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.json</groupId>
+                        <artifactId>json</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>com.zaxxer</groupId>

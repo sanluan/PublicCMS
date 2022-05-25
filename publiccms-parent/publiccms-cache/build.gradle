@@ -11,7 +11,10 @@ dependencies {
     // https://mvnrepository.com/artifact/net.oschina.j2cache/j2cache-core
     implementation ("net.oschina.j2cache:j2cache-core:2.8.5-release") {
         exclude group:"org.slf4j", module: 'slf4j-simple'
+        exclude group:"com.alibaba", module: 'fastjson'
     }
-    implementation "redis.clients:jedis:${jedisVersion}"
+    implementation ("redis.clients:jedis:${jedisVersion}") {
+        exclude group:"org.json", module: 'json'
+    }
     implementation "org.mybatis:mybatis:${mybatisVersion}"
 }
