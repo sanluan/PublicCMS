@@ -2932,14 +2932,18 @@ var navTab = {
             var $panel = this.getPanel($tab.attr("tabid"));
             if ($tab.hasClass("external") || url.isExternalUrl()) {
                 navTab.openExternal(url, $panel);
+            } else if("2" ==flag) {
+                $panel.loadUrl(url, {}, function() {
+                    navTab._loadUrlCallback($panel);
+                });
             } else {
                 // 获取pagerForm参数
                 var $pagerForm = $(".pagerForm", $panel);
-                if(0==$pagerForm.length || "2" ==flag){
-                    $panel.loadUrl(url, $pagerForm.serializeArray(), function() {
+                if(0==$pagerForm.length){
+                    $panel.loadUrl(url, {}, function() {
                         navTab._loadUrlCallback($panel);
                     });
-                }else{
+                } else {
                     $pagerForm.submit();
                 }
             }
