@@ -1,5 +1,8 @@
 package com.publiccms.common.tools;
 
+import java.math.BigInteger;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
@@ -10,6 +13,10 @@ public class IpUtils {
     private static Pattern IPV4_PATTERN = Pattern
             .compile("^(\\d|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])(\\.(\\d|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])){3}$");
 
+    public static void main(String[] args) {
+        System.out.println(getIpv6String(getIpv6Number("0000:0000:0000:0000:0000:0000:874B:2B34")));
+    }
+
     /**
      * @param value
      * @return number
@@ -19,9 +26,9 @@ public class IpUtils {
         long result = 0;
         if (null != array && 4 == array.length) {
             try {
-                result = Integer.parseInt(array[0]) * 256 * 256 * 256;
-                result += Integer.parseInt(array[1]) * 256 * 256;
-                result += Integer.parseInt(array[2]) * 256;
+                result = Integer.parseInt(array[0]) << 24;
+                result += Integer.parseInt(array[1]) << 16;
+                result += Integer.parseInt(array[2]) << 8;
                 result += Integer.parseInt(array[3]);
             } catch (NumberFormatException e) {
                 result = 0;
@@ -32,7 +39,51 @@ public class IpUtils {
 
     /**
      * @param value
-     * @return
+     * @return string
+     */
+    public static String getIpv4String(long value) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(value >> 24);
+        sb.append(".").append((0x00ffffff & value) >> 16);
+        sb.append(".").append((0x0000ffff & value) >> 8);
+        sb.append(".").append(0x000000ff & value);
+        return sb.toString();
+    }
+
+    /**
+     * @param value
+     * @return number
+     */
+    public static BigInteger getIpv6Number(String value) {
+        try {
+            return new BigInteger(1, InetAddress.getByName(value).getAddress());
+        } catch (UnknownHostException e) {
+            return null;
+        }
+    }
+
+    /**
+     * @param value
+     * @return string
+     */
+    public static String getIpv6String(BigInteger value) {
+        if (null != value) {
+            StringBuilder sb = new StringBuilder();
+            BigInteger ff = BigInteger.valueOf(0xffff);
+            for (int i = 0; i < 8; i++) {
+                sb.insert(0, ":").insert(0, value.and(ff).toString(16));
+                value = value.shiftRight(16);
+            }
+            sb.setLength(sb.length() - 1);
+            return sb.toString().replaceFirst("(^|:)(0+(:|$)){1,8}", "::");
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * @param value
+     * @return boolean
      */
     public static boolean isIpv4(String value) {
         return IPV4_PATTERN.matcher(value).matches();
@@ -40,7 +91,7 @@ public class IpUtils {
 
     /**
      * @param value
-     * @return
+     * @return boolean
      */
     public static boolean isIpv6(String value) {
         return IPV6_PATTERN.matcher(value).matches();
@@ -48,7 +99,7 @@ public class IpUtils {
 
     /**
      * @param value
-     * @return
+     * @return boolean
      */
     public static boolean isIp(String value) {
         return isIpv4(value) || isIpv6(value);
