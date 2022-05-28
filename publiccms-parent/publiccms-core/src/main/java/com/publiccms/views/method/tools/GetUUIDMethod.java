@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.BaseMethod;
 
+import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 
 /**
@@ -18,7 +19,7 @@ import freemarker.template.TemplateModelException;
 public class GetUUIDMethod extends BaseMethod {
 
     @Override
-    public Object exec(@SuppressWarnings("rawtypes") List arguments) throws TemplateModelException {
+    public Object execute(List<TemplateModel> arguments) throws TemplateModelException {
         return UUID.randomUUID();
     }
     

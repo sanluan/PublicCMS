@@ -13,6 +13,7 @@ import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.entities.cms.CmsCategoryAttribute;
 import com.publiccms.logic.service.cms.CmsCategoryAttributeService;
 
+import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 
 /**
@@ -23,9 +24,8 @@ import freemarker.template.TemplateModelException;
 @Component
 public class GetCategoryAttributesMethod extends BaseMethod {
 
-    @SuppressWarnings("unchecked")
     @Override
-    public Object exec(@SuppressWarnings("rawtypes") List arguments) throws TemplateModelException {
+    public Object execute(List<TemplateModel> arguments) throws TemplateModelException {
         Integer[] ids = getIntegerArray(0, arguments);
         if (CommonUtils.notEmpty(ids)) {
             Map<String, Map<String, String>> resultMap = new HashMap<>();

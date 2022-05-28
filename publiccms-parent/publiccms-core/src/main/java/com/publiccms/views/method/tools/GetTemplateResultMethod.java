@@ -12,6 +12,7 @@ import com.publiccms.common.tools.FreeMarkerUtils;
 import freemarker.cache.StringTemplateLoader;
 import freemarker.core.TemplateClassResolver;
 import freemarker.template.Configuration;
+import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 
 /**
@@ -36,9 +37,8 @@ public class GetTemplateResultMethod extends BaseMethod {
         configuration.setTemplateLoader(new StringTemplateLoader());
     }
 
-    @SuppressWarnings("unchecked")
     @Override
-    public Object exec(@SuppressWarnings("rawtypes") List arguments) throws TemplateModelException {
+    public Object execute(List<TemplateModel> arguments) throws TemplateModelException {
         String template = getString(0, arguments);
         if (CommonUtils.notEmpty(template)) {
             template = "<#attempt>" + template + "<#recover>${.error!}</#attempt>";

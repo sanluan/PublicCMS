@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import com.publiccms.common.base.BaseMethod;
 import com.publiccms.logic.component.site.SiteComponent;
 
+import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 
 @Component
@@ -16,7 +17,7 @@ public class GetDictEnableMethod extends BaseMethod {
     private SiteComponent siteComponent;
 
     @Override
-    public Object exec(@SuppressWarnings("rawtypes") List arguments) throws TemplateModelException {
+    public Object execute(List<TemplateModel> arguments) throws TemplateModelException {
         return siteComponent.isDictEnable();
     }
 

@@ -13,10 +13,6 @@ public class IpUtils {
     private static Pattern IPV4_PATTERN = Pattern
             .compile("^(\\d|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])(\\.(\\d|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])){3}$");
 
-    public static void main(String[] args) {
-        System.out.println(getIpv6String(getIpv6Number("0000:0000:0000:0000:0000:0000:874B:2B34")));
-    }
-
     /**
      * @param value
      * @return number

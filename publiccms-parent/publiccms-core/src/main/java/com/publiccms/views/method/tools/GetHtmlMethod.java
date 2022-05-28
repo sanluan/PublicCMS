@@ -23,6 +23,7 @@ import com.publiccms.common.base.BaseMethod;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 
+import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 
 /**
@@ -33,9 +34,8 @@ import freemarker.template.TemplateModelException;
 @Component
 public class GetHtmlMethod extends BaseMethod {
 
-    @SuppressWarnings("unchecked")
     @Override
-    public Object exec(@SuppressWarnings("rawtypes") List arguments) throws TemplateModelException {
+    public Object execute(List<TemplateModel> arguments) throws TemplateModelException {
         String url = getString(0, arguments);
         Map<?, ?> parameters = getMap(1, arguments);
         String body = getString(1, arguments);
