@@ -171,16 +171,17 @@ public class ScheduledTaskComponent {
     }
 
     /**
-     * 每月1号凌晨清理两年以前的日志
+     * 每月1号凌晨清理三年以前的日志
      */
     @Scheduled(cron = "0 0 0 1 * ?")
     public void clearLog() {
         if (CmsVersion.isMaster()) {
-            Date date = DateUtils.addYears(CommonUtils.getDate(), -2);
+            Date date = DateUtils.addYears(CommonUtils.getDate(), -3);
             logLoginService.delete(null, date);
             logOperateService.delete(null, date);
-            logTaskService.delete(null, date);
             visitDayService.delete(date);
+            date = DateUtils.addMonths(CommonUtils.getDate(), -12);
+            logTaskService.delete(null, date);
             date = DateUtils.addMonths(CommonUtils.getDate(), -3);
             visitSessionService.delete(date);
             visitHistoryService.delete(date);
