@@ -1,6 +1,6 @@
 /**
  *  Oauth pojo<p>
  *  OAUTH对象
- * 
+ *
  */
-package com.publiccms.view.pojo.oauth;
+package com.publiccms.views.pojo.oauth;

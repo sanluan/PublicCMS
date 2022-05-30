@@ -1,4 +1,4 @@
-package com.publiccms.view.pojo.oauth;
+package com.publiccms.views.pojo.oauth;
 
 import java.io.Serializable;
 
@@ -22,7 +22,7 @@ public class OauthUser implements Serializable {
         this.openId = openId;
         this.nickname = nickname;
     }
-    
+
     /**
      * @return
      */

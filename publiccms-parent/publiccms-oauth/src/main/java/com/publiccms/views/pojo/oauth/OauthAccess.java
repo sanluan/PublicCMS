@@ -1,4 +1,4 @@
-package com.publiccms.view.pojo.oauth;
+package com.publiccms.views.pojo.oauth;
 
 import java.io.Serializable;
 
