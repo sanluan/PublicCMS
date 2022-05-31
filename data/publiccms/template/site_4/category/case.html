@@ -72,7 +72,11 @@
                 <#if (page.pageIndex-5) gt start>
                 <#assign start=page.pageIndex-4/>
                 </#if>
-                <#assign end=page.totalPage/>
+				<#assign max=page.totalPage/>
+				<#if 100 lt max>
+				<#assign max=100/>
+				</#if>
+				<#assign end=max/>
                 <#if (page.pageIndex+5) lt end>
                 <#assign end=page.pageIndex+4/>
                 </#if>
@@ -83,9 +87,9 @@
 				<#list start..end as a>
 				<li class="page-item<#if a=page.pageIndex> active</#if>"><a class="page-link" href="${getPage(url,a)}">${a}</a></li>
 				</#list>
-				<#if end lt page.totalPage>
+				<#if end lt max>
 				<li class="page-item"><span>...</span></li>
-				<li class="page-item"><a class="page-link" href="${getPage(url,page.totalPage)}">${page.totalPage}</a></li>
+				<li class="page-item"><a class="page-link" href="${getPage(url,max)}">${max}</a></li>
 				</#if>
                 <li class="page-item">
                     <a class="page-link" href="${getPage(url,page.nextPage)}" aria-label="Next">

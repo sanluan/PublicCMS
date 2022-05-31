@@ -2,30 +2,30 @@
 	<div class="guide-side fs-7">
 		<div class="navbar-expand-md" role="navigation">
 			<h3 class="mb-4">
-				<a href="#" class="navbar-toggler collapsed" data-bs-toggle="collapse" aria-expanded="false" data-bs-target="#guide" aria-controls="guide">			
+				<a href="#" class="navbar-toggler collapsed" data-bs-toggle="collapse" aria-expanded="false" data-bs-target="#guide" aria-controls="guide">
 					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
 					  <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
 					</svg>
 					手册导航
 				</a>
 			</h3>
-			<@_category code='guide'>
-				<@_categoryList parentId=object.id>
+			<@cms.category code='guide'>
+				<@cms.categoryList parentId=object.id>
 			<div class="list-group mb-5 collapse navbar-collapse align-items-start"  id="guide">
 				<#list page.list as a>
 				<h5 class="list-group-title <#if !a?is_first> mt-4</#if> mb-2">
 					<#assign attribute=getCategoryAttribute(a.id)/>
 					<img src="${getAbsoluteUrl(site.sitePath,attribute.cover)!}" class="me-2">  ${a.name}
 				</h5>
-				<@_contentList categoryId=a.id containChild=a.containChild pageSize=100 orderType='asc'>
+				<@cms.contentList categoryId=a.id containChild=a.containChild pageSize=100 orderType='asc'>
 					<#list page.list as a>
 	                    <a class="list-group-item fs-6" data-id="${a.id}" href="${a.url}">${a.title}</a>
 					</#list>
-				</@_contentList>
+				</@cms.contentList>
 				</#list>
 			</div>
-				</@_categoryList>
-			</@_category>
+				</@cms.categoryList>
+			</@cms.category>
 		</div>
 	</div>
 </div>

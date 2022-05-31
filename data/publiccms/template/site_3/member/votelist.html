@@ -2,21 +2,21 @@
 <html lang="zh-CN">
 <head>
 	<title>${metadata.alias!}</title>
-	<@_includePlace path="/76c53ac2-4f88-4ef3-984b-c81d00a48089.html"/> <#-- 头部Header -->
+	<@tools.includePlace path="/76c53ac2-4f88-4ef3-984b-c81d00a48089.html"/> <#-- 头部Header -->
 </head>
 <body>
-<@_includePlace path="/23e95a91-0063-4498-99ef-aa3fc4a79c4c.html"/> <#-- 导航 -->
+<@tools.includePlace path="/23e95a91-0063-4498-99ef-aa3fc4a79c4c.html"/> <#-- 导航 -->
 <main>
     <div class="container">
 		<h3>投票列表</h3>
-<@_voteList pageIndex=pageIndex pageSize=10>
+<@cms.voteList pageIndex=pageIndex pageSize=10>
         <ul>
     <#list page.list as a>
             <li>
 				<h3><a href="${site.dynamicPath}vote.html?id=${a.id}">${a.title}</a></h3>
 				<p>${a.description}</p>
 				<#if .now gt a.endDate && a.scores gt 0><#assign show=true/><#else><#assign show=false/></#if>
-				<@_voteItemList voteId=a.id pageSize=3>
+				<@cms.voteItemList voteId=a.id pageSize=3>
 					<ol class="vote">
 						<#list page.list as v>
 						<li>
@@ -29,7 +29,7 @@
 						</li>
 						</#list>
 					</ol>
-				</@_voteItemList>
+				</@cms.voteItemList>
             </li>
     </#list>
         </ul>
@@ -69,9 +69,9 @@
                 <span>下一页</span>
             </#if>
         </div>
-</@_voteList>
+</@cms.voteList>
     </div>
 </main>
-<@_includePlace path="/cc29e896-332a-46d8-9bcb-d48e92144e9c.html"/> <#-- 尾部Footer -->
+<@tools.includePlace path="/cc29e896-332a-46d8-9bcb-d48e92144e9c.html"/> <#-- 尾部Footer -->
 </body>
 </html>

@@ -6,12 +6,12 @@
 </head>
 <body>
     <main><#list RequestParameters as k,v>${k},</#list>
-	
-	<@_facetSearch word='cms' pageSize=10> 
-  <p> category: <#list page.facetMap.categoryId as k,v><@_category id=k>${object.name}</@_category>(${v})</#list></p>
-  <p> model: <#list page.facetMap.modelId as k,v><@_model id=k>${object.name}</@_model>(${v})</#list></p>
+
+	<@cms.facetSearch word='cms' pageSize=10>
+  <p> category: <#list page.facetMap.categoryId as k,v><@cms.category id=k>${object.name}</@cms.category>(${v})</#list></p>
+  <p> model: <#list page.facetMap.modelId as k,v><@cms.model id=k>${object.name}</@cms.model>(${v})</#list></p>
   <#list page.list as a><p>${a.title}</p></#list>
-  </@_facetSearch>
+  </@cms.facetSearch>
 
 	</main>
     <footer>

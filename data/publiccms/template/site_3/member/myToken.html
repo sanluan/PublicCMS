@@ -2,23 +2,23 @@
 <html lang="zh_CN">
 <head>
     <title>${(metadata.alias)!}</title>
-	<@_includePlace path="/76c53ac2-4f88-4ef3-984b-c81d00a48089.html"/> <#-- 头部Header -->
+	<@tools.includePlace path="/76c53ac2-4f88-4ef3-984b-c81d00a48089.html"/> <#-- 头部Header -->
 </head>
 <body>
-	<@_includePlace path="/23e95a91-0063-4498-99ef-aa3fc4a79c4c.html"/> <#-- 导航 -->
+	<@tools.includePlace path="/23e95a91-0063-4498-99ef-aa3fc4a79c4c.html"/> <#-- 导航 -->
     <main>
 		<div class="container clearfix-after">
-			<@_includePlace path="/c936c718-5f19-426f-b3ff-13a5a8d63044.html"/> <#-- 个人中心导航 -->
+			<@tools.includePlace path="/c936c718-5f19-426f-b3ff-13a5a8d63044.html"/> <#-- 个人中心导航 -->
 			<div class="right-content">
 				<div class="box">
 					<#macro message code>${springMacroRequestContext.getMessage(code)}</#macro>
-					<@_sysUserTokenList userId=user.id pageIndex=pageIndex pageSize=10>
+					<@sys.userTokenList userId=user.id pageIndex=pageIndex pageSize=10>
 						<h3>我的登录授权</h3>
 						<ul>
 						<#list page.list as a>
 							<li class="underline">
 								<p>${a.channel!}<span class="float-right"><label>创建日期:</label>${a.createDate!}</span></p>
-								<p><label>过期日期:</label>${a.expiryDate!}<span class="float-right"><a href="${site.dynamicPath!}user/deleteToken?authToken=${a.authToken}&_csrf=<@_csrfToken/>&returnUrl=${site.dynamicPath}myToken.html">删除</a></span></p>
+								<p><label>过期日期:</label>${a.expiryDate!}<span class="float-right"><a href="${site.dynamicPath!}user/deleteToken?authToken=${a.authToken}&_csrf=<@tools.csrfToken/>&returnUrl=${site.dynamicPath}myToken.html">删除</a></span></p>
 							</li>
 						</#list>
 						</ul>
@@ -53,7 +53,7 @@
 								<span>下一页</span>
 							</#if>
 						</div>
-					</@_sysUserTokenList>
+					</@sys.userTokenList>
 				</div>
 			</div>
 		</div>
@@ -61,6 +61,6 @@
 	<script>
     var itemString="itemType=user&itemId=${user.id}";
     </script>
-    <@_includePlace path="/cc29e896-332a-46d8-9bcb-d48e92144e9c.html"/> <#-- 尾部Footer -->   
+    <@tools.includePlace path="/cc29e896-332a-46d8-9bcb-d48e92144e9c.html"/> <#-- 尾部Footer -->
 </body>
-</html> 
+</html>

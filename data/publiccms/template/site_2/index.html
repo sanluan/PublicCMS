@@ -6,14 +6,14 @@
 	<title>${site.name!}</title>
 	<meta name="keywords" content="${(metadata.extendData.keywords)!}" />
 	<meta name="description" content="${(metadata.extendData.description)!}" />
-	<@_includePlace path="/194ca327-6b34-431d-a2d2-90f94b25e950.html"/> <#-- Head META -->
+	<@tools.includePlace path="/194ca327-6b34-431d-a2d2-90f94b25e950.html"/> <#-- Head META -->
 </head>
 <body>
-	<@_includePlace path="/0dff168a-bc70-40d3-bf8f-c209dd598e5b.html"/> <#-- Header -->
+	<@tools.includePlace path="/0dff168a-bc70-40d3-bf8f-c209dd598e5b.html"/> <#-- Header -->
 
 	<div class="index-bg" style="background:urL(${site.sitePath}assets/images/index.jpg) repeat-x center top; text-align:center;"></div>
 
-	<@_includePlace path="/b7da840c-9f97-486c-af7c-7ff114b60c26.html"/> <#-- 中文导航 -->
+	<@tools.includePlace path="/b7da840c-9f97-486c-af7c-7ff114b60c26.html"/> <#-- 中文导航 -->
 
 	<main class="container">
 		<div class="introduction-box">
@@ -24,7 +24,7 @@
 			</div>
             <img name="" src="${site.sitePath}assets/images/201209291602208653.jpg" alt="">
 		</div>
-	<@_category id=(metadata.extendData.category)!>
+	<@cms.category id=(metadata.extendData.category)!>
 		<div class="content-list-box">
 			<h2>
 				<div>
@@ -32,7 +32,7 @@
 				</div>
 			</h2>
 			<div class="tab-list">
-		<@_contentList categoryId=object.id containChild=true pageSize=pageSize>
+		<@cms.contentList categoryId=object.id containChild=true pageSize=pageSize>
 			<#if page.totalCount gt 0>
 				<ul>
 				<#list page.list as a>
@@ -40,23 +40,23 @@
 			    </#list>
 				</ul>
 			</#if>
-		</@_contentList>
+		</@cms.contentList>
 			</div>
 		</div>
-	</@_category>
+	</@cms.category>
 		<div class="aside-box">
 			<h2><div><strong>相关链接</strong></div></h2>
 			<select class="friend-link" onchange="javascript:if(this.options[this.selectedIndex].value){window.open(this.options[this.selectedIndex].value)}">
                 <option value="">友情连接</option>
-				<@_includePlace path="/505ddbed-f6ff-4a53-b5a8-0b2d7479a2ec.html"/> <#-- 友情链接 -->
+				<@tools.includePlace path="/505ddbed-f6ff-4a53-b5a8-0b2d7479a2ec.html"/> <#-- 友情链接 -->
 			</select>
-			<@_includePlace path="/e2ef0223-ddd3-4a95-bc65-c7eb796c911a.html"/> <#-- 内部链接 -->
+			<@tools.includePlace path="/e2ef0223-ddd3-4a95-bc65-c7eb796c911a.html"/> <#-- 内部链接 -->
 		</div>
 	</main>
 
-    <@_includePlace path="/ab53b388-be0e-4674-b631-e1de625c74ac.html"/> <#-- 首页推荐 -->
+    <@tools.includePlace path="/ab53b388-be0e-4674-b631-e1de625c74ac.html"/> <#-- 首页推荐 -->
 
-	<@_includePlace path="/df408ca8-9f6d-4c65-b4ca-1eea34955834.html"/> <#-- Footer -->
+	<@tools.includePlace path="/df408ca8-9f6d-4c65-b4ca-1eea34955834.html"/> <#-- Footer -->
 	<script>
 			$('a[data-id=home]').addClass('selected');
 	</script>

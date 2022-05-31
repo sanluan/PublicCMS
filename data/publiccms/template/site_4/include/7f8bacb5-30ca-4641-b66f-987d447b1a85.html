@@ -6,12 +6,12 @@
                     <img src="${site.sitePath}assets/img/logo.png" alt="LOGO" class="w-50 me-2">
                     与先进同行
                 </div>
-                <p><@_metadata path='index.html';metadata>${(metadata.extendData.description)!}</@_metadata></p>
+                <p><@tools.metadata path='index.html';metadata>${(metadata.extendData.description)!}</@tools.metadata></p>
             </div>
             <div class="col-auto mb-5 mb-md-4">
                 <dl data-diy="region" data-diy-id="0b584103-4d6e-4940-8519-f40cbb056db8">
                     <dt class="fs-5 mb-4">联系方式</dt>
-					<@_includeRegion id="0b584103-4d6e-4940-8519-f40cbb056db8"/> <#-- 页尾联系方式 -->
+					<@tools.includeRegion id="0b584103-4d6e-4940-8519-f40cbb056db8"/> <#-- 页尾联系方式 -->
                 </dl>
             </div>
             <div class="col-md-3 mb-5 mb-md-4">
@@ -33,15 +33,15 @@
             <div class="row justify-content-between">
                 <div class="col-md-auto">
                     ${.now?string('yyyy')} PublicCMS.com All Rights Reserved.
-                    <@_includePlace path="/footer/9eedb96c-4f47-422e-8020-81a4b362e0a6.html"/> <#-- 备案链接 -->
+                    <@tools.includePlace path="/footer/9eedb96c-4f47-422e-8020-81a4b362e0a6.html"/> <#-- 备案链接 -->
                 </div>
-                <@_includePlace path="/cfdc226d-8abc-48ec-810d-f3941b175b20.html"/> <#-- 友情链接 -->
+                <@tools.includePlace path="/cfdc226d-8abc-48ec-810d-f3941b175b20.html"/> <#-- 友情链接 -->
             </div>
         </div>
     </footer>
 </footer>
 <!-- 搜索 -->
-<div class="modal fade" id="searchModal" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="searchModal" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content bg-transparent border-0">
             <form action="${siteAttribute.searchPath!}" method="get">
@@ -96,7 +96,7 @@
 <script src="${site.sitePath}assets/js/cms.diy.js"></script>
 <script>var CMS_PATH='${site.dynamicPath}';</script>
 <script src="${site.sitePath}assets/js/main.js"></script>
-<script>    
+<script>
     var ca = cmsAnalytics();
     var url='${site.dynamicPath}api/visit/record';
     if("string" ==typeof itemString){

@@ -4,10 +4,10 @@
         <title>${(attribute.title)!category.name}</title>
         <meta name="keywords" content="${(attribute.keywords)!}"/>
         <meta name="description" content="${(attribute.description)!}"/>
-        <@_includePlace path="/8ddab9ba-a8aa-4745-86c6-66bf1c2c976c.html"/> <#-- header -->
+        <@tools.includePlace path="/8ddab9ba-a8aa-4745-86c6-66bf1c2c976c.html"/> <#-- header -->
     </head>
     <body>
-        <@_includePlace path="/c32a4f4a-ff5d-49cf-bb59-5d9784539174.html"/> <#-- 导航 -->
+        <@tools.includePlace path="/c32a4f4a-ff5d-49cf-bb59-5d9784539174.html"/> <#-- 导航 -->
 		
         <div class="banner-l2 position-relative d-flex align-items-center justify-content-center" data-diy="category" data-diy-id="${category.id}">
             <div class="container text-center position-relative py-3 py-md-4">
@@ -24,7 +24,7 @@
         <div class="container mt-5">
             <div class="row">
                 <div class="col-12">
-                    <@_categoryList parentId=category.id>
+                    <@cms.categoryList parentId=category.id>
                     <div class="row row-cols-1 row-cols-md-4 gx-3 gx-md-5 gy-3 gy-md-4 demo-list" data-diy="child-category">
                         <#list page.list as a>
                         <div class="col">
@@ -39,7 +39,7 @@
                         </div>
                         </#list>
                     </div>
-                    </@_categoryList>
+                    </@cms.categoryList>
                 </div>
             </div>
         </div>
@@ -48,7 +48,7 @@
             var itemString="itemType=category&itemId=${category.id}";
 			var templatePath='${.current_template_name?keep_after('/')}';
         </script>
-        <@_includePlace path="/7f8bacb5-30ca-4641-b66f-987d447b1a85.html"/> <#-- footer -->
+        <@tools.includePlace path="/7f8bacb5-30ca-4641-b66f-987d447b1a85.html"/> <#-- footer -->
 		<script>
             $('.navbar-nav .nav-item[data-id=${category.parentId!category.id}]').addClass('selected');
         </script>

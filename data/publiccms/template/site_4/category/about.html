@@ -4,10 +4,10 @@
         <title>${(attribute.title)!category.name}</title>
         <meta name="keywords" content="${(attribute.keywords)!}"/>
         <meta name="description" content="${(attribute.description)!}"/>
-        <@_includePlace path="/8ddab9ba-a8aa-4745-86c6-66bf1c2c976c.html"/> <#-- header -->
+        <@tools.includePlace path="/8ddab9ba-a8aa-4745-86c6-66bf1c2c976c.html"/> <#-- header -->
     </head>
     <body>
-        <@_includePlace path="/c32a4f4a-ff5d-49cf-bb59-5d9784539174.html"/> <#-- 导航 -->
+        <@tools.includePlace path="/c32a4f4a-ff5d-49cf-bb59-5d9784539174.html"/> <#-- 导航 -->
 
         <div class="banner-l2 position-relative d-flex align-items-center justify-content-center" data-diy="category" data-diy-id="${category.id}">
             <div class="container text-center position-relative py-3 py-md-4">
@@ -25,18 +25,18 @@
 			 <div class="row">
                 <div class="col-12 d-flex justify-content-center my-5" data-diy="child-category">
                     <ul class="nav nav-pills nav-l2">
-                    <@_category id=category.parentId!category.id>
+                    <@cms.category id=category.parentId!category.id>
                         <li class="nav-item">
                             <a class="nav-link<#if object.id=category.id> active</#if>" aria-current="page" href="${object.url!}">全部</a>
                         </li>
-                    </@_category>
-                    <@_categoryList parentId=category.parentId!category.id>
+                    </@cms.category>
+                    <@cms.categoryList parentId=category.parentId!category.id>
                         <#list page.list as a>
                         <li class="nav-item">
                             <a class="nav-link<#if a.id=category.id> active</#if>"<#if a.onlyUrl> target="_blank"</#if> href="${a.url}">${a.name!}</a>
                         </li>
                         </#list>
-                    </@_categoryList>
+                    </@cms.categoryList>
                     </ul>
                 </div>
             </div>
@@ -55,7 +55,7 @@
             var itemString="itemType=category&itemId=${category.id}";
 			var templatePath='${.current_template_name?keep_after('/')}';
         </script>
-        <@_includePlace path="/7f8bacb5-30ca-4641-b66f-987d447b1a85.html"/> <#-- footer -->
+        <@tools.includePlace path="/7f8bacb5-30ca-4641-b66f-987d447b1a85.html"/> <#-- footer -->
 		<script>
             $('.navbar-nav .nav-item[data-id=${category.parentId!category.id}]').addClass('selected');
         </script>

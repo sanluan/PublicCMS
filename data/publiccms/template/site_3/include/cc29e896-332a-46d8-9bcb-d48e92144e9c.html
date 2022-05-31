@@ -19,8 +19,8 @@
 			<p>我们专注提供专业的软件产品和技术。为合作伙伴提供安全可靠的软件产品与解决方案，共同帮助终端用户实现业务创新、快速发展。</p>
 		</div>
 		<div class="footer-bottom clearfix-before">
-			<p>&copy;${.now?string('yyyy')}  PublicCMS.com All Rights Reserved. <@_sysConfigData code="site"><a href="http://beian.miit.gov.cn/" target="_blank">${object.approve!}</a></@_sysConfigData></p>
-			<@_includePlace path="/cfdc226d-8abc-48ec-810d-f3941b175b20.html"/> <#-- 友情链接 -->
+			<p>&copy;${.now?string('yyyy')}  PublicCMS.com All Rights Reserved. <@sys.configData code="site"><a href="http://beian.miit.gov.cn/" target="_blank">${object.approve!}</a></@sys.configData></p>
+			<@tools.includePlace path="/cfdc226d-8abc-48ec-810d-f3941b175b20.html"/> <#-- 友情链接 -->
 		</div>
 	</div>
 </footer>
@@ -58,7 +58,7 @@
 <script>var CMS_PATH='${site.dynamicPath}';</script>
 <script src="${site.sitePath!}assets/js/main.js?4"></script>
 <script>
-	<@_sysConfigData code="site">${(object.statistics?no_esc)!}</@_sysConfigData>
+	<@sys.configData code="site">${(object.statistics?no_esc)!}</@sys.configData>
 </script>
 <script src="${site.sitePath}assets/js/cms.analytics.js"></script>
 <script>

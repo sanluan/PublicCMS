@@ -1,4 +1,4 @@
-<@_voteList endStartDate=.now  pageSize=5>
+<@cms.voteList endStartDate=.now  pageSize=5>
     <#if page.totalCount gt 0>
 	<header class="tab-header fs-5" data-diy="place" data-diy-id="${path}">
 		<b class="pb-2"><a href="${site.dynamicPath}votelist.html">最新投票</a></b>
@@ -11,7 +11,7 @@
 				<footer class="fs-8 text-secondary text-opacity-50 d-flex align-items-center">
 					<span class="me-4 d-inline-flex align-items-center"><#if .now gt a.endDate>已截止<#else>截止:${(a.endDate)?string('yyyy-MM-dd')}</#if></span>
 				</footer>
-				<@_voteItemList voteId=a.id pageSize=3>
+				<@cms.voteItemList voteId=a.id pageSize=3>
 				<ol class="vote">
 					<#if .now gt a.endDate && a.scores gt 0><#assign show=true/><#else><#assign show=false/></#if>
 					<#list page.list as v>
@@ -25,9 +25,9 @@
 					</li>
 					</#list>
 				</ol>
-			</@_voteItemList>
+			</@cms.voteItemList>
 			</div>
 		</#list>
 	</div>
 	</#if>
-</@_voteList>
+</@cms.voteList>

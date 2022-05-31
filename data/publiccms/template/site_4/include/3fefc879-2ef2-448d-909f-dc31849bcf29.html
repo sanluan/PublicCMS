@@ -1,4 +1,4 @@
-<@_surveyList endStartDate=.now  pageSize=5>
+<@cms.surveyList endStartDate=.now  pageSize=5>
     <#if page.totalCount gt 0>
 	<header class="tab-header fs-5" data-diy="place" data-diy-id="${path}">
 		<a href="${site.dynamicPath}surveyList.html"><b class="pb-2">最新问卷调查</b></a>
@@ -15,4 +15,4 @@
 		</#list>
 	</div>
     </#if>
-</@_surveyList>
+</@cms.surveyList>

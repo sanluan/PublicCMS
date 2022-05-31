@@ -3,18 +3,18 @@
 <head>
     <title>接口列表</title>
     <meta charset="utf-8">
-    <@_includePlace path="/8ddab9ba-a8aa-4745-86c6-66bf1c2c976c.html"/> <#-- header -->
+    <@tools.includePlace path="/8ddab9ba-a8aa-4745-86c6-66bf1c2c976c.html"/> <#-- header -->
     <link href="${base}/resource/plugins/json-formatter/code-formatter.css" rel="stylesheet"/>
 <style>
-#rawJson{width:100%; height: 50px;}
-#interfaes{overflow: hidden;padding-left:35px;}
+#rawJson{width:100%;height: 50px;}
+#interfaes{overflow:auto;padding-left:35px;}
 #interfaes label{margin-left:-35px;}
 #interfaes a{padding: 0 5px;}
 p{margin-bottom:5px;}
 </style>
 </head>
 <body>
-    <@_includePlace path="/c32a4f4a-ff5d-49cf-bb59-5d9784539174.html"/> <#-- 导航 -->
+    <@tools.includePlace path="/c32a4f4a-ff5d-49cf-bb59-5d9784539174.html"/> <#-- 导航 -->
     <main class="container">
         <fieldset>
             <legend>接口测试</legend>
@@ -32,17 +32,17 @@ p{margin-bottom:5px;}
             <p>
                 <label>站点切换
                     <select onchange="$('#sendData').val($('#sendData').val().replace(sitePath,$(this).val()));sitePath=$(this).val();">
-                <@_sysSiteList count=500>
+                <@sys.siteList count=500>
                     <#list page.list as a>
                         <option value ="${a.dynamicPath!}" <#if site.id=a.id>selected="selected"</#if>>${a.name!}<#if site.id=a.id>[当前站点]</#if></option>
                     </#list>
-                </@_sysSiteList>
+                </@sys.siteList>
                     </select>
                 </label>
                 <label><input type="radio" name="api" value="0"/>指令接口</label>
                 <label><input type="radio" name="api" value="1"/>方法接口</label>
                 <label><input type="radio" name="api" value="2"/>定制接口</label>
-				<a href="javascript:;" onclick="$(this).hide().next().show();$('#interfaes').css('height','20px');return false;">↑↑↑↑ 折叠接口列表</a>
+				<a href="javascript:;" onclick="$(this).hide().next().show();$('#interfaes').css('height','55px');return false;">↑↑↑↑ 折叠接口列表</a>
                 <a href="javascript:;" style="display:none;" onclick="$(this).hide().prev().show();$('#interfaes').css('height','auto');return false;">↓↓↓↓ 展开接口列表</a>
             </p>            
             <p id="interfaes"></p>
@@ -58,7 +58,7 @@ p{margin-bottom:5px;}
 	<script>
 		var templatePath='${.current_template_name?keep_after('/')}';
 	</script>
-    <@_includePlace path="/7f8bacb5-30ca-4641-b66f-987d447b1a85.html"/> <#-- footer -->
+    <@tools.includePlace path="/7f8bacb5-30ca-4641-b66f-987d447b1a85.html"/> <#-- footer -->
     <script src="${base}/resource/plugins/json-formatter/code-formatter.js"></script>
     <script src="${base}/resource/plugins/json-formatter/json2.js"></script>
 	<script>

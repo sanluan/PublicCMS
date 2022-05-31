@@ -9,7 +9,7 @@
 		<script src="https://unpkg.com/vue"></script>
 		<script src="https://unpkg.com/vue-resource"></script>
 	</head>
-	<body>	
+	<body>
 		<div id="app">
 			<header class="header">
 				<div class="top-bar">
@@ -41,14 +41,14 @@
 							<div class="swiper-slide"  v-for="focus in focusList"><a v-bind:href="focus.url"><img  v-bind:src="focus.cover" v-bind:alt="focus.title"></a></div>
 						</div>
 						<div class="swiper-pagination swiper-pagination-white"></div>
-					</div> 
+					</div>
 					<div class="data-list">
 						<ul>
 							<li v-for="content in contentList" class="clearfix-after">
 								<a v-if="content.cover !== ''" v-bind:href="content.url">
 									<img v-bind:src="content.cover" v-bind:alt=" content.title "/>
 								</a>
-								<h3><span>{{ content.publishDate}}</span><a v-bind:href="content.url">{{ content.title }}</a></h3>								
+								<h3><span>{{ content.publishDate}}</span><a v-bind:href="content.url">{{ content.title }}</a></h3>
 								<p>{{ content.description }}</p>
 							</li>
 						</ul>
@@ -95,7 +95,7 @@
 					this.$http.get("focusList.json").then(function(data){
 						this.focusList=eval('('+data.bodyText+')');
 					});
-	
+
 				},
 				mounted:function(){
 					console.log('mounted');
@@ -125,12 +125,12 @@
 							}
 						});
 						this.focusInited=true;
-					} 
+					}
 				}
 			});
 		</script>
 		<script>
-			<@_sysConfigData code="site">${(object.statistics?no_esc)!}</@_sysConfigData>
+			<@sys.configData code="site">${(object.statistics?no_esc)!}</@sys.configData>
 		</script>
 		<script>
 			cmsAnalytics().report('${site.dynamicPath}api/visit/record');

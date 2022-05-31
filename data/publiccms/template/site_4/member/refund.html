@@ -4,10 +4,10 @@
 <html lang="zh-CN">
     <head>
         <title>${(metadata.alias)!}</title>
-        <@_includePlace path="/8ddab9ba-a8aa-4745-86c6-66bf1c2c976c.html"/> <#-- header -->
+        <@tools.includePlace path="/8ddab9ba-a8aa-4745-86c6-66bf1c2c976c.html"/> <#-- header -->
     </head>
     <body>
-        <@_includePlace path="/c32a4f4a-ff5d-49cf-bb59-5d9784539174.html"/> <#-- 导航 -->
+        <@tools.includePlace path="/c32a4f4a-ff5d-49cf-bb59-5d9784539174.html"/> <#-- 导航 -->
 
         <div class="banner-l3 position-relative d-flex align-items-center justify-content-center" style="background:#22407c url(${site.sitePath}assets/img/banner-l3-bg-1.png) 50% 50% no-repeat;">
             <div class="container text-center position-relative py-3 py-md-4 text-white">
@@ -20,7 +20,7 @@
 
         <div class="container">
             <div class="row gx-5 justify-content-between my-5">
-                <@_includePlace path="/c936c718-5f19-426f-b3ff-13a5a8d63044.html"/> <#-- 个人中心导航 -->
+                <@tools.includePlace path="/c936c718-5f19-426f-b3ff-13a5a8d63044.html"/> <#-- 个人中心导航 -->
                 <div class="col-md-9">
                     <div class="ps-4">
                         <#macro message code>${springMacroRequestContext.getMessage(code)}</#macro>
@@ -38,7 +38,7 @@
                                     <p>${a.reason!}<#if a.reply?has_content><span class="float-end"><label class="ms-4 text-secondary">回复:</label> ${a.reply!}</span></#if></p>
                                     <#if 0=a.status||3=a.status>
                                         <form action="${site.dynamicPath}tradePayment/refund" method="POST">
-                                            <input type="hidden" name="_csrf" value="<@_csrfToken/>"/>
+                                            <input type="hidden" name="_csrf" value="<@tools.csrfToken/>"/>
                                             <input type="hidden" name="id" value="${a.id}"/>
                                             <input type="hidden" name="returnUrl" value="${site.dynamicPath}paymentList.html"/>
                                             <input type="hidden" name="paymentId" value="${a.id}"/>
@@ -93,6 +93,6 @@
 			var itemString="itemType=user&itemId=${user.id}";
 			var templatePath='${.current_template_name?keep_after('/')}';
 		</script>
-        <@_includePlace path="/7f8bacb5-30ca-4641-b66f-987d447b1a85.html"/> <#-- footer -->
+        <@tools.includePlace path="/7f8bacb5-30ca-4641-b66f-987d447b1a85.html"/> <#-- footer -->
     </body>
 </html>
