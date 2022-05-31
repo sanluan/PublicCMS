@@ -22,7 +22,7 @@
                 <div class="col-md-9">
                     <div class="ps-4">
                         <#macro message code>${springMacroRequestContext.getMessage(code)}</#macro>
-                        <@_tradeOrderList userId=user.id pageIndex=pageIndex pageSize=10>
+                        <@trade.orderList userId=user.id pageIndex=pageIndex pageSize=10>
                             <h3>我的订单</h3>
                             <ul class="article-list">
                             <#list page.list as a>
@@ -79,7 +79,7 @@
 									</a>
 								</li>
                             </ul>
-                        </@_tradeOrderList>
+                        </@trade.orderList>
                     </div>
                 </div>
             </div>

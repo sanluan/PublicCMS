@@ -187,7 +187,7 @@ public class CmsTemplateAdminController {
             CmsFileUtils.replaceFileList(filePath, replaceParameters.getReplaceList(), word, replace);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "replace.template", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), word + " to " + replace + "in " + replaceParameters.getReplaceList().toString()));
+                    CommonUtils.getDate(), word + " to " + replace + " in " + replaceParameters.getReplaceList().toString()));
         }
         return CommonConstants.TEMPLATE_DONE;
     }

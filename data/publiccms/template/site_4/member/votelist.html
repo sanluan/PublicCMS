@@ -16,14 +16,14 @@
             </div>
         </div>
         <div class="container">
-    <@_voteList pageIndex=pageIndex pageSize=10>
+    <@cms.voteList pageIndex=pageIndex pageSize=10>
             <ul class="pt-4">
         <#list page.list as a>
                 <li>
                     <h3><a href="${site.dynamicPath}vote.html?id=${a.id}">${a.title}</a></h3>
                     <p>${a.description}</p>
                     <#if .now gt a.endDate && a.scores gt 0><#assign show=true/><#else><#assign show=false/></#if>
-                    <@_voteItemList voteId=a.id pageSize=3>
+                    <@cms.voteItemList voteId=a.id pageSize=3>
                         <ol class="vote">
                             <#list page.list as v>
                             <li>
@@ -36,7 +36,7 @@
                             </li>
                             </#list>
                         </ol>
-                    </@_voteItemList>
+                    </@cms.voteItemList>
                 </li>
         </#list>
             </ul>
@@ -64,7 +64,7 @@
 					</a>
 				</li>
 			</ul>
-    </@_voteList>
+    </@cms.voteList>
         </div>
 		<script>
 		var templatePath='${.current_template_name?keep_after('/')}';

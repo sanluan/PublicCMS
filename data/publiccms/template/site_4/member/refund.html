@@ -24,7 +24,7 @@
                 <div class="col-md-9">
                     <div class="ps-4">
                         <#macro message code>${springMacroRequestContext.getMessage(code)}</#macro>
-                        <@_tradeRefundList userId=user.id pageIndex=pageIndex pageSize=10>
+                        <@trade.refundList userId=user.id pageIndex=pageIndex pageSize=10>
                             <h3>我的退款记录</h3>
                             <ul class="article-list">
                             <#list page.list as a>
@@ -84,7 +84,7 @@
 									</a>
 								</li>
                             </ul>
-                        </@_tradeRefundList>
+                        </@trade.refundList>
                     </div>
                 </div>
             </div>
