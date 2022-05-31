@@ -105,8 +105,6 @@ public class DirectiveComponent {
             directiveMap.put(directive.getShortName(), directive);
             taskDirectiveMap.put(directive.getName(), directive);
         }
-        log.info(new StringBuilder().append(namespaceMap.size()).append(" namespace created :").append(namespaceMap.keySet())
-                .toString());
         for (Entry<String, Map<String, BaseTemplateDirective>> entry : namespaceMap.entrySet()) {
             log.info(new StringBuilder().append("namespace ").append(entry.getKey()).append(" has ").append(entry.getValue().keySet().size())
                     .append(" directives : ").append(entry.getValue().keySet()).toString());

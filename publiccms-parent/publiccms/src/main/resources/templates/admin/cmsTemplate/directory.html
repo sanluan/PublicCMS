@@ -1,8 +1,18 @@
-<h2 class="contentTitle">
-    <a class="button" href="cmsTemplate/upload.html?path=${(path?url)!}" target="dialog" mask="true" width="500" height="250"><@t.page 'template.upload'/></a>
-    <a class="button" href="cmsTemplate/export?_csrf=<@tools.csrfToken admin=true/>" target="dwzExport" targetType="navTab"><@t.page 'button.export'/></a>
-    <#if path?has_content>
-        <a class="button" href="cmsTemplate/delete?path=${path?url}&navTabId=cmsTemplate/list&_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.delete_directory'/>" target="ajaxTodo"><@t.page 'button.delete_directory'/></a>
-        <a class="button" href="cmsTemplate/metadata.html?path=${(path?url)!}/" target="ajax" rel="cmsTemplateBox"><@t.page 'template.create_here'/></a>
-    </#if>
-</h2>
+<div id="searchBox">
+    <h2 class="contentTitle">
+        <a class="button" href="cmsTemplate/upload.html?path=${(path?url)!}" target="dialog" mask="true" width="500" height="250"><@t.page 'template.upload'/></a>
+        <a class="button" href="cmsTemplate/export?_csrf=<@tools.csrfToken admin=true/>" target="dwzExport" targetType="navTab"><@t.page 'button.export'/></a>
+        <#if path?has_content>
+            <a class="button" href="cmsTemplate/delete?path=${path?url}&navTabId=cmsTemplate/list&_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.delete_directory'/>" target="ajaxTodo"><@t.page 'button.delete_directory'/></a>
+            <a class="button" href="cmsTemplate/metadata.html?path=${(path?url)!}/" target="ajax" rel="cmsTemplateBox"><@t.page 'template.create_here'/></a>
+        </#if>
+    </h2>
+    <div class="pageFormContent" layoutH>
+        <form action="cmsTemplate/search.html" autocomplete="off" onsubmit="return divSearch(this,'searchBox');" method="post">
+            <input type="hidden" name="path" value="${path!}"/>
+            <label><@t.page 'template.content'/>:</label>
+            <input type="text" name="word"/>
+            <button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
+        </form>
+    </div>
+</div>
