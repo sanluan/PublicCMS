@@ -2,21 +2,24 @@
     <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <input name="word" type="hidden" value="${word!}"/>
     <#if word?has_content>
+    <@tools.templateSearchList path=path word=word>
     <div class="formBar">
         <ul>
             <li><a class="button" href="${returnUrl!'cmsTemplate/directory.html'}" target="ajax" rel="${rel!'searchBox'}"><@t.page 'button.return'/></a></li>
-            <li><button type="submit" class="buttonActive" title="ctrl+s"><@t.page 'button.save'/></button></li>
+            <#if list?has_content>
+                <li><button type="submit" class="buttonActive" title="ctrl+s"><@t.page 'replace'/></button></li>
+            </#if>
         </ul>
     </div>
     <div class="pageFormContent" layoutH>
-        <@tools.templateSearchList path=path word=word>
-            <#if list?has_content>
+    <#if list?has_content>
         <dl class="nowrap">
             <dt><@t.page 'replace'/>:</dt>
             <dd>
                 <input name="replace" type="text" value="${word!}"/>
             </dd>
         </dl>
+    </#if>
         <dl class="nowrap">
             <dt><@t.page 'result'/>:</dt>
             <dd>
@@ -36,8 +39,7 @@
                 </ul>
             </dd>
         </dl>
-            </#if>
-        </@tools.templateSearchList>
     </div>
+    </@tools.templateSearchList>
     </#if>
 </form>
