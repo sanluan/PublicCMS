@@ -22,8 +22,7 @@ import com.publiccms.logic.component.template.TemplateComponent;
  */
 @Component
 public class TemplateRegionListDirective extends AbstractTemplateDirective {
-    public static final Pattern REGION_PATTERN = Pattern.compile("<@[_a-z\\.]*includeRegion[ ]+(.*)id=[\"|\']([^\"\']*)[\"|\'](.*)>");
-	public static final Pattern CATEGORY_ID_PATTERN = Pattern.compile(".*categoryId=[\"|\']([^\"\']*)[\"|\'].*");
+    public static final Pattern REGION_PATTERN = Pattern.compile("<@[_a-z\\.]*includeRegion[ ]+.*id=[\"|\']([^\"\']*)[\"|\'].*>");
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
@@ -35,7 +34,7 @@ public class TemplateRegionListDirective extends AbstractTemplateDirective {
                 if (CommonUtils.notEmpty(fileContent)) {
                     Matcher matcher = REGION_PATTERN.matcher(fileContent);
                     while (matcher.find()) {
-                        regionList.add(matcher.group(2));
+                        regionList.add(matcher.group(1));
                     }
                 }
                 Set<String> placeSet = new HashSet<>();
@@ -49,7 +48,7 @@ public class TemplateRegionListDirective extends AbstractTemplateDirective {
                     if (CommonUtils.notEmpty(placeContent)) {
                         matcher = REGION_PATTERN.matcher(placeContent);
                         while (matcher.find()) {
-                            regionList.add(matcher.group(2));
+                            regionList.add(matcher.group(1));
                         }
                     }
                 }

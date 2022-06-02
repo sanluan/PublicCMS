@@ -1,12 +1,9 @@
 package com.publiccms.views.directive.tools;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -41,7 +38,6 @@ public class TemplatePlaceListDirective extends AbstractTemplateDirective {
         String path = handler.getString("path");
         Set<String> placeSet = new LinkedHashSet<>();
         Set<String> regionList = new LinkedHashSet<>();
-        Map<String, List<Integer>> regionMap = new HashMap<>();
         if (CommonUtils.notEmpty(path)) {
             SysSite site = getSite(handler);
             String fileContent = CmsFileUtils.getFileContent(siteComponent.getWebTemplateFilePath(site, path));
@@ -52,7 +48,7 @@ public class TemplatePlaceListDirective extends AbstractTemplateDirective {
                 }
                 Matcher regionMatcher = TemplateRegionListDirective.REGION_PATTERN.matcher(fileContent);
                 while (regionMatcher.find()) {
-                    regionList.add(regionMatcher.group(2));
+                    regionList.add(regionMatcher.group(1));
                 }
                 Set<String> placeSet2 = new HashSet<>();
                 for (String place : placeSet) {
@@ -65,46 +61,24 @@ public class TemplatePlaceListDirective extends AbstractTemplateDirective {
                         }
                         regionMatcher = TemplateRegionListDirective.REGION_PATTERN.matcher(placeContent);
                         while (regionMatcher.find()) {
-                            String id = regionMatcher.group(2);
+                            String id = regionMatcher.group(1);
                             regionList.add(id);
-                            findCategoryId(id, regionMatcher, regionMap);
                         }
                     }
                 }
                 placeSet.addAll(placeSet2);
                 for (String id : regionList) {
-                    addPlaceInRegion(site, id, regionMap, placeSet);
+                    addPlaceInRegion(site, id, placeSet);
                 }
             }
         }
         handler.put("list", placeSet).render();
     }
 
-    private void addPlaceInRegion(SysSite site, String id, Map<String, List<Integer>> regionMap, Set<String> placeSet) {
+    private void addPlaceInRegion(SysSite site, String id, Set<String> placeSet) {
         CmsRegionData regionData = diyComponent.getRegionData(site, id);
-        if (null != regionData) {
-            List<Integer> categoryIdList = regionMap.get(id);
-            if (null == categoryIdList) {
-                addPlaceInRegion(site, null, regionData, placeSet);
-            } else {
-                for (Integer categoryId : categoryIdList) {
-                    addPlaceInRegion(site, categoryId, regionData, placeSet);
-                }
-            }
-        }
-    }
-
-    private void addPlaceInRegion(SysSite site, Integer categoryId, CmsRegionData regionData, Set<String> placeSet) {
-        List<CmsLayoutData> layoutList = null;
-        if (null == categoryId) {
-            layoutList = regionData.getLayoutList();
-        } else {
-            if (null != regionData.getCategoryLayoutMap()) {
-                layoutList = regionData.getCategoryLayoutMap().get(categoryId);
-            }
-        }
-        if (null != layoutList) {
-            for (CmsLayoutData layoutData : layoutList) {
+        if (null != regionData && null != regionData.getLayoutList()) {
+            for (CmsLayoutData layoutData : regionData.getLayoutList()) {
                 CmsLayout layout = diyComponent.getLayout(site, layoutData.getId());
                 if (null != layout) {
                     String template = layout.getTemplate();
@@ -123,27 +97,6 @@ public class TemplatePlaceListDirective extends AbstractTemplateDirective {
                 }
             }
         }
-    }
-
-    private static void findCategoryId(String id, Matcher regionMatcher, Map<String, List<Integer>> regionMap) {
-        String parameter1 = regionMatcher.group(1);
-        if (CommonUtils.notEmpty(parameter1)) {
-            Matcher categoryIdMatcher = TemplateRegionListDirective.CATEGORY_ID_PATTERN.matcher(parameter1);
-            if (categoryIdMatcher.find()) {
-                List<Integer> categoryIdList = regionMap.computeIfAbsent(id, k -> new ArrayList<>());
-                categoryIdList.add(Integer.parseInt(categoryIdMatcher.group(1)));
-            } else {
-                String parameter2 = regionMatcher.group(3);
-                if (CommonUtils.notEmpty(parameter2)) {
-                    categoryIdMatcher = TemplateRegionListDirective.CATEGORY_ID_PATTERN.matcher(parameter2);
-                    if (categoryIdMatcher.find()) {
-                        List<Integer> categoryIdList = regionMap.computeIfAbsent(id, k -> new ArrayList<>());
-                        categoryIdList.add(Integer.parseInt(categoryIdMatcher.group(1)));
-                    }
-                }
-            }
-        }
-
     }
 
     @Override
