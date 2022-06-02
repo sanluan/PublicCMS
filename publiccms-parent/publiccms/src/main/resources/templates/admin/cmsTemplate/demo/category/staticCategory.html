@@ -7,8 +7,17 @@
     <meta name="description" content="${(attribute.description)!}"/>
 </head>
 <body>
+<#macro bread category>
+    <#if category.parentId?has_content>
+        <@cms.category id=category.parentId;category>
+            <@bread object/>
+            <a href="${category.url}">${category.name}</a> &gt;
+        </@cms.category>
+    </#if>
+</#macro>
     <header data-diy="page">
         <h1>${(site.name)!}</h1>
+        <p><@bread category/> ${(category.name)!}</p>
     </header>
     <nav data-diy="category">
         <a href="${site.sitePath}">Home</a>
@@ -87,8 +96,7 @@
     var templatePath='${.current_template_name?keep_after('/')}';
     </script>
     
-    <script src="${site.dynamicPath}resource/js/cms.analytics.js"></script>
-    <script src="${site.dynamicPath}resource/js/cms.diy.js"></script>
+    <script src="${site.dynamicPath}resource/js/cms.support.js"></script>
     <script>
         var ca = cmsAnalytics();
         var url='${site.dynamicPath}api/visit/record';
