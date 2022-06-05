@@ -25,14 +25,33 @@ public class CmsSurveyQuestionItem implements java.io.Serializable {
     *
     */
     private static final long serialVersionUID = 1L;
+    /**
+     * id
+     */
     @GeneratorColumn(title = "ID")
     private Long id;
+    /**
+     * question id<p>
+     * 问题id
+     */
     @GeneratorColumn(title = "问题", condition = true)
     private long questionId;
+    /**
+     * votes<p>
+     * 票数
+     */
     @GeneratorColumn(title = "投票次数", order = true)
     private int votes;
+    /**
+     * title<p>
+     * 标题
+     */
     @GeneratorColumn(title = "标题")
     private String title;
+    /**
+     * sort<p>
+     * 排序
+     */
     @GeneratorColumn(title = "排序", order = true)
     private int sort;
 

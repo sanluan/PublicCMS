@@ -16,10 +16,38 @@ import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsSurveyQuestionService;
 
 /**
- *
- * CmsSurveyQuestionListDirective
- * 
- */
+*
+* surveyQuestionList 问卷调查问题列表查询指令
+* <p>
+* 参数列表
+* <ul>
+* <li><code>surveyId</code> 问卷调查id
+* <li><code>questionTypes</code> 多个问题类型,【radio:单选,select:下拉选择,checkbox:复选框,text:文字,file:文件,picture:图片】
+* <li><code>absoluteURL</code> 封面图处理为绝对路径 默认为<code>true</code>
+* <li><code>orderType</code> 排序类型,【asc:正序,desc:倒叙】，默认为排序顺序
+* <li><code>pageIndex</code> 页码
+* <li><code>pageSize</code> 每页条数
+* </ul>
+* <p>
+* 返回结果
+* <ul>
+* <li><code>page</code> {@link com.publiccms.common.handler.PageHandler}
+* <li><code>page.list</code> List类型 查询结果实体列表
+* {@link com.publiccms.entities.cms.CmsSurveyQuestion}
+* </ul>
+* 使用示例
+* <p>
+* &lt;@cms.surveyQuestionList surveyId=1 pageSize=10&gt;&lt;#list page.list as
+* a&gt;${a.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.surveyQuestionList&gt;
+* 
+* <pre>
+&lt;script&gt;
+$.getJSON('//cms.publiccms.com/api/directive/cms/surveyQuestionList?surveyId=1&amp;pageSize=10&amp;appToken=接口访问授权Token', function(data){    
+  console.log(data.totalCount);
+});
+&lt;/script&gt;
+* </pre>
+*/
 @Component
 public class CmsSurveyQuestionListDirective extends AbstractTemplateDirective {
 
