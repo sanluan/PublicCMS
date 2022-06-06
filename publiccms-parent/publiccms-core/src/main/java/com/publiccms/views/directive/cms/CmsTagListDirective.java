@@ -23,12 +23,18 @@ public class CmsTagListDirective extends AbstractTemplateDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
         String orderField = "searchCount";
-        if (handler.getBoolean("advanced", false)) {
+        if (getAdvanced(handler)) {
             orderField = handler.getString("orderField");
         }
         PageHandler page = service.getPage(getSite(handler).getId(), handler.getInteger("typeId"), handler.getString("name"),
-                orderField, handler.getString("orderType"), handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", 30));
+                orderField, handler.getString("orderType"), handler.getInteger("pageIndex", 1),
+                handler.getInteger("pageSize", 30));
         handler.put("page", page).render();
+    }
+
+    @Override
+    public boolean supportAdvanced() {
+        return true;
     }
 
     @Autowired

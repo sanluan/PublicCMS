@@ -23,14 +23,19 @@ public class SysSiteListDirective extends AbstractTemplateDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
         Boolean disabled = false;
-        if (handler.getBoolean("advanced", false)) {
+        if (getAdvanced(handler)) {
             disabled = handler.getBoolean("disabled", false);
         }
-        PageHandler page = service.getPage(disabled,handler.getShort("parentId"), handler.getString("name"), handler.getInteger("pageIndex", 1),
-                handler.getInteger("pageSize", 30));
+        PageHandler page = service.getPage(disabled, handler.getShort("parentId"), handler.getString("name"),
+                handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", 30));
         handler.put("page", page).render();
     }
-    
+
+    @Override
+    public boolean supportAdvanced() {
+        return true;
+    }
+
     @Override
     public boolean needAppToken() {
         return true;

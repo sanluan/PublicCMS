@@ -72,7 +72,7 @@ public class CmsPlaceListDirective extends AbstractTemplateDirective {
         String path = handler.getString("path");
         Boolean disabled = false;
         Integer[] status;
-        if (handler.getBoolean("advanced", false)) {
+        if (getAdvanced(handler)) {
             status = handler.getIntegerArray("status");
             disabled = handler.getBoolean("disabled", false);
         } else {
@@ -106,6 +106,11 @@ public class CmsPlaceListDirective extends AbstractTemplateDirective {
             });
         }
         handler.put("page", page).render();
+    }
+    
+    @Override
+    public boolean supportAdvanced() {
+        return true;
     }
 
     @Override

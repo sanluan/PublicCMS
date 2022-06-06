@@ -23,7 +23,7 @@ public class SysAppClientListDirective extends AbstractTemplateDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
         Boolean disabled = false;
-        if (handler.getBoolean("advanced", false)) {
+        if (getAdvanced(handler)) {
             disabled = handler.getBoolean("disabled", false);
         }
         PageHandler page = service.getPage(getSite(handler).getId(), handler.getString("channel"), handler.getLong("userId"),
@@ -35,6 +35,11 @@ public class SysAppClientListDirective extends AbstractTemplateDirective {
 
     @Override
     public boolean needAppToken() {
+        return true;
+    }
+
+    @Override
+    public boolean supportAdvanced() {
         return true;
     }
 

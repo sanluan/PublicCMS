@@ -63,7 +63,7 @@ public class CmsCommentListDirective extends AbstractTemplateDirective {
         Integer status;
         Long checkUserId = null;
         Boolean disabled;
-        if (handler.getBoolean("advanced", false)) {
+        if (getAdvanced(handler)) {
             status = handler.getInteger("status");
             checkUserId = handler.getLong("checkUserId");
             disabled = handler.getBoolean("disabled", false);
@@ -82,6 +82,11 @@ public class CmsCommentListDirective extends AbstractTemplateDirective {
         } finally {
             CmsDataSource.resetDataSourceName();
         }
+    }
+
+    @Override
+    public boolean supportAdvanced() {
+        return true;
     }
 
     @Override

@@ -61,7 +61,7 @@ public class CmsCategoryListDirective extends AbstractTemplateDirective {
         SysSite site = getSite(handler);
         CmsCategoryQuery queryEntity = new CmsCategoryQuery();
         queryEntity.setQueryAll(handler.getBoolean("queryAll"));
-        if (handler.getBoolean("advanced", false)) {
+        if (getAdvanced(handler)) {
             queryEntity.setDisabled(handler.getBoolean("disabled", false));
             queryEntity.setHidden(handler.getBoolean("hidden"));
         } else {
@@ -73,8 +73,7 @@ public class CmsCategoryListDirective extends AbstractTemplateDirective {
         queryEntity.setTypeId(handler.getInteger("typeId"));
         queryEntity.setAllowContribute(handler.getBoolean("allowContribute"));
 
-        PageHandler page = service.getPage(queryEntity, handler.getInteger("pageIndex", 1),
-                handler.getInteger("pageSize", 30));
+        PageHandler page = service.getPage(queryEntity, handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", 30));
         @SuppressWarnings("unchecked")
         List<CmsCategory> list = (List<CmsCategory>) page.getList();
         if (null != list && handler.getBoolean("absoluteURL", true)) {
@@ -83,6 +82,11 @@ public class CmsCategoryListDirective extends AbstractTemplateDirective {
             });
         }
         handler.put("page", page).render();
+    }
+
+    @Override
+    public boolean supportAdvanced() {
+        return true;
     }
 
     @Autowired

@@ -23,7 +23,7 @@ public class SysModuleListDirective extends AbstractTemplateDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
         Boolean menu = null;
-        if (!handler.getBoolean("advanced", false)) {
+        if (!getAdvanced(handler)) {
             menu = handler.getBoolean("menu", true);
         }
         PageHandler page = service.getPage(handler.getString("parentId"), menu, handler.getInteger("pageIndex", 1),
@@ -33,6 +33,11 @@ public class SysModuleListDirective extends AbstractTemplateDirective {
 
     @Override
     public boolean needAppToken() {
+        return true;
+    }
+
+    @Override
+    public boolean supportAdvanced() {
         return true;
     }
 

@@ -23,7 +23,7 @@ public class SysDomainListDirective extends AbstractTemplateDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
         Short siteId = null;
-        if (handler.getBoolean("advanced", false)) {
+        if (getAdvanced(handler)) {
             siteId = handler.getShort("siteId");
         } else {
             siteId = getSite(handler).getId();
@@ -35,6 +35,11 @@ public class SysDomainListDirective extends AbstractTemplateDirective {
 
     @Override
     public boolean needAppToken() {
+        return true;
+    }
+
+    @Override
+    public boolean supportAdvanced() {
         return true;
     }
 

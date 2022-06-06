@@ -25,7 +25,7 @@ public class SysUserListDirective extends AbstractTemplateDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
         Boolean disabled = false;
-        if (handler.getBoolean("advanced", false)) {
+        if (getAdvanced(handler)) {
             disabled = handler.getBoolean("disabled", false);
         }
         SysSite site = getSite(handler);
@@ -45,6 +45,11 @@ public class SysUserListDirective extends AbstractTemplateDirective {
             });
         }
         handler.put("page", page).render();
+    }
+
+    @Override
+    public boolean supportAdvanced() {
+        return true;
     }
 
     @Override

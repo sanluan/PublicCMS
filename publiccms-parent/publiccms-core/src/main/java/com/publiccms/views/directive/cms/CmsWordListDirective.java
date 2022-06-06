@@ -24,7 +24,7 @@ public class CmsWordListDirective extends AbstractTemplateDirective {
     public void execute(RenderHandler handler) throws IOException, Exception {
         Boolean hidden = false;
         String orderField = "searchCount";
-        if (handler.getBoolean("advanced", false)) {
+        if (getAdvanced(handler)) {
             hidden = handler.getBoolean("hidden");
             orderField = handler.getString("orderField");
         }
@@ -42,7 +42,7 @@ public class CmsWordListDirective extends AbstractTemplateDirective {
     }
 
     @Override
-    public boolean needAppToken() {
+    public boolean supportAdvanced() {
         return true;
     }
 
