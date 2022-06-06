@@ -26,20 +26,43 @@ public class SysApp implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
+    /**
+     * id
+     */
     @GeneratorColumn(title = "ID")
     private Integer id;
     @GeneratorColumn(title = "站点", condition = true)
     @JsonIgnore
     private short siteId;
+    /**
+     * channel<p>
+     * 渠道
+     */
     @GeneratorColumn(title = "渠道", condition = true)
     private String channel;
+    /**
+     * app key<p>
+     * 授权key
+     */
     @GeneratorColumn(title = "授权KEY")
     private String appKey;
+    /**
+     * app secret<p>
+     * 授权密钥
+     */
     @JsonIgnore
     @GeneratorColumn(title = "授权密码")
     private String appSecret;
+    /**
+     * authorized apis<p>
+     * 授权接口
+     */
     @GeneratorColumn(title = "授权接口")
     private String authorizedApis;
+    /**
+     * expiry minutes<p>
+     * 过期分钟数
+     */
     @GeneratorColumn(title = "过期时间")
     private Integer expiryMinutes;
 

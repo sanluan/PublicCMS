@@ -20,6 +20,10 @@ public class SysConfigDataId implements java.io.Serializable {
     @GeneratorColumn(title = "站点", condition = true)
     @JsonIgnore
     private short siteId;
+    /**
+     * code<p>
+     * 编码
+     */
     @GeneratorColumn(title = "编码", condition = true)
     private String code;
 

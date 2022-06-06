@@ -30,22 +30,58 @@ public class SysAppClient implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
+    /**
+     * 
+     */
     @GeneratorColumn(title = "ID")
     private Long id;
+    @GeneratorColumn(title = "站点", condition = true)
+    @JsonIgnore
     private short siteId;
+    /**
+     * channel<p>
+     * 渠道
+     */
+    @GeneratorColumn(title = "渠道", condition = true)
     private String channel;
+    /**
+     * uuid<p>
+     * 唯一id
+     */
+    @GeneratorColumn(title = "uuid")
     private String uuid;
+    /**
+     * user id<p>
+     * 用户id
+     */
+    @GeneratorColumn(title = "用户id", condition = true)
     private Long userId;
+    /**
+     * client version<p>
+     * 客户端版本
+     */
     @GeneratorColumn(title = "版本")
     private String clientVersion;
+    /**
+     * last login date<p>
+     * 上次登录日期
+     */
     @GeneratorColumn(title = "上次登录日期", condition = true, order = true)
     private Date lastLoginDate;
+    /**
+     * last login ip<p>
+     * 上次登录ip
+     */
     @GeneratorColumn(title = "上次登录IP")
     private String lastLoginIp;
+    /**
+     * create date<p>
+     * 创建日期
+     */
     @GeneratorColumn(title = "创建日期", condition = true, order = true)
     private Date createDate;
     @GeneratorColumn(title = "已禁用", condition = true)
-    @JsonIgnore
+    @JsonIgnore 
     private boolean disabled;
 
     public SysAppClient() {

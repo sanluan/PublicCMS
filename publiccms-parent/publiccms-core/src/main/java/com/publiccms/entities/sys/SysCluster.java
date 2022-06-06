@@ -26,16 +26,39 @@ public class SysCluster implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
+    /**
+     * uuid
+     */
     @GeneratorColumn(title = "ID")
     private String uuid;
+    /**
+     * startup date<p>
+     * 启动日期
+     */
     @GeneratorColumn(title = "启动时间", order = true)
     private Date createDate;
+    /**
+     * heart beat date<p>
+     * 上次心跳日期
+     */
     @GeneratorColumn(title = "心跳时间", condition = true, order = true)
     private Date heartbeatDate;
+    /**
+     * master<p>
+     * 管理节点
+     */
     @GeneratorColumn(title = "管理节点", condition = true)
     private boolean master;
+    /**
+     * cms version<p>
+     * cms版本
+     */
     @GeneratorColumn(title = "版本", condition = true)
     private String cmsVersion;
+    /**
+     * revision<p>
+     * 修改版本
+     */
     @GeneratorColumn(title = "修订版本")
     private String revision;
 

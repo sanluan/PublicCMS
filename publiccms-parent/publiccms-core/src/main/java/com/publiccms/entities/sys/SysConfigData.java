@@ -12,7 +12,6 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicUpdate;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.publiccms.common.generator.annotation.GeneratorColumn;
 
 /**
@@ -27,10 +26,16 @@ public class SysConfigData implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
+    /**
+     * id
+     */
     @GeneratorColumn(title = "ID")
     private SysConfigDataId id;
+    /**
+     * config data<p>
+     * 配置数据
+     */
     @GeneratorColumn(title = "值")
-    @JsonIgnore
     private String data;
 
     public SysConfigData() {

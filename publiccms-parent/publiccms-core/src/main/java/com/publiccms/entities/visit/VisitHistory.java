@@ -1,6 +1,7 @@
 package com.publiccms.entities.visit;
 // Generated 2021-1-14 22:33:12 by Hibernate Tools 6.0.0-SNAPSHOT
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.publiccms.common.database.CmsUpgrader;
 import com.publiccms.common.generator.annotation.GeneratorColumn;
 
@@ -29,34 +30,88 @@ public class VisitHistory implements java.io.Serializable {
     */
     private static final long serialVersionUID = 1L;
 
+    /**
+     * 
+     */
     @GeneratorColumn(title = "ID")
     private Long id;
+    @JsonIgnore
     @GeneratorColumn(title = "站点", condition = true)
     private short siteId;
+    /**
+     * session id<p>
+     * 会话id
+     */
     @GeneratorColumn(title = "会话", condition = true)
     private String sessionId;
+    /**
+     * visit date<p>
+     * 访问日期
+     */
     @GeneratorColumn(title = "访问日期", condition = true)
     private Date visitDate;
+    /**
+     * visit hour<p>
+     * 访问小时
+     */
     @GeneratorColumn(title = "访问小时", condition = true)
     private byte visitHour;
+    /**
+     * ip
+     */
     @GeneratorColumn(title = "IP")
     private String ip;
+    /**
+     * user agent<p>
+     * 浏览器用户标识
+     */
     @GeneratorColumn(title = "UserAgent")
     private String userAgent;
+    /**
+     * title<p>
+     * 标题
+     */
     @GeneratorColumn(title = "url")
     private String url;
+    /**
+     * 
+     */
     @GeneratorColumn(title = "标题")
     private String title;
+    /**
+     * screen width<p>
+     * 屏幕宽度
+     */
     @GeneratorColumn(title = "屏幕宽度")
     private Integer screenWidth;
+    /**
+     * screen height<p>
+     * 屏幕高度
+     */
     @GeneratorColumn(title = "屏幕高度")
     private Integer screenHeight;
+    /**
+     * referer url<p>
+     * 来源地址
+     */
     @GeneratorColumn(title = "refererUrl")
     private String refererUrl;
+    /**
+     * item type<p>
+     * 项目类型
+     */
     @GeneratorColumn(title = "项目类型")
     private String itemType;
+    /**
+     * item id<p>
+     * 项目id
+     */
     @GeneratorColumn(title = "项目ID")
     private String itemId;
+    /**
+     * create date<p>
+     * 创建日期
+     */
     @GeneratorColumn(title = "创建日期", condition = true, order = true)
     private Date createDate;
 

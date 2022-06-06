@@ -1,6 +1,7 @@
 package com.publiccms.entities.cms;
 // Generated 2020-3-26 11:25:55 by Hibernate Tools 6.0.0-SNAPSHOT
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.publiccms.common.database.CmsUpgrader;
 import com.publiccms.common.generator.annotation.GeneratorColumn;
 
@@ -29,24 +30,53 @@ public class CmsVote implements java.io.Serializable {
     *
     */
     private static final long serialVersionUID = 1L;
+    /**
+     * id
+     */
     @GeneratorColumn(title = "ID")
     private Long id;
+    @JsonIgnore
     @GeneratorColumn(title = "站点", condition = true)
     private short siteId;
+    /**
+     * start date<p>
+     * 开始日期
+     */
     @GeneratorColumn(title = "开始日期", condition = true, order = true)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startDate;
+    /**
+     * end date<p>
+     * 结束日期
+     */
     @GeneratorColumn(title = "结束日期", condition = true, order = true)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endDate;
+    /**
+     * scores<p>
+     * 投票次数
+     */
     @GeneratorColumn(title = "投票次数", order = true)
     private int scores;
+    /**
+     * title<p>
+     * 标题
+     */
     @GeneratorColumn(title = "标题", condition = true, like = true)
     private String title;
+    /**
+     * description<p>
+     * 描述
+     */
     @GeneratorColumn(title = "描述")
     private String description;
+    /**
+     * create date<p>
+     * 创建日期
+     */
     @GeneratorColumn(title = "创建日期", order = true)
     private Date createDate;
+    @JsonIgnore
     @GeneratorColumn(title = "已禁用", condition = true)
     private boolean disabled;
 

@@ -16,8 +16,16 @@ public class CmsUserSurveyQuestionId implements java.io.Serializable {
     *
     */
     private static final long serialVersionUID = 1L;
+    /**
+     * user id<p>
+     * 用户id
+     */
     @GeneratorColumn(title = "用户", condition = true)
     private long userId;
+    /**
+     * question id<p>
+     * 问题id
+     */
     @GeneratorColumn(title = "问题ID", condition = true)
     private long questionId;
 
