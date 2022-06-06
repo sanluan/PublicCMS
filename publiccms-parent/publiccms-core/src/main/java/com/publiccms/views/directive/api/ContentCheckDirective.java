@@ -32,6 +32,8 @@ import com.publiccms.logic.service.cms.CmsCategoryService;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.log.LogOperateService;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * ContentClickDirective
@@ -85,7 +87,11 @@ public class ContentCheckDirective extends AbstractAppDirective {
         CmsCategoryModel categoryModel = categoryModelService
                 .getEntity(new CmsCategoryModelId(entity.getCategoryId(), entity.getModelId()));
         if (null != categoryModel && ControllerUtils.hasContentPermissions(user, entity) && !entity.isOnlyUrl()) {
-            return templateComponent.createContentFile(site, entity, null, categoryModel);
+            try {
+                return templateComponent.createContentFile(site, entity, null, categoryModel);
+            } catch (IOException | TemplateException e) {
+                return false;
+            }
         }
         return false;
     }

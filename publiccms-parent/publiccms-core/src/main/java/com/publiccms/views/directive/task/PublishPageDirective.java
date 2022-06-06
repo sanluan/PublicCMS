@@ -46,23 +46,24 @@ public class PublishPageDirective extends AbstractTaskDirective {
                             metadata.getPublishPath(), null, metadata.getAsMap(data), null, null);
                     map.put(path, true);
                 } catch (IOException | TemplateException e) {
+                    handler.getWriter().append(e.getMessage());
                     map.put(path, false);
                 }
                 handler.put("map", map).render();
             }
         } else if (CmsFileUtils.isDirectory(filepath)) {
-            handler.put("map", deal(site, path)).render();
+            handler.put("map", deal(site, handler, path)).render();
         }
     }
 
-    private Map<String, Boolean> deal(SysSite site, String path) {
+    private Map<String, Boolean> deal(SysSite site, RenderHandler handler, String path) throws IOException {
         path = path.replace("\\", CommonConstants.SEPARATOR).replace("//", CommonConstants.SEPARATOR);
         Map<String, Boolean> map = new LinkedHashMap<>();
         List<FileInfo> list = CmsFileUtils.getFileList(siteComponent.getWebTemplateFilePath(site, path), null);
         for (FileInfo fileInfo : list) {
             String filepath = path + fileInfo.getFileName();
             if (fileInfo.isDirectory()) {
-                map.putAll(deal(site, filepath + CommonConstants.SEPARATOR));
+                map.putAll(deal(site, handler, filepath + CommonConstants.SEPARATOR));
             } else {
                 String realTemplatePath = siteComponent.getWebTemplateFilePath(site, filepath);
                 CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(realTemplatePath);
@@ -74,6 +75,8 @@ public class PublishPageDirective extends AbstractTaskDirective {
                                 metadata.getAsMap(data), null, null);
                         map.put(filepath, true);
                     } catch (IOException | TemplateException e) {
+                        handler.getWriter().append(e.getMessage());
+                        handler.getWriter().append("\n");
                         map.put(filepath, false);
                     }
                 }

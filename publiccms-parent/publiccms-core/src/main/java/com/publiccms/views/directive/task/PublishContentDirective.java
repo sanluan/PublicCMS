@@ -16,6 +16,8 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsContentService;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * PublishContentDirective
@@ -23,20 +25,31 @@ import com.publiccms.logic.service.cms.CmsContentService;
  */
 @Component
 public class PublishContentDirective extends AbstractTaskDirective {
-    
+
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
         Long id = handler.getLong("id");
         SysSite site = getSite(handler);
         Map<String, Boolean> map = new LinkedHashMap<>();
         if (CommonUtils.notEmpty(id)) {
-            map.put(id.toString(), templateComponent.createContentFile(site, service.getEntity(id), null, null));
+            try {
+                map.put(id.toString(), templateComponent.createContentFile(site, service.getEntity(id), null, null));
+            } catch (IOException | TemplateException e) {
+                handler.getWriter().append(e.getMessage());
+                map.put(id.toString(), false);
+            }
         } else {
             Long[] ids = handler.getLongArray("ids");
             if (CommonUtils.notEmpty(ids)) {
                 List<CmsContent> entityList = service.getEntitys(ids);
                 for (CmsContent entity : entityList) {
-                    map.put(entity.getId().toString(), templateComponent.createContentFile(site, entity, null, null));
+                    try {
+                        map.put(entity.getId().toString(), templateComponent.createContentFile(site, entity, null, null));
+                    } catch (IOException | TemplateException e) {
+                        handler.getWriter().append(e.getMessage());
+                        handler.getWriter().append("\n");
+                        map.put(entity.getId().toString(), false);
+                    }
                 }
             }
         }
@@ -47,5 +60,5 @@ public class PublishContentDirective extends AbstractTaskDirective {
     private TemplateComponent templateComponent;
     @Autowired
     private CmsContentService service;
-    
+
 }

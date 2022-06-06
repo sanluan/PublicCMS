@@ -155,8 +155,11 @@ public class TemplateComponent implements Cache {
      * @param category
      * @param categoryModel
      * @return whether the create is successful
+     * @throws TemplateException
+     * @throws IOException
      */
-    public boolean createContentFile(SysSite site, CmsContent entity, CmsCategory category, CmsCategoryModel categoryModel) {
+    public boolean createContentFile(SysSite site, CmsContent entity, CmsCategory category, CmsCategoryModel categoryModel)
+            throws IOException, TemplateException {
         if (null != site && null != entity) {
             if (!entity.isOnlyUrl()) {
                 if (null == category) {
@@ -167,29 +170,24 @@ public class TemplateComponent implements Cache {
                             .getEntity(new CmsCategoryModelId(entity.getCategoryId(), entity.getModelId()));
                 }
                 if (null != categoryModel && null != category) {
-                    try {
-                        if (site.isUseStatic() && CommonUtils.notEmpty(categoryModel.getTemplatePath())) {
-                            String filepath = createContentFile(site, entity, category, true, categoryModel.getTemplatePath(),
-                                    null, null);
-                            if (!entity.isHasStatic() || null == entity.getUrl() || !entity.getUrl().equals(filepath)) {
-                                contentService.updateUrl(site.getId(), entity.getId(), filepath, true);
-                            }
-                        } else {
-                            Map<String, Object> model = new HashMap<>();
-                            model.put("content", entity);
-                            model.put("category", category);
-                            model.put(AbstractFreemarkerView.CONTEXT_SITE, site);
-                            String filepath = FreeMarkerUtils.generateStringByString(category.getContentPath(), webConfiguration,
-                                    model);
-                            if (entity.isHasStatic() || null == entity.getUrl() || !entity.getUrl().equals(filepath)) {
-                                contentService.updateUrl(site.getId(), entity.getId(), filepath, false);
-                            }
+                    if (site.isUseStatic() && CommonUtils.notEmpty(categoryModel.getTemplatePath())) {
+                        String filepath = createContentFile(site, entity, category, true, categoryModel.getTemplatePath(), null,
+                                null);
+                        if (!entity.isHasStatic() || null == entity.getUrl() || !entity.getUrl().equals(filepath)) {
+                            contentService.updateUrl(site.getId(), entity.getId(), filepath, true);
                         }
-                        return true;
-                    } catch (IOException | TemplateException e) {
-                        log.error(e.getMessage(), e);
-                        return false;
+                    } else {
+                        Map<String, Object> model = new HashMap<>();
+                        model.put("content", entity);
+                        model.put("category", category);
+                        model.put(AbstractFreemarkerView.CONTEXT_SITE, site);
+                        String filepath = FreeMarkerUtils.generateStringByString(category.getContentPath(), webConfiguration,
+                                model);
+                        if (entity.isHasStatic() || null == entity.getUrl() || !entity.getUrl().equals(filepath)) {
+                            contentService.updateUrl(site.getId(), entity.getId(), filepath, false);
+                        }
                     }
+                    return true;
                 }
             } else if (null != entity.getQuoteContentId()) {
                 if (null != categoryModel && null != category) {
@@ -354,33 +352,31 @@ public class TemplateComponent implements Cache {
      * @param pageIndex
      * @param totalPage
      * @return whether the create is successful
+     * @throws IOException
+     * @throws TemplateException
      */
-    public boolean createCategoryFile(SysSite site, CmsCategory entity, Integer pageIndex, Integer totalPage) {
+    public boolean createCategoryFile(SysSite site, CmsCategory entity, Integer pageIndex, Integer totalPage)
+            throws IOException, TemplateException {
         if (entity.isOnlyUrl()) {
             categoryService.updateUrl(entity.getId(), entity.getPath(), false);
         } else if (CommonUtils.notEmpty(entity.getPath())) {
-            try {
-                if (site.isUseStatic() && CommonUtils.notEmpty(entity.getTemplatePath())) {
-                    String filepath = createCategoryFile(site, entity, entity.getTemplatePath(), entity.getPath(), pageIndex,
-                            totalPage);
-                    if (!entity.isHasStatic() || null == entity.getUrl() || !entity.getUrl().equals(filepath)) {
-                        categoryService.updateUrl(entity.getId(), filepath, true);
-                    }
-                } else {
-                    Map<String, Object> model = new HashMap<>();
-                    initCategoryUrl(site, entity);
-                    model.put("category", entity);
-                    model.put(AbstractFreemarkerView.CONTEXT_SITE, site);
-                    String filepath = FreeMarkerUtils.generateStringByString(entity.getPath(), webConfiguration, model);
-                    if (entity.isHasStatic() || null == entity.getUrl() || !entity.getUrl().equals(filepath)) {
-                        categoryService.updateUrl(entity.getId(), filepath, false);
-                    }
+            if (site.isUseStatic() && CommonUtils.notEmpty(entity.getTemplatePath())) {
+                String filepath = createCategoryFile(site, entity, entity.getTemplatePath(), entity.getPath(), pageIndex,
+                        totalPage);
+                if (!entity.isHasStatic() || null == entity.getUrl() || !entity.getUrl().equals(filepath)) {
+                    categoryService.updateUrl(entity.getId(), filepath, true);
                 }
-            } catch (IOException | TemplateException e) {
-                log.error(e.getMessage(), e);
-                return false;
+                return true;
+            } else {
+                Map<String, Object> model = new HashMap<>();
+                initCategoryUrl(site, entity);
+                model.put("category", entity);
+                model.put(AbstractFreemarkerView.CONTEXT_SITE, site);
+                String filepath = FreeMarkerUtils.generateStringByString(entity.getPath(), webConfiguration, model);
+                if (entity.isHasStatic() || null == entity.getUrl() || !entity.getUrl().equals(filepath)) {
+                    categoryService.updateUrl(entity.getId(), filepath, false);
+                }
             }
-            return true;
         }
         return false;
 
@@ -458,7 +454,7 @@ public class TemplateComponent implements Cache {
             }
             model.put("page", page);
         }
-		model.put("path", templatePath);
+        model.put("path", templatePath);
         model.put("metadata", metadata.getAsMap(data));
         AbstractFreemarkerView.exposeSite(model, site);
     }

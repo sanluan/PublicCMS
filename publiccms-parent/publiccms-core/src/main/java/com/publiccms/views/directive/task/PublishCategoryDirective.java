@@ -16,6 +16,8 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsCategoryService;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * PublishCategoryDirective
@@ -23,7 +25,7 @@ import com.publiccms.logic.service.cms.CmsCategoryService;
  */
 @Component
 public class PublishCategoryDirective extends AbstractTaskDirective {
-    
+
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
         Integer id = handler.getInteger("id");
@@ -33,29 +35,36 @@ public class PublishCategoryDirective extends AbstractTaskDirective {
         Map<String, Boolean> map = new LinkedHashMap<>();
         if (CommonUtils.notEmpty(id)) {
             CmsCategory entity = service.getEntity(id);
-            map.put(id.toString(), deal(site, entity, pageIndex, totalPage));
+            try {
+                boolean result = templateComponent.createCategoryFile(site, entity, pageIndex, totalPage);
+                map.put(id.toString(), result);
+            } catch (IOException | TemplateException e) {
+                handler.getWriter().append(e.getMessage());
+                map.put(id.toString(), false);
+            }
         } else {
             Integer[] ids = handler.getIntegerArray("ids");
             if (CommonUtils.notEmpty(ids)) {
                 List<CmsCategory> entityList = service.getEntitys(ids);
                 for (CmsCategory entity : entityList) {
-                    map.put(entity.getId().toString(), deal(site, entity, pageIndex, totalPage));
+                    try {
+                        boolean result = templateComponent.createCategoryFile(site, entity, pageIndex, totalPage);
+                        map.put(entity.getId().toString(), result);
+                    } catch (IOException | TemplateException e) {
+                        handler.getWriter().append(e.getMessage());
+                        handler.getWriter().append("\n");
+                        map.put(entity.getId().toString(), false);
+                    }
+
                 }
             }
         }
         handler.put("map", map).render();
     }
 
-    private boolean deal(SysSite site, CmsCategory entity, Integer pageIndex, Integer totalPage) {
-        if (null != entity) {
-            return templateComponent.createCategoryFile(site, entity, pageIndex, totalPage);
-        }
-        return false;
-    }
-
     @Autowired
     private TemplateComponent templateComponent;
     @Autowired
     private CmsCategoryService service;
-    
+
 }
