@@ -24,13 +24,24 @@ public class TradeAccount implements java.io.Serializable {
     *
     */
     private static final long serialVersionUID = 1L;
+    /**
+     * id
+     */
     @GeneratorColumn(title = "用户")
     private long id;
     @GeneratorColumn(title = "站点", condition = true)
     @JsonIgnore
     private short siteId;
+    /**
+     * amount<p>
+     * 金额
+     */
     @GeneratorColumn(title = "金额")
     private BigDecimal amount;
+    /**
+     * update date<p>
+     * 更新日期
+     */
     @GeneratorColumn(title = "更新日期")
     private Date updateDate;
 

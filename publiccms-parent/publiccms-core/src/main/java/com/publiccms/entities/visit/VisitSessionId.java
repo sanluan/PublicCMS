@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.publiccms.common.generator.annotation.GeneratorColumn;
 
 /**
@@ -18,10 +19,19 @@ public class VisitSessionId implements java.io.Serializable {
     */
     private static final long serialVersionUID = 1L;
 
+    @JsonIgnore
     @GeneratorColumn(title = "站点", condition = true)
     private short siteId;
+    /**
+     * session id<p>
+     * 会话id
+     */
     @GeneratorColumn(title = "会话")
     private String sessionId;
+    /**
+     * visit date<p>
+     * 访问日期
+     */
     @GeneratorColumn(title = "访问日期", condition = true)
     private Date visitDate;
 

@@ -25,14 +25,33 @@ public class CmsVoteItem implements java.io.Serializable {
     *
     */
     private static final long serialVersionUID = 1L;
+    /**
+     * id
+     */
     @GeneratorColumn(title = "ID")
     private Long id;
+    /**
+     * vote id<p>
+     * 投票id
+     */
     @GeneratorColumn(title = "投票", condition = true)
     private long voteId;
+    /**
+     * title<p>
+     * 标题
+     */
     @GeneratorColumn(title = "标题")
     private String title;
+    /**
+     * scores<p>
+     * 票数
+     */
     @GeneratorColumn(title = "票数", order = true)
     private int scores;
+    /**
+     * sort<p>
+     * 排序
+     */
     @GeneratorColumn(title = "排序", order = true)
     private int sort;
 

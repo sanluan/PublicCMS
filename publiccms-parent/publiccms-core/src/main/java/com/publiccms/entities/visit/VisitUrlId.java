@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.publiccms.common.generator.annotation.GeneratorColumn;
 
 /**
@@ -17,12 +18,25 @@ public class VisitUrlId implements java.io.Serializable {
     * 
     */
     private static final long serialVersionUID = 1L;
+    @JsonIgnore
     @GeneratorColumn(title = "站点", condition = true)
     private short siteId;
+    /**
+     * visit date<p>
+     * 访问日期
+     */
     @GeneratorColumn(title = "访问日期", condition = true)
     private Date visitDate;
+    /**
+     * url md5<p>
+     * 网址md5
+     */
     @GeneratorColumn(title = "页面md5")
     private String urlMd5;
+    /**
+     * url sha<p>
+     * 网址sha
+     */
     @GeneratorColumn(title = "页面sha")
     private String urlSha;
 

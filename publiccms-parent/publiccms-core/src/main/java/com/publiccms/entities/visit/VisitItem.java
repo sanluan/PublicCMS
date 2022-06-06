@@ -26,12 +26,25 @@ public class VisitItem implements java.io.Serializable {
     * 
     */
     private static final long serialVersionUID = 1L;
+    /**
+     * id
+     */
     @GeneratorColumn(title = "ID")
     private VisitItemId id;
+    /**
+     * pv
+     */
     @GeneratorColumn(title = "PV")
     private long pv;
+    /**
+     * uv
+     */
     @GeneratorColumn(title = "UV")
     private Long uv;
+    /**
+     * ip views<p>
+     * ip访问数
+     */
     @GeneratorColumn(title = "IP Views")
     private Long ipviews;
 

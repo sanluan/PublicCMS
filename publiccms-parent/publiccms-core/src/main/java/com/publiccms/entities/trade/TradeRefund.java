@@ -30,31 +30,78 @@ public class TradeRefund implements java.io.Serializable {
     */
     private static final long serialVersionUID = 1L;
 
+    /**
+     * id
+     */
     @GeneratorColumn(title = "ID")
     private Long id;
     @GeneratorColumn(title = "站点", condition = true)
     @JsonIgnore
     private short siteId;
+    /**
+     * user id<p>
+     * 用户id
+     */
     @GeneratorColumn(title = "用户", condition = true)
     private long userId;
+    /**
+     * payment id<p>
+     * 付款订单id
+     */
     @GeneratorColumn(title = "订单", condition = true)
     private long paymentId;
+    /**
+     * apply amount<p>
+     * 申请退款金额
+     */
     @GeneratorColumn(title = "申请退款金额")
     private BigDecimal amount;
+    /**
+     * reason<p>
+     * 原因
+     */
     @GeneratorColumn(title = "原因")
     private String reason;
+    /**
+     * update date<p>
+     * 更新日期
+     */
     @GeneratorColumn(title = "更新日期")
     private Date updateDate;
+    /**
+     * refund user id<p>
+     * 退款操作用户id
+     */
     @GeneratorColumn(title = "退款操作用户", condition = true)
     private Long refundUserId;
+    /**
+     * refund amount<p>
+     * 退款金额
+     */
     @GeneratorColumn(title = "退款金额")
     private BigDecimal refundAmount;
+    /**
+     * status(0:pending,1:refunded,2:cancelled,3:refuse,4:fail)<p>
+     * 退款状态(0:待处理,1:已退款,2:取消,3:拒绝,4:失败)
+     */
     @GeneratorColumn(title = "状态", condition = true)
     private int status;
+    /**
+     * reply<p>
+     * 回复
+     */
     @GeneratorColumn(title = "回复")
     private String reply;
+    /**
+     * create date<p>
+     * 创建日期
+     */
     @GeneratorColumn(title = "创建日期", order = true)
     private Date createDate;
+    /**
+     * process date<p>
+     * 处理日期
+     */
     @GeneratorColumn(title = "处理日期", order = true)
     private Date processingDate;
 

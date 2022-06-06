@@ -28,23 +28,53 @@ public class LogLogin implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
+    /**
+     * id
+     */
     @GeneratorColumn(title = "ID")
     private Long id;
     @GeneratorColumn(title = "站点", condition = true)
     @JsonIgnore
     private short siteId;
+    /**
+     * name<p>
+     * 用户名
+     */
     @GeneratorColumn(title = "用户名", condition = true, like = true)
     private String name;
+    /**
+     * user id<p>
+     * 用户id
+     */
     @GeneratorColumn(title = "用户", condition = true)
     private Long userId;
+    /**
+     * ip
+     */
     @GeneratorColumn(title = "IP", condition = true, like = true)
     private String ip;
+    /**
+     * login channel<p>
+     * 登录渠道
+     */
     @GeneratorColumn(title = "登录渠道", condition = true)
     private String channel;
+    /**
+     * login result<p>
+     * 登录结果
+     */
     @GeneratorColumn(title = "登录结果", condition = true)
     private boolean result;
+    /**
+     * login date<p>
+     * 登录日期
+     */
     @GeneratorColumn(title = "登录日期", condition = true, order = true)
     private Date createDate;
+    /**
+     * error password<p>
+     * 错误密码
+     */
     @GeneratorColumn(title = "错误密码")
     private String errorPassword;
 

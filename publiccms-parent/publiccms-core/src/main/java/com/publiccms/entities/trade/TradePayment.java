@@ -30,39 +30,101 @@ public class TradePayment implements java.io.Serializable {
     */
     private static final long serialVersionUID = 1L;
 
+    /**
+     * id
+     */
     @GeneratorColumn(title = "ID")
     private Long id;
     @GeneratorColumn(title = "站点", condition = true)
     @JsonIgnore
     private short siteId;
+    /**
+     * user id<p>
+     * 用户id
+     */
     @GeneratorColumn(title = "用户", condition = true)
     private long userId;
+    /**
+     * amount<p>
+     * 金额
+     */
     @GeneratorColumn(title = "金额")
     private BigDecimal amount;
+    /**
+     * description<p>
+     * 描述
+     */
     @GeneratorColumn(title = "描述")
     private String description;
+    /**
+     * trade type(recharge,product)<p>
+     * 订单类型(recharge:充值,product:产品)
+     */
     @GeneratorColumn(title = "订单类型", condition = true)
     private String tradeType;
+    /**
+     * serial number<p>
+     * 订单流水
+     */
     @GeneratorColumn(title = "订单流水", condition = true)
     private String serialNumber;
+    /**
+     * account type(account,alipay,wechat)<p>
+     * 账户类型(account:账户,alipay:支付宝,wechat:微信)
+     */
     @GeneratorColumn(title = "账户类型", condition = true)
     private String accountType;
+    /**
+     * account serial number<p>
+     * 账户流水
+     */
     @GeneratorColumn(title = "账户流水", condition = true)
     private String accountSerialNumber;
+    /**
+     * ip
+     */
     @GeneratorColumn(title = "IP")
     private String ip;
+    /**
+     * status(0:pending pay,1:paid,2:pending refund,3:refunded,4:closed)<p>
+     * 状态(0:待支付,1:已支付,2:待退款,3:已退款,4:已关闭)
+     */
     @GeneratorColumn(title = "状态", condition = true)
     private int status;
+    /**
+     * processed<p>
+     * 已处理
+     */
     @GeneratorColumn(title = "已处理", condition = true)
     private boolean processed;
+    /**
+     * process user id<p>
+     * 处理用户id
+     */
     @GeneratorColumn(title = "处理用户")
     private Long processUserId;
+    /**
+     * update date<p>
+     * 更新日期
+     */
     @GeneratorColumn(title = "更新日期")
     private Date updateDate;
+    /**
+     * create date<p>
+     * 创建日期
+     */
     @GeneratorColumn(title = "创建日期", condition = true, order = true)
     private Date createDate;
+    /**
+     * process date<p>
+     * 处理日期
+     */
     @GeneratorColumn(title = "处理日期")
     private Date processDate;
+    /**
+     * payment date<p>
+     * 支付日期
+     */
     @GeneratorColumn(title = "支付日期")
     private Date paymentDate;
 

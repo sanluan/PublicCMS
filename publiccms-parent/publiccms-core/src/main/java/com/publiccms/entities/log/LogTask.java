@@ -29,19 +29,42 @@ public class LogTask implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
+    /**
+     * id
+     */
     @GeneratorColumn(title = "ID")
     private Long id;
     @GeneratorColumn(title = "站点", condition = true)
     @JsonIgnore
     private short siteId;
+    /**
+     * task id<p>
+     * 任务id
+     */
     @GeneratorColumn(title = "任务", condition = true)
     private int taskId;
+    /**
+     * begin time<p>
+     * 开始日期
+     */
     @GeneratorColumn(title = "开始日期", condition = true, order = true)
     private Date begintime;
+    /**
+     * end timeb<p>
+     * 结束日期
+     */
     @GeneratorColumn(title = "结束时间")
     private Date endtime;
+    /**
+     * success<p>
+     * 执行成功
+     */
     @GeneratorColumn(title = "结果", condition = true)
     private boolean success;
+    /**
+     * result<p>
+     * 执行结果
+     */
     @GeneratorColumn(title = "日志")
     private String result;
 

@@ -26,17 +26,36 @@ public class TradeOrderHistory implements java.io.Serializable {
     */
     private static final long serialVersionUID = 1L;
 
+    /**
+     * id
+     */
     @GeneratorColumn(title = "ID")
     private Long id;
     @GeneratorColumn(title = "站点", condition = true)
     @JsonIgnore
     private short siteId;
+    /**
+     * order id<p>
+     * 订单id
+     */
     @GeneratorColumn(title = "订单", condition = true)
     private long orderId;
+    /**
+     * create date<p>
+     * 创建日期
+     */
     @GeneratorColumn(title = "创建日期", condition = true, order = true)
     private Date createDate;
+    /**
+     * operate<p>
+     * 操作
+     */
     @GeneratorColumn(title = "操作", condition = true)
     private String operate;
+    /**
+     * content<p>
+     * 内容
+     */
     @GeneratorColumn(title = "内容", condition = true, like = true)
     private String content;
 
