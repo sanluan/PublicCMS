@@ -30,7 +30,7 @@ import com.publiccms.logic.service.cms.CmsSurveyQuestionService;
  * 多个调查问卷问题id，逗号或空格间隔，当id为空时生效，结果返回<code>map</code>(id,调查问卷问题)
  * {@link com.publiccms.entities.cms.CmsSurveyQuestion}
  * <li><code>absoluteURL</code> 封面图处理为绝对路径 默认为<code>true</code>
- * <li><code>advanced</code> 高级选项,
+ * <li><code>advanced</code> 开启高级选项， 默认为<code> false</code>
  * </ul>
  * 使用示例
  * <p>

@@ -42,6 +42,11 @@ public class CmsWordListDirective extends AbstractTemplateDirective {
     }
 
     @Override
+    public boolean needAppToken() {
+        return true;
+    }
+
+    @Override
     public boolean supportAdvanced() {
         return true;
     }
