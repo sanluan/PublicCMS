@@ -16,8 +16,16 @@ public class SysDeptPageId implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
+    /**
+     * dept id<p>
+     * 部门id
+     */
     @GeneratorColumn(title = "部门", condition = true)
     private int deptId;
+    /**
+     * page<p>
+     * 页面
+     */
     @GeneratorColumn(title = "页面", condition = true)
     private String page;
 

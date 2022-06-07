@@ -16,8 +16,16 @@ public class SysDeptCategoryId implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
+    /**
+     * dept id<p>
+     * 部门id
+     */
     @GeneratorColumn(title = "部门", condition = true)
     private int deptId;
+    /**
+     * category id<p>
+     * 分类id
+     */
     @GeneratorColumn(title = "分类", condition = true)
     private int categoryId;
 

@@ -168,11 +168,12 @@ public class SiteComponent implements Cache {
             sysDomain = sysDomainService.getEntity(serverName);
             if (null == sysDomain) {
                 int index;
-                if (null != serverName && 0 < (index = serverName.indexOf(CommonConstants.DOT))
-                        && index != serverName.lastIndexOf(CommonConstants.DOT)) {
-                    sysDomain = getDomain(serverName.substring(index + 1));
-                    if (null != sysDomain.getName()) {
-                        if (!sysDomain.isWild()) {
+                if (null != serverName && 0 < (index = serverName.indexOf(CommonConstants.DOT))) {
+                    String subname = serverName.substring(index + 1);
+                    sysDomain = domainCache.get(subname);
+                    if (null == sysDomain) {
+                        sysDomain = sysDomainService.getEntity(subname);
+                        if (null == sysDomain || !sysDomain.isWild()) {
                             sysDomain = new SysDomain();
                             sysDomain.setSiteId(defaultSiteId);
                         }
@@ -185,6 +186,7 @@ public class SiteComponent implements Cache {
             domainCache.put(serverName, sysDomain);
         }
         return sysDomain;
+
     }
 
     /**
@@ -407,7 +409,7 @@ public class SiteComponent implements Cache {
     public String getModelFilePath(SysSite site) {
         return getWebTemplateFilePath() + getFullTemplatePath(site, MODEL_FILE);
     }
-    
+
     /**
      * @param site
      * @return category type file path
