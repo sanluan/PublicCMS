@@ -127,8 +127,9 @@ public class PlaceController {
                 }
                 entity.setDisabled(false);
                 service.save(entity);
-                logOperateService.save(new LogOperate(site.getId(), userId, user.getDeptId(), LogLoginService.CHANNEL_WEB,
-                        "save.place", RequestUtils.getIpAddress(request), CommonUtils.getDate(), entity.getPath()));
+                logOperateService.save(
+                        new LogOperate(site.getId(), userId, null == user ? null : user.getDeptId(), LogLoginService.CHANNEL_WEB,
+                                "save.place", RequestUtils.getIpAddress(request), CommonUtils.getDate(), entity.getPath()));
             }
             Map<String, String> map = ExtendUtils.getExtentDataMap(placeParameters.getExtendDataList(),
                     metadataComponent.getPlaceMetadata(filepath).getExtendList());
