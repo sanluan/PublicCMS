@@ -17,10 +17,30 @@ import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.RenderHandler;
 
 /**
- *
- * TradeOrderDirective
- * 
- */
+*
+* tradeOrder 订单查询指令
+* <p>
+* 参数列表
+* <ul>
+* <li><code>id</code> 订单id，结果返回<code>object</code>
+* {@link com.publiccms.entities.trade.TradeOrder}
+* <li><code>ids</code> 多个订单id，逗号或空格间隔，当id为空时生效，结果返回<code>map</code>(id,<code>object</code>)
+* </ul>
+* 使用示例
+* <p>
+* &lt;@trade.order id=1&gt;${object.title}&lt;/@trade.order&gt;
+* <p>
+* &lt;@trade.order ids=1,2,3&gt;&lt;#list map as
+* k,v&gt;${v.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@trade.order&gt;
+* 
+* <pre>
+ &lt;script&gt;
+  $.getJSON('//cms.publiccms.com/api/directive/trade/order?id=1&amp;appToken=接口访问授权Token', function(data){    
+    console.log(data.title);
+  });
+  &lt;/script&gt;
+* </pre>
+*/
 @Component
 public class TradeOrderDirective extends AbstractTemplateDirective {
 

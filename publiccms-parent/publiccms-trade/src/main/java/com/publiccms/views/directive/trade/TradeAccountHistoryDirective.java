@@ -17,10 +17,30 @@ import com.publiccms.entities.trade.TradeAccountHistory;
 import com.publiccms.logic.service.trade.TradeAccountHistoryService;
 
 /**
- *
- * TradeAccountHistoryDirective
- * 
- */
+*
+* tradeAccountHistory 账户历史查询指令
+* <p>
+* 参数列表
+* <ul>
+* <li><code>id</code> 账户历史id，结果返回<code>object</code>
+* {@link com.publiccms.entities.trade.TradeAccountHistory}
+* <li><code>ids</code> 多个账户历史id，逗号或空格间隔，当id为空时生效，结果返回<code>map</code>(id,<code>object</code>)
+* </ul>
+* 使用示例
+* <p>
+* &lt;@trade.accountHistory id=1&gt;${object.balance}&lt;/@trade.accountHistory&gt;
+* <p>
+* &lt;@trade.accountHistory ids=1,2,3&gt;&lt;#list map as
+* k,v&gt;${v.balance}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@trade.accountHistory&gt;
+* 
+* <pre>
+ &lt;script&gt;
+  $.getJSON('//cms.publiccms.com/api/directive/trade/accountHistory?id=1&amp;appToken=接口访问授权Token', function(data){    
+    console.log(data.balance);
+  });
+  &lt;/script&gt;
+* </pre>
+*/
 @Component
 public class TradeAccountHistoryDirective extends AbstractTemplateDirective {
 
