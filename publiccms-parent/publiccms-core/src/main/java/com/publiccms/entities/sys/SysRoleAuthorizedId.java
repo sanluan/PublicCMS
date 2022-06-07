@@ -16,8 +16,16 @@ public class SysRoleAuthorizedId implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
+    /**
+     * role id<p>
+     * 角色id
+     */
     @GeneratorColumn(title = "角色", condition = true)
     private int roleId;
+    /**
+     * url<p>
+     * 地址
+     */
     @GeneratorColumn(title = "地址", condition = true)
     private String url;
 

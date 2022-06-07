@@ -24,15 +24,30 @@ public class SysRole implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
+    /**
+     * id
+     */
     @GeneratorColumn(title = "ID")
     private Integer id;
     @GeneratorColumn(title = "站点", condition = true)
     @JsonIgnore
     private short siteId;
+    /**
+     * name<p>
+     * 名称
+     */
     @GeneratorColumn(title = "名称")
     private String name;
-    @GeneratorColumn(title = "拥有全部权限")
+    /**
+     * owns all right<p>
+     * 拥有全部功能权限
+     */
+    @GeneratorColumn(title = "拥有全部功能权限")
     private boolean ownsAllRight;
+    /**
+     * show all modules<p>
+     * 显示全部模块
+     */
     @GeneratorColumn(title = "显示全部模块")
     private boolean showAllModule;
 

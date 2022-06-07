@@ -26,20 +26,51 @@ public class SysSite implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
+    /**
+     * id
+     */
     @GeneratorColumn(title = "ID")
     private Short id;
+    /**
+     * parent site id<p>
+     * 父站点id
+     */
     @GeneratorColumn(title = "父站点", condition = true)
     private Short parentId;
+    /**
+     * directory<p>
+     * 目录
+     */
     @GeneratorColumn(title = "目录")
     private String directory;
+    /**
+     * name<p>
+     * 名称
+     */
     @GeneratorColumn(title = "名称", condition = true, like = true)
     private String name;
+    /**
+     * use static<p>
+     * 启用静态化
+     */
     @GeneratorColumn(title = "启用静态化")
     private boolean useStatic;
+    /**
+     * site url<p>
+     * 静态站点地址
+     */
     @GeneratorColumn(title = "站点地址")
     private String sitePath;
+    /**
+     * use SSI<p>
+     * 启用服务器端包含
+     */
     @GeneratorColumn(title = "启用SSI")
     private boolean useSsi;
+    /**
+     * dynamic site url<p>
+     * 动态站点地址
+     */
     @GeneratorColumn(title = "动态站点地址")
     private String dynamicPath;
     @GeneratorColumn(title = "禁用", condition = true)

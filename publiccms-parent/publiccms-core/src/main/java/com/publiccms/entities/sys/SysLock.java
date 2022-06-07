@@ -28,12 +28,27 @@ public class SysLock implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
+    /**
+     * id
+     */
     @GeneratorColumn(title = "ID")
     private SysLockId id;
+    /**
+     * user id<p>
+     * 用户id
+     */
     @GeneratorColumn(title = "锁定用户")
     private Long userId;
+    /**
+     * locked count<p>
+     * 锁定次数
+     */
     @GeneratorColumn(title = "锁定次数")
     private int count;
+    /**
+     * create date<p>
+     * 创建日期
+     */
     @GeneratorColumn(title = "创建日期")
     private Date createDate;
 

@@ -26,14 +26,34 @@ public class SysEmailToken implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
+    /**
+     * auth token<p>
+     * 验证授权码
+     */
     @GeneratorColumn(title = "验证授权码")
     private String authToken;
+    /**
+     * user id<p>
+     * 用户id
+     */
     @GeneratorColumn(title = "用户", condition = true)
     private long userId;
+    /**
+     * email<p>
+     * 邮件地址
+     */
     @GeneratorColumn(title = "邮件地址")
     private String email;
+    /**
+     * create date<p>
+     * 创建日期
+     */
     @GeneratorColumn(title = "创建日期")
     private Date createDate;
+    /**
+     * expiry date<p>
+     * 过期日期
+     */
     @GeneratorColumn(title = "过期日期")
     private Date expiryDate;
 

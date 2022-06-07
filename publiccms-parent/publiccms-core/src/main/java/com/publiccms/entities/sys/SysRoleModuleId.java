@@ -16,8 +16,16 @@ public class SysRoleModuleId implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
+    /**
+     * role id<p>
+     * 角色id
+     */
     @GeneratorColumn(title = "角色", condition = true)
     private int roleId;
+    /**
+     * module id<p>
+     * 模块id
+     */
     @GeneratorColumn(title = "模块", condition = true)
     private String moduleId;
 

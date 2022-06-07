@@ -14,7 +14,14 @@ public class SysSiteDatasourceId implements java.io.Serializable {
     * 
     */
     private static final long serialVersionUID = 1L;
+    /**
+     * site id
+     */
     private short siteId;
+    /**
+     * datasource<p>
+     * 数据源
+     */
     private String datasource;
 
     public SysSiteDatasourceId() {

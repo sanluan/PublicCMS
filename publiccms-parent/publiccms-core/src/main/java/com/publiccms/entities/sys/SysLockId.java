@@ -17,8 +17,16 @@ public class SysLockId implements java.io.Serializable {
     @GeneratorColumn(title = "站点", condition = true)
     @JsonIgnore
     private short siteId;
+    /**
+     * item type<p>
+     * 项目类型
+     */
     @GeneratorColumn(title = "项目类型", condition = true)
     private String itemType;
+    /**
+     * item id<p>
+     * 项目id
+     */
     @GeneratorColumn(title = "项目")
     private String itemId;
 

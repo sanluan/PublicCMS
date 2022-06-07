@@ -16,8 +16,16 @@ public class SysRoleUserId implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
+    /**
+     * role id<p>
+     * 角色id
+     */
     @GeneratorColumn(title = "角色", condition = true)
     private int roleId;
+    /**
+     * user id<p>
+     * 用户id
+     */
     @GeneratorColumn(title = "用户", condition = true)
     private long userId;
 
