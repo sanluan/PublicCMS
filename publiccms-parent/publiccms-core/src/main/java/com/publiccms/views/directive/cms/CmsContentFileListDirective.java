@@ -66,7 +66,7 @@ public class CmsContentFileListDirective extends AbstractTemplateDirective {
         }
         PageHandler page = service.getPage(handler.getLong("contentId"), handler.getLong("userId"), fileTypes,
                 handler.getString("orderField"), handler.getString("orderType"), handler.getInteger("pageIndex", 1),
-                handler.getInteger("pageSize", 30));
+                handler.getInteger("pageSize", handler.getInteger("count", 30)));
         @SuppressWarnings("unchecked")
         List<CmsContentFile> list = (List<CmsContentFile>) page.getList();
         if (null != list) {

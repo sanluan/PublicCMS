@@ -50,7 +50,7 @@ public class CmsSurveyQuestionItemListDirective extends AbstractTemplateDirectiv
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
         PageHandler page = service.getPage(handler.getLong("questionId"), handler.getString("orderField"),
-                handler.getString("orderType"), handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", 30));
+                handler.getString("orderType"), handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", handler.getInteger("count", 30)));
         handler.put("page", page).render();
     }
 

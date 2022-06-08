@@ -25,7 +25,7 @@ public class WorkloadDirective extends AbstractTemplateDirective {
         PageHandler page = service.getWorkLoadPage(getSite(handler).getId(), handler.getString("channel"),
                 handler.getString("operate"), handler.getDate("startCreateDate"), handler.getDate("endCreateDate"),
                 handler.getString("workloadType"), handler.getInteger("pageIndex", 1),
-                handler.getInteger("pageSize", 20));
+                handler.getInteger("pageSize", 30));
         handler.put("page", page).render();
     }
 

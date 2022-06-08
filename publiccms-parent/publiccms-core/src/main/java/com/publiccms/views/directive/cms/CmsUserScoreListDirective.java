@@ -22,7 +22,7 @@ public class CmsUserScoreListDirective extends AbstractTemplateDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
         PageHandler page = service.getPage(handler.getLong("userId"), handler.getString("itemType"), handler.getLong("itemId"),
-                handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", 30));
+                handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", handler.getInteger("count", 30)));
         handler.put("page", page).render();
     }
 

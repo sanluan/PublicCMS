@@ -25,7 +25,7 @@ public class LogOperateListDirective extends AbstractTemplateDirective {
         PageHandler page = service.getPage(getSite(handler).getId(), handler.getString("channel"), handler.getString("operate"),
                 handler.getLong("userId"), handler.getDate("startCreateDate"), handler.getDate("endCreateDate"),
                 handler.getString("content"), handler.getString("ip"), handler.getString("orderType"),
-                handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", 20));
+                handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", handler.getInteger("count", 30)));
         handler.put("page", page).render();
     }
 

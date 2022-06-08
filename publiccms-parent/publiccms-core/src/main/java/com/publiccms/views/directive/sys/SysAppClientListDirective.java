@@ -29,7 +29,7 @@ public class SysAppClientListDirective extends AbstractTemplateDirective {
         PageHandler page = service.getPage(getSite(handler).getId(), handler.getString("channel"), handler.getLong("userId"),
                 handler.getDate("startLastLoginDate"), handler.getDate("endLastLoginDate"), handler.getDate("startCreateDate"),
                 handler.getDate("endCreateDate"), disabled, handler.getString("orderField"), handler.getString("orderType"),
-                handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", 30));
+                handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", handler.getInteger("count", 30)));
         handler.put("page", page).render();
     }
 
