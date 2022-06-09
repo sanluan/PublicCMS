@@ -31,7 +31,7 @@ import com.publiccms.logic.service.trade.TradeRefundService;
 * &lt;@trade.refund id=1&gt;${object.amount}&lt;/@trade.refund&gt;
 * <p>
 * &lt;@trade.refund ids=1,2,3&gt;&lt;#list map as
-* k,v&gt;${v.amount}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@trade.refund&gt;
+* k,v&gt;${k}:${v.amount}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@trade.refund&gt;
 * 
 * <pre>
  &lt;script&gt;

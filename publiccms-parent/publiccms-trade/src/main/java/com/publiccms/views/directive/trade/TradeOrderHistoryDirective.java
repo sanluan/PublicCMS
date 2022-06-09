@@ -31,7 +31,7 @@ import com.publiccms.logic.service.trade.TradeOrderHistoryService;
 * &lt;@trade.orderHistory id=1&gt;${object.amount}&lt;/@trade.orderHistory&gt;
 * <p>
 * &lt;@trade.orderHistory ids=1,2,3&gt;&lt;#list map as
-* k,v&gt;${v.amount}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@trade.orderHistory&gt;
+* k,v&gt;${k}:${v.amount}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@trade.orderHistory&gt;
 * 
 * <pre>
  &lt;script&gt;

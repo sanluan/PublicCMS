@@ -13,8 +13,24 @@ import com.publiccms.logic.component.config.ConfigComponent.ConfigInfo;
 
 /**
  *
- * SysConfigDirective
+ * sysConfig 配置查询指令
+ * <p>
+ * 参数列表
+ * <ul>
+ * <li><code>code</code> 配置编码，结果返回<code>object</code>
+ * {@link com.publiccms.logic.component.config.ConfigComponent.ConfigInfo}
+ * </ul>
+ * 使用示例
+ * <p>
+ * &lt;@sys.config code='site'&gt;${object.description}&lt;/@sys.config&gt;
  * 
+ * <pre>
+&lt;script&gt;
+$.getJSON('//cms.publiccms.com/api/directive/sys/config?code=site&amp;appToken=接口访问授权Token', function(data){    
+  console.log(data.description);
+});
+&lt;/script&gt;
+ * </pre>
  */
 @Component
 public class SysConfigDirective extends AbstractTemplateDirective {

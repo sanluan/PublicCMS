@@ -31,7 +31,7 @@ import com.publiccms.logic.service.trade.TradeAccountHistoryService;
 * &lt;@trade.accountHistory id=1&gt;${object.balance}&lt;/@trade.accountHistory&gt;
 * <p>
 * &lt;@trade.accountHistory ids=1,2,3&gt;&lt;#list map as
-* k,v&gt;${v.balance}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@trade.accountHistory&gt;
+* k,v&gt;${k}:${v.balance}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@trade.accountHistory&gt;
 * 
 * <pre>
  &lt;script&gt;

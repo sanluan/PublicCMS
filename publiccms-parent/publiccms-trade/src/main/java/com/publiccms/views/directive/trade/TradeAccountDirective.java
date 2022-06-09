@@ -31,7 +31,7 @@ import com.publiccms.logic.service.trade.TradeAccountService;
  * &lt;@trade.account id=1&gt;${object.amount}&lt;/@trade.account&gt;
  * <p>
  * &lt;@trade.account ids=1,2,3&gt;&lt;#list map as
- * k,v&gt;${v.amount}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@trade.account&gt;
+ * k,v&gt;${k}:${v.amount}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@trade.account&gt;
  * 
  * <pre>
   &lt;script&gt;

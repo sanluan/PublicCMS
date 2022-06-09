@@ -49,7 +49,7 @@ public class SysDomain implements java.io.Serializable {
      * root template path<p>
      * 模板根目录
      */
-    @GeneratorColumn(title = "路径")
+    @GeneratorColumn(title = "模板根目录")
     private String path;
 
     public SysDomain() {

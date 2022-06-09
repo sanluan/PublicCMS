@@ -18,10 +18,31 @@ import com.publiccms.entities.sys.SysDatasource;
 import com.publiccms.logic.service.sys.SysDatasourceService;
 
 /**
- *
- * SysDatasourceDirective
- * 
- */
+*
+* sysDatasource 数据源查询指令
+* <p>
+* 参数列表
+* <ul>
+* <li><code>id</code> 数据源id，结果返回<code>object</code>
+* {@link com.publiccms.entities.sys.SysDatasource}
+* <li><code>ids</code>
+* 多个数据源id，逗号或空格间隔，当id为空时生效，结果返回<code>map</code>(id,<code>object</code>)
+* </ul>
+* 使用示例
+* <p>
+* &lt;@sys.datasource id=1&gt;${object.name}&lt;/@sys.datasource&gt;
+* <p>
+* &lt;@sys.datasource ids='1,2,3'&gt;&lt;#list map as
+* k,v&gt;${k}:${v.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.datasource&gt;
+* 
+* <pre>
+&lt;script&gt;
+$.getJSON('//cms.publiccms.com/api/directive/sys/datasource?id=1&amp;appToken=接口访问授权Token', function(data){    
+  console.log(data.name);
+});
+&lt;/script&gt;
+* </pre>
+*/
 @Component
 public class SysDatasourceDirective extends AbstractTemplateDirective {
 

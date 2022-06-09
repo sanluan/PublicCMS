@@ -14,10 +14,31 @@ import com.publiccms.entities.sys.SysDomain;
 import com.publiccms.logic.service.sys.SysDomainService;
 
 /**
- *
- * SysDomainDirective
- * 
- */
+*
+* sysDomain 域名查询指令
+* <p>
+* 参数列表
+* <ul>
+* <li><code>id</code> 域名，结果返回<code>object</code>
+* {@link com.publiccms.entities.sys.SysDomain}
+* <li><code>ids</code>
+* 多个域名，逗号或空格间隔，当id为空时生效，结果返回<code>map</code>(id,<code>object</code>)
+* </ul>
+* 使用示例
+* <p>
+* &lt;@sys.domain id='www.publiccms.com'&gt;${object.name}&lt;/@sys.domaing&gt;
+* <p>
+* &lt;@sys.domain ids='www.publiccms.com,www.sanluan.com'&gt;&lt;#list map as
+* k,v&gt;${k}:${v.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.domain&gt;
+* 
+* <pre>
+&lt;script&gt;
+$.getJSON('//cms.publiccms.com/api/directive/sys/domain?id=1&amp;appToken=接口访问授权Token', function(data){    
+  console.log(data.name);
+});
+&lt;/script&gt;
+* </pre>
+*/
 @Component
 public class SysDomainDirective extends AbstractTemplateDirective {
 

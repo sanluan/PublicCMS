@@ -16,10 +16,26 @@ import com.publiccms.entities.visit.VisitSessionId;
 import com.publiccms.logic.service.visit.VisitSessionService;
 
 /**
- *
- * VisitSessionDirective
- * 
- */
+*
+* visitSession 访问统计会话报表查询指令
+* <p>
+* 参数列表
+* <ul>
+* <li><code>visitDate</code> 访问日期,【2020-01-01】
+* <li><code>sessionId</code> 会话id，两个参数都不为空时，结果返回<code>object</code>
+ * {@link com.publiccms.entities.visit.VisitSession}
+* </ul>
+* 使用示例
+* <p>
+* &lt;@visit.session visitDate='2020-01-01' sessionId='xxxx-xxxx-xxxx'&gt;${object.pv}&lt;/@visit.session&gt;
+* <pre>
+ &lt;script&gt;
+  $.getJSON('//cms.publiccms.com/api/directive/visit/session?visitDate=2020-01-01&amp;sessionId=xxxx-xxxx-xxxx&amp;appToken=接口访问授权Token', function(data){    
+    console.log(data.pv);
+  });
+  &lt;/script&gt;
+* </pre>
+*/
 @Component
 public class VisitSessionDirective extends AbstractTemplateDirective {
 

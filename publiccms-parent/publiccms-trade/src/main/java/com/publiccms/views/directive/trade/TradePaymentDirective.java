@@ -31,7 +31,7 @@ import com.publiccms.logic.service.trade.TradePaymentService;
 * &lt;@trade.payment id=1&gt;${object.amount}&lt;/@trade.payment&gt;
 * <p>
 * &lt;@trade.payment ids=1,2,3&gt;&lt;#list map as
-* k,v&gt;${v.amount}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@trade.payment&gt;
+* k,v&gt;${k}:${v.amount}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@trade.payment&gt;
 * 
 * <pre>
  &lt;script&gt;

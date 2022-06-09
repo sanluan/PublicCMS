@@ -31,7 +31,7 @@ import com.publiccms.common.handler.RenderHandler;
 * &lt;@trade.order id=1&gt;${object.title}&lt;/@trade.order&gt;
 * <p>
 * &lt;@trade.order ids=1,2,3&gt;&lt;#list map as
-* k,v&gt;${v.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@trade.order&gt;
+* k,v&gt;${k}:${v.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@trade.order&gt;
 * 
 * <pre>
  &lt;script&gt;

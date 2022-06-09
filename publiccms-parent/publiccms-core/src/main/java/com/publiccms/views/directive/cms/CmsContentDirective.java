@@ -31,14 +31,14 @@ import com.publiccms.views.pojo.entities.ClickStatistics;
 * <li><code>absoluteURL</code> url处理为绝对路径 默认为<code> true</code>
 * <li><code>absoluteId</code> url处理为绝对路径 默认为<code> true</code>
 * <li><code>containsAttribute</code> id不为空时有效，默认为<code>false</code>，结果返回<code>attribute</code>
-* <li><code>ids</code> 多个内容id，逗号或空格间隔，当id为空时生效，结果返回<code>map</code>(id,内容){@link com.publiccms.entities.cms.CmsContent} 
+* <li><code>ids</code> 多个内容id，逗号或空格间隔，当id为空时生效，结果返回<code>map</code>(id,<code>object</code>)
 * </ul>
 * 使用示例
 * <p>
 * &lt;@cms.content id=1&gt;${object.title}&lt;/@cms.content&gt;
 * <p>
 * &lt;@cms.content ids=1,2,3&gt;&lt;#list map as
-* k,v&gt;${v.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.content&gt;
+* k,v&gt;${k}:${v.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.content&gt;
 * 
 * <pre>
 *  &lt;script&gt;

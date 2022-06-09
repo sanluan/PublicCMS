@@ -31,7 +31,7 @@ import com.publiccms.logic.service.trade.TradePaymentHistoryService;
 * &lt;@trade.paymentHistory id=1&gt;${object.content}&lt;/@trade.paymentHistory&gt;
 * <p>
 * &lt;@trade.paymentHistory ids=1,2,3&gt;&lt;#list map as
-* k,v&gt;${v.content}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@trade.paymentHistory&gt;
+* k,v&gt;${k}:${v.content}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@trade.paymentHistory&gt;
 * 
 * <pre>
  &lt;script&gt;

@@ -16,10 +16,27 @@ import com.publiccms.entities.visit.VisitItemId;
 import com.publiccms.logic.service.visit.VisitItemService;
 
 /**
- *
- * VisitItemDirective
- * 
- */
+*
+* visitItem 访问统计项目报表查询指令
+* <p>
+* 参数列表
+* <ul>
+* <li><code>visitDate</code> 访问日期,【2020-01-01】
+* <li><code>itemType</code> 访问项目类型，【category,content,user等页面统计时中的itemType】
+* <li><code>itemId</code> 访问项目id，三个参数都不为空时，结果返回<code>object</code>
+ * {@link com.publiccms.entities.visit.VisitItem}
+* </ul>
+* 使用示例
+* <p>
+* &lt;@visit.item visitDate='2020-01-01' visitHour=9&gt;${object.pv}&lt;/@visit.item&gt;
+* <pre>
+ &lt;script&gt;
+  $.getJSON('//cms.publiccms.com/api/directive/visit/item?visitDate=2020-01-01&amp;itemType=content&amp;itemId=1&amp;appToken=接口访问授权Token', function(data){    
+    console.log(data.pv);
+  });
+  &lt;/script&gt;
+* </pre>
+*/
 @Component
 public class VisitItemDirective extends AbstractTemplateDirective {
 

@@ -17,8 +17,29 @@ import com.publiccms.logic.service.visit.VisitHistoryService;
 
 /**
  *
- * VisitHistoryDirective
+ * visitHistory 访问记录查询指令
+ * <p>
+ * 参数列表
+ * <ul>
+ * <li><code>id</code> 记录id，结果返回<code>object</code>
+ * {@link com.publiccms.entities.visit.VisitHistory}
+ * <li><code>ids</code>
+ * 多个记录id，逗号或空格间隔，当id为空时生效，结果返回<code>map</code>(id,<code>object</code>)
+ * </ul>
+ * 使用示例
+ * <p>
+ * &lt;@visit.history id=1&gt;${object.title}&lt;/@visit.history&gt;
+ * <p>
+ * &lt;@visit.history ids='1,2,3'&gt;&lt;#list map as
+ * k,v&gt;${k}:${v.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@visit.history&gt;
  * 
+ * <pre>
+ &lt;script&gt;
+  $.getJSON('//cms.publiccms.com/api/directive/visit/history?id=1&amp;appToken=接口访问授权Token', function(data){    
+    console.log(data.title);
+  });
+  &lt;/script&gt;
+ * </pre>
  */
 @Component
 public class VisitHistoryDirective extends AbstractTemplateDirective {
