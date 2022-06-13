@@ -88,7 +88,7 @@ public class ScoreController {
                         scores = 1;
                     }
                     CmsContent content = contentService.updateScores(site.getId(), itemId, score ? 1 : -1,
-                            score ? scores : -scores);
+                            score ? scores : -entity.getScores());
                     if (null != content) {
                         if (score) {
                             entity = new CmsUserScore();
