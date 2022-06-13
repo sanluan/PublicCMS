@@ -619,7 +619,7 @@ public class CmsContentService extends BaseService<CmsContent> {
         CmsContent entity = getEntity(id);
         if (null != entity && siteId == entity.getSiteId()) {
             entity.setScores(entity.getScores() + scores);
-            entity.setScoreUsers(entity.getScoreUsers() + scores);
+            entity.setScoreUsers(entity.getScoreUsers() + scoreUsers);
             if (0 < entity.getScoreUsers()) {
                 entity.setScore(new BigDecimal(entity.getScores()).divide(new BigDecimal(entity.getScoreUsers())));
             } else {
