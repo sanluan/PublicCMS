@@ -31,15 +31,14 @@ import com.publiccms.logic.service.cms.CmsPlaceService;
  * <li><code>absoluteURL</code> url处理为绝对路径 默认为<code> true</code>
  * <li><code>containsAttribute</code> id不为空时有效，默认为<code>false</code>，结果返回<code>attribute</code>
  * <li><code>ids</code>
- * 多个推荐位id，逗号或空格间隔，当id为空时生效，结果返回<code>map</code>(id,推荐位)
- * {@link com.publiccms.entities.cms.CmsPlace}
+ * 多个推荐位id，逗号或空格间隔，当id为空时生效，结果返回<code>map</code>(id,<code>object</code>)
  * </ul>
  * 使用示例
  * <p>
  * &lt;@cms.place id=1&gt;${object.title}&lt;/@cms.place&gt;
  * <p>
  * &lt;@cms.place ids='1,2,3'&gt;&lt;#list map as
- * k,v&gt;${v.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.place&gt;
+ * k,v&gt;${k}:${v.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.place&gt;
  * 
  * <pre>
  &lt;script&gt;

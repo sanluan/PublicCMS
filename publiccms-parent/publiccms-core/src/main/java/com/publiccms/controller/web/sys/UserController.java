@@ -188,7 +188,7 @@ public class UserController {
         Map<String, String> config = configComponent.getConfigData(site.getId(), EmailTemplateConfigComponent.CONFIG_CODE);
         String emailTitle = config.get(EmailTemplateConfigComponent.CONFIG_EMAIL_TITLE);
         String emailPath = config.get(EmailTemplateConfigComponent.CONFIG_EMAIL_PATH);
-        PageHandler page = sysEmailTokenService.getPage(user.getId(), null, null);
+        PageHandler page = sysEmailTokenService.getPage(user.getId(), null, 0);
         if (ControllerUtils.errorNotEmpty("email", email, model)
                 || ControllerUtils.errorNotEmpty("email.config", emailTitle, model)
                 || ControllerUtils.errorNotEmpty("email.config", emailPath, model)

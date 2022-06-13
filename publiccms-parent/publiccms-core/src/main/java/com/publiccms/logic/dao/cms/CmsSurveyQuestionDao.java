@@ -34,8 +34,8 @@ public class CmsSurveyQuestionDao extends BaseDao<CmsSurveyQuestion> {
         if (CommonUtils.notEmpty(questionTypes)) {
             queryHandler.condition("bean.questionTypes in (:questionTypes)").setParameter("questionTypes", questionTypes);
         }
-        if (!ORDERTYPE_ASC.equalsIgnoreCase(orderType)) {
-            orderType = ORDERTYPE_DESC;
+        if (!ORDERTYPE_DESC.equalsIgnoreCase(orderType)) {
+            orderType = ORDERTYPE_ASC;
         }
         queryHandler.order("bean.sort " + orderType);
         return getPage(queryHandler, pageIndex, pageSize);

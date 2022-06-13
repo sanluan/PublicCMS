@@ -15,10 +15,26 @@ import com.publiccms.entities.visit.VisitDayId;
 import com.publiccms.logic.service.visit.VisitDayService;
 
 /**
- *
- * VisitDayDirective
- * 
- */
+*
+* visitDay 访问统计日报表查询指令
+* <p>
+* 参数列表
+* <ul>
+* <li><code>visitDate</code> 访问日期,【2020-01-01】
+* <li><code>visitHour</code> 访问小时，【0-23】,两个参数都不为空时，结果返回<code>object</code>
+ * {@link com.publiccms.entities.visit.VisitDay}
+* </ul>
+* 使用示例
+* <p>
+* &lt;@visit.day visitDate='2020-01-01' visitHour=9&gt;${object.pv}&lt;/@visit.day&gt;
+* <pre>
+ &lt;script&gt;
+  $.getJSON('//cms.publiccms.com/api/directive/visit/day?visitDate=2020-01-01&amp;visitHour=9&amp;appToken=接口访问授权Token', function(data){    
+    console.log(data.pv);
+  });
+  &lt;/script&gt;
+* </pre>
+*/
 @Component
 public class VisitDayDirective extends AbstractTemplateDirective {
 

@@ -27,12 +27,27 @@ public class VisitDay implements java.io.Serializable {
     */
     private static final long serialVersionUID = 1L;
 
+    /**
+     * id
+     */
     @GeneratorColumn(title = "ID")
     private VisitDayId id;
+    /**
+     * page views<p>
+     * 页面访问数
+     */
     @GeneratorColumn(title = "PV")
     private long pv;
+    /**
+     * user views<p>
+     * 用户访问数
+     */
     @GeneratorColumn(title = "UV")
     private Long uv;
+    /**
+     * ip views<p>
+     * ip访问数
+     */
     @GeneratorColumn(title = "IP Views")
     private Long ipviews;
 

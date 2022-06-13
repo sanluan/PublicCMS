@@ -42,8 +42,8 @@ import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.sys.SysAppClientService;
 import com.publiccms.logic.service.sys.SysUserService;
 import com.publiccms.logic.service.sys.SysUserTokenService;
-import com.publiccms.view.pojo.oauth.OauthAccess;
-import com.publiccms.view.pojo.oauth.OauthUser;
+import com.publiccms.views.pojo.oauth.OauthAccess;
+import com.publiccms.views.pojo.oauth.OauthUser;
 
 @Controller
 @RequestMapping("oauth")

@@ -61,3 +61,8 @@ INSERT INTO `sys_module_lang` VALUES ('page_diy_region', 'ja', '領域');
 INSERT INTO `sys_module_lang` VALUES ('page_diy_region', 'zh', '区域');
 -- 2022-05-22 --
 ALTER TABLE `cms_place` COMMENT = '推荐位数据';
+-- 2022-05-31 --
+INSERT INTO `sys_module` VALUES ('template_search', 'cmsTemplate/search', 'cmsTemplate/replace', NULL, 'template_list', 0, 0);
+INSERT INTO `sys_module_lang` VALUES ('template_search', 'en', 'Search');
+INSERT INTO `sys_module_lang` VALUES ('template_search', 'ja', '検索');
+INSERT INTO `sys_module_lang` VALUES ('template_search', 'zh', '搜索');

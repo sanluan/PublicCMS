@@ -30,21 +30,48 @@ public class SysTask implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
+    /**
+     * id
+     */
     @GeneratorColumn(title = "ID")
     private Integer id;
     @GeneratorColumn(title = "站点", condition = true)
     @JsonIgnore
     private short siteId;
+    /**
+     * name<p>
+     * 名称
+     */
     @GeneratorColumn(title = "任务名称")
     private String name;
+    /**
+     * status(0:ready,1:running,2:paused,3:error)<p>
+     * 状态(0:就绪,1:执行中,2:暂停,3:错误)
+     */
     @GeneratorColumn(title = "状态", condition = true)
     private int status;
+    /**
+     * cron expression<p>
+     * 计划表达式
+     */
     @GeneratorColumn(title = "表达式")
     private String cronExpression;
+    /**
+     * description<p>
+     * 描述
+     */
     @GeneratorColumn(title = "描述")
     private String description;
-    @GeneratorColumn(title = "任务内容")
+    /**
+     * file path<p>
+     * 文件路径
+     */
+    @GeneratorColumn(title = "文件路径")
     private String filepath;
+    /**
+     * update date<p>
+     * 更新日期
+     */
     @GeneratorColumn(title = "更新日期", condition = true)
     private Date updateDate;
 

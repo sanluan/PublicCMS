@@ -26,14 +26,14 @@ import com.publiccms.logic.service.cms.CmsContentProductService;
 * <ul>
 * <li><code>id</code> 内容id，结果返回<code>object</code>{@link com.publiccms.entities.cms.CmsContentProduct} 
 * <li><code>absoluteURL</code> cover处理为绝对路径 默认为<code> true</code>
-* <li><code>ids</code> 多个内容id，逗号或空格间隔，当id为空时生效，结果返回<code>map</code>(id,产品){@link com.publiccms.entities.cms.CmsContentProduct} 
+* <li><code>ids</code> 多个内容id，逗号或空格间隔，当id为空时生效，结果返回<code>map</code>(id,<code>object</code>)
 * </ul>
 * 使用示例
 * <p>
 * &lt;@cms.contentProduct id=1&gt;${object.title}&lt;/@cms.contentProduct&gt;
 * <p>
 * &lt;@cms.contentProduct ids=1,2,3&gt;&lt;#list map as
-* k,v&gt;${v.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.contentProduct&gt;
+* k,v&gt;${k}:${v.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.contentProduct&gt;
 * 
 * <pre>
 *  &lt;script&gt;

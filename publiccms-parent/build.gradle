@@ -32,9 +32,9 @@ subprojects {
 
     group = 'com.publiccms'
     version = 'V5.202204.b'
-    
+
     test.enabled = false
-    
+
     ext {
         // http://mvnrepository.com/artifact/org.springframework/spring-core
         // https://spring.io/projects/spring-framework
@@ -64,7 +64,7 @@ subprojects {
         // http://mvnrepository.com/artifact/org.freemarker/freemarker
         freemarkerVersion = "2.3.31"
         // http://mvnrepository.com/artifact/org.mybatis/mybatis
-        mybatisVersion = "3.5.9"
+        mybatisVersion = "3.5.10"
         // http://mvnrepository.com/artifact/org.mybatis/mybatis-spring
         mybatisSpringVersion = "2.0.7"
         // http://mvnrepository.com/artifact/org.mybatis.generator/mybatis-generator-core

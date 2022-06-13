@@ -1,11 +1,14 @@
 package com.publiccms.controller.web.cms;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.Map;
 
 import jakarta.servlet.http.HttpServletRequest;
-
 import jakarta.annotation.Resource;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,6 +34,8 @@ import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 
+import freemarker.template.TemplateException;
+
 /**
  * 
  * ContentController 内容
@@ -39,6 +44,7 @@ import com.publiccms.logic.service.log.LogOperateService;
 @Controller
 @RequestMapping("comment")
 public class CommentController {
+    protected final Log log = LogFactory.getLog(getClass());
     @Resource
     protected LogOperateService logOperateService;
     @Resource
@@ -61,7 +67,7 @@ public class CommentController {
      * @param entity
      * @param returnUrl
      * @param request
-     * @return
+     * @return redirect url
      */
     @RequestMapping("save")
     @Csrf
@@ -114,7 +120,11 @@ public class CommentController {
                     content = contentService.getEntity(entity.getContentId());
                 }
                 if (null != content && !content.isDisabled()) {
-                    templateComponent.createContentFile(site, content, null, null);
+                    try {
+                        templateComponent.createContentFile(site, content, null, null);
+                    } catch (IOException | TemplateException e) {
+                        log.error(e.getMessage(), e);
+                    }
                 }
             }
         }

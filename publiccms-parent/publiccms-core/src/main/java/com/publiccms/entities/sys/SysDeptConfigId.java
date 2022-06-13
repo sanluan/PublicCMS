@@ -16,8 +16,16 @@ public class SysDeptConfigId implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
+    /**
+     * dept id<p>
+     * 部门id
+     */
     @GeneratorColumn(title = "部门", condition = true)
     private int deptId;
+    /**
+     * config<p>
+     * 配置
+     */
     @GeneratorColumn(title = "配置", condition = true)
     private String config;
 

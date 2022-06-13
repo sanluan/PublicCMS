@@ -14,10 +14,31 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.service.sys.SysDeptService;
 
 /**
- *
- * SysDeptDirective
- * 
- */
+*
+* sysDept 部门查询指令
+* <p>
+* 参数列表
+* <ul>
+* <li><code>id</code> 部门id，结果返回<code>object</code>
+* {@link com.publiccms.entities.sys.SysDept}
+* <li><code>ids</code>
+* 多个部门id，逗号或空格间隔，当id为空时生效，结果返回<code>map</code>(id,<code>object</code>)
+* </ul>
+* 使用示例
+* <p>
+* &lt;@sys.dept id=1&gt;${object.name}&lt;/@sys.dept&gt;
+* <p>
+* &lt;@sys.dept ids='1,2,3'&gt;&lt;#list map as
+* k,v&gt;${k}:${v.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.dept&gt;
+* 
+* <pre>
+&lt;script&gt;
+$.getJSON('//sys.publicsys.com/api/directive/sys/dept?id=1&amp;appToken=接口访问授权Token', function(data){    
+  console.log(data.name);
+});
+&lt;/script&gt;
+* </pre>
+*/
 @Component
 public class SysDeptDirective extends AbstractTemplateDirective {
 

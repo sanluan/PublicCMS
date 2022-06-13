@@ -25,20 +25,51 @@ public class CmsSurveyQuestion implements java.io.Serializable {
     *
     */
     private static final long serialVersionUID = 1L;
+    /**
+     * id
+     */
     @GeneratorColumn(title = "ID")
     private Long id;
+    /**
+     * survey id<p>
+     * 问卷id
+     */
     @GeneratorColumn(title = "问卷", condition = true)
     private long surveyId;
+    /**
+     * title<p>
+     * 标题
+     */
     @GeneratorColumn(title = "标题")
     private String title;
+    /**
+     * score<p>
+     * 分数
+     */
     @GeneratorColumn(title = "分数")
     private Integer score;
+    /**
+     * question type[radio,select,checkbox,text,file,picture]<p>
+     * 问题类型[radio:单选,select:下拉选择,checkbox:复选框,text:文字,file:文件,picture:图片]
+     */
     @GeneratorColumn(title = "问题类型", condition = true)
     private String questionType;
+    /**
+     * cover<p>
+     * 图片
+     */
     @GeneratorColumn(title = "图片")
     private String cover;
+    /**
+     * answer<p>
+     * 答案
+     */
     @GeneratorColumn(title = "答案")
     private String answer;
+    /**
+     * sort<p>
+     * 排序
+     */
     @GeneratorColumn(title = "排序", order = true)
     private int sort;
 

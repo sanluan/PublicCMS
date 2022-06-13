@@ -10,9 +10,9 @@ import org.springframework.stereotype.Component;
 import com.publiccms.common.base.oauth.AbstractOauth;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
-import com.publiccms.view.pojo.oauth.OauthAccess;
-import com.publiccms.view.pojo.oauth.OauthConfig;
-import com.publiccms.view.pojo.oauth.OauthUser;
+import com.publiccms.views.pojo.oauth.OauthAccess;
+import com.publiccms.views.pojo.oauth.OauthConfig;
+import com.publiccms.views.pojo.oauth.OauthUser;
 
 /**
  *

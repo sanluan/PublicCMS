@@ -5,21 +5,22 @@
         <title>${content.title} - ${category.name}</title>
         <meta name="keywords" content="<#list getKeywords(content.title) as a>${a}<#sep>,</#list>"/>
         <meta name="description" content="${content.description!}"/>
-        <@_includePlace path="/8ddab9ba-a8aa-4745-86c6-66bf1c2c976c.html"/> <#-- header -->
+        <@tools.includePlace path="/8ddab9ba-a8aa-4745-86c6-66bf1c2c976c.html"/> <#-- header -->
     </head>
     <body>
-        <@_includePlace path="/c32a4f4a-ff5d-49cf-bb59-5d9784539174.html"/> <#-- 导航 -->
+        <@tools.includePlace path="/c32a4f4a-ff5d-49cf-bb59-5d9784539174.html"/> <#-- 导航 -->
 
         <div class="banner-l3 position-relative d-flex align-items-center justify-content-center" style="background:#22407c url(${site.sitePath}assets/img/banner-l3-bg-1.png) 50% 50% no-repeat;">
             <div class="container text-center position-relative py-3 py-md-4 text-white">
                 <div class="breadcrumbs fs-7 text-white d-inline-flex align-items-center text-opacity-50">
                     <@include path="/ftl/bread.ftl"/><#-- 面包屑导航 -->
                 </div>
-                <h1 class="my-4"><a href="${url!}" class="text-white">${content.title}</a></h1>
+                <h1 class="my-4" data-diy="content" data-diy-id="${content.id}"><a href="${url!}" class="text-white">${content.title}</a></h1>
                 <footer class="fs-8 text-white text-opacity-50 d-flex align-items-center justify-content-center">
+					<#if attribute.source?has_content><span class="me-4 d-inline-flex align-items-center"><a href="${attribute.sourceUrl!}" class="text-white" target="_blank">${attribute.source}</a></span></#if>
                     <span class="me-4 d-inline-flex align-items-center"><img src="${site.sitePath}assets/img/icon-calendar.svg">${content.publishDate?date}</span>
                     <span class="me-4 d-inline-flex align-items-center"><img src="${site.sitePath}assets/img/icon-view.svg"><span id="clicks">loading</span></span>
-                    <a href="#comments"><span class="me-4 d-inline-flex align-items-center text-white"><img src="${site.sitePath}assets/img/icon-comment.svg">${content.comments!}</span></a>
+                    <a href="#comments" data-diy="comment"><span class="me-4 d-inline-flex align-items-center text-white"><img src="${site.sitePath}assets/img/icon-comment.svg">${content.comments!}</span></a>
                 </footer>
             </div>
         </div>
@@ -27,28 +28,28 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-9 pe-4">
-                    <article class="article-cont mt-5">
+                    <article class="article-cont mt-5" data-diy="content" data-diy-id="${content.id}">
                         <div class="clearfix" id="content">
                             ${(text?no_esc)!}
                         </div>
                     <#if content.hasFiles>
-                        <@_contentFileList contentId=content.id fileTypes='video,audio,other'>
+                        <@cms.contentFileList contentId=content.id fileTypes='video,audio,other'>
                             <#list page.list as file>
                         <p><a href="${(file.filePath)!}" target="_blank">${(file.description)!}</a> </p>
                             </#list>
-                        </@_contentFileList>
+                        </@cms.contentFileList>
                     </#if>
                     <#if content.hasImages>
-                         <@_contentFileList contentId=content.id fileTypes='image'>
+                         <@cms.contentFileList contentId=content.id fileTypes='image'>
                              <#list page.list as file>
                                  <figure class="text-center">
                                      <img src="${(file.filePath)!}" alt="${(file.description)!}"/>
                                      <p>图${file?counter} ${(file.description)!}</p>
                                 </figure>
                              </#list>
-                         </@_contentFileList>
+                         </@cms.contentFileList>
                     </#if>
-						<p><@_tag ids=content.tagIds><#if map?has_content>标签:</#if><#list map?keys as k><a href="${siteAttribute.searchPath!}?tagIds=${k}" target="_blank">${map[k].name}</a><#sep>,</#list></@_tag></p>
+						<p><@cms.tag ids=content.tagIds><#if map?has_content>标签:</#if><#list map?keys as k><a href="${siteAttribute.searchPath!}?tagIds=${k}" target="_blank">${map[k].name}</a><#sep>,</#list></@cms.tag></p>
                     </article>
                     <#if page?? && page.totalCount gt 1>
                         <ul class="pagination mt-5 overflow-auto pb-3">
@@ -69,7 +70,7 @@
                     </#if>
                     <div class="my-4 py-4 d-flex justify-content-between align-items-start">
                         <div class="d-flex align-items-center me-4">
-                            <@_contentList categoryId=content.categoryId endPublishDate=content.publishDate orderField='publishDate' pageIndex=2 count=1>
+                            <@cms.contentList categoryId=content.categoryId endPublishDate=content.publishDate orderField='publishDate' pageIndex=2 pageSize=1>
                                 <#if 2=page.pageIndex>
                                     <#list page.list as a>
                             <svg width="17" height="32" viewBox="0 0 17 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.148 16.296l14.42-14.574c.474-.478.573-1.154.22-1.509-.35-.355-1.02-.256-1.492.221L.459 15.43a1.568 1.568 0 0 0-.218.272.915.915 0 0 0 .023 1.263L14.88 31.734a.901.901 0 0 0 .636.266.895.895 0 0 0 .832-.562.917.917 0 0 0-.196-.992L2.15 16.294v.002z" fill="#E6E6E6"/></svg>
@@ -79,16 +80,16 @@
                             </a>
                                     </#list>
                                 </#if>
-                            </@_contentList>
+                            </@cms.contentList>
                         </div>
                         <div class="d-flex align-items-center ms-4">
-                            <@_contentList categoryId=content.categoryId startPublishDate=content.publishDate orderField='publishDate' orderType='asc' pageIndex=1 count=1><#list page.list as a>
+                            <@cms.contentList categoryId=content.categoryId startPublishDate=content.publishDate orderField='publishDate' orderType='asc' pageIndex=1 pageSize=1><#list page.list as a>
                             <a href="${a.url!}" class="d-flex flex-column align-items-end text-end me-3">
                                 <span class="fs-6p">下一篇</span>
                                 <span class="text-secondary text-opacity-50 fs-7">${a.title}</span>
                             </a>
                             <svg width="17" height="32" viewBox="0 0 17 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15.625 17.19L1.205 2.614C.73 2.138.632 1.462.985 1.107c.351-.355 1.02-.257 1.493.22l14.836 14.997c.085.084.158.176.218.271a.915.915 0 0 1-.023 1.264L2.894 32.627a.898.898 0 0 1-.981.197.9.9 0 0 1-.488-.493.919.919 0 0 1 .196-.991l14.003-14.152.001.001z" fill="#E6E6E6"/></svg>
-                            </#list></@_contentList>
+                            </#list></@cms.contentList>
                         </div>
                     </div>
                     <@include path="/ftl/comment.ftl"/><#-- 评论 -->
@@ -98,39 +99,40 @@
 						<b class="pb-2">相关推荐</b>
 					</header>
 					<div class="list-group list-group-flush article-list-side py-2 fs-7 mb-4">
-		<@_contentRelatedList contentId=content.id pageSize=10>
+		<@cms.contentRelatedList contentId=content.id pageSize=10>
 			<#list page.list as a>
 						<a href="${a.url!}" class="list-group-item" title="${a.title}">${a.title}</a>
 			</#list>
-		</@_contentRelatedList>
+		</@cms.contentRelatedList>
 		<#if content.tagIds?has_content>
-			<@_search tagId=content.tagIds count=10>
+			<@cms.search tagId=content.tagIds count=10>
 				<#list page.list as a>
 						<#if content.id!=a.id>
 							<a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect?id=${a.id}<#else>${a.url}</#if>" class="list-group-item" title="${a.title}">${a.title}</a>
 						</#if>
 				</#list>
-			</@_search>
+			</@cms.search>
 		<#else>
-				<@_contentList categoryId=content.categoryId endPublishDate=content.publishDate pageSize=10>
+				<@cms.contentList categoryId=content.categoryId endPublishDate=content.publishDate pageSize=10>
 					<#list page.list as a>
 						<#if !a?is_first>
 							<a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect?id=${a.id}<#else>${a.url}</#if>" class="list-group-item" title="${a.title}">${a.title}</a>
 						</#if>
 					</#list>
-				</@_contentList>
+				</@cms.contentList>
 		</#if>
 					</div>
-					<@_includePlace path="/17fbfe62-4fbe-4987-93d5-85383ebc5aa4.html"/> <#-- 最新投票 -->
-					<@_includePlace path="/3fefc879-2ef2-448d-909f-dc31849bcf29.html"/> <#-- 最新调查问卷 -->
+					<@tools.includePlace path="/17fbfe62-4fbe-4987-93d5-85383ebc5aa4.html"/> <#-- 最新投票 -->
+					<@tools.includePlace path="/3fefc879-2ef2-448d-909f-dc31849bcf29.html"/> <#-- 最新调查问卷 -->
 				</aside>
             </div>
         </div>
 
         <script>
             var itemString="itemType=content&itemId=${content.id}";
-        </script>
-        <@_includePlace path="/7f8bacb5-30ca-4641-b66f-987d447b1a85.html"/> <#-- footer -->
+		var templatePath='${.current_template_name?keep_after('/')}';
+		</script>
+        <@tools.includePlace path="/7f8bacb5-30ca-4641-b66f-987d447b1a85.html"/> <#-- footer -->
         <script src="${site.sitePath!}assets/ueditor/ueditor.parse.min.js"></script>
         <script>
         $.getJSON('${site.dynamicPath!}api/contentClick?id=${content.id}', function(data){
@@ -142,7 +144,7 @@
 				 $('#clicks').text(((data.clicks/10000)|0)+"万+");
             }
         });
-        uParse('#content',{rootPath: '${site.sitePath!}assets/ueditor'});
+        uParse('#content',{rootPath: '${site.sitePath!}assets/ueditor/'});
         </script>
     </body>
 </html>

@@ -1,5 +1,15 @@
-<h2 class="contentTitle">
-<#if path?has_content>
-    <a class="button" href="cmsTemplate/deletePlace?path=${(path?url)!}&navTabId=placeTemplate/list&_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.delete_directory'/>" target="ajaxTodo"><@t.page 'button.delete_directory'/></a>
-</#if>
-</h2>
+<div id="placeSearchBox">
+    <#if path?has_content>
+    <h2 class="contentTitle">
+        <a class="button" href="cmsTemplate/deletePlace?path=${(path?url)!}&navTabId=placeTemplate/list&_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.delete_directory'/>" target="ajaxTodo"><@t.page 'button.delete_directory'/></a>
+    </h2>
+    </#if>
+    <div class="pageFormContent" layoutH>
+        <form action="cmsTemplate/search.html?navTabId=placeTemplate/list&rel=placeSearchBox&returnUrl=placeTemplate/directory.html" autocomplete="off" onsubmit="return divSearch(this,'placeSearchBox');" method="post">
+            <input type="hidden" name="path" value="/include${path!}"/>
+            <label><@t.page 'template.content'/>:</label>
+            <input type="text" name="word"/>
+            <button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
+        </form>
+    </div>
+</div>

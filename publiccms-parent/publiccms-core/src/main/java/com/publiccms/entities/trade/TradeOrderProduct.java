@@ -27,23 +27,54 @@ public class TradeOrderProduct implements java.io.Serializable {
     */
     private static final long serialVersionUID = 1L;
 
+    /**
+     * id
+     */
     @GeneratorColumn(title = "ID")
     private Long id;
     @GeneratorColumn(title = "站点", condition = true)
     @JsonIgnore
     private short siteId;
+    /**
+     * order id<p>
+     * 订单id
+     */
     @GeneratorColumn(title = "订单", condition = true)
     private long orderId;
+    /**
+     * content id<p>
+     * 内容id
+     */
     @GeneratorColumn(title = "内容")
     private long contentId;
+    /**
+     * product id<p>
+     * 产品id
+     */
     @GeneratorColumn(title = "产品")
     private long productId;
+    /**
+     * price<p>
+     * 价格
+     */
     @GeneratorColumn(title = "价格")
     private BigDecimal price;
+    /**
+     * quantity<p>
+     * 数量
+     */
     @GeneratorColumn(title = "数量")
     private int quantity;
+    /**
+     * amount<p>
+     * 金额
+     */
     @GeneratorColumn(title = "金额")
     private BigDecimal amount;
+    /**
+     * remark<p>
+     * 备注
+     */
     @GeneratorColumn(title = "备注")
     private String remark;
 

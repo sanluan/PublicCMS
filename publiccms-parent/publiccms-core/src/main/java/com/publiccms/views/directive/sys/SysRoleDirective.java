@@ -14,10 +14,31 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.service.sys.SysRoleService;
 
 /**
- *
- * SysRoleDirective
- * 
- */
+*
+* sysRole 角色查询指令
+* <p>
+* 参数列表
+* <ul>
+* <li><code>id</code> 角色id，结果返回<code>object</code>
+* {@link com.publiccms.entities.sys.SysRole}
+* <li><code>ids</code>
+* 多个角色id，逗号或空格间隔，当id为空时生效，结果返回<code>map</code>(id,<code>object</code>)
+* </ul>
+* 使用示例
+* <p>
+* &lt;@sys.role id=1&gt;${object.name}&lt;/@sys.role&gt;
+* <p>
+* &lt;@sys.role ids='1,2,3'&gt;&lt;#list map as
+* k,v&gt;${k}:${v.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.role&gt;
+* 
+* <pre>
+&lt;script&gt;
+$.getJSON('//sys.publicsys.com/api/directive/sys/role?id=1&amp;appToken=接口访问授权Token', function(data){    
+  console.log(data.name);
+});
+&lt;/script&gt;
+* </pre>
+*/
 @Component
 public class SysRoleDirective extends AbstractTemplateDirective {
 

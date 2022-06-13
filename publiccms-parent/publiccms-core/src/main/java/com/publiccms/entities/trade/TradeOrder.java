@@ -32,45 +32,119 @@ public class TradeOrder implements java.io.Serializable {
     */
     private static final long serialVersionUID = 1L;
 
+    /**
+     * id
+     */
     @GeneratorColumn(title = "ID")
     private Long id;
     @GeneratorColumn(title = "站点", condition = true)
     @JsonIgnore
     private short siteId;
+    /**
+     * user id<p>
+     * 用户id
+     */
     @GeneratorColumn(title = "用户", condition = true)
     private long userId;
+    /**
+     * title<p>
+     * 标题
+     */
     @GeneratorColumn(title = "标题", condition = true, like = true)
     private String title;
+    /**
+     * amount<p>
+     * 金额
+     */
     @GeneratorColumn(title = "总金额")
     private BigDecimal amount;
+    /**
+     * payment id<p>
+     * 支付订单id
+     */
     @GeneratorColumn(title = "支付", condition = true)
     private Long paymentId;
+    /**
+     * address<p>
+     * 收货地址
+     */
     @GeneratorColumn(title = "收货地址")
     private String address;
+    /**
+     * addressee<p>
+     * 收件人
+     */
     @GeneratorColumn(title = "收件人")
     private String addressee;
+    /**
+     * telphone<p>
+     * 电话
+     */
     @GeneratorColumn(title = "电话")
     private String telephone;
+    /**
+     * ip
+     */
     @GeneratorColumn(title = "IP")
     private String ip;
+    /**
+     * remark<p>
+     * 备注
+     */
     @GeneratorColumn(title = "备注")
     private String remark;
+    /**
+     * status(0:pending,1:invalid,2:paid,3:refunded,4:close)<p>
+     * 状态(0:待处理,1:无效订单,2:已支付,3:已退款,4:已关闭)
+     */
     @GeneratorColumn(title = "订单状态", condition = true)
     private int status;
+    /**
+     * confirmed<p>
+     * 是否确认
+     */
     @GeneratorColumn(title = "是否确认", condition = true)
     private boolean confirmed;
+    /**
+     * processed<p>
+     * 是否处理
+     */
     @GeneratorColumn(title = "是否处理", condition = true)
     private boolean processed;
+    /**
+     * process user id<p>
+     * 处理用户id
+     */
     @GeneratorColumn(title = "处理用户")
     private Long processUserId;
+    /**
+     * process info<p>
+     * 处理信息
+     */
     @GeneratorColumn(title = "处理信息")
     private String processInfo;
+    /**
+     * update date<p>
+     * 更新日期
+     */
     @GeneratorColumn(title = "更新日期")
     private Date updateDate;
+    /**
+     * create date<p>
+     * 创建日期
+     */
     @GeneratorColumn(title = "创建日期", order = true)
     private Date createDate;
+    /**
+     * process date<p>
+     * 处理日期
+     */
     @GeneratorColumn(title = "处理日期")
     private Date processDate;
+    /**
+     * payment date<p>
+     * 付款日期
+     */
     @GeneratorColumn(title = "付款日期")
     private Date paymentDate;
 

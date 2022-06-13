@@ -29,48 +29,90 @@ public class LogUpload implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
+    /**
+     * id
+     */
     @GeneratorColumn(title = "ID")
     private Long id;
     @GeneratorColumn(title = "站点", condition = true)
     @JsonIgnore
     private short siteId;
+    /**
+     * user id<p>
+     * 用户id
+     */
     @GeneratorColumn(title = "用户", condition = true)
     private long userId;
+    /**
+     * operate channel<p>
+     * 操作渠道
+     */
     @GeneratorColumn(title = "渠道", condition = true)
     private String channel;
+    /**
+     * original name<p>
+     * 原文件名
+     */
     @GeneratorColumn(title = "原文件名", condition = true, like = true)
     private String originalName;
+    /**
+     * file type<p>
+     * 文件类型
+     */
     @GeneratorColumn(title = "文件类型", condition = true)
     private String fileType;
+    /**
+     * file size<p>
+     * 文件大小
+     */
     @GeneratorColumn(title = "文件大小", order = true)
     private long fileSize;
+    /**
+     * image width<p>
+     * 图片宽度
+     */
     @GeneratorColumn(title = "宽度")
     private Integer width;
+    /**
+     * image height<p>
+     * 图片高度
+     */
     @GeneratorColumn(title = "高度")
     private Integer height;
+    /**
+     * ip
+     */
     @GeneratorColumn(title = "IP")
     private String ip;
+    /**
+     * upload date<p>
+     * 上传日期
+     */
     @GeneratorColumn(title = "操作日期", order = true)
     private Date createDate;
+    /**
+     * file path<p>
+     * 文件路径
+     */
     @GeneratorColumn(title = "文件路径", condition = true, like = true)
-    private String filepath;
+    private String filePath;
 
     public LogUpload() {
     }
 
     public LogUpload(short siteId, long userId, String channel, String fileType, long fileSize, Date createDate,
-            String filepath) {
+            String filePath) {
         this.siteId = siteId;
         this.userId = userId;
         this.channel = channel;
         this.fileType = fileType;
         this.fileSize = fileSize;
         this.createDate = createDate;
-        this.filepath = filepath;
+        this.filePath = filePath;
     }
 
     public LogUpload(short siteId, long userId, String channel, String originalName, String fileType, long fileSize,
-            Integer width, Integer height, String ip, Date createDate, String filepath) {
+            Integer width, Integer height, String ip, Date createDate, String filePath) {
         this.siteId = siteId;
         this.userId = userId;
         this.channel = channel;
@@ -81,7 +123,7 @@ public class LogUpload implements java.io.Serializable {
         this.height = height;
         this.ip = ip;
         this.createDate = createDate;
-        this.filepath = filepath;
+        this.filePath = filePath;
     }
 
     @Id
@@ -189,11 +231,11 @@ public class LogUpload implements java.io.Serializable {
 
     @Column(name = "file_path", nullable = false, length = 500)
     public String getFilePath() {
-        return this.filepath;
+        return this.filePath;
     }
 
-    public void setFilePath(String filepath) {
-        this.filepath = filepath;
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
     }
 
 }

@@ -180,7 +180,7 @@ public class CmsContent implements java.io.Serializable {
     private String description;
     /**
      * tag ids<p>
-     * 标签id
+     * 多个标签id
      */
     @GeneratorColumn(title = "标签")
     @FullTextField(analyzer = AnalyzerNames.WHITESPACE)

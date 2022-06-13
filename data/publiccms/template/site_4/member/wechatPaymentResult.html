@@ -22,13 +22,17 @@
             <p class="text-center">使用微信扫描</p>
             <p class="text-center"><a href="${returnUrl!site.dynamicPath!}">返回首页</a></p>
         </div>
-
+		
 		<script src="${site.sitePath}assets/js/jquery-1.12.4.min.js"></script>
         <script src="${site.dynamicPath!}resource/js/jquery.qrcode.min.js"></script>
         <script>
             $('.qr').qrcode({width: 200,height: 200,text: "${code_url!}"});
         </script>
+		<script>
+		var templatePath='${.current_template_name?keep_after('/')}';
+		</script>
 		<script src="${site.sitePath}assets/js/cms.analytics.js"></script>
+		<script src="${site.sitePath}assets/js/cms.diy.js"></script>
 		<script>    
 			var ca = cmsAnalytics();
 			var url='${site.dynamicPath}api/visit/record';

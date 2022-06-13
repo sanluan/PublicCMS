@@ -24,7 +24,7 @@ public class SysUserTokenListDirective extends AbstractTemplateDirective {
     public void execute(RenderHandler handler) throws IOException, Exception {
         PageHandler page = service.getPage(getSite(handler).getId(), getUserId(handler, "userId"), handler.getString("channel"),
                 handler.getString("orderField"), handler.getString("orderType"), handler.getInteger("pageIndex", 1),
-                handler.getInteger("pageSize", 30));
+                handler.getInteger("pageSize", handler.getInteger("count", 30)));
         handler.put("page", page).render();
     }
 

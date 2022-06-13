@@ -16,8 +16,16 @@ public class SysModuleLangId implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
+    /**
+     * module id<p>
+     * 模块id
+     */
     @GeneratorColumn(title = "模块", condition = true)
     private String moduleId;
+    /**
+     * lang<p>
+     * 语言
+     */
     @GeneratorColumn(title = "语言", condition = true)
     private String lang;
 

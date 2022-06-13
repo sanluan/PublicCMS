@@ -1,7 +1,7 @@
 <#assign attribute=getCategoryAttribute(category.id)/>
-<@_category id=category.parentId>
+<@cms.category id=category.parentId>
 <#assign parent=object/>
-</@_category>
+</@cms.category>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -10,32 +10,32 @@
 	<title>${(attribute.title)!} ${(category.name)!} - ${site.name!}</title>
 	<meta name="keywords" content="${(attribute.keyworks)!}" />
 	<meta name="description" content="${(attribute.description)!}" />
-	<@_includePlace path="/194ca327-6b34-431d-a2d2-90f94b25e950.html"/> <#-- Head META -->
+	<@tools.includePlace path="/194ca327-6b34-431d-a2d2-90f94b25e950.html"/> <#-- Head META -->
 </head>
 <body>
-	<@_includePlace path="/0dff168a-bc70-40d3-bf8f-c209dd598e5b.html"/> <#-- Header -->
+	<@tools.includePlace path="/0dff168a-bc70-40d3-bf8f-c209dd598e5b.html"/> <#-- Header -->
 
 	<div class="banner" style="background:url(${site.sitePath!}assets/images/banner.gif) no-repeat top;"></div>
 
-	<@_includePlace path="/b7da840c-9f97-486c-af7c-7ff114b60c26.html"/> <#-- 中文导航 -->
+	<@tools.includePlace path="/b7da840c-9f97-486c-af7c-7ff114b60c26.html"/> <#-- 中文导航 -->
 
 	<main class="container">
 		<div class="left">
 			<h2><div><strong>${parent.name!}</strong></div></h2>
 			<ul class="left-nav">
-		<@_categoryList parentId=category.parentId>
+		<@cms.categoryList parentId=category.parentId>
 			<#list page.list as a>
 				<li><a href="${a.url!}">${a.name}</a></li>
 			</#list>
-		</@_categoryList>
+		</@cms.categoryList>
 			</ul>
 
 		<h2><div><strong>相关链接</strong></div></h2>
 		<select class="friend-link" onchange="javascript:window.open(this.options[this.selectedIndex].value)">
 			<option value="">友情链接</option>
-			<@_includePlace path="/505ddbed-f6ff-4a53-b5a8-0b2d7479a2ec.html"/> <#-- 友情链接 -->
+			<@tools.includePlace path="/505ddbed-f6ff-4a53-b5a8-0b2d7479a2ec.html"/> <#-- 友情链接 -->
 		</select>
-		<@_includePlace path="/e2ef0223-ddd3-4a95-bc65-c7eb796c911a.html"/> <#-- 内部链接 -->
+		<@tools.includePlace path="/e2ef0223-ddd3-4a95-bc65-c7eb796c911a.html"/> <#-- 内部链接 -->
 		</div>
 		<div class="breadcrumb">
 			<h3><span>当前位置：<a href="${base!}">首页</a> > <a href="${(category.url)!}">${category.name}</a></span>${category.name}</h3>
@@ -47,7 +47,7 @@
 	<script>
     var itemString="itemType=category&itemId=${category.id}";
     </script>
-	<@_includePlace path="/df408ca8-9f6d-4c65-b4ca-1eea34955834.html"/> <#-- Footer -->
+	<@tools.includePlace path="/df408ca8-9f6d-4c65-b4ca-1eea34955834.html"/> <#-- Footer -->
 	<script>
 			$('a[data-id=${parent.id}]').addClass('selected');
 	</script>

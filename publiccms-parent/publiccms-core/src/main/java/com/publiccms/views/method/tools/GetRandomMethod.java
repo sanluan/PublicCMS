@@ -8,6 +8,7 @@ import com.publiccms.common.base.BaseMethod;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 
+import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 
 /**
@@ -18,9 +19,8 @@ import freemarker.template.TemplateModelException;
 @Component
 public class GetRandomMethod extends BaseMethod {
 
-    @SuppressWarnings("unchecked")
     @Override
-    public Object exec(@SuppressWarnings("rawtypes") List arguments) throws TemplateModelException {
+    public Object execute(List<TemplateModel> arguments) throws TemplateModelException {
         Integer max = getInteger(0, arguments);
         if (CommonUtils.notEmpty(max)) {
             return CommonConstants.random.nextInt(max);

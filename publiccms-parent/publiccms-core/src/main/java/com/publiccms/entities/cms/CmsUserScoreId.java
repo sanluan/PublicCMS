@@ -16,10 +16,22 @@ public class CmsUserScoreId implements java.io.Serializable {
     *
     */
     private static final long serialVersionUID = 1L;
+    /**
+     * user id<p>
+     * 用户id
+     */
     @GeneratorColumn(title = "用户", condition = true)
     private long userId;
+    /**
+     * item type<p>
+     * 项目类型
+     */
     @GeneratorColumn(title = "项目类型", condition = true)
     private String itemType;
+    /**
+     * item id<p>
+     * 项目id
+     */
     @GeneratorColumn(title = "项目", condition = true)
     private long itemId;
 

@@ -17,10 +17,30 @@ import com.publiccms.entities.trade.TradeRefund;
 import com.publiccms.logic.service.trade.TradeRefundService;
 
 /**
- *
- * TradeRefundDirective
- * 
- */
+*
+* tradeRefund 退款查询指令
+* <p>
+* 参数列表
+* <ul>
+* <li><code>id</code> 退款id，结果返回<code>object</code>
+* {@link com.publiccms.entities.trade.TradeRefund}
+* <li><code>ids</code> 多个退款id，逗号或空格间隔，当id为空时生效，结果返回<code>map</code>(id,<code>object</code>)
+* </ul>
+* 使用示例
+* <p>
+* &lt;@trade.refund id=1&gt;${object.amount}&lt;/@trade.refund&gt;
+* <p>
+* &lt;@trade.refund ids=1,2,3&gt;&lt;#list map as
+* k,v&gt;${k}:${v.amount}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@trade.refund&gt;
+* 
+* <pre>
+ &lt;script&gt;
+  $.getJSON('//cms.publiccms.com/api/directive/trade/refund?id=1&amp;appToken=接口访问授权Token', function(data){    
+    console.log(data.amount);
+  });
+  &lt;/script&gt;
+* </pre>
+*/
 @Component
 public class TradeRefundDirective extends AbstractTemplateDirective {
 

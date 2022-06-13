@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.BaseMethod;
 
+import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 
 /**
@@ -18,9 +19,8 @@ import freemarker.template.TemplateModelException;
 @Component
 public class GetKeywordsMethod extends BaseMethod {
 
-    @SuppressWarnings("unchecked")
     @Override
-    public Object exec(@SuppressWarnings("rawtypes") List arguments) throws TemplateModelException {
+    public Object execute(List<TemplateModel> arguments) throws TemplateModelException {
         return service.getToken(getString(0, arguments));
     }
 

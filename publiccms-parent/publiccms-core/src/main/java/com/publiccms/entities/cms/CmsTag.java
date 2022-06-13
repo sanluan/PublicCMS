@@ -25,15 +25,30 @@ public class CmsTag implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
+    /**
+     * id
+     */
     @GeneratorColumn(title = "ID")
     private Long id;
     @GeneratorColumn(title = "站点", condition = true)
     @JsonIgnore
     private short siteId;
+    /**
+     * name<p>
+     * 名称
+     */
     @GeneratorColumn(title = "名称", condition = true, like = true)
     private String name;
+    /**
+     * type id<p>
+     * 类型id
+     */
     @GeneratorColumn(title = "类型", condition = true)
     private Integer typeId;
+    /**
+     * search count<p>
+     * 搜索次数
+     */
     @GeneratorColumn(title = "搜索次数", order = true)
     private int searchCount;
 

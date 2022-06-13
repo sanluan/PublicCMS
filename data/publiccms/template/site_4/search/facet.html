@@ -4,10 +4,10 @@
         <title>高级搜索 ${(word)!} - PublicCMS</title>
         <meta name="keywords" content="高级搜索,分面搜索,智能搜索"/>
         <meta name="description" content="高级搜索  ${word!}"/>
-        <@_includePlace path="/8ddab9ba-a8aa-4745-86c6-66bf1c2c976c.html"/> <#-- header -->
+        <@tools.includePlace path="/8ddab9ba-a8aa-4745-86c6-66bf1c2c976c.html"/> <#-- header -->
     </head>
     <body>
-        <@_includePlace path="/c32a4f4a-ff5d-49cf-bb59-5d9784539174.html"/> <#-- 导航 -->
+        <@tools.includePlace path="/c32a4f4a-ff5d-49cf-bb59-5d9784539174.html"/> <#-- 导航 -->
         <div class="banner-l3 position-relative d-flex align-items-center justify-content-center" style="background:#22407c url(${site.sitePath}assets/img/banner-l3-bg-1.png) 50% 50% no-repeat;">
             <div class="container text-center position-relative py-3 py-md-4 text-white">
                 <div class="breadcrumbs fs-7 text-white d-inline-flex align-items-center text-opacity-50">
@@ -43,7 +43,7 @@
                     </form>
 
 <#if word?has_content || tagIds?has_content || dictionaryValues?has_content>
-    <@_facetSearch word=word tagId=tagIds categoryId=categoryId dictionaryValues=dictionaryValues modelId=modelId phrase=phrase highlight=true  pageIndex=pageIndex pageSize=10>
+    <@cms.facetSearch word=word tagId=tagIds categoryId=categoryId dictionaryValues=dictionaryValues modelId=modelId phrase=phrase highlight=true  pageIndex=pageIndex pageSize=10>
             <#if page.totalCount gt 0>
                          <@import path="/ftl/tools.ftl" namespace="t"/>
 
@@ -52,7 +52,7 @@
                             <div class="d-flex align-items-center my-3">
                                 <b class="flex-shrink-0">分类：</b>
                                     <#list page.facetMap.categoryId?keys as k><@t.merge 'categoryIds' k/></#list>
-                                    <@_category ids=(t.categoryIds)!><#assign categoryMap=map/></@_category>
+                                    <@cms.category ids=(t.categoryIds)!><#assign categoryMap=map/></@cms.category>
                                 <ul class="nav nav-pills nav-facet">
                                      <#list page.facetMap.categoryId?keys as k>
                                         <#if k?is_first && categoryMap[k]?has_content><#assign firstCategory=categoryMap[k]/></#if>
@@ -68,7 +68,7 @@
                             <div class="d-flex align-items-center my-3">
                                 <b class="flex-shrink-0">模型：</b>
                                     <#list page.facetMap.modelId?keys as k><@t.merge 'modelIds' k/></#list>
-                                    <@_model ids=(t.modelIds)!><#assign modelMap=map!/></@_model>
+                                    <@cms.model ids=(t.modelIds)!><#assign modelMap=map!/></@cms.model>
                                 <ul class="nav nav-pills nav-facet">
                                     <#list page.facetMap.modelId?keys as k>
                                         <#if k?is_first><#assign firstModel=modelMap[k]/></#if>
@@ -80,7 +80,7 @@
                             </div>
                             </#if>
 
-                            <@_tag ids=tagIds>
+                            <@cms.tag ids=tagIds>
                                 <#if map?has_content>
                                     <div class="d-flex align-items-center my-3">
                                         <b class="flex-shrink-0">标签：</b>
@@ -93,34 +93,34 @@
                                         </ul>
                                     </div>
                                 </#if>
-                            </@_tag>
+                            </@cms.tag>
 
                         <#macro dictionarySearch extendList>
                             <#list extendList as extend>
                                 <div class="d-flex align-items-center my-3">
-                                    <@_dictionary id=extend.dictionaryId>
+                                    <@cms.dictionary id=extend.dictionaryId>
                                     <b class="flex-shrink-0">${object.name}：</b>
                                     <ul class="nav nav-pills nav-facet">
                                         <li class="nav-item">
                                             <a  class="nav-link${(!dictionaryValues?has_content)?then(' active','')?no_esc}" href="javascript:search('dictionaryValues','');">全部</a>
                                             </li>
-                                        <@_dictionaryDataList dictionaryId=object.id.id>
+                                        <@cms.dictionaryDataList dictionaryId=object.id.id>
                                             <#list list as d>
                                             <li class="nav-item">
                                                 <a class="nav-link<#if (dictionaryValues?has_content && dictionaryValues?seq_contains(extend.id.code+'_'+d.id.value))> active</#if>"  href="javascript:search('dictionaryValues','${extend.id.code}_${d.id.value!}');">${d.text}</a>
                                             </li>
                                             </#list>
-                                        </@_dictionaryDataList>
+                                        </@cms.dictionaryDataList>
                                     </ul>
-                                    </@_dictionary>
+                                    </@cms.dictionary>
                                 </div>
                             </#list>
                         </#macro>
 
                         <#if (firstCategory.extendId)?has_content>
-                            <@_sysExtendFieldList extendId=firstCategory.extendId inputType='dictionary' searchable=true>
+                            <@sys.extendFieldList extendId=firstCategory.extendId inputType='dictionary' searchable=true>
                                 <@dictionarySearch list/>
-                            </@_sysExtendFieldList>
+                            </@sys.extendFieldList>
                         </#if>
                         <#if (firstModel.extendList)?has_content>
                             <@dictionarySearch firstModel.extendList/>
@@ -191,13 +191,15 @@
                         </li>
                     </ul>
         </#if>
-     </@_facetSearch>
+     </@cms.facetSearch>
 </#if>
                 </div>
             </div>
         </div>
-
-        <@_includePlace path="/7f8bacb5-30ca-4641-b66f-987d447b1a85.html"/> <#-- footer -->
+		<script>
+			var templatePath='${.current_template_name?keep_after('/')}';
+		</script>
+        <@tools.includePlace path="/7f8bacb5-30ca-4641-b66f-987d447b1a85.html"/> <#-- footer -->
         <script>
         function search(name,value){
             var $form = $('form[name=search]');

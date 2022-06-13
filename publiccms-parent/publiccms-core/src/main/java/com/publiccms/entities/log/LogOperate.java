@@ -29,23 +29,53 @@ public class LogOperate implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
+    /**
+     * id
+     */
     @GeneratorColumn(title = "ID")
     private Long id;
     @GeneratorColumn(title = "站点", condition = true)
     @JsonIgnore
     private short siteId;
+    /**
+     * user id<p>
+     * 用户id
+     */
     @GeneratorColumn(title = "用户", condition = true)
     private Long userId;
+    /**
+     * dept id<p>
+     * 部门id
+     */
     @GeneratorColumn(title = "部门", condition = true)
     private Integer deptId;
+    /**
+     * channel<p>
+     * 渠道
+     */
     @GeneratorColumn(title = "渠道", condition = true)
     private String channel;
+    /**
+     * operate channel<p>
+     * 操作渠道
+     */
     @GeneratorColumn(title = "操作", condition = true)
     private String operate;
+    /**
+     * ip
+     */
     @GeneratorColumn(title = "IP", condition = true)
     private String ip;
+    /**
+     * operate date<p>
+     * 操作日期
+     */
     @GeneratorColumn(title = "操作日期", condition = true, order = true)
     private Date createDate;
+    /**
+     * content<p>
+     * 内容
+     */
     @GeneratorColumn(title = "内容", condition = true, like = true)
     private String content;
 

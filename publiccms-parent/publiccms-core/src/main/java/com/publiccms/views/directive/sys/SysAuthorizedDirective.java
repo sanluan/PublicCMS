@@ -18,8 +18,32 @@ import com.publiccms.logic.service.sys.SysRoleService;
 
 /**
  *
- * SysAuthorizedDirective
+ * sysAuthorized 角色url授权查询指令
+ * <p>
+ * 参数列表
+ * <ul>
+ * <li><code>roleIds</code> 多个角色id
+ * <li><code>url</code>
+ * url,roleIds、url都存在时，结果返回<code>true</code>或<code>false</code>，表示这些角色是否拥有该url的权限
+ * <li><code>urls</code>
+ * 多个url，当roleIds存在，且url为空时生效，结果返回<code>map</code>(url,<code>true</code>或<code>false</code>)
+ * </ul>
+ * 使用示例
+ * <p>
+ * &lt;@sys.authorized roleIds='1,2,3'
+ * url='cmsContent/list'&gt;${object}&lt;/@sys.authorized&gt;
+ * <p>
+ * &lt;@sys.authorized roleIds='1,2,3'
+ * urls='cmsContent/list,cmsCategory/list'&gt;&lt;#list map as
+ * k,v&gt;${k}:${v}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.authorized&gt;
  * 
+ * <pre>
+&lt;script&gt;
+ $.getJSON('//cms.publiccms.com/api/directive/sys/authorized?roleIds=1,2,3&amp;url=cmsContent/list&amp;appToken=接口访问授权Token', function(data){    
+   console.log(data);
+ });
+ &lt;/script&gt;
+ * </pre>
  */
 @Component
 public class SysAuthorizedDirective extends AbstractTemplateDirective {

@@ -94,23 +94,17 @@ public class CustomXHTMLMapper extends XHTMLMapper {
     protected void visitRun(XWPFRun run, boolean pageNumber, String url, Object paragraphContainer) throws Exception {
         if (run.getParent() instanceof XWPFParagraph) {
             this.currentParagraph = (XWPFParagraph) run.getParent();
+            List<CSSStyle> styleList = createStyleList(currentParagraph.getStyleID());
+            CTRPr rPr = run.getCTR().getRPr();
+            CSSStyle cssStyle = getStylesDocument().createCSSStyle(rPr);
+            this.currentRunAttributes = createStyleAttribute(cssStyle, styleList);
         }
-
-        @SuppressWarnings("deprecation")
-        XWPFParagraph paragraph = run.getParagraph();
-        List<CSSStyle> styleList = createStyleList(paragraph.getStyleID());
-        CTRPr rPr = run.getCTR().getRPr();
-        CSSStyle cssStyle = getStylesDocument().createCSSStyle(rPr);
-        this.currentRunAttributes = createStyleAttribute(cssStyle, styleList);
-
         if (url != null) {
             AttributesImpl hyperlinkAttributes = new AttributesImpl();
             SAXHelper.addAttrValue(hyperlinkAttributes, HREF_ATTR, url);
             startElement(A_ELEMENT, hyperlinkAttributes);
         }
-
         super.visitRun(run, pageNumber, url, paragraphContainer);
-
         if (url != null) {
             characters(" ");
             endElement(A_ELEMENT);

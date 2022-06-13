@@ -6,8 +6,8 @@ import java.util.function.Supplier;
 import org.apache.http.client.ClientProtocolException;
 
 import com.publiccms.common.api.Container;
-import com.publiccms.view.pojo.oauth.OauthAccess;
-import com.publiccms.view.pojo.oauth.OauthUser;
+import com.publiccms.views.pojo.oauth.OauthAccess;
+import com.publiccms.views.pojo.oauth.OauthUser;
 
 /**
  *

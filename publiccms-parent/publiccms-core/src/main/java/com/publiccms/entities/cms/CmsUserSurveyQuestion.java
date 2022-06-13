@@ -14,6 +14,7 @@ import jakarta.persistence.TemporalType;
 
 import org.hibernate.annotations.DynamicUpdate;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.publiccms.common.generator.annotation.GeneratorColumn;
 
 /**
@@ -29,16 +30,36 @@ public class CmsUserSurveyQuestion implements java.io.Serializable {
     */
     private static final long serialVersionUID = 1L;
 
+    /**
+     * id
+     */
     @GeneratorColumn(title = "ID")
     private CmsUserSurveyQuestionId id;
+    @JsonIgnore
     @GeneratorColumn(title = "站点", condition = true)
     private short siteId;
+    /**
+     * survey id<p>
+     * 问卷调查id
+     */
     @GeneratorColumn(title = "问卷", condition = true)
     private long surveyId;
+    /**
+     * answer<p>
+     * 答案
+     */
     @GeneratorColumn(title = "答案")
     private String answer;
+    /**
+     * score<p>
+     * 分数
+     */
     @GeneratorColumn(title = "分数", order = true)
     private Integer score;
+    /**
+     * create date<p>
+     * 创建日期
+     */
     @GeneratorColumn(title = "创建日期", order = true)
     private Date createDate;
 

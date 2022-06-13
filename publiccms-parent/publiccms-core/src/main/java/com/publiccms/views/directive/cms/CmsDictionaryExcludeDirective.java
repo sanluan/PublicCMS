@@ -25,7 +25,7 @@ import com.publiccms.logic.service.cms.CmsDictionaryExcludeService;
  * <li><code>excludeDictionaryId</code>
  * 排除的字典，结果返回<code>object</code>{@link com.publiccms.entities.cms.CmsDictionaryExclude}
  * <li><code>excludeDictionaryIds</code>
- * 多个排除的字典，逗号或空格间隔，当excludeDictionaryId为空时生效，结果返回<code>map</code>(id,数据字典排除规则){@link com.publiccms.entities.cms.CmsDictionaryExclude}
+ * 多个排除的字典，逗号或空格间隔，当excludeDictionaryId为空时生效，结果返回<code>map</code>(id,<code>object</code>)
  * </ul>
  * 使用示例
  * <p>
@@ -34,7 +34,7 @@ import com.publiccms.logic.service.cms.CmsDictionaryExcludeService;
  * <p>
  * &lt;@cms.dictionaryExclude dictionaryId='data'
  * excludeDictionaryIds='data1,data2'&gt;&lt;#list map as
- * k,v&gt;${v.id.excludeDictionaryId}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.dictionaryExclude&gt;
+ * k,v&gt;${k}:${v.id.excludeDictionaryId}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.dictionaryExclude&gt;
  * 
  * <pre>
 *  &lt;script&gt;

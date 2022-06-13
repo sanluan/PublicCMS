@@ -27,12 +27,26 @@ public class CmsUserVote implements java.io.Serializable {
     *
     */
     private static final long serialVersionUID = 1L;
+    /**
+     * id
+     */
     @GeneratorColumn(title = "ID")
     private CmsUserVoteId id;
+    /**
+     * item id<p>
+     * 选项id
+     */
     @GeneratorColumn(title = "选项")
     private long itemId;
+    /**
+     * ip
+     */
     @GeneratorColumn(title = "IP")
     private String ip;
+    /**
+     * create date<p>
+     * 创建日期
+     */
     @GeneratorColumn(title = "创建日期", order = true)
     private Date createDate;
 

@@ -14,10 +14,31 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.service.cms.CmsTagTypeService;
 
 /**
- *
- * CmsTagTypeDirective
- * 
- */
+*
+* tagType 标签类型查询指令
+* <p>
+* 参数列表
+* <ul>
+* <li><code>id</code> 标签类型id，结果返回<code>object</code>
+* {@link com.publiccms.entities.cms.CmsTagType}
+* <li><code>ids</code>
+* 多个标签类型id，逗号或空格间隔，当id为空时生效，结果返回<code>map</code>(id,<code>object</code>)
+* </ul>
+* 使用示例
+* <p>
+* &lt;@cms.tagType id=1&gt;${object.name}&lt;/@cms.tagType&gt;
+* <p>
+* &lt;@cms.tagType ids='1,2,3'&gt;&lt;#list map as
+* k,v&gt;${k}:${v.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.tagType&gt;
+* 
+* <pre>
+&lt;script&gt;
+$.getJSON('//cms.publiccms.com/api/directive/cms/tagType?id=1', function(data){    
+  console.log(data.name);
+});
+&lt;/script&gt;
+* </pre>
+*/
 @Component
 public class CmsTagTypeDirective extends AbstractTemplateDirective {
 

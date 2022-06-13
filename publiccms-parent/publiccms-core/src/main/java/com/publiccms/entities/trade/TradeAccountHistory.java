@@ -30,27 +30,66 @@ public class TradeAccountHistory implements java.io.Serializable {
     */
     private static final long serialVersionUID = 1L;
 
+    /**
+     * id
+     */
     @GeneratorColumn(title = "ID")
     private Long id;
     @GeneratorColumn(title = "站点", condition = true)
     @JsonIgnore
     private short siteId;
+    /**
+     * serial number<p>
+     * 流水号
+     */
     @GeneratorColumn(title = "流水号")
     private String serialNumber;
+    /**
+     * account id<p>
+     * 账户id
+     */
     @GeneratorColumn(title = "账户", condition = true)
     private long accountId;
+    /**
+     * operate user id<p>
+     * 操作用户id
+     */
     @GeneratorColumn(title = "用户", condition = true)
     private Long userId;
+    /**
+     * amount change<p>
+     * 金额变动
+     */
     @GeneratorColumn(title = "变动")
     private BigDecimal amountChange;
+    /**
+     * abmount<p>
+     * 金额
+     */
     @GeneratorColumn(title = "金额")
     private BigDecimal amount;
+    /**
+     * balance<p>
+     * 余额
+     */
     @GeneratorColumn(title = "余额")
     private BigDecimal balance;
+    /**
+     * status(0:pend,1:pay,2:charge,3:refund)<p>
+     * 状态(0:待处理,1:支付,2:充值,3:退款)
+     */
     @GeneratorColumn(title = "状态", condition = true)
     private int status;
+    /**
+     * description<p>
+     * 描述
+     */
     @GeneratorColumn(title = "描述")
     private String description;
+    /**
+     * create date<p>
+     * 创建日期
+     */
     @GeneratorColumn(title = "创建日期", condition = true, order = true)
     private Date createDate;
 

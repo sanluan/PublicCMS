@@ -1,8 +1,12 @@
 package com.publiccms.controller.web.cms;
 
+import java.io.IOException;
 import java.util.Map;
 
 import jakarta.annotation.Resource;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +29,8 @@ import com.publiccms.logic.service.cms.CmsCommentService;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.cms.CmsUserScoreService;
 
+import freemarker.template.TemplateException;
+
 /**
  * 
  * ScoreController 评分
@@ -33,6 +39,7 @@ import com.publiccms.logic.service.cms.CmsUserScoreService;
 @Controller
 @RequestMapping("score")
 public class ScoreController {
+    protected final Log log = LogFactory.getLog(getClass());
     @Resource
     protected ConfigComponent configComponent;
 
@@ -82,7 +89,7 @@ public class ScoreController {
                         scores = 1;
                     }
                     CmsContent content = contentService.updateScores(site.getId(), itemId, score ? 1 : -1,
-                            score ? scores : -scores);
+                            score ? scores : -entity.getScores());
                     if (null != content) {
                         if (score) {
                             entity = new CmsUserScore();
@@ -93,7 +100,12 @@ public class ScoreController {
                             service.delete(id);
                         }
                         if (needStatic) {
-                            templateComponent.createContentFile(site, content, null, null);
+                            try {
+                                templateComponent.createContentFile(site, content, null, null);
+                            } catch (IOException | TemplateException e) {
+                                log.error(e.getMessage(), e);
+                            }
+
                         }
                     } else if (!score) {
                         service.delete(id);
@@ -111,8 +123,12 @@ public class ScoreController {
                             service.delete(id);
                         }
                         if (needStatic) {
-                            templateComponent.createContentFile(site, contentService.getEntity(comment.getContentId()), null,
-                                    null);
+                            try {
+                                templateComponent.createContentFile(site, contentService.getEntity(comment.getContentId()), null,
+                                        null);
+                            } catch (IOException | TemplateException e) {
+                                log.error(e.getMessage(), e);
+                            }
                         }
                     } else if (!score) {
                         service.delete(id);

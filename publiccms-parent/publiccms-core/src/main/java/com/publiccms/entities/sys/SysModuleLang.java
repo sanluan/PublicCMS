@@ -21,8 +21,15 @@ public class SysModuleLang implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
+    /**
+     * id
+     */
     @GeneratorColumn(title = "ID")
     private SysModuleLangId id;
+    /**
+     * value<p>
+     * 值
+     */
     @GeneratorColumn(title = "值")
     private String value;
 

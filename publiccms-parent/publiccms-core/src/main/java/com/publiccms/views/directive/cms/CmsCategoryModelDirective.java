@@ -26,10 +26,9 @@ import com.publiccms.logic.service.cms.CmsCategoryModelService;
  * {@link com.publiccms.entities.cms.CmsCategoryModel}
  * <li><code>modelId</code> 内容模型id，当id为空时生效，结果返回<code>object</code>
  * <li><code>modelIds</code>
- * 多个内容模型id，当分类id存在，且内容模型id为空时生效，结果返回<code>map</code>(内容模型id,分类内容模型映射)
- * {@link com.publiccms.entities.cms.CmsCategoryModel}
+ * 多个内容模型id，当categoryId存在，且modelId为空时生效，结果返回<code>map</code>(内容模型id,<code>object</code>)
  * <li><code>categoryIds</code>
- * 多个分类id,当分类id不存在，且内容模型id存在时生效，结果返回<code>map</code>(分类id,分类内容模型映射)
+ * 多个分类id,当categoryId不存在，且modelId存在时生效，结果返回<code>map</code>(分类id,<code>object</code>)
  * </ul>
  * 使用示例
  * <p>
@@ -37,7 +36,7 @@ import com.publiccms.logic.service.cms.CmsCategoryModelService;
  * modelId='article'&gt;${object.templatePath}&lt;/@cms.categoryModel&gt;
  * <p>
  * &lt;@cms.categoryModel categoryIds=1,2,3 modelId='article'&gt;&lt;#list map as
- * k,v&gt;${v.templatePath}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.categoryModel&gt;
+ * k,v&gt;${k}:${v.templatePath}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.categoryModel&gt;
  * 
  * <pre>
   &lt;script&gt;

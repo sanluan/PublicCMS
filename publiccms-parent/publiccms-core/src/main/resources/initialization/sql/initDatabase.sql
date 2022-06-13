@@ -968,6 +968,7 @@ INSERT INTO `sys_module` VALUES ('template_list', 'cmsTemplate/list', 'cmsTempla
 INSERT INTO `sys_module` VALUES ('template_metadata', 'cmsTemplate/metadata', 'cmsTemplate/saveMetadata', NULL, 'template_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('template_place', 'placeTemplate/lookup', NULL, NULL, 'template_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('template_place_form', 'placeTemplate/form', NULL, NULL, 'template_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('template_search', 'cmsTemplate/search', 'cmsTemplate/replace', NULL, 'template_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('template_upload', 'cmsTemplate/upload', 'cmsTemplate/doUpload', NULL, 'template_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('template_website_file', 'cmsWebFile/lookup', NULL, NULL, 'template_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('trade_menu', NULL, NULL, 'icon-money', 'maintenance', 1, 4);
@@ -1593,6 +1594,9 @@ INSERT INTO `sys_module_lang` VALUES ('template_place', 'zh', '页面片段');
 INSERT INTO `sys_module_lang` VALUES ('template_place_form', 'en', 'Page fragment data contribute form');
 INSERT INTO `sys_module_lang` VALUES ('template_place_form', 'ja', 'ページフラグメント提出フォーム');
 INSERT INTO `sys_module_lang` VALUES ('template_place_form', 'zh', '页面片段投稿表单');
+INSERT INTO `sys_module_lang` VALUES ('template_search', 'en', 'Search');
+INSERT INTO `sys_module_lang` VALUES ('template_search', 'ja', '検索');
+INSERT INTO `sys_module_lang` VALUES ('template_search', 'zh', '搜索');
 INSERT INTO `sys_module_lang` VALUES ('template_upload', 'en', 'Upload template');
 INSERT INTO `sys_module_lang` VALUES ('template_upload', 'ja', 'テンプレートをアップロードする');
 INSERT INTO `sys_module_lang` VALUES ('template_upload', 'zh', '上传模板');

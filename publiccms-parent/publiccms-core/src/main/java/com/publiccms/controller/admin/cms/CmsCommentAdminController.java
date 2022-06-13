@@ -1,5 +1,6 @@
 package com.publiccms.controller.admin.cms;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.Map;
 import java.util.Set;
@@ -9,6 +10,8 @@ import java.util.Set;
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -37,6 +40,8 @@ import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * CmsCommentAdminController
@@ -45,6 +50,7 @@ import com.publiccms.logic.service.log.LogOperateService;
 @Controller
 @RequestMapping("cmsComment")
 public class CmsCommentAdminController {
+    protected final Log log = LogFactory.getLog(getClass());
     @Resource
     protected LogOperateService logOperateService;
     @Resource
@@ -112,7 +118,13 @@ public class CmsCommentAdminController {
         if (needStatic && CmsCommentService.STATUS_NORMAL == entity.getStatus()) {
             CmsContent content = contentService.getEntity(entity.getContentId());
             if (null != content && !content.isDisabled()) {
-                templateComponent.createContentFile(site, content, null, null);
+                try {
+                    templateComponent.createContentFile(site, content, null, null);
+                } catch (IOException | TemplateException e) {
+                    model.addAttribute(CommonConstants.ERROR, e.getMessage());
+                    log.error(e.getMessage(), e);
+                    return CommonConstants.TEMPLATE_ERROR;
+                }
             }
         }
         return CommonConstants.TEMPLATE_DONE;
@@ -123,18 +135,26 @@ public class CmsCommentAdminController {
      * @param admin
      * @param ids
      * @param request
+     * @param model
      * @return view name
      */
     @RequestMapping("check")
     @Csrf
-    public String check(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids, HttpServletRequest request) {
+    public String check(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids, HttpServletRequest request,
+            ModelMap model) {
         if (CommonUtils.notEmpty(ids)) {
             Set<CmsContent> contentSet = service.check(site.getId(), ids, admin.getId());
             Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
             boolean needStatic = ConfigComponent.getBoolean(config.get(SiteConfigComponent.CONFIG_STATIC_AFTER_COMMENT), false);
             if (needStatic) {
-                for (CmsContent content : contentSet) {
-                    templateComponent.createContentFile(site, content, null, null);// 静态化
+                try {
+                    for (CmsContent content : contentSet) {
+                        templateComponent.createContentFile(site, content, null, null);
+                    }
+                } catch (IOException | TemplateException e) {
+                    model.addAttribute(CommonConstants.ERROR, e.getMessage());
+                    log.error(e.getMessage(), e);
+                    return CommonConstants.TEMPLATE_ERROR;
                 }
             }
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
@@ -149,19 +169,26 @@ public class CmsCommentAdminController {
      * @param admin
      * @param ids
      * @param request
+     * @param model
      * @return view name
      */
     @RequestMapping("uncheck")
     @Csrf
-    public String uncheck(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids,
-            HttpServletRequest request) {
+    public String uncheck(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids, HttpServletRequest request,
+            ModelMap model) {
         if (CommonUtils.notEmpty(ids)) {
             Set<CmsContent> contentSet = service.uncheck(site.getId(), ids);
             Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
             boolean needStatic = ConfigComponent.getBoolean(config.get(SiteConfigComponent.CONFIG_STATIC_AFTER_COMMENT), false);
             if (needStatic) {
-                for (CmsContent content : contentSet) {
-                    templateComponent.createContentFile(site, content, null, null);// 静态化
+                try {
+                    for (CmsContent content : contentSet) {
+                        templateComponent.createContentFile(site, content, null, null);// 静态化
+                    }
+                } catch (IOException | TemplateException e) {
+                    model.addAttribute(CommonConstants.ERROR, e.getMessage());
+                    log.error(e.getMessage(), e);
+                    return CommonConstants.TEMPLATE_ERROR;
                 }
             }
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
@@ -176,19 +203,26 @@ public class CmsCommentAdminController {
      * @param admin
      * @param ids
      * @param request
+     * @param model
      * @return operate result
      */
     @RequestMapping("delete")
     @Csrf
-    public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids,
-            HttpServletRequest request) {
+    public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids, HttpServletRequest request,
+            ModelMap model) {
         if (CommonUtils.notEmpty(ids)) {
             Set<CmsContent> contentSet = service.delete(site.getId(), ids);
             Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
             boolean needStatic = ConfigComponent.getBoolean(config.get(SiteConfigComponent.CONFIG_STATIC_AFTER_COMMENT), false);
             if (needStatic) {
-                for (CmsContent content : contentSet) {
-                    templateComponent.createContentFile(site, content, null, null);// 静态化
+                try {
+                    for (CmsContent content : contentSet) {
+                        templateComponent.createContentFile(site, content, null, null);// 静态化
+                    }
+                } catch (IOException | TemplateException e) {
+                    model.addAttribute(CommonConstants.ERROR, e.getMessage());
+                    log.error(e.getMessage(), e);
+                    return CommonConstants.TEMPLATE_ERROR;
                 }
             }
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),

@@ -10,7 +10,7 @@
         <h1>Sites list</h1>
     </header>
     <main>
-<@_sysSiteList pageSize=10>
+<@sys.siteList pageSize=10>
 		<#list page.list?chunk(2) as row>
         <ul>
     		<#list row as a>
@@ -20,18 +20,18 @@
 					<div>
 						<p><a href="${a.dynamicPath!}admin/" target="_blank">Management system</a></p>
 						Domains list:
-						<@_sysDomainList advanced=true siteId=a.id>
+						<@sys.domainList advanced=true siteId=a.id>
 							<#list page.list as a>
 						<p>${a.name}<#if a.wild>[Wild domain]</#if> <#if a.path?has_content>Template root path:${(a.path)!}</#if></p>
 							</#list>
-						</@_sysDomainList>
+						</@sys.domainList>
 					</div>
 				</div>
 			</li>
     		</#list>
         </ul>
 		 </#list>
-</@_sysSiteList>
+</@sys.siteList>
         <div class="clear"></div>
         <p>The default user name / password for all sites: admin / admin</p>
         <p>The domain name list indicates that you use these domain names to access the program, the corresponding site will be displayed! Wildcard domain name means that all subdomains of this domain name can also access this site。The template root directory means access using this domain name, the template files in this directory are accessed</p>

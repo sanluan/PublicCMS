@@ -1,7 +1,9 @@
-友情链接
-<#list page.list as a>
-<a href="${site.dynamicPath}place/redirect?id=${a.id!}" class="text-white ps-1" target="_blank">${a.title}</a>
-</#list>
-<a href="${site.dynamicPath}friendlink.html" class="text-white ps-1">申请友链</a>
-<a href="${site.dynamicPath}case.html" class="text-white ps-1">案例提交</a> 
-<a href="${site.sitePath!}sitemap.xml" class="text-white ps-1" target="_blank">站点地图</a>
+<div class="col-md-auto" data-diy="place" data-diy-id="${path}">
+	友情链接
+	<#list page.list as a>
+	<a href="${site.dynamicPath}place/redirect?id=${a.id!}" class="text-white ps-1" target="_blank">${a.title}</a>
+	</#list>
+	<a href="${site.dynamicPath}friendlink.html" class="text-white ps-1">申请友链</a>
+	<a href="${site.dynamicPath}case.html" class="text-white ps-1">案例提交</a> 
+	<a href="${site.sitePath!}sitemap.xml" class="text-white ps-1" target="_blank">站点地图</a>
+</div>

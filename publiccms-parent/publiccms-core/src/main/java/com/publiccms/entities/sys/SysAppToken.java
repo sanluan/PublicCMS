@@ -27,12 +27,28 @@ public class SysAppToken implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
+    /**
+     * auth token<p>
+     * 授权验证码
+     */
     @GeneratorColumn(title = "授权验证")
     private String authToken;
+    /**
+     * app id<p>
+     * 应用id
+     */
     @GeneratorColumn(title = "应用")
     private int appId;
+    /**
+     * create date<p>
+     * 创建日期
+     */
     @GeneratorColumn(title = "创建日期", condition = true)
     private Date createDate;
+    /**
+     * expiry date<p>
+     * 过期日期
+     */
     @GeneratorColumn(title = "过期日期", condition = true, order = true)
     private Date expiryDate;
 

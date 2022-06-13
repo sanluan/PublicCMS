@@ -12,7 +12,7 @@
 			<@_includePlace path="/c936c718-5f19-426f-b3ff-13a5a8d63044.html"/> <#-- 个人中心导航 -->
 			<div class="right-content">
 				<div class="box">
-					<p class="message">${user.nickName},您已经登录了! 您可以选择<a href="logout.html">退出登录</a></p>
+					<p class="message">${user.nickname},您已经登录了! 您可以选择<a href="logout.html">退出登录</a></p>
 				</div>
 		    </div>
 		<#else>
@@ -25,7 +25,7 @@
 					<p class="message"><@t.m "message."+message/></p>
 				</#if>
 				<p class="text-center"><input type="text" name="name" class="input-text" placeholder="用户名" title="用户名" value="${name!}"/></p>
-				<p class="text-center"><input type="text" name="nickName" class="input-text" placeholder="昵称" title="昵称"  value="${nickName!}"/></p>
+				<p class="text-center"><input type="text" name="nickname" class="input-text" placeholder="昵称" title="昵称"  value="${nickname!}"/></p>
 				<p class="text-center"><input type="password" name="password" class="input-text" placeholder="密码" title="密码"/></p>
 				<p class="text-center"><input type="password" name="repassword" class="input-text" placeholder="重复密码" title="重复密码"/></p>
 				<p class="text-center">

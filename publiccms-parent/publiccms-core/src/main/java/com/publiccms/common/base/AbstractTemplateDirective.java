@@ -37,6 +37,7 @@ import com.publiccms.logic.service.sys.SysUserTokenService;
 public abstract class AbstractTemplateDirective extends BaseTemplateDirective {
     public static final String AUTH_TOKEN = "authToken";
     public static final String AUTH_USER_ID = "authUserId";
+    public static final String ADVANCED = "advanced";
 
     /**
      * @param handler
@@ -57,16 +58,18 @@ public abstract class AbstractTemplateDirective extends BaseTemplateDirective {
         AbstractFreemarkerView.exposeSite(model, getSite(handler));
     }
 
+    protected boolean getAdvanced(RenderHandler handler) throws Exception {
+        return handler.getBoolean(ADVANCED, false);
+    }
+
     protected Long getUserId(RenderHandler handler, String name) throws Exception {
         if (needUserToken()) {
             Long authUserId = handler.getLong(AUTH_USER_ID);
-            Long userId = null;
             if (null != authUserId) {
-                userId = authUserId;
+                return authUserId;
             } else {
-                userId = handler.getLong(name);
+                return handler.getLong(name);
             }
-            return userId;
         } else {
             return handler.getLong(name);
         }
@@ -86,6 +89,8 @@ public abstract class AbstractTemplateDirective extends BaseTemplateDirective {
             }
         } else if (needUserToken() && null == getUser(handler)) {
             handler.put("error", ApiController.NEED_LOGIN).render();
+        } else if (null != handler.getBoolean(ADVANCED) && (!supportAdvanced() || null == getApp(handler))) {
+            handler.put("error", ApiController.NEED_APP_TOKEN).render();
         } else {
             execute(handler);
             if (!handler.renderd) {
@@ -111,6 +116,13 @@ public abstract class AbstractTemplateDirective extends BaseTemplateDirective {
             }
         }
         return null;
+    }
+
+    /**
+     * @return support advanced parameters
+     */
+    public boolean supportAdvanced() {
+        return false;
     }
 
     /**

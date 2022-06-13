@@ -24,15 +24,14 @@ import com.publiccms.logic.service.cms.CmsSurveyService;
 * <li><code>id</code> 调查问卷id，结果返回<code>object</code>
 * {@link com.publiccms.entities.cms.CmsSurvey}
 * <li><code>ids</code>
-* 多个调查问卷id，逗号或空格间隔，当id为空时生效，结果返回<code>map</code>(id,调查问卷)
-* {@link com.publiccms.entities.cms.CmsSurvey}
+* 多个调查问卷id，逗号或空格间隔，当id为空时生效，结果返回<code>map</code>(id,<code>object</code>)
 * </ul>
 * 使用示例
 * <p>
 * &lt;@cms.survey id=1&gt;${object.title}&lt;/@cms.survey&gt;
 * <p>
 * &lt;@cms.survey ids='1,2,3'&gt;&lt;#list map as
-* k,v&gt;${v.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.survey&gt;
+* k,v&gt;${k}:${v.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.survey&gt;
 * 
 * <pre>
 &lt;script&gt;

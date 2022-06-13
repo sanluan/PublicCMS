@@ -42,15 +42,16 @@ public class PublishPlaceDirective extends AbstractTaskDirective {
                 templateComponent.staticPlace(site, path, metadata, data);
                 map.put(path, true);
             } catch (IOException | TemplateException e) {
+                handler.getWriter().append(e.getMessage());
                 map.put(path, false);
             }
             handler.put("map", map).render();
         } else if (CmsFileUtils.isDirectory(filepath)) {
-            handler.put("map", dealDir(site, path)).render();
+            handler.put("map", dealDir(site, handler, path)).render();
         }
     }
 
-    private Map<String, Boolean> dealDir(SysSite site, String path) {
+    private Map<String, Boolean> dealDir(SysSite site, RenderHandler handler, String path) throws IOException {
         path = path.replace("\\", CommonConstants.SEPARATOR).replace("//", CommonConstants.SEPARATOR);
         Map<String, Boolean> map = new LinkedHashMap<>();
         String realPath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
@@ -58,15 +59,18 @@ public class PublishPlaceDirective extends AbstractTaskDirective {
         for (FileInfo fileInfo : list) {
             String filepath = path + fileInfo.getFileName();
             if (fileInfo.isDirectory()) {
-                map.putAll(dealDir(site, filepath + CommonConstants.SEPARATOR));
+                map.putAll(dealDir(site, handler, filepath + CommonConstants.SEPARATOR));
             } else {
                 try {
-                    String realfilepath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + filepath);
+                    String realfilepath = siteComponent.getWebTemplateFilePath(site,
+                            TemplateComponent.INCLUDE_DIRECTORY + filepath);
                     CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(realfilepath);
                     CmsPageData data = metadataComponent.getTemplateData(realfilepath);
                     templateComponent.staticPlace(site, filepath, metadata, data);
                     map.put(filepath, true);
                 } catch (IOException | TemplateException e) {
+                    handler.getWriter().append(e.getMessage());
+                    handler.getWriter().append("\n");
                     map.put(filepath, false);
                 }
             }

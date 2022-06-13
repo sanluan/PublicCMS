@@ -1,13 +1,13 @@
-<div class="container mt-5 pt-5">
+<div class="container mt-5 pt-5" data-diy="place" data-diy-id="${path}">
 	<div class="mb-5 pb-2 text-center">
 		<div class="fs-0 text-black fw-bold">产品动态</div>
 		<p class="text-black-50">了解产品更新和使用问题</p>
-	</div>    
+	</div>
 	<div class="row justify-content-between">
 <#list page.list as a>
-	<@_category id=a.itemId;category>
+	<@cms.category id=a.itemId;category>
 		<@import path="/ftl/tools.ftl" namespace="t"/><#-- 工具 -->
-		<@_contentList categoryId=category.id containChild=true pageSize=3>
+		<@cms.contentList categoryId=category.id containChild=true pageSize=3>
 		<div class="col-md-6 mb-5 mb-md-0 px-4">
 			<header class="tab-header fs-5">
 				<a href="${category.url}"><b class="pb-2">${category.name}</b></a>
@@ -15,7 +15,7 @@
 			<#list page.list as a>
 			<@t.merge 'categoryIds' a.categoryId/>
 			</#list>
-			<@_category ids=t.categoryIds!><#assign categoryMap=map!/></@_category>
+			<@cms.category ids=t.categoryIds!><#assign categoryMap=map!/></@cms.category>
 			<#list page.list as a>
 			<div class="article-list">
 				<a href="${a.url}" class="d-block">
@@ -33,12 +33,12 @@
 							</footer>
 						</div>
 					</div>
-				</a>							
+				</a>
 			</div>
 			</#list>
-		</div>				
-		</@_contentList>
-	</@_category>
+		</div>
+		</@cms.contentList>
+	</@cms.category>
 </#list>
 	</div>
 </div>

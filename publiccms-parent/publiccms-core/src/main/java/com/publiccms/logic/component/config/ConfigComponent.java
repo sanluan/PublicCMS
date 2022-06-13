@@ -275,8 +275,20 @@ public class ConfigComponent implements SiteCache {
          *
          */
         private static final long serialVersionUID = 1L;
+        /**
+         * code<p>
+         * 编码
+         */
         private String code;
+        /**
+         * description<p>
+         * 描述
+         */
         private String description;
+        /**
+         * customed<p>
+         * 自定义
+         */
         private boolean customed;
 
         /**

@@ -24,10 +24,21 @@ public class SysExtend implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
+    /**
+     * id
+     */
     @GeneratorColumn(title = "ID")
     private Integer id;
+    /**
+     * item type<p>
+     * 项目类型
+     */
     @GeneratorColumn(title = "扩展类型")
     private String itemType;
+    /**
+     * item id<p>
+     * 项目id
+     */
     @GeneratorColumn(title = "扩展项目")
     private int itemId;
 

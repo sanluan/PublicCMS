@@ -24,15 +24,14 @@ import com.publiccms.common.handler.RenderHandler;
 * <li><code>id</code> 分类id，结果返回<code>object</code>
 * {@link com.publiccms.entities.cms.CmsContentTextHistory}
 * <li><code>ids</code>
-* 多个评论id，逗号或空格间隔，当id为空时生效，结果返回<code>map</code>(id,正文历史)
-* {@link com.publiccms.entities.cms.CmsContentTextHistory}
+* 多个评论id，逗号或空格间隔，当id为空时生效，结果返回<code>map</code>(id,<code>object</code>)
 * </ul>
 * 使用示例
 * <p>
 * &lt;@cms.contentTextHistory id=1&gt;${object.text}&lt;/@cms.contentTextHistory&gt;
 * <p>
 * &lt;@cms.contentTextHistory ids=1,2,3&gt;&lt;#list map as
-* k,v&gt;${v.text}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.contentTextHistory&gt;
+* k,v&gt;${k}:${v.text}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.contentTextHistory&gt;
 * 
 * <pre>
   &lt;script&gt;

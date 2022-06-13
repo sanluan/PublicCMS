@@ -1,21 +1,21 @@
-<div id="comments">					
+<div id="comments" data-diy="comment">
 	<h6 class="mb-1 pb-2"><a href="${site.dynamicPath}comment.html?contentId=${content.id}">${content.comments}条评论</a></h6>
 	<@import path="/ftl/tools.ftl" namespace="t"/><#-- 工具 -->
-	<@_commentList contentId=content.id emptyReply=true pageSize=10>
-	<ol class="comments-list px-0 py-4">
+	<@cms.commentList contentId=content.id emptyReply=true pageSize=10>
+	<ul class="comments-list px-0 py-4">
 		<#list page.list as a>
 		<@t.merge 'userIds' a.userId!/>
 		<@t.merge 'userIds' a.replyUserId!/>
 		</#list>
-		<@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
+		<@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
 		<#list page.list as a>
 		<li class="comment">
 			<div class="d-flex align-items-center">
 				<figure class="rounded-circle">
-					<img alt="${userMap[a.userId?string].nickName}" src="${userMap[a.userId?string].cover!(site.sitePath+'assets/img/logo-graphic.png')}">
+					<img alt="${userMap[a.userId?string].nickname}" src="${userMap[a.userId?string].cover!(site.sitePath+'assets/img/logo-graphic.png')}">
 				</figure>
 				<div>
-					<a href="${site.dynamicPath}user.html?id=${a.userId}" class="fw-bold me-2">${userMap[a.userId?string].nickName}</a><span><#if userMap[a.userId?string].superuser>[管理员]</#if></span>
+					<a href="${site.dynamicPath}user.html?id=${a.userId}" class="fw-bold me-2">${userMap[a.userId?string].nickname}</a><span><#if userMap[a.userId?string].superuser>[管理员]</#if></span>
 					<div class="text-secondary text-opacity-50 fs-8">${a.createDate?string('yyyy-MM-dd HH:mm')}</div>
 				</div>
 				<a href="${site.dynamicPath}comment.html?contentId=${content.id!}&replyId=${a.id}" class="reply d-inline-flex align-items-center ms-auto fs-8 text-muted"><img src="${site.sitePath}assets/img/icon-comment-reply.svg" alt="reply"> 回复<#if a.replies gt 0> (${a.replies})</#if></a>
@@ -24,21 +24,21 @@
 				${a.text!}
 			</p>
 			<#if a.replies gt 0>
-			<@_commentList contentId=content.id replyId=a.id orderType='asc' pageSize=10>
+			<@cms.commentList contentId=content.id replyId=a.id orderType='asc' pageSize=10>
 			<ul class="child">
 				<#list page.list as a>
 				<@t.merge 'userIds' a.userId!/>
 				<@t.merge 'userIds' a.replyUserId!/>
 				</#list>
-				<@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
+				<@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
 				<#list page.list as a>
 				<li class="comment">
 					<div class="d-flex align-items-center">
 						<figure>
-							<img class="rounded-circle" alt="${userMap[a.userId?string].nickName}" src="${userMap[a.userId?string].cover!(site.sitePath+'assets/img/logo-graphic.png')}">
+							<img class="rounded-circle" alt="${userMap[a.userId?string].nickname}" src="${userMap[a.userId?string].cover!(site.sitePath+'assets/img/logo-graphic.png')}">
 						</figure>
 						<div>
-							<a href="${site.dynamicPath}user.html?id=${a.userId}" class=" fw-bold  me-2">${userMap[a.userId?string].nickName}</a><span class="me-2"><#if userMap[a.userId?string].superuser>[管理员]</#if></span> <span class="text-muted">回复</span><a href="${site.dynamicPath}user.html?id=${a.userId}" class=" fw-bold">${userMap[a.replyUserId?string].nickName}</a>
+							<a href="${site.dynamicPath}user.html?id=${a.userId}" class=" fw-bold  me-2">${userMap[a.userId?string].nickname}</a><span class="me-2"><#if userMap[a.userId?string].superuser>[管理员]</#if></span> <span class="text-muted">回复</span><a href="${site.dynamicPath}user.html?id=${a.userId}" class=" fw-bold">${userMap[a.replyUserId?string].nickname}</a>
 							<div class="text-secondary text-opacity-50 fs-8">${a.createDate?string('yyyy-MM-dd HH:mm')}</div>
 						</div>
 						<a href="${site.dynamicPath}comment.html?contentId=${content.id!}&replyId=${a.id}" class="reply d-inline-flex align-items-center ms-auto fs-8 text-muted"><img src="${site.sitePath}assets/img/icon-comment-reply.svg" alt="reply"> 回复</a>
@@ -49,12 +49,12 @@
 				</li>
 				</#list>
 			</ul>
-		</@_commentList>
+		</@cms.commentList>
 		</#if>
 		</li>
 		</#list>
 	</ol>
-	</@_commentList>
+	</@cms.commentList>
 	<h6 class="mb-1 pb-2">发表评论</h6>
 	<div class="user-login">
 		<div class="form-control text-center" style="line-height:5;"><a href="${site.dynamicPath}login.html">登录后发布评论</a></div>

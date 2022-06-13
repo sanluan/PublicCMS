@@ -90,7 +90,7 @@
 					<#if list?has_content>
 					<#list list as a>
 						<@tools.diyMetadata itemType='region' itemId=a>
-						<li><a href="cmsPage/diy.html?id=${(object.id?url)!}" target="navTab" rel="cmsPage/diy" title="<@t.page 'diy'/>" data-diy="region" data-diy-id="${(object.id)!}"><i class='bi bi-palette'></i>${(object.name)!}</a></li>
+						<li><a href="cmsPage/diy.html?id=${(object.id?url)!}<#if object.categoryType?has_content&&category?has_content&&object.categoryType=category.typeId>&categoryId=${category.id}</#if>" target="navTab" rel="cmsPage/diy" title="<@t.page 'diy'/>" data-diy="region" data-diy-id="${(object.id)!}"><i class='bi bi-palette'></i>${(object.name)!}</a></li>
 						</@tools.diyMetadata>
 					</#list>
 					</#if>

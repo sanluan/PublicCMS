@@ -47,6 +47,7 @@ import com.publiccms.logic.service.sys.SysDeptPageService;
 import com.publiccms.views.pojo.entities.CmsPageData;
 import com.publiccms.views.pojo.entities.CmsPageMetadata;
 import com.publiccms.views.pojo.entities.CmsPlaceMetadata;
+import com.publiccms.views.pojo.model.TemplateReplaceParameters;
 
 import freemarker.template.TemplateException;
 
@@ -163,6 +164,31 @@ public class CmsTemplateAdminController {
                 log.error(e.getMessage(), e);
                 return CommonConstants.TEMPLATE_ERROR;
             }
+        }
+        return CommonConstants.TEMPLATE_DONE;
+    }
+
+    /**
+     * @param site
+     * @param admin
+     * @param replaceParameters
+     * @param word
+     * @param replace
+     * @param request
+     * @param model
+     * @return view name
+     */
+    @RequestMapping("replace")
+    @Csrf
+    public String replace(@RequestAttribute SysSite site, @SessionAttribute SysUser admin,
+            @ModelAttribute TemplateReplaceParameters replaceParameters, String word, String replace,
+            HttpServletRequest request) {
+        if (CommonUtils.notEmpty(word)) {
+            String filePath = siteComponent.getWebTemplateFilePath(site, CommonConstants.SEPARATOR);
+            CmsFileUtils.replaceFileList(filePath, replaceParameters.getReplaceList(), word, replace);
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "replace.template", RequestUtils.getIpAddress(request),
+                    CommonUtils.getDate(), word + " to " + replace + " in " + replaceParameters.getReplaceList().toString()));
         }
         return CommonConstants.TEMPLATE_DONE;
     }

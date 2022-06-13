@@ -16,8 +16,31 @@ import com.publiccms.logic.service.sys.SysRoleService;
 
 /**
  *
- * SysRoleModuleDirective
+ * sysRoleModule 部门页面授权查询指令
+ * <p>
+ * 参数列表
+ * <ul>
+ * <li><code>roleIds</code> 多个角色id
+ * <li><code>moduleId</code>
+ * 模块id,roleIds、moduleId都存在时，结果返回<code>true</code>或<code>false</code>，表示这些角色是否拥有该模块的数据权限
+ * <li><code>moduleIds</code>
+ * 多个模块id，当roleIds存在，且moduleId为空时生效，结果返回<code>map</code>(模块id,<code>true</code>或<code>false</code>)
+ * </ul>
+ * 使用示例
+ * <p>
+ * &lt;@sys.roleModule roleIds='1,2,3'
+ * modelId='page'&gt;${object}&lt;/@sys.roleModule&gt;
+ * <p>
+ * &lt;@sys.roleModule deptId=1 pages='/index.html,/search'&gt;&lt;#list map as
+ * k,v&gt;${k}:${v}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.roleModule&gt;
  * 
+ * <pre>
+&lt;script&gt;
+$.getJSON('//cms.publiccms.com/api/directive/sys/roleModule?roleIds=1,2,3&amp;modelId=page&amp;appToken=接口访问授权Token', function(data){    
+  console.log(data);
+});
+&lt;/script&gt;
+ * </pre>
  */
 @Component
 public class SysRoleModuleDirective extends AbstractTemplateDirective {
@@ -28,19 +51,19 @@ public class SysRoleModuleDirective extends AbstractTemplateDirective {
         String moduleId = handler.getString("moduleId");
         if (CommonUtils.notEmpty(roleIds)) {
             if (CommonUtils.notEmpty(moduleId)) {
-                SysRoleModule entity = service.getEntity(roleIds, moduleId);
-                handler.put("object", entity).render();
+                handler.put("object", sysRoleService.showAllModule(roleIds) || null != service.getEntity(roleIds, moduleId))
+                        .render();
             } else {
                 String[] moduleIds = handler.getStringArray("moduleIds");
                 if (CommonUtils.notEmpty(moduleIds)) {
                     Map<String, Boolean> map = new LinkedHashMap<>();
                     if (sysRoleService.showAllModule(roleIds)) {
                         for (String id : moduleIds) {
-                            map.put(String.valueOf(id), true);
+                            map.put(id, true);
                         }
                     } else {
                         for (SysRoleModule entity : service.getEntitys(roleIds, moduleIds)) {
-                            map.put(String.valueOf(entity.getId().getModuleId()), true);
+                            map.put(entity.getId().getModuleId(), true);
                         }
                     }
                     handler.put("map", map).render();

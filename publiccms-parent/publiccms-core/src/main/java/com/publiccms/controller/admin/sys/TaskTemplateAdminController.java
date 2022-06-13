@@ -71,13 +71,15 @@ public class TaskTemplateAdminController {
                 String filepath = siteComponent.getTaskTemplateFilePath(site, path);
                 content = new String(VerificationUtils.base64Decode(content), CommonConstants.DEFAULT_CHARSET);
                 if (CmsFileUtils.createFile(filepath, content)) {
-                    logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                            "save.task.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
+                    logOperateService.save(
+                            new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                                    "save.task.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
                 } else {
                     String historyFilePath = siteComponent.getTaskTemplateHistoryFilePath(site, path);
                     CmsFileUtils.updateFile(filepath, historyFilePath, content);
-                    logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                            "update.task.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
+                    logOperateService.save(
+                            new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                                    "update.task.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
                 }
                 templateComponent.clearTaskTemplateCache();
             } catch (IOException e) {
@@ -114,8 +116,9 @@ public class TaskTemplateAdminController {
                         CmsFileUtils.delete(destFullFileName);
                     }
                     templateComponent.clearTaskTemplateCache();
-                    logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                            "upload.task.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), filepath));
+                    logOperateService.save(
+                            new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                                    "upload.task.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), filepath));
                 }
             } catch (IOException e) {
                 model.addAttribute(CommonConstants.ERROR, e.getMessage());
@@ -166,8 +169,9 @@ public class TaskTemplateAdminController {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             templateComponent.clearTaskTemplateCache();
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                    "delete.task.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
+            logOperateService
+                    .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                            "delete.task.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
         }
         return CommonConstants.TEMPLATE_DONE;
     }

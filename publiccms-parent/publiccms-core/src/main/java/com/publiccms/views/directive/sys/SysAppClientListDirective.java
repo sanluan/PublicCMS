@@ -4,9 +4,10 @@ package com.publiccms.views.directive.sys;
 
 import java.io.IOException;
 
+import jakarta.annotation.Resource;
+
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.logic.service.sys.SysAppClientService;
-import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.handler.PageHandler;
@@ -23,18 +24,23 @@ public class SysAppClientListDirective extends AbstractTemplateDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
         Boolean disabled = false;
-        if (handler.getBoolean("advanced", false)) {
+        if (getAdvanced(handler)) {
             disabled = handler.getBoolean("disabled", false);
         }
         PageHandler page = service.getPage(getSite(handler).getId(), handler.getString("channel"), handler.getLong("userId"),
                 handler.getDate("startLastLoginDate"), handler.getDate("endLastLoginDate"), handler.getDate("startCreateDate"),
                 handler.getDate("endCreateDate"), disabled, handler.getString("orderField"), handler.getString("orderType"),
-                handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", 30));
+                handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", handler.getInteger("count", 30)));
         handler.put("page", page).render();
     }
 
     @Override
     public boolean needAppToken() {
+        return true;
+    }
+
+    @Override
+    public boolean supportAdvanced() {
         return true;
     }
 

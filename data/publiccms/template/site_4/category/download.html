@@ -4,12 +4,12 @@
         <title>${(attribute.title)!category.name}</title>
         <meta name="keywords" content="${(attribute.keywords)!}"/>
         <meta name="description" content="${(attribute.description)!}"/>
-        <@_includePlace path="/8ddab9ba-a8aa-4745-86c6-66bf1c2c976c.html"/> <#-- header -->
+        <@tools.includePlace path="/8ddab9ba-a8aa-4745-86c6-66bf1c2c976c.html"/> <#-- header -->
     </head>
     <body>
-        <@_includePlace path="/c32a4f4a-ff5d-49cf-bb59-5d9784539174.html"/> <#-- 导航 -->
+        <@tools.includePlace path="/c32a4f4a-ff5d-49cf-bb59-5d9784539174.html"/> <#-- 导航 -->
 
-        <div class="banner-l2 position-relative d-flex align-items-center justify-content-center">
+        <div class="banner-l2 position-relative d-flex align-items-center justify-content-center" data-diy="category" data-diy-id="${category.id}">
             <div class="container text-center position-relative py-3 py-md-4">
                 <div class="display-3 fw-bolder">${category.name}</div>
                 <p class="text-secondary m-0">${(attribute.description)!}</p>
@@ -22,36 +22,32 @@
 			<div class="row">
 				<div class="col-md-9">
 					<@import path="/ftl/tools.ftl" namespace="t"/><#-- 工具 -->
-        			<@_contentList categoryId=category.id pageSize=category.pageSize>
-					<div class="row">
+        			<@cms.contentList categoryId=category.id pageSize=category.pageSize>
+					<div class="row" data-diy="content">
 						<div class="col-12 d-flex justify-content-center my-5">
-							<ul class="nav nav-pills nav-l2">
-								<li class="nav-item">
-									<a class="nav-link active" aria-current="page" href="#">全部</a>
-								</li>
+							<ul class="nav nav-pills nav-l2" role="tablist">
 								<#list page.list as a>
 								<li class="nav-item">
-									<a class="nav-link" href="#${a.id}">${a.title!}</a>
+									<a class="nav-link${a?is_first?then(' active','')}" href="javascript:void(0)" data-bs-toggle="pill" data-bs-target="#pills-${a.id}">${a.title!}</a>
 								</li>
 								</#list>
 							</ul>
 						</div>
 					</div>
 
-					<div class="row">
-						<div class="col-12">
-							<section class="download-list">
-								<#list page.list as a>
+					<div class="tab-content download-list">
+						<#list page.list as a>
+							<div class="tab-pane fade${a?is_first?then(' show active','')}" id="pills-${a.id}">
 								<dl class="mb-4">
 									<dt class="d-flex py-3 align-items-center">
 										<#if a.cover?has_content><img src="${a.cover!}" alt="${a.title}"></#if>
-										<b class="fs-4 ms-2" id="${a.id}">${a.title}</b>
+										<b class="fs-4 ms-2">${a.title}</b>
 										<span class="fw-normal text-secondary fs-7 ms-3">${a.description!}</span>
 									</dt>
 									<#assign attribute=getContentAttribute(a.id)/>
-									<@_webFileList path=attribute.dir orderField='fileSize'>
-										<#list list as a>
-											<#if !a.directory>
+									<@tools.webFileList path=attribute.dir orderField='fileSize'>
+									<#list list as a>
+									<#if !a.directory>
 									<dd class="d-flex justify-content-between mb-0 py-3 flex-column flex-md-row flex-column flex-md-row">
 										<div class="fs-6p"><a href="${siteAttribute.downloadPath!site.sitePath}${attribute.dir+'/'+a.fileName?url}" target="_blank">${a.fileName}</a></div>
 										<div class="text-secondary text-opacity-50">
@@ -59,23 +55,27 @@
 											<span class="ms-5"><@t.fileSize a.size/></span>
 										</div>
 									</dd>
-											</#if>
-										</#list>
-									</@_webFileList>
+									</#if>
+									</#list>
+									</@tools.webFileList>
 								</dl>
-								</#list>
-							</section>
-						</div>
+							</div>
+						</#list>
 					</div>
-					</@_contentList>
+					</@cms.contentList>
 				</div>
-				<@_includePlace path="/d9e04fa7-f90b-4ddc-86eb-846af14affce.html"/> <#-- 产品资源下载 -->
+				<@tools.includePlace path="/d9e04fa7-f90b-4ddc-86eb-846af14affce.html"/> <#-- 产品资源下载 -->
 			</div>
-		</div>        
+
+		</div>
 
         <script>
             var itemString="itemType=category&itemId=${category.id}";
+			var templatePath='${.current_template_name?keep_after('/')}';
         </script>
-        <@_includePlace path="/7f8bacb5-30ca-4641-b66f-987d447b1a85.html"/> <#-- footer -->
+        <@tools.includePlace path="/7f8bacb5-30ca-4641-b66f-987d447b1a85.html"/> <#-- footer -->
+		<script>
+            $('.navbar-nav .nav-item[data-id=${category.parentId!category.id}]').addClass('selected');
+        </script>
     </body>
 </html>

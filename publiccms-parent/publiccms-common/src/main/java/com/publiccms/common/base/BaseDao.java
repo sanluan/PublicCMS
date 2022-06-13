@@ -309,21 +309,10 @@ public abstract class BaseDao<E> {
      * @param queryHandler
      * @param pageIndex
      * @param pageSize
-     * @param maxResults
-     * @return results page
-     */
-    protected PageHandler getPage(QueryHandler queryHandler, Integer pageIndex, Integer pageSize, Integer maxResults) {
-        return getPage(queryHandler, null, pageIndex, pageSize, maxResults);
-    }
-
-    /**
-     * @param queryHandler
-     * @param pageIndex
-     * @param pageSize
      * @return page
      */
     protected PageHandler getPage(QueryHandler queryHandler, Integer pageIndex, Integer pageSize) {
-        return getPage(queryHandler, pageIndex, pageSize, Integer.MAX_VALUE);
+        return getPage(queryHandler, null, pageIndex, pageSize, Integer.MAX_VALUE);
     }
 
     /**

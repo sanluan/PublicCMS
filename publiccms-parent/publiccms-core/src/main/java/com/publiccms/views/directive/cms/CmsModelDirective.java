@@ -22,15 +22,14 @@ import com.publiccms.views.pojo.entities.CmsModel;
  * <ul>
  * <li><code>id</code> 内容模型id，结果返回<code>object</code>
  * {@link com.publiccms.views.pojo.entities.CmsModel}
- * <li><code>ids</code> 多个内容模型id，逗号或空格间隔，当id为空时生效，结果返回<code>map</code>(id,内容模型)
- * {@link com.publiccms.views.pojo.entities.CmsModel}
+ * <li><code>ids</code> 多个内容模型id，逗号或空格间隔，当id为空时生效，结果返回<code>map</code>(id,<code>object</code>)
  * </ul>
  * 使用示例
  * <p>
  * &lt;@cms.model id='article'&gt;${object.name}&lt;/@cms.model&gt;
  * <p>
  * &lt;@cms.model ids='article,link,picture'&gt;&lt;#list map as
- * k,v&gt;${v.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.model&gt;
+ * k,v&gt;${k}:${v.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.model&gt;
  * 
  * <pre>
   &lt;script&gt;

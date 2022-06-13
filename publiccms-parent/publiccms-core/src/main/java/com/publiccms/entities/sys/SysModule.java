@@ -21,18 +21,45 @@ public class SysModule implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
+    /**
+     * id
+     */
     @GeneratorColumn(title = "ID")
     private String id;
+    /**
+     * url<p>
+     * 地址
+     */
     @GeneratorColumn(title = "地址")
     private String url;
+    /**
+     * authorized url<p>
+     * 授权访问地址
+     */
     @GeneratorColumn(title = "授权地址")
     private String authorizedUrl;
+    /**
+     * attached<p>
+     * 附加信息
+     */
     @GeneratorColumn(title = "附加")
     private String attached;
+    /**
+     * parent module id<p>
+     * 父模块id
+     */
     @GeneratorColumn(title = "父模块", condition = true)
     private String parentId;
+    /**
+     * is menu<p>
+     * 是否菜单
+     */
     @GeneratorColumn(title = "是否菜单", condition = true)
     private boolean menu;
+    /**
+     * sort<p>
+     * 排序
+     */
     @GeneratorColumn(title = "排序")
     private int sort;
 

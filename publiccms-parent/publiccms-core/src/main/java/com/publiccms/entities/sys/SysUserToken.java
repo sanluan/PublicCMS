@@ -28,19 +28,43 @@ public class SysUserToken implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
+    /**
+     * auth token<p>
+     * 授权码
+     */
     @GeneratorColumn(title = "授权码")
     private String authToken;
     @GeneratorColumn(title = "站点", condition = true)
     @JsonIgnore
     private short siteId;
+    /**
+     * user id<p>
+     * 用户id
+     */
     @GeneratorColumn(title = "用户", condition = true)
     private long userId;
+    /**
+     * channel<p>
+     * 渠道
+     */
     @GeneratorColumn(title = "授权渠道", condition = true)
     private String channel;
+    /**
+     * create date<p>
+     * 授权日期
+     */
     @GeneratorColumn(title = "授权日期", order = true)
     private Date createDate;
+    /**
+     * expiry date<p>
+     * 过期日期
+     */
     @GeneratorColumn(title = "过期日期", order = true)
     private Date expiryDate;
+    /**
+     * login ip<p>
+     * 登录ip
+     */
     @GeneratorColumn(title = "登录IP")
     private String loginIp;
 

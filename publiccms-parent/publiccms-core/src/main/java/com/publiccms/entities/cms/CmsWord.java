@@ -30,18 +30,37 @@ public class CmsWord implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
+    /**
+     * id
+     */
     @GeneratorColumn(title = "ID")
     private Long id;
     @GeneratorColumn(title = "站点", condition = true)
     @JsonIgnore
     private short siteId;
+    /**
+     * name<p>
+     * 名称
+     */
     @GeneratorColumn(title = "名称", condition = true, like = true)
     private String name;    
+    /**
+     * search count<p>
+     * 搜索次数
+     */
     @GeneratorColumn(title = "搜索次数", order = true)
     private int searchCount;
+    /**
+     * hidden<p>
+     * 隐藏
+     */
     @GeneratorColumn(title = "隐藏", condition = true)
     private boolean hidden;
-    @GeneratorColumn(title = "类型", condition = true, order = true)
+    /**
+     * create date<p>
+     * 创建日期
+     */
+    @GeneratorColumn(title = "创建日期", condition = true, order = true)
     private Date createDate;
 
     public CmsWord() {

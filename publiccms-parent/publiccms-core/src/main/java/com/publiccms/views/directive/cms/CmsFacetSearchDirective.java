@@ -102,7 +102,7 @@ public class CmsFacetSearchDirective extends AbstractTemplateDirective {
         }
         FacetPageHandler page;
         Integer pageIndex = handler.getInteger("pageIndex", 1);
-        Integer pageSize = handler.getInteger("pageSize", 30);
+        Integer pageSize = handler.getInteger("pageSize", handler.getInteger("count", 30));
         Date currentDate = CommonUtils.getMinuteDate();
         HighLighterQuery highLighterQuery = new HighLighterQuery(handler.getBoolean("highlight", false));
         if (highLighterQuery.isHighlight()) {

@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import jakarta.annotation.Resource;
+
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
@@ -41,7 +42,8 @@ import com.publiccms.views.pojo.query.CmsContentQuery;
  * <li><code>hasCover</code> 拥有封面图,【true,false】
  * <li><code>userId</code> 发布用户id
  * <li><code>startPublishDate</code> 发布日期开始时间,【2020-01-01 23:59:59】,【2020-01-01】
- * <li><code>endPublishDate</code> 发布日期结束时间，高级选项禁用时不能超过现在,【2020-01-01 23:59:59】,【2020-01-01】
+ * <li><code>endPublishDate</code> 发布日期结束时间，高级选项禁用时不能超过现在,【2020-01-01
+ * 23:59:59】,【2020-01-01】
  * <li><code>advanced</code> 开启高级选项， 默认为<code> false</code>
  * <li><code>status</code> 高级选项:内容状态，【0:操作,1:已发布,2:待审核,3:驳回】
  * <li><code>disabled</code> 高级选项:禁用状态，默认为<code>false</code>
@@ -49,7 +51,8 @@ import com.publiccms.views.pojo.query.CmsContentQuery;
  * <li><code>title</code> 高级选项:标题
  * <li><code>absoluteURL</code> url处理为绝对路径 默认为<code>true</code>
  * <li><code>absoluteId</code> id处理为引用内容的ID 默认为<code>true</code>
- * <li><code>orderField</code> 排序字段,【score:评分,comments:评论数,clicks:点击数,publishDate:发布日期,updateDate:更新日期,checkDate:审核日期】,默认置顶级别倒叙、发布日期按orderType排序
+ * <li><code>orderField</code>
+ * 排序字段,【score:评分,comments:评论数,clicks:点击数,publishDate:发布日期,updateDate:更新日期,checkDate:审核日期】,默认置顶级别倒叙、发布日期按orderType排序
  * <li><code>orderType</code> 排序类型,【asc:正序,desc:倒叙】，默认为倒叙
  * <li><code>pageIndex</code> 页码
  * <li><code>pageSize</code> 每页条数
@@ -58,11 +61,13 @@ import com.publiccms.views.pojo.query.CmsContentQuery;
  * 返回结果
  * <ul>
  * <li><code>page</code> {@link com.publiccms.common.handler.PageHandler}
- * <li><code>page.list</code> List类型 查询结果实体列表 {@link com.publiccms.entities.cms.CmsContent} 
+ * <li><code>page.list</code> List类型 查询结果实体列表
+ * {@link com.publiccms.entities.cms.CmsContent}
  * </ul>
  * 使用示例
  * <p>
- * &lt;@cms.contentList pageSize=10&gt;&lt;#list page.list as a&gt;${a.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.contentList&gt;
+ * &lt;@cms.contentList pageSize=10&gt;&lt;#list page.list as
+ * a&gt;${a.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.contentList&gt;
  * 
  * <pre>
  *  &lt;script&gt;
@@ -82,7 +87,7 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
         SysSite site = getSite(handler);
         queryEntity.setSiteId(site.getId());
         queryEntity.setEndPublishDate(handler.getDate("endPublishDate"));
-        if (handler.getBoolean("advanced", false)) {
+        if (getAdvanced(handler)) {
             queryEntity.setStatus(handler.getIntegerArray("status"));
             queryEntity.setDisabled(handler.getBoolean("disabled", false));
             queryEntity.setEmptyParent(handler.getBoolean("emptyParent"));
@@ -109,12 +114,11 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
         queryEntity.setUserId(handler.getLong("userId"));
         queryEntity.setStartPublishDate(handler.getDate("startPublishDate"));
         try {
-            if (!handler.getBoolean("advanced", false)) {
+            if (!getAdvanced(handler)) {
                 CmsDataSource.setDataSourceName(datasourceComponent.getRandomDatasource(site.getId()));
             }
             PageHandler page = service.getPage(queryEntity, handler.getBoolean("containChild"), handler.getString("orderField"),
-                    handler.getString("orderType"), handler.getInteger("pageIndex", 1),
-                    handler.getInteger("pageSize", 30));
+                    handler.getString("orderType"), handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", handler.getInteger("count", 30)));
             @SuppressWarnings("unchecked")
             List<CmsContent> list = (List<CmsContent>) page.getList();
             if (null != list) {
@@ -138,6 +142,11 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
         } finally {
             CmsDataSource.resetDataSourceName();
         }
+    }
+
+    @Override
+    public boolean supportAdvanced() {
+        return true;
     }
 
     @Resource

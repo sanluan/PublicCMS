@@ -24,7 +24,7 @@ public class CmsVoteListDirective extends AbstractTemplateDirective {
         PageHandler page = service.getPage(getSite(handler).getId(), handler.getDate("startStartDate"),
                 handler.getDate("endStartDate"), handler.getDate("startEndDate"), handler.getDate("endEndDate"),
                 handler.getString("title"), handler.getBoolean("disabled"), handler.getString("orderField"),
-                handler.getString("orderType"), handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", 30));
+                handler.getString("orderType"), handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", handler.getInteger("count", 30)));
         handler.put("page", page).render();
     }
 

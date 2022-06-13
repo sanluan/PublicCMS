@@ -30,8 +30,8 @@ import com.publiccms.common.tools.LanguagesUtils;
 import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.BeanComponent;
-import com.publiccms.view.pojo.oauth.OauthAccess;
-import com.publiccms.view.pojo.oauth.OauthConfig;
+import com.publiccms.views.pojo.oauth.OauthAccess;
+import com.publiccms.views.pojo.oauth.OauthConfig;
 
 /**
  *

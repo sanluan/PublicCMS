@@ -556,10 +556,14 @@ public class CmsContentService extends BaseService<CmsContent> {
 
     /**
      * @param siteId
+     * @param user 
      * @param entity
      */
     @CopyToDatasource
-    public void save(short siteId, CmsContent entity) {
+    public void save(short siteId, SysUser user, CmsContent entity) {
+        entity.setSiteId(siteId);
+        entity.setUserId(user.getId());
+        entity.setDeptId(user.getDeptId());
         save(entity);
     }
 

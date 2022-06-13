@@ -1,14 +1,14 @@
-<@_survey id=id;survey>
+<@cms.survey id=id;survey>
 <!DOCTYPE html>
 <html lang="zh-CN">
     <head>
         <meta charset="utf-8">
         <title>${survey.title!} - ${metadata.alias!}</title>
         <meta name="description" content="${survey.description!}"/>
-        <@_includePlace path="/8ddab9ba-a8aa-4745-86c6-66bf1c2c976c.html"/> <#-- header -->
+        <@tools.includePlace path="/8ddab9ba-a8aa-4745-86c6-66bf1c2c976c.html"/> <#-- header -->
     </head>
     <body>
-        <@_includePlace path="/c32a4f4a-ff5d-49cf-bb59-5d9784539174.html"/> <#-- 导航 -->
+        <@tools.includePlace path="/c32a4f4a-ff5d-49cf-bb59-5d9784539174.html"/> <#-- 导航 -->
 
         <div class="banner-l3 position-relative d-flex align-items-center justify-content-center" style="background:#22407c url(${site.sitePath}assets/img/banner-l3-bg-1.png) 50% 50% no-repeat;">
             <div class="container text-center position-relative py-3 py-md-4 text-white">
@@ -35,20 +35,20 @@
                 <div id="content">
                     <#macro message code>${springMacroRequestContext.getMessage(code)}</#macro>
                     <#if user?has_content>
-                    <@_userSurvey userId=user.id surveyId=survey.id>
+                    <@cms.userSurvey userId=user.id surveyId=survey.id>
                     <#assign available=false/>
                     <p>您已经参与过了!</p>
-                    </@_userSurvey>
+                    </@cms.userSurvey>
                     <#else>
                     <#assign available=false/>
                     <p class="user-login">请<a href="${site.dynamicPath}login.html">登录</a></p>
                     </#if>
                     <form action="${site.dynamicPath}survey/save" method="POST">
-                        <input name="_csrf" type="hidden" value="<@_csrfToken/>"/>
+                        <input name="_csrf" type="hidden" value="<@tools.csrfToken/>"/>
                         <input name="surveyId" type="hidden" value="${survey.id}"/>
                         <input name="returnUrl" type="hidden" value="${site.dynamicPath}survey.html?id=${survey.id}"/>
                         <ul>
-                            <@_surveyQuestionList surveyId=survey.id orderType='asc' pageSize=500>
+                            <@cms.surveyQuestionList surveyId=survey.id orderType='asc' pageSize=500>
                             <#list page.list as a>
                             <li>
                                 <h3>${a.title!} <#if 'exam'=survey.surveyType>(${a.score!}分)</#if></h3>
@@ -61,27 +61,27 @@
                                     <input name="answerList[${a?index}].id.questionId" type="hidden" value="${a.id}">
                                     <#switch a.questionType>
                                     <#case 'radio'>
-                                    <@_surveyQuestionItemList questionId=a.id pageSize=500>
+                                    <@cms.surveyQuestionItemList questionId=a.id pageSize=500>
                                     <#list page.list as i>
                                     <label><input name="answerList[${a?index}].answer" type="radio" value="${i.id}"<#if a?is_first> required="required"</#if><#if !available> disabled="true"</#if>/>${i.title}</label>
                             </#list>
-                            </@_surveyQuestionItemList>
+                            </@cms.surveyQuestionItemList>
                                     <#break>
                                     <#case 'select'>
-                                    <@_surveyQuestionItemList questionId=a.id pageSize=500>
+                                    <@cms.surveyQuestionItemList questionId=a.id pageSize=500>
                                     <select name="answerList[${a?index}].answer"<#if !available> disabled="true"</#if>>
                                         <#list page.list as i>
                                         <option value="${i.id}">${i.title}</option>
                                         </#list>
                                     </select>
-                            </@_surveyQuestionItemList>
+                            </@cms.surveyQuestionItemList>
                                     <#break>
                                     <#case 'checkbox'>
-                                    <@_surveyQuestionItemList questionId=a.id pageSize=500>
+                                    <@cms.surveyQuestionItemList questionId=a.id pageSize=500>
                                     <#list page.list as i>
                                     <label><input name="answerList[${a?index}].answer" type="checkbox" value="${i.id}"<#if !available> disabled="true"</#if>/>${i.title}</label>
                             </#list>
-                            </@_surveyQuestionItemList>
+                            </@cms.surveyQuestionItemList>
                                     <#break>
                                     <#case 'text'>
                                     <textarea name="answerList[${a?index}].answer" maxlength="150" cols="80" rows="4" required="required"<#if !available> disabled="true"</#if>></textarea>
@@ -96,7 +96,7 @@
                                 </p>
                             </li>
                             </#list>
-                            </@_surveyQuestionList>
+                            </@cms.surveyQuestionList>
                         </ul>
                         <p><input type="submit" class="button" value="提交"<#if !available> disabled="true"</#if>/></p>
                     </form>
@@ -105,8 +105,9 @@
         </div>
         <script>
             var itemString="itemType=survey&itemId=${survey.id}";
-        </script>
-        <@_includePlace path="/7f8bacb5-30ca-4641-b66f-987d447b1a85.html"/> <#-- footer -->
+			var templatePath='${.current_template_name?keep_after('/')}';
+		</script>
+        <@tools.includePlace path="/7f8bacb5-30ca-4641-b66f-987d447b1a85.html"/> <#-- footer -->
     </body>
 </html>
-</@_survey>
+</@cms.survey>

@@ -13,6 +13,7 @@ import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.entities.cms.CmsContentAttribute;
 import com.publiccms.logic.service.cms.CmsContentAttributeService;
 
+import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 
 /**
@@ -23,9 +24,8 @@ import freemarker.template.TemplateModelException;
 @Component
 public class GetContentAttributesMethod extends BaseMethod {
 
-    @SuppressWarnings("unchecked")
     @Override
-    public Object exec(@SuppressWarnings("rawtypes") List arguments) throws TemplateModelException {
+    public Object execute(List<TemplateModel> arguments) throws TemplateModelException {
         Long[] ids = getLongArray(0, arguments);
         if (CommonUtils.notEmpty(ids)) {
             Map<String, Map<String, String>> resultMap = new HashMap<>();

@@ -4,10 +4,10 @@
 <html lang="zh-CN">
     <head>
         <title>${(metadata.alias)!}</title>
-        <@_includePlace path="/8ddab9ba-a8aa-4745-86c6-66bf1c2c976c.html"/> <#-- header -->
+        <@tools.includePlace path="/8ddab9ba-a8aa-4745-86c6-66bf1c2c976c.html"/> <#-- header -->
     </head>
     <body>
-        <@_includePlace path="/c32a4f4a-ff5d-49cf-bb59-5d9784539174.html"/> <#-- 导航 -->
+        <@tools.includePlace path="/c32a4f4a-ff5d-49cf-bb59-5d9784539174.html"/> <#-- 导航 -->
 
         <div class="banner-l3 position-relative d-flex align-items-center justify-content-center" style="background:#22407c url(${site.sitePath}assets/img/banner-l3-bg-1.png) 50% 50% no-repeat;">
             <div class="container text-center position-relative py-3 py-md-4 text-white">
@@ -20,11 +20,11 @@
 
         <div class="container">
             <div class="row gx-5 justify-content-between my-5">
-                <@_includePlace path="/c936c718-5f19-426f-b3ff-13a5a8d63044.html"/> <#-- 个人中心导航 -->
+                <@tools.includePlace path="/c936c718-5f19-426f-b3ff-13a5a8d63044.html"/> <#-- 个人中心导航 -->
                 <div class="col-md-9">
                     <div class="ps-4">
                         <#macro message code>${springMacroRequestContext.getMessage(code)}</#macro>
-                        <@_sysUserTokenList userId=user.id pageIndex=pageIndex pageSize=10>
+                        <@sys.userTokenList userId=user.id pageIndex=pageIndex pageSize=10>
                             <h3>我的登录授权</h3>
                             <ul class="article-list">
                             <#list page.list as a>
@@ -37,7 +37,7 @@
 										<label class="text-secondary">过期日期:</label> ${a.expiryDate?string('yyyy-MM-dd HH:mm')!}
 										<label class="ms-2 text-secondary">IP:</label> ${a.loginIp!}
 										<span class="float-end">
-											<a href="${site.dynamicPath!}user/deleteToken?authToken=${a.authToken}&_csrf=<@_csrfToken/>&returnUrl=${site.dynamicPath}myToken.html" class="ms-2">删除</a>
+											<a href="${site.dynamicPath!}user/deleteToken?authToken=${a.authToken}&_csrf=<@tools.csrfToken/>&returnUrl=${site.dynamicPath}myToken.html" class="ms-2">删除</a>
 										</span>
 									</p>
                                 </li>
@@ -77,14 +77,15 @@
 									</a>
 								</li>
                             </ul>
-                        </@_sysUserTokenList>
+                        </@sys.userTokenList>
                     </div>
                 </div>
             </div>
         </div>
         <script>
-        var itemString="itemType=user&itemId=${user.id}";
-        </script>
-        <@_includePlace path="/7f8bacb5-30ca-4641-b66f-987d447b1a85.html"/> <#-- footer -->
+			var itemString="itemType=user&itemId=${user.id}";
+			var templatePath='${.current_template_name?keep_after('/')}';
+		</script>
+        <@tools.includePlace path="/7f8bacb5-30ca-4641-b66f-987d447b1a85.html"/> <#-- footer -->
     </body>
 </html>

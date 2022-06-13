@@ -5,10 +5,11 @@ package com.publiccms.views.directive.sys;
 import java.io.IOException;
 import java.util.Collection;
 
+import jakarta.annotation.Resource;
+
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.logic.component.config.ConfigComponent;
 import com.publiccms.logic.component.config.ConfigComponent.ConfigInfo;
-import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.handler.RenderHandler;
@@ -23,13 +24,17 @@ public class SysConfigListDirective extends AbstractTemplateDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
-        Collection<ConfigInfo> list = configComponent.getConfigList(getSite(handler), handler.getLocale(),
-                handler.getBoolean("advanced", false));
+        Collection<ConfigInfo> list = configComponent.getConfigList(getSite(handler), handler.getLocale(), getAdvanced(handler));
         handler.put("list", list).render();
     }
 
     @Override
     public boolean needAppToken() {
+        return true;
+    }
+
+    @Override
+    public boolean supportAdvanced() {
         return true;
     }
 

@@ -134,6 +134,99 @@ public class CmsFileUtils {
      * 获取目录下文件列表
      *
      * @param dirPath
+     * @param parentPath
+     * @param word
+     * @return file result list
+     */
+    public static List<FileSearchResult> searchFileList(String dirPath, String parentPath, String word) {
+        List<FileSearchResult> fileList = new ArrayList<>();
+        if (CommonUtils.notEmpty(word)) {
+            searchFileList(Paths.get(dirPath), parentPath, word, fileList);
+        }
+        return fileList;
+    }
+
+    /**
+     * 获取目录下文件列表
+     *
+     * @param dirPath
+     * @param fileList
+     * @param word
+     * @param replace
+     */
+    public static void replaceFileList(String dirPath, List<FileReplaceResult> fileList, String word, String replace) {
+        if (CommonUtils.notEmpty(fileList)) {
+            for (FileReplaceResult result : fileList) {
+                File file = Paths.get(dirPath, result.getPath()).toFile();
+                if (null != result.getIndexs()) {
+                    try {
+                        List<String> list = FileUtils.readLines(file, CommonConstants.DEFAULT_CHARSET_NAME);
+                        int i = 0, j = 0, n = 0;
+                        for (String line : list) {
+                            if (line.contains(word)) {
+                                if (result.getIndexs().length > j && j == result.getIndexs()[n]) {
+                                    list.set(i, line.replaceAll(word, replace));
+                                    n++;
+                                }
+                                j++;
+                            }
+                            i++;
+                        }
+                        FileUtils.writeLines(file, CommonConstants.DEFAULT_CHARSET_NAME, list);
+                    } catch (IOException e) {
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * 获取目录下文件列表
+     *
+     * @param dirPath
+     * @param parentPath
+     * @param word
+     * @param fileList
+     */
+    private static void searchFileList(Path dirPath, String parentPath, String word, List<FileSearchResult> fileList) {
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(dirPath)) {
+            for (Path entry : stream) {
+                Path fileNamePath = entry.getFileName();
+                if (null != fileNamePath) {
+                    String fileName = fileNamePath.toString();
+                    if (!parentPath.endsWith(CommonConstants.SEPARATOR)) {
+                        parentPath += CommonConstants.SEPARATOR;
+                    }
+                    File file = entry.toFile();
+                    if (file.isDirectory()) {
+                        if (!TemplateComponent.INCLUDE_DIRECTORY.equalsIgnoreCase(fileName)) {
+                            searchFileList(entry, parentPath + fileName, word, fileList);
+                        }
+                    } else if (!fileName.endsWith(".data")) {
+                        List<String> matchList = new ArrayList<>();
+                        List<String> list = FileUtils.readLines(entry.toFile(), CommonConstants.DEFAULT_CHARSET_NAME);
+                        for (String line : list) {
+                            if (line.contains(word)) {
+                                matchList.add(line);
+                            }
+                        }
+                        if (!matchList.isEmpty()) {
+                            FileSearchResult result = new FileSearchResult();
+                            result.setPath(parentPath + fileName);
+                            result.setMatchList(matchList);
+                            fileList.add(result);
+                        }
+                    }
+                }
+            }
+        } catch (IOException e) {
+        }
+    }
+
+    /**
+     * 获取目录下文件列表
+     *
+     * @param dirPath
      * @param useFilter
      * @param orderField
      * @return file info list
@@ -148,7 +241,7 @@ public class CmsFileUtils {
                     if (!useFilter
                             || !fileName.endsWith(".data") && !TemplateComponent.INCLUDE_DIRECTORY.equalsIgnoreCase(fileName)) {
                         BasicFileAttributes attrs = Files.readAttributes(entry, BasicFileAttributes.class);
-                        fileList.add(new FileInfo(fileName, attrs.isDirectory(), attrs, dirPath));
+                        fileList.add(new FileInfo(fileName, attrs.isDirectory(), attrs));
                     }
                 }
             }
@@ -514,6 +607,94 @@ public class CmsFileUtils {
     }
 
     /**
+     * FileSearchResult 文件查找结果
+     * 
+     */
+    public static class FileReplaceResult {
+        private String path;
+        private int[] indexs;
+
+        /**
+         * @return the path
+         */
+        public String getPath() {
+            return path;
+        }
+
+        /**
+         * @param path
+         *            the path to set
+         */
+        public void setPath(String path) {
+            this.path = path;
+        }
+
+        /**
+         * @return the indexs
+         */
+        public int[] getIndexs() {
+            return indexs;
+        }
+
+        /**
+         * @param indexs
+         *            the indexs to set
+         */
+        public void setIndexs(int[] indexs) {
+            this.indexs = indexs;
+        }
+
+        @Override
+        public String toString() {
+            return "FileReplaceResult [path=" + path + ", indexs=" + Arrays.toString(indexs) + "]";
+        }
+    }
+
+    /**
+     * FileSearchResult 文件查找结果
+     * 
+     */
+    public static class FileSearchResult {
+        private String path;
+        private List<String> matchList;
+
+        /**
+         * @return the path
+         */
+        public String getPath() {
+            return path;
+        }
+
+        /**
+         * @param path
+         *            the path to set
+         */
+        public void setPath(String path) {
+            this.path = path;
+        }
+
+        /**
+         * @return the matchList
+         */
+        public List<String> getMatchList() {
+            return matchList;
+        }
+
+        /**
+         * @param matchList
+         *            the matchList to set
+         */
+        public void setMatchList(List<String> matchList) {
+            this.matchList = matchList;
+        }
+
+        @Override
+        public String toString() {
+            return "FileSearchResult [path=" + path + ", matchList=" + matchList + "]";
+        }
+    }
+
+    /**
      *
      * FileInfo 文件信息封装类
      *
@@ -525,22 +706,19 @@ public class CmsFileUtils {
         private Date lastAccessTime;
         private Date creationTime;
         private long size;
-        private String dirPath;
 
         /**
          * @param fileName
          * @param directory
          * @param attrs
-         * @param dirPath
          */
-        public FileInfo(String fileName, boolean directory, BasicFileAttributes attrs, String dirPath) {
+        public FileInfo(String fileName, boolean directory, BasicFileAttributes attrs) {
             this.fileName = fileName;
             this.directory = directory;
             this.lastModifiedTime = new Date(attrs.lastModifiedTime().toMillis());
             this.lastAccessTime = new Date(attrs.lastAccessTime().toMillis());
             this.creationTime = new Date(attrs.creationTime().toMillis());
             this.size = attrs.size();
-            this.dirPath = dirPath;
         }
 
         /**
@@ -625,21 +803,6 @@ public class CmsFileUtils {
          */
         public void setSize(long size) {
             this.size = size;
-        }
-
-        /**
-         * @return the dirPath
-         */
-        public String getDirPath() {
-            return dirPath;
-        }
-
-        /**
-         * @param dirPath
-         *            the dirPath to set
-         */
-        public void setDirPath(String dirPath) {
-            this.dirPath = dirPath;
         }
     }
 }

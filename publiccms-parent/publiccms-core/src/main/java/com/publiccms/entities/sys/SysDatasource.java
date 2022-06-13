@@ -10,6 +10,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.publiccms.common.generator.annotation.GeneratorColumn;
 
 /**
@@ -23,15 +24,32 @@ public class SysDatasource implements java.io.Serializable {
     * 
     */
     private static final long serialVersionUID = 1L;
+    /**
+     * name<p>
+     * 名称
+     */
     @GeneratorColumn(title = "名称")
     private String name;
+    /**
+     * config<p>
+     * 配置
+     */
     @GeneratorColumn(title = "配置")
     private String config;
+    /**
+     * create date<p>
+     * 创建日期
+     */
     @GeneratorColumn(title = "创建日期", order = true)
     private Date createDate;
+    /**
+     * update date<p>
+     * 更新日期
+     */
     @GeneratorColumn(title = "更新日期")
     private Date updateDate;
     @GeneratorColumn(title = "禁用", condition = true)
+    @JsonIgnore
     private boolean disabled;
 
     public SysDatasource() {

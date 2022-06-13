@@ -13,6 +13,7 @@ import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.AnalyzerDictUtils;
 import com.publiccms.logic.component.site.SiteComponent;
 
+import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 
 @Component
@@ -21,7 +22,7 @@ public class GetDictMethod extends BaseMethod {
     private SiteComponent siteComponent;
 
     @Override
-    public Object exec(@SuppressWarnings("rawtypes") List arguments) throws TemplateModelException {
+    public Object execute(List<TemplateModel> arguments) throws TemplateModelException {
         File dictFile = new File(siteComponent.getRootPath() + AnalyzerDictUtils.DIR_DICT + AnalyzerDictUtils.TXT_DICT);
         try {
             return FileUtils.readFileToString(dictFile, CommonConstants.DEFAULT_CHARSET_NAME);

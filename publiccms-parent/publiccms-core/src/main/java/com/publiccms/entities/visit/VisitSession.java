@@ -29,14 +29,31 @@ public class VisitSession implements java.io.Serializable {
     */
     private static final long serialVersionUID = 1L;
 
+    /**
+     * id
+     */
     @GeneratorColumn(title = "ID")
     private VisitSessionId id;
+    /**
+     * last visit date<p>
+     * 上次访问日期
+     */
     @GeneratorColumn(title = "上次访问时间", order = true)
     private Date lastVisitDate;
+    /**
+     * first visit date<p>
+     * 首次访问日期
+     */
     @GeneratorColumn(title = "首次访问时间")
     private Date firstVisitDate;
+    /**
+     * ip
+     */
     @GeneratorColumn(title = "IP", condition = true)
     private String ip;
+    /**
+     * pv
+     */
     @GeneratorColumn(title = "PV")
     private long pv;
 

@@ -21,15 +21,35 @@ public class SysDomain implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
+    /**
+     * domain name<p>
+     * 域名
+     */
     @GeneratorColumn(title = "域名")
     private String name;
+    /**
+     * site id<p>
+     * 站点id
+     */
     @GeneratorColumn(title = "站点", condition = true)
     private short siteId;
+    /**
+     * wild<p>
+     * 通配域名
+     */
     @GeneratorColumn(title = "通配", condition = true)
     private boolean wild;
+    /**
+     * multiple site<p>
+     * 站群
+     */
     @GeneratorColumn(title = "多站点", condition = true)
     private boolean multiple;
-    @GeneratorColumn(title = "路径")
+    /**
+     * root template path<p>
+     * 模板根目录
+     */
+    @GeneratorColumn(title = "模板根目录")
     private String path;
 
     public SysDomain() {

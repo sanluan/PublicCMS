@@ -4,9 +4,10 @@ package com.publiccms.views.directive.cms;
 
 import java.io.IOException;
 
+import jakarta.annotation.Resource;
+
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.logic.service.cms.CmsWordService;
-import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.handler.PageHandler;
@@ -24,13 +25,13 @@ public class CmsWordListDirective extends AbstractTemplateDirective {
     public void execute(RenderHandler handler) throws IOException, Exception {
         Boolean hidden = false;
         String orderField = "searchCount";
-        if (handler.getBoolean("advanced", false)) {
+        if (getAdvanced(handler)) {
             hidden = handler.getBoolean("hidden");
             orderField = handler.getString("orderField");
         }
         PageHandler page;
         Integer pageIndex = handler.getInteger("pageIndex", 1);
-        Integer count = handler.getInteger("pageSize", 30);
+        Integer count = handler.getInteger("pageSize", handler.getInteger("count", 30));
         try {
             page = service.getPage(getSite(handler).getId(), hidden, handler.getDate("startCreateDate"),
                     handler.getDate("endCreateDate"), handler.getString("name"), orderField, handler.getString("orderType"),
@@ -43,6 +44,11 @@ public class CmsWordListDirective extends AbstractTemplateDirective {
 
     @Override
     public boolean needAppToken() {
+        return true;
+    }
+
+    @Override
+    public boolean supportAdvanced() {
         return true;
     }
 

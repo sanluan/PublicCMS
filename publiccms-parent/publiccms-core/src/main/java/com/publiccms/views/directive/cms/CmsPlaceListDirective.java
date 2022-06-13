@@ -72,7 +72,7 @@ public class CmsPlaceListDirective extends AbstractTemplateDirective {
         String path = handler.getString("path");
         Boolean disabled = false;
         Integer[] status;
-        if (handler.getBoolean("advanced", false)) {
+        if (getAdvanced(handler)) {
             status = handler.getIntegerArray("status");
             disabled = handler.getBoolean("disabled", false);
         } else {
@@ -89,7 +89,7 @@ public class CmsPlaceListDirective extends AbstractTemplateDirective {
         PageHandler page = service.getPage(site.getId(), handler.getLong("userId"), path, handler.getString("itemType"),
                 handler.getLong("itemId"), handler.getDate("startPublishDate"), endPublishDate, expiryDate, status, disabled,
                 handler.getString("orderField"), handler.getString("orderType"), handler.getInteger("pageIndex", 1),
-                handler.getInteger("pageSize", 30));
+                handler.getInteger("pageSize", handler.getInteger("count", 30)));
         @SuppressWarnings("unchecked")
         List<CmsPlace> list = (List<CmsPlace>) page.getList();
         if (null != list) {
@@ -106,6 +106,11 @@ public class CmsPlaceListDirective extends AbstractTemplateDirective {
             });
         }
         handler.put("page", page).render();
+    }
+    
+    @Override
+    public boolean supportAdvanced() {
+        return true;
     }
 
     @Override

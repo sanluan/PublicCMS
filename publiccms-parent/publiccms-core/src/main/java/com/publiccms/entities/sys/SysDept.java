@@ -25,27 +25,66 @@ public class SysDept implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
+    /**
+     * id
+     */
     @GeneratorColumn(title = "ID")
     private Integer id;
     @GeneratorColumn(title = "站点", condition = true)
     @JsonIgnore
     private short siteId;
+    /**
+     * name<p>
+     * 名称
+     */
     @GeneratorColumn(title = "名称", condition = true, like = true, name = "name")
     private String name;
+    /**
+     * code<p>
+     * 编码
+     */
     @GeneratorColumn(title = "编码", condition = true, like = true, name = "name")
     private String code;
+    /**
+     * parent id<p>
+     * 父部门id
+     */
     @GeneratorColumn(title = "父部门", condition = true)
     private Integer parentId;
+    /**
+     * description<p>
+     * 描述
+     */
     @GeneratorColumn(title = "描述")
     private String description;
+    /**
+     * manage user id<p>
+     * 负责用户id
+     */
     @GeneratorColumn(title = "负责人", condition = true)
     private Long userId;
+    /**
+     * max content sort<p>
+     * 最大内容置顶级别
+     */
     @GeneratorColumn(title = "最大内容置顶级别")
     private int maxSort;
+    /**
+     * owns all category<p>
+     * 拥有全部分类
+     */
     @GeneratorColumn(title = "拥有全部分类")
     private boolean ownsAllCategory;
+    /**
+     * owns all page<p>
+     * 拥有全部页面
+     */
     @GeneratorColumn(title = "拥有全部页面")
     private boolean ownsAllPage;
+    /**
+     * owns all config<p>
+     * 拥有全部配置
+     */
     @GeneratorColumn(title = "拥有全部配置")
     private boolean ownsAllConfig;
 

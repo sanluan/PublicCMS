@@ -26,6 +26,14 @@ public abstract class BaseMethod implements TemplateMethodModelEx {
     protected final Log log = LogFactory.getLog(getClass());
     private String name;
 
+    @SuppressWarnings("unchecked")
+    @Override
+    public Object exec(@SuppressWarnings("rawtypes") List arguments) throws TemplateModelException {
+        return execute((List<TemplateModel>) arguments);
+    }
+
+    public abstract Object execute(List<TemplateModel> arguments) throws TemplateModelException;
+
     protected static TemplateModel getModel(int index, List<TemplateModel> arguments) {
         if (CommonUtils.notEmpty(arguments) && index < arguments.size()) {
             return arguments.get(index);

@@ -4,11 +4,12 @@
         <title>${(attribute.title)!category.name}</title>
         <meta name="keywords" content="${(attribute.keywords)!}"/>
         <meta name="description" content="${(attribute.description)!}"/>
-        <@_includePlace path="/8ddab9ba-a8aa-4745-86c6-66bf1c2c976c.html"/> <#-- header -->
+        <@tools.includePlace path="/8ddab9ba-a8aa-4745-86c6-66bf1c2c976c.html"/> <#-- header -->
     </head>
     <body>
-        <@_includePlace path="/c32a4f4a-ff5d-49cf-bb59-5d9784539174.html"/> <#-- 导航 -->
-        <div class="banner-l2 position-relative d-flex align-items-center justify-content-center">
+        <@tools.includePlace path="/c32a4f4a-ff5d-49cf-bb59-5d9784539174.html"/> <#-- 导航 -->
+
+        <div class="banner-l2 position-relative d-flex align-items-center justify-content-center" data-diy="category" data-diy-id="${category.id}">
             <div class="container text-center position-relative py-3 py-md-4">
                 <div class="display-3 fw-bolder">${category.name}</div>
                 <p class="text-secondary m-0">${(attribute.description)!}</p>
@@ -24,24 +25,24 @@
         <div class="container">
             <div class="row">
                 <div class="col-12 d-flex justify-content-center my-5">
-                    <ul class="nav nav-pills nav-l2">
-                    <@_category id=category.parentId!category.id>
+                    <ul class="nav nav-pills nav-l2" data-diy="child-category">
+                    <@cms.category id=category.parentId!category.id>
                         <li class="nav-item">
                             <a class="nav-link<#if object.id=category.id> active</#if>" aria-current="page" href="${object.url!}">全部</a>
                         </li>
-                    </@_category>
-                    <@_categoryList parentId=category.parentId!category.id>
+                    </@cms.category>
+                    <@cms.categoryList parentId=category.parentId!category.id>
                         <#list page.list as a>
                         <li class="nav-item">
                             <a class="nav-link<#if a.id=category.id> active</#if>" href="${a.url}">${a.name!}</a>
                         </li>
                         </#list>
-                    </@_categoryList>
+                    </@cms.categoryList>
                     </ul>
                 </div>
             </div>
-        <@_contentList categoryId=category.id hasCover=true containChild=category.containChild pageIndex=pageIndex pageSize=category.pageSize>
-            <div class="row row-cols-2 row-cols-md-3 gx-3 gx-md-5 gy-1 gy-md-4 case-list">
+        <@cms.contentList categoryId=category.id hasCover=true containChild=category.containChild pageIndex=pageIndex pageSize=category.pageSize>
+            <div class="row row-cols-2 row-cols-md-3 gx-3 gx-md-5 gy-1 gy-md-4 case-list" data-diy="content">
                 <#list page.list as a>
                 <a class="col" href="${a.url}" title="${a.title}">
                     <figure class="d-flex justify-content-center align-items-center">
@@ -50,7 +51,7 @@
                 </a>
                 </#list>
             </div>
-			
+
             <#if 1=pageIndex>
 				<#if  !page.lastPage>
             <div class="text-center position-relative mt-5">
@@ -61,7 +62,7 @@
             </div>
 				</#if>
             <#else>
-            <ul class="pagination mt-5 overflow-auto pb-3">
+            <ul class="pagination mt-5 overflow-auto pb-3" data-diy="task">
                 <li class="page-item">
                     <a class="page-link" href="${getPage(url,page.prePage)}" aria-label="Previous">
                         <span aria-hidden="true">«</span>
@@ -71,7 +72,11 @@
                 <#if (page.pageIndex-5) gt start>
                 <#assign start=page.pageIndex-4/>
                 </#if>
-                <#assign end=page.totalPage/>
+				<#assign max=page.totalPage/>
+				<#if 100 lt max>
+				<#assign max=100/>
+				</#if>
+				<#assign end=max/>
                 <#if (page.pageIndex+5) lt end>
                 <#assign end=page.pageIndex+4/>
                 </#if>
@@ -82,9 +87,9 @@
 				<#list start..end as a>
 				<li class="page-item<#if a=page.pageIndex> active</#if>"><a class="page-link" href="${getPage(url,a)}">${a}</a></li>
 				</#list>
-				<#if end lt page.totalPage>
+				<#if end lt max>
 				<li class="page-item"><span>...</span></li>
-				<li class="page-item"><a class="page-link" href="${getPage(url,page.totalPage)}">${page.totalPage}</a></li>
+				<li class="page-item"><a class="page-link" href="${getPage(url,max)}">${max}</a></li>
 				</#if>
                 <li class="page-item">
                     <a class="page-link" href="${getPage(url,page.nextPage)}" aria-label="Next">
@@ -93,11 +98,15 @@
                 </li>
             </ul>
             </#if>
-        </@_contentList>
+        </@cms.contentList>
         </div>
         <script>
             var itemString="itemType=category&itemId=${category.id}";
+			var templatePath='${.current_template_name?keep_after('/')}';
         </script>
-        <@_includePlace path="/7f8bacb5-30ca-4641-b66f-987d447b1a85.html"/> <#-- footer -->
+        <@tools.includePlace path="/7f8bacb5-30ca-4641-b66f-987d447b1a85.html"/> <#-- footer -->
+		<script>
+            $('.navbar-nav .nav-item[data-id=${category.parentId!category.id}]').addClass('selected');
+        </script>
     </body>
 </html>
