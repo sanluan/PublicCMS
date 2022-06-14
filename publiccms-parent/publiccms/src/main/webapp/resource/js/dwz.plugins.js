@@ -197,13 +197,13 @@ DWZ.regPlugins.push(function($p){
         img.file = file;
         $previewElem.empty().append(img);
 
-        if ($previewElem.find('.del-icon').size() == 0) {
+        if ($previewElem.find('.del-icon').length == 0) {
             $('<a class="del-icon"></a>').appendTo($previewElem).click(function(event){
                 $previewElem.remove();
                 $uploadWrap.find('input[type=file]').val('');
             });
         }
-        if ($previewElem.find('.edit-icon').size() == 0) {
+        if ($previewElem.find('.edit-icon').length == 0) {
             $('<a class="edit-icon"></a>').appendTo($previewElem).click(function(event){
                 editImg($uploadWrap,file,file.name,function(dataURL){
                     if(dataURL){
@@ -233,10 +233,14 @@ DWZ.regPlugins.push(function($p){
         var widthInput=$uploadWrap.parents("form:first").find("input[name=width]");
         var heightInput=$uploadWrap.parents("form:first").find("input[name=height]");
         widthInput.change(function(){
-            DWZ.instances[$uploadWrap.parent().find('.image-editor').data("id")].size(parseInt(widthInput.val()),parseInt(heightInput.val()));
+            if(DWZ.instances[$uploadWrap.parent().find('.image-editor').data("id")]){
+                DWZ.instances[$uploadWrap.parent().find('.image-editor').data("id")].size(parseInt(widthInput.val()),parseInt(heightInput.val()));
+            }
         });
         heightInput.change(function(){
-            DWZ.instances[$uploadWrap.parent().find('.image-editor').data("id")].size(parseInt(widthInput.val()),parseInt(heightInput.val()));
+            if(DWZ.instances[$uploadWrap.parent().find('.image-editor').data("id")]){
+                DWZ.instances[$uploadWrap.parent().find('.image-editor').data("id")].size(parseInt(widthInput.val()),parseInt(heightInput.val()));
+            }
         });
         var options= {
             size: [parseInt(widthInput.val()), parseInt(heightInput.val())],
@@ -315,7 +319,7 @@ DWZ.regPlugins.push(function($p){
                     $uploadWrap.find('input[name=base64File]').val(dataURL.substring(dataURL.indexOf('base64,')+7));
                     $uploadWrap.find('input[name=originalFilename]').val(options.imgName);
                     $uploadWrap.find('input[type=file]').val('');
-                    if ($previewElem.find('.del-icon').size() == 0) {
+                    if ($previewElem.find('.del-icon').length == 0) {
                         $('<a class="del-icon"></a>').appendTo($previewElem).click(function(event){
                             $previewElem.remove();
                             $uploadWrap.find('input[name=base64File]').val('');

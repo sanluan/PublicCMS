@@ -54,7 +54,7 @@
             <@t.merge 'moduleIds' a.id!/>
         </#list>
         <@sys.roleModule roleIds=admin.roles moduleIds=t.moduleIds!><#assign roleModuleMap=map!/></@sys.roleModule>
-    
+
         <#list page.list as a>
             <#if (roleModuleMap[a.id?string])?has_content&&roleModuleMap[a.id?string]>
                 <#if !parentId?has_content><#assign parentId=a.id/></#if>
@@ -131,7 +131,7 @@
             <li theme="red"><div></div></li>
         </ul>
     </footer>
-    <script src="${base}/resource/js/jquery-1.12.4.min.js"></script>
+    <script src="${base}/resource/js/jquery-3.6.0.min.js"></script>
     <script src="${base}/resource/js/jquery.cookie.js"></script>
     <script src="${base}/resource/js/jquery.validate.js"></script>
     <script src="${base}/resource/js/jquery.bgiframe.js"></script>
