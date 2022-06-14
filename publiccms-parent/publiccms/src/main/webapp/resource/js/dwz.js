@@ -99,7 +99,7 @@ var DWZ = {
     } ,
     jsonEval: function(data) {
         try {
-            if ($.type(data) == 'string' ) {
+            if (typeof data == 'string' ) {
                 return eval('(' + data + ')');
             } else {
                 return data;
@@ -169,14 +169,14 @@ var DWZ = {
                         DWZ.frag[pageId] = $(this).text();
                     }
                 });
-                if ($.isFunction(op.callback) ) {
+                if ("function" === typeof op.callback ) {
                     op.callback();
                 }
             }
         });
         var _doc = $(document);
         if (!_doc.isBind(DWZ.eventType.pageClear) ) {
-            _doc.bind(DWZ.eventType.pageClear, function(event) {
+            _doc.on(DWZ.eventType.pageClear, null, null, function(event) {
                 var box = event.target;
                 $("textarea.editor", $(box)).each(function() {
                     if('ckeditor'==$(this).attr('editorType')) {
@@ -249,7 +249,7 @@ var DWZ = {
                         });
                     } else {
                         $this.html(response).initUI();
-                        if ($.isFunction(op.callback) ) {
+                        if ("function" === typeof op.callback ) {
                             op.callback(response);
                         }
                     }
@@ -268,7 +268,7 @@ var DWZ = {
         },
         initUI: function() {
             return this.each(function() {
-                if ($.isFunction(initUI) ) {
+                if ("function" === typeof initUI ) {
                     initUI(this);
                 }
             });
@@ -359,7 +359,7 @@ var DWZ = {
                         width: $this.width(), top: position.top + 'px', left: position.left + 'px', opacity: opacity || 1
                     };
                 }
-                if (getAltBox().size() < 1 ) {
+                if (getAltBox().length < 1 ) {
                     if (!$this.attr("id") ) {
                         $this.attr("id", $this.attr("name") + "_" + Math.round(Math.random() * 10000));
                     }
@@ -1088,7 +1088,7 @@ function Map() {
             }
             function closeCalendar() {
                 $(setting.box$).remove();
-                $(document).unbind("click", closeCalendar);
+                $(document).off("click", null, closeCalendar);
             }
             $this.click(function(event) {
                 closeCalendar();
@@ -1100,7 +1100,6 @@ function Map() {
                 }).show().click(function(event) {
                     event.stopPropagation();
                 });
-                ( $.fn.bgiframe && $(setting.box$).bgiframe() );
                 var dayNames = "";
                 $.each($.regional.datepicker.dayNames, function(i, v) {
                     dayNames += "<dt>" + v + "</dt>"
@@ -1152,7 +1151,7 @@ function Map() {
                     $this.val(dp.formatDate(date));
                     closeCalendar();
                 });
-                $(document).bind("click", closeCalendar);
+                $(document).on("click", null, null, closeCalendar);
                 return false;
             });
         });
@@ -1387,7 +1386,7 @@ function Map() {
                             });
                         }
                         function _hideBar() {
-                            $(op.container).unbind("click", _hideBar);
+                            $(op.container).off("click", null, _hideBar);
                             if (!DWZ.ui.sbar ) {
                                 bar.animate({
                                     left: barleft
@@ -1414,7 +1413,7 @@ function Map() {
                         $(op.container).css({
                             'margin-left': cleft, width: cwidth
                         });
-                        $(sbar).unbind('click');
+                        $(sbar).off('click');
                         $(window).trigger(DWZ.eventType.resizeGrid);
                     });
                 }
@@ -1468,7 +1467,7 @@ function Map() {
         if (typeof options == 'string' ) {
             if (options == 'destroy' ) {
                 return this.each(function() {
-                    $(this).unbind('mousedown', $.rwdrag.start);
+                    $(this).off('mousedown', null, $.rwdrag.start);
                     $.data(this, 'pp-rwdrag', null);
                 });
             }
@@ -1484,7 +1483,7 @@ function Map() {
                 $.rwdrag.start(options.event);
             } else {
                 var select = options.selector;
-                $(select, obj).bind('mousedown', $.rwdrag.start);
+                $(select, obj).on('mousedown', null, null, $.rwdrag.start);
             }
         });
     };
@@ -1503,7 +1502,7 @@ function Map() {
                 $.rwdrag.current = {
                     el: el, oleft: parseInt(el.style.left) || 0, otop: parseInt(el.style.top) || 0, ox: e.pageX || e.screenX, oy: e.pageY || e.screenY
                 };
-                $(document).bind("mouseup", $.rwdrag.stop).bind("mousemove", $.rwdrag.drag);
+                $(document).on("mouseup", null, null, $.rwdrag.stop).on("mousemove", null, null, $.rwdrag.drag);
             }
         },
         drag: function(e) {
@@ -1544,7 +1543,7 @@ function Map() {
         }, stop: function(e) {
             var current = $.rwdrag.current;
             var data = $.data(current.el, 'pp-rwdrag');
-            $(document).unbind('mousemove', $.rwdrag.drag).unbind('mouseup', $.rwdrag.stop);
+            $(document).off('mousemove', null, $.rwdrag.drag).off('mouseup', null, $.rwdrag.stop);
             if (data.options.stop ) {
                 data.options.stop.apply(current.el, [ current.el, e ]);
             }
@@ -1595,7 +1594,7 @@ function Map() {
                 setTimeout(function() {
                     if ($this.hasClass("treeCheck") ) {
                         var checkFn = eval($this.attr("oncheck"));
-                        if (checkFn && $.isFunction(checkFn) ) {
+                        if (checkFn && "function" === typeof checkFn ) {
                             $("div.ckbox", $this).each(function() {
                                 var ckbox = $(this);
                                 ckbox.click(function() {
@@ -1604,7 +1603,7 @@ function Map() {
                                     if (checked ) {
                                         var tnode = $(ckbox).parent().parent();
                                         var boxes = $("input", tnode);
-                                        if (boxes.size() > 1 ) {
+                                        if (boxes.length > 1 ) {
                                             $(boxes).each(function() {
                                                 items[items.length] = {
                                                     name: $(this).attr("name"), value: $(this).val()
@@ -1629,7 +1628,7 @@ function Map() {
                         var parent = $(this).parent().addClass(op.selected);
                         var $li = $(this).parents("li:first"), sTarget = $li.attr("target");
                         if (sTarget ) {
-                            if ($("#" + sTarget, $this).size() == 0 ) {
+                            if ($("#" + sTarget, $this).length == 0 ) {
                                 $this.prepend('<input id="' + sTarget + '" type="hidden" />');
                             }
                             $("#" + sTarget, $this).val($li.attr("rel"));
@@ -1665,14 +1664,14 @@ function Map() {
                 var tree = $(">ul", node);
                 var parent = node.parent().prev();
                 var checked = 'unchecked';
-                if (op.ckbox && 0 > $(">.checked", parent).size() ) {
+                if (op.ckbox && 0 > $(">.checked", parent).length ) {
                     checked = 'checked';
                 }
-                if (tree.size() > 0 || node.attr(op.options.async)) {
+                if (tree.length > 0 || node.attr(op.options.async)) {
                     node.children(":first").wrap("<div></div>");
                     $(">div", node).prepend(( op.ckbox ? "<div class='ckbox " + checked + "'></div>": "" )
                             + ( op.icon ? "<div class='" + ( ( op.showSub  && !node.attr(op.options.async) )  ? op.options.folderColl: op.options.folderExp ) + "'></div>": "<div class='" + ( ( op.showSub && !node.attr(op.options.async) ) ? op.coll: op.exp ) + "'></div>" ));
-                    if (tree.size() > 0 ) {
+                    if (tree.length > 0 ) {
                         op.showSub ? tree.show(): tree.hide();
                     }
                     $(">div>div."+op.options.folderColl+",>div>div."+op.options.folderExp+",>div>a", node).click(function() {
@@ -1687,7 +1686,7 @@ function Map() {
                                         var parent = $(this).parent().addClass(op.options.selected);
                                         var $li = $(this).parents("li:first"), sTarget = $li.attr("target");
                                         if (sTarget ) {
-                                            if ($("#" + sTarget, op.root).size() == 0 ) {
+                                            if ($("#" + sTarget, op.root).length == 0 ) {
                                                 op.root.prepend('<input id="' + sTarget + '" type="hidden" />');
                                             }
                                             $("#" + sTarget, op.root).val($li.attr("rel"));
@@ -1802,8 +1801,8 @@ function Map() {
             }
             var parent = $(this).parent().parent();
             var stree = $(">ul", parent);
-            var ckbox = stree.find(">li>a").size() + stree.find("div.ckbox").size();
-            var ckboxed = stree.find("div.checked").size();
+            var ckbox = stree.find(">li>a").length + stree.find("div.ckbox").length;
+            var ckboxed = stree.find("div.checked").length;
             var aClass = ( ckboxed == ckbox ? "checked": ( ckboxed != 0 ? "indeterminate": "unchecked" ) );
             var rClass = ( ckboxed == ckbox ? "indeterminate": ( ckboxed != 0 ? "checked": "indeterminate" ) );
             $(">div>.ckbox", parent).removeClass("unchecked").removeClass("checked").removeClass(rClass).addClass(aClass);
@@ -1884,7 +1883,7 @@ function Map() {
         options.active.find("h2").addClass(options.selectedClass);
         options.active.find("h2 .icon").addClass(options.selectedIconClass);
         if (options.event ) {
-            $(container).bind( ( options.event ) + ".dwz-accordion", clickHandler);
+            $(container).on( ( options.event ) + ".dwz-accordion", null, null, clickHandler);
         }
     };
     $.dwz.accordion.prototype = {
@@ -1905,7 +1904,7 @@ function Map() {
                 this.options.headers.next().css("height", "");
             }
             $.removeData(this.element, "dwz-accordion");
-            $(this.element).removeClass("dwz-accordion").unbind(".dwz-accordion");
+            $(this.element).removeClass("dwz-accordion").off(".dwz-accordion");
         }
     }
     function scopeCallback(callback, scope) {
@@ -1936,7 +1935,7 @@ function Map() {
         if (!obj) return;
 
         var parent = $(obj).parent();
-        var height = parent.height() - (($(".accordionHeader", obj).size()) * ($(".accordionHeader:first-child", obj).outerHeight())) -2;
+        var height = parent.height() - (($(".accordionHeader", obj).length) * ($(".accordionHeader:first-child", obj).outerHeight())) -2;
 
         var os = parent.children().not(obj);
         $.each(os, function(i){
@@ -1952,7 +1951,7 @@ function Map() {
         var complete = scopeCallback(completed, this);
 
         // count elements to animate
-        options.running = toHide.size() == 0 ? toShow.size(): toHide.size();
+        options.running = toHide.length == 0 ? toShow.length: toHide.length;
         if (options.animated ) {
             if (!options.alwaysOpen && clickedActive ) {
                 $.dwz.accordion.animations[options.animated]({
@@ -2045,7 +2044,7 @@ function Map() {
                 options = $.extend({
                     easing: "swing", duration: 100
                 }, options, additions);
-                if (!options.toHide.size() ) {
+                if (!options.toHide.length ) {
                     options.toShow.animate({
                         height: "show"
                     }, options);
@@ -2053,7 +2052,7 @@ function Map() {
                 }
                 var hideHeight = options.toHide.height(), showHeight = options.toShow.height(), difference = showHeight / hideHeight;
                 options.toShow.css({
-                    height: 0
+                    height: '0px'
                 }).show();
                 options.toHide.filter(":hidden").each(options.complete).end().filter(":visible").animate({
                     height: "hide"
@@ -2066,7 +2065,7 @@ function Map() {
                         options.toShow.height(current);
                     }, duration: options.duration, easing: options.easing, complete: function() {
                         options.toShow.css({
-                            height: showHeight
+                            height: showHeight+'px'
                         });
                         options.toShow.css({
                             overflow: "auto"
@@ -2093,9 +2092,6 @@ function initEnv() {
         try {
             document.execCommand("BackgroundImageCache", false, true);
         } catch (e) {}
-    }
-    if (!$.support.leadingWhitespace ) {
-        window.setInterval("CollectGarbage();", 10000);
     }
     $(window).resize(function() {
         initLayout();
@@ -2147,13 +2143,13 @@ function initEnv() {
 function initLayout() {
     var iContentW = $(window).width() - (DWZ.ui.sbar ? $("#sidebar").width() : 0);
     var iContentH = $(window).height() - $('header').outerHeight(true) - $('footer').outerHeight(true);
-    $("#navTab").css({"width":iContentW});
+    $("#navTab").css({"width":iContentW+'px'});
     $("main .tabsPageContent").height(iContentH - $('.tabsPageHeader').outerHeight(true)).find("[layoutH]").layoutH();
     $("#splitBar, #splitBarProxy").height(iContentH - 2);
     $("#taskbar").css({
-        top: iContentH + $("header").height(), width: $(window).width()
+        top: (iContentH + $("header").height())+'px', width: $(window).width()+'px'
     });
-  $("#menu").css({'max-height':iContentH-$("#sidebar .collapse").height()});
+  $("#menu").css({'max-height':(iContentH-$("#sidebar .collapse").height())+'px'});
 }
 
 function initUI(_box) {
@@ -2384,7 +2380,7 @@ function initLink($p) {
                 $themeItem.attr("href", _themeHref.replace("#theme#", themeName));
                 jThemeLi.find(">div").removeClass("selected");
                 jThemeLi.filter("[theme=" + themeName + "]").find(">div").addClass("selected");
-                if ($.isFunction($.cookie) ) {
+                if ("function" === typeof $.cookie ) {
                     $.cookie("dwz_theme", themeName);
                 }
             }
@@ -2399,7 +2395,7 @@ function initLink($p) {
                     setTheme(themeName);
                 });
             });
-            if ($.isFunction($.cookie) ) {
+            if ("function" === typeof $.cookie ) {
                 if ($.cookie("dwz_theme") ) {
                     setTheme($.cookie("dwz_theme"));
                 }
@@ -2419,7 +2415,7 @@ function initLink($p) {
             var $callback = callback;
             $box.find("li>a").click(function() {
                 var $a = $(this);
-                if(!$a.is("[href^=javascript:]")){
+                if(!$a.is("[href^=javascript]")){
                     $("#sidebar #menu").ajaxUrl({
                         type: "get", url: $a.attr("href"), callback: function(response) {
                             $box.find("li").removeClass("selected");
@@ -2504,18 +2500,18 @@ var alertMsg = {
                 jCallButs.eq(i).click(buttons[i].call);
             }
             if (buttons[i].keyCode == DWZ.keyCode.ENTER ) {
-                jDoc.bind("keydown", {
+                jDoc.on("keydown", null, {
                     target: jButs.eq(i)
                 }, this._keydownOk);
             }
             if (buttons[i].keyCode == DWZ.keyCode.ESC ) {
-                jDoc.bind("keydown", {
+                jDoc.on("keydown", null, {
                     target: jButs.eq(i)
                 }, this._keydownEsc);
             }
         }
     }, close: function() {
-        $(document).unbind("keydown", this._keydownOk).unbind("keydown", this._keydownEsc);
+        $(document).off("keydown", null, this._keydownOk).off("keydown", null, this._keydownEsc);
         $(this._boxId).animate({
             top: -$(this._boxId).height()
         }, 100, function() {
@@ -2539,7 +2535,7 @@ var alertMsg = {
             okName: $.regional.alertMsg.butMsg.ok, okCall: null
         };
         $.extend(op, options);
-        if(options && options.callback && $.isFunction(options.callback)){
+        if(options && options.callback && "function" === typeof options.callback){
             this._callback = options.callback;
         }
         var buttons = [ {
@@ -2586,7 +2582,7 @@ var alertMsg = {
                 id: id, bindings: op.bindings || {}, ctrSub: op.ctrSub
             });
             var index = hash.length - 1;
-            $(this).bind('contextmenu', function(e) {
+            $(this).on('contextmenu', null, null, function(e) {
                 display(index, this, e, op);
                 return false;
             });
@@ -2601,7 +2597,7 @@ var alertMsg = {
         // Send the content to the menu
         menu.html(content);
         $.each(cur.bindings, function(id, func) {
-            $("[rel='" + id + "']", menu).bind('click', function(e) {
+            $("[rel='" + id + "']", menu).on('click', null, null, function(e) {
                 hide();
                 func($(trigger), $("#" + cur.id));
             });
@@ -2615,10 +2611,10 @@ var alertMsg = {
             posY -= menu.height();
         }
         menu.css({
-            'left': posX, 'top': posY
+            'left': posX+'px', 'top': posY+'px'
         }).show();
         $(document).one('click', hide);
-        if ($.isFunction(cur.ctrSub) ) {
+        if ("function" === typeof cur.ctrSub ) {
             cur.ctrSub($(trigger), $("#" + cur.id));
         }
     }
@@ -2679,15 +2675,15 @@ var navTab = {
     _init: function() {
         var $this = this;
         this._getTabs().each(function(iTabIndex) {
-            $(this).unbind("click").click(function(event) {
+            $(this).off("click").click(function(event) {
                 $this._switchTab(iTabIndex);
             });
-            $(this).find(navTab._op.close$).unbind("click").click(function() {
+            $(this).find(navTab._op.close$).off("click").click(function() {
                 $this._closeTab(iTabIndex);
             });
         });
         this._getMoreLi().each(function(iTabIndex) {
-            $(this).find(">a").unbind("click").click(function(event) {
+            $(this).find(">a").off("click").click(function(event) {
                 $this._switchTab(iTabIndex);
             });
         });
@@ -2718,7 +2714,7 @@ var navTab = {
                 var mOther = m.find("[rel='closeOther']");
                 var mAll = m.find("[rel='closeAll']");
                 var $tabLi = $this._getTabs();
-                if ($tabLi.size() < 2 ) {
+                if ($tabLi.length < 2 ) {
                     mCur.addClass("disabled");
                     mOther.addClass("disabled");
                     mAll.addClass("disabled");
@@ -2728,7 +2724,7 @@ var navTab = {
                     if(!t.attr('url')){
                         mReload.addClass("disabled");
                     }
-                } else if ($tabLi.size() == 2 ) {
+                } else if ($tabLi.length == 2 ) {
                     mOther.addClass("disabled");
                 }
             }
@@ -2787,7 +2783,7 @@ var navTab = {
     _visibleStart: function() {
         var iLeft = this._getLeft(), iW = 0;
         var $tabs = this._getTabs();
-        for (var i = 0; i < $tabs.size(); i++) {
+        for (var i = 0; i < $tabs.length; i++) {
             if (iW + iLeft >= 0 ) {
                 return i;
             }
@@ -2798,13 +2794,13 @@ var navTab = {
     _visibleEnd: function() {
         var iLeft = this._getLeft(), iW = 0;
         var $tabs = this._getTabs();
-        for (var i = 0; i < $tabs.size(); i++) {
+        for (var i = 0; i < $tabs.length; i++) {
             iW += $tabs.eq(i).outerWidth(true);
             if (iW + iLeft > this._getScrollBarW() ) {
                 return i;
             }
         }
-        return $tabs.size();
+        return $tabs.length;
     } ,
     _scrollPrev: function() {
         var iStart = this._visibleStart();
@@ -2816,9 +2812,9 @@ var navTab = {
     } ,
     _scrollNext: function() {
         var iEnd = this._visibleEnd();
-        if (iEnd + this.step <= this._getTabs().size() ) {
+        if (iEnd + this.step <= this._getTabs().length ) {
             this._scrollTab(-this._getTabsW(0, iEnd + this.step) + this._getScrollBarW());
-        } else if (iEnd < this._getTabs().size() ) {
+        } else if (iEnd < this._getTabs().length ) {
             this._scrollTab(-this._getTabsW(0, iEnd + 1) + this._getScrollBarW());
         }
     } ,
@@ -2978,12 +2974,12 @@ var navTab = {
                 } else {
                     if ($.isEmptyObject(op.data) ) { // 获取pagerForm参数
                         var $pagerForm = $(".pagerForm", $panel);
-                        op.data = $pagerForm.size() > 0 ? $pagerForm.serializeArray(): {}
+                        op.data = $pagerForm.length > 0 ? $pagerForm.serializeArray(): {}
                     }
                     $panel.ajaxUrl({
                         type: "POST", url: url, data: op.data, callback: function(response) {
                             navTab._loadUrlCallback($panel);
-                            if ($.isFunction(op.callback) ) {
+                            if ("function" === typeof op.callback ) {
                                 op.callback(response);
                             }
                         }
@@ -3101,9 +3097,9 @@ var navTab = {
                 var jTabHeader = $(op.stTabHeader, jSelector);
                 var jTabs = $(op.stTab + " li", jTabHeader);
                 var jGroups = $(op.stTabPanel + " > *", jSelector);
-                jTabs.unbind().find("a").unbind();
-                jTabHeader.find("." + op.prevClass).unbind();
-                jTabHeader.find("." + op.nextClass).unbind();
+                jTabs.off().find("a").off();
+                jTabHeader.find("." + op.prevClass).off();
+                jTabHeader.find("." + op.nextClass).off();
                 jTabs.each(function(iTabIndex) {
                     if (op.currentIndex == iTabIndex ) {
                         $(this).addClass("selected");
@@ -3111,7 +3107,7 @@ var navTab = {
                         $(this).removeClass("selected");
                     }
                     if (op.eventType == "hover" ) {
-                        $(this).hover(function(event) {
+                        $(this).on( "mouseenter",function(event) {
                             switchTab(jT, iTabIndex)
                         });
                     } else {
@@ -3136,7 +3132,7 @@ var navTab = {
                                 jTabs.eq(iTabIndex).remove();
                                 jGroups.eq(iTabIndex).remove();
                                 if (iTabIndex == op.currentIndex ) {
-                                    op.currentIndex = ( iTabIndex + 1 < jTabs.size() ) ? iTabIndex: iTabIndex - 1;
+                                    op.currentIndex = ( iTabIndex + 1 < jTabs.length ) ? iTabIndex: iTabIndex - 1;
                                 } else if (iTabIndex < op.currentIndex ) {
                                     op.currentIndex = iTabIndex;
                                 }
@@ -3225,8 +3221,8 @@ var navTab = {
                     el: obj, oleft: parseInt(obj.style.left) || 0, owidth: parseInt(obj.style.width) || 0, otop: parseInt(obj.style.top) || 0 ,
                     oheight: parseInt(obj.style.height) || 0, ox: e.pageX || e.screenX, oy: e.pageY || e.clientY
                 };
-                $(document).bind('mouseup', $.layerdrag.stop);
-                $(document).bind('mousemove', $.layerdrag.drag);
+                $(document).on('mouseup', null, null, $.layerdrag.stop);
+                $(document).on('mousemove', null, null, $.layerdrag.drag);
             }
             return $.layerdrag.preventEvent(e);
         }, drag: function(e) {
@@ -3269,8 +3265,8 @@ var navTab = {
         }, stop: function(e) {
             var current = $.layerdrag.current;
             var data = $.data(current.el, 'layer-drag');
-            $(document).unbind('mousemove', $.layerdrag.drag);
-            $(document).unbind('mouseup', $.layerdrag.stop);
+            $(document).off('mousemove', null, $.layerdrag.drag);
+            $(document).off('mouseup', null, $.layerdrag.stop);
             if (data.options.stop ) {
                 data.options.stop.apply(current.el, [ current.el ]);
             }
@@ -3316,7 +3312,7 @@ var navTab = {
                             $.pdialog.close(dialog);
                             return false;
                         });
-                        if ($.isFunction(op.callback) ) {
+                        if ("function" === typeof op.callback ) {
                             op.callback(response);
                         }
                     }
@@ -3359,7 +3355,6 @@ var navTab = {
                 if (options.param ) {
                     dialog.data("param", options.param);
                 }
-                ( $.fn.bgiframe && dialog.bgiframe() );
                 dialog.find(".dialogHeader").find("h1").html(title);
                 dialog.css("zIndex", ( $.pdialog._zIndex += 2 ));
                 $.pdialog._init(dialog, options);
@@ -3543,7 +3538,7 @@ var navTab = {
             }
             var close = dialog.data("close");
             var go = true;
-            if (close && $.isFunction(close) ) {
+            if (close && "function" === typeof close ) {
                 var param = dialog.data("param");
                 if (param && param != "" ) {
                     param = DWZ.jsonEval(param);
@@ -3632,7 +3627,7 @@ var navTab = {
             if (options == 'destroy' ) {
                 return this.each(function() {
                     var dialog = this;
-                    $("div.dialogHeader", dialog).unbind("mousedown");
+                    $("div.dialogHeader", dialog).off("mousedown");
                 });
             }
         }
@@ -3657,7 +3652,7 @@ var navTab = {
         currId: null, _init: function(dialog) {
             this.currId = new Date().getTime();
             var shadow = $("#dialogProxy");
-            if (!shadow.size() ) {
+            if (!shadow.length ) {
                 shadow = $(DWZ.frag["dialogProxy"]);
                 $("body").append(shadow);
             }
@@ -3785,7 +3780,7 @@ var navTab = {
                     $selector = $item.find(op.selector).css({cursor: op.cursor});
                 }
                 if (op.refresh) {
-                    $selector.unbind('mousedown');
+                    $selector.off('mousedown');
                 }
                 $selector.mousedown(function (event) {
                     if (!$sortBox.hasClass('disabled') && !$(event.target).is('input')&& !$(event.target).is('a')) {
@@ -4088,7 +4083,7 @@ var navTab = {
                         $tr.addClass("selected");
                         var sTarget = $tr.attr("target");
                         if (sTarget ) {
-                            if ($("#" + sTarget, $grid).size() == 0 ) {
+                            if ($("#" + sTarget, $grid).length == 0 ) {
                                 $grid.prepend('<input id="' + sTarget + '" type="hidden" />');
                             }
                             $("#" + sTarget, $grid).val($tr.attr("rel"));
@@ -4124,7 +4119,7 @@ var navTab = {
             var $tc = $table.parent().addClass("j-resizeGrid"); // table parent container
             var oldThs = $table.find("thead>tr:last-child").find("th");
 
-            for(var i = 0, l = oldThs.size(); i < l; i++) {
+            for(var i = 0, l = oldThs.length; i < l; i++) {
                 var $th = $(oldThs[i]);
                 var style = [], width = $th.innerWidth() - (100 * $th.innerWidth() / tlength)-2;
                 style[0] = parseInt(width);
@@ -4161,7 +4156,7 @@ var navTab = {
                 var $tr = $(this);
                 var $ftds = $(">td", this);
 
-                for (var i=0; i < $ftds.size(); i++) {
+                for (var i=0; i < $ftds.length; i++) {
                     var $ftd = $($ftds[i]);
                     if (nowrapTD != "false") $ftd.html("<div>" + $ftd.html() + "</div>");
                     if (i < aStyles.length) $ftd.addClass(aStyles[i][1]);
@@ -4171,7 +4166,7 @@ var navTab = {
                     $tr.addClass("selected");
                     var sTarget = $tr.attr("target");
                     if (sTarget) {
-                        if ($("#"+sTarget, $grid).size() == 0) {
+                        if ($("#"+sTarget, $grid).length == 0) {
                             $grid.prepend('<input id="'+sTarget+'" type="hidden" />');
                         }
                         $("#"+sTarget, $grid).val($tr.attr("rel"));
@@ -4256,7 +4251,7 @@ var navTab = {
                             });
                         } else {
                             $th.css("cursor", $th.attr("orderField") ? "pointer" : "default");
-                            $th.unbind("mousedown");
+                            $th.off("mousedown");
                         }
                         return false;
                     });
@@ -4275,7 +4270,7 @@ var navTab = {
                     }
                 });
             }
-            $(window).unbind(DWZ.eventType.resizeGrid).bind("resizeGrid", _resizeGrid);
+            $(window).off(DWZ.eventType.resizeGrid).on("resizeGrid", null, null, _resizeGrid);
         });
     };
 
@@ -4314,7 +4309,7 @@ var navTab = {
             return height;
         },
         getCellNum:function(obj) {
-            return $(obj).prevAll().andSelf().size();
+            return $(obj).prevAll().andSelf().length;
         },
         getColspan:function(obj) {
             return $(obj).attr("colspan") || 1;
@@ -4411,7 +4406,7 @@ var navTab = {
             var $this = this;
             $.extend(this._op, options);
             this._taskBar = $("#" + this._op.id);
-            if (this._taskBar.size() == 0 ) {
+            if (this._taskBar.length == 0 ) {
                 this._taskBar = $($.parseHTML(DWZ.frag["taskbar"], document, true)).appendTo($("body"));
                 this._taskBar.find(".taskbarLeft");
                 this._taskBar.find(".taskbarRight");
@@ -4454,7 +4449,7 @@ var navTab = {
                         mCur.addClass("disabled");
                         mOther.addClass("disabled");
                     } else {
-                        if ($.taskBar._getTasks().size() == 1 ) {
+                        if ($.taskBar._getTasks().length == 1 ) {
                             mOther.addClass("disabled");
                         }
                     }
@@ -4530,7 +4525,7 @@ var navTab = {
         _visibleStart: function() {
             var iLeft = this._getLeft();
             var jTasks = this._getTasks();
-            for (var i = 0; i < jTasks.size(); i++) {
+            for (var i = 0; i < jTasks.length; i++) {
                 if (jTasks.eq(i).position().left + jTasks.eq(i).outerWidth(true) + iLeft >= 0 ) {
                     return jTasks.eq(i);
                 }
@@ -4543,12 +4538,12 @@ var navTab = {
         _visibleEnd: function() {
             var iLeft = this._getLeft();
             var jTasks = this._getTasks();
-            for (var i = 0; i < jTasks.size(); i++) {
+            for (var i = 0; i < jTasks.length; i++) {
                 if (jTasks.eq(i).position().left + jTasks.eq(i).outerWidth(true) + iLeft > this._getBarWidth() ) {
                     return jTasks.eq(i);
                 }
             }
-            return jTasks.eq(jTasks.size() - 1);
+            return jTasks.eq(jTasks.length - 1);
         } ,
         /**
          * 取得所有的任务
@@ -4604,7 +4599,7 @@ var navTab = {
         closeDialog: function(obj) {
             var task = ( typeof obj == 'string' ) ? $("#" + obj, this._taskList): obj;
             task.remove();
-            if (this._getTasks().size() == 0 ) {
+            if (this._getTasks().length == 0 ) {
                 this.hide();
             }
             this._scrollCurrent();
@@ -4786,7 +4781,7 @@ function iframeCallback(form, callback) {
     if (!$form.valid() ) {
         return false;
     }
-    if ($iframe.size() == 0 ) {
+    if ($iframe.length == 0 ) {
         $iframe = $($.parseHTML("<iframe id='callbackframe' name='callbackframe' src='about:blank' style='display:none'></iframe>", document, true)).appendTo("body");
     }
     if (!form.ajax ) {
@@ -4798,8 +4793,8 @@ function iframeCallback(form, callback) {
 function _iframeResponse(iframe, callback) {
     var $iframe = $(iframe), $document = $(document);
     $document.trigger("ajaxStart");
-    $iframe.bind("load", function(event) {
-        $iframe.unbind("load");
+    $iframe.on("load", null, null, function(event) {
+        $iframe.off("load");
         $document.trigger("ajaxStop");
 
         if (iframe.src == "javascript:'%3Chtml%3E%3C/html%3E';" || // For
@@ -4824,7 +4819,7 @@ function _iframeResponse(iframe, callback) {
         } else if (doc.body ) {
             try {
                 response = $iframe.contents().find("body").text();
-                response = $.parseJSON(response);
+                response = JSON.parse(response);
             } catch (e) { // response is html document or plain text
                 response = doc.body.innerHTML;
             }
@@ -5052,7 +5047,7 @@ function dialogPageBreak(args, rel) {
 }
 function ajaxTodo(url, callback) {
     var $callback = callback || navTabAjaxDone;
-    if (!$.isFunction($callback) ) {
+    if ("function" !== typeof $callback ) {
         $callback = eval('(' + callback + ')');
     }
     $.ajax({
@@ -5234,7 +5229,7 @@ $.fn.extend({
                 });
             });
             function _bindEvent($target, pageNum, targetType, rel) {
-                $target.bind("click", {
+                $target.on("click", null, {
                     pageNum: pageNum
                 }, function(event) {
                     dwzPageBreak({
@@ -5445,7 +5440,7 @@ $.fn.extend({
                     var offset = $input.offset();
                     var iTop = offset.top + this.offsetHeight;
                     var $suggest = $(op.suggest$);
-                    if ($suggest.size() == 0 ) {
+                    if ($suggest.length == 0 ) {
                         $suggest = $('<div id="suggest"></div>').appendTo($('body'));
                     }
                     $suggest.css({
@@ -5493,7 +5488,7 @@ $.fn.extend({
                                     $input.next().click();
                                 }
                             });
-                            if ($lis.size() == 0 ) {
+                            if ($lis.length == 0 ) {
                                 var jsonStr = "";
                                 for (var i = 0; i < suggestFields.length; i++) {
                                     if (_util.lookupField(suggestFields[i]) == event.target.name ) {
@@ -5511,7 +5506,7 @@ $.fn.extend({
                             $suggest.html('');
                         }
                     });
-                    $(document).bind("click", _close);
+                    $(document).on("click", null, null , _close);
                     return false;
                 }
                 function _select($item) {
@@ -5521,7 +5516,7 @@ $.fn.extend({
                 function _close() {
                     $(op.suggest$).html('').hide();
                     selectedIndex = -1;
-                    $(document).unbind("click", _close);
+                    $(document).off("click", null, _close);
                 }
                 $input.focus(_show).click(false).keyup(function(event) {
                     var $items = $(op.suggest$).find("li");
@@ -5538,7 +5533,7 @@ $.fn.extend({
                             _close();
                             break;
                         case DWZ.keyCode.DOWN:
-                            if (selectedIndex >= $items.size() - 1 ) {
+                            if (selectedIndex >= $items.length - 1 ) {
                                 selectedIndex = -1;
                             } else {
                                 selectedIndex++;
@@ -5546,7 +5541,7 @@ $.fn.extend({
                             break;
                         case DWZ.keyCode.UP:
                             if (selectedIndex < 0 ) {
-                                selectedIndex = $items.size() - 1;
+                                selectedIndex = $items.length - 1;
                             } else {
                                 selectedIndex--;
                             }
@@ -5579,7 +5574,7 @@ $.fn.extend({
                 });
                 $tbody.find("a.btnDel").click(function() {
                     var $btnDel = $(this);
-                    if ($btnDel.is("[href^=javascript:]") ) {
+                    if ($btnDel.is("[href^=javascript]") ) {
                         $btnDel.parents("tr:first").remove();
                         initSuffix($tbody);
                         return false;
@@ -5765,7 +5760,7 @@ $.fn.extend({
                         return false;
                     }
                     var _callback = $this.attr("callback") || ( targetType == "dialog" ? dialogAjaxDone: navTabAjaxDone );
-                    if (!$.isFunction(_callback) ) {
+                    if ("function" !== typeof _callback ) {
                         _callback = eval('(' + _callback + ')');
                     }
                     function _doPost() {
@@ -6009,13 +6004,13 @@ $.fn.extend({
                     }).hide();
                 }
                 $('#'+ allSelectBox[i]).children('a').removeClass('expand');
-                $(document).unbind("click", killAllBox);
+                $(document).off("click", null, killAllBox);
             }
         });
     };
     var _onchange = function(event) {
         var $ref = $("select[name=" + escapeJquery(event.data.$this.attr('ref'))+"]");
-        if ($ref.size() == 0 ) {
+        if ($ref.length == 0 ) {
             return false;
         }
         if(event.data.$this.attr('index')){
@@ -6094,7 +6089,7 @@ $.fn.extend({
                         killAllBox(box.attr("id"));
                         $(document).click(killAllBox);
                     } else {
-                        $(document).unbind("click", killAllBox);
+                        $(document).off("click", null, killAllBox);
                         killAllBox();
                     }
                     return false;
@@ -6153,7 +6148,7 @@ $.fn.extend({
                 $this.after(select);
                 $("div.select", $this.next()).comboxSelect().append($this);
                 if (ref && refUrl ) {
-                    $this.unbind("change", _onchange).bind("change", {
+                    $this.off("change", null, _onchange).on("change", null, {
                         $this: $this
                     }, _onchange);
                 }
@@ -6191,7 +6186,7 @@ $.fn.extend({
                     iframe.close();
                     iframe.location.hash = current_hash;
                 }
-                if ($.isFunction(this._callback))
+                if ("function" === typeof this._callback)
                     $.History._callback(current_hash.skipChar("#"));
                 setInterval($.History._historyCheck, 100);
             },
@@ -6246,7 +6241,7 @@ $.fn.extend({
     $.printBox = function(rel) {
         var _printBoxId = 'printBox';
         var $contentBox = rel ? $('#' + rel): $("body"), $printBox = $('#' + _printBoxId);
-        if ($printBox.size() == 0 ) {
+        if ($printBox.length == 0 ) {
             $printBox = $('<div id="' + _printBoxId + '"></div>').appendTo("body");
         }
         $printBox.html($contentBox.html()).find("[layoutH]").height("auto");

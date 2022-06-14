@@ -7,19 +7,11 @@
     <link href="${base}/resource/plugins/codemirror/lib/codemirror.css" rel="stylesheet"/>
     <link href="${base}/resource/plugins/codemirror/addon/hint/show-hint.css" rel="stylesheet"/>
     <link href="${base}/resource/fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
-    <!--[if IE 7]>
-        <link href="${base}/resource/fonts/font-awesome/css/font-awesome-ie7.min.css" rel="stylesheet"/>
-    <![endif]-->
     <link href="${base}/resource/fonts/bootstrap-icons/bootstrap-icons.css" rel="stylesheet"/>
     <link href="${base}/resource/plugins/spectrum/spectrum.min.css" rel="stylesheet"/>
     <link href="${base}/resource/css/core.css?version=202205" rel="stylesheet" media="screen"/>
     <link href="${base}/resource/css/print.css" rel="stylesheet" media="print"/>
     <link href="${base}/resource/css/cms.css?version=202205" rel="stylesheet" media="screen"/>
-    <!--[if lte IE 9]>
-        <link href="${base}/resource/css/ieHack.css" rel="stylesheet" media="screen"/>
-        <script src="${base}/resource/js/html5shiv.min.js"></script>
-        <script src="${base}/resource/js/respond.min.js"></script>
-    <![endif]-->
     <script src="${base}/resource/js/echarts.proxy.js"></script>
 </head>
 <body>
@@ -54,7 +46,7 @@
             <@t.merge 'moduleIds' a.id!/>
         </#list>
         <@sys.roleModule roleIds=admin.roles moduleIds=t.moduleIds!><#assign roleModuleMap=map!/></@sys.roleModule>
-    
+
         <#list page.list as a>
             <#if (roleModuleMap[a.id?string])?has_content&&roleModuleMap[a.id?string]>
                 <#if !parentId?has_content><#assign parentId=a.id/></#if>
@@ -131,10 +123,9 @@
             <li theme="red"><div></div></li>
         </ul>
     </footer>
-    <script src="${base}/resource/js/jquery-1.12.4.min.js"></script>
+    <script src="${base}/resource/js/jquery-3.6.0.min.js"></script>
     <script src="${base}/resource/js/jquery.cookie.js"></script>
     <script src="${base}/resource/js/jquery.validate.js"></script>
-    <script src="${base}/resource/js/jquery.bgiframe.js"></script>
     <script src="${base}/resource/js/base64.js"></script>
     <script src="${base}/resource/js/sha512.min.js"></script>
     <script src="${base}/resource/js/dwz.min.js?version=20220524"></script>

@@ -19,10 +19,16 @@ function loadScripts(urls, callback) {
         head.appendChild(script);
     }
     var i = 0,count = urls.length-1;
+    var callbacks = [];
+    if(callback){
+        callbacks.push(callback);
+    }
     var loadOrCallback=function(){
-        if (i == count) {
-            callback && callback();
-        }else{
+        if (i == count && 0 < callbacks.length) {
+            for(var j=0;j<callbacks.length;j++){
+                callbacks[j]();
+            }
+        } else {
             loadScript(urls[++i],loadOrCallback);
         }
     };
