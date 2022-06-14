@@ -1100,7 +1100,6 @@ function Map() {
                 }).show().click(function(event) {
                     event.stopPropagation();
                 });
-                ( $.fn.bgiframe && $(setting.box$).bgiframe() );
                 var dayNames = "";
                 $.each($.regional.datepicker.dayNames, function(i, v) {
                     dayNames += "<dt>" + v + "</dt>"
@@ -3356,7 +3355,6 @@ var navTab = {
                 if (options.param ) {
                     dialog.data("param", options.param);
                 }
-                ( $.fn.bgiframe && dialog.bgiframe() );
                 dialog.find(".dialogHeader").find("h1").html(title);
                 dialog.css("zIndex", ( $.pdialog._zIndex += 2 ));
                 $.pdialog._init(dialog, options);
