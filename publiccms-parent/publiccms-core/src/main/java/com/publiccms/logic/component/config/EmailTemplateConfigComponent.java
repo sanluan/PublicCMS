@@ -78,4 +78,9 @@ public class EmailTemplateConfigComponent implements Config {
             return null;
         }
     }
+
+    @Override
+    public boolean exportable() {
+        return false;
+    }
 }

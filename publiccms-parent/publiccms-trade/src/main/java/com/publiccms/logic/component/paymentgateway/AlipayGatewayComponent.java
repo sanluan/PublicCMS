@@ -260,4 +260,9 @@ public class AlipayGatewayComponent extends AbstractPaymentGateway implements co
     public void clear() {
         cache.clear();
     }
+
+    @Override
+    public boolean exportable() {
+        return false;
+    }
 }

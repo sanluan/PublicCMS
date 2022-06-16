@@ -362,4 +362,9 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
     public void destroy() {
         certificatesManager.stop();
     }
+
+    @Override
+    public boolean exportable() {
+        return false;
+    }
 }

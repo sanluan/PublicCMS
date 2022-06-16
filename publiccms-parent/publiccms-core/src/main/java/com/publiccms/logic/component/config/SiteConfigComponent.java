@@ -173,4 +173,10 @@ public class SiteConfigComponent implements Config {
         }
         return extendFieldList;
     }
+    
+
+    @Override
+    public boolean exportable() {
+        return false;
+    }
 }

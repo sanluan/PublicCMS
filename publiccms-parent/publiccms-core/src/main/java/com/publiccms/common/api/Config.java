@@ -166,6 +166,11 @@ public interface Config {
     }
 
     /**
+     * @return Is it possible to export
+     */
+    boolean exportable();
+
+    /**
      * @param locale
      * @return
      */
