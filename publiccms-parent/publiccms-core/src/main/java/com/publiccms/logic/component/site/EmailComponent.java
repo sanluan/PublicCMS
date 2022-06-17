@@ -161,14 +161,14 @@ public class EmailComponent implements SiteCache, Config {
      * @param bcc
      * @param title
      * @param content
-     * @param fileName
-     * @param file
+     * @param fileNames
+     * @param files
      * @return whether to send successfully
      * @throws MessagingException
      */
     public boolean send(short siteId, String[] toAddress, String[] cc, String[] bcc, String title, String content,
-            String fileName, File file) throws MessagingException {
-        return send(siteId, toAddress, cc, bcc, title, content, false, fileName, file);
+            String[] fileNames, File[] files) throws MessagingException {
+        return send(siteId, toAddress, cc, bcc, title, content, false, fileNames, files);
     }
 
     /**
@@ -205,18 +205,18 @@ public class EmailComponent implements SiteCache, Config {
      * @param bcc
      * @param title
      * @param html
-     * @param fileName
-     * @param file
+     * @param fileNames
+     * @param files
      * @return whether to send successfully
      * @throws MessagingException
      */
     public boolean sendHtml(short siteId, String[] toAddress, String[] cc, String[] bcc, String title, String html,
-            String fileName, File file) throws MessagingException {
-        return send(siteId, toAddress, cc, bcc, title, html, true, fileName, file);
+            String[] fileNames, File[] files) throws MessagingException {
+        return send(siteId, toAddress, cc, bcc, title, html, true, fileNames, files);
     }
 
     private boolean send(short siteId, String[] toAddress, String[] cc, String[] bcc, String title, String content,
-            boolean isHtml, String fileName, File file) throws MessagingException {
+            boolean isHtml, String[] fileNames, File[] files) throws MessagingException {
         Map<String, String> config = BeanComponent.getConfigComponent().getConfigData(siteId, CONFIG_CODE);
         if (CommonUtils.notEmpty(config) && CommonUtils.notEmpty(config.get(CONFIG_FROMADDRESS))) {
             JavaMailSender mailSender = getMailSender(siteId, config);
@@ -239,9 +239,16 @@ public class EmailComponent implements SiteCache, Config {
             }
             messageHelper.setSubject(title);
             messageHelper.setText(content, isHtml);
-            if (null != file) {
+            if (null != files) {
+                int i = 0;
                 messageHelper.setEncodeFilenames(true);
-                messageHelper.addAttachment(fileName, file);
+                for (File file : files) {
+                    if (file.exists() && file.isFile()) {
+                        messageHelper.addAttachment((null != fileNames && fileNames.length > i) ? fileNames[i] : file.getName(),
+                                file);
+                    }
+                    i++;
+                }
             }
             log.info(String.format("%s send a email to %s title [%s]", config.get(CONFIG_FROMADDRESS),
                     StringUtils.join(toAddress, CommonConstants.COMMA), title));

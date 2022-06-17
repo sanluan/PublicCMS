@@ -1,5 +1,6 @@
 package com.publiccms.views.directive.tools;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,7 +35,18 @@ public class SendEmailDirective extends AbstractTemplateDirective {
         String[] bcc = handler.getStringArray("bcc");
         String title = handler.getString("title");
         String templatePath = handler.getString("templatePath");
+        String[] fileNames = handler.getStringArray("fileNames");
+        String[] filePaths = handler.getStringArray("filePaths");
         if (CommonUtils.notEmpty(email) && CommonUtils.notEmpty(title)) {
+            File[] files = null;
+            if (null != filePaths) {
+                files = new File[filePaths.length];
+                int i = 0;
+                for (String filePath : filePaths) {
+                    files[i] = new File(siteComponent.getWebFilePath(getSite(handler), filePath));
+                    i++;
+                }
+            }
             SysSite site = getSite(handler);
             if (CommonUtils.notEmpty(templatePath)) {
                 Map<String, Object> model = new HashMap<>();
@@ -45,11 +57,13 @@ public class SendEmailDirective extends AbstractTemplateDirective {
                 model.put("metadata", metadata.getAsMap(data));
                 String content = FreeMarkerUtils.generateStringByFile(SiteComponent.getFullTemplatePath(site, templatePath),
                         templateComponent.getWebConfiguration(), model);
-                handler.put("result", emailComponent.sendHtml(site.getId(), email, cc, bcc, title, content)).render();
+                handler.put("result", emailComponent.sendHtml(site.getId(), email, cc, bcc, title, content, fileNames, files))
+                        .render();
             } else {
                 String content = handler.getString("content");
                 if (CommonUtils.notEmpty(content)) {
-                    handler.put("result", emailComponent.send(site.getId(), email, cc, bcc, title, content)).render();
+                    handler.put("result", emailComponent.send(site.getId(), email, cc, bcc, title, content, fileNames, files))
+                            .render();
                 }
             }
 
