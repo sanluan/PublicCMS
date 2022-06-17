@@ -204,7 +204,7 @@ public abstract class BaseHandler implements RenderHandler {
         try {
             String result = getString(name);
             regristerParameter(PARAMETER_TYPE_STRING, name, defaultValue);
-            return CommonUtils.notEmpty(result) ? result : defaultValue;
+            return null == result ? defaultValue : result;
         } catch (Exception e) {
             return defaultValue;
         }
@@ -231,7 +231,17 @@ public abstract class BaseHandler implements RenderHandler {
         try {
             regristerParameter(PARAMETER_TYPE_INTEGER, name, defaultValue);
             Integer result = getIntegerWithoutRegister(name);
-            return CommonUtils.notEmpty(result) ? result : defaultValue;
+            return null == result ? defaultValue : result;
+        } catch (Exception e) {
+            return defaultValue;
+        }
+    }
+
+    @Override
+    public Long getLong(String name, Long defaultValue) {
+        try {
+            Long result = getLong(name);
+            return null == result ? defaultValue : result;
         } catch (Exception e) {
             return defaultValue;
         }
@@ -248,7 +258,7 @@ public abstract class BaseHandler implements RenderHandler {
         try {
             regristerParameter(PARAMETER_TYPE_BYTE, name, defaultValue);
             Byte result = getByteWithoutRegister(name);
-            return CommonUtils.notEmpty(result) ? result : defaultValue;
+            return null == result ? defaultValue : result;
         } catch (Exception e) {
             return defaultValue;
         }
