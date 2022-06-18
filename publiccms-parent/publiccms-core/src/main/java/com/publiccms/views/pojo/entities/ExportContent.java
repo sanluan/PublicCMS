@@ -11,11 +11,26 @@ public class ExportContent implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
+    private String categoryCode;
     private CmsContent content;
     private CmsContent attribute;
     private List<CmsContentFile> fileList;
     private List<CmsContentProduct> productList;
     private List<CmsContent> childList;
+
+    /**
+     * @return the categoryCode
+     */
+    public String getCategoryCode() {
+        return categoryCode;
+    }
+
+    /**
+     * @param categoryCode the categoryCode to set
+     */
+    public void setCategoryCode(String categoryCode) {
+        this.categoryCode = categoryCode;
+    }
 
     /**
      * @return the content
