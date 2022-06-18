@@ -63,7 +63,7 @@ public class SysSiteAdminController {
     private SysSiteDatasourceService siteDatasourceService;
     @Resource
     protected SiteComponent siteComponent;
-    @Autowired
+    @Resource
     protected ScriptComponent scriptComponent;
 
     private String[] ignoreProperties = new String[] { "id" };
