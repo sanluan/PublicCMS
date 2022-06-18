@@ -117,6 +117,14 @@ public interface RenderHandler {
      * @throws Exception
      */
     Long getLong(String name) throws Exception;
+    
+    /**
+     * @param name
+     * @param defaultValue
+     * @return long value
+     * @throws Exception
+     */
+    Long getLong(String name, Long defaultValue) throws Exception;
 
     /**
      * @param name

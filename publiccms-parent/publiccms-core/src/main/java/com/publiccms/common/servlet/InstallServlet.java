@@ -131,7 +131,8 @@ public class InstallServlet extends HttpServlet {
                     break;
                 case STEP_INITDATABASE:
                     try {
-                        initDatabase(request.getParameter("useSimple"), map);
+                        initDatabase(request.getParameter("useSimple"), request.getParameter("adminusername"),
+                                request.getParameter("adminpassword"), map);
                         startCMS(map);
                     } catch (Exception e) {
                         map.put("error", e.getMessage());
@@ -222,14 +223,16 @@ public class InstallServlet extends HttpServlet {
      * 初始化数据库
      *
      * @param useSimple
+     * @param username
+     * @param password
      * @param map
      * @throws IOException
      */
-    private void initDatabase(String useSimple, Map<String, Object> map) throws Exception {
+    private void initDatabase(String useSimple, String username, String password, Map<String, Object> map) throws Exception {
         String databaseConfiFile = CommonConstants.CMS_FILEPATH + CmsDataSource.DATABASE_CONFIG_FILENAME;
         try (Connection connection = DatabaseUtils.getConnection(databaseConfiFile)) {
             try {
-                map.put("history", install(connection, null != useSimple));
+                map.put("history", install(connection, username, password, null != useSimple));
                 map.put("message", "success");
             } catch (Exception e) {
                 map.put("message", "failed");
@@ -250,7 +253,8 @@ public class InstallServlet extends HttpServlet {
         return stringWriter.toString();
     }
 
-    public static String install(Connection connection, boolean useSimple) throws SQLException, IOException {
+    public String install(Connection connection, String username, String password, boolean useSimple)
+            throws SQLException, IOException {
         StringWriter stringWriter = new StringWriter();
         ScriptRunner runner = new ScriptRunner(connection);
         runner.setLogWriter(null);
@@ -259,6 +263,7 @@ public class InstallServlet extends HttpServlet {
         try (InputStream inputStream = InstallServlet.class.getResourceAsStream("/initialization/sql/initDatabase.sql")) {
             runner.runScript(new InputStreamReader(inputStream, CommonConstants.DEFAULT_CHARSET));
         }
+        cmsUpgrader.setPassword(connection, username, password);
         stringWriter.append(installDatasource(connection));
         if (useSimple) {
             File file = new File(CommonConstants.CMS_FILEPATH + "/publiccms.sql");

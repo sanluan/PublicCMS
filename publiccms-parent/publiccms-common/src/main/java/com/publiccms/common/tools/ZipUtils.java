@@ -122,6 +122,13 @@ public class ZipUtils {
         }
     }
 
+    public static void compressFile(InputStream inputStream, ZipOutputStream out, String fullName) throws IOException {
+        ZipEntry entry = new ZipEntry(fullName);
+        entry.setTime(System.currentTimeMillis());
+        out.putNextEntry(entry);
+        StreamUtils.copy(inputStream, out);
+    }
+
     /**
      * @param zipFilePath
      * @param encoding

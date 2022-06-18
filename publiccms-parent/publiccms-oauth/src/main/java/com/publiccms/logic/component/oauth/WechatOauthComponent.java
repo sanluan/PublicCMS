@@ -83,5 +83,4 @@ public class WechatOauthComponent extends AbstractOauth {
         }
         return null;
     }
-
 }
