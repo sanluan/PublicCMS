@@ -1,9 +1,0 @@
-@charset "utf-8";
-
-html, body { *overflow:hidden;}
-
-/* calendar */
-#calendar .time .hh, #calendar .time .mm, #calendar .time .ss { border:0}
-#calendar .time .up, #calendar .time .down { font-size:7px;}
-
-textarea.required { background-position:104% 0;}

@@ -8,6 +8,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.URISyntaxException;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -20,6 +21,7 @@ import java.util.Properties;
 import org.apache.ibatis.jdbc.ScriptRunner;
 
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.tools.UserPasswordUtils;
 import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
@@ -93,6 +95,17 @@ public abstract class AbstractCmsUpgrader {
      */
     public abstract void setDataBaseUrl(Properties dbconfig, String host, String port, String database, String timeZone)
             throws IOException, URISyntaxException;
+
+    public void setPassword(Connection connection, String username, String password) throws SQLException, IOException {
+        try (PreparedStatement statement = connection
+                .prepareStatement("update sys_user set name=?,password=?,salt=? where id = 1");) {
+            statement.setString(1, username);
+            String salt = UserPasswordUtils.getSalt();
+            statement.setString(2, UserPasswordUtils.passwordEncode(password, salt, null));
+            statement.setString(3, salt);
+            statement.execute();
+        }
+    }
 
     protected void updateMetadata(StringWriter stringWriter, Connection connection) {
         try (Statement statement = connection.createStatement();

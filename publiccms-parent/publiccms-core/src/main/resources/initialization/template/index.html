@@ -70,6 +70,8 @@ select {
                         <div class="wrapper"><label>数据库用户</label><input type="text" maxlength="50" name="username"/></div>
                         <div class="wrapper"><label>数据库密码</label><input type="text" maxlength="50" name="password"/></div>
                         <div class="wrapper"><label>数据库时区</label><input type="text" maxlength="10" name="timeZone" value="${.now?string('X')}"/></div>
+                        <div class="wrapper"><label>管理员用户名</label><input type="text" maxlength="30" name="adminusername" value="admin"/></div>
+                        <div class="wrapper"><label>管理员密码</label><input type="text" maxlength="30" required="required" name="adminpassword" value=""/></div>
                         <div class="wrapper"><span>数据库配置文件将保存至您的数据目录：${dataFilePath}</span></div>
                     </form>
                 </div>

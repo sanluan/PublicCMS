@@ -262,9 +262,4 @@ public class LockComponent implements Config, SiteCache {
         expriy = getExpriy(siteId, null);
         service.delete(null, SysLockService.SYSTEM_ITEM_TYPES, DateUtils.addMinutes(now, -expriy));
     }
-
-    @Override
-    public boolean exportable() {
-        return false;
-    }
 }

@@ -325,11 +325,6 @@ public class EmailComponent implements SiteCache, Config {
     public void destroy() {
         pool.shutdown();
     }
-
-    @Override
-    public boolean exportable() {
-        return false;
-    }
 }
 
 /**

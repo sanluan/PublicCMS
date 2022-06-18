@@ -107,9 +107,4 @@ public class QQOauthComponent extends AbstractOauth {
         }
         return null;
     }
-
-    @Override
-    public boolean exportable() {
-        return false;
-    }
 }

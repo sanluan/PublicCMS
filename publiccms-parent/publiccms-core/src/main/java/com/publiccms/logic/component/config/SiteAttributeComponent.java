@@ -46,10 +46,4 @@ public class SiteAttributeComponent implements Config {
                         CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_SQUARE_LOGO + CONFIG_CODE_DESCRIPTION_SUFFIX)));
         return extendFieldList;
     }
-    
-
-    @Override
-    public boolean exportable() {
-        return true;
-    }
 }
