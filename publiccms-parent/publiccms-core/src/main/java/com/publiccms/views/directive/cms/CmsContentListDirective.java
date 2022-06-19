@@ -40,8 +40,8 @@ import com.publiccms.views.pojo.query.CmsContentQuery;
  * <li><code>hasProducts</code> 拥有产品列表,【true,false】
  * <li><code>hasCover</code> 拥有封面图,【true,false】
  * <li><code>userId</code> 发布用户id
- * <li><code>startPublishDate</code> 发布日期开始时间,【2020-01-01 23:59:59】,【2020-01-01】
- * <li><code>endPublishDate</code> 发布日期结束时间，高级选项禁用时不能超过现在,【2020-01-01
+ * <li><code>startPublishDate</code> 起始发布日期,【2020-01-01 23:59:59】,【2020-01-01】
+ * <li><code>endPublishDate</code> 终止发布日期，高级选项禁用时不能超过现在,【2020-01-01
  * 23:59:59】,【2020-01-01】
  * <li><code>advanced</code> 开启高级选项， 默认为<code> false</code>
  * <li><code>status</code> 高级选项:内容状态，【0:操作,1:已发布,2:待审核,3:驳回】
