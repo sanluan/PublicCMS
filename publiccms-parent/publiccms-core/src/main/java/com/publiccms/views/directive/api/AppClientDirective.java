@@ -16,10 +16,27 @@ import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.service.sys.SysAppClientService;
 
 /**
- *
- * AppClientDirective
- * 
- */
+*
+* appClient 客户端注册接口
+* <p>
+* 参数列表
+* <ul>
+* <li><code>uuid</code> 设备唯一id
+* <li><code>clientVersion</code> 客户端版本
+* </ul>
+* <p>
+* 返回结果
+* <ul>
+* </ul>
+* 使用示例
+* <p>
+* <pre>
+&lt;script&gt;
+$.getJSON('//cms.publiccms.com/api/appClient?uuid=1&amp;clientVersion=1.0&amp;appToken=接口访问授权Token', function(data){
+});
+&lt;/script&gt;
+* </pre>
+*/
 @Component
 public class AppClientDirective extends AbstractAppDirective {
 
@@ -53,6 +70,6 @@ public class AppClientDirective extends AbstractAppDirective {
 
     @Override
     public boolean needAppToken() {
-        return false;
+        return true;
     }
 }

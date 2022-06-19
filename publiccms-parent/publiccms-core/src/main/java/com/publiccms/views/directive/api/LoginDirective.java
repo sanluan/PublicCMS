@@ -31,10 +31,34 @@ import com.publiccms.logic.service.sys.SysUserService;
 import com.publiccms.logic.service.sys.SysUserTokenService;
 
 /**
- *
- * LoginDirective
- * 
- */
+*
+* login 登录接口
+* <p>
+* 参数列表
+* <ul>
+* <li><code>username</code> 设备唯一id
+* <li><code>password</code> 用户名
+* <li><code>encoding</code> 密码加密方式
+* <li><code>channel</code> 登录渠道
+* </ul>
+* <p>
+* 返回结果
+* <ul>
+* <li><code>result</code> 登录结果,【true,false】
+* <li><code>authToken</code> 用户登录授权
+* <li><code>expiryDate</code> 过期日期
+* <li><code>user</code> 用户信息 {@link com.publiccms.entities.sys.SysUser}
+* </ul>
+* 使用示例
+* <p>
+* <pre>
+&lt;script&gt;
+$.getJSON('//cms.publiccms.com/api/login?username=admin&amp;password=sha512encodingpassword&amp;encoding=sha512&amp;channel=web', function(data){
+    console.log(result+","+authToken+","+user.nickname+","+expiryDate);
+});
+&lt;/script&gt;
+* </pre>
+*/
 @Component
 public class LoginDirective extends AbstractAppDirective {
 

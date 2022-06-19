@@ -20,7 +20,7 @@ import com.publiccms.logic.component.cache.CacheComponent;
 * <p>
 * <pre>
   &lt;script&gt;
-   $.getJSON('//cms.publiccms.com/api/clearCache', function(data){    
+   $.getJSON('//cms.publiccms.com/api/clearCache&amp;appToken=接口访问授权Token', function(data){    
      console.log("ok");
    });
    &lt;/script&gt;

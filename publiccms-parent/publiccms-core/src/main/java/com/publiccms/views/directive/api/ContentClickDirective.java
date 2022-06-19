@@ -15,10 +15,28 @@ import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.views.pojo.entities.ClickStatistics;
 
 /**
- *
- * ContentClickDirective
- * 
- */
+*
+* contentClick 内容点击接口
+* <p>
+* 参数列表
+* <ul>
+* <li><code>id</code> 内容id
+* </ul>
+* <p>
+* 返回结果
+* <ul>
+* <li><code>clicks</code> 内容点击数
+* </ul>
+* 使用示例
+* <p>
+* <pre>
+&lt;script&gt;
+$.getJSON('//cms.publiccms.com/api/contentClick?id=1', function(data){
+  console.log(data.clicks);
+});
+&lt;/script&gt;
+* </pre>
+*/
 @Component
 public class ContentClickDirective extends AbstractAppDirective {
 

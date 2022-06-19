@@ -18,13 +18,33 @@ import com.publiccms.logic.service.sys.SysAppService;
 import com.publiccms.logic.service.sys.SysAppTokenService;
 
 /**
- *
- * AppTokenDirective
- * 
- */
+*
+* appToken 接口访问授权Token获取接口
+* <p>
+* 参数列表
+* <ul>
+* <li><code>appKey</code> 应用key
+* <li><code>appSecret</code> 应用密钥
+* </ul>
+* <p>
+* 返回结果
+* <ul>
+* <li><code>appToken</code> 接口访问授权Token
+* <li><code>expiryDate</code> 过期日期
+* <li><code>error</code> 错误信息,当appKey、appSecret为空或错误时返回【secretError】
+* </ul>
+* 使用示例
+* <p>
+* <pre>
+&lt;script&gt;
+$.getJSON('//cms.publiccms.com/api/appToken?appKey=1&amp;appSecret=1', function(data){
+  $('article p em').text(data.clicks);
+});
+&lt;/script&gt;
+* </pre>
+*/
 @Component
 public class AppTokenDirective extends AbstractAppDirective {
-    private final static String KEY_NOT_EXISTS = "keyNotExists";
     private final static String SECRET_ERROR = "secretError";
 
     @Override
@@ -44,7 +64,7 @@ public class AppTokenDirective extends AbstractAppDirective {
                 handler.put("error", SECRET_ERROR);
             }
         } else {
-            handler.put("error", KEY_NOT_EXISTS);
+            handler.put("error", SECRET_ERROR);
         }
         handler.render();
     }
