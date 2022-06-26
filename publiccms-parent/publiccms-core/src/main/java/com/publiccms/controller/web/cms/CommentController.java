@@ -62,6 +62,27 @@ public class CommentController {
             "replyUserId", "replies", "scores", "disabled" };
 
     /**
+     * 使用示例
+     * <p>
+     * 
+     * <pre>
+     * &lt;#if user?has_content&gt;
+     * &lt;form method="post" action="${site.dynamicPath}comment/save"&gt;
+            &lt;@cms.comment id=id&gt;
+                &lt;input type="hidden" name="id" value="${object.id}"/&gt;
+                &lt;#assign text=object.text!/&gt;
+            &lt;/@cms.comment&gt;
+            &lt;input type="hidden" name="replyId" value="${replyId!}"/&gt;
+            &lt;input type="hidden" name="_csrf" value="&lt;@tools.csrfToken/&gt;"/&gt;
+            &lt;input type="hidden" name="contentId" value="${content.id}"/&gt;
+            &lt;input name="returnUrl" type="hidden" value="${content.url!}" /&gt;
+            &lt;p&gt;&lt;label&gt;Comment:&lt;/label&gt;&lt;/p&gt;
+            &lt;p&gt;&lt;textarea name="text" cols="100" rows="4" maxlength="1000"&gt;${text!}&lt;/textarea&gt;&lt;/p&gt;
+            &lt;p&gt;&lt;input type="submit" value="Submit"/&gt;&lt;/p&gt;
+        &lt;/form&gt;
+        &lt;/#if&gt;
+     * </pre>
+     * 
      * @param site
      * @param user
      * @param entity

@@ -15,26 +15,26 @@ import com.publiccms.logic.service.log.LogTaskService;
 
 /**
 *
-* tag 标签查询指令
+* logTask 任务计划日志查询指令
 * <p>
 * 参数列表
 * <ul>
-* <li><code>id</code> 标签id，结果返回<code>object</code>
-* {@link com.publiccms.entities.cms.CmsTag}
+* <li><code>id</code> 日志id，结果返回<code>object</code>
+* {@link com.publiccms.entities.log.LogTask}
 * <li><code>ids</code>
-* 多个标签id，逗号或空格间隔，当id为空时生效，结果返回<code>map</code>(id,<code>object</code>)
+* 多个日志id，逗号或空格间隔，当id为空时生效，结果返回<code>map</code>(id,<code>object</code>)
 * </ul>
 * 使用示例
 * <p>
-* &lt;@cms.tag id=1&gt;${object.name}&lt;/@cms.tag&gt;
+* &lt;@log.task id=1&gt;${object.result}&lt;/@log.task&gt;
 * <p>
-* &lt;@cms.tag ids='1,2,3'&gt;&lt;#list map as
-* k,v&gt;${k}:${v.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.tag&gt;
+* &lt;@log.task ids='1,2,3'&gt;&lt;#list map as
+* k,v&gt;${k}:${v.result}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@log.task&gt;
 * 
 * <pre>
 &lt;script&gt;
-$.getJSON('//cms.publiccms.com/api/directive/cms/tag?id=1&amp;appToken=接口访问授权Token', function(data){    
-  console.log(data.name);
+$.getJSON('//cms.publiccms.com/api/directive/log/task?id=1&amp;appToken=接口访问授权Token', function(data){    
+  console.log(data.result);
 });
 &lt;/script&gt;
 * </pre>
