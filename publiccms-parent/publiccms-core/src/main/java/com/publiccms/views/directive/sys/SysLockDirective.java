@@ -20,26 +20,27 @@ import com.publiccms.logic.service.sys.SysLockService;
 
 /**
 *
-* tag 标签查询指令
+* lock 锁查询指令
 * <p>
 * 参数列表
 * <ul>
-* <li><code>id</code> 标签id，结果返回<code>object</code>
-* {@link com.publiccms.entities.cms.CmsTag}
-* <li><code>ids</code>
-* 多个标签id，逗号或空格间隔，当id为空时生效，结果返回<code>map</code>(id,<code>object</code>)
+* <li><code>itemType</code> 项目类型
+* <li><code>itemId</code> 项目id，结果返回<code>object</code>
+* {@link com.publiccms.entities.sys.SysLock}
+* <li><code>itemIds</code>
+* 多个项目id，逗号或空格间隔，当id为空时生效，结果返回<code>map</code>(id,<code>object</code>)
 * </ul>
 * 使用示例
 * <p>
-* &lt;@cms.tag id=1&gt;${object.name}&lt;/@cms.tag&gt;
+* &lt;@sys.lock id=1&gt;${object.count}&lt;/@sys.lock&gt;
 * <p>
-* &lt;@cms.tag ids='1,2,3'&gt;&lt;#list map as
-* k,v&gt;${k}:${v.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.tag&gt;
+* &lt;@sys.lock ids='1,2,3'&gt;&lt;#list map as
+* k,v&gt;${k}:${v.count}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.lock&gt;
 * 
 * <pre>
 &lt;script&gt;
-$.getJSON('//cms.publiccms.com/api/directive/cms/tag?id=1&amp;appToken=接口访问授权Token', function(data){    
-  console.log(data.name);
+$.getJSON('//cms.publiccms.com/api/directive/sys/lock?id=1', function(data){    
+  console.log(data.count);
 });
 &lt;/script&gt;
 * </pre>

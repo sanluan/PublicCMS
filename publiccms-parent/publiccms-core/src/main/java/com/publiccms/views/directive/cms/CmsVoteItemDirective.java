@@ -17,26 +17,26 @@ import com.publiccms.logic.service.cms.CmsVoteItemService;
 
 /**
 *
-* tag 标签查询指令
+* voteItem 投票选项查询指令
 * <p>
 * 参数列表
 * <ul>
-* <li><code>id</code> 标签id，结果返回<code>object</code>
-* {@link com.publiccms.entities.cms.CmsTag}
+* <li><code>id</code> 投票选项id，结果返回<code>object</code>
+* {@link com.publiccms.entities.cms.CmsVoteItem}
 * <li><code>ids</code>
-* 多个标签id，逗号或空格间隔，当id为空时生效，结果返回<code>map</code>(id,<code>object</code>)
+* 多个投票选项id，逗号或空格间隔，当id为空时生效，结果返回<code>map</code>(id,<code>object</code>)
 * </ul>
 * 使用示例
 * <p>
-* &lt;@cms.tag id=1&gt;${object.name}&lt;/@cms.tag&gt;
+* &lt;@cms.voteItem id=1&gt;${object.title}&lt;/@cms.voteItem&gt;
 * <p>
-* &lt;@cms.tag ids='1,2,3'&gt;&lt;#list map as
-* k,v&gt;${k}:${v.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.tag&gt;
+* &lt;@cms.voteItem ids='1,2,3'&gt;&lt;#list map as
+* k,v&gt;${k}:${v.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.voteItem&gt;
 * 
 * <pre>
 &lt;script&gt;
-$.getJSON('//cms.publiccms.com/api/directive/cms/tag?id=1&amp;appToken=接口访问授权Token', function(data){    
-  console.log(data.name);
+$.getJSON('//cms.publiccms.com/api/directive/cms/voteItem?id=1', function(data){    
+  console.log(data.title);
 });
 &lt;/script&gt;
 * </pre>
