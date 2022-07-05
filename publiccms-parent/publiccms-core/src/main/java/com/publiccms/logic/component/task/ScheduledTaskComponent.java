@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 import com.publiccms.common.constants.CmsVersion;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.logic.component.cache.CacheComponent;
-import com.publiccms.logic.component.site.DatasourceComponent;
 import com.publiccms.logic.component.site.LockComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.component.site.VisitComponent;
@@ -66,8 +65,6 @@ public class ScheduledTaskComponent {
     @Autowired
     private StatisticsComponent statisticsComponent;
     @Autowired
-    private DatasourceComponent datasourceComponent;
-    @Autowired
     private LockComponent lockComponent;
 
     /**
@@ -92,18 +89,6 @@ public class ScheduledTaskComponent {
         if (CmsVersion.isScheduled()) {
             synchronized (visitComponent) {
                 visitComponent.clear();
-            }
-        }
-    }
-
-    /**
-     * 30分钟清理已禁用的数据源
-     */
-    @Scheduled(cron = "01 0/30 * * * ?")
-    public void cleanDisabledDatasource() {
-        if (CmsVersion.isScheduled()) {
-            synchronized (datasourceComponent) {
-                datasourceComponent.cleanDisabledDatasource(30);
             }
         }
     }

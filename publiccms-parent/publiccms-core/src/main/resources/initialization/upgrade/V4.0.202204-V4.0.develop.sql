@@ -17,6 +17,8 @@ INSERT INTO `sys_module_lang` VALUES ('page_diy', 'ja', '視覚化されたペ�
 INSERT INTO `sys_module_lang` VALUES ('page_diy', 'zh', '页面可视化');
 
 -- 2022-05-10 --
+ALTER TABLE `cms_content` 
+    ADD COLUMN `update_user_id` bigint(20) DEFAULT NULL COMMENT '更新用户' AFTER `check_date`;
 CREATE TABLE `cms_content_text_history` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `content_id` bigint(20) NOT NULL COMMENT '内容',

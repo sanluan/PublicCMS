@@ -181,7 +181,7 @@ public class CmsContentAdminController {
         } else {
             service.save(site.getId(), admin, entity);
             if (CommonUtils.notEmpty(entity.getParentId())) {
-                service.updateChilds(site.getId(), entity.getParentId(), 1);
+                service.updateChilds(entity.getParentId(), 1);
             }
             logOperateService
                     .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
@@ -557,7 +557,7 @@ public class CmsContentAdminController {
                     || ControllerUtils.errorCustom("noright", !ControllerUtils.hasContentPermissions(admin, content), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
-            service.changeModel(site.getId(), id, modelId);
+            service.changeModel(id, modelId);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "changeModel.content", RequestUtils.getIpAddress(request),
                     CommonUtils.getDate(), new StringBuilder().append(id).append(" to ").append(modelId).toString()));

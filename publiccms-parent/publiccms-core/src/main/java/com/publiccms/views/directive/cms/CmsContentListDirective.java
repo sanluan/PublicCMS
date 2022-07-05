@@ -10,13 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
-import com.publiccms.common.database.CmsDataSource;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.component.site.DatasourceComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsContentService;
@@ -112,35 +110,29 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
         queryEntity.setHasCover(handler.getBoolean("hasCover"));
         queryEntity.setUserId(handler.getLong("userId"));
         queryEntity.setStartPublishDate(handler.getDate("startPublishDate"));
-        try {
-            if (!getAdvanced(handler)) {
-                CmsDataSource.setDataSourceName(datasourceComponent.getRandomDatasource(site.getId()));
-            }
-            PageHandler page = service.getPage(queryEntity, handler.getBoolean("containChild"), handler.getString("orderField"),
-                    handler.getString("orderType"), handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", handler.getInteger("count", 30)));
-            @SuppressWarnings("unchecked")
-            List<CmsContent> list = (List<CmsContent>) page.getList();
-            if (null != list) {
-                boolean absoluteURL = handler.getBoolean("absoluteURL", true);
-                boolean absoluteId = handler.getBoolean("absoluteId", true);
-                list.forEach(e -> {
-                    ClickStatistics statistics = statisticsComponent.getContentStatistics(e.getId());
-                    if (null != statistics) {
-                        e.setClicks(e.getClicks() + statistics.getClicks());
-                    }
-                    if (absoluteId && null != e.getQuoteContentId()) {
-                        e.setId(e.getQuoteContentId());
-                    }
-                    if (absoluteURL) {
-                        TemplateComponent.initContentUrl(site, e);
-                        TemplateComponent.initContentCover(site, e);
-                    }
-                });
-            }
-            handler.put("page", page).render();
-        } finally {
-            CmsDataSource.resetDataSourceName();
+        PageHandler page = service.getPage(queryEntity, handler.getBoolean("containChild"), handler.getString("orderField"),
+                handler.getString("orderType"), handler.getInteger("pageIndex", 1),
+                handler.getInteger("pageSize", handler.getInteger("count", 30)));
+        @SuppressWarnings("unchecked")
+        List<CmsContent> list = (List<CmsContent>) page.getList();
+        if (null != list) {
+            boolean absoluteURL = handler.getBoolean("absoluteURL", true);
+            boolean absoluteId = handler.getBoolean("absoluteId", true);
+            list.forEach(e -> {
+                ClickStatistics statistics = statisticsComponent.getContentStatistics(e.getId());
+                if (null != statistics) {
+                    e.setClicks(e.getClicks() + statistics.getClicks());
+                }
+                if (absoluteId && null != e.getQuoteContentId()) {
+                    e.setId(e.getQuoteContentId());
+                }
+                if (absoluteURL) {
+                    TemplateComponent.initContentUrl(site, e);
+                    TemplateComponent.initContentCover(site, e);
+                }
+            });
         }
+        handler.put("page", page).render();
     }
 
     @Override
@@ -150,8 +142,6 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
 
     @Autowired
     private CmsContentService service;
-    @Autowired
-    private DatasourceComponent datasourceComponent;
     @Autowired
     private StatisticsComponent statisticsComponent;
 }

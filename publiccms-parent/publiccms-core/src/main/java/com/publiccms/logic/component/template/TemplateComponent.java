@@ -30,7 +30,6 @@ import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.cms.CmsContentAttribute;
 import com.publiccms.entities.cms.CmsPlace;
 import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.component.site.DatasourceComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.service.cms.CmsCategoryAttributeService;
@@ -77,8 +76,6 @@ public class TemplateComponent implements Cache {
     private CmsCategoryModelService categoryModelService;
     @Autowired
     private CmsCategoryService categoryService;
-    @Autowired
-    protected DatasourceComponent datasourceComponent;
     @Autowired
     private SiteComponent siteComponent;
     @Autowired
@@ -174,7 +171,7 @@ public class TemplateComponent implements Cache {
                         String filepath = createContentFile(site, entity, category, true, categoryModel.getTemplatePath(), null,
                                 null);
                         if (!entity.isHasStatic() || null == entity.getUrl() || !entity.getUrl().equals(filepath)) {
-                            contentService.updateUrl(site.getId(), entity.getId(), filepath, true);
+                            contentService.updateUrl(entity.getId(), filepath, true);
                         }
                     } else {
                         Map<String, Object> model = new HashMap<>();
@@ -184,7 +181,7 @@ public class TemplateComponent implements Cache {
                         String filepath = FreeMarkerUtils.generateStringByString(category.getContentPath(), webConfiguration,
                                 model);
                         if (entity.isHasStatic() || null == entity.getUrl() || !entity.getUrl().equals(filepath)) {
-                            contentService.updateUrl(site.getId(), entity.getId(), filepath, false);
+                            contentService.updateUrl(entity.getId(), filepath, false);
                         }
                     }
                     return true;
@@ -193,7 +190,7 @@ public class TemplateComponent implements Cache {
                 if (null != categoryModel && null != category) {
                     CmsContent quote = contentService.getEntity(entity.getQuoteContentId());
                     if (null != quote) {
-                        contentService.updateUrl(site.getId(), entity.getId(), quote.getUrl(), false);
+                        contentService.updateUrl(entity.getId(), quote.getUrl(), false);
                     }
                 }
             }

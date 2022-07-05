@@ -35,10 +35,6 @@ public class CmsUpgrader extends AbstractCmsUpgrader {
             VERSION_190312 = "V4.0.190312", VERSION_2019 = "V2019", VERSION_202004 = "V4.0.202004",
             VERSION_202011 = "V4.0.202011", VERSION_202107 = "V4.0.202107", VERSION_202204 = "V4.0.202204";
     /**
-    *
-    */
-    private final static List<String> UPDATE_DATAOURCE_VERSION_LIST = Arrays.asList(VERSION_202204);
-    /**
      *
      */
     private final static List<String> VERSION_LIST = Arrays.asList(VERSION_20170708, VERSION_20180210, VERSION_180707,
@@ -71,21 +67,9 @@ public class CmsUpgrader extends AbstractCmsUpgrader {
             runScript(stringWriter, connection, VERSION_202011, VERSION_202107);
         case VERSION_202107:
             updateCategoryType(stringWriter, connection);
-            runScript(stringWriter, connection, VERSION_202107, CmsVersion.getVersion());
-        }
-    }
-
-    @Override
-    public boolean needUpdateDatasource(String fromVersion) {
-        return UPDATE_DATAOURCE_VERSION_LIST.contains(fromVersion);
-    }
-
-    @Override
-    public void updateDatasource(StringWriter stringWriter, Connection connection, String fromVersion)
-            throws SQLException, IOException {
-        switch (fromVersion) {
+            runScript(stringWriter, connection, VERSION_202107, VERSION_202204);
         case VERSION_202204:
-            runScript(stringWriter, connection, "datasource-" + VERSION_202204, CmsVersion.getVersion());
+            runScript(stringWriter, connection, VERSION_202204, CmsVersion.getVersion());
         }
     }
 
