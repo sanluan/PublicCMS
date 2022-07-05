@@ -66,3 +66,10 @@ INSERT INTO `sys_module` VALUES ('template_search', 'cmsTemplate/search', 'cmsTe
 INSERT INTO `sys_module_lang` VALUES ('template_search', 'en', 'Search');
 INSERT INTO `sys_module_lang` VALUES ('template_search', 'ja', '検索');
 INSERT INTO `sys_module_lang` VALUES ('template_search', 'zh', '搜索');
+-- 2022-07-04 --
+ALTER TABLE `visit_history` ADD INDEX  `visit_history_create_date` (`create_date`, `site_id`, `session_id`, `visit_date`, `ip`);
+ALTER TABLE `cms_content` 
+DROP INDEX `cms_content_check_date`,
+DROP INDEX `cms_content_score`,
+DROP INDEX `cms_content_only_url`,
+ADD INDEX `cms_content_disabled` (`site_id`, `parent_id`, `disabled`, `sort`, `publish_date`);

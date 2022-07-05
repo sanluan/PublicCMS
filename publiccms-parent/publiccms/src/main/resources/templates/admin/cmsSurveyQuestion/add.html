@@ -1,4 +1,4 @@
-<@cms.surveyQuestion id=id absoluteURL=false><#assign q=object/></@cms.surveyQuestion>
+<@cms.surveyQuestion id=id advanced=true absoluteURL=false><#assign q=object/></@cms.surveyQuestion>
 <form method="post" autocomplete="off" action="cmsSurveyQuestion/save?callbackType=closeCurrent&navTabId=cmsSurveyQuestion/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input name="id" type="hidden" value="${id!}"/>
     <input name="surveyId" type="hidden" value="${(q.surveyId)!surveyId}"/>

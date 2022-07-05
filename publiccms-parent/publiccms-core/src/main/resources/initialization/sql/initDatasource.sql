@@ -68,9 +68,7 @@ CREATE TABLE `cms_content` (
   `status` int(11) NOT NULL COMMENT '状态：0、草稿 1、已发布 2、待审核',
   `disabled` tinyint(1) NOT NULL COMMENT '是否删除',
   PRIMARY KEY  (`id`),
-  KEY `cms_content_check_date` (`check_date`,`update_date`),
-  KEY `cms_content_score` (`score`,`comments`,`clicks`),
-  KEY `cms_content_only_url` (`only_url`,`has_images`,`has_files`,`has_products`,`user_id`),
+  KEY `cms_content_disabled` (`site_id`, `parent_id`, `disabled`, `sort`, `publish_date`)
   KEY `cms_content_status` (`site_id`,`status`,`category_id`,`disabled`,`model_id`,`parent_id`,`sort`,`publish_date`,`expiry_date`),
   KEY `cms_content_quote_content_id` (`site_id`, `quote_content_id`)
 ) COMMENT='内容';
