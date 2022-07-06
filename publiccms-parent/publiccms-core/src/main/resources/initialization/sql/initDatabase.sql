@@ -127,7 +127,7 @@ CREATE TABLE `cms_content` (
   `disabled` tinyint(1) NOT NULL COMMENT '是否删除',
   PRIMARY KEY  (`id`),
   KEY `cms_content_disabled` (`site_id`, `parent_id`, `disabled`, `sort`, `publish_date`)
-  KEY `cms_content_status` (`site_id`,`status`,`category_id`,`disabled`,`model_id`,`parent_id`,`sort`,`publish_date`,`expiry_date`),
+  KEY `cms_content_status`(`site_id`, `status`, `parent_id`, `category_id`, `disabled`, `model_id`, `publish_date`, `expiry_date`, `sort`),
   KEY `cms_content_quote_content_id` (`site_id`, `quote_content_id`)
 ) COMMENT='内容';
 -- ----------------------------
@@ -640,8 +640,8 @@ CREATE TABLE `sys_app_token` (
   `create_date` datetime NOT NULL COMMENT '创建日期',
   `expiry_date` datetime DEFAULT NULL COMMENT '过期日期',
   PRIMARY KEY  (`auth_token`),
-  KEY `sys_app_token_app_id` (`app_id`),
-  KEY `sys_app_token_create_date` (`create_date`)
+  KEY `sys_app_token_app_id`(`app_id`, `create_date`),
+  KEY `sys_app_token_expiry_date`(`expiry_date`)
 ) COMMENT='应用授权';
 
 -- ----------------------------
@@ -761,8 +761,8 @@ CREATE TABLE `sys_email_token` (
   `create_date` datetime NOT NULL COMMENT '创建日期',
   `expiry_date` datetime NOT NULL COMMENT '过期日期',
   PRIMARY KEY  (`auth_token`),
-  KEY `sys_email_token_create_date` (`create_date`),
-  KEY `sys_email_token_user_id` (`user_id`)
+  KEY `sys_email_token_expiry_date`(`expiry_date`),
+  KEY `sys_email_token_user_id`(`user_id`, `create_date`)
 ) COMMENT='邮件地址验证日志';
 
 -- ----------------------------
@@ -1881,10 +1881,9 @@ CREATE TABLE `sys_user_token` (
   `expiry_date` datetime DEFAULT NULL COMMENT '过期日期',
   `login_ip` varchar(130) NOT NULL COMMENT '登录IP',
   PRIMARY KEY  (`auth_token`),
-  KEY `sys_user_token_user_id` (`user_id`),
-  KEY `sys_user_token_create_date` (`create_date`),
-  KEY `sys_user_token_channel` (`channel`),
-  KEY `sys_user_token_site_id` (`site_id`)
+  KEY `sys_user_token_site_id`(`site_id`, `user_id`, `create_date`),
+  KEY `sys_user_token_expiry_date`(`expiry_date`),
+  KEY `sys_user_token_user_id`(`user_id`)
 ) COMMENT='用户令牌';
 
 -- ----------------------------

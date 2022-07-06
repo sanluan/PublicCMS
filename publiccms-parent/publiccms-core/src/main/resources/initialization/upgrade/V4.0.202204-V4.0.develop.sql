@@ -26,7 +26,7 @@ CREATE TABLE `cms_content_text_history` (
   `create_date` datetime NOT NULL COMMENT '创建日期',
   `user_id` bigint(20) NOT NULL COMMENT '修改用户',
   `text` longtext NOT NULL COMMENT '文本',
-  PRIMARY KEY (`id`) USING BTREE,
+  PRIMARY KEY (`id`),
   KEY `cms_content_history_content_id` (`content_id`,`field_name`,`create_date`,`user_id`)
 ) COMMENT='内容扩展';
 INSERT INTO `sys_module` VALUES ('content_text_history', 'cmsContentTextHistory/lookup', 'cmsContentTextHistory/use', NULL, 'content_add', 0, 0);
@@ -71,10 +71,35 @@ INSERT INTO `sys_module_lang` VALUES ('template_search', 'zh', '搜索');
 -- 2022-07-04 --
 ALTER TABLE `visit_history` ADD INDEX  `visit_history_create_date` (`create_date`, `site_id`, `session_id`, `visit_date`, `ip`);
 ALTER TABLE `cms_content` 
-DROP INDEX `cms_content_check_date`,
-DROP INDEX `cms_content_score`,
-DROP INDEX `cms_content_only_url`,
-ADD INDEX `cms_content_disabled` (`site_id`, `parent_id`, `disabled`, `sort`, `publish_date`);
+    DROP INDEX `cms_content_check_date`,
+    DROP INDEX `cms_content_score`,
+    DROP INDEX `cms_content_only_url`,
+    ADD INDEX `cms_content_disabled` (`site_id`, `parent_id`, `disabled`, `sort`, `publish_date`);
 -- 2022-07-05 --
 DROP TABLE IF EXISTS `sys_site_datasource`;
 DROP TABLE IF EXISTS `sys_datasource`;
+-- 2022-07-06 --
+ALTER TABLE `cms_content` 
+    DROP INDEX `cms_content_status`,
+    ADD INDEX `cms_content_status`(`site_id`, `status`, `parent_id`, `category_id`, `disabled`, `model_id`, `publish_date`, `expiry_date`, `sort`);
+ALTER TABLE `cms_comment` 
+    DROP INDEX `cms_comment_update_date`,
+    ADD INDEX `cms_comment_user_id`(`site_id`, `user_id`, `status`, `disabled`);
+ALTER TABLE `sys_app_token` 
+    DROP INDEX `sys_app_token_app_id`,
+    DROP INDEX `sys_app_token_create_date`,
+    ADD INDEX `sys_app_token_app_id`(`app_id`, `create_date`),
+    ADD INDEX `sys_app_token_expiry_date`(`expiry_date`);
+ALTER TABLE `sys_email_token` 
+    DROP INDEX `sys_email_token_user_id`,
+    DROP INDEX `sys_email_token_create_date`,
+    ADD INDEX `sys_email_token_expiry_date`(`expiry_date`),
+    ADD INDEX `sys_email_token_user_id`(`user_id`, `create_date`);
+ALTER TABLE `sys_user_token` 
+    DROP INDEX `sys_user_token_site_id`,
+    DROP INDEX `sys_user_token_user_id`,
+    DROP INDEX `sys_user_token_create_date`,
+    DROP INDEX `sys_user_token_channel`,
+    ADD INDEX `sys_user_token_site_id`(`site_id`, `user_id`, `create_date`),
+    ADD INDEX `sys_user_token_expiry_date`(`expiry_date`),
+    ADD INDEX `sys_user_token_user_id`(`user_id`);

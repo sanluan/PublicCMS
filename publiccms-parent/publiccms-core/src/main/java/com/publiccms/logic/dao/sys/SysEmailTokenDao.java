@@ -29,7 +29,7 @@ public class SysEmailTokenDao extends BaseDao<SysEmailToken> {
         if (CommonUtils.notEmpty(userId)) {
             queryHandler.condition("bean.userId = :userId").setParameter("userId", userId);
         }
-        queryHandler.order("bean.id desc");
+        queryHandler.order("bean.createDate desc");
         return getPage(queryHandler, pageIndex, pageSize);
     }
 
