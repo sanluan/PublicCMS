@@ -177,7 +177,7 @@ public class TemplateComponent implements Cache {
                         Map<String, Object> model = new HashMap<>();
                         model.put("content", entity);
                         model.put("category", category);
-                        model.put(AbstractFreemarkerView.CONTEXT_SITE, site);
+                        model.put(CommonConstants.getAttributeSite(), site);
                         String filepath = FreeMarkerUtils.generateStringByString(category.getContentPath(), webConfiguration,
                                 model);
                         if (entity.isHasStatic() || null == entity.getUrl() || !entity.getUrl().equals(filepath)) {
@@ -368,7 +368,7 @@ public class TemplateComponent implements Cache {
                 Map<String, Object> model = new HashMap<>();
                 initCategoryUrl(site, entity);
                 model.put("category", entity);
-                model.put(AbstractFreemarkerView.CONTEXT_SITE, site);
+                model.put(CommonConstants.getAttributeSite(), site);
                 String filepath = FreeMarkerUtils.generateStringByString(entity.getPath(), webConfiguration, model);
                 if (entity.isHasStatic() || null == entity.getUrl() || !entity.getUrl().equals(filepath)) {
                     categoryService.updateUrl(entity.getId(), filepath, false);

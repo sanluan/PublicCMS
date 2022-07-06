@@ -75,3 +75,6 @@ DROP INDEX `cms_content_check_date`,
 DROP INDEX `cms_content_score`,
 DROP INDEX `cms_content_only_url`,
 ADD INDEX `cms_content_disabled` (`site_id`, `parent_id`, `disabled`, `sort`, `publish_date`);
+-- 2022-07-05 --
+DROP TABLE IF EXISTS `sys_site_datasource`;
+DROP TABLE IF EXISTS `sys_datasource`;

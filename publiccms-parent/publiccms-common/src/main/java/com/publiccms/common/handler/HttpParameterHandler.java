@@ -5,7 +5,10 @@ import java.io.Writer;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -95,7 +98,7 @@ public class HttpParameterHandler extends BaseHandler {
         }
         return null;
     }
-    
+
     @Override
     public Short getShort(String name) {
         regristerParameter(PARAMETER_TYPE_SHORT, name);
@@ -188,6 +191,19 @@ public class HttpParameterHandler extends BaseHandler {
             }
         }
         return null;
+    }
+
+    @Override
+    public Map<?, ?> getMap(String name) {
+        Enumeration<String> names = request.getParameterNames();
+        Map<String, Object> map = new HashMap<>();
+        while (names.hasMoreElements()) {
+            String temp = names.nextElement();
+            if (temp.startsWith(name)) {
+                map.put(temp.substring(name.length()), request.getParameter(name));
+            }
+        }
+        return map;
     }
 
     @Override

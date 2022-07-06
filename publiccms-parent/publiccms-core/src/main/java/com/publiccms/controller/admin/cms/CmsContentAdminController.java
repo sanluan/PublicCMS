@@ -219,8 +219,8 @@ public class CmsContentAdminController {
                 }
             }
         } catch (IOException | TemplateException e) {
-            model.addAttribute(CommonConstants.ERROR, e.getMessage());
             log.error(e.getMessage(), e);
+            model.put(CommonConstants.ERROR, e.getMessage());
             return CommonConstants.TEMPLATE_ERROR;
         }
         return CommonConstants.TEMPLATE_DONE;
@@ -324,8 +324,8 @@ public class CmsContentAdminController {
                     templateComponent.createCategoryFile(site, category, null, null);
                 }
             } catch (IOException | TemplateException e) {
-                model.addAttribute(CommonConstants.ERROR, e.getMessage());
                 log.error(e.getMessage(), e);
+                model.put(CommonConstants.ERROR, e.getMessage());
                 return CommonConstants.TEMPLATE_ERROR;
             }
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
@@ -359,8 +359,8 @@ public class CmsContentAdminController {
                         templateComponent.createCategoryFile(site, entity, null, null);
                     }
                 } catch (IOException | TemplateException e) {
-                    model.addAttribute(CommonConstants.ERROR, e.getMessage());
                     log.error(e.getMessage(), e);
+                    model.addAttribute(CommonConstants.ERROR, e.getMessage());
                     return CommonConstants.TEMPLATE_ERROR;
                 }
             }

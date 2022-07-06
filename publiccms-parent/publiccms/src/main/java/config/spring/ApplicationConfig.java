@@ -20,7 +20,6 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
@@ -60,7 +59,6 @@ import freemarker.cache.FileTemplateLoader;
  *
  */
 @Configuration
-@EnableAspectJAutoProxy
 @ComponentScan(basePackages = "com.publiccms", excludeFilters = { @ComponentScan.Filter(value = { Controller.class }) })
 @MapperScan(basePackages = "com.publiccms.logic.mapper")
 @PropertySource({ "classpath:" + CommonConstants.CMS_CONFIG_FILE })

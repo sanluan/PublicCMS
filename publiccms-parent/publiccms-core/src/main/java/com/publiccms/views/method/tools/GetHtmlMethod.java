@@ -51,7 +51,8 @@ public class GetHtmlMethod extends BaseMethod {
                         Iterator<?> it = parameters.keySet().iterator();
                         while (it.hasNext()) {
                             String key = (String) it.next();
-                            nvps.add(new BasicNameValuePair(key, (String) parameters.get(key)));
+                            Object value = parameters.get(key);
+                            nvps.add(new BasicNameValuePair(key, null == value ? null : value.toString()));
                         }
                         httppost.setEntity(new UrlEncodedFormEntity(nvps, CommonConstants.DEFAULT_CHARSET));
                     } else {

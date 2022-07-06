@@ -81,8 +81,6 @@ public class TemplateCacheComponent implements Cache {
     @Autowired
     private ConfigComponent configComponent;
     @Autowired
-    private LocaleResolver localeResolver;
-    @Autowired
     private CmsContentService contentService;
     @Autowired
     private CmsCategoryService categoryService;
@@ -91,8 +89,8 @@ public class TemplateCacheComponent implements Cache {
     @Autowired
     private StatisticsComponent statisticsComponent;
 
-    public String getViewName(SysSite site, Long id, Integer pageIndex, String requestPath, String body,
-            HttpServletRequest request, HttpServletResponse response, ModelMap model) {
+    public String getViewName(LocaleResolver localeResolver, SysSite site, Long id, Integer pageIndex, String requestPath,
+            String body, HttpServletRequest request, HttpServletResponse response, ModelMap model) {
         requestPath = siteComponent.getPath(site, requestPath);
         SysDomain domain = siteComponent.getDomain(request.getServerName());
         String fullRequestPath = siteComponent.getViewName(site, domain, requestPath);

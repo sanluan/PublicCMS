@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.util.UrlPathHelper;
 
 import com.publiccms.common.constants.CommonConstants;
@@ -28,6 +29,8 @@ import com.publiccms.logic.component.template.TemplateCacheComponent;
 public class IndexController {
     @Autowired
     private TemplateCacheComponent templateCacheComponent;
+    @Autowired
+    private LocaleResolver localeResolver;
 
     /**
      * METADATA页面请求统一分发
@@ -97,7 +100,8 @@ public class IndexController {
             requestPath = requestPath.substring(0, requestPath.lastIndexOf(CommonConstants.SEPARATOR))
                     + CommonConstants.getDefaultSubfix();
         }
-        return templateCacheComponent.getViewName(site, id, pageIndex, requestPath, body, request, response, model);
+        return templateCacheComponent.getViewName(localeResolver, site, id, pageIndex, requestPath, body, request, response,
+                model);
     }
 
     /**
@@ -117,7 +121,7 @@ public class IndexController {
         if (requestPath.endsWith(CommonConstants.SEPARATOR)) {
             requestPath += CommonConstants.getDefaultPage();
         }
-        return templateCacheComponent.getViewName(site, null, null, requestPath, body, request, response, model);
+        return templateCacheComponent.getViewName(localeResolver, site, null, null, requestPath, body, request, response, model);
     }
 
 }

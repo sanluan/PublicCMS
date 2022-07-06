@@ -84,10 +84,10 @@ public class MethodController {
                     for (String parameter : parameters) {
                         list.add(getObjectWrapper().wrap(parameter));
                     }
-                    map.put("result", method.exec(list));
+                    map.put("result", method.execute(request, list));
                     return map;
                 } else if (CommonUtils.empty(parameters) && 0 == method.minParametersNumber()) {
-                    map.put("result", method.exec(new ArrayList<>()));
+                    map.put("result", method.execute(request, new ArrayList<>()));
                     return map;
                 } else {
                     map.put(CommonConstants.ERROR, "parametersError");

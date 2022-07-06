@@ -5,6 +5,7 @@ import java.io.Writer;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -212,6 +213,13 @@ public interface RenderHandler {
      * @throws Exception
      */
     Locale getLocale() throws Exception;
+    
+    /**
+     * @param name
+     * @return map value
+     * @throws Exception 
+     */
+    public Map<?, ?> getMap(String name) throws Exception;
 
     /**
      * @return request

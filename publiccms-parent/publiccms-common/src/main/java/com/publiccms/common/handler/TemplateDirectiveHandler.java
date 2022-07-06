@@ -97,11 +97,7 @@ public class TemplateDirectiveHandler extends BaseHandler {
         }
     }
 
-    /**
-     * @param name
-     * @return map value
-     * @throws TemplateModelException
-     */
+    @Override
     public Map<?, ?> getMap(String name) throws TemplateModelException {
         return TemplateModelUtils.converMap(parameters.get(name));
     }

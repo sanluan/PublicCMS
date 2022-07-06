@@ -12,7 +12,7 @@
             <#break>
         <#case 'file'>
             <#if 'view'=type>
-                <a href="${getAbsoluteUrl(site.sitePath,value)!}" target="_blank">${(value)!}</a>
+                <a href="${getUrl(value)!}" target="_blank">${(value)!}</a>
             <#else>
                 <input name="${inputName}" <#if 'customform'!=type>class="<#if extend.required>required</#if>" type="text" maxlength="300" size="50" <#else>type="file" </#if>value="${(value)!}"/>
                 <#if 'customform'!=type>
@@ -23,7 +23,7 @@
             <#break>
         <#case 'image'>
             <#if 'view'=type>
-                <img src="${getAbsoluteUrl(site.sitePath,value)!}" style="max-width:200px;max-height:200px;"/>
+                <img src="${getUrl(value)!}" style="max-width:200px;max-height:200px;"/>
                 <br/>
                 ${(value)!}
             <#else>
@@ -40,7 +40,7 @@
             <#break>
         <#case 'video'>
             <#if 'view'=type>
-                <video controls="controls" src="${getAbsoluteUrl(site.sitePath,value)!}" style="max-width:500px;max-height:500px;"></video>
+                <video controls="controls" src="${getUrl(value)!}" style="max-width:500px;max-height:500px;"></video>
                 <br/>
                 ${(value)!}
             <#else>

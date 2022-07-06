@@ -45,7 +45,7 @@ public abstract class AbstractTemplateDirective extends BaseTemplateDirective {
      * @throws Exception
      */
     protected SysSite getSite(RenderHandler handler) throws Exception {
-        return (SysSite) handler.getAttribute(AbstractFreemarkerView.CONTEXT_SITE);
+        return (SysSite) handler.getAttribute(CommonConstants.getAttributeSite());
     }
 
     /**

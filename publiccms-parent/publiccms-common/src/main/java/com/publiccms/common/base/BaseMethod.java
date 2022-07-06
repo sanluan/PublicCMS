@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -31,8 +33,12 @@ public abstract class BaseMethod implements TemplateMethodModelEx {
     public Object exec(@SuppressWarnings("rawtypes") List arguments) throws TemplateModelException {
         return execute((List<TemplateModel>) arguments);
     }
-
+    
     public abstract Object execute(List<TemplateModel> arguments) throws TemplateModelException;
+
+    public Object execute(@SuppressWarnings("unused") HttpServletRequest request, List<TemplateModel> arguments) throws TemplateModelException {
+        return execute((List<TemplateModel>) arguments);
+    }
 
     protected static TemplateModel getModel(int index, List<TemplateModel> arguments) {
         if (CommonUtils.notEmpty(arguments) && index < arguments.size()) {
