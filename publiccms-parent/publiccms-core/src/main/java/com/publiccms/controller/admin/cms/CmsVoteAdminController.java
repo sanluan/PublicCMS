@@ -37,8 +37,8 @@ import com.publiccms.views.pojo.model.CmsVoteParameters;
 @RequestMapping("cmsVote")
 public class CmsVoteAdminController {
 
-    private String[] ignoreProperties = new String[] { "id", "siteId", "scores", "createDate", "disabled" };
-    private String[] itemIgnoreProperties = new String[] { "id", "voteId", "scores" };
+    private String[] ignoreProperties = new String[] { "id", "siteId", "votes", "createDate", "disabled" };
+    private String[] itemIgnoreProperties = new String[] { "id", "voteId", "votes" };
 
     /**
      * @param site

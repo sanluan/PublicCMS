@@ -43,11 +43,11 @@ public class CmsVoteItem implements java.io.Serializable {
     @GeneratorColumn(title = "标题")
     private String title;
     /**
-     * scores<p>
+     * votes<p>
      * 票数
      */
     @GeneratorColumn(title = "票数", order = true)
-    private int scores;
+    private int votes;
     /**
      * sort<p>
      * 排序
@@ -58,10 +58,10 @@ public class CmsVoteItem implements java.io.Serializable {
     public CmsVoteItem() {
     }
 
-    public CmsVoteItem(long voteId, String title, int scores, int sort) {
+    public CmsVoteItem(long voteId, String title, int votes, int sort) {
         this.voteId = voteId;
         this.title = title;
-        this.scores = scores;
+        this.votes = votes;
         this.sort = sort;
     }
 
@@ -96,13 +96,13 @@ public class CmsVoteItem implements java.io.Serializable {
         this.title = title;
     }
 
-    @Column(name = "scores", nullable = false)
-    public int getScores() {
-        return this.scores;
+    @Column(name = "votes", nullable = false)
+    public int getVotes() {
+        return this.votes;
     }
 
-    public void setScores(int scores) {
-        this.scores = scores;
+    public void setVotes(int votes) {
+        this.votes = votes;
     }
 
     @Column(name = "sort", nullable = false)

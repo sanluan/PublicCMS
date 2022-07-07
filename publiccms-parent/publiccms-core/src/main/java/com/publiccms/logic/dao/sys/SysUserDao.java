@@ -110,18 +110,6 @@ public class SysUserDao extends BaseDao<SysUser> {
 
     /**
      * @param siteId
-     * @param nickname
-     * @return entity
-     */
-    public SysUser findByNickname(short siteId, String nickname) {
-        QueryHandler queryHandler = getQueryHandler("from SysUser bean");
-        queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
-        queryHandler.condition("bean.nickname = :nickname").setParameter("nickname", nickname);
-        return getEntity(queryHandler);
-    }
-
-    /**
-     * @param siteId
      * @param email
      * @return entity
      */

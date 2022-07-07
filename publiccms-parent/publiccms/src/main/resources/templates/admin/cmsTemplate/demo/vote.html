@@ -33,7 +33,7 @@ ol.vote>li:nth-child(3n) .progress-bar {background-color:blue;}
     <#list page.list as a>
             <li>
                 <h3>${a.title}</h3>
-                <p>${a.scores!} votes,end on:${(a.endDate)!}</p>
+                <p>${a.votes!} votes,end on:${(a.endDate)!}</p>
                 <p>${a.description}</p>
                 <#if a.startDate lt .now && .now lt a.endDate><#assign available=true/><#else><#assign available=false/></#if>
                 <#if available && user?has_content>
@@ -46,20 +46,20 @@ ol.vote>li:nth-child(3n) .progress-bar {background-color:blue;}
                     <#list page.list as v>
                         <li>
                             <div class="progress-box">
-                                <div class="progress-bar" style="width:${(a.scores gt 0 && myvote?has_content)?then(v.scores*100/a.scores,100)}%;"></div>
+                                <div class="progress-bar" style="width:${(a.votes gt 0 && myvote?has_content)?then(v.votes*100/a.votes,100)}%;"></div>
                                 <div class="progress-text">
                                     <#if available>
                                         <#if myvote?has_content>
                                             <#if myvote.itemId=v.id>
-                                                <a href="javascript:unvote('${v.id}');" title="Cannel voting">${v.title} (${v.scores!} votes)</a>
+                                                <a href="javascript:unvote('${v.id}');" title="Cannel voting">${v.title} (${v.votes!} votes)</a>
                                             <#else>
-                                                ${v.title} (${v.scores!} votes)
+                                                ${v.title} (${v.votes!} votes)
                                             </#if>
                                         <#else>
                                             <a href="<#if user?has_content>javascript:vote('${v.id}');<#else>${site.dynamicPath}login.html?returnUrl=${site.dynamicPath}vote.html?id=${a.id}</#if>" title="Vote and view">${v.title}</a>
                                         </#if>
                                     <#else>
-                                        (${v.scores!} votes)
+                                        (${v.votes!} votes)
                                     </#if>
                                 </div>
                             </div>

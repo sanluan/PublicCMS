@@ -44,7 +44,7 @@
                 <th>ID</th>
                 <th><@t.page 'title'/></th>
                 <th><@t.page 'description'/></th>
-                <th orderField="scores" class="<#if orderField?has_content&&'scores'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'content.score'/></th>
+                <th orderField="votes" class="<#if orderField?has_content&&'votes'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'content.score'/></th>
                 <th orderField="startDate" class="<#if orderField?has_content&&'startDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'start_date'/></th>
                 <th orderField="endDate" class="<#if orderField?has_content&&'endDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'end_date'/></th>
                 <th orderField="createDate" class="<#if orderField?has_content&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'create_date'/></th>
@@ -59,7 +59,7 @@
                 <td class="center">${a.id!}</td>
                 <td class="center exclude-translate" >${a.title!}</td>
                 <td class="center exclude-translate">${a.description!}</td>
-                <td>${a.scores!}</td>
+                <td>${a.votes!}</td>
                 <td>${a.startDate!}</td>
                 <td>${a.endDate!}</td>
                 <td>${a.createDate!}</td>

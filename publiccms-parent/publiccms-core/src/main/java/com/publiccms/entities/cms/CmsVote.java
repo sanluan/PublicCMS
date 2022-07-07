@@ -53,11 +53,11 @@ public class CmsVote implements java.io.Serializable {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endDate;
     /**
-     * scores<p>
+     * votes<p>
      * 投票次数
      */
     @GeneratorColumn(title = "投票次数", order = true)
-    private int scores;
+    private int votes;
     /**
      * title<p>
      * 标题
@@ -83,21 +83,21 @@ public class CmsVote implements java.io.Serializable {
     public CmsVote() {
     }
 
-    public CmsVote(short siteId, Date startDate, Date endDate, int scores, String title, Date createDate, boolean disabled) {
+    public CmsVote(short siteId, Date startDate, Date endDate, int votes, String title, Date createDate, boolean disabled) {
         this.siteId = siteId;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.scores = scores;
+        this.votes = votes;
         this.title = title;
         this.createDate = createDate;
         this.disabled = disabled;
     }
 
-    public CmsVote(short siteId, Date startDate, Date endDate, int scores, String title, String description, Date createDate, boolean disabled) {
+    public CmsVote(short siteId, Date startDate, Date endDate, int votes, String title, String description, Date createDate, boolean disabled) {
         this.siteId = siteId;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.scores = scores;
+        this.votes = votes;
         this.title = title;
         this.description = description;
         this.createDate = createDate;
@@ -146,13 +146,13 @@ public class CmsVote implements java.io.Serializable {
         this.endDate = endDate;
     }
 
-    @Column(name = "scores", nullable = false)
-    public int getScores() {
-        return this.scores;
+    @Column(name = "votes", nullable = false)
+    public int getVotes() {
+        return this.votes;
     }
 
-    public void setScores(int scores) {
-        this.scores = scores;
+    public void setVotes(int votes) {
+        this.votes = votes;
     }
 
     @Column(name = "title", nullable = false, length = 100)

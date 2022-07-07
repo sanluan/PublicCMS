@@ -22,6 +22,18 @@ import com.publiccms.common.constants.Constants;
  * 
  */
 public class CommonUtils {
+    /**
+     * @param <T>
+     * @param <F>
+     * @param list
+     * @param keyMapper
+     * @param consumer
+     * @param filter
+     * @return
+     */
+    public static <T, F> Map<F, T> listToMap(List<T> list, Function<T, F> keyMapper) {
+        return listToMap(list, keyMapper, null, null);
+    }
 
     /**
      * @param <T>
@@ -32,8 +44,7 @@ public class CommonUtils {
      * @param filter
      * @return
      */
-    public static <T, F> Map<F, T> listToMap(List<T> list, Function<T, F> keyMapper, Consumer<T> consumer,
-            Predicate<T> filter) {
+    public static <T, F> Map<F, T> listToMap(List<T> list, Function<T, F> keyMapper, Consumer<T> consumer, Predicate<T> filter) {
         if (null != consumer) {
             list.forEach(consumer);
         }

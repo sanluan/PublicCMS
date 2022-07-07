@@ -81,7 +81,10 @@ DROP TABLE IF EXISTS `sys_datasource`;
 -- 2022-07-06 --
 ALTER TABLE `cms_content` 
     DROP INDEX `cms_content_status`,
-    ADD INDEX `cms_content_status`(`site_id`, `status`, `parent_id`, `category_id`, `disabled`, `model_id`, `publish_date`, `expiry_date`, `sort`);
+    DROP INDEX `cms_content_disabled`,
+    ADD INDEX `cms_content_parent_id` (`site_id`, `parent_id`, `disabled`, `sort`, `publish_date`),
+    ADD INDEX `cms_content_disabled` (`site_id`, `disabled`, `sort`, `publish_date`),
+    ADD INDEX `cms_content_status` (`site_id`, `status`, `parent_id`, `category_id`, `disabled`, `model_id`, `publish_date`, `expiry_date`, `sort`);
 ALTER TABLE `cms_comment` 
     DROP INDEX `cms_comment_update_date`,
     ADD INDEX `cms_comment_user_id`(`site_id`, `user_id`, `status`, `disabled`);
@@ -103,3 +106,57 @@ ALTER TABLE `sys_user_token`
     ADD INDEX `sys_user_token_site_id`(`site_id`, `user_id`, `create_date`),
     ADD INDEX `sys_user_token_expiry_date`(`expiry_date`),
     ADD INDEX `sys_user_token_user_id`(`user_id`);
+-- 2022-07-07 --
+ALTER TABLE `sys_user` 
+    DROP INDEX `sys_user_name`,
+    DROP INDEX `sys_user_email`,
+    DROP INDEX `sys_user_disabled`,
+    DROP INDEX `sys_user_dept_id`,
+    DROP INDEX `sys_user_lastLoginDate`,
+    DROP INDEX `sys_user_email_checked`,
+    DROP INDEX `sys_user_site_id`,
+    ADD UNIQUE INDEX `sys_user_name`(`site_id`, `name`),
+    ADD INDEX `sys_user_email`(`site_id`, `email`, `email_checked`),
+    ADD INDEX `sys_user_disabled`(`site_id`, `disabled`),
+    ADD INDEX `sys_user_dept_id`(`site_id`, `registered_date`, `disabled`);
+ALTER TABLE `sys_app_client` 
+    ADD INDEX `sys_app_client_disabled`(`site_id`, `disabled`, `create_date`);
+ALTER TABLE `trade_order` 
+    DROP INDEX `trade_order_create_date`,
+    ADD INDEX `trade_order_create_date`(`site_id`, `create_date`);
+ALTER TABLE `trade_payment` 
+    DROP INDEX `trade_payment_account_type`,
+    DROP INDEX `trade_payment_trade_type`,
+    DROP INDEX `trade_payment_create_date`,
+    ADD INDEX `trade_payment_account_type`(`site_id`, `account_type`, `account_serial_number`),
+    ADD INDEX `trade_payment_trade_type`(`site_id`, `trade_type`, `serial_number`),
+    ADD INDEX `trade_payment_create_date` (`site_id`, `create_date`);
+ALTER TABLE `trade_payment_history` 
+    DROP INDEX `trade_payment_history_create_date`,
+    ADD INDEX `trade_payment_history_create_date`(`site_id`, `create_date`);
+ALTER TABLE `trade_payment_history` 
+    DROP INDEX `trade_order_history_create_date`,
+    ADD INDEX `trade_order_history_create_date`(`site_id`, `create_date`);
+ALTER TABLE `trade_account_history` 
+    DROP INDEX `trade_account_history_create_date`,
+    ADD INDEX `trade_account_history_create_date`(`site_id`, `create_date`);
+ALTER TABLE `trade_refund` 
+    DROP INDEX `trade_refund_create_date`,
+    DROP INDEX `trade_refund_user_id`,
+    ADD INDEX `trade_refund_create_date`(`site_id`, `create_date`),
+    ADD INDEX `trade_refund_user_id`(`site_id`,`user_id`,`status`);
+ALTER TABLE `cms_vote_item` 
+    DROP INDEX `cms_vote_item_vote_id`,
+    ADD INDEX `cms_vote_item_vote_id`(`vote_id`, `sort`);
+ALTER TABLE `cms_user_score`
+    CHANGE COLUMN `scores` `score` int(11) NOT NULL COMMENT '分数' AFTER `item_id`;
+ALTER TABLE `cms_vote` 
+    CHANGE COLUMN `scores` `votes` int(11) NOT NULL COMMENT '总票数' AFTER `end_date`;
+ALTER TABLE `cms_vote_item` 
+    CHANGE COLUMN `scores` `votes` int(11) NOT NULL COMMENT '票数' AFTER `title`;
+ALTER TABLE `cms_vote_item` 
+    DROP INDEX `cms_user_survey_site_id`,
+    ADD INDEX `cms_user_survey_site_id`(`site_id`, `create_date`);
+ALTER TABLE `cms_user_survey_question` 
+    DROP INDEX `cms_user_survey_site_id`,
+    ADD INDEX `cms_user_survey_site_id`(`site_id`, `survey_id`, `create_date`);

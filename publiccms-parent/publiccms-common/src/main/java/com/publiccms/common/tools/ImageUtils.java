@@ -3,10 +3,14 @@ package com.publiccms.common.tools;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -24,6 +28,10 @@ import com.publiccms.common.constants.Constants;
  * 
  */
 public class ImageUtils {
+    /**
+     * 
+     */
+    public static final String DEFAULT_FORMAT_NAME = "jpg";
 
     /**
      * @param width
@@ -141,4 +149,29 @@ public class ImageUtils {
         ImageIO.write(image, "webp", webpFile);
     }
 
+    public static void thumb(String sourceFilePath, String thumbFilePath, int width, int height, String suffix)
+            throws IOException {
+        try (FileOutputStream outputStream = new FileOutputStream(thumbFilePath);) {
+            BufferedImage sourceImage = ImageIO.read(new File(sourceFilePath));
+            if (width > sourceImage.getWidth()) {
+                width = sourceImage.getWidth();
+            }
+            if (height > sourceImage.getHeight()) {
+                height = sourceImage.getHeight();
+            }
+            BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+            Image scaledImage = sourceImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+            Graphics2D g = img.createGraphics();
+            if (".png".equalsIgnoreCase(suffix)) {
+                img = g.getDeviceConfiguration().createCompatibleImage(img.getWidth(), img.getHeight(), Transparency.TRANSLUCENT);
+                g = img.createGraphics();
+            }
+            g.drawImage(scaledImage, 0, 0, null);
+            if (null != suffix && suffix.length() > 1) {
+                ImageIO.write(img, suffix.substring(1), outputStream);
+            } else {
+                ImageIO.write(img, DEFAULT_FORMAT_NAME, outputStream);
+            }
+        }
+    }
 }

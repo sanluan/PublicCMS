@@ -9,6 +9,7 @@ import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.ImageUtils;
 import com.publiccms.entities.sys.SysSite;
 
 /**
@@ -43,7 +44,7 @@ public class ThumbDirective extends AbstractTemplateDirective {
                 String sourceFilePath = siteComponent.getWebFilePath(site, filepath);
                 if (CmsFileUtils.exists(sourceFilePath)) {
                     try {
-                        CmsFileUtils.thumb(sourceFilePath, thumbFilePath, width, height, suffix);
+                        ImageUtils.thumb(sourceFilePath, thumbFilePath, width, height, suffix);
                         handler.print(site.getSitePath() + thumbPath);
                     } catch (IOException e) {
                         handler.print(path);
