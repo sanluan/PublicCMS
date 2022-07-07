@@ -405,7 +405,7 @@ CREATE TABLE `cms_user_score`  (
   `create_date` datetime NOT NULL COMMENT '创建日期',
   PRIMARY KEY (`user_id`, `item_type`, `item_id`),
   KEY `cms_user_score_item_type`(`item_type`, `item_id`, `create_date`),
-  KEY `cms_user_score_user_id`(`user_id`, `create_date`)
+  KEY `cms_user_score_user_id`(`user_id`, `item_type`, `create_date`)
 ) COMMENT = '用户评分表';
 
 -- ----------------------------

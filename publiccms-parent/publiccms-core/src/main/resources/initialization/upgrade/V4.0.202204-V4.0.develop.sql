@@ -160,3 +160,6 @@ ALTER TABLE `cms_vote_item`
 ALTER TABLE `cms_user_survey_question` 
     DROP INDEX `cms_user_survey_site_id`,
     ADD INDEX `cms_user_survey_question_site_id`(`site_id`, `survey_id`, `create_date`);
+ALTER TABLE `cms_user_score` 
+    DROP INDEX `cms_user_score_user_id`,
+    ADD INDEX `cms_user_score_user_id`(`user_id`, `item_type`, `create_date`);
