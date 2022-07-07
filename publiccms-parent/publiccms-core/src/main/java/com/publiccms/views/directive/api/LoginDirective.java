@@ -86,9 +86,6 @@ public class LoginDirective extends AbstractAppDirective {
                     String salt = UserPasswordUtils.getSalt();
                     service.updatePassword(user.getId(), UserPasswordUtils.passwordEncode(password, salt, encoding), salt);
                 }
-                if (!user.isWeakPassword() && UserPasswordUtils.isWeek(username, password)) {
-                    service.updateWeekPassword(user.getId(), true);
-                }
                 service.updateLoginStatus(user.getId(), ip);
                 String authToken = UUID.randomUUID().toString();
                 Date now = CommonUtils.getDate();
