@@ -134,7 +134,7 @@ ALTER TABLE `trade_payment`
 ALTER TABLE `trade_payment_history` 
     DROP INDEX `trade_payment_history_create_date`,
     ADD INDEX `trade_payment_history_create_date`(`site_id`, `create_date`);
-ALTER TABLE `trade_payment_history` 
+ALTER TABLE `trade_order_history` 
     DROP INDEX `trade_order_history_create_date`,
     ADD INDEX `trade_order_history_create_date`(`site_id`, `create_date`);
 ALTER TABLE `trade_account_history` 
@@ -155,8 +155,8 @@ ALTER TABLE `cms_vote`
 ALTER TABLE `cms_vote_item` 
     CHANGE COLUMN `scores` `votes` int(11) NOT NULL COMMENT '票数' AFTER `title`;
 ALTER TABLE `cms_vote_item` 
-    DROP INDEX `cms_user_survey_site_id`,
-    ADD INDEX `cms_user_survey_site_id`(`site_id`, `create_date`);
+    DROP INDEX `cms_vote_item_vote_id`,
+    ADD INDEX `cms_vote_item_vote_id`(`vote_id`, `sort`);
 ALTER TABLE `cms_user_survey_question` 
     DROP INDEX `cms_user_survey_site_id`,
-    ADD INDEX `cms_user_survey_site_id`(`site_id`, `survey_id`, `create_date`);
+    ADD INDEX `cms_user_survey_question_site_id`(`site_id`, `survey_id`, `create_date`);
