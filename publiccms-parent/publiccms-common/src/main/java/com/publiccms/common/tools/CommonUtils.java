@@ -77,16 +77,14 @@ public class CommonUtils {
      */
     public static String keep(String var, int length, String append) {
         if (null != append) {
-            length -= append.length();
-        }
-        if (null != var && var.length() > length) {
-            if (null != append) {
-                return var.substring(0, length) + append;
+            if (null != var && var.length() > length && length > append.length()) {
+                return var.substring(0, length - append.length()) + append;
             } else {
-                return var.substring(0, length);
+                return var;
             }
+        } else {
+            return StringUtils.substring(var, 0, length);
         }
-        return var;
     }
 
     /**
