@@ -174,18 +174,18 @@ public class CmsContentAdminController {
             entity.setUpdateUserId(admin.getId());
             entity = service.update(entity.getId(), entity, entity.isOnlyUrl() ? ignoreProperties : ignorePropertiesWithUrl);
             if (null != entity) {
-                logOperateService
-                        .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                                "update.content", RequestUtils.getIpAddress(request), now, JsonUtils.getString(entity)));
+                logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
+                        LogLoginService.CHANNEL_WEB_MANAGER, "update.content", RequestUtils.getIpAddress(request), now,
+                        JsonUtils.getString(new Object[] { entity, attribute, contentParameters })));
             }
         } else {
             service.save(site.getId(), admin, entity);
             if (CommonUtils.notEmpty(entity.getParentId())) {
                 service.updateChilds(entity.getParentId(), 1);
             }
-            logOperateService
-                    .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                            "save.content", RequestUtils.getIpAddress(request), now, JsonUtils.getString(entity)));
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "save.content", RequestUtils.getIpAddress(request), now,
+                    JsonUtils.getString(new Object[] { entity, attribute, contentParameters })));
         }
         entity = service.saveTagAndAttribute(site.getId(), admin.getId(), entity.getId(), contentParameters, cmsModel,
                 category.getExtendId(), attribute);

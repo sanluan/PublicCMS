@@ -13,7 +13,7 @@ import com.publiccms.entities.sys.SysTask;
 /**
  *
  * SysTaskDao
- * 
+ *
  */
 @Repository
 public class SysTaskDao extends BaseDao<SysTask> {

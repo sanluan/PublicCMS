@@ -303,7 +303,7 @@ public class CmsContentService extends BaseService<CmsContent> {
                 searchTextBuilder.append(text).append(CommonConstants.BLANK_SPACE);
             }
             if (CommonUtils.empty(entity.getDescription())) {
-                entity.setDescription(StringUtils.substring(text, 0, 150));
+                entity.setDescription(CommonUtils.keep(entity.getDescription(), 300));
             }
         } else {
             attribute.setWordCount(0);

@@ -1,3 +1,7 @@
+数据库初始化脚本位置:
+publiccms-parent\publiccms-core\src\main\resources\initialization\sql\initDatabase.sql
+但是您完全不需要手动执行数据库初始化脚本，直接启动产品，在页面中配置和初始化数据库就可以了
+
 maven(使用以下文件：.mvn,pom.xml,mvnw,mvnw.cmd)
 
 已安装maven完整命令行为  mvn clean

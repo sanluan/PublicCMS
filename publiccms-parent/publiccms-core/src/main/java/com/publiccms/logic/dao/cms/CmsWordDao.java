@@ -18,7 +18,7 @@ import com.publiccms.entities.cms.CmsWord;
  */
 @Repository
 public class CmsWordDao extends BaseDao<CmsWord> {
-    
+
     /**
      * @param siteId
      * @param hidden
@@ -89,8 +89,8 @@ public class CmsWordDao extends BaseDao<CmsWord> {
         if (null == entity.getCreateDate()) {
             entity.setCreateDate(CommonUtils.getDate());
         }
-        if (CommonUtils.notEmpty(entity.getName()) && entity.getName().length() > 255) {
-            entity.setName(entity.getName().substring(0, 255));
+        if (CommonUtils.notEmpty(entity.getName())) {
+            entity.setName(CommonUtils.keep(entity.getName(), 255));
         }
         return entity;
     }

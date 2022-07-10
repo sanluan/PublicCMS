@@ -98,11 +98,11 @@ public class CmsSurveyDao extends BaseDao<CmsSurvey> {
         if (null == entity.getCreateDate()) {
             entity.setCreateDate(CommonUtils.getDate());
         }
-        if (CommonUtils.notEmpty(entity.getTitle()) && entity.getTitle().length() > 255) {
-            entity.setTitle(entity.getTitle().substring(0, 255));
+        if (CommonUtils.notEmpty(entity.getTitle())) {
+            entity.setTitle(CommonUtils.keep(entity.getTitle(), 255));
         }
-        if (CommonUtils.notEmpty(entity.getDescription()) && entity.getDescription().length() > 300) {
-            entity.setDescription(entity.getDescription().substring(0, 300));
+        if (CommonUtils.notEmpty(entity.getDescription())) {
+            entity.setDescription(CommonUtils.keep(entity.getDescription(), 300));
         }
         return entity;
     }

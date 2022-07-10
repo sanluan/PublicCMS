@@ -128,6 +128,9 @@ public class LogOperateDao extends BaseDao<LogOperate> {
         if (null == entity.getCreateDate()) {
             entity.setCreateDate(CommonUtils.getDate());
         }
+        if (CommonUtils.notEmpty(entity.getContent())) {
+            entity.setContent(CommonUtils.keep(entity.getContent(), 65535));
+        }
         return entity;
     }
 

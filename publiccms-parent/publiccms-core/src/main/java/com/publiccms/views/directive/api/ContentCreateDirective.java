@@ -156,7 +156,7 @@ public class ContentCreateDirective extends AbstractAppDirective {
                 String text = HtmlUtils.removeHtmlTag(attribute.getText());
                 attribute.setWordCount(text.length());
                 if (CommonUtils.empty(entity.getDescription())) {
-                    entity.setDescription(StringUtils.substring(text, 0, 300));
+                    entity.setDescription(CommonUtils.keep(text, 300));
                 }
                 if (cmsModel.isSearchable()) {
                     attribute.setSearchText(text);

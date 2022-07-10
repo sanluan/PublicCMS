@@ -43,8 +43,8 @@ public class CmsSurveyQuestionDao extends BaseDao<CmsSurveyQuestion> {
 
     @Override
     protected CmsSurveyQuestion init(CmsSurveyQuestion entity) {
-        if (CommonUtils.notEmpty(entity.getTitle()) && entity.getTitle().length() > 255) {
-            entity.setTitle(entity.getTitle().substring(0, 255));
+        if (CommonUtils.notEmpty(entity.getTitle())) {
+            entity.setTitle(CommonUtils.keep(entity.getTitle(), 255));
         }
         return entity;
     }

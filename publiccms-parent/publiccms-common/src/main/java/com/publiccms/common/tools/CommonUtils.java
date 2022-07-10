@@ -61,6 +61,35 @@ public class CommonUtils {
     }
 
     /**
+     * @param var
+     * @param length
+     * @return 截取后的文本
+     */
+    public static String keep(String var, int length) {
+        return keep(var, length, "...");
+    }
+
+    /**
+     * @param var
+     * @param length
+     * @param append
+     * @return 截取后的文本
+     */
+    public static String keep(String var, int length, String append) {
+        if (null != append) {
+            length -= append.length();
+        }
+        if (null != var && var.length() > length) {
+            if (null != append) {
+                return var.substring(0, length) + append;
+            } else {
+                return var.substring(0, length);
+            }
+        }
+        return var;
+    }
+
+    /**
      * @return 当前日期
      */
     public static Date getDate() {

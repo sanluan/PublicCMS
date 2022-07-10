@@ -88,8 +88,8 @@ public class LogLoginDao extends BaseDao<LogLogin> {
         if (null == entity.getCreateDate()) {
             entity.setCreateDate(CommonUtils.getDate());
         }
-        if (CommonUtils.notEmpty(entity.getErrorPassword()) && entity.getErrorPassword().length() > 255) {
-            entity.setErrorPassword(entity.getErrorPassword().substring(0, 255));
+        if (CommonUtils.notEmpty(entity.getErrorPassword())) {
+            entity.setErrorPassword(CommonUtils.keep(entity.getErrorPassword(), 255));
         }
         return entity;
     }
