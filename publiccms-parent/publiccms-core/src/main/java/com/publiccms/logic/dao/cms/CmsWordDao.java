@@ -90,7 +90,7 @@ public class CmsWordDao extends BaseDao<CmsWord> {
             entity.setCreateDate(CommonUtils.getDate());
         }
         if (CommonUtils.notEmpty(entity.getName())) {
-            entity.setName(CommonUtils.keep(entity.getName(), 255));
+            entity.setName(CommonUtils.keep(entity.getName(), 100));
         }
         return entity;
     }

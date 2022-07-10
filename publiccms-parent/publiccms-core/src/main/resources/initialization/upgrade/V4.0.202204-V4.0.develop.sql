@@ -163,3 +163,12 @@ ALTER TABLE `cms_user_survey_question`
 ALTER TABLE `cms_user_score` 
     DROP INDEX `cms_user_score_user_id`,
     ADD INDEX `cms_user_score_user_id`(`user_id`, `item_type`, `create_date`);
+-- 2022-07-10 --
+ALTER TABLE `cms_word` 
+	DROP INDEX `cms_word_name`,
+	DROP INDEX `cms_word_hidden`,
+	DROP INDEX `cms_word_create_date`,
+	DROP INDEX `cms_word_search_count`,
+	DROP INDEX `cms_word_site_id`,
+	ADD UNIQUE INDEX `cms_word_name`(`site_id`, `name`),
+	ADD INDEX `cms_word_hidden`(`site_id`, `hidden`);

@@ -91,7 +91,7 @@ public class CmsFacetSearchDirective extends AbstractTemplateDirective {
         }
         SysSite site = getSite(handler);
         if (CommonUtils.notEmpty(word)) {
-            word = CommonUtils.keep(word, 200, null);
+            word = CommonUtils.keep(word, 100, null);
             statisticsComponent.search(site.getId(), word);
         }
         if (CommonUtils.notEmpty(tagIds)) {
