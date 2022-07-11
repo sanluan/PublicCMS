@@ -33,7 +33,6 @@ import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.log.LogUploadService;
 import com.publiccms.logic.service.sys.SysDomainService;
-import com.publiccms.logic.service.sys.SysSiteDatasourceService;
 import com.publiccms.logic.service.sys.SysSiteService;
 import com.publiccms.logic.service.tools.HqlService;
 import com.publiccms.logic.service.tools.SqlService;
@@ -59,8 +58,6 @@ public class SysSiteAdminController {
     protected LogUploadService logUploadService;
     @Autowired
     protected LogOperateService logOperateService;
-    @Autowired
-    private SysSiteDatasourceService siteDatasourceService;
     @Autowired
     protected SiteComponent siteComponent;
     @Autowired
@@ -153,7 +150,6 @@ public class SysSiteAdminController {
         if (null != entity) {
             service.delete(id);
             domainService.deleteBySiteId(entity.getId());
-            siteDatasourceService.deleteBySiteId(entity.getId());
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.site", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
                     JsonUtils.getString(entity)));
