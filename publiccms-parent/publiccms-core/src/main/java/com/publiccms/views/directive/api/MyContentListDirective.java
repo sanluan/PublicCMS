@@ -23,8 +23,47 @@ import com.publiccms.views.pojo.query.CmsContentQuery;
 
 /**
  *
- * MyContentListDirective
+ * myContentList 我的内容接口
+ * <p>
+ * 参数列表
+ * <ul>
+ * <li><code>categoryId</code> 分类id,当parentId为空时有效
+ * <li><code>containChild</code> 是否包含子分类,【true,false】
+ * <li><code>categoryIds</code> 多个分类id，当categoryId为空时有效
+ * <li><code>modelId</code> 多个模型id
+ * <li><code>parentId</code> 父内容id
+ * <li><code>onlyUrl</code> 外链,【true,false】
+ * <li><code>hasImages</code> 拥有图片列表,【true,false】
+ * <li><code>hasFiles</code> 拥有附件列表,【true,false】
+ * <li><code>hasProducts</code> 拥有产品列表,【true,false】
+ * <li><code>startPublishDate</code> 发布日期开始时间,【2020-01-01 23:59:59】,【2020-01-01】
+ * <li><code>endPublishDate</code> 发布日期结束时间，高级选项禁用时不能超过现在,【2020-01-01
+ * 23:59:59】,【2020-01-01】
+ * <li><code>status</code> 内容状态，【0:操作,1:已发布,2:待审核,3:驳回】
+ * <li><code>emptyParent</code> 高级选项:父内容id是否为空，【true,false】,当parentId为空时有效
+ * <li><code>orderField</code>
+ * 排序字段,【score:评分,comments:评论数,clicks:点击数,publishDate:发布日期,updateDate:更新日期,checkDate:审核日期】,默认置顶级别倒叙、发布日期按orderType排序
+ * <li><code>orderType</code> 排序类型,【asc:正序,desc:倒叙】，默认为倒叙
+ * <li><code>pageIndex</code> 页码
+ * <li><code>pageSize</code> 每页条数
+ * </ul>
+ * <p>
+ * 返回结果
+ * <ul>
+ * <li><code>page</code> {@link com.publiccms.common.handler.PageHandler}
+ * <li><code>page.list</code> List类型 查询结果实体列表
+ * {@link com.publiccms.entities.cms.CmsContent}
+ * </ul>
+ * 使用示例
+ * <p>
  * 
+ * <pre>
+&lt;script&gt;
+$.getJSON('${site.dynamicPath!}api/myContentList?pageSize=10&amp;authToken=用户登录授权&amp;authUserId=1', function(data){
+    console.log(data.totalCount);
+});
+&lt;/script&gt;
+ * </pre>
  */
 @Component
 public class MyContentListDirective extends AbstractAppDirective {
@@ -37,7 +76,7 @@ public class MyContentListDirective extends AbstractAppDirective {
                         handler.getIntegerArray("categoryIds"), false, handler.getStringArray("modelIds"),
                         handler.getLong("parentId"), handler.getBoolean("emptyParent"), handler.getBoolean("onlyUrl"),
                         handler.getBoolean("hasImages"), handler.getBoolean("hasCover"), handler.getBoolean("hasFiles"), null,
-                        user.getId(), null, handler.getDate("endPublishDate"), null),
+                        user.getId(), handler.getDate("startPublishDate"), handler.getDate("endPublishDate"), null),
                 handler.getBoolean("containChild"), null, null, handler.getInteger("pageIndex", 1),
                 handler.getInteger("pageSize", handler.getInteger("count", 30)));
         @SuppressWarnings("unchecked")
@@ -50,7 +89,7 @@ public class MyContentListDirective extends AbstractAppDirective {
             TemplateComponent.initContentUrl(site, e);
             TemplateComponent.initContentCover(site, e);
         });
-        handler.put("page", page).render();;
+        handler.put("page", page).render();
     }
 
     @Resource

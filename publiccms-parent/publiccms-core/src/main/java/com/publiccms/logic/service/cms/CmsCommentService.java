@@ -10,7 +10,6 @@ import java.util.Set;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.publiccms.common.annotation.CopyToDatasource;
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
@@ -77,20 +76,10 @@ public class CmsCommentService extends BaseService<CmsComment> {
 
     /**
      * @param siteId
-     * @param entity
-     */
-    @CopyToDatasource
-    public void save(short siteId, CmsComment entity) {
-        save(entity);
-    }
-
-    /**
-     * @param siteId
      * @param ids
      * @param userId
      * @return
      */
-    @CopyToDatasource
     public Set<CmsContent> check(short siteId, Serializable[] ids, long userId) {
         Date now = CommonUtils.getDate();
         Set<CmsContent> contentSet = new HashSet<>();
@@ -116,7 +105,6 @@ public class CmsCommentService extends BaseService<CmsComment> {
      * @param ids
      * @return
      */
-    @CopyToDatasource
     public Set<CmsContent> uncheck(short siteId, Serializable[] ids) {
         Set<CmsContent> contentSet = new HashSet<>();
         for (CmsComment entity : getEntitys(ids)) {
@@ -140,7 +128,6 @@ public class CmsCommentService extends BaseService<CmsComment> {
      * @param replies
      * @return
      */
-    @CopyToDatasource
     @Transactional
     public CmsComment updateReplies(short siteId, Serializable id, int replies) {
         CmsComment entity = getEntity(id);
@@ -156,7 +143,6 @@ public class CmsCommentService extends BaseService<CmsComment> {
      * @param scores
      * @return
      */
-    @CopyToDatasource
     @Transactional
     public CmsComment updateScores(short siteId, Serializable id, int scores) {
         CmsComment entity = getEntity(id);
@@ -171,7 +157,6 @@ public class CmsCommentService extends BaseService<CmsComment> {
      * @param ids
      * @return
      */
-    @CopyToDatasource
     public Set<CmsContent> delete(short siteId, Serializable[] ids) {
         Set<CmsContent> contentSet = new HashSet<>();
         for (CmsComment entity : getEntitys(ids)) {

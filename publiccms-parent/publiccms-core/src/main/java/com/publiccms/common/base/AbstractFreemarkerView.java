@@ -7,6 +7,7 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerView;
 import org.springframework.web.util.UrlPathHelper;
 
 import com.publiccms.common.api.Config;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.RequestUtils;
@@ -33,10 +34,6 @@ public abstract class AbstractFreemarkerView extends FreeMarkerView {
      * Domain Context
      */
     public static final String CONTEXT_DOMAIN = "domain";
-    /**
-     * Site Context
-     */
-    public static final String CONTEXT_SITE = "site";
     /**
      * Parent Site Context
      */
@@ -98,7 +95,7 @@ public abstract class AbstractFreemarkerView extends FreeMarkerView {
      * @param site
      */
     public static void exposeSite(Map<String, Object> model, SysSite site) {
-        model.put(CONTEXT_SITE, site);
+        model.put(CommonConstants.getAttributeSite(), site);
         if (null != site.getParentId() && CommonUtils.notEmpty(site.getDirectory())) {
             model.put(CONTEXT_PARENT_SITE, BeanComponent.getSiteComponent().getSiteById(site.getParentId()));
         }

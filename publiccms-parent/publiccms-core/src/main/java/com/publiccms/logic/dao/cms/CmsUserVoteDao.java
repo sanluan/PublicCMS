@@ -5,7 +5,6 @@ package com.publiccms.logic.dao.cms;
 import org.springframework.stereotype.Repository;
 
 import com.publiccms.common.base.BaseDao;
-import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
 import com.publiccms.common.tools.CommonUtils;
@@ -22,13 +21,12 @@ public class CmsUserVoteDao extends BaseDao<CmsUserVote> {
     /**
      * @param userId
      * @param voteId
-     * @param orderField
      * @param orderType
      * @param pageIndex
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(Long userId, Long voteId, String orderField, String orderType, Integer pageIndex,
+    public PageHandler getPage(Long userId, Long voteId, String orderType, Integer pageIndex,
             Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from CmsUserVote bean");
         if (null != userId) {
@@ -40,11 +38,7 @@ public class CmsUserVoteDao extends BaseDao<CmsUserVote> {
         if (!ORDERTYPE_ASC.equalsIgnoreCase(orderType)) {
             orderType = ORDERTYPE_DESC;
         }
-        if (null == orderField) {
-            orderField = CommonConstants.BLANK;
-        }
-        queryHandler.order("bean.createDate ");
-        queryHandler.append(orderType);
+        queryHandler.order("bean.createDate ").append(orderType);
         return getPage(queryHandler, pageIndex, pageSize);
     }
 

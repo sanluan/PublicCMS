@@ -140,7 +140,7 @@
             <#list page.list as a>
                 <#assign modelIndex++/>
         <li style="clear:both;margin-left:${index*50}px;padding: 5px 0;">
-            <label>${a.id}:${a.name!}</label>
+            <label title="${a.id}">${a.name!}</label>
             <input name="categoryModelList[${modelIndex}].use" type="hidden" value="false"/>
             <input name="categoryModelList[${modelIndex}].categoryModel.id.modelId" type="hidden" value="${a.id}"/>
                 <#if site.useStatic>
@@ -226,12 +226,12 @@ checkCategoryModel();
 <#if showAdvancedOptions?has_content && 'true' = showAdvancedOptions>
     <script>
     $('input[name=showAdvancedOptions]',navTab.getCurrentPanel()).click();
-    $('.tabs',navTab.getCurrentPanel()).attr('currentIndex',$('li.categoryModelControl').index('.tabsHeaderContent ul li')); 
+    $('.tabs',navTab.getCurrentPanel()).attr('currentIndex',$('li.categoryModelControl').index('.tabsHeaderContent ul li'));
     </script>
 </#if>
 <#if seo?has_content && 'true' = seo>
     <script>
-    $('.tabs',navTab.getCurrentPanel()).attr('currentIndex',$('li.seo').index('.tabsHeaderContent ul li')); 
+    $('.tabs',navTab.getCurrentPanel()).attr('currentIndex',$('li.seo').index('.tabsHeaderContent ul li'));
     </script>
 </#if>
 </form>

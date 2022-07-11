@@ -25,20 +25,15 @@ public class CmsWordListDirective extends AbstractTemplateDirective {
     public void execute(RenderHandler handler) throws IOException, Exception {
         Boolean hidden = false;
         String orderField = "searchCount";
+        String name = null;
         if (getAdvanced(handler)) {
             hidden = handler.getBoolean("hidden");
             orderField = handler.getString("orderField");
+            name = handler.getString("name");
         }
-        PageHandler page;
-        Integer pageIndex = handler.getInteger("pageIndex", 1);
-        Integer count = handler.getInteger("pageSize", handler.getInteger("count", 30));
-        try {
-            page = service.getPage(getSite(handler).getId(), hidden, handler.getDate("startCreateDate"),
-                    handler.getDate("endCreateDate"), handler.getString("name"), orderField, handler.getString("orderType"),
-                    pageIndex, count);
-        } catch (Exception e) {
-            page = new PageHandler(pageIndex, count);
-        }
+        PageHandler page = service.getPage(getSite(handler).getId(), hidden, handler.getDate("startCreateDate"),
+                handler.getDate("endCreateDate"), name, orderField, handler.getString("orderType"),
+                handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", handler.getInteger("count", 30)));
         handler.put("page", page).render();
     }
 

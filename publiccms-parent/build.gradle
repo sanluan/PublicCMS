@@ -42,8 +42,6 @@ subprojects {
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
         // https://spring.io/projects/spring-boot
         springBootVersion = "3.0.0-M1"
-        // https://mvnrepository.com/artifact/org.aspectj/aspectjweaver
-        aspectjVersion = "1.9.7"
         // http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
         // http://hc.apache.org/downloads.cgi
         httpclientVersion = "4.5.13"
@@ -70,19 +68,19 @@ subprojects {
         // http://mvnrepository.com/artifact/org.mybatis.generator/mybatis-generator-core
         mybatisGenerator = "1.4.1"
         // https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper
-        pageHelperVersion = "5.3.0"
+        pageHelperVersion = "5.3.1"
         // https://mvnrepository.com/artifact/org.mybatis.dynamic-sql/mybatis-dynamic-sql
-        dynamicSqlVersion = "1.2.1"
+        dynamicSqlVersion = "1.4.0"
         // https://mvnrepository.com/artifact/org.apache.lucene/lucene-analyzers-smartcn
         luceneVersion = "8.11.1"
         // http://mvnrepository.com/artifact/redis.clients/jedis
-        jedisVersion = "4.2.2"
+        jedisVersion = "4.2.3"
         // http://mvnrepository.com/artifact/org.quartz-scheduler/quartz
         quartzVersion = "2.3.2"
         // https://mvnrepository.com/artifact/com.zaxxer/HikariCP
         hikariCPVersion = "4.0.3"
         // https://mvnrepository.com/artifact/mysql/mysql-connector-java
-        mysqlVersion = "8.0.28"
+        mysqlVersion = "8.0.29"
         // https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml
         poiVersion = "4.1.2"
         // http://mvnrepository.com/artifact/commons-fileupload/commons-fileupload
@@ -98,7 +96,7 @@ subprojects {
         // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
         log4jVersion = "2.17.2"
         // https://mvnrepository.com/artifact/com.drewnoakes/metadata-extractor
-        extractorVersion = "2.17.0"
+        extractorVersion = "2.18.0"
         // https://mvnrepository.com/artifact/org.sejda.imageio/webp-imageio
         webpVersion = "0.1.6"
         // http://mvnrepository.com/artifact/eu.bitwalker/UserAgentUtils

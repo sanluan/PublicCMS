@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +21,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.publiccms.common.annotation.CopyToDatasource;
 import com.publiccms.common.api.Config;
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.base.HighLighterQuery;
@@ -38,8 +36,8 @@ import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.cms.CmsContentAttribute;
 import com.publiccms.entities.cms.CmsContentFile;
-import com.publiccms.entities.cms.CmsContentTextHistory;
 import com.publiccms.entities.cms.CmsContentProduct;
+import com.publiccms.entities.cms.CmsContentTextHistory;
 import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
@@ -305,7 +303,7 @@ public class CmsContentService extends BaseService<CmsContent> {
                 searchTextBuilder.append(text).append(CommonConstants.BLANK_SPACE);
             }
             if (CommonUtils.empty(entity.getDescription())) {
-                entity.setDescription(StringUtils.substring(text, 0, 150));
+                entity.setDescription(CommonUtils.keep(entity.getDescription(), 300));
             }
         } else {
             attribute.setWordCount(0);
@@ -391,7 +389,6 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param ids
      * @return results list
      */
-    @CopyToDatasource
     public List<CmsContent> refresh(short siteId, SysUser user, Serializable[] ids) {
         List<CmsContent> entityList = new ArrayList<>();
         List<CmsContent> list = getEntitys(ids);
@@ -415,7 +412,6 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param id
      * @return result
      */
-    @CopyToDatasource
     public CmsContent check(short siteId, SysUser user, Serializable id) {
         CmsContent entity = getEntity(id);
         if (null != entity && siteId == entity.getSiteId() && STATUS_DRAFT != entity.getStatus()
@@ -433,7 +429,6 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param ids
      * @return results list
      */
-    @CopyToDatasource
     public List<CmsContent> check(short siteId, SysUser user, Serializable[] ids) {
         List<CmsContent> entityList = new ArrayList<>();
         for (CmsContent entity : getEntitys(ids)) {
@@ -454,7 +449,6 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param ids
      * @return results list
      */
-    @CopyToDatasource
     public List<CmsContent> reject(short siteId, SysUser user, Serializable[] ids) {
         List<CmsContent> entityList = new ArrayList<>();
         for (CmsContent entity : getEntitys(ids)) {
@@ -475,7 +469,6 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param ids
      * @return results list
      */
-    @CopyToDatasource
     public List<CmsContent> uncheck(short siteId, SysUser user, Serializable[] ids) {
         List<CmsContent> entityList = new ArrayList<>();
         for (CmsContent entity : getEntitys(ids)) {
@@ -493,7 +486,6 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param categoryList
      * @param category
      */
-    @CopyToDatasource
     public void saveQuote(Serializable id, List<CmsCategory> categoryList, CmsCategory category) {
         CmsContent entity = getEntity(id);
         if (CommonUtils.notEmpty(categoryList) && null != entity) {
@@ -524,7 +516,6 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param contentParameters
      * @return categoryIds set
      */
-    @CopyToDatasource
     public Set<Integer> updateQuote(Serializable id, CmsContentParameters contentParameters) {
         CmsContent entity = getEntity(id);
         Set<Integer> categoryIds = new HashSet<>();
@@ -556,10 +547,9 @@ public class CmsContentService extends BaseService<CmsContent> {
 
     /**
      * @param siteId
-     * @param user 
+     * @param user
      * @param entity
      */
-    @CopyToDatasource
     public void save(short siteId, SysUser user, CmsContent entity) {
         entity.setSiteId(siteId);
         entity.setUserId(user.getId());
@@ -570,24 +560,7 @@ public class CmsContentService extends BaseService<CmsContent> {
     /**
      * @param entitys
      */
-    @CopyToDatasource
     public void updateStatistics(Collection<ClickStatistics> entitys) {
-        Map<Short, List<ClickStatistics>> siteMap = new HashMap<>();
-        for (ClickStatistics entityStatistics : entitys) {
-            List<ClickStatistics> list = siteMap.computeIfAbsent(entityStatistics.getSiteId(), k -> new ArrayList<>());
-            list.add(entityStatistics);
-        }
-        for (Map.Entry<Short, List<ClickStatistics>> entry : siteMap.entrySet()) {
-            updateStatistics(entry.getKey(), entry.getValue());
-        }
-    }
-
-    /**
-     * @param siteId
-     * @param entitys
-     */
-    @CopyToDatasource
-    public void updateStatistics(short siteId, Collection<ClickStatistics> entitys) {
         for (ClickStatistics entityStatistics : entitys) {
             CmsContent entity = getEntity(entityStatistics.getId());
             if (null != entity) {
@@ -602,7 +575,6 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param comments
      * @return
      */
-    @CopyToDatasource
     @Transactional
     public CmsContent updateComments(short siteId, Serializable id, int comments) {
         CmsContent entity = getEntity(id);
@@ -619,7 +591,6 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param scores
      * @return
      */
-    @CopyToDatasource
     @Transactional
     public CmsContent updateScores(short siteId, Serializable id, int scoreUsers, int scores) {
         CmsContent entity = getEntity(id);
@@ -641,7 +612,6 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param categoryId
      * @return result
      */
-    @CopyToDatasource
     public CmsContent updateCategoryId(short siteId, Serializable id, int categoryId) {
         CmsContent entity = getEntity(id);
         if (null != entity && siteId == entity.getSiteId()) {
@@ -651,13 +621,11 @@ public class CmsContentService extends BaseService<CmsContent> {
     }
 
     /**
-     * @param siteId
      * @param id
      * @param num
      * @return result
      */
-    @CopyToDatasource
-    public CmsContent updateChilds(short siteId, Serializable id, int num) {
+    public CmsContent updateChilds(Serializable id, int num) {
         CmsContent entity = getEntity(id);
         if (null != entity) {
             entity.setChilds(entity.getChilds() + num);
@@ -666,12 +634,10 @@ public class CmsContentService extends BaseService<CmsContent> {
     }
 
     /**
-     * @param siteId
      * @param id
      * @param modelId
      */
-    @CopyToDatasource
-    public void changeModel(short siteId, Serializable id, String modelId) {
+    public void changeModel(Serializable id, String modelId) {
         CmsContent entity = getEntity(id);
         if (null != entity) {
             entity.setModelId(modelId);
@@ -684,7 +650,6 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param sort
      * @return result
      */
-    @CopyToDatasource
     public CmsContent sort(short siteId, Long id, int sort) {
         CmsContent entity = getEntity(id);
         if (null != entity && siteId == entity.getSiteId()) {
@@ -694,14 +659,12 @@ public class CmsContentService extends BaseService<CmsContent> {
     }
 
     /**
-     * @param siteId
      * @param id
      * @param url
      * @param hasStatic
      * @return result
      */
-    @CopyToDatasource
-    public CmsContent updateUrl(short siteId, Serializable id, String url, boolean hasStatic) {
+    public CmsContent updateUrl(Serializable id, String url, boolean hasStatic) {
         CmsContent entity = getEntity(id);
         if (null != entity) {
             entity.setUrl(url);
@@ -715,7 +678,6 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param categoryIds
      * @return number of data deleted
      */
-    @CopyToDatasource
     public int deleteByCategoryIds(short siteId, Integer[] categoryIds) {
         return dao.deleteByCategoryIds(siteId, categoryIds);
     }
@@ -726,7 +688,6 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param ids
      * @return list of data deleted
      */
-    @CopyToDatasource
     public List<CmsContent> delete(short siteId, SysUser user, Serializable[] ids) {
         List<CmsContent> entityList = new ArrayList<>();
         for (CmsContent entity : getEntitys(ids)) {
@@ -736,7 +697,7 @@ public class CmsContentService extends BaseService<CmsContent> {
                         quote.setDisabled(true);
                     }
                 } else {
-                    updateChilds(siteId, entity.getParentId(), -1);
+                    updateChilds(entity.getParentId(), -1);
                 }
                 entity.setDisabled(true);
                 entityList.add(entity);
@@ -839,7 +800,6 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param ids
      * @return
      */
-    @CopyToDatasource
     public List<CmsContent> recycle(short siteId, Serializable[] ids) {
         List<CmsContent> entityList = new ArrayList<>();
         for (CmsContent entity : getEntitys(ids)) {
@@ -847,7 +807,7 @@ public class CmsContentService extends BaseService<CmsContent> {
                 entity.setDisabled(false);
                 entityList.add(entity);
                 if (null != entity.getParentId()) {
-                    updateChilds(siteId, entity.getParentId(), 1);
+                    updateChilds(entity.getParentId(), 1);
                 }
             }
         }
@@ -858,7 +818,6 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param siteId
      * @param ids
      */
-    @CopyToDatasource
     public void realDelete(Short siteId, Long[] ids) {
         for (CmsContent entity : getEntitys(ids)) {
             if (siteId == entity.getSiteId() && entity.isDisabled()) {

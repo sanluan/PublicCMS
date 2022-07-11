@@ -8,8 +8,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
-import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractAppDirective;
@@ -42,6 +40,8 @@ import com.publiccms.logic.service.cms.CmsTagService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.views.pojo.entities.CmsModel;
+
+import jakarta.annotation.Resource;
 
 /**
  *
@@ -148,7 +148,7 @@ public class ContentCreateDirective extends AbstractAppDirective {
                     entity.setUserId(user.getId());
                     service.save(entity);
                     if (CommonUtils.notEmpty(entity.getParentId())) {
-                        service.updateChilds(site.getId(), entity.getParentId(), 1);
+                        service.updateChilds(entity.getParentId(), 1);
                     }
                     logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), channel, "save.content",
                             RequestUtils.getIpAddress(handler.getRequest()), CommonUtils.getDate(), JsonUtils.getString(entity)));
@@ -156,7 +156,7 @@ public class ContentCreateDirective extends AbstractAppDirective {
                 String text = HtmlUtils.removeHtmlTag(attribute.getText());
                 attribute.setWordCount(text.length());
                 if (CommonUtils.empty(entity.getDescription())) {
-                    entity.setDescription(StringUtils.substring(text, 0, 300));
+                    entity.setDescription(CommonUtils.keep(text, 300));
                 }
                 if (cmsModel.isSearchable()) {
                     attribute.setSearchText(text);

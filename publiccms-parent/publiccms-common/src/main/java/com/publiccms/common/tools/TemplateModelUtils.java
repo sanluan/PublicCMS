@@ -3,6 +3,7 @@ package com.publiccms.common.tools;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
@@ -10,9 +11,15 @@ import org.apache.commons.lang3.StringUtils;
 import com.publiccms.common.constants.Constants;
 
 import freemarker.ext.beans.BeanModel;
+import freemarker.template.SimpleDate;
 import freemarker.template.SimpleHash;
+import freemarker.template.SimpleNumber;
+import freemarker.template.SimpleScalar;
 import freemarker.template.TemplateBooleanModel;
 import freemarker.template.TemplateDateModel;
+import freemarker.template.TemplateHashModelEx2;
+import freemarker.template.TemplateHashModelEx2.KeyValuePair;
+import freemarker.template.TemplateHashModelEx2.KeyValuePairIterator;
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 import freemarker.template.TemplateNumberModel;
@@ -40,8 +47,17 @@ public class TemplateModelUtils {
             if (model instanceof BeanModel) {
                 return ((BeanModel) model).getWrappedObject();
             }
-            if (model instanceof SimpleHash ) {
-                return ((SimpleHash ) model).toMap();
+            if (model instanceof SimpleScalar) {
+                return ((SimpleScalar) model).toString();
+            }
+            if (model instanceof SimpleDate) {
+                return ((SimpleDate) model).getAsDate();
+            }
+            if (model instanceof SimpleNumber) {
+                return ((SimpleNumber) model).getAsNumber();
+            }
+            if (model instanceof SimpleHash) {
+                return ((SimpleHash) model).toMap();
             }
         }
         return null;
@@ -71,10 +87,16 @@ public class TemplateModelUtils {
      * @return map value
      * @throws TemplateModelException
      */
-    public static Map<?,?> converMap(TemplateModel model) throws TemplateModelException {
+    public static Map<?, ?> converMap(TemplateModel model) throws TemplateModelException {
         if (null != model) {
-            if (model instanceof SimpleHash ) {
-                return ((SimpleHash ) model).toMap();
+            if (model instanceof TemplateHashModelEx2) {
+                HashMap<String, Object> map = new HashMap<>();
+                KeyValuePairIterator keyValuePairIterator = ((TemplateHashModelEx2) model).keyValuePairIterator();
+                while (keyValuePairIterator.hasNext()) {
+                    KeyValuePair keyValuePair = keyValuePairIterator.next();
+                    map.put(converString(keyValuePair.getKey()), converBean(keyValuePair.getValue()));
+                }
+                return map;
             }
         }
         return null;

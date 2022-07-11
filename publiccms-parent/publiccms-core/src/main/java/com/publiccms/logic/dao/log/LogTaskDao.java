@@ -96,6 +96,9 @@ public class LogTaskDao extends BaseDao<LogTask> {
         if (null == entity.getBegintime()) {
             entity.setBegintime(CommonUtils.getDate());
         }
+        if (CommonUtils.notEmpty(entity.getResult())) {
+            entity.setResult(CommonUtils.keep(entity.getResult(), 65535));
+        }
         return entity;
     }
 }

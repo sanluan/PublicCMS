@@ -28,10 +28,33 @@ import com.publiccms.logic.service.sys.SysUserService;
 import com.publiccms.logic.service.sys.SysUserTokenService;
 
 /**
- *
- * AutoLoginDirective
- * 
- */
+*
+* autoLogin 自动登录接口
+* <p>
+* 参数列表
+* <ul>
+* <li><code>uuid</code> 设备唯一id
+* <li><code>username</code> 用户名
+* <li><code>channel</code> 登陆渠道
+* </ul>
+* <p>
+* 返回结果
+* <ul>
+* <li><code>result</code> 登录结果,【true,false】
+* <li><code>authToken</code> 用户登录授权
+* <li><code>expiryDate</code> 过期日期
+* <li><code>user</code> 用户信息 {@link com.publiccms.entities.sys.SysUser}
+* </ul>
+* 使用示例
+* <p>
+* <pre>
+&lt;script&gt;
+$.getJSON('//cms.publiccms.com/api/autoLogin?uuid=1&amp;username=admin&amp;channel=web', function(data){
+    console.log(result+","+authToken+","+user.nickname+","+expiryDate);
+});
+&lt;/script&gt;
+* </pre>
+*/
 @Component
 public class AutoLoginDirective extends AbstractAppDirective {
 

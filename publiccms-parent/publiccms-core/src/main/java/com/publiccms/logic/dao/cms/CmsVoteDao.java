@@ -71,8 +71,8 @@ public class CmsVoteDao extends BaseDao<CmsVote> {
         case "endDate":
             queryHandler.order("bean.endDate").append(orderType);
             break;
-        case "scores":
-            queryHandler.order("bean.scores").append(orderType);
+        case "votes":
+            queryHandler.order("bean.votes").append(orderType);
             break;
         case "createDate":
             queryHandler.order("bean.createDate").append(orderType);

@@ -174,18 +174,18 @@ public class CmsContentAdminController {
             entity.setUpdateUserId(admin.getId());
             entity = service.update(entity.getId(), entity, entity.isOnlyUrl() ? ignoreProperties : ignorePropertiesWithUrl);
             if (null != entity) {
-                logOperateService
-                        .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                                "update.content", RequestUtils.getIpAddress(request), now, JsonUtils.getString(entity)));
+                logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
+                        LogLoginService.CHANNEL_WEB_MANAGER, "update.content", RequestUtils.getIpAddress(request), now,
+                        JsonUtils.getString(new Object[] { entity, attribute, contentParameters })));
             }
         } else {
             service.save(site.getId(), admin, entity);
             if (CommonUtils.notEmpty(entity.getParentId())) {
-                service.updateChilds(site.getId(), entity.getParentId(), 1);
+                service.updateChilds(entity.getParentId(), 1);
             }
-            logOperateService
-                    .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                            "save.content", RequestUtils.getIpAddress(request), now, JsonUtils.getString(entity)));
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "save.content", RequestUtils.getIpAddress(request), now,
+                    JsonUtils.getString(new Object[] { entity, attribute, contentParameters })));
         }
         entity = service.saveTagAndAttribute(site.getId(), admin.getId(), entity.getId(), contentParameters, cmsModel,
                 category.getExtendId(), attribute);
@@ -219,8 +219,8 @@ public class CmsContentAdminController {
                 }
             }
         } catch (IOException | TemplateException e) {
-            model.addAttribute(CommonConstants.ERROR, e.getMessage());
             log.error(e.getMessage(), e);
+            model.put(CommonConstants.ERROR, e.getMessage());
             return CommonConstants.TEMPLATE_ERROR;
         }
         return CommonConstants.TEMPLATE_DONE;
@@ -324,8 +324,8 @@ public class CmsContentAdminController {
                     templateComponent.createCategoryFile(site, category, null, null);
                 }
             } catch (IOException | TemplateException e) {
-                model.addAttribute(CommonConstants.ERROR, e.getMessage());
                 log.error(e.getMessage(), e);
+                model.put(CommonConstants.ERROR, e.getMessage());
                 return CommonConstants.TEMPLATE_ERROR;
             }
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
@@ -359,8 +359,8 @@ public class CmsContentAdminController {
                         templateComponent.createCategoryFile(site, entity, null, null);
                     }
                 } catch (IOException | TemplateException e) {
-                    model.addAttribute(CommonConstants.ERROR, e.getMessage());
                     log.error(e.getMessage(), e);
+                    model.addAttribute(CommonConstants.ERROR, e.getMessage());
                     return CommonConstants.TEMPLATE_ERROR;
                 }
             }
@@ -557,7 +557,7 @@ public class CmsContentAdminController {
                     || ControllerUtils.errorCustom("noright", !ControllerUtils.hasContentPermissions(admin, content), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
-            service.changeModel(site.getId(), id, modelId);
+            service.changeModel(id, modelId);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "changeModel.content", RequestUtils.getIpAddress(request),
                     CommonUtils.getDate(), new StringBuilder().append(id).append(" to ").append(modelId).toString()));

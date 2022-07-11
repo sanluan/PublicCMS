@@ -111,8 +111,9 @@ public class CmsCategoryAdminController {
         try {
             publish(site, entity.getId(), null);
         } catch (IOException | TemplateException e) {
-            ControllerUtils.errorCustom("static", true, model);
             log.error(e.getMessage(), e);
+            model.put(CommonConstants.ERROR, e.getMessage());
+            return CommonConstants.TEMPLATE_ERROR;
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -177,8 +178,8 @@ public class CmsCategoryAdminController {
                     publish(site, id, max);
                 }
             } catch (IOException | TemplateException e) {
-                ControllerUtils.errorCustom("static", true, model);
                 log.error(e.getMessage(), e);
+                model.put(CommonConstants.ERROR, e.getMessage());
                 return CommonConstants.TEMPLATE_ERROR;
             }
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),

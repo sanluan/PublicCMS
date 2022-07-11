@@ -4730,12 +4730,6 @@ function validateCallback(form, callback, confirmMsg) {
             $(this).val(html2Escape($(this).val()));
         }
     });
-    $("input[escape=true]", $form).each(function() {
-        if($(this).val()){
-          $(this).attr('maxlength',128);
-          $(this).val(sha512($(this).val()));
-        }
-    });
     $("textarea.code", $form).each(function() {
          $(this).val(DWZ.instances[$(this).data("id")].getValue());
          if('true'==$(this).attr('escape')){
@@ -4747,6 +4741,13 @@ function validateCallback(form, callback, confirmMsg) {
         var $sortBox=$(this);
         if($sortBox.data("result")){
             $sortBox.find($sortBox.data("result")).val(DWZ.obj2str($sortBox.miscSortDragData($sortBox)));
+        }
+    });
+
+    $("input[escape=true]", $form).each(function() {
+        if($(this).val()){
+          $(this).attr('maxlength',128);
+          $(this).val(sha512($(this).val()));
         }
     });
 

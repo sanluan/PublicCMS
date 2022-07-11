@@ -29,7 +29,7 @@ public class SysAppTokenDao extends BaseDao<SysAppToken> {
         if (CommonUtils.notEmpty(appId)) {
             queryHandler.condition("bean.appId = :appId").setParameter("appId", appId);
         }
-        queryHandler.order("bean.id desc");
+        queryHandler.order("bean.createDate desc");
         return getPage(queryHandler, pageIndex, pageSize);
     }
 

@@ -16,6 +16,7 @@ import com.publiccms.common.tools.TemplateModelUtils;
 import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * 
@@ -31,8 +32,12 @@ public abstract class BaseMethod implements TemplateMethodModelEx {
     public Object exec(@SuppressWarnings("rawtypes") List arguments) throws TemplateModelException {
         return execute((List<TemplateModel>) arguments);
     }
-
+    
     public abstract Object execute(List<TemplateModel> arguments) throws TemplateModelException;
+
+    public Object execute(@SuppressWarnings("unused") HttpServletRequest request, List<TemplateModel> arguments) throws TemplateModelException {
+        return execute((List<TemplateModel>) arguments);
+    }
 
     protected static TemplateModel getModel(int index, List<TemplateModel> arguments) {
         if (CommonUtils.notEmpty(arguments) && index < arguments.size()) {

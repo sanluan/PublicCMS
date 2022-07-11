@@ -39,13 +39,13 @@ public class CmsVoteItemService extends BaseService<CmsVoteItem> {
 
     /**
      * @param id
-     * @param scores
+     * @param votes
      * @return entity
      */
-    public CmsVoteItem updateScores(Serializable id, int scores) {
+    public CmsVoteItem updateVotes(Serializable id, int votes) {
         CmsVoteItem entity = getEntity(id);
         if (null != entity) {
-            entity.setScores(entity.getScores() + scores);
+            entity.setVotes(entity.getVotes() + votes);
         }
         return entity;
     }

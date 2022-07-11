@@ -17,7 +17,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
@@ -126,9 +125,6 @@ public class LoginAdminController {
             String salt = UserPasswordUtils.getSalt();
             service.updatePassword(user.getId(), UserPasswordUtils.passwordEncode(password, salt, encoding), salt);
         }
-        if (!user.isWeakPassword() && UserPasswordUtils.isWeek(username, password)) {
-            service.updateWeekPassword(user.getId(), true);
-        }
         service.updateLoginStatus(user.getId(), ip);
         String authToken = UUID.randomUUID().toString();
         Date now = CommonUtils.getDate();
@@ -201,24 +197,13 @@ public class LoginAdminController {
         }
         String salt = UserPasswordUtils.getSalt();
         service.updatePassword(user.getId(), UserPasswordUtils.passwordEncode(password, salt, encoding), salt);
-        if (user.isWeakPassword() && !UserPasswordUtils.isWeek(user.getName(), password)) {
+        if (user.isWeakPassword()) {
             service.updateWeekPassword(user.getId(), false);
         }
         sysUserTokenService.delete(user.getId());
         logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                 "changepassword", RequestUtils.getIpAddress(request), CommonUtils.getDate(), encodedOldPassword));
         return "common/ajaxTimeout";
-    }
-
-    /**
-     * @param admin
-     * @param password
-     * @return result
-     */
-    @RequestMapping("isWeak")
-    @ResponseBody
-    public boolean isWeak(@SessionAttribute SysUser admin, String password) {
-        return !UserPasswordUtils.isWeek(admin.getName(), password);
     }
 
     /**

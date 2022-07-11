@@ -48,13 +48,13 @@ public class CmsVoteService extends BaseService<CmsVote> {
     /**
      * @param siteId
      * @param id
-     * @param scores
+     * @param votes
      * @return entity
      */
-    public CmsVote updateScores(short siteId, Serializable id, int scores) {
+    public CmsVote updateVotes(short siteId, Serializable id, int votes) {
         CmsVote entity = getEntity(id);
         if (null != entity && siteId == entity.getSiteId()) {
-            entity.setScores(entity.getScores() + scores);
+            entity.setVotes(entity.getVotes() + votes);
         }
         return entity;
     }

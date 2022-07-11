@@ -15,10 +15,30 @@ import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.service.sys.SysAppTokenService;
 
 /**
- *
- * AppTokenDirective
- * 
- */
+*
+* refreshToken 刷新appToken接口
+* <p>
+* 参数列表
+* <ul>
+* <li><code>appToken</code> 设备唯一id
+* </ul>
+* <p>
+* 返回结果
+* <ul>
+* <li><code>authToken</code> 用户登录授权
+* <li><code>expiryDate</code> 过期日期
+* <li><code>error</code> 错误信息【needNotRefresh】
+* </ul>
+* 使用示例
+* <p>
+* <pre>
+&lt;script&gt;
+$.getJSON('//cms.publiccms.com/api/login?appToken=接口访问授权Token', function(data){
+    console.log(appToken+","+expiryDate);
+});
+&lt;/script&gt;
+* </pre>
+*/
 @Component
 public class RefreshTokenDirective extends AbstractAppDirective {
     private final static String NEED_NOT_REFRESH = "needNotRefresh";

@@ -10,11 +10,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.io.StringReader;
 import java.io.StringWriter;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
@@ -286,32 +283,6 @@ public class InstallServlet extends HttpServlet {
                 StringWriter stringWriter = new StringWriter();
                 try {
                     cmsUpgrader.update(stringWriter, connection, version);
-                    if (cmsUpgrader.needUpdateDatasource(version)) {
-                        try (PreparedStatement preparedStatement = connection
-                                .prepareStatement("select * from sys_datasource where disabled = 0");
-                                ResultSet resultSet = preparedStatement.executeQuery();) {
-                            while (resultSet.next()) {
-                                String config = resultSet.getString("config");
-                                try {
-                                    Properties properties = new Properties();
-                                    properties.load(new StringReader(config));
-                                    String password = properties.getProperty("jdbc.password");
-                                    String encryptPassword = properties.getProperty("jdbc.encryptPassword");
-                                    if (null != encryptPassword) {
-                                        password = VerificationUtils.decrypt(VerificationUtils.base64Decode(encryptPassword),
-                                                CommonConstants.ENCRYPT_KEY);
-                                    }
-                                    try (Connection conn = DatabaseUtils.getConnection(
-                                            properties.getProperty("jdbc.driverClassName"), properties.getProperty("jdbc.url"),
-                                            properties.getProperty("jdbc.username"), password)) {
-                                        cmsUpgrader.updateDatasource(stringWriter, connection, version);
-                                    }
-                                } catch (Exception e) {
-                                    stringWriter.append(e.getMessage());
-                                }
-                            }
-                        }
-                    }
                     map.put("history", stringWriter.toString());
                     map.put("message", "success");
                 } catch (Exception e) {

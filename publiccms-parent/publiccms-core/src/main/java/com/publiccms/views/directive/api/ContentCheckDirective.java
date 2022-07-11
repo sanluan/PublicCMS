@@ -35,10 +35,27 @@ import com.publiccms.logic.service.log.LogOperateService;
 import freemarker.template.TemplateException;
 
 /**
- *
- * ContentClickDirective
- * 
- */
+*
+* contentCheck 内容审核接口
+* <p>
+* 参数列表
+* <ul>
+* <li><code>ids</code> 多个内容id
+* <li><code>uncheck</code> 取消审核, 【true,false】，默认为<code>false</code>
+* </ul>
+* <p>
+* 返回结果
+* <ul>
+* </ul>
+* 使用示例
+* <p>
+* <pre>
+&lt;script&gt;
+$.getJSON('${site.dynamicPath!}api/contentCheck?ids=1,2&amp;authToken=用户登录授权&amp;authUserId=1&amp;appToken=接口访问授权Token', function(data){
+});
+&lt;/script&gt;
+* </pre>
+*/
 @Component
 public class ContentCheckDirective extends AbstractAppDirective {
 

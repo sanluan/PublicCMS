@@ -34,7 +34,7 @@ public abstract class AbstractAppDirective extends BaseHttpDirective {
      * @throws Exception
      */
     public SysSite getSite(RenderHandler handler) throws IOException, Exception {
-        return (SysSite) handler.getAttribute(AbstractFreemarkerView.CONTEXT_SITE);
+        return (SysSite) handler.getAttribute(CommonConstants.getAttributeSite());
     }
 
     @Override

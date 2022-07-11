@@ -181,20 +181,23 @@ public class VisitHistoryDao extends BaseDao<VisitHistory> {
         if (null == entity.getCreateDate()) {
             entity.setCreateDate(CommonUtils.getDate());
         }
-        if (CommonUtils.notEmpty(entity.getSessionId()) && entity.getSessionId().length() > 50) {
-            entity.setSessionId(entity.getSessionId().substring(0, 50));
+        if (CommonUtils.notEmpty(entity.getSessionId())) {
+            entity.setSessionId(CommonUtils.keep(entity.getSessionId(), 50, null));
         }
-        if (CommonUtils.notEmpty(entity.getTitle()) && entity.getTitle().length() > 255) {
-            entity.setTitle(entity.getTitle().substring(0, 255));
+        if (CommonUtils.notEmpty(entity.getTitle())) {
+            entity.setTitle(CommonUtils.keep(entity.getTitle(), 255));
         }
-        if (CommonUtils.notEmpty(entity.getUserAgent()) && entity.getUserAgent().length() > 500) {
-            entity.setUserAgent(entity.getUserAgent().substring(0, 500));
+        if (CommonUtils.notEmpty(entity.getUserAgent())) {
+            entity.setUserAgent(CommonUtils.keep(entity.getUserAgent(), 500, null));
         }
-        if (CommonUtils.notEmpty(entity.getItemType()) && entity.getItemType().length() > 50) {
-            entity.setItemType(entity.getItemType().substring(0, 50));
+        if (CommonUtils.notEmpty(entity.getItemType())) {
+            entity.setItemType(CommonUtils.keep(entity.getItemType(), 50, null));
         }
-        if (CommonUtils.notEmpty(entity.getItemId()) && entity.getItemId().length() > 50) {
-            entity.setItemId(entity.getItemId().substring(0, 50));
+        if (CommonUtils.notEmpty(entity.getItemId())) {
+            entity.setItemId(CommonUtils.keep(entity.getItemId(), 50, null));
+        }
+        if (CommonUtils.notEmpty(entity.getUrl())) {
+            entity.setUrl(CommonUtils.keep(entity.getUrl(), 2048, null));
         }
         return entity;
     }

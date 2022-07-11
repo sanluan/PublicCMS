@@ -78,14 +78,14 @@ public class VoteController {
                         entity.setItemId(itemId);
                         entity.setIp(ip);
                         userVoteService.save(entity);
-                        voteItemService.updateScores(itemId, 1);
-                        service.updateScores(siteId, cmsVote.getId(), 1);
+                        voteItemService.updateVotes(itemId, 1);
+                        service.updateVotes(siteId, cmsVote.getId(), 1);
                         return true;
                     }
                 } else if (null != entity) {
                     userVoteService.delete(id);
-                    voteItemService.updateScores(entity.getItemId(), -1);
-                    service.updateScores(siteId, cmsVote.getId(), -1);
+                    voteItemService.updateVotes(entity.getItemId(), -1);
+                    service.updateVotes(siteId, cmsVote.getId(), -1);
                     return true;
                 }
             }

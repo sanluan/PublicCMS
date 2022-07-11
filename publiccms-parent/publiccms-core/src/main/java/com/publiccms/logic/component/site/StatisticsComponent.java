@@ -136,7 +136,7 @@ public class StatisticsComponent implements Cache {
                     clickStatistics = new ClickStatistics(id, entity.getSiteId(), 1, entity.getClicks(), entity.getUrl());
                     List<ClickStatistics> list = contentCache.put(id, clickStatistics);
                     if (CommonUtils.notEmpty(list)) {
-                        contentService.updateStatistics(site.getId(), list);
+                        contentService.updateStatistics(list);
                     }
                 }
             } else {

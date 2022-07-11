@@ -18,26 +18,27 @@ import com.publiccms.logic.service.cms.CmsUserVoteService;
 
 /**
 *
-* tag 标签查询指令
+* userVote 用户投票查询指令
 * <p>
 * 参数列表
 * <ul>
-* <li><code>id</code> 标签id，结果返回<code>object</code>
-* {@link com.publiccms.entities.cms.CmsTag}
-* <li><code>ids</code>
-* 多个标签id，逗号或空格间隔，当id为空时生效，结果返回<code>map</code>(id,<code>object</code>)
+* <li><code>userId</code> 用户id
+* <li><code>voteId</code> 投票id，结果返回<code>object</code>
+* {@link com.publiccms.entities.cms.CmsUserVote}
+* <li><code>voteIds</code>
+* 多个投票id，逗号或空格间隔，当voteId为空时生效，结果返回<code>map</code>(voteId,<code>object</code>)
 * </ul>
 * 使用示例
 * <p>
-* &lt;@cms.tag id=1&gt;${object.name}&lt;/@cms.tag&gt;
+* &lt;@cms.userVote id=1&gt;${object.itemId}&lt;/@cms.userVote&gt;
 * <p>
-* &lt;@cms.tag ids='1,2,3'&gt;&lt;#list map as
-* k,v&gt;${k}:${v.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.tag&gt;
+* &lt;@cms.userVote ids='1,2,3'&gt;&lt;#list map as
+* k,v&gt;${k}:${v.itemId}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.userVote&gt;
 * 
 * <pre>
 &lt;script&gt;
-$.getJSON('//cms.publiccms.com/api/directive/cms/tag?id=1&amp;appToken=接口访问授权Token', function(data){    
-  console.log(data.name);
+$.getJSON('//cms.publiccms.com/api/directive/cms/userVote?id=1', function(data){    
+  console.log(data.itemId);
 });
 &lt;/script&gt;
 * </pre>

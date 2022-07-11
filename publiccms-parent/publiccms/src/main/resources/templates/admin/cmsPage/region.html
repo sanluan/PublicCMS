@@ -55,7 +55,7 @@
                         </span>
                         <#if a.cover?has_content>
                         <div class="dragContent">
-                            <img src="${(getAbsoluteUrl(site.sitePath,a.cover))!}"/>
+                            <img src="${(getUrl(a.cover))!}"/>
                         </div>
                         </#if>
                     </div>
@@ -95,7 +95,7 @@
                                                                     </span>
                                                                     <#if module.cover?has_content>
                                                                         <div class="ctl-label">
-                                                                            <img src="${(getAbsoluteUrl(site.sitePath,module.cover))!}"/>
+                                                                            <img src="${(getUrl(module.cover))!}"/>
                                                                         </div>
                                                                     </#if>
                                                                 </div>

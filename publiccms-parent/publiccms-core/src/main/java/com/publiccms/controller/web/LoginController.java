@@ -129,9 +129,6 @@ public class LoginController {
                     String salt = UserPasswordUtils.getSalt();
                     service.updatePassword(user.getId(), UserPasswordUtils.passwordEncode(password, salt, encoding), salt);
                 }
-                if (!user.isWeakPassword() && UserPasswordUtils.isWeek(username, password)) {
-                    service.updateWeekPassword(user.getId(), true);
-                }
                 service.updateLoginStatus(user.getId(), ip);
 
                 if (null != clientId && null != uuid) {

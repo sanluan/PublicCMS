@@ -18,7 +18,7 @@ import freemarker.template.TemplateModelException;
 /**
  *
  * GetContentAttributesMethod
- * 
+ *
  */
 @Component
 public class GetContentPageMethod extends BaseMethod {
@@ -27,6 +27,7 @@ public class GetContentPageMethod extends BaseMethod {
     public Object execute(List<TemplateModel> arguments) throws TemplateModelException {
         String text = getString(0, arguments);
         Integer pageIndex = getInteger(1, arguments);
+        Map<String, Object> resultMap = new HashMap<>();
         if (CommonUtils.notEmpty(text)) {
             String pageBreakTag = null;
             if (text.contains(CommonConstants.getCkeditorPageBreakTag())) {
@@ -41,12 +42,10 @@ public class GetContentPageMethod extends BaseMethod {
             String[] texts = StringUtils.splitByWholeSeparator(text, pageBreakTag);
             PageHandler page = new PageHandler(pageIndex, 1);
             page.setTotalCount(texts.length);
-            Map<String, Object> resultMap = new HashMap<>();
             resultMap.put("page", page);
             resultMap.put("text", texts[page.getPageIndex() - 1]);
-            return resultMap;
         }
-        return null;
+        return resultMap;
     }
 
     @Override

@@ -15,10 +15,29 @@ import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.sys.SysAppClientService;
 
 /**
- *
- * UnBindingUserDirective
- * 
- */
+*
+* unBindingUser 客户端绑定用户接口
+* <p>
+* 参数列表
+* <ul>
+* <li><code>uuid</code> 设备唯一id
+* <li><code>channel</code> 客户端版本
+* </ul>
+* <p>
+* 返回结果
+* <ul>
+* <li><code>result</code> 取消绑定结果
+* </ul>
+* 使用示例
+* <p>
+* <pre>
+&lt;script&gt;
+$.getJSON('//cms.publiccms.com/api/unBindingUser?uuid=1&amp;channel=web&amp;authToken=用户登录授权&amp;authUserId=1', function(data){
+console.log(data.result);
+});
+&lt;/script&gt;
+* </pre>
+*/
 @Component
 public class UnBindingUserDirective extends AbstractAppDirective {
 
