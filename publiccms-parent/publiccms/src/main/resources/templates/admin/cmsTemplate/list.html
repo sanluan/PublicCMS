@@ -14,7 +14,7 @@
             <li>
                 <#local path=filepath+'/'+a.fileName>
                 <@_metadata path=path>
-                    <a href="cmsTemplate/${a.directory?then('directory','content')}.html?path=${(path?url)!}"<#if lockMap[path]?has_content><#assign lockUser=(userMap[lockMap[path].userId?string].nickName)!''/>title="<@t.page 'lock.message' lockUser/> ${lockMap[path].createDate}"</#if> target="ajax" rel="cmsTemplateBox">
+                    <a href="cmsTemplate/${a.directory?then('directory','content')}.html?path=${(path?url)!}"<#if lockMap?has_content && lockMap[path]?has_content><#assign lockUser=(userMap[lockMap[path].userId?string].nickName)!''/>title="<@t.page 'lock.message' lockUser/> ${lockMap[path].createDate}"</#if> target="ajax" rel="cmsTemplateBox">
                         <#if lockMap[path]?has_content><i class="icon-lock icon-large"></i> </#if>${(object.alias)?has_content?then(object.alias+' ('+a.fileName+')',a.fileName)}
                     </a>
                 </@_metadata>
