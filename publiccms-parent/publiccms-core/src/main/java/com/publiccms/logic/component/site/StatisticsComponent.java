@@ -23,7 +23,7 @@ import com.publiccms.views.pojo.entities.ClickStatistics;
 /**
  *
  * StatisticsComponent
- * 
+ *
  */
 @Component
 public class StatisticsComponent implements Cache {
@@ -105,7 +105,7 @@ public class StatisticsComponent implements Cache {
             ClickStatistics clickStatistics = placeCache.get(id);
             if (null == clickStatistics) {
                 CmsPlace entity = placeService.getEntity(id);
-                if (null != entity && !entity.isDisabled() && siteId == entity.getSiteId()) {
+                if (null != entity && !entity.isDisabled() && CmsPlaceService.STATUS_NORMAL == entity.getStatus() && siteId == entity.getSiteId()) {
                     clickStatistics = new ClickStatistics(id, entity.getSiteId(), 1, entity.getClicks(), entity.getUrl());
                     List<ClickStatistics> list = placeCache.put(id, clickStatistics);
                     if (CommonUtils.notEmpty(list)) {
@@ -131,7 +131,7 @@ public class StatisticsComponent implements Cache {
             ClickStatistics clickStatistics = contentCache.get(id);
             if (null == clickStatistics) {
                 CmsContent entity = contentService.getEntity(id);
-                if (null != entity && !entity.isDisabled() && site.getId().equals(entity.getSiteId())) {
+                if (null != entity && !entity.isDisabled() && CmsContentService.STATUS_NORMAL == entity.getStatus() && site.getId().equals(entity.getSiteId())) {
                     TemplateComponent.initContentUrl(site, entity);
                     clickStatistics = new ClickStatistics(id, entity.getSiteId(), 1, entity.getClicks(), entity.getUrl());
                     List<ClickStatistics> list = contentCache.put(id, clickStatistics);
