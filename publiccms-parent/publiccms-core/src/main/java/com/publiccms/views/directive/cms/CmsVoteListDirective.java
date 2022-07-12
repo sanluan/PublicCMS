@@ -24,7 +24,7 @@ import com.publiccms.common.handler.PageHandler;
  * <li><code>advanced</code> 开启高级选项， 默认为<code> false</code>
  * <li><code>disabled</code> 高级选项:禁用状态，默认为<code>false</code>
  * <li><code>title</code> 高级选项:标题
- * <li><code>orderField</code> 排序字段,【startDate:开始日期,endDate:结束,scores:投票人数,createDate:创建日期】,默认id按orderType排序
+ * <li><code>orderField</code> 排序字段,【startDate:开始日期,endDate:结束,votes:投票人数,createDate:创建日期】,默认id按orderType排序
  * <li><code>orderType</code> 排序类型,【asc:正序,desc:倒叙】，默认为倒叙
  * <li><code>pageIndex</code> 页码
  * <li><code>pageSize</code> 每页条数

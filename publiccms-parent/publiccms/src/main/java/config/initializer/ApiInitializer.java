@@ -11,7 +11,7 @@ import config.spring.ApiConfig;
  * <p>WebInitializer</p>
  *
  */
-public class ApiInitializer extends BaseServletInitializer implements WebApplicationInitializer {
+public class ApiInitializer extends BaseServletInitializer implements WebApplicationInitializer {// 防止jetty等追求速度的容器不扫描父类实现的接口
 
     @Override
     protected Class<?>[] getServletConfigClasses() {

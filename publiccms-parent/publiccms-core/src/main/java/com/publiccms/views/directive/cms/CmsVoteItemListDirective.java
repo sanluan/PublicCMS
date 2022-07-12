@@ -18,7 +18,7 @@ import com.publiccms.common.handler.PageHandler;
 * 参数列表
 * <ul>
 * <li><code>voteId</code> 投票id
-* <li><code>orderField</code> 排序字段,【scores:分数,sort:排序正序】,默认sort按正序
+* <li><code>orderField</code> 排序字段,【votes:投票人数,sort:排序正序】,默认sort按正序
 * <li><code>orderType</code> 排序类型,【asc:正序,desc:倒叙】，默认为倒叙
 * <li><code>pageIndex</code> 页码
 * <li><code>pageSize</code> 每页条数
