@@ -47,7 +47,8 @@ import com.publiccms.views.pojo.entities.ClickStatistics;
  * <li><code>modelIds</code> 多个模型id
  * <li><code>startPublishDate</code> 起始发布日期,【2000-01-01 23:59:59】,【2000-01-01】
  * <li><code>endPublishDate</code> 终止发布日期,【2000-01-01 23:59:59】,【2000-01-01】
- * <li><code>orderField</code> 排序字段,【clicks:点击数倒叙,score:分数倒叙,publishDate:发布日期倒叙】,默认相关度倒叙
+ * <li><code>orderField</code>
+ * 排序字段,【clicks:点击数倒叙,score:分数倒叙,publishDate:发布日期倒叙】,默认相关度倒叙
  * <li><code>pageIndex</code> 页码
  * <li><code>pageSize</code> 每页条数
  * </ul>

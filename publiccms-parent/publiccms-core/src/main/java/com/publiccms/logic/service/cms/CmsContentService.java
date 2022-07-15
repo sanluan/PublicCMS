@@ -315,14 +315,16 @@ public class CmsContentService extends BaseService<CmsContent> {
             dealExtend(categoryExtendList, dictionaryValueList, map, searchTextBuilder);
             if (CommonUtils.notEmpty(dictionaryValueList)) {
                 String[] dictionaryValues = dictionaryValueList.toArray(new String[dictionaryValueList.size()]);
-                entity.setDictionaryValues(arrayToDelimitedString(dictionaryValues, CommonConstants.BLANK_SPACE));
+                attribute.setDictionaryValues(arrayToDelimitedString(dictionaryValues, CommonConstants.BLANK_SPACE));
+            } else {
+                attribute.setDictionaryValues(null);
             }
             attribute.setData(ExtendUtils.getExtendString(map));
         } else {
             attribute.setData(null);
-            entity.setDictionaryValues(null);
+            attribute.setDictionaryValues(null);
         }
-        dealFiles(files, images, products, searchTextBuilder);
+        dealFiles(files, images, products, attribute);
 
         if (searchTextBuilder.length() > 0) {
             attribute.setSearchText(searchTextBuilder.toString());
@@ -332,22 +334,40 @@ public class CmsContentService extends BaseService<CmsContent> {
     }
 
     private static void dealFiles(List<CmsContentFile> files, List<CmsContentFile> images, List<CmsContentProduct> products,
-            StringBuilder searchTextBuilder) {
+            CmsContentAttribute attribute) {
+        StringBuilder filesTextBuilder = new StringBuilder();
         if (CommonUtils.notEmpty(files)) {
             for (CmsContentFile file : files) {
-                searchTextBuilder.append(file.getDescription()).append(CommonConstants.BLANK_SPACE);
+                filesTextBuilder.append(file.getDescription()).append(CommonConstants.BLANK_SPACE);
             }
         }
         if (CommonUtils.notEmpty(images)) {
             for (CmsContentFile file : images) {
-                searchTextBuilder.append(file.getDescription()).append(CommonConstants.BLANK_SPACE);
+                filesTextBuilder.append(file.getDescription()).append(CommonConstants.BLANK_SPACE);
             }
         }
         if (CommonUtils.notEmpty(products)) {
+            StringBuilder productsTextBuilder = new StringBuilder();
+            BigDecimal minPrice = BigDecimal.ZERO;
+            BigDecimal maxPrice = BigDecimal.ZERO;
             for (CmsContentProduct product : products) {
-                searchTextBuilder.append(product.getTitle()).append(CommonConstants.BLANK_SPACE);
+                productsTextBuilder.append(product.getTitle()).append(CommonConstants.BLANK_SPACE);
+                if (0 == BigDecimal.ZERO.compareTo(maxPrice) || 0 < minPrice.compareTo(product.getPrice())) {
+                    minPrice = product.getPrice();
+                }
+                if (0 > maxPrice.compareTo(product.getPrice())) {
+                    maxPrice = product.getPrice();
+                }
             }
+            attribute.setMinPrice(minPrice);
+            attribute.setMaxPrice(maxPrice);
+            attribute.setProductsText(productsTextBuilder.toString());
+        } else {
+            attribute.setMinPrice(null);
+            attribute.setMaxPrice(null);
+            attribute.setProductsText(null);
         }
+        attribute.setFilesText(filesTextBuilder.toString());
     }
 
     private static void dealExtend(List<SysExtendField> extendList, List<String> dictionaryValueList, Map<String, String> map,
@@ -616,6 +636,7 @@ public class CmsContentService extends BaseService<CmsContent> {
         CmsContent entity = getEntity(id);
         if (null != entity && siteId == entity.getSiteId()) {
             entity.setCategoryId(categoryId);
+            dao.moveByTopId(siteId, entity.getId(), categoryId);
         }
         return entity;
     }
@@ -808,6 +829,8 @@ public class CmsContentService extends BaseService<CmsContent> {
                 entityList.add(entity);
                 if (null != entity.getParentId()) {
                     updateChilds(entity.getParentId(), 1);
+                } else {
+                    dao.deleteByTopId(siteId, entity.getId());
                 }
             }
         }

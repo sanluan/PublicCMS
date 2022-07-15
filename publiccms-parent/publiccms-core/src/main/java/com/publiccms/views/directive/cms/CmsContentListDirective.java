@@ -123,7 +123,7 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
                 if (null != statistics) {
                     e.setClicks(e.getClicks() + statistics.getClicks());
                 }
-                if (absoluteId && null != e.getQuoteContentId()) {
+                if (absoluteId && null==e.getParentId() && null != e.getQuoteContentId()) {
                     e.setId(e.getQuoteContentId());
                 }
                 if (absoluteURL) {

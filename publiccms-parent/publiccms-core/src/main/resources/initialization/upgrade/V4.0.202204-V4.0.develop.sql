@@ -165,10 +165,22 @@ ALTER TABLE `cms_user_score`
     ADD INDEX `cms_user_score_user_id`(`user_id`, `item_type`, `create_date`);
 -- 2022-07-10 --
 ALTER TABLE `cms_word` 
-	DROP INDEX `cms_word_name`,
-	DROP INDEX `cms_word_hidden`,
-	DROP INDEX `cms_word_create_date`,
-	DROP INDEX `cms_word_search_count`,
-	DROP INDEX `cms_word_site_id`,
-	ADD UNIQUE INDEX `cms_word_name`(`site_id`, `name`),
-	ADD INDEX `cms_word_hidden`(`site_id`, `hidden`);
+    DROP INDEX `cms_word_name`,
+    DROP INDEX `cms_word_hidden`,
+    DROP INDEX `cms_word_create_date`,
+    DROP INDEX `cms_word_search_count`,
+    DROP INDEX `cms_word_site_id`,
+    ADD UNIQUE INDEX `cms_word_name`(`site_id`, `name`),
+    ADD INDEX `cms_word_hidden`(`site_id`, `hidden`);
+-- 2022-07-15 --
+ALTER TABLE `cms_content_attribute` 
+    ADD COLUMN `dictionary_values` text NULL COMMENT '数据字典值' AFTER `search_text`,
+    ADD COLUMN `files_text` text NULL COMMENT '附件文本' AFTER `dictionary_values`,
+    ADD COLUMN `products_text` text NULL COMMENT '产品文本' AFTER `files_text`,
+    ADD COLUMN `min_price` decimal(10, 2) NULL COMMENT '最低价格' AFTER `products_text`,
+    ADD COLUMN `max_price` decimal(10, 2) NULL COMMENT '最高价格' AFTER `min_price`;
+update cms_content_attribute a set a.dictionary_values = (select dictionary_values from cms_content b where a.content_id = b.id);
+ALTER TABLE `cms_content` 
+    DROP COLUMN `dictionary_values`;
+ALTER TABLE `cms_content` 
+    MODIFY COLUMN `quote_content_id` bigint(20) NULL DEFAULT NULL COMMENT '引用内容(当父内容不为空时为顶级内容)' AFTER `parent_id`;

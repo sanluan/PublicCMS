@@ -164,6 +164,10 @@ public class CmsContentAdminController {
         }
         Date now = CommonUtils.getDate();
         initContent(entity, cmsModel, draft, checked, attribute, true, now);
+        CmsContent parent = service.getEntity(entity.getParentId());
+        if (null != parent) {
+            entity.setQuoteContentId(null == parent.getParentId() ? parent.getId() : parent.getQuoteContentId());
+        }
         if (null != entity.getId()) {
             CmsContent oldEntity = service.getEntity(entity.getId());
             if (null == oldEntity || ControllerUtils.errorNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)
@@ -213,7 +217,6 @@ public class CmsContentAdminController {
             }
             if (null != checked && checked) {
                 templateComponent.createCategoryFile(site, category, null, null);
-                CmsContent parent = service.getEntity(entity.getParentId());
                 if (null != parent) {
                     publish(site, parent, admin);
                 }

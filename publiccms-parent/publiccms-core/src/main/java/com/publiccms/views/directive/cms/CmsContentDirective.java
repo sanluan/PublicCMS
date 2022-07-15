@@ -96,7 +96,7 @@ public class CmsContentDirective extends AbstractTemplateDirective {
                         if (null != statistics) {
                             e.setClicks(e.getClicks() + statistics.getClicks());
                         }
-                        if (absoluteId && null != e.getQuoteContentId()) {
+                        if (absoluteId &&null==e.getParentId() &&  null != e.getQuoteContentId()) {
                             e.setId(e.getQuoteContentId());
                         }
                         TemplateComponent.initContentUrl(site, e);
@@ -105,7 +105,7 @@ public class CmsContentDirective extends AbstractTemplateDirective {
                 } else {
                     consumer = e -> {
                         ClickStatistics statistics = statisticsComponent.getContentStatistics(e.getId());
-                        if (absoluteId && null != e.getQuoteContentId()) {
+                        if (absoluteId && null==e.getParentId() && null != e.getQuoteContentId()) {
                             e.setId(e.getQuoteContentId());
                         }
                         if (null != statistics) {

@@ -200,6 +200,16 @@ public abstract class BaseHandler implements RenderHandler {
     }
 
     @Override
+    public String[] getStringArray(String name, String[] defaultValue) throws Exception {
+        try {
+            String[] result = getStringArray(name);
+            return null == result ? defaultValue : result;
+        } catch (Exception e) {
+            return defaultValue;
+        }
+    }
+
+    @Override
     public String getString(String name, String defaultValue) throws Exception {
         try {
             String result = getString(name);

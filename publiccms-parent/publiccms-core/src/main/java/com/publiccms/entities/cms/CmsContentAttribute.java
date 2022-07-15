@@ -1,5 +1,7 @@
 package com.publiccms.entities.cms;
 
+import java.math.BigDecimal;
+
 //Generated 2016-1-19 11:28:06 by Hibernate Tools 4.3.1
 
 import javax.persistence.Column;
@@ -32,9 +34,20 @@ public class CmsContentAttribute implements java.io.Serializable {
     private String sourceUrl;
     @GeneratorColumn(title = "扩展数据")
     private String data;
+    @GeneratorColumn(title = "数据字典值")
+    @JsonIgnore
+    private String dictionaryValues;
     @GeneratorColumn(title = "全文索引文本")
     @JsonIgnore
     private String searchText;
+    @GeneratorColumn(title = "附件文本")
+    private String filesText;
+    @GeneratorColumn(title = "产品文本")
+    private String productsText;
+    @GeneratorColumn(title = "最低价格")
+    private BigDecimal minPrice;
+    @GeneratorColumn(title = "最高价格")
+    private BigDecimal maxPrice;
     @GeneratorColumn(title = "文本")
     private String text;
     @GeneratorColumn(title = "字数")
@@ -56,13 +69,19 @@ public class CmsContentAttribute implements java.io.Serializable {
         this.wordCount = wordCount;
     }
 
-    public CmsContentAttribute(long contentId, String source, String sourceUrl, String data, String searchText, String text,
+    public CmsContentAttribute(long contentId, String source, String sourceUrl, String data, String dictionaryValues,
+            String searchText, String filesText, String productsText, BigDecimal minPrice, BigDecimal maxPrice, String text,
             int wordCount) {
         this.contentId = contentId;
         this.source = source;
         this.sourceUrl = sourceUrl;
         this.data = data;
+        this.dictionaryValues = dictionaryValues;
         this.searchText = searchText;
+        this.filesText = filesText;
+        this.productsText = productsText;
+        this.minPrice = minPrice;
+        this.maxPrice = maxPrice;
         this.text = text;
         this.wordCount = wordCount;
     }
@@ -105,6 +124,15 @@ public class CmsContentAttribute implements java.io.Serializable {
         this.data = data;
     }
 
+    @Column(name = "dictionary_values", length = 65535)
+    public String getDictionaryValues() {
+        return this.dictionaryValues;
+    }
+
+    public void setDictionaryValues(String dictionaryValues) {
+        this.dictionaryValues = dictionaryValues;
+    }
+
     @Column(name = "search_text")
     public String getSearchText() {
         return this.searchText;
@@ -112,6 +140,42 @@ public class CmsContentAttribute implements java.io.Serializable {
 
     public void setSearchText(String searchText) {
         this.searchText = searchText;
+    }
+
+    @Column(name = "files_text", length = 65535)
+    public String getFilesText() {
+        return this.filesText;
+    }
+
+    public void setFilesText(String filesText) {
+        this.filesText = filesText;
+    }
+
+    @Column(name = "products_text", length = 65535)
+    public String getProductsText() {
+        return this.productsText;
+    }
+
+    public void setProductsText(String productsText) {
+        this.productsText = productsText;
+    }
+
+    @Column(name = "min_price", length = 50)
+    public BigDecimal getMinPrice() {
+        return this.minPrice;
+    }
+
+    public void setMinPrice(BigDecimal minPrice) {
+        this.minPrice = minPrice;
+    }
+
+    @Column(name = "max_price", length = 50)
+    public BigDecimal getMaxPrice() {
+        return this.maxPrice;
+    }
+
+    public void setMaxPrice(BigDecimal maxPrice) {
+        this.maxPrice = maxPrice;
     }
 
     @Column(name = "text")

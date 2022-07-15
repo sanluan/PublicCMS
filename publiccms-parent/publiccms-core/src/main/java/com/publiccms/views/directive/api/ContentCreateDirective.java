@@ -92,8 +92,6 @@ public class ContentCreateDirective extends AbstractAppDirective {
                 entity.setEditor(handler.getString("editor"));
                 entity.setCopied(handler.getBoolean("copied", false));
                 entity.setPublishDate(handler.getDate("publishDate"));
-                entity.setDictionaryValues(
-                        arrayToDelimitedString(handler.getStringArray("dictionaryValues"), CommonConstants.BLANK_SPACE));
                 String[] tagNames = handler.getStringArray("tagNames");
                 Long[] tagIds = handler.getLongArray("tagIds");
                 if (CommonUtils.notEmpty(tagNames) || CommonUtils.notEmpty(tagIds)) {

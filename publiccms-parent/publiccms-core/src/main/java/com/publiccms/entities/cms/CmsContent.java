@@ -185,10 +185,6 @@ public class CmsContent implements java.io.Serializable {
     @GeneratorColumn(title = "标签")
     @FullTextField(analyzer = AnalyzerNames.WHITESPACE)
     private String tagIds;
-    @GeneratorColumn(title = "数据字典值")
-    @FullTextField(analyzer = AnalyzerNames.WHITESPACE)
-    @JsonIgnore
-    private String dictionaryValues;
     /**
      * cover<p>
      * 封面图
@@ -525,15 +521,6 @@ public class CmsContent implements java.io.Serializable {
 
     public void setTagIds(String tagIds) {
         this.tagIds = tagIds;
-    }
-
-    @Column(name = "dictionary_values", length = 65535)
-    public String getDictionaryValues() {
-        return this.dictionaryValues;
-    }
-
-    public void setDictionaryValues(String dictionaryValues) {
-        this.dictionaryValues = dictionaryValues;
     }
 
     @Column(name = "cover")

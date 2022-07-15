@@ -234,7 +234,16 @@
             kindeditorResources: ["${base}/resource/plugins/kindeditor/kindeditor-all-min.js","${base}/resource/plugins/kindeditor/<@t.page 'kindeditor.lang_js'/>"],
             ckeditorInitd: false,
             ueditorInitd: false,
+            tinymceInitd: false,
             kindeditorInitd: false,
+            ckeditorIniting: false,
+            ueditorIniting: false,
+            tinymceIniting: false,
+            kindeditorIniting: false,
+            ckeditorArray:[],
+            ueditorArray:[],
+            tinymceArray:[],
+            kindeditorArray:[],
             index: 0
         };
         window.codemirror = {
@@ -243,6 +252,8 @@
                 '${base}/resource/plugins/codemirror/mode/nginx/nginx.js','${base}/resource/plugins/codemirror/addon/hint/show-hint.js','${base}/resource/plugins/codemirror/addon/hint/javascript-hint.js','${base}/resource/plugins/codemirror/addon/hint/html-hint.js',
                 '${base}/resource/plugins/codemirror/addon/hint/css-hint.js','${base}/resource/plugins/codemirror/addon/hint/xml-hint.js'],
             initd: false,
+            initing: false,
+            array: false,
             index: 0
         };
         window.photoclip = {

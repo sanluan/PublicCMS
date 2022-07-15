@@ -186,7 +186,7 @@ public class TemplateComponent implements Cache {
                     }
                     return true;
                 }
-            } else if (null != entity.getQuoteContentId()) {
+            } else if (null == entity.getParentId() && null != entity.getQuoteContentId()) {
                 if (null != categoryModel && null != category) {
                     CmsContent quote = contentService.getEntity(entity.getQuoteContentId());
                     if (null != quote) {

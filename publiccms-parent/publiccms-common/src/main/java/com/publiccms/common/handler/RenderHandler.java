@@ -118,7 +118,7 @@ public interface RenderHandler {
      * @throws Exception
      */
     Long getLong(String name) throws Exception;
-    
+
     /**
      * @param name
      * @param defaultValue
@@ -178,6 +178,15 @@ public interface RenderHandler {
     /**
      * @param name
      * @param defaultValue
+     * 
+     * @return string array value
+     * @throws Exception
+     */
+    String[] getStringArray(String name, String[] defaultValue) throws Exception;
+
+    /**
+     * @param name
+     * @param defaultValue
      * @return bool value
      * @throws Exception
      */
@@ -213,11 +222,11 @@ public interface RenderHandler {
      * @throws Exception
      */
     Locale getLocale() throws Exception;
-    
+
     /**
      * @param name
      * @return map value
-     * @throws Exception 
+     * @throws Exception
      */
     public Map<?, ?> getMap(String name) throws Exception;
 
