@@ -184,3 +184,7 @@ ALTER TABLE `cms_content`
     DROP COLUMN `dictionary_values`;
 ALTER TABLE `cms_content` 
     MODIFY COLUMN `quote_content_id` bigint(20) NULL DEFAULT NULL COMMENT '引用内容(当父内容不为空时为顶级内容)' AFTER `parent_id`;
+-- 2022-07-16 --
+ALTER TABLE `cms_content_attribute` 
+    ADD COLUMN `extends_text` text NULL COMMENT '扩展文本' AFTER `dictionary_values`,
+    ADD COLUMN `extends_fields` text NULL COMMENT '扩展文本字段' AFTER `extends_text`;

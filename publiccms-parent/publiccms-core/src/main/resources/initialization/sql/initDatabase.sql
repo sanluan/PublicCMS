@@ -140,6 +140,13 @@ CREATE TABLE `cms_content_attribute` (
   `source_url` varchar(1000) default NULL COMMENT '来源地址',
   `data` longtext COMMENT '数据JSON',
   `search_text` longtext NULL COMMENT '全文索引文本',
+  `dictionary_values` text NULL COMMENT '数据字典值',
+  `extends_text` text NULL COMMENT '扩展文本',
+  `extends_fields` text NULL COMMENT '扩展文本字段',
+  `files_text` text NULL COMMENT '附件文本',
+  `products_text` text NULL COMMENT '产品文本',
+  `min_price` decimal(10, 2) NULL COMMENT '最低价格',
+  `max_price` decimal(10, 2) NULL COMMENT '最高价格',
   `text` longtext COMMENT '内容',
   `word_count` int(11) NOT NULL COMMENT '字数',
   PRIMARY KEY  (`content_id`)

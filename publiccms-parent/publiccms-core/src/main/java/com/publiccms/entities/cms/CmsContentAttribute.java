@@ -34,12 +34,16 @@ public class CmsContentAttribute implements java.io.Serializable {
     private String sourceUrl;
     @GeneratorColumn(title = "扩展数据")
     private String data;
-    @GeneratorColumn(title = "数据字典值")
-    @JsonIgnore
-    private String dictionaryValues;
     @GeneratorColumn(title = "全文索引文本")
     @JsonIgnore
     private String searchText;
+    @GeneratorColumn(title = "数据字典值")
+    @JsonIgnore
+    private String dictionaryValues;
+    @GeneratorColumn(title = "扩展文本")
+    private String extendsText;
+    @GeneratorColumn(title = "扩展文本字段")
+    private String extendsFields;
     @GeneratorColumn(title = "附件文本")
     private String filesText;
     @GeneratorColumn(title = "产品文本")
@@ -69,15 +73,17 @@ public class CmsContentAttribute implements java.io.Serializable {
         this.wordCount = wordCount;
     }
 
-    public CmsContentAttribute(long contentId, String source, String sourceUrl, String data, String dictionaryValues,
-            String searchText, String filesText, String productsText, BigDecimal minPrice, BigDecimal maxPrice, String text,
-            int wordCount) {
+    public CmsContentAttribute(long contentId, String source, String sourceUrl, String data, String searchText,
+            String dictionaryValues, String extendsText,String extendsFields, String filesText, String productsText, BigDecimal minPrice,
+            BigDecimal maxPrice, String text, int wordCount) {
         this.contentId = contentId;
         this.source = source;
         this.sourceUrl = sourceUrl;
         this.data = data;
-        this.dictionaryValues = dictionaryValues;
         this.searchText = searchText;
+        this.dictionaryValues = dictionaryValues;
+        this.extendsText = extendsText;
+        this.extendsFields = extendsFields;
         this.filesText = filesText;
         this.productsText = productsText;
         this.minPrice = minPrice;
@@ -87,7 +93,6 @@ public class CmsContentAttribute implements java.io.Serializable {
     }
 
     @Id
-
     @Column(name = "content_id", unique = true, nullable = false)
     public long getContentId() {
         return this.contentId;
@@ -124,15 +129,6 @@ public class CmsContentAttribute implements java.io.Serializable {
         this.data = data;
     }
 
-    @Column(name = "dictionary_values", length = 65535)
-    public String getDictionaryValues() {
-        return this.dictionaryValues;
-    }
-
-    public void setDictionaryValues(String dictionaryValues) {
-        this.dictionaryValues = dictionaryValues;
-    }
-
     @Column(name = "search_text")
     public String getSearchText() {
         return this.searchText;
@@ -142,7 +138,34 @@ public class CmsContentAttribute implements java.io.Serializable {
         this.searchText = searchText;
     }
 
-    @Column(name = "files_text", length = 65535)
+    @Column(name = "dictionary_values", length = 65535)
+    public String getDictionaryValues() {
+        return this.dictionaryValues;
+    }
+
+    public void setDictionaryValues(String dictionaryValues) {
+        this.dictionaryValues = dictionaryValues;
+    }
+
+    @Column(name = "extends_text", length = 65535)
+    public String getExtendsText() {
+        return this.extendsText;
+    }
+
+    public void setExtendsText(String extendsText) {
+        this.extendsText = extendsText;
+    }
+
+    @Column(name = "extends_fields", length = 65535)
+    public String getExtendsFields() {
+        return this.extendsFields;
+    }
+
+    public void setExtendsFields(String extendsFields) {
+        this.extendsFields = extendsFields;
+    }
+
+    @Column(name = "files_fields", length = 65535)
     public String getFilesText() {
         return this.filesText;
     }
