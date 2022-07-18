@@ -80,6 +80,8 @@ public class CmsContentDirective extends AbstractTemplateDirective {
                         map.put("source", attribute.getSource());
                         map.put("sourceUrl", attribute.getSourceUrl());
                         map.put("wordCount", String.valueOf(attribute.getWordCount()));
+                        map.put("minPrice", String.valueOf(attribute.getMinPrice()));
+                        map.put("maxPrice", String.valueOf(attribute.getMaxPrice()));
                         handler.put("attribute", map);
                     }
                 }

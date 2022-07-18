@@ -291,6 +291,8 @@ public class TemplateComponent implements Cache {
             map.put("source", attribute.getSource());
             map.put("sourceUrl", attribute.getSourceUrl());
             map.put("wordCount", String.valueOf(attribute.getWordCount()));
+            map.put("minPrice", String.valueOf(attribute.getMinPrice()));
+            map.put("maxPrice", String.valueOf(attribute.getMaxPrice()));
             model.put("attribute", map);
         } else {
             model.put("attribute", attribute);

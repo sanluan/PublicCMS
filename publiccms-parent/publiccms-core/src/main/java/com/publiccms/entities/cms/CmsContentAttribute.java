@@ -65,12 +65,15 @@ public class CmsContentAttribute implements java.io.Serializable {
         this.wordCount = wordCount;
     }
 
-    public CmsContentAttribute(long contentId, String source, String sourceUrl, String data, int wordCount) {
+    public CmsContentAttribute(long contentId, String source, String sourceUrl, String data, int wordCount,BigDecimal minPrice,
+            BigDecimal maxPrice) {
         this.contentId = contentId;
         this.source = source;
         this.sourceUrl = sourceUrl;
         this.data = data;
         this.wordCount = wordCount;
+        this.minPrice = minPrice;
+        this.maxPrice = maxPrice;
     }
 
     public CmsContentAttribute(long contentId, String source, String sourceUrl, String data, String searchText,
@@ -165,7 +168,7 @@ public class CmsContentAttribute implements java.io.Serializable {
         this.extendsFields = extendsFields;
     }
 
-    @Column(name = "files_fields", length = 65535)
+    @Column(name = "files_text", length = 65535)
     public String getFilesText() {
         return this.filesText;
     }

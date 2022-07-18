@@ -421,47 +421,64 @@ public abstract class BaseDao<E> {
      * @param highLighterQuery
      */
     protected void higtLighter(List<E> resultList, HighLighterQuery highLighterQuery) {
-        if (highLighterQuery.isHighlight() && null != highLighterQuery.getQuery()
-                && CommonUtils.notEmpty(highLighterQuery.getFields())) {
-            SimpleHTMLFormatter formatter;
-            if (CommonUtils.notEmpty(highLighterQuery.getPreTag()) && CommonUtils.notEmpty(highLighterQuery.getPostTag())) {
-                formatter = new SimpleHTMLFormatter(highLighterQuery.getPreTag(), highLighterQuery.getPostTag());
-            } else {
-                formatter = new SimpleHTMLFormatter();
-            }
-            Backend backend = getSearchBackend();
-            Analyzer analyzer;
-            if (backend instanceof LuceneBackend) {
-                analyzer = backend.unwrap(LuceneBackend.class).analyzer("cms").get();
-            } else {
-                analyzer = new StandardAnalyzer();
-            }
-            QueryScorer queryScorer = new QueryScorer(highLighterQuery.getQuery(), highLighterQuery.getDefaultFieldName());
-            Highlighter highlighter = new Highlighter(formatter, queryScorer);
-            for (E e : resultList) {
-                for (String fieldName : highLighterQuery.getFields()) {
-                    try {
-                        Method method = BeanUtils.getPropertyDescriptor(getEntityClass(), fieldName).getReadMethod();
-                        if (null != method) {
-                            Object fieldValue = ReflectionUtils.invokeMethod(method, e);
-                            String hightLightFieldValue = null;
-                            if (fieldValue instanceof String && CommonUtils.notEmpty(String.valueOf(fieldValue))) {
-                                String safeValue = HtmlUtils.htmlEscape(String.valueOf(fieldValue),
-                                        Constants.DEFAULT_CHARSET_NAME);
-                                hightLightFieldValue = highlighter.getBestFragment(analyzer, fieldName, safeValue);
-                                if (CommonUtils.notEmpty(hightLightFieldValue)) {
+        if (highLighterQuery.isHighlight() && CommonUtils.notEmpty(highLighterQuery.getFields())) {
+            if (null == highLighterQuery.getQuery()) {
+                for (E e : resultList) {
+                    for (String fieldName : highLighterQuery.getFields()) {
+                        try {
+                            Method method = BeanUtils.getPropertyDescriptor(getEntityClass(), fieldName).getReadMethod();
+                            if (null != method) {
+                                Object fieldValue = ReflectionUtils.invokeMethod(method, e);
+                                if (fieldValue instanceof String && CommonUtils.notEmpty(String.valueOf(fieldValue))) {
                                     ReflectionUtils.invokeMethod(
                                             BeanUtils.getPropertyDescriptor(getEntityClass(), fieldName).getWriteMethod(), e,
-                                            hightLightFieldValue);
-                                } else {
-                                    ReflectionUtils.invokeMethod(
-                                            BeanUtils.getPropertyDescriptor(getEntityClass(), fieldName).getWriteMethod(), e,
-                                            safeValue);
+                                            HtmlUtils.htmlEscape(String.valueOf(fieldValue), Constants.DEFAULT_CHARSET_NAME));
                                 }
                             }
+                        } catch (Exception ignore) {
                         }
-                    } catch (Exception ignore) {
-                        ignore.printStackTrace();
+                    }
+                }
+            } else {
+                SimpleHTMLFormatter formatter;
+                if (CommonUtils.notEmpty(highLighterQuery.getPreTag()) && CommonUtils.notEmpty(highLighterQuery.getPostTag())) {
+                    formatter = new SimpleHTMLFormatter(highLighterQuery.getPreTag(), highLighterQuery.getPostTag());
+                } else {
+                    formatter = new SimpleHTMLFormatter();
+                }
+                Backend backend = getSearchBackend();
+                Analyzer analyzer;
+                if (backend instanceof LuceneBackend) {
+                    analyzer = backend.unwrap(LuceneBackend.class).analyzer("cms").get();
+                } else {
+                    analyzer = new StandardAnalyzer();
+                }
+                QueryScorer queryScorer = new QueryScorer(highLighterQuery.getQuery(), highLighterQuery.getDefaultFieldName());
+                Highlighter highlighter = new Highlighter(formatter, queryScorer);
+                for (E e : resultList) {
+                    for (String fieldName : highLighterQuery.getFields()) {
+                        try {
+                            Method method = BeanUtils.getPropertyDescriptor(getEntityClass(), fieldName).getReadMethod();
+                            if (null != method) {
+                                Object fieldValue = ReflectionUtils.invokeMethod(method, e);
+                                String hightLightFieldValue = null;
+                                if (fieldValue instanceof String && CommonUtils.notEmpty(String.valueOf(fieldValue))) {
+                                    String safeValue = HtmlUtils.htmlEscape(String.valueOf(fieldValue),
+                                            Constants.DEFAULT_CHARSET_NAME);
+                                    hightLightFieldValue = highlighter.getBestFragment(analyzer, fieldName, safeValue);
+                                    if (CommonUtils.notEmpty(hightLightFieldValue)) {
+                                        ReflectionUtils.invokeMethod(
+                                                BeanUtils.getPropertyDescriptor(getEntityClass(), fieldName).getWriteMethod(), e,
+                                                hightLightFieldValue);
+                                    } else {
+                                        ReflectionUtils.invokeMethod(
+                                                BeanUtils.getPropertyDescriptor(getEntityClass(), fieldName).getWriteMethod(), e,
+                                                safeValue);
+                                    }
+                                }
+                            }
+                        } catch (Exception ignore) {
+                        }
                     }
                 }
             }

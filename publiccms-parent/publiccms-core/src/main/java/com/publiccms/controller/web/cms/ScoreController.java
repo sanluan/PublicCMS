@@ -88,12 +88,12 @@ public class ScoreController {
                         scores = 1;
                     }
                     CmsContent content = contentService.updateScores(site.getId(), itemId, score ? 1 : -1,
-                            score ? scores : -entity.getScores());
+                            score ? scores : -entity.getScore());
                     if (null != content) {
                         if (score) {
                             entity = new CmsUserScore();
                             entity.setId(id);
-                            entity.setScores(scores);
+                            entity.setScore(scores);
                             service.save(entity);
                         } else {
                             service.delete(id);
@@ -116,7 +116,7 @@ public class ScoreController {
                         if (score) {
                             entity = new CmsUserScore();
                             entity.setId(id);
-                            entity.setScores(1);
+                            entity.setScore(1);
                             service.save(entity);
                         } else {
                             service.delete(id);
