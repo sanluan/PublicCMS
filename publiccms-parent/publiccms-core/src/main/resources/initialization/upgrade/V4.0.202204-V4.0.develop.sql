@@ -188,3 +188,12 @@ ALTER TABLE `cms_content`
 ALTER TABLE `cms_content_attribute` 
     ADD COLUMN `extends_text` text NULL COMMENT '扩展文本' AFTER `dictionary_values`,
     ADD COLUMN `extends_fields` text NULL COMMENT '扩展文本字段' AFTER `extends_text`;
+-- 2022-07-23 --
+ALTER TABLE `cms_content_related` 
+    ADD COLUMN `relation_type` varchar(20) NULL COMMENT '关系类型' AFTER `content_id`,
+    ADD COLUMN `relation` varchar(50) NULL COMMENT '关系' AFTER `relation_type`,
+    DROP INDEX `cms_content_related_content_id`,
+    DROP INDEX `cms_content_related_related_content_id`,
+    ADD INDEX `cms_content_related_content_id`(`content_id`, `relation_type`, `relation`, `sort`),
+    ADD INDEX `cms_content_related_related_content_id`(`related_content_id`, `relation_type`, `relation`);
+UPDATE `sys_module` SET `authorized_url` = 'cmsPlace/push,cmsPlace/add,cmsPlace/save,cmsContent/unrelated,cmsPlace/delete' WHERE `id` ='content_push';

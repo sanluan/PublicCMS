@@ -377,48 +377,6 @@ public class CmsContentAdminController {
     /**
      * @param site
      * @param admin
-     * @param entity
-     * @param request
-     * @param model
-     * @return view name
-     */
-    @RequestMapping("related")
-    @Csrf
-    public String related(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, CmsContentRelated entity,
-            HttpServletRequest request, ModelMap model) {
-        CmsContent content = service.getEntity(entity.getContentId());
-        CmsContent related = service.getEntity(entity.getRelatedContentId());
-        if (null != content && null != related) {
-            if (ControllerUtils.errorNotEquals("siteId", site.getId(), content.getSiteId(), model)
-                    || ControllerUtils.errorNotEquals("siteId", site.getId(), related.getSiteId(), model)
-                    || ControllerUtils.errorCustom("noright", !ControllerUtils.hasContentPermissions(admin, content), model)) {
-                return CommonConstants.TEMPLATE_ERROR;
-            }
-            if (CommonUtils.empty(entity.getTitle())) {
-                entity.setTitle(entity.getTitle());
-            }
-            if (CommonUtils.empty(entity.getDescription())) {
-                entity.setDescription(entity.getDescription());
-            }
-            entity.setUserId(admin.getId());
-            cmsContentRelatedService.save(entity);
-            try {
-                publish(site, content, admin);
-            } catch (IOException | TemplateException e) {
-                model.addAttribute(CommonConstants.ERROR, e.getMessage());
-                log.error(e.getMessage(), e);
-                return CommonConstants.TEMPLATE_ERROR;
-            }
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "related.content", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), JsonUtils.getString(related)));
-        }
-        return CommonConstants.TEMPLATE_DONE;
-    }
-
-    /**
-     * @param site
-     * @param admin
      * @param id
      * @param request
      * @param model

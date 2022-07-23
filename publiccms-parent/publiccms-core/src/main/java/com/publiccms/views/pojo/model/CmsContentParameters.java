@@ -20,7 +20,7 @@ public class CmsContentParameters implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
-    private List<CmsContentRelated> contentRelateds;
+    private List<List<CmsContentRelated>> contentRelateds;
     private Set<Integer> categoryIds;
     private Set<Long> contentIds;
     private List<CmsContentFile> files;
@@ -33,14 +33,14 @@ public class CmsContentParameters implements java.io.Serializable {
     /**
      * @return
      */
-    public List<CmsContentRelated> getContentRelateds() {
+    public List<List<CmsContentRelated>> getContentRelateds() {
         return contentRelateds;
     }
 
     /**
      * @param contentRelateds
      */
-    public void setContentRelateds(List<CmsContentRelated> contentRelateds) {
+    public void setContentRelateds(List<List<CmsContentRelated>> contentRelateds) {
         this.contentRelateds = contentRelateds;
     }
 

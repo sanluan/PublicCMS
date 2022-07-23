@@ -4,7 +4,6 @@
 <@cms.contentRelatedList relatedContentId=contentId>
         <p>
             <label><@t.page 'content'/>:</label><label><@t.page 'total_count' page.totalCount/></label>
-            <a class="button" href="cmsContent/push_content.html?contentId=${contentId}" target="dialog" mask="true"><@t.page 'button.push'/></a>
         </p>
         <p>
     <#list page.list as a>
@@ -12,7 +11,7 @@
     </#list>
     <@cms.content ids=t.contentIds!><#assign contentMap=map!/></@cms.content>
     <#list page.list as a>
-            <a href="cmsContent/view.html?id=${a.id}" class="exclude-translate" target="dialog" rel="viewContent${a.id}">${(contentMap[a.contentId?string].title)!}</a> <a href="cmsContent/unrelated?id=${a.id}&_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo" callback="$.pdialog.closeCurrent()"><@t.page 'button.delete'/></a><br/>
+          <#if a.relationType?has_content><@cms.dictionary id=a.relationType><label>${object.name}:</label></@cms.dictionary><#if a.relation?has_content><@cms.dictionaryData dictionaryId=a.relationType value=a.relation><label>${object.text}:</label></@cms.dictionaryData></#if></#if><a href="${a.url}" class="exclude-translate" target="_blank">${(contentMap[a.contentId?string].title)!}</a> <a href="cmsContent/unrelated?id=${a.id}&_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo" callback="$.pdialog.closeCurrent()"><@t.page 'button.delete'/></a><br/>
     </#list>
         </p>
 </@cms.contentRelatedList>

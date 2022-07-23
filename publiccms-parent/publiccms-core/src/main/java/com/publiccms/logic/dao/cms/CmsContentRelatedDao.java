@@ -20,6 +20,8 @@ public class CmsContentRelatedDao extends BaseDao<CmsContentRelated> {
     /**
      * @param contentId
      * @param relatedContentId
+     * @param relationType 
+     * @param relation 
      * @param userId
      * @param orderField
      * @param orderType
@@ -27,7 +29,7 @@ public class CmsContentRelatedDao extends BaseDao<CmsContentRelated> {
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(Long contentId, Long relatedContentId, Long userId, String orderField, String orderType,
+    public PageHandler getPage(Long contentId, Long relatedContentId, String relationType, String relation, String orderField, String orderType,
             Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from CmsContentRelated bean");
         if (CommonUtils.notEmpty(contentId)) {
@@ -37,8 +39,11 @@ public class CmsContentRelatedDao extends BaseDao<CmsContentRelated> {
             queryHandler.condition("bean.relatedContentId = :relatedContentId")
                     .setParameter("relatedContentId", relatedContentId);
         }
-        if (CommonUtils.notEmpty(userId)) {
-            queryHandler.condition("bean.userId = :userId").setParameter("userId", userId);
+        if (CommonUtils.notEmpty(relationType)) {
+            queryHandler.condition("bean.relationType = :relationType").setParameter("relationType", relationType);
+        }
+        if (CommonUtils.notEmpty(relation)) {
+            queryHandler.condition("bean.relation = :relation").setParameter("relation", relation);
         }
         if (!ORDERTYPE_ASC.equalsIgnoreCase(orderType)) {
             orderType = ORDERTYPE_DESC;

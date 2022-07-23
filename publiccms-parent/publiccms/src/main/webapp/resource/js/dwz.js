@@ -5569,7 +5569,7 @@ $.fn.extend({
                         defaultVal: $th.attr("defaultVal") || "", size: $th.attr("size") || "12", enumUrl: $th.attr("enumUrl") || "" ,
                         lookupGroup: $th.attr("lookupGroup") || "", lookupUrl: $th.attr("lookupUrl") || "", lookupPk: $th.attr("lookupPk") || "id" ,
                         suggestUrl: $th.attr("suggestUrl"), suggestFields: $th.attr("suggestFields"), postField: $th.attr("postField") || "" ,
-                        fieldClass: $th.attr("fieldClass") || "", fieldAttrs: $th.attr("fieldAttrs") || "", title:$th.text()
+                        fieldClass: $th.attr("fieldClass") || "", fieldAttrs: $th.attr("fieldAttrs") || "", title:$th.text(), pkValue: $th.attr("pkValue")
                     };
                     fields.push(field);
                 });
@@ -5668,7 +5668,7 @@ $.fn.extend({
                 });
             }
             function tdHtml(field) {
-                var html = '', suffix = '';
+                var hiddenHtml = '', html = '', suffix = '';
                 if (field.name.endsWith("[#index#]") ) {
                     suffix = "[#index#]";
                 } else if (field.name.endsWith("[]") ) {
@@ -5682,6 +5682,13 @@ $.fn.extend({
                         attrFrag += key + '="' + attrs[key] + '"';
                     }
                 }
+                if(field.lookupPk){
+                    var value='';
+                    if(field.pkValue){
+                        value = field.pkValue;
+                    }
+                    hiddenHtml = '<input type="hidden" name="' + field.lookupGroup + '.' + field.lookupPk + suffix + '" value="' + value + '"/>';
+                }
                 switch (field.type) {
                     case 'del':
                         html = '<a href="javascript:void(0)" class="btnDel ' + field.fieldClass + '"></a>';
@@ -5692,14 +5699,12 @@ $.fn.extend({
                             suggestFrag = 'autocomplete="off" lookupGroup="' + field.lookupGroup + '"' + suffixFrag + ' suggestUrl="' + field.suggestUrl + '" suggestFields="'
                                     + field.suggestFields + '"' + ' postField="' + field.postField + '"';
                         }
-                        html = '<input type="hidden" name="' + field.lookupGroup + '.' + field.lookupPk + suffix + '"/>' + '<input type="text" name="' + field.name + '"'
-                                + suggestFrag + ' lookupPk="' + field.lookupPk + '" size="' + field.size + '" class="' + field.fieldClass + '" ' + attrFrag + '/>' + '<a class="btnLook" href="'
-                                + field.lookupUrl + '" lookupGroup="' + field.lookupGroup + '" ' + suggestFrag + ' lookupPk="' + field.lookupPk + '" ' + attrFrag + '>'+field.title+'</a>';
+                        html =  '<input type="text" name="' + field.name + '"' + suggestFrag + ' lookupPk="' + field.lookupPk + '" size="' + field.size + '" class="' + field.fieldClass + '" ' + attrFrag + '/>'
+                            + '<a class="btnLook" href="' + field.lookupUrl + '" lookupGroup="' + field.lookupGroup + '" ' + suggestFrag + ' lookupPk="' + field.lookupPk + '" ' + attrFrag + '>'+field.title+'</a>';
                         break;
                     case 'attach':
-                        html = '<input type="hidden" name="' + field.lookupGroup + '.' + field.lookupPk + suffix + '"/>' + '<input type="text" name="' + field.name + '" size="'
-                                + field.size + '" class="' + field.fieldClass + '" ' + attrFrag + '/>' + '<a class="btnAttach" href="' + field.lookupUrl + '" lookupGroup="' + field.lookupGroup
-                                + '" ' + suffixFrag + ' lookupPk="' + field.lookupPk + '" width="1000" height="600" ' + attrFrag + '>'+field.title+'</a>';
+                        html =  '<input type="text" name="' + field.name + '" size="' + field.size + '" class="' + field.fieldClass + '" ' + attrFrag + '/>'
+                                 + '<a class="btnAttach" href="' + field.lookupUrl + '" lookupGroup="' + field.lookupGroup + '" ' + suffixFrag + ' lookupPk="' + field.lookupPk + '" width="1000" height="600" ' + attrFrag + '>'+field.title+'</a>';
                         break;
                     case 'enum':
                         $.ajax({
@@ -5729,7 +5734,7 @@ $.fn.extend({
                                 + attrFrag + '/>';
                         break;
                 }
-                return '<td>' + html + '</td>';
+                return '<td>' + hiddenHtml + html + '</td>';
             }
             function trHtml(fields) {
                 var html = '';

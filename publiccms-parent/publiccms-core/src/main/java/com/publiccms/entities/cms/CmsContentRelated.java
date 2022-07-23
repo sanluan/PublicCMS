@@ -34,41 +34,66 @@ public class CmsContentRelated implements java.io.Serializable {
     @GeneratorColumn(title = "ID")
     private Long id;
     /**
-     * content id<p>
+     * content id
+     * <p>
      * 内容id
      */
     @GeneratorColumn(title = "内容", condition = true)
     private long contentId;
     /**
-     * related content id<p>
+     * relation type
+     * <p>
+     * 关系类型
+     */
+    @GeneratorColumn(title = "关系类型", condition = true)
+    private String relationType;
+    /**
+     * relation
+     * <p>
+     * 关系
+     */
+    @GeneratorColumn(title = "关系", condition = true)
+    private String relation;
+    /**
+     * related content id
+     * <p>
      * 推进内容id
      */
     @GeneratorColumn(title = "推荐内容", condition = true)
     private Long relatedContentId;
     /**
-     * related user id<p>
+     * related user id
+     * <p>
      * 推进用户id
      */
     @GeneratorColumn(title = "推荐用户", condition = true)
     private long userId;
     /**
-     * url<p>
+     * url
+     * <p>
      * 链接地址
      */
     @GeneratorColumn(title = "推荐地址")
     private String url;
     /**
-     * title<p>
+     * title
+     * <p>
      * 标题
      */
     @GeneratorColumn(title = "推荐标题")
     private String title;
     /**
-     * sort<p>
-     * 排序
+     * description
+     * <p>
+     * 描述
      */
     @GeneratorColumn(title = "推荐描述")
     private String description;
+    /**
+     * sort
+     * <p>
+     * 排序
+     */
     @GeneratorColumn(title = "排序")
     private int sort;
 
@@ -81,9 +106,11 @@ public class CmsContentRelated implements java.io.Serializable {
         this.sort = sort;
     }
 
-    public CmsContentRelated(long contentId, Long relatedContentId, long userId, String url, String title, String description,
-            int sort) {
+    public CmsContentRelated(long contentId, String relationType, String relation, Long relatedContentId, long userId, String url,
+            String title, String description, int sort) {
         this.contentId = contentId;
+        this.relationType = relationType;
+        this.relation = relation;
         this.relatedContentId = relatedContentId;
         this.userId = userId;
         this.url = url;
@@ -111,6 +138,24 @@ public class CmsContentRelated implements java.io.Serializable {
 
     public void setContentId(long contentId) {
         this.contentId = contentId;
+    }
+
+    @Column(name = "relation_type")
+    public String getRelationType() {
+        return this.relationType;
+    }
+
+    public void setRelationType(String relationType) {
+        this.relationType = relationType;
+    }
+
+    @Column(name = "relation")
+    public String getRelation() {
+        return this.relation;
+    }
+
+    public void setRelation(String relation) {
+        this.relation = relation;
     }
 
     @Column(name = "related_content_id")
