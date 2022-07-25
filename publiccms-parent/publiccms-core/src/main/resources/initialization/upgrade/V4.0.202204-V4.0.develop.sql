@@ -176,7 +176,6 @@ ALTER TABLE `cms_word`
 ALTER TABLE `cms_content_attribute` 
     ADD COLUMN `dictionary_values` text NULL COMMENT '数据字典值' AFTER `search_text`,
     ADD COLUMN `files_text` text NULL COMMENT '附件文本' AFTER `dictionary_values`,
-    ADD COLUMN `products_text` text NULL COMMENT '产品文本' AFTER `files_text`,
     ADD COLUMN `min_price` decimal(10, 2) NULL COMMENT '最低价格' AFTER `products_text`,
     ADD COLUMN `max_price` decimal(10, 2) NULL COMMENT '最高价格' AFTER `min_price`;
 update cms_content_attribute a set a.dictionary_values = (select dictionary_values from cms_content b where a.content_id = b.id);

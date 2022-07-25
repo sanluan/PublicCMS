@@ -144,7 +144,6 @@ CREATE TABLE `cms_content_attribute` (
   `extends_text` text NULL COMMENT '扩展文本',
   `extends_fields` text NULL COMMENT '扩展文本字段',
   `files_text` text NULL COMMENT '附件文本',
-  `products_text` text NULL COMMENT '产品文本',
   `min_price` decimal(10, 2) NULL COMMENT '最低价格',
   `max_price` decimal(10, 2) NULL COMMENT '最高价格',
   `text` longtext COMMENT '内容',

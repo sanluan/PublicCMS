@@ -45,7 +45,7 @@ import com.publiccms.views.pojo.entities.ClickStatistics;
  * <li><code>projection</code> 投影结果,【true,false】,默认为false
  * <li><code>phrase</code> 精确搜索,【true,false】,默认为false
  * <li><code>fields</code> 搜索字段,【title:标题, author:作者, editor:编辑, description:描述,
- * text:正文,files:附件,products:产品,extends:扩展数据全文索引】
+ * text:正文,files:附件,extends:扩展数据全文索引】
  * <li><code>modelIds</code> 多个模型id
  * <li><code>startPublishDate</code> 起始发布日期,【2000-01-01 23:59:59】,【2000-01-01】
  * <li><code>endPublishDate</code> 终止发布日期,【2000-01-01 23:59:59】,【2000-01-01】

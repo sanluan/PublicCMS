@@ -360,12 +360,11 @@ public class CmsContentService extends BaseService<CmsContent> {
                 filesTextBuilder.append(file.getDescription()).append(CommonConstants.BLANK_SPACE);
             }
         }
+        attribute.setFilesText(filesTextBuilder.toString());
         if (CommonUtils.notEmpty(products)) {
-            StringBuilder productsTextBuilder = new StringBuilder();
             BigDecimal minPrice = BigDecimal.ZERO;
             BigDecimal maxPrice = BigDecimal.ZERO;
             for (CmsContentProduct product : products) {
-                productsTextBuilder.append(product.getTitle()).append(CommonConstants.BLANK_SPACE);
                 if (0 == BigDecimal.ZERO.compareTo(maxPrice) || 0 < minPrice.compareTo(product.getPrice())) {
                     minPrice = product.getPrice();
                 }
@@ -375,13 +374,10 @@ public class CmsContentService extends BaseService<CmsContent> {
             }
             attribute.setMinPrice(minPrice);
             attribute.setMaxPrice(maxPrice);
-            attribute.setProductsText(productsTextBuilder.toString());
         } else {
             attribute.setMinPrice(null);
             attribute.setMaxPrice(null);
-            attribute.setProductsText(null);
         }
-        attribute.setFilesText(filesTextBuilder.toString());
     }
 
     private static void dealExtend(List<SysExtendField> extendList, Set<String> dictionaryValueList, Set<String> extendsFieldList,

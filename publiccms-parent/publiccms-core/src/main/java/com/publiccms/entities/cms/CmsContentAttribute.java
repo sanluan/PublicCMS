@@ -46,8 +46,6 @@ public class CmsContentAttribute implements java.io.Serializable {
     private String extendsFields;
     @GeneratorColumn(title = "附件文本")
     private String filesText;
-    @GeneratorColumn(title = "产品文本")
-    private String productsText;
     @GeneratorColumn(title = "最低价格")
     private BigDecimal minPrice;
     @GeneratorColumn(title = "最高价格")
@@ -77,7 +75,7 @@ public class CmsContentAttribute implements java.io.Serializable {
     }
 
     public CmsContentAttribute(long contentId, String source, String sourceUrl, String data, String searchText,
-            String dictionaryValues, String extendsText,String extendsFields, String filesText, String productsText, BigDecimal minPrice,
+            String dictionaryValues, String extendsText,String extendsFields, String filesText, BigDecimal minPrice,
             BigDecimal maxPrice, String text, int wordCount) {
         this.contentId = contentId;
         this.source = source;
@@ -88,7 +86,6 @@ public class CmsContentAttribute implements java.io.Serializable {
         this.extendsText = extendsText;
         this.extendsFields = extendsFields;
         this.filesText = filesText;
-        this.productsText = productsText;
         this.minPrice = minPrice;
         this.maxPrice = maxPrice;
         this.text = text;
@@ -175,15 +172,6 @@ public class CmsContentAttribute implements java.io.Serializable {
 
     public void setFilesText(String filesText) {
         this.filesText = filesText;
-    }
-
-    @Column(name = "products_text", length = 65535)
-    public String getProductsText() {
-        return this.productsText;
-    }
-
-    public void setProductsText(String productsText) {
-        this.productsText = productsText;
     }
 
     @Column(name = "min_price", length = 50)

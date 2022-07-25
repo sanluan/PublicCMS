@@ -27,7 +27,6 @@ public class CmsContentTextBinder implements TypeBinder {
 
         IndexFieldReference<String> textField = schemaElement.field("text", textFieldType).toReference();
         IndexFieldReference<String> filesField = schemaElement.field("files", textFieldType).toReference();
-        IndexFieldReference<String> productsField = schemaElement.field("products", textFieldType).toReference();
         IndexFieldReference<String> extendsField = schemaElement.field("extends", textFieldType).toReference();
 
         IndexFieldReference<BigDecimal> minPriceField = schemaElement.field("minPrice", bigDecimalFieldType).toReference();
@@ -36,8 +35,8 @@ public class CmsContentTextBinder implements TypeBinder {
         IndexSchemaObjectField extendField = schemaElement.objectField(EXTEND_OBJECT_NAME);
         extendField.fieldTemplate("template", textFieldType);
 
-        context.bridge(CmsContent.class, new CmsContentTextBridge(textField, filesField, productsField, extendsField,
-                minPriceField, maxPriceField, extendField.toReference()));
+        context.bridge(CmsContent.class, new CmsContentTextBridge(textField, filesField, extendsField, minPriceField,
+                maxPriceField, extendField.toReference()));
     }
 
 }
