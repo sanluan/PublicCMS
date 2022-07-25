@@ -277,10 +277,10 @@ a.button,button.button{border-width:1px;border-style:solid;-moz-box-shadow:0px 0
 .pageForm{display:block;overflow:auto;}
 .pageFormContent{display:block;padding:15px;position:relative;height:100%;width:100%;overflow:auto;box-sizing:border-box;}
 .pageFormContent div.unit{display:block;margin:0;padding:5px 0;position:relative;clear:both;}
-.pageFormContent p{float:left;display:block;min-width:380px;min-height:16px;margin:0;padding:5px 0;position:relative;}
+.pageFormContent p{float:left;display:block;min-width:380px;min-height:16px;margin:0;padding:3px 0;position:relative;}
 .pageFormContent p.nowrap{width:100%;}
 .pageFormContent .radioGroup{float:left;display:block;overflow:hidden;}
-.pageFormContent label{float:left;width:100px;padding:0px 10px;line-height:26px;}
+.pageFormContent label{float:left;width:100px;padding:0 10px;line-height:26px;}
 .pageFormContent label.radioButton{float:left;width:auto;padding:0 10px 0 0;}
 .pageFormContent .textInput,.pageFormContent select{float:left;}
 .pageFormContent .inputInfo{padding:0 5px;line-height:26px;}
@@ -299,7 +299,7 @@ a.button,button.button{border-width:1px;border-style:solid;-moz-box-shadow:0px 0
 #content p{float:none;display:block;min-width:initial;padding:0;}
 .CodeMirror{height:100%;line-height:16px;}
 
-fieldset{border:none;margin:0 0 15px 0;position:relative;padding:40px 20px 20px 20px;border-radius:5px;-moz-box-shadow:0px 0px 5px 1px #DDE4EF;box-shadow:0px 0px 5px 1px #DDE4EF;-ms-box-shadow:0px 0px 5px 1px #DDE4EF;-o-box-shadow:0px 0px 5px 1px #DDE4EF;-webkit-box-shadow:0px 0px 5px 1px #DDE4EF;}
+fieldset{border:none;margin-bottom:10px;position:relative;padding:40px 20px 20px 20px;border-radius:5px;-moz-box-shadow:0px 0px 5px 1px #DDE4EF;box-shadow:0px 0px 5px 1px #DDE4EF;-ms-box-shadow:0px 0px 5px 1px #DDE4EF;-o-box-shadow:0px 0px 5px 1px #DDE4EF;-webkit-box-shadow:0px 0px 5px 1px #DDE4EF;}
 fieldset:hover {-moz-box-shadow:0px 0px 5px 2px #DDE4EF;box-shadow:0px 0px 5px 2px #DDE4EF;-ms-box-shadow:0px 0px 5px 2px #DDE4EF;-o-box-shadow:0px 0px 5px 2px #DDE4EF;-webkit-box-shadow:0px 0px 5px 2px #DDE4EF;}
 fieldset>label, .pageFormContent>label{margin-bottom:10px;}
 fieldset legend{position:absolute;top:0;font-weight:400;font-size:13px;padding:0;line-height:40px;padding-left:9px;}

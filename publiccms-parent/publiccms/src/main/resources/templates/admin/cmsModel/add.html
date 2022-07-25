@@ -48,10 +48,10 @@
         <fieldset class="systemField">
             <legend><@t.page 'model.system_field'/></legend>
             <div class="unit">
-                <p><label><input name="hasChild" type="checkbox"/><@t.page 'model.has_child'/></label></p>
-                <p><label><input name="hasImages" type="checkbox"/><@t.page 'model.has_images'/></label></p>
-                <p><label><input name="hasFiles" type="checkbox"/><@t.page 'model.has_attachs'/></label></p>
-                <p><label><input name="hasProducts" type="checkbox"/><@t.page 'model.has_products'/></label></p>
+                <label><input name="hasChild" type="checkbox"/><@t.page 'model.has_child'/></label>
+                <label><input name="hasImages" type="checkbox"/><@t.page 'model.has_images'/></label>
+                <label><input name="hasFiles" type="checkbox"/><@t.page 'model.has_attachs'/></label>
+                <label><input name="hasProducts" type="checkbox"/><@t.page 'model.has_products'/></label>
             </div>
             <div class="divider"></div>
             <dl class="nowrap">
@@ -132,7 +132,7 @@
             </dl>
         </fieldset>
         <fieldset class="systemField">
-            <legend><@t.page 'extend_field'/></legend>
+            <legend><@t.page 'extend_field'/>(<@t.page 'extend_field.use.content'/>)</legend>
             <dl class="nowrap copied">
                 <dt>
                     <label><@t.page 'content.source'/></label>
@@ -164,66 +164,6 @@
                 </dd>
             </dl>
         </fieldset>
-        <script>
-            $('.systemField dt [type=checkbox]',navTab.getCurrentPanel()).each(function(){
-                var box = $(this).parent().parent().parent();
-                box.find('dd').hide();
-                $('.copied',navTab.getCurrentPanel()).hide();
-                $(this).click(function(){
-                    if( $(this).is(':checked') ) {
-                        box.find('dd').show().find('input[type=text]').addClass('required');
-                        if("copied"==$(this).val()){
-                            $('.copied',navTab.getCurrentPanel()).show().find('input[type=text]').addClass('required');
-                        }
-                    } else {
-                        box.find('dd').hide().find('input[type=text]').removeClass('required').val('');
-                        if("copied"==$(this).val()){
-                            $('.copied',navTab.getCurrentPanel()).hide().find('input[type=text]').removeClass('required');
-                        }
-                    }
-                });
-            });
-            $('input[name=onlyUrl]',navTab.getCurrentPanel()).click(function(){
-                if($(this).is(':checked')) {
-                    $('.onlyUrl',navTab.getCurrentPanel()).hide();
-                    $('.onlyUrl input[type=text]',navTab.getCurrentPanel()).val('');
-                    $('.urlText',navTab.getCurrentPanel()).show();
-                    $('.urlText input[type=text]',navTab.getCurrentPanel()).addClass('required');
-                } else {
-                    $('.onlyUrl',navTab.getCurrentPanel()).show();
-                    $('.urlText',navTab.getCurrentPanel()).hide();
-                    $('.urlText input[type=text]',navTab.getCurrentPanel()).removeClass('required').val('');
-                }
-            });
-            <#if a?has_content>
-                <#if a.onlyUrl>
-                $('input[name=onlyUrl]',navTab.getCurrentPanel()).click();
-                </#if>
-                <#if a.hasChild>
-                    $('input[name=hasChild]',navTab.getCurrentPanel()).click();
-                </#if>
-                <#if a.hasImages>
-                    $('input[name=hasImages]',navTab.getCurrentPanel()).click();
-                </#if>
-                <#if a.hasFiles>
-                    $('input[name=hasFiles]',navTab.getCurrentPanel()).click();
-                </#if>
-                <#if a.hasProducts>
-                    $('input[name=hasProducts]',navTab.getCurrentPanel()).click();
-                </#if>
-
-                <#if a.fieldList?has_content>
-                    <#list a.fieldList as field>
-                        $('input[name=fieldList][value=${field}]',navTab.getCurrentPanel()).click();
-                    </#list>
-                </#if>
-                <#if a.requiredFieldList?has_content>
-                    <#list a.requiredFieldList as field>
-                        $('input[name=requiredFieldList][value=${field}]',navTab.getCurrentPanel()).click();
-                    </#list>
-                </#if>
-            </#if>
-        </script>
         <fieldset>
             <legend><@t.page 'content.extend_field'/>(<@t.page 'extend_field.use.content'/>;<@t.page 'extend_field.invalid'/>:source,sourceUrl,wordCount,minPrice,maxPrice,text;<@t.page 'metadata.default_value_description'/>)</legend>
             <#include "../include_page/extends.html"/>
@@ -269,5 +209,64 @@
                 </tbody>
             </table>
         </fieldset>
+        <script>
+            $('.systemField dt [type=checkbox]',navTab.getCurrentPanel()).each(function(){
+                var box = $(this).parent().parent().parent();
+                box.find('dd').hide();
+                $('.copied',navTab.getCurrentPanel()).hide();
+                $(this).click(function(){
+                    if( $(this).is(':checked') ) {
+                        box.find('dd').show().find('input[type=text]').addClass('required');
+                        if("copied"==$(this).val()){
+                            $('.copied',navTab.getCurrentPanel()).show().find('input[type=text]').addClass('required');
+                        }
+                    } else {
+                        box.find('dd').hide().find('input[type=text]').removeClass('required');
+                        if("copied"==$(this).val()){
+                            $('.copied',navTab.getCurrentPanel()).hide().find('input[type=text]').removeClass('required');
+                        }
+                    }
+                });
+            });
+            $('input[name=onlyUrl]',navTab.getCurrentPanel()).click(function(){
+                if($(this).is(':checked')) {
+                    $('.onlyUrl',navTab.getCurrentPanel()).hide();
+                    $('.urlText',navTab.getCurrentPanel()).show();
+                    $('.urlText input[type=text]',navTab.getCurrentPanel()).addClass('required');
+                } else {
+                    $('.onlyUrl',navTab.getCurrentPanel()).show();
+                    $('.urlText',navTab.getCurrentPanel()).hide();
+                    $('.urlText input[type=text]',navTab.getCurrentPanel()).removeClass('required');
+                }
+            });
+            <#if a?has_content>
+                <#if a.onlyUrl>
+                $('input[name=onlyUrl]',navTab.getCurrentPanel()).click();
+                </#if>
+                <#if a.hasChild>
+                    $('input[name=hasChild]',navTab.getCurrentPanel()).click();
+                </#if>
+                <#if a.hasImages>
+                    $('input[name=hasImages]',navTab.getCurrentPanel()).click();
+                </#if>
+                <#if a.hasFiles>
+                    $('input[name=hasFiles]',navTab.getCurrentPanel()).click();
+                </#if>
+                <#if a.hasProducts>
+                    $('input[name=hasProducts]',navTab.getCurrentPanel()).click();
+                </#if>
+
+                <#if a.fieldList?has_content>
+                    <#list a.fieldList as field>
+                        $('input[name=fieldList][value=${field}]',navTab.getCurrentPanel()).click();
+                    </#list>
+                </#if>
+                <#if a.requiredFieldList?has_content>
+                    <#list a.requiredFieldList as field>
+                        $('input[name=requiredFieldList][value=${field}]',navTab.getCurrentPanel()).click();
+                    </#list>
+                </#if>
+            </#if>
+        </script>
     </div>
 </form>
