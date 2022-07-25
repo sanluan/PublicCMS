@@ -77,9 +77,9 @@ public class PageHandler implements java.io.Serializable {
      */
     public PageHandler(Integer firstResult, Integer pageIndex, Integer pageSize) {
         this.firstResult = firstResult;
-        this.pageIndex = null != pageIndex ? pageIndex : 1;
-        this.pageSize = null != pageSize ? 1 > pageSize ? DEFAULT_PAGE_SIZE : MAX_PAGE_SIZE < pageSize ? MAX_PAGE_SIZE : pageSize
-                : 0;
+        this.pageIndex = null == pageIndex ? 1 : pageIndex;
+        this.pageSize = null == pageSize ? 1
+                : 1 > pageSize ? DEFAULT_PAGE_SIZE : MAX_PAGE_SIZE < pageSize ? MAX_PAGE_SIZE : pageSize;
     }
 
     /**
