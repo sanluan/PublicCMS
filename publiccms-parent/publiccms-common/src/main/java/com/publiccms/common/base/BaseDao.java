@@ -278,25 +278,37 @@ public abstract class BaseDao<E> {
 
     /**
      * @param queryHandler
+     * @param firstResult
+     * @param pageIndex
+     * @param pageSize
+     * @return page
+     */
+    protected PageHandler getPage(QueryHandler queryHandler, Integer firstResult, Integer pageIndex, Integer pageSize) {
+        return getPage(queryHandler, null, firstResult, pageIndex, pageSize, Integer.MAX_VALUE);
+    }
+
+    /**
+     * @param queryHandler
      * @param pageIndex
      * @param pageSize
      * @return page
      */
     protected PageHandler getPage(QueryHandler queryHandler, Integer pageIndex, Integer pageSize) {
-        return getPage(queryHandler, null, pageIndex, pageSize, Integer.MAX_VALUE);
+        return getPage(queryHandler, null, null, pageIndex, pageSize, Integer.MAX_VALUE);
     }
 
     /**
      * @param queryHandler
      * @param countHql
+     * @param firstResult
      * @param pageIndex
      * @param pageSize
      * @param maxResults
      * @return results page
      */
-    protected PageHandler getPage(QueryHandler queryHandler, String countHql, Integer pageIndex, Integer pageSize,
+    protected PageHandler getPage(QueryHandler queryHandler, String countHql, Integer firstResult, Integer pageIndex, Integer pageSize,
             Integer maxResults) {
-        PageHandler page = new PageHandler(pageIndex, pageSize);
+        PageHandler page = new PageHandler(firstResult, pageIndex, pageSize);
         if (null == pageSize) {
             queryHandler.setMaxResults(maxResults);
             List<?> list = getList(queryHandler);
@@ -324,20 +336,21 @@ public abstract class BaseDao<E> {
      */
     protected PageHandler getPage(SearchQueryOptionsStep<?, E, ?, ?, ?> optionsStep, HighLighterQuery highLighterQuery,
             Integer pageIndex, Integer pageSize) {
-        return getPage(optionsStep, highLighterQuery, pageIndex, pageSize, Integer.MAX_VALUE);
+        return getPage(optionsStep, highLighterQuery, null, pageIndex, pageSize, Integer.MAX_VALUE);
     }
 
     /**
      * @param optionsStep
      * @param highLighterQuery
+     * @param firstResult
      * @param pageIndex
      * @param pageSize
      * @param maxResults
      * @return results page
      */
     protected PageHandler getPage(SearchQueryOptionsStep<?, E, ?, ?, ?> optionsStep, HighLighterQuery highLighterQuery,
-            Integer pageIndex, Integer pageSize, Integer maxResults) {
-        PageHandler page = new PageHandler(pageIndex, pageSize);
+            Integer firstResult, Integer pageIndex, Integer pageSize, Integer maxResults) {
+        PageHandler page = new PageHandler(firstResult, pageIndex, pageSize);
         SearchResult<E> result;
         if (null == pageSize) {
             result = optionsStep.fetch(0, maxResults);

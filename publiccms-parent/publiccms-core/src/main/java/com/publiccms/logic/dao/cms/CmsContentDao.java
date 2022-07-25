@@ -365,12 +365,13 @@ public class CmsContentDao extends BaseDao<CmsContent> {
      * @param queryEntitry
      * @param orderField
      * @param orderType
+     * @param firstResult
      * @param pageIndex
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(CmsContentQuery queryEntitry, String orderField, String orderType, Integer pageIndex,
-            Integer pageSize) {
+    public PageHandler getPage(CmsContentQuery queryEntitry, String orderField, String orderType, Integer firstResult,
+            Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from CmsContent bean");
         if (CommonUtils.notEmpty(queryEntitry.getSiteId())) {
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", queryEntitry.getSiteId());
@@ -469,7 +470,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
             queryHandler.order("bean.publishDate").append(orderType);
         }
         queryHandler.order("bean.id desc");
-        return getPage(queryHandler, pageIndex, pageSize);
+        return getPage(queryHandler, firstResult, pageIndex, pageSize);
     }
 
     /**

@@ -51,7 +51,8 @@ import com.publiccms.views.pojo.query.CmsContentQuery;
  * <li><code>orderField</code>
  * 排序字段,【score:评分,comments:评论数,clicks:点击数,publishDate:发布日期,updateDate:更新日期,checkDate:审核日期】,默认置顶级别倒叙、发布日期按orderType排序
  * <li><code>orderType</code> 排序类型,【asc:正序,desc:倒叙】，默认为倒叙
- * <li><code>pageIndex</code> 页码
+ * <li><code>firstResult</code> 开始位置,从1开始
+ * <li><code>pageIndex</code> 页码,firstResult不存在时有效
  * <li><code>pageSize</code> 每页条数
  * </ul>
  * <p>
@@ -111,7 +112,7 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
         queryEntity.setUserId(handler.getLong("userId"));
         queryEntity.setStartPublishDate(handler.getDate("startPublishDate"));
         PageHandler page = service.getPage(queryEntity, handler.getBoolean("containChild"), handler.getString("orderField"),
-                handler.getString("orderType"), handler.getInteger("pageIndex", 1),
+                handler.getString("orderType"),handler.getInteger("firstResult"), handler.getInteger("pageIndex", 1), 
                 handler.getInteger("pageSize", handler.getInteger("count", 30)));
         @SuppressWarnings("unchecked")
         List<CmsContent> list = (List<CmsContent>) page.getList();

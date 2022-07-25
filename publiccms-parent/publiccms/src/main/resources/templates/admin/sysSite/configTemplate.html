@@ -37,7 +37,7 @@ server {
     ssi_silent_errors on;
         </#if>
     location ${dynamicLocation?has_content?then('/'+dynamicLocation,'/')} {
-        client_max_body_size 20m;
+        client_max_body_size 100m;
         proxy_redirect off;
         proxy_set_header Host $http_host;
         proxy_set_header X-Real-IP $remote_addr;

@@ -165,15 +165,16 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param containChild
      * @param orderField
      * @param orderType
+     * @param firstResult
      * @param pageIndex
      * @param pageSize
      * @return results page
      */
     @Transactional(readOnly = true)
     public PageHandler getPage(CmsContentQuery queryEntity, Boolean containChild, String orderField, String orderType,
-            Integer pageIndex, Integer pageSize) {
+            Integer firstResult, Integer pageIndex, Integer pageSize) {
         queryEntity.setCategoryIds(getCategoryIds(containChild, queryEntity.getCategoryId(), queryEntity.getCategoryIds()));
-        return dao.getPage(queryEntity, orderField, orderType, pageIndex, pageSize);
+        return dao.getPage(queryEntity, orderField, orderType, firstResult, pageIndex, pageSize);
     }
 
     /**

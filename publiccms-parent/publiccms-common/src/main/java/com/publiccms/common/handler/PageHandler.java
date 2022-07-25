@@ -38,6 +38,12 @@ public class PageHandler implements java.io.Serializable {
      */
     private int pageSize;
     /**
+     * first result offset
+     * <p>
+     * 当前开始位置
+     */
+    private Integer firstResult;
+    /**
      * current page index
      * <p>
      * 当前页面
@@ -61,16 +67,19 @@ public class PageHandler implements java.io.Serializable {
      * @param pageSize
      */
     public PageHandler(Integer pageIndex, Integer pageSize) {
-        setPageSize(null != pageSize ? pageSize : 0);
-        setPageIndex(null != pageIndex ? pageIndex : 1);
-        init();
+        this(null, pageIndex, pageSize);
     }
 
     /**
-     * 初始化
+     * @param firstResult
+     * @param pageIndex
+     * @param pageSize
      */
-    public void init() {
-        pageSize = 1 > pageSize ? DEFAULT_PAGE_SIZE : MAX_PAGE_SIZE < pageSize ? MAX_PAGE_SIZE : pageSize;
+    public PageHandler(Integer firstResult, Integer pageIndex, Integer pageSize) {
+        this.firstResult = firstResult;
+        this.pageIndex = null != pageIndex ? pageIndex : 1;
+        this.pageSize = null != pageSize ? 1 > pageSize ? DEFAULT_PAGE_SIZE : MAX_PAGE_SIZE < pageSize ? MAX_PAGE_SIZE : pageSize
+                : 0;
     }
 
     /**
@@ -92,7 +101,11 @@ public class PageHandler implements java.io.Serializable {
      * @return first result
      */
     public int getFirstResult() {
-        return (pageIndex - 1) * pageSize;
+        if (null == firstResult) {
+            return (pageIndex - 1) * pageSize;
+        } else {
+            return firstResult - 1;
+        }
     }
 
     /**
@@ -119,7 +132,7 @@ public class PageHandler implements java.io.Serializable {
     public void setTotalCount(int totalCount) {
         this.totalCount = totalCount = 0 > totalCount ? 0 : totalCount;
         this.totalPage = getTotalPage(totalCount, pageSize);
-        pageIndex = 1 > pageIndex ? 1 : pageIndex > totalPage ? totalPage : pageIndex;
+        this.pageIndex = 1 > pageIndex ? 1 : pageIndex > totalPage ? totalPage : pageIndex;
     }
 
     /**
@@ -132,28 +145,12 @@ public class PageHandler implements java.io.Serializable {
     }
 
     /**
-     * @param pageSize
-     *            the pageSize to set
-     */
-    public void setPageSize(int pageSize) {
-        this.pageSize = pageSize;
-    }
-
-    /**
      * 当前页码
      * 
      * @return the pageIndex
      */
     public int getPageIndex() {
         return pageIndex;
-    }
-
-    /**
-     * @param pageIndex
-     *            the pageIndex to set
-     */
-    public void setPageIndex(int pageIndex) {
-        this.pageIndex = pageIndex;
     }
 
     /**
