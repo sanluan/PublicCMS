@@ -5074,6 +5074,14 @@ function escapeJquery(srcString) {
     return escapseResult;
 }
 
+function escapeHtml(str) {
+    if(str) {
+        return str.encodeTXT();
+    } else {
+        return str;
+    }
+}
+
 
 /**
  * http://www.uploadify.com/documentation/uploadify/onqueuecomplete/
@@ -5566,7 +5574,7 @@ $.fn.extend({
                     var $th = $(this);
                     var field = {
                         type: $th.attr("type") || "text", patternDate: $th.attr("dateFmt") || "yyyy-MM-dd", name: $th.attr("name") || "" ,
-                        defaultVal: $th.attr("defaultVal") || "", size: $th.attr("size") || "12", enumUrl: $th.attr("enumUrl") || "" ,
+                        defaultVal: escapeHtml($th.attr("defaultVal") || ""), size: $th.attr("size") || "12", enumUrl: $th.attr("enumUrl") || "" ,
                         lookupGroup: $th.attr("lookupGroup") || "", lookupUrl: $th.attr("lookupUrl") || "", lookupPk: $th.attr("lookupPk") || "id" ,
                         suggestUrl: $th.attr("suggestUrl"), suggestFields: $th.attr("suggestFields"), postField: $th.attr("postField") || "" ,
                         fieldClass: $th.attr("fieldClass") || "", fieldAttrs: $th.attr("fieldAttrs") || "", title:$th.text(), pkValue: $th.attr("pkValue")
@@ -6028,14 +6036,14 @@ $.fn.extend({
                 if (!json ) {
                     return;
                 }
-                var html = '';
+                $ref.empty();
                 $.each(json, function(i) {
                     if (json[i] && json[i].length > 1 ) {
-                        html += '<option value="' + json[i][0] + '">' + json[i][1] + '</option>';
+                        $('<option></option>').attr('value',json[i][0]).text(json[i][1]).appendTo($ref);
                     }
                 });
                 var $refCombox = $ref.parents("div.combox:first");
-                $ref.html(html).insertAfter($refCombox);
+                $ref.insertAfter($refCombox);
                 $refCombox.remove();
                 $ref.trigger("change").combox();
             }, error: DWZ.ajaxError
@@ -6142,11 +6150,11 @@ $.fn.extend({
                 var refUrl = $this.attr("refUrl") || "";
                 var cid = $this.attr("id") || Math.round(Math.random() * 10000000);
                 var select = '<div class="combox"><div id="combox_' + cid + '" class="select"' + ( ref ? ' ref="' + ref + '"': '' ) + '>';
-                select += '<a href="javascript:" class="' + $this.attr("class") + '" name="' + name + '" value="' + value + '">' + label + '</a></div></div>';
+                select += '<a href="javascript:" class="' + $this.attr("class") + '" name="' + name + '" value="' + escapeHtml(value) + '">' + label + '</a></div></div>';
                 var options = '<div class="comboxop" id="op_combox_' + cid + '"><div class="search"><input type="text" class="textInput"/></div><ul>';
                 $("option", $this).each(function() {
                     var option = $(this);
-                    options += "<li><a class=\"" + ( value == option[0].value ? "selected": "" ) + "\" href=\"#\" value=\"" + option[0].value + "\">" + option[0].text
+                    options += "<li><a class=\"" + ( value == option[0].value ? "selected": "" ) + "\" href=\"#\" title=\"" + escapeHtml(option[0].text) + "\" value=\"" + escapeHtml(option[0].value) + "\">" + escapeHtml(option[0].text)
                             + "</a></li>";
                 });
                 options += "</ul></div>";
