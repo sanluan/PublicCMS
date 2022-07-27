@@ -164,6 +164,10 @@ public class CmsContentAdminController {
         }
         Date now = CommonUtils.getDate();
         initContent(entity, cmsModel, draft, checked, attribute, true, now);
+        CmsContent parent = service.getEntity(entity.getParentId());
+        if (null != parent) {
+            entity.setQuoteContentId(null == parent.getParentId() ? parent.getId() : parent.getQuoteContentId());
+        }
         if (null != entity.getId()) {
             CmsContent oldEntity = service.getEntity(entity.getId());
             if (null == oldEntity || ControllerUtils.errorNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)
@@ -213,7 +217,6 @@ public class CmsContentAdminController {
             }
             if (null != checked && checked) {
                 templateComponent.createCategoryFile(site, category, null, null);
-                CmsContent parent = service.getEntity(entity.getParentId());
                 if (null != parent) {
                     publish(site, parent, admin);
                 }
@@ -367,48 +370,6 @@ public class CmsContentAdminController {
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "refresh.content", RequestUtils.getIpAddress(request),
                     CommonUtils.getDate(), StringUtils.join(ids, CommonConstants.COMMA)));
-        }
-        return CommonConstants.TEMPLATE_DONE;
-    }
-
-    /**
-     * @param site
-     * @param admin
-     * @param entity
-     * @param request
-     * @param model
-     * @return view name
-     */
-    @RequestMapping("related")
-    @Csrf
-    public String related(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, CmsContentRelated entity,
-            HttpServletRequest request, ModelMap model) {
-        CmsContent content = service.getEntity(entity.getContentId());
-        CmsContent related = service.getEntity(entity.getRelatedContentId());
-        if (null != content && null != related) {
-            if (ControllerUtils.errorNotEquals("siteId", site.getId(), content.getSiteId(), model)
-                    || ControllerUtils.errorNotEquals("siteId", site.getId(), related.getSiteId(), model)
-                    || ControllerUtils.errorCustom("noright", !ControllerUtils.hasContentPermissions(admin, content), model)) {
-                return CommonConstants.TEMPLATE_ERROR;
-            }
-            if (CommonUtils.empty(entity.getTitle())) {
-                entity.setTitle(entity.getTitle());
-            }
-            if (CommonUtils.empty(entity.getDescription())) {
-                entity.setDescription(entity.getDescription());
-            }
-            entity.setUserId(admin.getId());
-            cmsContentRelatedService.save(entity);
-            try {
-                publish(site, content, admin);
-            } catch (IOException | TemplateException e) {
-                model.addAttribute(CommonConstants.ERROR, e.getMessage());
-                log.error(e.getMessage(), e);
-                return CommonConstants.TEMPLATE_ERROR;
-            }
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "related.content", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), JsonUtils.getString(related)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -669,7 +630,7 @@ public class CmsContentAdminController {
         queryEntity.setEmptyParent(true);
         Locale locale = RequestContextUtils.getLocale(request);
 
-        PageHandler page = service.getPage(queryEntity, null, orderField, orderType, 1, PageHandler.MAX_PAGE_SIZE);
+        PageHandler page = service.getPage(queryEntity, null, orderField, orderType, null, 1, PageHandler.MAX_PAGE_SIZE);
         @SuppressWarnings("unchecked")
         List<CmsContent> entityList = (List<CmsContent>) page.getList();
         Map<String, List<Serializable>> pksMap = new HashMap<>();

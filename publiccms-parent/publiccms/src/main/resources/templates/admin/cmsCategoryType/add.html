@@ -74,7 +74,7 @@
                 </dl>
             </fieldset>
             <fieldset>
-                <legend><@t.page 'category.extend_field'/>(<@t.page 'extend_field.invalid'/>:title,keywords,description)(<@t.page 'metadata.default_value_description'/>)</legend>
+                <legend><@t.page 'category.extend_field'/>(<@t.page 'extend_field.use.category'/>;<@t.page 'extend_field.invalid'/>:title,keywords,description;<@t.page 'metadata.default_value_description'/>)</legend>
                 <#include "../include_page/extends.html"/>
                 <#assign categoryExtendList=(a.extendList)![]>
                 <@extends 'extendList' categoryExtendList/>

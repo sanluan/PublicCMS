@@ -4,13 +4,13 @@ package com.publiccms.views.directive.cms;
 
 import java.io.IOException;
 
-import com.publiccms.common.base.AbstractTemplateDirective;
-import com.publiccms.logic.service.cms.CmsContentRelatedService;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
+import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.logic.service.cms.CmsContentRelatedService;
 
 /**
  *
@@ -20,7 +20,8 @@ import com.publiccms.common.handler.RenderHandler;
  * <ul>
  * <li><code>contentId</code> 内容id
  * <li><code>relatedContentId</code> 被推荐内容id
- * <li><code>userId</code> 推荐用户id
+ * <li><code>relationType</code> 关系类型
+ * <li><code>relation</code> 关系
  * <li><code>orderField</code> 排序字段,【clicks:点击数】,默认排序正序、id正序
  * <li><code>orderType</code> 排序类型,【asc:正序,desc:倒叙】，默认为倒叙
  * <li><code>pageIndex</code> 页码
@@ -52,8 +53,9 @@ public class CmsContentRelatedListDirective extends AbstractTemplateDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
         PageHandler page = service.getPage(handler.getLong("contentId"), handler.getLong("relatedContentId"),
-                handler.getLong("userId"), handler.getString("orderField"), handler.getString("orderType"),
-                handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", handler.getInteger("count", 30)));
+                handler.getString("relationType"), handler.getString("relation"), handler.getString("orderField"),
+                handler.getString("orderType"), handler.getInteger("pageIndex", 1),
+                handler.getInteger("pageSize", handler.getInteger("count", 30)));
         handler.put("page", page).render();
     }
 

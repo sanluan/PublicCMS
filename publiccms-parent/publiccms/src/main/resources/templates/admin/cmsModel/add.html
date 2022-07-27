@@ -48,10 +48,10 @@
         <fieldset class="systemField">
             <legend><@t.page 'model.system_field'/></legend>
             <div class="unit">
-                <p><label><input name="hasChild" type="checkbox"/><@t.page 'model.has_child'/></label></p>
-                <p><label><input name="hasImages" type="checkbox"/><@t.page 'model.has_images'/></label></p>
-                <p><label><input name="hasFiles" type="checkbox"/><@t.page 'model.has_attachs'/></label></p>
-                <p><label><input name="hasProducts" type="checkbox"/><@t.page 'model.has_products'/></label></p>
+                <label><input name="hasChild" type="checkbox"/><@t.page 'model.has_child'/></label>
+                <label><input name="hasImages" type="checkbox"/><@t.page 'model.has_images'/></label>
+                <label><input name="hasFiles" type="checkbox"/><@t.page 'model.has_attachs'/></label>
+                <label><input name="hasProducts" type="checkbox"/><@t.page 'model.has_products'/></label>
             </div>
             <div class="divider"></div>
             <dl class="nowrap">
@@ -132,7 +132,7 @@
             </dl>
         </fieldset>
         <fieldset class="systemField">
-            <legend><@t.page 'extend_field'/></legend>
+            <legend><@t.page 'extend_field'/>(<@t.page 'extend_field.use.content'/>)</legend>
             <dl class="nowrap copied">
                 <dt>
                     <label><@t.page 'content.source'/></label>
@@ -164,6 +164,51 @@
                 </dd>
             </dl>
         </fieldset>
+        <fieldset>
+            <legend><@t.page 'content.extend_field'/>(<@t.page 'extend_field.use.content'/>;<@t.page 'extend_field.invalid'/>:source,sourceUrl,wordCount,minPrice,maxPrice,text;<@t.page 'metadata.default_value_description'/>)</legend>
+            <#include "../include_page/extends.html"/>
+            <#assign contentExtendList=(a.extendList)![]>
+            <@extends 'extendList' contentExtendList true/>
+        </fieldset>
+        <fieldset>
+            <legend><@t.page 'recommend_info'/></legend>
+            <table class="list nowrap itemDetail" addButton="<@t.page 'button.new_line'/>" width="100%">
+                <thead>
+                    <tr>
+                        <th type="lookup" name="relatedList[#index#].dictionaryName" lookupPk="dictionaryId" lookupUrl="cmsDictionary/lookup.html" lookupGroup="relatedList[#index#]" fieldAttrs="{'readonly':'readonly'}" size="10"><a href="cmsDictionary/list.html" target="navTab" rel="cmsDictionary/list" icon="<i class='icon-book icon-large'></i>"><@t.page 'dictionary'/></a></th>
+                        <th type="enum" name="relatedList[#index#].modelIds" enumUrl="common/modelId.html?queryAll=true"><@t.page 'model'/></th>
+                        <th type="del" width="100"><@t.page 'operate'/></th>
+                    </tr>
+                </thead>
+                <tbody>
+            <#if (a.relatedList)?has_content>
+                <#list a.relatedList as a>
+                    <tr>
+                        <td>
+                            <@cms.dictionary id=a.dictionaryId><#assign dictionary=object/></@cms.dictionary>
+                            <input type="hidden" name="relatedList[${a?index}].dictionaryId" value="${(a.dictionaryId)!}"/>
+                            <input type="text" name="relatedList[${a?index}].dictionaryName" readonly="readonly" size="10" value="${(dictionary.name)!}"/>
+                            <a class="btnLook" href="cmsDictionary/lookup.html" lookupGroup="relatedList[${a?index}]" width="1000" height="500"><@t.page 'dictionary.select'/></a>
+                        </td>
+                        <td>
+                            <@cms.modelList queryAll=true>
+                                <#list page.list as m>
+                                    <label style="width:auto">
+                                        <input<#if a.modelIds?has_content && a.modelIds?split(',')?seq_contains(m.id)> checked="checked"</#if> name="relatedList[${a?index}].modelIds" value="${m.id}" type="checkbox"/>
+                                        ${(m.name)!}
+                                    </label>
+                                </#list>
+                            </@cms.modelList>
+                        </td>
+                        <td>
+                            <a href="javascript:;" class="btnDel"><@t.page 'button.delete'/></a>
+                        </td>
+                    </tr>
+                </#list>
+            </#if>
+                </tbody>
+            </table>
+        </fieldset>
         <script>
             $('.systemField dt [type=checkbox]',navTab.getCurrentPanel()).each(function(){
                 var box = $(this).parent().parent().parent();
@@ -176,7 +221,7 @@
                             $('.copied',navTab.getCurrentPanel()).show().find('input[type=text]').addClass('required');
                         }
                     } else {
-                        box.find('dd').hide().find('input[type=text]').removeClass('required').val('');
+                        box.find('dd').hide().find('input[type=text]').removeClass('required');
                         if("copied"==$(this).val()){
                             $('.copied',navTab.getCurrentPanel()).hide().find('input[type=text]').removeClass('required');
                         }
@@ -186,13 +231,12 @@
             $('input[name=onlyUrl]',navTab.getCurrentPanel()).click(function(){
                 if($(this).is(':checked')) {
                     $('.onlyUrl',navTab.getCurrentPanel()).hide();
-                    $('.onlyUrl input[type=text]',navTab.getCurrentPanel()).val('');
                     $('.urlText',navTab.getCurrentPanel()).show();
                     $('.urlText input[type=text]',navTab.getCurrentPanel()).addClass('required');
                 } else {
                     $('.onlyUrl',navTab.getCurrentPanel()).show();
                     $('.urlText',navTab.getCurrentPanel()).hide();
-                    $('.urlText input[type=text]',navTab.getCurrentPanel()).removeClass('required').val('');
+                    $('.urlText input[type=text]',navTab.getCurrentPanel()).removeClass('required');
                 }
             });
             <#if a?has_content>
@@ -224,11 +268,5 @@
                 </#if>
             </#if>
         </script>
-        <fieldset>
-            <legend><@t.page 'content.extend_field'/>(<@t.page 'extend_field.invalid'/>:source,sourceUrl,text)(<@t.page 'metadata.default_value_description'/>)</legend>
-            <#include "../include_page/extends.html"/>
-            <#assign contentExtendList=(a.extendList)![]>
-            <@extends 'extendList' contentExtendList true/>
-        </fieldset>
     </div>
 </form>

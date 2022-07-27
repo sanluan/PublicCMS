@@ -98,6 +98,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param text
      * @param fields
      * @param tagIds
+     * @param extendsValues
      * @param dictionaryValues
      * @param dictionaryUnion
      * @param startPublishDate
@@ -111,11 +112,11 @@ public class CmsContentService extends BaseService<CmsContent> {
     @Transactional(readOnly = true)
     public PageHandler query(Short siteId, boolean projection, boolean phrase, HighLighterQuery highLighterQuery, String text,
             String[] fields, Long[] tagIds, Integer categoryId, Boolean containChild, Integer[] categoryIds, String[] modelIds,
-            String[] dictionaryValues, Boolean dictionaryUnion, Date startPublishDate, Date endPublishDate, Date expiryDate,
-            String orderField, Integer pageIndex, Integer pageSize) {
+            String[] extendsValues, String[] dictionaryValues, Boolean dictionaryUnion, Date startPublishDate,
+            Date endPublishDate, Date expiryDate, String orderField, Integer pageIndex, Integer pageSize) {
         return dao.query(siteId, projection, phrase, highLighterQuery, getCategoryIds(containChild, categoryId, categoryIds),
-                modelIds, text, fields, tagIds, dictionaryValues, dictionaryUnion, startPublishDate, endPublishDate, expiryDate,
-                orderField, pageIndex, pageSize);
+                modelIds, text, fields, tagIds, extendsValues, dictionaryValues, dictionaryUnion, startPublishDate,
+                endPublishDate, expiryDate, orderField, pageIndex, pageSize);
     }
 
     /**
@@ -130,6 +131,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param containChild
      * @param categoryIds
      * @param modelIds
+     * @param extendsValues
      * @param dictionaryValues
      * @param dictionaryUnion
      * @param startPublishDate
@@ -143,11 +145,11 @@ public class CmsContentService extends BaseService<CmsContent> {
     @Transactional(readOnly = true)
     public FacetPageHandler facetQuery(Short siteId, boolean projection, boolean phrase, HighLighterQuery highLighterQuery,
             String text, String[] fields, Long[] tagIds, Integer categoryId, Boolean containChild, Integer[] categoryIds,
-            String[] modelIds, String[] dictionaryValues, Boolean dictionaryUnion, Date startPublishDate, Date endPublishDate,
-            Date expiryDate, String orderField, Integer pageIndex, Integer pageSize) {
+            String[] modelIds, String[] extendsValues, String[] dictionaryValues, Boolean dictionaryUnion, Date startPublishDate,
+            Date endPublishDate, Date expiryDate, String orderField, Integer pageIndex, Integer pageSize) {
         return dao.facetQuery(siteId, projection, phrase, highLighterQuery, getCategoryIds(containChild, categoryId, categoryIds),
-                modelIds, text, fields, tagIds, dictionaryValues, dictionaryUnion, startPublishDate, endPublishDate, expiryDate,
-                orderField, pageIndex, pageSize);
+                modelIds, text, fields, tagIds, extendsValues, dictionaryValues, dictionaryUnion, startPublishDate,
+                endPublishDate, expiryDate, orderField, pageIndex, pageSize);
     }
 
     /**
@@ -163,15 +165,16 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param containChild
      * @param orderField
      * @param orderType
+     * @param firstResult
      * @param pageIndex
      * @param pageSize
      * @return results page
      */
     @Transactional(readOnly = true)
     public PageHandler getPage(CmsContentQuery queryEntity, Boolean containChild, String orderField, String orderType,
-            Integer pageIndex, Integer pageSize) {
+            Integer firstResult, Integer pageIndex, Integer pageSize) {
         queryEntity.setCategoryIds(getCategoryIds(containChild, queryEntity.getCategoryId(), queryEntity.getCategoryIds()));
-        return dao.getPage(queryEntity, orderField, orderType, pageIndex, pageSize);
+        return dao.getPage(queryEntity, orderField, orderType, firstResult, pageIndex, pageSize);
     }
 
     /**
@@ -310,19 +313,32 @@ public class CmsContentService extends BaseService<CmsContent> {
         }
 
         if (CommonUtils.notEmpty(map)) {
-            List<String> dictionaryValueList = new ArrayList<>();
-            dealExtend(modelExtendList, dictionaryValueList, map, searchTextBuilder);
-            dealExtend(categoryExtendList, dictionaryValueList, map, searchTextBuilder);
+            Set<String> dictionaryValueList = new HashSet<>();
+            Set<String> extendsFieldList = new HashSet<>();
+            StringBuilder extendsTextBuilder = new StringBuilder();
+            dealExtend(modelExtendList, dictionaryValueList, extendsFieldList, map, extendsTextBuilder);
+            dealExtend(categoryExtendList, dictionaryValueList, extendsFieldList, map, extendsTextBuilder);
             if (CommonUtils.notEmpty(dictionaryValueList)) {
                 String[] dictionaryValues = dictionaryValueList.toArray(new String[dictionaryValueList.size()]);
-                entity.setDictionaryValues(arrayToDelimitedString(dictionaryValues, CommonConstants.BLANK_SPACE));
+                attribute.setDictionaryValues(arrayToDelimitedString(dictionaryValues, CommonConstants.BLANK_SPACE));
+            } else {
+                attribute.setDictionaryValues(null);
+            }
+            if (CommonUtils.notEmpty(extendsFieldList)) {
+                String[] extendsFields = extendsFieldList.toArray(new String[extendsFieldList.size()]);
+                attribute.setExtendsFields(arrayToDelimitedString(extendsFields, CommonConstants.COMMA_DELIMITED));
+                attribute.setExtendsText(extendsTextBuilder.toString());
+                searchTextBuilder.append(attribute.getExtendsText());
+            } else {
+                attribute.setExtendsFields(null);
+                attribute.setExtendsText(null);
             }
             attribute.setData(ExtendUtils.getExtendString(map));
         } else {
             attribute.setData(null);
-            entity.setDictionaryValues(null);
+            attribute.setDictionaryValues(null);
         }
-        dealFiles(files, images, products, searchTextBuilder);
+        dealFiles(files, images, products, attribute);
 
         if (searchTextBuilder.length() > 0) {
             attribute.setSearchText(searchTextBuilder.toString());
@@ -332,26 +348,40 @@ public class CmsContentService extends BaseService<CmsContent> {
     }
 
     private static void dealFiles(List<CmsContentFile> files, List<CmsContentFile> images, List<CmsContentProduct> products,
-            StringBuilder searchTextBuilder) {
+            CmsContentAttribute attribute) {
+        StringBuilder filesTextBuilder = new StringBuilder();
         if (CommonUtils.notEmpty(files)) {
             for (CmsContentFile file : files) {
-                searchTextBuilder.append(file.getDescription()).append(CommonConstants.BLANK_SPACE);
+                filesTextBuilder.append(file.getDescription()).append(CommonConstants.BLANK_SPACE);
             }
         }
         if (CommonUtils.notEmpty(images)) {
             for (CmsContentFile file : images) {
-                searchTextBuilder.append(file.getDescription()).append(CommonConstants.BLANK_SPACE);
+                filesTextBuilder.append(file.getDescription()).append(CommonConstants.BLANK_SPACE);
             }
         }
+        attribute.setFilesText(filesTextBuilder.toString());
         if (CommonUtils.notEmpty(products)) {
+            BigDecimal minPrice = BigDecimal.ZERO;
+            BigDecimal maxPrice = BigDecimal.ZERO;
             for (CmsContentProduct product : products) {
-                searchTextBuilder.append(product.getTitle()).append(CommonConstants.BLANK_SPACE);
+                if (0 == BigDecimal.ZERO.compareTo(maxPrice) || 0 < minPrice.compareTo(product.getPrice())) {
+                    minPrice = product.getPrice();
+                }
+                if (0 > maxPrice.compareTo(product.getPrice())) {
+                    maxPrice = product.getPrice();
+                }
             }
+            attribute.setMinPrice(minPrice);
+            attribute.setMaxPrice(maxPrice);
+        } else {
+            attribute.setMinPrice(null);
+            attribute.setMaxPrice(null);
         }
     }
 
-    private static void dealExtend(List<SysExtendField> extendList, List<String> dictionaryValueList, Map<String, String> map,
-            StringBuilder searchTextBuilder) {
+    private static void dealExtend(List<SysExtendField> extendList, Set<String> dictionaryValueList, Set<String> extendsFieldList,
+            Map<String, String> map, StringBuilder searchTextBuilder) {
         if (CommonUtils.notEmpty(extendList)) {
             for (SysExtendField extendField : extendList) {
                 if (extendField.isSearchable()) {
@@ -375,7 +405,10 @@ public class CmsContentService extends BaseService<CmsContent> {
                             if (ArrayUtils.contains(FULLTEXT_SEARCHABLE_EDITOR, extendField.getInputType())) {
                                 value = HtmlUtils.removeHtmlTag(value);
                             }
-                            searchTextBuilder.append(value).append(CommonConstants.BLANK_SPACE);
+                            if (CommonUtils.notEmpty(value)) {
+                                extendsFieldList.add(extendField.getId().getCode());
+                                searchTextBuilder.append(value).append(CommonConstants.BLANK_SPACE);
+                            }
                         }
                     }
                 }
@@ -616,6 +649,7 @@ public class CmsContentService extends BaseService<CmsContent> {
         CmsContent entity = getEntity(id);
         if (null != entity && siteId == entity.getSiteId()) {
             entity.setCategoryId(categoryId);
+            dao.moveByTopId(siteId, entity.getId(), categoryId);
         }
         return entity;
     }
@@ -808,6 +842,8 @@ public class CmsContentService extends BaseService<CmsContent> {
                 entityList.add(entity);
                 if (null != entity.getParentId()) {
                     updateChilds(entity.getParentId(), 1);
+                } else {
+                    dao.deleteByTopId(siteId, entity.getId());
                 }
             }
         }

@@ -95,7 +95,7 @@ CREATE TABLE `cms_content` (
   `category_id` int(11) NOT NULL COMMENT '分类',
   `model_id` varchar(20) NOT NULL COMMENT '模型',
   `parent_id` bigint(20) default NULL COMMENT '父内容',
-  `quote_content_id` bigint(20) NULL COMMENT '引用内容',
+  `quote_content_id` bigint(20) NULL COMMENT '引用内容(当父内容不为空时为顶级内容)',
   `copied` tinyint(1) NOT NULL COMMENT '是否转载',
   `contribute` tinyint(1) NOT NULL default 0 COMMENT '是否投稿',
   `author` varchar(50) default NULL COMMENT '作者',
@@ -108,7 +108,6 @@ CREATE TABLE `cms_content` (
   `url` varchar(1000) default NULL COMMENT '地址',
   `description` varchar(300) default NULL COMMENT '简介',
   `tag_ids` text default NULL COMMENT '标签',
-  `dictionary_values` text default NULL COMMENT '数据字典值',
   `cover` varchar(255) default NULL COMMENT '封面',
   `childs` int(11) NOT NULL COMMENT '子内容数',
   `scores` int(11) NOT NULL COMMENT '总分数',
@@ -141,6 +140,12 @@ CREATE TABLE `cms_content_attribute` (
   `source_url` varchar(1000) default NULL COMMENT '来源地址',
   `data` longtext COMMENT '数据JSON',
   `search_text` longtext NULL COMMENT '全文索引文本',
+  `dictionary_values` text NULL COMMENT '数据字典值',
+  `extends_text` text NULL COMMENT '扩展文本',
+  `extends_fields` text NULL COMMENT '扩展文本字段',
+  `files_text` text NULL COMMENT '附件文本',
+  `min_price` decimal(10, 2) NULL COMMENT '最低价格',
+  `max_price` decimal(10, 2) NULL COMMENT '最高价格',
   `text` longtext COMMENT '内容',
   `word_count` int(11) NOT NULL COMMENT '字数',
   PRIMARY KEY  (`content_id`)
@@ -198,6 +203,8 @@ DROP TABLE IF EXISTS `cms_content_related`;
 CREATE TABLE `cms_content_related` (
   `id` bigint(20) NOT NULL auto_increment,
   `content_id` bigint(20) NOT NULL COMMENT '内容',
+  `relation_type` varchar(20) DEFAULT NULL COMMENT '关系类型',
+  `relation` varchar(50) DEFAULT NULL COMMENT '关系',
   `related_content_id` bigint(20) default NULL COMMENT '推荐内容',
   `user_id` bigint(20) NOT NULL COMMENT '推荐用户',
   `url` varchar(1000) default NULL COMMENT '推荐链接地址',
@@ -205,8 +212,8 @@ CREATE TABLE `cms_content_related` (
   `description` varchar(300) default NULL COMMENT '推荐简介',
   `sort` int(11) NOT NULL COMMENT '排序',
   PRIMARY KEY  (`id`),
-  KEY `cms_content_related_content_id`(`content_id`, `sort`),
-  KEY `cms_content_related_related_content_id` (`related_content_id`)
+  KEY `cms_content_related_content_id`(`content_id`, `relation_type`, `relation`,  `sort`),
+  KEY `cms_content_related_related_content_id` (`related_content_id`,`relation_type`, `relation` )
 ) COMMENT='推荐推荐';
 -- ----------------------------
 -- Table structure for cms_content_text_history
@@ -879,7 +886,7 @@ INSERT INTO `sys_module` VALUES ('content_list', 'cmsContent/list', NULL, 'icon-
 INSERT INTO `sys_module` VALUES ('content_menu', NULL, NULL, 'icon-book', 'content', 1, 0);
 INSERT INTO `sys_module` VALUES ('content_move', 'cmsContent/moveParameters', 'cmsContent/move', '', 'content_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_publish', NULL, 'cmsContent/publish', '', 'content_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('content_push', 'cmsContent/push', 'cmsContent/push_content,cmsContent/push_content_list,cmsContent/push_to_content,cmsContent/push_page,cmsContent/push_page_list,cmsPlace/add,cmsPlace/save,cmsContent/related,cmsContent/unrelated,cmsPlace/delete,cmsPlace/push', '', 'content_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('content_push', 'cmsContent/push', 'cmsPlace/push,cmsPlace/add,cmsPlace/save,cmsContent/unrelated,cmsPlace/delete', '', 'content_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_recycle_delete', NULL, 'cmsContent/realDelete', NULL, 'content_recycle_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_recycle_list', 'cmsRecycleContent/list', 'sysUser/lookup,sysUser/lookup_list', 'icon-trash', 'content_menu', 1, 9);
 INSERT INTO `sys_module` VALUES ('content_recycle_recycle', NULL, 'cmsContent/recycle', NULL, 'content_recycle_list', 0, 0);

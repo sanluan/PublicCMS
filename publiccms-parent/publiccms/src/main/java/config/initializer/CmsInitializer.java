@@ -15,7 +15,7 @@ import config.spring.CmsConfig;
  * Management Initializer
  *
  */
-public class CmsInitializer extends AbstractContextLoaderInitializer implements WebApplicationInitializer {
+public class CmsInitializer extends AbstractContextLoaderInitializer implements WebApplicationInitializer {// 防止jetty等追求速度的容器不扫描父类实现的接口
 
     @Override
     protected WebApplicationContext createRootApplicationContext() {

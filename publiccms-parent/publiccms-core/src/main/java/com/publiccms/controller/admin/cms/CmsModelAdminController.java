@@ -1,7 +1,11 @@
 package com.publiccms.controller.admin.cms;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -28,6 +32,7 @@ import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.views.pojo.entities.CmsModel;
+import com.publiccms.views.pojo.entities.ContentRelated;
 
 /**
  * 
@@ -69,11 +74,28 @@ public class CmsModelAdminController {
         if (CommonUtils.notEmpty(entity.getExtendList())) {
             entity.getExtendList().sort((e1, e2) -> e1.getSort() - e2.getSort());
         }
+        if (CommonUtils.notEmpty(entity.getRelatedList())) {
+            List<Integer> templist = new ArrayList<>();
+            Set<String> dictionarySet = new HashSet<String>();
+            int i = 0;
+            for (ContentRelated related : entity.getRelatedList()) {
+                if (!dictionarySet.add(related.getDictionaryId())) {
+                    templist.add(i);
+                }
+                i++;
+            }
+            if (!templist.isEmpty()) {
+                Collections.reverse(templist);  
+                for (int index : templist) {
+                    entity.getRelatedList().remove(index);
+                }
+            }
+        }
         if (CommonUtils.notEmpty(modelId)) {
             Map<String, CmsModel> modelMap = modelComponent.getModelMap(site);
             modelMap.remove(modelId);
             modelMap.put(entity.getId(), entity);
-            List<CmsModel> modelList = modelComponent.getModelList(site, modelId, null, null, null, null);
+            List<CmsModel> modelList = modelComponent.getModelList(site, modelId, false, null, null, null, null);
             for (CmsModel m : modelList) {
                 m.setParentId(entity.getId());
                 modelMap.put(m.getId(), m);
@@ -111,7 +133,7 @@ public class CmsModelAdminController {
         Map<String, CmsModel> modelMap = modelComponent.getModelMap(site);
         CmsModel entity = modelMap.remove(id);
         if (null != entity) {
-            List<CmsModel> modelList = modelComponent.getModelList(site, entity.getId(), null, null, null, null);
+            List<CmsModel> modelList = modelComponent.getModelList(site, entity.getId(), false, null, null, null, null);
             for (CmsModel m : modelList) {
                 m.setParentId(null);
                 modelMap.put(m.getId(), m);

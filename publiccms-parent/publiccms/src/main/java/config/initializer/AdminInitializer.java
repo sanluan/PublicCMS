@@ -27,7 +27,7 @@ import jakarta.servlet.ServletRegistration;
  * </p>
  *
  */
-public class AdminInitializer extends BaseServletInitializer implements WebApplicationInitializer {
+public class AdminInitializer extends BaseServletInitializer implements WebApplicationInitializer {// 防止jetty等追求速度的容器不扫描父类实现的接口
 
     @Override
     protected DispatcherServlet createDispatcherServlet(WebApplicationContext servletAppContext) {

@@ -32,8 +32,10 @@ import com.publiccms.views.pojo.entities.ClickStatistics;
  * <li><code>categoryId</code> 分类id
  * <li><code>containChild</code> 包含子分类，当categoryId不为空时有效
  * <li><code>categoryIds</code> 多个分类id，当categoryId为空时有效
+ * <li><code>extendsValues</code>
+ * 多个扩展字段值,格式：[字段编码]:字段值],例如:extendsValues='isbn:value1,unicode:value2'
  * <li><code>dictionaryValues</code>
- * 多个数据字典值,只有父级值时包含所有子级结果,格式：[字段编码]_{字段值],例如:dictionaryValues='extend1_value1,extend1_value1'
+ * 多个数据字典值,只有父级值时包含所有子级结果,格式：[字段编码]_[字段值],例如:dictionaryValues='extend1_value1,extend1_value2'
  * <li><code>dictionaryUnion</code>
  * 取数据字典并集结果,dictionaryUnion不为空时有效,【true,false】,默认为交集结果
  * <li><code>highlight</code> 高亮关键词,【true,false】,默认为false,启用高亮后台
@@ -43,11 +45,12 @@ import com.publiccms.views.pojo.entities.ClickStatistics;
  * <li><code>projection</code> 投影结果,【true,false】,默认为false
  * <li><code>phrase</code> 精确搜索,【true,false】,默认为false
  * <li><code>fields</code> 搜索字段,【title:标题, author:作者, editor:编辑, description:描述,
- * text:正文】
+ * text:正文,files:附件,extends:扩展数据全文索引】
  * <li><code>modelIds</code> 多个模型id
  * <li><code>startPublishDate</code> 起始发布日期,【2000-01-01 23:59:59】,【2000-01-01】
  * <li><code>endPublishDate</code> 终止发布日期,【2000-01-01 23:59:59】,【2000-01-01】
- * <li><code>orderField</code> 排序字段,【clicks:点击数倒叙,score:分数倒叙,publishDate:发布日期倒叙】,默认相关度倒叙
+ * <li><code>orderField</code>
+ * 排序字段,【clicks:点击数倒叙,score:分数倒叙,publishDate:发布日期倒叙】,默认相关度倒叙
  * <li><code>pageIndex</code> 页码
  * <li><code>pageSize</code> 每页条数
  * </ul>
@@ -105,9 +108,10 @@ public class CmsSearchDirective extends AbstractTemplateDirective {
             page = service.query(site.getId(), handler.getBoolean("projection", false), handler.getBoolean("phrase", false),
                     highLighterQuery, word, handler.getStringArray("fields"), tagIds, handler.getInteger("categoryId"),
                     handler.getBoolean("containChild"), handler.getIntegerArray("categoryIds"),
-                    handler.getStringArray("modelIds"), handler.getStringArray("dictionaryValues"),
-                    handler.getBoolean("dictionaryUnion"), handler.getDate("startPublishDate"), currentDate, currentDate,
-                    handler.getString("orderField"), pageIndex, pageSize);
+                    handler.getStringArray("modelIds"), handler.getStringArray("extendsValues"),
+                    handler.getStringArray("dictionaryValues"), handler.getBoolean("dictionaryUnion"),
+                    handler.getDate("startPublishDate"), currentDate, currentDate, handler.getString("orderField"), pageIndex,
+                    pageSize);
             @SuppressWarnings("unchecked")
             List<CmsContent> list = (List<CmsContent>) page.getList();
             if (null != list) {

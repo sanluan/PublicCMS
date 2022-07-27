@@ -28,7 +28,7 @@ public class CmsContentAttributeDao extends BaseDao<CmsContentAttribute> {
     public List<CmsContentAttribute> getEntitysWithoutText(Serializable[] ids) {
         if (CommonUtils.notEmpty(ids)) {
             QueryHandler queryHandler = getQueryHandler(
-                    "select new CmsContentAttribute(contentId, source, sourceUrl, data, wordCount) from CmsContentAttribute bean");
+                    "select new CmsContentAttribute(contentId, source, sourceUrl, data, wordCount,minPrice,maxPrice) from CmsContentAttribute bean");
             queryHandler.condition("bean.contentId in (:ids)").setParameter("ids", ids);
             return getList(queryHandler);
         }

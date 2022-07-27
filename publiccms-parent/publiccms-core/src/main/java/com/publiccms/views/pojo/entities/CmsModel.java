@@ -119,6 +119,12 @@ public class CmsModel implements java.io.Serializable {
      * 扩展字段列表
      */
     private List<SysExtendField> extendList;
+    /**
+     * related list
+     * <p>
+     * 推荐列表
+     */
+    private List<ContentRelated> relatedList;
 
     /**
      * @return
@@ -363,5 +369,19 @@ public class CmsModel implements java.io.Serializable {
      */
     public void setParentId(String parentId) {
         this.parentId = parentId;
+    }
+
+    /**
+     * @return the relatedList
+     */
+    public List<ContentRelated> getRelatedList() {
+        return relatedList;
+    }
+
+    /**
+     * @param relatedList the relatedList to set
+     */
+    public void setRelatedList(List<ContentRelated> relatedList) {
+        this.relatedList = relatedList;
     }
 }

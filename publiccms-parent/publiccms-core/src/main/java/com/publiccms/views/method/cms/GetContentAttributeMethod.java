@@ -34,6 +34,8 @@ public class GetContentAttributeMethod extends BaseMethod {
                 map.put("source", entity.getSource());
                 map.put("sourceUrl", entity.getSourceUrl());
                 map.put("wordCount", String.valueOf(entity.getWordCount()));
+                map.put("minPrice", String.valueOf(entity.getMinPrice()));
+                map.put("maxPrice", String.valueOf(entity.getMaxPrice()));
                 return map;
             }
         }

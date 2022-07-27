@@ -22,7 +22,7 @@ import jakarta.servlet.ServletRegistration;
  * WebInitializer Servlet3.0 工程入口类
  *
  */
-public class WebInitializer extends BaseServletInitializer implements WebApplicationInitializer {
+public class WebInitializer extends BaseServletInitializer implements WebApplicationInitializer {// 防止jetty等追求速度的容器不扫描父类实现的接口
     @Override
     protected DispatcherServlet createDispatcherServlet(WebApplicationContext servletAppContext) {
         return new WebDispatcherServlet(servletAppContext, InitializationInitializer.INSTALL_HTTPREQUEST_HANDLER);

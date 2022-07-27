@@ -47,59 +47,70 @@ DWZ.regPlugins.push(function($p){
         var $this = $(this);
         var index= window.editor.index++;
         var dataId="editor_"+index;
+        $this.attr("id",dataId);
+        $this.attr("data-id",dataId);
         if("ckeditor"==$this.attr("editorType")) {
-            if(!window.editor.ckeditorInitd){
-                loadScripts(window.editor.ckeditorResources,function(){
-                    window.editor.ckeditorInitd=true;
-                    $this.attr("id",dataId);
-                    CKEDITOR.replace(dataId);
-                    $this.attr("data-id",dataId);
-                });
-            } else {
-                $this.attr("id",dataId);
+            if(window.editor.ckeditorInitd){
                 CKEDITOR.replace(dataId);
-                $this.attr("data-id",dataId);
+            } else {
+                if(window.editor.ckeditorIniting){
+                    window.editor.ckeditorArray.push(dataId);
+                } else {
+                    window.editor.ckeditorIniting=true;
+                    loadScripts(window.editor.ckeditorResources,function(){
+                        window.editor.ckeditorIniting=false;
+                        window.editor.ckeditorInitd=true;
+                        CKEDITOR.replace(dataId);
+                        if(0 < window.editor.ckeditorArray.length){
+                            for(var i=0;i<window.editor.ckeditorArray.length;i++){
+                                CKEDITOR.replace(window.editor.ckeditorArray[i]);
+                            }
+                        }
+                    });
+                }
             }
         } else if("tinymce"==$this.attr("editorType")) {
-            if(!window.editor.tinymceInitd){
-                loadScripts(window.editor.tinymceResources,function(){
-                    window.editor.tinymceInitd=true;
-                    $this.attr("id",dataId);
-                    tinymce.init($.extend(true, {selector:'#'+dataId}, window.TINYMCE_OPTIONS));
-                    $this.attr("data-id",dataId);
-                });
-            } else {
-                $this.attr("id",dataId);
+            if(window.editor.tinymceInitd){
                 tinymce.init($.extend(true, {selector:'#'+dataId}, window.TINYMCE_OPTIONS));
-                $this.attr("data-id",dataId);
+            } else {
+                if(window.editor.tinymceIniting){
+                    window.editor.tinymceArray.push(dataId);
+                } else {
+                    window.editor.tinymceIniting=true;
+                    loadScripts(window.editor.tinymceResources,function(){
+                        window.editor.tinymceIniting=false;
+                        window.editor.tinymceInitd=true;
+                        tinymce.init($.extend(true, {selector:'#'+dataId}, window.TINYMCE_OPTIONS));
+                        if(0 < window.editor.tinymceArray.length){
+                            for(var i=0;i<window.editor.tinymceArray.length;i++){
+                                tinymce.init($.extend(true, {selector:'#'+window.editor.tinymceArray[i]}, window.TINYMCE_OPTIONS));
+                            }
+                        }
+                    });
+                }
             }
         } else if("kindeditor"==$this.attr("editorType")) {
-            if(!window.editor.kindeditorInitd){
-                loadScripts(window.editor.kindeditorResources,function(){
-                    window.editor.kindeditorInitd=true;
-                    $this.attr("id",dataId);
-                    KindEditor.create('#'+dataId,window.KINDEDITOR_OPTIONS);
-                    $this.attr("data-id",dataId);
-                });
-            } else {
-                $this.attr("id",dataId);
+            if(window.editor.kindeditorInitd){
                 KindEditor.create('#'+dataId,window.KINDEDITOR_OPTIONS);
-                $this.attr("data-id",dataId);
+            } else {
+                if(window.editor.kindeditorIniting){
+                    window.editor.kindeditorArray.push(dataId);
+                } else {
+                    window.editor.kindeditorIniting=true;
+                    loadScripts(window.editor.kindeditorResources,function(){
+                        window.editor.kindeditorIniting=false;
+                        window.editor.kindeditorInitd=true;
+                        KindEditor.create('#'+dataId,window.KINDEDITOR_OPTIONS);
+                        if(0 < window.editor.kindeditorArray.length){
+                            for(var i=0;i<window.editor.kindeditorArray.length;i++){
+                                KindEditor.create('#'+window.editor.kindeditorArray[i],window.KINDEDITOR_OPTIONS);
+                            }
+                        }
+                    });
+                }
             }
         } else {
-            if(!window.editor.ueditorInitd){
-                loadScripts(window.editor.ueditorResources,function(){
-                    window.editor.ueditorInitd=true;
-                    var editor = new baidu.editor.ui.Editor();
-                    if ($this.attr("maxlength") ){
-                        editor.setOpt({
-                            maximumWords: $this.attr("maxlength")
-                        });
-                    }
-                    editor.render($this[0]);
-                    $this.attr("data-id","ueditorInstant"+editor.uid);
-                });
-            } else {
+            if(window.editor.ueditorInitd){
                 var editor = new baidu.editor.ui.Editor();
                 if ($this.attr("maxlength") ){
                     editor.setOpt({
@@ -108,6 +119,31 @@ DWZ.regPlugins.push(function($p){
                 }
                 editor.render($this[0]);
                 $this.attr("data-id","ueditorInstant"+editor.uid);
+            } else {
+                if(window.editor.ueditorIniting){
+                    window.editor.ueditorArray.push(dataId);
+                } else {
+                    window.editor.ueditorIniting=true;
+                    loadScripts(window.editor.ueditorResources,function(){
+                        window.editor.ueditorIniting=false;
+                        window.editor.ueditorInitd=true;
+                        var editor = new baidu.editor.ui.Editor();
+                        if ($this.attr("maxlength") ){
+                            editor.setOpt({
+                                maximumWords: $this.attr("maxlength")
+                            });
+                        }
+                        editor.render($this[0]);
+                        $this.attr("data-id","ueditorInstant"+editor.uid);
+                        if(0 < window.editor.ueditorArray.length){
+                            for(var i=0;i<window.editor.ueditorArray.length;i++){
+                                var editor = new baidu.editor.ui.Editor();
+                                editor.render($('#'+window.editor.ueditorArray[i])[0]);
+                                $('#'+window.editor.ueditorArray[i]).attr("data-id","ueditorInstant"+editor.uid);
+                            }
+                        }
+                    });
+                }
             }
         }
     });

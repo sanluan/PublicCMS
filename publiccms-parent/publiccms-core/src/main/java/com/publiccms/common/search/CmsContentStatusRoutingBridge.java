@@ -20,7 +20,8 @@ public class CmsContentStatusRoutingBridge implements RoutingBridge<CmsContent> 
     public void route(DocumentRoutes routes, Object entityIdentifier, CmsContent indexedEntity,
             RoutingBridgeRouteContext context) {
         if (CommonUtils.empty(CmsDataSource.getDataSourceName()) && CmsContentService.STATUS_NORMAL == indexedEntity.getStatus()
-                && null == indexedEntity.getQuoteContentId() && !indexedEntity.isDisabled()) {
+                && (null != indexedEntity.getParentId() || null == indexedEntity.getQuoteContentId())
+                && !indexedEntity.isDisabled()) {
             routes.addRoute();
         } else {
             routes.notIndexed();

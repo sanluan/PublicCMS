@@ -28,7 +28,8 @@ public class CmsContentRelatedService extends BaseService<CmsContentRelated> {
     /**
      * @param contentId
      * @param relatedContentId
-     * @param userId
+     * @param relationType
+     * @param relation
      * @param orderField
      * @param orderType
      * @param pageIndex
@@ -36,32 +37,34 @@ public class CmsContentRelatedService extends BaseService<CmsContentRelated> {
      * @return results page
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(Long contentId, Long relatedContentId, Long userId, String orderField, String orderType,
-            Integer pageIndex, Integer pageSize) {
-        return dao.getPage(contentId, relatedContentId, userId, orderField, orderType, pageIndex, pageSize);
+    public PageHandler getPage(Long contentId, Long relatedContentId, String relationType, String relation, String orderField,
+            String orderType, Integer pageIndex, Integer pageSize) {
+        return dao.getPage(contentId, relatedContentId, relationType, relation, orderField, orderType, pageIndex, pageSize);
     }
 
     /**
      * @param contentId
      * @param userId
-     * @param entitys
+     * @param entitysList
      */
     @SuppressWarnings("unchecked")
-    public void update(long contentId, long userId, List<CmsContentRelated> entitys) {
+    public void update(long contentId, long userId, List<List<CmsContentRelated>> entitysList) {
         Set<Long> idList = new HashSet<>();
-        if (CommonUtils.notEmpty(entitys)) {
-            for (CmsContentRelated entity : entitys) {
-                if (null != entity.getId()) {
-                    update(entity.getId(), entity, ignoreProperties);
-                } else {
-                    entity.setContentId(contentId);
-                    entity.setUserId(userId);
-                    save(entity);
+        if (CommonUtils.notEmpty(entitysList)) {
+            for (List<CmsContentRelated> list : entitysList) {
+                for (CmsContentRelated entity : list) {
+                    if (null != entity.getId()) {
+                        update(entity.getId(), entity, ignoreProperties);
+                    } else {
+                        entity.setContentId(contentId);
+                        entity.setUserId(userId);
+                        save(entity);
+                    }
+                    idList.add(entity.getId());
                 }
-                idList.add(entity.getId());
             }
         }
-        for (CmsContentRelated extend : (List<CmsContentRelated>) getPage(contentId, null, null, null, null, null, null)
+        for (CmsContentRelated extend : (List<CmsContentRelated>) getPage(contentId, null, null, null, null, null, null, null)
                 .getList()) {
             if (!idList.contains(extend.getId())) {
                 delete(extend.getId());

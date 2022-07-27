@@ -5074,6 +5074,14 @@ function escapeJquery(srcString) {
     return escapseResult;
 }
 
+function escapeHtml(str) {
+    if(str) {
+        return str.encodeTXT();
+    } else {
+        return str;
+    }
+}
+
 
 /**
  * http://www.uploadify.com/documentation/uploadify/onqueuecomplete/
@@ -5566,10 +5574,10 @@ $.fn.extend({
                     var $th = $(this);
                     var field = {
                         type: $th.attr("type") || "text", patternDate: $th.attr("dateFmt") || "yyyy-MM-dd", name: $th.attr("name") || "" ,
-                        defaultVal: $th.attr("defaultVal") || "", size: $th.attr("size") || "12", enumUrl: $th.attr("enumUrl") || "" ,
+                        defaultVal: escapeHtml($th.attr("defaultVal") || ""), size: $th.attr("size") || "12", enumUrl: $th.attr("enumUrl") || "" ,
                         lookupGroup: $th.attr("lookupGroup") || "", lookupUrl: $th.attr("lookupUrl") || "", lookupPk: $th.attr("lookupPk") || "id" ,
                         suggestUrl: $th.attr("suggestUrl"), suggestFields: $th.attr("suggestFields"), postField: $th.attr("postField") || "" ,
-                        fieldClass: $th.attr("fieldClass") || "", fieldAttrs: $th.attr("fieldAttrs") || "", title:$th.text()
+                        fieldClass: $th.attr("fieldClass") || "", fieldAttrs: $th.attr("fieldAttrs") || "", title:$th.text(), pkValue: $th.attr("pkValue")
                     };
                     fields.push(field);
                 });
@@ -5668,7 +5676,7 @@ $.fn.extend({
                 });
             }
             function tdHtml(field) {
-                var html = '', suffix = '';
+                var hiddenHtml = '', html = '', suffix = '';
                 if (field.name.endsWith("[#index#]") ) {
                     suffix = "[#index#]";
                 } else if (field.name.endsWith("[]") ) {
@@ -5682,6 +5690,13 @@ $.fn.extend({
                         attrFrag += key + '="' + attrs[key] + '"';
                     }
                 }
+                if(field.lookupPk){
+                    var value='';
+                    if(field.pkValue){
+                        value = field.pkValue;
+                    }
+                    hiddenHtml = '<input type="hidden" name="' + field.lookupGroup + '.' + field.lookupPk + suffix + '" value="' + value + '"/>';
+                }
                 switch (field.type) {
                     case 'del':
                         html = '<a href="javascript:void(0)" class="btnDel ' + field.fieldClass + '"></a>';
@@ -5692,14 +5707,12 @@ $.fn.extend({
                             suggestFrag = 'autocomplete="off" lookupGroup="' + field.lookupGroup + '"' + suffixFrag + ' suggestUrl="' + field.suggestUrl + '" suggestFields="'
                                     + field.suggestFields + '"' + ' postField="' + field.postField + '"';
                         }
-                        html = '<input type="hidden" name="' + field.lookupGroup + '.' + field.lookupPk + suffix + '"/>' + '<input type="text" name="' + field.name + '"'
-                                + suggestFrag + ' lookupPk="' + field.lookupPk + '" size="' + field.size + '" class="' + field.fieldClass + '" ' + attrFrag + '/>' + '<a class="btnLook" href="'
-                                + field.lookupUrl + '" lookupGroup="' + field.lookupGroup + '" ' + suggestFrag + ' lookupPk="' + field.lookupPk + '" ' + attrFrag + '>'+field.title+'</a>';
+                        html =  '<input type="text" name="' + field.name + '"' + suggestFrag + ' lookupPk="' + field.lookupPk + '" size="' + field.size + '" class="' + field.fieldClass + '" ' + attrFrag + '/>'
+                            + '<a class="btnLook" href="' + field.lookupUrl + '" lookupGroup="' + field.lookupGroup + '" ' + suggestFrag + ' lookupPk="' + field.lookupPk + '" ' + attrFrag + '>'+field.title+'</a>';
                         break;
                     case 'attach':
-                        html = '<input type="hidden" name="' + field.lookupGroup + '.' + field.lookupPk + suffix + '"/>' + '<input type="text" name="' + field.name + '" size="'
-                                + field.size + '" class="' + field.fieldClass + '" ' + attrFrag + '/>' + '<a class="btnAttach" href="' + field.lookupUrl + '" lookupGroup="' + field.lookupGroup
-                                + '" ' + suffixFrag + ' lookupPk="' + field.lookupPk + '" width="1000" height="600" ' + attrFrag + '>'+field.title+'</a>';
+                        html =  '<input type="text" name="' + field.name + '" size="' + field.size + '" class="' + field.fieldClass + '" ' + attrFrag + '/>'
+                                 + '<a class="btnAttach" href="' + field.lookupUrl + '" lookupGroup="' + field.lookupGroup + '" ' + suffixFrag + ' lookupPk="' + field.lookupPk + '" width="1000" height="600" ' + attrFrag + '>'+field.title+'</a>';
                         break;
                     case 'enum':
                         $.ajax({
@@ -5729,7 +5742,7 @@ $.fn.extend({
                                 + attrFrag + '/>';
                         break;
                 }
-                return '<td>' + html + '</td>';
+                return '<td>' + hiddenHtml + html + '</td>';
             }
             function trHtml(fields) {
                 var html = '';
@@ -6023,14 +6036,14 @@ $.fn.extend({
                 if (!json ) {
                     return;
                 }
-                var html = '';
+                $ref.empty();
                 $.each(json, function(i) {
                     if (json[i] && json[i].length > 1 ) {
-                        html += '<option value="' + json[i][0] + '">' + json[i][1] + '</option>';
+                        $('<option></option>').attr('value',json[i][0]).text(json[i][1]).appendTo($ref);
                     }
                 });
                 var $refCombox = $ref.parents("div.combox:first");
-                $ref.html(html).insertAfter($refCombox);
+                $ref.insertAfter($refCombox);
                 $refCombox.remove();
                 $ref.trigger("change").combox();
             }, error: DWZ.ajaxError
@@ -6137,11 +6150,11 @@ $.fn.extend({
                 var refUrl = $this.attr("refUrl") || "";
                 var cid = $this.attr("id") || Math.round(Math.random() * 10000000);
                 var select = '<div class="combox"><div id="combox_' + cid + '" class="select"' + ( ref ? ' ref="' + ref + '"': '' ) + '>';
-                select += '<a href="javascript:" class="' + $this.attr("class") + '" name="' + name + '" value="' + value + '">' + label + '</a></div></div>';
+                select += '<a href="javascript:" class="' + $this.attr("class") + '" name="' + name + '" value="' + escapeHtml(value) + '">' + label + '</a></div></div>';
                 var options = '<div class="comboxop" id="op_combox_' + cid + '"><div class="search"><input type="text" class="textInput"/></div><ul>';
                 $("option", $this).each(function() {
                     var option = $(this);
-                    options += "<li><a class=\"" + ( value == option[0].value ? "selected": "" ) + "\" href=\"#\" value=\"" + option[0].value + "\">" + option[0].text
+                    options += "<li><a class=\"" + ( value == option[0].value ? "selected": "" ) + "\" href=\"#\" title=\"" + escapeHtml(option[0].text) + "\" value=\"" + escapeHtml(option[0].value) + "\">" + escapeHtml(option[0].text)
                             + "</a></li>";
                 });
                 options += "</ul></div>";

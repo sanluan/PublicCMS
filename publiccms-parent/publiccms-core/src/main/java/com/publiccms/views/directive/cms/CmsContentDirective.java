@@ -80,6 +80,8 @@ public class CmsContentDirective extends AbstractTemplateDirective {
                         map.put("source", attribute.getSource());
                         map.put("sourceUrl", attribute.getSourceUrl());
                         map.put("wordCount", String.valueOf(attribute.getWordCount()));
+                        map.put("minPrice", String.valueOf(attribute.getMinPrice()));
+                        map.put("maxPrice", String.valueOf(attribute.getMaxPrice()));
                         handler.put("attribute", map);
                     }
                 }
@@ -96,7 +98,7 @@ public class CmsContentDirective extends AbstractTemplateDirective {
                         if (null != statistics) {
                             e.setClicks(e.getClicks() + statistics.getClicks());
                         }
-                        if (absoluteId && null != e.getQuoteContentId()) {
+                        if (absoluteId &&null==e.getParentId() &&  null != e.getQuoteContentId()) {
                             e.setId(e.getQuoteContentId());
                         }
                         TemplateComponent.initContentUrl(site, e);
@@ -105,7 +107,7 @@ public class CmsContentDirective extends AbstractTemplateDirective {
                 } else {
                     consumer = e -> {
                         ClickStatistics statistics = statisticsComponent.getContentStatistics(e.getId());
-                        if (absoluteId && null != e.getQuoteContentId()) {
+                        if (absoluteId && null==e.getParentId() && null != e.getQuoteContentId()) {
                             e.setId(e.getQuoteContentId());
                         }
                         if (null != statistics) {

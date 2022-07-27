@@ -41,18 +41,19 @@ public class ModelComponent implements SiteCache {
     /**
      * @param site
      * @param parentId
+     * @param queryAll
      * @param hasChild
      * @param onlyUrl
      * @param hasImages
      * @param hasFiles
      * @return models list
      */
-    public List<CmsModel> getModelList(SysSite site, String parentId, Boolean hasChild, Boolean onlyUrl, Boolean hasImages,
-            Boolean hasFiles) {
+    public List<CmsModel> getModelList(SysSite site, String parentId, boolean queryAll, Boolean hasChild, Boolean onlyUrl,
+            Boolean hasImages, Boolean hasFiles) {
         List<CmsModel> modelList = new ArrayList<>();
         Map<String, CmsModel> map = getModelMap(site);
         for (CmsModel model : map.values()) {
-            if ((CommonUtils.empty(parentId) && CommonUtils.empty(model.getParentId())
+            if ((CommonUtils.empty(parentId) && (queryAll || CommonUtils.empty(model.getParentId()))
                     || CommonUtils.notEmpty(parentId) && parentId.equals(model.getParentId()))
                     || (null != hasChild && hasChild.equals(model.isHasChild()))
                     || (null != onlyUrl && onlyUrl.equals(model.isOnlyUrl()))

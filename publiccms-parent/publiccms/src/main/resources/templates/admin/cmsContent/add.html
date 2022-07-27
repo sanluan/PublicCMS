@@ -35,17 +35,30 @@
         </ul>
     </div>
     <div class="tabs">
+        <#if model?has_content>
         <div class="tabsHeader">
             <div class="tabsHeaderContent">
                 <ul>
                     <li><a href="javascript:;" onclick="return false;"><@t.page 'base_info'/></a></li>
-                    <li><a href="javascript:;" onclick="return false;"><@t.page 'recommend_info'/></a></li>
+                <#if model.hasImages>
+                    <li><a href="javascript:;" onclick="return false;"><@t.page 'image_list'/></a></li>
+                </#if>
+                <#if model.hasFiles>
+                    <li><a href="javascript:;" onclick="return false;"><@t.page 'attach_list'/></a></li>
+                </#if>
+                <#if model.hasProducts>
+                    <li><a href="javascript:;" onclick="return false;"><@t.page 'product_list'/></a></li>
+                </#if>
+                <#if (model.relatedList)?has_content>
+                    <#list model.relatedList as a>
+                        <li><a href="javascript:;" onclick="return false;"><@t.page 'recommend_info'/><#if a.dictionaryId?has_content><@cms.dictionary id=a.dictionaryId>:${object.name}</@cms.dictionary></#if></a></li>
+                    </#list>
+                </#if>
                 </ul>
             </div>
         </div>
         <div class="tabsContent unitBox">
             <div class="pageFormContent" layoutH>
-        <#if model?has_content>
             <#assign fieldList=model.fieldList![]/>
             <#assign requiredFieldList=model.requiredFieldList![]/>
             <@cms.content id=parentId>
@@ -226,72 +239,88 @@ $('input[name=timing]',navTab.getCurrentPanel()).click();
                     </dd>
                 </dl>
             </#if>
-            <div class="clearfix"></div>
+            </div>
             <#if model.hasImages||model.hasFiles>
                 <#include "../include_page/contentFiles.html"/>
                 <#if model.hasImages>
-                <fieldset>
-                    <legend><@t.page 'image_list'/></legend>
+                <div class="pageFormContent" layoutH>
                     <@contentFiles true id!copyId copy/>
-                </fieldset>
+                </div>
                 </#if>
                 <#if model.hasFiles>
-                <fieldset>
-                    <legend><@t.page 'attach_list'/></legend>
+                <div class="pageFormContent" layoutH>
                     <@contentFiles false id!copyId copy/>
-                </fieldset>
+                </div>
                 </#if>
             </#if>
             <#if model.hasProducts>
-                <#include "../include_page/contentProducts.html"/>
-                <fieldset>
-                    <legend><@t.page 'product_list'/></legend>
+                <div class="pageFormContent" layoutH>
+                    <#include "../include_page/contentProducts.html"/>
                     <@contentProducts id!copyId copy/>
-                </fieldset>
+                </div>
             </#if>
-        </#if>
-            </div>
-            <div class="pageFormContent" layoutH>
-                <table class="list nowrap itemDetail" addButton="<@t.page 'button.new_line'/>" width="100%">
-                    <thead>
-                        <tr>
-                            <th type="lookup" name="contentRelateds[#index#].title" size="30" fieldClass="required" fieldAttrs="{maxlength:255,width:1200,height:580}" lookupGroup="contentRelateds[#index#]" lookupUrl="cmsContent/lookup.html" lookupPk="relatedContentId"><@t.page 'content.select'/></th>
-                            <th type="text" name="contentRelateds[#index#].url" size="40" fieldClass="required" fieldAttrs="{maxlength:2048}"><@t.page 'address'/></th>
-                            <th type="textarea" name="contentRelateds[#index#].description" fieldAttrs="{maxlength:150,rows:2,cols:60}"><@t.page 'description'/></th>
-                            <th type="text" name="contentRelateds[#index#].sort" fieldClass="required digits" defaultval="#index#" size="5"><@t.page 'sort'/></th>
-                            <th type="del" width="100"><@t.page 'operate'/></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-        <#if id?has_content>
-            <@cms.contentRelatedList contentId=id>
-                <#list page.list as related>
-                        <tr>
-                            <td>
-                                <input type="hidden" name="contentRelateds[${related?index}].id" value="${related.id}"/>
-                                <input type="hidden" name="contentRelateds[${related?index}].relatedContentId" value="${related.relatedContentId!}"/>
-                                <input class="required" type="text" name="contentRelateds[${related?index}].title" value="${related.title}" size="30" maxlength="255" class="required" />
-                                <a class="btnLook" href="cmsContent/lookup.html" lookupGroup="contentRelateds[${related?index}]" lookupPk="relatedContentId" width="1200" height="580"><@t.page 'content.select'/></a>
-                            </td>
-                            <td>
-                                <input class="required" type="text" name="contentRelateds[${related?index}].url" value="${(related.url)!}" size="40" maxlength="2048"/>
-                            </td>
-                            <td>
-                                <textarea name="contentRelateds[${related?index}].description" rows="2" cols="60" maxlength="150">${(related.description)!}</textarea>
-                            </td>
-                            <td>
-                                <input class="required digits" type="text" name="contentRelateds[${related?index}].sort" value="${related.sort!}" size="5" maxlength="5"/>
-                            </td>
-                            <td>
-                                <a href="javascript:;" class="btnDel"><@t.page 'button.delete'/></a>
-                            </td>
-                        </tr>
+            <#if (model.relatedList)?has_content>
+                <#list model.relatedList as a>
+                    <div class="pageFormContent" layoutH>
+                        <table class="list nowrap itemDetail" addButton="<@t.page 'button.new_line'/>" width="100%">
+                            <thead>
+                                <tr>
+                                    <th type="lookup" name="contentRelateds[${a?index}][#index#].title" size="30" fieldClass="required" fieldAttrs="{'maxlength':255,'width':1200,'height':580}" lookupGroup="contentRelateds[${a?index}][#index#]" lookupUrl="cmsContent/lookup.html?modelIds=${a.modelIds!}" lookupPk="relatedContentId"><@t.page 'content.select'/></th>
+                                    <#if a.dictionaryId?has_content>
+                                        <th type="enum" name="contentRelateds[${a?index}][#index#].relation" fieldClass="required" enumUrl="common/dictionarySelect.html?dictionaryId=${a.dictionaryId}" lookupGroup="contentRelateds[${a?index}][#index#]" lookupPk="relationType" pkValue="${a.dictionaryId}"><@t.page 'relation'/></th>
+                                    </#if>
+                                    <th type="text" name="contentRelateds[${a?index}][#index#].url" size="40" fieldClass="required" fieldAttrs="{'maxlength':2048,'readonly':'readonly'}"><@t.page 'address'/></th>
+                                    <th type="textarea" name="contentRelateds[${a?index}][#index#].description" fieldAttrs="{maxlength:150,rows:2,cols:60}"><@t.page 'description'/></th>
+                                    <th type="text" name="contentRelateds[${a?index}][#index#].sort" fieldClass="required digits" defaultval="#index#" size="5"><@t.page 'sort'/></th>
+                                    <th type="del" width="100"><@t.page 'operate'/></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                <#if id?has_content>
+                    <@cms.contentRelatedList contentId=id relationType=a.dictionaryId>
+                        <#list page.list as related>
+                                <tr>
+                                    <td>
+                                        <input type="hidden" name="contentRelateds[${a?index}][${related?index}].id" value="${related.id}"/>
+                                        <input type="hidden" name="contentRelateds[${a?index}][${related?index}].relatedContentId" value="${related.relatedContentId!}"/>
+                                        <input class="required" type="text" name="contentRelateds[${a?index}][${related?index}].title" value="${related.title}" size="30" maxlength="255" class="required" />
+                                        <a class="btnLook" href="cmsContent/lookup.html?modelIds=${a.modelIds!}" lookupGroup="contentRelateds[${a?index}][${related?index}]" lookupPk="relatedContentId" width="1200" height="580"><@t.page 'content.select'/></a>
+                                    </td>
+                                    <#if a.dictionaryId?has_content>
+                                    <td>
+                                        <input type="hidden" name="contentRelateds[${a?index}][${related?index}].relationType" value="${a.dictionaryId}"/>
+                                        <select class="combox" name="contentRelateds[${a?index}][${related?index}].relation" class="required">
+                                            <option></option>
+                                            <@cms.dictionaryDataList dictionaryId=a.dictionaryId>
+                                                <#list list as a>
+                                                    <option value="${a.id.value}"<#if related.relation?has_content && a.id.value = related.relation> selected="selected"</#if>>${a.text}</option>
+                                                </#list>
+                                            </@cms.dictionaryDataList>
+                                        </select>
+                                    </td>
+                                    </#if>
+                                    <td>
+                                        <input class="required" type="text" name="contentRelateds[${a?index}][${related?index}].url" value="${(related.url)!}" readonly="readonly" size="40" maxlength="2048"/>
+                                    </td>
+                                    <td>
+                                        <textarea name="contentRelateds[${a?index}][${related?index}].description" rows="2" cols="60" maxlength="150">${(related.description)!}</textarea>
+                                    </td>
+                                    <td>
+                                        <input class="required digits" type="text" name="contentRelateds[${a?index}][${related?index}].sort" value="${related.sort!}" size="5" maxlength="5"/>
+                                    </td>
+                                    <td>
+                                        <a href="javascript:;" class="btnDel"><@t.page 'button.delete'/></a>
+                                    </td>
+                                </tr>
+                        </#list>
+                    </@cms.contentRelatedList>
+                </#if>
+                            </tbody>
+                        </table>
+                    </div>
                 </#list>
-            </@cms.contentRelatedList>
-        </#if>
-                    </tbody>
-                </table>
-            </div>
+             </#if>
         </div>
+        </#if>
     </div>
 </form>

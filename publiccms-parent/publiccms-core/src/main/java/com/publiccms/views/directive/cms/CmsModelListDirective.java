@@ -19,6 +19,7 @@ import com.publiccms.logic.component.template.ModelComponent;
  * 参数列表
  * <ul>
  * <li><code>parentId</code> 父内容模型id
+ * <li><code>queryAll</code> 查询所有模型,parentId为空时有效，【true,false】,默认false
  * <li><code>hasChild</code> 拥有子模型，【true,false】
  * <li><code>onlyUrl</code> 外链,【true,false】
  * <li><code>hasImages</code> 拥有图片列表，【true,false】
@@ -50,8 +51,9 @@ public class CmsModelListDirective extends AbstractTemplateDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
         PageHandler page = new PageHandler(null, null);
-        page.setList(modelComponent.getModelList(getSite(handler), handler.getString("parentId"), handler.getBoolean("hasChild"),
-                handler.getBoolean("onlyUrl"), handler.getBoolean("hasImages"), handler.getBoolean("hasFiles")));
+        page.setList(modelComponent.getModelList(getSite(handler), handler.getString("parentId"),
+                handler.getBoolean("queryAll", false), handler.getBoolean("hasChild"), handler.getBoolean("onlyUrl"),
+                handler.getBoolean("hasImages"), handler.getBoolean("hasFiles")));
         handler.put("page", page).render();
     }
 
