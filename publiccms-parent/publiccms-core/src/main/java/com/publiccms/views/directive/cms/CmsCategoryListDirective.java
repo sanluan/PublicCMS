@@ -70,7 +70,7 @@ public class CmsCategoryListDirective extends AbstractTemplateDirective {
         }
         queryEntity.setSiteId(site.getId());
         queryEntity.setParentId(handler.getInteger("parentId"));
-        queryEntity.setTypeId(handler.getInteger("typeId"));
+        queryEntity.setTypeId(handler.getString("typeId"));
         queryEntity.setAllowContribute(handler.getBoolean("allowContribute"));
 
         PageHandler page = service.getPage(queryEntity, handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", handler.getInteger("count", 30)));

@@ -60,13 +60,18 @@ public class GetPageMethod extends BaseMethod {
             if (url.endsWith(CommonConstants.SEPARATOR) && 1 != pageIndex) {
                 url += CommonConstants.getDefaultPage();
             }
-            int index = url.lastIndexOf(CommonConstants.DOT);
-            int index2 = url.lastIndexOf(CommonConstants.SEPARATOR);
-            if (index2 < index) {
-                String prefixFilePath = url.substring(0, index);
-                String suffixFilePath = url.substring(index, url.length());
-                if (url.lastIndexOf(CommonConstants.SEPARATOR) < url.lastIndexOf(CommonConstants.UNDERLINE)) {
-                    prefixFilePath = prefixFilePath.substring(0, url.lastIndexOf(CommonConstants.UNDERLINE));
+            int dotIndex = url.lastIndexOf(CommonConstants.DOT);
+            int separatorIndex = url.lastIndexOf(CommonConstants.SEPARATOR);
+            int underlineIndex = url.lastIndexOf(CommonConstants.UNDERLINE);
+            if (separatorIndex < dotIndex) {
+                String prefixFilePath = url.substring(0, dotIndex);
+                String suffixFilePath = url.substring(dotIndex, url.length());
+                if (separatorIndex < underlineIndex) {
+                    try {
+                        Integer.parseInt(prefixFilePath.substring(underlineIndex + 1, prefixFilePath.length()));
+                        prefixFilePath = prefixFilePath.substring(0, underlineIndex);
+                    } catch (NumberFormatException e) {
+                    }
                 }
                 if (1 < pageIndex) {
                     return prefixFilePath + CommonConstants.UNDERLINE + pageIndex + suffixFilePath;
@@ -76,8 +81,8 @@ public class GetPageMethod extends BaseMethod {
 
             } else {
                 String prefixFilePath = url;
-                if (url.lastIndexOf(CommonConstants.SEPARATOR) < url.lastIndexOf(CommonConstants.UNDERLINE)) {
-                    prefixFilePath = prefixFilePath.substring(0, url.lastIndexOf(CommonConstants.UNDERLINE));
+                if (separatorIndex < underlineIndex) {
+                    prefixFilePath = prefixFilePath.substring(0, underlineIndex);
                 }
                 if (1 < pageIndex) {
                     return prefixFilePath + CommonConstants.UNDERLINE + pageIndex;
