@@ -115,7 +115,7 @@ public class PlaceController {
                     return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
                 }
                 entity = service.update(entity.getId(), entity, ignoreProperties);
-                logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB, "update.place",
+                logOperateService.save(new LogOperate(site.getId(), user.getId(), null == user ? null : user.getDeptId(), LogLoginService.CHANNEL_WEB, "update.place",
                         RequestUtils.getIpAddress(request), CommonUtils.getDate(), entity.getPath()));
             } else {
                 entity.setSiteId(site.getId());
@@ -126,7 +126,7 @@ public class PlaceController {
                 }
                 entity.setDisabled(false);
                 service.save(entity);
-                logOperateService.save(new LogOperate(site.getId(), userId, user.getDeptId(), LogLoginService.CHANNEL_WEB, "save.place",
+                logOperateService.save(new LogOperate(site.getId(), userId, null == user ? null : user.getDeptId(), LogLoginService.CHANNEL_WEB, "save.place",
                         RequestUtils.getIpAddress(request), CommonUtils.getDate(), entity.getPath()));
             }
             Map<String, String> map = ExtendUtils.getExtentDataMap(placeParameters.getExtendDataList(),
