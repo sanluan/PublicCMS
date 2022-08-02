@@ -2841,12 +2841,12 @@ var navTab = {
     _ctrlScrollBut: function() {
         var iW = this._tabsW(this._getTabs());
         if (this._getScrollBarW() > iW ) {
-            this._prevBut.addClass("tabsLeftDisabled");
-            this._nextBut.addClass("tabsRightDisabled");
+            this._prevBut.hide();
+            this._nextBut.hide();
             this._tabBox.parent().removeClass("tabsPageHeaderMargin");
         } else {
-            this._prevBut.removeClass("tabsLeftDisabled");
-            this._nextBut.removeClass("tabsRightDisabled");
+            this._prevBut.show().removeClass("tabsLeftDisabled");
+            this._nextBut.show().removeClass("tabsRightDisabled");
             this._tabBox.parent().addClass("tabsPageHeaderMargin");
             if (this._getLeft() >= 0 ) {
                 this._prevBut.addClass("tabsLeftDisabled");
