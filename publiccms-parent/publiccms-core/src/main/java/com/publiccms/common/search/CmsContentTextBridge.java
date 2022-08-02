@@ -19,16 +19,19 @@ import com.publiccms.logic.component.BeanComponent;
 
 public class CmsContentTextBridge implements TypeBridge<CmsContent> {
     private final IndexFieldReference<String> textField;
+    private final IndexFieldReference<String> dictionaryValuesField;
     private final IndexFieldReference<String> filesField;
     private final IndexFieldReference<String> extendsField;
     private final IndexFieldReference<BigDecimal> minPriceField;
     private final IndexFieldReference<BigDecimal> maxPriceField;
     private final IndexObjectFieldReference extendField;
 
-    public CmsContentTextBridge(IndexFieldReference<String> textField, IndexFieldReference<String> filesField,
-            IndexFieldReference<String> extendsField, IndexFieldReference<BigDecimal> minPriceField,
-            IndexFieldReference<BigDecimal> maxPriceField, IndexObjectFieldReference extendField) {
+    public CmsContentTextBridge(IndexFieldReference<String> textField, IndexFieldReference<String> dictionaryValuesField,
+            IndexFieldReference<String> filesField, IndexFieldReference<String> extendsField,
+            IndexFieldReference<BigDecimal> minPriceField, IndexFieldReference<BigDecimal> maxPriceField,
+            IndexObjectFieldReference extendField) {
         this.textField = textField;
+        this.dictionaryValuesField = dictionaryValuesField;
         this.filesField = filesField;
         this.extendsField = extendsField;
         this.minPriceField = minPriceField;
@@ -50,6 +53,7 @@ public class CmsContentTextBridge implements TypeBridge<CmsContent> {
                     }
                 }
                 target.addValue(this.textField, attribute.getSearchText());
+                target.addValue(this.dictionaryValuesField, attribute.getDictionaryValues());
                 target.addValue(this.filesField, attribute.getFilesText());
                 target.addValue(this.extendsField, attribute.getExtendsText());
                 target.addValue(this.minPriceField, attribute.getMinPrice());
