@@ -6,10 +6,10 @@
 <#if !a?has_content&&itemType?has_content>
 <#switch itemType>
     <#case 'content'>
-        <@_content id=itemId absoluteURL=false><#assign content=object/></@_content>
+        <@_content id=itemId><#assign content=object/></@_content>
     <#break>
     <#case 'category'>
-        <@_category id=itemId absoluteURL=false><#assign category=object/></@_category>
+        <@_category id=itemId><#assign category=object/></@_category>
     <#break>
 </#switch>
 </#if>
