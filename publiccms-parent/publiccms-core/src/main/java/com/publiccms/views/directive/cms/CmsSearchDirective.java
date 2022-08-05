@@ -28,6 +28,7 @@ import com.publiccms.views.pojo.entities.ClickStatistics;
  * 参数列表
  * <ul>
  * <li><code>word</code> 搜索词,多个搜索词时取并集结果
+ * <li><code>exclude</code> 排除词汇
  * <li><code>tagId</code> 多个标签id,多个标签时取并集结果
  * <li><code>categoryId</code> 分类id
  * <li><code>containChild</code> 包含子分类，当categoryId不为空时有效
@@ -106,8 +107,8 @@ public class CmsSearchDirective extends AbstractTemplateDirective {
         }
         try {
             page = service.query(site.getId(), handler.getBoolean("projection", false), handler.getBoolean("phrase", false),
-                    highLighterQuery, word, handler.getStringArray("fields"), tagIds, handler.getInteger("categoryId"),
-                    handler.getBoolean("containChild"), handler.getIntegerArray("categoryIds"),
+                    highLighterQuery, word, handler.getString("exclude"), handler.getStringArray("fields"), tagIds,
+                    handler.getInteger("categoryId"), handler.getBoolean("containChild"), handler.getIntegerArray("categoryIds"),
                     handler.getStringArray("modelIds"), handler.getStringArray("extendsValues"),
                     handler.getStringArray("dictionaryValues"), handler.getBoolean("dictionaryUnion"),
                     handler.getDate("startPublishDate"), currentDate, currentDate, handler.getString("orderField"), pageIndex,

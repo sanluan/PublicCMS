@@ -86,12 +86,12 @@ public class CmsFacetSearchDirective extends AbstractTemplateDirective {
         }
         try {
             page = service.facetQuery(site.getId(), handler.getBoolean("projection", false), handler.getBoolean("phrase", false),
-                    highLighterQuery, word, handler.getStringArray("fields"), tagIds, handler.getInteger("categoryId"),
-                    handler.getBoolean("containChild"), handler.getIntegerArray("categoryIds"),
-                    handler.getStringArray("modelIds"), handler.getStringArray("extendsValues"), handler.getStringArray("dictionaryValues"),
-                    handler.getBoolean("dictionaryUnion"), handler.getDate("startPublishDate"),
-                    handler.getDate("endPublishDate", currentDate), currentDate, handler.getString("orderField"), pageIndex,
-                    pageSize);
+                    highLighterQuery, word, handler.getString("exclude"), handler.getStringArray("fields"), tagIds,
+                    handler.getInteger("categoryId"), handler.getBoolean("containChild"), handler.getIntegerArray("categoryIds"),
+                    handler.getStringArray("modelIds"), handler.getStringArray("extendsValues"),
+                    handler.getStringArray("dictionaryValues"), handler.getBoolean("dictionaryUnion"),
+                    handler.getDate("startPublishDate"), handler.getDate("endPublishDate", currentDate), currentDate,
+                    handler.getString("orderField"), pageIndex, pageSize);
             @SuppressWarnings("unchecked")
             List<CmsContent> list = (List<CmsContent>) page.getList();
             if (null != list) {

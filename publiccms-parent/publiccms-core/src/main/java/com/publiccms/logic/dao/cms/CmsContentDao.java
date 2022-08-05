@@ -73,6 +73,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
      * @param dictionaryValues
      * @param categoryIds
      * @param modelIds
+     * @param exclude 
      * @param fields
      * @param dictionaryUnion
      * @param startPublishDate
@@ -84,7 +85,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
      * @return results page
      */
     public PageHandler query(Short siteId, boolean projection, boolean phrase, HighLighterQuery highLighterQuery,
-            Integer[] categoryIds, String[] modelIds, String text, String[] fields, Long[] tagIds, String[] extendsValues,
+            Integer[] categoryIds, String[] modelIds, String text,String exclude,  String[] fields, Long[] tagIds, String[] extendsValues,
             String[] dictionaryValues, Boolean dictionaryUnion, Date startPublishDate, Date endPublishDate, Date expiryDate,
             String orderField, Integer pageIndex, Integer pageSize) {
         if (CommonUtils.notEmpty(fields)) {
@@ -98,7 +99,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         }
         initHighLighterQuery(highLighterQuery, text);
         SearchQueryOptionsStep<?, CmsContent, ?, ?, ?> optionsStep = getOptionsStep(siteId, projection, phrase, categoryIds,
-                modelIds, text, fields, tagIds, extendsValues, dictionaryValues, dictionaryUnion, startPublishDate,
+                modelIds, text, exclude, fields, tagIds, extendsValues, dictionaryValues, dictionaryUnion, startPublishDate,
                 endPublishDate, expiryDate, orderField);
         return getPage(optionsStep, highLighterQuery, pageIndex, pageSize);
     }
@@ -111,6 +112,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
      * @param categoryIds
      * @param modelIds
      * @param text
+     * @param exclude
      * @param fields
      * @param tagIds
      * @param extendsValues
@@ -125,9 +127,9 @@ public class CmsContentDao extends BaseDao<CmsContent> {
      * @return results page
      */
     public FacetPageHandler facetQuery(Short siteId, boolean projection, boolean phrase, HighLighterQuery highLighterQuery,
-            Integer[] categoryIds, String[] modelIds, String text, String[] fields, Long[] tagIds, String[] extendsValues,
-            String[] dictionaryValues, Boolean dictionaryUnion, Date startPublishDate, Date endPublishDate, Date expiryDate,
-            String orderField, Integer pageIndex, Integer pageSize) {
+            Integer[] categoryIds, String[] modelIds, String text, String exclude, String[] fields, Long[] tagIds,
+            String[] extendsValues, String[] dictionaryValues, Boolean dictionaryUnion, Date startPublishDate,
+            Date endPublishDate, Date expiryDate, String orderField, Integer pageIndex, Integer pageSize) {
         if (CommonUtils.notEmpty(fields)) {
             for (String field : fields) {
                 if (!ArrayUtils.contains(textFields, field)) {
@@ -139,7 +141,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         }
         initHighLighterQuery(highLighterQuery, text);
         SearchQueryOptionsStep<?, CmsContent, ?, ?, ?> optionsStep = getOptionsStep(siteId, projection, phrase, categoryIds,
-                modelIds, text, fields, tagIds, extendsValues, dictionaryValues, dictionaryUnion, startPublishDate,
+                modelIds, text, exclude, fields, tagIds, extendsValues, dictionaryValues, dictionaryUnion, startPublishDate,
                 endPublishDate, expiryDate, orderField);
 
         AggregationKey<Map<Integer, Long>> categoryIdKey = AggregationKey.of("categoryIdKey");
@@ -186,9 +188,9 @@ public class CmsContentDao extends BaseDao<CmsContent> {
     }
 
     private SearchQueryOptionsStep<?, CmsContent, ?, ?, ?> getOptionsStep(Short siteId, boolean projection, boolean phrase,
-            Integer[] categoryIds, String[] modelIds, String text, String[] fields, Long[] tagIds, String[] extendsValues,
-            String[] dictionaryValues, Boolean dictionaryUnion, Date startPublishDate, Date endPublishDate, Date expiryDate,
-            String orderField) {
+            Integer[] categoryIds, String[] modelIds, String text, String exclude, String[] fields, Long[] tagIds,
+            String[] extendsValues, String[] dictionaryValues, Boolean dictionaryUnion, Date startPublishDate,
+            Date endPublishDate, Date expiryDate, String orderField) {
 
         Consumer<? super BooleanPredicateClausesStep<?>> clauseContributor = b -> {
             b.must(t -> t.match().field(siteIdField).matching(siteId));
@@ -225,6 +227,10 @@ public class CmsContentDao extends BaseDao<CmsContent> {
                     }
                 };
                 b.must(f -> f.bool(keywordFiledsContributor));
+                if (CommonUtils.notEmpty(exclude)) {
+                    b.mustNot(phrase ? t -> t.phrase().fields(fields).matching(text)
+                            : t -> t.match().fields(fields).matching(text));
+                }
             }
             if (CommonUtils.notEmpty(tagIds)) {
                 Consumer<? super BooleanPredicateClausesStep<?>> tagIdsFiledsContributor = c -> {
