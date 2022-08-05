@@ -52,13 +52,13 @@ public class CmsContentTextBridge implements TypeBridge<CmsContent> {
                         extend.addValue(field, map.get(field));
                     }
                 }
-                target.addValue(this.textField, attribute.getSearchText());
-                target.addValue(this.dictionaryValuesField, attribute.getDictionaryValues());
-                target.addValue(this.filesField, attribute.getFilesText());
-                target.addValue(this.extendsField, attribute.getExtendsText());
-                target.addValue(this.minPriceField, attribute.getMinPrice());
-                target.addValue(this.maxPriceField, attribute.getMaxPrice());
             }
+            target.addValue(this.textField, attribute.getSearchText());
+            target.addValue(this.dictionaryValuesField, attribute.getDictionaryValues());
+            target.addValue(this.filesField, attribute.getFilesText());
+            target.addValue(this.extendsField, attribute.getExtendsText());
+            target.addValue(this.minPriceField, attribute.getMinPrice());
+            target.addValue(this.maxPriceField, attribute.getMaxPrice());
         }
     }
 }

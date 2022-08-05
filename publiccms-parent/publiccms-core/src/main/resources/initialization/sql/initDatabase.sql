@@ -127,7 +127,8 @@ CREATE TABLE `cms_content` (
   PRIMARY KEY  (`id`),
   KEY `cms_content_parent_id` (`site_id`, `parent_id`, `disabled`, `sort`, `publish_date`),
   KEY `cms_content_disabled` (`site_id`, `disabled`, `sort`, `publish_date`),
-  KEY `cms_content_status`(`site_id`, `status`, `parent_id`, `category_id`, `disabled`, `model_id`, `publish_date`, `expiry_date`, `sort`),
+  KEY `cms_content_status` (`site_id`, `status`, `parent_id`, `category_id`, `disabled`, `model_id`, `publish_date`, `expiry_date`, `sort`),
+  KEY `cms_content_category_id` (`site_id`, `category_id`, `parent_id`, `disabled`),
   KEY `cms_content_quote_content_id` (`site_id`, `quote_content_id`)
 ) COMMENT='内容';
 -- ----------------------------
