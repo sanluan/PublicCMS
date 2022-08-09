@@ -1039,7 +1039,7 @@ INSERT INTO `sys_module` VALUES ('template_place_form', 'placeTemplate/form', NU
 INSERT INTO `sys_module` VALUES ('template_search', 'cmsTemplate/search', 'cmsTemplate/replace', NULL, 'template_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('template_upload', 'cmsTemplate/upload', 'cmsTemplate/doUpload', NULL, 'template_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('template_website_file', 'cmsWebFile/lookup', NULL, NULL, 'template_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('trade_menu', NULL, NULL, 'icon-money', 'maintenance', 1, 4);
+INSERT INTO `sys_module` VALUES ('trade_menu', NULL, NULL, 'icon-money', 'content', 1, 2);
 INSERT INTO `sys_module` VALUES ('user_add', 'sysUser/add', 'sysDept/lookup,sysUser/save', NULL, 'user_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('user_disable', NULL, 'sysUser/disable', NULL, 'user_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('user_enable', NULL, 'sysUser/enable', NULL, 'user_list', 0, 0);
@@ -1047,7 +1047,7 @@ INSERT INTO `sys_module` VALUES ('user_list', 'sysUser/list', NULL, 'icon-user',
 INSERT INTO `sys_module` VALUES ('user_menu', NULL, NULL, 'icon-user', 'maintenance', 1, 1);
 INSERT INTO `sys_module` VALUES ('visit_day', 'visit/day', NULL, 'icon-calendar', 'visit_menu', 1, 3);
 INSERT INTO `sys_module` VALUES ('visit_history', 'visit/history', 'log/view', 'icon-bolt', 'visit_menu', 1, 1);
-INSERT INTO `sys_module` VALUES ('visit_menu', NULL, NULL, 'icon-bolt', 'maintenance', 1, 5);
+INSERT INTO `sys_module` VALUES ('visit_menu', NULL, NULL, 'icon-bolt', 'page', 1, 2);
 INSERT INTO `sys_module` VALUES ('visit_item', 'visit/item', NULL, 'icon-flag-checkered', 'visit_menu', 1, 5);
 INSERT INTO `sys_module` VALUES ('visit_session', 'visit/session', NULL, 'icon-comment-alt', 'visit_menu', 1, 2);
 INSERT INTO `sys_module` VALUES ('visit_url', 'visit/url', NULL, 'icon-link', 'visit_menu', 1, 4);

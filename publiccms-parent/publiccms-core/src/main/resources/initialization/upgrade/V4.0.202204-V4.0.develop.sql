@@ -199,3 +199,7 @@ UPDATE `sys_module` SET `authorized_url` = 'cmsPlace/push,cmsPlace/add,cmsPlace/
 -- 2022-08-03 --
 ALTER TABLE `cms_content`
     ADD INDEX `cms_content_category_id`(`site_id`, `category_id`, `parent_id`, `disabled`);
+-- 2022-08-05 --
+UPDATE `sys_module` SET `sort` = 2,`parent_id`='content' WHERE `id` ='trade_menu';
+UPDATE `sys_module` SET `sort` = 2,`parent_id`='page' WHERE `id` ='visit_menu';
+

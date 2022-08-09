@@ -2149,7 +2149,7 @@ function initLayout() {
     $("#taskbar").css({
         top: (iContentH + $("header").height())+'px', width: $(window).width()+'px'
     });
-  $("#menu").css({'max-height':(iContentH-$("#sidebar .collapse").height())+'px'});
+    $("#menu").css({'max-height':(iContentH-$("#sidebar .collapse").height())+'px'});
 }
 
 function initUI(_box) {

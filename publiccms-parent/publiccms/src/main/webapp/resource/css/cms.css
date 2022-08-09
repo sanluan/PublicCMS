@@ -4,7 +4,7 @@ a.btnText:hover{text-decoration:none;}
 a.btnText i{margin-right:3px;}
 .grid .gridTbody td div a.btnText:hover,table.list a.btnText:hover{text-decoration:none;}
 
-.button.float{position:absolute;right:30px;z-index:10;top:24px;}
+.button.float{position:absolute;right:30px;z-index:2;top:24px;}
 .unit .chart{min-width:390px;width:40%;height:234px;float:left;}
 .unit ul{padding:0;margin:0;list-style:none;}
 .unit ul li{min-width:195px;width:20%;float:left;}
@@ -60,12 +60,15 @@ ol.vote>li:nth-child(3n) .progress-bar {background-color:blue;}
 
 @media screen and (max-width:768px) {
 .unit ul li{width:50%;}
+.unit .chart{width:100%;}
 }
 
 @media screen and (min-width:768px) and (max-width:1024px) {
 .unit ul li{width:33.3%;}
+.unit .chart{width:66.6%;}
 }
 
 @media screen and (min-width:1025px) and (max-width:1400px) {
 .unit ul li{width:25%;}
+.unit .chart{width:50%;}
 }
