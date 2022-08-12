@@ -630,7 +630,7 @@ public class CmsContentAdminController {
         queryEntity.setEmptyParent(true);
         Locale locale = RequestContextUtils.getLocale(request);
 
-        PageHandler page = service.getPage(queryEntity, null, orderField, orderType, null, 1, PageHandler.MAX_PAGE_SIZE);
+        PageHandler page = service.getPage(queryEntity, null, orderField, orderType, null, 1, PageHandler.MAX_PAGE_SIZE, null);
         @SuppressWarnings("unchecked")
         List<CmsContent> entityList = (List<CmsContent>) page.getList();
         Map<String, List<Serializable>> pksMap = new HashMap<>();

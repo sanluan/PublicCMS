@@ -281,6 +281,19 @@ public abstract class BaseDao<E> {
      * @param firstResult
      * @param pageIndex
      * @param pageSize
+     * @param maxResults
+     * @return page
+     */
+    protected PageHandler getPage(QueryHandler queryHandler, Integer firstResult, Integer pageIndex, Integer pageSize,
+            Integer maxResults) {
+        return getPage(queryHandler, null, firstResult, pageIndex, pageSize, maxResults);
+    }
+
+    /**
+     * @param queryHandler
+     * @param firstResult
+     * @param pageIndex
+     * @param pageSize
      * @return page
      */
     protected PageHandler getPage(QueryHandler queryHandler, Integer firstResult, Integer pageIndex, Integer pageSize) {
@@ -306,8 +319,8 @@ public abstract class BaseDao<E> {
      * @param maxResults
      * @return results page
      */
-    protected PageHandler getPage(QueryHandler queryHandler, String countHql, Integer firstResult, Integer pageIndex, Integer pageSize,
-            Integer maxResults) {
+    protected PageHandler getPage(QueryHandler queryHandler, String countHql, Integer firstResult, Integer pageIndex,
+            Integer pageSize, Integer maxResults) {
         PageHandler page = new PageHandler(firstResult, pageIndex, pageSize);
         if (null == pageSize) {
             queryHandler.setMaxResults(maxResults);
@@ -325,6 +338,18 @@ public abstract class BaseDao<E> {
             }
         }
         return page;
+    }
+
+    /**
+     * @param optionsStep
+     * @param highLighterQuery
+     * @param pageIndex
+     * @param pageSize
+     * @return page
+     */
+    protected PageHandler getPage(SearchQueryOptionsStep<?, E, ?, ?, ?> optionsStep, HighLighterQuery highLighterQuery,
+            Integer pageIndex, Integer pageSize, Integer maxResults) {
+        return getPage(optionsStep, highLighterQuery, null, pageIndex, pageSize, maxResults);
     }
 
     /**

@@ -20,6 +20,7 @@ import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.views.pojo.entities.ClickStatistics;
+import com.publiccms.views.pojo.query.CmsContentSearchQuery;
 
 /**
  *
@@ -85,13 +86,16 @@ public class CmsFacetSearchDirective extends AbstractTemplateDirective {
             highLighterQuery.setPostTag(handler.getString("postTag"));
         }
         try {
-            page = service.facetQuery(site.getId(), handler.getBoolean("projection", false), handler.getBoolean("phrase", false),
-                    highLighterQuery, word, handler.getString("exclude"), handler.getStringArray("fields"), tagIds,
-                    handler.getInteger("categoryId"), handler.getBoolean("containChild"), handler.getIntegerArray("categoryIds"),
-                    handler.getStringArray("modelIds"), handler.getStringArray("extendsValues"),
-                    handler.getStringArray("dictionaryValues"), handler.getBoolean("dictionaryUnion"),
-                    handler.getDate("startPublishDate"), handler.getDate("endPublishDate", currentDate), currentDate,
-                    handler.getString("orderField"), pageIndex, pageSize);
+            page = service.facetQuery(
+                    new CmsContentSearchQuery(site.getId(), handler.getBoolean("projection", false),
+                            handler.getBoolean("phrase", false), highLighterQuery, word, handler.getString("exclude"),
+                            handler.getStringArray("fields"), tagIds, handler.getInteger("categoryId"),
+                            handler.getIntegerArray("categoryIds"), handler.getStringArray("modelIds"),
+                            handler.getStringArray("extendsValues"), handler.getStringArray("dictionaryValues"),
+                            handler.getBoolean("dictionaryUnion"), handler.getDate("startPublishDate"),
+                            handler.getDate("endPublishDate", currentDate), currentDate),
+                    handler.getBoolean("containChild"), handler.getString("orderField"), pageIndex, pageSize,
+                    handler.getInteger("maxPage"));
             @SuppressWarnings("unchecked")
             List<CmsContent> list = (List<CmsContent>) page.getList();
             if (null != list) {
