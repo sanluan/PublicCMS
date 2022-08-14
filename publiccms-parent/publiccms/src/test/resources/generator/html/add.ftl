@@ -1,7 +1,7 @@
 ${"<@_"+entityName?replace('Cms','')?uncap_first+" id=id><#assign a=object/></@_"+entityName?replace('Cms','')?uncap_first+">"}
 <form method="post" action="${entityName?uncap_first}/save.do?callbackType=closeCurrent&navTabId=${entityName?uncap_first}/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input name="id" type="hidden" value="<#noparse>${id!}</#noparse>" />
-    <input type="hidden" name="csrfToken" value="<#noparse><@_csrfToken admin=true/></#noparse>"/>
+    <input type="hidden" name="_csrf" value="<#noparse><@_csrfToken admin=true/></#noparse>"/>
     <div class="formBar">
         <ul>
             <li><button type="submit" class="buttonActive"><#noparse><@t.page 'button.save'/></#noparse></button></li>
