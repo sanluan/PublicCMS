@@ -105,11 +105,11 @@ public class UeditorAdminController {
         config.setImageManagerUrlPrefix(urlPrefix);
         config.setVideoManagerUrlPrefix(urlPrefix);
         config.setFileManagerUrlPrefix(urlPrefix);
-        config.setImageAllowFiles(CmsFileUtils.IMAGE_ALLOW_FILES);
-        config.setCatcherAllowFiles(CmsFileUtils.IMAGE_ALLOW_FILES);
-        config.setVideoAllowFiles(CmsFileUtils.VIDEO_ALLOW_FILES);
+        config.setImageAllowFiles(CmsFileUtils.IMAGE_FILE_SUFFIXS);
+        config.setCatcherAllowFiles(CmsFileUtils.IMAGE_FILE_SUFFIXS);
+        config.setVideoAllowFiles(CmsFileUtils.VIDEO_FILE_SUFFIXS);
         config.setFileAllowFiles(siteConfigComponent.getSafeSuffix(site));
-        config.setImageManagerAllowFiles(CmsFileUtils.IMAGE_ALLOW_FILES);
+        config.setImageManagerAllowFiles(CmsFileUtils.IMAGE_FILE_SUFFIXS);
         config.setFileManagerAllowFiles(siteConfigComponent.getSafeSuffix(site));
         return config;
     }

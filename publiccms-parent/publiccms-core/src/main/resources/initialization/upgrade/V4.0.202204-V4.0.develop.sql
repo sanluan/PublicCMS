@@ -202,4 +202,6 @@ ALTER TABLE `cms_content`
 -- 2022-08-05 --
 UPDATE `sys_module` SET `sort` = 2,`parent_id`='content' WHERE `id` ='trade_menu';
 UPDATE `sys_module` SET `sort` = 2,`parent_id`='page' WHERE `id` ='visit_menu';
-
+-- 2022-08-14 --
+UPDATE `sys_module` SET `sort` = 0,`parent_id`='visit_menu' WHERE `id` ='report_visit';
+UPDATE `log_upload` SET file_type = 'document' WHERE file_path like '%.doc' or file_path like '%.docx' or file_path like '%.xls' or file_path like '%.xlsx' or file_path like '%.ppt' or file_path like '%.pptx' or file_path like '%.pdf' or file_path like '%.txt' or file_path like '%.md' or file_path like '%.xml' or file_path like '%.ofd';
