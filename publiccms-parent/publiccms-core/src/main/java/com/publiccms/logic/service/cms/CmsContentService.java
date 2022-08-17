@@ -12,13 +12,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.api.Config;
@@ -40,7 +40,6 @@ import com.publiccms.entities.cms.CmsContentTextHistory;
 import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
-import com.publiccms.logic.component.BeanComponent;
 import com.publiccms.logic.dao.cms.CmsContentDao;
 import com.publiccms.logic.service.sys.SysExtendFieldService;
 import com.publiccms.logic.service.sys.SysExtendService;
@@ -87,8 +86,8 @@ public class CmsContentService extends BaseService<CmsContent> {
     public static final Integer[] STATUS_NORMAL_ARRAY = new Integer[] { STATUS_NORMAL };
 
     /**
-     * @param queryEntity 
-     * @param containChild 
+     * @param queryEntity
+     * @param containChild
      * @param orderField
      * @param pageIndex
      * @param pageSize
@@ -115,8 +114,7 @@ public class CmsContentService extends BaseService<CmsContent> {
     public FacetPageHandler facetQuery(CmsContentSearchQuery queryEntity, Boolean containChild, String orderField,
             Integer pageIndex, Integer pageSize, Integer maxResults) {
         queryEntity.setCategoryIds(getCategoryIds(containChild, queryEntity.getCategoryId(), queryEntity.getCategoryIds()));
-        return dao.facetQuery(queryEntity, orderField, pageIndex, pageSize,
-                maxResults);
+        return dao.facetQuery(queryEntity, orderField, pageIndex, pageSize, maxResults);
     }
 
     /**
@@ -211,23 +209,18 @@ public class CmsContentService extends BaseService<CmsContent> {
 
     /**
      * @param siteId
-     * @param cmsModel
+     * @param status 
+     * @param categoryIds 
+     * @param modelIds 
+     * @param worker 
+     * @param batchSize 
      */
     @Transactional(readOnly = true)
-    public void rebuildSearchText(short siteId, CmsModel cmsModel) {
-        PageHandler page = dao.getPageByModelId(siteId, cmsModel.getId(), null, PageHandler.MAX_PAGE_SIZE);
-        while (!page.isLastPage()) {
-            @SuppressWarnings("unchecked")
-            List<CmsContent> list = (List<CmsContent>) page.getList();
-            BeanComponent.getContentService().rebuildSearchText(siteId, cmsModel, list);
-            page = dao.getPageByModelId(siteId, cmsModel.getId(), page.getNextPage(), PageHandler.MAX_PAGE_SIZE);
-        }
-        @SuppressWarnings("unchecked")
-        List<CmsContent> list = (List<CmsContent>) page.getList();
-        BeanComponent.getContentService().rebuildSearchText(siteId, cmsModel, list);
+    public void batchWork(short siteId, Integer[] categoryIds, String[] modelIds, Consumer<List<CmsContent>> worker,
+            int batchSize) {
+        dao.batchWork(siteId, categoryIds, modelIds, worker, batchSize);
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void rebuildSearchText(short siteId, CmsModel cmsModel, List<CmsContent> list) {
         for (CmsContent entity : list) {
             CmsContentAttribute attribute = attributeService.getEntity(entity.getId());

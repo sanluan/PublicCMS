@@ -335,6 +335,20 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         }
     }
 
+    public void batchWork(short siteId, Integer[] categoryIds, String[] modelIds, Consumer<List<CmsContent>> worker,
+            int batchSize) {
+        QueryHandler queryHandler = getQueryHandler("from CmsContent bean");
+        queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
+        queryHandler.condition("bean.disabled = :disabled").setParameter("disabled", false);
+        if (CommonUtils.notEmpty(categoryIds)) {
+            queryHandler.condition("bean.categoryId in (:categoryIds)").setParameter("categoryIds", categoryIds);
+        }
+        if (CommonUtils.notEmpty(modelIds)) {
+            queryHandler.condition("bean.modelId in (:modelIds)").setParameter("modelIds", modelIds);
+        }
+        batchWork(queryHandler, worker, batchSize);
+    }
+
     /**
      * @param queryEntitry
      * @param orderField
@@ -446,21 +460,6 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         }
         queryHandler.order("bean.id desc");
         return getPage(queryHandler, firstResult, pageIndex, pageSize, maxResults);
-    }
-
-    /**
-     * @param siteId
-     * @param modelId
-     * @param pageIndex
-     * @param pageSize
-     * @return results page
-     */
-    public PageHandler getPageByModelId(short siteId, String modelId, Integer pageIndex, Integer pageSize) {
-        QueryHandler queryHandler = getQueryHandler("from CmsContent bean");
-        queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
-        queryHandler.condition("bean.modelId = :modelId").setParameter("modelId", modelId);
-        queryHandler.order("bean.id desc");
-        return getPage(queryHandler, pageIndex, pageSize);
     }
 
     /**

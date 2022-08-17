@@ -27,6 +27,7 @@ import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.entities.cms.CmsCategoryAttribute;
+import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
@@ -284,6 +285,28 @@ public class CmsCategoryAdminController {
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.category", RequestUtils.getIpAddress(request),
                     CommonUtils.getDate(), StringUtils.join(ids, CommonConstants.COMMA)));
+        }
+        return CommonConstants.TEMPLATE_DONE;
+    }
+
+    /**
+     * @param site
+     * @param ids 
+     * @return view name
+     */
+    @RequestMapping("batchPublish")
+    @Csrf
+    public String batchPublish(@RequestAttribute SysSite site, Integer[] ids) {
+        if (CommonUtils.notEmpty(ids)) {
+            contentService.batchWork(site.getId(), ids, null, list -> {
+                for (CmsContent content : list) {
+                    try {
+                        templateComponent.createContentFile(site, content, null, null);
+                    } catch (IOException | TemplateException e) {
+                        log.error(e.getMessage());
+                    }
+                }
+            }, PageHandler.MAX_PAGE_SIZE);
         }
         return CommonConstants.TEMPLATE_DONE;
     }

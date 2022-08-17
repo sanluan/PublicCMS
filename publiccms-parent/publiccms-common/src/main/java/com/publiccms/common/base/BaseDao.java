@@ -3,10 +3,12 @@ package com.publiccms.common.base;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletionStage;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import javax.persistence.EntityNotFoundException;
@@ -18,6 +20,8 @@ import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.search.highlight.Highlighter;
 import org.apache.lucene.search.highlight.QueryScorer;
 import org.apache.lucene.search.highlight.SimpleHTMLFormatter;
+import org.hibernate.ScrollMode;
+import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -251,6 +255,33 @@ public abstract class BaseDao<E> {
             return query.list();
         } catch (EntityNotFoundException e) {
             return query.setCacheable(false).list();
+        }
+    }
+
+    /**
+     * 处理数据
+     *
+     * @param <T>
+     * @param query
+     * @param queryHandler
+     * @param worker
+     * @param batchSize
+     */
+    @SuppressWarnings("unchecked")
+    protected <T> void batchWork(QueryHandler queryHandler, Consumer<List<T>> worker, int batchSize) {
+        Query<E> query = getSession().createQuery(queryHandler.getSql(), getEntityClass());
+        queryHandler.initQuery(query);
+        ScrollableResults results = query.setReadOnly(true).setCacheable(false).scroll(ScrollMode.FORWARD_ONLY);
+        List<T> resultList = new ArrayList<>(batchSize);
+        while (results.next()) {
+            resultList.add((T) results.get(0));
+            if (resultList.size() >= batchSize) {
+                worker.accept(resultList);
+                resultList.clear();
+            }
+        }
+        if (resultList.size() >= 0) {
+            worker.accept(resultList);
         }
     }
 

@@ -1,5 +1,6 @@
 package com.publiccms.controller.admin.cms;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -9,6 +10,8 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -19,20 +22,25 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
+import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.ModelComponent;
+import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.views.pojo.entities.CmsModel;
 import com.publiccms.views.pojo.entities.ContentRelated;
+
+import freemarker.template.TemplateException;
 
 /**
  * 
@@ -42,6 +50,8 @@ import com.publiccms.views.pojo.entities.ContentRelated;
 @Controller
 @RequestMapping("cmsModel")
 public class CmsModelAdminController {
+    protected final Log log = LogFactory.getLog(getClass());
+
     @Autowired
     private ModelComponent modelComponent;
     @Autowired
@@ -50,6 +60,8 @@ public class CmsModelAdminController {
     protected LogOperateService logOperateService;
     @Autowired
     protected SiteComponent siteComponent;
+    @Autowired
+    private TemplateComponent templateComponent;
 
     /**
      * @param site
@@ -85,7 +97,7 @@ public class CmsModelAdminController {
                 i++;
             }
             if (!templist.isEmpty()) {
-                Collections.reverse(templist);  
+                Collections.reverse(templist);
                 for (int index : templist) {
                     entity.getRelatedList().remove(index);
                 }
@@ -151,13 +163,39 @@ public class CmsModelAdminController {
      * @param id
      * @return view name
      */
+    @RequestMapping("batchPublish")
+    @Csrf
+    public String batchPublish(@RequestAttribute SysSite site, String id) {
+        Map<String, CmsModel> modelMap = modelComponent.getModelMap(site);
+        CmsModel entity = modelMap.get(id);
+        if (null != entity) {
+            contentService.batchWork(site.getId(), null, new String[] { id }, list -> {
+                for (CmsContent content : list) {
+                    try {
+                        templateComponent.createContentFile(site, content, null, null);
+                    } catch (IOException | TemplateException e) {
+                        log.error(e.getMessage());
+                    }
+                }
+            }, PageHandler.MAX_PAGE_SIZE);
+        }
+        return CommonConstants.TEMPLATE_DONE;
+    }
+
+    /**
+     * @param site
+     * @param id
+     * @return view name
+     */
     @RequestMapping("rebuildSearchText")
     @Csrf
     public String rebuildSearchText(@RequestAttribute SysSite site, String id) {
         Map<String, CmsModel> modelMap = modelComponent.getModelMap(site);
         CmsModel entity = modelMap.get(id);
         if (null != entity) {
-            contentService.rebuildSearchText(site.getId(), entity);
+            contentService.batchWork(site.getId(), null, new String[] { id }, list -> {
+                contentService.rebuildSearchText(site.getId(), entity, list);
+            }, PageHandler.MAX_PAGE_SIZE);
         }
         return CommonConstants.TEMPLATE_DONE;
     }

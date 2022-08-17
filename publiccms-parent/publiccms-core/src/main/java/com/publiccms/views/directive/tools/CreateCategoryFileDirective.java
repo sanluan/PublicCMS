@@ -17,7 +17,7 @@ import freemarker.template.TemplateException;
 
 /**
  *
- * CreateCategoryFileDirective
+ * createCategoryFile 创建分类静态文件指令
  * 
  */
 @Component

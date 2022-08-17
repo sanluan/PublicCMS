@@ -205,3 +205,9 @@ UPDATE `sys_module` SET `sort` = 2,`parent_id`='page' WHERE `id` ='visit_menu';
 -- 2022-08-14 --
 UPDATE `sys_module` SET `sort` = 0,`parent_id`='visit_menu' WHERE `id` ='report_visit';
 UPDATE `log_upload` SET file_type = 'document' WHERE file_path like '%.doc' or file_path like '%.docx' or file_path like '%.xls' or file_path like '%.xlsx' or file_path like '%.ppt' or file_path like '%.pptx' or file_path like '%.pdf' or file_path like '%.txt' or file_path like '%.md' or file_path like '%.xml' or file_path like '%.ofd';
+-- 2022-08-17 --
+UPDATE `sys_module` SET `authorized_url` = 'cmsCategory/addMore,cmsCategory/virify,cmsCategory/rebuildChildIds,cmsCategory/batchPublish,cmsTemplate/lookup,cmsCategory/categoryPath,cmsCategory/contentPath,file/doUpload,cmsDictionary/lookup,cmsCategory/save' WHERE `id` ='category_add';
+UPDATE `sys_module` SET `authorized_url` = 'cmsModel/save,cmsTemplate/lookup,cmsModel/rebuildSearchText,cmsModel/batchPublish,cmsDictionary/lookup' WHERE `id` ='model_add';
+ALTER TABLE `cms_content` 
+    DROP INDEX `cms_content_disabled`,
+    ADD INDEX `cms_content_disabled`(`site_id`, `disabled`, `category_id`, `model_id`);
