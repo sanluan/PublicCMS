@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTaskDirective;
+import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsContent;
@@ -51,6 +52,21 @@ public class PublishContentDirective extends AbstractTaskDirective {
                         map.put(entity.getId().toString(), false);
                     }
                 }
+            } else {
+                service.batchWork(site.getId(), handler.getIntegerArray("categoryIds"), handler.getStringArray("modelIds"),
+                        list -> {
+                            for (CmsContent content : list) {
+                                try {
+                                    templateComponent.createContentFile(site, content, null, null);
+                                } catch (IOException | TemplateException e) {
+                                    try {
+                                        handler.getWriter().append(e.getMessage());
+                                        handler.getWriter().append("\n");
+                                    } catch (IOException e1) {
+                                    }
+                                }
+                            }
+                        }, PageHandler.MAX_PAGE_SIZE);
             }
         }
         handler.put("map", map).render();

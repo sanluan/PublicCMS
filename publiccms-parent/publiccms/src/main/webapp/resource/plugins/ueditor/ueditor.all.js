@@ -1,7 +1,7 @@
 /*!
  * UEditor
  * version: ueditor
- * build: Wed Apr 27 2022 19:46:20 GMT+0800 (中国标准时间)
+ * build: Thu Aug 18 2022 16:15:06 GMT+0800 (中国标准时间)
  */
 
 (function(){
@@ -25414,12 +25414,12 @@ UE.ui = baidu.editor.ui = {};
 
             var sideLeft, sideUp, left, top;
             if (hoz) {
-                sideLeft = this.canSideLeft && (rect.right + popSize.width > vpRect.right && rect.left > popSize.width);
+                sideLeft = this.canSideLeft && (rect.left + popSize.width > vpRect.right && rect.right > popSize.width);
                 sideUp = this.canSideUp && (rect.top + popSize.height > vpRect.bottom && rect.bottom > popSize.height);
                 left = (sideLeft ? rect.left - popSize.width : rect.right);
                 top = (sideUp ? rect.bottom - popSize.height : rect.top);
             } else {
-                sideLeft = this.canSideLeft && (rect.right + popSize.width > vpRect.right && rect.left > popSize.width);
+                sideLeft = this.canSideLeft && (rect.left + popSize.width > vpRect.right && rect.right > popSize.width);
                 sideUp = this.canSideUp && (rect.top + popSize.height > vpRect.bottom && rect.bottom > popSize.height);
                 left = (sideLeft ? rect.right - popSize.width : rect.left);
                 top = (sideUp ? rect.top - popSize.height : rect.bottom);

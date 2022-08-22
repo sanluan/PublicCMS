@@ -50,7 +50,6 @@
             <li><a href="cmsCategory/moveParameters.html" target="dialog" mask="true"><i class="icon-move icon-large"></i><@t.page 'button.batch_move'/></a></li>
         </#if>
         <#if authorizedMap['cmsCategory/batchPublish']>
-            <li class="line">line</li>
             <li><a href="cmsCategory/batchPublish?_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.do'/>" target="selectedTodo" rel="ids"><i class="icon-file-text-alt icon-large"></i><@t.page 'button.batch_publish_content'/></a></li>
         </#if>
         <#if authorizedMap['cmsCategory/delete']>

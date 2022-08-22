@@ -220,9 +220,7 @@
             if(src) {
                 /* 设置表单内容 */
                 $G("width").value = img.width || '';
-                $G("width").title  = img.naturalWidth;
                 $G("height").value = img.height || '';
-                $G("height").title  = img.naturalHeight;
                 $G("border").value = img.getAttribute("border") || '0';
                 $G("vhSpace").value = img.getAttribute("vspace") || '0';
                 $G("title").value = img.title || img.alt || '';
@@ -234,9 +232,7 @@
         getData: function(){
             var data = {};
             for(var k in this.dom){
-                if(k!='width' && k!='height' || $G(k).title !=this.dom[k].value){
-                    data[k] = this.dom[k].value;
-                }
+                data[k] = this.dom[k].value;
             }
             return data;
         },
@@ -283,7 +279,6 @@
                     border: data['border'] || '',
                     floatStyle: data['align'] || '',
                     vspace: data['vhSpace'] || '',
-                    title: data['title'] || '',
                     alt: data['title'] || '',
                     style: style
                 }];
@@ -786,7 +781,6 @@
                 list.push({
                     src: prefix + data.url,
                     _src: prefix + data.url,
-                    title: data.title,
                     alt: data.original,
                     floatStyle: align
                 });
