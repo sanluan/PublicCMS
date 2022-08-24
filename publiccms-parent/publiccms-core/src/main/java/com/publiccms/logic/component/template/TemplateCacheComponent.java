@@ -94,7 +94,7 @@ public class TemplateCacheComponent implements Cache {
         requestPath = siteComponent.getPath(site, requestPath);
         SysDomain domain = siteComponent.getDomain(request.getServerName());
         String fullRequestPath = siteComponent.getViewName(site, domain, requestPath);
-        String templatePath = siteComponent.getWebTemplateFilePath() + fullRequestPath;
+        String templatePath = siteComponent.getTemplateFilePath() + fullRequestPath;
         CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(templatePath);
         if (metadata.isUseDynamic()) {
             if (metadata.isNeedLogin() && null == ControllerUtils.getUserFromSession(request.getSession())) {
@@ -459,6 +459,6 @@ public class TemplateCacheComponent implements Cache {
     }
 
     private String getCachedFilePath(String path) {
-        return siteComponent.getWebTemplateFilePath() + CACHE_FILE_DIRECTORY + path;
+        return siteComponent.getTemplateFilePath() + CACHE_FILE_DIRECTORY + path;
     }
 }

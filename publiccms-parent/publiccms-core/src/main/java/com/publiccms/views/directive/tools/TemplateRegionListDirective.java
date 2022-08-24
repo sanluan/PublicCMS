@@ -29,7 +29,7 @@ public class TemplateRegionListDirective extends AbstractTemplateDirective {
         String path = handler.getString("path");
         Set<String> regionList = new LinkedHashSet<>();
         if (CommonUtils.notEmpty(path)) {
-            String fileContent = CmsFileUtils.getFileContent(siteComponent.getWebTemplateFilePath(getSite(handler), path));
+            String fileContent = CmsFileUtils.getFileContent(siteComponent.getTemplateFilePath(getSite(handler), path));
             if (CommonUtils.notEmpty(fileContent)) {
                 if (CommonUtils.notEmpty(fileContent)) {
                     Matcher matcher = REGION_PATTERN.matcher(fileContent);
@@ -44,7 +44,7 @@ public class TemplateRegionListDirective extends AbstractTemplateDirective {
                 }
                 for (String place : placeSet) {
                     String placeContent = CmsFileUtils.getFileContent(
-                            siteComponent.getWebTemplateFilePath(getSite(handler), TemplateComponent.INCLUDE_DIRECTORY + place));
+                            siteComponent.getTemplateFilePath(getSite(handler), TemplateComponent.INCLUDE_DIRECTORY + place));
                     if (CommonUtils.notEmpty(placeContent)) {
                         matcher = REGION_PATTERN.matcher(placeContent);
                         while (matcher.find()) {

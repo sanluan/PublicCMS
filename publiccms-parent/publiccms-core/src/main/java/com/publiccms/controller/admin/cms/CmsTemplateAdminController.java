@@ -91,7 +91,7 @@ public class CmsTemplateAdminController {
             HttpServletRequest request, ModelMap model) {
         if (CommonUtils.notEmpty(path)) {
             try {
-                String filepath = siteComponent.getWebTemplateFilePath(site, path);
+                String filepath = siteComponent.getTemplateFilePath(site, path);
                 CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(filepath);
                 content = new String(VerificationUtils.base64Decode(content), CommonConstants.DEFAULT_CHARSET);
                 if (CmsFileUtils.createFile(filepath, content)) {
@@ -99,7 +99,7 @@ public class CmsTemplateAdminController {
                             new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                                     "save.web.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
                 } else {
-                    String historyFilePath = siteComponent.getWebTemplateHistoryFilePath(site, path);
+                    String historyFilePath = siteComponent.getTemplateHistoryFilePath(site, path);
                     CmsFileUtils.updateFile(filepath, historyFilePath, content);
                     if (CommonUtils.notEmpty(metadata.getCacheTime()) && 0 < metadata.getCacheTime()) {
                         templateCacheComponent.deleteCachedFile(SiteComponent.getFullTemplatePath(site, path));
@@ -137,14 +137,14 @@ public class CmsTemplateAdminController {
             HttpServletRequest request, ModelMap model) {
         if (CommonUtils.notEmpty(path)) {
             try {
-                String filepath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
+                String filepath = siteComponent.getTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
                 content = new String(VerificationUtils.base64Decode(content), CommonConstants.DEFAULT_CHARSET);
                 if (CmsFileUtils.createFile(filepath, content)) {
                     logOperateService.save(
                             new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                                     "save.place.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
                 } else {
-                    String historyFilePath = siteComponent.getWebTemplateHistoryFilePath(site,
+                    String historyFilePath = siteComponent.getTemplateHistoryFilePath(site,
                             TemplateComponent.INCLUDE_DIRECTORY + path);
                     CmsFileUtils.updateFile(filepath, historyFilePath, content);
                     logOperateService.save(
@@ -183,7 +183,7 @@ public class CmsTemplateAdminController {
             @ModelAttribute TemplateReplaceParameters replaceParameters, String word, String replace,
             HttpServletRequest request) {
         if (CommonUtils.notEmpty(word)) {
-            String filePath = siteComponent.getWebTemplateFilePath(site, CommonConstants.SEPARATOR);
+            String filePath = siteComponent.getTemplateFilePath(site, CommonConstants.SEPARATOR);
             CmsFileUtils.replaceFileList(filePath, replaceParameters.getReplaceList(), word, replace);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "replace.template", RequestUtils.getIpAddress(request),
@@ -210,7 +210,7 @@ public class CmsTemplateAdminController {
             try {
                 for (MultipartFile file : files) {
                     String filepath = path + CommonConstants.SEPARATOR + file.getOriginalFilename();
-                    String destFullFileName = siteComponent.getWebTemplateFilePath(site, filepath);
+                    String destFullFileName = siteComponent.getTemplateFilePath(site, filepath);
                     CmsFileUtils.upload(file, destFullFileName);
                     if (destFullFileName.endsWith(".zip") && CmsFileUtils.isFile(destFullFileName)) {
                         ZipUtils.unzipHere(destFullFileName, encoding);
@@ -243,7 +243,7 @@ public class CmsTemplateAdminController {
     @RequestMapping("export")
     @Csrf
     public void export(@RequestAttribute SysSite site, HttpServletResponse response) {
-        String filepath = siteComponent.getWebTemplateFilePath(site, CommonConstants.SEPARATOR);
+        String filepath = siteComponent.getTemplateFilePath(site, CommonConstants.SEPARATOR);
         try {
             response.setHeader("content-disposition",
                     "attachment;fileName=" + URLEncoder.encode(site.getName() + "_template.zip", "utf-8"));
@@ -270,12 +270,12 @@ public class CmsTemplateAdminController {
     public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path, HttpServletRequest request,
             ModelMap model) {
         if (CommonUtils.notEmpty(path)) {
-            String filepath = siteComponent.getWebTemplateFilePath(site, path);
+            String filepath = siteComponent.getTemplateFilePath(site, path);
             CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(filepath);
             if (CommonUtils.notEmpty(metadata.getCacheTime()) && metadata.getCacheTime() > 0) {
                 templateCacheComponent.deleteCachedFile(SiteComponent.getFullTemplatePath(site, path));
             }
-            String backupFilePath = siteComponent.getWebTemplateBackupFilePath(site, path);
+            String backupFilePath = siteComponent.getTemplateBackupFilePath(site, path);
             if (ControllerUtils.errorCustom("notExist.template", !CmsFileUtils.moveFile(filepath, backupFilePath), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
@@ -304,8 +304,8 @@ public class CmsTemplateAdminController {
     public String deletePlace(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path,
             HttpServletRequest request, ModelMap model) {
         if (CommonUtils.notEmpty(path)) {
-            String filepath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
-            String backupFilePath = siteComponent.getWebTemplateBackupFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
+            String filepath = siteComponent.getTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
+            String backupFilePath = siteComponent.getTemplateBackupFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
             if (ControllerUtils.errorCustom("notExist.template", !CmsFileUtils.moveFile(filepath, backupFilePath), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
@@ -334,7 +334,7 @@ public class CmsTemplateAdminController {
     public String savePlaceMetaData(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path,
             @ModelAttribute CmsPlaceMetadata metadata, String content, HttpServletRequest request, ModelMap model) {
         if (CommonUtils.notEmpty(path)) {
-            String filepath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
+            String filepath = siteComponent.getTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
             try {
                 CmsFileUtils.createFile(filepath, content);
                 if (CommonUtils.notEmpty(metadata.getExtendList())) {
@@ -381,7 +381,7 @@ public class CmsTemplateAdminController {
                 path += CommonConstants.getDefaultPage();
             }
 
-            String filepath = siteComponent.getWebTemplateFilePath(site, path);
+            String filepath = siteComponent.getTemplateFilePath(site, path);
             try {
                 CmsFileUtils.createFile(filepath, content);
                 if (CommonUtils.notEmpty(metadata.getExtendList())) {
@@ -420,7 +420,7 @@ public class CmsTemplateAdminController {
         try {
             if (CommonUtils.notEmpty(path) && (site.isUseSsi()
                     || CmsFileUtils.exists(siteComponent.getWebFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path)))) {
-                String filepath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
+                String filepath = siteComponent.getTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
                 CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);
                 CmsPageData data = metadataComponent.getTemplateData(filepath);
                 templateComponent.staticPlace(site, path, metadata, data);
@@ -457,7 +457,7 @@ public class CmsTemplateAdminController {
 
     private void publish(SysSite site, String path) throws IOException, TemplateException {
         if (CommonUtils.notEmpty(path)) {
-            String filepath = siteComponent.getWebTemplateFilePath(site, path);
+            String filepath = siteComponent.getTemplateFilePath(site, path);
             CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(filepath);
             if (site.isUseStatic() && CommonUtils.notEmpty(metadata.getPublishPath())) {
                 String templatePath = SiteComponent.getFullTemplatePath(site, path);

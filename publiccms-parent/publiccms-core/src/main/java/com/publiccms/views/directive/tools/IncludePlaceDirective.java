@@ -29,7 +29,7 @@ public class IncludePlaceDirective extends AbstractTemplateDirective {
         String path = handler.getString("path");
         if (CommonUtils.notEmpty(path)) {
             SysSite site = getSite(handler);
-            String filepath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
+            String filepath = siteComponent.getTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
             CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);
             if (site.isUseSsi()) {
                 StringBuilder sb = new StringBuilder("<!--#include virtual=\"/");
