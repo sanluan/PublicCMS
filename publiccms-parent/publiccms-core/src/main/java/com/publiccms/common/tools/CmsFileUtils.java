@@ -78,8 +78,10 @@ public class CmsFileUtils {
     /**
      * 
      */
-    public static final String[] ALLOW_FILES = (String[]) ArrayUtils.addAll(AUDIO_FILE_SUFFIXS, VIDEO_FILE_SUFFIXS,
-            IMAGE_FILE_SUFFIXS, DOCUMENT_FILE_SUFFIXS, OTHER_FILE_SUFFIXS);
+    public static final String[] ALLOW_FILES = ArrayUtils.addAll(
+            ArrayUtils.addAll(ArrayUtils.addAll(ArrayUtils.addAll(AUDIO_FILE_SUFFIXS, VIDEO_FILE_SUFFIXS), IMAGE_FILE_SUFFIXS),
+                    DOCUMENT_FILE_SUFFIXS),
+            OTHER_FILE_SUFFIXS);
     /**
      * 
      */
