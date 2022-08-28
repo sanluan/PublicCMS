@@ -23,10 +23,10 @@
         <version.publiccms>V5.202204.b</version.publiccms>
         <!-- http://mvnrepository.com/artifact/org.springframework/spring-core -->
         <!-- https://spring.io/projects/spring-framework -->
-        <version.spring>6.0.0-M2</version.spring>
+        <version.spring>6.0.0-M5</version.spring>
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
         <!-- https://spring.io/projects/spring-boot -->
-        <version.springBoot>3.0.0-M1</version.springBoot>
+        <version.springBoot>3.0.0-M4</version.springBoot>
         <!-- https://mvnrepository.com/artifact/org.aspectj/aspectjweaver -->
         <!-- http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
         <!-- http://hc.apache.org/downloads.cgi -->

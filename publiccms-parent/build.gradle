@@ -38,10 +38,10 @@ subprojects {
     ext {
         // http://mvnrepository.com/artifact/org.springframework/spring-core
         // https://spring.io/projects/spring-framework
-        springVersion = "6.0.0-M2"
+        springVersion = "6.0.0-M5"
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
         // https://spring.io/projects/spring-boot
-        springBootVersion = "3.0.0-M1"
+        springBootVersion = "3.0.0-M4"
         // http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
         // http://hc.apache.org/downloads.cgi
         httpclientVersion = "4.5.13"
