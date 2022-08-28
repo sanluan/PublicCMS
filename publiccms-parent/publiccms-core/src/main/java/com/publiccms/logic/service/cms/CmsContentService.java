@@ -209,11 +209,11 @@ public class CmsContentService extends BaseService<CmsContent> {
 
     /**
      * @param siteId
-     * @param status 
-     * @param categoryIds 
-     * @param modelIds 
-     * @param worker 
-     * @param batchSize 
+     * @param status
+     * @param categoryIds
+     * @param modelIds
+     * @param worker
+     * @param batchSize
      */
     @Transactional(readOnly = true)
     public void batchWork(short siteId, Integer[] categoryIds, String[] modelIds, Consumer<List<CmsContent>> worker,
@@ -221,22 +221,14 @@ public class CmsContentService extends BaseService<CmsContent> {
         dao.batchWork(siteId, categoryIds, modelIds, worker, batchSize);
     }
 
-    public void rebuildSearchText(short siteId, CmsModel cmsModel, List<CmsContent> list) {
+    public void rebuildSearchText(short siteId, CmsModel cmsModel, List<SysExtendField> categoryExtendList,
+            List<CmsContent> list) {
         for (CmsContent entity : list) {
             CmsContentAttribute attribute = attributeService.getEntity(entity.getId());
             if (null == attribute) {
                 attribute = new CmsContentAttribute(entity.getId(), 0);
             }
-            Integer extendId = null;
-            CmsCategory category = categoryService.getEntity(entity.getCategoryId());
-            if (null != category) {
-                extendId = category.getExtendId();
-            }
             List<SysExtendField> modelExtendList = cmsModel.getExtendList();
-            List<SysExtendField> categoryExtendList = null;
-            if (null != extendId && null != extendService.getEntity(extendId)) {
-                categoryExtendList = extendFieldService.getList(extendId, null, null);
-            }
             List<CmsContentFile> files = null;
             List<CmsContentFile> images = null;
             List<CmsContentProduct> products = null;
@@ -252,13 +244,12 @@ public class CmsContentService extends BaseService<CmsContent> {
             dealAttribute(entity, modelExtendList, categoryExtendList, ExtendUtils.getExtendMap(attribute.getData()), cmsModel,
                     files, images, products, attribute);
             attributeService.updateAttribute(entity.getId(), attribute);
-            update(entity.getId(), entity);
         }
     }
 
-    private static void dealAttribute(CmsContent entity, List<SysExtendField> modelExtendList,
-            List<SysExtendField> categoryExtendList, Map<String, String> map, CmsModel cmsModel, List<CmsContentFile> files,
-            List<CmsContentFile> images, List<CmsContentProduct> products, CmsContentAttribute attribute) {
+    private void dealAttribute(CmsContent entity, List<SysExtendField> modelExtendList, List<SysExtendField> categoryExtendList,
+            Map<String, String> map, CmsModel cmsModel, List<CmsContentFile> files, List<CmsContentFile> images,
+            List<CmsContentProduct> products, CmsContentAttribute attribute) {
         StringBuilder searchTextBuilder = new StringBuilder();
         String text = HtmlUtils.removeHtmlTag(null == attribute ? null : attribute.getText());
         if (null != text) {
@@ -268,6 +259,7 @@ public class CmsContentService extends BaseService<CmsContent> {
             }
             if (CommonUtils.empty(entity.getDescription())) {
                 entity.setDescription(CommonUtils.keep(entity.getDescription(), 300));
+                update(entity.getId(), entity);
             }
         } else {
             attribute.setWordCount(0);

@@ -53,6 +53,7 @@ public class PublishContentDirective extends AbstractTaskDirective {
                     }
                 }
             } else {
+                log.info("begin batch publish");
                 service.batchWork(site.getId(), handler.getIntegerArray("categoryIds"), handler.getStringArray("modelIds"),
                         list -> {
                             for (CmsContent content : list) {
@@ -66,7 +67,9 @@ public class PublishContentDirective extends AbstractTaskDirective {
                                     }
                                 }
                             }
+                            log.info("batch publish size : " + list.size());
                         }, PageHandler.MAX_PAGE_SIZE);
+                log.info("complete batch publish");
             }
         }
         handler.put("map", map).render();

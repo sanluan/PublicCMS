@@ -291,13 +291,14 @@ public class CmsCategoryAdminController {
 
     /**
      * @param site
-     * @param ids 
+     * @param ids
      * @return view name
      */
     @RequestMapping("batchPublish")
     @Csrf
     public String batchPublish(@RequestAttribute SysSite site, Integer[] ids) {
         if (CommonUtils.notEmpty(ids)) {
+            log.info("begin batch publish");
             contentService.batchWork(site.getId(), ids, null, list -> {
                 for (CmsContent content : list) {
                     try {
@@ -306,19 +307,23 @@ public class CmsCategoryAdminController {
                         log.error(e.getMessage());
                     }
                 }
+                log.info("batch publish size : " + list.size());
             }, PageHandler.MAX_PAGE_SIZE);
+            log.info("complete batch publish");
         }
         return CommonConstants.TEMPLATE_DONE;
     }
 
     /**
+     * @param site
      * @return view name
      */
     @SuppressWarnings("unchecked")
     @RequestMapping("rebuildChildIds")
     @Csrf
-    public String rebuildChildIds() {
+    public String rebuildChildIds(@RequestAttribute SysSite site) {
         CmsCategoryQuery query = new CmsCategoryQuery();
+        query.setSiteId(site.getId());
         query.setQueryAll(true);
         PageHandler page = service.getPage(query, null, null);
         for (CmsCategory category : (List<CmsCategory>) page.getList()) {

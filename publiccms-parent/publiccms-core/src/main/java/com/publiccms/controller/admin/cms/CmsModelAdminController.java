@@ -27,18 +27,23 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
+import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.log.LogOperate;
+import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.ModelComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
+import com.publiccms.logic.service.cms.CmsCategoryService;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
+import com.publiccms.logic.service.sys.SysExtendFieldService;
 import com.publiccms.views.pojo.entities.CmsModel;
 import com.publiccms.views.pojo.entities.ContentRelated;
+import com.publiccms.views.pojo.query.CmsCategoryQuery;
 
 import freemarker.template.TemplateException;
 
@@ -51,11 +56,14 @@ import freemarker.template.TemplateException;
 @RequestMapping("cmsModel")
 public class CmsModelAdminController {
     protected final Log log = LogFactory.getLog(getClass());
-
+    @Autowired
+    private CmsCategoryService categoryService;
     @Autowired
     private ModelComponent modelComponent;
     @Autowired
     protected CmsContentService contentService;
+    @Autowired
+    private SysExtendFieldService extendFieldService;
     @Autowired
     protected LogOperateService logOperateService;
     @Autowired
@@ -169,6 +177,7 @@ public class CmsModelAdminController {
         Map<String, CmsModel> modelMap = modelComponent.getModelMap(site);
         CmsModel entity = modelMap.get(id);
         if (null != entity) {
+            log.info("begin batch publish");
             contentService.batchWork(site.getId(), null, new String[] { id }, list -> {
                 for (CmsContent content : list) {
                     try {
@@ -177,7 +186,9 @@ public class CmsModelAdminController {
                         log.error(e.getMessage());
                     }
                 }
+                log.info("batch publish size : " + list.size());
             }, PageHandler.MAX_PAGE_SIZE);
+            log.info("complete batch publish");
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -187,15 +198,29 @@ public class CmsModelAdminController {
      * @param id
      * @return view name
      */
+    @SuppressWarnings("unchecked")
     @RequestMapping("rebuildSearchText")
     @Csrf
     public String rebuildSearchText(@RequestAttribute SysSite site, String id) {
         Map<String, CmsModel> modelMap = modelComponent.getModelMap(site);
         CmsModel entity = modelMap.get(id);
         if (null != entity) {
-            contentService.batchWork(site.getId(), null, new String[] { id }, list -> {
-                contentService.rebuildSearchText(site.getId(), entity, list);
-            }, PageHandler.MAX_PAGE_SIZE);
+            CmsCategoryQuery query = new CmsCategoryQuery();
+            query.setSiteId(site.getId());
+            query.setQueryAll(true);
+            PageHandler page = categoryService.getPage(query, null, null);
+            for (CmsCategory category : (List<CmsCategory>) page.getList()) {
+                log.info("begin rebuild search text for category : " + category.getId());
+                contentService.batchWork(site.getId(), new Integer[] { category.getId() }, new String[] { id }, list -> {
+                    List<SysExtendField> categoryExtendList = null;
+                    if (null != category.getExtendId()) {
+                        categoryExtendList = extendFieldService.getList(category.getExtendId(), null, true);
+                    }
+                    contentService.rebuildSearchText(site.getId(), entity, categoryExtendList, list);
+                    log.info("rebuild search text for category : " + category.getId() + " size : " + list.size());
+                }, PageHandler.MAX_PAGE_SIZE);
+                log.info("complete rebuild search text for category : " + category.getId());
+            }
         }
         return CommonConstants.TEMPLATE_DONE;
     }
