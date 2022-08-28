@@ -69,14 +69,14 @@ public class SiteComponent implements Cache {
     private String rootPath;
     private String webFilePath;
     private String taskTemplateFilePath;
-    private String webTemplateFilePath;
+    private String templateFilePath;
 
     private String webBackupFilePath;
-    private String webTemplateBackupFilePath;
+    private String templateBackupFilePath;
     private String taskTemplateBackupFilePath;
 
     private String webHistoryFilePath;
-    private String webTemplateHistoryFilePath;
+    private String templateHistoryFilePath;
     private String taskTemplateHistoryFilePath;
 
     private short defaultSiteId;
@@ -374,19 +374,19 @@ public class SiteComponent implements Cache {
     /**
      * @param site
      * @param templatePath
-     * @return web template file path
+     * @return template file path
      */
-    public String getWebTemplateFilePath(SysSite site, String templatePath) {
-        return getWebTemplateFilePath() + getFullTemplatePath(site, templatePath);
+    public String getTemplateFilePath(SysSite site, String templatePath) {
+        return getTemplateFilePath() + getFullTemplatePath(site, templatePath);
     }
 
     /**
      * @param site
      * @param templatePath
-     * @return web template history file path
+     * @return template history file path
      */
-    public String getWebTemplateHistoryFilePath(SysSite site, String templatePath) {
-        StringBuilder sb = new StringBuilder(webTemplateHistoryFilePath);
+    public String getTemplateHistoryFilePath(SysSite site, String templatePath) {
+        StringBuilder sb = new StringBuilder(templateHistoryFilePath);
         sb.append(getFullFileName(site.getId(), templatePath));
         sb.append(CommonConstants.SEPARATOR);
         sb.append(DateFormatUtils.getDateFormat(FILE_NAME_FORMAT_STRING).format(CommonUtils.getDate()));
@@ -396,10 +396,10 @@ public class SiteComponent implements Cache {
     /**
      * @param site
      * @param templatePath
-     * @return web template backup file path
+     * @return template backup file path
      */
-    public String getWebTemplateBackupFilePath(SysSite site, String templatePath) {
-        return webTemplateBackupFilePath + getFullFileName(site.getId(), templatePath);
+    public String getTemplateBackupFilePath(SysSite site, String templatePath) {
+        return templateBackupFilePath + getFullFileName(site.getId(), templatePath);
     }
 
     /**
@@ -407,7 +407,7 @@ public class SiteComponent implements Cache {
      * @return model file path
      */
     public String getModelFilePath(SysSite site) {
-        return getWebTemplateFilePath() + getFullTemplatePath(site, MODEL_FILE);
+        return getTemplateFilePath() + getFullTemplatePath(site, MODEL_FILE);
     }
 
     /**
@@ -415,7 +415,7 @@ public class SiteComponent implements Cache {
      * @return category type file path
      */
     public String getCategoryTypeFilePath(SysSite site) {
-        return getWebTemplateFilePath() + getFullTemplatePath(site, CATEGORY_TYPE_FILE);
+        return getTemplateFilePath() + getFullTemplatePath(site, CATEGORY_TYPE_FILE);
     }
 
     /**
@@ -423,7 +423,7 @@ public class SiteComponent implements Cache {
      * @return config file path
      */
     public String getConfigFilePath(SysSite site) {
-        return getWebTemplateFilePath() + getFullTemplatePath(site, CONFIG_FILE);
+        return getTemplateFilePath() + getFullTemplatePath(site, CONFIG_FILE);
     }
 
     /**
@@ -459,11 +459,11 @@ public class SiteComponent implements Cache {
         this.rootPath = rootPath;
         this.webFilePath = rootPath + STATIC_FILE_PATH_WEB;
         this.taskTemplateFilePath = rootPath + TASK_FILE_PATH;
-        this.webTemplateFilePath = rootPath + TEMPLATE_PATH;
-        this.webTemplateBackupFilePath = rootPath + BACKUP_PATH + CommonConstants.SEPARATOR + TEMPLATE_PATH;
+        this.templateFilePath = rootPath + TEMPLATE_PATH;
+        this.templateBackupFilePath = rootPath + BACKUP_PATH + CommonConstants.SEPARATOR + TEMPLATE_PATH;
         this.taskTemplateBackupFilePath = rootPath + BACKUP_PATH + CommonConstants.SEPARATOR + TASK_FILE_PATH;
         this.webBackupFilePath = rootPath + BACKUP_PATH + CommonConstants.SEPARATOR + STATIC_FILE_PATH_WEB;
-        this.webTemplateHistoryFilePath = rootPath + HISTORY_PATH + CommonConstants.SEPARATOR + TEMPLATE_PATH;
+        this.templateHistoryFilePath = rootPath + HISTORY_PATH + CommonConstants.SEPARATOR + TEMPLATE_PATH;
         this.taskTemplateHistoryFilePath = rootPath + HISTORY_PATH + CommonConstants.SEPARATOR + TASK_FILE_PATH;
         this.webHistoryFilePath = rootPath + HISTORY_PATH + CommonConstants.SEPARATOR + STATIC_FILE_PATH_WEB;
     }
@@ -504,7 +504,7 @@ public class SiteComponent implements Cache {
     /**
      * @return web template file path
      */
-    public String getWebTemplateFilePath() {
-        return webTemplateFilePath;
+    public String getTemplateFilePath() {
+        return templateFilePath;
     }
 }

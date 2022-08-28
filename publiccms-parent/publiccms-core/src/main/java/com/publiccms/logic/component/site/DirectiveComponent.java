@@ -136,7 +136,7 @@ public class DirectiveComponent {
         templateComponent.setAdminConfiguration(adminConfiguration);
 
         Configuration webConfiguration = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
-        File webFile = new File(siteComponent.getWebTemplateFilePath());
+        File webFile = new File(siteComponent.getTemplateFilePath());
         webFile.mkdirs();
         webConfiguration.setDirectoryForTemplateLoading(webFile);
         copyConfig(adminConfiguration, webConfiguration);

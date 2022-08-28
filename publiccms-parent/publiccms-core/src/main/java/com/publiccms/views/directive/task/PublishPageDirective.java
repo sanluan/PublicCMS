@@ -35,7 +35,7 @@ public class PublishPageDirective extends AbstractTaskDirective {
     public void execute(RenderHandler handler) throws IOException, Exception {
         String path = handler.getString("path", CommonConstants.SEPARATOR);
         SysSite site = getSite(handler);
-        String filepath = siteComponent.getWebTemplateFilePath(site, path);
+        String filepath = siteComponent.getTemplateFilePath(site, path);
         if (CmsFileUtils.isFile(filepath)) {
             Map<String, Boolean> map = new LinkedHashMap<>();
             CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(filepath);
@@ -59,13 +59,13 @@ public class PublishPageDirective extends AbstractTaskDirective {
     private Map<String, Boolean> deal(SysSite site, RenderHandler handler, String path) throws IOException {
         path = path.replace("\\", CommonConstants.SEPARATOR).replace("//", CommonConstants.SEPARATOR);
         Map<String, Boolean> map = new LinkedHashMap<>();
-        List<FileInfo> list = CmsFileUtils.getFileList(siteComponent.getWebTemplateFilePath(site, path), null);
+        List<FileInfo> list = CmsFileUtils.getFileList(siteComponent.getTemplateFilePath(site, path), null);
         for (FileInfo fileInfo : list) {
             String filepath = path + fileInfo.getFileName();
             if (fileInfo.isDirectory()) {
                 map.putAll(deal(site, handler, filepath + CommonConstants.SEPARATOR));
             } else {
-                String realTemplatePath = siteComponent.getWebTemplateFilePath(site, filepath);
+                String realTemplatePath = siteComponent.getTemplateFilePath(site, filepath);
                 CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(realTemplatePath);
                 if (null != metadata && CommonUtils.notEmpty(metadata.getPublishPath())) {
                     try {

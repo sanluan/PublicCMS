@@ -46,37 +46,42 @@ public class CmsFileUtils {
     /**
      * 
      */
-    public static final List<String> IMAGE_FILE_SUFFIXS = Arrays.asList(".png", ".jpg", ".jpeg", ".gif", ".bmp", ".svg");
+    public static final List<String> IMAGE_FILE_SUFFIXS_LIST = Arrays.asList(".png", ".jpg", ".jpeg", ".gif", ".bmp", ".svg");
 
     /**
      * 
      */
-    public static final List<String> VIDEO_FILE_SUFFIXS = Arrays.asList(".flv", ".swf", ".mkv", ".avi", ".rm", ".rmvb", ".mpeg",
-            ".mpg", ".ogg", ".ogv", ".mov", ".wmv", ".mp4", ".webm");
     /**
      * 
      */
-    /**
-     * 
-     */
-    public static final List<String> AUDIO_FILE_SUFFIXS = Arrays.asList(".mp3", ".wav", ".mid");
+    public static final String[] AUDIO_FILE_SUFFIXS = new String[] { ".mp3", ".wav", ".mid" };
 
     /**
      * 
      */
-    public static final String[] IMAGE_ALLOW_FILES = new String[] { ".png", ".jpg", ".jpeg", ".gif", ".bmp" };
-
+    public static final String[] IMAGE_FILE_SUFFIXS = new String[] { ".png", ".jpg", ".jpeg", ".gif", ".bmp" };
     /**
      * 
      */
-    public static final String[] VIDEO_ALLOW_FILES = new String[] { ".flv", ".swf", ".mkv", ".avi", ".rm", ".rmvb", ".mpeg",
-            ".mpg", ".ogg", ".ogv", ".mov", ".wmv", ".mp4", ".webm", ".mp3", ".wav", ".mid" };
+    public static final String[] DOCUMENT_FILE_SUFFIXS = new String[] { ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", ".pdf",
+            ".txt", ".md", ".xml", ".ofd" };
     /**
      * 
      */
-    public static final String[] ALLOW_FILES = ArrayUtils.addAll(ArrayUtils.addAll(VIDEO_ALLOW_FILES, IMAGE_ALLOW_FILES),
-            new String[] { ".rar", ".zip", ".tar", ".gz", ".7z", ".bz2", ".cab", ".iso", ".doc", ".docx", ".xls", ".xlsx", ".ppt",
-                    ".pptx", ".pdf", ".txt", ".md", ".xml", ".ofd", ".psd" });
+    public static final String[] VIDEO_FILE_SUFFIXS = new String[] { ".flv", ".swf", ".mkv", ".avi", ".rm", ".rmvb", ".mpeg",
+            ".mpg", ".ogg", ".ogv", ".mov", ".wmv", ".mp4", ".webm" };
+    /**
+     * 
+     */
+    public static final String[] OTHER_FILE_SUFFIXS = new String[] { ".rar", ".zip", ".tar", ".gz", ".7z", ".bz2", ".cab", ".iso",
+            ".psd" };
+    /**
+     * 
+     */
+    public static final String[] ALLOW_FILES = ArrayUtils.addAll(
+            ArrayUtils.addAll(ArrayUtils.addAll(ArrayUtils.addAll(AUDIO_FILE_SUFFIXS, VIDEO_FILE_SUFFIXS), IMAGE_FILE_SUFFIXS),
+                    DOCUMENT_FILE_SUFFIXS),
+            OTHER_FILE_SUFFIXS);
     /**
      * 
      */
@@ -85,7 +90,7 @@ public class CmsFileUtils {
      * 
      */
     public static final String[] OTHER_FILETYPES = new String[] { CmsFileUtils.FILE_TYPE_VIDEO, CmsFileUtils.FILE_TYPE_AUDIO,
-            CmsFileUtils.FILE_TYPE_OTHER };
+            CmsFileUtils.FILE_TYPE_DOCUMENT, CmsFileUtils.FILE_TYPE_OTHER };
 
     /**
      * 
@@ -99,6 +104,10 @@ public class CmsFileUtils {
      * 
      */
     public static final String FILE_TYPE_VIDEO = "video";
+    /**
+     * 
+     */
+    public static final String FILE_TYPE_DOCUMENT = "document";
     /**
      * 
      */
@@ -288,7 +297,7 @@ public class CmsFileUtils {
         if (null != suffix && !suffix.startsWith(CommonConstants.DOT)) {
             suffix = CommonConstants.DOT + suffix;
         }
-        if (IMAGE_FILE_SUFFIXS.contains(suffix)) {
+        if (ArrayUtils.contains(IMAGE_FILE_SUFFIXS, suffix)) {
             FileSize fileSize = new FileSize();
             fileSize.setFileSize(file.length());
             try (FileInputStream fis = new FileInputStream(file)) {
@@ -491,12 +500,14 @@ public class CmsFileUtils {
         if (null != suffix && !suffix.startsWith(CommonConstants.DOT)) {
             suffix = CommonConstants.DOT + suffix;
         }
-        if (IMAGE_FILE_SUFFIXS.contains(suffix)) {
+        if (ArrayUtils.contains(IMAGE_FILE_SUFFIXS, suffix)) {
             return FILE_TYPE_IMAGE;
-        } else if (VIDEO_FILE_SUFFIXS.contains(suffix)) {
+        } else if (ArrayUtils.contains(VIDEO_FILE_SUFFIXS, suffix)) {
             return FILE_TYPE_VIDEO;
-        } else if (AUDIO_FILE_SUFFIXS.contains(suffix)) {
+        } else if (ArrayUtils.contains(AUDIO_FILE_SUFFIXS, suffix)) {
             return FILE_TYPE_AUDIO;
+        } else if (ArrayUtils.contains(DOCUMENT_FILE_SUFFIXS, suffix)) {
+            return FILE_TYPE_DOCUMENT;
         } else {
             return FILE_TYPE_OTHER;
         }

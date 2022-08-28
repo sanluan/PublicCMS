@@ -78,7 +78,7 @@ public class MyContentListDirective extends AbstractAppDirective {
                         handler.getBoolean("hasImages"), handler.getBoolean("hasCover"), handler.getBoolean("hasFiles"), null,
                         user.getId(), handler.getDate("startPublishDate"), handler.getDate("endPublishDate"), null),
                 handler.getBoolean("containChild"), null, null, handler.getInteger("offset"), handler.getInteger("pageIndex", 1),
-                handler.getInteger("pageSize", handler.getInteger("count", 30)));
+                handler.getInteger("pageSize", handler.getInteger("count", 30)), null);
         @SuppressWarnings("unchecked")
         List<CmsContent> list = (List<CmsContent>) page.getList();
         list.forEach(e -> {

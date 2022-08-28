@@ -62,7 +62,7 @@ public class LogOperateDao extends BaseDao<LogOperate> {
         if (!ORDERTYPE_ASC.equalsIgnoreCase(orderType)) {
             orderType = ORDERTYPE_DESC;
         }
-        queryHandler.order("bean.createDate").append(orderType).append(",bean.id").append(orderType);
+        queryHandler.order("bean.id").append(orderType);
         return getPage(queryHandler, pageIndex, pageSize);
     }
 

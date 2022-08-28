@@ -17,7 +17,7 @@ INSERT INTO `sys_module_lang` VALUES ('page_diy', 'ja', '視覚化されたペ�
 INSERT INTO `sys_module_lang` VALUES ('page_diy', 'zh', '页面可视化');
 
 -- 2022-05-10 --
-ALTER TABLE `cms_content` 
+ALTER TABLE `cms_content`
     ADD COLUMN `update_user_id` bigint(20) DEFAULT NULL COMMENT '更新用户' AFTER `check_date`;
 CREATE TABLE `cms_content_text_history` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -70,7 +70,7 @@ INSERT INTO `sys_module_lang` VALUES ('template_search', 'ja', '検索');
 INSERT INTO `sys_module_lang` VALUES ('template_search', 'zh', '搜索');
 -- 2022-07-04 --
 ALTER TABLE `visit_history` ADD INDEX  `visit_history_create_date` (`create_date`, `site_id`, `session_id`, `visit_date`, `ip`);
-ALTER TABLE `cms_content` 
+ALTER TABLE `cms_content`
     DROP INDEX `cms_content_check_date`,
     DROP INDEX `cms_content_score`,
     DROP INDEX `cms_content_only_url`,
@@ -79,26 +79,26 @@ ALTER TABLE `cms_content`
 DROP TABLE IF EXISTS `sys_site_datasource`;
 DROP TABLE IF EXISTS `sys_datasource`;
 -- 2022-07-06 --
-ALTER TABLE `cms_content` 
+ALTER TABLE `cms_content`
     DROP INDEX `cms_content_status`,
     DROP INDEX `cms_content_disabled`,
     ADD INDEX `cms_content_parent_id` (`site_id`, `parent_id`, `disabled`, `sort`, `publish_date`),
     ADD INDEX `cms_content_disabled` (`site_id`, `disabled`, `sort`, `publish_date`),
     ADD INDEX `cms_content_status` (`site_id`, `status`, `parent_id`, `category_id`, `disabled`, `model_id`, `publish_date`, `expiry_date`, `sort`);
-ALTER TABLE `cms_comment` 
+ALTER TABLE `cms_comment`
     DROP INDEX `cms_comment_update_date`,
     ADD INDEX `cms_comment_user_id`(`site_id`, `user_id`, `status`, `disabled`);
-ALTER TABLE `sys_app_token` 
+ALTER TABLE `sys_app_token`
     DROP INDEX `sys_app_token_app_id`,
     DROP INDEX `sys_app_token_create_date`,
     ADD INDEX `sys_app_token_app_id`(`app_id`, `create_date`),
     ADD INDEX `sys_app_token_expiry_date`(`expiry_date`);
-ALTER TABLE `sys_email_token` 
+ALTER TABLE `sys_email_token`
     DROP INDEX `sys_email_token_user_id`,
     DROP INDEX `sys_email_token_create_date`,
     ADD INDEX `sys_email_token_expiry_date`(`expiry_date`),
     ADD INDEX `sys_email_token_user_id`(`user_id`, `create_date`);
-ALTER TABLE `sys_user_token` 
+ALTER TABLE `sys_user_token`
     DROP INDEX `sys_user_token_site_id`,
     DROP INDEX `sys_user_token_user_id`,
     DROP INDEX `sys_user_token_create_date`,
@@ -107,7 +107,7 @@ ALTER TABLE `sys_user_token`
     ADD INDEX `sys_user_token_expiry_date`(`expiry_date`),
     ADD INDEX `sys_user_token_user_id`(`user_id`);
 -- 2022-07-07 --
-ALTER TABLE `sys_user` 
+ALTER TABLE `sys_user`
     DROP INDEX `sys_user_name`,
     DROP INDEX `sys_user_email`,
     DROP INDEX `sys_user_disabled`,
@@ -119,52 +119,52 @@ ALTER TABLE `sys_user`
     ADD INDEX `sys_user_email`(`site_id`, `email`, `email_checked`),
     ADD INDEX `sys_user_disabled`(`site_id`, `disabled`),
     ADD INDEX `sys_user_dept_id`(`site_id`, `registered_date`, `disabled`);
-ALTER TABLE `sys_app_client` 
+ALTER TABLE `sys_app_client`
     ADD INDEX `sys_app_client_disabled`(`site_id`, `disabled`, `create_date`);
-ALTER TABLE `trade_order` 
+ALTER TABLE `trade_order`
     DROP INDEX `trade_order_create_date`,
     ADD INDEX `trade_order_create_date`(`site_id`, `create_date`);
-ALTER TABLE `trade_payment` 
+ALTER TABLE `trade_payment`
     DROP INDEX `trade_payment_account_type`,
     DROP INDEX `trade_payment_trade_type`,
     DROP INDEX `trade_payment_create_date`,
     ADD INDEX `trade_payment_account_type`(`site_id`, `account_type`, `account_serial_number`),
     ADD INDEX `trade_payment_trade_type`(`site_id`, `trade_type`, `serial_number`),
     ADD INDEX `trade_payment_create_date` (`site_id`, `create_date`);
-ALTER TABLE `trade_payment_history` 
+ALTER TABLE `trade_payment_history`
     DROP INDEX `trade_payment_history_create_date`,
     ADD INDEX `trade_payment_history_create_date`(`site_id`, `create_date`);
-ALTER TABLE `trade_order_history` 
+ALTER TABLE `trade_order_history`
     DROP INDEX `trade_order_history_create_date`,
     ADD INDEX `trade_order_history_create_date`(`site_id`, `create_date`);
-ALTER TABLE `trade_account_history` 
+ALTER TABLE `trade_account_history`
     DROP INDEX `trade_account_history_create_date`,
     ADD INDEX `trade_account_history_create_date`(`site_id`, `create_date`);
-ALTER TABLE `trade_refund` 
+ALTER TABLE `trade_refund`
     DROP INDEX `trade_refund_create_date`,
     DROP INDEX `trade_refund_user_id`,
     ADD INDEX `trade_refund_create_date`(`site_id`, `create_date`),
     ADD INDEX `trade_refund_user_id`(`site_id`,`user_id`,`status`);
-ALTER TABLE `cms_vote_item` 
+ALTER TABLE `cms_vote_item`
     DROP INDEX `cms_vote_item_vote_id`,
     ADD INDEX `cms_vote_item_vote_id`(`vote_id`, `sort`);
 ALTER TABLE `cms_user_score`
     CHANGE COLUMN `scores` `score` int(11) NOT NULL COMMENT '分数' AFTER `item_id`;
-ALTER TABLE `cms_vote` 
+ALTER TABLE `cms_vote`
     CHANGE COLUMN `scores` `votes` int(11) NOT NULL COMMENT '总票数' AFTER `end_date`;
-ALTER TABLE `cms_vote_item` 
+ALTER TABLE `cms_vote_item`
     CHANGE COLUMN `scores` `votes` int(11) NOT NULL COMMENT '票数' AFTER `title`;
-ALTER TABLE `cms_vote_item` 
+ALTER TABLE `cms_vote_item`
     DROP INDEX `cms_vote_item_vote_id`,
     ADD INDEX `cms_vote_item_vote_id`(`vote_id`, `sort`);
-ALTER TABLE `cms_user_survey_question` 
+ALTER TABLE `cms_user_survey_question`
     DROP INDEX `cms_user_survey_site_id`,
     ADD INDEX `cms_user_survey_question_site_id`(`site_id`, `survey_id`, `create_date`);
-ALTER TABLE `cms_user_score` 
+ALTER TABLE `cms_user_score`
     DROP INDEX `cms_user_score_user_id`,
     ADD INDEX `cms_user_score_user_id`(`user_id`, `item_type`, `create_date`);
 -- 2022-07-10 --
-ALTER TABLE `cms_word` 
+ALTER TABLE `cms_word`
     DROP INDEX `cms_word_name`,
     DROP INDEX `cms_word_hidden`,
     DROP INDEX `cms_word_create_date`,
@@ -173,22 +173,22 @@ ALTER TABLE `cms_word`
     ADD UNIQUE INDEX `cms_word_name`(`site_id`, `name`),
     ADD INDEX `cms_word_hidden`(`site_id`, `hidden`);
 -- 2022-07-15 --
-ALTER TABLE `cms_content_attribute` 
+ALTER TABLE `cms_content_attribute`
     ADD COLUMN `dictionary_values` text NULL COMMENT '数据字典值' AFTER `search_text`,
     ADD COLUMN `files_text` text NULL COMMENT '附件文本' AFTER `dictionary_values`,
     ADD COLUMN `min_price` decimal(10, 2) NULL COMMENT '最低价格' AFTER `products_text`,
     ADD COLUMN `max_price` decimal(10, 2) NULL COMMENT '最高价格' AFTER `min_price`;
 update cms_content_attribute a set a.dictionary_values = (select dictionary_values from cms_content b where a.content_id = b.id);
-ALTER TABLE `cms_content` 
+ALTER TABLE `cms_content`
     DROP COLUMN `dictionary_values`;
-ALTER TABLE `cms_content` 
+ALTER TABLE `cms_content`
     MODIFY COLUMN `quote_content_id` bigint(20) NULL DEFAULT NULL COMMENT '引用内容(当父内容不为空时为顶级内容)' AFTER `parent_id`;
 -- 2022-07-16 --
-ALTER TABLE `cms_content_attribute` 
+ALTER TABLE `cms_content_attribute`
     ADD COLUMN `extends_text` text NULL COMMENT '扩展文本' AFTER `dictionary_values`,
     ADD COLUMN `extends_fields` text NULL COMMENT '扩展文本字段' AFTER `extends_text`;
 -- 2022-07-23 --
-ALTER TABLE `cms_content_related` 
+ALTER TABLE `cms_content_related`
     ADD COLUMN `relation_type` varchar(20) NULL COMMENT '关系类型' AFTER `content_id`,
     ADD COLUMN `relation` varchar(50) NULL COMMENT '关系' AFTER `relation_type`,
     DROP INDEX `cms_content_related_content_id`,
@@ -196,3 +196,18 @@ ALTER TABLE `cms_content_related`
     ADD INDEX `cms_content_related_content_id`(`content_id`, `relation_type`, `relation`, `sort`),
     ADD INDEX `cms_content_related_related_content_id`(`related_content_id`, `relation_type`, `relation`);
 UPDATE `sys_module` SET `authorized_url` = 'cmsPlace/push,cmsPlace/add,cmsPlace/save,cmsContent/unrelated,cmsPlace/delete' WHERE `id` ='content_push';
+-- 2022-08-03 --
+ALTER TABLE `cms_content`
+    ADD INDEX `cms_content_category_id`(`site_id`, `category_id`, `parent_id`, `disabled`);
+-- 2022-08-05 --
+UPDATE `sys_module` SET `sort` = 2,`parent_id`='content' WHERE `id` ='trade_menu';
+UPDATE `sys_module` SET `sort` = 2,`parent_id`='page' WHERE `id` ='visit_menu';
+-- 2022-08-14 --
+UPDATE `sys_module` SET `sort` = 0,`parent_id`='visit_menu' WHERE `id` ='report_visit';
+UPDATE `log_upload` SET file_type = 'document' WHERE file_path like '%.doc' or file_path like '%.docx' or file_path like '%.xls' or file_path like '%.xlsx' or file_path like '%.ppt' or file_path like '%.pptx' or file_path like '%.pdf' or file_path like '%.txt' or file_path like '%.md' or file_path like '%.xml' or file_path like '%.ofd';
+-- 2022-08-17 --
+UPDATE `sys_module` SET `authorized_url` = 'cmsCategory/addMore,cmsCategory/virify,cmsCategory/rebuildChildIds,cmsCategory/batchPublish,cmsTemplate/lookup,cmsCategory/categoryPath,cmsCategory/contentPath,file/doUpload,cmsDictionary/lookup,cmsCategory/save' WHERE `id` ='category_add';
+UPDATE `sys_module` SET `authorized_url` = 'cmsModel/save,cmsTemplate/lookup,cmsModel/rebuildSearchText,cmsModel/batchPublish,cmsDictionary/lookup' WHERE `id` ='model_add';
+ALTER TABLE `cms_content` 
+    DROP INDEX `cms_content_disabled`,
+    ADD INDEX `cms_content_disabled`(`site_id`, `disabled`, `category_id`, `model_id`);

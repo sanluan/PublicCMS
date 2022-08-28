@@ -68,6 +68,9 @@
                     <@sys.authorized roleIds=admin.roles url='cmsModel/rebuildSearchText'>
                         <a href="cmsModel/rebuildSearchText?id=${a.id?url}&_csrf=<@tools.csrfToken admin=true/>" class="btnText" title="<@t.page 'confirm.do'/>" target="ajaxTodo"><i class="icon-refresh"></i><@t.page 'button.rebuild_search_text'/></a>
                     </@sys.authorized>
+                    <@sys.authorized roleIds=admin.roles url='cmsModel/batchPublish'>
+                        <a href="cmsModel/batchPublish?id=${a.id?url}&_csrf=<@tools.csrfToken admin=true/>" class="btnText" title="<@t.page 'confirm.do'/>" target="ajaxTodo"><i class="icon-file-text-alt"></i><@t.page 'button.batch_publish_content'/></a>
+                    </@sys.authorized>
                     <#if !site.parentId?has_content>
                         <@sys.authorized roleIds=admin.roles url='cmsModel/delete'>
                             <a href="cmsModel/delete?id=${a.id?url}&_csrf=<@tools.csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i><@t.page 'button.delete'/></a>

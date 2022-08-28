@@ -3,10 +3,12 @@ package com.publiccms.common.base;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletionStage;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import org.apache.commons.logging.Log;
@@ -16,6 +18,8 @@ import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.search.highlight.Highlighter;
 import org.apache.lucene.search.highlight.QueryScorer;
 import org.apache.lucene.search.highlight.SimpleHTMLFormatter;
+import org.hibernate.ScrollMode;
+import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -273,6 +277,33 @@ public abstract class BaseDao<E> {
     }
 
     /**
+     * 处理数据
+     *
+     * @param <T>
+     * @param query
+     * @param queryHandler
+     * @param worker
+     * @param batchSize
+     */
+    @SuppressWarnings("unchecked")
+    protected <T> void batchWork(QueryHandler queryHandler, Consumer<List<T>> worker, int batchSize) {
+        Query<E> query = getSession().createQuery(queryHandler.getSql(), getEntityClass());
+        queryHandler.initQuery(query);
+        ScrollableResults results = query.setReadOnly(true).setCacheable(false).scroll(ScrollMode.FORWARD_ONLY);
+        List<T> resultList = new ArrayList<>(batchSize);
+        while (results.next()) {
+            resultList.add((T) results.get(0));
+            if (resultList.size() >= batchSize) {
+                worker.accept(resultList);
+                resultList.clear();
+            }
+        }
+        if (resultList.size() >= 0) {
+            worker.accept(resultList);
+        }
+    }
+
+    /**
      * 获取列表
      *
      * @param queryHandler
@@ -303,6 +334,19 @@ public abstract class BaseDao<E> {
     protected List<E> getList(QueryHandler queryHandler) {
         TypedQuery<E> query = getSession().createQuery(queryHandler.getSql(), getEntityClass());
         return getList(query, queryHandler);
+    }
+
+    /**
+     * @param queryHandler
+     * @param firstResult
+     * @param pageIndex
+     * @param pageSize
+     * @param maxResults
+     * @return page
+     */
+    protected PageHandler getPage(QueryHandler queryHandler, Integer firstResult, Integer pageIndex, Integer pageSize,
+            Integer maxResults) {
+        return getPage(queryHandler, null, firstResult, pageIndex, pageSize, maxResults);
     }
 
     /**
@@ -354,6 +398,18 @@ public abstract class BaseDao<E> {
             }
         }
         return page;
+    }
+
+    /**
+     * @param optionsStep
+     * @param highLighterQuery
+     * @param pageIndex
+     * @param pageSize
+     * @return page
+     */
+    protected PageHandler getPage(SearchQueryOptionsStep<?, E, ?, ?, ?> optionsStep, HighLighterQuery highLighterQuery,
+            Integer pageIndex, Integer pageSize, Integer maxResults) {
+        return getPage(optionsStep, highLighterQuery, null, pageIndex, pageSize, maxResults);
     }
 
     /**

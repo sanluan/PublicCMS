@@ -17,6 +17,7 @@ import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.logic.service.cms.CmsContentService;
+import com.publiccms.views.pojo.query.CmsContentSearchQuery;
 
 import config.spring.ApplicationConfig;
 
@@ -51,9 +52,9 @@ public class CmsContentTest {
         HighLighterQuery highLighterQuery = new HighLighterQuery(true);
         highLighterQuery.setPreTag("<em>");
         highLighterQuery.setPostTag("</em>");
-        PageHandler page = contentService.query((short) 1, false, true, highLighterQuery, "天津黑核科技有限公司",
-                new String[] { "title", "description" }, null, 1, false, null, new String[] { "1" }, null, null, null, null, null,
-                CommonUtils.getMinuteDate(), null, null, null);
+        PageHandler page = contentService.query(new CmsContentSearchQuery((short) 1, false, true, highLighterQuery, "天津黑核科技有限公司",
+                null, new String[] { "title", "description" }, null, 1, null, new String[] { "1" }, null, null, null, null, null,
+                CommonUtils.getMinuteDate()), false, null, null, null, null);
         for (CmsContent content : (List<CmsContent>) page.getList()) {
             System.out.println(content.getTitle() + "\t" + content.getDescription());
         }

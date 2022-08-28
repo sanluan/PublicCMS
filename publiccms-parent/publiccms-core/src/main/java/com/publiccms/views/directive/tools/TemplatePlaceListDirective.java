@@ -40,7 +40,7 @@ public class TemplatePlaceListDirective extends AbstractTemplateDirective {
         Set<String> regionList = new LinkedHashSet<>();
         if (CommonUtils.notEmpty(path)) {
             SysSite site = getSite(handler);
-            String fileContent = CmsFileUtils.getFileContent(siteComponent.getWebTemplateFilePath(site, path));
+            String fileContent = CmsFileUtils.getFileContent(siteComponent.getTemplateFilePath(site, path));
             if (CommonUtils.notEmpty(fileContent)) {
                 Matcher matcher = PLACE_PATTERN.matcher(fileContent);
                 while (matcher.find()) {
@@ -53,7 +53,7 @@ public class TemplatePlaceListDirective extends AbstractTemplateDirective {
                 Set<String> placeSet2 = new HashSet<>();
                 for (String place : placeSet) {
                     String placeContent = CmsFileUtils.getFileContent(
-                            siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + place));
+                            siteComponent.getTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + place));
                     if (CommonUtils.notEmpty(placeContent)) {
                         Matcher placeMatcher = PLACE_PATTERN.matcher(placeContent);
                         while (placeMatcher.find()) {

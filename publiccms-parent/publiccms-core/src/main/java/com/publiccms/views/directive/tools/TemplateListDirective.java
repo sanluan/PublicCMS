@@ -23,7 +23,7 @@ public class TemplateListDirective extends AbstractTemplateDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
         String path = handler.getString("path", CommonConstants.SEPARATOR);
-        handler.put("list", CmsFileUtils.getFileList(siteComponent.getWebTemplateFilePath(getSite(handler), path),
+        handler.put("list", CmsFileUtils.getFileList(siteComponent.getTemplateFilePath(getSite(handler), path),
                 handler.getString("orderField"))).render();
     }
 

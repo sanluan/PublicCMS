@@ -62,7 +62,7 @@ header .nav .selected ul{display:block;}
 
 .tabsPage{margin-left:185px;position:relative;}
 .tabsPage .tabsPageHeader{display:block;height:35px;position:relative;}
-.tabsPage .tabsPageHeaderContent{display:block;overflow:hidden;height:100%;margin-left:30px;margin-right:60px;position:relative;}
+.tabsPage .tabsPageHeaderContent{display:block;overflow:hidden;height:100%;margin-left:0px;margin-right:30px;position:relative;}
 .tabsPage .tabsPageHeaderMargin{margin:0 60px 0 30px;}
 .tabsPage .tabsPageHeader ul{display:block;width:10000px;z-index:1;position:absolute;}
 .tabsPage .tabsPageHeader li{float:left;display:block;height:100%;position:relative;}
@@ -76,6 +76,7 @@ header .nav .selected ul{display:block;}
 .tabsPage .tabsLeft, .tabsPage .tabsRight, .tabsPage .tabsMore{text-decoration:none;display:block;overflow:hidden;width:30px;text-align:center;height:100%;line-height:35px;position:absolute;z-index:2;}
 .tabsPage .tabsLeft{top:0px;}
 .tabsPage .tabsRight{top:0px;right:30px;}
+.tabsPage .tabsLeftDisabled,.tabsPage .tabsRightDisabled{opacity:0.4;}
 .tabsPage .tabsMore{top:0px;right:0;}
 .tabsPage .tabsMoreList{display:none;overflow-x:hidden;overflow-y:auto;width:170px;max-height:380px;padding:2px;border-style:solid;border-width:1px;position:absolute;top:35px;right:0;z-index:3;}
 .tabsPage .tabsMoreList li{display:block;overflow:hidden;height:30px;line-height:21px;}

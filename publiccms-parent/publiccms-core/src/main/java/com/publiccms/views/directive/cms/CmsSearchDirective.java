@@ -20,6 +20,7 @@ import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.views.pojo.entities.ClickStatistics;
+import com.publiccms.views.pojo.query.CmsContentSearchQuery;
 
 /**
  *
@@ -28,6 +29,7 @@ import com.publiccms.views.pojo.entities.ClickStatistics;
  * 参数列表
  * <ul>
  * <li><code>word</code> 搜索词,多个搜索词时取并集结果
+ * <li><code>exclude</code> 排除词汇
  * <li><code>tagId</code> 多个标签id,多个标签时取并集结果
  * <li><code>categoryId</code> 分类id
  * <li><code>containChild</code> 包含子分类，当categoryId不为空时有效
@@ -53,6 +55,7 @@ import com.publiccms.views.pojo.entities.ClickStatistics;
  * 排序字段,【clicks:点击数倒叙,score:分数倒叙,publishDate:发布日期倒叙】,默认相关度倒叙
  * <li><code>pageIndex</code> 页码
  * <li><code>pageSize</code> 每页条数
+ * <li><code>maxResults</code> 最大结果数
  * </ul>
  * <p>
  * 返回结果
@@ -105,13 +108,16 @@ public class CmsSearchDirective extends AbstractTemplateDirective {
             highLighterQuery.setPostTag(handler.getString("postTag"));
         }
         try {
-            page = service.query(site.getId(), handler.getBoolean("projection", false), handler.getBoolean("phrase", false),
-                    highLighterQuery, word, handler.getStringArray("fields"), tagIds, handler.getInteger("categoryId"),
-                    handler.getBoolean("containChild"), handler.getIntegerArray("categoryIds"),
-                    handler.getStringArray("modelIds"), handler.getStringArray("extendsValues"),
-                    handler.getStringArray("dictionaryValues"), handler.getBoolean("dictionaryUnion"),
-                    handler.getDate("startPublishDate"), currentDate, currentDate, handler.getString("orderField"), pageIndex,
-                    pageSize);
+            page = service.query(
+                    new CmsContentSearchQuery(site.getId(), handler.getBoolean("projection", false),
+                            handler.getBoolean("phrase", false), highLighterQuery, word, handler.getString("exclude"),
+                            handler.getStringArray("fields"), tagIds, handler.getInteger("categoryId"),
+                            handler.getIntegerArray("categoryIds"), handler.getStringArray("modelIds"),
+                            handler.getStringArray("extendsValues"), handler.getStringArray("dictionaryValues"),
+                            handler.getBoolean("dictionaryUnion"), handler.getDate("startPublishDate"),
+                            handler.getDate("endPublishDate", currentDate), currentDate),
+                    handler.getBoolean("containChild"), handler.getString("orderField"), pageIndex, pageSize,
+                    handler.getInteger("maxPage"));
             @SuppressWarnings("unchecked")
             List<CmsContent> list = (List<CmsContent>) page.getList();
             if (null != list) {

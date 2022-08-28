@@ -23,7 +23,7 @@
         </div>
     </form>
 </div>
-<@sys.authorized roleIds=admin.roles urls='cmsCategory/add,cmsCategory/delete,cmsCategory/publish,cmsCategory/rebuildChildIds,cmsCategory/contributeForm,cmsCategory/static,cmsCategory/moveParameters,cmsCategory/changeTypeParameters,cmsCategory/publishParameters,cmsPlace/push'><#assign authorizedMap=map/></@sys.authorized>
+<@sys.authorized roleIds=admin.roles urls='cmsCategory/add,cmsCategory/delete,cmsCategory/publish,cmsCategory/rebuildChildIds,cmsCategory/batchPublish,cmsCategory/contributeForm,cmsCategory/static,cmsCategory/moveParameters,cmsCategory/changeTypeParameters,cmsCategory/publishParameters,cmsPlace/push'><#assign authorizedMap=map/></@sys.authorized>
 <div class="pageContent">
     <div class="panelBar">
         <ul class="toolBar">
@@ -48,6 +48,9 @@
         </#if>
         <#if authorizedMap['cmsCategory/moveParameters']>
             <li><a href="cmsCategory/moveParameters.html" target="dialog" mask="true"><i class="icon-move icon-large"></i><@t.page 'button.batch_move'/></a></li>
+        </#if>
+        <#if authorizedMap['cmsCategory/batchPublish']>
+            <li><a href="cmsCategory/batchPublish?_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.do'/>" target="selectedTodo" rel="ids"><i class="icon-file-text-alt icon-large"></i><@t.page 'button.batch_publish_content'/></a></li>
         </#if>
         <#if authorizedMap['cmsCategory/delete']>
             <li class="line">line</li>

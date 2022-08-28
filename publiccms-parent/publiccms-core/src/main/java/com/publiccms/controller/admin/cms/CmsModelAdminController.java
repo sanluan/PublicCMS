@@ -1,5 +1,6 @@
 package com.publiccms.controller.admin.cms;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -9,6 +10,8 @@ import java.util.Set;
 
 import jakarta.servlet.http.HttpServletRequest;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -19,20 +22,30 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
+import com.publiccms.entities.cms.CmsCategory;
+import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.log.LogOperate;
+import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.ModelComponent;
+import com.publiccms.logic.component.template.TemplateComponent;
+import com.publiccms.logic.service.cms.CmsCategoryService;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
+import com.publiccms.logic.service.sys.SysExtendFieldService;
 import com.publiccms.views.pojo.entities.CmsModel;
 import com.publiccms.views.pojo.entities.ContentRelated;
+import com.publiccms.views.pojo.query.CmsCategoryQuery;
+
+import freemarker.template.TemplateException;
 
 /**
  * 
@@ -42,14 +55,21 @@ import com.publiccms.views.pojo.entities.ContentRelated;
 @Controller
 @RequestMapping("cmsModel")
 public class CmsModelAdminController {
+    protected final Log log = LogFactory.getLog(getClass());
+    @Resource
+    private CmsCategoryService categoryService;
     @Resource
     private ModelComponent modelComponent;
     @Resource
     protected CmsContentService contentService;
     @Resource
+    private SysExtendFieldService extendFieldService;
+    @Resource
     protected LogOperateService logOperateService;
     @Resource
     protected SiteComponent siteComponent;
+    @Resource
+    private TemplateComponent templateComponent;
 
     /**
      * @param site
@@ -85,7 +105,7 @@ public class CmsModelAdminController {
                 i++;
             }
             if (!templist.isEmpty()) {
-                Collections.reverse(templist);  
+                Collections.reverse(templist);
                 for (int index : templist) {
                     entity.getRelatedList().remove(index);
                 }
@@ -151,13 +171,56 @@ public class CmsModelAdminController {
      * @param id
      * @return view name
      */
+    @RequestMapping("batchPublish")
+    @Csrf
+    public String batchPublish(@RequestAttribute SysSite site, String id) {
+        Map<String, CmsModel> modelMap = modelComponent.getModelMap(site);
+        CmsModel entity = modelMap.get(id);
+        if (null != entity) {
+            log.info("begin batch publish");
+            contentService.batchWork(site.getId(), null, new String[] { id }, list -> {
+                for (CmsContent content : list) {
+                    try {
+                        templateComponent.createContentFile(site, content, null, null);
+                    } catch (IOException | TemplateException e) {
+                        log.error(e.getMessage());
+                    }
+                }
+                log.info("batch publish size : " + list.size());
+            }, PageHandler.MAX_PAGE_SIZE);
+            log.info("complete batch publish");
+        }
+        return CommonConstants.TEMPLATE_DONE;
+    }
+
+    /**
+     * @param site
+     * @param id
+     * @return view name
+     */
+    @SuppressWarnings("unchecked")
     @RequestMapping("rebuildSearchText")
     @Csrf
     public String rebuildSearchText(@RequestAttribute SysSite site, String id) {
         Map<String, CmsModel> modelMap = modelComponent.getModelMap(site);
         CmsModel entity = modelMap.get(id);
         if (null != entity) {
-            contentService.rebuildSearchText(site.getId(), entity);
+            CmsCategoryQuery query = new CmsCategoryQuery();
+            query.setSiteId(site.getId());
+            query.setQueryAll(true);
+            PageHandler page = categoryService.getPage(query, null, null);
+            for (CmsCategory category : (List<CmsCategory>) page.getList()) {
+                log.info("begin rebuild search text for category : " + category.getId());
+                contentService.batchWork(site.getId(), new Integer[] { category.getId() }, new String[] { id }, list -> {
+                    List<SysExtendField> categoryExtendList = null;
+                    if (null != category.getExtendId()) {
+                        categoryExtendList = extendFieldService.getList(category.getExtendId(), null, true);
+                    }
+                    contentService.rebuildSearchText(site.getId(), entity, categoryExtendList, list);
+                    log.info("rebuild search text for category : " + category.getId() + " size : " + list.size());
+                }, PageHandler.MAX_PAGE_SIZE);
+                log.info("complete rebuild search text for category : " + category.getId());
+            }
         }
         return CommonConstants.TEMPLATE_DONE;
     }

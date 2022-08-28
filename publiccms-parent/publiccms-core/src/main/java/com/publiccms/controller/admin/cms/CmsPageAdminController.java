@@ -78,7 +78,7 @@ public class CmsPageAdminController {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (CommonUtils.notEmpty(path)) {
-            String filepath = siteComponent.getWebTemplateFilePath(site, path);
+            String filepath = siteComponent.getTemplateFilePath(site, path);
             CmsPageData pageDate = new CmsPageData();
             pageDate.setExtendDataList(extendDataParameters.getExtendDataList());
             metadataComponent.updateTemplateData(filepath, pageDate);

@@ -21,7 +21,7 @@ public class TemplateContentDirective extends AbstractTemplateDirective {
     public void execute(RenderHandler handler) throws IOException, Exception {
         String path = handler.getString("path");
         if (CommonUtils.notEmpty(path)) {
-            handler.put("object", CmsFileUtils.getFileContent(siteComponent.getWebTemplateFilePath(getSite(handler), path)))
+            handler.put("object", CmsFileUtils.getFileContent(siteComponent.getTemplateFilePath(getSite(handler), path)))
                     .render();
         }
     }

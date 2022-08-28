@@ -300,7 +300,7 @@ public class TemplateComponent implements Cache {
         if (CommonUtils.empty(filepath)) {
             filepath = category.getContentPath();
         }
-        String realTemplatePath = siteComponent.getWebTemplateFilePath(site, templatePath);
+        String realTemplatePath = siteComponent.getTemplateFilePath(site, templatePath);
         CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(realTemplatePath);
         CmsPageData data = metadataComponent.getTemplateData(realTemplatePath);
         Map<String, Object> metadataMap = metadata.getAsMap(data);
@@ -412,7 +412,7 @@ public class TemplateComponent implements Cache {
         } else {
             model.put("attribute", attribute);
         }
-        String realTemplatePath = siteComponent.getWebTemplateFilePath(site, templatePath);
+        String realTemplatePath = siteComponent.getTemplateFilePath(site, templatePath);
         CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(realTemplatePath);
         CmsPageData data = metadataComponent.getTemplateData(realTemplatePath);
         Map<String, Object> metadataMap = metadata.getAsMap(data);

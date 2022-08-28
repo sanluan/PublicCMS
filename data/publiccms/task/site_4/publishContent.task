@@ -1,12 +1,12 @@
-<#assign pageCount=500/>
 <#assign dealCount=0/>
-<@_contentList advanced=true pageIndex=1 count=pageCount>
-  <#list 1..page.totalPage as n>
-    <@_contentList advanced=true pageIndex=n count=pageCount>
-      <#list page.list as a>
-        <@_publishContent id=a.id><#assign dealCount++/></@_publishContent>
-      </#list>
-    </@_contentList>
-  </#list>
-</@_contentList>
-共生成${dealCount}条内容静态页面
+<#assign maxPage=100/>
+<#macro deal parentId>
+	<@_categoryList advanced=true parentId=parentId count=100>
+		<#list page.list as a>
+			<@_publishContent categoryIds=a.id><#assign dealCount++/></@_publishContent>
+			<#if a.childIds?has_content><@deal a.id/></#if>
+		</#list>
+	</@_categoryList>
+</#macro>
+<@deal ''/>
+共生成${dealCount}个分类内容静态页面

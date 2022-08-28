@@ -241,7 +241,7 @@
         <#if 'customform'=type>
     <p><label>${(e.name)}:</label><@input name e e?index+fromIndex value type/></p>
         <#else>
-    <dl class="nowrap">
+    <dl<#if !['number','alphaColor','color','date','datetime','boolean','text','password']?seq_contains(e.inputType)> class="nowrap"</#if>>
         <dt>${(e.name)}:</dt>
         <dd<#if 'editor'=e.inputType> style="width:90%;"</#if>>
             <@input name e e?index+fromIndex value type/>

@@ -5,12 +5,19 @@ function ChartProxy(ele) {
         this.config=config;
         var chart=this;
         if( chart.echart) {
-            return chart.echart.setOption(chart.config);
+            chart.echart.setOption(chart.config)
+            return chart.echart;
         } else {
             echartsProxyList.push(function(echarts) {
-                chart.echart=echarts.init(chart.ele).setOption(chart.config);
+                chart.echart=echarts.init(chart.ele);
+                chart.echart.setOption(chart.config)
             });
             return chart;
+        }
+    };
+    this.resize = function(){
+        if(this.echart) {
+            this.echart.resize();
         }
     }
 }

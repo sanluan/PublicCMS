@@ -54,7 +54,7 @@ public class ContentCoverCatch {
     public void insertTest() {
         CmsContentQuery query = new CmsContentQuery();
         query.setHasCover(true);
-        PageHandler page = contentService.getPage(query, null, null, null, null, null, 500);
+        PageHandler page = contentService.getPage(query, null, null, null, null, null, 500, null);
         while (!page.isLastPage()) {
             for (CmsContent entity : (List<CmsContent>) page.getList()) {
                 if (CommonUtils.notEmpty(entity.getCover()) && entity.getCover().contains("http")) {
@@ -62,7 +62,7 @@ public class ContentCoverCatch {
                 }
                 contentService.update(entity.getId(), entity);
             }
-            page = contentService.getPage(query, null, null, null, null, page.getNextPage(), 500);
+            page = contentService.getPage(query, null, null, null, null, page.getNextPage(), 500, null);
         }
         for (CmsContent entity : (List<CmsContent>) page.getList()) {
             if (CommonUtils.notEmpty(entity.getCover()) && entity.getCover().contains("http")) {

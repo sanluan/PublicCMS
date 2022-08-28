@@ -27,6 +27,7 @@ import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.entities.cms.CmsCategoryAttribute;
+import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
@@ -289,13 +290,40 @@ public class CmsCategoryAdminController {
     }
 
     /**
+     * @param site
+     * @param ids
+     * @return view name
+     */
+    @RequestMapping("batchPublish")
+    @Csrf
+    public String batchPublish(@RequestAttribute SysSite site, Integer[] ids) {
+        if (CommonUtils.notEmpty(ids)) {
+            log.info("begin batch publish");
+            contentService.batchWork(site.getId(), ids, null, list -> {
+                for (CmsContent content : list) {
+                    try {
+                        templateComponent.createContentFile(site, content, null, null);
+                    } catch (IOException | TemplateException e) {
+                        log.error(e.getMessage());
+                    }
+                }
+                log.info("batch publish size : " + list.size());
+            }, PageHandler.MAX_PAGE_SIZE);
+            log.info("complete batch publish");
+        }
+        return CommonConstants.TEMPLATE_DONE;
+    }
+
+    /**
+     * @param site
      * @return view name
      */
     @SuppressWarnings("unchecked")
     @RequestMapping("rebuildChildIds")
     @Csrf
-    public String rebuildChildIds() {
+    public String rebuildChildIds(@RequestAttribute SysSite site) {
         CmsCategoryQuery query = new CmsCategoryQuery();
+        query.setSiteId(site.getId());
         query.setQueryAll(true);
         PageHandler page = service.getPage(query, null, null);
         for (CmsCategory category : (List<CmsCategory>) page.getList()) {

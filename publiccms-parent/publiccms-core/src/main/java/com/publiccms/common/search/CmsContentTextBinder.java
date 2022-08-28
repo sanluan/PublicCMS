@@ -2,6 +2,7 @@ package com.publiccms.common.search;
 
 import java.math.BigDecimal;
 
+import org.hibernate.search.engine.backend.analysis.AnalyzerNames;
 import org.hibernate.search.engine.backend.document.IndexFieldReference;
 import org.hibernate.search.engine.backend.document.model.dsl.IndexSchemaElement;
 import org.hibernate.search.engine.backend.document.model.dsl.IndexSchemaObjectField;
@@ -23,11 +24,15 @@ public class CmsContentTextBinder implements TypeBinder {
 
         IndexFieldType<String> textFieldType = context.typeFactory().asString().projectable(Projectable.YES)
                 .analyzer(ANALYZER_NAME).toIndexFieldType();
+        IndexFieldType<String> dictionaryFieldType = context.typeFactory().asString().analyzer(AnalyzerNames.WHITESPACE)
+                .toIndexFieldType();
         IndexFieldType<BigDecimal> bigDecimalFieldType = context.typeFactory().asBigDecimal().decimalScale(2).toIndexFieldType();
 
         IndexFieldReference<String> textField = schemaElement.field("text", textFieldType).toReference();
         IndexFieldReference<String> filesField = schemaElement.field("files", textFieldType).toReference();
         IndexFieldReference<String> extendsField = schemaElement.field("extends", textFieldType).toReference();
+        IndexFieldReference<String> dictionaryValuesField = schemaElement.field("dictionaryValues", dictionaryFieldType)
+                .toReference();
 
         IndexFieldReference<BigDecimal> minPriceField = schemaElement.field("minPrice", bigDecimalFieldType).toReference();
         IndexFieldReference<BigDecimal> maxPriceField = schemaElement.field("maxPrice", bigDecimalFieldType).toReference();
@@ -35,8 +40,8 @@ public class CmsContentTextBinder implements TypeBinder {
         IndexSchemaObjectField extendField = schemaElement.objectField(EXTEND_OBJECT_NAME);
         extendField.fieldTemplate("template", textFieldType);
 
-        context.bridge(CmsContent.class, new CmsContentTextBridge(textField, filesField, extendsField, minPriceField,
-                maxPriceField, extendField.toReference()));
+        context.bridge(CmsContent.class, new CmsContentTextBridge(textField, dictionaryValuesField, filesField, extendsField,
+                minPriceField, maxPriceField, extendField.toReference()));
     }
 
 }

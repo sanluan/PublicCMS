@@ -23,7 +23,7 @@ public class TemplateSearchListDirective extends AbstractTemplateDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
         String path = handler.getString("path", CommonConstants.SEPARATOR);
-        handler.put("list", CmsFileUtils.searchFileList(siteComponent.getWebTemplateFilePath(getSite(handler), path), path,
+        handler.put("list", CmsFileUtils.searchFileList(siteComponent.getTemplateFilePath(getSite(handler), path), path,
                 handler.getString("word"))).render();
     }
 

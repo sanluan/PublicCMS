@@ -30,6 +30,8 @@ import config.spring.CmsConfig;
 /**
  *
  * SpringBootApplication
+ * <p>
+ * 在idea中通过SprintBootApplication main方法启动需要将工作目录改为 publiccms 模块所在的路径，否则静态资源不能加载
  * 
  */
 @Configuration

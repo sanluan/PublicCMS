@@ -73,6 +73,7 @@
     <fieldset>
         <legend><@t.page 'comment.management'/></legend>
         <div class="unit">
+            <div id="comment" class="chart"></div>
             <ul class="clearfix">
                 <li>
                     <div class="card">
@@ -97,10 +98,10 @@
                     </div>
                 </li>
             </ul>
-            <div id="comment" style="height:350px;"></div>
         </div>
 <script>
-echarts.init(document.getElementById('comment')).setOption({
+var commentChart=echarts.init(document.getElementById('comment'));
+commentChart.setOption({
     title: {
         text: '<@t.page 'comment'/>',
         x:'center'
@@ -117,7 +118,7 @@ echarts.init(document.getElementById('comment')).setOption({
     xAxis: {
         type: 'category',
         boundaryGap: false,
-        data: [<#list 30..0 as a>'${(.now?long-a*86400000)?number_to_date?string('MM-dd')}'<#sep>,</#list>]
+        data: [<#list 7..0 as a>'${(.now?long-a*86400000)?number_to_date?string('MM-dd')}'<#sep>,</#list>]
     },
     yAxis: {
         type: 'value'
@@ -126,7 +127,7 @@ echarts.init(document.getElementById('comment')).setOption({
     {
         name:'<@t.page 'operate'/>',
         type:'line',
-        data:[<#list 30..0 as a><@log.operateList operate='save.cmsComment' startCreateDate=(.now?long-a*86400000)?number_to_date?string endCreateDate=(.now?long-(a-1)*86400000)?number_to_date?string>${page.totalCount}</@log.operateList><#sep>,</#list>],
+        data:[<#list 7..0 as a><@log.operateList operate='save.cmsComment' startCreateDate=(.now?long-a*86400000)?number_to_date?string endCreateDate=(.now?long-(a-1)*86400000)?number_to_date?string>${page.totalCount}</@log.operateList><#sep>,</#list>],
         areaStyle: {}
     }]
 });
@@ -137,7 +138,7 @@ echarts.init(document.getElementById('comment')).setOption({
     <fieldset>
         <legend><@t.page 'report.user'/></legend>
         <div class="unit">
-            <div id="visit" style="height:350px;"></div>
+            <div id="visit" class="chart"></div>
             <ul>
                 <li>
                     <div class="card">
@@ -175,8 +176,9 @@ echarts.init(document.getElementById('comment')).setOption({
             </ul>
         </div>
 <script>
-<@visit.dayList startVisitDate=(.now?long-30*86400000)?number_to_date>
-echarts.init(document.getElementById('visit')).setOption({
+<@visit.dayList startVisitDate=(.now?long-7*86400000)?number_to_date>
+var visitChart = echarts.init(document.getElementById('visit'));
+visitChart.setOption({
     title: {
         text: '<@t.page 'visit'/>',
         x:'center'
