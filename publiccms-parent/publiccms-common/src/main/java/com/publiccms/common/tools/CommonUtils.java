@@ -169,6 +169,21 @@ public class CommonUtils {
      * @param var
      * @return 是否非空
      */
+    public static boolean notEmpty(String[] var) {
+        if (null != var && 0 < var.length) {
+            for (String t : var) {
+                if (notEmpty(t)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @param var
+     * @return 是否非空
+     */
     public static boolean notEmpty(Object[] var) {
         return null != var && 0 < var.length;
     }
