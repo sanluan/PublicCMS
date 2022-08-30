@@ -269,7 +269,7 @@ $('input[name=timing]',navTab.getCurrentPanel()).click();
                                     <#if a.dictionaryId?has_content>
                                         <th type="enum" name="contentRelateds[${a?index}][#index#].relation" fieldClass="required" enumUrl="common/dictionarySelect.html?dictionaryId=${a.dictionaryId}" lookupGroup="contentRelateds[${a?index}][#index#]" lookupPk="relationType" pkValue="${a.dictionaryId}"><@t.page 'relation'/></th>
                                     </#if>
-                                    <th type="text" name="contentRelateds[${a?index}][#index#].url" size="40" fieldClass="required" fieldAttrs="{'maxlength':2048,'readonly':'readonly'}"><@t.page 'address'/></th>
+                                    <th type="text" name="contentRelateds[${a?index}][#index#].url" size="40" fieldClass="required" fieldAttrs="{'maxlength':2048}"><@t.page 'address'/></th>
                                     <th type="textarea" name="contentRelateds[${a?index}][#index#].description" fieldAttrs="{maxlength:150,rows:2,cols:60}"><@t.page 'description'/></th>
                                     <th type="text" name="contentRelateds[${a?index}][#index#].sort" fieldClass="required digits" defaultval="#index#" size="5"><@t.page 'sort'/></th>
                                     <th type="del" width="100"><@t.page 'operate'/></th>
@@ -300,7 +300,7 @@ $('input[name=timing]',navTab.getCurrentPanel()).click();
                                     </td>
                                     </#if>
                                     <td>
-                                        <input class="required" type="text" name="contentRelateds[${a?index}][${related?index}].url" value="${(related.url)!}" readonly="readonly" size="40" maxlength="2048"/>
+                                        <input class="required" type="text" name="contentRelateds[${a?index}][${related?index}].url" value="${(related.url)!}" size="40" maxlength="2048"/>
                                     </td>
                                     <td>
                                         <textarea name="contentRelateds[${a?index}][${related?index}].description" rows="2" cols="60" maxlength="150">${(related.description)!}</textarea>
