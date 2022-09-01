@@ -153,6 +153,17 @@ commentChart.setOption({
                 </li>
                 <li>
                     <div class="card">
+                        <i class="icon-signal icon-large icon"></i>
+                        <p><@t.page 'user'/></p>
+                        <a href="report/user.html" icon="<i class='icon-male icon-large'></i>" title="<@t.page 'report.user'/>" target="navTab" rel="report/user">
+                            <@sys.userList pageSize=0>
+                               <h3>${page.totalCount}</h3>
+                            </@sys.userList>
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <div class="card">
                         <i class="icon-ticket icon-large icon"></i>
                         <p><@t.page 'login'/></p>
                         <a href="report/user.html" icon="<i class='icon-male icon-large'></i>" title="<@t.page 'report.user'/>" target="navTab" rel="report/user">
