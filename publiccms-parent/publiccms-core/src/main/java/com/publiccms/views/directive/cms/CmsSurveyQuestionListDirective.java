@@ -58,7 +58,7 @@ public class CmsSurveyQuestionListDirective extends AbstractTemplateDirective {
         boolean absoluteURL = handler.getBoolean("absoluteURL", true);
         boolean advanced = getAdvanced(handler);
         PageHandler page = service.getPage(handler.getLong("surveyId"), handler.getStringArray("questionTypes"),
-                handler.getString("orderType"), handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", handler.getInteger("count", 30)));
+                handler.getString("orderType"), handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", 30));
         SysSite site = getSite(handler);
         @SuppressWarnings("unchecked")
         List<CmsSurveyQuestion> list = (List<CmsSurveyQuestion>) page.getList();
