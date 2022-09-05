@@ -43,7 +43,7 @@ import com.publiccms.common.handler.RenderHandler;
  * 
  * <pre>
 &lt;script&gt;
-$.getJSON('//cms.publiccms.com/api/directive/cms/wordList?userId=1&amp;pageSize=10&amp;appToken=接口访问授权Token', function(data){    
+$.getJSON('//cms.publiccms.com/api/directive/cms/wordList?userId=1&amp;pageSize=10', function(data){    
 console.log(data.totalCount);
 });
 &lt;/script&gt;
@@ -66,11 +66,6 @@ public class CmsWordListDirective extends AbstractTemplateDirective {
                 handler.getDate("endCreateDate"), name, orderField, handler.getString("orderType"),
                 handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", handler.getInteger("count", 30)));
         handler.put("page", page).render();
-    }
-
-    @Override
-    public boolean needAppToken() {
-        return true;
     }
 
     @Override

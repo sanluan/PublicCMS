@@ -44,7 +44,7 @@ import com.publiccms.common.handler.RenderHandler;
  * 
  * <pre>
   &lt;script&gt;
-   $.getJSON('//cms.publiccms.com/api/directive/log/OperateList?pageSize=10', function(data){    
+   $.getJSON('//cms.publiccms.com/api/directive/log/OperateList?pageSize=10&amp;appToken=接口访问授权Token', function(data){    
      console.log(data.totalCount);
    });
    &lt;/script&gt;
