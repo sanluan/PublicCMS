@@ -8,6 +8,7 @@ import java.util.function.BinaryOperator;
 import org.apache.http.client.config.RequestConfig;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 
 /**
  *
@@ -18,7 +19,7 @@ public class Constants {
     /**
      * Json Mapper
      */
-    public static final ObjectMapper objectMapper = new ObjectMapper();
+    public static final ObjectMapper objectMapper = JsonMapper.builder().build();
     
     /**
      * Default Request Config

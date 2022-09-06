@@ -43,7 +43,7 @@ import com.publiccms.common.handler.RenderHandler;
 * 
 * <pre>
   &lt;script&gt;
-   $.getJSON('//cms.publiccms.com/api/directive/log/loginList?pageSize=10', function(data){    
+   $.getJSON('//cms.publiccms.com/api/directive/log/loginList?pageSize=10&amp;appToken=接口访问授权Token', function(data){    
      console.log(data.totalCount);
    });
    &lt;/script&gt;
@@ -57,7 +57,7 @@ public class LogLoginListDirective extends AbstractTemplateDirective {
         PageHandler page = service.getPage(getSite(handler).getId(), handler.getLong("userId"),
                 handler.getDate("startCreateDate"), handler.getDate("endCreateDate"), handler.getString("channel"),
                 handler.getBoolean("result"), handler.getString("name"), handler.getString("ip"), handler.getString("orderType"),
-                handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", handler.getInteger("count", 30)));
+                handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", 30));
         handler.put("page", page).render();
     }
     

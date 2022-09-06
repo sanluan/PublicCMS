@@ -14,7 +14,7 @@ import com.publiccms.common.handler.RenderHandler;
 
 /**
 *
-* wordloadList 工作量列表查询指令
+* wordload 工作量查询指令
 * <p>
 * 参数列表
 * <ul>
@@ -40,7 +40,7 @@ import com.publiccms.common.handler.RenderHandler;
 * 
 * <pre>
  &lt;script&gt;
-  $.getJSON('//cms.publiccms.com/api/directive/log/wordload?pageSize=10', function(data){    
+  $.getJSON('//cms.publiccms.com/api/directive/log/wordload?pageSize=10&amp;appToken=接口访问授权Token', function(data){    
     console.log(data.totalCount);
   });
   &lt;/script&gt;

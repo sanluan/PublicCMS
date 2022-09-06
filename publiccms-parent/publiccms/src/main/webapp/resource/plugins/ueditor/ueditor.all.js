@@ -1,7 +1,7 @@
 /*!
  * UEditor
  * version: ueditor
- * build: Thu Aug 18 2022 16:15:06 GMT+0800 (中国标准时间)
+ * build: Mon Aug 29 2022 10:32:41 GMT+0800 (中国标准时间)
  */
 
 (function(){
@@ -10510,6 +10510,7 @@ UE.plugins['autotypeset'] = function(){
         tags = {
             div:1,
             p:1,
+            section:1,
             //trace:2183 这些也认为是行
             blockquote:1,center:1,h1:1,h2:1,h3:1,h4:1,h5:1,h6:1,
             span:1

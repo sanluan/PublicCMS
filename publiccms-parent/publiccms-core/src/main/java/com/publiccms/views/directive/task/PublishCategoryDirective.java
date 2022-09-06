@@ -20,10 +20,34 @@ import com.publiccms.logic.service.cms.CmsCategoryService;
 import freemarker.template.TemplateException;
 
 /**
- *
- * PublishCategoryDirective
- * 
- */
+*
+* publishCategory 发布分类静态页面指令
+* <p>
+* 参数列表
+* <ul>
+* <li><code>id</code> 分类id
+* <li><code>ids</code> 多个分类id
+* <li><code>pageIndex</code> 当前页码，默认值1
+* <li><code>totalPage</code> 最大页码，为空时则只生成当前页
+* </ul>
+* <p>
+* 返回结果
+* <ul>
+* <li><code>map</code>map类型,键值内容id,值为生成结果
+* </ul>
+* 使用示例
+* <p>
+* &lt;@task.publishCategory id=1&gt;&lt;#list map as
+* k,v&gt;${k}:${v}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@task.publishCategory&gt;
+* 
+* <pre>
+&lt;script&gt;
+ $.getJSON('//cms.publiccms.com/api/directive/task/publishCategory?id=1&amp;appToken=接口访问授权Token', function(data){    
+   console.log(data);
+ });
+ &lt;/script&gt;
+* </pre>
+*/
 @Component
 public class PublishCategoryDirective extends AbstractTaskDirective {
 
