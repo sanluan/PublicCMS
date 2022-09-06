@@ -13,10 +13,25 @@ import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.entities.sys.SysSite;
 
 /**
- *
- * OauthListDirective
- *
- */
+*
+* oauthList 账户查询指令
+* <p>
+* 参数列表
+* <ul>
+* 结果返回登录渠道名称列表
+* </ul>
+* 使用示例
+* <p>
+* &lt;@oauth.list&gt;&lt;#list list as a&gt;${a}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@oauth.list&gt;
+* 
+* <pre>
+ &lt;script&gt;
+  $.getJSON('//cms.publiccms.com/api/directive/oauth/list', function(data){    
+    console.log(data);
+  });
+  &lt;/script&gt;
+* </pre>
+*/
 @Component
 public class OauthListDirective extends AbstractTemplateDirective {
     @Override

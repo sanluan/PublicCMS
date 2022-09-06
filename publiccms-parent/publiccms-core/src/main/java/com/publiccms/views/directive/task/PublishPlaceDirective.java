@@ -22,10 +22,31 @@ import com.publiccms.views.pojo.entities.CmsPlaceMetadata;
 import freemarker.template.TemplateException;
 
 /**
- *
- * PublishPageDirective
- *
- */
+*
+* publishPlace 页面片段静态化指令
+* <p>
+* 参数列表
+* <ul>
+* <li><code>path</code> 页面路径,默认值"/"
+* </ul>
+* <p>
+* 返回结果
+* <ul>
+* <li><code>map</code>map类型,键值页面路径,值为生成结果
+* </ul>
+* 使用示例
+* <p>
+* &lt;@task.publishPlace&gt;&lt;#list map as
+* k,v&gt;${k}:${v}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@task.publishPlace&gt;
+* 
+* <pre>
+&lt;script&gt;
+ $.getJSON('//cms.publiccms.com/api/directive/task/publishPlace?path=&amp;appToken=接口访问授权Token', function(data){    
+   console.log(data);
+ });
+ &lt;/script&gt;
+* </pre>
+*/
 @Component
 public class PublishPlaceDirective extends AbstractTaskDirective {
 
