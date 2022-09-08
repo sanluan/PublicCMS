@@ -195,12 +195,13 @@ public class HttpParameterHandler extends BaseHandler {
 
     @Override
     public Map<?, ?> getMap(String name) {
+        String mapNamePrefix = name + Constants.UNDERLINE;
         Enumeration<String> names = request.getParameterNames();
         Map<String, Object> map = new HashMap<>();
         while (names.hasMoreElements()) {
             String temp = names.nextElement();
-            if (temp.startsWith(name)) {
-                map.put(temp.substring(name.length()), request.getParameter(name));
+            if (temp.startsWith(mapNamePrefix)) {
+                map.put(temp.substring(name.length() + 1), request.getParameter(name));
             }
         }
         return map;

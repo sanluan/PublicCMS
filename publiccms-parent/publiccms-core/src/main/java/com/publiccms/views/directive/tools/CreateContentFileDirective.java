@@ -19,8 +19,32 @@ import freemarker.template.TemplateException;
 
 /**
  *
- * CreateContentFileDirective
+ * createContentFile 创建内容静态文件指令
+ * <p>
+ * 参数列表
+ * <ul>
+ * <li><code>id</code> 内容id
+ * <li><code>templatePath</code> 模板路径
+ * <li><code>filePath</code> 静态文件路径
+ * <li><code>pageIndex</code> 当前页码，默认为1
+ * </ul>
+ * <p>
+ * 返回结果
+ * <ul>
+ * <li><code>url</code>静态文件路径
+ * </ul>
+ * 使用示例
+ * <p>
+ * &lt;@tools.createContentFile id=1 templatePath='content.html'
+ * filePath='content/'+1+'.html'&gt;${url}&lt;/@tools.createContentFile&gt;
  * 
+ * <pre>
+&lt;script&gt;
+$.getJSON('//cms.publiccms.com/api/directive/tools/createContentFile?id=1&amp;templatePath=content.html&amp;filePath=content/1.html&amp;appToken=接口访问授权Token', function(data){    
+  console.log(data);
+});
+&lt;/script&gt;
+ * </pre>
  */
 @Component
 public class CreateContentFileDirective extends AbstractTemplateDirective {
@@ -37,8 +61,8 @@ public class CreateContentFileDirective extends AbstractTemplateDirective {
                 CmsContent content = contentService.getEntity(id);
                 if (null != content && site.getId() == content.getSiteId()) {
                     CmsCategory category = categoryService.getEntity(content.getCategoryId());
-                    handler.put("url", templateComponent.createContentFile(site, content, category, false, templatePath,
-                            filepath, pageIndex)).render();
+                    handler.put("url", templateComponent.createContentFile(site, content, category, false, templatePath, filepath,
+                            pageIndex)).render();
                 }
             } catch (IOException | TemplateException e) {
                 handler.print(e.getMessage());

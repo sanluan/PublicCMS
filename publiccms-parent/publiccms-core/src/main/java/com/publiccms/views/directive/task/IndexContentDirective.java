@@ -11,27 +11,27 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.logic.service.cms.CmsContentService;
 
 /**
-*
-* indexContent 重建内容索引指令
-* <p>
-* 参数列表
-* <ul>
-* <li><code>id</code> 内容id,ids为空时有效
-* <li><code>ids</code> 多个内容id
-* </ul>
-* <p>
-* 使用示例
-* <p>
-* &lt;@task.indexContent id=1&gt;&lt;&lt;/@task.indexContent&gt;
-* 
-* <pre>
+ *
+ * indexContent 重建内容索引指令
+ * <p>
+ * 参数列表
+ * <ul>
+ * <li><code>id</code> 内容id,ids为空时有效
+ * <li><code>ids</code> 多个内容id
+ * </ul>
+ * <p>
+ * 使用示例
+ * <p>
+ * &lt;@task.indexContent id=1&gt;&lt;&lt;/@task.indexContent&gt;
+ * 
+ * <pre>
 &lt;script&gt;
  $.getJSON('//cms.publiccms.com/api/directive/task/indexContent?id=1&amp;appToken=接口访问授权Token', function(data){    
    console.log(data.totalCount);
  });
  &lt;/script&gt;
-* </pre>
-*/
+ * </pre>
+ */
 @Component
 public class IndexContentDirective extends AbstractTaskDirective {
 
@@ -48,5 +48,5 @@ public class IndexContentDirective extends AbstractTaskDirective {
 
     @Autowired
     private CmsContentService service;
-    
+
 }
