@@ -84,7 +84,7 @@ public class VisitUrl implements java.io.Serializable {
     @AttributeOverrides({ @AttributeOverride(name = "siteId", column = @Column(name = "site_id", nullable = false)),
             @AttributeOverride(name = "visitDate", column = @Column(name = "visit_date", nullable = false, length = 10)),
             @AttributeOverride(name = "urlMd5", column = @Column(name = "url_md5", nullable = false, length = 50)),
-            @AttributeOverride(name = "urlSha256", column = @Column(name = "url_sha256", nullable = false, length = 100)) })
+            @AttributeOverride(name = "urlSha", column = @Column(name = "url_sha", nullable = false, length = 100)) })
     public VisitUrlId getId() {
         return this.id;
     }
