@@ -2,24 +2,27 @@ package com.publiccms.common.generator;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collection;
-import org.apache.commons.io.DirectoryWalker;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
+
 import org.apache.commons.io.FileUtils;
 
 import com.publiccms.common.constants.CommonConstants;
 
-public class Utf8BomRemover extends DirectoryWalker<String> {
+public class Utf8BomRemover {
     public static void main(String[] args) throws IOException {
-        new Utf8BomRemover().start(new File(new File(CommonConstants.BLANK).getAbsolutePath()).getParentFile());
-    }
+        Files.walkFileTree(new File(new File(CommonConstants.BLANK).getAbsolutePath()).getParentFile().toPath(),
+                new SimpleFileVisitor<Path>() {
+                    @Override
+                    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                        removeBom(file.toFile());
+                        return FileVisitResult.CONTINUE;
+                    }
+                });
 
-    public void start(File rootDir) throws IOException {
-        walk(rootDir, null);
-    }
-
-    @Override
-    protected void handleFile(File file, int depth, Collection<String> results) throws IOException {
-        removeBom(file);
     }
 
     private static void removeBom(File file) throws IOException {

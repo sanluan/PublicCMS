@@ -33,20 +33,20 @@ subprojects {
         springVersion = "5.3.22"
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
         // https://spring.io/projects/spring-boot
-        springBootVersion = "2.7.2"
+        springBootVersion = "2.7.3"
         // http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
         // http://hc.apache.org/downloads.cgi
         httpclientVersion = "4.5.13"
         // http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
-        jacksonVersion = "2.13.3"
+        jacksonVersion = "2.13.4"
         // http://mvnrepository.com/artifact/org.hibernate/hibernate-core
         // http://hibernate.org/orm/downloads/
-        hibernateVersion = "5.6.8.Final"
+        hibernateVersion = "5.6.10.Final"
         // http://mvnrepository.com/artifact/org.hibernate/hibernate-tools
         hibernateToolsVersion = "5.6.2.Final"
         // https://mvnrepository.com/artifact/org.hibernate.search/hibernate-search-mapper-orm
         // http://hibernate.org/search/downloads/
-        hibernateSearchVersion = "6.1.5.Final"
+        hibernateSearchVersion = "6.1.6.Final"
         // https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator
         hibernateValidatorVersion = "6.0.23.Final"
         // https://mvnrepository.com/artifact/org.ehcache/ehcache
@@ -64,7 +64,7 @@ subprojects {
         // https://mvnrepository.com/artifact/org.mybatis.dynamic-sql/mybatis-dynamic-sql
         dynamicSqlVersion = "1.4.0"
         // https://mvnrepository.com/artifact/org.apache.lucene/lucene-analyzers-smartcn
-        luceneVersion = "8.11.1"
+        luceneVersion = "8.11.2"
         // http://mvnrepository.com/artifact/redis.clients/jedis
         jedisVersion = "4.2.3"
         // http://mvnrepository.com/artifact/org.quartz-scheduler/quartz
@@ -72,15 +72,17 @@ subprojects {
         // https://mvnrepository.com/artifact/com.zaxxer/HikariCP
         hikariCPVersion = "4.0.3"
         // https://mvnrepository.com/artifact/mysql/mysql-connector-java
-        mysqlVersion = "8.0.29"
+        mysqlVersion = "8.0.30"
         // https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml
-        poiVersion = "4.1.2"
+        poiVersion = "5.2.2"
         // http://mvnrepository.com/artifact/commons-fileupload/commons-fileupload
         fileuploadVersion = "1.4"
         // http://mvnrepository.com/artifact/org.apache.commons/commons-collections4
         collectionsVersion = "4.4"
         // http://mvnrepository.com/artifact/org.apache.commons/commons-lang3
         langVersion = "3.12.0"
+        // http://mvnrepository.com/artifact/commons-io/commons-io
+        ioVersion = "2.11.0"
         // https://mvnrepository.com/artifact/org.apache.commons/commons-text
         textVersion = "1.9"
         // http://mvnrepository.com/artifact/commons-codec/commons-codec
@@ -104,7 +106,7 @@ subprojects {
         // https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api
         servletVersion = "4.0.1"
         // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine
-        junitVersion = "5.7.2"
+        junitVersion = "5.9.0"
     }
     sourceCompatibility = 1.8
     targetCompatibility = 1.8

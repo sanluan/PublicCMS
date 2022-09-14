@@ -8,6 +8,7 @@ dependencies {
     implementation "commons-fileupload:commons-fileupload:${fileuploadVersion}"
     implementation "org.apache.commons:commons-collections4:${collectionsVersion}"
     implementation "org.apache.commons:commons-lang3:${langVersion}"
+    implementation "commons-io:commons-io:${ioVersion}"
     implementation "org.apache.commons:commons-text:${textVersion}"
     implementation "commons-codec:commons-codec:${codecVersion}"
 
@@ -32,7 +33,7 @@ dependencies {
     implementation "org.apache.poi:poi-ooxml:${poiVersion}"
     implementation "org.apache.poi:poi-scratchpad:${poiVersion}"
     // https://mvnrepository.com/artifact/fr.opensagres.xdocreport/fr.opensagres.poi.xwpf.converter.xhtml
-    implementation "fr.opensagres.xdocreport:fr.opensagres.poi.xwpf.converter.xhtml:2.0.3"
+    implementation "fr.opensagres.xdocreport:fr.opensagres.poi.xwpf.converter.xhtml:2.0.4"
     implementation "org.sejda.imageio:webp-imageio:${webpVersion}"
 
     implementation "org.apache.lucene:lucene-analyzers-smartcn:${luceneVersion}"

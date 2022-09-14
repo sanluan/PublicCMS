@@ -51,7 +51,7 @@ public class DictAdminController {
      * @param site
      * @param admin
      * @param dict
-     * @param skipWord 
+     * @param skipWord
      * @param request
      * @param model
      * @return view name
@@ -66,17 +66,17 @@ public class DictAdminController {
         try {
             String dictDir = siteComponent.getRootPath() + AnalyzerDictUtils.DIR_DICT;
             File dictFile = new File(dictDir + AnalyzerDictUtils.TXT_DICT);
-            FileUtils.writeStringToFile(dictFile, dict);
+            FileUtils.writeStringToFile(dictFile, dict, CommonConstants.DEFAULT_CHARSET);
             Map<String, Integer> wordMap = new HashMap<>();
-            for (String word : FileUtils.readLines(dictFile)) {
+            for (String word : FileUtils.readLines(dictFile, CommonConstants.DEFAULT_CHARSET)) {
                 if (!word.startsWith("#")) {
                     wordMap.put(word, 10);
                 }
             }
             File skipWordFile = new File(dictDir + AnalyzerDictUtils.TXT_SKIPWORD);
-            FileUtils.writeStringToFile(skipWordFile, skipWord);
+            FileUtils.writeStringToFile(skipWordFile, skipWord, CommonConstants.DEFAULT_CHARSET);
             List<String> skipWordList = new ArrayList<>();
-            for (String word : FileUtils.readLines(skipWordFile)) {
+            for (String word : FileUtils.readLines(skipWordFile, CommonConstants.DEFAULT_CHARSET)) {
                 if (!word.startsWith("#")) {
                     skipWordList.add(word);
                 }
@@ -86,8 +86,9 @@ public class DictAdminController {
         } catch (IOException | ClassNotFoundException e1) {
         }
         try {
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER, "save.dict",
-                    RequestUtils.getIpAddress(request), CommonUtils.getDate(), dict));
+            logOperateService
+                    .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                            "save.dict", RequestUtils.getIpAddress(request), CommonUtils.getDate(), dict));
             return CommonConstants.TEMPLATE_DONE;
         } catch (IllegalStateException e) {
             log.error(e.getMessage(), e);

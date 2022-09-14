@@ -16,6 +16,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.publiccms.common.constants.CmsVersion;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.DateFormatUtils;
 import com.publiccms.entities.cms.CmsComment;
@@ -40,7 +41,7 @@ public class CommentImportTest {
     @Test
     public void importTest() throws IOException, ParseException {
         File file = new File("D:\\Users\\kerneler\\Desktop\\b28141a5-8e9c-4f4f-aacc-9864c6bce235_16.json");
-        String content = FileUtils.readFileToString(file);
+        String content = FileUtils.readFileToString(file, CommonConstants.DEFAULT_CHARSET);
         Map<String, Object> a = Constants.objectMapper.readValue(content,
                 Constants.objectMapper.getTypeFactory().constructMapLikeType(HashMap.class, String.class, Object.class));
         @SuppressWarnings("unchecked")
