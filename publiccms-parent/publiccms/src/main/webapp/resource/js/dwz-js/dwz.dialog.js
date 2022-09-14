@@ -45,7 +45,7 @@
                 }
                 if (op.fresh || url != dialog.data("url") ) {
                     dialog.data("url", url);
-                    dialog.find(".dialogHeader").find("h1").html(title);
+                    dialog.find(".dialogHeader").find("h1").text(title);
                     this.switchDialog(dialog);
                     var jDContent = dialog.find(".dialogContent");
                     jDContent.loadUrl(url, {}, function() {
@@ -70,7 +70,7 @@
                 if (options.param ) {
                     dialog.data("param", options.param);
                 }
-                dialog.find(".dialogHeader").find("h1").html(title);
+                dialog.find(".dialogHeader").find("h1").text(title);
                 dialog.css("zIndex", ( $.pdialog._zIndex += 2 ));
                 $.pdialog._init(dialog, options);
                 dialog.click(function() {
@@ -371,7 +371,7 @@
                 shadow = $(DWZ.frag["dialogProxy"]);
                 $("body").append(shadow);
             }
-            $("h1", shadow).html($(".dialogHeader h1", dialog).text());
+            $("h1", shadow).text($(".dialogHeader h1", dialog).text());
         },
         start: function(dialog, event) {
             this._init(dialog);

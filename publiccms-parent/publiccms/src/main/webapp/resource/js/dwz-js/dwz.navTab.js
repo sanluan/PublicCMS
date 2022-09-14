@@ -435,7 +435,9 @@ var navTab = {
                     $.History.addHistory($('#navMenu .selected a').attr('parentid') + '_' + tabid, function(hash){
                         var tabid = hash.substring(hash.indexOf('_')+1);
                         var i = navTab._indexTabId(tabid);
-                        if (i >= 0) navTab._switchTab(i);
+                        if (i >= 0) {
+                            navTab._switchTab(i);
+                        }
                     }, tabid);
                 }, 10);
             }

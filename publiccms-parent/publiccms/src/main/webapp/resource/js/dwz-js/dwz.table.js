@@ -50,8 +50,12 @@
 
                 for (var i=0; i < $ftds.length; i++) {
                     var $ftd = $($ftds[i]);
-                    if (nowrapTD != "false") $ftd.html("<div>" + $ftd.html() + "</div>");
-                    if (i < aStyles.length) $ftd.addClass(aStyles[i][1]);
+                    if (nowrapTD != "false") {
+                        $ftd.html("<div>" + $ftd.html() + "</div>");
+                    }
+                    if (i < aStyles.length) {
+                        $ftd.addClass(aStyles[i][1]);
+                    }
                 }
                 $tr.click(function(){
                     $trs.filter(".selected").removeClass("selected");
