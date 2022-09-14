@@ -203,11 +203,7 @@ function initLink($p) {
             if(title){
                 title = title.replace(/<[^>]*>/gi,"");
             }
-            var titleHtml = $this.attr("title") || $this.html();
-            var icon = $this.attr("icon");
-            if(icon){
-                titleHtml = icon + " " + titleHtml;
-            }
+            var icon = $this.attr("icon") || $this.find("i").prop("outerHTML");
             var tabid = $this.attr("rel") || "_blank";
             var fresh = eval($this.attr("fresh") || "true");
             var external = eval($this.attr("external") || "false");
@@ -219,7 +215,7 @@ function initLink($p) {
                 return false;
             }
             navTab.openTab(tabid, url, {
-                title: title, titleHtml: titleHtml, fresh: fresh, external: external, focusNewWindow:newWindow
+                title: title, icon: icon, fresh: fresh, external: external, focusNewWindow:newWindow
             });
             return false;
         });
@@ -229,7 +225,7 @@ function initLink($p) {
     $("a[target=dialog]", $p).each(function() {
         $(this).click(function(event) {
             var $this = $(this);
-            var title = $this.attr("title") || $this.html();
+            var title = $this.attr("title") || $this.text();
             var rel = $this.attr("rel") || "_blank";
             var options = {};
             var w = $this.attr("width");

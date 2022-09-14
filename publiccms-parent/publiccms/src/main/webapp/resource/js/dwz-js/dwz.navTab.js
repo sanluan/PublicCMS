@@ -387,7 +387,7 @@ var navTab = {
     openTab: function(tabid, url, options) { // if found tabid replace tab,
         // else create a new tab.
         var op = $.extend({
-            title: "New Tab", titleHtml: "New Tab", data: {}, fresh: true, external: false, focusNewWindow:false
+            title: "New Tab", icon: "", data: {}, fresh: true, external: false, focusNewWindow:false
         }, options);
         var iOpenIndex = this._indexTabId(tabid);
         if (iOpenIndex >= 0 && !op.focusNewWindow) {
@@ -413,9 +413,8 @@ var navTab = {
               tabid += Math.round(Math.random() * 10000000);
             }
             this._getPanels().eq(this._currentIndex).after('<div class="page unitBox"></div>');
-            this._getTabs().eq(this._currentIndex).after('<li tabid="' + tabid + '"><a href="javascript:" title="' + op.title + '">' + op.titleHtml
-                    + '</a><a href="javascript:;" class="close"><i class="icon-remove-sign"></i></a></li>');
-            this._getMoreLi().eq(this._currentIndex).after('<li><a href="javascript:" title="' + op.title + '">' + op.titleHtml + '</a></li>');
+            this._getTabs().eq(this._currentIndex).after($('<li><a href="javascript:;" class="close"><i class="icon-remove-sign"></i></a></li>').attr('tabid',tabid).prepend($('<a href="javascript:"></a>').attr('title',op.title).text(op.title).prepend(op.icon)));
+            this._getMoreLi().eq(this._currentIndex).after($('<li></li>').append($('<a href="javascript:"></a>').attr('title',op.title).text(op.title).prepend(op.icon)));
             var $tabs = this._getTabs();
             var $tab = $tabs.eq(this._currentIndex+1);
             var $panel = this._getPanels().eq(this._currentIndex+1);
