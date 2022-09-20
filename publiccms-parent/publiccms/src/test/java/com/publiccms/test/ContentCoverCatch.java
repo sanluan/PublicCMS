@@ -75,7 +75,7 @@ public class ContentCoverCatch {
     public static String getUrl(String url) {
         String fileName = null;
         try (CloseableHttpClient httpclient = HttpClients.custom().setDefaultRequestConfig(CommonConstants.defaultRequestConfig)
-                .build();) {
+                .build()) {
             HttpGet httpget = new HttpGet(url);
             CloseableHttpResponse response = httpclient.execute(httpget);
             HttpEntity entity = response.getEntity();

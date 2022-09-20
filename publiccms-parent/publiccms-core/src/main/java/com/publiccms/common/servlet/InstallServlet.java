@@ -165,7 +165,7 @@ public class InstallServlet extends HttpServlet {
         CmsVersion.setInitialized(true);
         CmsDataSource.initDefaultDataSource();
         File file = new File(CommonConstants.CMS_FILEPATH + CommonConstants.INSTALL_LOCK_FILENAME);
-        try (FileOutputStream outputStream = new FileOutputStream(file);) {
+        try (FileOutputStream outputStream = new FileOutputStream(file)) {
             outputStream.write(CmsVersion.getVersion().getBytes(CommonConstants.DEFAULT_CHARSET));
         }
         log.info(String.format("PublicCMS %s started!", CmsVersion.getVersion()));
@@ -187,7 +187,7 @@ public class InstallServlet extends HttpServlet {
                     .base64Encode(VerificationUtils.encrypt(request.getParameter("password"), CommonConstants.ENCRYPT_KEY)));
             String databaseConfiFile = CommonConstants.CMS_FILEPATH + CmsDataSource.DATABASE_CONFIG_FILENAME;
             File file = new File(databaseConfiFile);
-            try (FileOutputStream outputStream = new FileOutputStream(file);) {
+            try (FileOutputStream outputStream = new FileOutputStream(file)) {
                 dbconfig.store(outputStream, null);
             }
             try (Connection connection = DatabaseUtils.getConnection(databaseConfiFile)) {
@@ -208,7 +208,7 @@ public class InstallServlet extends HttpServlet {
     private void checkDatabse(Map<String, Object> map) {
         String databaseConfiFile = CommonConstants.CMS_FILEPATH + CmsDataSource.DATABASE_CONFIG_FILENAME;
         startStep = null;
-        try (Connection connection = DatabaseUtils.getConnection(databaseConfiFile);) {
+        try (Connection connection = DatabaseUtils.getConnection(databaseConfiFile)) {
             map.put("message", "success");
             map.put("usersql", new File(CommonConstants.CMS_FILEPATH + "/publiccms.sql").exists());
         } catch (Exception e) {
@@ -279,7 +279,7 @@ public class InstallServlet extends HttpServlet {
     private void upgradeDatabase(String version, Map<String, Object> map) throws Exception {
         if (cmsUpgrader.getVersionList().contains(version)) {
             String databaseConfiFile = CommonConstants.CMS_FILEPATH + CmsDataSource.DATABASE_CONFIG_FILENAME;
-            try (Connection connection = DatabaseUtils.getConnection(databaseConfiFile);) {
+            try (Connection connection = DatabaseUtils.getConnection(databaseConfiFile)) {
                 StringWriter stringWriter = new StringWriter();
                 try {
                     cmsUpgrader.update(stringWriter, connection, version);

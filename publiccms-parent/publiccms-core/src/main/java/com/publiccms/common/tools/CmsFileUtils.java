@@ -436,7 +436,7 @@ public class CmsFileUtils {
                 history.getParentFile().mkdirs();
             }
             FileUtils.copyFile(file, history);
-            try (FileOutputStream outputStream = new FileOutputStream(file);) {
+            try (FileOutputStream outputStream = new FileOutputStream(file)) {
                 outputStream.write(content.getBytes(CommonConstants.DEFAULT_CHARSET));
             }
             return true;

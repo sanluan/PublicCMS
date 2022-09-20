@@ -1,4 +1,4 @@
-package com.publiccms.views.pojo.entities;
+package com.publiccms.views.pojo.export;
 
 import java.util.List;
 

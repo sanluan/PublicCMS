@@ -294,7 +294,7 @@ public class MetadataComponent implements Cache {
         if (CommonUtils.empty(file)) {
             file.getParentFile().mkdirs();
         }
-        try (FileOutputStream outputStream = new FileOutputStream(file);) {
+        try (FileOutputStream outputStream = new FileOutputStream(file)) {
             CommonConstants.objectMapper.writeValue(file, dataMap);
         }
         pageCache.clear();
@@ -315,7 +315,7 @@ public class MetadataComponent implements Cache {
         if (CommonUtils.empty(file)) {
             file.getParentFile().mkdirs();
         }
-        try (FileOutputStream outputStream = new FileOutputStream(file);) {
+        try (FileOutputStream outputStream = new FileOutputStream(file)) {
             CommonConstants.objectMapper.writeValue(file, metadataMap);
         }
         pageCache.clear();

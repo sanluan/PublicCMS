@@ -24,7 +24,7 @@ public class BinarySerializer<T> implements Serializer<T> {
         if (null == graph) {
             return EMPTY_BYTES;
         }
-        try (ByteArrayOutputStream os = new ByteArrayOutputStream(); ObjectOutputStream oos = new ObjectOutputStream(os);) {
+        try (ByteArrayOutputStream os = new ByteArrayOutputStream(); ObjectOutputStream oos = new ObjectOutputStream(os)) {
             oos.writeObject(graph);
             oos.flush();
             return os.toByteArray();
@@ -40,7 +40,7 @@ public class BinarySerializer<T> implements Serializer<T> {
             return null;
         }
         try (ByteArrayInputStream is = new ByteArrayInputStream(bytes);
-                ObjectInputStream ois = new ConfigurableObjectInputStream(is, Thread.currentThread().getContextClassLoader());) {
+                ObjectInputStream ois = new ConfigurableObjectInputStream(is, Thread.currentThread().getContextClassLoader())) {
             return (T) ois.readObject();
         } catch (Exception e) {
             log.warn("Fail to deserialize bytes.", e);

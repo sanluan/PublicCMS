@@ -271,7 +271,7 @@ public abstract class BaseDao<E> {
     protected <T> void batchWork(QueryHandler queryHandler, Consumer<List<T>> worker, int batchSize) {
         Query<E> query = getSession().createQuery(queryHandler.getSql(), getEntityClass());
         queryHandler.initQuery(query);
-        try (ScrollableResults results = query.setReadOnly(true).setCacheable(false).scroll(ScrollMode.FORWARD_ONLY);) {
+        try (ScrollableResults results = query.setReadOnly(true).setCacheable(false).scroll(ScrollMode.FORWARD_ONLY)) {
             List<T> resultList = new ArrayList<>(batchSize);
             while (results.next()) {
                 resultList.add((T) results.get(0));

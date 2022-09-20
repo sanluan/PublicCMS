@@ -12,12 +12,12 @@
 <@cms.category id=categoryId!><#assign category=object/></@cms.category>
 <@cms.model id=modelId!><#assign model=object/></@cms.model>
 <#macro bread category>
-	<#if category.parentId?has_content>
-		<@cms.category id=category.parentId>
-			<@bread object/>
-			${object.name} &gt;
-		</@cms.category>
-	</#if>
+    <#if category.parentId?has_content>
+        <@cms.category id=category.parentId>
+            <@bread object/>
+            ${object.name} &gt;
+        </@cms.category>
+    </#if>
 </#macro>
 <div class="pageFormContent" layoutH>
     <#if model?has_content>

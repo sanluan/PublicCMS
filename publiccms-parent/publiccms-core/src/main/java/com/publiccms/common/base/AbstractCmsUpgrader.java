@@ -82,7 +82,7 @@ public abstract class AbstractCmsUpgrader {
 
     public void setPassword(Connection connection, String username, String password) throws SQLException, IOException {
         try (PreparedStatement statement = connection
-                .prepareStatement("update sys_user set name=?,password=?,salt=? where id = 1");) {
+                .prepareStatement("update sys_user set name=?,password=?,salt=? where id = 1")) {
             statement.setString(1, username);
             String salt = UserPasswordUtils.getSalt();
             statement.setString(2, UserPasswordUtils.passwordEncode(password, salt, null));
@@ -93,7 +93,7 @@ public abstract class AbstractCmsUpgrader {
 
     protected void updateMetadata(StringWriter stringWriter, Connection connection) {
         try (Statement statement = connection.createStatement();
-                ResultSet rs = statement.executeQuery("select * from sys_site");) {
+                ResultSet rs = statement.executeQuery("select * from sys_site")) {
             while (rs.next()) {
                 String filepath = CommonConstants.CMS_FILEPATH + CommonConstants.SEPARATOR + SiteComponent.TEMPLATE_PATH
                         + CommonConstants.SEPARATOR + SiteComponent.SITE_PATH_PREFIX + rs.getString("id")
@@ -124,7 +124,7 @@ public abstract class AbstractCmsUpgrader {
 
     protected void updateCategoryType(StringWriter stringWriter, Connection connection) {
         try (Statement statement = connection.createStatement();
-                ResultSet rs = statement.executeQuery("select * from cms_category_type");) {
+                ResultSet rs = statement.executeQuery("select * from cms_category_type")) {
             while (rs.next()) {
                 try {
                     CmsCategoryType entity = new CmsCategoryType();
@@ -148,7 +148,7 @@ public abstract class AbstractCmsUpgrader {
                         List<SysExtendField> extendList = new ArrayList<>();
                         try (Statement extendFieldStatement = connection.createStatement();
                                 ResultSet extendFieldRs = extendFieldStatement.executeQuery(
-                                        "select * from sys_extend_field where extend_id = " + rs.getString("extend_id"));) {
+                                        "select * from sys_extend_field where extend_id = " + rs.getString("extend_id"))) {
                             while (extendFieldRs.next()) {
                                 SysExtendField e = new SysExtendField(extendFieldRs.getString("code"),
                                         extendFieldRs.getString("input_type"), extendFieldRs.getBoolean("required"),
@@ -191,7 +191,7 @@ public abstract class AbstractCmsUpgrader {
         runner.setErrorLogWriter(new PrintWriter(stringWriter));
         runner.setAutoCommit(true);
         try (InputStream inputStream = getClass()
-                .getResourceAsStream(String.format("/initialization/upgrade/%s-%s.sql", fromVersion, toVersion));) {
+                .getResourceAsStream(String.format("/initialization/upgrade/%s-%s.sql", fromVersion, toVersion))) {
             if (null != inputStream) {
                 runner.runScript(new InputStreamReader(inputStream, CommonConstants.DEFAULT_CHARSET));
             }

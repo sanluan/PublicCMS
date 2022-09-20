@@ -216,7 +216,7 @@ public class ConfigComponent implements SiteCache {
         if (CommonUtils.empty(file)) {
             file.getParentFile().mkdirs();
         }
-        try (FileOutputStream outputStream = new FileOutputStream(file);) {
+        try (FileOutputStream outputStream = new FileOutputStream(file)) {
             CommonConstants.objectMapper.writeValue(outputStream, modelMap);
         } catch (IOException e) {
             return false;

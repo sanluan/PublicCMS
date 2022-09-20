@@ -132,7 +132,7 @@ public class ModelComponent implements SiteCache {
         if (CommonUtils.empty(file)) {
             file.getParentFile().mkdirs();
         }
-        try (FileOutputStream outputStream = new FileOutputStream(file);) {
+        try (FileOutputStream outputStream = new FileOutputStream(file)) {
             CommonConstants.objectMapper.writeValue(file, modelMap);
         } catch (IOException e) {
             return false;
@@ -153,7 +153,7 @@ public class ModelComponent implements SiteCache {
         if (CommonUtils.empty(file)) {
             file.getParentFile().mkdirs();
         }
-        try (FileOutputStream outputStream = new FileOutputStream(file);) {
+        try (FileOutputStream outputStream = new FileOutputStream(file)) {
             CommonConstants.objectMapper.writeValue(file, typeMap);
         } catch (IOException e) {
             return false;

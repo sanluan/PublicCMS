@@ -137,7 +137,7 @@ public class ContentBatchImport {
     public static String getUrl(String url) {
         String fileName = null;
         try (CloseableHttpClient httpclient = HttpClients.custom().setDefaultRequestConfig(CommonConstants.defaultRequestConfig)
-                .build();) {
+                .build()) {
             HttpGet httpget = new HttpGet(url);
             CloseableHttpResponse response = httpclient.execute(httpget);
             HttpEntity entity = response.getEntity();
@@ -162,7 +162,7 @@ public class ContentBatchImport {
     }
 
     public static void main(String[] args) {
-        try (Workbook wb = WorkbookFactory.create(new FileInputStream(new File("D:/1.xlsx")));) {
+        try (Workbook wb = WorkbookFactory.create(new FileInputStream(new File("D:/1.xlsx")))) {
             Sheet sheet = wb.getSheetAt(0);
             Row row = null;
             int lastRowNum = sheet.getLastRowNum();

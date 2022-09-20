@@ -151,7 +151,7 @@ public class ImageUtils {
 
     public static void thumb(String sourceFilePath, String thumbFilePath, int width, int height, String suffix)
             throws IOException {
-        try (FileOutputStream outputStream = new FileOutputStream(thumbFilePath);) {
+        try (FileOutputStream outputStream = new FileOutputStream(thumbFilePath)) {
             BufferedImage sourceImage = ImageIO.read(new File(sourceFilePath));
             if (width > sourceImage.getWidth()) {
                 width = sourceImage.getWidth();

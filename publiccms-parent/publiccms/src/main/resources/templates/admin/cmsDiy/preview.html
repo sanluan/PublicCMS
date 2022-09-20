@@ -1,23 +1,23 @@
 <div class="panelBar" id="buttonBox"><#include "buttons.html"/></div>
 <#assign url=url?has_content?then(url,site.useStatic?then(site.sitePath,site.dynamicPath))/>
 <form method="post" action="cmsDiy/buttons.html" onsubmit="return divSearch(this, 'buttonBox');">
-	<input type="hidden" name="templatePath" value=""/>
-	<input type="hidden" name="itemType" value=""/>
-	<input type="hidden" name="itemId" value=""/>
-	<input type="hidden" name="url" value="${url+url?contains('?')?then('&diy','?diy')}"/>
+    <input type="hidden" name="templatePath" value=""/>
+    <input type="hidden" name="itemType" value=""/>
+    <input type="hidden" name="itemId" value=""/>
+    <input type="hidden" name="url" value="${url+url?contains('?')?then('&diy','?diy')}"/>
 </form>
 <audio id="audioPopPlay" src="${base}/resource/sounds/jia.mp3" preload="auto" class="hide"></audio>
 <audio id="audioLoadPlay" src="${base}/resource/sounds/ria.mp3" preload="auto" class="hide"></audio>
 <div class="iframe-box">
-	<iframe layoutH></iframe>
-	<div class="diy-border diy-border-top"><div class="diy-menu"></div></div>
-	<div class="diy-border diy-border-right"></div>
-	<div class="diy-border diy-border-bottom"></div>
-	<div class="diy-border diy-border-left"></div>
+    <iframe layoutH></iframe>
+    <div class="diy-border diy-border-top"><div class="diy-menu"></div></div>
+    <div class="diy-border diy-border-right"></div>
+    <div class="diy-border diy-border-bottom"></div>
+    <div class="diy-border diy-border-left"></div>
 </div>
 <script>
 diyIframeRefresh();
 if(DWZ.ui.sbar ) {
-	$('.toggleCollapse').click();
+    $('.toggleCollapse').click();
 }
 </script>

@@ -224,22 +224,18 @@ public class CmsContentDao extends BaseDao<CmsContent> {
                 b.must(f -> f.bool(extendsFiledsContributor));
             }
             if (CommonUtils.notEmpty(queryEntity.getDictionaryValues())) {
-                if (null == queryEntity.getDictionaryUnion() || queryEntity.getDictionaryUnion()) {
-                    Consumer<? super BooleanPredicateClausesStep<?>> dictionaryFiledsContributor = c -> {
-                        for (String value : queryEntity.getDictionaryValues()) {
-                            if (CommonUtils.notEmpty(value)) {
-                                c.should(t -> t.match().fields(dictionaryField).matching(value));
-                            }
-                        }
-                    };
-                    b.must(f -> f.bool(dictionaryFiledsContributor));
-                } else {
+                Consumer<? super BooleanPredicateClausesStep<?>> dictionaryFiledsContributor = c -> {
                     for (String value : queryEntity.getDictionaryValues()) {
                         if (CommonUtils.notEmpty(value)) {
-                            b.must(t -> t.match().fields(dictionaryField).matching(value));
+                            if (null == queryEntity.getDictionaryUnion() || queryEntity.getDictionaryUnion()) {
+                                c.should(t -> t.match().fields(dictionaryField).matching(value));
+                            } else {
+                                c.must(t -> t.match().fields(dictionaryField).matching(value));
+                            }
                         }
                     }
-                }
+                };
+                b.must(f -> f.bool(dictionaryFiledsContributor));
             }
             if (null != queryEntity.getStartPublishDate()) {
                 b.must(t -> t.range().field("publishDate").greaterThan(queryEntity.getStartPublishDate()));

@@ -199,7 +199,7 @@ public class UeditorAdminController {
     public Map<String, Object> catchimage(@RequestAttribute SysSite site, @SessionAttribute SysUser admin,
             HttpServletRequest request) {
         try (CloseableHttpClient httpclient = HttpClients.custom().setDefaultRequestConfig(CommonConstants.defaultRequestConfig)
-                .build();) {
+                .build()) {
             String[] files = request.getParameterValues(FIELD_NAME + "[]");
             if (CommonUtils.notEmpty(files)) {
                 List<Map<String, Object>> list = new ArrayList<>();

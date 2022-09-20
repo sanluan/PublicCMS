@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,6 +47,16 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
     private SysExtendService extendService;
     @Autowired
     private SysExtendFieldService extendFieldService;
+
+    /**
+     * @param siteId
+     * @param worker
+     * @param batchSize
+     */
+    @Transactional(readOnly = true)
+    public void batchWork(short siteId, Consumer<List<CmsCategory>> worker, int batchSize) {
+        dao.batchWork(siteId, worker, batchSize);
+    }
 
     /**
      * @param queryEntity
