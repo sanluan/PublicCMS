@@ -30,7 +30,7 @@ subprojects {
     ext {
         // http://mvnrepository.com/artifact/org.springframework/spring-core
         // https://spring.io/projects/spring-framework
-        springVersion = "5.3.22"
+        springVersion = "5.3.23"
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
         // https://spring.io/projects/spring-boot
         springBootVersion = "2.7.3"
@@ -54,7 +54,7 @@ subprojects {
         // http://mvnrepository.com/artifact/org.freemarker/freemarker
         freemarkerVersion = "2.3.31"
         // http://mvnrepository.com/artifact/org.mybatis/mybatis
-        mybatisVersion = "3.5.10"
+        mybatisVersion = "3.5.11"
         // http://mvnrepository.com/artifact/org.mybatis/mybatis-spring
         mybatisSpringVersion = "2.0.7"
         // http://mvnrepository.com/artifact/org.mybatis.generator/mybatis-generator-core
@@ -74,7 +74,7 @@ subprojects {
         // https://mvnrepository.com/artifact/mysql/mysql-connector-java
         mysqlVersion = "8.0.30"
         // https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml
-        poiVersion = "5.2.2"
+        poiVersion = "5.2.3"
         // http://mvnrepository.com/artifact/commons-fileupload/commons-fileupload
         fileuploadVersion = "1.4"
         // http://mvnrepository.com/artifact/org.apache.commons/commons-collections4
@@ -88,7 +88,7 @@ subprojects {
         // http://mvnrepository.com/artifact/commons-codec/commons-codec
         codecVersion = "1.15"
         // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
-        log4jVersion = "2.18.0"
+        log4jVersion = "2.19.0"
         // https://mvnrepository.com/artifact/com.drewnoakes/metadata-extractor
         extractorVersion = "2.18.0"
         // https://mvnrepository.com/artifact/org.sejda.imageio/webp-imageio
