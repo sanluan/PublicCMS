@@ -14,8 +14,21 @@ public class CmsRegion implements java.io.Serializable {
      */
     private static final long serialVersionUID = 1L;
 
+    /**
+     * id
+     */
     private String id;
+    /**
+     * category type
+     * <p>
+     * 分类类型
+     */
     private String categoryType;
+    /**
+     * name
+     * <p>
+     * 名称
+     */
     private String name;
 
     /**

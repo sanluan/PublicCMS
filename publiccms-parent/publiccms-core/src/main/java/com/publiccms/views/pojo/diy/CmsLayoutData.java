@@ -15,7 +15,14 @@ public class CmsLayoutData implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
+    /**
+     * id
+     */
     private String id;
+    /**
+     * list of module data list
+     * 模块数据列表的列表
+     */
     private List<List<CmsModuleData>> moduleList;
 
     /**

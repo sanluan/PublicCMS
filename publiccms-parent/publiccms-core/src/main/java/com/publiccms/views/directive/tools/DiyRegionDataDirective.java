@@ -12,7 +12,28 @@ import com.publiccms.logic.component.template.DiyComponent;
 import com.publiccms.views.pojo.diy.CmsRegionData;
 
 /**
- *
+ * regionData diy区域数据获取 参数列表
+ * <ul>
+ * <li><code>id</code> 区域id
+ * <li><code>categoryId</code> 分类id
+ * </ul>
+ * <p>
+ * 返回结果
+ * <ul>
+ * <li><code>object</code>{@link com.publiccms.views.pojo.diy.CmsRegionData}
+ * </ul>
+ * 使用示例
+ * <p>
+ * &lt;@tools.diyMetadata id='00000000-0000-0000-0000-000000000000'&gt;${object.id}&lt;/@tools.diyMetadata&gt;
+ * 
+ * <pre>
+&lt;script&gt;
+ $.getJSON('//cms.publiccms.com/api/directive/tools/regionData?itemId=00000000-0000-0000-0000-000000000000&amp;appToken=接口访问授权Token', function(data){    
+   console.log(data.id);
+ });
+ &lt;/script&gt;
+ * </pre>
+ * 
  * DiyRegionDataDirective 区域diy数据获取 参数 id 区域id 结果项 object diy数据
  * 
  */

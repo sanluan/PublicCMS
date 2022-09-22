@@ -19,9 +19,27 @@ public class CmsLayout implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
+    /**
+     * id
+     */
     private String id;
+    /**
+     * name
+     * <p>
+     * 名称
+     */
     private String name;
+    /**
+     * template
+     * <p>
+     * 模板
+     */
     private String template;
+    /**
+     * style
+     * <p>
+     * 样式
+     */
     private String style;
 
     /**

@@ -12,7 +12,28 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.template.DiyComponent;
 
 /**
- *
+ * diyMetadataList diy元数据列表获取
+ * 参数列表
+ * <ul>
+ * <li><code>itemType</code> 元数据类型,【region,layout,module】
+ * </ul>
+ * <p>
+ * 返回结果
+ * <ul>
+ * <li><code>list</code> diy元数据列表<code>region</code>{@link com.publiccms.views.pojo.diy.CmsRegion},<code>layout</code>{@link com.publiccms.views.pojo.diy.CmsLayout},<code>module</code>{@link com.publiccms.views.pojo.diy.CmsModule}
+ * </ul>
+ * 使用示例
+ * <p>
+ * &lt;@tools.diyMetadataList itemType='region'&gt;&lt;#list page.list as
+ * a&gt;${a.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@tools.diyMetadataList&gt;
+ * 
+ * <pre>
+&lt;script&gt;
+ $.getJSON('//cms.publiccms.com/api/directive/tools/diyMetadataList?itemType=region&amp;appToken=接口访问授权Token', function(data){    
+   console.log(data.name);
+ });
+ &lt;/script&gt;
+ * </pre>
  * DiyMetadataListDirective diy元数据列表获取
  * 参数列表：
  * itemType 元数据类型 可选值 region,layout,module 结果项 list 为diy元数据列表
