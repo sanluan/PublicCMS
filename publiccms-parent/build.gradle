@@ -60,7 +60,7 @@ subprojects {
         // http://mvnrepository.com/artifact/org.mybatis.generator/mybatis-generator-core
         mybatisGenerator = "1.4.1"
         // https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper
-        pageHelperVersion = "5.3.1"
+        pageHelperVersion = "5.3.2"
         // https://mvnrepository.com/artifact/org.mybatis.dynamic-sql/mybatis-dynamic-sql
         dynamicSqlVersion = "1.4.0"
         // https://mvnrepository.com/artifact/org.apache.lucene/lucene-analyzers-smartcn
@@ -106,7 +106,7 @@ subprojects {
         // https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api
         servletVersion = "4.0.1"
         // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine
-        junitVersion = "5.9.0"
+        junitVersion = "5.9.1"
     }
     sourceCompatibility = 1.8
     targetCompatibility = 1.8

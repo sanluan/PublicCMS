@@ -55,7 +55,7 @@
         <!-- http://mvnrepository.com/artifact/org.mybatis.generator/mybatis-generator-core -->
         <version.mybatisGenerator>1.4.1</version.mybatisGenerator>
         <!-- https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper -->
-        <version.pagehelper>5.3.1</version.pagehelper>
+        <version.pagehelper>5.3.2</version.pagehelper>
         <!-- https://mvnrepository.com/artifact/org.mybatis.dynamic-sql/mybatis-dynamic-sql -->
         <version.dynamicSql>1.4.0</version.dynamicSql>
         <!-- https://mvnrepository.com/artifact/org.apache.lucene/lucene-core -->
@@ -101,7 +101,7 @@
         <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
         <version.servlet>4.0.1</version.servlet>
         <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine -->
-        <version.juint>5.9.0</version.juint>
+        <version.juint>5.9.1</version.juint>
     </properties>
     <dependencyManagement>
         <dependencies>
