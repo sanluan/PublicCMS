@@ -33,7 +33,7 @@ subprojects {
         springVersion = "5.3.23"
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
         // https://spring.io/projects/spring-boot
-        springBootVersion = "2.7.3"
+        springBootVersion = "2.7.4"
         // http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
         // http://hc.apache.org/downloads.cgi
         httpclientVersion = "4.5.13"
@@ -41,12 +41,12 @@ subprojects {
         jacksonVersion = "2.13.4"
         // http://mvnrepository.com/artifact/org.hibernate/hibernate-core
         // http://hibernate.org/orm/downloads/
-        hibernateVersion = "5.6.10.Final"
+        hibernateVersion = "5.6.11.Final"
         // http://mvnrepository.com/artifact/org.hibernate/hibernate-tools
         hibernateToolsVersion = "5.6.2.Final"
         // https://mvnrepository.com/artifact/org.hibernate.search/hibernate-search-mapper-orm
         // http://hibernate.org/search/downloads/
-        hibernateSearchVersion = "6.1.6.Final"
+        hibernateSearchVersion = "6.1.7.Final"
         // https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator
         hibernateValidatorVersion = "6.0.23.Final"
         // https://mvnrepository.com/artifact/org.ehcache/ehcache

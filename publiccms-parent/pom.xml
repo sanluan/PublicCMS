@@ -28,7 +28,7 @@
         <version.spring>5.3.23</version.spring>
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
         <!-- https://spring.io/projects/spring-boot -->
-        <version.springBoot>2.7.3</version.springBoot>
+        <version.springBoot>2.7.4</version.springBoot>
         <!-- http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
         <!-- http://hc.apache.org/downloads.cgi -->
         <version.httpclient>4.5.13</version.httpclient>
@@ -36,12 +36,12 @@
         <version.jackson>2.13.4</version.jackson>
         <!-- http://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
         <!-- http://hibernate.org/orm/releases/ -->
-        <version.hibernate>5.6.10.Final</version.hibernate>
+        <version.hibernate>5.6.11.Final</version.hibernate>
         <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-tools -->
         <version.hibernateTools>5.6.2.Final</version.hibernateTools>
         <!-- https://mvnrepository.com/artifact/org.hibernate.search/hibernate-search-mapper-orm/ -->
         <!-- http://hibernate.org/search/releases/ -->
-        <version.hibernateSearch>6.1.6.Final</version.hibernateSearch>
+        <version.hibernateSearch>6.1.7.Final</version.hibernateSearch>
         <!-- https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator -->
         <version.hibernateValidator>6.0.23.Final</version.hibernateValidator>
         <!-- https://mvnrepository.com/artifact/org.ehcache/ehcache -->
