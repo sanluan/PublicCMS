@@ -21,8 +21,33 @@ import freemarker.template.TemplateException;
 
 /**
  *
- * CreateTemplateFileDirective
+ * createTemplateFile 创建分类静态文件指令
+ * <p>
+ * 参数列表
+ * <ul>
+ * <li><code>templatePath</code> 模板路径
+ * <li><code>filePath</code> 静态文件路径
+ * <li><code>pageIndex</code> 当前页码，默认为1
+ * <li><code>parameters</code> 参数map
+ * </ul>
+ * <p>
+ * 返回结果
+ * <ul>
+ * <li><code>url</code>静态文件路径
+ * </ul>
+ * 使用示例
+ * <p>
+ * &lt;@tools.createTemplateFile templatePath='template.html'
+ * filePath='page/'+1+'.html'
+ * parameters={"parameter1","value1"}&gt;${url}&lt;/@tools.createTemplateFile&gt;
  * 
+ * <pre>
+&lt;script&gt;
+$.getJSON('//cms.publiccms.com/api/directive/tools/createTemplateFile?id=1&amp;templatePath=template.html&amp;filePath=page/1.html&amp;parameters_parameter1=value1&amp;appToken=接口访问授权Token', function(data){    
+  console.log(data);
+});
+&lt;/script&gt;
+ * </pre>
  */
 @Component
 public class CreateTemplateFileDirective extends AbstractTemplateDirective {

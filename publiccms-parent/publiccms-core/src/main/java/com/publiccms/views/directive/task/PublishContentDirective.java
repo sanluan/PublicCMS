@@ -9,7 +9,6 @@ import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTaskDirective;
-import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsContent;
@@ -27,13 +26,11 @@ import freemarker.template.TemplateException;
  * <ul>
  * <li><code>id</code> 内容id
  * <li><code>ids</code> 多个内容id,id为空时有效
- * <li><code>categoryIds</code> 批量生成多个分类id,id、ids为空时有效
- * <li><code>modelIds</code> 批量生成多个内容模型id,id、ids为空时有效
  * </ul>
  * <p>
  * 返回结果
  * <ul>
- * <li><code>map</code>map类型,id或ids不为空时,键值内容id,值为生成结果
+ * <li><code>map</code>map类型,键值内容id,值为生成结果
  * </ul>
  * 使用示例
  * <p>
@@ -76,25 +73,6 @@ public class PublishContentDirective extends AbstractTaskDirective {
                         map.put(entity.getId().toString(), false);
                     }
                 }
-            } else if (CommonUtils.notEmpty(handler.getIntegerArray("categoryIds"))
-                    || CommonUtils.notEmpty(handler.getStringArray("modelIds"))) {
-                log.info("begin batch publish");
-                service.batchWork(site.getId(), handler.getIntegerArray("categoryIds"), handler.getStringArray("modelIds"),
-                        list -> {
-                            for (CmsContent content : list) {
-                                try {
-                                    templateComponent.createContentFile(site, content, null, null);
-                                } catch (IOException | TemplateException e) {
-                                    try {
-                                        handler.getWriter().append(e.getMessage());
-                                        handler.getWriter().append("\n");
-                                    } catch (IOException e1) {
-                                    }
-                                }
-                            }
-                            log.info("batch publish size : " + list.size());
-                        }, PageHandler.MAX_PAGE_SIZE);
-                log.info("complete batch publish");
             }
         }
         handler.put("map", map).render();

@@ -25,13 +25,13 @@ import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 import org.apache.xmlbeans.XmlException;
+import org.openxmlformats.schemas.officeDocument.x2006.sharedTypes.STVerticalAlignRun;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTPPr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTRPr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTabs;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTblPr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTcPr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTText;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.STVerticalAlignRun;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
@@ -133,8 +133,8 @@ public class CustomXHTMLMapper extends XHTMLMapper {
             run.setFontFamily(getStylesDocument().getFontFamilyAscii(run));
         }
 
-        if (run.getFontSize() <= 0) {
-            run.setFontSize(getStylesDocument().getFontSize(run).intValue());
+        if (run.getFontSizeAsDouble() <= 0) {
+            run.setFontSize(getStylesDocument().getFontSize(run).doubleValue());
         }
 
         CTRPr rPr = run.getCTR().getRPr();
@@ -148,10 +148,10 @@ public class CustomXHTMLMapper extends XHTMLMapper {
                 cssStyle.addProperty(CSSStylePropertyConstants.BACKGROUND_COLOR,
                         fr.opensagres.poi.xwpf.converter.core.utils.StringUtils.toHexString(color));
             if (Boolean.TRUE.equals(RunFontStyleStrikeValueProvider.INSTANCE.getValue(rPr, getStylesDocument()))
-                    || rPr.getDstrike() != null)
+                    || rPr.sizeOfDstrikeArray() > 0)
                 cssStyle.addProperty("text-decoration", "line-through");
-            if (rPr.getVertAlign() != null) {
-                int align = rPr.getVertAlign().getVal().intValue();
+            if (rPr.sizeOfVertAlignArray() > 0) {
+                int align = rPr.getVertAlignArray(0).getVal().intValue();
                 if (STVerticalAlignRun.INT_SUPERSCRIPT == align) {
                     cssStyle.addProperty("vertical-align", "super");
                 } else if (STVerticalAlignRun.INT_SUBSCRIPT == align) {

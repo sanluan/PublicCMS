@@ -18,6 +18,7 @@ maven(使用以下文件：.mvn,pom.xml,mvnw,mvnw.cmd)
 清空idea配置 ：idea:clean
 配置idea工程 ：idea:idea
 运行工程：spring-boot:run
+检查版本更新：versions:display-dependency-updates
 
 gradle(使用以下文件：gradle,build.gradle,settings.gradle,gradlew,gradlew.bat)
 

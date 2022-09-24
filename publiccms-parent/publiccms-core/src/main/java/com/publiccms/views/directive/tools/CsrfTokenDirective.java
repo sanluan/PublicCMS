@@ -14,10 +14,23 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.RequestUtils;
 
 /**
- * 
- * DiskDirective PublicCMS磁盘空间与路径指令
- *
- */
+*
+* csrfToken 防跨站请求伪造token指令
+* <p>
+* 参数列表
+* <ul>
+* <li><code>admin</code> 是否后台,默认值<code>false</code>
+* </ul>
+* <p>
+* 返回结果
+* <ul>
+* <li>打印token值
+* </ul>
+* 使用示例
+* <p>
+* &lt;input type="hidden" name="_csrf" value="&lt;@tools.csrfToken/&gt;"/&gt;
+* </pre>
+*/
 @Component
 public class CsrfTokenDirective extends AbstractTemplateDirective {
 

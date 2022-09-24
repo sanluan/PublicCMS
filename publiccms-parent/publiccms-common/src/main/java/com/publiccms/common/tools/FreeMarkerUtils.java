@@ -84,7 +84,7 @@ public class FreeMarkerUtils {
             }
             try (OutputStream outputStream = append
                     ? Files.newOutputStream(Paths.get(destFilePath), StandardOpenOption.APPEND, StandardOpenOption.CREATE)
-                    : Files.newOutputStream(Paths.get(destFilePath));) {
+                    : Files.newOutputStream(Paths.get(destFilePath))) {
                 Writer out = new OutputStreamWriter(outputStream, Constants.DEFAULT_CHARSET);
                 t.process(model, out);
                 log.info(String.format("%s saved!", destFilePath));

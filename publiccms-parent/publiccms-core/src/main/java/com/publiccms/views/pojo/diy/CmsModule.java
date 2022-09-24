@@ -13,11 +13,39 @@ public class CmsModule implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
+    /**
+     * id
+     */
     private String id;
+    /**
+     * name
+     * <p>
+     * 名称
+     */
     private String name;
+    /**
+     * clone
+     * <p>
+     * 复制
+     */
     private boolean clone;
+    /**
+     * cover
+     * <p>
+     * 封面图
+     */
     private String cover;
+    /**
+     * place path
+     * <p>
+     * 页面片段
+     */
     private String place;
+    /**
+     * file path
+     * <p>
+     * 文件路径
+     */
     private String filePath;
 
     /**

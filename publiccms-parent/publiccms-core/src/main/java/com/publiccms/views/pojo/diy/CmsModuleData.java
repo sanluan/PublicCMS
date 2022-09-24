@@ -13,8 +13,21 @@ public class CmsModuleData implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
+    /**
+     * id
+     */
     private String id;
+    /**
+     * name
+     * <p>
+     * 名称
+     */
     private String name;
+    /**
+     * place path
+     * <p>
+     * 页面片段路径
+     */
     private String place;
 
     /**

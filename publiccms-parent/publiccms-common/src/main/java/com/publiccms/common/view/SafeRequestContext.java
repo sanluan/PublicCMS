@@ -16,9 +16,6 @@ import org.springframework.context.i18n.LocaleContext;
 import org.springframework.context.i18n.SimpleTimeZoneAwareLocaleContext;
 import org.springframework.context.i18n.TimeZoneAwareLocaleContext;
 import org.springframework.lang.Nullable;
-import org.springframework.ui.context.Theme;
-import org.springframework.ui.context.ThemeSource;
-import org.springframework.ui.context.support.ResourceBundleThemeSource;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindException;
@@ -28,7 +25,6 @@ import org.springframework.web.bind.EscapedErrors;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.LocaleContextResolver;
 import org.springframework.web.servlet.LocaleResolver;
-import org.springframework.web.servlet.ThemeResolver;
 import org.springframework.web.servlet.support.RequestContext;
 import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.servlet.support.RequestDataValueProcessor;
@@ -38,8 +34,6 @@ import org.springframework.web.util.UrlPathHelper;
 import org.springframework.web.util.WebUtils;
 
 public class SafeRequestContext {
-
-    public static final String DEFAULT_THEME_NAME = "theme";
 
     public static final String WEB_APPLICATION_CONTEXT_ATTRIBUTE = RequestContext.class.getName() + ".CONTEXT";
 
@@ -58,9 +52,6 @@ public class SafeRequestContext {
 
     @Nullable
     private TimeZone timeZone;
-
-    @Nullable
-    private Theme theme;
 
     @Nullable
     private Boolean defaultHtmlEscape;
@@ -206,66 +197,6 @@ public class SafeRequestContext {
                 new SimpleTimeZoneAwareLocaleContext(locale, timeZone));
         this.locale = locale;
         this.timeZone = timeZone;
-    }
-
-    /**
-     * @return current theme (never {@code null}).
-     */
-    public Theme getTheme() {
-        if (this.theme == null) {
-            this.theme = RequestContextUtils.getTheme(this.request);
-            if (this.theme == null) {
-                this.theme = getFallbackTheme();
-            }
-        }
-        return this.theme;
-    }
-
-    /**
-     * 
-     * @return the fallback theme (never {@code null})
-     */
-    protected Theme getFallbackTheme() {
-        ThemeSource themeSource = RequestContextUtils.getThemeSource(getRequest());
-        if (themeSource == null) {
-            themeSource = new ResourceBundleThemeSource();
-        }
-        Theme theme = themeSource.getTheme(DEFAULT_THEME_NAME);
-        if (theme == null) {
-            throw new IllegalStateException("No theme defined and no fallback theme found");
-        }
-        return theme;
-    }
-
-    /**
-     * 
-     * @param theme
-     *            the new theme
-     * @see ThemeResolver#setThemeName
-     */
-    public void changeTheme(@Nullable Theme theme) {
-        ThemeResolver themeResolver = RequestContextUtils.getThemeResolver(this.request);
-        if (themeResolver == null) {
-            throw new IllegalStateException("Cannot change theme if no ThemeResolver configured");
-        }
-        themeResolver.setThemeName(this.request, this.response, (theme != null ? theme.getName() : null));
-        this.theme = theme;
-    }
-
-    /**
-     * 
-     * @param themeName
-     *            the name of the new theme
-     * @see ThemeResolver#setThemeName
-     */
-    public void changeTheme(String themeName) {
-        ThemeResolver themeResolver = RequestContextUtils.getThemeResolver(this.request);
-        if (themeResolver == null) {
-            throw new IllegalStateException("Cannot change theme if no ThemeResolver configured");
-        }
-        themeResolver.setThemeName(this.request, this.response, themeName);
-        // Ask for re-resolution on next getTheme call.
-        this.theme = null;
     }
 
     /**
@@ -545,102 +476,6 @@ public class SafeRequestContext {
     public String getMessage(MessageSourceResolvable resolvable, boolean htmlEscape) throws NoSuchMessageException {
         String msg = this.webApplicationContext.getMessage(resolvable, getLocale());
         return (htmlEscape ? HtmlUtils.htmlEscape(msg) : msg);
-    }
-
-    /**
-     * 
-     * @param code
-     *            the code of the message
-     * @param defaultMessage
-     *            the String to return if the lookup fails
-     * @return the message
-     */
-    public String getThemeMessage(String code, String defaultMessage) {
-        String msg = getTheme().getMessageSource().getMessage(code, null, defaultMessage, getLocale());
-        return (msg != null ? msg : "");
-    }
-
-    /**
-     * 
-     * @param code
-     *            the code of the message
-     * @param args
-     *            arguments for the message, or {@code null} if none
-     * @param defaultMessage
-     *            the String to return if the lookup fails
-     * @return the message
-     */
-    public String getThemeMessage(String code, @Nullable Object[] args, String defaultMessage) {
-        String msg = getTheme().getMessageSource().getMessage(code, args, defaultMessage, getLocale());
-        return (msg != null ? msg : "");
-    }
-
-    /**
-     * 
-     * @param code
-     *            the code of the message
-     * @param args
-     *            arguments for the message as a List, or {@code null} if none
-     * @param defaultMessage
-     *            the String to return if the lookup fails
-     * @return the message
-     */
-    public String getThemeMessage(String code, @Nullable List<?> args, String defaultMessage) {
-        String msg = getTheme().getMessageSource().getMessage(code, (args != null ? args.toArray() : null), defaultMessage,
-                getLocale());
-        return (msg != null ? msg : "");
-    }
-
-    /**
-     * 
-     * @param code
-     *            the code of the message
-     * @return the message
-     * @throws org.springframework.context.NoSuchMessageException
-     *             if not found
-     */
-    public String getThemeMessage(String code) throws NoSuchMessageException {
-        return getTheme().getMessageSource().getMessage(code, null, getLocale());
-    }
-
-    /**
-     * 
-     * @param code
-     *            the code of the message
-     * @param args
-     *            arguments for the message, or {@code null} if none
-     * @return the message
-     * @throws org.springframework.context.NoSuchMessageException
-     *             if not found
-     */
-    public String getThemeMessage(String code, @Nullable Object[] args) throws NoSuchMessageException {
-        return getTheme().getMessageSource().getMessage(code, args, getLocale());
-    }
-
-    /**
-     * 
-     * @param code
-     *            the code of the message
-     * @param args
-     *            arguments for the message as a List, or {@code null} if none
-     * @return the message
-     * @throws org.springframework.context.NoSuchMessageException
-     *             if not found
-     */
-    public String getThemeMessage(String code, @Nullable List<?> args) throws NoSuchMessageException {
-        return getTheme().getMessageSource().getMessage(code, (args != null ? args.toArray() : null), getLocale());
-    }
-
-    /**
-     * 
-     * @param resolvable
-     *            the MessageSourceResolvable
-     * @return the message
-     * @throws org.springframework.context.NoSuchMessageException
-     *             if not found
-     */
-    public String getThemeMessage(MessageSourceResolvable resolvable) throws NoSuchMessageException {
-        return getTheme().getMessageSource().getMessage(resolvable, getLocale());
     }
 
     /**

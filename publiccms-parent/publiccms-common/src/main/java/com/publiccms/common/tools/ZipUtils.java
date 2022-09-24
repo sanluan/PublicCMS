@@ -53,7 +53,7 @@ public class ZipUtils {
                 zipFile.getParentFile().mkdirs();
                 try (FileOutputStream outputStream = new FileOutputStream(zipFile);
                         ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream);
-                        FileLock fileLock = outputStream.getChannel().tryLock();) {
+                        FileLock fileLock = outputStream.getChannel().tryLock()) {
                     if (null != fileLock) {
                         zipOutputStream.setEncoding(Constants.DEFAULT_CHARSET_NAME);
                         compress(Paths.get(sourceFilePath), zipOutputStream, Constants.BLANK);
@@ -73,7 +73,7 @@ public class ZipUtils {
      */
     public static void compress(Path sourceFilePath, ZipOutputStream out, String basedir) throws IOException {
         if (Files.isDirectory(sourceFilePath)) {
-            try (DirectoryStream<Path> stream = Files.newDirectoryStream(sourceFilePath);) {
+            try (DirectoryStream<Path> stream = Files.newDirectoryStream(sourceFilePath)) {
                 for (Path entry : stream) {
                     BasicFileAttributes attrs = Files.readAttributes(entry, BasicFileAttributes.class);
                     String fullName = Constants.BLANK.equals(basedir) ? entry.toFile().getName()
@@ -116,7 +116,7 @@ public class ZipUtils {
             ZipEntry entry = new ZipEntry(fullName);
             entry.setTime(file.lastModified());
             out.putNextEntry(entry);
-            try (FileInputStream fis = new FileInputStream(file);) {
+            try (FileInputStream fis = new FileInputStream(file)) {
                 StreamUtils.copy(fis, out);
             }
         }
@@ -177,7 +177,7 @@ public class ZipUtils {
                         targetFile.getParentFile().mkdirs();
                         try (InputStream inputStream = zipFile.getInputStream(zipEntry);
                                 FileOutputStream outputStream = new FileOutputStream(targetFile);
-                                FileLock fileLock = outputStream.getChannel().tryLock();) {
+                                FileLock fileLock = outputStream.getChannel().tryLock()) {
                             if (null != fileLock) {
                                 StreamUtils.copy(inputStream, outputStream);
                             }

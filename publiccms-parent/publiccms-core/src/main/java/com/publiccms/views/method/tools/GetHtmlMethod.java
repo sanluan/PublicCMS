@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
@@ -29,7 +30,7 @@ import freemarker.template.TemplateModelException;
 /**
  *
  * GetHtmlMethod
- * 
+ *
  */
 @Component
 public class GetHtmlMethod extends BaseMethod {
@@ -39,10 +40,11 @@ public class GetHtmlMethod extends BaseMethod {
         String url = getString(0, arguments);
         Map<?, ?> parameters = getMap(1, arguments);
         String body = getString(1, arguments);
+        Map<?, ?> headers = getMap(2, arguments);
         String html = null;
         if (CommonUtils.notEmpty(url)) {
             try (CloseableHttpClient httpclient = HttpClients.custom()
-                    .setDefaultRequestConfig(CommonConstants.defaultRequestConfig).build();) {
+                    .setDefaultRequestConfig(CommonConstants.defaultRequestConfig).build()) {
                 HttpUriRequest request;
                 if (null != parameters || CommonUtils.notEmpty(body)) {
                     HttpPost httppost = new HttpPost(url);
@@ -61,6 +63,11 @@ public class GetHtmlMethod extends BaseMethod {
                     request = httppost;
                 } else {
                     request = new HttpGet(url);
+                }
+                if (null != headers) {
+                    for (Entry<?, ?> entry : headers.entrySet()) {
+                        request.addHeader((String) entry.getKey(), (String) entry.getValue());
+                    }
                 }
                 try (CloseableHttpResponse response = httpclient.execute(request)) {
                     HttpEntity entity = response.getEntity();

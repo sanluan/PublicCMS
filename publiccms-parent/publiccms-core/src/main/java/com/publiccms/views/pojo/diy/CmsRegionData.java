@@ -16,8 +16,21 @@ public class CmsRegionData implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
+    /**
+     * id
+     */
     private String id;
+    /**
+     * layout data list
+     * <p>
+     * 布局列表
+     */
     private List<CmsLayoutData> layoutList;
+    /**
+     * layout data list map
+     * <p>
+     * 布局数据列表哈希表
+     */
     private Map<Integer, List<CmsLayoutData>> categoryLayoutMap;
 
     /**

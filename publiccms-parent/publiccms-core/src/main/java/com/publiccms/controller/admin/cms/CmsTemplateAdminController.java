@@ -251,7 +251,7 @@ public class CmsTemplateAdminController {
         } catch (UnsupportedEncodingException e1) {
         }
         try (ServletOutputStream outputStream = response.getOutputStream();
-                ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream);) {
+                ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream)) {
             zipOutputStream.setEncoding(Constants.DEFAULT_CHARSET_NAME);
             ZipUtils.compress(Paths.get(filepath), zipOutputStream, Constants.BLANK);
         } catch (IOException e) {

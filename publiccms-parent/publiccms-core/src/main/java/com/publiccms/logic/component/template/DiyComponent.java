@@ -555,7 +555,7 @@ public class DiyComponent implements SiteCache {
         if (CommonUtils.empty(file)) {
             file.getParentFile().mkdirs();
         }
-        try (FileOutputStream outputStream = new FileOutputStream(file);) {
+        try (FileOutputStream outputStream = new FileOutputStream(file)) {
             CommonConstants.objectMapper.writeValue(file, map);
         }
         regionCache.remove(site.getId());
@@ -576,7 +576,7 @@ public class DiyComponent implements SiteCache {
         if (CommonUtils.empty(file)) {
             file.getParentFile().mkdirs();
         }
-        try (FileOutputStream outputStream = new FileOutputStream(file);) {
+        try (FileOutputStream outputStream = new FileOutputStream(file)) {
             CommonConstants.objectMapper.writeValue(file, map);
         }
         layoutCache.remove(site.getId());
@@ -597,7 +597,7 @@ public class DiyComponent implements SiteCache {
         if (CommonUtils.empty(file)) {
             file.getParentFile().mkdirs();
         }
-        try (FileOutputStream outputStream = new FileOutputStream(file);) {
+        try (FileOutputStream outputStream = new FileOutputStream(file)) {
             CommonConstants.objectMapper.writeValue(file, map);
         }
         moduleCache.remove(site.getId());
@@ -618,7 +618,7 @@ public class DiyComponent implements SiteCache {
         if (CommonUtils.empty(file)) {
             file.getParentFile().mkdirs();
         }
-        try (FileOutputStream outputStream = new FileOutputStream(file);) {
+        try (FileOutputStream outputStream = new FileOutputStream(file)) {
             CommonConstants.objectMapper.writeValue(file, map);
         }
         regionDataCache.remove(site.getId());

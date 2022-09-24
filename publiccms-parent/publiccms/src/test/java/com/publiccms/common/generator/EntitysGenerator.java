@@ -19,7 +19,7 @@ public class EntitysGenerator {
         String packageName = "com.publiccms.entities";
         String outputDirectory = "src/main/java";
         Properties properties = new Properties();
-        try (InputStream is = EntitysGenerator.class.getResourceAsStream("/generator/hibernate/hibernate.properties");) {
+        try (InputStream is = EntitysGenerator.class.getResourceAsStream("/generator/hibernate/hibernate.properties")) {
             properties.load(is);
         } catch (IOException e) {
         }

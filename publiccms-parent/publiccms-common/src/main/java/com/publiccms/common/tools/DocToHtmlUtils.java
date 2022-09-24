@@ -45,7 +45,7 @@ public class DocToHtmlUtils {
      */
     public static String docToHtml(File file, PicturesManager picturesManager)
             throws IOException, ParserConfigurationException, TransformerException {
-        try (HWPFDocument wordDocument = new HWPFDocument(new FileInputStream(file));) {
+        try (HWPFDocument wordDocument = new HWPFDocument(new FileInputStream(file))) {
             WordToHtmlConverter wordToHtmlConverter = new WordToHtmlConverter(new StyleOnlyDocumentFacade());
             wordToHtmlConverter.setPicturesManager(picturesManager);
             wordToHtmlConverter.processDocument(wordDocument);
@@ -61,7 +61,7 @@ public class DocToHtmlUtils {
      */
     public static String docxToHtml(File file, ImageManager imageManager) throws IOException {
         ZipSecureFile.setMinInflateRatio(-1.0d);
-        try (XWPFDocument document = new XWPFDocument(new FileInputStream(file));) {
+        try (XWPFDocument document = new XWPFDocument(new FileInputStream(file))) {
             XHTMLOptions options = XHTMLOptions.create().setImageManager(imageManager).setFragment(true);
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             CustomXHTMLConverter.getInstance().convert(document, out, options);
@@ -102,7 +102,7 @@ public class DocToHtmlUtils {
      */
     public static String excelToHtml(File file, ImageManager imageManager)
             throws FileNotFoundException, IOException, ParserConfigurationException, TransformerException {
-        try (Workbook wb = WorkbookFactory.create(new FileInputStream(file));) {
+        try (Workbook wb = WorkbookFactory.create(new FileInputStream(file))) {
             if (wb instanceof HSSFWorkbook) {
                 HSSFWorkbook hWb = (HSSFWorkbook) wb;
                 ExcelToHtmlConverter excelToHtmlConverter = new ExcelToHtmlConverter(

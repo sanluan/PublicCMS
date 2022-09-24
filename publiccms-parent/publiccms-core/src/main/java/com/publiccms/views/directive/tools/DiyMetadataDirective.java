@@ -13,11 +13,28 @@ import com.publiccms.logic.component.template.DiyComponent;
 
 /**
  *
- * DiyMetadataDirective diy元数据获取
- * 参数列表：
- * itemType 元数据类型 可选值 region,layout,module
- * itemId 元数据id
- * 结果项 object 为diy元数据 
+ * diyMetadata diy元数据获取
+ * 参数列表
+ * <ul>
+ * <li><code>itemType</code> 元数据类型,【region,layout,module】
+ * <li><code>itemId</code> 元数据id
+ * </ul>
+ * <p>
+ * 返回结果
+ * <ul>
+ * <li><code>object</code> diy元数据<code>region</code>{@link com.publiccms.views.pojo.diy.CmsRegion},<code>layout</code>{@link com.publiccms.views.pojo.diy.CmsLayout},<code>module</code>{@link com.publiccms.views.pojo.diy.CmsModule}
+ * </ul>
+ * 使用示例
+ * <p>
+ * &lt;@tools.diyMetadata itemType='region' itemId='00000000-0000-0000-0000-000000000000'&gt;${object.name}&lt;/@tools.diyMetadata&gt;
+ * 
+ * <pre>
+&lt;script&gt;
+ $.getJSON('//cms.publiccms.com/api/directive/tools/diyMetadata?itemType=region&amp;itemId=00000000-0000-0000-0000-000000000000&amp;appToken=接口访问授权Token', function(data){    
+   console.log(data.name);
+ });
+ &lt;/script&gt;
+ * </pre>
  * 
  */
 @Component
