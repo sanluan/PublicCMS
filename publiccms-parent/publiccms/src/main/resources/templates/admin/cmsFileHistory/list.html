@@ -1,6 +1,6 @@
 <@tools.fileHistoryList type=type path=path orderField='createDate'>
 <div class="pageHeader">
-    <form class="pagerForm" autocomplete="off" onsubmit="return dialogSearch(this);" action="cmsFileHistory/history.html" method="post">
+    <form class="pagerForm" autocomplete="off" onsubmit="return dialogSearch(this);" action="cmsFileHistory/list.html" method="post">
         <#include "../include_page/parameters.html"/>
         <input type="hidden" name="path" value="${path!}"/>
         <input type="hidden" name="type" value="${type!}"/>
@@ -11,10 +11,10 @@
         <thead>
             <tr>
                 <th width="20"><@t.page 'use'/></th>
-                <th orderField="fileName" class="<#if !orderField?has_content||'fileName'==orderField>asc<#else>order</#if>"><@t.page 'name'/></th>
-                <th orderField="modifiedDate" class="<#if orderField?has_content&&'modifiedDate'==orderField>desc<#else>order</#if>"><@t.page 'modified_date'/></th>
-                <th orderField="createDate" class="<#if orderField?has_content&&'createDate'==orderField>desc<#else>order</#if>"><@t.page 'create_date'/></th>
-                <th orderField="fileSize" class="<#if orderField?has_content&&'fileSize'==orderField>desc<#else>order</#if>"><@t.page 'file.size'/></th>
+                <th><@t.page 'name'/></th>
+                <th><@t.page 'modified_date'/></th>
+                <th><@t.page 'create_date'/></th>
+                <th><@t.page 'file.size'/></th>
                 <th><@t.page 'compare'/></th>
             </tr>
         </thead>
