@@ -30,6 +30,7 @@
                 <th><@t.page 'id'/></th>
                 <th><@t.page 'user'/></th>
                 <th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'create_date'/></th>
+                <th><@t.page 'compare'/></th>
             </tr>
         </thead>
         <tbody>
@@ -40,13 +41,16 @@
             <#list page.list as a>
             <tr>
                 <td>
-                    <a href="cmsContentTextHistory/use.html?id=${a.id}" target="dialog" rel="_blank" class="btnText green"><i class="icon-ok"></i><@t.page 'select'/></a>
+                    <a href="cmsContentTextHistory/use.html?id=${a.id}" target="dialog" mask="true" class="btnText green"><i class="icon-ok"></i><@t.page 'select'/></a>
                 </td>
                 <td>${a.id!}</td>
                 <td class="center exclude-translate">
                     ${(userMap[a.userId?string].nickname)!}
                 </td>
                 <td>${a.createDate!}</td>
+                <td>
+                    <a href="cmsContentTextHistory/compare.html?id=${a.id}" target="dialog" max="true" mask="true" class="btnText bule"><i class="bi bi-file-diff"></i><@t.page 'compare'/></a>
+                </td>
             </tr>
             </#list>
         </tbody>

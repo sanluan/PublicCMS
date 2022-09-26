@@ -349,6 +349,37 @@ DWZ.regPlugins.push(function($p){
         $this.spectrum(opts);
     });
 });
+DWZ.regPlugins.push(function($p){
+    $('.compare', $p).each(function() {
+        var $this=$(this);
+        function init($resultBox,oldstring,newstring){
+            var diff = Diff.diffLines(oldstring, newstring);
+            var fragment = document.createDocumentFragment();
+            for (var i=0; i < diff.length; i++) {        
+                var node;
+                if (diff[i].removed) {
+                    node = document.createElement('del');
+                    node.appendChild(document.createTextNode(diff[i].value));
+                } else if (diff[i].added) {
+                    node = document.createElement('ins');
+                    node.appendChild(document.createTextNode(diff[i].value));
+                } else {
+                    node = document.createTextNode(diff[i].value);
+                }
+                fragment.appendChild(node);
+            }
+            $resultBox.empty().append(fragment);
+        }
+        if(window.jsdiff.initd){
+            init($this.find('.result-box'),$this.find('[name=old]').val(),$this.find('[name=new]').val());
+        } else {
+            loadScripts(window.jsdiff.resources,function(){
+                window.jsdiff.initd=true;
+                init($this.find('.result-box'),$this.find('[name=old]').val(),$this.find('[name=new]').val());
+            });
+        }
+    });
+});
 $(document).keydown(function(e){
     if(e.keyCode == DWZ.keyCode.ESC && $.pdialog.getCurrent()){
         $.pdialog.closeCurrent();

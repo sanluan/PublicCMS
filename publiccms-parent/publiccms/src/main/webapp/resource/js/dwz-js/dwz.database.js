@@ -25,7 +25,7 @@
                     if (name == inputName && "" != name ) {
                         if($input.hasClass('editor')){
                             if('ckeditor'==$input.attr('editorType')) {
-                                CKEDITOR.instances[$input.data("id")].setDate(args[key]);
+                                CKEDITOR.instances[$input.data("id")].setData(args[key]);
                             } else if ("tinymce"==$input.attr("editorType")){
                                 tinymce.get($input.data("id")).setContent(args[key]);
                             } else if ("kindeditor"==$input.attr("editorType")){

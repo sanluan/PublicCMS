@@ -43,6 +43,10 @@
                 if (dialog.is(":hidden") ) {
                     dialog.show();
                 }
+                if (op.max ) {
+                    $.pdialog.maxsize(dialog);
+                    dialog.jresize("destroy").dialogDrag("destroy");
+                }
                 if (op.fresh || url != dialog.data("url") ) {
                     dialog.data("url", url);
                     dialog.find(".dialogHeader").find("h1").text(title);
