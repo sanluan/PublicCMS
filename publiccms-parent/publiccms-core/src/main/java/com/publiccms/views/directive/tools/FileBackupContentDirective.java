@@ -22,7 +22,6 @@ public class FileBackupContentDirective extends AbstractTemplateDirective {
         if (CommonUtils.notEmpty(path)) {
             SysSite site = getSite(handler);
             String realpath;
-
             if (CommonUtils.notEmpty(type)) {
                 switch (type) {
                 case "file":
@@ -36,7 +35,7 @@ public class FileBackupContentDirective extends AbstractTemplateDirective {
                     realpath = siteComponent.getTemplateBackupFilePath(site, path);
                 }
             } else {
-                realpath = siteComponent.getTemplateFilePath(site, path);
+                realpath = siteComponent.getTemplateBackupFilePath(site, path);
             }
             handler.put("object", CmsFileUtils.getFileContent(realpath)).render();
         }

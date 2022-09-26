@@ -353,7 +353,7 @@ DWZ.regPlugins.push(function($p){
     $('.compare', $p).each(function() {
         var $this=$(this);
         function init($resultBox,oldstring,newstring){
-            var diff = Diff.diffLines(oldstring, newstring);
+            var diff = Diff.diffWords(oldstring, newstring);
             var fragment = document.createDocumentFragment();
             for (var i=0; i < diff.length; i++) {        
                 var node;

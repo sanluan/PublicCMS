@@ -1,0 +1,78 @@
+<#assign editableSubfix=['css','js','html','shtml','htm','xml','txt','svg','md','text','json']/>
+<div class="pageHeader">
+    <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
+        <input type="hidden" name="orderField" value="${orderField!}" />
+        <div class="searchBar">
+            <ul class="searchContent">
+                <li>
+                    <label><@t.page 'path'/>:</label>
+                    <label>${path?has_content?then(path+'/','/')}</label>
+                </li>
+            </ul>
+        </div>
+    </form>
+</div>
+<div class="pageContent">
+    <div class="panelBar">
+        <ul class="toolBar">
+            <li><a href="cmsFileBackup/recycle?type=${type!}&_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.batch_recycle'/>" target="selectedTodo" rel="paths"><i class="icon-reply-all icon-large"></i><@t.page 'button.batch_recycle'/></a></li>
+        </ul>
+    </div>
+    <table class="table" width="100%" layoutH>
+        <thead>
+            <tr>
+                <th width="20"><input type="checkbox" group="paths" class="checkboxCtrl"></th>
+                <th width="30"></th>
+                <th orderField="fileName" class="<#if !orderField?has_content||'fileName'==orderField>asc<#else>order</#if>"><@t.page 'name'/></th>
+                <th orderField="modifiedDate" class="<#if orderField?has_content&&'modifiedDate'==orderField>desc<#else>order</#if>"><@t.page 'modified_date'/></th>
+                <th orderField="createDate" class="<#if orderField?has_content&&'createDate'==orderField>desc<#else>order</#if>"><@t.page 'create_date'/></th>
+                <th orderField="fileSize" class="<#if orderField?has_content&&'fileSize'==orderField>desc<#else>order</#if>"><@t.page 'file.size'/></th>
+                <th><@t.page 'operate'/></th>
+            </tr>
+        </thead>
+        <tbody>
+    <@tools.fileBackupList type=type path=path orderField=orderField>
+        <#if path?has_content>
+            <tr>
+                <td></td>
+                <td class="tree"><div class="folder_expandable"></div></td>
+                <td>
+                    <a href="cmsFileBackup/list.html?type=${type!}&path=${path?keep_before_last('/')}" target="navTab" rel="cmsWebFile/list" title="<@t.page 'button.return'/>">
+                        <@t.page 'button.return'/>
+                    </a>
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </#if>
+        <#list list as a>
+            <#assign filePath=path?has_content?then(path+'/','/')+a.fileName/>
+            <tr>
+                <td><input name="paths" value="${filePath}" type="checkbox"></td>
+                <td class="tree"><div class="${a.directory?then('folder_expandable','file')}" style="width:30px;"></div></td>
+                <td>
+                    <#if a.directory>
+                        <a href="cmsFileBackup/list.html?type=${type!}&path=${filePath?url}" target="navTab" rel="cmsFileBackup/list">
+                            ${a.fileName}
+                        </a>
+                    <#else>
+                        ${a.fileName}
+                    </#if>
+                </td>
+                <td>${a.lastModifiedTime?datetime}</td>
+                <td>${a.creationTime?datetime}</td>
+                <td><@t.fileSize a.size/></td>
+                <td class="wrap">
+                    <a href="cmsFileBackup/recycle?type=${type!}&paths=${filePath?url}&_csrf=<@tools.csrfToken admin=true/>" class="btnText blue" title="<@t.page 'confirm.recycle'/>" target="ajaxTodo"><i class="icon-reply icon-large"></i><@t.page 'button.recycle'/></a>
+                    <#if editableSubfix?seq_contains(a.fileName?keep_after_last('.')?lower_case)>
+                      <a href="cmsFileBackup/content?type=${type!}&path=${filePath?url}" class="edit btnText blue" target="navTab" rel="cmsWebBackup/content:${filePath}" icon="<i class='icon-edit'></i>" title="${a.fileName}"><i class="icon-eye-open"></i><@t.page 'button.view'/></a>
+                    </#if>
+                </td>
+            </tr>
+        </#list>
+    </@tools.fileBackupList>
+        </tbody>
+    </table>
+</div>

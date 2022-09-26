@@ -211,3 +211,13 @@ UPDATE `sys_module` SET `authorized_url` = 'cmsModel/save,cmsTemplate/lookup,cms
 ALTER TABLE `cms_content` 
     DROP INDEX `cms_content_disabled`,
     ADD INDEX `cms_content_disabled`(`site_id`, `disabled`, `category_id`, `model_id`);
+--2022-09-26 --
+UPDATE `sys_module` SET `authorized_url`= 'cmsContentTextHistory/use,cmsContentTextHistory/compare' WHERE `id` ='content_text_history';
+INSERT INTO `sys_module` VALUES ('file_history', 'cmsFileHistory/list', 'cmsFileHistory/use,cmsFileHistory/compare', NULL, 'template_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('file_recycle', 'cmsFileBackup/list', 'cmsFileBackup/content,cmsFileBackup/recycle', NULL, 'template_list', 0, 0);
+INSERT INTO `sys_module_lang` VALUES ('file_history', 'en', 'File modification history');
+INSERT INTO `sys_module_lang` VALUES ('file_history', 'ja', 'ファイル変更履歴');
+INSERT INTO `sys_module_lang` VALUES ('file_history', 'zh', '文件修改历史');
+INSERT INTO `sys_module_lang` VALUES ('file_recycle', 'en', 'File recycle bin');
+INSERT INTO `sys_module_lang` VALUES ('file_recycle', 'ja', 'ファイルのごみ箱');
+INSERT INTO `sys_module_lang` VALUES ('file_recycle', 'zh', '文件回收站');

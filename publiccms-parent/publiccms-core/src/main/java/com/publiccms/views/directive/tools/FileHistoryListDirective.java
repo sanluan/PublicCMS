@@ -29,17 +29,17 @@ public class FileHistoryListDirective extends AbstractTemplateDirective {
         if (CommonUtils.notEmpty(type)) {
             switch (type) {
             case "file":
-                realpath = siteComponent.getWebHistoryFilePath(site, path);
+                realpath = siteComponent.getWebHistoryFilePath(site, path, false);
                 break;
             case "task":
-                realpath = siteComponent.getTaskTemplateHistoryFilePath(site, path);
+                realpath = siteComponent.getTaskTemplateHistoryFilePath(site, path, false);
                 break;
             case "template":
             default:
-                realpath = siteComponent.getTemplateHistoryFilePath(site, path);
+                realpath = siteComponent.getTemplateHistoryFilePath(site, path, false);
             }
         } else {
-            realpath = siteComponent.getTemplateFilePath(site, path);
+            realpath = siteComponent.getTemplateHistoryFilePath(site, path, false);
         }
         handler.put("list", CmsFileUtils.getFileList(realpath, handler.getString("orderField"))).render();
     }

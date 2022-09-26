@@ -99,7 +99,7 @@ public class CmsTemplateAdminController {
                             new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                                     "save.web.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
                 } else {
-                    String historyFilePath = siteComponent.getTemplateHistoryFilePath(site, path);
+                    String historyFilePath = siteComponent.getTemplateHistoryFilePath(site, path, true);
                     CmsFileUtils.updateFile(filepath, historyFilePath, content);
                     if (CommonUtils.notEmpty(metadata.getCacheTime()) && 0 < metadata.getCacheTime()) {
                         templateCacheComponent.deleteCachedFile(SiteComponent.getFullTemplatePath(site, path));
@@ -145,7 +145,7 @@ public class CmsTemplateAdminController {
                                     "save.place.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
                 } else {
                     String historyFilePath = siteComponent.getTemplateHistoryFilePath(site,
-                            TemplateComponent.INCLUDE_DIRECTORY + path);
+                            TemplateComponent.INCLUDE_DIRECTORY + path, true);
                     CmsFileUtils.updateFile(filepath, historyFilePath, content);
                     logOperateService.save(
                             new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,

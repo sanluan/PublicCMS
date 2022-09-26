@@ -192,7 +192,7 @@ var DWZ = {
                     }
                 });
                 $("textarea.code", $box).each(function() {
-                     $(this).val(DWZ.instances[$(this).data("id")].getValue());
+                     DWZ.instances[$(this).data("id")].save();
                 });
         
                 $(".miscSortDrag", $box).each(function() {
@@ -219,6 +219,7 @@ var DWZ = {
                     }
                 });
                 $("textarea.code", $box).each(function() {
+                    DWZ.instances[$(this).data("id")].toTextArea();
                     delete DWZ.instances[$(this).data("id")];
                 });
                 $(".image-editor", $box).each(function() {

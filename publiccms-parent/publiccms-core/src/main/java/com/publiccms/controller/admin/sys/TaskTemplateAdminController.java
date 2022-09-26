@@ -75,7 +75,7 @@ public class TaskTemplateAdminController {
                             new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                                     "save.task.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
                 } else {
-                    String historyFilePath = siteComponent.getTaskTemplateHistoryFilePath(site, path);
+                    String historyFilePath = siteComponent.getTaskTemplateHistoryFilePath(site, path, true);
                     CmsFileUtils.updateFile(filepath, historyFilePath, content);
                     logOperateService.save(
                             new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,

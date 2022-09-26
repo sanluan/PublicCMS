@@ -33,6 +33,8 @@
                             } else {
                                 UE.instants[$input.data("id")].setContent(args[key]);
                             }
+                        } else if($input.hasClass('code')) {
+                            DWZ.instances[$(this).data("id")].setValue(args[key]);
                         } else {
                             $input.val(args[key]).trigger('change');
                         }

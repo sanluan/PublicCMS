@@ -1,0 +1,39 @@
+<@tools.fileHistoryList type=type path=path orderField='createDate'>
+<div class="pageHeader">
+    <form class="pagerForm" autocomplete="off" onsubmit="return dialogSearch(this);" action="cmsFileHistory/history.html" method="post">
+        <#include "../include_page/parameters.html"/>
+        <input type="hidden" name="path" value="${path!}"/>
+        <input type="hidden" name="type" value="${type!}"/>
+    </form>
+</div>
+<div class="pageContent">
+    <table class="table" width="100%" layoutH>
+        <thead>
+            <tr>
+                <th width="20"><@t.page 'use'/></th>
+                <th orderField="fileName" class="<#if !orderField?has_content||'fileName'==orderField>asc<#else>order</#if>"><@t.page 'name'/></th>
+                <th orderField="modifiedDate" class="<#if orderField?has_content&&'modifiedDate'==orderField>desc<#else>order</#if>"><@t.page 'modified_date'/></th>
+                <th orderField="createDate" class="<#if orderField?has_content&&'createDate'==orderField>desc<#else>order</#if>"><@t.page 'create_date'/></th>
+                <th orderField="fileSize" class="<#if orderField?has_content&&'fileSize'==orderField>desc<#else>order</#if>"><@t.page 'file.size'/></th>
+                <th><@t.page 'compare'/></th>
+            </tr>
+        </thead>
+        <tbody>
+            <#list list as a>
+            <tr>
+                <td>
+                    <a href="cmsFileHistory/use.html?type=${type!}&path=${path!}&fileName=${a.fileName}" target="dialog" mask="true" class="btnText green"><i class="icon-ok"></i><@t.page 'select'/></a>
+                </td>
+                <td>${a.fileName}</td>
+                <td>${a.lastModifiedTime?datetime}</td>
+                <td>${a.creationTime?datetime}</td>
+                <td><@t.fileSize a.size/></td>
+                <td>
+                    <a href="cmsFileHistory/compare.html?type=${type!}&path=${path!}&fileName=${a.fileName}" target="dialog" max="true" mask="true" class="btnText bule"><i class="bi bi-file-diff"></i><@t.page 'compare'/></a>
+                </td>
+            </tr>
+            </#list>
+        </tbody>
+    </table>
+</div>
+</@tools.fileHistoryList>

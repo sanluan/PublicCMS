@@ -39,7 +39,7 @@ public class FileBackupListDirective extends AbstractTemplateDirective {
                 realpath = siteComponent.getTemplateBackupFilePath(site, path);
             }
         } else {
-            realpath = siteComponent.getTemplateFilePath(site, path);
+            realpath = siteComponent.getTemplateBackupFilePath(site, path);
         }
         handler.put("list", CmsFileUtils.getFileList(realpath, handler.getString("orderField"))).render();
     }
