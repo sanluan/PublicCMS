@@ -34,9 +34,6 @@ import com.publiccms.logic.component.template.DiyComponent;
  });
  &lt;/script&gt;
  * </pre>
- * DiyMetadataListDirective diy元数据列表获取
- * 参数列表：
- * itemType 元数据类型 可选值 region,layout,module 结果项 list 为diy元数据列表
  * 
  */
 @Component

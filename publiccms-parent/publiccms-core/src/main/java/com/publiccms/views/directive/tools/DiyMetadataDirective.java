@@ -12,7 +12,6 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.template.DiyComponent;
 
 /**
- *
  * diyMetadata diy元数据获取
  * 参数列表
  * <ul>
