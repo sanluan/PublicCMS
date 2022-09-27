@@ -11,7 +11,6 @@
         <thead>
             <tr>
                 <th width="20"><@t.page 'use'/></th>
-                <th><@t.page 'name'/></th>
                 <th><@t.page 'modified_date'/></th>
                 <th><@t.page 'create_date'/></th>
                 <th><@t.page 'file.size'/></th>
@@ -24,7 +23,6 @@
                 <td>
                     <a href="cmsFileHistory/use.html?type=${type!}&path=${path!}&fileName=${a.fileName}" target="dialog" mask="true" class="btnText green"><i class="icon-ok"></i><@t.page 'select'/></a>
                 </td>
-                <td>${a.fileName}</td>
                 <td>${a.lastModifiedTime?datetime}</td>
                 <td>${a.creationTime?datetime}</td>
                 <td><@t.fileSize a.size/></td>

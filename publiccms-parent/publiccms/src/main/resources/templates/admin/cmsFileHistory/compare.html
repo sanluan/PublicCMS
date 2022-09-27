@@ -1,13 +1,17 @@
 <@tools.fileHistoryContent type=type path=path+'/'+fileName><#assign a=object/></@tools.fileHistoryContent>
+<#assign
+    editorType={'css':'css','js':'javascript','xml':'xml'}
+    fileType=path?keep_after_last('.')?lower_case
+/>
 <div class="pageFormContent" layoutH>
     <div class="unit">
         <table class="compare">
             <tr>
                 <td>
-                    <textarea name="old" class="code">${a!}</textarea>
+                    <textarea name="old" class="code" mode="${(!type?has_content || 'template'=type)?then('freemarkermixed',editorType[fileType]?has_content?then(editorType[fileType],'htmlmixed'))}">${a!}</textarea>
                 </td>
                 <td>
-                    <textarea name="new" class="code"></textarea>
+                    <textarea name="new" class="code" mode="${(!type?has_content || 'template'=type)?then('freemarkermixed',editorType[fileType]?has_content?then(editorType[fileType],'htmlmixed'))}"></textarea>
                 </td>
                 <td><pre class="result-box"></pre></td>
             </tr>
