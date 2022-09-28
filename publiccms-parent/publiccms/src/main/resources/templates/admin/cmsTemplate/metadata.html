@@ -182,7 +182,7 @@ $('.parametersBox',navTab.getCurrentPanel()).on('click','span>a',function(){
 </#if>
 </script>
 <#if a?has_content>
-        <textarea name="content" class="hide"><@tools.templateContent path=path>${(object)!}</@tools.templateContent></textarea>
+        <textarea name="content" class="hide"><@tools.fileContent path=path>${(object)!}</@tools.fileContent></textarea>
         <script>
     <#if site.useStatic&&(a.publishPath)?has_content>
             $('input[name=useStatic]',navTab.getCurrentPanel()).click();

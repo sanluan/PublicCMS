@@ -1,5 +1,5 @@
 <#macro placeTree filepath=''>
-    <@tools.templateList path='/include'+filepath orderField='createDate'>
+    <@tools.fileList path='/include'+filepath orderField='createDate'>
         <#list list as a>
             <@t.merge 'pages' '/include'+filepath+'/'+a.fileName/>
         </#list>
@@ -23,7 +23,7 @@
         <#else>
             <li><a><@t.page 'empty_directory'/></a></li>
         </#list>
-    </@tools.templateList>
+    </@tools.fileList>
 </#macro>
 <div class="pageContent">
     <div layoutH class="leftPageContent">

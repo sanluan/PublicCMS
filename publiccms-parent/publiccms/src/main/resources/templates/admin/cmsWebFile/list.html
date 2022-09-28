@@ -36,7 +36,7 @@
             </tr>
         </thead>
         <tbody>
-    <@tools.webFileList path=path orderField=orderField>
+    <@tools.fileList type='file' path=path orderField=orderField>
         <#if path?has_content>
             <tr>
                 <td></td>
@@ -94,7 +94,7 @@
                 </td>
             </tr>
         </#list>
-    </@tools.webFileList>
+    </@tools.fileList>
         </tbody>
     </table>
 </div>

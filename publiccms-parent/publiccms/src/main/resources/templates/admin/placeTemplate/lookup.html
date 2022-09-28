@@ -1,5 +1,5 @@
 <#macro chipTree filepath prefix suffix>
-    <@tools.templateList path='include'+filepath orderField='createDate'>
+    <@tools.fileList path='include'+filepath orderField='createDate'>
         <#list list as a>
             <li>
                 <#local path=filepath+'/'+a.fileName>
@@ -19,7 +19,7 @@
         <#else>
             <li><a><@t.page 'empty_directory'/></a></li>
         </#list>
-    </@tools.templateList>
+    </@tools.fileList>
 </#macro>
 <div class="pageFormContent" layoutH>
     <ul class="tree treeFolder">

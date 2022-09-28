@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletionStage;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 import javax.persistence.EntityNotFoundException;
@@ -268,20 +268,21 @@ public abstract class BaseDao<E> {
      * @param batchSize
      */
     @SuppressWarnings("unchecked")
-    protected <T> void batchWork(QueryHandler queryHandler, Consumer<List<T>> worker, int batchSize) {
+    protected <T> void batchWork(QueryHandler queryHandler, BiConsumer<List<T>, Integer> worker, int batchSize) {
         Query<E> query = getSession().createQuery(queryHandler.getSql(), getEntityClass());
         queryHandler.initQuery(query);
         try (ScrollableResults results = query.setReadOnly(true).setCacheable(false).scroll(ScrollMode.FORWARD_ONLY)) {
             List<T> resultList = new ArrayList<>(batchSize);
+            int i = 0;
             while (results.next()) {
                 resultList.add((T) results.get(0));
                 if (resultList.size() >= batchSize) {
-                    worker.accept(resultList);
+                    worker.accept(resultList, i++);
                     resultList.clear();
                 }
             }
             if (resultList.size() >= 0) {
-                worker.accept(resultList);
+                worker.accept(resultList, i++);
             }
         }
 

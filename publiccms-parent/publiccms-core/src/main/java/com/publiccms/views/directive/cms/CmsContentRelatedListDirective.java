@@ -1,6 +1,6 @@
 package com.publiccms.views.directive.cms;
 
-// Generated 2016-1-25 10:53:21 by com.publiccms.common.source.SourceGenerator
+// Generated 2016-1-25 10:53:21 by com.publiccms.common.generator.SourceGenerator
 
 import java.io.IOException;
 

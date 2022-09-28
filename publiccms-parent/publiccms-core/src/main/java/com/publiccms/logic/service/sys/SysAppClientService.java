@@ -1,6 +1,6 @@
 package com.publiccms.logic.service.sys;
 
-// Generated 2016-3-1 17:24:12 by com.publiccms.common.source.SourceGenerator
+// Generated 2016-3-1 17:24:12 by com.publiccms.common.generator.SourceGenerator
 
 import java.io.Serializable;
 import java.util.Date;

@@ -2,7 +2,7 @@ package com.publiccms.views.directive.api;
 
 import static org.springframework.util.StringUtils.arrayToDelimitedString;
 
-//Generated 2015-5-10 17:54:56 by com.publiccms.common.source.SourceGenerator
+//Generated 2015-5-10 17:54:56 by com.publiccms.common.generator.SourceGenerator
 
 import java.io.IOException;
 import java.util.ArrayList;

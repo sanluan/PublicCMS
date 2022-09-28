@@ -3,7 +3,7 @@ package com.publiccms.logic.service.cms;
 import java.io.Serializable;
 import java.util.Collection;
 
-// Generated 2016-3-22 11:21:35 by com.publiccms.common.source.SourceGenerator
+// Generated 2016-3-22 11:21:35 by com.publiccms.common.generator.SourceGenerator
 
 import java.util.Date;
 

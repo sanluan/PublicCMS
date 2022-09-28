@@ -3,7 +3,7 @@ package com.publiccms.logic.service.cms;
 import com.publiccms.entities.cms.CmsDictionary;
 import com.publiccms.logic.dao.cms.CmsDictionaryDao;
 
-// Generated 2016-11-20 14:50:37 by com.publiccms.common.source.SourceGenerator
+// Generated 2016-11-20 14:50:37 by com.publiccms.common.generator.SourceGenerator
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

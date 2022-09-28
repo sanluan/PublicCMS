@@ -35,7 +35,7 @@
     <div class="pageFormContent" layoutH>
         <div>
             <input name="path" type="hidden" value="${path}"/>
-            <textarea name="content" class="code" escape="true" mode="freemarkermixed"><@tools.templateContent path='/include'+path>${(object)!}</@tools.templateContent></textarea>
+            <textarea name="content" class="code" escape="true" mode="freemarkermixed"><@tools.fileContent path='/include'+path>${(object)!}</@tools.fileContent></textarea>
         </div>
     </div>
 </form>

@@ -1,4 +1,4 @@
-<@tools.webFileContent path=path><#assign content=object!/></@tools.webFileContent>
+<@tools.fileContent type='file' path=path><#assign content=object!/></@tools.fileContent>
 <#assign
     editorType={'css':'css','js':'javascript','xml':'xml'}
     fileType=path?keep_after_last('.')?lower_case

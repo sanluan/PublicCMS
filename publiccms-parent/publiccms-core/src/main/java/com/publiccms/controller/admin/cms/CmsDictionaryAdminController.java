@@ -1,8 +1,15 @@
 package com.publiccms.controller.admin.cms;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.tools.zip.ZipOutputStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -13,6 +20,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
@@ -21,6 +29,7 @@ import com.publiccms.entities.cms.CmsDictionaryId;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
+import com.publiccms.logic.component.site.ExportComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.cms.CmsDictionaryDataService;
 import com.publiccms.logic.service.cms.CmsDictionaryExcludeService;
@@ -42,6 +51,8 @@ public class CmsDictionaryAdminController {
     protected LogOperateService logOperateService;
     @Autowired
     protected SiteComponent siteComponent;
+    @Autowired
+    protected ExportComponent exportComponent;
 
     private String[] ignoreProperties = new String[] { "id", "siteId" };
 
@@ -105,6 +116,26 @@ public class CmsDictionaryAdminController {
             }
         }
         return true;
+    }
+
+    /**
+     * @param site
+     * @param response
+     */
+    @RequestMapping("export")
+    @Csrf
+    public void export(@RequestAttribute SysSite site, HttpServletResponse response) {
+        try {
+            response.setHeader("content-disposition",
+                    "attachment;fileName=" + URLEncoder.encode(site.getName() + "_dictionary.zip", "utf-8"));
+        } catch (UnsupportedEncodingException e1) {
+        }
+        try (ServletOutputStream outputStream = response.getOutputStream();
+                ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream)) {
+            zipOutputStream.setEncoding(Constants.DEFAULT_CHARSET_NAME);
+            exportComponent.exportDictionary(site.getId(), zipOutputStream);
+        } catch (IOException e) {
+        }
     }
 
     /**

@@ -23,7 +23,7 @@
     <div class="pageFormContent" layoutH>
         <div class="exclude-translate">
             <input name="path" type="hidden" value="${path}"/>
-            <textarea name="content" class="code" escape="true" mode="freemarkermixed"><@tools.templateContent path=path>${(object)!}</@tools.templateContent></textarea>
+            <textarea name="content" class="code" escape="true" mode="freemarkermixed"><@tools.fileContent path=path>${(object)!}</@tools.fileContent></textarea>
         </div>
     </div>
 </form>

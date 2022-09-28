@@ -12,7 +12,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -215,7 +215,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param batchSize
      */
     @Transactional(readOnly = true)
-    public void batchWork(short siteId, Integer[] categoryIds, String[] modelIds, Consumer<List<CmsContent>> worker,
+    public void batchWork(short siteId, Integer[] categoryIds, String[] modelIds, BiConsumer<List<CmsContent>, Integer> worker,
             int batchSize) {
         dao.batchWork(siteId, categoryIds, modelIds, worker, batchSize);
     }

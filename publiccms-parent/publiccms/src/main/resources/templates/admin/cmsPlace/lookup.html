@@ -27,7 +27,7 @@
     </@cms.categoryList>
 </#macro>
 <#macro pageTree filepath=''>
-    <@tools.templateList path=filepath orderField='createDate'>
+    <@tools.fileList path=filepath orderField='createDate'>
         <#list list as a>
             <#local path=filepath+'/'+a.fileName>
             <li>
@@ -56,7 +56,7 @@
         <#else>
             <li><a><@t.page 'empty_directory'/></a></li>
         </#list>
-    </@tools.templateList>
+    </@tools.fileList>
 </#macro>
 <#assign itemTypes=acceptItemTypes?has_content?then(acceptItemTypes?split(','),['page','content','category'])/>
 <div class="tabs">

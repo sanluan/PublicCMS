@@ -241,7 +241,7 @@
                     </ul>
                 </li>
 <#macro placeTree filepath=''>
-    <@tools.templateList path='/include'+filepath>
+    <@tools.fileList path='/include'+filepath>
         <#list list as a>
             <#local path=filepath+'/'+a.fileName>
             <@tools.placeMetadata path=path>
@@ -259,7 +259,7 @@
         <#else>
             <li><a><@t.page 'empty_directory'/></a></li>
         </#list>
-    </@tools.templateList>
+    </@tools.fileList>
 </#macro>
                 <li>
                     <a href="javascript:;" onclick="return false;"><@t.page 'help.place_contribute'/></a>

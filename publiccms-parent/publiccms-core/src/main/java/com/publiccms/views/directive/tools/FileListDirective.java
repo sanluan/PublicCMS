@@ -1,6 +1,6 @@
 package com.publiccms.views.directive.tools;
 
-// Generated 2022-5-10 by com.publiccms.common.generator.SourceGenerator
+// Generated 2015-5-10 17:54:56 by com.publiccms.common.generator.SourceGenerator
 
 import java.io.IOException;
 
@@ -14,7 +14,7 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysSite;
 
 /**
- * fileBackupList 文件回收站列表获取
+ * fileList 文件列表获取
  * <p>
  * 参数列表
  * <ul>
@@ -31,12 +31,12 @@ import com.publiccms.entities.sys.SysSite;
  * </ul>
  * 使用示例
  * <p>
- * &lt;@tools.fileBackupList path='/'&gt;&lt;#list list as
- * a&gt;${a.fileName}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@tools.fileBackupList&gt;
+ * &lt;@tools.fileList path='/'&gt;&lt;#list list as
+ * a&gt;${a.fileName}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@tools.fileList&gt;
  * 
  * <pre>
 &lt;script&gt;
- $.getJSON('//cms.publiccms.com/api/directive/tools/fileBackupList?path=/&amp;appToken=接口访问授权Token', function(data){    
+ $.getJSON('//cms.publiccms.com/api/directive/tools/fileList?path=/&amp;appToken=接口访问授权Token', function(data){    
    console.log(data);
  });
  &lt;/script&gt;
@@ -44,7 +44,7 @@ import com.publiccms.entities.sys.SysSite;
  * 
  */
 @Component
-public class FileBackupListDirective extends AbstractTemplateDirective {
+public class FileListDirective extends AbstractTemplateDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
@@ -55,17 +55,17 @@ public class FileBackupListDirective extends AbstractTemplateDirective {
         if (CommonUtils.notEmpty(type)) {
             switch (type) {
             case "file":
-                realpath = siteComponent.getWebBackupFilePath(site, path);
+                realpath = siteComponent.getWebFilePath(site, path);
                 break;
             case "task":
-                realpath = siteComponent.getTaskTemplateBackupFilePath(site, path);
+                realpath = siteComponent.getTaskTemplateFilePath(site, path);
                 break;
             case "template":
             default:
-                realpath = siteComponent.getTemplateBackupFilePath(site, path);
+                realpath = siteComponent.getTemplateFilePath(site, path);
             }
         } else {
-            realpath = siteComponent.getTemplateBackupFilePath(site, path);
+            realpath = siteComponent.getTemplateFilePath(site, path);
         }
         handler.put("list", CmsFileUtils.getFileList(realpath, handler.getString("orderField"))).render();
     }

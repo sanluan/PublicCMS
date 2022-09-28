@@ -1,6 +1,6 @@
 package com.publiccms.controller.admin.sys;
 
-// Generated 2016-7-16 11:54:16 by com.publiccms.common.source.SourceGenerator
+// Generated 2016-7-16 11:54:16 by com.publiccms.common.generator.SourceGenerator
 
 import java.util.Map;
 

@@ -1,6 +1,6 @@
 package com.publiccms.logic.service.sys;
 
-// Generated 2016-1-19 11:41:45 by com.publiccms.common.source.SourceGenerator
+// Generated 2016-1-19 11:41:45 by com.publiccms.common.generator.SourceGenerator
 
 import java.util.List;
 
