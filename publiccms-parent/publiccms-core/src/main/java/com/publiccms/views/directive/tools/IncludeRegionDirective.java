@@ -93,8 +93,8 @@ public class IncludeRegionDirective extends AbstractTemplateDirective {
     }
 
     @Override
-    public boolean needAppToken() {
-        return true;
+    public boolean httpEnabled() {
+        return false;
     }
 
     @Autowired

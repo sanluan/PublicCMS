@@ -61,8 +61,8 @@ public class IncludeLayoutDirective extends AbstractTemplateDirective {
     }
 
     @Override
-    public boolean needAppToken() {
-        return true;
+    public boolean httpEnabled() {
+        return false;
     }
 
     @Autowired

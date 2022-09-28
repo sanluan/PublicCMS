@@ -16,9 +16,30 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.logic.component.template.TemplateComponent;
 
 /**
- *
- * TemplateRegionListDirective
- *
+ * templateRegionList 模板文件页面可视化区域列表获取
+ * <p>
+ * 参数列表
+ * <ul>
+ * <li><code>path</code> 文件路径
+ * </ul>
+ * <p>
+ * 返回结果
+ * <ul>
+ * <li><code>list</code> 可视化区域id列表
+ * </ul>
+ * 使用示例
+ * <p>
+ * &lt;@tools.templateRegionList path='index.html'&gt;&lt;#list list as
+ * a&gt;${a}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@tools.templateRegionList&gt;
+ * 
+ * <pre>
+&lt;script&gt;
+ $.getJSON('//cms.publiccms.com/api/directive/tools/templateRegionList?path=index.html&amp;appToken=接口访问授权Token', function(data){    
+   console.log(data);
+ });
+ &lt;/script&gt;
+ * </pre>
+ * 
  */
 @Component
 public class TemplateRegionListDirective extends AbstractTemplateDirective {
