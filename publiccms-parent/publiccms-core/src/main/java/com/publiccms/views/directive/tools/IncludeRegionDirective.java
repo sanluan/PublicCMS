@@ -26,8 +26,19 @@ import freemarker.template.TemplateException;
 import freemarker.template.TemplateModel;
 
 /**
- *
- * MetadataDirective
+ * includeRegion 包含diy区域指令
+ * <p>
+ * 参数列表
+ * <ul>
+ * <li><code>id</code> 布局id
+ * </ul>
+ * <p>
+ * 打印包含结果
+ * <p>
+ * 使用示例
+ * <p>
+ * &lt;@tools.includeRegion id='00000000-0000-0000-0000-000000000000'
+ * categoryId=1/&gt;
  * 
  */
 @Component
@@ -68,7 +79,8 @@ public class IncludeRegionDirective extends AbstractTemplateDirective {
                                         List<CmsModuleData> moduleList = moduleListList.get(i);
                                         if (null != moduleList) {
                                             for (CmsModuleData moduleData : moduleList) {
-                                                sb.append("<@tools.includePlace path=\"").append(moduleData.getPlace()).append("\"/>");
+                                                sb.append("<@tools.includePlace path=\"").append(moduleData.getPlace())
+                                                        .append("\"/>");
                                             }
                                         }
                                     }

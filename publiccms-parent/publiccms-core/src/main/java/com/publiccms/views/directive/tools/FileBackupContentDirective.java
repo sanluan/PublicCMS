@@ -13,7 +13,7 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysSite;
 
 /**
- * fileBackupContent 备份文件内容获取
+ * fileBackupContent 备份文件内容获取指令
  * <p>
  * 参数列表
  * <ul>

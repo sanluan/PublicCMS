@@ -13,7 +13,7 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysSite;
 
 /**
- * fileHistoryContent 文件修改历史内容获取
+ * fileHistoryContent 文件修改历史内容获取指令
  * <p>
  * 参数列表
  * <ul>

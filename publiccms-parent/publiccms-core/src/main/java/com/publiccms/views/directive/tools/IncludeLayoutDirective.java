@@ -21,8 +21,19 @@ import freemarker.template.TemplateException;
 import freemarker.template.TemplateModel;
 
 /**
- *
- * MetadataDirective
+ * includeLayout 包含diy布局指令
+ * <p>
+ * 参数列表
+ * <ul>
+ * <li><code>id</code> 布局id
+ * </ul>
+ * <p>
+ * 打印包含结果
+ * <p>
+ * 使用示例
+ * <p>
+ * &lt;@tools.includeLayout
+ * id='00000000-0000-0000-0000-000000000000'&gt;${index},&lt;/@tools.includeLayout&gt;
  * 
  */
 @Component

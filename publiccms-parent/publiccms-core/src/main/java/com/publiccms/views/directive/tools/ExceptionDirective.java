@@ -8,7 +8,7 @@ import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.RenderHandler;
 
 /**
- * exception 异常获取
+ * exception 异常获取指令
  * 返回结果
  * <ul>
  * <li><code>object</code>异常字符串

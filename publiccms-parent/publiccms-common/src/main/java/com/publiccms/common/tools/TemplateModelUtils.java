@@ -87,7 +87,7 @@ public class TemplateModelUtils {
      * @return map value
      * @throws TemplateModelException
      */
-    public static Map<?, ?> converMap(TemplateModel model) throws TemplateModelException {
+    public static Map<String, Object> converMap(TemplateModel model) throws TemplateModelException {
         if (null != model) {
             if (model instanceof TemplateHashModelEx2) {
                 HashMap<String, Object> map = new HashMap<>();

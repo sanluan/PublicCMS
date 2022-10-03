@@ -14,7 +14,7 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysSite;
 
 /**
- * fileBackupList 文件回收站列表获取
+ * fileBackupList 文件回收站列表获取指令
  * <p>
  * 参数列表
  * <ul>

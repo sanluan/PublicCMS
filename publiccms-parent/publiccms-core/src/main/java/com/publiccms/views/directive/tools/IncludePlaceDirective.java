@@ -17,8 +17,26 @@ import com.publiccms.views.pojo.entities.CmsPageData;
 import com.publiccms.views.pojo.entities.CmsPlaceMetadata;
 
 /**
- *
- * IncludePlaceDirective
+ * includePlace 包含页面片段指令
+ * <p>
+ * 参数列表
+ * <ul>
+ * <li><code>path</code> 路径
+ * </ul>
+ * <p>
+ * 打印包含结果
+ * <p>
+ * 使用示例
+ * <p>
+ * &lt;@tools.includePlace path='00000000-0000-0000-0000-000000000000'/&gt;
+ * 
+ * <pre>
+&lt;script&gt;
+ $.getJSON('//cms.publiccms.com/api/directive/tools/includePlace?path=00000000-0000-0000-0000-000000000000.html&amp;appToken=接口访问授权Token', function(data){    
+   console.log(data);
+ });
+ &lt;/script&gt;
+ * </pre>
  * 
  */
 @Component

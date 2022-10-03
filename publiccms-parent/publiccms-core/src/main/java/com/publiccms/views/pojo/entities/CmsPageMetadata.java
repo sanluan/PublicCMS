@@ -20,15 +20,65 @@ public class CmsPageMetadata implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
+    /**
+     * alias
+     * <p>
+     * 别名
+     */
     private String alias;
+    /**
+     * static file path
+     * <p>
+     * 静态文件路径
+     */
     private String publishPath;
+    /**
+     * allow dynamic access
+     * <p>
+     * 允许动态访问
+     */
     private boolean useDynamic;
+    /**
+     * need login
+     * <p>
+     * 需要登录
+     */
     private boolean needLogin;
+    /**
+     * need body field
+     * <p>
+     * 需要消息体
+     */
     private boolean needBody;
+    /**
+     * accept parameters
+     * <p>
+     * 可接受参数名
+     */
     private String acceptParameters;
+    /**
+     * cache time
+     * <p>
+     * 缓存时间
+     */
     private Integer cacheTime;
+    /**
+     * content type
+     * <p>
+     * 内存类型
+     */
     private String contentType;
+    /**
+     * extend field list
+     * <p>
+     * 扩展字段列表
+     */
     private List<SysExtendField> extendList;
+    /**
+     * parameter type map
+     * <p>
+     * 参数类型表
+     */
     private Map<String, ParameterType> parameterTypeMap;
 
     /**

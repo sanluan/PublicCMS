@@ -12,17 +12,15 @@ import com.publiccms.common.tools.LanguagesUtils;
 import com.publiccms.logic.component.site.ScriptComponent;
 
 /**
- * executeScript diy区域数据获取
+ * executeScript 脚本执行指令
  * 参数列表
  * <ul>
  * <li><code>command</code> 命令【sync.bat,sync.sh,backupdb.bat,backupdb.sh】
  * <li><code>parameters</code> 参数数组
  * </ul>
  * <p>
- * 返回结果
- * <ul>
- * <li><code>object</code>{@link com.publiccms.views.pojo.diy.CmsRegionData}
- * </ul>
+ * 打印执行结果
+ * <p>
  * 使用示例
  * <p>
  * &lt;@tools.executeScript command='backupdb.bat'/&gt;

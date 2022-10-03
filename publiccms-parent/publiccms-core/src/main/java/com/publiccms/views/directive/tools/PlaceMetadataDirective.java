@@ -15,8 +15,30 @@ import com.publiccms.views.pojo.entities.CmsPageData;
 import com.publiccms.views.pojo.entities.CmsPlaceMetadata;
 
 /**
- *
- * PlaceMetadataDirective
+ * placeMetadata 页面片段元数据获取指令
+ * <p>
+ * 参数列表
+ * <ul>
+ * <li><code>path</code> 模板路径
+ * </ul>
+ * <p>
+ * 返回结果
+ * <ul>
+ * <li><code>object</code>
+ * 元数据{@link com.publiccms.views.pojo.entities.CmsPlaceMetadata}
+ * </ul>
+ * 使用示例
+ * <p>
+ * &lt;@tools.placeMetadata
+ * path='00000000-0000-0000-0000-000000000000'&gt;${object.alias}&lt;/@tools.placeMetadata&gt;
+ * 
+ * <pre>
+&lt;script&gt;
+ $.getJSON('//cms.publiccms.com/api/directive/tools/placeMetadata?path=00000000-0000-0000-0000-000000000000.html&amp;appToken=接口访问授权Token', function(data){    
+   console.log(data.alias);
+ });
+ &lt;/script&gt;
+ * </pre>
  * 
  */
 @Component

@@ -9,8 +9,26 @@ import com.publiccms.common.handler.RenderHandler;
 
 /**
  *
- * MemoryDirective 内存指令
- *
+ * memory 内存监控指令
+ * <p>
+ * <p>
+ * 返回结果
+ * <ul>
+ * <li><code>freeMemory</code> 空闲内存
+ * <li><code>totalMemory</code> 总内存
+ * <li><code>maxMemory</code> 最大内存
+ * </ul>
+ * 使用示例
+ * <p>
+ * &lt;@tools.memory&gt;${totalMemory}&lt;/@tools.memory&gt;
+ * 
+ * <pre>
+&lt;script&gt;
+$.getJSON('//cms.publiccms.com/api/directive/tools/memory?appToken=接口访问授权Token', function(data){    
+ console.log(data);
+});
+&lt;/script&gt;
+ * </pre>
  */
 @Component
 public class MemoryDirective extends AbstractTemplateDirective {
@@ -24,4 +42,8 @@ public class MemoryDirective extends AbstractTemplateDirective {
         handler.render();
     }
 
+    @Override
+    public boolean needAppToken() {
+        return true;
+    }
 }

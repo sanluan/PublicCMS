@@ -12,7 +12,7 @@ import com.publiccms.logic.component.template.DiyComponent;
 import com.publiccms.views.pojo.diy.CmsRegionData;
 
 /**
- * regionData diy区域数据获取
+ * regionData diy区域数据获取指令
  * 参数列表
  * <ul>
  * <li><code>id</code> 区域id

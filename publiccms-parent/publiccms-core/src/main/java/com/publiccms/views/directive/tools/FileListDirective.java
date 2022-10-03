@@ -14,7 +14,7 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysSite;
 
 /**
- * fileList 文件列表获取
+ * fileList 文件列表获取指令
  * <p>
  * 参数列表
  * <ul>

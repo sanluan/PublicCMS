@@ -14,7 +14,7 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysSite;
 
 /**
- * fileHistoryList 文件修改历史列表获取
+ * fileHistoryList 文件修改历史列表获取指令
  * <p>
  * 参数列表
  * <ul>

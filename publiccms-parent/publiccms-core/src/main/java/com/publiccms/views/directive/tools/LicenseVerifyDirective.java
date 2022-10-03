@@ -12,10 +12,30 @@ import com.publiccms.common.tools.LicenseUtils;
 import com.publiccms.common.tools.VerificationUtils;
 
 /**
- * 
- * VersionDirective 技术框架版本指令
- *
- */
+*
+* licenseVerify 授权文件验证指令
+* <p>
+* 参数列表
+* <ul>
+* <li><code>licenseData</code> 授权文件数据
+* </ul>
+* <p>
+* 返回结果
+* <ul>
+* <li><code>result</code> 验证结果,【true:验证成功,false:验证失败】
+* </ul>
+* 使用示例
+* <p>
+* &lt;@tools.licenseVerify licenseData='content'&gt;${url}&lt;/@tools.licenseVerify&gt;
+* 
+* <pre>
+&lt;script&gt;
+$.getJSON('//cms.publiccms.com/api/directive/tools/licenseVerify?licenseData=content', function(data){    
+ console.log(data);
+});
+&lt;/script&gt;
+* </pre>
+*/
 @Component
 public class LicenseVerifyDirective extends AbstractTemplateDirective {
 
