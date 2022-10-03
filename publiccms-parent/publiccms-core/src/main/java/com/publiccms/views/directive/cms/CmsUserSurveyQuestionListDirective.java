@@ -21,7 +21,7 @@ import com.publiccms.logic.service.cms.CmsUserSurveyQuestionService;
 * <li><code>questionId</code> 问题id
 * <li><code>surveyId</code> 问卷id
 * <li><code>orderField</code> 排序字段,【score:评分,createDate:创建日期】,默认createDate按orderType排序
-* <li><code>orderType</code> 排序类型,【asc:正序,desc:倒叙】，默认为倒叙
+* <li><code>orderType</code> 排序类型,【asc:正序,desc:倒叙】,默认为倒叙
 * <li><code>pageIndex</code> 页码
 * <li><code>pageSize</code> 每页条数
 * </ul>

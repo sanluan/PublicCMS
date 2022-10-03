@@ -50,7 +50,7 @@ import com.publiccms.entities.cms.CmsContentAttribute;
 import com.publiccms.entities.cms.CmsContentRelated;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysDept;
-import com.publiccms.entities.sys.SysDeptCategoryId;
+import com.publiccms.entities.sys.SysDeptItemId;
 import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
@@ -66,7 +66,7 @@ import com.publiccms.logic.service.cms.CmsContentRelatedService;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
-import com.publiccms.logic.service.sys.SysDeptCategoryService;
+import com.publiccms.logic.service.sys.SysDeptItemService;
 import com.publiccms.logic.service.sys.SysDeptService;
 import com.publiccms.logic.service.sys.SysExtendFieldService;
 import com.publiccms.logic.service.sys.SysSiteService;
@@ -95,7 +95,7 @@ public class CmsContentAdminController {
     @Autowired
     private SysExtendFieldService extendFieldService;
     @Autowired
-    private SysDeptCategoryService sysDeptCategoryService;
+    private SysDeptItemService sysDeptItemService;
     @Autowired
     private SysDeptService sysDeptService;
     @Autowired
@@ -145,8 +145,10 @@ public class CmsContentAdminController {
         SysDept dept = sysDeptService.getEntity(admin.getDeptId());
         if (ControllerUtils.errorNotEmpty("deptId", admin.getDeptId(), model)
                 || ControllerUtils.errorNotEmpty("deptId", dept, model)
-                || ControllerUtils.errorCustom("noright", !(dept.isOwnsAllCategory() || null != sysDeptCategoryService
-                        .getEntity(new SysDeptCategoryId(admin.getDeptId(), entity.getCategoryId()))), model)) {
+                || ControllerUtils.errorCustom("noright",
+                        !(dept.isOwnsAllCategory() || null != sysDeptItemService.getEntity(new SysDeptItemId(admin.getDeptId(),
+                                SysDeptItemService.ITEM_TYPE_CATEGORY, String.valueOf(entity.getCategoryId())))),
+                        model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         CmsCategory category = categoryService.getEntity(entity.getCategoryId());
@@ -427,8 +429,9 @@ public class CmsContentAdminController {
         if (ControllerUtils.errorNotEquals("siteId", site.getId(), category.getSiteId(), model)
                 || ControllerUtils.errorNotEmpty("deptId", admin.getDeptId(), model)
                 || ControllerUtils.errorNotEmpty("deptId", dept, model)
-                || ControllerUtils.errorCustom("noright", !(dept.isOwnsAllCategory()
-                        || null != sysDeptCategoryService.getEntity(new SysDeptCategoryId(admin.getDeptId(), category.getId()))),
+                || ControllerUtils.errorCustom("noright",
+                        !(dept.isOwnsAllCategory() || null != sysDeptItemService.getEntity(new SysDeptItemId(admin.getDeptId(),
+                                SysDeptItemService.ITEM_TYPE_CATEGORY, String.valueOf(category.getId())))),
                         model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
@@ -512,8 +515,9 @@ public class CmsContentAdminController {
             if (ControllerUtils.errorNotEmpty("deptId", admin.getDeptId(), model)
                     || ControllerUtils.errorNotEmpty("deptId", dept, model)
                     || ControllerUtils.errorCustom("noright",
-                            !(dept.isOwnsAllCategory() || null != sysDeptCategoryService
-                                    .getEntity(new SysDeptCategoryId(admin.getDeptId(), content.getCategoryId()))),
+                            !(dept.isOwnsAllCategory()
+                                    || null != sysDeptItemService.getEntity(new SysDeptItemId(admin.getDeptId(),
+                                            SysDeptItemService.ITEM_TYPE_CATEGORY, String.valueOf(content.getCategoryId())))),
                             model)
                     || ControllerUtils.errorCustom("noright", !ControllerUtils.hasContentPermissions(admin, content), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
@@ -545,8 +549,9 @@ public class CmsContentAdminController {
             if (ControllerUtils.errorNotEmpty("deptId", admin.getDeptId(), model)
                     || ControllerUtils.errorNotEmpty("deptId", dept, model)
                     || ControllerUtils.errorCustom("noright",
-                            !(dept.isOwnsAllCategory() || null != sysDeptCategoryService
-                                    .getEntity(new SysDeptCategoryId(admin.getDeptId(), content.getCategoryId()))),
+                            !(dept.isOwnsAllCategory()
+                                    || null != sysDeptItemService.getEntity(new SysDeptItemId(admin.getDeptId(),
+                                            SysDeptItemService.ITEM_TYPE_CATEGORY, String.valueOf(content.getCategoryId())))),
                             model)
                     || ControllerUtils.errorCustom("noright", !ControllerUtils.hasContentPermissions(admin, content), model)) {
                 return CommonConstants.TEMPLATE_ERROR;

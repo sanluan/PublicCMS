@@ -18,7 +18,7 @@ import com.publiccms.common.handler.RenderHandler;
 * <p>
 * 参数列表
 * <ul>
-* <li><code>advanced</code> 开启高级选项， 默认为<code> false</code>
+* <li><code>advanced</code> 开启高级选项, 默认为<code>false</code>
 * <li><code>disabled</code> 高级选项:禁用状态,【true,false】,默认false
 * <li><code>channel</code> 渠道
 * <li><code>userId</code> 用户id

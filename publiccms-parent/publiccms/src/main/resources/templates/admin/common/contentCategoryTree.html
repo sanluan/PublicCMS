@@ -3,7 +3,7 @@
     <#list page.list as a>
         <@t.merge 'categoryIds' a.id!/>
     </#list>
-    <@sys.deptCategory deptId=(admin.deptId)!'' categoryIds=t.categoryIds!><#assign deptCategoryMap=map!/></@sys.deptCategory>
+    <@sys.deptItem itemType='category' deptId=(admin.deptId)!'' categoryIds=t.categoryIds!><#assign deptCategoryMap=map!/></@sys.deptItem>
     <#list page.list as a>
         <#if (deptCategoryMap[a.id?string])?has_content&&deptCategoryMap[a.id?string]>
             <li<#if a.childIds?has_content> _src="common/contentCategoryTree.html?parentId=${a.id}"</#if>>

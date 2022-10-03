@@ -2,10 +2,8 @@ package com.publiccms.controller.admin.sys;
 
 import static org.springframework.util.StringUtils.arrayToCommaDelimitedString;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,12 +23,6 @@ import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.common.tools.UserPasswordUtils;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysDept;
-import com.publiccms.entities.sys.SysDeptCategory;
-import com.publiccms.entities.sys.SysDeptCategoryId;
-import com.publiccms.entities.sys.SysDeptConfig;
-import com.publiccms.entities.sys.SysDeptConfigId;
-import com.publiccms.entities.sys.SysDeptPage;
-import com.publiccms.entities.sys.SysDeptPageId;
 import com.publiccms.entities.sys.SysRoleUser;
 import com.publiccms.entities.sys.SysRoleUserId;
 import com.publiccms.entities.sys.SysSite;
@@ -38,9 +30,7 @@ import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
-import com.publiccms.logic.service.sys.SysDeptCategoryService;
-import com.publiccms.logic.service.sys.SysDeptConfigService;
-import com.publiccms.logic.service.sys.SysDeptPageService;
+import com.publiccms.logic.service.sys.SysDeptItemService;
 import com.publiccms.logic.service.sys.SysDeptService;
 import com.publiccms.logic.service.sys.SysRoleUserService;
 import com.publiccms.logic.service.sys.SysUserService;
@@ -60,11 +50,7 @@ public class SysDeptAdminController {
     @Autowired
     private SysRoleUserService roleUserService;
     @Autowired
-    private SysDeptCategoryService sysDeptCategoryService;
-    @Autowired
-    private SysDeptPageService sysDeptPageService;
-    @Autowired
-    private SysDeptConfigService sysDeptConfigService;
+    private SysDeptItemService sysDeptItemService;
     @Autowired
     protected LogOperateService logOperateService;
     @Autowired
@@ -87,7 +73,7 @@ public class SysDeptAdminController {
      */
     @RequestMapping("save")
     @Csrf
-    public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, SysDept entity, Integer[] categoryIds,
+    public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, SysDept entity, String[] categoryIds,
             String[] pages, String[] configs, HttpServletRequest request, ModelMap model) {
         if (null != entity.getId()) {
             SysDept oldEntity = service.getEntity(entity.getId());
@@ -100,36 +86,18 @@ public class SysDeptAdminController {
                         LogLoginService.CHANNEL_WEB_MANAGER, "update.dept", RequestUtils.getIpAddress(request),
                         CommonUtils.getDate(), JsonUtils.getString(entity)));
             }
-            sysDeptCategoryService.updateDeptCategorys(entity.getId(), categoryIds);
-            sysDeptPageService.updateDeptPages(entity.getId(), pages);
-            sysDeptConfigService.updateDeptConfigs(entity.getId(), configs);
+            sysDeptItemService.update(entity.getId(), SysDeptItemService.ITEM_TYPE_CATEGORY, categoryIds);
+            sysDeptItemService.update(entity.getId(), SysDeptItemService.ITEM_TYPE_PAGE, pages);
+            sysDeptItemService.update(entity.getId(), SysDeptItemService.ITEM_TYPE_CONFIG, configs);
         } else {
             entity.setSiteId(site.getId());
             service.save(entity);
             logOperateService
                     .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                             "save.dept", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
-            if (CommonUtils.notEmpty(categoryIds)) {
-                List<SysDeptCategory> list = new ArrayList<>();
-                for (int categoryId : categoryIds) {
-                    list.add(new SysDeptCategory(new SysDeptCategoryId(entity.getId(), categoryId)));
-                }
-                sysDeptCategoryService.save(list);
-            }
-            if (CommonUtils.notEmpty(pages)) {
-                List<SysDeptPage> list = new ArrayList<>();
-                for (String page : pages) {
-                    list.add(new SysDeptPage(new SysDeptPageId(entity.getId(), page)));
-                }
-                sysDeptPageService.save(list);
-            }
-            if (CommonUtils.notEmpty(configs)) {
-                List<SysDeptConfig> list = new ArrayList<>();
-                for (String config : configs) {
-                    list.add(new SysDeptConfig(new SysDeptConfigId(entity.getId(), config)));
-                }
-                sysDeptConfigService.save(list);
-            }
+            sysDeptItemService.save(entity.getId(), SysDeptItemService.ITEM_TYPE_CATEGORY, categoryIds);
+            sysDeptItemService.save(entity.getId(), SysDeptItemService.ITEM_TYPE_PAGE, pages);
+            sysDeptItemService.save(entity.getId(), SysDeptItemService.ITEM_TYPE_CONFIG, configs);
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -201,8 +169,8 @@ public class SysDeptAdminController {
             }
         } else {
             if (ControllerUtils.errorNotEmpty("password", entity.getPassword(), model)
-                    || ControllerUtils.errorNotEquals("repassword", entity.getPassword(), repassword, model) || ControllerUtils
-                            .errorHasExist("username", userService.findByName(site.getId(), entity.getName()), model)) {
+                    || ControllerUtils.errorNotEquals("repassword", entity.getPassword(), repassword, model)
+                    || ControllerUtils.errorHasExist("username", userService.findByName(site.getId(), entity.getName()), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             if (SysUserService.CONTENT_PERMISSIONS_ALL != admin.getContentPermissions()
@@ -253,12 +221,11 @@ public class SysDeptAdminController {
      */
     @RequestMapping("delete")
     @Csrf
-    public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Integer id, HttpServletRequest request) {
+    public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Integer id,
+            HttpServletRequest request) {
         SysDept entity = service.delete(site.getId(), id);
         if (null != entity) {
-            sysDeptCategoryService.delete(entity.getId(), null);
-            sysDeptPageService.delete(entity.getId(), null);
-            sysDeptConfigService.delete(entity.getId(), null);
+            sysDeptItemService.delete(entity.getId(), null, null);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.dept", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
                     JsonUtils.getString(entity)));

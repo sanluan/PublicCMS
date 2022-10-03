@@ -20,9 +20,9 @@ import com.publiccms.common.handler.RenderHandler;
  * <ul>
  * <li><code>typeId</code> 标签类型id
  * <li><code>name</code> 标签名
- * <li><code>advanced</code> 开启高级选项， 默认为<code> false</code>
+ * <li><code>advanced</code> 开启高级选项, 默认为<code>false</code>
  * <li><code>orderField</code> 高级选项:排序字段,【searchCount:搜索次数】,默认searchCount按orderType排序
- * <li><code>orderType</code> 排序类型,【asc:正序,desc:倒叙】，默认为倒叙
+ * <li><code>orderType</code> 排序类型,【asc:正序,desc:倒叙】,默认为倒叙
  * <li><code>pageIndex</code> 页码
  * <li><code>pageSize</code> 每页条数
  * </ul>

@@ -25,11 +25,11 @@ import com.publiccms.views.pojo.query.CmsCategoryQuery;
  * <ul>
  * <li><code>parentId</code> 父分类id
  * <li><code>typeId</code> 分类类型id
- * <li><code>absoluteURL</code> url处理为绝对路径 默认为<code> true</code>
- * <li><code>queryAll</code> 查询全部,【true,false】，parentId为空时有效
- * <li><code>advanced</code> 开启高级选项， 默认为<code> false</code>
- * <li><code>disabled</code> 高级选项:禁用状态， 默认为<code> false</code>
- * <li><code>hidden</code> 高级选项:隐藏，【true,false】
+ * <li><code>absoluteURL</code> url处理为绝对路径, 默认为<code> true</code>
+ * <li><code>queryAll</code> 查询全部,【true,false】,parentId为空时有效
+ * <li><code>advanced</code> 开启高级选项, 默认为<code>false</code>
+ * <li><code>disabled</code> 高级选项:禁用状态, 默认为<code>false</code>
+ * <li><code>hidden</code> 高级选项:隐藏,【true,false】
  * <li><code>pageIndex</code> 页码
  * <li><code>pageSize</code> 每页条数
  * </ul>

@@ -196,7 +196,7 @@ public class ContentCreateDirective extends AbstractAppDirective {
                             }
                         }
                     }
-                    contentFileService.update(entity.getId(), user.getId(), files, images);// 更新保存图集，附件
+                    contentFileService.update(entity.getId(), user.getId(), files, images);// 更新保存图集,附件
                 }
                 if (null != checked && checked) {
                     service.check(site.getId(), user, new Long[] { entity.getId() });

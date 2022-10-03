@@ -42,7 +42,7 @@ import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsPlaceService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
-import com.publiccms.logic.service.sys.SysDeptPageService;
+import com.publiccms.logic.service.sys.SysDeptItemService;
 import com.publiccms.views.pojo.entities.CmsPageData;
 import com.publiccms.views.pojo.entities.CmsPageMetadata;
 import com.publiccms.views.pojo.entities.CmsPlaceMetadata;
@@ -70,7 +70,7 @@ public class CmsTemplateAdminController {
     @Autowired
     private CmsPlaceService cmsPlaceService;
     @Autowired
-    private SysDeptPageService sysDeptPageService;
+    private SysDeptItemService sysDeptItemService;
     @Autowired
     protected LogOperateService logOperateService;
     @Autowired
@@ -281,7 +281,7 @@ public class CmsTemplateAdminController {
             }
             metadataComponent.deleteTemplateMetadata(filepath);
             metadataComponent.deleteTemplateData(filepath);
-            sysDeptPageService.delete(null, path);
+            sysDeptItemService.delete(null, "page", path);
             templateComponent.clearTemplateCache();
             cacheComponent.clearViewCache();
             logOperateService

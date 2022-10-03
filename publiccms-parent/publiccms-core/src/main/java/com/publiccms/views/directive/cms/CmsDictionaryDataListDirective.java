@@ -20,7 +20,7 @@ import com.publiccms.logic.service.cms.CmsDictionaryDataService;
  * <p>
  * 参数列表
  * <ul>
- * <li><code>dictionaryId</code> 字典id，为空时返回空结果
+ * <li><code>dictionaryId</code> 字典id,为空时返回空结果
  * <li><code>parentValue</code> 父节点值
  * </ul>
  * <p>

@@ -22,9 +22,9 @@ import com.publiccms.logic.service.sys.SysRoleService;
  * <ul>
  * <li><code>roleIds</code> 多个角色id
  * <li><code>moduleId</code>
- * 模块id,roleIds、moduleId都存在时，结果返回<code>true</code>或<code>false</code>，表示这些角色是否拥有该模块的数据权限
+ * 模块id,roleIds、moduleId都存在时,结果返回<code>true</code>或<code>false</code>,表示这些角色是否拥有该模块的数据权限
  * <li><code>moduleIds</code>
- * 多个模块id，当roleIds存在，且moduleId为空时生效，结果返回<code>map</code>(模块id,<code>true</code>或<code>false</code>)
+ * 多个模块id,当roleIds存在,且moduleId为空时生效,结果返回<code>map</code>(模块id,<code>true</code>或<code>false</code>)
  * </ul>
  * 使用示例
  * <p>

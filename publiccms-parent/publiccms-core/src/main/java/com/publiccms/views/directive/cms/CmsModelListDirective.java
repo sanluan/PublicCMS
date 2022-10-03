@@ -19,11 +19,11 @@ import com.publiccms.logic.component.template.ModelComponent;
  * 参数列表
  * <ul>
  * <li><code>parentId</code> 父内容模型id
- * <li><code>queryAll</code> 查询所有模型,parentId为空时有效，【true,false】,默认false
- * <li><code>hasChild</code> 拥有子模型，【true,false】
+ * <li><code>queryAll</code> 查询所有模型,parentId为空时有效,【true,false】,默认false
+ * <li><code>hasChild</code> 拥有子模型,【true,false】
  * <li><code>onlyUrl</code> 外链,【true,false】
- * <li><code>hasImages</code> 拥有图片列表，【true,false】
- * <li><code>hasFiles</code> 拥有文件列表，【true,false】
+ * <li><code>hasImages</code> 拥有图片列表,【true,false】
+ * <li><code>hasFiles</code> 拥有文件列表,【true,false】
  * </ul>
  * <p>
  * 返回结果

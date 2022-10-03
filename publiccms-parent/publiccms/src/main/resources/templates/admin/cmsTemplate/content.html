@@ -4,9 +4,9 @@
         <ul>
             <li><a class="button" href="cmsTemplate/delete?path=${(path?url)!}&navTabId=cmsTemplate/list&_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.delete_file'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i><@t.page 'button.delete'/></a></li>
     <@sys.authorized roleIds=admin.roles url='cmsPage/metadata'>
-        <@sys.deptPage deptId=admin.deptId!'' pages=path>
+        <@sys.deptItem itemType='page' deptId=admin.deptId!'' pages=path>
             <li><a class="button" href="cmsPage/metadata.html?path=${(path?url)!}" target="ajax" rel="cmsTemplateBox"><@t.page 'page.management'/></a></li>
-        </@sys.deptPage>
+        </@sys.deptItem>
     </@sys.authorized>
             <li><a class="button" href="cmsTemplate/metadata.html?path=${(path?url)!}" target="ajax" rel="cmsTemplateBox"><@t.page 'metadata'/></a></li>
             <li><button type="submit" class="buttonActive" title="ctrl+s"<#if path?has_content> lock-url="common/lock?itemType=template&itemId=${(path?url)!}" close-url="common/unlock?itemType=template&itemId=${(path?url)!}"</#if>><@t.page 'button.save'/></button></li>

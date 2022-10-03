@@ -26,7 +26,7 @@ public class SysUserDao extends BaseDao<SysUser> {
      * @param endRegisteredDate
      * @param startLastLoginDate
      * @param endLastLoginDate
-     * @param superuserAccess
+     * @param superuser
      * @param emailChecked
      * @param disabled
      * @param name
@@ -37,7 +37,7 @@ public class SysUserDao extends BaseDao<SysUser> {
      * @return results page
      */
     public PageHandler getPage(Short siteId, Integer deptId, Date startRegisteredDate, Date endRegisteredDate,
-            Date startLastLoginDate, Date endLastLoginDate, Boolean superuserAccess, Boolean emailChecked, Boolean disabled,
+            Date startLastLoginDate, Date endLastLoginDate, Boolean superuser, Boolean emailChecked, Boolean disabled,
             String name, String orderField, String orderType, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from SysUser bean");
         if (CommonUtils.notEmpty(siteId)) {
@@ -61,8 +61,8 @@ public class SysUserDao extends BaseDao<SysUser> {
         if (null != endLastLoginDate) {
             queryHandler.condition("bean.lastLoginDate <= :endLastLoginDate").setParameter("endLastLoginDate", endLastLoginDate);
         }
-        if (null != superuserAccess) {
-            queryHandler.condition("bean.superuserAccess = :superuserAccess").setParameter("superuserAccess", superuserAccess);
+        if (null != superuser) {
+            queryHandler.condition("bean.superuser = :superuser").setParameter("superuser", superuser);
         }
         if (null != emailChecked) {
             queryHandler.condition("bean.emailChecked = :emailChecked").setParameter("emailChecked", emailChecked);

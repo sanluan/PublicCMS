@@ -41,7 +41,7 @@ import freemarker.template.TemplateException;
 * 参数列表
 * <ul>
 * <li><code>ids</code> 多个内容id
-* <li><code>uncheck</code> 取消审核, 【true,false】，默认为<code>false</code>
+* <li><code>uncheck</code> 取消审核, 【true,false】,默认为<code>false</code>
 * </ul>
 * <p>
 * 返回结果

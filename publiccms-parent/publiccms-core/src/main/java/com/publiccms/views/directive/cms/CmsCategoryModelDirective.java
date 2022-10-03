@@ -22,13 +22,13 @@ import com.publiccms.logic.service.cms.CmsCategoryModelService;
  * <p>
  * 参数列表
  * <ul>
- * <li><code>categoryId</code> 分类id，结果返回<code>object</code>
+ * <li><code>categoryId</code> 分类id,结果返回<code>object</code>
  * {@link com.publiccms.entities.cms.CmsCategoryModel}
- * <li><code>modelId</code> 内容模型id，当id为空时生效，结果返回<code>object</code>
+ * <li><code>modelId</code> 内容模型id,当id为空时生效,结果返回<code>object</code>
  * <li><code>modelIds</code>
- * 多个内容模型id，当categoryId存在，且modelId为空时生效，结果返回<code>map</code>(内容模型id,<code>object</code>)
+ * 多个内容模型id,当categoryId存在,且modelId为空时生效,结果返回<code>map</code>(内容模型id,<code>object</code>)
  * <li><code>categoryIds</code>
- * 多个分类id,当categoryId不存在，且modelId存在时生效，结果返回<code>map</code>(分类id,<code>object</code>)
+ * 多个分类id,当categoryId不存在,且modelId存在时生效,结果返回<code>map</code>(分类id,<code>object</code>)
  * </ul>
  * 使用示例
  * <p>

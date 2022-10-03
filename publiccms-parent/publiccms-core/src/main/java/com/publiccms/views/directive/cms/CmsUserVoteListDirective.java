@@ -19,7 +19,7 @@ import com.publiccms.common.handler.PageHandler;
  * <ul>
  * <li><code>userId</code> 用户id
  * <li><code>voteId</code> 投票id
- * <li><code>orderType</code> 排序类型,【asc:正序,desc:倒叙】，默认为创建日期倒叙
+ * <li><code>orderType</code> 排序类型,【asc:正序,desc:倒叙】,默认为创建日期倒叙
  * <li><code>pageIndex</code> 页码
  * <li><code>pageSize</code> 每页条数
  * </ul>

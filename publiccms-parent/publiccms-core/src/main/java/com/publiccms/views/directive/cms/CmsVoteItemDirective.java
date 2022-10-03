@@ -21,10 +21,10 @@ import com.publiccms.logic.service.cms.CmsVoteItemService;
 * <p>
 * 参数列表
 * <ul>
-* <li><code>id</code> 投票选项id，结果返回<code>object</code>
+* <li><code>id</code> 投票选项id,结果返回<code>object</code>
 * {@link com.publiccms.entities.cms.CmsVoteItem}
 * <li><code>ids</code>
-* 多个投票选项id，逗号或空格间隔，当id为空时生效，结果返回<code>map</code>(id,<code>object</code>)
+* 多个投票选项id,逗号或空格间隔,当id为空时生效,结果返回<code>map</code>(id,<code>object</code>)
 * </ul>
 * 使用示例
 * <p>

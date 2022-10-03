@@ -17,7 +17,7 @@ import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysDept;
-import com.publiccms.entities.sys.SysDeptPageId;
+import com.publiccms.entities.sys.SysDeptItemId;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.site.SiteComponent;
@@ -26,7 +26,7 @@ import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateCacheComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
-import com.publiccms.logic.service.sys.SysDeptPageService;
+import com.publiccms.logic.service.sys.SysDeptItemService;
 import com.publiccms.logic.service.sys.SysDeptService;
 import com.publiccms.views.pojo.entities.CmsPageData;
 import com.publiccms.views.pojo.model.ExtendDataParameters;
@@ -42,7 +42,7 @@ public class CmsPageAdminController {
     @Autowired
     private MetadataComponent metadataComponent;
     @Autowired
-    private SysDeptPageService sysDeptPageService;
+    private SysDeptItemService sysDeptItemService;
     @Autowired
     private SysDeptService sysDeptService;
     @Autowired
@@ -70,11 +70,10 @@ public class CmsPageAdminController {
         SysDept dept = sysDeptService.getEntity(admin.getDeptId());
         if (ControllerUtils.errorNotEmpty("deptId", admin.getDeptId(), model)
                 || ControllerUtils.errorNotEmpty("deptId", dept, model)
-                || ControllerUtils
-                        .errorCustom("noright",
-                                !(dept.isOwnsAllPage()
-                                        || null != sysDeptPageService.getEntity(new SysDeptPageId(admin.getDeptId(), path))),
-                                model)) {
+                || ControllerUtils.errorCustom("noright",
+                        !(dept.isOwnsAllPage() || null != sysDeptItemService
+                                .getEntity(new SysDeptItemId(admin.getDeptId(), SysDeptItemService.ITEM_TYPE_PAGE, path))),
+                        model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (CommonUtils.notEmpty(path)) {
@@ -104,11 +103,10 @@ public class CmsPageAdminController {
         SysDept dept = sysDeptService.getEntity(admin.getDeptId());
         if (ControllerUtils.errorNotEmpty("deptId", admin.getDeptId(), model)
                 || ControllerUtils.errorNotEmpty("deptId", dept, model)
-                || ControllerUtils
-                        .errorCustom("noright",
-                                !(dept.isOwnsAllPage()
-                                        || null != sysDeptPageService.getEntity(new SysDeptPageId(admin.getDeptId(), path))),
-                                model)) {
+                || ControllerUtils.errorCustom("noright",
+                        !(dept.isOwnsAllPage()
+                                || null != sysDeptItemService.getEntity(new SysDeptItemId(admin.getDeptId(), SysDeptItemService.ITEM_TYPE_PAGE, path))),
+                        model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (CommonUtils.notEmpty(path)) {

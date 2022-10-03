@@ -23,7 +23,7 @@ import com.publiccms.logic.service.cms.CmsContentRelatedService;
  * <li><code>relationType</code> 关系类型
  * <li><code>relation</code> 关系
  * <li><code>orderField</code> 排序字段,【clicks:点击数】,默认排序正序、id正序
- * <li><code>orderType</code> 排序类型,【asc:正序,desc:倒叙】，默认为倒叙
+ * <li><code>orderType</code> 排序类型,【asc:正序,desc:倒叙】,默认为倒叙
  * <li><code>pageIndex</code> 页码
  * <li><code>pageSize</code> 每页条数
  * </ul>

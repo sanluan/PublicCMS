@@ -5,6 +5,7 @@ package com.publiccms.controller.admin.sys;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -25,7 +26,7 @@ import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysConfigData;
 import com.publiccms.entities.sys.SysConfigDataId;
 import com.publiccms.entities.sys.SysDept;
-import com.publiccms.entities.sys.SysDeptConfigId;
+import com.publiccms.entities.sys.SysDeptItemId;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.config.ConfigComponent;
@@ -35,7 +36,7 @@ import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.sys.SysConfigDataService;
-import com.publiccms.logic.service.sys.SysDeptConfigService;
+import com.publiccms.logic.service.sys.SysDeptItemService;
 import com.publiccms.logic.service.sys.SysDeptService;
 import com.publiccms.views.pojo.model.SysConfigParameters;
 
@@ -71,11 +72,10 @@ public class SysConfigDataAdminController {
             SysDept dept = sysDeptService.getEntity(admin.getDeptId());
             if (ControllerUtils.errorNotEmpty("deptId", admin.getDeptId(), model)
                     || ControllerUtils.errorNotEmpty("deptId", dept, model)
-                    || ControllerUtils
-                            .errorCustom("noright",
-                                    !(dept.isOwnsAllConfig() || null != sysDeptConfigService
-                                            .getEntity(new SysDeptConfigId(admin.getDeptId(), entity.getId().getCode()))),
-                                    model)) {
+                    || ControllerUtils.errorCustom("noright",
+                            !(dept.isOwnsAllConfig() || null != sysDeptItemService
+                                    .getEntity(new SysDeptItemId(admin.getDeptId(), SysDeptItemService.ITEM_TYPE_CONFIG, entity.getId().getCode()))),
+                            model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             entity.getId().setSiteId(site.getId());
@@ -129,13 +129,14 @@ public class SysConfigDataAdminController {
                 || ControllerUtils.errorNotEmpty("deptId", dept, model)
                 || ControllerUtils.errorCustom("noright",
                         !(dept.isOwnsAllConfig()
-                                || null != sysDeptConfigService.getEntity(new SysDeptConfigId(admin.getDeptId(), code))),
+                                || null != sysDeptItemService.getEntity(new SysDeptItemId(admin.getDeptId(), SysDeptItemService.ITEM_TYPE_CONFIG, code))),
                         model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         SysConfigData entity = service.getEntity(new SysConfigDataId(site.getId(), code));
         if (null != entity) {
             service.delete(entity.getId());
+            sysDeptItemService.delete(null, SysDeptItemService.ITEM_TYPE_CONFIG, code);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.configData", RequestUtils.getIpAddress(request),
                     CommonUtils.getDate(), JsonUtils.getString(entity)));
@@ -145,7 +146,7 @@ public class SysConfigDataAdminController {
     }
 
     @Autowired
-    private SysDeptConfigService sysDeptConfigService;
+    private SysDeptItemService sysDeptItemService;
     @Autowired
     private SysDeptService sysDeptService;
     @Autowired

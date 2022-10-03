@@ -354,21 +354,16 @@ DWZ.regPlugins.push(function($p){
         var $this=$(this);
         function init($resultBox,oldstring,newstring){
             var diff = Diff.diffWords(oldstring, newstring);
-            var fragment = document.createDocumentFragment();
-            for (var i=0; i < diff.length; i++) {        
-                var node;
+            $resultBox.empty();
+            for (var i=0; i < diff.length; i++) {
                 if (diff[i].removed) {
-                    node = document.createElement('del');
-                    node.appendChild(document.createTextNode(diff[i].value));
+                    $('<del></del>').append(diff[i].value).appendTo($resultBox);
                 } else if (diff[i].added) {
-                    node = document.createElement('ins');
-                    node.appendChild(document.createTextNode(diff[i].value));
+                    $('<ins></ins>').append(diff[i].value).appendTo($resultBox);
                 } else {
-                    node = document.createTextNode(diff[i].value);
+                  $resultBox.append(diff[i].value);
                 }
-                fragment.appendChild(node);
             }
-            $resultBox.empty().append(fragment);
         }
         if(window.jsdiff.initd){
             init($this.find('.result-box'),$this.find('[name=old]').val(),$this.find('[name=new]').val());

@@ -15,10 +15,27 @@ import com.publiccms.entities.sys.SysModuleLangId;
 import com.publiccms.logic.service.sys.SysModuleLangService;
 
 /**
- *
- * SysModuleLangDirective
- * 
- */
+*
+* sysModuleLang 模块语言查询指令
+* <p>
+* 参数列表
+* <ul>
+* <li><code>moduleId</code> 模块id,结果返回<code>object</code>
+* {@link com.publiccms.entities.sys.SysModule}
+* <li><code>lang</code> 语言【zh:中文,en:英语,ja:日语】
+* </ul>
+* 使用示例
+* <p>
+* &lt;@sys.moduleLang moduleId='page' lang='zh'&gt;${object}&lt;/@sys.moduleLang&gt;
+* 
+* <pre>
+&lt;script&gt;
+$.getJSON('//sys.publicsys.com/api/directive/sys/moduleLang?moduleId=page&amp;lang=zh', function(data){    
+ console.log(data);
+});
+&lt;/script&gt;
+* </pre>
+*/
 @Component
 public class SysModuleLangDirective extends AbstractTemplateDirective {
 

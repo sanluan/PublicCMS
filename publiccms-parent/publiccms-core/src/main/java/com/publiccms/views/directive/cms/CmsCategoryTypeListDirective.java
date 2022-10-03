@@ -16,7 +16,7 @@ import com.publiccms.logic.component.template.ModelComponent;
  *
  * categoryTypeList 分类类型列表查询指令
  * <p>
- * 没有可用于查询得参数，该指令固定返回所有结果，不可分页查询
+ * 没有可用于查询得参数,该指令固定返回所有结果,不可分页查询
  * <p>
  * 返回结果
  * <ul>

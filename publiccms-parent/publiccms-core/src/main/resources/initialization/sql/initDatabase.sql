@@ -704,36 +704,16 @@ CREATE TABLE `sys_dept` (
 INSERT INTO `sys_dept` VALUES ('1', '1', 'Technical department','1', null, '', '1', '1000', '1', '1', '1');
 
 -- ----------------------------
--- Table structure for sys_dept_category
+-- Table structure for sys_dept_item
 -- ----------------------------
-DROP TABLE IF EXISTS `sys_dept_category`;
-CREATE TABLE `sys_dept_category` (
+DROP TABLE IF EXISTS `sys_dept_item`;
+CREATE TABLE `sys_dept_item` (
   `dept_id` int(11) NOT NULL COMMENT '部门',
-  `category_id` int(11) NOT NULL COMMENT '分类',
-  PRIMARY KEY  (`dept_id`, `category_id`)
-) COMMENT='部门分类';
-
-
--- ----------------------------
--- Table structure for sys_dept_config
--- ----------------------------
-DROP TABLE IF EXISTS `sys_dept_config`;
-CREATE TABLE `sys_dept_config` (
-  `dept_id` int(11) NOT NULL COMMENT '部门',
-  `config` varchar(100) NOT NULL COMMENT '配置',
-  PRIMARY KEY (`dept_id`, `config`)
-) COMMENT='部门配置';
-
--- ----------------------------
--- Table structure for sys_dept_page
--- ----------------------------
-DROP TABLE IF EXISTS `sys_dept_page`;
-CREATE TABLE `sys_dept_page` (
-  `dept_id` int(11) NOT NULL COMMENT '部门',
-  `page` varchar(100) NOT NULL COMMENT '页面',
-  PRIMARY KEY  (`dept_id`, `page`),
-  KEY `sys_dept_page_page` (`page`)
-) COMMENT='部门页面';
+  `item_type` varchar(50) NOT NULL COMMENT '项目类型',
+  `item_id` varchar(100) NOT NULL COMMENT '项目',
+  PRIMARY KEY  (`dept_id`, `item_type`, `item_id`),
+  KEY `sys_dept_item_item_id` (`item_type`, `item_id`)
+) COMMENT='部门数据项';
 
 
 -- ----------------------------

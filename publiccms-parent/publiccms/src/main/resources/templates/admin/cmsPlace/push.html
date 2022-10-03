@@ -3,7 +3,7 @@
         <#list list as a>
             <@t.merge 'pages' '/include'+filepath+'/'+a.fileName/>
         </#list>
-        <@sys.deptPage deptId=admin.deptId!'' pages=t.pages!><#assign deptPageMap=map!/></@sys.deptPage>
+        <@sys.deptItem itemType='page' deptId=admin.deptId!'' pages=t.pages!><#assign deptPageMap=map!/></@sys.deptItem>
         <#list list as a>
             <#local path=filepath+'/'+a.fileName>
             <#if (deptPageMap['/include'+path])?has_content&&deptPageMap['/include'+path]>

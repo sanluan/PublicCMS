@@ -25,14 +25,14 @@ public class SysTaskService extends BaseService<SysTask> {
     /**
      * @param siteId
      * @param status
-     * @param beginUpdateDate
+     * @param startUpdateDate
      * @param pageIndex
      * @param pageSize
      * @return
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(Short siteId, Integer status, Date beginUpdateDate, Integer pageIndex, Integer pageSize) {
-        return dao.getPage(siteId, status, beginUpdateDate, pageIndex, pageSize);
+    public PageHandler getPage(Short siteId, Integer status, Date startUpdateDate, Integer pageIndex, Integer pageSize) {
+        return dao.getPage(siteId, status, startUpdateDate, pageIndex, pageSize);
     }
 
     /**
