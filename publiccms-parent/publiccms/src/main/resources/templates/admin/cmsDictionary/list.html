@@ -1,4 +1,5 @@
 <@cms.dictionaryList name=name pageIndex=pageNum pageSize=numPerPage>
+<@sys.authorized roleIds=admin.roles urls='cmsDictionary/add,cmsDictionary/delete,cmsDictionary/export'><#assign authorizedMap=map/></@sys.authorized>
 <div class="pageHeader">
     <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
@@ -16,12 +17,16 @@
                     <li>
                         <button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
                     </li>
+                    <#if authorizedMap['cmsDictionary/export']>
+                        <li>
+                            <a class="button" href="cmsDictionary/export?_csrf=<@tools.csrfToken admin=true/>" target="dwzExport" targetType="navTab"><i class="icon-download-alt icon-large"></i><@t.page 'button.export'/></a>
+                        </li>
+                    </#if>
                 </ul>
             </div>
         </div>
     </form>
 </div>
-<@sys.authorized roleIds=admin.roles urls='cmsDictionary/add,cmsDictionary/delete'><#assign authorizedMap=map/></@sys.authorized>
 <div class="pageContent">
     <div class="panelBar">
         <ul class="toolBar">

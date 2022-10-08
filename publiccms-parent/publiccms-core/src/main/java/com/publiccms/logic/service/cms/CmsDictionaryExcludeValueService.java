@@ -1,5 +1,7 @@
 package com.publiccms.logic.service.cms;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +19,16 @@ import com.publiccms.logic.dao.cms.CmsDictionaryExcludeValueDao;
 @Service
 @Transactional
 public class CmsDictionaryExcludeValueService extends BaseService<CmsDictionaryExcludeValue> {
+    /**
+     * @param siteId
+     * @param dictionaryId
+     * @param excludeDictionaryId
+     * @return data list
+     */
+    @Transactional(readOnly = true)
+    public List<CmsDictionaryExcludeValue> getList(short siteId, String dictionaryId, String excludeDictionaryId) {
+        return dao.getList(siteId, dictionaryId, excludeDictionaryId);
+    }
 
     /**
      * @param excludeId
