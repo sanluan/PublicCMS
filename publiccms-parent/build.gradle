@@ -38,7 +38,7 @@ subprojects {
         // http://hc.apache.org/downloads.cgi
         httpclientVersion = "4.5.13"
         // http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
-        jacksonVersion = "2.13.4"
+        jacksonVersion = "2.14.0-rc1"
         // http://mvnrepository.com/artifact/org.hibernate/hibernate-core
         // http://hibernate.org/orm/downloads/
         hibernateVersion = "5.6.11.Final"
@@ -62,11 +62,11 @@ subprojects {
         // https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper
         pageHelperVersion = "5.3.2"
         // https://mvnrepository.com/artifact/org.mybatis.dynamic-sql/mybatis-dynamic-sql
-        dynamicSqlVersion = "1.4.0"
+        dynamicSqlVersion = "1.4.1"
         // https://mvnrepository.com/artifact/org.apache.lucene/lucene-analyzers-smartcn
         luceneVersion = "8.11.2"
         // http://mvnrepository.com/artifact/redis.clients/jedis
-        jedisVersion = "4.2.3"
+        jedisVersion = "4.3.0"
         // http://mvnrepository.com/artifact/org.quartz-scheduler/quartz
         quartzVersion = "2.3.2"
         // https://mvnrepository.com/artifact/com.zaxxer/HikariCP
