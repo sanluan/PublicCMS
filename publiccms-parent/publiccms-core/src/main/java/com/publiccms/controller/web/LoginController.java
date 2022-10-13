@@ -123,7 +123,7 @@ public class LoginController {
                         new LogLogin(site.getId(), username, userId, ip, LogLoginService.CHANNEL_WEB, false, now, password));
                 return UrlBasedViewResolver.REDIRECT_URL_PREFIX + loginPath;
             } else {
-                lockComponent.unLock(site.getId(), SysLockService.ITEM_TYPE_IP_LOGIN, String.valueOf(user.getId()), null);
+                lockComponent.unLock(site.getId(), SysLockService.ITEM_TYPE_IP_LOGIN, ip, user.getId());
                 lockComponent.unLock(site.getId(), SysLockService.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null);
                 if (UserPasswordUtils.needUpdate(user.getSalt())) {
                     String salt = UserPasswordUtils.getSalt();

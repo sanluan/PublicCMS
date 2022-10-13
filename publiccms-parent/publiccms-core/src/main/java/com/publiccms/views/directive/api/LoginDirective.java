@@ -80,7 +80,7 @@ public class LoginDirective extends AbstractAppDirective {
             boolean locked = lockComponent.isLocked(site.getId(), SysLockService.ITEM_TYPE_IP_LOGIN, ip, null);
             if (null != user && (!locked || !ControllerUtils.ipNotEquals(ip, user)) && !user.isDisabled()
                     && user.getPassword().equals(UserPasswordUtils.passwordEncode(password, user.getSalt(), encoding))) {
-                lockComponent.unLock(site.getId(), SysLockService.ITEM_TYPE_IP_LOGIN, String.valueOf(user.getId()), null);
+                lockComponent.unLock(site.getId(), SysLockService.ITEM_TYPE_IP_LOGIN, ip, user.getId());
                 lockComponent.unLock(site.getId(), SysLockService.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null);
                 if (UserPasswordUtils.needUpdate(user.getSalt())) {
                     String salt = UserPasswordUtils.getSalt();

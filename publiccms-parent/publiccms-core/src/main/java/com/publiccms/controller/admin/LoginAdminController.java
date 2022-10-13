@@ -117,7 +117,7 @@ public class LoginAdminController {
                 return "login";
             }
         }
-        lockComponent.unLock(site.getId(), SysLockService.ITEM_TYPE_IP_LOGIN, String.valueOf(user.getId()), null);
+        lockComponent.unLock(site.getId(), SysLockService.ITEM_TYPE_IP_LOGIN, ip, user.getId());
         lockComponent.unLock(site.getId(), SysLockService.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null);
 
         ControllerUtils.setAdminToSession(session, user);
