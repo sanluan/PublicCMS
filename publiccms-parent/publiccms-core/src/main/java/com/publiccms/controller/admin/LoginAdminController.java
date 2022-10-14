@@ -93,8 +93,8 @@ public class LoginAdminController {
         String ip = RequestUtils.getIpAddress(request);
         SysUser user = service.findByName(site.getId(), username);
         boolean locked = lockComponent.isLocked(site.getId(), SysLockService.ITEM_TYPE_IP_LOGIN, ip, null);
-        if (ControllerUtils.errorNotEquals("password", user, model)
-                || ControllerUtils.errorCustom("locked.ip", locked && ControllerUtils.ipNotEquals(ip, user), model)) {
+        if (ControllerUtils.errorCustom("locked.ip", locked && ControllerUtils.ipNotEquals(ip, user), model)
+                || ControllerUtils.errorNotEquals("password", user, model)) {
             model.addAttribute("username", username);
             model.addAttribute("returnUrl", returnUrl);
             lockComponent.lock(site.getId(), SysLockService.ITEM_TYPE_IP_LOGIN, ip, null, true);

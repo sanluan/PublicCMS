@@ -19,7 +19,7 @@ import com.publiccms.logic.service.sys.SysUserService;
 
 /**
  * Controller工具类
- * 
+ *
  * ControllerUtils
  *
  */
@@ -396,7 +396,7 @@ public class ControllerUtils {
     }
 
     public static boolean ipNotEquals(String ip, SysUser user) {
-        return null == ip || !ip.equalsIgnoreCase(user.getLastLoginIp());
+        return null == ip || null == user || !ip.equalsIgnoreCase(user.getLastLoginIp());
     }
 
     /**
