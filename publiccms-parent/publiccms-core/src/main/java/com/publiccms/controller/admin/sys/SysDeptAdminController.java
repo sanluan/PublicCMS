@@ -152,8 +152,7 @@ public class SysDeptAdminController {
                 if (ControllerUtils.errorNotEquals("repassword", entity.getPassword(), repassword, model)) {
                     return CommonConstants.TEMPLATE_ERROR;
                 }
-                entity.setSalt(UserPasswordUtils.getSalt());
-                entity.setPassword(UserPasswordUtils.passwordEncode(entity.getPassword(), entity.getSalt(), encoding));
+                entity.setPassword(UserPasswordUtils.passwordEncode(entity.getPassword(), UserPasswordUtils.getSalt(), null, encoding));
             } else {
                 entity.setPassword(user.getPassword());
                 if (CommonUtils.empty(entity.getEmail()) || !entity.getEmail().equals(user.getEmail())) {
@@ -179,8 +178,7 @@ public class SysDeptAdminController {
             }
             entity.setDeptId(dept.getId());
             entity.setSiteId(site.getId());
-            entity.setSalt(UserPasswordUtils.getSalt());
-            entity.setPassword(UserPasswordUtils.passwordEncode(entity.getPassword(), entity.getSalt(), encoding));
+            entity.setPassword(UserPasswordUtils.passwordEncode(entity.getPassword(), UserPasswordUtils.getSalt(), null, encoding));
             userService.save(entity);
             if (CommonUtils.notEmpty(roleIds)) {
                 for (Integer roleId : roleIds) {

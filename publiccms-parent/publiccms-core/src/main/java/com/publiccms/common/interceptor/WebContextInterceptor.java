@@ -1,11 +1,15 @@
 package com.publiccms.common.interceptor;
 
+import java.util.Date;
+import java.util.Map;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,16 +17,21 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.util.UrlPathHelper;
 
+import com.publiccms.common.api.Config;
 import com.publiccms.common.constants.CmsVersion;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.RequestUtils;
+import com.publiccms.controller.admin.LoginAdminController;
+import com.publiccms.controller.web.LoginController;
 import com.publiccms.entities.log.LogLogin;
 import com.publiccms.entities.sys.SysDomain;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.entities.sys.SysUserToken;
+import com.publiccms.logic.component.config.ConfigComponent;
+import com.publiccms.logic.component.config.SiteConfigComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.sys.SysUserService;
@@ -43,6 +52,8 @@ public class WebContextInterceptor implements HandlerInterceptor {
     private SiteComponent siteComponent;
     @Autowired
     private LogLoginService logLoginService;
+    @Autowired
+    private ConfigComponent configComponent;
     protected LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
 
     @Override
@@ -110,14 +121,34 @@ public class WebContextInterceptor implements HandlerInterceptor {
                 try {
                     Long userId = Long.parseLong(userData[0]);
                     SysUserToken userToken = sysUserTokenService.getEntity(userData[1]);
+                    Date now = CommonUtils.getDate();
                     if (null != userToken && null != site && !site.isDisabled() && userToken.getSiteId() == site.getId()
                             && userToken.getUserId() == userId && channel.equals(userToken.getChannel())
-                            && (null == userToken.getExpiryDate() || CommonUtils.getDate().before(userToken.getExpiryDate()))
+                            && (null == userToken.getExpiryDate() || now.before(userToken.getExpiryDate()))
                             && null != (user = sysUserService.getEntity(userId)) && !user.isDisabled()) {
                         user.setPassword(null);
                         String ip = RequestUtils.getIpAddress(request);
-                        logLoginService.save(new LogLogin(site.getId(), user.getName(), user.getId(), ip, channel, true,
-                                CommonUtils.getDate(), null));
+                        logLoginService
+                                .save(new LogLogin(site.getId(), user.getName(), user.getId(), ip, channel, true, now, null));
+                        Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+                        int expiryMinutes;
+                        if (LogLoginService.CHANNEL_WEB.equalsIgnoreCase(channel)) {
+                            expiryMinutes = ConfigComponent.getInt(config.get(SiteConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
+                                    SiteConfigComponent.DEFAULT_EXPIRY_MINUTES);
+                        } else {
+                            expiryMinutes = ConfigComponent.getInt(config.get(SiteConfigComponent.CONFIG_EXPIRY_MINUTES_MANAGER),
+                                    SiteConfigComponent.DEFAULT_EXPIRY_MINUTES);
+                        }
+                        if (DateUtils.addMinutes(now, expiryMinutes / 4).after(userToken.getExpiryDate())) {
+                            Date expiryDate = DateUtils.addMinutes(now, expiryMinutes);
+                            if (LogLoginService.CHANNEL_WEB.equalsIgnoreCase(channel)) {
+                                LoginController.addLoginStatus(user, userToken.getAuthToken(), request, response, expiryMinutes);
+                            } else {
+                                LoginAdminController.addLoginStatus(user, userToken.getAuthToken(), request, response,
+                                        expiryMinutes);
+                            }
+                            sysUserTokenService.updateExpiryDate(userToken.getAuthToken(), expiryDate);
+                        }
                     } else {
                         user = null;
                         if (null != userToken) {

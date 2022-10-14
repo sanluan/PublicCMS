@@ -112,9 +112,8 @@ public class LoginController {
                 return UrlBasedViewResolver.REDIRECT_URL_PREFIX + loginPath;
             }
             locked = lockComponent.isLocked(site.getId(), SysLockService.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null);
-            if (ControllerUtils.errorCustom("locked.user", locked, model)
-                    || ControllerUtils.errorNotEquals("password",
-                            UserPasswordUtils.passwordEncode(password, user.getSalt(), encoding), user.getPassword(), model)
+            if (ControllerUtils.errorCustom("locked.user", locked, model) || ControllerUtils.errorNotEquals("password",
+                    UserPasswordUtils.passwordEncode(password, null, user.getPassword(), encoding), user.getPassword(), model)
                     || verifyNotEnablie(user, model)) {
                 Long userId = user.getId();
                 lockComponent.lock(site.getId(), SysLockService.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null, true);
@@ -125,9 +124,8 @@ public class LoginController {
             } else {
                 lockComponent.unLock(site.getId(), SysLockService.ITEM_TYPE_IP_LOGIN, ip, user.getId());
                 lockComponent.unLock(site.getId(), SysLockService.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null);
-                if (UserPasswordUtils.needUpdate(user.getSalt())) {
-                    String salt = UserPasswordUtils.getSalt();
-                    service.updatePassword(user.getId(), UserPasswordUtils.passwordEncode(password, salt, encoding), salt);
+                if (UserPasswordUtils.needUpdate(user.getPassword())) {
+                    service.updatePassword(user.getId(), UserPasswordUtils.passwordEncode(password, UserPasswordUtils.getSalt(), null, encoding));
                 }
                 service.updateLoginStatus(user.getId(), ip);
 
@@ -217,8 +215,7 @@ public class LoginController {
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + registerPath;
         } else {
             String salt = UserPasswordUtils.getSalt();
-            entity.setPassword(UserPasswordUtils.passwordEncode(entity.getPassword(), salt, encode));
-            entity.setSalt(salt);
+            entity.setPassword(UserPasswordUtils.passwordEncode(entity.getPassword(), salt, null, encode));
             entity.setLastLoginIp(ip);
             entity.setSiteId(site.getId());
             entity.setDisabled(false);

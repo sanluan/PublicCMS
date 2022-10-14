@@ -82,11 +82,9 @@ public abstract class AbstractCmsUpgrader {
 
     public void setPassword(Connection connection, String username, String password) throws SQLException, IOException {
         try (PreparedStatement statement = connection
-                .prepareStatement("update sys_user set name=?,password=?,salt=? where id = 1")) {
+                .prepareStatement("update sys_user set name=?,password=? where id = 1")) {
             statement.setString(1, username);
-            String salt = UserPasswordUtils.getSalt();
-            statement.setString(2, UserPasswordUtils.passwordEncode(password, salt, null));
-            statement.setString(3, salt);
+            statement.setString(2, UserPasswordUtils.passwordEncode(password, UserPasswordUtils.getSalt(), null, null));
             statement.execute();
         }
     }

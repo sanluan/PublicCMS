@@ -39,6 +39,17 @@ public class SysUserTokenService extends BaseService<SysUserToken> {
     }
 
     /**
+     * @param authToken
+     * @param expiryDate
+     */
+    public void updateExpiryDate(String authToken, Date expiryDate) {
+        SysUserToken entity = getEntity(authToken);
+        if (null != entity) {
+            entity.setExpiryDate(expiryDate);
+        }
+    }
+
+    /**
      * @param userId
      * @return number of data deleted
      */

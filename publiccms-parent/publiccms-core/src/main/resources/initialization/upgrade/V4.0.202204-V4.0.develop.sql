@@ -234,3 +234,7 @@ INSERT INTO sys_dept_item SELECT dept_id,'config',config FROM sys_dept_config;
 INSERT INTO sys_dept_item SELECT dept_id,'category',category_id FROM sys_dept_config;
 DROP TABLE `sys_dept_category`;
 DROP TABLE `sys_dept_config`;
+-- 2022-10-14 --
+ALTER TABLE `sys_user` CHANGE COLUMN `password` `password` varchar(150) NOT NULL COMMENT '混淆码.密码' AFTER `name`;
+UPDATE `sys_user` SET `password` = CONCAT(`salt`,'.',`password`) WHERE `salt` IS NOT NULL AND `salt` != '';
+ALTER TABLE `sys_user` DROP COLUMN `salt`;

@@ -96,13 +96,11 @@ public class SysUserService extends BaseService<SysUser> {
     /**
      * @param id
      * @param password
-     * @param salt
      */
-    public void updatePassword(Serializable id, String password, String salt) {
+    public void updatePassword(Serializable id, String password) {
         SysUser entity = getEntity(id);
         if (null != entity) {
             entity.setPassword(password);
-            entity.setSalt(salt);
         }
     }
 
