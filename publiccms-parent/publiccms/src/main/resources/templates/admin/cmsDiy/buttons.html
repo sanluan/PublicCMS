@@ -8,7 +8,7 @@
         </@cms.content>
     </#if>
     <#if 'category'=itemType||content?has_content>
-        <@sys.deptItem itemType='category' deptId=admin.deptId!'' categoryId=('category'=itemType)?then(itemId,content.categoryId)><#assign deptCategory=object!/></@sys.deptItem>
+        <@sys.deptItem itemType='category' deptId=admin.deptId!'' itemId=('category'=itemType)?then(itemId,content.categoryId)><#assign deptCategory=object!/></@sys.deptItem>
         <#if deptCategory?has_content&&deptCategory || dept?has_content && dept.ownsAllCategory>
             <@cms.category id=('category'=itemType)?then(itemId,content.categoryId)><#assign category=object/></@cms.category>
         </#if>

@@ -12,7 +12,7 @@
             <#list list as a>
                 <@t.merge 'configs' a.code/>
             </#list>
-            <@sys.deptItem itemType='config' deptId=admin.deptId!'' configs=t.configs!><#assign deptConfigMap=map!/></@sys.deptItem>
+            <@sys.deptItem itemType='config' deptId=admin.deptId!'' itemIds=t.configs!><#assign deptConfigMap=map!/></@sys.deptItem>
     <#list list as a>
         <#if (deptConfigMap[a.code])?has_content&&deptConfigMap[a.code]><@t.merge 'codes' a.code/></#if>
     </#list>

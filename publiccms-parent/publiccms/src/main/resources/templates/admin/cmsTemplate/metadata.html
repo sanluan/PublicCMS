@@ -6,7 +6,7 @@
         <#if a?has_content>
              <li><a class="button" href="cmsTemplate/delete?path=${(path?url)!}&navTabId=cmsTemplate/list&_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.delete_file'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i><@t.page 'button.delete'/></a></li>
     <@sys.authorized roleIds=admin.roles url='cmsPage/metadata'>
-        <@sys.deptItem itemType='page' deptId=admin.deptId!'' pages=path>
+        <@sys.deptItem itemType='page' deptId=admin.deptId!'' itemIds=path>
             <li><a class="button" href="cmsPage/metadata.html?path=${(path?url)!}" target="ajax" rel="cmsTemplateBox"><@t.page 'page.management'/></a></li>
         </@sys.deptItem>
     </@sys.authorized>

@@ -10,7 +10,7 @@
                 <#if lock.userId?has_content><@t.merge 'userIds' lock.userId/></#if>
             </#list>
         </#if>
-        <@sys.deptItem itemType='page' deptId=admin.deptId!'' pages=t.pages!><#assign deptPageMap=map!/></@sys.deptItem>
+        <@sys.deptItem itemType='page' deptId=admin.deptId!'' itemIds=t.pages!><#assign deptPageMap=map!/></@sys.deptItem>
         <@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
         <#list list as a>
             <#local path=filepath+'/'+a.fileName>

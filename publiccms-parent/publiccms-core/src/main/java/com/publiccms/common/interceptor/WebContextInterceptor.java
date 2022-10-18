@@ -139,7 +139,7 @@ public class WebContextInterceptor implements HandlerInterceptor {
                             expiryMinutes = ConfigComponent.getInt(config.get(SiteConfigComponent.CONFIG_EXPIRY_MINUTES_MANAGER),
                                     SiteConfigComponent.DEFAULT_EXPIRY_MINUTES);
                         }
-                        if (DateUtils.addMinutes(now, expiryMinutes / 4).after(userToken.getExpiryDate())) {
+                        if (DateUtils.addMinutes(now, expiryMinutes / 3).after(userToken.getExpiryDate())) {
                             Date expiryDate = DateUtils.addMinutes(now, expiryMinutes);
                             if (LogLoginService.CHANNEL_WEB.equalsIgnoreCase(channel)) {
                                 LoginController.addLoginStatus(user, userToken.getAuthToken(), request, response, expiryMinutes);
