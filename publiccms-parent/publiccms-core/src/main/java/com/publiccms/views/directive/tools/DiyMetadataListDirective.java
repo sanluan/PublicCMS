@@ -12,7 +12,7 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.template.DiyComponent;
 
 /**
- * diyMetadataList diy元数据列表获取
+ * diyMetadataList diy元数据列表获取指令
  * 参数列表
  * <ul>
  * <li><code>itemType</code> 元数据类型,【region,layout,module】
@@ -34,9 +34,6 @@ import com.publiccms.logic.component.template.DiyComponent;
  });
  &lt;/script&gt;
  * </pre>
- * DiyMetadataListDirective diy元数据列表获取
- * 参数列表：
- * itemType 元数据类型 可选值 region,layout,module 结果项 list 为diy元数据列表
  * 
  */
 @Component

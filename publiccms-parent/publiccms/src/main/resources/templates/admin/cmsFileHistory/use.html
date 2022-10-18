@@ -1,0 +1,15 @@
+<@tools.fileHistoryContent type=type path=path+'/'+fileName><#assign a=object/></@tools.fileHistoryContent>
+<div class="pageFormContent" layoutH>
+    <dl class="nowrap">
+        <dt><@t.page 'content'/>:</dt>
+        <textarea name="content">${a!}</textarea>
+    </dl>
+    <script>
+    $.bringBack({"content":$('textarea[name=content]',$.pdialog.getCurrent()).val()});
+    </script>
+</div>
+<div class="formBar">
+    <ul>
+        <li><a href="cmsFileHistory/use.html?type=${type!}path=${path!}&fileName=${fileName!}" target="dialog" rel="_blank" class="btnText green"><i class="icon-ok"></i><@t.page 'select'/></a></li>
+    </ul>
+</div>

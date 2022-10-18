@@ -15,8 +15,30 @@ import com.publiccms.views.pojo.entities.CmsPageData;
 import com.publiccms.views.pojo.entities.CmsPageMetadata;
 
 /**
- *
- * MetadataDirective
+ * metadata 模板元数据获取指令
+ * <p>
+ * 参数列表
+ * <ul>
+ * <li><code>path</code> 模板路径
+ * </ul>
+ * <p>
+ * 返回结果
+ * <ul>
+ * <li><code>object</code>
+ * 元数据{@link com.publiccms.views.pojo.entities.CmsPageMetadata}
+ * </ul>
+ * 使用示例
+ * <p>
+ * &lt;@tools.metadata
+ * path='index.html'&gt;${object.alias}&lt;/@tools.metadata&gt;
+ * 
+ * <pre>
+&lt;script&gt;
+ $.getJSON('//cms.publiccms.com/api/directive/tools/metadata?path=index.html&amp;appToken=接口访问授权Token', function(data){    
+   console.log(data.alias);
+ });
+ &lt;/script&gt;
+ * </pre>
  * 
  */
 @Component

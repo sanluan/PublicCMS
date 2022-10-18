@@ -15,7 +15,7 @@
     <#if category.parentId?has_content>
         <@cms.category id=category.parentId>
             <@bread object/>
-            ${object.name} &gt;
+            <a href="${object.url!}" target="_blank">${object.name}</a> &gt;
         </@cms.category>
     </#if>
 </#macro>
@@ -33,7 +33,7 @@
             <dl>
                 <dt><@t.page 'category'/>:</dt>
                 <dd class="exclude-translate">
-                    <@bread category/> ${(category.name)!}
+                    <@bread category/> <a href="${(category.url)!}" target="_blank">${(category.name)!}</a>
                 </dd>
             </dl>
             <dl>

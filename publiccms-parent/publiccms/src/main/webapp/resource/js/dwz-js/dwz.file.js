@@ -116,13 +116,13 @@
             photoClip.load(img);
             DWZ.instances[dataId] = photoClip;
         }
-        if(!window.photoclip.initd){
+        if(window.photoclip.initd){
+            init(dataId,img);
+        } else {
             loadScripts(window.photoclip.resources,function(){
                 window.photoclip.initd=true;
                 init(dataId,img);
             });
-        } else {
-            init(dataId,img);
         }
         $this.attr("data-id",dataId);
     }

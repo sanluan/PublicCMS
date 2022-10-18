@@ -5,4 +5,5 @@
     <a class="button" href="taskTemplate/content.html?path=${path?url}/" target="ajax" rel="taskTemplateBox"><@t.page 'task_template.create_here'/></a>
     <a class="button" href="taskTemplate/delete?path=${path?url}&navTabId=taskTemplate/list&_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.delete_directory'/>" target="ajaxTodo"><@t.page 'button.delete_directory'/></a>
 </#if>
+    <a class="button" href="cmsFileBackup/list.html?type=task&path=${(path?url)!}" target="navTab" rel="cmsFileBackup/list" icon="<i class='bi bi-recycle icon-large'></i>"><@t.page 'recycle_bin'/></a>
 </h2>

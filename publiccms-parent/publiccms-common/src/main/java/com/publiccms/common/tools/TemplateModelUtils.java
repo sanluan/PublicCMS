@@ -17,18 +17,17 @@ import freemarker.template.SimpleNumber;
 import freemarker.template.SimpleScalar;
 import freemarker.template.TemplateBooleanModel;
 import freemarker.template.TemplateDateModel;
-import freemarker.template.TemplateHashModelEx2;
-import freemarker.template.TemplateHashModelEx2.KeyValuePair;
-import freemarker.template.TemplateHashModelEx2.KeyValuePairIterator;
+import freemarker.template.TemplateHashModelEx;
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
+import freemarker.template.TemplateModelIterator;
 import freemarker.template.TemplateNumberModel;
 import freemarker.template.TemplateScalarModel;
 import freemarker.template.TemplateSequenceModel;
 
 /**
  * 模板数据模型工具类
- * 
+ *
  * TemplateModelUtils
  *
  */
@@ -87,17 +86,17 @@ public class TemplateModelUtils {
      * @return map value
      * @throws TemplateModelException
      */
-    public static Map<?, ?> converMap(TemplateModel model) throws TemplateModelException {
+    public static Map<String, Object> converMap(TemplateModel model) throws TemplateModelException {
         if (null != model) {
-            if (model instanceof TemplateHashModelEx2) {
-                HashMap<String, Object> map = new HashMap<>();
-                KeyValuePairIterator keyValuePairIterator = ((TemplateHashModelEx2) model).keyValuePairIterator();
-                while (keyValuePairIterator.hasNext()) {
-                    KeyValuePair keyValuePair = keyValuePairIterator.next();
-                    map.put(converString(keyValuePair.getKey()), converBean(keyValuePair.getValue()));
-                }
-                return map;
-            }
+            if (model instanceof TemplateHashModelEx) {
+				HashMap<String, Object> map = new HashMap<>();
+				TemplateModelIterator keys = ((TemplateHashModelEx) model).keys().iterator();
+				while (keys.hasNext()) {
+					String key = converString(keys.next());
+					map.put(key, converBean(((TemplateHashModelEx) model).get(key)));
+				}
+				return map;
+			}
         }
         return null;
     }

@@ -232,7 +232,7 @@ $('input[name=timing]',navTab.getCurrentPanel()).click();
                         <div>
                             <a class="button" href="common/import.html" lookupGroup="" width="500" height="200"><@t.page 'import_doc'/></a>
                         <#if a?has_content>
-                            <a class="button" href="cmsContentTextHistory/lookup.html?contentId=${a.id}&fieldName=text" lookupGroup=""><@t.page 'content.history'/></a>
+                            <a class="button" href="cmsContentTextHistory/lookup.html?contentId=${a.id}&fieldName=text" lookupGroup=""><@t.page 'history'/></a>
                         </#if>
                         </div>
                         <textarea name="text" class="editor<#if requiredFieldList?seq_contains('content')> required</#if>" escape="true" editorType="${model.editorType!}">${(attribute.text)!}</textarea>

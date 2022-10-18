@@ -178,7 +178,7 @@ public class CmsModelAdminController {
         CmsModel entity = modelMap.get(id);
         if (null != entity) {
             log.info("begin batch publish");
-            contentService.batchWork(site.getId(), null, new String[] { id }, list -> {
+            contentService.batchWork(site.getId(), null, new String[] { id }, (list, i) -> {
                 for (CmsContent content : list) {
                     try {
                         templateComponent.createContentFile(site, content, null, null);
@@ -186,7 +186,7 @@ public class CmsModelAdminController {
                         log.error(e.getMessage());
                     }
                 }
-                log.info("batch publish size : " + list.size());
+                log.info("batch " + i + " publish size : " + list.size());
             }, PageHandler.MAX_PAGE_SIZE);
             log.info("complete batch publish");
         }
@@ -211,13 +211,13 @@ public class CmsModelAdminController {
             PageHandler page = categoryService.getPage(query, null, null);
             for (CmsCategory category : (List<CmsCategory>) page.getList()) {
                 log.info("begin rebuild search text for category : " + category.getId());
-                contentService.batchWork(site.getId(), new Integer[] { category.getId() }, new String[] { id }, list -> {
+                contentService.batchWork(site.getId(), new Integer[] { category.getId() }, new String[] { id }, (list, i) -> {
                     List<SysExtendField> categoryExtendList = null;
                     if (null != category.getExtendId()) {
                         categoryExtendList = extendFieldService.getList(category.getExtendId(), null, true);
                     }
                     contentService.rebuildSearchText(site.getId(), entity, categoryExtendList, list);
-                    log.info("rebuild search text for category : " + category.getId() + " size : " + list.size());
+                    log.info("rebuild search text for category : " + category.getId() + " batch " + i + " size : " + list.size());
                 }, PageHandler.MAX_PAGE_SIZE);
                 log.info("complete rebuild search text for category : " + category.getId());
             }

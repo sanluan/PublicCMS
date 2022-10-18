@@ -73,7 +73,7 @@ public class CmsWebFileAdminController {
                             new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                                     "save.web.webfile", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
                 } else {
-                    String historyFilePath = siteComponent.getWebHistoryFilePath(site, path);
+                    String historyFilePath = siteComponent.getWebHistoryFilePath(site, path, true);
                     CmsFileUtils.updateFile(filepath, historyFilePath, content);
                     logOperateService.save(
                             new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,

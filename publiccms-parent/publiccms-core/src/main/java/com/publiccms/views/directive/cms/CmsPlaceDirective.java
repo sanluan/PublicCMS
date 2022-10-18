@@ -26,12 +26,12 @@ import com.publiccms.logic.service.cms.CmsPlaceService;
  * <p>
  * 参数列表
  * <ul>
- * <li><code>id</code> 推荐位id，结果返回<code>object</code>
+ * <li><code>id</code> 推荐位id,结果返回<code>object</code>
  * {@link com.publiccms.entities.cms.CmsPlace}
  * <li><code>absoluteURL</code> url处理为绝对路径 默认为<code> true</code>
- * <li><code>containsAttribute</code> id不为空时有效，默认为<code>false</code>，结果返回<code>attribute</code>
+ * <li><code>containsAttribute</code> id不为空时有效,默认为<code>false</code>,结果返回<code>attribute</code>
  * <li><code>ids</code>
- * 多个推荐位id，逗号或空格间隔，当id为空时生效，结果返回<code>map</code>(id,<code>object</code>)
+ * 多个推荐位id,逗号或空格间隔,当id为空时生效,结果返回<code>map</code>(id,<code>object</code>)
  * </ul>
  * 使用示例
  * <p>

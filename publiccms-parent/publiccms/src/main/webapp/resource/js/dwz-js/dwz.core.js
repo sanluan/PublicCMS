@@ -10,6 +10,7 @@ var DWZ = {
     } ,
     eventType: {
         pageClear: "pageClear", // 用于重新ajaxLoad、关闭nabTab, 关闭dialog时，去除xheditor等需要特殊处理的资源
+        editorSync: "editorSync",
         resizeGrid: "resizeGrid", // 用于窗口或dialog大小调整
         initEnvAfter: "initEnvAfter" // initEnv完成触发
     } ,
@@ -175,10 +176,38 @@ var DWZ = {
             }
         });
         var _doc = $(document);
+        if (!_doc.isBind(DWZ.eventType.editorSync) ) {
+            _doc.on(DWZ.eventType.editorSync, null, null, function(event) {
+                var box = event.target;
+                var $box = $(box);
+                $("textarea.editor", $box).each(function() {
+                    if('ckeditor'==$(this).attr('editorType')) {
+                        CKEDITOR.instances[$(this).data("id")].updateElement();
+                    } else if ("tinymce"==$(this).attr("editorType")){
+                        tinymce.get($(this).data("id")).save();
+                    } else if ("kindeditor"==$(this).attr("editorType")){
+                        KindEditor.sync('#'+$(this).data("id"));
+                    } else {
+                        UE.instants[$(this).data("id")].sync();
+                    }
+                });
+                $("textarea.code", $box).each(function() {
+                     DWZ.instances[$(this).data("id")].save();
+                });
+        
+                $(".miscSortDrag", $box).each(function() {
+                    var $sortBox=$(this);
+                    if($sortBox.data("result")){
+                        $sortBox.find($sortBox.data("result")).val(DWZ.obj2str($sortBox.miscSortDragData($sortBox)));
+                    }
+                });
+            });
+        }
         if (!_doc.isBind(DWZ.eventType.pageClear) ) {
             _doc.on(DWZ.eventType.pageClear, null, null, function(event) {
                 var box = event.target;
-                $("textarea.editor", $(box)).each(function() {
+                var $box = $(box);
+                $("textarea.editor", $box).each(function() {
                     if('ckeditor'==$(this).attr('editorType')) {
                         CKEDITOR.instances[$(this).data("id")].destroy();
                     } else if("tinymce"==$(this).attr("editorType")) {
@@ -189,14 +218,15 @@ var DWZ = {
                         UE.instants[$(this).data("id")].destroy();
                     }
                 });
-                $("textarea.code", $(box)).each(function() {
+                $("textarea.code", $box).each(function() {
+                    DWZ.instances[$(this).data("id")].toTextArea();
                     delete DWZ.instances[$(this).data("id")];
                 });
-                $(".image-editor", $(box)).each(function() {
+                $(".image-editor", $box).each(function() {
                     DWZ.instances[$(this).data("id")].destroy();
                     delete DWZ.instances[$(this).data("id")];
                 });
-                $('[close-url]',$(box)).each(function (){
+                $('[close-url]',$box).each(function (){
                     $.getJSON($(this).attr("close-url"), function(data) {});
                 });
             });

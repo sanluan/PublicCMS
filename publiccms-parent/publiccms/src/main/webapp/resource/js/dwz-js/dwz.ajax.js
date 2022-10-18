@@ -14,41 +14,20 @@
  */
 function validateCallback(form, callback, confirmMsg) {
     var $form = $(form);
-    $("textarea.editor", $form).each(function() {
-        if('ckeditor'==$(this).attr('editorType')) {
-            CKEDITOR.instances[$(this).data("id")].updateElement();
-        } else if ("tinymce"==$(this).attr("editorType")){
-            tinymce.get($(this).data("id")).save();
-        } else if ("kindeditor"==$(this).attr("editorType")){
-            KindEditor.sync('#'+$(this).data("id"));
-        } else {
-            UE.instants[$(this).data("id")].sync();
-        }
-        if('true'==$(this).attr('escape')){
-            $(this).val(html2Escape($(this).val()));
-        }
+    $form.trigger(DWZ.eventType.editorSync);
+    $("textarea.editor[escape=true]", $form).each(function() {
+         $(this).val(html2Escape($(this).val()));
     });
-    $("textarea.code", $form).each(function() {
-         $(this).val(DWZ.instances[$(this).data("id")].getValue());
-         if('true'==$(this).attr('escape')){
-             $(this).val(html2Escape($(this).val()));
-         }
+    $("textarea.code[escape=true]", $form).each(function() {
+         $(this).val(html2Escape($(this).val()));
     });
-
-    $(".miscSortDrag", $form).each(function() {
-        var $sortBox=$(this);
-        if($sortBox.data("result")){
-            $sortBox.find($sortBox.data("result")).val(DWZ.obj2str($sortBox.miscSortDragData($sortBox)));
-        }
-    });
-
     $("input[escape=true]", $form).each(function() {
         if($(this).val()){
           $(this).attr('maxlength',128);
           $(this).val(sha512($(this).val()));
         }
     });
-
+    
     if (!$form.valid() ) {
         return false;
     }

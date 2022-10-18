@@ -13,9 +13,28 @@ import com.publiccms.common.tools.ImageUtils;
 import com.publiccms.entities.sys.SysSite;
 
 /**
- *
- * ThumbDirective
- *
+ * thumb 缩略图指令
+ * <p>
+ * 参数列表
+ * <ul>
+ * <li><code>path</code> 文件路径
+ * <li><code>width</code> 宽度
+ * <li><code>height</code> 高度
+ * </ul>
+ * <p>
+ * 打印结果文件路径
+ * <p>
+ * 使用示例
+ * <p>
+ * &lt;@tools.thumb path='images/logo.jpg' width=100 height=100/&gt;
+ * 
+ * <pre>
+&lt;script&gt;
+ $.getJSON('//cms.publiccms.com/api/directive/tools/thumb?path=images/logo.jpg&amp;width=100&amp;height=100&amp;appToken=接口访问授权Token', function(data){    
+   console.log(data.deviceType);
+ });
+ &lt;/script&gt;
+ * </pre>
  */
 @Component
 public class ThumbDirective extends AbstractTemplateDirective {

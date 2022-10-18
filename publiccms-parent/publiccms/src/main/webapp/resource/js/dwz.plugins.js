@@ -349,6 +349,32 @@ DWZ.regPlugins.push(function($p){
         $this.spectrum(opts);
     });
 });
+DWZ.regPlugins.push(function($p){
+    $('.compare', $p).each(function() {
+        var $this=$(this);
+        function init($resultBox,oldstring,newstring){
+            var diff = Diff.diffWords(oldstring, newstring);
+            $resultBox.empty();
+            for (var i=0; i < diff.length; i++) {
+                if (diff[i].removed) {
+                    $('<del></del>').append(diff[i].value).appendTo($resultBox);
+                } else if (diff[i].added) {
+                    $('<ins></ins>').append(diff[i].value).appendTo($resultBox);
+                } else {
+                  $resultBox.append(diff[i].value);
+                }
+            }
+        }
+        if(window.jsdiff.initd){
+            init($this.find('.result-box'),$this.find('[name=old]').val(),$this.find('[name=new]').val());
+        } else {
+            loadScripts(window.jsdiff.resources,function(){
+                window.jsdiff.initd=true;
+                init($this.find('.result-box'),$this.find('[name=old]').val(),$this.find('[name=new]').val());
+            });
+        }
+    });
+});
 $(document).keydown(function(e){
     if(e.keyCode == DWZ.keyCode.ESC && $.pdialog.getCurrent()){
         $.pdialog.closeCurrent();

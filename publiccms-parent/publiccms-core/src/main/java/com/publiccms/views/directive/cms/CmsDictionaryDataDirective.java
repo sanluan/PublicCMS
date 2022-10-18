@@ -22,8 +22,8 @@ import com.publiccms.logic.service.cms.CmsDictionaryDataService;
 * 参数列表
 * <ul>
 * <li><code>dictionaryId</code> 数据字典id
-* <li><code>value</code> 值，结果返回<code>object</code>{@link com.publiccms.entities.cms.CmsDictionaryData} 
-* <li><code>values</code> 多个值，逗号或空格间隔，当value为空时生效，结果返回<code>map</code>(id,<code>object</code>)
+* <li><code>value</code> 值,结果返回<code>object</code>{@link com.publiccms.entities.cms.CmsDictionaryData} 
+* <li><code>values</code> 多个值,逗号或空格间隔,当value为空时生效,结果返回<code>map</code>(id,<code>object</code>)
 * </ul>
 * 使用示例
 * <p>

@@ -84,7 +84,7 @@
             </ul>
         </fieldset>
 <#macro pageTree filepath=''>
-    <@tools.templateList path=filepath>
+    <@tools.fileList path=filepath>
         <#list list as a>
             <li>
                 <#local path=filepath+'/'+a.fileName>
@@ -100,7 +100,7 @@
         <#else>
             <li><a><@t.page 'empty_directory'/></a></li>
         </#list>
-    </@tools.templateList>
+    </@tools.fileList>
 </#macro>
         <fieldset class="ownsAllPage">
             <legend><@t.page 'dept.page_authorize'/></legend>
@@ -137,27 +137,27 @@
     <#if a.ownsAllPage>
     $('input[name=ownsAllPage]',navTab.getCurrentPanel()).click();
     </#if>
-    <@sys.deptPageList deptId=a.id>
+    <@sys.deptItemList itemType='page' deptId=a.id>
         <#list page.list as a>
     $('.ownsAllPage .tree li a[tname=pages][tvalue="${a.id.page?js_string}"]',navTab.getCurrentPanel()).attr('checked','true');
         </#list>
-    </@sys.deptPageList>
+    </@sys.deptItemList>
     <#if a.ownsAllCategory>
     $('input[name=ownsAllCategory]',navTab.getCurrentPanel()).click();
     </#if>
-    <@sys.deptCategoryList deptId=a.id>
+    <@sys.deptItemList itemType='category' deptId=a.id>
         <#list page.list as a>
     $('.ownsAllCategory .tree li a[tname=categoryIds][tvalue=${a.id.categoryId}]',navTab.getCurrentPanel()).attr('checked','true');
         </#list>
-    </@sys.deptCategoryList>
+    </@sys.deptItemList>
     <#if a.ownsAllConfig>
     $('input[name=ownsAllConfig]',navTab.getCurrentPanel()).click();
     </#if>
-    <@sys.deptConfigList deptId=a.id>
+    <@sys.deptItemList itemType='config' deptId=a.id>
         <#list page.list as a>
     $('.ownsAllConfig .tree li a[tname=configs][tvalue=${a.id.config?js_string}]',navTab.getCurrentPanel()).attr('checked','true');
         </#list>
-    </@sys.deptConfigList>
+    </@sys.deptItemList>
 </script>
 </#if>
     </div>

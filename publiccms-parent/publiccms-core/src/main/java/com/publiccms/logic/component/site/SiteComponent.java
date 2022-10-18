@@ -321,13 +321,16 @@ public class SiteComponent implements Cache {
     /**
      * @param site
      * @param filepath
+     * @param newfile add new file name
      * @return web history file path
      */
-    public String getWebHistoryFilePath(SysSite site, String filepath) {
+    public String getWebHistoryFilePath(SysSite site, String filepath, boolean newfile) {
         StringBuilder sb = new StringBuilder(webHistoryFilePath);
         sb.append(getFullFileName(site.getId(), filepath));
         sb.append(CommonConstants.SEPARATOR);
-        sb.append(DateFormatUtils.getDateFormat(FILE_NAME_FORMAT_STRING).format(CommonUtils.getDate()));
+        if (newfile) {
+            sb.append(DateFormatUtils.getDateFormat(FILE_NAME_FORMAT_STRING).format(CommonUtils.getDate()));
+        }
         return sb.toString();
     }
 
@@ -352,13 +355,16 @@ public class SiteComponent implements Cache {
     /**
      * @param site
      * @param templatePath
+     * @param newfile add new file name
      * @return task template history file path
      */
-    public String getTaskTemplateHistoryFilePath(SysSite site, String templatePath) {
+    public String getTaskTemplateHistoryFilePath(SysSite site, String templatePath, boolean newfile) {
         StringBuilder sb = new StringBuilder(taskTemplateHistoryFilePath);
         sb.append(getFullFileName(site.getId(), templatePath));
         sb.append(CommonConstants.SEPARATOR);
-        sb.append(DateFormatUtils.getDateFormat(FILE_NAME_FORMAT_STRING).format(CommonUtils.getDate()));
+        if (newfile) {
+            sb.append(DateFormatUtils.getDateFormat(FILE_NAME_FORMAT_STRING).format(CommonUtils.getDate()));
+        }
         return sb.toString();
     }
 
@@ -383,13 +389,16 @@ public class SiteComponent implements Cache {
     /**
      * @param site
      * @param templatePath
+     * @param newfile add new file name
      * @return template history file path
      */
-    public String getTemplateHistoryFilePath(SysSite site, String templatePath) {
+    public String getTemplateHistoryFilePath(SysSite site, String templatePath, boolean newfile) {
         StringBuilder sb = new StringBuilder(templateHistoryFilePath);
         sb.append(getFullFileName(site.getId(), templatePath));
         sb.append(CommonConstants.SEPARATOR);
-        sb.append(DateFormatUtils.getDateFormat(FILE_NAME_FORMAT_STRING).format(CommonUtils.getDate()));
+        if (newfile) {
+            sb.append(DateFormatUtils.getDateFormat(FILE_NAME_FORMAT_STRING).format(CommonUtils.getDate()));
+        }
         return sb.toString();
     }
 

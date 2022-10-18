@@ -21,12 +21,12 @@ public class SysTaskDao extends BaseDao<SysTask> {
     /**
      * @param siteId
      * @param status
-     * @param beginUpdateDate
+     * @param startUpdateDate
      * @param pageIndex
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(Short siteId, Integer status, Date beginUpdateDate, Integer pageIndex, Integer pageSize) {
+    public PageHandler getPage(Short siteId, Integer status, Date startUpdateDate, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from SysTask bean");
         if (CommonUtils.notEmpty(siteId)) {
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
@@ -34,8 +34,8 @@ public class SysTaskDao extends BaseDao<SysTask> {
         if (CommonUtils.notEmpty(status)) {
             queryHandler.condition("bean.status = :status").setParameter("status", status);
         }
-        if (null != beginUpdateDate) {
-            queryHandler.condition("bean.updateDate >= :beginUpdateDate").setParameter("beginUpdateDate", beginUpdateDate);
+        if (null != startUpdateDate) {
+            queryHandler.condition("bean.updateDate >= :startUpdateDate").setParameter("startUpdateDate", startUpdateDate);
         }
         queryHandler.order("bean.id desc");
         return getPage(queryHandler, pageIndex, pageSize);

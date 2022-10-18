@@ -38,7 +38,7 @@ public class SysUserService extends BaseService<SysUser> {
      * @param endRegisteredDate
      * @param startLastLoginDate
      * @param endLastLoginDate
-     * @param superuserAccess
+     * @param superuser
      * @param emailChecked
      * @param disabled
      * @param name
@@ -50,10 +50,10 @@ public class SysUserService extends BaseService<SysUser> {
      */
     @Transactional(readOnly = true)
     public PageHandler getPage(Short siteId, Integer deptId, Date startRegisteredDate, Date endRegisteredDate,
-            Date startLastLoginDate, Date endLastLoginDate, Boolean superuserAccess, Boolean emailChecked, Boolean disabled,
+            Date startLastLoginDate, Date endLastLoginDate, Boolean superuser, Boolean emailChecked, Boolean disabled,
             String name, String orderField, String orderType, Integer pageIndex, Integer pageSize) {
         return dao.getPage(siteId, deptId, startRegisteredDate, endRegisteredDate, startLastLoginDate, endLastLoginDate,
-                superuserAccess, emailChecked, disabled, name, orderField, orderType, pageIndex, pageSize);
+                superuser, emailChecked, disabled, name, orderField, orderType, pageIndex, pageSize);
     }
 
     /**
@@ -96,13 +96,11 @@ public class SysUserService extends BaseService<SysUser> {
     /**
      * @param id
      * @param password
-     * @param salt
      */
-    public void updatePassword(Serializable id, String password, String salt) {
+    public void updatePassword(Serializable id, String password) {
         SysUser entity = getEntity(id);
         if (null != entity) {
             entity.setPassword(password);
-            entity.setSalt(salt);
         }
     }
 

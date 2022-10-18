@@ -97,9 +97,8 @@ public class SysUserAdminController {
                 if (ControllerUtils.errorNotEquals("repassword", entity.getPassword(), repassword, model)) {
                     return CommonConstants.TEMPLATE_ERROR;
                 }
-                String salt = UserPasswordUtils.getSalt();
-                service.updatePassword(entity.getId(), UserPasswordUtils.passwordEncode(entity.getPassword(), salt, encoding),
-                        salt);
+                service.updatePassword(entity.getId(),
+                        UserPasswordUtils.passwordEncode(entity.getPassword(), UserPasswordUtils.getSalt(), null, encoding));
             }
             if (CommonUtils.empty(entity.getEmail()) || !entity.getEmail().equals(oldEntity.getEmail())) {
                 entity.setEmailChecked(false);
@@ -118,8 +117,8 @@ public class SysUserAdminController {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             entity.setSiteId(site.getId());
-            entity.setSalt(UserPasswordUtils.getSalt());
-            entity.setPassword(UserPasswordUtils.passwordEncode(entity.getPassword(), entity.getSalt(), encoding));
+            entity.setPassword(
+                    UserPasswordUtils.passwordEncode(entity.getPassword(), UserPasswordUtils.getSalt(), null, encoding));
             entity.setWeakPassword(true);
             service.save(entity);
             if (CommonUtils.notEmpty(roleIds)) {
@@ -159,13 +158,14 @@ public class SysUserAdminController {
     /**
      * @param site
      * @param admin
-     * @param ids 
+     * @param ids
      * @param request
      * @return view name
      */
     @RequestMapping(value = "enable", method = RequestMethod.POST)
     @Csrf
-    public String enable(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids, HttpServletRequest request) {
+    public String enable(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids,
+            HttpServletRequest request) {
         if (CommonUtils.notEmpty(ids)) {
             service.updateStatus(site.getId(), ids, admin.getId(), false);
             logOperateService
@@ -184,7 +184,8 @@ public class SysUserAdminController {
      */
     @RequestMapping(value = "disable", method = RequestMethod.POST)
     @Csrf
-    public String disable(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids, HttpServletRequest request) {
+    public String disable(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids,
+            HttpServletRequest request) {
         if (CommonUtils.notEmpty(ids)) {
             service.updateStatus(site.getId(), ids, admin.getId(), true);
             logOperateService

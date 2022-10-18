@@ -6,6 +6,7 @@
             <a class="button" href="cmsTemplate/delete?path=${path?url}&navTabId=cmsTemplate/list&_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.delete_directory'/>" target="ajaxTodo"><@t.page 'button.delete_directory'/></a>
             <a class="button" href="cmsTemplate/metadata.html?path=${(path?url)!}/" target="ajax" rel="cmsTemplateBox"><@t.page 'template.create_here'/></a>
         </#if>
+        <a class="button" href="cmsFileBackup/list.html?path=${(path?url)!}" target="navTab" rel="cmsFileBackup/list" icon="<i class='bi bi-recycle icon-large'></i>"><@t.page 'recycle_bin'/></a>
     </h2>
     <div class="pageFormContent" layoutH>
         <form action="cmsTemplate/search.html" autocomplete="off" onsubmit="return divSearch(this,'searchBox');" method="post">

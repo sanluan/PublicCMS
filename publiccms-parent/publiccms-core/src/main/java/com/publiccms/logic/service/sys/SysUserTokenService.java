@@ -2,7 +2,7 @@ package com.publiccms.logic.service.sys;
 
 import java.util.Date;
 
-// Generated 2016-1-20 11:19:18 by com.publiccms.common.source.SourceGenerator
+// Generated 2016-1-20 11:19:18 by com.publiccms.common.generator.SourceGenerator
 
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
@@ -36,6 +36,17 @@ public class SysUserTokenService extends BaseService<SysUserToken> {
     public PageHandler getPage(Short siteId, Long userId, String channel, String orderField, String orderType, Integer pageIndex,
             Integer pageSize) {
         return dao.getPage(siteId, userId, channel, orderField, orderType, pageIndex, pageSize);
+    }
+
+    /**
+     * @param authToken
+     * @param expiryDate
+     */
+    public void updateExpiryDate(String authToken, Date expiryDate) {
+        SysUserToken entity = getEntity(authToken);
+        if (null != entity) {
+            entity.setExpiryDate(expiryDate);
+        }
     }
 
     /**

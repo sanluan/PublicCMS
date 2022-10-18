@@ -2,7 +2,7 @@ package com.publiccms.logic.dao.cms;
 
 import com.publiccms.entities.cms.CmsPlaceAttribute;
 
-// Generated 2016-3-1 17:29:33 by com.publiccms.common.source.SourceGenerator
+// Generated 2016-3-1 17:29:33 by com.publiccms.common.generator.SourceGenerator
 
 import org.springframework.stereotype.Repository;
 

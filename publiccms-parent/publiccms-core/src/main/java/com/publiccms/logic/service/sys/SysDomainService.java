@@ -5,7 +5,7 @@ import java.io.Serializable;
 import com.publiccms.entities.sys.SysDomain;
 import com.publiccms.logic.dao.sys.SysDomainDao;
 
-// Generated 2015-7-3 16:18:22 by com.publiccms.common.source.SourceGenerator
+// Generated 2015-7-3 16:18:22 by com.publiccms.common.generator.SourceGenerator
 
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;

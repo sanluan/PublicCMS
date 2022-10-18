@@ -1,4 +1,4 @@
-<@tools.webFileContent path=path><#assign content=object!/></@tools.webFileContent>
+<@tools.fileContent type='file' path=path><#assign content=object!/></@tools.fileContent>
 <#assign
     editorType={'css':'css','js':'javascript','xml':'xml'}
     fileType=path?keep_after_last('.')?lower_case
@@ -13,6 +13,7 @@
     </div>
     <h2 class="contentTitle">
         <a class="button" href="cmsWebFile/lookup.html?fullPath=true" target="dialog" mask="true"><@t.page 'webfile'/></a>
+        <a class="button" href="cmsFileHistory/list.html?type=file&path=${(path?url)!}" lookupGroup=""><@t.page 'history'/></a>
     </h2>
     <div class="pageFormContent" layoutH>
         <div class="clearfix">

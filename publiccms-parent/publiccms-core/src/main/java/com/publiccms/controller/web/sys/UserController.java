@@ -100,7 +100,7 @@ public class UserController {
         if (ControllerUtils.errorNotEmpty("user", user, model) || ControllerUtils.errorNotEmpty("password", password, model)
                 || ControllerUtils.errorNotEquals("repassword", password, repassword, model)
                 || null != user.getPassword() && ControllerUtils.errorNotEquals("password", user.getPassword(),
-                        UserPasswordUtils.passwordEncode(oldpassword, user.getSalt(), encoding), model)) {
+                        UserPasswordUtils.passwordEncode(oldpassword, null, user.getPassword(), encoding), model)) {
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
         } else {
             Cookie userCookie = RequestUtils.getCookie(request.getCookies(), CommonConstants.getCookiesUser());
@@ -114,8 +114,8 @@ public class UserController {
                 }
             }
             ControllerUtils.clearUserToSession(request.getContextPath(), request.getScheme(), session, response);
-            String salt = UserPasswordUtils.getSalt();
-            service.updatePassword(user.getId(), UserPasswordUtils.passwordEncode(password, salt, encoding), salt);
+            service.updatePassword(user.getId(),
+                    UserPasswordUtils.passwordEncode(password, UserPasswordUtils.getSalt(), null, encoding));
             if (user.isWeakPassword()) {
                 service.updateWeekPassword(user.getId(), false);
             }

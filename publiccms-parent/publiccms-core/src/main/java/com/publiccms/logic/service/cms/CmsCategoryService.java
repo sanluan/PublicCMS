@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
@@ -54,7 +54,7 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
      * @param batchSize
      */
     @Transactional(readOnly = true)
-    public void batchWork(short siteId, Consumer<List<CmsCategory>> worker, int batchSize) {
+    public void batchWork(short siteId, BiConsumer<List<CmsCategory>, Integer> worker, int batchSize) {
         dao.batchWork(siteId, worker, batchSize);
     }
 

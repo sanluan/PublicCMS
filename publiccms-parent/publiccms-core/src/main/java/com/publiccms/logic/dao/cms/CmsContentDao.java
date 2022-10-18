@@ -3,13 +3,14 @@ package com.publiccms.logic.dao.cms;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-// Generated 2015-5-8 16:50:23 by com.publiccms.common.source.SourceGenerator
+// Generated 2015-5-8 16:50:23 by com.publiccms.common.generator.SourceGenerator
 
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -331,7 +332,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         }
     }
 
-    public void batchWork(short siteId, Integer[] categoryIds, String[] modelIds, Consumer<List<CmsContent>> worker,
+    public void batchWork(short siteId, Integer[] categoryIds, String[] modelIds, BiConsumer<List<CmsContent>, Integer> worker,
             int batchSize) {
         QueryHandler queryHandler = getQueryHandler("from CmsContent bean");
         queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);

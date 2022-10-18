@@ -1,9 +1,9 @@
 package com.publiccms.logic.dao.cms;
 
 import java.util.List;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
-// Generated 2016-1-19 11:41:45 by com.publiccms.common.source.SourceGenerator
+// Generated 2016-1-19 11:41:45 by com.publiccms.common.generator.SourceGenerator
 
 import org.springframework.stereotype.Repository;
 
@@ -54,7 +54,7 @@ public class CmsCategoryDao extends BaseDao<CmsCategory> {
         return getPage(queryHandler, pageIndex, pageSize);
     }
 
-    public void batchWork(short siteId, Consumer<List<CmsCategory>> worker, int batchSize) {
+    public void batchWork(short siteId, BiConsumer<List<CmsCategory>, Integer> worker, int batchSize) {
         QueryHandler queryHandler = getQueryHandler("from CmsCategory bean");
         queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
         queryHandler.condition("bean.disabled = :disabled").setParameter("disabled", false);

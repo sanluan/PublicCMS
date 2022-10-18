@@ -1,0 +1,30 @@
+<@tools.fileHistoryContent type=type path=path+'/'+fileName><#assign a=object/></@tools.fileHistoryContent>
+<#assign
+    editorType={'css':'css','js':'javascript','xml':'xml'}
+    fileType=path?keep_after_last('.')?lower_case
+/>
+<div class="pageFormContent" layoutH>
+    <div class="unit">
+        <table class="compare">
+            <tr>
+                <td>
+                    <textarea name="old" class="code" mode="${(!type?has_content || 'template'=type)?then('freemarkermixed',editorType[fileType]?has_content?then(editorType[fileType],'htmlmixed'))}">${a!}</textarea>
+                </td>
+                <td>
+                    <textarea name="new" class="code" mode="${(!type?has_content || 'template'=type)?then('freemarkermixed',editorType[fileType]?has_content?then(editorType[fileType],'htmlmixed'))}"></textarea>
+                </td>
+                <td><pre class="result-box"></pre></td>
+            </tr>
+        </table>
+    </div>
+    <script>
+    $('form',navTab.getCurrentPanel()).trigger(DWZ.eventType.editorSync);
+    $('textarea[name=new]',$.pdialog.getCurrent()).val($('[name=content]',navTab.getCurrentPanel()).val());
+    </script>
+</div>
+<div class="formBar">
+    <ul>
+        <li><a href="cmsFileHistory/use.html?type=${type!}path=${path!}&fileName=${fileName!}" target="dialog" rel="_blank" class="button"><i class="icon-ok"></i><@t.page 'select'/></a></li>
+        <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+    </ul>
+</div>

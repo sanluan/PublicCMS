@@ -2,7 +2,7 @@ package com.publiccms.logic.dao.cms;
 
 import java.util.List;
 
-// Generated 2016-11-20 14:50:55 by com.publiccms.common.source.SourceGenerator
+// Generated 2016-11-20 14:50:55 by com.publiccms.common.generator.SourceGenerator
 
 import org.springframework.stereotype.Repository;
 

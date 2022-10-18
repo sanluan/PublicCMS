@@ -27,7 +27,7 @@ import freemarker.template.TemplateException;
  * <ul>
  * <li><code>templatePath</code> 模板路径
  * <li><code>filePath</code> 静态文件路径
- * <li><code>pageIndex</code> 当前页码，默认为1
+ * <li><code>pageIndex</code> 当前页码,默认为1
  * <li><code>parameters</code> 参数map
  * </ul>
  * <p>
@@ -62,7 +62,7 @@ public class CreateTemplateFileDirective extends AbstractTemplateDirective {
             String templateFullPath = SiteComponent.getFullTemplatePath(site, templatePath);
             try {
                 Map<String, Object> model = new HashMap<>();
-                model.put("parameters", handler.getMap("parameters"));
+                model.putAll(handler.getMap("parameters"));
                 String realTemplatePath = siteComponent.getTemplateFilePath(site, templatePath);
                 CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(realTemplatePath);
                 CmsPageData data = metadataComponent.getTemplateData(realTemplatePath);

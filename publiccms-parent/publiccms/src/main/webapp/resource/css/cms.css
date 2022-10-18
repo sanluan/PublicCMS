@@ -1,5 +1,9 @@
 @charset "UTF-8";
-a.btnText{padding:4px 5px;word-break:keep-all;white-space:nowrap;background-color:#ddd;border-radius:2px;margin-right:2px;}a.btnText.red{background-color:#edd;}a.btnText.green{background-color:#ded;}a.btnText.blue{background-color:#dde;}a.btnText.warn{background-color:#edd;color:#f33;}
+a.btnText{padding:4px 5px;word-break:keep-all;white-space:nowrap;background-color:#ddd;border-radius:2px;margin-right:2px;}
+a.btnText.red{background-color:#edd;}
+a.btnText.green{background-color:#ded;}
+a.btnText.blue{background-color:#dde;}
+a.btnText.warn{background-color:#edd;color:#f33;}
 a.btnText:hover{text-decoration:none;}
 a.btnText i{margin-right:3px;}
 .grid .gridTbody td div a.btnText:hover,table.list a.btnText:hover{text-decoration:none;}
@@ -27,6 +31,13 @@ a.btnText i{margin-right:3px;}
 .unit ul li:nth-child(6n+3) .card,.unit ul li:nth-child(6n+3) .card .icon{border-color:#FF99CC;color:#FF99CC;}
 .unit ul li:nth-child(6n+4) .card,.unit ul li:nth-child(6n+4) .card .icon{border-color:#9999FF;color:#9999FF;}
 .unit ul li:nth-child(6n+5) .card,.unit ul li:nth-child(6n+5) .card .icon{border-color:#CC99CC;color:#CC99CC;}
+
+table.compare{table-layout: fixed;width: 100%;}
+table.compare td{width: 33%;padding: 3px 4px;border: 1px solid transparent;vertical-align: top;}
+table.compare .result-box{white-space: pre-wrap;}
+table.compare .result-box del {text-decoration: none;color: #b30000;background: #fadad7;}
+table.compare .result-box ins {text-decoration: none;color: #406619;background: #eaf2c2;}
+
 ol.vote>li {line-height:30px;height:30px;width:400px;margin:5px 0 0 0;max-width:95%;position:relative;}
 .progress-box {width:100%;height:100%;border:1px solid #cccccc;display:inline-block;}
 .progress-bar {height:100%;opacity:0.4;}

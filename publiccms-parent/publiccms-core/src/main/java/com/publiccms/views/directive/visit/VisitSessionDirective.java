@@ -22,7 +22,7 @@ import com.publiccms.logic.service.visit.VisitSessionService;
 * 参数列表
 * <ul>
 * <li><code>visitDate</code> 访问日期,【2020-01-01】
-* <li><code>sessionId</code> 会话id，两个参数都不为空时，结果返回<code>object</code>
+* <li><code>sessionId</code> 会话id,两个参数都不为空时,结果返回<code>object</code>
  * {@link com.publiccms.entities.visit.VisitSession}
 * </ul>
 * 使用示例

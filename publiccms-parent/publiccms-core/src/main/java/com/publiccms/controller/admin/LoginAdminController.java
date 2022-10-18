@@ -7,7 +7,6 @@ import java.util.UUID;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
@@ -81,7 +80,7 @@ public class LoginAdminController {
      */
     @RequestMapping(value = "login", method = RequestMethod.POST)
     public String login(@RequestAttribute SysSite site, String username, String password, String returnUrl, String encoding,
-            HttpServletRequest request, HttpSession session, HttpServletResponse response, ModelMap model) {
+            HttpServletRequest request, HttpServletResponse response, ModelMap model) {
         username = StringUtils.trim(username);
         password = StringUtils.trim(password);
         if (ControllerUtils.errorNotEmpty("username", username, model)
@@ -93,8 +92,8 @@ public class LoginAdminController {
         String ip = RequestUtils.getIpAddress(request);
         SysUser user = service.findByName(site.getId(), username);
         boolean locked = lockComponent.isLocked(site.getId(), SysLockService.ITEM_TYPE_IP_LOGIN, ip, null);
-        if (ControllerUtils.errorNotEquals("password", user, model)
-                || ControllerUtils.errorCustom("locked.ip", locked && ControllerUtils.ipNotEquals(ip, user), model)) {
+        if (ControllerUtils.errorCustom("locked.ip", locked && ControllerUtils.ipNotEquals(ip, user), model)
+                || ControllerUtils.errorNotEquals("password", user, model)) {
             model.addAttribute("username", username);
             model.addAttribute("returnUrl", returnUrl);
             lockComponent.lock(site.getId(), SysLockService.ITEM_TYPE_IP_LOGIN, ip, null, true);
@@ -103,9 +102,8 @@ public class LoginAdminController {
             return "login";
         } else {
             locked = lockComponent.isLocked(site.getId(), SysLockService.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null);
-            if (ControllerUtils.errorCustom("locked.user", locked, model)
-                    || ControllerUtils.errorNotEquals("password",
-                            UserPasswordUtils.passwordEncode(password, user.getSalt(), encoding), user.getPassword(), model)
+            if (ControllerUtils.errorCustom("locked.user", locked, model) || ControllerUtils.errorNotEquals("password",
+                    UserPasswordUtils.passwordEncode(password, null, user.getPassword(), encoding), user.getPassword(), model)
                     || verifyNotAdmin(user, model) || verifyNotEnablie(user, model)) {
                 model.addAttribute("username", username);
                 model.addAttribute("returnUrl", returnUrl);
@@ -117,13 +115,12 @@ public class LoginAdminController {
                 return "login";
             }
         }
-        lockComponent.unLock(site.getId(), SysLockService.ITEM_TYPE_IP_LOGIN, String.valueOf(user.getId()), null);
+        lockComponent.unLock(site.getId(), SysLockService.ITEM_TYPE_IP_LOGIN, ip, user.getId());
         lockComponent.unLock(site.getId(), SysLockService.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null);
 
-        ControllerUtils.setAdminToSession(session, user);
-        if (UserPasswordUtils.needUpdate(user.getSalt())) {
-            String salt = UserPasswordUtils.getSalt();
-            service.updatePassword(user.getId(), UserPasswordUtils.passwordEncode(password, salt, encoding), salt);
+        if (UserPasswordUtils.needUpdate(user.getPassword())) {
+            service.updatePassword(user.getId(),
+                    UserPasswordUtils.passwordEncode(password, UserPasswordUtils.getSalt(), null, encoding));
         }
         service.updateLoginStatus(user.getId(), ip);
         String authToken = UUID.randomUUID().toString();
@@ -131,12 +128,10 @@ public class LoginAdminController {
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
         int expiryMinutes = ConfigComponent.getInt(config.get(SiteConfigComponent.CONFIG_EXPIRY_MINUTES_MANAGER),
                 SiteConfigComponent.DEFAULT_EXPIRY_MINUTES);
+        addLoginStatus(user, authToken, request, response, expiryMinutes);
+
         sysUserTokenService.save(new SysUserToken(authToken, site.getId(), user.getId(), LogLoginService.CHANNEL_WEB_MANAGER, now,
                 DateUtils.addMinutes(now, expiryMinutes), ip));
-        StringBuilder sb = new StringBuilder();
-        sb.append(user.getId()).append(CommonConstants.getCookiesUserSplit()).append(authToken);
-        RequestUtils.addCookie(request.getContextPath(), request.getScheme(), response, CommonConstants.getCookiesAdmin(),
-                sb.toString(), expiryMinutes * 60, null);
         logLoginService.save(new LogLogin(site.getId(), username, user.getId(), ip, LogLoginService.CHANNEL_WEB_MANAGER, true,
                 CommonUtils.getDate(), null));
         String safeReturnUrl = config.get(SiteConfigComponent.CONFIG_RETURN_URL);
@@ -144,6 +139,16 @@ public class LoginAdminController {
             returnUrl = CommonConstants.getDefaultPage();
         }
         return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
+    }
+
+    public static void addLoginStatus(SysUser user, String authToken, HttpServletRequest request, HttpServletResponse response,
+            int expiryMinutes) {
+        user.setPassword(null);
+        ControllerUtils.setAdminToSession(request.getSession(), user);
+        StringBuilder sb = new StringBuilder();
+        sb.append(user.getId()).append(CommonConstants.getCookiesUserSplit()).append(authToken);
+        RequestUtils.addCookie(request.getContextPath(), request.getScheme(), response, CommonConstants.getCookiesAdmin(),
+                sb.toString(), expiryMinutes * 60, null);
     }
 
     /**
@@ -159,8 +164,8 @@ public class LoginAdminController {
      */
     @RequestMapping(value = "loginDialog", method = RequestMethod.POST)
     public String loginDialog(@RequestAttribute SysSite site, String username, String password, String encoding,
-            HttpServletRequest request, HttpServletResponse response, HttpSession session, ModelMap model) {
-        if ("login".equals(login(site, username, password, null, encoding, request, session, response, model))) {
+            HttpServletRequest request, HttpServletResponse response, ModelMap model) {
+        if ("login".equals(login(site, username, password, null, encoding, request, response, model))) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         return CommonConstants.TEMPLATE_DONE;
@@ -184,7 +189,7 @@ public class LoginAdminController {
             String password, String repassword, String encoding, HttpServletRequest request, HttpServletResponse response,
             ModelMap model) {
         SysUser user = service.getEntity(admin.getId());
-        String encodedOldPassword = UserPasswordUtils.passwordEncode(oldpassword, user.getSalt(), encoding);
+        String encodedOldPassword = UserPasswordUtils.passwordEncode(oldpassword, null, user.getPassword(), encoding);
         if (null != user.getPassword()
                 && ControllerUtils.errorNotEquals("password", user.getPassword(), encodedOldPassword, model)) {
             return CommonConstants.TEMPLATE_ERROR;
@@ -195,8 +200,8 @@ public class LoginAdminController {
             ControllerUtils.clearAdminToSession(request.getContextPath(), request.getScheme(), request.getSession(), response);
             model.addAttribute(CommonConstants.MESSAGE, "message.needReLogin");
         }
-        String salt = UserPasswordUtils.getSalt();
-        service.updatePassword(user.getId(), UserPasswordUtils.passwordEncode(password, salt, encoding), salt);
+        service.updatePassword(user.getId(),
+                UserPasswordUtils.passwordEncode(password, UserPasswordUtils.getSalt(), null, encoding));
         if (user.isWeakPassword()) {
             service.updateWeekPassword(user.getId(), false);
         }

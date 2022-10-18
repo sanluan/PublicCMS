@@ -1,6 +1,6 @@
 package com.publiccms.views.directive.api;
 
-//Generated 2015-5-10 17:54:56 by com.publiccms.common.source.SourceGenerator
+//Generated 2015-5-10 17:54:56 by com.publiccms.common.generator.SourceGenerator
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -41,7 +41,7 @@ import freemarker.template.TemplateException;
 * 参数列表
 * <ul>
 * <li><code>ids</code> 多个内容id
-* <li><code>uncheck</code> 取消审核, 【true,false】，默认为<code>false</code>
+* <li><code>uncheck</code> 取消审核, 【true,false】,默认为<code>false</code>
 * </ul>
 * <p>
 * 返回结果

@@ -1,6 +1,6 @@
 package com.publiccms.views.directive.cms;
 
-// Generated 2016-2-18 23:41:56 by com.publiccms.common.source.SourceGenerator
+// Generated 2016-2-18 23:41:56 by com.publiccms.common.generator.SourceGenerator
 
 import java.io.IOException;
 import java.util.List;
@@ -30,7 +30,7 @@ import com.publiccms.logic.service.cms.CmsContentFileService;
  * <li><code>userId</code> 用户id
  * <li><code>absoluteURL</code> url处理为绝对路径 默认为<code>true</code>
  * <li><code>orderField</code> 排序字段,【size:文件大小,clicks:点击数】,默认排序正序、id正序
- * <li><code>orderType</code> 排序类型,【asc:正序,desc:倒叙】，默认为倒叙
+ * <li><code>orderType</code> 排序类型,【asc:正序,desc:倒叙】,默认为倒叙
  * <li><code>pageIndex</code> 页码
  * <li><code>pageSize</code> 每页条数
  * </ul>

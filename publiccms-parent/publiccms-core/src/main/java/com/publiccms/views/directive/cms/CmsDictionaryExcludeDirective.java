@@ -23,9 +23,9 @@ import com.publiccms.logic.service.cms.CmsDictionaryExcludeService;
  * <ul>
  * <li><code>dictionaryId</code> 数据字典id
  * <li><code>excludeDictionaryId</code>
- * 排除的字典，结果返回<code>object</code>{@link com.publiccms.entities.cms.CmsDictionaryExclude}
+ * 排除的字典,结果返回<code>object</code>{@link com.publiccms.entities.cms.CmsDictionaryExclude}
  * <li><code>excludeDictionaryIds</code>
- * 多个排除的字典，逗号或空格间隔，当excludeDictionaryId为空时生效，结果返回<code>map</code>(id,<code>object</code>)
+ * 多个排除的字典,逗号或空格间隔,当excludeDictionaryId为空时生效,结果返回<code>map</code>(id,<code>object</code>)
  * </ul>
  * 使用示例
  * <p>

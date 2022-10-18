@@ -211,3 +211,30 @@ UPDATE `sys_module` SET `authorized_url` = 'cmsModel/save,cmsTemplate/lookup,cms
 ALTER TABLE `cms_content` 
     DROP INDEX `cms_content_disabled`,
     ADD INDEX `cms_content_disabled`(`site_id`, `disabled`, `category_id`, `model_id`);
+--2022-09-26 --
+UPDATE `sys_module` SET `authorized_url`= 'cmsContentTextHistory/use,cmsContentTextHistory/compare' WHERE `id` ='content_text_history';
+INSERT INTO `sys_module` VALUES ('file_history', 'cmsFileHistory/list', 'cmsFileHistory/use,cmsFileHistory/compare', NULL, 'template_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('file_recycle', 'cmsFileBackup/list', 'cmsFileBackup/content,cmsFileBackup/recycle', NULL, 'template_list', 0, 0);
+INSERT INTO `sys_module_lang` VALUES ('file_history', 'en', 'File modification history');
+INSERT INTO `sys_module_lang` VALUES ('file_history', 'ja', 'ファイル変更履歴');
+INSERT INTO `sys_module_lang` VALUES ('file_history', 'zh', '文件修改历史');
+INSERT INTO `sys_module_lang` VALUES ('file_recycle', 'en', 'File recycle bin');
+INSERT INTO `sys_module_lang` VALUES ('file_recycle', 'ja', 'ファイルのごみ箱');
+INSERT INTO `sys_module_lang` VALUES ('file_recycle', 'zh', '文件回收站');
+-- 2022-10-03 --
+RENAME TABLE `sys_dept_page` TO `sys_dept_item`;
+ALTER TABLE `sys_dept_item` 
+    CHANGE COLUMN `page` `item_id` varchar(100) NOT NULL COMMENT '项目id' AFTER `dept_id`,
+    ADD COLUMN `item_type` varchar(50) NOT NULL DEFAULT 'page' COMMENT '项目类型' AFTER `dept_id`,
+    DROP PRIMARY KEY,
+    ADD PRIMARY KEY (`dept_id`, `item_type`, `item_id`);
+	DROP INDEX `sys_dept_page_page`,
+	ADD INDEX `sys_dept_item_item_id`(`item_type`, `item_id`);
+INSERT INTO sys_dept_item SELECT dept_id,'config',config FROM sys_dept_config;
+INSERT INTO sys_dept_item SELECT dept_id,'category',category_id FROM sys_dept_config;
+DROP TABLE `sys_dept_category`;
+DROP TABLE `sys_dept_config`;
+-- 2022-10-14 --
+ALTER TABLE `sys_user` CHANGE COLUMN `password` `password` varchar(150) NOT NULL COMMENT '混淆码.密码' AFTER `name`;
+UPDATE `sys_user` SET `password` = CONCAT(`salt`,'.',`password`) WHERE `salt` IS NOT NULL AND `salt` != '';
+ALTER TABLE `sys_user` DROP COLUMN `salt`;

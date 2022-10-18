@@ -1,6 +1,5 @@
 package com.publiccms.controller.admin.cms;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -28,6 +27,7 @@ import com.publiccms.views.pojo.diy.CmsModule;
 import com.publiccms.views.pojo.diy.CmsRegion;
 import com.publiccms.views.pojo.diy.CmsRegionData;
 
+import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**
@@ -38,13 +38,13 @@ import jakarta.servlet.http.HttpServletRequest;
 @Controller
 @RequestMapping("cmsDiy")
 public class CmsDiyAdminController {
-    @Autowired
+    @Resource
     private CmsCategoryService categoryService;
-    @Autowired
+    @Resource
     private DiyComponent diyComponent;
-    @Autowired
+    @Resource
     protected LogOperateService logOperateService;
-    @Autowired
+    @Resource
     protected SiteComponent siteComponent;
 
     /**

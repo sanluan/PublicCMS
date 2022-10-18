@@ -6,9 +6,9 @@
         <#if a?has_content>
              <li><a class="button" href="cmsTemplate/delete?path=${(path?url)!}&navTabId=cmsTemplate/list&_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.delete_file'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i><@t.page 'button.delete'/></a></li>
     <@sys.authorized roleIds=admin.roles url='cmsPage/metadata'>
-        <@sys.deptPage deptId=admin.deptId!'' pages=path>
+        <@sys.deptItem itemType='page' deptId=admin.deptId!'' itemIds=path>
             <li><a class="button" href="cmsPage/metadata.html?path=${(path?url)!}" target="ajax" rel="cmsTemplateBox"><@t.page 'page.management'/></a></li>
-        </@sys.deptPage>
+        </@sys.deptItem>
     </@sys.authorized>
             <li><a class="button" href="cmsTemplate/content.html?path=${(path?url)!}" target="ajax" rel="cmsTemplateBox"><@t.page 'template.content'/></a></li>
         </#if>
@@ -182,7 +182,7 @@ $('.parametersBox',navTab.getCurrentPanel()).on('click','span>a',function(){
 </#if>
 </script>
 <#if a?has_content>
-        <textarea name="content" class="hide"><@tools.templateContent path=path>${(object)!}</@tools.templateContent></textarea>
+        <textarea name="content" class="hide"><@tools.fileContent path=path>${(object)!}</@tools.fileContent></textarea>
         <script>
     <#if site.useStatic&&(a.publishPath)?has_content>
             $('input[name=useStatic]',navTab.getCurrentPanel()).click();

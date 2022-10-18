@@ -228,7 +228,7 @@ public interface RenderHandler {
      * @return map value
      * @throws Exception
      */
-    public Map<?, ?> getMap(String name) throws Exception;
+    public Map<String, Object> getMap(String name) throws Exception;
 
     /**
      * @return request

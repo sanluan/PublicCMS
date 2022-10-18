@@ -704,36 +704,16 @@ CREATE TABLE `sys_dept` (
 INSERT INTO `sys_dept` VALUES ('1', '1', 'Technical department','1', null, '', '1', '1000', '1', '1', '1');
 
 -- ----------------------------
--- Table structure for sys_dept_category
+-- Table structure for sys_dept_item
 -- ----------------------------
-DROP TABLE IF EXISTS `sys_dept_category`;
-CREATE TABLE `sys_dept_category` (
+DROP TABLE IF EXISTS `sys_dept_item`;
+CREATE TABLE `sys_dept_item` (
   `dept_id` int(11) NOT NULL COMMENT '部门',
-  `category_id` int(11) NOT NULL COMMENT '分类',
-  PRIMARY KEY  (`dept_id`, `category_id`)
-) COMMENT='部门分类';
-
-
--- ----------------------------
--- Table structure for sys_dept_config
--- ----------------------------
-DROP TABLE IF EXISTS `sys_dept_config`;
-CREATE TABLE `sys_dept_config` (
-  `dept_id` int(11) NOT NULL COMMENT '部门',
-  `config` varchar(100) NOT NULL COMMENT '配置',
-  PRIMARY KEY (`dept_id`, `config`)
-) COMMENT='部门配置';
-
--- ----------------------------
--- Table structure for sys_dept_page
--- ----------------------------
-DROP TABLE IF EXISTS `sys_dept_page`;
-CREATE TABLE `sys_dept_page` (
-  `dept_id` int(11) NOT NULL COMMENT '部门',
-  `page` varchar(100) NOT NULL COMMENT '页面',
-  PRIMARY KEY  (`dept_id`, `page`),
-  KEY `sys_dept_page_page` (`page`)
-) COMMENT='部门页面';
+  `item_type` varchar(50) NOT NULL COMMENT '项目类型',
+  `item_id` varchar(100) NOT NULL COMMENT '项目',
+  PRIMARY KEY  (`dept_id`, `item_type`, `item_id`),
+  KEY `sys_dept_item_item_id` (`item_type`, `item_id`)
+) COMMENT='部门数据项';
 
 
 -- ----------------------------
@@ -901,7 +881,7 @@ INSERT INTO `sys_module` VALUES ('content_select_template', 'cmsTemplate/lookup'
 INSERT INTO `sys_module` VALUES ('content_select_user', 'sysUser/lookup', 'sysUser/lookup_list', NULL, 'content_add', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_select_vote', 'cmsVote/lookup', NULL, NULL, 'content_add', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_sort', 'cmsContent/sortParameters', 'cmsContent/sort', '', 'content_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('content_text_history', 'cmsContentTextHistory/lookup', 'cmsContentTextHistory/use', NULL, 'content_add', 0, 0);
+INSERT INTO `sys_module` VALUES ('content_text_history', 'cmsContentTextHistory/lookup', 'cmsContentTextHistory/use,cmsContentTextHistory/compare', NULL, 'content_add', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_uncheck', NULL, 'cmsContent/uncheck', '', 'content_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_view', 'cmsContent/view', NULL, '', 'content_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_vote', 'cmsVote/list', NULL, 'icon-ticket', 'content_menu', 1, 5);
@@ -919,7 +899,9 @@ INSERT INTO `sys_module` VALUES ('dictionary_list', 'cmsDictionary/list', NULL, 
 INSERT INTO `sys_module` VALUES ('diy_list', 'cmsDiy/list', 'cmsDiy/region,cmsDiy/layout,cmsDiy/module,placeTemplate/lookupPlace,cmsCategoryType/lookup', 'icon-dashboard', 'file_menu', 1, 5);
 INSERT INTO `sys_module` VALUES ('domain_config', 'sysDomain/config', 'sysDomain/saveConfig,cmsTemplate/directoryLookup,cmsTemplate/lookup', NULL, 'domain_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('domain_list', 'sysDomain/domainList', NULL, 'icon-qrcode', 'config_menu', 1, 4);
+INSERT INTO `sys_module` VALUES ('file_history', 'cmsFileHistory/list', 'cmsFileHistory/use,cmsFileHistory/compare', NULL, 'template_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('file_menu', NULL, NULL, 'icon-folder-close-alt', 'develop', 1, 1);
+INSERT INTO `sys_module` VALUES ('file_recycle', 'cmsFileBackup/list', 'cmsFileBackup/content,cmsFileBackup/recycle', NULL, 'template_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('log_login', 'log/login', 'sysUser/lookup,sysUser/lookup_list', 'icon-signin', 'log_menu', 1, 3);
 INSERT INTO `sys_module` VALUES ('log_login_delete', NULL, 'logLogin/delete', NULL, 'log_login', 0, 0);
 INSERT INTO `sys_module` VALUES ('log_menu', NULL, NULL, 'icon-list-alt', 'maintenance', 1, 3);
@@ -1311,9 +1293,15 @@ INSERT INTO `sys_module_lang` VALUES ('domain_config', 'zh', '修改');
 INSERT INTO `sys_module_lang` VALUES ('domain_list', 'en', 'Domain management');
 INSERT INTO `sys_module_lang` VALUES ('domain_list', 'ja', 'ドメイン名をバインド');
 INSERT INTO `sys_module_lang` VALUES ('domain_list', 'zh', '绑定域名');
+INSERT INTO `sys_module_lang` VALUES ('file_history', 'en', 'File modification history');
+INSERT INTO `sys_module_lang` VALUES ('file_history', 'ja', 'ファイル変更履歴');
+INSERT INTO `sys_module_lang` VALUES ('file_history', 'zh', '文件修改历史');
 INSERT INTO `sys_module_lang` VALUES ('file_menu', 'en', 'File maintenance');
 INSERT INTO `sys_module_lang` VALUES ('file_menu', 'ja', 'ファイル管理');
 INSERT INTO `sys_module_lang` VALUES ('file_menu', 'zh', '文件管理');
+INSERT INTO `sys_module_lang` VALUES ('file_recycle', 'en', 'File recycle bin');
+INSERT INTO `sys_module_lang` VALUES ('file_recycle', 'ja', 'ファイルのごみ箱');
+INSERT INTO `sys_module_lang` VALUES ('file_recycle', 'zh', '文件回收站');
 INSERT INTO `sys_module_lang` VALUES ('log_login', 'en', 'Login log');
 INSERT INTO `sys_module_lang` VALUES ('log_login', 'ja', 'ログインログ');
 INSERT INTO `sys_module_lang` VALUES ('log_login', 'zh', '登录日志');
@@ -1843,8 +1831,7 @@ CREATE TABLE `sys_user` (
   `id` bigint(20) NOT NULL auto_increment,
   `site_id` smallint(6) NOT NULL COMMENT '站点',
   `name` varchar(50) NOT NULL COMMENT '用户名',
-  `password` varchar(128) NOT NULL COMMENT '密码',
-  `salt` varchar(20) DEFAULT NULL COMMENT '混淆码,为空时则密码为md5,为10位时sha512(sha512(password)+salt)',
+  `password` varchar(150) NOT NULL COMMENT '混淆码.密码',
   `weak_password` tinyint(1) NOT NULL DEFAULT '0' COMMENT '弱密码',
   `nickname` varchar(45) NOT NULL COMMENT '昵称',
   `cover` varchar(255) default NULL COMMENT '封面',

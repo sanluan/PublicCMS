@@ -31,34 +31,35 @@ import com.publiccms.logic.service.sys.SysUserService;
 import com.publiccms.logic.service.sys.SysUserTokenService;
 
 /**
-*
-* login 登录接口
-* <p>
-* 参数列表
-* <ul>
-* <li><code>username</code> 设备唯一id
-* <li><code>password</code> 用户名
-* <li><code>encoding</code> 密码加密方式
-* <li><code>channel</code> 登录渠道
-* </ul>
-* <p>
-* 返回结果
-* <ul>
-* <li><code>result</code> 登录结果,【true,false】
-* <li><code>authToken</code> 用户登录授权
-* <li><code>expiryDate</code> 过期日期
-* <li><code>user</code> 用户信息 {@link com.publiccms.entities.sys.SysUser}
-* </ul>
-* 使用示例
-* <p>
-* <pre>
+ *
+ * login 登录接口
+ * <p>
+ * 参数列表
+ * <ul>
+ * <li><code>username</code> 设备唯一id
+ * <li><code>password</code> 用户名
+ * <li><code>encoding</code> 密码加密方式
+ * <li><code>channel</code> 登录渠道
+ * </ul>
+ * <p>
+ * 返回结果
+ * <ul>
+ * <li><code>result</code> 登录结果,【true,false】
+ * <li><code>authToken</code> 用户登录授权
+ * <li><code>expiryDate</code> 过期日期
+ * <li><code>user</code> 用户信息 {@link com.publiccms.entities.sys.SysUser}
+ * </ul>
+ * 使用示例
+ * <p>
+ * 
+ * <pre>
 &lt;script&gt;
 $.getJSON('//cms.publiccms.com/api/login?username=admin&amp;password=sha512encodingpassword&amp;encoding=sha512&amp;channel=web', function(data){
     console.log(result+","+authToken+","+user.nickname+","+expiryDate);
 });
 &lt;/script&gt;
-* </pre>
-*/
+ * </pre>
+ */
 @Component
 public class LoginDirective extends AbstractAppDirective {
 
@@ -78,13 +79,12 @@ public class LoginDirective extends AbstractAppDirective {
             }
             String ip = RequestUtils.getIpAddress(handler.getRequest());
             boolean locked = lockComponent.isLocked(site.getId(), SysLockService.ITEM_TYPE_IP_LOGIN, ip, null);
-            if (null != user && (!locked || !ControllerUtils.ipNotEquals(ip, user)) && !user.isDisabled()
-                    && user.getPassword().equals(UserPasswordUtils.passwordEncode(password, user.getSalt(), encoding))) {
-                lockComponent.unLock(site.getId(), SysLockService.ITEM_TYPE_IP_LOGIN, String.valueOf(user.getId()), null);
+            if (null != user && (!locked || !ControllerUtils.ipNotEquals(ip, user)) && !user.isDisabled() && user.getPassword()
+                    .equals(UserPasswordUtils.passwordEncode(password, null, user.getPassword(), encoding))) {
+                lockComponent.unLock(site.getId(), SysLockService.ITEM_TYPE_IP_LOGIN, ip, user.getId());
                 lockComponent.unLock(site.getId(), SysLockService.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null);
-                if (UserPasswordUtils.needUpdate(user.getSalt())) {
-                    String salt = UserPasswordUtils.getSalt();
-                    service.updatePassword(user.getId(), UserPasswordUtils.passwordEncode(password, salt, encoding), salt);
+                if (UserPasswordUtils.needUpdate(user.getPassword())) {
+                    service.updatePassword(user.getId(), UserPasswordUtils.passwordEncode(password, UserPasswordUtils.getSalt(), null, encoding));
                 }
                 service.updateLoginStatus(user.getId(), ip);
                 String authToken = UUID.randomUUID().toString();

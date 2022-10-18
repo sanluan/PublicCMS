@@ -12,8 +12,26 @@ import com.publiccms.common.tools.LanguagesUtils;
 import com.publiccms.logic.component.site.ScriptComponent;
 
 /**
- *
- * ExecuteScriptDirective
+ * executeScript 脚本执行指令
+ * 参数列表
+ * <ul>
+ * <li><code>command</code> 命令【sync.bat,sync.sh,backupdb.bat,backupdb.sh】
+ * <li><code>parameters</code> 参数数组
+ * </ul>
+ * <p>
+ * 打印执行结果
+ * <p>
+ * 使用示例
+ * <p>
+ * &lt;@tools.executeScript command='backupdb.bat'/&gt;
+ * 
+ * <pre>
+&lt;script&gt;
+ $.getJSON('//cms.publiccms.com/api/directive/tools/executeScript?command=backupdb.bat&amp;appToken=接口访问授权Token', function(data){    
+   console.log(data.id);
+ });
+ &lt;/script&gt;
+ * </pre>
  * 
  */
 @Component

@@ -1,5 +1,5 @@
 <#macro pageTree filepath=''>
-    <@tools.templateList path=filepath>
+    <@tools.fileList path=filepath>
         <#list list as a>
             <@t.merge 'pages' filepath+'/'+a.fileName/>
             <#if !a.directory><@t.merge 'paths' filepath+'/'+a.fileName/></#if>
@@ -10,7 +10,7 @@
                 <#if lock.userId?has_content><@t.merge 'userIds' lock.userId/></#if>
             </#list>
         </#if>
-        <@sys.deptPage deptId=admin.deptId!'' pages=t.pages!><#assign deptPageMap=map!/></@sys.deptPage>
+        <@sys.deptItem itemType='page' deptId=admin.deptId!'' itemIds=t.pages!><#assign deptPageMap=map!/></@sys.deptItem>
         <@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
         <#list list as a>
             <#local path=filepath+'/'+a.fileName>
@@ -31,7 +31,7 @@
         <#else>
             <li><a><@t.page 'empty_directory'/></a></li>
         </#list>
-    </@tools.templateList>
+    </@tools.fileList>
 </#macro>
 <div class="pageContent">
     <div layoutH class="leftPageContent">

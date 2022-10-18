@@ -1,9 +1,11 @@
 package com.publiccms.controller.admin.cms;
 
-import jakarta.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 import org.apache.commons.lang3.StringUtils;
-import jakarta.annotation.Resource;
+import org.apache.tools.zip.ZipOutputStream;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
@@ -21,6 +24,7 @@ import com.publiccms.entities.cms.CmsDictionaryId;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
+import com.publiccms.logic.component.site.ExportComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.cms.CmsDictionaryDataService;
 import com.publiccms.logic.service.cms.CmsDictionaryExcludeService;
@@ -29,6 +33,11 @@ import com.publiccms.logic.service.cms.CmsDictionaryService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.views.pojo.model.CmsDictionaryParameters;
+
+import jakarta.annotation.Resource;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  *
@@ -42,6 +51,8 @@ public class CmsDictionaryAdminController {
     protected LogOperateService logOperateService;
     @Resource
     protected SiteComponent siteComponent;
+    @Resource
+    protected ExportComponent exportComponent;
 
     private String[] ignoreProperties = new String[] { "id", "siteId" };
 
@@ -105,6 +116,26 @@ public class CmsDictionaryAdminController {
             }
         }
         return true;
+    }
+
+    /**
+     * @param site
+     * @param response
+     */
+    @RequestMapping("export")
+    @Csrf
+    public void export(@RequestAttribute SysSite site, HttpServletResponse response) {
+        try {
+            response.setHeader("content-disposition",
+                    "attachment;fileName=" + URLEncoder.encode(site.getName() + "_dictionary.zip", "utf-8"));
+        } catch (UnsupportedEncodingException e1) {
+        }
+        try (ServletOutputStream outputStream = response.getOutputStream();
+                ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream)) {
+            zipOutputStream.setEncoding(Constants.DEFAULT_CHARSET_NAME);
+            exportComponent.exportDictionary(site.getId(), zipOutputStream);
+        } catch (IOException e) {
+        }
     }
 
     /**

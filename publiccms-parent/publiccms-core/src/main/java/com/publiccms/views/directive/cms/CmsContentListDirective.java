@@ -1,6 +1,6 @@
 package com.publiccms.views.directive.cms;
 
-// Generated 2015-5-10 17:54:56 by com.publiccms.common.source.SourceGenerator
+// Generated 2015-5-10 17:54:56 by com.publiccms.common.generator.SourceGenerator
 
 import java.io.IOException;
 import java.util.Date;
@@ -30,7 +30,7 @@ import com.publiccms.views.pojo.query.CmsContentQuery;
  * <ul>
  * <li><code>categoryId</code> 分类id,当parentId为空时有效
  * <li><code>containChild</code> 是否包含子分类,【true,false】
- * <li><code>categoryIds</code> 多个分类id，当categoryId为空时有效
+ * <li><code>categoryIds</code> 多个分类id,当categoryId为空时有效
  * <li><code>modelId</code> 多个模型id
  * <li><code>parentId</code> 父内容id
  * <li><code>onlyUrl</code> 外链,【true,false】
@@ -40,18 +40,18 @@ import com.publiccms.views.pojo.query.CmsContentQuery;
  * <li><code>hasCover</code> 拥有封面图,【true,false】
  * <li><code>userId</code> 发布用户id
  * <li><code>startPublishDate</code> 起始发布日期,【2020-01-01 23:59:59】,【2020-01-01】
- * <li><code>endPublishDate</code> 终止发布日期，高级选项禁用时不能超过现在,【2020-01-01
+ * <li><code>endPublishDate</code> 终止发布日期,高级选项禁用时不能超过现在,【2020-01-01
  * 23:59:59】,【2020-01-01】
- * <li><code>advanced</code> 开启高级选项， 默认为<code> false</code>
- * <li><code>status</code> 高级选项:内容状态，【0:操作,1:已发布,2:待审核,3:驳回】
- * <li><code>disabled</code> 高级选项:禁用状态，默认为<code>false</code>
- * <li><code>emptyParent</code> 高级选项:父内容id是否为空，【true,false】,当parentId为空时有效
+ * <li><code>advanced</code> 开启高级选项, 默认为<code>false</code>
+ * <li><code>status</code> 高级选项:内容状态,【0:操作,1:已发布,2:待审核,3:驳回】
+ * <li><code>disabled</code> 高级选项:禁用状态,默认为<code>false</code>
+ * <li><code>emptyParent</code> 高级选项:父内容id是否为空,【true,false】,当parentId为空时有效
  * <li><code>title</code> 高级选项:标题
  * <li><code>absoluteURL</code> url处理为绝对路径 默认为<code>true</code>
  * <li><code>absoluteId</code> id处理为引用内容的ID 默认为<code>true</code>
  * <li><code>orderField</code>
  * 排序字段,【score:评分,comments:评论数,clicks:点击数,publishDate:发布日期,updateDate:更新日期,checkDate:审核日期】,默认置顶级别倒叙、发布日期按orderType排序
- * <li><code>orderType</code> 排序类型,【asc:正序,desc:倒叙】，默认为倒叙
+ * <li><code>orderType</code> 排序类型,【asc:正序,desc:倒叙】,默认为倒叙
  * <li><code>firstResult</code> 开始位置,从1开始
  * <li><code>pageIndex</code> 页码,firstResult不存在时有效
  * <li><code>pageSize</code> 每页条数

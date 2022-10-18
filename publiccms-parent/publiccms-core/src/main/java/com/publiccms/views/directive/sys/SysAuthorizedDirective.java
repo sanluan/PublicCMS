@@ -24,9 +24,9 @@ import com.publiccms.logic.service.sys.SysRoleService;
  * <ul>
  * <li><code>roleIds</code> 多个角色id
  * <li><code>url</code>
- * url,roleIds、url都存在时，结果返回<code>true</code>或<code>false</code>，表示这些角色是否拥有该url的权限
+ * url,roleIds、url都存在时,结果返回<code>true</code>或<code>false</code>,表示这些角色是否拥有该url的权限
  * <li><code>urls</code>
- * 多个url，当roleIds存在，且url为空时生效，结果返回<code>map</code>(url,<code>true</code>或<code>false</code>)
+ * 多个url,当roleIds存在,且url为空时生效,结果返回<code>map</code>(url,<code>true</code>或<code>false</code>)
  * </ul>
  * 使用示例
  * <p>

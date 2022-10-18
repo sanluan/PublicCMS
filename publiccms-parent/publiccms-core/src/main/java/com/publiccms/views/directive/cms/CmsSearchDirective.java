@@ -32,8 +32,8 @@ import com.publiccms.views.pojo.query.CmsContentSearchQuery;
  * <li><code>exclude</code> 排除词汇
  * <li><code>tagId</code> 多个标签id,多个标签时取并集结果
  * <li><code>categoryId</code> 分类id
- * <li><code>containChild</code> 包含子分类，当categoryId不为空时有效
- * <li><code>categoryIds</code> 多个分类id，当categoryId为空时有效
+ * <li><code>containChild</code> 包含子分类,当categoryId不为空时有效
+ * <li><code>categoryIds</code> 多个分类id,当categoryId为空时有效
  * <li><code>extendsValues</code>
  * 多个扩展字段值,格式：[字段编码]:字段值],例如:extendsValues='isbn:value1,unicode:value2'
  * <li><code>dictionaryValues</code>

@@ -33,7 +33,7 @@ public class ScriptComponent {
         if (CommonUtils.notEmpty(command) && ArrayUtils.contains(COMMANDS, command.toLowerCase())) {
             String dir = CommonConstants.CMS_FILEPATH + "/script";
             String[] cmdarray;
-            if ("backupDB.bat".equalsIgnoreCase(command) || "backupDB.sh".equalsIgnoreCase(command)) {
+            if ("backupdb.bat".equalsIgnoreCase(command) || "backupdb.sh".equalsIgnoreCase(command)) {
                 String databaseConfiFile = CommonConstants.CMS_FILEPATH + CmsDataSource.DATABASE_CONFIG_FILENAME;
                 Properties dbconfigProperties = CmsDataSource.loadDatabaseConfig(databaseConfiFile);
                 String userName = dbconfigProperties.getProperty("jdbc.username");

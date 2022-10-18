@@ -1,5 +1,5 @@
 <#macro templateTree filepath>
-    <@tools.taskTemplateList path=filepath>
+    <@tools.fileList type='task' path=filepath>
         <#list list as a>
             <#if !a.directory><@t.merge 'paths' filepath+'/'+a.fileName/></#if>
         </#list>
@@ -25,7 +25,7 @@
         <#else>
             <li><a><@t.page 'empty_directory'/></a></li>
         </#list>
-    </@tools.taskTemplateList>
+    </@tools.fileList>
 </#macro>
 <div class="pageContent">
     <div layoutH class="leftPageContent">

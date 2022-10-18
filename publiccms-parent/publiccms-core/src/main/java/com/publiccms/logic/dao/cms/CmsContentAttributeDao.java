@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
-// Generated 2015-5-8 16:50:23 by com.publiccms.common.source.SourceGenerator
+// Generated 2015-5-8 16:50:23 by com.publiccms.common.generator.SourceGenerator
 
 import org.springframework.stereotype.Repository;
 

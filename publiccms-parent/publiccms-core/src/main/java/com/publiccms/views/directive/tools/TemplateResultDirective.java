@@ -16,8 +16,26 @@ import com.publiccms.logic.component.template.TemplateComponent;
 import freemarker.template.TemplateException;
 
 /**
- *
- * TemplateResultDirective
+ * templateResult 模板渲染结果获取
+ * <p>
+ * 参数列表
+ * <ul>
+ * <li><code>parameters</code> 参数map
+ * <li><code>templateContent</code> 模板内容
+ * </ul>
+ * 打印渲染结果
+ * <p>
+ * 使用示例
+ * <p>
+ * &lt;@tools.templateResult templateContent='${name}' parameters={'name':'value'}/&gt;
+ * 
+ * <pre>
+&lt;script&gt;
+ $.getJSON('//cms.publiccms.com/api/directive/tools/templateResult?path=$%7Bname%7D&amp;parameters_name=value&amp;appToken=接口访问授权Token', function(data){    
+   console.log(data);
+ });
+ &lt;/script&gt;
+ * </pre>
  * 
  */
 @Component
@@ -30,8 +48,7 @@ public class TemplateResultDirective extends AbstractTemplateDirective {
             try {
                 content = "<#attempt>" + content + "<#recover>${.error!}</#attempt>";
                 Map<String, Object> model = new HashMap<>();
-                expose(handler, model);
-                model.remove("templateContent");
+                model.putAll(handler.getMap("parameters"));
                 handler.print(FreeMarkerUtils.generateStringByString(content, templateComponent.getWebConfiguration(), model));
             } catch (IOException | TemplateException e) {
                 handler.print(e.getMessage());

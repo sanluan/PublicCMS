@@ -46,9 +46,6 @@ public class SysUser implements java.io.Serializable {
     @GeneratorColumn(title = "密码")
     @JsonIgnore
     private String password;
-    @GeneratorColumn(title = "混淆码")
-    @JsonIgnore
-    private String salt;
     /**
      * weak password<p>
      * 弱密码
@@ -148,13 +145,12 @@ public class SysUser implements java.io.Serializable {
         this.loginCount = loginCount;
     }
 
-    public SysUser(short siteId, String name, String password, String salt, boolean weakPassword, String nickname, String cover,
+    public SysUser(short siteId, String name, String password, boolean weakPassword, String nickname, String cover,
             Integer deptId, int contentPermissions, String roles, String email, boolean emailChecked, boolean superuser,
             boolean disabled, Date lastLoginDate, String lastLoginIp, int loginCount, Date registeredDate) {
         this.siteId = siteId;
         this.name = name;
         this.password = password;
-        this.salt = salt;
         this.weakPassword = weakPassword;
         this.nickname = nickname;
         this.cover = cover;
@@ -201,22 +197,13 @@ public class SysUser implements java.io.Serializable {
         this.name = name;
     }
 
-    @Column(name = "password", nullable = false, length = 128)
+    @Column(name = "password", nullable = false, length = 150)
     public String getPassword() {
         return this.password;
     }
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    @Column(name = "salt", length = 20)
-    public String getSalt() {
-        return this.salt;
-    }
-
-    public void setSalt(String salt) {
-        this.salt = salt;
     }
 
     @Column(name = "weak_password", nullable = false)

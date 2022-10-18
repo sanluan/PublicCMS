@@ -43,7 +43,7 @@ import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsPlaceService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
-import com.publiccms.logic.service.sys.SysDeptPageService;
+import com.publiccms.logic.service.sys.SysDeptItemService;
 import com.publiccms.views.pojo.entities.CmsPageData;
 import com.publiccms.views.pojo.entities.CmsPageMetadata;
 import com.publiccms.views.pojo.entities.CmsPlaceMetadata;
@@ -71,7 +71,7 @@ public class CmsTemplateAdminController {
     @Resource
     private CmsPlaceService cmsPlaceService;
     @Resource
-    private SysDeptPageService sysDeptPageService;
+    private SysDeptItemService sysDeptItemService;
     @Resource
     protected LogOperateService logOperateService;
     @Resource
@@ -100,7 +100,7 @@ public class CmsTemplateAdminController {
                             new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                                     "save.web.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
                 } else {
-                    String historyFilePath = siteComponent.getTemplateHistoryFilePath(site, path);
+                    String historyFilePath = siteComponent.getTemplateHistoryFilePath(site, path, true);
                     CmsFileUtils.updateFile(filepath, historyFilePath, content);
                     if (CommonUtils.notEmpty(metadata.getCacheTime()) && 0 < metadata.getCacheTime()) {
                         templateCacheComponent.deleteCachedFile(SiteComponent.getFullTemplatePath(site, path));
@@ -146,7 +146,7 @@ public class CmsTemplateAdminController {
                                     "save.place.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
                 } else {
                     String historyFilePath = siteComponent.getTemplateHistoryFilePath(site,
-                            TemplateComponent.INCLUDE_DIRECTORY + path);
+                            TemplateComponent.INCLUDE_DIRECTORY + path, true);
                     CmsFileUtils.updateFile(filepath, historyFilePath, content);
                     logOperateService.save(
                             new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
@@ -282,7 +282,7 @@ public class CmsTemplateAdminController {
             }
             metadataComponent.deleteTemplateMetadata(filepath);
             metadataComponent.deleteTemplateData(filepath);
-            sysDeptPageService.delete(null, path);
+            sysDeptItemService.delete(null, "page", path);
             templateComponent.clearTemplateCache();
             cacheComponent.clearViewCache();
             logOperateService

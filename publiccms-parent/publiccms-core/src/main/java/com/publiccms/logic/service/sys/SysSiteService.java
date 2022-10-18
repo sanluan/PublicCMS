@@ -1,6 +1,6 @@
 package com.publiccms.logic.service.sys;
 
-// Generated 2015-7-3 16:18:22 by com.publiccms.common.source.SourceGenerator
+// Generated 2015-7-3 16:18:22 by com.publiccms.common.generator.SourceGenerator
 
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
@@ -74,8 +74,8 @@ public class SysSiteService extends BaseService<SysSite> {
         SysRole role = new SysRole(entity.getId(), roleName, true, true);
         roleService.save(role);// 初始化角色
         String salt = UserPasswordUtils.getSalt();
-        SysUser user = new SysUser(entity.getId(), userName, UserPasswordUtils.passwordEncode(password, salt, encoding), salt,
-                true, userName, null, dept.getId(), 1, role.getId().toString(), null, false, true, false, null, null, 0,
+        SysUser user = new SysUser(entity.getId(), userName, UserPasswordUtils.passwordEncode(password, salt, null, encoding), true,
+                userName, null, dept.getId(), 1, role.getId().toString(), null, false, true, false, null, null, 0,
                 CommonUtils.getDate());
         userService.save(user);// 初始化用户
         roleUserService.save(new SysRoleUser(new SysRoleUserId(role.getId(), user.getId())));// 初始化角色用户映射

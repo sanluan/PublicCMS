@@ -15,9 +15,37 @@ import com.publiccms.common.tools.RequestUtils;
 import eu.bitwalker.useragentutils.UserAgent;
 
 /**
- *
- * UserAgentDirective
+ * userAgent user agent分析指令
+ * <p>
+ * 参数列表
+ * <ul>
+ * <li><code>userAgent</code> user agent,为空时取当前请求的user agent
+ * </ul>
+ * <p>
+ * 返回结果
+ * <ul>
+ * <li><code>object.id</code>id
+ * <li><code>object.ip</code>客户端ip
+ * <li><code>object.browser</code>浏览器
+ * <li><code>object.browserGroup</code>浏览器分组
+ * <li><code>object.browserType</code>浏览器类型
+ * <li><code>object.browserVersion</code>浏览器版本
+ * <li><code>object.operatingSystem</code>操作系统
+ * <li><code>object.operatingSystemGroup</code>操作系统分组
+ * <li><code>object.deviceType</code>设备类型
+ * <li><code>object.userAgent</code>user agent
+ * </ul>
+ * 使用示例
+ * <p>
+ * &lt;@tools.userAgent&gt;${a.deviceType}&lt;/@tools.userAgent&gt;
  * 
+ * <pre>
+&lt;script&gt;
+ $.getJSON('//cms.publiccms.com/api/directive/tools/userAgent', function(data){    
+   console.log(data.deviceType);
+ });
+ &lt;/script&gt;
+ * </pre>
  */
 @Component
 public class UserAgentDirective extends AbstractTemplateDirective {
@@ -45,11 +73,6 @@ public class UserAgentDirective extends AbstractTemplateDirective {
         map.put("deviceType", ua.getOperatingSystem().getDeviceType());
         map.put("userAgent", userAgent);
         handler.put("object", map).render();
-    }
-
-    @Override
-    public boolean needAppToken() {
-        return false;
     }
 
 }

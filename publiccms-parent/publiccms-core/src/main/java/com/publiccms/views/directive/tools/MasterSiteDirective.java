@@ -9,8 +9,11 @@ import com.publiccms.common.handler.RenderHandler;
 
 /**
  *
- * MasterSiteDirective
- * 
+ * masterSite 管理站点判断指令
+ * <p>
+ * 使用示例
+ * <p>
+ * &lt;@tools.masterSite&gt;this is a master site&lt;/@tools.masterSite&gt;
  */
 @Component
 public class MasterSiteDirective extends AbstractTemplateDirective {
@@ -21,5 +24,4 @@ public class MasterSiteDirective extends AbstractTemplateDirective {
             handler.render();
         }
     }
-
 }
