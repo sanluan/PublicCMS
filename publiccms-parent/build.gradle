@@ -38,7 +38,7 @@ subprojects {
         // http://hc.apache.org/downloads.cgi
         httpclientVersion = "4.5.13"
         // http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
-        jacksonVersion = "2.14.0-rc1"
+        jacksonVersion = "2.14.0-rc2"
         // http://mvnrepository.com/artifact/org.hibernate/hibernate-core
         // http://hibernate.org/orm/downloads/
         hibernateVersion = "5.6.11.Final"
@@ -72,7 +72,7 @@ subprojects {
         // https://mvnrepository.com/artifact/com.zaxxer/HikariCP
         hikariCPVersion = "4.0.3"
         // https://mvnrepository.com/artifact/mysql/mysql-connector-java
-        mysqlVersion = "8.0.30"
+        mysqlVersion = "8.0.31"
         // https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml
         poiVersion = "5.2.3"
         // http://mvnrepository.com/artifact/commons-fileupload/commons-fileupload
