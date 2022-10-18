@@ -15,6 +15,7 @@ import org.hibernate.SessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.FactoryBean;
+import org.springframework.context.EnvironmentAware;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -48,7 +49,6 @@ import com.publiccms.logic.component.site.SiteComponent;
 
 import config.initializer.InitializationInitializer;
 import freemarker.cache.FileTemplateLoader;
-import jakarta.annotation.Resource;
 
 /**
  *
@@ -63,10 +63,12 @@ import jakarta.annotation.Resource;
 @PropertySource({ "classpath:" + CommonConstants.CMS_CONFIG_FILE })
 @EnableTransactionManagement
 @EnableScheduling
-public class ApplicationConfig {
-
-    @Resource
+public class ApplicationConfig implements EnvironmentAware{
     private Environment env;
+    @Override
+    public void setEnvironment(Environment environment) {
+        env = environment;
+    }
 
     /**
      * 序列生成器

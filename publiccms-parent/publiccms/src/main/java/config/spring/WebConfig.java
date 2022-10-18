@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import jakarta.annotation.Resource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -13,10 +12,12 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
@@ -32,6 +33,8 @@ import com.publiccms.common.view.WebFreeMarkerView;
 import com.publiccms.common.view.WebFreeMarkerViewResolver;
 import com.publiccms.logic.component.cache.CacheComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
+
+import jakarta.annotation.Resource;
 
 /**
  * 
@@ -131,5 +134,10 @@ public class WebConfig implements WebMvcConfigurer {
                 ((MappingJackson2HttpMessageConverter) converter).getObjectMapper().registerModule(module);
             }
         }
+    }
+    
+    @Override
+    public void configurePathMatch(PathMatchConfigurer configurer) {
+        configurer.setPathMatcher(new AntPathMatcher());
     }
 }
