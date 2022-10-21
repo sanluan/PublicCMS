@@ -15,10 +15,33 @@ import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 
 /**
- *
- * GetPlaceAttributeMethod
- * 
- */
+*
+* getContentAttribute 获取推荐位数据扩展数据
+* <p>
+* 参数列表
+* <ol>
+* <li>推荐位数据id
+* </ol>
+* <p>
+* 返回结果
+* <ul>
+* <li><code>attribute</code>推荐位数据扩展数据(字段编码,<code>value</code>)
+* </ul>
+* 使用示例
+* <p>
+* &lt;#assign attribute=getContentAttribute(1)/&lt;
+* <p>
+* ${(attribute.description)!}
+* <p>
+* 
+* <pre>
+&lt;script&gt;
+$.getJSON('//cms.publiccms.com/api/method/getContentAttribute?appToken=接口访问授权Token&amp;parameters=1', function(data){
+console.log(data.description);
+});
+&lt;/script&gt;
+* </pre>
+*/
 @Component
 public class GetPlaceAttributeMethod extends BaseMethod {
 

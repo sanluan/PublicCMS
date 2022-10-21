@@ -1,5 +1,6 @@
 package com.publiccms.views.method.tools;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -23,7 +24,8 @@ public class GetIpv6NumberMethod extends BaseMethod {
     public Object execute(List<TemplateModel> arguments) throws TemplateModelException {
         String string = getString(0, arguments);
         if (CommonUtils.notEmpty(string)) {
-            return IpUtils.getIpv6Number(string);
+            BigInteger number = IpUtils.getIpv6Number(string);
+            return null == number ? null : number.toString();
         }
         return null;
     }

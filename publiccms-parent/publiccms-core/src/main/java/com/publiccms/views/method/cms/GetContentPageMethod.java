@@ -16,10 +16,35 @@ import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 
 /**
- *
- * GetContentAttributesMethod
- *
- */
+*
+* getContentPage 获取正文分页结果
+* <p>
+* 参数列表
+* <ol>
+* <li>正文
+* <li>页码
+* </ol>
+* <p>
+* 返回结果
+* <ul>
+* <li><code>map</code>(id,<code>attribute</code>内容扩展数据(字段编码,<code>value</code>))
+* </ul>
+* 使用示例
+* <p>
+* &lt;#assign textPage=getContentPage(attribute.text,2)/&lt;
+* <p>
+* ${textPage.text?no_esc!}
+* current page :${textPage.page.pageIndex}
+* <p>
+* 
+* <pre>
+&lt;script&gt;
+$.getJSON('//cms.publiccms.com/api/method/getContentAttributes?parameters=正文内容&amp;parameters=2', function(data){
+console.log(data.text);
+});
+&lt;/script&gt;
+* </pre>
+*/
 @Component
 public class GetContentPageMethod extends BaseMethod {
 
