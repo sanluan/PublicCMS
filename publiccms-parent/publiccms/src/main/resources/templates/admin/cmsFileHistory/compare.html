@@ -7,6 +7,11 @@
     <div class="unit">
         <table class="compare">
             <tr>
+                <td><@t.page 'version.old'/></td>
+                <td><@t.page 'version.new'/></td>
+                <td><@t.page 'compare'/></td>
+            </tr>
+            <tr>
                 <td>
                     <textarea name="old" class="code" mode="${(!type?has_content || 'template'=type)?then('freemarkermixed',editorType[fileType]?has_content?then(editorType[fileType],'htmlmixed'))}">${a!}</textarea>
                 </td>
