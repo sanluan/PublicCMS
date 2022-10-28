@@ -11,10 +11,24 @@ import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 
 /**
- *
- * GetSleepMethod
- *
- */
+*
+* getSleep 睡眠一段时间
+* <p>
+* 参数列表
+* <ol>
+* <li><code>number</code> 睡眠时间0-60秒
+* </ol>
+* <p>
+* 返回结果
+* <ul>
+* <li><code>boolean</code> 是否睡眠
+* </ul>
+* 使用示例
+* <p>
+* ${getSleep(5)}
+* <p>
+* 
+*/
 @Component
 public class GetSleepMethod extends BaseMethod {
 

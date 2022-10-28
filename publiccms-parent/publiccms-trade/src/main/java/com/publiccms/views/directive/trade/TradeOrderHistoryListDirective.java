@@ -13,8 +13,36 @@ import com.publiccms.logic.service.trade.TradeOrderHistoryService;
 
 /**
  *
- * TradeOrderHistoryListDirective
+ * tradeOrderHistoryList 订单历史列表查询指令
+ * <p>
+ * 参数列表
+ * <ul>
+ * <li><code>orderId</code> 订单id
+ * <li><code>startCreateDate</code> 起始创建日期,【2020-01-01 23:59:59】,【2020-01-01】
+ * <li><code>endCreateDate</code> 终止创建日期,【2020-01-01 23:59:59】,【2020-01-01】
+ * <li><code>orderType</code> 排序类型,【asc:正序,desc:倒叙】,默认为创建日期倒叙
+ * <li><code>pageIndex</code> 页码
+ * <li><code>pageSize</code> 每页条数
+ * </ul>
+ * <p>
+ * 返回结果
+ * <ul>
+ * <li><code>page</code> {@link com.publiccms.common.handler.PageHandler}
+ * <li><code>page.list</code> List类型 查询结果实体列表
+ * {@link com.publiccms.entities.trade.TradeOrderHistory}
+ * </ul>
+ * 使用示例
+ * <p>
+ * &lt;@trade.orderHistoryList orderId=1 pageSize=10&gt;&lt;#list page.list as
+ * a&gt;${a.content}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@trade.orderHistoryList&gt;
  * 
+ * <pre>
+&lt;script&gt;
+$.getJSON('//cms.publiccms.com/api/directive/trade/orderHistoryList?orderId=1&amp;pageSize=10&amp;appToken=接口访问授权Token', function(data){    
+ console.log(data.totalCount);
+});
+&lt;/script&gt;
+ * </pre>
  */
 @Component
 public class TradeOrderHistoryListDirective extends AbstractTemplateDirective {

@@ -71,15 +71,15 @@ public class TradePaymentHistoryService extends BaseService<TradePaymentHistory>
      * @param paymentId
      * @param startCreateDate
      * @param endCreateDate
-     * @param paymentType
+     * @param orderType
      * @param pageIndex
      * @param pageSize
      * @return results page
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(Short siteId, Long paymentId, Date startCreateDate, Date endCreateDate, String paymentType,
+    public PageHandler getPage(Short siteId, Long paymentId, Date startCreateDate, Date endCreateDate, String orderType,
             Integer pageIndex, Integer pageSize) {
-        return dao.getPage(siteId, paymentId, startCreateDate, endCreateDate, paymentType, pageIndex, pageSize);
+        return dao.getPage(siteId, paymentId, startCreateDate, endCreateDate, orderType, pageIndex, pageSize);
     }
 
     @Autowired

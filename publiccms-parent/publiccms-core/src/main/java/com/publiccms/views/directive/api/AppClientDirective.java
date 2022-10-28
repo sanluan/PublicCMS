@@ -25,9 +25,6 @@ import com.publiccms.logic.service.sys.SysAppClientService;
 * <li><code>clientVersion</code> 客户端版本
 * </ul>
 * <p>
-* 返回结果
-* <ul>
-* </ul>
 * 使用示例
 * <p>
 * <pre>

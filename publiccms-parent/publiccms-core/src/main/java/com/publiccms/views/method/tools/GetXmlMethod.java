@@ -19,10 +19,23 @@ import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 
 /**
- *
- * GetXmlMethod
- * 
- */
+*
+* getXml 获取xml节点
+* <p>
+* 参数列表
+* <ol>
+* <li><code>string</code>xml文本
+* </ol>
+* <p>
+* 返回结果
+* <ul>
+* <li><code>xml</code> xml模型
+* </ul>
+* 使用示例
+* <p>
+* ${getXml('&lt;xml&gt;&lt;data&gt;value&lt;/data&gt;&lt;/xml&gt;').xml.data}
+* <p>
+*/
 @Component
 public class GetXmlMethod extends BaseMethod {
     private boolean uninitialized = true;

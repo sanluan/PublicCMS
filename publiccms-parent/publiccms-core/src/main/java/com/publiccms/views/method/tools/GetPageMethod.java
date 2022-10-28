@@ -16,8 +16,33 @@ import freemarker.template.TemplateModelException;
 
 /**
  *
- * GetPageMethod
- *
+ * getPage 获取分页url
+ * <p>
+ * 参数列表
+ * <ol>
+ * <li><code>url</code>
+ * <li><code>pageIndex</code>页码数字
+ * <li><code>string</code>分页参数,动态url分页参数名,为空时返回静态化url分页结果
+ * </ol>
+ * <p>
+ * 返回结果
+ * <ul>
+ * <li><code>url</code> 带分页的url
+ * </ul>
+ * 使用示例
+ * <p>
+ * ${getPage('https://www.publiccms.com/introduction/index_3.html',2)}
+ * <p>
+ * ${getPage('https://search.publiccms.com/?word=cms',2,'pageIndex')}
+ * <p>
+ * 
+ * <pre>
+&lt;script&gt;
+$.getJSON('//cms.publiccms.com/api/method/getHash?parameters=https://www.publiccms.com/introduction/index_3.html&amp;parameters=2', function(data){
+console.log(data);
+});
+&lt;/script&gt;
+ * </pre>
  */
 @Component
 public class GetPageMethod extends BaseMethod {
@@ -27,8 +52,12 @@ public class GetPageMethod extends BaseMethod {
         String url = getString(0, arguments);
         Integer pageIndex = getInteger(1, arguments);
         String pageParameter = getString(2, arguments);
-        if (CommonUtils.notEmpty(url) && CommonUtils.notEmpty(pageIndex)) {
-            return getPageUrl(url, pageIndex, pageParameter);
+        if (CommonUtils.notEmpty(url)) {
+            if (CommonUtils.notEmpty(pageIndex)) {
+                return getPageUrl(url, pageIndex, pageParameter);
+            } else {
+                return getPageUrl(url, 1, pageParameter);
+            }
         }
         return url;
     }
@@ -49,12 +78,16 @@ public class GetPageMethod extends BaseMethod {
                 }
                 StringBuilder sb = new StringBuilder(url.substring(0, splitIndex)).append("?")
                         .append(arrayToDelimitedString(parameters, "&"));
-                if (flag) {
+                if (flag && 1 != pageIndex) {
                     sb.append("&").append(pageParameter).append("=").append(pageIndex);
                 }
                 return sb.toString();
             } else {
-                return new StringBuilder(url).append("?").append(pageParameter).append("=").append(pageIndex).toString();
+                if (1 != pageIndex) {
+                    return new StringBuilder(url).append("?").append(pageParameter).append("=").append(pageIndex).toString();
+                } else {
+                    return url;
+                }
             }
         } else {
             if (url.endsWith(CommonConstants.SEPARATOR) && 1 != pageIndex) {
@@ -78,7 +111,6 @@ public class GetPageMethod extends BaseMethod {
                 } else {
                     return prefixFilePath + suffixFilePath;
                 }
-
             } else {
                 String prefixFilePath = url;
                 if (separatorIndex < underlineIndex) {

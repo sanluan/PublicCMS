@@ -51,15 +51,15 @@ public class TradeRefundService extends BaseService<TradeRefund> {
      * @param paymentId
      * @param refundUserId
      * @param status
-     * @param paymentType
+     * @param orderType
      * @param pageIndex
      * @param pageSize
      * @return results page
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(Short siteId, Long userId, Long paymentId, Long refundUserId, Integer status, String paymentType,
+    public PageHandler getPage(Short siteId, Long userId, Long paymentId, Long refundUserId, Integer status, String orderType,
             Integer pageIndex, Integer pageSize) {
-        return dao.getPage(siteId, userId, paymentId, refundUserId, status, paymentType, pageIndex, pageSize);
+        return dao.getPage(siteId, userId, paymentId, refundUserId, status, orderType, pageIndex, pageSize);
     }
 
     /**

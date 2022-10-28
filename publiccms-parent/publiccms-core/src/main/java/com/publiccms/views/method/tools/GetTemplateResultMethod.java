@@ -16,8 +16,30 @@ import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 
 /**
- * @author zhangxd
+ *
+ * getTemplateResult 获取模板解析结果
+ * <p>
+ * 参数列表
+ * <ol>
+ * <li>模板内容
+ * </ol>
+ * <p>
+ * 返回结果
+ * <ul>
+ * <li><code>string</code> 解析结果
+ * </ul>
+ * 使用示例
+ * <p>
+ * ${getTemplateResult('${.now}')}
+ * <p>
  * 
+ * <pre>
+&lt;script&gt;
+$.getJSON('//cms.publiccms.com/api/method/getDate?appToken=接口访问授权Token&amp;parameters=${.now}', function(data){
+console.log(data);
+});
+&lt;/script&gt;
+ * </pre>
  */
 @Component
 public class GetTemplateResultMethod extends BaseMethod {

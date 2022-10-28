@@ -19,8 +19,30 @@ import freemarker.template.TemplateModelException;
 
 /**
  *
- * url
+ * getUrl 获取多个推荐位数据扩展数据
+ * <p>
+ * 参数列表
+ * <ol>
+ * <li>url前缀
+ * <li><code>url</code>,当第二个为空时,将第一个参数当作url
+ * </ol>
+ * <p>
+ * 返回结果
+ * <ul>
+ * <li><code>url</code> 绝对路径的url
+ * </ul>
+ * 使用示例
+ * <p>
+ * ${getUrl(site.sitePath,'index.html')} ${getUrl('index.html')}
+ * <p>
  * 
+ * <pre>
+&lt;script&gt;
+$.getJSON('//cms.publiccms.com/api/method/getUrl?parameters=index.html', function(data){
+console.log(data);
+});
+&lt;/script&gt;
+ * </pre>
  */
 @Component
 public class GetUrlMethod extends BaseMethod {

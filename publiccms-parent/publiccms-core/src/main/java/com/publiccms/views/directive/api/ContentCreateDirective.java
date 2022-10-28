@@ -44,7 +44,7 @@ import com.publiccms.views.pojo.entities.CmsModel;
 
 /**
  *
- * ContentClickDirective
+ * contentCreate 内容创建接口
  * 
  */
 @Component

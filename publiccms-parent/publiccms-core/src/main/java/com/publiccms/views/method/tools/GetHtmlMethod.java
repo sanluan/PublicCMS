@@ -29,8 +29,35 @@ import freemarker.template.TemplateModelException;
 
 /**
  *
- * GetHtmlMethod
- *
+ * getHtml 获取远程页面文本
+ * <p>
+ * 参数列表
+ * <ol>
+ * <li><code>url</code>
+ * <li>参数,<code>map</code>类型或<code>string</code>类型,为空时以get方式请求,不为空时以post方式请求
+ * <li>请求头,<code>map</code>类型
+ * </ol>
+ * <p>
+ * 返回结果
+ * <ul>
+ * <li><code>html</code> 页面文本
+ * </ul>
+ * 使用示例
+ * <p>
+ * ${getHtml('https://www.baidu.com/')}
+ * <p>
+ * ${getHtml('https://www.baidu.com/',"body")}
+ * <p>
+ * ${getHtml('https://www.baidu.com/',{"parameters1":"value1","parameters2":"value2"},{"headers1":"value1","headers2":"value2"})}
+ * <p>
+ * 
+ * <pre>
+&lt;script&gt;
+$.getJSON('//cms.publiccms.com/api/method/getUrl?appToken=接口访问授权Token&amp;parameters=https://www.baidu.com/', function(data){
+console.log(data);
+});
+&lt;/script&gt;
+ * </pre>
  */
 @Component
 public class GetHtmlMethod extends BaseMethod {

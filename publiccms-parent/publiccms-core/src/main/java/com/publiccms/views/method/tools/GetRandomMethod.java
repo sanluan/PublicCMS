@@ -13,8 +13,31 @@ import freemarker.template.TemplateModelException;
 
 /**
  *
- * GetRandomMethod
+ * getRandom 获取随机数字
+ * <p>
+ * 参数列表
+ * <ol>
+ * <li><code>number</code>最大数字,可以为空
+ * </ol>
+ * <p>
+ * 返回结果
+ * <ul>
+ * <li><code>number</code> 随机数字
+ * </ul>
+ * 使用示例
+ * <p>
+ * ${getRandom()}
+ * <p>
+ * ${getRandom(100)}
+ * <p>
  * 
+ * <pre>
+&lt;script&gt;
+$.getJSON('//cms.publiccms.com/api/method/getRandom?parameters=100', function(data){
+console.log(data);
+});
+&lt;/script&gt;
+ * </pre>
  */
 @Component
 public class GetRandomMethod extends BaseMethod {
@@ -27,7 +50,7 @@ public class GetRandomMethod extends BaseMethod {
         }
         return CommonConstants.random.nextInt();
     }
-    
+
     @Override
     public boolean needAppToken() {
         return false;

@@ -12,8 +12,29 @@ import freemarker.template.TemplateModelException;
 
 /**
  *
- * GetHashMethod
+ * getHash 获取哈希值
+ * <p>
+ * 参数列表
+ * <ol>
+ * <li>字符串
+ * </ol>
+ * <p>
+ * 返回结果
+ * <ul>
+ * <li><code>string</code> 哈希值
+ * </ul>
+ * 使用示例
+ * <p>
+ * ${getHash('aaa')}
+ * <p>
  * 
+ * <pre>
+&lt;script&gt;
+$.getJSON('//cms.publiccms.com/api/method/getHash?parameters=aaa', function(data){
+console.log(data);
+});
+&lt;/script&gt;
+ * </pre>
  */
 @Component
 public class GetHashMethod extends BaseMethod {
@@ -26,7 +47,7 @@ public class GetHashMethod extends BaseMethod {
         }
         return null;
     }
-    
+
     @Override
     public boolean needAppToken() {
         return false;
