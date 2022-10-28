@@ -14,7 +14,7 @@ import com.publiccms.logic.service.sys.SysDeptItemService;
 
 /**
  *
- * sysDeptItemList 部门数据映射列表查询指令
+ * sysDeptItemList 部门数据授权列表查询指令
  * <p>
  * 参数列表
  * <ul>
@@ -29,16 +29,16 @@ import com.publiccms.logic.service.sys.SysDeptItemService;
  * <ul>
  * <li><code>page</code> {@link com.publiccms.common.handler.PageHandler}
  * <li><code>page.list</code> List类型 查询结果实体列表
- * {@link com.publiccms.entities.sys.SysDeptCategory}
+ * {@link com.publiccms.entities.sys.SysDeptItem}
  * </ul>
  * 使用示例
  * <p>
  * &lt;@sys.deptCategoryList deptId=1 pageSize=10&gt;&lt;#list page.list as
  * a&gt;${a.id.deptId}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.deptCategoryList&gt;
- * 
+ *
  * <pre>
  &lt;script&gt;
-  $.getJSON('//cms.publiccms.com/api/directive/sys/deptCategoryList?deptId=1&amp;pageSize=10&amp;appToken=接口访问授权Token', function(data){    
+  $.getJSON('${site.dynamicPath}api/directive/sys/deptCategoryList?deptId=1&amp;pageSize=10&amp;appToken=接口访问授权Token', function(data){
     console.log(data.totalCount);
   });
   &lt;/script&gt;

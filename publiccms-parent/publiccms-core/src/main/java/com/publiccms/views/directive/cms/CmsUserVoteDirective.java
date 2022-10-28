@@ -37,7 +37,7 @@ import com.publiccms.logic.service.cms.CmsUserVoteService;
 * 
 * <pre>
 &lt;script&gt;
-$.getJSON('//cms.publiccms.com/api/directive/cms/userVote?id=1', function(data){    
+$.getJSON('${site.dynamicPath}api/directive/cms/userVote?id=1', function(data){    
   console.log(data.itemId);
 });
 &lt;/script&gt;

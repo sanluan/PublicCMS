@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 import com.publiccms.common.handler.RenderHandler;
 
 /**
- * 
- * disk PublicCMS磁盘空间与路径指令
+ *
+ * disk 磁盘空间与路径指令
 * <p>
 * 返回结果
 * <ul>
@@ -22,10 +22,10 @@ import com.publiccms.common.handler.RenderHandler;
 * 使用示例
 * <p>
 * &lt;@tools.disk&gt;${freeSpace}&lt;/@tools.disk&gt;
-* 
+*
 * <pre>
 &lt;script&gt;
-$.getJSON('//cms.publiccms.com/api/directive/tools/disk?appToken=接口访问授权Token', function(data){    
+$.getJSON('${site.dynamicPath}api/directive/tools/disk?appToken=接口访问授权Token', function(data){
  console.log(data);
 });
 &lt;/script&gt;

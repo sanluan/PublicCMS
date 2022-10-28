@@ -44,16 +44,16 @@ import freemarker.template.TemplateModelException;
  * </ul>
  * 使用示例
  * <p>
- * ${getHtml('https://www.baidu.com/')}
+ * ${getHtml('https://www.publiccms.com/')}
  * <p>
- * ${getHtml('https://www.baidu.com/',"body")}
+ * ${getHtml('https://www.publiccms.com/',"body")}
  * <p>
- * ${getHtml('https://www.baidu.com/',{"parameters1":"value1","parameters2":"value2"},{"headers1":"value1","headers2":"value2"})}
+ * ${getHtml('https://www.publiccms.com/',{"parameters1":"value1","parameters2":"value2"},{"headers1":"value1","headers2":"value2"})}
  * <p>
  * 
  * <pre>
 &lt;script&gt;
-$.getJSON('//cms.publiccms.com/api/method/getUrl?appToken=接口访问授权Token&amp;parameters=https://www.baidu.com/', function(data){
+$.getJSON('${site.dynamicPath}api/method/getHtml?appToken=接口访问授权Token&amp;parameters=https://www.publiccms.com/', function(data){
 console.log(data);
 });
 &lt;/script&gt;

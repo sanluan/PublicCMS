@@ -19,7 +19,7 @@ import freemarker.template.TemplateModelException;
 
 /**
  *
- * getUrl 获取多个推荐位数据扩展数据
+ * getUrl 获取url绝对路径
  * <p>
  * 参数列表
  * <ol>
@@ -38,7 +38,7 @@ import freemarker.template.TemplateModelException;
  * 
  * <pre>
 &lt;script&gt;
-$.getJSON('//cms.publiccms.com/api/method/getUrl?parameters=index.html', function(data){
+$.getJSON('${site.dynamicPath}api/method/getUrl?parameters=index.html', function(data){
 console.log(data);
 });
 &lt;/script&gt;

@@ -34,7 +34,7 @@ import com.publiccms.logic.service.cms.CmsDictionaryDataService;
 * 
 * <pre>
 *  &lt;script&gt;
-   $.getJSON('//cms.publiccms.com/api/directive/cms/dictionaryData?dictionaryId=data&amp;value=1', function(data){    
+   $.getJSON('${site.dynamicPath}api/directive/cms/dictionaryData?dictionaryId=data&amp;value=1', function(data){    
      console.log(data.text);
    });
    &lt;/script&gt;

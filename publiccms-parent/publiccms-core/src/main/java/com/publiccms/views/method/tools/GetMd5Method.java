@@ -31,7 +31,7 @@ import freemarker.template.TemplateModelException;
  * 
  * <pre>
 &lt;script&gt;
-$.getJSON('//cms.publiccms.com/api/method/getMd5?parameters=aaa', function(data){
+$.getJSON('${site.dynamicPath}api/method/getMd5?parameters=aaa', function(data){
 console.log(data);
 });
 &lt;/script&gt;

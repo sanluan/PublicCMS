@@ -37,7 +37,7 @@ import com.publiccms.common.handler.RenderHandler;
  * 
  * <pre>
 &lt;script&gt;
- $.getJSON('//cms.publiccms.com/api/directive/tools/systemProperties?appToken=接口访问授权Token', function(data){    
+ $.getJSON('${site.dynamicPath}api/directive/tools/systemProperties?appToken=接口访问授权Token', function(data){    
    console.log(data['java.version']);
  });
  &lt;/script&gt;

@@ -38,7 +38,7 @@ import freemarker.template.TemplateModelException;
 * 
 * <pre>
 &lt;script&gt;
-$.getJSON('//cms.publiccms.com/api/method/getCategoryAttributes?parameters=1,2,3,4', function(data){
+$.getJSON('${site.dynamicPath}api/method/getCategoryAttributes?parameters=1,2,3,4', function(data){
 console.log(data);
 });
 &lt;/script&gt;

@@ -33,7 +33,7 @@ import com.publiccms.views.pojo.entities.CmsModel;
  * 
  * <pre>
   &lt;script&gt;
-   $.getJSON('//cms.publiccms.com/api/directive/cms/model?id=article', function(data){    
+   $.getJSON('${site.dynamicPath}api/directive/cms/model?id=article', function(data){    
      console.log(data.name);
    });
    &lt;/script&gt;

@@ -41,7 +41,7 @@ import eu.bitwalker.useragentutils.UserAgent;
  * 
  * <pre>
 &lt;script&gt;
- $.getJSON('//cms.publiccms.com/api/directive/tools/userAgent', function(data){    
+ $.getJSON('${site.dynamicPath}api/directive/tools/userAgent', function(data){    
    console.log(data.deviceType);
  });
  &lt;/script&gt;

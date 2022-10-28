@@ -13,7 +13,7 @@ import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CmsFileUtils;
 
 /**
- * templateSearchList 模板文件搜索列表获取
+ * templateSearchList 模板文件搜索列表指令
  * <p>
  * 参数列表
  * <ul>
@@ -33,7 +33,7 @@ import com.publiccms.common.tools.CmsFileUtils;
  * 
  * <pre>
 &lt;script&gt;
- $.getJSON('//cms.publiccms.com/api/directive/tools/templateSearchList?path=/&amp;word=script&amp;appToken=接口访问授权Token', function(data){    
+ $.getJSON('${site.dynamicPath}api/directive/tools/templateSearchList?path=/&amp;word=script&amp;appToken=接口访问授权Token', function(data){    
    console.log(data);
  });
  &lt;/script&gt;

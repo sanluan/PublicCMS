@@ -35,7 +35,7 @@ import com.publiccms.logic.service.visit.VisitHistoryService;
  * 
  * <pre>
  &lt;script&gt;
-  $.getJSON('//cms.publiccms.com/api/directive/visit/history?id=1&amp;appToken=接口访问授权Token', function(data){    
+  $.getJSON('${site.dynamicPath}api/directive/visit/history?id=1&amp;appToken=接口访问授权Token', function(data){    
     console.log(data.title);
   });
   &lt;/script&gt;

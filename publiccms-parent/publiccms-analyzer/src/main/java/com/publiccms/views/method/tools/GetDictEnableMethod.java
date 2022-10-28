@@ -26,7 +26,7 @@ import freemarker.template.TemplateModelException;
 * 
 * <pre>
 &lt;script&gt;
-$.getJSON('//cms.publiccms.com/api/method/getDictEnable', function(data){
+$.getJSON('${site.dynamicPath}api/method/getDictEnable', function(data){
 console.log(data);
 });
 &lt;/script&gt;

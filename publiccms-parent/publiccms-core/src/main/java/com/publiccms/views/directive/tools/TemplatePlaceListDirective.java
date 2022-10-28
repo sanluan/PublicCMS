@@ -24,7 +24,7 @@ import com.publiccms.views.pojo.diy.CmsModuleData;
 import com.publiccms.views.pojo.diy.CmsRegionData;
 
 /**
- * templatePlaceList 模板文件页面片段列表获取
+ * templatePlaceList 模板文件页面片段列表获取指令
  * <p>
  * 参数列表
  * <ul>
@@ -42,7 +42,7 @@ import com.publiccms.views.pojo.diy.CmsRegionData;
  * 
  * <pre>
 &lt;script&gt;
- $.getJSON('//cms.publiccms.com/api/directive/tools/templatePlaceList?path=index.html&amp;appToken=接口访问授权Token', function(data){    
+ $.getJSON('${site.dynamicPath}api/directive/tools/templatePlaceList?path=index.html&amp;appToken=接口访问授权Token', function(data){    
    console.log(data);
  });
  &lt;/script&gt;

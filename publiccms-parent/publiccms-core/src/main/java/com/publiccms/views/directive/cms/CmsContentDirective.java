@@ -42,7 +42,7 @@ import com.publiccms.views.pojo.entities.ClickStatistics;
 * 
 * <pre>
 *  &lt;script&gt;
-   $.getJSON('//cms.publiccms.com/api/directive/cms/content?id=1', function(data){    
+   $.getJSON('${site.dynamicPath}api/directive/cms/content?id=1', function(data){    
      console.log(data.title);
    });
    &lt;/script&gt;

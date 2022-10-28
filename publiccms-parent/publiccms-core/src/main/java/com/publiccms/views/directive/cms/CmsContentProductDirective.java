@@ -37,7 +37,7 @@ import com.publiccms.logic.service.cms.CmsContentProductService;
 * 
 * <pre>
 *  &lt;script&gt;
-   $.getJSON('//cms.publiccms.com/api/directive/cms/contentProduct?id=1', function(data){    
+   $.getJSON('${site.dynamicPath}api/directive/cms/contentProduct?id=1', function(data){    
      console.log(data.title);
    });
    &lt;/script&gt;

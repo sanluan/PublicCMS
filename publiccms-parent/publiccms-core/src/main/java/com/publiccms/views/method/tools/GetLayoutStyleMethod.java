@@ -29,12 +29,12 @@ import freemarker.template.TemplateModelException;
 * </ul>
 * 使用示例
 * <p>
-* ${getIpv6Number('&#47;&#42; selecter &#42;&#47;','.diy-layout')}
+* ${getLayoutStyle('&#47;&#42; selecter &#42;&#47;','.diy-layout')}
 * <p>
 * 
 * <pre>
 &lt;script&gt;
-$.getJSON('//cms.publiccms.com/api/method/getUrl?parameters=&#47;&#42; selecter &#42;&#47;&amp;parameters=.diy-layout', function(data){
+$.getJSON('${site.dynamicPath}api/method/getLayoutStyle?parameters=&#47;&#42; selecter &#42;&#47;&amp;parameters=.diy-layout', function(data){
 console.log(data);
 });
 &lt;/script&gt;

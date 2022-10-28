@@ -40,7 +40,7 @@ import com.publiccms.logic.service.cms.CmsUserSurveyService;
 * 
 * <pre>
 &lt;script&gt;
-$.getJSON('//cms.publiccms.com/api/directive/cms/userSurvey?id=1&amp;appToken=接口访问授权Token', function(data){    
+$.getJSON('${site.dynamicPath}api/directive/cms/userSurvey?id=1&amp;appToken=接口访问授权Token', function(data){    
   console.log(data.score);
 });
 &lt;/script&gt;

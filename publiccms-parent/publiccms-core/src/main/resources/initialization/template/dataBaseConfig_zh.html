@@ -1,0 +1,8 @@
+<#if message?has_content&&'success'=message>
+    <h3>数据配置</h3>
+    <#include "install_form.html"/>
+<#else>
+    <h3>数据库信息配置错误</h3>
+    <p class="error">${error!}</p>
+    <p><a href="./">重新配置</a></p>
+</#if>

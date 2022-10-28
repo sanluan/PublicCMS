@@ -29,7 +29,7 @@ import com.publiccms.logic.service.sys.SysAppClientService;
 * <p>
 * <pre>
 &lt;script&gt;
-$.getJSON('//cms.publiccms.com/api/appClient?uuid=1&amp;clientVersion=1.0&amp;appToken=接口访问授权Token', function(data){
+$.getJSON('${site.dynamicPath}api/appClient?uuid=1&amp;clientVersion=1.0&amp;appToken=接口访问授权Token', function(data){
 });
 &lt;/script&gt;
 * </pre>

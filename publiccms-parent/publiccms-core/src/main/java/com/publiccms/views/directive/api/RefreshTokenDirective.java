@@ -33,7 +33,7 @@ import com.publiccms.logic.service.sys.SysAppTokenService;
 * <p>
 * <pre>
 &lt;script&gt;
-$.getJSON('//cms.publiccms.com/api/login?appToken=接口访问授权Token', function(data){
+$.getJSON('${site.dynamicPath}api/login?appToken=接口访问授权Token', function(data){
     console.log(appToken+","+expiryDate);
 });
 &lt;/script&gt;

@@ -32,7 +32,7 @@ import com.publiccms.logic.service.cms.CmsDictionaryService;
 * 
 * <pre>
 *  &lt;script&gt;
-   $.getJSON('//cms.publiccms.com/api/directive/cms/dictionary?dictionaryId=data&amp;value=1', function(data){    
+   $.getJSON('${site.dynamicPath}api/directive/cms/dictionary?dictionaryId=data&amp;value=1', function(data){    
      console.log(data.name);
    });
    &lt;/script&gt;

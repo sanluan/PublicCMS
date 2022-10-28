@@ -43,7 +43,7 @@ import com.publiccms.logic.service.cms.CmsCategoryService;
  * 
  * <pre>
    &lt;script&gt;
-    $.getJSON('//cms.publiccms.com/api/directive/cms/category?id=1', function(data){    
+    $.getJSON('${site.dynamicPath}api/directive/cms/category?id=1', function(data){    
       console.log(data.name);
     });
     &lt;/script&gt;

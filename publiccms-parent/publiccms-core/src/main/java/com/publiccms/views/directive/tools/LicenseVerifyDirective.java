@@ -30,7 +30,7 @@ import com.publiccms.common.tools.VerificationUtils;
 * 
 * <pre>
 &lt;script&gt;
-$.getJSON('//cms.publiccms.com/api/directive/tools/licenseVerify?licenseData=content', function(data){    
+$.getJSON('${site.dynamicPath}api/directive/tools/licenseVerify?licenseData=content', function(data){    
  console.log(data);
 });
 &lt;/script&gt;

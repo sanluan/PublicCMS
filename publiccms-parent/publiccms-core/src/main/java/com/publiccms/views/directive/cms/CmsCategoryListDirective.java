@@ -47,7 +47,7 @@ import com.publiccms.views.pojo.query.CmsCategoryQuery;
  * 
  * <pre>
    &lt;script&gt;
-    $.getJSON('//cms.publiccms.com/api/directive/cms/categoryList?pageSize=10', function(data){    
+    $.getJSON('${site.dynamicPath}api/directive/cms/categoryList?pageSize=10', function(data){    
       console.log(data.totalCount);
     });
     &lt;/script&gt;

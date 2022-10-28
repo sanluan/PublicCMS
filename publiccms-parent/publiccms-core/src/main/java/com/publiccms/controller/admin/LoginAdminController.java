@@ -73,7 +73,6 @@ public class LoginAdminController {
      * @param returnUrl
      * @param encoding
      * @param request
-     * @param session
      * @param response
      * @param model
      * @return view name
@@ -157,7 +156,6 @@ public class LoginAdminController {
      * @param password
      * @param encoding
      * @param request
-     * @param session
      * @param response
      * @param model
      * @return view name

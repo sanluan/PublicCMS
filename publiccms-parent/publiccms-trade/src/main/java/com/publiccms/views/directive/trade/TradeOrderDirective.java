@@ -35,7 +35,7 @@ import com.publiccms.common.handler.RenderHandler;
 * 
 * <pre>
  &lt;script&gt;
-  $.getJSON('//cms.publiccms.com/api/directive/trade/order?id=1&amp;appToken=接口访问授权Token', function(data){    
+  $.getJSON('${site.dynamicPath}api/directive/trade/order?id=1&amp;appToken=接口访问授权Token', function(data){    
     console.log(data.title);
   });
   &lt;/script&gt;

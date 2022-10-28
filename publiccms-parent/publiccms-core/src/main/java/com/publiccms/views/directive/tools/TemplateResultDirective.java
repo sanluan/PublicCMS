@@ -16,7 +16,7 @@ import com.publiccms.logic.component.template.TemplateComponent;
 import freemarker.template.TemplateException;
 
 /**
- * templateResult 模板渲染结果获取
+ * templateResult 模板渲染结果指令
  * <p>
  * 参数列表
  * <ul>
@@ -31,7 +31,7 @@ import freemarker.template.TemplateException;
  * 
  * <pre>
 &lt;script&gt;
- $.getJSON('//cms.publiccms.com/api/directive/tools/templateResult?path=$%7Bname%7D&amp;parameters_name=value&amp;appToken=接口访问授权Token', function(data){    
+ $.getJSON('${site.dynamicPath}api/directive/tools/templateResult?path=$%7Bname%7D&amp;parameters_name=value&amp;appToken=接口访问授权Token', function(data){    
    console.log(data);
  });
  &lt;/script&gt;

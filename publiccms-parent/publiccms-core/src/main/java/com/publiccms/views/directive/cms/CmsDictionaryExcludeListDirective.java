@@ -36,7 +36,7 @@ import com.publiccms.logic.service.cms.CmsDictionaryExcludeService;
 *
 * <pre>
 &lt;script&gt;
-$.getJSON('//cms.publiccms.com/api/directive/cms/dictionaryExcludeList?dictionaryId=1&amp;parentValue=text', function(data){
+$.getJSON('${site.dynamicPath}api/directive/cms/dictionaryExcludeList?dictionaryId=1&amp;parentValue=text', function(data){
   console.log(data);
 });
 &lt;/script&gt;

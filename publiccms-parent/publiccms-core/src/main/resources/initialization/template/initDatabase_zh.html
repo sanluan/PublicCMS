@@ -1,0 +1,11 @@
+<#if message?has_content&&'success'=message>
+    <h3>数据库初始化完毕</h3>
+    <p style="color:#FF0000">恭喜，PublicCMS已安装完毕，<a href="../">点击此处进入主页</a></p>
+<#else>
+    <h3>数据库初始化失败</h3>
+    <p class="error">${error!}</p>
+    <p><a href="./">重新配置</a></p>
+    <div>
+        <pre>${history!}</pre>
+    </div>
+</#if>

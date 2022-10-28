@@ -27,7 +27,7 @@ import freemarker.template.TemplateModelException;
 * 
 * <pre>
 &lt;script&gt;
-$.getJSON('//cms.publiccms.com/api/method/getLicenseData, function(data){
+$.getJSON('${site.dynamicPath}api/method/getLicenseData, function(data){
 console.log(data);
 });
 &lt;/script&gt;

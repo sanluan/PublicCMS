@@ -108,11 +108,16 @@ public class IndexController {
      * 页面请求统一分发
      * 
      * @param site
+     *            当前站点
      * @param body
+     *            消息体
      * @param request
+     *            请求
      * @param response
+     *            响应
      * @param model
-     * @return view name
+     *            模型
+     * @return view name 视图名
      */
     @RequestMapping({ CommonConstants.SEPARATOR, "/**" })
     public String page(@RequestAttribute SysSite site, @RequestBody(required = false) String body, HttpServletRequest request,

@@ -32,7 +32,7 @@ import com.publiccms.common.handler.PageHandler;
  * <ul>
  * <li><code>page</code> {@link com.publiccms.common.handler.PageHandler}
  * <li><code>page.list</code> List类型 查询结果实体列表
- * {@link com.publiccms.entities.trade.TraOrder}
+ * {@link com.publiccms.entities.trade.TradeOrder}
  * </ul>
  * 使用示例
  * <p>
@@ -41,7 +41,7 @@ import com.publiccms.common.handler.PageHandler;
  * 
  * <pre>
 &lt;script&gt;
-$.getJSON('//cms.publiccms.com/api/directive/trade/orderList?pageSize=10&amp;authToken=用户登录Token&amp;authUserId=用户id', function(data){    
+$.getJSON('${site.dynamicPath}api/directive/trade/orderList?pageSize=10&amp;authToken=用户登录Token&amp;authUserId=用户id', function(data){    
  console.log(data.totalCount);
 });
 &lt;/script&gt;

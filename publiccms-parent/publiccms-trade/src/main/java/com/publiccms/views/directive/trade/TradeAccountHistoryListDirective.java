@@ -40,7 +40,7 @@ import com.publiccms.common.handler.PageHandler;
  * 
  * <pre>
   &lt;script&gt;
-   $.getJSON('//cms.publiccms.com/api/directive/trade/accountHistoryList?authToken=用户登录Token&amp;authUserId=用户id', function(data){    
+   $.getJSON('${site.dynamicPath}api/directive/trade/accountHistoryList?authToken=用户登录Token&amp;authUserId=用户id', function(data){    
      console.log(data.totalCount);
    });
    &lt;/script&gt;

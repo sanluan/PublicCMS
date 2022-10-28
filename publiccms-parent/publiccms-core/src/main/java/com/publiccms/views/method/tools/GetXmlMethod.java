@@ -24,7 +24,7 @@ import freemarker.template.TemplateModelException;
 * <p>
 * 参数列表
 * <ol>
-* <li><code>string</code>xml文本
+* <li><code>string</code> xml文本
 * </ol>
 * <p>
 * 返回结果

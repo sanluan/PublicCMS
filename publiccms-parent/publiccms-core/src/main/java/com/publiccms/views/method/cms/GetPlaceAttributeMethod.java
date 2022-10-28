@@ -16,7 +16,7 @@ import freemarker.template.TemplateModelException;
 
 /**
 *
-* getContentAttribute 获取推荐位数据扩展数据
+* getPlaceAttribute 获取推荐位数据扩展数据
 * <p>
 * 参数列表
 * <ol>
@@ -33,10 +33,10 @@ import freemarker.template.TemplateModelException;
 * <p>
 * ${(attribute.description)!}
 * <p>
-* 
+*
 * <pre>
 &lt;script&gt;
-$.getJSON('//cms.publiccms.com/api/method/getContentAttribute?appToken=接口访问授权Token&amp;parameters=1', function(data){
+$.getJSON('${site.dynamicPath}api/method/getContentAttribute?appToken=接口访问授权Token&amp;parameters=1', function(data){
 console.log(data.description);
 });
 &lt;/script&gt;
@@ -56,7 +56,7 @@ public class GetPlaceAttributeMethod extends BaseMethod {
         }
         return null;
     }
-    
+
     @Override
     public boolean needAppToken() {
         return true;
@@ -69,5 +69,5 @@ public class GetPlaceAttributeMethod extends BaseMethod {
 
     @Autowired
     private CmsPlaceAttributeService service;
-    
+
 }

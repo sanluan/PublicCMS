@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="utf-8" />
-<title>PublicCMS 安装 - 数据库信息配置</title>
+<title>PublicCMS install</title>
 <meta http-equiv="pragma" content="no-cache">
 <meta http-equiv="cache-control" content="no-cache">
 <meta http-equiv="expires" content="0">
@@ -16,9 +16,9 @@ body {font-size: 14px;}
 .install .header {height: 65px;line-height: 65px;background-color: #6999ec;border-bottom: 2px solid lightgray;}
 .install .header h1 {font-size: 20px;padding-left: 10px;float: left;margin: 0px;color: #ffffff;}
 .install .header div {float: right;margin-right: 10px;font-size: 13px;color: lightgray;}
-.install .box-page {height: 430px;}
-.install .box-page .page-content {height: 400px;overflow: auto;overflow-x: hidden;padding:0 10px;border: 1px solid #6999ec;border-radius: 4px;}
-.install .box-page .page-content .content-box{width:400px;margin:0 auto;}
+.install .box-page {height: 450px;}
+.install .box-page .page-content {height: 420px;overflow: auto;overflow-x: hidden;padding:0 10px;border: 1px solid #6999ec;border-radius: 4px;}
+.install .box-page .page-content .content-box{width:420px;margin:0 auto;}
 .install .box-page .page-content form .wrapper{line-height: 35px;margin-top:5px;}
 .install .box-page .page-content form .wrapper span{color: #6999ec;}
 .install .box-page .page-content form label{width:140px;margin-right: 10px;}
@@ -41,44 +41,44 @@ select {
 <body class="install">
     <div class="box">
         <div class="header">
-            <h1>欢迎使用 PublicCMS</h1>
+            <h1>Welcome to PublicCMS</h1>
             <div>${currentVersion}</div>
         </div>
         <div class="box-page page-policy">
             <div class="page-content">
                 <pre>
-                    <p style="text-align: center;">======= PublicCMS ${currentVersion} 授权许可协议 =======</p>
+                    <p style="text-align: center;">======= PublicCMS ${currentVersion} License =======</p>
 <#include "license.html"/>
                 </pre>
             </div>
 
             <div class="checkbox">
-                <input type="checkbox">我已阅读并同意此协议
+                <input type="checkbox">I have read and agree to this agreement
             </div>
         </div>
 
         <div class="box-page hide page-operate">
             <div class="page-content">
                 <div class="content-box">
-                    <h2>系统配置</h2>
+                    <h2>Database configuration</h2>
                     <form action="./" method="post">
                         <input type="hidden" name="step" value="dataBaseConfig"/>
-                        <div class="wrapper"><label>数据库地址</label><input type="text" maxlength="100" name="host" value="127.0.0.1"/></div>
-                        <div class="wrapper"><label>数据库端口</label><input type="number" maxlength="10" name="port" value="${defaultPort}"/></div>
-                        <div class="wrapper"><label>数据库名称</label><input type="text" maxlength="50" name="database" value="publiccms"/></div>
-                        <div class="wrapper"><span>请输入已有的数据库名称，字符集编码推荐使用utf8或utf8mb4，CMS程序不会自动创建数据库</span></div>
-                        <div class="wrapper"><label>数据库用户</label><input type="text" maxlength="50" name="username"/></div>
-                        <div class="wrapper"><label>数据库密码</label><input type="text" maxlength="50" name="password"/></div>
-                        <div class="wrapper"><label>数据库时区</label><input type="text" maxlength="10" name="timeZone" value="${.now?string('X')}"/></div>
-                        <div class="wrapper"><span>数据库配置文件将保存至您的数据目录：${dataFilePath}</span></div>
+                        <div class="wrapper"><label>Database address</label><input type="text" maxlength="100" name="host" value="127.0.0.1"/></div>
+                        <div class="wrapper"><label>Database port</label><input type="number" maxlength="10" name="port" value="${defaultPort}"/></div>
+                        <div class="wrapper"><label>Database name</label><input type="text" maxlength="50" name="database" value="publiccms"/></div>
+                        <div class="wrapper"><span>Please enter the existing database name, the character set encoding is recommended to use utf8 or utf8mb4, the CMS program will not automatically create the database</span></div>
+                        <div class="wrapper"><label>Database user</label><input type="text" maxlength="50" name="username"/></div>
+                        <div class="wrapper"><label>Database password</label><input type="text" maxlength="50" name="password"/></div>
+                        <div class="wrapper"><label>Database timezone</label><input type="text" maxlength="10" name="timeZone" value="${.now?string('X')}"/></div>
+                        <div class="wrapper"><span>The database configuration file will be saved to your data directory:${dataFilePath}</span></div>
                     </form>
                 </div>
             </div>
         </div>
         
         <div class="buttons">
-            <a href="./" class="hide">重新配置</a>
-            <button class="next">下一步</button>
+            <a href="./" class="hide">Reconfigure</a>
+            <button class="next">Next Step</button>
         </div>
         
         <div class="copyright" style="font-size:12px;text-align:center;">

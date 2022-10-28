@@ -35,7 +35,7 @@ import freemarker.template.TemplateModelException;
  * 
  * <pre>
 &lt;script&gt;
-$.getJSON('//cms.publiccms.com/api/method/getDate?parameters=thisSunday&amp;parameters=2020-01-01', function(data){
+$.getJSON('${site.dynamicPath}api/method/getDate?parameters=thisSunday&amp;parameters=2020-01-01', function(data){
 console.log(data);
 });
 &lt;/script&gt;

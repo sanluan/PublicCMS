@@ -39,7 +39,7 @@ import com.publiccms.logic.service.sys.SysLockService;
  * 
  * <pre>
 &lt;script&gt;
-$.getJSON('//cms.publiccms.com/api/directive/sys/lock?id=1', function(data){    
+$.getJSON('${site.dynamicPath}api/directive/sys/lock?id=1', function(data){    
   console.log(data.count);
 });
 &lt;/script&gt;

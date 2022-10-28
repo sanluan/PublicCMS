@@ -31,7 +31,7 @@ import freemarker.template.TemplateModelException;
  * 
  * <pre>
 &lt;script&gt;
-$.getJSON('//cms.publiccms.com/api/method/getUrl?parameters=127.0.0.1', function(data){
+$.getJSON('${site.dynamicPath}api/method/getIpv4Number?parameters=127.0.0.1', function(data){
 console.log(data);
 });
 &lt;/script&gt;

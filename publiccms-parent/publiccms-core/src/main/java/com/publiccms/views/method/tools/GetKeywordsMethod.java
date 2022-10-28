@@ -31,7 +31,7 @@ import freemarker.template.TemplateModelException;
 * 
 * <pre>
 &lt;script&gt;
-$.getJSON('//cms.publiccms.com/api/method/getKeywords?parameters=这是一段话', function(data){
+$.getJSON('${site.dynamicPath}api/method/getKeywords?parameters=这是一段话', function(data){
 console.log(data);
 });
 &lt;/script&gt;

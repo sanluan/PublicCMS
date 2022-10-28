@@ -15,12 +15,11 @@ import com.publiccms.logic.component.cache.CacheComponent;
 *
 * clearCache 缓存清理接口
 * <p>
-* </ul>
 * 使用示例
 * <p>
 * <pre>
   &lt;script&gt;
-   $.getJSON('//cms.publiccms.com/api/clearCache&amp;appToken=接口访问授权Token', function(data){    
+   $.getJSON('${site.dynamicPath}api/clearCache&amp;appToken=接口访问授权Token', function(data){    
      console.log("ok");
    });
    &lt;/script&gt;

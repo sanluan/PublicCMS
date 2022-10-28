@@ -33,7 +33,7 @@ import freemarker.template.TemplateModelException;
  * 
  * <pre>
 &lt;script&gt;
-$.getJSON('//cms.publiccms.com/api/method/getRandom?parameters=100', function(data){
+$.getJSON('${site.dynamicPath}api/method/getRandom?parameters=100', function(data){
 console.log(data);
 });
 &lt;/script&gt;

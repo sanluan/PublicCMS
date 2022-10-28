@@ -39,7 +39,7 @@ import com.publiccms.common.handler.RenderHandler;
 * 
 * <pre>
 &lt;script&gt;
- $.getJSON('//cms.publiccms.com/api/directive/sys/userTokenList?pageSize=10&amp;authToken=用户登录Token&amp;authUserId=用户id', function(data){    
+ $.getJSON('${site.dynamicPath}api/directive/sys/userTokenList?pageSize=10&amp;authToken=用户登录Token&amp;authUserId=用户id', function(data){    
    console.log(data.totalCount);
  });
  &lt;/script&gt;

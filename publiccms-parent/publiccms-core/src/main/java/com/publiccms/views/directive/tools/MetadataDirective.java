@@ -34,7 +34,7 @@ import com.publiccms.views.pojo.entities.CmsPageMetadata;
  * 
  * <pre>
 &lt;script&gt;
- $.getJSON('//cms.publiccms.com/api/directive/tools/metadata?path=index.html&amp;appToken=接口访问授权Token', function(data){    
+ $.getJSON('${site.dynamicPath}api/directive/tools/metadata?path=index.html&amp;appToken=接口访问授权Token', function(data){    
    console.log(data.alias);
  });
  &lt;/script&gt;

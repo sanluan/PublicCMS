@@ -37,7 +37,7 @@ import com.publiccms.logic.service.sys.SysAppTokenService;
 * <p>
 * <pre>
 &lt;script&gt;
-$.getJSON('//cms.publiccms.com/api/appToken?appKey=1&amp;appSecret=1', function(data){
+$.getJSON('${site.dynamicPath}api/appToken?appKey=1&amp;appSecret=1', function(data){
   $('article p em').text(data.clicks);
 });
 &lt;/script&gt;

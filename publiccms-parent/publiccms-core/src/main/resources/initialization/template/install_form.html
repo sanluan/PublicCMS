@@ -1,27 +1,27 @@
 <form action="./" method="post">
     <div class="wrapper">
-        <label>选择操作</label>
+        <label>Select actions</label>
         <select name="step" onChange="if($(this).val()=='initDatabase'){$('#useSimple').show();}else{$('#useSimple').hide();};if($(this).val()=='update'){$('#useUpdate').show();}else{$('#useUpdate').hide();}">
-            <option value="initDatabase">初始化数据库(新安装)</option>
-            <option value="update"<#if fromVersion?has_content> selected="true"</#if>>升级数据库(旧版本CMS升级)</option>
-            <option value="start">直接启动</option>
+            <option value="initDatabase">Initialize the database(new installation)</option>
+            <option value="update"<#if fromVersion?has_content> selected="true"</#if>>Upgrade database(older CMS upgrade)</option>
+            <option value="start">Direct boot</option>
         </select>
     </div>
     <div id="useSimple"<#if fromVersion?has_content> style="display:none"</#if>>
         <#if usersql?has_content&&usersql>
             <div class="wrapper">
-                <input type="checkbox" name="useSimple" checked="checked" value="true"/>导入示例数据(数据目录中的publiccms.sql)
+                <input type="checkbox" name="useSimple" checked="checked" value="true"/>Import sample data (publiccms.sql in the data catalog)
             </div>
         </#if>
         <div class="wrapper">
-            <label>管理员用户名</label><input type="text" maxlength="30" name="username" value="admin"/>
+            <label>Administrator username</label><input type="text" maxlength="30" name="username" value="admin"/>
         </div>
         <div class="wrapper">
-            <label>管理员密码</label><input type="text" maxlength="30" required="required" name="password" value=""/>
+            <label>Administrator password</label><input type="text" maxlength="30" required="required" name="password" value=""/>
         </div>
     </div>
     <div class="wrapper" id="useUpdate"<#if !fromVersion?has_content> style="display:none"</#if>>
-        <label>原CMS版本</label>
+        <label>Original CMS version</label>
         <select name="from_version">
             <#list versions as v>
                 <option value="${v}"<#if fromVersion?has_content&&fromVersion=v> selected="true"</#if>>${v}</option>

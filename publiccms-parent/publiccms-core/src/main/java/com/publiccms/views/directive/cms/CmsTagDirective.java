@@ -33,7 +33,7 @@ import com.publiccms.logic.service.cms.CmsTagService;
 * 
 * <pre>
 &lt;script&gt;
-$.getJSON('//cms.publiccms.com/api/directive/cms/tag?id=1', function(data){    
+$.getJSON('${site.dynamicPath}api/directive/cms/tag?id=1', function(data){    
   console.log(data.name);
 });
 &lt;/script&gt;

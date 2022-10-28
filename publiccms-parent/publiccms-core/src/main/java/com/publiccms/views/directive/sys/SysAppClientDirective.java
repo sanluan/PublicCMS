@@ -34,7 +34,7 @@ import com.publiccms.logic.service.sys.SysAppClientService;
 * 
 * <pre>
 &lt;script&gt;
-$.getJSON('//cms.publiccms.com/api/directive/sys/appClient?id=1&amp;appToken=接口访问授权Token', function(data){    
+$.getJSON('${site.dynamicPath}api/directive/sys/appClient?id=1&amp;appToken=接口访问授权Token', function(data){    
   console.log(data.clientVersion);
 });
 &lt;/script&gt;

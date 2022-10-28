@@ -16,7 +16,7 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.logic.component.template.TemplateComponent;
 
 /**
- * templateRegionList 模板文件页面可视化区域列表获取
+ * templateRegionList 模板文件页面可视化区域列表指令
  * <p>
  * 参数列表
  * <ul>
@@ -34,7 +34,7 @@ import com.publiccms.logic.component.template.TemplateComponent;
  * 
  * <pre>
 &lt;script&gt;
- $.getJSON('//cms.publiccms.com/api/directive/tools/templateRegionList?path=index.html&amp;appToken=接口访问授权Token', function(data){    
+ $.getJSON('${site.dynamicPath}api/directive/tools/templateRegionList?path=index.html&amp;appToken=接口访问授权Token', function(data){    
    console.log(data);
  });
  &lt;/script&gt;

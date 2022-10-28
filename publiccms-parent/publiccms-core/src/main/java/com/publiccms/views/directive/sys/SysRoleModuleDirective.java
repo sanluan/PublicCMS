@@ -16,7 +16,7 @@ import com.publiccms.logic.service.sys.SysRoleService;
 
 /**
  *
- * sysRoleModule 部门页面授权查询指令
+ * sysRoleModule 角色模块授权查询指令
  * <p>
  * 参数列表
  * <ul>
@@ -33,10 +33,10 @@ import com.publiccms.logic.service.sys.SysRoleService;
  * <p>
  * &lt;@sys.roleModule deptId=1 pages='/index.html,/search'&gt;&lt;#list map as
  * k,v&gt;${k}:${v}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.roleModule&gt;
- * 
+ *
  * <pre>
 &lt;script&gt;
-$.getJSON('//cms.publiccms.com/api/directive/sys/roleModule?roleIds=1,2,3&amp;modelId=page&amp;appToken=接口访问授权Token', function(data){    
+$.getJSON('${site.dynamicPath}api/directive/sys/roleModule?roleIds=1,2,3&amp;modelId=page&amp;appToken=接口访问授权Token', function(data){
   console.log(data);
 });
 &lt;/script&gt;

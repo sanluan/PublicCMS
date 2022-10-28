@@ -47,7 +47,7 @@ import com.publiccms.views.pojo.entities.CmsPageMetadata;
  * 
  * <pre>
 &lt;script&gt;
- $.getJSON('//cms.publiccms.com/api/directive/tools/placeMetadata?email=master@puliccms.com&amp;title=title&amp;content=content&amp;appToken=接口访问授权Token', function(data){    
+ $.getJSON('${site.dynamicPath}api/directive/tools/placeMetadata?email=master@puliccms.com&amp;title=title&amp;content=content&amp;appToken=接口访问授权Token', function(data){    
    console.log(data.alias);
  });
  &lt;/script&gt;

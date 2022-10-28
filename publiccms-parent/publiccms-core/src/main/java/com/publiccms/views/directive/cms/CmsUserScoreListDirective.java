@@ -37,7 +37,7 @@ import com.publiccms.common.handler.PageHandler;
 * 
 * <pre>
 &lt;script&gt;
-$.getJSON('//cms.publiccms.com/api/directive/cms/userScoreList?userId=1&amp;pageSize=10', function(data){    
+$.getJSON('${site.dynamicPath}api/directive/cms/userScoreList?userId=1&amp;pageSize=10', function(data){    
  console.log(data.totalCount);
 });
 &lt;/script&gt;

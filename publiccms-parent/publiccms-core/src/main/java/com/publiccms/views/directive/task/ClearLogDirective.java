@@ -40,7 +40,7 @@ import com.publiccms.logic.service.log.LogTaskService;
  * 
  * <pre>
 &lt;script&gt;
- $.getJSON('//cms.publiccms.com/api/directive/task/clearLog?appToken=接口访问授权Token', function(data){    
+ $.getJSON('${site.dynamicPath}api/directive/task/clearLog?appToken=接口访问授权Token', function(data){    
    console.log(data.totalCount);
  });
  &lt;/script&gt;

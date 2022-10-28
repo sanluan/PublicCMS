@@ -13,6 +13,7 @@ import com.publiccms.logic.component.template.DiyComponent;
 
 /**
  * diyMetadata diy元数据获取指令
+ * <p>
  * 参数列表
  * <ul>
  * <li><code>itemType</code> 元数据类型,【region,layout,module】
@@ -29,7 +30,7 @@ import com.publiccms.logic.component.template.DiyComponent;
  * 
  * <pre>
 &lt;script&gt;
- $.getJSON('//cms.publiccms.com/api/directive/tools/diyMetadata?itemType=region&amp;itemId=00000000-0000-0000-0000-000000000000&amp;appToken=接口访问授权Token', function(data){    
+ $.getJSON('${site.dynamicPath}api/directive/tools/diyMetadata?itemType=region&amp;itemId=00000000-0000-0000-0000-000000000000&amp;appToken=接口访问授权Token', function(data){    
    console.log(data.name);
  });
  &lt;/script&gt;

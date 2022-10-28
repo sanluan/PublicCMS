@@ -35,7 +35,7 @@ import freemarker.template.TemplateModelException;
  * 
  * <pre>
 &lt;script&gt;
-$.getJSON('//cms.publiccms.com/api/method/getDate?appToken=接口访问授权Token&amp;parameters=${.now}', function(data){
+$.getJSON('${site.dynamicPath}api/method/getDate?appToken=接口访问授权Token&amp;parameters=${.now}', function(data){
 console.log(data);
 });
 &lt;/script&gt;

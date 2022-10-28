@@ -49,7 +49,7 @@ import com.publiccms.logic.service.sys.SysUserTokenService;
 * <p>
 * <pre>
 &lt;script&gt;
-$.getJSON('//cms.publiccms.com/api/autoLogin?uuid=1&amp;username=admin&amp;channel=web', function(data){
+$.getJSON('${site.dynamicPath}api/autoLogin?uuid=1&amp;username=admin&amp;channel=web', function(data){
     console.log(result+","+authToken+","+user.nickname+","+expiryDate);
 });
 &lt;/script&gt;
