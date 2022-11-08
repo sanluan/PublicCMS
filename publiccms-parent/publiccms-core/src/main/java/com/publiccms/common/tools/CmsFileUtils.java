@@ -336,6 +336,14 @@ public class CmsFileUtils {
 
     /**
      * @param filepath
+     */
+    public static void mkdirsParent(String filepath) {
+        File file = new File(filepath);
+        file.getParentFile().mkdirs();
+    }
+
+    /**
+     * @param filepath
      * @return
      */
     public static boolean isDirectory(String filepath) {

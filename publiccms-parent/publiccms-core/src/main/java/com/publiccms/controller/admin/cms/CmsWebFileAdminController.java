@@ -1,5 +1,7 @@
 package com.publiccms.controller.admin.cms;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +24,7 @@ import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
+import com.publiccms.common.tools.ImageUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.common.tools.VerificationUtils;
 import com.publiccms.common.tools.ZipUtils;
@@ -125,7 +128,57 @@ public class CmsWebFileAdminController {
             }
         }
         return CommonConstants.TEMPLATE_DONE;
+    }
 
+    /**
+     * @param site
+     * @param admin
+     * @param file
+     * @param filename
+     * @param base64File
+     * @param originalFilename
+     * @param size
+     * @param override
+     * @param request
+     * @param model
+     * @return view name
+     */
+    @RequestMapping("doUploadIco")
+    @Csrf
+    public String uploadIco(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile file, String filename,
+            String base64File, String originalFilename, int size, Boolean override, HttpServletRequest request, ModelMap model) {
+        if (null != file && !file.isEmpty() || CommonUtils.notEmpty(base64File)) {
+            String originalName;
+            String suffix;
+            if (null != file && !file.isEmpty()) {
+                originalName = file.getOriginalFilename();
+            } else {
+                originalName = originalFilename;
+            }
+            suffix = CmsFileUtils.getSuffix(originalName);
+            try {
+                String filepath = CommonConstants.SEPARATOR + filename;
+                String fuleFilePath = siteComponent.getWebFilePath(site, filepath);
+                if (null != override && override || !CmsFileUtils.exists(fuleFilePath)) {
+                    CmsFileUtils.mkdirsParent(fuleFilePath);
+                    if (CommonUtils.notEmpty(base64File)) {
+                        ImageUtils.image2Ico(new ByteArrayInputStream(VerificationUtils.base64Decode(base64File)), suffix, size,
+                                new File(fuleFilePath));
+                    } else {
+                        ImageUtils.image2Ico(file.getInputStream(), suffix, size, new File(fuleFilePath));
+                    }
+                    FileSize fileSize = CmsFileUtils.getFileSize(fuleFilePath, suffix);
+                    logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                            filename, CmsFileUtils.FILE_TYPE_IMAGE, file.getSize(), fileSize.getWidth(), fileSize.getHeight(),
+                            RequestUtils.getIpAddress(request), CommonUtils.getDate(), filepath));
+                }
+            } catch (IOException e) {
+                model.addAttribute(CommonConstants.ERROR, e.getMessage());
+                log.error(e.getMessage(), e);
+                return CommonConstants.TEMPLATE_ERROR;
+            }
+        }
+        return CommonConstants.TEMPLATE_DONE;
     }
 
     /**

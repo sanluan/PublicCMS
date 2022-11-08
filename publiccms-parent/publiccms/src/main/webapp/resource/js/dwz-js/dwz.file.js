@@ -32,17 +32,12 @@
     }
 
     function previewUploadImg($uploadWrap, files, maxW, maxH) {
-
         var $previewElem = $('<div class="thumbnail"></div>').appendTo($uploadWrap);
-
         var file = files[0];
-
         if (!file) {return false;}
-
         if (!file.type.match(/image.*/)) {
             throw "File Type must be an image";
         }
-
         var img = document.createElement("img");
         img.file = file;
         $previewElem.empty().append(img);
@@ -65,14 +60,12 @@
                 });
             });
         }
-
         readAsDataURL(img, file, maxW, maxH);
-
     }
 
     function editImg($uploadWrap,img,fileName,callback){
         if(0 == $uploadWrap.parent().find('.image-editor').length ) {
-            $uploadWrap.after('<div class="image-editor" ><div class="unit"><p class="image-box"></p><label><a href="javascript:;" class="button"><i class="icon-ok"></i></a></label></div></div>');
+            $uploadWrap.after('<div class="image-editor" ><div class="unit"><p class="nowarp"><a href="javascript:;" class="button"><i class="icon-ok"></i></a></p><p class="image-box"></p></div></div>');
         }
         var $this = $uploadWrap.parent().find('.image-editor');
         if($this.attr("data-id")){
@@ -80,8 +73,8 @@
         }
         var index = window.photoclip.index++;
         var dataId = "photoclip_"+index;
-        var widthInput=$uploadWrap.parents("form:first").find("input[name=width]");
-        var heightInput=$uploadWrap.parents("form:first").find("input[name=height]");
+        var widthInput=$uploadWrap.find("input[name=width]");
+        var heightInput=$uploadWrap.find("input[name=height]");
         widthInput.change(function(){
             if(DWZ.instances[$uploadWrap.parent().find('.image-editor').data("id")]){
                 DWZ.instances[$uploadWrap.parent().find('.image-editor').data("id")].size(parseInt(widthInput.val()),parseInt(heightInput.val()));
@@ -129,21 +122,16 @@
 
     // multiple
     function previewUploadImg2($uploadWrap, files, maxW, maxH) {
-
         var rel = $uploadWrap.attr('rel');
         var $previewElem = $(rel);
-
         $previewElem.empty();
         for (var index=0; index<files.length; index++) {
             var file = files[index];
-
             var $thumb = $('<li class="thumbnail"></li>');
-
             var img = document.createElement("img");
             img.file = file;
             $thumb.append(img);
             $previewElem.append($thumb);
-
             readAsDataURL(img, file, maxW, maxH);
         }
     }

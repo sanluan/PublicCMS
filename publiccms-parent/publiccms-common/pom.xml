@@ -90,6 +90,10 @@
             <artifactId>webp-imageio</artifactId>
         </dependency>
         <dependency>
+            <groupId>net.ifok.image</groupId>
+            <artifactId>image4j</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.hibernate.search</groupId>
             <artifactId>hibernate-search-mapper-orm</artifactId>
         </dependency>

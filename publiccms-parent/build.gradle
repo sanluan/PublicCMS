@@ -93,6 +93,8 @@ subprojects {
         extractorVersion = "2.18.0"
         // https://mvnrepository.com/artifact/org.sejda.imageio/webp-imageio
         webpVersion = "0.1.6"
+        // https://mvnrepository.com/artifact/net.ifok.image/image4j
+        image4jVersion = "0.7.2"
         // http://mvnrepository.com/artifact/eu.bitwalker/UserAgentUtils
         userAgentUtilsVersion = "1.21"
         // https://mvnrepository.com/artifact/jakarta.annotation/jakarta.annotation-api

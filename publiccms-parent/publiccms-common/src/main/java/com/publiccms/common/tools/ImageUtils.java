@@ -9,6 +9,7 @@ import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -22,6 +23,8 @@ import javax.imageio.stream.FileImageInputStream;
 import com.luciad.imageio.webp.WebPReadParam;
 import com.publiccms.common.constants.Constants;
 
+import net.ifok.image.image4j.codec.ico.ICOEncoder;
+
 /**
  *
  * ImageUtils
@@ -31,7 +34,19 @@ public class ImageUtils {
     /**
      * 
      */
-    public static final String DEFAULT_FORMAT_NAME = "jpg";
+    public static final String FORMAT_NAME_PNG = "png";
+    /**
+     * 
+     */
+    public static final String FORMAT_NAME_JPG = "jpg";
+    /**
+     * 
+     */
+    public static final String FORMAT_NAME_WEBP = "webp";
+    /**
+     * 
+     */
+    public static final String DEFAULT_FORMAT_NAME = FORMAT_NAME_JPG;
 
     /**
      * @param width
@@ -105,7 +120,7 @@ public class ImageUtils {
                 }
             }
         }
-        ImageIO.write(bufferedImage, "png", outputStream);
+        ImageIO.write(bufferedImage, FORMAT_NAME_PNG, outputStream);
     }
 
     private static Color getRandColor(int fc, int bc) {
@@ -132,7 +147,7 @@ public class ImageUtils {
         readParam.setBypassFiltering(true);
         reader.setInput(webpInputStream);
         BufferedImage image = reader.read(0, readParam);
-        ImageIO.write(image, png ? "png" : "jpg", imageFile);
+        ImageIO.write(image, png ? FORMAT_NAME_PNG : FORMAT_NAME_JPG, imageFile);
     }
 
     public static void webp2Image(File webpFile, boolean png, File imageFile) throws FileNotFoundException, IOException {
@@ -141,37 +156,56 @@ public class ImageUtils {
         readParam.setBypassFiltering(true);
         reader.setInput(new FileImageInputStream(webpFile));
         BufferedImage image = reader.read(0, readParam);
-        ImageIO.write(image, png ? "png" : "jpg", imageFile);
+        ImageIO.write(image, png ? FORMAT_NAME_PNG : FORMAT_NAME_JPG, imageFile);
     }
 
     public static void image2Webp(File imageFile, File webpFile) throws IOException {
         BufferedImage image = ImageIO.read(imageFile);
-        ImageIO.write(image, "webp", webpFile);
+        ImageIO.write(image, FORMAT_NAME_WEBP, webpFile);
+    }
+
+    public static void image2Ico(InputStream input, String suffix, int size, File icoFile) throws IOException {
+        BufferedImage sourceImage = ImageIO.read(input);
+        BufferedImage resultImage = thumb(sourceImage, size, size, ".png".equalsIgnoreCase(suffix));
+        try (FileOutputStream outputStream = new FileOutputStream(icoFile)) {
+            ICOEncoder.write(resultImage, outputStream);
+        }
+    }
+
+    public static BufferedImage thumb(BufferedImage sourceImage, int width, int height, boolean png) throws IOException {
+        BufferedImage resultImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        Image scaledImage = sourceImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        Graphics2D g = resultImage.createGraphics();
+        if (png) {
+            resultImage = g.getDeviceConfiguration().createCompatibleImage(resultImage.getWidth(), resultImage.getHeight(),
+                    Transparency.TRANSLUCENT);
+            g = resultImage.createGraphics();
+        }
+        g.drawImage(scaledImage, 0, 0, null);
+        return resultImage;
     }
 
     public static void thumb(String sourceFilePath, String thumbFilePath, int width, int height, String suffix)
             throws IOException {
+        BufferedImage sourceImage = ImageIO.read(new File(sourceFilePath));
+        if (width > sourceImage.getWidth()) {
+            width = sourceImage.getWidth();
+        }
+        if (height > sourceImage.getHeight()) {
+            height = sourceImage.getHeight();
+        }
+        BufferedImage resultImage = thumb(sourceImage, width, height, ".png".equalsIgnoreCase(suffix));
         try (FileOutputStream outputStream = new FileOutputStream(thumbFilePath)) {
-            BufferedImage sourceImage = ImageIO.read(new File(sourceFilePath));
-            if (width > sourceImage.getWidth()) {
-                width = sourceImage.getWidth();
-            }
-            if (height > sourceImage.getHeight()) {
-                height = sourceImage.getHeight();
-            }
-            BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-            Image scaledImage = sourceImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-            Graphics2D g = img.createGraphics();
-            if (".png".equalsIgnoreCase(suffix)) {
-                img = g.getDeviceConfiguration().createCompatibleImage(img.getWidth(), img.getHeight(), Transparency.TRANSLUCENT);
-                g = img.createGraphics();
-            }
-            g.drawImage(scaledImage, 0, 0, null);
             if (null != suffix && suffix.length() > 1) {
-                ImageIO.write(img, suffix.substring(1), outputStream);
+                ImageIO.write(resultImage, suffix.substring(1), outputStream);
             } else {
-                ImageIO.write(img, DEFAULT_FORMAT_NAME, outputStream);
+                ImageIO.write(resultImage, DEFAULT_FORMAT_NAME, outputStream);
             }
         }
+    }
+
+    public static void main(String[] args) throws FileNotFoundException, IOException {
+        ImageUtils.image2Ico(new FileInputStream("D:\\Users\\kerneler\\OneDrive\\图片\\1.png"), ".png", 32,
+                new File("D:\\Users\\kerneler\\OneDrive\\图片\\1.ico"));
     }
 }
