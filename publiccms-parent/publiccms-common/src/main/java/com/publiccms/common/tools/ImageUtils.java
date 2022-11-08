@@ -9,7 +9,6 @@ import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -202,10 +201,5 @@ public class ImageUtils {
                 ImageIO.write(resultImage, DEFAULT_FORMAT_NAME, outputStream);
             }
         }
-    }
-
-    public static void main(String[] args) throws FileNotFoundException, IOException {
-        ImageUtils.image2Ico(new FileInputStream("D:\\Users\\kerneler\\OneDrive\\图片\\1.png"), ".png", 32,
-                new File("D:\\Users\\kerneler\\OneDrive\\图片\\1.ico"));
     }
 }

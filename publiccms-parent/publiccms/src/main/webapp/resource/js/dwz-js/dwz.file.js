@@ -10,18 +10,16 @@
         reader.onload = (function(aImg) {
             return function(e) {
                 aImg.src = e.target.result;
-
                 var width = aImg.naturalWidth,
                     height = aImg.naturalHeight;
                 aImg.setAttribute('data-width', width);
                 aImg.setAttribute('data-height', height);
-
                 if (maxW && maxH) {
-
-                    if (width/maxW > height/maxH) {
-                        aImg.setAttribute('height', maxH);
-                    } else {
+                    if (width>maxW){
                         aImg.setAttribute('width', maxW);
+                    }
+                    if( height > maxH) {
+                        aImg.setAttribute('height', maxH);
                     }
                 }
 
@@ -65,7 +63,7 @@
 
     function editImg($uploadWrap,img,fileName,callback){
         if(0 == $uploadWrap.parent().find('.image-editor').length ) {
-            $uploadWrap.after('<div class="image-editor" ><div class="unit"><p class="nowarp"><a href="javascript:;" class="button"><i class="icon-ok"></i></a></p><p class="image-box"></p></div></div>');
+            $uploadWrap.after('<div class="image-editor"><div class="unit"><p class="nowrap"><a href="javascript:;" class="button"><i class="icon-ok"></i></a></p><p class="image-box"></p></div></div>');
         }
         var $this = $uploadWrap.parent().find('.image-editor');
         if($this.attr("data-id")){

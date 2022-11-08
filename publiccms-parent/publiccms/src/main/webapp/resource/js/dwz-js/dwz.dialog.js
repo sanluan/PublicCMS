@@ -302,7 +302,7 @@
             dialog.css({
                 top: "0px", left: "0px", width: iContentW + "px", height: iContentH + "px"
             });
-            $.pdialog._resizeContent(dialog,iContentH);
+            $.pdialog._resizeContent(dialog,iContentW,iContentH);
         },
         restore: function(dialog) {
             var original = dialog.data("original");
@@ -311,7 +311,7 @@
             dialog.css({
                 top: original.top, left: original.left, width: dwidth, height: dheight
             });
-            $.pdialog._resizeContent(dialog,dheight);
+            $.pdialog._resizeContent(dialog,dwidth,dheight);
             $("a.maximize", dialog).show();
             $("a.restore", dialog).hide();
         },
@@ -327,11 +327,12 @@
                 $.taskBar.inactive(dialog.data("id"));
             });
         },
-        _resizeContent: function(dialog,height) {
+        _resizeContent: function(dialog,width,height) {
             var content = $(".dialogContent", dialog);
             content.css({
                 height: height - $(".dialogHeader", dialog).outerHeight()
             });
+            content.css("width", (width -10) + "px");
             content.find("[layoutH]").layoutH(content);
             $(window).trigger(DWZ.eventType.resizeGrid);
         }
