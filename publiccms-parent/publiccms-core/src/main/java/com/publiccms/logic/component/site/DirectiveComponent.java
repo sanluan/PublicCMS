@@ -123,6 +123,7 @@ public class DirectiveComponent {
     private void initTemplateComponent(FreeMarkerConfigurer freeMarkerConfigurer, String directivePrefix)
             throws IOException, TemplateModelException {
         Map<String, Object> freemarkerVariables = new HashMap<>();
+        freemarkerVariables.put("null", CommonConstants.BLANK);
         Configuration adminConfiguration = freeMarkerConfigurer.getConfiguration();
         for (Entry<String, AbstractTemplateDirective> entry : getTemplateDirectiveMap().entrySet()) {
             freemarkerVariables.put(directivePrefix + entry.getKey(), entry.getValue());

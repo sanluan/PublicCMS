@@ -1,6 +1,8 @@
 package com.publiccms.views.method.tools;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
@@ -12,6 +14,7 @@ import com.publiccms.common.tools.FreeMarkerUtils;
 import freemarker.cache.StringTemplateLoader;
 import freemarker.core.TemplateClassResolver;
 import freemarker.template.Configuration;
+import freemarker.template.SimpleHash;
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 
@@ -57,6 +60,12 @@ public class GetTemplateResultMethod extends BaseMethod {
         configuration.setLogTemplateExceptions(false);
         configuration.setBooleanFormat("c");
         configuration.setTemplateLoader(new StringTemplateLoader());
+        Map<String, Object> freemarkerVariables = new HashMap<>();
+        freemarkerVariables.put("null", CommonConstants.BLANK);
+        try {
+            configuration.setAllSharedVariables(new SimpleHash(freemarkerVariables, configuration.getObjectWrapper()));
+        } catch (TemplateModelException e) {
+        }
     }
 
     @Override
