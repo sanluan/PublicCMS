@@ -9,7 +9,6 @@ dependencies {
     implementation  project(':publiccms-common')
 
     implementation "com.zaxxer:HikariCP:${hikariCPVersion}"
-    implementation "mysql:mysql-connector-java:${mysqlVersion}"
     implementation "eu.bitwalker:UserAgentUtils:${userAgentUtilsVersion}"
     implementation "jakarta.annotation:jakarta.annotation-api:${annotationVersion}"
     implementation "org.hibernate.validator:hibernate-validator:${hibernateValidatorVersion}"
