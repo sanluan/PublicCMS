@@ -35,7 +35,7 @@ import freemarker.template.TemplateModelException;
  * <p>
  * ${getTemplateResult('${.now}')}
  * <p>
- * 
+ *
  * <pre>
 &lt;script&gt;
 $.getJSON('${site.dynamicPath}api/method/getDate?appToken=接口访问授权Token&amp;parameters=${.now}', function(data){
@@ -49,11 +49,12 @@ public class GetTemplateResultMethod extends BaseMethod {
     private Configuration configuration;
 
     /**
-     * 
+     *
      */
     public GetTemplateResultMethod() {
         configuration = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
         configuration.setDefaultEncoding(CommonConstants.DEFAULT_CHARSET_NAME);
+        configuration.setURLEscapingCharset(CommonConstants.DEFAULT_CHARSET_NAME);
         configuration.setTemplateUpdateDelayMilliseconds(0);
         configuration.setAPIBuiltinEnabled(false);
         configuration.setNewBuiltinClassResolver(TemplateClassResolver.ALLOWS_NOTHING_RESOLVER);
