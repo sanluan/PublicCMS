@@ -17,6 +17,9 @@ import com.publiccms.common.handler.PageHandler;
  * <p>
  * 参数列表
  * <ul>
+ * <li><code>orderField</code>
+ * 排序字段,【amount:金额,updateDate:更新日期】,默认置顶id按orderType排序
+ * <li><code>orderType</code> 排序类型,【asc:正序,desc:倒叙】,默认为倒叙
  * <li><code>pageIndex</code> 页码
  * <li><code>pageSize</code> 每页条数
  * </ul>
@@ -45,8 +48,8 @@ public class TradeAccountListDirective extends AbstractTemplateDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
-        PageHandler page = service.getPage(getSite(handler).getId(), handler.getInteger("pageIndex", 1),
-                handler.getInteger("pageSize", 30));
+        PageHandler page = service.getPage(getSite(handler).getId(), handler.getString("orderField"),
+                handler.getString("orderType"), handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", 30));
         handler.put("page", page).render();
     }
 
