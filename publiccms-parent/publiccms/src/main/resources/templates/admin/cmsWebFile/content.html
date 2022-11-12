@@ -1,9 +1,11 @@
-<@tools.fileContent type='file' path=path><#assign content=object!/></@tools.fileContent>
-<#assign
-    editorType={'css':'css','js':'javascript','xml':'xml'}
-    fileType=path?keep_after_last('.')?lower_case
-/>
-<form method="post" autocomplete="off" action="cmsWebFile/save<#if !content?has_content>?callbackType=closeCurrent&navTabId=cmsWebFile/list</#if>" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+<@tools.fileExists type='file' path=path><#assign exists=object&&path?has_content></@tools.fileContent>
+<#if path?has_content>
+	<#assign
+		editorType={'css':'css','js':'javascript','xml':'xml'}
+		fileType=path?keep_after_last('.')?lower_case
+	/>
+</#if>
+<form method="post" autocomplete="off" action="cmsWebFile/save<#if !exists>?callbackType=closeCurrent&navTabId=cmsWebFile/list</#if>" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
@@ -18,10 +20,10 @@
     <div class="pageFormContent" layoutH>
         <div class="clearfix">
             <label><@t.page 'path'/>:</label>
-            <input name="path" class="required" type="text" maxlength="500" size="50" value="${(path)!}<#if !content?has_content>/filename.html</#if>"/>
+            <input name="path" class="required" type="text" maxlength="500" size="50" value="${(path)!}<#if !exists>/filename.html</#if>"/>
         </div>
         <div>
-            <textarea name="content" class="code" escape="true" mode="${editorType[fileType]?has_content?then(editorType[fileType],'htmlmixed')}">${content!}</textarea>
+            <textarea name="content" class="code" escape="true" mode="${(editorType[fileType])?has_content?then(editorType[fileType],'htmlmixed')}"><@tools.fileContent type='file' path=path>${object!}</@tools.fileContent></textarea>
         </div>
     </div>
 </form>

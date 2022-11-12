@@ -32,8 +32,7 @@ dependencies {
 
     implementation "org.apache.poi:poi-ooxml:${poiVersion}"
     implementation "org.apache.poi:poi-scratchpad:${poiVersion}"
-    // https://mvnrepository.com/artifact/fr.opensagres.xdocreport/fr.opensagres.poi.xwpf.converter.xhtml
-    implementation "fr.opensagres.xdocreport:fr.opensagres.poi.xwpf.converter.xhtml:2.0.4"
+    implementation "fr.opensagres.xdocreport:fr.opensagres.poi.xwpf.converter.xhtml:${xhtmlConverterVersion}"
     implementation "org.sejda.imageio:webp-imageio:${webpVersion}"
     implementation "net.ifok.image:image4j:${image4jVersion}"
 

@@ -73,6 +73,8 @@ subprojects {
         hikariCPVersion = "4.0.3"
         // https://mvnrepository.com/artifact/com.mysql/mysql-connector-j
         mysqlVersion = "8.0.31"
+        // https://mvnrepository.com/artifact/fr.opensagres.xdocreport/fr.opensagres.poi.xwpf.converter.xhtml
+        xhtmlConverterVersion = "2.0.4"
         // https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml
         poiVersion = "5.2.3"
         // http://mvnrepository.com/artifact/commons-fileupload/commons-fileupload
