@@ -45,7 +45,7 @@ public class SysDeptItemDao extends BaseDao<SysDeptItem> {
      * @return results number
      */
     public int delete(Integer deptId, String itemType, String itemId) {
-        QueryHandler queryHandler = getQueryHandler("from SysDeptItem bean");
+        QueryHandler queryHandler = getQueryHandler("delete from SysDeptItem bean");
         if (CommonUtils.notEmpty(deptId)) {
             queryHandler.condition("bean.id.deptId = :deptId").setParameter("deptId", deptId);
         }

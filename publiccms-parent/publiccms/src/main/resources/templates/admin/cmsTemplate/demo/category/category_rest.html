@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>${(category.name)!} ${(attribute.title)!}</title>
+    <title>${(attribute.title)?has_content?then(attribute.title,category.name)!}</title>
     <meta name="keywords" content="${(attribute.keywords)!}"/>
     <meta name="description" content="${(attribute.description)!}"/>
 </head>
@@ -96,7 +96,7 @@
     var itemString="itemType=category&itemId=${category.id}";
     var templatePath='${.current_template_name?keep_after('/')}';
     </script>
-    
+
     <script src="${site.dynamicPath}resource/js/cms.support.js"></script>
     <script>
         var ca = cmsAnalytics();
