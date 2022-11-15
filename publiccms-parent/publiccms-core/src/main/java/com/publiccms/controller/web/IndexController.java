@@ -17,6 +17,8 @@ import org.springframework.web.util.UrlPathHelper;
 
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.site.SiteComponent;
+import com.publiccms.logic.component.template.DiyComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateCacheComponent;
 
@@ -38,7 +40,10 @@ public class IndexController {
      * @param response
      *            响应
      */
-    @RequestMapping({ "/**/" + MetadataComponent.DATA_FILE, "/**/" + MetadataComponent.METADATA_FILE })
+    @RequestMapping({ "/**/" + MetadataComponent.DATA_FILE, "/**/" + MetadataComponent.METADATA_FILE,
+            "/**/" + DiyComponent.REGION_FILE, "/**/" + DiyComponent.LAYOUT_FILE, "/**/" + DiyComponent.MODULE_FILE,
+            "/**/" + DiyComponent.DATA_FILE, "/**/" + SiteComponent.MODEL_FILE, "/**/" + SiteComponent.CATEGORY_TYPE_FILE,
+            "/**/" + SiteComponent.CONFIG_FILE })
     public void rest(HttpServletResponse response) {
         try {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
