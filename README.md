@@ -98,14 +98,6 @@ Meaning more parameters, and please refer to https://hub.docker.com/r/sanluan/pu
 
 ![](doc/structure.png)
 
-## Public CMS管理后台 - 中文
-
-![](doc/management.png)
-
-## Public CMS管理後臺 - 繁體
-
-![](doc/management_traditional_cn.png)
-
 ## Public CMS Management - English
 
 ![](doc/management_en.png)
@@ -113,3 +105,11 @@ Meaning more parameters, and please refer to https://hub.docker.com/r/sanluan/pu
 ## Public CMS 管理バックグラウンド - 日本語
 
 ![](doc/management_ja.png)
+
+## Public CMS管理后台 - 中文
+
+![](doc/management.png)
+
+## Public CMS管理後臺 - 繁體
+
+![](doc/management_traditional_cn.png)

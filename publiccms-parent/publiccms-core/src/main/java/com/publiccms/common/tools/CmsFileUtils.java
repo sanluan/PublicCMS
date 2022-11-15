@@ -167,7 +167,7 @@ public class CmsFileUtils {
                         for (String line : list) {
                             if (line.contains(word)) {
                                 if (result.getIndexs().length > j && j == result.getIndexs()[n]) {
-                                    list.set(i, line.replaceAll(word, replace));
+                                    list.set(i, line.replace(word, replace));
                                     n++;
                                 }
                                 j++;
