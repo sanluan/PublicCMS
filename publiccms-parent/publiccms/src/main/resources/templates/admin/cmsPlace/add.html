@@ -73,6 +73,7 @@
                 <input name="cover" value="${(a.cover)!(content.cover)!}"<#if requiredFieldList?seq_contains('cover')> class="required"</#if> maxlength="300" size="40" type="text"/>
                 <a class="btnAttach" href="common/upload.html?field=cover&fileTypes=image&width=${(metadata.coverWidth)!}&height=${(metadata.coverHeight)!}" lookupGroup="" width="1000" height="600"><@t.page 'image'/></a>
                 <a class="view icon-eye-open" ref="cover" data-prefix="${site.sitePath}" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
+				<#if (metadata.coverWidth)?has_content && (metadata.coverHeight)?has_content><span class="info">${(metadata.coverWidth)!}*${(metadata.coverHeight)!}</span></#if>
                 <#include "../include_page/preview.html"/>
                 <@preview 'page' 'input[name=cover]'/>
             </dd>
@@ -88,5 +89,5 @@
     </div>
 </form>
 <#else>
-    
+
 </#if>

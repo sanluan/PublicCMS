@@ -16,14 +16,15 @@
 <#macro bread category>
     <#if category.parentId?has_content>
         <@cms.category id=category.parentId;category>
-            <@bread object/>
+            <@bread category/>
             <a href="${category.url}">${category.name}</a> &gt;
         </@cms.category>
     </#if>
+	${(category.name)!}
 </#macro>
     <header data-diy="page">
         <h1>${(site.name)!}</h1>
-        <p><@bread category/> ${(category.name)!}</p>
+        <p><@bread category/></p>
     </header>
     <nav data-diy="category">
         <a href="${site.sitePath}">Home</a>
