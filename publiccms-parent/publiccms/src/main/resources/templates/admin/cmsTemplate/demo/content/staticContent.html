@@ -20,11 +20,10 @@
             <a href="${category.url}">${category.name}</a> &gt;
         </@cms.category>
     </#if>
-	${(category.name)!}
 </#macro>
     <header data-diy="page">
         <h1>${(site.name)!}</h1>
-        <p><@bread category/></p>
+        <p><@bread category/> <a href="${category.url}">${category.name}</a></p>
     </header>
     <nav data-diy="category">
         <a href="${site.sitePath}">Home</a>
@@ -86,7 +85,7 @@
                 </@cms.tag>
             </p>
         </#if>
-		<#if page?has_content>
+        <#if page?has_content>
             <div>
                 <#if !page.firstPage>
                     <a href="${getPage(url,page.prePage)}">Previous page</a>
@@ -106,7 +105,7 @@
                     <span>Next page</span>
                 </#if>
             </div>
-		</#if>
+        </#if>
             <div>
                 <@cms.contentList categoryId=category.id endPublishDate=content.publishDate orderField='publishDate' pageIndex=2 pageSize=1><#if 2=page.pageIndex><#list page.list as a><a href="${a.url!}">Previous:${a.title}</a></#list></#if></@cms.contentList>
             </div>

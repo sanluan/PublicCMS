@@ -214,11 +214,12 @@ $('.parametersBox',navTab.getCurrentPanel()).on('click','span>a',function(){
         <#case "index.html">
             <#if site.useStatic>
                 $('input[name=useStatic]',navTab.getCurrentPanel()).prop('checked',true).trigger('change');
-                $('input[name=publishPath]',navTab.getCurrentPanel()).val('/demo/index.html');
+                $('input[name=publishPath]',navTab.getCurrentPanel()).val('/index.html');
             </#if>
             <#break>
         <#case "sitemap.xml">
             <#if site.useStatic>
+                $('input[name=useStatic]',navTab.getCurrentPanel()).prop('checked',true).trigger('change');
                 $('input[name=publishPath]',navTab.getCurrentPanel()).val('/sitemap.xml');
             <#else>
                 $('input[name=cacheTime]',navTab.getCurrentPanel()).val(7200);

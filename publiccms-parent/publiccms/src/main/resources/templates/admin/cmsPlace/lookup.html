@@ -60,60 +60,60 @@
 </#macro>
 <#assign itemTypes=acceptItemTypes?has_content?then(acceptItemTypes?split(','),['page','content','category'])/>
 <div class="pageContent">
-	<div class="tabs">
-		<div class="tabsHeader">
-			<div class="tabsHeaderContent">
-				<ul>
-				<#if itemTypes?seq_contains('content')>
-					<li><a href="javascript:;" onclick="return false;"><@t.page 'content'/></a></li>
-				</#if>
-				<#if itemTypes?seq_contains('category')>
-					<li><a href="javascript:;" onclick="return false;"><@t.page 'category'/></a></li>
-				</#if>
-				<#if itemTypes?seq_contains('page')>
-					<li><a href="javascript:;" onclick="return false;"><@t.page 'page'/></a></li>
-				</#if>
-				</ul>
-			</div>
-		</div>
-		<div class="tabsContent">
-		<#if itemTypes?seq_contains('content')>
-			<div class="pageContent" layoutH>
-				<div class="unitBox leftPageContent" layoutH>
-					<ul class="tree treeFolder">
-						<li>
-							<a href="cmsPlace/lookup_content_list.html" target="ajax" rel="lookup_content_list"><@t.page 'category'/></a>
-							<ul>
-								<@categoryTree/>
-							</ul>
-						</li>
-					 </ul>
-				</div>
-				<div id="lookup_content_list" class="unitBox rightPageContent">
-					<#include "lookup_content_list.html"/>
-				</div>
-			</div>
-		</#if>
-		<#if itemTypes?seq_contains('category')>
-			<div class="pageFormContent" layoutH>
-				<ul class="tree treeFolder expand">
-					<@lookupTree/>
-				</ul>
-			</div>
-		</#if>
-		<#if itemTypes?seq_contains('page')>
-			<div class="pageFormContent" layoutH>
-				<ul class="tree treeFolder expand">
-					<@pageTree/>
-				</ul>
-			</div>
-		</#if>
-		</div>
-	</div>
-	<div class="formBar">
-		<ul>
-			<li><button class="button" type="button" onclick="$.bringBack({itemType:'',itemId:''});return false;"><@t.page 'button.clear_select'/></li>
-			<li><button class="close button" type="button"><@t.page 'button.close'/></li>
-		</ul>
-	</div>
+    <div class="tabs">
+        <div class="tabsHeader">
+            <div class="tabsHeaderContent">
+                <ul>
+                <#if itemTypes?seq_contains('content')>
+                    <li><a href="javascript:;" onclick="return false;"><@t.page 'content'/></a></li>
+                </#if>
+                <#if itemTypes?seq_contains('category')>
+                    <li><a href="javascript:;" onclick="return false;"><@t.page 'category'/></a></li>
+                </#if>
+                <#if itemTypes?seq_contains('page')>
+                    <li><a href="javascript:;" onclick="return false;"><@t.page 'page'/></a></li>
+                </#if>
+                </ul>
+            </div>
+        </div>
+        <div class="tabsContent">
+        <#if itemTypes?seq_contains('content')>
+            <div class="pageContent" layoutH>
+                <div class="unitBox leftPageContent" layoutH>
+                    <ul class="tree treeFolder">
+                        <li>
+                            <a href="cmsPlace/lookup_content_list.html" target="ajax" rel="lookup_content_list"><@t.page 'category'/></a>
+                            <ul>
+                                <@categoryTree/>
+                            </ul>
+                        </li>
+                     </ul>
+                </div>
+                <div id="lookup_content_list" class="unitBox rightPageContent">
+                    <#include "lookup_content_list.html"/>
+                </div>
+            </div>
+        </#if>
+        <#if itemTypes?seq_contains('category')>
+            <div class="pageFormContent" layoutH>
+                <ul class="tree treeFolder expand">
+                    <@lookupTree/>
+                </ul>
+            </div>
+        </#if>
+        <#if itemTypes?seq_contains('page')>
+            <div class="pageFormContent" layoutH>
+                <ul class="tree treeFolder expand">
+                    <@pageTree/>
+                </ul>
+            </div>
+        </#if>
+        </div>
+    </div>
+    <div class="formBar">
+        <ul>
+            <li><button class="button" type="button" onclick="$.bringBack({itemType:'',itemId:''});return false;"><@t.page 'button.clear_select'/></li>
+            <li><button class="close button" type="button"><@t.page 'button.close'/></li>
+        </ul>
+    </div>
 </div>
