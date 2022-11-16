@@ -103,6 +103,7 @@
                     <#if !stared?has_content><a href="javascript:score(${content.id});">Score</a></#if>
                 </#if>
             </div>
+		<#if page?has_content>
             <div>
                 <#if !page.firstPage>
                     <a href="${getPage(content.url,page.prePage)}">Previous page</a>
@@ -122,6 +123,7 @@
                     <span>Next page</span>
                 </#if>
             </div>
+		</#if>
             <div>
                 <@cms.contentList categoryId=category.id endPublishDate=content.publishDate orderField='publishDate' pageIndex=2 pageSize=1><#if 2=page.pageIndex><#list page.list as a><a href="${a.url!}">Previous:${a.title}</a></#list></#if></@cms.contentList>
                 <@cms.contentList categoryId=category.id startPublishDate=content.publishDate orderField='publishDate' orderType='asc' pageIndex=1 pageSize=1><#list page.list as a><a href="${a.url!}">Next:${a.title}</a></#list></@cms.contentList>
