@@ -34,12 +34,12 @@
         <version.jackson>2.14.0</version.jackson>
         <!-- http://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
         <!-- http://hibernate.org/orm/releases/ -->
-        <version.hibernate>5.6.11.Final</version.hibernate>
+        <version.hibernate>5.6.10.Final</version.hibernate>
         <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-tools -->
-        <version.hibernateTools>5.6.2.Final</version.hibernateTools>
+        <version.hibernateTools>5.6.10.Final</version.hibernateTools>
         <!-- https://mvnrepository.com/artifact/org.hibernate.search/hibernate-search-mapper-orm/ -->
         <!-- http://hibernate.org/search/releases/ -->
-        <version.hibernateSearch>6.1.7.Final</version.hibernateSearch>
+        <version.hibernateSearch>6.2.0.Alpha1</version.hibernateSearch>
         <!-- https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator -->
         <version.hibernateValidator>6.0.23.Final</version.hibernateValidator>
         <!-- https://mvnrepository.com/artifact/org.ehcache/ehcache -->
@@ -98,12 +98,6 @@
         <version.mailApi>2.1.0</version.mailApi>
         <!-- https://mvnrepository.com/artifact/com.sun.mail/jakarta.mail -->
         <version.mail>2.0.1</version.mail>
-        <!-- https://mvnrepository.com/artifact/com.sun.xml.bind/jaxb-impl -->
-        <version.jaxb>2.3.6</version.jaxb>
-        <!-- https://mvnrepository.com/artifact/jakarta.xml.bind/jakarta.xml.bind-api -->
-        <version.jaxbApi>3.0.1</version.jaxbApi>
-        <!-- https://mvnrepository.com/artifact/javax.xml.bind/javax.xml.bind-api -->
-        <version.javaxJaxbApi>2.3.1</version.javaxJaxbApi>
         <!-- http://mvnrepository.com/artifact/org.apache.ant/ant -->
         <version.ant>1.10.12</version.ant>
         <!-- https://mvnrepository.com/artifact/jakarta.servlet/jakarta.servlet-api -->
@@ -216,6 +210,16 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-webmvc</artifactId>
+                <version>${version.spring}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-web</artifactId>
+                <version>${version.spring}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-beans</artifactId>
                 <version>${version.spring}</version>
             </dependency>
             <dependency>
@@ -349,21 +353,6 @@
                 <groupId>jakarta.mail</groupId>
                 <artifactId>jakarta.mail-api</artifactId>
                 <version>${version.mailApi}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.sun.xml.bind</groupId>
-                <artifactId>jaxb-impl</artifactId>
-                <version>${version.jaxb}</version>
-            </dependency>
-            <dependency>
-                <groupId>jakarta.xml.bind</groupId>
-                <artifactId>jakarta.xml.bind-api</artifactId>
-                <version>${version.jaxbApi}</version>
-            </dependency>
-            <dependency>
-                <groupId>javax.xml.bind</groupId>
-                <artifactId>jaxb-api</artifactId>
-                <version>${version.javaxJaxbApi}</version>
             </dependency>
             <dependency>
                 <groupId>jakarta.annotation</groupId>

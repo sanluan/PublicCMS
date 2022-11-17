@@ -109,10 +109,6 @@ subprojects {
         mailApiVersion = "2.1.0"
         // https://mvnrepository.com/artifact/com.sun.mail/jakarta.mail
         mailVersion = "2.0.1"
-        // https://mvnrepository.com/artifact/com.sun.xml.bind/jaxb-impl
-        jaxbVersion = "2.3.6"
-        // https://mvnrepository.com/artifact/jakarta.xml.bind/jakarta.xml.bind-api
-        jaxbApiVersion = "3.0.1"
         // http://mvnrepository.com/artifact/org.apache.ant/ant
         antVersion = "1.10.12"
         // https://mvnrepository.com/artifact/jakarta.servlet/jakarta.servlet-api

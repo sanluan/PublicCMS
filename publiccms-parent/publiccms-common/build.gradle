@@ -22,6 +22,8 @@ dependencies {
     implementation "org.springframework:spring-context-support:${springVersion}"
     implementation "org.springframework:spring-orm:${springVersion}"
     implementation "org.springframework:spring-webmvc:${springVersion}"
+    implementation "org.springframework:spring-web:${springVersion}"
+    implementation "org.springframework:spring-beans:${springVersion}"
 
     implementation "org.hibernate.search:hibernate-search-mapper-orm-jakarta:${hibernateSearchVersion}"
     implementation "org.hibernate.search:hibernate-search-backend-lucene:${hibernateSearchVersion}"
@@ -49,8 +51,6 @@ dependencies {
     implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
 
     implementation "jakarta.annotation:jakarta.annotation-api:${annotationVersion}"
-    implementation "com.sun.xml.bind:jaxb-impl:${jaxbVersion}"
-    implementation "jakarta.xml.bind:jakarta.xml.bind-api:${jaxbApiVersion}"
     implementation "jakarta.servlet:jakarta.servlet-api:${servletVersion}"
 
     implementation ("org.quartz-scheduler:quartz:${quartzVersion}") {
