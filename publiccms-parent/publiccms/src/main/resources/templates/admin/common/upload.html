@@ -16,13 +16,15 @@
             <div class="tabsContent unitBox">
                 <div class="pageContent">
                     <#if fileTypes?has_content&&'image'=fileTypes>
-                        <p class="nowrap">
-                            <label><@t.page 'width'/></label><input name="width" type="number" value="${width!50}"/><label><@t.page 'height'/></label><input name="height" type="number" value="${height!50}"/>
-                        </p>
                         <div class="upload-wrap">
                             <input type="file" name="file" accept="image/*" class="valid" style="left: 0px;">
                             <input type="hidden" name="base64File"/>
                             <input type="hidden" name="originalFilename"/>
+                            <div class="cutinput">
+                                <input name="width" type="number" value="${width!300}"/>
+                                <span>*</span>
+                                <input name="height" type="number" value="${height!300}"/>
+                            </div>
                         </div>
                     <#else>
                         <input type="file" name="file" class="required" size="30"<#if fileTypes?has_content&&'video'=fileTypes> accept="video/*"</#if>/>

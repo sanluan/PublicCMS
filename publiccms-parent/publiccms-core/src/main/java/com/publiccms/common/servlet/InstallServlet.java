@@ -14,6 +14,7 @@ import java.io.StringWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 
@@ -157,7 +158,7 @@ public class InstallServlet extends HttpServlet {
                     response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 }
             }
-            render(step, map, response);
+            render(step, request.getLocale(), map, response);
         }
     }
 
@@ -295,10 +296,10 @@ public class InstallServlet extends HttpServlet {
         }
     }
 
-    private void render(String step, Map<String, Object> model, HttpServletResponse response) {
+    private void render(String step, Locale locale, Map<String, Object> model, HttpServletResponse response) {
         if (!response.isCommitted()) {
             try {
-                Template template = freemarkerConfiguration.getTemplate(null == step ? "index.html" : step + ".html");
+                Template template = freemarkerConfiguration.getTemplate(null == step ? "index.html" : step + ".html", locale);
                 response.setCharacterEncoding(DEFAULT_CHARSET_NAME);
                 response.setContentType("text/html");
                 template.process(model, response.getWriter());

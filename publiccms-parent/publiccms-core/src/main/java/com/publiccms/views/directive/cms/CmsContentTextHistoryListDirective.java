@@ -39,7 +39,7 @@ import com.publiccms.common.handler.PageHandler;
  * 
  * <pre>
  &lt;script&gt;
-  $.getJSON('//cms.publiccms.com/api/directive/cms/contentTextHistoryList?contentId=1&amp;fieldName='text'&amp;pageSize=10&amp;appToken=接口访问授权Token', function(data){    
+  $.getJSON('${site.dynamicPath}api/directive/cms/contentTextHistoryList?contentId=1&amp;fieldName='text'&amp;pageSize=10&amp;appToken=接口访问授权Token', function(data){    
     console.log(data.totalCount);
   });
   &lt;/script&gt;

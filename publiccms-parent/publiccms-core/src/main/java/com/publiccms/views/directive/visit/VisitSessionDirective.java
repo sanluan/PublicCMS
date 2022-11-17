@@ -17,7 +17,7 @@ import com.publiccms.logic.service.visit.VisitSessionService;
 
 /**
 *
-* visitSession 访问统计会话报表查询指令
+* visitSession 访问会话报表查询指令
 * <p>
 * 参数列表
 * <ul>
@@ -30,7 +30,7 @@ import com.publiccms.logic.service.visit.VisitSessionService;
 * &lt;@visit.session visitDate='2020-01-01' sessionId='xxxx-xxxx-xxxx'&gt;${object.pv}&lt;/@visit.session&gt;
 * <pre>
  &lt;script&gt;
-  $.getJSON('//cms.publiccms.com/api/directive/visit/session?visitDate=2020-01-01&amp;sessionId=xxxx-xxxx-xxxx&amp;appToken=接口访问授权Token', function(data){    
+  $.getJSON('${site.dynamicPath}api/directive/visit/session?visitDate=2020-01-01&amp;sessionId=xxxx-xxxx-xxxx&amp;appToken=接口访问授权Token', function(data){    
     console.log(data.pv);
   });
   &lt;/script&gt;

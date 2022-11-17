@@ -70,17 +70,17 @@ public class LoginController {
     protected SiteConfigComponent siteConfigComponent;
 
     /**
-     * @param site
-     * @param username
-     * @param password
-     * @param returnUrl
-     * @param encoding
-     * @param clientId
-     * @param uuid
-     * @param request
-     * @param response
-     * @param model
-     * @return view name
+     * @param site 站点
+     * @param username 用户名
+     * @param password 密码
+     * @param returnUrl 返回地址
+     * @param encoding 密码编码
+     * @param clientId 客户端id
+     * @param uuid 客户端uuid
+     * @param request 请求
+     * @param response 返回
+     * @param model 模型
+     * @return view name 视图名
      */
     @RequestMapping(value = "doLogin", method = RequestMethod.POST)
     public String login(@RequestAttribute SysSite site, String username, String password, String returnUrl, String encoding,

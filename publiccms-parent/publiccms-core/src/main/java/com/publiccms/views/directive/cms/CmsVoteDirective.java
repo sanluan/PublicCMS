@@ -36,7 +36,7 @@ import com.publiccms.logic.service.cms.CmsVoteService;
 * 
 * <pre>
 &lt;script&gt;
-$.getJSON('//cms.publiccms.com/api/directive/cms/vote?id=1', function(data){    
+$.getJSON('${site.dynamicPath}api/directive/cms/vote?id=1', function(data){    
   console.log(data.title);
 });
 &lt;/script&gt;

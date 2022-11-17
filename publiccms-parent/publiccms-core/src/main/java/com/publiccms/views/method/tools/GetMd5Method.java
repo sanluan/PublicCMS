@@ -13,8 +13,29 @@ import freemarker.template.TemplateModelException;
 
 /**
  *
- * GetMd5Method
+ * getMd5 获取md5值
+ * <p>
+ * 参数列表
+ * <ol>
+ * <li>字符串
+ * </ol>
+ * <p>
+ * 返回结果
+ * <ul>
+ * <li><code>string</code> md5值
+ * </ul>
+ * 使用示例
+ * <p>
+ * ${getMd5('aaa')}
+ * <p>
  * 
+ * <pre>
+&lt;script&gt;
+$.getJSON('${site.dynamicPath}api/method/getMd5?parameters=aaa', function(data){
+console.log(data);
+});
+&lt;/script&gt;
+ * </pre>
  */
 @Component
 public class GetMd5Method extends BaseMethod {
@@ -27,7 +48,7 @@ public class GetMd5Method extends BaseMethod {
         }
         return null;
     }
-    
+
     @Override
     public boolean needAppToken() {
         return false;

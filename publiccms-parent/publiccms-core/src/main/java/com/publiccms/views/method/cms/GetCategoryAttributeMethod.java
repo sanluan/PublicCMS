@@ -17,8 +17,31 @@ import freemarker.template.TemplateModelException;
 
 /**
  *
- * GetCategoryAttributeMethod
+ * getCategoryAttribute 获取分类扩展数据
+ * <p>
+ * 参数列表
+ * <ol>
+ * <li>分类id
+ * </ol>
+ * <p>
+ * 返回结果
+ * <ul>
+ * <li><code>attribute</code>分类扩展数据(字段编码,<code>value</code>)
+ * </ul>
+ * 使用示例
+ * <p>
+ * &lt;#assign attribute=getCategoryAttribute(1)/&lt;
+ * <p>
+ * ${attribute.title!}
+ * <p>
  * 
+ * <pre>
+&lt;script&gt;
+$.getJSON('${site.dynamicPath}api/method/getCategoryAttribute?parameters=1', function(data){
+console.log(data.title);
+});
+&lt;/script&gt;
+ * </pre>
  */
 @Component
 public class GetCategoryAttributeMethod extends BaseMethod {

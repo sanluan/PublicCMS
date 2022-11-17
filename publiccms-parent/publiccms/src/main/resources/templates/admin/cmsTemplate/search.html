@@ -4,7 +4,7 @@
     <@tools.templateSearchList path=path word=word>
     <div class="formBar">
         <ul>
-            <li><a class="button" href="${returnUrl!'cmsTemplate/directory.html'}" target="ajax" rel="${rel!'searchBox'}"><@t.page 'button.return'/></a></li>
+            <li><a class="button" href="${returnUrl!'cmsTemplate/directory.html?path='+((path?url)!)}" target="ajax" rel="${rel!'searchBox'}"><@t.page 'button.return'/></a></li>
             <#if list?has_content>
                 <li><button type="submit" class="buttonActive" title="ctrl+s"><@t.page 'replace'/></button></li>
             </#if>

@@ -36,7 +36,7 @@ import com.publiccms.logic.service.cms.CmsCommentService;
 * 
 * <pre>
   &lt;script&gt;
-   $.getJSON('//cms.publiccms.com/api/directive/cms/comment?id=1&amp;appToken=接口访问授权Token', function(data){    
+   $.getJSON('${site.dynamicPath}api/directive/cms/comment?id=1&amp;appToken=接口访问授权Token', function(data){    
      console.log(data.text);
    });
    &lt;/script&gt;

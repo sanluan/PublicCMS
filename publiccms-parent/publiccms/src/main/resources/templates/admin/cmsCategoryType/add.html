@@ -74,10 +74,12 @@
                 </dl>
             </fieldset>
             <fieldset>
-                <legend><@t.page 'category.extend_field'/>(<@t.page 'extend_field.use.category'/>;<@t.page 'extend_field.invalid'/>:title,keywords,description;<@t.page 'metadata.default_value_description'/>)</legend>
+                <legend><@t.page 'category.extend_field'/></legend>
                 <#include "../include_page/extends.html"/>
                 <#assign categoryExtendList=(a.extendList)![]>
                 <@extends 'extendList' categoryExtendList/>
+                <span class="info"><@t.page 'extend_field.use.category'/>;<#noparse>&lt;#assign attribute=getCategoryAttribute(category.id)&gt;</#noparse></span>
+                <span class="info"><@t.page 'extend_field.invalid'/>:title,keywords,description;<@t.page 'metadata.default_value_description'/></span>
             </fieldset>
         </div>
     </form>

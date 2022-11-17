@@ -47,16 +47,17 @@ public class CmsVoteItemDao extends BaseDao<CmsVoteItem> {
         return getPage(queryHandler, pageIndex, pageSize);
     }
 
-    @Override
-    protected CmsVoteItem init(CmsVoteItem entity) {
-        return entity;
-    }
-
     public void deleteByVoteId(Long voteId) {
         if (null != voteId) {
             QueryHandler queryHandler = getQueryHandler("delete from CmsVoteItem bean");
             queryHandler.condition("bean.voteId = :voteId").setParameter("voteId", voteId);
+            delete(queryHandler);
         }
+    }
+
+    @Override
+    protected CmsVoteItem init(CmsVoteItem entity) {
+        return entity;
     }
 
 }

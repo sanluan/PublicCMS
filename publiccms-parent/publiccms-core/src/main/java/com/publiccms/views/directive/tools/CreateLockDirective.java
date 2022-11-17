@@ -33,7 +33,7 @@ import com.publiccms.logic.component.site.LockComponent;
  * 
  * <pre>
 &lt;script&gt;
-$.getJSON('//cms.publiccms.com/api/directive/tools/createLock?itemType=content&amp;itemId=1&amp;userId=1&amp;appToken=接口访问授权Token', function(data){    
+$.getJSON('${site.dynamicPath}api/directive/tools/createLock?itemType=content&amp;itemId=1&amp;userId=1&amp;appToken=接口访问授权Token', function(data){    
   console.log(data);
 });
 &lt;/script&gt;

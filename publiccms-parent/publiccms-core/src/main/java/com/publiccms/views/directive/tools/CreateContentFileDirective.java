@@ -40,7 +40,7 @@ import freemarker.template.TemplateException;
  * 
  * <pre>
 &lt;script&gt;
-$.getJSON('//cms.publiccms.com/api/directive/tools/createContentFile?id=1&amp;templatePath=content.html&amp;filePath=content/1.html&amp;appToken=接口访问授权Token', function(data){    
+$.getJSON('${site.dynamicPath}api/directive/tools/createContentFile?id=1&amp;templatePath=content.html&amp;filePath=content/1.html&amp;appToken=接口访问授权Token', function(data){    
   console.log(data);
 });
 &lt;/script&gt;

@@ -30,7 +30,7 @@ import com.publiccms.views.pojo.entities.ClickStatistics;
 * <li><code>id</code> 内容id,结果返回<code>object</code>{@link com.publiccms.entities.cms.CmsContent} 
 * <li><code>absoluteURL</code> url处理为绝对路径 默认为<code> true</code>
 * <li><code>absoluteId</code> url处理为绝对路径 默认为<code> true</code>
-* <li><code>containsAttribute</code> id不为空时有效,默认为<code>false</code>,结果返回<code>attribute</code>
+* <li><code>containsAttribute</code> id不为空时有效,默认为<code>false</code>,结果返回<code>attribute</code>内容扩展数据<code>map</code>(字段编码,<code>value</code>)
 * <li><code>ids</code> 多个内容id,逗号或空格间隔,当id为空时生效,结果返回<code>map</code>(id,<code>object</code>)
 * </ul>
 * 使用示例
@@ -42,7 +42,7 @@ import com.publiccms.views.pojo.entities.ClickStatistics;
 * 
 * <pre>
 *  &lt;script&gt;
-   $.getJSON('//cms.publiccms.com/api/directive/cms/content?id=1', function(data){    
+   $.getJSON('${site.dynamicPath}api/directive/cms/content?id=1', function(data){    
      console.log(data.title);
    });
    &lt;/script&gt;

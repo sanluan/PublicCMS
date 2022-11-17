@@ -15,6 +15,7 @@ dependencies {
     implementation project(path:':publiccms-trade', configuration: 'instrumentedJars')
     implementation project(':publiccms-trade')
 
+    implementation "mysql:mysql-connector-java:${mysqlVersion}"
     implementation "org.apache.logging.log4j:log4j-core:${log4jVersion}"
     implementation "org.apache.logging.log4j:log4j-slf4j-impl:${log4jVersion}"
     implementation ("org.springframework.boot:spring-boot-starter-web:${springBootVersion}") {

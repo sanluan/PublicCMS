@@ -35,7 +35,7 @@ import com.publiccms.logic.service.trade.TradeAccountHistoryService;
 * 
 * <pre>
  &lt;script&gt;
-  $.getJSON('//cms.publiccms.com/api/directive/trade/accountHistory?id=1&amp;appToken=接口访问授权Token', function(data){    
+  $.getJSON('${site.dynamicPath}api/directive/trade/accountHistory?id=1&amp;appToken=接口访问授权Token', function(data){    
     console.log(data.balance);
   });
   &lt;/script&gt;

@@ -13,7 +13,7 @@ public class UserPasswordUtils {
 
     public static String passwordEncode(String password, String salt, String encodePassword, String encode) {
         if (null == salt && null != encodePassword && encodePassword.contains(SALT_SPLIT)) {
-            salt = encodePassword.substring(encodePassword.indexOf(SALT_SPLIT) + 1);
+            salt = encodePassword.substring(0, encodePassword.indexOf(SALT_SPLIT));
         }
         if (null != salt && SALT_LENGTH == salt.length()) {
             if (ENCODE_SHA512.equalsIgnoreCase(encode)) {

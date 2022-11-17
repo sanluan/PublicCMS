@@ -32,7 +32,7 @@ import com.publiccms.entities.sys.SysSite;
  * 
  * <pre>
 &lt;script&gt;
- $.getJSON('//cms.publiccms.com/api/directive/tools/fileBackupContent?type=file&amp;path=index.html&amp;appToken=接口访问授权Token', function(data){    
+ $.getJSON('${site.dynamicPath}api/directive/tools/fileBackupContent?type=file&amp;path=index.html&amp;appToken=接口访问授权Token', function(data){    
    console.log(data);
  });
  &lt;/script&gt;

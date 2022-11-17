@@ -135,7 +135,6 @@
                 <th width="30" orderField="comments" class="<#if orderField?has_content&&'comments'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'content.comments'/></th>
                 <th width="30" orderField="clicks" class="<#if orderField?has_content&&'clicks'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'clicks'/></th>
                 <th width="70" orderField="publishDate" class="<#if orderField?has_content&&'publishDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'publish_date'/></th>
-                <th width="40" orderField="default" class="<#if !orderField?has_content||'default'==orderField>desc<#else>order</#if>"><@t.page 'content.top_level'/></th>
                 <th width="50"><@t.page 'status'/>/<@t.page 'inspector'/></th>
                 <th width="100"><@t.page 'operate'/></th>
             </tr>
@@ -190,7 +189,6 @@
                 </td>
                 <td class="center">${a.clicks!}</td>
                 <td class="center" title="<@t.page 'create_date'/>:${a.createDate!}">${a.publishDate!}</td>
-                <td class="center">${a.sort!}</td>
                 <td>
                     <@t.page 'status.content.'+a.status/>
                     <#if 1=a.status || 3=a.status>/ <span class="exclude-translate">${(userMap[a.checkUserId?string].nickname)!}</span></#if>
@@ -200,7 +198,7 @@
                     <#if 1=a.status>
                         <#if authorizedMap['cmsContent/sortParameters']>
                             <#if dept?has_content>
-                                <a href="cmsContent/sortParameters.html?id=${a.id}&sort=${a.sort}" class="btnText blue" target="dialog" width="450" height="180" mask="true"><@t.page 'top'/></a>
+                                <a href="cmsContent/sortParameters.html?id=${a.id}&sort=${a.sort}" class="btnText <#if a.sort gt 0>warn<#else>blue</#if>" target="dialog" width="450" height="180" mask="true"><@t.page 'top'/></a>
                             </#if>
                         </#if>
                         <#if authorizedMap['cmsContent/add']>

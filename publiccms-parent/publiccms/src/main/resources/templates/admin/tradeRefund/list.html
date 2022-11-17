@@ -42,12 +42,13 @@
         <thead>
             <tr>
                 <th><@t.page 'id'/></th>
+                <th><@t.page 'user'/></th>
                 <th><@t.page 'payment.id'/></th>
                 <th><@t.page 'amount'/></th>
                 <th><@t.page 'refund.reason'/></th>
+                <th><@t.page 'status'/></th>
                 <th><@t.page 'operate_user'/></th>
                 <th><@t.page 'refund.amount'/></th>
-                <th><@t.page 'status'/></th>
                 <th><@t.page 'reply'/></th>
                 <th orderField="createDate" class="<#if orderField?has_content&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'create_date'/></th>
                 <th><@t.page 'operate'/></th>
@@ -55,14 +56,19 @@
         </thead>
         <tbody>
             <#list page.list as a>
+                <@t.merge 'userIds' a.userId!/>
+            </#list>
+            <@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
+            <#list page.list as a>
             <tr>
                 <td>${a.id!}</td>
-                <td>${a.orderId!}</td>
+                <td class="exclude-translate">${(userMap[a.userId?string].nickname)!}</td>
+                <td>${a.paymentId!}</td>
                 <td>${a.amount!}</td>
                 <td class="exclude-translate">${a.reason!}</td>
+                <td><@t.page 'status.refund.'+a.status/></td>
                 <td>${a.refundUserId!}</td>
                 <td>${a.refundAmount!}</td>
-                <td><@t.page 'status.refund.'+a.status/></td>
                 <td class="exclude-translate">${a.reply!}</td>
                 <td>${a.createDate!}</td>
                 <td class="wrap">

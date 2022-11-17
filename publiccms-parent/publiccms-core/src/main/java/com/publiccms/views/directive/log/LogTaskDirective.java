@@ -33,7 +33,7 @@ import com.publiccms.logic.service.log.LogTaskService;
 * 
 * <pre>
 &lt;script&gt;
-$.getJSON('//cms.publiccms.com/api/directive/log/task?id=1&amp;appToken=接口访问授权Token', function(data){    
+$.getJSON('${site.dynamicPath}api/directive/log/task?id=1&amp;appToken=接口访问授权Token', function(data){    
   console.log(data.result);
 });
 &lt;/script&gt;

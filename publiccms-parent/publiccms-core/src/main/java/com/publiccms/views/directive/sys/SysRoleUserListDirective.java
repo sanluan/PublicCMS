@@ -14,7 +14,7 @@ import com.publiccms.common.handler.RenderHandler;
 
 /**
 *
-* sysRoleUserList 部门分离映射数据查询指令
+* sysRoleUserList 角色用户列表查询指令
 * <p>
 * 参数列表
 * <ul>
@@ -34,10 +34,10 @@ import com.publiccms.common.handler.RenderHandler;
 * <p>
 * &lt;@sys.roleUserList roleId=1 pageSize=10&gt;&lt;#list page.list as
 * a&gt;${a.id.roleId}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.roleUserList&gt;
-* 
+*
 * <pre>
 &lt;script&gt;
- $.getJSON('//cms.publiccms.com/api/directive/sys/roleUserList?roleId=1&amp;pageSize=10&amp;appToken=接口访问授权Token', function(data){    
+ $.getJSON('${site.dynamicPath}api/directive/sys/roleUserList?roleId=1&amp;pageSize=10&amp;appToken=接口访问授权Token', function(data){
    console.log(data.totalCount);
  });
  &lt;/script&gt;
@@ -52,7 +52,7 @@ public class SysRoleUserListDirective extends AbstractTemplateDirective {
                 handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", 30));
         handler.put("page", page).render();
     }
-    
+
     @Override
     public boolean needAppToken() {
         return true;

@@ -207,6 +207,7 @@ $('input[name=timing]',navTab.getCurrentPanel()).click();
                         <input name="cover"<#if requiredFieldList?seq_contains('cover')> class="required"</#if> value="${(a.cover)!}" maxlength="300" size="50" type="text"/>
                         <a class="btnAttach" href="common/upload.html?field=cover&fileTypes=image&width=${(model.coverWidth)!}&height=${(model.coverHeight)!}" lookupGroup="" width="1000" height="600">${(model.fieldTextMap['cover'])!}</a>
                         <a class="view icon-eye-open" ref="cover" data-prefix="${site.sitePath}" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
+                        <#if (model.coverWidth)?has_content && (model.coverHeight)?has_content><span class="info">${(model.coverWidth)!}*${(model.coverHeight)!}</span></#if>
                         <#include "../include_page/preview.html"/>
                         <@preview 'content' 'input[name=cover]'/>
                     </dd>

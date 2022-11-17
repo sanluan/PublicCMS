@@ -11,10 +11,27 @@ import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 
 /**
- *
- * GetUUIDMethod
- * 
- */
+*
+* getUUID 获取UUID
+* <p>
+* <p>
+* 返回结果
+* <ul>
+* <li><code>string</code> 随机uuid
+* </ul>
+* 使用示例
+* <p>
+* ${getUUID()}
+* <p>
+* 
+* <pre>
+&lt;script&gt;
+$.getJSON('${site.dynamicPath}api/method/getUUID', function(data){
+console.log(data);
+});
+&lt;/script&gt;
+* </pre>
+*/
 @Component
 public class GetUUIDMethod extends BaseMethod {
 

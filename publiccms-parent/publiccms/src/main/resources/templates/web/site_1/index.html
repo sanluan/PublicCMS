@@ -16,7 +16,7 @@
     <p>You see this page because your cms data directory does not yet have an index.html template file</p>
     <p>Create the index.html template in Development -> File management -> Template management</p>
     <p>Depending on the cms project configuration, your cms data directory is placed on <@tools.disk>${rootPath}</@tools.disk>,If this is not the path you expected, modify the configuration file cms.properties</p>
-	<script>
+    <script>
     var templatePath='${.current_template_name?keep_after('/')}';
     </script>
     <script src="${base}/resource/js/cms.support.js"></script>

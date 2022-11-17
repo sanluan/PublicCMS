@@ -13,6 +13,7 @@ import com.publiccms.views.pojo.diy.CmsRegionData;
 
 /**
  * regionData diy区域数据获取指令
+ * <p>
  * 参数列表
  * <ul>
  * <li><code>id</code> 区域id
@@ -30,7 +31,7 @@ import com.publiccms.views.pojo.diy.CmsRegionData;
  * 
  * <pre>
 &lt;script&gt;
- $.getJSON('//cms.publiccms.com/api/directive/tools/regionData?itemId=00000000-0000-0000-0000-000000000000&amp;appToken=接口访问授权Token', function(data){    
+ $.getJSON('${site.dynamicPath}api/directive/tools/regionData?itemId=00000000-0000-0000-0000-000000000000&amp;appToken=接口访问授权Token', function(data){    
    console.log(data.id);
  });
  &lt;/script&gt;

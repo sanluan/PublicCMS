@@ -29,7 +29,7 @@ import com.publiccms.common.tools.RequestUtils;
 * 使用示例
 * <p>
 * &lt;input type="hidden" name="_csrf" value="&lt;@tools.csrfToken/&gt;"/&gt;
-* </pre>
+* </p>
 */
 @Component
 public class CsrfTokenDirective extends AbstractTemplateDirective {

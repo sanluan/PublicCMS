@@ -31,6 +31,7 @@
                 <#if 'customform'!=type>
                     <a class="btnAttach" href="common/upload.html?field=value&fileTypes=image&width=${extend.width!}&height=${extend.height!}" lookupGroup="${name}[${index}]" width="1000" height="600"><@t.page 'image'/></a>
                     <a class="view icon-eye-open" ref="${inputName}" data-prefix="${site.sitePath}" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
+                    <#if (extend.width)?has_content && (extend.height)?has_content><span class="info">${extend.width!}*${extend.height!}</span></#if>
                     <#if !preview?has_content>
                         <#include "../include_page/preview.html"/>
                     </#if>

@@ -9,6 +9,7 @@ import com.publiccms.common.handler.RenderHandler;
 
 /**
  * exception 异常获取指令
+ * <p>
  * 返回结果
  * <ul>
  * <li><code>object</code>异常字符串

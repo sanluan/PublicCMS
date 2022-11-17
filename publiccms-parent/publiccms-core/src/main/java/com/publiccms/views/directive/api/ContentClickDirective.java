@@ -31,7 +31,7 @@ import com.publiccms.views.pojo.entities.ClickStatistics;
 * <p>
 * <pre>
 &lt;script&gt;
-$.getJSON('//cms.publiccms.com/api/contentClick?id=1', function(data){
+$.getJSON('${site.dynamicPath}api/contentClick?id=1', function(data){
   console.log(data.clicks);
 });
 &lt;/script&gt;

@@ -34,7 +34,7 @@ import com.publiccms.views.pojo.entities.CmsCategoryType;
  * 
  * <pre>
   &lt;script&gt;
-   $.getJSON('//cms.publiccms.com/api/directive/cms/categoryType?id=banner', function(data){    
+   $.getJSON('${site.dynamicPath}api/directive/cms/categoryType?id=banner', function(data){    
      console.log(data.name);
    });
    &lt;/script&gt;

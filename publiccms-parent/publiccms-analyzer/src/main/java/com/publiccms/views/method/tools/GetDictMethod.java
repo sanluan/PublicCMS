@@ -16,6 +16,28 @@ import com.publiccms.logic.component.site.SiteComponent;
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 
+/**
+*
+* getDict 获取分词词典
+* <p>
+* <p>
+* 返回结果
+* <ul>
+* <li><code>string</code> 自定义分词词典
+* </ul>
+* 使用示例
+* <p>
+* ${getDict()}
+* <p>
+* 
+* <pre>
+&lt;script&gt;
+$.getJSON('${site.dynamicPath}api/method/getDict?appToken=接口访问授权Token', function(data){
+console.log(data);
+});
+&lt;/script&gt;
+* </pre>
+*/
 @Component
 public class GetDictMethod extends BaseMethod {
     @Resource

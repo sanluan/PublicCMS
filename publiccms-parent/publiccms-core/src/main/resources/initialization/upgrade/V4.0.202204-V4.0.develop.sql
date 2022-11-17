@@ -238,3 +238,5 @@ DROP TABLE `sys_dept_config`;
 ALTER TABLE `sys_user` CHANGE COLUMN `password` `password` varchar(150) NOT NULL COMMENT '混淆码.密码' AFTER `name`;
 UPDATE `sys_user` SET `password` = CONCAT(`salt`,'.',`password`) WHERE `salt` IS NOT NULL AND `salt` != '';
 ALTER TABLE `sys_user` DROP COLUMN `salt`;
+-- 2022-11-08 --
+UPDATE `sys_module` SET `authorized_url`= 'cmsWebFile/doUpload,cmsWebFile/uploadIco,cmsWebFile/doUpload,cmsWebFile/doUploadIco,cmsWebFile/check' WHERE `id` ='webfile_upload';

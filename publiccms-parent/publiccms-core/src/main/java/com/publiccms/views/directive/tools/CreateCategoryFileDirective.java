@@ -38,7 +38,7 @@ import freemarker.template.TemplateException;
  * 
  * <pre>
 &lt;script&gt;
- $.getJSON('//cms.publiccms.com/api/directive/tools/createCategoryFile?id=1&amp;templatePath=category.html&amp;filePath=category/1.html&amp;appToken=接口访问授权Token', function(data){    
+ $.getJSON('${site.dynamicPath}api/directive/tools/createCategoryFile?id=1&amp;templatePath=category.html&amp;filePath=category/1.html&amp;appToken=接口访问授权Token', function(data){    
    console.log(data);
  });
  &lt;/script&gt;

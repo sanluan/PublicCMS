@@ -13,11 +13,12 @@ import com.publiccms.common.handler.RenderHandler;
  * <p>
  * 返回结果
  * <ul>
- * <li><code>cms</code>cms版本
- * <li><code>authorizationEdition</code>使用授权
- * <li><code>authorizationStartDate</code>授权起始日期
- * <li><code>authorizationEndDate</code>授权结束日期
- * <li><code>authorizationOrganization</code>授权单位
+ * <li><code>cms</code> cms版本
+ * <li><code>revision</code> 修订版
+ * <li><code>authorizationEdition</code> 使用授权
+ * <li><code>authorizationStartDate</code> 授权起始日期
+ * <li><code>authorizationEndDate</code> 授权结束日期
+ * <li><code>authorizationOrganization</code> 授权单位
  * <li><code>cluster</code>节点id
  * <li><code>master</code>是否管理节点【true:管理节点,false:普通节点】
  * </ul>
@@ -27,7 +28,7 @@ import com.publiccms.common.handler.RenderHandler;
  * 
  * <pre>
 &lt;script&gt;
- $.getJSON('//cms.publiccms.com/api/directive/tools/version', function(data){    
+ $.getJSON('${site.dynamicPath}api/directive/tools/version', function(data){    
    console.log(data.cms);
  });
  &lt;/script&gt;
@@ -39,6 +40,7 @@ public class VersionDirective extends AbstractTemplateDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
         handler.put("cms", CmsVersion.getVersion());
+        handler.put("revision", CmsVersion.getRevision());
         boolean authorizationEdition = CmsVersion.isAuthorizationEdition();
         handler.put("authorizationEdition", authorizationEdition);
         if (authorizationEdition) {

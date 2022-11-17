@@ -22,7 +22,6 @@ public class CmsContentRelatedDao extends BaseDao<CmsContentRelated> {
      * @param relatedContentId
      * @param relationType 
      * @param relation 
-     * @param userId
      * @param orderField
      * @param orderType
      * @param pageIndex

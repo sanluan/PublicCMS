@@ -16,10 +16,33 @@ import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 
 /**
- *
- * GetContentAttributeMethod
- * 
- */
+*
+* getContentAttribute 获取内容扩展数据
+* <p>
+* 参数列表
+* <ol>
+* <li>内容id
+* </ol>
+* <p>
+* 返回结果
+* <ul>
+* <li><code>attribute</code>内容扩展数据(字段编码,<code>value</code>)
+* </ul>
+* 使用示例
+* <p>
+* &lt;#assign attribute=getContentAttribute(1)/&lt;
+* <p>
+* ${(attribute.text?no_esc)!}
+* <p>
+* 
+* <pre>
+&lt;script&gt;
+$.getJSON('${site.dynamicPath}api/method/getContentAttribute?appToken=接口访问授权Token&amp;parameters=1', function(data){
+console.log(data.text);
+});
+&lt;/script&gt;
+* </pre>
+*/
 @Component
 public class GetContentAttributeMethod extends BaseMethod {
 

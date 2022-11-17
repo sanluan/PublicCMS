@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<title>PublicCMS install</title>
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="cache-control" content="no-cache">
+<meta http-equiv="expires" content="0">
+<script src="../resource/js/jquery-3.6.1.min.js"></script>
+<style type="text/css">
+body {font-size: 14px;}
+.install .error {color: #f00;}
+.install .box {margin: 0 auto;margin-top: 20px;width: 99%;border-radius: 4px;}
+.install .box p {border-bottom: 1px solid #fafafa;}
+.install .box label {width: 100px;}
+.install .header {height: 65px;line-height: 65px;background-color: #6999ec;border-bottom: 2px solid lightgray;}
+.install .header h1 {font-size: 20px;padding-left: 10px;float: left;margin: 0px;color: #ffffff;}
+.install .header div {float: right;margin-right: 10px;font-size: 13px;color: lightgray;}
+.install .box-page {height: 450px;}
+.install .box-page .page-content {height: 420px;overflow: auto;overflow-x: hidden;padding:0 10px;border: 1px solid #6999ec;border-radius: 4px;}
+.install .box-page .page-content .content-box{width:420px;margin:0 auto;}
+.install .box-page .page-content form .wrapper{line-height: 35px;margin-top:5px;}
+.install .box-page .page-content form .wrapper span{color: #6999ec;}
+.install .box-page .page-content form label{width:140px;margin-right: 10px;}
+.install .box-page .page-content form input[type=text],input[type=number]{width:250px;height:28px;font-size: 14px;padding-left:5px;padding-right:5px;}
+.install .box-page .page-content pre {font-size: 13px; white-space : pre-wrap;white-space: -moz-pre-wrap;white-space: -pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word;white-space: pre-wrap;}
+.install .box-page .checkbox {line-height: 30px;height: 30px;text-align: center;}
+.install .buttons {margin: auto;text-align: center;}
+.install .buttons button,.install .buttons a {width:120px;border:0px;color:white;line-height: 30px;cursor:pointer;}
+.install .buttons a{color:black;}
+.install .active {background-color: #6999ec;}
+.install .hide {display: none;}
+.install .show {display: block;}
+select {
+    height:30px;
+    line-height:30px;
+}
+</style>
+
+</head>
+<body class="install">
+    <div class="box">
+        <div class="header">
+            <h1>欢迎使用 PublicCMS</h1>
+            <div>${currentVersion}</div>
+        </div>
+        <div class="box-page page-policy">
+            <div class="page-content">
+                <pre>
+                    <p style="text-align: center;">======= PublicCMS ${currentVersion} 授权许可协议 =======</p>
+<#include "license.html"/>
+                </pre>
+            </div>
+
+            <div class="checkbox">
+                <input type="checkbox">我已阅读并同意此协议
+            </div>
+        </div>
+
+        <div class="box-page hide page-operate">
+            <div class="page-content">
+                <div class="content-box">
+                    <h2>系统配置</h2>
+                    <form action="./" method="post">
+                        <input type="hidden" name="step" value="dataBaseConfig"/>
+                        <div class="wrapper"><label>数据库地址</label><input type="text" maxlength="100" name="host" value="127.0.0.1"/></div>
+                        <div class="wrapper"><label>数据库端口</label><input type="number" maxlength="10" name="port" value="${defaultPort}"/></div>
+                        <div class="wrapper"><label>数据库名称</label><input type="text" maxlength="50" name="database" value="publiccms"/></div>
+                        <div class="wrapper"><span>请输入已有的数据库名称，字符集编码推荐使用utf8或utf8mb4，CMS程序不会自动创建数据库</span></div>
+                        <div class="wrapper"><label>数据库用户</label><input type="text" maxlength="50" name="username"/></div>
+                        <div class="wrapper"><label>数据库密码</label><input type="text" maxlength="50" name="password"/></div>
+                        <div class="wrapper"><label>数据库时区</label><input type="text" maxlength="10" name="timeZone" value="${.now?string('X')}"/></div>
+                        <div class="wrapper"><span>数据库配置文件将保存至您的数据目录：${dataFilePath}</span></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="buttons">
+            <a href="./" class="hide">重新配置</a>
+            <button class="next">下一步</button>
+        </div>
+        
+        <div class="copyright" style="font-size:12px;text-align:center;">
+            <p>&copy;${.now?string('yyyy')} PublicCMS.com All Rights Reserved.</p>
+        </div>
+    </div>
+
+
+    <script>
+        $("input[type=checkbox]").click(function() {
+            if ($(this).is(':checked')) {
+                $(".buttons button:last").addClass("active");
+            } else {
+                $(".buttons button:last").removeClass("active");
+            }
+        });
+        
+        var step = 0;
+        $(".buttons button").click(function() {
+            if (!$(this).hasClass("active")) {
+                return;
+            }
+
+            step += 1;
+
+            switch(step) {
+                case 1:
+                    $(".page-policy").hide();
+                    $(".page-operate").show();
+                    $(".buttons button").addClass("active");
+                    $(".buttons a").show();
+                    break;
+                case 2:
+                    $(".buttons button").removeClass("active");
+                    $form = $(document.forms[0]);
+                    $.post($form.attr("action"), $form.serialize() ,function(result){
+                        $(".content-box").html(result);
+                        if ($(".error",$(".content-box")).length <= 0) {
+                            $(".buttons button").addClass("active");
+                        }
+                    }).fail(function(){
+                        $(".buttons button").addClass("active");
+                        step -= 1;
+                    });
+                    break;
+                case 3:
+                    $(".buttons button").removeClass("active");
+                    $form = $(document.forms[0]);
+                    $.post($form.attr("action"), $form.serialize() ,function(result){
+                        $(".content-box").html(result);
+                        $(".buttons a").hide();
+                    }).fail(function(){
+                        $(".buttons button").addClass("active");
+                        step -= 1;
+                    });
+                    break;
+            }
+        });
+
+    </script>
+</body>
+</html>

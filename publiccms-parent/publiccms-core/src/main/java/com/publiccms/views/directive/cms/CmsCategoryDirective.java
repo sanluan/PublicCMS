@@ -28,7 +28,9 @@ import com.publiccms.logic.service.cms.CmsCategoryService;
  * <li><code>id</code> 分类id,结果返回<code>object</code>
  * {@link com.publiccms.entities.cms.CmsCategory}
  * <li><code>code</code> 分类编码,当id为空时生效,结果返回<code>object</code>
- * <li><code>absoluteURL</code> url处理为绝对路径 默认为<code> true</code>
+ * <li><code>absoluteURL</code> url处理为绝对路径 默认为<code>true</code>
+ * <li><code>containsAttribute</code>
+ * id不为空时有效,默认为<code>false</code>,结果返回<code>attribute</code>分类扩展数据<code>map</code>(字段编码,<code>value</code>)
  * <li><code>ids</code>
  * 多个分类id,逗号或空格间隔,当id或code为空时生效,结果返回<code>map</code>(id,<code>object</code>)
  * </ul>
@@ -41,7 +43,7 @@ import com.publiccms.logic.service.cms.CmsCategoryService;
  * 
  * <pre>
    &lt;script&gt;
-    $.getJSON('//cms.publiccms.com/api/directive/cms/category?id=1', function(data){    
+    $.getJSON('${site.dynamicPath}api/directive/cms/category?id=1', function(data){    
       console.log(data.name);
     });
     &lt;/script&gt;

@@ -42,7 +42,7 @@ import com.publiccms.logic.service.cms.CmsPlaceService;
  * 
  * <pre>
  &lt;script&gt;
-  $.getJSON('//cms.publiccms.com/api/directive/cms/place?id=1&amp;appToken=接口访问授权Token', function(data){    
+  $.getJSON('${site.dynamicPath}api/directive/cms/place?id=1&amp;appToken=接口访问授权Token', function(data){    
     console.log(data.title);
   });
   &lt;/script&gt;

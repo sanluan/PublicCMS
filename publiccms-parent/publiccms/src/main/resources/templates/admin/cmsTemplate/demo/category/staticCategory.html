@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>${(category.name)!} ${(attribute.title)!}</title>
+    <title>${(attribute.title)?has_content?then(attribute.title,category.name)!}</title>
     <meta name="keywords" content="${(attribute.keywords)!}"/>
     <meta name="description" content="${(attribute.description)!}"/>
 </head>
@@ -10,14 +10,14 @@
 <#macro bread category>
     <#if category.parentId?has_content>
         <@cms.category id=category.parentId;category>
-            <@bread object/>
+            <@bread category/>
             <a href="${category.url}">${category.name}</a> &gt;
         </@cms.category>
     </#if>
 </#macro>
     <header data-diy="page">
         <h1>${(site.name)!}</h1>
-        <p><@bread category/> ${(category.name)!}</p>
+        <p><@bread category/> <a href="${category.url}">${category.name}</a></p>
     </header>
     <nav data-diy="category">
         <a href="${site.sitePath}">Home</a>
@@ -95,7 +95,7 @@
     var itemString="itemType=category&itemId=${category.id}";
     var templatePath='${.current_template_name?keep_after('/')}';
     </script>
-    
+
     <script src="${site.dynamicPath}resource/js/cms.support.js"></script>
     <script>
         var ca = cmsAnalytics();

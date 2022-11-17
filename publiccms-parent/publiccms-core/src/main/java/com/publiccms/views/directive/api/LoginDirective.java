@@ -54,7 +54,7 @@ import com.publiccms.logic.service.sys.SysUserTokenService;
  * 
  * <pre>
 &lt;script&gt;
-$.getJSON('//cms.publiccms.com/api/login?username=admin&amp;password=sha512encodingpassword&amp;encoding=sha512&amp;channel=web', function(data){
+$.getJSON('${site.dynamicPath}api/login?username=admin&amp;password=sha512encodingpassword&amp;encoding=sha512&amp;channel=web', function(data){
     console.log(result+","+authToken+","+user.nickname+","+expiryDate);
 });
 &lt;/script&gt;

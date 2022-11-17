@@ -36,7 +36,7 @@ import com.publiccms.common.handler.RenderHandler;
  * 
  * <pre>
 &lt;script&gt;
- $.getJSON('//cms.publiccms.com/api/directive/cms/dictionaryList?name=data', function(data){    
+ $.getJSON('${site.dynamicPath}api/directive/cms/dictionaryList?name=data', function(data){    
    console.log(data.totalCount);
  });
  &lt;/script&gt;

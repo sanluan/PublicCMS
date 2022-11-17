@@ -1,6 +1,6 @@
 <#macro contentFiles image contentId='' copy=false>
     <#local name=image?then('images','files')/>
-    <#local fileTypes=image?then('image','video,audio,other')/>
+    <#local fileTypes=image?then('image','video,document,audio,other')/>
 <table class="list nowrap itemDetail ${name}" addButton="<@t.page 'button.new_line'/>" batchButton="<@t.page 'button.batch_upload'/>" batchUploadUrl="common/batchUpload.html?field=filePath&originalField=description<#if image>&fileTypes=image</#if>" width="100%">
     <thead>
         <tr>

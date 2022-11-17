@@ -13,8 +13,29 @@ import freemarker.template.TemplateModelException;
 
 /**
  *
- * GetMd5Method
+ * getSha1 获取sha1
+ * <p>
+ * 参数列表
+ * <ol>
+ * <li>字符串
+ * </ol>
+ * <p>
+ * 返回结果
+ * <ul>
+ * <li><code>string</code> sha1值
+ * </ul>
+ * 使用示例
+ * <p>
+ * ${getSha1('aaa')}
+ * <p>
  * 
+ * <pre>
+&lt;script&gt;
+$.getJSON('${site.dynamicPath}api/method/getSha1?parameters=aaa', function(data){
+console.log(data);
+});
+&lt;/script&gt;
+ * </pre>
  */
 @Component
 public class GetSha1Method extends BaseMethod {
@@ -27,7 +48,7 @@ public class GetSha1Method extends BaseMethod {
         }
         return null;
     }
-    
+
     @Override
     public boolean needAppToken() {
         return false;

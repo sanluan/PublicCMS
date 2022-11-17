@@ -357,11 +357,11 @@ DWZ.regPlugins.push(function($p){
             $resultBox.empty();
             for (var i=0; i < diff.length; i++) {
                 if (diff[i].removed) {
-                    $('<del></del>').append(diff[i].value).appendTo($resultBox);
+                    $('<del></del>').appendTo($resultBox).text(diff[i].value);
                 } else if (diff[i].added) {
-                    $('<ins></ins>').append(diff[i].value).appendTo($resultBox);
+                    $('<ins></ins>').appendTo($resultBox).text(diff[i].value);
                 } else {
-                  $resultBox.append(diff[i].value);
+                  $resultBox.append($('<div></div>').text(diff[i].value).html());
                 }
             }
         }

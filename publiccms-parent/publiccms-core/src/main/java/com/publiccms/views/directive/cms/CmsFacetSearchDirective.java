@@ -27,8 +27,6 @@ import com.publiccms.views.pojo.query.CmsContentSearchQuery;
  * facetSearch 内容列表查询指令
  * <p>
  * 参数列表{@link com.publiccms.views.directive.cms.CmsSearchDirective}
- * 
- * </ul>
  * <p>
  * 返回结果
  * <ul>
@@ -49,7 +47,7 @@ import com.publiccms.views.pojo.query.CmsContentSearchQuery;
  * 
  * <pre>
   &lt;script&gt;
-   $.getJSON('//cms.publiccms.com/api/directive/cms/facetSearch?word=cms&amp;pageSize=10', function(data){    
+   $.getJSON('${site.dynamicPath}api/directive/cms/facetSearch?word=cms&amp;pageSize=10', function(data){    
      console.log(data.totalCount);
    });
    &lt;/script&gt;

@@ -45,7 +45,7 @@ import jakarta.annotation.Resource;
 
 /**
  *
- * ContentClickDirective
+ * contentCreate 内容创建接口
  * 
  */
 @Component

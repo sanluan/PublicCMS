@@ -9,14 +9,10 @@ buildscript {
             name = "spring-milestone"
             url "https://repo.spring.io/milestone/"
         }
-        maven {
-            name = "spring-libs-milestone"
-            url "https://repo.spring.io/libs-milestone/"
-        }
     }
     dependencies {
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-gradle-plugin
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.5.1")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.7.5")
     }
 }
 
@@ -38,7 +34,7 @@ subprojects {
     ext {
         // http://mvnrepository.com/artifact/org.springframework/spring-core
         // https://spring.io/projects/spring-framework
-        springVersion = "6.0.0-M6"
+        springVersion = "6.0.0"
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
         // https://spring.io/projects/spring-boot
         springBootVersion = "3.0.0-M5"
@@ -46,7 +42,7 @@ subprojects {
         // http://hc.apache.org/downloads.cgi
         httpclientVersion = "4.5.13"
         // http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
-        jacksonVersion = "2.14.0-rc1"
+        jacksonVersion = "2.14.0"
         // http://mvnrepository.com/artifact/org.hibernate/hibernate-core
         // http://hibernate.org/orm/downloads/
         hibernateVersion = "5.6.11.Final"
@@ -74,13 +70,15 @@ subprojects {
         // https://mvnrepository.com/artifact/org.apache.lucene/lucene-analyzers-smartcn
         luceneVersion = "8.11.2"
         // http://mvnrepository.com/artifact/redis.clients/jedis
-        jedisVersion = "4.3.0"
+        jedisVersion = "4.3.1"
         // http://mvnrepository.com/artifact/org.quartz-scheduler/quartz
         quartzVersion = "2.3.2"
         // https://mvnrepository.com/artifact/com.zaxxer/HikariCP
         hikariCPVersion = "5.0.1"
-        // https://mvnrepository.com/artifact/mysql/mysql-connector-java
-        mysqlVersion = "8.0.30"
+        // https://mvnrepository.com/artifact/com.mysql/mysql-connector-j
+        mysqlVersion = "8.0.31"
+        // https://mvnrepository.com/artifact/fr.opensagres.xdocreport/fr.opensagres.poi.xwpf.converter.xhtml
+        xhtmlConverterVersion = "2.0.4"
         // https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml
         poiVersion = "5.2.3"
         // http://mvnrepository.com/artifact/commons-fileupload/commons-fileupload
@@ -92,7 +90,7 @@ subprojects {
         // http://mvnrepository.com/artifact/commons-io/commons-io
         ioVersion = "2.11.0"
         // https://mvnrepository.com/artifact/org.apache.commons/commons-text
-        textVersion = "1.9"
+        textVersion = "1.10.0"
         // http://mvnrepository.com/artifact/commons-codec/commons-codec
         codecVersion = "1.15"
         // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
@@ -101,6 +99,8 @@ subprojects {
         extractorVersion = "2.18.0"
         // https://mvnrepository.com/artifact/org.sejda.imageio/webp-imageio
         webpVersion = "0.1.6"
+        // https://mvnrepository.com/artifact/net.ifok.image/image4j
+        image4jVersion = "0.7.2"
         // http://mvnrepository.com/artifact/eu.bitwalker/UserAgentUtils
         userAgentUtilsVersion = "1.21"
         // https://mvnrepository.com/artifact/jakarta.annotation/jakarta.annotation-api

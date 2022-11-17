@@ -39,7 +39,7 @@ import com.publiccms.logic.component.template.ModelComponent;
  * 
  * <pre>
  &lt;script&gt;
-  $.getJSON('//cms.publiccms.com/api/directive/cms/modelList', function(data){    
+  $.getJSON('${site.dynamicPath}api/directive/cms/modelList', function(data){    
     console.log(data.totalCount);
   });
   &lt;/script&gt;

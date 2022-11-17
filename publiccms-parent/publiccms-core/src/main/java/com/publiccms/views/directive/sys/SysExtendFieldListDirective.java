@@ -13,7 +13,7 @@ import com.publiccms.common.handler.RenderHandler;
 
 /**
  *
- * sysExtendFieldList 部门分离映射数据查询指令
+ * sysExtendFieldList 扩展字段列表查询指令
  * <p>
  * 参数列表
  * <ul>
@@ -31,10 +31,10 @@ import com.publiccms.common.handler.RenderHandler;
  * <p>
  * &lt;@sys.extendFieldList deptId=1 pageSize=10&gt;&lt;#list list as
  * a&gt;${a.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.extendFieldList&gt;
- * 
+ *
  * <pre>
  &lt;script&gt;
-  $.getJSON('//cms.publiccms.com/api/directive/sys/extendFieldList?extendId=1&amp;appToken=接口访问授权Token', function(data){    
+  $.getJSON('${site.dynamicPath}api/directive/sys/extendFieldList?extendId=1&amp;appToken=接口访问授权Token', function(data){
     console.log(data);
   });
   &lt;/script&gt;

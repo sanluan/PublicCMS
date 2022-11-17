@@ -13,8 +13,29 @@ import freemarker.template.TemplateModelException;
 
 /**
  *
- * GetMd5Method
+ * getIpv4Number 获取ip的数字值
+ * <p>
+ * 参数列表
+ * <ol>
+ * <li>ip
+ * </ol>
+ * <p>
+ * 返回结果
+ * <ul>
+ * <li><code>number</code> 数字
+ * </ul>
+ * 使用示例
+ * <p>
+ * ${getIpv4Number('127.0.0.1')}
+ * <p>
  * 
+ * <pre>
+&lt;script&gt;
+$.getJSON('${site.dynamicPath}api/method/getIpv4Number?parameters=127.0.0.1', function(data){
+console.log(data);
+});
+&lt;/script&gt;
+ * </pre>
  */
 @Component
 public class GetIpv4NumberMethod extends BaseMethod {
@@ -23,7 +44,7 @@ public class GetIpv4NumberMethod extends BaseMethod {
     public Object execute(List<TemplateModel> arguments) throws TemplateModelException {
         String string = getString(0, arguments);
         if (CommonUtils.notEmpty(string)) {
-            return IpUtils.getIpv4Number(string);
+            return String.valueOf(IpUtils.getIpv4Number(string));
         }
         return null;
     }

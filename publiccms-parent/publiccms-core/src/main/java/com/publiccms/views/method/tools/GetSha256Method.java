@@ -13,8 +13,29 @@ import freemarker.template.TemplateModelException;
 
 /**
  *
- * GetMd5Method
+ * getSha256 获取sha256
+ * <p>
+ * 参数列表
+ * <ol>
+ * <li>字符串
+ * </ol>
+ * <p>
+ * 返回结果
+ * <ul>
+ * <li><code>string</code> sha256值
+ * </ul>
+ * 使用示例
+ * <p>
+ * ${getSha256('aaa')}
+ * <p>
  * 
+ * <pre>
+&lt;script&gt;
+$.getJSON('${site.dynamicPath}api/method/getSha256?parameters=aaa', function(data){
+console.log(data);
+});
+&lt;/script&gt;
+ * </pre>
  */
 @Component
 public class GetSha256Method extends BaseMethod {
@@ -23,11 +44,11 @@ public class GetSha256Method extends BaseMethod {
     public Object execute(List<TemplateModel> arguments) throws TemplateModelException {
         String string = getString(0, arguments);
         if (CommonUtils.notEmpty(string)) {
-            return VerificationUtils.sha512Encode(string);
+            return VerificationUtils.sha256Encode(string);
         }
         return null;
     }
-    
+
     @Override
     public boolean needAppToken() {
         return false;

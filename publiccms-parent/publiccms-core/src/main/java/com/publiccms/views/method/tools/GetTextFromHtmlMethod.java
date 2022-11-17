@@ -12,10 +12,31 @@ import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 
 /**
- *
- * GetTextFromHtmlMethod
- * 
- */
+*
+* getTextFromHtml 获取html中的文本
+* <p>
+* 参数列表
+* <ol>
+* <li>html内容
+* </ol>
+* <p>
+* 返回结果
+* <ul>
+* <li><code>string</code> 文本结果
+* </ul>
+* 使用示例
+* <p>
+* ${getTextFromHtml('&lt;a href="http://www.publiccms.com/"&gt;publiccms&lt;/a&gt;')}
+* <p>
+* 
+* <pre>
+&lt;script&gt;
+$.getJSON('${site.dynamicPath}api/method/getTextFromHtml?parameters=&lt;a href="http://www.publiccms.com/"&gt;publiccms&lt;/a&gt;', function(data){
+console.log(data);
+});
+&lt;/script&gt;
+* </pre>
+*/
 @Component
 public class GetTextFromHtmlMethod extends BaseMethod {
 

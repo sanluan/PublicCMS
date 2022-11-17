@@ -15,7 +15,7 @@ function initEnv() {
     var ajaxbg = $("#background,#progressBar");
     ajaxbg.hide();
     ajaxbg.click(function(){
-        $('#background,#progressBar').hide();
+        ajaxbg.hide();
     });
     $(document).ajaxStart(function() {
         ajaxbg.show();

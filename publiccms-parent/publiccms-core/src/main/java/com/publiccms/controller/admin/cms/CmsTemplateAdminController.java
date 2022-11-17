@@ -175,7 +175,6 @@ public class CmsTemplateAdminController {
      * @param word
      * @param replace
      * @param request
-     * @param model
      * @return view name
      */
     @RequestMapping("replace")

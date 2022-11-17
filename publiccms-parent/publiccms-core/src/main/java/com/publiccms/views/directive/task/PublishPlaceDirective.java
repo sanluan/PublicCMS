@@ -41,7 +41,7 @@ import freemarker.template.TemplateException;
  * 
  * <pre>
 &lt;script&gt;
- $.getJSON('//cms.publiccms.com/api/directive/task/publishPlace?path=&amp;appToken=接口访问授权Token', function(data){    
+ $.getJSON('${site.dynamicPath}api/directive/task/publishPlace?path=&amp;appToken=接口访问授权Token', function(data){    
    console.log(data);
  });
  &lt;/script&gt;

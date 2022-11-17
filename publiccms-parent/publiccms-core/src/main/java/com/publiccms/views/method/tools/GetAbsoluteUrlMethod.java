@@ -4,8 +4,9 @@ import org.springframework.stereotype.Component;
 
 /**
  *
- * getAbsoluteUrl
- * 
+ * getAbsoluteUrl 获取url绝对路径
+ * <p>
+ * {@link com.publiccms.views.method.tools.GetUrlMethod}
  */
 @Component
 public class GetAbsoluteUrlMethod extends GetUrlMethod {

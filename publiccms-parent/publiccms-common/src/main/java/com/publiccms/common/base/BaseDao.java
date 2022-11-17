@@ -280,7 +280,6 @@ public abstract class BaseDao<E> {
      * 处理数据
      *
      * @param <T>
-     * @param query
      * @param queryHandler
      * @param worker
      * @param batchSize

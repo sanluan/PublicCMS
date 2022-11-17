@@ -11,6 +11,27 @@ import com.publiccms.logic.component.site.SiteComponent;
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 
+/**
+*
+* getDictEnable 获取词典是否启用
+* <p>
+* 返回结果
+* <ul>
+* <li><code>boolean</code> 词典是否启用
+* </ul>
+* 使用示例
+* <p>
+* ${getDictEnable()}
+* <p>
+* 
+* <pre>
+&lt;script&gt;
+$.getJSON('${site.dynamicPath}api/method/getDictEnable', function(data){
+console.log(data);
+});
+&lt;/script&gt;
+* </pre>
+*/
 @Component
 public class GetDictEnableMethod extends BaseMethod {
     @Resource

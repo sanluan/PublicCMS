@@ -32,7 +32,7 @@ import com.publiccms.logic.service.sys.SysConfigDataService;
 * 
 * <pre>
 &lt;script&gt;
-$.getJSON('//cms.publiccms.com/api/directive/sys/configData?code=site&amp;appToken=接口访问授权Token', function(data){    
+$.getJSON('${site.dynamicPath}api/directive/sys/configData?code=site&amp;appToken=接口访问授权Token', function(data){    
  console.log(data.register_url);
 });
 &lt;/script&gt;

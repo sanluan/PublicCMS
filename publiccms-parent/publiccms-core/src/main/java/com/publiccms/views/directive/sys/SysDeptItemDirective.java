@@ -18,7 +18,7 @@ import com.publiccms.logic.service.sys.SysDeptService;
 
 /**
  *
- * sysDeptItem 部门分类授权查询指令
+ * sysDeptItem 数据授权查询指令
  * <p>
  * 参数列表
  * <ul>
@@ -34,10 +34,10 @@ import com.publiccms.logic.service.sys.SysDeptService;
  * <p>
  * &lt;@sys.deptItem deptId=1 ItemIds=1,2,3&gt;&lt;#list map as
  * k,v&gt;${k}:${v}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.deptItem&gt;
- * 
+ *
  * <pre>
  &lt;script&gt;
-  $.getJSON('//cms.publiccms.com/api/directive/sys/deptItem?deptId=1&amp;ItemId=1&amp;appToken=接口访问授权Token', function(data){    
+  $.getJSON('${site.dynamicPath}api/directive/sys/deptItem?deptId=1&amp;ItemId=1&amp;appToken=接口访问授权Token', function(data){
     console.log(data);
   });
   &lt;/script&gt;

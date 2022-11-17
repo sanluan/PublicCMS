@@ -1,4 +1,9 @@
 <@trade.accountList pageIndex=pageNum pageSize=numPerPage>
+<div class="pageHeader">
+    <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
+        <#include "../include_page/parameters.html"/>
+    </form>
+</div>
 <@sys.authorized roleIds=admin.roles urls='tradeAccount/add,tradeAccount/rechargeParameters,tradeAccountHistory/list'><#assign authorizedMap=map/></@sys.authorized>
 <div class="pageContent">
     <div class="panelBar">
@@ -13,8 +18,8 @@
             <tr>
                 <th><@t.page 'id'/></th>
                 <th><@t.page 'user.nickname'/></th>
-                <th><@t.page 'amount'/></th>
-                <th><@t.page 'update_date'/></th>
+                <th orderField="amount" class="<#if orderField?has_content&&'amount'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'amount'/></th>
+                <th orderField="updateDate" class="<#if orderField?has_content&&'updateDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'update_date'/></th>
                 <th><@t.page 'operate'/></th>
             </tr>
         </thead>

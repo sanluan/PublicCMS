@@ -13,8 +13,29 @@ import freemarker.template.TemplateModelException;
 
 /**
  *
- * GetMd5Method
+ * getSha512 获取sha512
+ * <p>
+ * 参数列表
+ * <ol>
+ * <li>字符串
+ * </ol>
+ * <p>
+ * 返回结果
+ * <ul>
+ * <li><code>string</code> sha512值
+ * </ul>
+ * 使用示例
+ * <p>
+ * ${getSha512('aaa')}
+ * <p>
  * 
+ * <pre>
+&lt;script&gt;
+$.getJSON('${site.dynamicPath}api/method/getSha512?parameters=aaa', function(data){
+console.log(data);
+});
+&lt;/script&gt;
+ * </pre>
  */
 @Component
 public class GetSha512Method extends BaseMethod {

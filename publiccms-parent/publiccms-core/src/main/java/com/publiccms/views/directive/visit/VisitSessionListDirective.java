@@ -13,8 +13,36 @@ import com.publiccms.common.handler.PageHandler;
 
 /**
  *
- * VisitSessionListDirective
+ * visitSessionList 访问会话报表列表查询指令
+ * <p>
+ * 参数列表
+ * <ul>
+ * <li><code>sessionId</code> 会话id
+ * <li><code>startVisitDate</code> 起始访问日期,【2020-01-01 23:59:59】,【2020-01-01】
+ * <li><code>endVisitDate</code> 终止访问日期,【2020-01-01 23:59:59】,【2020-01-01】
+ * <li><code>orderType</code> <code>orderType</code> 排序类型,【asc:正序,desc:倒叙】,默认为创建日期倒叙
+ * <li><code>pageIndex</code> 页码
+ * <li><code>pageSize</code> 每页条数
+ * </ul>
+ * <p>
+ * 返回结果
+ * <ul>
+ * <li><code>page</code> {@link com.publiccms.common.handler.PageHandler}
+ * <li><code>page.list</code> List类型 查询结果实体列表
+ * {@link com.publiccms.entities.visit.VisitSession}
+ * </ul>
+ * 使用示例
+ * <p>
+ * &lt;@visit.sessionList&gt;&lt;#list page.list as
+ * a&gt;${a.pv}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@visit.sessionList&gt;
  * 
+ * <pre>
+&lt;script&gt;
+$.getJSON('${site.dynamicPath}api/directive/visit/sessionList?appToken=接口访问授权Token', function(data){    
+  console.log(data.totalCount);
+});
+&lt;/script&gt;
+ * </pre>
  */
 @Component
 public class VisitSessionListDirective extends AbstractTemplateDirective {

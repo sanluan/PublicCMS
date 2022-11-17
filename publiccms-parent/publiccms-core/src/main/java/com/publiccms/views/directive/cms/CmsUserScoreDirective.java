@@ -38,7 +38,7 @@ import com.publiccms.logic.service.cms.CmsUserScoreService;
 * 
 * <pre>
 &lt;script&gt;
-$.getJSON('//cms.publiccms.com/api/directive/cms/userScore?id=1', function(data){    
+$.getJSON('${site.dynamicPath}api/directive/cms/userScore?id=1', function(data){    
   console.log(data.scores);
 });
 &lt;/script&gt;

@@ -16,6 +16,28 @@ import com.publiccms.logic.component.site.SiteComponent;
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 
+/**
+*
+* getSkipWord 获取词典忽略分词
+* <p>
+* <p>
+* 返回结果
+* <ul>
+* <li><code>string</code> 词典忽略分词
+* </ul>
+* 使用示例
+* <p>
+* ${getSkipWord()}
+* <p>
+* 
+* <pre>
+&lt;script&gt;
+$.getJSON('${site.dynamicPath}api/method/getRandom?appToken=接口访问授权Token', function(data){
+console.log(data);
+});
+&lt;/script&gt;
+* </pre>
+*/
 @Component
 public class GetSkipWordMethod extends BaseMethod {
     @Resource

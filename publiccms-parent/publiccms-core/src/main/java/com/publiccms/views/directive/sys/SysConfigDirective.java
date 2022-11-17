@@ -26,7 +26,7 @@ import com.publiccms.logic.component.config.ConfigComponent.ConfigInfo;
  * 
  * <pre>
 &lt;script&gt;
-$.getJSON('//cms.publiccms.com/api/directive/sys/config?code=site&amp;appToken=接口访问授权Token', function(data){    
+$.getJSON('${site.dynamicPath}api/directive/sys/config?code=site&amp;appToken=接口访问授权Token', function(data){    
   console.log(data.description);
 });
 &lt;/script&gt;

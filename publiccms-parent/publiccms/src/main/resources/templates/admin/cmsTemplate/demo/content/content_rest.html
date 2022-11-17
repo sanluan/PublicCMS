@@ -16,21 +16,21 @@
         .text-center{text-align:center;}
         .clearfix::after{display: block;clear: both;content: "";}
         article #content img,article #content table,article figure img{max-width:100%;}
-        article #content,{width:100%;overflow: auto;}
+        article #content{width:100%;overflow: auto;}
     </style>
 </head>
 <body>
 <#macro bread category>
     <#if category.parentId?has_content>
         <@cms.category id=category.parentId;category>
-            <@bread object/>
+            <@bread category/>
             <a href="${category.url}">${category.name}</a> &gt;
         </@cms.category>
     </#if>
 </#macro>
     <header data-diy="page">
         <h1>${(site.name)!}</h1>
-        <p><@bread category/> ${(category.name)!}</p>
+        <p><@bread category/> <a href="${category.url}">${category.name}</a></p>
     </header>
     <nav data-diy="category">
         <a href="${site.dynamicPath}">Home</a>
@@ -102,6 +102,7 @@
                     <#if !stared?has_content><a href="javascript:score(${content.id});">Score</a></#if>
                 </#if>
             </div>
+        <#if page?has_content>
             <div>
                 <#if !page.firstPage>
                     <a href="${getPage(content.url,page.prePage)}">Previous page</a>
@@ -121,6 +122,7 @@
                     <span>Next page</span>
                 </#if>
             </div>
+        </#if>
             <div>
                 <@cms.contentList categoryId=category.id endPublishDate=content.publishDate orderField='publishDate' pageIndex=2 pageSize=1><#if 2=page.pageIndex><#list page.list as a><a href="${a.url!}">Previous:${a.title}</a></#list></#if></@cms.contentList>
                 <@cms.contentList categoryId=category.id startPublishDate=content.publishDate orderField='publishDate' orderType='asc' pageIndex=1 pageSize=1><#list page.list as a><a href="${a.url!}">Next:${a.title}</a></#list></@cms.contentList>

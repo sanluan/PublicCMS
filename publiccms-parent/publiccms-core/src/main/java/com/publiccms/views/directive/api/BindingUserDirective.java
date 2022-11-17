@@ -32,7 +32,7 @@ import com.publiccms.logic.service.sys.SysAppClientService;
 * <p>
 * <pre>
 &lt;script&gt;
-$.getJSON('//cms.publiccms.com/api/bindingUser?uuid=1&amp;channel=web&amp;authToken=用户登录授权&amp;authUserId=1', function(data){
+$.getJSON('${site.dynamicPath}api/bindingUser?uuid=1&amp;channel=web&amp;authToken=用户登录授权&amp;authUserId=1', function(data){
 console.log(data.result);
 });
 &lt;/script&gt;

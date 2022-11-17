@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.publiccms</groupId>
     <artifactId>publiccms-parent</artifactId>
@@ -25,7 +23,7 @@
         <version.publiccms>V5.202204.c</version.publiccms>
         <!-- http://mvnrepository.com/artifact/org.springframework/spring-core -->
         <!-- https://spring.io/projects/spring-framework -->
-        <version.spring>6.0.0-M6</version.spring>
+        <version.spring>6.0.0</version.spring>
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
         <!-- https://spring.io/projects/spring-boot -->
         <version.springBoot>3.0.0-M5</version.springBoot>
@@ -33,7 +31,7 @@
         <!-- http://hc.apache.org/downloads.cgi -->
         <version.httpclient>4.5.13</version.httpclient>
         <!-- http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
-        <version.jackson>2.14.0-rc1</version.jackson>
+        <version.jackson>2.14.0</version.jackson>
         <!-- http://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
         <!-- http://hibernate.org/orm/releases/ -->
         <version.hibernate>5.6.11.Final</version.hibernate>
@@ -61,13 +59,15 @@
         <!-- https://mvnrepository.com/artifact/org.apache.lucene/lucene-core -->
         <version.lucene>8.11.2</version.lucene>
         <!-- http://mvnrepository.com/artifact/redis.clients/jedis -->
-        <version.jedis>4.3.0</version.jedis>
+        <version.jedis>4.3.1</version.jedis>
         <!-- http://mvnrepository.com/artifact/org.quartz-scheduler/quartz -->
         <version.quartz>2.3.2</version.quartz>
         <!-- https://mvnrepository.com/artifact/com.zaxxer/HikariCP -->
         <version.hikariCP>5.0.1</version.hikariCP>
-        <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
-        <version.mysql>8.0.30</version.mysql>
+        <!-- https://mvnrepository.com/artifact/com.mysql/mysql-connector-j -->
+        <version.mysql>8.0.31</version.mysql>
+        <!-- https://mvnrepository.com/artifact/fr.opensagres.xdocreport/fr.opensagres.poi.xwpf.converter.xhtml -->
+        <version.xhtmlConverter>2.0.4</version.xhtmlConverter>
         <!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
         <version.poi>5.2.3</version.poi>
         <!-- http://mvnrepository.com/artifact/commons-fileupload/commons-fileupload -->
@@ -79,7 +79,7 @@
         <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
         <version.io>2.11.0</version.io>
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-text -->
-        <version.text>1.9</version.text>
+        <version.text>1.10.0</version.text>
         <!-- http://mvnrepository.com/artifact/commons-codec/commons-codec -->
         <version.codec>1.15</version.codec>
         <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
@@ -88,6 +88,8 @@
         <version.extractor>2.18.0</version.extractor>
         <!-- https://mvnrepository.com/artifact/org.sejda.imageio/webp-imageio -->
         <version.webp>0.1.6</version.webp>
+        <!-- https://mvnrepository.com/artifact/net.ifok.image/image4j -->
+        <version.image4j>0.7.2</version.image4j>
         <!-- http://mvnrepository.com/artifact/eu.bitwalker/UserAgentUtils -->
         <version.userAgentUtils>1.21</version.userAgentUtils>
         <!-- https://mvnrepository.com/artifact/jakarta.annotation/jakarta.annotation-api -->
@@ -190,6 +192,11 @@
                 <groupId>org.sejda.imageio</groupId>
                 <artifactId>webp-imageio</artifactId>
                 <version>${version.webp}</version>
+            </dependency>
+            <dependency>
+                <groupId>net.ifok.image</groupId>
+                <artifactId>image4j</artifactId>
+                <version>${version.image4j}</version>
             </dependency>
             <dependency>
                 <groupId>org.freemarker</groupId>
@@ -314,8 +321,8 @@
                 <version>${version.hikariCP}</version>
             </dependency>
             <dependency>
-                <groupId>mysql</groupId>
-                <artifactId>mysql-connector-java</artifactId>
+                <groupId>com.mysql</groupId>
+                <artifactId>mysql-connector-j</artifactId>
                 <version>${version.mysql}</version>
             </dependency>
             <dependency>
@@ -372,6 +379,11 @@
                 <groupId>org.apache.ant</groupId>
                 <artifactId>ant</artifactId>
                 <version>${version.ant}</version>
+            </dependency>
+            <dependency>
+                <groupId>fr.opensagres.xdocreport</groupId>
+                <artifactId>fr.opensagres.poi.xwpf.converter.xhtml</artifactId>
+                <version>${version.xhtmlConverter}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.poi</groupId>
@@ -441,10 +453,6 @@
             <url>https://repo.spring.io/milestone/</url>
         </repository>
         <repository>
-            <id>spring-libs-milestone</id>
-            <url>https://repo.spring.io/libs-milestone/</url>
-        </repository>
-        <repository>
             <id>nexus-aliyun</id>
             <url>https://maven.aliyun.com/nexus/content/repositories/central/</url>
         </repository>
@@ -461,10 +469,6 @@
         <pluginRepository>
             <id>spring-milestone</id>
             <url>https://repo.spring.io/milestone/</url>
-        </pluginRepository>
-        <pluginRepository>
-            <id>spring-libs-milestone</id>
-            <url>https://repo.spring.io/libs-milestone/</url>
         </pluginRepository>
         <pluginRepository>
             <id>jcenter</id>
@@ -488,11 +492,6 @@
                 <configuration>
                     <skipTests>true</skipTests>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.0.0</version>
             </plugin>
             <!-- http://mvnrepository.com/artifact/org.apache.maven.plugins/maven-compiler-plugin -->
             <plugin>

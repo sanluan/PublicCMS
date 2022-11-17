@@ -1,5 +1,6 @@
 package config.spring;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -53,9 +54,8 @@ public class AdminConfig implements WebMvcConfigurer {
 
     @Bean
     public LocaleResolver localeResolver(Environment env) {
-        CookieLocaleResolver localeResolver = new CookieLocaleResolver();
-        localeResolver.setCookieName("cms.locale");
-        localeResolver.setCookieMaxAge(30 * 24 * 3600);
+        CookieLocaleResolver localeResolver = new CookieLocaleResolver("cms.locale");
+        localeResolver.setCookieMaxAge(Duration.ofDays(30));
         String defaultLocale = env.getProperty("cms.defaultLocale");
         if (!"auto".equalsIgnoreCase(defaultLocale)) {
             localeResolver.setDefaultLocale(Locale.forLanguageTag(defaultLocale));

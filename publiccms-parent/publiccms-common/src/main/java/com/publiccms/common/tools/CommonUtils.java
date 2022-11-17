@@ -27,8 +27,6 @@ public class CommonUtils {
      * @param <F>
      * @param list
      * @param keyMapper
-     * @param consumer
-     * @param filter
      * @return
      */
     public static <T, F> Map<F, T> listToMap(List<T> list, Function<T, F> keyMapper) {

@@ -39,7 +39,7 @@ import com.publiccms.logic.service.sys.SysRoleService;
  * 
  * <pre>
 &lt;script&gt;
- $.getJSON('//cms.publiccms.com/api/directive/sys/authorized?roleIds=1,2,3&amp;url=cmsContent/list&amp;appToken=接口访问授权Token', function(data){    
+ $.getJSON('${site.dynamicPath}api/directive/sys/authorized?roleIds=1,2,3&amp;url=cmsContent/list&amp;appToken=接口访问授权Token', function(data){    
    console.log(data);
  });
  &lt;/script&gt;

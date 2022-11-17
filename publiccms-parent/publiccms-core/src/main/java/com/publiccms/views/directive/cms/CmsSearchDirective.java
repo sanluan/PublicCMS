@@ -71,7 +71,7 @@ import com.publiccms.views.pojo.query.CmsContentSearchQuery;
  * 
  * <pre>
 *  &lt;script&gt;
-  $.getJSON('//cms.publiccms.com/api/directive/cms/search?word=cms&amp;pageSize=10', function(data){    
+  $.getJSON('${site.dynamicPath}api/directive/cms/search?word=cms&amp;pageSize=10', function(data){    
     console.log(data.totalCount);
   });
   &lt;/script&gt;

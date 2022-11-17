@@ -17,7 +17,7 @@ import com.publiccms.logic.service.visit.VisitItemService;
 
 /**
 *
-* visitItem 访问统计项目报表查询指令
+* visitItem 访问项目报表查询指令
 * <p>
 * 参数列表
 * <ul>
@@ -31,7 +31,7 @@ import com.publiccms.logic.service.visit.VisitItemService;
 * &lt;@visit.item visitDate='2020-01-01' visitHour=9&gt;${object.pv}&lt;/@visit.item&gt;
 * <pre>
  &lt;script&gt;
-  $.getJSON('//cms.publiccms.com/api/directive/visit/item?visitDate=2020-01-01&amp;itemType=content&amp;itemId=1&amp;appToken=接口访问授权Token', function(data){    
+  $.getJSON('${site.dynamicPath}api/directive/visit/item?visitDate=2020-01-01&amp;itemType=content&amp;itemId=1&amp;appToken=接口访问授权Token', function(data){    
     console.log(data.pv);
   });
   &lt;/script&gt;

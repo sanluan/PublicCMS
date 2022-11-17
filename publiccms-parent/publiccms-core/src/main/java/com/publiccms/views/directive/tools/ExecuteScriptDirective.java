@@ -13,6 +13,7 @@ import com.publiccms.logic.component.site.ScriptComponent;
 
 /**
  * executeScript 脚本执行指令
+ * <p>
  * 参数列表
  * <ul>
  * <li><code>command</code> 命令【sync.bat,sync.sh,backupdb.bat,backupdb.sh】
@@ -27,7 +28,7 @@ import com.publiccms.logic.component.site.ScriptComponent;
  * 
  * <pre>
 &lt;script&gt;
- $.getJSON('//cms.publiccms.com/api/directive/tools/executeScript?command=backupdb.bat&amp;appToken=接口访问授权Token', function(data){    
+ $.getJSON('${site.dynamicPath}api/directive/tools/executeScript?command=backupdb.bat&amp;appToken=接口访问授权Token', function(data){    
    console.log(data.id);
  });
  &lt;/script&gt;

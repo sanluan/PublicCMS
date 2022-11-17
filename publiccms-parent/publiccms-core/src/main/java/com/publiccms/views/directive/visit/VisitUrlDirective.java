@@ -17,7 +17,7 @@ import com.publiccms.logic.service.visit.VisitUrlService;
 
 /**
 *
-* visitUrl 访问统计网址报表查询指令
+* visitUrl 访问网址报表查询指令
 * <p>
 * 参数列表
 * <ul>
@@ -31,7 +31,7 @@ import com.publiccms.logic.service.visit.VisitUrlService;
 * &lt;@visit.url visitDate='2020-01-01' urlMd5='md5' urlSha='sha'&gt;${object.pv}&lt;/@visit.url&gt;
 * <pre>
  &lt;script&gt;
-  $.getJSON('//cms.publiccms.com/api/directive/visit/url?visitDate=2020-01-01&amp;urlMd5=MD5&amp;urlSha=sha&amp;appToken=接口访问授权Token', function(data){    
+  $.getJSON('${site.dynamicPath}api/directive/visit/url?visitDate=2020-01-01&amp;urlMd5=MD5&amp;urlSha=sha&amp;appToken=接口访问授权Token', function(data){    
     console.log(data.pv);
   });
   &lt;/script&gt;

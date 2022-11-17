@@ -32,7 +32,7 @@ import com.publiccms.views.pojo.entities.CmsPlaceMetadata;
  * 
  * <pre>
 &lt;script&gt;
- $.getJSON('//cms.publiccms.com/api/directive/tools/includePlace?path=00000000-0000-0000-0000-000000000000.html&amp;appToken=接口访问授权Token', function(data){    
+ $.getJSON('${site.dynamicPath}api/directive/tools/includePlace?path=00000000-0000-0000-0000-000000000000.html&amp;appToken=接口访问授权Token', function(data){    
    console.log(data);
  });
  &lt;/script&gt;

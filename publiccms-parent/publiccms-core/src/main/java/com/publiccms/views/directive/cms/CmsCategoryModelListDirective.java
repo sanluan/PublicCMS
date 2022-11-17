@@ -35,7 +35,7 @@ import com.publiccms.logic.service.cms.CmsCategoryModelService;
  * 
  * <pre>
   &lt;script&gt;
-   $.getJSON('//cms.publiccms.com/api/directive/cms/categoryModelList?modelId=article', function(data){    
+   $.getJSON('${site.dynamicPath}api/directive/cms/categoryModelList?modelId=article', function(data){    
      console.log(data[0].totalCount);
    });
    &lt;/script&gt;

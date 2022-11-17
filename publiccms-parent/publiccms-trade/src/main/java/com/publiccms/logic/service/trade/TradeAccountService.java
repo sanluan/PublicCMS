@@ -32,13 +32,15 @@ public class TradeAccountService extends BaseService<TradeAccount> {
     /**
      * 
      * @param siteId
+     * @param orderField
+     * @param orderType
      * @param pageIndex
      * @param pageSize
      * @return results page
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(Short siteId, Integer pageIndex, Integer pageSize) {
-        return dao.getPage(siteId, pageIndex, pageSize);
+    public PageHandler getPage(Short siteId, String orderField, String orderType, Integer pageIndex, Integer pageSize) {
+        return dao.getPage(siteId, orderField, orderType, pageIndex, pageSize);
     }
 
     @Transactional(isolation = Isolation.READ_COMMITTED)

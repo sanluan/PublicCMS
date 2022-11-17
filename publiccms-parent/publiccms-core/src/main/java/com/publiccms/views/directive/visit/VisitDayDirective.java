@@ -16,7 +16,7 @@ import com.publiccms.logic.service.visit.VisitDayService;
 
 /**
 *
-* visitDay 访问统计日报表查询指令
+* visitDay 访问日报表查询指令
 * <p>
 * 参数列表
 * <ul>
@@ -29,7 +29,7 @@ import com.publiccms.logic.service.visit.VisitDayService;
 * &lt;@visit.day visitDate='2020-01-01' visitHour=9&gt;${object.pv}&lt;/@visit.day&gt;
 * <pre>
  &lt;script&gt;
-  $.getJSON('//cms.publiccms.com/api/directive/visit/day?visitDate=2020-01-01&amp;visitHour=9&amp;appToken=接口访问授权Token', function(data){    
+  $.getJSON('${site.dynamicPath}api/directive/visit/day?visitDate=2020-01-01&amp;visitHour=9&amp;appToken=接口访问授权Token', function(data){    
     console.log(data.pv);
   });
   &lt;/script&gt;

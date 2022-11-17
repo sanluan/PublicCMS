@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="utf-8" />
-<title>PublicCMS 安装 - 数据库检测</title>
+<title>PublicCMS install - Database configuration detection </title>
 <meta http-equiv="pragma" content="no-cache">
 <meta http-equiv="cache-control" content="no-cache">
 <meta http-equiv="expires" content="0">
@@ -16,9 +16,9 @@ body {font-size: 14px;}
 .install .header {height: 65px;line-height: 65px;background-color: #6999ec;border-bottom: 2px solid lightgray;}
 .install .header h1 {font-size: 20px;padding-left: 10px;float: left;margin: 0px;color: #ffffff;}
 .install .header div {float: right;margin-right: 10px;font-size: 13px;color: lightgray;}
-.install .box-page {height: 430px;}
-.install .box-page .page-content {height: 400px;overflow: auto;overflow-x: hidden;padding:0 10px;border: 1px solid #6999ec;border-radius: 4px;}
-.install .box-page .page-content .content-box{width:400px;margin:0 auto;}
+.install .box-page {height: 450px;}
+.install .box-page .page-content {height: 420px;overflow: auto;overflow-x: hidden;padding:0 10px;border: 1px solid #6999ec;border-radius: 4px;}
+.install .box-page .page-content .content-box{width:420px;margin:0 auto;}
 .install .box-page .page-content form .wrapper{line-height: 35px;margin-top:5px;}
 .install .box-page .page-content form .wrapper span{color: #6999ec;}
 .install .box-page .page-content form label{width:140px;margin-right: 10px;}
@@ -41,19 +41,19 @@ select {
 <body class="install">
     <div class="box">
         <div class="header">
-            <h1>欢迎使用 PublicCMS</h1>
+            <h1>Welcome to PublicCMS</h1>
             <div>${currentVersion}</div>
         </div>
         <div class="box-page page-policy">
             <div class="page-content">
                 <pre>
-                    <p style="text-align: center;">======= PublicCMS ${currentVersion} 授权许可协议 =======</p>
+                    <p style="text-align: center;">======= PublicCMS ${currentVersion} License =======</p>
 <#include "license.html"/>
                 </pre>
             </div>
 
             <div class="checkbox">
-                <input type="checkbox">我已阅读并同意此协议
+                <input type="checkbox">I have read and agree to this agreement
             </div>
         </div>
 
@@ -61,20 +61,20 @@ select {
             <div class="page-content">
                 <div class="content-box">
                     <#if message?has_content&&'success'=message>
-                        <h3>数据库配置信息检测成功</h3>
+                        <h3>Database configuration detection  success!</h3>
                         <#include "install_form.html"/>
                     <#else>
-                        <h3>数据库配置信息检测失败</h3>
+                        <h3>Database configuration detection  failed!</h3>
                         <p class="error">${error!}</p>
-                        <p><a href="./">重新配置</a></p>
+                        <p><a href="./">Reconfigure</a></p>
                     </#if>
                 </div>
             </div>
         </div>
         
         <div class="buttons">
-            <a href="./" class="hide">重新配置</a>
-            <button class="next">下一步</button>
+            <a href="./" class="hide">Reconfigure</a>
+            <button class="next">Next Step</button>
         </div>
         
         <div class="copyright" style="font-size:12px;text-align:center;">
@@ -113,7 +113,7 @@ select {
                     $.post($form.attr("action"), $form.serialize() ,function(result){
                         $(".content-box").html(result);
                         $(".buttons a").hide();
-                    }).error(function(){
+                    }).fail(function(){
                         $(".buttons button").addClass("active");
                         step -= 1;
                     });
