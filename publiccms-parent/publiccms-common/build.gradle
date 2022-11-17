@@ -22,6 +22,8 @@ dependencies {
     implementation "org.springframework:spring-context-support:${springVersion}"
     implementation "org.springframework:spring-orm:${springVersion}"
     implementation "org.springframework:spring-webmvc:${springVersion}"
+    implementation "org.springframework:spring-webc:${springVersion}"
+    implementation "org.springframework:spring-beans:${springVersion}"
 
     implementation "org.hibernate.search:hibernate-search-mapper-orm:${hibernateSearchVersion}"
     implementation "org.hibernate.search:hibernate-search-backend-lucene:${hibernateSearchVersion}"

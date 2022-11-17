@@ -23,7 +23,7 @@
         <version.publiccms>V4.0.202204.c</version.publiccms>
         <!-- http://mvnrepository.com/artifact/org.springframework/spring-core -->
         <!-- https://spring.io/projects/spring-framework -->
-        <version.spring>5.3.23</version.spring>
+        <version.spring>5.3.24</version.spring>
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
         <!-- https://spring.io/projects/spring-boot -->
         <version.springBoot>2.7.5</version.springBoot>
@@ -31,7 +31,7 @@
         <!-- http://hc.apache.org/downloads.cgi -->
         <version.httpclient>4.5.13</version.httpclient>
         <!-- http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
-        <version.jackson>2.14.0-rc2</version.jackson>
+        <version.jackson>2.14.0</version.jackson>
         <!-- http://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
         <!-- http://hibernate.org/orm/releases/ -->
         <version.hibernate>5.6.11.Final</version.hibernate>
@@ -210,6 +210,16 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-webmvc</artifactId>
+                <version>${version.spring}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-web</artifactId>
+                <version>${version.spring}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-beans</artifactId>
                 <version>${version.spring}</version>
             </dependency>
             <dependency>
