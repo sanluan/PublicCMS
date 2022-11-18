@@ -29,8 +29,10 @@ DWZ.regPlugins.push(function($p){
         var fullVersion=$('.cmsVersion a',$p).eq(0).text();
         $.getJSON(Base64.decode('Ly9jbXMucHVibGljY21zLmNvbS9hcGkvZGlyZWN0aXZlL3ZlcnNpb24=')+"?version="+fullVersion, function(data) {
             var version=fullVersion.substring(0,fullVersion.lastIndexOf('.'));
+            var databaseVersion=version.substring(version.lastIndexOf('.')+1);
             var revision=fullVersion.substring(fullVersion.lastIndexOf('.')+1);
-            if(version!==data.cms ) {
+            var remoteDatabaseVersion = data.cms.substring(data.cms.lastIndexOf('.')+1);
+            if(databaseVersion !== remoteVersion ) {
                 $('.cmsVersion .old',$p).show();
             } else {
                 if(revision == data.revision){
