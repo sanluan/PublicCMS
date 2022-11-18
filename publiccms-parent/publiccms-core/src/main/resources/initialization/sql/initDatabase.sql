@@ -523,12 +523,11 @@ CREATE TABLE `log_login` (
   `create_date` datetime NOT NULL COMMENT '创建日期',
   `error_password` varchar(255) default NULL COMMENT '错误密码',
   PRIMARY KEY  (`id`),
-  KEY `log_login_result` (`result`),
-  KEY `log_login_user_id` (`user_id`),
-  KEY `log_login_create_date` (`create_date`),
-  KEY `log_login_ip` (`ip`),
-  KEY `log_login_site_id` (`site_id`),
-  KEY `log_login_channel` (`channel`)
+  KEY `log_login_result` (`site_id`, `result`),
+  KEY `log_login_user_id` (`site_id`, `user_id`),
+  KEY `log_login_create_date` (`site_id`, `create_date`),
+  KEY `log_login_ip` (`site_id`, `ip`),
+  KEY `log_login_channel` (`site_id`, `channel`)
 ) COMMENT='登录日志';
 
 -- ----------------------------
@@ -544,14 +543,12 @@ CREATE TABLE `log_operate` (
   `operate` varchar(40) NOT NULL COMMENT '操作',
   `ip` varchar(130) default NULL COMMENT 'IP',
   `create_date` datetime NOT NULL COMMENT '创建日期',
-  `content` text NOT NULL COMMENT '内容',
+  `content` text default NULL COMMENT '内容',
   PRIMARY KEY  (`id`),
-  KEY `log_operate_user_id` (`user_id`, `dept_id`),
-  KEY `log_operate_operate` (`operate`),
-  KEY `log_operate_create_date` (`create_date`),
-  KEY `log_operate_ip` (`ip`),
-  KEY `log_operate_site_id` (`site_id`),
-  KEY `log_operate_channel` (`channel`)
+  KEY `log_operate_user_id` (`site_id`, `user_id`, `dept_id`, `create_date`),
+  KEY `log_operate_operate` (`site_id`, `operate`, `create_date`),
+  KEY `log_operate_ip` (`site_id`, `ip`, `create_date`),
+  KEY `log_operate_channel` (`site_id`, `channel`, `create_date`)
 ) COMMENT='操作日志';
 
 -- ----------------------------
@@ -567,10 +564,9 @@ CREATE TABLE `log_task` (
   `success` tinyint(1) NOT NULL COMMENT '执行成功',
   `result` longtext COMMENT '执行结果',
   PRIMARY KEY  (`id`),
-  KEY `log_task_task_id` (`task_id`),
-  KEY `log_task_success` (`success`),
-  KEY `log_task_site_id` (`site_id`),
-  KEY `log_task_begintime` (`begintime`)
+  KEY `log_task_task_id` (`site_id`, `task_id`),
+  KEY `log_task_success` (`site_id`, `success`),
+  KEY `log_task_begintime` (`site_id`, `begintime`)
 ) COMMENT='任务计划日志';
 
 -- ----------------------------
@@ -591,13 +587,11 @@ CREATE TABLE `log_upload` (
   `create_date` datetime NOT NULL COMMENT '创建日期',
   `file_path` varchar(500) NOT NULL COMMENT '文件路径',
   PRIMARY KEY  (`id`),
-  KEY `log_upload_user_id` (`user_id`),
-  KEY `log_upload_create_date` (`create_date`),
-  KEY `log_upload_ip` (`ip`),
-  KEY `log_upload_site_id` (`site_id`),
-  KEY `log_upload_channel` (`channel`),
-  KEY `log_upload_file_type` (`file_type`),
-  KEY `log_upload_file_size` (`file_size`)
+  KEY `log_upload_user_id` (`site_id`, `user_id`),
+  KEY `log_upload_create_date` (`site_id`, `create_date`),
+  KEY `log_upload_ip` (`site_id`, `ip`),
+  KEY `log_upload_channel` (`site_id`, `channel`),
+  KEY `log_upload_file_type` (`site_id`, `file_type`, `file_size`)
 ) COMMENT='上传日志';
 -- ----------------------------
 -- Table structure for sys_app
