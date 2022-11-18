@@ -1,6 +1,7 @@
 package config.initializer;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.Authenticator;
 import java.util.Properties;
@@ -52,7 +53,14 @@ public class InitializationInitializer implements WebApplicationInitializer {
             File file = new File(CommonConstants.CMS_FILEPATH + CommonConstants.INSTALL_LOCK_FILENAME);
             if (file.exists()) {
                 String version = FileUtils.readFileToString(file, CommonConstants.DEFAULT_CHARSET_NAME);
-                if (CmsVersion.getVersion().equals(version)) {
+                if (CmsVersion.getVersion().equals(version)
+                        || CmsVersion.getVersion().substring(CmsVersion.getVersion().lastIndexOf("."))
+                                .equals(version.substring(version.lastIndexOf(".")))) {
+                    if (!CmsVersion.getVersion().equals(version)) {
+                        try (FileOutputStream outputStream = new FileOutputStream(file)) {
+                            outputStream.write(CmsVersion.getVersion().getBytes(CommonConstants.DEFAULT_CHARSET));
+                        }
+                    }
                     CmsVersion.setInitialized(true);
                     CmsDataSource.initDefaultDataSource();
                     log.info(String.format("PublicCMS %s will start normally in %s", CmsVersion.getVersion(),
