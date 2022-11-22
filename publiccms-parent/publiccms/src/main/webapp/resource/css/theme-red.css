@@ -22,9 +22,9 @@ header a{color:#efefef;}
 .accordion .accordionContent{background-color:#FAE1E1;}
 #splitBarProxy{border-color:#c0c0c0;background-color:#CCC;}
 
-#sidebar_s,.accordion .accordionHeader{color:#b5c3db;}
-.accordion .accordionContent,.accordionContent .tree a,.accordionContent .tree div:hover{color:#000000;}
-.accordionContent .tree div:hover a{background-color:#D8403D;color:#8d95a7;}
+#sidebar_s,.accordion .accordionHeader{color:#e3e3e3;}
+.accordion .accordionContent,.accordionContent .tree a,.accordionContent .tree div:hover{color:#333;}
+.accordionContent .tree div:hover a{background-color:#D8403D;color:#eee;}
 .accordionContent .tree div.selected a{background-color:#FA5151;color:#fff;}
 
 .tabsPage .tabsPageHeader{background-color:#dde2ec;}
@@ -37,12 +37,13 @@ header a{color:#efefef;}
 .tabsPage .tabsMoreList li a{color:#333;}
 .tabsPage .tabsMoreList li a:hover,.tabsPage .tabsMoreList li.selected a{background-color:#D8403D;color:#fff;}
 
-.page{background-color:#fff;}
-.pageFormContent.card{background-color:#edf1f5;}
+.page{background-color:#edf1f5;}
 
 fieldset{background-color:#fff;}
 fieldset legend{color:#b52e31;}
 fieldset legend:before{background-color:#b52e31;}
+.pageFormContent{background-color:#fff;}
+.pageFormContent.nobg{background-color:unset;}
 .pageFormContent label{color:#989eab;}
 .pageFormContent dt{color:#31353e;}
 .unit a.button:hover{background-color:#8f0006;color:#fff;border-color:#8f0006;}
@@ -53,7 +54,7 @@ fieldset legend:before{background-color:#b52e31;}
 .leftPageContent{border-color:#FAE1E1;background-color:#faf9f9;}
 
 button.buttonActive{color:#fff;background-color:#D8403D;border-color:#D8403D;}
-button.buttonActive:hover{background-color:#5d7298;border-color:#5d7298;}
+button.buttonActive:hover{background-color:#8f0006;border-color:#8f0006;}
 button.buttonDisabled{color:#8f0006;background-color:#eee;border-color:#dde2ec;}
 a.button,button.button{color:#8f0006;background-color:#fff;border-color:#dde2ec;}
 a.button:hover,button.button:hover{background-color:#eceff3;border-color:#dde2ec;}
@@ -63,7 +64,7 @@ textarea.readonly,input.readonly{background-color:#eee;}
 .pageHeader{background-color:#f2f6f9;color:#31353e;}
 .searchBar span.connect-string{color:#dde2ec;}
 .searchBar ul.searchContent:before{color:#D8403D;}
-.panelBar .toolBar li a{color:#8f0006;background-color:#FAE1E1;}
+.panelBar .toolBar li a{color:#8f0006;background-color:#fbb;}
 .panelBar .toolBar li a>i{color:#8f0006;}
 .panelBar .toolBar li a:hover>i{color:#fff;}
 .panelBar .toolBar li a:hover{background-color:#D8403D;color:#fff;}
@@ -82,7 +83,7 @@ textarea.readonly,input.readonly{background-color:#eee;}
 .grid .gridTbody tr:nth-child(even){background-color:#f8fcfe;}
 .grid .gridTbody tr:hover,.grid .gridTbody tr.selected { border-color:#edd9dd;background-color:#edd9dd;}
 .grid .error{background-color:#fb7e81;}
-.grid .gridHeader th.asc:before,.grid .gridHeader th.desc:before,.grid .gridHeader th.order:before{color:#FFFFFF;}
+.grid .gridHeader th.asc:before,.grid .gridHeader th.desc:before,.grid .gridHeader th.order:before{color:#fff;}
 
 table.list,table.list td{border-color:#e4e9f2;}
 table.list thead tr{background-color:#f8fcfe;}
@@ -101,10 +102,10 @@ table.nowrap tbody tr {border-color:#ededed;}
 .tabs .tabsHeader li.selected a{color:#31353e;}
 .tabs .tabsHeader ul{border-color:#dde2ec;box-sizing:border-box;}
 a.btnLook:before{color:#333;}
-footer{background-color:#8f0006;color:#FFFFFF;}
+footer{background-color:#8f0006;color:#fff;}
 footer a{color:#4d84ff;}
 .langList a{color:#4d84ff;}
-.langList a:hover,.langList li.current-lang a{color:#FFFFFF;}
+.langList a:hover,.langList li.current-lang a{color:#fff;}
 /* 弹窗 */
 .alert .error h1{background-color:#f2f6f9;}
 .alert .alertContent{background-color: #fff;}

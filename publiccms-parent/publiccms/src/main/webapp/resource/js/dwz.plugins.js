@@ -32,7 +32,7 @@ DWZ.regPlugins.push(function($p){
             var databaseVersion=version.substring(version.lastIndexOf('.')+1);
             var revision=fullVersion.substring(fullVersion.lastIndexOf('.')+1);
             var remoteDatabaseVersion = data.cms.substring(data.cms.lastIndexOf('.')+1);
-            if(databaseVersion !== remoteVersion ) {
+            if(databaseVersion !== remoteDatabaseVersion ) {
                 $('.cmsVersion .old',$p).show();
             } else {
                 if(revision == data.revision){
