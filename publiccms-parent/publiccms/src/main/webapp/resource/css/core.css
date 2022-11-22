@@ -51,10 +51,10 @@ header .nav .selected ul{display:block;}
 /* Tabs */
 .tabs .tabsHeader{display:block;overflow:hidden;height:35px;padding-left:5px;}
 .tabs .tabsHeaderContent{display:block;overflow:hidden;height:100%;}
-.tabs .tabsHeaderContent>ul li a{line-height:35px;}
+.tabs .tabsHeaderContent>ul li a{line-height:34px;}
 .tabs .tabsHeader ul{display:block;height:100%;border-bottom-width:1px;border-bottom-style:solid;box-sizing:border-box;}
-.tabs .tabsHeader li{float:left;display:block;height:100%;margin-right:2px;line-height:35px;}
-.tabs .tabsHeader li a{float:left;display:block;height:100%;padding:0 15px;line-height:35px;}
+.tabs .tabsHeader li{float:left;display:block;height:100%;margin-right:2px;line-height:34px;}
+.tabs .tabsHeader li a{float:left;display:block;height:100%;padding:0 15px;line-height:34px;}
 .tabs .tabsHeader li a:hover{text-decoration:none;}
 .tabs .tabsHeader li.selected{position:relative;}
 .tabs .tabsHeader li.selected:before{content:"";width:100%;height:2px;position:absolute;bottom:-1px;left:0;}
@@ -66,7 +66,7 @@ header .nav .selected ul{display:block;}
 .tabsPage .tabsPageHeaderMargin{margin:0 60px 0 30px;}
 .tabsPage .tabsPageHeader ul{display:block;width:10000px;z-index:1;position:absolute;}
 .tabsPage .tabsPageHeader li{float:left;display:block;height:100%;position:relative;}
-.tabsPage .tabsPageHeader li a{font-size:14px;display:inline-block;max-width:112px;padding:0 8px;line-height:35px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.tabsPage .tabsPageHeader li a{font-size:13px;display:inline-block;max-width:112px;padding:0 8px;line-height:35px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .tabsPage .tabsPageHeader li a>i{margin-right:5px;}
 .tabsPage .tabsPageHeader li a:hover{text-decoration:none;}
 .tabsPage .tabsPageHeader li.selected a, .tabsPage .tabsPageHeader li:hover a{font-weight:400;}
@@ -89,7 +89,7 @@ header .nav .selected ul{display:block;}
 /* Tree */
 .tree li{clear:both;display:block;line-height:30px;cursor:pointer;}
 .tree li a.disabled{color:#aaa;}
-.tree div, .tree a, .tree span{display:inherit;height:30px;line-height:30px;white-space:nowrap;}
+.tree div, .tree a, .tree span{display:inherit;height:30px;line-height:30px;font-size:13px;white-space:nowrap;}
 .tree div div{float:left;display:block;overflow:hidden;width:22px;height:30px;border:none;}
 .tree.treeFolder li>div>div:first-child{padding-left:10px;}
 .tree a, .tree a:hover{text-decoration:none;}
@@ -111,7 +111,7 @@ header .nav .selected ul{display:block;}
 .accordion .accordionContent .tree a{line-height:35px;height:auto;}
 .accordion .accordionContent .tree div{height:auto;}
 .accordion .accordionContent .tree div div{background:0 0;width:25px;height:35px;}
-.accordion .accordionContent .tree a>i{margin-right:5px;width:16px;display:inline-block;text-align:center;}
+.accordion .accordionContent .tree a>i{margin-right:5px;width:16px;font-size: 13px;display:inline-block;text-align:center;}
 .accordion .accordionContent .tree.treeFolder a{line-height:30px;}
 .accordion .accordionContent .tree.treeFolder div div{height:30px;}
 
@@ -219,7 +219,7 @@ label.alt{display:block;overflow:hidden;position:absolute;line-height:20px;}
 .nowrap span.error{position:static;}
 
 /* Button */
-.button,.buttonActive,.buttonDisabled{display:inline-block;height:30px;padding:0 12px;border-width:1px;border-style:solid;border-radius:2px;cursor:pointer;text-align:center;line-height:28px;white-space:nowrap;font-size:14px;letter-spacing:.03em;position:relative;overflow:hidden;}
+.button,.buttonActive,.buttonDisabled{display:inline-block;height:30px;padding:0 8px;border-width:1px;border-style:solid;border-radius:2px;cursor:pointer;text-align:center;line-height:28px;white-space:nowrap;font-size:14px;letter-spacing:.03em;position:relative;overflow:hidden;}
 button.button,button.buttonActive{height:30px;}
 button.buttonActive{border-width:1px;border-style:solid;font-weight:400;}
 a.button,button.button{border-width:1px;border-style:solid;-moz-box-shadow:0px 0px 5px 1px #DDE4EF;box-shadow:0px 0px 5px 1px #DDE4EF;-ms-box-shadow:0px 0px 5px 1px #DDE4EF;-o-box-shadow:0px 0px 5px 1px #DDE4EF;-webkit-box-shadow:0px 0px 5px 1px #DDE4EF;}
@@ -275,6 +275,7 @@ a.button,button.button{border-width:1px;border-style:solid;-moz-box-shadow:0px 0
 .dateRange .limit{text-align:center;width:15px;line-height:21px;}
 
 /* Pages Form */
+.pageForm{display:block;overflow:auto;}
 .pageFormContent{display:block;padding:15px;position:relative;height:100%;width:100%;overflow:auto;box-sizing:border-box;}
 .pageFormContent div.unit{display:block;margin:0;padding:5px 0;position:relative;clear:both;}
 .pageFormContent p{float:left;display:block;min-width:380px;min-height:16px;margin:0;padding:3px 0;position:relative;}
@@ -285,7 +286,7 @@ a.button,button.button{border-width:1px;border-style:solid;-moz-box-shadow:0px 0
 .pageFormContent .textInput,.pageFormContent select{float:left;}
 .pageFormContent .inputInfo{padding:0 5px;line-height:26px;}
 .pageFormContent span.unit, .pageFormContent a.unit{padding:0 5px;line-height:26px;}
-.pageFormContent span.info{color:#7F7F7F;line-height:26px;}
+.pageFormContent span.info{color:#7F7F7F;line-height:26px;font-size:12px;}
 .pageFormContent span.info:before{display:block;content:".";height:0;clear:both;visibility:hidden;}
 .pageFormContent dl{float:left;line-height:22px;width:50%;margin:0;padding:5px 0;position:relative;}
 .pageFormContent dt{float:left;width:120px;padding:0 5px;word-break:break-all;}
@@ -309,7 +310,7 @@ fieldset:first-child .unit:first-of-type p:last-child{padding:0;}
 
 .formBar{clear:both;padding:10px;height:30px;}
 .formBar ul{float:right;}
-.formBar li{float:left;line-height:30px;height:32px;margin-left:10px;}
+.formBar li{float:left;line-height:30px;font-size:13px;height:30px;margin-left:10px;}
 .divider{clear:both;display:block;overflow:hidden;width:auto;height:1px;padding:4px 0 0 0;margin-bottom:5px;border-style:dashed;border-width:0 0 1px 0;}
 
 .tagsBox{line-height:25px;float:left;}

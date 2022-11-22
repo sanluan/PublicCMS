@@ -4,7 +4,7 @@ body,html{color:#31353e;}
 ::-webkit-scrollbar-thumb:vertical:hover{background-color:rgba(0,0,0,.35);}
 ::-webkit-scrollbar-thumb:vertical:active{background-color:rgba(0,0,0,.38);}
 a{color:#8f0006;}
-body h2.contentTitle{border-color:#e4e9f2;}
+h2.contentTitle{border-color:#e4e9f2;background-color:#fff;}
 header{background-color:#8f0006;color:#afc5f6;}
 header .nav ul{background-color:#D8403D;}
 header .nav ul li a { color:#000;}

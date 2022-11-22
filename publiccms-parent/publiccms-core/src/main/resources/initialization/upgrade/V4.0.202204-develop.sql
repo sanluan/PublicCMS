@@ -283,3 +283,22 @@ ALTER TABLE `log_login`
     ADD INDEX `log_login_user_id`(`site_id`, `user_id`, `create_date`),
     ADD INDEX `log_login_ip`(`site_id`, `ip`, `create_date`),
     ADD INDEX `log_login_channel`(`site_id`, `channel`, `create_date`);
+-- 2022-11-22 --
+UPDATE `sys_module` SET `url`='cmsContent/uncheck_list',`parent_id`='content_menu',`attached`='icon-check-sign',`menu`=1,`sort`=1 WHERE `id` = 'content_check';
+INSERT INTO `sys_module` VALUES ('content_search', 'cmsContent/search', 'cmsContent/view', 'icon-search', 'content_menu', 1, 2);
+UPDATE `sys_module` SET `sort`=`sort` + 2 WHERE `id` in('comment_list','category_list','tag_list','product_list','content_vote','survey_list','word_list','content_recycle_list');
+INSERT INTO `sys_module_lang` VALUES ('content_search', 'en', 'Content search');
+INSERT INTO `sys_module_lang` VALUES ('content_search', 'ja', 'コンテンツ検索');
+INSERT INTO `sys_module_lang` VALUES ('content_search', 'zh', '内容搜索');
+UPDATE `sys_module_lang` SET `value` = 'Content check' WHERE `module_id` = 'content_check' AND `lang` = 'en';
+UPDATE `sys_module_lang` SET `value` = '内容の審査' WHERE `module_id` = 'content_check' AND `lang` = 'ja';
+UPDATE `sys_module_lang` SET `value` = '内容审核' WHERE `module_id` = 'content_check' AND `lang` = 'zh';
+UPDATE `sys_module` SET `id` = 'vote_list' WHERE `id` = 'content_vote';
+UPDATE `sys_module` SET `id` = 'vote_add' WHERE `id` = 'content_vote_add';
+UPDATE `sys_module` SET `id` = 'vote_delete' WHERE `id` = 'content_vote_delete';
+UPDATE `sys_module` SET `id` = 'vote_view' WHERE `id` = 'content_vote_view';
+UPDATE `sys_module` SET `attached` = 'bi bi-search-heart' WHERE `id` = 'word_list';
+UPDATE `sys_module_lang` SET `module_id` = 'vote_list' WHERE `module_id` = 'content_vote';
+UPDATE `sys_module_lang` SET `module_id` = 'vote_add' WHERE `module_id` = 'content_vote_add';
+UPDATE `sys_module_lang` SET `module_id` = 'vote_delete' WHERE `module_id` = 'content_vote_delete';
+UPDATE `sys_module_lang` SET `module_id` = 'vote_view' WHERE `module_id` = 'content_vote_view';
