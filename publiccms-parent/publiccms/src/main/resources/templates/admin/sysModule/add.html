@@ -7,70 +7,72 @@
 <form method="post" autocomplete="off" action="sysModule/save?callbackType=closeCurrent&navTabId=sysModule/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input name="oldId" type="hidden" value="${id!}" />
     <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
-    <div class="formBar">
+    <div class="formBar card">
         <ul>
             <li><button type="submit" class="buttonActive" title="ctrl+s"><@t.page 'button.save'/></button></li>
             <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
         </ul>
     </div>
-    <div class="pageFormContent" layoutH>
-        <dl>
-            <dt><@t.page 'id'/>:</dt>
-            <dd>
-                <input class="required" remote="sysModule/virify?oldId=${id!}" data-msg-remote="<@t.message 'verify.hasExist.module'/>" name="id" type="text" size="20" maxlength="30" value="${id!(parentId?has_content)?then(parentId+'_','')}" />
-                <label><input name="menu" type="checkbox"<#if (!a?has_content||a.menu)&&deep lte 2> checked="checked"</#if>/><@t.page 'module.menu'/></label>
-            </dd>
-        </dl>
-        <dl>
-            <dt><@t.page 'module.parent'/>:</dt>
-            <dd>
-                <input name="parentId" type="hidden" value="${parentId!}" />
-                <input name="parentName" readonly="readonly" type="text" size="20" value="<#if module?has_content><@t.menu (module.id)!/></#if>"/>
-                <a class="btnLook" href="sysModule/lookup.html" lookupGroup=""><@t.page 'module.select'/></a>
-            </dd>
-        </dl>
-      <fieldset>
-          <legend><@t.page 'name'/>:</legend>
-          <#assign index=0/>
-          <#list langs as k,v>
-            <#if 'zh_TW'!=k>
-            <dl class="nowrap">
-                <dt>${v}:</dt>
+    <div class="card">
+        <div class="pageFormContent" layoutH>
+            <dl>
+                <dt><@t.page 'id'/>:</dt>
                 <dd>
-                    <input type="hidden" name="langList[${index}].id.lang" value="${k}"/>
-                    <input class="required" name="langList[${index}].value" type="text" size="20" maxlength="100" value="<@sys.moduleLang moduleId=id lang=k>${object.value!}</@sys.moduleLang>"/>
+                    <input class="required" remote="sysModule/virify?oldId=${id!}" data-msg-remote="<@t.message 'verify.hasExist.module'/>" name="id" type="text" size="20" maxlength="30" value="${id!(parentId?has_content)?then(parentId+'_','')}" />
+                    <label><input name="menu" type="checkbox"<#if (!a?has_content||a.menu)&&deep lte 2> checked="checked"</#if>/><@t.page 'module.menu'/></label>
                 </dd>
             </dl>
-            <#assign index++/>
-            </#if>
-        </#list>
-      </fieldset>
-    <#if deep lte 2>
-        <dl class="nowrap">
-            <dt><@t.page 'icons'/>:</dt>
-            <dd>
-                <input name="attached" type="text" size="30" maxlength="50" value="${(a.attached)!}"/>
-                <a class="btnLook" href="sysModule/icons.html?field=attached" lookupGroup="" width="1000"><@t.page 'icons.select'/></a>
-            </dd>
-        </dl>
-    </#if>
-        <dl class="nowrap">
-            <dt><@t.page 'module.page_url'/>:</dt>
-            <dd>
-                <input name="url" type="text" size="30" value="${(a.url)!}"/>
-                <span class="info"><@t.page 'module.page_url.description'/></span>
-            </dd>
-        </dl>
-        <dl class="nowrap">
-            <dt><@t.page 'module.authorize_url'/>:</dt>
-            <dd>
-                <textarea name="authorizedUrl" cols="80" rows="4">${(a.authorizedUrl)!}</textarea>
-                <span class="info"><@t.page 'module.authorize_url.description'/></span>
-            </dd>
-        </dl>
-        <dl>
-            <dt><@t.page 'sort'/>:</dt>
-            <dd><input class="required digits" name="sort" type="number" size="3" value="${(a.sort)!0}"/></dd>
-        </dl>
+            <dl>
+                <dt><@t.page 'module.parent'/>:</dt>
+                <dd>
+                    <input name="parentId" type="hidden" value="${parentId!}" />
+                    <input name="parentName" readonly="readonly" type="text" size="20" value="<#if module?has_content><@t.menu (module.id)!/></#if>"/>
+                    <a class="btnLook" href="sysModule/lookup.html" lookupGroup=""><@t.page 'module.select'/></a>
+                </dd>
+            </dl>
+          <fieldset>
+              <legend><@t.page 'name'/>:</legend>
+              <#assign index=0/>
+              <#list langs as k,v>
+                <#if 'zh_TW'!=k>
+                <dl class="nowrap">
+                    <dt>${v}:</dt>
+                    <dd>
+                        <input type="hidden" name="langList[${index}].id.lang" value="${k}"/>
+                        <input class="required" name="langList[${index}].value" type="text" size="20" maxlength="100" value="<@sys.moduleLang moduleId=id lang=k>${object.value!}</@sys.moduleLang>"/>
+                    </dd>
+                </dl>
+                <#assign index++/>
+                </#if>
+            </#list>
+          </fieldset>
+        <#if deep lte 2>
+            <dl class="nowrap">
+                <dt><@t.page 'icons'/>:</dt>
+                <dd>
+                    <input name="attached" type="text" size="30" maxlength="50" value="${(a.attached)!}"/>
+                    <a class="btnLook" href="sysModule/icons.html?field=attached" lookupGroup="" width="1000"><@t.page 'icons.select'/></a>
+                </dd>
+            </dl>
+        </#if>
+            <dl class="nowrap">
+                <dt><@t.page 'module.page_url'/>:</dt>
+                <dd>
+                    <input name="url" type="text" size="30" value="${(a.url)!}"/>
+                    <span class="info"><@t.page 'module.page_url.description'/></span>
+                </dd>
+            </dl>
+            <dl class="nowrap">
+                <dt><@t.page 'module.authorize_url'/>:</dt>
+                <dd>
+                    <textarea name="authorizedUrl" cols="80" rows="4">${(a.authorizedUrl)!}</textarea>
+                    <span class="info"><@t.page 'module.authorize_url.description'/></span>
+                </dd>
+            </dl>
+            <dl>
+                <dt><@t.page 'sort'/>:</dt>
+                <dd><input class="required digits" name="sort" type="number" size="3" value="${(a.sort)!0}"/></dd>
+            </dl>
+        </div>
     </div>
 </form>

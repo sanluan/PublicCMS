@@ -2,7 +2,7 @@
     <#assign startCreateDate=(.now?long-7*24*3600*1000)?number_to_date/>
 </#if>
 <@log.workload channel='web_manager' operate='save.content' startCreateDate=startCreateDate endCreateDate=endCreateDate workloadType=workloadType pageIndex=pageNum pageSize=numPerPage>
-<div class="pageHeader">
+<div class="pageHeader card">
     <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
         <div class="searchBar">
@@ -34,7 +34,7 @@
         </div>
     </form>
 </div>
-<div class="pageContent">
+<div class="card">
     <div class="panelBar">
         <ul class="toolBar">
         </ul>

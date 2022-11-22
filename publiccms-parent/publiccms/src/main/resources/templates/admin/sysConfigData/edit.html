@@ -4,7 +4,7 @@
 <form method="post" autocomplete="off" action="sysConfigData/save?callbackType=closeCurrent&navTabId=sysConfigData/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input name="id.code" type="hidden" value="${code!}" />
     <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
-    <div class="formBar">
+    <div class="formBar card">
         <ul>
         <#if authorizedMap['sysConfig/add']>
             <li><a class="button" href="sysConfig/add.html?code=${code}" target="navTab" rel="sysConfig/edit"><i class="icon-edit icon-large"></i><@t.page 'config.edit'/></a></li>
@@ -18,16 +18,18 @@
             <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
         </ul>
     </div>
-    <div class="pageFormContent" layoutH>
-        <dl class="nowrap">
-            <dt><@t.page 'description'/>:</dt>
-            <dd>
-                ${(a.description)!}
-            </dd>
-        </dl>
-<#include "../include_page/extendData.html"/>
-<@sys.configFieldList code=code>
-    <@extendData name='extendDataList' extendList=list extendValues=(attribute!{}) htmlSafe=true/>
-</@sys.configFieldList>
+    <div class="card">
+        <div class="pageFormContent" layoutH>
+            <dl class="nowrap">
+                <dt><@t.page 'description'/>:</dt>
+                <dd>
+                    ${(a.description)!}
+                </dd>
+            </dl>
+    <#include "../include_page/extendData.html"/>
+    <@sys.configFieldList code=code>
+        <@extendData name='extendDataList' extendList=list extendValues=(attribute!{}) htmlSafe=true/>
+    </@sys.configFieldList>
+        </div>
     </div>
 </form>

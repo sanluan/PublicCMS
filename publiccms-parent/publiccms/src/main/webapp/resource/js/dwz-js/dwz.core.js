@@ -320,6 +320,8 @@ var DWZ = {
                 var iLayoutH = 0;
                 if ($this.parents('.rightPageContent').length != 0){
                     iLayoutH = $this.getSiblingsElemsH($this.parents('.rightPageContent'));
+                }else if ($this.parents('.leftPageContent').length != 0){
+                    iLayoutH = $this.getSiblingsElemsH($this.parents('.leftPageContent'));
                 }else if ($this.parents('.pageFormContent').length != 0){
                     iLayoutH = $this.getSiblingsElemsH($this.parents('.pageFormContent')) + 30;
                 }else if ($this.parents('.page').length != 0 ) {
@@ -340,7 +342,6 @@ var DWZ = {
          * 获取page中的其他元素的总高度
          */
         getSiblingsElemsH: function($container) {
-            var height = 0;
             var $page = $container;
             var headerH = this.getElemsH($page, '.pageHeader');
             var formBarH = this.getElemsH($page, '.formBar');
@@ -349,8 +350,7 @@ var DWZ = {
             var tabsHeaderH = this.getElemsH($page, '.tabsHeader');
             var pageBarH = this.getElemsH($page, '.pageBar.panelBar');
             var panelBarH = this.getElemsH($page, '.panelBar:not(.pageBar)');
-            height = headerH + pageBarH + gridHeaderH + panelBarH + formBarH + tabsHeaderH + contentTitleH;
-            return height;
+            return headerH + pageBarH + gridHeaderH + panelBarH + formBarH + tabsHeaderH + contentTitleH;
         },
         /**
          * 获取元素高度

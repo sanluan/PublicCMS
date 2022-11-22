@@ -4,7 +4,7 @@
             startPublishDate=startPublishDate endPublishDate=endPublishDate absoluteId=false
             orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <@sys.authorized roleIds=admin.roles urls='cmsContent/delete,cmsContent/check,cmsContent/reject,cmsContent/moveParameters,cmsComment/list'><#assign authorizedMap=map/></@sys.authorized>
-<div class="pageHeader">
+<div class="pageHeader card">
     <form class="pagerForm" action="cmsContent/uncheck_list.html" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
         <input name="categoryId" type="hidden" value="${categoryId!}"/>
@@ -47,7 +47,7 @@
         </div>
     </form>
 </div>
-<div class="pageContent">
+<div class="card">
     <div class="panelBar">
         <ul class="toolBar">
         <#if authorizedMap['cmsContent/check']>

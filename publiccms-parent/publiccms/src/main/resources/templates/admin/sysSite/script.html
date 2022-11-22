@@ -1,56 +1,58 @@
 <form method="post" autocomplete="off" action="sysSite/execScript?navTabId=sysSite/script" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
-    <div class="formBar">
+    <div class="formBar card">
         <ul>
             <li><button type="submit" class="buttonActive" title="ctrl+s"><@t.page 'button.exec'/></button></li>
             <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
         </ul>
     </div>
-    <div class="pageFormContent" layoutH>
-        <dl class="nowrap">
-            <dt>Script:</dt>
-            <dd>
-                <input name="command" type="text" readonly="readonly" class="required"/>
-                <span class="info">
-                    <button type="button" class="button" onclick="commandParameter('sync.bat','siteId')"><@t.page 'repo_sync'/>(sync.bat)</button>
-                    <button type="button" class="button" onclick="commandParameter('sync.sh','siteId')"><@t.page 'repo_sync'/>(sync.sh)</button>
-                    <button type="button" class="button" onclick="commandParameter('backupDB.bat')"><@t.page 'backup_database'/>(backupDB.bat)</button>
-                    <button type="button" class="button" onclick="commandParameter('backupDB.sh')"><@t.page 'backup_database'/>(backupDB.sh)</button>
-                </span>
-            </dd>
-        </dl>
-        <dl class="nowrap">
-            <dt><@t.page 'parameter'/>:</dt>
-            <dd>
-                <p class="commandBox"></p>
-            </dd>
-        </dl>
-<@log.operateList operate='execscript.site' pageSize=10>
-    <#list page.list as a>
-        <@t.merge 'userIds' a.userId!/>
-    </#list>
-    <@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
-    <#list page.list as a>
-        <dl>
-            <dt><@t.page 'user'/>:</dt>
-            <dd>
-                ${(userMap[a.userId?string].nickname)!}
-            </dd>
-        </dl>
-        <dl>
-            <dt><@t.page 'exec_date'/>:</dt>
-            <dd>
-                ${a.createDate!}
-            </dd>
-        </dl>
-        <dl class="nowrap">
-            <dt><@t.page 'result'/>:</dt>
-            <dd>
-                <textarea cols="80" rows="5">${(a.content)!}</textarea>
-            </dd>
-        </dl>
-        <div class="divider"></div>
-    </#list>
-</@log.operateList>
+    <div class="card">
+        <div class="pageFormContent" layoutH>
+            <dl class="nowrap">
+                <dt>Script:</dt>
+                <dd>
+                    <input name="command" type="text" readonly="readonly" class="required"/>
+                    <span class="info">
+                        <button type="button" class="button" onclick="commandParameter('sync.bat','siteId')"><@t.page 'repo_sync'/>(sync.bat)</button>
+                        <button type="button" class="button" onclick="commandParameter('sync.sh','siteId')"><@t.page 'repo_sync'/>(sync.sh)</button>
+                        <button type="button" class="button" onclick="commandParameter('backupDB.bat')"><@t.page 'backup_database'/>(backupDB.bat)</button>
+                        <button type="button" class="button" onclick="commandParameter('backupDB.sh')"><@t.page 'backup_database'/>(backupDB.sh)</button>
+                    </span>
+                </dd>
+            </dl>
+            <dl class="nowrap">
+                <dt><@t.page 'parameter'/>:</dt>
+                <dd>
+                    <p class="commandBox"></p>
+                </dd>
+            </dl>
+    <@log.operateList operate='execscript.site' pageSize=10>
+        <#list page.list as a>
+            <@t.merge 'userIds' a.userId!/>
+        </#list>
+        <@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
+        <#list page.list as a>
+            <dl>
+                <dt><@t.page 'user'/>:</dt>
+                <dd>
+                    ${(userMap[a.userId?string].nickname)!}
+                </dd>
+            </dl>
+            <dl>
+                <dt><@t.page 'exec_date'/>:</dt>
+                <dd>
+                    ${a.createDate!}
+                </dd>
+            </dl>
+            <dl class="nowrap">
+                <dt><@t.page 'result'/>:</dt>
+                <dd>
+                    <textarea cols="80" rows="5">${(a.content)!}</textarea>
+                </dd>
+            </dl>
+            <div class="divider"></div>
+        </#list>
+    </@log.operateList>
+        </div>
     </div>
 </form>

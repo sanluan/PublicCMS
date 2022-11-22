@@ -3,107 +3,109 @@
     <input name="id" type="hidden" value="${id!}"/>
     <input name="surveyId" type="hidden" value="${(q.surveyId)!surveyId}"/>
     <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
-    <div class="formBar">
+    <div class="formBar card">
         <ul>
             <li><button type="submit" class="buttonActive" title="ctrl+s"><@t.page 'button.save'/></button></li>
             <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
         </ul>
     </div>
-    <div class="pageFormContent" layoutH>
-        <dl class="nowrap">
-            <dt><@t.page 'survey'/>:</dt>
-            <dd><@cms.survey id=(q.surveyId)!surveyId>${object.title!}</@cms.survey></dd>
-        </dl>
-        <dl class="nowrap">
-            <dt><@t.page 'title'/>:</dt>
-            <dd><input class="required" name="title" type="text" size="50" maxlength="50" value="${(q.title)!}"/></dd>
-        </dl>
-        <dl>
-            <dt><@t.page 'question.type'/>:</dt>
-            <dd>
-                <select class="combox" name="questionType">
-                <#list ['radio','select','checkbox','text','file','picture'] as type>
-                    <option value="${type}"${(type=((q.questionType)!))?then(' selected="true"','')?no_esc}><@t.page 'question.type.'+type/></option>
-                </#list>
-                </select>
-            </dd>
-        </dl>
-<@cms.survey id=(q.surveyId)!surveyId>
-    <#if 'exam'=object.surveyType>
-        <dl>
-            <dt><@t.page 'content.score'/>:</dt>
-            <dd><input class="required digits" type="text" name="score" value="${(q.score)!}" size="5" maxlength="5"/></dd>
-        </dl>
-        <dl class="answer">
-            <dt><@t.page 'answer'/>:</dt>
-            <dd><input type="text" name="answer" value="${(q.answer)!}" size="80" maxlength="120" /></dd>
-        </dl>
-    </#if>
-        <dl class="nowrap">
-            <dt><@t.page 'cover'/>:</dt>
-            <dd>
-                <input name="cover" maxlength="300" size="50" type="text" value="${(q.cover)!}"/>
-                <a class="btnAttach" href="common/upload.html?field=cover&fileTypes=image" lookupGroup="" width="1000" height="600"><@t.page 'cover'/></a>
-                <a class="view icon-eye-open" ref="cover" data-prefix="${site.sitePath}" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
-                <#include "../include_page/preview.html"/>
-                <@preview 'survey' 'input[name=cover]'/>
-            </dd>
-        </dl>
-        <dl class="nowrap">
-            <dt><@t.page 'sort'/></dt>
-            <dd><input class="required digits" name="sort" type="text" size="5" value="<@cms.surveyQuestionList surveyId=(q.surveyId)!surveyId pageSize=0>${(q.sort)!page.totalCount+1}</@cms.surveyQuestionList>"/></dd>
-        </dl>
-        <fieldset class="itemList">
-            <legend><@t.page 'question.item'/></legend>
-            <table class="list nowrap itemDetail" addButton="<@t.page 'button.new_line'/>" width="100%">
-                <thead>
-                    <tr>
-                        <th type="text" name="itemList[#index#].title" size="50" fieldClass="required" fieldAttrs="{maxlength:100}"><@t.page 'title'/></th>
-                        <th type="text" name="itemList[#index#].sort" fieldClass="required digits" defaultval="#index#" size="5"><@t.page 'sort'/></th>
-                    <#if 'exam'=object.surveyType>
-                        <th type="checkbox" name="itemList[#index#].answer" size="10"><@t.page 'answer.correct'/></th>
-                    </#if>
-                        <th type="del" width="60"><@t.page 'operate'/></th>
-                    </tr>
-                </thead>
-                <tbody>
-        <#if q?has_content && ['radio','select','checkbox']?seq_contains(q.questionType)>
-            <@cms.surveyQuestionItemList questionId=q.id pageSize=500>
-                <#list page.list as a>
-                    <tr>
-                        <td>
-                            <input type="hidden" name="itemList[${a?index}].id" value="${a.id}"/>
-                            <input class="required" type="text" name="itemList[${a?index}].title" value="${a.title}" size="50" maxlength="100" class="required" />
-                        </td>
-                        <td>
-                            <input class="required digits" type="text" name="itemList[${a?index}].sort" value="${a.sort!}" size="5" maxlength="5"/>
-                        </td>
-                    <#if 'exam'=object.surveyType>
-                        <td>
-                            <input type="checkbox" name="itemList[${a?index}].answer" ${(q.answer?has_content&&q.answer?split(',')?seq_contains(a.id?string))?then(' checked="true"','')?no_esc}/>
-                        </td>
-                    </#if>
-                        <td>
-                            <a href="javascript:;" class="btnDel"><@t.page 'button.delete'/></a>
-                        </td>
-                    </tr>
-                </#list>
-            </@cms.surveyQuestionItemList>
+    <div class="card">
+        <div class="pageFormContent" layoutH>
+            <dl class="nowrap">
+                <dt><@t.page 'survey'/>:</dt>
+                <dd><@cms.survey id=(q.surveyId)!surveyId>${object.title!}</@cms.survey></dd>
+            </dl>
+            <dl class="nowrap">
+                <dt><@t.page 'title'/>:</dt>
+                <dd><input class="required" name="title" type="text" size="50" maxlength="50" value="${(q.title)!}"/></dd>
+            </dl>
+            <dl>
+                <dt><@t.page 'question.type'/>:</dt>
+                <dd>
+                    <select class="combox" name="questionType">
+                    <#list ['radio','select','checkbox','text','file','picture'] as type>
+                        <option value="${type}"${(type=((q.questionType)!))?then(' selected="true"','')?no_esc}><@t.page 'question.type.'+type/></option>
+                    </#list>
+                    </select>
+                </dd>
+            </dl>
+    <@cms.survey id=(q.surveyId)!surveyId>
+        <#if 'exam'=object.surveyType>
+            <dl>
+                <dt><@t.page 'content.score'/>:</dt>
+                <dd><input class="required digits" type="text" name="score" value="${(q.score)!}" size="5" maxlength="5"/></dd>
+            </dl>
+            <dl class="answer">
+                <dt><@t.page 'answer'/>:</dt>
+                <dd><input type="text" name="answer" value="${(q.answer)!}" size="80" maxlength="120" /></dd>
+            </dl>
         </#if>
-                </tbody>
-            </table>
-        </fieldset>
-</@cms.survey>
-        <script>
-        $('select[name=\'questionType\']',navTab.getCurrentPanel()).on('change',function(){
-            if(-1 != $.inArray($(this).val(), ["radio","select","checkbox"])){
-                $('.itemList',navTab.getCurrentPanel()).show();
-                $('.answer',navTab.getCurrentPanel()).hide();
-            }else{
-                $('.itemList',navTab.getCurrentPanel()).hide();
-                $('.answer',navTab.getCurrentPanel()).show();
-            }
-        }).trigger('change');
-        </script>
+            <dl class="nowrap">
+                <dt><@t.page 'cover'/>:</dt>
+                <dd>
+                    <input name="cover" maxlength="300" size="50" type="text" value="${(q.cover)!}"/>
+                    <a class="btnAttach" href="common/upload.html?field=cover&fileTypes=image" lookupGroup="" width="1000" height="600"><@t.page 'cover'/></a>
+                    <a class="view icon-eye-open" ref="cover" data-prefix="${site.sitePath}" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
+                    <#include "../include_page/preview.html"/>
+                    <@preview 'survey' 'input[name=cover]'/>
+                </dd>
+            </dl>
+            <dl class="nowrap">
+                <dt><@t.page 'sort'/></dt>
+                <dd><input class="required digits" name="sort" type="text" size="5" value="<@cms.surveyQuestionList surveyId=(q.surveyId)!surveyId pageSize=0>${(q.sort)!page.totalCount+1}</@cms.surveyQuestionList>"/></dd>
+            </dl>
+            <fieldset class="itemList">
+                <legend><@t.page 'question.item'/></legend>
+                <table class="list nowrap itemDetail" addButton="<@t.page 'button.new_line'/>" width="100%">
+                    <thead>
+                        <tr>
+                            <th type="text" name="itemList[#index#].title" size="50" fieldClass="required" fieldAttrs="{maxlength:100}"><@t.page 'title'/></th>
+                            <th type="text" name="itemList[#index#].sort" fieldClass="required digits" defaultval="#index#" size="5"><@t.page 'sort'/></th>
+                        <#if 'exam'=object.surveyType>
+                            <th type="checkbox" name="itemList[#index#].answer" size="10"><@t.page 'answer.correct'/></th>
+                        </#if>
+                            <th type="del" width="60"><@t.page 'operate'/></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            <#if q?has_content && ['radio','select','checkbox']?seq_contains(q.questionType)>
+                <@cms.surveyQuestionItemList questionId=q.id pageSize=500>
+                    <#list page.list as a>
+                        <tr>
+                            <td>
+                                <input type="hidden" name="itemList[${a?index}].id" value="${a.id}"/>
+                                <input class="required" type="text" name="itemList[${a?index}].title" value="${a.title}" size="50" maxlength="100" class="required" />
+                            </td>
+                            <td>
+                                <input class="required digits" type="text" name="itemList[${a?index}].sort" value="${a.sort!}" size="5" maxlength="5"/>
+                            </td>
+                        <#if 'exam'=object.surveyType>
+                            <td>
+                                <input type="checkbox" name="itemList[${a?index}].answer" ${(q.answer?has_content&&q.answer?split(',')?seq_contains(a.id?string))?then(' checked="true"','')?no_esc}/>
+                            </td>
+                        </#if>
+                            <td>
+                                <a href="javascript:;" class="btnDel"><@t.page 'button.delete'/></a>
+                            </td>
+                        </tr>
+                    </#list>
+                </@cms.surveyQuestionItemList>
+            </#if>
+                    </tbody>
+                </table>
+            </fieldset>
+    </@cms.survey>
+            <script>
+            $('select[name=\'questionType\']',navTab.getCurrentPanel()).on('change',function(){
+                if(-1 != $.inArray($(this).val(), ["radio","select","checkbox"])){
+                    $('.itemList',navTab.getCurrentPanel()).show();
+                    $('.answer',navTab.getCurrentPanel()).hide();
+                }else{
+                    $('.itemList',navTab.getCurrentPanel()).hide();
+                    $('.answer',navTab.getCurrentPanel()).show();
+                }
+            }).trigger('change');
+            </script>
+        </div>
     </div>
 </form>

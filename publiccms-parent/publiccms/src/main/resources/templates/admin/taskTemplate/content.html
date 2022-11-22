@@ -1,7 +1,7 @@
 <@tools.fileContent type='task' path=path><#assign template=object!/></@tools.fileContent>
 <form method="post" autocomplete="off" action="taskTemplate/save?navTabId=taskTemplate/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
-    <div class="formBar">
+    <div class="formBar card">
         <ul>
         <#if template?has_content>
             <li><a class="button" href="taskTemplate/delete?path=${path?url}&navTabId=taskTemplate/list&_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.delete_file'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i><@t.page 'button.delete'/></a></li>
@@ -9,18 +9,20 @@
             <li><button type="submit" class="buttonActive" title="ctrl+s"<#if path?has_content> lock-url="common/lock?itemType=taskTemplate&itemId=${(path?url)!}" close-url="common/unlock?itemType=taskTemplate&itemId=${(path?url)!}"</#if>><@t.page 'button.save'/></button></li>
         </ul>
     </div>
-    <h2 class="contentTitle">
-         <a class="button" href="taskTemplate/chipLookup.html" target="dialog" mask="true"><@t.page 'task_template.fragment'/></a>
-         <a class="button" href="cmsFileHistory/list.html?type=task&path=${(path?url)!}" lookupGroup=""><@t.page 'history'/></a>
-         <a class="button" href="cmsTemplate/help.html?type=task" target="dialog" mask="true"><@t.page 'template.help'/></a>
-         <a class="button" href="<@t.page 'template.manual.url'/>" target="_blank"><@t.page 'template.manual'/></a>
-    </h2>
-    <div class="pageFormContent" layoutH>
-        <div class="clearfix">
-            <label><@t.page 'path'/>:</label><input name="path" class="required" type="text" maxlength="50" size="50" value="${(path)!}"/>
-        </div>
-        <div class="exclude-translate">
-            <textarea name="content" class="code" escape="true" mode="freemarkermixed">${(template)!}</textarea>
+    <div class="card">
+        <h2 class="contentTitle">
+             <a class="button" href="taskTemplate/chipLookup.html" target="dialog" mask="true"><@t.page 'task_template.fragment'/></a>
+             <a class="button" href="cmsFileHistory/list.html?type=task&path=${(path?url)!}" lookupGroup=""><@t.page 'history'/></a>
+             <a class="button" href="cmsTemplate/help.html?type=task" target="dialog" mask="true"><@t.page 'template.help'/></a>
+             <a class="button" href="<@t.page 'template.manual.url'/>" target="_blank"><@t.page 'template.manual'/></a>
+        </h2>
+        <div class="pageFormContent" layoutH>
+            <div class="clearfix">
+                <label><@t.page 'path'/>:</label><input name="path" class="required" type="text" maxlength="50" size="50" value="${(path)!}"/>
+            </div>
+            <div class="exclude-translate">
+                <textarea name="content" class="code" escape="true" mode="freemarkermixed">${(template)!}</textarea>
+            </div>
         </div>
     </div>
 </form>

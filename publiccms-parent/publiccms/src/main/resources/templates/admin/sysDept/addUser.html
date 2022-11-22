@@ -6,89 +6,91 @@
     <input name="id" type="hidden" value="${id!}" />
     <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <input type="hidden" name="encoding" value="sha512"/>
-    <div class="formBar">
+    <div class="formBar card">
         <ul>
             <li><button type="submit" class="buttonActive" title="ctrl+s"><@t.page 'button.save'/></button></li>
             <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
         </ul>
     </div>
-    <div class="pageFormContent" layoutH>
-        <dl class="nowrap">
-            <dt><@t.page 'user.username'/>:</dt>
-            <dd>
-                <input class="required" name="name" type="text" maxlength="20" size="20" value="${(a.name)!}"/>
-                <label><input name="superuser" type="checkbox" onclick="if($(this).is(':checked')){$('.superuser',navTab.getCurrentPanel()).show();}else{$('.superuser',navTab.getCurrentPanel()).hide();}"/><@t.page 'admin'/></label>
-            </dd>
-        </dl>
-        <dl class="nowrap">
-            <dt><@t.page 'dept'/>:</dt>
-            <dd>
-                <input name="deptId" type="hidden" value="${(dept.id)!}"/>
-                <input readonly="readonly" name="deptName" type="text" size="10" value="${(dept.name)!}"/>
-            </dd>
-        </dl>
-        <dl class="nowrap superuser hide">
-            <dt><@t.page 'user.content_permissions'/>:</dt>
-            <dd>
-                <select class="combox" name="contentPermissions" class="required">
-                    <option value="0"${(!a?has_content||0=a.contentPermissions)?then(' selected="true"','')?no_esc}><@t.page 'user.content_permissions.0'/></option>
-                    <#if a?has_content || 1=admin.getContentPermissions><option value="1"${(a?has_content&&1=a.contentPermissions)?then(' selected="true"','')?no_esc}><@t.page 'user.content_permissions.1'/></option></#if>
-                    <option value="2"${(a?has_content&&2=a.contentPermissions)?then(' selected="true"','')?no_esc}><@t.page 'user.content_permissions.2'/></option>
-                </select>
-            </dd>
-        </dl>
-        <dl class="nowrap">
-            <dt><@t.page 'password'/>:</dt>
-            <dd>
-                <input<#if !a?has_content> class="required"</#if> name="password" type="password" escape="true" maxlength="30" size="20" value=""/>
-                <#if a?has_content><span class="info"><@t.page 'user.password.description'/></span></#if>
-            </dd>
-        </dl>
-        <dl class="nowrap">
-            <dt><@t.page 'repeat_password'/>:</dt>
-            <dd><input<#if !a?has_content> class="required"</#if> name="repassword" type="password" escape="true" maxlength="30" size="20" value=""/></dd>
-        </dl>
-        <dl class="nowrap">
-            <dt><@t.page 'user.nickname'/>:</dt>
-            <dd><input class="required" name="nickname" type="text" size="20" maxlength="30" value="${(a.nickname)!}"/></dd>
-        </dl>
-        <dl class="nowrap">
-            <dt><@t.page 'cover'/>:</dt>
-            <dd>
-                <input name="cover" value="${(a.cover)!}" maxlength="300" size="50" type="text"/>
-                <a class="btnAttach" href="common/upload.html?field=cover&fileTypes=image" lookupGroup="" width="1000" height="600"><@t.page 'cover'/></a>
-                <a class="view icon-eye-open" ref="cover" data-prefix="${site.sitePath}" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
-                <#include "../include_page/preview.html"/>
-                <@preview 'user' 'input[name=cover]'/>
-            </dd>
-        </dl>
-        <dl class="nowrap">
-            <dt><@t.page 'email'/>:</dt>
-            <dd><input name="email" type="text" size="30" maxlength="50" value="${(a.email)!}"/></dd>
-        </dl>
-        <fieldset class="superuser hide">
-            <legend><i class="icon-user-md icon-large"></i><@t.page 'role'/>(<@t.page 'dept.role.description'/>)</legend>
-            <ul class="tree treeFolder treeCheck expand">
-        <@sys.role ids=admin.roles>
-            <#list map as k,role>
-                <li><a tname="roleIds" tvalue="${k}">${role.name}</a></li>
-            </#list>
-        </@sys.role>
-            </ul>
-        </fieldset>
-<#if a?has_content&&a.superuser>
-<script>
-    $('input[name=superuser]',navTab.getCurrentPanel()).click();
-<#if a.roles?has_content>
-    <#list a.roles?split(',') as role>
-        if($('.tree li a[tname=roleIds][tvalue=${role?js_string}]',navTab.getCurrentPanel()).length) {
-            $('.tree li a[tname=roleIds][tvalue=${role?js_string}]',navTab.getCurrentPanel()).attr('checked','true');
-        } else {
-            $('form',navTab.getCurrentPanel()).prepend('<input name="roleIds" value="${role}" type="hidden"/>');
-        }
-    </#list>
-</#if>
-</script>
-</#if>
+    <div class="card">
+        <div class="pageFormContent" layoutH>
+            <dl class="nowrap">
+                <dt><@t.page 'user.username'/>:</dt>
+                <dd>
+                    <input class="required" name="name" type="text" maxlength="20" size="20" value="${(a.name)!}"/>
+                    <label><input name="superuser" type="checkbox" onclick="if($(this).is(':checked')){$('.superuser',navTab.getCurrentPanel()).show();}else{$('.superuser',navTab.getCurrentPanel()).hide();}"/><@t.page 'admin'/></label>
+                </dd>
+            </dl>
+            <dl class="nowrap">
+                <dt><@t.page 'dept'/>:</dt>
+                <dd>
+                    <input name="deptId" type="hidden" value="${(dept.id)!}"/>
+                    <input readonly="readonly" name="deptName" type="text" size="10" value="${(dept.name)!}"/>
+                </dd>
+            </dl>
+            <dl class="nowrap superuser hide">
+                <dt><@t.page 'user.content_permissions'/>:</dt>
+                <dd>
+                    <select class="combox" name="contentPermissions" class="required">
+                        <option value="0"${(!a?has_content||0=a.contentPermissions)?then(' selected="true"','')?no_esc}><@t.page 'user.content_permissions.0'/></option>
+                        <#if a?has_content || 1=admin.getContentPermissions><option value="1"${(a?has_content&&1=a.contentPermissions)?then(' selected="true"','')?no_esc}><@t.page 'user.content_permissions.1'/></option></#if>
+                        <option value="2"${(a?has_content&&2=a.contentPermissions)?then(' selected="true"','')?no_esc}><@t.page 'user.content_permissions.2'/></option>
+                    </select>
+                </dd>
+            </dl>
+            <dl class="nowrap">
+                <dt><@t.page 'password'/>:</dt>
+                <dd>
+                    <input<#if !a?has_content> class="required"</#if> name="password" type="password" escape="true" maxlength="30" size="20" value=""/>
+                    <#if a?has_content><span class="info"><@t.page 'user.password.description'/></span></#if>
+                </dd>
+            </dl>
+            <dl class="nowrap">
+                <dt><@t.page 'repeat_password'/>:</dt>
+                <dd><input<#if !a?has_content> class="required"</#if> name="repassword" type="password" escape="true" maxlength="30" size="20" value=""/></dd>
+            </dl>
+            <dl class="nowrap">
+                <dt><@t.page 'user.nickname'/>:</dt>
+                <dd><input class="required" name="nickname" type="text" size="20" maxlength="30" value="${(a.nickname)!}"/></dd>
+            </dl>
+            <dl class="nowrap">
+                <dt><@t.page 'cover'/>:</dt>
+                <dd>
+                    <input name="cover" value="${(a.cover)!}" maxlength="300" size="50" type="text"/>
+                    <a class="btnAttach" href="common/upload.html?field=cover&fileTypes=image" lookupGroup="" width="1000" height="600"><@t.page 'cover'/></a>
+                    <a class="view icon-eye-open" ref="cover" data-prefix="${site.sitePath}" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
+                    <#include "../include_page/preview.html"/>
+                    <@preview 'user' 'input[name=cover]'/>
+                </dd>
+            </dl>
+            <dl class="nowrap">
+                <dt><@t.page 'email'/>:</dt>
+                <dd><input name="email" type="text" size="30" maxlength="50" value="${(a.email)!}"/></dd>
+            </dl>
+            <fieldset class="superuser hide">
+                <legend><i class="icon-user-md icon-large"></i><@t.page 'role'/>(<@t.page 'dept.role.description'/>)</legend>
+                <ul class="tree treeFolder treeCheck expand">
+            <@sys.role ids=admin.roles>
+                <#list map as k,role>
+                    <li><a tname="roleIds" tvalue="${k}">${role.name}</a></li>
+                </#list>
+            </@sys.role>
+                </ul>
+            </fieldset>
+    <#if a?has_content&&a.superuser>
+    <script>
+        $('input[name=superuser]',navTab.getCurrentPanel()).click();
+    <#if a.roles?has_content>
+        <#list a.roles?split(',') as role>
+            if($('.tree li a[tname=roleIds][tvalue=${role?js_string}]',navTab.getCurrentPanel()).length) {
+                $('.tree li a[tname=roleIds][tvalue=${role?js_string}]',navTab.getCurrentPanel()).attr('checked','true');
+            } else {
+                $('form',navTab.getCurrentPanel()).prepend('<input name="roleIds" value="${role}" type="hidden"/>');
+            }
+        </#list>
+    </#if>
+    </script>
+    </#if>
+        </div>
     </div>
 </form>

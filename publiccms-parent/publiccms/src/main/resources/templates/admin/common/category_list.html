@@ -1,6 +1,6 @@
 <@cms.categoryList advanced=true parentId=categoryId allowContribute=allowContribute pageIndex=pageNum pageSize=numPerPage>
 <@sys.authorized roleIds=admin.roles urls='cmsCategory/add,cmsCategory/delete,cmsCategory/publish,cmsCategory/rebuildChildIds,cmsCategory/batchPublish,cmsCategory/export,cmsCategory/contributeForm,cmsCategory/static,cmsCategory/moveParameters,cmsCategory/changeTypeParameters,cmsCategory/publishParameters,cmsPlace/push'><#assign authorizedMap=map/></@sys.authorized>
-<div class="pageHeader">
+<div class="pageHeader card">
     <form autocomplete="off" class="pagerForm" action="common/category_list.html" onsubmit="return divSearch(this,'categoryBox');" method="post">
         <#include "../include_page/parameters.html"/>
         <input name="categoryId" type="hidden" value="${categoryId!}"/>
@@ -29,7 +29,7 @@
         </div>
     </form>
 </div>
-<div class="pageContent">
+<div class="card">
     <div class="panelBar">
         <ul class="toolBar">
 <#if authorizedMap['cmsCategory/add']>

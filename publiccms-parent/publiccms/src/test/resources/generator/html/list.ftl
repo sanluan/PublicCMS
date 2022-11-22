@@ -1,5 +1,5 @@
 ${"<@_"+entityName?replace('Cms','')?uncap_first+"List"} <#include "../include_condition/parameter.ftl">>
-<div class="pageHeader">
+<div class="pageHeader card">
     <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#noparse><#include "../include_page/parameters.html"/></#noparse>
         <div class="searchBar">
@@ -29,7 +29,7 @@ ${"<@_"+entityName?replace('Cms','')?uncap_first+"List"} <#include "../include_c
     </form>
 </div>
 <#noparse><@_sysAuthorized roleIds=admin.roles urls='</#noparse>${entityName?uncap_first}/add,${entityName?uncap_first}/delete<#noparse>'><#assign authorizedMap=map/></@_sysAuthorized></#noparse>
-<div class="pageContent">
+<div class="pageContent card">
     <div class="panelBar">
         <ul class="toolBar">
         ${'<#'}if authorizedMap['${entityName?uncap_first}/add']>

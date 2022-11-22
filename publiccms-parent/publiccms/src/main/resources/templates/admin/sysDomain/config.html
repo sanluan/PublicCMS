@@ -2,23 +2,25 @@
 <form method="post" autocomplete="off" action="sysDomain/saveConfig?callbackType=closeCurrent&navTabId=sysDomain/domainList" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input name="name" type="hidden" value="${id!}"/>
     <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
-    <div class="formBar">
+    <div class="formBar card">
         <ul>
             <li><button type="submit" class="buttonActive" title="ctrl+s"><@t.page 'button.save'/></button></li>
             <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
         </ul>
     </div>
-    <div class="pageFormContent" layoutH>
-        <dl class="nowrap">
-            <dt><@t.page 'domain'/>:</dt>
-            <dd><input type="text" readonly="readonly" value="${(a.name)!}"/></dd>
-        </dl>
-        <dl class="nowrap">
-            <dt><@t.page 'domain.template_directory'/>:</dt>
-            <dd>
-                <input name="path" type="text" size="50" maxlength="255" value="${(a.path)!}"/>
-                <a class="btnLook" href="cmsTemplate/directoryLookup.html?field=path" lookupGroup=""><@t.page 'template.directory.select'/></a>
-            </dd>
-        </dl>
+    <div class="card">
+        <div class="pageFormContent" layoutH>
+            <dl class="nowrap">
+                <dt><@t.page 'domain'/>:</dt>
+                <dd><input type="text" readonly="readonly" value="${(a.name)!}"/></dd>
+            </dl>
+            <dl class="nowrap">
+                <dt><@t.page 'domain.template_directory'/>:</dt>
+                <dd>
+                    <input name="path" type="text" size="50" maxlength="255" value="${(a.path)!}"/>
+                    <a class="btnLook" href="cmsTemplate/directoryLookup.html?field=path" lookupGroup=""><@t.page 'template.directory.select'/></a>
+                </dd>
+            </dl>
+        </div>
     </div>
 </form>

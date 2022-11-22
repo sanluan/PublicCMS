@@ -1,5 +1,5 @@
 <div class="pageFormContent" layoutH>
-    <ul class="tree treeFolder expand">
+    <ul class="card tree treeFolder expand">
 <@cms.modelList parentId=parentId>
     <#list page.list as a>
         <li><a href="cmsContent/changeModel?id=${id!}&modelId=${a.id}&_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.change_type'/>" target="ajaxTodo"><@t.page 'change_type_to' a.name!/></a></li>

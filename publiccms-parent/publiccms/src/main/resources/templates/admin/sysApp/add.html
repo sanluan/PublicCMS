@@ -1,53 +1,55 @@
 <@sys.app id=id><#assign a=object/></@sys.app>
 <form method="post" autocomplete="off" action="sysApp/save?callbackType=closeCurrent&navTabId=sysApp/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
-    <div class="formBar">
+    <div class="formBar card">
         <ul>
             <li><button type="submit" class="buttonActive"><@t.page 'button.save'/></button></li>
             <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
         </ul>
     </div>
-    <div class="pageFormContent" layoutH>
-        <input name="id" type="hidden" value="${id!}" />
-        <input name="appKey" type="hidden" value="${(a.appKey)!getUUID()}"/>
-    <#if !a?has_content>
-        <input name="appSecret" type="hidden" value="${getUUID()}"/>
-        <dl class="nowrap">
-            <dt><@t.page 'channel'/>:</dt>
-            <dd><input class="required" name="channel" type="text" size="30" value="${(a.channel)!}"/></dd>
-        </dl>
-    <#else>
-        <dl class="nowrap">
-            <dt><@t.page 'channel'/>:</dt>
-            <dd>${(a.channel)!}</dd>
-        </dl>
-    </#if>
-        <dl class="nowrap">
-            <dt><@t.page 'expiry_minutes'/>:</dt>
-            <dd><input name="expiryMinutes" type="number" size="30" value="${(a.expiryMinutes)!}" min="1"/></dd>
-        </dl>
-        <fieldset class="ownsAllRight">
-            <legend><@t.page 'app.interface'/></legend>
-            <ul class="authorizedApis treeFolder treeCheck expand">
-                <li>
-                    <a href="javascript:;" onclick="return false;"><@t.page 'app.all_interface'/></a>
-                    <ul>
-                        <li>
-                            <a data-id="0" href="javascript:;" onclick="return false;"><@t.page 'app.directive'/></a>
-                            <ul></ul>
-                        </li>
-                        <li>
-                            <a data-id="1" href="javascript:;" onclick="return false;"><@t.page 'app.method'/></a>
-                            <ul></ul>
-                        </li>
-                        <li>
-                            <a data-id="2" href="javascript:;" onclick="return false;"><@t.page 'app.app_directive'/></a>
-                            <ul></ul>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-        </fieldset>
+    <div class="card">
+        <div class="pageFormContent" layoutH>
+            <input name="id" type="hidden" value="${id!}" />
+            <input name="appKey" type="hidden" value="${(a.appKey)!getUUID()}"/>
+        <#if !a?has_content>
+            <input name="appSecret" type="hidden" value="${getUUID()}"/>
+            <dl class="nowrap">
+                <dt><@t.page 'channel'/>:</dt>
+                <dd><input class="required" name="channel" type="text" size="30" value="${(a.channel)!}"/></dd>
+            </dl>
+        <#else>
+            <dl class="nowrap">
+                <dt><@t.page 'channel'/>:</dt>
+                <dd>${(a.channel)!}</dd>
+            </dl>
+        </#if>
+            <dl class="nowrap">
+                <dt><@t.page 'expiry_minutes'/>:</dt>
+                <dd><input name="expiryMinutes" type="number" size="30" value="${(a.expiryMinutes)!}" min="1"/></dd>
+            </dl>
+            <fieldset class="ownsAllRight">
+                <legend><@t.page 'app.interface'/></legend>
+                <ul class="authorizedApis treeFolder treeCheck expand">
+                    <li>
+                        <a href="javascript:;" onclick="return false;"><@t.page 'app.all_interface'/></a>
+                        <ul>
+                            <li>
+                                <a data-id="0" href="javascript:;" onclick="return false;"><@t.page 'app.directive'/></a>
+                                <ul></ul>
+                            </li>
+                            <li>
+                                <a data-id="1" href="javascript:;" onclick="return false;"><@t.page 'app.method'/></a>
+                                <ul></ul>
+                            </li>
+                            <li>
+                                <a data-id="2" href="javascript:;" onclick="return false;"><@t.page 'app.app_directive'/></a>
+                                <ul></ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </fieldset>
+        </div>
     </div>
 <script>
 getApi("${base}",['/api/directives','/api/methods','/api/apis'],'${(a.authorizedApis)!}'.split(","));

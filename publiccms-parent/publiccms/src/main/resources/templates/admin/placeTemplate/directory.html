@@ -1,4 +1,4 @@
-<div id="placeSearchBox">
+<div id="placeSearchBox" class="card">
     <h2 class="contentTitle">
         <#if path?has_content>
         <a class="button" href="cmsTemplate/deletePlace?path=${(path?url)!}&navTabId=placeTemplate/list&_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.delete_directory'/>" target="ajaxTodo"><@t.page 'button.delete_directory'/></a>

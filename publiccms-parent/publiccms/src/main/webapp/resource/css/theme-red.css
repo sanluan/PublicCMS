@@ -42,8 +42,6 @@ header a{color:#efefef;}
 fieldset{background-color:#fff;}
 fieldset legend{color:#b52e31;}
 fieldset legend:before{background-color:#b52e31;}
-.pageFormContent{background-color:#fff;}
-.pageFormContent.nobg{background-color:unset;}
 .pageFormContent label{color:#989eab;}
 .pageFormContent dt{color:#31353e;}
 .unit a.button:hover{background-color:#8f0006;color:#fff;border-color:#8f0006;}
@@ -71,7 +69,7 @@ textarea.readonly,input.readonly{background-color:#eee;}
 .panelBar .toolBar li.line{background-color:#e4e9f2;}
 .panelBar .toolBar li a.addMore{background-color:#FF9913}
 .panelBar .toolBar li>ul{border-color:#eceff3;}
-.panelBar.pageBar{background-color:#e8ebf2;}
+.panelBar.pageBar{background-color:#f4f4f4;}
 
 .grid { background-color:#FFF;}
 .grid table { border-color:#e4e9f2;}
@@ -96,7 +94,6 @@ table.list tbody tr.selected td{background-color:#edd9dd;}
 table.list th.asc:before,table.list th.desc:before,table.list th.order:before{color:#D8403D;}
 table.nowrap tbody tr {border-color:#ededed;}
 
-.tabs .tabsHeader{background-color:#FFF;}
 .tabs .tabsHeaderContent>ul li a{color:#989eab;}
 .tabs .tabsHeader li.selected:before{background-color:#b52e31;}
 .tabs .tabsHeader li.selected a{color:#31353e;}
@@ -114,6 +111,7 @@ footer a{color:#4d84ff;}
 .alert h1{background-color: #f2f6f9;}
 
 .dialog{background-color:#fff;}
+.dialog .pageHeader{background-color:#fff;}
 .dialog .dialogHeader{background-color:#f2f6f9;}
 .dialog .dialogHeader_c a:hover{color:#3587ef;}
 .dialog .dialogHeader .close,.dialog .dialogHeader .maximize,.dialog .dialogHeader .minimize,.dialog .dialogHeader .restore{color:#a1a4a8;}

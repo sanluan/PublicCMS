@@ -1,58 +1,60 @@
 <form method="post" autocomplete="off" action="sysSite/execSql?navTabId=sysSite/sql" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
-    <div class="formBar">
+    <div class="formBar card">
         <ul>
             <li><button type="submit" class="buttonActive" title="ctrl+s"><@t.page 'button.exec'/></button></li>
             <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
         </ul>
     </div>
-    <div class="pageFormContent" layoutH>
-        <dl class="nowrap">
-            <dt>SQL Command:</dt>
-            <dd>
-                <input name="command" type="text" readonly="readonly" class="required"/>
-                <span class="info"><button type="button" class="button" onclick="commandParameter('update_url','oldurl,newurl')"><@t.page 'sql.example.1'/></button></span>
-            </dd>
-        </dl>
-        <dl class="nowrap">
-            <dt><@t.page 'parameter'/>:</dt>
-            <dd>
-                <p class="commandBox"></p>
-            </dd>
-        </dl>
-<@log.operateList operate='execSql.site' pageSize=10>
-    <#list page.list as a>
-        <@t.merge 'userIds' a.userId!/>
-    </#list>
-    <@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
-    <#list page.list as a>
-        <dl>
-            <dt><@t.page 'user'/>:</dt>
-            <dd>
-                ${(userMap[a.userId?string].nickname)!}
-            </dd>
-        </dl>
-        <dl>
-            <dt><@t.page 'exec_date'/>:</dt>
-            <dd>
-                ${a.createDate!}
-            </dd>
-        </dl>
-        <#assign content=a.content?eval/>
-        <dl class="nowrap">
-            <dt><@t.page 'log.content'/>:</dt>
-            <dd>
-                ${(content.sqlcommand)!}:<#if content.sqlparameters?has_content><#list content.sqlparameters as a>${a}<#sep>,</#list></#if>
-            </dd>
-        </dl>
-        <dl class="nowrap">
-            <dt><@t.page 'result'/>:</dt>
-            <dd>
-                ${(content.result)!(content.error)!}
-            </dd>
-        </dl>
-        <div class="divider"></div>
-    </#list>
-</@log.operateList>
+    <div class="card">
+        <div class="pageFormContent" layoutH>
+            <dl class="nowrap">
+                <dt>SQL Command:</dt>
+                <dd>
+                    <input name="command" type="text" readonly="readonly" class="required"/>
+                    <span class="info"><button type="button" class="button" onclick="commandParameter('update_url','oldurl,newurl')"><@t.page 'sql.example.1'/></button></span>
+                </dd>
+            </dl>
+            <dl class="nowrap">
+                <dt><@t.page 'parameter'/>:</dt>
+                <dd>
+                    <p class="commandBox"></p>
+                </dd>
+            </dl>
+    <@log.operateList operate='execSql.site' pageSize=10>
+        <#list page.list as a>
+            <@t.merge 'userIds' a.userId!/>
+        </#list>
+        <@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
+        <#list page.list as a>
+            <dl>
+                <dt><@t.page 'user'/>:</dt>
+                <dd>
+                    ${(userMap[a.userId?string].nickname)!}
+                </dd>
+            </dl>
+            <dl>
+                <dt><@t.page 'exec_date'/>:</dt>
+                <dd>
+                    ${a.createDate!}
+                </dd>
+            </dl>
+            <#assign content=a.content?eval/>
+            <dl class="nowrap">
+                <dt><@t.page 'log.content'/>:</dt>
+                <dd>
+                    ${(content.sqlcommand)!}:<#if content.sqlparameters?has_content><#list content.sqlparameters as a>${a}<#sep>,</#list></#if>
+                </dd>
+            </dl>
+            <dl class="nowrap">
+                <dt><@t.page 'result'/>:</dt>
+                <dd>
+                    ${(content.result)!(content.error)!}
+                </dd>
+            </dl>
+            <div class="divider"></div>
+        </#list>
+    </@log.operateList>
+        </div>
     </div>
 </form>
