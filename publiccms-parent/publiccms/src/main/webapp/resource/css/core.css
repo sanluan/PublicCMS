@@ -49,7 +49,7 @@ header .nav .selected ul{display:block;}
 #navMenu li a>i{margin-right:5px;}
 
 /* Tabs */
-.tabs .tabsHeader{display:block;overflow:hidden;height:35px;padding-left:5px;}
+.tabs .tabsHeader{border-radius:5px;display:block;overflow:hidden;height:35px;padding-left:5px;}
 .tabs .tabsHeaderContent{display:block;overflow:hidden;height:100%;}
 .tabs .tabsHeaderContent>ul li a{line-height:34px;}
 .tabs .tabsHeader ul{display:block;height:100%;border-bottom-width:1px;border-bottom-style:solid;box-sizing:border-box;}
@@ -340,7 +340,7 @@ fieldset:first-child .unit:first-of-type p:last-child{padding:0;}
 .comboxop .selected,body .comboxop a:hover{text-decoration:none;}
 
 /* contentTitle */
-h2.contentTitle{padding:5px 10px;font-size:18px;border-bottom:solid 1px #CCC;}
+h2.contentTitle{border-radius: 5px;padding:5px 10px;font-size:18px;border-bottom:solid 1px #CCC;}
 h3.contentTitle{font-size:16px;border-bottom:solid 1px #CCC;clear:both;}
 .dialog h2.contentTitle{border:none;}
 
