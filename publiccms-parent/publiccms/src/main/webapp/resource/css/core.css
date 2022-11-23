@@ -87,7 +87,6 @@ header .nav .selected ul{display:block;}
 .tabsPage .tabsPageContent{display:block;overflow:hidden;position:relative;}
 
 /* Tree */
-.tree{overflow:auto;}
 .tree li{clear:both;display:block;line-height:30px;cursor:pointer;}
 .tree li a.disabled{color:#aaa;}
 .tree div, .tree a, .tree span{display:inherit;height:30px;line-height:30px;font-size:13px;white-space:nowrap;}

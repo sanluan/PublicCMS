@@ -236,16 +236,16 @@
             </#if>
     </#switch>
 </#macro>
-<#macro extendData name extendList extendValues type='form' fromIndex=0 htmlSafe=false>
+<#macro extendData name extendList extendValues type='form' htmlSafe=false>
     <#list extendList as e>
     <#local value=extendValues[e.id.code]!e.defaultValue!''/>
         <#if 'customform'=type>
-    <p><label>${(e.name)}:</label><@input name e e?index+fromIndex value type/></p>
+    <p><label>${(e.name)}:</label><@input name e e?index value type/></p>
         <#else>
     <dl<#if !['number','alphaColor','color','date','datetime','boolean','text','password']?seq_contains(e.inputType)> class="nowrap"</#if>>
         <dt>${(e.name)}:</dt>
         <dd<#if 'editor'=e.inputType> style="width:90%;"</#if>>
-            <@input name e e?index+fromIndex value type/>
+            <@input name e e?index value type/>
             <span class="info">${(htmlSafe?then(e.description?no_esc,e.description))!}</span>
         </dd>
     </dl>
