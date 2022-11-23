@@ -82,12 +82,11 @@
                     </#if>
                     </dd>
                 </dl>
-                    <#if !parentId?has_content>
+            <#if !parentId?has_content>
 <script>
 $('input[name=\'categoryName\']',navTab.getCurrentPanel()).on('change',function(){
     addCategory($('input[name=\'quoteCategoryId\']',navTab.getCurrentPanel()).val(), $(this).val(), null);
 });
-<#assign copy=false/>
 <#if a?has_content>
 <@cms.contentQuoteList quoteId=a.id>
     <#list list as a>
@@ -96,10 +95,9 @@ $('input[name=\'categoryName\']',navTab.getCurrentPanel()).on('change',function(
     </@cms.category>
     </#list>
 </@cms.contentQuoteList>
-<#if copyId?has_content && !id?has_content><#assign copy=true/></#if>
 </#if>
 </script>
-                    </#if>
+            </#if>
                 <dl>
                     <dt><@t.page 'model'/>:</dt>
                     <dd>
@@ -241,6 +239,8 @@ $('input[name=timing]',navTab.getCurrentPanel()).click();
                 </dl>
             </#if>
             </div>
+            <#assign copy=false/>
+            <#if a?has_content && copyId?has_content && !id?has_content><#assign copy=true/></#if>
             <#if model.hasImages||model.hasFiles>
                 <#include "../include_page/contentFiles.html"/>
                 <#if model.hasImages>
