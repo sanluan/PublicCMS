@@ -280,18 +280,18 @@ a.button,button.button{border-width:1px;border-style:solid;-moz-box-shadow:0px 0
 .pageForm{display:block;overflow:auto;}
 .pageFormContent{display:block;padding:15px;position:relative;height:100%;width:100%;overflow:auto;box-sizing:border-box;}
 .pageFormContent div.unit{display:block;margin:0;padding:5px 0;position:relative;clear:both;}
-.pageFormContent p{float:left;display:block;min-width:380px;min-height:16px;margin:0;padding:3px 0;position:relative;}
+.pageFormContent p{float:left;display:block;min-width:325px;min-height:16px;margin:0;padding:3px 0;position:relative;}
 .pageFormContent p.nowrap{width:100%;}
 .pageFormContent .radioGroup{float:left;display:block;overflow:hidden;}
-.pageFormContent label{float:left;width:100px;padding:0 10px;line-height:26px;}
+.pageFormContent label{float:left;min-width:80px;padding:0 10px;line-height:26px;}
 .pageFormContent label.radioButton{float:left;width:auto;padding:0 10px 0 0;}
 .pageFormContent .textInput,.pageFormContent select{float:left;}
 .pageFormContent .inputInfo{padding:0 5px;line-height:26px;}
 .pageFormContent span.unit, .pageFormContent a.unit{padding:0 5px;line-height:26px;}
 .pageFormContent span.info{color:#7F7F7F;line-height:26px;font-size:12px;}
 .pageFormContent span.info:before{display:block;content:".";height:0;clear:both;visibility:hidden;}
-.pageFormContent dl{float:left;line-height:22px;width:50%;margin:0;padding:5px 0;position:relative;}
-.pageFormContent dt{float:left;width:120px;padding:0 5px;word-break:break-all;}
+.pageFormContent dl{float:left;line-height:22px;width:50%;margin:0;padding:4px 0;position:relative;}
+.pageFormContent dt{float:left;min-width:120px;width:120px;padding:0 5px;word-break:break-all;}
 .pageFormContent dd{margin-left:130px;}
 .pageFormContent dl dd label{text-align:right;}
 .pageFormContent dl.nowrap, .nowrap dl{width:100%;height:auto;clear:both;}

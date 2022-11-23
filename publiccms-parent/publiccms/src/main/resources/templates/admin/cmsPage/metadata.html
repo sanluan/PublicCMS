@@ -8,7 +8,7 @@
                     <li><a class="button" href="cmsTemplate/list.html?path=${(path?url)!}&editType=metadata" target="navTab" rel="cmsTemplate/list"><@t.page 'metadata'/></a></li>
                     <li><a class="button" href="cmsTemplate/list.html?path=${(path?url)!}" target="navTab" rel="cmsTemplate/list"><@t.page 'template.content'/></a></li>
                 </@sys.authorized>
-                <#if (metadata.extendList)?has_content><button type="submit" class="buttonActive" title="ctrl+s" lock-url="common/lock?itemType=page&itemId=${path}" close-url="common/unlock?itemType=page&itemId=${path}"><@t.page 'button.save'/></button></#if>
+                <#if (metadata.extendList)?has_content><li><button type="submit" class="buttonActive" title="ctrl+s" lock-url="common/lock?itemType=page&itemId=${path}" close-url="common/unlock?itemType=page&itemId=${path}"><@t.page 'button.save'/></button></li></#if>
             </li>
         </ul>
     </div>
@@ -19,8 +19,10 @@
                 <dl class="nowrap">
                     <dt><@t.page 'static_page'/>:</dt>
                     <dd>
-                        <label><a class="button" href="cmsTemplate/publish?path=${path}&_csrf=<@tools.csrfToken admin=true/>" target="ajaxTodo"><@t.page 'publish_page'/></a></label>
-                        <label><a class="button" href="cmsDiy/preview.html?url=${(site.sitePath+(metadata.publishPath?starts_with('/'))?then(metadata.publishPath?keep_after('/'),metadata.publishPath))?url}" target="navTab" rel="cmsDiy/preview"  icon="<i class='bi bi-palette2 icon-large'></i>" title="<@t.page 'diy.preview'/>"><@t.page 'button.view_page'/></a></label>
+                        <p>
+                            <a class="button" href="cmsTemplate/publish?path=${path}&_csrf=<@tools.csrfToken admin=true/>" target="ajaxTodo"><@t.page 'publish_page'/></a>
+                            <a class="button" href="cmsDiy/preview.html?url=${(site.sitePath+(metadata.publishPath?starts_with('/'))?then(metadata.publishPath?keep_after('/'),metadata.publishPath))?url}" target="navTab" rel="cmsDiy/preview"  icon="<i class='bi bi-palette2 icon-large'></i>" title="<@t.page 'diy.preview'/>"><@t.page 'button.view_page'/></a>
+                        </p>
                     </dd>
                 </dl>
             </#if>
@@ -28,10 +30,12 @@
                 <dl class="nowrap">
                     <dt><@t.page 'dynamic_page'/>:</dt>
                     <dd>
-                        <label><a class="button" href="cmsDiy/preview.html?url=${(site.dynamicPath+(path?starts_with('/'))?then(path?keep_after('/'),path))?url}<#if metadata.acceptParameters?has_content>%3F<#list metadata.acceptParameters?split(',') as p>${p}=<#if 'content'=(metadata.parameterTypeMap[p].type)!><@cms.contentList pageSize=1><#list page.list as a>${a.id}</#list></@cms.contentList><#elseif 'category'=(metadata.parameterTypeMap[p].type)!><@cms.categoryList pageSize=1><#list page.list as a>${a.id}</#list></@cms.categoryList></#if><#sep>%26</#list></#if>" target="navTab" rel="cmsDiy/preview"  icon="<i class='bi bi-palette2 icon-large'></i>" title="<@t.page 'diy.preview'/>"><@t.page 'button.view_page'/></a></label>
-                        <#if 0 lte (metadata.cacheTime)!0>
-                            <label><a class="button" href="cmsPage/clearCache?path=${path}&_csrf=<@tools.csrfToken admin=true/>" target="ajaxTodo"><@t.page 'button.clear_cache'/></a></label>
-                        </#if>
+                        <p>
+                            <a class="button" href="cmsDiy/preview.html?url=${(site.dynamicPath+(path?starts_with('/'))?then(path?keep_after('/'),path))?url}<#if metadata.acceptParameters?has_content>%3F<#list metadata.acceptParameters?split(',') as p>${p}=<#if 'content'=(metadata.parameterTypeMap[p].type)!><@cms.contentList pageSize=1><#list page.list as a>${a.id}</#list></@cms.contentList><#elseif 'category'=(metadata.parameterTypeMap[p].type)!><@cms.categoryList pageSize=1><#list page.list as a>${a.id}</#list></@cms.categoryList></#if><#sep>%26</#list></#if>" target="navTab" rel="cmsDiy/preview"  icon="<i class='bi bi-palette2 icon-large'></i>" title="<@t.page 'diy.preview'/>"><@t.page 'button.view_page'/></a>
+                            <#if 0 lte (metadata.cacheTime)!0>
+                                <a class="button" href="cmsPage/clearCache?path=${path}&_csrf=<@tools.csrfToken admin=true/>" target="ajaxTodo"><@t.page 'button.clear_cache'/></a>
+                            </#if>
+                        </p>
                     </dd>
                 </dl>
             </#if>
