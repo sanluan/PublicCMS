@@ -24,9 +24,9 @@
     <#if category.parentId?has_content>
         <@cms.category id=category.parentId;category>
             <@bread category/>
-            <a href="${category.url}">${category.name}</a> &gt;
         </@cms.category>
     </#if>
+    <a href="${category.url}">${category.name}</a> &gt;
 </#macro>
     <header data-diy="page">
         <h1>${(site.name)!}</h1>
