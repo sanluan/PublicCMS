@@ -118,6 +118,9 @@ public class SiteComponent implements Cache {
      * @return full file name
      */
     private static String getFullFileName(short siteId, String path) {
+        if (CommonUtils.empty(path)) {
+            path = CommonConstants.BLANK;
+        }
         if (path.contains("..")) {
             path = path.replace("..", CommonConstants.BLANK);
         }
@@ -321,7 +324,8 @@ public class SiteComponent implements Cache {
     /**
      * @param site
      * @param filepath
-     * @param newfile add new file name
+     * @param newfile
+     *            add new file name
      * @return web history file path
      */
     public String getWebHistoryFilePath(SysSite site, String filepath, boolean newfile) {
@@ -355,7 +359,8 @@ public class SiteComponent implements Cache {
     /**
      * @param site
      * @param templatePath
-     * @param newfile add new file name
+     * @param newfile
+     *            add new file name
      * @return task template history file path
      */
     public String getTaskTemplateHistoryFilePath(SysSite site, String templatePath, boolean newfile) {
@@ -389,7 +394,8 @@ public class SiteComponent implements Cache {
     /**
      * @param site
      * @param templatePath
-     * @param newfile add new file name
+     * @param newfile
+     *            add new file name
      * @return template history file path
      */
     public String getTemplateHistoryFilePath(SysSite site, String templatePath, boolean newfile) {

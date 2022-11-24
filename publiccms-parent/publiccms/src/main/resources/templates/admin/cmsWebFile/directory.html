@@ -1,17 +1,15 @@
 <form action="cmsWebFile/createDirectory?callbackType=closeCurrent&navTabId=cmsWebFile/list" method="post" autocomplete="off" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
     <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
-    <div class="card">
-        <div class="pageFormContent" layoutH>
-            <dl>
-                <dt><@t.page 'name'/>:</dt>
-                <dd>
-                    <input type="hidden" name="path" value="${path!}"/>
-                    <input type="text" name="fileName" class="required" size="30" />
-                </dd>
-            </dl>
-        </div>
+    <div class="pageFormContent" layoutH>
+        <dl>
+            <dt><@t.page 'name'/>:</dt>
+            <dd>
+                <input type="hidden" name="path" value="${path!}"/>
+                <input type="text" name="fileName" class="required" size="30" />
+            </dd>
+        </dl>
     </div>
-    <div class="formBar card">
+    <div class="formBar">
         <ul>
             <li><button type="submit" class="buttonActive" title="ctrl+s"><@t.page 'button.save'/></button></li>
             <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
