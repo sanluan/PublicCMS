@@ -182,17 +182,25 @@ var DWZ = {
                 var $box = $(box);
                 $("textarea.editor", $box).each(function() {
                     if('ckeditor'==$(this).attr('editorType')) {
-                        CKEDITOR.instances[$(this).data("id")].updateElement();
+                        if(CKEDITOR.instances[$(this).data("id")]) {
+                            CKEDITOR.instances[$(this).data("id")].updateElement();
+                        }
                     } else if ("tinymce"==$(this).attr("editorType")){
-                        tinymce.get($(this).data("id")).save();
+                        if(tinymce.get($(this).data("id"))) {
+                            tinymce.get($(this).data("id")).save();
+                        }
                     } else if ("kindeditor"==$(this).attr("editorType")){
                         KindEditor.sync('#'+$(this).data("id"));
                     } else {
-                        UE.instants[$(this).data("id")].sync();
+                        if(UE.instants[$(this).data("id")]) {
+                            UE.instants[$(this).data("id")].sync();
+                        }
                     }
                 });
                 $("textarea.code", $box).each(function() {
-                     DWZ.instances[$(this).data("id")].save();
+                    if(DWZ.instances[$(this).data("id")]) {
+                        DWZ.instances[$(this).data("id")].save();
+                    }
                 });
         
                 $(".miscSortDrag", $box).each(function() {
@@ -209,22 +217,30 @@ var DWZ = {
                 var $box = $(box);
                 $("textarea.editor", $box).each(function() {
                     if('ckeditor'==$(this).attr('editorType')) {
-                        CKEDITOR.instances[$(this).data("id")].destroy();
+                        if(CKEDITOR.instances[$(this).data("id")]) {
+                            CKEDITOR.instances[$(this).data("id")].destroy();
+                        }
                     } else if("tinymce"==$(this).attr("editorType")) {
                         tinymce.remove('#'+$(this).data("id"));
                     } else if("kindeditor"==$(this).attr("editorType")) {
                         KindEditor.remove('#'+$(this).data("id"));
                     } else {
-                        UE.instants[$(this).data("id")].destroy();
+                        if(UE.instants[$(this).data("id")]) {
+                            UE.instants[$(this).data("id")].destroy();
+                        }
                     }
                 });
                 $("textarea.code", $box).each(function() {
-                    DWZ.instances[$(this).data("id")].toTextArea();
-                    delete DWZ.instances[$(this).data("id")];
+                    if(DWZ.instances[$(this).data("id")]) {
+                        DWZ.instances[$(this).data("id")].toTextArea();
+                        delete DWZ.instances[$(this).data("id")];
+                    }
                 });
                 $(".image-editor", $box).each(function() {
-                    DWZ.instances[$(this).data("id")].destroy();
-                    delete DWZ.instances[$(this).data("id")];
+                    if(DWZ.instances[$(this).data("id")]) {
+                        DWZ.instances[$(this).data("id")].destroy();
+                        delete DWZ.instances[$(this).data("id")];
+                    }
                 });
                 $('[close-url]',$box).each(function (){
                     $.getJSON($(this).attr("close-url"), function(data) {});

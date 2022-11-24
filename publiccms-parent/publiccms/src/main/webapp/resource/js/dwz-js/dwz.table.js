@@ -21,7 +21,7 @@
             $(this).wrap("<div class='grid'></div>");
             var $grid = $table.parent().html($table.html());
             var thead = $grid.find("thead");
-            thead.wrap("<div class='gridHeader'><div class='gridThead'><table style='width:" + (tlength - 26) + "px;'></table></div></div>");
+            thead.wrap("<div class='gridHeader'><div class='gridThead'><table style='width:" + (tlength - 20) + "px;'></table></div></div>");
             var lastH = $(">tr:last-child", thead);
             var ths = $(">th", lastH);
             $("th",thead).each(function(){
@@ -40,7 +40,7 @@
             });
 
             var tbody = $grid.find(">tbody");
-            tbody.wrap("<div class='gridScroller' layoutH style='width:" + ($tc.width()-6) + "px;'><div class='gridTbody'><table style='width:" + (tlength - 26) + "px;'></table></div></div>");
+            tbody.wrap("<div class='gridScroller' layoutH style='width:" + $tc.width() + "px;'><div class='gridTbody'><table style='width:" + (tlength - 20) + "px;'></table></div></div>");
             var ftr = $(">tr:first-child", tbody);
             var $trs = tbody.find('>tr');
 
@@ -158,10 +158,10 @@
                 $("div.j-resizeGrid").each(function(){
                     var width = $(this).innerWidth();
                     if (width){
-                        $("div.gridScroller", this).width((width-6)+"px");
-                        if(width -26 > $("div.gridHeader>.gridThead>table", this).width()) {
-                            $("div.gridHeader>.gridThead>table", this).width((width - 26 )+"px");
-                            $("div.gridScroller>.gridTbody>table", this).width((width - 26 )+"px");
+                        $("div.gridScroller", this).width(width+"px");
+                        if(width -20 > $("div.gridHeader>.gridThead>table", this).width()) {
+                            $("div.gridHeader>.gridThead>table", this).width((width - 20 )+"px");
+                            $("div.gridScroller>.gridTbody>table", this).width((width - 20 )+"px");
                         }
                     }
                 });
