@@ -2,49 +2,51 @@
     <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <#if word?has_content>
     <@tools.templateSearchList path=path word=word>
-    <div class="formBar">
+    <div class="formBar card">
         <ul>
-            <li><a class="button" href="${returnUrl!'cmsTemplate/directory.html?path='+((path?url)!)}" target="ajax" rel="${rel!'searchBox'}"><@t.page 'button.return'/></a></li>
+            <li><a class="button" href="${returnUrl!'cmsTemplate/directory.html?path='+((path?url)!)}" target="ajax" rel="${rel!'cmsTemplateBox'}"><@t.page 'button.return'/></a></li>
             <#if list?has_content>
                 <li><button type="submit" class="buttonActive" title="ctrl+s"><@t.page 'replace'/></button></li>
             </#if>
         </ul>
     </div>
-    <div class="pageFormContent" layoutH>
-        <dl class="nowrap">
-            <dt><@t.page 'search'/>:</dt>
-            <dd>
-                <input name="word" type="text" class="readonly" readonly="readonly" value="${word!}"/>
-            </dd>
-        </dl>
-    <#if list?has_content>
-        <dl class="nowrap">
-            <dt><@t.page 'replace'/>:</dt>
-            <dd>
-                <input name="replace" type="text" value="${word!}"/>
-            </dd>
-        </dl>
-    </#if>
-        <dl class="nowrap">
-            <dt><@t.page 'result'/>:</dt>
-            <dd>
-                <ul class="tree treeFolder treeCheck expand">
-                    <#list list as a>
-                    <li>
-                        <a tname="replaceList[${a?index}].path" tvalue="${a.path}" href="javascript:;" checked="true" onclick="return false;">${a.path}</a>
-                        <ul>
-                        <#list a.matchList as m>
-                            <li>
-                                <a tname="replaceList[${a?index}].indexs" tvalue="${m?index}" checked="true">${m}</a>
-                            </li>
+    <div class="card">
+        <div class="pageFormContent" layoutH>
+            <dl class="nowrap">
+                <dt><@t.page 'search'/>:</dt>
+                <dd>
+                    <input name="word" type="text" class="readonly" readonly="readonly" value="${word!}"/>
+                </dd>
+            </dl>
+        <#if list?has_content>
+            <dl class="nowrap">
+                <dt><@t.page 'replace'/>:</dt>
+                <dd>
+                    <input name="replace" type="text" value="${word!}"/>
+                </dd>
+            </dl>
+        </#if>
+            <dl class="nowrap">
+                <dt><@t.page 'result'/>:</dt>
+                <dd>
+                    <ul class="tree treeFolder treeCheck expand">
+                        <#list list as a>
+                        <li>
+                            <a tname="replaceList[${a?index}].path" tvalue="${a.path}" href="javascript:;" checked="true" onclick="return false;">${a.path}</a>
+                            <ul>
+                            <#list a.matchList as m>
+                                <li>
+                                    <a tname="replaceList[${a?index}].indexs" tvalue="${m?index}" checked="true">${m}</a>
+                                </li>
+                            </#list>
+                            </ul>
+                        </li>
                         </#list>
-                        </ul>
-                    </li>
-                    </#list>
-                </ul>
-            </dd>
-        </dl>
+                    </ul>
+                </dd>
+            </dl>
+        </div>
+        </@tools.templateSearchList>
+        </#if>
     </div>
-    </@tools.templateSearchList>
-    </#if>
 </form>

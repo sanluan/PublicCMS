@@ -2,14 +2,14 @@ ${"<@_"+entityName?replace('Cms','')?uncap_first+" id=id><#assign a=object/></@_
 <form method="post" autocomplete="off" action="${entityName?uncap_first}/save?callbackType=closeCurrent&navTabId=${entityName?uncap_first}/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input name="id" type="hidden" value="<#noparse>${id!}</#noparse>" />
     <input type="hidden" name="_csrf" value="<#noparse><@_csrfToken admin=true/></#noparse>"/>
-    <div class="formBar">
+    <div class="formBar card">
         <ul>
             <li><button type="submit" class="buttonActive"><#noparse><@t.page 'button.save'/></#noparse></button></li>
             <li><button type="button" class="button close"><#noparse><@t.page 'button.close'/></#noparse></button></li>
         </ul>
     </div>
-    <div class="pageContent">
-        <div class="pageFormContent" layoutH="56">
+    <div class="card">
+        <div class="pageFormContent" layoutH>
         <#list columnList as a>
             <#if "Date"=a.type>
             <dl>

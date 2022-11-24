@@ -1,6 +1,6 @@
 <@cms.wordList name=name advanced=true hidden=hidden startCreateDate=startCreateDate endCreateDate=endCreateDate
             orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
-<div class="pageHeader">
+<div class="pageHeader card">
     <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
         <div class="searchBar">
@@ -33,7 +33,7 @@
         </div>
     </form>
 </div>
-<div class="pageContent">
+<div class="card">
     <div class="panelBar">
         <ul class="toolBar">
             <li><a href="cmsWord/add.html" target="dialog" rel="cmsWord_add" ><i class="icon-plus-sign-alt icon-large"></i><@t.page 'search_word.add'/></a></li>

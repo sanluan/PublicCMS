@@ -4,81 +4,83 @@
     <input type="hidden" name="id.surveyId" value="${object.id.surveyId}"/>
     <input type="hidden" name="id.userId" value="${object.id.userId}"/>
     <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
-    <div class="formBar">
+    <div class="formBar card">
         <ul>
             <li><button type="submit" class="buttonActive" title="ctrl+s"><@t.page 'button.ok'/></button></li>
             <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
         </ul>
     </div>
-    <div class="pageFormContent" layoutH>
-        <dl class="nowrap">
-            <dt><@t.page 'title'/>:</dt>
-            <dd class="exclude-translate">
-                ${(survey.title)!}
-            </dd>
-        </dl>
-        <dl class="nowrap">
-            <dt><@t.page 'user'/>:</dt>
-            <dd class="exclude-translate">
-                <@sys.user id=object.id.userId>${object.nickname!}</@sys.user>
-            </dd>
-        </dl>
-    <#if 'exam'=survey.surveyType>
-        <dl>
-            <dt><@t.page 'content.score'/>:</dt>
-            <dd>
-                ${(object.score)!}
-            </dd>
-        </dl>
-    </#if>
-        <dl class="nowrap">
-            <dt><@t.page 'create_date'/>:</dt>
-            <dd>
-                ${(object.createDate)!}
-            </dd>
-        </dl>
-        <@cms.surveyQuestionList surveyId=object.id.surveyId pageSize=500>
-            <#if page.totalCount gt 0>
-        <fieldset>
-            <legend><@t.page 'question'/></legend>
-            <#list page.list as a>
-                <@t.merge 'questionIds' a.id!/>
-            </#list>
-    
-            <@cms.userSurveyQuestion userId=object.id.userId questionIds=t.questionIds!><#assign userQuestionMap=map!/></@cms.userSurveyQuestion>
-    
-            <#list page.list as q>
-                <div class="unit">
-                    <p class="nowrap"><label><@t.page 'question'/>:</label>[<@t.page 'question.type.'+q.questionType/>] ${q.title}</p>
-                    <#if q.cover?has_content>
-                        <p class="thumbnail">
-                            <img src="${(q.cover)!}"/>
-                        </p>
-                    </#if>
-                    <#if ['radio','select','checkbox']?seq_contains(q.questionType)>
-                        <@cms.surveyQuestionItemList userId=userId questionId=q.id pageSize=500>
-                            <#list page.list as a>
-                        <p><label><@t.page 'question.item'/>:</label>${a.sort}. ${a.title} <#if (q.answer)?has_content&&q.answer?split(',')?seq_contains(a.id?string)>[<@t.page 'answer.correct'/>]</#if> <#if (userQuestionMap[q.id?string].answer)?has_content&&userQuestionMap[q.id?string].answer?split(',')?seq_contains(a.id?string)>(<@t.page 'answer.user'/>)</#if></p>
-                            </#list>
-                        </@cms.surveyQuestionItemList>
-                    <#elseif 'text'=q.questionType>
-                        <#if q.answer?has_content><p><label><@t.page 'answer.correct'/>:</label>${(q.answer)!}</p></#if>
-                        <p><label><@t.page 'answer.user'/>:</label>${(userQuestionMap[q.id?string].answer)!}</p>
-                    <#elseif (userQuestionMap[q.id?string].answer)?has_content&&('file'=q.questionType||'picture'=q.questionType)>
-                        <#if q.answer?has_content><p><label><@t.page 'answer.correct'/>:</label>${(q.answer)!}</p></#if>
-                        <p><a href="${(userQuestionMap[q.id?string].answer)!}" target="_blank"><@t.page 'answer.user'/></a></p>
-                    </#if>
-                    <#if 'exam'=survey.surveyType>
-                        <input type="hidden" name="answerList[${q?index}].id.userId" value="${object.id.userId!}"/>
-                        <input type="hidden" name="answerList[${q?index}].id.questionId" value="${q.id!}"/>
-                        <p><label><@t.page 'content.score'/></label><input class="required digits" type="text" name="answerList[${q?index}].score" value="${(userQuestionMap[q.id?string].score)!}" max="${q.score!}" size="5" maxlength="5"/></p>
-                    </#if>
-                </div>
-                <div class="divider"></div>
-            </#list>
-        </fieldset>
-            </#if>
-        </@cms.surveyQuestionList>
+    <div class="card">
+        <div class="pageFormContent" layoutH>
+            <dl class="nowrap">
+                <dt><@t.page 'title'/>:</dt>
+                <dd class="exclude-translate">
+                    ${(survey.title)!}
+                </dd>
+            </dl>
+            <dl class="nowrap">
+                <dt><@t.page 'user'/>:</dt>
+                <dd class="exclude-translate">
+                    <@sys.user id=object.id.userId>${object.nickname!}</@sys.user>
+                </dd>
+            </dl>
+        <#if 'exam'=survey.surveyType>
+            <dl>
+                <dt><@t.page 'content.score'/>:</dt>
+                <dd>
+                    ${(object.score)!}
+                </dd>
+            </dl>
+        </#if>
+            <dl class="nowrap">
+                <dt><@t.page 'create_date'/>:</dt>
+                <dd>
+                    ${(object.createDate)!}
+                </dd>
+            </dl>
+            <@cms.surveyQuestionList surveyId=object.id.surveyId pageSize=500>
+                <#if page.totalCount gt 0>
+            <fieldset>
+                <legend><@t.page 'question'/></legend>
+                <#list page.list as a>
+                    <@t.merge 'questionIds' a.id!/>
+                </#list>
+        
+                <@cms.userSurveyQuestion userId=object.id.userId questionIds=t.questionIds!><#assign userQuestionMap=map!/></@cms.userSurveyQuestion>
+        
+                <#list page.list as q>
+                    <div class="unit">
+                        <p class="nowrap"><label><@t.page 'question'/>:</label>[<@t.page 'question.type.'+q.questionType/>] ${q.title}</p>
+                        <#if q.cover?has_content>
+                            <p class="thumbnail">
+                                <img src="${(q.cover)!}"/>
+                            </p>
+                        </#if>
+                        <#if ['radio','select','checkbox']?seq_contains(q.questionType)>
+                            <@cms.surveyQuestionItemList userId=userId questionId=q.id pageSize=500>
+                                <#list page.list as a>
+                            <p><label><@t.page 'question.item'/>:</label>${a.sort}. ${a.title} <#if (q.answer)?has_content&&q.answer?split(',')?seq_contains(a.id?string)>[<@t.page 'answer.correct'/>]</#if> <#if (userQuestionMap[q.id?string].answer)?has_content&&userQuestionMap[q.id?string].answer?split(',')?seq_contains(a.id?string)>(<@t.page 'answer.user'/>)</#if></p>
+                                </#list>
+                            </@cms.surveyQuestionItemList>
+                        <#elseif 'text'=q.questionType>
+                            <#if q.answer?has_content><p><label><@t.page 'answer.correct'/>:</label>${(q.answer)!}</p></#if>
+                            <p><label><@t.page 'answer.user'/>:</label>${(userQuestionMap[q.id?string].answer)!}</p>
+                        <#elseif (userQuestionMap[q.id?string].answer)?has_content&&('file'=q.questionType||'picture'=q.questionType)>
+                            <#if q.answer?has_content><p><label><@t.page 'answer.correct'/>:</label>${(q.answer)!}</p></#if>
+                            <p><a href="${(userQuestionMap[q.id?string].answer)!}" target="_blank"><@t.page 'answer.user'/></a></p>
+                        </#if>
+                        <#if 'exam'=survey.surveyType>
+                            <input type="hidden" name="answerList[${q?index}].id.userId" value="${object.id.userId!}"/>
+                            <input type="hidden" name="answerList[${q?index}].id.questionId" value="${q.id!}"/>
+                            <p><label><@t.page 'content.score'/></label><input class="required digits" type="text" name="answerList[${q?index}].score" value="${(userQuestionMap[q.id?string].score)!}" max="${q.score!}" size="5" maxlength="5"/></p>
+                        </#if>
+                    </div>
+                    <div class="divider"></div>
+                </#list>
+            </fieldset>
+                </#if>
+            </@cms.surveyQuestionList>
+        </div>
     </div>
 </form>
     </@cms.userSurvey>

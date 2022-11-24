@@ -1,5 +1,5 @@
 @charset "UTF-8";
-a.btnText{padding:4px 5px;word-break:keep-all;white-space:nowrap;background-color:#ddd;border-radius:2px;margin-right:2px;}
+a.btnText{padding:2px 5px;font-size:13px;word-break:keep-all;white-space:nowrap;background-color:#ddd;border-radius:2px;margin-right:2px;}
 a.btnText.red{background-color:#edd;}
 a.btnText.green{background-color:#ded;}
 a.btnText.blue{background-color:#dde;}
@@ -7,13 +7,12 @@ a.btnText.warn{background-color:#edd;color:#f33;}
 a.btnText:hover{text-decoration:none;}
 a.btnText i{margin-right:3px;}
 .grid .gridTbody td div a.btnText:hover,table.list a.btnText:hover{text-decoration:none;}
-
 .button.float{position:absolute;right:30px;z-index:2;top:24px;}
 .unit .chart{min-width:390px;width:40%;height:234px;float:left;}
 .unit ul{padding:0;margin:0;list-style:none;}
 .unit ul li{min-width:195px;width:20%;float:left;}
-.unit ul li .card{padding:10px;height:75px;margin:10px;border-radius:5px;border-style:solid;border-width:1px;font-size:16px;-moz-box-shadow:0px 0px 5px 1px #DDE4EF;box-shadow:0px 0px 5px 1px #DDE4EF;-ms-box-shadow:0px 0px 5px 1px #DDE4EF;-o-box-shadow:0px 0px 5px 1px #DDE4EF;-webkit-box-shadow:0px 0px 5px 1px #DDE4EF;}
-.unit ul li .card p{line-height:26px;float:none;color:#333;min-width:unset;word-break:break-all;}
+.unit ul li .card{padding:10px;border-style:solid;border-width:1px;}
+.unit ul li .card p{line-height:32px;float:none;color:#333;min-width:unset;word-break:break-all;}
 .unit ul li .card p.label{color:#aaa;}
 .unit ul li .card a{color:#333;}
 .unit ul li .card .button{margin:15px;}
@@ -55,6 +54,8 @@ ol.vote>li:nth-child(3n) .progress-bar {background-color:blue;}
 .diy-border.noborder .diy-border-top,.diy-border.noborder .diy-border-right,.diy-border.noborder .diy-border-bottom,.diy-border.noborder .diy-border-left{border-top-width:0px;border-left-width:0px;}
 .diy-menu{position:absolute;top:0px;height:32px;left:50%;margin-top:-32px;white-space:nowrap;}
 .diy-border-bottom .diy-menu{bottom:-32px;top:auto;}
+
+.searchResult b{color:#f00;}
 
 @media screen and (max-width:768px) {
 .unit ul li{width:50%;}

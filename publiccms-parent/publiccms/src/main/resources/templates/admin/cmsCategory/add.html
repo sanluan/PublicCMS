@@ -11,7 +11,7 @@
 <form method="post" autocomplete="off" action="cmsCategory/save?callbackType=closeCurrent&navTabId=cmsCategory/list" class="pageForm required-validate" onsubmit="clickAddTagType();return validateCallback(this, navTabAjaxDone);">
     <input name="id" type="hidden" value="${id!}" />
     <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
-    <div class="formBar">
+    <div class="formBar card">
         <ul>
             <li>
                 <label><input type="checkbox" name="showAdvancedOptions" onclick="if($(this).is(':checked')){$('.advanced',navTab.getCurrentPanel()).show();checkCategoryModel();}else{$('.advanced',navTab.getCurrentPanel()).hide();checkCategoryModel();}"/><@t.page 'show_advanced_options'/></label>
@@ -22,7 +22,7 @@
             <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
         </ul>
     </div>
-    <div class="tabs">
+    <div class="tabs card">
         <div class="tabsHeader">
             <div class="tabsHeaderContent">
                 <ul>

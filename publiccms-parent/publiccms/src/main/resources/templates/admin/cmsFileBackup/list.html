@@ -1,5 +1,5 @@
 <#assign editableSubfix=['css','js','html','shtml','htm','xml','txt','svg','md','text','json']/>
-<div class="pageHeader">
+<div class="pageHeader card">
     <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <input type="hidden" name="orderField" value="${orderField!}" />
         <div class="searchBar">
@@ -12,7 +12,7 @@
         </div>
     </form>
 </div>
-<div class="pageContent">
+<div class="card">
     <div class="panelBar">
         <ul class="toolBar">
             <li><a href="cmsFileBackup/recycle?type=${type!}&_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.batch_recycle'/>" target="selectedTodo" rel="paths"><i class="icon-reply-all icon-large"></i><@t.page 'button.batch_recycle'/></a></li>

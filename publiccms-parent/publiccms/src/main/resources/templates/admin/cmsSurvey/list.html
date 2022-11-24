@@ -2,7 +2,7 @@
             startEndDate=startEndDate endEndDate=endEndDate 
             title=title disabled=disabled 
             orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
-<div class="pageHeader">
+<div class="pageHeader card">
     <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
         <div class="searchBar">
@@ -40,7 +40,7 @@
     </form>
 </div>
 <@sys.authorized roleIds=admin.roles urls='cmsSurvey/add,cmsSurvey/delete,cmsSurvey/view,cmsSurveyQuestion/list,cmsUserSurvey/list'><#assign authorizedMap=map/></@sys.authorized>
-<div class="pageContent">
+<div class="card">
     <div class="panelBar">
         <ul class="toolBar">
         <#if authorizedMap['cmsSurvey/add']>

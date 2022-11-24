@@ -1,7 +1,7 @@
 <@sys.userList deptId=deptId startRegisteredDate=startRegisteredDate endRegisteredDate=endRegisteredDate startLastLoginDate=startLastLoginDate endLastLoginDate=endLastLoginDate
             superuser=superuser emailChecked=emailChecked name=name disable=false
             orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
-<div class="pageHeader">
+<div class="pageHeader card">
     <form class="pagerForm" action="sysUser/lookup_list.html" autocomplete="off" onsubmit="return divSearch(this, 'user_list');" method="post">
         <#include "../include_page/parameters.html"/>
         <input type="hidden" name="field" value="${field!'userId'}"/>
@@ -42,6 +42,9 @@
             <div class="subBar">
                 <ul>
                     <li>
+                        <button type="button" class="button" onclick="$.bringBack({'${field!'userId'}':'','${nicknameField!'nickname'}':''});return false;"><@t.page 'button.clear_select'/></button>
+                    </li>
+                    <li>
                         <button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
                     </li>
                 </ul>
@@ -49,7 +52,7 @@
         </div>
     </form>
 </div>
-<div class="pageContent">
+<div class="card">
     <table class="table" width="100%" layoutH targetType="ajax" rel="user_list">
         <thead>
             <tr>

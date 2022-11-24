@@ -4,77 +4,77 @@ UPDATE `sys_module` SET `url` = 'cmsPlace/metadata' WHERE `id` ='place_publish';
 UPDATE `sys_module` SET `sort` = 4 WHERE `id` ='task_template_list';
 UPDATE `sys_module` SET `sort` = 5 WHERE `id` ='webfile_list';
 UPDATE `sys_module` SET `sort` = 2 WHERE `id` ='place_list';
-INSERT INTO `sys_module` VALUES ('diy_list', 'cmsDiy/list', 'cmsDiy/region,cmsDiy/layout,cmsDiy/module,placeTemplate/lookupPlace,cmsCategoryType/lookup', 'icon-dashboard', 'file_menu', 1, 5);
-INSERT INTO `sys_module_lang` VALUES ('diy_list', 'en', 'Page visualization management');
-INSERT INTO `sys_module_lang` VALUES ('diy_list', 'ja', 'ページ視覚化管理');
-INSERT INTO `sys_module_lang` VALUES ('diy_list', 'zh', '页面可视化管理');
+INSERT INTO `sys_module` VALUES('diy_list', 'cmsDiy/list', 'cmsDiy/region,cmsDiy/layout,cmsDiy/module,placeTemplate/lookupPlace,cmsCategoryType/lookup', 'icon-dashboard', 'file_menu', 1, 5);
+INSERT INTO `sys_module_lang` VALUES('diy_list', 'en', 'Page visualization management');
+INSERT INTO `sys_module_lang` VALUES('diy_list', 'ja', 'ページ視覚化管理');
+INSERT INTO `sys_module_lang` VALUES('diy_list', 'zh', '页面可视化管理');
 ALTER TABLE `sys_user`
     CHANGE COLUMN `nick_name` `nickname` varchar(45) NOT NULL COMMENT '昵称' AFTER `weak_password`;
 -- 2022-05-05 --
-INSERT INTO `sys_module` VALUES ('page_diy', 'cmsPage/diy', 'cmsPage/style,cmsDiy/save', 'bi bi-palette', 'page_menu', 1, 3);
-INSERT INTO `sys_module_lang` VALUES ('page_diy', 'en', 'Visualized page');
-INSERT INTO `sys_module_lang` VALUES ('page_diy', 'ja', '視覚化されたページ');
-INSERT INTO `sys_module_lang` VALUES ('page_diy', 'zh', '页面可视化');
+INSERT INTO `sys_module` VALUES('page_diy', 'cmsPage/diy', 'cmsPage/style,cmsDiy/save', 'bi bi-palette', 'page_menu', 1, 3);
+INSERT INTO `sys_module_lang` VALUES('page_diy', 'en', 'Visualized page');
+INSERT INTO `sys_module_lang` VALUES('page_diy', 'ja', '視覚化されたページ');
+INSERT INTO `sys_module_lang` VALUES('page_diy', 'zh', '页面可视化');
 
 -- 2022-05-10 --
 ALTER TABLE `cms_content`
     ADD COLUMN `update_user_id` bigint(20) DEFAULT NULL COMMENT '更新用户' AFTER `check_date`;
-CREATE TABLE `cms_content_text_history` (
+CREATE TABLE `cms_content_text_history`(
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `content_id` bigint(20) NOT NULL COMMENT '内容',
   `field_name` varchar(100) NOT NULL COMMENT '字段名',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   `user_id` bigint(20) NOT NULL COMMENT '修改用户',
   `text` longtext NOT NULL COMMENT '文本',
-  PRIMARY KEY (`id`),
-  KEY `cms_content_history_content_id` (`content_id`,`field_name`,`create_date`,`user_id`)
+  PRIMARY KEY(`id`),
+  KEY `cms_content_history_content_id`(`content_id`,`field_name`,`create_date`,`user_id`)
 ) COMMENT='内容扩展';
-INSERT INTO `sys_module` VALUES ('content_text_history', 'cmsContentTextHistory/lookup', 'cmsContentTextHistory/use', NULL, 'content_add', 0, 0);
-INSERT INTO `sys_module_lang` VALUES ('content_text_history', 'en', 'Modify records');
-INSERT INTO `sys_module_lang` VALUES ('content_text_history', 'ja', 'レコードを変更する');
-INSERT INTO `sys_module_lang` VALUES ('content_text_history', 'zh', '修改记录');
+INSERT INTO `sys_module` VALUES('content_text_history', 'cmsContentTextHistory/lookup', 'cmsContentTextHistory/use', NULL, 'content_add', 0, 0);
+INSERT INTO `sys_module_lang` VALUES('content_text_history', 'en', 'Modify records');
+INSERT INTO `sys_module_lang` VALUES('content_text_history', 'ja', 'レコードを変更する');
+INSERT INTO `sys_module_lang` VALUES('content_text_history', 'zh', '修改记录');
 -- 2022-05-18 --
 ALTER TABLE `visit_history`
     DROP INDEX `visit_visit_date`,
     DROP INDEX `visit_session_id`,
-    ADD INDEX `visit_history_visit_date` (`site_id`,`visit_date`,`visit_hour`),
-    ADD INDEX `visit_history_session_id` (`site_id`,`session_id`,`visit_date`,`create_date`);
+    ADD INDEX `visit_history_visit_date`(`site_id`,`visit_date`,`visit_hour`),
+    ADD INDEX `visit_history_session_id`(`site_id`,`session_id`,`visit_date`,`create_date`);
 ALTER TABLE `visit_item`
     DROP INDEX `visit_session_id`,
-    ADD INDEX `visit_item_session_id` (`site_id`,`visit_date`,`item_type`, `item_id`, `pv`);
+    ADD INDEX `visit_item_session_id`(`site_id`,`visit_date`,`item_type`, `item_id`, `pv`);
 ALTER TABLE `visit_session`
     DROP INDEX `visit_visit_date`,
-    ADD INDEX `visit_session_visit_date` (`site_id`,`visit_date`,`session_id`,`last_visit_date`);
+    ADD INDEX `visit_session_visit_date`(`site_id`,`visit_date`,`session_id`,`last_visit_date`);
 ALTER TABLE `visit_url`
     DROP INDEX `visit_session_id`,
     ADD INDEX `visit_url_pv`(`site_id`, `visit_date`, `pv`);
 -- 2022-05-19 --
-INSERT INTO `sys_module` VALUES ('page_diy_buttons', 'cmsDiy/buttons', NULL, NULL, 'page_diy', 0, 3);
-INSERT INTO `sys_module` VALUES ('page_diy_preview', 'cmsDiy/preview', NULL, NULL, 'page_diy', 0, 2);
-INSERT INTO `sys_module` VALUES ('page_diy_region', 'cmsPage/region', NULL, NULL, 'page_diy', 0, 1);
-INSERT INTO `sys_module_lang` VALUES ('page_diy_buttons', 'en', 'Button');
-INSERT INTO `sys_module_lang` VALUES ('page_diy_buttons', 'ja', 'ボタン');
-INSERT INTO `sys_module_lang` VALUES ('page_diy_buttons', 'zh', '按钮');
-INSERT INTO `sys_module_lang` VALUES ('page_diy_preview', 'en', 'Quick Maintenance');
-INSERT INTO `sys_module_lang` VALUES ('page_diy_preview', 'ja', 'クイックメンテナンス');
-INSERT INTO `sys_module_lang` VALUES ('page_diy_preview', 'zh', '快捷维护');
-INSERT INTO `sys_module_lang` VALUES ('page_diy_region', 'en', 'Region');
-INSERT INTO `sys_module_lang` VALUES ('page_diy_region', 'ja', '領域');
-INSERT INTO `sys_module_lang` VALUES ('page_diy_region', 'zh', '区域');
+INSERT INTO `sys_module` VALUES('page_diy_buttons', 'cmsDiy/buttons', NULL, NULL, 'page_diy', 0, 3);
+INSERT INTO `sys_module` VALUES('page_diy_preview', 'cmsDiy/preview', NULL, NULL, 'page_diy', 0, 2);
+INSERT INTO `sys_module` VALUES('page_diy_region', 'cmsPage/region', NULL, NULL, 'page_diy', 0, 1);
+INSERT INTO `sys_module_lang` VALUES('page_diy_buttons', 'en', 'Button');
+INSERT INTO `sys_module_lang` VALUES('page_diy_buttons', 'ja', 'ボタン');
+INSERT INTO `sys_module_lang` VALUES('page_diy_buttons', 'zh', '按钮');
+INSERT INTO `sys_module_lang` VALUES('page_diy_preview', 'en', 'Quick Maintenance');
+INSERT INTO `sys_module_lang` VALUES('page_diy_preview', 'ja', 'クイックメンテナンス');
+INSERT INTO `sys_module_lang` VALUES('page_diy_preview', 'zh', '快捷维护');
+INSERT INTO `sys_module_lang` VALUES('page_diy_region', 'en', 'Region');
+INSERT INTO `sys_module_lang` VALUES('page_diy_region', 'ja', '領域');
+INSERT INTO `sys_module_lang` VALUES('page_diy_region', 'zh', '区域');
 -- 2022-05-22 --
 ALTER TABLE `cms_place` COMMENT = '推荐位数据';
 -- 2022-05-31 --
-INSERT INTO `sys_module` VALUES ('template_search', 'cmsTemplate/search', 'cmsTemplate/replace', NULL, 'template_list', 0, 0);
-INSERT INTO `sys_module_lang` VALUES ('template_search', 'en', 'Search');
-INSERT INTO `sys_module_lang` VALUES ('template_search', 'ja', '検索');
-INSERT INTO `sys_module_lang` VALUES ('template_search', 'zh', '搜索');
+INSERT INTO `sys_module` VALUES('template_search', 'cmsTemplate/search', 'cmsTemplate/replace', NULL, 'template_list', 0, 0);
+INSERT INTO `sys_module_lang` VALUES('template_search', 'en', 'Search');
+INSERT INTO `sys_module_lang` VALUES('template_search', 'ja', '検索');
+INSERT INTO `sys_module_lang` VALUES('template_search', 'zh', '搜索');
 -- 2022-07-04 --
-ALTER TABLE `visit_history` ADD INDEX  `visit_history_create_date` (`create_date`, `site_id`, `session_id`, `visit_date`, `ip`);
+ALTER TABLE `visit_history` ADD INDEX  `visit_history_create_date`(`create_date`, `site_id`, `session_id`, `visit_date`, `ip`);
 ALTER TABLE `cms_content`
     DROP INDEX `cms_content_check_date`,
     DROP INDEX `cms_content_score`,
     DROP INDEX `cms_content_only_url`,
-    ADD INDEX `cms_content_disabled` (`site_id`, `parent_id`, `disabled`, `sort`, `publish_date`);
+    ADD INDEX `cms_content_disabled`(`site_id`, `parent_id`, `disabled`, `sort`, `publish_date`);
 -- 2022-07-05 --
 DROP TABLE IF EXISTS `sys_site_datasource`;
 DROP TABLE IF EXISTS `sys_datasource`;
@@ -82,9 +82,9 @@ DROP TABLE IF EXISTS `sys_datasource`;
 ALTER TABLE `cms_content`
     DROP INDEX `cms_content_status`,
     DROP INDEX `cms_content_disabled`,
-    ADD INDEX `cms_content_parent_id` (`site_id`, `parent_id`, `disabled`, `sort`, `publish_date`),
-    ADD INDEX `cms_content_disabled` (`site_id`, `disabled`, `sort`, `publish_date`),
-    ADD INDEX `cms_content_status` (`site_id`, `status`, `parent_id`, `category_id`, `disabled`, `model_id`, `publish_date`, `expiry_date`, `sort`);
+    ADD INDEX `cms_content_parent_id`(`site_id`, `parent_id`, `disabled`, `sort`, `publish_date`),
+    ADD INDEX `cms_content_disabled`(`site_id`, `disabled`, `sort`, `publish_date`),
+    ADD INDEX `cms_content_status`(`site_id`, `status`, `parent_id`, `category_id`, `disabled`, `model_id`, `publish_date`, `expiry_date`, `sort`);
 ALTER TABLE `cms_comment`
     DROP INDEX `cms_comment_update_date`,
     ADD INDEX `cms_comment_user_id`(`site_id`, `user_id`, `status`, `disabled`);
@@ -130,7 +130,7 @@ ALTER TABLE `trade_payment`
     DROP INDEX `trade_payment_create_date`,
     ADD INDEX `trade_payment_account_type`(`site_id`, `account_type`, `account_serial_number`),
     ADD INDEX `trade_payment_trade_type`(`site_id`, `trade_type`, `serial_number`),
-    ADD INDEX `trade_payment_create_date` (`site_id`, `create_date`);
+    ADD INDEX `trade_payment_create_date`(`site_id`, `create_date`);
 ALTER TABLE `trade_payment_history`
     DROP INDEX `trade_payment_history_create_date`,
     ADD INDEX `trade_payment_history_create_date`(`site_id`, `create_date`);
@@ -178,7 +178,7 @@ ALTER TABLE `cms_content_attribute`
     ADD COLUMN `files_text` text NULL COMMENT '附件文本' AFTER `dictionary_values`,
     ADD COLUMN `min_price` decimal(10, 2) NULL COMMENT '最低价格' AFTER `products_text`,
     ADD COLUMN `max_price` decimal(10, 2) NULL COMMENT '最高价格' AFTER `min_price`;
-update cms_content_attribute a set a.dictionary_values = (select dictionary_values from cms_content b where a.content_id = b.id);
+update cms_content_attribute a set a.dictionary_values =(select dictionary_values from cms_content b where a.content_id = b.id);
 ALTER TABLE `cms_content`
     DROP COLUMN `dictionary_values`;
 ALTER TABLE `cms_content`
@@ -208,28 +208,28 @@ UPDATE `log_upload` SET file_type = 'document' WHERE file_path like '%.doc' or f
 -- 2022-08-17 --
 UPDATE `sys_module` SET `authorized_url` = 'cmsCategory/addMore,cmsCategory/virify,cmsCategory/rebuildChildIds,cmsCategory/batchPublish,cmsTemplate/lookup,cmsCategory/categoryPath,cmsCategory/contentPath,file/doUpload,cmsDictionary/lookup,cmsCategory/save' WHERE `id` ='category_add';
 UPDATE `sys_module` SET `authorized_url` = 'cmsModel/save,cmsTemplate/lookup,cmsModel/rebuildSearchText,cmsModel/batchPublish,cmsDictionary/lookup' WHERE `id` ='model_add';
-ALTER TABLE `cms_content` 
+ALTER TABLE `cms_content`
     DROP INDEX `cms_content_disabled`,
     ADD INDEX `cms_content_disabled`(`site_id`, `disabled`, `category_id`, `model_id`);
 --2022-09-26 --
 UPDATE `sys_module` SET `authorized_url`= 'cmsContentTextHistory/use,cmsContentTextHistory/compare' WHERE `id` ='content_text_history';
-INSERT INTO `sys_module` VALUES ('file_history', 'cmsFileHistory/list', 'cmsFileHistory/use,cmsFileHistory/compare', NULL, 'template_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('file_recycle', 'cmsFileBackup/list', 'cmsFileBackup/content,cmsFileBackup/recycle', NULL, 'template_list', 0, 0);
-INSERT INTO `sys_module_lang` VALUES ('file_history', 'en', 'File modification history');
-INSERT INTO `sys_module_lang` VALUES ('file_history', 'ja', 'ファイル変更履歴');
-INSERT INTO `sys_module_lang` VALUES ('file_history', 'zh', '文件修改历史');
-INSERT INTO `sys_module_lang` VALUES ('file_recycle', 'en', 'File recycle bin');
-INSERT INTO `sys_module_lang` VALUES ('file_recycle', 'ja', 'ファイルのごみ箱');
-INSERT INTO `sys_module_lang` VALUES ('file_recycle', 'zh', '文件回收站');
+INSERT INTO `sys_module` VALUES('file_history', 'cmsFileHistory/list', 'cmsFileHistory/use,cmsFileHistory/compare', NULL, 'template_list', 0, 0);
+INSERT INTO `sys_module` VALUES('file_recycle', 'cmsFileBackup/list', 'cmsFileBackup/content,cmsFileBackup/recycle', NULL, 'template_list', 0, 0);
+INSERT INTO `sys_module_lang` VALUES('file_history', 'en', 'File modification history');
+INSERT INTO `sys_module_lang` VALUES('file_history', 'ja', 'ファイル変更履歴');
+INSERT INTO `sys_module_lang` VALUES('file_history', 'zh', '文件修改历史');
+INSERT INTO `sys_module_lang` VALUES('file_recycle', 'en', 'File recycle bin');
+INSERT INTO `sys_module_lang` VALUES('file_recycle', 'ja', 'ファイルのごみ箱');
+INSERT INTO `sys_module_lang` VALUES('file_recycle', 'zh', '文件回收站');
 -- 2022-10-03 --
 RENAME TABLE `sys_dept_page` TO `sys_dept_item`;
-ALTER TABLE `sys_dept_item` 
+ALTER TABLE `sys_dept_item`
     CHANGE COLUMN `page` `item_id` varchar(100) NOT NULL COMMENT '项目id' AFTER `dept_id`,
     ADD COLUMN `item_type` varchar(50) NOT NULL DEFAULT 'page' COMMENT '项目类型' AFTER `dept_id`,
     DROP PRIMARY KEY,
-    ADD PRIMARY KEY (`dept_id`, `item_type`, `item_id`);
-	DROP INDEX `sys_dept_page_page`,
-	ADD INDEX `sys_dept_item_item_id`(`item_type`, `item_id`);
+    ADD PRIMARY KEY(`dept_id`, `item_type`, `item_id`);
+    DROP INDEX `sys_dept_page_page`,
+    ADD INDEX `sys_dept_item_item_id`(`item_type`, `item_id`);
 INSERT INTO sys_dept_item SELECT dept_id,'config',config FROM sys_dept_config;
 INSERT INTO sys_dept_item SELECT dept_id,'category',category_id FROM sys_dept_config;
 DROP TABLE `sys_dept_category`;
@@ -240,3 +240,65 @@ UPDATE `sys_user` SET `password` = CONCAT(`salt`,'.',`password`) WHERE `salt` IS
 ALTER TABLE `sys_user` DROP COLUMN `salt`;
 -- 2022-11-08 --
 UPDATE `sys_module` SET `authorized_url`= 'cmsWebFile/doUpload,cmsWebFile/uploadIco,cmsWebFile/doUpload,cmsWebFile/doUploadIco,cmsWebFile/check' WHERE `id` ='webfile_upload';
+-- 2022-11-18 --
+ALTER TABLE `log_operate`
+    CHANGE COLUMN `content` `content` text default NULL COMMENT '内容',
+    DROP INDEX `log_operate_site_id`,
+    DROP INDEX `log_operate_create_date`,
+    DROP INDEX `log_operate_user_id`,
+    DROP INDEX `log_operate_operate`,
+    DROP INDEX `log_operate_ip`,
+    DROP INDEX `log_operate_channel`,
+    ADD INDEX `log_operate_user_id`(`site_id`, `user_id`, `dept_id`),
+    ADD INDEX `log_operate_operate`(`site_id`, `operate`, `create_date`),
+    ADD INDEX `log_operate_ip`(`site_id`, `ip`, `create_date`),
+    ADD INDEX `log_operate_channel`(`site_id`, `channel`, `create_date`);
+ALTER TABLE `log_task`
+    DROP INDEX `log_task_site_id`,
+    DROP INDEX `log_task_task_id`,
+    DROP INDEX `log_task_success`,
+    DROP INDEX `log_task_begintime`,
+    ADD INDEX `log_task_task_id`(`site_id`, `task_id`, `begintime`),
+    ADD INDEX `log_task_success`(`site_id`, `success`, `begintime`);
+ALTER TABLE `log_upload`
+    DROP INDEX `log_upload_user_id`,
+    DROP INDEX `log_upload_create_date`,
+    DROP INDEX `log_upload_ip`,
+    DROP INDEX `log_upload_site_id`,
+    DROP INDEX `log_upload_channel`,
+    DROP INDEX `log_upload_file_type`,
+    DROP INDEX `log_upload_file_size`,
+    ADD INDEX `log_upload_user_id`(`site_id`, `user_id`, `create_date`),
+    ADD INDEX `log_upload_ip`(`site_id`, `ip`, `create_date`),
+    ADD INDEX `log_upload_channel`(`site_id`, `channel`, `create_date`),
+    ADD INDEX `log_upload_file_type`(`site_id`, `file_type`, `file_size`);
+ALTER TABLE `log_login`
+    DROP INDEX `log_login_result`,
+    DROP INDEX `log_login_user_id`,
+    DROP INDEX `log_login_create_date`,
+    DROP INDEX `log_login_ip`,
+    DROP INDEX `log_login_site_id`,
+    DROP INDEX `log_login_channel`,
+    ADD INDEX `log_login_result`(`site_id`, `result`, `create_date`),
+    ADD INDEX `log_login_user_id`(`site_id`, `user_id`, `create_date`),
+    ADD INDEX `log_login_ip`(`site_id`, `ip`, `create_date`),
+    ADD INDEX `log_login_channel`(`site_id`, `channel`, `create_date`);
+-- 2022-11-22 --
+UPDATE `sys_module` SET `url`='cmsContent/uncheck_list',`parent_id`='content_menu',`attached`='icon-check-sign',`menu`=1,`sort`=1 WHERE `id` = 'content_check';
+INSERT INTO `sys_module` VALUES ('content_search', 'cmsContent/search', 'cmsContent/view', 'icon-search', 'content_menu', 1, 2);
+UPDATE `sys_module` SET `sort`=`sort` + 2 WHERE `id` in('comment_list','category_list','tag_list','product_list','content_vote','survey_list','word_list','content_recycle_list');
+INSERT INTO `sys_module_lang` VALUES ('content_search', 'en', 'Content search');
+INSERT INTO `sys_module_lang` VALUES ('content_search', 'ja', 'コンテンツ検索');
+INSERT INTO `sys_module_lang` VALUES ('content_search', 'zh', '内容搜索');
+UPDATE `sys_module_lang` SET `value` = 'Content check' WHERE `module_id` = 'content_check' AND `lang` = 'en';
+UPDATE `sys_module_lang` SET `value` = '内容の審査' WHERE `module_id` = 'content_check' AND `lang` = 'ja';
+UPDATE `sys_module_lang` SET `value` = '内容审核' WHERE `module_id` = 'content_check' AND `lang` = 'zh';
+UPDATE `sys_module` SET `id` = 'vote_list' WHERE `id` = 'content_vote';
+UPDATE `sys_module` SET `id` = 'vote_add' WHERE `id` = 'content_vote_add';
+UPDATE `sys_module` SET `id` = 'vote_delete' WHERE `id` = 'content_vote_delete';
+UPDATE `sys_module` SET `id` = 'vote_view' WHERE `id` = 'content_vote_view';
+UPDATE `sys_module` SET `attached` = 'bi bi-search-heart' WHERE `id` = 'word_list';
+UPDATE `sys_module_lang` SET `module_id` = 'vote_list' WHERE `module_id` = 'content_vote';
+UPDATE `sys_module_lang` SET `module_id` = 'vote_add' WHERE `module_id` = 'content_vote_add';
+UPDATE `sys_module_lang` SET `module_id` = 'vote_delete' WHERE `module_id` = 'content_vote_delete';
+UPDATE `sys_module_lang` SET `module_id` = 'vote_view' WHERE `module_id` = 'content_vote_view';

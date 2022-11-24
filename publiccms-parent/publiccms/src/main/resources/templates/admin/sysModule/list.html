@@ -1,7 +1,7 @@
 <#if !deep?has_content><#assign deep=0/><#else><#assign deep=deep?number/></#if>
 <@sys.module id=parentId><#assign parent=object/></@sys.module>
 <@sys.moduleList advanced=true parentId=parentId pageIndex=pageNum pageSize=numPerPage>
-<div class="pageHeader">
+<div class="pageHeader card">
     <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
         <div class="searchBar">
@@ -16,7 +16,7 @@
         </div>
     </form>
 </div>
-<div class="pageContent">
+<div class="card">
     <div class="panelBar">
         <ul class="toolBar">
             <#if parent?has_content>

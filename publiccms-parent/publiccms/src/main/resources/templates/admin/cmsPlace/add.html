@@ -17,77 +17,77 @@
     <input name="id" type="hidden" value="${id!}"/>
     <input name="path" type="hidden" value="${(a.path)!(path)!}"/>
     <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
-    <div class="formBar">
+    <div class="formBar card">
         <ul>
             <li><button type="submit" class="buttonActive" title="ctrl+s"<#if id?has_content> lock-url="common/lock?itemType=place&itemId=${id}" close-url="common/unlock?itemType=place&itemId=${id}"</#if>><@t.page 'button.save'/></button></li>
             <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
         </ul>
     </div>
-    <div class="pageFormContent" layoutH>
-        <#assign fieldList=metadata.fieldList![]/>
-        <#assign requiredFieldList=metadata.requiredFieldList![]/>
-        <dl>
-            <dt>${(metadata.fieldTextMap['title'])!t.pageMessage('title')}:</dt>
-            <dd>
-                <input class="required" name="title" type="text" maxlength="255" size="60" value="${(a.title)!(content.title)!(category.name)!title!}"/>
-            <#if !(metadata.acceptItemTypes)?has_content>
-                <a class="btnLook" href="cmsPlace/lookup.html" lookupGroup="" width="1200" ><@t.page 'select'/></a>
-            </#if>
-            </dd>
-        </dl>
-    <#if (metadata.acceptItemTypes)?has_content>
-        <dl>
-            <dt><@t.page 'item_type'/>:</dt>
-            <dd>
-                <input class="required" name="itemType" type="text" readonly="readonly" value="${(a.itemType)!itemType!}"/>
-                <input name="itemId" type="hidden" readonly="readonly" value="${(a.itemId)!itemId!}" />
-                <a class="btnLook" href="cmsPlace/lookup.html<#if (metadata.acceptItemTypes)?has_content>?acceptItemTypes=<#list metadata.acceptItemTypes as a>${a}<#sep>,</#list></#if>" lookupGroup="" width="1200" ><@t.page 'select'/></a>
-            </dd>
-        </dl>
-    <#else>
-        <input name="itemType" type="hidden" value="${(a.itemType)!itemType!}" />
-        <input name="itemId" type="hidden" value="${(a.itemId)!itemId!}" />
-    </#if>
-    <#if fieldList?seq_contains('url')>
-        <dl class="nowrap">
-            <dt>${(metadata.fieldTextMap['url'])}:</dt>
-            <dd><input name="url" type="text"<#if requiredFieldList?seq_contains('url')> class="required"</#if> maxlength="1000" size="60" value="${(a.url)!(content.url)!(category.url)!url!}"/></dd>
-        </dl>
-    </#if>
-        <dl>
-            <dt><@t.page 'publish_date'/>:</dt>
-            <dd>
-                <input type="text" name="publishDate" class="date" size="20" autocomplete="off" dateFmt="yyyy-MM-dd HH:mm:ss" value="${(a.publishDate)!(content.publishDate)!.now}"/>
-            </dd>
-        </dl>
-        <dl>
-            <dt><@t.page 'expiry_date'/>:</dt>
-            <dd>
-                <input type="text" name="expiryDate" class="date" size="20" autocomplete="off" dateFmt="yyyy-MM-dd HH:mm:ss" value="${(a.expiryDate)!(content.expiryDate)!}"/>
-            </dd>
-        </dl>
-    <#if fieldList?seq_contains('cover')>
-        <dl class="nowrap">
-            <dt>${(metadata.fieldTextMap['cover'])}:</dt>
-            <dd>
-                <input name="cover" value="${(a.cover)!(content.cover)!}"<#if requiredFieldList?seq_contains('cover')> class="required"</#if> maxlength="300" size="40" type="text"/>
-                <a class="btnAttach" href="common/upload.html?field=cover&fileTypes=image&width=${(metadata.coverWidth)!}&height=${(metadata.coverHeight)!}" lookupGroup="" width="1000" height="600"><@t.page 'image'/></a>
-                <a class="view icon-eye-open" ref="cover" data-prefix="${site.sitePath}" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
-                <#if (metadata.coverWidth)?has_content && (metadata.coverHeight)?has_content><span class="info">${(metadata.coverWidth)!}*${(metadata.coverHeight)!}</span></#if>
-                <#include "../include_page/preview.html"/>
-                <@preview 'page' 'input[name=cover]'/>
-            </dd>
-        </dl>
-    </#if>
-        <#include "../include_page/extendData.html"/>
-        <@tools.placeMetadata path=(a.path)!path!''><#assign metadata=object/></@tools.placeMetadata>
-        <#assign
-            extendList=(metadata.extendList)![]
-            attribute=getPlaceAttribute((a.id)!)!{}
-        />
-        <@extendData 'extendDataList' extendList attribute/>
+    <div class="card">
+        <div class="pageFormContent" layoutH>
+            <#assign fieldList=metadata.fieldList![]/>
+            <#assign requiredFieldList=metadata.requiredFieldList![]/>
+            <dl>
+                <dt>${(metadata.fieldTextMap['title'])!t.pageMessage('title')}:</dt>
+                <dd>
+                    <input class="required" name="title" type="text" maxlength="255" size="60" value="${(a.title)!(content.title)!(category.name)!title!}"/>
+                <#if !(metadata.acceptItemTypes)?has_content>
+                    <a class="btnLook" href="cmsPlace/lookup.html" lookupGroup="" width="1200" ><@t.page 'select'/></a>
+                </#if>
+                </dd>
+            </dl>
+        <#if (metadata.acceptItemTypes)?has_content>
+            <dl>
+                <dt><@t.page 'item_type'/>:</dt>
+                <dd>
+                    <input class="required" name="itemType" type="text" readonly="readonly" value="${(a.itemType)!itemType!}"/>
+                    <input name="itemId" type="hidden" readonly="readonly" value="${(a.itemId)!itemId!}" />
+                    <a class="btnLook" href="cmsPlace/lookup.html<#if (metadata.acceptItemTypes)?has_content>?acceptItemTypes=<#list metadata.acceptItemTypes as a>${a}<#sep>,</#list></#if>" lookupGroup="" width="1200" ><@t.page 'select'/></a>
+                </dd>
+            </dl>
+        <#else>
+            <input name="itemType" type="hidden" value="${(a.itemType)!itemType!}" />
+            <input name="itemId" type="hidden" value="${(a.itemId)!itemId!}" />
+        </#if>
+        <#if fieldList?seq_contains('url')>
+            <dl class="nowrap">
+                <dt>${(metadata.fieldTextMap['url'])}:</dt>
+                <dd><input name="url" type="text"<#if requiredFieldList?seq_contains('url')> class="required"</#if> maxlength="1000" size="60" value="${(a.url)!(content.url)!(category.url)!url!}"/></dd>
+            </dl>
+        </#if>
+            <dl>
+                <dt><@t.page 'publish_date'/>:</dt>
+                <dd>
+                    <input type="text" name="publishDate" class="date" size="20" autocomplete="off" dateFmt="yyyy-MM-dd HH:mm:ss" value="${(a.publishDate)!(content.publishDate)!.now}"/>
+                </dd>
+            </dl>
+            <dl>
+                <dt><@t.page 'expiry_date'/>:</dt>
+                <dd>
+                    <input type="text" name="expiryDate" class="date" size="20" autocomplete="off" dateFmt="yyyy-MM-dd HH:mm:ss" value="${(a.expiryDate)!(content.expiryDate)!}"/>
+                </dd>
+            </dl>
+        <#if fieldList?seq_contains('cover')>
+            <dl class="nowrap">
+                <dt>${(metadata.fieldTextMap['cover'])}:</dt>
+                <dd>
+                    <input name="cover" value="${(a.cover)!(content.cover)!}"<#if requiredFieldList?seq_contains('cover')> class="required"</#if> maxlength="300" size="40" type="text"/>
+                    <a class="btnAttach" href="common/upload.html?field=cover&fileTypes=image&width=${(metadata.coverWidth)!}&height=${(metadata.coverHeight)!}" lookupGroup="" width="1000" height="600"><@t.page 'image'/></a>
+                    <a class="view icon-eye-open" ref="cover" data-prefix="${site.sitePath}" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
+                    <#if (metadata.coverWidth)?has_content && (metadata.coverHeight)?has_content><span class="info">${(metadata.coverWidth)!}*${(metadata.coverHeight)!}</span></#if>
+                    <#include "../include_page/preview.html"/>
+                    <@preview 'page' 'input[name=cover]'/>
+                </dd>
+            </dl>
+        </#if>
+            <#include "../include_page/extendData.html"/>
+            <@tools.placeMetadata path=(a.path)!path!''><#assign metadata=object/></@tools.placeMetadata>
+            <#assign
+                extendList=(metadata.extendList)![]
+                attribute=getPlaceAttribute((a.id)!)!{}
+            />
+            <@extendData 'extendDataList' extendList attribute/>
+        </div>
     </div>
 </form>
-<#else>
-
 </#if>

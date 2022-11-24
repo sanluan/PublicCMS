@@ -79,8 +79,8 @@
         <div class="tabsContent">
         <#if itemTypes?seq_contains('content')>
             <div class="pageContent" layoutH>
-                <div class="unitBox leftPageContent" layoutH>
-                    <ul class="tree treeFolder">
+                <div class="unitBox leftPageContent">
+                    <ul class="tree treeFolder" layoutH>
                         <li>
                             <a href="cmsPlace/lookup_content_list.html" target="ajax" rel="lookup_content_list"><@t.page 'category'/></a>
                             <ul>
@@ -89,7 +89,7 @@
                         </li>
                      </ul>
                 </div>
-                <div id="lookup_content_list" class="unitBox rightPageContent">
+                <div id="lookup_content_list" class="unitBox rightPageContent" layoutH>
                     <#include "lookup_content_list.html"/>
                 </div>
             </div>

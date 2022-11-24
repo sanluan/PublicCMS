@@ -2,14 +2,16 @@
     editorType={'css':'css','js':'javascript','xml':'xml'}
     fileType=path?keep_after_last('.')?lower_case
 />
-<div class="formBar">
+<div class="formBar card">
     <ul>
         <li><a class="button" href="cmsFileBackup/recycle?type=${type!}&paths=${path?url}&_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.recycle'/>" target="ajaxTodo"><i class="icon-reply icon-large"></i><@t.page 'button.recycle'/></a></li>
         <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
     </ul>
 </div>
-<div class="pageFormContent" layoutH>
-    <div>
-        <textarea name="content" class="code" mode="${(!type?has_content || 'template'=type)?then('freemarkermixed',editorType[fileType]?has_content?then(editorType[fileType],'htmlmixed'))}"><@tools.fileBackupContent type=type path=path>${(object)!}</@tools.fileBackupContent></textarea>
+<div class="card">
+    <div class="pageFormContent" layoutH>
+        <div>
+            <textarea name="content" class="code" mode="${(!type?has_content || 'template'=type)?then('freemarkermixed',editorType[fileType]?has_content?then(editorType[fileType],'htmlmixed'))}"><@tools.fileBackupContent type=type path=path>${(object)!}</@tools.fileBackupContent></textarea>
+        </div>
     </div>
 </div>

@@ -1,7 +1,7 @@
 <@tools.placeMetadata path=path><#assign a=object/></@tools.placeMetadata>
 <@cms.placeList path=path advanced=true status=status userId=userId startPublishDate=startPublishDate endPublishDate=endPublishDate
     orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
-<div class="pageHeader">
+<div class="pageHeader card">
     <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
         <div class="searchBar">
@@ -42,7 +42,7 @@
         </div>
     </form>
 </div>
-<div class="pageContent">
+<div class="card">
     <div class="panelBar">
         <ul class="toolBar">
             <li><a href="cmsPlace/add.html?path=${(path?url)!}" target="navTab" rel="cmsPlace/add"><i class="icon-plus-sign-alt icon-large"></i><@t.page 'place_data.add'/></a></li>

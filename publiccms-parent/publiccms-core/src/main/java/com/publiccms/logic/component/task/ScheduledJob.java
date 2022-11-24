@@ -5,8 +5,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.quartz.InterruptableJob;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.quartz.UnableToInterruptJobException;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
 import com.publiccms.common.base.AbstractFreemarkerView;
@@ -25,14 +27,16 @@ import freemarker.template.TemplateException;
  * ScheduledJob 任务计划实现类
  *
  */
-public class ScheduledJob extends QuartzJobBean {
+public class ScheduledJob extends QuartzJobBean implements InterruptableJob {
     public static String[] ignoreProperties = new String[] { "id", "begintime", "taskId", "siteId" };
+    private Thread thread;
 
     @Override
     public void executeInternal(JobExecutionContext context) throws JobExecutionException {
         Integer taskId = (Integer) context.getMergedJobDataMap().get(ScheduledTask.ID);
         SysTask task = BeanComponent.getSysTaskService().getEntity(taskId);
         if (null != task) {
+            thread = Thread.currentThread();
             Object flag = context.getMergedJobDataMap().get(ScheduledTask.RUNONCE);
             if (ScheduledTask.TASK_STATUS_READY == task.getStatus() && CmsVersion.isMaster() || null != flag) {
                 if (null != flag) {
@@ -64,6 +68,13 @@ public class ScheduledJob extends QuartzJobBean {
             }
         } else {
             BeanComponent.getScheduledTask().delete(taskId);
+        }
+    }
+
+    @Override
+    public void interrupt() throws UnableToInterruptJobException {
+        if (null != thread) {
+            thread.interrupt();
         }
     }
 }

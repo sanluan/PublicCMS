@@ -4,7 +4,7 @@ body,html{color:#31353e;}
 ::-webkit-scrollbar-thumb:vertical:hover{background-color:rgba(0,0,0,.35);}
 ::-webkit-scrollbar-thumb:vertical:active{background-color:rgba(0,0,0,.38);}
 a{color:#448af3;}
-body h2.contentTitle{border-color:#e4e9f2;}
+h2.contentTitle{border-color:#e4e9f2;background-color:#fff;}
 header{background-color:#131a23;color:#afc5f6;}
 header .nav ul{background-color:#667ea7;}
 header .nav ul li a { color:#000;}
@@ -34,8 +34,7 @@ header a{color:#afc5f6;}
 .tabsPage .tabsMoreList li a{color:#333;}
 .tabsPage .tabsMoreList li a:hover,.tabsPage .tabsMoreList li.selected a{background-color:#667ea7;color:#fff;}
 
-.page{background-color:#fff;}
-.pageFormContent.card{background-color:#edf1f5;}
+.page{background-color:#edf1f5;}
 
 fieldset{background-color:#fff;}
 fieldset legend{color:#3587ef;}
@@ -60,26 +59,26 @@ textarea.readonly,input.readonly{background-color:#eee;}
 .pageHeader{background-color:#f2f6f9;color:#31353e;}
 .searchBar span.connect-string{color:#dde2ec;}
 .searchBar ul.searchContent:before{color:#667ea7;}
-.panelBar .toolBar li a{color:#516485;background-color:#e4e9f2;}
+.panelBar .toolBar li a{color:#516485;background-color:#cdd9ef;}
 .panelBar .toolBar li a>i{color:#516485;}
 .panelBar .toolBar li a:hover>i{color:#fff;}
 .panelBar .toolBar li a:hover{background-color:#667ea7;color:#fff;}
 .panelBar .toolBar li.line{background-color:#e4e9f2;}
 .panelBar .toolBar li a.addMore{background-color:#FF9913}
 .panelBar .toolBar li>ul{border-color:#eceff3;}
-.panelBar.pageBar{background-color:#e8ebf2;}
+.panelBar.pageBar{background-color:#f4f4f4;}
 
-.grid { background-color:#FFF;}
+.grid { background-color:#fff;}
 .grid table { border-color:#e4e9f2;}
 .grid .gridHeader th { background-color:#707CA1;border-color:#e4e9f2;}
-.grid .gridHeader th div { border-left-color:#e4e9f2;border-right-color:#d0d0d0;color:#FFF;}
+.grid .gridHeader th div { border-left-color:#e4e9f2;border-right-color:#d0d0d0;color:#fff;}
 .grid table td { border-color:#ededed;}
 .grid .resizeMarker, .grid .resizeProxy { background-color:#d0d0d0;}
 .grid .gridHeader th:hover, .grid .gridHeader th.thSelected { border-color:#e5eaf4;}
 .grid .gridTbody tr:nth-child(even){background-color:#f8fcfe;}
 .grid .gridTbody tr:hover,.grid .gridTbody tr.selected { border-color:#cdd9ed;background-color:#cdd9ed;}
 .grid .error{background-color:#fb7e81;}
-.grid .gridHeader th.asc:before,.grid .gridHeader th.desc:before,.grid .gridHeader th.order:before{color:#FFFFFF;}
+.grid .gridHeader th.asc:before,.grid .gridHeader th.desc:before,.grid .gridHeader th.order:before{color:#fff;}
 
 table.list,table.list td{border-color:#e4e9f2;}
 table.list thead tr{background:#f8fcfe;}
@@ -92,7 +91,7 @@ table.list tbody tr.selected td{background:#cdd9ed;}
 table.list th.asc:before,table.list th.desc:before,table.list th.order:before{color:#667ea7;}
 table.nowrap tbody tr {border-color:#ededed;}
 
-.tabs .tabsHeader{background-color:#FFF;}
+.tabs .tabsHeader{background-color:#fff;}
 .tabs .tabsHeaderContent>ul li a{color:#989eab;}
 .tabs .tabsHeader li.selected:before{background-color:#516485;}
 .tabs .tabsHeader li.selected a{color:#31353e;}
@@ -110,6 +109,7 @@ footer a{color:#4d84ff;}
 .alert h1{background-color: #f2f6f9;}
 
 .dialog{background-color:#fff;}
+.dialog .pageHeader{background-color:#fff;}
 .dialog .dialogHeader{background-color:#f2f6f9;}
 .dialog .dialogHeader_c a:hover{color:#3587ef;}
 .dialog .dialogHeader .close,.dialog .dialogHeader .maximize,.dialog .dialogHeader .minimize,.dialog .dialogHeader .restore{color:#a1a4a8;}
@@ -121,7 +121,7 @@ footer a{color:#4d84ff;}
 #taskbar :hover,#taskbar .selected{background-color:#222836;color:#fff;}
 /* 日期控件 */
 #calendar{border-color:#e4e9f2;}
-#calendar .main{background-color:#ffffff;}
+#calendar .main{background-color:#fff;}
 #calendar .foot,#calendar .head{background-color:#f2f6f9;}
 #calendar .days dd:hover{background-color:#e4e4e4;}
 #calendar dd,#calendar dt{color:#333;}

@@ -1,25 +1,27 @@
 <form action="dict/save?callbackType=closeCurrent" method="post" class="pageForm required-validate" onsubmit="return validateCallback(this,navTabAjaxDone);">
     <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
-    <div class="formBar">
+    <div class="formBar card">
         <ul>
             <li><button type="submit" class="buttonActive" title="ctrl+s"><@t.page 'button.save'/></button></li>
             <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
         </ul>
     </div>
-    <div class="pageFormContent" layoutH>
-        <dl>
-            <dt><@t.page 'dict'/>:</dt>
-            <dd>
-                <textarea name="dict" cols="50" rows="20">${getDict()!}</textarea>
-                <span class="info"><@t.page 'dict.description'/></span>
-            </dd>
-        </dl>
-        <dl>
-            <dt><@t.page 'skip_word'/>:</dt>
-            <dd>
-                <textarea name="skipWord" cols="50" rows="20">${getSkipWord()!}</textarea>
-                <span class="info"><@t.page 'skip_word.description'/></span>
-            </dd>
-        </dl>
+    <div class="card">
+        <div class="pageFormContent" layoutH>
+            <dl>
+                <dt><@t.page 'dict'/>:</dt>
+                <dd>
+                    <textarea name="dict" cols="50" rows="20">${getDict()!}</textarea>
+                    <span class="info"><@t.page 'dict.description'/></span>
+                </dd>
+            </dl>
+            <dl>
+                <dt><@t.page 'skip_word'/>:</dt>
+                <dd>
+                    <textarea name="skipWord" cols="50" rows="20">${getSkipWord()!}</textarea>
+                    <span class="info"><@t.page 'skip_word.description'/></span>
+                </dd>
+            </dl>
+        </div>
     </div>
 </form>

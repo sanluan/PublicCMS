@@ -1,12 +1,12 @@
 <@tools.fileHistoryList type=type path=path orderField='createDate'>
-<div class="pageHeader">
+<div class="pageHeader card">
     <form class="pagerForm" autocomplete="off" onsubmit="return dialogSearch(this);" action="cmsFileHistory/list.html" method="post">
         <#include "../include_page/parameters.html"/>
         <input type="hidden" name="path" value="${path!}"/>
         <input type="hidden" name="type" value="${type!}"/>
     </form>
 </div>
-<div class="pageContent">
+<div class="card">
     <table class="table" width="100%" layoutH>
         <thead>
             <tr>

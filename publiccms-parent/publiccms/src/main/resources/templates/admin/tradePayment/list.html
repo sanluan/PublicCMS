@@ -1,7 +1,7 @@
 <@trade.paymentList userId=userId tradeType=tradeType serialNumber=serialNumber accountType=accountType 
             accountSerialNumber=accountSerialNumber status=status startCreateDate=startCreateDate endCreateDate=endCreateDate 
             orderType=orderType pageIndex=pageNum pageSize=numPerPage>
-<div class="pageHeader">
+<div class="pageHeader card">
     <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
         <div class="searchBar">
@@ -53,7 +53,7 @@
     </form>
 </div>
 <@sys.authorized roleIds=admin.roles urls='tradePaymentHistory/list'><#assign authorizedMap=map/></@sys.authorized>
-<div class="pageContent">
+<div class="card">
     <table class="table" width="100%" layoutH>
         <thead>
             <tr>

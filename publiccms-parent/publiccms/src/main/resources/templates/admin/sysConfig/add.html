@@ -3,7 +3,7 @@
 </@sys.config>
 <form method="post" autocomplete="off" action="sysConfig/save?callbackType=${closeCurrent!'closeCurrent'}&navTabId=sysConfig/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
-    <div class="formBar">
+    <div class="formBar card">
         <ul>
     <#if code?has_content>
         <@sys.authorized roleIds=admin.roles url='sysConfigData/edit'>
@@ -14,37 +14,39 @@
             <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
         </ul>
     </div>
-    <div class="pageFormContent" layoutH>
-        <dl class="nowrap">
-            <dt><@t.page 'code'/>:</dt>
-            <dd>
-                <input name="configCode" type="hidden" value="${code!}"/>
-                <#if a?has_content&&!a.customed>
-                    <input class="required" readonly="readonly" name="code" type="text" value="${(a.code)!}"/>
-                <#else>
-                    <input class="required" name="code" type="text" maxlength="20" size="20" value="${(a.code)!}"/>
-                </#if>
-            </dd>
-        </dl>
-        <dl class="nowrap">
-            <dt><@t.page 'description'/>:</dt>
-            <dd>
-                <#if a?has_content&&!a.customed>
-                    <textarea class="required" readonly="readonly" name="description" maxlength="150" cols="80" rows="3">${(a.description)!}</textarea>
-                <#else>
-                    <textarea class="required" name="description" maxlength="150" cols="80" rows="3">${(a.description)!}</textarea>
-                </#if>
-            </dd>
-        </dl>
-<#if a?has_content>
-    <@sys.configFieldList code=code customed=true>
-        <#assign extendList=list>
-    </@sys.configFieldList>
-</#if>
-        <fieldset>
-            <legend><@t.page 'extend_field'/>(<@t.page 'metadata.default_value_description'/>)</legend>
-            <#include "../include_page/extends.html"/>
-            <@extends 'extendList' extendList![]/>
-        </fieldset>
+    <div class="card">
+        <div class="pageFormContent" layoutH>
+            <dl class="nowrap">
+                <dt><@t.page 'code'/>:</dt>
+                <dd>
+                    <input name="configCode" type="hidden" value="${code!}"/>
+                    <#if a?has_content&&!a.customed>
+                        <input class="required" readonly="readonly" name="code" type="text" value="${(a.code)!}"/>
+                    <#else>
+                        <input class="required" name="code" type="text" maxlength="20" size="20" value="${(a.code)!}"/>
+                    </#if>
+                </dd>
+            </dl>
+            <dl class="nowrap">
+                <dt><@t.page 'description'/>:</dt>
+                <dd>
+                    <#if a?has_content&&!a.customed>
+                        <textarea class="required" readonly="readonly" name="description" maxlength="150" cols="80" rows="3">${(a.description)!}</textarea>
+                    <#else>
+                        <textarea class="required" name="description" maxlength="150" cols="80" rows="3">${(a.description)!}</textarea>
+                    </#if>
+                </dd>
+            </dl>
+    <#if a?has_content>
+        <@sys.configFieldList code=code customed=true>
+            <#assign extendList=list>
+        </@sys.configFieldList>
+    </#if>
+            <fieldset>
+                <legend><@t.page 'extend_field'/>(<@t.page 'metadata.default_value_description'/>)</legend>
+                <#include "../include_page/extends.html"/>
+                <@extends 'extendList' extendList![]/>
+            </fieldset>
+        </div>
     </div>
 </form>

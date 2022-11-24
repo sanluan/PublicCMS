@@ -2,43 +2,45 @@
 <form method="post" autocomplete="off" action="cmsSurvey/save?callbackType=closeCurrent&navTabId=cmsSurvey/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input name="id" type="hidden" value="${id!}" />
     <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
-    <div class="formBar">
+    <div class="formBar card">
         <ul>
             <li><button type="submit" class="buttonActive" title="ctrl+s"><@t.page 'button.save'/></button></li>
             <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
         </ul>
     </div>
-    <div class="pageFormContent" layoutH>
-        <dl class="nowrap">
-            <dt><@t.page 'title'/>:</dt>
-            <dd><input class="required" name="title" type="text" size="50" maxlength="50" value="${(a.title)!}"/></dd>
-        </dl>
-        <dl class="nowrap">
-            <dt><@t.page 'description'/>:</dt>
-            <dd>
-                <textarea name="description" maxlength="150" cols="80" rows="2">${(a.description)!}</textarea>
-            </dd>
-        </dl>
-        <dl class="nowrap">
-            <dt><@t.page 'survey.type'/>:</dt>
-            <dd>
-                <select class="combox" name="surveyType">
-                    <option value="survey"${("survey"=((a.surveyType)!))?then(' selected="true"','')?no_esc}><@t.page 'survey.type.survey'/></option>
-                    <option value="exam"${("exam"=((a.surveyType)!))?then(' selected="true"','')?no_esc}><@t.page 'survey.type.exam'/></option>
-                </select>
-            </dd>
-        </dl>
-        <dl>
-            <dt><@t.page 'start_date'/>:</dt>
-            <dd>
-                <input type="text" name="startDate" class="required date" size="20" dateFmt="yyyy-MM-dd HH:mm:ss" value="${(a.startDate)!}"/>
-            </dd>
-        </dl>
-        <dl>
-            <dt><@t.page 'end_date'/>:</dt>
-            <dd>
-                <input type="text" name="endDate" class="required date" size="20" dateFmt="yyyy-MM-dd HH:mm:ss" minDate="{%y}-%M-{%d}" value="${(a.endDate)!}"/>
-            </dd>
-        </dl>
+    <div class="card">
+        <div class="pageFormContent" layoutH>
+            <dl class="nowrap">
+                <dt><@t.page 'title'/>:</dt>
+                <dd><input class="required" name="title" type="text" size="50" maxlength="50" value="${(a.title)!}"/></dd>
+            </dl>
+            <dl class="nowrap">
+                <dt><@t.page 'description'/>:</dt>
+                <dd>
+                    <textarea name="description" maxlength="150" cols="80" rows="2">${(a.description)!}</textarea>
+                </dd>
+            </dl>
+            <dl class="nowrap">
+                <dt><@t.page 'survey.type'/>:</dt>
+                <dd>
+                    <select class="combox" name="surveyType">
+                        <option value="survey"${("survey"=((a.surveyType)!))?then(' selected="true"','')?no_esc}><@t.page 'survey.type.survey'/></option>
+                        <option value="exam"${("exam"=((a.surveyType)!))?then(' selected="true"','')?no_esc}><@t.page 'survey.type.exam'/></option>
+                    </select>
+                </dd>
+            </dl>
+            <dl>
+                <dt><@t.page 'start_date'/>:</dt>
+                <dd>
+                    <input type="text" name="startDate" class="required date" size="20" dateFmt="yyyy-MM-dd HH:mm:ss" value="${(a.startDate)!}"/>
+                </dd>
+            </dl>
+            <dl>
+                <dt><@t.page 'end_date'/>:</dt>
+                <dd>
+                    <input type="text" name="endDate" class="required date" size="20" dateFmt="yyyy-MM-dd HH:mm:ss" minDate="{%y}-%M-{%d}" value="${(a.endDate)!}"/>
+                </dd>
+            </dl>
+        </div>
     </div>
 </form>

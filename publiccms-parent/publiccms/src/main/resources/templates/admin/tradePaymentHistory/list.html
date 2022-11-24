@@ -1,6 +1,6 @@
 <@trade.paymentHistoryList paymentId=paymentId operate=operate startCreateDate=startCreateDate endCreateDate=endCreateDate 
             orderType=orderType pageIndex=pageNum pageSize=numPerPage>
-<div class="pageHeader">
+<div class="pageHeader card">
     <form class="pagerForm" action="tradePaymentHistory/list.html" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
         <div class="searchBar">
@@ -30,7 +30,7 @@
         </div>
     </form>
 </div>
-<div class="pageContent">
+<div class="card">
     <table class="table" width="100%" layoutH>
         <thead>
             <tr>

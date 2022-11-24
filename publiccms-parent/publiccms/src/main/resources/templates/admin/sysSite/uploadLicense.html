@@ -1,35 +1,37 @@
 <form action="sysSite/doUploadLicense?callbackType=closeCurrent" method="post" enctype="multipart/form-data" class="pageForm required-validate" onsubmit="return iframeCallback(this,navTabAjaxDone);">
     <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
-    <div class="formBar">
+    <div class="formBar card">
         <ul>
             <li><button type="submit" class="buttonActive" title="ctrl+s"><@t.page 'upload'/></button></li>
             <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
         </ul>
     </div>
-    <div class="pageFormContent" layoutH>
-        <dl class="nowrap">
-            <dt><@t.page 'license.award'/>:</dt>
-            <dd>
-                <a href="//www.publiccms.com" target="navTab" rel="publiccms.com"><i class="icon-globe icon-large"></i><@t.menu 'official_website'/></a>
-            </dd>
-        </dl>
-        <dl class="nowrap">
-            <dt><@t.page 'license.status'/>:</dt>
-            <dd>
-                <@tools.version>
-                    <#if authorizationEdition>
-                        <a href="common/license.html" target="dialog" mask="true"><@t.page 'license'/>: ${getLicense().authorization!}</a>
-                    <#else>
-                        <@t.page 'license.no'/>
-                    </#if>
-                </@tools.version>
-            </dd>
-        </dl>
-        <dl class="nowrap">
-            <dt><@t.page 'license.file'/>:</dt>
-            <dd>
-                <input type="file" name="file" class="required" size="30" />
-            </dd>
-        </dl>
+    <div class="card">
+        <div class="pageFormContent" layoutH>
+            <dl class="nowrap">
+                <dt><@t.page 'license.award'/>:</dt>
+                <dd>
+                    <a href="//www.publiccms.com" target="navTab" rel="publiccms.com"><i class="icon-globe icon-large"></i><@t.menu 'official_website'/></a>
+                </dd>
+            </dl>
+            <dl class="nowrap">
+                <dt><@t.page 'license.status'/>:</dt>
+                <dd>
+                    <@tools.version>
+                        <#if authorizationEdition>
+                            <a href="common/license.html" target="dialog" mask="true"><@t.page 'license'/>: ${getLicense().authorization!}</a>
+                        <#else>
+                            <@t.page 'license.no'/>
+                        </#if>
+                    </@tools.version>
+                </dd>
+            </dl>
+            <dl class="nowrap">
+                <dt><@t.page 'license.file'/>:</dt>
+                <dd>
+                    <input type="file" name="file" class="required" size="30" />
+                </dd>
+            </dl>
+        </div>
     </div>
 </form>
