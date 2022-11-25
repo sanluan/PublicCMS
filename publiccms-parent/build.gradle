@@ -5,14 +5,10 @@ buildscript {
             name = "aliyun"
             url "https://maven.aliyun.com/repository/public/"
         }
-        maven {
-            name = "spring-milestone"
-            url "https://repo.spring.io/milestone/"
-        }
     }
     dependencies {
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-gradle-plugin
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.7.5")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:3.0.0")
     }
 }
 
@@ -37,7 +33,7 @@ subprojects {
         springVersion = "6.0.1"
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
         // https://spring.io/projects/spring-boot
-        springBootVersion = "3.0.0-M5"
+        springBootVersion = "3.0.0"
         // http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
         // http://hc.apache.org/downloads.cgi
         httpclientVersion = "4.5.13"

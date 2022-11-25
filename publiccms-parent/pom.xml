@@ -26,7 +26,7 @@
         <version.spring>6.0.1</version.spring>
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
         <!-- https://spring.io/projects/spring-boot -->
-        <version.springBoot>3.0.0-M5</version.springBoot>
+        <version.springBoot>3.0.0</version.springBoot>
         <!-- http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
         <!-- http://hc.apache.org/downloads.cgi -->
         <version.httpclient>4.5.13</version.httpclient>
@@ -438,10 +438,6 @@
     </dependencyManagement>
     <repositories>
         <repository>
-            <id>spring-milestone</id>
-            <url>https://repo.spring.io/milestone/</url>
-        </repository>
-        <repository>
             <id>nexus-aliyun</id>
             <url>https://maven.aliyun.com/nexus/content/repositories/central/</url>
         </repository>
@@ -454,10 +450,6 @@
         <pluginRepository>
             <id>nexus-aliyun</id>
             <url>https://maven.aliyun.com/nexus/content/repositories/central/</url>
-        </pluginRepository>
-        <pluginRepository>
-            <id>spring-milestone</id>
-            <url>https://repo.spring.io/milestone/</url>
         </pluginRepository>
         <pluginRepository>
             <id>jcenter</id>
