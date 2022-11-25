@@ -46,7 +46,7 @@ public class HtmlUtils {
                     "width")
             .addAttributes("source", "media", "sizes", "src", "srcset", "type")
             .addAttributes("track", "default", "kind", "label", "src", "srclang")
-            .removeProtocols("a", "href", "ftp", "http", "https", "mailto").removeProtocols("img", "src", "http", "https");
+            .addProtocols("a", "href", "#").addProtocols("img", "src", "data");
 
     /**
      * @param string
