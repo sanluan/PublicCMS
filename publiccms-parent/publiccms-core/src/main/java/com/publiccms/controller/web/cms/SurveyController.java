@@ -40,7 +40,7 @@ import com.publiccms.views.pojo.model.CmsUserSurveyQuestionParameters;
 
 /**
  * 
- * VoteController 投票
+ * SurveyController 问卷调查
  *
  */
 @Controller

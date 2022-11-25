@@ -31,6 +31,7 @@ import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.config.SiteConfigComponent;
+import com.publiccms.logic.component.site.LockComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
@@ -71,6 +72,8 @@ public class PlaceController {
     protected SiteConfigComponent siteConfigComponent;
     @Autowired
     private TemplateComponent templateComponent;
+    @Autowired
+    private LockComponent lockComponent;
 
     private String[] ignoreProperties = new String[] { "id", "siteId", "type", "path", "createDate", "userId", "disabled" };
 
@@ -104,10 +107,27 @@ public class PlaceController {
                     || ControllerUtils.errorCustom("anonymousContribute", null == user && !metadata.isAllowAnonymous(), model)) {
                 return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
             }
-            if (!metadata.isAllowAnonymous()
-                    && ControllerUtils.errorNotEquals("_csrf", ControllerUtils.getWebToken(request), _csrf, model)) {
-                return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
+            String ip = RequestUtils.getIpAddress(request);
+            if (metadata.isAllowAnonymous()) {
+                boolean locked = lockComponent.isLocked(site.getId(), LockComponent.ITEM_TYPE_CONTRIBUTE, ip, null);
+                if (ControllerUtils.errorCustom("locked.ip", locked, model)) {
+                    lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_CONTRIBUTE, ip, null, true);
+                    return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
+                }
+            } else {
+                if (ControllerUtils.errorNotEquals("_csrf", ControllerUtils.getWebToken(request), _csrf, model)) {
+                    return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
+                } else {
+                    boolean locked = lockComponent.isLocked(site.getId(), LockComponent.ITEM_TYPE_CONTRIBUTE,
+                            String.valueOf(user.getId()), null);
+                    if (ControllerUtils.errorCustom("locked.user", locked, model)) {
+                        lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_CONTRIBUTE, String.valueOf(user.getId()), null,
+                                true);
+                        return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
+                    }
+                }
             }
+
             if (null != entity.getId()) {
                 CmsPlace oldEntity = service.getEntity(entity.getId());
                 if (null == oldEntity || CommonUtils.empty(oldEntity.getUserId()) || null == user
@@ -116,8 +136,8 @@ public class PlaceController {
                     return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
                 }
                 entity = service.update(entity.getId(), entity, ignoreProperties);
-                logOperateService.save(new LogOperate(site.getId(), user.getId(), null == user ? null : user.getDeptId(), LogLoginService.CHANNEL_WEB,
-                        "update.place", RequestUtils.getIpAddress(request), CommonUtils.getDate(), entity.getPath()));
+                logOperateService.save(new LogOperate(site.getId(), user.getId(), null == user ? null : user.getDeptId(),
+                        LogLoginService.CHANNEL_WEB, "update.place", ip, CommonUtils.getDate(), entity.getPath()));
             } else {
                 entity.setSiteId(site.getId());
                 Long userId = null;
@@ -127,10 +147,11 @@ public class PlaceController {
                 }
                 entity.setDisabled(false);
                 service.save(entity);
-                logOperateService.save(
-                        new LogOperate(site.getId(), userId, null == user ? null : user.getDeptId(), LogLoginService.CHANNEL_WEB,
-                                "save.place", RequestUtils.getIpAddress(request), CommonUtils.getDate(), entity.getPath()));
+                logOperateService.save(new LogOperate(site.getId(), userId, null == user ? null : user.getDeptId(),
+                        LogLoginService.CHANNEL_WEB, "save.place", ip, CommonUtils.getDate(), entity.getPath()));
             }
+            lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_CONTRIBUTE,
+                    metadata.isAllowAnonymous() ? ip : String.valueOf(user.getId()), null, true);
             Map<String, String> map = ExtendUtils.getExtentDataMap(placeParameters.getExtendDataList(),
                     metadataComponent.getPlaceMetadata(filepath).getExtendList());
             String extentString = ExtendUtils.getExtendString(map);

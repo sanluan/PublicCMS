@@ -38,7 +38,6 @@ import com.publiccms.logic.component.site.LockComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
-import com.publiccms.logic.service.sys.SysLockService;
 import com.publiccms.logic.service.sys.SysUserService;
 import com.publiccms.logic.service.sys.SysUserTokenService;
 
@@ -90,32 +89,32 @@ public class LoginAdminController {
         }
         String ip = RequestUtils.getIpAddress(request);
         SysUser user = service.findByName(site.getId(), username);
-        boolean locked = lockComponent.isLocked(site.getId(), SysLockService.ITEM_TYPE_IP_LOGIN, ip, null);
+        boolean locked = lockComponent.isLocked(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, null);
         if (ControllerUtils.errorCustom("locked.ip", locked && ControllerUtils.ipNotEquals(ip, user), model)
                 || ControllerUtils.errorNotEquals("password", user, model)) {
             model.addAttribute("username", username);
             model.addAttribute("returnUrl", returnUrl);
-            lockComponent.lock(site.getId(), SysLockService.ITEM_TYPE_IP_LOGIN, ip, null, true);
+            lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, null, true);
             logLoginService.save(new LogLogin(site.getId(), username, null, ip, LogLoginService.CHANNEL_WEB_MANAGER, false,
                     CommonUtils.getDate(), password));
             return "login";
         } else {
-            locked = lockComponent.isLocked(site.getId(), SysLockService.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null);
+            locked = lockComponent.isLocked(site.getId(), LockComponent.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null);
             if (ControllerUtils.errorCustom("locked.user", locked, model) || ControllerUtils.errorNotEquals("password",
                     UserPasswordUtils.passwordEncode(password, null, user.getPassword(), encoding), user.getPassword(), model)
                     || verifyNotAdmin(user, model) || verifyNotEnablie(user, model)) {
                 model.addAttribute("username", username);
                 model.addAttribute("returnUrl", returnUrl);
                 Long userId = user.getId();
-                lockComponent.lock(site.getId(), SysLockService.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null, true);
-                lockComponent.lock(site.getId(), SysLockService.ITEM_TYPE_IP_LOGIN, ip, null, true);
+                lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null, true);
+                lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, null, true);
                 logLoginService.save(new LogLogin(site.getId(), username, userId, ip, LogLoginService.CHANNEL_WEB_MANAGER, false,
                         CommonUtils.getDate(), password));
                 return "login";
             }
         }
-        lockComponent.unLock(site.getId(), SysLockService.ITEM_TYPE_IP_LOGIN, ip, user.getId());
-        lockComponent.unLock(site.getId(), SysLockService.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null);
+        lockComponent.unLock(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, user.getId());
+        lockComponent.unLock(site.getId(), LockComponent.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null);
 
         if (UserPasswordUtils.needUpdate(user.getPassword())) {
             service.updatePassword(user.getId(),

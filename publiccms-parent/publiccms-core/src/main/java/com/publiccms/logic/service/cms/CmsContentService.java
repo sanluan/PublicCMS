@@ -355,6 +355,7 @@ public class CmsContentService extends BaseService<CmsContent> {
                         String value = map.get(extendField.getId().getCode());
                         if (null != value) {
                             if (ArrayUtils.contains(FULLTEXT_SEARCHABLE_EDITOR, extendField.getInputType())) {
+                                map.put(extendField.getId().getCode(), HtmlUtils.cleanUnsafeHtml(value));
                                 value = HtmlUtils.removeHtmlTag(value);
                             }
                             if (CommonUtils.notEmpty(value)) {

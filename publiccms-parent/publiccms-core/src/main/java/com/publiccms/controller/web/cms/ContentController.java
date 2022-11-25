@@ -29,6 +29,7 @@ import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.config.SiteConfigComponent;
+import com.publiccms.logic.component.site.LockComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.component.template.ModelComponent;
@@ -64,6 +65,8 @@ public class ContentController {
     @Autowired
     protected SiteComponent siteComponent;
     @Autowired
+    private LockComponent lockComponent;
+    @Autowired
     protected SiteConfigComponent siteConfigComponent;
 
     /**
@@ -87,6 +90,12 @@ public class ContentController {
             CmsContentAttribute attribute, @ModelAttribute CmsContentParameters contentParameters, String returnUrl,
             HttpServletRequest request, ModelMap model) {
         returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
+        boolean locked = lockComponent.isLocked(site.getId(), LockComponent.ITEM_TYPE_CONTRIBUTE, String.valueOf(user.getId()),
+                null);
+        if (ControllerUtils.errorCustom("locked.user", locked, model)) {
+            lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_CONTRIBUTE, String.valueOf(user.getId()), null, true);
+            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
+        }
         CmsCategoryModel categoryModel = categoryModelService
                 .getEntity(new CmsCategoryModelId(entity.getCategoryId(), entity.getModelId()));
         if (ControllerUtils.errorNotEmpty("categoryModel", categoryModel, model)
@@ -133,6 +142,7 @@ public class ContentController {
             logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
                     "save.content", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
+        lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_CONTRIBUTE, String.valueOf(user.getId()), null, true);
         service.saveTagAndAttribute(site.getId(), user.getId(), entity.getId(), contentParameters, cmsModel,
                 category.getExtendId(), attribute);
         return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;

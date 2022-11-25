@@ -37,6 +37,7 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.DateFormatUtils;
 import com.publiccms.common.tools.ExtendUtils;
+import com.publiccms.common.tools.HtmlUtils;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.LanguagesUtils;
 import com.publiccms.common.tools.RequestUtils;
@@ -246,7 +247,8 @@ public class CmsContentAdminController {
             entity.setPublishDate(now);
         }
         if (null != attribute.getText() && base64) {
-            attribute.setText(new String(VerificationUtils.base64Decode(attribute.getText()), CommonConstants.DEFAULT_CHARSET));
+            attribute.setText(HtmlUtils.cleanUnsafeHtml(
+                    new String(VerificationUtils.base64Decode(attribute.getText()), CommonConstants.DEFAULT_CHARSET)));
         }
     }
 

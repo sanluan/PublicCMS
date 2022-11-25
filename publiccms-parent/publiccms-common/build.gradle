@@ -37,6 +37,7 @@ dependencies {
     implementation "fr.opensagres.xdocreport:fr.opensagres.poi.xwpf.converter.xhtml:${xhtmlConverterVersion}"
     implementation "org.sejda.imageio:webp-imageio:${webpVersion}"
     implementation "net.ifok.image:image4j:${image4jVersion}"
+    implementation "org.jsoup:jsoup:${jsoupVersion}"
 
     implementation "org.apache.lucene:lucene-analyzers-smartcn:${luceneVersion}"
     implementation "org.apache.lucene:lucene-backward-codecs:${luceneVersion}"

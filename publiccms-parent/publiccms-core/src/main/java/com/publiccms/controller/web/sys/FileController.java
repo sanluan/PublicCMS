@@ -21,11 +21,13 @@ import org.springframework.web.multipart.MultipartFile;
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.log.LogUpload;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.config.SiteConfigComponent;
+import com.publiccms.logic.component.site.LockComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogUploadService;
@@ -45,6 +47,8 @@ public class FileController {
     @Autowired
     protected SiteComponent siteComponent;
     @Autowired
+    private LockComponent lockComponent;
+    @Autowired
     protected SiteConfigComponent siteConfigComponent;
 
     /**
@@ -61,6 +65,12 @@ public class FileController {
             HttpServletRequest request) {
         Map<String, Object> result = new HashMap<>();
         result.put("success", false);
+        boolean locked = lockComponent.isLocked(site.getId(), LockComponent.ITEM_TYPE_FILEUPLOAD, String.valueOf(user.getId()),
+                null);
+        if (ControllerUtils.errorCustom("locked.user", locked, result)) {
+            lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_FILEUPLOAD, String.valueOf(user.getId()), null, true);
+            return result;
+        }
         if (null != file && !file.isEmpty() && null != user) {
             String originalName = file.getOriginalFilename();
             String suffix = CmsFileUtils.getSuffix(originalName);
@@ -69,6 +79,7 @@ public class FileController {
                 String filepath = siteComponent.getWebFilePath(site, fileName);
                 try {
                     CmsFileUtils.upload(file, filepath);
+                    lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_FILEUPLOAD, String.valueOf(user.getId()), null, true);
                     result.put("success", true);
                     result.put("fileName", fileName);
                     String fileType = CmsFileUtils.getFileType(suffix);

@@ -40,7 +40,6 @@ import com.publiccms.logic.component.site.LockComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.sys.SysAppClientService;
-import com.publiccms.logic.service.sys.SysLockService;
 import com.publiccms.logic.service.sys.SysUserService;
 import com.publiccms.logic.service.sys.SysUserTokenService;
 
@@ -105,25 +104,25 @@ public class LoginController {
             }
             String ip = RequestUtils.getIpAddress(request);
             Date now = CommonUtils.getDate();
-            boolean locked = lockComponent.isLocked(site.getId(), SysLockService.ITEM_TYPE_IP_LOGIN, ip, null);
+            boolean locked = lockComponent.isLocked(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, null);
             if (ControllerUtils.errorCustom("locked.ip", locked && ControllerUtils.ipNotEquals(ip, user), model)
                     || ControllerUtils.errorNotEquals("password", user, model)) {
-                lockComponent.lock(site.getId(), SysLockService.ITEM_TYPE_IP_LOGIN, ip, null, true);
+                lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, null, true);
                 return UrlBasedViewResolver.REDIRECT_URL_PREFIX + loginPath;
             }
-            locked = lockComponent.isLocked(site.getId(), SysLockService.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null);
+            locked = lockComponent.isLocked(site.getId(), LockComponent.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null);
             if (ControllerUtils.errorCustom("locked.user", locked, model) || ControllerUtils.errorNotEquals("password",
                     UserPasswordUtils.passwordEncode(password, null, user.getPassword(), encoding), user.getPassword(), model)
                     || verifyNotEnablie(user, model)) {
                 Long userId = user.getId();
-                lockComponent.lock(site.getId(), SysLockService.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null, true);
-                lockComponent.lock(site.getId(), SysLockService.ITEM_TYPE_IP_LOGIN, ip, null, true);
+                lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null, true);
+                lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, null, true);
                 logLoginService.save(
                         new LogLogin(site.getId(), username, userId, ip, LogLoginService.CHANNEL_WEB, false, now, password));
                 return UrlBasedViewResolver.REDIRECT_URL_PREFIX + loginPath;
             } else {
-                lockComponent.unLock(site.getId(), SysLockService.ITEM_TYPE_IP_LOGIN, ip, user.getId());
-                lockComponent.unLock(site.getId(), SysLockService.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null);
+                lockComponent.unLock(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, user.getId());
+                lockComponent.unLock(site.getId(), LockComponent.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null);
                 if (UserPasswordUtils.needUpdate(user.getPassword())) {
                     service.updatePassword(user.getId(), UserPasswordUtils.passwordEncode(password, UserPasswordUtils.getSalt(), null, encoding));
                 }
@@ -193,9 +192,9 @@ public class LoginController {
             registerPath = site.getDynamicPath();
         }
         String ip = RequestUtils.getIpAddress(request);
-        boolean locked = lockComponent.isLocked(site.getId(), SysLockService.ITEM_TYPE_REGISTER, ip, null);
+        boolean locked = lockComponent.isLocked(site.getId(), LockComponent.ITEM_TYPE_REGISTER, ip, null);
         if (ControllerUtils.errorCustom("locked.ip", locked, model)) {
-            lockComponent.lock(site.getId(), SysLockService.ITEM_TYPE_REGISTER, ip, null, true);
+            lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_REGISTER, ip, null, true);
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + registerPath;
         }
         entity.setName(StringUtils.trim(entity.getName()));
@@ -225,7 +224,7 @@ public class LoginController {
             entity.setLoginCount(0);
             entity.setDeptId(null);
             service.save(entity);
-            lockComponent.lock(site.getId(), SysLockService.ITEM_TYPE_REGISTER, ip, null, true);
+            lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_REGISTER, ip, null, true);
             if (null != clientId && null != uuid) {
                 SysAppClient appClient = appClientService.getEntity(clientId);
                 if (null != appClient && appClient.getSiteId() == site.getId() && appClient.getUuid().equals(uuid)

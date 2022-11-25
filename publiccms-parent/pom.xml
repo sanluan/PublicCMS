@@ -92,6 +92,8 @@
         <version.image4j>0.7.2</version.image4j>
         <!-- http://mvnrepository.com/artifact/eu.bitwalker/UserAgentUtils -->
         <version.userAgentUtils>1.21</version.userAgentUtils>
+        <!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
+        <version.jsoup>1.15.3</version.jsoup>
         <!-- https://mvnrepository.com/artifact/jakarta.annotation/jakarta.annotation-api -->
         <version.annotation>1.3.5</version.annotation>
         <!-- https://mvnrepository.com/artifact/jakarta.mail/jakarta.mail-api -->
@@ -357,6 +359,11 @@
                 <groupId>eu.bitwalker</groupId>
                 <artifactId>UserAgentUtils</artifactId>
                 <version>${version.userAgentUtils}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jsoup</groupId>
+                <artifactId>jsoup</artifactId>
+                <version>${version.jsoup}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.ant</groupId>

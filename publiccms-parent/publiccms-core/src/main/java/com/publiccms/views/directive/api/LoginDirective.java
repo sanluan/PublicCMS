@@ -26,7 +26,6 @@ import com.publiccms.logic.component.config.ConfigComponent;
 import com.publiccms.logic.component.config.SiteConfigComponent;
 import com.publiccms.logic.component.site.LockComponent;
 import com.publiccms.logic.service.log.LogLoginService;
-import com.publiccms.logic.service.sys.SysLockService;
 import com.publiccms.logic.service.sys.SysUserService;
 import com.publiccms.logic.service.sys.SysUserTokenService;
 
@@ -78,11 +77,11 @@ public class LoginDirective extends AbstractAppDirective {
                 user = service.findByEmail(site.getId(), username);
             }
             String ip = RequestUtils.getIpAddress(handler.getRequest());
-            boolean locked = lockComponent.isLocked(site.getId(), SysLockService.ITEM_TYPE_IP_LOGIN, ip, null);
+            boolean locked = lockComponent.isLocked(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, null);
             if (null != user && (!locked || !ControllerUtils.ipNotEquals(ip, user)) && !user.isDisabled() && user.getPassword()
                     .equals(UserPasswordUtils.passwordEncode(password, null, user.getPassword(), encoding))) {
-                lockComponent.unLock(site.getId(), SysLockService.ITEM_TYPE_IP_LOGIN, ip, user.getId());
-                lockComponent.unLock(site.getId(), SysLockService.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null);
+                lockComponent.unLock(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, user.getId());
+                lockComponent.unLock(site.getId(), LockComponent.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null);
                 if (UserPasswordUtils.needUpdate(user.getPassword())) {
                     service.updatePassword(user.getId(), UserPasswordUtils.passwordEncode(password, UserPasswordUtils.getSalt(), null, encoding));
                 }
@@ -101,9 +100,9 @@ public class LoginDirective extends AbstractAppDirective {
                 handler.put("authToken", authToken).put("expiryDate", expiryDate).put("user", user);
             } else {
                 if (null != user) {
-                    lockComponent.lock(site.getId(), SysLockService.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null, true);
+                    lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null, true);
                 }
-                lockComponent.lock(site.getId(), SysLockService.ITEM_TYPE_IP_LOGIN, ip, null, true);
+                lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, null, true);
                 LogLogin log = new LogLogin();
                 log.setSiteId(site.getId());
                 log.setName(username);
