@@ -147,8 +147,8 @@ header .nav .selected ul{display:block;}
 
 /* Grid */
 .grid {display:block;overflow:hidden;width:100%;border-width:0 1px;position:relative;}
-.grid .gridHeader{margin-left:6px;margin-top:6px;display:block;overflow:hidden;width:auto;}
-.grid .gridScroller{margin-left:6px;display:block;overflow:auto;position:relative;}
+.grid .gridHeader{margin-top:6px;display:block;overflow:hidden;width:auto;}
+.grid .gridScroller{display:block;overflow:auto;position:relative;}
 .grid table{border:0;border-collapse:collapse;table-layout:fixed;min-width:800px;}
 .grid .gridHeader th{padding:3px 2px;border-style:solid;border-width:0 1px 1px 0;vertical-align:top;white-space:nowrap;line-height:26px;cursor:default;}
 .grid .gridHeader th:hover, .grid .gridHeader th.thSelected{background-position:0 -50px;}
