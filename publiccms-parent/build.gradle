@@ -8,7 +8,7 @@ buildscript {
     }
     dependencies {
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-gradle-plugin
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.5.1")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.6.14")
     }
 }
 
@@ -23,24 +23,24 @@ subprojects {
     apply plugin: "eclipse-wtp"
 
     group = 'com.publiccms'
-    version = 'V4.0.202204.c'
+    version = 'V4.0.202204.d'
     
     test.enabled = false
     
     ext {
         // http://mvnrepository.com/artifact/org.springframework/spring-core
         // https://spring.io/projects/spring-framework
-        springVersion = "5.3.19"
+        springVersion = "5.3.24"
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
         // https://spring.io/projects/spring-boot
-        springBootVersion = "2.6.6"
+        springBootVersion = "2.6.14"
         // https://mvnrepository.com/artifact/org.aspectj/aspectjweaver
         aspectjVersion = "1.9.7"
         // http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
         // http://hc.apache.org/downloads.cgi
         httpclientVersion = "4.5.13"
         // http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
-        jacksonVersion = "2.14.0-rc2"
+        jacksonVersion = "2.14.1"
         // http://mvnrepository.com/artifact/org.hibernate/hibernate-core
         // http://hibernate.org/orm/downloads/
         hibernateVersion = "5.6.7.Final"
