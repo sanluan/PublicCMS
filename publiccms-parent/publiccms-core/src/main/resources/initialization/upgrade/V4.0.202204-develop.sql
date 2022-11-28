@@ -227,11 +227,11 @@ ALTER TABLE `sys_dept_item`
     CHANGE COLUMN `page` `item_id` varchar(100) NOT NULL COMMENT '项目id' AFTER `dept_id`,
     ADD COLUMN `item_type` varchar(50) NOT NULL DEFAULT 'page' COMMENT '项目类型' AFTER `dept_id`,
     DROP PRIMARY KEY,
-    ADD PRIMARY KEY(`dept_id`, `item_type`, `item_id`);
+    ADD PRIMARY KEY(`dept_id`, `item_type`, `item_id`),
     DROP INDEX `sys_dept_page_page`,
     ADD INDEX `sys_dept_item_item_id`(`item_type`, `item_id`);
 INSERT INTO sys_dept_item SELECT dept_id,'config',config FROM sys_dept_config;
-INSERT INTO sys_dept_item SELECT dept_id,'category',category_id FROM sys_dept_config;
+INSERT INTO sys_dept_item SELECT dept_id,'category',category_id FROM sys_dept_category;
 DROP TABLE `sys_dept_category`;
 DROP TABLE `sys_dept_config`;
 -- 2022-10-14 --

@@ -22,7 +22,7 @@ dependencies {
     implementation "org.springframework:spring-context-support:${springVersion}"
     implementation "org.springframework:spring-orm:${springVersion}"
     implementation "org.springframework:spring-webmvc:${springVersion}"
-    implementation "org.springframework:spring-webc:${springVersion}"
+    implementation "org.springframework:spring-web:${springVersion}"
     implementation "org.springframework:spring-beans:${springVersion}"
 
     implementation "org.hibernate.search:hibernate-search-mapper-orm:${hibernateSearchVersion}"
@@ -54,6 +54,6 @@ dependencies {
 
     implementation ("org.quartz-scheduler:quartz:${quartzVersion}") {
         exclude group:"com.mchange"
-        exclude group:"com.zaxxer" 
+        exclude group:"com.zaxxer"
     }
 }
