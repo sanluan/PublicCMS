@@ -115,8 +115,8 @@ public class TradePaymentController {
     @ResponseBody
     public String notifyAlipay(@RequestAttribute SysSite site, long out_trade_no, String total_amount, String trade_no,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
-        log.info(String.format("alipay notify out_trade_no:%s,total_amount:%s,trade_no:%s", out_trade_no, total_amount,
-                trade_no));
+        log.info(
+                String.format("alipay notify out_trade_no:%s,total_amount:%s,trade_no:%s", out_trade_no, total_amount, trade_no));
         Map<String, String> config = configComponent.getConfigData(site.getId(), AlipayGatewayComponent.CONFIG_CODE);
         if (CommonUtils.notEmpty(config)) {
             Map<String, String> params = request.getParameterMap().entrySet().stream()
@@ -204,7 +204,9 @@ public class TradePaymentController {
                             if ("SUCCESS".equalsIgnoreCase((String) data.get("refund_status")) && null != amount) {
                                 TradePayment payment = service.getEntity(paymentId);
                                 TradeRefund refund = refundService.getEntity(Long.parseLong((String) data.get("out_refund_no")));
-                                if (null != payment && null != refund && refund.getStatus() == TradeRefundService.STATUS_PENDING
+                                if (null != payment && null != refund
+                                        && (refund.getStatus() == TradeRefundService.STATUS_PENDING
+                                                || refund.getStatus() == TradeRefundService.STATUS_FAIL)
                                         && (refund.getRefundAmount().multiply(new BigDecimal(100))).intValue() == amount
                                                 .get("refund")) {
                                     TradePaymentProcessor tradePaymentProcessor = tradePaymentProcessorComponent
@@ -312,10 +314,14 @@ public class TradePaymentController {
     }
 
     /**
-     * @param site 站点
-     * @param user 用户
-     * @param refundId 退款id
-     * @param returnUrl 重定向页面地址
+     * @param site
+     *            站点
+     * @param user
+     *            用户
+     * @param refundId
+     *            退款id
+     * @param returnUrl
+     *            重定向页面地址
      * @param request
      * @return 重定向页面地址
      */
