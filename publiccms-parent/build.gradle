@@ -23,7 +23,7 @@ subprojects {
     apply plugin: "eclipse-wtp"
 
     group = 'com.publiccms'
-    version = 'V4.0.202204.c'
+    version = 'V4.0.202204.d'
 
     test.enabled = false
 
@@ -33,7 +33,7 @@ subprojects {
         springVersion = "5.3.24"
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
         // https://spring.io/projects/spring-boot
-        springBootVersion = "2.7.5"
+        springBootVersion = "2.7.6"
         // http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
         // http://hc.apache.org/downloads.cgi
         httpclientVersion = "4.5.13"
