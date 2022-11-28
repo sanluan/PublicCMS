@@ -1,4 +1,4 @@
-FROM java:latest
+FROM openjdk:latest
 ADD publiccms-parent/publiccms/target/publiccms.war /opt/publiccms.war
 ADD data /data
 ENV PORT 8080
