@@ -45,8 +45,8 @@ public class HtmlUtils {
             .addAttributes("video", "autoplay", "controls", "data-setup", "height", "loop", "muted", "preload", "poster", "src",
                     "width")
             .addAttributes("source", "media", "sizes", "src", "srcset", "type")
-            .addAttributes("track", "default", "kind", "label", "src", "srclang")
-            .addProtocols("a", "href", "#").addProtocols("img", "src", "data");
+            .addAttributes("track", "default", "kind", "label", "src", "srclang").addProtocols("a", "href", "#")
+            .removeProtocols("img", "src", "http", "https");
 
     /**
      * @param string
