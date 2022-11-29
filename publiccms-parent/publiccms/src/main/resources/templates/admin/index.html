@@ -2,7 +2,7 @@
 <html lang="<@t.page 'html_lang'/>">
 <head>
     <meta charset="utf-8">
-    <title>${site.name} - <@t.page 'management_system'/></title>
+    <title>${site.name} - <@t.page "management_system"/></title>
     <meta name="viewport" content="width=device-width,initial-scale=0.6">
     <link href="${base}/resource/plugins/codemirror/lib/codemirror.css" rel="stylesheet"/>
     <link href="${base}/resource/plugins/codemirror/addon/hint/show-hint.css" rel="stylesheet"/>
@@ -18,14 +18,14 @@
     <header>
         <a class="logo" href="./"><img src="<#if siteAttribute.logo?has_content>${getUrl(siteAttribute.logo)}<#else>${base}/resource/logo.png</#if>" alt="LOGO"/></a>
         <ul class="nav">
-            <@sys.authorized roleIds=admin.roles url='cmsDiy/preview'>
-            <li><a href="cmsDiy/preview.html" target="navTab" rel="cmsDiy/preview"><i class='bi bi-palette2'></i> <@t.page 'diy.preview'/></a></li>
+            <@sys.authorized roleIds=admin.roles url="cmsDiy/preview">
+            <li><a href="cmsDiy/preview.html" target="navTab" rel="cmsDiy/preview"><i class="bi bi-palette2"></i> <@t.page "diy.preview"/></a></li>
             </@sys.authorized>
             <li><a href="${site.dynamicPath!}" target="_blank"><i class="icon-home icon-large"></i></a></li>
         <#if site.useStatic>
-            <li><a href="${site.sitePath!}" target="_blank"><@t.page 'website'/></a></li>
+            <li><a href="${site.sitePath!}" target="_blank"><@t.page "website"/></a></li>
         </#if>
-        <@sys.authorized roleIds=admin.roles url='clearCache'>
+        <@sys.authorized roleIds=admin.roles url="clearCache">
             <li>
                 <a href="clearCache" target="ajaxTodo" title="<@t.page 'button.clear_cache'/>"><i class="icon-rubbish icon-large"></i></a>
             </li>
@@ -43,7 +43,7 @@
             </li>
     <@sys.moduleList>
         <#list page.list as a>
-            <@t.merge 'moduleIds' a.id!/>
+            <@t.merge "moduleIds" a.id!/>
         </#list>
         <@sys.roleModule roleIds=admin.roles moduleIds=t.moduleIds!><#assign roleModuleMap=map!/></@sys.roleModule>
 
@@ -57,9 +57,9 @@
         </#list>
     </@sys.moduleList>
     <@tools.masterSite>
-        <@sys.authorized roleIds=admin.roles url='sysSite/menu'>
+        <@sys.authorized roleIds=admin.roles url="sysSite/menu">
             <li>
-                <a href="sysSite/menu.html" parentId="site"><i class="icon-sitemap icon-large"></i><@t.menu 'site'/></a>
+                <a href="sysSite/menu.html" parentId="site"><i class="icon-sitemap icon-large"></i><@t.menu "site"/></a>
             </li>
         </@sys.authorized>
     </@tools.masterSite>
@@ -78,7 +78,7 @@
             <div class="tabsPageHeader">
                 <div class="tabsPageHeaderContent">
                     <ul class="navTab-tab">
-                        <li tabid="main" class="main" url="main.html"><a href="javascript:;" onclick="return false;"><i class="icon-home icon-large"></i><@t.page 'workgin_table'/></a></li>
+                        <li tabid="main" class="main" url="main.html"><a href="javascript:;" onclick="return false;"><i class="icon-home icon-large"></i><@t.page "workgin_table"/></a></li>
                     </ul>
                 </div>
                 <a href="javascript:;" onclick="return false;" class="tabsLeft"><i class="icon-backward icon-large"></i></a>
@@ -86,7 +86,7 @@
                 <a href="javascript:;" onclick="return false;" class="tabsMore"><i class="icon-th-list icon-large"></i></a>
             </div>
             <ul class="tabsMoreList">
-                <li><a href="javascript:;" onclick="return false;"><i class="icon-home icon-large"></i><@t.page 'workgin_table'/></a></li>
+                <li><a href="javascript:;" onclick="return false;"><i class="icon-home icon-large"></i><@t.page "workgin_table"/></a></li>
             </ul>
             <div class="navTab-panel tabsPageContent layoutBox">
                 <div class="page unitBox work-bench">
@@ -98,7 +98,7 @@
     <footer>
        <ul class="langList">
         <#list langs as k,v>
-            <li<#if springMacroRequestContext.getMessage('page.lang')=k> class="current-lang"</#if>>
+            <li<#if springMacroRequestContext.getMessage("page.lang")=k> class="current-lang"</#if>>
                 <a href="changeLocale?lang=${k}" target="ajaxTodo">
                     <img src="${base}/resource/images/${k}.png" alt="${v}"/>${v}
                 </a>
@@ -107,17 +107,17 @@
         </ul>
     <@tools.version>
         <#if authorizationEdition>
-            <a href="common/license.html" target="dialog" mask="true"><@t.page 'license'/>: ${getLicense().authorization!}</a>
+            <a href="common/license.html" target="dialog" mask="true"><@t.page "license"/>: ${getLicense().authorization!}</a>
         <#else>
-            <@t.page 'license.no'/>
+            <@t.page "license.no"/>
             <@tools.masterSite>
-                <@sys.authorized roleIds=admin.roles url='sysSite/uploadLicense'>
-            <a href="sysSite/uploadLicense.html" target="navTab" rel="sysSite/uploadLicense" icon="<i class='icon-archive icon-large'></i>" title="<@t.menu 'license'/>"><@t.page 'license.upgrade'/></a>
+                <@sys.authorized roleIds=admin.roles url="sysSite/uploadLicense">
+            <a href="sysSite/uploadLicense.html" target="navTab" rel="sysSite/uploadLicense" icon="<i class='icon-archive icon-large'></i>" title="<@t.menu 'license'/>"><@t.page "license.upgrade"/></a>
                 </@sys.authorized>
             </@tools.masterSite>
         </#if>
     </@tools.version>
-        Copyright &copy; ${.now?string('yyyy')}
+        Copyright &copy; ${.now?string("yyyy")}
         <ul class="themeList" id="themeList">
             <li theme="toptry"><div></div></li>
             <li theme="red"><div></div></li>
@@ -136,150 +136,44 @@
     <script src="${base}/resource/js/lang/<@t.page 'dwz_regional_js'/>"></script>
     <script src="${base}/resource/js/cms.js?version=202205"></script>
     <script>
-        var base="${base+adminContextPath}";
-        window.UEDITOR_HOME_URL="${(parentSite!site).dynamicPath}resource/plugins/ueditor/";
-        window.CKEDITOR_BASEPATH="${(parentSite!site).dynamicPath}resource/plugins/ckeditor/";
-        window.CKEDITOR_LANGUAGE="<@t.page 'ckeditor.lang'/>";
+        var base = "${base+adminContextPath}";
+        window.UEDITOR_HOME_URL = "${(parentSite!site).dynamicPath}resource/plugins/ueditor/";
+        window.UEDITOR_LANGUAGE = "<@t.page 'ueditor.lang_js'/>";
+        window.CKEDITOR_BASEPATH = "${(parentSite!site).dynamicPath}resource/plugins/ckeditor/";
+        window.CKEDITOR_LANGUAGE = "<@t.page 'ckeditor.lang'/>";
         window.KINDEDITOR_OPTIONS = {
-                width:'60%',
-                height:'400px',
-                basePath:'${(parentSite!site).dynamicPath}resource/plugins/kindeditor/',
-                uploadJson : '${base+adminContextPath}/kindeditor/upload',
-                fileManagerJson : '${base+adminContextPath}/cmsWebFile/fileList.html',
+                width:"60%",
+                height:"400px",
+                basePath:"${(parentSite!site).dynamicPath}resource/plugins/kindeditor/",
+                uploadJson : base + "/kindeditor/upload",
+                fileManagerJson : base + "/cmsWebFile/fileList.html",
                 allowFileManager : true,
                 formatUploadUrl : false
         };
-        window.TINYMCE_OPTIONS = {
-            language:'<@t.page 'tinymce.lang'/>',
-            base_url:'${(parentSite!site).dynamicPath}resource/plugins/tinymce/',
-            plugins: 'preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help charmap quickbars emoticons',
-            editimage_cors_hosts: ['picsum.photos'],
-            menubar: 'file edit view insert format tools table help',
-            toolbar: 'undo redo | bold italic underline strikethrough | fontfamily fontsize blocks | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media template link anchor codesample | ltr rtl',
-            toolbar_sticky: true,
-            toolbar_sticky_offset: 108,
-            autosave_ask_before_unload: true,
-            autosave_interval: '30s',
-            autosave_prefix: '{path}{query}-{id}-',
-            autosave_restore_when_empty: false,
-            autosave_retention: '2m',
-            pagebreak_split_block: true,
-            image_advtab: true,
-            importcss_append: true,
-            images_upload_url: '${base+adminContextPath}/tinymce/upload',
-            images_reuse_filename: true,
-            images_upload_base_path: '${site.sitePath}',
-            image_list: '${base+adminContextPath}/tinymce/imageList',
-            image_prepend_url:"${site.sitePath}",
-            file_picker_callback: function (callback, value, meta) {
-                var filetype='<@sys.configData code="site">${object.allow_files!}</@sys.configData>';
-                switch(meta.filetype){
-                    case 'image':
-                        filetype='.png,.jpg,.jpeg,.gif,.bmp';
-                        break;
-                    case 'media':
-                        filetype='.mp3, .mp4, .wmv, .mid,.flv,.swf,.mkv,.avi,.rm,.rmvb,.mpeg,.mpg,.ogg,.ogv,.mov';
-                        break;
-                    case 'file':
-                    default:
-                }
-                var input = document.createElement('input');
-                    input.setAttribute('type', 'file');
-                    input.setAttribute('accept', filetype);
-                input.click();
-                input.onchange = function() {
-                    var file = this.files[0];
-                    var xhr, formData;
-                    xhr = new XMLHttpRequest();
-                    xhr.withCredentials = false;
-                    xhr.open('POST', '${base+adminContextPath}/tinymce/upload');
-                    xhr.onload = function() {
-                        var json;
-                        if (xhr.status != 200) {
-                            alertMsg.error('HTTP Error: ' + xhr.status);
-                            return;
-                        }
-                        json = JSON.parse(xhr.responseText);
-                        if (!json || typeof json.location != 'string') {
-                            alertMsg.error('Invalid JSON: ' + xhr.responseText);
-                            return;
-                        }
-                        callback('${site.sitePath}'+json.location);
-                    };
-                    formData = new FormData();
-                    formData.append('file', file, file.name );
-                    xhr.send(formData);
-              };
-          },
-          templates: [
-            { title: 'New Table', description: 'creates a new table', content: '<div class="mceTmpl"><table width="98%%"  border="0" cellspacing="0" cellpadding="0"><tr><th scope="col"> </th><th scope="col"> </th></tr><tr><td> </td><td> </td></tr></table></div>' },
-            { title: 'Starting my story', description: 'A cure for writers block', content: 'Once upon a time...' },
-            { title: 'New list with dates', description: 'New List with dates', content: '<div class="mceTmpl"><span class="cdate">cdate</span><br><span class="mdate">mdate</span><h2>My List</h2><ul><li></li><li></li></ul></div>' }
-          ],
-          template_cdate_format: '[Date Created (CDATE): %m/%d/%Y : %H:%M:%S]',
-          template_mdate_format: '[Date Modified (MDATE): %m/%d/%Y : %H:%M:%S]',
-          height: 600,
-          image_caption: true,
-          quickbars_selection_toolbar: 'bold italic | quicklink h2 h3 blockquote quickimage quicktable',
-          noneditable_class: 'mceNonEditable',
-          toolbar_mode: 'wrap',
-          contextmenu: 'link image table',
-          skin: 'oxide',
-          content_css: 'default',
-        };
-        window.editor = {
-            ckeditorResources: ["${base}/resource/plugins/ckeditor/ckeditor.js"],
-            ueditorResources: ["${base}/resource/plugins/ueditor/ueditor.config.js","${base}/resource/plugins/ueditor/ueditor.all.min.js","${base}/resource/plugins/ueditor/lang/<@t.page 'ueditor.lang_js'/>"],
-            tinymceResources: ["${base}/resource/plugins/tinymce/tinymce.min.js"],
-            kindeditorResources: ["${base}/resource/plugins/kindeditor/kindeditor-all-min.js","${base}/resource/plugins/kindeditor/<@t.page 'kindeditor.lang_js'/>"],
-            ckeditorInitd: false,
-            ueditorInitd: false,
-            tinymceInitd: false,
-            kindeditorInitd: false,
-            ckeditorIniting: false,
-            ueditorIniting: false,
-            tinymceIniting: false,
-            kindeditorIniting: false,
-            ckeditorArray:[],
-            ueditorArray:[],
-            tinymceArray:[],
-            kindeditorArray:[],
-            index: 0
-        };
-        window.codemirror = {
-            resources: ['${base}/resource/plugins/codemirror/lib/codemirror.js','${base}/resource/plugins/codemirror/mode/xml/xml.js','${base}/resource/plugins/codemirror/mode/javascript/javascript.js','${base}/resource/plugins/codemirror/mode/css/css.js',
-                '${base}/resource/plugins/codemirror/mode/htmlmixed/htmlmixed.js','${base}/resource/plugins/codemirror/mode/freemarker/freemarker.js','${base}/resource/plugins/codemirror/mode/freemarkermixed/freemarkermixed.js',
-                '${base}/resource/plugins/codemirror/mode/nginx/nginx.js','${base}/resource/plugins/codemirror/addon/hint/show-hint.js','${base}/resource/plugins/codemirror/addon/hint/javascript-hint.js','${base}/resource/plugins/codemirror/addon/hint/html-hint.js',
-                '${base}/resource/plugins/codemirror/addon/hint/css-hint.js','${base}/resource/plugins/codemirror/addon/hint/xml-hint.js'],
-            initd: false,
-            initing: false,
-            array: false,
-            index: 0
-        };
-        window.photoclip = {
-            resources: ['${base}/resource/plugins/photoclip/hammer.min.js','${base}/resource/plugins/photoclip/iscroll-zoom-min.js','${base}/resource/plugins/photoclip/lrz.all.bundle.js','${base}/resource/plugins/photoclip/PhotoClip.min.js'],
-            initd: false,
-            index: 0
-        };
-        window.jsdiff = {
-            resources: ['${base}/resource/plugins/jsdiff/diff.min.js'],
-            initd: false,
-            index: 0
-        };
-        DWZ.init("${base+adminContextPath}/common/dwz.frag.html", {
+        window.KINDEDITOR_LANGUAGE = "<@t.page 'kindeditor.lang_js'/>";
+        window.TIMYMCE_HOME_URL = "${(parentSite!site).dynamicPath}resource/plugins/tinymce/";
+        window.TIMYMCE_LANGUAGE = "<@t.page 'tinymce.lang'/>";
+        window.TIMYMCE_RESOURCE_PREFIX = "${site.sitePath}";
+        window.TIMYMCE_FILETYPES = "<@sys.configData code="site">${object.allow_files!}</@sys.configData>";
+        window.LOADSCRIPTS_BASE = "${base}";
+    </script>
+    <script src="${base}/resource/js/loadscripts.config.js"></script>
+    <script src="${base}/resource/js/tinymce.config.js"></script>
+    <script>
+        DWZ.init(base + "/common/dwz.frag.html", {
             loginUrl:"login_dialog.html", loginTitle:"<@t.page 'login'/>",
             pageInfo:{pageNum:"pageNum", numPerPage:"numPerPage", orderField:"orderField", orderDirection:"orderType"},
             debug:false,
             callback:function(){
                 initEnv();
-                $("#themeList").theme({themeBase:"${base}/resource/css/theme-",defaultTheme:"toptry"});
+                $("#themeList").theme({themeBase:window.LOADSCRIPTS_BASE+"/resource/css/theme-",defaultTheme:"toptry"});
             <#if admin.weakPassword && admin.loginCount lte 3 >
-                <@sys.authorized roleIds=admin.roles url='changePassword'>
+                <@sys.authorized roleIds=admin.roles url="changePassword">
                 $.pdialog.open("myself/password.html?target=dialog", "login", "<@t.page 'user.new_password'/>", {mask: true, width: 450, height: 320});
                 </@sys.authorized>
             </#if>
-                $('#navMenu li a[parentId=${parentId!0}]').parent().addClass("selected");
-                loadScripts(["${base}/resource/plugins/echarts/echarts.common.min.js"],function(){
+                $("#navMenu li a[parentId=${parentId!0}]").parent().addClass("selected");
+                loadScripts([window.LOADSCRIPTS_BASE+"/resource/plugins/echarts/echarts.common.min.js"],function(){
                     echartsProxy(echarts);
                 });
             }

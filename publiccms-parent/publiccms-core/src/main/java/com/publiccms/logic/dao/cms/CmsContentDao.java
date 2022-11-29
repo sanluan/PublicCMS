@@ -193,12 +193,12 @@ public class CmsContentDao extends BaseDao<CmsContent> {
                     }
                 };
                 b.must(f -> f.bool(keywordFiledsContributor));
-                if (CommonUtils.notEmpty(queryEntity.getExclude())) {
-                    b.mustNot(queryEntity.isPhrase()
-                            ? t -> t.phrase().fields(queryEntity.getFields()).matching(queryEntity.getExclude())
-                            : t -> t.match().fields(queryEntity.getFields()).matching(queryEntity.getExclude()));
-                }
             }
+			if (CommonUtils.notEmpty(queryEntity.getExclude())) {
+				b.mustNot(queryEntity.isPhrase()
+						? t -> t.phrase().fields(queryEntity.getFields()).matching(queryEntity.getExclude())
+						: t -> t.match().fields(queryEntity.getFields()).matching(queryEntity.getExclude()));
+			}
             if (CommonUtils.notEmpty(queryEntity.getTagIds())) {
                 Consumer<? super BooleanPredicateClausesStep<?>> tagIdsFiledsContributor = c -> {
                     for (Long tagId : queryEntity.getTagIds()) {
