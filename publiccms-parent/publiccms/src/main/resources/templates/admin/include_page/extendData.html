@@ -133,7 +133,7 @@
                 ${(value)!}:${(tempCategory=object.name)!}
             <#else>
                 <input name="${inputName}" value="${(value)!}" type="hidden"/>
-                <input name="${name}[${index}].categoryName" readonly="readonly" size="30" value="${(tempCategory=object.name)!}" type="text"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>/>
+                <input name="${name}[${index}].categoryName" readonly="readonly" size="30" value="${(tempCategory.name)!}" type="text"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>/>
                 <a class="btnLook" href="cmsCategory/lookup.html?field=value" lookupGroup="${name}[${index}]" width="1000" height="500"><@t.page 'category.select'/></a>
             </#if>
             <#break>
