@@ -81,26 +81,26 @@
                                                         <@t.page 'drag_module_here'/>
                                                         <#if layoutdata.moduleList[index]?has_content>
                                                             <#list layoutdata.moduleList[index] as moduleData>
-                                                                <@tools.diyMetadata itemType="module" itemId=moduleData.id;module>
-                                                                    <div class="dragItem" data-id="${module.id}" data-type="module" >
-                                                                        ${moduleData.name}<span class="close">X</span>
-                                                                        <span class="ctl-label">
-                                                                            <@tools.placeMetadata path=module.place>
-                                                                                <a class="button" href="cmsPlace/metadata.html?path=${module.place?url}" target="ajax" rel="diyConfigBox">${(object.alias)!module.place}</a>
-                                                                                <#if 0 lt ((object.size)!0)>
-                                                                                 <a class="button" href="cmsPlace/dataList.html?path=${module.place?url}" target="navTab" rel="cmsPlace/dataList" title="<@t.page 'place_data'/>:${(object.alias)!}"><@t.page 'place_data'/>(${object.size})</a>
-                                                                                </#if>
-                                                                            </@tools.placeMetadata>
-                                                                            <input data-name="name" type="hidden" value="${moduleData.name}"/>
-                                                                            <input data-name="place" type="hidden" value="${moduleData.place}"/>
-                                                                        </span>
+                                                                <div class="dragItem" data-id="${moduleData.id}" data-type="module" >
+                                                                    ${moduleData.name}<span class="close">X</span>
+                                                                    <span class="ctl-label">
+                                                                        <@tools.placeMetadata path=moduleData.place>
+                                                                            <a class="button" href="cmsPlace/metadata.html?path=${moduleData.place?url}" target="ajax" rel="diyConfigBox">${(object.alias)!moduleData.place}</a>
+                                                                            <#if 0 lt ((object.size)!0)>
+                                                                             <a class="button" href="cmsPlace/dataList.html?path=${moduleData.place?url}" target="navTab" rel="cmsPlace/dataList" title="<@t.page 'place_data'/>:${(object.alias)!}"><@t.page 'place_data'/>(${object.size})</a>
+                                                                            </#if>
+                                                                        </@tools.placeMetadata>
+                                                                        <input data-name="name" type="hidden" value="${moduleData.name}"/>
+                                                                        <input data-name="place" type="hidden" value="${moduleData.place}"/>
+                                                                    </span>
+                                                                    <@tools.diyMetadata itemType="module" itemId=moduleData.id;module>
                                                                         <#if module.cover?has_content>
                                                                             <div class="ctl-label">
                                                                                 <img src="${(getUrl(module.cover))!}"/>
                                                                             </div>
                                                                         </#if>
-                                                                    </div>
-                                                                </@tools.diyMetadata>
+                                                                    </@tools.diyMetadata>
+                                                                </div>
                                                             </#list>
                                                         </#if>
                                                     </div>

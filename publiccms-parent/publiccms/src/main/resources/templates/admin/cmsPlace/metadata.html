@@ -8,9 +8,9 @@
                     <li><a class="button" href="placeTemplate/list.html?path=${(path?url)!}&editType=metadata" target="navTab" rel="placeTemplate/list"><@t.page 'metadata'/></a></li>
                     <li><a class="button" href="placeTemplate/list.html?path=${(path?url)!}" target="navTab" rel="placeTemplate/list"><@t.page 'template.content'/></a></li>
                 </@sys.authorized>
-				<#if site.useSsi>
-					<li><a class="button" href="cmsTemplate/publishPlace?path=${(path?url)!}&_csrf=<@tools.csrfToken admin=true/>" target="ajaxTodo"><@t.page 'button.publish'/></a></li>
-				</#if>
+                <#if site.useSsi>
+                    <li><a class="button" href="cmsTemplate/publishPlace?path=${(path?url)!}&_csrf=<@tools.csrfToken admin=true/>" target="ajaxTodo"><@t.page 'button.publish'/></a></li>
+                </#if>
                 <#if (a.metadataExtendList)?has_content><li><button type="submit" class="buttonActive" title="ctrl+s"><@t.page 'button.save'/></button></li></#if>
             </li>
         </ul>
@@ -24,14 +24,14 @@
                     ${(a.alias)!}
                 </dd>
             </dl>
-			<#if (a.size?has_content) && 0 lt a.size>
+            <#if (a.size?has_content) && 0 lt a.size>
             <dl class="nowrap">
                 <dt><@t.page 'operate'/>:</dt>
                 <dd>
                     <a class="button" href="cmsPlace/dataList.html?path=${path?url}" target="navTab" rel="cmsPlace/dataList" title="<@t.page 'place_data'/>:${(a.alias)!}"><i class="bi bi-layout-text-sidebar-reverse"></i><@t.page 'place_data'/>(${a.size})</a>
                 </dd>
             </dl>
-			</#if>
+            </#if>
         <@tools.templatePlaceList path='include'+path>
             <#if list?has_content>
             <dl class="nowrap">
