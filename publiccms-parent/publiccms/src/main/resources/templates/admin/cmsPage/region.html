@@ -17,7 +17,7 @@
                         <@tools.diyMetadataList itemType="layout">
                         <div class="itemBox">
                             <#list list as a>
-                                <div class="dragItem icon-move icon-large" data-id="${a.id}" data-type="layout">
+                                <div class="dragItem icon-move icon-large" data-id="${a.id}" data-type="layout" title="${a.name!}">
                                     ${a.name!} (${a.count})<span class="close">X</span>
                                     <div class="dragContent">
                                         <@tools.includeLayout id=a.id>
@@ -41,7 +41,7 @@
                     <@tools.diyMetadataList itemType="module">
                         <div class="itemBox">
                             <#list list as a>
-                        <div class="dragItem icon-move icon-large" data-id="${a.id}" data-type="module" >
+                        <div class="dragItem icon-move icon-large" data-id="${a.id}" data-type="module" title="${a.name!}">
                             ${a.name!}<span class="close">X</span>
                             <span class="ctl-label">
                                 <input data-name="name" type="text" class="required" value="<@cms.category id=categoryId>${object.name}-</@cms.category>${a.name}"/>

@@ -184,6 +184,7 @@ public class CmsTemplateAdminController {
         if (CommonUtils.notEmpty(word)) {
             String filePath = siteComponent.getTemplateFilePath(site, CommonConstants.SEPARATOR);
             CmsFileUtils.replaceFileList(filePath, replaceParameters.getReplaceList(), word, replace);
+            templateComponent.clearTemplateCache();
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "replace.template", RequestUtils.getIpAddress(request),
                     CommonUtils.getDate(), word + " to " + replace + " in " + replaceParameters.getReplaceList().toString()));

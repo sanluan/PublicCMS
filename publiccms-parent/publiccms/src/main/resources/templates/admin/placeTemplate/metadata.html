@@ -101,17 +101,17 @@
                     </dd>
                 </dl>
             </fieldset>
-            <fieldset>
-                <legend><@t.page 'metadata.extend_field'/></legend>
-                <#include '../include_page/extends.html'/>
-                <#assign metadataExtendList=(a.metadataExtendList)![]/>
-                <@extends 'metadataExtendList' metadataExtendList/>
-            </fieldset>
             <fieldset class="placeExtend">
                 <legend><@t.page 'place_data.extend_field'/>(<@t.page 'metadata.default_value_description'/>)</legend>
                 <#include '../include_page/extends.html'/>
                 <#assign extendList=(a.extendList)![]/>
                 <@extends 'extendList' extendList/>
+            </fieldset>
+            <fieldset>
+                <legend><@t.page 'metadata.extend_field'/></legend>
+                <#include '../include_page/extends.html'/>
+                <#assign metadataExtendList=(a.metadataExtendList)![]/>
+                <@extends 'metadataExtendList' metadataExtendList/>
             </fieldset>
     <script>
     $('.systemField dt [type=checkbox]',navTab.getCurrentPanel()).each(function(){
