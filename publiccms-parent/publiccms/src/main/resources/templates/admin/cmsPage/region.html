@@ -14,7 +14,7 @@
                 <dt>
                     <fieldset>
                         <legend><@t.page 'layout'/></legend>
-                        <@tools.diyMetadataList itemType="layout">
+                        <@tools.diyMetadataList itemType="layout" region=a.id>
                         <div class="itemBox">
                             <#list list as a>
                                 <div class="dragItem icon-move icon-large" data-id="${a.id}" data-type="layout" title="${a.name!}">
@@ -38,7 +38,7 @@
                     </fieldset>
                     <fieldset>
                         <legend><@t.page 'module'/></legend>
-                    <@tools.diyMetadataList itemType="module">
+                    <@tools.diyMetadataList itemType="module" region=a.id>
                         <div class="itemBox">
                             <#list list as a>
                         <div class="dragItem icon-move icon-large" data-id="${a.id}" data-type="module" title="${a.name!}">

@@ -21,7 +21,8 @@ import com.publiccms.logic.component.template.DiyComponent;
  * <p>
  * 返回结果
  * <ul>
- * <li><code>list</code> diy元数据列表<code>region</code>{@link com.publiccms.views.pojo.diy.CmsRegion},<code>layout</code>{@link com.publiccms.views.pojo.diy.CmsLayout},<code>module</code>{@link com.publiccms.views.pojo.diy.CmsModule}
+ * <li><code>list</code>
+ * diy元数据列表<code>region</code>{@link com.publiccms.views.pojo.diy.CmsRegion},<code>layout</code>{@link com.publiccms.views.pojo.diy.CmsLayout},<code>module</code>{@link com.publiccms.views.pojo.diy.CmsModule}
  * </ul>
  * 使用示例
  * <p>
@@ -44,13 +45,14 @@ public class DiyMetadataListDirective extends AbstractTemplateDirective {
     public void execute(RenderHandler handler) throws IOException, Exception {
         SysSite site = getSite(handler);
         String itemType = handler.getString("itemType");
+        String region = handler.getString("region");
         if (CommonUtils.notEmpty(itemType)) {
             if ("region".equalsIgnoreCase(itemType)) {
                 handler.put("list", diyComponent.getRegionList(site)).render();
             } else if ("layout".equalsIgnoreCase(itemType)) {
-                handler.put("list", diyComponent.getLayoutList(site)).render();
+                handler.put("list", diyComponent.getLayoutList(site, region)).render();
             } else if ("module".equalsIgnoreCase(itemType)) {
-                handler.put("list", diyComponent.getModuleList(site)).render();
+                handler.put("list", diyComponent.getModuleList(site, region)).render();
             }
         }
     }

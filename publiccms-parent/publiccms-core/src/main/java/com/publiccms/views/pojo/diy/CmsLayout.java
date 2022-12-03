@@ -24,6 +24,12 @@ public class CmsLayout implements java.io.Serializable {
      */
     private String id;
     /**
+     * region
+     * <p>
+     * 区域
+     */
+    private String region;
+    /**
      * name
      * <p>
      * 名称
@@ -55,6 +61,21 @@ public class CmsLayout implements java.io.Serializable {
      */
     public void setId(String id) {
         this.id = id;
+    }
+
+    /**
+     * @return the region
+     */
+    public String getRegion() {
+        return region;
+    }
+
+    /**
+     * @param region
+     *            the region to set
+     */
+    public void setRegion(String region) {
+        this.region = region;
     }
 
     /**

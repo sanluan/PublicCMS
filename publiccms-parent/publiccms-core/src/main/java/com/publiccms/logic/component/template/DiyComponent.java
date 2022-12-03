@@ -83,7 +83,7 @@ public class DiyComponent implements SiteCache {
      * 
      * @param site
      *
-     * @return region
+     * @return region list
      */
 
     public List<CmsRegion> getRegionList(SysSite site) {
@@ -99,16 +99,19 @@ public class DiyComponent implements SiteCache {
      * 获取布局列表
      * 
      * @param site
+     * @param region
      *
-     * @return region
+     * @return layout list
      */
 
-    public List<CmsLayout> getLayoutList(SysSite site) {
+    public List<CmsLayout> getLayoutList(SysSite site, String region) {
         Map<String, CmsLayout> map = getLayoutMap(site);
         if (null == map) {
             return new ArrayList<>();
         } else {
-            return map.values().stream().collect(Collectors.toList());
+            return map.values().stream().filter(layout -> {
+                return CommonUtils.empty(region) || CommonUtils.empty(layout.getRegion()) || region.equals(layout.getRegion());
+            }).collect(Collectors.toList());
         }
     }
 
@@ -116,16 +119,19 @@ public class DiyComponent implements SiteCache {
      * 获取模块列表
      * 
      * @param site
+     * @param region
      *
-     * @return region
+     * @return module list
      */
 
-    public List<CmsModule> getModuleList(SysSite site) {
+    public List<CmsModule> getModuleList(SysSite site, String region) {
         Map<String, CmsModule> map = getModuleMap(site);
         if (null == map) {
             return null;
         } else {
-            return map.values().stream().collect(Collectors.toList());
+            return map.values().stream().filter(module -> {
+                return CommonUtils.empty(region) || CommonUtils.empty(module.getRegion()) || region.equals(module.getRegion());
+            }).collect(Collectors.toList());
         }
     }
 

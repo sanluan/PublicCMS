@@ -18,6 +18,19 @@
                 </dd>
             </dl>
             <dl class="nowrap">
+                <dt><@t.page 'region'/>:</dt></dt>
+                <dd>
+                    <select name="region" class="combox">
+                        <option><@t.page 'unrestricted'/><option>
+                 <@tools.diyMetadataList itemType="region">
+                    <#list list as a>
+                        <option value="${(a.id)!}"<#if a.region?has_content&&a.region=a.id> selected="selected"</#if>>${a.name!}<option>
+                    </#list>
+                </@tools.diyMetadataList>
+                    </select>
+                </dd>
+            </dl>
+            <dl class="nowrap">
                 <dt><@t.page 'name'/>:</dt></dt>
                 <dd>
                     <input name="name" class="required" type="text" maxlength="40" size="20" value="${(a.name)!}"/>
