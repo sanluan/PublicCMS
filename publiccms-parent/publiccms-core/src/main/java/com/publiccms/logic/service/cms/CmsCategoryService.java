@@ -53,7 +53,6 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
      * @param worker
      * @param batchSize
      */
-    @Transactional(readOnly = true)
     public void batchWork(short siteId, BiConsumer<List<CmsCategory>, Integer> worker, int batchSize) {
         dao.batchWork(siteId, worker, batchSize);
     }

@@ -214,7 +214,6 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param worker
      * @param batchSize
      */
-    @Transactional(readOnly = true)
     public void batchWork(short siteId, Integer[] categoryIds, String[] modelIds, BiConsumer<List<CmsContent>, Integer> worker,
             int batchSize) {
         dao.batchWork(siteId, categoryIds, modelIds, worker, batchSize);
