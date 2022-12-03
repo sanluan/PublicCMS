@@ -302,3 +302,8 @@ UPDATE `sys_module_lang` SET `module_id` = 'vote_list' WHERE `module_id` = 'cont
 UPDATE `sys_module_lang` SET `module_id` = 'vote_add' WHERE `module_id` = 'content_vote_add';
 UPDATE `sys_module_lang` SET `module_id` = 'vote_delete' WHERE `module_id` = 'content_vote_delete';
 UPDATE `sys_module_lang` SET `module_id` = 'vote_view' WHERE `module_id` = 'content_vote_view';
+-- 2022-12-02 --
+INSERT INTO `sys_module` VALUES ('content_select_survey', 'cmsSurvey/lookup', NULL, NULL, 'content_add', 0, 0);
+INSERT INTO `sys_module_lang` VALUES ('content_select_survey', 'en', 'Select 问卷');
+INSERT INTO `sys_module_lang` VALUES ('content_select_survey', 'ja', 'アンケート選択');
+INSERT INTO `sys_module_lang` VALUES ('content_select_survey', 'zh', '选择问卷');

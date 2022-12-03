@@ -177,6 +177,16 @@
                 <a class="btnLook" href="cmsVote/lookup.html?field=value" lookupGroup="${name}[${index}]" width="1000" height="500"><@t.page 'select'/></a>
             </#if>
             <#break>
+		<#case 'survey'>
+            <@cms.survey id=value><#local survey=object/></@cms.survey>
+            <#if 'view'=type>
+                ${(value)!}:${(survey.title)!}
+            <#else>
+                <input name="${inputName}" value="${(value)!}" type="hidden"/>
+                <input name="${name}[${index}].surveyName" readonly="readonly" size="30" value="${(survey.title)!}" type="text"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>/>
+                <a class="btnLook" href="cmsSurvey/lookup.html?field=value" lookupGroup="${name}[${index}]" width="1000" height="500"><@t.page 'select'/></a>
+            </#if>
+            <#break>
         <#case 'dictionary'>
             <@cms.dictionary id=extend.dictionaryId><#local dictionary=object/></@cms.dictionary>
             <#if site.parentId?has_content&&!dictionary?has_content><@cms.dictionary id=extend.dictionaryId siteId=site.parentId><#local dictionary=object/></@cms.dictionary></#if>

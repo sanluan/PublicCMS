@@ -870,6 +870,7 @@ INSERT INTO `sys_module` VALUES ('content_search', 'cmsContent/search', 'cmsCont
 INSERT INTO `sys_module` VALUES ('content_select_category', 'cmsCategory/lookupByModelId', NULL, NULL, 'content_add', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_select_category_type', 'cmsCategoryType/lookup', NULL, NULL, 'content_add', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_select_content', 'cmsContent/lookup', 'cmsContent/lookup_list', NULL, 'content_add', 0, 0);
+INSERT INTO `sys_module` VALUES ('content_select_survey', 'cmsSurvey/lookup', NULL, NULL, 'content_add', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_select_tag', 'cmsTag/lookup', NULL, NULL, 'content_add', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_select_tag_type', 'cmsTagType/lookup', NULL, NULL, 'content_add', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_select_template', 'cmsTemplate/lookup', NULL, NULL, 'content_add', 0, 0);
@@ -1219,6 +1220,9 @@ INSERT INTO `sys_module_lang` VALUES ('content_select_category_type', 'zh', '选
 INSERT INTO `sys_module_lang` VALUES ('content_select_content', 'en', 'Select content');
 INSERT INTO `sys_module_lang` VALUES ('content_select_content', 'ja', 'コンテンツを選択');
 INSERT INTO `sys_module_lang` VALUES ('content_select_content', 'zh', '选择内容');
+INSERT INTO `sys_module_lang` VALUES ('content_select_survey', 'en', 'Select 问卷');
+INSERT INTO `sys_module_lang` VALUES ('content_select_survey', 'ja', 'アンケート選択');
+INSERT INTO `sys_module_lang` VALUES ('content_select_survey', 'zh', '选择问卷');
 INSERT INTO `sys_module_lang` VALUES ('content_select_tag', 'en', 'Select tag');
 INSERT INTO `sys_module_lang` VALUES ('content_select_tag', 'ja', 'タグを選択');
 INSERT INTO `sys_module_lang` VALUES ('content_select_tag', 'zh', '选择标签');
