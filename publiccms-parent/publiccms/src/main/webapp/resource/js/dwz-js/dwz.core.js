@@ -468,10 +468,8 @@ var DWZ = {
             return d >= 0 && this.lastIndexOf(pattern) === d;
         },
         replaceSuffix: function(index) {
-            return this.replace(/\[[0-9]+\]/, "[" + index + "]").replace("#index#", index);
-        },
-        trans: function() {
-            return this.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"');
+            var i = this.lastIndexOf('[');
+            return this.substring(0,i)+this.substring(i).replace(/\[[0-9]+\]/, "[" + index + "]").replace("#index#", index);
         },
         encodeTXT: function() {
             return (this).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll(" ", "&nbsp;");
@@ -511,18 +509,6 @@ var DWZ = {
         },
         isValidMail: function() {
             return (new RegExp(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/).test(this.trim()));
-        },
-        isSpaces: function() {
-            for (var i = 0; i < this.length; i += 1) {
-                var ch = this.charAt(i);
-                if (ch != " " && ch != "\n" && ch != "\t" && ch != "\r") {
-                    return fals;
-                }
-            }
-            return true;
-        },
-        isPhone: function() {
-            return (new RegExp(/(^([0-9]{3,4}[-])?\d{3,8}(-\d{1,6})?$)|(^\([0-9]{3,4}\)\d{3,8}(\(\d{1,6}\))?$)|(^\d{3,8}$)/).test(this));
         },
         isUrl: function() {
             return ( new RegExp(/^([a-zA-z]+:)?\/\/([a-zA-Z0-9\-\.]+)([-\w .\/?%&=:]*)$/).test(this) );

@@ -100,17 +100,22 @@ public class DiyComponent implements SiteCache {
      * 
      * @param site
      * @param region
+     * @param showGlobal
      *
      * @return layout list
      */
 
-    public List<CmsLayout> getLayoutList(SysSite site, String region) {
+    public List<CmsLayout> getLayoutList(SysSite site, String region, boolean showGlobal) {
         Map<String, CmsLayout> map = getLayoutMap(site);
         if (null == map) {
             return new ArrayList<>();
         } else {
             return map.values().stream().filter(layout -> {
-                return CommonUtils.empty(region) || CommonUtils.empty(layout.getRegion()) || region.equals(layout.getRegion());
+                return showGlobal
+                        ? (CommonUtils.empty(region) || CommonUtils.empty(layout.getRegion())
+                                || region.equals(layout.getRegion()))
+                        : (CommonUtils.empty(region) && CommonUtils.empty(layout.getRegion())
+                                || CommonUtils.notEmpty(region) && region.equals(layout.getRegion()));
             }).collect(Collectors.toList());
         }
     }
@@ -120,17 +125,22 @@ public class DiyComponent implements SiteCache {
      * 
      * @param site
      * @param region
+     * @param showGlobal
      *
      * @return module list
      */
 
-    public List<CmsModule> getModuleList(SysSite site, String region) {
+    public List<CmsModule> getModuleList(SysSite site, String region, boolean showGlobal) {
         Map<String, CmsModule> map = getModuleMap(site);
         if (null == map) {
             return null;
         } else {
             return map.values().stream().filter(module -> {
-                return CommonUtils.empty(region) || CommonUtils.empty(module.getRegion()) || region.equals(module.getRegion());
+                return showGlobal
+                        ? (CommonUtils.empty(region) || CommonUtils.empty(module.getRegion())
+                                || region.equals(module.getRegion()))
+                        : (CommonUtils.empty(region) && CommonUtils.empty(module.getRegion())
+                                || CommonUtils.notEmpty(region) && region.equals(module.getRegion()));
             }).collect(Collectors.toList());
         }
     }

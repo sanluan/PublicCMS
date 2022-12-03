@@ -17,6 +17,8 @@ import com.publiccms.logic.component.template.DiyComponent;
  * 参数列表
  * <ul>
  * <li><code>itemType</code> 元数据类型,【region,layout,module】
+ * <li><code>region</code> 区域id,当itemType为layout或module时有效
+ * <li><code>showGlobal</code> 元数据类型,【true,false】,当itemType为layout或module时有效,默认为<code>true</code>
  * </ul>
  * <p>
  * 返回结果
@@ -46,13 +48,14 @@ public class DiyMetadataListDirective extends AbstractTemplateDirective {
         SysSite site = getSite(handler);
         String itemType = handler.getString("itemType");
         String region = handler.getString("region");
+        boolean showGlobal = handler.getBoolean("showGlobal", false);
         if (CommonUtils.notEmpty(itemType)) {
             if ("region".equalsIgnoreCase(itemType)) {
                 handler.put("list", diyComponent.getRegionList(site)).render();
             } else if ("layout".equalsIgnoreCase(itemType)) {
-                handler.put("list", diyComponent.getLayoutList(site, region)).render();
+                handler.put("list", diyComponent.getLayoutList(site, region, showGlobal)).render();
             } else if ("module".equalsIgnoreCase(itemType)) {
-                handler.put("list", diyComponent.getModuleList(site, region)).render();
+                handler.put("list", diyComponent.getModuleList(site, region, showGlobal)).render();
             }
         }
     }
