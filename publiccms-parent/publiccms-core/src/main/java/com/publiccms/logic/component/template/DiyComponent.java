@@ -49,19 +49,19 @@ public class DiyComponent implements SiteCache {
     /**
     *
     */
-    public static final String REGION_FILE = "diy-region.data";
+    public static final String REGION_FILE = "diy/region.data";
     /**
     *
     */
-    public static final String LAYOUT_FILE = "diy-layout.data";
+    public static final String LAYOUT_FILE = "diy/layout.data";
     /**
     *
     */
-    public static final String MODULE_FILE = "diy-module.data";
+    public static final String MODULE_FILE = "diy/module.data";
     /**
      *
      */
-    public static final String DATA_FILE = "diy-data.data";
+    public static final String DATA_FILE = "diy/data.data";
 
     private CacheEntity<Short, Map<String, CmsRegionData>> regionDataCache;
 
