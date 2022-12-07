@@ -344,7 +344,7 @@ UE.I18N['ja-jp'] = {
             'lang_tab_uploadI':"画像をアップロード",
             'lang_tab_uploadV':"動画をアップロード",
             'lang_tab_online':"オンラインビデオ",
-            'lang_tab_onlineImage':"オンライン写真",    
+            'lang_tab_onlineImage':"オンライン写真",
             'lang_video_url':"動画URL",
             'lang_image_url':"画像URL",
             'lang_video_size':"動画サイズ",
@@ -429,13 +429,13 @@ UE.I18N['ja-jp'] = {
             'lang_template_clear' : '元のコンテンツを保持',
             'lang_template_select' : 'テンプレートを選択'
         },
-        'blank':"空白のテクスト",
+        'colorTitle':"カラータイトル",
         'blog':"ブログ",
         'resume':"履歴書",
         'richText':"イメージとテキスト",
-        'sciPapers':"技術論文"
-
-
+        'sciPapers':"技術論文",
+        'squareNumber':"ブロック番号",
+        'scroll':"スクロール領域"
     },
     'scrawl':{
         'static':{

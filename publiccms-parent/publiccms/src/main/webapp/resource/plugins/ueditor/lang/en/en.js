@@ -435,11 +435,14 @@ UE.I18N['en'] = {
             'lang_template_clear' : 'Keep Content',
             'lang_template_select':'Select Template'
         },
-        'blank':"Blank",
+        'colorTitle':"Color Title",
         'blog':"Blog",
         'resume':"Resume",
         'richText':"Rich Text",
-        'scPapers':"Scientific Papers"
+        'richText':"Rich Text",
+        'scPapers':"Scientific Papers",
+        'squareNumber':"Square Serial Number",
+        'scroll':"Rolling Region"
     },
     'scrawl':{
         'static':{

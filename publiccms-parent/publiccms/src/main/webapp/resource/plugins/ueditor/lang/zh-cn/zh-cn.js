@@ -434,13 +434,13 @@ UE.I18N['zh-cn'] = {
             'lang_template_clear' : '保留原有内容',
             'lang_template_select' : '选择模板'
         },
-        'blank':"空白文档",
+        'colorTitle':"彩色标题",
         'blog':"博客文章",
         'resume':"个人简历",
         'richText':"图文混排",
-        'sciPapers':"科技论文"
-
-
+        'sciPapers':"科技论文",
+        'squareNumber':"方块序号",
+        'scroll':"滚动区域"
     },
     'scrawl':{
         'static':{

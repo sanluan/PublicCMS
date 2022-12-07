@@ -8,10 +8,22 @@
 var templates = [
     {
         "pre":"pre0.png",
-        'title':lang.blank,
-        'preHtml':'<p class="ue_t">&nbsp;欢迎使用UEditor！</p>',
-        "html":'<p class="ue_t">欢迎使用UEditor！</p>'
+        'title':lang.colorTitle,
+        'preHtml':'<p style="text-align: center;"><span style="color: rgb(0, 176, 80);display:inline-block;line-height:2em;border-bottom:2px solid rgb(0,176,80);">01</span><br/></p><h3 style="text-align: center;">第一部分标题</h3><p>第一部分内容<br/></p><p style="white-space: normal; text-align: center;"><span style="color: rgb(0, 176, 80); display: inline-block; line-height: 2em; border-bottom: 2px solid rgb(0, 176, 80);">02</span><br/></p><h3 style="white-space: normal; text-align: center;">第二部分标题</h3><p>第二部分内容</p><p style="white-space: normal; text-align: center;"><span style="color: rgb(0, 176, 80); display: inline-block; line-height: 2em; border-bottom: 2px solid rgb(0, 176, 80);">03</span><br/></p><h3 style="white-space: normal; text-align: center;">第三部分标题</h3><p style="white-space: normal;">第三部分内容</p>',
+        "html":'<p style="text-align: center;"><span style="color: rgb(0, 176, 80);display:inline-block;line-height:2em;border-bottom:2px solid rgb(0,176,80);">01</span><br/></p><h3 style="text-align: center;">第一部分标题</h3><p>第一部分内容<br/></p><p style="white-space: normal; text-align: center;"><span style="color: rgb(0, 176, 80); display: inline-block; line-height: 2em; border-bottom: 2px solid rgb(0, 176, 80);">02</span><br/></p><h3 style="white-space: normal; text-align: center;">第二部分标题</h3><p>第二部分内容</p><p style="white-space: normal; text-align: center;"><span style="color: rgb(0, 176, 80); display: inline-block; line-height: 2em; border-bottom: 2px solid rgb(0, 176, 80);">03</span><br/></p><h3 style="white-space: normal; text-align: center;">第三部分标题</h3><p style="white-space: normal;">第三部分内容</p>'
 
+    },
+    {
+        "pre":"pre-block-number.png",
+        "title":lang.squareNumber,
+        'preHtml':'<p style="text-align: center;"><span style="background-color: rgb(0, 176, 80);color: rgb(255, 255, 255);display:inline-block;padding:2px;">01</span>&nbsp;<span style="color: rgb(0, 176, 80);">标题1</span><br/></p><p>第一部分内容<br/></p><p style="text-align: center;"><span style="background-color: rgb(0, 176, 80); color: rgb(255, 255, 255); display: inline-block; padding: 2px;">02</span>&nbsp;<span style="color: rgb(0, 176, 80);">标题2</span><br/></p><p>第二部分内容<br/></p><p style="text-align: center;"><span style="background-color: rgb(0, 176, 80); color: rgb(255, 255, 255); display: inline-block; padding: 2px;">03</span>&nbsp;<span style="color: rgb(0, 176, 80);">标题3</span><br/></p><p>第三部分内容</p>',
+        'html':'<p style="text-align: center;"><span style="background-color: rgb(0, 176, 80);color: rgb(255, 255, 255);display:inline-block;padding:2px;">01</span>&nbsp;<span style="color: rgb(0, 176, 80);">标题1</span><br/></p><p>第一部分内容<br/></p><p style="text-align: center;"><span style="background-color: rgb(0, 176, 80); color: rgb(255, 255, 255); display: inline-block; padding: 2px;">02</span>&nbsp;<span style="color: rgb(0, 176, 80);">标题2</span><br/></p><p>第二部分内容<br/></p><p style="text-align: center;"><span style="background-color: rgb(0, 176, 80); color: rgb(255, 255, 255); display: inline-block; padding: 2px;">03</span>&nbsp;<span style="color: rgb(0, 176, 80);">标题3</span><br/></p><p>第三部分内容</p>'
+    },
+    {
+        "pre":"pre-scroll.png",
+        "title":lang.scroll,
+        'preHtml':'<p><br></p><section style="overflow-y:auto;height:300px;padding:10x;border:1px solid #eee;"><h3 style="text-align: center;">这里是标题</h3><p>这里是内容</p><h3 style="text-align: center;">这里是标题</h3><p>这里是内容</p><h3 style="text-align: center;">这里是标题</h3><p>这里是内容</p><h3 style="text-align: center;">这里是标题</h3><p>这里是内容</p><h3 style="text-align: center;">这里是标题</h3><p>这里是内容</p><h3 style="text-align: center;">这里是标题</h3><p>这里是内容</p></section><p><br></p>',
+        'html':'<p><br></p><section style="overflow-y:auto;height:300px;padding:10x;border:1px solid #eee;"><h3 style="text-align: center;">这里是标题</h3><p>这里是内容</p><h3 style="text-align: center;">这里是标题</h3><p>这里是内容</p><h3 style="text-align: center;">这里是标题</h3><p>这里是内容</p><h3 style="text-align: center;">这里是标题</h3><p>这里是内容</p><h3 style="text-align: center;">这里是标题</h3><p>这里是内容</p><h3 style="text-align: center;">这里是标题</h3><p>这里是内容</p></section><p><br></p>'
     },
     {
         "pre":"pre1.png",
