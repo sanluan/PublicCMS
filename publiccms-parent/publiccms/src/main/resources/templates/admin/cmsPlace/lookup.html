@@ -96,14 +96,14 @@
         </#if>
         <#if itemTypes?seq_contains('category')>
             <div class="pageFormContent" layoutH>
-                <ul class="tree treeFolder expand">
+                <ul class="tree treeFolder">
                     <@lookupTree/>
                 </ul>
             </div>
         </#if>
         <#if itemTypes?seq_contains('page')>
             <div class="pageFormContent" layoutH>
-                <ul class="tree treeFolder expand">
+                <ul class="tree treeFolder">
                     <@pageTree/>
                 </ul>
             </div>

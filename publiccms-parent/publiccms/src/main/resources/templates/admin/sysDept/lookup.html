@@ -10,7 +10,7 @@
 </ul>
 <#else>
 <div class="pageFormContent" layoutH>
-    <ul class="tree treeFolder expand">
+    <ul class="tree treeFolder">
 <@sys.deptList pageSize=500>
     <#list page.list as a>
         <li _src="sysDept/lookup.html?parentId=${a.id}">

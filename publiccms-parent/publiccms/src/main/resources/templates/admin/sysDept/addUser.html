@@ -69,7 +69,7 @@
             </dl>
             <fieldset class="superuser hide">
                 <legend><i class="icon-user-md icon-large"></i><@t.page 'role'/>(<@t.page 'dept.role.description'/>)</legend>
-                <ul class="tree treeFolder treeCheck expand">
+                <ul class="tree treeFolder treeCheck">
             <@sys.role ids=admin.roles>
                 <#list map as k,role>
                     <li><a tname="roleIds" tvalue="${k}">${role.name}</a></li>
