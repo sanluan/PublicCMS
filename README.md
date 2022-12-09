@@ -1,7 +1,7 @@
 # PublicCMS V4.0
 
 <p style="align:center">
-  English | <a href="./README.md">简体中文</a>
+  English | <a href="./README.zh-CN.md">简体中文</a>
 </p>
 
 <a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=xoxCUvv7bDCFQ8AAqaoWB1JsLz0L90qn">QQ Group 1</a> 191381542

@@ -49,19 +49,19 @@ public class DiyComponent implements SiteCache {
     /**
     *
     */
-    public static final String REGION_FILE = "diy/region.data";
+    public static final String REGION_FILE = "include/region.data";
     /**
     *
     */
-    public static final String LAYOUT_FILE = "diy/layout.data";
+    public static final String LAYOUT_FILE = "include/layout.data";
     /**
     *
     */
-    public static final String MODULE_FILE = "diy/module.data";
+    public static final String MODULE_FILE = "include/module.data";
     /**
      *
      */
-    public static final String DATA_FILE = "diy/data.data";
+    public static final String DATA_FILE = "include/diy.data";
 
     private CacheEntity<Short, Map<String, CmsRegionData>> regionDataCache;
 
@@ -80,7 +80,7 @@ public class DiyComponent implements SiteCache {
 
     /**
      * 获取区域列表
-     * 
+     *
      * @param site
      *
      * @return region list
@@ -97,7 +97,7 @@ public class DiyComponent implements SiteCache {
 
     /**
      * 获取布局列表
-     * 
+     *
      * @param site
      * @param region
      * @param showGlobal
@@ -122,7 +122,7 @@ public class DiyComponent implements SiteCache {
 
     /**
      * 获取模块列表
-     * 
+     *
      * @param site
      * @param region
      * @param showGlobal
@@ -147,7 +147,7 @@ public class DiyComponent implements SiteCache {
 
     /**
      * 获取区域元数据
-     * 
+     *
      * @param site
      * @param id
      *
@@ -160,7 +160,7 @@ public class DiyComponent implements SiteCache {
 
     /**
      * 获取区域元数据
-     * 
+     *
      * @param site
      * @param id
      *
@@ -173,7 +173,7 @@ public class DiyComponent implements SiteCache {
 
     /**
      * 获取区域元数据
-     * 
+     *
      * @param site
      * @param id
      *
@@ -186,7 +186,7 @@ public class DiyComponent implements SiteCache {
 
     /**
      * 获取DIY数据
-     * 
+     *
      * @param site
      * @param id
      *
@@ -199,7 +199,7 @@ public class DiyComponent implements SiteCache {
 
     /**
      * 更新区域数据
-     * 
+     *
      * @param site
      * @param region
      * @return whether the update is successful
@@ -217,7 +217,7 @@ public class DiyComponent implements SiteCache {
 
     /**
      * 更新布局数据
-     * 
+     *
      * @param site
      * @param layout
      * @return whether the update is successful
@@ -235,7 +235,7 @@ public class DiyComponent implements SiteCache {
 
     /**
      * 更新模块数据
-     * 
+     *
      * @param site
      * @param module
      * @return whether the update is successful
@@ -253,7 +253,7 @@ public class DiyComponent implements SiteCache {
 
     /**
      * 更新DIY数据
-     * 
+     *
      * @param site
      * @param regionData
      * @return whether the update is successful
@@ -271,7 +271,7 @@ public class DiyComponent implements SiteCache {
 
     /**
      * 删除区域
-     * 
+     *
      * @param site
      * @param id
      *
@@ -290,7 +290,7 @@ public class DiyComponent implements SiteCache {
 
     /**
      * 删除布局
-     * 
+     *
      * @param site
      * @param id
      *
@@ -309,7 +309,7 @@ public class DiyComponent implements SiteCache {
 
     /**
      * 删除模块
-     * 
+     *
      * @param site
      * @param id
      *
@@ -328,7 +328,7 @@ public class DiyComponent implements SiteCache {
 
     /**
      * 删除DIY数据
-     * 
+     *
      * @param site
      * @param id
      * @return whether the delete is successful

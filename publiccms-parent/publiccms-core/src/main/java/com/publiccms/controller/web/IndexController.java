@@ -22,7 +22,7 @@ import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateCacheComponent;
 
 /**
- * 
+ *
  * IndexController 统一分发Controller
  *
  */
@@ -35,7 +35,7 @@ public class IndexController {
 
     /**
      * METADATA页面请求统一分发
-     * 
+     *
      * @param response
      *            响应
      */
@@ -50,7 +50,7 @@ public class IndexController {
 
     /**
      * REST页面请求统一分发
-     * 
+     *
      * @param site
      *            站点
      * @param id
@@ -73,7 +73,7 @@ public class IndexController {
 
     /**
      * REST页面请求统一分发
-     * 
+     *
      * @param site
      *            站点
      * @param id
@@ -108,7 +108,7 @@ public class IndexController {
 
     /**
      * 页面请求统一分发
-     * 
+     *
      * @param site
      *            当前站点
      * @param body
