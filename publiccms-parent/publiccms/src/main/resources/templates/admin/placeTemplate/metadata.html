@@ -90,6 +90,16 @@
                 </dl>
                 <dl class="nowrap">
                     <dt>
+                        <label><input name="fieldList" type="checkbox" value="description"/><@t.page 'description'/></label>
+                    </dt>
+                    <dd>
+                        <label><@t.page 'text'/>:</label>
+                        <input name="fieldTextMap[description]" type="text" maxlength="20" size="10" value="${(a.fieldTextMap['description'])!t.pageMessage('description')}"/>
+                        <label><input name="requiredFieldList" type="checkbox" value="description"/><@t.page 'required'/></label>
+                    </dd>
+                </dl>
+                <dl class="nowrap">
+                    <dt>
                         <label><input name="fieldList" type="checkbox" value="cover"/><@t.page 'cover'/></label>
                     </dt>
                     <dd>
@@ -164,6 +174,7 @@
                 <!-- ${a.itemType!} : ${a.itemId!} ,place/redirect:count and 301 jump to a.url,place/click:count and 302 jump to a.url-->
                 <a href="${site.dynamicPath}place/redirect?id=${a.id!}" target="_blank"><img src="${a.cover!}"></a>
                 <figcaption><a href="${a.url!}" target="_blank">${a.title!}</a>(${a.clicks!})</figcaption>
+                <p><#list (a.description!'')?split('\n') as line>${line}<#sep><br/></#list></p>
                 </#noparse><@t.page 'extend_field'/>:<#noparse><#assign attribute=getPlaceAttribute(a.id)/>
             </figure>
         </li>

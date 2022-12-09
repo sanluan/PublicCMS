@@ -1,6 +1,8 @@
 <@cms.place id=id>
     <#assign a=object/>
 </@cms.place>
+<@tools.placeMetadata path=(a.path)!><#assign metadata=object/></@tools.placeMetadata>
+<#assign fieldList=metadata.fieldList![]/>
 <div class="pageFormContent" layoutH>
     <dl class="nowrap">
         <dt><@t.page 'title'/>:</dt>
@@ -8,21 +10,31 @@
             ${(a.title)!}
         </dd>
     </dl>
+<#if fieldList?seq_contains('url')>
     <dl class="nowrap">
-        <dt><@t.page 'url'/>:</dt>
+        <dt>${(metadata.fieldTextMap['url'])}:</dt>
         <dd>
             <a href="${(a.url)!}" target="_blank">${(a.url)!}</a>
         </dd>
     </dl>
+</#if>
     <dl>
         <dt><@t.page 'publish_date'/>:</dt>
         <dd>
-            ${(a.publishDate)!}
+            ${(a.publishDate)!} <#if a.expiryDate?has_content> - ${(a.expiryDate)!}</#if>
         </dd>
     </dl>
-<#if (a.cover)?has_content>
+<#if fieldList?seq_contains('description')>
     <dl class="nowrap">
-        <dt><@t.page 'cover'/>:</dt>
+        <dt>${(metadata.fieldTextMap['description'])!}:</dt>
+        <dd class="exclude-translate">
+            ${(a.description)!}
+        </dd>
+    </dl>
+</#if>
+<<#if fieldList?seq_contains('cover')>
+    <dl class="nowrap">
+        <dt>${(metadata.fieldTextMap['cover'])!}:</dt>
         <dd>
             <div class="thumbnail">
                 <img src="${(a.cover)!}" style="max-width:200px;max-height:200px;"/>
@@ -30,7 +42,6 @@
         </dd>
     </dl>
 </#if>
-    <@tools.placeMetadata path=(a.path)!><#assign metadata=object/></@tools.placeMetadata>
 <#if (metadata.extendList)?has_content>
     <#include "../include_page/extendData.html"/>
     <#assign attribute=getPlaceAttribute((a.id)!)!{}/>

@@ -307,3 +307,5 @@ INSERT INTO `sys_module` VALUES ('content_select_survey', 'cmsSurvey/lookup', NU
 INSERT INTO `sys_module_lang` VALUES ('content_select_survey', 'en', 'Select 问卷');
 INSERT INTO `sys_module_lang` VALUES ('content_select_survey', 'ja', 'アンケート選択');
 INSERT INTO `sys_module_lang` VALUES ('content_select_survey', 'zh', '选择问卷');
+-- 2022-12-09 --
+ALTER TABLE `cms_place` ADD COLUMN `description` varchar(300) default NULL COMMENT '简介' AFTER `url`;

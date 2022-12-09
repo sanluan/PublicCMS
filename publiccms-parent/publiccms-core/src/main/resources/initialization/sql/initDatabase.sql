@@ -293,6 +293,7 @@ CREATE TABLE `cms_place` (
   `item_id` bigint(20) default NULL COMMENT '推荐项目',
   `title` varchar(255) NOT NULL COMMENT '标题',
   `url` varchar(1000) default NULL COMMENT '超链接',
+  `description` varchar(300) default NULL COMMENT '简介',
   `cover` varchar(255) default NULL COMMENT '封面图',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   `publish_date` datetime NOT NULL COMMENT '发布日期',
