@@ -131,14 +131,14 @@
             <dl class="nowrap">
                 <dt>${(model.fieldTextMap['description'])!}:</dt>
                 <dd class="exclude-translate">
-                    ${(a.description)!}
+                    <#list (a.description!'')?split('\n') as line>${line}<#sep><br/></#list>
                 </dd>
             </dl>
         </#if>
             <dl>
                 <dt><@t.page 'publish_date'/>:</dt>
                 <dd>
-                    ${(a.publishDate)!}
+                    ${(a.publishDate)!}<#if a.expiryDate?has_content> - ${(a.expiryDate)!}</#if>
                 </dd>
             </dl>
         <#if fieldList?seq_contains('cover')&&a.cover?has_content>
