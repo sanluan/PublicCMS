@@ -92,6 +92,8 @@
         <version.webp>0.1.6</version.webp>
         <!-- https://mvnrepository.com/artifact/net.ifok.image/image4j -->
         <version.image4j>0.7.2</version.image4j>
+        <!-- https://mvnrepository.com/artifact/net.sf.cssbox/pdf2dom -->
+        <version.pdf2dom>2.0.3</version.pdf2dom>
         <!-- http://mvnrepository.com/artifact/eu.bitwalker/UserAgentUtils -->
         <version.userAgentUtils>1.21</version.userAgentUtils>
         <!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
@@ -195,6 +197,11 @@
                 <groupId>net.ifok.image</groupId>
                 <artifactId>image4j</artifactId>
                 <version>${version.image4j}</version>
+            </dependency>
+            <dependency>
+                <groupId>net.sf.cssbox</groupId>
+                <artifactId>pdf2dom</artifactId>
+                <version>${version.pdf2dom}</version>
             </dependency>
             <dependency>
                 <groupId>org.freemarker</groupId>
