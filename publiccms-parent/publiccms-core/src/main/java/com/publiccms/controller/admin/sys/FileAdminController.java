@@ -168,7 +168,7 @@ public class FileAdminController {
                     }
                     result.put(titleField, originalName);
                     if (".docx".equalsIgnoreCase(suffix) || ".xlsx".equalsIgnoreCase(suffix) || ".ppt".equalsIgnoreCase(suffix)
-                            || ".ppts".equalsIgnoreCase(suffix) || ".xls".equalsIgnoreCase(suffix)) {
+                            || ".pptx".equalsIgnoreCase(suffix) || ".xls".equalsIgnoreCase(suffix)) {
                         File dest = File.createTempFile("temp_", suffix);
                         file.transferTo(dest);
                         ImageManager imageManager = new ImageManager(new File(""), "") {
@@ -199,7 +199,7 @@ public class FileAdminController {
                         };
                         if (".docx".equalsIgnoreCase(suffix)) {
                             result.put(field, DocToHtmlUtils.docxToHtml(dest, imageManager));
-                        } else if (".ppt".equalsIgnoreCase(suffix) || ".ppts".equalsIgnoreCase(suffix)) {
+                        } else if (".ppt".equalsIgnoreCase(suffix) || ".pptx".equalsIgnoreCase(suffix)) {
                             result.put(field, DocToHtmlUtils.pptToHtml(dest, imageManager));
                         } else {
                             result.put(field, DocToHtmlUtils.excelToHtml(dest, imageManager));

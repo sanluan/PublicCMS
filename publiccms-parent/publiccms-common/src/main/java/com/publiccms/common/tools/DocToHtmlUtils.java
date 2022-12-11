@@ -115,12 +115,13 @@ public class DocToHtmlUtils {
      */
     public static String pdfToHtml(File file, HtmlResourceHandler imageHandler) throws IOException, ClassNotFoundException,
             InstantiationException, IllegalAccessException, ClassCastException, TransformerException {
-        PDDocument pdf = PDDocument.load(file);
-        PDFDomTreeConfig config = PDFDomTreeConfig.createDefaultConfig();
-        config.setFontHandler(PDFDomTreeConfig.ignoreResource());
-        config.setImageHandler(imageHandler);
-        CustomPDFDomTree parser = new CustomPDFDomTree(config);
-        return documentToHtml(parser.createDOM(pdf));
+        try (PDDocument pdf = PDDocument.load(file)) {
+            PDFDomTreeConfig config = PDFDomTreeConfig.createDefaultConfig();
+            config.setFontHandler(PDFDomTreeConfig.ignoreResource());
+            config.setImageHandler(imageHandler);
+            CustomPDFDomTree parser = new CustomPDFDomTree(config);
+            return documentToHtml(parser.createDOM(pdf));
+        }
     }
 
     /**
@@ -134,7 +135,7 @@ public class DocToHtmlUtils {
         StringBuilder sb = new StringBuilder();
         try (SlideShow<?, ?> sw = SlideShowFactory.create(new FileInputStream(file))) {
             Dimension pgSize = sw.getPageSize();
-            for(Slide<?, ?> slide : sw.getSlides()) {
+            for (Slide<?, ?> slide : sw.getSlides()) {
                 BufferedImage img = new BufferedImage(pgSize.width, pgSize.height, BufferedImage.TYPE_INT_RGB);
                 Graphics2D graphics = img.createGraphics();
                 graphics.setPaint(Color.white);
