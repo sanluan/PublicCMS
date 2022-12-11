@@ -154,19 +154,11 @@
         <#include "../include_page/extendData.html"/>
         <#if category?has_content&&category.extendId?has_content>
             <@sys.extendFieldList extendId=category.extendId>
-                <#assign
-                    extendList=list![]
-                    extendValue=attribute!{}
-                />
-                <@extendData 'categoryExtendDataList' extendList extendValue 'view' safe/>
+                <@extendData name='categoryExtendDataList' extendList=list extendValues=attribute type='view' htmlSafe=safe/>
             </@sys.extendFieldList>
         </#if>
         <#if model?has_content>
-            <#assign
-                extendList=model.extendList![]
-                extendValue=attribute!{}
-            />
-            <@extendData 'modelExtendDataList' extendList extendValue 'view' safe/>
+            <@extendData name='modelExtendDataList' extendList=model.extendList extendValues=attribute type='view' htmlSafe=safe/>
         </#if>
         <#if a?has_content&&(a.hasImages||a.hasFiles)>
             <#if a.hasImages>

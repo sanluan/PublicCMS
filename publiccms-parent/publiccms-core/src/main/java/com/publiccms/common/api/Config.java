@@ -131,6 +131,8 @@ public interface Config {
      */
     String INPUTTYPE_COLOR = "color";
 
+    public static final String[] INPUT_TYPE_EDITORS = { "kindeditor", "ckeditor", "tinymce", "editor" };
+
     /**
      * @param site
      * @param locale

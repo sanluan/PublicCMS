@@ -1,6 +1,7 @@
 <@tools.metadata path=path><#assign metadata=object/></@tools.metadata>
 <form method="post" autocomplete="off" action="cmsPage/save?rel=pageBox" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
+    <input type="hidden" name="type" value="page"/>
     <div class="formBar card">
         <ul>
             <li>
@@ -75,9 +76,7 @@
             </#if>
         </@tools.templatePlaceList>
             <#include "../include_page/extendData.html"/>
-            <#assign extendList=(metadata.extendList)![]/>
-            <#assign attribute=(metadata.extendData)!{}/>
-            <@extendData 'extendDataList' extendList attribute/>
+            <@extendData name='extendDataList' extendList=metadata.extendList extendValues=metadata.extendData historyItemType='metadataExtend' historyItemId=path/>
         </div>
     </div>
 </form>

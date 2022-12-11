@@ -217,19 +217,6 @@ CREATE TABLE `cms_content_related` (
   KEY `cms_content_related_related_content_id` (`related_content_id`,`relation_type`, `relation` )
 ) COMMENT='推荐推荐';
 -- ----------------------------
--- Table structure for cms_content_text_history
--- ----------------------------
-CREATE TABLE `cms_content_text_history` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `content_id` bigint(20) NOT NULL COMMENT '内容',
-  `field_name` varchar(100) NOT NULL COMMENT '字段名',
-  `create_date` datetime NOT NULL COMMENT '创建日期',
-  `user_id` bigint(20) NOT NULL COMMENT '修改用户',
-  `text` longtext NOT NULL COMMENT '文本',
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `cms_content_history_content_id` (`content_id`, `field_name`, `create_date`, `user_id`)
-) COMMENT='内容扩展';
--- ----------------------------
 -- Table structure for cms_dictionary
 -- ----------------------------
 DROP TABLE IF EXISTS `cms_dictionary`;
@@ -279,6 +266,20 @@ CREATE TABLE `cms_dictionary_exclude_value` (
   PRIMARY KEY (`dictionary_id`, `site_id`, `exclude_dictionary_id`, `value`),
   KEY `cms_dictionary_parent_value` (`dictionary_id`, `site_id`)
 )COMMENT='字典数据排除规则值';
+-- ----------------------------
+-- Table structure for cms_editor_history
+-- ----------------------------
+CREATE TABLE `cms_editor_history` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `item_type` varchar(50) NOT NULL COMMENT '数据类型',
+  `item_id` varchar(100) NOT NULL COMMENT '数据id',
+  `field_name` varchar(100) NOT NULL COMMENT '字段名',
+  `create_date` datetime NOT NULL COMMENT '创建日期',
+  `user_id` bigint(20) NOT NULL COMMENT '修改用户',
+  `text` longtext NOT NULL COMMENT '文本',
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `cms_editor_content_id` (`item_type`,`item_id`, `field_name`, `create_date`)
+) COMMENT='内容扩展';
 -- ----------------------------
 -- Table structure for cms_place
 -- ----------------------------
@@ -826,7 +827,7 @@ INSERT INTO `sys_module` VALUES ('app_client_list', 'sysAppClient/list', NULL, '
 INSERT INTO `sys_module` VALUES ('app_delete', NULL, 'sysApp/delete', NULL, 'app_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('app_issue', 'sysApp/issueParameters', 'sysAppToken/issue', NULL, 'app_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('app_list', 'sysApp/list', NULL, 'icon-linux', 'system_menu', 1, 5);
-INSERT INTO `sys_module` VALUES ('category_add', 'cmsCategory/add', 'cmsCategory/addMore,cmsCategory/virify,cmsCategory/rebuildChildIds,cmsCategory/batchPublish,cmsTemplate/lookup,cmsCategory/categoryPath,cmsCategory/contentPath,file/doUpload,cmsDictionary/lookup,cmsCategory/save', '', 'category_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('category_add', 'cmsCategory/add', 'cmsCategory/addMore,cmsCategory/virify,cmsCategory/rebuildChildIds,cmsCategory/batchPublish,cmsTemplate/lookup,cmsCategory/categoryPath,cmsCategory/contentPath,file/doUpload,cmsDictionary/lookup,cmsCategory/save,cmsEditorHistory/lookup,cmsEditorHistory/use,cmsEditorHistory/compare', '', 'category_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('category_delete', NULL, 'cmsCategory/delete', '', 'category_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('category_extend', NULL, NULL, 'icon-road', 'content', 1, 1);
 INSERT INTO `sys_module` VALUES ('category_list', 'cmsCategory/list', NULL, 'icon-folder-open', 'content_menu', 1, 4);
@@ -846,7 +847,7 @@ INSERT INTO `sys_module` VALUES ('comment_reply', 'cmsComment/reply', 'cmsCommen
 INSERT INTO `sys_module` VALUES ('comment_uncheck', NULL, 'cmsComment/uncheck', NULL, 'comment_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('config_add', 'sysConfig/add', 'sysConfig/save', NULL, 'config_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('config_data_delete', NULL, 'sysConfigData/delete', NULL, 'config_data_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('config_data_edit', NULL, 'sysConfigData/save,sysConfigData/edit', NULL, 'config_data_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('config_data_edit', NULL, 'sysConfigData/save,sysConfigData/edit,cmsEditorHistory/lookup,cmsEditorHistory/use,cmsEditorHistory/compare', NULL, 'config_data_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('config_data_list', 'sysConfigData/list', NULL, 'icon-cog', 'system_menu', 1, 1);
 INSERT INTO `sys_module` VALUES ('config_delete', NULL, 'sysConfig/delete', NULL, 'config_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('config_list', 'sysConfig/list', NULL, 'icon-cogs', 'config_menu', 1, 3);
@@ -878,7 +879,6 @@ INSERT INTO `sys_module` VALUES ('content_select_template', 'cmsTemplate/lookup'
 INSERT INTO `sys_module` VALUES ('content_select_user', 'sysUser/lookup', 'sysUser/lookup_list', NULL, 'content_add', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_select_vote', 'cmsVote/lookup', NULL, NULL, 'content_add', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_sort', 'cmsContent/sortParameters', 'cmsContent/sort', '', 'content_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('content_text_history', 'cmsContentTextHistory/lookup', 'cmsContentTextHistory/use,cmsContentTextHistory/compare', NULL, 'content_add', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_uncheck', NULL, 'cmsContent/uncheck', '', 'content_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_view', 'cmsContent/view', NULL, '', 'content_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('dept_add', 'sysDept/add', 'sysDept/lookup,sysUser/lookup,sysUser/lookup_list,sysDept/save,sysDept/virify', NULL, 'dept_list', 0, 0);
@@ -892,6 +892,7 @@ INSERT INTO `sys_module` VALUES ('dictionary_list', 'cmsDictionary/list', NULL, 
 INSERT INTO `sys_module` VALUES ('diy_list', 'cmsDiy/list', 'cmsDiy/region,cmsDiy/layout,cmsDiy/module,placeTemplate/lookupPlace,cmsCategoryType/lookup', 'icon-dashboard', 'file_menu', 1, 5);
 INSERT INTO `sys_module` VALUES ('domain_config', 'sysDomain/config', 'sysDomain/saveConfig,cmsTemplate/directoryLookup,cmsTemplate/lookup', NULL, 'domain_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('domain_list', 'sysDomain/domainList', NULL, 'icon-qrcode', 'config_menu', 1, 4);
+INSERT INTO `sys_module` VALUES ('editor_history', 'cmsEditorHistory/lookup', 'cmsEditorHistory/use,cmsEditorHistory/compare', NULL, 'content_add', 0, 0);
 INSERT INTO `sys_module` VALUES ('file_history', 'cmsFileHistory/list', 'cmsFileHistory/use,cmsFileHistory/compare', NULL, 'template_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('file_menu', NULL, NULL, 'icon-folder-close-alt', 'develop', 1, 1);
 INSERT INTO `sys_module` VALUES ('file_recycle', 'cmsFileBackup/list', 'cmsFileBackup/content,cmsFileBackup/recycle', NULL, 'template_list', 0, 0);
@@ -938,7 +939,7 @@ INSERT INTO `sys_module` VALUES ('page_list', 'cmsPage/list', 'cmsPage/metadata,
 INSERT INTO `sys_module` VALUES ('page_menu', NULL, NULL, 'icon-globe', 'page', 1, 0);
 INSERT INTO `sys_module` VALUES ('page_metadata', 'cmsPage/metadata', 'cmsPage/save', NULL, 'page_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('page_publish', NULL, 'cmsTemplate/publish', NULL, 'page_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('page_save', NULL, 'cmsPage/save,file/doUpload,cmsPage/clearCache', NULL, 'page_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('page_save', NULL, 'cmsPage/save,file/doUpload,cmsPage/clearCache,cmsEditorHistory/lookup,cmsEditorHistory/use,cmsEditorHistory/compare', NULL, 'page_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('page_select_category', 'cmsCategory/lookup', NULL, NULL, 'page_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('page_select_category_type', 'cmsCategoryType/lookup', NULL, NULL, 'page_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('page_select_content', 'cmsContent/lookup', 'cmsContent/lookup_list', NULL, 'page_list', 0, 0);
@@ -947,7 +948,7 @@ INSERT INTO `sys_module` VALUES ('page_select_template', 'cmsTemplate/lookup', N
 INSERT INTO `sys_module` VALUES ('page_select_user', 'sysUser/lookup', 'sysUser/lookup_list', NULL, 'page_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('payment_history_list', 'tradePaymentHistory/list', 'tradePaymentHistory/view', 'icon-exchange', 'trade_menu', 1, 4);
 INSERT INTO `sys_module` VALUES ('payment_list', 'tradePayment/list', 'sysUser/lookup,sysUser/lookup_list', 'icon-money', 'trade_menu', 1, 3);
-INSERT INTO `sys_module` VALUES ('place_add', 'cmsPlace/add', 'cmsContent/lookup,cmsPlace/lookup,cmsPlace/lookup_content_list,file/doUpload,cmsPlace/save', NULL, 'place_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('place_add', 'cmsPlace/add', 'cmsContent/lookup,cmsPlace/lookup,cmsPlace/lookup_content_list,file/doUpload,cmsPlace/save,cmsEditorHistory/lookup,cmsEditorHistory/use,cmsEditorHistory/compare', NULL, 'place_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('place_check', NULL, 'cmsPlace/check,cmsPlace/uncheck', NULL, 'place_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('place_clear', NULL, 'cmsPlace/clear', NULL, 'place_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('place_data_list', 'cmsPlace/dataList', 'cmsPlace/export', NULL, 'place_list', 0, 1);

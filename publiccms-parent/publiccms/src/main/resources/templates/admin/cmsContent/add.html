@@ -214,16 +214,10 @@ $('input[name=timing]',navTab.getCurrentPanel()).click();
             <#include "../include_page/extendData.html"/>
             <#if category?has_content&&category.extendId?has_content>
                  <@sys.extendFieldList extendId=category.extendId>
-                    <#assign extendList=list![]/>
-                    <#assign extendValue=attribute!{}/>
-                    <@extendData 'categoryExtendDataList' extendList extendValue 'contentForm'/>
+                    <@extendData name='categoryExtendDataList' extendList=list extendValues=attribute historyItemType='contentExtend' historyItemId=id/>
                  </@sys.extendFieldList>
             </#if>
-            <#assign
-                extendList=model.extendList![]
-                extendValue=attribute!{}
-            />
-            <@extendData 'modelExtendDataList' extendList extendValue/>
+            <@extendData name='modelExtendDataList' extendList=model.extendList extendValues=attribute historyItemType='contentExtend' historyItemId=id/>
             <#if fieldList?seq_contains('content')>
                 <dl class="nowrap">
                     <dt>${(model.fieldTextMap['content'])!}:</dt>
@@ -231,7 +225,7 @@ $('input[name=timing]',navTab.getCurrentPanel()).click();
                         <div>
                             <a class="button" href="common/import.html" lookupGroup="" width="500" height="300"><@t.page 'import_doc'/></a>
                         <#if a?has_content>
-                            <a class="button" href="cmsContentTextHistory/lookup.html?contentId=${a.id}&fieldName=text" lookupGroup=""><@t.page 'history'/></a>
+                            <a class="button" href="cmsEditorHistory/lookup.html?itemType=content&itemId=${a.id}&fieldName=text" lookupGroup=""><@t.page 'history'/></a>
                         </#if>
                         </div>
                         <textarea name="text" class="editor<#if requiredFieldList?seq_contains('content')> required</#if>" escape="true" editorType="${model.editorType!}">${(attribute.text)!}</textarea>

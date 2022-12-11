@@ -29,10 +29,6 @@ CREATE TABLE `cms_content_text_history`(
   PRIMARY KEY(`id`),
   KEY `cms_content_history_content_id`(`content_id`,`field_name`,`create_date`,`user_id`)
 ) COMMENT='内容扩展';
-INSERT INTO `sys_module` VALUES('content_text_history', 'cmsContentTextHistory/lookup', 'cmsContentTextHistory/use', NULL, 'content_add', 0, 0);
-INSERT INTO `sys_module_lang` VALUES('content_text_history', 'en', 'Modify records');
-INSERT INTO `sys_module_lang` VALUES('content_text_history', 'ja', 'レコードを変更する');
-INSERT INTO `sys_module_lang` VALUES('content_text_history', 'zh', '修改记录');
 -- 2022-05-18 --
 ALTER TABLE `visit_history`
     DROP INDEX `visit_visit_date`,
@@ -212,7 +208,6 @@ ALTER TABLE `cms_content`
     DROP INDEX `cms_content_disabled`,
     ADD INDEX `cms_content_disabled`(`site_id`, `disabled`, `category_id`, `model_id`);
 --2022-09-26 --
-UPDATE `sys_module` SET `authorized_url`= 'cmsContentTextHistory/use,cmsContentTextHistory/compare' WHERE `id` ='content_text_history';
 INSERT INTO `sys_module` VALUES('file_history', 'cmsFileHistory/list', 'cmsFileHistory/use,cmsFileHistory/compare', NULL, 'template_list', 0, 0);
 INSERT INTO `sys_module` VALUES('file_recycle', 'cmsFileBackup/list', 'cmsFileBackup/content,cmsFileBackup/recycle', NULL, 'template_list', 0, 0);
 INSERT INTO `sys_module_lang` VALUES('file_history', 'en', 'File modification history');
@@ -309,3 +304,22 @@ INSERT INTO `sys_module_lang` VALUES ('content_select_survey', 'ja', 'アンケ�
 INSERT INTO `sys_module_lang` VALUES ('content_select_survey', 'zh', '选择问卷');
 -- 2022-12-09 --
 ALTER TABLE `cms_place` ADD COLUMN `description` varchar(300) default NULL COMMENT '简介' AFTER `url`;
+-- 2022-12-11 --
+RENAME TABLE `cms_content_text_history` TO `cms_editor_history`;
+ALTER TABLE `cms_editor_history`
+    ADD COLUMN `item_type` varchar(50) DEFAULT NULL COMMENT '数据类型' AFTER `id`,
+    CHANGE COLUMN `content_id` `item_id` varchar(100) NOT NULL COMMENT '数据id',
+    DROP INDEX `cms_content_history_content_id`,
+    ADD INDEX `cms_editor_history_item_id` (`item_type`,`item_id`, `field_name`, `create_date`);
+UPDATE `cms_editor_history` set item_type = 'content';
+ALTER TABLE `cms_editor_history` CHANGE COLUMN `item_type` `item_type` varchar(50) NOT NULL COMMENT '数据类型';
+DELETE FROM `sys_module` WHERE id = `content_text_history`;
+DELETE FROM `sys_module_lang` WHERE module_id = `content_text_history`;
+INSERT INTO `sys_module` VALUES('editor_history', 'cmsEditorHistory/lookup', 'cmsEditorHistory/use,cmsEditorHistory/compare', NULL, 'content_add', 0, 0);
+INSERT INTO `sys_module_lang` VALUES('editor_history', 'en', 'Modify records');
+INSERT INTO `sys_module_lang` VALUES('editor_history', 'ja', 'レコードを変更する');
+INSERT INTO `sys_module_lang` VALUES('editor_history', 'zh', '修改记录');
+UPDATE `sys_module` SET `authorized_url`= 'sysConfigData/save,sysConfigData/edit,cmsEditorHistory/lookup,cmsEditorHistory/use,cmsEditorHistory/compare' WHERE `id` ='config_data_edit';
+UPDATE `sys_module` SET `authorized_url`= 'cmsPage/save,file/doUpload,cmsPage/clearCache,cmsEditorHistory/lookup,cmsEditorHistory/use,cmsEditorHistory/compare' WHERE `id` ='page_save';
+UPDATE `sys_module` SET `authorized_url`= 'cmsContent/lookup,cmsPlace/lookup,cmsPlace/lookup_content_list,file/doUpload,cmsPlace/save,cmsEditorHistory/lookup,cmsEditorHistory/use,cmsEditorHistory/compare' WHERE `id` ='place_add';
+UPDATE `sys_module` SET `authorized_url`= 'cmsCategory/addMore,cmsCategory/virify,cmsCategory/rebuildChildIds,cmsCategory/batchPublish,cmsTemplate/lookup,cmsCategory/categoryPath,cmsCategory/contentPath,file/doUpload,cmsDictionary/lookup,cmsCategory/save,cmsEditorHistory/lookup,cmsEditorHistory/use,cmsEditorHistory/compare' WHERE `id` ='category_add';

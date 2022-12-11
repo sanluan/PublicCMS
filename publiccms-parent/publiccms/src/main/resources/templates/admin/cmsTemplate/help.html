@@ -43,7 +43,7 @@
 </#if>
 </#macro>
 <#macro getAction code description=''>
-onclick="DWZ.instances[$('textarea.code',navTab.getCurrentPanel()).data('id')].replaceSelection('<#if description?has_content>${r'<#--'} ${description} ${r'-->'}\n</#if>${code?js_string}${description?has_content?then('\\n','')}');$.pdialog.closeCurrent();return false;"
+onclick="JUI.instances[$('textarea.code',navTab.getCurrentPanel()).data('id')].replaceSelection('<#if description?has_content>${r'<#--'} ${description} ${r'-->'}\n</#if>${code?js_string}${description?has_content?then('\\n','')}');$.pdialog.closeCurrent();return false;"
 </#macro>
 <div class="tabs">
     <div class="tabsHeader">

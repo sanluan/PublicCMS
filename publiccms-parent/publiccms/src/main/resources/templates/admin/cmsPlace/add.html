@@ -90,11 +90,8 @@
         </#if>
             <#include "../include_page/extendData.html"/>
             <@tools.placeMetadata path=(a.path)!path!''><#assign metadata=object/></@tools.placeMetadata>
-            <#assign
-                extendList=(metadata.extendList)![]
-                attribute=getPlaceAttribute((a.id)!)!{}
-            />
-            <@extendData 'extendDataList' extendList attribute/>
+            <#assign attribute=getPlaceAttribute((a.id)!)!{}/>
+            <@extendData name='extendDataList' extendList=metadata.extendList extendValues=attribute historyItemType='placeExtend' historyItemId=id/>
         </div>
     </div>
 </form>

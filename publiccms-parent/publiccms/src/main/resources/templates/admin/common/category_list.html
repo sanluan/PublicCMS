@@ -59,11 +59,11 @@
         </#if>
         <#if authorizedMap['cmsCategory/delete']>
             <li class="line">line</li>
-            <li><a href="cmsCategory/delete?_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i><@t.page 'button.batch_delete'/></a></li>
+            <li><a href="cmsCategory/delete?_csrf=<@tools.csrfToken admin=true/>&ref=page" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i><@t.page 'button.batch_delete'/></a></li>
         </#if>
         <#if authorizedMap['cmsCategory/rebuildChildIds']>
             <li class="line">line</li>
-            <li><a href="cmsCategory/rebuildChildIds?_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.do'/>" target="ajaxTodo"><i class="icon-refresh icon-large"></i><@t.page 'button.rebuild_childs'/></a></li>
+            <li><a href="cmsCategory/rebuildChildIds?_csrf=<@tools.csrfToken admin=true/>&ref=page" title="<@t.page 'confirm.do'/>" target="ajaxTodo"><i class="icon-refresh icon-large"></i><@t.page 'button.rebuild_childs'/></a></li>
         </#if>
         </ul>
     </div>

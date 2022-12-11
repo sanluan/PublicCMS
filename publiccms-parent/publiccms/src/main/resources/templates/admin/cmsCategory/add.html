@@ -99,7 +99,7 @@
                 </dl>
 <#if categoryType?has_content && categoryType.extendList?has_content>
     <#include "../include_page/extendData.html"/>
-    <@extendData 'extendDataList' categoryType.extendList attribute!{}/>
+    <@extendData name='extendDataList' extendList=categoryType.extendList extendValues=(attribute!{}) historyItemType='categoryExtend' historyItemId=id/>
 </#if>
             </div>
             <div class="pageFormContent onlyUrl" layoutH>

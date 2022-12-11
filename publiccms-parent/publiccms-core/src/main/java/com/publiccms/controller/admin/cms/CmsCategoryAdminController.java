@@ -116,7 +116,7 @@ public class CmsCategoryAdminController {
                     LogLoginService.CHANNEL_WEB_MANAGER, "save.category", RequestUtils.getIpAddress(request),
                     CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
-        service.saveTagAndAttribute(site.getId(), entity.getId(), attribute,
+        service.saveTagAndAttribute(site.getId(), entity.getId(), admin.getId(), attribute,
                 modelComponent.getCategoryTypeMap(site).get(entity.getTypeId()), categoryParameters);
         try {
             publish(site, entity.getId(), null);

@@ -1,6 +1,7 @@
 <@tools.placeMetadata path=path><#assign a=object/></@tools.placeMetadata>
-<form method="post" autocomplete="off" action="cmsPage/save?rel=placeBox" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+<form method="post" autocomplete="off" action="cmsPage/save?rel=${rel!'placeBox'}" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
+    <input type="hidden" name="type" value="place"/>
     <div class="formBar card">
         <ul>
             <li>
@@ -40,7 +41,7 @@
                     <#list list as a>
                         <@tools.placeMetadata path=a>
                         <p>
-                            <a class="button" href="cmsPlace/metadata.html?path=${a?url}" target="ajax" rel="placeBox">${(object.alias)!a}</a>
+                            <a class="button" href="cmsPlace/metadata.html?path=${a?url}" target="ajax" rel="${rel!'placeBox'}">${(object.alias)!a}</a>
                             <#if 0 lt ((object.size)!0)>
                                <a class="button" href="cmsPlace/dataList.html?path=${a?url}" target="navTab" rel="cmsPlace/dataList:${a!}" title="<@t.page 'place_data'/>:${(object.alias)!a}"><@t.page 'place_data'/>(${object.size})</a>
                             </#if>
@@ -70,7 +71,7 @@
             <#include "../include_page/extendData.html"/>
             <#assign extendList=(a.metadataExtendList)![]/>
             <#assign attribute=(a.extendData)!{}/>
-            <@extendData 'extendDataList' extendList attribute/>
+            <@extendData name='extendDataList' extendList=extendList extendValues=attribute historyItemType='metadataExtend' historyItemId='include'+path/>
         </div>
     </div>
 </form>

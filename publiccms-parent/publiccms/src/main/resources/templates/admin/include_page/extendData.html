@@ -1,5 +1,5 @@
 <#include "dictionary.html"/>
-<#macro input name extend index value='' type='form' safe=true>
+<#macro input name extend index value='' type='form' safe=true itemType='' itemId=''>
     <#local inputName=name+'['+index+'].value'/>
     <input name="${name}[${index}].name" type="hidden" value="${extend.id.code}"/>
     <#switch extend.inputType>
@@ -75,6 +75,9 @@
             <#else>
                 <div>
                     <a class="button" href="common/import.html?fieldName=extend.${extend.id.code}&field=value" lookupGroup="${name}[${index}]" width="500" height="300"><@t.page 'import_doc'/></a>
+                    <#if itemType?has_content && itemId?has_content>
+                        <a class="button" href="cmsEditorHistory/lookup.html?itemType=${itemType}&itemId=${itemId?url}&fieldName=${extend.id.code}" lookupGroup="${name}[${index}]"><@t.page 'history'/></a>
+                    </#if>
                 </div>
                 <textarea name="${inputName}"<#if extend.maxlength?has_content> maxlength="${extend.maxlength}"</#if> <#if 'customform'!=type>class="editor<#if extend.required> required</#if>" editorType="${extend.inputType}" </#if>cols="80" rows="20">${(value)!}</textarea>
             </#if>
@@ -246,7 +249,7 @@
             </#if>
     </#switch>
 </#macro>
-<#macro extendData name extendList extendValues type='form' htmlSafe=false>
+<#macro extendData name extendList=[] extendValues={} historyItemType='' historyItemId='' type='form' htmlSafe=false>
     <#list extendList as e>
     <#local value=extendValues[e.id.code]!e.defaultValue!''/>
         <#if 'customform'=type>
@@ -255,8 +258,8 @@
     <dl<#if !['number','alphaColor','color','date','datetime','boolean','text','password']?seq_contains(e.inputType)> class="nowrap"</#if>>
         <dt>${(e.name)}:</dt>
         <dd<#if 'editor'=e.inputType> style="width:90%;"</#if>>
-            <@input name e e?index value type/>
-            <span class="info">${(htmlSafe?then(e.description?no_esc,e.description))!}</span>
+            <@input name e e?index value type htmlSafe historyItemType historyItemId/>
+            <#if e.description?has_content><span class="info">${htmlSafe?then(e.description?no_esc,e.description)}</span></#if>
         </dd>
     </dl>
         </#if>

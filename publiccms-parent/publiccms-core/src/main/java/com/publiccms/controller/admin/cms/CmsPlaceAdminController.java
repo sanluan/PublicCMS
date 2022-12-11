@@ -12,6 +12,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.publiccms.common.annotation.Csrf;
+import com.publiccms.common.api.Config;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CmsFileUtils;
@@ -40,6 +42,7 @@ import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.LanguagesUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.common.view.ExcelView;
+import com.publiccms.entities.cms.CmsEditorHistory;
 import com.publiccms.entities.cms.CmsPlace;
 import com.publiccms.entities.cms.CmsPlaceAttribute;
 import com.publiccms.entities.log.LogOperate;
@@ -51,6 +54,7 @@ import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
+import com.publiccms.logic.service.cms.CmsEditorHistoryService;
 import com.publiccms.logic.service.cms.CmsPlaceAttributeService;
 import com.publiccms.logic.service.cms.CmsPlaceService;
 import com.publiccms.logic.service.log.LogLoginService;
@@ -91,6 +95,8 @@ public class CmsPlaceAdminController {
     protected SiteComponent siteComponent;
     @Autowired
     private TemplateComponent templateComponent;
+    @Autowired
+    private CmsEditorHistoryService editorHistoryService;
 
     private String[] ignoreProperties = new String[] { "id", "siteId", "status", "userId", "type", "clicks", "path", "createDate",
             "disabled" };
@@ -128,9 +134,9 @@ public class CmsPlaceAdminController {
                 entity.setItemType(CmsPlaceService.ITEM_TYPE_CUSTOM);
                 entity.setItemId(null);
             }
-            if (null != entity.getId()) {
-                CmsPlace oldEntity = service.getEntity(entity.getId());
-                if (null == oldEntity || ControllerUtils.errorNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
+            CmsPlace oldEntity = service.getEntity(entity.getId());
+            if (null != oldEntity) {
+                if (ControllerUtils.errorNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
                     return CommonConstants.TEMPLATE_ERROR;
                 }
                 entity = service.update(entity.getId(), entity, ignoreProperties);
@@ -153,8 +159,27 @@ public class CmsPlaceAdminController {
             CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);
             Map<String, String> map = ExtendUtils.getExtentDataMap(extendDataParameters.getExtendDataList(),
                     metadata.getExtendList());
-            String extentString = ExtendUtils.getExtendString(map);
-            attributeService.updateAttribute(entity.getId(), extentString);
+
+            CmsPlaceAttribute oldAttribute = attributeService.getEntity(entity.getId());
+            if (null != oldAttribute) {
+                if (CommonUtils.notEmpty(oldAttribute.getData()) && CommonUtils.notEmpty(metadata.getExtendList())) {
+                    Map<String, String> oldMap = ExtendUtils.getExtendMap(oldAttribute.getData());
+                    for (SysExtendField extendField : metadata.getExtendList()) {
+                        if (ArrayUtils.contains(Config.INPUT_TYPE_EDITORS, extendField.getInputType())) {
+                            if (CommonUtils.notEmpty(oldMap) && CommonUtils.notEmpty(oldMap.get(extendField.getId().getCode()))
+                                    && (CommonUtils.notEmpty(map) || !oldMap.get(extendField.getId().getCode())
+                                            .equals(map.get(extendField.getId().getCode())))) {
+                                CmsEditorHistory history = new CmsEditorHistory(CmsEditorHistoryService.ITEM_TYPE_PLACE_EXTEND,
+                                        String.valueOf(entity.getId()), extendField.getId().getCode(), CommonUtils.getDate(),
+                                        admin.getId(), map.get(extendField.getId().getCode()));
+                                editorHistoryService.save(history);
+                            }
+                        }
+                    }
+                }
+            }
+
+            attributeService.updateAttribute(entity.getId(), ExtendUtils.getExtendString(map));
             staticPlace(site, entity.getPath());
         }
         return CommonConstants.TEMPLATE_DONE;

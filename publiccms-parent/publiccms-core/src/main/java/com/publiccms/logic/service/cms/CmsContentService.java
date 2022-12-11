@@ -36,7 +36,7 @@ import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.cms.CmsContentAttribute;
 import com.publiccms.entities.cms.CmsContentFile;
 import com.publiccms.entities.cms.CmsContentProduct;
-import com.publiccms.entities.cms.CmsContentTextHistory;
+import com.publiccms.entities.cms.CmsEditorHistory;
 import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
@@ -61,7 +61,6 @@ public class CmsContentService extends BaseService<CmsContent> {
             Config.INPUTTYPE_DEPT, Config.INPUTTYPE_CONTENT, Config.INPUTTYPE_CATEGORY, Config.INPUTTYPE_DICTIONARY,
             Config.INPUTTYPE_CATEGORYTYPE, Config.INPUTTYPE_TAGTYPE };
 
-    public static final String[] FULLTEXT_SEARCHABLE_EDITOR = { "kindeditor", "ckeditor", "tinymce", "editor" };
     public static final String[] ignoreProperties = new String[] { "id", "siteId" };
     /**
      * 
@@ -84,6 +83,25 @@ public class CmsContentService extends BaseService<CmsContent> {
      * 
      */
     public static final Integer[] STATUS_NORMAL_ARRAY = new Integer[] { STATUS_NORMAL };
+
+    @Autowired
+    private CmsCategoryService categoryService;
+    @Autowired
+    private SysExtendService extendService;
+    @Autowired
+    private SysExtendFieldService extendFieldService;
+    @Autowired
+    private CmsTagService tagService;
+    @Autowired
+    private CmsContentFileService contentFileService;
+    @Autowired
+    private CmsEditorHistoryService editorHistoryService;
+    @Autowired
+    private CmsContentProductService contentProductService;
+    @Autowired
+    private CmsContentAttributeService attributeService;
+    @Autowired
+    private CmsContentRelatedService cmsContentRelatedService;
 
     /**
      * @param queryEntity
@@ -191,20 +209,61 @@ public class CmsContentService extends BaseService<CmsContent> {
                     map = categoryMap;
                 }
             }
+
             dealAttribute(entity, modelExtendList, categoryExtendList, map, cmsModel,
                     entity.isHasFiles() ? contentParameters.getFiles() : null,
                     entity.isHasImages() ? contentParameters.getImages() : null,
                     entity.isHasProducts() ? contentParameters.getProducts() : null, attribute);
-            CmsContentAttribute oldAttribute = attributeService.getEntity(entity.getId());
-            if (null != oldAttribute && null != oldAttribute.getText() && !oldAttribute.getText().equals(attribute.getText())) {
-                CmsContentTextHistory history = new CmsContentTextHistory(entity.getId(), "text", CommonUtils.getDate(), userId,
-                        oldAttribute.getText());
-                contentHistoryService.save(history);
-            }
+
+            saveEditorHistory(attributeService.getEntity(entity.getId()), attribute, entity.getId(), userId, modelExtendList,
+                    categoryExtendList, map);// 保存编辑器字段历史记录
+
             attributeService.updateAttribute(entity.getId(), attribute);// 更新保存扩展字段，文本字段
             cmsContentRelatedService.update(entity.getId(), userId, contentParameters.getContentRelateds());// 更新保存推荐内容
         }
         return entity;
+    }
+
+    private void saveEditorHistory(CmsContentAttribute oldAttribute, CmsContentAttribute attribute, long contentId, long userId,
+            List<SysExtendField> modelExtendList, List<SysExtendField> categoryExtendList, Map<String, String> map) {
+        if (null != oldAttribute) {
+            if (CommonUtils.notEmpty(oldAttribute.getText()) && !oldAttribute.getText().equals(attribute.getText())) {
+                CmsEditorHistory history = new CmsEditorHistory(CmsEditorHistoryService.ITEM_TYPE_CONTENT,
+                        String.valueOf(contentId), "text", CommonUtils.getDate(), userId, oldAttribute.getText());
+                editorHistoryService.save(history);
+            }
+            if (CommonUtils.notEmpty(oldAttribute.getData())) {
+                Map<String, String> oldMap = ExtendUtils.getExtendMap(oldAttribute.getData());
+                if (CommonUtils.notEmpty(modelExtendList)) {
+                    for (SysExtendField extendField : modelExtendList) {
+                        if (ArrayUtils.contains(Config.INPUT_TYPE_EDITORS, extendField.getInputType())) {
+                            if (CommonUtils.notEmpty(oldMap) && CommonUtils.notEmpty(oldMap.get(extendField.getId().getCode()))
+                                    && (CommonUtils.notEmpty(map) || !oldMap.get(extendField.getId().getCode())
+                                            .equals(map.get(extendField.getId().getCode())))) {
+                                CmsEditorHistory history = new CmsEditorHistory(CmsEditorHistoryService.ITEM_TYPE_CONTENT_EXTEND,
+                                        String.valueOf(contentId), extendField.getId().getCode(), CommonUtils.getDate(), userId,
+                                        map.get(extendField.getId().getCode()));
+                                editorHistoryService.save(history);
+                            }
+                        }
+                    }
+                }
+                if (CommonUtils.notEmpty(categoryExtendList)) {
+                    for (SysExtendField extendField : categoryExtendList) {
+                        if (ArrayUtils.contains(Config.INPUT_TYPE_EDITORS, extendField.getInputType())) {
+                            if (CommonUtils.notEmpty(oldMap) && CommonUtils.notEmpty(oldMap.get(extendField.getId().getCode()))
+                                    && (CommonUtils.notEmpty(map) || !oldMap.get(extendField.getId().getCode())
+                                            .equals(map.get(extendField.getId().getCode())))) {
+                                CmsEditorHistory history = new CmsEditorHistory(CmsEditorHistoryService.ITEM_TYPE_CONTENT_EXTEND,
+                                        String.valueOf(contentId), extendField.getId().getCode(), CommonUtils.getDate(), userId,
+                                        map.get(extendField.getId().getCode()));
+                                editorHistoryService.save(history);
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -288,6 +347,8 @@ public class CmsContentService extends BaseService<CmsContent> {
         } else {
             attribute.setData(null);
             attribute.setDictionaryValues(null);
+            attribute.setExtendsFields(null);
+            attribute.setExtendsText(null);
         }
         dealFiles(files, images, products, attribute);
 
@@ -353,7 +414,7 @@ public class CmsContentService extends BaseService<CmsContent> {
                     } else {
                         String value = map.get(extendField.getId().getCode());
                         if (null != value) {
-                            if (ArrayUtils.contains(FULLTEXT_SEARCHABLE_EDITOR, extendField.getInputType())) {
+                            if (ArrayUtils.contains(Config.INPUT_TYPE_EDITORS, extendField.getInputType())) {
                                 map.put(extendField.getId().getCode(), HtmlUtils.cleanUnsafeHtml(value));
                                 value = HtmlUtils.removeHtmlTag(value);
                             }
@@ -833,22 +894,4 @@ public class CmsContentService extends BaseService<CmsContent> {
 
     @Autowired
     private CmsContentDao dao;
-    @Autowired
-    private CmsCategoryService categoryService;
-    @Autowired
-    private SysExtendService extendService;
-    @Autowired
-    private SysExtendFieldService extendFieldService;
-    @Autowired
-    private CmsTagService tagService;
-    @Autowired
-    private CmsContentFileService contentFileService;
-    @Autowired
-    private CmsContentTextHistoryService contentHistoryService;
-    @Autowired
-    private CmsContentProductService contentProductService;
-    @Autowired
-    private CmsContentAttributeService attributeService;
-    @Autowired
-    private CmsContentRelatedService cmsContentRelatedService;
 }

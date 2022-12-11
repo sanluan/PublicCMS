@@ -40,14 +40,14 @@
                 <dt><@t.page 'template.content'/></dt>
                 <dd>
                     <a class="button" href="cmsWebFile/lookup.html" target="dialog" mask="true"><@t.page 'webfile'/></a>
-                    <a class="button" href="javascript:;" onclick="DWZ.instances[$('textarea[name=template]',navTab.getCurrentPanel()).data('id')].replaceSelection('${r'<#-- position -->'}');return false;"><@t.page 'layout.insert'/></a>
+                    <a class="button" href="javascript:;" onclick="JUI.instances[$('textarea[name=template]',navTab.getCurrentPanel()).data('id')].replaceSelection('${r'<#-- position -->'}');return false;"><@t.page 'layout.insert'/></a>
                     <textarea name="template" class="code" escape="true" mode="freemarkermixed">${(a.template)!'<div class="container"><div class="row"><div class="col"><#-- position --></div><div class="col"><#-- position --></div></div></div>'}</textarea>
                 </dd>
             </dl>
             <dl class="nowrap">
                 <dt><@t.page 'style'/></dt>
                 <dd>
-                    <a class="button" href="javascript:;" onclick="DWZ.instances[$('textarea[name=style]',navTab.getCurrentPanel()).data('id')].replaceSelection('${r'/* selecter */'}');return false;"><@t.page 'style.insert'/></a>
+                    <a class="button" href="javascript:;" onclick="JUI.instances[$('textarea[name=style]',navTab.getCurrentPanel()).data('id')].replaceSelection('${r'/* selecter */'}');return false;"><@t.page 'style.insert'/></a>
                     <textarea name="style" class="code" mode="css">${(a.style)!'/* selecter */ .row{clear:both;display:flex;}/* selecter */ .row .col{width:50%;float:left;}'}</textarea>
                     <span class="info"><@t.page 'style.description'/></span>
                 </dd>

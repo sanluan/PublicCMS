@@ -1,0 +1,32 @@
+<@cms.editorHistory id=id><#assign a=object/></@cms.editorHistory>
+<div class="pageFormContent" layoutH>
+    <div class="unit">
+        <table class="compare">
+            <tr>
+                <td><@t.page 'version.old'/></td>
+                <td><@t.page 'version.new'/></td>
+                <td><@t.page 'compare'/></td>
+            </tr>
+            <tr>
+                <td>
+                    <textarea name="old" class="code">${(a.text)!}</textarea>
+                </td>
+                <td>
+                    <textarea name="new" class="code"></textarea>
+                </td>
+                <td><pre class="result-box"></pre></td>
+            </tr>
+        </table>
+    </div>
+    <script>
+    $('form',navTab.getCurrentPanel()).trigger(JUI.eventType.editorSync);
+    var fieldName = <#if 'content'=a.itemType>${(a.fieldName)!'text'};<#else>$('[value=${(a.fieldName)!"text"}]',navTab.getCurrentPanel()).attr('name').replace('.name','.value');</#if>
+    $('textarea[name=new]',$.pdialog.getCurrent()).val($('[name='+escapeJquery(fieldName)+']',navTab.getCurrentPanel()).val());
+    </script>
+</div>
+<div class="formBar">
+    <ul>
+        <li><a href="cmsEditorHistory/use.html?id=${a.id}" target="dialog" rel="_blank" class="button"><i class="icon-ok"></i><@t.page 'select'/></a></li>
+        <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+    </ul>
+</div>
