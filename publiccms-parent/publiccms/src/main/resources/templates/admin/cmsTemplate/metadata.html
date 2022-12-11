@@ -108,6 +108,7 @@
                 <#include '../include_page/extends.html'/>
                 <#assign extendList=(a.extendList)![]/>
                 <@extends 'extendList' extendList/>
+                <span class="info"><@t.page 'extend_field.use.metadata'/>;<@t.page 'extend_field.use.content'/>;<@t.page 'metadata.default_value_description'/></span>
             </fieldset>
     <script>
     $('input[name=useStatic]',navTab.getCurrentPanel()).on('change',function(){

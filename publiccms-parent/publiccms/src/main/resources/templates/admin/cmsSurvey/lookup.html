@@ -1,6 +1,6 @@
 <@cms.surveyList userId=userId startStartDate=startStartDate endStartDate=endStartDate 
             startEndDate=startEndDate endEndDate=endEndDate title=title
-			orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
+            orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
     <form class="pagerForm" autocomplete="off" onsubmit="return dialogSearch(this);" action="cmsSurvey/lookup.html" method="post">
         <#include "../include_page/parameters.html"/>
@@ -62,7 +62,7 @@
                     <a href="javascript:;" class="btnText green" onclick="$.bringBack({'${field!'voteId'}':'${a.id}','${titleField!'title'}':'${(a.title?js_string)!}'});return false;"><i class="icon-ok"></i><@t.page 'select'/></a>
                 </td>
                 <td class="center">${a.id!}</td>
-				<td class="center"><@t.page 'survey.type.'+a.surveyType/></td>
+                <td class="center"><@t.page 'survey.type.'+a.surveyType/></td>
                 <td class="center exclude-translate" >${a.title!}</td>
                 <td class="center exclude-translate">${a.description!}</td>
                 <td>${a.votes!}</td>

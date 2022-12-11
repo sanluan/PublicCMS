@@ -21,6 +21,7 @@
                     <input name="path" type="hidden" value="${path}" size="40"/>
                 <#else>
                     <input name="path" type="text" value="/${getUUID()}.html" size="40"/>
+                    <span class="info"><@t.page 'template_path.description'/></span>
                 </#if>
                 </dd>
             </dl>
@@ -49,6 +50,7 @@
                 <dt><@t.page 'place_data.page_size'/>:</dt>
                 <dd>
                     <input name="size" class="required digits" type="number" value="${(a.size)!0}"/>
+                    <span class="info"><@t.page 'place_data.page_size.description'/></span>
                 </dd>
             </dl>
             <dl class="nowrap placeExtend">
@@ -57,6 +59,7 @@
                     <label><input name="acceptItemTypes" type="checkbox" value="content"<#if (a.acceptItemTypes)?has_content&&a.acceptItemTypes?seq_contains('content')> checked="checked"</#if>/><@t.page 'content'/></label>
                     <label><input name="acceptItemTypes" type="checkbox" value="page"<#if (a.acceptItemTypes)?has_content&&a.acceptItemTypes?seq_contains('page')> checked="checked"</#if>/><@t.page 'page'/></label>
                     <label><input name="acceptItemTypes" type="checkbox" value="category"<#if (a.acceptItemTypes)?has_content&&a.acceptItemTypes?seq_contains('category')> checked="checked"</#if>/><@t.page 'category'/></label>
+                    <span class="info"><#noparse>${(a.itemType)!}:${(a.itemId)!}</#noparse></span>
                 </dd>
             </dl>
             <dl class="nowrap placeExtend">
@@ -76,6 +79,7 @@
                     </dt>
                     <dd>
                         <input name="fieldTextMap[title]" class="required" type="text" maxlength="20" size="10" value="${(a.fieldTextMap['title'])!t.pageMessage('title')}"/>
+                        <span class="info"><#noparse>${(a.title)!}</#noparse></span>
                     </dd>
                 </dl>
                 <dl class="nowrap">
@@ -86,6 +90,7 @@
                         <label><@t.page 'text'/>:</label>
                         <input name="fieldTextMap[url]" type="text" maxlength="20" size="10" value="${(a.fieldTextMap['url'])!t.pageMessage('url')}"/>
                         <label><input name="requiredFieldList" type="checkbox" value="url"/><@t.page 'required'/></label>
+                        <span class="info"><#noparse>${(a.url)!}</#noparse></span>
                     </dd>
                 </dl>
                 <dl class="nowrap">
@@ -96,6 +101,7 @@
                         <label><@t.page 'text'/>:</label>
                         <input name="fieldTextMap[description]" type="text" maxlength="20" size="10" value="${(a.fieldTextMap['description'])!t.pageMessage('description')}"/>
                         <label><input name="requiredFieldList" type="checkbox" value="description"/><@t.page 'required'/></label>
+                        <span class="info"><#noparse><#list (a.description!'')?split("\n") as a>${a}<#sep><br/></#list></#noparse></span>
                     </dd>
                 </dl>
                 <dl class="nowrap">
@@ -108,20 +114,24 @@
                         <label><input name="requiredFieldList" type="checkbox" value="cover"/><@t.page 'required'/></label>
                         <label><@t.page 'width'/></label><input name="coverWidth" type="number" size="5" value="${(a.coverWidth)!}"/>
                         <label><@t.page 'height'/></label><input name="coverHeight" type="number" size="5" value="${(a.coverHeight)!}"/>
+                        <span class="info"><#noparse>&lt;img src="${(a.cover)!}" alt="${(a.title)!}"/&gt;</#noparse></span>
                     </dd>
                 </dl>
             </fieldset>
             <fieldset class="placeExtend">
-                <legend><@t.page 'place_data.extend_field'/>(<@t.page 'metadata.default_value_description'/>)</legend>
+                <legend><@t.page 'place_data.extend_field'/></legend>
+                <span class="info"><#noparse>&lt;#assign attribute=getPlaceAttribute(a.id)&gt;</#noparse></span>
                 <#include '../include_page/extends.html'/>
                 <#assign extendList=(a.extendList)![]/>
                 <@extends 'extendList' extendList/>
+                <span class="info"><@t.page 'extend_field.use.place'/>;<@t.page 'extend_field.use.content'/>;<@t.page 'metadata.default_value_description'/></span>
             </fieldset>
             <fieldset>
                 <legend><@t.page 'metadata.extend_field'/></legend>
                 <#include '../include_page/extends.html'/>
                 <#assign metadataExtendList=(a.metadataExtendList)![]/>
                 <@extends 'metadataExtendList' metadataExtendList/>
+                <span class="info"><@t.page 'extend_field.use.metadata'/>;<@t.page 'extend_field.use.content'/>;<@t.page 'metadata.default_value_description'/></span>
             </fieldset>
     <script>
     $('.systemField dt [type=checkbox]',navTab.getCurrentPanel()).each(function(){

@@ -37,7 +37,7 @@
 <#elseif 'alphaColor'=extend.inputType>
 <@getAction r'<div style="background-color:${('+prefix+extend.id.code+r')!}">text</div>'/>
 <#elseif 'textarea'=extend.inputType>
-<@getAction r'<#list ('+prefix+extend.id.code+r'!"")?split("\n") as a>${a}<#sep><br></#list>'/>
+<@getAction r'<#list ('+prefix+extend.id.code+r'!"")?split("\n") as a>${a}<#sep><br/></#list>'/>
 <#else>
 <@getAction r'${('+prefix+extend.id.code+r')!}'/>
 </#if>

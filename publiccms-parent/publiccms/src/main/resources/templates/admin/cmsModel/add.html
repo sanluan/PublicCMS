@@ -127,7 +127,7 @@
                         <label><@t.page 'text'/>:</label>
                         <input name="fieldTextMap[description]" type="text" autocomplete="on" maxlength="20" size="10" value="${(a.fieldTextMap['description'])!t.pageMessage('description')}"/>
                         <label><input name="requiredFieldList" type="checkbox" value="description"/><@t.page 'required'/></label>
-                        <span class="info"><#noparse>${(content.description)!}</#noparse></span>
+                        <span class="info"><#noparse><#list (content.description!'')?split("\n") as a>${a}<#sep><br/></#list></#noparse></span>
                     </dd>
                 </dl>
                 <dl class="nowrap">
@@ -140,7 +140,7 @@
                         <label><input name="requiredFieldList" type="checkbox" value="cover"/><@t.page 'required'/></label>
                         <label><@t.page 'width'/></label><input name="coverWidth" type="number" size="5" value="${(a.coverWidth)!}"/>
                         <label><@t.page 'height'/></label><input name="coverHeight" type="number" size="5" value="${(a.coverHeight)!}"/>
-                        <span class="info"><#noparse>${(content.cover)!}</#noparse></span>
+                        <span class="info"><#noparse>&lt;img src="${(content.cover)!}" alt="${(content.title)!}"/&gt;</#noparse></span>
                     </dd>
                 </dl>
             </fieldset>
@@ -185,7 +185,7 @@
                 <#include "../include_page/extends.html"/>
                 <#assign contentExtendList=(a.extendList)![]>
                 <@extends 'extendList' contentExtendList true/>
-                <span class="info"><@t.page 'extend_field.use.content'/>;<@t.page 'extend_field.invalid'/>:source,sourceUrl,wordCount,minPrice,maxPrice,text;<@t.page 'metadata.default_value_description'/></span>
+                <span class="info"><@t.page 'extend_field.use.content'/>;<@t.page 'extend_field.use.content'/>;<@t.page 'extend_field.invalid'/>:source,sourceUrl,wordCount,minPrice,maxPrice,text;<@t.page 'metadata.default_value_description'/></span>
             </fieldset>
             <fieldset>
                 <legend><@t.page 'recommend_info'/></legend>

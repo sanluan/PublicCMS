@@ -177,7 +177,7 @@
                 <a class="btnLook" href="cmsVote/lookup.html?field=value" lookupGroup="${name}[${index}]" width="1000" height="500"><@t.page 'select'/></a>
             </#if>
             <#break>
-		<#case 'survey'>
+        <#case 'survey'>
             <@cms.survey id=value><#local survey=object/></@cms.survey>
             <#if 'view'=type>
                 ${(value)!}:${(survey.title)!}
