@@ -28,6 +28,7 @@ import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
+import com.publiccms.common.tools.LanguagesUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.common.tools.VerificationUtils;
 import com.publiccms.common.tools.ZipUtils;
@@ -209,17 +210,25 @@ public class CmsTemplateAdminController {
         if (null != files) {
             try {
                 for (MultipartFile file : files) {
-                    String filepath = path + CommonConstants.SEPARATOR + file.getOriginalFilename();
-                    String destFullFileName = siteComponent.getTemplateFilePath(site, filepath);
-                    CmsFileUtils.upload(file, destFullFileName);
-                    if (destFullFileName.endsWith(".zip") && CmsFileUtils.isFile(destFullFileName)) {
-                        ZipUtils.unzipHere(destFullFileName, encoding);
-                        CmsFileUtils.delete(destFullFileName);
+                    String shortFilepath = path + CommonConstants.SEPARATOR + file.getOriginalFilename();
+                    String filepath = siteComponent.getTemplateFilePath(site, shortFilepath);
+                    CmsFileUtils.upload(file, filepath);
+                    if (shortFilepath.endsWith(".zip") && CmsFileUtils.isFile(filepath)) {
+                        ZipUtils.unzipHere(filepath, encoding);
+                        CmsFileUtils.delete(filepath);
                         metadataComponent.clear();
                     } else {
-                        CmsPageMetadata metadata = new CmsPageMetadata();
-                        metadata.setUseDynamic(true);
-                        metadataComponent.updateTemplateMetadata(filepath, metadata);
+                        String suffix = CmsFileUtils.getSuffix(filepath);
+                        if (CmsFileUtils.isSafe(filepath, suffix)) {
+                            CmsPageMetadata metadata = new CmsPageMetadata();
+                            metadata.setUseDynamic(true);
+                            metadataComponent.updateTemplateMetadata(filepath, metadata);
+                        } else {
+                            CmsFileUtils.delete(filepath);
+                            model.addAttribute(CommonConstants.ERROR, LanguagesUtils.getMessage(
+                                    CommonConstants.applicationContext, request.getLocale(), "verify.custom.file.unsafe"));
+                            return CommonConstants.TEMPLATE_ERROR;
+                        }
                     }
                     logOperateService.save(
                             new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,

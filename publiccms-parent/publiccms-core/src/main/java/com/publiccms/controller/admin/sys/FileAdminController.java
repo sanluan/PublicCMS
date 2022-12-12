@@ -93,21 +93,28 @@ public class FileAdminController {
                     } else {
                         CmsFileUtils.upload(file, filepath);
                     }
-                    result.put("field", field);
-                    result.put(field, fileName);
-                    String fileType = CmsFileUtils.getFileType(suffix);
-                    result.put("fileType", fileType);
-                    FileSize fileSize = CmsFileUtils.getFileSize(filepath, suffix);
-                    result.put("width", fileSize.getWidth());
-                    result.put("height", fileSize.getHeight());
-                    result.put("fileSize", fileSize.getFileSize());
-                    if (CommonUtils.notEmpty(originalField)) {
-                        result.put("originalField", originalField);
-                        result.put(originalField, originalName);
+                    if (CmsFileUtils.isSafe(filepath, suffix)) {
+                        result.put("field", field);
+                        result.put(field, fileName);
+                        String fileType = CmsFileUtils.getFileType(suffix);
+                        result.put("fileType", fileType);
+                        FileSize fileSize = CmsFileUtils.getFileSize(filepath, suffix);
+                        result.put("width", fileSize.getWidth());
+                        result.put("height", fileSize.getHeight());
+                        result.put("fileSize", fileSize.getFileSize());
+                        if (CommonUtils.notEmpty(originalField)) {
+                            result.put("originalField", originalField);
+                            result.put(originalField, originalName);
+                        }
+                        logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                                originalName, fileType, fileSize.getFileSize(), fileSize.getWidth(), fileSize.getHeight(),
+                                RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
+                    } else {
+                        result.put("statusCode", 300);
+                        result.put("message", LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
+                                "verify.custom.file.unsafe"));
+                        CmsFileUtils.delete(filepath);
                     }
-                    logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                            originalName, fileType, fileSize.getFileSize(), fileSize.getWidth(), fileSize.getHeight(),
-                            RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
                     return result;
                 } catch (IllegalStateException | IOException e) {
                     log.error(e.getMessage(), e);
@@ -315,24 +322,33 @@ public class FileAdminController {
                     String filepath = siteComponent.getWebFilePath(site, fileName);
                     try {
                         CmsFileUtils.upload(file, filepath);
-                        result.put("field", field);
-                        result.put(field, fileName);
-                        String fileType = CmsFileUtils.getFileType(suffix);
-                        result.put("fileType", fileType);
-                        result.put("fileSize", file.getSize());
-                        FileSize fileSize = CmsFileUtils.getFileSize(filepath, suffix);
-                        result.put("width", fileSize.getWidth());
-                        result.put("height", fileSize.getHeight());
-                        if (CommonUtils.notEmpty(originalField)) {
-                            result.put("originalField", originalField);
-                            result.put(originalField, originalName);
+                        if (CmsFileUtils.isSafe(filepath, suffix)) {
+                            result.put("field", field);
+                            result.put(field, fileName);
+                            String fileType = CmsFileUtils.getFileType(suffix);
+                            result.put("fileType", fileType);
+                            result.put("fileSize", file.getSize());
+                            FileSize fileSize = CmsFileUtils.getFileSize(filepath, suffix);
+                            result.put("width", fileSize.getWidth());
+                            result.put("height", fileSize.getHeight());
+                            if (CommonUtils.notEmpty(originalField)) {
+                                result.put("originalField", originalField);
+                                result.put(originalField, originalName);
+                            }
+                            resultList.add(result);
+                            logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                                    originalName, fileType, file.getSize(), fileSize.getWidth(), fileSize.getHeight(),
+                                    RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
+                        } else {
+                            result.put("statusCode", 300);
+                            result.put("message", LanguagesUtils.getMessage(CommonConstants.applicationContext,
+                                    request.getLocale(), "verify.custom.file.unsafe"));
+                            CmsFileUtils.delete(filepath);
                         }
-                        resultList.add(result);
-                        logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                                originalName, fileType, file.getSize(), fileSize.getWidth(), fileSize.getHeight(),
-                                RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
                     } catch (IllegalStateException | IOException e) {
                         log.error(e.getMessage(), e);
+                        result.put("statusCode", 300);
+                        result.put("message", e.getMessage());
                     }
                 } else {
                     result.put("statusCode", 300);

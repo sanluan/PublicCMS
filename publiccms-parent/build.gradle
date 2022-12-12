@@ -28,17 +28,16 @@ subprojects {
     test.enabled = false
 
     ext {
+        // https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api
+        servletVersion = "4.0.1"
         // http://mvnrepository.com/artifact/org.springframework/spring-core
         // https://spring.io/projects/spring-framework
         springVersion = "5.3.24"
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
         // https://spring.io/projects/spring-boot
         springBootVersion = "2.7.6"
-        // http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
-        // http://hc.apache.org/downloads.cgi
-        httpclientVersion = "4.5.13"
-        // http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
-        jacksonVersion = "2.14.1"
+        // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine
+        junitVersion = "5.9.1"
         // http://mvnrepository.com/artifact/org.hibernate/hibernate-core
         // http://hibernate.org/orm/downloads/
         hibernateVersion = "5.6.11.Final"
@@ -51,8 +50,6 @@ subprojects {
         hibernateValidatorVersion = "6.0.23.Final"
         // https://mvnrepository.com/artifact/org.ehcache/ehcache
         ehcacheVersion = "3.9.9"
-        // http://mvnrepository.com/artifact/org.freemarker/freemarker
-        freemarkerVersion = "2.3.31"
         // http://mvnrepository.com/artifact/org.mybatis/mybatis
         mybatisVersion = "3.5.11"
         // http://mvnrepository.com/artifact/org.mybatis/mybatis-spring
@@ -63,6 +60,10 @@ subprojects {
         pageHelperVersion = "5.3.2"
         // https://mvnrepository.com/artifact/org.mybatis.dynamic-sql/mybatis-dynamic-sql
         dynamicSqlVersion = "1.4.1"
+        // http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
+        jacksonVersion = "2.14.1"
+        // http://mvnrepository.com/artifact/org.freemarker/freemarker
+        freemarkerVersion = "2.3.31"
         // https://mvnrepository.com/artifact/org.apache.lucene/lucene-analyzers-smartcn
         luceneVersion = "8.11.2"
         // http://mvnrepository.com/artifact/redis.clients/jedis
@@ -73,6 +74,9 @@ subprojects {
         hikariCPVersion = "4.0.3"
         // https://mvnrepository.com/artifact/com.mysql/mysql-connector-j
         mysqlVersion = "8.0.31"
+        // http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
+        // http://hc.apache.org/downloads.cgi
+        httpclientVersion = "4.5.13"
         // https://mvnrepository.com/artifact/fr.opensagres.xdocreport/fr.opensagres.poi.xwpf.converter.xhtml
         xhtmlConverterVersion = "2.0.4"
         // https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml
@@ -99,6 +103,8 @@ subprojects {
         image4jVersion = "0.7.2"
         // https://mvnrepository.com/artifact/net.sf.cssbox/pdf2dom -->
         pdf2domVersion = "2.0.3"
+        // https://mvnrepository.com/artifact/com.github.bgalek.security.svg/safe-svg
+        safeSvgVersion = "1.1.6"
         // http://mvnrepository.com/artifact/eu.bitwalker/UserAgentUtils
         userAgentUtilsVersion = "1.21"
         // https://mvnrepository.com/artifact/org.jsoup/jsoup
@@ -111,10 +117,6 @@ subprojects {
         antVersion = "1.10.12"
         // http://mvnrepository.com/artifact/javax.transaction/jta
         jtaVersion = "1.1"
-        // https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api
-        servletVersion = "4.0.1"
-        // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine
-        junitVersion = "5.9.1"
     }
     sourceCompatibility = 1.8
     targetCompatibility = 1.8

@@ -5,19 +5,7 @@ configurations {
 }
 
 dependencies {
-    implementation "commons-fileupload:commons-fileupload:${fileuploadVersion}"
-    implementation "org.apache.commons:commons-collections4:${collectionsVersion}"
-    implementation "org.apache.commons:commons-lang3:${langVersion}"
-    implementation "commons-io:commons-io:${ioVersion}"
-    implementation "org.apache.commons:commons-text:${textVersion}"
-    implementation "commons-codec:commons-codec:${codecVersion}"
-
-    implementation "org.apache.httpcomponents:httpmime:${httpclientVersion}"
-    implementation "org.apache.httpcomponents:httpclient-cache:${httpclientVersion}"
-
-    implementation "org.apache.ant:ant:${antVersion}"
-
-    implementation "org.freemarker:freemarker:${freemarkerVersion}"
+    implementation "javax.servlet:javax.servlet-api:${servletVersion}"
 
     implementation "org.springframework:spring-context-support:${springVersion}"
     implementation "org.springframework:spring-orm:${springVersion}"
@@ -28,33 +16,43 @@ dependencies {
     implementation "org.hibernate.search:hibernate-search-mapper-orm:${hibernateSearchVersion}"
     implementation "org.hibernate.search:hibernate-search-backend-lucene:${hibernateSearchVersion}"
     implementation "org.hibernate.search:hibernate-search-backend-elasticsearch:${hibernateSearchVersion}"
+    implementation "org.mybatis:mybatis:${mybatisVersion}"
+    
     implementation "org.hibernate:hibernate-jcache:${hibernateVersion}"
-
     implementation "org.ehcache:ehcache:${ehcacheVersion}"
-
-    implementation "org.apache.poi:poi-ooxml:${poiVersion}"
-    implementation "org.apache.poi:poi-scratchpad:${poiVersion}"
-    implementation "fr.opensagres.xdocreport:fr.opensagres.poi.xwpf.converter.xhtml:${xhtmlConverterVersion}"
-    implementation "org.sejda.imageio:webp-imageio:${webpVersion}"
-    implementation "net.ifok.image:image4j:${image4jVersion}"
-    implementation "net.sf.cssbox:pdf2dom:${pdf2domVersion}"
-    implementation "org.jsoup:jsoup:${jsoupVersion}"
+    
+    implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+    implementation "org.freemarker:freemarker:${freemarkerVersion}"
 
     implementation "org.apache.lucene:lucene-analyzers-smartcn:${luceneVersion}"
     implementation "org.apache.lucene:lucene-backward-codecs:${luceneVersion}"
     implementation "org.apache.lucene:lucene-highlighter:${luceneVersion}"
 
-    implementation "org.mybatis:mybatis:${mybatisVersion}"
-
-
-    implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
-
-    implementation "javax.transaction:jta:${jtaVersion}"
-    implementation "com.sun.mail:jakarta.mail:${mailVersion}"
-    implementation "javax.servlet:javax.servlet-api:${servletVersion}"
-
     implementation ("org.quartz-scheduler:quartz:${quartzVersion}") {
         exclude group:"com.mchange"
         exclude group:"com.zaxxer"
     }
+
+    implementation "fr.opensagres.xdocreport:fr.opensagres.poi.xwpf.converter.xhtml:${xhtmlConverterVersion}"
+    implementation "org.apache.poi:poi-ooxml:${poiVersion}"
+    implementation "org.apache.poi:poi-scratchpad:${poiVersion}"
+
+    implementation "commons-fileupload:commons-fileupload:${fileuploadVersion}"
+    implementation "org.apache.commons:commons-collections4:${collectionsVersion}"
+    implementation "org.apache.commons:commons-lang3:${langVersion}"
+    implementation "commons-io:commons-io:${ioVersion}"
+    implementation "org.apache.commons:commons-text:${textVersion}"
+    implementation "commons-codec:commons-codec:${codecVersion}"
+    implementation "org.apache.httpcomponents:httpmime:${httpclientVersion}"
+    implementation "org.apache.httpcomponents:httpclient-cache:${httpclientVersion}"
+
+    implementation "org.sejda.imageio:webp-imageio:${webpVersion}"
+    implementation "net.ifok.image:image4j:${image4jVersion}"
+    implementation "net.sf.cssbox:pdf2dom:${pdf2domVersion}"
+    implementation "com.github.bgalek.security.svg:safe-svg:${safeSvgVersion}"
+    implementation "org.jsoup:jsoup:${jsoupVersion}"
+
+    implementation "com.sun.mail:jakarta.mail:${mailVersion}"
+    implementation "org.apache.ant:ant:${antVersion}"
+    implementation "javax.transaction:jta:${jtaVersion}"
 }
