@@ -339,7 +339,8 @@ public class CmsCategoryAdminController {
                         contentService.batchWorkId(site.getId(), category.getId(), categoryModel.getId().getModelId(),
                                 (list, i) -> {
                                     templateComponent.createContentFile(site, list, category, categoryModel);
-                                    log.info("batch " + i + " publish size : " + list.size());
+                                    log.info("publish for category : " + category.getName() + " batch " + i + " size : "
+                                            + list.size());
                                 }, PageHandler.MAX_PAGE_SIZE);
                     }
                 }

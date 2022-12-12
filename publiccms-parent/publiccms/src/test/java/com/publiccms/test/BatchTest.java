@@ -25,7 +25,7 @@ import com.publiccms.logic.service.sys.SysSiteService;
 import config.spring.ApplicationConfig;
 
 /**
- * CmsContentTest https://junit.org/junit5/docs/current/user-guide/
+ * BatchTest https://junit.org/junit5/docs/current/user-guide/
  * 
  */
 @DisplayName("Batch test case")

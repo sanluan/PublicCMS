@@ -184,7 +184,7 @@ public class CmsModelAdminController {
                 if (null != category) {
                     contentService.batchWorkId(site.getId(), category.getId(), id, (list, i) -> {
                         templateComponent.createContentFile(site, list, category, categoryModel);
-                        log.info("batch " + i + " publish size : " + list.size());
+                        log.info("publish for category : " + category.getName() + " batch " + i + " size : " + list.size());
                     }, PageHandler.MAX_PAGE_SIZE);
                 }
             }
@@ -211,17 +211,17 @@ public class CmsModelAdminController {
             for (CmsCategoryModel categoryModel : categoryModelService.getList(site.getId(), id, null)) {
                 CmsCategory category = categoryService.getEntity(categoryModel.getId().getCategoryId());
                 if (null != category) {
-                    log.info("begin rebuild search text for category : " + category.getId());
+                    log.info("begin rebuild search text for category : " + category.getName());
                     contentService.batchWorkContent(site.getId(), category.getId(), id, (list, i) -> {
                         List<SysExtendField> categoryExtendList = null;
                         if (null != category.getExtendId()) {
                             categoryExtendList = extendFieldService.getList(category.getExtendId(), null, true);
                         }
                         contentService.rebuildSearchText(site.getId(), entity, categoryExtendList, list);
-                        log.info("rebuild search text for category : " + category.getId() + " batch " + i + " size : "
+                        log.info("rebuild search text for category : " + category.getName() + " batch " + i + " size : "
                                 + list.size());
                     }, PageHandler.MAX_PAGE_SIZE);
-                    log.info("complete rebuild search text for category : " + category.getId());
+                    log.info("complete rebuild search text for category : " + category.getName());
                 }
             }
         }
