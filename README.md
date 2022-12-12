@@ -100,7 +100,7 @@ docker compose up -d
 ```
 mysql host/port : mysql-cms/3306 ; user/password  : publiccms/password!@#
 
-Meaning more parameters, and please refer to https://hub.docker.com/r/sanluan/publiccms/
+More parameters, please refer to https://hub.docker.com/r/sanluan/publiccms/
 
 ## Demonstration
 
