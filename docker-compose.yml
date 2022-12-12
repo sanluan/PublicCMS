@@ -1,0 +1,34 @@
+version: "3.9"
+services:
+  publiccms:
+    build: .
+    container_name: publiccms
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./data/publiccms:/data/publiccms
+      - ./log/publiccms.log:/var/log/publiccms.log
+    depends_on:
+      - "mysql"
+  mysql:
+    image: mysql:lastest
+    container_name: mysql
+    volumes:
+      - ./data:/var/lib/mysql
+      - ./data/config/mysql:/etc/mysql/conf.d
+      - ./log:/var/log/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpassword!@#
+      - MYSQL_DATABASE=publiccms
+      - MYSQL_USER=publiccms
+      - MYSQL_PASSWORD=publiccmspassword!@#
+  nginx:
+    nginx:
+    image: nginx:latest
+    container_name: nginx
+    volumes:
+      - ./data/config/nginx:/etc/nginx/conf.d/ #配置文件挂载
+      - ./data/publiccms:/data/publiccms #静态资源根目录挂载
+      - ./log:/var/log/nginx #日志文件挂载
+    ports:
+      - "80:80"
