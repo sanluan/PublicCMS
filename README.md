@@ -52,6 +52,7 @@ java -jar publiccms.war
 Visit the program page http://localhost:8080/ and follow the prompts to configure and initialize the database
 
 Management background to visit relative paths for http://localhost:8080/admin/
+
 * direct download an executable program (https://www.publiccms.com/download.html)
 
 Prepare java and mysql environments locally, download executable programs, compress and decompress them, and run startup.bat or startup.sh
@@ -71,14 +72,19 @@ java -jar -Dfile.encoding="UTF-8" -Dcms.port=8080 -Dcms.contextPath=/publiccms -
 For details about the parameters and their meanings, see the deployment manual
 
 * Run in tomcat
+
 Rename publiccms.war.original to publiccms.war or ROOT.war(the context path is /) and move the file to the tomcat webapps directory,The "-Dcms.filePath" parameter is still valid
+
 * Run in docker
-Execution:
+
+Execute:
 ```
 docker run -d -p 8080:8080 sanluan/publiccms
 
 ```
-Build your own image: Execute
+Build your own image
+
+Execute:
 
 ```
 docker build -t mypubliccms .
@@ -86,12 +92,14 @@ docker run -d -p 8080:8080 mypubliccms
 
 ```
 * Run in docker compose
-Execution:
+
+Execute:
 ```
 docker compose up -d
 
 ```
 mysql host/port : mysql-cms/3306 ; user/password  : publiccms/password!@#
+
 Meaning more parameters, and please refer to https://hub.docker.com/r/sanluan/publiccms/
 
 ## Demonstration

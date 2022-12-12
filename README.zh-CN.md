@@ -50,8 +50,11 @@ cd publiccms/target
 java -jar publiccms.war
 ```
 访问程序页面http://localhost:8080/ ,根据页面提示配置并初始化数据库
+
 管理后台访问相对路径为http://localhost:8080/admin/ ,数据脚本内置管理员账号/密码:admin/admin
+
 * 直接下载可执行程序(https://www.publiccms.com/download.html)
+
 本地准备java,mysql环境,下载可执行程序压缩解压缩后运行startup.bat或startup.sh
 
 ## 定制运行方式
@@ -70,24 +73,29 @@ java -jar -Dfile.encoding="UTF-8" -Dcms.port=8080 -Dcms.contextPath=/publiccms -
 * tomcat中运行
 将publiccms.war.original重命名为publiccms.war或ROOT.war(上下文路径为/),移动文件到tomcat的webapps目录下,此时-Dcms.filePath参数依旧有效
 * docker中运行
+
 执行:
 ```
 docker run -d -p 8080:8080 sanluan/publiccms
 
 ```
-自行构建镜像:执行
+自行构建镜像
+
+执行:
 ```
 docker build -t mypubliccms .
 docker run -d -p 8080:8080 mypubliccms
 
 ```
 * docker compose中运行
+
 执行:
 ```
 docker compose up -d
 
 ```
 mysql ip/端口 : mysql-cms/3306 ; 用户名/密码 : publiccms/password!@#
+
 更多参数及含义请参考 https://hub.docker.com/r/sanluan/publiccms/
 
 ## 演示
