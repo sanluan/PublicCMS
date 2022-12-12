@@ -57,7 +57,7 @@ public class CommentImportTest {
                     }
                 }
                 CmsComment entity = new CmsComment((short) 1, 1, null, null, 0, 0,
-                        Integer.parseInt((String) map.get("topicSourceId")), null, null, null,
+                        Integer.parseInt((String) map.get("topicSourceId")), "127.0.0.1", null, null, null,
                         DateFormatUtils.getDateFormat(DateFormatUtils.FULL_DATE_FORMAT_STRING).parse((String) map.get("ctime")),
                         CmsCommentService.STATUS_PEND, false, text);
                 commentsService.save(entity);

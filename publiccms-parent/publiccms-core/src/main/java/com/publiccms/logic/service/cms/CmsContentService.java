@@ -215,8 +215,8 @@ public class CmsContentService extends BaseService<CmsContent> {
                     entity.isHasImages() ? contentParameters.getImages() : null,
                     entity.isHasProducts() ? contentParameters.getProducts() : null, attribute);
 
-            saveEditorHistory(attributeService.getEntity(entity.getId()), attribute, entity.getId(), userId, modelExtendList,
-                    categoryExtendList, map);// 保存编辑器字段历史记录
+            saveEditorHistory(attributeService.getEntity(entity.getId()), attribute, siteId, entity.getId(), userId,
+                    modelExtendList, categoryExtendList, map);// 保存编辑器字段历史记录
 
             attributeService.updateAttribute(entity.getId(), attribute);// 更新保存扩展字段，文本字段
             cmsContentRelatedService.update(entity.getId(), userId, contentParameters.getContentRelateds());// 更新保存推荐内容
@@ -224,11 +224,11 @@ public class CmsContentService extends BaseService<CmsContent> {
         return entity;
     }
 
-    private void saveEditorHistory(CmsContentAttribute oldAttribute, CmsContentAttribute attribute, long contentId, long userId,
-            List<SysExtendField> modelExtendList, List<SysExtendField> categoryExtendList, Map<String, String> map) {
+    private void saveEditorHistory(CmsContentAttribute oldAttribute, CmsContentAttribute attribute, short siteId, long contentId,
+            long userId, List<SysExtendField> modelExtendList, List<SysExtendField> categoryExtendList, Map<String, String> map) {
         if (null != oldAttribute) {
             if (CommonUtils.notEmpty(oldAttribute.getText()) && !oldAttribute.getText().equals(attribute.getText())) {
-                CmsEditorHistory history = new CmsEditorHistory(CmsEditorHistoryService.ITEM_TYPE_CONTENT,
+                CmsEditorHistory history = new CmsEditorHistory(siteId, CmsEditorHistoryService.ITEM_TYPE_CONTENT,
                         String.valueOf(contentId), "text", CommonUtils.getDate(), userId, oldAttribute.getText());
                 editorHistoryService.save(history);
             }
@@ -240,8 +240,9 @@ public class CmsContentService extends BaseService<CmsContent> {
                             if (CommonUtils.notEmpty(oldMap) && CommonUtils.notEmpty(oldMap.get(extendField.getId().getCode()))
                                     && (CommonUtils.notEmpty(map) || !oldMap.get(extendField.getId().getCode())
                                             .equals(map.get(extendField.getId().getCode())))) {
-                                CmsEditorHistory history = new CmsEditorHistory(CmsEditorHistoryService.ITEM_TYPE_CONTENT_EXTEND,
-                                        String.valueOf(contentId), extendField.getId().getCode(), CommonUtils.getDate(), userId,
+                                CmsEditorHistory history = new CmsEditorHistory(siteId,
+                                        CmsEditorHistoryService.ITEM_TYPE_CONTENT_EXTEND, String.valueOf(contentId),
+                                        extendField.getId().getCode(), CommonUtils.getDate(), userId,
                                         map.get(extendField.getId().getCode()));
                                 editorHistoryService.save(history);
                             }
@@ -254,8 +255,9 @@ public class CmsContentService extends BaseService<CmsContent> {
                             if (CommonUtils.notEmpty(oldMap) && CommonUtils.notEmpty(oldMap.get(extendField.getId().getCode()))
                                     && (CommonUtils.notEmpty(map) || !oldMap.get(extendField.getId().getCode())
                                             .equals(map.get(extendField.getId().getCode())))) {
-                                CmsEditorHistory history = new CmsEditorHistory(CmsEditorHistoryService.ITEM_TYPE_CONTENT_EXTEND,
-                                        String.valueOf(contentId), extendField.getId().getCode(), CommonUtils.getDate(), userId,
+                                CmsEditorHistory history = new CmsEditorHistory(siteId,
+                                        CmsEditorHistoryService.ITEM_TYPE_CONTENT_EXTEND, String.valueOf(contentId),
+                                        extendField.getId().getCode(), CommonUtils.getDate(), userId,
                                         map.get(extendField.getId().getCode()));
                                 editorHistoryService.save(history);
                             }
@@ -268,14 +270,26 @@ public class CmsContentService extends BaseService<CmsContent> {
 
     /**
      * @param siteId
-     * @param categoryIds
-     * @param modelIds
+     * @param categoryId
+     * @param modelId
      * @param worker
      * @param batchSize
      */
-    public void batchWork(short siteId, Integer[] categoryIds, String[] modelIds, BiConsumer<List<CmsContent>, Integer> worker,
+    public void batchWorkId(short siteId, Integer categoryId, String modelId, BiConsumer<List<Long>, Integer> worker,
             int batchSize) {
-        dao.batchWork(siteId, categoryIds, modelIds, worker, batchSize);
+        dao.batchWorkId(siteId, categoryId, modelId, worker, batchSize);
+    }
+
+    /**
+     * @param siteId
+     * @param categoryId
+     * @param modelId
+     * @param worker
+     * @param batchSize
+     */
+    public void batchWorkContent(short siteId, Integer categoryId, String modelId, BiConsumer<List<CmsContent>, Integer> worker,
+            int batchSize) {
+        dao.batchWorkContent(siteId, categoryId, modelId, worker, batchSize);
     }
 
     public void rebuildSearchText(short siteId, CmsModel cmsModel, List<SysExtendField> categoryExtendList,

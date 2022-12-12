@@ -18,12 +18,16 @@ import com.publiccms.entities.cms.CmsCategoryModel;
 public class CmsCategoryModelDao extends BaseDao<CmsCategoryModel> {
 
     /**
+     * @param siteId
      * @param modelId
      * @param categoryId
      * @return results list
      */
-    public List<CmsCategoryModel> getList(String modelId, Integer categoryId) {
+    public List<CmsCategoryModel> getList(short siteId, String modelId, Integer categoryId) {
         QueryHandler queryHandler = getQueryHandler("from CmsCategoryModel bean");
+        if (CommonUtils.notEmpty(siteId)) {
+            queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
+        }
         if (CommonUtils.notEmpty(modelId)) {
             queryHandler.condition("bean.id.modelId = :modelId").setParameter("modelId", modelId);
         }

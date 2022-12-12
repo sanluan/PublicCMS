@@ -53,8 +53,10 @@ DROP TABLE IF EXISTS `cms_category_model`;
 CREATE TABLE `cms_category_model` (
   `category_id` int(11) NOT NULL COMMENT '分类',
   `model_id` varchar(20) NOT NULL COMMENT '模型编码',
+  `site_id` smallint(6) NOT NULL COMMENT '站点'
   `template_path` varchar(200) default NULL COMMENT '内容模板路径',
-  PRIMARY KEY  (`category_id`, `model_id`)
+  PRIMARY KEY  (`category_id`, `model_id`),
+  KEY `cms_category_model_site_id`(`site_id`, `model_id`)
 ) COMMENT='分类模型';
 -- ----------------------------
 -- Table structure for cms_comment
@@ -69,6 +71,7 @@ CREATE TABLE `cms_comment` (
   `replies` int(11) NOT NULL default 0 COMMENT '回复数',
   `scores` int(11) NOT NULL COMMENT '分数',
   `content_id` bigint(20) NOT NULL COMMENT '文章内容',
+  `ip` varchar(130) NOT NULL COMMENT 'IP'
   `check_user_id` bigint(20) DEFAULT NULL COMMENT '审核用户',
   `check_date` datetime DEFAULT NULL COMMENT '审核日期',
   `update_date` datetime DEFAULT NULL COMMENT '更新日期',
@@ -271,14 +274,15 @@ CREATE TABLE `cms_dictionary_exclude_value` (
 -- ----------------------------
 CREATE TABLE `cms_editor_history` (
   `id` bigint(20) NOT NULL auto_increment,
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
   `item_type` varchar(50) NOT NULL COMMENT '数据类型',
   `item_id` varchar(100) NOT NULL COMMENT '数据id',
   `field_name` varchar(100) NOT NULL COMMENT '字段名',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   `user_id` bigint(20) NOT NULL COMMENT '修改用户',
   `text` longtext NOT NULL COMMENT '文本',
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `cms_editor_content_id` (`item_type`,`item_id`, `field_name`, `create_date`)
+  PRIMARY KEY (`id`),
+  KEY `cms_editor_content_id` (`site_id`, `item_type`, `item_id`, `field_name`, `create_date`)
 ) COMMENT='内容扩展';
 -- ----------------------------
 -- Table structure for cms_place
@@ -412,6 +416,7 @@ CREATE TABLE `cms_user_score`  (
   `item_type` varchar(50) NOT NULL COMMENT '类型',
   `item_id` bigint(20) NOT NULL COMMENT '项目',
   `score` int(11) NOT NULL COMMENT '分数',
+  `ip` varchar(130) NOT NULL COMMENT 'IP',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   PRIMARY KEY (`user_id`, `item_type`, `item_id`),
   KEY `cms_user_score_item_type`(`item_type`, `item_id`, `create_date`),
@@ -427,6 +432,7 @@ CREATE TABLE `cms_user_survey` (
   `survey_id` bigint(20) NOT NULL COMMENT '问卷',
   `site_id` smallint(6) NOT NULL COMMENT '站点',
   `score` int(11) DEFAULT NULL COMMENT '分数',
+  `ip` varchar(130) NOT NULL COMMENT 'IP',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   PRIMARY KEY (`user_id`, `survey_id`),
   KEY `cms_user_survey_site_id` (`site_id`, `create_date`)
@@ -504,6 +510,7 @@ CREATE TABLE `cms_word` (
   `name` varchar(100) NOT NULL COMMENT '名称',
   `search_count` int(11) NOT NULL COMMENT '搜索次数',
   `hidden` tinyint(1) NOT NULL COMMENT '隐藏',
+  `ip` varchar(130) NOT NULL COMMENT 'IP',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `cms_word_name` (`site_id`, `name`),

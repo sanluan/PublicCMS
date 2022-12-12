@@ -33,13 +33,20 @@ public class CmsUserScore implements java.io.Serializable {
     @GeneratorColumn(title = "ID")
     private CmsUserScoreId id;
     /**
-     * score<p>
+     * score
+     * <p>
      * 分数
      */
     @GeneratorColumn(title = "分数", order = true)
     private int score;
     /**
-     * create date<p>
+     * ip
+     */
+    @GeneratorColumn(title = "IP")
+    private String ip;
+    /**
+     * create date
+     * <p>
      * 创建日期
      */
     @GeneratorColumn(title = "创建日期")
@@ -48,9 +55,10 @@ public class CmsUserScore implements java.io.Serializable {
     public CmsUserScore() {
     }
 
-    public CmsUserScore(CmsUserScoreId id, int score, Date createDate) {
+    public CmsUserScore(CmsUserScoreId id, int score, String ip, Date createDate) {
         this.id = id;
         this.score = score;
+        this.ip = ip;
         this.createDate = createDate;
     }
 
@@ -73,6 +81,15 @@ public class CmsUserScore implements java.io.Serializable {
 
     public void setScore(int score) {
         this.score = score;
+    }
+
+    @Column(name = "ip", nullable = false, length = 130)
+    public String getIp() {
+        return this.ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
     }
 
     @Temporal(TemporalType.TIMESTAMP)

@@ -194,11 +194,11 @@ public class CmsContentDao extends BaseDao<CmsContent> {
                 };
                 b.must(f -> f.bool(keywordFiledsContributor));
             }
-			if (CommonUtils.notEmpty(queryEntity.getExclude())) {
-				b.mustNot(queryEntity.isPhrase()
-						? t -> t.phrase().fields(queryEntity.getFields()).matching(queryEntity.getExclude())
-						: t -> t.match().fields(queryEntity.getFields()).matching(queryEntity.getExclude()));
-			}
+            if (CommonUtils.notEmpty(queryEntity.getExclude())) {
+                b.mustNot(queryEntity.isPhrase()
+                        ? t -> t.phrase().fields(queryEntity.getFields()).matching(queryEntity.getExclude())
+                        : t -> t.match().fields(queryEntity.getFields()).matching(queryEntity.getExclude()));
+            }
             if (CommonUtils.notEmpty(queryEntity.getTagIds())) {
                 Consumer<? super BooleanPredicateClausesStep<?>> tagIdsFiledsContributor = c -> {
                     for (Long tagId : queryEntity.getTagIds()) {
@@ -331,19 +331,33 @@ public class CmsContentDao extends BaseDao<CmsContent> {
             }
         }
     }
-
-    public void batchWork(short siteId, Integer[] categoryIds, String[] modelIds, BiConsumer<List<CmsContent>, Integer> worker,
+    
+    public void batchWorkContent(short siteId, Integer categoryId, String modelId, BiConsumer<List<CmsContent>, Integer> worker,
             int batchSize) {
         QueryHandler queryHandler = getQueryHandler("from CmsContent bean");
         queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
         queryHandler.condition("bean.disabled = :disabled").setParameter("disabled", false);
-        if (CommonUtils.notEmpty(categoryIds)) {
-            queryHandler.condition("bean.categoryId in (:categoryIds)").setParameter("categoryIds", categoryIds);
+        if (CommonUtils.notEmpty(categoryId)) {
+            queryHandler.condition("bean.categoryId = :categoryId").setParameter("categoryId", categoryId);
         }
-        if (CommonUtils.notEmpty(modelIds)) {
-            queryHandler.condition("bean.modelId in (:modelIds)").setParameter("modelIds", modelIds);
+        if (CommonUtils.notEmpty(modelId)) {
+            queryHandler.condition("bean.modelId = :modelId").setParameter("modelId", modelId);
         }
         batchWork(queryHandler, worker, batchSize);
+    }
+
+    public void batchWorkId(short siteId, Integer categoryId, String modelId, BiConsumer<List<Long>, Integer> worker,
+            int batchSize) {
+        QueryHandler queryHandler = getQueryHandler("select bean.id from CmsContent bean");
+        queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
+        queryHandler.condition("bean.disabled = :disabled").setParameter("disabled", false);
+        if (CommonUtils.notEmpty(categoryId)) {
+            queryHandler.condition("bean.categoryId = :categoryId").setParameter("categoryId", categoryId);
+        }
+        if (CommonUtils.notEmpty(modelId)) {
+            queryHandler.condition("bean.modelId = :modelId").setParameter("modelId", modelId);
+        }
+        batchWork(queryHandler, worker, batchSize, Long.class);
     }
 
     /**

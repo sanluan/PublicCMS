@@ -1,6 +1,5 @@
 package com.publiccms.controller.admin.cms;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -29,7 +28,6 @@ import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.entities.cms.CmsCategoryModel;
-import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
@@ -46,8 +44,6 @@ import com.publiccms.logic.service.sys.SysExtendFieldService;
 import com.publiccms.views.pojo.entities.CmsModel;
 import com.publiccms.views.pojo.entities.ContentRelated;
 import com.publiccms.views.pojo.query.CmsCategoryQuery;
-
-import freemarker.template.TemplateException;
 
 /**
  * 
@@ -182,19 +178,20 @@ public class CmsModelAdminController {
         CmsModel entity = modelMap.get(id);
         if (null != entity) {
             log.info("begin batch publish");
-            contentService.batchWork(site.getId(), null, new String[] { id }, (list, i) -> {
-                for (CmsContent content : list) {
-                    try {
-                        templateComponent.createContentFile(site, content, null, null);
-                    } catch (IOException | TemplateException e) {
-                        log.error(e.getMessage());
-                    }
+            List<CmsCategoryModel> categoryModelList = categoryModelService.getList(site.getId(), id, null);
+            for (CmsCategoryModel categoryModel : categoryModelList) {
+                CmsCategory category = categoryService.getEntity(categoryModel.getId().getCategoryId());
+                if (null != category) {
+                    contentService.batchWorkId(site.getId(), category.getId(), id, (list, i) -> {
+                        templateComponent.createContentFile(site, list, category, categoryModel);
+                        log.info("batch " + i + " publish size : " + list.size());
+                    }, PageHandler.MAX_PAGE_SIZE);
                 }
-                log.info("batch " + i + " publish size : " + list.size());
-            }, PageHandler.MAX_PAGE_SIZE);
+            }
             log.info("complete batch publish");
         }
         return CommonConstants.TEMPLATE_DONE;
+
     }
 
     /**
@@ -211,11 +208,11 @@ public class CmsModelAdminController {
             CmsCategoryQuery query = new CmsCategoryQuery();
             query.setSiteId(site.getId());
             query.setQueryAll(true);
-            for (CmsCategoryModel categoryModel : categoryModelService.getList(id, null)) {
+            for (CmsCategoryModel categoryModel : categoryModelService.getList(site.getId(), id, null)) {
                 CmsCategory category = categoryService.getEntity(categoryModel.getId().getCategoryId());
                 if (null != category) {
                     log.info("begin rebuild search text for category : " + category.getId());
-                    contentService.batchWork(site.getId(), new Integer[] { category.getId() }, new String[] { id }, (list, i) -> {
+                    contentService.batchWorkContent(site.getId(), category.getId(), id, (list, i) -> {
                         List<SysExtendField> categoryExtendList = null;
                         if (null != category.getExtendId()) {
                             categoryExtendList = extendFieldService.getList(category.getExtendId(), null, true);

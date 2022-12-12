@@ -39,25 +39,34 @@ public class CmsWord implements java.io.Serializable {
     @JsonIgnore
     private short siteId;
     /**
-     * name<p>
+     * name
+     * <p>
      * 名称
      */
     @GeneratorColumn(title = "名称", condition = true, like = true)
-    private String name;    
+    private String name;
     /**
-     * search count<p>
+     * search count
+     * <p>
      * 搜索次数
      */
     @GeneratorColumn(title = "搜索次数", order = true)
     private int searchCount;
     /**
-     * hidden<p>
+     * hidden
+     * <p>
      * 隐藏
      */
     @GeneratorColumn(title = "隐藏", condition = true)
     private boolean hidden;
     /**
-     * create date<p>
+     * ip
+     */
+    @GeneratorColumn(title = "IP")
+    private String ip;
+    /**
+     * create date
+     * <p>
      * 创建日期
      */
     @GeneratorColumn(title = "创建日期", condition = true, order = true)
@@ -66,11 +75,12 @@ public class CmsWord implements java.io.Serializable {
     public CmsWord() {
     }
 
-    public CmsWord(short siteId, String name, int searchCount, boolean hidden, Date createDate) {
+    public CmsWord(short siteId, String name, int searchCount, boolean hidden, String ip, Date createDate) {
         this.siteId = siteId;
         this.name = name;
         this.searchCount = searchCount;
         this.hidden = hidden;
+        this.ip = ip;
         this.createDate = createDate;
     }
 
@@ -120,6 +130,15 @@ public class CmsWord implements java.io.Serializable {
 
     public void setHidden(boolean hidden) {
         this.hidden = hidden;
+    }
+
+    @Column(name = "ip", nullable = false, length = 130)
+    public String getIp() {
+        return this.ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
     }
 
     @Temporal(TemporalType.TIMESTAMP)

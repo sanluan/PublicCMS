@@ -47,11 +47,6 @@ server {
         proxy_send_timeout 30;
         proxy_read_timeout 10;
         proxy_pass http://cms;
-        
-        #<@t.page 'server_config.proxy'/>
-        #proxy_pass http://cms/publiccms/;
-        #proxy_cookie_path /publiccms/ /;
-        #rewrite /publiccms/(.*)$ /$1 last;
     }
 
         <#if a.useSsi>

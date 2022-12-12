@@ -33,7 +33,7 @@ import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.entities.cms.CmsCategoryAttribute;
-import com.publiccms.entities.cms.CmsContent;
+import com.publiccms.entities.cms.CmsCategoryModel;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
@@ -41,6 +41,7 @@ import com.publiccms.logic.component.site.ExportComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.ModelComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
+import com.publiccms.logic.service.cms.CmsCategoryModelService;
 import com.publiccms.logic.service.cms.CmsCategoryService;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.log.LogLoginService;
@@ -63,6 +64,8 @@ public class CmsCategoryAdminController {
     private CmsCategoryService service;
     @Autowired
     private CmsContentService contentService;
+    @Autowired
+    private CmsCategoryModelService categoryModelService;
     @Autowired
     private TemplateComponent templateComponent;
     @Autowired
@@ -328,19 +331,23 @@ public class CmsCategoryAdminController {
     public String batchPublish(@RequestAttribute SysSite site, Integer[] ids) {
         if (CommonUtils.notEmpty(ids)) {
             log.info("begin batch publish");
-            contentService.batchWork(site.getId(), ids, null, (list, i) -> {
-                for (CmsContent content : list) {
-                    try {
-                        templateComponent.createContentFile(site, content, null, null);
-                    } catch (IOException | TemplateException e) {
-                        log.error(e.getMessage());
+            List<CmsCategory> categoryList = service.getEntitys(ids);
+            for (CmsCategory category : categoryList) {
+                if (category.getSiteId() == site.getId()) {
+                    List<CmsCategoryModel> categoryModelList = categoryModelService.getList(site.getId(), null, category.getId());
+                    for (CmsCategoryModel categoryModel : categoryModelList) {
+                        contentService.batchWorkId(site.getId(), category.getId(), categoryModel.getId().getModelId(),
+                                (list, i) -> {
+                                    templateComponent.createContentFile(site, list, category, categoryModel);
+                                    log.info("batch " + i + " publish size : " + list.size());
+                                }, PageHandler.MAX_PAGE_SIZE);
                     }
                 }
-                log.info("batch " + i + " publish size : " + list.size());
-            }, PageHandler.MAX_PAGE_SIZE);
+            }
             log.info("complete batch publish");
         }
         return CommonConstants.TEMPLATE_DONE;
+
     }
 
     /**

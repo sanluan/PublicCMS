@@ -169,9 +169,10 @@ public class CmsPlaceAdminController {
                             if (CommonUtils.notEmpty(oldMap) && CommonUtils.notEmpty(oldMap.get(extendField.getId().getCode()))
                                     && (CommonUtils.notEmpty(map) || !oldMap.get(extendField.getId().getCode())
                                             .equals(map.get(extendField.getId().getCode())))) {
-                                CmsEditorHistory history = new CmsEditorHistory(CmsEditorHistoryService.ITEM_TYPE_PLACE_EXTEND,
-                                        String.valueOf(entity.getId()), extendField.getId().getCode(), CommonUtils.getDate(),
-                                        admin.getId(), map.get(extendField.getId().getCode()));
+                                CmsEditorHistory history = new CmsEditorHistory(site.getId(),
+                                        CmsEditorHistoryService.ITEM_TYPE_PLACE_EXTEND, String.valueOf(entity.getId()),
+                                        extendField.getId().getCode(), CommonUtils.getDate(), admin.getId(),
+                                        map.get(extendField.getId().getCode()));
                                 editorHistoryService.save(history);
                             }
                         }

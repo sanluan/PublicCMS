@@ -66,14 +66,16 @@ public class StatisticsComponent implements Cache {
     /**
      * @param siteId
      * @param word
+     * @param ip 
      * @return word statistics
      */
-    public ClickStatistics search(short siteId, String word) {
+    public ClickStatistics search(short siteId, String word, String ip) {
         if (CommonUtils.notEmpty(word)) {
             CmsWord entity = wordService.getEntity(siteId, word);
             if (null == entity) {
                 entity = new CmsWord();
                 entity.setName(word);
+                entity.setIp(ip);
                 entity.setSiteId(siteId);
                 entity.setHidden(true);
                 entity.setSearchCount(1);
@@ -105,7 +107,8 @@ public class StatisticsComponent implements Cache {
             ClickStatistics clickStatistics = placeCache.get(id);
             if (null == clickStatistics) {
                 CmsPlace entity = placeService.getEntity(id);
-                if (null != entity && !entity.isDisabled() && CmsPlaceService.STATUS_NORMAL == entity.getStatus() && siteId == entity.getSiteId()) {
+                if (null != entity && !entity.isDisabled() && CmsPlaceService.STATUS_NORMAL == entity.getStatus()
+                        && siteId == entity.getSiteId()) {
                     clickStatistics = new ClickStatistics(id, entity.getSiteId(), 1, entity.getClicks(), entity.getUrl());
                     List<ClickStatistics> list = placeCache.put(id, clickStatistics);
                     if (CommonUtils.notEmpty(list)) {
@@ -131,7 +134,8 @@ public class StatisticsComponent implements Cache {
             ClickStatistics clickStatistics = contentCache.get(id);
             if (null == clickStatistics) {
                 CmsContent entity = contentService.getEntity(id);
-                if (null != entity && !entity.isDisabled() && CmsContentService.STATUS_NORMAL == entity.getStatus() && site.getId().equals(entity.getSiteId())) {
+                if (null != entity && !entity.isDisabled() && CmsContentService.STATUS_NORMAL == entity.getStatus()
+                        && site.getId().equals(entity.getSiteId())) {
                     TemplateComponent.initContentUrl(site, entity);
                     clickStatistics = new ClickStatistics(id, entity.getSiteId(), 1, entity.getClicks(), entity.getUrl());
                     List<ClickStatistics> list = contentCache.put(id, clickStatistics);

@@ -3,6 +3,8 @@ package com.publiccms.controller.web.cms;
 import java.io.IOException;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.api.Config;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.cms.CmsComment;
 import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.cms.CmsUserScore;
@@ -48,14 +51,15 @@ public class ScoreController {
      * @param itemType
      * @param itemId
      * @param scores
+     * @param request
      * @return
      */
     @RequestMapping("score")
     @Csrf
     @ResponseBody
     public boolean score(@RequestAttribute SysSite site, @SessionAttribute SysUser user, String itemType, long itemId,
-            Integer scores) {
-        return score(site, user.getId(), itemType, itemId, true, null == scores ? 1 : scores);
+            Integer scores, HttpServletRequest request) {
+        return score(site, user.getId(), itemType, itemId, true, null == scores ? 1 : scores, request);
     }
 
     /**
@@ -63,22 +67,26 @@ public class ScoreController {
      * @param user
      * @param itemType
      * @param itemId
+     * @param request
      * @return
      */
     @RequestMapping("unscore")
     @Csrf
     @ResponseBody
-    public boolean unscore(@RequestAttribute SysSite site, @SessionAttribute SysUser user, String itemType, long itemId) {
-        return score(site, user.getId(), itemType, itemId, false, 0);
+    public boolean unscore(@RequestAttribute SysSite site, @SessionAttribute SysUser user, String itemType, long itemId,
+            HttpServletRequest request) {
+        return score(site, user.getId(), itemType, itemId, false, 0, request);
     }
 
-    private boolean score(SysSite site, long userId, String itemType, long itemId, boolean score, int scores) {
+    private boolean score(SysSite site, long userId, String itemType, long itemId, boolean score, int scores,
+            HttpServletRequest request) {
         if (CommonUtils.notEmpty(itemType)) {
             CmsUserScoreId id = new CmsUserScoreId(userId, itemType, itemId);
             CmsUserScore entity = service.getEntity(id);
             if (score && null == entity || !score && null != entity) {
                 Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
                 boolean needStatic = ConfigComponent.getBoolean(config.get(SiteConfigComponent.CONFIG_STATIC_AFTER_SCORE), false);
+                String ip = RequestUtils.getIpAddress(request);
                 if ("content".equals(itemType)) {
                     int maxScores = ConfigComponent.getInt(config.get(SiteConfigComponent.CONFIG_MAX_SCORES),
                             SiteConfigComponent.DEFAULT_MAX_SCORES);
@@ -93,6 +101,7 @@ public class ScoreController {
                         if (score) {
                             entity = new CmsUserScore();
                             entity.setId(id);
+                            entity.setIp(ip);
                             entity.setScore(scores);
                             service.save(entity);
                         } else {
@@ -116,6 +125,7 @@ public class ScoreController {
                         if (score) {
                             entity = new CmsUserScore();
                             entity.setId(id);
+                            entity.setIp(ip);
                             entity.setScore(1);
                             service.save(entity);
                         } else {

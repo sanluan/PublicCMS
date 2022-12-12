@@ -82,7 +82,7 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
      * @param categoryType
      * @param categoryParameters
      */
-    public void saveTagAndAttribute(Short siteId, Integer id, Long userId, CmsCategoryAttribute attribute,
+    public void saveTagAndAttribute(short siteId, Integer id, Long userId, CmsCategoryAttribute attribute,
             CmsCategoryType categoryType, CmsCategoryParameters categoryParameters) {
         if (CommonUtils.notEmpty(id)) {
             if (CommonUtils.notEmpty(categoryParameters.getCategoryModelList())) {
@@ -90,7 +90,7 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
                     if (null != cmsCategoryModelParameters.getCategoryModel()) {
                         cmsCategoryModelParameters.getCategoryModel().getId().setCategoryId(id);
                         if (cmsCategoryModelParameters.isUse()) {
-                            categoryModelService.updateCategoryModel(cmsCategoryModelParameters.getCategoryModel());
+                            categoryModelService.updateCategoryModel(siteId, cmsCategoryModelParameters.getCategoryModel());
                         } else {
                             categoryModelService.delete(cmsCategoryModelParameters.getCategoryModel().getId());
                         }
@@ -118,13 +118,13 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
                 attribute.setData(null);
             }
 
-            saveEditorHistory(attributeService.getEntity(entity.getId()), entity.getId(), userId, categoryType, map);// 保存编辑器字段历史记录
+            saveEditorHistory(attributeService.getEntity(entity.getId()),siteId, entity.getId(), userId, categoryType, map);// 保存编辑器字段历史记录
 
             attributeService.updateAttribute(id, attribute);
         }
     }
 
-    private void saveEditorHistory(CmsCategoryAttribute oldAttribute, int contentId, long userId,
+    private void saveEditorHistory(CmsCategoryAttribute oldAttribute, short siteId, int contentId, long userId,
             CmsCategoryType categoryType, Map<String, String> map) {
         if (null != oldAttribute) {
             if (CommonUtils.notEmpty(oldAttribute.getData()) && null != categoryType
@@ -135,9 +135,9 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
                         if (CommonUtils.notEmpty(oldMap) && CommonUtils.notEmpty(oldMap.get(extendField.getId().getCode()))
                                 && (CommonUtils.notEmpty(map) || !oldMap.get(extendField.getId().getCode())
                                         .equals(map.get(extendField.getId().getCode())))) {
-                            CmsEditorHistory history = new CmsEditorHistory(CmsEditorHistoryService.ITEM_TYPE_CATEGORY_EXTEND,
-                                    String.valueOf(contentId), "text", CommonUtils.getDate(), userId,
-                                    map.get(extendField.getId().getCode()));
+                            CmsEditorHistory history = new CmsEditorHistory(siteId,
+                                    CmsEditorHistoryService.ITEM_TYPE_CATEGORY_EXTEND, String.valueOf(contentId), "text",
+                                    CommonUtils.getDate(), userId, map.get(extendField.getId().getCode()));
                             editorHistoryService.save(history);
                         }
                     }

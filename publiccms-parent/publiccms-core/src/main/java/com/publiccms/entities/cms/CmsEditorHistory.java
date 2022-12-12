@@ -14,6 +14,7 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.publiccms.common.database.CmsUpgrader;
 import com.publiccms.common.generator.annotation.GeneratorColumn;
 
@@ -31,6 +32,9 @@ public class CmsEditorHistory implements java.io.Serializable {
      */
     @GeneratorColumn(title = "ID")
     private Long id;
+    @GeneratorColumn(title = "站点", condition = true)
+    @JsonIgnore
+    private short siteId;
     /**
      * item type
      * <p>
@@ -77,8 +81,10 @@ public class CmsEditorHistory implements java.io.Serializable {
     public CmsEditorHistory() {
     }
 
-    public CmsEditorHistory(Long id, String itemType, String itemId, String fieldName, Date createDate, long userId) {
+    public CmsEditorHistory(Long id, short siteId, String itemType, String itemId, String fieldName, Date createDate,
+            long userId) {
         this.id = id;
+        this.siteId = siteId;
         this.itemType = itemType;
         this.itemId = itemId;
         this.fieldName = fieldName;
@@ -86,7 +92,9 @@ public class CmsEditorHistory implements java.io.Serializable {
         this.userId = userId;
     }
 
-    public CmsEditorHistory(String itemType, String itemId, String fieldName, Date createDate, long userId, String text) {
+    public CmsEditorHistory(short siteId, String itemType, String itemId, String fieldName, Date createDate, long userId,
+            String text) {
+        this.siteId = siteId;
         this.itemType = itemType;
         this.itemId = itemId;
         this.fieldName = fieldName;
@@ -105,6 +113,15 @@ public class CmsEditorHistory implements java.io.Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    @Column(name = "site_id", nullable = false)
+    public short getSiteId() {
+        return this.siteId;
+    }
+
+    public void setSiteId(short siteId) {
+        this.siteId = siteId;
     }
 
     @Column(name = "item_type", nullable = false, length = 50)

@@ -39,13 +39,20 @@ public class CmsUserSurvey implements java.io.Serializable {
     @GeneratorColumn(title = "站点", condition = true)
     private short siteId;
     /**
-     * score<p>
+     * score
+     * <p>
      * 分数
      */
     @GeneratorColumn(title = "分数", order = true)
     private Integer score;
     /**
-     * create date<p>
+     * ip
+     */
+    @GeneratorColumn(title = "IP")
+    private String ip;
+    /**
+     * create date
+     * <p>
      * 创建日期
      */
     @GeneratorColumn(title = "创建日期", order = true)
@@ -54,14 +61,16 @@ public class CmsUserSurvey implements java.io.Serializable {
     public CmsUserSurvey() {
     }
 
-    public CmsUserSurvey(short siteId, Date createDate) {
+    public CmsUserSurvey(short siteId, String ip, Date createDate) {
         this.siteId = siteId;
+        this.ip = ip;
         this.createDate = createDate;
     }
 
-    public CmsUserSurvey(short siteId, Integer score, Date createDate) {
+    public CmsUserSurvey(short siteId, Integer score, String ip, Date createDate) {
         this.siteId = siteId;
         this.score = score;
+        this.ip = ip;
         this.createDate = createDate;
     }
 
@@ -92,6 +101,15 @@ public class CmsUserSurvey implements java.io.Serializable {
 
     public void setScore(Integer score) {
         this.score = score;
+    }
+
+    @Column(name = "ip", nullable = false, length = 130)
+    public String getIp() {
+        return this.ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
     }
 
     @Temporal(TemporalType.TIMESTAMP)

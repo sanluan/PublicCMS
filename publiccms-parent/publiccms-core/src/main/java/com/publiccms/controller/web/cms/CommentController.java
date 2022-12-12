@@ -113,15 +113,17 @@ public class CommentController {
             boolean needCheck = ConfigComponent.getBoolean(config.get(SiteConfigComponent.CONFIG_COMMENT_NEED_CHECK), true);
             boolean needStatic = ConfigComponent.getBoolean(config.get(SiteConfigComponent.CONFIG_STATIC_AFTER_COMMENT), false);
             entity.setStatus(CmsCommentService.STATUS_PEND);
+            String ip = RequestUtils.getIpAddress(request);
+            entity.setIp(ip);
             if (null != entity.getId()) {
                 CmsComment oldEntity = service.getEntity(entity.getId());
                 if (null != oldEntity && !oldEntity.isDisabled()
                         && (oldEntity.getUserId() == user.getId() || user.isSuperuser())) {
                     entity.setUpdateDate(CommonUtils.getDate());
                     entity = service.update(entity.getId(), entity, ignoreProperties);
-                    logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(),
-                            LogLoginService.CHANNEL_WEB, "update.cmsComment", RequestUtils.getIpAddress(request),
-                            CommonUtils.getDate(), JsonUtils.getString(entity)));
+                    logOperateService
+                            .save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
+                                    "update.cmsComment", ip, CommonUtils.getDate(), JsonUtils.getString(entity)));
                 }
             } else {
                 Date now = CommonUtils.getDate();
@@ -146,7 +148,7 @@ public class CommentController {
                 }
                 service.save(entity);
                 logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
-                        "save.cmsComment", RequestUtils.getIpAddress(request), now, JsonUtils.getString(entity)));
+                        "save.cmsComment", ip, now, JsonUtils.getString(entity)));
             }
             lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_COMMENT, String.valueOf(user.getId()), null, true);
             if (needStatic && CmsCommentService.STATUS_NORMAL == entity.getStatus()) {

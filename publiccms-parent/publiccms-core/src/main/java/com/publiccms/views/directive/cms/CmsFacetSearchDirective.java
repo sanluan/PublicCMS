@@ -14,6 +14,7 @@ import com.publiccms.common.base.HighLighterQuery;
 import com.publiccms.common.handler.FacetPageHandler;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.site.StatisticsComponent;
@@ -67,7 +68,8 @@ public class CmsFacetSearchDirective extends AbstractTemplateDirective {
         SysSite site = getSite(handler);
         if (CommonUtils.notEmpty(word)) {
             word = CommonUtils.keep(word, 100, null);
-            statisticsComponent.search(site.getId(), word);
+            String ip = RequestUtils.getIpAddress(handler.getRequest());
+            statisticsComponent.search(site.getId(), word, ip);
         }
         if (CommonUtils.notEmpty(tagIds)) {
             for (Long tagId : tagIds) {
