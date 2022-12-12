@@ -73,7 +73,7 @@ For details about the parameters and their meanings, see the deployment manual
 * Run in tomcat
 Rename publiccms.war.original to publiccms.war or ROOT.war(the context path is /) and move the file to the tomcat webapps directory,The "-Dcms.filePath" parameter is still valid
 * Run in docker
-Direct execution:
+Execution:
 ```
 docker run -d -p 8080:8080 sanluan/publiccms
 
@@ -85,6 +85,13 @@ docker build -t mypubliccms .
 docker run -d -p 8080:8080 mypubliccms
 
 ```
+* Run in docker compose
+Execution:
+```
+docker compose up -d
+
+```
+mysql host/port : mysql-cms/3306 ; user/password  : publiccms/password!@#
 Meaning more parameters, and please refer to https://hub.docker.com/r/sanluan/publiccms/
 
 ## Demonstration
