@@ -227,6 +227,14 @@
                     $('input[name=cacheTime]',navTab.getCurrentPanel()).val(7200);
                 </#if>
                 <#break>
+            <#case "error/500.html">
+            <#case "error/404.html">
+            <#case "error/403.html">
+                <#if site.useStatic>
+                    $('input[name=useStatic]',navTab.getCurrentPanel()).prop('checked',true).trigger('change');
+                    $('input[name=publishPath]',navTab.getCurrentPanel()).val(${demo});
+                </#if>
+                <#break>
             <#case "json/comment.json">
             <#case "json/content.json">
             <#case "json/contentList.json">

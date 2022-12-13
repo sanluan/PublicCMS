@@ -92,6 +92,9 @@ server {
                 </@sys.siteList>
             </#if>
         </#if>
+    error_page 403 /error/403.html;
+    error_page 404 /error/403.html;
+    error_page 500 502 503 504 /error/500.html;
 }
 </@sys.domainList>
 <#if dynamicPath!=sitePath||dynamicPort!=sitePort||!(dynamicPath=sitePath&&dynamicLocation!=siteLocation)>
@@ -129,6 +132,9 @@ server {
             </#list>
         </@sys.siteList>
     </#if>
+    error_page 403 /error/403.html;
+    error_page 404 /error/403.html;
+    error_page 500 502 503 504 /error/500.html;
 }
 </#if></textarea>
             <span class="info"><@t.page 'server_config.nginx_config_description'/></span>

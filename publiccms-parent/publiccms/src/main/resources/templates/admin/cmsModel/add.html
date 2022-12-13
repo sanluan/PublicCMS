@@ -127,7 +127,7 @@
                         <label><@t.page 'text'/>:</label>
                         <input name="fieldTextMap[description]" type="text" autocomplete="on" maxlength="20" size="10" value="${(a.fieldTextMap['description'])!t.pageMessage('description')}"/>
                         <label><input name="requiredFieldList" type="checkbox" value="description"/><@t.page 'required'/></label>
-                        <span class="info"><#noparse><#list (content.description!'')?split("\n") as a>${a}<#sep><br/></#list></#noparse></span>
+                        <span class="info"><#noparse>&lt;#list (content.description!'')?split("\n") as a&gt;${a}&lt;#sep&gt;&lt;br/&gt;&lt;/#list&gt;</#noparse></span>
                     </dd>
                 </dl>
                 <dl class="nowrap">
