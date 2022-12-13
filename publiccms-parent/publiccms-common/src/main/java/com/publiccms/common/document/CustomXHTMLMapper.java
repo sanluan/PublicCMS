@@ -1,4 +1,4 @@
-package com.publiccms.common.tools;
+package com.publiccms.common.document;
 
 import static fr.opensagres.poi.xwpf.converter.xhtml.internal.XHTMLConstants.A_ELEMENT;
 import static fr.opensagres.poi.xwpf.converter.xhtml.internal.XHTMLConstants.COLSPAN_ATTR;
@@ -36,6 +36,8 @@ import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
+
+import com.publiccms.common.tools.CommonUtils;
 
 import fr.opensagres.poi.xwpf.converter.core.BorderSide;
 import fr.opensagres.poi.xwpf.converter.core.Color;

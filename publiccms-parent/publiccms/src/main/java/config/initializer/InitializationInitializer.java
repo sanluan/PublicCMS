@@ -21,7 +21,7 @@ import org.springframework.web.util.IntrospectorCleanupListener;
 import com.publiccms.common.constants.CmsVersion;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.database.CmsDataSource;
-import com.publiccms.common.proxy.UsernamePasswordAuthenticator;
+import com.publiccms.common.handler.UsernamePasswordAuthenticator;
 import com.publiccms.common.servlet.InstallHttpRequestHandler;
 import com.publiccms.common.servlet.InstallServlet;
 

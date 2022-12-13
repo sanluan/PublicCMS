@@ -1,4 +1,4 @@
-package com.publiccms.common.view;
+package com.publiccms.common.servlet;
 
 import java.util.HashMap;
 import java.util.List;

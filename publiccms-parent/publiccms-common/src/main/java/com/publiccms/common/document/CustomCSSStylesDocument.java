@@ -1,4 +1,4 @@
-package com.publiccms.common.tools;
+package com.publiccms.common.document;
 
 import java.io.IOException;
 import java.util.HashMap;

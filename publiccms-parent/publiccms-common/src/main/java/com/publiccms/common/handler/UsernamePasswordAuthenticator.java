@@ -1,14 +1,17 @@
-package com.publiccms.common.proxy;
+package com.publiccms.common.handler;
 
+import java.net.Authenticator;
 import java.net.PasswordAuthentication;
 
 /**
  *
- * UsernamePasswordAuthenticator
+ * UsernamePassword proxy authenticator
+ * <p>
+ * 用户名密码代理认证
  * 
  */
-public class UsernamePasswordAuthenticator extends java.net.Authenticator {
-    
+public class UsernamePasswordAuthenticator extends Authenticator {
+
     private PasswordAuthentication auth;
 
     /**

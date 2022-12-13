@@ -42,6 +42,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import com.publiccms.common.constants.Constants;
+import com.publiccms.common.document.CustomPDFDomTree;
+import com.publiccms.common.document.CustomXHTMLConverter;
 
 import fr.opensagres.poi.xwpf.converter.core.ImageManager;
 import fr.opensagres.poi.xwpf.converter.xhtml.XHTMLOptions;
