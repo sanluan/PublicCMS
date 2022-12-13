@@ -45,7 +45,6 @@
                 <th width="50"><@t.page 'visit.session'/></th>
                 <th width="180"><@t.page 'title'/>/<@t.page 'url'/></th>
                 <th width="100"><@t.page 'visit.screen'/></th>
-                <th width="100"><@t.page 'visit.referer'/></th>
                 <th width="50"><@t.page 'visit.item'/></th>
                 <th width="70"><@t.page 'visit.ip'/></th>
                 <th width="50" orderField="createDate" class="<#if orderField?has_content&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'visit.visit_date'/></th>
@@ -59,7 +58,11 @@
                 <td>
                     <div class="box">
                         <p>${a.title!}</p>
-                        <p><a href="cmsDiy/preview.html?url=${((a.url)?url)!}" target="navTab" rel="cmsDiy/preview"  icon="<i class='bi bi-palette2 icon-large'></i>" title="<@t.page 'diy.preview'/>">${a.url!}</a></p>
+                        <p>
+                            <a href="cmsDiy/preview.html?url=${((a.url)?url)!}" target="navTab" rel="cmsDiy/preview"  icon="<i class='bi bi-palette2 icon-large'></i>" title="<@t.page 'diy.preview'/>">${a.url!}</a>
+                            <a href="${a.url!}" target="_blank"><i class="icon-external-link"></i></a>
+                        </p>
+                        <#if a.refererUrl?has_content><p><@t.page 'visit.referer'/>:${a.refererUrl!}</p></#if>
                     </div>
                 </td>
                 <td class="exclude-translate">
@@ -70,7 +73,6 @@
                     </@tools.userAgent>
                     </div>
                 </td>
-                <td>${a.refererUrl!}</td>
                 <td>
                     ${a.itemType!}${a.itemId?has_content?then(':','')}${a.itemId!}
                 </td>
