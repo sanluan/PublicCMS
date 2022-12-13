@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
@@ -62,8 +63,9 @@ public class ScriptComponent {
             String filepath = String.format("%s/%s", dir, command);
             File script = new File(filepath);
             if (!script.exists()) {
-                FileUtils.copyInputStreamToFile(this.getClass().getResourceAsStream(String.format("/script/%s", command)),
-                        script);
+                try (InputStream inputStream = getClass().getResourceAsStream(String.format("/script/%s", command))) {
+                    FileUtils.copyInputStreamToFile(inputStream, script);
+                }
             }
             if (command.toLowerCase().endsWith(".sh")) {
                 cmdarray = ArrayUtils.insert(0, cmdarray, filepath);

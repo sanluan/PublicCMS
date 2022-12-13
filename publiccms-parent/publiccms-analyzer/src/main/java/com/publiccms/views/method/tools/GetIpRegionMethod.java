@@ -1,6 +1,7 @@
 package com.publiccms.views.method.tools;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
@@ -42,7 +43,9 @@ public class GetIpRegionMethod extends BaseMethod {
     private final Searcher searcher;
 
     public GetIpRegionMethod() throws IOException {
-        searcher = Searcher.newWithBuffer(IOUtils.toByteArray(getClass().getResourceAsStream("/ip2region.xdb")));
+        try(InputStream inputStream = getClass().getResourceAsStream("/ip2region.xdb")){
+            searcher = Searcher.newWithBuffer(IOUtils.toByteArray(inputStream));
+        }
     }
 
     @Override

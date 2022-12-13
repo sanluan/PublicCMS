@@ -322,7 +322,7 @@ public class CmsContentService extends BaseService<CmsContent> {
             Map<String, String> map, CmsModel cmsModel, List<CmsContentFile> files, List<CmsContentFile> images,
             List<CmsContentProduct> products, CmsContentAttribute attribute) {
         StringBuilder searchTextBuilder = new StringBuilder();
-        String text = HtmlUtils.removeHtmlTag(null == attribute ? null : attribute.getText());
+        String text = HtmlUtils.removeHtmlTag(attribute.getText());
         if (null != text) {
             attribute.setWordCount(text.length());
             if (cmsModel.isSearchable()) {

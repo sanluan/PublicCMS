@@ -292,7 +292,7 @@ public abstract class BaseDao<E> {
                     resultList.clear();
                 }
             }
-            if (resultList.size() >= 0) {
+            if (resultList.size() > 0) {
                 worker.accept(resultList, i++);
             }
         }

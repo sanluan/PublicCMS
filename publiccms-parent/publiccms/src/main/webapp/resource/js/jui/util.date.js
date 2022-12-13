@@ -12,7 +12,7 @@
  *         HH (2 digits) | H (1 or 2 digits) Hour (0-11) | KK (2 digits) | K (1
  *         or 2 digits) Hour (1-24) | kk (2 digits) | k (1 or 2 digits) Minute |
  *         mm (2 digits) | m (1 or 2 digits) Second | ss (2 digits) | s (1 or 2
- *         digits) AM/PM | a | NOTE THE DIFFERENCE BETWEEN MM and mm! Month=MM,
+ *         digits) AM/PM | a | NOTICE THE DIFFERENCE BETWEEN MM and mm! Month=MM,
  *         not mm! Examples: "MMM d, y" matches: January 01, 2000 Dec 1, 1970
  *         Nov 20, 00 "M/d/yy" matches: 01/20/00 9/2/00 "MMM dd, yyyy hh:mm:ssa"
  *         matches: "January 01, 2000 12:30:45AM"
