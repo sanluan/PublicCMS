@@ -90,7 +90,6 @@ public class DocToHtmlUtils {
      * @param filePath
      * @param width
      * @param height
-     * @param prefix
      * @return
      */
     public static String pdfToHtml(String filePath, String width, String height) {
@@ -128,7 +127,6 @@ public class DocToHtmlUtils {
 
     /**
      * @param file
-     * @param ppt
      * @param imageManager
      * @return
      * @throws Exception

@@ -160,8 +160,6 @@ public class TemplateComponent implements Cache {
      * @param idList
      * @param category
      * @param categoryModel
-     * @throws TemplateException
-     * @throws IOException
      */
     public void createContentFile(SysSite site, List<Long> idList, CmsCategory category, CmsCategoryModel categoryModel) {
         List<Future<?>> futureList = new ArrayList<>();
