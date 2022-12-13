@@ -31,7 +31,7 @@ public class CmsEditorHistoryDao extends BaseDao<CmsEditorHistory> {
     public PageHandler getPage(String itemType, String itemId, String fieldName, Long userId, String orderType,
             Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler(
-                "select new CmsEditorHistory(id,itemType, itemId, fieldName, createDate, userId) from CmsEditorHistory bean");
+                "select new CmsEditorHistory(id, siteId, itemType, itemId, fieldName, createDate, userId) from CmsEditorHistory bean");
         if (CommonUtils.notEmpty(itemType)) {
             queryHandler.condition("bean.itemType = :itemType").setParameter("itemType", itemType);
         }
