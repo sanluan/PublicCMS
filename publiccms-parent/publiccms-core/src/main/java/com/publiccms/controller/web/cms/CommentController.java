@@ -163,6 +163,7 @@ public class CommentController {
                     }
                 }
             }
+            model.addAttribute("id", entity.getId());
         }
         return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
     }

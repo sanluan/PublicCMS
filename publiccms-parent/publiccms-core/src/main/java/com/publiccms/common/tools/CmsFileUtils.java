@@ -59,7 +59,7 @@ public class CmsFileUtils {
     /**
      * 
      */
-    public static final String[] IMAGE_FILE_SUFFIXS = new String[] { ".png", ".jpg", ".jpeg", ".gif", ".bmp" };
+    public static final String[] IMAGE_FILE_SUFFIXS = new String[] { ".png", ".jpg", ".jpeg", ".gif", ".svg", ".bmp" };
     /**
      * 
      */

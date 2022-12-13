@@ -19,9 +19,11 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.publiccms.common.annotation.Csrf;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
+import com.publiccms.common.tools.LanguagesUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.log.LogUpload;
 import com.publiccms.entities.sys.SysSite;
@@ -71,7 +73,7 @@ public class FileController {
             lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_FILEUPLOAD, String.valueOf(user.getId()), null, true);
             return result;
         }
-        if (null != file && !file.isEmpty() && null != user) {
+        if (null != file && !file.isEmpty()) {
             String originalName = file.getOriginalFilename();
             String suffix = CmsFileUtils.getSuffix(originalName);
             if (ArrayUtils.contains(siteConfigComponent.getSafeSuffix(site), suffix)) {
@@ -79,23 +81,33 @@ public class FileController {
                 String filepath = siteComponent.getWebFilePath(site, fileName);
                 try {
                     CmsFileUtils.upload(file, filepath);
-                    lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_FILEUPLOAD, String.valueOf(user.getId()), null, true);
-                    result.put("success", true);
-                    result.put("fileName", fileName);
-                    String fileType = CmsFileUtils.getFileType(suffix);
-                    result.put("fileType", fileType);
-                    result.put("fileSize", file.getSize());
-                    FileSize fileSize = CmsFileUtils.getFileSize(filepath, suffix);
-                    logUploadService.save(new LogUpload(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, originalName,
-                            fileType, file.getSize(), fileSize.getWidth(), fileSize.getHeight(),
-                            RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
+                    if (CmsFileUtils.isSafe(filepath, suffix)) {
+                        lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_FILEUPLOAD, String.valueOf(user.getId()), null,
+                                true);
+                        result.put("success", true);
+                        result.put("fileName", fileName);
+                        String fileType = CmsFileUtils.getFileType(suffix);
+                        result.put("fileType", fileType);
+                        result.put("fileSize", file.getSize());
+                        FileSize fileSize = CmsFileUtils.getFileSize(filepath, suffix);
+                        logUploadService.save(new LogUpload(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, originalName,
+                                fileType, file.getSize(), fileSize.getWidth(), fileSize.getHeight(),
+                                RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
+                    } else {
+                        result.put("error", LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
+                                "verify.custom.file.unsafe"));
+                    }
                 } catch (IllegalStateException | IOException e) {
                     log.error(e.getMessage(), e);
                     result.put("error", e.getMessage());
                 }
             } else {
-                result.put("error", "fileTypeNotAllowed");
+                result.put("error", LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
+                        "verify.custom.fileType"));
             }
+        } else {
+            result.put("error",
+                    LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(), "verify.notEmpty.file"));
         }
         return result;
     }

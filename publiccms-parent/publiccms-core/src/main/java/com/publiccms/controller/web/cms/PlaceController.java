@@ -156,6 +156,7 @@ public class PlaceController {
                     metadataComponent.getPlaceMetadata(filepath).getExtendList());
             String extentString = ExtendUtils.getExtendString(map);
             attributeService.updateAttribute(entity.getId(), extentString);
+            model.addAttribute("id", entity.getId());
         }
         return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
     }

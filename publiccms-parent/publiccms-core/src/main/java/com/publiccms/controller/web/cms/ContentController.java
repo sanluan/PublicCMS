@@ -145,6 +145,7 @@ public class ContentController {
         lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_CONTRIBUTE, String.valueOf(user.getId()), null, true);
         service.saveTagAndAttribute(site.getId(), user.getId(), entity.getId(), contentParameters, cmsModel,
                 category.getExtendId(), attribute);
+        model.addAttribute("id", entity.getId());
         return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
     }
 
