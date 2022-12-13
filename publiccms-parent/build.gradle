@@ -42,7 +42,7 @@ subprojects {
         // http://hibernate.org/orm/downloads/
         hibernateVersion = "5.6.11.Final"
         // http://mvnrepository.com/artifact/org.hibernate/hibernate-tools
-        hibernateToolsVersion = "5.6.2.Final"
+        hibernateToolsVersion = "5.6.11.Final"
         // https://mvnrepository.com/artifact/org.hibernate.search/hibernate-search-mapper-orm
         // http://hibernate.org/search/downloads/
         hibernateSearchVersion = "6.1.7.Final"
@@ -76,7 +76,7 @@ subprojects {
         mysqlVersion = "8.0.31"
         // http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
         // http://hc.apache.org/downloads.cgi
-        httpclientVersion = "4.5.13"
+        httpclientVersion = "4.5.14"
         // https://mvnrepository.com/artifact/fr.opensagres.xdocreport/fr.opensagres.poi.xwpf.converter.xhtml
         xhtmlConverterVersion = "2.0.4"
         // https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml

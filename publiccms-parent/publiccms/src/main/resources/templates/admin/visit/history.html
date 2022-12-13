@@ -74,7 +74,12 @@
                 <td>
                     ${a.itemType!}${a.itemId?has_content?then(':','')}${a.itemId!}
                 </td>
-                <td>${a.ip!}</td>
+                <td>
+                    <div class="box">
+                        <p>${a.ip!}</p>
+                        <p>${(getIpRegion(a.ip).address)!}</p>
+                    </div>
+                </td>
                 <td>${a.createDate!}</td>
             </tr>
             </#list>

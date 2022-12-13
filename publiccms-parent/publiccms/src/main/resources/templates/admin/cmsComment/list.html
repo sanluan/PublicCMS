@@ -76,8 +76,12 @@
             <tr>
                 <td class="center"><input name="ids" value="${a.id}" type="checkbox"></td>
                 <td>${a.id!}</td>
-                <td class="center exclude-translate">
-                    ${(userMap[a.userId?string].nickname)!}
+                <td>
+                    <div class="box">
+                        <p class="center exclude-translate">${(userMap[a.userId?string].nickname)!}</p>
+                        <p>${a.ip!}</p>
+                        <p>${(getIpRegion(a.ip).address)!}</p>
+                    </div>
                 </td>
                 <td class="exclude-translate">
                     <a href="cmsContent/view.html?id=${a.contentId}" target="dialog" rel="viewContent${a.contentId}">${(contentMap[a.contentId?string].title)!}</a>

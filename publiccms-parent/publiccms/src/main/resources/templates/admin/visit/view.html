@@ -35,7 +35,8 @@
     <dl>
         <dt><@t.page 'visit.ip'/>:</dt>
         <dd>
-            ${a.ip!}
+            <p>${a.ip!}</p>
+            <p>${(getIpRegion(a.ip).address)!}</p>
         </dd>
     </dl>
     <dl>

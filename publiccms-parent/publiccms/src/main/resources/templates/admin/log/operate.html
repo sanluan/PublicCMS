@@ -79,7 +79,10 @@
                     ${a.operate}
                 </td>
                 <td>
-                    ${a.ip!}
+                    <div class="box">
+                        <p>${a.ip!}</p>
+                        <p>${(getIpRegion(a.ip).address)!}</p>
+                    </div>
                 </td>
                 <td>${a.createDate!}</td>
                 <td class="exclude-translate"><@t.cut a.content 60 '...<a href="log/operateView.html?id=${a.id}" class="btnText" target="dialog" rel="operateTask">'?no_esc+t.pageMessage('button.view_more')+'</a>'?no_esc/></td>

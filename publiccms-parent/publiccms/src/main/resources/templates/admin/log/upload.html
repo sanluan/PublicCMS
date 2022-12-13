@@ -81,7 +81,12 @@
                 </td>
                 <td>${a.originalName!}</td>
                 <td><@t.fileSize a.fileSize/><#if a.width?has_content&&a.height?has_content>(${a.width}*${a.height})</#if></td>
-                <td>${a.ip!}</td>
+                <td>
+                    <div class="box">
+                        <p>${a.ip!}</p>
+                        <p>${(getIpRegion(a.ip).address)!}</p>
+                    </div>
+                </td>
                 <td>${a.createDate!}</td>
                 <td>${(a.filePath)!}</td>
             </tr>
