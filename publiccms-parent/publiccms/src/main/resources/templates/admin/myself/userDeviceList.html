@@ -56,7 +56,12 @@
                 <td>${a.uuid!}</td>
                 <td>${a.clientVersion!}</td>
                 <td>${a.lastLoginDate!}</td>
-                <td>${a.lastLoginIp!}</td>
+                <td>
+                    <div class="box">
+                        <p>${a.lastLoginIp!}</p>
+                        <p>${(getIpRegion(a.lastLoginIp).address)!}</p>
+                    </div>
+                </td>
                 <td>${a.createDate!}</td>
                 <td>${(a.disabled)?then('<font color="red">'+t.pageMessage('disabled')+'</font>',t.pageMessage('normal'))?no_esc}</td>
                 <td class="wrap">

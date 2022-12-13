@@ -61,7 +61,7 @@
                         <p class="label">
                             <@t.page 'user.last_login_ip'/>
                         </p>
-                        <p>
+                        <p title="${(getIpRegion(admin.lastLoginIp).address)!}">
                             ${admin.lastLoginIp!}
                         </p>
                     </div>

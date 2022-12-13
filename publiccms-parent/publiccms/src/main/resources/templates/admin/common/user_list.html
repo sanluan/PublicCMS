@@ -104,6 +104,7 @@
                     <div class="box">
                         <p>${a.lastLoginDate!}</p>
                         <p><@t.page 'log.login_ip'/>:${a.lastLoginIp!}</p>
+                        <p>${(getIpRegion(a.lastLoginIp).address)!}</p>
                     </div>
                 </td>
                 <td>${a.loginCount!}</td>
