@@ -63,7 +63,7 @@ public class FileExistDirective extends AbstractTemplateDirective {
         } else {
             realpath = siteComponent.getTemplateFilePath(site, path);
         }
-        handler.put("object", CommonUtils.notEmpty(path) && CmsFileUtils.exists(realpath)).render();
+        handler.put("object", CommonUtils.notEmpty(path) && CmsFileUtils.isFile(realpath)).render();
     }
 
     @Override

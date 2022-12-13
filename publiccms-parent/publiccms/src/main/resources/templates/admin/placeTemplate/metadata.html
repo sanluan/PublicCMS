@@ -16,13 +16,9 @@
             <dl class="nowrap">
                 <dt><@t.page 'path'/>:</dt></dt>
                 <dd>
-                <#if path?has_content>
-                    ${path}
-                    <input name="path" type="hidden" value="${path}" size="40"/>
-                <#else>
-                    <input name="path" type="text" value="/${getUUID()}.html" size="40"/>
+                    <@tools.fileExist path='/include'+path><#assign exists=object&&path?has_content></@tools.fileExist>
+                    <input name="path" type="text" value="${path}${exists?then('','/'+getUUID()+'.html')}" size="40"/>
                     <span class="info"><@t.page 'template_path.description'/></span>
-                </#if>
                 </dd>
             </dl>
             <dl class="nowrap">
@@ -175,7 +171,7 @@
     </#if>
     </script>
             <textarea name="content" class="hide"></textarea>
-            <textarea class="placeContent hide"><#noparse>
+            <textarea class="placeContent hide"><#if exists && ((a.size)!0) gt 0><@tools.fileContent path='/include'+path>${(object)!}</@tools.fileContent><#else><#noparse>
 <#list page.list>
     <ul data-diy="place" data-diy-id="${path}">
     <#items as a>
@@ -191,12 +187,12 @@
     </#items>
     </ul>
 </#list>
-</#noparse></textarea>
-    <textarea class="content hide"><#noparse>
+</#noparse></#if></textarea>
+    <textarea class="content hide"><#if exists && ((a.size)!0)=0><@tools.fileContent path='/include'+path>${(object)!}</@tools.fileContent><#else><#noparse>
 <div data-diy="place" data-diy-id="${path}">
 
 </div>
-</#noparse></textarea>
+</#noparse></#if></textarea>
         </div>
     </div>
 </form>
