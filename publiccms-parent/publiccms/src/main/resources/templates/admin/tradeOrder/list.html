@@ -84,6 +84,7 @@
                     <div class="box">
                         <p>${(userMap[a.userId?string].nickname)!}</p>
                         <p>${a.ip!}</p>
+                        <p>${(getIpRegion(a.ip).address)!}</p>
                     </div>
                 </td>
                 <td class="exclude-translate">${a.title!}</td>

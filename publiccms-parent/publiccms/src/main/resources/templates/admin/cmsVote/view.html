@@ -63,7 +63,8 @@
                 ${(itemMap[u.itemId?string].title)!}
             </dt>
             <dd>
-                ${(userMap[u.id.userId?string].nickname)!}(${u.ip!})
+                ${(userMap[u.id.userId?string].nickname)!}
+                <p>${(u.ip)!} ${(getIpRegion(u.ip).address)!}</p>
             </dd>
         </dl>
         </#list>

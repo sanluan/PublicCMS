@@ -49,7 +49,12 @@
                 <td><a href="visit/history.html?sessionId=${a.id.sessionId!}" target="navTab" rel="visit/history" icon="<i class='icon-bolt icon-large'></i>">${a.id.sessionId!}</a></td>
                 <td>${a.lastVisitDate!}</td>
                 <td>${a.firstVisitDate!}</td>
-                <td class="center">${a.ip!}</td>
+                <td>
+                    <div class="box">
+                        <p>${a.ip!}</p>
+                        <p>${(getIpRegion(a.ip).address)!}</p>
+                    </div>
+                </td>
                 <td class="center">${a.pv!}</td>
             </tr>
             </#list>
