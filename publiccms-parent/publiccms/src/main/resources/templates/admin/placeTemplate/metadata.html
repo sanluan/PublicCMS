@@ -1,4 +1,5 @@
 <@tools.placeMetadata path=path><#assign a=object/></@tools.placeMetadata>
+<@tools.fileExist path='/include'+(path!)><#assign exists=object&&path?has_content></@tools.fileExist>
 <form method="post" autocomplete="off" action="cmsTemplate/savePlaceMetaData?navTabId=placeTemplate/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <div class="formBar card">
@@ -16,8 +17,7 @@
             <dl class="nowrap">
                 <dt><@t.page 'path'/>:</dt></dt>
                 <dd>
-                    <@tools.fileExist path='/include'+path><#assign exists=object&&path?has_content></@tools.fileExist>
-                    <input name="path" type="text" value="${path}${exists?then('','/'+getUUID()+'.html')}" size="40"/>
+                    <input name="path" type="text" value="${path!}${exists?then('','/'+getUUID()+'.html')}" size="40"/>
                     <span class="info"><@t.page 'template_path.description'/></span>
                 </dd>
             </dl>
