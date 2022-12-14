@@ -50,6 +50,9 @@ public class ${entityName}${controllerSuffix} {
     @Csrf
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, ${entityName} entity, HttpServletRequest request,
              ModelMap model) {
+             <#list conditionList as a><#if a.name='siteId'>
+             entity.setSiteId(site.getId());
+             </#if></#list>
         if (null != entity.getId()) {
             entity = service.update(entity.getId(), entity, ignoreProperties);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER, "update.${entityName?uncap_first}", 
