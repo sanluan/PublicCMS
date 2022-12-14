@@ -279,14 +279,26 @@ public abstract class BaseDao<E> {
     /**
      * 处理数据
      *
+     * @param queryHandler
+     * @param worker
+     * @param batchSize
+     */
+    protected void batchWork(QueryHandler queryHandler, BiConsumer<List<E>, Integer> worker, int batchSize) {
+        batchWork(queryHandler, worker, batchSize, getEntityClass());
+    }
+
+    /**
+     * 处理数据
+     *
      * @param <T>
      * @param queryHandler
      * @param worker
      * @param batchSize
      */
     @SuppressWarnings("unchecked")
-    protected <T> void batchWork(QueryHandler queryHandler, BiConsumer<List<T>, Integer> worker, int batchSize) {
-        Query<E> query = getSession().createQuery(queryHandler.getSql(), getEntityClass());
+    protected <T> void batchWork(QueryHandler queryHandler, BiConsumer<List<T>, Integer> worker, int batchSize,
+            Class<T> resultType) {
+        Query<T> query = getSession().createQuery(queryHandler.getSql(), resultType);
         queryHandler.initQuery(query);
         try (ScrollableResults results = query.setReadOnly(true).setCacheable(false).scroll(ScrollMode.FORWARD_ONLY)) {
             List<T> resultList = new ArrayList<>(batchSize);
@@ -298,7 +310,7 @@ public abstract class BaseDao<E> {
                     resultList.clear();
                 }
             }
-            if (resultList.size() >= 0) {
+            if (resultList.size() > 0) {
                 worker.accept(resultList, i++);
             }
         }

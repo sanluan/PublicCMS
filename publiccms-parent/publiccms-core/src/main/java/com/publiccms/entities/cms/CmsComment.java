@@ -36,67 +36,83 @@ public class CmsComment implements java.io.Serializable {
     @JsonIgnore
     private short siteId;
     /**
-     * user id<p>
+     * user id
+     * <p>
      * 发布用户id
      */
     @GeneratorColumn(title = "发布用户", condition = true)
     private long userId;
     /**
-     * reply comment id<p>
+     * reply comment id
+     * <p>
      * 回复评论id
      */
     @GeneratorColumn(title = "回复评论", condition = true)
     private Long replyId;
     /**
-     * reply user id<p>
+     * reply user id
+     * <p>
      * 回复用户id
      */
     @GeneratorColumn(title = "回复用户", condition = true)
     private Long replyUserId;
     /**
-     * replies<p>
+     * replies
+     * <p>
      * 回复数
      */
     @GeneratorColumn(title = "回复数")
     private int replies;
     /**
-     * scores<p>
+     * scores
+     * <p>
      * 分数
      */
     @GeneratorColumn(title = "分数", order = true)
     private int scores;
     /**
-     * content id<p>
+     * content id
+     * <p>
      * 内容id
      */
     @GeneratorColumn(title = "内容", condition = true)
     private long contentId;
     /**
-     * check user<p>
+     * ip
+     */
+    @GeneratorColumn(title = "IP")
+    private String ip;
+    /**
+     * check user
+     * <p>
      * 审核用户
      */
     @GeneratorColumn(title = "审核用户", condition = true)
     private Long checkUserId;
     /**
-     * check date<p>
+     * check date
+     * <p>
      * 审核日期
      */
     @GeneratorColumn(title = "审核日期", order = true)
     private Date checkDate;
     /**
-     * update date<p>
+     * update date
+     * <p>
      * 更新日期
      */
     @GeneratorColumn(title = "更新日期", order = true)
     private Date updateDate;
     /**
-     * create date<p>
+     * create date
+     * <p>
      * 创建日期
      */
     @GeneratorColumn(title = "创建日期", order = true)
     private Date createDate;
     /**
-     * status(1:Published,2:Pending)<p>
+     * status(1:Published,2:Pending)
+     * <p>
      * 状态(1:已审核,2:待审核)
      */
     @GeneratorColumn(title = "状态", condition = true)
@@ -113,20 +129,22 @@ public class CmsComment implements java.io.Serializable {
     public CmsComment() {
     }
 
-    public CmsComment(short siteId, long userId, int replies, int scores, long contentId, Date createDate, int status,
+    public CmsComment(short siteId, long userId, int replies, int scores, long contentId, String ip, Date createDate, int status,
             boolean disabled) {
         this.siteId = siteId;
         this.userId = userId;
         this.replies = replies;
         this.scores = scores;
         this.contentId = contentId;
+        this.ip = ip;
         this.createDate = createDate;
         this.status = status;
         this.disabled = disabled;
     }
 
     public CmsComment(short siteId, long userId, Long replyId, Long replyUserId, int replies, int scores, long contentId,
-            Long checkUserId, Date checkDate, Date updateDate, Date createDate, int status, boolean disabled, String text) {
+            String ip, Long checkUserId, Date checkDate, Date updateDate, Date createDate, int status, boolean disabled,
+            String text) {
         this.siteId = siteId;
         this.userId = userId;
         this.replyId = replyId;
@@ -134,6 +152,7 @@ public class CmsComment implements java.io.Serializable {
         this.replies = replies;
         this.scores = scores;
         this.contentId = contentId;
+        this.ip = ip;
         this.checkUserId = checkUserId;
         this.checkDate = checkDate;
         this.updateDate = updateDate;
@@ -197,7 +216,7 @@ public class CmsComment implements java.io.Serializable {
     public void setReplies(int replies) {
         this.replies = replies;
     }
-    
+
     @Column(name = "scores", nullable = false)
     public int getScores() {
         return this.scores;
@@ -214,6 +233,15 @@ public class CmsComment implements java.io.Serializable {
 
     public void setContentId(long contentId) {
         this.contentId = contentId;
+    }
+
+    @Column(name = "ip", nullable = false, length = 130)
+    public String getIp() {
+        return this.ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
     }
 
     @Column(name = "check_user_id")

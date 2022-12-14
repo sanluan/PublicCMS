@@ -7,14 +7,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import jakarta.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.poi.hwpf.converter.PicturesManager;
 import org.apache.poi.hwpf.usermodel.PictureType;
-import jakarta.annotation.Resource;
+import org.fit.pdfdom.resource.HtmlResource;
+import org.fit.pdfdom.resource.HtmlResourceHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,6 +40,8 @@ import com.publiccms.logic.service.log.LogUploadService;
 import com.publiccms.views.pojo.entities.FileSize;
 
 import fr.opensagres.poi.xwpf.converter.core.ImageManager;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * FileAdminController
@@ -91,21 +92,28 @@ public class FileAdminController {
                     } else {
                         CmsFileUtils.upload(file, filepath);
                     }
-                    result.put("field", field);
-                    result.put(field, fileName);
-                    String fileType = CmsFileUtils.getFileType(suffix);
-                    result.put("fileType", fileType);
-                    FileSize fileSize = CmsFileUtils.getFileSize(filepath, suffix);
-                    result.put("width", fileSize.getWidth());
-                    result.put("height", fileSize.getHeight());
-                    result.put("fileSize", fileSize.getFileSize());
-                    if (CommonUtils.notEmpty(originalField)) {
-                        result.put("originalField", originalField);
-                        result.put(originalField, originalName);
+                    if (CmsFileUtils.isSafe(filepath, suffix)) {
+                        result.put("field", field);
+                        result.put(field, fileName);
+                        String fileType = CmsFileUtils.getFileType(suffix);
+                        result.put("fileType", fileType);
+                        FileSize fileSize = CmsFileUtils.getFileSize(filepath, suffix);
+                        result.put("width", fileSize.getWidth());
+                        result.put("height", fileSize.getHeight());
+                        result.put("fileSize", fileSize.getFileSize());
+                        if (CommonUtils.notEmpty(originalField)) {
+                            result.put("originalField", originalField);
+                            result.put(originalField, originalName);
+                        }
+                        logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                                originalName, fileType, fileSize.getFileSize(), fileSize.getWidth(), fileSize.getHeight(),
+                                RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
+                    } else {
+                        result.put("statusCode", 300);
+                        result.put("message", LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
+                                "verify.custom.file.unsafe"));
+                        CmsFileUtils.delete(filepath);
                     }
-                    logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                            originalName, fileType, fileSize.getFileSize(), fileSize.getWidth(), fileSize.getHeight(),
-                            RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
                     return result;
                 } catch (IllegalStateException | IOException e) {
                     log.error(e.getMessage(), e);
@@ -141,8 +149,11 @@ public class FileAdminController {
      * @param site
      * @param admin
      * @param file
-     * @param field 
-     * @param titleField 
+     * @param useIframe
+     * @param width
+     * @param height
+     * @param field
+     * @param titleField
      * @param request
      * @return view name
      */
@@ -150,7 +161,7 @@ public class FileAdminController {
     @Csrf
     @ResponseBody
     public Map<String, Object> doImport(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile file,
-            String field, String titleField, HttpServletRequest request) {
+            boolean useIframe, String width, String height, String field, String titleField, HttpServletRequest request) {
         Map<String, Object> result = new HashMap<>();
         if (null != file && !file.isEmpty()) {
             String originalName = file.getOriginalFilename();
@@ -162,9 +173,10 @@ public class FileAdminController {
                         originalName = originalName.substring(0, index);
                     }
                     result.put(titleField, originalName);
-                    File dest = File.createTempFile("temp_", suffix);
-                    file.transferTo(dest);
-                    if (".docx".equalsIgnoreCase(suffix) || ".xlsx".equalsIgnoreCase(suffix) || ".xls".equalsIgnoreCase(suffix)) {
+                    if (".docx".equalsIgnoreCase(suffix) || ".xlsx".equalsIgnoreCase(suffix) || ".ppt".equalsIgnoreCase(suffix)
+                            || ".pptx".equalsIgnoreCase(suffix) || ".xls".equalsIgnoreCase(suffix)) {
+                        File dest = File.createTempFile("temp_", suffix);
+                        file.transferTo(dest);
                         ImageManager imageManager = new ImageManager(new File(""), "") {
                             private String fileName;
 
@@ -182,7 +194,7 @@ public class FileAdminController {
                                             imageData.length, fileSize.getWidth(), fileSize.getHeight(),
                                             RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
                                 } catch (IllegalStateException | IOException e) {
-                                    e.printStackTrace();
+                                    log.error(e.getMessage());
                                 }
                             }
 
@@ -193,10 +205,15 @@ public class FileAdminController {
                         };
                         if (".docx".equalsIgnoreCase(suffix)) {
                             result.put(field, DocToHtmlUtils.docxToHtml(dest, imageManager));
+                        } else if (".ppt".equalsIgnoreCase(suffix) || ".pptx".equalsIgnoreCase(suffix)) {
+                            result.put(field, DocToHtmlUtils.pptToHtml(dest, imageManager));
                         } else {
                             result.put(field, DocToHtmlUtils.excelToHtml(dest, imageManager));
                         }
+                        dest.delete();
                     } else if (".doc".equalsIgnoreCase(suffix)) {
+                        File dest = File.createTempFile("temp_", suffix);
+                        file.transferTo(dest);
                         result.put(field, DocToHtmlUtils.docToHtml(dest, new PicturesManager() {
                             @Override
                             public String savePicture(byte[] content, PictureType pictureType, String suggestedName,
@@ -217,14 +234,59 @@ public class FileAdminController {
                                             CommonUtils.getDate(), fileName));
                                     return site.getSitePath() + fileName;
                                 } catch (IllegalStateException | IOException e) {
-                                    e.printStackTrace();
+                                    log.error(e.getMessage());
                                     return null;
                                 }
                             }
-
                         }));
+                        dest.delete();
+                    } else if (".pdf".equalsIgnoreCase(suffix)) {
+                        if (useIframe) {
+                            String fileName = CmsFileUtils.getUploadFileName(suffix);
+                            String filepath = siteComponent.getWebFilePath(site, fileName);
+                            try {
+                                CmsFileUtils.upload(file, filepath);
+                                String fileType = CmsFileUtils.getFileType(suffix);
+                                FileSize fileSize = CmsFileUtils.getFileSize(filepath, suffix);
+                                logUploadService.save(new LogUpload(site.getId(), admin.getId(),
+                                        LogLoginService.CHANNEL_WEB_MANAGER, originalName, fileType, fileSize.getFileSize(),
+                                        fileSize.getWidth(), fileSize.getHeight(), RequestUtils.getIpAddress(request),
+                                        CommonUtils.getDate(), fileName));
+                                result.put(field, DocToHtmlUtils.pdfToHtml(site.getSitePath() + fileName, width, height));
+                            } catch (IllegalStateException | IOException e) {
+                                log.error(e.getMessage());
+                            }
+                        } else {
+                            File dest = File.createTempFile("temp_", suffix);
+                            file.transferTo(dest);
+                            result.put(field, DocToHtmlUtils.pdfToHtml(dest, new HtmlResourceHandler() {
+                                @Override
+                                public String handleResource(HtmlResource resource) throws IOException {
+                                    String imagesuffix = resource.getFileEnding();
+                                    if (!suffix.contains(CommonConstants.DOT)) {
+                                        imagesuffix = CommonConstants.DOT + imagesuffix;
+                                    }
+                                    String fileName = CmsFileUtils.getUploadFileName(imagesuffix);
+                                    String filepath = siteComponent.getWebFilePath(site, fileName);
+                                    try {
+                                        CmsFileUtils.upload(resource.getData(), filepath);
+                                        String fileType = CmsFileUtils.getFileType(imagesuffix);
+                                        FileSize fileSize = CmsFileUtils.getFileSize(filepath, imagesuffix);
+                                        logUploadService.save(new LogUpload(site.getId(), admin.getId(),
+                                                LogLoginService.CHANNEL_WEB_MANAGER, resource.getName(), fileType,
+                                                resource.getData().length, fileSize.getWidth(), fileSize.getHeight(),
+                                                RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
+                                        return site.getSitePath() + fileName;
+                                    } catch (IllegalStateException | IOException e) {
+                                        log.error(e.getMessage());
+                                        return null;
+                                    }
+                                }
+
+                            }));
+                            dest.delete();
+                        }
                     }
-                    dest.delete();
                 } catch (Exception e) {
                     log.error(e.getMessage(), e);
                     result.put(field, e.getMessage());
@@ -259,24 +321,33 @@ public class FileAdminController {
                     String filepath = siteComponent.getWebFilePath(site, fileName);
                     try {
                         CmsFileUtils.upload(file, filepath);
-                        result.put("field", field);
-                        result.put(field, fileName);
-                        String fileType = CmsFileUtils.getFileType(suffix);
-                        result.put("fileType", fileType);
-                        result.put("fileSize", file.getSize());
-                        FileSize fileSize = CmsFileUtils.getFileSize(filepath, suffix);
-                        result.put("width", fileSize.getWidth());
-                        result.put("height", fileSize.getHeight());
-                        if (CommonUtils.notEmpty(originalField)) {
-                            result.put("originalField", originalField);
-                            result.put(originalField, originalName);
+                        if (CmsFileUtils.isSafe(filepath, suffix)) {
+                            result.put("field", field);
+                            result.put(field, fileName);
+                            String fileType = CmsFileUtils.getFileType(suffix);
+                            result.put("fileType", fileType);
+                            result.put("fileSize", file.getSize());
+                            FileSize fileSize = CmsFileUtils.getFileSize(filepath, suffix);
+                            result.put("width", fileSize.getWidth());
+                            result.put("height", fileSize.getHeight());
+                            if (CommonUtils.notEmpty(originalField)) {
+                                result.put("originalField", originalField);
+                                result.put(originalField, originalName);
+                            }
+                            resultList.add(result);
+                            logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                                    originalName, fileType, file.getSize(), fileSize.getWidth(), fileSize.getHeight(),
+                                    RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
+                        } else {
+                            result.put("statusCode", 300);
+                            result.put("message", LanguagesUtils.getMessage(CommonConstants.applicationContext,
+                                    request.getLocale(), "verify.custom.file.unsafe"));
+                            CmsFileUtils.delete(filepath);
                         }
-                        resultList.add(result);
-                        logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                                originalName, fileType, file.getSize(), fileSize.getWidth(), fileSize.getHeight(),
-                                RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
                     } catch (IllegalStateException | IOException e) {
                         log.error(e.getMessage(), e);
+                        result.put("statusCode", 300);
+                        result.put("message", e.getMessage());
                     }
                 } else {
                     result.put("statusCode", 300);

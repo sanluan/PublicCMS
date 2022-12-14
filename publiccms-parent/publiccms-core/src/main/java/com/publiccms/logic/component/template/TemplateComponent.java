@@ -3,16 +3,20 @@ package com.publiccms.logic.component.template;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.function.Consumer;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.api.Cache;
@@ -45,6 +49,8 @@ import com.publiccms.views.pojo.entities.CmsPlaceMetadata;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateModelException;
+import jakarta.annotation.PreDestroy;
+import jakarta.annotation.Resource;
 
 /**
  * 模板处理组件 Template Component
@@ -84,6 +90,8 @@ public class TemplateComponent implements Cache {
     private CmsPlaceService placeService;
     @Resource
     private StatisticsComponent statisticsComponent;
+
+    private static ExecutorService pool = Executors.newFixedThreadPool(2 * Runtime.getRuntime().availableProcessors());
 
     public String generatePlaceFilePath(String filepath, CmsCategory category, Map<String, Object> model)
             throws IOException, TemplateException {
@@ -148,6 +156,27 @@ public class TemplateComponent implements Cache {
      * 内容页面静态化
      *
      * @param site
+     * @param idList
+     * @param category
+     * @param categoryModel
+     */
+    public void createContentFile(SysSite site, List<Long> idList, CmsCategory category, CmsCategoryModel categoryModel) {
+        List<Future<?>> futureList = new ArrayList<>();
+        for (CmsContent content : contentService.getEntitys(idList.toArray(new Long[idList.size()]))) {
+            futureList.add(pool.submit(new PublishTask(this, site, content, category, categoryModel)));
+        }
+        for (Future<?> future : futureList) {
+            try {
+                future.get();
+            } catch (InterruptedException | ExecutionException e) {
+            }
+        }
+    }
+
+    /**
+     * 内容页面静态化
+     *
+     * @param site
      * @param entity
      * @param category
      * @param categoryModel
@@ -167,10 +196,11 @@ public class TemplateComponent implements Cache {
                             .getEntity(new CmsCategoryModelId(entity.getCategoryId(), entity.getModelId()));
                 }
                 if (null != categoryModel && null != category) {
+                    String oldUrl = entity.getUrl();
                     if (site.isUseStatic() && CommonUtils.notEmpty(categoryModel.getTemplatePath())) {
                         String filepath = createContentFile(site, entity, category, true, categoryModel.getTemplatePath(), null,
                                 null);
-                        if (!entity.isHasStatic() || null == entity.getUrl() || !entity.getUrl().equals(filepath)) {
+                        if (!entity.isHasStatic() || null == oldUrl || !oldUrl.equals(filepath)) {
                             contentService.updateUrl(entity.getId(), filepath, true);
                         }
                     } else {
@@ -180,7 +210,7 @@ public class TemplateComponent implements Cache {
                         model.put(CommonConstants.getAttributeSite(), site);
                         String filepath = FreeMarkerUtils.generateStringByString(category.getContentPath(), webConfiguration,
                                 model);
-                        if (entity.isHasStatic() || null == entity.getUrl() || !entity.getUrl().equals(filepath)) {
+                        if (entity.isHasStatic() || null == oldUrl || !oldUrl.equals(filepath)) {
                             contentService.updateUrl(entity.getId(), filepath, false);
                         }
                     }
@@ -533,6 +563,11 @@ public class TemplateComponent implements Cache {
         clearTaskTemplateCache();
     }
 
+    @PreDestroy
+    public void destroy() {
+        pool.shutdown();
+    }
+
     /**
      * 清理模板缓存
      *
@@ -600,5 +635,37 @@ public class TemplateComponent implements Cache {
      */
     public Configuration getTaskConfiguration() {
         return taskConfiguration;
+    }
+}
+
+/**
+ * 
+ * PublishTask 静态化线程
+ *
+ */
+class PublishTask implements Runnable {
+    private TemplateComponent templateComponent;
+    private SysSite site;
+    private CmsContent content;
+    private CmsCategory category;
+    private CmsCategoryModel categoryModel;
+    private final Log log = LogFactory.getLog(getClass());
+
+    public PublishTask(TemplateComponent templateComponent, SysSite site, CmsContent content, CmsCategory category,
+            CmsCategoryModel categoryModel) {
+        this.templateComponent = templateComponent;
+        this.site = site;
+        this.content = content;
+        this.category = category;
+        this.categoryModel = categoryModel;
+    }
+
+    @Override
+    public void run() {
+        try {
+            templateComponent.createContentFile(site, content, category, categoryModel);
+        } catch (IOException | TemplateException e) {
+            log.error(e.getMessage());
+        }
     }
 }

@@ -17,11 +17,14 @@ import com.publiccms.logic.component.template.DiyComponent;
  * 参数列表
  * <ul>
  * <li><code>itemType</code> 元数据类型,【region,layout,module】
+ * <li><code>region</code> 区域id,当itemType为layout或module时有效
+ * <li><code>showGlobal</code> 元数据类型,【true,false】,当itemType为layout或module时有效,默认为<code>true</code>
  * </ul>
  * <p>
  * 返回结果
  * <ul>
- * <li><code>list</code> diy元数据列表<code>region</code>{@link com.publiccms.views.pojo.diy.CmsRegion},<code>layout</code>{@link com.publiccms.views.pojo.diy.CmsLayout},<code>module</code>{@link com.publiccms.views.pojo.diy.CmsModule}
+ * <li><code>list</code>
+ * diy元数据列表<code>region</code>{@link com.publiccms.views.pojo.diy.CmsRegion},<code>layout</code>{@link com.publiccms.views.pojo.diy.CmsLayout},<code>module</code>{@link com.publiccms.views.pojo.diy.CmsModule}
  * </ul>
  * 使用示例
  * <p>
@@ -44,13 +47,15 @@ public class DiyMetadataListDirective extends AbstractTemplateDirective {
     public void execute(RenderHandler handler) throws IOException, Exception {
         SysSite site = getSite(handler);
         String itemType = handler.getString("itemType");
+        String region = handler.getString("region");
+        boolean showGlobal = handler.getBoolean("showGlobal", false);
         if (CommonUtils.notEmpty(itemType)) {
             if ("region".equalsIgnoreCase(itemType)) {
                 handler.put("list", diyComponent.getRegionList(site)).render();
             } else if ("layout".equalsIgnoreCase(itemType)) {
-                handler.put("list", diyComponent.getLayoutList(site)).render();
+                handler.put("list", diyComponent.getLayoutList(site, region, showGlobal)).render();
             } else if ("module".equalsIgnoreCase(itemType)) {
-                handler.put("list", diyComponent.getModuleList(site)).render();
+                handler.put("list", diyComponent.getModuleList(site, region, showGlobal)).render();
             }
         }
     }

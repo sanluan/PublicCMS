@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.LanguagesUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.log.LogUpload;
 import com.publiccms.entities.sys.SysSite;
@@ -71,13 +72,21 @@ public class CkEditorAdminController {
                 String filepath = siteComponent.getWebFilePath(site, fileName);
                 try {
                     CmsFileUtils.upload(upload, filepath);
-                    FileSize fileSize = CmsFileUtils.getFileSize(filepath, suffix);
-                    logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                            originalName, CmsFileUtils.getFileType(suffix), upload.getSize(), fileSize.getWidth(),
-                            fileSize.getHeight(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
-                    map.put(RESULT_FILENAME, originalName);
-                    map.put(RESULT_URL, site.getSitePath() + fileName);
-                    uploaded++;
+                    if (CmsFileUtils.isSafe(filepath, suffix)) {
+                        FileSize fileSize = CmsFileUtils.getFileSize(filepath, suffix);
+                        logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                                originalName, CmsFileUtils.getFileType(suffix), upload.getSize(), fileSize.getWidth(),
+                                fileSize.getHeight(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
+                        map.put(RESULT_FILENAME, originalName);
+                        map.put(RESULT_URL, site.getSitePath() + fileName);
+                        uploaded++;
+                    } else {
+                        Map<String, String> messageMap = new HashMap<>();
+                        messageMap.put(CommonConstants.MESSAGE, LanguagesUtils.getMessage(CommonConstants.applicationContext,
+                                request.getLocale(), "verify.custom.file.unsafe"));
+                        map.put(CommonConstants.ERROR, messageMap);
+                        CmsFileUtils.delete(filepath);
+                    }
                 } catch (IllegalStateException | IOException e) {
                     Map<String, String> messageMap = new HashMap<>();
                     messageMap.put(CommonConstants.MESSAGE, e.getMessage());
@@ -85,12 +94,14 @@ public class CkEditorAdminController {
                 }
             } else {
                 Map<String, String> messageMap = new HashMap<>();
-                messageMap.put(CommonConstants.MESSAGE, "error");
+                messageMap.put(CommonConstants.MESSAGE, LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
+                        "verify.custom.fileType"));
                 map.put(CommonConstants.ERROR, messageMap);
             }
         } else {
             Map<String, String> messageMap = new HashMap<>();
-            messageMap.put(CommonConstants.MESSAGE, "no file");
+            messageMap.put(CommonConstants.MESSAGE, 
+                    LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(), "verify.notEmpty.file"));
             map.put(CommonConstants.ERROR, messageMap);
         }
         map.put(RESULT_UPLOADED, uploaded);

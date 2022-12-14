@@ -48,17 +48,17 @@
         </#if>
         </ul>
     </div>
-    <table class="table" width="100%" layoutH>
+    <table class="table" width="100%" layoutH orderField="${orderField!}" orderType="${orderType!}">
         <thead>
             <tr>
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
                 <th><@t.page 'id'/></th>
                 <th><@t.page 'content.promulgator'/></th>
                 <th width="150"><@t.page 'content'/></th>
-                <th width="30" orderField="scores" class="<#if orderField?has_content&&'scores'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'content.score'/></th>
-                <th width="30" orderField="replies" class="<#if orderField?has_content&&'replies'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'replies'/></th>
-                <th orderField="updateDate" class="<#if orderField?has_content&&'updateDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'modified_date'/></th>
-                <th orderField="createDate" class="<#if orderField?has_content&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'create_date'/></th>
+                <th width="30" orderField="scores"><@t.page 'content.score'/></th>
+                <th width="30" orderField="replies"><@t.page 'replies'/></th>
+                <th orderField="updateDate"><@t.page 'modified_date'/></th>
+                <th orderField="createDate"><@t.page 'create_date'/></th>
                 <th><@t.page 'status'/>/<@t.page 'inspector'/></th>
                 <th><@t.page 'comment'/></th>
                 <th><@t.page 'operate'/></th>
@@ -76,8 +76,12 @@
             <tr>
                 <td class="center"><input name="ids" value="${a.id}" type="checkbox"></td>
                 <td>${a.id!}</td>
-                <td class="center exclude-translate">
-                    ${(userMap[a.userId?string].nickname)!}
+                <td>
+                    <div class="box">
+                        <p class="center exclude-translate">${(userMap[a.userId?string].nickname)!}</p>
+                        <p>${a.ip!}</p>
+                        <p>${(getIpRegion(a.ip).address)!}</p>
+                    </div>
                 </td>
                 <td class="exclude-translate">
                     <a href="cmsContent/view.html?id=${a.contentId}" target="dialog" rel="viewContent${a.contentId}">${(contentMap[a.contentId?string].title)!}</a>

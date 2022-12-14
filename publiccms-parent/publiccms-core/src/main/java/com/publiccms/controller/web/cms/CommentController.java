@@ -10,6 +10,7 @@ import jakarta.annotation.Resource;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
@@ -18,6 +19,7 @@ import org.springframework.web.servlet.view.UrlBasedViewResolver;
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.api.Config;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.cms.CmsComment;
@@ -27,6 +29,7 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.config.ConfigComponent;
 import com.publiccms.logic.component.config.SiteConfigComponent;
+import com.publiccms.logic.component.site.LockComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsCommentService;
@@ -57,6 +60,8 @@ public class CommentController {
     private CmsContentService contentService;
     @Resource
     private TemplateComponent templateComponent;
+    @Resource
+    private LockComponent lockComponent;
 
     private String[] ignoreProperties = new String[] { "siteId", "userId", "createDate", "checkUserId", "checkDate", "replyId",
             "replyUserId", "replies", "scores", "disabled" };
@@ -88,28 +93,37 @@ public class CommentController {
      * @param entity
      * @param returnUrl
      * @param request
+     * @param model
      * @return redirect url
      */
     @RequestMapping("save")
     @Csrf
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser user, CmsComment entity, String returnUrl,
-            HttpServletRequest request) {
+            HttpServletRequest request, ModelMap model) {
         returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
+        boolean locked = lockComponent.isLocked(site.getId(), LockComponent.ITEM_TYPE_COMMENT, String.valueOf(user.getId()),
+                null);
+        if (ControllerUtils.errorCustom("locked.user", locked, model)) {
+            lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_COMMENT, String.valueOf(user.getId()), null, true);
+            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
+        }
         CmsContent content = null;
         if (CommonUtils.notEmpty(entity.getText())) {
             Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
             boolean needCheck = ConfigComponent.getBoolean(config.get(SiteConfigComponent.CONFIG_COMMENT_NEED_CHECK), true);
             boolean needStatic = ConfigComponent.getBoolean(config.get(SiteConfigComponent.CONFIG_STATIC_AFTER_COMMENT), false);
             entity.setStatus(CmsCommentService.STATUS_PEND);
+            String ip = RequestUtils.getIpAddress(request);
+            entity.setIp(ip);
             if (null != entity.getId()) {
                 CmsComment oldEntity = service.getEntity(entity.getId());
                 if (null != oldEntity && !oldEntity.isDisabled()
                         && (oldEntity.getUserId() == user.getId() || user.isSuperuser())) {
                     entity.setUpdateDate(CommonUtils.getDate());
                     entity = service.update(entity.getId(), entity, ignoreProperties);
-                    logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(),
-                            LogLoginService.CHANNEL_WEB, "update.cmsComment", RequestUtils.getIpAddress(request),
-                            CommonUtils.getDate(), JsonUtils.getString(entity)));
+                    logOperateService
+                            .save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
+                                    "update.cmsComment", ip, CommonUtils.getDate(), JsonUtils.getString(entity)));
                 }
             } else {
                 Date now = CommonUtils.getDate();
@@ -134,8 +148,9 @@ public class CommentController {
                 }
                 service.save(entity);
                 logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
-                        "save.cmsComment", RequestUtils.getIpAddress(request), now, JsonUtils.getString(entity)));
+                        "save.cmsComment", ip, now, JsonUtils.getString(entity)));
             }
+            lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_COMMENT, String.valueOf(user.getId()), null, true);
             if (needStatic && CmsCommentService.STATUS_NORMAL == entity.getStatus()) {
                 if (null == content) {
                     content = contentService.getEntity(entity.getContentId());
@@ -148,6 +163,7 @@ public class CommentController {
                     }
                 }
             }
+            model.addAttribute("id", entity.getId());
         }
         return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
     }

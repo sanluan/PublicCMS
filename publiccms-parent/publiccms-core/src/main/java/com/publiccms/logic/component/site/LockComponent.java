@@ -30,6 +30,15 @@ import com.publiccms.logic.service.sys.SysLockService;
  */
 @Component
 public class LockComponent implements Config, SiteCache {
+    public static final String ITEM_TYPE_LOGIN = "userLogin";
+    public static final String ITEM_TYPE_IP_LOGIN = "ipLogin";
+    public static final String ITEM_TYPE_REGISTER = "register";
+    public static final String ITEM_TYPE_FILEUPLOAD = "fileUpload";
+    public static final String ITEM_TYPE_CONTRIBUTE = "contribute";
+    public static final String ITEM_TYPE_COMMENT = "comment";
+    public static final String[] SYSTEM_ITEM_TYPES = { ITEM_TYPE_LOGIN, ITEM_TYPE_IP_LOGIN, ITEM_TYPE_REGISTER,
+            ITEM_TYPE_FILEUPLOAD, ITEM_TYPE_CONTRIBUTE, ITEM_TYPE_COMMENT };
+    private static final String[] ITEM_TYPE_LOGINS = new String[] { ITEM_TYPE_LOGIN, ITEM_TYPE_IP_LOGIN };
     /**
      * 
      */
@@ -45,7 +54,7 @@ public class LockComponent implements Config, SiteCache {
     /**
     *
     */
-    public static final String CONFIG_LOCK_EXPIRY_LOGIN_MINUTES = "expiry_minutes.login";
+    public static final String CONFIG_LOCK_EXPIRY_LOGIN = "expiry_minutes.login";
     /**
     *
     */
@@ -57,15 +66,47 @@ public class LockComponent implements Config, SiteCache {
     /**
     *
     */
-    public static final String CONFIG_LOCK_EXPIRY_REGISTER_MINUTES = "expiry_minutes.register";
+    public static final String CONFIG_LOCK_EXPIRY_REGISTER = "expiry_minutes.register";
     /**
     *
     */
     public static final String CONFIG_LOCK_REGISTER_MAX_COUNT = "register.max_count";
     /**
+    *
+    */
+    public static final String CONFIG_LOCK_EXPIRY_FILEUPLOAD = "expiry_minutes.fileupload";
+    /**
+    *
+    */
+    public static final String CONFIG_LOCK_FILEUPLOAD_MAX_COUNT = "fileupload.max_count";
+    /**
+     *
+     */
+    public static final String CONFIG_LOCK_EXPIRY_CONTRIBUTE = "expiry_minutes.contribute";
+    /**
+     *
+     */
+    public static final String CONFIG_LOCK_CONTRIBUTE_MAX_COUNT = "contribute.max_count";
+    /**
+    *
+    */
+    public static final String CONFIG_LOCK_EXPIRY_COMMENT = "expiry_minutes.comment";
+    /**
+    *
+    */
+    public static final String CONFIG_LOCK_COMMENT_MAX_COUNT = "comment.max_count";
+    /**
      * default expiry minutes
      */
     public static final int DEFAULT_EXPIRY_MINUTES = 10;
+    /**
+     * default operate max count
+     */
+    public static final int DEFAULT_OPERATE_EXPIRY_MINUTES = 2 * 60;
+    /**
+     * default operate max count
+     */
+    public static final int DEFAULT_OPERATE_MAX_COUNT = 3;
     /**
      * default login expiry minutes
      */
@@ -92,11 +133,16 @@ public class LockComponent implements Config, SiteCache {
     public int getExpriy(short siteId, String itemType) {
         Map<String, String> config = BeanComponent.getConfigComponent().getConfigData(siteId, CONFIG_CODE);
         int expriy = 0;
-        if (SysLockService.ITEM_TYPE_LOGIN.equalsIgnoreCase(itemType)
-                || SysLockService.ITEM_TYPE_IP_LOGIN.equalsIgnoreCase(itemType)) {
-            expriy = ConfigComponent.getInt(config.get(CONFIG_LOCK_EXPIRY_LOGIN_MINUTES), DEFAULT_LOGIN_EXPIRY_MINUTES);
-        } else if (SysLockService.ITEM_TYPE_REGISTER.equalsIgnoreCase(itemType)) {
-            expriy = ConfigComponent.getInt(config.get(CONFIG_LOCK_EXPIRY_REGISTER_MINUTES), DEFAULT_REGISTER_EXPIRY_MINUTES);
+        if (ITEM_TYPE_LOGIN.equalsIgnoreCase(itemType) || ITEM_TYPE_IP_LOGIN.equalsIgnoreCase(itemType)) {
+            expriy = ConfigComponent.getInt(config.get(CONFIG_LOCK_EXPIRY_LOGIN), DEFAULT_LOGIN_EXPIRY_MINUTES);
+        } else if (ITEM_TYPE_REGISTER.equalsIgnoreCase(itemType)) {
+            expriy = ConfigComponent.getInt(config.get(CONFIG_LOCK_EXPIRY_REGISTER), DEFAULT_REGISTER_EXPIRY_MINUTES);
+        } else if (ITEM_TYPE_FILEUPLOAD.equalsIgnoreCase(itemType)) {
+            expriy = ConfigComponent.getInt(config.get(CONFIG_LOCK_EXPIRY_FILEUPLOAD), DEFAULT_OPERATE_MAX_COUNT);
+        } else if (ITEM_TYPE_CONTRIBUTE.equalsIgnoreCase(itemType)) {
+            expriy = ConfigComponent.getInt(config.get(CONFIG_LOCK_EXPIRY_CONTRIBUTE), DEFAULT_OPERATE_MAX_COUNT);
+        } else if (ITEM_TYPE_COMMENT.equalsIgnoreCase(itemType)) {
+            expriy = ConfigComponent.getInt(config.get(CONFIG_LOCK_EXPIRY_COMMENT), DEFAULT_OPERATE_MAX_COUNT);
         } else {
             expriy = ConfigComponent.getInt(config.get(CONFIG_LOCK_EXPIRY_MINUTES), DEFAULT_EXPIRY_MINUTES);
         }
@@ -107,12 +153,18 @@ public class LockComponent implements Config, SiteCache {
         if (CommonUtils.notEmpty(itemType) && CommonUtils.notEmpty(itemId)) {
             Map<String, String> config = BeanComponent.getConfigComponent().getConfigData(siteId, CONFIG_CODE);
             int expriy = getExpriy(siteId, itemType), maxCount = 0;
-            if (SysLockService.ITEM_TYPE_LOGIN.equalsIgnoreCase(itemType)) {
+            if (ITEM_TYPE_LOGIN.equalsIgnoreCase(itemType)) {
                 maxCount = ConfigComponent.getInt(config.get(CONFIG_LOCK_LOGIN_MAX_COUNT), DEFAULT_LOGIN_MAX_COUNT);
-            } else if (SysLockService.ITEM_TYPE_IP_LOGIN.equalsIgnoreCase(itemType)) {
+            } else if (ITEM_TYPE_IP_LOGIN.equalsIgnoreCase(itemType)) {
                 maxCount = ConfigComponent.getInt(config.get(CONFIG_LOCK_IP_LOGIN_MAX_COUNT), DEFAULT_IP_LOGIN_MAX_COUNT);
-            } else if (SysLockService.ITEM_TYPE_REGISTER.equalsIgnoreCase(itemType)) {
+            } else if (ITEM_TYPE_REGISTER.equalsIgnoreCase(itemType)) {
                 maxCount = ConfigComponent.getInt(config.get(CONFIG_LOCK_REGISTER_MAX_COUNT), DEFAULT_REGISTER_MAX_COUNT);
+            } else if (ITEM_TYPE_FILEUPLOAD.equalsIgnoreCase(itemType)) {
+                maxCount = ConfigComponent.getInt(config.get(CONFIG_LOCK_FILEUPLOAD_MAX_COUNT), DEFAULT_OPERATE_MAX_COUNT);
+            } else if (ITEM_TYPE_CONTRIBUTE.equalsIgnoreCase(itemType)) {
+                maxCount = ConfigComponent.getInt(config.get(CONFIG_LOCK_CONTRIBUTE_MAX_COUNT), DEFAULT_OPERATE_MAX_COUNT);
+            } else if (ITEM_TYPE_COMMENT.equalsIgnoreCase(itemType)) {
+                maxCount = ConfigComponent.getInt(config.get(CONFIG_LOCK_COMMENT_MAX_COUNT), DEFAULT_OPERATE_MAX_COUNT);
             }
             if (expriy > 0) {
                 SysLockId id = new SysLockId(siteId, itemType, itemId);
@@ -200,10 +252,9 @@ public class LockComponent implements Config, SiteCache {
         extendFieldList.add(new SysExtendField(CONFIG_LOCK_EXPIRY_MINUTES, INPUTTYPE_NUMBER, false, CONFIG_LOCK_EXPIRY_MINUTES,
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOCK_EXPIRY_MINUTES),
                 String.valueOf(DEFAULT_EXPIRY_MINUTES)));
-        extendFieldList.add(
-                new SysExtendField(CONFIG_LOCK_EXPIRY_LOGIN_MINUTES, INPUTTYPE_NUMBER, false, CONFIG_LOCK_EXPIRY_LOGIN_MINUTES,
-                        getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOCK_EXPIRY_LOGIN_MINUTES),
-                        String.valueOf(DEFAULT_LOGIN_EXPIRY_MINUTES)));
+        extendFieldList.add(new SysExtendField(CONFIG_LOCK_EXPIRY_LOGIN, INPUTTYPE_NUMBER, false, CONFIG_LOCK_EXPIRY_LOGIN,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOCK_EXPIRY_LOGIN),
+                String.valueOf(DEFAULT_LOGIN_EXPIRY_MINUTES)));
         extendFieldList.add(new SysExtendField(CONFIG_LOCK_LOGIN_MAX_COUNT, INPUTTYPE_NUMBER, false, CONFIG_LOCK_LOGIN_MAX_COUNT,
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOCK_LOGIN_MAX_COUNT),
                 String.valueOf(DEFAULT_LOGIN_MAX_COUNT)));
@@ -211,43 +262,82 @@ public class LockComponent implements Config, SiteCache {
                 .add(new SysExtendField(CONFIG_LOCK_IP_LOGIN_MAX_COUNT, INPUTTYPE_NUMBER, false, CONFIG_LOCK_IP_LOGIN_MAX_COUNT,
                         getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOCK_IP_LOGIN_MAX_COUNT),
                         String.valueOf(DEFAULT_IP_LOGIN_MAX_COUNT)));
-        extendFieldList.add(new SysExtendField(CONFIG_LOCK_EXPIRY_REGISTER_MINUTES, INPUTTYPE_NUMBER, false,
-                CONFIG_LOCK_EXPIRY_REGISTER_MINUTES,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOCK_EXPIRY_REGISTER_MINUTES),
+        extendFieldList.add(new SysExtendField(CONFIG_LOCK_EXPIRY_REGISTER, INPUTTYPE_NUMBER, false, CONFIG_LOCK_EXPIRY_REGISTER,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOCK_EXPIRY_REGISTER),
                 String.valueOf(DEFAULT_REGISTER_EXPIRY_MINUTES)));
         extendFieldList
                 .add(new SysExtendField(CONFIG_LOCK_REGISTER_MAX_COUNT, INPUTTYPE_NUMBER, false, CONFIG_LOCK_REGISTER_MAX_COUNT,
                         getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOCK_REGISTER_MAX_COUNT),
                         String.valueOf(DEFAULT_REGISTER_MAX_COUNT)));
+        extendFieldList
+                .add(new SysExtendField(CONFIG_LOCK_EXPIRY_FILEUPLOAD, INPUTTYPE_NUMBER, false, CONFIG_LOCK_EXPIRY_FILEUPLOAD,
+                        getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOCK_EXPIRY_FILEUPLOAD),
+                        String.valueOf(DEFAULT_OPERATE_EXPIRY_MINUTES)));
+        extendFieldList.add(
+                new SysExtendField(CONFIG_LOCK_FILEUPLOAD_MAX_COUNT, INPUTTYPE_NUMBER, false, CONFIG_LOCK_FILEUPLOAD_MAX_COUNT,
+                        getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOCK_FILEUPLOAD_MAX_COUNT),
+                        String.valueOf(DEFAULT_OPERATE_MAX_COUNT)));
+        extendFieldList
+                .add(new SysExtendField(CONFIG_LOCK_EXPIRY_CONTRIBUTE, INPUTTYPE_NUMBER, false, CONFIG_LOCK_EXPIRY_CONTRIBUTE,
+                        getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOCK_EXPIRY_CONTRIBUTE),
+                        String.valueOf(DEFAULT_OPERATE_EXPIRY_MINUTES)));
+        extendFieldList.add(
+                new SysExtendField(CONFIG_LOCK_CONTRIBUTE_MAX_COUNT, INPUTTYPE_NUMBER, false, CONFIG_LOCK_CONTRIBUTE_MAX_COUNT,
+                        getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOCK_CONTRIBUTE_MAX_COUNT),
+                        String.valueOf(DEFAULT_OPERATE_MAX_COUNT)));
+        extendFieldList.add(new SysExtendField(CONFIG_LOCK_EXPIRY_COMMENT, INPUTTYPE_NUMBER, false, CONFIG_LOCK_EXPIRY_COMMENT,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOCK_EXPIRY_COMMENT),
+                String.valueOf(DEFAULT_OPERATE_EXPIRY_MINUTES)));
+        extendFieldList
+                .add(new SysExtendField(CONFIG_LOCK_COMMENT_MAX_COUNT, INPUTTYPE_NUMBER, false, CONFIG_LOCK_COMMENT_MAX_COUNT,
+                        getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOCK_COMMENT_MAX_COUNT),
+                        String.valueOf(DEFAULT_OPERATE_MAX_COUNT)));
         return extendFieldList;
     }
-
-    private static final String[] ITEM_TYPE_LOGIN = new String[] { SysLockService.ITEM_TYPE_LOGIN,
-            SysLockService.ITEM_TYPE_IP_LOGIN };
-    private static final String[] ITEM_TYPE_REGISTER = new String[] { SysLockService.ITEM_TYPE_REGISTER };
 
     @Override
     public void clear() {
         Date now = CommonUtils.getDate();
-        List<Short> list1 = service.getSiteIdList(ITEM_TYPE_LOGIN, null);
+        List<Short> list1 = service.getSiteIdListByItemTypes(ITEM_TYPE_LOGINS, null);
         if (CommonUtils.notEmpty(list1)) {
             for (Short siteId : list1) {
-                int expriy = getExpriy(siteId, SysLockService.ITEM_TYPE_LOGIN);
-                service.delete(ITEM_TYPE_LOGIN, null, DateUtils.addMinutes(now, -expriy));
+                int expriy = getExpriy(siteId, ITEM_TYPE_LOGIN);
+                service.deleteByItemTypes(ITEM_TYPE_LOGINS, null, DateUtils.addMinutes(now, -expriy));
             }
         }
         List<Short> list2 = service.getSiteIdList(ITEM_TYPE_REGISTER, null);
         if (CommonUtils.notEmpty(list2)) {
             for (Short siteId : list2) {
-                int expriy = getExpriy(siteId, SysLockService.ITEM_TYPE_REGISTER);
+                int expriy = getExpriy(siteId, ITEM_TYPE_REGISTER);
                 service.delete(ITEM_TYPE_REGISTER, null, DateUtils.addMinutes(now, -expriy));
             }
         }
-        List<Short> list3 = service.getSiteIdList(null, SysLockService.SYSTEM_ITEM_TYPES);
+        List<Short> list3 = service.getSiteIdList(null, SYSTEM_ITEM_TYPES);
         if (CommonUtils.notEmpty(list3)) {
             for (Short siteId : list3) {
                 int expriy = getExpriy(siteId, null);
-                service.delete(null, SysLockService.SYSTEM_ITEM_TYPES, DateUtils.addMinutes(now, -expriy));
+                service.delete(null, SYSTEM_ITEM_TYPES, DateUtils.addMinutes(now, -expriy));
+            }
+        }
+        List<Short> list4 = service.getSiteIdList(ITEM_TYPE_FILEUPLOAD, null);
+        if (CommonUtils.notEmpty(list4)) {
+            for (Short siteId : list4) {
+                int expriy = getExpriy(siteId, ITEM_TYPE_FILEUPLOAD);
+                service.delete(ITEM_TYPE_FILEUPLOAD, null, DateUtils.addMinutes(now, -expriy));
+            }
+        }
+        List<Short> list5 = service.getSiteIdList(ITEM_TYPE_CONTRIBUTE, null);
+        if (CommonUtils.notEmpty(list5)) {
+            for (Short siteId : list5) {
+                int expriy = getExpriy(siteId, ITEM_TYPE_CONTRIBUTE);
+                service.delete(ITEM_TYPE_CONTRIBUTE, null, DateUtils.addMinutes(now, -expriy));
+            }
+        }
+        List<Short> list6 = service.getSiteIdList(ITEM_TYPE_COMMENT, null);
+        if (CommonUtils.notEmpty(list6)) {
+            for (Short siteId : list6) {
+                int expriy = getExpriy(siteId, ITEM_TYPE_COMMENT);
+                service.delete(ITEM_TYPE_COMMENT, null, DateUtils.addMinutes(now, -expriy));
             }
         }
     }
@@ -255,11 +345,17 @@ public class LockComponent implements Config, SiteCache {
     @Override
     public void clear(short siteId) {
         Date now = CommonUtils.getDate();
-        int expriy = getExpriy(siteId, SysLockService.ITEM_TYPE_LOGIN);
-        service.delete(ITEM_TYPE_LOGIN, null, DateUtils.addMinutes(now, -expriy));
-        expriy = getExpriy(siteId, SysLockService.ITEM_TYPE_LOGIN);
+        int expriy = getExpriy(siteId, ITEM_TYPE_LOGIN);
+        service.deleteByItemTypes(ITEM_TYPE_LOGINS, null, DateUtils.addMinutes(now, -expriy));
+        expriy = getExpriy(siteId, ITEM_TYPE_REGISTER);
         service.delete(ITEM_TYPE_REGISTER, null, DateUtils.addMinutes(now, -expriy));
+        expriy = getExpriy(siteId, ITEM_TYPE_FILEUPLOAD);
+        service.delete(ITEM_TYPE_FILEUPLOAD, null, DateUtils.addMinutes(now, -expriy));
+        expriy = getExpriy(siteId, ITEM_TYPE_CONTRIBUTE);
+        service.delete(ITEM_TYPE_CONTRIBUTE, null, DateUtils.addMinutes(now, -expriy));
+        expriy = getExpriy(siteId, ITEM_TYPE_COMMENT);
+        service.delete(ITEM_TYPE_COMMENT, null, DateUtils.addMinutes(now, -expriy));
         expriy = getExpriy(siteId, null);
-        service.delete(null, SysLockService.SYSTEM_ITEM_TYPES, DateUtils.addMinutes(now, -expriy));
+        service.delete(null, SYSTEM_ITEM_TYPES, DateUtils.addMinutes(now, -expriy));
     }
 }

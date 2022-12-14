@@ -20,6 +20,11 @@ public class CmsPlaceMetadata implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
+    /**
+     * alias
+     * <p>
+     * 别名
+     */
     private String alias;
     private Integer size;
     private Long[] adminIds;
@@ -31,7 +36,17 @@ public class CmsPlaceMetadata implements java.io.Serializable {
     private List<String> fieldList;
     private List<String> requiredFieldList;
     private Map<String, String> fieldTextMap;
+    /**
+     * extend field list
+     * <p>
+     * 扩展字段列表
+     */
     private List<SysExtendField> extendList;
+    /**
+     * metadata extend field list
+     * <p>
+     * 元数据扩展字段列表
+     */
     private List<SysExtendField> metadataExtendList;
 
     /**

@@ -59,7 +59,7 @@ public class CmsFileUtils {
     /**
      * 
      */
-    public static final String[] IMAGE_FILE_SUFFIXS = new String[] { ".png", ".jpg", ".jpeg", ".gif", ".bmp" };
+    public static final String[] IMAGE_FILE_SUFFIXS = new String[] { ".png", ".jpg", ".jpeg", ".gif", ".svg", ".bmp" };
     /**
      * 
      */
@@ -450,6 +450,27 @@ public class CmsFileUtils {
             return true;
         }
         return false;
+    }
+
+    /**
+     * 获取文件内容
+     *
+     * @param filepath
+     * @param suffix
+     * @return is safe
+     */
+    public static boolean isSafe(String filepath, String suffix) {
+        if (CommonUtils.notEmpty(suffix) && suffix.endsWith(ImageUtils.FORMAT_NAME_SVG)) {
+            File file = new File(filepath);
+            try {
+                if (file.isFile()) {
+                    return ImageUtils.svgSafe(file);
+                }
+            } catch (IOException e) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**

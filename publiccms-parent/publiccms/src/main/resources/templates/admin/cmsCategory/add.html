@@ -8,7 +8,7 @@
 </@cms.category>
 <@cms.category id=parentId><#assign category=object/></@cms.category>
 <@cms.categoryType id=typeId><#assign categoryType=object/></@cms.categoryType>
-<form method="post" autocomplete="off" action="cmsCategory/save?callbackType=closeCurrent&navTabId=cmsCategory/list" class="pageForm required-validate" onsubmit="clickAddTagType();return validateCallback(this, navTabAjaxDone);">
+<form method="post" autocomplete="off" action="cmsCategory/save?callbackType=closeCurrent&navTabId=cmsCategory/list<#if !id?has_content>&ref=page</#if>" class="pageForm required-validate" onsubmit="clickAddTagType();return validateCallback(this, navTabAjaxDone);">
     <input name="id" type="hidden" value="${id!}" />
     <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <div class="formBar card">
@@ -99,7 +99,7 @@
                 </dl>
 <#if categoryType?has_content && categoryType.extendList?has_content>
     <#include "../include_page/extendData.html"/>
-    <@extendData 'extendDataList' categoryType.extendList attribute!{}/>
+    <@extendData name='extendDataList' extendList=categoryType.extendList extendValues=(attribute!{}) historyItemType='categoryExtend' historyItemId=id/>
 </#if>
             </div>
             <div class="pageFormContent onlyUrl" layoutH>
@@ -217,8 +217,10 @@ checkCategoryModel();
 </#if>
 <#include "../include_page/extends.html"/>
                 <fieldset>
-                    <legend><@t.page 'content.extend_field'/>(<@t.page 'extend_field.use.content'/>;<@t.page 'extend_field.invalid'/>:source,sourceUrl,wordCount,minPrice,maxPrice,text;<@t.page 'metadata.default_value_description'/>)</legend>
+                    <legend><@t.page 'content.extend_field'/></legend>
+                    <span class="info"><#noparse>&lt;#assign attribute=getContentAttribute(content.id)&gt;</#noparse></span>
                     <@extends 'contentExtends' contentExtendList true copy/>
+                    span class="info"><@t.page 'extend_field.use.content'/>;<@t.page 'extend_field.invalid'/>:source,sourceUrl,wordCount,minPrice,maxPrice,text;<@t.page 'metadata.default_value_description'/></span>
                 </fieldset>
             </div>
         </div>

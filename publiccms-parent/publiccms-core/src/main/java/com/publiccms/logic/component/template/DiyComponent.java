@@ -49,19 +49,19 @@ public class DiyComponent implements SiteCache {
     /**
     *
     */
-    public static final String REGION_FILE = "diy-region.data";
+    public static final String REGION_FILE = "include/region.data";
     /**
     *
     */
-    public static final String LAYOUT_FILE = "diy-layout.data";
+    public static final String LAYOUT_FILE = "include/layout.data";
     /**
     *
     */
-    public static final String MODULE_FILE = "diy-module.data";
+    public static final String MODULE_FILE = "include/module.data";
     /**
      *
      */
-    public static final String DATA_FILE = "diy-data.data";
+    public static final String DATA_FILE = "include/diy.data";
 
     private CacheEntity<Short, Map<String, CmsRegionData>> regionDataCache;
 
@@ -80,10 +80,10 @@ public class DiyComponent implements SiteCache {
 
     /**
      * 获取区域列表
-     * 
+     *
      * @param site
      *
-     * @return region
+     * @return region list
      */
 
     public List<CmsRegion> getRegionList(SysSite site) {
@@ -97,41 +97,57 @@ public class DiyComponent implements SiteCache {
 
     /**
      * 获取布局列表
-     * 
-     * @param site
      *
-     * @return region
+     * @param site
+     * @param region
+     * @param showGlobal
+     *
+     * @return layout list
      */
 
-    public List<CmsLayout> getLayoutList(SysSite site) {
+    public List<CmsLayout> getLayoutList(SysSite site, String region, boolean showGlobal) {
         Map<String, CmsLayout> map = getLayoutMap(site);
         if (null == map) {
             return new ArrayList<>();
         } else {
-            return map.values().stream().collect(Collectors.toList());
+            return map.values().stream().filter(layout -> {
+                return showGlobal
+                        ? (CommonUtils.empty(region) || CommonUtils.empty(layout.getRegion())
+                                || region.equals(layout.getRegion()))
+                        : (CommonUtils.empty(region) && CommonUtils.empty(layout.getRegion())
+                                || CommonUtils.notEmpty(region) && region.equals(layout.getRegion()));
+            }).collect(Collectors.toList());
         }
     }
 
     /**
      * 获取模块列表
-     * 
-     * @param site
      *
-     * @return region
+     * @param site
+     * @param region
+     * @param showGlobal
+     *
+     * @return module list
      */
 
-    public List<CmsModule> getModuleList(SysSite site) {
+    public List<CmsModule> getModuleList(SysSite site, String region, boolean showGlobal) {
         Map<String, CmsModule> map = getModuleMap(site);
         if (null == map) {
             return null;
         } else {
-            return map.values().stream().collect(Collectors.toList());
+            return map.values().stream().filter(module -> {
+                return showGlobal
+                        ? (CommonUtils.empty(region) || CommonUtils.empty(module.getRegion())
+                                || region.equals(module.getRegion()))
+                        : (CommonUtils.empty(region) && CommonUtils.empty(module.getRegion())
+                                || CommonUtils.notEmpty(region) && region.equals(module.getRegion()));
+            }).collect(Collectors.toList());
         }
     }
 
     /**
      * 获取区域元数据
-     * 
+     *
      * @param site
      * @param id
      *
@@ -144,7 +160,7 @@ public class DiyComponent implements SiteCache {
 
     /**
      * 获取区域元数据
-     * 
+     *
      * @param site
      * @param id
      *
@@ -157,7 +173,7 @@ public class DiyComponent implements SiteCache {
 
     /**
      * 获取区域元数据
-     * 
+     *
      * @param site
      * @param id
      *
@@ -170,7 +186,7 @@ public class DiyComponent implements SiteCache {
 
     /**
      * 获取DIY数据
-     * 
+     *
      * @param site
      * @param id
      *
@@ -183,7 +199,7 @@ public class DiyComponent implements SiteCache {
 
     /**
      * 更新区域数据
-     * 
+     *
      * @param site
      * @param region
      * @return whether the update is successful
@@ -201,7 +217,7 @@ public class DiyComponent implements SiteCache {
 
     /**
      * 更新布局数据
-     * 
+     *
      * @param site
      * @param layout
      * @return whether the update is successful
@@ -219,7 +235,7 @@ public class DiyComponent implements SiteCache {
 
     /**
      * 更新模块数据
-     * 
+     *
      * @param site
      * @param module
      * @return whether the update is successful
@@ -237,7 +253,7 @@ public class DiyComponent implements SiteCache {
 
     /**
      * 更新DIY数据
-     * 
+     *
      * @param site
      * @param regionData
      * @return whether the update is successful
@@ -255,7 +271,7 @@ public class DiyComponent implements SiteCache {
 
     /**
      * 删除区域
-     * 
+     *
      * @param site
      * @param id
      *
@@ -274,7 +290,7 @@ public class DiyComponent implements SiteCache {
 
     /**
      * 删除布局
-     * 
+     *
      * @param site
      * @param id
      *
@@ -293,7 +309,7 @@ public class DiyComponent implements SiteCache {
 
     /**
      * 删除模块
-     * 
+     *
      * @param site
      * @param id
      *
@@ -312,7 +328,7 @@ public class DiyComponent implements SiteCache {
 
     /**
      * 删除DIY数据
-     * 
+     *
      * @param site
      * @param id
      * @return whether the delete is successful

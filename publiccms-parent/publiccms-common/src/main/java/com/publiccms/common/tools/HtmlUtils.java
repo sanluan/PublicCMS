@@ -10,6 +10,8 @@ import org.apache.commons.text.translate.CharSequenceTranslator;
 import org.apache.commons.text.translate.EntityArrays;
 import org.apache.commons.text.translate.LookupTranslator;
 import org.apache.commons.text.translate.NumericEntityUnescaper;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Safelist;
 
 import com.publiccms.common.constants.Constants;
 
@@ -37,6 +39,15 @@ public class HtmlUtils {
      */
     public static final Pattern HTML_PATTERN = Pattern.compile("<[^>]+>");
 
+    public static final Safelist SAFELIST = Safelist.relaxed().addTags("figure", "section")
+            .addAttributes(":all", "class", "style").addAttributes("a", "name", "id", "target")
+            .addAttributes("audio", "autoplay", "controls", "loop", "muted", "preload", "src")
+            .addAttributes("video", "autoplay", "controls", "data-setup", "height", "loop", "muted", "preload", "poster", "src",
+                    "width")
+            .addAttributes("source", "media", "sizes", "src", "srcset", "type")
+            .addAttributes("track", "default", "kind", "label", "src", "srclang").addProtocols("a", "href", "#")
+            .removeProtocols("img", "src", "http", "https");
+
     /**
      * @param string
      * @return result
@@ -44,6 +55,13 @@ public class HtmlUtils {
     public static String removeHtmlTag(String string) {
         if (CommonUtils.notEmpty(string)) {
             return UNESCAPE_HTML4.translate(HTML_PATTERN.matcher(string).replaceAll(Constants.BLANK));
+        }
+        return string;
+    }
+
+    public static String cleanUnsafeHtml(String string) {
+        if (CommonUtils.notEmpty(string)) {
+            return Jsoup.clean(string, SAFELIST);
         }
         return string;
     }

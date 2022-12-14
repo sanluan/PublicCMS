@@ -19,6 +19,12 @@ import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.FileImageInputStream;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import com.github.bgalek.security.svg.SvgSecurityValidator;
+import com.github.bgalek.security.svg.ValidationResult;
 import com.luciad.imageio.webp.WebPReadParam;
 import com.publiccms.common.constants.Constants;
 
@@ -30,6 +36,7 @@ import net.ifok.image.image4j.codec.ico.ICOEncoder;
  * 
  */
 public class ImageUtils {
+    private static final Log log = LogFactory.getLog(ImageUtils.class);
     /**
      * 
      */
@@ -42,6 +49,10 @@ public class ImageUtils {
      * 
      */
     public static final String FORMAT_NAME_WEBP = "webp";
+    /**
+     * 
+     */
+    public static final String FORMAT_NAME_SVG = "svg";
     /**
      * 
      */
@@ -168,6 +179,19 @@ public class ImageUtils {
         try (FileOutputStream outputStream = new FileOutputStream(icoFile)) {
             ICOEncoder.write(resultImage, outputStream);
         }
+    }
+
+    public static boolean svgSafe(File imageFile) throws IOException {
+        SvgSecurityValidator svgSecurityValidator = SvgSecurityValidator.builder().build();
+        ValidationResult validation;
+        validation = svgSecurityValidator.validate(FileUtils.readFileToString(imageFile, Constants.DEFAULT_CHARSET));
+        if (validation.hasViolations()) {
+            log.error("unsafe svg file:");
+            log.error(imageFile.getAbsolutePath());
+            log.error(validation.getOffendingElements());
+            return false;
+        }
+        return true;
     }
 
     public static BufferedImage thumb(BufferedImage sourceImage, int width, int height, boolean png) throws IOException {

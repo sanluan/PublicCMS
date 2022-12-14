@@ -25,9 +25,8 @@
     <p><label>${(a.fieldTextMap['cover'])!}:</label><input name="cover" type="text" size="60" maxlength="1000" value=""/></p>
 </#if>
     <#include "../include_page/extendData.html"/>
-    <#assign extendList=(a.extendList)![]/>
     <#assign extendValues=getPlaceAttribute((a.id)!)!{}/>
-    <@extendData 'extendDataList' extendList extendValues 'customform'/>
+    <@extendData name='extendDataList' extendList=a.extendList extendValues=extendValues type='customform'/>
     <p><input type="submit" value="<@t.page 'button.save'/>"/></p>
 </form>
     ${'<#assign path=\''?no_esc+path+'\'/>'?no_esc}

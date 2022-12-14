@@ -15,6 +15,20 @@
             <li>
                 <a href="javascript:;" onclick="return false;"><@t.page 'layout'/></a>
                 <ul>
+                    <@tools.diyMetadataList itemType="region">
+                <#list list as a>
+                    <li>
+                        <a href="javascript:void(0)">${a.name!}</a>
+                        <ul>
+                     <@tools.diyMetadataList itemType="layout" region=a.id>
+                        <#list list as a>
+                            <li><a href="cmsDiy/layout.html?id=${(a.id?url)!}" target="ajax" rel="diyBox">${a.name!} (${a.count})</a></li>
+                        </#list>
+                    </@tools.diyMetadataList>
+                        </ul>
+                    </li>
+                </#list>
+            </@tools.diyMetadataList>
             <@tools.diyMetadataList itemType="layout">
                 <#list list as a>
                     <li><a href="cmsDiy/layout.html?id=${(a.id?url)!}" target="ajax" rel="diyBox">${a.name!} (${a.count})</a></li>
@@ -26,6 +40,20 @@
             <li>
                 <a href="javascript:;" onclick="return false;"><@t.page 'module'/></a>
                 <ul>
+             <@tools.diyMetadataList itemType="region">
+                <#list list as a>
+                    <li>
+                        <a href="javascript:void(0)">${a.name!}</a>
+                        <ul>
+                     <@tools.diyMetadataList itemType="module" region=a.id>
+                        <#list list as a>
+                            <li><a href="cmsDiy/module.html?id=${(a.id?url)!}" target="ajax" rel="diyBox">${a.name!}</a></li>
+                        </#list>
+                    </@tools.diyMetadataList>
+                        </ul>
+                    </li>
+                </#list>
+            </@tools.diyMetadataList>
             <@tools.diyMetadataList itemType="module">
                 <#list list as a>
                     <li><a href="cmsDiy/module.html?id=${(a.id?url)!}" target="ajax" rel="diyBox">${a.name!}</a></li>

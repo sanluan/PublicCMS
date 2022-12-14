@@ -62,8 +62,8 @@ public class CmsCommentAdminController {
     @Resource
     protected ConfigComponent configComponent;
 
-    private String[] ignoreProperties = new String[] { "siteId", "userId", "createDate", "checkUserId", "checkDate", "status",
-            "replyId", "replyUserId", "replies", "scores", "disabled" };
+    private String[] ignoreProperties = new String[] { "siteId", "userId", "createDate", "checkUserId", "checkDate", "contentId",
+            "ip", "status", "replyId", "replyUserId", "replies", "scores", "disabled" };
 
     /**
      * @param site
@@ -77,6 +77,9 @@ public class CmsCommentAdminController {
     @Csrf
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, CmsComment entity,
             HttpServletRequest request, ModelMap model) {
+
+        String ip = RequestUtils.getIpAddress(request);
+        entity.setIp(ip);
         if (null != entity.getId()) {
             CmsComment oldEntity = service.getEntity(entity.getId());
             if (null == oldEntity || ControllerUtils.errorNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {

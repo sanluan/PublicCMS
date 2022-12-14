@@ -23,7 +23,7 @@
         </table>
     </div>
     <script>
-    $('form',navTab.getCurrentPanel()).trigger(DWZ.eventType.editorSync);
+    $('form',navTab.getCurrentPanel()).trigger(JUI.eventType.editorSync);
     $('textarea[name=new]',$.pdialog.getCurrent()).val($('[name=content]',navTab.getCurrentPanel()).val());
     </script>
 </div>

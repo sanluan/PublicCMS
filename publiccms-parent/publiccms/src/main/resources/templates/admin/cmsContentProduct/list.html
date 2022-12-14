@@ -29,17 +29,17 @@
 </div>
 <@sys.authorized roleIds=admin.roles urls='cmsContentProduct/add'><#assign authorizedMap=map/></@sys.authorized>
 <div class="card">
-    <table class="table" width="100%" layoutH="92">
+    <table class="table" width="100%" layoutH orderField="${orderField!}" orderType="${orderType!}">
         <thead>
             <tr>
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
                 <th><@t.page 'id'/></th>
                 <th><@t.page 'title'/></th>
                 <th><@t.page 'content.promulgator'/></th>
-                <th orderField="price" class="<#if orderField?has_content&&'price'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'product.price'/></th>
+                <th orderField="price"><@t.page 'product.price'/></th>
                 <th><@t.page 'product.quantity_limit'/></th>
-                <th orderField="inventory" class="<#if orderField?has_content&&'inventory'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'product.inventory'/></th>
-                <th orderField="sales" class="<#if orderField?has_content&&'sales'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'product.sales'/></th>
+                <th orderField="inventory"><@t.page 'product.inventory'/></th>
+                <th orderField="sales"><@t.page 'product.sales'/></th>
                 <th width="100"><@t.page 'operate'/></th>
             </tr>
         </thead>

@@ -59,11 +59,11 @@
         </#if>
         <#if authorizedMap['cmsCategory/delete']>
             <li class="line">line</li>
-            <li><a href="cmsCategory/delete?_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i><@t.page 'button.batch_delete'/></a></li>
+            <li><a href="cmsCategory/delete?_csrf=<@tools.csrfToken admin=true/>&ref=page" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i><@t.page 'button.batch_delete'/></a></li>
         </#if>
         <#if authorizedMap['cmsCategory/rebuildChildIds']>
             <li class="line">line</li>
-            <li><a href="cmsCategory/rebuildChildIds?_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.do'/>" target="ajaxTodo"><i class="icon-refresh icon-large"></i><@t.page 'button.rebuild_childs'/></a></li>
+            <li><a href="cmsCategory/rebuildChildIds?_csrf=<@tools.csrfToken admin=true/>&ref=page" title="<@t.page 'confirm.do'/>" target="ajaxTodo"><i class="icon-refresh icon-large"></i><@t.page 'button.rebuild_childs'/></a></li>
         </#if>
         </ul>
     </div>
@@ -105,6 +105,7 @@
                 <td <#if lockMap[a.id?string]?has_content><#assign lockUser=(userMap[lockMap[a.id?string].userId?string].nickname)!''/>title="<@t.page 'lock.message' lockUser/> ${lockMap[a.id?string].createDate}"</#if>>
                     <#if lockMap[a.id?string]?has_content><i class="icon-lock icon-large"></i></#if>
                     <a class="exclude-translate" href="cmsDiy/preview.html?url=${((a.url)?url)!}" target="navTab" rel="cmsDiy/preview"  icon="<i class='bi bi-palette2 icon-large'></i>" title="<@t.page 'diy.preview'/>">${(a.name)!}</a>
+                    <a href="${a.url!}" target="_blank"><i class="icon-external-link"></i></a>
                     ${(a.onlyUrl?then('['+t.pageMessage('url')+']',''))!}
                 </td>
                 <td class="exclude-translate">${a.code!}</td>

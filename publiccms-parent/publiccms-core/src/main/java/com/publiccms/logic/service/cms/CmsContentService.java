@@ -17,7 +17,6 @@ import java.util.function.BiConsumer;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
-import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,7 +35,7 @@ import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.cms.CmsContentAttribute;
 import com.publiccms.entities.cms.CmsContentFile;
 import com.publiccms.entities.cms.CmsContentProduct;
-import com.publiccms.entities.cms.CmsContentTextHistory;
+import com.publiccms.entities.cms.CmsEditorHistory;
 import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
@@ -48,6 +47,8 @@ import com.publiccms.views.pojo.entities.CmsModel;
 import com.publiccms.views.pojo.model.CmsContentParameters;
 import com.publiccms.views.pojo.query.CmsContentQuery;
 import com.publiccms.views.pojo.query.CmsContentSearchQuery;
+
+import jakarta.annotation.Resource;
 
 /**
  *
@@ -61,7 +62,6 @@ public class CmsContentService extends BaseService<CmsContent> {
             Config.INPUTTYPE_DEPT, Config.INPUTTYPE_CONTENT, Config.INPUTTYPE_CATEGORY, Config.INPUTTYPE_DICTIONARY,
             Config.INPUTTYPE_CATEGORYTYPE, Config.INPUTTYPE_TAGTYPE };
 
-    public static final String[] FULLTEXT_SEARCHABLE_EDITOR = { "kindeditor", "ckeditor", "tinymce", "editor" };
     public static final String[] ignoreProperties = new String[] { "id", "siteId" };
     /**
      * 
@@ -84,6 +84,25 @@ public class CmsContentService extends BaseService<CmsContent> {
      * 
      */
     public static final Integer[] STATUS_NORMAL_ARRAY = new Integer[] { STATUS_NORMAL };
+
+    @Resource
+    private CmsCategoryService categoryService;
+    @Resource
+    private SysExtendService extendService;
+    @Resource
+    private SysExtendFieldService extendFieldService;
+    @Resource
+    private CmsTagService tagService;
+    @Resource
+    private CmsContentFileService contentFileService;
+    @Resource
+    private CmsEditorHistoryService editorHistoryService;
+    @Resource
+    private CmsContentProductService contentProductService;
+    @Resource
+    private CmsContentAttributeService attributeService;
+    @Resource
+    private CmsContentRelatedService cmsContentRelatedService;
 
     /**
      * @param queryEntity
@@ -191,33 +210,87 @@ public class CmsContentService extends BaseService<CmsContent> {
                     map = categoryMap;
                 }
             }
+
             dealAttribute(entity, modelExtendList, categoryExtendList, map, cmsModel,
                     entity.isHasFiles() ? contentParameters.getFiles() : null,
                     entity.isHasImages() ? contentParameters.getImages() : null,
                     entity.isHasProducts() ? contentParameters.getProducts() : null, attribute);
-            CmsContentAttribute oldAttribute = attributeService.getEntity(entity.getId());
-            if (null != oldAttribute && null != oldAttribute.getText() && !oldAttribute.getText().equals(attribute.getText())) {
-                CmsContentTextHistory history = new CmsContentTextHistory(entity.getId(), "text", CommonUtils.getDate(), userId,
-                        oldAttribute.getText());
-                contentHistoryService.save(history);
-            }
+
+            saveEditorHistory(attributeService.getEntity(entity.getId()), attribute, siteId, entity.getId(), userId,
+                    modelExtendList, categoryExtendList, map);// 保存编辑器字段历史记录
+
             attributeService.updateAttribute(entity.getId(), attribute);// 更新保存扩展字段，文本字段
             cmsContentRelatedService.update(entity.getId(), userId, contentParameters.getContentRelateds());// 更新保存推荐内容
         }
         return entity;
     }
 
+    private void saveEditorHistory(CmsContentAttribute oldAttribute, CmsContentAttribute attribute, short siteId, long contentId,
+            long userId, List<SysExtendField> modelExtendList, List<SysExtendField> categoryExtendList, Map<String, String> map) {
+        if (null != oldAttribute) {
+            if (CommonUtils.notEmpty(oldAttribute.getText()) && !oldAttribute.getText().equals(attribute.getText())) {
+                CmsEditorHistory history = new CmsEditorHistory(siteId, CmsEditorHistoryService.ITEM_TYPE_CONTENT,
+                        String.valueOf(contentId), "text", CommonUtils.getDate(), userId, oldAttribute.getText());
+                editorHistoryService.save(history);
+            }
+            if (CommonUtils.notEmpty(oldAttribute.getData())) {
+                Map<String, String> oldMap = ExtendUtils.getExtendMap(oldAttribute.getData());
+                if (CommonUtils.notEmpty(modelExtendList)) {
+                    for (SysExtendField extendField : modelExtendList) {
+                        if (ArrayUtils.contains(Config.INPUT_TYPE_EDITORS, extendField.getInputType())) {
+                            if (CommonUtils.notEmpty(oldMap) && CommonUtils.notEmpty(oldMap.get(extendField.getId().getCode()))
+                                    && (CommonUtils.notEmpty(map) || !oldMap.get(extendField.getId().getCode())
+                                            .equals(map.get(extendField.getId().getCode())))) {
+                                CmsEditorHistory history = new CmsEditorHistory(siteId,
+                                        CmsEditorHistoryService.ITEM_TYPE_CONTENT_EXTEND, String.valueOf(contentId),
+                                        extendField.getId().getCode(), CommonUtils.getDate(), userId,
+                                        map.get(extendField.getId().getCode()));
+                                editorHistoryService.save(history);
+                            }
+                        }
+                    }
+                }
+                if (CommonUtils.notEmpty(categoryExtendList)) {
+                    for (SysExtendField extendField : categoryExtendList) {
+                        if (ArrayUtils.contains(Config.INPUT_TYPE_EDITORS, extendField.getInputType())) {
+                            if (CommonUtils.notEmpty(oldMap) && CommonUtils.notEmpty(oldMap.get(extendField.getId().getCode()))
+                                    && (CommonUtils.notEmpty(map) || !oldMap.get(extendField.getId().getCode())
+                                            .equals(map.get(extendField.getId().getCode())))) {
+                                CmsEditorHistory history = new CmsEditorHistory(siteId,
+                                        CmsEditorHistoryService.ITEM_TYPE_CONTENT_EXTEND, String.valueOf(contentId),
+                                        extendField.getId().getCode(), CommonUtils.getDate(), userId,
+                                        map.get(extendField.getId().getCode()));
+                                editorHistoryService.save(history);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     /**
      * @param siteId
-     * @param categoryIds
-     * @param modelIds
+     * @param categoryId
+     * @param modelId
      * @param worker
      * @param batchSize
      */
-    @Transactional(readOnly = true)
-    public void batchWork(short siteId, Integer[] categoryIds, String[] modelIds, BiConsumer<List<CmsContent>, Integer> worker,
+    public void batchWorkId(short siteId, Integer categoryId, String modelId, BiConsumer<List<Long>, Integer> worker,
             int batchSize) {
-        dao.batchWork(siteId, categoryIds, modelIds, worker, batchSize);
+        dao.batchWorkId(siteId, categoryId, modelId, worker, batchSize);
+    }
+
+    /**
+     * @param siteId
+     * @param categoryId
+     * @param modelId
+     * @param worker
+     * @param batchSize
+     */
+    public void batchWorkContent(short siteId, Integer categoryId, String modelId, BiConsumer<List<CmsContent>, Integer> worker,
+            int batchSize) {
+        dao.batchWorkContent(siteId, categoryId, modelId, worker, batchSize);
     }
 
     public void rebuildSearchText(short siteId, CmsModel cmsModel, List<SysExtendField> categoryExtendList,
@@ -250,7 +323,7 @@ public class CmsContentService extends BaseService<CmsContent> {
             Map<String, String> map, CmsModel cmsModel, List<CmsContentFile> files, List<CmsContentFile> images,
             List<CmsContentProduct> products, CmsContentAttribute attribute) {
         StringBuilder searchTextBuilder = new StringBuilder();
-        String text = HtmlUtils.removeHtmlTag(null == attribute ? null : attribute.getText());
+        String text = HtmlUtils.removeHtmlTag(attribute.getText());
         if (null != text) {
             attribute.setWordCount(text.length());
             if (cmsModel.isSearchable()) {
@@ -289,6 +362,8 @@ public class CmsContentService extends BaseService<CmsContent> {
         } else {
             attribute.setData(null);
             attribute.setDictionaryValues(null);
+            attribute.setExtendsFields(null);
+            attribute.setExtendsText(null);
         }
         dealFiles(files, images, products, attribute);
 
@@ -354,7 +429,8 @@ public class CmsContentService extends BaseService<CmsContent> {
                     } else {
                         String value = map.get(extendField.getId().getCode());
                         if (null != value) {
-                            if (ArrayUtils.contains(FULLTEXT_SEARCHABLE_EDITOR, extendField.getInputType())) {
+                            if (ArrayUtils.contains(Config.INPUT_TYPE_EDITORS, extendField.getInputType())) {
+                                map.put(extendField.getId().getCode(), HtmlUtils.cleanUnsafeHtml(value));
                                 value = HtmlUtils.removeHtmlTag(value);
                             }
                             if (CommonUtils.notEmpty(value)) {
@@ -833,22 +909,4 @@ public class CmsContentService extends BaseService<CmsContent> {
 
     @Resource
     private CmsContentDao dao;
-    @Resource
-    private CmsCategoryService categoryService;
-    @Resource
-    private SysExtendService extendService;
-    @Resource
-    private SysExtendFieldService extendFieldService;
-    @Resource
-    private CmsTagService tagService;
-    @Resource
-    private CmsContentFileService contentFileService;
-    @Resource
-    private CmsContentTextHistoryService contentHistoryService;
-    @Resource
-    private CmsContentProductService contentProductService;
-    @Resource
-    private CmsContentAttributeService attributeService;
-    @Resource
-    private CmsContentRelatedService cmsContentRelatedService;
 }

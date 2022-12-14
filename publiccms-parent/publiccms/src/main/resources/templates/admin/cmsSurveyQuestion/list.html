@@ -32,7 +32,7 @@
         </#if>
         </ul>
     </div>
-    <table class="table" width="100%" layoutH>
+    <table class="table" width="100%" layoutH orderField="${orderField!}" orderType="${orderType!}">
         <thead>
             <tr>
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
@@ -40,7 +40,7 @@
                 <th><@t.page 'survey'/></th>
                 <th><@t.page 'title'/></th>
                 <th><@t.page 'content.score'/></th>
-                <th orderField="sort" class="<#if orderField?has_content&&'sort'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'sort'/></th>
+                <th orderField="sort"><@t.page 'sort'/></th>
                 <th><@t.page 'operate'/></th>
             </tr>
         </thead>

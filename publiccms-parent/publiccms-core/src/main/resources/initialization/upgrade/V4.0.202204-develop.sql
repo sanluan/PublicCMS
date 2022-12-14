@@ -29,10 +29,6 @@ CREATE TABLE `cms_content_text_history`(
   PRIMARY KEY(`id`),
   KEY `cms_content_history_content_id`(`content_id`,`field_name`,`create_date`,`user_id`)
 ) COMMENT='内容扩展';
-INSERT INTO `sys_module` VALUES('content_text_history', 'cmsContentTextHistory/lookup', 'cmsContentTextHistory/use', NULL, 'content_add', 0, 0);
-INSERT INTO `sys_module_lang` VALUES('content_text_history', 'en', 'Modify records');
-INSERT INTO `sys_module_lang` VALUES('content_text_history', 'ja', 'レコードを変更する');
-INSERT INTO `sys_module_lang` VALUES('content_text_history', 'zh', '修改记录');
 -- 2022-05-18 --
 ALTER TABLE `visit_history`
     DROP INDEX `visit_visit_date`,
@@ -211,8 +207,7 @@ UPDATE `sys_module` SET `authorized_url` = 'cmsModel/save,cmsTemplate/lookup,cms
 ALTER TABLE `cms_content`
     DROP INDEX `cms_content_disabled`,
     ADD INDEX `cms_content_disabled`(`site_id`, `disabled`, `category_id`, `model_id`);
---2022-09-26 --
-UPDATE `sys_module` SET `authorized_url`= 'cmsContentTextHistory/use,cmsContentTextHistory/compare' WHERE `id` ='content_text_history';
+-- 2022-09-26 --
 INSERT INTO `sys_module` VALUES('file_history', 'cmsFileHistory/list', 'cmsFileHistory/use,cmsFileHistory/compare', NULL, 'template_list', 0, 0);
 INSERT INTO `sys_module` VALUES('file_recycle', 'cmsFileBackup/list', 'cmsFileBackup/content,cmsFileBackup/recycle', NULL, 'template_list', 0, 0);
 INSERT INTO `sys_module_lang` VALUES('file_history', 'en', 'File modification history');
@@ -227,11 +222,11 @@ ALTER TABLE `sys_dept_item`
     CHANGE COLUMN `page` `item_id` varchar(100) NOT NULL COMMENT '项目id' AFTER `dept_id`,
     ADD COLUMN `item_type` varchar(50) NOT NULL DEFAULT 'page' COMMENT '项目类型' AFTER `dept_id`,
     DROP PRIMARY KEY,
-    ADD PRIMARY KEY(`dept_id`, `item_type`, `item_id`);
+    ADD PRIMARY KEY(`dept_id`, `item_type`, `item_id`),
     DROP INDEX `sys_dept_page_page`,
     ADD INDEX `sys_dept_item_item_id`(`item_type`, `item_id`);
 INSERT INTO sys_dept_item SELECT dept_id,'config',config FROM sys_dept_config;
-INSERT INTO sys_dept_item SELECT dept_id,'category',category_id FROM sys_dept_config;
+INSERT INTO sys_dept_item SELECT dept_id,'category',category_id FROM sys_dept_category;
 DROP TABLE `sys_dept_category`;
 DROP TABLE `sys_dept_config`;
 -- 2022-10-14 --
@@ -302,3 +297,47 @@ UPDATE `sys_module_lang` SET `module_id` = 'vote_list' WHERE `module_id` = 'cont
 UPDATE `sys_module_lang` SET `module_id` = 'vote_add' WHERE `module_id` = 'content_vote_add';
 UPDATE `sys_module_lang` SET `module_id` = 'vote_delete' WHERE `module_id` = 'content_vote_delete';
 UPDATE `sys_module_lang` SET `module_id` = 'vote_view' WHERE `module_id` = 'content_vote_view';
+-- 2022-12-02 --
+INSERT INTO `sys_module` VALUES ('content_select_survey', 'cmsSurvey/lookup', NULL, NULL, 'content_add', 0, 0);
+INSERT INTO `sys_module_lang` VALUES ('content_select_survey', 'en', 'Select 问卷');
+INSERT INTO `sys_module_lang` VALUES ('content_select_survey', 'ja', 'アンケート選択');
+INSERT INTO `sys_module_lang` VALUES ('content_select_survey', 'zh', '选择问卷');
+-- 2022-12-09 --
+ALTER TABLE `cms_place` ADD COLUMN `description` varchar(300) default NULL COMMENT '简介' AFTER `url`;
+-- 2022-12-11 --
+RENAME TABLE `cms_content_text_history` TO `cms_editor_history`;
+ALTER TABLE `cms_editor_history`
+    ADD COLUMN `item_type` varchar(50) DEFAULT NULL COMMENT '数据类型' AFTER `id`,
+    CHANGE COLUMN `content_id` `item_id` varchar(100) NOT NULL COMMENT '数据id',
+    DROP INDEX `cms_content_history_content_id`,
+    ADD INDEX `cms_editor_history_item_id` (`item_type`,`item_id`, `field_name`, `create_date`);
+UPDATE `cms_editor_history` set item_type = 'content';
+ALTER TABLE `cms_editor_history` CHANGE COLUMN `item_type` `item_type` varchar(50) NOT NULL COMMENT '数据类型';
+DELETE FROM `sys_module` WHERE `id` = 'content_text_history';
+DELETE FROM `sys_module_lang` WHERE `module_id` = 'content_text_history';
+INSERT INTO `sys_module` VALUES('editor_history', 'cmsEditorHistory/lookup', 'cmsEditorHistory/use,cmsEditorHistory/compare', NULL, 'content_add', 0, 0);
+INSERT INTO `sys_module_lang` VALUES('editor_history', 'en', 'Modify records');
+INSERT INTO `sys_module_lang` VALUES('editor_history', 'ja', 'レコードを変更する');
+INSERT INTO `sys_module_lang` VALUES('editor_history', 'zh', '修改记录');
+UPDATE `sys_module` SET `authorized_url`= 'sysConfigData/save,sysConfigData/edit,cmsEditorHistory/lookup,cmsEditorHistory/use,cmsEditorHistory/compare' WHERE `id` ='config_data_edit';
+UPDATE `sys_module` SET `authorized_url`= 'cmsPage/save,file/doUpload,cmsPage/clearCache,cmsEditorHistory/lookup,cmsEditorHistory/use,cmsEditorHistory/compare' WHERE `id` ='page_save';
+UPDATE `sys_module` SET `authorized_url`= 'cmsContent/lookup,cmsPlace/lookup,cmsPlace/lookup_content_list,file/doUpload,cmsPlace/save,cmsEditorHistory/lookup,cmsEditorHistory/use,cmsEditorHistory/compare' WHERE `id` ='place_add';
+UPDATE `sys_module` SET `authorized_url`= 'cmsCategory/addMore,cmsCategory/virify,cmsCategory/rebuildChildIds,cmsCategory/batchPublish,cmsTemplate/lookup,cmsCategory/categoryPath,cmsCategory/contentPath,file/doUpload,cmsDictionary/lookup,cmsCategory/save,cmsEditorHistory/lookup,cmsEditorHistory/use,cmsEditorHistory/compare' WHERE `id` ='category_add';
+-- 2022-12-12 --
+ALTER TABLE `cms_category_model` 
+    ADD COLUMN `site_id` smallint(6) NOT NULL COMMENT '站点' AFTER `model_id`,
+    ADD INDEX `cms_category_model_site_id`(`site_id`, `model_id`);
+UPDATE `cms_category_model` cm SET cm.`site_id` = (SELECT c.`site_id` FROM `cms_category` c WHERE c.`id`=cm.`category_id`);
+ALTER TABLE `cms_editor_history` 
+    ADD COLUMN `site_id` smallint(6) NOT NULL COMMENT '站点' AFTER `id`,
+    DROP INDEX `cms_editor_history_item_id`,
+    ADD INDEX `cms_editor_history_item_id`(`site_id`, `item_type`, `item_id`, `field_name`, `create_date`);
+UPDATE `cms_editor_history` eh SET eh.`site_id` = (SELECT c.`site_id` FROM `cms_content` c WHERE c.`id`= eh.`item_id` and eh.`item_type`='content');
+ALTER TABLE `cms_user_survey` 
+    ADD COLUMN `ip` varchar(130) NOT NULL COMMENT 'IP' AFTER `score`;
+ALTER TABLE `cms_user_score` 
+    ADD COLUMN `ip` varchar(130) NOT NULL COMMENT 'IP' AFTER `score`;
+ALTER TABLE `cms_comment` 
+    ADD COLUMN `ip` varchar(130) NOT NULL COMMENT 'IP' AFTER `content_id`;
+ALTER TABLE `cms_word` 
+    ADD COLUMN `ip` varchar(130) NOT NULL COMMENT 'IP' AFTER `hidden`;

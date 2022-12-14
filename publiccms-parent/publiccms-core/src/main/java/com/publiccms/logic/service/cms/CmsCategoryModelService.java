@@ -19,24 +19,27 @@ import com.publiccms.logic.dao.cms.CmsCategoryModelDao;
 @Transactional
 public class CmsCategoryModelService extends BaseService<CmsCategoryModel> {
 
-    private String[] ignoreProperties = new String[] { "id" };
+    private String[] ignoreProperties = new String[] { "id", "siteId" };
 
     /**
+     * @param siteId
      * @param modelId
      * @param categoryId
      * @return results page
      */
     @Transactional(readOnly = true)
-    public List<CmsCategoryModel> getList(String modelId, Integer categoryId) {
-        return dao.getList(modelId, categoryId);
+    public List<CmsCategoryModel> getList(short siteId, String modelId, Integer categoryId) {
+        return dao.getList(siteId, modelId, categoryId);
     }
 
     /**
+     * @param siteId 
      * @param entity
      */
-    public void updateCategoryModel(CmsCategoryModel entity) {
+    public void updateCategoryModel(short siteId, CmsCategoryModel entity) {
         CmsCategoryModel oldEntity = getEntity(entity.getId());
         if (null == oldEntity) {
+            entity.setSiteId(siteId);
             save(entity);
         } else {
             update(oldEntity.getId(), entity, ignoreProperties);

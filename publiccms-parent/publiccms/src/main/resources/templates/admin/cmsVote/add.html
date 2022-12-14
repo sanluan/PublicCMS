@@ -24,12 +24,14 @@
                 <dt><@t.page 'start_date'/>:</dt>
                 <dd>
                     <input type="text" name="startDate" class="required date" size="20" dateFmt="yyyy-MM-dd HH:mm:ss" value="${(a.startDate)!}"/>
+                    <a class="inputDateButton" href="javascript:void(0);"></a>
                 </dd>
             </dl>
             <dl>
                 <dt><@t.page 'end_date'/>:</dt>
                 <dd>
                     <input type="text" name="endDate" class="required date" size="20" dateFmt="yyyy-MM-dd HH:mm:ss" minDate="{%y}-%M-{%d}" value="${(a.endDate)!}"/>
+                    <a class="inputDateButton" href="javascript:void(0);"></a>
                 </dd>
             </dl>
             <fieldset>
@@ -49,7 +51,7 @@
                         <tr>
                             <td>
                                 <input type="hidden" name="itemList[${v?index}].id" value="${v.id}"/>
-                                <input class="required" type="text" name="itemList[${v?index}].title" value="${v.title}" size="50" maxlength="100" class="required" />
+                                <input class="required" type="text" name="itemList[${v?index}].title" value="${v.title}" size="50" maxlength="100"/>
                             </td>
                             <td>
                                 <input class="required digits" type="text" name="itemList[${v?index}].sort" value="${v.sort!}" size="5" maxlength="5"/>

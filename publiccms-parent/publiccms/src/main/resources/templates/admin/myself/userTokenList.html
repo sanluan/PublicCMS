@@ -20,12 +20,12 @@
     </form>
 </div>
 <div class="card">
-    <table class="table" width="100%" layoutH>
+    <table class="table" width="100%" layoutH orderField="${orderField!}" orderType="${orderType!}">
         <thead>
             <tr>
                 <th><@t.page 'channel'/></th>
-                <th orderField="createDate" class="<#if orderField?has_content&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'authorize_date'/></th>
-                <th orderField="expiryDate" class="<#if orderField?has_content&&'expiryDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'expiry_date'/></th>
+                <th orderField="createDate"><@t.page 'authorize_date'/></th>
+                <th orderField="expiryDate"><@t.page 'expiry_date'/></th>
                 <th><@t.page 'log.login_ip'/></th>
                 <th><@t.page 'operate'/></th>
             </tr>
@@ -36,7 +36,12 @@
                 <td>${a.channel!}</td>
                 <td>${a.createDate!}</td>
                 <td>${a.expiryDate!}</td>
-                <td>${a.loginIp!}</td>
+                <td>
+                    <div class="box">
+                        <p>${a.loginIp!}</p>
+                        <p>${(getIpRegion(a.loginIp).address)!}</p>
+                    </div>
+                </td>
                 <td class="wrap">
                     <a href="sysUserToken/delete?authToken=${a.authToken}&_csrf=<@tools.csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i><@t.page 'button.delete'/></a>
                 </td>

@@ -25,6 +25,7 @@ import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.ImageUtils;
+import com.publiccms.common.tools.LanguagesUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.common.tools.VerificationUtils;
 import com.publiccms.common.tools.ZipUtils;
@@ -114,11 +115,18 @@ public class CmsWebFileAdminController {
                     String fuleFilePath = siteComponent.getWebFilePath(site, filepath);
                     if (null != override && override || !CmsFileUtils.exists(fuleFilePath)) {
                         CmsFileUtils.upload(file, fuleFilePath);
-                        FileSize fileSize = CmsFileUtils.getFileSize(fuleFilePath, suffix);
-                        logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                                originalName, CmsFileUtils.getFileType(CmsFileUtils.getSuffix(originalName)), file.getSize(),
-                                fileSize.getWidth(), fileSize.getHeight(), RequestUtils.getIpAddress(request),
-                                CommonUtils.getDate(), filepath));
+                        if (CmsFileUtils.isSafe(fuleFilePath, suffix)) {
+                            FileSize fileSize = CmsFileUtils.getFileSize(fuleFilePath, suffix);
+                            logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                                    originalName, CmsFileUtils.getFileType(CmsFileUtils.getSuffix(originalName)), file.getSize(),
+                                    fileSize.getWidth(), fileSize.getHeight(), RequestUtils.getIpAddress(request),
+                                    CommonUtils.getDate(), filepath));
+                        } else {
+                            CmsFileUtils.delete(fuleFilePath);
+                            model.addAttribute(CommonConstants.ERROR, LanguagesUtils.getMessage(CommonConstants.applicationContext,
+                                    request.getLocale(), "verify.custom.file.unsafe"));
+                            return CommonConstants.TEMPLATE_ERROR;
+                        }
                     }
                 }
             } catch (IOException e) {

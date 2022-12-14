@@ -108,6 +108,7 @@
                 <#include '../include_page/extends.html'/>
                 <#assign extendList=(a.extendList)![]/>
                 <@extends 'extendList' extendList/>
+                <span class="info"><@t.page 'extend_field.use.metadata'/>;<@t.page 'extend_field.use.content'/>;<@t.page 'metadata.default_value_description'/></span>
             </fieldset>
     <script>
     $('input[name=useStatic]',navTab.getCurrentPanel()).on('change',function(){
@@ -224,6 +225,14 @@
                     $('input[name=publishPath]',navTab.getCurrentPanel()).val('/sitemap.xml');
                 <#else>
                     $('input[name=cacheTime]',navTab.getCurrentPanel()).val(7200);
+                </#if>
+                <#break>
+            <#case "error/500.html">
+            <#case "error/404.html">
+            <#case "error/403.html">
+                <#if site.useStatic>
+                    $('input[name=useStatic]',navTab.getCurrentPanel()).prop('checked',true).trigger('change');
+                    $('input[name=publishPath]',navTab.getCurrentPanel()).val(${demo});
                 </#if>
                 <#break>
             <#case "json/comment.json">

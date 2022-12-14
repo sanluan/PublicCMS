@@ -59,14 +59,24 @@
                 <dt><@t.page 'publish_date'/>:</dt>
                 <dd>
                     <input type="text" name="publishDate" class="date" size="20" autocomplete="off" dateFmt="yyyy-MM-dd HH:mm:ss" value="${(a.publishDate)!(content.publishDate)!.now}"/>
+                    <a class="inputDateButton" href="javascript:void(0);"></a>
                 </dd>
             </dl>
             <dl>
                 <dt><@t.page 'expiry_date'/>:</dt>
                 <dd>
                     <input type="text" name="expiryDate" class="date" size="20" autocomplete="off" dateFmt="yyyy-MM-dd HH:mm:ss" value="${(a.expiryDate)!(content.expiryDate)!}"/>
+                    <a class="inputDateButton" href="javascript:void(0);"></a>
                 </dd>
             </dl>
+        <#if fieldList?seq_contains('description')>
+            <dl class="nowrap">
+                <dt>${(metadata.fieldTextMap['description'])!}:</dt>
+                <dd>
+                    <textarea name="description"<#if requiredFieldList?seq_contains('description')> class="required"</#if> maxlength="300" cols="80" rows="4">${(a.description)!(content.description)!}</textarea>
+                </dd>
+            </dl>
+        </#if>
         <#if fieldList?seq_contains('cover')>
             <dl class="nowrap">
                 <dt>${(metadata.fieldTextMap['cover'])}:</dt>
@@ -82,11 +92,8 @@
         </#if>
             <#include "../include_page/extendData.html"/>
             <@tools.placeMetadata path=(a.path)!path!''><#assign metadata=object/></@tools.placeMetadata>
-            <#assign
-                extendList=(metadata.extendList)![]
-                attribute=getPlaceAttribute((a.id)!)!{}
-            />
-            <@extendData 'extendDataList' extendList attribute/>
+            <#assign attribute=getPlaceAttribute((a.id)!)!{}/>
+            <@extendData name='extendDataList' extendList=metadata.extendList extendValues=attribute historyItemType='placeExtend' historyItemId=id/>
         </div>
     </div>
 </form>

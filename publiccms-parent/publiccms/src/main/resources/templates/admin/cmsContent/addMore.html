@@ -5,7 +5,7 @@
 </#if>
 <@sys.authorized roleIds=admin.roles urls='cmsCategory/add'><#assign authorizedMap=map/></@sys.authorized>
 <div class="pageFormContent">
-    <ul class="tree treeFolder expand" layoutH>
+    <ul class="tree treeFolder" layoutH>
 <#if categoryId?has_content>
     <@cms.category id=categoryId>
         <#if object.typeId?has_content && authorizedMap['cmsCategory/add']>

@@ -17,9 +17,11 @@
                 </li>
                 <li>
                     <label><@t.page 'publish_date'/>:</label>
-                    <input type="text" name="startPublishDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" value="${startPublishDate!}" />
+                    <input type="text" name="startPublishDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" value="${startPublishDate!}"/>
+                    <a class="inputDateButton" href="javascript:void(0);"></a>
                     <span>-</span>
-                    <input type="text" name="endPublishDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" value="${endPublishDate!}" />
+                    <input type="text" name="endPublishDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" value="${endPublishDate!}"/>
+                    <a class="inputDateButton" href="javascript:void(0);"></a>
                 </li>
                 <li>
                     <label><@t.page 'field'/>:</label>
@@ -63,15 +65,15 @@
         </#if>
         </ul>
     </div>
-    <table class="table" width="100%" layoutH>
+    <table class="table" width="100%" layoutH orderField="${orderField!}" orderType="${orderType!}">
         <thead>
             <tr>
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
                 <th width="200"><@t.page 'content'/></th>
                 <th width="30"><@t.page 'content.comments'/></th>
-                <th width="30" orderField="clicks" class="<#if orderField?has_content&&'clicks'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'clicks'/></th>
-                <th width="30" orderField="score" class="<#if orderField?has_content&&'score'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'content.score'/></th>
-                <th width="70" orderField="publishDate" class="<#if orderField?has_content&&'publishDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'publish_date'/></th>
+                <th width="30" orderField="clicks"><@t.page 'clicks'/></th>
+                <th width="30" orderField="score"><@t.page 'content.score'/></th>
+                <th width="70" orderField="publishDate"><@t.page 'publish_date'/></th>
                 <th width="100"><@t.page 'operate'/></th>
             </tr>
         </thead>

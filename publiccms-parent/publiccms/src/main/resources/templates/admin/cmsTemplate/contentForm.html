@@ -26,13 +26,9 @@
 </#if>
     <#include "../include_page/extendData.html"/>
     <@sys.extendFieldList extendId=category.extendId>
-        <#assign extendList=list![]/>
-        <#assign extendValue=attribute!{}/>
-        <@extendData 'categoryExtendDataList' extendList extendValue 'customform'/>
+        <@extendData name='categoryExtendDataList' extendList=list extendValues=attribute type='customform'/>
     </@sys.extendFieldList>
-    <#assign extendList=model.extendList![]/>
-    <#assign extendValue=attribute!{}/>
-    <@extendData 'modelExtendDataList' extendList extendValue 'customform'/>
+    <@extendData name='modelExtendDataList' extendList=model.extendList extendValues=attribute type='customform'/>
     <p><input type="submit" value="<@t.page 'button.save'/>"/></p>
 </form>
 <#noparse>

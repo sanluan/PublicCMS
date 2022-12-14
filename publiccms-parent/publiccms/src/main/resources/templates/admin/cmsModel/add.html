@@ -53,10 +53,10 @@
                     <label><input name="hasImages" type="checkbox"/><@t.page 'model.has_images'/></label>
                     <label><input name="hasFiles" type="checkbox"/><@t.page 'model.has_attachs'/></label>
                     <label><input name="hasProducts" type="checkbox"/><@t.page 'model.has_products'/></label>
-                    <span class="info hasChild hide"><@t.page 'content.child'/>:<#noparse>&lt;@cms.contentList parentId=content.id&gt;&lt;#list page.list as a&gt;${a.title!}&lt;#seq&gt;,&lt;/#list&gt;&lt;/@cms.contentList&gt;</#noparse></span>
-                    <span class="info hasImages hide"><@t.page 'image_list'/>:<#noparse>&lt;@cms.contentFileList contentId=content.id fileTypes='image'&gt;&lt;#list page.list as a&gt;${a.filePath!}&lt;#seq&gt;,&lt;/#list&gt;&lt;/@cms.contentFileList&gt;</#noparse></span>
-                    <span class="info hasFiles hide"><@t.page 'attach_list'/>:<#noparse>&lt;@cms.contentFileList contentId=content.id fileTypes='video,document,audio,other'&gt;&lt;#list page.list as a&gt;${a.filePath!}&lt;#seq&gt;,&lt;/#list&gt;&lt;/@cms.contentFileList&gt;</#noparse></span>
-                    <span class="info hasProducts hide"><@t.page 'product_list'/>:<#noparse>&lt;@cms.contentProductList contentId=content.id&gt;&lt;#list page.list as a&gt;${a.title!}&lt;#seq&gt;,&lt;/#list&gt;&lt;/@cms.contentProductList&gt;</#noparse></span>
+                    <span class="info hasChild hide"><@t.page 'content.child'/>:<#noparse>&lt;@cms.contentList parentId=content.id&gt;&lt;#list page.list as a&gt;${a.title!}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.contentList&gt;</#noparse></span>
+                    <span class="info hasImages hide"><@t.page 'image_list'/>:<#noparse>&lt;@cms.contentFileList contentId=content.id fileTypes='image'&gt;&lt;#list page.list as a&gt;${a.filePath!}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.contentFileList&gt;</#noparse></span>
+                    <span class="info hasFiles hide"><@t.page 'attach_list'/>:<#noparse>&lt;@cms.contentFileList contentId=content.id fileTypes='video,document,audio,other'&gt;&lt;#list page.list as a&gt;${a.filePath!}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.contentFileList&gt;</#noparse></span>
+                    <span class="info hasProducts hide"><@t.page 'product_list'/>:<#noparse>&lt;@cms.contentProductList contentId=content.id&gt;&lt;#list page.list as a&gt;${a.title!}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.contentProductList&gt;</#noparse></span>
                 </div>
                 <div class="divider"></div>
                 <dl class="nowrap">
@@ -94,7 +94,7 @@
                     <dd>
                         <label><@t.page 'text'/>:</label>
                         <input name="fieldTextMap[tag]" type="text" autocomplete="on" maxlength="20" size="10" value="${(a.fieldTextMap['tag'])!t.pageMessage('tag')}"/>
-                        <span class="info"><#noparse>&lt;@cms.tag ids=content.tagIds&gt;&lt;#list map as k,v&gt;${v.name!}&lt;#seq&gt;,&lt;/#list&gt;&lt;/@cms.tag&gt;</#noparse></span>
+                        <span class="info"><#noparse>&lt;@cms.tag ids=content.tagIds&gt;&lt;#list map as k,v&gt;${v.name!}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.tag&gt;</#noparse></span>
                     </dd>
                 </dl>
                 <dl class="nowrap">
@@ -127,7 +127,7 @@
                         <label><@t.page 'text'/>:</label>
                         <input name="fieldTextMap[description]" type="text" autocomplete="on" maxlength="20" size="10" value="${(a.fieldTextMap['description'])!t.pageMessage('description')}"/>
                         <label><input name="requiredFieldList" type="checkbox" value="description"/><@t.page 'required'/></label>
-                        <span class="info"><#noparse>${(content.description)!}</#noparse></span>
+                        <span class="info"><#noparse>&lt;#list (content.description!'')?split("\n") as a&gt;${a}&lt;#sep&gt;&lt;br/&gt;&lt;/#list&gt;</#noparse></span>
                     </dd>
                 </dl>
                 <dl class="nowrap">
@@ -140,7 +140,7 @@
                         <label><input name="requiredFieldList" type="checkbox" value="cover"/><@t.page 'required'/></label>
                         <label><@t.page 'width'/></label><input name="coverWidth" type="number" size="5" value="${(a.coverWidth)!}"/>
                         <label><@t.page 'height'/></label><input name="coverHeight" type="number" size="5" value="${(a.coverHeight)!}"/>
-                        <span class="info"><#noparse>${(content.cover)!}</#noparse></span>
+                        <span class="info"><#noparse>&lt;img src="${(content.cover)!}" alt="${(content.title)!}"/&gt;</#noparse></span>
                     </dd>
                 </dl>
             </fieldset>
@@ -185,7 +185,7 @@
                 <#include "../include_page/extends.html"/>
                 <#assign contentExtendList=(a.extendList)![]>
                 <@extends 'extendList' contentExtendList true/>
-                <span class="info"><@t.page 'extend_field.use.content'/>;<@t.page 'extend_field.invalid'/>:source,sourceUrl,wordCount,minPrice,maxPrice,text;<@t.page 'metadata.default_value_description'/></span>
+                <span class="info"><@t.page 'extend_field.use.content'/>;<@t.page 'extend_field.use.content'/>;<@t.page 'extend_field.invalid'/>:source,sourceUrl,wordCount,minPrice,maxPrice,text;<@t.page 'metadata.default_value_description'/></span>
             </fieldset>
             <fieldset>
                 <legend><@t.page 'recommend_info'/></legend>
@@ -225,7 +225,7 @@
                 </#if>
                     </tbody>
                 </table>
-                <span class="info"><@t.page 'recommend_info'/>:<#noparse>&lt;@cms.contentRelatedList contentId=content.id relationType=dictionaryId&gt;&lt;#list page.list as a&gt;${a.title!}&lt;#seq&gt;,&lt;/#list&gt;&lt;/@cms.contentRelatedList&gt;</#noparse></span>
+                <span class="info"><@t.page 'recommend_info'/>:<#noparse>&lt;@cms.contentRelatedList contentId=content.id relationType=dictionaryId&gt;&lt;#list page.list as a&gt;${a.title!}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.contentRelatedList&gt;</#noparse></span>
             </fieldset>
             <script>
                 $('.systemField dt [type=checkbox]',navTab.getCurrentPanel()).each(function(){

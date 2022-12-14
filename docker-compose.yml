@@ -1,0 +1,42 @@
+version: "3.9"
+services:
+  publiccms:
+    build: .
+    container_name: publiccms
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./data/publiccms:/data/publiccms  #website file
+      - ./data/log/:/var/log/  #log file
+    environment:
+      - TZ=Asia/Shanghai
+    depends_on:
+      - "mysql"
+  mysql:
+    image: mysql:latest
+    container_name: mysql-cms
+    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    #restart: always
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./data/mysql:/var/lib/mysql #data file
+      - ./data/mysql-config:/etc/mysql/conf.d #config file
+      - ./data/log:/var/log/mysql  #log file
+    environment:
+      - TZ=Asia/Shanghai
+      - MYSQL_ROOT_PASSWORD=password!@#
+      - MYSQL_DATABASE=publiccms
+      - MYSQL_USER=publiccms
+      - MYSQL_PASSWORD=password!@#
+  nginx:
+    image: nginx:stable
+    container_name: nginx-cms
+    ports:
+      - "80:80"
+    volumes:
+      - ./data/nginx-config:/etc/nginx/conf.d #config file
+      - ./data/publiccms:/data/publiccms #website file
+      - ./data/log:/var/log/nginx #log file
+    environment:
+      - TZ=Asia/Shanghai

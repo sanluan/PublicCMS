@@ -1,6 +1,5 @@
 <div class="pageFormContent" layoutH>
-    <ul class="tree treeFolder expand">
-        <ul>
+    <ul class="tree treeFolder">
     <@cms.categoryModelList categoryId=categoryId>
         <#list list as a>
             <@t.merge 'modelIds' a.id.modelId!/>

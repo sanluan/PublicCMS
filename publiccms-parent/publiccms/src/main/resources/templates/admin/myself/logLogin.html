@@ -21,8 +21,10 @@
                 <li>
                     <label><@t.page 'log.login_date'/>:</label>
                     <input type="text" name="startCreateDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startCreateDate!}" />
+                    <a class="inputDateButton" href="javascript:void(0);"></a>
                     <span>-</span>
                     <input type="text" name="endCreateDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endCreateDate!}" />
+                    <a class="inputDateButton" href="javascript:void(0);"></a>
                 </li>
                 <li>
                     <label><@t.page 'log.login_ip'/>:</label>
@@ -45,14 +47,14 @@
             <li><a href="logLogin/delete?_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i><@t.page 'button.batch_delete'/></a></li>
         </ul>
     </div>
-    <table class="table" width="100%" layoutH>
+    <table class="table" width="100%" layoutH orderField="${orderField!}" orderType="${orderType!}">
         <thead>
             <tr>
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
                 <th><@t.page 'channel'/></th>
                 <th><@t.page 'log.login_ip'/></th>
                 <th><@t.page 'result'/></th>
-                <th orderField="createDate" class="<#if orderField?has_content&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'log.login_date'/></th>
+                <th orderField="createDate"><@t.page 'log.login_date'/></th>
                 <th><@t.page 'log.error_password'/></th>
             </tr>
         </thead>
@@ -61,7 +63,12 @@
             <tr>
                 <td><input name="ids" value="${a.id}" type="checkbox"></td>
                 <td class="exclude-translate">${a.channel!}</td>
-                <td>${a.ip!}</td>
+                <td>
+                    <div class="box">
+                        <p>${a.ip!}</p>
+                        <p>${(getIpRegion(a.ip).address)!}</p>
+                    </div>
+                </td>
                 <td>${a.result?then(t.pageMessage('success'),t.pageMessage('fail'))}</td>
                 <td>${a.createDate!}</td>
                 <td class="exclude-translate">${(a.errorPassword)!}</td>

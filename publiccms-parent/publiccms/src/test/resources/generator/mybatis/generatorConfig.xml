@@ -2,23 +2,23 @@
 <!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 <generatorConfiguration>
     <context id="context" defaultModelType="flat"><!-- use targetRuntime="MyBatis3" for mapper.xml -->
-        <property name="javaFileEncoding" value="UTF-8" />
-        <plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
-        <plugin type="org.mybatis.generator.plugins.ToStringPlugin" />
-        <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin" />
-        <plugin type="org.mybatis.generator.plugins.RowBoundsPlugin" />
+        <property name="javaFileEncoding" value="UTF-8"/>
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
+        <plugin type="org.mybatis.generator.plugins.ToStringPlugin"/>
+        <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin"/>
+        <plugin type="org.mybatis.generator.plugins.RowBoundsPlugin"/>
         <jdbcConnection
             connectionURL="jdbc:mysql://127.0.0.1/publiccms?characterEncoding=UTF-8&amp;ampuseSSL=false;&amp;serverTimezone=GMT%2B08"
-            driverClass="com.mysql.cj.jdbc.Driver" userId="publiccms" password="publiccms_password" />
+            driverClass="com.mysql.cj.jdbc.Driver" userId="publiccms" password="publiccms_password"/>
         <javaModelGenerator targetPackage="com.publiccms.model"
             targetProject="src/main/java/">
-            <property name="enableSubPackages" value="true" />
-            <property name="trimStrings" value="true" />
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
         </javaModelGenerator>
         <sqlMapGenerator targetPackage="mapper.cms"
-            targetProject="src/main/resources/" />
+            targetProject="src/main/resources/"/>
         <javaClientGenerator targetPackage="com.publiccms.mapper"
-            targetProject="src/main/java/" type="XMLMAPPER" />
+            targetProject="src/main/java/" type="XMLMAPPER"/>
         <table tableName="cms_category">
           <generatedKey column="id" sqlStatement="JDBC" identity="true"/>
         </table>

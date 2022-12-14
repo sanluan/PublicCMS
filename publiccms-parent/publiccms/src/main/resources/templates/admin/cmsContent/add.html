@@ -185,12 +185,14 @@ $('input[name=copied]',navTab.getCurrentPanel()).click();
                     <dt><@t.page 'publish_date'/>:</dt>
                     <dd>
                         <input type="text" name="publishDate" class="date" size="20" autocomplete="off" dateFmt="yyyy-MM-dd HH:mm:ss" value="${(a.publishDate)!}"/>
+                        <a class="inputDateButton" href="javascript:void(0);"></a>
                     </dd>
                 </dl>
                 <dl class="publishDate hide">
                     <dt><@t.page 'expiry_date'/>:</dt>
                     <dd>
                         <input type="text" name="expiryDate" class="date" size="20" autocomplete="off" dateFmt="yyyy-MM-dd HH:mm:ss" value="${(a.expiryDate)!}"/>
+                        <a class="inputDateButton" href="javascript:void(0);"></a>
                     </dd>
                 </dl>
             <#if a?has_content&&(a.publishDate gt .now || a.expiryDate?has_content)>
@@ -214,24 +216,18 @@ $('input[name=timing]',navTab.getCurrentPanel()).click();
             <#include "../include_page/extendData.html"/>
             <#if category?has_content&&category.extendId?has_content>
                  <@sys.extendFieldList extendId=category.extendId>
-                    <#assign extendList=list![]/>
-                    <#assign extendValue=attribute!{}/>
-                    <@extendData 'categoryExtendDataList' extendList extendValue 'contentForm'/>
+                    <@extendData name='categoryExtendDataList' extendList=list extendValues=attribute historyItemType='contentExtend' historyItemId=id/>
                  </@sys.extendFieldList>
             </#if>
-            <#assign
-                extendList=model.extendList![]
-                extendValue=attribute!{}
-            />
-            <@extendData 'modelExtendDataList' extendList extendValue/>
+            <@extendData name='modelExtendDataList' extendList=model.extendList extendValues=attribute historyItemType='contentExtend' historyItemId=id/>
             <#if fieldList?seq_contains('content')>
                 <dl class="nowrap">
                     <dt>${(model.fieldTextMap['content'])!}:</dt>
                     <dd>
                         <div>
-                            <a class="button" href="common/import.html" lookupGroup="" width="500" height="200"><@t.page 'import_doc'/></a>
+                            <a class="button" href="common/import.html" lookupGroup="" width="500" height="300"><@t.page 'import_doc'/></a>
                         <#if a?has_content>
-                            <a class="button" href="cmsContentTextHistory/lookup.html?contentId=${a.id}&fieldName=text" lookupGroup=""><@t.page 'history'/></a>
+                            <a class="button" href="cmsEditorHistory/lookup.html?itemType=content&itemId=${a.id}&fieldName=text" lookupGroup=""><@t.page 'history'/></a>
                         </#if>
                         </div>
                         <textarea name="text" class="editor<#if requiredFieldList?seq_contains('content')> required</#if>" escape="true" editorType="${model.editorType!}">${(attribute.text)!}</textarea>
@@ -290,7 +286,7 @@ $('input[name=timing]',navTab.getCurrentPanel()).click();
                                     <#if a.dictionaryId?has_content>
                                     <td>
                                         <input type="hidden" name="contentRelateds[${a?index}][${related?index}].relationType" value="${a.dictionaryId}"/>
-                                        <select class="combox" name="contentRelateds[${a?index}][${related?index}].relation" class="required">
+                                        <select class="combox" name="contentRelateds[${a?index}][${related?index}].relation">
                                             <option></option>
                                             <@cms.dictionaryDataList dictionaryId=a.dictionaryId>
                                                 <#list list as a>

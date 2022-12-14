@@ -10,6 +10,6 @@ dependencies {
     // https://mvnrepository.com/artifact/com.alipay.sdk/alipay-easysdk
     implementation "com.alipay.sdk:alipay-easysdk:2.2.2"
     // https://mvnrepository.com/artifact/com.github.wechatpay-apiv3/wechatpay-apache-httpclient
-    implementation "com.github.wechatpay-apiv3:wechatpay-apache-httpclient:0.4.4"
+    implementation "com.github.wechatpay-apiv3:wechatpay-apache-httpclient:0.4.8"
     runtimeOnly "jakarta.servlet:jakarta.servlet-api:${servletVersion}"
 }

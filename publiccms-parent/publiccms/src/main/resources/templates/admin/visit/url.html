@@ -10,8 +10,10 @@
                 <li>
                     <label><@t.page 'visit.visit_date'/>:</label>
                     <input type="text" name="startVisitDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startVisitDate!}" />
+                    <a class="inputDateButton" href="javascript:void(0);"></a>
                     <span>-</span>
                     <input type="text" name="endVisitDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endVisitDate!}" />
+                    <a class="inputDateButton" href="javascript:void(0);"></a>
                 </li>
             </ul>
             <div class="subBar">
@@ -29,7 +31,7 @@
         <ul class="toolBar">
         </ul>
     </div>
-    <table class="table" width="100%" layoutH="92">
+    <table class="table" width="100%" layoutH>
         <thead>
             <tr>
                 <th><@t.page 'visit.visit_date'/></th>
@@ -45,7 +47,8 @@
                 <td><a href="visit/history.html?startCreateDate=${a.id.visitDate!}" target="navTab" rel="visit/history" title="<@t.page 'visit.history'/>" icon="<i class='icon-bolt icon-large'></i>">${a.id.visitDate?date}</a></td>
                 <td>
                     <div class="box">
-                    <a href="cmsDiy/preview.html?url=${((a.url)?url)!}" target="navTab" rel="cmsDiy/preview"  icon="<i class='bi bi-palette2 icon-large'></i>" title="<@t.page 'diy.preview'/>">${a.url!}</a>
+                        <a href="cmsDiy/preview.html?url=${((a.url)?url)!}" target="navTab" rel="cmsDiy/preview"  icon="<i class='bi bi-palette2 icon-large'></i>" title="<@t.page 'diy.preview'/>">${a.url!}</a>
+                        <a href="${a.url!}" target="_blank"><i class="icon-external-link"></i></a>
                     </div>
                 </td>
                 <td class="center">${a.pv!}</td>

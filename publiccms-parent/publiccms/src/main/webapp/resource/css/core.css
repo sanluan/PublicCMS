@@ -5,6 +5,7 @@ html, body, *{padding:0;margin:0;font-size:14px;font-family:microsoft yahei,Aria
 body{width:100%;height:100%;overflow:hidden;}
 iframe{width:100%;height:100%;border:0px;}
 input[type="checkbox"]{margin:3px 3px 3px 4px;}
+input[type="number"]{width:80px;}
 .clearfix{*zoom:1;}
 .clearfix:after{display:block;content:".";height:0;clear:both;visibility:hidden;}
 /* Remember to define focus styles! */
@@ -111,7 +112,7 @@ header .nav .selected ul{display:block;}
 .accordion .accordionContent .tree a{line-height:34px;height:auto;}
 .accordion .accordionContent .tree div{height:auto;}
 .accordion .accordionContent .tree div div{background:0 0;width:25px;height:34px;}
-.accordion .accordionContent .tree a>i{margin-right:5px;width:16px;font-size: 13px;display:inline-block;text-align:center;}
+.accordion .accordionContent .tree a>i{margin-right:5px;width:16px;font-size:13px;display:inline-block;text-align:center;}
 .accordion .accordionContent .tree.treeFolder a{line-height:30px;}
 .accordion .accordionContent .tree.treeFolder div div{height:30px;}
 
@@ -125,31 +126,22 @@ header .nav .selected ul{display:block;}
 .panelBar .toolBar li>ul>li{float:none;padding:5px 0 0 0;white-space:nowrap;}
 .panelBar .toolBar li:hover>ul{display:block;}
 
-.panelBar .pages{float:left;overflow:hidden;height:100%;padding:0 5px;}
-.panelBar .pages span{float:left;line-height:28px;}
-.panelBar .pages select{float:left;margin:0 3px;font-size:14px;}
-.panelBar .pages .combox .select a{height:26px;line-height:26px;}
-
-.pagination{float:right;padding-left:7px;}
-.pagination li, .pagination li:hover{padding:0 0 0 5px;}
-.pagination a, .pagination li:hover a, .pagination li span{float:left;display:block;padding-right:5px;text-decoration:none;}
+.pagination{float:right;padding-left:7px;padding-bottom:1px;}
+.pagination li{padding:1px 0 0 5px;line-height:26px;}
+.pagination li a,.pagination li span{display:inline-block;padding:0 5px;border-width:1px;border-style:solid;border-radius:3px;text-decoration:none;}
 .pagination li.selected a{color:red;font-weight:bold;}
-.pagination span, .pagination li:hover span{float:left;display:block;cursor:pointer;}
-.pagination li .first span, .panelBar li .previous span{padding-left:10px;}
-.pagination li .next span, .panelBar li .last span{padding-right:10px;}
-.pagination li .last{margin-right:5px;}
-.pagination li.disabled{background:none;}
-.pagination li.disabled span, .grid .pagination li.disabled a{cursor:default;}
-.pagination li.disabled span span{color:#666;}
-.pagination li.disabled .last{margin-right:5px;}
-.pagination li.jumpto .textInput{float:left;width:30px;padding:1px;margin-top:2px;font-size:14px;border-color:#acaeaf;}
-.pagination li.jumpto .goto{width:16px;line-height:30px;text-align:center;}
+.pagination li:hover a{text-decoration: none;}
+.pagination li .previous{margin-left:5px;}
+.pagination li .next{margin-right:5px;}
+.pagination li.disabled a{color:#666;}
+.pagination li.jumpto .textInput{float:left;width:35px;padding:1px;font-size:14px;border-color:#acaeaf;}
+.pagination li.jumpto .goto{width:10px;line-height:26px;text-align:center;border-top-left-radius:0px;border-bottom-left-radius:0px;border-left:0px;text-align:center;}
 
 /* Grid */
 .grid {display:block;overflow:hidden;width:100%;border-width:0 1px;position:relative;}
 .grid .gridHeader{margin-top:6px;display:block;overflow:hidden;width:auto;}
 .grid .gridScroller{display:block;overflow:auto;position:relative;}
-.grid table{border:0;border-collapse:collapse;table-layout:fixed;min-width:800px;}
+.grid table{border:0;border-collapse:collapse;table-layout:fixed;min-width:800px;width:100%;}
 .grid .gridHeader th{padding:3px 2px;border-style:solid;border-width:0 1px 1px 0;vertical-align:top;white-space:nowrap;line-height:26px;cursor:default;}
 .grid .gridHeader th:hover, .grid .gridHeader th.thSelected{background-position:0 -50px;}
 .grid .gridHeader th.order,.grid .gridHeader th.asc,.grid .gridHeader th.desc{cursor:pointer;position:relative;}
@@ -206,16 +198,14 @@ table.nowrap tbody tr{border-bottom-width:1px;border-bottom-style:solid;}
 .textInput, input.focus, input.required, input.error, input.readonly, input.disabled,
 textarea.focus, textarea.required, textarea.error, textarea.readonly,
 textarea.disabled{background:#fff;padding:2px;margin:0;line-height:24px;font-size:14px;border-style:solid;border-width:1px;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box;}
-.textInput, input.focus, input.required, input.error, input.readonly, input.disabled,
-textarea.focus, textarea.required, textarea.error, textarea.readonly, textarea.disabled{background-image:url(../images/input_bg.png);background-repeat:no-repeat;background-attachment:scroll;}
-input.required, textarea.required{background-position:100% 0;}
+input.required,textarea.required,.combox .select a.required{background-image:url(../images/input_bg.png);background-position:100% 0;background-repeat:no-repeat;background-attachment:scroll;}
 input.gray, textarea.gray{color:gray;}
 select{border:1px solid;border-color:#A2BAC0 #B8D0D6 #B8D0D6 #A2BAC0;}
 textarea.editor{width:80%;}
 textarea{max-width:100%;}
 
 span.error{display:block;overflow:hidden;width:165px;height:21px;padding:0 3px;line-height:21px;background:#F00;color:#FFF;}
-label.alt{display:block;overflow:hidden;position:absolute;line-height:20px;}
+.pageFormContent label.alt{display:block;overflow:hidden;position:absolute;line-height:26px;padding:0px;}
 .nowrap span.error{position:static;}
 
 /* Button */
@@ -272,9 +262,6 @@ a.button,button.button{border-width:1px;border-style:solid;-moz-box-shadow:0px 0
 
 .pageContent{display:block;overflow:auto;position:relative;}
 
-.dateRange input{width:72px;}
-.dateRange .limit{text-align:center;width:15px;line-height:21px;}
-
 /* Pages Form */
 .pageForm{display:block;overflow:auto;}
 .pageFormContent{display:block;padding:15px;position:relative;height:100%;width:100%;overflow:auto;box-sizing:border-box;}
@@ -325,7 +312,7 @@ fieldset:first-child .unit:first-of-type p:last-child{padding:0;}
 .combox{float:left;margin-right:3px;}
 .combox select{display:none;}
 .combox .select{float:left;}
-.combox .select a{float:left;display:block;overflow:hidden;height:28px;padding:0 25px 0 6px;line-height:28px;text-decoration:none;font-size:14px;border-width:1px;border-style:solid;position:relative;padding:0 28px 0 10px;}
+.combox .select a{float:left;display:block;overflow:hidden;height:26px;padding:0 25px 0 6px;line-height:26px;text-decoration:none;font-size:14px;border-width:1px;border-style:solid;position:relative;padding:0 28px 0 10px;}
 .combox .select a:before{content:"\e668";font-family:iconfont;position:absolute;right:8px;}
 .combox .select a.expand:before{content:"\e654";}
 .comboxop{position:absolute;z-index:1001;display:none;padding:4px;border-style:solid;border-width:1px 2px 2px 1px;position:absolute;top:22px;left:1px;border-width:1px;border-style:solid;}
@@ -333,13 +320,13 @@ fieldset:first-child .unit:first-of-type p:last-child{padding:0;}
 .comboxop .search input{width:100%;}
 .comboxop a{width:100%;height:28px;box-sizing:border-box;padding:0 10px;line-height:28px;text-align:left;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .comboxop.lot{width:800px;}
-.comboxop ul{overflow-y: scroll;}
+.comboxop ul{overflow-y:scroll;}
 .comboxop li{text-align:left;}
 .comboxop.lot li{float:left;width:33.3%;}
 .comboxop .selected,body .comboxop a:hover{text-decoration:none;}
 
 /* contentTitle */
-h2.contentTitle{border-radius: 5px;padding:5px 10px;font-size:18px;border-bottom:solid 1px #CCC;}
+h2.contentTitle{border-radius:5px;padding:5px 10px;font-size:18px;border-bottom:solid 1px #CCC;}
 h3.contentTitle{font-size:16px;border-bottom:solid 1px #CCC;clear:both;}
 .dialog h2.contentTitle{border:none;}
 
@@ -379,13 +366,8 @@ a.btnLook:before,a.btnDel:before,a.btnAttach:before,a.view:before{font-size:20px
 .alert .toolBar li{float:left;}
 .alert .toolBar .button, .alert .toolBar .buttonActive{margin-left:5px;}
 
-.alert .alertFooter_c{display:block;overflow:hidden;height:5px;}
-.alert .alertFooter{padding-left:5px;}
-.alert .alertFooter_r{padding-right:5px;}
-.alert .alertFooter_c{padding:0;background-repeat:repeat-x;}
-
 /* Dialog */
-.dialog{display:block;text-align:left;position:absolute;z-index:42;-moz-box-shadow:0px 0px 18px rgba(157,159,168,.35);box-shadow:0px 0px 18px rgba(157,159,168,.35);-ms-box-shadow:0px 0px 18px rgba(157,159,168,.35);-o-box-shadow:0px 0px 18px rgba(157,159,168,.35);-webkit-box-shadow:0px 0px 18px rgba(157,159,168,.35);}
+.dialog{display:block;text-align:left;position:absolute;z-index:42;-moz-box-shadow:0px 0px 18px rgba(157,159,168,.55);box-shadow:0px 0px 18px rgba(157,159,168,.55);-ms-box-shadow:0px 0px 18px rgba(157,159,168,.55);-o-box-shadow:0px 0px 18px rgba(157,159,168,.55);-webkit-box-shadow:0px 0px 18px rgba(157,159,168,.55);}
 .dialog .dialogHeader{padding-left:5px;position:relative;cursor:move;}
 .dialog .dialogHeader, .dialog .dialogHeader_c{display:block;overflow:hidden;height:40px;}
 .dialog .dialogHeader .close, .dialog .dialogHeader .maximize, .dialog .dialogHeader .restore, .dialog .dialogHeader .minimize{font-family:iconfont;font-size:22px;display:block;overflow:hidden;width:22px;height:22px;position:absolute;top:10px;text-indent:0;}
@@ -410,6 +392,7 @@ a.btnLook:before,a.btnDel:before,a.btnAttach:before,a.view:before{font-size:20px
 .resizable_h_l{cursor:nw-resize;top:0;left:0;z-index:2;}
 .resizable_h_r{cursor:ne-resize;top:0;right:0;z-index:2;}
 .resizable_h_c{width:100%;cursor:n-resize;top:0;left:0;z-index:1;}
+.resizable_c_l, .resizable_c_r{height:100%;}
 .resizable_c_l{cursor:w-resize;top:0;left:0;z-index:1;}
 .resizable_c_r{cursor:e-resize;top:0;right:0;z-index:1;}
 .resizable_f_l{cursor:sw-resize;bottom:0;left:0;z-index:2;}
@@ -443,7 +426,7 @@ a.btnLook:before,a.btnDel:before,a.btnAttach:before,a.view:before{font-size:20px
 #calendar *{margin:0;padding:0;font-size:14px;line-height:18px;}
 #calendar .main{margin:auto;text-align:center;zoom:1;position:relative;}
 #calendar .head{padding:6px 0;}
-#calendar .head select{width:60px;}
+#calendar .head select{width:60%;}
 #calendar .body{margin:2px 0;padding:2px;clear:both;overflow:hidden;position:relative;}
 #calendar .foot{text-align:right;padding:6px 0;}
 #calendar .nodate .head, #calendar .nodate .body{display:none;}
@@ -453,8 +436,8 @@ a.btnLook:before,a.btnDel:before,a.btnAttach:before,a.view:before{font-size:20px
 #calendar dt{margin-top:4px;font-weight:bold;}
 #calendar .days dd{cursor:pointer;}
 #calendar .days dd.disabled{cursor:not-allowed;}
-#calendar .close{width:16px;height:16px;font-size:16px;display:block;cursor:pointer;text-align:center;}
-#calendar .clearBut, #calendar .okBut{border-width:1px;border-style:solid;width:52px;line-height:24px;cursor:pointer;margin-right:7px;}
+#calendar .close{width:16px;height:16px;font-size:16px;margin-top:-6px;display:block;cursor:pointer;text-align:center;}
+#calendar .clearBut, #calendar .okBut{border-width:1px;border-style:solid;border-radius:2px;width:52px;line-height:24px;cursor:pointer;margin-right:7px;}
 #calendar .clearBut{margin-right:2px;}
 #calendar .time{border-collapse:collapse;float:left;display:none;margin-left:6px;}
 #calendar .time td{line-height:16px;vertical-align:center;line-height:26px;}
@@ -469,8 +452,8 @@ a.btnLook:before,a.btnDel:before,a.btnAttach:before,a.view:before{font-size:20px
 .miscSortDrag dt{width:160px;position:sticky;z-index:999;top:5px;}
 .miscSortDrag dt fieldset .itemBox{max-height:360px;min-height:100px;overflow-y:auto;}
 .miscSortDrag dt .sortDragPlaceholder, .miscSortDrag dt .dragItem .close, .miscSortDrag dt .dragItem .ctl-label,.miscSortDrag dt .dragItem .dragContent{display:none}
-.miscSortDrag dt .dragItem{border:1px solid #B8D0D6;height:24px;line-height:24px;overflow: hidden;padding:2px;margin:3px 0px;display:block;cursor:move;user-select:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;}
-.miscSortDrag dt .dragItem.icon-move:before{float:right;color: #ccc;}
+.miscSortDrag dt .dragItem{border:1px solid #B8D0D6;height:24px;line-height:24px;overflow:hidden;padding:2px;margin:3px 0px;display:block;cursor:move;user-select:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;}
+.miscSortDrag dt .dragItem.icon-move:before{float:right;color:#ccc;}
 .miscSortDrag dt:after{content:" ";display:block;clear:both;}
 .miscSortDrag dd{margin-left:175px;}
 .miscSortDrag dd .sortDrag{width:100%;min-height:100px;margin-bottom:10px;color:#ccc;text-align:center;box-sizing:border-box;border:1px dashed #d66;overflow-y:auto;}
@@ -524,6 +507,12 @@ a.btnLook:before{content:"\e66a";font-family:iconfont;}
 .ckbox.checked:before{content:"\f046";}
 
 .panelBar .toolBar li:hover .addMore .icon-double-angle-down:before{content:"\f102";}
+
+input.date{border-right-width:0px;}
+a.inputDateButton{float:left;display:block;background-color:#fff;width:20px;font-size:16px;height:30px;line-height:28px;overflow:hidden;border-style:solid;border-width:1px;box-sizing:border-box;border-left:0px;}
+a.inputDateButton:before{content:"\e60b";font-family:iconfont;}
+a.inputDateButton:hover{text-decoration:none;}
+
 /* basic color */
 body{color:#ccc;}
 a{color:#fff;}

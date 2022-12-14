@@ -16,8 +16,10 @@
                 <li>
                     <label><@t.page 'publish_date'/>:</label>
                     <input type="text" name="startPublishDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startPublishDate!}" />
+                    <a class="inputDateButton" href="javascript:void(0);"></a>
                     <span>-</span>
                     <input type="text" name="endPublishDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endPublishDate!}" />
+                    <a class="inputDateButton" href="javascript:void(0);"></a>
                 </li>
                 <li>
                     <label><@t.page 'title'/>:</label>
@@ -35,15 +37,15 @@
     </form>
 </div>
 <div class="card">
-    <table class="table" width="100%" layoutH targetType="ajax" rel="lookup_content_list">
+    <table class="table" width="100%" layoutH targetType="ajax" rel="lookup_content_list" orderField="${orderField!}" orderType="${orderType!}">
         <thead>
             <tr>
                 <th width="20"><@t.page 'use'/></th>
                 <th width="20"><@t.page 'id'/></th>
                 <th width="200"><@t.page 'content'/></th>
-                <th width="30" orderField="comments" class="<#if orderField?has_content&&'comments'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'content.comments'/></th>
-                <th width="30" orderField="clicks" class="<#if orderField?has_content&&'clicks'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'clicks'/></th>
-                <th width="70" orderField="publishDate" class="<#if orderField?has_content&&'publishDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'publish_date'/></th>
+                <th width="30" orderField="comments"><@t.page 'content.comments'/></th>
+                <th width="30" orderField="clicks"><@t.page 'clicks'/></th>
+                <th width="70" orderField="publishDate"><@t.page 'publish_date'/></th>
             </tr>
         </thead>
         <tbody>

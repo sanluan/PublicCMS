@@ -23,14 +23,14 @@
     </form>
 </div>
 <div class="pageContent">
-    <table class="table" width="100%" layoutH>
+    <table class="table" width="100%" layoutH orderField="${orderField!}" orderType="${orderType!}">
         <thead>
             <tr>
                 <th><@t.page 'select'/></th>
                 <th width="30"><@t.page 'id'/></th>
                 <th><@t.page 'name'/></th>
                 <th><@t.page 'tag_type'/></th>
-                <th orderField="searchCount" class="<#if orderField?has_content&&'searchCount'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'tag.search_count'/></th>
+                <th orderField="searchCount"><@t.page 'tag.search_count'/></th>
             </tr>
         </thead>
         <tbody>

@@ -13,6 +13,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,7 @@ import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.cms.CmsSurvey;
 import com.publiccms.entities.cms.CmsSurveyQuestion;
 import com.publiccms.entities.cms.CmsUserSurvey;
@@ -40,7 +42,7 @@ import com.publiccms.views.pojo.model.CmsUserSurveyQuestionParameters;
 
 /**
  * 
- * VoteController 投票
+ * SurveyController 问卷调查
  *
  */
 @Controller
@@ -54,16 +56,18 @@ public class SurveyController {
      * @param userQuestionParameters
      * @param returnUrl
      * @param request
+     * @param model 
      * @return
      */
     @RequestMapping("save")
     @Csrf
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser user, long surveyId,
-            @ModelAttribute CmsUserSurveyQuestionParameters userQuestionParameters, String returnUrl,
-            HttpServletRequest request) {
+            @ModelAttribute CmsUserSurveyQuestionParameters userQuestionParameters, String returnUrl, HttpServletRequest request,
+            ModelMap model) {
         returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         CmsSurvey entity = service.getEntity(surveyId);
         if (null != entity) {
+            String ip = RequestUtils.getIpAddress(request);
             Date now = CommonUtils.getDate();
             if (!entity.isDisabled() && entity.getSiteId() == site.getId() && now.before(entity.getEndDate())
                     && now.after(entity.getStartDate())) {
@@ -74,11 +78,12 @@ public class SurveyController {
                     CmsUserSurveyId userSurveyId = new CmsUserSurveyId(user.getId(), surveyId);
                     CmsUserSurvey userSurvey = userSurveyService.getEntity(userSurveyId);
                     if (null == userSurvey) {
-                        userSurvey = new CmsUserSurvey(site.getId(), now);
+                        userSurvey = new CmsUserSurvey(site.getId(), ip, now);
                         userSurvey.setId(userSurveyId);
                         userSurveyService.save(userSurvey);
                         service.updateVotes(site.getId(), surveyId, 1);
-                        Map<Long, CmsSurveyQuestion> questionMap = CommonUtils.listToMap(questionList, k -> k.getId(), null, null);
+                        Map<Long, CmsSurveyQuestion> questionMap = CommonUtils.listToMap(questionList, k -> k.getId(), null,
+                                null);
                         Set<Long> answerSet = new TreeSet<>();
                         List<CmsUserSurveyQuestion> answerList = new ArrayList<>();
                         for (CmsUserSurveyQuestion answer : userQuestionParameters.getAnswerList()) {
@@ -127,6 +132,7 @@ public class SurveyController {
                     }
                 }
             }
+            model.addAttribute("id", entity.getId());
         }
         return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
     }

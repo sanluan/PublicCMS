@@ -137,6 +137,7 @@ public class MetadataComponent implements Cache {
     public boolean updatePlaceMetadata(String filepath, CmsPlaceMetadata metadata) {
         File file = new File(filepath);
         String dirPath = file.getParent();
+        placeCache.remove(dirPath);
         Map<String, CmsPlaceMetadata> metadataMap = getPlaceMetadataMap(dirPath);
         metadataMap.put(file.getName(), metadata);
         try {

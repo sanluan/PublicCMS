@@ -17,7 +17,7 @@
 </#macro>
 <div class="pageFormContent">
 <@cms.dictionary id=id>
-    <ul class="tree treeFolder expand" layoutH>
+    <ul class="tree treeFolder" layoutH>
         <li><a href="cmsDictionary/add.html?id=${object.id.id}" target="navTab" rel="cmsDictionary/edit"><i class="icon-edit"></i><@t.page 'dictionary.edit'/></a></li>
         <#if object.childDepth gt 0>
 <@cms.dictionaryDataList dictionaryId=object.id.id>

@@ -9,10 +9,11 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.function.BiConsumer;
 
-import jakarta.annotation.Resource;
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.publiccms.common.api.Config;
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.PageHandler;
@@ -20,7 +21,9 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.entities.cms.CmsCategoryAttribute;
+import com.publiccms.entities.cms.CmsEditorHistory;
 import com.publiccms.entities.sys.SysExtend;
+import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.logic.dao.cms.CmsCategoryDao;
 import com.publiccms.logic.service.sys.SysExtendFieldService;
 import com.publiccms.logic.service.sys.SysExtendService;
@@ -28,6 +31,8 @@ import com.publiccms.views.pojo.entities.CmsCategoryType;
 import com.publiccms.views.pojo.model.CmsCategoryModelParameters;
 import com.publiccms.views.pojo.model.CmsCategoryParameters;
 import com.publiccms.views.pojo.query.CmsCategoryQuery;
+
+import jakarta.annotation.Resource;
 
 /**
  *
@@ -47,13 +52,14 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
     private SysExtendService extendService;
     @Resource
     private SysExtendFieldService extendFieldService;
+    @Resource
+    private CmsEditorHistoryService editorHistoryService;
 
     /**
      * @param siteId
      * @param worker
      * @param batchSize
      */
-    @Transactional(readOnly = true)
     public void batchWork(short siteId, BiConsumer<List<CmsCategory>, Integer> worker, int batchSize) {
         dao.batchWork(siteId, worker, batchSize);
     }
@@ -72,19 +78,20 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
     /**
      * @param siteId
      * @param id
+     * @param userId
      * @param attribute
      * @param categoryType
      * @param categoryParameters
      */
-    public void saveTagAndAttribute(Short siteId, Integer id, CmsCategoryAttribute attribute, CmsCategoryType categoryType,
-            CmsCategoryParameters categoryParameters) {
+    public void saveTagAndAttribute(short siteId, Integer id, Long userId, CmsCategoryAttribute attribute,
+            CmsCategoryType categoryType, CmsCategoryParameters categoryParameters) {
         if (CommonUtils.notEmpty(id)) {
             if (CommonUtils.notEmpty(categoryParameters.getCategoryModelList())) {
                 for (CmsCategoryModelParameters cmsCategoryModelParameters : categoryParameters.getCategoryModelList()) {
                     if (null != cmsCategoryModelParameters.getCategoryModel()) {
                         cmsCategoryModelParameters.getCategoryModel().getId().setCategoryId(id);
                         if (cmsCategoryModelParameters.isUse()) {
-                            categoryModelService.updateCategoryModel(cmsCategoryModelParameters.getCategoryModel());
+                            categoryModelService.updateCategoryModel(siteId, cmsCategoryModelParameters.getCategoryModel());
                         } else {
                             categoryModelService.delete(cmsCategoryModelParameters.getCategoryModel().getId());
                         }
@@ -104,15 +111,39 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
                 }
                 extendFieldService.update(entity.getExtendId(), categoryParameters.getContentExtends());// 修改或增加内容扩展字段
             }
-
+            Map<String, String> map = null;
             if (null != categoryType && CommonUtils.notEmpty(categoryType.getExtendList())) {
-                Map<String, String> map = ExtendUtils.getSysExtentDataMap(categoryParameters.getExtendDataList(),
-                        categoryType.getExtendList());
+                map = ExtendUtils.getSysExtentDataMap(categoryParameters.getExtendDataList(), categoryType.getExtendList());
                 attribute.setData(ExtendUtils.getExtendString(map));
             } else {
                 attribute.setData(null);
             }
+
+            saveEditorHistory(attributeService.getEntity(entity.getId()),siteId, entity.getId(), userId, categoryType, map);// 保存编辑器字段历史记录
+
             attributeService.updateAttribute(id, attribute);
+        }
+    }
+
+    private void saveEditorHistory(CmsCategoryAttribute oldAttribute, short siteId, int contentId, long userId,
+            CmsCategoryType categoryType, Map<String, String> map) {
+        if (null != oldAttribute) {
+            if (CommonUtils.notEmpty(oldAttribute.getData()) && null != categoryType
+                    && CommonUtils.notEmpty(categoryType.getExtendList())) {
+                Map<String, String> oldMap = ExtendUtils.getExtendMap(oldAttribute.getData());
+                for (SysExtendField extendField : categoryType.getExtendList()) {
+                    if (ArrayUtils.contains(Config.INPUT_TYPE_EDITORS, extendField.getInputType())) {
+                        if (CommonUtils.notEmpty(oldMap) && CommonUtils.notEmpty(oldMap.get(extendField.getId().getCode()))
+                                && (CommonUtils.notEmpty(map) || !oldMap.get(extendField.getId().getCode())
+                                        .equals(map.get(extendField.getId().getCode())))) {
+                            CmsEditorHistory history = new CmsEditorHistory(siteId,
+                                    CmsEditorHistoryService.ITEM_TYPE_CATEGORY_EXTEND, String.valueOf(contentId), "text",
+                                    CommonUtils.getDate(), userId, map.get(extendField.getId().getCode()));
+                            editorHistoryService.save(history);
+                        }
+                    }
+                }
+            }
         }
     }
 

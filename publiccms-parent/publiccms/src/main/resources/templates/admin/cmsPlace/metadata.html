@@ -1,6 +1,7 @@
 <@tools.placeMetadata path=path><#assign a=object/></@tools.placeMetadata>
-<form method="post" autocomplete="off" action="cmsPage/save?rel=placeBox" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+<form method="post" autocomplete="off" action="cmsPage/save?rel=${rel!'placeBox'}" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
+    <input type="hidden" name="type" value="place"/>
     <div class="formBar card">
         <ul>
             <li>
@@ -8,7 +9,10 @@
                     <li><a class="button" href="placeTemplate/list.html?path=${(path?url)!}&editType=metadata" target="navTab" rel="placeTemplate/list"><@t.page 'metadata'/></a></li>
                     <li><a class="button" href="placeTemplate/list.html?path=${(path?url)!}" target="navTab" rel="placeTemplate/list"><@t.page 'template.content'/></a></li>
                 </@sys.authorized>
-                <#if (a.metadataExtendList)?has_content><button type="submit" class="buttonActive" title="ctrl+s"><@t.page 'button.save'/></button></#if>
+                <#if site.useSsi>
+                    <li><a class="button" href="cmsTemplate/publishPlace?path=${(path?url)!}&_csrf=<@tools.csrfToken admin=true/>" target="ajaxTodo"><@t.page 'button.publish'/></a></li>
+                </#if>
+                <#if (a.metadataExtendList)?has_content><li><button type="submit" class="buttonActive" title="ctrl+s"><@t.page 'button.save'/></button></li></#if>
             </li>
         </ul>
     </div>
@@ -21,17 +25,14 @@
                     ${(a.alias)!}
                 </dd>
             </dl>
+            <#if (a.size?has_content) && 0 lt a.size>
             <dl class="nowrap">
                 <dt><@t.page 'operate'/>:</dt>
                 <dd>
-                    <#if site.useSsi>
-                        <a class="button" href="cmsTemplate/publishPlace?path=${(path?url)!}&_csrf=<@tools.csrfToken admin=true/>" target="ajaxTodo"><@t.page 'button.publish'/></a>
-                    </#if>
-                    <#if (a.size?has_content) && 0 lt a.size>
-                        <a class="button" href="cmsPlace/dataList.html?path=${path?url}" target="navTab" rel="cmsPlace/dataList" title="<@t.page 'place_data'/>:${(a.alias)!}"><i class="bi bi-layout-text-sidebar-reverse"></i><@t.page 'place_data'/>(${a.size})</a>
-                    </#if>
+                    <a class="button" href="cmsPlace/dataList.html?path=${path?url}" target="navTab" rel="cmsPlace/dataList" title="<@t.page 'place_data'/>:${(a.alias)!}"><i class="bi bi-layout-text-sidebar-reverse"></i><@t.page 'place_data'/>(${a.size})</a>
                 </dd>
             </dl>
+            </#if>
         <@tools.templatePlaceList path='include'+path>
             <#if list?has_content>
             <dl class="nowrap">
@@ -40,7 +41,7 @@
                     <#list list as a>
                         <@tools.placeMetadata path=a>
                         <p>
-                            <a class="button" href="cmsPlace/metadata.html?path=${a?url}" target="ajax" rel="placeBox">${(object.alias)!a}</a>
+                            <a class="button" href="cmsPlace/metadata.html?path=${a?url}" target="ajax" rel="${rel!'placeBox'}">${(object.alias)!a}</a>
                             <#if 0 lt ((object.size)!0)>
                                <a class="button" href="cmsPlace/dataList.html?path=${a?url}" target="navTab" rel="cmsPlace/dataList:${a!}" title="<@t.page 'place_data'/>:${(object.alias)!a}"><@t.page 'place_data'/>(${object.size})</a>
                             </#if>
@@ -70,7 +71,7 @@
             <#include "../include_page/extendData.html"/>
             <#assign extendList=(a.metadataExtendList)![]/>
             <#assign attribute=(a.extendData)!{}/>
-            <@extendData 'extendDataList' extendList attribute/>
+            <@extendData name='extendDataList' extendList=extendList extendValues=attribute historyItemType='metadataExtend' historyItemId='include'+path/>
         </div>
     </div>
 </form>

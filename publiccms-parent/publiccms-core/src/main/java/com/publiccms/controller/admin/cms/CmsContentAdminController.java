@@ -37,6 +37,7 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.DateFormatUtils;
 import com.publiccms.common.tools.ExtendUtils;
+import com.publiccms.common.tools.HtmlUtils;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.LanguagesUtils;
 import com.publiccms.common.tools.RequestUtils;
@@ -246,7 +247,8 @@ public class CmsContentAdminController {
             entity.setPublishDate(now);
         }
         if (null != attribute.getText() && base64) {
-            attribute.setText(new String(VerificationUtils.base64Decode(attribute.getText()), CommonConstants.DEFAULT_CHARSET));
+            attribute.setText(HtmlUtils.cleanUnsafeHtml(
+                    new String(VerificationUtils.base64Decode(attribute.getText()), CommonConstants.DEFAULT_CHARSET)));
         }
     }
 
@@ -445,7 +447,7 @@ public class CmsContentAdminController {
                             && move(site, entity, categoryId)) {
                         categoryIdSet.add(entity.getCategoryId());
                     } else {
-                        sb.append(entity.getId()).append(CommonConstants.COMMA_DELIMITED);
+                        sb.append(entity.getTitle()).append(CommonConstants.COMMA_DELIMITED);
                     }
                 }
             } catch (IOException | TemplateException e) {
@@ -466,15 +468,18 @@ public class CmsContentAdminController {
                     return CommonConstants.TEMPLATE_ERROR;
                 }
             }
+            StringBuilder logContent = new StringBuilder(StringUtils.join(ids, CommonConstants.COMMA)).append(" to ")
+                    .append(category.getId()).append(":").append(category.getName());
             if (sb.length() > 0) {
                 sb.setLength(sb.length() - 1);
+                String fail = sb.toString();
+                logContent.append("; failed : ").append(fail);
                 model.addAttribute("message", LanguagesUtils.getMessage(CommonConstants.applicationContext,
-                        RequestContextUtils.getLocale(request), "message.content_move_fail", sb.toString()));
+                        RequestContextUtils.getLocale(request), "message.content_move_fail", fail));
             }
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "move.content", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), new StringBuilder(StringUtils.join(ids, CommonConstants.COMMA)).append(" to ")
-                            .append(category.getId()).append(":").append(category.getName()).toString()));
+            logOperateService
+                    .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                            "move.content", RequestUtils.getIpAddress(request), CommonUtils.getDate(), logContent.toString()));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -587,12 +592,12 @@ public class CmsContentAdminController {
     @Csrf
     public String publish(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids, HttpServletRequest request,
             ModelMap model) {
-        boolean flag = false;
         if (CommonUtils.notEmpty(ids)) {
+            StringBuilder sb = new StringBuilder();
             try {
                 for (CmsContent entity : service.getEntitys(ids)) {
                     if (!publish(site, entity, admin)) {
-                        flag = true;
+                        sb.append(entity.getTitle()).append(CommonConstants.COMMA_DELIMITED);
                     }
                 }
             } catch (IOException | TemplateException e) {
@@ -600,12 +605,19 @@ public class CmsContentAdminController {
                 log.error(e.getMessage(), e);
                 return CommonConstants.TEMPLATE_ERROR;
             }
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "static.content", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), StringUtils.join(ids, CommonConstants.COMMA)));
-            if (flag) {
-                ControllerUtils.errorCustom("static", true, model);
-                return CommonConstants.TEMPLATE_ERROR;
+            if (sb.length() > 0) {
+                sb.setLength(sb.length() - 1);
+                String fail = sb.toString();
+                model.addAttribute("message", LanguagesUtils.getMessage(CommonConstants.applicationContext,
+                        RequestContextUtils.getLocale(request), "message.content_static_fail", fail));
+                logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
+                        LogLoginService.CHANNEL_WEB_MANAGER, "static.content", RequestUtils.getIpAddress(request),
+                        CommonUtils.getDate(), new StringBuilder(StringUtils.join(ids, CommonConstants.COMMA))
+                                .append("; failed : ").append(fail).toString()));
+            } else {
+                logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
+                        LogLoginService.CHANNEL_WEB_MANAGER, "static.content", RequestUtils.getIpAddress(request),
+                        CommonUtils.getDate(), StringUtils.join(ids, CommonConstants.COMMA)));
             }
         }
         return CommonConstants.TEMPLATE_DONE;

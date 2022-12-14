@@ -19,13 +19,17 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.publiccms.common.annotation.Csrf;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.ControllerUtils;
+import com.publiccms.common.tools.LanguagesUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.log.LogUpload;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.config.SiteConfigComponent;
+import com.publiccms.logic.component.site.LockComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogUploadService;
@@ -45,6 +49,8 @@ public class FileController {
     @Resource
     protected SiteComponent siteComponent;
     @Resource
+    private LockComponent lockComponent;
+    @Resource
     protected SiteConfigComponent siteConfigComponent;
 
     /**
@@ -61,7 +67,13 @@ public class FileController {
             HttpServletRequest request) {
         Map<String, Object> result = new HashMap<>();
         result.put("success", false);
-        if (null != file && !file.isEmpty() && null != user) {
+        boolean locked = lockComponent.isLocked(site.getId(), LockComponent.ITEM_TYPE_FILEUPLOAD, String.valueOf(user.getId()),
+                null);
+        if (ControllerUtils.errorCustom("locked.user", locked, result)) {
+            lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_FILEUPLOAD, String.valueOf(user.getId()), null, true);
+            return result;
+        }
+        if (null != file && !file.isEmpty()) {
             String originalName = file.getOriginalFilename();
             String suffix = CmsFileUtils.getSuffix(originalName);
             if (ArrayUtils.contains(siteConfigComponent.getSafeSuffix(site), suffix)) {
@@ -69,22 +81,33 @@ public class FileController {
                 String filepath = siteComponent.getWebFilePath(site, fileName);
                 try {
                     CmsFileUtils.upload(file, filepath);
-                    result.put("success", true);
-                    result.put("fileName", fileName);
-                    String fileType = CmsFileUtils.getFileType(suffix);
-                    result.put("fileType", fileType);
-                    result.put("fileSize", file.getSize());
-                    FileSize fileSize = CmsFileUtils.getFileSize(filepath, suffix);
-                    logUploadService.save(new LogUpload(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, originalName,
-                            fileType, file.getSize(), fileSize.getWidth(), fileSize.getHeight(),
-                            RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
+                    if (CmsFileUtils.isSafe(filepath, suffix)) {
+                        lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_FILEUPLOAD, String.valueOf(user.getId()), null,
+                                true);
+                        result.put("success", true);
+                        result.put("fileName", fileName);
+                        String fileType = CmsFileUtils.getFileType(suffix);
+                        result.put("fileType", fileType);
+                        result.put("fileSize", file.getSize());
+                        FileSize fileSize = CmsFileUtils.getFileSize(filepath, suffix);
+                        logUploadService.save(new LogUpload(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, originalName,
+                                fileType, file.getSize(), fileSize.getWidth(), fileSize.getHeight(),
+                                RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
+                    } else {
+                        result.put("error", LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
+                                "verify.custom.file.unsafe"));
+                    }
                 } catch (IllegalStateException | IOException e) {
                     log.error(e.getMessage(), e);
                     result.put("error", e.getMessage());
                 }
             } else {
-                result.put("error", "fileTypeNotAllowed");
+                result.put("error", LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
+                        "verify.custom.fileType"));
             }
+        } else {
+            result.put("error",
+                    LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(), "verify.notEmpty.file"));
         }
         return result;
     }

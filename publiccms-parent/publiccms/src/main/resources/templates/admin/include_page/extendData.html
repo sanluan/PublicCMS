@@ -1,5 +1,5 @@
 <#include "dictionary.html"/>
-<#macro input name extend index value='' type='form' safe=true>
+<#macro input name extend index value='' type='form' safe=true itemType='' itemId=''>
     <#local inputName=name+'['+index+'].value'/>
     <input name="${name}[${index}].name" type="hidden" value="${extend.id.code}"/>
     <#switch extend.inputType>
@@ -74,7 +74,10 @@
                 <#if safe>${(value?no_esc)!}<#else>${value!}</#if>
             <#else>
                 <div>
-                    <a class="button" href="common/import.html?fieldName=extend.${extend.id.code}&field=value" lookupGroup="${name}[${index}]" width="500" height="200"><@t.page 'import_doc'/></a>
+                    <a class="button" href="common/import.html?fieldName=extend.${extend.id.code}&field=value" lookupGroup="${name}[${index}]" width="500" height="300"><@t.page 'import_doc'/></a>
+                    <#if itemType?has_content && itemId?has_content>
+                        <a class="button" href="cmsEditorHistory/lookup.html?itemType=${itemType}&itemId=${itemId?url}&fieldName=${extend.id.code}" lookupGroup="${name}[${index}]"><@t.page 'history'/></a>
+                    </#if>
                 </div>
                 <textarea name="${inputName}"<#if extend.maxlength?has_content> maxlength="${extend.maxlength}"</#if> <#if 'customform'!=type>class="editor<#if extend.required> required</#if>" editorType="${extend.inputType}" </#if>cols="80" rows="20">${(value)!}</textarea>
             </#if>
@@ -91,7 +94,7 @@
             <#if 'view'=type>
                 <#if value?has_content>${('true'=value)?then(t.pageMessage('yes'),t.pageMessage('no'))}</#if>
             <#else>
-                <select class="combox" name="${inputName}"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>>
+                <select name="${inputName}"<#if 'customform'!=type> class="combox<#if extend.required> required</#if>"</#if>>
                     <option value="true"${(value?has_content&&'true'=value)?then(' selected="true"','')?no_esc}><@t.page 'yes'/></option>
                     <option value="false"${(!value?has_content||'false'=value)?then(' selected="true"','')?no_esc}><@t.page 'no'/></option>
                 </select>
@@ -133,7 +136,7 @@
                 ${(value)!}:${(tempCategory=object.name)!}
             <#else>
                 <input name="${inputName}" value="${(value)!}" type="hidden"/>
-                <input name="${name}[${index}].categoryName" readonly="readonly" size="30" value="${(tempCategory=object.name)!}" type="text"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>/>
+                <input name="${name}[${index}].categoryName" readonly="readonly" size="30" value="${(tempCategory.name)!}" type="text"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>/>
                 <a class="btnLook" href="cmsCategory/lookup.html?field=value" lookupGroup="${name}[${index}]" width="1000" height="500"><@t.page 'category.select'/></a>
             </#if>
             <#break>
@@ -177,6 +180,16 @@
                 <a class="btnLook" href="cmsVote/lookup.html?field=value" lookupGroup="${name}[${index}]" width="1000" height="500"><@t.page 'select'/></a>
             </#if>
             <#break>
+        <#case 'survey'>
+            <@cms.survey id=value><#local survey=object/></@cms.survey>
+            <#if 'view'=type>
+                ${(value)!}:${(survey.title)!}
+            <#else>
+                <input name="${inputName}" value="${(value)!}" type="hidden"/>
+                <input name="${name}[${index}].surveyName" readonly="readonly" size="30" value="${(survey.title)!}" type="text"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>/>
+                <a class="btnLook" href="cmsSurvey/lookup.html?field=value" lookupGroup="${name}[${index}]" width="1000" height="500"><@t.page 'select'/></a>
+            </#if>
+            <#break>
         <#case 'dictionary'>
             <@cms.dictionary id=extend.dictionaryId><#local dictionary=object/></@cms.dictionary>
             <#if site.parentId?has_content&&!dictionary?has_content><@cms.dictionary id=extend.dictionaryId siteId=site.parentId><#local dictionary=object/></@cms.dictionary></#if>
@@ -205,6 +218,7 @@
                 ${(value)!}
             <#else>
                 <input name="${inputName}" <#if 'customform'!=type>class="date<#if extend.required> required</#if>" autocomplete="off" dateFmt="yyyy-MM-dd" </#if>type="text" size="10" value="${(value)!}"/>
+                <#if 'customform'!=type><a class="inputDateButton" href="javascript:void(0);"></a></#if>
             </#if>
             <#break>
         <#case 'datetime'>
@@ -212,6 +226,7 @@
                 ${(value)!}
             <#else>
                 <input name="${inputName}" <#if 'customform'!=type>class="date<#if extend.required> required</#if>" autocomplete="off" dateFmt="yyyy-MM-dd HH:mm:ss" </#if>type="text" size="20" value="${(value)!}"/>
+                <#if 'customform'!=type><a class="inputDateButton" href="javascript:void(0);"></a></#if>
             </#if>
             <#break>
         <#case 'color'>
@@ -236,7 +251,7 @@
             </#if>
     </#switch>
 </#macro>
-<#macro extendData name extendList extendValues type='form' htmlSafe=false>
+<#macro extendData name extendList=[] extendValues={} historyItemType='' historyItemId='' type='form' htmlSafe=false>
     <#list extendList as e>
     <#local value=extendValues[e.id.code]!e.defaultValue!''/>
         <#if 'customform'=type>
@@ -245,8 +260,8 @@
     <dl<#if !['number','alphaColor','color','date','datetime','boolean','text','password']?seq_contains(e.inputType)> class="nowrap"</#if>>
         <dt>${(e.name)}:</dt>
         <dd<#if 'editor'=e.inputType> style="width:90%;"</#if>>
-            <@input name e e?index value type/>
-            <span class="info">${(htmlSafe?then(e.description?no_esc,e.description))!}</span>
+            <@input name e e?index value type htmlSafe historyItemType historyItemId/>
+            <#if e.description?has_content><span class="info">${htmlSafe?then(e.description?no_esc,e.description)}</span></#if>
         </dd>
     </dl>
         </#if>

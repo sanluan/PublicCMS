@@ -27,17 +27,16 @@ if(0==$('.idsToMove input',$.pdialog.getCurrent()).length){
         <div class="idsToMove"></div>
         <ul class="tree treeFolder expand">
             <li>
-                <a href="javascript:;" onclick="return false;"><@t.page 'category.parent.select'/></a>
+                <a href="javascript:;"><@t.page 'category.parent.select'/></a>
                 <ul>
-                    <@cms.categoryList advanced=true pageSize=500>
-                        <#list page.list as a>
-                            <li<#if a.childIds?has_content> _src="cmsCategory/moveParameters.html?parentId=${a.id}"</#if>>
-                                <a href="javascript:;" class="exclude-translate" onclick="$('input[name=parentId]',$.pdialog.getCurrent()).val('${a.id}');$('form',$.pdialog.getCurrent()).submit();">${a.name!}</a>
-                            </li>
-                        <#else>
-                            <li><a><@t.page 'empty_directory'/></a></li>
-                        </#list>
-                    </@cms.categoryList>
+                    <li><a href="javascript:;" onclick="$('form',$.pdialog.getCurrent()).submit();"><@t.page 'empty_directory'/></a></li>
+            <@cms.categoryList advanced=true pageSize=500>
+                <#list page.list as a>
+                    <li<#if a.childIds?has_content> _src="cmsCategory/moveParameters.html?parentId=${a.id}"</#if>>
+                        <a href="javascript:;" class="exclude-translate" onclick="$('input[name=parentId]',$.pdialog.getCurrent()).val('${a.id}');$('form',$.pdialog.getCurrent()).submit();">${a.name!}</a>
+                    </li>
+                </#list>
+            </@cms.categoryList>
                 </ul>
             </li>
         </ul>

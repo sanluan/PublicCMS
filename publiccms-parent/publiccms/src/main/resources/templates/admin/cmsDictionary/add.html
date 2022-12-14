@@ -17,10 +17,16 @@
                     <input name="id.id" type="hidden" value="${(a.id.id)!}"/>
                 </dd>
             </dl>
-            <dl class="nowrap">
+            <dl>
                 <dt><@t.page 'value'/>:</dt>
                 <dd>
                     <input name="parentValue" type="hidden" value="${(parentValue)!}"/>${(parentValue)!}
+                </dd>
+            </dl>
+            <dl>
+                <dt><@t.page 'text'/>:</dt>
+                <dd>
+                    <@cms.dictionaryData dictionaryId=id value=parentValue>${(object.text)!}</@cms.dictionaryData>
                 </dd>
             </dl>
         <#else>

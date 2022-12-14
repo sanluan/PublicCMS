@@ -182,47 +182,50 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
                     WechatPayHttpClientBuilder builder = WechatPayHttpClientBuilder.create()
                             .withMerchant(config.get(CONFIG_MCHID), config.get(CONFIG_SERIALNO), merchantPrivateKey)
                             .withValidator(new WechatPay2Validator(verifier));
-                    CloseableHttpClient httpClient = builder.build();
-                    HttpPost httpPost = new HttpPost(
-                            "https://api.mch.weixin.qq.com/v3/pay/transactions/" + config.get(CONFIG_APITYPE));
-                    httpPost.addHeader("Accept", "application/json");
-                    httpPost.addHeader("Content-type", "application/json; charset=utf-8");
-                    Map<String, Object> requestMap = new HashMap<>();
-                    requestMap.put("mchid", config.get(CONFIG_MCHID));
-                    requestMap.put("appid", config.get(CONFIG_APPID));
-                    requestMap.put("description", null == payment.getDescription() ? "order" : payment.getDescription());
-                    requestMap.put("notify_url", config.get(CONFIG_NOTIFYURL));
-                    requestMap.put("out_trade_no", getOutTradeNo(payment.getId()));
-                    Map<String, Object> amountMap = new HashMap<>();
-                    amountMap.put("total", (payment.getAmount().multiply(new BigDecimal(100))).intValue());
-                    requestMap.put("amount", amountMap);
-                    Map<String, Object> sceneMap = new HashMap<>();
-                    sceneMap.put("payer_client_ip", payment.getIp());
-                    requestMap.put("scene_info", sceneMap);
-                    String requestBody = JsonUtils.getString(requestMap);
-                    httpPost.setEntity(new StringEntity(requestBody, CommonConstants.DEFAULT_CHARSET));
-                    log.info(String.format("pay request: %s", requestBody));
-                    CloseableHttpResponse res = httpClient.execute(httpPost);
-                    HttpEntity entity = res.getEntity();
-                    log.info(String.format("pay response status: %d", res.getStatusLine().getStatusCode()));
-                    if (200 == res.getStatusLine().getStatusCode() && null != entity) {
-                        String bodyAsString = EntityUtils.toString(entity, CommonConstants.DEFAULT_CHARSET);
-                        log.info(String.format("pay response: %s", bodyAsString));
-                        Map<String, String> result = CommonConstants.objectMapper.readValue(bodyAsString,
-                                CommonConstants.objectMapper.getTypeFactory().constructMapLikeType(HashMap.class, String.class,
-                                        String.class));
-                        if ("h5".equalsIgnoreCase(config.get(CONFIG_APITYPE))) {
-                            response.sendRedirect(result.get("h5_url"));
-                        } else {
-                            Template template = templateComponent.getWebConfiguration()
-                                    .getTemplate(SiteComponent.getFullTemplatePath(site, config.get(CONFIG_RESULTPAGE)));
-                            Map<String, Object> model = new HashMap<>();
-                            AbstractFreemarkerView.exposeSite(model, site);
-                            model.putAll(result);
-                            model.put("payment", payment);
-                            template.process(model, response.getWriter());
+                    try (CloseableHttpClient httpClient = builder.build()) {
+                        HttpPost httpPost = new HttpPost(
+                                "https://api.mch.weixin.qq.com/v3/pay/transactions/" + config.get(CONFIG_APITYPE));
+                        httpPost.addHeader("Accept", "application/json");
+                        httpPost.addHeader("Content-type", "application/json; charset=utf-8");
+                        Map<String, Object> requestMap = new HashMap<>();
+                        requestMap.put("mchid", config.get(CONFIG_MCHID));
+                        requestMap.put("appid", config.get(CONFIG_APPID));
+                        requestMap.put("description", null == payment.getDescription() ? "order" : payment.getDescription());
+                        requestMap.put("notify_url", config.get(CONFIG_NOTIFYURL));
+                        requestMap.put("out_trade_no", getOutTradeNo(payment.getId()));
+                        Map<String, Object> amountMap = new HashMap<>();
+                        amountMap.put("total", (payment.getAmount().multiply(new BigDecimal(100))).intValue());
+                        requestMap.put("amount", amountMap);
+                        Map<String, Object> sceneMap = new HashMap<>();
+                        sceneMap.put("payer_client_ip", payment.getIp());
+                        requestMap.put("scene_info", sceneMap);
+                        String requestBody = JsonUtils.getString(requestMap);
+                        httpPost.setEntity(new StringEntity(requestBody, CommonConstants.DEFAULT_CHARSET));
+                        log.info(String.format("pay request: %s", requestBody));
+                        CloseableHttpResponse res = httpClient.execute(httpPost);
+                        HttpEntity entity = res.getEntity();
+                        log.info(String.format("pay response status: %d", res.getStatusLine().getStatusCode()));
+                        if (null != entity) {
+                            String bodyAsString = EntityUtils.toString(entity, CommonConstants.DEFAULT_CHARSET);
+                            log.info(String.format("pay response: %s", bodyAsString));
+                            if (200 == res.getStatusLine().getStatusCode()) {
+                                Map<String, String> result = CommonConstants.objectMapper.readValue(bodyAsString,
+                                        CommonConstants.objectMapper.getTypeFactory().constructMapLikeType(HashMap.class,
+                                                String.class, String.class));
+                                if ("h5".equalsIgnoreCase(config.get(CONFIG_APITYPE))) {
+                                    response.sendRedirect(result.get("h5_url"));
+                                } else {
+                                    Template template = templateComponent.getWebConfiguration()
+                                            .getTemplate(SiteComponent.getFullTemplatePath(site, config.get(CONFIG_RESULTPAGE)));
+                                    Map<String, Object> model = new HashMap<>();
+                                    AbstractFreemarkerView.exposeSite(model, site);
+                                    model.putAll(result);
+                                    model.put("payment", payment);
+                                    template.process(model, response.getWriter());
+                                }
+                                return true;
+                            }
                         }
-                        return true;
                     }
                 } catch (Exception e) {
                     TradePaymentHistory history = new TradePaymentHistory(site.getId(), payment.getId(), CommonUtils.getDate(),
@@ -253,53 +256,58 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
                 WechatPayHttpClientBuilder builder = WechatPayHttpClientBuilder.create()
                         .withMerchant(config.get(CONFIG_MCHID), config.get(CONFIG_SERIALNO), merchantPrivateKey)
                         .withValidator(new WechatPay2Validator(verifier));
-                CloseableHttpClient httpClient = builder.build();
-                HttpPost httpPost = new HttpPost("https://api.mch.weixin.qq.com/v3/refund/domestic/refunds");
-                httpPost.addHeader("Accept", "application/json");
-                httpPost.addHeader("Content-type", "application/json; charset=utf-8");
-                Map<String, Object> requestMap = new HashMap<>();
-                requestMap.put("out_trade_no", getOutTradeNo(payment.getId()));
-                requestMap.put("out_refund_no", String.valueOf(refund.getId()));
-                requestMap.put("reason", null == refund.getReply() ? refund.getReason() : refund.getReply());
-                requestMap.put("notify_url", config.get(CONFIG_NOTIFYURL));
-                Map<String, Object> amountMap = new HashMap<>();
-                amountMap.put("refund", (refund.getRefundAmount().multiply(new BigDecimal(100))).intValue());
-                amountMap.put("total", (payment.getAmount().multiply(new BigDecimal(100))).intValue());
-                amountMap.put("currency", "CNY");
-                requestMap.put("amount", amountMap);
-                String requestBody = JsonUtils.getString(requestMap);
-                httpPost.setEntity(new StringEntity(requestBody, CommonConstants.DEFAULT_CHARSET));
-                log.info(String.format("refund request: %s", requestBody));
-                CloseableHttpResponse res = httpClient.execute(httpPost);
-                HttpEntity entity = res.getEntity();
-                log.info(String.format("refund response status: %d", res.getStatusLine().getStatusCode()));
-                if (200 == res.getStatusLine().getStatusCode() && null != entity) {
-                    String bodyAsString = EntityUtils.toString(entity, CommonConstants.DEFAULT_CHARSET);
-                    log.info(String.format("refund response: %s", bodyAsString));
-                    TradePaymentHistory history = new TradePaymentHistory(siteId, payment.getId(), CommonUtils.getDate(),
-                            TradePaymentHistoryService.OPERATE_REFUND_RESPONSE, bodyAsString);
-                    historyService.save(history);
-                    Map<String, Object> result = CommonConstants.objectMapper.readValue(bodyAsString, CommonConstants.objectMapper
-                            .getTypeFactory().constructMapLikeType(HashMap.class, String.class, Object.class));
-                    if ("SUCCESS".equalsIgnoreCase((String) result.get("status"))) {
-                        TradePaymentProcessor tradePaymentProcessor = tradePaymentProcessorComponent.get(payment.getTradeType());
-                        if (null != tradePaymentProcessor && tradePaymentProcessor.refunded(siteId, payment)) {
-                            service.refunded(siteId, payment.getId());
+                try (CloseableHttpClient httpClient = builder.build()) {
+                    HttpPost httpPost = new HttpPost("https://api.mch.weixin.qq.com/v3/refund/domestic/refunds");
+                    httpPost.addHeader("Accept", "application/json");
+                    httpPost.addHeader("Content-type", "application/json; charset=utf-8");
+                    Map<String, Object> requestMap = new HashMap<>();
+                    requestMap.put("out_trade_no", getOutTradeNo(payment.getId()));
+                    requestMap.put("out_refund_no", String.valueOf(refund.getId()));
+                    requestMap.put("reason", null == refund.getReply() ? refund.getReason() : refund.getReply());
+                    requestMap.put("notify_url", config.get(CONFIG_NOTIFYURL));
+                    Map<String, Object> amountMap = new HashMap<>();
+                    amountMap.put("refund", (refund.getRefundAmount().multiply(new BigDecimal(100))).intValue());
+                    amountMap.put("total", (payment.getAmount().multiply(new BigDecimal(100))).intValue());
+                    amountMap.put("currency", "CNY");
+                    requestMap.put("amount", amountMap);
+                    String requestBody = JsonUtils.getString(requestMap);
+                    httpPost.setEntity(new StringEntity(requestBody, CommonConstants.DEFAULT_CHARSET));
+                    log.info(String.format("refund request: %s", requestBody));
+                    CloseableHttpResponse res = httpClient.execute(httpPost);
+                    HttpEntity entity = res.getEntity();
+                    log.info(String.format("refund response status: %d", res.getStatusLine().getStatusCode()));
+                    if (null != entity) {
+                        String bodyAsString = EntityUtils.toString(entity, CommonConstants.DEFAULT_CHARSET);
+                        log.info(String.format("refund response: %s", bodyAsString));
+                        TradePaymentHistory history = new TradePaymentHistory(siteId, payment.getId(), CommonUtils.getDate(),
+                                TradePaymentHistoryService.OPERATE_REFUND_RESPONSE, bodyAsString);
+                        historyService.save(history);
+                        if (200 == res.getStatusLine().getStatusCode()) {
+                            Map<String, Object> result = CommonConstants.objectMapper.readValue(bodyAsString,
+                                    CommonConstants.objectMapper.getTypeFactory().constructMapLikeType(HashMap.class,
+                                            String.class, Object.class));
+                            if ("SUCCESS".equalsIgnoreCase((String) result.get("status"))) {
+                                TradePaymentProcessor tradePaymentProcessor = tradePaymentProcessorComponent
+                                        .get(payment.getTradeType());
+                                if (null != tradePaymentProcessor && tradePaymentProcessor.refunded(siteId, payment)) {
+                                    service.refunded(siteId, payment.getId());
+                                }
+                                return true;
+                            } else {
+                                TradePaymentHistory history1 = new TradePaymentHistory(siteId, payment.getId(),
+                                        CommonUtils.getDate(), TradePaymentHistoryService.OPERATE_REFUNDERROR,
+                                        String.format("response result status: %s", result.get("status")));
+                                historyService.save(history1);
+                                service.pendingRefund(siteId, payment.getId());
+                            }
                         }
-                        return true;
                     } else {
-                        TradePaymentHistory history1 = new TradePaymentHistory(siteId, payment.getId(), CommonUtils.getDate(),
+                        TradePaymentHistory history = new TradePaymentHistory(siteId, payment.getId(), CommonUtils.getDate(),
                                 TradePaymentHistoryService.OPERATE_REFUNDERROR,
-                                String.format("response result status: %s", result.get("status")));
-                        historyService.save(history1);
+                                String.format("response status error: %d", res.getStatusLine().getStatusCode()));
+                        historyService.save(history);
                         service.pendingRefund(siteId, payment.getId());
                     }
-                } else {
-                    TradePaymentHistory history = new TradePaymentHistory(siteId, payment.getId(), CommonUtils.getDate(),
-                            TradePaymentHistoryService.OPERATE_REFUNDERROR,
-                            String.format("response status error: %d", res.getStatusLine().getStatusCode()));
-                    historyService.save(history);
-                    service.pendingRefund(siteId, payment.getId());
                 }
             } catch (Exception e) {
                 TradePaymentHistory history = new TradePaymentHistory(siteId, payment.getId(), CommonUtils.getDate(),
@@ -361,4 +369,5 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
     public void destroy() {
         certificatesManager.stop();
     }
+
 }

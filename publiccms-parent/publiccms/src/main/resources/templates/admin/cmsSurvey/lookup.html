@@ -1,0 +1,82 @@
+<@cms.surveyList userId=userId startStartDate=startStartDate endStartDate=endStartDate 
+            startEndDate=startEndDate endEndDate=endEndDate title=title
+            orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
+<div class="pageHeader">
+    <form class="pagerForm" autocomplete="off" onsubmit="return dialogSearch(this);" action="cmsSurvey/lookup.html" method="post">
+        <#include "../include_page/parameters.html"/>
+        <input type="hidden" name="field" value="${field!'surveyId'}"/>
+        <input type="hidden" name="titleField" value="${titleField!'title'}"/>
+        <div class="searchBar">
+            <ul class="searchContent">
+                <li>
+                    <label><@t.page 'content.promulgator'/>:</label>
+                    <#include "../include_page/userId.html"/>
+                </li>
+                <li>
+                    <label><@t.page 'start_date'/>:</label>
+                    <input type="text" name="startStartDate" class="date" size="10" dateFmt="yyyy-MM-dd" value="${startStartDate!}" />
+                    <a class="inputDateButton" href="javascript:void(0);"></a>
+                    <span>-</span>
+                    <input type="text" name="endStartDate" class="date" size="10" dateFmt="yyyy-MM-dd" value="${endStartDate!}" />
+                    <a class="inputDateButton" href="javascript:void(0);"></a>
+                </li>
+                <li>
+                    <label><@t.page 'end_date'/>:</label>
+                    <input type="text" name="startEndDate" class="date" size="10" dateFmt="yyyy-MM-dd" value="${startEndDate!}" />
+                    <a class="inputDateButton" href="javascript:void(0);"></a>
+                    <span>-</span>
+                    <input type="text" name="endEndDate" class="date" size="10" dateFmt="yyyy-MM-dd" value="${endEndDate!}" />
+                    <a class="inputDateButton" href="javascript:void(0);"></a>
+                </li>
+                <li>
+                    <label><@t.page 'title'/>:</label>
+                    <input type="text" name="title" value="${title!}" />
+                </li>
+            </ul>
+            <div class="subBar">
+                <ul>
+                    <li>
+                        <button type="button" class="button" onclick="$.bringBack({'${field!'surveyId'}':'','${titleField!'title'}':''});return false;"><@t.page 'button.clear_select'/></button>
+                        <button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="pageContent">
+    <table class="table" width="100%" layoutH orderField="${orderField!}" orderType="${orderType!}">
+        <thead>
+            <tr>
+                <th><@t.page 'select'/></th>
+                <th>ID</th>
+                <th><@t.page 'survey.type'/></th>
+                <th><@t.page 'title'/></th>
+                <th><@t.page 'description'/></th>
+                <th orderField="votes"><@t.page 'content.score'/></th>
+                <th orderField="startDate"><@t.page 'start_date'/></th>
+                <th orderField="endDate"><@t.page 'end_date'/></th>
+                <th orderField="createDate"><@t.page 'create_date'/></th>
+            </tr>
+        </thead>
+        <tbody>
+            <#list page.list as a>
+            <tr>
+                <td>
+                    <a href="javascript:;" class="btnText green" onclick="$.bringBack({'${field!'voteId'}':'${a.id}','${titleField!'title'}':'${(a.title?js_string)!}'});return false;"><i class="icon-ok"></i><@t.page 'select'/></a>
+                </td>
+                <td class="center">${a.id!}</td>
+                <td class="center"><@t.page 'survey.type.'+a.surveyType/></td>
+                <td class="center exclude-translate" >${a.title!}</td>
+                <td class="center exclude-translate">${a.description!}</td>
+                <td>${a.votes!}</td>
+                <td>${a.startDate!}</td>
+                <td>${a.endDate!}</td>
+                <td>${a.createDate!}</td>
+            </tr>
+            </#list>
+        </tbody>
+    </table>
+    <#include "../include_page/pageDialog.html"/>
+</div>
+</@cms.surveyList>

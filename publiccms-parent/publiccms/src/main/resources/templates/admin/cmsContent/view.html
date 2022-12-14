@@ -131,14 +131,14 @@
             <dl class="nowrap">
                 <dt>${(model.fieldTextMap['description'])!}:</dt>
                 <dd class="exclude-translate">
-                    ${(a.description)!}
+                    <#list (a.description!'')?split('\n') as line>${line}<#sep><br/></#list>
                 </dd>
             </dl>
         </#if>
             <dl>
                 <dt><@t.page 'publish_date'/>:</dt>
                 <dd>
-                    ${(a.publishDate)!}
+                    ${(a.publishDate)!}<#if a.expiryDate?has_content> - ${(a.expiryDate)!}</#if>
                 </dd>
             </dl>
         <#if fieldList?seq_contains('cover')&&a.cover?has_content>
@@ -154,19 +154,11 @@
         <#include "../include_page/extendData.html"/>
         <#if category?has_content&&category.extendId?has_content>
             <@sys.extendFieldList extendId=category.extendId>
-                <#assign
-                    extendList=list![]
-                    extendValue=attribute!{}
-                />
-                <@extendData 'categoryExtendDataList' extendList extendValue 'view' safe/>
+                <@extendData name='categoryExtendDataList' extendList=list extendValues=attribute type='view' htmlSafe=safe/>
             </@sys.extendFieldList>
         </#if>
         <#if model?has_content>
-            <#assign
-                extendList=model.extendList![]
-                extendValue=attribute!{}
-            />
-            <@extendData 'modelExtendDataList' extendList extendValue 'view' safe/>
+            <@extendData name='modelExtendDataList' extendList=model.extendList extendValues=attribute type='view' htmlSafe=safe/>
         </#if>
         <#if a?has_content&&(a.hasImages||a.hasFiles)>
             <#if a.hasImages>

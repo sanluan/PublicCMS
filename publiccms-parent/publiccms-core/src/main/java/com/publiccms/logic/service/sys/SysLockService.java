@@ -21,18 +21,33 @@ import com.publiccms.logic.dao.sys.SysLockDao;
 @Service
 @Transactional
 public class SysLockService extends BaseService<SysLock> {
-    public static final String ITEM_TYPE_LOGIN = "userLogin";
-    public static final String ITEM_TYPE_IP_LOGIN = "ipLogin";
-    public static final String ITEM_TYPE_REGISTER = "register";
-    public static final String[] SYSTEM_ITEM_TYPES = { ITEM_TYPE_LOGIN, ITEM_TYPE_IP_LOGIN, ITEM_TYPE_REGISTER };
 
     /**
      * @param itemTypes
      * @param excludeItemTypes
      * @return list of site id
      */
-    public List<Short> getSiteIdList(String[] itemTypes, String[] excludeItemTypes) {
+    public List<Short> getSiteIdListByItemTypes(String[] itemTypes, String[] excludeItemTypes) {
         return dao.getSiteIdList(itemTypes, excludeItemTypes);
+    }
+
+    /**
+     * @param itemType
+     * @param excludeItemTypes
+     * @return list of site id
+     */
+    public List<Short> getSiteIdList(String itemType, String[] excludeItemTypes) {
+        return dao.getSiteIdList(new String[] { itemType }, excludeItemTypes);
+    }
+
+    /**
+     * @param itemType
+     * @param excludeItemTypes
+     * @param createDate
+     * @return number of data deleted
+     */
+    public int delete(String itemType, String[] excludeItemTypes, Date createDate) {
+        return dao.delete(new String[] { itemType }, excludeItemTypes, createDate);
     }
 
     /**
@@ -41,7 +56,7 @@ public class SysLockService extends BaseService<SysLock> {
      * @param createDate
      * @return number of data deleted
      */
-    public int delete(String[] itemTypes, String[] excludeItemTypes, Date createDate) {
+    public int deleteByItemTypes(String[] itemTypes, String[] excludeItemTypes, Date createDate) {
         return dao.delete(itemTypes, excludeItemTypes, createDate);
     }
 

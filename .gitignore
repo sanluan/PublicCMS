@@ -7,6 +7,8 @@
 **/.svn/
 **/.idea/
 **/*.iml
+/data/log/
+/data/mysql/
 /data/publiccms/database.properties
 /data/publiccms/install.lock
 /data/publiccms/license.dat

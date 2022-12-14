@@ -7,14 +7,16 @@ ${"<@_"+entityName?replace('Cms','')?uncap_first+"List"} <#include "../include_c
             <#list conditionList as a><#if "Date"=a.type>
                 <li>
                     <label>${a.title}:</label>
-                    <input type="text" name="start${a.name?cap_first}" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${r"${start"+a.name?cap_first+"!}"}" />
+                    <input type="text" name="start${a.name?cap_first}" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${r"${start"+a.name?cap_first+"!}"}"/>
+                    <a class="inputDateButton" href="javascript:void(0);"></a>
                     <span>-</span>
-                    <input type="text" name="end${a.name?cap_first}" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${r"${end"+a.name?cap_first+"!}"}" />
+                    <input type="text" name="end${a.name?cap_first}" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${r"${end"+a.name?cap_first+"!}"}"/>
+                    <a class="inputDateButton" href="javascript:void(0);"></a>
                 </li>
                 <#elseif "siteId"!=a.name>
                 <li>
                     <label>${a.title}:</label>
-                    <input type="text" name="${a.name}" value="${r"${"+a.name+"!}"}" />
+                    <input type="text" name="${a.name}" value="${r"${"+a.name+"!}"}"/>
                 </li>
                 </#if></#list>
             </ul>
@@ -40,12 +42,12 @@ ${"<@_"+entityName?replace('Cms','')?uncap_first+"List"} <#include "../include_c
         ${'</#'}if>
         </ul>
     </div>
-    <table class="table" width="100%" layoutH>
+    <table class="table" layoutH orderField="${orderField!}" orderType="${orderType!}">
         <thead>
             <tr>
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
                 <#list columnList as a>
-                <th<#if a.order> orderField="${a.name}" class="<#noparse><#if orderField??&&</#noparse>'${a.name}'<#noparse>==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if></#noparse>"</#if>>${a.title}</th>
+                <th<#if a.order> orderField="${a.name}">${a.title}</th>
                 </#list>
                 <th><#noparse><@t.page 'operate'/></#noparse></th>
             </tr>

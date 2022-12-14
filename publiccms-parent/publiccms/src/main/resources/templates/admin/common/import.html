@@ -4,10 +4,22 @@
     <input type="hidden" name="field" value="${field!'text'}"/>
     <div class="pageFormContent layoutBox" layoutH>
         <div class="preview" style="position:relative;"><div style="position:absolute;top:0px;right:0;z-index:1000;"><img style="max-height:200px;max-width:300px;"/></div></div>
-        <dl class="nowrap contentTitle">
+        <dl class="nowrap">
             <dt><@t.page 'file'/>:</dt>
             <dd>
-                <input type="file" name="file" class="required" size="30" accept="application/msword,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"/>
+                <input type="file" name="file" class="required" size="30" accept="application/pdf,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/msword,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"/>
+                <span class="info"><@t.page 'import_doc.support_type'/></span>
+            </dd>
+            <div class="clearfix"></div>
+        </dl>
+        <dl class="nowrap iframe hide">
+            <dt><@t.page 'iframe'/>:</dt>
+            <dd>
+                <p><label><input type="checkbox" name="useIframe"><@t.page 'upload.useIframe'/></label></p>
+                <div class="iframeSize hide">
+                    <label><@t.page 'width'/></label><input name="width" data-required="true" type="text" value="100%"/>
+                    <label><@t.page 'height'/></label><input name="height" data-required="true" type="text" value="800px"/>
+                </div>
             </dd>
             <div class="clearfix"></div>
         </dl>
@@ -19,3 +31,24 @@
         </ul>
     </div>
 </form>
+<script>
+$(".pageFormContent",$.pdialog.getCurrent()).on("change","input[type=file]",function(){
+    if($(this).length && $(this)[0].files){
+        var filenames=$(this)[0].files[0].name.toLowerCase().split('.');
+        if('pdf' == filenames[filenames.length-1]){
+            $('.iframe',$.pdialog.getCurrent()).show();
+        } else {
+            $('.iframe',$.pdialog.getCurrent()).hide();
+        }
+    }
+});
+$('input[name=useIframe]',$.pdialog.getCurrent()).click(function(){
+    if($(this).is(':checked')) {
+        $('.iframeSize',$.pdialog.getCurrent()).show();
+        $('.iframeSize input[data-required=true]',navTab.getCurrentPanel()).addClass('required');
+    } else {
+        $('.iframeSize',$.pdialog.getCurrent()).hide();
+        $('.iframeSize input[data-required=true]',navTab.getCurrentPanel()).removeClass('required');
+    }
+});
+</script>

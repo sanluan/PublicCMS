@@ -239,7 +239,7 @@ function diyShowMenu(itemType,itemId,noborder){
     }
     return false;
 }
-DWZ.regPlugins.push(function($p){
+JUI.regPlugins.push(function($p){
     $('.diy-menu',$p).each(function (){
         $(this).hover(function(){
             if(diytimer){

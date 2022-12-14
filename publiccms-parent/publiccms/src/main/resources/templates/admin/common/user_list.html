@@ -29,14 +29,18 @@
                 <li>
                     <label><@t.page 'user.register_date'/>:</label>
                     <input type="text" name="startRegisteredDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startRegisteredDate!}" />
+                    <a class="inputDateButton" href="javascript:void(0);"></a>
                     <span>-</span>
                     <input type="text" name="endRegisteredDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endRegisteredDate!}" />
+                    <a class="inputDateButton" href="javascript:void(0);"></a>
                 </li>
                 <li>
                     <label><@t.page 'user.last_login_date'/>:</label>
                     <input type="text" name="startLastLoginDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startLastLoginDate!}" />
+                    <a class="inputDateButton" href="javascript:void(0);"></a>
                     <span>-</span>
                     <input type="text" name="endLastLoginDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endLastLoginDate!}" />
+                    <a class="inputDateButton" href="javascript:void(0);"></a>
                 </li>
             </ul>
             <div class="subBar">
@@ -57,7 +61,7 @@
             <li><a href="sysUser/disable?_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.disable'/>" target="selectedTodo" rel="ids"><i class="icon-ban-circle icon-large"></i><@t.page 'button.disable'/></a></li>
         </ul>
     </div>
-    <table class="table" width="100%" layoutH targetType="ajax" rel="userBox">
+    <table class="table" width="100%" layoutH targetType="ajax" orderField="${orderField!}" orderType="${orderType!}" rel="userBox">
         <thead>
             <tr>
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
@@ -65,9 +69,9 @@
                 <th width="200"><@t.page 'user.username'/>/<@t.page 'user.nickname'/></th>
                 <th><@t.page 'dept'/></th>
                 <th><@t.page 'email'/></th>
-                <th orderField="lastLoginDate" class="<#if orderField?has_content&&'lastLoginDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'user.last_login_date'/></th>
-                <th orderField="loginCount" class="<#if orderField?has_content&&'loginCount'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'user.login_count'/></th>
-                <th orderField="registeredDate" class="<#if orderField?has_content&&'registeredDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'user.register_date'/></th>
+                <th orderField="lastLoginDate"><@t.page 'user.last_login_date'/></th>
+                <th orderField="loginCount"><@t.page 'user.login_count'/></th>
+                <th orderField="registeredDate"><@t.page 'user.register_date'/></th>
                 <th><@t.page 'operate'/></th>
             </tr>
         </thead>
@@ -104,6 +108,7 @@
                     <div class="box">
                         <p>${a.lastLoginDate!}</p>
                         <p><@t.page 'log.login_ip'/>:${a.lastLoginIp!}</p>
+                        <p>${(getIpRegion(a.lastLoginIp).address)!}</p>
                     </div>
                 </td>
                 <td>${a.loginCount!}</td>

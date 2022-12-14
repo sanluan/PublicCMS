@@ -12,9 +12,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.publiccms.common.base.BaseHandler;
+import com.publiccms.common.servlet.HttpRequestHashModel;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.TemplateModelUtils;
-import com.publiccms.common.view.HttpRequestHashModel;
 
 import freemarker.core.Environment;
 import freemarker.core.Environment.Namespace;

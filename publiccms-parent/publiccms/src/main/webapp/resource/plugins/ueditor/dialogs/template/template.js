@@ -48,6 +48,6 @@
     };
     initPre();
     window.pre = pre;
-    pre(2)
+    pre(1)
 
 })();

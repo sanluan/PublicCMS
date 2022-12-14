@@ -51,7 +51,8 @@ public class CmsWordAdminController {
     @Csrf
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, CmsWord entity,
             HttpServletRequest request, ModelMap model) {
-
+        String ip = RequestUtils.getIpAddress(request);
+        entity.setIp(ip);
         if (null != entity.getId()) {
             CmsWord oldEntity = service.getEntity(entity.getId());
             if (null == oldEntity || ControllerUtils.errorNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
@@ -82,7 +83,8 @@ public class CmsWordAdminController {
      */
     @RequestMapping("delete")
     @Csrf
-    public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids, HttpServletRequest request) {
+    public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids,
+            HttpServletRequest request) {
         if (CommonUtils.notEmpty(ids)) {
             service.delete(site.getId(), ids);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),

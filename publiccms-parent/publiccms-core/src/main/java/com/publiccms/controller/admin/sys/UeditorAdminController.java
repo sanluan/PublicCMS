@@ -34,6 +34,7 @@ import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ImageUtils;
+import com.publiccms.common.tools.LanguagesUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.common.tools.VerificationUtils;
 import com.publiccms.entities.log.LogUpload;
@@ -133,23 +134,35 @@ public class UeditorAdminController {
                 String filepath = siteComponent.getWebFilePath(site, fileName);
                 try {
                     CmsFileUtils.upload(file, filepath);
-                    FileSize fileSize = CmsFileUtils.getFileSize(filepath, suffix);
-                    logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                            originalName, CmsFileUtils.getFileType(suffix), file.getSize(), fileSize.getWidth(),
-                            fileSize.getHeight(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
-                    Map<String, Object> map = getResultMap(true);
-                    map.put("size", file.getSize());
-                    map.put("title", originalName);
-                    map.put("url", fileName);
-                    map.put("type", suffix);
-                    map.put("original", originalName);
-                    return map;
+                    if (CmsFileUtils.isSafe(filepath, suffix)) {
+                        FileSize fileSize = CmsFileUtils.getFileSize(filepath, suffix);
+                        logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                                originalName, CmsFileUtils.getFileType(suffix), file.getSize(), fileSize.getWidth(),
+                                fileSize.getHeight(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
+                        Map<String, Object> map = getResultMap();
+                        map.put("size", file.getSize());
+                        map.put("title", originalName);
+                        map.put("url", fileName);
+                        map.put("type", suffix);
+                        map.put("original", originalName);
+                        return map;
+                    } else {
+                        CmsFileUtils.delete(filepath);
+                        return getResultMap(false, LanguagesUtils.getMessage(CommonConstants.applicationContext,
+                                request.getLocale(), "verify.custom.file.unsafe"));
+                    }
                 } catch (IllegalStateException | IOException e) {
                     log.error(e.getMessage(), e);
+                    return getResultMap(false, e.getMessage());
                 }
+            } else {
+                return getResultMap(false, LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
+                        "verify.custom.fileType"));
             }
+        } else {
+            return getResultMap(false,
+                    LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(), "verify.notEmpty.file"));
         }
-        return getResultMap(false);
     }
 
     /**
@@ -173,7 +186,7 @@ public class UeditorAdminController {
                 logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                         CommonConstants.BLANK, CmsFileUtils.FILE_TYPE_IMAGE, data.length, fileSize.getWidth(),
                         fileSize.getHeight(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
-                Map<String, Object> map = getResultMap(true);
+                Map<String, Object> map = getResultMap();
                 map.put("size", data.length);
                 map.put("title", fileName);
                 map.put("url", fileName);
@@ -182,10 +195,13 @@ public class UeditorAdminController {
                 return map;
             } catch (IllegalStateException | IOException e) {
                 log.error(e.getMessage(), e);
-                return getResultMap(false);
+                return getResultMap(false, e.getMessage());
             }
+        } else {
+            return getResultMap(false,
+                    LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(), "verify.notEmpty.file"));
         }
-        return getResultMap(false);
+
     }
 
     /**
@@ -229,7 +245,7 @@ public class UeditorAdminController {
                                     CommonConstants.BLANK, CmsFileUtils.getFileType(suffix), fileSize.getFileSize(),
                                     fileSize.getWidth(), fileSize.getHeight(), RequestUtils.getIpAddress(request),
                                     CommonUtils.getDate(), fileName));
-                            Map<String, Object> map = getResultMap(true);
+                            Map<String, Object> map = getResultMap();
                             map.put("size", fileSize.getFileSize());
                             map.put("title", fileName);
                             map.put("url", fileName);
@@ -241,18 +257,21 @@ public class UeditorAdminController {
                     EntityUtils.consume(entity);
                 }
                 if (list.isEmpty()) {
-                    return getResultMap(false);
+                    return getResultMap(false, LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
+                            "verify.notEmpty.file"));
                 } else {
-                    Map<String, Object> map = getResultMap(true);
+                    Map<String, Object> map = getResultMap();
                     map.put("list", list);
                     return map;
                 }
+            } else {
+                return getResultMap(false, LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
+                        "verify.notEmpty.file"));
             }
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            return getResultMap(false);
+            return getResultMap(false, e.getMessage());
         }
-        return getResultMap(false);
     }
 
     /**
@@ -299,10 +318,10 @@ public class UeditorAdminController {
         PageHandler page = logUploadService.getPage(site.getId(), admin.getId(), null, fileTyps, null, null, null, null,
                 start / 20 + 1, 20);
 
-        Map<String, Object> map = getResultMap(true);
+        Map<String, Object> map = getResultMap();
         List<Map<String, Object>> list = new ArrayList<>();
         for (LogUpload logUpload : ((List<LogUpload>) page.getList())) {
-            Map<String, Object> tempMap = getResultMap(true);
+            Map<String, Object> tempMap = getResultMap();
             tempMap.put("url", logUpload.getFilePath());
             tempMap.put("name", logUpload.getOriginalName());
             list.add(tempMap);
@@ -313,12 +332,20 @@ public class UeditorAdminController {
         return map;
     }
 
-    protected static Map<String, Object> getResultMap(boolean success) {
+    protected static Map<String, Object> getResultMap() {
+        return getResultMap(true, null);
+    }
+
+    protected static Map<String, Object> getResultMap(boolean success, String message) {
         Map<String, Object> map = new HashMap<>();
         if (success) {
             map.put("state", "SUCCESS");
         } else {
-            map.put("state", "error");
+            if (CommonUtils.notEmpty(message)) {
+                map.put("state", message);
+            } else {
+                map.put("state", "error");
+            }
         }
         return map;
     }

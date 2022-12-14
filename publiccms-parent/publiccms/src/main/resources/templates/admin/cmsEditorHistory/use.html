@@ -1,0 +1,15 @@
+<@cms.editorHistory id=id><#assign a=object/></@cms.editorHistory>
+<div class="pageFormContent" layoutH>
+    <dl class="nowrap">
+        <dt><@t.page 'content'/>:</dt>
+        <textarea name="content">${(a.text)!}</textarea>
+    </dl>
+    <script>
+    $.bringBack({"<#if 'content'=a.itemType>${(a.fieldName)!'text'}<#else>value</#if>":$('textarea[name=content]',$.pdialog.getCurrent()).val()});
+    </script>
+</div>
+<div class="formBar">
+    <ul>
+        <li><a href="cmsEditorHistory/use.html?id=${a.id}" target="dialog" rel="_blank" class="btnText green"><i class="icon-ok"></i><@t.page 'select'/></a></li>
+    </ul>
+</div>

@@ -1,9 +1,10 @@
 <@tools.placeMetadata path=path><#assign a=object/></@tools.placeMetadata>
+<@tools.fileExist path='/include'+(path!)><#assign exists=object&&path?has_content></@tools.fileExist>
 <form method="post" autocomplete="off" action="cmsTemplate/savePlaceMetaData?navTabId=placeTemplate/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <div class="formBar card">
         <ul>
-        <#if a?has_content>
+        <#if exists>
             <li><a class="button" href="cmsTemplate/deletePlace?path=${(path?url)!}&navTabId=placeTemplate/list&_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.delete_file'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i><@t.page 'button.delete'/></a></li>
             <li><a class="button" href="cmsPlace/metadata.html?path=${(path?url)!}" target="ajax" rel="cmsTemplatePlace"><@t.page 'place.management'/></a></li>
             <li><a class="button" href="placeTemplate/content.html?path=${(path?url)!}" target="ajax" rel="cmsTemplatePlace"><@t.page 'template.content'/></a></li>
@@ -16,12 +17,8 @@
             <dl class="nowrap">
                 <dt><@t.page 'path'/>:</dt></dt>
                 <dd>
-                <#if path?has_content>
-                    ${path}
-                    <input name="path" type="hidden" value="${path}" size="40"/>
-                <#else>
-                    <input name="path" type="text" value="/${getUUID()}.html" size="40"/>
-                </#if>
+                    <input name="path" type="text" value="${path!}${exists?then('','/'+getUUID()+'.html')}" size="40"/>
+                    <span class="info"><@t.page 'template_path.description'/></span>
                 </dd>
             </dl>
             <dl class="nowrap">
@@ -49,6 +46,7 @@
                 <dt><@t.page 'place_data.page_size'/>:</dt>
                 <dd>
                     <input name="size" class="required digits" type="number" value="${(a.size)!0}"/>
+                    <span class="info"><@t.page 'place_data.page_size.description'/></span>
                 </dd>
             </dl>
             <dl class="nowrap placeExtend">
@@ -57,6 +55,7 @@
                     <label><input name="acceptItemTypes" type="checkbox" value="content"<#if (a.acceptItemTypes)?has_content&&a.acceptItemTypes?seq_contains('content')> checked="checked"</#if>/><@t.page 'content'/></label>
                     <label><input name="acceptItemTypes" type="checkbox" value="page"<#if (a.acceptItemTypes)?has_content&&a.acceptItemTypes?seq_contains('page')> checked="checked"</#if>/><@t.page 'page'/></label>
                     <label><input name="acceptItemTypes" type="checkbox" value="category"<#if (a.acceptItemTypes)?has_content&&a.acceptItemTypes?seq_contains('category')> checked="checked"</#if>/><@t.page 'category'/></label>
+                    <span class="info"><#noparse>${(a.itemType)!}:${(a.itemId)!}</#noparse></span>
                 </dd>
             </dl>
             <dl class="nowrap placeExtend">
@@ -76,6 +75,7 @@
                     </dt>
                     <dd>
                         <input name="fieldTextMap[title]" class="required" type="text" maxlength="20" size="10" value="${(a.fieldTextMap['title'])!t.pageMessage('title')}"/>
+                        <span class="info"><#noparse>${(a.title)!}</#noparse></span>
                     </dd>
                 </dl>
                 <dl class="nowrap">
@@ -86,6 +86,18 @@
                         <label><@t.page 'text'/>:</label>
                         <input name="fieldTextMap[url]" type="text" maxlength="20" size="10" value="${(a.fieldTextMap['url'])!t.pageMessage('url')}"/>
                         <label><input name="requiredFieldList" type="checkbox" value="url"/><@t.page 'required'/></label>
+                        <span class="info"><#noparse>${(a.url)!}</#noparse></span>
+                    </dd>
+                </dl>
+                <dl class="nowrap">
+                    <dt>
+                        <label><input name="fieldList" type="checkbox" value="description"/><@t.page 'description'/></label>
+                    </dt>
+                    <dd>
+                        <label><@t.page 'text'/>:</label>
+                        <input name="fieldTextMap[description]" type="text" maxlength="20" size="10" value="${(a.fieldTextMap['description'])!t.pageMessage('description')}"/>
+                        <label><input name="requiredFieldList" type="checkbox" value="description"/><@t.page 'required'/></label>
+                        <span class="info"><#noparse>&lt;#list (a.description!'')?split("\n") as a&gt;${a}&lt;#sep&gt;&lt;br/&gt;&lt;/#list&gt;</#noparse></span>
                     </dd>
                 </dl>
                 <dl class="nowrap">
@@ -98,20 +110,24 @@
                         <label><input name="requiredFieldList" type="checkbox" value="cover"/><@t.page 'required'/></label>
                         <label><@t.page 'width'/></label><input name="coverWidth" type="number" size="5" value="${(a.coverWidth)!}"/>
                         <label><@t.page 'height'/></label><input name="coverHeight" type="number" size="5" value="${(a.coverHeight)!}"/>
+                        <span class="info"><#noparse>&lt;img src="${(a.cover)!}" alt="${(a.title)!}"/&gt;</#noparse></span>
                     </dd>
                 </dl>
+            </fieldset>
+            <fieldset class="placeExtend">
+                <legend><@t.page 'place_data.extend_field'/></legend>
+                <span class="info"><#noparse>&lt;#assign attribute=getPlaceAttribute(a.id)&gt;</#noparse></span>
+                <#include '../include_page/extends.html'/>
+                <#assign extendList=(a.extendList)![]/>
+                <@extends 'extendList' extendList/>
+                <span class="info"><@t.page 'extend_field.use.place'/>;<@t.page 'extend_field.use.content'/>;<@t.page 'metadata.default_value_description'/></span>
             </fieldset>
             <fieldset>
                 <legend><@t.page 'metadata.extend_field'/></legend>
                 <#include '../include_page/extends.html'/>
                 <#assign metadataExtendList=(a.metadataExtendList)![]/>
                 <@extends 'metadataExtendList' metadataExtendList/>
-            </fieldset>
-            <fieldset class="placeExtend">
-                <legend><@t.page 'place_data.extend_field'/>(<@t.page 'metadata.default_value_description'/>)</legend>
-                <#include '../include_page/extends.html'/>
-                <#assign extendList=(a.extendList)![]/>
-                <@extends 'extendList' extendList/>
+                <span class="info"><@t.page 'extend_field.use.metadata'/>;<@t.page 'extend_field.use.content'/>;<@t.page 'metadata.default_value_description'/></span>
             </fieldset>
     <script>
     $('.systemField dt [type=checkbox]',navTab.getCurrentPanel()).each(function(){
@@ -155,7 +171,7 @@
     </#if>
     </script>
             <textarea name="content" class="hide"></textarea>
-            <textarea class="placeContent hide"><#noparse>
+            <textarea class="placeContent hide"><#if exists && ((a.size)!0) gt 0><@tools.fileContent path='/include'+path>${(object)!}</@tools.fileContent><#else><#noparse>
 <#list page.list>
     <ul data-diy="place" data-diy-id="${path}">
     <#items as a>
@@ -164,18 +180,19 @@
                 <!-- ${a.itemType!} : ${a.itemId!} ,place/redirect:count and 301 jump to a.url,place/click:count and 302 jump to a.url-->
                 <a href="${site.dynamicPath}place/redirect?id=${a.id!}" target="_blank"><img src="${a.cover!}"></a>
                 <figcaption><a href="${a.url!}" target="_blank">${a.title!}</a>(${a.clicks!})</figcaption>
+                <p><#list (a.description!'')?split('\n') as line>${line}<#sep><br/></#list></p>
                 </#noparse><@t.page 'extend_field'/>:<#noparse><#assign attribute=getPlaceAttribute(a.id)/>
             </figure>
         </li>
     </#items>
     </ul>
 </#list>
-</#noparse></textarea>
-    <textarea class="content hide"><#noparse>
+</#noparse></#if></textarea>
+    <textarea class="content hide"><#if exists && ((a.size)!0)=0><@tools.fileContent path='/include'+path>${(object)!}</@tools.fileContent><#else><#noparse>
 <div data-diy="place" data-diy-id="${path}">
-    
+
 </div>
-</#noparse></textarea>
+</#noparse></#if></textarea>
         </div>
     </div>
 </form>

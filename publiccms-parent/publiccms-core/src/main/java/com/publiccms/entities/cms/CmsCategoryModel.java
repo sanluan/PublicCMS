@@ -12,6 +12,7 @@ import jakarta.persistence.Table;
 
 import org.hibernate.annotations.DynamicUpdate;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.publiccms.common.generator.annotation.GeneratorColumn;
 
 /**
@@ -30,8 +31,12 @@ public class CmsCategoryModel implements java.io.Serializable {
      * id
      */
     private CmsCategoryModelId id;
+    @GeneratorColumn(title = "站点", condition = true)
+    @JsonIgnore
+    private short siteId;
     /**
-     * template path<p>
+     * template path
+     * <p>
      * 模板路径
      */
     @GeneratorColumn(title = "模板路径")
@@ -40,12 +45,14 @@ public class CmsCategoryModel implements java.io.Serializable {
     public CmsCategoryModel() {
     }
 
-    public CmsCategoryModel(CmsCategoryModelId id) {
+    public CmsCategoryModel(CmsCategoryModelId id, short siteId) {
         this.id = id;
+        this.siteId = siteId;
     }
 
-    public CmsCategoryModel(CmsCategoryModelId id, String templatePath) {
+    public CmsCategoryModel(CmsCategoryModelId id, short siteId, String templatePath) {
         this.id = id;
+        this.siteId = siteId;
         this.templatePath = templatePath;
     }
 
@@ -59,6 +66,15 @@ public class CmsCategoryModel implements java.io.Serializable {
 
     public void setId(CmsCategoryModelId id) {
         this.id = id;
+    }
+
+    @Column(name = "site_id", nullable = false)
+    public short getSiteId() {
+        return this.siteId;
+    }
+
+    public void setSiteId(short siteId) {
+        this.siteId = siteId;
     }
 
     @Column(name = "template_path", length = 200)

@@ -38,7 +38,7 @@
 </div>
 <@sys.authorized roleIds=admin.roles urls='tradeRefund/refundParameters,tradeRefund/refuseParameters'><#assign authorizedMap=map/></@sys.authorized>
 <div class="card">
-    <table class="table" width="100%" layoutH>
+    <table class="table" width="100%" layoutH orderField="${orderField!}" orderType="${orderType!}">
         <thead>
             <tr>
                 <th><@t.page 'id'/></th>
@@ -50,7 +50,7 @@
                 <th><@t.page 'operate_user'/></th>
                 <th><@t.page 'refund.amount'/></th>
                 <th><@t.page 'reply'/></th>
-                <th orderField="createDate" class="<#if orderField?has_content&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'create_date'/></th>
+                <th orderField="createDate"><@t.page 'create_date'/></th>
                 <th><@t.page 'operate'/></th>
             </tr>
         </thead>

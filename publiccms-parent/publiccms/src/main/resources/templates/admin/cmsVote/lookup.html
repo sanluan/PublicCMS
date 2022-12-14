@@ -11,14 +11,18 @@
                 <li>
                     <label><@t.page 'start_date'/>:</label>
                     <input type="text" name="startStartDate" class="date" size="10" dateFmt="yyyy-MM-dd" value="${startStartDate!}" />
+                    <a class="inputDateButton" href="javascript:void(0);"></a>
                     <span>-</span>
                     <input type="text" name="endStartDate" class="date" size="10" dateFmt="yyyy-MM-dd" value="${endStartDate!}" />
+                    <a class="inputDateButton" href="javascript:void(0);"></a>
                 </li>
                 <li>
                     <label><@t.page 'end_date'/>:</label>
                     <input type="text" name="startEndDate" class="date" size="10" dateFmt="yyyy-MM-dd" value="${startEndDate!}" />
+                    <a class="inputDateButton" href="javascript:void(0);"></a>
                     <span>-</span>
                     <input type="text" name="endEndDate" class="date" size="10" dateFmt="yyyy-MM-dd" value="${endEndDate!}" />
+                    <a class="inputDateButton" href="javascript:void(0);"></a>
                 </li>
                 <li>
                     <label><@t.page 'title'/>:</label>
@@ -37,17 +41,17 @@
     </form>
 </div>
 <div class="pageContent">
-    <table class="table" width="100%" layoutH>
+    <table class="table" width="100%" layoutH orderField="${orderField!}" orderType="${orderType!}">
         <thead>
             <tr>
                 <th><@t.page 'select'/></th>
                 <th>ID</th>
                 <th><@t.page 'title'/></th>
                 <th><@t.page 'description'/></th>
-                <th orderField="votes" class="<#if orderField?has_content&&'votes'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'content.score'/></th>
-                <th orderField="startDate" class="<#if orderField?has_content&&'startDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'start_date'/></th>
-                <th orderField="endDate" class="<#if orderField?has_content&&'endDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'end_date'/></th>
-                <th orderField="createDate" class="<#if orderField?has_content&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'create_date'/></th>
+                <th orderField="votes"><@t.page 'content.score'/></th>
+                <th orderField="startDate"><@t.page 'start_date'/></th>
+                <th orderField="endDate"><@t.page 'end_date'/></th>
+                <th orderField="createDate"><@t.page 'create_date'/></th>
             </tr>
         </thead>
         <tbody>

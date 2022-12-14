@@ -1,12 +1,12 @@
 package com.publiccms.controller.admin.sys;
 
+import java.util.List;
+
 // Generated 2016-7-16 11:54:16 by com.publiccms.common.generator.SourceGenerator
 
 import java.util.Map;
 
-import jakarta.servlet.http.HttpServletRequest;
-
-import jakarta.annotation.Resource;
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -16,29 +16,36 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.publiccms.common.annotation.Csrf;
+import com.publiccms.common.api.Config;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
+import com.publiccms.entities.cms.CmsEditorHistory;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysConfigData;
 import com.publiccms.entities.sys.SysConfigDataId;
 import com.publiccms.entities.sys.SysDept;
 import com.publiccms.entities.sys.SysDeptItemId;
+import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.config.ConfigComponent;
 import com.publiccms.logic.component.config.CorsConfigComponent;
 import com.publiccms.logic.component.site.EmailComponent;
 import com.publiccms.logic.component.site.SiteComponent;
+import com.publiccms.logic.service.cms.CmsEditorHistoryService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.sys.SysConfigDataService;
 import com.publiccms.logic.service.sys.SysDeptItemService;
 import com.publiccms.logic.service.sys.SysDeptService;
 import com.publiccms.views.pojo.model.SysConfigParameters;
+
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  *
@@ -52,6 +59,8 @@ public class SysConfigDataAdminController {
     protected LogOperateService logOperateService;
     @Resource
     protected SiteComponent siteComponent;
+    @Resource
+    private CmsEditorHistoryService editorHistoryService;
 
     private String[] ignoreProperties = new String[] { "id" };
 
@@ -72,9 +81,8 @@ public class SysConfigDataAdminController {
             SysDept dept = sysDeptService.getEntity(admin.getDeptId());
             if (ControllerUtils.errorNotEmpty("deptId", admin.getDeptId(), model)
                     || ControllerUtils.errorNotEmpty("deptId", dept, model)
-                    || ControllerUtils.errorCustom("noright",
-                            !(dept.isOwnsAllConfig() || null != sysDeptItemService
-                                    .getEntity(new SysDeptItemId(admin.getDeptId(), SysDeptItemService.ITEM_TYPE_CONFIG, entity.getId().getCode()))),
+                    || ControllerUtils.errorCustom("noright", !(dept.isOwnsAllConfig() || null != sysDeptItemService.getEntity(
+                            new SysDeptItemId(admin.getDeptId(), SysDeptItemService.ITEM_TYPE_CONFIG, entity.getId().getCode()))),
                             model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
@@ -84,8 +92,9 @@ public class SysConfigDataAdminController {
                     && ControllerUtils.errorNotEquals("siteId", site.getId(), oldEntity.getId().getSiteId(), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
-            Map<String, String> map = ExtendUtils.getExtentDataMap(sysConfigParameters.getExtendDataList(),
-                    configComponent.getFieldList(site, entity.getId().getCode(), null, RequestContextUtils.getLocale(request)));
+            List<SysExtendField> fieldList = configComponent.getFieldList(site, entity.getId().getCode(), null,
+                    RequestContextUtils.getLocale(request));
+            Map<String, String> map = ExtendUtils.getExtentDataMap(sysConfigParameters.getExtendDataList(), fieldList);
             entity.setData(ExtendUtils.getExtendString(map));
             if (null != oldEntity) {
                 entity = service.update(oldEntity.getId(), entity, ignoreProperties);
@@ -94,6 +103,24 @@ public class SysConfigDataAdminController {
                             LogLoginService.CHANNEL_WEB_MANAGER, "update.configData", RequestUtils.getIpAddress(request),
                             CommonUtils.getDate(), JsonUtils.getString(entity)));
                 }
+
+                if (CommonUtils.notEmpty(oldEntity.getData()) && CommonUtils.notEmpty(fieldList)) {
+                    Map<String, String> oldMap = ExtendUtils.getExtendMap(oldEntity.getData());
+                    for (SysExtendField extendField : fieldList) {
+                        if (ArrayUtils.contains(Config.INPUT_TYPE_EDITORS, extendField.getInputType())) {
+                            if (CommonUtils.notEmpty(oldMap) && CommonUtils.notEmpty(oldMap.get(extendField.getId().getCode()))
+                                    && (CommonUtils.notEmpty(map) || !oldMap.get(extendField.getId().getCode())
+                                            .equals(map.get(extendField.getId().getCode())))) {
+                                CmsEditorHistory history = new CmsEditorHistory(site.getId(),
+                                        CmsEditorHistoryService.ITEM_TYPE_CONFIG_DATA, entity.getId().getCode(),
+                                        extendField.getId().getCode(), CommonUtils.getDate(), admin.getId(),
+                                        map.get(extendField.getId().getCode()));
+                                editorHistoryService.save(history);
+                            }
+                        }
+                    }
+                }
+
             } else {
                 entity.getId().setSiteId(site.getId());
                 service.save(entity);
@@ -101,6 +128,7 @@ public class SysConfigDataAdminController {
                         LogLoginService.CHANNEL_WEB_MANAGER, "save.configData", RequestUtils.getIpAddress(request),
                         CommonUtils.getDate(), JsonUtils.getString(entity)));
             }
+
             configComponent.removeCache(site.getId(), entity.getId().getCode());
             if (emailComponent.getCode(site).equals(entity.getId().getCode())) {
                 emailComponent.clear(site.getId());
@@ -128,8 +156,8 @@ public class SysConfigDataAdminController {
         if (ControllerUtils.errorNotEmpty("deptId", admin.getDeptId(), model)
                 || ControllerUtils.errorNotEmpty("deptId", dept, model)
                 || ControllerUtils.errorCustom("noright",
-                        !(dept.isOwnsAllConfig()
-                                || null != sysDeptItemService.getEntity(new SysDeptItemId(admin.getDeptId(), SysDeptItemService.ITEM_TYPE_CONFIG, code))),
+                        !(dept.isOwnsAllConfig() || null != sysDeptItemService
+                                .getEntity(new SysDeptItemId(admin.getDeptId(), SysDeptItemService.ITEM_TYPE_CONFIG, code))),
                         model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }

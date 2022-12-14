@@ -94,8 +94,8 @@ public class ExportComponent {
     }
 
     public void importContent(short siteId) {
-        contentService.batchWork(siteId, null, null, (list, i) -> {
-
+        contentService.batchWorkId(siteId, null, null, (list, i) -> {
+            
         }, PageHandler.MAX_PAGE_SIZE);
     }
 

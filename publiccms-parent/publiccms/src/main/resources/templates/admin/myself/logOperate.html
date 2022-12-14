@@ -21,8 +21,10 @@
                 <li>
                     <label><@t.page 'log.create_date'/>:</label>
                     <input type="text" name="startCreateDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startCreateDate!}" />
+                    <a class="inputDateButton" href="javascript:void(0);"></a>
                     <span>-</span>
                     <input type="text" name="endCreateDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endCreateDate!}" />
+                    <a class="inputDateButton" href="javascript:void(0);"></a>
                 </li>
             </ul>
             <div class="subBar">
@@ -41,14 +43,14 @@
             <li><a href="logOperate/delete?_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i><@t.page 'button.batch_delete'/></a></li>
         </ul>
     </div>
-    <table class="table" width="100%" layoutH>
+    <table class="table" width="100%" layoutH orderField="${orderField!}" orderType="${orderType!}">
         <thead>
             <tr>
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
                 <th><@t.page 'channel'/></th>
                 <th><@t.page 'operate'/>/<@t.page 'code'/></th>
                 <th><@t.page 'log.operate_ip'/></th>
-                <th orderField="createDate" class="<#if orderField?has_content&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'log.create_date'/></th>
+                <th orderField="createDate"><@t.page 'log.create_date'/></th>
                 <th><@t.page 'log.content'/></th>
             </tr>
         </thead>
@@ -60,12 +62,16 @@
                     ${a.channel!}
                 </td>
                 <td>
-                    <@t.message 'operate.'+a.operate/>
-                    /
-                    ${a.operate}
+                    <div class="box">
+                        <p><@t.message 'operate.'+a.operate/></p>
+                        <p>${a.operate}</p>
+                    </div>
                 </td>
                 <td>
-                    ${a.ip!}
+                    <div class="box">
+                        <p>${a.ip!}</p>
+                        <p>${(getIpRegion(a.ip).address)!}</p>
+                    </div>
                 </td>
                 <td>${a.createDate!}</td>
                 <td><@t.cut a.content 60 '...<a href="log/operateView.html?id=${a.id}" class="btnText" target="dialog" rel="operateTask">'?no_esc+t.pageMessage('button.view_more')+'</a>'?no_esc/></td>

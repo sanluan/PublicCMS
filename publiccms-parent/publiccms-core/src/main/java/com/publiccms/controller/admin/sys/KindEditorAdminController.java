@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.LanguagesUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.log.LogUpload;
 import com.publiccms.entities.sys.SysSite;
@@ -66,20 +67,28 @@ public class KindEditorAdminController {
                 String filepath = siteComponent.getWebFilePath(site, fileName);
                 try {
                     CmsFileUtils.upload(imgFile, filepath);
-                    FileSize fileSize = CmsFileUtils.getFileSize(filepath, suffix);
-                    logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                            originalName, CmsFileUtils.getFileType(suffix), imgFile.getSize(), fileSize.getWidth(),
-                            fileSize.getHeight(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
-                    map.put(RESULT_URL, site.getSitePath() + fileName);
-                    return map;
+                    if (CmsFileUtils.isSafe(filepath, suffix)) {
+                        FileSize fileSize = CmsFileUtils.getFileSize(filepath, suffix);
+                        logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                                originalName, CmsFileUtils.getFileType(suffix), imgFile.getSize(), fileSize.getWidth(),
+                                fileSize.getHeight(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
+                        map.put(RESULT_URL, site.getSitePath() + fileName);
+                        return map;
+                    } else {
+                        map.put(CommonConstants.MESSAGE, LanguagesUtils.getMessage(CommonConstants.applicationContext,
+                                request.getLocale(), "verify.custom.file.unsafe"));
+                        CmsFileUtils.delete(filepath);
+                    }
                 } catch (IllegalStateException | IOException e) {
                     map.put(CommonConstants.MESSAGE, e.getMessage());
                 }
             } else {
-                map.put(CommonConstants.MESSAGE, "unsafe file");
+                map.put(CommonConstants.MESSAGE, LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
+                        "verify.custom.fileType"));
             }
         } else {
-            map.put(CommonConstants.MESSAGE, "no file");
+            map.put(CommonConstants.MESSAGE, 
+                    LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(), "verify.notEmpty.file"));
         }
         map.put(CommonConstants.ERROR, 1);
         return map;

@@ -14,8 +14,10 @@
                 <li>
                     <label><@t.page 'visit.visit_date'/>:</label>
                     <input type="text" name="startVisitDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startVisitDate!}" />
+                    <a class="inputDateButton" href="javascript:void(0);"></a>
                     <span>-</span>
                     <input type="text" name="endVisitDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endVisitDate!}" />
+                    <a class="inputDateButton" href="javascript:void(0);"></a>
                 </li>
             </ul>
             <div class="subBar">
@@ -33,11 +35,11 @@
         <ul class="toolBar">
         </ul>
     </div>
-    <table class="table" width="100%" layoutH="92">
+    <table class="table" width="100%" layoutH orderField="${orderField!}" orderType="${orderType!}">
         <thead>
             <tr>
                 <th><@t.page 'visit.session'/></th>
-                <th orderField="lastVisitDate" class="<#if orderField?has_content&&'lastVisitDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'visit.visit_date.last'/></th>
+                <th orderField="lastVisitDate"><@t.page 'visit.visit_date.last'/></th>
                 <th><@t.page 'visit.visit_date.first'/></th>
                 <th><@t.page 'visit.ip'/></th>
                 <th>PV</th>
@@ -49,7 +51,12 @@
                 <td><a href="visit/history.html?sessionId=${a.id.sessionId!}" target="navTab" rel="visit/history" icon="<i class='icon-bolt icon-large'></i>">${a.id.sessionId!}</a></td>
                 <td>${a.lastVisitDate!}</td>
                 <td>${a.firstVisitDate!}</td>
-                <td class="center">${a.ip!}</td>
+                <td>
+                    <div class="box">
+                        <p>${a.ip!}</p>
+                        <p>${(getIpRegion(a.ip).address)!}</p>
+                    </div>
+                </td>
                 <td class="center">${a.pv!}</td>
             </tr>
             </#list>

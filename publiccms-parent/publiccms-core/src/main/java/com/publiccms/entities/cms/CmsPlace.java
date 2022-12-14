@@ -81,6 +81,12 @@ public class CmsPlace implements java.io.Serializable {
     @GeneratorColumn(title = "地址")
     private String url;
     /**
+     * description<p>
+     * 描述
+     */
+    @GeneratorColumn(title = "描述")
+    private String description;
+    /**
      * cover<p>
      * 封面图
      */
@@ -239,6 +245,15 @@ public class CmsPlace implements java.io.Serializable {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    @Column(name = "description", length = 300)
+    public String getDescription() {
+        return this.description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Column(name = "cover")

@@ -1,6 +1,7 @@
 <@tools.metadata path=path><#assign metadata=object/></@tools.metadata>
 <form method="post" autocomplete="off" action="cmsPage/save?rel=pageBox" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
+    <input type="hidden" name="type" value="page"/>
     <div class="formBar card">
         <ul>
             <li>
@@ -22,6 +23,7 @@
                         <p>
                             <a class="button" href="cmsTemplate/publish?path=${path}&_csrf=<@tools.csrfToken admin=true/>" target="ajaxTodo"><@t.page 'publish_page'/></a>
                             <a class="button" href="cmsDiy/preview.html?url=${(site.sitePath+(metadata.publishPath?starts_with('/'))?then(metadata.publishPath?keep_after('/'),metadata.publishPath))?url}" target="navTab" rel="cmsDiy/preview"  icon="<i class='bi bi-palette2 icon-large'></i>" title="<@t.page 'diy.preview'/>"><@t.page 'button.view_page'/></a>
+                            <a class="button" href="${site.sitePath+(metadata.publishPath?starts_with('/'))?then(metadata.publishPath?keep_after('/'),metadata.publishPath)}" target="_blank"><i class="icon-external-link"></i></a>
                         </p>
                     </dd>
                 </dl>
@@ -32,6 +34,7 @@
                     <dd>
                         <p>
                             <a class="button" href="cmsDiy/preview.html?url=${(site.dynamicPath+(path?starts_with('/'))?then(path?keep_after('/'),path))?url}<#if metadata.acceptParameters?has_content>%3F<#list metadata.acceptParameters?split(',') as p>${p}=<#if 'content'=(metadata.parameterTypeMap[p].type)!><@cms.contentList pageSize=1><#list page.list as a>${a.id}</#list></@cms.contentList><#elseif 'category'=(metadata.parameterTypeMap[p].type)!><@cms.categoryList pageSize=1><#list page.list as a>${a.id}</#list></@cms.categoryList></#if><#sep>%26</#list></#if>" target="navTab" rel="cmsDiy/preview"  icon="<i class='bi bi-palette2 icon-large'></i>" title="<@t.page 'diy.preview'/>"><@t.page 'button.view_page'/></a>
+                            <a class="button" href="${site.dynamicPath+(path?starts_with('/'))?then(path?keep_after('/'),path)}<#if metadata.acceptParameters?has_content>?<#list metadata.acceptParameters?split(',') as p>${p}=<#if 'content'=(metadata.parameterTypeMap[p].type)!><@cms.contentList pageSize=1><#list page.list as a>${a.id}</#list></@cms.contentList><#elseif 'category'=(metadata.parameterTypeMap[p].type)!><@cms.categoryList pageSize=1><#list page.list as a>${a.id}</#list></@cms.categoryList></#if><#sep>&</#list></#if>" target="_blank"><i class="icon-external-link"></i></a>
                             <#if 0 lte (metadata.cacheTime)!0>
                                 <a class="button" href="cmsPage/clearCache?path=${path}&_csrf=<@tools.csrfToken admin=true/>" target="ajaxTodo"><@t.page 'button.clear_cache'/></a>
                             </#if>
@@ -75,9 +78,7 @@
             </#if>
         </@tools.templatePlaceList>
             <#include "../include_page/extendData.html"/>
-            <#assign extendList=(metadata.extendList)![]/>
-            <#assign attribute=(metadata.extendData)!{}/>
-            <@extendData 'extendDataList' extendList attribute/>
+            <@extendData name='extendDataList' extendList=metadata.extendList extendValues=metadata.extendData historyItemType='metadataExtend' historyItemId=path/>
         </div>
     </div>
 </form>
