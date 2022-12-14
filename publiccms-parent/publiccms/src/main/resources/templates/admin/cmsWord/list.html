@@ -19,8 +19,10 @@
                 <li>
                     <label><@t.page 'create_date'/>:</label>
                     <input type="text" name="startCreateDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startCreateDate!}" />
+                    <a class="inputDateButton" href="javascript:void(0);"></a>
                     <span>-</span>
                     <input type="text" name="endCreateDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endCreateDate!}" />
+                    <a class="inputDateButton" href="javascript:void(0);"></a>
                 </li>
             </ul>
             <div class="subBar">
@@ -48,6 +50,7 @@
                 <th orderField="searchCount" class="<#if orderField?has_content&&'searchCount'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'tag.search_count'/></th>
                 <th><@t.page 'display'/></th>
                 <th orderField="createDate" class="<#if orderField?has_content&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'create_date'/></th>
+                <th><@t.page 'log.operate_ip'/></th>
                 <th><@t.page 'operate'/></th>
             </tr>
         </thead>
@@ -59,6 +62,12 @@
                 <td>${a.searchCount!}</td>
                 <td>${a.hidden?then(t.pageMessage('hidden'),t.pageMessage('show'))}</td>
                 <td>${a.createDate!}</td>
+                <td>
+                    <div class="box">
+                        <p>${a.ip!}</p>
+                        <p>${(getIpRegion(a.ip).address)!}</p>
+                    </div>
+                </td>
                 <td class="wrap">
                     <a href="cmsWord/add.html?id=${a.id}" class="edit btnText blue" target="dialog" rel="cmsWord_edit" title="<@t.page 'search_word.edit'/>"><i class="icon-edit"></i><@t.page 'button.edit'/></a>
                     <#if a.hidden>

@@ -218,6 +218,7 @@
                 ${(value)!}
             <#else>
                 <input name="${inputName}" <#if 'customform'!=type>class="date<#if extend.required> required</#if>" autocomplete="off" dateFmt="yyyy-MM-dd" </#if>type="text" size="10" value="${(value)!}"/>
+                <#if 'customform'!=type><a class="inputDateButton" href="javascript:void(0);"></a></#if>
             </#if>
             <#break>
         <#case 'datetime'>
@@ -225,6 +226,7 @@
                 ${(value)!}
             <#else>
                 <input name="${inputName}" <#if 'customform'!=type>class="date<#if extend.required> required</#if>" autocomplete="off" dateFmt="yyyy-MM-dd HH:mm:ss" </#if>type="text" size="20" value="${(value)!}"/>
+                <#if 'customform'!=type><a class="inputDateButton" href="javascript:void(0);"></a></#if>
             </#if>
             <#break>
         <#case 'color'>

@@ -112,7 +112,7 @@ header .nav .selected ul{display:block;}
 .accordion .accordionContent .tree a{line-height:34px;height:auto;}
 .accordion .accordionContent .tree div{height:auto;}
 .accordion .accordionContent .tree div div{background:0 0;width:25px;height:34px;}
-.accordion .accordionContent .tree a>i{margin-right:5px;width:16px;font-size: 13px;display:inline-block;text-align:center;}
+.accordion .accordionContent .tree a>i{margin-right:5px;width:16px;font-size:13px;display:inline-block;text-align:center;}
 .accordion .accordionContent .tree.treeFolder a{line-height:30px;}
 .accordion .accordionContent .tree.treeFolder div div{height:30px;}
 
@@ -331,13 +331,13 @@ fieldset:first-child .unit:first-of-type p:last-child{padding:0;}
 .comboxop .search input{width:100%;}
 .comboxop a{width:100%;height:28px;box-sizing:border-box;padding:0 10px;line-height:28px;text-align:left;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .comboxop.lot{width:800px;}
-.comboxop ul{overflow-y: scroll;}
+.comboxop ul{overflow-y:scroll;}
 .comboxop li{text-align:left;}
 .comboxop.lot li{float:left;width:33.3%;}
 .comboxop .selected,body .comboxop a:hover{text-decoration:none;}
 
 /* contentTitle */
-h2.contentTitle{border-radius: 5px;padding:5px 10px;font-size:18px;border-bottom:solid 1px #CCC;}
+h2.contentTitle{border-radius:5px;padding:5px 10px;font-size:18px;border-bottom:solid 1px #CCC;}
 h3.contentTitle{font-size:16px;border-bottom:solid 1px #CCC;clear:both;}
 .dialog h2.contentTitle{border:none;}
 
@@ -441,7 +441,7 @@ a.btnLook:before,a.btnDel:before,a.btnAttach:before,a.view:before{font-size:20px
 #calendar *{margin:0;padding:0;font-size:14px;line-height:18px;}
 #calendar .main{margin:auto;text-align:center;zoom:1;position:relative;}
 #calendar .head{padding:6px 0;}
-#calendar .head select{width:60px;}
+#calendar .head select{width:60%;}
 #calendar .body{margin:2px 0;padding:2px;clear:both;overflow:hidden;position:relative;}
 #calendar .foot{text-align:right;padding:6px 0;}
 #calendar .nodate .head, #calendar .nodate .body{display:none;}
@@ -451,8 +451,8 @@ a.btnLook:before,a.btnDel:before,a.btnAttach:before,a.view:before{font-size:20px
 #calendar dt{margin-top:4px;font-weight:bold;}
 #calendar .days dd{cursor:pointer;}
 #calendar .days dd.disabled{cursor:not-allowed;}
-#calendar .close{width:16px;height:16px;font-size:16px;display:block;cursor:pointer;text-align:center;}
-#calendar .clearBut, #calendar .okBut{border-width:1px;border-style:solid;width:52px;line-height:24px;cursor:pointer;margin-right:7px;}
+#calendar .close{width:16px;height:16px;font-size:16px;margin-top:-6px;display:block;cursor:pointer;text-align:center;}
+#calendar .clearBut, #calendar .okBut{border-width:1px;border-style:solid;border-radius:2px;width:52px;line-height:24px;cursor:pointer;margin-right:7px;}
 #calendar .clearBut{margin-right:2px;}
 #calendar .time{border-collapse:collapse;float:left;display:none;margin-left:6px;}
 #calendar .time td{line-height:16px;vertical-align:center;line-height:26px;}
@@ -467,8 +467,8 @@ a.btnLook:before,a.btnDel:before,a.btnAttach:before,a.view:before{font-size:20px
 .miscSortDrag dt{width:160px;position:sticky;z-index:999;top:5px;}
 .miscSortDrag dt fieldset .itemBox{max-height:360px;min-height:100px;overflow-y:auto;}
 .miscSortDrag dt .sortDragPlaceholder, .miscSortDrag dt .dragItem .close, .miscSortDrag dt .dragItem .ctl-label,.miscSortDrag dt .dragItem .dragContent{display:none}
-.miscSortDrag dt .dragItem{border:1px solid #B8D0D6;height:24px;line-height:24px;overflow: hidden;padding:2px;margin:3px 0px;display:block;cursor:move;user-select:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;}
-.miscSortDrag dt .dragItem.icon-move:before{float:right;color: #ccc;}
+.miscSortDrag dt .dragItem{border:1px solid #B8D0D6;height:24px;line-height:24px;overflow:hidden;padding:2px;margin:3px 0px;display:block;cursor:move;user-select:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;}
+.miscSortDrag dt .dragItem.icon-move:before{float:right;color:#ccc;}
 .miscSortDrag dt:after{content:" ";display:block;clear:both;}
 .miscSortDrag dd{margin-left:175px;}
 .miscSortDrag dd .sortDrag{width:100%;min-height:100px;margin-bottom:10px;color:#ccc;text-align:center;box-sizing:border-box;border:1px dashed #d66;overflow-y:auto;}
@@ -522,6 +522,12 @@ a.btnLook:before{content:"\e66a";font-family:iconfont;}
 .ckbox.checked:before{content:"\f046";}
 
 .panelBar .toolBar li:hover .addMore .icon-double-angle-down:before{content:"\f102";}
+
+input.date{border-right-width:0px;}
+a.inputDateButton{float:left;display:block;background-color:#fff;width:20px;font-size:16px;height:30px;line-height:28px;overflow:hidden;border-style:solid;border-width:1px;box-sizing:border-box;border-left:0px;}
+a.inputDateButton:before{content:"\e60b";font-family:iconfont;}
+a.inputDateButton:hover{text-decoration:none;}
+
 /* basic color */
 body{color:#ccc;}
 a{color:#fff;}

@@ -185,12 +185,14 @@ $('input[name=copied]',navTab.getCurrentPanel()).click();
                     <dt><@t.page 'publish_date'/>:</dt>
                     <dd>
                         <input type="text" name="publishDate" class="date" size="20" autocomplete="off" dateFmt="yyyy-MM-dd HH:mm:ss" value="${(a.publishDate)!}"/>
+                        <a class="inputDateButton" href="javascript:void(0);"></a>
                     </dd>
                 </dl>
                 <dl class="publishDate hide">
                     <dt><@t.page 'expiry_date'/>:</dt>
                     <dd>
                         <input type="text" name="expiryDate" class="date" size="20" autocomplete="off" dateFmt="yyyy-MM-dd HH:mm:ss" value="${(a.expiryDate)!}"/>
+                        <a class="inputDateButton" href="javascript:void(0);"></a>
                     </dd>
                 </dl>
             <#if a?has_content&&(a.publishDate gt .now || a.expiryDate?has_content)>

@@ -14,8 +14,10 @@
                 <li>
                     <label><@t.page 'visit.visit_date'/>:</label>
                     <input type="text" name="startVisitDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startVisitDate!}" />
+                    <a class="inputDateButton" href="javascript:void(0);"></a>
                     <span>-</span>
                     <input type="text" name="endVisitDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endVisitDate!}" />
+                    <a class="inputDateButton" href="javascript:void(0);"></a>
                 </li>
             </ul>
             <div class="subBar">

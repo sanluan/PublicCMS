@@ -29,14 +29,18 @@
                 <li>
                     <label><@t.page 'user.register_date'/>:</label>
                     <input type="text" name="startRegisteredDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startRegisteredDate!}" />
+                    <a class="inputDateButton" href="javascript:void(0);"></a>
                     <span>-</span>
                     <input type="text" name="endRegisteredDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endRegisteredDate!}" />
+                    <a class="inputDateButton" href="javascript:void(0);"></a>
                 </li>
                 <li>
                     <label><@t.page 'user.last_login_date'/>:</label>
                     <input type="text" name="startLastLoginDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startLastLoginDate!}" />
+                    <a class="inputDateButton" href="javascript:void(0);"></a>
                     <span>-</span>
                     <input type="text" name="endLastLoginDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endLastLoginDate!}" />
+                    <a class="inputDateButton" href="javascript:void(0);"></a>
                 </li>
             </ul>
             <div class="subBar">

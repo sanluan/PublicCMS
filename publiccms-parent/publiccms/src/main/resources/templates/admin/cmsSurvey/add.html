@@ -33,12 +33,14 @@
                 <dt><@t.page 'start_date'/>:</dt>
                 <dd>
                     <input type="text" name="startDate" class="required date" size="20" dateFmt="yyyy-MM-dd HH:mm:ss" value="${(a.startDate)!}"/>
+                    <a class="inputDateButton" href="javascript:void(0);"></a>
                 </dd>
             </dl>
             <dl>
                 <dt><@t.page 'end_date'/>:</dt>
                 <dd>
                     <input type="text" name="endDate" class="required date" size="20" dateFmt="yyyy-MM-dd HH:mm:ss" minDate="{%y}-%M-{%d}" value="${(a.endDate)!}"/>
+                    <a class="inputDateButton" href="javascript:void(0);"></a>
                 </dd>
             </dl>
         </div>

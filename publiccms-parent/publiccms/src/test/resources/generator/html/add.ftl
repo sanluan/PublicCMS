@@ -1,6 +1,6 @@
 ${"<@_"+entityName?replace('Cms','')?uncap_first+" id=id><#assign a=object/></@_"+entityName?replace('Cms','')?uncap_first+">"}
 <form method="post" autocomplete="off" action="${entityName?uncap_first}/save?callbackType=closeCurrent&navTabId=${entityName?uncap_first}/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
-    <input name="id" type="hidden" value="<#noparse>${id!}</#noparse>" />
+    <input name="id" type="hidden" value="<#noparse>${id!}</#noparse>"/>
     <input type="hidden" name="_csrf" value="<#noparse><@_csrfToken admin=true/></#noparse>"/>
     <div class="formBar card">
         <ul>
@@ -16,6 +16,7 @@ ${"<@_"+entityName?replace('Cms','')?uncap_first+" id=id><#assign a=object/></@_
                 <dt>${a.title}:</dt>
                 <dd>
                     <input type="text" name="${a.name}" class="required date" size="20" dateFmt="yyyy-MM-dd HH:mm:ss" value="${r"${(a."+a.name+")!}"}"/>
+                    <a class="inputDateButton" href="javascript:void(0);"></a>
                 </dd>
             </dl>
             <#elseif 'id' != a.name && 'siteId' != a.name && 'createDate' != a.name&& 'disabled' != a.name>

@@ -9,7 +9,9 @@
     <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <div class="formBar card">
         <ul>
-            <li><a class="button" href="cmsWebFile/delete?paths=${(path?url)!}&callbackType=closeCurrent&navTabId=cmsWebFile/list&_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.delete_file'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i><@t.page 'button.delete'/></a></li>
+            <#if exists>
+                <li><a class="button" href="cmsWebFile/delete?paths=${(path?url)!}&callbackType=closeCurrent&navTabId=cmsWebFile/list&_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.delete_file'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i><@t.page 'button.delete'/></a></li>
+            </#if>
             <li><button type="submit" class="buttonActive" title="ctrl+s"<#if path?has_content> lock-url="common/lock?itemType=file&itemId=${(path?url)!}" close-url="common/unlock?itemType=file&itemId=${(path?url)!}"</#if>><@t.page 'button.save'/></button></li>
         </ul>
     </div>
