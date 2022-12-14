@@ -198,9 +198,7 @@ table.nowrap tbody tr{border-bottom-width:1px;border-bottom-style:solid;}
 .textInput, input.focus, input.required, input.error, input.readonly, input.disabled,
 textarea.focus, textarea.required, textarea.error, textarea.readonly,
 textarea.disabled{background:#fff;padding:2px;margin:0;line-height:24px;font-size:14px;border-style:solid;border-width:1px;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box;}
-.textInput, input.focus, input.required, input.error, input.readonly, input.disabled,
-textarea.focus, textarea.required, textarea.error, textarea.readonly, textarea.disabled{background-image:url(../images/input_bg.png);background-repeat:no-repeat;background-attachment:scroll;}
-input.required, textarea.required{background-position:100% 0;}
+input.required,textarea.required,.combox .select a.required{background-image:url(../images/input_bg.png);background-position:100% 0;background-repeat:no-repeat;background-attachment:scroll;}
 input.gray, textarea.gray{color:gray;}
 select{border:1px solid;border-color:#A2BAC0 #B8D0D6 #B8D0D6 #A2BAC0;}
 textarea.editor{width:80%;}
