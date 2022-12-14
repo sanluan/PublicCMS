@@ -126,8 +126,7 @@ header .nav .selected ul{display:block;}
 .panelBar .toolBar li>ul>li{float:none;padding:5px 0 0 0;white-space:nowrap;}
 .panelBar .toolBar li:hover>ul{display:block;}
 
-.pagination{float:right;padding-left:7px;}
-.pagination ul{padding-bottom:1px;}
+.pagination{float:right;padding-left:7px;padding-bottom:1px;}
 .pagination li{padding:1px 0 0 5px;line-height:26px;}
 .pagination li a,.pagination li span{display:inline-block;padding:0 5px;border-width:1px;border-style:solid;border-radius:3px;text-decoration:none;}
 .pagination li.selected a{color:red;font-weight:bold;}

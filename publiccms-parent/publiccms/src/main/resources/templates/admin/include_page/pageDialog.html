@@ -1,49 +1,47 @@
 <#if page?has_content>
-<div class="pageBar panelBar">
-    <div class="pagination">
-        <ul>
-            <li>
-                <span><@t.page 'total_count' page.totalCount/></span>
-                <select class="combox" name="numPerPage" onchange="dialogPageBreak({pageNum:1,numPerPage:this.value},'${rel!}');">
-                    <option value="30"${(page.pageSize=30)?then(' selected="true"','')?no_esc}><@t.page 'page_size' 30/></option>
-                    <option value="50"${(page.pageSize=50)?then(' selected="true"','')?no_esc}><@t.page 'page_size' 50/></option>
-                    <option value="100"${(page.pageSize=100)?then(' selected="true"','')?no_esc}><@t.page 'page_size' 100/></option>
-                    <option value="500"${(page.pageSize=500)?then(' selected="true"','')?no_esc}><@t.page 'page_size' 500/></option>
-                </select>
-            </li>
-            <#assign
-                start=1
-                step=5
-                end=page.totalPage
-            />
-            <#if (page.pageIndex-step) gt start>
-                <#assign start=page.pageIndex-step/>
-            </#if>
-            <#if (page.pageIndex+step) lt end>
-                <#assign end=page.pageIndex+step/>
-            </#if>
-            <li<#if page.firstPage> class="disabled"</#if>>
-                <a class="previous" href="javascript:;" onclick="dialogPageBreak({pageNum:${page.prePage}},'${(rel?js_string)!}');return false;"><@t.page 'pre_page'/></a>
-            </li>
-            <#if start gt 1>
-                <li><a href="javascript:;" href="dialogPageBreak({pageNum:1},'${(rel?js_string)!}');return false;">1</a></li>
-                <li class="disabled"><span>...</span></li>
-            </#if>
-            <#list start..end as a>
-                <li<#if a=page.pageIndex> class="selected"</#if>><a  href="javascript:;" href="dialogPageBreak({pageNum:${a}},'${(rel?js_string)!}');return false;">${a}</a></li>
-            </#list>
-            <#if end lt page.totalPage>
-                <li class="disabled"><span>...</span></li>
-                <li><a href="dialogPageBreak({pageNum:${page.totalPage}},'${(rel?js_string)!}');return false;">${page.totalPage}</a></li>
-            </#if>
-            <li<#if page.lastPage> class="disabled"</#if>>
-                <a class="next" href="javascript:;"><@t.page 'next_page'/></a>
-            </li>
-            <li class="jumpto">
-                <input type="text" size="4" value="${page.pageIndex}" />
-                <a href="javascript:void(0);" class="goto"><i class="icon-large icon-chevron-right"></i></a>
-            </li>
-        </ul>
-    </div>
+<div class="panelBar pageBar">
+    <ul class="pagination">
+        <li>
+            <span><@t.page 'total_count' page.totalCount/></span>
+            <select class="combox" name="numPerPage" onchange="dialogPageBreak({pageNum:1,numPerPage:this.value},'${(rel?js_string)!}');">
+                <option value="30"${(page.pageSize=30)?then(' selected="true"','')?no_esc}><@t.page 'page_size' 30/></option>
+                <option value="50"${(page.pageSize=50)?then(' selected="true"','')?no_esc}><@t.page 'page_size' 50/></option>
+                <option value="100"${(page.pageSize=100)?then(' selected="true"','')?no_esc}><@t.page 'page_size' 100/></option>
+                <option value="500"${(page.pageSize=500)?then(' selected="true"','')?no_esc}><@t.page 'page_size' 500/></option>
+            </select>
+        </li>
+        <#assign
+            start=1
+            step=5
+            end=page.totalPage
+        />
+        <#if (page.pageIndex-step) gt start>
+            <#assign start=page.pageIndex-step/>
+        </#if>
+        <#if (page.pageIndex+step) lt end>
+            <#assign end=page.pageIndex+step/>
+        </#if>
+        <li<#if page.firstPage> class="disabled"</#if>>
+            <a class="previous" href="javascript:;" onclick="dialogPageBreak({pageNum:${page.prePage}},'${(rel?js_string)!}');return false;"><@t.page 'pre_page'/></a>
+        </li>
+        <#if start gt 1>
+            <li><a href="javascript:;" onclick="dialogPageBreak({pageNum:1},'${(rel?js_string)!}');return false;">1</a></li>
+            <li class="disabled"><span>...</span></li>
+        </#if>
+        <#list start..end as a>
+            <li<#if a=page.pageIndex> class="selected"</#if>><a href="javascript:;" onclick="dialogPageBreak({pageNum:${a}},'${(rel?js_string)!}');return false;">${a}</a></li>
+        </#list>
+        <#if end lt page.totalPage>
+            <li class="disabled"><span>...</span></li>
+            <li><a href="javascript:;" onclick="dialogPageBreak({pageNum:${page.totalPage}},'${(rel?js_string)!}');return false;">${page.totalPage}</a></li>
+        </#if>
+        <li<#if page.lastPage> class="disabled"</#if>>
+            <a class="next" href="javascript:;" onclick="dialogPageBreak({pageNum:${page.nextPage}},'${(rel?js_string)!}');return false;"><@t.page 'next_page'/></a>
+        </li>
+        <li class="jumpto">
+            <input type="text" size="4" value="${page.pageIndex}"/>
+            <a href="javascript:void(0);" class="goto" onclick="navTabPageBreak({pageNum:$(this).prev().val()},'${(rel?js_string)!}');return false;"><i class="icon-large icon-chevron-right"></i></a>
+        </li>
+    </ul>
 </div>
 </#if>
