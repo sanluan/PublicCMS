@@ -201,23 +201,6 @@
             resizable.show();
         } ,
         /**
-         * 改变左右拖动层的高度
-         *
-         * @param {Object}
-         *            target
-         * @param {Object}
-         *            tmove
-         * @param {Object}
-         *            dialog
-         */
-        resizeTool: function(target, tmove, dialog) {
-            $("div[class^='resizable']", dialog).filter(function() {
-                return $(this).attr("tar") == 'w' || $(this).attr("tar") == 'e';
-            }).each(function() {
-                $(this).css("height", $(this).outerHeight() + tmove);
-            });
-        } ,
-        /**
          * 改变原始层的大小
          *
          * @param {Object}
@@ -247,7 +230,6 @@
                     height: height - $(".dialogHeader", dialog).outerHeight()
                 });
                 content.find("[layoutH]").layoutH(content);
-                $.pdialog.resizeTool(target, tmove, dialog);
             }
             $(window).trigger(JUI.eventType.resizeGrid);
         },

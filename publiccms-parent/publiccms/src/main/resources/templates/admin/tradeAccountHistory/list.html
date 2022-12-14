@@ -33,7 +33,7 @@
     </form>
 </div>
 <div class="card">
-    <table class="table" width="100%" layoutH>
+    <table class="table" width="100%" layoutH orderField="${orderField!}" orderType="${orderType!}">
         <thead>
             <tr>
                 <th><@t.page 'id'/></th>
@@ -46,7 +46,7 @@
                 <th><@t.page 'balance'/></th>
                 <th><@t.page 'status'/></th>
                 <th><@t.page 'description'/></th>
-                <th orderField="createDate" class="<#if orderField?has_content&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'create_date'/></th>
+                <th orderField="createDate"><@t.page 'create_date'/></th>
             </tr>
         </thead>
         <tbody>

@@ -33,14 +33,14 @@
             <li><a href="cmsTag/delete?_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i><@t.page 'button.batch_delete'/></a></li>
         </ul>
     </div>
-    <table class="table" width="100%" layoutH>
+    <table class="table" width="100%" layoutH orderField="${orderField!}" orderType="${orderType!}">
         <thead>
             <tr>
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
                 <th width="30"><@t.page 'id'/></th>
                 <th><@t.page 'name'/></th>
                 <th><@t.page 'tag_type'/></th>
-                <th orderField="searchCount" class="<#if orderField?has_content&&'searchCount'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'tag.search_count'/></th>
+                <th orderField="searchCount"><@t.page 'tag.search_count'/></th>
                 <th><@t.page 'operate'/></th>
             </tr>
         </thead>

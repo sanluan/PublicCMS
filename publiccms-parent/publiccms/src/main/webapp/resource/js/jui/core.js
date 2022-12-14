@@ -165,9 +165,9 @@ var JUI = {
                 alert(xhr.statusText);
             }, success: function(html) {
                 $($.parseHTML(html, document, true)).each(function() {
-                    var pageId = $(this).attr("id");
-                    if (pageId ) {
-                        JUI.frag[pageId] = $(this).text();
+                    var fragId = $(this).attr("id");
+                    if (fragId ) {
+                        JUI.frag[fragId] = $(this).text();
                     }
                 });
                 if ("function" === typeof op.callback ) {

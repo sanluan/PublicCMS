@@ -23,13 +23,13 @@
     </form>
 </div>
 <div class="pageContent">
-    <table class="table" width="100%" targetType="dialog" layoutH>
+    <table class="table" width="100%" targetType="dialog" layoutH  orderField="${orderField!}" orderType="${orderType!}">
         <thead>
             <tr>
                 <th width="20"><@t.page 'use'/></th>
                 <th><@t.page 'id'/></th>
                 <th><@t.page 'user'/></th>
-                <th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'create_date'/></th>
+                <th orderField="createDate"><@t.page 'create_date'/></th>
                 <th><@t.page 'compare'/></th>
             </tr>
         </thead>

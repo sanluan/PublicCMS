@@ -43,14 +43,14 @@
             <li><a href="logOperate/delete?_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i><@t.page 'button.batch_delete'/></a></li>
         </ul>
     </div>
-    <table class="table" width="100%" layoutH>
+    <table class="table" width="100%" layoutH orderField="${orderField!}" orderType="${orderType!}">
         <thead>
             <tr>
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
                 <th><@t.page 'channel'/></th>
                 <th><@t.page 'operate'/>/<@t.page 'code'/></th>
                 <th><@t.page 'log.operate_ip'/></th>
-                <th orderField="createDate" class="<#if orderField?has_content&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'log.create_date'/></th>
+                <th orderField="createDate"><@t.page 'log.create_date'/></th>
                 <th><@t.page 'log.content'/></th>
             </tr>
         </thead>

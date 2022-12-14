@@ -57,16 +57,16 @@
     </form>
 </div>
 <div class="card">
-    <table class="table" width="100%" layoutH targetType="ajax" rel="user_list">
+    <table class="table" width="100%" layoutH targetType="ajax"  orderField="${orderField!}" orderType="${orderType!}" rel="user_list">
         <thead>
             <tr>
                 <th><@t.page 'user.select'/></th>
                 <th width="200"><@t.page 'user.username'/>/<@t.page 'user.nickname'/></th>
                 <th><@t.page 'dept'/></th>
                 <th><@t.page 'email'/></th>
-                <th orderField="lastLoginDate" class="<#if orderField?has_content&&'lastLoginDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'user.last_login_date'/></th>
-                <th orderField="loginCount" class="<#if orderField?has_content&&'loginCount'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'user.login_count'/></th>
-                <th orderField="registeredDate" class="<#if orderField?has_content&&'registeredDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'user.register_date'/></th>
+                <th orderField="lastLoginDate"><@t.page 'user.last_login_date'/></th>
+                <th orderField="loginCount"><@t.page 'user.login_count'/></th>
+                <th orderField="registeredDate"><@t.page 'user.register_date'/></th>
             </tr>
         </thead>
         <tbody>

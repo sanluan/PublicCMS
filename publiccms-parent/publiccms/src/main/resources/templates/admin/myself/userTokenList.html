@@ -20,12 +20,12 @@
     </form>
 </div>
 <div class="card">
-    <table class="table" width="100%" layoutH>
+    <table class="table" width="100%" layoutH orderField="${orderField!}" orderType="${orderType!}">
         <thead>
             <tr>
                 <th><@t.page 'channel'/></th>
-                <th orderField="createDate" class="<#if orderField?has_content&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'authorize_date'/></th>
-                <th orderField="expiryDate" class="<#if orderField?has_content&&'expiryDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'expiry_date'/></th>
+                <th orderField="createDate"><@t.page 'authorize_date'/></th>
+                <th orderField="expiryDate"><@t.page 'expiry_date'/></th>
                 <th><@t.page 'log.login_ip'/></th>
                 <th><@t.page 'operate'/></th>
             </tr>

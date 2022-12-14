@@ -46,7 +46,7 @@
             <li><a href="logUpload/delete?_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i><@t.page 'button.batch_delete'/></a></li>
         </ul>
     </div>
-    <table class="table" width="100%" layoutH>
+    <table class="table" width="100%" layoutH orderField="${orderField!}" orderType="${orderType!}">
         <thead>
             <tr>
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
@@ -55,9 +55,9 @@
                 <th><@t.page 'channel'/></th>
                 <th><@t.page 'file_type'/></th>
                 <th><@t.page 'file.original_name'/></th>
-                <th orderField="fileSize" class="<#if orderField?has_content&&'fileSize'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'file.size'/></th>
+                <th orderField="fileSize"><@t.page 'file.size'/></th>
                 <th>IP</th>
-                <th orderField="createDate" class="<#if orderField?has_content&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'log.create_date'/></th>
+                <th orderField="createDate"><@t.page 'log.create_date'/></th>
                 <th><@t.page 'file_path'/></th>
             </tr>
         </thead>

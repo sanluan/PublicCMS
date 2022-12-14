@@ -34,9 +34,11 @@
                 $th.addClass(style[1]).removeAttr("align").removeAttr("width").width(style[0]);
             }).filter("[orderField]").orderBy({
                 targetType: $table.attr("targetType"),
-                rel:$table.attr("rel"),
+                rel: $table.attr("rel"),
                 asc: $table.attr("asc") || "asc",
-                desc:  $table.attr("desc") || "desc"
+                desc: $table.attr("desc") || "desc",
+                orderField: $table.attr("orderField"),
+                orderType: $table.attr("orderType")
             });
 
             var tbody = $grid.find(">tbody");
@@ -293,8 +295,45 @@
                     }
                 });
                 $this.find("thead [orderField]").orderBy({
-                    targetType: $this.attr("targetType"), rel: $this.attr("rel"), asc: $this.attr("asc") || "asc", desc: $this.attr("desc") || "desc"
+                    targetType: $this.attr("targetType"), rel: $this.attr("rel"), asc: $this.attr("asc") || "asc", desc: $this.attr("desc") || "desc" , orderField: $this.attr("orderField"), orderType: $this.attr("orderType")
                 });
+            });
+        }
+    });
+} )(jQuery);
+
+/**
+ * @author ZhangHuihua@msn.com
+ * @param {Object}
+ *            opts Several options
+ */
+( function($) {
+    $.fn.extend({
+        orderBy: function(options) {
+            var op = $.extend({
+                targetType: "navTab", rel: "", asc: "asc", desc: "desc" , orderType : "", orderField : ""
+            }, options);
+            return this.each(function() {
+                var $this = $(this).click(function() {
+                    var orderField = $this.attr("orderField");
+                    var orderDirection = $this.hasClass(op.asc) ? op.desc: op.asc;
+                    dwzPageBreak({
+                        targetType: op.targetType, rel: op.rel, data: {
+                            orderField: orderField, orderDirection: orderDirection
+                        }
+                    });
+                });
+                if(op.orderField == $this.attr("orderField")) {
+                    if(op.asc == op.orderType) {
+                        $this.addClass(op.asc);
+                    } else if(op.desc == op.orderType) {
+                        $this.addClass(op.desc);
+                    } else {
+                        $this.addClass("order");
+                    }
+                } else {
+                    $this.addClass("order");
+                }
             });
         }
     });

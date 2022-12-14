@@ -24,15 +24,15 @@
             <li><a href="cmsFileBackup/list.html?type=file&path=${(path?url)!}" target="navTab" rel="cmsFileBackup/list"><i class="bi bi-recycle"></i><@t.page 'recycle_bin'/></a></li>
         </ul>
     </div>
-    <table class="table" width="100%" layoutH>
+    <table class="table" width="100%" layoutH orderField="${orderField!}" orderType="${orderType!}">
         <thead>
             <tr>
                 <th width="20"><input type="checkbox" group="paths" class="checkboxCtrl"></th>
                 <th width="30"></th>
-                <th orderField="fileName" class="<#if !orderField?has_content||'fileName'==orderField>asc<#else>order</#if>"><@t.page 'name'/></th>
-                <th orderField="modifiedDate" class="<#if orderField?has_content&&'modifiedDate'==orderField>desc<#else>order</#if>"><@t.page 'modified_date'/></th>
-                <th orderField="createDate" class="<#if orderField?has_content&&'createDate'==orderField>desc<#else>order</#if>"><@t.page 'create_date'/></th>
-                <th orderField="fileSize" class="<#if orderField?has_content&&'fileSize'==orderField>desc<#else>order</#if>"><@t.page 'file.size'/></th>
+                <th orderField="fileName"><@t.page 'name'/></th>
+                <th orderField="modifiedDate"><@t.page 'modified_date'/></th>
+                <th orderField="createDate"><@t.page 'create_date'/></th>
+                <th orderField="fileSize"><@t.page 'file.size'/></th>
                 <th><@t.page 'operate'/></th>
             </tr>
         </thead>

@@ -34,12 +34,12 @@
 <div class="card">
     <div class="panelBar">
     </div>
-    <table class="table" width="100%" layoutH>
+    <table class="table" width="100%" layoutH orderField="${orderField!}" orderType="${orderType!}">
         <thead>
             <tr>
                 <th><@t.page 'id'/></th>
-                <th orderField="createDate" class="<#if orderField?has_content&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'cluster.startup_date'/></th>
-                <th orderField="heartbeatDate" class="<#if orderField?has_content&&'heartbeatDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'cluster.heartbeat_time'/></th>
+                <th orderField="createDate"><@t.page 'cluster.startup_date'/></th>
+                <th orderField="heartbeatDate"><@t.page 'cluster.heartbeat_time'/></th>
                 <th><@t.page 'version'/></th>
                 <th><@t.page 'revision'/></th>
             </tr>

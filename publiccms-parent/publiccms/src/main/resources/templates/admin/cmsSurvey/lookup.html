@@ -45,7 +45,7 @@
     </form>
 </div>
 <div class="pageContent">
-    <table class="table" width="100%" layoutH>
+    <table class="table" width="100%" layoutH orderField="${orderField!}" orderType="${orderType!}">
         <thead>
             <tr>
                 <th><@t.page 'select'/></th>
@@ -53,10 +53,10 @@
                 <th><@t.page 'survey.type'/></th>
                 <th><@t.page 'title'/></th>
                 <th><@t.page 'description'/></th>
-                <th orderField="votes" class="<#if orderField?has_content&&'votes'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'content.score'/></th>
-                <th orderField="startDate" class="<#if orderField?has_content&&'startDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'start_date'/></th>
-                <th orderField="endDate" class="<#if orderField?has_content&&'endDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'end_date'/></th>
-                <th orderField="createDate" class="<#if orderField?has_content&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'create_date'/></th>
+                <th orderField="votes"><@t.page 'content.score'/></th>
+                <th orderField="startDate"><@t.page 'start_date'/></th>
+                <th orderField="endDate"><@t.page 'end_date'/></th>
+                <th orderField="createDate"><@t.page 'create_date'/></th>
             </tr>
         </thead>
         <tbody>

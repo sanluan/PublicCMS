@@ -56,7 +56,7 @@
 </div>
 <@sys.authorized roleIds=admin.roles urls='tradePaymentHistory/list'><#assign authorizedMap=map/></@sys.authorized>
 <div class="card">
-    <table class="table" width="100%" layoutH>
+    <table class="table" width="100%" layoutH orderField="${orderField!}" orderType="${orderType!}">
         <thead>
             <tr>
                 <th><@t.page 'id'/></th>
@@ -68,7 +68,7 @@
                 <th><@t.page 'payment.account_serial_number'/></th>
                 <th><@t.page 'status'/></th>
                 <th><@t.page 'payment.process'/></th>
-                <th orderField="createDate" class="<#if orderField?has_content&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'create_date'/></th>
+                <th orderField="createDate"><@t.page 'create_date'/></th>
                 <th><@t.page 'operate'/></th>
             </tr>
         </thead>

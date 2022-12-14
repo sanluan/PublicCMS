@@ -13,13 +13,13 @@
         </#if>
         </ul>
     </div>
-    <table class="table" width="100%" layoutH>
+    <table class="table" width="100%" layoutH orderField="${orderField!}" orderType="${orderType!}">
         <thead>
             <tr>
                 <th><@t.page 'id'/></th>
                 <th><@t.page 'user.nickname'/></th>
-                <th orderField="amount" class="<#if orderField?has_content&&'amount'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'amount'/></th>
-                <th orderField="updateDate" class="<#if orderField?has_content&&'updateDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'update_date'/></th>
+                <th orderField="amount"><@t.page 'amount'/></th>
+                <th orderField="updateDate"><@t.page 'update_date'/></th>
                 <th><@t.page 'operate'/></th>
             </tr>
         </thead>

@@ -126,24 +126,15 @@ header .nav .selected ul{display:block;}
 .panelBar .toolBar li>ul>li{float:none;padding:5px 0 0 0;white-space:nowrap;}
 .panelBar .toolBar li:hover>ul{display:block;}
 
-.panelBar .pages{float:left;overflow:hidden;height:100%;padding:0 5px;}
-.panelBar .pages span{float:left;line-height:28px;}
-.panelBar .pages select{float:left;margin:0 3px;font-size:14px;}
-.panelBar .pages .combox .select a{height:26px;line-height:26px;}
-
-.panelBar.pageBar{height:30px;}
 .pagination{float:right;padding-left:7px;}
-.pagination li, .pagination li:hover{padding:1px 0 0 5px;line-height:26px;}
-.pagination a, .pagination li:hover a, .pagination li span{float:left;display:block;padding:0 5px;border-width:1px;border-style:solid;border-radius:3px;text-decoration:none;}
+.pagination ul{padding-bottom:1px;}
+.pagination li{padding:1px 0 0 5px;line-height:26px;}
+.pagination li a,.pagination li span{display:inline-block;padding:0 5px;border-width:1px;border-style:solid;border-radius:3px;text-decoration:none;}
 .pagination li.selected a{color:red;font-weight:bold;}
-.pagination span, .pagination li:hover span{float:left;display:block;cursor:pointer;}
-.pagination li .first span, .panelBar li .previous span{padding-left:10px;}
-.pagination li .next span, .panelBar li .last span{padding-right:10px;}
-.pagination li .last{margin-right:5px;}
-.pagination li.disabled{background:none;}
-.pagination li.disabled span, .grid .pagination li.disabled a{cursor:default;}
-.pagination li.disabled span{color:#666;}
-.pagination li.disabled .last{margin-right:5px;}
+.pagination li:hover a{text-decoration: none;}
+.pagination li .previous{margin-left:5px;}
+.pagination li .next{margin-right:5px;}
+.pagination li.disabled a{color:#666;}
 .pagination li.jumpto .textInput{float:left;width:35px;padding:1px;font-size:14px;border-color:#acaeaf;}
 .pagination li.jumpto .goto{width:10px;line-height:26px;text-align:center;border-top-left-radius:0px;border-bottom-left-radius:0px;border-left:0px;text-align:center;}
 
@@ -151,7 +142,7 @@ header .nav .selected ul{display:block;}
 .grid {display:block;overflow:hidden;width:100%;border-width:0 1px;position:relative;}
 .grid .gridHeader{margin-top:6px;display:block;overflow:hidden;width:auto;}
 .grid .gridScroller{display:block;overflow:auto;position:relative;}
-.grid table{border:0;border-collapse:collapse;table-layout:fixed;min-width:800px;}
+.grid table{border:0;border-collapse:collapse;table-layout:fixed;min-width:800px;width:100%;}
 .grid .gridHeader th{padding:3px 2px;border-style:solid;border-width:0 1px 1px 0;vertical-align:top;white-space:nowrap;line-height:26px;cursor:default;}
 .grid .gridHeader th:hover, .grid .gridHeader th.thSelected{background-position:0 -50px;}
 .grid .gridHeader th.order,.grid .gridHeader th.asc,.grid .gridHeader th.desc{cursor:pointer;position:relative;}
@@ -324,7 +315,7 @@ fieldset:first-child .unit:first-of-type p:last-child{padding:0;}
 .combox{float:left;margin-right:3px;}
 .combox select{display:none;}
 .combox .select{float:left;}
-.combox .select a{float:left;display:block;overflow:hidden;height:28px;padding:0 25px 0 6px;line-height:28px;text-decoration:none;font-size:14px;border-width:1px;border-style:solid;position:relative;padding:0 28px 0 10px;}
+.combox .select a{float:left;display:block;overflow:hidden;height:26px;padding:0 25px 0 6px;line-height:26px;text-decoration:none;font-size:14px;border-width:1px;border-style:solid;position:relative;padding:0 28px 0 10px;}
 .combox .select a:before{content:"\e668";font-family:iconfont;position:absolute;right:8px;}
 .combox .select a.expand:before{content:"\e654";}
 .comboxop{position:absolute;z-index:1001;display:none;padding:4px;border-style:solid;border-width:1px 2px 2px 1px;position:absolute;top:22px;left:1px;border-width:1px;border-style:solid;}
@@ -378,13 +369,8 @@ a.btnLook:before,a.btnDel:before,a.btnAttach:before,a.view:before{font-size:20px
 .alert .toolBar li{float:left;}
 .alert .toolBar .button, .alert .toolBar .buttonActive{margin-left:5px;}
 
-.alert .alertFooter_c{display:block;overflow:hidden;height:5px;}
-.alert .alertFooter{padding-left:5px;}
-.alert .alertFooter_r{padding-right:5px;}
-.alert .alertFooter_c{padding:0;background-repeat:repeat-x;}
-
 /* Dialog */
-.dialog{display:block;text-align:left;position:absolute;z-index:42;-moz-box-shadow:0px 0px 18px rgba(157,159,168,.35);box-shadow:0px 0px 18px rgba(157,159,168,.35);-ms-box-shadow:0px 0px 18px rgba(157,159,168,.35);-o-box-shadow:0px 0px 18px rgba(157,159,168,.35);-webkit-box-shadow:0px 0px 18px rgba(157,159,168,.35);}
+.dialog{display:block;text-align:left;position:absolute;z-index:42;-moz-box-shadow:0px 0px 18px rgba(157,159,168,.55);box-shadow:0px 0px 18px rgba(157,159,168,.55);-ms-box-shadow:0px 0px 18px rgba(157,159,168,.55);-o-box-shadow:0px 0px 18px rgba(157,159,168,.55);-webkit-box-shadow:0px 0px 18px rgba(157,159,168,.55);}
 .dialog .dialogHeader{padding-left:5px;position:relative;cursor:move;}
 .dialog .dialogHeader, .dialog .dialogHeader_c{display:block;overflow:hidden;height:40px;}
 .dialog .dialogHeader .close, .dialog .dialogHeader .maximize, .dialog .dialogHeader .restore, .dialog .dialogHeader .minimize{font-family:iconfont;font-size:22px;display:block;overflow:hidden;width:22px;height:22px;position:absolute;top:10px;text-indent:0;}
@@ -409,6 +395,7 @@ a.btnLook:before,a.btnDel:before,a.btnAttach:before,a.view:before{font-size:20px
 .resizable_h_l{cursor:nw-resize;top:0;left:0;z-index:2;}
 .resizable_h_r{cursor:ne-resize;top:0;right:0;z-index:2;}
 .resizable_h_c{width:100%;cursor:n-resize;top:0;left:0;z-index:1;}
+.resizable_c_l, .resizable_c_r{height:100%;}
 .resizable_c_l{cursor:w-resize;top:0;left:0;z-index:1;}
 .resizable_c_r{cursor:e-resize;top:0;right:0;z-index:1;}
 .resizable_f_l{cursor:sw-resize;bottom:0;left:0;z-index:2;}
