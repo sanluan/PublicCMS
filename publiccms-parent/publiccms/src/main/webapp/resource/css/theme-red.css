@@ -71,6 +71,8 @@ textarea.readonly,input.readonly{background-color:#eee;}
 .panelBar .toolBar li>ul{border-color:#eceff3;}
 .panelBar.pageBar{background-color:#f4f4f4;}
 
+.pagination a, .pagination li:hover a, .pagination li span{border-color:#ddd;}
+
 .grid { background-color:#FFF;}
 .grid table { border-color:#e4e9f2;}
 .grid .gridHeader th { border-color:#e4e9f2;background-color:#D8403D;}

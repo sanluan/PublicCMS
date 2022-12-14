@@ -131,9 +131,10 @@ header .nav .selected ul{display:block;}
 .panelBar .pages select{float:left;margin:0 3px;font-size:14px;}
 .panelBar .pages .combox .select a{height:26px;line-height:26px;}
 
+.panelBar.pageBar{height:30px;}
 .pagination{float:right;padding-left:7px;}
-.pagination li, .pagination li:hover{padding:0 0 0 5px;}
-.pagination a, .pagination li:hover a, .pagination li span{float:left;display:block;padding-right:5px;text-decoration:none;}
+.pagination li, .pagination li:hover{padding:1px 0 0 5px;line-height:26px;}
+.pagination a, .pagination li:hover a, .pagination li span{float:left;display:block;padding:0 5px;border-width:1px;border-style:solid;border-radius:3px;text-decoration:none;}
 .pagination li.selected a{color:red;font-weight:bold;}
 .pagination span, .pagination li:hover span{float:left;display:block;cursor:pointer;}
 .pagination li .first span, .panelBar li .previous span{padding-left:10px;}
@@ -141,10 +142,10 @@ header .nav .selected ul{display:block;}
 .pagination li .last{margin-right:5px;}
 .pagination li.disabled{background:none;}
 .pagination li.disabled span, .grid .pagination li.disabled a{cursor:default;}
-.pagination li.disabled span span{color:#666;}
+.pagination li.disabled span{color:#666;}
 .pagination li.disabled .last{margin-right:5px;}
-.pagination li.jumpto .textInput{float:left;width:30px;padding:1px;margin-top:2px;font-size:14px;border-color:#acaeaf;}
-.pagination li.jumpto .goto{width:16px;line-height:30px;text-align:center;}
+.pagination li.jumpto .textInput{float:left;width:35px;padding:1px;font-size:14px;border-color:#acaeaf;}
+.pagination li.jumpto .goto{width:10px;line-height:26px;text-align:center;border-top-left-radius:0px;border-bottom-left-radius:0px;border-left:0px;text-align:center;}
 
 /* Grid */
 .grid {display:block;overflow:hidden;width:100%;border-width:0 1px;position:relative;}
