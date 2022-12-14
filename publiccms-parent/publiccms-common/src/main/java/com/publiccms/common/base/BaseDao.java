@@ -338,7 +338,7 @@ public abstract class BaseDao<E> {
         TypedQuery<R> query = getSession().createQuery(queryHandler.getSql(), resultClass);
         return getList(query, queryHandler);
     }
-
+    
     /**
      * 获取列表
      *
@@ -360,18 +360,7 @@ public abstract class BaseDao<E> {
      */
     protected PageHandler getPage(QueryHandler queryHandler, Integer firstResult, Integer pageIndex, Integer pageSize,
             Integer maxResults) {
-        return getPage(queryHandler, null, firstResult, pageIndex, pageSize, maxResults);
-    }
-
-    /**
-     * @param queryHandler
-     * @param firstResult
-     * @param pageIndex
-     * @param pageSize
-     * @return page
-     */
-    protected PageHandler getPage(QueryHandler queryHandler, Integer firstResult, Integer pageIndex, Integer pageSize) {
-        return getPage(queryHandler, null, firstResult, pageIndex, pageSize, Integer.MAX_VALUE);
+        return getPage(queryHandler, null, firstResult, pageIndex, pageSize, maxResults, getEntityClass());
     }
 
     /**
@@ -381,7 +370,42 @@ public abstract class BaseDao<E> {
      * @return page
      */
     protected PageHandler getPage(QueryHandler queryHandler, Integer pageIndex, Integer pageSize) {
-        return getPage(queryHandler, null, null, pageIndex, pageSize, Integer.MAX_VALUE);
+        return getPage(queryHandler, null, null, pageIndex, pageSize, Integer.MAX_VALUE, getEntityClass());
+    }
+
+    /**
+     * @param queryHandler
+     * @param firstResult
+     * @param pageIndex
+     * @param pageSize
+     * @param maxResults
+     * @return page
+     */
+    protected <R> PageHandler getPage(QueryHandler queryHandler, Integer firstResult, Integer pageIndex, Integer pageSize,
+            Integer maxResults, Class<R> resultClass) {
+        return getPage(queryHandler, null, firstResult, pageIndex, pageSize, maxResults, resultClass);
+    }
+
+    /**
+     * @param queryHandler
+     * @param firstResult
+     * @param pageIndex
+     * @param pageSize
+     * @return page
+     */
+    protected <R> PageHandler getPage(QueryHandler queryHandler, Integer firstResult, Integer pageIndex, Integer pageSize,
+            Class<R> resultClass) {
+        return getPage(queryHandler, null, firstResult, pageIndex, pageSize, Integer.MAX_VALUE, resultClass);
+    }
+
+    /**
+     * @param queryHandler
+     * @param pageIndex
+     * @param pageSize
+     * @return page
+     */
+    protected <R> PageHandler getPage(QueryHandler queryHandler, Integer pageIndex, Integer pageSize, Class<R> resultClass) {
+        return getPage(queryHandler, null, null, pageIndex, pageSize, Integer.MAX_VALUE, resultClass);
     }
 
     /**
@@ -393,19 +417,19 @@ public abstract class BaseDao<E> {
      * @param maxResults
      * @return results page
      */
-    protected PageHandler getPage(QueryHandler queryHandler, String countHql, Integer firstResult, Integer pageIndex,
-            Integer pageSize, Integer maxResults) {
+    protected <R> PageHandler getPage(QueryHandler queryHandler, String countHql, Integer firstResult, Integer pageIndex,
+            Integer pageSize, Integer maxResults, Class<R> resultClass) {
         PageHandler page = new PageHandler(firstResult, pageIndex, pageSize);
         if (null == pageSize) {
             queryHandler.setMaxResults(maxResults);
-            List<?> list = getList(queryHandler);
+            List<?> list = getList(queryHandler, resultClass);
             page.setList(list);
             page.setTotalCount(list.size());
         } else {
             page.setTotalCount(countResult(queryHandler, countHql));
             if (0 != pageSize) {
                 queryHandler.setFirstResult(page.getFirstResult()).setMaxResults(page.getPageSize());
-                page.setList(getList(queryHandler));
+                page.setList(getList(queryHandler, resultClass));
             }
             if (null != maxResults && page.getTotalCount() > maxResults) {
                 page.setTotalCount(maxResults);

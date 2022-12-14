@@ -46,7 +46,20 @@ public class HqlService extends BaseService<Object> {
     public int delete(String hql) {
         return dao.delete(hql);
     }
-
+    /**
+     * @param <R> 
+     * @param hql
+     * @param parameters
+     * @param pageIndex
+     * @param pageSize
+     * @param resultClass 
+     * @return
+     */
+    @Transactional(readOnly = true)
+    public <R> PageHandler getPage(String hql, Map<String, Object> parameters, Integer pageIndex, Integer pageSize,
+            Class<R> resultClass) {
+        return dao.getPage(hql, parameters, pageIndex, pageSize,resultClass);
+    }
     /**
      * @param hql
      * @param parameters

@@ -17,6 +17,24 @@ import com.publiccms.common.tools.CommonUtils;
  */
 @Repository
 public class HqlDao extends BaseDao<Object> {
+    /**
+     * @param hql
+     * @param parameters
+     * @param pageIndex
+     * @param pageSize
+     * @param resultClass 
+     * @return results page
+     */
+    public <R> PageHandler getPage(String hql, Map<String, Object> parameters, Integer pageIndex, Integer pageSize,
+            Class<R> resultClass) {
+        QueryHandler queryHandler = getQueryHandler(hql);
+        if (CommonUtils.notEmpty(parameters)) {
+            for (Entry<String, Object> entry : parameters.entrySet()) {
+                queryHandler.setParameter(entry.getKey(), entry.getValue());
+            }
+        }
+        return getPage(queryHandler, pageIndex, pageSize, resultClass);
+    }
 
     /**
      * @param hql

@@ -55,7 +55,7 @@ subprojects {
         // http://mvnrepository.com/artifact/org.mybatis/mybatis
         mybatisVersion = "3.5.11"
         // http://mvnrepository.com/artifact/org.mybatis/mybatis-spring
-        mybatisSpringVersion = "2.0.7"
+        mybatisSpringVersion = "3.0.1"
         // http://mvnrepository.com/artifact/org.mybatis.generator/mybatis-generator-core
         mybatisGenerator = "1.4.1"
         // https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper

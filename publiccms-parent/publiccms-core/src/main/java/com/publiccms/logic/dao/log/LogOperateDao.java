@@ -9,6 +9,7 @@ import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.log.LogOperate;
+import com.publiccms.views.pojo.entities.Workload;
 
 /**
  *
@@ -103,7 +104,7 @@ public class LogOperateDao extends BaseDao<LogOperate> {
         }
         queryHandler.group(queryString);
         queryHandler.order("count(*) desc");
-        return getPage(queryHandler, pageIndex, pageSize);
+        return getPage(queryHandler, pageIndex, pageSize, Workload.class);
     }
 
     /**
