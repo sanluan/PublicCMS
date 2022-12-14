@@ -36,7 +36,7 @@
             <dl class="nowrap">
                 <dt><@t.page 'user.content_permissions'/>:</dt>
                 <dd>
-                    <select class="combox" name="contentPermissions" class="required">
+                    <select class="combox required" name="contentPermissions">
                         <option value="0"${(!a?has_content||0=a.contentPermissions)?then(' selected="true"','')?no_esc}><@t.page 'user.content_permissions.0'/></option>
                         <option value="1"${(a?has_content&&1=a.contentPermissions)?then(' selected="true"','')?no_esc}><@t.page 'user.content_permissions.1'/></option>
                         <option value="2"${(a?has_content&&2=a.contentPermissions)?then(' selected="true"','')?no_esc}><@t.page 'user.content_permissions.2'/></option>

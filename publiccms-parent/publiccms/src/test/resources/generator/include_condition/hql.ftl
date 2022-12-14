@@ -40,4 +40,4 @@
 <#else>
         queryHandler.order("bean.id desc");
 </#if>
-<#macro condition a><#if a.or||a.like>(</#if><#list a.nameList as n>bean.${n} <#if "String"=a.type&&a.like>like<#else>=</#if> :${a.name}<#sep> or </#sep></#list><#if a.or||a.like>)</#if></#macro>
+<#macro condition a><#if a.or||a.like>(</#if><#list a.nameList as n>bean.${n} <#if "String"=a.type&&a.like>like<#else>=</#if> :${a.name}<#sep> or </#list><#if a.or||a.like>)</#if></#macro>

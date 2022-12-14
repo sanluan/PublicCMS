@@ -286,7 +286,7 @@ $('input[name=timing]',navTab.getCurrentPanel()).click();
                                     <#if a.dictionaryId?has_content>
                                     <td>
                                         <input type="hidden" name="contentRelateds[${a?index}][${related?index}].relationType" value="${a.dictionaryId}"/>
-                                        <select class="combox" name="contentRelateds[${a?index}][${related?index}].relation" class="required">
+                                        <select class="combox" name="contentRelateds[${a?index}][${related?index}].relation">
                                             <option></option>
                                             <@cms.dictionaryDataList dictionaryId=a.dictionaryId>
                                                 <#list list as a>
