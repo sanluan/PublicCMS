@@ -3,6 +3,7 @@ package com.publiccms.common.tools;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.GraphicsEnvironment;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
@@ -10,6 +11,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
@@ -30,9 +33,13 @@ import org.apache.poi.hwpf.converter.HtmlDocumentFacade;
 import org.apache.poi.hwpf.converter.PicturesManager;
 import org.apache.poi.hwpf.converter.WordToHtmlConverter;
 import org.apache.poi.openxml4j.util.ZipSecureFile;
+import org.apache.poi.sl.usermodel.Shape;
 import org.apache.poi.sl.usermodel.Slide;
 import org.apache.poi.sl.usermodel.SlideShow;
 import org.apache.poi.sl.usermodel.SlideShowFactory;
+import org.apache.poi.sl.usermodel.TextParagraph;
+import org.apache.poi.sl.usermodel.TextRun;
+import org.apache.poi.sl.usermodel.TextShape;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
@@ -51,6 +58,8 @@ import fr.opensagres.poi.xwpf.converter.xhtml.XHTMLOptions;
 public class DocToHtmlUtils {
     public static final Pattern WIDTH_HEIGHT_PATTERN = Pattern
             .compile("^\\d+(\\.\\d+)?(cm|px|em|ex|mm|in|pt|pc|vh|vw|vmin|vmax|ch|rem|%)?");
+    public static List<String> allFonts = Arrays
+            .asList(GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames());
 
     /**
      * @param file
@@ -127,15 +136,28 @@ public class DocToHtmlUtils {
 
     /**
      * @param file
+     * @param defaultFontFamily
      * @param imageManager
      * @return
      * @throws Exception
      */
-    public static String pptToHtml(File file, ImageManager imageManager) throws Exception {
+    public static String pptToHtml(File file, String defaultFontFamily, ImageManager imageManager) throws Exception {
         StringBuilder sb = new StringBuilder();
         try (SlideShow<?, ?> sw = SlideShowFactory.create(new FileInputStream(file))) {
             Dimension pgSize = sw.getPageSize();
             for (Slide<?, ?> slide : sw.getSlides()) {
+                for (Shape<?, ?> shape : slide.getShapes()) {
+                    if (shape instanceof TextShape) {
+                        TextShape<?, ?> textShape = (TextShape<?, ?>) shape;
+                        for (TextParagraph<?, ?, ? extends TextRun> paragraph : textShape) {
+                            for (TextRun run : paragraph) {
+                                if (!allFonts.contains(run.getFontFamily())) {
+                                    run.setFontFamily(defaultFontFamily);
+                                }
+                            }
+                        }
+                    }
+                }
                 BufferedImage img = new BufferedImage(pgSize.width, pgSize.height, BufferedImage.TYPE_INT_RGB);
                 Graphics2D graphics = img.createGraphics();
                 graphics.setPaint(Color.white);

@@ -135,6 +135,11 @@
             allSelectBox = _selectBox;
             return this.each(function(i) {
                 var $this = $(this).removeClass("combox");
+                var $thisCombox = $this.parents("div.combox:first");
+                if($thisCombox.length){
+                    $this.insertAfter($thisCombox);
+                    $thisCombox.remove();
+                }
                 var name = $this.attr("name");
                 var value = $this.val();
                 var label = '';
@@ -146,7 +151,7 @@
                 var ref = $this.attr("ref");
                 var refUrl = $this.attr("refUrl") || "";
                 var cid = $this.attr("id") || Math.round(Math.random() * 10000000);
-                var select = '<div class="combox"><div id="combox_' + cid + '" class="select"' + ( ref ? ' ref="' + ref + '"': '' ) + '>';
+                var select = '<div class="combox"><div id="combox_' + cid + '" class="select"' + ( ref ? ' ref="' + escapeHtml(ref) + '"': '' ) + '>';
                 select += '<a href="javascript:" class="' + $this.attr("class") + '" name="' + name + '" value="' + escapeHtml(value) + '">' + label + '</a></div></div>';
                 var options = '<div class="comboxop" id="op_combox_' + cid + '"><div class="search"><input type="text" class="textInput"/></div><ul>';
                 $("option", $this).each(function() {

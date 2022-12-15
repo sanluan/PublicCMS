@@ -23,6 +23,18 @@
             </dd>
             <div class="clearfix"></div>
         </dl>
+        <dl class="nowrap font hide">
+            <dt><@t.page 'default_font'/>:</dt>
+            <dd>
+                <select name="defaultFontFamily" class="combox">
+                    <#list getFontList() as font>
+                    <option value="${font}">${font}</option>
+                    </#list>
+                </select>
+                <span class="info"><@t.page 'default_font.description'/></span>
+            </dd>
+            <div class="clearfix"></div>
+        </dl>
     </div>
     <div class="formBar">
         <ul>
@@ -40,8 +52,22 @@ $(".pageFormContent",$.pdialog.getCurrent()).on("change","input[type=file]",func
         } else {
             $('.iframe',$.pdialog.getCurrent()).hide();
         }
+        if('pptx' == filenames[filenames.length-1]||'ppt' == filenames[filenames.length-1]){
+            $('.font',$.pdialog.getCurrent()).show();
+            if ("function" === typeof $.cookie && $.cookie("import_font")) {
+                $("select[name=defaultFontFamily]",$.pdialog.getCurrent()).val($.cookie("import_font"));
+                $("select[name=defaultFontFamily]",$.pdialog.getCurrent()).combox();
+            }
+        } else {
+            $('.font',$.pdialog.getCurrent()).hide();
+        }
     }
 });
+if ("function" === typeof $.cookie){
+    $("select[name=defaultFontFamily]",$.pdialog.getCurrent()).change(function(){
+        $.cookie("import_font",$(this).val());
+    });
+}
 $('input[name=useIframe]',$.pdialog.getCurrent()).click(function(){
     if($(this).is(':checked')) {
         $('.iframeSize',$.pdialog.getCurrent()).show();
