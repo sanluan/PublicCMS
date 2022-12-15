@@ -7,18 +7,29 @@
     <div class="unit">
         <table class="compare">
             <tr>
-                <td><@t.page 'version.old'/></td>
-                <td><@t.page 'version.new'/></td>
+                <td><@t.page 'compare.history'/></td>
+                <td><@t.page 'compare.now'/></td>
                 <td><@t.page 'compare'/></td>
             </tr>
             <tr>
                 <td>
-                    <textarea name="old" class="code" mode="${(!type?has_content || 'template'=type)?then('freemarkermixed',editorType[fileType]?has_content?then(editorType[fileType],'htmlmixed'))}">${a!}</textarea>
+                    <textarea name="old" class="code" readOnly="readOnly" mode="${(!type?has_content || 'template'=type)?then('freemarkermixed',editorType[fileType]?has_content?then(editorType[fileType],'htmlmixed'))}">${a!}</textarea>
                 </td>
                 <td>
                     <textarea name="new" class="code" mode="${(!type?has_content || 'template'=type)?then('freemarkermixed',editorType[fileType]?has_content?then(editorType[fileType],'htmlmixed'))}"></textarea>
                 </td>
-                <td><pre class="result-box"></pre></td>
+                <td>
+                    <div class="clearfix">
+                        <label>
+                            <select name="comparetype">
+                            <#list ['chars','words','lines','sentence','css'] as o>
+                                <option value="${o}"<#if 'css'=fileType&&'css'=o> selected="selected"</#if>><@t.page 'compare.type.'+o/></option>
+                            </#list>
+                            </select>
+                        </label>
+                    </div>
+                    <pre class="result-box"></pre>
+                </td>
             </tr>
         </table>
     </div>

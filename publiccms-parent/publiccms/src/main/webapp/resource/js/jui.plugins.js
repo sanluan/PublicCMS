@@ -1,21 +1,21 @@
 JUI.regPlugins.push(function($p){
     $(".searchBar .searchContent", $p).click(function(event){
-        if($(event.target).is('ul')||$(event.target).is('li')){
-            $content = $(this).closest(".pageHeader").next().find('[layouth]');
+        if($(event.target).is("ul")||$(event.target).is("li")){
+            $content = $(this).closest(".pageHeader").next().find("[layouth]");
             var height = $(this).height();
-            $(this).toggleClass('searchContentHover');
+            $(this).toggleClass("searchContentHover");
             $content.height($content.height()-$(this).height()+height);
         }
     });
 });
 JUI.regPlugins.push(function($p){
-    $('.tagsBox',$p).each(function (){
+    $(".tagsBox",$p).each(function (){
         var $tagBox = $(this);
         var $callback = $tagBox.attr("callback");
         if ($callback && !$.isFunction($callback) ) {
-            $callback = eval('(' + $callback + ')');
+            $callback = eval("(" + $callback + ")");
         }
-        $tagBox.on('click','span>a',function(){
+        $tagBox.on("click","span>a",function(){
             $(this).parent().remove();
             if ($callback) {
                 $callback();
@@ -25,20 +25,20 @@ JUI.regPlugins.push(function($p){
     });
 });
 JUI.regPlugins.push(function($p){
-    if($('.cmsVersion',$p).length ) {
-        var fullVersion=$('.cmsVersion a',$p).eq(0).text();
-        $.getJSON(Base64.decode('Ly9jbXMucHVibGljY21zLmNvbS9hcGkvZGlyZWN0aXZlL3ZlcnNpb24=')+"?version="+fullVersion, function(data) {
-            var version=fullVersion.substring(0,fullVersion.lastIndexOf('.'));
-            var databaseVersion=version.substring(version.lastIndexOf('.')+1);
-            var revision=fullVersion.substring(fullVersion.lastIndexOf('.')+1);
-            var remoteDatabaseVersion = data.cms.substring(data.cms.lastIndexOf('.')+1);
+    if($(".cmsVersion",$p).length ) {
+        var fullVersion=$(".cmsVersion a",$p).eq(0).text();
+        $.getJSON(Base64.decode("Ly9jbXMucHVibGljY21zLmNvbS9hcGkvZGlyZWN0aXZlL3ZlcnNpb24=")+"?version="+fullVersion, function(data) {
+            var version=fullVersion.substring(0,fullVersion.lastIndexOf("."));
+            var databaseVersion=version.substring(version.lastIndexOf(".")+1);
+            var revision=fullVersion.substring(fullVersion.lastIndexOf(".")+1);
+            var remoteDatabaseVersion = data.cms.substring(data.cms.lastIndexOf(".")+1);
             if(databaseVersion !== remoteDatabaseVersion ) {
-                $('.cmsVersion .old',$p).show();
+                $(".cmsVersion .old",$p).show();
             } else {
                 if(revision == data.revision){
-                    $('.cmsVersion .new',$p).show();
+                    $(".cmsVersion .new",$p).show();
                 } else {
-                    $('.cmsVersion .old',$p).css('color','gray').show();
+                    $(".cmsVersion .old",$p).css("color","gray").show();
                 }
             }
         });
@@ -73,7 +73,7 @@ JUI.regPlugins.push(function($p){
             }
         } else if("tinymce"==$this.attr("editorType")) {
             if(window.editor.tinymceInitd){
-                tinymce.init($.extend(true, {selector:'#'+dataId}, window.TINYMCE_OPTIONS));
+                tinymce.init($.extend(true, {selector:"#"+dataId}, window.TINYMCE_OPTIONS));
             } else {
                 if(window.editor.tinymceIniting){
                     window.editor.tinymceArray.push(dataId);
@@ -82,10 +82,10 @@ JUI.regPlugins.push(function($p){
                     loadScripts(window.editor.tinymceResources,function(){
                         window.editor.tinymceIniting=false;
                         window.editor.tinymceInitd=true;
-                        tinymce.init($.extend(true, {selector:'#'+dataId}, window.TINYMCE_OPTIONS));
+                        tinymce.init($.extend(true, {selector:"#"+dataId}, window.TINYMCE_OPTIONS));
                         if(0 < window.editor.tinymceArray.length){
                             for(var i=0;i<window.editor.tinymceArray.length;i++){
-                                tinymce.init($.extend(true, {selector:'#'+window.editor.tinymceArray[i]}, window.TINYMCE_OPTIONS));
+                                tinymce.init($.extend(true, {selector:"#"+window.editor.tinymceArray[i]}, window.TINYMCE_OPTIONS));
                             }
                         }
                     });
@@ -93,7 +93,7 @@ JUI.regPlugins.push(function($p){
             }
         } else if("kindeditor"==$this.attr("editorType")) {
             if(window.editor.kindeditorInitd){
-                KindEditor.create('#'+dataId,window.KINDEDITOR_OPTIONS);
+                KindEditor.create("#"+dataId,window.KINDEDITOR_OPTIONS);
             } else {
                 if(window.editor.kindeditorIniting){
                     window.editor.kindeditorArray.push(dataId);
@@ -102,10 +102,10 @@ JUI.regPlugins.push(function($p){
                     loadScripts(window.editor.kindeditorResources,function(){
                         window.editor.kindeditorIniting=false;
                         window.editor.kindeditorInitd=true;
-                        KindEditor.create('#'+dataId,window.KINDEDITOR_OPTIONS);
+                        KindEditor.create("#"+dataId,window.KINDEDITOR_OPTIONS);
                         if(0 < window.editor.kindeditorArray.length){
                             for(var i=0;i<window.editor.kindeditorArray.length;i++){
-                                KindEditor.create('#'+window.editor.kindeditorArray[i],window.KINDEDITOR_OPTIONS);
+                                KindEditor.create("#"+window.editor.kindeditorArray[i],window.KINDEDITOR_OPTIONS);
                             }
                         }
                     });
@@ -140,8 +140,8 @@ JUI.regPlugins.push(function($p){
                         if(0 < window.editor.ueditorArray.length){
                             for(var i=0;i<window.editor.ueditorArray.length;i++){
                                 var editor = new baidu.editor.ui.Editor();
-                                editor.render($('#'+window.editor.ueditorArray[i])[0]);
-                                $('#'+window.editor.ueditorArray[i]).attr("data-id","ueditorInstant"+editor.uid);
+                                editor.render($("#"+window.editor.ueditorArray[i])[0]);
+                                $("#"+window.editor.ueditorArray[i]).attr("data-id","ueditorInstant"+editor.uid);
                             }
                         }
                     });
@@ -153,9 +153,9 @@ JUI.regPlugins.push(function($p){
         var $this = $(this);
         var index= window.codemirror.index++;
         var dataId="editor_"+index;
-        var mode = 'htmlmixed'
-        if($(this).attr('mode')){
-            mode = $(this).attr('mode');
+        var mode = "htmlmixed"
+        if($(this).attr("mode")){
+            mode = $(this).attr("mode");
         }
         if(!window.codemirror.initd){
             loadScripts(window.codemirror.resources,function(){
@@ -169,6 +169,9 @@ JUI.regPlugins.push(function($p){
                     indentWithTabs : true,
                     extraKeys: { "Ctrl": "autocomplete" }
                 });
+                if($this.prop("readonly")){
+                    JUI.instances[dataId].setOption("readOnly",true);
+                }
                 $this.attr("data-id",dataId);
             });
         } else {
@@ -181,6 +184,9 @@ JUI.regPlugins.push(function($p){
                 indentWithTabs : true,
                 extraKeys: { "Ctrl": "autocomplete" }
             });
+            if($this.prop("readonly")){
+                JUI.instances[dataId].setOption("readOnly",true);
+            }
             $this.attr("data-id",dataId);
         }
 
@@ -190,12 +196,12 @@ JUI.regPlugins.push(function($p){
 JUI.regPlugins.push(function($p){
     $("a.view[target=_blank]", $p).each(function(){
         $btn=$(this);
-        $input=$('input[name='+escapeJquery($(this).attr('ref'))+']',$(this).parents(".unitBox:first"));
+        $input=$("input[name="+escapeJquery($(this).attr("ref"))+"]",$(this).parents(".unitBox:first"));
         function control(){
             if($(this).val()){
-                $('a.view[target=_blank][ref='+escapeJquery($(this).attr('name'))+']').show();
+                $("a.view[target=_blank][ref="+escapeJquery($(this).attr("name"))+"]").show();
             }else{
-                $('a.view[target=_blank][ref='+escapeJquery($(this).attr('name'))+']').hide();
+                $("a.view[target=_blank][ref="+escapeJquery($(this).attr("name"))+"]").hide();
             }
         }
         $input.change(control);
@@ -205,9 +211,9 @@ JUI.regPlugins.push(function($p){
             $btn.hide();
         }
         $btn.click(function(){
-            var value=$('input[name='+escapeJquery($(this).attr('ref'))+']',$(this).parents(".unitBox:first")).val();
+            var value=$("input[name="+escapeJquery($(this).attr("ref"))+"]",$(this).parents(".unitBox:first")).val();
             if(value){
-                $(this).attr('href',value.isUrl() ? value : $(this).data('prefix')+value);
+                $(this).attr("href",value.isUrl() ? value : $(this).data("prefix")+value);
             }else{
                 return false;
             }
@@ -218,27 +224,27 @@ JUI.regPlugins.push(function($p){
 JUI.regPlugins.push(function($p){
     function initDictionary($dictionary,$exclude,url){
         var valuearray=[];
-        $dictionary.find('select,input[checked]').each(function(){
+        $dictionary.find("select,input[checked]").each(function(){
             if($(this).val()){
                 valuearray.push($(this).val());
             }
         });
         $.ajax({
-            type: 'POST', dataType: "json", url: url+'?id='+$dictionary.data('id')+'&excludeDictionaryId='+$exclude.data('id')+'&values='+valuearray.join(), cache: false, data: {} ,
+            type: "POST", dataType: "json", url: url+"?id="+$dictionary.data("id")+"&excludeDictionaryId="+$exclude.data("id")+"&values="+valuearray.join(), cache: false, data: {} ,
             success: function(json) {
                 if (!json ) {
                     return;
                 }
-                combox = $exclude.find('.combox');
-                tree = $exclude.find('.tree');
-                checkbox = $exclude.find('[type=checkbox]');
+                combox = $exclude.find(".combox");
+                tree = $exclude.find(".tree");
+                checkbox = $exclude.find("[type=checkbox]");
                 if(combox.length) {
                     combox.each(function(){
-                        var $combox = $("#op_" + $(this).find('.select').attr('id'));
-                        $combox.find("li.disabled").removeClass('disabled').show();
+                        var $combox = $("#op_" + $(this).find(".select").attr("id"));
+                        $combox.find("li.disabled").removeClass("disabled").show();
                         $.each(json, function(i) {
-                            $combox.find("li a[value="+json[i]+"]").parent().addClass('disabled').hide();
-                            if($combox.find("li a[value="+json[i]+"]").hasClass('selected')){
+                            $combox.find("li a[value="+json[i]+"]").parent().addClass("disabled").hide();
+                            if($combox.find("li a[value="+json[i]+"]").hasClass("selected")){
                                 $combox.find("li:visible:eq(0) a").click();
                             }
                         });
@@ -246,10 +252,10 @@ JUI.regPlugins.push(function($p){
                 } else if (tree.length) {
                     tree.each(function(){
                         $tree=$(this);
-                        $tree.find('li').show();
+                        $tree.find("li").show();
                         $.each(json, function(i) {
-                            $tree.find("li a[tvalue="+json[i]+"]").parent().parent().addClass('disabled').hide();
-                            if($tree.find("li a[tvalue="+json[i]+"]").parent().find('[type=checkbox]').is(':checked')){
+                            $tree.find("li a[tvalue="+json[i]+"]").parent().parent().addClass("disabled").hide();
+                            if($tree.find("li a[tvalue="+json[i]+"]").parent().find("[type=checkbox]").is(":checked")){
                                 $tree.find("li a[tvalue="+json[i]+"]").click();
                             }
                         });
@@ -261,7 +267,7 @@ JUI.regPlugins.push(function($p){
                         $.each(json, function(i) {
                             if($checkbox.val()==json[i]){
                                 $checkbox.parent().hide();
-                                if($checkbox.is(':checked')){
+                                if($checkbox.is(":checked")){
                                     $checkbox.click();
                                 }
                             }
@@ -272,15 +278,15 @@ JUI.regPlugins.push(function($p){
         });
     }
     $(".dictionary", $p).each(function(){
-        if($(this).data('ref')){
-            var refArray = $(this).data('ref').split(',');
-            var url=$(this).data('url');
+        if($(this).data("ref")){
+            var refArray = $(this).data("ref").split(",");
+            var url=$(this).data("url");
             var $dictionary=$(this);
             for (var index=0; index<refArray.length; index++) {
                 (function($dictionary,index,$box,url){
-                    var $exclude=$('.dictionary[data-id='+refArray[index]+']',$box);
+                    var $exclude=$(".dictionary[data-id="+refArray[index]+"]",$box);
                     if($exclude.length){
-                        $dictionary.find('select,input').change(function(){
+                        $dictionary.find("select,input").change(function(){
                             initDictionary($dictionary,$exclude,url);
                         });
                     }
@@ -296,13 +302,13 @@ JUI.regPlugins.push(function($p){
         $.getJSON($this.attr("lock-url"), function(data) {
             if(data && $this.hasClass("buttonActive")){
                 $this.removeClass("buttonActive").addClass("buttonDisabled").prop("disabled",true).attr("title",data.nickname + "-" + new Date(data.createDate).toLocaleString());
-                $('<i class="icon-lock icon-large"></i>').prependTo($this);
+                $("<i class=\"icon-lock icon-large\"></i>").prependTo($this);
             }
         });
     });
 });
 JUI.regPlugins.push(function($p){
-    $('input.color', $p).each(function() {
+    $("input.color", $p).each(function() {
         var $this = $(this);
         var opts = {
             color: $this.val(),
@@ -352,28 +358,62 @@ JUI.regPlugins.push(function($p){
     });
 });
 JUI.regPlugins.push(function($p){
-    $('.compare', $p).each(function() {
+    $(".compare", $p).each(function() {
         var $this=$(this);
-        function init($resultBox,oldstring,newstring){
-            var diff = Diff.diffWords(oldstring, newstring);
-            $resultBox.empty();
+        var $resultBox = $this.find(".result-box");
+        var $current = $this.find("[name=new]");
+        var $compareMode = $this.find("[name=comparetype]");
+        var $history = $this.find("[name=old]");
+        var comparetype="words";
+        function compare(resultBox,comparetype,oldstring,newstring){
+            var diff
+            if("chars"===comparetype) {
+                diff = Diff.diffChars(oldstring, newstring);
+            } else if("lines"===comparetype) {
+                diff = Diff.diffLines(oldstring, newstring);
+            } else if("sentence"===comparetype) {
+                diff = Diff.diffSentences(oldstring, newstring);
+            } else if("css"===comparetype) {
+                diff = Diff.diffCss(oldstring, newstring);
+            } else {
+                diff = Diff.diffWords(oldstring, newstring);
+            }
+            
+            resultBox.empty();
             for (var i=0; i < diff.length; i++) {
                 if (diff[i].removed) {
-                    $('<del></del>').appendTo($resultBox).text(diff[i].value);
+                    $("<del></del>").appendTo(resultBox).text(diff[i].value);
                 } else if (diff[i].added) {
-                    $('<ins></ins>').appendTo($resultBox).text(diff[i].value);
+                    $("<ins></ins>").appendTo(resultBox).text(diff[i].value);
                 } else {
-                  $resultBox.append($('<div></div>').text(diff[i].value).html());
+                  resultBox.append($("<div></div>").text(diff[i].value).html());
                 }
             }
         }
-        if(window.jsdiff.initd){
-            init($this.find('.result-box'),$this.find('[name=old]').val(),$this.find('[name=new]').val());
-        } else {
-            loadScripts(window.jsdiff.resources,function(){
-                window.jsdiff.initd=true;
-                init($this.find('.result-box'),$this.find('[name=old]').val(),$this.find('[name=new]').val());
-            });
+        if($history.length && $current.length && $resultBox.length){
+            if($compareMode.length){
+                comparetype=$compareMode.val();
+                $compareMode.change(function(){
+                    compare($resultBox, comparetype, $history.val(), $current.val());
+                });
+            }
+            if($current.is(".code") && JUI.instances[$current.data("id")]){
+                JUI.instances[$current.data("id")].on('change',function(editor){
+                    compare($resultBox, comparetype, $history.val(), editor.getValue());
+                });
+            } else {
+                $current.change(function(){
+                    compare($resultBox, comparetype, $history.val(), $current.val());
+                });
+            }
+            if(window.jsdiff.initd){
+                compare($resultBox, comparetype, $history.val(), $current.val());
+            } else {
+                loadScripts(window.jsdiff.resources,function(){
+                    window.jsdiff.initd=true;
+                    compare($resultBox, comparetype, $history.val(), $current.val());
+                });
+            }
         }
     });
 });
@@ -381,7 +421,7 @@ $(document).keydown(function(e){
     if(e.keyCode == JUI.keyCode.ESC && $.pdialog.getCurrent()){
         $.pdialog.closeCurrent();
     } else if(e.keyCode == JUI.keyCode.CHAR_S && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
-        var formSubmit=$('form',!$.pdialog.getCurrent() ? navTab.getCurrentPanel(): $.pdialog.getCurrent()).not('.pagerForm').find('[type=submit]:eq(0)');
+        var formSubmit=$("form",!$.pdialog.getCurrent() ? navTab.getCurrentPanel(): $.pdialog.getCurrent()).not(".pagerForm").find("[type=submit]:eq(0)");
         if(formSubmit.length){
           formSubmit.click();
           e.preventDefault();

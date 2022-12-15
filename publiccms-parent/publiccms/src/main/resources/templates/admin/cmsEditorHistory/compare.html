@@ -3,18 +3,29 @@
     <div class="unit">
         <table class="compare">
             <tr>
-                <td><@t.page 'version.old'/></td>
-                <td><@t.page 'version.new'/></td>
+                <td><@t.page 'compare.history'/></td>
+                <td><@t.page 'compare.now'/></td>
                 <td><@t.page 'compare'/></td>
             </tr>
             <tr>
                 <td>
-                    <textarea name="old" class="code">${(a.text)!}</textarea>
+                    <textarea name="old" class="code" readOnly="readOnly">${(a.text)!}</textarea>
                 </td>
                 <td>
                     <textarea name="new" class="code"></textarea>
                 </td>
-                <td><pre class="result-box"></pre></td>
+                <td>
+                    <div class="clearfix">
+                        <label>
+                            <select name="comparetype">
+                            <#list ['chars','words','lines','sentence'] as o>
+                                <option value="${o}"><@t.page 'compare.type.'+o/></option>
+                            </#list>
+                            </select>
+                        </label>
+                    </div>
+                    <pre class="result-box"></pre>
+                </td>
             </tr>
         </table>
     </div>
