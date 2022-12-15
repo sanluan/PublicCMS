@@ -29,7 +29,7 @@ https://github.com/sanluan/PublicCMS
 
 ## 环境要求
 
-* jdk或jre 1.8 及以上
+* jdk或jre 17 及以上
 * mysql 5.5 及以上
 
 ## 目录说明
@@ -42,7 +42,7 @@ https://github.com/sanluan/PublicCMS
 
 * 编译运行
 
-保证操作系统中有jdk1.8及以上
+保证操作系统中有jdk17及以上
 ```
 cd publiccms-parent
 mvnw clean package
