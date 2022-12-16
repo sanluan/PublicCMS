@@ -31,6 +31,17 @@ public class CmsCategoryModelService extends BaseService<CmsCategoryModel> {
     public List<CmsCategoryModel> getList(short siteId, String modelId, Integer categoryId) {
         return dao.getList(siteId, modelId, categoryId);
     }
+    
+    /**
+     * @param siteId
+     * @param modelId
+     * @param categoryId
+     * @return number of data deleted
+     */
+    @Transactional(readOnly = true)
+    public int delete(short siteId, String modelId, Integer categoryId) {
+        return dao.delete(siteId, modelId, categoryId);
+    }
 
     /**
      * @param siteId 

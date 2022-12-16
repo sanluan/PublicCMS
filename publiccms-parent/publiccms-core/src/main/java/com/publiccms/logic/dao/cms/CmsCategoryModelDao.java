@@ -25,9 +25,7 @@ public class CmsCategoryModelDao extends BaseDao<CmsCategoryModel> {
      */
     public List<CmsCategoryModel> getList(short siteId, String modelId, Integer categoryId) {
         QueryHandler queryHandler = getQueryHandler("from CmsCategoryModel bean");
-        if (CommonUtils.notEmpty(siteId)) {
-            queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
-        }
+        queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
         if (CommonUtils.notEmpty(modelId)) {
             queryHandler.condition("bean.id.modelId = :modelId").setParameter("modelId", modelId);
         }
@@ -36,6 +34,25 @@ public class CmsCategoryModelDao extends BaseDao<CmsCategoryModel> {
         }
         queryHandler.order("bean.id desc");
         return getEntityList(queryHandler);
+    }
+
+    /**
+     * @param siteId
+     * @param modelId
+     * @param categoryId
+     * @return number of data deleted
+     */
+    public int delete(short siteId, String modelId, Integer categoryId) {
+        QueryHandler queryHandler = getQueryHandler("delete from CmsCategoryModel bean");
+        queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
+        if (CommonUtils.notEmpty(modelId)) {
+            queryHandler.condition("bean.id.modelId = :modelId").setParameter("modelId", modelId);
+        }
+        if (CommonUtils.notEmpty(categoryId)) {
+            queryHandler.condition("bean.id.categoryId = :categoryId").setParameter("categoryId", categoryId);
+        }
+        queryHandler.order("bean.id desc");
+        return delete(queryHandler);
     }
 
     @Override

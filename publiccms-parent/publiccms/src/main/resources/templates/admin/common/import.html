@@ -55,8 +55,7 @@ $(".pageFormContent",$.pdialog.getCurrent()).on("change","input[type=file]",func
         if('pptx' == filenames[filenames.length-1]||'ppt' == filenames[filenames.length-1]){
             $('.font',$.pdialog.getCurrent()).show();
             if ("function" === typeof $.cookie && $.cookie("import_font")) {
-                $("select[name=defaultFontFamily]",$.pdialog.getCurrent()).val($.cookie("import_font"));
-                $("select[name=defaultFontFamily]",$.pdialog.getCurrent()).combox();
+                $("select[name=defaultFontFamily]",$.pdialog.getCurrent()).comboxVal($.cookie("import_font"));
             }
         } else {
             $('.font',$.pdialog.getCurrent()).hide();

@@ -173,6 +173,22 @@
                     }, _onchange);
                 }
             });
+        },
+        comboxDisable: function(){
+          return this.each(function(){
+            $(this).parents('.combox .select:first').addClass('disabled');
+          });
+        },
+        comboxEnable: function(){
+          return this.each(function(){
+            $(this).parents('.combox .select:first').removeClass('disabled');
+          });
+        },
+        comboxVal: function(val){
+          return this.each(function(){
+            var $box = $(this).parents('.combox .select:first');
+            $('#op_'+$box.attr('id')).find('>li a[value="'+escapeJquery(val)+'"]').trigger('click');
+          });
         }
     });
 } )(jQuery);
