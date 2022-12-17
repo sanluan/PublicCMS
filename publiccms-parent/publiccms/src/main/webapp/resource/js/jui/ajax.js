@@ -333,33 +333,6 @@ function ajaxTodo(url, callback) {
     });
 }
 
-function escapeJquery(srcString) {
-    var escapseResult = srcString;
-    var jsSpecialChars = ["\\", "^", "$", "*", "?", ".", "+", "(", ")", "[",
-        "]", "|", "{", "}"];
-    var jquerySpecialChars = ["~", "`", "@", "#", "%", "&", "=", "'", "\"", " ",
-        ":", ";", "<", ">", ",", "/"];
-    for (var i = 0; i < jsSpecialChars.length; i++) {
-        escapseResult = escapseResult.replace(new RegExp("\\"
-                + jsSpecialChars[i], "g"), "\\"
-                + jsSpecialChars[i]);
-    }
-    for (var i = 0; i < jquerySpecialChars.length; i++) {
-        escapseResult = escapseResult.replace(new RegExp(jquerySpecialChars[i],
-                "g"), "\\" + jquerySpecialChars[i]);
-    }
-    return escapseResult;
-}
-
-function escapeHtml(str) {
-    if(str) {
-        return str.encodeTXT();
-    } else {
-        return str;
-    }
-}
-
-
 /**
  * http://www.uploadify.com/documentation/uploadify/onqueuecomplete/
  */

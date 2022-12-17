@@ -27,18 +27,23 @@ JUI.regPlugins.push(function($p){
 JUI.regPlugins.push(function($p){
     if($(".cmsVersion",$p).length ) {
         var fullVersion=$(".cmsVersion a",$p).eq(0).text();
-        $.getJSON(Base64.decode("Ly9jbXMucHVibGljY21zLmNvbS9hcGkvZGlyZWN0aXZlL3ZlcnNpb24=")+"?version="+fullVersion, function(data) {
-            var version=fullVersion.substring(0,fullVersion.lastIndexOf("."));
-            var databaseVersion=version.substring(version.lastIndexOf(".")+1);
-            var revision=fullVersion.substring(fullVersion.lastIndexOf(".")+1);
-            var remoteDatabaseVersion = data.cms.substring(data.cms.lastIndexOf(".")+1);
-            if(databaseVersion !== remoteDatabaseVersion ) {
-                $(".cmsVersion .old",$p).show();
-            } else {
-                if(revision == data.revision){
-                    $(".cmsVersion .new",$p).show();
+        $.ajax({
+            url: Base64.decode("Ly9jbXMucHVibGljY21zLmNvbS9hcGkvZGlyZWN0aXZlL3ZlcnNpb24=")+"?version="+fullVersion,
+            global: false,
+            dataType: "json",
+            success: function(data) {
+                var version=fullVersion.substring(0,fullVersion.lastIndexOf("."));
+                var databaseVersion=version.substring(version.lastIndexOf(".")+1);
+                var revision=fullVersion.substring(fullVersion.lastIndexOf(".")+1);
+                var remoteDatabaseVersion = data.cms.substring(data.cms.lastIndexOf(".")+1);
+                if(databaseVersion !== remoteDatabaseVersion ) {
+                    $(".cmsVersion .old",$p).show();
                 } else {
-                    $(".cmsVersion .old",$p).css("color","gray").show();
+                    if(revision == data.revision){
+                        $(".cmsVersion .new",$p).show();
+                    } else {
+                        $(".cmsVersion .old",$p).css("color","gray").show();
+                    }
                 }
             }
         });
