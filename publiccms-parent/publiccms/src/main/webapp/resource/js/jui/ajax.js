@@ -337,7 +337,7 @@ function escapeJquery(srcString) {
     var escapseResult = srcString;
     var jsSpecialChars = ["\\", "^", "$", "*", "?", ".", "+", "(", ")", "[",
         "]", "|", "{", "}"];
-    var jquerySpecialChars = ["~", "`", "@", "#", "%", "&", "=", "'", "\"",
+    var jquerySpecialChars = ["~", "`", "@", "#", "%", "&", "=", "'", "\"", " ",
         ":", ";", "<", ">", ",", "/"];
     for (var i = 0; i < jsSpecialChars.length; i++) {
         escapseResult = escapseResult.replace(new RegExp("\\"

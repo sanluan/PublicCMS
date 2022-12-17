@@ -1,0 +1,1 @@
+uglifyjs core.js util.date.js datepicker.js drag.js tree.js accordion.js ui.js navTab.js tab.js dialog.js table.js taskBar.js ajax.js database.js input.js file.js -c -o ../jui.min.js

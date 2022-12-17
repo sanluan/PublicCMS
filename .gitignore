@@ -1,9 +1,9 @@
-**/.settings
+**/.settings/
 **/.classpath
 **/.project
-**/.gradle
-**/target
-**/build
+**/.gradle/
+**/target/
+**/build/
 **/.svn/
 **/.idea/
 **/*.iml

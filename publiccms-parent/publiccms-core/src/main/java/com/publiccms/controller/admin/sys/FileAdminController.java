@@ -152,6 +152,7 @@ public class FileAdminController {
      * @param useIframe
      * @param width
      * @param height
+     * @param defaultFontFamily 
      * @param field
      * @param titleField
      * @param request
@@ -161,7 +162,8 @@ public class FileAdminController {
     @Csrf
     @ResponseBody
     public Map<String, Object> doImport(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile file,
-            boolean useIframe, String width, String height, String field, String titleField, HttpServletRequest request) {
+            boolean useIframe, String width, String height, String defaultFontFamily, String field, String titleField,
+            HttpServletRequest request) {
         Map<String, Object> result = new HashMap<>();
         if (null != file && !file.isEmpty()) {
             String originalName = file.getOriginalFilename();
@@ -206,7 +208,7 @@ public class FileAdminController {
                         if (".docx".equalsIgnoreCase(suffix)) {
                             result.put(field, DocToHtmlUtils.docxToHtml(dest, imageManager));
                         } else if (".ppt".equalsIgnoreCase(suffix) || ".pptx".equalsIgnoreCase(suffix)) {
-                            result.put(field, DocToHtmlUtils.pptToHtml(dest, imageManager));
+                            result.put(field, DocToHtmlUtils.pptToHtml(dest, defaultFontFamily, imageManager));
                         } else {
                             result.put(field, DocToHtmlUtils.excelToHtml(dest, imageManager));
                         }
