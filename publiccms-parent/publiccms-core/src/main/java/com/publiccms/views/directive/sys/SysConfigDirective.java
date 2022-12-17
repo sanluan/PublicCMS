@@ -39,7 +39,7 @@ public class SysConfigDirective extends AbstractTemplateDirective {
     public void execute(RenderHandler handler) throws IOException, Exception {
         String code = handler.getString("code");
         if (CommonUtils.notEmpty(code)) {
-            ConfigInfo entity = configComponent.getConfig(getSite(handler), code, handler.getLocale());
+            ConfigInfo entity = configComponent.getConfig(getSite(handler).getId(), code, handler.getLocale());
             if (null != entity) {
                 handler.put("object", entity).render();
             }

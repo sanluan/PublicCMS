@@ -1,5 +1,6 @@
 package com.publiccms.logic.service.trade;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -59,17 +60,16 @@ public class TradeOrderProductService extends BaseService<TradeOrderProduct> {
         BigDecimal amount = BigDecimal.ZERO;
         if (null != tradeOrderProductList && 0 < tradeOrderProductList.size()) {
             Date now = CommonUtils.getDate();
-            List<Long> contentIdsList = new ArrayList<>();
-            List<Long> productIdsList = new ArrayList<>();
+            List<Serializable> contentIdsList = new ArrayList<>();
+            List<Serializable> productIdsList = new ArrayList<>();
             for (TradeOrderProduct entity : tradeOrderProductList) {
                 contentIdsList.add(entity.getContentId());
                 productIdsList.add(entity.getProductId());
             }
 
-            List<CmsContent> contentList = contentService.getEntitys(contentIdsList.toArray(new Long[contentIdsList.size()]));
+            List<CmsContent> contentList = contentService.getEntitys(contentIdsList);
             Map<Long, CmsContent> contentMap = CommonUtils.listToMap(contentList, k -> k.getId(), null, null);
-            List<CmsContentProduct> productList = productService
-                    .getEntitys(productIdsList.toArray(new Long[productIdsList.size()]));
+            List<CmsContentProduct> productList = productService.getEntitys(productIdsList);
             Map<Long, CmsContentProduct> productMap = CommonUtils.listToMap(productList, k -> k.getId(), null, null);
 
             for (TradeOrderProduct entity : tradeOrderProductList) {

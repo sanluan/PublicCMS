@@ -197,7 +197,7 @@ public class UserController {
                 emailModel.put("expiryDate", sysEmailToken.getExpiryDate());
                 if (emailComponent.sendHtml(site.getId(), email,
                         FreeMarkerUtils.generateStringByString(emailTitle, templateComponent.getWebConfiguration(), emailModel),
-                        FreeMarkerUtils.generateStringByFile(SiteComponent.getFullTemplatePath(site, emailPath),
+                        FreeMarkerUtils.generateStringByFile(SiteComponent.getFullTemplatePath(site.getId(), emailPath),
                                 templateComponent.getWebConfiguration(), emailModel))) {
                     model.addAttribute(CommonConstants.MESSAGE, "sendEmail.success");
                 } else {

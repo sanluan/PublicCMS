@@ -78,7 +78,7 @@ public class TradeOrderAdminController {
         }
         Map<Long, SysUser> userMap = new HashMap<>();
         if (!userIdList.isEmpty()) {
-            List<SysUser> entitys = sysUserService.getEntitys(userIdList.toArray(new Serializable[userIdList.size()]));
+            List<SysUser> entitys = sysUserService.getEntitys(userIdList);
             for (SysUser entity : entitys) {
                 userMap.put(entity.getId(), entity);
             }

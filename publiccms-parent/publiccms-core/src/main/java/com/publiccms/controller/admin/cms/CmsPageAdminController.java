@@ -90,7 +90,7 @@ public class CmsPageAdminController {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (CommonUtils.notEmpty(path)) {
-            String filepath = siteComponent.getTemplateFilePath(site, path);
+            String filepath = siteComponent.getTemplateFilePath(site.getId(), path);
             CmsPageData olddata = metadataComponent.getTemplateData(filepath);
             CmsPageData pageDate = new CmsPageData();
             pageDate.setExtendDataList(extendDataParameters.getExtendDataList());
@@ -150,7 +150,7 @@ public class CmsPageAdminController {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (CommonUtils.notEmpty(path)) {
-            templateCacheComponent.deleteCachedFile(SiteComponent.getFullTemplatePath(site, path));
+            templateCacheComponent.deleteCachedFile(SiteComponent.getFullTemplatePath(site.getId(), path));
             logOperateService
                     .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                             "clear.pageCache", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));

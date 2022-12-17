@@ -82,12 +82,12 @@ public class AlipayGatewayComponent extends AbstractPaymentGateway implements co
     private CacheEntity<Short, MultipleFactory> cache;
 
     /**
-     * @param site
+     * @param siteId
      * @param showAll
      * @return config code or null
      */
     @Override
-    public String getCode(SysSite site, boolean showAll) {
+    public String getCode(short siteId, boolean showAll) {
         return CONFIG_CODE;
     }
 

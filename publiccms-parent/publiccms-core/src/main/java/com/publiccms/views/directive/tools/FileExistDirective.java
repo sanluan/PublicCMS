@@ -51,17 +51,17 @@ public class FileExistDirective extends AbstractTemplateDirective {
         if (CommonUtils.notEmpty(type)) {
             switch (type) {
             case "file":
-                realpath = siteComponent.getWebFilePath(site, path);
+                realpath = siteComponent.getWebFilePath(site.getId(), path);
                 break;
             case "task":
-                realpath = siteComponent.getTaskTemplateFilePath(site, path);
+                realpath = siteComponent.getTaskTemplateFilePath(site.getId(), path);
                 break;
             case "template":
             default:
-                realpath = siteComponent.getTemplateFilePath(site, path);
+                realpath = siteComponent.getTemplateFilePath(site.getId(), path);
             }
         } else {
-            realpath = siteComponent.getTemplateFilePath(site, path);
+            realpath = siteComponent.getTemplateFilePath(site.getId(), path);
         }
         handler.put("object", CommonUtils.notEmpty(path) && CmsFileUtils.isFile(realpath)).render();
     }

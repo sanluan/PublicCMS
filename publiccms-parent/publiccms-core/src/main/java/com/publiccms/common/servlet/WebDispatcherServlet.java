@@ -61,7 +61,7 @@ public class WebDispatcherServlet extends CommonDispatcherServlet {
         } else if (viewName.startsWith(GLOBLE_URL_PREFIX)) {
             multiSiteViewName = viewName.substring(GLOBLE_URL_PREFIX_LENGTH);
         } else {
-            multiSiteViewName = getSiteComponent().getViewName(ControllerUtils.getSiteFromAttribute(request),
+            multiSiteViewName = getSiteComponent().getViewName(ControllerUtils.getSiteFromAttribute(request).getId(),
                     request.getServerName(), viewName);
         }
         return super.resolveViewName(multiSiteViewName, model, locale, request);

@@ -26,7 +26,7 @@ public class SiteAttributeComponent implements Config {
     public static final String CONFIG_CODE_DESCRIPTION = CONFIGPREFIX + CONFIG_CODE_SITEA_TTRIBUTE;
 
     @Override
-    public String getCode(SysSite site, boolean showAll) {
+    public String getCode(short siteId, boolean showAll) {
         return CONFIG_CODE_SITEA_TTRIBUTE;
     }
 

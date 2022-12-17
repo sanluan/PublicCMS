@@ -52,7 +52,7 @@ public class ScheduledJob extends QuartzJobBean implements InterruptableJob {
                     map.put("object", task);
                     SysSite site = BeanComponent.getSiteService().getEntity(task.getSiteId());
                     AbstractFreemarkerView.exposeSite(map, site);
-                    String templatePath = SiteComponent.getFullTemplatePath(site, task.getFilePath());
+                    String templatePath = SiteComponent.getFullTemplatePath(site.getId(), task.getFilePath());
                     result = FreeMarkerUtils.generateStringByFile(templatePath,
                             BeanComponent.getTemplateComponent().getTaskConfiguration(), map);
                     success = true;

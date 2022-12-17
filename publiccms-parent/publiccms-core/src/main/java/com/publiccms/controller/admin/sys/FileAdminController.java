@@ -86,7 +86,7 @@ public class FileAdminController {
             suffix = CmsFileUtils.getSuffix(originalName);
             if (ArrayUtils.contains(siteConfigComponent.getSafeSuffix(site), suffix)) {
                 String fileName = CmsFileUtils.getUploadFileName(suffix);
-                String filepath = siteComponent.getWebFilePath(site, fileName);
+                String filepath = siteComponent.getWebFilePath(site.getId(), fileName);
                 try {
                     if (CommonUtils.notEmpty(base64File)) {
                         CmsFileUtils.upload(VerificationUtils.base64Decode(base64File), filepath);
@@ -153,7 +153,7 @@ public class FileAdminController {
      * @param useIframe
      * @param width
      * @param height
-     * @param defaultFontFamily 
+     * @param defaultFontFamily
      * @param field
      * @param titleField
      * @param request
@@ -187,7 +187,7 @@ public class FileAdminController {
                             public void extract(String imagePath, byte[] imageData) throws IOException {
                                 String imagesuffix = CmsFileUtils.getSuffix(imagePath);
                                 fileName = CmsFileUtils.getUploadFileName(imagesuffix);
-                                String filepath = siteComponent.getWebFilePath(site, fileName);
+                                String filepath = siteComponent.getWebFilePath(site.getId(), fileName);
                                 try {
                                     CmsFileUtils.upload(imageData, filepath);
                                     String fileType = CmsFileUtils.getFileType(imagesuffix);
@@ -226,7 +226,7 @@ public class FileAdminController {
                                     imagesuffix = CommonConstants.DOT + imagesuffix;
                                 }
                                 String fileName = CmsFileUtils.getUploadFileName(imagesuffix);
-                                String filepath = siteComponent.getWebFilePath(site, fileName);
+                                String filepath = siteComponent.getWebFilePath(site.getId(), fileName);
                                 try {
                                     CmsFileUtils.upload(content, filepath);
                                     String fileType = CmsFileUtils.getFileType(imagesuffix);
@@ -246,7 +246,7 @@ public class FileAdminController {
                     } else if (".pdf".equalsIgnoreCase(suffix)) {
                         if (useIframe) {
                             String fileName = CmsFileUtils.getUploadFileName(suffix);
-                            String filepath = siteComponent.getWebFilePath(site, fileName);
+                            String filepath = siteComponent.getWebFilePath(site.getId(), fileName);
                             try {
                                 CmsFileUtils.upload(file, filepath);
                                 String fileType = CmsFileUtils.getFileType(suffix);
@@ -270,7 +270,7 @@ public class FileAdminController {
                                         imagesuffix = CommonConstants.DOT + imagesuffix;
                                     }
                                     String fileName = CmsFileUtils.getUploadFileName(imagesuffix);
-                                    String filepath = siteComponent.getWebFilePath(site, fileName);
+                                    String filepath = siteComponent.getWebFilePath(site.getId(), fileName);
                                     try {
                                         CmsFileUtils.upload(resource.getData(), filepath);
                                         String fileType = CmsFileUtils.getFileType(imagesuffix);
@@ -321,7 +321,7 @@ public class FileAdminController {
                 String suffix = CmsFileUtils.getSuffix(originalName);
                 if (ArrayUtils.contains(siteConfigComponent.getSafeSuffix(site), suffix)) {
                     String fileName = CmsFileUtils.getUploadFileName(suffix);
-                    String filepath = siteComponent.getWebFilePath(site, fileName);
+                    String filepath = siteComponent.getWebFilePath(site.getId(), fileName);
                     try {
                         CmsFileUtils.upload(file, filepath);
                         if (CmsFileUtils.isSafe(filepath, suffix)) {

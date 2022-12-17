@@ -1,12 +1,14 @@
 package com.publiccms.views.directive.api;
 
-import static org.springframework.util.StringUtils.arrayToDelimitedString;
+import static org.springframework.util.StringUtils.collectionToDelimitedString;
 
 //Generated 2015-5-10 17:54:56 by com.publiccms.common.generator.SourceGenerator
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -80,7 +82,7 @@ public class ContentCreateDirective extends AbstractAppDirective {
         handler.put("result", "failed");
         if (null != categoryModel) {
             CmsCategory category = categoryService.getEntity(entity.getCategoryId());
-            CmsModel cmsModel = modelComponent.getModelMap(site).get(entity.getModelId());
+            CmsModel cmsModel = modelComponent.getModelMap(site.getId()).get(entity.getModelId());
             if (null != category && null != cmsModel && site.getId() == category.getSiteId() && category.isAllowContribute()) {
                 entity.setId(handler.getLong("id"));
                 entity.setOnlyUrl(cmsModel.isOnlyUrl());
@@ -110,8 +112,8 @@ public class ContentCreateDirective extends AbstractAppDirective {
                             tagList.add(tag);
                         }
                     }
-                    tagIds = tagService.update(site.getId(), tagList);
-                    entity.setTagIds(arrayToDelimitedString(tagIds, CommonConstants.BLANK_SPACE));
+                    Set<Serializable> tagIdSet = tagService.update(site.getId(), tagList);
+                    entity.setTagIds(collectionToDelimitedString(tagIdSet, CommonConstants.BLANK_SPACE));
                 } else {
                     entity.setTagIds(null);
                 }

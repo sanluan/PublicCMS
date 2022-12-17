@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.function.BiConsumer;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,15 +52,6 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
     private SysExtendFieldService extendFieldService;
     @Autowired
     private CmsEditorHistoryService editorHistoryService;
-
-    /**
-     * @param siteId
-     * @param worker
-     * @param batchSize
-     */
-    public void batchWork(short siteId, BiConsumer<List<CmsCategory>, Integer> worker, int batchSize) {
-        dao.batchWork(siteId, worker, batchSize);
-    }
 
     /**
      * @param queryEntity
@@ -296,7 +286,7 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
             entity.setHasStatic(hasStatic);
         }
     }
-
+    
     @Autowired
     private CmsCategoryDao dao;
 }

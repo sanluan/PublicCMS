@@ -48,7 +48,7 @@ public class PlaceMetadataDirective extends AbstractTemplateDirective {
     public void execute(RenderHandler handler) throws IOException, Exception {
         String path = handler.getString("path");
         if (CommonUtils.notEmpty(path) && !path.endsWith(CommonConstants.SEPARATOR)) {
-            String filepath = siteComponent.getTemplateFilePath(getSite(handler), TemplateComponent.INCLUDE_DIRECTORY + path);
+            String filepath = siteComponent.getTemplateFilePath(getSite(handler).getId(), TemplateComponent.INCLUDE_DIRECTORY + path);
             CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);
             CmsPageData data = metadataComponent.getTemplateData(filepath);
             handler.put("object", metadata.getAsMap(data)).render();

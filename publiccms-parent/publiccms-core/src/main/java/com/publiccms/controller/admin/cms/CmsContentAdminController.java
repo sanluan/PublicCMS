@@ -157,7 +157,7 @@ public class CmsContentAdminController {
             category = null;
         }
 
-        CmsModel cmsModel = modelComponent.getModelMap(site).get(entity.getModelId());
+        CmsModel cmsModel = modelComponent.getModelMap(site.getId()).get(entity.getModelId());
         CmsCategoryModel categoryModel = categoryModelService
                 .getEntity(new CmsCategoryModelId(entity.getCategoryId(), entity.getModelId()));
 
@@ -202,15 +202,14 @@ public class CmsContentAdminController {
         try {
             templateComponent.createContentFile(site, entity, category, categoryModel); // 静态化
             if (null == entity.getParentId() && null == entity.getQuoteContentId()) {
-                Set<Integer> categoryIdsSet = service.updateQuote(entity.getId(), contentParameters);
+                Set<Serializable> categoryIdsSet = service.updateQuote(entity.getId(), contentParameters);
                 if (CommonUtils.notEmpty(contentParameters.getCategoryIds())) {
                     List<CmsCategory> categoryList = categoryService.getEntitys(
                             contentParameters.getCategoryIds().toArray(new Integer[contentParameters.getCategoryIds().size()]));
                     service.saveQuote(entity.getId(), categoryList, category);
                     if (null != checked && checked) {
                         if (!categoryIdsSet.isEmpty()) {
-                            categoryList.addAll(
-                                    categoryService.getEntitys(categoryIdsSet.toArray(new Integer[categoryIdsSet.size()])));
+                            categoryList.addAll(categoryService.getEntitys(categoryIdsSet));
                         }
                         for (CmsCategory c : categoryList) {
                             templateComponent.createCategoryFile(site, c, null, null);
@@ -311,8 +310,8 @@ public class CmsContentAdminController {
             } else {
                 entityList = service.check(site.getId(), admin, ids);
             }
-            Set<Integer> categoryIdSet = new HashSet<>();
-            Set<Long> parentIdSet = new HashSet<>();
+            Set<Serializable> categoryIdSet = new HashSet<>();
+            Set<Serializable> parentIdSet = new HashSet<>();
             try {
                 for (CmsContent entity : entityList) {
                     if (null != entity && site.getId() == entity.getSiteId()) {
@@ -323,11 +322,10 @@ public class CmsContentAdminController {
                         categoryIdSet.add(entity.getCategoryId());
                     }
                 }
-                for (CmsContent parent : service.getEntitys(parentIdSet.toArray(new Long[parentIdSet.size()]))) {
+                for (CmsContent parent : service.getEntitys(parentIdSet)) {
                     publish(site, parent, admin);
                 }
-                for (CmsCategory category : categoryService
-                        .getEntitys(categoryIdSet.toArray(new Integer[categoryIdSet.size()]))) {
+                for (CmsCategory category : categoryService.getEntitys(categoryIdSet)) {
                     templateComponent.createCategoryFile(site, category, null, null);
                 }
             } catch (IOException | TemplateException e) {
@@ -355,14 +353,13 @@ public class CmsContentAdminController {
     public String refresh(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids, HttpServletRequest request,
             ModelMap model) {
         if (CommonUtils.notEmpty(ids)) {
-            Set<Integer> categoryIdSet = new HashSet<>();
+            Set<Serializable> categoryIdSet = new HashSet<>();
             for (CmsContent entity : service.refresh(site.getId(), admin, ids)) {
                 categoryIdSet.add(entity.getCategoryId());
             }
             if (!categoryIdSet.isEmpty()) {
-                Integer[] categoryIds = categoryIdSet.toArray(new Integer[categoryIdSet.size()]);
                 try {
-                    for (CmsCategory entity : categoryService.getEntitys(categoryIds)) {
+                    for (CmsCategory entity : categoryService.getEntitys(categoryIdSet)) {
                         templateComponent.createCategoryFile(site, entity, null, null);
                     }
                 } catch (IOException | TemplateException e) {
@@ -439,7 +436,7 @@ public class CmsContentAdminController {
         }
         if (CommonUtils.notEmpty(ids) && null != category && site.getId() == category.getSiteId()) {
             StringBuilder sb = new StringBuilder();
-            Set<Integer> categoryIdSet = new HashSet<>();
+            Set<Serializable> categoryIdSet = new HashSet<>();
             try {
                 for (CmsContent entity : service.getEntitys(ids)) {
                     if (null != entity && entity.getCategoryId() != categoryId && site.getId() == entity.getSiteId()
@@ -457,9 +454,8 @@ public class CmsContentAdminController {
             }
             if (!categoryIdSet.isEmpty()) {
                 categoryIdSet.add(categoryId);
-                Integer[] categoryIds = categoryIdSet.toArray(new Integer[categoryIdSet.size()]);
                 try {
-                    for (CmsCategory entity : categoryService.getEntitys(categoryIds)) {
+                    for (CmsCategory entity : categoryService.getEntitys(categoryIdSet)) {
                         templateComponent.createCategoryFile(site, entity, null, null);
                     }
                 } catch (IOException | TemplateException e) {
@@ -667,7 +663,7 @@ public class CmsContentAdminController {
         Map<Long, SysUser> userMap = new HashMap<>();
         if (null != pksMap.get("userIds")) {
             List<Serializable> userIds = pksMap.get("userIds");
-            List<SysUser> entitys = sysUserService.getEntitys(userIds.toArray(new Serializable[userIds.size()]));
+            List<SysUser> entitys = sysUserService.getEntitys(userIds);
             for (SysUser entity : entitys) {
                 userMap.put(entity.getId(), entity);
             }
@@ -675,7 +671,7 @@ public class CmsContentAdminController {
         Map<Integer, SysDept> deptMap = new HashMap<>();
         if (null != pksMap.get("deptIds")) {
             List<Serializable> deptIds = pksMap.get("deptIds");
-            List<SysDept> entitys = sysDeptService.getEntitys(deptIds.toArray(new Serializable[deptIds.size()]));
+            List<SysDept> entitys = sysDeptService.getEntitys(deptIds);
             for (SysDept entity : entitys) {
                 deptMap.put(entity.getId(), entity);
             }
@@ -683,17 +679,16 @@ public class CmsContentAdminController {
         Map<Integer, CmsCategory> categoryMap = new HashMap<>();
         if (null != pksMap.get("categoryIds")) {
             List<Serializable> categoryIds = pksMap.get("categoryIds");
-            List<CmsCategory> entitys = categoryService.getEntitys(categoryIds.toArray(new Serializable[categoryIds.size()]));
+            List<CmsCategory> entitys = categoryService.getEntitys(categoryIds);
             for (CmsCategory entity : entitys) {
                 categoryMap.put(entity.getId(), entity);
             }
         }
-        Map<String, CmsModel> modelMap = modelComponent.getModelMap(site);
+        Map<String, CmsModel> modelMap = modelComponent.getModelMap(site.getId());
         Map<Long, CmsContentAttribute> contentAttributeMap = new HashMap<>();
         if (null != pksMap.get("contentIds")) {
             List<Serializable> contentIds = pksMap.get("contentIds");
-            List<CmsContentAttribute> entitys = attributeService
-                    .getEntitys(contentIds.toArray(new Serializable[contentIds.size()]));
+            List<CmsContentAttribute> entitys = attributeService.getEntitys(contentIds);
             for (CmsContentAttribute entity : entitys) {
                 contentAttributeMap.put(entity.getContentId(), entity);
             }
@@ -709,7 +704,7 @@ public class CmsContentAdminController {
             }
             List<SysExtendField> modelExtendList = null;
             if (CommonUtils.notEmpty(queryEntity.getModelIds()) && 1 == queryEntity.getModelIds().length) {
-                CmsModel cmsModel = modelComponent.getModelMap(site).get(queryEntity.getModelIds()[0]);
+                CmsModel cmsModel = modelComponent.getModelMap(site.getId()).get(queryEntity.getModelIds()[0]);
                 if (null != cmsModel) {
                     modelExtendList = cmsModel.getExtendList();
                 }
@@ -840,21 +835,20 @@ public class CmsContentAdminController {
     public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids, HttpServletRequest request,
             ModelMap model) {
         if (CommonUtils.notEmpty(ids)) {
-            Set<Integer> categoryIdSet = new HashSet<>();
+            Set<Serializable> categoryIdSet = new HashSet<>();
             for (CmsContent entity : service.delete(site.getId(), admin, ids)) {
                 categoryIdSet.add(entity.getCategoryId());
                 if (entity.isHasStatic()) {
-                    String filepath = siteComponent.getWebFilePath(site, entity.getUrl());
+                    String filepath = siteComponent.getWebFilePath(site.getId(), entity.getUrl());
                     if (CmsFileUtils.exists(filepath)) {
-                        String backupFilePath = siteComponent.getWebBackupFilePath(site, filepath);
+                        String backupFilePath = siteComponent.getWebBackupFilePath(site.getId(), filepath);
                         CmsFileUtils.moveFile(filepath, backupFilePath);
                     }
                 }
             }
             if (!categoryIdSet.isEmpty()) {
-                Integer[] categoryIds = categoryIdSet.toArray(new Integer[categoryIdSet.size()]);
                 try {
-                    for (CmsCategory entity : categoryService.getEntitys(categoryIds)) {
+                    for (CmsCategory entity : categoryService.getEntitys(categoryIdSet)) {
                         templateComponent.createCategoryFile(site, entity, null, null);
                     }
                 } catch (IOException | TemplateException e) {
@@ -937,15 +931,14 @@ public class CmsContentAdminController {
     public String recycle(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids, HttpServletRequest request,
             ModelMap model) {
         if (CommonUtils.notEmpty(ids)) {
-            Set<Integer> categoryIdSet = new HashSet<>();
             try {
+                Set<Serializable> categoryIdSet = new HashSet<>();
                 for (CmsContent entity : service.recycle(site.getId(), ids)) {
                     categoryIdSet.add(entity.getCategoryId());
                     templateComponent.createContentFile(site, entity, null, null);
                 }
                 if (!categoryIdSet.isEmpty()) {
-                    Integer[] categoryIds = categoryIdSet.toArray(new Integer[categoryIdSet.size()]);
-                    for (CmsCategory entity : categoryService.getEntitys(categoryIds)) {
+                    for (CmsCategory entity : categoryService.getEntitys(categoryIdSet)) {
                         templateComponent.createCategoryFile(site, entity, null, null);
                     }
                 }

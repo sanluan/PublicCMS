@@ -48,8 +48,8 @@ public class EmailTemplateConfigComponent implements Config {
     public static final int DEFAULT_EXPIRY_MINUTES = 30;
 
     @Override
-    public String getCode(SysSite site, boolean showAll) {
-        Map<String, String> config = BeanComponent.getConfigComponent().getConfigData(site.getId(), EmailComponent.CONFIG_CODE);
+    public String getCode(short siteId, boolean showAll) {
+        Map<String, String> config = BeanComponent.getConfigComponent().getConfigData(siteId, EmailComponent.CONFIG_CODE);
         if (CommonUtils.notEmpty(config) || showAll) {
             return CONFIG_CODE;
         } else {

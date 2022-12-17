@@ -48,14 +48,14 @@ public class CmsCategoryTypeDirective extends AbstractTemplateDirective {
         String id = handler.getString("id");
         SysSite site = getSite(handler);
         if (CommonUtils.notEmpty(id)) {
-            CmsCategoryType entity = modelComponent.getCategoryTypeMap(site).get(id);
+            CmsCategoryType entity = modelComponent.getCategoryTypeMap(site.getId()).get(id);
             if (null != entity) {
                 handler.put("object", entity).render();
             }
         } else {
             String[] ids = handler.getStringArray("ids");
             if (CommonUtils.notEmpty(ids)) {
-                Map<String, CmsCategoryType> typeMap = modelComponent.getCategoryTypeMap(site);
+                Map<String, CmsCategoryType> typeMap = modelComponent.getCategoryTypeMap(site.getId());
                 Map<String, CmsCategoryType> map = new LinkedHashMap<>();
                 for (String typeId : ids) {
                     map.put(typeId, typeMap.get(typeId));

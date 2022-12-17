@@ -155,7 +155,7 @@ public class CmsPlaceAdminController {
                         LogLoginService.CHANNEL_WEB_MANAGER, "save.place", RequestUtils.getIpAddress(request),
                         CommonUtils.getDate(), JsonUtils.getString(entity)));
             }
-            String filepath = siteComponent.getTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
+            String filepath = siteComponent.getTemplateFilePath(site.getId(), TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
             CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);
             Map<String, String> map = ExtendUtils.getExtentDataMap(extendDataParameters.getExtendDataList(),
                     metadata.getExtendList());
@@ -310,7 +310,7 @@ public class CmsPlaceAdminController {
         }
         Locale locale = RequestContextUtils.getLocale(request);
 
-        String filepath = siteComponent.getTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
+        String filepath = siteComponent.getTemplateFilePath(site.getId(), TemplateComponent.INCLUDE_DIRECTORY + path);
         CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);
 
         PageHandler page = service.getPage(site.getId(), userId, path, itemType, itemId, startPublishDate, endPublishDate,
@@ -329,12 +329,12 @@ public class CmsPlaceAdminController {
         Map<Serializable, CmsPlaceAttribute> attributeMap = new HashMap<>();
         if (null != pksMap.get("userIds")) {
             List<Serializable> userIds = pksMap.get("userIds");
-            List<SysUser> entitys = sysUserService.getEntitys(userIds.toArray(new Serializable[userIds.size()]));
+            List<SysUser> entitys = sysUserService.getEntitys(userIds);
             for (SysUser entity : entitys) {
                 userMap.put(entity.getId(), entity);
             }
             List<Serializable> ids = pksMap.get("ids");
-            List<CmsPlaceAttribute> attributes = attributeService.getEntitys(ids.toArray(new Serializable[ids.size()]));
+            List<CmsPlaceAttribute> attributes = attributeService.getEntitys(ids);
             for (CmsPlaceAttribute attribute : attributes) {
                 attributeMap.put(attribute.getPlaceId(), attribute);
             }
@@ -469,9 +469,9 @@ public class CmsPlaceAdminController {
     }
 
     private void staticPlace(SysSite site, String path) {
-        if (CmsFileUtils.exists(siteComponent.getWebFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path))) {
+        if (CmsFileUtils.exists(siteComponent.getWebFilePath(site.getId(), TemplateComponent.INCLUDE_DIRECTORY + path))) {
             try {
-                String filepath = siteComponent.getTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
+                String filepath = siteComponent.getTemplateFilePath(site.getId(), TemplateComponent.INCLUDE_DIRECTORY + path);
                 CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);
                 CmsPageData data = metadataComponent.getTemplateData(filepath);
                 templateComponent.staticPlace(site, path, metadata, data);

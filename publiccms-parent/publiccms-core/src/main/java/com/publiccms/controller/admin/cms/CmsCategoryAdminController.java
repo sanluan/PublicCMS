@@ -37,7 +37,7 @@ import com.publiccms.entities.cms.CmsCategoryModel;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
-import com.publiccms.logic.component.site.ExportComponent;
+import com.publiccms.logic.component.interaction.CategoryInteractionComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.ModelComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
@@ -75,7 +75,7 @@ public class CmsCategoryAdminController {
     @Autowired
     protected SiteComponent siteComponent;
     @Autowired
-    protected ExportComponent exportComponent;
+    protected CategoryInteractionComponent interactionComponent;
 
     private String[] ignoreProperties = new String[] { "id", "siteId", "childIds", "tagTypeIds", "url", "disabled", "extendId",
             "hasStatic", "typeId" };
@@ -120,7 +120,7 @@ public class CmsCategoryAdminController {
                     CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
         service.saveTagAndAttribute(site.getId(), entity.getId(), admin.getId(), attribute,
-                modelComponent.getCategoryTypeMap(site).get(entity.getTypeId()), categoryParameters);
+                modelComponent.getCategoryTypeMap(site.getId()).get(entity.getTypeId()), categoryParameters);
         try {
             publish(site, entity.getId(), null);
         } catch (IOException | TemplateException e) {
@@ -286,9 +286,9 @@ public class CmsCategoryAdminController {
         if (CommonUtils.notEmpty(ids)) {
             for (CmsCategory entity : service.delete(site.getId(), ids)) {
                 if (entity.isHasStatic()) {
-                    String filepath = siteComponent.getWebFilePath(site, entity.getUrl());
+                    String filepath = siteComponent.getWebFilePath(site.getId(), entity.getUrl());
                     if (CmsFileUtils.exists(filepath)) {
-                        String backupFilePath = siteComponent.getWebBackupFilePath(site, filepath);
+                        String backupFilePath = siteComponent.getWebBackupFilePath(site.getId(), filepath);
                         CmsFileUtils.moveFile(filepath, backupFilePath);
                     }
                 }
@@ -303,11 +303,12 @@ public class CmsCategoryAdminController {
 
     /**
      * @param site
+     * @param id
      * @param response
      */
     @RequestMapping("export")
     @Csrf
-    public void export(@RequestAttribute SysSite site, HttpServletResponse response) {
+    public void export(@RequestAttribute SysSite site, Integer id, HttpServletResponse response) {
         try {
             response.setHeader("content-disposition",
                     "attachment;fileName=" + URLEncoder.encode(site.getName() + "_category.zip", "utf-8"));
@@ -316,7 +317,11 @@ public class CmsCategoryAdminController {
         try (ServletOutputStream outputStream = response.getOutputStream();
                 ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream)) {
             zipOutputStream.setEncoding(Constants.DEFAULT_CHARSET_NAME);
-            exportComponent.exportCategory(site.getId(), zipOutputStream);
+            if (null == id) {
+                interactionComponent.exportAll(site.getId(), zipOutputStream);
+            } else {
+                interactionComponent.exportEntity(site.getId(), service.getEntity(id), zipOutputStream);
+            }
         } catch (IOException e) {
         }
     }

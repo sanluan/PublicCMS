@@ -42,8 +42,8 @@ import com.publiccms.views.pojo.entities.CmsPageMetadata;
  * </ul>
  * 使用示例
  * <p>
- * &lt;@tools.sendEmail
- * email='master@puliccms.com' title='title' content='content'/&gt;
+ * &lt;@tools.sendEmail email='master@puliccms.com' title='title'
+ * content='content'/&gt;
  * 
  * <pre>
 &lt;script&gt;
@@ -72,7 +72,7 @@ public class SendEmailDirective extends AbstractTemplateDirective {
                 files = new File[filePaths.length];
                 int i = 0;
                 for (String filePath : filePaths) {
-                    files[i] = new File(siteComponent.getWebFilePath(getSite(handler), filePath));
+                    files[i] = new File(siteComponent.getWebFilePath(getSite(handler).getId(), filePath));
                     i++;
                 }
             }
@@ -80,13 +80,14 @@ public class SendEmailDirective extends AbstractTemplateDirective {
             if (CommonUtils.notEmpty(templatePath)) {
                 Map<String, Object> model = new HashMap<>();
                 expose(handler, model);
-                String filepath = siteComponent.getTemplateFilePath(site, templatePath);
+                String filepath = siteComponent.getTemplateFilePath(site.getId(), templatePath);
                 CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(filepath);
                 CmsPageData data = metadataComponent.getTemplateData(filepath);
                 model.putAll(handler.getMap("parameters"));
                 model.put("metadata", metadata.getAsMap(data));
-                String content = FreeMarkerUtils.generateStringByFile(SiteComponent.getFullTemplatePath(site, templatePath),
-                        templateComponent.getWebConfiguration(), model);
+                String content = FreeMarkerUtils.generateStringByFile(
+                        SiteComponent.getFullTemplatePath(site.getId(), templatePath), templateComponent.getWebConfiguration(),
+                        model);
                 handler.put("result", emailComponent.sendHtml(site.getId(), email, cc, bcc, title, content, fileNames, files))
                         .render();
             } else {

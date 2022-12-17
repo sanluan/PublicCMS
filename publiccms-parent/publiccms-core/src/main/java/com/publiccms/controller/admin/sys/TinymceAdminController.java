@@ -67,7 +67,7 @@ public class TinymceAdminController {
             String suffix = CmsFileUtils.getSuffix(originalName);
             if (ArrayUtils.contains(siteConfigComponent.getSafeSuffix(site), suffix)) {
                 String fileName = CmsFileUtils.getUploadFileName(suffix);
-                String filepath = siteComponent.getWebFilePath(site, fileName);
+                String filepath = siteComponent.getWebFilePath(site.getId(), fileName);
                 try {
                     CmsFileUtils.upload(file, filepath);
                     if (CmsFileUtils.isSafe(filepath, suffix)) {

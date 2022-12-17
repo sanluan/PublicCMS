@@ -46,13 +46,13 @@ public class ConfigComponent implements SiteCache {
     private CacheEntity<Short, Map<String, Map<String, String>>> cache;
 
     /**
-     * @param site
+     * @param siteId
      * @param code
      * @param locale
      * @return config
      */
-    public ConfigInfo getConfig(SysSite site, String code, Locale locale) {
-        Map<String, SysConfig> map = getMap(site);
+    public ConfigInfo getConfig(short siteId, String code, Locale locale) {
+        Map<String, SysConfig> map = getMap(siteId);
         SysConfig entity = map.get(code);
         ConfigInfo configInfo = null;
         if (null != entity) {
@@ -61,7 +61,7 @@ public class ConfigComponent implements SiteCache {
         }
         if (CommonUtils.notEmpty(configPluginList)) {
             for (Config configPlugin : configPluginList) {
-                String configCode = configPlugin.getCode(site);
+                String configCode = configPlugin.getCode(siteId);
                 if (null != configCode && configCode.equals(code)) {
                     configInfo = new ConfigInfo(code, configPlugin.getCodeDescription(locale));
                 }
@@ -71,24 +71,24 @@ public class ConfigComponent implements SiteCache {
     }
 
     /**
-     * @param site
+     * @param siteId
      * @param locale
      * @param showAll
      * @return config list
      */
-    public List<ConfigInfo> getConfigList(SysSite site, Locale locale, boolean showAll) {
+    public List<ConfigInfo> getConfigList(short siteId, Locale locale, boolean showAll) {
         List<ConfigInfo> configList = new ArrayList<>();
         List<String> configCodeList = new ArrayList<>();
         if (CommonUtils.notEmpty(configPluginList)) {
             for (Config config : configPluginList) {
-                String code = config.getCode(site, showAll);
+                String code = config.getCode(siteId, showAll);
                 if (CommonUtils.notEmpty(code) && !configCodeList.contains(code)) {
                     configList.add(new ConfigInfo(code, config.getCodeDescription(locale)));
                     configCodeList.add(code);
                 }
             }
         }
-        for (Entry<String, SysConfig> entry : getMap(site).entrySet()) {
+        for (Entry<String, SysConfig> entry : getMap(siteId).entrySet()) {
             if (!configCodeList.contains(entry.getKey())) {
                 ConfigInfo configInfo = new ConfigInfo(entry.getKey(), entry.getValue().getDescription());
                 configInfo.setCustomed(true);
@@ -110,7 +110,7 @@ public class ConfigComponent implements SiteCache {
         List<SysExtendField> fieldList = new ArrayList<>();
         if ((null == customed || !customed) && CommonUtils.notEmpty(configPluginList)) {
             for (Config config : configPluginList) {
-                String configCode = config.getCode(site);
+                String configCode = config.getCode(site.getId());
                 if (null != configCode && configCode.equals(code)) {
                     List<SysExtendField> extendFieldList = config.getExtendFieldList(site, locale);
                     if (null != extendFieldList) {
@@ -120,7 +120,7 @@ public class ConfigComponent implements SiteCache {
             }
         }
         if (null == customed || customed) {
-            SysConfig sysConfig = getMap(site).get(code);
+            SysConfig sysConfig = getMap(site.getId()).get(code);
             if (null != sysConfig && CommonUtils.notEmpty(sysConfig.getExtendList())) {
                 fieldList.addAll(sysConfig.getExtendList());
             }
@@ -185,12 +185,12 @@ public class ConfigComponent implements SiteCache {
     }
 
     /**
-     * @param site
+     * @param siteId
      * @return config map
      */
-    public Map<String, SysConfig> getMap(SysSite site) {
+    public Map<String, SysConfig> getMap(short siteId) {
         Map<String, SysConfig> modelMap;
-        File file = new File(siteComponent.getConfigFilePath(site));
+        File file = new File(siteComponent.getConfigFilePath(siteId));
         if (CommonUtils.notEmpty(file)) {
             try {
                 modelMap = CommonConstants.objectMapper.readValue(file, CommonConstants.objectMapper.getTypeFactory()
@@ -207,12 +207,12 @@ public class ConfigComponent implements SiteCache {
     /**
      * 保存配置
      *
-     * @param site
+     * @param siteId
      * @param modelMap
      * @return whether to save successfully
      */
-    public boolean save(SysSite site, Map<String, SysConfig> modelMap) {
-        File file = new File(siteComponent.getConfigFilePath(site));
+    public boolean save(short siteId, Map<String, SysConfig> modelMap) {
+        File file = new File(siteComponent.getConfigFilePath(siteId));
         if (CommonUtils.empty(file)) {
             file.getParentFile().mkdirs();
         }
@@ -274,17 +274,20 @@ public class ConfigComponent implements SiteCache {
          */
         private static final long serialVersionUID = 1L;
         /**
-         * code<p>
+         * code
+         * <p>
          * 编码
          */
         private String code;
         /**
-         * description<p>
+         * description
+         * <p>
          * 描述
          */
         private String description;
         /**
-         * customed<p>
+         * customed
+         * <p>
          * 自定义
          */
         private boolean customed;

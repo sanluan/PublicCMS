@@ -54,7 +54,7 @@ public class PublishPlaceDirective extends AbstractTaskDirective {
     public void execute(RenderHandler handler) throws IOException, Exception {
         String path = handler.getString("path", CommonConstants.SEPARATOR);
         SysSite site = getSite(handler);
-        String filepath = siteComponent.getTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
+        String filepath = siteComponent.getTemplateFilePath(site.getId(), TemplateComponent.INCLUDE_DIRECTORY + path);
         if (CmsFileUtils.isFile(filepath)) {
             Map<String, Boolean> map = new LinkedHashMap<>();
             try {
@@ -75,7 +75,7 @@ public class PublishPlaceDirective extends AbstractTaskDirective {
     private Map<String, Boolean> dealDir(SysSite site, RenderHandler handler, String path) throws IOException {
         path = path.replace("\\", CommonConstants.SEPARATOR).replace("//", CommonConstants.SEPARATOR);
         Map<String, Boolean> map = new LinkedHashMap<>();
-        String realPath = siteComponent.getTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
+        String realPath = siteComponent.getTemplateFilePath(site.getId(), TemplateComponent.INCLUDE_DIRECTORY + path);
         List<FileInfo> list = CmsFileUtils.getFileList(realPath, null);
         for (FileInfo fileInfo : list) {
             String filepath = path + fileInfo.getFileName();
@@ -83,7 +83,7 @@ public class PublishPlaceDirective extends AbstractTaskDirective {
                 map.putAll(dealDir(site, handler, filepath + CommonConstants.SEPARATOR));
             } else {
                 try {
-                    String realfilepath = siteComponent.getTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + filepath);
+                    String realfilepath = siteComponent.getTemplateFilePath(site.getId(), TemplateComponent.INCLUDE_DIRECTORY + filepath);
                     CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(realfilepath);
                     CmsPageData data = metadataComponent.getTemplateData(realfilepath);
                     templateComponent.staticPlace(site, filepath, metadata, data);

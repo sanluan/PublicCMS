@@ -99,7 +99,7 @@ public class PlaceController {
             }
             entity.setPath(entity.getPath().replace("//", CommonConstants.SEPARATOR));
             entity.setStatus(CmsPlaceService.STATUS_PEND);
-            String filepath = siteComponent.getTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
+            String filepath = siteComponent.getTemplateFilePath(site.getId(), TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
             CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);
             SysUser user = ControllerUtils.getUserFromSession(session);
             if (ControllerUtils.errorCustom("contribute",
@@ -177,7 +177,7 @@ public class PlaceController {
         returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         CmsPlace entity = service.getEntity(id);
         if (null != entity) {
-            String filepath = siteComponent.getTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
+            String filepath = siteComponent.getTemplateFilePath(site.getId(), TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
             CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);
             if (ControllerUtils.errorCustom("manage",
                     CommonUtils.empty(metadata.getAdminIds()) || !ArrayUtils.contains(metadata.getAdminIds(), user.getId()),
@@ -187,7 +187,7 @@ public class PlaceController {
                 logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
                         "delete.place", RequestUtils.getIpAddress(request), CommonUtils.getDate(), id.toString()));
                 if (site.isUseSsi() || CmsFileUtils
-                        .exists(siteComponent.getWebFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + entity.getPath()))) {
+                        .exists(siteComponent.getWebFilePath(site.getId(), TemplateComponent.INCLUDE_DIRECTORY + entity.getPath()))) {
                     try {
                         CmsPageData data = metadataComponent.getTemplateData(filepath);
                         templateComponent.staticPlace(site, entity.getPath(), metadata, data);
@@ -217,7 +217,7 @@ public class PlaceController {
         returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         CmsPlace entity = service.getEntity(id);
         if (null != entity) {
-            String filepath = siteComponent.getTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
+            String filepath = siteComponent.getTemplateFilePath(site.getId(), TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
             CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);
             if (ControllerUtils.errorCustom("manage",
                     CommonUtils.empty(metadata.getAdminIds()) || !ArrayUtils.contains(metadata.getAdminIds(), user.getId()),
@@ -227,7 +227,7 @@ public class PlaceController {
                 logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
                         "check.place", RequestUtils.getIpAddress(request), CommonUtils.getDate(), id.toString()));
                 if (site.isUseSsi() || CmsFileUtils
-                        .exists(siteComponent.getWebFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + entity.getPath()))) {
+                        .exists(siteComponent.getWebFilePath(site.getId(), TemplateComponent.INCLUDE_DIRECTORY + entity.getPath()))) {
                     try {
                         CmsPageData data = metadataComponent.getTemplateData(filepath);
                         templateComponent.staticPlace(site, entity.getPath(), metadata, data);
@@ -257,7 +257,7 @@ public class PlaceController {
         returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         CmsPlace entity = service.getEntity(id);
         if (null != entity) {
-            String filepath = siteComponent.getTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
+            String filepath = siteComponent.getTemplateFilePath(site.getId(), TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
             CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);
             if (ControllerUtils.errorCustom("manage",
                     null == entity || null == user || CommonUtils.empty(metadata.getAdminIds())
@@ -268,7 +268,7 @@ public class PlaceController {
                 logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
                         "check.place", RequestUtils.getIpAddress(request), CommonUtils.getDate(), id.toString()));
                 if (site.isUseSsi() || CmsFileUtils
-                        .exists(siteComponent.getWebFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + entity.getPath()))) {
+                        .exists(siteComponent.getWebFilePath(site.getId(), TemplateComponent.INCLUDE_DIRECTORY + entity.getPath()))) {
                     try {
                         CmsPageData data = metadataComponent.getTemplateData(filepath);
                         templateComponent.staticPlace(site, entity.getPath(), metadata, data);

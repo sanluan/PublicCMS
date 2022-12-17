@@ -161,7 +161,7 @@ public abstract class AbstractOauth implements Config, OauthGateway {
     public abstract OauthAccess getAccessToken(short siteId, String code) throws ClientProtocolException, IOException;
 
     @Override
-    public String getCode(SysSite site, boolean showAll) {
+    public String getCode(short siteId, boolean showAll) {
         return CONFIG_CODE;
     }
 

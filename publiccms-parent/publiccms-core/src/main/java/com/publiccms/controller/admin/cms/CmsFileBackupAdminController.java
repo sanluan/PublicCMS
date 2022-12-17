@@ -62,21 +62,21 @@ public class CmsFileBackupAdminController {
                 if (CommonUtils.notEmpty(type)) {
                     switch (type) {
                     case "file":
-                        backupFilePath = siteComponent.getWebBackupFilePath(site, path);
-                        filepath = siteComponent.getWebFilePath(site, path);
+                        backupFilePath = siteComponent.getWebBackupFilePath(site.getId(), path);
+                        filepath = siteComponent.getWebFilePath(site.getId(), path);
                         break;
                     case "task":
-                        backupFilePath = siteComponent.getTaskTemplateBackupFilePath(site, path);
-                        filepath = siteComponent.getTaskTemplateFilePath(site, path);
+                        backupFilePath = siteComponent.getTaskTemplateBackupFilePath(site.getId(), path);
+                        filepath = siteComponent.getTaskTemplateFilePath(site.getId(), path);
                         break;
                     case "template":
                     default:
-                        backupFilePath = siteComponent.getTemplateBackupFilePath(site, path);
-                        filepath = siteComponent.getTemplateFilePath(site, path);
+                        backupFilePath = siteComponent.getTemplateBackupFilePath(site.getId(), path);
+                        filepath = siteComponent.getTemplateFilePath(site.getId(), path);
                     }
                 } else {
-                    backupFilePath = siteComponent.getTemplateBackupFilePath(site, path);
-                    filepath = siteComponent.getTemplateFilePath(site, path);
+                    backupFilePath = siteComponent.getTemplateBackupFilePath(site.getId(), path);
+                    filepath = siteComponent.getTemplateFilePath(site.getId(), path);
                 }
                 if (ControllerUtils.errorCustom("notExist.backupfile", !CmsFileUtils.moveFile(backupFilePath, filepath), model)) {
                     return CommonConstants.TEMPLATE_ERROR;

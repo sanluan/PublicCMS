@@ -29,7 +29,7 @@ import com.publiccms.entities.cms.CmsDictionaryId;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
-import com.publiccms.logic.component.site.ExportComponent;
+import com.publiccms.logic.component.interaction.DictionaryInteractionComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.cms.CmsDictionaryDataService;
 import com.publiccms.logic.service.cms.CmsDictionaryExcludeService;
@@ -52,7 +52,7 @@ public class CmsDictionaryAdminController {
     @Autowired
     protected SiteComponent siteComponent;
     @Autowired
-    protected ExportComponent exportComponent;
+    protected DictionaryInteractionComponent interactionComponent;
 
     private String[] ignoreProperties = new String[] { "id", "siteId" };
 
@@ -120,11 +120,12 @@ public class CmsDictionaryAdminController {
 
     /**
      * @param site
+     * @param id
      * @param response
      */
     @RequestMapping("export")
     @Csrf
-    public void export(@RequestAttribute SysSite site, HttpServletResponse response) {
+    public void export(@RequestAttribute SysSite site, String id, HttpServletResponse response) {
         try {
             response.setHeader("content-disposition",
                     "attachment;fileName=" + URLEncoder.encode(site.getName() + "_dictionary.zip", "utf-8"));
@@ -133,7 +134,11 @@ public class CmsDictionaryAdminController {
         try (ServletOutputStream outputStream = response.getOutputStream();
                 ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream)) {
             zipOutputStream.setEncoding(Constants.DEFAULT_CHARSET_NAME);
-            exportComponent.exportDictionary(site.getId(), zipOutputStream);
+            if (CommonUtils.empty(id)) {
+                interactionComponent.exportAll(site.getId(), zipOutputStream);
+            } else {
+                interactionComponent.exportEntity(site.getId(), service.getEntity(id), zipOutputStream);
+            }
         } catch (IOException e) {
         }
     }

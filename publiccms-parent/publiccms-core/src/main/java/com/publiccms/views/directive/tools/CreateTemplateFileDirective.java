@@ -59,11 +59,11 @@ public class CreateTemplateFileDirective extends AbstractTemplateDirective {
         Integer pageIndex = handler.getInteger("pageIndex");
         if (CommonUtils.notEmpty(templatePath) && CommonUtils.notEmpty(filepath)) {
             SysSite site = getSite(handler);
-            String templateFullPath = SiteComponent.getFullTemplatePath(site, templatePath);
+            String templateFullPath = SiteComponent.getFullTemplatePath(site.getId(), templatePath);
             try {
                 Map<String, Object> model = new HashMap<>();
                 model.putAll(handler.getMap("parameters"));
-                String realTemplatePath = siteComponent.getTemplateFilePath(site, templatePath);
+                String realTemplatePath = siteComponent.getTemplateFilePath(site.getId(), templatePath);
                 CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(realTemplatePath);
                 CmsPageData data = metadataComponent.getTemplateData(realTemplatePath);
                 Map<String, Object> metadataMap = metadata.getAsMap(data);

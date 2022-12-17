@@ -35,27 +35,28 @@ import com.publiccms.logic.service.log.LogOperateService;
 import freemarker.template.TemplateException;
 
 /**
-*
-* contentCheck 内容审核接口
-* <p>
-* 参数列表
-* <ul>
-* <li><code>ids</code> 多个内容id
-* <li><code>uncheck</code> 取消审核, 【true,false】,默认为<code>false</code>
-* </ul>
-* <p>
-* 返回结果
-* <ul>
-* </ul>
-* 使用示例
-* <p>
-* <pre>
+ *
+ * contentCheck 内容审核接口
+ * <p>
+ * 参数列表
+ * <ul>
+ * <li><code>ids</code> 多个内容id
+ * <li><code>uncheck</code> 取消审核, 【true,false】,默认为<code>false</code>
+ * </ul>
+ * <p>
+ * 返回结果
+ * <ul>
+ * </ul>
+ * 使用示例
+ * <p>
+ * 
+ * <pre>
 &lt;script&gt;
 $.getJSON('${site.dynamicPath!}api/contentCheck?ids=1,2&amp;authToken=用户登录授权&amp;authUserId=1&amp;appToken=接口访问授权Token', function(data){
 });
 &lt;/script&gt;
-* </pre>
-*/
+ * </pre>
+ */
 @Component
 public class ContentCheckDirective extends AbstractAppDirective {
 
@@ -81,7 +82,7 @@ public class ContentCheckDirective extends AbstractAppDirective {
         } else {
             entityList = service.check(site.getId(), user, ids);
         }
-        Set<Integer> categoryIdSet = new HashSet<>();
+        Set<Serializable> categoryIdSet = new HashSet<>();
         for (CmsContent entity : entityList) {
             if (null != entity && site.getId() == entity.getSiteId()) {
                 if (CommonUtils.notEmpty(entity.getParentId())) {
@@ -91,7 +92,7 @@ public class ContentCheckDirective extends AbstractAppDirective {
                 categoryIdSet.add(entity.getCategoryId());
             }
         }
-        for (CmsCategory category : categoryService.getEntitys(categoryIdSet.toArray(new Integer[categoryIdSet.size()]))) {
+        for (CmsCategory category : categoryService.getEntitys(categoryIdSet)) {
             templateComponent.createCategoryFile(site, category, null, null);
         }
         logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), app.getChannel(),

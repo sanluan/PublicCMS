@@ -1,6 +1,7 @@
 package com.publiccms.logic.service.cms;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 
 // Generated 2020-7-1 21:06:19 by com.publiccms.common.generator.SourceGenerator
@@ -43,7 +44,7 @@ public class CmsSurveyQuestionItemService extends BaseService<CmsSurveyQuestionI
      * @param votes
      * @return entity
      */
-    public List<CmsSurveyQuestionItem> updateVotes(Serializable[] ids, int votes) {
+    public List<CmsSurveyQuestionItem> updateVotes(Collection<Serializable> ids, int votes) {
         List<CmsSurveyQuestionItem> entityList = getEntitys(ids);
         if (null != entityList) {
             for (CmsSurveyQuestionItem entity : entityList) {

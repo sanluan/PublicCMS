@@ -1,5 +1,6 @@
 package com.publiccms.common.handler;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,6 +38,7 @@ public class QueryHandler {
     private StringBuilder sqlBuilder;
     private Map<String, Object> map;
     private Map<String, Object[]> arrayMap;
+    private Map<String, Collection<?>> collectionMap;
     private Integer firstResult;
     private Integer maxResults;
     private Boolean cacheable;
@@ -163,6 +165,19 @@ public class QueryHandler {
         arrayMap.put(key, value);
         return this;
     }
+    
+    /**
+     * @param key
+     * @param value
+     * @return query handler
+     */
+    public QueryHandler setParameter(String key, Collection<?> value) {
+        if (null == collectionMap) {
+            collectionMap = new HashMap<>();
+        }
+        collectionMap.put(key, value);
+        return this;
+    }
 
     public <T> Query<T> initQuery(Query<T> query) {
         return initQuery(query, true);
@@ -177,6 +192,11 @@ public class QueryHandler {
         if (null != arrayMap) {
             for (String key : arrayMap.keySet()) {
                 query.setParameterList(key, arrayMap.get(key));
+            }
+        }
+        if (null != collectionMap) {
+            for (String key : collectionMap.keySet()) {
+                query.setParameterList(key, collectionMap.get(key));
             }
         }
         if (pageable) {

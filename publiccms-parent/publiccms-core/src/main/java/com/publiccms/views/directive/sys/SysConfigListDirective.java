@@ -41,7 +41,7 @@ public class SysConfigListDirective extends AbstractTemplateDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
-        Collection<ConfigInfo> list = configComponent.getConfigList(getSite(handler), handler.getLocale(), getAdvanced(handler));
+        Collection<ConfigInfo> list = configComponent.getConfigList(getSite(handler).getId(), handler.getLocale(), getAdvanced(handler));
         handler.put("list", list).render();
     }
 
