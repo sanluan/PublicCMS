@@ -15,32 +15,34 @@
     <style>
         .text-center{text-align:center;}
         .clearfix::after{display: block;clear: both;content: "";}
-        article #content img,article #content table,article figure img{max-width:100%;}
-        article #content{width:100%;overflow: auto;}
+        #content img,#content video,#content table,article figure img{max-width:100%;}
+        #content{width:100%;overflow: auto;}
+        nav a.selected{border-bottom:1px solid #f099f0;}
+        .bread{border-bottom:1px solid #eee;}
     </style>
 </head>
 <body>
+    <header data-diy="page">
+        <h1>${(site.name)!}</h1>
+    </header>
+    <nav data-diy="category">
+        <a href="${site.dynamicPath}" data-id="home">Home</a>
+<@cms.categoryList>
+    <#list page.list as a>
+        <a href="${a.url!}" target="_blank" data-id="${category.id}">${a.name}</a>
+    </#list>
+</@cms.categoryList>
+    </nav>
+    <main>
 <#macro bread category>
     <#if category.parentId?has_content>
         <@cms.category id=category.parentId;category>
             <@bread category/>
         </@cms.category>
     </#if>
-    <a href="${category.url}">${category.name}</a> &gt;
+    <a href="${category.url}" data-id="${category.id}">${category.name}</a> &gt;
 </#macro>
-    <header data-diy="page">
-        <h1>${(site.name)!}</h1>
-        <p><@bread category/> <a href="${category.url}">${category.name}</a></p>
-    </header>
-    <nav data-diy="category">
-        <a href="${site.dynamicPath}">Home</a>
-<@cms.categoryList>
-    <#list page.list as a>
-        <a href="${a.url!}" target="_blank">${a.name}</a>
-    </#list>
-</@cms.categoryList>
-    </nav>
-    <main>
+        <p class="bread"><@bread category/> <a href="${category.url}" data-id="${category.id}">${category.name}</a></p>
         <article>
             <h1 data-diy="content" data-diy-id="${(content.id)!}"><a href="${content.url!}">${content.title}</a></h1>
             <p><#if content.copied>Source:<a href="${(attribute.sourceUrl)!}" target="_blank">${(attribute.source)!}</a></#if> ${content.author!} ${content.editor!} ${content.publishDate?datetime} Views:<em>loading...</em></p>
@@ -161,6 +163,7 @@
         Copyright &copy; ${.now?string('yyyy')}
     </footer>
     <script src="${site.dynamicPath!}resource/plugins/jquery/jquery.min.js"></script>
+    <script src="${site.dynamicPath}resource/plugins/ueditor/ueditor.parse.min.js"></script>
     <#if content.hasProducts>
     <script>
     $('input[name=productId]').change(function(){
@@ -184,11 +187,14 @@
     </script>
     </#if>
     <script>
+        $("nav a[data-id="+$(".bread a:first-child").data("id")+"]").addClass("selected");
+
         $.getJSON('${site.dynamicPath!}api/contentClick?id=${content.id}', function(data){
             $('article p em').text(data.clicks);
         });
-    </script>
-    <script>
+
+        uParse('#content',{rootPath: '${site.dynamicPath}resource/ueditor/'});
+
 function score(contentId){
     $.getJSON('${site.dynamicPath!}score/score?itemId='+contentId+'&itemType=content&_csrf=<@tools.csrfToken/>', function(data){
         alert("Score ok!");
@@ -201,10 +207,6 @@ function unscore(contentId){
         location.reload();
     });
 }
-    </script>
-    <script src="${site.dynamicPath}resource/plugins/ueditor/ueditor.parse.min.js"></script>
-    <script>
-    uParse('#content',{rootPath: '${site.dynamicPath}resource/ueditor/'});
     </script>
     <script>
     var itemString="itemType=content&itemId=${content.id}";
