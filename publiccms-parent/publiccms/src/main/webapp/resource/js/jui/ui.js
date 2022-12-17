@@ -3,7 +3,7 @@
  */
 function initEnv() {
     $("body").append(JUI.frag["dwzFrag"]);
-    if (!$.support.leadingWhitespace && /6.0/.test(navigator.userAgent) ) {
+    if (!$.support.leadingWhitespace ) {
         try {
             document.execCommand("BackgroundImageCache", false, true);
         } catch (e) {}
@@ -14,9 +14,6 @@ function initEnv() {
     });
     var ajaxbg = $("#background,#progressBar");
     ajaxbg.hide();
-    ajaxbg.click(function(){
-        ajaxbg.hide();
-    });
     $(document).ajaxStart(function() {
         ajaxbg.show();
     }).ajaxStop(function() {

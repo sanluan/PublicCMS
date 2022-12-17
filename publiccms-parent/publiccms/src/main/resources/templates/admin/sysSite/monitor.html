@@ -204,9 +204,12 @@ function refreshMemory(){
         }
     }
 }
+refreshMemory();
+if(window.memoryInterval){
+    clearInterval(window.memoryInterval);
+}
 window.memoryInterval=setInterval(function () {
     refreshMemory();
 }, 10000);
-refreshMemory();
 </script>
 </@tools.disk>
