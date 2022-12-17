@@ -34,7 +34,11 @@
         <dd class="licenseVerify"></dd>
     </dl>
     <script>
-        $.getJSON('//cms.publiccms.com/api/directive/licenseVerify?licenseData=${getLicenseData()?url}',function(data){
+        $.getJSON({
+            url:'//cms.publiccms.com/api/directive/licenseVerify?licenseData=${getLicenseData()?url}',
+            global: false,
+            dataType: "json",
+            success: function(data){
             if(data.result){
                 $('.licenseVerify').append('<@t.page 'verified'/>');
             }else{

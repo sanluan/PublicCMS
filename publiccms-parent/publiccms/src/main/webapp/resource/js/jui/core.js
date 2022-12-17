@@ -22,7 +22,6 @@ var JUI = {
         // Determines when x, y coordinates is over "b" element
         return this.isOverAxis(y, top, height) && this.isOverAxis(x, left, width);
     } ,
-
     pageInfo: {
         pageNum: "pageNum", numPerPage: "numPerPage", orderField: "orderField", orderDirection: "orderDirection"
     } ,
@@ -529,6 +528,36 @@ var JUI = {
  */
 function html2Escape(sHtml) {
     return Base64.encode(sHtml);
+}
+/**
+ * jquery 选择器转义
+ * @param srcString 
+ * @returns safe selector
+ */
+function escapeJquery(srcString) {
+    var escapseResult = srcString;
+    var jsSpecialChars = ["\\", "^", "$", "*", "?", ".", "+", "(", ")", "[",
+        "]", "|", "{", "}"];
+    var jquerySpecialChars = ["~", "`", "@", "#", "%", "&", "=", "'", "\"", " ",
+        ":", ";", "<", ">", ",", "/"];
+    for (var i = 0; i < jsSpecialChars.length; i++) {
+        escapseResult = escapseResult.replace(new RegExp("\\"
+                + jsSpecialChars[i], "g"), "\\"
+                + jsSpecialChars[i]);
+    }
+    for (var i = 0; i < jquerySpecialChars.length; i++) {
+        escapseResult = escapseResult.replace(new RegExp(jquerySpecialChars[i],
+                "g"), "\\" + jquerySpecialChars[i]);
+    }
+    return escapseResult;
+}
+
+function escapeHtml(str) {
+    if(str) {
+        return str.encodeTXT();
+    } else {
+        return str;
+    }
 }
 /**
  * You can use this map like this: var myMap = new Map();
