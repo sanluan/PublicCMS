@@ -280,7 +280,7 @@ $('input[name=timing]',navTab.getCurrentPanel()).click();
                                     <td>
                                         <input type="hidden" name="contentRelateds[${a?index}][${related?index}].id" value="${related.id}"/>
                                         <input type="hidden" name="contentRelateds[${a?index}][${related?index}].relatedContentId" value="${related.relatedContentId!}"/>
-                                        <input class="required" type="text" name="contentRelateds[${a?index}][${related?index}].title" value="${related.title}" size="30" maxlength="255" class="required" />
+                                        <input class="required" type="text" name="contentRelateds[${a?index}][${related?index}].title" value="${related.title}" size="30" maxlength="255"/>
                                         <a class="btnLook" href="cmsContent/lookup.html?modelIds=${a.modelIds!}" lookupGroup="contentRelateds[${a?index}][${related?index}]" lookupPk="relatedContentId" width="1200" height="580"><@t.page 'content.select'/></a>
                                     </td>
                                     <#if a.dictionaryId?has_content>
