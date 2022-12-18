@@ -5,7 +5,6 @@ package com.publiccms.logic.service.sys;
 import java.util.List;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +14,8 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysDeptItem;
 import com.publiccms.entities.sys.SysDeptItemId;
 import com.publiccms.logic.dao.sys.SysDeptItemDao;
+
+import jakarta.annotation.Resource;
 
 /**
  *
@@ -99,7 +100,7 @@ public class SysDeptItemService extends BaseService<SysDeptItem> {
         }
     }
 
-    @Autowired
+    @Resource
     private SysDeptItemDao dao;
 
 }

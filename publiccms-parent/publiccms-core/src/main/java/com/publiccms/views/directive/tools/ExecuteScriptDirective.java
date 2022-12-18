@@ -2,7 +2,6 @@ package com.publiccms.views.directive.tools;
 
 import java.io.IOException;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
@@ -10,6 +9,8 @@ import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.LanguagesUtils;
 import com.publiccms.logic.component.site.ScriptComponent;
+
+import jakarta.annotation.Resource;
 
 /**
  * executeScript 脚本执行指令
@@ -60,6 +61,6 @@ public class ExecuteScriptDirective extends AbstractTemplateDirective {
         return true;
     }
 
-    @Autowired
+    @Resource
     protected ScriptComponent scriptComponent;
 }

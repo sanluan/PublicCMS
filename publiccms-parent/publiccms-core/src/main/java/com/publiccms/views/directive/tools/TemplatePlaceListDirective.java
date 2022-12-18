@@ -8,7 +8,6 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
@@ -22,6 +21,8 @@ import com.publiccms.views.pojo.diy.CmsLayout;
 import com.publiccms.views.pojo.diy.CmsLayoutData;
 import com.publiccms.views.pojo.diy.CmsModuleData;
 import com.publiccms.views.pojo.diy.CmsRegionData;
+
+import jakarta.annotation.Resource;
 
 /**
  * templatePlaceList 模板文件页面片段列表获取指令
@@ -61,7 +62,7 @@ public class TemplatePlaceListDirective extends AbstractTemplateDirective {
         Set<String> regionList = new LinkedHashSet<>();
         if (CommonUtils.notEmpty(path)) {
             SysSite site = getSite(handler);
-            String fileContent = CmsFileUtils.getFileContent(siteComponent.getTemplateFilePath(site, path));
+            String fileContent = CmsFileUtils.getFileContent(siteComponent.getTemplateFilePath(site.getId(), path));
             if (CommonUtils.notEmpty(fileContent)) {
                 Matcher matcher = PLACE_PATTERN.matcher(fileContent);
                 while (matcher.find()) {
@@ -74,7 +75,7 @@ public class TemplatePlaceListDirective extends AbstractTemplateDirective {
                 Set<String> placeSet2 = new HashSet<>();
                 for (String place : placeSet) {
                     String placeContent = CmsFileUtils
-                            .getFileContent(siteComponent.getTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + place));
+                            .getFileContent(siteComponent.getTemplateFilePath(site.getId(), TemplateComponent.INCLUDE_DIRECTORY + place));
                     if (CommonUtils.notEmpty(placeContent)) {
                         Matcher placeMatcher = PLACE_PATTERN.matcher(placeContent);
                         while (placeMatcher.find()) {
@@ -125,6 +126,6 @@ public class TemplatePlaceListDirective extends AbstractTemplateDirective {
         return true;
     }
 
-    @Autowired
+    @Resource
     private DiyComponent diyComponent;
 }

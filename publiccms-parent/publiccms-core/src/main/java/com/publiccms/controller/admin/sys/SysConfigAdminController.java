@@ -52,16 +52,16 @@ public class SysConfigAdminController {
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, @ModelAttribute SysConfig entity,
             String configCode, HttpServletRequest request) {
         if (CommonUtils.notEmpty(configCode)) {
-            Map<String, SysConfig> map = configComponent.getMap(site);
+            Map<String, SysConfig> map = configComponent.getMap(site.getId());
             map.remove(configCode);
             map.put(entity.getCode(), entity);
-            configComponent.save(site, map);
+            configComponent.save(site.getId(), map);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                     "update.config", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         } else {
-            Map<String, SysConfig> map = configComponent.getMap(site);
+            Map<String, SysConfig> map = configComponent.getMap(site.getId());
             map.put(entity.getCode(), entity);
-            configComponent.save(site, map);
+            configComponent.save(site.getId(), map);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER, "save.config",
                     RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
@@ -78,10 +78,10 @@ public class SysConfigAdminController {
     @RequestMapping("delete")
     @Csrf
     public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String code, HttpServletRequest request) {
-        Map<String, SysConfig> modelMap = configComponent.getMap(site);
+        Map<String, SysConfig> modelMap = configComponent.getMap(site.getId());
         SysConfig entity = modelMap.remove(code);
         if (null != entity) {
-            configComponent.save(site, modelMap);
+            configComponent.save(site.getId(), modelMap);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                     "delete.config", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         }

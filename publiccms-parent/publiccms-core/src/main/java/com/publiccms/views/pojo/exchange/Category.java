@@ -1,4 +1,4 @@
-package com.publiccms.views.pojo.export;
+package com.publiccms.views.pojo.exchange;
 
 import java.util.List;
 
@@ -7,30 +7,61 @@ import com.publiccms.entities.cms.CmsCategoryAttribute;
 import com.publiccms.entities.cms.CmsCategoryModel;
 import com.publiccms.entities.sys.SysExtendField;
 
-public class ExportCategory implements java.io.Serializable {
+public class Category implements java.io.Serializable {
     /**
      * 
      */
     private static final long serialVersionUID = 1L;
-    private CmsCategory category;
+    private String parentCode;
+    private CmsCategory entity;
+    private List<String> tagTypeList;
     private CmsCategoryAttribute attribute;
     private List<CmsCategoryModel> modelList;
     private List<SysExtendField> extendList;
-    private List<ExportCategory> childList;
+    private List<Category> childList;
 
     /**
-     * @return the category
+     * @return the parentCode
      */
-    public CmsCategory getCategory() {
-        return category;
+    public String getParentCode() {
+        return parentCode;
     }
 
     /**
-     * @param category
-     *            the category to set
+     * @param parentCode
+     *            the parentCode to set
      */
-    public void setCategory(CmsCategory category) {
-        this.category = category;
+    public void setParentCode(String parentCode) {
+        this.parentCode = parentCode;
+    }
+
+    /**
+     * @return the entity
+     */
+    public CmsCategory getEntity() {
+        return entity;
+    }
+
+    /**
+     * @param entity
+     *            the entity to set
+     */
+    public void setEntity(CmsCategory entity) {
+        this.entity = entity;
+    }
+
+    /**
+     * @return the tagTypeList
+     */
+    public List<String> getTagTypeList() {
+        return tagTypeList;
+    }
+
+    /**
+     * @param tagTypeList the tagTypeList to set
+     */
+    public void setTagTypeList(List<String> tagTypeList) {
+        this.tagTypeList = tagTypeList;
     }
 
     /**
@@ -81,7 +112,7 @@ public class ExportCategory implements java.io.Serializable {
     /**
      * @return the childList
      */
-    public List<ExportCategory> getChildList() {
+    public List<Category> getChildList() {
         return childList;
     }
 
@@ -89,7 +120,7 @@ public class ExportCategory implements java.io.Serializable {
      * @param childList
      *            the childList to set
      */
-    public void setChildList(List<ExportCategory> childList) {
+    public void setChildList(List<Category> childList) {
         this.childList = childList;
     }
 }

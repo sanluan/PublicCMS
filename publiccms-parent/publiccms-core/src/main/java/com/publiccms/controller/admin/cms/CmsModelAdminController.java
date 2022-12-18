@@ -113,15 +113,15 @@ public class CmsModelAdminController {
             }
         }
         if (CommonUtils.notEmpty(modelId)) {
-            Map<String, CmsModel> modelMap = modelComponent.getModelMap(site);
+            Map<String, CmsModel> modelMap = modelComponent.getModelMap(site.getId());
             CmsModel oldModel = modelMap.remove(modelId);
             modelMap.put(entity.getId(), entity);
-            List<CmsModel> modelList = modelComponent.getModelList(site, modelId, false, null, null, null, null);
+            List<CmsModel> modelList = modelComponent.getModelList(site.getId(), modelId, false, null, null, null, null);
             for (CmsModel m : modelList) {
                 m.setParentId(entity.getId());
                 modelMap.put(m.getId(), m);
             }
-            modelComponent.saveModel(site, modelMap);
+            modelComponent.saveModel(site.getId(), modelMap);
             if (CommonUtils.notEmpty(entity.getParentId()) && entity.getParentId().equals(oldModel.getParentId())) {
                 List<CmsCategoryModel> categoryModelList = categoryModelService.getList(site.getId(), entity.getParentId(), null);
                 for (CmsCategoryModel categoryModel : categoryModelList) {
@@ -136,9 +136,9 @@ public class CmsModelAdminController {
                     LogLoginService.CHANNEL_WEB_MANAGER, "update.model", RequestUtils.getIpAddress(request),
                     CommonUtils.getDate(), JsonUtils.getString(entity)));
         } else {
-            Map<String, CmsModel> modelMap = modelComponent.getModelMap(site);
+            Map<String, CmsModel> modelMap = modelComponent.getModelMap(site.getId());
             modelMap.put(entity.getId(), entity);
-            modelComponent.saveModel(site, modelMap);
+            modelComponent.saveModel(site.getId(), modelMap);
             if (CommonUtils.notEmpty(entity.getParentId())) {
                 List<CmsCategoryModel> categoryModelList = categoryModelService.getList(site.getId(), entity.getParentId(), null);
                 for (CmsCategoryModel categoryModel : categoryModelList) {
@@ -170,15 +170,15 @@ public class CmsModelAdminController {
         if (ControllerUtils.errorCustom("noright", null != site.getParentId(), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        Map<String, CmsModel> modelMap = modelComponent.getModelMap(site);
+        Map<String, CmsModel> modelMap = modelComponent.getModelMap(site.getId());
         CmsModel entity = modelMap.remove(id);
         if (null != entity) {
-            List<CmsModel> modelList = modelComponent.getModelList(site, entity.getId(), false, null, null, null, null);
+            List<CmsModel> modelList = modelComponent.getModelList(site.getId(), entity.getId(), false, null, null, null, null);
             for (CmsModel m : modelList) {
                 m.setParentId(null);
                 modelMap.put(m.getId(), m);
             }
-            modelComponent.saveModel(site, modelMap);
+            modelComponent.saveModel(site.getId(), modelMap);
             categoryModelService.delete(site.getId(), id, null);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.model", RequestUtils.getIpAddress(request),
@@ -195,7 +195,7 @@ public class CmsModelAdminController {
     @RequestMapping("batchPublish")
     @Csrf
     public String batchPublish(@RequestAttribute SysSite site, String id) {
-        Map<String, CmsModel> modelMap = modelComponent.getModelMap(site);
+        Map<String, CmsModel> modelMap = modelComponent.getModelMap(site.getId());
         CmsModel entity = modelMap.get(id);
         if (null != entity) {
             log.info("begin batch publish");
@@ -223,7 +223,7 @@ public class CmsModelAdminController {
     @RequestMapping("rebuildSearchText")
     @Csrf
     public String rebuildSearchText(@RequestAttribute SysSite site, String id) {
-        Map<String, CmsModel> modelMap = modelComponent.getModelMap(site);
+        Map<String, CmsModel> modelMap = modelComponent.getModelMap(site.getId());
         CmsModel entity = modelMap.get(id);
         if (null != entity) {
             CmsCategoryQuery query = new CmsCategoryQuery();

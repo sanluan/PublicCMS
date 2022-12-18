@@ -1,0 +1,15 @@
+<div class="pageFormContent layoutBox" layoutH>
+    <dl class="nowrap">
+        <dt><@t.page 'button.export'/>:</dt>
+        <dd>
+            <a class="button" href="cmsContent/exportExcel?_csrf=<@tools.csrfToken admin=true/>" target="dwzExport" targetType="navTab"><i class="bi bi-table"></i><@t.page 'export.excel'/></a>
+            <a class="button" href="cmsContent/exportData?_csrf=<@tools.csrfToken admin=true/>" target="dwzExport" targetType="navTab"><i class="icon-download-alt icon-large"></i><@t.page 'export.datafile'/></a>
+            <span class="info"><@t.page 'export.description'/></span>
+        </dd>
+    </dl>
+</div>
+<div class="formBar">
+    <ul>
+        <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+    </ul>
+</div>

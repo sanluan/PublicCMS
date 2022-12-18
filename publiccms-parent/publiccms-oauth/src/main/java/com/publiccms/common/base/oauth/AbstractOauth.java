@@ -142,7 +142,7 @@ public abstract class AbstractOauth implements Config, OauthGateway {
      * @throws ClientProtocolException
      * @throws IOException
      */
-    public OauthAccess getOpenId(short siteId, OauthAccess oauthInfo) throws ClientProtocolException, IOException {
+    public OauthAccess getOpenId(@SuppressWarnings("unused") short siteId, OauthAccess oauthInfo) throws ClientProtocolException, IOException {
         return oauthInfo;
     }
 
@@ -161,7 +161,7 @@ public abstract class AbstractOauth implements Config, OauthGateway {
     public abstract OauthAccess getAccessToken(short siteId, String code) throws ClientProtocolException, IOException;
 
     @Override
-    public String getCode(SysSite site, boolean showAll) {
+    public String getCode(short siteId, boolean showAll) {
         return CONFIG_CODE;
     }
 

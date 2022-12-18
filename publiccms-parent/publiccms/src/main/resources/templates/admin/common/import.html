@@ -3,14 +3,12 @@
     <input type="hidden" name="titleField" value="${titleField!'title'}"/>
     <input type="hidden" name="field" value="${field!'text'}"/>
     <div class="pageFormContent layoutBox" layoutH>
-        <div class="preview" style="position:relative;"><div style="position:absolute;top:0px;right:0;z-index:1000;"><img style="max-height:200px;max-width:300px;"/></div></div>
         <dl class="nowrap">
             <dt><@t.page 'file'/>:</dt>
             <dd>
                 <input type="file" name="file" class="required" size="30" accept="application/pdf,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/msword,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"/>
                 <span class="info"><@t.page 'import_doc.support_type'/></span>
             </dd>
-            <div class="clearfix"></div>
         </dl>
         <dl class="nowrap iframe hide">
             <dt><@t.page 'iframe'/>:</dt>
@@ -21,7 +19,6 @@
                     <label><@t.page 'height'/></label><input name="height" data-required="true" type="text" value="800px"/>
                 </div>
             </dd>
-            <div class="clearfix"></div>
         </dl>
         <dl class="nowrap font hide">
             <dt><@t.page 'default_font'/>:</dt>
@@ -33,7 +30,6 @@
                 </select>
                 <span class="info"><@t.page 'default_font.description'/></span>
             </dd>
-            <div class="clearfix"></div>
         </dl>
     </div>
     <div class="formBar">

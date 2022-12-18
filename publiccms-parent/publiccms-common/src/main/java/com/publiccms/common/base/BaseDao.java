@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -140,7 +141,32 @@ public abstract class BaseDao<E> {
             return getEntity(queryHandler);
         }
     }
+    /**
+     * 获取实体集合
+     *
+     * @param ids
+     * @return entity list
+     */
+    public List<E> getEntitys(Collection<Serializable> ids) {
+        return getEntitys(ids, "id");
+    }
 
+    /**
+     * 获取实体集合
+     *
+     * @param ids
+     * @param primaryKeyName
+     * @return entity list
+     */
+    public List<E> getEntitys(Collection<Serializable> ids, String primaryKeyName) {
+        if (CommonUtils.notEmpty(ids)) {
+            QueryHandler queryHandler = getQueryHandler("from").append(getEntityClass().getSimpleName()).append("bean");
+            queryHandler.condition(String.format("bean.%s", primaryKeyName)).append("in (:ids)").setParameter("ids", ids);
+            Query<E> query = getSession().createQuery(queryHandler.getSql(), getEntityClass());
+            return getList(query, queryHandler);
+        }
+        return Collections.emptyList();
+    }
     /**
      * 获取实体集合
      *
@@ -168,6 +194,14 @@ public abstract class BaseDao<E> {
         return Collections.emptyList();
     }
 
+    /**
+     * 保存或更新
+     *
+     * @param entity
+     */
+    public void saveOrUpdate(E entity) {
+        getSession().saveOrUpdate(init(entity));
+    }
     /**
      * 保存
      *

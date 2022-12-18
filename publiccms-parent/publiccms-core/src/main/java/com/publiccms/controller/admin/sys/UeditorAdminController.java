@@ -131,7 +131,7 @@ public class UeditorAdminController {
             String suffix = CmsFileUtils.getSuffix(originalName);
             if (ArrayUtils.contains(siteConfigComponent.getSafeSuffix(site), suffix)) {
                 String fileName = CmsFileUtils.getUploadFileName(suffix);
-                String filepath = siteComponent.getWebFilePath(site, fileName);
+                String filepath = siteComponent.getWebFilePath(site.getId(), fileName);
                 try {
                     CmsFileUtils.upload(file, filepath);
                     if (CmsFileUtils.isSafe(filepath, suffix)) {
@@ -179,7 +179,7 @@ public class UeditorAdminController {
         if (CommonUtils.notEmpty(file)) {
             byte[] data = VerificationUtils.base64Decode(file);
             String fileName = CmsFileUtils.getUploadFileName(SCRAW_TYPE);
-            String filepath = siteComponent.getWebFilePath(site, fileName);
+            String filepath = siteComponent.getWebFilePath(site.getId(), fileName);
             try {
                 CmsFileUtils.writeByteArrayToFile(filepath, data);
                 FileSize fileSize = CmsFileUtils.getFileSize(filepath, SCRAW_TYPE);
@@ -233,12 +233,12 @@ public class UeditorAdminController {
                             FileSize fileSize;
                             if (fileType.equals(FileType.WebP)) {
                                 fileName = CmsFileUtils.getUploadFileName("jpg");
-                                String filepath = siteComponent.getWebFilePath(site, fileName);
+                                String filepath = siteComponent.getWebFilePath(site.getId(), fileName);
                                 ImageUtils.webp2Image(inputStream, false, new File(filepath));
                                 fileSize = CmsFileUtils.getFileSize(filepath, suffix);
                             } else {
                                 fileName = CmsFileUtils.getUploadFileName(suffix);
-                                String filepath = siteComponent.getWebFilePath(site, fileName);
+                                String filepath = siteComponent.getWebFilePath(site.getId(), fileName);
                                 fileSize = CmsFileUtils.copyInputStreamToFile(inputStream, filepath, suffix);
                             }
                             logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,

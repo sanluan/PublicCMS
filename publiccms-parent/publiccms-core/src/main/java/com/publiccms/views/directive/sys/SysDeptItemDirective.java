@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
@@ -15,6 +14,8 @@ import com.publiccms.entities.sys.SysDeptItem;
 import com.publiccms.entities.sys.SysDeptItemId;
 import com.publiccms.logic.service.sys.SysDeptItemService;
 import com.publiccms.logic.service.sys.SysDeptService;
+
+import jakarta.annotation.Resource;
 
 /**
  *
@@ -89,8 +90,8 @@ public class SysDeptItemDirective extends AbstractTemplateDirective {
         return true;
     }
 
-    @Autowired
+    @Resource
     private SysDeptItemService service;
-    @Autowired
+    @Resource
     private SysDeptService sysDeptService;
 }

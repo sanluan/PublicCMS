@@ -6,14 +6,15 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.publiccms.entities.cms.CmsEditorHistory;
-import com.publiccms.logic.service.cms.CmsEditorHistoryService;
-import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.cms.CmsEditorHistory;
+import com.publiccms.logic.service.cms.CmsEditorHistoryService;
+
+import jakarta.annotation.Resource;
 
 /**
 *
@@ -67,7 +68,7 @@ public class CmsEditorHistoryDirective extends AbstractTemplateDirective {
         return true;
     }
 
-    @Autowired
+    @Resource
     private CmsEditorHistoryService service;
 
 }

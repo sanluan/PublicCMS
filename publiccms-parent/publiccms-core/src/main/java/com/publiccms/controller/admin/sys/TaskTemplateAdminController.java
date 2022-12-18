@@ -68,14 +68,14 @@ public class TaskTemplateAdminController {
             HttpServletRequest request, ModelMap model) {
         if (CommonUtils.notEmpty(path)) {
             try {
-                String filepath = siteComponent.getTaskTemplateFilePath(site, path);
+                String filepath = siteComponent.getTaskTemplateFilePath(site.getId(), path);
                 content = new String(VerificationUtils.base64Decode(content), CommonConstants.DEFAULT_CHARSET);
                 if (CmsFileUtils.createFile(filepath, content)) {
                     logOperateService.save(
                             new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                                     "save.task.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
                 } else {
-                    String historyFilePath = siteComponent.getTaskTemplateHistoryFilePath(site, path, true);
+                    String historyFilePath = siteComponent.getTaskTemplateHistoryFilePath(site.getId(), path, true);
                     CmsFileUtils.updateFile(filepath, historyFilePath, content);
                     logOperateService.save(
                             new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
@@ -109,7 +109,7 @@ public class TaskTemplateAdminController {
             try {
                 for (MultipartFile file : files) {
                     String filepath = path + CommonConstants.SEPARATOR + file.getOriginalFilename();
-                    String destFullFileName = siteComponent.getTaskTemplateFilePath(site, filepath);
+                    String destFullFileName = siteComponent.getTaskTemplateFilePath(site.getId(), filepath);
                     CmsFileUtils.upload(file, destFullFileName);
                     if (destFullFileName.endsWith(".zip") && CmsFileUtils.isFile(destFullFileName)) {
                         ZipUtils.unzipHere(destFullFileName, encoding);
@@ -136,7 +136,7 @@ public class TaskTemplateAdminController {
     @RequestMapping("export")
     @Csrf
     public void export(@RequestAttribute SysSite site, HttpServletResponse response) {
-        String filepath = siteComponent.getTaskTemplateFilePath(site, CommonConstants.SEPARATOR);
+        String filepath = siteComponent.getTaskTemplateFilePath(site.getId(), CommonConstants.SEPARATOR);
         try {
             response.setHeader("content-disposition",
                     "attachment;fileName=" + URLEncoder.encode(site.getName() + "_tasktemplate.zip", "utf-8"));
@@ -163,8 +163,8 @@ public class TaskTemplateAdminController {
     public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path, HttpServletRequest request,
             ModelMap model) {
         if (CommonUtils.notEmpty(path)) {
-            String filepath = siteComponent.getTaskTemplateFilePath(site, path);
-            String backupFilePath = siteComponent.getTaskTemplateBackupFilePath(site, path);
+            String filepath = siteComponent.getTaskTemplateFilePath(site.getId(), path);
+            String backupFilePath = siteComponent.getTaskTemplateBackupFilePath(site.getId(), path);
             if (ControllerUtils.errorCustom("notExist.template", !CmsFileUtils.moveFile(filepath, backupFilePath), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }

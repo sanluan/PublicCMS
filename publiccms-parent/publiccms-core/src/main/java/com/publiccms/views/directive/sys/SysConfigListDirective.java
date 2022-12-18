@@ -7,12 +7,12 @@ import java.util.Collection;
 
 import jakarta.annotation.Resource;
 
-import com.publiccms.common.base.AbstractTemplateDirective;
-import com.publiccms.logic.component.config.ConfigComponent;
-import com.publiccms.logic.component.config.ConfigComponent.ConfigInfo;
 import org.springframework.stereotype.Component;
 
+import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.logic.component.config.ConfigComponent;
+import com.publiccms.views.pojo.entities.ConfigInfo;
 
 /**
 *
@@ -22,7 +22,7 @@ import com.publiccms.common.handler.RenderHandler;
 * 返回结果
 * <ul>
 * <li><code>list</code> List类型 查询结果实体列表
-* {@link com.publiccms.logic.component.config.ConfigComponent.ConfigInfo}
+ * {@link com.publiccms.views.pojo.entities.ConfigInfo}
 * </ul>
 * 使用示例
 * <p>
@@ -42,7 +42,8 @@ public class SysConfigListDirective extends AbstractTemplateDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
-        Collection<ConfigInfo> list = configComponent.getConfigList(getSite(handler), handler.getLocale(), getAdvanced(handler));
+        Collection<ConfigInfo> list = configComponent.getConfigList(getSite(handler).getId(), handler.getLocale(),
+                getAdvanced(handler));
         handler.put("list", list).render();
     }
 

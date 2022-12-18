@@ -55,17 +55,17 @@ public class FileBackupListDirective extends AbstractTemplateDirective {
         if (CommonUtils.notEmpty(type)) {
             switch (type) {
             case "file":
-                realpath = siteComponent.getWebBackupFilePath(site, path);
+                realpath = siteComponent.getWebBackupFilePath(site.getId(), path);
                 break;
             case "task":
-                realpath = siteComponent.getTaskTemplateBackupFilePath(site, path);
+                realpath = siteComponent.getTaskTemplateBackupFilePath(site.getId(), path);
                 break;
             case "template":
             default:
-                realpath = siteComponent.getTemplateBackupFilePath(site, path);
+                realpath = siteComponent.getTemplateBackupFilePath(site.getId(), path);
             }
         } else {
-            realpath = siteComponent.getTemplateBackupFilePath(site, path);
+            realpath = siteComponent.getTemplateBackupFilePath(site.getId(), path);
         }
         handler.put("list", CmsFileUtils.getFileList(realpath, handler.getString("orderField"))).render();
     }

@@ -1,6 +1,7 @@
 package com.publiccms.logic.service.cms;
 
-import static org.springframework.util.StringUtils.arrayToDelimitedString;
+import static org.springframework.util.StringUtils.collectionToDelimitedString;
+import static org.springframework.util.StringUtils.collectionToCommaDelimitedString;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -163,17 +164,6 @@ public class CmsContentService extends BaseService<CmsContent> {
     }
 
     /**
-     * @param siteIds
-     * @param pageIndex
-     * @param pageSize
-     * @return results page
-     */
-    @Transactional(readOnly = true)
-    public PageHandler getPage(Short[] siteIds, Integer pageIndex, Integer pageSize) {
-        return dao.getPage(siteIds, pageIndex, pageSize);
-    }
-
-    /**
      * @param siteId
      * @param quoteId
      * @return results list
@@ -182,13 +172,17 @@ public class CmsContentService extends BaseService<CmsContent> {
     public List<CmsContent> getListByQuoteId(short siteId, Long quoteId) {
         return dao.getListByQuoteId(siteId, quoteId);
     }
+    
+    public List<CmsContent> getListByTopId(short siteId, Long topId) {
+        return dao.getListByTopId(siteId, topId);
+    }
 
     public CmsContent saveTagAndAttribute(short siteId, Long userId, Long id, CmsContentParameters contentParameters,
             CmsModel cmsModel, Integer extendId, CmsContentAttribute attribute) {
         CmsContent entity = getEntity(id);
         if (null != entity) {
-            Long[] tagIds = tagService.update(siteId, contentParameters.getTags());
-            entity.setTagIds(arrayToDelimitedString(tagIds, CommonConstants.BLANK_SPACE));
+            Set<Serializable> tagIds = tagService.update(siteId, contentParameters.getTags());
+            entity.setTagIds(collectionToDelimitedString(tagIds, CommonConstants.BLANK_SPACE));
             if (entity.isHasImages() || entity.isHasFiles()) {
                 contentFileService.update(entity.getId(), userId, entity.isHasFiles() ? contentParameters.getFiles() : null,
                         entity.isHasImages() ? contentParameters.getImages() : null);// 更新保存图集，附件
@@ -276,7 +270,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param worker
      * @param batchSize
      */
-    public void batchWorkId(short siteId, Integer categoryId, String modelId, BiConsumer<List<Long>, Integer> worker,
+    public void batchWorkId(short siteId, Integer categoryId, String modelId, BiConsumer<List<Serializable>, Integer> worker,
             int batchSize) {
         dao.batchWorkId(siteId, categoryId, modelId, worker, batchSize);
     }
@@ -343,14 +337,12 @@ public class CmsContentService extends BaseService<CmsContent> {
             dealExtend(modelExtendList, dictionaryValueList, extendsFieldList, map, extendsTextBuilder);
             dealExtend(categoryExtendList, dictionaryValueList, extendsFieldList, map, extendsTextBuilder);
             if (CommonUtils.notEmpty(dictionaryValueList)) {
-                String[] dictionaryValues = dictionaryValueList.toArray(new String[dictionaryValueList.size()]);
-                attribute.setDictionaryValues(arrayToDelimitedString(dictionaryValues, CommonConstants.BLANK_SPACE));
+                attribute.setDictionaryValues(collectionToDelimitedString(dictionaryValueList, CommonConstants.BLANK_SPACE));
             } else {
                 attribute.setDictionaryValues(null);
             }
             if (CommonUtils.notEmpty(extendsFieldList)) {
-                String[] extendsFields = extendsFieldList.toArray(new String[extendsFieldList.size()]);
-                attribute.setExtendsFields(arrayToDelimitedString(extendsFields, CommonConstants.COMMA_DELIMITED));
+                attribute.setExtendsFields(collectionToCommaDelimitedString(extendsFieldList));
                 attribute.setExtendsText(extendsTextBuilder.toString());
                 searchTextBuilder.append(attribute.getExtendsText());
             } else {
@@ -576,9 +568,9 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param contentParameters
      * @return categoryIds set
      */
-    public Set<Integer> updateQuote(Serializable id, CmsContentParameters contentParameters) {
+    public Set<Serializable> updateQuote(Serializable id, CmsContentParameters contentParameters) {
         CmsContent entity = getEntity(id);
-        Set<Integer> categoryIds = new HashSet<>();
+        Set<Serializable> categoryIds = new HashSet<>();
         if (null != entity) {
             for (CmsContent quote : getListByQuoteId(entity.getSiteId(), entity.getId())) {
                 if (null != contentParameters.getContentIds() && contentParameters.getContentIds().contains(quote.getId())) {

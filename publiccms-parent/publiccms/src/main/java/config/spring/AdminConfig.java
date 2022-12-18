@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Locale;
 
 import jakarta.annotation.Resource;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;

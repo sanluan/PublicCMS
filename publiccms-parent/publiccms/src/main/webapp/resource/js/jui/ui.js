@@ -19,6 +19,9 @@ function initEnv() {
     }).ajaxStop(function() {
         ajaxbg.hide();
     });
+    $("#progressBar").click(function(){
+        ajaxbg.hide();
+    });
     $("#leftside").jBar({
         minW: 150, maxW: 700
     });

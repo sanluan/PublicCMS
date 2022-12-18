@@ -130,9 +130,9 @@ public class SysConfigDataAdminController {
             }
 
             configComponent.removeCache(site.getId(), entity.getId().getCode());
-            if (emailComponent.getCode(site).equals(entity.getId().getCode())) {
+            if (emailComponent.getCode(site.getId()).equals(entity.getId().getCode())) {
                 emailComponent.clear(site.getId());
-            } else if (corsConfigComponent.getCode(site).equals(entity.getId().getCode())) {
+            } else if (corsConfigComponent.getCode(site.getId()).equals(entity.getId().getCode())) {
                 corsConfigComponent.clear(site.getId());
             }
 

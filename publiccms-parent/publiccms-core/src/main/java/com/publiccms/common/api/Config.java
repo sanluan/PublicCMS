@@ -141,11 +141,11 @@ public interface Config {
     List<SysExtendField> getExtendFieldList(SysSite site, Locale locale);
 
     /**
-     * @param site
+     * @param siteId
      * @param showAll
      * @return config code or null
      */
-    default String getCode(SysSite site, boolean showAll) {
+    default String getCode(@SuppressWarnings("unused") short siteId, @SuppressWarnings("unused") boolean showAll) {
         return CONFIG_CODE_SITE;
     }
 
@@ -160,11 +160,11 @@ public interface Config {
     }
 
     /**
-     * @param site
+     * @param siteId
      * @return config code or null
      */
-    default String getCode(SysSite site) {
-        return getCode(site, false);
+    default String getCode(short siteId) {
+        return getCode(siteId, false);
     }
 
     /**

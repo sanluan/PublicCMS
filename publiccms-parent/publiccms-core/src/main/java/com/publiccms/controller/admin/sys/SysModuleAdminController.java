@@ -1,5 +1,6 @@
 package com.publiccms.controller.admin.sys;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -162,7 +163,7 @@ public class SysModuleAdminController {
     @SuppressWarnings("unchecked")
     private void dealRoleAuthorized(List<SysRoleModule> roleModuleList) {
         for (SysRoleModule roleModule : roleModuleList) {
-            Set<String> moduleIds = new HashSet<>();
+            Set<Serializable> moduleIds = new HashSet<>();
             for (SysRoleModule roleModule2 : (List<SysRoleModule>) roleModuleService
                     .getPage(roleModule.getId().getRoleId(), null, null, null).getList()) {
                 moduleIds.add(roleModule2.getId().getModuleId());
@@ -170,8 +171,7 @@ public class SysModuleAdminController {
             SysRole role = roleService.getEntity(roleModule.getId().getRoleId());
             if (!moduleIds.isEmpty() && null != role && !role.isOwnsAllRight()) {
                 roleAuthorizedService.dealRoleModules(roleModule.getId().getRoleId(), role.isShowAllModule(),
-                        service.getEntitys(moduleIds.toArray(new String[moduleIds.size()])),
-                        role.isShowAllModule() ? moduleService.getPageUrl(null) : null);
+                        service.getEntitys(moduleIds), role.isShowAllModule() ? moduleService.getPageUrl(null) : null);
             }
         }
     }

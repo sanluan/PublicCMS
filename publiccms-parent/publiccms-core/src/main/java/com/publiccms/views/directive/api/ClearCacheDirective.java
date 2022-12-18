@@ -2,7 +2,6 @@ package com.publiccms.views.directive.api;
 
 import java.io.IOException;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractAppDirective;
@@ -10,6 +9,8 @@ import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.entities.sys.SysApp;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.cache.CacheComponent;
+
+import jakarta.annotation.Resource;
 
 /**
 *
@@ -34,7 +35,7 @@ public class ClearCacheDirective extends AbstractAppDirective {
         handler.render();
     }
 
-    @Autowired
+    @Resource
     private CacheComponent cacheComponent;
 
     @Override

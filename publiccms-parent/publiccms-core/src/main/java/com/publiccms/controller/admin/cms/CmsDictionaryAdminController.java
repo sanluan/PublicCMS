@@ -3,20 +3,27 @@ package com.publiccms.controller.admin.cms;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.DateFormat;
+import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.tools.zip.ZipOutputStream;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.DateFormatUtils;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.cms.CmsDictionary;
@@ -24,7 +31,8 @@ import com.publiccms.entities.cms.CmsDictionaryId;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
-import com.publiccms.logic.component.site.ExportComponent;
+import com.publiccms.logic.component.exchange.DictionaryExchangeComponent;
+import com.publiccms.logic.component.exchange.Exchange;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.cms.CmsDictionaryDataService;
 import com.publiccms.logic.service.cms.CmsDictionaryExcludeService;
@@ -47,12 +55,13 @@ import jakarta.servlet.http.HttpServletResponse;
 @Controller
 @RequestMapping("cmsDictionary")
 public class CmsDictionaryAdminController {
+    protected final Log log = LogFactory.getLog(getClass());
     @Resource
     protected LogOperateService logOperateService;
     @Resource
     protected SiteComponent siteComponent;
     @Resource
-    protected ExportComponent exportComponent;
+    protected DictionaryExchangeComponent exchangeComponent;
 
     private String[] ignoreProperties = new String[] { "id", "siteId" };
 
@@ -120,20 +129,48 @@ public class CmsDictionaryAdminController {
 
     /**
      * @param site
+     * @param admin
+     * @param overwrite
+     * @param file
+     * @param request
+     * @param model
+     * @return
+     */
+    @RequestMapping("doImport")
+    @Csrf
+    public String doImport(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile file, boolean overwrite,
+            HttpServletRequest request, ModelMap model) {
+        if (null != file) {
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "import.cmsDictionary", RequestUtils.getIpAddress(request),
+                    CommonUtils.getDate(), file.getOriginalFilename()));
+        }
+        return Exchange.importData(site.getId(), admin.getId(), overwrite, "_dictionary.zip", exchangeComponent, file, model);
+    }
+
+    /**
+     * @param site
+     * @param id
      * @param response
      */
     @RequestMapping("export")
     @Csrf
-    public void export(@RequestAttribute SysSite site, HttpServletResponse response) {
+    public void export(@RequestAttribute SysSite site, String id, HttpServletResponse response) {
         try {
-            response.setHeader("content-disposition",
-                    "attachment;fileName=" + URLEncoder.encode(site.getName() + "_dictionary.zip", "utf-8"));
+            DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.FULL_DATE_FORMAT_STRING);
+            response.setHeader("content-disposition", "attachment;fileName="
+                    + URLEncoder.encode(site.getName() + "_" + dateFormat.format(new Date()) + "_dictionary.zip", "utf-8"));
         } catch (UnsupportedEncodingException e1) {
         }
         try (ServletOutputStream outputStream = response.getOutputStream();
                 ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream)) {
             zipOutputStream.setEncoding(Constants.DEFAULT_CHARSET_NAME);
-            exportComponent.exportDictionary(site.getId(), zipOutputStream);
+            if (CommonUtils.empty(id)) {
+                exchangeComponent.exportAll(site.getId(), zipOutputStream);
+            } else {
+                exchangeComponent.exportEntity(site.getId(), service.getEntity(new CmsDictionaryId(id, site.getId())),
+                        zipOutputStream);
+            }
         } catch (IOException e) {
         }
     }

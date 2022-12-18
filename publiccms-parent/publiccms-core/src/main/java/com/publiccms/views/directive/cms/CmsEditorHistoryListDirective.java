@@ -4,13 +4,14 @@ package com.publiccms.views.directive.cms;
 
 import java.io.IOException;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.publiccms.logic.service.cms.CmsEditorHistoryService;
 import com.publiccms.common.base.AbstractTemplateDirective;
-import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.handler.PageHandler;
+import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.logic.service.cms.CmsEditorHistoryService;
+
+import jakarta.annotation.Resource;
 
 /**
  *
@@ -63,7 +64,7 @@ public class CmsEditorHistoryListDirective extends AbstractTemplateDirective {
         return true;
     }
 
-    @Autowired
+    @Resource
     private CmsEditorHistoryService service;
 
 }

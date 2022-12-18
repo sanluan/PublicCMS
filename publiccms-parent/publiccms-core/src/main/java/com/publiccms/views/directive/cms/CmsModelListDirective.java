@@ -51,7 +51,7 @@ public class CmsModelListDirective extends AbstractTemplateDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
         PageHandler page = new PageHandler(null, null);
-        page.setList(modelComponent.getModelList(getSite(handler), handler.getString("parentId"),
+        page.setList(modelComponent.getModelList(getSite(handler).getId(), handler.getString("parentId"),
                 handler.getBoolean("queryAll", false), handler.getBoolean("hasChild"), handler.getBoolean("onlyUrl"),
                 handler.getBoolean("hasImages"), handler.getBoolean("hasFiles")));
         handler.put("page", page).render();

@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.function.BiConsumer;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.stereotype.Service;
@@ -56,15 +55,6 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
     private CmsEditorHistoryService editorHistoryService;
 
     /**
-     * @param siteId
-     * @param worker
-     * @param batchSize
-     */
-    public void batchWork(short siteId, BiConsumer<List<CmsCategory>, Integer> worker, int batchSize) {
-        dao.batchWork(siteId, worker, batchSize);
-    }
-
-    /**
      * @param queryEntity
      * @param pageIndex
      * @param pageSize
@@ -91,7 +81,8 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
                     if (null != cmsCategoryModelParameters.getCategoryModel()) {
                         cmsCategoryModelParameters.getCategoryModel().getId().setCategoryId(id);
                         if (cmsCategoryModelParameters.isUse()) {
-                            categoryModelService.updateCategoryModel(siteId, cmsCategoryModelParameters.getCategoryModel());
+                            cmsCategoryModelParameters.getCategoryModel().setSiteId(siteId);
+                            categoryModelService.saveOrUpdate( cmsCategoryModelParameters.getCategoryModel());
                         } else {
                             categoryModelService.delete(cmsCategoryModelParameters.getCategoryModel().getId());
                         }

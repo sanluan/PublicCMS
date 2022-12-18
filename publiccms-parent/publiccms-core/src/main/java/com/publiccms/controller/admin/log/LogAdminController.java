@@ -115,7 +115,7 @@ public class LogAdminController {
         Map<Integer, SysDept> deptMap = new HashMap<>();
         if (null != pksMap.get("deptIds")) {
             List<Serializable> deptIds = pksMap.get("deptIds");
-            List<SysDept> entitys = sysDeptService.getEntitys(deptIds.toArray(new Serializable[deptIds.size()]));
+            List<SysDept> entitys = sysDeptService.getEntitys(deptIds);
             for (SysDept entity : entitys) {
                 deptMap.put(entity.getId(), entity);
             }
@@ -123,7 +123,7 @@ public class LogAdminController {
         Map<Long, SysUser> userMap = new HashMap<>();
         if (null != pksMap.get("userIds")) {
             List<Serializable> userIds = pksMap.get("userIds");
-            List<SysUser> entitys = sysUserService.getEntitys(userIds.toArray(new Serializable[userIds.size()]));
+            List<SysUser> entitys = sysUserService.getEntitys(userIds);
             for (SysUser entity : entitys) {
                 userMap.put(entity.getId(), entity);
             }

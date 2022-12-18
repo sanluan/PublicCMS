@@ -2,7 +2,6 @@ package com.publiccms.views.directive.tools;
 
 import java.io.IOException;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
@@ -10,6 +9,8 @@ import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.template.DiyComponent;
+
+import jakarta.annotation.Resource;
 
 /**
  * diyMetadata diy元数据获取指令
@@ -61,6 +62,6 @@ public class DiyMetadataDirective extends AbstractTemplateDirective {
         return true;
     }
 
-    @Autowired
+    @Resource
     private DiyComponent diyComponent;
 }

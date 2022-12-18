@@ -83,6 +83,16 @@ public class CmsDictionaryDataService extends BaseService<CmsDictionaryData> {
     public List<CmsDictionaryData> getList(short siteId, String dictionaryId, String parentValue) {
         return dao.getList(siteId, dictionaryId, parentValue);
     }
+    
+    /**
+     * @param siteId
+     * @param dictionaryId
+     * @return data list
+     */
+    @Transactional(readOnly = true)
+    public List<CmsDictionaryData> getList(short siteId, String dictionaryId) {
+        return dao.getList(siteId, dictionaryId);
+    }
 
     /**
      * @param siteId

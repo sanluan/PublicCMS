@@ -71,10 +71,8 @@ public class CmsCategory implements java.io.Serializable {
     @GeneratorColumn(title = "编码")
     private String code;
     @GeneratorColumn(title = "模板路径")
-    @JsonIgnore
     private String templatePath;
     @GeneratorColumn(title = "路径")
-    @JsonIgnore
     private String path;
     /**
      * extend link<p>
@@ -95,7 +93,6 @@ public class CmsCategory implements java.io.Serializable {
     @GeneratorColumn(title = "地址")
     private String url;
     @GeneratorColumn(title = "内容路径")
-    @JsonIgnore
     private String contentPath;
     /**
      * contain child content<p>
@@ -131,6 +128,7 @@ public class CmsCategory implements java.io.Serializable {
     @JsonIgnore
     private boolean disabled;
     @GeneratorColumn(title = "扩展")
+    @JsonIgnore
     private Integer extendId;
 
     public CmsCategory() {

@@ -1,22 +1,25 @@
-package com.publiccms.views.pojo.export;
+package com.publiccms.views.pojo.exchange;
 
 import java.util.List;
 
 import com.publiccms.entities.cms.CmsContent;
+import com.publiccms.entities.cms.CmsContentAttribute;
 import com.publiccms.entities.cms.CmsContentFile;
 import com.publiccms.entities.cms.CmsContentProduct;
+import com.publiccms.entities.cms.CmsContentRelated;
 
-public class ExportContent implements java.io.Serializable {
+public class Content implements java.io.Serializable {
     /**
      * 
      */
     private static final long serialVersionUID = 1L;
     private String categoryCode;
-    private CmsContent content;
-    private CmsContent attribute;
+    private CmsContent entity;
+    private CmsContentAttribute attribute;
     private List<CmsContentFile> fileList;
     private List<CmsContentProduct> productList;
-    private List<CmsContent> childList;
+    private List<CmsContentRelated> relatedList;
+    private List<Content> childList;
 
     /**
      * @return the categoryCode
@@ -26,31 +29,32 @@ public class ExportContent implements java.io.Serializable {
     }
 
     /**
-     * @param categoryCode the categoryCode to set
+     * @param categoryCode
+     *            the categoryCode to set
      */
     public void setCategoryCode(String categoryCode) {
         this.categoryCode = categoryCode;
     }
 
     /**
-     * @return the content
+     * @return the entity
      */
-    public CmsContent getContent() {
-        return content;
+    public CmsContent getEntity() {
+        return entity;
     }
 
     /**
-     * @param content
-     *            the content to set
+     * @param entity
+     *            the entity to set
      */
-    public void setContent(CmsContent content) {
-        this.content = content;
+    public void setEntity(CmsContent entity) {
+        this.entity = entity;
     }
 
     /**
      * @return the attribute
      */
-    public CmsContent getAttribute() {
+    public CmsContentAttribute getAttribute() {
         return attribute;
     }
 
@@ -58,7 +62,7 @@ public class ExportContent implements java.io.Serializable {
      * @param attribute
      *            the attribute to set
      */
-    public void setAttribute(CmsContent attribute) {
+    public void setAttribute(CmsContentAttribute attribute) {
         this.attribute = attribute;
     }
 
@@ -93,9 +97,24 @@ public class ExportContent implements java.io.Serializable {
     }
 
     /**
+     * @return the relatedList
+     */
+    public List<CmsContentRelated> getRelatedList() {
+        return relatedList;
+    }
+
+    /**
+     * @param relatedList
+     *            the relatedList to set
+     */
+    public void setRelatedList(List<CmsContentRelated> relatedList) {
+        this.relatedList = relatedList;
+    }
+
+    /**
      * @return the childList
      */
-    public List<CmsContent> getChildList() {
+    public List<Content> getChildList() {
         return childList;
     }
 
@@ -103,7 +122,7 @@ public class ExportContent implements java.io.Serializable {
      * @param childList
      *            the childList to set
      */
-    public void setChildList(List<CmsContent> childList) {
+    public void setChildList(List<Content> childList) {
         this.childList = childList;
     }
 }

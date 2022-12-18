@@ -3,16 +3,19 @@
 <head>
     <meta charset="utf-8">
     <title>${metadata.alias!}</title>
+    <style>
+        nav a.selected{border-bottom:1px solid #f099f0;}
+    </style>
 </head>
 <body>
     <header data-diy="page">
         <h1>${(site.name)!}</h1>
     </header>
     <nav data-diy="category">
-        <a href="${site.useStatic?then(site.sitePath,site.dynamicPath)}">首页</a>
+        <a href="${site.useStatic?then(site.sitePath,site.dynamicPath)}" data-id="home">首页</a>
 <@cms.categoryList>
     <#list page.list as a>
-        <a href="${a.url!}" target="_blank">${a.name}</a>
+        <a href="${a.url!}" data-id="${a.id}" target="_blank">${a.name}</a>
     </#list>
 </@cms.categoryList>
     </nav>
@@ -52,6 +55,10 @@
     </script>
     <script src="${site.dynamicPath}resource/js/cms.support.js"></script>
     <script>
+        var nav = document.querySelectorAll('nav a[data-id="home"]');
+        if(nav.length){
+            nav[0].className="selected";
+        }
         var ca = cmsAnalytics();
         var url='${site.dynamicPath}api/visit/record';
         if("string" ==typeof itemString){

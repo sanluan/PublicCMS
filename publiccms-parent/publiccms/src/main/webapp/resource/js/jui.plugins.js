@@ -423,7 +423,9 @@ JUI.regPlugins.push(function($p){
     });
 });
 $(document).keydown(function(e){
-    if(e.keyCode == JUI.keyCode.ESC && $.pdialog.getCurrent()){
+    if(e.keyCode == JUI.keyCode.ESC && $("#background,#progressBar").is(":visible")){
+        $("#background,#progressBar").hide();
+    } else if(e.keyCode == JUI.keyCode.ESC && $.pdialog.getCurrent()){
         $.pdialog.closeCurrent();
     } else if(e.keyCode == JUI.keyCode.CHAR_S && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
         var formSubmit=$("form",!$.pdialog.getCurrent() ? navTab.getCurrentPanel(): $.pdialog.getCurrent()).not(".pagerForm").find("[type=submit]:eq(0)");

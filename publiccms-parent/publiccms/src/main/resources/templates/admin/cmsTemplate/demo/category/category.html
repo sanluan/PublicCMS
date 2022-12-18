@@ -6,29 +6,33 @@
     <title>${(attribute.title)?has_content?then(attribute.title,category.name)!}</title>
     <meta name="keywords" content="${(attribute.keywords)!}"/>
     <meta name="description" content="${(attribute.description)!}"/>
+    <style>
+        nav a.selected{border-bottom:1px solid #f099f0;}
+        .bread{border-bottom:1px solid #eee;}
+    </style>
 </head>
 <body>
+    <header data-diy="page">
+        <h1>${(site.name)!}</h1>
+    </header>
+    <nav data-diy="category">
+        <a href="${site.dynamicPath}" data-id="home">Home</a>
+<@cms.categoryList>
+    <#list page.list as a>
+        <a href="${a.url!}" target="_blank" data-id="${category.id}">${a.name}</a>
+    </#list>
+</@cms.categoryList>
+    </nav>
+    <main>
 <#macro bread category>
     <#if category.parentId?has_content>
         <@cms.category id=category.parentId;category>
             <@bread category/>
         </@cms.category>
     </#if>
-    <a href="${category.url}">${category.name}</a> &gt;
+    <a href="${category.url}" data-id="${category.id}">${category.name}</a> &gt;
 </#macro>
-    <header data-diy="page">
-        <h1>${(site.name)!}</h1>
-        <p><@bread category/> <a href="${category.url}">${category.name}</a></p>
-    </header>
-    <nav data-diy="category">
-        <a href="${site.dynamicPath}">Home</a>
-<@cms.categoryList>
-    <#list page.list as a>
-        <a href="${a.url!}" target="_blank">${a.name}</a>
-    </#list>
-</@cms.categoryList>
-    </nav>
-    <main>
+        <p class="bread"><@bread category/> <a href="${category.url}" data-id="${category.id}">${category.name}</a></p>
         <h1 data-diy="category" data-diy-id="${(category.id)!}">${(category.name)!}</h1>
 <@cms.contentList categoryId=category.id containChild=category.containChild pageIndex=pageIndex pageSize=category.pageSize>
         <ul data-diy="content">
@@ -99,6 +103,14 @@
 
     <script src="${site.dynamicPath}resource/js/cms.support.js"></script>
     <script>
+        var bread = document.querySelectorAll('.bread a:first-child');
+        if(bread.length)
+            var nav = document.querySelectorAll('nav a[data-id="'+bread[0].getAttribute("data-id")+'"]');
+            if(nav.length){
+                nav[0].className="selected";
+            }
+        }
+
         var ca = cmsAnalytics();
         var url='${site.dynamicPath}api/visit/record';
         if("string" ==typeof itemString){

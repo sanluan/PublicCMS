@@ -1,6 +1,7 @@
 package com.publiccms.common.base;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -52,10 +53,36 @@ public abstract class BaseService<E> {
 
     /**
      * @param ids
+     * @param pk
+     * @return entitys list
+     */
+    public List<E> getEntitys(Collection<Serializable> ids, String pk) {
+        return dao.getEntitys(ids, pk);
+    }
+
+    /**
+     * @param ids
      * @return entitys list
      */
     public List<E> getEntitys(Serializable[] ids) {
         return dao.getEntitys(ids);
+    }
+
+    /**
+     * @param ids
+     * @return entitys list
+     */
+    public List<E> getEntitys(Collection<Serializable> ids) {
+        return dao.getEntitys(ids);
+    }
+
+    /**
+     * @param ids
+     */
+    public void delete(Collection<Serializable> ids) {
+        for (Serializable id : ids) {
+            delete(id);
+        }
     }
 
     /**
@@ -104,8 +131,26 @@ public abstract class BaseService<E> {
     /**
      * @param entity
      */
+    public void saveOrUpdate(E entity) {
+        dao.saveOrUpdate(entity);
+    }
+
+    /**
+     * @param entity
+     */
     public void save(E entity) {
         dao.save(entity);
+    }
+
+    /**
+     * @param entityList
+     */
+    public void saveOrUpdate(List<E> entityList) {
+        if (CommonUtils.notEmpty(entityList)) {
+            for (E entity : entityList) {
+                saveOrUpdate(entity);
+            }
+        }
     }
 
     /**

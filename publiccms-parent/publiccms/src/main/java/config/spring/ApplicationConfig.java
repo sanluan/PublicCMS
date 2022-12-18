@@ -65,6 +65,7 @@ import freemarker.cache.FileTemplateLoader;
 @EnableScheduling
 public class ApplicationConfig implements EnvironmentAware{
     private Environment env;
+
     @Override
     public void setEnvironment(Environment environment) {
         env = environment;

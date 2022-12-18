@@ -1,6 +1,7 @@
 package com.publiccms.common.handler;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -152,6 +153,19 @@ public class QueryHandler {
             map = new HashMap<>();
         }
         map.put(key, Arrays.asList(values));
+        return this;
+    }
+    
+    /**
+     * @param key
+     * @param value
+     * @return query handler
+     */
+    public QueryHandler setParameter(String key, Collection<?> value) {
+        if (null == map) {
+            map = new HashMap<>();
+        }
+        map.put(key, value);
         return this;
     }
 

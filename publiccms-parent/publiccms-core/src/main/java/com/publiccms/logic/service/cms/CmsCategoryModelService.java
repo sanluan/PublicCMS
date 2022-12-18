@@ -19,8 +19,6 @@ import com.publiccms.logic.dao.cms.CmsCategoryModelDao;
 @Transactional
 public class CmsCategoryModelService extends BaseService<CmsCategoryModel> {
 
-    private String[] ignoreProperties = new String[] { "id", "siteId" };
-
     /**
      * @param siteId
      * @param modelId
@@ -41,20 +39,6 @@ public class CmsCategoryModelService extends BaseService<CmsCategoryModel> {
     @Transactional(readOnly = true)
     public int delete(short siteId, String modelId, Integer categoryId) {
         return dao.delete(siteId, modelId, categoryId);
-    }
-
-    /**
-     * @param siteId 
-     * @param entity
-     */
-    public void updateCategoryModel(short siteId, CmsCategoryModel entity) {
-        CmsCategoryModel oldEntity = getEntity(entity.getId());
-        if (null == oldEntity) {
-            entity.setSiteId(siteId);
-            save(entity);
-        } else {
-            update(oldEntity.getId(), entity, ignoreProperties);
-        }
     }
 
     @Resource

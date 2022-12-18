@@ -106,7 +106,7 @@ public class ContentController {
         if (null != category && (site.getId() != category.getSiteId() || !category.isAllowContribute())) {
             category = null;
         }
-        CmsModel cmsModel = modelComponent.getModelMap(site).get(entity.getModelId());
+        CmsModel cmsModel = modelComponent.getModelMap(site.getId()).get(entity.getModelId());
         if (ControllerUtils.errorNotEmpty("category", category, model)
                 || ControllerUtils.errorNotEmpty("model", cmsModel, model)) {
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;

@@ -331,7 +331,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
             }
         }
     }
-    
+
     public void batchWorkContent(short siteId, Integer categoryId, String modelId, BiConsumer<List<CmsContent>, Integer> worker,
             int batchSize) {
         QueryHandler queryHandler = getQueryHandler("from CmsContent bean");
@@ -346,7 +346,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         batchWork(queryHandler, worker, batchSize);
     }
 
-    public void batchWorkId(short siteId, Integer categoryId, String modelId, BiConsumer<List<Long>, Integer> worker,
+    public void batchWorkId(short siteId, Integer categoryId, String modelId, BiConsumer<List<Serializable>, Integer> worker,
             int batchSize) {
         QueryHandler queryHandler = getQueryHandler("select bean.id from CmsContent bean");
         queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
@@ -357,7 +357,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         if (CommonUtils.notEmpty(modelId)) {
             queryHandler.condition("bean.modelId = :modelId").setParameter("modelId", modelId);
         }
-        batchWork(queryHandler, worker, batchSize, Long.class);
+        batchWork(queryHandler, worker, batchSize, Serializable.class);
     }
 
     /**
@@ -473,29 +473,29 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         return getPage(queryHandler, firstResult, pageIndex, pageSize, maxResults);
     }
 
-    /**
-     * @param siteIds
-     * @param pageIndex
-     * @param pageSize
-     * @return results page
-     */
-    public PageHandler getPage(Short[] siteIds, Integer pageIndex, Integer pageSize) {
+    public List<CmsContent> getListByQuoteId(short siteId, Long quoteId) {
         QueryHandler queryHandler = getQueryHandler("from CmsContent bean");
-        queryHandler.condition("bean.siteId in (:siteIds)").setParameter("siteIds", siteIds);
-        queryHandler.order("bean.id asc");
-        return getPage(queryHandler, pageIndex, pageSize);
-    }
-
-    public List<CmsContent> getListByQuoteId(Short siteId, Long quoteId) {
-        QueryHandler queryHandler = getQueryHandler("from CmsContent bean");
-        if (CommonUtils.notEmpty(siteId)) {
-            queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
-        }
+        queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
         queryHandler.condition("bean.parentId is null");
         if (CommonUtils.notEmpty(quoteId)) {
             queryHandler.condition("bean.quoteContentId = :quoteContentId").setParameter("quoteContentId", quoteId);
         }
         return (List<CmsContent>) getList(queryHandler);
+    }
+
+    /**
+     * @param siteId
+     * @param topId
+     * @return number of data deleted
+     */
+    public List<CmsContent> getListByTopId(short siteId, Long topId) {
+        QueryHandler queryHandler = getQueryHandler("update CmsContent bean set bean.disabled = :disabled");
+        queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
+        queryHandler.condition("bean.parentId is not null");
+        if (CommonUtils.notEmpty(topId)) {
+            queryHandler.condition("bean.quoteContentId = :topId").setParameter("topId", topId).setParameter("disabled", true);
+        }
+        return getList(queryHandler);
     }
 
     @Override

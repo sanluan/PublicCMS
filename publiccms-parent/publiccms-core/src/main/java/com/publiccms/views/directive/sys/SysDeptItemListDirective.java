@@ -4,13 +4,14 @@ package com.publiccms.views.directive.sys;
 
 import java.io.IOException;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.logic.service.sys.SysDeptItemService;
+
+import jakarta.annotation.Resource;
 
 /**
  *
@@ -59,7 +60,7 @@ public class SysDeptItemListDirective extends AbstractTemplateDirective {
         return true;
     }
 
-    @Autowired
+    @Resource
     private SysDeptItemService service;
 
 }

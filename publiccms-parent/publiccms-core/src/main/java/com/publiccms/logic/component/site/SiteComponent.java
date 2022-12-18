@@ -104,12 +104,12 @@ public class SiteComponent implements Cache {
     }
 
     /**
-     * @param site
+     * @param siteId
      * @param path
      * @return full file name
      */
-    public static String getFullTemplatePath(SysSite site, String path) {
-        return getFullFileName(site.getId(), path);
+    public static String getFullTemplatePath(short siteId, String path) {
+        return getFullFileName(siteId, path);
     }
 
     /**
@@ -131,22 +131,22 @@ public class SiteComponent implements Cache {
     }
 
     /**
-     * @param site
+     * @param siteId
      * @param serverName
      * @param path
      * @return view name
      */
-    public String getViewName(SysSite site, String serverName, String path) {
-        return getViewName(site, getDomain(serverName), path);
+    public String getViewName(short siteId, String serverName, String path) {
+        return getViewName(siteId, getDomain(serverName), path);
     }
 
     /**
-     * @param site
+     * @param siteId
      * @param sysDomain
      * @param path
      * @return view name
      */
-    public String getViewName(SysSite site, SysDomain sysDomain, String path) {
+    public String getViewName(short siteId, SysDomain sysDomain, String path) {
         if (CommonUtils.notEmpty(sysDomain.getPath())) {
             if (path.startsWith(CommonConstants.SEPARATOR) || sysDomain.getPath().endsWith(CommonConstants.SEPARATOR)) {
                 if (path.startsWith(CommonConstants.SEPARATOR) && sysDomain.getPath().endsWith(CommonConstants.SEPARATOR)) {
@@ -158,7 +158,7 @@ public class SiteComponent implements Cache {
                 path = sysDomain.getPath() + CommonConstants.SEPARATOR + path;
             }
         }
-        return getFullTemplatePath(site, path);
+        return getFullTemplatePath(siteId, path);
     }
 
     /**
@@ -313,24 +313,24 @@ public class SiteComponent implements Cache {
     }
 
     /**
-     * @param site
+     * @param siteId
      * @param filepath
      * @return web file path
      */
-    public String getWebFilePath(SysSite site, String filepath) {
-        return webFilePath + getFullFileName(site.getId(), filepath);
+    public String getWebFilePath(short siteId, String filepath) {
+        return webFilePath + getFullFileName(siteId, filepath);
     }
 
     /**
-     * @param site
+     * @param siteId
      * @param filepath
      * @param newfile
      *            add new file name
      * @return web history file path
      */
-    public String getWebHistoryFilePath(SysSite site, String filepath, boolean newfile) {
+    public String getWebHistoryFilePath(short siteId, String filepath, boolean newfile) {
         StringBuilder sb = new StringBuilder(webHistoryFilePath);
-        sb.append(getFullFileName(site.getId(), filepath));
+        sb.append(getFullFileName(siteId, filepath));
         sb.append(CommonConstants.SEPARATOR);
         if (newfile) {
             sb.append(DateFormatUtils.getDateFormat(FILE_NAME_FORMAT_STRING).format(CommonUtils.getDate()));
@@ -339,33 +339,33 @@ public class SiteComponent implements Cache {
     }
 
     /**
-     * @param site
+     * @param siteId
      * @param filepath
      * @return web backup file path
      */
-    public String getWebBackupFilePath(SysSite site, String filepath) {
-        return webBackupFilePath + getFullFileName(site.getId(), filepath);
+    public String getWebBackupFilePath(short siteId, String filepath) {
+        return webBackupFilePath + getFullFileName(siteId, filepath);
     }
 
     /**
-     * @param site
+     * @param siteId
      * @param templatePath
      * @return task template file path
      */
-    public String getTaskTemplateFilePath(SysSite site, String templatePath) {
-        return getTaskTemplateFilePath() + getFullTemplatePath(site, templatePath);
+    public String getTaskTemplateFilePath(short siteId, String templatePath) {
+        return getTaskTemplateFilePath() + getFullTemplatePath(siteId, templatePath);
     }
 
     /**
-     * @param site
+     * @param siteId
      * @param templatePath
      * @param newfile
      *            add new file name
      * @return task template history file path
      */
-    public String getTaskTemplateHistoryFilePath(SysSite site, String templatePath, boolean newfile) {
+    public String getTaskTemplateHistoryFilePath(short siteId, String templatePath, boolean newfile) {
         StringBuilder sb = new StringBuilder(taskTemplateHistoryFilePath);
-        sb.append(getFullFileName(site.getId(), templatePath));
+        sb.append(getFullFileName(siteId, templatePath));
         sb.append(CommonConstants.SEPARATOR);
         if (newfile) {
             sb.append(DateFormatUtils.getDateFormat(FILE_NAME_FORMAT_STRING).format(CommonUtils.getDate()));
@@ -374,33 +374,33 @@ public class SiteComponent implements Cache {
     }
 
     /**
-     * @param site
+     * @param siteId
      * @param templatePath
      * @return task template backup file path
      */
-    public String getTaskTemplateBackupFilePath(SysSite site, String templatePath) {
-        return taskTemplateBackupFilePath + getFullFileName(site.getId(), templatePath);
+    public String getTaskTemplateBackupFilePath(short siteId, String templatePath) {
+        return taskTemplateBackupFilePath + getFullFileName(siteId, templatePath);
     }
 
     /**
-     * @param site
+     * @param siteId
      * @param templatePath
      * @return template file path
      */
-    public String getTemplateFilePath(SysSite site, String templatePath) {
-        return getTemplateFilePath() + getFullTemplatePath(site, templatePath);
+    public String getTemplateFilePath(short siteId, String templatePath) {
+        return getTemplateFilePath() + getFullTemplatePath(siteId, templatePath);
     }
 
     /**
-     * @param site
+     * @param siteId
      * @param templatePath
      * @param newfile
      *            add new file name
      * @return template history file path
      */
-    public String getTemplateHistoryFilePath(SysSite site, String templatePath, boolean newfile) {
+    public String getTemplateHistoryFilePath(short siteId, String templatePath, boolean newfile) {
         StringBuilder sb = new StringBuilder(templateHistoryFilePath);
-        sb.append(getFullFileName(site.getId(), templatePath));
+        sb.append(getFullFileName(siteId, templatePath));
         sb.append(CommonConstants.SEPARATOR);
         if (newfile) {
             sb.append(DateFormatUtils.getDateFormat(FILE_NAME_FORMAT_STRING).format(CommonUtils.getDate()));
@@ -409,36 +409,36 @@ public class SiteComponent implements Cache {
     }
 
     /**
-     * @param site
+     * @param siteId
      * @param templatePath
      * @return template backup file path
      */
-    public String getTemplateBackupFilePath(SysSite site, String templatePath) {
-        return templateBackupFilePath + getFullFileName(site.getId(), templatePath);
+    public String getTemplateBackupFilePath(short siteId, String templatePath) {
+        return templateBackupFilePath + getFullFileName(siteId, templatePath);
     }
 
     /**
-     * @param site
+     * @param siteId
      * @return model file path
      */
-    public String getModelFilePath(SysSite site) {
-        return getTemplateFilePath() + getFullTemplatePath(site, MODEL_FILE);
+    public String getModelFilePath(short siteId) {
+        return getTemplateFilePath() + getFullTemplatePath(siteId, MODEL_FILE);
     }
 
     /**
-     * @param site
+     * @param siteId
      * @return category type file path
      */
-    public String getCategoryTypeFilePath(SysSite site) {
-        return getTemplateFilePath() + getFullTemplatePath(site, CATEGORY_TYPE_FILE);
+    public String getCategoryTypeFilePath(short siteId) {
+        return getTemplateFilePath() + getFullTemplatePath(siteId, CATEGORY_TYPE_FILE);
     }
 
     /**
-     * @param site
+     * @param siteId
      * @return config file path
      */
-    public String getConfigFilePath(SysSite site) {
-        return getTemplateFilePath() + getFullTemplatePath(site, CONFIG_FILE);
+    public String getConfigFilePath(short siteId) {
+        return getTemplateFilePath() + getFullTemplatePath(siteId, CONFIG_FILE);
     }
 
     /**

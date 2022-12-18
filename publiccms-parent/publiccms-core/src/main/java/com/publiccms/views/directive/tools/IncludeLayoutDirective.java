@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.regex.Matcher;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
@@ -19,6 +18,7 @@ import freemarker.template.Template;
 import freemarker.template.TemplateDirectiveBody;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateModel;
+import jakarta.annotation.Resource;
 
 /**
  * includeLayout 包含diy布局指令
@@ -76,7 +76,7 @@ public class IncludeLayoutDirective extends AbstractTemplateDirective {
         return false;
     }
 
-    @Autowired
+    @Resource
     private DiyComponent diyComponent;
 
     @Override

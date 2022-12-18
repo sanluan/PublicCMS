@@ -64,7 +64,7 @@ public class KindEditorAdminController {
             String suffix = CmsFileUtils.getSuffix(originalName);
             if (ArrayUtils.contains(siteConfigComponent.getSafeSuffix(site), suffix)) {
                 String fileName = CmsFileUtils.getUploadFileName(suffix);
-                String filepath = siteComponent.getWebFilePath(site, fileName);
+                String filepath = siteComponent.getWebFilePath(site.getId(), fileName);
                 try {
                     CmsFileUtils.upload(imgFile, filepath);
                     if (CmsFileUtils.isSafe(filepath, suffix)) {

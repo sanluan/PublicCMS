@@ -259,7 +259,7 @@ public class EmailComponent implements SiteCache, Config {
     }
 
     @Override
-    public String getCode(SysSite site, boolean showAll) {
+    public String getCode(short siteId, boolean showAll) {
         return CONFIG_CODE;
     }
 

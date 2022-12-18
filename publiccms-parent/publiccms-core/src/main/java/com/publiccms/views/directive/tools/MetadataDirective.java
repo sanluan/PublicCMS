@@ -49,7 +49,7 @@ public class MetadataDirective extends AbstractTemplateDirective {
         String path = handler.getString("path");
         if (CommonUtils.notEmpty(path) && !path.endsWith(CommonConstants.SEPARATOR)) {
             SysSite site = getSite(handler);
-            String filepath = siteComponent.getTemplateFilePath(site, path);
+            String filepath = siteComponent.getTemplateFilePath(site.getId(), path);
             CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(filepath);
             CmsPageData data = metadataComponent.getTemplateData(filepath);
             handler.put("object", metadata.getAsMap(data)).render();

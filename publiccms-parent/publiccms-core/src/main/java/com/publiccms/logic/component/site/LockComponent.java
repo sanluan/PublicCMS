@@ -234,7 +234,7 @@ public class LockComponent implements Config, SiteCache {
      * @param showAll
      * @return config code or null
      */
-    public String getCode(SysSite site, boolean showAll) {
+    public String getCode(@SuppressWarnings("unused") SysSite site, @SuppressWarnings("unused") boolean showAll) {
         return CONFIG_CODE;
     }
 

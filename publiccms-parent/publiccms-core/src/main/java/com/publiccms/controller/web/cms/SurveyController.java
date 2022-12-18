@@ -1,5 +1,6 @@
 package com.publiccms.controller.web.cms;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -84,7 +85,7 @@ public class SurveyController {
                         service.updateVotes(site.getId(), surveyId, 1);
                         Map<Long, CmsSurveyQuestion> questionMap = CommonUtils.listToMap(questionList, k -> k.getId(), null,
                                 null);
-                        Set<Long> answerSet = new TreeSet<>();
+                        Set<Serializable> answerSet = new TreeSet<>();
                         List<CmsUserSurveyQuestion> answerList = new ArrayList<>();
                         for (CmsUserSurveyQuestion answer : userQuestionParameters.getAnswerList()) {
                             if (null != answer.getId()) {
@@ -127,7 +128,7 @@ public class SurveyController {
                                 }
                             }
                         }
-                        itemService.updateVotes(answerSet.toArray(new Long[answerSet.size()]), 1);
+                        itemService.updateVotes(answerSet, 1);
                         userQuestionquestionService.save(answerList);
                     }
                 }

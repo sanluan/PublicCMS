@@ -1,5 +1,5 @@
 <@cms.dictionaryList name=name pageIndex=pageNum pageSize=numPerPage>
-<@sys.authorized roleIds=admin.roles urls='cmsDictionary/add,cmsDictionary/delete,cmsDictionary/export'><#assign authorizedMap=map/></@sys.authorized>
+<@sys.authorized roleIds=admin.roles urls='cmsDictionary/add,cmsDictionary/delete,cmsDictionary/export,cmsDictionary/import'><#assign authorizedMap=map/></@sys.authorized>
 <div class="pageHeader card">
     <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
@@ -36,6 +36,9 @@
         <#if authorizedMap['cmsDictionary/delete']>
             <li><a href="cmsDictionary/delete?_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i><@t.page 'button.batch_delete'/></a></li>
         </#if>
+        <#if authorizedMap['cmsDictionary/import']>
+            <li><a href="cmsDictionary/import.html" target="dialog" mask="true" width="500" height="250"><i class="icon-upload-alt icon-large"></i><@t.page 'import'/></a></li>
+        </#if>
         </ul>
     </div>
     <table class="table" width="100%" layoutH>
@@ -60,6 +63,9 @@
                     <a href="cmsDictionary/addChild.html?id=${a.id.id}" class="edit btnText blue" target="dialog" mask="true"><i class="icon-edit"></i><@t.page 'button.edit'/></a>
                 <#else>
                     <a href="cmsDictionary/add.html?id=${a.id.id}" class="edit btnText blue" target="navTab" rel="cmsDictionary/edit"><i class="icon-edit"></i><@t.page 'button.edit'/></a>
+                </#if>
+                <#if authorizedMap['cmsDictionary/export']>
+                    <a href="cmsDictionary/export?id=${a.id.id}&_csrf=<@tools.csrfToken admin=true/>" class="edit btnText" target="_blank"><i class="icon-download-alt icon-large"></i><@t.page 'button.export'/></a>
                 </#if>
                 <a href="cmsDictionary/excludeTree.html?id=${a.id.id}" class="btnText blue" target="navTab" rel="cmsDictionary/excludeTree" title="${a.name!}" icon="<i class='bi bi-exclude'></i>"><i class="bi bi-exclude"></i><@t.page 'dictionary.exclude'/></a>
                 <#if authorizedMap['cmsDictionary/delete']>

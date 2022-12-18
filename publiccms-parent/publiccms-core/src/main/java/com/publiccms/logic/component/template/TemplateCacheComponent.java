@@ -2,6 +2,7 @@ package com.publiccms.logic.component.template;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -93,7 +94,7 @@ public class TemplateCacheComponent implements Cache {
             String body, HttpServletRequest request, HttpServletResponse response, ModelMap model) {
         requestPath = siteComponent.getPath(site, requestPath);
         SysDomain domain = siteComponent.getDomain(request.getServerName());
-        String fullRequestPath = siteComponent.getViewName(site, domain, requestPath);
+        String fullRequestPath = siteComponent.getViewName(site.getId(), domain, requestPath);
         String templatePath = siteComponent.getTemplateFilePath() + fullRequestPath;
         CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(templatePath);
         if (metadata.isUseDynamic()) {
@@ -222,7 +223,7 @@ public class TemplateCacheComponent implements Cache {
                 if (set.isEmpty() && parameterType.isRequired()) {
                     return false;
                 } else {
-                    model.addAttribute(parameterName, set.toArray(new Long[set.size()]));
+                    model.addAttribute(parameterName, set);
                 }
             } else if (CommonUtils.notEmpty(values) && CommonUtils.notEmpty(values[0])) {
                 try {
@@ -236,7 +237,7 @@ public class TemplateCacheComponent implements Cache {
             break;
         case Config.INPUTTYPE_CONTENT:
             if (parameterType.isArray() && CommonUtils.notEmpty(values)) {
-                Set<Long> set = new TreeSet<>();
+                Set<Serializable> set = new TreeSet<>();
                 for (String s : values) {
                     try {
                         set.add(Long.valueOf(s));
@@ -244,7 +245,7 @@ public class TemplateCacheComponent implements Cache {
                         return false;
                     }
                 }
-                List<CmsContent> entityList = contentService.getEntitys(set.toArray(new Long[set.size()]));
+                List<CmsContent> entityList = contentService.getEntitys(set);
                 entityList = entityList.stream().filter(entity -> site.getId() == entity.getSiteId())
                         .collect(Collectors.toList());
                 entityList.forEach(e -> {
@@ -285,7 +286,7 @@ public class TemplateCacheComponent implements Cache {
             break;
         case Config.INPUTTYPE_CATEGORY:
             if (parameterType.isArray() && CommonUtils.notEmpty(values)) {
-                Set<Integer> set = new TreeSet<>();
+                Set<Serializable> set = new TreeSet<>();
                 for (String s : values) {
                     try {
                         set.add(Integer.valueOf(s));
@@ -293,7 +294,7 @@ public class TemplateCacheComponent implements Cache {
                         return false;
                     }
                 }
-                List<CmsCategory> entityList = categoryService.getEntitys(set.toArray(new Integer[set.size()]));
+                List<CmsCategory> entityList = categoryService.getEntitys(set);
                 entityList = entityList.stream().filter(entity -> site.getId() == entity.getSiteId())
                         .collect(Collectors.toList());
                 entityList.forEach(e -> {
@@ -324,7 +325,7 @@ public class TemplateCacheComponent implements Cache {
             break;
         case Config.INPUTTYPE_USER:
             if (parameterType.isArray()) {
-                Set<Long> set = new TreeSet<>();
+                Set<Serializable> set = new TreeSet<>();
                 for (String s : values) {
                     try {
                         set.add(Long.valueOf(s));
@@ -332,7 +333,7 @@ public class TemplateCacheComponent implements Cache {
                         return false;
                     }
                 }
-                List<SysUser> entityList = userService.getEntitys(set.toArray(new Long[set.size()]));
+                List<SysUser> entityList = userService.getEntitys(set);
                 entityList = entityList.stream().filter(entity -> site.getId() == entity.getSiteId())
                         .collect(Collectors.toList());
                 if (entityList.isEmpty() && parameterType.isRequired()) {

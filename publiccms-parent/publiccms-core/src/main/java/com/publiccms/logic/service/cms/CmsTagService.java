@@ -71,8 +71,8 @@ public class CmsTagService extends BaseService<CmsTag> {
      * @param entitys
      * @return
      */
-    public Long[] update(short siteId, List<CmsTag> entitys) {
-        Set<Long> idList = new HashSet<>();
+    public Set<Serializable> update(short siteId, List<CmsTag> entitys) {
+        Set<Serializable> idList = new HashSet<>();
         if (CommonUtils.notEmpty(entitys)) {
             for (CmsTag entity : entitys) {
                 if (null != entity.getId()) {
@@ -84,7 +84,7 @@ public class CmsTagService extends BaseService<CmsTag> {
                 }
             }
         }
-        return idList.toArray(new Long[idList.size()]);
+        return idList;
     }
 
     @Resource

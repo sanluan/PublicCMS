@@ -5,7 +5,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTaskDirective;
@@ -22,6 +21,7 @@ import com.publiccms.views.pojo.entities.CmsPageData;
 import com.publiccms.views.pojo.entities.CmsPageMetadata;
 
 import freemarker.template.TemplateException;
+import jakarta.annotation.Resource;
 
 /**
  *
@@ -56,14 +56,14 @@ public class PublishPageDirective extends AbstractTaskDirective {
     public void execute(RenderHandler handler) throws IOException, Exception {
         String path = handler.getString("path", CommonConstants.SEPARATOR);
         SysSite site = getSite(handler);
-        String filepath = siteComponent.getTemplateFilePath(site, path);
+        String filepath = siteComponent.getTemplateFilePath(site.getId(), path);
         if (CmsFileUtils.isFile(filepath)) {
             Map<String, Boolean> map = new LinkedHashMap<>();
             CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(filepath);
             if (CommonUtils.notEmpty(metadata.getPublishPath())) {
                 try {
                     CmsPageData data = metadataComponent.getTemplateData(filepath);
-                    templateComponent.createStaticFile(site, SiteComponent.getFullTemplatePath(site, path),
+                    templateComponent.createStaticFile(site, SiteComponent.getFullTemplatePath(site.getId(), path),
                             metadata.getPublishPath(), null, metadata.getAsMap(data), null, null);
                     map.put(path, true);
                 } catch (IOException | TemplateException e) {
@@ -80,17 +80,17 @@ public class PublishPageDirective extends AbstractTaskDirective {
     private Map<String, Boolean> deal(SysSite site, RenderHandler handler, String path) throws IOException {
         path = path.replace("\\", CommonConstants.SEPARATOR).replace("//", CommonConstants.SEPARATOR);
         Map<String, Boolean> map = new LinkedHashMap<>();
-        List<FileInfo> list = CmsFileUtils.getFileList(siteComponent.getTemplateFilePath(site, path), null);
+        List<FileInfo> list = CmsFileUtils.getFileList(siteComponent.getTemplateFilePath(site.getId(), path), null);
         for (FileInfo fileInfo : list) {
             String filepath = path + fileInfo.getFileName();
             if (fileInfo.isDirectory()) {
                 map.putAll(deal(site, handler, filepath + CommonConstants.SEPARATOR));
             } else {
-                String realTemplatePath = siteComponent.getTemplateFilePath(site, filepath);
+                String realTemplatePath = siteComponent.getTemplateFilePath(site.getId(), filepath);
                 CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(realTemplatePath);
                 if (null != metadata && CommonUtils.notEmpty(metadata.getPublishPath())) {
                     try {
-                        String templatePath = SiteComponent.getFullTemplatePath(site, filepath);
+                        String templatePath = SiteComponent.getFullTemplatePath(site.getId(), filepath);
                         CmsPageData data = metadataComponent.getTemplateData(realTemplatePath);
                         templateComponent.createStaticFile(site, templatePath, metadata.getPublishPath(), null,
                                 metadata.getAsMap(data), null, null);

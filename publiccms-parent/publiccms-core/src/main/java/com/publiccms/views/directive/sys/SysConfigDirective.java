@@ -9,7 +9,7 @@ import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.logic.component.config.ConfigComponent;
-import com.publiccms.logic.component.config.ConfigComponent.ConfigInfo;
+import com.publiccms.views.pojo.entities.ConfigInfo;
 
 /**
  *
@@ -18,7 +18,7 @@ import com.publiccms.logic.component.config.ConfigComponent.ConfigInfo;
  * 参数列表
  * <ul>
  * <li><code>code</code> 配置编码,结果返回<code>object</code>
- * {@link com.publiccms.logic.component.config.ConfigComponent.ConfigInfo}
+ * {@link com.publiccms.views.pojo.entities.ConfigInfo}
  * </ul>
  * 使用示例
  * <p>
@@ -39,7 +39,7 @@ public class SysConfigDirective extends AbstractTemplateDirective {
     public void execute(RenderHandler handler) throws IOException, Exception {
         String code = handler.getString("code");
         if (CommonUtils.notEmpty(code)) {
-            ConfigInfo entity = configComponent.getConfig(getSite(handler), code, handler.getLocale());
+            ConfigInfo entity = configComponent.getConfig(getSite(handler).getId(), code, handler.getLocale());
             if (null != entity) {
                 handler.put("object", entity).render();
             }

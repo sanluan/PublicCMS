@@ -143,13 +143,8 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
         return verifier;
     }
 
-    /**
-     * @param site
-     * @param showAll
-     * @return config code or null
-     */
     @Override
-    public String getCode(SysSite site, boolean showAll) {
+    public String getCode(short siteId, boolean showAll) {
         return CONFIG_CODE;
     }
 
@@ -216,7 +211,7 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
                                     response.sendRedirect(result.get("h5_url"));
                                 } else {
                                     Template template = templateComponent.getWebConfiguration()
-                                            .getTemplate(SiteComponent.getFullTemplatePath(site, config.get(CONFIG_RESULTPAGE)));
+                                            .getTemplate(SiteComponent.getFullTemplatePath(site.getId(), config.get(CONFIG_RESULTPAGE)));
                                     Map<String, Object> model = new HashMap<>();
                                     AbstractFreemarkerView.exposeSite(model, site);
                                     model.putAll(result);
