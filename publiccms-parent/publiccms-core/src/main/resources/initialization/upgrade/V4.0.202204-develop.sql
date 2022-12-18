@@ -341,3 +341,26 @@ ALTER TABLE `cms_comment`
     ADD COLUMN `ip` varchar(130) NOT NULL COMMENT 'IP' AFTER `content_id`;
 ALTER TABLE `cms_word` 
     ADD COLUMN `ip` varchar(130) NOT NULL COMMENT 'IP' AFTER `hidden`;
+-- 2022-12-18 --
+INSERT INTO `sys_module` VALUES ('category_export', NULL, 'cmsCategory/export', NULL, 'category_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('category_import', 'cmsCategory/import','cmsCategory/doImport' ,NULL, 'category_list', 0, 0);
+UPDATE `sys_module` SET `url` = 'cmsContent/export', `authorized_url`= 'cmsContent/exportExcel,cmsContent/exportData'  WHERE `id` ='content_export';
+INSERT INTO `sys_module` VALUES ('content_import', 'cmsContent/import', 'cmsContent/doImport', NULL, 'content_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('dictionary_export', NULL, 'cmsDictionary/export', NULL, 'dictionary_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('dictionary_import', 'cmsDictionary/import', 'cmsDictionary/doImport', NULL, 'dictionary_list', 0, 0);
+
+INSERT INTO `sys_module_lang` VALUES ('category_export', 'en', 'Export');
+INSERT INTO `sys_module_lang` VALUES ('category_export', 'ja', '輸出');
+INSERT INTO `sys_module_lang` VALUES ('category_export', 'zh', '导出');
+INSERT INTO `sys_module_lang` VALUES ('category_import', 'en', 'Import');
+INSERT INTO `sys_module_lang` VALUES ('category_import', 'ja', '導入');
+INSERT INTO `sys_module_lang` VALUES ('category_import', 'zh', '导入');
+INSERT INTO `sys_module_lang` VALUES ('content_import', 'en', 'Import');
+INSERT INTO `sys_module_lang` VALUES ('content_import', 'ja', '導入');
+INSERT INTO `sys_module_lang` VALUES ('content_import', 'zh', '导入');
+INSERT INTO `sys_module_lang` VALUES ('dictionary_export', 'en', 'Import');
+INSERT INTO `sys_module_lang` VALUES ('dictionary_export', 'ja', '導入');
+INSERT INTO `sys_module_lang` VALUES ('dictionary_export', 'zh', '导入');
+INSERT INTO `sys_module_lang` VALUES ('dictionary_import', 'en', 'Import');
+INSERT INTO `sys_module_lang` VALUES ('dictionary_import', 'ja', '導入');
+INSERT INTO `sys_module_lang` VALUES ('dictionary_import', 'zh', '导入');

@@ -2,7 +2,7 @@ package com.publiccms.logic.service.cms;
 
 // Generated 2020-3-26 11:46:48 by com.publiccms.common.generator.SourceGenerator
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,7 +33,7 @@ public class CmsUserScoreService extends BaseService<CmsUserScore> {
         return dao.getPage(userId, itemType, itemId, pageIndex, pageSize);
     }
 
-    @Autowired
+    @Resource
     private CmsUserScoreDao dao;
 
 }

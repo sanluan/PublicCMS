@@ -7,7 +7,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.context.support.AbstractMessageSource;
 import org.springframework.stereotype.Component;
 
@@ -32,7 +32,7 @@ public class MenuMessageComponent extends AbstractMessageSource implements Cache
     private CacheEntity<String, Map<String, String>> messageCache;
     private Map<String, Map<Locale, MessageFormat>> messageFormatCaches = new HashMap<>();
 
-    @Autowired
+    @Resource
     private SysModuleLangService sysModuleLangService;
 
     @Override
@@ -103,7 +103,7 @@ public class MenuMessageComponent extends AbstractMessageSource implements Cache
      * @throws InstantiationException
      * @throws ClassNotFoundException
      */
-    @Autowired
+    @Resource
     public void initCache(CacheEntityFactory cacheEntityFactory)
             throws ClassNotFoundException, InstantiationException, IllegalAccessException {
         messageCache = cacheEntityFactory.createCacheEntity(CODE);

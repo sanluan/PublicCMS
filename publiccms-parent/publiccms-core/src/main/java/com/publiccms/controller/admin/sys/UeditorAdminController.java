@@ -19,7 +19,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -56,11 +56,11 @@ import com.publiccms.views.pojo.entities.UeditorConfig;
 @RequestMapping("ueditor")
 public class UeditorAdminController {
     protected final Log log = LogFactory.getLog(getClass());
-    @Autowired
+    @Resource
     protected LogUploadService logUploadService;
-    @Autowired
+    @Resource
     protected SiteComponent siteComponent;
-    @Autowired
+    @Resource
     protected SiteConfigComponent siteConfigComponent;
 
     protected static final String ACTION_CONFIG = "config";

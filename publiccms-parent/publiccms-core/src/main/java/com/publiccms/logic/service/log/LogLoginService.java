@@ -5,7 +5,7 @@ import java.util.Date;
 
 import com.publiccms.entities.log.LogLogin;
 import com.publiccms.logic.dao.log.LogLoginDao;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -72,7 +72,7 @@ public class LogLoginService extends BaseService<LogLogin> {
         return dao.delete(siteId, createDate);
     }
 
-    @Autowired
+    @Resource
     private LogLoginDao dao;
 
 }

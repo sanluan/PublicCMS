@@ -8,7 +8,7 @@ import java.util.Date;
 
 import com.publiccms.entities.sys.SysCluster;
 import com.publiccms.logic.dao.sys.SysClusterDao;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -62,7 +62,7 @@ public class SysClusterService extends BaseService<SysCluster> {
         }
     }
 
-    @Autowired
+    @Resource
     private SysClusterDao dao;
     
 }

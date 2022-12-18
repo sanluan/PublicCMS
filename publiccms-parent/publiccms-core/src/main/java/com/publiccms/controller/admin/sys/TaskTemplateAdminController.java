@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.tools.zip.ZipOutputStream;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -46,11 +46,11 @@ import com.publiccms.logic.service.log.LogOperateService;
 @RequestMapping("taskTemplate")
 public class TaskTemplateAdminController {
     protected final Log log = LogFactory.getLog(getClass());
-    @Autowired
+    @Resource
     private TemplateComponent templateComponent;
-    @Autowired
+    @Resource
     protected LogOperateService logOperateService;
-    @Autowired
+    @Resource
     protected SiteComponent siteComponent;
 
     /**

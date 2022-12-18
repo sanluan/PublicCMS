@@ -2,7 +2,7 @@ package com.publiccms.logic.service.cms;
 
 // Generated 2022-5-10 by com.publiccms.common.generator.SourceGenerator
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,7 +42,7 @@ public class CmsEditorHistoryService extends BaseService<CmsEditorHistory> {
         return dao.getPage(itemType, itemId, fieldName, userId, orderType, pageIndex, pageSize);
     }
 
-    @Autowired
+    @Resource
     private CmsEditorHistoryDao dao;
 
 }

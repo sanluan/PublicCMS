@@ -1,1 +1,0 @@
-package com.publiccms.views.pojo.interaction;

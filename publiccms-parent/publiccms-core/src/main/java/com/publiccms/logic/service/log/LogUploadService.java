@@ -2,7 +2,7 @@ package com.publiccms.logic.service.log;
 
 import java.io.Serializable;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,7 +51,7 @@ public class LogUploadService extends BaseService<LogUpload> {
         }
     }
 
-    @Autowired
+    @Resource
     private LogUploadDao dao;
 
 }

@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -37,9 +37,9 @@ import com.publiccms.logic.service.sys.SysAppTokenService;
 @Controller
 @RequestMapping("sysAppToken")
 public class SysAppTokenAdminController {
-    @Autowired
+    @Resource
     protected LogOperateService logOperateService;
-    @Autowired
+    @Resource
     protected SiteComponent siteComponent;
 
     /**
@@ -97,10 +97,10 @@ public class SysAppTokenAdminController {
         return CommonConstants.TEMPLATE_DONE;
     }
 
-    @Autowired
+    @Resource
     private SysAppTokenService service;
 
-    @Autowired
+    @Resource
     private SysAppService appService;
 
 }

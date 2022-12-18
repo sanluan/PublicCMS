@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.file.Paths;
+import java.text.DateFormat;
 import java.util.Comparator;
+import java.util.Date;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -13,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.tools.zip.ZipOutputStream;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -28,6 +30,7 @@ import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
+import com.publiccms.common.tools.DateFormatUtils;
 import com.publiccms.common.tools.LanguagesUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.common.tools.VerificationUtils;
@@ -60,21 +63,21 @@ import freemarker.template.TemplateException;
 @RequestMapping("cmsTemplate")
 public class CmsTemplateAdminController {
     protected final Log log = LogFactory.getLog(getClass());
-    @Autowired
+    @Resource
     private TemplateComponent templateComponent;
-    @Autowired
+    @Resource
     private TemplateCacheComponent templateCacheComponent;
-    @Autowired
+    @Resource
     private CacheComponent cacheComponent;
-    @Autowired
+    @Resource
     private MetadataComponent metadataComponent;
-    @Autowired
+    @Resource
     private CmsPlaceService cmsPlaceService;
-    @Autowired
+    @Resource
     private SysDeptItemService sysDeptItemService;
-    @Autowired
+    @Resource
     protected LogOperateService logOperateService;
-    @Autowired
+    @Resource
     protected SiteComponent siteComponent;
 
     /**
@@ -254,8 +257,9 @@ public class CmsTemplateAdminController {
     public void export(@RequestAttribute SysSite site, HttpServletResponse response) {
         String filepath = siteComponent.getTemplateFilePath(site.getId(), CommonConstants.SEPARATOR);
         try {
-            response.setHeader("content-disposition",
-                    "attachment;fileName=" + URLEncoder.encode(site.getName() + "_template.zip", "utf-8"));
+            DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.FULL_DATE_FORMAT_STRING);
+            response.setHeader("content-disposition", "attachment;fileName="
+                    + URLEncoder.encode(site.getName() + "_" + dateFormat.format(new Date()) + "_template.zip", "utf-8"));
         } catch (UnsupportedEncodingException e1) {
         }
         try (ServletOutputStream outputStream = response.getOutputStream();

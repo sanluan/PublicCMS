@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -75,8 +75,8 @@ public class TradeAccountAdminController {
         return CommonConstants.TEMPLATE_ERROR;
     }
 
-    @Autowired
+    @Resource
     private TradeAccountService service;
-    @Autowired
+    @Resource
     protected LogOperateService logOperateService;
 }

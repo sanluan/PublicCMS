@@ -3,8 +3,11 @@ package com.publiccms.controller.admin.cms;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.List;
 
+import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,7 +16,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.tools.zip.ZipOutputStream;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
@@ -29,6 +32,7 @@ import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
+import com.publiccms.common.tools.DateFormatUtils;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.cms.CmsCategory;
@@ -37,7 +41,8 @@ import com.publiccms.entities.cms.CmsCategoryModel;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
-import com.publiccms.logic.component.interaction.CategoryInteractionComponent;
+import com.publiccms.logic.component.exchange.CategoryExchangeComponent;
+import com.publiccms.logic.component.exchange.Exchange;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.ModelComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
@@ -60,22 +65,22 @@ import freemarker.template.TemplateException;
 @RequestMapping("cmsCategory")
 public class CmsCategoryAdminController {
     protected final Log log = LogFactory.getLog(getClass());
-    @Autowired
+    @Resource
     private CmsCategoryService service;
-    @Autowired
+    @Resource
     private CmsContentService contentService;
-    @Autowired
+    @Resource
     private CmsCategoryModelService categoryModelService;
-    @Autowired
+    @Resource
     private TemplateComponent templateComponent;
-    @Autowired
+    @Resource
     private ModelComponent modelComponent;
-    @Autowired
+    @Resource
     protected LogOperateService logOperateService;
-    @Autowired
+    @Resource
     protected SiteComponent siteComponent;
-    @Autowired
-    protected CategoryInteractionComponent interactionComponent;
+    @Resource
+    protected CategoryExchangeComponent exchangeComponent;
 
     private String[] ignoreProperties = new String[] { "id", "siteId", "childIds", "tagTypeIds", "url", "disabled", "extendId",
             "hasStatic", "typeId" };
@@ -303,6 +308,27 @@ public class CmsCategoryAdminController {
 
     /**
      * @param site
+     * @param admin
+     * @param overwrite
+     * @param file
+     * @param request
+     * @param model
+     * @return
+     */
+    @RequestMapping("doImport")
+    @Csrf
+    public String doImport(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile file, boolean overwrite,
+            HttpServletRequest request, ModelMap model) {
+        if (null != file) {
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "import.category", RequestUtils.getIpAddress(request),
+                    CommonUtils.getDate(), file.getOriginalFilename()));
+        }
+        return Exchange.importData(site.getId(), admin.getId(), overwrite, "_category.zip", exchangeComponent, file, model);
+    }
+
+    /**
+     * @param site
      * @param id
      * @param response
      */
@@ -310,17 +336,18 @@ public class CmsCategoryAdminController {
     @Csrf
     public void export(@RequestAttribute SysSite site, Integer id, HttpServletResponse response) {
         try {
-            response.setHeader("content-disposition",
-                    "attachment;fileName=" + URLEncoder.encode(site.getName() + "_category.zip", "utf-8"));
+            DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.FULL_DATE_FORMAT_STRING);
+            response.setHeader("content-disposition", "attachment;fileName="
+                    + URLEncoder.encode(site.getName() + "_" + dateFormat.format(new Date()) + "_category.zip", "utf-8"));
         } catch (UnsupportedEncodingException e1) {
         }
         try (ServletOutputStream outputStream = response.getOutputStream();
                 ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream)) {
             zipOutputStream.setEncoding(Constants.DEFAULT_CHARSET_NAME);
             if (null == id) {
-                interactionComponent.exportAll(site.getId(), zipOutputStream);
+                exchangeComponent.exportAll(site.getId(), zipOutputStream);
             } else {
-                interactionComponent.exportEntity(site.getId(), service.getEntity(id), zipOutputStream);
+                exchangeComponent.exportEntity(site.getId(), service.getEntity(id), zipOutputStream);
             }
         } catch (IOException e) {
         }

@@ -1,9 +1,9 @@
-package com.publiccms.logic.component.interaction;
+package com.publiccms.logic.component.exchange;
 
 import java.io.ByteArrayOutputStream;
 
 import org.apache.tools.zip.ZipOutputStream;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.handler.PageHandler;
@@ -15,21 +15,21 @@ import com.publiccms.logic.service.cms.CmsDictionaryDataService;
 import com.publiccms.logic.service.cms.CmsDictionaryExcludeService;
 import com.publiccms.logic.service.cms.CmsDictionaryExcludeValueService;
 import com.publiccms.logic.service.cms.CmsDictionaryService;
-import com.publiccms.views.pojo.interaction.Dictionary;
+import com.publiccms.views.pojo.exchange.Dictionary;
 
 /**
  * DictionaryInteractionComponent 数据字典导入导出组件
  * 
  */
 @Component
-public class DictionaryInteractionComponent extends InteractionComponent<CmsDictionary, Dictionary> {
-    @Autowired
+public class DictionaryExchangeComponent extends Exchange<CmsDictionary, Dictionary> {
+    @Resource
     private CmsDictionaryService service;
-    @Autowired
+    @Resource
     private CmsDictionaryDataService dataService;
-    @Autowired
+    @Resource
     private CmsDictionaryExcludeService excludeService;
-    @Autowired
+    @Resource
     private CmsDictionaryExcludeValueService excludeValueService;
 
     public void exportAll(short siteId, String directory, ZipOutputStream zipOutputStream) {
@@ -56,25 +56,24 @@ public class DictionaryInteractionComponent extends InteractionComponent<CmsDict
         entity.getId().setSiteId(siteId);
         CmsDictionary oldentity = service.getEntity(entity.getId());
         if (null == oldentity || overwrite) {
-            service.delete(entity.getId());
-            service.save(entity);
+            service.saveOrUpdate(entity);
             if (null != data.getDataList()) {
                 for (CmsDictionaryData temp : data.getDataList()) {
                     temp.getId().setSiteId(siteId);
                 }
-                dataService.save(data.getDataList());
+                dataService.saveOrUpdate(data.getDataList());
             }
             if (null != data.getExcludeList()) {
                 for (CmsDictionaryExclude temp : data.getExcludeList()) {
                     temp.getId().setSiteId(siteId);
                 }
-                excludeService.save(data.getExcludeList());
+                excludeService.saveOrUpdate(data.getExcludeList());
             }
             if (null != data.getExcludeValueList()) {
                 for (CmsDictionaryExcludeValue temp : data.getExcludeValueList()) {
                     temp.getId().setSiteId(siteId);
                 }
-                excludeValueService.save(data.getExcludeValueList());
+                excludeValueService.saveOrUpdate(data.getExcludeValueList());
             }
         }
     }

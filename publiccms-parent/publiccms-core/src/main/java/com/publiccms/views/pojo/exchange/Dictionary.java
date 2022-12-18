@@ -1,4 +1,4 @@
-package com.publiccms.views.pojo.interaction;
+package com.publiccms.views.pojo.exchange;
 
 import java.util.List;
 

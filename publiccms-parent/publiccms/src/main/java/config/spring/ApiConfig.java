@@ -3,7 +3,7 @@ package config.spring;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -29,7 +29,7 @@ import com.publiccms.common.interceptor.SiteInterceptor;
 @ComponentScan(basePackages = "com.publiccms.controller.api", useDefaultFilters = false, includeFilters = {
         @ComponentScan.Filter(value = { Controller.class }) }, nameGenerator = FullBeanNameGenerator.class)
 public class ApiConfig implements WebMvcConfigurer {
-    @Autowired
+    @Resource
     private SiteInterceptor siteInterceptor;
 
     /**

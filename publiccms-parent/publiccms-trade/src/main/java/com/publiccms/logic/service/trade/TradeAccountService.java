@@ -5,7 +5,7 @@ import java.util.Date;
 
 // Generated 2019-6-16 9:47:27 by com.publiccms.common.generator.SourceGenerator
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -79,11 +79,11 @@ public class TradeAccountService extends BaseService<TradeAccount> {
         return null;
     }
 
-    @Autowired
+    @Resource
     private TradeAccountDao dao;
-    @Autowired
+    @Resource
     private TradeAccountHistoryDao historyDao;
-    @Autowired
+    @Resource
     private SysUserService userService;
 
 }

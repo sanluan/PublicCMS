@@ -12,7 +12,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.util.UrlPathHelper;
@@ -44,15 +44,15 @@ import com.publiccms.logic.service.sys.SysUserTokenService;
  */
 public class WebContextInterceptor implements HandlerInterceptor {
     protected final Log log = LogFactory.getLog(getClass());
-    @Autowired
+    @Resource
     private SysUserService sysUserService;
-    @Autowired
+    @Resource
     private SysUserTokenService sysUserTokenService;
-    @Autowired
+    @Resource
     private SiteComponent siteComponent;
-    @Autowired
+    @Resource
     private LogLoginService logLoginService;
-    @Autowired
+    @Resource
     private ConfigComponent configComponent;
     protected LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
 

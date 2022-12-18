@@ -12,7 +12,7 @@ import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.hibernate.search.backend.lucene.LuceneBackend;
 import org.hibernate.search.engine.backend.Backend;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -100,7 +100,7 @@ public class HqlService extends BaseService<Object> {
         dao.clear();
     }
 
-    @Autowired
+    @Resource
     private HqlDao dao;
 
 }

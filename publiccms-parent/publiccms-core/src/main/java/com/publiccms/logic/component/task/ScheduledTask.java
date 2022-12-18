@@ -17,6 +17,8 @@ import org.quartz.SchedulerException;
 import org.quartz.TriggerBuilder;
 import org.quartz.TriggerKey;
 import org.quartz.UnableToInterruptJobException;
+import javax.annotation.Resource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -62,13 +64,13 @@ public class ScheduledTask {
      */
     public static final int TASK_STATUS_ERROR = 3;
 
-    @Autowired
+    @Resource
     private SysTaskService sysTaskService;
     @Autowired(required = false)
     private Scheduler scheduler;
-    @Autowired
+    @Resource
     private LogTaskService logTaskService;
-    @Autowired
+    @Resource
     private SysSiteService siteService;
 
     /**

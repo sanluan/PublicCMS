@@ -7,7 +7,7 @@ import com.publiccms.logic.dao.sys.SysDomainDao;
 
 // Generated 2015-7-3 16:18:22 by com.publiccms.common.generator.SourceGenerator
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,7 +46,7 @@ public class SysDomainService extends BaseService<SysDomain> {
         return newEntity;
     }
 
-    @Autowired
+    @Resource
     private SysDomainDao dao;
 
 }

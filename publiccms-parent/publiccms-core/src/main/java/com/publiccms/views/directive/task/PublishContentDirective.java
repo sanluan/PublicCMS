@@ -5,7 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTaskDirective;
@@ -78,9 +78,9 @@ public class PublishContentDirective extends AbstractTaskDirective {
         handler.put("map", map).render();
     }
 
-    @Autowired
+    @Resource
     private TemplateComponent templateComponent;
-    @Autowired
+    @Resource
     private CmsContentService service;
 
 }

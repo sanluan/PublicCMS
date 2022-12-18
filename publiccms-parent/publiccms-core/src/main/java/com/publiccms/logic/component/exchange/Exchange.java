@@ -1,23 +1,58 @@
-package com.publiccms.logic.component.interaction;
+package com.publiccms.logic.component.exchange;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.ParameterizedType;
 import java.util.Enumeration;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.tools.zip.ZipEntry;
 import org.apache.tools.zip.ZipFile;
 import org.apache.tools.zip.ZipOutputStream;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.constants.Constants;
+import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ZipUtils;
 
-public abstract class InteractionComponent<E, D> {
+public abstract class Exchange<E, D> {
+    protected final static Log log = LogFactory.getLog(Exchange.class);
     private Class<D> clazz;
+
+    public static <E, D> String importData(short siteId, long userId, boolean overwrite, String dataFileSuffix,
+            Exchange<E, D> exchangeComponent, MultipartFile file, ModelMap model) {
+        if (null != file && !file.isEmpty()) {
+            String originalName = file.getOriginalFilename();
+            if (originalName.endsWith(dataFileSuffix)) {
+                String suffix = CmsFileUtils.getSuffix(originalName);
+                try {
+                    File dest = File.createTempFile("temp_import_", suffix);
+                    file.transferTo(dest);
+                    try (ZipFile zipFile = new ZipFile(dest, CommonConstants.DEFAULT_CHARSET_NAME)) {
+                        exchangeComponent.importData(siteId, userId, overwrite, zipFile);
+                    }
+                    dest.delete();
+                } catch (IOException e) {
+                    log.error(e.getMessage());
+                    model.addAttribute("error", e.getMessage());
+                    return CommonConstants.TEMPLATE_ERROR;
+                }
+            } else {
+                model.addAttribute("error", "verify.custom.fileType");
+                return CommonConstants.TEMPLATE_ERROR;
+            }
+        } else {
+            model.addAttribute("error", "verify.notEmpty.file");
+        }
+        return CommonConstants.TEMPLATE_DONE;
+    }
 
     public abstract void exportAll(short siteId, String directory, ZipOutputStream zipOutputStream);
 

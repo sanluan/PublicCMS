@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 // Generated 2019-6-15 20:08:45 by com.publiccms.common.generator.SourceGenerator
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -150,7 +150,7 @@ public class TradeRefundService extends BaseService<TradeRefund> {
         return false;
     }
 
-    @Autowired
+    @Resource
     private TradeRefundDao dao;
 
 }

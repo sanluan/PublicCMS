@@ -3,7 +3,7 @@ package com.publiccms.views.method.tools;
 import java.util.List;
 
 import com.publiccms.logic.service.tools.HqlService;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.BaseMethod;
@@ -55,6 +55,6 @@ public class GetKeywordsMethod extends BaseMethod {
         return 1;
     }
 
-    @Autowired
+    @Resource
     private HqlService service;
 }

@@ -11,6 +11,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.annotation.Resource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -27,6 +29,7 @@ import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.sys.SysConfigDataService;
+import com.publiccms.views.pojo.entities.ConfigInfo;
 import com.publiccms.views.pojo.entities.SysConfig;
 
 /**
@@ -36,12 +39,12 @@ import com.publiccms.views.pojo.entities.SysConfig;
  */
 @Component
 public class ConfigComponent implements SiteCache {
-    @Autowired
+    @Resource
     private SysConfigDataService service;
     @Autowired(required = false)
     private List<Config> configPluginList;
 
-    @Autowired
+    @Resource
     private SiteComponent siteComponent;
     private CacheEntity<Short, Map<String, Map<String, String>>> cache;
 
@@ -255,92 +258,11 @@ public class ConfigComponent implements SiteCache {
      * @throws InvocationTargetException
      * @throws IllegalArgumentException
      */
-    @Autowired
+    @Resource
     public void initCache(CacheEntityFactory cacheEntityFactory)
             throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException,
             InvocationTargetException, NoSuchMethodException, SecurityException {
         cache = cacheEntityFactory.createCacheEntity("config");
     }
 
-    /**
-     *
-     * ConfigInfo
-     *
-     */
-    public static class ConfigInfo implements java.io.Serializable {
-
-        /**
-         *
-         */
-        private static final long serialVersionUID = 1L;
-        /**
-         * code
-         * <p>
-         * 编码
-         */
-        private String code;
-        /**
-         * description
-         * <p>
-         * 描述
-         */
-        private String description;
-        /**
-         * customed
-         * <p>
-         * 自定义
-         */
-        private boolean customed;
-
-        /**
-         * @param code
-         * @param description
-         */
-        public ConfigInfo(String code, String description) {
-            this.code = code;
-            this.description = description;
-        }
-
-        /**
-         * @return code
-         */
-        public String getCode() {
-            return code;
-        }
-
-        /**
-         * @param code
-         */
-        public void setCode(String code) {
-            this.code = code;
-        }
-
-        /**
-         * @return description
-         */
-        public String getDescription() {
-            return description;
-        }
-
-        /**
-         * @param description
-         */
-        public void setDescription(String description) {
-            this.description = description;
-        }
-
-        /**
-         * @return customed
-         */
-        public boolean isCustomed() {
-            return customed;
-        }
-
-        /**
-         * @param customed
-         */
-        public void setCustomed(boolean customed) {
-            this.customed = customed;
-        }
-    }
 }

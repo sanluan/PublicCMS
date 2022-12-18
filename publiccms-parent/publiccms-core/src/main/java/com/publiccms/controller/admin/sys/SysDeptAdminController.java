@@ -5,7 +5,7 @@ import static org.springframework.util.StringUtils.arrayToCommaDelimitedString;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -43,17 +43,17 @@ import com.publiccms.logic.service.sys.SysUserService;
 @Controller
 @RequestMapping("sysDept")
 public class SysDeptAdminController {
-    @Autowired
+    @Resource
     private SysDeptService service;
-    @Autowired
+    @Resource
     private SysUserService userService;
-    @Autowired
+    @Resource
     private SysRoleUserService roleUserService;
-    @Autowired
+    @Resource
     private SysDeptItemService sysDeptItemService;
-    @Autowired
+    @Resource
     protected LogOperateService logOperateService;
-    @Autowired
+    @Resource
     protected SiteComponent siteComponent;
 
     private String[] ignoreProperties = new String[] { "id", "siteId" };

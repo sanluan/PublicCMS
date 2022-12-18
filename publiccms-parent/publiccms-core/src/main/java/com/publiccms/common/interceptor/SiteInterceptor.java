@@ -3,7 +3,7 @@ package com.publiccms.common.interceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.cors.CorsProcessor;
 import org.springframework.web.cors.DefaultCorsProcessor;
@@ -24,9 +24,9 @@ import com.publiccms.logic.component.site.SiteComponent;
 @Component
 public class SiteInterceptor implements HandlerInterceptor {
     public static final CorsProcessor corsProcessor = new DefaultCorsProcessor();
-    @Autowired
+    @Resource
     private CorsConfigComponent corsConfigComponent;
-    @Autowired
+    @Resource
     private SiteComponent siteComponent;
 
     @Override

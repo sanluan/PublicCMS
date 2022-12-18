@@ -3,7 +3,7 @@ package com.publiccms.views.directive.sys;
 import java.io.IOException;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
@@ -94,7 +94,7 @@ public class SysUserListDirective extends AbstractTemplateDirective {
         return true;
     }
 
-    @Autowired
+    @Resource
     private SysUserService service;
 
 }

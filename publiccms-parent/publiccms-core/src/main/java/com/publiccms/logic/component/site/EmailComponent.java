@@ -17,7 +17,7 @@ import javax.mail.internet.MimeMessage;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -315,7 +315,7 @@ public class EmailComponent implements SiteCache, Config {
      * @throws InstantiationException
      * @throws ClassNotFoundException
      */
-    @Autowired
+    @Resource
     public void initCache(CacheEntityFactory cacheEntityFactory)
             throws ClassNotFoundException, InstantiationException, IllegalAccessException {
         cache = cacheEntityFactory.createCacheEntity(CONFIG_CODE, CacheEntityFactory.MEMORY_CACHE_ENTITY);

@@ -2,7 +2,7 @@ package com.publiccms.views.method.tools;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.BaseMethod;
@@ -34,7 +34,7 @@ console.log(data);
 */
 @Component
 public class GetDictEnableMethod extends BaseMethod {
-    @Autowired
+    @Resource
     private SiteComponent siteComponent;
 
     @Override

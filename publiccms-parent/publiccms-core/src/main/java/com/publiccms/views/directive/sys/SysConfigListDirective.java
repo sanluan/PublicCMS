@@ -5,43 +5,45 @@ package com.publiccms.views.directive.sys;
 import java.io.IOException;
 import java.util.Collection;
 
-import com.publiccms.common.base.AbstractTemplateDirective;
-import com.publiccms.logic.component.config.ConfigComponent;
-import com.publiccms.logic.component.config.ConfigComponent.ConfigInfo;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
+
 import org.springframework.stereotype.Component;
 
+import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.logic.component.config.ConfigComponent;
+import com.publiccms.views.pojo.entities.ConfigInfo;
 
 /**
-*
-* sysConfigList 配置列表查询指令
-* <p>
-* <p>
-* 返回结果
-* <ul>
-* <li><code>list</code> List类型 查询结果实体列表
-* {@link com.publiccms.logic.component.config.ConfigComponent.ConfigInfo}
-* </ul>
-* 使用示例
-* <p>
-* &lt;@sys.configList&gt;&lt;#list list as
-* a&gt;${a.code}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.configList&gt;
-* 
-* <pre>
+ *
+ * sysConfigList 配置列表查询指令
+ * <p>
+ * <p>
+ * 返回结果
+ * <ul>
+ * <li><code>list</code> List类型 查询结果实体列表
+ * {@link com.publiccms.views.pojo.entities.ConfigInfo}
+ * </ul>
+ * 使用示例
+ * <p>
+ * &lt;@sys.configList&gt;&lt;#list list as
+ * a&gt;${a.code}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.configList&gt;
+ * 
+ * <pre>
  &lt;script&gt;
   $.getJSON('${site.dynamicPath}api/directive/sys/configList?appToken=接口访问授权Token', function(data){    
     console.log(data);
   });
   &lt;/script&gt;
-* </pre>
-*/
+ * </pre>
+ */
 @Component
 public class SysConfigListDirective extends AbstractTemplateDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
-        Collection<ConfigInfo> list = configComponent.getConfigList(getSite(handler).getId(), handler.getLocale(), getAdvanced(handler));
+        Collection<ConfigInfo> list = configComponent.getConfigList(getSite(handler).getId(), handler.getLocale(),
+                getAdvanced(handler));
         handler.put("list", list).render();
     }
 
@@ -55,6 +57,6 @@ public class SysConfigListDirective extends AbstractTemplateDirective {
         return true;
     }
 
-    @Autowired
+    @Resource
     private ConfigComponent configComponent;
 }

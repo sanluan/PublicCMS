@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -48,9 +48,9 @@ public class DirectiveController {
 
     });
     private List<Map<String, String>> actionList = new ArrayList<>();
-    @Autowired
+    @Resource
     protected MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter;
-    @Autowired
+    @Resource
     protected SiteComponent siteComponent;
     protected DirectiveComponent directiveComponent;
 
@@ -173,7 +173,7 @@ public class DirectiveController {
      * @param directiveComponent
      * 
      */
-    @Autowired
+    @Resource
     public void init(DirectiveComponent directiveComponent) {
         this.directiveComponent = directiveComponent;
         for (Entry<String, AbstractTemplateDirective> entry : directiveComponent.getTemplateDirectiveMap().entrySet()) {

@@ -3,7 +3,7 @@ package com.publiccms.controller.admin;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -26,9 +26,9 @@ import com.publiccms.logic.component.site.SiteComponent;
  */
 @Controller
 public class IndexAdminController {
-    @Autowired
+    @Resource
     protected SiteComponent siteComponent;
-    @Autowired
+    @Resource
     protected SiteConfigComponent siteConfigComponent;
 
     /**

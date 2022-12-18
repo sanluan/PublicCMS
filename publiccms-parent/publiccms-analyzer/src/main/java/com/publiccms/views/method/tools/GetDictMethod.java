@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.BaseMethod;
@@ -40,7 +40,7 @@ console.log(data);
 */
 @Component
 public class GetDictMethod extends BaseMethod {
-    @Autowired
+    @Resource
     private SiteComponent siteComponent;
 
     @Override

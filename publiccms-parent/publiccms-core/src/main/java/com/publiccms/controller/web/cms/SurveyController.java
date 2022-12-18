@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -138,16 +138,16 @@ public class SurveyController {
         return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
     }
 
-    @Autowired
+    @Resource
     private CmsSurveyService service;
-    @Autowired
+    @Resource
     private CmsSurveyQuestionService questionService;
-    @Autowired
+    @Resource
     private CmsUserSurveyService userSurveyService;
-    @Autowired
+    @Resource
     private CmsUserSurveyQuestionService userQuestionquestionService;
-    @Autowired
+    @Resource
     private CmsSurveyQuestionItemService itemService;
-    @Autowired
+    @Resource
     protected SiteConfigComponent siteConfigComponent;
 }

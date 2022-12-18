@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang3.time.DateUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTaskDirective;
@@ -62,10 +62,10 @@ public class ClearLogDirective extends AbstractTaskDirective {
         handler.put("result", map).render();
     }
 
-    @Autowired
+    @Resource
     private LogLoginService logLoginService;
-    @Autowired
+    @Resource
     private LogOperateService logOperateService;
-    @Autowired
+    @Resource
     private LogTaskService logTaskService;
 }

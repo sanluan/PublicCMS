@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.annotation.Resource;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -42,9 +44,9 @@ public class DirectiveComponent {
     private Map<String, AbstractTaskDirective> taskDirectiveMap = new HashMap<>();
     private Map<String, BaseMethod> methodMap = new HashMap<>();
 
-    @Autowired
+    @Resource
     private TemplateComponent templateComponent;
-    @Autowired
+    @Resource
     private SiteComponent siteComponent;
 
     public String getDirectiveName(String className) {

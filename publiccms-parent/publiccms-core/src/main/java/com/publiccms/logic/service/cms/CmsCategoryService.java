@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,17 +40,17 @@ import com.publiccms.views.pojo.query.CmsCategoryQuery;
 @Service
 @Transactional
 public class CmsCategoryService extends BaseService<CmsCategory> {
-    @Autowired
+    @Resource
     private CmsTagTypeService tagTypeService;
-    @Autowired
+    @Resource
     private CmsCategoryAttributeService attributeService;
-    @Autowired
+    @Resource
     private CmsCategoryModelService categoryModelService;
-    @Autowired
+    @Resource
     private SysExtendService extendService;
-    @Autowired
+    @Resource
     private SysExtendFieldService extendFieldService;
-    @Autowired
+    @Resource
     private CmsEditorHistoryService editorHistoryService;
 
     /**
@@ -80,7 +80,8 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
                     if (null != cmsCategoryModelParameters.getCategoryModel()) {
                         cmsCategoryModelParameters.getCategoryModel().getId().setCategoryId(id);
                         if (cmsCategoryModelParameters.isUse()) {
-                            categoryModelService.updateCategoryModel(siteId, cmsCategoryModelParameters.getCategoryModel());
+                            cmsCategoryModelParameters.getCategoryModel().setSiteId(siteId);
+                            categoryModelService.saveOrUpdate( cmsCategoryModelParameters.getCategoryModel());
                         } else {
                             categoryModelService.delete(cmsCategoryModelParameters.getCategoryModel().getId());
                         }
@@ -287,6 +288,6 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
         }
     }
     
-    @Autowired
+    @Resource
     private CmsCategoryDao dao;
 }

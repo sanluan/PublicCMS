@@ -9,7 +9,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -55,11 +55,11 @@ import com.publiccms.views.pojo.model.SysConfigParameters;
 @Controller
 @RequestMapping("sysConfigData")
 public class SysConfigDataAdminController {
-    @Autowired
+    @Resource
     protected LogOperateService logOperateService;
-    @Autowired
+    @Resource
     protected SiteComponent siteComponent;
-    @Autowired
+    @Resource
     private CmsEditorHistoryService editorHistoryService;
 
     private String[] ignoreProperties = new String[] { "id" };
@@ -173,16 +173,16 @@ public class SysConfigDataAdminController {
         return CommonConstants.TEMPLATE_DONE;
     }
 
-    @Autowired
+    @Resource
     private SysDeptItemService sysDeptItemService;
-    @Autowired
+    @Resource
     private SysDeptService sysDeptService;
-    @Autowired
+    @Resource
     private ConfigComponent configComponent;
-    @Autowired
+    @Resource
     private CorsConfigComponent corsConfigComponent;
-    @Autowired
+    @Resource
     private EmailComponent emailComponent;
-    @Autowired
+    @Resource
     private SysConfigDataService service;
 }

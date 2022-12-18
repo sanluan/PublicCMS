@@ -7,7 +7,7 @@ import org.springframework.beans.BeanUtils;
 
 // Generated 2021-1-14 22:44:06 by com.publiccms.common.generator.SourceGenerator
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -76,7 +76,7 @@ public class VisitSessionService extends BaseService<VisitSession> {
         }
     }
 
-    @Autowired
+    @Resource
     private VisitSessionDao dao;
 
 }

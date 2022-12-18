@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -214,14 +214,14 @@ public class TradeOrderAdminController {
         return CommonConstants.TEMPLATE_DONE;
     }
 
-    @Autowired
+    @Resource
     private TradeOrderService service;
-    @Autowired
+    @Resource
     private TradeOrderProductService traderProductService;
-    @Autowired
+    @Resource
     private CmsContentProductService productService;
-    @Autowired
+    @Resource
     private TradeRefundService refundService;
-    @Autowired
+    @Resource
     private SysUserService sysUserService;
 }

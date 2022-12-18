@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -334,25 +334,25 @@ public class TradePaymentController {
         return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
     }
 
-    @Autowired
+    @Resource
     private PaymentProcessorComponent tradePaymentProcessorComponent;
-    @Autowired
+    @Resource
     private PaymentProcessorComponent paymentProcessorComponent;
-    @Autowired
+    @Resource
     private PaymentGatewayComponent gatewayComponent;
-    @Autowired
+    @Resource
     private WechatGatewayComponent wechatGatewayComponent;
-    @Autowired
+    @Resource
     private AlipayGatewayComponent alipayGatewayComponent;
-    @Autowired
+    @Resource
     protected ConfigComponent configComponent;
-    @Autowired
+    @Resource
     protected SiteConfigComponent siteConfigComponent;
-    @Autowired
+    @Resource
     private TradePaymentService service;
-    @Autowired
+    @Resource
     private TradeRefundService refundService;
-    @Autowired
+    @Resource
     private TradePaymentHistoryService historyService;
 
 }

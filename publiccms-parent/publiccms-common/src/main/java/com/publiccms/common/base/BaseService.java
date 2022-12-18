@@ -131,8 +131,26 @@ public abstract class BaseService<E> {
     /**
      * @param entity
      */
+    public void saveOrUpdate(E entity) {
+        dao.saveOrUpdate(entity);
+    }
+
+    /**
+     * @param entity
+     */
     public void save(E entity) {
         dao.save(entity);
+    }
+
+    /**
+     * @param entityList
+     */
+    public void saveOrUpdate(List<E> entityList) {
+        if (CommonUtils.notEmpty(entityList)) {
+            for (E entity : entityList) {
+                saveOrUpdate(entity);
+            }
+        }
     }
 
     /**

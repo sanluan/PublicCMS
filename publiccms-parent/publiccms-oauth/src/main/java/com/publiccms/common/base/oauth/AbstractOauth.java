@@ -142,7 +142,7 @@ public abstract class AbstractOauth implements Config, OauthGateway {
      * @throws ClientProtocolException
      * @throws IOException
      */
-    public OauthAccess getOpenId(short siteId, OauthAccess oauthInfo) throws ClientProtocolException, IOException {
+    public OauthAccess getOpenId(@SuppressWarnings("unused") short siteId, OauthAccess oauthInfo) throws ClientProtocolException, IOException {
         return oauthInfo;
     }
 

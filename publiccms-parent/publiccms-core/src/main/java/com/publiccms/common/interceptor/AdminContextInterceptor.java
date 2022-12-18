@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.web.util.UrlPathHelper;
 
 import com.publiccms.common.constants.CommonConstants;
@@ -38,13 +38,13 @@ public class AdminContextInterceptor extends WebContextInterceptor {
     private String[] needNotAuthorizedUrls;
     private UrlPathHelper urlPathHelper = UrlPathHelper.defaultInstance;
 
-    @Autowired
+    @Resource
     private SysRoleAuthorizedService roleAuthorizedService;
-    @Autowired
+    @Resource
     private SysRoleService sysRoleService;
-    @Autowired
+    @Resource
     private SysUserService sysUserService;
-    @Autowired
+    @Resource
     private SiteComponent siteComponent;
 
     @Override

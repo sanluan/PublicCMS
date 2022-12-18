@@ -1,4 +1,4 @@
-package com.publiccms.logic.component.interaction;
+package com.publiccms.logic.component.exchange;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -9,7 +9,7 @@ import java.util.TreeSet;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tools.zip.ZipOutputStream;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.constants.CommonConstants;
@@ -27,7 +27,7 @@ import com.publiccms.logic.service.cms.CmsCategoryService;
 import com.publiccms.logic.service.cms.CmsTagTypeService;
 import com.publiccms.logic.service.sys.SysExtendFieldService;
 import com.publiccms.logic.service.sys.SysExtendService;
-import com.publiccms.views.pojo.interaction.Category;
+import com.publiccms.views.pojo.exchange.Category;
 import com.publiccms.views.pojo.query.CmsCategoryQuery;
 
 import freemarker.template.TemplateException;
@@ -37,22 +37,22 @@ import freemarker.template.TemplateException;
  * 
  */
 @Component
-public class CategoryInteractionComponent extends InteractionComponent<CmsCategory, Category> {
-    @Autowired
+public class CategoryExchangeComponent extends Exchange<CmsCategory, Category> {
+    @Resource
     private CmsCategoryService service;
-    @Autowired
+    @Resource
     private TemplateComponent templateComponent;
-    @Autowired
+    @Resource
     private SiteComponent siteComponent;
-    @Autowired
+    @Resource
     private CmsCategoryAttributeService attributeService;
-    @Autowired
+    @Resource
     private CmsCategoryModelService categoryModelService;
-    @Autowired
+    @Resource
     private SysExtendService extendService;
-    @Autowired
+    @Resource
     private SysExtendFieldService extendFieldService;
-    @Autowired
+    @Resource
     private CmsTagTypeService tagTypeService;
 
     @Override
@@ -79,12 +79,13 @@ public class CategoryInteractionComponent extends InteractionComponent<CmsCatego
 
     public void exportEntity(short siteId, String directory, String parentCode, CmsCategory entity, ByteArrayOutputStream out,
             ZipOutputStream zipOutputStream) {
+        Integer categoryId = entity.getId();
         Category data = new Category();
         data.setParentCode(parentCode);
         entity.setId(null);
         data.setEntity(entity);
-        data.setAttribute(attributeService.getEntity(entity.getId()));
-        data.setModelList(categoryModelService.getList(siteId, null, entity.getId()));
+        data.setAttribute(attributeService.getEntity(categoryId));
+        data.setModelList(categoryModelService.getList(siteId, null, categoryId));
         if (null != entity.getExtendId()) {
             data.setExtendList(extendFieldService.getList(entity.getExtendId(), null, null));
         }
@@ -103,7 +104,7 @@ public class CategoryInteractionComponent extends InteractionComponent<CmsCatego
         if (CommonUtils.notEmpty(entity.getChildIds())) {
             CmsCategoryQuery query = new CmsCategoryQuery();
             query.setSiteId(siteId);
-            query.setParentId(entity.getId());
+            query.setParentId(categoryId);
             query.setDisabled(false);
             PageHandler page = service.getPage(query, null, null);
             if (null != page.getList()) {
@@ -133,32 +134,62 @@ public class CategoryInteractionComponent extends InteractionComponent<CmsCatego
                     entity.setParentId(parent.getId());
                 }
             }
-            service.save(entity);
+            if (null == oldentity) {
+                service.save(entity);
+                if (null != data.getModelList()) {
+                    for (CmsCategoryModel temp : data.getModelList()) {
+                        temp.setSiteId(siteId);
+                        temp.getId().setCategoryId(entity.getId());
+                    }
+                    categoryModelService.save(data.getModelList());
+                }
+                if (null != data.getExtendList()) {
+                    SysExtend extend = new SysExtend("category", entity.getId());
+                    extendService.saveOrUpdate(extend);
+
+                    entity.setExtendId(extend.getId());
+                    service.update(entity, entity);
+
+                    for (SysExtendField temp : data.getExtendList()) {
+                        temp.getId().setExtendId(extend.getId());
+                    }
+                    extendFieldService.save(data.getExtendList());
+                }
+            } else {
+                entity.setId(oldentity.getId());
+                service.update(oldentity.getId(), entity);
+                if (null != data.getModelList()) {
+                    for (CmsCategoryModel temp : data.getModelList()) {
+                        temp.setSiteId(siteId);
+                        temp.getId().setCategoryId(entity.getId());
+                    }
+                    categoryModelService.saveOrUpdate(data.getModelList());
+                }
+                if (null != data.getExtendList()) {
+                    Integer extendId;
+                    if (null == oldentity.getExtendId()) {
+                        SysExtend extend = new SysExtend("category", entity.getId());
+                        extendService.saveOrUpdate(extend);
+                        extendId = extend.getId();
+                    } else {
+                        extendId = oldentity.getExtendId();
+                    }
+                    entity.setExtendId(extendId);
+                    service.update(entity, entity);
+                    for (SysExtendField temp : data.getExtendList()) {
+                        temp.getId().setExtendId(extendId);
+                    }
+                    extendFieldService.update(parentId, data.getExtendList());
+                }
+            }
             if (null != data.getAttribute()) {
                 data.getAttribute().setCategoryId(entity.getId());
-                attributeService.save(data.getAttribute());
+                attributeService.saveOrUpdate(data.getAttribute());
             }
-            if (null != data.getModelList()) {
-                for (CmsCategoryModel temp : data.getModelList()) {
-                    temp.setSiteId(siteId);
-                    temp.getId().setCategoryId(entity.getId());
+            if (null != data.getChildList()) {
+                for (Category child : data.getChildList()) {
+                    save(siteId, userId, overwrite, child);
                 }
-                categoryModelService.save(data.getModelList());
-            }
-            if (null != data.getExtendList()) {
-                SysExtend extend = new SysExtend("category", entity.getId());
-                extendService.save(extend);
-
-                entity.setExtendId(extend.getId());
-                service.update(entity, entity);
-
-                for (SysExtendField temp : data.getExtendList()) {
-                    temp.getId().setExtendId(extend.getId());
-                }
-                extendFieldService.save(data.getExtendList());
-            }
-            for (Category child : data.getChildList()) {
-                save(siteId, userId, overwrite, child);
             }
             try {
                 templateComponent.createCategoryFile(siteComponent.getSiteById(siteId), entity, null, null);

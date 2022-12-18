@@ -7,7 +7,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.apache.commons.lang3.time.DateUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.api.Config;
@@ -127,7 +127,7 @@ public class LockComponent implements Config, SiteCache {
      * default register max count
      */
     public static final int DEFAULT_REGISTER_MAX_COUNT = 3;
-    @Autowired
+    @Resource
     private SysLockService service;
 
     public int getExpriy(short siteId, String itemType) {
@@ -234,7 +234,7 @@ public class LockComponent implements Config, SiteCache {
      * @param showAll
      * @return config code or null
      */
-    public String getCode(SysSite site, boolean showAll) {
+    public String getCode(@SuppressWarnings("unused") SysSite site, @SuppressWarnings("unused") boolean showAll) {
         return CONFIG_CODE;
     }
 

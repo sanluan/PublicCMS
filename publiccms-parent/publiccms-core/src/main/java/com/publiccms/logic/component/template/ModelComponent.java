@@ -10,7 +10,7 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.api.SiteCache;
@@ -37,7 +37,7 @@ public class ModelComponent implements SiteCache {
      *
      */
     public static final String MODEL_LINK = "link";
-    @Autowired
+    @Resource
     private SiteComponent siteComponent;
 
     /**
@@ -184,7 +184,7 @@ public class ModelComponent implements SiteCache {
      * @throws InstantiationException
      * @throws ClassNotFoundException
      */
-    @Autowired
+    @Resource
     public void initCache(CacheEntityFactory cacheEntityFactory)
             throws ClassNotFoundException, InstantiationException, IllegalAccessException {
         modelCache = cacheEntityFactory.createCacheEntity("cmsModel");

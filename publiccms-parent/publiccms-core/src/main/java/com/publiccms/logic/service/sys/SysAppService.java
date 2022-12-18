@@ -5,7 +5,7 @@ import com.publiccms.logic.dao.sys.SysAppDao;
 
 // Generated 2016-3-2 10:25:12 by com.publiccms.common.generator.SourceGenerator
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,7 +41,7 @@ public class SysAppService extends BaseService<SysApp> {
         return getEntity(appKey, "appKey");
     }
 
-    @Autowired
+    @Resource
     private SysAppDao dao;
     
 }

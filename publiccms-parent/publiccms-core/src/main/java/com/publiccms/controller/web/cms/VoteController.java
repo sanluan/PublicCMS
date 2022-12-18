@@ -4,7 +4,7 @@ import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -93,11 +93,11 @@ public class VoteController {
         return false;
     }
 
-    @Autowired
+    @Resource
     private CmsVoteService service;
-    @Autowired
+    @Resource
     private CmsVoteItemService voteItemService;
-    @Autowired
+    @Resource
     private CmsUserVoteService userVoteService;
 
 }

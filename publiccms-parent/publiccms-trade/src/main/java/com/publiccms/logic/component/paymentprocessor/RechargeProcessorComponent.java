@@ -1,6 +1,6 @@
 package com.publiccms.logic.component.paymentprocessor;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.api.TradePaymentProcessor;
@@ -11,7 +11,7 @@ import com.publiccms.logic.service.trade.TradeAccountService;
 @Component
 public class RechargeProcessorComponent implements TradePaymentProcessor {
     public static final String GRADE_TYPE = "recharge";
-    @Autowired
+    @Resource
     private TradeAccountService accountService;
 
     @Override

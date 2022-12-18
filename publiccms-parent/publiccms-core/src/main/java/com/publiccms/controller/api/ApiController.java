@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import javax.annotation.Resource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Controller;
@@ -32,7 +34,7 @@ public class ApiController {
     protected final Log log = LogFactory.getLog(getClass());
     private Map<String, AbstractAppDirective> appDirectiveMap = new HashMap<>();
     private List<Map<String, String>> appList = new ArrayList<>();
-    @Autowired
+    @Resource
     protected MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter;
     /**
      *

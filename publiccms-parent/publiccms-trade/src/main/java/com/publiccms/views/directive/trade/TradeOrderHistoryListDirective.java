@@ -3,7 +3,7 @@ package com.publiccms.views.directive.trade;
 // Generated 2019-6-16 9:47:27 by com.publiccms.common.generator.SourceGenerator
 import java.io.IOException;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
@@ -60,7 +60,7 @@ public class TradeOrderHistoryListDirective extends AbstractTemplateDirective {
         return true;
     }
 
-    @Autowired
+    @Resource
     private TradeOrderHistoryService service;
 
 }

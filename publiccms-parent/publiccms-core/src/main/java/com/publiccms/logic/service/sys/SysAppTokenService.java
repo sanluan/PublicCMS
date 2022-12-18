@@ -6,7 +6,7 @@ import java.util.Date;
 
 import com.publiccms.entities.sys.SysAppToken;
 import com.publiccms.logic.dao.sys.SysAppTokenDao;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,7 +54,7 @@ public class SysAppTokenService extends BaseService<SysAppToken> {
         return entity;
     }
 
-    @Autowired
+    @Resource
     private SysAppTokenDao dao;
 
 }

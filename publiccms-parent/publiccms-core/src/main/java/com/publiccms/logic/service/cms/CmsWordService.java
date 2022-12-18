@@ -7,7 +7,7 @@ import java.util.Collection;
 
 import java.util.Date;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -90,7 +90,7 @@ public class CmsWordService extends BaseService<CmsWord> {
         return entity;
     }
 
-    @Autowired
+    @Resource
     private CmsWordDao dao;
 
 }

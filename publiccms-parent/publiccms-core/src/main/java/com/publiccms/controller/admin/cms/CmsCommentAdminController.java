@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -51,15 +51,15 @@ import freemarker.template.TemplateException;
 @RequestMapping("cmsComment")
 public class CmsCommentAdminController {
     protected final Log log = LogFactory.getLog(getClass());
-    @Autowired
+    @Resource
     protected LogOperateService logOperateService;
-    @Autowired
+    @Resource
     protected SiteComponent siteComponent;
-    @Autowired
+    @Resource
     private TemplateComponent templateComponent;
-    @Autowired
+    @Resource
     private CmsContentService contentService;
-    @Autowired
+    @Resource
     protected ConfigComponent configComponent;
 
     private String[] ignoreProperties = new String[] { "siteId", "userId", "createDate", "checkUserId", "checkDate", "contentId",
@@ -235,6 +235,6 @@ public class CmsCommentAdminController {
         return CommonConstants.TEMPLATE_DONE;
     }
 
-    @Autowired
+    @Resource
     private CmsCommentService service;
 }

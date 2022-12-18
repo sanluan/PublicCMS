@@ -3,7 +3,7 @@ package com.publiccms.controller.admin.sys;
 import static org.springframework.util.StringUtils.arrayToCommaDelimitedString;
 
 import javax.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -33,11 +33,11 @@ import com.publiccms.logic.service.sys.SysAppService;
 @Controller
 @RequestMapping("sysApp")
 public class SysAppAdminController {
-    @Autowired
+    @Resource
     private SysAppService service;
-    @Autowired
+    @Resource
     protected LogOperateService logOperateService;
-    @Autowired
+    @Resource
     protected SiteComponent siteComponent;
 
     private String[] ignoreProperties = new String[] { "id", "siteId", "channel", "appSecret" };

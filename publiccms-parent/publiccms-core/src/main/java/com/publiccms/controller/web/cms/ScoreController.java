@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,7 +42,7 @@ import freemarker.template.TemplateException;
 @RequestMapping("score")
 public class ScoreController {
     protected final Log log = LogFactory.getLog(getClass());
-    @Autowired
+    @Resource
     protected ConfigComponent configComponent;
 
     /**
@@ -149,13 +149,13 @@ public class ScoreController {
         return false;
     }
 
-    @Autowired
+    @Resource
     private CmsUserScoreService service;
-    @Autowired
+    @Resource
     private CmsCommentService commentService;
-    @Autowired
+    @Resource
     private CmsContentService contentService;
-    @Autowired
+    @Resource
     private TemplateComponent templateComponent;
 
 }

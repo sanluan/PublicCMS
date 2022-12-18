@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 import org.apache.commons.collections4.map.CaseInsensitiveMap;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
@@ -71,11 +71,11 @@ public class DiyComponent implements SiteCache {
 
     private CacheEntity<Short, Map<String, CmsModule>> moduleCache;
 
-    @Autowired
+    @Resource
     private SiteComponent siteComponent;
-    @Autowired
+    @Resource
     private TemplateComponent templateComponent;
-    @Autowired
+    @Resource
     private MetadataComponent metadataComponent;
 
     /**
@@ -666,7 +666,7 @@ public class DiyComponent implements SiteCache {
      * @throws InstantiationException
      * @throws ClassNotFoundException
      */
-    @Autowired
+    @Resource
     public void initCache(CacheEntityFactory cacheEntityFactory)
             throws ClassNotFoundException, InstantiationException, IllegalAccessException {
         regionDataCache = cacheEntityFactory.createCacheEntity("regionDataCache");

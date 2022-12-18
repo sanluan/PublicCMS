@@ -1,7 +1,7 @@
 package com.publiccms.controller.admin.sys;
 
 import javax.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -31,9 +31,9 @@ import com.publiccms.logic.service.sys.SysUserTokenService;
 @Controller
 @RequestMapping("sysUserToken")
 public class SysUserTokenAdminController {
-    @Autowired
+    @Resource
     protected LogOperateService logOperateService;
-    @Autowired
+    @Resource
     protected SiteComponent siteComponent;
 
     /**
@@ -60,7 +60,7 @@ public class SysUserTokenAdminController {
         return CommonConstants.TEMPLATE_DONE;
     }
 
-    @Autowired
+    @Resource
     private SysUserTokenService service;
 
 }

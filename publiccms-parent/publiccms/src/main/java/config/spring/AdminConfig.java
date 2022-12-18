@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -46,9 +47,9 @@ public class AdminConfig implements WebMvcConfigurer {
      */
     public static final String ADMIN_CONTEXT_PATH = "/admin";
 
-    @Autowired
+    @Resource
     private CacheComponent cacheComponent;
-    @Autowired
+    @Resource
     private AdminContextInterceptor adminInterceptor;
 
     @Bean

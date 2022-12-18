@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.annotation.PreDestroy;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -28,9 +28,9 @@ public class ClusterComponent {
      */
     public static final long THEARTBEAT_INTERVAL = 60 * 1000L;
 
-    @Autowired
+    @Resource
     private SysClusterService service;
-    @Autowired
+    @Resource
     private ScheduledTask scheduledTask;
 
     private void upgrade() {

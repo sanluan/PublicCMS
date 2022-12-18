@@ -3,7 +3,7 @@ package com.publiccms.views.directive.visit;
 // Generated 2021-1-14 22:43:59 by com.publiccms.common.generator.SourceGenerator
 import java.io.IOException;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
@@ -61,7 +61,7 @@ public class VisitHistoryListDirective extends AbstractTemplateDirective {
         return true;
     }
 
-    @Autowired
+    @Resource
     private VisitHistoryService service;
 
 }

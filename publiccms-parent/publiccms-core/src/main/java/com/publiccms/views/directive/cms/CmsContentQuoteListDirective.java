@@ -5,7 +5,7 @@ package com.publiccms.views.directive.cms;
 import java.io.IOException;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
@@ -51,6 +51,6 @@ public class CmsContentQuoteListDirective extends AbstractTemplateDirective {
         handler.put("list", list).render();
     }
 
-    @Autowired
+    @Resource
     private CmsContentService service;
 }

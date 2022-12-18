@@ -5,7 +5,7 @@ package com.publiccms.controller.admin.cms;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -93,10 +93,10 @@ public class CmsVoteAdminController {
         return CommonConstants.TEMPLATE_DONE;
     }
 
-    @Autowired
+    @Resource
     private CmsVoteService service;
-    @Autowired
+    @Resource
     private CmsVoteItemService voteItemService;
-    @Autowired
+    @Resource
     protected LogOperateService logOperateService;
 }

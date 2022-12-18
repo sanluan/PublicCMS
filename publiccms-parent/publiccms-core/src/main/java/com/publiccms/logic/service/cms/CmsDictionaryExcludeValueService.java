@@ -2,7 +2,7 @@ package com.publiccms.logic.service.cms;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,7 +57,7 @@ public class CmsDictionaryExcludeValueService extends BaseService<CmsDictionaryE
         return dao.deleteByValue(siteId, dictionaryId, value);
     }
 
-    @Autowired
+    @Resource
     private CmsDictionaryExcludeValueDao dao;
 
 }

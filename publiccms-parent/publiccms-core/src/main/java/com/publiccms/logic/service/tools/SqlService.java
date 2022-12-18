@@ -3,7 +3,7 @@ package com.publiccms.logic.service.tools;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -90,6 +90,6 @@ public class SqlService {
         return mapper.select(sql);
     }
 
-    @Autowired
+    @Resource
     private SqlMapper mapper;
 }

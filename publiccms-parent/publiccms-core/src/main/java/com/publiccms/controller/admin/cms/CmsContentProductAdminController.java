@@ -2,7 +2,7 @@ package com.publiccms.controller.admin.cms;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -32,9 +32,9 @@ import com.publiccms.logic.service.log.LogOperateService;
 @Controller
 @RequestMapping("cmsContentProduct")
 public class CmsContentProductAdminController {
-    @Autowired
+    @Resource
     protected LogOperateService logOperateService;
-    @Autowired
+    @Resource
     protected SiteComponent siteComponent;
 
     private String[] ignoreProperties = new String[] { "id", "siteId", "contentId", "userId", "title", "cover", "inventory",
@@ -67,6 +67,6 @@ public class CmsContentProductAdminController {
         return CommonConstants.TEMPLATE_DONE;
     }
 
-    @Autowired
+    @Resource
     private CmsContentProductService service;
 }

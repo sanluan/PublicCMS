@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
@@ -99,8 +99,8 @@ public class CmsCategoryDirective extends AbstractTemplateDirective {
         }
     }
 
-    @Autowired
+    @Resource
     private CmsCategoryService service;
-    @Autowired
+    @Resource
     private CmsCategoryAttributeService attributeService;
 }

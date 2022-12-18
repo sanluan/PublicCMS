@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.annotation.PreDestroy;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.view.AbstractCachingViewResolver;
 
@@ -19,9 +19,9 @@ import com.publiccms.logic.service.tools.HqlService;
  */
 @Component
 public class CacheComponent {
-    @Autowired
+    @Resource
     private List<Cache> cacheableList;
-    @Autowired
+    @Resource
     private HqlService hqlService;
     private List<AbstractCachingViewResolver> cachingViewResolverList = new ArrayList<>();
 

@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,13 +44,13 @@ import com.publiccms.views.pojo.entities.FileSize;
 @RequestMapping("file")
 public class FileController {
     protected final Log log = LogFactory.getLog(getClass());
-    @Autowired
+    @Resource
     protected LogUploadService logUploadService;
-    @Autowired
+    @Resource
     protected SiteComponent siteComponent;
-    @Autowired
+    @Resource
     private LockComponent lockComponent;
-    @Autowired
+    @Resource
     protected SiteConfigComponent siteConfigComponent;
 
     /**

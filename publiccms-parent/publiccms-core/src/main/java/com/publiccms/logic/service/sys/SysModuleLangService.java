@@ -4,7 +4,7 @@ import java.util.List;
 
 // Generated 2018-6-5 18:21:28 by com.publiccms.common.generator.SourceGenerator
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -69,7 +69,7 @@ public class SysModuleLangService extends BaseService<SysModuleLang> {
         }
     }
 
-    @Autowired
+    @Resource
     private SysModuleLangDao dao;
 
 }

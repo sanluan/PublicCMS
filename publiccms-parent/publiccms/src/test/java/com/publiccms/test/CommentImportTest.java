@@ -11,7 +11,7 @@ import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -34,7 +34,7 @@ public class CommentImportTest {
         CmsVersion.setScheduled(false);
     }
 
-    @Autowired
+    @Resource
     CmsCommentService commentsService;
 
     // 搜狐畅言评论导入

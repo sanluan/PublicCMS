@@ -4,7 +4,7 @@ import java.util.Date;
 
 // Generated 2016-1-20 11:19:18 by com.publiccms.common.generator.SourceGenerator
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -65,7 +65,7 @@ public class SysUserTokenService extends BaseService<SysUserToken> {
         return dao.delete(now);
     }
 
-    @Autowired
+    @Resource
     private SysUserTokenDao dao;
 
 }

@@ -33,7 +33,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -56,11 +56,11 @@ import config.spring.ApplicationConfig;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = ApplicationConfig.class)
 public class ContentBatchImport {
-    @Autowired
+    @Resource
     private CmsContentService contentService;
-    @Autowired
+    @Resource
     private CmsContentAttributeService contentAttributeService;
-    @Autowired
+    @Resource
     private CmsContentFileService contentFileService;
 
     @BeforeAll

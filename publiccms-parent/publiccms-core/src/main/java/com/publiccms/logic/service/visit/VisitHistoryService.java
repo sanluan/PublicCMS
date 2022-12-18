@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -106,7 +106,7 @@ public class VisitHistoryService extends BaseService<VisitHistory> {
         }
     }
 
-    @Autowired
+    @Resource
     private VisitHistoryDao dao;
 
 }

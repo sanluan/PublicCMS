@@ -5,7 +5,7 @@ import java.util.Date;
 
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.logic.dao.log.LogOperateDao;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -80,7 +80,7 @@ public class LogOperateService extends BaseService<LogOperate> {
         }
     }
 
-    @Autowired
+    @Resource
     private LogOperateDao dao;
 
 }

@@ -16,7 +16,7 @@ import org.apache.poi.hwpf.converter.PicturesManager;
 import org.apache.poi.hwpf.usermodel.PictureType;
 import org.fit.pdfdom.resource.HtmlResource;
 import org.fit.pdfdom.resource.HtmlResourceHandler;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,11 +51,11 @@ import fr.opensagres.poi.xwpf.converter.core.ImageManager;
 @RequestMapping("file")
 public class FileAdminController {
     protected final Log log = LogFactory.getLog(getClass());
-    @Autowired
+    @Resource
     protected LogUploadService logUploadService;
-    @Autowired
+    @Resource
     protected SiteComponent siteComponent;
-    @Autowired
+    @Resource
     protected SiteConfigComponent siteConfigComponent;
 
     /**

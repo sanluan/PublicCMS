@@ -34,7 +34,7 @@ import org.hibernate.search.engine.search.query.dsl.SearchQueryOptionsStep;
 import org.hibernate.search.mapper.orm.Search;
 import org.hibernate.search.mapper.orm.session.SearchSession;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.web.util.HtmlUtils;
 
@@ -190,7 +190,14 @@ public abstract class BaseDao<E> {
         }
         return Collections.emptyList();
     }
-
+    /**
+     * 保存或更新
+     *
+     * @param entity
+     */
+    public void saveOrUpdate(E entity) {
+        getSession().saveOrUpdate(init(entity));
+    }
     /**
      * 保存
      *
@@ -688,8 +695,8 @@ public abstract class BaseDao<E> {
 
     protected abstract E init(E entity);
 
-    @Autowired
+    @Resource
     protected SessionFactory sessionFactory;
-    @Autowired
+    @Resource
     protected IdWorker idWorker;
 }

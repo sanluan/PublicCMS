@@ -9,7 +9,7 @@ import java.util.Set;
 
 // Generated 2018-11-7 16:25:07 by com.publiccms.common.generator.SourceGenerator
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -185,8 +185,8 @@ public class CmsCommentService extends BaseService<CmsComment> {
         return resultList;
     }
 
-    @Autowired
+    @Resource
     private CmsCommentDao dao;
-    @Autowired
+    @Resource
     private CmsContentService contentService;
 }

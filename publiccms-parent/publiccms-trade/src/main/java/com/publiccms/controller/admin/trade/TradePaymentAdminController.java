@@ -2,7 +2,7 @@ package com.publiccms.controller.admin.trade;
 
 import java.math.BigDecimal;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -85,10 +85,10 @@ public class TradePaymentAdminController {
         return CommonConstants.TEMPLATE_DONE;
     }
 
-    @Autowired
+    @Resource
     private PaymentGatewayComponent gatewayComponent;
-    @Autowired
+    @Resource
     private TradeRefundService service;
-    @Autowired
+    @Resource
     private TradePaymentService paymentService;
 }

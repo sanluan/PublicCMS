@@ -3,7 +3,7 @@ package com.publiccms.logic.service.sys;
 import java.util.List;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -73,7 +73,7 @@ public class SysRoleUserService extends BaseService<SysRoleUser> {
         return dao.deleteByRoleId(roleId);
     }
 
-    @Autowired
+    @Resource
     private SysRoleUserDao dao;
     
 }

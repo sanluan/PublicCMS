@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
@@ -59,7 +59,7 @@ public class CmsDictionaryExcludeListDirective extends AbstractTemplateDirective
         handler.put("list", list).render();
     }
 
-    @Autowired
+    @Resource
     private CmsDictionaryExcludeService service;
 
 }

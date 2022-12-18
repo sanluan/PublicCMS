@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -42,21 +42,21 @@ import com.publiccms.logic.service.sys.SysUserService;
 @Controller
 @RequestMapping("sysRole")
 public class SysRoleAdminController {
-    @Autowired
+    @Resource
     private SysRoleService service;
-    @Autowired
+    @Resource
     private SysRoleUserService roleUserService;
-    @Autowired
+    @Resource
     private SysRoleModuleService roleModuleService;
-    @Autowired
+    @Resource
     private SysModuleService moduleService;
-    @Autowired
+    @Resource
     private SysRoleAuthorizedService roleAuthorizedService;
-    @Autowired
+    @Resource
     private SysUserService userService;
-    @Autowired
+    @Resource
     protected LogOperateService logOperateService;
-    @Autowired
+    @Resource
     protected SiteComponent siteComponent;
 
     private String[] ignoreProperties = new String[] { "id", "siteId" };

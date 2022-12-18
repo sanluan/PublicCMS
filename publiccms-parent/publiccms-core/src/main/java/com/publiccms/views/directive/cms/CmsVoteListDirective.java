@@ -3,7 +3,7 @@ package com.publiccms.views.directive.cms;
 // Generated 2020-3-26 12:04:23 by com.publiccms.common.generator.SourceGenerator
 import java.io.IOException;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.logic.service.cms.CmsVoteService;
@@ -72,7 +72,7 @@ public class CmsVoteListDirective extends AbstractTemplateDirective {
         return true;
     }
 
-    @Autowired
+    @Resource
     private CmsVoteService service;
 
 }

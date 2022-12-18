@@ -22,7 +22,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.util.EntityUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.api.Config;
@@ -97,13 +97,13 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
      * 
      */
     public static final String CONFIG_RESULTPAGE = "resultPage";
-    @Autowired
+    @Resource
     private TemplateComponent templateComponent;
-    @Autowired
+    @Resource
     private TradePaymentService service;
-    @Autowired
+    @Resource
     private TradePaymentHistoryService historyService;
-    @Autowired
+    @Resource
     private PaymentProcessorComponent tradePaymentProcessorComponent;
 
     private CertificatesManager certificatesManager = CertificatesManager.getInstance();

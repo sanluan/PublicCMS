@@ -3,7 +3,7 @@ package com.publiccms.views.directive.cms;
 // Generated 2020-3-26 11:46:48 by com.publiccms.common.generator.SourceGenerator
 import java.io.IOException;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.logic.service.cms.CmsUserScoreService;
@@ -53,7 +53,7 @@ public class CmsUserScoreListDirective extends AbstractTemplateDirective {
         handler.put("page", page).render();
     }
 
-    @Autowired
+    @Resource
     private CmsUserScoreService service;
 
 }

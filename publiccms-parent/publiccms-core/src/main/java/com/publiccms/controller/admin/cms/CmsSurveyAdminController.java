@@ -5,7 +5,7 @@ package com.publiccms.controller.admin.cms;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -82,8 +82,8 @@ public class CmsSurveyAdminController {
         return CommonConstants.TEMPLATE_DONE;
     }
 
-    @Autowired
+    @Resource
     private CmsSurveyService service;
-    @Autowired
+    @Resource
     protected LogOperateService logOperateService;
 }

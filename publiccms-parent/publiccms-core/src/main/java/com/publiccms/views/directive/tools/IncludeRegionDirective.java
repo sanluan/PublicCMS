@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
@@ -109,7 +109,7 @@ public class IncludeRegionDirective extends AbstractTemplateDirective {
         return false;
     }
 
-    @Autowired
+    @Resource
     private DiyComponent diyComponent;
 
     @Override

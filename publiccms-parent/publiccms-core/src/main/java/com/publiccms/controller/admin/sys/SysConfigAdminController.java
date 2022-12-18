@@ -4,7 +4,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -33,11 +33,11 @@ import com.publiccms.views.pojo.entities.SysConfig;
 @Controller
 @RequestMapping("sysConfig")
 public class SysConfigAdminController {
-    @Autowired
+    @Resource
     private ConfigComponent configComponent;
-    @Autowired
+    @Resource
     protected LogOperateService logOperateService;
-    @Autowired
+    @Resource
     protected SiteComponent siteComponent;
 
     /**

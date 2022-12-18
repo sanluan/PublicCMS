@@ -5,7 +5,7 @@ package com.publiccms.views.directive.visit;
 import java.io.IOException;
 import java.util.Date;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
@@ -58,7 +58,7 @@ public class VisitItemDirective extends AbstractTemplateDirective {
         return true;
     }
 
-    @Autowired
+    @Resource
     private VisitItemService service;
 
 }

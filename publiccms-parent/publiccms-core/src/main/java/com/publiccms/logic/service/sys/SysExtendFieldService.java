@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -65,7 +65,7 @@ public class SysExtendFieldService extends BaseService<SysExtendField> {
         }
     }
 
-    @Autowired
+    @Resource
     private SysExtendFieldDao dao;
 
 }

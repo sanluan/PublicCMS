@@ -6,7 +6,7 @@ import java.util.List;
 
 // Generated 2021-6-26 20:16:25 by com.publiccms.common.generator.SourceGenerator
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -224,12 +224,12 @@ public class TradeOrderService extends BaseService<TradeOrder> {
         return false;
     }
 
-    @Autowired
+    @Resource
     private TradeOrderDao dao;
-    @Autowired
+    @Resource
     private CmsContentProductService productService;
-    @Autowired
+    @Resource
     private TradeOrderProductService tradeOrderProductService;
-    @Autowired
+    @Resource
     private TradeOrderHistoryDao historyDao;
 }

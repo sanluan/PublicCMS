@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -55,21 +55,21 @@ import com.publiccms.views.pojo.query.CmsCategoryQuery;
 @RequestMapping("cmsModel")
 public class CmsModelAdminController {
     protected final Log log = LogFactory.getLog(getClass());
-    @Autowired
+    @Resource
     private CmsCategoryService categoryService;
-    @Autowired
+    @Resource
     private ModelComponent modelComponent;
-    @Autowired
+    @Resource
     protected CmsContentService contentService;
-    @Autowired
+    @Resource
     private SysExtendFieldService extendFieldService;
-    @Autowired
+    @Resource
     protected LogOperateService logOperateService;
-    @Autowired
+    @Resource
     protected SiteComponent siteComponent;
-    @Autowired
+    @Resource
     private TemplateComponent templateComponent;
-    @Autowired
+    @Resource
     private CmsCategoryModelService categoryModelService;
 
     /**

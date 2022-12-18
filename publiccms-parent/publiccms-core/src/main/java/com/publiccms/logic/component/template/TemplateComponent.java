@@ -20,7 +20,7 @@ import javax.annotation.PreDestroy;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.api.Cache;
@@ -74,23 +74,23 @@ public class TemplateComponent implements Cache {
     private Configuration webConfiguration;
     private Configuration taskConfiguration;
 
-    @Autowired
+    @Resource
     private CmsContentAttributeService contentAttributeService;
-    @Autowired
+    @Resource
     private CmsCategoryAttributeService categoryAttributeService;
-    @Autowired
+    @Resource
     private CmsContentService contentService;
-    @Autowired
+    @Resource
     private CmsCategoryModelService categoryModelService;
-    @Autowired
+    @Resource
     private CmsCategoryService categoryService;
-    @Autowired
+    @Resource
     private SiteComponent siteComponent;
-    @Autowired
+    @Resource
     private MetadataComponent metadataComponent;
-    @Autowired
+    @Resource
     private CmsPlaceService placeService;
-    @Autowired
+    @Resource
     private StatisticsComponent statisticsComponent;
 
     private static ExecutorService pool = Executors.newFixedThreadPool(2 * Runtime.getRuntime().availableProcessors());

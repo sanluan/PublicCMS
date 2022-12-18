@@ -1,4 +1,4 @@
-package com.publiccms.views.pojo.interaction;
+package com.publiccms.views.pojo.exchange;
 
 import com.publiccms.entities.cms.CmsPlace;
 import com.publiccms.entities.cms.CmsPlaceAttribute;

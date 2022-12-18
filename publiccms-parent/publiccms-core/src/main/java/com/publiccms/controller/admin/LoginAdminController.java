@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -48,21 +48,21 @@ import com.publiccms.logic.service.sys.SysUserTokenService;
  */
 @Controller
 public class LoginAdminController {
-    @Autowired
+    @Resource
     protected LogOperateService logOperateService;
-    @Autowired
+    @Resource
     private SysUserService service;
-    @Autowired
+    @Resource
     private SysUserTokenService sysUserTokenService;
-    @Autowired
+    @Resource
     private LogLoginService logLoginService;
-    @Autowired
+    @Resource
     private CacheComponent cacheComponent;
-    @Autowired
+    @Resource
     private ConfigComponent configComponent;
-    @Autowired
+    @Resource
     private LockComponent lockComponent;
-    @Autowired
+    @Resource
     protected SiteComponent siteComponent;
 
     /**

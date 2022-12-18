@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -72,9 +72,9 @@ public class CmsDictionaryExcludeService extends BaseService<CmsDictionaryExclud
         return dao.delete(siteId, dictionaryIds);
     }
 
-    @Autowired
+    @Resource
     private CmsDictionaryExcludeDao dao;
-    @Autowired
+    @Resource
     private CmsDictionaryExcludeValueService excludeValueService;
 
 }

@@ -10,7 +10,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -56,23 +56,23 @@ import freemarker.template.TemplateException;
 @RequestMapping("place")
 public class PlaceController {
     protected final Log log = LogFactory.getLog(getClass());
-    @Autowired
+    @Resource
     private CmsPlaceService service;
-    @Autowired
+    @Resource
     private StatisticsComponent statisticsComponent;
-    @Autowired
+    @Resource
     private CmsPlaceAttributeService attributeService;
-    @Autowired
+    @Resource
     private MetadataComponent metadataComponent;
-    @Autowired
+    @Resource
     protected LogOperateService logOperateService;
-    @Autowired
+    @Resource
     protected SiteComponent siteComponent;
-    @Autowired
+    @Resource
     protected SiteConfigComponent siteConfigComponent;
-    @Autowired
+    @Resource
     private TemplateComponent templateComponent;
-    @Autowired
+    @Resource
     private LockComponent lockComponent;
 
     private String[] ignoreProperties = new String[] { "id", "siteId", "type", "path", "createDate", "userId", "disabled" };

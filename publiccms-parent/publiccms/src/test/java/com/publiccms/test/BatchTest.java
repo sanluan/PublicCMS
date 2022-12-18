@@ -6,7 +6,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -59,14 +59,14 @@ public class BatchTest {
         log.info(System.currentTimeMillis() - start);
     }
 
-    @Autowired
+    @Resource
     private SysSiteService siteService;
-    @Autowired
+    @Resource
     private CmsCategoryService categoryService;
-    @Autowired
+    @Resource
     private CmsCategoryModelService categoryModelService;
-    @Autowired
+    @Resource
     private CmsContentService contentService;
-    @Autowired
+    @Resource
     private TemplateComponent templateComponent;
 }

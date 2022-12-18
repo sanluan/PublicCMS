@@ -4,7 +4,7 @@ import java.util.Date;
 
 import com.publiccms.entities.sys.SysEmailToken;
 import com.publiccms.logic.dao.sys.SysEmailTokenDao;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,7 +39,7 @@ public class SysEmailTokenService extends BaseService<SysEmailToken> {
         return dao.delete(now);
     }
     
-    @Autowired
+    @Resource
     private SysEmailTokenDao dao;
     
 }

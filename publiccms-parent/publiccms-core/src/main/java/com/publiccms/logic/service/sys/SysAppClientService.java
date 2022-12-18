@@ -5,7 +5,7 @@ package com.publiccms.logic.service.sys;
 import java.io.Serializable;
 import java.util.Date;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -99,7 +99,7 @@ public class SysAppClientService extends BaseService<SysAppClient> {
         return entity;
     }
 
-    @Autowired
+    @Resource
     private SysAppClientDao dao;
 
 }

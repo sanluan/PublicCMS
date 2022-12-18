@@ -2,41 +2,42 @@ package com.publiccms.controller.admin.cms;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.DateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.tools.zip.ZipOutputStream;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
-import com.publiccms.common.handler.PageHandler;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.DateFormatUtils;
-import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.common.tools.HtmlUtils;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.LanguagesUtils;
@@ -52,26 +53,24 @@ import com.publiccms.entities.cms.CmsContentRelated;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysDept;
 import com.publiccms.entities.sys.SysDeptItemId;
-import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.config.ConfigComponent;
 import com.publiccms.logic.component.config.SiteConfigComponent;
+import com.publiccms.logic.component.exchange.ContentExchangeComponent;
+import com.publiccms.logic.component.exchange.Exchange;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.ModelComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsCategoryModelService;
 import com.publiccms.logic.service.cms.CmsCategoryService;
-import com.publiccms.logic.service.cms.CmsContentAttributeService;
 import com.publiccms.logic.service.cms.CmsContentRelatedService;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.sys.SysDeptItemService;
 import com.publiccms.logic.service.sys.SysDeptService;
-import com.publiccms.logic.service.sys.SysExtendFieldService;
 import com.publiccms.logic.service.sys.SysSiteService;
-import com.publiccms.logic.service.sys.SysUserService;
 import com.publiccms.views.pojo.entities.CmsModel;
 import com.publiccms.views.pojo.model.CmsContentParameters;
 import com.publiccms.views.pojo.query.CmsContentQuery;
@@ -87,36 +86,32 @@ import freemarker.template.TemplateException;
 @RequestMapping("cmsContent")
 public class CmsContentAdminController {
     protected final Log log = LogFactory.getLog(getClass());
-    @Autowired
+    @Resource
     private CmsContentService service;
-    @Autowired
-    private CmsContentAttributeService attributeService;
-    @Autowired
-    private SysUserService sysUserService;
-    @Autowired
-    private SysExtendFieldService extendFieldService;
-    @Autowired
+    @Resource
     private SysDeptItemService sysDeptItemService;
-    @Autowired
+    @Resource
     private SysDeptService sysDeptService;
-    @Autowired
+    @Resource
     private CmsContentRelatedService cmsContentRelatedService;
-    @Autowired
+    @Resource
     private CmsCategoryModelService categoryModelService;
-    @Autowired
+    @Resource
     private ModelComponent modelComponent;
-    @Autowired
+    @Resource
     private CmsCategoryService categoryService;
-    @Autowired
+    @Resource
     private TemplateComponent templateComponent;
-    @Autowired
+    @Resource
     protected LogOperateService logOperateService;
-    @Autowired
+    @Resource
     protected SiteComponent siteComponent;
-    @Autowired
+    @Resource
     protected ConfigComponent configComponent;
-    @Autowired
+    @Resource
     private SysSiteService siteService;
+    @Resource
+    private ContentExchangeComponent exchangeComponent;
 
     public static final String[] ignoreProperties = new String[] { "siteId", "userId", "deptId", "categoryId", "tagIds", "sort",
             "createDate", "updateDate", "clicks", "comments", "scores", "scoreUsers", "score", "childs", "checkUserId",
@@ -628,198 +623,69 @@ public class CmsContentAdminController {
 
     /**
      * @param site
+     * @param admin
+     * @param overwrite
+     * @param file
+     * @param request
+     * @param model
+     * @return
+     */
+    @RequestMapping("doImport")
+    @Csrf
+    public String doImport(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile file, boolean overwrite,
+            HttpServletRequest request, ModelMap model) {
+        if (null != file) {
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "import.content", RequestUtils.getIpAddress(request),
+                    CommonUtils.getDate(), file.getOriginalFilename()));
+        }
+        return Exchange.importData(site.getId(), admin.getId(), overwrite, "_content.zip", exchangeComponent, file, model);
+    }
+
+    /**
+     * @param site
      * @param queryEntity
      * @param orderField
      * @param orderType
      * @param request
      * @return view name
      */
-    @RequestMapping("export")
+    @RequestMapping("exportExcel")
     @Csrf
-    public ExcelView export(@RequestAttribute SysSite site, CmsContentQuery queryEntity, String orderField, String orderType,
+    public ExcelView exportExcel(@RequestAttribute SysSite site, CmsContentQuery queryEntity, String orderField, String orderType,
             HttpServletRequest request) {
         queryEntity.setSiteId(site.getId());
         queryEntity.setDisabled(false);
         queryEntity.setEmptyParent(true);
         Locale locale = RequestContextUtils.getLocale(request);
+        return exchangeComponent.exportExcelByQuery(site.getId(), queryEntity, orderField, orderType, locale);
+    }
 
-        PageHandler page = service.getPage(queryEntity, null, orderField, orderType, null, 1, PageHandler.MAX_PAGE_SIZE, null);
-        @SuppressWarnings("unchecked")
-        List<CmsContent> entityList = (List<CmsContent>) page.getList();
-        Map<String, List<Serializable>> pksMap = new HashMap<>();
-        for (CmsContent entity : entityList) {
-            List<Serializable> userIds = pksMap.computeIfAbsent("userIds", k -> new ArrayList<>());
-            userIds.add(entity.getUserId());
-            userIds.add(entity.getCheckUserId());
-            List<Serializable> deptIds = pksMap.computeIfAbsent("deptIds", k -> new ArrayList<>());
-            deptIds.add(entity.getDeptId());
-            List<Serializable> categoryIds = pksMap.computeIfAbsent("categoryIds", k -> new ArrayList<>());
-            categoryIds.add(entity.getCategoryId());
-            List<Serializable> modelIds = pksMap.computeIfAbsent("modelIds", k -> new ArrayList<>());
-            modelIds.add(entity.getModelId());
-            List<Serializable> contentIds = pksMap.computeIfAbsent("contentIds", k -> new ArrayList<>());
-            contentIds.add(entity.getId());
-        }
-        Map<Long, SysUser> userMap = new HashMap<>();
-        if (null != pksMap.get("userIds")) {
-            List<Serializable> userIds = pksMap.get("userIds");
-            List<SysUser> entitys = sysUserService.getEntitys(userIds);
-            for (SysUser entity : entitys) {
-                userMap.put(entity.getId(), entity);
-            }
-        }
-        Map<Integer, SysDept> deptMap = new HashMap<>();
-        if (null != pksMap.get("deptIds")) {
-            List<Serializable> deptIds = pksMap.get("deptIds");
-            List<SysDept> entitys = sysDeptService.getEntitys(deptIds);
-            for (SysDept entity : entitys) {
-                deptMap.put(entity.getId(), entity);
-            }
-        }
-        Map<Integer, CmsCategory> categoryMap = new HashMap<>();
-        if (null != pksMap.get("categoryIds")) {
-            List<Serializable> categoryIds = pksMap.get("categoryIds");
-            List<CmsCategory> entitys = categoryService.getEntitys(categoryIds);
-            for (CmsCategory entity : entitys) {
-                categoryMap.put(entity.getId(), entity);
-            }
-        }
-        Map<String, CmsModel> modelMap = modelComponent.getModelMap(site.getId());
-        Map<Long, CmsContentAttribute> contentAttributeMap = new HashMap<>();
-        if (null != pksMap.get("contentIds")) {
-            List<Serializable> contentIds = pksMap.get("contentIds");
-            List<CmsContentAttribute> entitys = attributeService.getEntitys(contentIds);
-            for (CmsContentAttribute entity : entitys) {
-                contentAttributeMap.put(entity.getContentId(), entity);
-            }
-        }
-
-        ExcelView view = new ExcelView(workbook -> {
-            List<SysExtendField> categoryExtendList = null;
-            if (CommonUtils.notEmpty(queryEntity.getCategoryId())) {
-                CmsCategory category = categoryService.getEntity(queryEntity.getCategoryId());
-                if (null != category && null != category.getExtendId()) {
-                    categoryExtendList = extendFieldService.getList(category.getExtendId(), null, null);
-                }
-            }
-            List<SysExtendField> modelExtendList = null;
-            if (CommonUtils.notEmpty(queryEntity.getModelIds()) && 1 == queryEntity.getModelIds().length) {
-                CmsModel cmsModel = modelComponent.getModelMap(site.getId()).get(queryEntity.getModelIds()[0]);
-                if (null != cmsModel) {
-                    modelExtendList = cmsModel.getExtendList();
-                }
-            }
-
-            Sheet sheet = workbook.createSheet(
-                    LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(), "page.content"));
-            int i = 0, j = 0;
-            Row row = sheet.createRow(i++);
-
-            row.createCell(j++).setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.id"));
-            row.createCell(j++).setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.title"));
-            row.createCell(j++).setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.url"));
-            row.createCell(j++).setCellValue(
-                    LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content.promulgator"));
-            row.createCell(j++).setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.dept"));
-            row.createCell(j++)
-                    .setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.category"));
-            row.createCell(j++).setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.model"));
-            row.createCell(j++)
-                    .setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content.score"));
-            row.createCell(j++)
-                    .setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content.comments"));
-            row.createCell(j++)
-                    .setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.clicks"));
-            row.createCell(j++)
-                    .setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.publish_date"));
-            row.createCell(j++)
-                    .setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.create_date"));
-            row.createCell(j++).setCellValue(
-                    LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content.top_level"));
-            row.createCell(j++)
-                    .setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.status"));
-            row.createCell(j++)
-                    .setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.inspector"));
-            row.createCell(j++)
-                    .setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content.source"));
-            row.createCell(j++).setCellValue(
-                    LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content.source_url"));
-
-            if (CommonUtils.notEmpty(categoryExtendList)) {
-                for (SysExtendField extend : categoryExtendList) {
-                    row.createCell(j++).setCellValue(extend.getName());
-                }
-            }
-            if (CommonUtils.notEmpty(modelExtendList)) {
-                for (SysExtendField extend : modelExtendList) {
-                    row.createCell(j++).setCellValue(extend.getName());
-                }
-            }
-            row.createCell(j++)
-                    .setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content.text"));
-
-            SysUser user;
-            SysDept dept;
-            CmsCategory category;
-            CmsModel cmsModel;
-            CmsContentAttribute attribute;
+    /**
+     * @param site
+     * @param queryEntity
+     * @param id
+     * @param response
+     */
+    @RequestMapping("exportData")
+    @Csrf
+    public void exportData(@RequestAttribute SysSite site, CmsContentQuery queryEntity, String id, HttpServletResponse response) {
+        try {
             DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.FULL_DATE_FORMAT_STRING);
-            for (CmsContent entity : entityList) {
-                row = sheet.createRow(i++);
-                j = 0;
-                row.createCell(j++).setCellValue(entity.getId().toString());
-                row.createCell(j++).setCellValue(entity.getTitle());
-                row.createCell(j++).setCellValue(entity.getUrl());
-                user = userMap.get(entity.getUserId());
-                dept = deptMap.get(entity.getDeptId());
-                row.createCell(j++).setCellValue(null == user ? null : user.getNickname());
-                row.createCell(j++).setCellValue(null == dept ? null : dept.getName());
-                category = categoryMap.get(entity.getCategoryId());
-                row.createCell(j++).setCellValue(null == category ? null : category.getName());
-                cmsModel = modelMap.get(entity.getModelId());
-                row.createCell(j++).setCellValue(null == cmsModel ? null : cmsModel.getName());
-                row.createCell(j++).setCellValue(String.valueOf(entity.getScores()));
-                row.createCell(j++).setCellValue(String.valueOf(entity.getComments()));
-                row.createCell(j++).setCellValue(String.valueOf(entity.getClicks()));
-                row.createCell(j++).setCellValue(dateFormat.format(entity.getPublishDate()));
-                row.createCell(j++).setCellValue(dateFormat.format(entity.getCreateDate()));
-                row.createCell(j++).setCellValue(String.valueOf(entity.getSort()));
-                row.createCell(j++).setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale,
-                        "page.status.content." + entity.getStatus()));
-                user = userMap.get(entity.getCheckUserId());
-                row.createCell(j++).setCellValue(null == user ? null : user.getNickname());
-
-                attribute = contentAttributeMap.get(entity.getId());
-                row.createCell(j++).setCellValue(null == attribute ? null : attribute.getSource());
-                row.createCell(j++).setCellValue(null == attribute ? null : attribute.getSourceUrl());
-
-                Map<String, String> map = ExtendUtils.getExtendMap(null == attribute ? null : attribute.getData());
-                if (CommonUtils.notEmpty(categoryExtendList) && entity.getCategoryId() == queryEntity.getCategoryId()) {
-                    for (SysExtendField extend : categoryExtendList) {
-                        row.createCell(j++).setCellValue(map.get(extend.getId().getCode()));
-                    }
-                }
-                if (CommonUtils.notEmpty(modelExtendList)) {
-                    for (SysExtendField extend : modelExtendList) {
-                        row.createCell(j++).setCellValue(map.get(extend.getId().getCode()));
-                    }
-                }
-
-                row.createCell(j++).setCellValue(null == attribute ? null : StringUtils.substring(attribute.getText(), 0, 32767));
-                if (null != attribute && null != attribute.getText() && attribute.getText().length() > 32767) {
-                    long length = attribute.getText().length();
-                    int m = 0;
-                    while ((length = length - 32767) > 0) {
-                        m++;
-                        row.createCell(j++).setCellValue(StringUtils.substring(attribute.getText(), m * 32767, (m + 1) * 32767));
-                    }
-                }
+            response.setHeader("content-disposition", "attachment;fileName="
+                    + URLEncoder.encode(site.getName() + "_" + dateFormat.format(new Date()) + "_content.zip", "utf-8"));
+        } catch (UnsupportedEncodingException e1) {
+        }
+        try (ServletOutputStream outputStream = response.getOutputStream();
+                ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream)) {
+            zipOutputStream.setEncoding(Constants.DEFAULT_CHARSET_NAME);
+            if (CommonUtils.empty(id)) {
+                exchangeComponent.exportDataByQuery(site.getId(), null, queryEntity, zipOutputStream);
+            } else {
+                exchangeComponent.exportEntity(site.getId(), service.getEntity(id), zipOutputStream);
             }
-        });
-        DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.SHORT_DATE_FORMAT_STRING);
-        view.setFilename(LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(), "page.content") + "_"
-                + dateFormat.format(new Date()));
-        return view;
+        } catch (IOException e) {
+        }
     }
 
     /**

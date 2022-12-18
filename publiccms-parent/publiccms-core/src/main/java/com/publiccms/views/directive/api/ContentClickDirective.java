@@ -4,7 +4,7 @@ package com.publiccms.views.directive.api;
 
 import java.io.IOException;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractAppDirective;
@@ -40,7 +40,7 @@ $.getJSON('${site.dynamicPath}api/contentClick?id=1', function(data){
 @Component
 public class ContentClickDirective extends AbstractAppDirective {
 
-    @Autowired
+    @Resource
     private StatisticsComponent statisticsComponent;
 
     @Override

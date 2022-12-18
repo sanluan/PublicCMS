@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -50,23 +50,23 @@ import com.publiccms.views.pojo.model.CmsContentParameters;
 @Controller
 @RequestMapping("content")
 public class ContentController {
-    @Autowired
+    @Resource
     private CmsContentService service;
-    @Autowired
+    @Resource
     private StatisticsComponent statisticsComponent;
-    @Autowired
+    @Resource
     private CmsCategoryModelService categoryModelService;
-    @Autowired
+    @Resource
     private CmsCategoryService categoryService;
-    @Autowired
+    @Resource
     private ModelComponent modelComponent;
-    @Autowired
+    @Resource
     protected LogOperateService logOperateService;
-    @Autowired
+    @Resource
     protected SiteComponent siteComponent;
-    @Autowired
+    @Resource
     private LockComponent lockComponent;
-    @Autowired
+    @Resource
     protected SiteConfigComponent siteConfigComponent;
 
     /**

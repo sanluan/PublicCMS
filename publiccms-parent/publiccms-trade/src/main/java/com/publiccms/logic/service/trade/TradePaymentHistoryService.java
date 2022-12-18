@@ -3,7 +3,7 @@ package com.publiccms.logic.service.trade;
 // Generated 2019-6-16 9:47:27 by com.publiccms.common.generator.SourceGenerator
 import java.util.Date;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -82,7 +82,7 @@ public class TradePaymentHistoryService extends BaseService<TradePaymentHistory>
         return dao.getPage(siteId, paymentId, startCreateDate, endCreateDate, orderType, pageIndex, pageSize);
     }
 
-    @Autowired
+    @Resource
     private TradePaymentHistoryDao dao;
 
 }

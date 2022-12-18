@@ -13,7 +13,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -58,21 +58,21 @@ public class OauthController {
      */
     public final static String RETURN_URL = "oauth_return_url";
 
-    @Autowired
+    @Resource
     private OauthComponent oauthComponent;
-    @Autowired
+    @Resource
     private ConfigComponent configComponent;
-    @Autowired
+    @Resource
     protected SiteConfigComponent siteConfigComponent;
-    @Autowired
+    @Resource
     private SysAppClientService appClientService;
-    @Autowired
+    @Resource
     private SysUserTokenService sysUserTokenService;
-    @Autowired
+    @Resource
     private SysUserService sysUserService;
-    @Autowired
+    @Resource
     private LogLoginService logLoginService;
-    @Autowired
+    @Resource
     protected SiteComponent siteComponent;
 
     /**

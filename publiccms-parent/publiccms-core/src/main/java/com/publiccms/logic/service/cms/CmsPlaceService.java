@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -186,7 +186,7 @@ public class CmsPlaceService extends BaseService<CmsPlace> {
         return dao.delete(siteId, path);
     }
 
-    @Autowired
+    @Resource
     private CmsPlaceDao dao;
 
 }

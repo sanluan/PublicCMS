@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 // Generated 2021-09-23 16:55:08 by com.publiccms.common.generator.SourceGenerator
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,7 +52,7 @@ public class CmsUserSurveyService extends BaseService<CmsUserSurvey> {
         return entity;
     }
 
-    @Autowired
+    @Resource
     private CmsUserSurveyDao dao;
 
 }

@@ -3,7 +3,7 @@ package com.publiccms.logic.service.trade;
 // Generated 2019-6-15 18:52:24 by com.publiccms.common.generator.SourceGenerator
 import java.util.Date;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -176,9 +176,9 @@ public class TradePaymentService extends BaseService<TradePayment> {
         return false;
     }
 
-    @Autowired
+    @Resource
     private TradePaymentDao dao;
-    @Autowired
+    @Resource
     private TradePaymentHistoryDao historyDao;
 
 }

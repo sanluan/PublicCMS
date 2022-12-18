@@ -8,7 +8,7 @@ import org.apache.commons.lang3.time.DateUtils;
 
 // Generated 2021-1-14 22:44:12 by com.publiccms.common.generator.SourceGenerator
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,9 +26,9 @@ import com.publiccms.logic.dao.visit.VisitDayDao;
 @Service
 @Transactional
 public class VisitDayService extends BaseService<VisitDay> {
-    @Autowired
+    @Resource
     private VisitSessionService visitSessionService;
-    @Autowired
+    @Resource
     private VisitHistoryService visitHistoryService;
 
     /**
@@ -66,7 +66,7 @@ public class VisitDayService extends BaseService<VisitDay> {
         return dao.delete(begintime);
     }
 
-    @Autowired
+    @Resource
     private VisitDayDao dao;
 
 }

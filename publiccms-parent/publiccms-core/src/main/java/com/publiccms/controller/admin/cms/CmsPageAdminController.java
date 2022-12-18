@@ -6,7 +6,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -49,21 +49,21 @@ import com.publiccms.views.pojo.model.ExtendDataParameters;
 @Controller
 @RequestMapping("cmsPage")
 public class CmsPageAdminController {
-    @Autowired
+    @Resource
     private MetadataComponent metadataComponent;
-    @Autowired
+    @Resource
     private SysDeptItemService sysDeptItemService;
-    @Autowired
+    @Resource
     private SysDeptService sysDeptService;
-    @Autowired
+    @Resource
     private TemplateCacheComponent templateCacheComponent;
-    @Autowired
+    @Resource
     protected LogOperateService logOperateService;
-    @Autowired
+    @Resource
     protected SiteComponent siteComponent;
-    @Autowired
+    @Resource
     protected DiyComponent diyComponent;
-    @Autowired
+    @Resource
     private CmsEditorHistoryService editorHistoryService;
 
     /**

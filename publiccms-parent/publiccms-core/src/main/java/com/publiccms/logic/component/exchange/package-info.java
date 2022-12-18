@@ -3,4 +3,4 @@
  *  数据导入导出
  * 
  */
-package com.publiccms.logic.component.interaction;
+package com.publiccms.logic.component.exchange;

@@ -8,7 +8,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.cors.CorsConfiguration;
 
@@ -112,7 +112,7 @@ public class CorsConfigComponent implements SiteCache, Config {
      * @throws InvocationTargetException
      * @throws IllegalArgumentException
      */
-    @Autowired
+    @Resource
     public void initCache(CacheEntityFactory cacheEntityFactory)
             throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException,
             InvocationTargetException, NoSuchMethodException, SecurityException {
@@ -124,7 +124,7 @@ public class CorsConfigComponent implements SiteCache, Config {
      * @param showAll
      * @return config code or null
      */
-    public String getCode(SysSite site, boolean showAll) {
+    public String getCode(@SuppressWarnings("unused") SysSite site, @SuppressWarnings("unused") boolean showAll) {
         return CONFIG_CODE;
     }
 

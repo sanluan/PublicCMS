@@ -18,7 +18,7 @@ import java.util.function.BiConsumer;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -85,23 +85,23 @@ public class CmsContentService extends BaseService<CmsContent> {
      */
     public static final Integer[] STATUS_NORMAL_ARRAY = new Integer[] { STATUS_NORMAL };
 
-    @Autowired
+    @Resource
     private CmsCategoryService categoryService;
-    @Autowired
+    @Resource
     private SysExtendService extendService;
-    @Autowired
+    @Resource
     private SysExtendFieldService extendFieldService;
-    @Autowired
+    @Resource
     private CmsTagService tagService;
-    @Autowired
+    @Resource
     private CmsContentFileService contentFileService;
-    @Autowired
+    @Resource
     private CmsEditorHistoryService editorHistoryService;
-    @Autowired
+    @Resource
     private CmsContentProductService contentProductService;
-    @Autowired
+    @Resource
     private CmsContentAttributeService attributeService;
-    @Autowired
+    @Resource
     private CmsContentRelatedService cmsContentRelatedService;
 
     /**
@@ -897,6 +897,6 @@ public class CmsContentService extends BaseService<CmsContent> {
         return resultList;
     }
 
-    @Autowired
+    @Resource
     private CmsContentDao dao;
 }

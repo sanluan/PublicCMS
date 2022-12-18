@@ -2,7 +2,7 @@ package com.publiccms.logic.service.sys;
 
 // Generated 2015-7-3 16:18:22 by com.publiccms.common.generator.SourceGenerator
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,15 +27,15 @@ import com.publiccms.logic.dao.sys.SysSiteDao;
 @Service
 @Transactional
 public class SysSiteService extends BaseService<SysSite> {
-    @Autowired
+    @Resource
     private SysRoleService roleService;
-    @Autowired
+    @Resource
     private SysUserService userService;
-    @Autowired
+    @Resource
     private SysDeptService deptService;
-    @Autowired
+    @Resource
     private SysDomainService domainService;
-    @Autowired
+    @Resource
     private SysRoleUserService roleUserService;
 
     /**
@@ -104,7 +104,7 @@ public class SysSiteService extends BaseService<SysSite> {
         return entity;
     }
 
-    @Autowired
+    @Resource
     private SysSiteDao dao;
 
 }

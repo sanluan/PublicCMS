@@ -9,7 +9,7 @@ import java.util.List;
 
 import com.publiccms.entities.log.LogTask;
 import com.publiccms.logic.dao.log.LogTaskDao;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -73,7 +73,7 @@ public class LogTaskService extends BaseService<LogTask> {
         }
     }
 
-    @Autowired
+    @Resource
     private LogTaskDao dao;
 
 }

@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -46,21 +46,21 @@ import com.publiccms.logic.service.tools.SqlService;
 @RequestMapping("sysSite")
 public class SysSiteAdminController {
     protected final Log log = LogFactory.getLog(getClass());
-    @Autowired
+    @Resource
     private SysSiteService service;
-    @Autowired
+    @Resource
     private SysDomainService domainService;
-    @Autowired
+    @Resource
     private SqlService sqlService;
-    @Autowired
+    @Resource
     private HqlService hqlService;
-    @Autowired
+    @Resource
     protected LogUploadService logUploadService;
-    @Autowired
+    @Resource
     protected LogOperateService logOperateService;
-    @Autowired
+    @Resource
     protected SiteComponent siteComponent;
-    @Autowired
+    @Resource
     protected ScriptComponent scriptComponent;
 
     private String[] ignoreProperties = new String[] { "id" };

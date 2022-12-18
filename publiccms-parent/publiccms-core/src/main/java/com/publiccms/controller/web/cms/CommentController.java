@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -48,19 +48,19 @@ import freemarker.template.TemplateException;
 @RequestMapping("comment")
 public class CommentController {
     protected final Log log = LogFactory.getLog(getClass());
-    @Autowired
+    @Resource
     protected LogOperateService logOperateService;
-    @Autowired
+    @Resource
     protected SiteComponent siteComponent;
-    @Autowired
+    @Resource
     protected SiteConfigComponent siteConfigComponent;
-    @Autowired
+    @Resource
     protected ConfigComponent configComponent;
-    @Autowired
+    @Resource
     private CmsContentService contentService;
-    @Autowired
+    @Resource
     private TemplateComponent templateComponent;
-    @Autowired
+    @Resource
     private LockComponent lockComponent;
 
     private String[] ignoreProperties = new String[] { "siteId", "userId", "createDate", "checkUserId", "checkDate", "replyId",
@@ -168,7 +168,7 @@ public class CommentController {
         return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
     }
 
-    @Autowired
+    @Resource
     private CmsCommentService service;
 
 }

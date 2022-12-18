@@ -2,7 +2,7 @@ package com.publiccms.logic.service.cms;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,8 +18,6 @@ import com.publiccms.logic.dao.cms.CmsCategoryModelDao;
 @Service
 @Transactional
 public class CmsCategoryModelService extends BaseService<CmsCategoryModel> {
-
-    private String[] ignoreProperties = new String[] { "id", "siteId" };
 
     /**
      * @param siteId
@@ -43,21 +41,7 @@ public class CmsCategoryModelService extends BaseService<CmsCategoryModel> {
         return dao.delete(siteId, modelId, categoryId);
     }
 
-    /**
-     * @param siteId 
-     * @param entity
-     */
-    public void updateCategoryModel(short siteId, CmsCategoryModel entity) {
-        CmsCategoryModel oldEntity = getEntity(entity.getId());
-        if (null == oldEntity) {
-            entity.setSiteId(siteId);
-            save(entity);
-        } else {
-            update(oldEntity.getId(), entity, ignoreProperties);
-        }
-    }
-
-    @Autowired
+    @Resource
     private CmsCategoryModelDao dao;
 
 }

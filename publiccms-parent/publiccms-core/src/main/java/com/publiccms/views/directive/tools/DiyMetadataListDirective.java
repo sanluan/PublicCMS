@@ -2,7 +2,7 @@ package com.publiccms.views.directive.tools;
 
 import java.io.IOException;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
@@ -65,6 +65,6 @@ public class DiyMetadataListDirective extends AbstractTemplateDirective {
         return true;
     }
 
-    @Autowired
+    @Resource
     private DiyComponent diyComponent;
 }

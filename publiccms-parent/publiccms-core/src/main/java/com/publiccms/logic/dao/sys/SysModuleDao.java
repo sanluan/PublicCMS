@@ -15,7 +15,7 @@ import com.publiccms.entities.sys.SysModule;
  */
 @Repository
 public class SysModuleDao extends BaseDao<SysModule> {
-    
+
     /**
      * @param parentId
      * @param menu
@@ -47,6 +47,9 @@ public class SysModuleDao extends BaseDao<SysModule> {
         }
         if (CommonUtils.empty(entity.getParentId())) {
             entity.setParentId(null);
+        }
+        if (CommonUtils.empty(entity.getAttached())) {
+            entity.setAttached(null);
         }
         return entity;
     }

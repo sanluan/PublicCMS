@@ -2,7 +2,7 @@ package com.publiccms.common.base;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 
 import com.publiccms.common.api.PaymentGateway;
 import com.publiccms.common.api.TradePaymentProcessor;
@@ -14,11 +14,11 @@ import com.publiccms.logic.service.trade.TradePaymentHistoryService;
 import com.publiccms.logic.service.trade.TradePaymentService;
 
 public abstract class AbstractPaymentGateway implements PaymentGateway {
-    @Autowired
+    @Resource
     private TradePaymentService service;
-    @Autowired
+    @Resource
     private TradePaymentHistoryService historyService;
-    @Autowired
+    @Resource
     private PaymentProcessorComponent paymentProcessorComponent;
 
     @Override
