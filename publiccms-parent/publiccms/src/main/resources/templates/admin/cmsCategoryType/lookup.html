@@ -1,8 +1,5 @@
 <div class="pageFormContent" layoutH>
     <ul class="tree treeFolder">
-        <li>
-            <a href="javascript:;" onclick="$.bringBack({${field!'categoryTypeId'}:'',categoryTypeName:''});return false;"><@t.page 'button.clear_select'/></a>
-        </li>
 <@cms.categoryTypeList parentId=parentId pageSize=500>
     <#list page.list as a>
         <li>
@@ -16,6 +13,7 @@
 </div>
 <div class="formBar">
     <ul>
+        <li><a class="button" href="javascript:;" onclick="$.bringBack({${field!'categoryTypeId'}:'',categoryTypeName:''});return false;"><@t.page 'button.clear_select'/></a></li>
         <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
     </ul>
 </div>

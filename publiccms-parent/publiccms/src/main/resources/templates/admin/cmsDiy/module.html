@@ -21,10 +21,10 @@
                 <dt><@t.page 'region'/>:</dt></dt>
                 <dd>
                     <select name="region" class="combox">
-                        <option><@t.page 'unrestricted'/></option>
+                        <option value=""><@t.page 'unrestricted'/></option>
                  <@tools.diyMetadataList itemType="region">
                     <#list list as r>
-                        <option value="${(r.id)!}"<#if a.region?has_content&&a.region=r.id> selected="selected"</#if>>${r.name!}</option>
+                        <option value="${(r.id)!}"<#if (a.region)?has_content&&a.region=r.id> selected="selected"</#if>>${r.name!}</option>
                     </#list>
                 </@tools.diyMetadataList>
                     </select>
@@ -70,20 +70,22 @@
             <script>
             $('input[name=place]',navTab.getCurrentPanel()).change(function(){
                 if($(this).val()){
-                    $('input[name=fragment]',navTab.getCurrentPanel()).addClass("required").parent().parent().hide();
+                    $('input[name=fragment]',navTab.getCurrentPanel()).removeClass("required").parent().parent().hide();
                 } else {
-                    $('input[name=fragment]',navTab.getCurrentPanel()).removeClass("required").parent().parent().show();
+                    $('input[name=fragment]',navTab.getCurrentPanel()).addClass("required").parent().parent().show();
                 }
             });
             $('input[name=fragment]',navTab.getCurrentPanel()).change(function(){
                 if($(this).val()){
-                    $('input[name=place]',navTab.getCurrentPanel()).addClass("required").parent().parent().hide();
+                    $('input[name=place]',navTab.getCurrentPanel()).removeClass("required").parent().parent().hide();
                     $('.clone',navTab.getCurrentPanel()).addClass("hide");
                 } else {
-                    $('input[name=place]',navTab.getCurrentPanel()).removeClass("required").parent().parent().show();
+                    $('input[name=place]',navTab.getCurrentPanel()).addClass("required").parent().parent().show();
                     $('.clone',navTab.getCurrentPanel()).removeClass("hide");
                 }
             });
+            <#if (a.place)?has_content>$('input[name=place]',navTab.getCurrentPanel()).trigger("change");</#if>
+            <#if (a.fragment)?has_content>$('input[name=fragment]',navTab.getCurrentPanel()).trigger("change");</#if>
             $('input[name=clone]',navTab.getCurrentPanel()).click(function(){
                 if($(this).is(':checked')) {
                     $('.clone',navTab.getCurrentPanel()).show();

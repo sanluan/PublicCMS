@@ -8,7 +8,7 @@
                     <ul><@templateTree field path/></ul>
                 <#else>
                     <@tools.metadata path=path>
-                        <a href="javascript:;" data="${path!}" onclick="$.bringBack({'${field}':'${path}','${fieldName!'name'}':'${object.alias!}'});return false;">
+                        <a href="javascript:;" data="${path!}" onclick="$.bringBack({'${field!'path'}':'${path}','${fieldName!'name'}':'${object.alias!}'});return false;">
                             ${(object.alias)?has_content?then(object.alias+' ('+a.fileName+')',a.fileName)}
                         </a>
                     </@tools.metadata>
@@ -29,6 +29,7 @@
 </div>
 <div class="formBar">
     <ul>
+        <li><a href="javascript:;" onclick="$.bringBack({'${field!'path'}':''});return false;"><@t.page 'button.clear_select'/></a></li>
         <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
     </ul>
 </div>

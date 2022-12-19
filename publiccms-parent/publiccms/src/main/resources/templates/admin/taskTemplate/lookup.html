@@ -9,7 +9,7 @@
                 <@templateTree field path/>
             </ul>
         <#else>
-            <a href="javascript:;" data="${path!}" onclick="$.bringBack({'${field}':'${path}'});return false;">
+            <a href="javascript:;" data="${path!}" onclick="$.bringBack({'${field!'path'}':'${path}'});return false;">
                 ${a.fileName}
             </a>
         </#if>
@@ -26,4 +26,10 @@
     <script>
         $('a[data="${(value?js_string)!}"]',$.pdialog.getCurrent()).parent().addClass('selected');
     </script>
+</div>
+<div class="formBar">
+    <ul>
+        <li><a class="button" href="javascript:;" onclick="$.bringBack({'${field!'path'}':''});return false;"><@t.page 'button.clear_select'/></a></li>
+        <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+    </ul>
 </div>
