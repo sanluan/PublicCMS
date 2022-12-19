@@ -50,7 +50,7 @@
                 <dt><@t.page 'place'/>:</dt></dt>
                 <dd>
                     <input name="place" type="text" maxlength="255" size="50" value="${(a.place)!}" class="required"/>
-                    <a class="btnLook" href="placeTemplate/lookupPlace?field=place" lookupGroup=""><@t.page 'template.select'/></a>
+                    <a class="btnLook" href="placeTemplate/lookupPlace.html?field=place" lookupGroup=""><@t.page 'template.select'/></a>
                     <label><input name="clone" type="checkbox"/><@t.page 'button.copy'/></label>
                 </dd>
             </dl>
@@ -60,7 +60,30 @@
                     <input name="filePath" type="text" maxlength="255" size="50" value="${(a.filePath)!r"/${(category.code)!'diy'}/${getUUID()}.html"}"/>
                 </dd>
             </dl>
+            <dl class="nowrap">
+                <dt><@t.page 'template.fragment'/>:</dt></dt>
+                <dd>
+                    <input name="fragment" type="text" maxlength="255" size="50" value="${(a.fragment)!}" class="required"/>
+                    <a class="btnLook" href="cmsTemplate/lookup.htmlPlace?field=fragment" lookupGroup=""><@t.page 'template.select'/></a>
+                </dd>
+            </dl>
             <script>
+            $('input[name=place]',navTab.getCurrentPanel()).change(function(){
+                if($(this).val()){
+                    $('input[name=fragment]',navTab.getCurrentPanel()).addClass("required").parent().parent().hide();
+                } else {
+                    $('input[name=fragment]',navTab.getCurrentPanel()).removeClass("required").parent().parent().show();
+                }
+            });
+            $('input[name=fragment]',navTab.getCurrentPanel()).change(function(){
+                if($(this).val()){
+                    $('input[name=place]',navTab.getCurrentPanel()).addClass("required").parent().parent().hide();
+                    $('.clone',navTab.getCurrentPanel()).addClass("hide");
+                } else {
+                    $('input[name=place]',navTab.getCurrentPanel()).removeClass("required").parent().parent().show();
+                    $('.clone',navTab.getCurrentPanel()).removeClass("hide");
+                }
+            });
             $('input[name=clone]',navTab.getCurrentPanel()).click(function(){
                 if($(this).is(':checked')) {
                     $('.clone',navTab.getCurrentPanel()).show();

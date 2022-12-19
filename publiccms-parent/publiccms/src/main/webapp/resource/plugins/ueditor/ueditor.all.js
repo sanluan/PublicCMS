@@ -1,7 +1,7 @@
 /*!
  * UEditor
  * version: ueditor
- * build: Mon Aug 29 2022 10:32:41 GMT+0800 (中国标准时间)
+ * build: Mon Dec 19 2022 13:30:45 GMT+0800 (中国标准时间)
  */
 
 (function(){
@@ -19150,7 +19150,7 @@ UE.plugins['video'] = function (){
                     html.push('</tr>')
                 }
                 //禁止指定table-width
-                return '<table><tbody>' + html.join('') + '</tbody></table>'
+                return '<div style="overflow-x:auto"><table><tbody>' + html.join('') + '</tbody></table></div>'
             }
 
             if (!opt) {
@@ -20018,7 +20018,7 @@ UE.plugins['video'] = function (){
         utils.each(tds, function (td) {
             td.removeAttribute("width");
         });
-        table.setAttribute('width', getTableWidth(editor, true, getDefaultValue(editor, table)));
+        table.setAttribute('width', '100%');
         var tdsWidths = [];
         setTimeout(function () {
             utils.each(tds, function (td) {
@@ -20028,11 +20028,6 @@ UE.plugins['video'] = function (){
                 (td.colSpan == 1) && td.setAttribute("width", tdsWidths[i] + "");
             })
         }, 0);
-    }
-
-    function getTableWidth(editor, needIEHack, defaultValue) {
-        var body = editor.body;
-        return body.offsetWidth - (needIEHack ? parseInt(domUtils.getComputedStyle(body, 'margin-left'), 10) * 2 : 0) - defaultValue.tableBorder * 2 - (editor.options.offsetWidth || 0);
     }
 
     function getSelectedArr(editor) {

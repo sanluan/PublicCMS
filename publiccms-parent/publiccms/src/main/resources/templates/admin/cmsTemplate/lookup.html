@@ -8,7 +8,7 @@
                     <ul><@templateTree field path/></ul>
                 <#else>
                     <@tools.metadata path=path>
-                        <a href="javascript:;" data="${path!}" onclick="$.bringBack({'${field}':'${path}'});return false;">
+                        <a href="javascript:;" data="${path!}" onclick="$.bringBack({'${field}':'${path}','${fieldName!'name'}':'${object.alias!}'});return false;">
                             ${(object.alias)?has_content?then(object.alias+' ('+a.fileName+')',a.fileName)}
                         </a>
                     </@tools.metadata>

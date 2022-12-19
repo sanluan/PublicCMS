@@ -29,6 +29,12 @@ public class CmsModuleData implements java.io.Serializable {
      * 页面片段路径
      */
     private String place;
+    /**
+     * fragment path
+     * <p>
+     * 模板片段路径
+     */
+    private String fragment;
 
     /**
      * @return the id
@@ -73,6 +79,20 @@ public class CmsModuleData implements java.io.Serializable {
      */
     public void setPlace(String place) {
         this.place = place;
+    }
+
+    /**
+     * @return the fragment
+     */
+    public String getFragment() {
+        return fragment;
+    }
+
+    /**
+     * @param fragment the fragment to set
+     */
+    public void setFragment(String fragment) {
+        this.fragment = fragment;
     }
 
 }
