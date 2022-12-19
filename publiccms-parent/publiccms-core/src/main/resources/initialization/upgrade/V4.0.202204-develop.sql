@@ -324,22 +324,23 @@ UPDATE `sys_module` SET `authorized_url`= 'cmsPage/save,file/doUpload,cmsPage/cl
 UPDATE `sys_module` SET `authorized_url`= 'cmsContent/lookup,cmsPlace/lookup,cmsPlace/lookup_content_list,file/doUpload,cmsPlace/save,cmsEditorHistory/lookup,cmsEditorHistory/use,cmsEditorHistory/compare' WHERE `id` ='place_add';
 UPDATE `sys_module` SET `authorized_url`= 'cmsCategory/addMore,cmsCategory/virify,cmsCategory/rebuildChildIds,cmsCategory/batchPublish,cmsTemplate/lookup,cmsCategory/categoryPath,cmsCategory/contentPath,file/doUpload,cmsDictionary/lookup,cmsCategory/save,cmsEditorHistory/lookup,cmsEditorHistory/use,cmsEditorHistory/compare' WHERE `id` ='category_add';
 -- 2022-12-12 --
-ALTER TABLE `cms_category_model` 
+ALTER TABLE `cms_category_model`
     ADD COLUMN `site_id` smallint(6) NOT NULL COMMENT '站点' AFTER `model_id`,
     ADD INDEX `cms_category_model_site_id`(`site_id`, `model_id`);
 UPDATE `cms_category_model` cm SET cm.`site_id` = (SELECT c.`site_id` FROM `cms_category` c WHERE c.`id`=cm.`category_id`);
-ALTER TABLE `cms_editor_history` 
+ALTER TABLE `cms_editor_history`
     ADD COLUMN `site_id` smallint(6) NOT NULL COMMENT '站点' AFTER `id`,
     DROP INDEX `cms_editor_history_item_id`,
     ADD INDEX `cms_editor_history_item_id`(`site_id`, `item_type`, `item_id`, `field_name`, `create_date`);
+DELETE FROM `cms_editor_history` WHERE `item_id` NOT IN(select `id` from `cms_content`);
 UPDATE `cms_editor_history` eh SET eh.`site_id` = (SELECT c.`site_id` FROM `cms_content` c WHERE c.`id`= eh.`item_id` and eh.`item_type`='content');
-ALTER TABLE `cms_user_survey` 
+ALTER TABLE `cms_user_survey`
     ADD COLUMN `ip` varchar(130) NOT NULL COMMENT 'IP' AFTER `score`;
-ALTER TABLE `cms_user_score` 
+ALTER TABLE `cms_user_score`
     ADD COLUMN `ip` varchar(130) NOT NULL COMMENT 'IP' AFTER `score`;
-ALTER TABLE `cms_comment` 
+ALTER TABLE `cms_comment`
     ADD COLUMN `ip` varchar(130) NOT NULL COMMENT 'IP' AFTER `content_id`;
-ALTER TABLE `cms_word` 
+ALTER TABLE `cms_word`
     ADD COLUMN `ip` varchar(130) NOT NULL COMMENT 'IP' AFTER `hidden`;
 -- 2022-12-18 --
 INSERT INTO `sys_module` VALUES ('category_export', NULL, 'cmsCategory/export', NULL, 'category_list', 0, 0);

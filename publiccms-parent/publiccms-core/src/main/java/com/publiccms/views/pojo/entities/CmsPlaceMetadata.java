@@ -26,15 +26,65 @@ public class CmsPlaceMetadata implements java.io.Serializable {
      * 别名
      */
     private String alias;
+    /**
+     * data size
+     * <p>
+     * 数据条数
+     */
     private Integer size;
+    /**
+     * front administrator ids
+     * <p>
+     * 前台管理员ids
+     */
     private Long[] adminIds;
+    /**
+     * allow contribute
+     * <p>
+     * 允许投稿
+     */
     private boolean allowContribute;
+    /**
+     * allow anonymous contribute
+     * <p>
+     * 允许匿名投稿
+     */
     private boolean allowAnonymous;
+    /**
+     * cover width
+     * <p>
+     * 封面图宽度
+     */
     private Integer coverWidth;
+    /**
+     * cover height
+     * <p>
+     * 封面图高度
+     */
     private Integer coverHeight;
+    /**
+     * accept item types
+     * <p>
+     * 可以接受项目类型
+     */
     private List<String> acceptItemTypes;
+    /**
+     * system field list
+     * <p>
+     * 系统字段列表
+     */
     private List<String> fieldList;
+    /**
+     * required field list
+     * <p>
+     * 必填字段列表
+     */
     private List<String> requiredFieldList;
+    /**
+     * field text map
+     * <p>
+     * 字段文本哈希表
+     */
     private Map<String, String> fieldTextMap;
     /**
      * extend field list
@@ -50,7 +100,7 @@ public class CmsPlaceMetadata implements java.io.Serializable {
     private List<SysExtendField> metadataExtendList;
 
     /**
-     * @return
+     * @return alias
      */
     public String getAlias() {
         return alias;
@@ -64,7 +114,7 @@ public class CmsPlaceMetadata implements java.io.Serializable {
     }
 
     /**
-     * @return
+     * @return size
      */
     public Integer getSize() {
         return size;
@@ -78,7 +128,7 @@ public class CmsPlaceMetadata implements java.io.Serializable {
     }
 
     /**
-     * @return
+     * @return allowContribute
      */
     public boolean isAllowContribute() {
         return allowContribute;
@@ -92,7 +142,7 @@ public class CmsPlaceMetadata implements java.io.Serializable {
     }
 
     /**
-     * @return
+     * @return allowAnonymous
      */
     public boolean isAllowAnonymous() {
         return allowAnonymous;
@@ -158,7 +208,7 @@ public class CmsPlaceMetadata implements java.io.Serializable {
     }
 
     /**
-     * @return
+     * @return adminIds
      */
     public Long[] getAdminIds() {
         return adminIds;
@@ -210,7 +260,7 @@ public class CmsPlaceMetadata implements java.io.Serializable {
     }
 
     /**
-     * @return
+     * @return extendList
      */
     public List<SysExtendField> getExtendList() {
         return extendList;

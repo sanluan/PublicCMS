@@ -88,7 +88,7 @@ public class CmsPageMetadata implements java.io.Serializable {
     }
 
     /**
-     * @return
+     * @return alias
      */
     public String getAlias() {
         return alias;
@@ -102,7 +102,7 @@ public class CmsPageMetadata implements java.io.Serializable {
     }
 
     /**
-     * @return
+     * @return publishPath
      */
     public String getPublishPath() {
         return publishPath;
@@ -116,7 +116,7 @@ public class CmsPageMetadata implements java.io.Serializable {
     }
 
     /**
-     * @return
+     * @return needLogin
      */
     public boolean isNeedLogin() {
         return needLogin;
@@ -130,7 +130,7 @@ public class CmsPageMetadata implements java.io.Serializable {
     }
 
     /**
-     * @return
+     * @return acceptParameters
      */
     public String getAcceptParameters() {
         return acceptParameters;
@@ -144,7 +144,7 @@ public class CmsPageMetadata implements java.io.Serializable {
     }
 
     /**
-     * @return
+     * @return cacheTime
      */
     public Integer getCacheTime() {
         return cacheTime;
@@ -173,7 +173,7 @@ public class CmsPageMetadata implements java.io.Serializable {
     }
 
     /**
-     * @return
+     * @return useDynamic
      */
     public boolean isUseDynamic() {
         return useDynamic;
@@ -187,7 +187,7 @@ public class CmsPageMetadata implements java.io.Serializable {
     }
 
     /**
-     * @return
+     * @return needBody
      */
     public boolean isNeedBody() {
         return needBody;
@@ -201,7 +201,7 @@ public class CmsPageMetadata implements java.io.Serializable {
     }
 
     /**
-     * @return
+     * @return extendList
      */
     public List<SysExtendField> getExtendList() {
         return extendList;

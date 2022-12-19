@@ -15,9 +15,6 @@
 <#else>
 <div class="pageFormContent" layoutH>
     <ul class="tree treeFolder">
-        <li>
-            <a href="javascript:;" onclick="$.bringBack({${field!'categoryId'}:'',categoryId:'', categoryName:'',parentId:''});return false;"><@t.page 'button.clear_select'/></a>
-        </li>
         <@cms.categoryList advanced=true parentId=parentId pageSize=500>
         <#list page.list as a>
             <li<#if a.childIds?has_content> _src="cmsCategory/lookup.html?currentCategoryId=${currentCategoryId!}&parentId=${a.id}&field=${field!'categoryId'}"</#if>>
@@ -29,6 +26,7 @@
 </div>
 <div class="formBar">
     <ul>
+        <li><a class="button" href="javascript:;" onclick="$.bringBack({${field!'categoryId'}:'',categoryId:'', categoryName:'',parentId:''});return false;"><@t.page 'button.clear_select'/></a>
         <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
     </ul>
 </div>

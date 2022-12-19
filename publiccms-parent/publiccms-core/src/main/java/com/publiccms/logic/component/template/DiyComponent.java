@@ -456,28 +456,33 @@ public class DiyComponent implements SiteCache {
                     moduleData.setId(id);
                     moduleData.setName((String) modulMap.get("name"));
                     moduleData.setPlace((String) modulMap.get("place"));
-                    if (CommonUtils.empty(moduleData.getPlace())) {
+                    moduleData.setFragment((String) modulMap.get("fragment"));
+                    if (CommonUtils.empty(moduleData.getPlace()) && CommonUtils.empty(moduleData.getFragment())) {
                         CmsModule module = getModule(site, id);
-                        if (module.isClone()) {
-                            try {
-                                String placePath = templateComponent.generatePlaceFilePath(module.getFilePath(), category,
-                                        modulMap);
-                                String destFilepath = siteComponent.getTemplateFilePath(site.getId(),
-                                        TemplateComponent.INCLUDE_DIRECTORY + placePath);
-                                if (!CmsFileUtils.exists(destFilepath)) {
-                                    String filepath = siteComponent.getTemplateFilePath(site.getId(),
-                                            TemplateComponent.INCLUDE_DIRECTORY + module.getPlace());
-                                    CmsFileUtils.createFile(destFilepath, CmsFileUtils.getFileContent(filepath));
-                                    CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);
-                                    metadata.setAlias(moduleData.getName());
-                                    metadataComponent.updatePlaceMetadata(destFilepath, metadata);
-                                    moduleData.setPlace(placePath);
+                        if (CommonUtils.notEmpty(module.getPlace())) {
+                            if (module.isClone()) {
+                                try {
+                                    String placePath = templateComponent.generatePlaceFilePath(module.getFilePath(), category,
+                                            modulMap);
+                                    String destFilepath = siteComponent.getTemplateFilePath(site.getId(),
+                                            TemplateComponent.INCLUDE_DIRECTORY + placePath);
+                                    if (!CmsFileUtils.exists(destFilepath)) {
+                                        String filepath = siteComponent.getTemplateFilePath(site.getId(),
+                                                TemplateComponent.INCLUDE_DIRECTORY + module.getPlace());
+                                        CmsFileUtils.createFile(destFilepath, CmsFileUtils.getFileContent(filepath));
+                                        CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);
+                                        metadata.setAlias(moduleData.getName());
+                                        metadataComponent.updatePlaceMetadata(destFilepath, metadata);
+                                        moduleData.setPlace(placePath);
+                                    }
+                                } catch (IOException | TemplateException e) {
+                                    log.error(e);
                                 }
-                            } catch (IOException | TemplateException e) {
-                                log.error(e);
+                            } else {
+                                moduleData.setPlace(module.getPlace());
                             }
-                        } else {
-                            moduleData.setPlace(module.getPlace());
+                        } else if (CommonUtils.notEmpty(module.getFragment())) {
+                            moduleData.setFragment(module.getFragment());
                         }
                     }
                     moduleDataList.add(moduleData);

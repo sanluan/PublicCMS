@@ -21,12 +21,12 @@ import freemarker.template.TemplateModelException;
  * </ul>
  * 使用示例
  * <p>
- * ${getUrl(site.sitePath,'index.html')} ${getUrl('index.html')}
+ * <#list getFontList() as font>${font}</#list>
  * <p>
  * 
  * <pre>
 &lt;script&gt;
-$.getJSON('${site.dynamicPath}api/method/getFontList?appToken=接口访问授权Token&amp;', function(data){
+$.getJSON('${site.dynamicPath}api/method/getFontList?appToken=接口访问授权Token', function(data){
 console.log(data);
 });
 &lt;/script&gt;

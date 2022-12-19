@@ -48,6 +48,12 @@ public class CmsModule implements java.io.Serializable {
      */
     private String place;
     /**
+     * fragment path
+     * <p>
+     * 模板片段
+     */
+    private String fragment;
+    /**
      * file path
      * <p>
      * 文件路径
@@ -142,6 +148,20 @@ public class CmsModule implements java.io.Serializable {
      */
     public void setPlace(String place) {
         this.place = place;
+    }
+
+    /**
+     * @return the fragment
+     */
+    public String getFragment() {
+        return fragment;
+    }
+
+    /**
+     * @param fragment the fragment to set
+     */
+    public void setFragment(String fragment) {
+        this.fragment = fragment;
     }
 
     /**
