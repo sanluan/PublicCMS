@@ -47,7 +47,7 @@ ${"<@_"+entityName?replace('Cms','')?uncap_first+"List"} <#include "../include_c
             <tr>
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
                 <#list columnList as a>
-                <th<#if a.order> orderField="${a.name}">${a.title}</th>
+                <th<#if a.order> orderField="${a.name}"</#if>>${a.title}</th>
                 </#list>
                 <th><#noparse><@t.page 'operate'/></#noparse></th>
             </tr>
