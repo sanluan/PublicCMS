@@ -14,6 +14,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
@@ -183,7 +185,13 @@ public class ImageUtils {
     }
 
     public static boolean svgSafe(File imageFile) throws IOException {
-        SvgSecurityValidator svgSecurityValidator = SvgSecurityValidator.builder().build();
+        List<String> safeElementsList = new ArrayList<>();
+        safeElementsList.add("missing-glyph");
+        safeElementsList.add("font-face");
+        List<String> safeAttributesList = new ArrayList<>();
+        safeAttributesList.add("horiz-adv-x");
+        SvgSecurityValidator svgSecurityValidator = SvgSecurityValidator.builder().withAdditionalElements(safeElementsList)
+                .withAdditionalAttributes(safeAttributesList).build();
         ValidationResult validation;
         validation = svgSecurityValidator.validate(FileUtils.readFileToString(imageFile, Constants.DEFAULT_CHARSET));
         if (validation.hasViolations()) {
