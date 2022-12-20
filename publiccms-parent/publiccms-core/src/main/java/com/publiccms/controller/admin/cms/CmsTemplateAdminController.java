@@ -200,6 +200,7 @@ public class CmsTemplateAdminController {
      * @param site
      * @param admin
      * @param files
+     * @param overwrite
      * @param path
      * @param encoding
      * @param request
@@ -208,8 +209,8 @@ public class CmsTemplateAdminController {
      */
     @RequestMapping("doUpload")
     @Csrf
-    public String upload(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile[] files, String path,
-            String encoding, HttpServletRequest request, ModelMap model) {
+    public String upload(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile[] files,
+            boolean overwrite, String path, String encoding, HttpServletRequest request, ModelMap model) {
         if (null != files) {
             try {
                 for (MultipartFile file : files) {
@@ -217,7 +218,7 @@ public class CmsTemplateAdminController {
                     String filepath = siteComponent.getTemplateFilePath(site.getId(), shortFilepath);
                     CmsFileUtils.upload(file, filepath);
                     if (shortFilepath.endsWith(".zip") && CmsFileUtils.isFile(filepath)) {
-                        ZipUtils.unzipHere(filepath, encoding);
+                        ZipUtils.unzipHere(filepath, encoding, overwrite);
                         CmsFileUtils.delete(filepath);
                         metadataComponent.clear();
                     } else {

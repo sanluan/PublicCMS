@@ -13,7 +13,7 @@
                     <option value="64">64*64</option>
                     <option value="128">128*128</option>
                 </select>
-                <label class="override hide"><input type="checkbox" name="override" checked="checked"><@t.page 'upload.override'/></label>
+                <label class="overwrite hide"><input type="checkbox" name="overwrite" checked="checked"><@t.page 'upload.overwrite'/></label>
             </dd>
         </dl>
         <dl class="nowrap">
@@ -55,9 +55,9 @@ $(".pageFormContent",$.pdialog.getCurrent()).on("change","input[type=file]",func
             },
             success: function (result) {
                 if(true==result){
-                    $('.override').show();
+                    $('.overwrite').show();
                 } else {
-                    $('.override').hide();
+                    $('.overwrite').hide();
                 }
             }
         });

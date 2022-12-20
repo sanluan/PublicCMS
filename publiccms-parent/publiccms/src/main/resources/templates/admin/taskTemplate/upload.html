@@ -19,14 +19,14 @@ function checkFileType(){
             <dd>
                 <input type="hidden" name="path" value="${path!}"/>
                 <input type="file" name="files" class="required" size="30" multiple="multiple"/>
+                <label><input type="checkbox" name="overwrite" checked="checked"><@t.page 'upload.overwrite'/></label>
             </dd>
         </dl>
         <dl class="nowrap zipencoding hide">
             <dt><@t.page 'file.encoding'/>:</dt>
             <dd>
-                <label style="width:auto;"><input type="radio" name="encoding" value="utf-8" checked="checked"/><@t.page 'file.encoding.utf8'/></label>
-                <br/>
-                <label style="width:auto;"><input type="radio" name="encoding" value="gbk"/><@t.page 'file.encoding.gbk'/></label>
+                <label><input type="radio" name="encoding" value="utf-8" checked="checked"/><@t.page 'file.encoding.utf8'/></label>
+                <label><input type="radio" name="encoding" value="gbk"/><@t.page 'file.encoding.gbk'/></label>
             </dd>
         </dl>
     </div>

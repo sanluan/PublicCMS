@@ -97,7 +97,7 @@ public class CmsWebFileAdminController {
      * @param admin
      * @param files
      * @param path
-     * @param override
+     * @param overwrite
      * @param request
      * @param model
      * @return view name
@@ -105,7 +105,7 @@ public class CmsWebFileAdminController {
     @RequestMapping("doUpload")
     @Csrf
     public String upload(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile[] files, String path,
-            Boolean override, HttpServletRequest request, ModelMap model) {
+            boolean overwrite, HttpServletRequest request, ModelMap model) {
         if (null != files) {
             try {
                 for (MultipartFile file : files) {
@@ -113,7 +113,7 @@ public class CmsWebFileAdminController {
                     String suffix = CmsFileUtils.getSuffix(originalName);
                     String filepath = path + CommonConstants.SEPARATOR + originalName;
                     String fuleFilePath = siteComponent.getWebFilePath(site.getId(), filepath);
-                    if (null != override && override || !CmsFileUtils.exists(fuleFilePath)) {
+                    if (overwrite || !CmsFileUtils.exists(fuleFilePath)) {
                         CmsFileUtils.upload(file, fuleFilePath);
                         if (CmsFileUtils.isSafe(fuleFilePath, suffix)) {
                             FileSize fileSize = CmsFileUtils.getFileSize(fuleFilePath, suffix);
@@ -146,7 +146,7 @@ public class CmsWebFileAdminController {
      * @param base64File
      * @param originalFilename
      * @param size
-     * @param override
+     * @param overwrite
      * @param request
      * @param model
      * @return view name
@@ -154,7 +154,7 @@ public class CmsWebFileAdminController {
     @RequestMapping("doUploadIco")
     @Csrf
     public String uploadIco(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile file, String filename,
-            String base64File, String originalFilename, int size, Boolean override, HttpServletRequest request, ModelMap model) {
+            String base64File, String originalFilename, int size, boolean overwrite, HttpServletRequest request, ModelMap model) {
         if (null != file && !file.isEmpty() || CommonUtils.notEmpty(base64File)) {
             String originalName;
             String suffix;
@@ -167,7 +167,7 @@ public class CmsWebFileAdminController {
             try {
                 String filepath = CommonConstants.SEPARATOR + filename;
                 String fuleFilePath = siteComponent.getWebFilePath(site.getId(), filepath);
-                if (null != override && override || !CmsFileUtils.exists(fuleFilePath)) {
+                if (overwrite || !CmsFileUtils.exists(fuleFilePath)) {
                     CmsFileUtils.mkdirsParent(fuleFilePath);
                     if (CommonUtils.notEmpty(base64File)) {
                         ImageUtils.image2Ico(new ByteArrayInputStream(VerificationUtils.base64Decode(base64File)), suffix, size,
@@ -279,6 +279,7 @@ public class CmsWebFileAdminController {
      * @param path
      * @param encoding
      * @param here
+     * @param overwrite 
      * @param request
      * @param model
      * @return view name
@@ -286,15 +287,15 @@ public class CmsWebFileAdminController {
     @RequestMapping("unzip")
     @Csrf
     public String doUnzip(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path, String encoding,
-            boolean here, HttpServletRequest request, ModelMap model) {
+            boolean here, boolean overwrite, HttpServletRequest request, ModelMap model) {
         if (CommonUtils.notEmpty(path) && path.toLowerCase().endsWith(".zip")) {
             String filepath = siteComponent.getWebFilePath(site.getId(), path);
             if (CmsFileUtils.isFile(filepath)) {
                 try {
                     if (here) {
-                        ZipUtils.unzipHere(filepath, encoding);
+                        ZipUtils.unzipHere(filepath, encoding, overwrite);
                     } else {
-                        ZipUtils.unzip(filepath, filepath.substring(0, filepath.length() - 4), encoding, true);
+                        ZipUtils.unzip(filepath, encoding, overwrite);
                     }
                 } catch (IOException e) {
                     model.addAttribute(CommonConstants.ERROR, e.getMessage());

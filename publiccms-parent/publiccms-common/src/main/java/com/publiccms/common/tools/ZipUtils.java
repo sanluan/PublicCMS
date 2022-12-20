@@ -132,23 +132,25 @@ public class ZipUtils {
     /**
      * @param zipFilePath
      * @param encoding
+     * @param overwrite
      * @throws IOException
      */
-    public static void unzipHere(String zipFilePath, String encoding) throws IOException {
+    public static void unzipHere(String zipFilePath, String encoding, boolean overwrite) throws IOException {
         int index = zipFilePath.lastIndexOf(Constants.SEPARATOR);
         if (0 > index) {
             index = zipFilePath.lastIndexOf('\\');
         }
-        unzip(zipFilePath, zipFilePath.substring(0, index), encoding, true);
+        unzip(zipFilePath, zipFilePath.substring(0, index), encoding, overwrite);
     }
 
     /**
      * @param zipFilePath
      * @param encoding
+     * @param overwrite 
      * @throws IOException
      */
-    public static void unzip(String zipFilePath, String encoding) throws IOException {
-        unzip(zipFilePath, zipFilePath.substring(0, zipFilePath.lastIndexOf(Constants.DOT)), encoding, true);
+    public static void unzip(String zipFilePath, String encoding, boolean overwrite) throws IOException {
+        unzip(zipFilePath, zipFilePath.substring(0, zipFilePath.lastIndexOf(Constants.DOT)), encoding, overwrite);
     }
 
     /**
