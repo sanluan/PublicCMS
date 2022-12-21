@@ -972,8 +972,8 @@ INSERT INTO `sys_module` VALUES ('place_template_content', 'placeTemplate/conten
 INSERT INTO `sys_module` VALUES ('place_template_data_dictionary', 'cmsDictionary/lookup', NULL, NULL, 'place_template_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('place_template_fragment', 'cmsTemplate/ftlLookup', NULL, NULL, 'place_template_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('place_template_help', 'cmsTemplate/help', NULL, NULL, 'place_template_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('place_template_list', 'placeTemplate/list', NULL, 'icon-list-alt', 'file_menu', 1, 2);
-INSERT INTO `sys_module` VALUES ('place_template_metadata', 'placeTemplate/metadata', 'cmsTemplate/savePlaceMetaData', NULL, 'place_template_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('place_template_list', 'placeTemplate/list', 'placeTemplate/directory', 'icon-list-alt', 'file_menu', 1, 2);
+INSERT INTO `sys_module` VALUES ('place_template_metadata', 'placeTemplate/metadata', 'cmsTemplate/savePlaceMetaData,cmsTemplate/createDirectory', NULL, 'place_template_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('place_template_place', 'placeTemplate/lookup', NULL, NULL, 'place_template_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('place_template_webfile', 'cmsWebFile/lookup', NULL, NULL, 'place_template_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('place_view', 'cmsPlace/view', NULL, NULL, 'place_list', 0, 0);
@@ -1021,7 +1021,7 @@ INSERT INTO `sys_module` VALUES ('template_demo', 'cmsTemplate/demo', NULL, NULL
 INSERT INTO `sys_module` VALUES ('template_fragment', 'cmsTemplate/ftlLookup', NULL, NULL, 'template_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('template_help', 'cmsTemplate/help', NULL, NULL, 'template_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('template_list', 'cmsTemplate/list', 'cmsTemplate/directory', 'icon-code', 'file_menu', 1, 1);
-INSERT INTO `sys_module` VALUES ('template_metadata', 'cmsTemplate/metadata', 'cmsTemplate/saveMetadata', NULL, 'template_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('template_metadata', 'cmsTemplate/metadata', 'cmsTemplate/saveMetadata,cmsTemplate/createDirectory', NULL, 'template_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('template_place', 'placeTemplate/lookup', NULL, NULL, 'template_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('template_place_form', 'placeTemplate/form', NULL, NULL, 'template_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('template_search', 'cmsTemplate/search', 'cmsTemplate/replace', NULL, 'template_list', 0, 0);

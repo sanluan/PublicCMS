@@ -95,6 +95,7 @@ public class TaskTemplateAdminController {
      * @param site
      * @param admin
      * @param files
+     * @param overwrite
      * @param path
      * @param encoding
      * @param request
@@ -103,16 +104,18 @@ public class TaskTemplateAdminController {
      */
     @RequestMapping("doUpload")
     @Csrf
-    public String upload(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile[] files, String path,
-            String encoding, HttpServletRequest request, ModelMap model) {
+    public String upload(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile[] files,
+            boolean overwrite, String path, String encoding, HttpServletRequest request, ModelMap model) {
         if (null != files) {
             try {
                 for (MultipartFile file : files) {
                     String filepath = path + CommonConstants.SEPARATOR + file.getOriginalFilename();
                     String destFullFileName = siteComponent.getTaskTemplateFilePath(site.getId(), filepath);
-                    CmsFileUtils.upload(file, destFullFileName);
+                    if (!CmsFileUtils.exists(destFullFileName) || overwrite || destFullFileName.endsWith(".zip")) {
+                        CmsFileUtils.upload(file, destFullFileName);
+                    }
                     if (destFullFileName.endsWith(".zip") && CmsFileUtils.isFile(destFullFileName)) {
-                        ZipUtils.unzipHere(destFullFileName, encoding);
+                        ZipUtils.unzipHere(destFullFileName, encoding, overwrite);
                         CmsFileUtils.delete(destFullFileName);
                     }
                     templateComponent.clearTaskTemplateCache();

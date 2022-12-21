@@ -6,7 +6,7 @@
             <dd>
                 <input type="hidden" name="path" value="${path!}"/>
                 <input type="file" name="files" class="required" size="30" multiple="multiple"/>
-                <label class="override hide"><input type="checkbox" name="override" checked="checked"><@t.page 'upload.override'/></label>
+                <label class="overwrite hide"><input type="checkbox" name="overwrite" checked="checked"><@t.page 'upload.overwrite'/></label>
             </dd>
         </dl>
     </div>
@@ -36,9 +36,9 @@ $(".pageFormContent",$.pdialog.getCurrent()).on("change","input[type=file]",func
             },
             success: function (result) {
                 if(true==result){
-                    $('.override').show();
+                    $('.overwrite').show();
                 } else {
-                    $('.override').hide();
+                    $('.overwrite').hide();
                 }
             }
         });

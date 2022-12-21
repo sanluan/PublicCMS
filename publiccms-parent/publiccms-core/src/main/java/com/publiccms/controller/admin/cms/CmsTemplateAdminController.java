@@ -199,6 +199,7 @@ public class CmsTemplateAdminController {
      * @param site
      * @param admin
      * @param files
+     * @param overwrite
      * @param path
      * @param encoding
      * @param request
@@ -207,8 +208,8 @@ public class CmsTemplateAdminController {
      */
     @RequestMapping("doUpload")
     @Csrf
-    public String upload(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile[] files, String path,
-            String encoding, HttpServletRequest request, ModelMap model) {
+    public String upload(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile[] files,
+            boolean overwrite, String path, String encoding, HttpServletRequest request, ModelMap model) {
         if (null != files) {
             try {
                 for (MultipartFile file : files) {
@@ -216,7 +217,7 @@ public class CmsTemplateAdminController {
                     String filepath = siteComponent.getTemplateFilePath(site.getId(), shortFilepath);
                     CmsFileUtils.upload(file, filepath);
                     if (shortFilepath.endsWith(".zip") && CmsFileUtils.isFile(filepath)) {
-                        ZipUtils.unzipHere(filepath, encoding);
+                        ZipUtils.unzipHere(filepath, encoding, overwrite);
                         CmsFileUtils.delete(filepath);
                         metadataComponent.clear();
                     } else {
@@ -479,5 +480,28 @@ public class CmsTemplateAdminController {
                         null, null);
             }
         }
+    }
+    
+    /**
+     * @param site
+     * @param admin
+     * @param path
+     * @param fileName
+     * @param request
+     * @return view name
+     */
+    @RequestMapping("createDirectory")
+    @Csrf
+    public String createDirectory(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path, String fileName,
+            HttpServletRequest request) {
+        if (null != path && CommonUtils.notEmpty(fileName)) {
+            path = path + CommonConstants.SEPARATOR + fileName;
+            String filepath = siteComponent.getTemplateFilePath(site.getId(), path);
+            CmsFileUtils.mkdirs(filepath);
+            logOperateService
+                    .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                            "createDirectory.web.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
+        }
+        return CommonConstants.TEMPLATE_DONE;
     }
 }
