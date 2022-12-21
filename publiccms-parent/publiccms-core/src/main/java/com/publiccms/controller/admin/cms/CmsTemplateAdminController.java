@@ -482,4 +482,27 @@ public class CmsTemplateAdminController {
             }
         }
     }
+    
+    /**
+     * @param site
+     * @param admin
+     * @param path
+     * @param fileName
+     * @param request
+     * @return view name
+     */
+    @RequestMapping("createDirectory")
+    @Csrf
+    public String createDirectory(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path, String fileName,
+            HttpServletRequest request) {
+        if (null != path && CommonUtils.notEmpty(fileName)) {
+            path = path + CommonConstants.SEPARATOR + fileName;
+            String filepath = siteComponent.getTemplateFilePath(site.getId(), path);
+            CmsFileUtils.mkdirs(filepath);
+            logOperateService
+                    .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                            "createDirectory.web.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
+        }
+        return CommonConstants.TEMPLATE_DONE;
+    }
 }
