@@ -69,7 +69,7 @@ public class TradeOrderController {
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + site.getDynamicPath() + "tradePayment/pay?paymentId="
                     + order.getPaymentId() + "&returnUrl=" + returnUrl;
         }
-        return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
+        return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
     }
 
     /**
@@ -94,10 +94,10 @@ public class TradeOrderController {
         Long orderId = service.create(site.getId(), user.getId(), entity, RequestUtils.getIpAddress(request),
                 tradeOrderParameters.getTradeOrderProductList());
         if (null != orderId) {
-            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl + (returnUrl.contains("?") ? "&" : "?") + orderIdField
+            return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString() + (returnUrl.contains("?") ? "&" : "?") + orderIdField
                     + "=" + orderId;
         } else {
-            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
+            return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
         }
     }
 
@@ -115,7 +115,7 @@ public class TradeOrderController {
             HttpServletRequest request) {
         returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         service.close(site.getId(), orderId, user.getId());
-        return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
+        return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
     }
 
     @Resource

@@ -94,13 +94,13 @@ public class ContentController {
                 null);
         if (ControllerUtils.errorCustom("locked.user", locked, model)) {
             lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_CONTRIBUTE, String.valueOf(user.getId()), null, true);
-            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
+            return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
         }
         CmsCategoryModel categoryModel = categoryModelService
                 .getEntity(new CmsCategoryModelId(entity.getCategoryId(), entity.getModelId()));
         if (ControllerUtils.errorNotEmpty("categoryModel", categoryModel, model)
                 || ControllerUtils.errorCustom("contribute", null == user, model)) {
-            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
+            return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
         }
         CmsCategory category = categoryService.getEntity(entity.getCategoryId());
         if (null != category && (site.getId() != category.getSiteId() || !category.isAllowContribute())) {
@@ -109,7 +109,7 @@ public class ContentController {
         CmsModel cmsModel = modelComponent.getModelMap(site.getId()).get(entity.getModelId());
         if (ControllerUtils.errorNotEmpty("category", category, model)
                 || ControllerUtils.errorNotEmpty("model", cmsModel, model)) {
-            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
+            return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
         }
         CmsContentAdminController.initContent(entity, cmsModel, draft, false, attribute, false, CommonUtils.getDate());
         if (null != entity.getId()) {
@@ -146,7 +146,7 @@ public class ContentController {
         service.saveTagAndAttribute(site.getId(), user.getId(), entity.getId(), contentParameters, cmsModel,
                 category.getExtendId(), attribute);
         model.addAttribute("id", entity.getId());
-        return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
+        return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
     }
 
     /**

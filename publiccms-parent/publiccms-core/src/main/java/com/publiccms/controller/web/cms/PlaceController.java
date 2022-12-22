@@ -105,25 +105,25 @@ public class PlaceController {
             if (ControllerUtils.errorCustom("contribute",
                     null == metadata || !metadata.isAllowContribute() || 0 >= metadata.getSize(), model)
                     || ControllerUtils.errorCustom("anonymousContribute", null == user && !metadata.isAllowAnonymous(), model)) {
-                return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
+                return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
             }
             String ip = RequestUtils.getIpAddress(request);
             if (metadata.isAllowAnonymous()) {
                 boolean locked = lockComponent.isLocked(site.getId(), LockComponent.ITEM_TYPE_CONTRIBUTE, ip, null);
                 if (ControllerUtils.errorCustom("locked.ip", locked, model)) {
                     lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_CONTRIBUTE, ip, null, true);
-                    return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
+                    return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
                 }
             } else {
                 if (ControllerUtils.errorNotEquals("_csrf", ControllerUtils.getWebToken(request), _csrf, model)) {
-                    return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
+                    return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
                 } else {
                     boolean locked = lockComponent.isLocked(site.getId(), LockComponent.ITEM_TYPE_CONTRIBUTE,
                             String.valueOf(user.getId()), null);
                     if (ControllerUtils.errorCustom("locked.user", locked, model)) {
                         lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_CONTRIBUTE, String.valueOf(user.getId()), null,
                                 true);
-                        return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
+                        return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
                     }
                 }
             }
@@ -133,7 +133,7 @@ public class PlaceController {
                 if (null == oldEntity || CommonUtils.empty(oldEntity.getUserId()) || null == user
                         || ControllerUtils.errorNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)
                         || ControllerUtils.errorNotEquals("siteId", user.getId(), oldEntity.getUserId(), model)) {
-                    return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
+                    return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
                 }
                 entity = service.update(entity.getId(), entity, ignoreProperties);
                 logOperateService.save(new LogOperate(site.getId(), user.getId(), null == user ? null : user.getDeptId(),
@@ -158,7 +158,7 @@ public class PlaceController {
             attributeService.updateAttribute(entity.getId(), extentString);
             model.addAttribute("id", entity.getId());
         }
-        return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
+        return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
     }
 
     /**
@@ -198,7 +198,7 @@ public class PlaceController {
                 }
             }
         }
-        return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
+        return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
     }
 
     /**
@@ -238,7 +238,7 @@ public class PlaceController {
                 }
             }
         }
-        return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
+        return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
     }
 
     /**
@@ -279,7 +279,7 @@ public class PlaceController {
                 }
             }
         }
-        return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
+        return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
     }
 
     /**

@@ -107,6 +107,15 @@ public class QueryHandler {
      * @param sqlString
      * @return query handler
      */
+    public QueryHandler appendWithoutSpace(String sqlString) {
+        sqlBuilder.append(sqlString);
+        return this;
+    }
+
+    /**
+     * @param sqlString
+     * @return query handler
+     */
     public QueryHandler append(String sqlString) {
         sqlBuilder.append(Constants.BLANK_SPACE);
         sqlBuilder.append(sqlString);
@@ -165,7 +174,7 @@ public class QueryHandler {
         arrayMap.put(key, value);
         return this;
     }
-    
+
     /**
      * @param key
      * @param value

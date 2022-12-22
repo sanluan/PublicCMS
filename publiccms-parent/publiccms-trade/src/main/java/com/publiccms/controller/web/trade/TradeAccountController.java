@@ -70,7 +70,7 @@ public class TradeAccountController {
                         + entity.getId() + "&returnUrl=" + returnUrl;
             }
         }
-        return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
+        return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
     }
 
     @Resource

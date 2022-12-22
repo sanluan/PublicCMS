@@ -92,13 +92,13 @@ public class TradePaymentController {
         returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         TradePayment entity = service.getEntity(paymentId);
         if (null == entity || ControllerUtils.errorNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
-            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
+            return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
         }
         TradePaymentProcessor paymentProcessor = paymentProcessorComponent.get(entity.getTradeType());
         if (null != paymentProcessor && service.cancel(site.getId(), paymentId)) {
             paymentProcessor.cancel(site.getId(), entity);
         }
-        return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
+        return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
     }
 
     /**
@@ -115,8 +115,8 @@ public class TradePaymentController {
     @ResponseBody
     public String notifyAlipay(@RequestAttribute SysSite site, long out_trade_no, String total_amount, String trade_no,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
-        log.info(
-                String.format("alipay notify out_trade_no:%s,total_amount:%s,trade_no:%s", out_trade_no, total_amount, trade_no));
+        log.info(new StringBuilder("alipay notify out_trade_no:").append(out_trade_no).append(",total_amount:")
+                .append(total_amount).append(",trade_no:").append(trade_no).toString());
         Map<String, String> config = configComponent.getConfigData(site.getId(), AlipayGatewayComponent.CONFIG_CODE);
         if (CommonUtils.notEmpty(config)) {
             Map<String, String> params = request.getParameterMap().entrySet().stream()
@@ -168,8 +168,9 @@ public class TradePaymentController {
             @RequestHeader(value = "Wechatpay-Timestamp") String timestamp,
             @RequestHeader(value = "Wechatpay-Nonce") String nonce, @RequestHeader(value = "Wechatpay-Serial") String serial,
             @RequestBody String body, HttpServletResponse response) throws Exception {
-        log.info(String.format("wechat notify signature:%s,serial:%s,timestamp:%s,nonce:%s,body:%s", signature, serial, timestamp,
-                nonce, body));
+        log.info(new StringBuilder("wechat notify signature:").append(signature).append(",serial:").append(serial)
+                .append(",timestamp:").append(timestamp).append(",nonce:").append(nonce).append(",body:").append(body)
+                .toString());
         Map<String, String> config = configComponent.getConfigData(site.getId(), WechatGatewayComponent.CONFIG_CODE);
         Map<String, String> resultMap = new HashMap<>();
         resultMap.put("code", "FAIL");
@@ -296,7 +297,7 @@ public class TradePaymentController {
         returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         if (null != user && ControllerUtils.errorCustom("tradePaymentStatus",
                 !service.pendingRefund(site.getId(), entity.getPaymentId()), model)) {
-            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
+            return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
         }
         if (null == entity.getId()) {
             entity.setSiteId(site.getId());
@@ -310,7 +311,7 @@ public class TradePaymentController {
         } else {
             refundService.updateAmound(entity.getId(), user.getId(), entity.getAmount(), entity.getReason());
         }
-        return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
+        return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
     }
 
     /**
@@ -331,7 +332,7 @@ public class TradePaymentController {
             HttpServletRequest request) {
         returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         refundService.updateStatus(site.getId(), refundId, null, user.getId(), TradeRefundService.STATUS_CANCELLED);
-        return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
+        return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
     }
 
     @Resource

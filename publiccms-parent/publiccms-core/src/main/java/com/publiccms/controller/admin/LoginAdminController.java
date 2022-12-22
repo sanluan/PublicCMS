@@ -136,7 +136,7 @@ public class LoginAdminController {
         if (SiteConfigComponent.isUnSafeUrl(returnUrl, site, safeReturnUrl, request.getContextPath())) {
             returnUrl = CommonConstants.getDefaultPage();
         }
-        return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
+        return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
     }
 
     public static void addLoginStatus(SysUser user, String authToken, HttpServletRequest request, HttpServletResponse response,

@@ -169,7 +169,7 @@ public class InstallServlet extends HttpServlet {
         try (FileOutputStream outputStream = new FileOutputStream(file)) {
             outputStream.write(CmsVersion.getVersion().getBytes(CommonConstants.DEFAULT_CHARSET));
         }
-        log.info(String.format("PublicCMS %s started!", CmsVersion.getVersion()));
+        log.info(new StringBuilder("PublicCMS ").append(CmsVersion.getVersion()).append(" started!"));
     }
 
     /**

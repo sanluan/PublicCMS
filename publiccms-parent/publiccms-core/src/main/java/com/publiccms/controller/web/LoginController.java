@@ -144,7 +144,7 @@ public class LoginController {
                         DateUtils.addMinutes(now, expiryMinutes), ip));
                 logLoginService.save(
                         new LogLogin(site.getId(), username, user.getId(), ip, LogLoginService.CHANNEL_WEB, true, now, null));
-                return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
+                return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
             }
         }
     }
@@ -242,7 +242,7 @@ public class LoginController {
             sysUserTokenService.save(
                     new SysUserToken(authToken, site.getId(), entity.getId(), LogLoginService.CHANNEL_WEB, now, expiryDate, ip));
         }
-        return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
+        return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
     }
 
     /**
@@ -271,7 +271,7 @@ public class LoginController {
             }
             ControllerUtils.clearUserToSession(request.getContextPath(), request.getScheme(), request.getSession(), response);
         }
-        return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
+        return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
     }
 
     public static void addLoginStatus(SysUser user, String authToken, HttpServletRequest request, HttpServletResponse response,

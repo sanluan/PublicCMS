@@ -29,10 +29,11 @@ public class BinarySerializer<T> implements Serializer<T> {
             oos.flush();
             return os.toByteArray();
         } catch (Exception e) {
-            log.warn(String.format("Fail to serializer graph. graph = %s", graph), e);
+            log.warn(new StringBuilder("Fail to serializer graph. graph = ").append(graph).toString(), e);
             return EMPTY_BYTES;
         }
     }
+
     @Override
     @SuppressWarnings("unchecked")
     public T deserialize(final byte[] bytes) {

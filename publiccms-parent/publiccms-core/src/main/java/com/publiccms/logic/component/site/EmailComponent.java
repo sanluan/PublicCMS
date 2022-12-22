@@ -250,8 +250,9 @@ public class EmailComponent implements SiteCache, Config {
                     i++;
                 }
             }
-            log.info(String.format("%s send a email to %s title [%s]", config.get(CONFIG_FROMADDRESS),
-                    StringUtils.join(toAddress, CommonConstants.COMMA), title));
+            log.info(new StringBuilder(config.get(CONFIG_FROMADDRESS)).append(" send a email to ")
+                    .append(StringUtils.join(toAddress, CommonConstants.COMMA)).append(" title [").append(title).append("]")
+                    .toString());
             pool.execute(new SendTask(mailSender, message));
             return true;
         }

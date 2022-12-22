@@ -134,10 +134,11 @@ public abstract class BaseDao<E> {
             return null;
         } else {
             QueryHandler queryHandler = getQueryHandler("from").append(getEntityClass().getSimpleName()).append("bean");
-            queryHandler.condition(String.format("bean.%s", primaryKeyName)).append("= :id").setParameter("id", id);
+            queryHandler.condition("bean.").appendWithoutSpace(primaryKeyName).append("= :id").setParameter("id", id);
             return getEntity(queryHandler);
         }
     }
+
     /**
      * 获取实体集合
      *
@@ -158,12 +159,13 @@ public abstract class BaseDao<E> {
     public List<E> getEntitys(Collection<Serializable> ids, String primaryKeyName) {
         if (CommonUtils.notEmpty(ids)) {
             QueryHandler queryHandler = getQueryHandler("from").append(getEntityClass().getSimpleName()).append("bean");
-            queryHandler.condition(String.format("bean.%s", primaryKeyName)).append("in (:ids)").setParameter("ids", ids);
+            queryHandler.condition("bean.").appendWithoutSpace(primaryKeyName).append("in (:ids)").setParameter("ids", ids);
             Query<E> query = getSession().createQuery(queryHandler.getSql(), getEntityClass());
             return getList(query, queryHandler);
         }
         return Collections.emptyList();
     }
+
     /**
      * 获取实体集合
      *
@@ -184,12 +186,13 @@ public abstract class BaseDao<E> {
     public List<E> getEntitys(Serializable[] ids, String primaryKeyName) {
         if (CommonUtils.notEmpty(ids)) {
             QueryHandler queryHandler = getQueryHandler("from").append(getEntityClass().getSimpleName()).append("bean");
-            queryHandler.condition(String.format("bean.%s", primaryKeyName)).append("in (:ids)").setParameter("ids", ids);
+            queryHandler.condition("bean.").appendWithoutSpace(primaryKeyName).append("in (:ids)").setParameter("ids", ids);
             Query<E> query = getSession().createQuery(queryHandler.getSql(), getEntityClass());
             return getList(query, queryHandler);
         }
         return Collections.emptyList();
     }
+
     /**
      * 保存或更新
      *
@@ -198,6 +201,7 @@ public abstract class BaseDao<E> {
     public void saveOrUpdate(E entity) {
         getSession().saveOrUpdate(init(entity));
     }
+
     /**
      * 保存
      *

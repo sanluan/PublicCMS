@@ -31,11 +31,13 @@ public class IdWorker {
 
     public IdWorker(long workerId) {
         if (workerId > maxWorkerId || workerId < 0) {
-            throw new IllegalArgumentException(String.format("worker Id can't be greater than %d or less than 0", maxWorkerId));
+            throw new IllegalArgumentException(new StringBuilder("worker Id can't be greater than ").append(maxWorkerId)
+                    .append(" or less than 0").toString());
         }
         this.workerId = workerId;
-        log.info(String.format("worker starting. timestamp left shift %d, worker id bits %d, sequence bits %d, workerid %d",
-                timestampLeftShift, workerIdBits, sequenceBits, workerId));
+        log.info(new StringBuilder("worker starting. timestamp left shift ").append(timestampLeftShift)
+                .append(", worker id bits ").append(workerIdBits).append(", sequence bits ").append(sequenceBits)
+                .append(", workerid ").append(workerId).toString());
     }
 
     /**
@@ -56,9 +58,9 @@ public class IdWorker {
     public synchronized long nextId() {
         long timestamp = timeGen();
         if (timestamp < lastTimestamp) {
-            log.error(String.format("clock is moving backwards. Rejecting requests until %d.", lastTimestamp));
-            throw new RuntimeException(String.format("Clock moved backwards. Refusing to generate id for %d milliseconds",
-                    lastTimestamp - timestamp));
+            log.error(new StringBuilder("clock is moving backwards. Rejecting requests until ").append(lastTimestamp).toString());
+            throw new RuntimeException(new StringBuilder("Clock moved backwards. Refusing to generate id for ")
+                    .append(lastTimestamp - timestamp).append(" milliseconds").toString());
         }
         if (lastTimestamp == timestamp) {
             sequence = (sequence + 1) & sequenceMask;
