@@ -81,8 +81,7 @@ public abstract class AbstractCmsUpgrader {
             throws IOException, URISyntaxException;
 
     public void setPassword(Connection connection, String username, String password) throws SQLException, IOException {
-        try (PreparedStatement statement = connection
-                .prepareStatement("update sys_user set name=?,password=? where id = 1")) {
+        try (PreparedStatement statement = connection.prepareStatement("update sys_user set name=?,password=? where id = 1")) {
             statement.setString(1, username);
             statement.setString(2, UserPasswordUtils.passwordEncode(password, UserPasswordUtils.getSalt(), null, null));
             statement.execute();
@@ -188,8 +187,8 @@ public abstract class AbstractCmsUpgrader {
         runner.setLogWriter(null);
         runner.setErrorLogWriter(new PrintWriter(stringWriter));
         runner.setAutoCommit(true);
-        try (InputStream inputStream = getClass()
-                .getResourceAsStream(String.format("/initialization/upgrade/%s-%s.sql", fromVersion, toVersion))) {
+        try (InputStream inputStream = getClass().getResourceAsStream(new StringBuilder("/initialization/upgrade/")
+                .append(fromVersion).append("-").append(toVersion).append(".sql").toString())) {
             if (null != inputStream) {
                 runner.runScript(new InputStreamReader(inputStream, CommonConstants.DEFAULT_CHARSET));
             }

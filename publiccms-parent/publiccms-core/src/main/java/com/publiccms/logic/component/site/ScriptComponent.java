@@ -60,10 +60,11 @@ public class ScriptComponent {
                     }
                 }
             }
-            String filepath = String.format("%s/%s", dir, command);
+            String filepath = new StringBuilder(dir).append("/").append(command).toString();
             File script = new File(filepath);
             if (!script.exists()) {
-                try (InputStream inputStream = getClass().getResourceAsStream(String.format("/script/%s", command))) {
+                try (InputStream inputStream = getClass()
+                        .getResourceAsStream(new StringBuilder("/script/").append(command).toString())) {
                     FileUtils.copyInputStreamToFile(inputStream, script);
                 }
             }

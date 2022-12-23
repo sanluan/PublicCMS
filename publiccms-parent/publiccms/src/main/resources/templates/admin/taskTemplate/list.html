@@ -37,6 +37,16 @@
         </ul>
     </div>
     <div id="taskTemplateBox" class="unitBox rightPageContent">
-        <#include "directory.html"/>
+        <div class="card">
+        <h2 class="contentTitle">
+            <a class="button" href="taskTemplate/upload.html?path=${(path?url)!}" target="dialog" mask="true" width="500" height="250"><@t.page 'upload'/></a>
+            <a class="button" href="taskTemplate/export?_csrf=<@tools.csrfToken admin=true/>" target="dwzExport" targetType="navTab"><@t.page 'button.export'/></a>
+        <#if path?has_content>
+            <a class="button" href="taskTemplate/content.html?path=${path?url}/" target="ajax" rel="taskTemplateBox"><@t.page 'task_template.create_here'/></a>
+            <a class="button" href="taskTemplate/delete?path=${path?url}&navTabId=taskTemplate/list&_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.delete_directory'/>" target="ajaxTodo"><@t.page 'button.delete_directory'/></a>
+        </#if>
+            <a class="button" href="cmsFileBackup/list.html?type=task&path=${(path?url)!}" target="navTab" rel="cmsFileBackup/list" icon="<i class='bi bi-recycle icon-large'></i>"><@t.page 'recycle_bin'/></a>
+        </h2>
+</div>
     </div>
 </div>

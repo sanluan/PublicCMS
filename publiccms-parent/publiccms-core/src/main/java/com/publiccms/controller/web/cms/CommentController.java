@@ -105,7 +105,7 @@ public class CommentController {
                 null);
         if (ControllerUtils.errorCustom("locked.user", locked, model)) {
             lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_COMMENT, String.valueOf(user.getId()), null, true);
-            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
+            return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
         }
         CmsContent content = null;
         if (CommonUtils.notEmpty(entity.getText())) {
@@ -165,7 +165,7 @@ public class CommentController {
             }
             model.addAttribute("id", entity.getId());
         }
-        return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
+        return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
     }
 
     @Resource

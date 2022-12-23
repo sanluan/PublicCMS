@@ -73,7 +73,7 @@ public class IndexAdminController {
             return CommonConstants.TEMPLATE_DONEANDREFRESH;
         } else {
             returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
-            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
+            return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
         }
     }
 }

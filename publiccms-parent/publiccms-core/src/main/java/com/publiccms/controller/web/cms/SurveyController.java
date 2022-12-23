@@ -135,7 +135,7 @@ public class SurveyController {
             }
             model.addAttribute("id", entity.getId());
         }
-        return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
+        return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
     }
 
     @Resource

@@ -137,7 +137,7 @@ public abstract class BaseDao<E> {
             return null;
         } else {
             QueryHandler queryHandler = getQueryHandler("from").append(getEntityClass().getSimpleName()).append("bean");
-            queryHandler.condition(String.format("bean.%s", primaryKeyName)).append("= :id").setParameter("id", id);
+            queryHandler.condition("bean.").appendWithoutSpace(primaryKeyName).append("= :id").setParameter("id", id);
             return getEntity(queryHandler);
         }
     }
@@ -161,7 +161,7 @@ public abstract class BaseDao<E> {
     public List<E> getEntitys(Collection<Serializable> ids, String primaryKeyName) {
         if (CommonUtils.notEmpty(ids)) {
             QueryHandler queryHandler = getQueryHandler("from").append(getEntityClass().getSimpleName()).append("bean");
-            queryHandler.condition(String.format("bean.%s", primaryKeyName)).append("in (:ids)").setParameter("ids", ids);
+            queryHandler.condition("bean.").appendWithoutSpace(primaryKeyName).append("in (:ids)").setParameter("ids", ids);
             Query<E> query = getSession().createQuery(queryHandler.getSql(), getEntityClass());
             return getList(query, queryHandler);
         }
@@ -187,7 +187,7 @@ public abstract class BaseDao<E> {
     public List<E> getEntitys(Serializable[] ids, String primaryKeyName) {
         if (CommonUtils.notEmpty(ids)) {
             QueryHandler queryHandler = getQueryHandler("from").append(getEntityClass().getSimpleName()).append("bean");
-            queryHandler.condition(String.format("bean.%s", primaryKeyName)).append("in (:ids)").setParameter("ids", ids);
+            queryHandler.condition("bean.").appendWithoutSpace(primaryKeyName).append("in (:ids)").setParameter("ids", ids);
             TypedQuery<E> query = getSession().createQuery(queryHandler.getSql(), getEntityClass());
             return getList(query, queryHandler);
         }

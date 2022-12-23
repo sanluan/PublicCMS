@@ -63,18 +63,18 @@ public class InitializationInitializer implements WebApplicationInitializer {
                     }
                     CmsVersion.setInitialized(true);
                     CmsDataSource.initDefaultDataSource();
-                    log.info(String.format("PublicCMS %s will start normally in %s", CmsVersion.getVersion(),
-                            CommonConstants.CMS_FILEPATH));
+                    log.info(new StringBuilder("PublicCMS ").append(CmsVersion.getVersion()).append(" will start normally in ")
+                            .append(CommonConstants.CMS_FILEPATH).toString());
                 } else {
                     createInstallServlet(servletContext, InstallServlet.STEP_CHECKDATABASE, version);
-                    log.warn(String.format("PublicCMS %s installer will start in %s, please upgrade your database!",
-                            CmsVersion.getVersion(), CommonConstants.CMS_FILEPATH));
+                    log.warn(new StringBuilder("PublicCMS ").append(CmsVersion.getVersion()).append(" installer will start in ")
+                            .append(CommonConstants.CMS_FILEPATH).append(", please upgrade your database!").toString());
                 }
             } else {
                 createInstallServlet(servletContext, null, null);
-                log.warn(String.format(
-                        "PublicCMS %s installer will start in %s, please configure your database information and initialize the database!",
-                        CmsVersion.getVersion(), CommonConstants.CMS_FILEPATH));
+                log.warn(new StringBuilder("PublicCMS ").append(CmsVersion.getVersion()).append(" installer will start in ")
+                        .append(CommonConstants.CMS_FILEPATH)
+                        .append(", please configure your database information and initialize the database!").toString());
             }
         } catch (IOException e) {
             throw new ServletException(e);
@@ -96,8 +96,8 @@ public class InitializationInitializer implements WebApplicationInitializer {
         } catch (Exception e) {
         }
         if (!file.exists()) {
-            log.warn(String.format("PublicCMS %s the cms.filePath parameter is invalid , try to use the temporary directory.",
-                    CmsVersion.getVersion()));
+            log.warn(new StringBuilder("PublicCMS ").append(CmsVersion.getVersion())
+                    .append(" the cms.filePath parameter is invalid , try to use the temporary directory.").toString());
             file = new File(defaultPath, "data/publiccms");
         }
         CommonConstants.CMS_FILEPATH = file.getAbsolutePath();
