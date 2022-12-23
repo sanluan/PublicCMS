@@ -35,7 +35,7 @@ subprojects {
         springVersion = "6.0.3"
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
         // https://spring.io/projects/spring-boot
-        springBootVersion = "3.0.0"
+        springBootVersion = "3.0.1"
         // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine
         junitVersion = "5.9.1"
         // http://mvnrepository.com/artifact/org.hibernate/hibernate-core
