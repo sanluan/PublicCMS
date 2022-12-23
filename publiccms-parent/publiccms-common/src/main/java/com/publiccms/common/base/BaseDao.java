@@ -12,6 +12,7 @@ import java.util.concurrent.CompletionStage;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
+import javax.annotation.Resource;
 import javax.persistence.EntityNotFoundException;
 
 import org.apache.commons.logging.Log;
@@ -34,7 +35,6 @@ import org.hibernate.search.engine.search.query.dsl.SearchQueryOptionsStep;
 import org.hibernate.search.mapper.orm.Search;
 import org.hibernate.search.mapper.orm.session.SearchSession;
 import org.springframework.beans.BeanUtils;
-import javax.annotation.Resource;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.web.util.HtmlUtils;
 

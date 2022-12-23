@@ -54,5 +54,6 @@ dependencies {
 
     implementation "com.sun.mail:jakarta.mail:${mailVersion}"
     implementation "org.apache.ant:ant:${antVersion}"
+    implementation "jakarta.annotation:jakarta.annotation-api:${annotationVersion}"
     implementation "javax.transaction:jta:${jtaVersion}"
 }
