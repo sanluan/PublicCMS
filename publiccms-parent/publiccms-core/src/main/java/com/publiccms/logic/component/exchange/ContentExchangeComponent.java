@@ -53,7 +53,7 @@ import com.publiccms.views.pojo.query.CmsContentQuery;
 import freemarker.template.TemplateException;
 
 /**
- * CategoryInteractionComponent 分类数据导出组件
+ * CategoryExchangeComponent 内容数据导入导出组件
  * 
  */
 @Component

@@ -18,7 +18,7 @@ import com.publiccms.logic.service.cms.CmsDictionaryService;
 import com.publiccms.views.pojo.exchange.Dictionary;
 
 /**
- * DictionaryInteractionComponent 数据字典导入导出组件
+ * DictionaryExchangeComponent 数据字典导入导出组件
  * 
  */
 @Component

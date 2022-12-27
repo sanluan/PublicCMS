@@ -10,14 +10,17 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.annotation.Resource;
+
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.tools.zip.ZipOutputStream;
-import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.PageHandler;
+import com.publiccms.common.tools.CmsFileUtils;
+import com.publiccms.common.tools.CmsFileUtils.FileInfo;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.DateFormatUtils;
 import com.publiccms.common.tools.ExtendUtils;
@@ -40,7 +43,7 @@ import com.publiccms.views.pojo.exchange.Place;
 import com.publiccms.views.pojo.exchange.PlaceData;
 
 /**
- * PlaceInteractionComponent 分类数据导出组件
+ * PlaceExchangeComponent 页面片段数据导出组件
  * 
  */
 @Component
@@ -61,7 +64,22 @@ public class PlaceExchangeComponent extends Exchange<String, Place> {
     @Override
     public void exportAll(short siteId, String directory, ZipOutputStream zipOutputStream) {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        exportEntity(siteId, directory, "", out, zipOutputStream);
+        dealDir(siteId, directory, "", out, zipOutputStream);
+    }
+
+    private void dealDir(short siteId, String directory, String path, ByteArrayOutputStream out,
+            ZipOutputStream zipOutputStream) {
+        path = path.replace("\\", CommonConstants.SEPARATOR).replace("//", CommonConstants.SEPARATOR);
+        String realPath = siteComponent.getTemplateFilePath(siteId, TemplateComponent.INCLUDE_DIRECTORY + path);
+        List<FileInfo> list = CmsFileUtils.getFileList(realPath, null);
+        for (FileInfo fileInfo : list) {
+            String filepath = path + fileInfo.getFileName();
+            if (fileInfo.isDirectory()) {
+                dealDir(siteId, directory, filepath + CommonConstants.SEPARATOR, out, zipOutputStream);
+            } else {
+                exportEntity(siteId, directory, filepath, out, zipOutputStream);
+            }
+        }
     }
 
     public ExcelView exportExcelByQuery(short siteId, String path, Long userId, Integer[] status, String itemType, Long itemId,
@@ -162,7 +180,8 @@ public class PlaceExchangeComponent extends Exchange<String, Place> {
     @Override
     public void exportEntity(short siteId, String directory, String path, ByteArrayOutputStream out,
             ZipOutputStream zipOutputStream) {
-        PageHandler page = service.getPage(siteId, null, path, null, null, null, null, null, null, false, null, null, null, 0);
+        PageHandler page = service.getPage(siteId, null, path, null, null, null, null, null, null, false, null, null, null,
+                PageHandler.MAX_PAGE_SIZE);
         @SuppressWarnings("unchecked")
         List<CmsPlace> list = (List<CmsPlace>) page.getList();
         if (0 < page.getTotalCount()) {
@@ -184,6 +203,7 @@ public class PlaceExchangeComponent extends Exchange<String, Place> {
                 datalist.add(placeData);
             }
             data.setDatalist(datalist);
+            export(directory, out, zipOutputStream, data, data.getPath() + ".json");
         }
     }
 
@@ -194,6 +214,7 @@ public class PlaceExchangeComponent extends Exchange<String, Place> {
             if (0 == page.getTotalCount() || overwrite) {
                 for (PlaceData placeData : data.getDatalist()) {
                     CmsPlace entity = placeData.getEntity();
+                    entity.setSiteId(siteId);
                     if (CmsPlaceService.ITEM_TYPE_CATEGORY.equals(entity.getItemType())) {
                         if (CommonUtils.notEmpty(placeData.getCategoryCode())) {
                             CmsCategory category = categoryService.getEntityByCode(siteId, placeData.getCategoryCode());
