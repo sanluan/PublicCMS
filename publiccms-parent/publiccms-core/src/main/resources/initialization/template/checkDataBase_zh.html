@@ -6,7 +6,7 @@
 <meta http-equiv="pragma" content="no-cache">
 <meta http-equiv="cache-control" content="no-cache">
 <meta http-equiv="expires" content="0">
-<script src="../resource/js/jquery-3.6.1.min.js"></script>
+<script src="../resource/plugins/jquery/jquery.min.js"></script>
 <style type="text/css">
 body {font-size: 14px;}
 .install .error {color: #f00;}
@@ -71,12 +71,12 @@ select {
                 </div>
             </div>
         </div>
-        
+
         <div class="buttons">
             <a href="./" class="hide">重新配置</a>
             <button class="next">下一步</button>
         </div>
-        
+
         <div class="copyright" style="font-size:12px;text-align:center;">
             <p>&copy;${.now?string('yyyy')} PublicCMS.com All Rights Reserved.</p>
         </div>
@@ -91,7 +91,7 @@ select {
                 $(".buttons button:last").removeClass("active");
             }
         });
-        
+
         var step = 0;
         $(".buttons button").click(function() {
             if (!$(this).hasClass("active")) {

@@ -19,7 +19,7 @@ import com.publiccms.views.pojo.exchange.Dictionary;
 import jakarta.annotation.Resource;
 
 /**
- * DictionaryInteractionComponent 数据字典导入导出组件
+ * DictionaryExchangeComponent 数据字典导入导出组件
  * 
  */
 @Component

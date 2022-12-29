@@ -397,8 +397,8 @@ JUI.regPlugins.push(function($p){
         }
         if($history.length && $current.length && $resultBox.length){
             if($compareMode.length){
-                comparetype=$compareMode.val();
                 $compareMode.change(function(){
+                    comparetype=$compareMode.val();
                     compare($resultBox, comparetype, $history.val(), $current.val());
                 });
             }
