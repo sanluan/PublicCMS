@@ -3,8 +3,6 @@ package com.publiccms.logic.component.exchange;
 import java.io.ByteArrayOutputStream;
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.apache.tools.zip.ZipOutputStream;
 import org.springframework.stereotype.Component;
 
@@ -12,6 +10,8 @@ import com.publiccms.common.handler.PageHandler;
 import com.publiccms.entities.sys.SysTask;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.sys.SysTaskService;
+
+import jakarta.annotation.Resource;
 
 /**
  * TaskExchangeComponent 任务计划导出组件
