@@ -232,7 +232,7 @@
             <#case "error/403.html">
                 <#if site.useStatic>
                     $('input[name=useStatic]',navTab.getCurrentPanel()).prop('checked',true).trigger('change');
-                    $('input[name=publishPath]',navTab.getCurrentPanel()).val(${demo});
+                    $('input[name=publishPath]',navTab.getCurrentPanel()).val('${demo}');
                 </#if>
                 <#break>
             <#case "json/comment.json">
