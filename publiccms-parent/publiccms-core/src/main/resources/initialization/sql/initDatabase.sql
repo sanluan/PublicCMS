@@ -53,7 +53,7 @@ DROP TABLE IF EXISTS `cms_category_model`;
 CREATE TABLE `cms_category_model` (
   `category_id` int(11) NOT NULL COMMENT '分类',
   `model_id` varchar(20) NOT NULL COMMENT '模型编码',
-  `site_id` smallint(6) NOT NULL COMMENT '站点'
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
   `template_path` varchar(200) default NULL COMMENT '内容模板路径',
   PRIMARY KEY  (`category_id`, `model_id`),
   KEY `cms_category_model_site_id`(`site_id`, `model_id`)
@@ -71,7 +71,7 @@ CREATE TABLE `cms_comment` (
   `replies` int(11) NOT NULL default 0 COMMENT '回复数',
   `scores` int(11) NOT NULL COMMENT '分数',
   `content_id` bigint(20) NOT NULL COMMENT '文章内容',
-  `ip` varchar(130) NOT NULL COMMENT 'IP'
+  `ip` varchar(130) NOT NULL COMMENT 'IP',
   `check_user_id` bigint(20) DEFAULT NULL COMMENT '审核用户',
   `check_date` datetime DEFAULT NULL COMMENT '审核日期',
   `update_date` datetime DEFAULT NULL COMMENT '更新日期',
