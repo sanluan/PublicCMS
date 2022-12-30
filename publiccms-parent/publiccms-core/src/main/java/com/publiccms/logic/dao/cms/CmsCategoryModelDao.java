@@ -51,7 +51,6 @@ public class CmsCategoryModelDao extends BaseDao<CmsCategoryModel> {
         if (CommonUtils.notEmpty(categoryId)) {
             queryHandler.condition("bean.id.categoryId = :categoryId").setParameter("categoryId", categoryId);
         }
-        queryHandler.order("bean.id desc");
         return delete(queryHandler);
     }
 
