@@ -107,20 +107,20 @@ mysql ip/端口 : mysql-cms/3306 ; 用户名/密码 : publiccms/password!@#
 
 ## Public CMS架构图
 
-![](doc/structure.png)
+![](doc/images/structure.png)
 
 ## Public CMS管理后台 - 中文
 
-![](doc/management.png)
+![](doc/images/management.png)
 
 ## Public CMS管理後臺 - 繁體
 
-![](doc/management_traditional_cn.png)
+![](doc/images/management_traditional_cn.png)
 
 ## Public CMS Management - English
 
-![](doc/management_en.png)
+![](doc/images/management_en.png)
 
 ## Public CMS 管理バックグラウンド - 日本語
 
-![](doc/management_ja.png)
+![](doc/images/management_ja.png)
