@@ -13,9 +13,9 @@
 <#elseif editorExtendFieldTypes?seq_contains(extend.inputType)>
 <@getAction r'${('+prefix+extend.id.code+r'?no_esc)!}'/>
 <#elseif 'category'=extend.inputType>
-<@getAction r'<@cms.category id='+prefix+extend.id.code+r'><a href="${ojbect.url}">${object.name}</a></@cms.category>'/>
+<@getAction r'<@cms.category id='+prefix+extend.id.code+r'><a href="${object.url}">${object.name}</a></@cms.category>'/>
 <#elseif 'content'=extend.inputType>
-<@getAction r'<@cms.content id='+prefix+extend.id.code+r'><a href="${ojbect.url}">${object.title}</a></@cms.content>'/>
+<@getAction r'<@cms.content id='+prefix+extend.id.code+r'><a href="${object.url}">${object.title}</a></@cms.content>'/>
 <#elseif 'user'=extend.inputType>
 <@getAction r'<@sys.user id='+prefix+extend.id.code+r'>${object.nickname}</@sys.user>'/>
 <#elseif 'tag'=extend.inputType>
