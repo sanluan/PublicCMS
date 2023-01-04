@@ -104,7 +104,7 @@
         <!-- https://mvnrepository.com/artifact/net.sf.cssbox/pdf2dom -->
         <version.pdf2dom>2.0.3</version.pdf2dom>
         <!-- https://mvnrepository.com/artifact/com.github.bgalek.security.svg/safe-svg -->
-        <version.safeSvg>1.1.6</version.safeSvg>
+        <version.safeSvg>1.1.7</version.safeSvg>
         <!-- http://mvnrepository.com/artifact/eu.bitwalker/UserAgentUtils -->
         <version.userAgentUtils>1.21</version.userAgentUtils>
         <!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
