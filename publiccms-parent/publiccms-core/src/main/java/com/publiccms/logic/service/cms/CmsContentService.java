@@ -171,23 +171,23 @@ public class CmsContentService extends BaseService<CmsContent> {
     public List<CmsContent> getListByQuoteId(short siteId, Long quoteId) {
         return dao.getListByQuoteId(siteId, quoteId);
     }
-    
+
     public List<CmsContent> getListByTopId(short siteId, Long topId) {
         return dao.getListByTopId(siteId, topId);
     }
 
-    public CmsContent saveTagAndAttribute(short siteId, Long userId, Long id, CmsContentParameters contentParameters,
+    public CmsContent saveTagAndAttribute(SysSite site, Long userId, Long id, CmsContentParameters contentParameters,
             CmsModel cmsModel, Integer extendId, CmsContentAttribute attribute) {
         CmsContent entity = getEntity(id);
         if (null != entity) {
-            Set<Serializable> tagIds = tagService.update(siteId, contentParameters.getTags());
+            Set<Serializable> tagIds = tagService.update(site.getId(), contentParameters.getTags());
             entity.setTagIds(collectionToDelimitedString(tagIds, CommonConstants.BLANK_SPACE));
             if (entity.isHasImages() || entity.isHasFiles()) {
                 contentFileService.update(entity.getId(), userId, entity.isHasFiles() ? contentParameters.getFiles() : null,
                         entity.isHasImages() ? contentParameters.getImages() : null);// 更新保存图集，附件
             }
             if (entity.isHasProducts()) {
-                contentProductService.update(siteId, entity.getId(), userId, contentParameters.getProducts());
+                contentProductService.update(site.getId(), entity.getId(), userId, contentParameters.getProducts());
             }
 
             List<SysExtendField> modelExtendList = cmsModel.getExtendList();
@@ -204,12 +204,12 @@ public class CmsContentService extends BaseService<CmsContent> {
                 }
             }
 
-            dealAttribute(entity, modelExtendList, categoryExtendList, map, cmsModel,
+            dealAttribute(entity,site, modelExtendList, categoryExtendList, map, cmsModel,
                     entity.isHasFiles() ? contentParameters.getFiles() : null,
                     entity.isHasImages() ? contentParameters.getImages() : null,
                     entity.isHasProducts() ? contentParameters.getProducts() : null, attribute);
 
-            saveEditorHistory(attributeService.getEntity(entity.getId()), attribute, siteId, entity.getId(), userId,
+            saveEditorHistory(attributeService.getEntity(entity.getId()), attribute, site.getId(), entity.getId(), userId,
                     modelExtendList, categoryExtendList, map);// 保存编辑器字段历史记录
 
             attributeService.updateAttribute(entity.getId(), attribute);// 更新保存扩展字段，文本字段
@@ -286,7 +286,7 @@ public class CmsContentService extends BaseService<CmsContent> {
         dao.batchWorkContent(siteId, categoryId, modelId, worker, batchSize);
     }
 
-    public void rebuildSearchText(short siteId, CmsModel cmsModel, List<SysExtendField> categoryExtendList,
+    public void rebuildSearchText(SysSite site, CmsModel cmsModel, List<SysExtendField> categoryExtendList,
             List<CmsContent> list) {
         for (CmsContent entity : list) {
             CmsContentAttribute attribute = attributeService.getEntity(entity.getId());
@@ -298,23 +298,23 @@ public class CmsContentService extends BaseService<CmsContent> {
             List<CmsContentFile> images = null;
             List<CmsContentProduct> products = null;
             if (entity.isHasFiles()) {
-                files = contentFileService.getList(siteId, CmsFileUtils.OTHER_FILETYPES);
+                files = contentFileService.getList(site.getId(), CmsFileUtils.OTHER_FILETYPES);
             }
             if (entity.isHasImages()) {
-                images = contentFileService.getList(siteId, CmsFileUtils.IMAGE_FILETYPES);
+                images = contentFileService.getList(site.getId(), CmsFileUtils.IMAGE_FILETYPES);
             }
             if (entity.isHasProducts()) {
-                products = contentProductService.getList(siteId, entity.getId());
+                products = contentProductService.getList(site.getId(), entity.getId());
             }
-            dealAttribute(entity, modelExtendList, categoryExtendList, ExtendUtils.getExtendMap(attribute.getData()), cmsModel,
-                    files, images, products, attribute);
+            dealAttribute(entity, site, modelExtendList, categoryExtendList, ExtendUtils.getExtendMap(attribute.getData()),
+                    cmsModel, files, images, products, attribute);
             attributeService.updateAttribute(entity.getId(), attribute);
         }
     }
 
-    private void dealAttribute(CmsContent entity, List<SysExtendField> modelExtendList, List<SysExtendField> categoryExtendList,
-            Map<String, String> map, CmsModel cmsModel, List<CmsContentFile> files, List<CmsContentFile> images,
-            List<CmsContentProduct> products, CmsContentAttribute attribute) {
+    private void dealAttribute(CmsContent entity, SysSite site, List<SysExtendField> modelExtendList,
+            List<SysExtendField> categoryExtendList, Map<String, String> map, CmsModel cmsModel, List<CmsContentFile> files,
+            List<CmsContentFile> images, List<CmsContentProduct> products, CmsContentAttribute attribute) {
         StringBuilder searchTextBuilder = new StringBuilder();
         String text = HtmlUtils.removeHtmlTag(attribute.getText());
         if (null != text) {
@@ -333,8 +333,8 @@ public class CmsContentService extends BaseService<CmsContent> {
             Set<String> dictionaryValueList = new HashSet<>();
             Set<String> extendsFieldList = new HashSet<>();
             StringBuilder extendsTextBuilder = new StringBuilder();
-            dealExtend(modelExtendList, dictionaryValueList, extendsFieldList, map, extendsTextBuilder);
-            dealExtend(categoryExtendList, dictionaryValueList, extendsFieldList, map, extendsTextBuilder);
+            dealExtend(modelExtendList, dictionaryValueList, extendsFieldList, map, extendsTextBuilder, site);
+            dealExtend(categoryExtendList, dictionaryValueList, extendsFieldList, map, extendsTextBuilder, site);
             if (CommonUtils.notEmpty(dictionaryValueList)) {
                 attribute.setDictionaryValues(collectionToDelimitedString(dictionaryValueList, CommonConstants.BLANK_SPACE));
             } else {
@@ -398,7 +398,7 @@ public class CmsContentService extends BaseService<CmsContent> {
     }
 
     private static void dealExtend(List<SysExtendField> extendList, Set<String> dictionaryValueList, Set<String> extendsFieldList,
-            Map<String, String> map, StringBuilder searchTextBuilder) {
+            Map<String, String> map, StringBuilder searchTextBuilder, SysSite site) {
         if (CommonUtils.notEmpty(extendList)) {
             for (SysExtendField extendField : extendList) {
                 if (extendField.isSearchable()) {
@@ -420,7 +420,7 @@ public class CmsContentService extends BaseService<CmsContent> {
                         String value = map.get(extendField.getId().getCode());
                         if (null != value) {
                             if (ArrayUtils.contains(Config.INPUT_TYPE_EDITORS, extendField.getInputType())) {
-                                map.put(extendField.getId().getCode(), HtmlUtils.cleanUnsafeHtml(value));
+                                map.put(extendField.getId().getCode(), HtmlUtils.cleanUnsafeHtml(value, site.getSitePath()));
                                 value = HtmlUtils.removeHtmlTag(value);
                             }
                             if (CommonUtils.notEmpty(value)) {

@@ -161,7 +161,7 @@ public class CmsContentAdminController {
             return CommonConstants.TEMPLATE_ERROR;
         }
         Date now = CommonUtils.getDate();
-        initContent(entity, cmsModel, draft, checked, attribute, true, now);
+        initContent(entity, site, cmsModel, draft, checked, attribute, true, now);
         CmsContent parent = service.getEntity(entity.getParentId());
         if (null != parent) {
             entity.setQuoteContentId(null == parent.getParentId() ? parent.getId() : parent.getQuoteContentId());
@@ -189,7 +189,7 @@ public class CmsContentAdminController {
                     LogLoginService.CHANNEL_WEB_MANAGER, "save.content", RequestUtils.getIpAddress(request), now,
                     JsonUtils.getString(new Object[] { entity, attribute, contentParameters })));
         }
-        entity = service.saveTagAndAttribute(site.getId(), admin.getId(), entity.getId(), contentParameters, cmsModel,
+        entity = service.saveTagAndAttribute(site, admin.getId(), entity.getId(), contentParameters, cmsModel,
                 category.getExtendId(), attribute);
         if (null != checked && checked) {
             entity = service.check(site.getId(), admin, entity.getId());
@@ -226,7 +226,7 @@ public class CmsContentAdminController {
         return CommonConstants.TEMPLATE_DONE;
     }
 
-    public static void initContent(CmsContent entity, CmsModel cmsModel, Boolean draft, Boolean checked,
+    public static void initContent(CmsContent entity, SysSite site, CmsModel cmsModel, Boolean draft, Boolean checked,
             CmsContentAttribute attribute, boolean base64, Date now) {
         entity.setHasFiles(cmsModel.isHasFiles());
         entity.setHasImages(cmsModel.isHasImages());
@@ -242,7 +242,8 @@ public class CmsContentAdminController {
         }
         if (null != attribute.getText() && base64) {
             attribute.setText(HtmlUtils.cleanUnsafeHtml(
-                    new String(VerificationUtils.base64Decode(attribute.getText()), CommonConstants.DEFAULT_CHARSET)));
+                    new String(VerificationUtils.base64Decode(attribute.getText()), CommonConstants.DEFAULT_CHARSET),
+                    site.getSitePath()));
         }
     }
 

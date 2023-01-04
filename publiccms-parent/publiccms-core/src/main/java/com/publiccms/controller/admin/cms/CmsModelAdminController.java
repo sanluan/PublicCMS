@@ -238,7 +238,7 @@ public class CmsModelAdminController {
                         if (null != category.getExtendId()) {
                             categoryExtendList = extendFieldService.getList(category.getExtendId(), null, true);
                         }
-                        contentService.rebuildSearchText(site.getId(), entity, categoryExtendList, list);
+                        contentService.rebuildSearchText(site, entity, categoryExtendList, list);
                         log.info("rebuild search text for category : " + category.getName() + " batch " + i + " size : "
                                 + list.size());
                     }, PageHandler.MAX_PAGE_SIZE);
