@@ -14,6 +14,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.safety.Safelist;
 
 import com.publiccms.common.constants.Constants;
+import com.publiccms.common.document.CustomSafelist;
 
 /**
  * HtmlUtils
@@ -39,14 +40,15 @@ public class HtmlUtils {
      */
     public static final Pattern HTML_PATTERN = Pattern.compile("<[^>]+>");
 
-    public static final Safelist SAFELIST = Safelist.relaxed().addTags("figure", "section")
+    public static final Safelist SAFELIST = CustomSafelist.relaxed().addTags("figure", "iframe", "section")
             .addAttributes(":all", "class", "style").addAttributes("a", "name", "id", "target")
             .addAttributes("audio", "autoplay", "controls", "loop", "muted", "preload", "src")
+            .addAttributes("iframe", "src", "width", "height")
             .addAttributes("video", "autoplay", "controls", "data-setup", "height", "loop", "muted", "preload", "poster", "src",
                     "width")
             .addAttributes("source", "media", "sizes", "src", "srcset", "type")
             .addAttributes("track", "default", "kind", "label", "src", "srclang").addProtocols("a", "href", "#")
-            .removeProtocols("img", "src", "http", "https");
+            .addProtocols("img", "src", "data").addProtocols("iframe", "src", "http", "https").preserveRelativeLinks(true);
 
     /**
      * @param string
@@ -59,9 +61,9 @@ public class HtmlUtils {
         return string;
     }
 
-    public static String cleanUnsafeHtml(String string) {
+    public static String cleanUnsafeHtml(String string, String baseUri) {
         if (CommonUtils.notEmpty(string)) {
-            return Jsoup.clean(string, SAFELIST);
+            return Jsoup.clean(string, baseUri, SAFELIST);
         }
         return string;
     }

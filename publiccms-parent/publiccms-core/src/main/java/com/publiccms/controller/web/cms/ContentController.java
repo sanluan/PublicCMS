@@ -111,7 +111,7 @@ public class ContentController {
                 || ControllerUtils.errorNotEmpty("model", cmsModel, model)) {
             return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
         }
-        CmsContentAdminController.initContent(entity, cmsModel, draft, false, attribute, false, CommonUtils.getDate());
+        CmsContentAdminController.initContent(entity, site, cmsModel, draft, false, attribute, false, CommonUtils.getDate());
         if (null != entity.getId()) {
             CmsContent oldEntity = service.getEntity(entity.getId());
             if (null != oldEntity && ControllerUtils.errorNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)
@@ -143,8 +143,8 @@ public class ContentController {
                     "save.content", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
         lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_CONTRIBUTE, String.valueOf(user.getId()), null, true);
-        service.saveTagAndAttribute(site.getId(), user.getId(), entity.getId(), contentParameters, cmsModel,
-                category.getExtendId(), attribute);
+        service.saveTagAndAttribute(site, user.getId(), entity.getId(), contentParameters, cmsModel, category.getExtendId(),
+                attribute);
         model.addAttribute("id", entity.getId());
         return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
     }
