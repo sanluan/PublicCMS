@@ -232,6 +232,7 @@
                 content.find("[layoutH]").layoutH(content);
             }
             $(window).trigger(JUI.eventType.resizeGrid);
+            $(window).trigger(JUI.eventType.resizeChart);
         },
         close: function(dialog) {
             if (typeof dialog == 'string' ) {
@@ -317,6 +318,7 @@
             content.css("width", (width -10) + "px");
             content.find("[layoutH]").layoutH(content);
             $(window).trigger(JUI.eventType.resizeGrid);
+            $(window).trigger(JUI.eventType.resizeChart);
         }
     };
 } )(jQuery);

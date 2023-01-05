@@ -232,7 +232,7 @@ var navTab = {
     } ,
     _switchTab: function(iTabIndex) {
         var $tab = this._getTabs().removeClass("selected").eq(iTabIndex).addClass("selected");
-        this._getPanels().css("visibility","hidden").height(0).eq(iTabIndex).css("visibility","visible").css('height','auto');
+        this._getPanels().hide().eq(iTabIndex).show();
         this._getMoreLi().removeClass("selected").eq(iTabIndex).addClass("selected");
         this._currentIndex = iTabIndex;
         this._scrollCurrent();
@@ -318,6 +318,8 @@ var navTab = {
                     $pagerForm.submit();
                 }
             }
+        } else {
+            this.getCurrentPanel().trigger(JUI.eventType.resizeChart);
         }
     } ,
     reloadFlag: function(tabid,value) {

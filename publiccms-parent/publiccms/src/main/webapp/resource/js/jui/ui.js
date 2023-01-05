@@ -11,6 +11,7 @@ function initEnv() {
     $(window).resize(function() {
         initLayout();
         $(this).trigger(JUI.eventType.resizeGrid);
+        $(this).trigger(JUI.eventType.resizeChart);
     });
     var ajaxbg = $("#background,#progressBar");
     ajaxbg.hide();

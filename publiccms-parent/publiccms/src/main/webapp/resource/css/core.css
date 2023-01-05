@@ -255,7 +255,7 @@ a.button,button.button{border-width:1px;border-style:solid;-moz-box-shadow:0px 0
 .searchBar ul.searchContent:before{font-size:18px;position:absolute;right:0;top:0;line-height:32px;width:30px;text-align:right;}
 .searchBar ul.searchContent li{float:left;white-space:nowrap;display:block;overflow:hidden;height:28px;padding:2px 0;}
 .searchBar ul.searchContentHover,.searchBar ul.searchContentHover li{height:auto;}
-.searchBar label{float:left;padding:0 15px;line-height:28px;}
+.searchBar label{float:left;padding:0 10px;line-height:30px;}
 .searchBar .subBar{height:30px;position:absolute;top:11px;right:40px;}
 .searchBar .subBar ul{float:right;}
 .searchBar .subBar li{float:left;margin-left:5px;}

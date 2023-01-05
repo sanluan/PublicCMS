@@ -390,6 +390,7 @@
                             bar.hide();
                             bar.css("bottom","auto");
                             $(window).trigger(JUI.eventType.resizeGrid);
+                            $(window).trigger(JUI.eventType.resizeChart);
                         });
                     });
                     $(sbar).click(function() {
@@ -435,6 +436,7 @@
                         });
                         $(sbar).off('click');
                         $(window).trigger(JUI.eventType.resizeGrid);
+                        $(window).trigger(JUI.eventType.resizeChart);
                     });
                 }
                 return false;

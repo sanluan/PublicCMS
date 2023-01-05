@@ -73,7 +73,7 @@
     <fieldset>
         <legend><@t.page 'comment.management'/></legend>
         <div class="unit">
-            <div id="comment" class="chart"></div>
+            <div id="comment" class="chart" data-id="commentChart"></div>
             <ul class="clearfix">
                 <li>
                     <div class="card">
@@ -90,7 +90,7 @@
                     <div class="card">
                         <i class="icon-comments icon-large icon"></i>
                         <p><@t.page 'content.comments'/></p>
-                        <a href="cmsComment/list.html?status=1&status=2" icon="<i class='icon-comment icon-large'></i>" title="<@t.page 'comment.management'/>" target="navTab" rel="cmsComment/list">
+                        <a href="cmsComment/list.html" icon="<i class='icon-comment icon-large'></i>" title="<@t.page 'comment.management'/>" target="navTab" rel="cmsComment/list">
                             <@cms.commentList advanced=true status='1,2' pageSize=0>
                                 <h3>${page.totalCount}</h3>
                             </@cms.commentList>
@@ -103,7 +103,83 @@
 var commentChart=echarts.init(document.getElementById('comment'));
 commentChart.setOption({
     title: {
-        text: '<@t.page 'comment'/>',
+        text: "<@t.page 'comment'/>",
+        x:'center'
+    },
+    tooltip : {
+        trigger: 'axis'
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: [<#list 7..0 as a>"${(.now?long-a*86400000)?number_to_date?string('MM-dd')}"<#sep>,</#list>]
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [
+    {
+        name:'<@t.page 'operate'/>',
+        type:'line',
+        data:[<#list 7..0 as a><@log.operateList operate='save.cmsComment' startCreateDate=(.now?long-a*86400000)?number_to_date?string endCreateDate=(.now?long-(a-1)*86400000)?number_to_date?string pageSize=0>${page.totalCount}</@log.operateList><#sep>,</#list>],
+        areaStyle: {}
+    }]
+});
+</script>
+   </fieldset>
+</@sys.authorized>
+<@sys.authorized roleIds=admin.roles url='tradeOrder/list'>
+    <fieldset>
+        <legend><@t.page 'order'/></legend>
+        <div class="unit">
+            <div id="order" class="chart" data-id="orderChart"></div>
+            <ul class="clearfix">
+                <li>
+                    <div class="card">
+                        <i class="icon-barcode icon-large icon"></i>
+                        <p><@t.page 'order.toprocess'/></p>
+                        <a href="tradeOrder/list.html?status=2&processed=false" icon="<i class='icon-barcode icon-large'></i>" title="<@t.page 'order'/>" target="navTab" rel="tradeOrder/list">
+                            <@trade.orderList processed=false status=2 pageSize=0>
+                                <h3>${page.totalCount}</h3>
+                            </@trade.orderList>
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <div class="card">
+                        <i class="icon-credit-card icon-large icon"></i>
+                        <p><@t.page 'status.accountHistory.2'/></p>
+                        <a href="tradeAccountHistory/list.html?status=2&startCreateDate=${(.now?long-7*86400000)?number_to_date?string}" icon="<i class='icon-credit-card icon-large'></i>" title="<@t.page 'account.history'/>" target="navTab" rel="tradeAccountHistory/list">
+                            <@trade.accountHistoryList status=2 startCreateDate=(.now?long-7*86400000)?number_to_date?string pageSize=0>
+                                <h3>${page.totalCount}</h3>
+                            </@trade.accountHistoryList>
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <div class="card">
+                        <i class="icon-signout icon-large icon"></i>
+                        <p><@t.page 'status.refund.0'/></p>
+                        <a href="tradeRefund/list.html?status=0" icon="<i class='icon-signout icon-large'></i>" title="<@t.page 'refund'/>" target="navTab" rel="tradeRefund/list">
+                            <@trade.refundList status=0 pageSize=0>
+                                <h3>${page.totalCount}</h3>
+                            </@trade.refundList>
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+<script>
+var orderChart=echarts.init(document.getElementById('order'));
+orderChart.setOption({
+    title: {
+        text: '<@t.page 'order'/>',
         x:'center'
     },
     tooltip : {
@@ -124,21 +200,28 @@ commentChart.setOption({
         type: 'value'
     },
     series: [
-    {
-        name:'<@t.page 'operate'/>',
-        type:'line',
-        data:[<#list 7..0 as a><@log.operateList operate='save.cmsComment' startCreateDate=(.now?long-a*86400000)?number_to_date?string endCreateDate=(.now?long-(a-1)*86400000)?number_to_date?string>${page.totalCount}</@log.operateList><#sep>,</#list>],
-        areaStyle: {}
-    }]
+       {
+           name:"<@t.page 'status.order.2'/>",
+           type:'line',
+           data:[<#list 7..0 as a><@trade.orderList status=2 startCreateDate=(.now?long-a*86400000)?number_to_date?string endCreateDate=(.now?long-(a-1)*86400000)?number_to_date?string pageSize=0>${page.totalCount}</@trade.orderList><#sep>,</#list>],
+           areaStyle: {}
+       },
+       {
+            name:"<@t.page 'status.order.4'/>",
+            type:'line',
+            data:[<#list 7..0 as a><@trade.orderList status=4 startCreateDate=(.now?long-a*86400000)?number_to_date?string endCreateDate=(.now?long-(a-1)*86400000)?number_to_date?string pageSize=0>${page.totalCount}</@trade.orderList><#sep>,</#list>],
+            areaStyle: {}
+       }
+    ]
 });
 </script>
-   </fieldset>
+    </fieldset>
 </@sys.authorized>
 <@sys.authorized roleIds=admin.roles url='report/user'>
     <fieldset>
         <legend><@t.page 'report.user'/></legend>
         <div class="unit">
-            <div id="visit" class="chart"></div>
+            <div id="visit" class="chart" data-id="visitChart"></div>
             <ul>
                 <li>
                     <div class="card">
@@ -216,7 +299,7 @@ visitChart.setOption({
         type: 'value'
     },
     series: [
-    {
+       {
            name:'PV',
            type:'line',
            data:[<#list page.list?reverse as a>${a.pv!}<#sep>,</#list>],

@@ -3,19 +3,16 @@
     <fieldset>
         <legend><@t.page 'report.cms'/></legend>
         <div class="unit clearfix">
-            <div id="memory_count" style="width:50%;min-width:400px;float:left;"></div>
-            <div id="disk" style="width:50%;min-width:400px;float:left;"></div>
+            <div id="memory_count" class="chart" data-id="memoryChart" style="width:50%;"></div>
+            <div id="disk" class="chart" data-id="diskChart" style="width:50%;"></div>
         </div>
         <div class="unit">
-            <div id="memory" style="min-width:400px;min-height:300px;"></div>
+            <div id="memory" class="chart" style="width:100%;height:300px;"></div>
         </div>
     </fieldset>
 </div>
 <@tools.disk>
 <script>
-document.getElementById('memory_count').style.height=document.getElementById('memory_count').offsetWidth*0.4+'px';
-document.getElementById('disk').style.height=document.getElementById('disk').offsetWidth*0.4+'px';
-document.getElementById('memory').style.height=document.getElementById('memory').offsetWidth*0.3+'px';
 var memoryChart={
     chart:echarts.init(document.getElementById('memory')),
     countChart:echarts.init(document.getElementById('memory_count')),
@@ -32,7 +29,11 @@ var memoryChart={
         }  
         value = Math.round(number*100)/100;  
         return value;  
-    }  
+    },
+    resize:function(){
+        this.chart.resize();
+        this.countChart.resize();
+    }
 };
 memoryChart.chart.setOption({
     title: {
@@ -107,7 +108,8 @@ memoryChart.countChart.setOption({
     ]
 });
 
-echarts.init(document.getElementById("disk")).setOption({
+var diskChart = echarts.init(document.getElementById("disk"));
+diskChart.setOption({
     title : {
         text: "<@t.page 'report.disk'/>:<@t.fileSize totalSpace/>",
         subtext: "${(rootPath?js_string)!}",
