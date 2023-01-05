@@ -44,6 +44,7 @@ function initEnv() {
                 var tabid = hash.substring(hash.indexOf('_') + 1);
                 if(tabid ) {
                     callback = function(){
+                        $('#menu a[rel='+escapeJquery(tabid)+']').closest('.accordionContent').prev().click();
                         $('#menu a[rel='+escapeJquery(tabid)+']').click();
                     }
                 }
