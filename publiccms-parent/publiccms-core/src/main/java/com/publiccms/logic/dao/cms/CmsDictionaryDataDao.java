@@ -35,6 +35,7 @@ public class CmsDictionaryDataDao extends BaseDao<CmsDictionaryData> {
         }else {
             queryHandler.condition("bean.parentValue is null");
         }
+        queryHandler.order("bean.sort asc");
         queryHandler.order("bean.id.value asc");
         return (List<CmsDictionaryData>) getList(queryHandler);
     }
@@ -49,6 +50,7 @@ public class CmsDictionaryDataDao extends BaseDao<CmsDictionaryData> {
         QueryHandler queryHandler = getQueryHandler("from CmsDictionaryData bean");
         queryHandler.condition("bean.id.siteId = :siteId").setParameter("siteId", siteId);
         queryHandler.condition("bean.id.dictionaryId = :dictionaryId").setParameter("dictionaryId", dictionaryId);
+        queryHandler.order("bean.sort asc");
         queryHandler.order("bean.id.value asc");
         return (List<CmsDictionaryData>) getList(queryHandler);
     }

@@ -37,13 +37,20 @@ public class CmsDictionaryData implements java.io.Serializable {
      */
     @GeneratorColumn(title = "文字")
     private String text;
+    /**
+     * sort<p>
+     * 排序
+     */
+    @GeneratorColumn(title = "排序")
+    private int sort;
 
     public CmsDictionaryData() {
     }
 
-    public CmsDictionaryData(CmsDictionaryDataId id, String text) {
+    public CmsDictionaryData(CmsDictionaryDataId id, String text, int sort) {
         this.id = id;
         this.text = text;
+        this.sort = sort;
     }
 
     @EmbeddedId
@@ -78,4 +85,12 @@ public class CmsDictionaryData implements java.io.Serializable {
         this.text = text;
     }
 
+    @Column(name = "sort", nullable = false)
+    public int getSort() {
+        return this.sort;
+    }
+
+    public void setSort(int sort) {
+        this.sort = sort;
+    }
 }

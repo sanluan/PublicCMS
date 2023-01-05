@@ -45,13 +45,15 @@
                             ${a.name!}<span class="close">X</span>
                             <span class="ctl-label">
                                 <input data-name="name" type="text" class="required" value="<@cms.category id=categoryId>${object.name}-</@cms.category>${a.name}"/>
-                                <#if !a.clone>
-                                <@tools.placeMetadata path=a.place>
-                                    <a class="button" href="cmsPlace/metadata.html?path=${a.place?url}" target="ajax" rel="diyConfigBox">${(object.alias)!a.place}</a>
-                                    <#if 0 lt ((object.size)!0)>
-                                       <a class="button" href="cmsPlace/dataList.html?path=${a.place?url}" target="navTab" rel="cmsPlace/dataList" title="<@t.page 'place_data'/>:${(object.alias)!}"><@t.page 'place_data'/>(${object.size})</a>
-                                    </#if>
-                                </@tools.placeMetadata>
+                                <#if a.place?has_content && !a.clone>
+                                    <@tools.placeMetadata path=a.place>
+                                        <#if (object.metadataExtendList)?has_content>
+                                            <a class="button" href="cmsPlace/metadata.html?path=${a.place?url}" target="ajax" rel="diyConfigBox">${(object.alias)!a.place}</a>
+                                        </#if>
+                                        <#if 0 lt ((object.size)!0)>
+                                           <a class="button" href="cmsPlace/dataList.html?path=${a.place?url}" target="navTab" rel="cmsPlace/dataList" title="<@t.page 'place_data'/>:${(object.alias)!}"><@t.page 'place_data'/>(${object.size})</a>
+                                        </#if>
+                                    </@tools.placeMetadata>
                                 </#if>
                             </span>
                             <#if a.cover?has_content>
@@ -85,9 +87,11 @@
                                                                     ${moduleData.name}<span class="close">X</span>
                                                                     <span class="ctl-label">
                                                                         <@tools.placeMetadata path=moduleData.place>
-                                                                            <a class="button" href="cmsPlace/metadata.html?path=${moduleData.place?url}" target="ajax" rel="diyConfigBox">${(object.alias)!moduleData.place}</a>
+                                                                            <#if (object.metadataExtendList)?has_content>
+                                                                                <a class="button" href="cmsPlace/metadata.html?path=${moduleData.place?url}" target="ajax" rel="diyConfigBox">${(object.alias)!moduleData.place}</a>
+                                                                            </#if>
                                                                             <#if 0 lt ((object.size)!0)>
-                                                                             <a class="button" href="cmsPlace/dataList.html?path=${moduleData.place?url}" target="navTab" rel="cmsPlace/dataList" title="<@t.page 'place_data'/>:${(object.alias)!}"><@t.page 'place_data'/>(${object.size})</a>
+                                                                                <a class="button" href="cmsPlace/dataList.html?path=${moduleData.place?url}" target="navTab" rel="cmsPlace/dataList" title="<@t.page 'place_data'/>:${(object.alias)!}"><@t.page 'place_data'/>(${object.size})</a>
                                                                             </#if>
                                                                         </@tools.placeMetadata>
                                                                         <input data-name="name" type="hidden" value="${moduleData.name}"/>
@@ -97,7 +101,7 @@
                                                                     <@tools.diyMetadata itemType="module" itemId=moduleData.id;module>
                                                                         <#if module.cover?has_content>
                                                                             <div class="ctl-label">
-                                                                                <img src="${(getUrl(module.cover))!}"/>
+                                                                                <img src="${(getUrl(module.cover))!}" alt="${moduleData.name}"/>
                                                                             </div>
                                                                         </#if>
                                                                     </@tools.diyMetadata>

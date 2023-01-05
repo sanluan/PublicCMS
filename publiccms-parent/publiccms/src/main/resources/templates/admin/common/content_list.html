@@ -102,9 +102,6 @@
         </@cms.modelList>
             <li class="line">line</li>
 </#if>
-        <#if authorizedMap['cmsContent/import']>
-            <li><a href="cmsContent/import.html" target="dialog" mask="true" width="500" height="250"><i class="icon-upload-alt icon-large"></i><@t.page 'import'/></a></li>
-        </#if>
         <#if authorizedMap['cmsContent/uncheck']>
             <li><a href="cmsContent/uncheck?_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.batch_uncheck'/>" target="selectedTodo" rel="ids"><i class="icon-check icon-large"></i><@t.page 'button.batch_uncheck'/></a></li>
         </#if>
@@ -120,6 +117,9 @@
         <#if authorizedMap['cmsContent/delete']>
             <li class="line">line</li>
             <li><a href="cmsContent/delete?_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i><@t.page 'button.batch_delete'/></a></li>
+        </#if>
+        <#if authorizedMap['cmsContent/import']>
+            <li><a href="cmsContent/import.html" target="dialog" mask="true" width="500" height="250"><i class="icon-upload-alt icon-large"></i><@t.page 'import'/></a></li>
         </#if>
         </ul>
     </div>

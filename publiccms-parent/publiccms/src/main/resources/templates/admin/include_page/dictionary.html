@@ -34,7 +34,7 @@
         </div>
     <#else>
         <#list 0..childDepth as i>
-            <select name="${inputName}" <#if 'customform'!=type>class="combox<#if required> required</#if>" ref="${inputName}" index="${i+1}"<#if i lt childDepth> refUrl="common/dictionarySuggest.html?dictionaryId=${dictionaryId}&parentValue={value}"</#if></#if>>
+            <select name="${inputName}" <#if 'customform'!=type>class="combox<#if required> required<#if i gt 0> requiredIfNotEmpty</#if></#if>" ref="${inputName}" index="${i+1}"<#if i lt childDepth> refUrl="common/dictionarySuggest.html?dictionaryId=${dictionaryId}&parentValue={value}"</#if></#if>>
                 <option></option>
             <#if 0=i || parentValue?has_content>
             <@cms.dictionaryDataList dictionaryId=dictionaryId parentValue=parentValue>

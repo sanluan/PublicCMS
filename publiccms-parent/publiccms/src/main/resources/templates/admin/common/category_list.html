@@ -48,9 +48,6 @@
             </li>
             <li class="line">line</li>
 </#if>
-        <#if authorizedMap['cmsCategory/import']>
-            <li><a href="cmsCategory/import.html" target="dialog" mask="true" width="500" height="250"><i class="icon-upload-alt icon-large"></i><@t.page 'import'/></a></li>
-        </#if>
         <#if authorizedMap['cmsCategory/publish']>
             <li><a href="cmsCategory/publish?_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.batch_publish'/>" target="selectedTodo" rel="ids"><i class="icon-file-text-alt icon-large"></i><@t.page 'button.batch_publish'/></a></li>
         </#if>
@@ -67,6 +64,9 @@
         <#if authorizedMap['cmsCategory/rebuildChildIds']>
             <li class="line">line</li>
             <li><a href="cmsCategory/rebuildChildIds?_csrf=<@tools.csrfToken admin=true/>&ref=page" title="<@t.page 'confirm.do'/>" target="ajaxTodo"><i class="icon-refresh icon-large"></i><@t.page 'button.rebuild_childs'/></a></li>
+        </#if>
+        <#if authorizedMap['cmsCategory/import']>
+            <li><a href="cmsCategory/import.html" target="dialog" mask="true" width="500" height="250"><i class="icon-upload-alt icon-large"></i><@t.page 'import'/></a></li>
         </#if>
         </ul>
     </div>

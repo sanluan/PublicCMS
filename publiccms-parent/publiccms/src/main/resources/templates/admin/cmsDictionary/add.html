@@ -57,6 +57,7 @@
                         <tr>
                             <th type="text" name="dataList[#index#].id.value" size="20" fieldClass="required" fieldAttrs="{maxlength:50}"><@t.page 'value'/></th>
                             <th type="text" name="dataList[#index#].text" size="50" fieldClass="required" fieldAttrs="{maxlength:100}"><@t.page 'text'/></th>
+                            <th type="text" name="dataList[#index#].sort" fieldClass="required digits" defaultval="#index#" size="5"><@t.page 'sort'/></th>
                             <th type="del" width="100"><@t.page 'operate'/></th>
                         </tr>
                     </thead>
@@ -71,6 +72,9 @@
                                 </td>
                                 <td>
                                     <input type="text" name="dataList[${d?index}].text" value="${d.text}" size="50" class="required" maxlength="100"/>
+                                </td>
+                                <td>
+                                    <input type="text" name="dataList[${d?index}].sort" class="required digits" value="${d.sort!}" size="5" maxlength="5"/>
                                 </td>
                                 <td>
                                     <a href="javascript:void(0)" class="btnDel "><@t.page 'button.delete'/></a>

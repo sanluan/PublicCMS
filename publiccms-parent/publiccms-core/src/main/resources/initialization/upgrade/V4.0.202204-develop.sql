@@ -455,3 +455,6 @@ UPDATE `sys_module` SET `authorized_url`= 'tradePayment/refund,tradePayment/refu
 UPDATE `sys_module` SET `authorized_url`= 'sysTask/pause,sysTask/interrupt' WHERE `id` ='task_pause';
 UPDATE `sys_module` SET `authorized_url`= 'cmsWebFile/save,cmsWebFile/delete' WHERE `id` ='webfile_content';
 UPDATE `sys_module` SET `authorized_url`= 'visit/history',`url` = 'visit/view' WHERE `id` ='webfile_content';
+-- 2023-01-05 --
+ALTER TABLE `cms_dictionary_data`
+    ADD COLUMN `sort` int(11) NOT NULL default '0' COMMENT '顺序' AFTER `text`;
