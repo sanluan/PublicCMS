@@ -122,7 +122,7 @@ public class CmsModelAdminController {
                 modelMap.put(m.getId(), m);
             }
             modelComponent.saveModel(site.getId(), modelMap);
-            if (CommonUtils.notEmpty(entity.getParentId()) && entity.getParentId().equals(oldModel.getParentId())) {
+            if (CommonUtils.notEmpty(entity.getParentId()) && !entity.getId().equals(oldModel.getId())) {
                 List<CmsCategoryModel> categoryModelList = categoryModelService.getList(site.getId(), entity.getParentId(), null);
                 for (CmsCategoryModel categoryModel : categoryModelList) {
                     CmsCategoryModel cm = new CmsCategoryModel(

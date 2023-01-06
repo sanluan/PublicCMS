@@ -94,8 +94,23 @@ public class IpRegion implements java.io.Serializable {
     }
 
     public String getAddress() {
-        return (null != country ? (country) : "") + "," + (null != province ? (province) : "") + ","
-                + (null != city ? (city) : "");
+        StringBuilder sb = new StringBuilder();
+        if (null != country) {
+            sb.append(country);
+        }
+        if (null != province) {
+            if (sb.length() > 0) {
+                sb.append(",");
+            }
+            sb.append(province);
+        }
+        if (null != city) {
+            if (sb.length() > 0) {
+                sb.append(",");
+            }
+            sb.append(city);
+        }
+        return sb.toString();
     }
 
 }

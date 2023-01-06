@@ -29,10 +29,10 @@
     <@tools.diyMetadataList itemType="region">
         <#list list as a>
             <#if a.categoryType?has_content>
-                <li><a href="javascript:;" onclick="JUI.instances[$('textarea.code',navTab.getCurrentPanel()).data('id')].replaceSelection('${r'<div data-diy="region" data-diy-id="'+a.id+'"><@tools.includeRegion id="'+a.id+'" categoryId=category.id/></div>'} ${(a.name)?has_content?then('<#-- '+a.name+' -->','')?js_string}');$.pdialog.closeCurrent();return false;">${a.name}(<@t.page 'category_page'/>)</a></li>
+                <li><a href="javascript:;" onclick="JUI.instances[$('textarea.code',navTab.getCurrentPanel()).data('id')].replaceSelection('${r'<div data-diy="region" data-diy-id="'+a.id+'">'+r'\n    '+r'<@tools.includeRegion id="'+a.id+'" categoryId=category.id/> '+(a.name)?has_content?then('<#-- '+a.name+' -->','')+r'\n</div>'}');$.pdialog.closeCurrent();return false;">${a.name}(<@t.page 'category_page'/>)</a></li>
             <#else>
-                <li><a href="javascript:;" onclick="JUI.instances[$('textarea.code',navTab.getCurrentPanel()).data('id')].replaceSelection('${r'<div data-diy="region" data-diy-id="'+a.id+'"><@tools.includeRegion id="'+a.id+'"/></div>'} ${(a.name)?has_content?then('<#-- '+a.name+' -->','')?js_string}');$.pdialog.closeCurrent();return false;">${a.name}</a></li>
-            </#if> 
+                <li><a href="javascript:;" onclick="JUI.instances[$('textarea.code',navTab.getCurrentPanel()).data('id')].replaceSelection('${r'<div data-diy="region" data-diy-id="'+a.id+'">'+r'\n    '+r'<@tools.includeRegion id="'+a.id+'"/> '+(a.name)?has_content?then('<#-- '+a.name+' -->','')+r'\n</div>'}');$.pdialog.closeCurrent();return false;">${a.name}</a></li>
+            </#if>
         </#list>
     </@tools.diyMetadataList>
             </ul>

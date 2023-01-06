@@ -21,10 +21,10 @@
                 <dt><@t.page 'region'/>:</dt></dt>
                 <dd>
                     <select name="region" class="combox">
-                        <option><@t.page 'unrestricted'/></option>
+                        <option value=""><@t.page 'unrestricted'/></option>
                  <@tools.diyMetadataList itemType="region">
                     <#list list as r>
-                        <option value="${(r.id)!}"<#if a.region?has_content&&a.region=r.id> selected="selected"</#if>>${r.name!}</option>
+                        <option value="${(r.id)!}"<#if (a.region)?has_content&&a.region=r.id> selected="selected"</#if>>${r.name!}</option>
                     </#list>
                 </@tools.diyMetadataList>
                     </select>
