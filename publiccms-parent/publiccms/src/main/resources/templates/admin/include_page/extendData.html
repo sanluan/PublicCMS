@@ -1,20 +1,20 @@
 <#include "dictionary.html"/>
 <#macro input name extend index value='' type='form' safe=true itemType='' itemId=''>
     <#local inputName=name+'['+index+'].value'/>
-    <input name="${name}[${index}].name" type="hidden" value="${extend.id.code}"/>
+        <input name="${name}[${index}].name" type="hidden" value="${extend.id.code}"/>
     <#switch extend.inputType>
         <#case 'number'>
             <#if 'view'=type>
                 ${(value)!}
             <#else>
-            <input name="${inputName}" <#if 'customform'!=type>class="number<#if extend.required> required</#if>" </#if>type="number"<#if extend.maxlength?has_content> maxlength="${extend.maxlength}"</#if> value="${(value)!}"/>
+        <input name="${inputName}" <#if 'customform'!=type>class="number<#if extend.required> required</#if>" </#if>type="number"<#if extend.maxlength?has_content> maxlength="${extend.maxlength}"</#if> value="${(value)!}"/>
             </#if>
             <#break>
         <#case 'file'>
             <#if 'view'=type>
                 <a href="${getUrl(value)!}" target="_blank">${(value)!}</a>
             <#else>
-                <input name="${inputName}" <#if 'customform'!=type>class="<#if extend.required>required</#if>" type="text" maxlength="300" size="50" <#else>type="file" </#if>value="${(value)!}"/>
+        <input name="${inputName}" <#if 'customform'!=type>class="<#if extend.required>required</#if>" type="text" maxlength="300" size="50" <#else>type="file" </#if>value="${(value)!}"/>
                 <#if 'customform'!=type>
                     <a class="btnAttach" href="common/upload.html?field=value" lookupGroup="${name}[${index}]" width="1000" height="600"><@t.page 'attach'/></a>
                     <a class="view icon-eye-open" ref="${inputName}" data-prefix="${site.sitePath}" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
@@ -27,7 +27,7 @@
                 <br/>
                 ${(value)!}
             <#else>
-                <input name="${inputName}" size="50" <#if 'customform'!=type>class="<#if extend.required>required</#if>" type="text" maxlength="300" size="50" <#else>type="file" accept="image/*" </#if>value="${(value)!}"/>
+        <input name="${inputName}" size="50" <#if 'customform'!=type>class="<#if extend.required>required</#if>" type="text" maxlength="300" size="50" <#else>type="file" accept="image/*" </#if>value="${(value)!}"/>
                 <#if 'customform'!=type>
                     <a class="btnAttach" href="common/upload.html?field=value&fileTypes=image&width=${extend.width!}&height=${extend.height!}" lookupGroup="${name}[${index}]" width="1000" height="600"><@t.page 'image'/></a>
                     <a class="view icon-eye-open" ref="${inputName}" data-prefix="${site.sitePath}" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
@@ -45,7 +45,7 @@
                 <br/>
                 ${(value)!}
             <#else>
-                <input name="${inputName}" <#if 'customform'!=type>class="<#if extend.required>required</#if>" type="text" maxlength="300" size="50" <#else>type="file" accept="video/*"</#if>value="${(value)!}"/>
+        <input name="${inputName}" <#if 'customform'!=type>class="<#if extend.required>required</#if>" type="text" maxlength="300" size="50" <#else>type="file" accept="video/*"</#if>value="${(value)!}"/>
                 <#if 'customform'!=type>
                     <a class="btnAttach" href="common/upload.html?field=value&fileTypes=video" lookupGroup="${name}[${index}]" width="1000" height="600"><@t.page 'video'/></a>
                     <a class="view icon-eye-open" ref="${inputName}" data-prefix="${site.sitePath}" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
@@ -56,14 +56,14 @@
             <#if 'view'=type>
                 ${(value)!}
             <#else>
-                <input name="${inputName}"<#if extend.maxlength?has_content> size="${extend.maxlength}" maxlength="${extend.maxlength}"<#else> size="30"</#if> <#if 'customform'!=type>class="<#if extend.required> required</#if>" </#if>type="password" value="${(value)!}"/>
+        <input name="${inputName}"<#if extend.maxlength?has_content> size="${extend.maxlength}" maxlength="${extend.maxlength}"<#else> size="30"</#if> <#if 'customform'!=type>class="<#if extend.required> required</#if>" </#if>type="password" value="${(value)!}"/>
             </#if>
             <#break>
         <#case 'textarea'>
             <#if 'view'=type>
                 <pre>${(value)!}</pre>
             <#else>
-                <textarea name="${inputName}"<#if extend.maxlength?has_content> maxlength="${extend.maxlength}"</#if> <#if 'customform'!=type>class="<#if extend.required>required</#if>" </#if>cols="80" rows="4">${(value)!}</textarea>
+        <textarea name="${inputName}"<#if extend.maxlength?has_content> maxlength="${extend.maxlength}"</#if> <#if 'customform'!=type>class="<#if extend.required>required</#if>" </#if>cols="80" rows="4">${(value)!}</textarea>
             </#if>
             <#break>
         <#case 'editor'>
@@ -73,13 +73,15 @@
             <#if 'view'=type>
                 <#if safe>${(value?no_esc)!}<#else>${value!}</#if>
             <#else>
-                <div>
-                    <a class="button" href="common/import.html?fieldName=extend.${extend.id.code}&field=value" lookupGroup="${name}[${index}]" width="500" height="300"><@t.page 'import_doc'/></a>
-                    <#if itemType?has_content && itemId?has_content>
-                        <a class="button" href="cmsEditorHistory/lookup.html?itemType=${itemType}&itemId=${itemId?url}&fieldName=${extend.id.code}" lookupGroup="${name}[${index}]"><@t.page 'history'/></a>
-                    </#if>
-                </div>
-                <textarea name="${inputName}"<#if extend.maxlength?has_content> maxlength="${extend.maxlength}"</#if> <#if 'customform'!=type>class="editor<#if extend.required> required</#if>" editorType="${extend.inputType}" </#if>cols="80" rows="20">${(value)!}</textarea>
+                <#if 'customform'!=type>
+                    <div>
+                        <a class="button" href="common/import.html?fieldName=extend.${extend.id.code}&field=value" lookupGroup="${name}[${index}]" width="500" height="300"><@t.page 'import_doc'/></a>
+                        <#if itemType?has_content && itemId?has_content>
+                            <a class="button" href="cmsEditorHistory/lookup.html?itemType=${itemType}&itemId=${itemId?url}&fieldName=${extend.id.code}" lookupGroup="${name}[${index}]"><@t.page 'history'/></a>
+                        </#if>
+                    </div>
+                </#if>
+        <textarea name="${inputName}"<#if extend.maxlength?has_content> maxlength="${extend.maxlength}"</#if> <#if 'customform'!=type>class="editor<#if extend.required> required</#if>" editorType="${extend.inputType}" </#if>cols="80" rows="20">${(value)!}</textarea>
             </#if>
             <#break>
         <#case 'template'>
@@ -94,10 +96,10 @@
             <#if 'view'=type>
                 <#if value?has_content>${('true'=value)?then(t.pageMessage('yes'),t.pageMessage('no'))}</#if>
             <#else>
-                <select<#if 'customform'!=type> class="combox<#if extend.required> required</#if>"</#if> name="${inputName}">
-                    <option value="true"${(value?has_content&&'true'=value)?then(' selected="true"','')?no_esc}><@t.page 'yes'/></option>
-                    <option value="false"${(!value?has_content||'false'=value)?then(' selected="true"','')?no_esc}><@t.page 'no'/></option>
-                </select>
+        <select<#if 'customform'!=type> class="combox<#if extend.required> required</#if>"</#if> name="${inputName}">
+            <option value="true"${(value?has_content&&'true'=value)?then(' selected="true"','')?no_esc}><@t.page 'yes'/></option>
+            <option value="false"${(!value?has_content||'false'=value)?then(' selected="true"','')?no_esc}><@t.page 'no'/></option>
+        </select>
             </#if>
             <#break>
         <#case 'user'>
@@ -199,17 +201,23 @@
                 <#else>
                     <#local inputValuesName=name+'['+index+'].values'/>
                     <#local dictionaryId='dictionary_'+.now?long/>
-                    <div class="dictionary" data-id="${dictionary.id.id}" data-ref="<@cms.dictionaryExcludeList dictionaryId=dictionary.id.id><#list list as a>${a.id.excludeDictionaryId}<#sep>,</#list></@cms.dictionaryExcludeList>" data-url="common/dictionaryExclude.html" id="${dictionaryId}">
-                       <@dictionaryElement extend.dictionaryId inputValuesName extend.required dictionary.childDepth extend.multiple type value/>
-                    </div>
-                    <@sys.authorized roleIds=admin.roles url='cmsDictionary/add'>
-                        <a href="common/dictionary.html?id=${dictionary.id.id}&inputName=inputValuesName&required=${extend.required!}&multiple=${extend.multiple!}&value=${value!}" target="ajax" rel="${dictionaryId}"><i class="icon-refresh"></i><@t.page 'button.refresh'/></a>
-                        <#if dictionary.childDepth gt 0>
-                            <a href="cmsDictionary/addChild.html?id=${dictionary.id.id}" target="dialog" mask="true" icon="<i class='icon-edit'></i>"><@t.page 'dictionary.edit'/></a>
-                        <#else>
-                            <a href="cmsDictionary/add.html?id=${dictionary.id.id}" target="navTab" rel="cmsDictionary/edit" icon="<i class='icon-edit'></i>"><@t.page 'dictionary.edit'/></a>
-                        </#if>
-                    </@sys.authorized>
+                    <#if 'customform'=type>
+        <@dictionaryElement extend.dictionaryId inputValuesName extend.required dictionary.childDepth extend.multiple type value/>
+                    <#else>
+                        <div class="dictionary" data-id="${dictionary.id.id}" data-ref="<@cms.dictionaryExcludeList dictionaryId=dictionary.id.id><#list list as a>${a.id.excludeDictionaryId}<#sep>,</#list></@cms.dictionaryExcludeList>" data-url="common/dictionaryExclude.html" id="${dictionaryId}">
+                           <@dictionaryElement extend.dictionaryId inputValuesName extend.required dictionary.childDepth extend.multiple type value/>
+                        </div>
+                    </#if>
+                    <#if 'customform'!=type>
+                        <@sys.authorized roleIds=admin.roles url='cmsDictionary/add'>
+                            <a href="common/dictionary.html?id=${dictionary.id.id}&inputName=inputValuesName&required=${extend.required!}&multiple=${extend.multiple!}&value=${value!}" target="ajax" rel="${dictionaryId}"><i class="icon-refresh"></i><@t.page 'button.refresh'/></a>
+                            <#if dictionary.childDepth gt 0>
+                                <a href="cmsDictionary/addChild.html?id=${dictionary.id.id}" target="dialog" mask="true" icon="<i class='icon-edit'></i>"><@t.page 'dictionary.edit'/></a>
+                            <#else>
+                                <a href="cmsDictionary/add.html?id=${dictionary.id.id}" target="navTab" rel="cmsDictionary/edit" icon="<i class='icon-edit'></i>"><@t.page 'dictionary.edit'/></a>
+                            </#if>
+                        </@sys.authorized>
+                    </#if>
                 </#if>
             </#if>
             <#break>
@@ -225,7 +233,7 @@
             <#if 'view'=type>
                 ${(value)!}
             <#else>
-                <input name="${inputName}" <#if 'customform'!=type>class="date<#if extend.required> required</#if>" autocomplete="off" dateFmt="yyyy-MM-dd HH:mm:ss" </#if>type="text" size="20" value="${(value)!}"/>
+        <input name="${inputName}" <#if 'customform'!=type>class="date<#if extend.required> required</#if>" autocomplete="off" dateFmt="yyyy-MM-dd HH:mm:ss" </#if>type="text" size="20" value="${(value)!}"/>
                 <#if 'customform'!=type><a class="inputDateButton" href="javascript:void(0);"></a></#if>
             </#if>
             <#break>
@@ -233,21 +241,21 @@
             <#if 'view'=type>
                 ${(value)!}
             <#else>
-                <input name="${inputName}" <#if 'customform'!=type>class="color<#if extend.required> required</#if>" autocomplete="off" </#if>type="text" size="20" value="${(value)!}"/>
+        <input name="${inputName}" <#if 'customform'!=type>class="color<#if extend.required> required</#if>" autocomplete="off" </#if>type="text" size="20" value="${(value)!}"/>
             </#if>
             <#break>
         <#case 'alphaColor'>
             <#if 'view'=type>
                 ${(value)!}
             <#else>
-                <input name="${inputName}" <#if 'customform'!=type>class="color<#if extend.required> required</#if>" autocomplete="off" showAlpha="true" </#if>type="text" size="20" value="${(value)!}"/>
+        <input name="${inputName}" <#if 'customform'!=type>class="color<#if extend.required> required</#if>" autocomplete="off" showAlpha="true" </#if>type="text" size="20" value="${(value)!}"/>
             </#if>
             <#break>
         <#default>
             <#if 'view'=type>
                 ${(value)!}
             <#else>
-                <input name="${inputName}"<#if extend.maxlength?has_content> size="${extend.maxlength}" maxlength="${extend.maxlength}"<#else> size="50"</#if> <#if 'customform'!=type>class="<#if extend.required> required</#if>" </#if>type="text" value="${(value)!}"/>
+        <input name="${inputName}"<#if extend.maxlength?has_content> size="${extend.maxlength}" maxlength="${extend.maxlength}"<#else> size="50"</#if> <#if 'customform'!=type>class="<#if extend.required> required</#if>" </#if>type="text" value="${(value)!}"/>
             </#if>
     </#switch>
 </#macro>
@@ -255,7 +263,10 @@
     <#list extendList as e>
     <#local value=extendValues[e.id.code]!e.defaultValue!''/>
         <#if 'customform'=type>
-    <p><label>${(e.name)}:</label><@input name e e?index value type/></p>
+    <p>
+        <label>${(e.name)}:</label>
+        <@input name e e?index value type/>
+    </p>
         <#else>
     <dl<#if !['number','alphaColor','color','date','datetime','boolean','text','password']?seq_contains(e.inputType)> class="nowrap"</#if>>
         <dt>${(e.name)}:</dt>

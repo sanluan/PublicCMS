@@ -242,6 +242,7 @@ CREATE TABLE `cms_dictionary_data` (
   `parent_value` varchar(50) NULL COMMENT '父值',
   `value` varchar(50) NOT NULL COMMENT '值',
   `text` varchar(100) NOT NULL COMMENT '文字',
+  `sort` int(11) NOT NULL default '0' COMMENT '顺序',
   PRIMARY KEY  (`dictionary_id`, `site_id`, `value`),
   KEY `cms_dictionary_parent_value`(`dictionary_id`, `site_id`, `parent_value`)
 ) COMMENT='字典数据';
@@ -272,6 +273,7 @@ CREATE TABLE `cms_dictionary_exclude_value` (
 -- ----------------------------
 -- Table structure for cms_editor_history
 -- ----------------------------
+DROP TABLE IF EXISTS `cms_editor_history`;
 CREATE TABLE `cms_editor_history` (
   `id` bigint(20) NOT NULL auto_increment,
   `site_id` smallint(6) NOT NULL COMMENT '站点',

@@ -3,7 +3,7 @@
     <@cms.dictionaryDataList dictionaryId=dictionaryId parentValue=parentValue>
         <ul>
             <li>
-                <a href="cmsDictionary/add.html?id=${dictionaryId}&parentValue=${parentValue}" target="navTab" rel="cmsDictionary/add"><i class="icon-plus-sign-alt"></i><@t.page 'dictionary.add'/></a>
+                <a href="cmsDictionary/add.html?id=${dictionaryId}&parentValue=${parentValue}" target="navTab" rel="cmsDictionary/add"><i class="icon-edit"></i><@t.page 'dictionary.edit'/></a>
             </li>
             <#list list as d>
                 <li>
@@ -23,7 +23,7 @@
 <@cms.dictionaryDataList dictionaryId=object.id.id>
     <#list list as d>
         <li>
-            <a href="javascript:void(0)"> ${d.id.value}:${d.text}</a>
+            <a href="cmsDictionary/add.html?id=${object.id.id}&parentValue=${d.id.value}" target="navTab" rel="cmsDictionary/add"> ${d.id.value}:${d.text}</a>
             <@dictionaryTree dictionaryId=id parentValue=d.id.value depth=object.childDepth-1/>
         </li>
     </#list>

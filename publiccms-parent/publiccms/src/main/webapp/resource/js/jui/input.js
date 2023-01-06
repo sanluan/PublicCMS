@@ -144,6 +144,13 @@
                     $this.insertAfter($thisCombox);
                     $thisCombox.remove();
                 }
+                if($this.hasClass("requiredIfNotEmpty") ){
+                    if(0 == $("option", $this).length || 1 == $("option", $this).length && !$("option", $this).val()){
+                        $this.removeClass("required");
+                    }else{
+                        $this.addClass("required")
+                    }
+                }
                 var name = $this.attr("name");
                 var value = $this.val();
                 var label = '';

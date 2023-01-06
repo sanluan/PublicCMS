@@ -3,7 +3,7 @@
         <#assign parent=object/>
     </@cms.content>
 </#if>
-<@cms.contentList advanced=true status=status modelId=modelIds parentId=parentId emptyParent=true title=title userId=admin.id
+<@cms.contentList advanced=true status=status modelId=modelIds parentId=parentId title=title userId=admin.id
             startPublishDate=startPublishDate endPublishDate=endPublishDate
             orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <@sys.authorized roleIds=admin.roles urls='cmsContent/add,cmsContent/delete,cmsContent/uncheck,cmsContent/push,cmsContent/refresh,cmsContent/publish,cmsContent/export,cmsComment/list'><#assign authorizedMap=map/></@sys.authorized>

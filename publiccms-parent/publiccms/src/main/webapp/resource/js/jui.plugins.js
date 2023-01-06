@@ -50,6 +50,7 @@ JUI.regPlugins.push(function($p){
     }
 });
 JUI.regPlugins.push(function($p){
+    var ajaxbg = $("#background,#progressBar");
     $("textarea.editor", $p).each(function(i) {
         var $this = $(this);
         var index= window.editor.index++;
@@ -64,10 +65,12 @@ JUI.regPlugins.push(function($p){
                     window.editor.ckeditorArray.push(dataId);
                 } else {
                     window.editor.ckeditorIniting=true;
+                    ajaxbg.show();
                     loadScripts(window.editor.ckeditorResources,function(){
                         window.editor.ckeditorIniting=false;
                         window.editor.ckeditorInitd=true;
                         CKEDITOR.replace(dataId);
+                        ajaxbg.hide();
                         if(0 < window.editor.ckeditorArray.length){
                             for(var i=0;i<window.editor.ckeditorArray.length;i++){
                                 CKEDITOR.replace(window.editor.ckeditorArray[i]);
@@ -84,10 +87,12 @@ JUI.regPlugins.push(function($p){
                     window.editor.tinymceArray.push(dataId);
                 } else {
                     window.editor.tinymceIniting=true;
+                    ajaxbg.show();
                     loadScripts(window.editor.tinymceResources,function(){
                         window.editor.tinymceIniting=false;
                         window.editor.tinymceInitd=true;
                         tinymce.init($.extend(true, {selector:"#"+dataId}, window.TINYMCE_OPTIONS));
+                        ajaxbg.hide();
                         if(0 < window.editor.tinymceArray.length){
                             for(var i=0;i<window.editor.tinymceArray.length;i++){
                                 tinymce.init($.extend(true, {selector:"#"+window.editor.tinymceArray[i]}, window.TINYMCE_OPTIONS));
@@ -104,10 +109,12 @@ JUI.regPlugins.push(function($p){
                     window.editor.kindeditorArray.push(dataId);
                 } else {
                     window.editor.kindeditorIniting=true;
+                    ajaxbg.show();
                     loadScripts(window.editor.kindeditorResources,function(){
                         window.editor.kindeditorIniting=false;
                         window.editor.kindeditorInitd=true;
                         KindEditor.create("#"+dataId,window.KINDEDITOR_OPTIONS);
+                        ajaxbg.hide();
                         if(0 < window.editor.kindeditorArray.length){
                             for(var i=0;i<window.editor.kindeditorArray.length;i++){
                                 KindEditor.create("#"+window.editor.kindeditorArray[i],window.KINDEDITOR_OPTIONS);
@@ -131,6 +138,7 @@ JUI.regPlugins.push(function($p){
                     window.editor.ueditorArray.push(dataId);
                 } else {
                     window.editor.ueditorIniting=true;
+                    ajaxbg.show();
                     loadScripts(window.editor.ueditorResources,function(){
                         window.editor.ueditorIniting=false;
                         window.editor.ueditorInitd=true;
@@ -142,6 +150,7 @@ JUI.regPlugins.push(function($p){
                         }
                         editor.render($this[0]);
                         $this.attr("data-id","ueditorInstant"+editor.uid);
+                        ajaxbg.hide();
                         if(0 < window.editor.ueditorArray.length){
                             for(var i=0;i<window.editor.ueditorArray.length;i++){
                                 var editor = new baidu.editor.ui.Editor();
@@ -163,6 +172,7 @@ JUI.regPlugins.push(function($p){
             mode = $(this).attr("mode");
         }
         if(!window.codemirror.initd){
+            ajaxbg.show();
             loadScripts(window.codemirror.resources,function(){
                 window.codemirror.initd=true;
                 JUI.instances[dataId]=CodeMirror.fromTextArea($this[0], {
@@ -178,6 +188,7 @@ JUI.regPlugins.push(function($p){
                     JUI.instances[dataId].setOption("readOnly",true);
                 }
                 $this.attr("data-id",dataId);
+                ajaxbg.hide();
             });
         } else {
             JUI.instances[dataId]=CodeMirror.fromTextArea($this[0], {
@@ -383,7 +394,7 @@ JUI.regPlugins.push(function($p){
             } else {
                 diff = Diff.diffWords(oldstring, newstring);
             }
-            
+
             resultBox.empty();
             for (var i=0; i < diff.length; i++) {
                 if (diff[i].removed) {

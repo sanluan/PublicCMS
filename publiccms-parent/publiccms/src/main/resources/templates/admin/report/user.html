@@ -3,19 +3,16 @@
     <fieldset>
         <legend><@t.page 'report.user'/></legend>
         <div class="unit clearfix">
-            <div id="register" style="width:50%;min-width:400px;float:left;"></div>
-            <div id="login" style="width:50%;min-width:400px;float:left;"></div>
-            <div id="operate" style="width:50%;min-width:400px;float:left;"></div>
-            <div id="userComment" style="width:50%;min-width:400px;float:left;"></div>
+            <div id="register" class="chart" data-id="registerChart" style="width:50%;"></div>
+            <div id="login" class="chart" data-id="loginChart" style="width:50%;"></div>
+            <div id="operate" class="chart" data-id="operateChart" style="width:50%;"></div>
+            <div id="userComment" class="chart" data-id="userCommentChart" style="width:50%;"></div>
          </div>
     </fieldset>
 </div>
 <script>
-document.getElementById("register").style.height=document.getElementById("register").offsetWidth*0.5+"px";
-document.getElementById("login").style.height=document.getElementById("login").offsetWidth*0.5+"px";
-document.getElementById("operate").style.height=document.getElementById("operate").offsetWidth*0.5+"px";
-document.getElementById("userComment").style.height=document.getElementById("userComment").offsetWidth*0.5+"px";
-echarts.init(document.getElementById("register")).setOption({
+registerChart=echarts.init(document.getElementById("register"));
+registerChart.setOption({
     title: {
         text: "<@t.page 'register'/>",
         subtext: "<@t.page 'total'/>:<@sys.userList pageSize=0>${page.totalCount}</@sys.userList>",
@@ -51,7 +48,8 @@ echarts.init(document.getElementById("register")).setOption({
            areaStyle: {}
        }]
 });
-echarts.init(document.getElementById("login")).setOption({
+loginChart=echarts.init(document.getElementById("login"));
+loginChart.setOption({
     title: {
         text: "<@t.page 'login'/>",
         x:"center"
@@ -86,7 +84,8 @@ echarts.init(document.getElementById("login")).setOption({
         areaStyle: {}
     }]
 });
-echarts.init(document.getElementById("operate")).setOption({
+operateChart=echarts.init(document.getElementById("operate"));
+operateChart.setOption({
     title: {
         text: "<@t.page 'operate'/>",
         x:"center"
@@ -121,7 +120,8 @@ echarts.init(document.getElementById("operate")).setOption({
         areaStyle: {}
     }]
 });
-echarts.init(document.getElementById("userComment")).setOption({
+userCommentChart=echarts.init(document.getElementById("userComment"));
+userCommentChart.setOption({
     title: {
         text: "<@t.page 'comment'/>",
         subtext: "<@t.page 'total'/>:<@cms.commentList pageSize=0>${page.totalCount}</@cms.commentList>",

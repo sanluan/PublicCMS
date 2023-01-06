@@ -12,6 +12,7 @@ var JUI = {
         pageClear: "pageClear", // 用于重新ajaxLoad、关闭nabTab, 关闭dialog时，去除xheditor等需要特殊处理的资源
         editorSync: "editorSync",
         resizeGrid: "resizeGrid", // 用于窗口或dialog大小调整
+        resizeChart: "resizeChart", // 用于报表大小调整
         initEnvAfter: "initEnvAfter" // initEnv完成触发
     } ,
     isOverAxis: function(x, reference, size) {
@@ -174,6 +175,16 @@ var JUI = {
                 }
             }
         });
+        if (!$(window).isBind(JUI.eventType.resizeChart) ) {
+            $(window).on(JUI.eventType.resizeChart, null, null, function() {
+                $(".chart").each(function() {
+                    $chart=$(this);
+                    if($chart.data("id") && window[$chart.data("id")] && "function" == typeof window[$chart.data("id")].resize){
+                        window[$chart.data("id")].resize();
+                    }
+                });
+            });
+        }
         var _doc = $(document);
         if (!_doc.isBind(JUI.eventType.editorSync) ) {
             _doc.on(JUI.eventType.editorSync, null, null, function(event) {
@@ -201,7 +212,7 @@ var JUI = {
                         JUI.instances[$(this).data("id")].save();
                     }
                 });
-        
+
                 $(".miscSortDrag", $box).each(function() {
                     var $sortBox=$(this);
                     if($sortBox.data("result")){
@@ -531,7 +542,7 @@ function html2Escape(sHtml) {
 }
 /**
  * jquery 选择器转义
- * @param srcString 
+ * @param srcString
  * @returns safe selector
  */
 function escapeJquery(srcString) {

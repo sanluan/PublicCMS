@@ -11,6 +11,7 @@ function initEnv() {
     $(window).resize(function() {
         initLayout();
         $(this).trigger(JUI.eventType.resizeGrid);
+        $(this).trigger(JUI.eventType.resizeChart);
     });
     var ajaxbg = $("#background,#progressBar");
     ajaxbg.hide();
@@ -43,6 +44,7 @@ function initEnv() {
                 var tabid = hash.substring(hash.indexOf('_') + 1);
                 if(tabid ) {
                     callback = function(){
+                        $('#menu a[rel='+escapeJquery(tabid)+']').closest('.accordionContent').prev().click();
                         $('#menu a[rel='+escapeJquery(tabid)+']').click();
                     }
                 }

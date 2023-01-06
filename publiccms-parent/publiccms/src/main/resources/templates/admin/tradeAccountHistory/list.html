@@ -1,7 +1,7 @@
 <@trade.accountHistoryList userId=userId status=status startCreateDate=startCreateDate endCreateDate=endCreateDate 
             orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader card">
-    <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
+    <form class="pagerForm" action="tradeAccountHistory/list.html" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
         <div class="searchBar">
             <ul class="searchContent">
@@ -11,7 +11,12 @@
                 </li>
                 <li>
                     <label><@t.page 'status'/>:</label>
-                    <input type="text" name="status" value="${status!}" />
+                    <#list 0..3 as s>
+                        <label style="width:auto">
+                            <input <@t.compare status!'' s?string 'checked="checked"'/> name="status" value="${s}" type="checkbox"/>
+                            <@t.page 'status.accountHistory.'+s/>
+                        </label>
+                    </#list>
                 </li>
                 <li>
                     <label><@t.page 'create_date'/>:</label>

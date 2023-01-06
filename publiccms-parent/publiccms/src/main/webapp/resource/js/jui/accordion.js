@@ -36,17 +36,6 @@
         this.options = options = $.extend({}, $.jui.accordion.defaults, options);
         this.element = container;
         $(container).addClass("jui-accordion");
-        if (options.navigation ) {
-            var current = $(container).find("a").filter(options.navigationFilter);
-            if (current.length ) {
-                if (current.filter(options.header).length ) {
-                    options.active = current;
-                } else {
-                    options.active = current.parent().parent().prev();
-                    current.addClass("current");
-                }
-            }
-        }
         // calculate active if not specified, using the first header
         options.headers = $(container).find(options.header);
         options.active = findActive(options.headers, options.active);
@@ -214,10 +203,7 @@
     }
     $.extend($.jui.accordion, {
         defaults: {
-            selectedClass: "collapsable",selectedIconClass: "icon-chevron-down", alwaysOpen: true, animated: 'slide', event: "click", header: ".accordionHeader", autoheight: true, running: 0, clearStyle: true,
-            navigationFilter: function() {
-                return this.href.toLowerCase() == location.href.toLowerCase();
-            }
+            selectedClass: "collapsable",selectedIconClass: "icon-chevron-down", alwaysOpen: true, animated: 'slide', event: "click", header: ".accordionHeader", autoheight: true, running: 0, clearStyle: true
         }, animations: {
             slide: function(options, additions) {
                 options = $.extend({
@@ -390,6 +376,7 @@
                             bar.hide();
                             bar.css("bottom","auto");
                             $(window).trigger(JUI.eventType.resizeGrid);
+                            $(window).trigger(JUI.eventType.resizeChart);
                         });
                     });
                     $(sbar).click(function() {
@@ -435,6 +422,7 @@
                         });
                         $(sbar).off('click');
                         $(window).trigger(JUI.eventType.resizeGrid);
+                        $(window).trigger(JUI.eventType.resizeChart);
                     });
                 }
                 return false;

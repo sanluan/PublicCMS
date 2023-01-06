@@ -17,12 +17,27 @@
 <#if fieldList?seq_contains('author')>
     <input name="author" type="hidden" value="<#noparse>${(user.nickname)!}</#noparse>"/>
 </#if>
-    <p><label>${(model.fieldTextMap['title'])!}:</label><input name="title" type="text" size="60" maxlength="255"/></p>
+    <p>
+        <label>${(model.fieldTextMap['title'])!}:</label>
+        <input name="title" type="text" size="60" maxlength="255"/>
+    </p>
+<#if fieldList?seq_contains('description')>
+    <p>
+        <label>${(model.fieldTextMap['description'])!}:</label>
+        <textarea name="text" cols="80" rows="20" maxlength="300"></textarea>
+    </p>
+</#if>
 <#if model.onlyUrl>
-    <p><label>${(model.fieldTextMap['url'])!}:</label><input name="url" type="text" size="60" maxlength="1000"/></p>
+    <p>
+        <label>${(model.fieldTextMap['url'])!}:</label>
+        <input name="url" type="text" size="60" maxlength="1000"/>
+    </p>
 </#if>
 <#if fieldList?seq_contains('content')>
-    <p><label>${(model.fieldTextMap['content'])!}:</label><textarea name="text" cols="80" rows="20"></textarea></p>
+    <p>
+        <label>${(model.fieldTextMap['content'])!}:</label>
+        <textarea name="text" cols="80" rows="20"></textarea>
+    </p>
 </#if>
     <#include "../include_page/extendData.html"/>
     <@sys.extendFieldList extendId=category.extendId>
@@ -57,7 +72,7 @@ please <a href="${site.dynamicPath}login.html">login</a>
     <dl class="nowrap">
         <dt><@t.page 'source_code'/>:</dt>
         <dd>
-            <textarea cols="80" rows="20"><@html_escape>${(formContent)!}</@html_escape></textarea>
+            <textarea  class="code" mode="freemarkermixed"><@html_escape>${(formContent)!}</@html_escape></textarea>
         </dd>
     </dl>
 </div>

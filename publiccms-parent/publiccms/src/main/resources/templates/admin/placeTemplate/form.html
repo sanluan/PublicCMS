@@ -17,18 +17,32 @@
 </#if>
     <input name="path" type="hidden" value="${(path)!}" />
     <input name="returnUrl" type="hidden" value="<#noparse>${site.dynamicPath}</#noparse>" />
-    <p><label>${(a.fieldTextMap['title'])!}:</label><input name="title" type="text" size="60" value=""/></p>
+    <p>
+        <label>${(a.fieldTextMap['title'])!}:</label>
+        <input name="title" type="text" size="60" value=""/>
+    </p>
+    <p>
+        <label>${(a.fieldTextMap['description'])!}:</label>
+        <textarea name="description" maxlength="300"></textarea>
+    </p>
 <#if fieldList?seq_contains('url')>
-    <p><label>${(a.fieldTextMap['url'])!}:</label><input name="url" type="text" size="60" maxlength="1000"/></p>
+    <p>
+        <label>${(a.fieldTextMap['url'])!}:</label>
+        <input name="url" type="text" size="60" maxlength="1000"/>
+    </p>
 </#if>
 <#if fieldList?seq_contains('cover')>
-    <p><label>${(a.fieldTextMap['cover'])!}:</label><input name="cover" type="text" size="60" maxlength="1000" value=""/></p>
+    <p>
+        <label>${(a.fieldTextMap['cover'])!}:</label>
+        <input name="cover" type="text" size="60" maxlength="1000" value=""/>
+    </p>
 </#if>
     <#include "../include_page/extendData.html"/>
     <#assign extendValues=getPlaceAttribute((a.id)!)!{}/>
     <@extendData name='extendDataList' extendList=a.extendList extendValues=extendValues type='customform'/>
     <p><input type="submit" value="<@t.page 'button.save'/>"/></p>
 </form>
+<#if a.adminIds?has_content>
     ${'<#assign path=\''?no_esc+path+'\'/>'?no_esc}
 <#noparse>
     <@tools.placeMetadata path=path><#assign a=object/></@tools.placeMetadata>
@@ -59,6 +73,7 @@
 please <a href="${site.dynamicPath}login.html">login</a>
 </#if>
 </#noparse>
+</#if>
             </#if>
         <#else>
 <@t.message 'verify.custom.contribute'/>
@@ -75,7 +90,7 @@ please <a href="${site.dynamicPath}login.html">login</a>
     <dl class="nowrap">
         <dt><@t.page 'source_code'/>:</dt>
         <dd>
-            <textarea cols="80" rows="20"><@html_escape>${(formContent)!}</@html_escape></textarea>
+            <textarea class="code" mode="freemarkermixed"><@html_escape>${(formContent)!}</@html_escape></textarea>
         </dd>
     </dl>
 </div>

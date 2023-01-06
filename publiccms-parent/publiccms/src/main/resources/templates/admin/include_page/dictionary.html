@@ -34,7 +34,7 @@
         </div>
     <#else>
         <#list 0..childDepth as i>
-            <select name="${inputName}" <#if 'customform'!=type>class="combox<#if required> required</#if>" ref="${inputName}" index="${i+1}"<#if i lt childDepth> refUrl="common/dictionarySuggest.html?dictionaryId=${dictionaryId}&parentValue={value}"</#if></#if>>
+            <select name="${inputName}" <#if 'customform'!=type>class="combox<#if required> required<#if i gt 0> requiredIfNotEmpty</#if></#if>" ref="${inputName}" index="${i+1}"<#if i lt childDepth> refUrl="common/dictionarySuggest.html?dictionaryId=${dictionaryId}&parentValue={value}"</#if></#if>>
                 <option></option>
             <#if 0=i || parentValue?has_content>
             <@cms.dictionaryDataList dictionaryId=dictionaryId parentValue=parentValue>
@@ -57,6 +57,17 @@
         <#if value?has_content>
             <#local values=value?split(',')/>
         </#if>
+        <#if 'customform'=type>
+        <#noparse><@cms.dictionaryDataList dictionaryId="</#noparse>${dictionaryId}<#noparse>">
+            <#list list as d>
+                <label>
+                    <input name="</#noparse>${inputName}<#noparse>" type="checkbox" value="${d.id.value}"/>
+                    ${d.text}
+                </label>
+            </#list>
+        </@cms.dictionaryDataList>
+        </#noparse>
+        <#else>
         <@cms.dictionaryDataList dictionaryId=dictionaryId>
             <#list list as d>
                 <label>
@@ -65,14 +76,24 @@
                 </label>
             </#list>
         </@cms.dictionaryDataList>
+        </#if>
     <#else>
         <select<#if 'customform'!=type> class="combox<#if required> required</#if>"</#if> name="${inputName}">
             <option></option>
+        <#if 'customform'=type>
+        <#noparse><@cms.dictionaryDataList dictionaryId="</#noparse>${dictionaryId}<#noparse>">
+            <#list list as d>
+            <option value="${d.id.value}">${d.text}</option>
+            </#list>
+        </@cms.dictionaryDataList>
+        </#noparse>
+        <#else>
         <@cms.dictionaryDataList dictionaryId=dictionaryId>
             <#list list as d>
             <option value="${d.id.value}"${(value?has_content&&d.id.value=value)?then(' selected="true"','')?no_esc}>${d.text}</option>
             </#list>
         </@cms.dictionaryDataList>
+        </#if>
         </select>
     </#if>
 </#if>
