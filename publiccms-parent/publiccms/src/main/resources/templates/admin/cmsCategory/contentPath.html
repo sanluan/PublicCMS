@@ -7,9 +7,10 @@
             <li><a href="javascript:;" onclick="$.bringBack({contentPath:'<#noparse>${category.code}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html</#noparse>'});return false;"><@t.page 'static_path'/>:{<@t.page 'category.code'/>}/{<@t.page 'year'/>}/{<@t.page 'month'/>-<@t.page 'day'/>}/{<@t.page 'content.id'/>}.html</a></li>
             <li><a href="javascript:;" onclick="$.bringBack({contentPath:'<#noparse><@cms.category id=category.parentId>${object.code}/</@cms.category>${category.code}//${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html</#noparse>'});return false;"><@t.page 'static_path'/>:{<@t.page 'category.parent'/>}/{<@t.page 'category.code'/>}/{<@t.page 'year'/>}/{<@t.page 'month'/>-<@t.page 'day'/>}/{<@t.page 'content.id'/>}.html</a></li>
         </#if>
-        <li><a href="javascript:;" onclick="$('input[data-model]',navTab.getCurrentPanel()).val('');$.bringBack({contentPath:'<#noparse>${getUrl(category.url)}</#noparse>'});return false;"><@t.page 'dynamic_path'/>:<@t.page 'category.url'/></a></li>
         <li><a href="javascript:;" onclick="$('input[data-model]',navTab.getCurrentPanel()).val('');$.bringBack({contentPath:'<#noparse>content.html?id=${content.id}</#noparse>'});return false;"><@t.page 'dynamic_path'/>:<@t.page 'template.name'/>.html?id={<@t.page 'content.id'/>}</a></li>
         <li><a href="javascript:;" onclick="$('input[data-model]',navTab.getCurrentPanel()).val('');$.bringBack({contentPath:'<#noparse>content/${content.id}</#noparse>'});return false;"><@t.page 'dynamic_path'/>:<@t.page 'template.name'/>/{<@t.page 'content.id'/>}</a></li>
+        <li><a href="javascript:;" onclick="$('input[data-model]',navTab.getCurrentPanel()).val('');$.bringBack({contentPath:'<#noparse>${getUrl(category.url)}</#noparse>'});return false;"><@t.page 'dynamic_path'/>:<@t.page 'category.url'/></a></li>
+        <li><a href="javascript:;" onclick="$('input[data-model]',navTab.getCurrentPanel()).val('');$.bringBack({contentPath:'<#noparse>${getUrl(attribute.file)}</#noparse>'});return false;"><@t.page 'dynamic_path'/>:{<@t.page 'extend_field'/>:file}</a></li>
     </ul>
 </div>
 <div class="formBar">
