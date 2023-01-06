@@ -55,7 +55,18 @@
             <tr>
                 <td><a href="visit/history.html?startCreateDate=${a.id.visitDate!}" target="navTab" rel="visit/history" title="<@t.page 'visit.history'/>" icon="<i class='icon-bolt icon-large'></i>">${a.id.visitDate?date}</a></td>
                 <td>${a.id.itemType!}</td>
-                <td>${a.id.itemId!}</td>
+                <td>
+                    ${a.id.itemId!}
+                    <#if a.id.itemType?has_content>
+                        <#if a.id.itemType="category">
+                            :<@cms.category id=a.id.itemId><a href="${object.url}" target="_blank">${object.name}</a></@cms.category>
+                        <#elseif a.id.itemType="content">
+                            :<@cms.content id=a.id.itemId><a href="${object.url}" target="_blank">${object.title}</a></@cms.content>
+                        <#elseif a.id.itemType="user">
+                            :<@sys.user id=a.id.itemId>${object.nickname}</@sys.user>
+                        </#if>
+                    </#if>
+                </td>
                 <td class="center">${a.pv!}</td>
                 <td class="center">${a.uv!}</td>
                 <td class="center">${a.ipviews!}</td>
