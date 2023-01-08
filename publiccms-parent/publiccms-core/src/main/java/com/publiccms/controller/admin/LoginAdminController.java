@@ -5,14 +5,15 @@ import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
-import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -250,7 +251,7 @@ public class LoginAdminController {
     }
 
     @RequestMapping(value = "getCaptchaImage")
-    public void getCaptchaImage(javax.servlet.http.HttpSession session, javax.servlet.http.HttpServletResponse response) {
+    public void getCaptchaImage(HttpSession session, HttpServletResponse response) {
         try {
             String captcha = VerificationUtils.getRandomString("ABCDEFGHJKMNPQRSTUVWXYZ23456789", 4);
             session.setAttribute("captcha", captcha);

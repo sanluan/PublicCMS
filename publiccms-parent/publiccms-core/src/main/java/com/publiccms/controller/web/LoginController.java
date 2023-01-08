@@ -290,7 +290,7 @@ public class LoginController {
     }
 
     @RequestMapping(value = "getCaptchaImage")
-    public void getCaptchaImage(javax.servlet.http.HttpSession session, javax.servlet.http.HttpServletResponse response) {
+    public void getCaptchaImage(HttpSession session, HttpServletResponse response) {
         try {
             String captcha = VerificationUtils.getRandomString("ABCDEFGHJKMNPQRSTUVWXYZ23456789", 4);
             session.setAttribute("captcha", captcha);
