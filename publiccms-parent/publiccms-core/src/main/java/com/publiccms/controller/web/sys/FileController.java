@@ -4,12 +4,13 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.publiccms.common.annotation.Csrf;
+import com.publiccms.common.api.Config;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
@@ -28,6 +30,7 @@ import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.log.LogUpload;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
+import com.publiccms.logic.component.config.ConfigComponent;
 import com.publiccms.logic.component.config.SiteConfigComponent;
 import com.publiccms.logic.component.site.LockComponent;
 import com.publiccms.logic.component.site.SiteComponent;
@@ -51,11 +54,14 @@ public class FileController {
     @Resource
     private LockComponent lockComponent;
     @Resource
+    protected ConfigComponent configComponent;
+    @Resource
     protected SiteConfigComponent siteConfigComponent;
 
     /**
      * @param site
      * @param user
+     * @param captcha
      * @param file
      * @param request
      * @return view name
@@ -63,8 +69,8 @@ public class FileController {
     @RequestMapping(value = "doUpload", method = RequestMethod.POST)
     @Csrf
     @ResponseBody
-    public Map<String, Object> upload(@RequestAttribute SysSite site, @SessionAttribute SysUser user, MultipartFile file,
-            HttpServletRequest request) {
+    public Map<String, Object> upload(@RequestAttribute SysSite site, @SessionAttribute SysUser user, String captcha,
+            MultipartFile file, HttpServletRequest request) {
         Map<String, Object> result = new HashMap<>();
         result.put("success", false);
         boolean locked = lockComponent.isLocked(site.getId(), LockComponent.ITEM_TYPE_FILEUPLOAD, String.valueOf(user.getId()),
@@ -73,6 +79,17 @@ public class FileController {
             lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_FILEUPLOAD, String.valueOf(user.getId()), null, true);
             return result;
         }
+        Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+        String enableCaptcha = config.get(SiteConfigComponent.CONFIG_CAPTCHA);
+        if (CommonUtils.notEmpty(captcha) || CommonUtils.notEmpty(enableCaptcha)
+                && ArrayUtils.contains(StringUtils.split(enableCaptcha, CommonConstants.COMMA), "upload")) {
+            String sessionCaptcha = (String) request.getSession().getAttribute("captcha");
+            request.getSession().removeAttribute("captcha");
+            if (ControllerUtils.errorCustom("captcha.error", null == sessionCaptcha || !sessionCaptcha.equals(captcha), result)) {
+                return result;
+            }
+        }
+
         if (null != file && !file.isEmpty()) {
             String originalName = file.getOriginalFilename();
             String suffix = CmsFileUtils.getSuffix(originalName);

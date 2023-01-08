@@ -48,6 +48,10 @@ public class SiteConfigComponent implements Config {
     /**
     *
     */
+    public static final String CONFIG_CAPTCHA = "captcha";
+    /**
+    *
+    */
     public static final String CONFIG_SITE_EXCLUDE_MODULE = "site_exclude_module";
     /**
     *
@@ -94,6 +98,10 @@ public class SiteConfigComponent implements Config {
      * 
      */
     public static final String INPUTTYPE_CATEGORY_PATH = "categoryPath";
+    /**
+     * 
+     */
+    public static final String INPUTTYPE_CAPTCHA = "captcha";
 
     /**
      * default expiry minutes
@@ -159,55 +167,60 @@ public class SiteConfigComponent implements Config {
     @Override
     public List<SysExtendField> getExtendFieldList(SysSite site, Locale locale) {
         List<SysExtendField> extendFieldList = new ArrayList<>();
-        extendFieldList.add(new SysExtendField(CONFIG_EXPIRY_MINUTES_WEB, INPUTTYPE_NUMBER, false, CONFIG_EXPIRY_MINUTES_WEB,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_EXPIRY_MINUTES_WEB),
+        extendFieldList.add(new SysExtendField(CONFIG_EXPIRY_MINUTES_WEB, INPUTTYPE_NUMBER, false,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_EXPIRY_MINUTES_WEB), null,
                 String.valueOf(DEFAULT_EXPIRY_MINUTES)));
+        extendFieldList.add(new SysExtendField(CONFIG_EXPIRY_MINUTES_MANAGER, INPUTTYPE_NUMBER, false,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_EXPIRY_MINUTES_MANAGER), null,
+                String.valueOf(DEFAULT_EXPIRY_MINUTES)));
+
+        extendFieldList.add(new SysExtendField(CONFIG_SITE_EXCLUDE_MODULE, INPUTTYPE_MODULE,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_SITE_EXCLUDE_MODULE), null));
+
+        extendFieldList.add(new SysExtendField(CONFIG_RETURN_URL, INPUTTYPE_TEXTAREA,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_RETURN_URL), null));
+
         extendFieldList
-                .add(new SysExtendField(CONFIG_EXPIRY_MINUTES_MANAGER, INPUTTYPE_NUMBER, false, CONFIG_EXPIRY_MINUTES_MANAGER,
-                        getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_EXPIRY_MINUTES_MANAGER),
-                        String.valueOf(DEFAULT_EXPIRY_MINUTES)));
+                .add(new SysExtendField(CONFIG_CAPTCHA, INPUTTYPE_CAPTCHA, false,
+                        getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_CAPTCHA),
+                        getMessage(locale,
+                                CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_CAPTCHA + CONFIG_CODE_DESCRIPTION_SUFFIX),
+                        null));
 
-        extendFieldList.add(new SysExtendField(CONFIG_SITE_EXCLUDE_MODULE, INPUTTYPE_MODULE, CONFIG_SITE_EXCLUDE_MODULE,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_SITE_EXCLUDE_MODULE)));
-
-        extendFieldList.add(new SysExtendField(CONFIG_RETURN_URL, INPUTTYPE_TEXTAREA, CONFIG_RETURN_URL,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_RETURN_URL)));
-
-        extendFieldList.add(new SysExtendField(CONFIG_REGISTER_URL, INPUTTYPE_TEXT, CONFIG_REGISTER_URL,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_REGISTER_URL)));
-        extendFieldList.add(new SysExtendField(CONFIG_LOGIN_PATH, INPUTTYPE_TEXT, CONFIG_LOGIN_PATH,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOGIN_PATH)));
+        extendFieldList.add(new SysExtendField(CONFIG_REGISTER_URL, INPUTTYPE_TEXT,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_REGISTER_URL), null));
+        extendFieldList.add(new SysExtendField(CONFIG_LOGIN_PATH, INPUTTYPE_TEXT,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOGIN_PATH), null));
 
         if (site.isUseStatic()) {
-            extendFieldList.add(
-                    new SysExtendField(CONFIG_CATEGORY_TEMPLATE_PATH, INPUTTYPE_TEMPLATE, true, CONFIG_CATEGORY_TEMPLATE_PATH,
-                            getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_CATEGORY_TEMPLATE_PATH),
-                            "category.html"));
+            extendFieldList.add(new SysExtendField(CONFIG_CATEGORY_TEMPLATE_PATH, INPUTTYPE_TEMPLATE, true,
+                    getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_CATEGORY_TEMPLATE_PATH), null,
+                    "category.html"));
         }
-        extendFieldList.add(new SysExtendField(CONFIG_CATEGORY_PATH, INPUTTYPE_CATEGORY_PATH, true, CONFIG_CATEGORY_PATH,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_CATEGORY_PATH),
+        extendFieldList.add(new SysExtendField(CONFIG_CATEGORY_PATH, INPUTTYPE_CATEGORY_PATH, true,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_CATEGORY_PATH), null,
                 site.isUseStatic() ? "category/${category.code}.html" : "category.html?id=${category.id}"));
 
-        extendFieldList.add(new SysExtendField(CONFIG_ALLOW_FILES, INPUTTYPE_TEXTAREA, false, CONFIG_ALLOW_FILES,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_ALLOW_FILES),
+        extendFieldList.add(new SysExtendField(CONFIG_ALLOW_FILES, INPUTTYPE_TEXTAREA, false,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_ALLOW_FILES), null,
                 StringUtils.join(CmsFileUtils.ALLOW_FILES, CommonConstants.COMMA)));
-        extendFieldList.add(new SysExtendField(CONFIG_COMMENT_NEED_CHECK, INPUTTYPE_BOOLEAN, false, CONFIG_COMMENT_NEED_CHECK,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_COMMENT_NEED_CHECK), "true"));
-        extendFieldList
-                .add(new SysExtendField(CONFIG_DEFAULT_CONTENT_STATUS, INPUTTYPE_NUMBER, true, CONFIG_DEFAULT_CONTENT_STATUS,
-                        getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_DEFAULT_CONTENT_STATUS),
-                        String.valueOf(CmsContentService.STATUS_PEND)));
-        extendFieldList.add(new SysExtendField(CONFIG_DEFAULT_CONTENT_USER, INPUTTYPE_USER, CONFIG_DEFAULT_CONTENT_USER,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_DEFAULT_CONTENT_USER)));
-        extendFieldList.add(new SysExtendField(CONFIG_MAX_SCORES, INPUTTYPE_NUMBER, false, CONFIG_MAX_SCORES,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_MAX_SCORES),
+        extendFieldList.add(new SysExtendField(CONFIG_COMMENT_NEED_CHECK, INPUTTYPE_BOOLEAN, false,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_COMMENT_NEED_CHECK), null, "true"));
+        extendFieldList.add(new SysExtendField(CONFIG_DEFAULT_CONTENT_STATUS, INPUTTYPE_NUMBER, true,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_DEFAULT_CONTENT_STATUS), null,
+                String.valueOf(CmsContentService.STATUS_PEND)));
+        extendFieldList.add(new SysExtendField(CONFIG_DEFAULT_CONTENT_USER, INPUTTYPE_USER,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_DEFAULT_CONTENT_USER), null));
+        extendFieldList.add(new SysExtendField(CONFIG_MAX_SCORES, INPUTTYPE_NUMBER, false,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_MAX_SCORES), null,
                 String.valueOf(DEFAULT_MAX_SCORES)));
         if (site.isUseStatic()) {
             extendFieldList.add(new SysExtendField(CONFIG_STATIC_AFTER_COMMENT, INPUTTYPE_BOOLEAN, false,
-                    CONFIG_STATIC_AFTER_COMMENT,
-                    getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_STATIC_AFTER_COMMENT), "false"));
-            extendFieldList.add(new SysExtendField(CONFIG_STATIC_AFTER_SCORE, INPUTTYPE_BOOLEAN, false, CONFIG_STATIC_AFTER_SCORE,
-                    getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_STATIC_AFTER_SCORE), "false"));
+                    getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_STATIC_AFTER_COMMENT), null,
+                    "false"));
+            extendFieldList.add(new SysExtendField(CONFIG_STATIC_AFTER_SCORE, INPUTTYPE_BOOLEAN, false,
+                    getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_STATIC_AFTER_SCORE), null,
+                    "false"));
         }
         return extendFieldList;
     }

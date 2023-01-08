@@ -1,20 +1,22 @@
 package com.publiccms.controller.web;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -27,8 +29,10 @@ import com.publiccms.common.api.Config;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
+import com.publiccms.common.tools.ImageUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.common.tools.UserPasswordUtils;
+import com.publiccms.common.tools.VerificationUtils;
 import com.publiccms.entities.log.LogLogin;
 import com.publiccms.entities.sys.SysAppClient;
 import com.publiccms.entities.sys.SysSite;
@@ -69,21 +73,34 @@ public class LoginController {
     protected SiteConfigComponent siteConfigComponent;
 
     /**
-     * @param site 站点
-     * @param username 用户名
-     * @param password 密码
-     * @param returnUrl 返回地址
-     * @param encoding 密码编码
-     * @param clientId 客户端id
-     * @param uuid 客户端uuid
-     * @param request 请求
-     * @param response 返回
-     * @param model 模型
+     * @param site
+     *            站点
+     * @param username
+     *            用户名
+     * @param password
+     *            密码
+     * @param returnUrl
+     *            返回地址
+     * @param encoding
+     *            密码编码
+     * @param captcha
+     *            验证码
+     * @param clientId
+     *            客户端id
+     * @param uuid
+     *            客户端uuid
+     * @param request
+     *            请求
+     * @param response
+     *            返回
+     * @param model
+     *            模型
      * @return view name 视图名
      */
     @RequestMapping(value = "doLogin", method = RequestMethod.POST)
     public String login(@RequestAttribute SysSite site, String username, String password, String returnUrl, String encoding,
-            Long clientId, String uuid, HttpServletRequest request, HttpServletResponse response, ModelMap model) {
+            String captcha, Long clientId, String uuid, HttpServletRequest request, HttpServletResponse response,
+            ModelMap model) {
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
         String loginPath = config.get(SiteConfigComponent.CONFIG_LOGIN_PATH);
         if (CommonUtils.empty(loginPath)) {
@@ -111,7 +128,21 @@ public class LoginController {
                 return UrlBasedViewResolver.REDIRECT_URL_PREFIX + loginPath;
             }
             locked = lockComponent.isLocked(site.getId(), LockComponent.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null);
-            if (ControllerUtils.errorCustom("locked.user", locked, model) || ControllerUtils.errorNotEquals("password",
+            String enableCaptcha = config.get(SiteConfigComponent.CONFIG_CAPTCHA);
+            if (CommonUtils.notEmpty(captcha) || CommonUtils.notEmpty(enableCaptcha)
+                    && ArrayUtils.contains(StringUtils.split(enableCaptcha, CommonConstants.COMMA), "login")) {
+                String sessionCaptcha = (String) request.getSession().getAttribute("captcha");
+                request.getSession().removeAttribute("captcha");
+                if (ControllerUtils.errorCustom("locked.user", locked, model) || ControllerUtils.errorCustom("captcha.error",
+                        null == sessionCaptcha || !sessionCaptcha.equals(captcha), model)) {
+                    lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null, true);
+                    lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, null, true);
+                    logLoginService.save(new LogLogin(site.getId(), username, user.getId(), ip, LogLoginService.CHANNEL_WEB,
+                            false, now, password));
+                    return UrlBasedViewResolver.REDIRECT_URL_PREFIX + loginPath;
+                }
+            }
+            if (ControllerUtils.errorNotEquals("password",
                     UserPasswordUtils.passwordEncode(password, null, user.getPassword(), encoding), user.getPassword(), model)
                     || verifyNotEnablie(user, model)) {
                 Long userId = user.getId();
@@ -124,7 +155,8 @@ public class LoginController {
                 lockComponent.unLock(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, user.getId());
                 lockComponent.unLock(site.getId(), LockComponent.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null);
                 if (UserPasswordUtils.needUpdate(user.getPassword())) {
-                    service.updatePassword(user.getId(), UserPasswordUtils.passwordEncode(password, UserPasswordUtils.getSalt(), null, encoding));
+                    service.updatePassword(user.getId(),
+                            UserPasswordUtils.passwordEncode(password, UserPasswordUtils.getSalt(), null, encoding));
                 }
                 service.updateLoginStatus(user.getId(), ip);
 
@@ -176,6 +208,8 @@ public class LoginController {
      * @param repassword
      * @param returnUrl
      * @param encode
+     * @param captcha
+     *            验证码
      * @param clientId
      * @param uuid
      * @param request
@@ -185,7 +219,8 @@ public class LoginController {
      */
     @RequestMapping(value = "doRegister", method = RequestMethod.POST)
     public String register(@RequestAttribute SysSite site, SysUser entity, String repassword, String returnUrl, String encode,
-            Long clientId, String uuid, HttpServletRequest request, HttpServletResponse response, ModelMap model) {
+            String captcha, Long clientId, String uuid, HttpServletRequest request, HttpServletResponse response,
+            ModelMap model) {
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
         String registerPath = config.get(SiteConfigComponent.CONFIG_REGISTER_URL);
         if (CommonUtils.empty(registerPath)) {
@@ -196,6 +231,15 @@ public class LoginController {
         if (ControllerUtils.errorCustom("locked.ip", locked, model)) {
             lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_REGISTER, ip, null, true);
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + registerPath;
+        }
+        String enableCaptcha = config.get(SiteConfigComponent.CONFIG_CAPTCHA);
+        if (CommonUtils.notEmpty(captcha) || CommonUtils.notEmpty(enableCaptcha)
+                && ArrayUtils.contains(StringUtils.split(enableCaptcha, CommonConstants.COMMA), "register")) {
+            String sessionCaptcha = (String) request.getSession().getAttribute("captcha");
+            request.getSession().removeAttribute("captcha");
+            if (ControllerUtils.errorCustom("captcha.error", null == sessionCaptcha || !sessionCaptcha.equals(captcha), model)) {
+                return UrlBasedViewResolver.REDIRECT_URL_PREFIX + registerPath;
+            }
         }
         entity.setName(StringUtils.trim(entity.getName()));
         entity.setNickname(StringUtils.trim(entity.getNickname()));
@@ -243,6 +287,16 @@ public class LoginController {
                     new SysUserToken(authToken, site.getId(), entity.getId(), LogLoginService.CHANNEL_WEB, now, expiryDate, ip));
         }
         return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
+    }
+
+    @RequestMapping(value = "getCaptchaImage")
+    public void getCaptchaImage(javax.servlet.http.HttpSession session, javax.servlet.http.HttpServletResponse response) {
+        try {
+            String captcha = VerificationUtils.getRandomString("ABCDEFGHJKMNPQRSTUVWXYZ23456789", 4);
+            session.setAttribute("captcha", captcha);
+            ImageUtils.drawImage(100, 20, captcha, response.getOutputStream());
+        } catch (IOException e) {
+        }
     }
 
     /**

@@ -8,11 +8,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
-import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -22,9 +22,11 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import com.publiccms.common.annotation.Csrf;
+import com.publiccms.common.api.Config;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.cms.CmsSurvey;
 import com.publiccms.entities.cms.CmsSurveyQuestion;
@@ -33,6 +35,7 @@ import com.publiccms.entities.cms.CmsUserSurveyId;
 import com.publiccms.entities.cms.CmsUserSurveyQuestion;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
+import com.publiccms.logic.component.config.ConfigComponent;
 import com.publiccms.logic.component.config.SiteConfigComponent;
 import com.publiccms.logic.service.cms.CmsSurveyQuestionItemService;
 import com.publiccms.logic.service.cms.CmsSurveyQuestionService;
@@ -49,23 +52,46 @@ import com.publiccms.views.pojo.model.CmsUserSurveyQuestionParameters;
 @Controller
 @RequestMapping("survey")
 public class SurveyController {
+    @Resource
+    private CmsSurveyQuestionService questionService;
+    @Resource
+    private CmsUserSurveyService userSurveyService;
+    @Resource
+    private CmsUserSurveyQuestionService userQuestionquestionService;
+    @Resource
+    private CmsSurveyQuestionItemService itemService;
+    @Resource
+    protected ConfigComponent configComponent;
+    @Resource
+    protected SiteConfigComponent siteConfigComponent;
 
     /**
      * @param site
      * @param user
      * @param surveyId
+     * @param captcha
      * @param userQuestionParameters
      * @param returnUrl
      * @param request
-     * @param model 
+     * @param model
      * @return
      */
     @RequestMapping("save")
     @Csrf
-    public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser user, long surveyId,
+    public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser user, long surveyId, String captcha,
             @ModelAttribute CmsUserSurveyQuestionParameters userQuestionParameters, String returnUrl, HttpServletRequest request,
             ModelMap model) {
         returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
+        Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+        String enableCaptcha = config.get(SiteConfigComponent.CONFIG_CAPTCHA);
+        if (CommonUtils.notEmpty(captcha) || CommonUtils.notEmpty(enableCaptcha)
+                && ArrayUtils.contains(StringUtils.split(enableCaptcha, CommonConstants.COMMA), "survey")) {
+            String sessionCaptcha = (String) request.getSession().getAttribute("captcha");
+            request.getSession().removeAttribute("captcha");
+            if (ControllerUtils.errorCustom("captcha.error", null == sessionCaptcha || !sessionCaptcha.equals(captcha), model)) {
+                return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
+            }
+        }
         CmsSurvey entity = service.getEntity(surveyId);
         if (null != entity) {
             String ip = RequestUtils.getIpAddress(request);
@@ -140,14 +166,4 @@ public class SurveyController {
 
     @Resource
     private CmsSurveyService service;
-    @Resource
-    private CmsSurveyQuestionService questionService;
-    @Resource
-    private CmsUserSurveyService userSurveyService;
-    @Resource
-    private CmsUserSurveyQuestionService userQuestionquestionService;
-    @Resource
-    private CmsSurveyQuestionItemService itemService;
-    @Resource
-    protected SiteConfigComponent siteConfigComponent;
 }
