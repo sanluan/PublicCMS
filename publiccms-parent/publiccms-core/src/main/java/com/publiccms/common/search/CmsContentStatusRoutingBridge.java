@@ -24,7 +24,7 @@ public class CmsContentStatusRoutingBridge implements RoutingBridge<CmsContent> 
             RoutingBridgeRouteContext context) {
         ModelComponent modelComponent = BeanComponent.getModelComponent();
         CmsModel model = modelComponent.getModelMap(indexedEntity.getSiteId()).get(indexedEntity.getModelId());
-        if (CommonUtils.empty(CmsDataSource.getDataSourceName()) && null != model && model.isSearchable()
+        if (CommonUtils.empty(CmsDataSource.getDataSourceName()) && null != model && model.isSearchableModel()
                 && CmsContentService.STATUS_NORMAL == indexedEntity.getStatus()
                 && (null != indexedEntity.getParentId() || null == indexedEntity.getQuoteContentId())
                 && !indexedEntity.isDisabled()) {
