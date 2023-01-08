@@ -168,10 +168,14 @@ public class ContentExchangeComponent extends Exchange<CmsContent, Content> {
                 }
             }
             List<SysExtendField> modelExtendList = null;
+            Map<String, String> fieldTextMap = null;
+            List<String> fieldList = null;
             if (CommonUtils.notEmpty(queryEntity.getModelIds()) && 1 == queryEntity.getModelIds().length) {
                 CmsModel cmsModel = modelComponent.getModelMap(siteId).get(queryEntity.getModelIds()[0]);
                 if (null != cmsModel) {
                     modelExtendList = cmsModel.getExtendList();
+                    fieldTextMap = cmsModel.getFieldTextMap();
+                    fieldList = cmsModel.getFieldList();
                 }
             }
 
@@ -181,8 +185,32 @@ public class ContentExchangeComponent extends Exchange<CmsContent, Content> {
             Row row = sheet.createRow(i++);
 
             row.createCell(j++).setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.id"));
-            row.createCell(j++).setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.title"));
-            row.createCell(j++).setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.url"));
+            row.createCell(j++)
+                    .setCellValue(null == fieldTextMap
+                            ? LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.title")
+                            : fieldTextMap.get("title"));
+            row.createCell(j++)
+                    .setCellValue(null == fieldTextMap
+                            ? LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.url")
+                            : fieldTextMap.get("url"));
+            if (null != fieldList && fieldList.contains("author")) {
+                row.createCell(j++)
+                        .setCellValue(null == fieldTextMap
+                                ? LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "content.author")
+                                : fieldTextMap.get("author"));
+            }
+            if (null != fieldList && fieldList.contains("editor")) {
+                row.createCell(j++)
+                        .setCellValue(null == fieldTextMap
+                                ? LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "editor")
+                                : fieldTextMap.get("editor"));
+            }
+            if (null != fieldList && fieldList.contains("description")) {
+                row.createCell(j++)
+                        .setCellValue(null == fieldTextMap
+                                ? LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.description")
+                                : fieldTextMap.get("description"));
+            }
             row.createCell(j++).setCellValue(
                     LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content.promulgator"));
             row.createCell(j++).setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.dept"));
@@ -197,6 +225,8 @@ public class ContentExchangeComponent extends Exchange<CmsContent, Content> {
                     .setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.clicks"));
             row.createCell(j++)
                     .setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.publish_date"));
+            row.createCell(j++)
+                    .setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.expiry_date"));
             row.createCell(j++)
                     .setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.create_date"));
             row.createCell(j++).setCellValue(
@@ -220,8 +250,12 @@ public class ContentExchangeComponent extends Exchange<CmsContent, Content> {
                     row.createCell(j++).setCellValue(extend.getName());
                 }
             }
-            row.createCell(j++)
-                    .setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content.text"));
+            if (null != fieldList && fieldList.contains("content")) {
+                row.createCell(j++)
+                        .setCellValue(null == fieldTextMap
+                                ? LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content.text")
+                                : fieldTextMap.get("content"));
+            }
 
             SysUser user;
             SysDept dept;
@@ -235,6 +269,15 @@ public class ContentExchangeComponent extends Exchange<CmsContent, Content> {
                 row.createCell(j++).setCellValue(entity.getId().toString());
                 row.createCell(j++).setCellValue(entity.getTitle());
                 row.createCell(j++).setCellValue(entity.getUrl());
+                if (null != fieldList && fieldList.contains("author")) {
+                    row.createCell(j++).setCellValue(entity.getAuthor());
+                }
+                if (null != fieldList && fieldList.contains("editor")) {
+                    row.createCell(j++).setCellValue(entity.getEditor());
+                }
+                if (null != fieldList && fieldList.contains("description")) {
+                    row.createCell(j++).setCellValue(entity.getDescription());
+                }
                 user = userMap.get(entity.getUserId());
                 dept = deptMap.get(entity.getDeptId());
                 row.createCell(j++).setCellValue(null == user ? null : user.getNickname());
@@ -247,6 +290,7 @@ public class ContentExchangeComponent extends Exchange<CmsContent, Content> {
                 row.createCell(j++).setCellValue(String.valueOf(entity.getComments()));
                 row.createCell(j++).setCellValue(String.valueOf(entity.getClicks()));
                 row.createCell(j++).setCellValue(dateFormat.format(entity.getPublishDate()));
+                row.createCell(j++).setCellValue(dateFormat.format(entity.getExpiryDate()));
                 row.createCell(j++).setCellValue(dateFormat.format(entity.getCreateDate()));
                 row.createCell(j++).setCellValue(String.valueOf(entity.getSort()));
                 row.createCell(j++).setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale,
@@ -270,13 +314,17 @@ public class ContentExchangeComponent extends Exchange<CmsContent, Content> {
                     }
                 }
 
-                row.createCell(j++).setCellValue(null == attribute ? null : StringUtils.substring(attribute.getText(), 0, 32767));
-                if (null != attribute && null != attribute.getText() && attribute.getText().length() > 32767) {
-                    long length = attribute.getText().length();
-                    int m = 0;
-                    while ((length = length - 32767) > 0) {
-                        m++;
-                        row.createCell(j++).setCellValue(StringUtils.substring(attribute.getText(), m * 32767, (m + 1) * 32767));
+                if (null != fieldList && fieldList.contains("content")) {
+                    row.createCell(j++)
+                            .setCellValue(null == attribute ? null : StringUtils.substring(attribute.getText(), 0, 32767));
+                    if (null != attribute && null != attribute.getText() && attribute.getText().length() > 32767) {
+                        long length = attribute.getText().length();
+                        int m = 0;
+                        while ((length = length - 32767) > 0) {
+                            m++;
+                            row.createCell(j++)
+                                    .setCellValue(StringUtils.substring(attribute.getText(), m * 32767, (m + 1) * 32767));
+                        }
                     }
                 }
             }

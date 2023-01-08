@@ -37,11 +37,6 @@
                     </span>
                 </dd>
             </dl>
-            <#if a?has_content&&a.allowContribute>
-                <script>
-                    $('input[name=allowContribute]',navTab.getCurrentPanel()).click();
-                </script>
-            </#if>
             <dl class="nowrap">
                 <dt><@t.page 'place_data.page_size'/>:</dt>
                 <dd>
@@ -130,7 +125,7 @@
                 <span class="info"><@t.page 'extend_field.use.metadata'/>;<@t.page 'extend_field.use.content'/>;<@t.page 'metadata.default_value_description'/></span>
             </fieldset>
     <script>
-    $('input[type=allowContribute]',navTab.getCurrentPanel()).click(function(){
+    $('input[name=allowContribute]',navTab.getCurrentPanel()).click(function(){
         if($(this).is(':checked')) {
             $('.allowContribute',navTab.getCurrentPanel()).show();
         } else {
@@ -148,6 +143,9 @@
             }
         });
     });
+    <#if a?has_content&&a.allowContribute>
+        $('input[name=allowContribute]',navTab.getCurrentPanel()).click();
+    </#if>
     <#if (a.fieldList)?has_content>
     <#list a.fieldList as field>
         $('input[name=fieldList][value=${field}]',navTab.getCurrentPanel()).click();

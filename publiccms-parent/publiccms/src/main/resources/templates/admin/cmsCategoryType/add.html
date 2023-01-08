@@ -86,7 +86,7 @@
         </div>
     </form>
 <script>
-    $('input[type=allowContribute]',navTab.getCurrentPanel()).click(function(){
+    $('input[name=onlyUrl]',navTab.getCurrentPanel()).click(function(){
         if($(this).is(':checked')) {
             $('.onlyUrl',navTab.getCurrentPanel()).hide();
             $('.onlyUrl input[type=text]',navTab.getCurrentPanel()).val('');
