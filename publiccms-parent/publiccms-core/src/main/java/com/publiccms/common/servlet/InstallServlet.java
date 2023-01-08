@@ -125,12 +125,12 @@ public class InstallServlet extends HttpServlet {
                     configDatabase(request, map);
                     break;
                 case STEP_CHECKDATABASE:
-                    checkDatabse(map);
+                    checkDatabse(request, map);
                     break;
                 case STEP_INITDATABASE:
                     try {
                         initDatabase(request.getParameter("useSimple"), request.getParameter("username"),
-                                request.getParameter("password"), map);
+                                request.getParameter("password"), request.getParameter("siteurl"), map);
                         startCMS(map);
                     } catch (Exception e) {
                         map.put("error", e.getMessage());
@@ -192,6 +192,7 @@ public class InstallServlet extends HttpServlet {
                 dbconfig.store(outputStream, null);
             }
             try (Connection connection = DatabaseUtils.getConnection(databaseConfiFile)) {
+                map.put("siteurl", getSiteUrl(request));
                 map.put("usersql", new File(CommonConstants.CMS_FILEPATH + "/publiccms.sql").exists());
                 map.put("message", "success");
             }
@@ -206,15 +207,23 @@ public class InstallServlet extends HttpServlet {
      *
      * @param map
      */
-    private void checkDatabse(Map<String, Object> map) {
+    private void checkDatabse(HttpServletRequest request, Map<String, Object> map) {
         String databaseConfiFile = CommonConstants.CMS_FILEPATH + CmsDataSource.DATABASE_CONFIG_FILENAME;
         startStep = null;
         try (Connection connection = DatabaseUtils.getConnection(databaseConfiFile)) {
             map.put("message", "success");
+            map.put("siteurl", getSiteUrl(request));
             map.put("usersql", new File(CommonConstants.CMS_FILEPATH + "/publiccms.sql").exists());
         } catch (Exception e) {
             map.put("error", e.getMessage());
         }
+    }
+
+    private static String getSiteUrl(HttpServletRequest request) {
+        return "//" + request.getServerName()
+                + ("https".equals(request.getScheme()) && 443 == request.getServerPort() || 80 == request.getServerPort() ? ("")
+                        : (":" + request.getServerPort()))
+                + request.getContextPath();
     }
 
     /**
@@ -226,11 +235,12 @@ public class InstallServlet extends HttpServlet {
      * @param map
      * @throws IOException
      */
-    private void initDatabase(String useSimple, String username, String password, Map<String, Object> map) throws Exception {
+    private void initDatabase(String useSimple, String username, String password, String siteurl, Map<String, Object> map)
+            throws Exception {
         String databaseConfiFile = CommonConstants.CMS_FILEPATH + CmsDataSource.DATABASE_CONFIG_FILENAME;
         try (Connection connection = DatabaseUtils.getConnection(databaseConfiFile)) {
             try {
-                map.put("history", install(connection, username, password, null != useSimple));
+                map.put("history", install(connection, username, password, siteurl, null != useSimple));
                 map.put("message", "success");
             } catch (Exception e) {
                 e.printStackTrace();
@@ -240,7 +250,7 @@ public class InstallServlet extends HttpServlet {
         }
     }
 
-    private String install(Connection connection, String username, String password, boolean useSimple)
+    private String install(Connection connection, String username, String password, String siteurl, boolean useSimple)
             throws SQLException, IOException {
         StringWriter stringWriter = new StringWriter();
         ScriptRunner runner = new ScriptRunner(connection);
@@ -251,6 +261,7 @@ public class InstallServlet extends HttpServlet {
             runner.runScript(new InputStreamReader(inputStream, CommonConstants.DEFAULT_CHARSET));
         }
         cmsUpgrader.setPassword(connection, username, password);
+        cmsUpgrader.setSiteUrl(connection, siteurl);
         if (useSimple) {
             File file = new File(CommonConstants.CMS_FILEPATH + "/publiccms.sql");
             if (file.exists()) {

@@ -88,6 +88,19 @@ public abstract class AbstractCmsUpgrader {
         }
     }
 
+    public void setSiteUrl(Connection connection, String siteurl) throws SQLException, IOException {
+        if (null != siteurl) {
+            String dynamicPath = siteurl.endsWith("/") ? siteurl : (siteurl + "/");
+            String sitePath = dynamicPath + "webfile/";
+            try (PreparedStatement statement = connection
+                    .prepareStatement("update sys_site set dynamic_path=?,site_path=? where id = 1")) {
+                statement.setString(1, dynamicPath);
+                statement.setString(2, sitePath);
+                statement.execute();
+            }
+        }
+    }
+
     protected void updateMetadata(StringWriter stringWriter, Connection connection) {
         try (Statement statement = connection.createStatement();
                 ResultSet rs = statement.executeQuery("select * from sys_site")) {
