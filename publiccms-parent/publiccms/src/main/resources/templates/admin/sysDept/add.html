@@ -5,7 +5,7 @@
 </@sys.dept>
 <@sys.dept id=parentId!><#assign parentName=(object.name)!/></@sys.dept>
 <form method="post" autocomplete="off" action="sysDept/save?callbackType=closeCurrent&navTabId=sysDept/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
-    <input name="id" type="hidden" value="${id!}" />
+    <input name="id" type="hidden" value="${id!}"/>
     <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <div class="formBar card">
         <ul>
@@ -45,7 +45,7 @@
             </dl>
             <dl>
                 <dt><@t.page 'dept.own_all_category'/>:</dt>
-                <dd><input name="ownsAllCategory" type="checkbox" onclick="if($(this).is(':checked')){$('.ownsAllCategory',navTab.getCurrentPanel()).hide();}else{$('.ownsAllCategory',navTab.getCurrentPanel()).show();}"/></dd>
+                <dd><input name="ownsAllCategory" type="checkbox"/></dd>
             </dl>
             <dl>
                 <dt><@t.page 'content.max_top_level'/>:</dt>
@@ -53,11 +53,11 @@
             </dl>
             <dl class="nowrap">
                 <dt><@t.page 'dept.own_all_page'/>:</dt>
-                <dd><input name="ownsAllPage" type="checkbox" onclick="if($(this).is(':checked')){$('.ownsAllPage',navTab.getCurrentPanel()).hide();}else{$('.ownsAllPage',navTab.getCurrentPanel()).show();}"/></dd>
+                <dd><input name="ownsAllPage" type="checkbox"/></dd>
             </dl>
             <dl class="nowrap">
                 <dt><@t.page 'dept.own_all_config'/>:</dt>
-                <dd><input name="ownsAllConfig" type="checkbox" onclick="if($(this).is(':checked')){$('.ownsAllConfig',navTab.getCurrentPanel()).hide();}else{$('.ownsAllConfig',navTab.getCurrentPanel()).show();}"/></dd>
+                <dd><input name="ownsAllConfig" type="checkbox"/></dd>
             </dl>
     <#macro categoryTree parentId=''>
         <@cms.categoryList parentId=parentId advanced=true pageSize=500>
@@ -133,8 +133,29 @@
                     </li>
                 </ul>
             </fieldset>
-    <#if a?has_content>
     <script>
+        $('input[type=ownsAllCategory]',navTab.getCurrentPanel()).click(function(){
+            if($(this).is(':checked')) {
+                $('.ownsAllCategory',navTab.getCurrentPanel()).hide();
+            } else {
+                $('.ownsAllCategory',navTab.getCurrentPanel()).show();
+            }
+        });
+        $('input[type=ownsAllPage]',navTab.getCurrentPanel()).click(function(){
+            if($(this).is(':checked')) {
+                $('.ownsAllPage',navTab.getCurrentPanel()).hide();
+            } else {
+                $('.ownsAllPage',navTab.getCurrentPanel()).show();
+            }
+        });
+        $('input[type=ownsAllConfig]',navTab.getCurrentPanel()).click(function(){
+            if($(this).is(':checked')) {
+                $('.ownsAllConfig',navTab.getCurrentPanel()).hide();
+            } else {
+                $('.ownsAllConfig',navTab.getCurrentPanel()).show();
+            }
+        });
+    <#if a?has_content>
         <#if a.ownsAllPage>
         $('input[name=ownsAllPage]',navTab.getCurrentPanel()).click();
         </#if>
@@ -159,8 +180,8 @@
         $('.ownsAllConfig .tree li a[tname=configs][tvalue=${a.id.config?js_string}]',navTab.getCurrentPanel()).attr('checked','true');
             </#list>
         </@sys.deptItemList>
-    </script>
     </#if>
+    </script>
         </div>
     </div>
 </form>

@@ -11,11 +11,11 @@
                 </li>
                 <li>
                     <label><@t.page 'content.id'/>:</label>
-                    <input type="text" name="contentId" value="${contentId!}" />
+                    <input type="text" name="contentId" value="${contentId!}"/>
                 </li>
                 <li>
                 <#list 1..2 as s>
-                    <label style="width:auto">
+                    <label>
                         <input <@t.compare status s?string 'checked="checked"'/> name="status" value="${s}" type="checkbox"/>
                         <@t.page 'status.content.'+s/>
                     </label>

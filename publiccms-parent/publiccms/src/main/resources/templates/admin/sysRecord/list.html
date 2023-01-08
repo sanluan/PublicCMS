@@ -1,0 +1,64 @@
+<@sys.recordList code=code startCreateDate=startCreateDate endCreateDate=endCreateDate orderType=orderType pageIndex=pageNum pageSize=numPerPage>
+<div class="pageHeader card">
+    <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
+        <#include "../include_page/parameters.html"/>
+        <div class="searchBar">
+            <ul class="searchContent">
+                <li>
+                    <label><@t.page 'code'/>:</label>
+                    <input name="code" type="text" value="${code!}"/>
+                </li>
+                <li>
+                    <label><@t.page 'create_date'/>:</label>
+                    <input type="text" name="startCreateDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startCreateDate!}"/>
+                    <a class="inputDateButton" href="javascript:void(0);"></a>
+                    <span>-</span>
+                    <input type="text" name="endCreateDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endCreateDate!}"/>
+                    <a class="inputDateButton" href="javascript:void(0);"></a>
+                </li>
+            </ul>
+            <div class="subBar">
+                <ul>
+                    <li>
+                        <button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="card">
+    <div class="panelBar">
+        <ul class="toolBar">
+            <li><a href="sysRecord/add.html" target="navTab" rel="sysTask/add"><i class="icon-plus-sign-alt icon-large"></i><@t.page 'button.add'/></a></li>
+            <li><a href="sysRecord/delete?_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i><@t.page 'button.batch_delete'/></a></li>
+        </ul>
+    </div>
+    <table class="table" width="100%" layoutH orderField="${orderField!}" orderType="${orderType!}">
+        <thead>
+            <tr>
+                <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
+                <th width="30"><@t.page 'code'/></th>
+                <th orderField="createDate"><@t.page 'create_date'/></th>
+                <th><@t.page 'content'/></th>
+                <th><@t.page 'operate'/></th>
+            </tr>
+        </thead>
+        <tbody>
+            <#list page.list as a>
+            <tr>
+                <td class="center"><input name="ids" value="${a.id.code}" type="checkbox"></td>
+                <td>${a.id.code!}</td>
+                <td>${a.createDate!}</td>
+                <td class="exclude-translate"><@t.cut a.data 60 '...<a href="sysRecord/view.html?id=${a.id.code}" class="btnText" target="dialog" rel="recordView">'?no_esc+t.pageMessage('button.view_more')+'</a>'?no_esc/></td>
+                <td>
+                    <a href="sysRecord/add.html?id=${a.id.code}" class="edit btnText blue" target="navTab" rel="sysRecord/edit"><i class="icon-edit"></i><@t.page 'button.edit'/></a>
+                    <a href="sysRecord/delete?ids=${a.id.code}&_csrf=<@tools.csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i><@t.page 'button.delete'/></a>
+                </td>
+            </tr>
+            </#list>
+        </tbody>
+    </table>
+    <#include "../include_page/page.html"/>
+</div>
+</@sys.recordList>

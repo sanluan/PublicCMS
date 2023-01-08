@@ -54,8 +54,6 @@ public class SysModuleAdminController {
     @Resource
     private SysRoleService roleService;
     @Resource
-    private SysModuleService moduleService;
-    @Resource
     private SysRoleModuleService roleModuleService;
     @Resource
     private SysRoleAuthorizedService roleAuthorizedService;
@@ -171,7 +169,7 @@ public class SysModuleAdminController {
             SysRole role = roleService.getEntity(roleModule.getId().getRoleId());
             if (!moduleIds.isEmpty() && null != role && !role.isOwnsAllRight()) {
                 roleAuthorizedService.dealRoleModules(roleModule.getId().getRoleId(), role.isShowAllModule(),
-                        service.getEntitys(moduleIds), role.isShowAllModule() ? moduleService.getPageUrl(null) : null);
+                        service.getEntitys(moduleIds), role.isShowAllModule() ? service.getPageUrl(null) : null);
             }
         }
     }

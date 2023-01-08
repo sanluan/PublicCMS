@@ -5,12 +5,20 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import jakarta.annotation.Resource;
+
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
+import com.publiccms.common.api.Config;
 import com.publiccms.common.base.AbstractTemplateDirective;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysRoleModule;
+import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.config.ConfigComponent;
+import com.publiccms.logic.component.config.SiteConfigComponent;
 import com.publiccms.logic.service.sys.SysRoleModuleService;
 import com.publiccms.logic.service.sys.SysRoleService;
 
@@ -31,7 +39,7 @@ import com.publiccms.logic.service.sys.SysRoleService;
  * &lt;@sys.roleModule roleIds='1,2,3'
  * modelId='page'&gt;${object}&lt;/@sys.roleModule&gt;
  * <p>
- * &lt;@sys.roleModule deptId=1 pages='/index.html,/search'&gt;&lt;#list map as
+ * &lt;@sys.roleModule roleIds='1,2,3' modelIds='page,content'&gt;&lt;#list map as
  * k,v&gt;${k}:${v}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.roleModule&gt;
  *
  * <pre>
@@ -44,14 +52,24 @@ $.getJSON('${site.dynamicPath}api/directive/sys/roleModule?roleIds=1,2,3&amp;mod
  */
 @Component
 public class SysRoleModuleDirective extends AbstractTemplateDirective {
+    @Resource
+    private SysRoleService sysRoleService;
+    @Resource
+    protected ConfigComponent configComponent;
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
         Integer[] roleIds = handler.getIntegerArray("roleIds");
         String moduleId = handler.getString("moduleId");
         if (CommonUtils.notEmpty(roleIds)) {
+            SysSite site = getSite(handler);
+            Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+            String[] excludeModules = StringUtils.split(config.get(SiteConfigComponent.CONFIG_SITE_EXCLUDE_MODULE),
+                    CommonConstants.COMMA);
             if (CommonUtils.notEmpty(moduleId)) {
-                handler.put("object", sysRoleService.showAllModule(roleIds) || null != service.getEntity(roleIds, moduleId))
+                handler.put("object",
+                        (CommonUtils.empty(excludeModules) || !ArrayUtils.contains(excludeModules, moduleId))
+                                && (sysRoleService.showAllModule(roleIds) || null != service.getEntity(roleIds, moduleId)))
                         .render();
             } else {
                 String[] moduleIds = handler.getStringArray("moduleIds");
@@ -59,11 +77,12 @@ public class SysRoleModuleDirective extends AbstractTemplateDirective {
                     Map<String, Boolean> map = new LinkedHashMap<>();
                     if (sysRoleService.showAllModule(roleIds)) {
                         for (String id : moduleIds) {
-                            map.put(id, true);
+                            map.put(id, CommonUtils.empty(excludeModules) || !ArrayUtils.contains(excludeModules, id));
                         }
                     } else {
                         for (SysRoleModule entity : service.getEntitys(roleIds, moduleIds)) {
-                            map.put(entity.getId().getModuleId(), true);
+                            map.put(entity.getId().getModuleId(), CommonUtils.empty(excludeModules)
+                                    || !ArrayUtils.contains(excludeModules, entity.getId().getModuleId()));
                         }
                     }
                     handler.put("map", map).render();
@@ -77,8 +96,6 @@ public class SysRoleModuleDirective extends AbstractTemplateDirective {
         return true;
     }
 
-    @Resource
-    private SysRoleService sysRoleService;
     @Resource
     private SysRoleModuleService service;
 

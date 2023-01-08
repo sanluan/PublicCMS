@@ -251,6 +251,38 @@
         <input name="${inputName}" <#if 'customform'!=type>class="color<#if extend.required> required</#if>" autocomplete="off" showAlpha="true" </#if>type="text" size="20" value="${(value)!}"/>
             </#if>
             <#break>
+        <#case 'categoryPath'>
+            <#if 'view'=type>
+                ${(value)!}
+            <#else>
+        <input name="${inputName}" type="text" <#if 'customform'!=type><#if extend.required> class="required"</#if></#if> autocomplete="on" maxlength="500" size="100" value="${(value)!}"/>
+        <a class="btnLook" href="cmsCategory/categoryPath.html?field=value" lookupGroup="${name}[${index}]" width="920"><@t.page 'select_path'/></a>
+            </#if>
+            <#break>
+        <#case 'contentPath'>
+            <#if 'view'=type>
+                ${(value)!}
+            <#else>
+        <input name="${inputName}" type="text" <#if 'customform'!=type><#if extend.required> class="required"</#if></#if> autocomplete="on" maxlength="500" size="100" value="${(value)!}"/>
+        <a class="btnLook" href="cmsCategory/contentPath.html?field=value" lookupGroup="${name}[${index}]" width="920"><@t.page 'select_path'/></a>
+            </#if>
+            <#break>
+        <#case 'module'>
+            <#if value?has_content>
+                <#local values=value?split(',')/>
+            </#if>
+            <#if 'view'=type>
+                <#if values?has_content>
+                    <#list values as a>
+                        <@t.menu a/><#sep>,
+                    </#list>
+                </#if>
+            <#else>
+                <#list ["myself_device","comment_list","tag_list","product_list","vote_list","survey_list","category_extend","trade_menu","page_diy","visit_menu","app_client_list"] as a>
+        <label><input name="${inputName}" type="checkbox" value="${a}"${(values?has_content&&values?seq_contains(a))?then(' checked="true"','')?no_esc}/><@t.menu a/></label>
+                </#list>
+            </#if>
+            <#break>
         <#default>
             <#if 'view'=type>
                 ${(value)!}

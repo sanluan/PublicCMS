@@ -3,8 +3,8 @@
     <#if (object.parentId)?has_content><#assign parentId=object.parentId/></#if>
 </@cms.model>
 <form method="post" autocomplete="off" action="cmsModel/save?callbackType=closeCurrent&navTabId=cmsModel/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
-    <input name="modelId" type="hidden" value="${id!}" />
-    <input name="parentId" type="hidden" value="${parentId!}" />
+    <input name="modelId" type="hidden" value="${id!}"/>
+    <input name="parentId" type="hidden" value="${parentId!}"/>
     <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <div class="formBar card">
         <ul>
@@ -33,6 +33,7 @@
                     <dt><@t.page 'name'/>:</dt>
                     <dd>
                         <input class="required" name="name" type="text" maxlength="20" size="20" value="${(a.name)!}"/>
+                        <label><input name="searchableModel" type="checkbox"/><@t.page 'searchableModel'/></label>
                     </dd>
                 </dl>
             <#if site.useStatic>
@@ -41,7 +42,6 @@
                     <dd>
                         <input name="templatePath" type="text" autocomplete="on" maxlength="200" size="30" value="${(a.templatePath)!}"/>
                         <a class="btnLook" href="cmsTemplate/lookup.html?field=templatePath" lookupGroup=""><@t.page 'template.select'/></a>
-                        <span class="info"><@t.page 'model.template_path.description'/></span>
                     </dd>
                 </dl>
             </#if>
@@ -168,7 +168,7 @@
                     <dd>
                         <label><@t.page 'text'/>:</label><input name="fieldTextMap[content]" type="text" autocomplete="on" maxlength="20" size="10" value="${(a.fieldTextMap['content'])!t.pageMessage('content.text')}"/>
                         <label><input name="requiredFieldList" type="checkbox" value="content"/><@t.page 'required'/></label>
-                        <label><input name="searchable" type="checkbox" ${(!a?has_content||a.searchable)?then(' checked="true"','')?no_esc}/><@t.page 'searchable'/></label>
+                        <label class="searchable"><input name="searchable" type="checkbox" ${(!a?has_content||a.searchable)?then(' checked="true"','')?no_esc}/><@t.page 'searchable'/></label>
                         <label><@t.page 'editor_type'/>:</label>
                         <#assign editorTypes={'ueditor':t.pageMessage('ueditor'),'ckeditor':t.pageMessage('ckeditor'),'tinymce':t.pageMessage('tinymce'),'kindeditor':t.pageMessage('kindeditor')}/>
                         <select class="combox" name="editorType">
@@ -210,7 +210,7 @@
                             <td>
                                 <@cms.modelList queryAll=true>
                                     <#list page.list as m>
-                                        <label style="width:auto">
+                                        <label>
                                             <input<#if a.modelIds?has_content && a.modelIds?split(',')?seq_contains(m.id)> checked="checked"</#if> name="relatedList[${a?index}].modelIds" value="${m.id}" type="checkbox"/>
                                             ${(m.name)!}
                                         </label>
@@ -264,7 +264,20 @@
                         $('.'+$(this).attr('name'),navTab.getCurrentPanel()).hide();
                     }
                 });
+                $('input[name=searchableModel]',navTab.getCurrentPanel()).click(function(){
+                    if($(this).is(':checked')) {
+                        $('.searchable',navTab.getCurrentPanel()).show();
+                    } else {
+                        $('.searchable',navTab.getCurrentPanel()).hide();
+                    }
+                });
                 <#if a?has_content>
+                    <#if a.onlyUrl>
+                        $('input[name=onlyUrl]',navTab.getCurrentPanel()).click();
+                    </#if>
+                    <#if a.searchableModel>
+                        $('input[name=searchableModel]',navTab.getCurrentPanel()).click();
+                    </#if>
                     <#if a.hasChild>
                         $('input[name=hasChild]',navTab.getCurrentPanel()).click();
                     </#if>
@@ -288,6 +301,8 @@
                             $('input[name=requiredFieldList][value=${field}]',navTab.getCurrentPanel()).click();
                         </#list>
                     </#if>
+                <#else>
+                    $('input[name=searchableModel]',navTab.getCurrentPanel()).click();
                 </#if>
             </script>
         </div>

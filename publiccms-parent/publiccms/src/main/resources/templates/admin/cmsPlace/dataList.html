@@ -12,7 +12,7 @@
                 </li>
                 <li class="width:auto">
                     <#list 0..2 as s>
-                        <label style="width:auto">
+                        <label>
                             <input <@t.compare status!'' s?string 'checked="checked"'/> name="status" value="${s}" type="checkbox"/>
                             <@t.page 'status.place.data.'+s/>
                         </label>
@@ -24,10 +24,10 @@
                 </li>
                 <li>
                     <label><@t.page 'publish_date'/>:</label>
-                    <input type="text" name="startPublishDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" value="${startPublishDate!}" />
+                    <input type="text" name="startPublishDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" value="${startPublishDate!}"/>
                     <a class="inputDateButton" href="javascript:void(0);"></a>
                     <span>-</span>
-                    <input type="text" name="endPublishDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" value="${endPublishDate!}" />
+                    <input type="text" name="endPublishDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" value="${endPublishDate!}"/>
                     <a class="inputDateButton" href="javascript:void(0);"></a>
                 </li>
             </ul>

@@ -36,7 +36,6 @@ public class CmsCategoryModelService extends BaseService<CmsCategoryModel> {
      * @param categoryId
      * @return number of data deleted
      */
-    @Transactional(readOnly = true)
     public int delete(short siteId, String modelId, Integer categoryId) {
         return dao.delete(siteId, modelId, categoryId);
     }

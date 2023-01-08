@@ -7,7 +7,7 @@
             <ul class="searchContent">
                 <li>
                     <label><@t.page 'payment.id'/>:</label>
-                    <input type="text" name="paymentId" value="${paymentId!}" />
+                    <input type="text" name="paymentId" value="${paymentId!}"/>
                 </li>
                 <li>
                     <label><@t.page 'operate_user'/>:</label>
@@ -19,7 +19,7 @@
                 <li>
                     <label><@t.page 'status'/>:</label>
                     <#list 0..4 as s>
-                        <label style="width:auto">
+                        <label>
                             <input <@t.compare status!'' s?string 'checked="checked"'/> name="status" value="${s}" type="checkbox"/>
                             <@t.page 'status.refund.'+s/>
                         </label>

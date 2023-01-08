@@ -15,8 +15,8 @@
 <#if !a.allowAnonymous>
     <input type="hidden" name="_csrf" value="<#noparse><@tools.csrfToken/></#noparse>"/>
 </#if>
-    <input name="path" type="hidden" value="${(path)!}" />
-    <input name="returnUrl" type="hidden" value="<#noparse>${site.dynamicPath}</#noparse>" />
+    <input name="path" type="hidden" value="${(path)!}"/>
+    <input name="returnUrl" type="hidden" value="<#noparse>${site.dynamicPath}</#noparse>"/>
     <p>
         <label>${(a.fieldTextMap['title'])!}:</label>
         <input name="title" type="text" size="60" value=""/>

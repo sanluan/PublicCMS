@@ -33,7 +33,7 @@ function siteDefaultConfig${id!}(type){
 }
 </script>
 <form method="post" autocomplete="off" action="sysSite/save?callbackType=closeCurrent&navTabId=sysSite/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
-    <input name="id" type="hidden" value="${id!}" />
+    <input name="id" type="hidden" value="${id!}"/>
     <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <input type="hidden" name="encoding" value="sha512"/>
     <div class="formBar card">

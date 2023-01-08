@@ -21,6 +21,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.api.Cache;
+import com.publiccms.common.api.Config;
 import com.publiccms.common.base.AbstractFreemarkerView;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.PageHandler;
@@ -35,6 +36,8 @@ import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.cms.CmsContentAttribute;
 import com.publiccms.entities.cms.CmsPlace;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.BeanComponent;
+import com.publiccms.logic.component.config.SiteConfigComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.service.cms.CmsCategoryAttributeService;
@@ -43,6 +46,8 @@ import com.publiccms.logic.service.cms.CmsCategoryService;
 import com.publiccms.logic.service.cms.CmsContentAttributeService;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.cms.CmsPlaceService;
+import com.publiccms.views.pojo.entities.CmsCategoryType;
+import com.publiccms.views.pojo.entities.CmsModel;
 import com.publiccms.views.pojo.entities.CmsPageData;
 import com.publiccms.views.pojo.entities.CmsPageMetadata;
 import com.publiccms.views.pojo.entities.CmsPlaceMetadata;
@@ -88,12 +93,313 @@ public class TemplateComponent implements Cache {
     @Resource
     private MetadataComponent metadataComponent;
     @Resource
+    private ModelComponent modelComponent;
+    @Resource
     private CmsPlaceService placeService;
     @Resource
     private StatisticsComponent statisticsComponent;
 
     private static ExecutorService pool = Executors.newFixedThreadPool(2 * Runtime.getRuntime().availableProcessors());
 
+    /**
+     * 分类页面静态化
+     *
+     * @param site
+     * @param entity
+     * @param templatePath
+     * @param filepath
+     * @param pageIndex
+     * @param totalPage
+     * @return category static file path
+     * @throws IOException
+     * @throws TemplateException
+     */
+    public String createCategoryFile(SysSite site, CmsCategory entity, String templatePath, String filepath, Integer pageIndex,
+            Integer totalPage) throws IOException, TemplateException {
+        Map<String, Object> model = new HashMap<>();
+        if (CommonUtils.empty(pageIndex)) {
+            pageIndex = 1;
+        }
+        initCategoryUrl(site, entity);
+        model.put("category", entity);
+        CmsCategoryAttribute attribute = categoryAttributeService.getEntity(entity.getId());
+        if (null != attribute) {
+            Map<String, String> map = ExtendUtils.getExtendMap(attribute.getData());
+            map.put("title", attribute.getTitle());
+            map.put("keywords", attribute.getKeywords());
+            map.put("description", attribute.getDescription());
+            model.put("attribute", map);
+        } else {
+            model.put("attribute", attribute);
+        }
+        String realTemplatePath = siteComponent.getTemplateFilePath(site.getId(), templatePath);
+        CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(realTemplatePath);
+        CmsPageData data = metadataComponent.getTemplateData(realTemplatePath);
+        Map<String, Object> metadataMap = metadata.getAsMap(data);
+        String fullTemplatePath = SiteComponent.getFullTemplatePath(site.getId(), templatePath);
+        if (CommonUtils.notEmpty(totalPage) && pageIndex + 1 <= totalPage) {
+            for (int i = pageIndex + 1; i <= totalPage; i++) {
+                createStaticFile(site, fullTemplatePath, filepath, i, metadataMap, model, url -> {
+                    if (null == entity.getUrl()) {
+                        entity.setUrl(url);
+                    }
+                });
+            }
+        }
+
+        return createStaticFile(site, fullTemplatePath, filepath, pageIndex, metadataMap, model, url -> {
+            if (null == entity.getUrl()) {
+                entity.setUrl(url);
+            }
+        });
+    }
+
+    /**
+     * 内容页面静态化
+     *
+     * @param site
+     * @param entity
+     * @param category
+     * @param createMultiContentPage
+     * @param templatePath
+     * @param filepath
+     * @param pageIndex
+     * @return content static file path
+     * @throws IOException
+     * @throws TemplateException
+     */
+    public String createContentFile(SysSite site, CmsContent entity, CmsCategory category, boolean createMultiContentPage,
+            String templatePath, String filepath, Integer pageIndex) throws IOException, TemplateException {
+        Map<String, Object> model = new HashMap<>();
+
+        initContentUrl(site, entity);
+        initContentCover(site, entity);
+        initCategoryUrl(site, category);
+
+        model.put("content", entity);
+        model.put("category", category);
+
+        CmsContentAttribute attribute = contentAttributeService.getEntity(entity.getId());
+        if (null != attribute) {
+            Map<String, String> map = ExtendUtils.getExtendMap(attribute.getData());
+            map.put("text", attribute.getText());
+            map.put("source", attribute.getSource());
+            map.put("sourceUrl", attribute.getSourceUrl());
+            map.put("wordCount", String.valueOf(attribute.getWordCount()));
+            map.put("minPrice", String.valueOf(attribute.getMinPrice()));
+            map.put("maxPrice", String.valueOf(attribute.getMaxPrice()));
+            model.put("attribute", map);
+        } else {
+            model.put("attribute", attribute);
+        }
+        String realTemplatePath = siteComponent.getTemplateFilePath(site.getId(), templatePath);
+        CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(realTemplatePath);
+        CmsPageData data = metadataComponent.getTemplateData(realTemplatePath);
+        Map<String, Object> metadataMap = metadata.getAsMap(data);
+        String fullTemplatePath = SiteComponent.getFullTemplatePath(site.getId(), templatePath);
+        if (null != attribute && CommonUtils.notEmpty(filepath) && CommonUtils.notEmpty(attribute.getText())) {
+            String pageBreakTag = null;
+            if (-1 < attribute.getText().indexOf(CommonConstants.getCkeditorPageBreakTag())) {
+                pageBreakTag = CommonConstants.getCkeditorPageBreakTag();
+            } else if (-1 < attribute.getText().indexOf(CommonConstants.getTinyMCEPageBreakTag())) {
+                pageBreakTag = CommonConstants.getTinyMCEPageBreakTag();
+            } else if (-1 < attribute.getText().indexOf(CommonConstants.getKindEditorPageBreakTag())) {
+                pageBreakTag = CommonConstants.getKindEditorPageBreakTag();
+            } else {
+                pageBreakTag = CommonConstants.getUeditorPageBreakTag();
+            }
+            String[] texts = StringUtils.splitByWholeSeparator(attribute.getText(), pageBreakTag);
+            if (createMultiContentPage) {
+                for (int i = 1; i < texts.length; i++) {
+                    PageHandler page = new PageHandler(i + 1, 1);
+                    page.setTotalCount(texts.length);
+                    model.put("text", texts[i]);
+                    model.put("page", page);
+                    createStaticFile(site, fullTemplatePath, filepath, i + 1, metadataMap, model, url -> {
+                        if (null == entity.getUrl()) {
+                            entity.setUrl(url);
+                        }
+                    });
+                }
+                pageIndex = 1;
+            }
+            PageHandler page = new PageHandler(pageIndex, 1);
+            page.setTotalCount(texts.length);
+            model.put("page", page);
+            model.put("text", texts[page.getPageIndex() - 1]);
+        }
+        return createStaticFile(site, fullTemplatePath, filepath, pageIndex, metadataMap, model, url -> {
+            if (null == entity.getUrl()) {
+                entity.setUrl(url);
+            }
+        });
+    }
+
+    /**
+     * 内容页面静态化
+     *
+     * @param site
+     * @param entity
+     * @param category
+     * @param categoryModel
+     * @return whether the create is successful
+     * @throws TemplateException
+     * @throws IOException
+     */
+    public boolean createContentFile(SysSite site, CmsContent entity, CmsCategory category, CmsCategoryModel categoryModel)
+            throws IOException, TemplateException {
+        if (null != site && null != entity) {
+            if (!entity.isOnlyUrl()) {
+                if (null == category) {
+                    category = categoryService.getEntity(entity.getCategoryId());
+                }
+                if (null == categoryModel) {
+                    categoryModel = categoryModelService
+                            .getEntity(new CmsCategoryModelId(entity.getCategoryId(), entity.getModelId()));
+                }
+                if (null != categoryModel && null != category) {
+
+                    String oldUrl = entity.getUrl();
+                    String contentPath;
+                    String templatePath = null;
+                    if (categoryModel.isCustomContentPath()) {
+                        contentPath = categoryModel.getContentPath();
+                        templatePath = categoryModel.getTemplatePath();
+                    } else {
+                        Map<String, String> config = BeanComponent.getConfigComponent().getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+                        if (category.isCustomContentPath()) {
+                            contentPath = category.getContentPath();
+                        } else if (CommonUtils.notEmpty(category.getTypeId())) {
+                            CmsCategoryType categoryType = modelComponent.getCategoryTypeMap(site.getId())
+                                    .get(category.getTypeId());
+                            if (null != categoryType) {
+                                contentPath = categoryType.getContentPath();
+                            } else {
+                                contentPath = config.get(SiteConfigComponent.CONFIG_CONTENT_PATH);
+                            }
+                        } else {
+                            contentPath = config.get(SiteConfigComponent.CONFIG_CONTENT_PATH);
+                        }
+                        CmsModel model = modelComponent.getModelMap(site.getId()).get(entity.getModelId());
+                        if (null != model) {
+                            templatePath = model.getTemplatePath();
+                        }
+                    }
+                    if (site.isUseStatic() && CommonUtils.notEmpty(templatePath)) {
+                        String filepath = createContentFile(site, entity, category, true, templatePath, contentPath, null);
+                        if (!entity.isHasStatic() || null == oldUrl || !oldUrl.equals(filepath)) {
+                            contentService.updateUrl(entity.getId(), filepath, true);
+                        }
+                    } else {
+                        Map<String, Object> model = new HashMap<>();
+                        model.put("content", entity);
+                        model.put("category", category);
+                        model.put(CommonConstants.getAttributeSite(), site);
+                        String filepath = FreeMarkerUtils.generateStringByString(contentPath, webConfiguration, model);
+                        if (entity.isHasStatic() || null == oldUrl || !oldUrl.equals(filepath)) {
+                            contentService.updateUrl(entity.getId(), filepath, false);
+                        }
+                    }
+                    return true;
+                }
+            } else if (null == entity.getParentId() && null != entity.getQuoteContentId()) {
+                if (null != categoryModel && null != category) {
+                    CmsContent quote = contentService.getEntity(entity.getQuoteContentId());
+                    if (null != quote) {
+                        contentService.updateUrl(entity.getId(), quote.getUrl(), false);
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 分类页面静态化
+     *
+     * @param site
+     * @param entity
+     * @param pageIndex
+     * @param totalPage
+     * @return whether the create is successful
+     * @throws IOException
+     * @throws TemplateException
+     */
+    public boolean createCategoryFile(SysSite site, CmsCategory entity, Integer pageIndex, Integer totalPage)
+            throws IOException, TemplateException {
+        if (entity.isOnlyUrl()) {
+            categoryService.updateUrl(entity.getId(), entity.getPath(), false);
+        } else {
+            Map<String, String> config = BeanComponent.getConfigComponent().getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+            String categoryPath;
+            String templatePath = null;
+            if (entity.isCustomPath()) {
+                categoryPath = entity.getPath();
+                templatePath = entity.getTemplatePath();
+            } else if (CommonUtils.notEmpty(entity.getTypeId())) {
+                CmsCategoryType categoryType = modelComponent.getCategoryTypeMap(site.getId()).get(entity.getTypeId());
+                if (null != categoryType) {
+                    categoryPath = categoryType.getPath();
+                    templatePath = categoryType.getTemplatePath();
+                } else {
+                    categoryPath = config.get(SiteConfigComponent.CONFIG_CATEGORY_PATH);
+                    templatePath = config.get(SiteConfigComponent.CONFIG_CATEGORY_TEMPLATE_PATH);
+                }
+            } else {
+                categoryPath = config.get(SiteConfigComponent.CONFIG_CATEGORY_PATH);
+                templatePath = config.get(SiteConfigComponent.CONFIG_CATEGORY_TEMPLATE_PATH);
+            }
+            if (site.isUseStatic() && CommonUtils.notEmpty(entity.getTemplatePath())) {
+                String filepath = createCategoryFile(site, entity, templatePath, categoryPath, pageIndex, totalPage);
+                if (!entity.isHasStatic() || null == entity.getUrl() || !entity.getUrl().equals(filepath)) {
+                    categoryService.updateUrl(entity.getId(), filepath, true);
+                }
+                return true;
+            } else {
+                Map<String, Object> model = new HashMap<>();
+                initCategoryUrl(site, entity);
+                model.put("category", entity);
+                model.put(CommonConstants.getAttributeSite(), site);
+                String filepath = FreeMarkerUtils.generateStringByString(categoryPath, webConfiguration, model);
+                if (entity.isHasStatic() || null == entity.getUrl() || !entity.getUrl().equals(filepath)) {
+                    categoryService.updateUrl(entity.getId(), filepath, false);
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 内容页面静态化
+     *
+     * @param site
+     * @param idList
+     * @param category
+     * @param categoryModel
+     */
+    public void createContentFile(SysSite site, List<Serializable> idList, CmsCategory category, CmsCategoryModel categoryModel) {
+        List<Future<?>> futureList = new ArrayList<>();
+        for (CmsContent content : contentService.getEntitys(idList)) {
+            futureList.add(pool.submit(new PublishTask(this, site, content, category, categoryModel)));
+        }
+        for (Future<?> future : futureList) {
+            try {
+                future.get();
+            } catch (InterruptedException | ExecutionException e) {
+            }
+        }
+    }
+
+    /**
+     * 生成页面片段路径
+     * 
+     * @param filepath
+     * @param category
+     * @param model
+     * @return
+     * @throws IOException
+     * @throws TemplateException
+     */
     public String generatePlaceFilePath(String filepath, CmsCategory category, Map<String, Object> model)
             throws IOException, TemplateException {
         if (null == model) {
@@ -101,6 +407,67 @@ public class TemplateComponent implements Cache {
         }
         model.put("category", category);
         return FreeMarkerUtils.generateStringByString(filepath, webConfiguration, model);
+    }
+
+    /**
+     * 静态化页面片段
+     *
+     * @param site
+     * @param templatePath
+     * @param metadata
+     * @param data
+     * @throws IOException
+     * @throws TemplateException
+     */
+    public void staticPlace(SysSite site, String templatePath, CmsPlaceMetadata metadata, CmsPageData data)
+            throws IOException, TemplateException {
+        if (CommonUtils.notEmpty(templatePath)) {
+            Map<String, Object> model = new HashMap<>();
+            exposePlace(site, templatePath, metadata, data, model);
+            String placeTemplatePath = INCLUDE_DIRECTORY + templatePath;
+            String templateFullPath = SiteComponent.getFullTemplatePath(site.getId(), placeTemplatePath);
+            FreeMarkerUtils.generateFileByFile(templateFullPath, siteComponent.getWebFilePath(site.getId(), placeTemplatePath),
+                    webConfiguration, model);
+        }
+    }
+
+    /**
+     * 输出页面片段
+     *
+     * @param site
+     * @param templatePath
+     * @param metadata
+     * @param data
+     * @return place content
+     * @throws IOException
+     * @throws TemplateException
+     */
+    public String printPlace(SysSite site, String templatePath, CmsPlaceMetadata metadata, CmsPageData data)
+            throws IOException, TemplateException {
+        StringWriter writer = new StringWriter();
+        printPlace(writer, site, templatePath, metadata, data);
+        return writer.toString();
+    }
+
+    /**
+     * 输出页面片段
+     *
+     * @param writer
+     * @param site
+     * @param templatePath
+     * @param metadata
+     * @param data
+     * @throws IOException
+     * @throws TemplateException
+     */
+    public void printPlace(Writer writer, SysSite site, String templatePath, CmsPlaceMetadata metadata, CmsPageData data)
+            throws IOException, TemplateException {
+        if (CommonUtils.notEmpty(templatePath)) {
+            Map<String, Object> model = new HashMap<>();
+            exposePlace(site, templatePath, metadata, data, model);
+            String templateFullPath = SiteComponent.getFullTemplatePath(site.getId(), INCLUDE_DIRECTORY + templatePath);
+            FreeMarkerUtils.generateStringByFile(writer, templateFullPath, webConfiguration, model);
+        }
     }
 
     /**
@@ -151,82 +518,6 @@ public class TemplateComponent implements Cache {
                     webConfiguration, model);
         }
         return filepath;
-    }
-
-    /**
-     * 内容页面静态化
-     *
-     * @param site
-     * @param idList
-     * @param category
-     * @param categoryModel
-     */
-    public void createContentFile(SysSite site, List<Serializable> idList, CmsCategory category, CmsCategoryModel categoryModel) {
-        List<Future<?>> futureList = new ArrayList<>();
-        for (CmsContent content : contentService.getEntitys(idList)) {
-            futureList.add(pool.submit(new PublishTask(this, site, content, category, categoryModel)));
-        }
-        for (Future<?> future : futureList) {
-            try {
-                future.get();
-            } catch (InterruptedException | ExecutionException e) {
-            }
-        }
-    }
-
-    /**
-     * 内容页面静态化
-     *
-     * @param site
-     * @param entity
-     * @param category
-     * @param categoryModel
-     * @return whether the create is successful
-     * @throws TemplateException
-     * @throws IOException
-     */
-    public boolean createContentFile(SysSite site, CmsContent entity, CmsCategory category, CmsCategoryModel categoryModel)
-            throws IOException, TemplateException {
-        if (null != site && null != entity) {
-            if (!entity.isOnlyUrl()) {
-                if (null == category) {
-                    category = categoryService.getEntity(entity.getCategoryId());
-                }
-                if (null == categoryModel) {
-                    categoryModel = categoryModelService
-                            .getEntity(new CmsCategoryModelId(entity.getCategoryId(), entity.getModelId()));
-                }
-                if (null != categoryModel && null != category) {
-                    String oldUrl = entity.getUrl();
-                    if (site.isUseStatic() && CommonUtils.notEmpty(categoryModel.getTemplatePath())) {
-                        String filepath = createContentFile(site, entity, category, true, categoryModel.getTemplatePath(), null,
-                                null);
-                        if (!entity.isHasStatic() || null == oldUrl || !oldUrl.equals(filepath)) {
-                            contentService.updateUrl(entity.getId(), filepath, true);
-                        }
-                    } else {
-                        Map<String, Object> model = new HashMap<>();
-                        model.put("content", entity);
-                        model.put("category", category);
-                        model.put(CommonConstants.getAttributeSite(), site);
-                        String filepath = FreeMarkerUtils.generateStringByString(category.getContentPath(), webConfiguration,
-                                model);
-                        if (entity.isHasStatic() || null == oldUrl || !oldUrl.equals(filepath)) {
-                            contentService.updateUrl(entity.getId(), filepath, false);
-                        }
-                    }
-                    return true;
-                }
-            } else if (null == entity.getParentId() && null != entity.getQuoteContentId()) {
-                if (null != categoryModel && null != category) {
-                    CmsContent quote = contentService.getEntity(entity.getQuoteContentId());
-                    if (null != quote) {
-                        contentService.updateUrl(entity.getId(), quote.getUrl(), false);
-                    }
-                }
-            }
-        }
-        return false;
     }
 
     /**
@@ -290,181 +581,6 @@ public class TemplateComponent implements Cache {
         }
     }
 
-    /**
-     * 内容页面静态化
-     *
-     * @param site
-     * @param entity
-     * @param category
-     * @param createMultiContentPage
-     * @param templatePath
-     * @param filepath
-     * @param pageIndex
-     * @return content static file path
-     * @throws IOException
-     * @throws TemplateException
-     */
-    public String createContentFile(SysSite site, CmsContent entity, CmsCategory category, boolean createMultiContentPage,
-            String templatePath, String filepath, Integer pageIndex) throws IOException, TemplateException {
-        Map<String, Object> model = new HashMap<>();
-
-        initContentUrl(site, entity);
-        initContentCover(site, entity);
-        initCategoryUrl(site, category);
-
-        model.put("content", entity);
-        model.put("category", category);
-
-        CmsContentAttribute attribute = contentAttributeService.getEntity(entity.getId());
-        if (null != attribute) {
-            Map<String, String> map = ExtendUtils.getExtendMap(attribute.getData());
-            map.put("text", attribute.getText());
-            map.put("source", attribute.getSource());
-            map.put("sourceUrl", attribute.getSourceUrl());
-            map.put("wordCount", String.valueOf(attribute.getWordCount()));
-            map.put("minPrice", String.valueOf(attribute.getMinPrice()));
-            map.put("maxPrice", String.valueOf(attribute.getMaxPrice()));
-            model.put("attribute", map);
-        } else {
-            model.put("attribute", attribute);
-        }
-        if (CommonUtils.empty(filepath)) {
-            filepath = category.getContentPath();
-        }
-        String realTemplatePath = siteComponent.getTemplateFilePath(site.getId(), templatePath);
-        CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(realTemplatePath);
-        CmsPageData data = metadataComponent.getTemplateData(realTemplatePath);
-        Map<String, Object> metadataMap = metadata.getAsMap(data);
-        String fullTemplatePath = SiteComponent.getFullTemplatePath(site.getId(), templatePath);
-        if (null != attribute && CommonUtils.notEmpty(filepath) && CommonUtils.notEmpty(attribute.getText())) {
-            String pageBreakTag = null;
-            if (-1 < attribute.getText().indexOf(CommonConstants.getCkeditorPageBreakTag())) {
-                pageBreakTag = CommonConstants.getCkeditorPageBreakTag();
-            } else if (-1 < attribute.getText().indexOf(CommonConstants.getTinyMCEPageBreakTag())) {
-                pageBreakTag = CommonConstants.getTinyMCEPageBreakTag();
-            } else if (-1 < attribute.getText().indexOf(CommonConstants.getKindEditorPageBreakTag())) {
-                pageBreakTag = CommonConstants.getKindEditorPageBreakTag();
-            } else {
-                pageBreakTag = CommonConstants.getUeditorPageBreakTag();
-            }
-            String[] texts = StringUtils.splitByWholeSeparator(attribute.getText(), pageBreakTag);
-            if (createMultiContentPage) {
-                for (int i = 1; i < texts.length; i++) {
-                    PageHandler page = new PageHandler(i + 1, 1);
-                    page.setTotalCount(texts.length);
-                    model.put("text", texts[i]);
-                    model.put("page", page);
-                    createStaticFile(site, fullTemplatePath, filepath, i + 1, metadataMap, model, url -> {
-                        if (null == entity.getUrl()) {
-                            entity.setUrl(url);
-                        }
-                    });
-                }
-                pageIndex = 1;
-            }
-            PageHandler page = new PageHandler(pageIndex, 1);
-            page.setTotalCount(texts.length);
-            model.put("page", page);
-            model.put("text", texts[page.getPageIndex() - 1]);
-        }
-        return createStaticFile(site, fullTemplatePath, filepath, pageIndex, metadataMap, model, url -> {
-            if (null == entity.getUrl()) {
-                entity.setUrl(url);
-            }
-        });
-    }
-
-    /**
-     * 分类页面静态化
-     *
-     * @param site
-     * @param entity
-     * @param pageIndex
-     * @param totalPage
-     * @return whether the create is successful
-     * @throws IOException
-     * @throws TemplateException
-     */
-    public boolean createCategoryFile(SysSite site, CmsCategory entity, Integer pageIndex, Integer totalPage)
-            throws IOException, TemplateException {
-        if (entity.isOnlyUrl()) {
-            categoryService.updateUrl(entity.getId(), entity.getPath(), false);
-        } else if (CommonUtils.notEmpty(entity.getPath())) {
-            if (site.isUseStatic() && CommonUtils.notEmpty(entity.getTemplatePath())) {
-                String filepath = createCategoryFile(site, entity, entity.getTemplatePath(), entity.getPath(), pageIndex,
-                        totalPage);
-                if (!entity.isHasStatic() || null == entity.getUrl() || !entity.getUrl().equals(filepath)) {
-                    categoryService.updateUrl(entity.getId(), filepath, true);
-                }
-                return true;
-            } else {
-                Map<String, Object> model = new HashMap<>();
-                initCategoryUrl(site, entity);
-                model.put("category", entity);
-                model.put(CommonConstants.getAttributeSite(), site);
-                String filepath = FreeMarkerUtils.generateStringByString(entity.getPath(), webConfiguration, model);
-                if (entity.isHasStatic() || null == entity.getUrl() || !entity.getUrl().equals(filepath)) {
-                    categoryService.updateUrl(entity.getId(), filepath, false);
-                }
-            }
-        }
-        return false;
-
-    }
-
-    /**
-     * 分类页面静态化
-     *
-     * @param site
-     * @param entity
-     * @param templatePath
-     * @param filepath
-     * @param pageIndex
-     * @param totalPage
-     * @return category static file path
-     * @throws IOException
-     * @throws TemplateException
-     */
-    public String createCategoryFile(SysSite site, CmsCategory entity, String templatePath, String filepath, Integer pageIndex,
-            Integer totalPage) throws IOException, TemplateException {
-        Map<String, Object> model = new HashMap<>();
-        if (CommonUtils.empty(pageIndex)) {
-            pageIndex = 1;
-        }
-        initCategoryUrl(site, entity);
-        model.put("category", entity);
-        CmsCategoryAttribute attribute = categoryAttributeService.getEntity(entity.getId());
-        if (null != attribute) {
-            Map<String, String> map = ExtendUtils.getExtendMap(attribute.getData());
-            map.put("title", attribute.getTitle());
-            map.put("keywords", attribute.getKeywords());
-            map.put("description", attribute.getDescription());
-            model.put("attribute", map);
-        } else {
-            model.put("attribute", attribute);
-        }
-        String realTemplatePath = siteComponent.getTemplateFilePath(site.getId(), templatePath);
-        CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(realTemplatePath);
-        CmsPageData data = metadataComponent.getTemplateData(realTemplatePath);
-        Map<String, Object> metadataMap = metadata.getAsMap(data);
-        String fullTemplatePath = SiteComponent.getFullTemplatePath(site.getId(), templatePath);
-        if (CommonUtils.notEmpty(totalPage) && pageIndex + 1 <= totalPage) {
-            for (int i = pageIndex + 1; i <= totalPage; i++) {
-                createStaticFile(site, fullTemplatePath, filepath, i, metadataMap, model, url -> {
-                    if (null == entity.getUrl()) {
-                        entity.setUrl(url);
-                    }
-                });
-            }
-        }
-
-        return createStaticFile(site, fullTemplatePath, filepath, pageIndex, metadataMap, model, url -> {
-            if (null == entity.getUrl()) {
-                entity.setUrl(url);
-            }
-        });
-    }
-
     private void exposePlace(SysSite site, String templatePath, CmsPlaceMetadata metadata, CmsPageData data,
             Map<String, Object> model) {
         if (null != metadata.getSize() && 0 < metadata.getSize()) {
@@ -487,67 +603,6 @@ public class TemplateComponent implements Cache {
         model.put("path", templatePath);
         model.put("metadata", metadata.getAsMap(data));
         AbstractFreemarkerView.exposeSite(model, site);
-    }
-
-    /**
-     * 静态化页面片段
-     *
-     * @param site
-     * @param templatePath
-     * @param metadata
-     * @param data
-     * @throws IOException
-     * @throws TemplateException
-     */
-    public void staticPlace(SysSite site, String templatePath, CmsPlaceMetadata metadata, CmsPageData data)
-            throws IOException, TemplateException {
-        if (CommonUtils.notEmpty(templatePath)) {
-            Map<String, Object> model = new HashMap<>();
-            exposePlace(site, templatePath, metadata, data, model);
-            String placeTemplatePath = INCLUDE_DIRECTORY + templatePath;
-            String templateFullPath = SiteComponent.getFullTemplatePath(site.getId(), placeTemplatePath);
-            FreeMarkerUtils.generateFileByFile(templateFullPath, siteComponent.getWebFilePath(site.getId(), placeTemplatePath),
-                    webConfiguration, model);
-        }
-    }
-
-    /**
-     * 输出页面片段
-     *
-     * @param site
-     * @param templatePath
-     * @param metadata
-     * @param data
-     * @return place content
-     * @throws IOException
-     * @throws TemplateException
-     */
-    public String printPlace(SysSite site, String templatePath, CmsPlaceMetadata metadata, CmsPageData data)
-            throws IOException, TemplateException {
-        StringWriter writer = new StringWriter();
-        printPlace(writer, site, templatePath, metadata, data);
-        return writer.toString();
-    }
-
-    /**
-     * 输出页面片段
-     *
-     * @param writer
-     * @param site
-     * @param templatePath
-     * @param metadata
-     * @param data
-     * @throws IOException
-     * @throws TemplateException
-     */
-    public void printPlace(Writer writer, SysSite site, String templatePath, CmsPlaceMetadata metadata, CmsPageData data)
-            throws IOException, TemplateException {
-        if (CommonUtils.notEmpty(templatePath)) {
-            Map<String, Object> model = new HashMap<>();
-            exposePlace(site, templatePath, metadata, data, model);
-            String templateFullPath = SiteComponent.getFullTemplatePath(site.getId(), INCLUDE_DIRECTORY + templatePath);
-            FreeMarkerUtils.generateStringByFile(writer, templateFullPath, webConfiguration, model);
-        }
     }
 
     public void setAdminContextPath(String adminContextPath) {

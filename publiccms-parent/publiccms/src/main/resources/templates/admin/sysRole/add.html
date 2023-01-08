@@ -2,7 +2,7 @@
     <#assign a=object/>
 </@sys.role>
 <form method="post" autocomplete="off" action="sysRole/save?callbackType=closeCurrent&navTabId=sysRole/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
-    <input name="id" type="hidden" value="${id!}" />
+    <input name="id" type="hidden" value="${id!}"/>
     <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <div class="formBar card">
         <ul>
@@ -21,7 +21,7 @@
             <dl class="nowrap">
                 <dt><@t.page 'module.own_all_right'/>:</dt>
                 <dd>
-                    <input name="ownsAllRight" type="checkbox" onclick="if($(this).is(':checked')){$('.ownsAllRight',navTab.getCurrentPanel()).hide();}else{$('.ownsAllRight').show();}"/>
+                    <input name="ownsAllRight" type="checkbox"/>
                 </dd>
             </dl>
     <#macro moduleTree parentId='' deep=0>
@@ -54,8 +54,15 @@
                         <@moduleTree deep=0/>
                     </li>
                 </ul>
-    <#if a?has_content>
     <script>
+    $('input[name=ownsAllRight]',navTab.getCurrentPanel()).click(function(){
+        if($(this).is(':checked')) {
+            $('.ownsAllRight',navTab.getCurrentPanel()).hide();
+        } else {
+            $('.ownsAllRight').show();
+        }
+    });
+<#if a?has_content>
         <#if a.ownsAllRight>
         $('input[name=ownsAllRight]',navTab.getCurrentPanel()).click();
         </#if>
@@ -67,8 +74,8 @@
         $('.tree li a[tname=moduleIds][tvalue=${a.id.moduleId?js_string}]',navTab.getCurrentPanel()).attr('checked','true');
             </#list>
         </@sys.roleModuleList>
+</#if>
     </script>
-    </#if>
             </fieldset>
         </div>
     </div>

@@ -1,0 +1,26 @@
+<@sys.record code=id><#assign a=object/></@sys.record>
+<form method="post" autocomplete="off" action="sysRecord/save?callbackType=closeCurrent&navTabId=sysRecord/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+    <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
+    <div class="formBar card">
+        <ul>
+            <li><button type="submit" class="buttonActive" title="ctrl+s"><@t.page 'button.save'/></button></li>
+            <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+        </ul>
+    </div>
+    <div class="card">
+        <div class="pageFormContent" layoutH>
+            <dl class="nowrap">
+                <dt><@t.page 'code'/>:</dt>
+                <dd>
+                    <input class="required" name="id.code" type="text" maxlength="50" size="30" value="${(a.id.code)!}"/>
+                </dd>
+            </dl>
+            <dl class="nowrap">
+                <dt><@t.page 'content'/>:</dt>
+                <dd>
+                    <textarea class="required" name="data" cols="80" rows="20">${(a.data)!}</textarea>
+                </dd>
+            </dl>
+        </div>
+    </div>
+</form>

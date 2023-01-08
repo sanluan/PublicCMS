@@ -55,7 +55,7 @@
                 <ul>
                     <#if authorizedMap['cmsCategory/add']>
                         <li><a href="cmsCategory/add.html?id=${category.id}" target="navTab" rel="cmsCategory/edit" data-diy="category" data-diy-id="${category.id}"><i class="icon-edit"></i><@t.page 'category.edit'/></a></li>
-                        <li><a href="cmsCategory/add.html?id=${category.id}&seo=true" target="navTab" rel="cmsCategory/edit" data-diy="category" data-diy-id="${category.id}"><i class="icon-edit"></i><@t.page 'seo'/></a></li>
+                        <li><a href="cmsCategory/add.html?id=${category.id}&showTab=seo" target="navTab" rel="cmsCategory/edit" data-diy="category" data-diy-id="${category.id}"><i class="icon-edit"></i><@t.page 'seo'/></a></li>
                         <li><a href="cmsCategory/add.html?copyId=${category.id}" target="navTab" rel="cmsCategory/add" icon="<i class='icon-plus-sign-alt'></i>" title="<@t.page 'category.add'/>" data-diy="category" data-diy-id="${category.id}"><i class="icon-copy"></i><@t.page 'button.copy'/></a></li>
                     </#if>
                     <li><a href="cmsCategory/list?categoryId=${category.id!}" target="navTab" rel="cmsCategory/list" data-diy="child-category"><@t.page 'category.child_management'/></a></li>

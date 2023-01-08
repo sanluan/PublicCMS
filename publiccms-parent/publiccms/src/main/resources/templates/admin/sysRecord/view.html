@@ -1,0 +1,26 @@
+<@sys.record code=id><#assign a=object/></@sys.record>
+<div class="pageFormContent" layoutH>
+    <dl>
+        <dt><@t.page 'code'/>:</dt>
+        <dd>
+            ${(a.id.code)!}
+        </dd>
+    </dl>
+    <dl>
+        <dt><@t.page 'create_date'/>:</dt>
+        <dd>
+            ${(a.createDate)!}
+        </dd>
+    </dl>
+    <dl class="nowrap">
+        <dt><@t.page 'content'/>:</dt>
+        <dd>
+            <textarea cols="80" rows="20">${(a.data)!}</textarea>
+        </dd>
+    </dl>
+</div>
+<div class="formBar">
+    <ul>
+        <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+    </ul>
+</div>

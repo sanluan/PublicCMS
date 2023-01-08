@@ -12,24 +12,24 @@
                 </li>
                 <li>
                     <label><@t.page 'payment.type'/>:</label>
-                    <input type="text" name="tradeType" value="${tradeType!}" />
+                    <input type="text" name="tradeType" value="${tradeType!}"/>
                 </li>
                 <li>
                     <label><@t.page 'serial_number'/>:</label>
-                    <input type="text" name="serialNumber" value="${serialNumber!}" />
+                    <input type="text" name="serialNumber" value="${serialNumber!}"/>
                 </li>
                 <li>
                     <label><@t.page 'payment.account_type'/>:</label>
-                    <input type="text" name="accountType" value="${accountType!}" />
+                    <input type="text" name="accountType" value="${accountType!}"/>
                 </li>
                 <li>
                     <label><@t.page 'payment.account_serial_number'/>:</label>
-                    <input type="text" name="accountSerialNumber" value="${accountSerialNumber!}" />
+                    <input type="text" name="accountSerialNumber" value="${accountSerialNumber!}"/>
                 </li>
                 <li>
                     <label><@t.page 'status'/>:</label>
                     <#list 0..4 as s>
-                        <label style="width:auto">
+                        <label>
                             <input <@t.compare status!'' s?string 'checked="checked"'/> name="status" value="${s}" type="checkbox"/>
                             <@t.page 'status.payment.'+s/>
                         </label>
@@ -37,10 +37,10 @@
                 </li>
                 <li>
                     <label><@t.page 'create_date'/>:</label>
-                    <input type="text" name="startCreateDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startCreateDate!}" />
+                    <input type="text" name="startCreateDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startCreateDate!}"/>
                     <a class="inputDateButton" href="javascript:void(0);"></a>
                     <span>-</span>
-                    <input type="text" name="endCreateDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${endCreateDate!}" />
+                    <input type="text" name="endCreateDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${endCreateDate!}"/>
                     <a class="inputDateButton" href="javascript:void(0);"></a>
                 </li>
             </ul>

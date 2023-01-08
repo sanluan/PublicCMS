@@ -35,6 +35,13 @@ public class CmsModel implements java.io.Serializable {
      */
     private String name;
     /**
+     * searchable model
+     * <p>
+     * 可搜索模型
+     * 
+     */
+    private boolean searchableModel = true;
+    /**
      * static template path
      * <p>
      * 静态化模型路径
@@ -90,9 +97,9 @@ public class CmsModel implements java.io.Serializable {
      */
     private boolean hasProducts;
     /**
-     * searchable
+     * text searchable
      * <p>
-     * 可搜索
+     * 正文可搜索
      */
     private boolean searchable;
     /**
@@ -154,6 +161,20 @@ public class CmsModel implements java.io.Serializable {
         this.name = name;
     }
 
+    /**
+     * @return the modelSearchable
+     */
+    public boolean isSearchableModel() {
+        return searchableModel;
+    }
+
+    /**
+     * @param searchableModel
+     *            the searchableModel to set
+     */
+    public void setSearchableModel(boolean searchableModel) {
+        this.searchableModel = searchableModel;
+    }
     /**
      * @return
      */

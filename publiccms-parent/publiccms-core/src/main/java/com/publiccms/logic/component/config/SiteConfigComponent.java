@@ -25,6 +25,15 @@ import com.publiccms.logic.service.cms.CmsContentService;
 @Component
 public class SiteConfigComponent implements Config {
     /**
+    *
+    */
+    public static final String CONFIG_EXPIRY_MINUTES_WEB = "expiry_minutes.web";
+    /**
+    *
+    */
+    public static final String CONFIG_EXPIRY_MINUTES_MANAGER = "expiry_minutes.manager";
+
+    /**
      *
      */
     public static final String CONFIG_RETURN_URL = "return_url";
@@ -37,13 +46,22 @@ public class SiteConfigComponent implements Config {
      */
     public static final String CONFIG_REGISTER_URL = "register_url";
     /**
-     *
-     */
-    public static final String CONFIG_EXPIRY_MINUTES_WEB = "expiry_minutes.web";
+    *
+    */
+    public static final String CONFIG_SITE_EXCLUDE_MODULE = "site_exclude_module";
     /**
-     *
-     */
-    public static final String CONFIG_EXPIRY_MINUTES_MANAGER = "expiry_minutes.manager";
+    *
+    */
+    public static final String CONFIG_CATEGORY_TEMPLATE_PATH = "category_template_path";
+    /**
+    *
+    */
+    public static final String CONFIG_CATEGORY_PATH = "category_path";
+    /**
+    *
+    */
+    public static final String CONFIG_CONTENT_PATH = "content_path";
+
     /**
     *
     */
@@ -72,6 +90,18 @@ public class SiteConfigComponent implements Config {
      *
      */
     public static final String CONFIG_DEFAULT_CONTENT_USER = "default_content_user";
+    /**
+    * 
+    */
+    public static final String INPUTTYPE_MODULE = "module";
+    /**
+     * 
+     */
+    public static final String INPUTTYPE_CATEGORY_PATH = "categoryPath";
+    /**
+     * 
+     */
+    public static final String INPUTTYPE_CONTENT_PATH = "contentPath";
 
     /**
      * default expiry minutes
@@ -137,12 +167,6 @@ public class SiteConfigComponent implements Config {
     @Override
     public List<SysExtendField> getExtendFieldList(SysSite site, Locale locale) {
         List<SysExtendField> extendFieldList = new ArrayList<>();
-        extendFieldList.add(new SysExtendField(CONFIG_RETURN_URL, INPUTTYPE_TEXTAREA, CONFIG_RETURN_URL,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_RETURN_URL)));
-        extendFieldList.add(new SysExtendField(CONFIG_REGISTER_URL, INPUTTYPE_TEXT, CONFIG_REGISTER_URL,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_REGISTER_URL)));
-        extendFieldList.add(new SysExtendField(CONFIG_LOGIN_PATH, INPUTTYPE_TEXT, CONFIG_LOGIN_PATH,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOGIN_PATH)));
         extendFieldList.add(new SysExtendField(CONFIG_EXPIRY_MINUTES_WEB, INPUTTYPE_NUMBER, false, CONFIG_EXPIRY_MINUTES_WEB,
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_EXPIRY_MINUTES_WEB),
                 String.valueOf(DEFAULT_EXPIRY_MINUTES)));
@@ -150,6 +174,32 @@ public class SiteConfigComponent implements Config {
                 .add(new SysExtendField(CONFIG_EXPIRY_MINUTES_MANAGER, INPUTTYPE_NUMBER, false, CONFIG_EXPIRY_MINUTES_MANAGER,
                         getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_EXPIRY_MINUTES_MANAGER),
                         String.valueOf(DEFAULT_EXPIRY_MINUTES)));
+
+        extendFieldList.add(new SysExtendField(CONFIG_SITE_EXCLUDE_MODULE, INPUTTYPE_MODULE, CONFIG_SITE_EXCLUDE_MODULE,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_SITE_EXCLUDE_MODULE)));
+
+        extendFieldList.add(new SysExtendField(CONFIG_RETURN_URL, INPUTTYPE_TEXTAREA, CONFIG_RETURN_URL,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_RETURN_URL)));
+
+        extendFieldList.add(new SysExtendField(CONFIG_REGISTER_URL, INPUTTYPE_TEXT, CONFIG_REGISTER_URL,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_REGISTER_URL)));
+        extendFieldList.add(new SysExtendField(CONFIG_LOGIN_PATH, INPUTTYPE_TEXT, CONFIG_LOGIN_PATH,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOGIN_PATH)));
+
+        if (site.isUseStatic()) {
+            extendFieldList.add(
+                    new SysExtendField(CONFIG_CATEGORY_TEMPLATE_PATH, INPUTTYPE_TEMPLATE, true, CONFIG_CATEGORY_TEMPLATE_PATH,
+                            getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_CATEGORY_TEMPLATE_PATH),
+                            "category.html"));
+        }
+        extendFieldList.add(new SysExtendField(CONFIG_CATEGORY_PATH, INPUTTYPE_CATEGORY_PATH, true, CONFIG_CATEGORY_PATH,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_CATEGORY_PATH),
+                site.isUseStatic() ? "category/${category.code}.html" : "category.html?id=${category.id}"));
+        extendFieldList.add(new SysExtendField(CONFIG_CONTENT_PATH, INPUTTYPE_CONTENT_PATH, true, CONFIG_CONTENT_PATH,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_CONTENT_PATH),
+                site.isUseStatic() ? "${content.modelId}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html"
+                        : "content.html?id=${content.id}"));
+
         extendFieldList.add(new SysExtendField(CONFIG_ALLOW_FILES, INPUTTYPE_TEXTAREA, false, CONFIG_ALLOW_FILES,
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_ALLOW_FILES),
                 StringUtils.join(CmsFileUtils.ALLOW_FILES, CommonConstants.COMMA)));

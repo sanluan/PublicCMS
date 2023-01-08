@@ -33,7 +33,7 @@
             <dl class="nowrap">
                 <dt><@t.page 'id'/>:</dt>
                 <dd>
-                    <input name="oldId" type="hidden" value="${(a.id.id)!}" />
+                    <input name="oldId" type="hidden" value="${(a.id.id)!}"/>
                     <input class="required" name="id.id" remote="cmsDictionary/virify<#if id?has_content>?oldId=${(a.id.id)!}</#if>" data-msg-remote="<@t.message 'verify.hasExist.code'/>" type="text" size="20" maxlength="20" value="${(a.id.id)!}"/>
                 </dd>
             </dl>

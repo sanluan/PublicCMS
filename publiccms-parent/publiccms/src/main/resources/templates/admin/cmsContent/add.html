@@ -10,8 +10,8 @@
 <@cms.category id=categoryId!><#assign category=object/></@cms.category>
 <@cms.model id=modelId!><#assign model=object/></@cms.model>
 <form method="post" autocomplete="off" action="cmsContent/save?callbackType=closeCurrent&navTabId=cmsContent/list" class="pageForm required-validate" onsubmit="clickAddTag(); return validateCallback(this,navTabAjaxDone);">
-    <input name="id" type="hidden" value="${id!}" />
-    <input name="parentId" type="hidden" value="${parentId!}" />
+    <input name="id" type="hidden" value="${id!}"/>
+    <input name="parentId" type="hidden" value="${parentId!}"/>
     <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <div class="formBar card">
         <ul>
@@ -24,11 +24,10 @@
         <@sys.authorized roleIds=admin.roles url='cmsContent/check'>
             <li>
                 <label>
-                    <input type="checkbox" name="checked" onclick="if($(this).is(':checked')){$('input[name=draft]',navTab.getCurrentPanel()).parent().parent().hide();}else{$('input[name=draft]',navTab.getCurrentPanel()).parent().parent().show();}"/>
+                    <input type="checkbox" name="checked"/>
                     <@t.page 'check_passed'/>
                 </label>
             </li>
-            <#if a?has_content&&1=a.status><script>$('input[name=checked]',navTab.getCurrentPanel()).click();</script></#if>
         </@sys.authorized>
             <li><button type="submit" class="buttonActive" title="ctrl+s"<#if id?has_content> lock-url="common/lock?itemType=content&itemId=${id!}" close-url="common/unlock?itemType=content&itemId=${id!}"</#if>><@t.page 'button.save'/></button></li>
             <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
@@ -73,7 +72,7 @@
                     <dt><@t.page 'category'/>:</dt>
                     <dd>
                         <input name="categoryId" type="hidden" value="${categoryId!}"/>
-                        <label style="width:auto">${(category.name)!}</label>
+                        <label>${(category.name)!}</label>
                    <#if !parentId?has_content>
                         <input name="quoteCategoryId" type="hidden"/>
                         <input name="categoryName" type="hidden"/>
@@ -178,7 +177,7 @@ $('input[name=copied]',navTab.getCurrentPanel()).click();
                 <dl>
                     <dt><@t.page 'content.timming'/>:</dt>
                     <dd>
-                      <input name="timing" type="checkbox" onclick="if($(this).is(':checked')){$('.publishDate',navTab.getCurrentPanel()).show();$('input[name=publishDate]',navTab.getCurrentPanel()).addClass('required').addClass('valid')}else{$('.publishDate',navTab.getCurrentPanel()).hide();$('input[name=publishDate]',navTab.getCurrentPanel()).removeClass('required').removeClass('valid')}"/>
+                      <input name="timing" type="checkbox"/>
                     </dd>
                 </dl>
                 <dl class="publishDate hide">
@@ -195,11 +194,6 @@ $('input[name=copied]',navTab.getCurrentPanel()).click();
                         <a class="inputDateButton" href="javascript:void(0);"></a>
                     </dd>
                 </dl>
-            <#if a?has_content&&(a.publishDate gt .now || a.expiryDate?has_content)>
-<script>
-$('input[name=timing]',navTab.getCurrentPanel()).click();
-</script>
-            </#if>
             <#if fieldList?seq_contains('cover')>
                 <dl class="nowrap">
                     <dt>${(model.fieldTextMap['cover'])!}:</dt>
@@ -320,4 +314,29 @@ $('input[name=timing]',navTab.getCurrentPanel()).click();
         </div>
         </#if>
     </div>
+<script>
+$('input[name=timing]',navTab.getCurrentPanel()).click(function(){
+    if($(this).is(':checked')) {
+        $('.publishDate',navTab.getCurrentPanel()).show();
+        $('input[name=publishDate]',navTab.getCurrentPanel()).addClass('required').addClass('valid');
+    } else {
+        $('.publishDate',navTab.getCurrentPanel()).hide();
+        $('input[name=publishDate]',navTab.getCurrentPanel()).removeClass('required').removeClass('valid');
+    }
+});
+
+$('input[name=copied]',navTab.getCurrentPanel()).click(function(){
+    if($(this).is(':checked')){
+        $('input[name=draft]',navTab.getCurrentPanel()).parent().parent().hide();
+    }else{
+        $('input[name=draft]',navTab.getCurrentPanel()).parent().parent().show();
+    }
+});
+<#if a?has_content&&(a.publishDate gt .now || a.expiryDate?has_content)>
+$('input[name=timing]',navTab.getCurrentPanel()).click();
+</#if>
+<#if a?has_content&&1=a.status>
+$('input[name=checked]',navTab.getCurrentPanel()).click();
+</#if>
+</script>
 </form>

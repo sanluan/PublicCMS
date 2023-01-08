@@ -13,7 +13,7 @@ input[type="number"]{width:80px;}
 ::-webkit-scrollbar{width:10px;height:10px;}
 ::-webkit-scrollbar-button:vertical{display:none;}
 ::-webkit-scrollbar-corner,::-webkit-scrollbar-track{border-radius:10px;}
-.hide{display:none;}
+.hide,a.btnLook.hide{display:none;}
 
 ul, ol{list-style:none;}
 /* Tables still need 'cellspacing="0"' in the markup. */
@@ -520,7 +520,9 @@ header,main,#sidebar,footer{background-color:#333;}
 table.list tbody{background-color:#666;}
 .page{background-color:#fff;color:#333;}
 .tagsBox span{background-color:#e0e0e0;}
-
+@media (max-width:1300px){
+    .pageFormContent dl{width:100%;height:auto;clear:both;}
+}
 @media (max-width:1100px){
     .logo{display:none;}
     #navMenu{left:0px;}
@@ -532,5 +534,4 @@ table.list tbody{background-color:#666;}
     header .nav li a{line-height:25px;}
     #navMenu{top:20px;}
     #navMenu li a{line-height:40px;}
-    .pageFormContent dl{width:100%;height:auto;clear:both;}
 }
