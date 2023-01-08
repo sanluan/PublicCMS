@@ -34,7 +34,7 @@
                 <div class="clearfix categoryModelCustomContentPath hide">
                     <label><@t.page 'category.content_path'/>:</label>
                     <input name="categoryModelList[${modelIndex}].categoryModel.contentPath" type="text" autocomplete="on" maxlength="500" size="100" value="${(a.contentPath)!(categoryType.contentPath)!(config.content_path)!}"/>
-                    <a class="btnLook" href="cmsCategory/contentPath.html" width="920" lookupGroup="categoryModelList[${modelIndex}].categoryModel"><@t.page 'select_path'/></a>
+                    <a class="btnLook" href="cmsCategory/contentPath.html?childContent=true" width="920" lookupGroup="categoryModelList[${modelIndex}].categoryModel"><@t.page 'select_path'/></a>
                 </div>
             </div>
             <@childModel m index+1/>
@@ -295,7 +295,7 @@ $('input[name$=\\.categoryModel\\.customContentPath]',navTab.getCurrentPanel()).
             <#if a.customContentPath>
             $('input[name$=\\.categoryModel\\.id\\.modelId][value=${a.id.modelId}]',navTab.getCurrentPanel()).parent().parent().parent().find('input[type=checkbox][name$=\\.categoryModel\\.customContentPath]').click();
             </#if>
-            $('input[name$=\\.categoryModel\\.id\\.modelId][value=${a.id.modelId}]',navTab.getCurrentPanel()).parent().parent().parent().find('input[name$=\\.categoryModel\\.contentPath]').val('${(a.contentPath)!}');
+            $('input[name$=\\.categoryModel\\.id\\.modelId][value=${a.id.modelId}]',navTab.getCurrentPanel()).parent().parent().parent().find('input[name$=\\.categoryModel\\.contentPath]').val('${(a.contentPath?no_esc)!}');
             $('input[data-model=${a.id.modelId}]',navTab.getCurrentPanel()).val('${(a.templatePath)!}');
         </#list>
     </@cms.categoryModelList>

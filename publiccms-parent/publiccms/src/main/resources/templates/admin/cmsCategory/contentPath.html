@@ -10,6 +10,9 @@
         <li><a href="javascript:;" onclick="<#if categoryConfig?has_content>$('input[data-model]',navTab.getCurrentPanel()).val('');</#if>$.bringBack({${field!'contentPath'}:'<#noparse>content.html?id=${content.id}</#noparse>',templatePath:''});return false;"><@t.page 'dynamic_path'/>:<@t.page 'template.name'/>.html?id={<@t.page 'content.id'/>}</a></li>
         <li><a href="javascript:;" onclick="<#if categoryConfig?has_content>$('input[data-model]',navTab.getCurrentPanel()).val('');</#if>$.bringBack({${field!'contentPath'}:'<#noparse>content/${content.id}</#noparse>',templatePath:''});return false;"><@t.page 'dynamic_path'/>:<@t.page 'template.name'/>/{<@t.page 'content.id'/>}</a></li>
         <li><a href="javascript:;" onclick="<#if categoryConfig?has_content>$('input[data-model]',navTab.getCurrentPanel()).val('');</#if>$.bringBack({${field!'contentPath'}:'<#noparse>${getUrl(category.url)}</#noparse>',templatePath:''});return false;"><@t.page 'dynamic_path'/>:<@t.page 'category.url'/></a></li>
+        <#if childContent?has_content>
+            <li><a href="javascript:;" onclick="<#if categoryConfig?has_content>$('input[data-model]',navTab.getCurrentPanel()).val('');</#if>$.bringBack({${field!'contentPath'}:'<#noparse><@cms.content id=content.parentId>${object.url}</@cms.content></#noparse>',templatePath:''});return false;"><@t.page 'dynamic_path'/>:<@t.page 'content.parent.url'/></a></li>
+        </#if>
         <li><a href="javascript:;" onclick="<#if categoryConfig?has_content>$('input[data-model]',navTab.getCurrentPanel()).val('');</#if>$.bringBack({${field!'contentPath'}:'<#noparse>${getUrl(attribute.file)}</#noparse>',templatePath:''});return false;"><@t.page 'dynamic_path'/>:{<@t.page 'extend_field'/>:file}</a></li>
     </ul>
 </div>
