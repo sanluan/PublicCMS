@@ -11,7 +11,7 @@
 <#noparse><#if user?has_content></#noparse>
 <form method="post" action="<#noparse>${site.dynamicPath}</#noparse>content/save">
     <input type="hidden" name="_csrf" value="<#noparse><@tools.csrfToken/></#noparse>"/>
-    <input name="returnUrl" type="hidden" value="${site.dynamicPath}" />
+    <input name="returnUrl" type="hidden" value="${site.dynamicPath}"/>
     <input name="categoryId" type="hidden" value="${category.id!}"/>
     <input name="modelId" type="hidden" value="${model.id!}"/>
 <#if fieldList?seq_contains('author')>

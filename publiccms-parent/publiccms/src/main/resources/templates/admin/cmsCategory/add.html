@@ -8,14 +8,48 @@
 </@cms.category>
 <@cms.category id=parentId><#assign category=object/></@cms.category>
 <@cms.categoryType id=typeId><#assign categoryType=object/></@cms.categoryType>
+<@sys.configData code='site'><#assign config=object/></@sys.configData>
+<#assign modelIndex=-1/>
+<#macro childModel parent index=1>
+    <#if parent.hasChild>
+        <@cms.modelList parentId=parent.id>
+            <#if page.list?has_content>
+    <ul>
+            <#list page.list as m>
+                <#assign modelIndex++/>
+        <li style="clear:both;margin-left:${index*50}px;padding: 5px 0;">
+            <div>
+                <label title="${m.id}">
+                    ${m.name!}
+                    <input name="categoryModelList[${modelIndex}].use" type="hidden" value="false"/>
+                    <input name="categoryModelList[${modelIndex}].categoryModel.id.modelId" type="hidden" value="${m.id}"/>
+                </label>
+                <div class="clearfix">
+                    <label><input name="categoryModelList[${modelIndex}].categoryModel.customContentPath" type="checkbox"/><@t.page 'custorm_path'/></label>
+                    <#if site.useStatic>
+                        <label><@t.page 'category.content_template_path'/>:</label><input class="categoryModelCustomContentPath hide" name="categoryModelList[${modelIndex}].categoryModel.templatePath" data-model="${m.id}" type="text" maxlength="200" size="30" value="${(m.templatePath)!}"/>
+                        <a class="btnLook categoryModelCustomContentPath hide" href="cmsTemplate/lookup.html?field=templatePath" lookupGroup="categoryModelList[${modelIndex}].categoryModel"><@t.page 'template.select'/></a>
+                    </#if>
+                </div>
+                <div class="clearfix categoryModelCustomContentPath hide">
+                    <label><@t.page 'category.content_path'/>:</label>
+                    <input name="categoryModelList[${modelIndex}].categoryModel.contentPath" type="text" autocomplete="on" maxlength="500" size="100" value="${(a.contentPath)!(categoryType.contentPath)!(config.content_path)!}"/>
+                    <a class="btnLook" href="cmsCategory/contentPath.html" width="920" lookupGroup="categoryModelList[${modelIndex}].categoryModel"><@t.page 'select_path'/></a>
+                </div>
+            </div>
+            <@childModel m index+1/>
+        </li>
+            </#list>
+    </ul>
+            </#if>
+        </@cms.modelList>
+    </#if>
+</#macro>
 <form method="post" autocomplete="off" action="cmsCategory/save?callbackType=closeCurrent&navTabId=cmsCategory/list<#if !id?has_content>&ref=page</#if>" class="pageForm required-validate" onsubmit="clickAddTagType();return validateCallback(this, navTabAjaxDone);">
-    <input name="id" type="hidden" value="${id!}" />
+    <input name="id" type="hidden" value="${id!}"/>
     <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <div class="formBar card">
         <ul>
-            <li>
-                <label><input type="checkbox" name="showAdvancedOptions" onclick="if($(this).is(':checked')){$('.advanced',navTab.getCurrentPanel()).show();checkCategoryModel();}else{$('.advanced',navTab.getCurrentPanel()).hide();checkCategoryModel();}"/><@t.page 'show_advanced_options'/></label>
-            </li>
         <@sys.authorized roleIds=admin.roles url='cmsCategory/save'>
             <li><button type="submit" class="buttonActive" title="ctrl+s"<#if id?has_content> lock-url="common/lock?itemType=category&itemId=${id!}" close-url="common/unlock?itemType=category&itemId=${id!}"</#if>><@t.page 'button.save'/></button></li>
         </@sys.authorized>
@@ -38,7 +72,7 @@
                 <dl>
                     <dt><@t.page 'category.parent'/>:</dt>
                     <dd>
-                        <input name="parentId" type="hidden" value="${parentId!}" />
+                        <input name="parentId" type="hidden" value="${parentId!}"/>
                         <input name="categoryName" readonly="readonly" type="text" size="10" value="${(category.name)!}"/>
                         <a class="btnLook" href="cmsCategory/lookup.html?currentCategoryId=${(a.id)!}" lookupGroup=""></a>
                     </dd>
@@ -46,7 +80,7 @@
                 <dl>
                     <dt><@t.page 'category_type'/>:</dt>
                     <dd>
-                        <input name="typeId" type="hidden" value="${typeId!}" />
+                        <input name="typeId" type="hidden" value="${typeId!}"/>
                         <input name="typeName" readonly="readonly" type="text" size="10" value="${(categoryType.name)!}"/>
                     </dd>
                 </dl>
@@ -55,8 +89,8 @@
                     <dt><@t.page 'name'/>:</dt>
                     <dd>
                         <input class="required" name="name" type="text" maxlength="50" size="20" value="<#if id?has_content>${(a.name)!}</#if>"/>
-                        <label class="advanced"><input name="onlyUrl" type="checkbox" onclick="if($(this).is(':checked')){$('.onlyUrl',navTab.getCurrentPanel()).hide();$('.onlyUrl input[type=text]',navTab.getCurrentPanel()).val('');}else{$('.onlyUrl',navTab.getCurrentPanel()).show();}"/><@t.page 'url'/></label>
-                        <label class="advanced"><input name="allowContribute" type="checkbox"${(a?has_content&&a.allowContribute)?then(' checked="checked"','')?no_esc}/><@t.page 'allow_contribute'/></label>
+                        <label><input name="onlyUrl" type="checkbox"/><@t.page 'url'/></label>
+                        <label><input name="allowContribute" type="checkbox"${(a?has_content&&a.allowContribute)?then(' checked="checked"','')?no_esc}/><@t.page 'allow_contribute'/></label>
                         <label><input name="hidden" type="checkbox"${(a?has_content&&a.hidden)?then(' checked="checked"','')?no_esc}/><@t.page 'front_hidden'/></label>
                     </dd>
                 </dl>
@@ -66,27 +100,39 @@
                         <input class="required" name="code" remote="cmsCategory/virify<#if id?has_content>?oldCode=${(a.code)!}</#if>" data-msg-remote="<@t.message 'verify.hasExist.code'/>" type="text" maxlength="50" size="20" value="<#if id?has_content>${(a.code)!}</#if>"/>
                     </dd>
                 </dl>
-<#include "../include_page/tagTypes.html"/>
-<@tagTypes ((a.tagTypeIds)!'')/>
-<#if site.useStatic>
-                <dl class="nowrap onlyUrl advanced">
+                <#include "../include_page/tagTypes.html"/>
+                <@tagTypes ((a.tagTypeIds)!'')/>
+            <#if site.useStatic>
+                <dl class="nowrap onlyUrl customPath hide">
                     <dt><@t.page 'category.template_path'/>:</dt>
                     <dd>
-                        <input name="templatePath" type="text" autocomplete="on" maxlength="255" size="50" value="${(a.templatePath)!(categoryType.templatePath)!}"/>
+                        <input name="templatePath" type="text" autocomplete="on" maxlength="255" size="50" value="${(a.templatePath)!(categoryType.templatePath)!(config.category_template_path)!}"/>
                         <a class="btnLook" href="cmsTemplate/lookup.html?field=templatePath" lookupGroup=""><@t.page 'template.select'/></a>
                         <span class="info"><@t.page 'category.template_path.description'/></span>
                     </dd>
                 </dl>
-</#if>
-                <dl class="nowrap advanced">
+            </#if>
+                <dl class="nowrap">
                     <dt><@t.page 'category.path'/>:</dt>
                     <dd>
-                        <input class="required" name="path" type="text" autocomplete="on" maxlength="500" size="100" value="${(a.path)!(categoryType.path)!}"/>
-                        <a class="btnLook onlyUrl" href="cmsCategory/categoryPath.html" width="920" lookupGroup=""><@t.page 'select_path'/></a>
+                        <div class="clearfix onlyUrl">
+                            <label><input name="customPath" type="checkbox"/><@t.page 'custorm_path'/></label>
+                            <span class="info">
+                                <#if categoryType?has_content>
+                                    <@t.page 'category.customPath.type'/>
+                                <#else>
+                                    <@t.page 'category.customPath.site'/>:<a href="sysConfigData/edit.html?code=site" target="navTab" rel="sysConfigData/edit" icon="<i class='icon-edit icon-large'></i>"><@t.page 'server_config.site'/></a>
+                                </#if>
+                            </span>
+                        </div>
+                        <div class="clearfix customPath hide">
+                            <input class="required" name="path" type="text" autocomplete="on" maxlength="500" size="100" value="${(a.path)!(categoryType.path)!(config.category_path)!}"/>
+                            <a class="btnLook onlyUrl" href="cmsCategory/categoryPath.html" width="920" lookupGroup=""><@t.page 'select_path'/></a>
+                        </div>
                     </dd>
                 </dl>
                 <div class="divider"></div>
-                <dl class="nowrap onlyUrl advanced">
+                <dl class="nowrap onlyUrl">
                     <dt><@t.page 'category.page_size'/>:</dt>
                     <dd>
                         <input class="required digits" name="pageSize" type="number" size="4" value="${(a.pageSize)!(categoryType.pageSize)!20}"/>
@@ -97,10 +143,10 @@
                     <dt><@t.page 'sort'/>:</dt>
                     <dd><input class="required digits" name="sort" type="number" size="4" value="${(a.sort)!0}"/></dd>
                 </dl>
-<#if categoryType?has_content && categoryType.extendList?has_content>
-    <#include "../include_page/extendData.html"/>
-    <@extendData name='extendDataList' extendList=categoryType.extendList extendValues=(attribute!{}) historyItemType='categoryExtend' historyItemId=id/>
-</#if>
+                <#if categoryType?has_content && categoryType.extendList?has_content>
+                    <#include "../include_page/extendData.html"/>
+                    <@extendData name='extendDataList' extendList=categoryType.extendList extendValues=(attribute!{}) historyItemType='categoryExtend' historyItemId=id/>
+                </#if>
             </div>
             <div class="pageFormContent onlyUrl" layoutH>
                 <dl class="nowrap">
@@ -132,90 +178,65 @@
                 </dl>
                 </@sys.authorized>
                 <div class="divider"></div>
-<#assign modelIndex=-1/>
-<#macro childModel parent index=1>
-    <#if parent.hasChild>
-        <@cms.modelList parentId=parent.id>
-    <ul>
-            <#list page.list as a>
+                <#if id?has_content><div><span class="info"><@t.page 'category.content_path.description'/></span></div></#if>
+        <@cms.modelList>
+            <#list page.list as m>
                 <#assign modelIndex++/>
-        <li style="clear:both;margin-left:${index*50}px;padding: 5px 0;">
-            <label title="${a.id}">${a.name!}</label>
-            <input name="categoryModelList[${modelIndex}].use" type="hidden" value="false"/>
-            <input name="categoryModelList[${modelIndex}].categoryModel.id.modelId" type="hidden" value="${a.id}"/>
-                <#if site.useStatic>
-            <input name="categoryModelList[${modelIndex}].categoryModel.templatePath" data-model="${a.id}" type="text" maxlength="200" size="30" value="${(a.templatePath)!}"/>
-            <a class="btnLook" href="cmsTemplate/lookup.html?field=categoryModelList${('['+modelIndex+']')?url}.categoryModel.templatePath" lookupGroup=""><@t.page 'template.select'/></a>
-                </#if>
-            <@childModel a index+1/>
-        </li>
-            </#list>
-    </ul>
-        </@cms.modelList>
-    </#if>
-</#macro>
-<@cms.modelList>
-    <#list page.list as a>
-        <#assign modelIndex++/>
                 <dl class="nowrap">
                     <dt>
-                        <label>
+                        <label title="${m.id}">
                             <input name="categoryModelList[${modelIndex}].use" type="checkbox" onclick="checkCategoryModel();"/>
-                            <input name="categoryModelList[${modelIndex}].categoryModel.id.modelId" type="hidden" value="${a.id}"/>
-                            ${a.id}:${a.name!}
+                            <input name="categoryModelList[${modelIndex}].categoryModel.id.modelId" type="hidden" value="${m.id}"/>
+                            ${m.name!}
                         </label>
                     </dt>
-                    <dd <#if a.onlyUrl> class="hide"</#if>>
-        <#if site.useStatic>
-                        <label><@t.page 'category.content_template_path'/>:</label>
-                        <input name="categoryModelList[${modelIndex}].categoryModel.templatePath" data-model="${a.id}" type="text" autocomplete="on" maxlength="200" size="30" value="${(a.templatePath)!}"/>
-                        <a class="btnLook" href="cmsTemplate/lookup.html?field=categoryModelList${('['+modelIndex+']')?url}.categoryModel.templatePath" lookupGroup=""><@t.page 'template.select'/></a>
-        </#if>
-                        <label>&nbsp;</label>
-                        <@childModel a/>
+                    <dd>
+                        <#if !m.onlyUrl>
+                            <div>
+                                <div class="clearfix">
+                                    <label><input name="categoryModelList[${modelIndex}].categoryModel.customContentPath" type="checkbox"/><@t.page 'custorm_path'/></label>
+                            <#if site.useStatic>
+                                    <label class="categoryModelCustomContentPath hide"><@t.page 'category.content_template_path'/>:</label>
+                                    <input class="categoryModelCustomContentPath hide" name="categoryModelList[${modelIndex}].categoryModel.templatePath" data-model="${m.id}" type="text" autocomplete="on" maxlength="200" size="30" value="${(m.templatePath)!}"/>
+                                    <a class="btnLook categoryModelCustomContentPath hide" href="cmsTemplate/lookup.html?field=templatePath" lookupGroup="categoryModelList[${modelIndex}].categoryModel"><@t.page 'template.select'/></a>
+                            </#if>
+                                </div>
+                                <div class="clearfix categoryModelCustomContentPath hide">
+                                    <label><@t.page 'category.content_path'/>:</label>
+                                    <input name="categoryModelList[${modelIndex}].categoryModel.contentPath" type="text" autocomplete="on" maxlength="500" size="100" value="${(a.contentPath)!(categoryType.contentPath)!(config.content_path)!}"/>
+                                    <a class="btnLook" href="cmsCategory/contentPath.html" width="920" lookupGroup="categoryModelList[${modelIndex}].categoryModel"><@t.page 'select_path'/></a>
+                                </div>
+                            </div>
+                        </#if>
+                        <@childModel m/>
                     </dd>
                 </dl>
-    </#list>
-</@cms.modelList>
+            </#list>
+        </@cms.modelList>
                 <dl class="nowrap categoryModelContentPath">
                     <dt><@t.page 'category.content_path'/>:</dt>
                     <dd>
-                        <input name="contentPath" type="text" autocomplete="on" maxlength="500" size="100" value="${(a.contentPath)!(categoryType.contentPath)!}"/>
-                        <a class="btnLook" href="cmsCategory/contentPath.html" width="920" lookupGroup=""><@t.page 'select_path'/></a>
-                        <#if id?has_content><span class="info"><@t.page 'category.content_path.description'/></span></#if>
+                        <div class="clearfix">
+                            <label><input name="customContentPath" type="checkbox"/><@t.page 'custorm_path'/></label>
+                        </div>
+                        <div class="clearfix customContentPath hide">
+                            <input name="contentPath" type="text" autocomplete="on" maxlength="500" size="100" value="${(a.contentPath)!(categoryType.contentPath)!(config.content_path)!}"/>
+                            <a class="btnLook" href="cmsCategory/contentPath.html?categoryConfig=true" width="920" lookupGroup=""><@t.page 'select_path'/></a>
+                        </div>
                     </dd>
                 </dl>
-<script>
-<#if a?has_content>
-    <@cms.categoryModelList categoryId=id!copyId>
-        <#list list as a>
-            $('input[name$=\\.categoryModel\\.id\\.modelId][value=${a.id.modelId}]',navTab.getCurrentPanel()).parent().find('input[type=checkbox]').click();
-            $('input[data-model=${a.id.modelId}]',navTab.getCurrentPanel()).val('${(a.templatePath)!}');
-        </#list>
-    </@cms.categoryModelList>
-    <#if a.onlyUrl>
-        $('input[name=onlyUrl]',navTab.getCurrentPanel()).click();
-    </#if>
-    $('.advanced',navTab.getCurrentPanel()).hide();
-<#else>
-    $('input[name=showAdvancedOptions]',navTab.getCurrentPanel()).click();
-    <#if categoryType?has_content && categoryType.onlyUrl>
-        $('input[name=onlyUrl]',navTab.getCurrentPanel()).click();
-    </#if>
-</#if>
-checkCategoryModel();
-        </script>
+                <div><span class="info"><@t.page 'category.customContentPath'/>:<a href="sysConfigData/edit.html?code=site" target="navTab" rel="sysConfigData/edit" icon="<i class='icon-edit icon-large'></i>"><@t.page 'server_config.site'/></a></div>
             </div>
             <div class="pageFormContent categoryModelContent" layoutH>
-<#assign contentExtendList=[]/>
-<#assign copy=false/>
-<#if a?has_content&&a.extendId?has_content>
-    <@sys.extendFieldList extendId=a.extendId>
-        <#assign contentExtendList=list>
-    </@sys.extendFieldList>
-    <#if copyId?has_content && !id?has_content><#assign copy=true/></#if>
-</#if>
-<#include "../include_page/extends.html"/>
+                <#assign contentExtendList=[]/>
+                <#assign copy=false/>
+                <#if a?has_content&&a.extendId?has_content>
+                    <@sys.extendFieldList extendId=a.extendId>
+                        <#assign contentExtendList=list>
+                    </@sys.extendFieldList>
+                    <#if copyId?has_content && !id?has_content><#assign copy=true/></#if>
+                </#if>
+                <#include "../include_page/extends.html"/>
                 <fieldset>
                     <legend><@t.page 'content.extend_field'/></legend>
                     <span class="info"><#noparse>&lt;#assign attribute=getContentAttribute(content.id)&gt;</#noparse></span>
@@ -225,15 +246,72 @@ checkCategoryModel();
             </div>
         </div>
     </div>
-<#if showAdvancedOptions?has_content && 'true' = showAdvancedOptions>
-    <script>
-    $('input[name=showAdvancedOptions]',navTab.getCurrentPanel()).click();
+<script>
+$('input[name=onlyUrl]',navTab.getCurrentPanel()).click(function(){
+    if($(this).is(':checked')){
+        if(!$('input[name=customPath]',navTab.getCurrentPanel()).is(':checked')){
+            $('input[name=customPath]',navTab.getCurrentPanel()).click();
+        }
+        $('.onlyUrl',navTab.getCurrentPanel()).hide();
+        $('.onlyUrl input[type=text]',navTab.getCurrentPanel()).val('');
+    } else {
+        $('.onlyUrl',navTab.getCurrentPanel()).show();
+    }
+});
+$('input[name=customPath]',navTab.getCurrentPanel()).click(function(){
+    if($(this).is(':checked')){
+        $('.customPath',navTab.getCurrentPanel()).show();
+    } else {
+        $('.customPath',navTab.getCurrentPanel()).hide();
+    }
+});
+$('input[name=customContentPath]',navTab.getCurrentPanel()).click(function(){
+    if($(this).is(':checked')){
+        $('.customContentPath',navTab.getCurrentPanel()).show();
+    } else {
+        $('.customContentPath',navTab.getCurrentPanel()).hide();
+    }
+});
+$('input[name$=\\.categoryModel\\.customContentPath]',navTab.getCurrentPanel()).click(function(){
+    checkCategoryModel();
+    if($(this).is(':checked')){
+        $(this).parent().parent().parent().find('.categoryModelCustomContentPath',navTab.getCurrentPanel()).show();
+    } else {
+        $(this).parent().parent().parent().find('.categoryModelCustomContentPath',navTab.getCurrentPanel()).hide();
+    }
+});
+<#if a?has_content>
+    <@cms.categoryModelList categoryId=id!copyId>
+        <#list list as a>
+            $('input[name$=\\.categoryModel\\.id\\.modelId][value=${a.id.modelId}]',navTab.getCurrentPanel()).parent().parent().parent().find('input[type=checkbox][name$=\\.use]').click();
+            <#if a.customContentPath>
+            $('input[name$=\\.categoryModel\\.id\\.modelId][value=${a.id.modelId}]',navTab.getCurrentPanel()).parent().parent().parent().find('input[type=checkbox][name$=\\.categoryModel\\.customContentPath]').click();
+            </#if>
+            $('input[name$=\\.categoryModel\\.id\\.modelId][value=${a.id.modelId}]',navTab.getCurrentPanel()).parent().parent().parent().find('input[name$=\\.categoryModel\\.contentPath]').val('${(a.contentPath)!}');
+            $('input[data-model=${a.id.modelId}]',navTab.getCurrentPanel()).val('${(a.templatePath)!}');
+        </#list>
+    </@cms.categoryModelList>
+    <#if a.onlyUrl>
+        $('input[name=onlyUrl]',navTab.getCurrentPanel()).click();
+    </#if>
+    <#if a.customPath>
+        $('input[name=customPath]',navTab.getCurrentPanel()).click();
+    </#if>
+    <#if a.customContentPath>
+        $('input[name=customContentPath]',navTab.getCurrentPanel()).click();
+    </#if>
+<#else>
+    <#if categoryType?has_content && categoryType.onlyUrl>
+        $('input[name=onlyUrl]',navTab.getCurrentPanel()).click();
+    </#if>
+</#if>
+checkCategoryModel();
+<#if showTab?has_content>
+    <#if 'model'=showTab>
     $('.tabs',navTab.getCurrentPanel()).attr('currentIndex',$('li.categoryModelControl').index('.tabsHeaderContent ul li'));
-    </script>
-</#if>
-<#if seo?has_content && 'true' = seo>
-    <script>
+    <#elseif 'seo'=showTab>
     $('.tabs',navTab.getCurrentPanel()).attr('currentIndex',$('li.seo').index('.tabsHeaderContent ul li'));
-    </script>
+    </#if>
 </#if>
+</script>
 </form>

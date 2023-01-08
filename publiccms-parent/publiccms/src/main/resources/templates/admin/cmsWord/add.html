@@ -1,7 +1,7 @@
 <@cms.word id=id><#assign a=object/></@cms.word>
 <form method="post" autocomplete="off" action="cmsWord/save?callbackType=closeCurrent&navTabId=cmsWord/list" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
     <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
-    <input name="id" type="hidden" value="${id!}" />
+    <input name="id" type="hidden" value="${id!}"/>
     <div class="pageFormContent" layoutH>
         <dl class="nowrap">
             <dt><@t.page 'name'/>:</dt>

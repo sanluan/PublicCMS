@@ -35,25 +35,41 @@ public class CmsCategoryModel implements java.io.Serializable {
     @JsonIgnore
     private short siteId;
     /**
+     * custom content path
+     * <p>
+     * 自定义内容访问路径
+     */
+    private boolean customContentPath;
+    /**
      * template path
      * <p>
      * 模板路径
      */
     @GeneratorColumn(title = "模板路径")
     private String templatePath;
+    /**
+     * content path
+     * <p>
+     * 内容路径
+     */
+    @GeneratorColumn(title = "内容路径")
+    private String contentPath;
 
     public CmsCategoryModel() {
     }
 
-    public CmsCategoryModel(CmsCategoryModelId id, short siteId) {
+    public CmsCategoryModel(CmsCategoryModelId id, short siteId, boolean customContentPath) {
         this.id = id;
         this.siteId = siteId;
+        this.customContentPath = customContentPath;
     }
 
-    public CmsCategoryModel(CmsCategoryModelId id, short siteId, String templatePath) {
+    public CmsCategoryModel(CmsCategoryModelId id, short siteId, boolean customContentPath, String templatePath, String contentPath) {
         this.id = id;
         this.siteId = siteId;
+        this.customContentPath = customContentPath;
         this.templatePath = templatePath;
+        this.contentPath = contentPath;
     }
 
     @EmbeddedId
@@ -77,6 +93,15 @@ public class CmsCategoryModel implements java.io.Serializable {
         this.siteId = siteId;
     }
 
+    @Column(name = "custom_content_path", nullable = false)
+    public boolean isCustomContentPath() {
+        return this.customContentPath;
+    }
+
+    public void setCustomContentPath(boolean customContentPath) {
+        this.customContentPath = customContentPath;
+    }
+
     @Column(name = "template_path", length = 200)
     public String getTemplatePath() {
         return this.templatePath;
@@ -86,4 +111,12 @@ public class CmsCategoryModel implements java.io.Serializable {
         this.templatePath = templatePath;
     }
 
+    @Column(name = "content_path", length = 1000)
+    public String getContentPath() {
+        return this.contentPath;
+    }
+
+    public void setContentPath(String contentPath) {
+        this.contentPath = contentPath;
+    }
 }

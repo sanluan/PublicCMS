@@ -13,11 +13,13 @@ CREATE TABLE `cms_category` (
   `child_ids` text COMMENT '所有子分类',
   `tag_type_ids` text default NULL COMMENT '标签分类',
   `code` varchar(50) NOT NULL COMMENT '编码',
+  `custom_path` tinyint(1) NOT NULL default 1 COMMENT '自定义访问路径',
   `template_path` varchar(255) default NULL COMMENT '模板路径',
   `path` varchar(1000) DEFAULT NULL COMMENT '首页路径',
   `only_url` tinyint(1) NOT NULL COMMENT '外链',
   `has_static` tinyint(1) NOT NULL COMMENT '已经静态化',
   `url` varchar(1000) default NULL COMMENT '首页地址',
+  `custom_content_path` tinyint(1) NOT NULL default 1 COMMENT '自定义内容访问路径',
   `content_path` varchar(1000) default NULL COMMENT '内容路径',
   `contain_child` tinyint(1) NOT NULL DEFAULT 1 COMMENT '包含子分类内容',
   `page_size` int(11) default NULL COMMENT '每页数据条数',
@@ -54,7 +56,9 @@ CREATE TABLE `cms_category_model` (
   `category_id` int(11) NOT NULL COMMENT '分类',
   `model_id` varchar(20) NOT NULL COMMENT '模型编码',
   `site_id` smallint(6) NOT NULL COMMENT '站点',
+  `custom_content_path` tinyint(1) NOT NULL default 0 COMMENT '自定义内容访问路径',
   `template_path` varchar(200) default NULL COMMENT '内容模板路径',
+  `content_path` varchar(1000) default NULL COMMENT '内容路径',
   PRIMARY KEY  (`category_id`, `model_id`),
   KEY `cms_category_model_site_id`(`site_id`, `model_id`)
 ) COMMENT='分类模型';
@@ -968,6 +972,9 @@ INSERT INTO `sys_module` VALUES ('place_template_metadata', 'placeTemplate/metad
 INSERT INTO `sys_module` VALUES ('place_view', 'cmsPlace/view', NULL, NULL, 'place_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('product_add', 'cmsContentProduct/add', 'cmsContentProduct/save', NULL, 'product_list', 1, 0);
 INSERT INTO `sys_module` VALUES ('product_list', 'cmsContentProduct/list', NULL, 'icon-truck', 'content_menu', 1, 6);
+INSERT INTO `sys_module` VALUES ('record_add', 'sysRecord/add', 'sysRecord/save', NULL, 'record_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('record_delete', NULL, 'sysRecord/delete', NULL, 'record_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('record_list', 'sysRecord/list', NULL, 'bi bi-receipt', 'system_menu', 1, 6);
 INSERT INTO `sys_module` VALUES ('refund_list', 'tradeRefund/list', NULL, 'icon-signout', 'trade_menu', 1, 5);
 INSERT INTO `sys_module` VALUES ('refund_refund', 'tradeRefund/refundParameters', 'tradeOrder/refund', NULL, 'refund_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('refund_refuse', 'tradeRefund/refuseParameters', 'tradeOrder/refuse', NULL, 'refund_list', 0, 0);
@@ -1493,6 +1500,15 @@ INSERT INTO `sys_module_lang` VALUES ('product_add', 'zh', '修改');
 INSERT INTO `sys_module_lang` VALUES ('product_list', 'en', 'Product management');
 INSERT INTO `sys_module_lang` VALUES ('product_list', 'ja', '製品管理');
 INSERT INTO `sys_module_lang` VALUES ('product_list', 'zh', '产品管理');
+INSERT INTO `sys_module_lang` VALUES ('record_add', 'en', 'Edit');
+INSERT INTO `sys_module_lang` VALUES ('record_add', 'ja', '変更');
+INSERT INTO `sys_module_lang` VALUES ('record_add', 'zh', '修改');
+INSERT INTO `sys_module_lang` VALUES ('record_delete', 'en', 'Delete');
+INSERT INTO `sys_module_lang` VALUES ('record_delete', 'ja', '削除');
+INSERT INTO `sys_module_lang` VALUES ('record_delete', 'zh', '删除');
+INSERT INTO `sys_module_lang` VALUES ('record_list', 'en', 'Custom record management');
+INSERT INTO `sys_module_lang` VALUES ('record_list', 'ja', 'カスタムレコード管理');
+INSERT INTO `sys_module_lang` VALUES ('record_list', 'zh', '自定义记录管理');
 INSERT INTO `sys_module_lang` VALUES ('refund_list', 'en', 'Refund management');
 INSERT INTO `sys_module_lang` VALUES ('refund_list', 'ja', '払い戻し管理');
 INSERT INTO `sys_module_lang` VALUES ('refund_list', 'zh', '退款管理');
@@ -1733,7 +1749,18 @@ INSERT INTO `sys_module_lang` VALUES ('webfile_zip', 'zh', '压缩');
 INSERT INTO `sys_module_lang` VALUES ('word_list', 'en', 'Search word management');
 INSERT INTO `sys_module_lang` VALUES ('word_list', 'ja', '検索ワード管理');
 INSERT INTO `sys_module_lang` VALUES ('word_list', 'zh', '搜索词管理');
-
+-- ----------------------------
+-- Table structure for sys_record
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_record`;
+CREATE TABLE `sys_record` (
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
+  `code` varchar(50) NOT NULL COMMENT '记录编码',
+  `data` longtext NOT NULL COMMENT '数据',
+  `create_date` datetime NOT NULL COMMENT '创建日期',
+  PRIMARY KEY  (`site_id`, `code`),
+  KEY `sys_record_site_id` (`site_id`,`create_date`)
+) COMMENT='自定义记录';
 -- ----------------------------
 -- Table structure for sys_role
 -- ----------------------------

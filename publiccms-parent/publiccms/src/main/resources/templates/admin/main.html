@@ -135,6 +135,8 @@ commentChart.setOption({
    </fieldset>
 </@sys.authorized>
 <@sys.authorized roleIds=admin.roles url='tradeOrder/list'>
+    <@sys.roleModule roleIds=admin.roles moduleId='trade_menu'>
+        <#if object>
     <fieldset>
         <legend><@t.page 'order'/></legend>
         <div class="unit">
@@ -216,12 +218,15 @@ orderChart.setOption({
 });
 </script>
     </fieldset>
+        </#if>
+    </@sys.roleModule>
 </@sys.authorized>
 <@sys.authorized roleIds=admin.roles url='report/user'>
+    <@sys.roleModule roleIdsadmin.roles moduleId='visit_menu';visitAuthorized>
     <fieldset>
         <legend><@t.page 'report.user'/></legend>
         <div class="unit">
-            <div id="visit" class="chart" data-id="visitChart"></div>
+            <#if visitAuthorized><div id="visit" class="chart" data-id="visitChart"></div></#if>
             <ul>
                 <li>
                     <div class="card">
@@ -269,6 +274,7 @@ orderChart.setOption({
                 </li>
             </ul>
         </div>
+<#if visitAuthorized>
 <script>
 <@visit.dayList startVisitDate=(.now?long-7*86400000)?number_to_date>
 var visitChart = echarts.init(document.getElementById('visit'));
@@ -320,7 +326,9 @@ visitChart.setOption({
 });
 </@visit.dayList>
 </script>
+</#if>
     </fieldset>
+    </@sys.roleModule>
 </@sys.authorized>
 <@tools.version>
     <fieldset>

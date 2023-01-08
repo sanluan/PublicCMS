@@ -20,7 +20,7 @@
             <tr>
                 <td>
                     <#if !copy><input type="hidden" name="${name}[${file?index}].id" value="${file.id}"/></#if>
-                    <input type="text" name="${name}[${file?index}].filePath" value="${(file.filePath)!}" size="50" class="required" />
+                    <input type="text" name="${name}[${file?index}].filePath" value="${(file.filePath)!}" size="50" class="required"/>
                     <a class="btnAttach" lookupGroup="${name}[${file?index}]" href="common/upload.html?field=filePath&originalField=description${image?then('&fileTypes=image','')}" width="1000" height="600">${image?then(t.pageMessage('upload.image'),t.pageMessage('upload.file'))}</a>
                 </td>
                 <td>

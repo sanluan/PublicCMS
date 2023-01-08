@@ -1,12 +1,14 @@
 package com.publiccms.logic.component;
 
 import javax.annotation.Resource;
+
 import org.springframework.stereotype.Component;
 
 import com.publiccms.logic.component.config.ConfigComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.task.ScheduledTask;
 import com.publiccms.logic.component.template.MetadataComponent;
+import com.publiccms.logic.component.template.ModelComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsContentAttributeService;
 import com.publiccms.logic.service.cms.CmsContentService;
@@ -33,6 +35,7 @@ public class BeanComponent {
     private static CmsContentService contentService;
     private static TemplateComponent templateComponent;
     private static MetadataComponent metadataComponent;
+    private static ModelComponent modelComponent;
 
     /**
      * @return the siteComponent
@@ -190,5 +193,21 @@ public class BeanComponent {
     @Resource
     public void setMetadataComponent(MetadataComponent metadataComponent) {
         BeanComponent.metadataComponent = metadataComponent;
+    }
+    
+
+    /**
+     * @return the modelComponent
+     */
+    public static ModelComponent getModelComponent() {
+        return modelComponent;
+    }
+
+    /**
+     * @param modelComponent the modelComponent to set
+     */
+    @Resource
+    public void setModelComponent(ModelComponent modelComponent) {
+        BeanComponent.modelComponent = modelComponent;
     }
 }

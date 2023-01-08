@@ -69,28 +69,17 @@ function reIndexTag(){
 function checkCategoryModel(){
     $('.categoryModelContent',navTab.getCurrentPanel()).hide();
     $('.categoryModelContentPath',navTab.getCurrentPanel()).hide().find('input[name=contentPath]').removeClass("required");
-    if($('input[name=showAdvancedOptions]',navTab.getCurrentPanel()).is(':checked')){
-        $('.categoryModel',navTab.getCurrentPanel()).show();
-        $('.categoryModelControl',navTab.getCurrentPanel()).show();
-        $('.categoryModel dl',navTab.getCurrentPanel()).each(function(){
-            if($(this).find('input[type=checkbox]').is(':checked')){
-                $(this).find('dd ul li input[name$=\\.use]').val('true');
-                $('.categoryModelContent',navTab.getCurrentPanel()).show();
-                if(0 == $(this).find('dd').children().length || $(this).find('dd').is(":visible")){
-                    $('.categoryModelContentPath',navTab.getCurrentPanel()).show().find('input[name=contentPath]').addClass("required");
-                    return ;
-                }
+    $('.categoryModel',navTab.getCurrentPanel()).show();
+    $('.categoryModel dl',navTab.getCurrentPanel()).each(function(){
+        if($(this).find('input[type=checkbox][name$=\\.use]').is(':checked')){
+            $(this).find('dd ul li input[name$=\\.use]').val('true');
+            $('.categoryModelContent',navTab.getCurrentPanel()).show();
+            if(0 != $(this).find('[name$=categoryModel\\.customContentPath]').not(':checked').length){
+                $('.categoryModelContentPath',navTab.getCurrentPanel()).show().find('input[name=contentPath]').addClass("required");
+                return ;
             }
-        });
-    }else{
-        $('.categoryModel',navTab.getCurrentPanel()).hide();
-        $('.categoryModelControl',navTab.getCurrentPanel()).hide();
-        $('.categoryModel dl',navTab.getCurrentPanel()).each(function(){
-            if($(this).find('input[type=checkbox]').is(':checked')){
-                $(this).find('dd ul li input[name$=\\.use]').val('true');
-            }
-        });
-    }
+        }
+    });
 }
 function checkPageSize(){
     if(parseInt($('input[name=size]',navTab.getCurrentPanel()).val())>0){

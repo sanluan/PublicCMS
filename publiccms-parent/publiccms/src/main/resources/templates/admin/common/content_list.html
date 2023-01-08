@@ -24,14 +24,14 @@
         <div class="searchBar">
             <ul class="searchContent">
                 <li>
-                    <label><@t.page 'title'/>:</label><input type="text" size="20" name="title" value="${title!}" />
+                    <label><@t.page 'title'/>:</label><input type="text" size="20" name="title" value="${title!}"/>
                 </li>
                 <li>
                     <label><@t.page 'publish_date'/>:</label>
-                    <input type="text" name="startPublishDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" value="${startPublishDate!}" />
+                    <input type="text" name="startPublishDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" value="${startPublishDate!}"/>
                     <a class="inputDateButton" href="javascript:void(0);"></a>
                     <span>-</span>
-                    <input type="text" name="endPublishDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" value="${endPublishDate!}" />
+                    <input type="text" name="endPublishDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" value="${endPublishDate!}"/>
                     <a class="inputDateButton" href="javascript:void(0);"></a>
                 </li>
             <#if 1=admin.contentPermissions>
@@ -95,7 +95,7 @@
                 </#if>
             </#list>
             <#if size=0 && authorizedMap['cmsCategory/add']>
-                    <li><a href="cmsCategory/add.html?id=${categoryId!}&showAdvancedOptions=true" target="navTab" rel="cmsCategory/edit" title="<@t.page 'category.edit'/>"><i class="icon-edit icon-large"></i><@t.page 'content.no_model'/></a></li>
+                    <li><a href="cmsCategory/add.html?id=${categoryId!}&showTab=model" target="navTab" rel="cmsCategory/edit" title="<@t.page 'category.edit'/>"><i class="icon-edit icon-large"></i><@t.page 'content.no_model'/></a></li>
             </#if>
                 </ul>
             </li>

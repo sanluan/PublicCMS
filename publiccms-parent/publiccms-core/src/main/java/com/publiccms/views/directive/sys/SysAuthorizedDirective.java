@@ -1,18 +1,29 @@
 package com.publiccms.views.directive.sys;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Resource;
+
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
+import com.publiccms.common.api.Config;
 import com.publiccms.common.base.AbstractTemplateDirective;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.sys.SysModule;
 import com.publiccms.entities.sys.SysRoleAuthorized;
 import com.publiccms.entities.sys.SysRoleAuthorizedId;
+import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.config.ConfigComponent;
+import com.publiccms.logic.component.config.SiteConfigComponent;
+import com.publiccms.logic.service.sys.SysModuleService;
 import com.publiccms.logic.service.sys.SysRoleAuthorizedService;
 import com.publiccms.logic.service.sys.SysRoleService;
 
@@ -47,6 +58,12 @@ import com.publiccms.logic.service.sys.SysRoleService;
  */
 @Component
 public class SysAuthorizedDirective extends AbstractTemplateDirective {
+    @Resource
+    private SysRoleService sysRoleService;
+    @Resource
+    protected ConfigComponent configComponent;
+    @Resource
+    private SysModuleService moduleService;
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
@@ -54,9 +71,28 @@ public class SysAuthorizedDirective extends AbstractTemplateDirective {
         String url = handler.getString("url");
         String[] urls = handler.getStringArray("urls");
         if (CommonUtils.notEmpty(roleIds)) {
-            if (CommonUtils.notEmpty(url) && sysRoleService.showAllModule(roleIds)) {
+            SysSite site = getSite(handler);
+            Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+            String excludeModules = config.get(SiteConfigComponent.CONFIG_SITE_EXCLUDE_MODULE);
+            Set<String> excludeUrls = null;
+            if (CommonUtils.notEmpty(excludeModules)) {
+                excludeUrls = new HashSet<>();
+                for (SysModule module : moduleService.getEntitys(StringUtils.split(excludeModules, CommonConstants.COMMA))) {
+                    if (CommonUtils.notEmpty(module.getUrl())) {
+                        int index = module.getUrl().indexOf("?");
+                        excludeUrls.add(module.getUrl().substring(0, 0 < index ? index : module.getUrl().length()));
+                    }
+                    if (CommonUtils.notEmpty(module.getAuthorizedUrl())) {
+                        for (String tempUrl : StringUtils.split(module.getAuthorizedUrl(), CommonConstants.COMMA)) {
+                            excludeUrls.add(tempUrl);
+                        }
+                    }
+                }
+            }
+            if (CommonUtils.notEmpty(url) && sysRoleService.showAllModule(roleIds)
+                    && (null == excludeUrls || !excludeUrls.contains(url))) {
                 handler.put("object", true).render();
-            } else if (CommonUtils.notEmpty(url)) {
+            } else if (CommonUtils.notEmpty(url) && (null == excludeUrls || !excludeUrls.contains(url))) {
                 SysRoleAuthorizedId[] ids = new SysRoleAuthorizedId[roleIds.length];
                 for (int i = 0; i < roleIds.length; i++) {
                     ids[i] = new SysRoleAuthorizedId(roleIds[i], url);
@@ -68,7 +104,7 @@ public class SysAuthorizedDirective extends AbstractTemplateDirective {
                 Map<String, Boolean> map = new LinkedHashMap<>();
                 if (sysRoleService.showAllModule(roleIds)) {
                     for (String u : urls) {
-                        map.put(u, true);
+                        map.put(u, null == excludeUrls || !excludeUrls.contains(url));
                     }
                 } else {
                     SysRoleAuthorizedId[] ids = new SysRoleAuthorizedId[urls.length * roleIds.length];
@@ -81,7 +117,7 @@ public class SysAuthorizedDirective extends AbstractTemplateDirective {
                     }
                     List<SysRoleAuthorized> entityList = service.getEntitys(ids);
                     for (SysRoleAuthorized entity : entityList) {
-                        map.put(entity.getId().getUrl(), true);
+                        map.put(entity.getId().getUrl(), null == excludeUrls || !excludeUrls.contains(url));
                     }
                 }
                 handler.put("map", map).render();
@@ -94,8 +130,6 @@ public class SysAuthorizedDirective extends AbstractTemplateDirective {
         return true;
     }
 
-    @Resource
-    private SysRoleService sysRoleService;
     @Resource
     private SysRoleAuthorizedService service;
 

@@ -35,91 +35,121 @@ public class CmsCategory implements java.io.Serializable {
     @JsonIgnore
     private short siteId;
     /**
-     * name<p>
+     * name
+     * <p>
      * 名称
      */
     @GeneratorColumn(title = "名称")
     private String name;
     /**
-     * parent id<p>
+     * parent id
+     * <p>
      * 父id
      */
     @GeneratorColumn(title = "父分类", condition = true)
     private Integer parentId;
     /**
-     * type id<p>
+     * type id
+     * <p>
      * 分类类型id
      */
     @GeneratorColumn(title = "分类类型", condition = true)
     private String typeId;
     /**
-     * child ids<p>
+     * child ids
+     * <p>
      * 子分类id
      */
     @GeneratorColumn(title = "子分类")
     private String childIds;
     /**
-     * tag type ids<p>
+     * tag type ids
+     * <p>
      * 标签类型id
      */
     @GeneratorColumn(title = "标签")
     private String tagTypeIds;
     /**
-     * code<p>
+     * code
+     * <p>
      * 编码
      */
     @GeneratorColumn(title = "编码")
     private String code;
+
+    /**
+     * custom path
+     * <p>
+     * 自定义访问路径
+     */
+    private boolean customPath;
+    @JsonIgnore
     @GeneratorColumn(title = "模板路径")
     private String templatePath;
+    @JsonIgnore
     @GeneratorColumn(title = "路径")
     private String path;
     /**
-     * extend link<p>
+     * extend link
+     * <p>
      * 外链
      */
     @GeneratorColumn(title = "外链")
     private boolean onlyUrl;
     /**
-     * has static file<p>
+     * has static file
+     * <p>
      * 有静态化文件
      */
     @GeneratorColumn(title = "有静态化")
     private boolean hasStatic;
     /**
-     * url<p>
+     * url
+     * <p>
      * 链接地址
      */
     @GeneratorColumn(title = "地址")
     private String url;
+    /**
+     * custom content path
+     * <p>
+     * 自定义内容访问路径
+     */
+    private boolean customContentPath;
+    @JsonIgnore
     @GeneratorColumn(title = "内容路径")
     private String contentPath;
     /**
-     * contain child content<p>
+     * contain child content
+     * <p>
      * 包含子分类内容
      */
     @GeneratorColumn(title = "包含子分类内容")
     private boolean containChild;
     /**
-     * content page size<p>
+     * content page size
+     * <p>
      * 内容分页大小
      */
     @GeneratorColumn(title = "每页数据")
     private Integer pageSize;
     /**
-     * allow contribute<p>
+     * allow contribute
+     * <p>
      * 允许投稿
      */
     @GeneratorColumn(title = "允许投稿", condition = true)
     private boolean allowContribute;
     /**
-     * sort<p>
+     * sort
+     * <p>
      * 排序
      */
     @GeneratorColumn(title = "排序")
     private int sort;
     /**
-     * hidden<p>
+     * hidden
+     * <p>
      * 前台隐藏
      */
     @GeneratorColumn(title = "是否隐藏", condition = true)
@@ -134,13 +164,16 @@ public class CmsCategory implements java.io.Serializable {
     public CmsCategory() {
     }
 
-    public CmsCategory(short siteId, String name, String code, boolean onlyUrl, boolean hasStatic, boolean containChild,
-            boolean allowContribute, int sort, boolean hidden, boolean disabled) {
+    public CmsCategory(short siteId, String name, String code, boolean customPath, boolean onlyUrl, boolean hasStatic,
+            boolean customContentPath, boolean containChild, boolean allowContribute, int sort, boolean hidden,
+            boolean disabled) {
         this.siteId = siteId;
         this.name = name;
         this.code = code;
+        this.customPath = customPath;
         this.onlyUrl = onlyUrl;
         this.hasStatic = hasStatic;
+        this.customContentPath = customContentPath;
         this.containChild = containChild;
         this.allowContribute = allowContribute;
         this.sort = sort;
@@ -149,9 +182,9 @@ public class CmsCategory implements java.io.Serializable {
     }
 
     public CmsCategory(short siteId, String name, Integer parentId, String typeId, String childIds, String tagTypeIds,
-            String code, String templatePath, String path, boolean onlyUrl, boolean hasStatic, String url, String contentPath,
-            boolean containChild, Integer pageSize, boolean allowContribute, int sort, boolean hidden, boolean disabled,
-            Integer extendId) {
+            String code, boolean customPath, String templatePath, String path, boolean onlyUrl, boolean hasStatic, String url,
+            boolean customContentPath, String contentPath, boolean containChild, Integer pageSize, boolean allowContribute,
+            int sort, boolean hidden, boolean disabled, Integer extendId) {
         this.siteId = siteId;
         this.name = name;
         this.parentId = parentId;
@@ -159,11 +192,13 @@ public class CmsCategory implements java.io.Serializable {
         this.childIds = childIds;
         this.tagTypeIds = tagTypeIds;
         this.code = code;
+        this.customPath = customPath;
         this.templatePath = templatePath;
         this.path = path;
         this.onlyUrl = onlyUrl;
         this.hasStatic = hasStatic;
         this.url = url;
+        this.customContentPath = customContentPath;
         this.contentPath = contentPath;
         this.containChild = containChild;
         this.pageSize = pageSize;
@@ -213,7 +248,7 @@ public class CmsCategory implements java.io.Serializable {
         this.parentId = parentId;
     }
 
-    @Column(name="type_id", length=20)
+    @Column(name = "type_id", length = 20)
     public String getTypeId() {
         return this.typeId;
     }
@@ -247,6 +282,15 @@ public class CmsCategory implements java.io.Serializable {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    @Column(name = "custom_path", nullable = false)
+    public boolean isCustomPath() {
+        return this.customPath;
+    }
+
+    public void setCustomPath(boolean customPath) {
+        this.customPath = customPath;
     }
 
     @Column(name = "template_path")
@@ -292,6 +336,15 @@ public class CmsCategory implements java.io.Serializable {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    @Column(name = "custom_content_path", nullable = false)
+    public boolean isCustomContentPath() {
+        return this.customContentPath;
+    }
+
+    public void setCustomContentPath(boolean customContentPath) {
+        this.customContentPath = customContentPath;
     }
 
     @Column(name = "content_path", length = 1000)

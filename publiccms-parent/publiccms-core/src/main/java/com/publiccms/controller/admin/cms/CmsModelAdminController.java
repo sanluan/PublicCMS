@@ -126,8 +126,7 @@ public class CmsModelAdminController {
                 List<CmsCategoryModel> categoryModelList = categoryModelService.getList(site.getId(), entity.getParentId(), null);
                 for (CmsCategoryModel categoryModel : categoryModelList) {
                     CmsCategoryModel cm = new CmsCategoryModel(
-                            new CmsCategoryModelId(categoryModel.getId().getCategoryId(), entity.getId()), site.getId(),
-                            entity.getTemplatePath());
+                            new CmsCategoryModelId(categoryModel.getId().getCategoryId(), entity.getId()), site.getId(), true);
                     categoryModelService.save(cm);
                 }
                 categoryModelService.delete(site.getId(), oldModel.getId(), null);
@@ -143,8 +142,7 @@ public class CmsModelAdminController {
                 List<CmsCategoryModel> categoryModelList = categoryModelService.getList(site.getId(), entity.getParentId(), null);
                 for (CmsCategoryModel categoryModel : categoryModelList) {
                     CmsCategoryModel cm = new CmsCategoryModel(
-                            new CmsCategoryModelId(categoryModel.getId().getCategoryId(), entity.getId()), site.getId(),
-                            entity.getTemplatePath());
+                            new CmsCategoryModelId(categoryModel.getId().getCategoryId(), entity.getId()), site.getId(), true);
                     categoryModelService.save(cm);
                 }
             }

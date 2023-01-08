@@ -458,3 +458,31 @@ UPDATE `sys_module` SET `authorized_url`= 'visit/history',`url` = 'visit/view' W
 -- 2023-01-05 --
 ALTER TABLE `cms_dictionary_data`
     ADD COLUMN `sort` int(11) NOT NULL default '0' COMMENT '顺序' AFTER `text`;
+-- 2023-01-08 --
+ALTER TABLE `cms_category`
+    ADD COLUMN `custom_path` tinyint(1) NOT NULL default 1 COMMENT '自定义访问路径' AFTER `code`,
+    ADD COLUMN `custom_content_path` tinyint(1) NOT NULL default 1 COMMENT '自定义内容访问路径' AFTER `url`;
+ALTER TABLE `cms_category_model`
+    ADD COLUMN `custom_content_path` tinyint(1) NOT NULL default 0 COMMENT '自定义内容访问路径' AFTER `site_id`,
+    ADD COLUMN `content_path` varchar(1000) default NULL COMMENT '内容路径'  AFTER `template_path`;
+DROP TABLE IF EXISTS `sys_record`;
+CREATE TABLE `sys_record` (
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
+  `code` varchar(50) NOT NULL COMMENT '记录编码',
+  `data` longtext NOT NULL COMMENT '数据',
+  `create_date` datetime NOT NULL COMMENT '创建日期',
+  PRIMARY KEY  (`site_id`, `code`),
+  KEY `sys_record_site_id` (`site_id`,`create_date`)
+) COMMENT='自定义记录';
+INSERT INTO `sys_module` VALUES ('record_add', 'sysRecord/add', 'sysRecord/save', NULL, 'record_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('record_delete', NULL, 'sysRecord/delete', NULL, 'record_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('record_list', 'sysRecord/list', NULL, 'bi bi-receipt', 'system_menu', 1, 6);
+INSERT INTO `sys_module_lang` VALUES ('record_add', 'en', 'Edit');
+INSERT INTO `sys_module_lang` VALUES ('record_add', 'ja', '変更');
+INSERT INTO `sys_module_lang` VALUES ('record_add', 'zh', '修改');
+INSERT INTO `sys_module_lang` VALUES ('record_delete', 'en', 'Delete');
+INSERT INTO `sys_module_lang` VALUES ('record_delete', 'ja', '削除');
+INSERT INTO `sys_module_lang` VALUES ('record_delete', 'zh', '删除');
+INSERT INTO `sys_module_lang` VALUES ('record_list', 'en', 'Custom record management');
+INSERT INTO `sys_module_lang` VALUES ('record_list', 'ja', 'カスタムレコード管理');
+INSERT INTO `sys_module_lang` VALUES ('record_list', 'zh', '自定义记录管理');

@@ -1,5 +1,5 @@
 <#list 0..2 as s>
-    <label style="width:auto">
+    <label>
         <input <@t.compare status!'' s?string 'checked="checked"'/> name="status" value="${s}" type="checkbox"/>
         <@t.page 'status.content.'+s/>
     </label>

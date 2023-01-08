@@ -3,7 +3,7 @@
 </@sys.user>
 <@sys.dept id=(a.deptId)!deptId><#assign dept=object/></@sys.dept>
 <form method="post" autocomplete="off" action="sysDept/saveUser?callbackType=closeCurrent&navTabId=sysDept/userList" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
-    <input name="id" type="hidden" value="${id!}" />
+    <input name="id" type="hidden" value="${id!}"/>
     <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <input type="hidden" name="encoding" value="sha512"/>
     <div class="formBar card">
@@ -18,7 +18,7 @@
                 <dt><@t.page 'user.username'/>:</dt>
                 <dd>
                     <input class="required" name="name" type="text" maxlength="20" size="20" value="${(a.name)!}"/>
-                    <label><input name="superuser" type="checkbox" onclick="if($(this).is(':checked')){$('.superuser',navTab.getCurrentPanel()).show();}else{$('.superuser',navTab.getCurrentPanel()).hide();}"/><@t.page 'admin'/></label>
+                    <label><input name="superuser" type="checkbox"/><@t.page 'admin'/></label>
                 </dd>
             </dl>
             <dl class="nowrap">
@@ -77,9 +77,16 @@
             </@sys.role>
                 </ul>
             </fieldset>
-    <#if a?has_content&&a.superuser>
     <script>
-        $('input[name=superuser]',navTab.getCurrentPanel()).click();
+    $('input[name=superuser]',navTab.getCurrentPanel()).click(function(){
+        if($(this).is(':checked')) {
+            $('.superuser',navTab.getCurrentPanel()).show();
+        } else {
+            $('.superuser',navTab.getCurrentPanel()).hide();
+        }
+    });
+<#if a?has_content&&a.superuser>
+    $('input[name=superuser]',navTab.getCurrentPanel()).click();
     <#if a.roles?has_content>
         <#list a.roles?split(',') as role>
             if($('.tree li a[tname=roleIds][tvalue=${role?js_string}]',navTab.getCurrentPanel()).length) {
@@ -89,8 +96,8 @@
             }
         </#list>
     </#if>
+</#if>
     </script>
-    </#if>
         </div>
     </div>
 </form>

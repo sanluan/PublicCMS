@@ -41,13 +41,13 @@
                 <dt><@t.page 'item_type'/>:</dt>
                 <dd>
                     <input class="required" name="itemType" type="text" readonly="readonly" value="${(a.itemType)!itemType!}"/>
-                    <input name="itemId" type="hidden" readonly="readonly" value="${(a.itemId)!itemId!}" />
+                    <input name="itemId" type="hidden" readonly="readonly" value="${(a.itemId)!itemId!}"/>
                     <a class="btnLook" href="cmsPlace/lookup.html<#if (metadata.acceptItemTypes)?has_content>?acceptItemTypes=<#list metadata.acceptItemTypes as a>${a}<#sep>,</#list></#if>" lookupGroup="" width="1200" ><@t.page 'select'/></a>
                 </dd>
             </dl>
         <#else>
-            <input name="itemType" type="hidden" value="${(a.itemType)!itemType!}" />
-            <input name="itemId" type="hidden" value="${(a.itemId)!itemId!}" />
+            <input name="itemType" type="hidden" value="${(a.itemType)!itemType!}"/>
+            <input name="itemId" type="hidden" value="${(a.itemId)!itemId!}"/>
         </#if>
         <#if fieldList?seq_contains('url')>
             <dl class="nowrap">
