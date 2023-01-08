@@ -259,15 +259,13 @@ public class TemplateComponent implements Cache {
                             .getEntity(new CmsCategoryModelId(entity.getCategoryId(), entity.getModelId()));
                 }
                 if (null != categoryModel && null != category) {
-
                     String oldUrl = entity.getUrl();
-                    String contentPath;
+                    String contentPath = null;
                     String templatePath = null;
                     if (categoryModel.isCustomContentPath()) {
                         contentPath = categoryModel.getContentPath();
                         templatePath = categoryModel.getTemplatePath();
                     } else {
-                        Map<String, String> config = BeanComponent.getConfigComponent().getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
                         if (category.isCustomContentPath()) {
                             contentPath = category.getContentPath();
                         } else if (CommonUtils.notEmpty(category.getTypeId())) {
@@ -275,15 +273,14 @@ public class TemplateComponent implements Cache {
                                     .get(category.getTypeId());
                             if (null != categoryType) {
                                 contentPath = categoryType.getContentPath();
-                            } else {
-                                contentPath = config.get(SiteConfigComponent.CONFIG_CONTENT_PATH);
                             }
-                        } else {
-                            contentPath = config.get(SiteConfigComponent.CONFIG_CONTENT_PATH);
                         }
                         CmsModel model = modelComponent.getModelMap(site.getId()).get(entity.getModelId());
                         if (null != model) {
                             templatePath = model.getTemplatePath();
+                            if (null != contentPath) {
+                                contentPath = model.getContentPath();
+                            }
                         }
                     }
                     if (site.isUseStatic() && CommonUtils.notEmpty(templatePath)) {

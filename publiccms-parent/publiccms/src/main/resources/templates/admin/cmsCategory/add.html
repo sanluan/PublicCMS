@@ -32,7 +32,7 @@
                     </#if>
                 </div>
                 <div class="clearfix categoryModelCustomContentPath hide">
-                    <label><@t.page 'category.content_path'/>:</label>
+                    <label><@t.page 'content_path'/>:</label>
                     <input name="categoryModelList[${modelIndex}].categoryModel.contentPath" type="text" autocomplete="on" maxlength="500" size="100" value="${(a.contentPath)!(categoryType.contentPath)!(config.content_path)!}"/>
                     <a class="btnLook" href="cmsCategory/contentPath.html?childContent=true" width="920" lookupGroup="categoryModelList[${modelIndex}].categoryModel"><@t.page 'select_path'/></a>
                 </div>
@@ -178,7 +178,7 @@
                 </dl>
                 </@sys.authorized>
                 <div class="divider"></div>
-                <#if id?has_content><div><span class="info"><@t.page 'category.content_path.description'/></span></div></#if>
+                <#if id?has_content><div><span class="info"><@t.page 'content_path.description'/></span></div></#if>
         <@cms.modelList>
             <#list page.list as m>
                 <#assign modelIndex++/>
@@ -202,7 +202,7 @@
                             </#if>
                                 </div>
                                 <div class="clearfix categoryModelCustomContentPath hide">
-                                    <label><@t.page 'category.content_path'/>:</label>
+                                    <label><@t.page 'content_path'/>:</label>
                                     <input name="categoryModelList[${modelIndex}].categoryModel.contentPath" type="text" autocomplete="on" maxlength="500" size="100" value="${(a.contentPath)!(categoryType.contentPath)!(config.content_path)!}"/>
                                     <a class="btnLook" href="cmsCategory/contentPath.html" width="920" lookupGroup="categoryModelList[${modelIndex}].categoryModel"><@t.page 'select_path'/></a>
                                 </div>
@@ -214,7 +214,7 @@
             </#list>
         </@cms.modelList>
                 <dl class="nowrap categoryModelContentPath">
-                    <dt><@t.page 'category.content_path'/>:</dt>
+                    <dt><@t.page 'content_path'/>:</dt>
                     <dd>
                         <div class="clearfix">
                             <label><input name="customContentPath" type="checkbox"/><@t.page 'custorm_path'/></label>

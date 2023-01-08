@@ -45,6 +45,13 @@
                     </dd>
                 </dl>
             </#if>
+                <dl class="onlyUrl nowrap">
+                    <dt><@t.page 'content_path'/>:</dt>
+                    <dd>
+                        <input name="contentPath" type="text" autocomplete="on" maxlength="500" size="100" value="${(a.contentPath)!(categoryType.contentPath)!(config.content_path)!}"/>
+                        <a class="btnLook" href="cmsCategory/contentPath.html<#if parentId?has_content>?childContent=true</#if>" width="920" lookupGroup=""><@t.page 'select_path'/></a>
+                    </dd>
+                </dl>
             </fieldset>
             <fieldset class="systemField">
                 <legend><@t.page 'model.system_field'/></legend>

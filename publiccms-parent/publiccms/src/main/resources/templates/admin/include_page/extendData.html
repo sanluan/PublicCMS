@@ -259,14 +259,6 @@
         <a class="btnLook" href="cmsCategory/categoryPath.html?field=value" lookupGroup="${name}[${index}]" width="920"><@t.page 'select_path'/></a>
             </#if>
             <#break>
-        <#case 'contentPath'>
-            <#if 'view'=type>
-                ${(value)!}
-            <#else>
-        <input name="${inputName}" type="text" <#if 'customform'!=type><#if extend.required> class="required"</#if></#if> autocomplete="on" maxlength="500" size="100" value="${(value)!}"/>
-        <a class="btnLook" href="cmsCategory/contentPath.html?field=value" lookupGroup="${name}[${index}]" width="920"><@t.page 'select_path'/></a>
-            </#if>
-            <#break>
         <#case 'module'>
             <#if value?has_content>
                 <#local values=value?split(',')/>

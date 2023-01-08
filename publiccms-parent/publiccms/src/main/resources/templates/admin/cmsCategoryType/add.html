@@ -66,11 +66,11 @@
                         </dd>
                     </dl>
                     <dl class="nowrap onlyUrl">
-                        <dt><@t.page 'category.content_path'/>:</dt>
+                        <dt><@t.page 'content_path'/>:</dt>
                         <dd>
                             <input name="contentPath" type="text" autocomplete="on" maxlength="500" size="100" value="${(a.contentPath)!}"/>
                             <a class="btnLook" href="cmsCategory/contentPath.html" width="920" lookupGroup=""><@t.page 'select_path'/></a>
-                            <#if id?has_content><span class="info"><@t.page 'category.content_path.description'/></span></#if>
+                            <#if id?has_content><span class="info"><@t.page 'content_path.description'/></span></#if>
                         </dd>
                     </dl>
                 </fieldset>
