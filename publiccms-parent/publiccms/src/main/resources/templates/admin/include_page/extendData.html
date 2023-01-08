@@ -275,6 +275,22 @@
                 </#list>
             </#if>
             <#break>
+        <#case 'captcha'>
+            <#if value?has_content>
+                <#local values=value?split(',')/>
+            </#if>
+            <#if 'view'=type>
+                <#if values?has_content>
+                    <#list values as a>
+                        <@t.page a/><#sep>,
+                    </#list>
+                </#if>
+            <#else>
+                <#list ["register","login","management_system","comment","contribute","upload","survey"] as a>
+        <label><input name="${inputName}" type="checkbox" value="${a}"${(values?has_content&&values?seq_contains(a))?then(' checked="true"','')?no_esc}/><@t.page a/></label>
+                </#list>
+            </#if>
+            <#break>
         <#default>
             <#if 'view'=type>
                 ${(value)!}

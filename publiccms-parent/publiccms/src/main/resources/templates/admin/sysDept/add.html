@@ -134,21 +134,21 @@
                 </ul>
             </fieldset>
     <script>
-        $('input[type=ownsAllCategory]',navTab.getCurrentPanel()).click(function(){
+        $('input[name=ownsAllCategory]',navTab.getCurrentPanel()).click(function(){
             if($(this).is(':checked')) {
                 $('.ownsAllCategory',navTab.getCurrentPanel()).hide();
             } else {
                 $('.ownsAllCategory',navTab.getCurrentPanel()).show();
             }
         });
-        $('input[type=ownsAllPage]',navTab.getCurrentPanel()).click(function(){
+        $('input[name=ownsAllPage]',navTab.getCurrentPanel()).click(function(){
             if($(this).is(':checked')) {
                 $('.ownsAllPage',navTab.getCurrentPanel()).hide();
             } else {
                 $('.ownsAllPage',navTab.getCurrentPanel()).show();
             }
         });
-        $('input[type=ownsAllConfig]',navTab.getCurrentPanel()).click(function(){
+        $('input[name=ownsAllConfig]',navTab.getCurrentPanel()).click(function(){
             if($(this).is(':checked')) {
                 $('.ownsAllConfig',navTab.getCurrentPanel()).hide();
             } else {

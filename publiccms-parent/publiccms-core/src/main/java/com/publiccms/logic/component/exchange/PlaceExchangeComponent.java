@@ -113,16 +113,30 @@ public class PlaceExchangeComponent extends Exchange<String, Place> {
                 attributeMap.put(attribute.getPlaceId(), attribute);
             }
         }
-
+        Map<String, String> fieldTextMap = metadata.getFieldTextMap();
+        List<String> fieldList = metadata.getFieldList();
         ExcelView view = new ExcelView(workbook -> {
             Sheet sheet = workbook
                     .createSheet(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content"));
             int i = 0, j = 0;
             Row row = sheet.createRow(i++);
-
             row.createCell(j++).setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.id"));
-            row.createCell(j++).setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.title"));
-            row.createCell(j++).setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.url"));
+            row.createCell(j++)
+                    .setCellValue(null == fieldTextMap
+                            ? LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.title")
+                            : fieldTextMap.get("title"));
+            if (null != fieldList && fieldList.contains("url")) {
+                row.createCell(j++)
+                        .setCellValue(null == fieldTextMap
+                                ? LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.url")
+                                : fieldTextMap.get("url"));
+            }
+            if (null != fieldList && fieldList.contains("description")) {
+                row.createCell(j++)
+                        .setCellValue(null == fieldTextMap
+                                ? LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.description")
+                                : fieldTextMap.get("description"));
+            }
             row.createCell(j++).setCellValue(
                     LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content.promulgator"));
             row.createCell(j++)
@@ -150,7 +164,12 @@ public class PlaceExchangeComponent extends Exchange<String, Place> {
                 j = 0;
                 row.createCell(j++).setCellValue(entity.getId().toString());
                 row.createCell(j++).setCellValue(entity.getTitle());
-                row.createCell(j++).setCellValue(entity.getUrl());
+                if (null != fieldList && fieldList.contains("url")) {
+                    row.createCell(j++).setCellValue(entity.getUrl());
+                }
+                if (null != fieldList && fieldList.contains("description")) {
+                    row.createCell(j++).setCellValue(entity.getDescription());
+                }
                 user = userMap.get(entity.getUserId());
                 row.createCell(j++).setCellValue(null == user ? null : user.getNickname());
                 row.createCell(j++).setCellValue(String.valueOf(entity.getClicks()));

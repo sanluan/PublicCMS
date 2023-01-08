@@ -142,7 +142,8 @@ public abstract class AbstractOauth implements Config, OauthGateway {
      * @throws ClientProtocolException
      * @throws IOException
      */
-    public OauthAccess getOpenId(@SuppressWarnings("unused") short siteId, OauthAccess oauthInfo) throws ClientProtocolException, IOException {
+    public OauthAccess getOpenId(@SuppressWarnings("unused") short siteId, OauthAccess oauthInfo)
+            throws ClientProtocolException, IOException {
         return oauthInfo;
     }
 
@@ -173,12 +174,16 @@ public abstract class AbstractOauth implements Config, OauthGateway {
     @Override
     public List<SysExtendField> getExtendFieldList(SysSite site, Locale locale) {
         List<SysExtendField> extendFieldList = new ArrayList<>();
-        extendFieldList.add(new SysExtendField(prefix + CONFIG_APP_KEY, INPUTTYPE_TEXT, CONFIG_APP_KEY,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + prefix + CONFIG_APP_KEY)));
-        extendFieldList.add(new SysExtendField(prefix + CONFIG_APP_SECRET, INPUTTYPE_TEXT, CONFIG_APP_SECRET,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + prefix + CONFIG_APP_SECRET)));
-        extendFieldList.add(new SysExtendField(prefix + CONFIG_RETURN_URL, INPUTTYPE_TEXT, CONFIG_RETURN_URL, getMessage(locale,
-                CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + prefix + CONFIG_RETURN_URL, site.getDynamicPath())));
+        extendFieldList.add(new SysExtendField(prefix + CONFIG_APP_KEY, INPUTTYPE_TEXT,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + prefix + CONFIG_APP_KEY),
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + prefix + CONFIG_APP_KEY
+                        + CONFIG_CODE_DESCRIPTION_SUFFIX)));
+        extendFieldList.add(new SysExtendField(prefix + CONFIG_APP_SECRET, INPUTTYPE_TEXT,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + prefix + CONFIG_APP_SECRET), null));
+        extendFieldList.add(new SysExtendField(prefix + CONFIG_RETURN_URL, INPUTTYPE_TEXT,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + prefix + CONFIG_RETURN_URL),
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + prefix + CONFIG_RETURN_URL
+                        + CONFIG_CODE_DESCRIPTION_SUFFIX, site.getDynamicPath())));
         return extendFieldList;
     }
 }

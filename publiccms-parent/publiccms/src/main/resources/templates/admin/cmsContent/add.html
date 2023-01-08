@@ -108,20 +108,9 @@ $('input[name=\'categoryName\']',navTab.getCurrentPanel()).on('change',function(
                     <dt>${(model.fieldTextMap['title'])!t.pageMessage('title')}:</dt>
                     <dd>
                         <input class="required" name="title" type="text" maxlength="250" size="60" value="${(a.title)!}"/>
-            <#if fieldList?seq_contains('copied')>
+                <#if fieldList?seq_contains('copied')>
                         <label><input name="copied" type="checkbox"/>${(model.fieldTextMap['copied'])!}</label>
-<script>
-$('input[name=copied]',navTab.getCurrentPanel()).click(function(){
-    if($(this).is(':checked')) {
-        $('.copied',navTab.getCurrentPanel()).show();
-        $('.copied input[data-required=true]',navTab.getCurrentPanel()).addClass('required');
-    } else {
-        $('.copied',navTab.getCurrentPanel()).hide();
-        $('.copied input[data-required=true]',navTab.getCurrentPanel()).removeClass('required').val('');
-    }
-});
-</script>
-            </#if>
+                </#if>
                     </dd>
                 </dl>
                 <dl class="copied hide">
@@ -132,11 +121,6 @@ $('input[name=copied]',navTab.getCurrentPanel()).click(function(){
                     <dt>${(model.fieldTextMap['sourceUrl'])!}:</dt>
                     <dd><input name="sourceUrl" autocomplete="on" type="text"<#if requiredFieldList?seq_contains('sourceUrl')> data-required="true"</#if> maxlength="250" size="20" value="${(attribute.sourceUrl)!}"/></dd>
                 </dl>
-            <#if a?has_content&&a.copied&&fieldList?seq_contains('copied')>
-<script>
-$('input[name=copied]',navTab.getCurrentPanel()).click();
-</script>
-            </#if>
             <#if model.onlyUrl>
                 <dl class="nowrap">
                     <dt>${(model.fieldTextMap['url'])!}:</dt>
@@ -166,14 +150,6 @@ $('input[name=copied]',navTab.getCurrentPanel()).click();
                     <dd><input name="editor"<#if requiredFieldList?seq_contains('editor')> class="required"</#if> autocomplete="on" type="text" maxlength="50" size="20" value="${(a.editor)!}"/></dd>
                 </dl>
             </#if>
-            <#if fieldList?seq_contains('description')>
-                <dl class="nowrap">
-                    <dt>${(model.fieldTextMap['description'])!}:</dt>
-                    <dd>
-                        <textarea name="description"<#if requiredFieldList?seq_contains('description')> class="required"</#if> maxlength="300" cols="80" rows="4">${(a.description)!}</textarea>
-                    </dd>
-                </dl>
-            </#if>
                 <dl>
                     <dt><@t.page 'content.timming'/>:</dt>
                     <dd>
@@ -194,6 +170,14 @@ $('input[name=copied]',navTab.getCurrentPanel()).click();
                         <a class="inputDateButton" href="javascript:void(0);"></a>
                     </dd>
                 </dl>
+             <#if fieldList?seq_contains('description')>
+                <dl class="nowrap">
+                    <dt>${(model.fieldTextMap['description'])!}:</dt>
+                    <dd>
+                        <textarea name="description"<#if requiredFieldList?seq_contains('description')> class="required"</#if> maxlength="300" cols="80" rows="4">${(a.description)!}</textarea>
+                    </dd>
+                </dl>
+            </#if>
             <#if fieldList?seq_contains('cover')>
                 <dl class="nowrap">
                     <dt>${(model.fieldTextMap['cover'])!}:</dt>
@@ -332,6 +316,20 @@ $('input[name=copied]',navTab.getCurrentPanel()).click(function(){
         $('input[name=draft]',navTab.getCurrentPanel()).parent().parent().show();
     }
 });
+<#if fieldList?seq_contains('copied')>
+$('input[name=copied]',navTab.getCurrentPanel()).click(function(){
+    if($(this).is(':checked')) {
+        $('.copied',navTab.getCurrentPanel()).show();
+        $('.copied input[data-required=true]',navTab.getCurrentPanel()).addClass('required');
+    } else {
+        $('.copied',navTab.getCurrentPanel()).hide();
+        $('.copied input[data-required=true]',navTab.getCurrentPanel()).removeClass('required').val('');
+    }
+});
+    <#if a?has_content&&a.copied>
+$('input[name=copied]',navTab.getCurrentPanel()).click();
+    </#if>
+</#if>
 <#if a?has_content&&(a.publishDate gt .now || a.expiryDate?has_content)>
 $('input[name=timing]',navTab.getCurrentPanel()).click();
 </#if>

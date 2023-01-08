@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import jakarta.annotation.Resource;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import com.publiccms.common.annotation.Csrf;
+import com.publiccms.common.api.Config;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
@@ -30,6 +32,7 @@ import com.publiccms.entities.cms.CmsPlace;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
+import com.publiccms.logic.component.config.ConfigComponent;
 import com.publiccms.logic.component.config.SiteConfigComponent;
 import com.publiccms.logic.component.site.LockComponent;
 import com.publiccms.logic.component.site.SiteComponent;
@@ -57,8 +60,6 @@ import freemarker.template.TemplateException;
 public class PlaceController {
     protected final Log log = LogFactory.getLog(getClass());
     @Resource
-    private CmsPlaceService service;
-    @Resource
     private StatisticsComponent statisticsComponent;
     @Resource
     private CmsPlaceAttributeService attributeService;
@@ -68,6 +69,8 @@ public class PlaceController {
     protected LogOperateService logOperateService;
     @Resource
     protected SiteComponent siteComponent;
+    @Resource
+    protected ConfigComponent configComponent;
     @Resource
     protected SiteConfigComponent siteConfigComponent;
     @Resource
@@ -82,6 +85,7 @@ public class PlaceController {
      * @param entity
      * @param returnUrl
      * @param _csrf
+     * @param captcha
      * @param placeParameters
      * @param request
      * @param session
@@ -89,17 +93,29 @@ public class PlaceController {
      * @return view name
      */
     @RequestMapping(value = "save")
-    public String save(@RequestAttribute SysSite site, CmsPlace entity, String returnUrl, String _csrf,
+    public String save(@RequestAttribute SysSite site, CmsPlace entity, String returnUrl, String _csrf, String captcha,
             @ModelAttribute ExtendDataParameters placeParameters, HttpServletRequest request, HttpSession session,
             ModelMap model) {
         returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         if (null != entity && CommonUtils.notEmpty(entity.getPath())) {
+            Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+            String enableCaptcha = config.get(SiteConfigComponent.CONFIG_CAPTCHA);
+            if (CommonUtils.notEmpty(captcha) || CommonUtils.notEmpty(enableCaptcha)
+                    && ArrayUtils.contains(StringUtils.split(enableCaptcha, CommonConstants.COMMA), "contribute")) {
+                String sessionCaptcha = (String) request.getSession().getAttribute("captcha");
+                request.getSession().removeAttribute("captcha");
+                if (ControllerUtils.errorCustom("captcha.error", null == sessionCaptcha || !sessionCaptcha.equalsIgnoreCase(captcha),
+                        model)) {
+                    return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
+                }
+            }
             if (!entity.getPath().startsWith(CommonConstants.SEPARATOR)) {
                 entity.setPath(CommonConstants.SEPARATOR + entity.getPath());
             }
             entity.setPath(entity.getPath().replace("//", CommonConstants.SEPARATOR));
             entity.setStatus(CmsPlaceService.STATUS_PEND);
-            String filepath = siteComponent.getTemplateFilePath(site.getId(), TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
+            String filepath = siteComponent.getTemplateFilePath(site.getId(),
+                    TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
             CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);
             SysUser user = ControllerUtils.getUserFromSession(session);
             if (ControllerUtils.errorCustom("contribute",
@@ -177,7 +193,8 @@ public class PlaceController {
         returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         CmsPlace entity = service.getEntity(id);
         if (null != entity) {
-            String filepath = siteComponent.getTemplateFilePath(site.getId(), TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
+            String filepath = siteComponent.getTemplateFilePath(site.getId(),
+                    TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
             CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);
             if (ControllerUtils.errorCustom("manage",
                     CommonUtils.empty(metadata.getAdminIds()) || !ArrayUtils.contains(metadata.getAdminIds(), user.getId()),
@@ -186,8 +203,8 @@ public class PlaceController {
                 service.delete(id);
                 logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
                         "delete.place", RequestUtils.getIpAddress(request), CommonUtils.getDate(), id.toString()));
-                if (site.isUseSsi() || CmsFileUtils
-                        .exists(siteComponent.getWebFilePath(site.getId(), TemplateComponent.INCLUDE_DIRECTORY + entity.getPath()))) {
+                if (site.isUseSsi() || CmsFileUtils.exists(
+                        siteComponent.getWebFilePath(site.getId(), TemplateComponent.INCLUDE_DIRECTORY + entity.getPath()))) {
                     try {
                         CmsPageData data = metadataComponent.getTemplateData(filepath);
                         templateComponent.staticPlace(site, entity.getPath(), metadata, data);
@@ -217,7 +234,8 @@ public class PlaceController {
         returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         CmsPlace entity = service.getEntity(id);
         if (null != entity) {
-            String filepath = siteComponent.getTemplateFilePath(site.getId(), TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
+            String filepath = siteComponent.getTemplateFilePath(site.getId(),
+                    TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
             CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);
             if (ControllerUtils.errorCustom("manage",
                     CommonUtils.empty(metadata.getAdminIds()) || !ArrayUtils.contains(metadata.getAdminIds(), user.getId()),
@@ -226,8 +244,8 @@ public class PlaceController {
                 service.check(id, user.getId());
                 logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
                         "check.place", RequestUtils.getIpAddress(request), CommonUtils.getDate(), id.toString()));
-                if (site.isUseSsi() || CmsFileUtils
-                        .exists(siteComponent.getWebFilePath(site.getId(), TemplateComponent.INCLUDE_DIRECTORY + entity.getPath()))) {
+                if (site.isUseSsi() || CmsFileUtils.exists(
+                        siteComponent.getWebFilePath(site.getId(), TemplateComponent.INCLUDE_DIRECTORY + entity.getPath()))) {
                     try {
                         CmsPageData data = metadataComponent.getTemplateData(filepath);
                         templateComponent.staticPlace(site, entity.getPath(), metadata, data);
@@ -257,7 +275,8 @@ public class PlaceController {
         returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         CmsPlace entity = service.getEntity(id);
         if (null != entity) {
-            String filepath = siteComponent.getTemplateFilePath(site.getId(), TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
+            String filepath = siteComponent.getTemplateFilePath(site.getId(),
+                    TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
             CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);
             if (ControllerUtils.errorCustom("manage",
                     null == entity || null == user || CommonUtils.empty(metadata.getAdminIds())
@@ -267,8 +286,8 @@ public class PlaceController {
                 service.uncheck(id);
                 logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
                         "check.place", RequestUtils.getIpAddress(request), CommonUtils.getDate(), id.toString()));
-                if (site.isUseSsi() || CmsFileUtils
-                        .exists(siteComponent.getWebFilePath(site.getId(), TemplateComponent.INCLUDE_DIRECTORY + entity.getPath()))) {
+                if (site.isUseSsi() || CmsFileUtils.exists(
+                        siteComponent.getWebFilePath(site.getId(), TemplateComponent.INCLUDE_DIRECTORY + entity.getPath()))) {
                     try {
                         CmsPageData data = metadataComponent.getTemplateData(filepath);
                         templateComponent.staticPlace(site, entity.getPath(), metadata, data);
@@ -306,4 +325,7 @@ public class PlaceController {
             ControllerUtils.redirectPermanently(response, site.getDynamicPath());
         }
     }
+
+    @Resource
+    private CmsPlaceService service;
 }

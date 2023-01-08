@@ -44,6 +44,14 @@
         <@extendData name='categoryExtendDataList' extendList=list extendValues=attribute type='customform'/>
     </@sys.extendFieldList>
     <@extendData name='modelExtendDataList' extendList=model.extendList extendValues=attribute type='customform'/>
+    <@sys.configData code="site">
+        <#if object.captcha?has_content && object.captcha?split(",")?seq_contains("contribute")>
+    <p>
+        <input name="captcha" type="text" autocomplete="off" placeholder="Captcha" title="Captcha"/>
+        <img src="${site.dynamicPath}getCaptchaImage" alt="captcha" onclick="this.src=this.src+'?'+new Date().getTime()"/>
+    </p>
+        </#if>
+    </@sys.configData>
     <p><input type="submit" value="<@t.page 'button.save'/>"/></p>
 </form>
 <#noparse>

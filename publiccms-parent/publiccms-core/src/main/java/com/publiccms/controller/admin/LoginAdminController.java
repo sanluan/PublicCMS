@@ -1,16 +1,13 @@
 package com.publiccms.controller.admin;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
-import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -24,8 +21,10 @@ import com.publiccms.common.api.Config;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
+import com.publiccms.common.tools.ImageUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.common.tools.UserPasswordUtils;
+import com.publiccms.common.tools.VerificationUtils;
 import com.publiccms.entities.log.LogLogin;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
@@ -40,6 +39,12 @@ import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.sys.SysUserService;
 import com.publiccms.logic.service.sys.SysUserTokenService;
+
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 /**
  *
@@ -71,6 +76,8 @@ public class LoginAdminController {
      * @param password
      * @param returnUrl
      * @param encoding
+     * @param captcha
+     *            验证码
      * @param request
      * @param response
      * @param model
@@ -78,7 +85,7 @@ public class LoginAdminController {
      */
     @RequestMapping(value = "login", method = RequestMethod.POST)
     public String login(@RequestAttribute SysSite site, String username, String password, String returnUrl, String encoding,
-            HttpServletRequest request, HttpServletResponse response, ModelMap model) {
+            String captcha, HttpServletRequest request, HttpServletResponse response, ModelMap model) {
         username = StringUtils.trim(username);
         password = StringUtils.trim(password);
         if (ControllerUtils.errorNotEmpty("username", username, model)
@@ -90,8 +97,18 @@ public class LoginAdminController {
         String ip = RequestUtils.getIpAddress(request);
         SysUser user = service.findByName(site.getId(), username);
         boolean locked = lockComponent.isLocked(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, null);
+        Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+        String enableCaptcha = config.get(SiteConfigComponent.CONFIG_CAPTCHA);
         if (ControllerUtils.errorCustom("locked.ip", locked && ControllerUtils.ipNotEquals(ip, user), model)
-                || ControllerUtils.errorNotEquals("password", user, model)) {
+                || CommonUtils.notEmpty(captcha) || CommonUtils.notEmpty(enableCaptcha)
+                        && ArrayUtils.contains(StringUtils.split(enableCaptcha, CommonConstants.COMMA), "management_system")) {
+            String sessionCaptcha = (String) request.getSession().getAttribute("captcha");
+            request.getSession().removeAttribute("captcha");
+            if (ControllerUtils.errorCustom("captcha.error", null == sessionCaptcha || !sessionCaptcha.equalsIgnoreCase(captcha), model)) {
+                return "login";
+            }
+        }
+        if (ControllerUtils.errorNotEquals("password", user, model)) {
             model.addAttribute("username", username);
             model.addAttribute("returnUrl", returnUrl);
             lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, null, true);
@@ -123,7 +140,6 @@ public class LoginAdminController {
         service.updateLoginStatus(user.getId(), ip);
         String authToken = UUID.randomUUID().toString();
         Date now = CommonUtils.getDate();
-        Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
         int expiryMinutes = ConfigComponent.getInt(config.get(SiteConfigComponent.CONFIG_EXPIRY_MINUTES_MANAGER),
                 SiteConfigComponent.DEFAULT_EXPIRY_MINUTES);
         addLoginStatus(user, authToken, request, response, expiryMinutes);
@@ -154,15 +170,16 @@ public class LoginAdminController {
      * @param username
      * @param password
      * @param encoding
+     * @param captcha
      * @param request
      * @param response
      * @param model
      * @return view name
      */
     @RequestMapping(value = "loginDialog", method = RequestMethod.POST)
-    public String loginDialog(@RequestAttribute SysSite site, String username, String password, String encoding,
+    public String loginDialog(@RequestAttribute SysSite site, String username, String password, String encoding, String captcha,
             HttpServletRequest request, HttpServletResponse response, ModelMap model) {
-        if ("login".equals(login(site, username, password, null, encoding, request, response, model))) {
+        if ("login".equals(login(site, username, password, null, encoding, captcha, request, response, model))) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         return CommonConstants.TEMPLATE_DONE;
@@ -231,6 +248,16 @@ public class LoginAdminController {
             ControllerUtils.clearAdminToSession(request.getContextPath(), request.getScheme(), request.getSession(), response);
         }
         return UrlBasedViewResolver.REDIRECT_URL_PREFIX + CommonConstants.getDefaultPage();
+    }
+
+    @RequestMapping(value = "getCaptchaImage")
+    public void getCaptchaImage(HttpSession session, HttpServletResponse response) {
+        try {
+            String captcha = VerificationUtils.getRandomString("ABCDEFGHJKMNPQRSTUVWXYZ23456789", 4);
+            session.setAttribute("captcha", captcha);
+            ImageUtils.drawImage(100, 20, captcha, response.getOutputStream());
+        } catch (IOException e) {
+        }
     }
 
     /**

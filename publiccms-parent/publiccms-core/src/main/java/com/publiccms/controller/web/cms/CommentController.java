@@ -7,6 +7,8 @@ import java.util.Map;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.annotation.Resource;
 
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
@@ -18,6 +20,7 @@ import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.api.Config;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.JsonUtils;
@@ -92,6 +95,7 @@ public class CommentController {
      * @param user
      * @param entity
      * @param returnUrl
+     * @param captcha
      * @param request
      * @param model
      * @return redirect url
@@ -99,7 +103,7 @@ public class CommentController {
     @RequestMapping("save")
     @Csrf
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser user, CmsComment entity, String returnUrl,
-            HttpServletRequest request, ModelMap model) {
+            String captcha, HttpServletRequest request, ModelMap model) {
         returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         boolean locked = lockComponent.isLocked(site.getId(), LockComponent.ITEM_TYPE_COMMENT, String.valueOf(user.getId()),
                 null);
@@ -107,9 +111,18 @@ public class CommentController {
             lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_COMMENT, String.valueOf(user.getId()), null, true);
             return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
         }
+        Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+        String enableCaptcha = config.get(SiteConfigComponent.CONFIG_CAPTCHA);
+        if (CommonUtils.notEmpty(captcha) || CommonUtils.notEmpty(enableCaptcha)
+                        && ArrayUtils.contains(StringUtils.split(enableCaptcha, CommonConstants.COMMA), "comment")) {
+            String sessionCaptcha = (String) request.getSession().getAttribute("captcha");
+            request.getSession().removeAttribute("captcha");
+            if (ControllerUtils.errorCustom("captcha.error", null == sessionCaptcha || !sessionCaptcha.equalsIgnoreCase(captcha), model)) {
+                return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
+            }
+        }
         CmsContent content = null;
         if (CommonUtils.notEmpty(entity.getText())) {
-            Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
             boolean needCheck = ConfigComponent.getBoolean(config.get(SiteConfigComponent.CONFIG_COMMENT_NEED_CHECK), true);
             boolean needStatic = ConfigComponent.getBoolean(config.get(SiteConfigComponent.CONFIG_STATIC_AFTER_COMMENT), false);
             entity.setStatus(CmsCommentService.STATUS_PEND);
