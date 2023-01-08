@@ -49,6 +49,14 @@
                     </#if>
                     <p><input type="text" name="username" placeholder="User name" title="User name"/></p>
                     <p><input type="password" name="password" placeholder="Password" title="Password"/></p>
+                    <@sys.configData code="site">
+                        <#if object.captcha?has_content && object.captcha?split(",")?seq_contains("login")>
+                    <p>
+                        <input name="captcha" type="text" autocomplete="off" placeholder="Captcha" title="Captcha"/>
+                        <img src="${site.dynamicPath}getCaptchaImage" alt="captcha" onclick="this.src=this.src+'?'+new Date().getTime()"/>
+                    </p>
+                        </#if>
+                    </@sys.configData>
                     <p>
                         <input type="hidden" name="returnUrl" value="${returnUrl!}"/>
                         <input type="hidden" name="clientId" value="${clientId!}"/>

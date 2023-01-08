@@ -9,6 +9,14 @@
             <dt><@t.page 'password'/>:</dt>
             <dd><input type="password" name="password" escape="true" title="<@t.page 'password'/>"/></dd>
         </dl>
+        <@sys.configData code="site">
+            <#if object.captcha?has_content && object.captcha?split(",")?seq_contains("management_system")>
+        <dl class="nowrap">
+            <dt><@t.page 'password'/>:</dt>
+            <dd><input type="text" name="captcha" title="<@t.page 'captcha'/>"/><label><img src="${base+adminContextPath}/getCaptchaImage" alt="<@t.page 'captcha'/>" onclick="this.src=this.src+'?'+new Date().getTime()"/></label></dd>
+        </dl>
+            </#if>
+        </@sys.configData>
     </div>
     <div class="formBar">
         <ul>

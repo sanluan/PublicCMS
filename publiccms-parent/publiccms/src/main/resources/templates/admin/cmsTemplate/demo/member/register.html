@@ -35,6 +35,14 @@
                 <p><input type="text" name="nickname" placeholder="Nickname" title="Nickname" value="${nickname!}"/></p>
                 <p><input type="password" name="password" placeholder="Password" title="Password"/></p>
                 <p><input type="password" name="repassword" placeholder="Repeat password" title="Repeat password"/></p>
+                <@sys.configData code="site">
+                    <#if object.captcha?has_content && object.captcha?split(",")?seq_contains("register")>
+                <p>
+                    <input name="captcha" type="text" autocomplete="off" placeholder="Captcha" title="Captcha"/>
+                    <img src="${site.dynamicPath}getCaptchaImage" alt="captcha" onclick="this.src=this.src+'?'+new Date().getTime()"/>
+                </p>
+                    </#if>
+                </@sys.configData>
                 <p>
                     <input type="hidden" name="returnUrl" value="${returnUrl!}"/>
                     <input type="hidden" name="clientId" value="${clientId!}"/>

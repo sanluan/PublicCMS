@@ -92,6 +92,16 @@
             </#list>
         </@cms.surveyQuestionList>
             </ul>
+        <#if available>
+            <@sys.configData code="site">
+                <#if object.captcha?has_content && object.captcha?split(",")?seq_contains("survey")>
+            <p>
+                <input name="captcha" type="text" autocomplete="off" placeholder="Captcha" title="Captcha"/>
+                <img src="${site.dynamicPath}getCaptchaImage" alt="captcha" onclick="this.src=this.src+'?'+new Date().getTime()"/>
+            </p>
+                </#if>
+            </@sys.configData>
+        </#if>
             <p><input type="submit" value="Submit"<#if !available> disabled="true"</#if>/></p>
         </form>
     </main>
