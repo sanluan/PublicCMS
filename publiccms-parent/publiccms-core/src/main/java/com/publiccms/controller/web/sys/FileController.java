@@ -85,7 +85,7 @@ public class FileController {
                 && ArrayUtils.contains(StringUtils.split(enableCaptcha, CommonConstants.COMMA), "upload")) {
             String sessionCaptcha = (String) request.getSession().getAttribute("captcha");
             request.getSession().removeAttribute("captcha");
-            if (ControllerUtils.errorCustom("captcha.error", null == sessionCaptcha || !sessionCaptcha.equals(captcha), result)) {
+            if (ControllerUtils.errorCustom("captcha.error", null == sessionCaptcha || !sessionCaptcha.equalsIgnoreCase(captcha), result)) {
                 return result;
             }
         }

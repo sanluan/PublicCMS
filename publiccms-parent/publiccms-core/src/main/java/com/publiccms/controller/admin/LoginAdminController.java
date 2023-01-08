@@ -103,7 +103,7 @@ public class LoginAdminController {
                         && ArrayUtils.contains(StringUtils.split(enableCaptcha, CommonConstants.COMMA), "management_system")) {
             String sessionCaptcha = (String) request.getSession().getAttribute("captcha");
             request.getSession().removeAttribute("captcha");
-            if (ControllerUtils.errorCustom("captcha.error", null == sessionCaptcha || !sessionCaptcha.equals(captcha), model)) {
+            if (ControllerUtils.errorCustom("captcha.error", null == sessionCaptcha || !sessionCaptcha.equalsIgnoreCase(captcha), model)) {
                 return "login";
             }
         }

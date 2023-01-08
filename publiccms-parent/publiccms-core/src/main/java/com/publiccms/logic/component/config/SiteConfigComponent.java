@@ -36,10 +36,6 @@ public class SiteConfigComponent implements Config {
     /**
      *
      */
-    public static final String CONFIG_RETURN_URL = "return_url";
-    /**
-     *
-     */
     public static final String CONFIG_LOGIN_PATH = "login_path";
     /**
      *
@@ -90,6 +86,10 @@ public class SiteConfigComponent implements Config {
      *
      */
     public static final String CONFIG_DEFAULT_CONTENT_USER = "default_content_user";
+    /**
+    *
+    */
+    public static final String CONFIG_RETURN_URL = "return_url";
     /**
     * 
     */
@@ -177,9 +177,6 @@ public class SiteConfigComponent implements Config {
         extendFieldList.add(new SysExtendField(CONFIG_SITE_EXCLUDE_MODULE, INPUTTYPE_MODULE,
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_SITE_EXCLUDE_MODULE), null));
 
-        extendFieldList.add(new SysExtendField(CONFIG_RETURN_URL, INPUTTYPE_TEXTAREA,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_RETURN_URL), null));
-
         extendFieldList
                 .add(new SysExtendField(CONFIG_CAPTCHA, INPUTTYPE_CAPTCHA, false,
                         getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_CAPTCHA),
@@ -201,9 +198,6 @@ public class SiteConfigComponent implements Config {
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_CATEGORY_PATH), null,
                 site.isUseStatic() ? "category/${category.code}.html" : "category.html?id=${category.id}"));
 
-        extendFieldList.add(new SysExtendField(CONFIG_ALLOW_FILES, INPUTTYPE_TEXTAREA, false,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_ALLOW_FILES), null,
-                StringUtils.join(CmsFileUtils.ALLOW_FILES, CommonConstants.COMMA)));
         extendFieldList.add(new SysExtendField(CONFIG_COMMENT_NEED_CHECK, INPUTTYPE_BOOLEAN, false,
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_COMMENT_NEED_CHECK), null, "true"));
         extendFieldList.add(new SysExtendField(CONFIG_DEFAULT_CONTENT_STATUS, INPUTTYPE_NUMBER, true,
@@ -222,6 +216,13 @@ public class SiteConfigComponent implements Config {
                     getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_STATIC_AFTER_SCORE), null,
                     "false"));
         }
+
+        extendFieldList.add(new SysExtendField(CONFIG_RETURN_URL, INPUTTYPE_TEXTAREA,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_RETURN_URL), null));
+        
+        extendFieldList.add(new SysExtendField(CONFIG_ALLOW_FILES, INPUTTYPE_TEXTAREA, false,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_ALLOW_FILES), null,
+                StringUtils.join(CmsFileUtils.ALLOW_FILES, CommonConstants.COMMA)));
         return extendFieldList;
     }
 }

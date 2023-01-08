@@ -134,7 +134,7 @@ public class LoginController {
                 String sessionCaptcha = (String) request.getSession().getAttribute("captcha");
                 request.getSession().removeAttribute("captcha");
                 if (ControllerUtils.errorCustom("locked.user", locked, model) || ControllerUtils.errorCustom("captcha.error",
-                        null == sessionCaptcha || !sessionCaptcha.equals(captcha), model)) {
+                        null == sessionCaptcha || !sessionCaptcha.equalsIgnoreCase(captcha), model)) {
                     lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null, true);
                     lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, null, true);
                     logLoginService.save(new LogLogin(site.getId(), username, user.getId(), ip, LogLoginService.CHANNEL_WEB,
@@ -237,7 +237,7 @@ public class LoginController {
                 && ArrayUtils.contains(StringUtils.split(enableCaptcha, CommonConstants.COMMA), "register")) {
             String sessionCaptcha = (String) request.getSession().getAttribute("captcha");
             request.getSession().removeAttribute("captcha");
-            if (ControllerUtils.errorCustom("captcha.error", null == sessionCaptcha || !sessionCaptcha.equals(captcha), model)) {
+            if (ControllerUtils.errorCustom("captcha.error", null == sessionCaptcha || !sessionCaptcha.equalsIgnoreCase(captcha), model)) {
                 return UrlBasedViewResolver.REDIRECT_URL_PREFIX + registerPath;
             }
         }
