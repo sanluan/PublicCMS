@@ -295,7 +295,7 @@ $('input[name$=\\.categoryModel\\.customContentPath]',navTab.getCurrentPanel()).
             <#if a.customContentPath>
             $('input[name$=\\.categoryModel\\.id\\.modelId][value=${a.id.modelId}]',navTab.getCurrentPanel()).parent().parent().parent().find('input[type=checkbox][name$=\\.categoryModel\\.customContentPath]').click();
             </#if>
-            $('input[name$=\\.categoryModel\\.id\\.modelId][value=${a.id.modelId}]',navTab.getCurrentPanel()).parent().parent().parent().find('input[name$=\\.categoryModel\\.contentPath]').val('${(a.contentPath?no_esc)!}');
+            $('input[name$=\\.categoryModel\\.id\\.modelId][value=${a.id.modelId}]',navTab.getCurrentPanel()).parent().parent().parent().find('input[name$=\\.categoryModel\\.contentPath]').val("${(a.contentPath?js_string?no_esc)!}");
             $('input[data-model=${a.id.modelId}]',navTab.getCurrentPanel()).val('${(a.templatePath)!}');
         </#list>
     </@cms.categoryModelList>
