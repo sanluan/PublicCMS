@@ -19,6 +19,9 @@
         <div class="wrapper">
             <label>Administrator password</label><input type="text" maxlength="30" required="required" name="password" value=""/>
         </div>
+        <div class="wrapper">
+            <label>Site url</label><input type="text" maxlength="30" required="required" name="siteurl" value="${siteurl!}"/>
+        </div>
     </div>
     <div class="wrapper" id="useUpdate"<#if !fromVersion?has_content> style="display:none"</#if>>
         <label>Original CMS version</label>

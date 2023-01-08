@@ -19,6 +19,9 @@
         <div class="wrapper">
             <label>管理员密码</label><input type="text" maxlength="30" required="required" name="password" value=""/>
         </div>
+        <div class="wrapper">
+            <label>站点地址</label><input type="text" maxlength="30" required="required" name="siteurl" value="${siteurl!}"/>
+        </div>
     </div>
     <div class="wrapper" id="useUpdate"<#if !fromVersion?has_content> style="display:none"</#if>>
         <label>原CMS版本</label>
