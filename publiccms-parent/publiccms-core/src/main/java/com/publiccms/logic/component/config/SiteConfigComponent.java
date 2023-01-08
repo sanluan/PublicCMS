@@ -57,10 +57,6 @@ public class SiteConfigComponent implements Config {
     *
     */
     public static final String CONFIG_CATEGORY_PATH = "category_path";
-    /**
-    *
-    */
-    public static final String CONFIG_CONTENT_PATH = "content_path";
 
     /**
     *
@@ -98,10 +94,6 @@ public class SiteConfigComponent implements Config {
      * 
      */
     public static final String INPUTTYPE_CATEGORY_PATH = "categoryPath";
-    /**
-     * 
-     */
-    public static final String INPUTTYPE_CONTENT_PATH = "contentPath";
 
     /**
      * default expiry minutes
@@ -195,10 +187,6 @@ public class SiteConfigComponent implements Config {
         extendFieldList.add(new SysExtendField(CONFIG_CATEGORY_PATH, INPUTTYPE_CATEGORY_PATH, true, CONFIG_CATEGORY_PATH,
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_CATEGORY_PATH),
                 site.isUseStatic() ? "category/${category.code}.html" : "category.html?id=${category.id}"));
-        extendFieldList.add(new SysExtendField(CONFIG_CONTENT_PATH, INPUTTYPE_CONTENT_PATH, true, CONFIG_CONTENT_PATH,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_CONTENT_PATH),
-                site.isUseStatic() ? "${content.modelId}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html"
-                        : "content.html?id=${content.id}"));
 
         extendFieldList.add(new SysExtendField(CONFIG_ALLOW_FILES, INPUTTYPE_TEXTAREA, false, CONFIG_ALLOW_FILES,
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_ALLOW_FILES),

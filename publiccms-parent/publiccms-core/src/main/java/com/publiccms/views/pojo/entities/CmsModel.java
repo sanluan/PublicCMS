@@ -49,6 +49,13 @@ public class CmsModel implements java.io.Serializable {
      */
     private String templatePath;
     /**
+     * content path
+     * <p>
+     * 内容访问路径
+     * 
+     */
+    private String contentPath;
+    /**
      * editor type
      * <p>
      * 编辑器类型
@@ -187,6 +194,19 @@ public class CmsModel implements java.io.Serializable {
      */
     public void setTemplatePath(String templatePath) {
         this.templatePath = templatePath;
+    }
+    /**
+     * @return
+     */
+    public String getContentPath() {
+        return contentPath;
+    }
+    
+    /**
+     * @param contentPath
+     */
+    public void setContentPath(String contentPath) {
+        this.contentPath = contentPath;
     }
 
     /**
