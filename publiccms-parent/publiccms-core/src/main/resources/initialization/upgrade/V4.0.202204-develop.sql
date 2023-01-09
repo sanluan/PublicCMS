@@ -471,6 +471,7 @@ CREATE TABLE `sys_record` (
   `code` varchar(50) NOT NULL COMMENT '记录编码',
   `data` longtext NOT NULL COMMENT '数据',
   `create_date` datetime NOT NULL COMMENT '创建日期',
+  `update_date` datetime DEFAULT NULL COMMENT '更新日期',
   PRIMARY KEY  (`site_id`, `code`),
   KEY `sys_record_site_id` (`site_id`,`create_date`)
 ) COMMENT='自定义记录';

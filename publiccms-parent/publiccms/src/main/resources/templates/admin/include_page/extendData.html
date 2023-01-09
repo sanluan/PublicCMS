@@ -252,44 +252,31 @@
             </#if>
             <#break>
         <#case 'categoryPath'>
-            <#if 'view'=type>
-                ${(value)!}
-            <#else>
-        <input name="${inputName}" type="text" <#if 'customform'!=type><#if extend.required> class="required"</#if></#if> autocomplete="on" maxlength="500" size="100" value="${(value)!}"/>
-        <a class="btnLook" href="cmsCategory/categoryPath.html?field=value" lookupGroup="${name}[${index}]" width="920"><@t.page 'select_path'/></a>
-            </#if>
+            <input name="${inputName}" type="text" <#if 'customform'!=type><#if extend.required> class="required"</#if></#if> autocomplete="on" maxlength="500" size="100" value="${(value)!}"/>
+            <a class="btnLook" href="cmsCategory/categoryPath.html?field=value" lookupGroup="${name}[${index}]" width="920"><@t.page 'select_path'/></a>
             <#break>
         <#case 'module'>
             <#if value?has_content>
                 <#local values=value?split(',')/>
             </#if>
-            <#if 'view'=type>
-                <#if values?has_content>
-                    <#list values as a>
-                        <@t.menu a/><#sep>,
-                    </#list>
-                </#if>
-            <#else>
-                <#list ["myself_device","comment_list","tag_list","product_list","vote_list","survey_list","category_extend","trade_menu","page_diy","visit_menu","app_client_list"] as a>
-        <label><input name="${inputName}" type="checkbox" value="${a}"${(values?has_content&&values?seq_contains(a))?then(' checked="true"','')?no_esc}/><@t.menu a/></label>
-                </#list>
-            </#if>
+            <#list ["myself_device","comment_list","tag_list","product_list","vote_list","survey_list","category_extend","trade_menu","page_diy","visit_menu","app_client_list"] as a>
+                <label><input name="${inputName}" type="checkbox" value="${a}"${(values?has_content&&values?seq_contains(a))?then(' checked="true"','')?no_esc}/><@t.menu a/></label>
+            </#list>
             <#break>
         <#case 'captcha'>
             <#if value?has_content>
                 <#local values=value?split(',')/>
             </#if>
-            <#if 'view'=type>
-                <#if values?has_content>
-                    <#list values as a>
-                        <@t.page a/><#sep>,
-                    </#list>
-                </#if>
-            <#else>
-                <#list ["register","login","management_system","comment","contribute","upload","survey"] as a>
-        <label><input name="${inputName}" type="checkbox" value="${a}"${(values?has_content&&values?seq_contains(a))?then(' checked="true"','')?no_esc}/><@t.page a/></label>
+            <#list ["register","login","management_system","comment","contribute","upload","survey"] as a>
+                <label><input name="${inputName}" type="checkbox" value="${a}"${(values?has_content&&values?seq_contains(a))?then(' checked="true"','')?no_esc}/><@t.page a/></label>
+            </#list>
+            <#break>
+        <#case 'contentStatus'>
+            <select class="combox<#if extend.required> required</#if>" name="${inputName}">
+                <#list 0..2 as s>
+                    <option value="true"${(value?has_content&&s=value)?then(' selected="true"','')?no_esc}><@t.page 'status.content.'+s/></option>
                 </#list>
-            </#if>
+            </select>
             <#break>
         <#default>
             <#if 'view'=type>

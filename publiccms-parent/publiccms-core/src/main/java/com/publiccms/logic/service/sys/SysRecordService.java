@@ -25,14 +25,15 @@ public class SysRecordService extends BaseService<SysRecord> {
      * @param code
      * @param startCreateDate
      * @param endCreateDate
+     * @param orderField
      * @param orderType
      * @param pageIndex
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(Short siteId, String code, Date startCreateDate, Date endCreateDate, String orderType,
-            Integer pageIndex, Integer pageSize) {
-        return dao.getPage(siteId, code, startCreateDate, endCreateDate, orderType, pageIndex, pageSize);
+    public PageHandler getPage(Short siteId, String code, Date startCreateDate, Date endCreateDate, String orderField,
+            String orderType, Integer pageIndex, Integer pageSize) {
+        return dao.getPage(siteId, code, startCreateDate, endCreateDate, orderField, orderType, pageIndex, pageSize);
     }
 
     @Resource

@@ -14,7 +14,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.safety.Safelist;
 
 import com.publiccms.common.constants.Constants;
-import com.publiccms.common.document.CustomSafelist;
 
 /**
  * HtmlUtils
@@ -40,7 +39,7 @@ public class HtmlUtils {
      */
     public static final Pattern HTML_PATTERN = Pattern.compile("<[^>]+>");
 
-    public static final Safelist SAFELIST = CustomSafelist.relaxed().addTags("figure", "iframe", "section")
+    public static final Safelist SAFELIST = Safelist.relaxed().addTags("figure", "iframe", "section")
             .addAttributes(":all", "class", "style").addAttributes("a", "name", "id", "target")
             .addAttributes("audio", "autoplay", "controls", "loop", "muted", "preload", "src")
             .addAttributes("iframe", "src", "width", "height")
@@ -63,6 +62,9 @@ public class HtmlUtils {
 
     public static String cleanUnsafeHtml(String string, String baseUri) {
         if (CommonUtils.notEmpty(string)) {
+            if (CommonUtils.notEmpty(baseUri) && baseUri.startsWith("//")) {
+                baseUri = "http:" + baseUri;
+            }
             return Jsoup.clean(string, baseUri, SAFELIST);
         }
         return string;
