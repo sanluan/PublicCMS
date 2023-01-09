@@ -113,7 +113,7 @@
                 <td>${a.createDate!}</td>
                 <td class="wrap">
                     <a href="tradeOrder/view.html?id=${a.id}" class="btnText edit" target="dialog" rel="viewOrder${a.id}"><@t.page 'button.view'/></a>
-                <#if !a.confirmed && ( 0 = a.status || 2 = a.status)>
+                <#if !a.confirmed && ( 0=a.status || 2=a.status)>
                     <#if authorizedMap['tradeOrder/confirm']>
                     <a href="tradeOrder/confirmParameters.html?id=${a.id}" class="btnText green" target="dialog" mask="true"><@t.page 'order.confirm'/></a>
                     </#if>
@@ -124,7 +124,7 @@
                 <#if 2=a.status && a.confirmed && !a.processed && authorizedMap['tradeOrder/process']>
                     <a href="tradeOrder/processParameters.html?id=${a.id}" class="btnText green" target="dialog" mask="true"><@t.page 'order.process'/></a>
                 </#if>
-                <#if (0=a.status || 1=a.status || 3=a.status ) && authorizedMap['tradeOrder/close']>
+                <#if (!a.confirmed && 0=a.status || 1=a.status || 3=a.status ) && authorizedMap['tradeOrder/close']>
                     <a href="tradeOrder/close?id=${a.id}&_csrf=<@tools.csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.close_order'/>" target="ajaxTodo"><@t.page 'button.close'/></a>
                 </#if>
                 <#if authorizedMap['tradeOrderHistory/list']>

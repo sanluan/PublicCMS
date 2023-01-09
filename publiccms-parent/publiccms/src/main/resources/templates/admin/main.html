@@ -155,6 +155,17 @@ commentChart.setOption({
                 </li>
                 <li>
                     <div class="card">
+                        <i class="icon-money icon-large icon"></i>
+                        <p><@t.page 'order.topayment'/></p>
+                        <a href="tradeOrder/list.html?status=0&processed=false" icon="<i class='icon-barcode icon-large'></i>" title="<@t.page 'order'/>" target="navTab" rel="tradeOrder/list">
+                            <@trade.orderList processed=false status=0 pageSize=0>
+                                <h3>${page.totalCount}</h3>
+                            </@trade.orderList>
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <div class="card">
                         <i class="icon-credit-card icon-large icon"></i>
                         <p><@t.page 'status.accountHistory.2'/></p>
                         <a href="tradeAccountHistory/list.html?status=2&startCreateDate=${(.now?long-7*86400000)?number_to_date?string}" icon="<i class='icon-credit-card icon-large'></i>" title="<@t.page 'account.history'/>" target="navTab" rel="tradeAccountHistory/list">
@@ -203,10 +214,16 @@ orderChart.setOption({
     },
     series: [
        {
-           name:"<@t.page 'status.order.2'/>",
+           name:"<@t.page 'status.order.0'/>",
            type:'line',
-           data:[<#list 7..0 as a><@trade.orderList status=2 startCreateDate=(.now?long-a*86400000)?number_to_date?string endCreateDate=(.now?long-(a-1)*86400000)?number_to_date?string pageSize=0>${page.totalCount}</@trade.orderList><#sep>,</#list>],
+           data:[<#list 7..0 as a><@trade.orderList status=0 startCreateDate=(.now?long-a*86400000)?number_to_date?string endCreateDate=(.now?long-(a-1)*86400000)?number_to_date?string pageSize=0>${page.totalCount}</@trade.orderList><#sep>,</#list>],
            areaStyle: {}
+       },
+       {
+            name:"<@t.page 'status.order.2'/>",
+            type:'line',
+            data:[<#list 7..0 as a><@trade.orderList status=2 startCreateDate=(.now?long-a*86400000)?number_to_date?string endCreateDate=(.now?long-(a-1)*86400000)?number_to_date?string pageSize=0>${page.totalCount}</@trade.orderList><#sep>,</#list>],
+            areaStyle: {}
        },
        {
             name:"<@t.page 'status.order.4'/>",
