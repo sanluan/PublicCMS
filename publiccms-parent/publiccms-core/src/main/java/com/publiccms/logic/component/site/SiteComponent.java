@@ -62,8 +62,6 @@ public class SiteComponent implements Cache {
      */
     public static final String CONFIG_FILE = "config.data";
 
-    private static final String FILE_NAME_FORMAT_STRING = "yyyy-MM-dd_HH-mm-ssSSSS";
-
     private CacheEntity<String, SysSite> siteCache;
     private CacheEntity<String, SysDomain> domainCache;
     private String rootPath;
@@ -333,7 +331,7 @@ public class SiteComponent implements Cache {
         sb.append(getFullFileName(siteId, filepath));
         sb.append(CommonConstants.SEPARATOR);
         if (newfile) {
-            sb.append(DateFormatUtils.getDateFormat(FILE_NAME_FORMAT_STRING).format(CommonUtils.getDate()));
+            sb.append(DateFormatUtils.getDateFormat(DateFormatUtils.FILE_NAME_FORMAT_STRING).format(CommonUtils.getDate()));
         }
         return sb.toString();
     }
@@ -368,7 +366,7 @@ public class SiteComponent implements Cache {
         sb.append(getFullFileName(siteId, templatePath));
         sb.append(CommonConstants.SEPARATOR);
         if (newfile) {
-            sb.append(DateFormatUtils.getDateFormat(FILE_NAME_FORMAT_STRING).format(CommonUtils.getDate()));
+            sb.append(DateFormatUtils.getDateFormat(DateFormatUtils.FILE_NAME_FORMAT_STRING).format(CommonUtils.getDate()));
         }
         return sb.toString();
     }
@@ -403,7 +401,7 @@ public class SiteComponent implements Cache {
         sb.append(getFullFileName(siteId, templatePath));
         sb.append(CommonConstants.SEPARATOR);
         if (newfile) {
-            sb.append(DateFormatUtils.getDateFormat(FILE_NAME_FORMAT_STRING).format(CommonUtils.getDate()));
+            sb.append(DateFormatUtils.getDateFormat(DateFormatUtils.FILE_NAME_FORMAT_STRING).format(CommonUtils.getDate()));
         }
         return sb.toString();
     }

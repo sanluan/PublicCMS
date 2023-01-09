@@ -118,6 +118,7 @@ public class PlaceExchangeComponent extends Exchange<String, Place> {
         ExcelView view = new ExcelView(workbook -> {
             Sheet sheet = workbook
                     .createSheet(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content"));
+            sheet.setDefaultColumnWidth(50);
             int i = 0, j = 0;
             Row row = sheet.createRow(i++);
             row.createCell(j++).setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.id"));
@@ -191,8 +192,8 @@ public class PlaceExchangeComponent extends Exchange<String, Place> {
                 }
             }
         });
-        DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.SHORT_DATE_FORMAT_STRING);
-        view.setFilename(metadata.getAlias() + "_" + dateFormat.format(new Date()));
+        DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.DOWNLOAD_FORMAT_STRING);
+        view.setFilename(new StringBuilder(metadata.getAlias()).append(dateFormat.format(new Date())).toString());
         return view;
     }
 

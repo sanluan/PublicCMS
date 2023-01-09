@@ -670,21 +670,21 @@ public class CmsContentAdminController {
      */
     @RequestMapping("exportData")
     @Csrf
-    public void exportData(@RequestAttribute SysSite site, CmsContentQuery queryEntity, String id, HttpServletResponse response) {
+    public void exportData(@RequestAttribute SysSite site, CmsContentQuery queryEntity, HttpServletResponse response) {
+        queryEntity.setSiteId(site.getId());
+        queryEntity.setDisabled(false);
+        queryEntity.setEmptyParent(true);
         try {
-            DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.FULL_DATE_FORMAT_STRING);
-            response.setHeader("content-disposition", "attachment;fileName="
-                    + URLEncoder.encode(site.getName() + "_" + dateFormat.format(new Date()) + "_content.zip", "utf-8"));
+            DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.DOWNLOAD_FORMAT_STRING);
+            response.setHeader("content-disposition", "attachment;fileName=" + URLEncoder.encode(
+                    new StringBuilder(site.getName()).append(dateFormat.format(new Date())).append("-content.zip").toString(),
+                    "utf-8"));
         } catch (UnsupportedEncodingException e1) {
         }
         try (ServletOutputStream outputStream = response.getOutputStream();
                 ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream)) {
             zipOutputStream.setEncoding(Constants.DEFAULT_CHARSET_NAME);
-            if (CommonUtils.empty(id)) {
-                exchangeComponent.exportDataByQuery(site.getId(), null, queryEntity, zipOutputStream);
-            } else {
-                exchangeComponent.exportEntity(site.getId(), service.getEntity(id), zipOutputStream);
-            }
+            exchangeComponent.exportDataByQuery(site.getId(), null, queryEntity, zipOutputStream);
         } catch (IOException e) {
         }
     }

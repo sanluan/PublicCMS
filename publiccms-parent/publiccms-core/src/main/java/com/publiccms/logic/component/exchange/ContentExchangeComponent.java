@@ -181,9 +181,9 @@ public class ContentExchangeComponent extends Exchange<CmsContent, Content> {
 
             Sheet sheet = workbook
                     .createSheet(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content"));
+            sheet.setDefaultColumnWidth(50);
             int i = 0, j = 0;
             Row row = sheet.createRow(i++);
-
             row.createCell(j++).setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.id"));
             row.createCell(j++)
                     .setCellValue(null == fieldTextMap
@@ -264,7 +264,6 @@ public class ContentExchangeComponent extends Exchange<CmsContent, Content> {
             CmsContentAttribute attribute;
             DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.FULL_DATE_FORMAT_STRING);
             for (CmsContent entity : entityList) {
-                row = sheet.createRow(i++);
                 j = 0;
                 row.createCell(j++).setCellValue(entity.getId().toString());
                 row.createCell(j++).setCellValue(entity.getTitle());
@@ -290,7 +289,8 @@ public class ContentExchangeComponent extends Exchange<CmsContent, Content> {
                 row.createCell(j++).setCellValue(String.valueOf(entity.getComments()));
                 row.createCell(j++).setCellValue(String.valueOf(entity.getClicks()));
                 row.createCell(j++).setCellValue(dateFormat.format(entity.getPublishDate()));
-                row.createCell(j++).setCellValue(dateFormat.format(entity.getExpiryDate()));
+                row.createCell(j++)
+                        .setCellValue(null == entity.getExpiryDate() ? null : dateFormat.format(entity.getExpiryDate()));
                 row.createCell(j++).setCellValue(dateFormat.format(entity.getCreateDate()));
                 row.createCell(j++).setCellValue(String.valueOf(entity.getSort()));
                 row.createCell(j++).setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale,
@@ -329,31 +329,10 @@ public class ContentExchangeComponent extends Exchange<CmsContent, Content> {
                 }
             }
         });
-        DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.FULL_DATE_FORMAT_STRING);
-        view.setFilename(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content") + "_"
-                + dateFormat.format(new Date()));
+        DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.DOWNLOAD_FORMAT_STRING);
+        view.setFilename(new StringBuilder(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content"))
+                .append(dateFormat.format(new Date())).toString());
         return view;
-    }
-
-    public Content exportEntity(short siteId, CmsContent entity) {
-        Content data = new Content();
-        data.setEntity(entity);
-        data.setAttribute(attributeService.getEntity(entity.getId()));
-        if (entity.isHasFiles() || entity.isHasImages()) {
-            @SuppressWarnings("unchecked")
-            List<CmsContentFile> fileList = (List<CmsContentFile>) fileService
-                    .getPage(entity.getId(), null, null, null, null, null, null).getList();
-            data.setFileList(fileList);
-        }
-        if (entity.isHasProducts()) {
-            List<CmsContentProduct> productList = productService.getList(siteId, entity.getId());
-            data.setProductList(productList);
-        }
-        @SuppressWarnings("unchecked")
-        List<CmsContentRelated> relatedList = (List<CmsContentRelated>) relatedService
-                .getPage(entity.getId(), null, null, null, null, null, null, null).getList();
-        data.setRelatedList(relatedList);
-        return data;
     }
 
     @Override
@@ -398,5 +377,26 @@ public class ContentExchangeComponent extends Exchange<CmsContent, Content> {
             } catch (IOException | TemplateException e) {
             }
         }
+    }
+
+    private Content exportEntity(short siteId, CmsContent entity) {
+        Content data = new Content();
+        data.setEntity(entity);
+        data.setAttribute(attributeService.getEntity(entity.getId()));
+        if (entity.isHasFiles() || entity.isHasImages()) {
+            @SuppressWarnings("unchecked")
+            List<CmsContentFile> fileList = (List<CmsContentFile>) fileService
+                    .getPage(entity.getId(), null, null, null, null, null, null).getList();
+            data.setFileList(fileList);
+        }
+        if (entity.isHasProducts()) {
+            List<CmsContentProduct> productList = productService.getList(siteId, entity.getId());
+            data.setProductList(productList);
+        }
+        @SuppressWarnings("unchecked")
+        List<CmsContentRelated> relatedList = (List<CmsContentRelated>) relatedService
+                .getPage(entity.getId(), null, null, null, null, null, null, null).getList();
+        data.setRelatedList(relatedList);
+        return data;
     }
 }

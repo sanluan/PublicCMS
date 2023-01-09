@@ -34,7 +34,6 @@ import com.publiccms.views.pojo.entities.FileSize;
  *
  */
 public class CmsFileUtils {
-    private static final String FILE_NAME_FORMAT_STRING = "yyyy/MM-dd/HH-mm-ssSSSS";
     private static final String ORDERFIELD_FILENAME = "fileName";
     private static final String ORDERFIELD_FILESIZE = "fileSize";
     private static final String ORDERFIELD_CREATEDATE = "createDate";
@@ -499,7 +498,7 @@ public class CmsFileUtils {
      */
     public static String getUploadFileName(String suffix) {
         StringBuilder sb = new StringBuilder("upload/");
-        sb.append(DateFormatUtils.getDateFormat(FILE_NAME_FORMAT_STRING).format(CommonUtils.getDate()));
+        sb.append(DateFormatUtils.getDateFormat(DateFormatUtils.UPLOAD_FILE_NAME_FORMAT_STRING).format(CommonUtils.getDate()));
         sb.append(CommonConstants.random.nextInt());
         if (!suffix.contains(CommonConstants.DOT)) {
             sb.append(CommonConstants.DOT);
