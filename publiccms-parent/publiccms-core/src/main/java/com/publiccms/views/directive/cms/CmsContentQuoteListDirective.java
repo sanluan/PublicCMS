@@ -47,8 +47,11 @@ public class CmsContentQuoteListDirective extends AbstractTemplateDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
         SysSite site = getSite(handler);
-        List<CmsContent> list = service.getListByQuoteId(site.getId(), handler.getLong("quoteId"));
-        handler.put("list", list).render();
+        Long quoteId = handler.getLong("quoteId");
+        if (null != quoteId) {
+            List<CmsContent> list = service.getListByQuoteId(site.getId(), quoteId);
+            handler.put("list", list).render();
+        }
     }
 
     @Resource

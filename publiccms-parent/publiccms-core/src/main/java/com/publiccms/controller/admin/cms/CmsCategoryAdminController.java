@@ -335,9 +335,10 @@ public class CmsCategoryAdminController {
     @Csrf
     public void export(@RequestAttribute SysSite site, Integer id, HttpServletResponse response) {
         try {
-            DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.FULL_DATE_FORMAT_STRING);
-            response.setHeader("content-disposition", "attachment;fileName="
-                    + URLEncoder.encode(site.getName() + "_" + dateFormat.format(new Date()) + "_category.zip", "utf-8"));
+            DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.DOWNLOAD_FORMAT_STRING);
+            response.setHeader("content-disposition", "attachment;fileName=" + URLEncoder.encode(
+                    new StringBuilder(site.getName()).append(dateFormat.format(new Date())).append("-category.zip").toString(),
+                    "utf-8"));
         } catch (UnsupportedEncodingException e1) {
         }
         try (ServletOutputStream outputStream = response.getOutputStream();

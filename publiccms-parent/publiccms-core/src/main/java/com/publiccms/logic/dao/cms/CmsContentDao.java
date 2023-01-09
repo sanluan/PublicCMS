@@ -304,18 +304,13 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         return 0;
     }
 
-    /**
-     * @param siteId
-     * @param topId
-     * @return number of data deleted
-     */
-    public int deleteByTopId(short siteId, Long topId) {
-        if (null != topId) {
+    public int deleteByQuoteId(short siteId, Long quoteId) {
+        if (CommonUtils.notEmpty(quoteId)) {
             QueryHandler queryHandler = getQueryHandler("update CmsContent bean set bean.disabled = :disabled");
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
-            queryHandler.condition("bean.parentId is not null");
-            queryHandler.condition("bean.quoteContentId = :topId").setParameter("topId", topId).setParameter("disabled", true);
-            return update(queryHandler);
+            queryHandler.condition("bean.quoteContentId = :quoteContentId").setParameter("quoteContentId", quoteId)
+                    .setParameter("disabled", true);
+            return delete(queryHandler);
         }
         return 0;
     }
@@ -473,13 +468,12 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         return getPage(queryHandler, firstResult, pageIndex, pageSize, maxResults);
     }
 
-    public List<CmsContent> getListByQuoteId(short siteId, Long quoteId) {
+    public List<CmsContent> getListByQuoteId(short siteId, long quoteId) {
         QueryHandler queryHandler = getQueryHandler("from CmsContent bean");
         queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
         queryHandler.condition("bean.parentId is null");
-        if (CommonUtils.notEmpty(quoteId)) {
-            queryHandler.condition("bean.quoteContentId = :quoteContentId").setParameter("quoteContentId", quoteId);
-        }
+        queryHandler.condition("bean.disabled = :disabled").setParameter("disabled", false);
+        queryHandler.condition("bean.quoteContentId = :quoteContentId").setParameter("quoteContentId", quoteId);
         return (List<CmsContent>) getList(queryHandler);
     }
 
@@ -488,13 +482,12 @@ public class CmsContentDao extends BaseDao<CmsContent> {
      * @param topId
      * @return number of data deleted
      */
-    public List<CmsContent> getListByTopId(short siteId, Long topId) {
-        QueryHandler queryHandler = getQueryHandler("update CmsContent bean set bean.disabled = :disabled");
+    public List<CmsContent> getListByTopId(short siteId, long topId) {
+        QueryHandler queryHandler = getQueryHandler("from CmsContent bean");
         queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
         queryHandler.condition("bean.parentId is not null");
-        if (CommonUtils.notEmpty(topId)) {
-            queryHandler.condition("bean.quoteContentId = :topId").setParameter("topId", topId).setParameter("disabled", true);
-        }
+        queryHandler.condition("bean.disabled = :disabled").setParameter("disabled", false);
+        queryHandler.condition("bean.quoteContentId = :topId").setParameter("topId", topId);
         return getList(queryHandler);
     }
 

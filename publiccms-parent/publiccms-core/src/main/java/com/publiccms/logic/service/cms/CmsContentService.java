@@ -169,11 +169,11 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @return results list
      */
     @Transactional(readOnly = true)
-    public List<CmsContent> getListByQuoteId(short siteId, Long quoteId) {
+    public List<CmsContent> getListByQuoteId(short siteId, long quoteId) {
         return dao.getListByQuoteId(siteId, quoteId);
     }
 
-    public List<CmsContent> getListByTopId(short siteId, Long topId) {
+    public List<CmsContent> getListByTopId(short siteId, long topId) {
         return dao.getListByTopId(siteId, topId);
     }
 
@@ -746,9 +746,8 @@ public class CmsContentService extends BaseService<CmsContent> {
         for (CmsContent entity : getEntitys(ids)) {
             if (siteId == entity.getSiteId() && !entity.isDisabled() && ControllerUtils.hasContentPermissions(user, entity)) {
                 if (null == entity.getParentId()) {
-                    for (CmsContent quote : getListByQuoteId(siteId, entity.getId())) {
-                        quote.setDisabled(true);
-                    }
+                    entity.setChilds(0);
+                    dao.deleteByQuoteId(siteId, entity.getId());
                 } else {
                     updateChilds(entity.getParentId(), -1);
                 }
@@ -861,8 +860,6 @@ public class CmsContentService extends BaseService<CmsContent> {
                 entityList.add(entity);
                 if (null != entity.getParentId()) {
                     updateChilds(entity.getParentId(), 1);
-                } else {
-                    dao.deleteByTopId(siteId, entity.getId());
                 }
             }
         }
