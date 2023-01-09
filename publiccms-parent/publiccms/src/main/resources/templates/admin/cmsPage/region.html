@@ -51,7 +51,7 @@
                                             <a class="button" href="cmsPlace/metadata.html?path=${a.place?url}" target="ajax" rel="diyConfigBox">${(object.alias)!a.place}</a>
                                         </#if>
                                         <#if 0 lt ((object.size)!0)>
-                                           <a class="button" href="cmsPlace/dataList.html?path=${a.place?url}" target="navTab" rel="cmsPlace/dataList" title="<@t.page 'place_data'/>:${(object.alias)!}"><@t.page 'place_data'/>(${object.size})</a>
+                                           <a class="button" href="cmsPlace/dataList.html?path=${a.place?url}" target="navTab" rel="cmsPlace/dataList"><@t.page 'place_data'/>:${(object.alias)!}(${object.size})</a>
                                         </#if>
                                     </@tools.placeMetadata>
                                 </#if>

@@ -70,7 +70,7 @@
                             <a href="cmsPlace/metadata.html?path=${a?url}" target="ajax" class="button" rel="pageBox"><i class="bi bi-layout-sidebar"></i>${(object.alias)!a}</a>
                         </#if>
                         <#if 0 lt ((object.size)!0)>
-                            <a href="cmsPlace/dataList.html?path=${a?url}" target="navTab" class="button" rel="cmsPlace/dataList" title="<@t.page 'place_data'/>:${(object.alias)!}"><i class="bi bi-layout-text-sidebar-reverse"></i><@t.page 'place_data'/>(${object.size})</a>
+                            <a href="cmsPlace/dataList.html?path=${a?url}" target="navTab" class="button" rel="cmsPlace/dataList"><i class="bi bi-layout-text-sidebar-reverse"></i><@t.page 'place_data'/>:${(object.alias)!a}(${object.size})</a>
                         </#if>
                         </p>
                         </@tools.placeMetadata>
