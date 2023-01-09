@@ -807,10 +807,10 @@ public class CmsContentAdminController {
             Set<Integer> categoryIdSet = new HashSet<>();
             for (CmsContent entity : service.delete(site.getId(), admin, ids)) {
                 categoryIdSet.add(entity.getCategoryId());
-                if (entity.isHasStatic()) {
+                if (entity.isHasStatic() && null == entity.getQuoteContentId() && CommonUtils.notEmpty(entity.getUrl())) {
                     String filePath = siteComponent.getWebFilePath(site, entity.getUrl());
-                    if (CmsFileUtils.exists(filePath)) {
-                        String backupFilePath = siteComponent.getWebBackupFilePath(site, filePath);
+                    if (CmsFileUtils.isFile(filePath)) {
+                        String backupFilePath = siteComponent.getWebBackupFilePath(site, entity.getUrl());
                         CmsFileUtils.moveFile(filePath, backupFilePath);
                     }
                 }
