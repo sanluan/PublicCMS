@@ -274,7 +274,7 @@
         <#case 'contentStatus'>
             <select class="combox<#if extend.required> required</#if>" name="${inputName}">
                 <#list 0..2 as s>
-                    <option value="true"${(value?has_content&&s=value)?then(' selected="true"','')?no_esc}><@t.page 'status.content.'+s/></option>
+                    <option value="${s}"${(value?has_content&&s?string=value)?then(' selected="true"','')?no_esc}><@t.page 'status.content.'+s/></option>
                 </#list>
             </select>
             <#break>

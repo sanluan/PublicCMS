@@ -276,7 +276,7 @@ public class TemplateComponent implements Cache {
                         CmsModel model = modelComponent.getModelMap(site.getId()).get(entity.getModelId());
                         if (null != model) {
                             templatePath = model.getTemplatePath();
-                            if (null != contentPath) {
+                            if (null == contentPath) {
                                 contentPath = model.getContentPath();
                             }
                         }
