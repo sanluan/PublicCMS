@@ -347,7 +347,7 @@ public class TemplateComponent implements Cache {
                 categoryPath = config.get(SiteConfigComponent.CONFIG_CATEGORY_PATH);
                 templatePath = config.get(SiteConfigComponent.CONFIG_CATEGORY_TEMPLATE_PATH);
             }
-            if (site.isUseStatic() && CommonUtils.notEmpty(entity.getTemplatePath())) {
+            if (site.isUseStatic() && CommonUtils.notEmpty(templatePath)) {
                 String filepath = createCategoryFile(site, entity, templatePath, categoryPath, pageIndex, totalPage);
                 if (!entity.isHasStatic() || null == entity.getUrl() || !entity.getUrl().equals(filepath)) {
                     categoryService.updateUrl(entity.getId(), filepath, true);
