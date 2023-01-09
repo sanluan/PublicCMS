@@ -173,6 +173,7 @@ public class CmsContentAdminController {
         if (!entity.isOnlyUrl()) {
             templateComponent.createContentFile(site, entity, category, categoryModel);// 静态化
             if (null == entity.getParentId() && !entity.isOnlyUrl()) {
+            	entity = service.getEntity(entity.getId());
                 service.quote(site.getId(), entity, contentParameters.getContentIds(), contentParameters, cmsModel, category,
                         attribute);
                 Set<Integer> categoryIdsList = contentParameters.getCategoryIds();
@@ -180,7 +181,6 @@ public class CmsContentAdminController {
                     if (categoryIdsList.contains(entity.getCategoryId())) {
                         categoryIdsList.remove(entity.getCategoryId());
                     }
-                    entity = service.getEntity(entity.getId());
                     for (Integer categoryId : categoryIdsList) {
                         CmsCategory newCategory = categoryService.getEntity(categoryId);
                         if (null != newCategory) {
@@ -188,8 +188,10 @@ public class CmsContentAdminController {
                                     categoryId, entity.getModelId(), entity.isCopied(), true, entity.isHasImages(),
                                     entity.isHasFiles(), false, 0, 0, 0, 0, entity.getPublishDate(), entity.getCreateDate(), 0,
                                     entity.getStatus(), false);
-                            quote.setQuoteContentId(entity.getId());
+                            quote.setUrl(entity.getUrl());
+                            quote.setTitle(entity.getTitle());
                             quote.setDescription(entity.getDescription());
+                            quote.setQuoteContentId(entity.getId());
                             quote.setAuthor(entity.getAuthor());
                             quote.setCover(entity.getCover());
                             quote.setEditor(entity.getEditor());
