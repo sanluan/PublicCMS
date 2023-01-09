@@ -6,10 +6,10 @@ import java.util.List;
 
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.ArrayUtils;
-import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -24,7 +24,6 @@ import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.ExtendUtils;
-import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.cms.CmsEditorHistory;
 import com.publiccms.entities.log.LogOperate;
@@ -99,9 +98,10 @@ public class SysConfigDataAdminController {
             if (null != oldEntity) {
                 entity = service.update(oldEntity.getId(), entity, ignoreProperties);
                 if (null != entity) {
-                    logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
-                            LogLoginService.CHANNEL_WEB_MANAGER, "update.configData", RequestUtils.getIpAddress(request),
-                            CommonUtils.getDate(), JsonUtils.getString(entity)));
+                    logOperateService.save(
+                            new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                                    "update.configData", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
+                                    new StringBuilder(entity.getId().getCode()).append(":").append(entity.getData()).toString()));
                 }
 
                 if (CommonUtils.notEmpty(oldEntity.getData()) && CommonUtils.notEmpty(fieldList)) {
@@ -124,9 +124,10 @@ public class SysConfigDataAdminController {
             } else {
                 entity.getId().setSiteId(site.getId());
                 service.save(entity);
-                logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
-                        LogLoginService.CHANNEL_WEB_MANAGER, "save.configData", RequestUtils.getIpAddress(request),
-                        CommonUtils.getDate(), JsonUtils.getString(entity)));
+                logOperateService
+                        .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                                "save.configData", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
+                                new StringBuilder(entity.getId().getCode()).append(":").append(entity.getData()).toString()));
             }
 
             configComponent.removeCache(site.getId(), entity.getId().getCode());
@@ -165,9 +166,10 @@ public class SysConfigDataAdminController {
         if (null != entity) {
             service.delete(entity.getId());
             sysDeptItemService.delete(null, SysDeptItemService.ITEM_TYPE_CONFIG, code);
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.configData", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), JsonUtils.getString(entity)));
+            logOperateService
+                    .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                            "delete.configData", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
+                            new StringBuilder(entity.getId().getCode()).append(":").append(entity.getData()).toString()));
             configComponent.removeCache(site.getId(), entity.getId().getCode());
         }
         return CommonConstants.TEMPLATE_DONE;

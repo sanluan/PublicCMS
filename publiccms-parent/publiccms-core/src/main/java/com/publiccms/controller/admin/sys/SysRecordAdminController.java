@@ -60,18 +60,21 @@ public class SysRecordAdminController {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             if (null != oldEntity) {
+                entity.setUpdateDate(CommonUtils.getDate());
                 entity = service.update(oldEntity.getId(), entity, ignoreProperties);
                 if (null != entity) {
-                    logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
-                            LogLoginService.CHANNEL_WEB_MANAGER, "update.record", RequestUtils.getIpAddress(request),
-                            CommonUtils.getDate(), JsonUtils.getString(entity)));
+                    logOperateService.save(
+                            new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                                    "update.record", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
+                                    new StringBuilder(entity.getId().getCode()).append(":").append(entity.getData()).toString()));
                 }
             } else {
                 entity.getId().setSiteId(site.getId());
                 service.save(entity);
-                logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
-                        LogLoginService.CHANNEL_WEB_MANAGER, "save.record", RequestUtils.getIpAddress(request),
-                        CommonUtils.getDate(), JsonUtils.getString(entity)));
+                logOperateService
+                        .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                                "save.record", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
+                                new StringBuilder(entity.getId().getCode()).append(":").append(entity.getData()).toString()));
             }
         }
         return CommonConstants.TEMPLATE_DONE;

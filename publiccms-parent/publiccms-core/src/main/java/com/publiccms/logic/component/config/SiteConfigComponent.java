@@ -102,6 +102,10 @@ public class SiteConfigComponent implements Config {
      * 
      */
     public static final String INPUTTYPE_CAPTCHA = "captcha";
+    /**
+     * 
+     */
+    public static final String INPUTTYPE_CONTENT_STATUS= "contentStatus";
 
     /**
      * default expiry minutes
@@ -198,13 +202,15 @@ public class SiteConfigComponent implements Config {
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_CATEGORY_PATH), null,
                 site.isUseStatic() ? "category/${category.code}.html" : "category.html?id=${category.id}"));
 
-        extendFieldList.add(new SysExtendField(CONFIG_COMMENT_NEED_CHECK, INPUTTYPE_BOOLEAN, false,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_COMMENT_NEED_CHECK), null, "true"));
-        extendFieldList.add(new SysExtendField(CONFIG_DEFAULT_CONTENT_STATUS, INPUTTYPE_NUMBER, true,
+        
+        extendFieldList.add(new SysExtendField(CONFIG_DEFAULT_CONTENT_STATUS, INPUTTYPE_CONTENT_STATUS, true,
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_DEFAULT_CONTENT_STATUS), null,
                 String.valueOf(CmsContentService.STATUS_PEND)));
         extendFieldList.add(new SysExtendField(CONFIG_DEFAULT_CONTENT_USER, INPUTTYPE_USER,
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_DEFAULT_CONTENT_USER), null));
+        
+        extendFieldList.add(new SysExtendField(CONFIG_COMMENT_NEED_CHECK, INPUTTYPE_BOOLEAN, false,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_COMMENT_NEED_CHECK), null, "true"));
         extendFieldList.add(new SysExtendField(CONFIG_MAX_SCORES, INPUTTYPE_NUMBER, false,
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_MAX_SCORES), null,
                 String.valueOf(DEFAULT_MAX_SCORES)));

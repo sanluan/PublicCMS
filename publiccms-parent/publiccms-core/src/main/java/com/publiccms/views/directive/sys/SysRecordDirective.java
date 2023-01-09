@@ -54,6 +54,7 @@ public class SysRecordDirective extends AbstractTemplateDirective {
                 SysRecord entity = new SysRecord();
                 entity.setId(id);
                 entity.setData(data);
+                entity.setUpdateDate(CommonUtils.getDate());
                 service.saveOrUpdate(entity);
             }
             SysRecord entity = service.getEntity(id);

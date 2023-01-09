@@ -49,6 +49,13 @@ public class SysRecord implements java.io.Serializable {
      */
     @GeneratorColumn(title = "创建日期", condition = true, order = true)
     private Date createDate;
+    /**
+     * update date
+     * <p>
+     * 更新日期
+     */
+    @GeneratorColumn(title = "更新日期", order = true)
+    private Date updateDate;
 
     public SysRecord() {
     }
@@ -57,6 +64,13 @@ public class SysRecord implements java.io.Serializable {
         this.id = id;
         this.data = data;
         this.createDate = createDate;
+    }
+
+    public SysRecord(SysRecordId id, String data, Date createDate, Date updateDate) {
+        this.id = id;
+        this.data = data;
+        this.createDate = createDate;
+        this.updateDate = updateDate;
     }
 
     @EmbeddedId
@@ -88,5 +102,15 @@ public class SysRecord implements java.io.Serializable {
 
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
+    }
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "update_date", length = 19)
+    public Date getUpdateDate() {
+        return this.updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
     }
 }
