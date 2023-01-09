@@ -290,9 +290,9 @@ public class CmsCategoryAdminController {
             HttpServletRequest request) {
         if (CommonUtils.notEmpty(ids)) {
             for (CmsCategory entity : service.delete(site.getId(), ids)) {
-                if (entity.isHasStatic()) {
+                if (entity.isHasStatic() && CommonUtils.notEmpty(entity.getUrl())) {
                     String filepath = siteComponent.getWebFilePath(site.getId(), entity.getUrl());
-                    if (CmsFileUtils.exists(filepath)) {
+                    if (CmsFileUtils.isFile(filepath)) {
                         String backupFilePath = siteComponent.getWebBackupFilePath(site.getId(), filepath);
                         CmsFileUtils.moveFile(filepath, backupFilePath);
                     }
