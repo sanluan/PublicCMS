@@ -584,7 +584,7 @@ public class CmsContentService extends BaseService<CmsContent> {
                     quote.setCheckUserId(entity.getCheckUserId());
                     quote.setCheckDate(entity.getCheckDate());
                     quote.setPublishDate(entity.getPublishDate());
-                    quote.setHasStatic(entity.isHasStatic());
+                    quote.setHasStatic(false);
                     quote.setHasFiles(entity.isHasFiles());
                     quote.setHasImages(entity.isHasImages());
                 } else {
