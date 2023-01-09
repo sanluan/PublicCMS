@@ -259,7 +259,6 @@ public class TemplateComponent implements Cache {
                             .getEntity(new CmsCategoryModelId(entity.getCategoryId(), entity.getModelId()));
                 }
                 if (null != categoryModel && null != category) {
-                    String oldUrl = entity.getUrl();
                     String contentPath = null;
                     String templatePath = null;
                     if (categoryModel.isCustomContentPath()) {
@@ -283,33 +282,35 @@ public class TemplateComponent implements Cache {
                             }
                         }
                     }
-                    if (site.isUseStatic() && CommonUtils.notEmpty(templatePath)) {
+                    if (site.isUseStatic() && CommonUtils.notEmpty(templatePath) && CommonUtils.notEmpty(contentPath)) {
+                        String oldUrl = entity.getUrl();
                         String filepath = createContentFile(site, entity, category, true, templatePath, contentPath, null);
                         if (!entity.isHasStatic() || null == oldUrl || !oldUrl.equals(filepath)) {
                             contentService.updateUrl(entity.getId(), filepath, true);
                         }
-                    } else {
+                    } else if (CommonUtils.notEmpty(contentPath)) {
                         Map<String, Object> model = new HashMap<>();
                         model.put("content", entity);
                         model.put("category", category);
                         model.put(CommonConstants.getAttributeSite(), site);
                         String filepath = FreeMarkerUtils.generateStringByString(contentPath, webConfiguration, model);
-                        if (entity.isHasStatic() || null == oldUrl || !oldUrl.equals(filepath)) {
+                        if (entity.isHasStatic() || null == entity.getUrl() || !entity.getUrl().equals(filepath)) {
                             contentService.updateUrl(entity.getId(), filepath, false);
                         }
+                    } else if (entity.isHasStatic() || CommonUtils.notEmpty(entity.getUrl())) {
+                        contentService.updateUrl(entity.getId(), null, false);
                     }
                     return true;
                 }
             } else if (null == entity.getParentId() && null != entity.getQuoteContentId()) {
-                if (null != categoryModel && null != category) {
-                    CmsContent quote = contentService.getEntity(entity.getQuoteContentId());
-                    if (null != quote) {
-                        contentService.updateUrl(entity.getId(), quote.getUrl(), false);
-                    }
+                CmsContent quote = contentService.getEntity(entity.getQuoteContentId());
+                if (null != quote) {
+                    contentService.updateUrl(entity.getId(), quote.getUrl(), false);
                 }
             }
         }
         return false;
+
     }
 
     /**
@@ -347,13 +348,14 @@ public class TemplateComponent implements Cache {
                 categoryPath = config.get(SiteConfigComponent.CONFIG_CATEGORY_PATH);
                 templatePath = config.get(SiteConfigComponent.CONFIG_CATEGORY_TEMPLATE_PATH);
             }
-            if (site.isUseStatic() && CommonUtils.notEmpty(templatePath)) {
+            if (site.isUseStatic() && CommonUtils.notEmpty(templatePath) && CommonUtils.notEmpty(categoryPath)) {
+                String oldUrl = entity.getUrl();
                 String filepath = createCategoryFile(site, entity, templatePath, categoryPath, pageIndex, totalPage);
-                if (!entity.isHasStatic() || null == entity.getUrl() || !entity.getUrl().equals(filepath)) {
+                if (!entity.isHasStatic() || null == oldUrl || !oldUrl.equals(filepath)) {
                     categoryService.updateUrl(entity.getId(), filepath, true);
                 }
                 return true;
-            } else {
+            } else if (CommonUtils.notEmpty(categoryPath)) {
                 Map<String, Object> model = new HashMap<>();
                 initCategoryUrl(site, entity);
                 model.put("category", entity);
@@ -362,6 +364,8 @@ public class TemplateComponent implements Cache {
                 if (entity.isHasStatic() || null == entity.getUrl() || !entity.getUrl().equals(filepath)) {
                     categoryService.updateUrl(entity.getId(), filepath, false);
                 }
+            } else if (entity.isHasStatic() || CommonUtils.notEmpty(entity.getUrl())) {
+                categoryService.updateUrl(entity.getId(), null, false);
             }
         }
         return false;
