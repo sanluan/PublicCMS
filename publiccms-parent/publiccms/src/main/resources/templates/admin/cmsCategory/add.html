@@ -33,7 +33,7 @@
                 </div>
                 <div class="clearfix categoryModelCustomContentPath hide">
                     <label><@t.page 'content_path'/>:</label>
-                    <input name="categoryModelList[${modelIndex}].categoryModel.contentPath" type="text" autocomplete="on" maxlength="500" size="100" value="${(a.contentPath)!(categoryType.contentPath)!(config.content_path)!}"/>
+                    <input name="categoryModelList[${modelIndex}].categoryModel.contentPath" type="text" autocomplete="on" maxlength="500" size="100" value="${(a.contentPath)!(categoryType.contentPath)!}"/>
                     <a class="btnLook" href="cmsCategory/contentPath.html?childContent=true" width="920" lookupGroup="categoryModelList[${modelIndex}].categoryModel"><@t.page 'select_path'/></a>
                 </div>
             </div>
@@ -203,7 +203,7 @@
                                 </div>
                                 <div class="clearfix categoryModelCustomContentPath hide">
                                     <label><@t.page 'content_path'/>:</label>
-                                    <input name="categoryModelList[${modelIndex}].categoryModel.contentPath" type="text" autocomplete="on" maxlength="500" size="100" value="${(a.contentPath)!(categoryType.contentPath)!(config.content_path)!}"/>
+                                    <input name="categoryModelList[${modelIndex}].categoryModel.contentPath" type="text" autocomplete="on" maxlength="500" size="100" value="${(a.contentPath)!(categoryType.contentPath)!}"/>
                                     <a class="btnLook" href="cmsCategory/contentPath.html" width="920" lookupGroup="categoryModelList[${modelIndex}].categoryModel"><@t.page 'select_path'/></a>
                                 </div>
                             </div>
@@ -220,18 +220,14 @@
                             <label><input name="customContentPath" type="checkbox"/><@t.page 'custorm_path'/></label>
                         </div>
                         <div class="clearfix customContentPath hide">
-                            <input name="contentPath" type="text" autocomplete="on" maxlength="500" size="100" value="${(a.contentPath)!(categoryType.contentPath)!(config.content_path)!}"/>
+                            <input name="contentPath" type="text" autocomplete="on" maxlength="500" size="100" value="${(a.contentPath)!(categoryType.contentPath)!}"/>
                             <a class="btnLook" href="cmsCategory/contentPath.html?categoryConfig=true" width="920" lookupGroup=""><@t.page 'select_path'/></a>
                         </div>
                     </dd>
                 </dl>
                 <div>
                     <span class="info">
-                        <#if categoryType?has_content>
-                            <@t.page 'category.customPath.type'/>
-                        <#else>
-                            <@t.page 'category.customPath.site'/>:<a href="sysConfigData/edit.html?code=site" target="navTab" rel="sysConfigData/edit" icon="<i class='icon-edit icon-large'></i>"><@t.page 'server_config.site'/></a>
-                        </#if>
+                        <@t.page 'category.customPath.model'/>
                     </span>
                 </div>
             </div>
