@@ -41,7 +41,7 @@
     <#assign extendValues=getPlaceAttribute((a.id)!)!{}/>
     <@extendData name='extendDataList' extendList=a.extendList extendValues=extendValues type='customform'/>
 <#noparse>
-    <@sys.configData code="site">
+    <@sys.configData code="safe">
         <#if object.captcha?has_content && object.captcha?split(",")?seq_contains("contribute")>
     <p>
         <input name="captcha" type="text" autocomplete="off" placeholder="Captcha" title="Captcha"/>

@@ -49,7 +49,7 @@
                     </#if>
                     <p><input type="text" name="username" placeholder="User name" title="User name"/></p>
                     <p><input type="password" name="password" placeholder="Password" title="Password"/></p>
-                    <@sys.configData code="site">
+                    <@sys.configData code="safe">
                         <#if object.captcha?has_content && object.captcha?split(",")?seq_contains("login")>
                     <p>
                         <input name="captcha" type="text" autocomplete="off" placeholder="Captcha" title="Captcha"/>

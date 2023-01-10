@@ -9,7 +9,7 @@
             <dt><@t.page 'password'/>:</dt>
             <dd><input type="password" name="password" escape="true" title="<@t.page 'password'/>"/></dd>
         </dl>
-        <@sys.configData code="site">
+        <@sys.configData code="safe">
             <#if object.captcha?has_content && object.captcha?split(",")?seq_contains("management_system")>
         <dl class="nowrap">
             <dt><@t.page 'password'/>:</dt>

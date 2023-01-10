@@ -142,7 +142,7 @@
         window.TIMYMCE_HOME_URL = "${(parentSite!site).dynamicPath}resource/plugins/tinymce/";
         window.TIMYMCE_LANGUAGE = "<@t.page 'tinymce.lang'/>";
         window.TIMYMCE_RESOURCE_PREFIX = "${site.sitePath}";
-        window.TIMYMCE_FILETYPES = "<@sys.configData code='site'>${object.allow_files!}</@sys.configData>";
+        window.TIMYMCE_FILETYPES = "<@sys.configData code='safe'>${object.allow_files!}</@sys.configData>";
         window.LOADSCRIPTS_BASE = "${base}";
     </script>
     <script src="${base}/resource/plugins/jquery/jquery.min.js"></script>

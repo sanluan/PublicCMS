@@ -35,7 +35,7 @@
                 <p><input type="text" name="nickname" placeholder="Nickname" title="Nickname" value="${nickname!}"/></p>
                 <p><input type="password" name="password" placeholder="Password" title="Password"/></p>
                 <p><input type="password" name="repassword" placeholder="Repeat password" title="Repeat password"/></p>
-                <@sys.configData code="site">
+                <@sys.configData code="safe">
                     <#if object.captcha?has_content && object.captcha?split(",")?seq_contains("register")>
                 <p>
                     <input name="captcha" type="text" autocomplete="off" placeholder="Captcha" title="Captcha"/>
