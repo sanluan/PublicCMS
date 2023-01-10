@@ -258,28 +258,19 @@ public class TemplateComponent implements Cache {
                     categoryModel = categoryModelService
                             .getEntity(new CmsCategoryModelId(entity.getCategoryId(), entity.getModelId()));
                 }
-                if (null != categoryModel && null != category) {
+                CmsModel model = modelComponent.getModelMap(site.getId()).get(entity.getModelId());
+                if (null != categoryModel && null != category && null != model) {
                     String contentPath = null;
                     String templatePath = null;
                     if (categoryModel.isCustomContentPath()) {
                         contentPath = categoryModel.getContentPath();
                         templatePath = categoryModel.getTemplatePath();
                     } else {
+                        templatePath = model.getTemplatePath();
                         if (category.isCustomContentPath()) {
                             contentPath = category.getContentPath();
-                        } else if (CommonUtils.notEmpty(category.getTypeId())) {
-                            CmsCategoryType categoryType = modelComponent.getCategoryTypeMap(site.getId())
-                                    .get(category.getTypeId());
-                            if (null != categoryType) {
-                                contentPath = categoryType.getContentPath();
-                            }
-                        }
-                        CmsModel model = modelComponent.getModelMap(site.getId()).get(entity.getModelId());
-                        if (null != model) {
-                            templatePath = model.getTemplatePath();
-                            if (null == contentPath) {
-                                contentPath = model.getContentPath();
-                            }
+                        } else {
+                            contentPath = model.getContentPath();
                         }
                     }
                     if (site.isUseStatic() && CommonUtils.notEmpty(templatePath) && CommonUtils.notEmpty(contentPath)) {
@@ -289,11 +280,11 @@ public class TemplateComponent implements Cache {
                             contentService.updateUrl(entity.getId(), filepath, true);
                         }
                     } else if (CommonUtils.notEmpty(contentPath)) {
-                        Map<String, Object> model = new HashMap<>();
-                        model.put("content", entity);
-                        model.put("category", category);
-                        model.put(CommonConstants.getAttributeSite(), site);
-                        String filepath = FreeMarkerUtils.generateStringByString(contentPath, webConfiguration, model);
+                        Map<String, Object> modelMap = new HashMap<>();
+                        modelMap.put("content", entity);
+                        modelMap.put("category", category);
+                        modelMap.put(CommonConstants.getAttributeSite(), site);
+                        String filepath = FreeMarkerUtils.generateStringByString(contentPath, webConfiguration, modelMap);
                         if (entity.isHasStatic() || null == entity.getUrl() || !entity.getUrl().equals(filepath)) {
                             contentService.updateUrl(entity.getId(), filepath, false);
                         }
@@ -329,24 +320,26 @@ public class TemplateComponent implements Cache {
         if (entity.isOnlyUrl()) {
             categoryService.updateUrl(entity.getId(), entity.getPath(), false);
         } else {
-            Map<String, String> config = BeanComponent.getConfigComponent().getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
             String categoryPath;
             String templatePath = null;
             if (entity.isCustomPath()) {
-                categoryPath = entity.getPath();
                 templatePath = entity.getTemplatePath();
-            } else if (CommonUtils.notEmpty(entity.getTypeId())) {
-                CmsCategoryType categoryType = modelComponent.getCategoryTypeMap(site.getId()).get(entity.getTypeId());
-                if (null != categoryType) {
-                    categoryPath = categoryType.getPath();
-                    templatePath = categoryType.getTemplatePath();
-                } else {
-                    categoryPath = config.get(SiteConfigComponent.CONFIG_CATEGORY_PATH);
-                    templatePath = config.get(SiteConfigComponent.CONFIG_CATEGORY_TEMPLATE_PATH);
-                }
+                categoryPath = entity.getPath();
             } else {
-                categoryPath = config.get(SiteConfigComponent.CONFIG_CATEGORY_PATH);
-                templatePath = config.get(SiteConfigComponent.CONFIG_CATEGORY_TEMPLATE_PATH);
+                Map<String, String> config = BeanComponent.getConfigComponent().getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+                if (CommonUtils.notEmpty(entity.getTypeId())) {
+                    CmsCategoryType categoryType = modelComponent.getCategoryTypeMap(site.getId()).get(entity.getTypeId());
+                    if (null != categoryType) {
+                        templatePath = categoryType.getTemplatePath();
+                        categoryPath = categoryType.getPath();
+                    } else {
+                        templatePath = config.get(SiteConfigComponent.CONFIG_CATEGORY_TEMPLATE_PATH);
+                        categoryPath = config.get(SiteConfigComponent.CONFIG_CATEGORY_PATH);
+                    }
+                } else {
+                    templatePath = config.get(SiteConfigComponent.CONFIG_CATEGORY_TEMPLATE_PATH);
+                    categoryPath = config.get(SiteConfigComponent.CONFIG_CATEGORY_PATH);
+                }
             }
             if (site.isUseStatic() && CommonUtils.notEmpty(templatePath) && CommonUtils.notEmpty(categoryPath)) {
                 String oldUrl = entity.getUrl();
