@@ -37,7 +37,7 @@ import com.publiccms.entities.sys.SysUser;
 import com.publiccms.entities.sys.SysUserToken;
 import com.publiccms.logic.component.config.ConfigComponent;
 import com.publiccms.logic.component.config.EmailTemplateConfigComponent;
-import com.publiccms.logic.component.config.SiteConfigComponent;
+import com.publiccms.logic.component.config.SafeConfigComponent;
 import com.publiccms.logic.component.site.EmailComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
@@ -70,7 +70,7 @@ public class UserController {
     @Resource
     private ConfigComponent configComponent;
     @Resource
-    protected SiteConfigComponent siteConfigComponent;
+    protected SafeConfigComponent safeConfigComponent;
     @Resource
     protected LogOperateService logOperateService;
     @Resource
@@ -95,7 +95,7 @@ public class UserController {
     public String changePassword(@RequestAttribute SysSite site, @SessionAttribute SysUser user, String oldpassword,
             String password, String repassword, String encoding, String returnUrl, HttpServletRequest request,
             HttpSession session, HttpServletResponse response, ModelMap model) {
-        returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
+        returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         user = service.getEntity(user.getId());
         if (ControllerUtils.errorNotEmpty("user", user, model) || ControllerUtils.errorNotEmpty("password", password, model)
                 || ControllerUtils.errorNotEquals("repassword", password, repassword, model)
@@ -140,7 +140,7 @@ public class UserController {
     @Csrf
     public String update(@RequestAttribute SysSite site, @SessionAttribute SysUser user, String nickname, String cover,
             String returnUrl, HttpServletRequest request, ModelMap model) {
-        returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
+        returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         if (ControllerUtils.errorNotEmpty("nickname", nickname, model)
                 || ControllerUtils.errorNotNickname("nickname", nickname, model)) {
             return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
@@ -167,7 +167,7 @@ public class UserController {
     @Csrf
     public String saveEmail(@RequestAttribute SysSite site, @SessionAttribute SysUser user, String email, String returnUrl,
             HttpServletRequest request, ModelMap model) {
-        returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
+        returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         Map<String, String> config = configComponent.getConfigData(site.getId(), EmailTemplateConfigComponent.CONFIG_CODE);
         String emailTitle = config.get(EmailTemplateConfigComponent.CONFIG_EMAIL_TITLE);
         String emailPath = config.get(EmailTemplateConfigComponent.CONFIG_EMAIL_PATH);
@@ -223,7 +223,7 @@ public class UserController {
     @RequestMapping(value = "verifyEmail")
     public String verifyEmail(@RequestAttribute SysSite site, String authToken, String returnUrl, HttpServletRequest request,
             ModelMap model) {
-        returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
+        returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         SysEmailToken sysEmailToken = sysEmailTokenService.getEntity(authToken);
         if (null != sysEmailToken && CommonUtils.getDate().after(sysEmailToken.getExpiryDate())) {
             sysEmailToken = null;
@@ -252,7 +252,7 @@ public class UserController {
     @Csrf
     public String deleteToken(@RequestAttribute SysSite site, @SessionAttribute SysUser user, String authToken, String returnUrl,
             HttpServletRequest request, ModelMap model) {
-        returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
+        returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         SysUserToken entity = sysUserTokenService.getEntity(authToken);
         if (null != entity) {
             if (ControllerUtils.errorNotEquals("userId", user.getId(), entity.getUserId(), model)) {

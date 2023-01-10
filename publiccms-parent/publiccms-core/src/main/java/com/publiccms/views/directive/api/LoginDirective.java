@@ -5,12 +5,12 @@ import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.annotation.Resource;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
-import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
-import com.publiccms.common.api.Config;
 import com.publiccms.common.base.AbstractAppDirective;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
@@ -23,7 +23,7 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.entities.sys.SysUserToken;
 import com.publiccms.logic.component.config.ConfigComponent;
-import com.publiccms.logic.component.config.SiteConfigComponent;
+import com.publiccms.logic.component.config.SafeConfigComponent;
 import com.publiccms.logic.component.site.LockComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.sys.SysUserService;
@@ -88,9 +88,9 @@ public class LoginDirective extends AbstractAppDirective {
                 service.updateLoginStatus(user.getId(), ip);
                 String authToken = UUID.randomUUID().toString();
                 Date now = CommonUtils.getDate();
-                Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
-                int expiryMinutes = ConfigComponent.getInt(config.get(SiteConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
-                        SiteConfigComponent.DEFAULT_EXPIRY_MINUTES);
+                Map<String, String> config = configComponent.getConfigData(site.getId(), SafeConfigComponent.CONFIG_CODE);
+                int expiryMinutes = ConfigComponent.getInt(config.get(SafeConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
+                        SafeConfigComponent.DEFAULT_EXPIRY_MINUTES);
                 Date expiryDate = DateUtils.addMinutes(now, expiryMinutes);
                 sysUserTokenService.save(new SysUserToken(authToken, site.getId(), user.getId(), channel, now, expiryDate, ip));
                 logLoginService

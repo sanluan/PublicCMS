@@ -40,7 +40,7 @@ import com.publiccms.common.tools.VerificationUtils;
 import com.publiccms.entities.log.LogUpload;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
-import com.publiccms.logic.component.config.SiteConfigComponent;
+import com.publiccms.logic.component.config.SafeConfigComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogUploadService;
@@ -61,7 +61,7 @@ public class UeditorAdminController {
     @Resource
     protected SiteComponent siteComponent;
     @Resource
-    protected SiteConfigComponent siteConfigComponent;
+    protected SafeConfigComponent safeConfigComponent;
 
     protected static final String ACTION_CONFIG = "config";
     protected static final String ACTION_UPLOAD = "upload";
@@ -109,9 +109,9 @@ public class UeditorAdminController {
         config.setImageAllowFiles(CmsFileUtils.IMAGE_FILE_SUFFIXS);
         config.setCatcherAllowFiles(CmsFileUtils.IMAGE_FILE_SUFFIXS);
         config.setVideoAllowFiles(CmsFileUtils.VIDEO_FILE_SUFFIXS);
-        config.setFileAllowFiles(siteConfigComponent.getSafeSuffix(site));
+        config.setFileAllowFiles(safeConfigComponent.getSafeSuffix(site));
         config.setImageManagerAllowFiles(CmsFileUtils.IMAGE_FILE_SUFFIXS);
-        config.setFileManagerAllowFiles(siteConfigComponent.getSafeSuffix(site));
+        config.setFileManagerAllowFiles(safeConfigComponent.getSafeSuffix(site));
         return config;
     }
 
@@ -129,7 +129,7 @@ public class UeditorAdminController {
         if (null != file) {
             String originalName = file.getOriginalFilename();
             String suffix = CmsFileUtils.getSuffix(originalName);
-            if (ArrayUtils.contains(siteConfigComponent.getSafeSuffix(site), suffix)) {
+            if (ArrayUtils.contains(safeConfigComponent.getSafeSuffix(site), suffix)) {
                 String fileName = CmsFileUtils.getUploadFileName(suffix);
                 String filepath = siteComponent.getWebFilePath(site.getId(), fileName);
                 try {

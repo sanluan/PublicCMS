@@ -100,21 +100,17 @@ public class LockComponent implements Config, SiteCache {
      */
     public static final int DEFAULT_EXPIRY_MINUTES = 10;
     /**
-     * default operate max count
+     * default operate max minutes
      */
     public static final int DEFAULT_OPERATE_EXPIRY_MINUTES = 2 * 60;
     /**
      * default operate max count
      */
-    public static final int DEFAULT_OPERATE_MAX_COUNT = 3;
+    public static final int DEFAULT_OPERATE_MAX_COUNT = 5;
     /**
      * default login expiry minutes
      */
     public static final int DEFAULT_LOGIN_EXPIRY_MINUTES = 2 * 60;
-    /**
-     * default login max count
-     */
-    public static final int DEFAULT_LOGIN_MAX_COUNT = 5;
     /**
      * default login max count
      */
@@ -123,10 +119,6 @@ public class LockComponent implements Config, SiteCache {
      * default register expiry minutes
      */
     public static final int DEFAULT_REGISTER_EXPIRY_MINUTES = 6 * 60;
-    /**
-     * default register max count
-     */
-    public static final int DEFAULT_REGISTER_MAX_COUNT = 3;
     @Resource
     private SysLockService service;
 
@@ -154,11 +146,11 @@ public class LockComponent implements Config, SiteCache {
             Map<String, String> config = BeanComponent.getConfigComponent().getConfigData(siteId, CONFIG_CODE);
             int expriy = getExpriy(siteId, itemType), maxCount = 0;
             if (ITEM_TYPE_LOGIN.equalsIgnoreCase(itemType)) {
-                maxCount = ConfigComponent.getInt(config.get(CONFIG_LOCK_LOGIN_MAX_COUNT), DEFAULT_LOGIN_MAX_COUNT);
+                maxCount = ConfigComponent.getInt(config.get(CONFIG_LOCK_LOGIN_MAX_COUNT), DEFAULT_OPERATE_MAX_COUNT);
             } else if (ITEM_TYPE_IP_LOGIN.equalsIgnoreCase(itemType)) {
                 maxCount = ConfigComponent.getInt(config.get(CONFIG_LOCK_IP_LOGIN_MAX_COUNT), DEFAULT_IP_LOGIN_MAX_COUNT);
             } else if (ITEM_TYPE_REGISTER.equalsIgnoreCase(itemType)) {
-                maxCount = ConfigComponent.getInt(config.get(CONFIG_LOCK_REGISTER_MAX_COUNT), DEFAULT_REGISTER_MAX_COUNT);
+                maxCount = ConfigComponent.getInt(config.get(CONFIG_LOCK_REGISTER_MAX_COUNT), DEFAULT_OPERATE_MAX_COUNT);
             } else if (ITEM_TYPE_FILEUPLOAD.equalsIgnoreCase(itemType)) {
                 maxCount = ConfigComponent.getInt(config.get(CONFIG_LOCK_FILEUPLOAD_MAX_COUNT), DEFAULT_OPERATE_MAX_COUNT);
             } else if (ITEM_TYPE_CONTRIBUTE.equalsIgnoreCase(itemType)) {
@@ -250,49 +242,42 @@ public class LockComponent implements Config, SiteCache {
     @Override
     public List<SysExtendField> getExtendFieldList(SysSite site, Locale locale) {
         List<SysExtendField> extendFieldList = new ArrayList<>();
-        extendFieldList.add(new SysExtendField(CONFIG_LOCK_EXPIRY_MINUTES, INPUTTYPE_NUMBER, false, CONFIG_LOCK_EXPIRY_MINUTES,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOCK_EXPIRY_MINUTES),
+        extendFieldList.add(new SysExtendField(CONFIG_LOCK_EXPIRY_MINUTES, INPUTTYPE_NUMBER, false,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOCK_EXPIRY_MINUTES), null,
                 String.valueOf(DEFAULT_EXPIRY_MINUTES)));
-        extendFieldList.add(new SysExtendField(CONFIG_LOCK_EXPIRY_LOGIN, INPUTTYPE_NUMBER, false, CONFIG_LOCK_EXPIRY_LOGIN,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOCK_EXPIRY_LOGIN),
+        extendFieldList.add(new SysExtendField(CONFIG_LOCK_EXPIRY_LOGIN, INPUTTYPE_NUMBER, false,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOCK_EXPIRY_LOGIN), null,
                 String.valueOf(DEFAULT_LOGIN_EXPIRY_MINUTES)));
-        extendFieldList.add(new SysExtendField(CONFIG_LOCK_LOGIN_MAX_COUNT, INPUTTYPE_NUMBER, false, CONFIG_LOCK_LOGIN_MAX_COUNT,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOCK_LOGIN_MAX_COUNT),
-                String.valueOf(DEFAULT_LOGIN_MAX_COUNT)));
-        extendFieldList
-                .add(new SysExtendField(CONFIG_LOCK_IP_LOGIN_MAX_COUNT, INPUTTYPE_NUMBER, false, CONFIG_LOCK_IP_LOGIN_MAX_COUNT,
-                        getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOCK_IP_LOGIN_MAX_COUNT),
-                        String.valueOf(DEFAULT_IP_LOGIN_MAX_COUNT)));
-        extendFieldList.add(new SysExtendField(CONFIG_LOCK_EXPIRY_REGISTER, INPUTTYPE_NUMBER, false, CONFIG_LOCK_EXPIRY_REGISTER,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOCK_EXPIRY_REGISTER),
+        extendFieldList.add(new SysExtendField(CONFIG_LOCK_LOGIN_MAX_COUNT, INPUTTYPE_NUMBER, false,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOCK_LOGIN_MAX_COUNT), null,
+                String.valueOf(DEFAULT_OPERATE_MAX_COUNT)));
+        extendFieldList.add(new SysExtendField(CONFIG_LOCK_IP_LOGIN_MAX_COUNT, INPUTTYPE_NUMBER, false,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOCK_IP_LOGIN_MAX_COUNT), null,
+                String.valueOf(DEFAULT_IP_LOGIN_MAX_COUNT)));
+        extendFieldList.add(new SysExtendField(CONFIG_LOCK_EXPIRY_REGISTER, INPUTTYPE_NUMBER, false,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOCK_EXPIRY_REGISTER), null,
                 String.valueOf(DEFAULT_REGISTER_EXPIRY_MINUTES)));
-        extendFieldList
-                .add(new SysExtendField(CONFIG_LOCK_REGISTER_MAX_COUNT, INPUTTYPE_NUMBER, false, CONFIG_LOCK_REGISTER_MAX_COUNT,
-                        getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOCK_REGISTER_MAX_COUNT),
-                        String.valueOf(DEFAULT_REGISTER_MAX_COUNT)));
-        extendFieldList
-                .add(new SysExtendField(CONFIG_LOCK_EXPIRY_FILEUPLOAD, INPUTTYPE_NUMBER, false, CONFIG_LOCK_EXPIRY_FILEUPLOAD,
-                        getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOCK_EXPIRY_FILEUPLOAD),
-                        String.valueOf(DEFAULT_OPERATE_EXPIRY_MINUTES)));
-        extendFieldList.add(
-                new SysExtendField(CONFIG_LOCK_FILEUPLOAD_MAX_COUNT, INPUTTYPE_NUMBER, false, CONFIG_LOCK_FILEUPLOAD_MAX_COUNT,
-                        getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOCK_FILEUPLOAD_MAX_COUNT),
-                        String.valueOf(DEFAULT_OPERATE_MAX_COUNT)));
-        extendFieldList
-                .add(new SysExtendField(CONFIG_LOCK_EXPIRY_CONTRIBUTE, INPUTTYPE_NUMBER, false, CONFIG_LOCK_EXPIRY_CONTRIBUTE,
-                        getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOCK_EXPIRY_CONTRIBUTE),
-                        String.valueOf(DEFAULT_OPERATE_EXPIRY_MINUTES)));
-        extendFieldList.add(
-                new SysExtendField(CONFIG_LOCK_CONTRIBUTE_MAX_COUNT, INPUTTYPE_NUMBER, false, CONFIG_LOCK_CONTRIBUTE_MAX_COUNT,
-                        getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOCK_CONTRIBUTE_MAX_COUNT),
-                        String.valueOf(DEFAULT_OPERATE_MAX_COUNT)));
-        extendFieldList.add(new SysExtendField(CONFIG_LOCK_EXPIRY_COMMENT, INPUTTYPE_NUMBER, false, CONFIG_LOCK_EXPIRY_COMMENT,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOCK_EXPIRY_COMMENT),
+        extendFieldList.add(new SysExtendField(CONFIG_LOCK_REGISTER_MAX_COUNT, INPUTTYPE_NUMBER, false,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOCK_REGISTER_MAX_COUNT), null,
+                String.valueOf(DEFAULT_OPERATE_MAX_COUNT)));
+        extendFieldList.add(new SysExtendField(CONFIG_LOCK_EXPIRY_FILEUPLOAD, INPUTTYPE_NUMBER, false,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOCK_EXPIRY_FILEUPLOAD), null,
                 String.valueOf(DEFAULT_OPERATE_EXPIRY_MINUTES)));
-        extendFieldList
-                .add(new SysExtendField(CONFIG_LOCK_COMMENT_MAX_COUNT, INPUTTYPE_NUMBER, false, CONFIG_LOCK_COMMENT_MAX_COUNT,
-                        getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOCK_COMMENT_MAX_COUNT),
-                        String.valueOf(DEFAULT_OPERATE_MAX_COUNT)));
+        extendFieldList.add(new SysExtendField(CONFIG_LOCK_FILEUPLOAD_MAX_COUNT, INPUTTYPE_NUMBER, false,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOCK_FILEUPLOAD_MAX_COUNT), null,
+                String.valueOf(DEFAULT_OPERATE_MAX_COUNT)));
+        extendFieldList.add(new SysExtendField(CONFIG_LOCK_EXPIRY_CONTRIBUTE, INPUTTYPE_NUMBER, false,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOCK_EXPIRY_CONTRIBUTE), null,
+                String.valueOf(DEFAULT_OPERATE_EXPIRY_MINUTES)));
+        extendFieldList.add(new SysExtendField(CONFIG_LOCK_CONTRIBUTE_MAX_COUNT, INPUTTYPE_NUMBER, false,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOCK_CONTRIBUTE_MAX_COUNT), null,
+                String.valueOf(DEFAULT_OPERATE_MAX_COUNT)));
+        extendFieldList.add(new SysExtendField(CONFIG_LOCK_EXPIRY_COMMENT, INPUTTYPE_NUMBER, false,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOCK_EXPIRY_COMMENT), null,
+                String.valueOf(DEFAULT_OPERATE_EXPIRY_MINUTES)));
+        extendFieldList.add(new SysExtendField(CONFIG_LOCK_COMMENT_MAX_COUNT, INPUTTYPE_NUMBER, false,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOCK_COMMENT_MAX_COUNT), null,
+                String.valueOf(DEFAULT_OPERATE_MAX_COUNT)));
         return extendFieldList;
     }
 

@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import com.publiccms.common.annotation.Csrf;
-import com.publiccms.common.api.Config;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
@@ -36,7 +35,7 @@ import com.publiccms.entities.cms.CmsUserSurveyQuestion;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.config.ConfigComponent;
-import com.publiccms.logic.component.config.SiteConfigComponent;
+import com.publiccms.logic.component.config.SafeConfigComponent;
 import com.publiccms.logic.service.cms.CmsSurveyQuestionItemService;
 import com.publiccms.logic.service.cms.CmsSurveyQuestionService;
 import com.publiccms.logic.service.cms.CmsSurveyService;
@@ -63,7 +62,7 @@ public class SurveyController {
     @Resource
     protected ConfigComponent configComponent;
     @Resource
-    protected SiteConfigComponent siteConfigComponent;
+    protected SafeConfigComponent safeConfigComponent;
 
     /**
      * @param site
@@ -81,14 +80,13 @@ public class SurveyController {
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser user, long surveyId, String captcha,
             @ModelAttribute CmsUserSurveyQuestionParameters userQuestionParameters, String returnUrl, HttpServletRequest request,
             ModelMap model) {
-        returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
-        Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
-        String enableCaptcha = config.get(SiteConfigComponent.CONFIG_CAPTCHA);
-        if (CommonUtils.notEmpty(captcha) || CommonUtils.notEmpty(enableCaptcha)
-                && ArrayUtils.contains(StringUtils.split(enableCaptcha, CommonConstants.COMMA), "survey")) {
+        returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
+        if (CommonUtils.notEmpty(captcha)
+                || safeConfigComponent.enableCaptcha(site.getId(), SafeConfigComponent.CAPTCHA_MODULE_SURVEY)) {
             String sessionCaptcha = (String) request.getSession().getAttribute("captcha");
             request.getSession().removeAttribute("captcha");
-            if (ControllerUtils.errorCustom("captcha.error", null == sessionCaptcha || !sessionCaptcha.equalsIgnoreCase(captcha), model)) {
+            if (ControllerUtils.errorCustom("captcha.error", null == sessionCaptcha || !sessionCaptcha.equalsIgnoreCase(captcha),
+                    model)) {
                 return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
             }
         }

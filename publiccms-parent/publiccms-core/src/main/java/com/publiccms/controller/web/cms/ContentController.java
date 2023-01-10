@@ -1,13 +1,10 @@
 package com.publiccms.controller.web.cms;
 
 import java.math.BigDecimal;
-import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -18,8 +15,6 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import com.publiccms.common.annotation.Csrf;
-import com.publiccms.common.api.Config;
-import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.JsonUtils;
@@ -33,8 +28,7 @@ import com.publiccms.entities.cms.CmsContentAttribute;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
-import com.publiccms.logic.component.config.ConfigComponent;
-import com.publiccms.logic.component.config.SiteConfigComponent;
+import com.publiccms.logic.component.config.SafeConfigComponent;
 import com.publiccms.logic.component.site.LockComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
@@ -71,9 +65,7 @@ public class ContentController {
     @Resource
     private LockComponent lockComponent;
     @Resource
-    protected ConfigComponent configComponent;
-    @Resource
-    protected SiteConfigComponent siteConfigComponent;
+    protected SafeConfigComponent safeConfigComponent;
 
     /**
      * 保存内容
@@ -96,17 +88,14 @@ public class ContentController {
     public String save(@RequestAttribute SysSite site, CmsContent entity, @SessionAttribute SysUser user, Boolean draft,
             String captcha, CmsContentAttribute attribute, @ModelAttribute CmsContentParameters contentParameters,
             String returnUrl, HttpServletRequest request, ModelMap model) {
-        returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
+        returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         boolean locked = lockComponent.isLocked(site.getId(), LockComponent.ITEM_TYPE_CONTRIBUTE, String.valueOf(user.getId()),
                 null);
         if (ControllerUtils.errorCustom("locked.user", locked, model)) {
             lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_CONTRIBUTE, String.valueOf(user.getId()), null, true);
             return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
         }
-        Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
-        String enableCaptcha = config.get(SiteConfigComponent.CONFIG_CAPTCHA);
-        if (CommonUtils.notEmpty(captcha) || CommonUtils.notEmpty(enableCaptcha)
-                && ArrayUtils.contains(StringUtils.split(enableCaptcha, CommonConstants.COMMA), "contribute")) {
+        if (CommonUtils.notEmpty(captcha) || safeConfigComponent.enableCaptcha(site.getId(),SafeConfigComponent.CAPTCHA_MODULE_CONTRIBUTE)) {
             String sessionCaptcha = (String) request.getSession().getAttribute("captcha");
             request.getSession().removeAttribute("captcha");
             if (ControllerUtils.errorCustom("captcha.error", null == sessionCaptcha || !sessionCaptcha.equalsIgnoreCase(captcha), model)) {

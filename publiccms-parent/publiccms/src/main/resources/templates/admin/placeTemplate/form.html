@@ -40,6 +40,7 @@
     <#include "../include_page/extendData.html"/>
     <#assign extendValues=getPlaceAttribute((a.id)!)!{}/>
     <@extendData name='extendDataList' extendList=a.extendList extendValues=extendValues type='customform'/>
+<#noparse>
     <@sys.configData code="site">
         <#if object.captcha?has_content && object.captcha?split(",")?seq_contains("contribute")>
     <p>
@@ -48,6 +49,7 @@
     </p>
         </#if>
     </@sys.configData>
+</#noparse>
     <p><input type="submit" value="<@t.page 'button.save'/>"/></p>
 </form>
 <#if a.adminIds?has_content>

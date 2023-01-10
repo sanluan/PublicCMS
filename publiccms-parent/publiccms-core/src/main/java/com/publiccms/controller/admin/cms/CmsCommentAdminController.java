@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Resource;
+
 // Generated 2018-11-7 16:25:07 by com.publiccms.common.generator.SourceGenerator
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestAttribute;

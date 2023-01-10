@@ -44,6 +44,7 @@
         <@extendData name='categoryExtendDataList' extendList=list extendValues=attribute type='customform'/>
     </@sys.extendFieldList>
     <@extendData name='modelExtendDataList' extendList=model.extendList extendValues=attribute type='customform'/>
+<#noparse>
     <@sys.configData code="site">
         <#if object.captcha?has_content && object.captcha?split(",")?seq_contains("contribute")>
     <p>
@@ -52,6 +53,7 @@
     </p>
         </#if>
     </@sys.configData>
+</#noparse>
     <p><input type="submit" value="<@t.page 'button.save'/>"/></p>
 </form>
 <#noparse>

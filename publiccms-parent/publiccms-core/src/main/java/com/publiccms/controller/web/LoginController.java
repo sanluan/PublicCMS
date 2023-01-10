@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.commons.logging.Log;
@@ -39,6 +38,7 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.entities.sys.SysUserToken;
 import com.publiccms.logic.component.config.ConfigComponent;
+import com.publiccms.logic.component.config.SafeConfigComponent;
 import com.publiccms.logic.component.config.SiteConfigComponent;
 import com.publiccms.logic.component.site.LockComponent;
 import com.publiccms.logic.component.site.SiteComponent;
@@ -70,7 +70,7 @@ public class LoginController {
     @Resource
     protected ConfigComponent configComponent;
     @Resource
-    protected SiteConfigComponent siteConfigComponent;
+    protected SafeConfigComponent safeConfigComponent;
 
     /**
      * @param site
@@ -106,7 +106,7 @@ public class LoginController {
         if (CommonUtils.empty(loginPath)) {
             loginPath = site.getDynamicPath();
         }
-        returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
+        returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         username = StringUtils.trim(username);
         password = StringUtils.trim(password);
         if (ControllerUtils.errorNotEmpty("username", username, model)
@@ -128,9 +128,8 @@ public class LoginController {
                 return UrlBasedViewResolver.REDIRECT_URL_PREFIX + loginPath;
             }
             locked = lockComponent.isLocked(site.getId(), LockComponent.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null);
-            String enableCaptcha = config.get(SiteConfigComponent.CONFIG_CAPTCHA);
-            if (CommonUtils.notEmpty(captcha) || CommonUtils.notEmpty(enableCaptcha)
-                    && ArrayUtils.contains(StringUtils.split(enableCaptcha, CommonConstants.COMMA), "login")) {
+            if (CommonUtils.notEmpty(captcha)
+                    || safeConfigComponent.enableCaptcha(site.getId(), SafeConfigComponent.CAPTCHA_MODULE_LOGIN)) {
                 String sessionCaptcha = (String) request.getSession().getAttribute("captcha");
                 request.getSession().removeAttribute("captcha");
                 if (ControllerUtils.errorCustom("locked.user", locked, model) || ControllerUtils.errorCustom("captcha.error",
@@ -169,8 +168,9 @@ public class LoginController {
                 }
 
                 String authToken = UUID.randomUUID().toString();
-                int expiryMinutes = ConfigComponent.getInt(config.get(SiteConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
-                        SiteConfigComponent.DEFAULT_EXPIRY_MINUTES);
+                Map<String, String> safeConfig = configComponent.getConfigData(site.getId(), SafeConfigComponent.CONFIG_CODE);
+                int expiryMinutes = ConfigComponent.getInt(safeConfig.get(SafeConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
+                        SafeConfigComponent.DEFAULT_EXPIRY_MINUTES);
                 addLoginStatus(user, authToken, request, response, expiryMinutes);
                 sysUserTokenService.save(new SysUserToken(authToken, site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, now,
                         DateUtils.addMinutes(now, expiryMinutes), ip));
@@ -232,12 +232,12 @@ public class LoginController {
             lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_REGISTER, ip, null, true);
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + registerPath;
         }
-        String enableCaptcha = config.get(SiteConfigComponent.CONFIG_CAPTCHA);
-        if (CommonUtils.notEmpty(captcha) || CommonUtils.notEmpty(enableCaptcha)
-                && ArrayUtils.contains(StringUtils.split(enableCaptcha, CommonConstants.COMMA), "register")) {
+        if (CommonUtils.notEmpty(captcha)
+                || safeConfigComponent.enableCaptcha(site.getId(), SafeConfigComponent.CAPTCHA_MODULE_REGISTER)) {
             String sessionCaptcha = (String) request.getSession().getAttribute("captcha");
             request.getSession().removeAttribute("captcha");
-            if (ControllerUtils.errorCustom("captcha.error", null == sessionCaptcha || !sessionCaptcha.equalsIgnoreCase(captcha), model)) {
+            if (ControllerUtils.errorCustom("captcha.error", null == sessionCaptcha || !sessionCaptcha.equalsIgnoreCase(captcha),
+                    model)) {
                 return UrlBasedViewResolver.REDIRECT_URL_PREFIX + registerPath;
             }
         }
@@ -245,7 +245,7 @@ public class LoginController {
         entity.setNickname(StringUtils.trim(entity.getNickname()));
         entity.setPassword(StringUtils.trim(entity.getPassword()));
         repassword = StringUtils.trim(repassword);
-        returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
+        returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         if (ControllerUtils.errorNotEmpty("username", entity.getName(), model)
                 || ControllerUtils.errorNotEmpty("nickname", entity.getNickname(), model)
                 || ControllerUtils.errorNotEmpty("password", entity.getPassword(), model)
@@ -276,8 +276,9 @@ public class LoginController {
                     appClientService.updateUser(appClient.getId(), entity.getId());
                 }
             }
-            int expiryMinutes = ConfigComponent.getInt(config.get(SiteConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
-                    SiteConfigComponent.DEFAULT_EXPIRY_MINUTES);
+            Map<String, String> safeconfig = configComponent.getConfigData(site.getId(), SafeConfigComponent.CONFIG_CODE);
+            int expiryMinutes = ConfigComponent.getInt(safeconfig.get(SafeConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
+                    SafeConfigComponent.DEFAULT_EXPIRY_MINUTES);
 
             Date now = CommonUtils.getDate();
             String authToken = UUID.randomUUID().toString();
@@ -310,7 +311,7 @@ public class LoginController {
     @RequestMapping(value = "doLogout", method = RequestMethod.POST)
     public String logout(@RequestAttribute SysSite site, Long userId, String returnUrl, HttpServletRequest request,
             HttpServletResponse response) {
-        returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
+        returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         SysUser user = ControllerUtils.getUserFromSession(request.getSession());
         if (null != userId && null != user && userId.equals(user.getId())) {
             Cookie userCookie = RequestUtils.getCookie(request.getCookies(), CommonConstants.getCookiesUser());

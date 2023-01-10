@@ -130,6 +130,22 @@ public interface Config {
      * 
      */
     String INPUTTYPE_COLOR = "color";
+    /**
+     * 
+     */
+     public static final String INPUTTYPE_MODULE = "module";
+     /**
+      * 
+      */
+     public static final String INPUTTYPE_CATEGORY_PATH = "categoryPath";
+     /**
+      * 
+      */
+     public static final String INPUTTYPE_CONTENT_STATUS= "contentStatus";
+    /**
+     * 
+     */
+    public static final String INPUTTYPE_CAPTCHA = "captcha";
 
     public static final String[] INPUT_TYPE_EDITORS = { "kindeditor", "ckeditor", "tinymce", "editor" };
 

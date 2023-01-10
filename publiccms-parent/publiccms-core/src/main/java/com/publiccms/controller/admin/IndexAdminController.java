@@ -16,7 +16,7 @@ import org.springframework.web.util.UrlPathHelper;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.component.config.SiteConfigComponent;
+import com.publiccms.logic.component.config.SafeConfigComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 
 /**
@@ -29,7 +29,7 @@ public class IndexAdminController {
     @Resource
     protected SiteComponent siteComponent;
     @Resource
-    protected SiteConfigComponent siteConfigComponent;
+    protected SafeConfigComponent safeConfigComponent;
 
     /**
      * 页面请求统一分发
@@ -72,7 +72,7 @@ public class IndexAdminController {
         if (CommonUtils.empty(returnUrl)) {
             return CommonConstants.TEMPLATE_DONEANDREFRESH;
         } else {
-            returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
+            returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
             return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
         }
     }
