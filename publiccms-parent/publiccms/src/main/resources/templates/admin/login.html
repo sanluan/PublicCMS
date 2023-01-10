@@ -35,7 +35,7 @@
                 <i class="iconfont iconfont-key"></i>
                 <input type="password" name="password" placeholder="<@t.page 'password'/>" title="<@t.page 'password'/>"/>
             </p>
-            <@sys.configData code="site">
+            <@sys.configData code="safe">
                 <#if object.captcha?has_content && object.captcha?split(",")?seq_contains("management_system")>
             <p>
                 <i class="iconfont iconfont-page"></i>

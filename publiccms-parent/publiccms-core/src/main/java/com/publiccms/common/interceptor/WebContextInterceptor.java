@@ -17,7 +17,6 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.util.UrlPathHelper;
 
-import com.publiccms.common.api.Config;
 import com.publiccms.common.constants.CmsVersion;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
@@ -31,7 +30,7 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.entities.sys.SysUserToken;
 import com.publiccms.logic.component.config.ConfigComponent;
-import com.publiccms.logic.component.config.SiteConfigComponent;
+import com.publiccms.logic.component.config.SafeConfigComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.sys.SysUserService;
@@ -130,14 +129,14 @@ public class WebContextInterceptor implements HandlerInterceptor {
                         String ip = RequestUtils.getIpAddress(request);
                         logLoginService
                                 .save(new LogLogin(site.getId(), user.getName(), user.getId(), ip, channel, true, now, null));
-                        Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+                        Map<String, String> config = configComponent.getConfigData(site.getId(), SafeConfigComponent.CONFIG_CODE);
                         int expiryMinutes;
                         if (LogLoginService.CHANNEL_WEB.equalsIgnoreCase(channel)) {
-                            expiryMinutes = ConfigComponent.getInt(config.get(SiteConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
-                                    SiteConfigComponent.DEFAULT_EXPIRY_MINUTES);
+                            expiryMinutes = ConfigComponent.getInt(config.get(SafeConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
+                                    SafeConfigComponent.DEFAULT_EXPIRY_MINUTES);
                         } else {
-                            expiryMinutes = ConfigComponent.getInt(config.get(SiteConfigComponent.CONFIG_EXPIRY_MINUTES_MANAGER),
-                                    SiteConfigComponent.DEFAULT_EXPIRY_MINUTES);
+                            expiryMinutes = ConfigComponent.getInt(config.get(SafeConfigComponent.CONFIG_EXPIRY_MINUTES_MANAGER),
+                                    SafeConfigComponent.DEFAULT_EXPIRY_MINUTES);
                         }
                         if (DateUtils.addMinutes(now, expiryMinutes / 3).after(userToken.getExpiryDate())) {
                             Date expiryDate = DateUtils.addMinutes(now, expiryMinutes);

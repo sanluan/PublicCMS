@@ -52,7 +52,7 @@
             <input name="returnUrl" type="hidden" value="${content.url!}"/>
             <p><label>Comment:</label></p>
             <p><textarea name="text" cols="100" rows="4" maxlength="1000">${text!}</textarea></p>
-            <@sys.configData code="site">
+            <@sys.configData code="safe">
                 <#if object.captcha?has_content && object.captcha?split(",")?seq_contains("comment")>
             <p>
                 <input name="captcha" type="text" autocomplete="off" placeholder="Captcha" title="Captcha"/>

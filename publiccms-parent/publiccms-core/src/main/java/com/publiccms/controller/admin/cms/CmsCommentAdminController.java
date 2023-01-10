@@ -5,14 +5,9 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 
-// Generated 2018-11-7 16:25:07 by com.publiccms.common.generator.SourceGenerator
-
-import jakarta.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -41,6 +36,11 @@ import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 
 import freemarker.template.TemplateException;
+import jakarta.annotation.Resource;
+
+// Generated 2018-11-7 16:25:07 by com.publiccms.common.generator.SourceGenerator
+
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  *

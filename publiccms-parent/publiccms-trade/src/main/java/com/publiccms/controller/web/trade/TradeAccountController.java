@@ -23,7 +23,7 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.entities.trade.TradeAccountHistory;
 import com.publiccms.entities.trade.TradePayment;
-import com.publiccms.logic.component.config.SiteConfigComponent;
+import com.publiccms.logic.component.config.SafeConfigComponent;
 import com.publiccms.logic.component.paymentgateway.AccountGatewayComponent;
 import com.publiccms.logic.component.paymentprocessor.RechargeProcessorComponent;
 import com.publiccms.logic.component.trade.PaymentGatewayComponent;
@@ -52,7 +52,7 @@ public class TradeAccountController {
     @Csrf
     public String recharge(@RequestAttribute SysSite site, @SessionAttribute SysUser user, BigDecimal change, String accountType,
             String returnUrl, HttpServletRequest request) {
-        returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
+        returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         PaymentGateway paymentGateway = gatewayComponent.get(accountType);
         if (null != paymentGateway && !accountType.equalsIgnoreCase(accountGatewayComponent.getAccountType())
                 && paymentGateway.enable(site.getId()) && null != change) {
@@ -79,7 +79,7 @@ public class TradeAccountController {
     @Resource
     private PaymentGatewayComponent gatewayComponent;
     @Resource
-    protected SiteConfigComponent siteConfigComponent;
+    protected SafeConfigComponent safeConfigComponent;
     @Resource
     private TradePaymentService paymentService;
     @Resource

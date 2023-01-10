@@ -7,8 +7,6 @@ import java.util.Map;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.annotation.Resource;
 
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
@@ -20,7 +18,6 @@ import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.api.Config;
-import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.JsonUtils;
@@ -31,6 +28,7 @@ import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.config.ConfigComponent;
+import com.publiccms.logic.component.config.SafeConfigComponent;
 import com.publiccms.logic.component.config.SiteConfigComponent;
 import com.publiccms.logic.component.site.LockComponent;
 import com.publiccms.logic.component.site.SiteComponent;
@@ -56,7 +54,7 @@ public class CommentController {
     @Resource
     protected SiteComponent siteComponent;
     @Resource
-    protected SiteConfigComponent siteConfigComponent;
+    protected SafeConfigComponent safeConfigComponent;
     @Resource
     protected ConfigComponent configComponent;
     @Resource
@@ -104,7 +102,7 @@ public class CommentController {
     @Csrf
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser user, CmsComment entity, String returnUrl,
             String captcha, HttpServletRequest request, ModelMap model) {
-        returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
+        returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         boolean locked = lockComponent.isLocked(site.getId(), LockComponent.ITEM_TYPE_COMMENT, String.valueOf(user.getId()),
                 null);
         if (ControllerUtils.errorCustom("locked.user", locked, model)) {
@@ -112,9 +110,7 @@ public class CommentController {
             return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
         }
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
-        String enableCaptcha = config.get(SiteConfigComponent.CONFIG_CAPTCHA);
-        if (CommonUtils.notEmpty(captcha) || CommonUtils.notEmpty(enableCaptcha)
-                        && ArrayUtils.contains(StringUtils.split(enableCaptcha, CommonConstants.COMMA), "comment")) {
+        if (CommonUtils.notEmpty(captcha) || safeConfigComponent.enableCaptcha(site.getId(), SafeConfigComponent.CAPTCHA_MODULE_COMMENT)) {
             String sessionCaptcha = (String) request.getSession().getAttribute("captcha");
             request.getSession().removeAttribute("captcha");
             if (ControllerUtils.errorCustom("captcha.error", null == sessionCaptcha || !sessionCaptcha.equalsIgnoreCase(captcha), model)) {

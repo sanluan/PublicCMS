@@ -29,12 +29,6 @@ import com.publiccms.logic.component.BeanComponent;
  */
 @Component
 public class CorsConfigComponent implements SiteCache, Config {
-    private static final String CONFIG_ALLOWED_ORIGINS = "allowed_origins";
-    private static final String CONFIG_ALLOWED_METHODS = "allowed_methods";
-    private static final String CONFIG_ALLOWED_HEADERS = "allowed_headers";
-    private static final String CONFIG_EXPOSED_HEADERS = "exposed_headers";
-    private static final String CONFIG_ALLOW_CREDENTIALS = "allow_credentials";
-    private static final String CONFIG_MAXAGE = "max_age";
     /**
      * 
      */
@@ -44,6 +38,13 @@ public class CorsConfigComponent implements SiteCache, Config {
      * 
      */
     public static final String CONFIG_CODE_DESCRIPTION = CONFIGPREFIX + CONFIG_CODE;
+    
+    private static final String CONFIG_ALLOWED_ORIGINS = "allowed_origins";
+    private static final String CONFIG_ALLOWED_METHODS = "allowed_methods";
+    private static final String CONFIG_ALLOWED_HEADERS = "allowed_headers";
+    private static final String CONFIG_EXPOSED_HEADERS = "exposed_headers";
+    private static final String CONFIG_ALLOW_CREDENTIALS = "allow_credentials";
+    private static final String CONFIG_MAXAGE = "max_age";
 
     private CacheEntity<Short, CorsConfiguration> cache;
 
@@ -133,6 +134,7 @@ public class CorsConfigComponent implements SiteCache, Config {
      * @param locale
      * @return
      */
+    @Override
     public String getCodeDescription(Locale locale) {
         return getMessage(locale, CONFIG_CODE_DESCRIPTION);
     }

@@ -36,7 +36,7 @@ import com.publiccms.entities.trade.TradePayment;
 import com.publiccms.entities.trade.TradePaymentHistory;
 import com.publiccms.entities.trade.TradeRefund;
 import com.publiccms.logic.component.config.ConfigComponent;
-import com.publiccms.logic.component.config.SiteConfigComponent;
+import com.publiccms.logic.component.config.SafeConfigComponent;
 import com.publiccms.logic.component.paymentgateway.AlipayGatewayComponent;
 import com.publiccms.logic.component.paymentgateway.WechatGatewayComponent;
 import com.publiccms.logic.component.trade.PaymentGatewayComponent;
@@ -64,7 +64,7 @@ public class TradePaymentController {
     @RequestMapping(value = "pay")
     public void pay(@RequestAttribute SysSite site, Long paymentId, String returnUrl, HttpServletRequest request,
             HttpServletResponse response, ModelMap model) throws Exception {
-        returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
+        returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         TradePayment entity = service.getEntity(paymentId);
         PaymentGateway paymentGateway = gatewayComponent.get(entity.getAccountType());
         if (null == paymentGateway || null == entity
@@ -90,7 +90,7 @@ public class TradePaymentController {
     @Csrf
     public String cancel(@RequestAttribute SysSite site, Long paymentId, String returnUrl, HttpServletRequest request,
             ModelMap model) throws Exception {
-        returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
+        returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         TradePayment entity = service.getEntity(paymentId);
         if (null == entity || ControllerUtils.errorNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
             return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
@@ -295,7 +295,7 @@ public class TradePaymentController {
     @Csrf
     public String refund(@RequestAttribute SysSite site, @SessionAttribute SysUser user, TradeRefund entity, String returnUrl,
             HttpServletRequest request, ModelMap model) {
-        returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
+        returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         if (null != user && ControllerUtils.errorCustom("tradePaymentStatus",
                 !service.pendingRefund(site.getId(), entity.getPaymentId()), model)) {
             return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
@@ -331,7 +331,7 @@ public class TradePaymentController {
     @Csrf
     public String cancel(@RequestAttribute SysSite site, @SessionAttribute SysUser user, long refundId, String returnUrl,
             HttpServletRequest request) {
-        returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
+        returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         refundService.updateStatus(site.getId(), refundId, null, user.getId(), TradeRefundService.STATUS_CANCELLED);
         return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
     }
@@ -349,7 +349,7 @@ public class TradePaymentController {
     @Resource
     protected ConfigComponent configComponent;
     @Resource
-    protected SiteConfigComponent siteConfigComponent;
+    protected SafeConfigComponent safeConfigComponent;
     @Resource
     private TradePaymentService service;
     @Resource

@@ -24,7 +24,7 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.entities.trade.TradeOrder;
 import com.publiccms.entities.trade.TradePayment;
-import com.publiccms.logic.component.config.SiteConfigComponent;
+import com.publiccms.logic.component.config.SafeConfigComponent;
 import com.publiccms.logic.component.paymentprocessor.ProductProcessorComponent;
 import com.publiccms.logic.component.trade.PaymentGatewayComponent;
 import com.publiccms.logic.service.trade.TradeOrderService;
@@ -50,7 +50,7 @@ public class TradeOrderController {
     @RequestMapping(value = "pay/{accountType}")
     public String pay(@RequestAttribute SysSite site, @PathVariable("accountType") String accountType, long orderId,
             String returnUrl, HttpServletRequest request) {
-        returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
+        returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         PaymentGateway paymentGateway = gatewayComponent.get(accountType);
         TradeOrder order = service.getEntity(orderId);
         if (null != paymentGateway && paymentGateway.enable(site.getId()) && null == order.getPaymentId()) {
@@ -88,7 +88,7 @@ public class TradeOrderController {
     public String create(@RequestAttribute SysSite site, @SessionAttribute SysUser user, TradeOrder entity,
             @ModelAttribute TradeOrderParameters tradeOrderParameters, String orderIdField, String returnUrl,
             HttpServletRequest request) {
-        returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
+        returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         if (CommonUtils.empty(orderIdField)) {
             orderIdField = "orderId";
         }
@@ -114,7 +114,7 @@ public class TradeOrderController {
     @Csrf
     public String close(@RequestAttribute SysSite site, @SessionAttribute SysUser user, long orderId, String returnUrl,
             HttpServletRequest request) {
-        returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
+        returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         service.close(site.getId(), orderId, user.getId());
         return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
     }
@@ -124,7 +124,7 @@ public class TradeOrderController {
     @Resource
     private TradePaymentService paymentService;
     @Resource
-    protected SiteConfigComponent siteConfigComponent;
+    protected SafeConfigComponent safeConfigComponent;
     @Resource
     private PaymentGatewayComponent gatewayComponent;
 }
