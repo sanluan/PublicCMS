@@ -16,7 +16,7 @@
                     <textarea name="old" class="code" readOnly="readOnly" mode="${(!type?has_content || 'template'=type)?then('freemarkermixed',editorType[fileType]?has_content?then(editorType[fileType],'htmlmixed'))}">${a!}</textarea>
                 </td>
                 <td>
-                    <textarea name="new" class="code" mode="${(!type?has_content || 'template'=type)?then('freemarkermixed',editorType[fileType]?has_content?then(editorType[fileType],'htmlmixed'))}"></textarea>
+                    <textarea name="new" class="code"  readOnly="readOnly" mode="${(!type?has_content || 'template'=type)?then('freemarkermixed',editorType[fileType]?has_content?then(editorType[fileType],'htmlmixed'))}"></textarea>
                 </td>
                 <td>
                     <div class="clearfix">
@@ -40,7 +40,7 @@
 </div>
 <div class="formBar">
     <ul>
-        <li><a href="cmsFileHistory/use.html?type=${type!}path=${path!}&fileName=${fileName!}" target="dialog" rel="_blank" class="button"><i class="icon-ok"></i><@t.page 'select'/></a></li>
+        <li><a href="javascript:;" onclick="$.bringBack({'content':$('textarea[name=content]',$.pdialog.getCurrent()).val()});" class="button"><i class="icon-ok"></i><@t.page 'select'/></a></li>
         <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
     </ul>
 </div>

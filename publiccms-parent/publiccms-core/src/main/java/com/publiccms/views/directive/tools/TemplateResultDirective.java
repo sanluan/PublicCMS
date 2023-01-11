@@ -48,7 +48,10 @@ public class TemplateResultDirective extends AbstractTemplateDirective {
             try {
                 content = "<#attempt>" + content + "<#recover>${.error!}</#attempt>";
                 Map<String, Object> model = new HashMap<>();
-                model.putAll(handler.getMap("parameters"));
+                Map<String, Object> parameters = handler.getMap("parameters");
+                if (null != parameters) {
+                    model.putAll(parameters);
+                }
                 handler.print(FreeMarkerUtils.generateStringByString(content, templateComponent.getWebConfiguration(), model));
             } catch (IOException | TemplateException e) {
                 handler.print(e.getMessage());

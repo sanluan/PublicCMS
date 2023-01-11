@@ -12,7 +12,7 @@
                     <textarea name="old" class="code" readOnly="readOnly">${(a.text)!}</textarea>
                 </td>
                 <td>
-                    <textarea name="new" class="code"></textarea>
+                    <textarea name="new" class="code" readOnly="readOnly"></textarea>
                 </td>
                 <td>
                     <div class="clearfix">
@@ -31,13 +31,13 @@
     </div>
     <script>
     $('form',navTab.getCurrentPanel()).trigger(JUI.eventType.editorSync);
-    var fieldName = <#if 'content'=a.itemType>${(a.fieldName)!'text'};<#else>$('[value=${(a.fieldName)!"text"}]',navTab.getCurrentPanel()).attr('name').replace('.name','.value');</#if>
+    var fieldName = <#if 'content'=a.itemType>"${(a.fieldName)!'text'}";<#else>$('[value=${(a.fieldName)!"text"}]',navTab.getCurrentPanel()).attr('name').replace('.name','.value');</#if>
     $('textarea[name=new]',$.pdialog.getCurrent()).val($('[name='+escapeJquery(fieldName)+']',navTab.getCurrentPanel()).val());
     </script>
 </div>
 <div class="formBar">
     <ul>
-        <li><a href="cmsEditorHistory/use.html?id=${a.id}" target="dialog" rel="_blank" class="button"><i class="icon-ok"></i><@t.page 'select'/></a></li>
+        <li><a href="javascript:;" onclick="$.bringBack({'<#if 'content'=a.itemType>${(a.fieldName)!'text'}<#else>value</#if>':$('textarea[name=content]',$.pdialog.getCurrent()).val()});" class="button"><i class="icon-ok"></i><@t.page 'select'/></a></li>
         <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
     </ul>
 </div>

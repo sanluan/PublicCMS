@@ -72,6 +72,7 @@ public class CmsUpgrader extends AbstractCmsUpgrader {
         case VERSION_202204:
         case VERSION5_202204:
             runScript(stringWriter, connection, VERSION_202204, VERSION_DEVELOP);
+            updateSiteConfig(stringWriter, connection);
         }
     }
 

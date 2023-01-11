@@ -249,7 +249,14 @@ public class TemplateComponent implements Cache {
     public boolean createContentFile(SysSite site, CmsContent entity, CmsCategory category, CmsCategoryModel categoryModel)
             throws IOException, TemplateException {
         if (null != site && null != entity) {
-            if (!entity.isOnlyUrl()) {
+            if (entity.isOnlyUrl()) {
+                if (null == entity.getParentId() && null != entity.getQuoteContentId()) {
+                    CmsContent quote = contentService.getEntity(entity.getQuoteContentId());
+                    if (null != quote) {
+                        contentService.updateUrl(entity.getId(), quote.getUrl(), false);
+                    }
+                }
+            } else {
                 if (null == category) {
                     category = categoryService.getEntity(entity.getCategoryId());
                 }
@@ -292,11 +299,6 @@ public class TemplateComponent implements Cache {
                     }
                     return true;
                 }
-            } else if (null == entity.getParentId() && null != entity.getQuoteContentId()) {
-                CmsContent quote = contentService.getEntity(entity.getQuoteContentId());
-                if (null != quote) {
-                    contentService.updateUrl(entity.getId(), quote.getUrl(), false);
-                }
             }
         }
         return false;
@@ -325,7 +327,8 @@ public class TemplateComponent implements Cache {
                 templatePath = entity.getTemplatePath();
                 categoryPath = entity.getPath();
             } else {
-                Map<String, String> config = BeanComponent.getConfigComponent().getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+                Map<String, String> config = BeanComponent.getConfigComponent().getConfigData(site.getId(),
+                        Config.CONFIG_CODE_SITE);
                 if (CommonUtils.notEmpty(entity.getTypeId())) {
                     CmsCategoryType categoryType = modelComponent.getCategoryTypeMap(site.getId()).get(entity.getTypeId());
                     if (null != categoryType) {
