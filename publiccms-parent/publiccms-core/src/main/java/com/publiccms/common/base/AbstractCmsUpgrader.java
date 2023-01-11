@@ -21,8 +21,10 @@ import java.util.Properties;
 import org.apache.ibatis.jdbc.ScriptRunner;
 
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.common.tools.UserPasswordUtils;
 import com.publiccms.entities.sys.SysExtendField;
+import com.publiccms.logic.component.config.SafeConfigComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.views.pojo.entities.CmsCategoryType;
@@ -84,7 +86,7 @@ public abstract class AbstractCmsUpgrader {
         try (PreparedStatement statement = connection.prepareStatement("update sys_user set name=?,password=? where id = 1")) {
             statement.setString(1, username);
             statement.setString(2, UserPasswordUtils.passwordEncode(password, UserPasswordUtils.getSalt(), null, null));
-            statement.execute();
+            statement.executeUpdate();
         }
     }
 
@@ -96,7 +98,7 @@ public abstract class AbstractCmsUpgrader {
                     .prepareStatement("update sys_site set dynamic_path=?,site_path=? where id = 1")) {
                 statement.setString(1, dynamicPath);
                 statement.setString(2, sitePath);
-                statement.execute();
+                statement.executeUpdate();
             }
         }
     }
@@ -129,6 +131,61 @@ public abstract class AbstractCmsUpgrader {
             stringWriter.write(e.getMessage());
             stringWriter.write(System.lineSeparator());
             e.printStackTrace();
+        }
+    }
+
+    protected void updateSiteConfig(StringWriter stringWriter, Connection connection) {
+        try (Statement statement = connection.createStatement();
+                ResultSet rs = statement.executeQuery("select * from sys_config_data where code = 'code'");
+                PreparedStatement insertStatement = connection
+                        .prepareStatement("insert into sys_config_data (site_id, code, data) VALUES (?, ?, ?)")) {
+            while (rs.next()) {
+                if (null != rs.getString("data")) {
+                    String data = rs.getString("data");
+                    try {
+                        Map<String, String> safeConfig = new HashMap<>();
+                        Map<String, String> siteConfig = ExtendUtils.getExtendMap(data);
+                        {
+                            String value = siteConfig.remove(SafeConfigComponent.CONFIG_EXPIRY_MINUTES_WEB);
+                            if (null == value) {
+                                safeConfig.put(SafeConfigComponent.CONFIG_EXPIRY_MINUTES_WEB, value);
+                            }
+                        }
+                        {
+                            String value = siteConfig.remove(SafeConfigComponent.CONFIG_EXPIRY_MINUTES_MANAGER);
+                            if (null == value) {
+                                safeConfig.put(SafeConfigComponent.CONFIG_EXPIRY_MINUTES_MANAGER, value);
+                            }
+                        }
+                        {
+                            String value = siteConfig.remove(SafeConfigComponent.CONFIG_ALLOW_FILES);
+                            if (null == value) {
+                                safeConfig.put(SafeConfigComponent.CONFIG_ALLOW_FILES, value);
+                            }
+                        }
+                        {
+                            String value = siteConfig.remove(SafeConfigComponent.CONFIG_RETURN_URL);
+                            if (null == value) {
+                                safeConfig.put(SafeConfigComponent.CONFIG_RETURN_URL, value);
+                            }
+                        }
+                        if (!safeConfig.isEmpty()) {
+                            insertStatement.setShort(1, rs.getShort("site_id"));
+                            insertStatement.setString(2, "safe");
+                            insertStatement.setString(3, ExtendUtils.getExtendString(safeConfig));
+                            insertStatement.executeUpdate();
+                        }
+                    } catch (ClassCastException e) {
+                        stringWriter.write(e.getMessage());
+                        stringWriter.write(System.lineSeparator());
+                        e.printStackTrace();
+                    }
+                }
+            }
+        } catch (SQLException e2) {
+            stringWriter.write(e2.getMessage());
+            stringWriter.write(System.lineSeparator());
+            e2.printStackTrace();
         }
     }
 

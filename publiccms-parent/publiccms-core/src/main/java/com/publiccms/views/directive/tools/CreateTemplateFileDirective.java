@@ -62,7 +62,10 @@ public class CreateTemplateFileDirective extends AbstractTemplateDirective {
             String templateFullPath = SiteComponent.getFullTemplatePath(site.getId(), templatePath);
             try {
                 Map<String, Object> model = new HashMap<>();
-                model.putAll(handler.getMap("parameters"));
+                Map<String, Object> parameters = handler.getMap("parameters");
+                if (null != parameters) {
+                    model.putAll(parameters);
+                }
                 String realTemplatePath = siteComponent.getTemplateFilePath(site.getId(), templatePath);
                 CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(realTemplatePath);
                 CmsPageData data = metadataComponent.getTemplateData(realTemplatePath);
