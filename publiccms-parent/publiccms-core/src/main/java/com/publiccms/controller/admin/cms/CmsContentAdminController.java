@@ -705,8 +705,12 @@ public class CmsContentAdminController {
             Set<Serializable> categoryIdSet = new HashSet<>();
             for (CmsContent entity : service.delete(site.getId(), admin, ids)) {
                 categoryIdSet.add(entity.getCategoryId());
-                if (entity.isHasStatic() && null == entity.getQuoteContentId() && CommonUtils.notEmpty(entity.getUrl())) {
+                if (!entity.isOnlyUrl() && entity.isHasStatic() && null == entity.getQuoteContentId()
+                        && CommonUtils.notEmpty(entity.getUrl())) {
                     String filepath = siteComponent.getWebFilePath(site.getId(), entity.getUrl());
+                    if (entity.getUrl().endsWith(CommonConstants.SEPARATOR)) {
+                        filepath = filepath + CommonConstants.getDefaultPage();
+                    }
                     if (CmsFileUtils.isFile(filepath)) {
                         String backupFilePath = siteComponent.getWebBackupFilePath(site.getId(), entity.getUrl());
                         CmsFileUtils.moveFile(filepath, backupFilePath);
