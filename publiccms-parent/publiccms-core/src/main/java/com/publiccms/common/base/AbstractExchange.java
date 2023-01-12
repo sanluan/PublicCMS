@@ -69,9 +69,15 @@ public abstract class AbstractExchange<E, D> implements Exchange<E, D> {
                 importData(siteId, userId, overwrite, zipFile, entryEnum.nextElement());
             }
         } else {
-            Iterable<ZipEntry> list = zipFile.getEntries(directory);
-            for (ZipEntry zipEntry : list) {
-                importData(siteId, userId, overwrite, zipFile, zipEntry);
+            Enumeration<? extends ZipEntry> entryEnum = zipFile.getEntries();
+            if (!directory.endsWith(Constants.SEPARATOR)) {
+                directory += Constants.SEPARATOR;
+            }
+            while (entryEnum.hasMoreElements()) {
+                ZipEntry zipEntry = entryEnum.nextElement();
+                if (zipEntry.getName().startsWith(directory)) {
+                    importData(siteId, userId, overwrite, zipFile, zipEntry);
+                }
             }
         }
     }

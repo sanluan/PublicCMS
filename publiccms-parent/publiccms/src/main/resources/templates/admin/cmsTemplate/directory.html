@@ -31,7 +31,7 @@
 <#if !path?has_content>
         <fieldset>
             <legend><@t.page 'server_config.site'/></legend>
-            <div><a href="sysConfigData/edit.html?code=${config.code!}" class="edit btnText blue" target="navTab" rel="sysConfigData/edit"><i class="icon-edit"></i><@t.page 'config_data.edit'/></a></div>
+            <div><a href="sysConfigData/edit.html?code=site" class="edit btnText blue" target="navTab" rel="sysConfigData/edit"><i class="icon-edit"></i><@t.page 'config_data.edit'/></a></div>
         <@sys.configData code="site">
     <#if object?has_content>
 <#include "../include_page/extendData.html"/>
@@ -42,18 +42,10 @@
         </@sys.configData>
         </fieldset>
         <div class="divider"></div>
-        <div class="unit"><a class="button" href="cmsTemplate/exportSite?_csrf=<@tools.csrfToken admin=true/>" target="dwzExport" targetType="navTab"><@t.page 'export.site'/></a></div>
-        <form action="cmsTemplate/exportSite?navTabId=${navTabId!'cmsTemplate/list'}" method="post" autocomplete="off" enctype="multipart/form-data" class="pageForm required-validate" onsubmit="return iframeCallback(this, navTabAjaxDone)">
-            <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
-            <dl class="nowrap">
-                <dt><@t.page 'file'/>:</dt>
-                <dd>
-                    <input type="file" name="file" class="required" size="30" accept="application/zip"/>
-                    <label><input type="checkbox" name="overwrite" checked="checked"><@t.page 'import.overwrite'/></label>
-                    <button type="submit" class="buttonActive"><@t.page 'import.site'/></button>
-                </dd>
-            </dl>
-        </form>
+        <div class="unit">
+            <a class="button" href="cmsTemplate/exportSite?_csrf=<@tools.csrfToken admin=true/>" target="dwzExport" targetType="navTab"><@t.page 'export.site'/></a>
+            <a class="button" href="cmsTemplate/import.html" target="dialog" mask="true" width="500" height="250"><@t.page 'import.site'/></a>
+        </div>
 </#if>
     </div>
 </div>

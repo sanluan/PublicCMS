@@ -17,6 +17,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.publiccms.common.base.AbstractExchange;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CmsFileUtils;
+import com.publiccms.common.tools.ZipUtils;
+import com.publiccms.logic.component.site.SiteComponent;
 
 /**
  * SiteExchangeComponent 站点导入导出组件
@@ -28,6 +30,8 @@ public class SiteExchangeComponent {
 
     @Resource
     private List<AbstractExchange<?, ?>> exchangeList;
+    @Resource
+    protected SiteComponent siteComponent;
 
     /**
      * @param <E>
@@ -98,6 +102,18 @@ public class SiteExchangeComponent {
                     File dest = File.createTempFile("temp_import_", suffix);
                     file.transferTo(dest);
                     try (ZipFile zipFile = new ZipFile(dest, CommonConstants.DEFAULT_CHARSET_NAME)) {
+                        {
+                            String filepath = siteComponent.getTemplateFilePath(siteId, CommonConstants.SEPARATOR);
+                            ZipUtils.unzip(zipFile, "template", filepath, overwrite);
+                        }
+                        {
+                            String filepath = siteComponent.getWebFilePath(siteId, CommonConstants.SEPARATOR);
+                            ZipUtils.unzip(zipFile, "web", filepath, overwrite);
+                        }
+                        {
+                            String filepath = siteComponent.getTaskTemplateFilePath(siteId, CommonConstants.SEPARATOR);
+                            ZipUtils.unzip(zipFile, "tasktemplate", filepath, overwrite);
+                        }
                         for (AbstractExchange<?, ?> exchange : exchangeList) {
                             exchange.importData(siteId, userId, exchange.getDirectory(), overwrite, zipFile);
                         }

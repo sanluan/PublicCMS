@@ -302,7 +302,7 @@ public class CmsTemplateAdminController {
             }
             {
                 String filepath = siteComponent.getTaskTemplateFilePath(site.getId(), CommonConstants.SEPARATOR);
-                ZipUtils.compress(Paths.get(filepath), zipOutputStream, "task");
+                ZipUtils.compress(Paths.get(filepath), zipOutputStream, "tasktemplate");
             }
             siteExchangeComponent.exportAll(site.getId(), zipOutputStream);
         } catch (IOException e) {

@@ -345,15 +345,15 @@ public class ContentExchangeComponent extends AbstractExchange<CmsContent, Conte
             ZipOutputStream zipOutputStream) {
         CmsCategory category = categoryService.getEntity(entity.getCategoryId());
         if (null != category) {
-            Content data = exportEntity(siteId, entity);
-            data.setCategoryCode(category.getCode());
+            Content data = exportEntity(siteId, category.getCode(), entity);
+
             CmsModel model = modelComponent.getModelMap(siteId).get(entity.getModelId());
             if (null != model && model.isHasChild()) {
                 List<CmsContent> list = service.getListByTopId(siteId, entity.getId());
                 if (null != list) {
                     List<Content> childList = new ArrayList<>();
                     for (CmsContent content : list) {
-                        childList.add(exportEntity(siteId, content));
+                        childList.add(exportEntity(siteId, category.getCode(), content));
                     }
                     data.setChildList(childList);
                 }
@@ -366,6 +366,27 @@ public class ContentExchangeComponent extends AbstractExchange<CmsContent, Conte
         CmsContent entity = data.getEntity();
         CmsContent oldentity = service.getEntity(entity.getId());
         CmsCategory category = categoryService.getEntityByCode(siteId, data.getCategoryCode());
+        if (null != category && (null == oldentity || oldentity.isDisabled() || overwrite)) {
+            entity.setSiteId(siteId);
+            service.saveOrUpdate(entity);
+            if (null != data.getAttribute()) {
+                attributeService.saveOrUpdate(data.getAttribute());
+            }
+            if (null != data.getChildList()) {
+                for (Content child : data.getChildList()) {
+                    save(siteId, userId, overwrite, category, child);
+                }
+            }
+            try {
+                templateComponent.createContentFile(siteComponent.getSiteById(siteId), entity, category, null);
+            } catch (IOException | TemplateException e) {
+            }
+        }
+    }
+
+    public void save(short siteId, long userId, boolean overwrite, CmsCategory category, Content data) {
+        CmsContent entity = data.getEntity();
+        CmsContent oldentity = service.getEntity(entity.getId());
         if (null != category && (null == oldentity || overwrite)) {
             entity.setSiteId(siteId);
             service.saveOrUpdate(entity);
@@ -384,8 +405,9 @@ public class ContentExchangeComponent extends AbstractExchange<CmsContent, Conte
         }
     }
 
-    private Content exportEntity(short siteId, CmsContent entity) {
+    private Content exportEntity(short siteId, String categoryCode, CmsContent entity) {
         Content data = new Content();
+        data.setCategoryCode(categoryCode);
         data.setEntity(entity);
         data.setAttribute(attributeService.getEntity(entity.getId()));
         if (entity.isHasFiles() || entity.isHasImages()) {
