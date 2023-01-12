@@ -487,3 +487,5 @@ INSERT INTO `sys_module_lang` VALUES ('record_delete', 'zh', '删除');
 INSERT INTO `sys_module_lang` VALUES ('record_list', 'en', 'Custom record management');
 INSERT INTO `sys_module_lang` VALUES ('record_list', 'ja', 'カスタムレコード管理');
 INSERT INTO `sys_module_lang` VALUES ('record_list', 'zh', '自定义记录管理');
+-- 2023-01-12 --
+UPDATE `sys_module` SET `authorized_url`= 'cmsModel/categoryList' WHERE `id` ='model_list';

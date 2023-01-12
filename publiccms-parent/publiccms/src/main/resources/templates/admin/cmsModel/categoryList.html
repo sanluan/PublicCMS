@@ -1,0 +1,35 @@
+<#macro bread category>
+    <#if category.parentId?has_content>
+        <@cms.category id=category.parentId>
+            <@bread object/>
+            ${object.name} &gt;
+        </@cms.category>
+    </#if>
+</#macro>
+<div class="pageFormContent" layoutH>
+    <ul class="tree treeFolder">
+<@cms.categoryModelList modelId=id>
+    <#list list as a>
+        <@t.merge 'categoryIds' a.id.categoryId/>
+    </#list>
+    <@cms.category ids=t.categoryIds><#assign categoryMap=map/></@cms.category>
+    <#list list as a>
+        <li>
+            <#if categoryMap[a.id.categoryId?string]?has_content>
+                <a href="cmsCategory/add.html?id=${a.id.categoryId}" class="exclude-translate" class="edit btnText blue" target="navTab" rel="cmsCategory/edit" icon="<i class='icon-edit'></i>"><@bread categoryMap[a.id.categoryId?string]/> ${categoryMap[a.id.categoryId?string].name}</a>
+            </#if>
+        </li>
+    </#list>
+</@cms.categoryModelList>
+    </ul>
+</div>
+<script>
+$('ul li a',$.pdialog.getCurrent()).click(function(){
+    $.pdialog.closeCurrent();
+});
+</script>
+<div class="formBar">
+    <ul>
+        <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+    </ul>
+</div>

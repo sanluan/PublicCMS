@@ -28,5 +28,17 @@
                 <button type="submit" class="buttonActive" title="ctrl+s"><@t.page 'button.create_directory'/></button>
             </form>
         </fieldset>
+        <fieldset>
+            <legend><@t.page 'server_config.site'/></legend>
+            <div><a href="sysConfigData/edit.html?code=${config.code!}" class="edit btnText blue" target="navTab" rel="sysConfigData/edit"><i class="icon-edit"></i><@t.page 'config_data.edit'/></a></div>
+            <@sys.configData code="site">
+            <#if object?has_content>
+<#include "../include_page/extendData.html"/>
+<@sys.configFieldList code="site">
+    <@extendData name='extendDataList' extendList=list extendValues=object type='view' htmlSafe=true historyItemType='configData' historyItemId=code/>
+</@sys.configFieldList>
+        </fieldset>
+            </#if>
+        </@sys.configData>
     </div>
 </div>

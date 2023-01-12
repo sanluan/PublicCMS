@@ -11,7 +11,7 @@
                 </li>
                 <li>
                     <select class="combox" name="hidden">
-                        <option value=""><@t.page 'display'/></option>
+                        <option value><@t.page 'display'/></option>
                         <option value="false"${(hidden?has_content&&'false'=hidden)?then(' selected="true"','')?no_esc}><@t.page 'show'/></option>
                         <option value="true"${(hidden?has_content&&'true'=hidden)?then(' selected="true"','')?no_esc}><@t.page 'hidden'/></option>
                     </select>

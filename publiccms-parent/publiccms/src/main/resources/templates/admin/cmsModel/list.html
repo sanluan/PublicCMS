@@ -32,6 +32,7 @@
             <tr>
                 <th width="80"><@t.page 'id'/></th>
                 <th><@t.page 'name'/></th>
+                <th><@t.page 'model.child_management'/></th>
                 <th><@t.page 'url'/></th>
                 <th><@t.page 'model.has_images'/></th>
                 <th><@t.page 'model.has_attachs'/></th>
@@ -56,15 +57,18 @@
                 <td class="exclude-translate" <#if lockMap[a.id?string]?has_content><#assign lockUser=(userMap[lockMap[a.id?string].userId?string].nickname)!''/>title="<@t.page 'lock.message' lockUser/> ${lockMap[a.id?string].createDate}"</#if>>
                     <#if lockMap[a.id?string]?has_content><i class="icon-lock icon-large"></i></#if>${(a.name)!}
                 </td>
+                <td>
+                    <#if a.hasChild>
+                        <a href="cmsModel/list.html?parentId=${a.id?url}" class="btnText" target="navTab" rel="cmsModel/list"><@t.page 'model.child_management'/></a>
+                    </#if>
+                </td>
                 <td>${a.onlyUrl?then(t.pageMessage('yes'),'')}</td>
                 <td>${a.hasImages?then(t.pageMessage('yes'),'')}</td>
                 <td>${a.hasFiles?then(t.pageMessage('yes'),'')}</td>
                 <td>${a.hasProducts?then(t.pageMessage('yes'),'')}</td>
                 <td class="wrap">
                     <a href="cmsModel/add.html?id=${a.id?url}" class="edit btnText blue" target="navTab" rel="cmsModel/edit"><i class="icon-edit"></i><@t.page 'model.edit'/></a>
-                    <#if a.hasChild>
-                        <a href="cmsModel/list.html?parentId=${a.id?url}" class="btnText" target="navTab" rel="cmsModel/list"><@t.page 'model.child_management'/></a>
-                    </#if>
+                    <a href="cmsModel/categoryList.html?id=${a.id?url}" class="btnText" target="dialog" rel="categoryList"><i class="icon-folder-open"></i><@t.page 'category'/></a>
                     <@sys.authorized roleIds=admin.roles url='cmsModel/rebuildSearchText'>
                         <a href="cmsModel/rebuildSearchText?id=${a.id?url}&_csrf=<@tools.csrfToken admin=true/>" class="btnText" title="<@t.page 'confirm.do'/>" target="ajaxTodo"><i class="icon-refresh"></i><@t.page 'button.rebuild_search_text'/></a>
                     </@sys.authorized>

@@ -14,14 +14,14 @@
                 </li>
                 <li>
                     <select class="combox" name="superuser">
-                        <option value=""${(!superuser?has_content)?then(' selected="true"','')?no_esc}><@t.page 'user.type'/></option>
+                        <option value><@t.page 'user.type'/></option>
                         <option value="false"${(superuser?has_content&&"false"=superuser)?then(' selected="true"','')?no_esc}><@t.page 'user.general'/></option>
                         <option value="true"${(superuser?has_content&&"true"=superuser)?then(' selected="true"','')?no_esc}><@t.page 'admin'/></option>
                     </select>
                 </li>
                 <li>
                     <select class="combox" name="emailChecked">
-                        <option value=""${(!emailChecked?has_content)?then(' selected="true"','')?no_esc}><@t.page 'email.verification_status'/></option>
+                        <option value><@t.page 'email.verification_status'/></option>
                         <option value="false"${(emailChecked?has_content&&"false"=emailChecked)?then(' selected="true"','')?no_esc}><@t.page 'unverified'/></option>
                         <option value="true"${(emailChecked?has_content&&"true"=emailChecked)?then(' selected="true"','')?no_esc}><@t.page 'verified'/></option>
                     </select>

@@ -30,7 +30,7 @@ import com.publiccms.logic.service.cms.CmsCategoryModelService;
  * </ul>
  * 使用示例
  * <p>
- * &lt;@cms.categoryModelList modelId='article'&gt;&lt;#list page.list as
+ * &lt;@cms.categoryModelList modelId='article'&gt;&lt;#list list as
  * a&gt;${a.templatePath}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.categoryModelList&gt;
  * 
  * <pre>
