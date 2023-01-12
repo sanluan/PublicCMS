@@ -489,3 +489,20 @@ INSERT INTO `sys_module_lang` VALUES ('record_list', 'ja', 'カスタムレコ�
 INSERT INTO `sys_module_lang` VALUES ('record_list', 'zh', '自定义记录管理');
 -- 2023-01-12 --
 UPDATE `sys_module` SET `authorized_url`= 'cmsModel/categoryList' WHERE `id` ='model_list';
+UPDATE `sys_module` SET `authorized_url`= 'cmsTemplate/save,cmsTemplate/saveMetaData,cmsTemplate/chipLookup,cmsWebFile/lookup,cmsTemplate/help' WHERE `id` ='template_content';
+INSERT INTO `sys_module` VALUES ('config_data_import', 'sysConfigData/import', 'sysConfigData/doImport', NULL, 'config_data_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('config_data_export', 'sysConfigData/export', 'cmsCategory/doImport', NULL, 'config_data_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('template_export', 'cmsTemplate/export', 'cmsTemplate/export,cmsTemplate/exportSite', NULL, 'template_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('template_import', 'cmsTemplate/upload', 'cmsTemplate/doUpload,cmsTemplate/importSite', NULL, 'template_list', 0, 0);
+INSERT INTO `sys_module_lang` VALUES ('config_data_export', 'en', 'Export');
+INSERT INTO `sys_module_lang` VALUES ('config_data_export', 'ja', '輸出');
+INSERT INTO `sys_module_lang` VALUES ('config_data_export', 'zh', '导出');
+INSERT INTO `sys_module_lang` VALUES ('config_data_import', 'en', 'Import');
+INSERT INTO `sys_module_lang` VALUES ('config_data_import', 'ja', '導入');
+INSERT INTO `sys_module_lang` VALUES ('config_data_import', 'zh', '导入');
+INSERT INTO `sys_module_lang` VALUES ('template_export', 'en', 'Export');
+INSERT INTO `sys_module_lang` VALUES ('template_export', 'ja', '輸出');
+INSERT INTO `sys_module_lang` VALUES ('template_export', 'zh', '导出');
+INSERT INTO `sys_module_lang` VALUES ('template_import', 'en', 'Import');
+INSERT INTO `sys_module_lang` VALUES ('template_import', 'ja', '導入');
+INSERT INTO `sys_module_lang` VALUES ('template_import', 'zh', '导入');

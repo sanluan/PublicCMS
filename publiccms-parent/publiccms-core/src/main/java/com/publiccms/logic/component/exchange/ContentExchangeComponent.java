@@ -18,6 +18,7 @@ import org.apache.tools.zip.ZipOutputStream;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
+import com.publiccms.common.base.AbstractExchange;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
@@ -53,11 +54,11 @@ import com.publiccms.views.pojo.query.CmsContentQuery;
 import freemarker.template.TemplateException;
 
 /**
- * CategoryExchangeComponent 内容数据导入导出组件
+ * ContentExchangeComponent 内容数据导入导出组件
  * 
  */
 @Component
-public class ContentExchangeComponent extends Exchange<CmsContent, Content> {
+public class ContentExchangeComponent extends AbstractExchange<CmsContent, Content> {
     @Resource
     private CmsContentService service;
     @Resource
@@ -84,23 +85,27 @@ public class ContentExchangeComponent extends Exchange<CmsContent, Content> {
     private SysExtendFieldService extendFieldService;
 
     @Override
-    public void exportAll(short siteId, String directory, ZipOutputStream zipOutputStream) {
+    public void exportAll(short siteId, String directory, ByteArrayOutputStream outputStream, ZipOutputStream zipOutputStream) {
         CmsContentQuery queryEntity = new CmsContentQuery();
         queryEntity.setSiteId(siteId);
         queryEntity.setDisabled(false);
         queryEntity.setEmptyParent(true);
-        exportDataByQuery(siteId, directory, queryEntity, zipOutputStream);
+        exportDataByQuery(siteId, directory, queryEntity, outputStream, zipOutputStream);
     }
 
     public void exportDataByQuery(short siteId, String directory, CmsContentQuery queryEntity, ZipOutputStream zipOutputStream) {
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        exportDataByQuery(siteId, directory, queryEntity, new ByteArrayOutputStream(), zipOutputStream);
+    }
+
+    public void exportDataByQuery(short siteId, String directory, CmsContentQuery queryEntity, ByteArrayOutputStream outputStream,
+            ZipOutputStream zipOutputStream) {
         PageHandler page = service.getPage(queryEntity, null, null, null, null, null, PageHandler.MAX_PAGE_SIZE, null);
         int i = 1;
         do {
             @SuppressWarnings("unchecked")
             List<CmsContent> list = (List<CmsContent>) page.getList();
             for (CmsContent entity : list) {
-                exportEntity(siteId, directory, entity, out, zipOutputStream);
+                exportEntity(siteId, directory, entity, outputStream, zipOutputStream);
             }
             page = service.getPage(queryEntity, null, null, null, null, i++, PageHandler.MAX_PAGE_SIZE, null);
         } while (!page.isLastPage());
@@ -181,7 +186,7 @@ public class ContentExchangeComponent extends Exchange<CmsContent, Content> {
 
             Sheet sheet = workbook
                     .createSheet(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content"));
-            sheet.setDefaultColumnWidth(50);
+            sheet.setDefaultColumnWidth(20);
             int i = 0, j = 0;
             Row row = sheet.createRow(i++);
             row.createCell(j++).setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.id"));
@@ -398,5 +403,10 @@ public class ContentExchangeComponent extends Exchange<CmsContent, Content> {
                 .getPage(entity.getId(), null, null, null, null, null, null, null).getList();
         data.setRelatedList(relatedList);
         return data;
+    }
+
+    @Override
+    public String getDirectory() {
+        return "content";
     }
 }

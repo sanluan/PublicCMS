@@ -6,6 +6,7 @@ import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.util.Date;
 
+import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,7 +15,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.tools.zip.ZipOutputStream;
-import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -37,7 +37,7 @@ import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.exchange.DictionaryExchangeComponent;
-import com.publiccms.logic.component.exchange.Exchange;
+import com.publiccms.logic.component.exchange.SiteExchangeComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.cms.CmsDictionaryDataService;
 import com.publiccms.logic.service.cms.CmsDictionaryExcludeService;
@@ -145,7 +145,7 @@ public class CmsDictionaryAdminController {
                     LogLoginService.CHANNEL_WEB_MANAGER, "import.cmsDictionary", RequestUtils.getIpAddress(request),
                     CommonUtils.getDate(), file.getOriginalFilename()));
         }
-        return Exchange.importData(site.getId(), admin.getId(), overwrite, "_dictionary.zip", exchangeComponent, file, model);
+        return SiteExchangeComponent.importData(site.getId(), admin.getId(), overwrite, "-dictionary.zip", exchangeComponent, file, model);
     }
 
     /**

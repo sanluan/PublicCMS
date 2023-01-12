@@ -172,4 +172,9 @@ public class CorsConfigComponent implements SiteCache, Config {
                         "1800"));
         return extendFieldList;
     }
+
+    @Override
+    public boolean exportable() {
+        return false;
+    }
 }

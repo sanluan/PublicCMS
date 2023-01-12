@@ -196,4 +196,10 @@ public class SafeConfigComponent implements Config {
                 StringUtils.join(CmsFileUtils.ALLOW_FILES, CommonConstants.COMMA)));
         return extendFieldList;
     }
+    
+
+    @Override
+    public boolean exportable() {
+        return true;
+    }
 }

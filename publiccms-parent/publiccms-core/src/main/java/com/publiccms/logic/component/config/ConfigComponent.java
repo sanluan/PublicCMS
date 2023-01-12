@@ -6,10 +6,12 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -75,28 +77,46 @@ public class ConfigComponent implements SiteCache {
 
     /**
      * @param siteId
+     * @return config list
+     */
+    public Set<String> getExportableConfigCodeList(short siteId) {
+        Set<String> configCodeSet = new HashSet<>();
+        if (CommonUtils.notEmpty(configPluginList)) {
+            for (Config config : configPluginList) {
+                String code = config.getCode(siteId, false);
+                if (CommonUtils.notEmpty(code) && config.exportable()) {
+                    configCodeSet.add(code);
+                }
+            }
+        }
+        for (Entry<String, SysConfig> entry : getMap(siteId).entrySet()) {
+            configCodeSet.add(entry.getKey());
+        }
+        return configCodeSet;
+    }
+
+    /**
+     * @param siteId
      * @param locale
      * @param showAll
      * @return config list
      */
     public List<ConfigInfo> getConfigList(short siteId, Locale locale, boolean showAll) {
         List<ConfigInfo> configList = new ArrayList<>();
-        List<String> configCodeList = new ArrayList<>();
+        Set<String> configCodeSet = new HashSet<>();
         if (CommonUtils.notEmpty(configPluginList)) {
             for (Config config : configPluginList) {
                 String code = config.getCode(siteId, showAll);
-                if (CommonUtils.notEmpty(code) && !configCodeList.contains(code)) {
+                if (CommonUtils.notEmpty(code) && configCodeSet.add(code)) {
                     configList.add(new ConfigInfo(code, config.getCodeDescription(locale)));
-                    configCodeList.add(code);
                 }
             }
         }
         for (Entry<String, SysConfig> entry : getMap(siteId).entrySet()) {
-            if (!configCodeList.contains(entry.getKey())) {
+            if (configCodeSet.add(entry.getKey())) {
                 ConfigInfo configInfo = new ConfigInfo(entry.getKey(), entry.getValue().getDescription());
                 configInfo.setCustomed(true);
                 configList.add(configInfo);
-                configCodeList.add(entry.getKey());
             }
         }
         return configList;

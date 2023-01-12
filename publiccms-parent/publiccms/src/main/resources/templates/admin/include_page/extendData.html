@@ -268,7 +268,7 @@
                     <#list values as a><@t.menu a/><#sep>,</#list>
                 </#if>
             <#else>
-                <#list ["myself_device","comment_list","tag_list","product_list","vote_list","survey_list","category_extend","trade_menu","page_diy","visit_menu","app_client_list"] as a>
+                <#list ["comment_list","tag_list","product_list","vote_list","survey_list","category_extend","trade_menu","page_diy","page_diy_preview","visit_menu","myself_device","app_client_list"] as a>
                     <label><input name="${inputName}" type="checkbox" value="${a}"${(values?has_content&&values?seq_contains(a))?then(' checked="true"','')?no_esc}/><@t.menu a/></label>
                 </#list>
             </#if>

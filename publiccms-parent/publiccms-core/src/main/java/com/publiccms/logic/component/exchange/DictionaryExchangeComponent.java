@@ -6,6 +6,7 @@ import org.apache.tools.zip.ZipOutputStream;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
+import com.publiccms.common.base.AbstractExchange;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.entities.cms.CmsDictionary;
 import com.publiccms.entities.cms.CmsDictionaryData;
@@ -22,7 +23,7 @@ import com.publiccms.views.pojo.exchange.Dictionary;
  * 
  */
 @Component
-public class DictionaryExchangeComponent extends Exchange<CmsDictionary, Dictionary> {
+public class DictionaryExchangeComponent extends AbstractExchange<CmsDictionary, Dictionary> {
     @Resource
     private CmsDictionaryService service;
     @Resource
@@ -32,7 +33,7 @@ public class DictionaryExchangeComponent extends Exchange<CmsDictionary, Diction
     @Resource
     private CmsDictionaryExcludeValueService excludeValueService;
 
-    public void exportAll(short siteId, String directory, ZipOutputStream zipOutputStream) {
+    public void exportAll(short siteId, String directory,ByteArrayOutputStream outputStream, ZipOutputStream zipOutputStream) {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         service.batchWork(siteId, (list, i) -> {
             for (CmsDictionary entity : list) {
@@ -41,14 +42,14 @@ public class DictionaryExchangeComponent extends Exchange<CmsDictionary, Diction
         }, PageHandler.MAX_PAGE_SIZE);
     }
 
-    public void exportEntity(short siteId, String directory, CmsDictionary entity, ByteArrayOutputStream out,
+    public void exportEntity(short siteId, String directory, CmsDictionary entity, ByteArrayOutputStream outputStream,
             ZipOutputStream zipOutputStream) {
         Dictionary data = new Dictionary();
         data.setEntity(entity);
         data.setDataList(dataService.getList(siteId, entity.getId().getId()));
         data.setExcludeList(excludeService.getList(siteId, entity.getId().getId(), null));
         data.setExcludeValueList(excludeValueService.getList(siteId, entity.getId().getId(), null));
-        export(directory, out, zipOutputStream, data, entity.getId().getId() + ".json");
+        export(directory, outputStream, zipOutputStream, data, entity.getId().getId() + ".json");
     }
 
     public void save(short siteId, long userId, boolean overwrite, Dictionary data) {
@@ -76,5 +77,10 @@ public class DictionaryExchangeComponent extends Exchange<CmsDictionary, Diction
                 excludeValueService.saveOrUpdate(data.getExcludeValueList());
             }
         }
+    }
+
+    @Override
+    public String getDirectory() {
+        return "dictionary";
     }
 }

@@ -29,16 +29,16 @@ public class SiteConfigComponent implements Config {
      */
     public static final String CONFIG_REGISTER_URL = "register_url";
     /**
-    * site exclude module
-    */
+     * site exclude module
+     */
     public static final String CONFIG_SITE_EXCLUDE_MODULE = "site_exclude_module";
     /**
-    * category template path
-    */
+     * category template path
+     */
     public static final String CONFIG_CATEGORY_TEMPLATE_PATH = "category_template_path";
     /**
-    * category path
-    */
+     * category path
+     */
     public static final String CONFIG_CATEGORY_PATH = "category_path";
     /**
      * comment need check
@@ -53,8 +53,8 @@ public class SiteConfigComponent implements Config {
      */
     public static final String CONFIG_STATIC_AFTER_SCORE = "static_after_score";
     /**
-    * max scores
-    */
+     * max scores
+     */
     public static final String CONFIG_MAX_SCORES = "max_scores";
     /**
      * default content statuc
@@ -90,13 +90,12 @@ public class SiteConfigComponent implements Config {
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_CATEGORY_PATH), null,
                 site.isUseStatic() ? "category/${category.code}.html" : "category.html?id=${category.id}"));
 
-        
         extendFieldList.add(new SysExtendField(CONFIG_DEFAULT_CONTENT_STATUS, INPUTTYPE_CONTENT_STATUS, true,
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_DEFAULT_CONTENT_STATUS), null,
                 String.valueOf(CmsContentService.STATUS_PEND)));
         extendFieldList.add(new SysExtendField(CONFIG_DEFAULT_CONTENT_USER, INPUTTYPE_USER,
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_DEFAULT_CONTENT_USER), null));
-        
+
         extendFieldList.add(new SysExtendField(CONFIG_COMMENT_NEED_CHECK, INPUTTYPE_BOOLEAN, false,
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_COMMENT_NEED_CHECK), null, "true"));
         extendFieldList.add(new SysExtendField(CONFIG_MAX_SCORES, INPUTTYPE_NUMBER, false,
@@ -111,5 +110,10 @@ public class SiteConfigComponent implements Config {
                     "false"));
         }
         return extendFieldList;
+    }
+
+    @Override
+    public boolean exportable() {
+        return true;
     }
 }

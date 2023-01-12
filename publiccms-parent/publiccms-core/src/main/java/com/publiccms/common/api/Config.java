@@ -184,6 +184,11 @@ public interface Config {
     }
 
     /**
+     * @return exportable
+     */
+    boolean exportable();
+    
+    /**
      * @param locale
      * @return
      */

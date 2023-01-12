@@ -34,4 +34,8 @@ public abstract class AbstractPaymentGateway implements PaymentGateway {
         }
         return false;
     }
+
+    public boolean exportable() {
+        return false;
+    }
 }

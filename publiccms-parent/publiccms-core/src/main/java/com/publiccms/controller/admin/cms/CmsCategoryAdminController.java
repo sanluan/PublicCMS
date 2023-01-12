@@ -42,7 +42,7 @@ import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.exchange.CategoryExchangeComponent;
-import com.publiccms.logic.component.exchange.Exchange;
+import com.publiccms.logic.component.exchange.SiteExchangeComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.ModelComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
@@ -327,7 +327,7 @@ public class CmsCategoryAdminController {
                     LogLoginService.CHANNEL_WEB_MANAGER, "import.category", RequestUtils.getIpAddress(request),
                     CommonUtils.getDate(), file.getOriginalFilename()));
         }
-        return Exchange.importData(site.getId(), admin.getId(), overwrite, "_category.zip", exchangeComponent, file, model);
+        return SiteExchangeComponent.importData(site.getId(), admin.getId(), overwrite, "-category.zip", exchangeComponent, file, model);
     }
 
     /**
