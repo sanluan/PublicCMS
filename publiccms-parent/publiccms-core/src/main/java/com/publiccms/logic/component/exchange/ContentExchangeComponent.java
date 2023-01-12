@@ -17,6 +17,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.tools.zip.ZipOutputStream;
 import org.springframework.stereotype.Component;
 
+import com.publiccms.common.base.AbstractExchange;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
@@ -53,11 +54,11 @@ import freemarker.template.TemplateException;
 import jakarta.annotation.Resource;
 
 /**
- * CategoryExchangeComponent 内容数据导入导出组件
+ * ContentExchangeComponent 内容数据导入导出组件
  * 
  */
 @Component
-public class ContentExchangeComponent extends Exchange<CmsContent, Content> {
+public class ContentExchangeComponent extends AbstractExchange<CmsContent, Content> {
     @Resource
     private CmsContentService service;
     @Resource
@@ -84,23 +85,27 @@ public class ContentExchangeComponent extends Exchange<CmsContent, Content> {
     private SysExtendFieldService extendFieldService;
 
     @Override
-    public void exportAll(short siteId, String directory, ZipOutputStream zipOutputStream) {
+    public void exportAll(short siteId, String directory, ByteArrayOutputStream outputStream, ZipOutputStream zipOutputStream) {
         CmsContentQuery queryEntity = new CmsContentQuery();
         queryEntity.setSiteId(siteId);
         queryEntity.setDisabled(false);
         queryEntity.setEmptyParent(true);
-        exportDataByQuery(siteId, directory, queryEntity, zipOutputStream);
+        exportDataByQuery(siteId, directory, queryEntity, outputStream, zipOutputStream);
     }
 
     public void exportDataByQuery(short siteId, String directory, CmsContentQuery queryEntity, ZipOutputStream zipOutputStream) {
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        exportDataByQuery(siteId, directory, queryEntity, new ByteArrayOutputStream(), zipOutputStream);
+    }
+
+    public void exportDataByQuery(short siteId, String directory, CmsContentQuery queryEntity, ByteArrayOutputStream outputStream,
+            ZipOutputStream zipOutputStream) {
         PageHandler page = service.getPage(queryEntity, null, null, null, null, null, PageHandler.MAX_PAGE_SIZE, null);
         int i = 1;
         do {
             @SuppressWarnings("unchecked")
             List<CmsContent> list = (List<CmsContent>) page.getList();
             for (CmsContent entity : list) {
-                exportEntity(siteId, directory, entity, out, zipOutputStream);
+                exportEntity(siteId, directory, entity, outputStream, zipOutputStream);
             }
             page = service.getPage(queryEntity, null, null, null, null, i++, PageHandler.MAX_PAGE_SIZE, null);
         } while (!page.isLastPage());
@@ -181,7 +186,7 @@ public class ContentExchangeComponent extends Exchange<CmsContent, Content> {
 
             Sheet sheet = workbook
                     .createSheet(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content"));
-            sheet.setDefaultColumnWidth(50);
+            sheet.setDefaultColumnWidth(20);
             int i = 0, j = 0;
             Row row = sheet.createRow(i++);
             row.createCell(j++).setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.id"));
@@ -340,15 +345,15 @@ public class ContentExchangeComponent extends Exchange<CmsContent, Content> {
             ZipOutputStream zipOutputStream) {
         CmsCategory category = categoryService.getEntity(entity.getCategoryId());
         if (null != category) {
-            Content data = exportEntity(siteId, entity);
-            data.setCategoryCode(category.getCode());
+            Content data = exportEntity(siteId, category.getCode(), entity);
+
             CmsModel model = modelComponent.getModelMap(siteId).get(entity.getModelId());
             if (null != model && model.isHasChild()) {
                 List<CmsContent> list = service.getListByTopId(siteId, entity.getId());
                 if (null != list) {
                     List<Content> childList = new ArrayList<>();
                     for (CmsContent content : list) {
-                        childList.add(exportEntity(siteId, content));
+                        childList.add(exportEntity(siteId, category.getCode(), content));
                     }
                     data.setChildList(childList);
                 }
@@ -361,6 +366,27 @@ public class ContentExchangeComponent extends Exchange<CmsContent, Content> {
         CmsContent entity = data.getEntity();
         CmsContent oldentity = service.getEntity(entity.getId());
         CmsCategory category = categoryService.getEntityByCode(siteId, data.getCategoryCode());
+        if (null != category && (null == oldentity || oldentity.isDisabled() || overwrite)) {
+            entity.setSiteId(siteId);
+            service.saveOrUpdate(entity);
+            if (null != data.getAttribute()) {
+                attributeService.saveOrUpdate(data.getAttribute());
+            }
+            if (null != data.getChildList()) {
+                for (Content child : data.getChildList()) {
+                    save(siteId, userId, overwrite, category, child);
+                }
+            }
+            try {
+                templateComponent.createContentFile(siteComponent.getSiteById(siteId), entity, category, null);
+            } catch (IOException | TemplateException e) {
+            }
+        }
+    }
+
+    public void save(short siteId, long userId, boolean overwrite, CmsCategory category, Content data) {
+        CmsContent entity = data.getEntity();
+        CmsContent oldentity = service.getEntity(entity.getId());
         if (null != category && (null == oldentity || overwrite)) {
             entity.setSiteId(siteId);
             service.saveOrUpdate(entity);
@@ -379,8 +405,9 @@ public class ContentExchangeComponent extends Exchange<CmsContent, Content> {
         }
     }
 
-    private Content exportEntity(short siteId, CmsContent entity) {
+    private Content exportEntity(short siteId, String categoryCode, CmsContent entity) {
         Content data = new Content();
+        data.setCategoryCode(categoryCode);
         data.setEntity(entity);
         data.setAttribute(attributeService.getEntity(entity.getId()));
         if (entity.isHasFiles() || entity.isHasImages()) {
@@ -398,5 +425,10 @@ public class ContentExchangeComponent extends Exchange<CmsContent, Content> {
                 .getPage(entity.getId(), null, null, null, null, null, null, null).getList();
         data.setRelatedList(relatedList);
         return data;
+    }
+
+    @Override
+    public String getDirectory() {
+        return "content";
     }
 }

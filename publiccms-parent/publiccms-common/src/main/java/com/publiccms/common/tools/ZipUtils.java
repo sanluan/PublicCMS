@@ -12,7 +12,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Enumeration;
+import java.util.zip.ZipException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.tools.zip.ZipEntry;
 import org.apache.tools.zip.ZipFile;
 import org.apache.tools.zip.ZipOutputStream;
@@ -146,7 +148,7 @@ public class ZipUtils {
     /**
      * @param zipFilePath
      * @param encoding
-     * @param overwrite 
+     * @param overwrite
      * @throws IOException
      */
     public static void unzip(String zipFilePath, String encoding, boolean overwrite) throws IOException {
@@ -163,31 +165,53 @@ public class ZipUtils {
     public static void unzip(String zipFilePath, String targetPath, String encoding, boolean overwrite) throws IOException {
         ZipFile zipFile = new ZipFile(zipFilePath, encoding);
         Enumeration<? extends ZipEntry> entryEnum = zipFile.getEntries();
-        if (null != entryEnum) {
-            while (entryEnum.hasMoreElements()) {
-                ZipEntry zipEntry = entryEnum.nextElement();
-                String filePath = zipEntry.getName();
-                if (filePath.contains("..")) {
-                    filePath = filePath.replace("..", Constants.BLANK);
-                }
-                if (zipEntry.isDirectory()) {
-                    File dir = new File(targetPath + File.separator + filePath);
-                    dir.mkdirs();
-                } else {
-                    File targetFile = new File(targetPath + File.separator + filePath);
-                    if (!targetFile.exists() || overwrite) {
-                        targetFile.getParentFile().mkdirs();
-                        try (InputStream inputStream = zipFile.getInputStream(zipEntry);
-                                FileOutputStream outputStream = new FileOutputStream(targetFile);
-                                FileLock fileLock = outputStream.getChannel().tryLock()) {
-                            if (null != fileLock) {
-                                StreamUtils.copy(inputStream, outputStream);
-                            }
-                        }
+        if (!targetPath.endsWith(Constants.SEPARATOR) && !targetPath.endsWith("\\")) {
+            targetPath += File.separator;
+        }
+        while (entryEnum.hasMoreElements()) {
+            ZipEntry zipEntry = entryEnum.nextElement();
+            unzip(zipFile, entryEnum.nextElement(), targetPath, zipEntry.getName(), overwrite);
+        }
+        zipFile.close();
+    }
+
+    private static void unzip(ZipFile zipFile, ZipEntry zipEntry, String targetPath, String filePath, boolean overwrite)
+            throws ZipException, IOException {
+        if (filePath.contains("..")) {
+            filePath = filePath.replace("..", Constants.BLANK);
+        }
+        if (zipEntry.isDirectory()) {
+            File dir = new File(targetPath + filePath);
+            dir.mkdirs();
+        } else {
+            File targetFile = new File(targetPath + filePath);
+            if (!targetFile.exists() || overwrite) {
+                targetFile.getParentFile().mkdirs();
+                try (InputStream inputStream = zipFile.getInputStream(zipEntry);
+                        FileOutputStream outputStream = new FileOutputStream(targetFile);
+                        FileLock fileLock = outputStream.getChannel().tryLock()) {
+                    if (null != fileLock) {
+                        StreamUtils.copy(inputStream, outputStream);
                     }
                 }
             }
         }
-        zipFile.close();
+    }
+
+    public static void unzip(ZipFile zipFile, String directory, String targetPath, boolean overwrite)
+            throws ZipException, IOException {
+        Enumeration<? extends ZipEntry> entryEnum = zipFile.getEntries();
+        if (!targetPath.endsWith(Constants.SEPARATOR) && !targetPath.endsWith("\\")) {
+            targetPath += File.separator;
+        }
+        if (!directory.endsWith(Constants.SEPARATOR)) {
+            directory += Constants.SEPARATOR;
+        }
+        while (entryEnum.hasMoreElements()) {
+            ZipEntry zipEntry = entryEnum.nextElement();
+            if (null == directory || zipEntry.getName().startsWith(directory)) {
+                unzip(zipFile, zipEntry, targetPath, StringUtils.removeStart(zipEntry.getName(), directory), overwrite);
+            }
+        }
     }
 }

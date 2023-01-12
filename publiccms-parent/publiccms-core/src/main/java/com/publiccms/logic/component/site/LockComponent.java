@@ -282,6 +282,11 @@ public class LockComponent implements Config, SiteCache {
     }
 
     @Override
+    public boolean exportable() {
+        return false;
+    }
+
+    @Override
     public void clear() {
         Date now = CommonUtils.getDate();
         List<Short> list1 = service.getSiteIdListByItemTypes(ITEM_TYPE_LOGINS, null);

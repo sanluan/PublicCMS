@@ -11,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.tools.zip.ZipOutputStream;
 import org.springframework.stereotype.Component;
 
+import com.publiccms.common.base.AbstractExchange;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
@@ -37,7 +38,7 @@ import jakarta.annotation.Resource;
  * 
  */
 @Component
-public class CategoryExchangeComponent extends Exchange<CmsCategory, Category> {
+public class CategoryExchangeComponent extends AbstractExchange<CmsCategory, Category> {
     @Resource
     private CmsCategoryService service;
     @Resource
@@ -56,8 +57,7 @@ public class CategoryExchangeComponent extends Exchange<CmsCategory, Category> {
     private CmsTagTypeService tagTypeService;
 
     @Override
-    public void exportAll(short siteId, String directory, ZipOutputStream zipOutputStream) {
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
+    public void exportAll(short siteId, String directory, ByteArrayOutputStream outputStream, ZipOutputStream zipOutputStream) {
         CmsCategoryQuery query = new CmsCategoryQuery();
         query.setSiteId(siteId);
         query.setDisabled(false);
@@ -66,19 +66,19 @@ public class CategoryExchangeComponent extends Exchange<CmsCategory, Category> {
             @SuppressWarnings("unchecked")
             List<CmsCategory> list = (List<CmsCategory>) page.getList();
             for (CmsCategory category : list) {
-                exportEntity(siteId, directory, category, out, zipOutputStream);
+                exportEntity(siteId, directory, category, outputStream, zipOutputStream);
             }
         }
     }
 
     @Override
-    public void exportEntity(short siteId, String directory, CmsCategory entity, ByteArrayOutputStream out,
+    public void exportEntity(short siteId, String directory, CmsCategory entity, ByteArrayOutputStream outputStream,
             ZipOutputStream zipOutputStream) {
-        exportEntity(siteId, directory, null, entity, out, zipOutputStream);
+        exportEntity(siteId, directory, null, entity, outputStream, zipOutputStream);
     }
 
-    public void exportEntity(short siteId, String directory, String parentCode, CmsCategory entity, ByteArrayOutputStream out,
-            ZipOutputStream zipOutputStream) {
+    public void exportEntity(short siteId, String directory, String parentCode, CmsCategory entity,
+            ByteArrayOutputStream outputStream, ZipOutputStream zipOutputStream) {
         Integer categoryId = entity.getId();
         Category data = new Category();
         data.setParentCode(parentCode);
@@ -100,7 +100,7 @@ public class CategoryExchangeComponent extends Exchange<CmsCategory, Category> {
             }
             tagTypeService.getEntitys(set);
         }
-        export(directory, out, zipOutputStream, data, entity.getCode() + ".json");
+        export(directory, outputStream, zipOutputStream, data, entity.getCode() + ".json");
         if (CommonUtils.notEmpty(entity.getChildIds())) {
             CmsCategoryQuery query = new CmsCategoryQuery();
             query.setSiteId(siteId);
@@ -111,7 +111,7 @@ public class CategoryExchangeComponent extends Exchange<CmsCategory, Category> {
                 @SuppressWarnings("unchecked")
                 List<CmsCategory> list = (List<CmsCategory>) page.getList();
                 for (CmsCategory category : list) {
-                    exportEntity(siteId, directory, entity.getCode(), category, out, zipOutputStream);
+                    exportEntity(siteId, directory, entity.getCode(), category, outputStream, zipOutputStream);
                 }
             }
         }
@@ -196,5 +196,10 @@ public class CategoryExchangeComponent extends Exchange<CmsCategory, Category> {
             } catch (IOException | TemplateException e) {
             }
         }
+    }
+
+    @Override
+    public String getDirectory() {
+        return "category";
     }
 }

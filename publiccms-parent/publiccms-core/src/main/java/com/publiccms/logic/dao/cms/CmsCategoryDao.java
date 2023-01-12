@@ -68,6 +68,12 @@ public class CmsCategoryDao extends BaseDao<CmsCategory> {
         if (CommonUtils.empty(entity.getChildIds())) {
             entity.setChildIds(null);
         }
+        if (CommonUtils.notEmpty(entity.getName())) {
+            entity.setName(CommonUtils.keep(entity.getName(), 50));
+        }
+        if (CommonUtils.notEmpty(entity.getCode())) {
+            entity.setCode(CommonUtils.keep(entity.getCode(), 50));
+        }
         return entity;
     }
 

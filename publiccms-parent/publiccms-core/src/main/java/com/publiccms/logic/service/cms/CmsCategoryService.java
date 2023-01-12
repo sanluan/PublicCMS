@@ -82,7 +82,7 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
                         cmsCategoryModelParameters.getCategoryModel().getId().setCategoryId(id);
                         if (cmsCategoryModelParameters.isUse()) {
                             cmsCategoryModelParameters.getCategoryModel().setSiteId(siteId);
-                            categoryModelService.saveOrUpdate( cmsCategoryModelParameters.getCategoryModel());
+                            categoryModelService.saveOrUpdate(cmsCategoryModelParameters.getCategoryModel());
                         } else {
                             categoryModelService.delete(cmsCategoryModelParameters.getCategoryModel().getId());
                         }
@@ -110,7 +110,7 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
                 attribute.setData(null);
             }
 
-            saveEditorHistory(attributeService.getEntity(entity.getId()),siteId, entity.getId(), userId, categoryType, map);// 保存编辑器字段历史记录
+            saveEditorHistory(attributeService.getEntity(entity.getId()), siteId, entity.getId(), userId, categoryType, map);// 保存编辑器字段历史记录
 
             attributeService.updateAttribute(id, attribute);
         }
@@ -244,7 +244,7 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
                 for (CmsCategory child : list) {
                     child.setParentId(entity.getParentId());
                 }
-                entity.setCode(UUID.randomUUID().toString());
+                entity.setCode(new StringBuilder(entity.getCode()).append("-").append(UUID.randomUUID().toString()).toString());
                 entity.setDisabled(true);
                 entityList.add(entity);
                 generateChildIds(entity.getSiteId(), entity.getParentId());

@@ -1,5 +1,10 @@
 package com.publiccms.controller.admin.sys;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.List;
 
 // Generated 2016-7-16 11:54:16 by com.publiccms.common.generator.SourceGenerator
@@ -7,19 +12,23 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.tools.zip.ZipOutputStream;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.api.Config;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
+import com.publiccms.common.tools.DateFormatUtils;
 import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.cms.CmsEditorHistory;
@@ -33,6 +42,8 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.config.ConfigComponent;
 import com.publiccms.logic.component.config.CorsConfigComponent;
+import com.publiccms.logic.component.exchange.ConfigDataExchangeComponent;
+import com.publiccms.logic.component.exchange.SiteExchangeComponent;
 import com.publiccms.logic.component.site.EmailComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.cms.CmsEditorHistoryService;
@@ -44,7 +55,9 @@ import com.publiccms.logic.service.sys.SysDeptService;
 import com.publiccms.views.pojo.model.SysConfigParameters;
 
 import jakarta.annotation.Resource;
+import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  *
@@ -60,6 +73,8 @@ public class SysConfigDataAdminController {
     protected SiteComponent siteComponent;
     @Resource
     private CmsEditorHistoryService editorHistoryService;
+    @Resource
+    private ConfigDataExchangeComponent exchangeComponent;
 
     private String[] ignoreProperties = new String[] { "id" };
 
@@ -139,6 +154,66 @@ public class SysConfigDataAdminController {
 
         }
         return CommonConstants.TEMPLATE_DONE;
+    }
+
+    /**
+     * @param site
+     * @param admin
+     * @param code
+     * @param response
+     * @param model
+     */
+    @RequestMapping("export")
+    @Csrf
+    public void export(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String code, HttpServletResponse response,
+            ModelMap model) {
+        SysDept dept = sysDeptService.getEntity(admin.getDeptId());
+        if (ControllerUtils.errorNotEmpty("deptId", admin.getDeptId(), model)
+                || ControllerUtils.errorNotEmpty("deptId", dept, model)
+                || ControllerUtils.errorCustom("noright",
+                        !(dept.isOwnsAllConfig() || null != sysDeptItemService
+                                .getEntity(new SysDeptItemId(admin.getDeptId(), SysDeptItemService.ITEM_TYPE_CONFIG, code))),
+                        model)) {
+        } else {
+            SysConfigData entity = service.getEntity(new SysConfigDataId(site.getId(), code));
+            if (null != entity) {
+                try {
+                    DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.DOWNLOAD_FORMAT_STRING);
+                    response.setHeader("content-disposition",
+                            "attachment;fileName=" + URLEncoder.encode(new StringBuilder(site.getName())
+                                    .append(dateFormat.format(new Date())).append("-config.zip").toString(), "utf-8"));
+                } catch (UnsupportedEncodingException e1) {
+                }
+                try (ServletOutputStream outputStream = response.getOutputStream();
+                        ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream)) {
+                    zipOutputStream.setEncoding(Constants.DEFAULT_CHARSET_NAME);
+                    exchangeComponent.exportEntity(site.getId(), entity, zipOutputStream);
+                } catch (IOException e) {
+                }
+            }
+        }
+    }
+
+    /**
+     * @param site
+     * @param admin
+     * @param overwrite
+     * @param file
+     * @param request
+     * @param model
+     * @return
+     */
+    @RequestMapping("doImport")
+    @Csrf
+    public String doImport(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile file, boolean overwrite,
+            HttpServletRequest request, ModelMap model) {
+        if (null != file) {
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "import.configData", RequestUtils.getIpAddress(request),
+                    CommonUtils.getDate(), file.getOriginalFilename()));
+        }
+        return SiteExchangeComponent.importData(site.getId(), admin.getId(), overwrite, "-config.zip", exchangeComponent, file,
+                model);
     }
 
     /**

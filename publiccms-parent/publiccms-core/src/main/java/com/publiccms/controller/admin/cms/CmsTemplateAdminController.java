@@ -34,6 +34,7 @@ import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.cache.CacheComponent;
+import com.publiccms.logic.component.exchange.SiteExchangeComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateCacheComponent;
@@ -78,6 +79,8 @@ public class CmsTemplateAdminController {
     protected LogOperateService logOperateService;
     @Resource
     protected SiteComponent siteComponent;
+    @Resource
+    protected SiteExchangeComponent siteExchangeComponent;
 
     /**
      * @param site
@@ -269,6 +272,61 @@ public class CmsTemplateAdminController {
             ZipUtils.compress(Paths.get(filepath), zipOutputStream, Constants.BLANK);
         } catch (IOException e) {
         }
+    }
+
+    /**
+     * @param site
+     * @param response
+     */
+    @RequestMapping("exportSite")
+    @Csrf
+    public void exportSite(@RequestAttribute SysSite site, HttpServletResponse response) {
+        try {
+            DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.DOWNLOAD_FORMAT_STRING);
+            response.setHeader("content-disposition", "attachment;fileName=" + URLEncoder.encode(
+                    new StringBuilder(site.getName()).append(dateFormat.format(new Date())).append("-site.zip").toString(),
+                    "utf-8"));
+        } catch (UnsupportedEncodingException e1) {
+        }
+        try (ServletOutputStream outputStream = response.getOutputStream();
+                ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream)) {
+            zipOutputStream.setEncoding(Constants.DEFAULT_CHARSET_NAME);
+            {
+                String filepath = siteComponent.getTemplateFilePath(site.getId(), CommonConstants.SEPARATOR);
+                ZipUtils.compress(Paths.get(filepath), zipOutputStream, "template");
+            }
+            {
+                String filepath = siteComponent.getWebFilePath(site.getId(), CommonConstants.SEPARATOR);
+                ZipUtils.compress(Paths.get(filepath), zipOutputStream, "web");
+            }
+            {
+                String filepath = siteComponent.getTaskTemplateFilePath(site.getId(), CommonConstants.SEPARATOR);
+                ZipUtils.compress(Paths.get(filepath), zipOutputStream, "tasktemplate");
+            }
+            siteExchangeComponent.exportAll(site.getId(), zipOutputStream);
+        } catch (IOException e) {
+        }
+    }
+
+    /**
+     * @param site
+     * @param admin
+     * @param overwrite
+     * @param file
+     * @param request
+     * @param model
+     * @return
+     */
+    @RequestMapping("doImport")
+    @Csrf
+    public String doImport(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile file, boolean overwrite,
+            HttpServletRequest request, ModelMap model) {
+        if (null != file) {
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "import.site", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
+                    file.getOriginalFilename()));
+        }
+        return siteExchangeComponent.importData(site.getId(), admin.getId(), overwrite, "-site.zip", file, model);
     }
 
     /**
