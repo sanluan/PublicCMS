@@ -371,7 +371,7 @@ a.btnLook:before,a.btnDel:before,a.btnAttach:before,a.view:before{font-size:20px
 .dialog .dialogHeader{padding-left:5px;position:relative;cursor:move;}
 .dialog .dialogHeader, .dialog .dialogHeader_c{display:block;overflow:hidden;height:40px;}
 .dialog .dialogHeader .close, .dialog .dialogHeader .maximize, .dialog .dialogHeader .restore, .dialog .dialogHeader .minimize{font-family:iconfont;font-size:22px;display:block;overflow:hidden;width:22px;height:22px;position:absolute;top:10px;text-indent:0;}
-.dialog .dialogHeader .maximize:hover, .dialog .dialogHeader .restore:hover, .dialog .dialogHeader .minimize:hover{background-color:#e0e0e0;color:#000;}
+.dialog .dialogHeader .maximize:hover, .dialog .dialogHeader .restore:hover, .dialog .dialogHeader .minimize:hover{background-color:#e0e0e0;color:#666;}
 .dialog .dialogHeader .close:hover{background-color:#ff0000;color:#fff;}
 .dialog .dialogHeader h1{display:block;overflow:hidden;padding:0 100px 0 20px;font-weight:400;line-height:40px;height:40px;font-size:16px;}
 .dialog .dialogHeader .close{right:10px;}

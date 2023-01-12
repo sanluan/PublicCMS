@@ -15,7 +15,7 @@
             modelId=modelIds parentId=parentId emptyParent=true title=title userId=userId deptId=deptId
             startPublishDate=startPublishDate endPublishDate=endPublishDate absoluteId=false
             orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
-<@sys.authorized roleIds=admin.roles urls='cmsContent/add,cmsContent/delete,cmsContent/check,cmsContent/reject,cmsContent/uncheck,cmsContent/push,cmsCategory/lookupBySiteId,cmsContent/refresh,cmsContent/publish,cmsContent/moveParameters,cmsContent/changeModelParameters,cmsContent/export,cmsContent/import,cmsComment/list,cmsContent/sortParameters,cmsCategory/add'><#assign authorizedMap=map/></@sys.authorized>
+<@sys.authorized roleIds=admin.roles urls='cmsContent/add,cmsContent/delete,cmsContent/check,cmsContent/reject,cmsContent/uncheck,cmsContent/push,cmsDiy/preview,cmsCategory/lookupBySiteId,cmsContent/refresh,cmsContent/publish,cmsContent/moveParameters,cmsContent/changeModelParameters,cmsContent/export,cmsContent/import,cmsComment/list,cmsContent/sortParameters,cmsCategory/add'><#assign authorizedMap=map/></@sys.authorized>
 <div class="pageHeader card">
     <form class="pagerForm" action="common/content_list.html" autocomplete="off" onsubmit="return divSearch(this,'contentBox');" method="post">
         <#include "../include_page/parameters.html"/>
@@ -164,7 +164,12 @@
                     </#if>
                     <div class="box">
                         <h3 <#if lockMap[a.id?string]?has_content><#assign lockUser=(userMap[lockMap[a.id?string].userId?string].nickname)!''/>title="<@t.page 'lock.message' lockUser/> ${lockMap[a.id?string].createDate}"</#if>>
-                            <#if lockMap[a.id?string]?has_content><i class="icon-lock icon-large"></i></#if>[<span class="exclude-translate">${(categoryMap[a.categoryId?string].name)!}</span>] ${(a.copied?then('['+t.pageMessage('copied')+']',''))!}<a href="cmsContent/view.html?id=${a.id}" class="exclude-translate" target="dialog" rel="viewContent${a.id}">${(a.title)!}</a>
+                            <#if lockMap[a.id?string]?has_content><i class="icon-lock icon-large"></i></#if>[<span class="exclude-translate">${(categoryMap[a.categoryId?string].name)!}</span>] ${(a.copied?then('['+t.pageMessage('copied')+']',''))!}
+                            <a href="cmsContent/view.html?id=${a.id}" class="exclude-translate" target="dialog" rel="viewContent${a.id}">${(a.title)!}</a>
+                            <#if authorizedMap['cmsContent/add'] && !a.onlyUrl && a.url?has_content>
+                                <a href="cmsDiy/preview.html?url=${((a.url)?url)!}" target="navTab" rel="cmsDiy/preview"  icon="<i class='bi bi-palette2 icon-large'></i>" title="<@t.page 'diy.preview'/>"><i class="bi bi-palette2"></i></a>
+                            </#if>
+                            <#if a.url?has_content><a href="${a.url!}" target="_blank"><i class="icon-external-link"></i></a></#if>
                         </h3>
                         <p>
                             <#if modelMap[a.modelId]?has_content&&modelMap[a.modelId].hasChild>
