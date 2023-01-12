@@ -19,7 +19,7 @@
     <input name="returnUrl" type="hidden" value="<#noparse>${site.dynamicPath}</#noparse>"/>
     <p>
         <label>${(a.fieldTextMap['title'])!}:</label>
-        <input name="title" type="text" size="60" value=""/>
+        <input name="title" type="text" size="60" required="true" maxlength="255"/>
     </p>
     <p>
         <label>${(a.fieldTextMap['description'])!}:</label>
@@ -34,7 +34,7 @@
 <#if fieldList?seq_contains('cover')>
     <p>
         <label>${(a.fieldTextMap['cover'])!}:</label>
-        <input name="cover" type="text" size="60" maxlength="1000" value=""/>
+        <input name="cover" type="text" size="60" maxlength="1000"/>
     </p>
 </#if>
     <#include "../include_page/extendData.html"/>
@@ -44,7 +44,7 @@
     <@sys.configData code="safe">
         <#if object.captcha?has_content && object.captcha?split(",")?seq_contains("contribute")>
     <p>
-        <input name="captcha" type="text" autocomplete="off" placeholder="Captcha" title="Captcha"/>
+        <input name="captcha" required="true" type="text" autocomplete="off" placeholder="Captcha" title="Captcha"/>
         <img src="${site.dynamicPath}getCaptchaImage" alt="captcha" onclick="this.src=this.src+'?'+new Date().getTime()"/>
     </p>
         </#if>

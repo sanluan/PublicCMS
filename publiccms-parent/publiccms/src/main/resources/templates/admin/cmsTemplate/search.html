@@ -2,7 +2,7 @@
     <div class="formBar card">
         <ul>
             <li>
-                <form action="cmsTemplate/search.html" autocomplete="off" onsubmit="return divSearch(this,'cmsTemplateBox');" method="post">
+                <form action="cmsTemplate/search.html" autocomplete="off" onsubmit="return divSearch(this,${rel'cmsTemplateBox'});" method="post">
                     <input type="hidden" name="path" value="${path!}"/>
                     <label><@t.page 'template.content'/>:</label>
                     <input type="text" name="word" value="${word!}"/>

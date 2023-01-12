@@ -41,13 +41,13 @@
             <dl class="nowrap">
                 <dt><@t.page 'password'/>:</dt>
                 <dd>
-                    <input<#if !a?has_content> class="required"</#if> name="password" type="password" escape="true" maxlength="30" size="20" value=""/>
+                    <input<#if !a?has_content> class="required"</#if> name="password" type="password" escape="true" maxlength="30" size="20"/>
                     <#if a?has_content><span class="info"><@t.page 'user.password.description'/></span></#if>
                 </dd>
             </dl>
             <dl class="nowrap">
                 <dt><@t.page 'repeat_password'/>:</dt>
-                <dd><input<#if !a?has_content> class="required"</#if> name="repassword" type="password" escape="true" maxlength="30" size="20" value=""/></dd>
+                <dd><input<#if !a?has_content> class="required"</#if> name="repassword" type="password" escape="true" maxlength="30" size="20"/></dd>
             </dl>
             <dl class="nowrap">
                 <dt><@t.page 'user.nickname'/>:</dt>

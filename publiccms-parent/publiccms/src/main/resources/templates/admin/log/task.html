@@ -13,7 +13,7 @@
                 <li>
                     <label><@t.page 'result'/>:</label>
                     <select class="combox" name="success">
-                        <option value=""${(!success?has_content)?then(' selected="true"','')?no_esc}><@t.page 'unrestricted'/></option>
+                        <option value><@t.page 'unrestricted'/></option>
                         <option value="true"${(success?has_content&&"true"=success)?then(' selected="true"','')?no_esc}><@t.page 'success'/></option>
                         <option value="false"${(success?has_content&&"false"=success)?then(' selected="true"','')?no_esc}><@t.page 'fail'/></option>
                     </select>
