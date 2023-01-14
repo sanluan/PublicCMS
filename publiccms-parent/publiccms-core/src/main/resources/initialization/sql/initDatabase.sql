@@ -922,7 +922,7 @@ INSERT INTO `sys_module` VALUES ('log_task', 'log/task', NULL, 'icon-time', 'log
 INSERT INTO `sys_module` VALUES ('log_task_delete', NULL, 'logTask/delete', NULL, 'log_task', 0, 0);
 INSERT INTO `sys_module` VALUES ('log_task_view', 'log/taskView', NULL, NULL, 'log_task', 0, 0);
 INSERT INTO `sys_module` VALUES ('log_upload', 'log/upload', 'logUpload/delete', 'icon-list-alt', 'log_menu', 1, 1);
-INSERT INTO `sys_module` VALUES ('log_workload', 'log/workload', NULL, 'icon-truck', 'log_menu', 1, 0);
+INSERT INTO `sys_module` VALUES ('log_workload', 'cmsContent/workload', NULL, 'bi bi-calendar-heart', 'log_menu', 1, 0);
 INSERT INTO `sys_module` VALUES ('maintenance', NULL, NULL, 'icon-cogs', NULL, 1, 6);
 INSERT INTO `sys_module` VALUES ('model_add', 'cmsModel/add', 'cmsModel/save,cmsModel/rebuildSearchText,cmsModel/batchPublish', NULL, 'model_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('model_delete', NULL, 'cmsModel/delete', NULL, 'model_list', 0, 0);

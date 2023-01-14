@@ -506,3 +506,5 @@ INSERT INTO `sys_module_lang` VALUES ('template_export', 'zh', '导出');
 INSERT INTO `sys_module_lang` VALUES ('template_import', 'en', 'Import');
 INSERT INTO `sys_module_lang` VALUES ('template_import', 'ja', '導入');
 INSERT INTO `sys_module_lang` VALUES ('template_import', 'zh', '导入');
+-- 2023-01-14 --
+UPDATE `sys_module` SET `url`='cmsContent/workload',`attached`='bi bi-calendar-heart' WHERE `id` ='log_workload';

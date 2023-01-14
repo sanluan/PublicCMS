@@ -5,18 +5,41 @@ public class Workload implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
+    private Integer categoryId;
     private Long userId;
     private Integer deptId;
     private long count;
 
-    public Workload(Long userId, long count) {
-        this.userId = userId;
+    public Workload(Integer categoryId, long count) {
+        this.categoryId = categoryId;
         this.count = count;
     }
-    
-    public Workload(Integer deptId, long count) {
-        this.deptId = deptId;
+
+    public Workload(Integer categoryId, Long userId, long count) {
+        this.userId = userId;
+        this.categoryId = categoryId;
         this.count = count;
+    }
+
+    public Workload(Integer categoryId, Integer deptId, long count) {
+        this.deptId = deptId;
+        this.categoryId = categoryId;
+        this.count = count;
+    }
+
+    /**
+     * @return the categoryId
+     */
+    public Integer getCategoryId() {
+        return categoryId;
+    }
+
+    /**
+     * @param categoryId
+     *            the categoryId to set
+     */
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
     }
 
     /**

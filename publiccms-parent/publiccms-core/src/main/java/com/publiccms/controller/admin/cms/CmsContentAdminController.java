@@ -22,6 +22,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.tools.zip.ZipOutputStream;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -640,7 +641,8 @@ public class CmsContentAdminController {
                     LogLoginService.CHANNEL_WEB_MANAGER, "import.content", RequestUtils.getIpAddress(request),
                     CommonUtils.getDate(), file.getOriginalFilename()));
         }
-        return SiteExchangeComponent.importData(site.getId(), admin.getId(), overwrite, "-content.zip", exchangeComponent, file, model);
+        return SiteExchangeComponent.importData(site.getId(), admin.getId(), overwrite, "-content.zip", exchangeComponent, file,
+                model);
     }
 
     /**
@@ -687,6 +689,27 @@ public class CmsContentAdminController {
             exchangeComponent.exportDataByQuery(site.getId(), null, queryEntity, zipOutputStream);
         } catch (IOException e) {
         }
+    }
+
+    /**
+     * @param site
+     * @param status
+     * @param startCreateDate
+     * @param endCreateDate
+     * @param workloadType
+     * @param dateField
+     * @param request
+     * @return view name
+     */
+    @RequestMapping("exportWorkload")
+    @Csrf
+    public ExcelView exportWorkload(@RequestAttribute SysSite site, Integer[] status,
+            @DateTimeFormat(pattern = "yyyy-MM-dd") Date startCreateDate,
+            @DateTimeFormat(pattern = "yyyy-MM-dd") Date endCreateDate, String workloadType, String dateField,
+            HttpServletRequest request) {
+        Locale locale = RequestContextUtils.getLocale(request);
+        return exchangeComponent.exportWorkload(site.getId(), status, startCreateDate, endCreateDate, workloadType, dateField,
+                locale);
     }
 
     /**

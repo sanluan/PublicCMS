@@ -44,23 +44,6 @@ public class LogOperateService extends BaseService<LogOperate> {
 
     /**
      * @param siteId
-     * @param channel
-     * @param operate
-     * @param startCreateDate
-     * @param endCreateDate
-     * @param workloadType
-     * @param pageIndex
-     * @param pageSize
-     * @return
-     */
-    @Transactional(readOnly = true)
-    public PageHandler getWorkLoadPage(Short siteId, String channel, String operate, Date startCreateDate, Date endCreateDate,
-            String workloadType, Integer pageIndex, Integer pageSize) {
-        return dao.getWorkLoadPage(siteId, channel, operate, startCreateDate, endCreateDate, workloadType, pageIndex, pageSize);
-    }
-
-    /**
-     * @param siteId
      * @param createDate
      * @return
      */

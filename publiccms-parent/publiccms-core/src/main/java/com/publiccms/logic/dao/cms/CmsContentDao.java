@@ -468,6 +468,63 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         return getPage(queryHandler, firstResult, pageIndex, pageSize, maxResults);
     }
 
+    /**
+     * @param siteId
+     * @param status
+     * @param startCreateDate
+     * @param endCreateDate
+     * @param workloadType
+     * @param dateField
+     * @param pageIndex
+     * @param pageSize
+     * @return result page
+     */
+    public PageHandler getWorkLoadPage(short siteId, Integer[] status, Date startCreateDate, Date endCreateDate,
+            String workloadType, String dateField, Integer pageIndex, Integer pageSize) {
+        QueryHandler queryHandler = getQueryHandler("select new com.publiccms.views.pojo.entities.Workload(");
+        if ("dept".equalsIgnoreCase(workloadType)) {
+            queryHandler.append("0,bean.deptId");
+        } else if ("user".equalsIgnoreCase(workloadType)) {
+            queryHandler.append("0,bean.userId");
+        } else if ("categoryUser".equalsIgnoreCase(workloadType)) {
+            queryHandler.append("bean.categoryId,bean.userId");
+        } else if ("categoryDept".equalsIgnoreCase(workloadType)) {
+            queryHandler.append("bean.categoryId,bean.deptId");
+        } else {
+            queryHandler.append("bean.categoryId");
+        }
+        queryHandler.append(",count(*)) from CmsContent bean");
+        queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
+        if (CommonUtils.notEmpty(status)) {
+            queryHandler.condition("bean.status in (:status)").setParameter("status", status);
+        }
+        if (!"publishDate".equals(dateField)) {
+            dateField = "createDate";
+        }
+        if (null != startCreateDate) {
+            queryHandler.condition("bean.").appendWithoutSpace(dateField).appendWithoutSpace(" > :startCreateDate")
+                    .setParameter("startCreateDate", startCreateDate);
+        }
+        if (null != endCreateDate) {
+            queryHandler.condition("bean.").appendWithoutSpace(dateField).appendWithoutSpace(" <= :endCreateDate")
+                    .setParameter("endCreateDate", endCreateDate);
+        }
+        queryHandler.condition("bean.disabled = :disabled").setParameter("disabled", false);
+        if ("dept".equalsIgnoreCase(workloadType)) {
+            queryHandler.group("bean.deptId");
+        } else if ("category".equalsIgnoreCase(workloadType)) {
+            queryHandler.group("bean.categoryId");
+        } else if ("categoryUser".equalsIgnoreCase(workloadType)) {
+            queryHandler.group("bean.categoryId,bean.userId");
+        } else if ("categoryDept".equalsIgnoreCase(workloadType)) {
+            queryHandler.group("bean.categoryId,bean.deptId");
+        } else {
+            queryHandler.group("bean.userId");
+        }
+        queryHandler.order("count(*) desc");
+        return getPage(queryHandler, pageIndex, pageSize);
+    }
+
     @SuppressWarnings("unchecked")
     public List<CmsContent> getListByQuoteId(short siteId, long quoteId) {
         QueryHandler queryHandler = getQueryHandler("from CmsContent bean");

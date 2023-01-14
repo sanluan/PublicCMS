@@ -112,6 +112,20 @@ public class PlaceExchangeComponent extends AbstractExchange<String, Place> {
         }
     }
 
+    /**
+     * @param siteId
+     * @param path
+     * @param userId
+     * @param status
+     * @param itemType
+     * @param itemId
+     * @param startPublishDate
+     * @param endPublishDate
+     * @param orderField
+     * @param orderType
+     * @param locale
+     * @return
+     */
     public ExcelView exportExcelByQuery(short siteId, String path, Long userId, Integer[] status, String itemType, Long itemId,
             Date startPublishDate, Date endPublishDate, String orderField, String orderType, Locale locale) {
         String filepath = siteComponent.getTemplateFilePath(siteId, TemplateComponent.INCLUDE_DIRECTORY + path);
