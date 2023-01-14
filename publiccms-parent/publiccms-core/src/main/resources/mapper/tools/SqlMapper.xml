@@ -26,7 +26,7 @@
         update cms_place_attribute set data=replace(data,#{oldurl},#{newurl})
     </update>
     <update id="updatePlace" parameterType="map">
-        update cms_place set url=replace(url,#{oldurl},#{newurl})
+        update cms_place set url=replace(url,#{oldurl},#{newurl}),cover=replace(cover,#{oldurl},#{newurl})
     </update>
     <update id="updateCategoryAttribute" parameterType="map">
         update cms_category_attribute set data=replace(data,#{oldurl},#{newurl})
