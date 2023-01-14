@@ -1,9 +1,11 @@
 package com.publiccms.views.method.cms;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.BaseMethod;
@@ -59,7 +61,7 @@ public class GetCategoryAttributeMethod extends BaseMethod {
                 return map;
             }
         }
-        return null;
+        return Collections.EMPTY_MAP;
     }
 
     @Override

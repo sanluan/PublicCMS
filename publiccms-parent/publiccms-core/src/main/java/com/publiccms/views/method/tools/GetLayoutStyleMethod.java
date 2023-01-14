@@ -34,7 +34,7 @@ import freemarker.template.TemplateModelException;
 * 
 * <pre>
 &lt;script&gt;
-$.getJSON('${site.dynamicPath}api/method/getLayoutStyle?parameters=&#47;&#42; selecter &#42;&#47;&amp;parameters=.diy-layout', function(data){
+$.getJSON('${site.dynamicPath}api/method/getLayoutStyle?appToken=接口访问授权Token&amp;parameters=&#47;&#42; selecter &#42;&#47;&amp;parameters=.diy-layout', function(data){
 console.log(data);
 });
 &lt;/script&gt;
@@ -58,7 +58,7 @@ public class GetLayoutStyleMethod extends BaseMethod {
 
     @Override
     public boolean needAppToken() {
-        return false;
+        return true;
     }
 
     @Override

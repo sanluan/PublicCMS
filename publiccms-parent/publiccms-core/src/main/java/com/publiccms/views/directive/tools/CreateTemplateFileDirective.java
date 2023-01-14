@@ -43,7 +43,7 @@ import freemarker.template.TemplateException;
  * 
  * <pre>
 &lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/tools/createTemplateFile?id=1&amp;templatePath=template.html&amp;filePath=page/1.html&amp;parameters_parameter1=value1&amp;appToken=接口访问授权Token', function(data){    
+$.getJSON('${site.dynamicPath}api/directive/tools/createTemplateFile?id=1&amp;templatePath=template.html&amp;filePath=page/1.html&amp;parameters.parameter1=value1&amp;appToken=接口访问授权Token', function(data){    
   console.log(data);
 });
 &lt;/script&gt;

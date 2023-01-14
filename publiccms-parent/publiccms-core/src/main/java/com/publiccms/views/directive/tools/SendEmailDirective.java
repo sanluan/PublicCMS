@@ -43,11 +43,11 @@ import com.publiccms.views.pojo.entities.CmsPageMetadata;
  * 使用示例
  * <p>
  * &lt;@tools.sendEmail email='master@puliccms.com' title='title'
- * content='content'/&gt;
+ * content='content' parameters={"parameter1","value1"}/&gt;
  * 
  * <pre>
 &lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/tools/placeMetadata?email=master@puliccms.com&amp;title=title&amp;content=content&amp;appToken=接口访问授权Token', function(data){    
+ $.getJSON('${site.dynamicPath}api/directive/tools/placeMetadata?email=master@puliccms.com&amp;title=title&amp;content=content&amp;parameters.parameter1=value1&amp;appToken=接口访问授权Token', function(data){    
    console.log(data.alias);
  });
  &lt;/script&gt;

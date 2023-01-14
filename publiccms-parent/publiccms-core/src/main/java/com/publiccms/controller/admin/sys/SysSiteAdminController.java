@@ -1,12 +1,13 @@
 package com.publiccms.controller.admin.sys;
 
+import java.io.File;
 import java.io.IOException;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -27,6 +28,7 @@ import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.log.LogUpload;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
+import com.publiccms.logic.component.exchange.SiteExchangeComponent;
 import com.publiccms.logic.component.site.ScriptComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
@@ -34,6 +36,7 @@ import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.log.LogUploadService;
 import com.publiccms.logic.service.sys.SysDomainService;
 import com.publiccms.logic.service.sys.SysSiteService;
+import com.publiccms.logic.service.sys.SysUserService;
 import com.publiccms.logic.service.tools.HqlService;
 import com.publiccms.logic.service.tools.SqlService;
 
@@ -51,6 +54,8 @@ public class SysSiteAdminController {
     @Resource
     private SysDomainService domainService;
     @Resource
+    private SysUserService userService;
+    @Resource
     private SqlService sqlService;
     @Resource
     private HqlService hqlService;
@@ -62,6 +67,8 @@ public class SysSiteAdminController {
     protected SiteComponent siteComponent;
     @Resource
     protected ScriptComponent scriptComponent;
+    @Resource
+    protected SiteExchangeComponent siteExchangeComponent;
 
     private String[] ignoreProperties = new String[] { "id" };
 
@@ -69,6 +76,7 @@ public class SysSiteAdminController {
      * @param site
      * @param admin
      * @param entity
+     * @param fileName
      * @param domain
      * @param wild
      * @param multiple
@@ -83,9 +91,9 @@ public class SysSiteAdminController {
      */
     @RequestMapping("save")
     @Csrf
-    public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, SysSite entity, String domain,
-            Boolean wild, Boolean multiple, String roleName, String deptName, String userName, String password, String encoding,
-            HttpServletRequest request, ModelMap model) {
+    public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, SysSite entity, String fileName,
+            String domain, Boolean wild, Boolean multiple, String roleName, String deptName, String userName, String password,
+            String encoding, HttpServletRequest request, ModelMap model) {
         if (ControllerUtils.errorCustom("noright", !siteComponent.isMaster(site.getId()), model)
                 || ControllerUtils.errorCustom("needAuthorizationEdition", !CmsVersion.isAuthorizationEdition(), model)
                 || (null != domain
@@ -115,11 +123,14 @@ public class SysSiteAdminController {
                     || ControllerUtils.errorHasExist("domain", domainService.getEntity(domain), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
-            service.save(entity, domain, null == wild ? false : wild, null == multiple ? false : multiple, roleName, deptName,
-                    userName, password, encoding);
+            SysUser user = service.save(entity, domain, null == wild ? false : wild, null == multiple ? false : multiple,
+                    roleName, deptName, userName, password, encoding);
             logOperateService
                     .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                             "save.site", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+            if (CommonUtils.notEmpty(fileName)) {
+                siteExchangeComponent.importData(site.getId(), user.getId(), true, "-site.zip", null, fileName, model);
+            }
         }
         siteComponent.clear();
         if (!siteComponent.getSite(request.getServerName(), null).getId().equals(site.getId()) || site.getId()
@@ -155,7 +166,45 @@ public class SysSiteAdminController {
                     JsonUtils.getString(entity)));
         }
         return CommonConstants.TEMPLATE_DONE;
+    }
 
+    /**
+     * @param site
+     * @param admin
+     * @param file
+     * @param overwrite
+     * @param request
+     * @param model
+     * @return view name
+     */
+    @RequestMapping("doUploadSitefile")
+    @Csrf
+    public String doUploadSitefile(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile file,
+            boolean overwrite, HttpServletRequest request, ModelMap model) {
+        if (null != file && !file.isEmpty()) {
+            String originalName = file.getOriginalFilename();
+            if (originalName.endsWith("-site.zip")) {
+                try {
+                    File dest = new File(siteComponent.getSiteFilePath(), originalName);
+                    if (overwrite || !dest.exists()) {
+                        dest.mkdirs();
+                        file.transferTo(dest);
+                        logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
+                                LogLoginService.CHANNEL_WEB_MANAGER, "upload.sitefile", RequestUtils.getIpAddress(request),
+                                CommonUtils.getDate(), originalName));
+                    }
+                    return CommonConstants.TEMPLATE_DONE;
+                } catch (IOException e) {
+                    log.error(e.getMessage());
+                    model.addAttribute("error", e.getMessage());
+                }
+            } else {
+                model.addAttribute("error", "verify.custom.fileType");
+            }
+        } else {
+            model.addAttribute("error", "verify.notEmpty.file");
+        }
+        return CommonConstants.TEMPLATE_ERROR;
     }
 
     /**
@@ -225,7 +274,17 @@ public class SysSiteAdminController {
         logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                 "execscript.site", RequestUtils.getIpAddress(request), CommonUtils.getDate(), log));
         return CommonConstants.TEMPLATE_DONE;
+    }
 
+    /**
+     * @param model
+     * @return view name
+     */
+    @RequestMapping({ "sitefile.html", "sitefile" })
+    public String lookupSiteImage(ModelMap model) {
+        model.addAttribute("list",
+                CmsFileUtils.getFileList(siteComponent.getSiteFilePath(), CmsFileUtils.ORDERFIELD_MODIFIEDDATE));
+        return "sysSite/sitefile";
     }
 
     /**

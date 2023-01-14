@@ -34,10 +34,10 @@ import com.publiccms.views.pojo.entities.FileSize;
  *
  */
 public class CmsFileUtils {
-    private static final String ORDERFIELD_FILENAME = "fileName";
-    private static final String ORDERFIELD_FILESIZE = "fileSize";
-    private static final String ORDERFIELD_CREATEDATE = "createDate";
-    private static final String ORDERFIELD_MODIFIEDDATE = "modifiedDate";
+    public static final String ORDERFIELD_FILENAME = "fileName";
+    public static final String ORDERFIELD_FILESIZE = "fileSize";
+    public static final String ORDERFIELD_CREATEDATE = "createDate";
+    public static final String ORDERFIELD_MODIFIEDDATE = "modifiedDate";
     private static final FileInfoComparator FILENAME_COMPARATOR = new FileInfoComparator();
     private static final FileInfoComparator FILESIZE_COMPARATOR = new FileInfoComparator(ORDERFIELD_FILESIZE);
     private static final FileInfoComparator CREATEDATE_COMPARATOR = new FileInfoComparator(ORDERFIELD_CREATEDATE);

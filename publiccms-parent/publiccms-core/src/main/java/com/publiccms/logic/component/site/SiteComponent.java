@@ -44,6 +44,10 @@ public class SiteComponent implements Cache {
      * 
      */
     public static final String STATIC_FILE_PATH_WEB = "web";
+    /**
+     * 
+     */
+    public static final String SITE_FILE_PATH = "site";
 
     /**
      * 
@@ -343,6 +347,13 @@ public class SiteComponent implements Cache {
      */
     public String getWebBackupFilePath(short siteId, String filepath) {
         return webBackupFilePath + getFullFileName(siteId, filepath);
+    }
+
+    /**
+     * @return site file path
+     */
+    public String getSiteFilePath() {
+        return rootPath + BACKUP_PATH + CommonConstants.SEPARATOR + SITE_FILE_PATH;
     }
 
     /**

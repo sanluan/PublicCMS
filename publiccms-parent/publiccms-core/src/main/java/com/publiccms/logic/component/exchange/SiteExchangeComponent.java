@@ -58,19 +58,18 @@ public class SiteExchangeComponent {
                         exchangeComponent.importData(siteId, userId, overwrite, zipFile);
                     }
                     dest.delete();
+                    return CommonConstants.TEMPLATE_DONE;
                 } catch (IOException e) {
                     log.error(e.getMessage());
                     model.addAttribute("error", e.getMessage());
-                    return CommonConstants.TEMPLATE_ERROR;
                 }
             } else {
                 model.addAttribute("error", "verify.custom.fileType");
-                return CommonConstants.TEMPLATE_ERROR;
             }
         } else {
             model.addAttribute("error", "verify.notEmpty.file");
         }
-        return CommonConstants.TEMPLATE_DONE;
+        return CommonConstants.TEMPLATE_ERROR;
     }
 
     /**
@@ -89,11 +88,12 @@ public class SiteExchangeComponent {
      * @param overwrite
      * @param dataFileSuffix
      * @param file
+     * @param fileName
      * @param model
      * @return
      */
     public String importData(short siteId, long userId, boolean overwrite, String dataFileSuffix, MultipartFile file,
-            ModelMap model) {
+            String fileName, ModelMap model) {
         if (null != file && !file.isEmpty()) {
             String originalName = file.getOriginalFilename();
             if (originalName.endsWith(dataFileSuffix)) {
@@ -101,36 +101,48 @@ public class SiteExchangeComponent {
                 try {
                     File dest = File.createTempFile("temp_import_", suffix);
                     file.transferTo(dest);
-                    try (ZipFile zipFile = new ZipFile(dest, CommonConstants.DEFAULT_CHARSET_NAME)) {
-                        {
-                            String filepath = siteComponent.getTemplateFilePath(siteId, CommonConstants.SEPARATOR);
-                            ZipUtils.unzip(zipFile, "template", filepath, overwrite);
-                        }
-                        {
-                            String filepath = siteComponent.getWebFilePath(siteId, CommonConstants.SEPARATOR);
-                            ZipUtils.unzip(zipFile, "web", filepath, overwrite);
-                        }
-                        {
-                            String filepath = siteComponent.getTaskTemplateFilePath(siteId, CommonConstants.SEPARATOR);
-                            ZipUtils.unzip(zipFile, "tasktemplate", filepath, overwrite);
-                        }
-                        for (AbstractExchange<?, ?> exchange : exchangeList) {
-                            exchange.importData(siteId, userId, exchange.getDirectory(), overwrite, zipFile);
-                        }
-                    }
+                    importDate(siteId, userId, overwrite, dest);
                     dest.delete();
+                    return CommonConstants.TEMPLATE_DONE;
                 } catch (IOException e) {
                     log.error(e.getMessage());
                     model.addAttribute("error", e.getMessage());
-                    return CommonConstants.TEMPLATE_ERROR;
                 }
             } else {
                 model.addAttribute("error", "verify.custom.fileType");
-                return CommonConstants.TEMPLATE_ERROR;
             }
+        } else if (null != fileName) {
+            File dest = new File(siteComponent.getSiteFilePath(), fileName);
+            try {
+                importDate(siteId, userId, overwrite, dest);
+            } catch (IOException e) {
+                log.error(e.getMessage());
+                model.addAttribute("error", e.getMessage());
+            }
+            return CommonConstants.TEMPLATE_DONE;
         } else {
             model.addAttribute("error", "verify.notEmpty.file");
         }
-        return CommonConstants.TEMPLATE_DONE;
+        return CommonConstants.TEMPLATE_ERROR;
+    }
+
+    private void importDate(short siteId, long userId, boolean overwrite, File file) throws IOException {
+        try (ZipFile zipFile = new ZipFile(file, CommonConstants.DEFAULT_CHARSET_NAME)) {
+            {
+                String filepath = siteComponent.getTemplateFilePath(siteId, CommonConstants.SEPARATOR);
+                ZipUtils.unzip(zipFile, "template", filepath, overwrite);
+            }
+            {
+                String filepath = siteComponent.getWebFilePath(siteId, CommonConstants.SEPARATOR);
+                ZipUtils.unzip(zipFile, "web", filepath, overwrite);
+            }
+            {
+                String filepath = siteComponent.getTaskTemplateFilePath(siteId, CommonConstants.SEPARATOR);
+                ZipUtils.unzip(zipFile, "tasktemplate", filepath, overwrite);
+            }
+            for (AbstractExchange<?, ?> exchange : exchangeList) {
+                exchange.importData(siteId, userId, exchange.getDirectory(), overwrite, zipFile);
+            }
+        }
     }
 }

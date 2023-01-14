@@ -92,6 +92,13 @@ function siteDefaultConfig${id!}(type){
                 <fieldset>
                     <legend><@t.page 'site.init'/></legend>
                     <dl class="nowrap">
+                        <dt><@t.menu 'sitefile'/>:</dt>
+                        <dd>
+                            <input type="text" name="fileName" size="30"/>
+                            <a class="btnLook" href="cmsTemplate/lookupSitefile.html" lookupGroup="" width="1000" height="600"><@t.menu 'sitefile'/></a>
+                        </dd>
+                    </dl>
+                    <dl class="nowrap">
                         <dt><@t.page 'domain'/>:</dt>
                         <dd>
                             <input class="<#if !parent?has_content>required </#if>domain" remote="sysDomain/virify" name="domain" data-msg-remote="<@t.message 'verify.hasExist.domain'/>" type="text" maxlength="50" size="20" value=""/>

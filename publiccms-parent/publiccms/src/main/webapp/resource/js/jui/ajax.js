@@ -15,6 +15,9 @@
 function validateCallback(form, callback, confirmMsg) {
     var $form = $(form);
     $form.trigger(JUI.eventType.editorSync);
+    if (!$form.valid() ) {
+        return false;
+    }
     $("textarea.editor[escape=true]", $form).each(function() {
          $(this).val(html2Escape($(this).val()));
     });
@@ -27,10 +30,6 @@ function validateCallback(form, callback, confirmMsg) {
           $(this).val(sha512($(this).val()));
         }
     });
-    
-    if (!$form.valid() ) {
-        return false;
-    }
     var _submitFn = function() {
         $.ajax({
             type: form.method || 'POST', url: $form.attr("action"), data: $form.serializeArray(), dataType: "json", cache: false, success: callback || JUI.ajaxDone ,

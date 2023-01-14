@@ -512,14 +512,14 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         queryHandler.condition("bean.disabled = :disabled").setParameter("disabled", false);
         if ("dept".equalsIgnoreCase(workloadType)) {
             queryHandler.group("bean.deptId");
-        } else if ("category".equalsIgnoreCase(workloadType)) {
-            queryHandler.group("bean.categoryId");
+        } else if ("user".equalsIgnoreCase(workloadType)) {
+            queryHandler.group("bean.userId");
         } else if ("categoryUser".equalsIgnoreCase(workloadType)) {
             queryHandler.group("bean.categoryId,bean.userId");
         } else if ("categoryDept".equalsIgnoreCase(workloadType)) {
             queryHandler.group("bean.categoryId,bean.deptId");
         } else {
-            queryHandler.group("bean.userId");
+            queryHandler.group("bean.categoryId");
         }
         queryHandler.order("count(*) desc");
         return getPage(queryHandler, pageIndex, pageSize);

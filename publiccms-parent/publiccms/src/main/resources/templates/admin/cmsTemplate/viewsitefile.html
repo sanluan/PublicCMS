@@ -1,0 +1,51 @@
+<#assign sitefile=getSitefile(name)/>
+<style>
+#content img,#content video{max-width:100%;}
+</style>
+<div class="pageFormContent" layoutH>
+    <#if sitefile?has_content>
+        <dl class="nowrap">
+            <dt><@t.page 'name'/>:</dt>
+            <dd class="exclude-translate">${sitefile.name!}<#if sitefile.url?has_content><a href="${sitefile.url}" target="_blank"><i class="icon-external-link"></i></a></#if></dd>
+        </dl>
+        <dl class="nowrap">
+            <dt><@t.page 'description'/>:</dt>
+            <dd class="exclude-translate">${sitefile.description!}</dd>
+        </dl>
+        <dl>
+            <dt><@t.page 'version'/>:</dt>
+            <dd class="exclude-translate">${sitefile.version!}</dd>
+        </dl>
+        <dl>
+            <dt><@t.page 'content.author'/>:</dt>
+            <dd class="exclude-translate">${sitefile.author!}</dd>
+        </dl>
+    <#if sitefile.cmsVersionList?has_content>
+        <dl class="nowrap">
+            <dt><@t.page 'publiccms'/>:</dt>
+            <dd class="exclude-translate">
+                <#list sitefile.cmsVersionList as a>${a}<#sep>,</#list> <label><@t.page 'compare.now'/>:</label><@tools.version>${cms}.${revision}</@tools.version>
+            </dd>
+        </dl>
+    </#if>
+        <dl class="nowrap">
+            <dt><@t.page 'cover'/>:</dt>
+            <dd>
+                <div class="thumbnail">
+                    <img src="${(a.cover)!}"/>
+                </div>
+            </dd>
+        </dl>
+        <dl class="nowrap">
+            <dt><@t.page 'content.text'/>:</dt>
+            <dd id="content" class="exclude-translate">
+                ${(attribute.text?no_esc)!}
+            </dd>
+        </dl>
+    </#if>
+</div>
+<div class="formBar">
+    <ul>
+        <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+    </ul>
+</div>
