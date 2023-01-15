@@ -66,8 +66,8 @@
                             </#if>
                         </@trade.payment>
                     <#else>
-                    <a href="${site.dynamicPath}tradeOrder/pay/alipay?orderId=${orderId!}&returnUrl=https:${(site.dynamicPath+'order.html?orderId='+orderId)?url}" data-diy="config" data-diy-id="alipay">Alipay</a>
-                    <a href="${site.dynamicPath}tradeOrder/pay/wechat?orderId=${orderId!}&returnUrl=https:${(site.dynamicPath+'order.html?orderId='+orderId)?url}" data-diy="config" data-diy-id="wechat">Wechat</a>
+                    <a href="${site.dynamicPath}tradeOrder/pay/alipay?orderId=${orderId!}&clientType=FAST_INSTANT_TRADE_PAY&returnUrl=https:${(site.dynamicPath+'order.html?orderId='+orderId)?url}" data-diy="config" data-diy-id="alipay">Alipay</a>
+                    <a href="${site.dynamicPath}tradeOrder/pay/wechat?orderId=${orderId!}&clientType=native&returnUrl=https:${(site.dynamicPath+'order.html?orderId='+orderId)?url}" data-diy="config" data-diy-id="wechat">Wechat</a>
                     <@trade.account id=object.userId;account>
                         <#if account.amount gte object.amount>
                             <a href="${site.dynamicPath}tradeOrder/pay/account?orderId=${orderId!}&returnUrl=https:${(site.dynamicPath+'order.html?orderId='+orderId)?url}">Account balance payment(${account.amount!})</a>

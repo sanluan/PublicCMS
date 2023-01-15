@@ -14,6 +14,7 @@ import java.util.Map;
 import javax.annotation.PreDestroy;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpEntity;
@@ -97,6 +98,8 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
      * 
      */
     public static final String CONFIG_RESULTPAGE = "resultPage";
+
+    public static final String[] API_TYPES = { "h5", "native", "app" };
     @Resource
     private TemplateComponent templateComponent;
     @Resource
@@ -164,7 +167,7 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
     }
 
     @Override
-    public boolean pay(SysSite site, TradePayment payment, String callbackUrl, HttpServletResponse response) {
+    public boolean pay(SysSite site, TradePayment payment, String paymentType, String callbackUrl, HttpServletResponse response) {
         if (null != payment) {
             Map<String, String> config = BeanComponent.getConfigComponent().getConfigData(site.getId(), CONFIG_CODE);
             if (CommonUtils.notEmpty(config) && CommonUtils.notEmpty(config.get(CONFIG_KEY))) {
@@ -179,8 +182,14 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
                             .withMerchant(config.get(CONFIG_MCHID), config.get(CONFIG_SERIALNO), merchantPrivateKey)
                             .withValidator(new WechatPay2Validator(verifier));
                     try (CloseableHttpClient httpClient = builder.build()) {
+                        String apiType;
+                        if (CommonUtils.notEmpty(paymentType) && ArrayUtils.contains(API_TYPES, paymentType)) {
+                            apiType = paymentType;
+                        } else {
+                            apiType = config.get(CONFIG_APITYPE);
+                        }
                         HttpPost httpPost = new HttpPost(new StringBuilder("https://api.mch.weixin.qq.com/v3/pay/transactions/")
-                                .append(config.get(CONFIG_APITYPE)).toString());
+                                .append(apiType).toString());
                         httpPost.addHeader("Accept", "application/json");
                         httpPost.addHeader("Content-type", "application/json; charset=utf-8");
                         Map<String, Object> requestMap = new HashMap<>();

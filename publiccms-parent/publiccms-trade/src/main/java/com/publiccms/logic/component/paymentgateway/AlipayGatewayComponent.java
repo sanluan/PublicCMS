@@ -8,6 +8,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 
 import javax.annotation.Resource;
+
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.stereotype.Component;
 
 import com.alipay.easysdk.factory.MultipleFactory;
@@ -64,6 +66,8 @@ public class AlipayGatewayComponent extends AbstractPaymentGateway implements co
      * 
      */
     public static final String CONFIG_PRODUCT_CODE = "productCode";
+
+    public static final String[] PROCUDT_CODES = { "FAST_INSTANT_TRADE_PAY", "QUICK_WAP_WAY", "QUICK_MSECURITY_PAY" };
     /**
      * 
      */
@@ -135,32 +139,47 @@ public class AlipayGatewayComponent extends AbstractPaymentGateway implements co
     }
 
     @Override
-    public boolean pay(SysSite site, TradePayment payment, String callbackUrl, HttpServletResponse response) {
+    public boolean pay(SysSite site, TradePayment payment, String paymentType, String callbackUrl, HttpServletResponse response) {
         if (null != payment) {
             Map<String, String> config = BeanComponent.getConfigComponent().getConfigData(site.getId(), CONFIG_CODE);
             if (CommonUtils.notEmpty(config) && CommonUtils.notEmpty(config.get(CONFIG_GATEWAY))) {
                 MultipleFactory factory = getFactory(site.getId(), config);
                 try {
-                    String form;
-                    if ("FAST_INSTANT_TRADE_PAY".equalsIgnoreCase(config.get(CONFIG_PRODUCT_CODE))) {
-                        form = factory.Page().optional("timeout_express", config.get(CONFIG_TIMEOUT_EXPRESS))
-                                .pay(payment.getDescription(), String.valueOf(payment.getId()), payment.getAmount().toString(),
-                                        callbackUrl)
-                                .getBody();
+                    String productCode;
+                    if (CommonUtils.notEmpty(paymentType) && ArrayUtils.contains(PROCUDT_CODES, paymentType)) {
+                        productCode = paymentType;
                     } else {
-                        form = factory.Wap().optional("timeout_express", config.get(CONFIG_TIMEOUT_EXPRESS))
-                                .pay(payment.getDescription(), String.valueOf(payment.getId()), payment.getAmount().toString(),
-                                        callbackUrl, callbackUrl)
-                                .getBody();
+                        productCode = config.get(CONFIG_PRODUCT_CODE);
                     }
+                    String form;
+                    if ("QUICK_MSECURITY_PAY".equalsIgnoreCase(productCode)) {
+                        form = factory.App().optional("timeout_express", config.get(CONFIG_TIMEOUT_EXPRESS))
+                                .pay(payment.getDescription(), String.valueOf(payment.getId()), payment.getAmount().toString())
+                                .getBody();
+                        response.getWriter().write(form);
+                        response.getWriter().flush();
+                        response.getWriter().close();
+                    } else {
+                        if ("FAST_INSTANT_TRADE_PAY".equalsIgnoreCase(productCode)) {
+                            form = factory.Page().optional("timeout_express", config.get(CONFIG_TIMEOUT_EXPRESS))
+                                    .pay(payment.getDescription(), String.valueOf(payment.getId()),
+                                            payment.getAmount().toString(), callbackUrl)
+                                    .getBody();
+                        } else {
+                            form = factory.Wap().optional("timeout_express", config.get(CONFIG_TIMEOUT_EXPRESS))
+                                    .pay(payment.getDescription(), String.valueOf(payment.getId()),
+                                            payment.getAmount().toString(), callbackUrl, callbackUrl)
+                                    .getBody();
+                        }
 
-                    response.setContentType("text/html;charset=" + CommonConstants.DEFAULT_CHARSET_NAME);
-                    response.getWriter()
-                            .write("<html><head><meta http-equiv='Content-Type' content='text/html;charset=UTF-8'></head><body>");
-                    response.getWriter().write(form);
-                    response.getWriter().write("</body></html>");
-                    response.getWriter().flush();
-                    response.getWriter().close();
+                        response.setContentType("text/html;charset=" + CommonConstants.DEFAULT_CHARSET_NAME);
+                        response.getWriter().write(
+                                "<html><head><meta http-equiv='Content-Type' content='text/html;charset=UTF-8'></head><body>");
+                        response.getWriter().write(form);
+                        response.getWriter().write("</body></html>");
+                        response.getWriter().flush();
+                        response.getWriter().close();
+                    }
                     return true;
                 } catch (Exception e) {
                 }

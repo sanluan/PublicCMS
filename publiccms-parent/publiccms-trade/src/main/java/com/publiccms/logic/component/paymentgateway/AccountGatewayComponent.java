@@ -32,7 +32,7 @@ public class AccountGatewayComponent extends AbstractPaymentGateway {
     }
 
     @Override
-    public boolean pay(SysSite site, TradePayment payment, String callbackUrl, HttpServletResponse response) {
+    public boolean pay(SysSite site, TradePayment payment, String paymentType, String callbackUrl, HttpServletResponse response) {
         if (null != payment && payment.getStatus() == TradePaymentService.STATUS_PENDING_PAY) {
             TradeAccountHistory history = accountService.change(site.getId(), payment.getSerialNumber(), payment.getUserId(),
                     payment.getUserId(), TradeAccountHistoryService.STATUS_PAY, payment.getAmount().negate(),
