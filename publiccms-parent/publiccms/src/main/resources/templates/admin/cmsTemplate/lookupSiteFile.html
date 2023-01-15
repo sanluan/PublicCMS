@@ -1,19 +1,27 @@
 <div class="pageFormContent">
 <#list list as a>
-    <#assign sitefile=getSitefile(a.fileName)/>
-    <div class="image-list">
-        <#if sitefile?has_content><a href="cmsTemplate/viewsitefile.html?name=${a.fileName?url}" target="dialog" rel="sitefile_${a?counter}" width="1000" height="600"></#if>
-            <#if (sitefile.cover)?has_content>
-                <img src="${base+adminContextPath}/visitSitefileImage?sitefile=${a.fileName}&imageFile=${sitefile.cover}" alt="${a.fileName}" title="${a.fileName}">
+    <#if !a.directory>
+        <#assign sitefile=getSitefile(a.fileName)/>
+        <div class="image-list">
+            <#if sitefile?has_content>
+                <a href="cmsTemplate/viewsitefile.html?name=${a.fileName?url}" target="dialog" rel="sitefile_${a?counter}" width="1000" height="600">
+                    <#if (sitefile.cover)?has_content>
+                        <img src="${base+adminContextPath}/visitSitefileImage?sitefile=${a.fileName}&imageFile=${sitefile.cover}" alt="${a.fileName}" title="${a.fileName}">
+                    <#else>
+                        <i class="thumb icon-file-alt icon-large"></i>
+                    </#if>
+                 </a>
             <#else>
-                <i class="thumb icon-file-alt icon-large"></i>
+                <a href="cmsTemplate/viewsitefile.html?name=${a.fileName?url}" target="dialog" rel="sitefile_${a?counter}" width="1000" height="600">
+                     <i class="thumb icon-file-alt icon-large"></i>
+                </a>
             </#if>
-        <#if sitefile?has_content></a></#if>
-        <p>
-            <a href="javascript:;" onclick="$.bringBack({'${field!'fileName'}':'${a.fileName}'});return false;">
-                ${a.fileName}<#if a.fileSize?has_content>(${a.fileSize})</#if>
-            </a>
-        </p>
-    </div>
+            <p>
+                <a href="javascript:;" onclick="$.bringBack({'${field!'fileName'}':'${a.fileName}'});return false;">
+                    ${(sitefile.name)!a.fileName}<#if a.fileSize?has_content>(${a.fileSize})</#if>
+                </a>
+            </p>
+        </div>
+    </#if>
 </#list>
 </div>

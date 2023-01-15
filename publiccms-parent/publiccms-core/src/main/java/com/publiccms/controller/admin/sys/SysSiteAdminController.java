@@ -129,7 +129,7 @@ public class SysSiteAdminController {
                     .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                             "save.site", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
             if (CommonUtils.notEmpty(fileName)) {
-                siteExchangeComponent.importData(site.getId(), user.getId(), true, "-site.zip", null, fileName, model);
+                siteExchangeComponent.importData(user.getSiteId(), user.getId(), true, "-site.zip", null, fileName, model);
             }
         }
         siteComponent.clear();

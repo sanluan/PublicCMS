@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.publiccms.common.base.AbstractExchange;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CmsFileUtils;
+import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ZipUtils;
 import com.publiccms.logic.component.site.SiteComponent;
 
@@ -111,7 +112,7 @@ public class SiteExchangeComponent {
             } else {
                 model.addAttribute("error", "verify.custom.fileType");
             }
-        } else if (null != fileName) {
+        } else if (CommonUtils.notEmpty(fileName)) {
             File dest = new File(siteComponent.getSiteFilePath(), fileName);
             try {
                 importDate(siteId, userId, overwrite, dest);

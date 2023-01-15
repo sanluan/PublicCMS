@@ -1,6 +1,7 @@
 <@log.operate id=id>
     <#assign a=object/>
     <@sys.user id=a.userId><#assign u=object/></@sys.user>
+    <@sys.dept id=a.deptId><#assign dept=object/></@sys.dept>
 </@log.operate>
 <div class="pageFormContent" layoutH>
     <dl>
@@ -13,6 +14,12 @@
         <dt><@t.page 'user.nickname'/>:</dt>
         <dd>
             ${(u.nickname)!}
+        </dd>
+    </dl>
+    <dl>
+        <dt><@t.page 'dept'/>:</dt>
+        <dd>
+            ${(dept.name)!}
         </dd>
     </dl>
     <dl>

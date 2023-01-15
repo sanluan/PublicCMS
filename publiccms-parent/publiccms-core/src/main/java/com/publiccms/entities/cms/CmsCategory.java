@@ -83,10 +83,8 @@ public class CmsCategory implements java.io.Serializable {
      * 自定义访问路径
      */
     private boolean customPath;
-    @JsonIgnore
     @GeneratorColumn(title = "模板路径")
     private String templatePath;
-    @JsonIgnore
     @GeneratorColumn(title = "路径")
     private String path;
     /**
@@ -116,7 +114,6 @@ public class CmsCategory implements java.io.Serializable {
      * 自定义内容访问路径
      */
     private boolean customContentPath;
-    @JsonIgnore
     @GeneratorColumn(title = "内容路径")
     private String contentPath;
     /**
