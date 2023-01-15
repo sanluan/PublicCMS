@@ -508,4 +508,9 @@ INSERT INTO `sys_module_lang` VALUES ('template_import', 'ja', '導入');
 INSERT INTO `sys_module_lang` VALUES ('template_import', 'zh', '导入');
 -- 2023-01-14 --
 UPDATE `sys_module` SET `url`='cmsContent/workload',`attached`='bi bi-calendar-heart' WHERE `id` ='log_workload';
-UPDATE `sys_module` SET `authorized_url`= 'cmsTemplate/doUpload,cmsTemplate/import,cmsTemplate/doImport,cmsTemplate/lookupSiteFile,cmsTemplate/visitSitefileImage' WHERE `id` ='template_import';
+UPDATE `sys_module` SET `authorized_url`= 'cmsTemplate/doUpload,cmsTemplate/import,cmsTemplate/doImport,cmsTemplate/lookupSiteFile,cmsTemplate/viewsitefile,cmsTemplate/visitSitefileImage' WHERE `id` ='template_import';
+-- 2023-01-15 --
+INSERT INTO `sys_module` VALUES ('record_view', 'sysRecord/view', NULL, NULL, 'record_list', 0, 0);
+INSERT INTO `sys_module_lang` VALUES ('refund_view', 'en', 'View');
+INSERT INTO `sys_module_lang` VALUES ('refund_view', 'ja', '見る');
+INSERT INTO `sys_module_lang` VALUES ('refund_view', 'zh', '查看');
