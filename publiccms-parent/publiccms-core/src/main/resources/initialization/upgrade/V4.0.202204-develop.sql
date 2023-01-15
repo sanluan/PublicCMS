@@ -509,5 +509,3 @@ INSERT INTO `sys_module_lang` VALUES ('template_import', 'zh', '导入');
 -- 2023-01-14 --
 UPDATE `sys_module` SET `url`='cmsContent/workload',`attached`='bi bi-calendar-heart' WHERE `id` ='log_workload';
 UPDATE `sys_module` SET `authorized_url`= 'cmsTemplate/doUpload,cmsTemplate/import,cmsTemplate/doImport,cmsTemplate/lookupSiteFile,cmsTemplate/visitSitefileImage' WHERE `id` ='template_import';
--- 2023-01-15 --
-UPDATE `sys_module` SET `authorized_url`= 'cmsSurveyQuestion/add,cmsSurveyQuestion/view,cmsSurveyQuestion/save,cmsSurveyQuestion/delete' WHERE `id` ='survey_question_list';

@@ -1001,7 +1001,7 @@ INSERT INTO `sys_module` VALUES ('select_vote', 'cmsVote/lookup', NULL, NULL, 'c
 INSERT INTO `sys_module` VALUES ('survey_add', 'cmsSurvey/add', 'cmsSurvey/save', NULL, 'survey_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('survey_delete', NULL, 'cmsSurvey/delete', NULL, 'survey_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('survey_list', 'cmsSurvey/list', NULL, 'icon-list-ul', 'content_menu', 1, 8);
-INSERT INTO `sys_module` VALUES ('survey_question_list', 'cmsSurveyQuestion/list', 'cmsSurveyQuestion/add,cmsSurveyQuestion/view,cmsSurveyQuestion/save,cmsSurveyQuestion/delete', NULL, 'survey_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('survey_question_list', 'cmsSurveyQuestion/list', 'cmsSurveyQuestion/add,cmsSurveyQuestion/save,cmsSurveyQuestion/delete', NULL, 'survey_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('survey_user_list', 'cmsUserSurvey/list', 'cmsUserSurvey/add,cmsUserSurvey/save', NULL, 'survey_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('survey_view', 'cmsSurvey/view', NULL, NULL, 'survey_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('system_menu', NULL, NULL, 'icon-cogs', 'maintenance', 1, 2);
