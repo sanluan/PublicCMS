@@ -1,4 +1,4 @@
-<@sys.authorized roleIds=admin.roles urls='sysConfigData/import,sysConfigData/export,cmsDictionary/edit'><#assign authorizedMap=map/></@sys.authorized>
+<@sys.authorized roleIds=admin.roles urls='sysConfigData/import,sysConfigData/export,sysConfigData/edit'><#assign authorizedMap=map/></@sys.authorized>
 <div class="card">
     <div class="panelBar">
         <ul class="toolBar">
@@ -43,7 +43,7 @@
                     <a href="sysConfigData/edit.html?code=${a.code!}" class="edit btnText blue" target="navTab" rel="sysConfigData/edit"><i class="icon-edit"></i><@t.page 'config_data.edit'/></a>
                 </#if>
                 <#if authorizedMap['sysConfigData/export']>
-                    <a href="sysConfigData/export?id=${a.id.id}&_csrf=<@tools.csrfToken admin=true/>" class="edit btnText" target="_blank"><i class="icon-download-alt icon-large"></i><@t.page 'button.export'/></a>
+                    <a href="sysConfigData/export?code=${a.code}&_csrf=<@tools.csrfToken admin=true/>" class="edit btnText" target="_blank"><i class="icon-download-alt icon-large"></i><@t.page 'button.export'/></a>
                 </#if>
                 </td>
             </tr>

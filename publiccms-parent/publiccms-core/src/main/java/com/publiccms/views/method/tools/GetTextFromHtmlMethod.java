@@ -46,7 +46,7 @@ public class GetTextFromHtmlMethod extends BaseMethod {
         if (CommonUtils.notEmpty(html)) {
             return HtmlUtils.removeHtmlTag(html);
         }
-        return null;
+        return html;
     }
     
     @Override

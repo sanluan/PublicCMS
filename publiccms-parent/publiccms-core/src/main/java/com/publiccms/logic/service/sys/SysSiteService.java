@@ -61,9 +61,9 @@ public class SysSiteService extends BaseService<SysSite> {
      * @param userName
      * @param password
      * @param encoding
-     * @return
+     * @return site master 
      */
-    public SysSite save(SysSite entity, String domain, boolean wild, boolean multiple, String roleName, String deptName,
+    public SysUser save(SysSite entity, String domain, boolean wild, boolean multiple, String roleName, String deptName,
             String userName, String password, String encoding) {
         save(entity);
         if (CommonUtils.notEmpty(domain)) {
@@ -79,7 +79,7 @@ public class SysSiteService extends BaseService<SysSite> {
                 CommonUtils.getDate());
         userService.save(user);// 初始化用户
         roleUserService.save(new SysRoleUser(new SysRoleUserId(role.getId(), user.getId())));// 初始化角色用户映射
-        return entity;
+        return user;
     }
 
     /**

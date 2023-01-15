@@ -4,7 +4,7 @@
         parentId=a.parentId!''
         categoryId=a.categoryId!''
         modelId=a.modelId!''
-        attribute=getContentAttribute(a.id)!{}
+        attribute=getContentAttribute(a.id)
     />
 </@cms.content>
 <@cms.category id=categoryId!><#assign category=object/></@cms.category>
@@ -309,7 +309,7 @@ $('input[name=timing]',navTab.getCurrentPanel()).click(function(){
     }
 });
 
-$('input[name=copied]',navTab.getCurrentPanel()).click(function(){
+$('input[name=checked]',navTab.getCurrentPanel()).click(function(){
     if($(this).is(':checked')){
         $('input[name=draft]',navTab.getCurrentPanel()).parent().parent().hide();
     }else{

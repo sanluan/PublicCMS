@@ -165,6 +165,23 @@ public class CmsContentService extends BaseService<CmsContent> {
 
     /**
      * @param siteId
+     * @param status 
+     * @param startCreateDate
+     * @param endCreateDate
+     * @param workloadType
+     * @param dateField 
+     * @param pageIndex
+     * @param pageSize
+     * @return
+     */
+    @Transactional(readOnly = true)
+    public PageHandler getWorkLoadPage(short siteId, Integer[] status, Date startCreateDate, Date endCreateDate,
+            String workloadType, String dateField, Integer pageIndex, Integer pageSize) {
+        return dao.getWorkLoadPage(siteId, status, startCreateDate, endCreateDate, workloadType, dateField, pageIndex, pageSize);
+    }
+
+    /**
+     * @param siteId
      * @param quoteId
      * @return results list
      */
@@ -205,7 +222,7 @@ public class CmsContentService extends BaseService<CmsContent> {
                 }
             }
 
-            dealAttribute(entity,site, modelExtendList, categoryExtendList, map, cmsModel,
+            dealAttribute(entity, site, modelExtendList, categoryExtendList, map, cmsModel,
                     entity.isHasFiles() ? contentParameters.getFiles() : null,
                     entity.isHasImages() ? contentParameters.getImages() : null,
                     entity.isHasProducts() ? contentParameters.getProducts() : null, attribute);

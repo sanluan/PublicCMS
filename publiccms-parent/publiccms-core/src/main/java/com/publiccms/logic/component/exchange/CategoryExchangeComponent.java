@@ -77,6 +77,14 @@ public class CategoryExchangeComponent extends AbstractExchange<CmsCategory, Cat
         exportEntity(siteId, directory, null, entity, outputStream, zipOutputStream);
     }
 
+    /**
+     * @param siteId
+     * @param directory
+     * @param parentCode
+     * @param entity
+     * @param outputStream
+     * @param zipOutputStream
+     */
     public void exportEntity(short siteId, String directory, String parentCode, CmsCategory entity,
             ByteArrayOutputStream outputStream, ZipOutputStream zipOutputStream) {
         Integer categoryId = entity.getId();

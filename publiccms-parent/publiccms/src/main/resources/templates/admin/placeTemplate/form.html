@@ -38,7 +38,7 @@
     </p>
 </#if>
     <#include "../include_page/extendData.html"/>
-    <#assign extendValues=getPlaceAttribute((a.id)!)!{}/>
+    <#assign extendValues=getPlaceAttribute((a.id)!)/>
     <@extendData name='extendDataList' extendList=a.extendList extendValues=extendValues type='customform'/>
 <#noparse>
     <@sys.configData code="safe">

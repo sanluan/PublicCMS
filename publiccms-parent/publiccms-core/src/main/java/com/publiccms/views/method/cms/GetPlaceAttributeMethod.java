@@ -1,5 +1,6 @@
 package com.publiccms.views.method.cms;
 
+import java.util.Collections;
 import java.util.List;
 
 import jakarta.annotation.Resource;
@@ -54,7 +55,7 @@ public class GetPlaceAttributeMethod extends BaseMethod {
                 return ExtendUtils.getExtendMap(entity.getData());
             }
         }
-        return null;
+        return Collections.EMPTY_MAP;
     }
 
     @Override

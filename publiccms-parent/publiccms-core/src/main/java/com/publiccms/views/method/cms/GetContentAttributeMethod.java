@@ -1,5 +1,6 @@
 package com.publiccms.views.method.cms;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -62,7 +63,7 @@ public class GetContentAttributeMethod extends BaseMethod {
                 return map;
             }
         }
-        return null;
+        return Collections.EMPTY_MAP;
     }
     
     @Override

@@ -50,6 +50,7 @@
         <thead>
             <tr>
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
+                <th><@t.page 'dept'/></th>
                 <th><@t.page 'user.id'/></th>
                 <th><@t.page 'user.nickname'/></th>
                 <th><@t.page 'channel'/></th>
@@ -62,19 +63,18 @@
         <tbody>
             <#list page.list as a>
                 <@t.merge 'userIds' a.userId!/>
+                <@t.merge 'deptIds' a.deptId!/>
             </#list>
             <@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
+            <@sys.dept ids=t.deptIds!><#assign deptMap=map!/></@sys.dept>
 
             <#list page.list as a>
             <tr>
                 <td><input name="ids" value="${a.id}" type="checkbox"></td>
+                <td class="exclude-translate">${(deptMap[a.deptId?string].name)!}</td>
                 <td>${a.userId!}</td>
-                <td>
-                    ${(userMap[a.userId?string].nickname)!}
-                </td>
-                <td>
-                    ${a.channel!}
-                </td>
+                <td class="exclude-translate">${(userMap[a.userId?string].nickname)!}</td>
+                <td>${a.channel!}</td>
                 <td>
                     <div class="box">
                         <p><@t.message 'operate.'+a.operate/></p>

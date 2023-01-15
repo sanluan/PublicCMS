@@ -493,7 +493,7 @@ UPDATE `sys_module` SET `authorized_url`= 'cmsTemplate/save,cmsTemplate/saveMeta
 INSERT INTO `sys_module` VALUES ('config_data_import', 'sysConfigData/import', 'sysConfigData/doImport', NULL, 'config_data_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('config_data_export', 'sysConfigData/export', 'cmsCategory/doImport', NULL, 'config_data_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('template_export', 'cmsTemplate/export', 'cmsTemplate/export,cmsTemplate/exportSite', NULL, 'template_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('template_import', 'cmsTemplate/upload', 'cmsTemplate/doUpload,,cmsTemplate/import,cmsTemplate/doImport', NULL, 'template_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('template_import', 'cmsTemplate/upload', 'cmsTemplate/doUpload,cmsTemplate/import,cmsTemplate/doImport', NULL, 'template_list', 0, 0);
 INSERT INTO `sys_module_lang` VALUES ('config_data_export', 'en', 'Export');
 INSERT INTO `sys_module_lang` VALUES ('config_data_export', 'ja', '輸出');
 INSERT INTO `sys_module_lang` VALUES ('config_data_export', 'zh', '导出');
@@ -506,3 +506,8 @@ INSERT INTO `sys_module_lang` VALUES ('template_export', 'zh', '导出');
 INSERT INTO `sys_module_lang` VALUES ('template_import', 'en', 'Import');
 INSERT INTO `sys_module_lang` VALUES ('template_import', 'ja', '導入');
 INSERT INTO `sys_module_lang` VALUES ('template_import', 'zh', '导入');
+-- 2023-01-14 --
+UPDATE `sys_module` SET `url`='cmsContent/workload',`attached`='bi bi-calendar-heart' WHERE `id` ='log_workload';
+UPDATE `sys_module` SET `authorized_url`= 'cmsTemplate/doUpload,cmsTemplate/import,cmsTemplate/doImport,cmsTemplate/lookupSiteFile,cmsTemplate/visitSitefileImage' WHERE `id` ='template_import';
+-- 2023-01-15 --
+UPDATE `sys_module` SET `authorized_url`= 'cmsSurveyQuestion/add,cmsSurveyQuestion/view,cmsSurveyQuestion/save,cmsSurveyQuestion/delete' WHERE `id` ='survey_question_list';

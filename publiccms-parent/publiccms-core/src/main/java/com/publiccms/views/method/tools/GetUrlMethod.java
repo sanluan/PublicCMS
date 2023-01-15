@@ -70,7 +70,7 @@ public class GetUrlMethod extends BaseMethod {
         } else if (CommonUtils.notEmpty(sitePath) && null != site) {
             return TemplateComponent.getUrl(site.getSitePath(), sitePath);
         }
-        return null;
+        return url;
     }
 
     @Override

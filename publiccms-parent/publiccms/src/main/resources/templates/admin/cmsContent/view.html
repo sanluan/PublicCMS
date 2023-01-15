@@ -5,7 +5,7 @@
         categoryId=a.categoryId!''
         modelId=a.modelId!''
         safe=true
-        attribute=getContentAttribute(a.id)!{}
+        attribute=getContentAttribute(a.id)
     />
     <#if a.contribute && a.status != 1><#assign safe=false/></#if>
 </@cms.content>
@@ -19,6 +19,9 @@
         </@cms.category>
     </#if>
 </#macro>
+<style>
+#content img,#content video{max-width:100%;}
+</style>
 <div class="pageFormContent" layoutH>
     <#if model?has_content>
         <#assign fieldList=model.fieldList![]/>

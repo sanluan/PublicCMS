@@ -9,7 +9,6 @@ import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.log.LogOperate;
-import com.publiccms.views.pojo.entities.Workload;
 
 /**
  *
@@ -65,46 +64,6 @@ public class LogOperateDao extends BaseDao<LogOperate> {
         }
         queryHandler.order("bean.id").append(orderType);
         return getPage(queryHandler, pageIndex, pageSize);
-    }
-
-    /**
-     * @param siteId
-     * @param channel
-     * @param operate
-     * @param startCreateDate
-     * @param endCreateDate
-     * @param workloadType
-     * @param pageIndex
-     * @param pageSize
-     * @return results page
-     */
-    public PageHandler getWorkLoadPage(Short siteId, String channel, String operate, Date startCreateDate, Date endCreateDate,
-            String workloadType, Integer pageIndex, Integer pageSize) {
-        String queryString = "bean.deptId";
-        if ("user".equalsIgnoreCase(workloadType)) {
-            queryString = "bean.userId";
-        }
-        QueryHandler queryHandler = getQueryHandler("select new com.publiccms.views.pojo.entities.Workload(");
-        queryHandler.append(queryString);
-        queryHandler.append(",count(*)) from LogOperate bean");
-        if (null != siteId) {
-            queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
-        }
-        if (CommonUtils.notEmpty(channel)) {
-            queryHandler.condition("bean.channel = :channel").setParameter("channel", channel);
-        }
-        if (CommonUtils.notEmpty(operate)) {
-            queryHandler.condition("bean.operate = :operate").setParameter("operate", operate);
-        }
-        if (null != startCreateDate) {
-            queryHandler.condition("bean.createDate > :startCreateDate").setParameter("startCreateDate", startCreateDate);
-        }
-        if (null != endCreateDate) {
-            queryHandler.condition("bean.createDate <= :endCreateDate").setParameter("endCreateDate", endCreateDate);
-        }
-        queryHandler.group(queryString);
-        queryHandler.order("count(*) desc");
-        return getPage(queryHandler, pageIndex, pageSize, Workload.class);
     }
 
     /**

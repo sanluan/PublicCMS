@@ -3,7 +3,7 @@
         a=object
         parentId=object.parentId!''
         typeId=object.typeId!''
-        attribute=getCategoryAttribute(a.id)!{}
+        attribute=getCategoryAttribute(a.id)
     />
 </@cms.category>
 <@cms.category id=parentId><#assign category=object/></@cms.category>
@@ -126,7 +126,7 @@
                             </span>
                         </div>
                         <div class="clearfix customPath hide">
-                            <input class="required" name="path" type="text" autocomplete="on" maxlength="500" size="100" value="${(a.path)!(categoryType.path)!(config.category_path)!}"/>
+                            <input name="path" type="text" autocomplete="on" maxlength="500" size="100" value="${(a.path)!(categoryType.path)!(config.category_path)!}"/>
                             <a class="btnLook onlyUrl" href="cmsCategory/categoryPath.html" width="920" lookupGroup=""><@t.page 'select_path'/></a>
                         </div>
                     </dd>
@@ -295,14 +295,14 @@ $('input[name$=\\.categoryModel\\.customContentPath]',navTab.getCurrentPanel()).
             $('input[data-model=${a.id.modelId}]',navTab.getCurrentPanel()).val('${(a.templatePath)!}');
         </#list>
     </@cms.categoryModelList>
-    <#if a.onlyUrl>
-        $('input[name=onlyUrl]',navTab.getCurrentPanel()).click();
-    </#if>
     <#if a.customPath>
         $('input[name=customPath]',navTab.getCurrentPanel()).click();
     </#if>
     <#if a.customContentPath>
         $('input[name=customContentPath]',navTab.getCurrentPanel()).click();
+    </#if>
+    <#if a.onlyUrl>
+        $('input[name=onlyUrl]',navTab.getCurrentPanel()).click();
     </#if>
 <#else>
     <#if categoryType?has_content && categoryType.onlyUrl>

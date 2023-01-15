@@ -12,9 +12,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Enumeration;
-import java.util.zip.ZipException;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.tools.zip.ZipEntry;
 import org.apache.tools.zip.ZipFile;
 import org.apache.tools.zip.ZipOutputStream;
@@ -28,6 +29,7 @@ import com.publiccms.common.constants.Constants;
  *
  */
 public class ZipUtils {
+    protected final static Log log = LogFactory.getLog(ZipUtils.class);
 
     /**
      * @param sourceFilePath
@@ -175,8 +177,7 @@ public class ZipUtils {
         zipFile.close();
     }
 
-    private static void unzip(ZipFile zipFile, ZipEntry zipEntry, String targetPath, String filePath, boolean overwrite)
-            throws ZipException, IOException {
+    private static void unzip(ZipFile zipFile, ZipEntry zipEntry, String targetPath, String filePath, boolean overwrite) {
         if (filePath.contains("..")) {
             filePath = filePath.replace("..", Constants.BLANK);
         }
@@ -193,13 +194,14 @@ public class ZipUtils {
                     if (null != fileLock) {
                         StreamUtils.copy(inputStream, outputStream);
                     }
+                } catch (IOException e) {
+                    log.error(e.getMessage());
                 }
             }
         }
     }
 
-    public static void unzip(ZipFile zipFile, String directory, String targetPath, boolean overwrite)
-            throws ZipException, IOException {
+    public static void unzip(ZipFile zipFile, String directory, String targetPath, boolean overwrite) {
         Enumeration<? extends ZipEntry> entryEnum = zipFile.getEntries();
         if (!targetPath.endsWith(Constants.SEPARATOR) && !targetPath.endsWith("\\")) {
             targetPath += File.separator;

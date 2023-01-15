@@ -1,6 +1,8 @@
 package com.publiccms.controller.admin.cms;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.file.Paths;
@@ -8,8 +10,11 @@ import java.text.DateFormat;
 import java.util.Comparator;
 import java.util.Date;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.tools.zip.ZipEntry;
+import org.apache.tools.zip.ZipFile;
 import org.apache.tools.zip.ZipOutputStream;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -28,6 +33,7 @@ import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.DateFormatUtils;
 import com.publiccms.common.tools.LanguagesUtils;
 import com.publiccms.common.tools.RequestUtils;
+import com.publiccms.common.tools.StreamUtils;
 import com.publiccms.common.tools.VerificationUtils;
 import com.publiccms.common.tools.ZipUtils;
 import com.publiccms.entities.log.LogOperate;
@@ -309,24 +315,63 @@ public class CmsTemplateAdminController {
     }
 
     /**
+     * @param model
+     * @return view name
+     */
+    @RequestMapping({ "lookupSitefile.html", "lookupSitefile" })
+    public String lookupSiteImage(ModelMap model) {
+        model.addAttribute("list",
+                CmsFileUtils.getFileList(siteComponent.getSiteFilePath(), CmsFileUtils.ORDERFIELD_MODIFIEDDATE));
+        return "cmsTemplate/lookupSitefile";
+    }
+
+    /**
+     * @param sitefile
+     * @param imageFile
+     * @param response
+     * @param model
+     */
+    @RequestMapping("visitSitefileImage")
+    public void lookupSiteImage(String sitefile, String imageFile, HttpServletResponse response) {
+        if (CommonUtils.notEmpty(imageFile) && CommonUtils.notEmpty(sitefile)) {
+            String suffix = CmsFileUtils.getSuffix(imageFile);
+            File file = new File(siteComponent.getSiteFilePath(), sitefile);
+            if (ArrayUtils.contains(CmsFileUtils.IMAGE_FILE_SUFFIXS, suffix) && file.exists() && file.isFile()) {
+                try (ZipFile zipFile = new ZipFile(file, CommonConstants.DEFAULT_CHARSET_NAME);
+                        ServletOutputStream outputStream = response.getOutputStream();) {
+                    ZipEntry entry = zipFile.getEntry(imageFile);
+                    if (null != entry) {
+                        try (InputStream inputStream = zipFile.getInputStream(entry);) {
+                            StreamUtils.copy(inputStream, outputStream);
+                        }
+                    }
+                } catch (IOException e) {
+                }
+            }
+        }
+
+    }
+
+    /**
      * @param site
      * @param admin
      * @param overwrite
      * @param file
+     * @param fileName
      * @param request
      * @param model
      * @return
      */
     @RequestMapping("doImport")
     @Csrf
-    public String doImport(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile file, boolean overwrite,
-            HttpServletRequest request, ModelMap model) {
+    public String doImport(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile file, String fileName,
+            boolean overwrite, HttpServletRequest request, ModelMap model) {
         if (null != file) {
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "import.site", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
                     file.getOriginalFilename()));
         }
-        return siteExchangeComponent.importData(site.getId(), admin.getId(), overwrite, "-site.zip", file, model);
+        return siteExchangeComponent.importData(site.getId(), admin.getId(), overwrite, "-site.zip", file, fileName, model);
     }
 
     /**

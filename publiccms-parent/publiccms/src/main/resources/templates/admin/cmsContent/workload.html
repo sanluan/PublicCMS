@@ -1,25 +1,43 @@
 <#if !startCreateDate?has_content>
     <#assign startCreateDate=(.now?long-7*24*3600*1000)?number_to_date/>
 </#if>
-<@log.workload channel='web_manager' operate='save.content' startCreateDate=startCreateDate endCreateDate=endCreateDate workloadType=workloadType pageIndex=pageNum pageSize=numPerPage>
+<#if !status?has_content>
+    <#assign status=['1','2']/>
+</#if>
+<@cms.workload status=status startCreateDate=startCreateDate endCreateDate=endCreateDate workloadType=workloadType dateField=dateField pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader card">
     <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
         <div class="searchBar">
             <ul class="searchContent">
                 <li>
-                    <label><@t.page 'log.create_date'/>:</label>
+                    <label><@t.page 'create_date'/>:</label>
                     <input type="text" name="startCreateDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startCreateDate!}"/>
                     <a class="inputDateButton" href="javascript:void(0);"></a>
                     <span>-</span>
                     <input type="text" name="endCreateDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endCreateDate!}"/>
                     <a class="inputDateButton" href="javascript:void(0);"></a>
                 </li>
+                <li class="width:auto">
+                    <#list 1..2 as s>
+                        <label>
+                            <input <@t.compare status!'' s?string 'checked="checked"'/> name="status" value="${s}" type="checkbox"/>
+                            <@t.page 'status.content.'+s/>
+                        </label>
+                    </#list>
+                </li>
                 <li>
                     <label><@t.page 'analytics.type'/>:</label>
                     <select class="combox" name="workloadType">
-                        <option value="dept"${(!(workloadType?has_content)||"dept"=workloadType)?then(' selected="true"','')?no_esc}><@t.page 'dept'/></option>
+                        <option value="category"${(!(workloadType?has_content)||"category"=workloadType)?then(' selected="true"','')?no_esc}><@t.page 'category'/></option>
                         <option value="user"${(workloadType?has_content&&"user"=workloadType)?then(' selected="true"','')?no_esc}><@t.page 'user'/></option>
+                        <option value="dept"${(workloadType?has_content&&"dept"=workloadType)?then(' selected="true"','')?no_esc}><@t.page 'dept'/></option>
+                        <option value="categoryUser"${(workloadType?has_content&&"categoryUser"=workloadType)?then(' selected="true"','')?no_esc}><@t.page 'category'/>,<@t.page 'user'/></option>
+                        <option value="categoryDept"${(workloadType?has_content&&"categoryDept"=workloadType)?then(' selected="true"','')?no_esc}><@t.page 'category'/>,<@t.page 'dept'/></option>
+                    </select>
+                    <select class="combox" name="dateField">
+                        <option value="createDate"${(!(dateField?has_content)||"createDate"=dateField)?then(' selected="true"','')?no_esc}><@t.page 'create_date'/></option>
+                        <option value="publishDate"${(dateField?has_content&&"publishDate"=dateField)?then(' selected="true"','')?no_esc}><@t.page 'publish_date'/></option>
                     </select>
                 </li>
             </ul>
@@ -29,7 +47,7 @@
                         <button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
                     </li>
                     <li>
-                        <a class="button" href="logOperate/export?channel=web_manager&operate=save.content&_csrf=<@tools.csrfToken admin=true/>" target="dwzExport" targetType="navTab"><i class="icon-download-alt icon-large"></i><@t.page 'button.export'/></a>
+                        <a class="button" href="cmsContent/exportWorkload?_csrf=<@tools.csrfToken admin=true/>" target="dwzExport" targetType="navTab"><i class="icon-download-alt icon-large"></i><@t.page 'button.export'/></a>
                     </li>
                 </ul>
             </div>
@@ -44,6 +62,7 @@
     <table class="table" width="100%" >
         <thead>
             <tr>
+                <th><@t.page 'category'/></th>
                 <th><@t.page 'dept'/></th>
                 <th><@t.page 'user'/></th>
                 <th><@t.page 'content.count'/></th>
@@ -51,15 +70,20 @@
         </thead>
         <tbody>
             <#list page.list as a>
+                <@t.merge 'categoryIds' a.categoryId!/>
                 <@t.merge 'userIds' a.userId!/>
                 <@t.merge 'deptIds' a.deptId!/>
             </#list>
 
+            <@cms.category ids=t.categoryIds!><#assign categoryMap=map!/></@cms.category>
             <@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
             <@sys.dept ids=t.deptIds!><#assign deptMap=map!/></@sys.dept>
 
             <#list page.list as a>
             <tr>
+                <td class="center exclude-translate">
+                    ${(categoryMap[a.categoryId?string].name)!}
+                </td>
                 <td class="center exclude-translate">
                     ${(deptMap[a.deptId?string].name)!}
                 </td>
@@ -73,4 +97,4 @@
     </table>
     <#include "../include_page/page.html"/>
 </div>
-</@log.workload>
+</@cms.workload>

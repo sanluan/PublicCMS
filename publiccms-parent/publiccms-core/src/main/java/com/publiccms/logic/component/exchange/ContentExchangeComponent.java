@@ -47,6 +47,7 @@ import com.publiccms.logic.service.sys.SysDeptService;
 import com.publiccms.logic.service.sys.SysExtendFieldService;
 import com.publiccms.logic.service.sys.SysUserService;
 import com.publiccms.views.pojo.entities.CmsModel;
+import com.publiccms.views.pojo.entities.Workload;
 import com.publiccms.views.pojo.exchange.Content;
 import com.publiccms.views.pojo.query.CmsContentQuery;
 
@@ -93,10 +94,23 @@ public class ContentExchangeComponent extends AbstractExchange<CmsContent, Conte
         exportDataByQuery(siteId, directory, queryEntity, outputStream, zipOutputStream);
     }
 
+    /**
+     * @param siteId
+     * @param directory
+     * @param queryEntity
+     * @param zipOutputStream
+     */
     public void exportDataByQuery(short siteId, String directory, CmsContentQuery queryEntity, ZipOutputStream zipOutputStream) {
         exportDataByQuery(siteId, directory, queryEntity, new ByteArrayOutputStream(), zipOutputStream);
     }
 
+    /**
+     * @param siteId
+     * @param directory
+     * @param queryEntity
+     * @param outputStream
+     * @param zipOutputStream
+     */
     public void exportDataByQuery(short siteId, String directory, CmsContentQuery queryEntity, ByteArrayOutputStream outputStream,
             ZipOutputStream zipOutputStream) {
         PageHandler page = service.getPage(queryEntity, null, null, null, null, null, PageHandler.MAX_PAGE_SIZE, null);
@@ -111,6 +125,94 @@ public class ContentExchangeComponent extends AbstractExchange<CmsContent, Conte
         } while (!page.isLastPage());
     }
 
+    /**
+     * @param siteId
+     * @param status
+     * @param startCreateDate
+     * @param endCreateDate
+     * @param workloadType
+     * @param dateField
+     * @param locale
+     * @return
+     */
+    public ExcelView exportWorkload(short siteId, Integer[] status, Date startCreateDate, Date endCreateDate, String workloadType,
+            String dateField, Locale locale) {
+        PageHandler page = service.getWorkLoadPage(siteId, status, startCreateDate, endCreateDate, workloadType, dateField, 1,
+                PageHandler.MAX_PAGE_SIZE);
+        @SuppressWarnings("unchecked")
+        List<Workload> entityList = (List<Workload>) page.getList();
+        Map<String, List<Serializable>> pksMap = new HashMap<>();
+        for (Workload entity : entityList) {
+            List<Serializable> categoryIds = pksMap.computeIfAbsent("categoryIds", k -> new ArrayList<>());
+            categoryIds.add(entity.getCategoryId());
+            List<Serializable> deptIds = pksMap.computeIfAbsent("deptIds", k -> new ArrayList<>());
+            deptIds.add(entity.getDeptId());
+            List<Serializable> userIds = pksMap.computeIfAbsent("userIds", k -> new ArrayList<>());
+            userIds.add(entity.getUserId());
+        }
+        Map<Integer, CmsCategory> categoryMap = new HashMap<>();
+        if (null != pksMap.get("categoryIds")) {
+            List<Serializable> categoryIds = pksMap.get("categoryIds");
+            List<CmsCategory> entitys = categoryService.getEntitys(categoryIds);
+            for (CmsCategory entity : entitys) {
+                categoryMap.put(entity.getId(), entity);
+            }
+        }
+        Map<Integer, SysDept> deptMap = new HashMap<>();
+        if (null != pksMap.get("deptIds")) {
+            List<Serializable> deptIds = pksMap.get("deptIds");
+            List<SysDept> entitys = sysDeptService.getEntitys(deptIds);
+            for (SysDept entity : entitys) {
+                deptMap.put(entity.getId(), entity);
+            }
+        }
+        Map<Long, SysUser> userMap = new HashMap<>();
+        if (null != pksMap.get("userIds")) {
+            List<Serializable> userIds = pksMap.get("userIds");
+            List<SysUser> entitys = sysUserService.getEntitys(userIds);
+            for (SysUser entity : entitys) {
+                userMap.put(entity.getId(), entity);
+            }
+        }
+        ExcelView view = new ExcelView(workbook -> {
+            Sheet sheet = workbook
+                    .createSheet(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.workload"));
+            int i = 0, j = 0;
+            Row row = sheet.createRow(i++);
+            row.createCell(j++)
+                    .setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.category"));
+            row.createCell(j++).setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.dept"));
+            row.createCell(j++).setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.user"));
+            row.createCell(j++)
+                    .setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content.count"));
+
+            CmsCategory category;
+            SysDept dept;
+            SysUser user;
+            for (Workload entity : entityList) {
+                row = sheet.createRow(i++);
+                j = 0;
+                category = categoryMap.get(entity.getCategoryId());
+                row.createCell(j++).setCellValue(null == category ? null : category.getName());
+                dept = deptMap.get(entity.getDeptId());
+                row.createCell(j++).setCellValue(null == dept ? null : dept.getName());
+                user = userMap.get(entity.getUserId());
+                row.createCell(j++).setCellValue(null == user ? null : user.getNickname());
+                row.createCell(j++).setCellValue(entity.getCount());
+            }
+        });
+        view.setFilename(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.workload"));
+        return view;
+    }
+
+    /**
+     * @param siteId
+     * @param queryEntity
+     * @param orderField
+     * @param orderType
+     * @param locale
+     * @return
+     */
     public ExcelView exportExcelByQuery(short siteId, CmsContentQuery queryEntity, String orderField, String orderType,
             Locale locale) {
         PageHandler page = service.getPage(queryEntity, null, orderField, orderType, null, 1, PageHandler.MAX_PAGE_SIZE, null);
