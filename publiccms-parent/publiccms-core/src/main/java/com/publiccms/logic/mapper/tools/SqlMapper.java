@@ -43,38 +43,51 @@ public interface SqlMapper {
     int delete(@Param("sql") String sql);
 
     /**
+     * @param siteId 
      * @param oldurl
      * @param newurl
      * @return number of data updated
      */
-    int updateContentAttribute(@Param("oldurl") String oldurl, @Param("newurl") String newurl);
+    int updateContentAttribute(@Param("siteId") short siteId, @Param("oldurl") String oldurl, @Param("newurl") String newurl);
 
     /**
+     * @param siteId
      * @param oldurl
      * @param newurl
      * @return number of data updated
      */
-    int updateContentRelated(@Param("oldurl") String oldurl, @Param("newurl") String newurl);
+    int updateContentRelated(@Param("siteId") short siteId, @Param("oldurl") String oldurl, @Param("newurl") String newurl);
 
     /**
+     * @param siteId 
      * @param oldurl
      * @param newurl
      * @return number of data updated
      */
-    int updatePlaceAttribute(@Param("oldurl") String oldurl, @Param("newurl") String newurl);
+    int updatePlaceAttribute(@Param("siteId") short siteId, @Param("oldurl") String oldurl, @Param("newurl") String newurl);
 
     /**
+     * @param siteId 
      * @param oldurl
      * @param newurl
      * @return number of data updated
      */
-    int updatePlace(@Param("oldurl") String oldurl, @Param("newurl") String newurl);
+    int updatePlace(@Param("siteId") short siteId, @Param("oldurl") String oldurl, @Param("newurl") String newurl);
 
     /**
+     * @param siteId 
      * @param oldurl
      * @param newurl
      * @return number of data updated
      */
-    int updateCategoryAttribute(@Param("oldurl") String oldurl, @Param("newurl") String newurl);
+    int updateCategoryAttribute(@Param("siteId") short siteId, @Param("oldurl") String oldurl, @Param("newurl") String newurl);
+    
+    /**
+     * @param siteId 
+     * @param oldurl
+     * @param newurl
+     * @return number of data updated
+     */
+    int updateConfigData(@Param("siteId") short siteId, @Param("oldurl") String oldurl, @Param("newurl") String newurl);
 
 }

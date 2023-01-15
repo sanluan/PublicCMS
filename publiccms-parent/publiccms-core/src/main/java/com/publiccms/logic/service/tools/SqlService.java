@@ -17,7 +17,7 @@ import com.publiccms.logic.mapper.tools.SqlMapper;
 @Service
 @Transactional
 public class SqlService {
-    
+
     /**
      * @param sql
      * @return
@@ -25,6 +25,7 @@ public class SqlService {
     public int insert(String sql) {
         return mapper.insert(sql);
     }
+
     /**
      * @param sql
      * @return
@@ -32,45 +33,66 @@ public class SqlService {
     public int update(String sql) {
         return mapper.update(sql);
     }
+
     /**
+     * @param siteId
      * @param oldurl
      * @param newurl
      * @return
      */
-    public int updateContentAttribute(String oldurl, String newurl) {
-        return mapper.updateContentAttribute(oldurl, newurl);
+    public int updateContentAttribute(short siteId, String oldurl, String newurl) {
+        return mapper.updateContentAttribute(siteId, oldurl, newurl);
     }
+
     /**
+     * @param siteId
      * @param oldurl
      * @param newurl
      * @return
      */
-    public int updateContentRelated(String oldurl, String newurl) {
-        return mapper.updateContentRelated(oldurl, newurl);
+    public int updateContentRelated(short siteId, String oldurl, String newurl) {
+        return mapper.updateContentRelated(siteId, oldurl, newurl);
     }
+
     /**
+     * @param siteId
      * @param oldurl
      * @param newurl
      * @return
      */
-    public int updatePlaceAttribute(String oldurl, String newurl) {
-        return mapper.updatePlaceAttribute(oldurl, newurl);
+    public int updatePlaceAttribute(short siteId, String oldurl, String newurl) {
+        return mapper.updatePlaceAttribute(siteId, oldurl, newurl);
     }
+
     /**
+     * @param siteId
      * @param oldurl
      * @param newurl
      * @return
      */
-    public int updatePlace(String oldurl, String newurl) {
-        return mapper.updatePlace(oldurl, newurl);
+    public int updatePlace(short siteId, String oldurl, String newurl) {
+        return mapper.updatePlace(siteId, oldurl, newurl);
     }
+
     /**
+     * @param siteId
      * @param oldurl
      * @param newurl
      * @return
      */
-    public int updateCategoryAttribute(String oldurl, String newurl) {
-        return mapper.updateCategoryAttribute(oldurl, newurl);
+    public int updateCategoryAttribute(short siteId, String oldurl, String newurl) {
+        return mapper.updateCategoryAttribute(siteId, oldurl, newurl);
+    }
+    
+
+    /**
+     * @param siteId
+     * @param oldurl
+     * @param newurl
+     * @return
+     */
+    public int updateConfigData(short siteId, String oldurl, String newurl) {
+        return mapper.updateConfigData(siteId, oldurl, newurl);
     }
 
     /**

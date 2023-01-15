@@ -6,10 +6,17 @@
 <#if !a?has_content&&itemType?has_content>
 <#switch itemType>
     <#case 'content'>
-        <@cms.content id=itemId><#assign content=object/></@cms.content>
+        <@cms.content id=itemId absoluteURL=false>
+            <#assign content=object/>
+            <#if !content.onlyUrl && !content.hasStatic>
+                <#assing contentUrl=getUrl(site.dynamicPath,content.url)/>
+            <#else>
+                <#assign contentUrl=content.url/>
+            </#if>
+        </@cms.content>
     <#break>
     <#case 'category'>
-        <@cms.category id=itemId><#assign category=object/></@cms.category>
+        <@cms.category id=itemId absoluteURL=false><#assign category=object/><#assign categoryDescription=getCategoryAttribute(category.id).description!/></@cms.category>
     <#break>
 </#switch>
 </#if>
@@ -30,7 +37,7 @@
             <dl>
                 <dt>${(metadata.fieldTextMap['title'])!t.pageMessage('title')}:</dt>
                 <dd>
-                    <input class="required" name="title" type="text" maxlength="255" size="60" value="${(a.title)!(content.title)!(category.name)!title!}"/>
+                    <input class="required" name="title" type="text" maxlength="255" size="60" value="${(a.title)!(content.title)!(category.name)!}"/>
                 <#if !(metadata.acceptItemTypes)?has_content>
                     <a class="btnLook" href="cmsPlace/lookup.html" lookupGroup="" width="1200" ><@t.page 'select'/></a>
                 </#if>
@@ -52,7 +59,7 @@
         <#if fieldList?seq_contains('url')>
             <dl class="nowrap">
                 <dt>${(metadata.fieldTextMap['url'])}:</dt>
-                <dd><input name="url" type="text"<#if requiredFieldList?seq_contains('url')> class="required"</#if> maxlength="1000" size="60" value="${(a.url)!(content.url)!(category.url)!url!}"/></dd>
+                <dd><input name="url" type="text"<#if requiredFieldList?seq_contains('url')> class="required"</#if> maxlength="1000" size="60" value="${(a.url)!(contentUrl)!(category.url)!}"/></dd>
             </dl>
         </#if>
             <dl>
@@ -73,7 +80,7 @@
             <dl class="nowrap">
                 <dt>${(metadata.fieldTextMap['description'])!}:</dt>
                 <dd>
-                    <textarea name="description"<#if requiredFieldList?seq_contains('description')> class="required"</#if> maxlength="300" cols="80" rows="4">${(a.description)!(content.description)!}</textarea>
+                    <textarea name="description"<#if requiredFieldList?seq_contains('description')> class="required"</#if> maxlength="300" cols="80" rows="4">${(a.description)!(content.description)!(categoryDescription)!}</textarea>
                 </dd>
             </dl>
         </#if>
@@ -92,7 +99,7 @@
         </#if>
             <#include "../include_page/extendData.html"/>
             <@tools.placeMetadata path=(a.path)!path!''><#assign metadata=object/></@tools.placeMetadata>
-            <#assign attribute=getPlaceAttribute((a.id)!)!{}/>
+            <#assign attribute=getPlaceAttribute((a.id)!)/>
             <@extendData name='extendDataList' extendList=metadata.extendList extendValues=attribute historyItemType='placeExtend' historyItemId=id/>
         </div>
     </div>

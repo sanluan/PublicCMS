@@ -2,10 +2,16 @@ package com.publiccms.controller.admin.sys;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
@@ -31,6 +37,7 @@ import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.exchange.SiteExchangeComponent;
 import com.publiccms.logic.component.site.ScriptComponent;
 import com.publiccms.logic.component.site.SiteComponent;
+import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.log.LogUploadService;
@@ -224,17 +231,32 @@ public class SysSiteAdminController {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if ("update_url".contains(command)) {
-            if (null != parameters && 2 == parameters.length) {
+            if (null != parameters && 3 == parameters.length) {
                 try {
-                    String oldurl = parameters[0];
-                    String newurl = parameters[1];
-                    int i = sqlService.updateContentAttribute(oldurl, newurl);
-                    i += sqlService.updateContentRelated(oldurl, newurl);
-                    i += sqlService.updatePlace(oldurl, newurl);
-                    i += sqlService.updatePlaceAttribute(oldurl, newurl);
-                    i += sqlService.updateCategoryAttribute(oldurl, newurl);
+                    short siteId = Short.parseShort(parameters[0]);
+                    String oldurl = parameters[1];
+                    String newurl = parameters[2];
+                    int i = sqlService.updateContentAttribute(siteId, oldurl, newurl);
+                    i += sqlService.updateContentRelated(siteId, oldurl, newurl);
+                    i += sqlService.updatePlace(siteId, oldurl, newurl);
+                    i += sqlService.updatePlaceAttribute(siteId, oldurl, newurl);
+                    i += sqlService.updateCategoryAttribute(siteId, oldurl, newurl);
+                    i += sqlService.updateConfigData(siteId, oldurl, newurl);
+                    String filepath = siteComponent.getTemplateFilePath(site.getId(), CommonConstants.SEPARATOR);
+                    try (DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get(filepath))) {
+                        for (Path entry : stream) {
+                            File file = entry.toFile();
+                            if (file.isFile() && MetadataComponent.DATA_FILE.equalsIgnoreCase(file.getName())) {
+                                String content = StringUtils.replace(
+                                        FileUtils.readFileToString(file, CommonConstants.DEFAULT_CHARSET), oldurl, newurl);
+                                FileUtils.write(file, content, CommonConstants.DEFAULT_CHARSET);
+                                i += 1;
+                            }
+                        }
+                    } catch (IOException e) {
+                    }
                     model.addAttribute("result", i);
-                } catch (Exception e) {
+                } catch (NumberFormatException e) {
                     model.addAttribute("error", e.getMessage());
                 }
             }
