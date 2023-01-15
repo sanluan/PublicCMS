@@ -43,16 +43,18 @@ public class TradeOrderController {
      * @param site
      * @param accountType
      * @param orderId
+     * @param paymentType
      * @param returnUrl
      * @param request
      * @return
      */
     @RequestMapping(value = "pay/{accountType}")
     public String pay(@RequestAttribute SysSite site, @PathVariable("accountType") String accountType, long orderId,
-            String returnUrl, HttpServletRequest request) {
+            String paymentType, String returnUrl, HttpServletRequest request) {
         returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         PaymentGateway paymentGateway = gatewayComponent.get(accountType);
         TradeOrder order = service.getEntity(orderId);
+        StringBuilder sb = new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX);
         if (null != paymentGateway && paymentGateway.enable(site.getId()) && null == order.getPaymentId()) {
             if (1 == order.getAmount().compareTo(BigDecimal.ZERO)) {
                 String ip = RequestUtils.getIpAddress(request);
@@ -63,14 +65,20 @@ public class TradeOrderController {
                 entity.setDescription(order.getTitle());
                 paymentService.create(site.getId(), entity);
                 service.pay(site.getId(), orderId, entity.getId());
-                return UrlBasedViewResolver.REDIRECT_URL_PREFIX + site.getDynamicPath() + "tradePayment/pay?paymentId="
-                        + entity.getId() + "&returnUrl=" + returnUrl;
+                sb.append(site.getDynamicPath()).append("tradePayment/pay?paymentId=").append(order.getPaymentId());
+                if (CommonUtils.notEmpty(paymentType)) {
+                    sb.append("&paymentType=").append(paymentType);
+                }
+                return sb.append("&returnUrl=").append(returnUrl).toString();
             }
         } else if (null != order.getPaymentId()) {
-            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + site.getDynamicPath() + "tradePayment/pay?paymentId="
-                    + order.getPaymentId() + "&returnUrl=" + returnUrl;
+            sb.append(site.getDynamicPath()).append("tradePayment/pay?paymentId=").append(order.getPaymentId());
+            if (CommonUtils.notEmpty(paymentType)) {
+                sb.append("&paymentType=").append(paymentType);
+            }
+            return sb.append("&returnUrl=").append(returnUrl).toString();
         }
-        return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
+        return sb.append(returnUrl).toString();
     }
 
     /**
@@ -95,8 +103,8 @@ public class TradeOrderController {
         Long orderId = service.create(site.getId(), user.getId(), entity, RequestUtils.getIpAddress(request),
                 tradeOrderParameters.getTradeOrderProductList());
         if (null != orderId) {
-            return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString() + (returnUrl.contains("?") ? "&" : "?") + orderIdField
-                    + "=" + orderId;
+            return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString()
+                    + (returnUrl.contains("?") ? "&" : "?") + orderIdField + "=" + orderId;
         } else {
             return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
         }

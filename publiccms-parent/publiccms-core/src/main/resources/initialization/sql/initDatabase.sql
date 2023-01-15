@@ -977,6 +977,7 @@ INSERT INTO `sys_module` VALUES ('product_list', 'cmsContentProduct/list', NULL,
 INSERT INTO `sys_module` VALUES ('record_add', 'sysRecord/add', 'sysRecord/save', NULL, 'record_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('record_delete', NULL, 'sysRecord/delete', NULL, 'record_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('record_list', 'sysRecord/list', NULL, 'bi bi-receipt', 'system_menu', 1, 6);
+INSERT INTO `sys_module` VALUES ('record_view', 'sysRecord/view', NULL, NULL, 'record_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('refund_list', 'tradeRefund/list', NULL, 'icon-signout', 'trade_menu', 1, 5);
 INSERT INTO `sys_module` VALUES ('refund_refund', 'tradeRefund/refundParameters', 'tradeOrder/refund', NULL, 'refund_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('refund_refuse', 'tradeRefund/refuseParameters', 'tradeOrder/refuse', NULL, 'refund_list', 0, 0);
@@ -1001,7 +1002,7 @@ INSERT INTO `sys_module` VALUES ('select_vote', 'cmsVote/lookup', NULL, NULL, 'c
 INSERT INTO `sys_module` VALUES ('survey_add', 'cmsSurvey/add', 'cmsSurvey/save', NULL, 'survey_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('survey_delete', NULL, 'cmsSurvey/delete', NULL, 'survey_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('survey_list', 'cmsSurvey/list', NULL, 'icon-list-ul', 'content_menu', 1, 8);
-INSERT INTO `sys_module` VALUES ('survey_question_list', 'cmsSurveyQuestion/list', 'cmsSurveyQuestion/add,cmsSurveyQuestion/view,cmsSurveyQuestion/save,cmsSurveyQuestion/delete', NULL, 'survey_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('survey_question_list', 'cmsSurveyQuestion/list', 'cmsSurveyQuestion/add,cmsSurveyQuestion/save,cmsSurveyQuestion/delete', NULL, 'survey_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('survey_user_list', 'cmsUserSurvey/list', 'cmsUserSurvey/add,cmsUserSurvey/save', NULL, 'survey_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('survey_view', 'cmsSurvey/view', NULL, NULL, 'survey_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('system_menu', NULL, NULL, 'icon-cogs', 'maintenance', 1, 2);
@@ -1030,7 +1031,7 @@ INSERT INTO `sys_module` VALUES ('template_delete', NULL, 'cmsTemplate/delete', 
 INSERT INTO `sys_module` VALUES ('template_demo', 'cmsTemplate/demo', NULL, NULL, 'template_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('template_fragment', 'cmsTemplate/ftlLookup', NULL, NULL, 'template_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('template_help', 'cmsTemplate/help', NULL, NULL, 'template_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('template_import', 'cmsTemplate/upload', 'cmsTemplate/doUpload,cmsTemplate/import,cmsTemplate/doImport,cmsTemplate/lookupSiteFile,cmsTemplate/visitSitefileImage', NULL, 'template_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('template_import', 'cmsTemplate/upload', 'cmsTemplate/doUpload,cmsTemplate/import,cmsTemplate/doImport,cmsTemplate/lookupSiteFile,cmsTemplate/viewsitefile,cmsTemplate/visitSitefileImage', NULL, 'template_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('template_list', 'cmsTemplate/list', 'cmsTemplate/directory', 'icon-code', 'file_menu', 1, 1);
 INSERT INTO `sys_module` VALUES ('template_metadata', 'cmsTemplate/metadata', 'cmsTemplate/saveMetadata,cmsTemplate/createDirectory', NULL, 'template_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('template_search', 'cmsTemplate/search', 'cmsTemplate/replace', NULL, 'template_list', 0, 0);
@@ -1520,6 +1521,9 @@ INSERT INTO `sys_module_lang` VALUES ('record_list', 'en', 'Custom record manage
 INSERT INTO `sys_module_lang` VALUES ('record_list', 'ja', 'カスタムレコード管理');
 INSERT INTO `sys_module_lang` VALUES ('record_list', 'zh', '自定义记录管理');
 INSERT INTO `sys_module_lang` VALUES ('refund_list', 'en', 'Refund management');
+INSERT INTO `sys_module_lang` VALUES ('refund_view', 'en', 'View');
+INSERT INTO `sys_module_lang` VALUES ('refund_view', 'ja', '見る');
+INSERT INTO `sys_module_lang` VALUES ('refund_view', 'zh', '查看');
 INSERT INTO `sys_module_lang` VALUES ('refund_list', 'ja', '払い戻し管理');
 INSERT INTO `sys_module_lang` VALUES ('refund_list', 'zh', '退款管理');
 INSERT INTO `sys_module_lang` VALUES ('refund_refund', 'en', 'Refund');

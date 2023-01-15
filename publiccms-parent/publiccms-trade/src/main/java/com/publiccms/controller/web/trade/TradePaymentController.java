@@ -55,6 +55,7 @@ public class TradePaymentController {
     /**
      * @param site
      * @param paymentId
+     * @param paymentType
      * @param returnUrl
      * @param request
      * @param response
@@ -62,8 +63,8 @@ public class TradePaymentController {
      * @throws Exception
      */
     @RequestMapping(value = "pay")
-    public void pay(@RequestAttribute SysSite site, Long paymentId, String returnUrl, HttpServletRequest request,
-            HttpServletResponse response, ModelMap model) throws Exception {
+    public void pay(@RequestAttribute SysSite site, Long paymentId, String paymentType, String returnUrl,
+            HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
         returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         TradePayment entity = service.getEntity(paymentId);
         PaymentGateway paymentGateway = gatewayComponent.get(entity.getAccountType());
@@ -71,7 +72,7 @@ public class TradePaymentController {
                 || ControllerUtils.errorNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
             log.info("pay parameter error");
             response.sendRedirect(returnUrl);
-        } else if (!paymentGateway.pay(site, entity, returnUrl, response)) {
+        } else if (!paymentGateway.pay(site, entity, paymentType, returnUrl, response)) {
             log.info("pay error");
             response.sendRedirect(returnUrl);
         }

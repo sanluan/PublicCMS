@@ -55,7 +55,7 @@
             <tr>
                 <td class="center"><input name="ids" value="${a.id}" type="checkbox"></td>
                 <td class="center">${a.id!}</td>
-                <td>${(surveyMap[a.surveyId?string].title)!}</td>
+                <td><a href="cmsSurvey/view.html?id=${a.surveyId}" class="exclude-translate" target="dialog" rel="viewSurvey_${a.surveyId}">${(surveyMap[a.surveyId?string].title)!}</a></td>
                 <td>
                     <#if a.cover?has_content>
                         <div class="thumbnail">
@@ -65,7 +65,7 @@
                     <div class="box">
                         <h3 class="exclude-translate">
                             [<@t.page 'question.type.'+a.questionType/>]
-                            <a href="cmsSurveyQuestion/view.html?id=${a.id}" class="exclude-translate" target="dialog" rel="viewSurveyQuestion_${a.surveyId}">${(a.title)!}</a>
+                            ${(a.title)!}
                         </h3>
                     </div>
                 </td>

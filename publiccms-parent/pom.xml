@@ -508,6 +508,9 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.10.1</version>
                 <configuration>
+                    <compilerArgs>
+                        <arg>-parameters</arg>
+                    </compilerArgs>
                     <compilerArguments>
                         <extdirs>src\main\webapp\WEB-INF\lib</extdirs>
                     </compilerArguments>

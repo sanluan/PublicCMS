@@ -56,7 +56,7 @@
                 <#list page.list as v>
                         <li>
                             <div class="progress-box">
-                                <div class="progress-bar" style="width:${(object.votes gt 0)?then(v.votes*100/object.votes,100)}%;"></div>
+                                <div class="progress-bar" style="width:${(object.votes gt 0)?then(v.votes*100/object.votes,0)}%;"></div>
                                 <div class="progress-text">
                                     ${v.sort}.${v.title} (${v.votes}/${object.votes}) <#if q.answer?has_content&&q.answer?split(',')?seq_contains(v.id?string)>[<@t.page 'answer.correct'/>]</#if>
                                 </div>

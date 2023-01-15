@@ -221,7 +221,7 @@ function unscore(contentId){
         if("string" ==typeof itemString){
             url=url+"?"+itemString;
         }
-        ca.setDomain('${domain.name}');
+        ca.setDomain('${site.sitePath?keep_after('//')?keep_before('/')?keep_before(':')}');
         ca.setPath('/');
         ca.report(url);
     </script>
