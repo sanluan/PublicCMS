@@ -33,12 +33,26 @@
             <legend><@t.page 'server_config.site'/></legend>
             <div><a href="sysConfigData/edit.html?code=site" class="edit btnText blue" target="navTab" rel="sysConfigData/edit"><i class="icon-edit"></i><@t.page 'config_data.edit'/></a></div>
         <@sys.configData code="site">
-    <#if object?has_content>
-<#include "../include_page/extendData.html"/>
-<@sys.configFieldList code="site">
-    <@extendData name='extendDataList' extendList=list extendValues=object type='view' htmlSafe=true historyItemType='configData' historyItemId=code/>
-</@sys.configFieldList>
-    </#if>
+            <dl class="nowrap">
+                <dt><@t.message 'config.site.site_exclude_module'/>:</dt>
+                <dd><#if (object.site_exclude_module)?has_content><#list object.site_exclude_module?split(',') as a><@t.menu a/><#sep>,</#list></#if></dd>
+            </dl>
+            <dl>
+                <dt><@t.message 'config.site.login_path'/>:</dt>
+                <dd>${(object.login_path)!}</dd>
+            </dl>
+            <dl>
+                <dt><@t.message 'config.site.register_url'/>:</dt>
+                <dd>${(object.register_url)!}</dd>
+            </dl>
+            <dl class="nowrap">
+                <dt><@t.message 'config.site.category_template_path'/>:</dt>
+                <dd>${(object.register_url)!}</dd>
+            </dl>
+            <dl class="nowrap">
+                <dt><@t.message 'config.site.category_path'/>:</dt>
+                <dd>${(object.category_path)!}</dd>
+            </dl>
         </@sys.configData>
         </fieldset>
         <div class="divider"></div>
@@ -50,7 +64,7 @@
                 <dl class="nowrap">
                     <dt><@t.menu 'sitefile'/>:</dt>
                     <dd>
-                        <input type="text" name="fileName" class="required" size="30"/>
+                        <input type="text" name="fileName" class="required" readonly="readonly" size="30"/>
                         <a class="btnLook" href="cmsTemplate/lookupSitefile.html" lookupGroup="" width="1000" height="600"><@t.menu 'sitefile'/></a>
                         <label><input type="checkbox" name="overwrite" checked="checked"><@t.page 'import.overwrite'/></label>
                         <button type="submit" class="buttonActive"><@t.page 'import'/></button>
