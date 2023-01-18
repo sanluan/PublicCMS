@@ -16,7 +16,7 @@
     <#list list as a>
         <li>
             <#if categoryMap[a.id.categoryId?string]?has_content>
-                <a href="cmsCategory/add.html?id=${a.id.categoryId}" class="exclude-translate" class="edit btnText blue" target="navTab" rel="cmsCategory/edit" icon="<i class='icon-edit'></i>"><@bread categoryMap[a.id.categoryId?string]/> ${categoryMap[a.id.categoryId?string].name}</a>
+                <a href="cmsCategory/add.html?id=${a.id.categoryId}" class="exclude-translate" class="edit btnText blue" target="navTab" rel="cmsCategory/edit" icon="<i class='icon-edit'></i>" title="${categoryMap[a.id.categoryId?string].name}"><@bread categoryMap[a.id.categoryId?string]/> ${categoryMap[a.id.categoryId?string].name} <#if a.customContentPath><@t.page 'custorm_path'/></#if></a>
             </#if>
         </li>
     </#list>

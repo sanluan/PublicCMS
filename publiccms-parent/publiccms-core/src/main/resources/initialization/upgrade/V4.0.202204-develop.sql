@@ -514,3 +514,5 @@ INSERT INTO `sys_module` VALUES ('record_view', 'sysRecord/view', NULL, NULL, 'r
 INSERT INTO `sys_module_lang` VALUES ('refund_view', 'en', 'View');
 INSERT INTO `sys_module_lang` VALUES ('refund_view', 'ja', '見る');
 INSERT INTO `sys_module_lang` VALUES ('refund_view', 'zh', '查看');
+-- 2023-01-18 --
+UPDATE `sys_module` SET `authorized_url`= 'cmsCategoryType/categoryList' WHERE `id` ='category_type_list';
