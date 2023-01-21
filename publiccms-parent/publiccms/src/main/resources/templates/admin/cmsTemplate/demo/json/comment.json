@@ -1,4 +1,4 @@
-<#ftl auto_esc=false/>
+<#ftl output_format="JSON">
 [<#macro merge name value><#if !.vars[name]??><@"<#assign ${name}=''>"?interpret /></#if><#if value?has_content><@"<#assign ${name}=${name}+'${value},'>"?interpret /></#if></#macro>
 <@cms.commentList contentId=content.id replyId=replyId pageIndex=pageIndex>
     <#list page.list as a>
@@ -8,20 +8,20 @@
     <@sys.user ids=userIds!><#assign userMap=map!/></@sys.user>
     <#list page.list as a>
         {
-            "userId":"${a.userId}",
-            "userNickname":"${userMap[a.userId?string].nickname}",
-            "createDate":"${a.createDate}",
-            "replies":"${a.replies}",
+            "userId":${a.userId?cn},
+            "userNickname":${userMap[a.userId?string].nickname?cn},
+            "createDate":${a.createDate?string?cn},
+            "replies":${a.replies?cn},
             <#if a.replyId?has_content>
                 "replay":{
                 <@cms.comment id=a.replyId>
-                    "userId":"${a.userId}",
-                    "userNickname":"${userMap[a.replyUserId?string].nickname}",
-                    "text":"${object.text!}"
+                    "userId":${a.userId?cn},
+                    "userNickname":${userMap[a.replyUserId?string].nickname?cn},
+                    "text":${object.text?html?cn}
                 </@cms.comment>
                 },
             </#if>
-            "text":${a.text!}"
+            "text":${a.text!}
         }<#sep>,
     </#list>
 </@cms.commentList>]

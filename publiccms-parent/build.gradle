@@ -32,10 +32,10 @@ subprojects {
         servletVersion = "4.0.1"
         // http://mvnrepository.com/artifact/org.springframework/spring-core
         // https://spring.io/projects/spring-framework
-        springVersion = "5.3.24"
+        springVersion = "5.3.25"
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
         // https://spring.io/projects/spring-boot
-        springBootVersion = "2.7.6"
+        springBootVersion = "2.7.8"
         // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine
         junitVersion = "5.9.1"
         // http://mvnrepository.com/artifact/org.hibernate/hibernate-core
@@ -63,7 +63,7 @@ subprojects {
         // http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
         jacksonVersion = "2.14.1"
         // http://mvnrepository.com/artifact/org.freemarker/freemarker
-        freemarkerVersion = "2.3.31"
+        freemarkerVersion = "2.3.32"
         // https://mvnrepository.com/artifact/org.apache.lucene/lucene-analyzers-smartcn
         luceneVersion = "8.11.2"
         // http://mvnrepository.com/artifact/redis.clients/jedis

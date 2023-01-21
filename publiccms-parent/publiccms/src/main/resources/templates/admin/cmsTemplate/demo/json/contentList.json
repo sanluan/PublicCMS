@@ -1,13 +1,13 @@
-<#ftl auto_esc=false/>
+<#ftl output_format="JSON">
 [<@cms.contentList categoryId=categoryId containChild=containChild modelId=modelId parentId=parentId userId=userId orderField=orderField orderType=orderType pageIndex=pageIndex pageSize=pageSize>
     <#list page.list as a>
         {
-            "id":"${a.id}",
-            "title":"${a.title?json_string}",
-            "url":"${a.url!}",
-            "description":"${(a.description?json_string)!}",
-            "publishDate":"${a.publishDate}",
-            "cover":"${a.cover!}"
+            "id":${a.id?cn},
+            "title":${a.title?cn},
+            "url":${a.url?cn},
+            "description":${(a.description)?cn},
+            "publishDate":${a.publishDate?string?cn},
+            "cover":${a.cover?cn}
         }<#sep>,
     </#list>
 </@cms.contentList>]
