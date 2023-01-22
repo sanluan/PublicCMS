@@ -282,40 +282,6 @@ public class CmsTemplateAdminController {
     }
 
     /**
-     * @param site
-     * @param response
-     */
-    @RequestMapping("exportSite")
-    @Csrf
-    public void exportSite(@RequestAttribute SysSite site, HttpServletResponse response) {
-        try {
-            DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.DOWNLOAD_FORMAT_STRING);
-            response.setHeader("content-disposition", "attachment;fileName=" + URLEncoder.encode(
-                    new StringBuilder(site.getName()).append(dateFormat.format(new Date())).append("-site.zip").toString(),
-                    "utf-8"));
-        } catch (UnsupportedEncodingException e1) {
-        }
-        try (ServletOutputStream outputStream = response.getOutputStream();
-                ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream)) {
-            zipOutputStream.setEncoding(Constants.DEFAULT_CHARSET_NAME);
-            {
-                String filepath = siteComponent.getTemplateFilePath(site.getId(), CommonConstants.SEPARATOR);
-                ZipUtils.compress(Paths.get(filepath), zipOutputStream, "template");
-            }
-            {
-                String filepath = siteComponent.getWebFilePath(site.getId(), CommonConstants.SEPARATOR);
-                ZipUtils.compress(Paths.get(filepath), zipOutputStream, "web");
-            }
-            {
-                String filepath = siteComponent.getTaskTemplateFilePath(site.getId(), CommonConstants.SEPARATOR);
-                ZipUtils.compress(Paths.get(filepath), zipOutputStream, "tasktemplate");
-            }
-            siteExchangeComponent.exportAll(site.getId(), zipOutputStream);
-        } catch (IOException e) {
-        }
-    }
-
-    /**
      * @param model
      * @return view name
      */

@@ -213,24 +213,14 @@ orderChart.setOption({
         type: 'value'
     },
     series: [
+    <#list 0..4 as a>
        {
-           name:"<@t.page 'status.order.0'/>",
+           name:"<@t.page 'status.order.'+a/>",
            type:'line',
-           data:[<#list 7..0 as a><@trade.orderList status=0 startCreateDate=(.now?long-a*86400000)?number_to_date?string endCreateDate=(.now?long-(a-1)*86400000)?number_to_date?string pageSize=0>${page.totalCount}</@trade.orderList><#sep>,</#list>],
+           data:[<#list 7..0 as a><@trade.orderList status=a startCreateDate=(.now?long-a*86400000)?number_to_date?string endCreateDate=(.now?long-(a-1)*86400000)?number_to_date?string pageSize=0>${page.totalCount}</@trade.orderList><#sep>,</#list>],
            areaStyle: {}
-       },
-       {
-            name:"<@t.page 'status.order.2'/>",
-            type:'line',
-            data:[<#list 7..0 as a><@trade.orderList status=2 startCreateDate=(.now?long-a*86400000)?number_to_date?string endCreateDate=(.now?long-(a-1)*86400000)?number_to_date?string pageSize=0>${page.totalCount}</@trade.orderList><#sep>,</#list>],
-            areaStyle: {}
-       },
-       {
-            name:"<@t.page 'status.order.4'/>",
-            type:'line',
-            data:[<#list 7..0 as a><@trade.orderList status=4 startCreateDate=(.now?long-a*86400000)?number_to_date?string endCreateDate=(.now?long-(a-1)*86400000)?number_to_date?string pageSize=0>${page.totalCount}</@trade.orderList><#sep>,</#list>],
-            areaStyle: {}
-       }
+       }<#sep>,
+   </#list>
     ]
 });
 </script>
