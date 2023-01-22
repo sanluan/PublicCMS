@@ -47,7 +47,7 @@
             </dl>
             <dl class="nowrap">
                 <dt><@t.message 'config.site.category_template_path'/>:</dt>
-                <dd>${(object.register_url)!}</dd>
+                <dd>${(object.category_template_path)!}</dd>
             </dl>
             <dl class="nowrap">
                 <dt><@t.message 'config.site.category_path'/>:</dt>
@@ -57,7 +57,6 @@
         </fieldset>
         <div class="divider"></div>
         <div class="unit">
-            <a class="button" href="cmsTemplate/exportSite?_csrf=<@tools.csrfToken admin=true/>" target="dwzExport" targetType="navTab"><@t.page 'export.site'/></a>
             <a class="button" href="cmsTemplate/import.html" target="dialog" mask="true" width="500" height="250"><@t.page 'import.site'/></a>
             <form action="cmsTemplate/doImport?callbackType=closeCurrent&navTabId=cmsTemplate/list" method="post" autocomplete="off" enctype="multipart/form-data" class="pageForm required-validate" onsubmit="return iframeCallback(this, dialogAjaxDone)">
                 <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>

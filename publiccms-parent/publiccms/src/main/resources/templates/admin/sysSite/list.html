@@ -63,6 +63,7 @@
                     <a href="sysSite/add.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="sysSite/edit"><i class="icon-edit"></i><@t.page 'site.edit'/></a>
                     <a href="sysDomain/add.html?siteId=${a.id!}" class="btnText blue" target="navTab" rel="sysDomain/add"><@t.page 'domain.add'/></a>
                     <a href="sysDomain/list.html?siteId=${a.id!}" class="btnText" target="navTab" rel="sysDomain/list"><@t.page 'domain.list'/></a>
+                    <a class="button" href="cmsTemplate/export?id=${a.id!}&_csrf=<@tools.csrfToken admin=true/>" target="dwzExport"><@t.page 'export'/></a>
                 <#if !a.parentId?has_content>
                     <a href="sysSite/list.html?parentId=${a.id!}" class="btnText" target="navTab" rel="sysSite/list"><@t.page 'site.child_management'/></a>
                 </#if>

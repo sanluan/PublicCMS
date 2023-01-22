@@ -13,17 +13,17 @@ buildscript {
 }
 
 plugins {
-    id 'idea'
-    id 'eclipse'
+    id "idea"
+    id "eclipse"
 }
 
 subprojects {
     apply plugin: "java"
-    apply plugin: 'idea'
+    apply plugin: "idea"
     apply plugin: "eclipse-wtp"
 
-    group = 'com.publiccms'
-    version = 'V5.202204.d'
+    group = "com.publiccms"
+    version = "V5.202204.d"
 
     test.enabled = false
 
@@ -121,10 +121,9 @@ subprojects {
     sourceCompatibility = 17
     targetCompatibility = 17
 
-    [compileJava]*.options*.encoding = "UTF-8"
-    [compileTestJava]*.options*.encoding = "UTF-8"
     compileJava {
-        options.compilerArgs << '-parameters'
+        options.encoding = "UTF-8"
+        options.compilerArgs << "-parameters"
     }
 
     repositories {

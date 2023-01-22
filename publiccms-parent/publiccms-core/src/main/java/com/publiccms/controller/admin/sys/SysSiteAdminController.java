@@ -2,18 +2,25 @@ package com.publiccms.controller.admin.sys;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.DateFormat;
+import java.util.Date;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import jakarta.annotation.Resource;
+import org.apache.tools.zip.ZipOutputStream;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -28,8 +35,10 @@ import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
+import com.publiccms.common.tools.DateFormatUtils;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
+import com.publiccms.common.tools.ZipUtils;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.log.LogUpload;
 import com.publiccms.entities.sys.SysSite;
@@ -176,6 +185,43 @@ public class SysSiteAdminController {
     }
 
     /**
+     * @param id
+     * @param response
+     */
+    @RequestMapping("export")
+    @Csrf
+    public void export(Short id, HttpServletResponse response) {
+        SysSite site = service.getEntity(id);
+        if (null != site) {
+            try {
+                DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.DOWNLOAD_FORMAT_STRING);
+                response.setHeader("content-disposition", "attachment;fileName=" + URLEncoder.encode(
+                        new StringBuilder(site.getName()).append(dateFormat.format(new Date())).append("-site.zip").toString(),
+                        "utf-8"));
+            } catch (UnsupportedEncodingException e1) {
+            }
+            try (ServletOutputStream outputStream = response.getOutputStream();
+                    ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream)) {
+                zipOutputStream.setEncoding(CommonConstants.DEFAULT_CHARSET_NAME);
+                {
+                    String filepath = siteComponent.getTemplateFilePath(site.getId(), CommonConstants.SEPARATOR);
+                    ZipUtils.compress(Paths.get(filepath), zipOutputStream, "template");
+                }
+                {
+                    String filepath = siteComponent.getWebFilePath(site.getId(), CommonConstants.SEPARATOR);
+                    ZipUtils.compress(Paths.get(filepath), zipOutputStream, "web");
+                }
+                {
+                    String filepath = siteComponent.getTaskTemplateFilePath(site.getId(), CommonConstants.SEPARATOR);
+                    ZipUtils.compress(Paths.get(filepath), zipOutputStream, "tasktemplate");
+                }
+                siteExchangeComponent.exportAll(site.getId(), zipOutputStream);
+            } catch (IOException e) {
+            }
+        }
+    }
+
+    /**
      * @param site
      * @param admin
      * @param file
@@ -270,7 +316,7 @@ public class SysSiteAdminController {
 
     /**
      * @author Qicz
-     * 
+     *
      * @param site
      * @param admin
      * @param command
