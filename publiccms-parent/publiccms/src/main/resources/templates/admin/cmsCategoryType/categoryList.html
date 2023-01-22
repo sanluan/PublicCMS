@@ -1,0 +1,29 @@
+<#macro bread category>
+    <#if category.parentId?has_content>
+        <@cms.category id=category.parentId>
+            <@bread object/>
+            ${object.name} &gt;
+        </@cms.category>
+    </#if>
+</#macro>
+<div class="pageFormContent" layoutH>
+    <ul class="tree treeFolder">
+<@cms.categoryList advanced=true queryAll=true typeId=id pageSize=500>
+    <#list list as a>
+        <li>
+            <a href="cmsCategory/add.html?id=${a.id}" class="exclude-translate" class="edit btnText blue" target="navTab" rel="cmsCategory/edit" icon="<i class='icon-edit'></i>" title="${a.name}"><@bread a.id/> ${a.name} <#if customPath><@t.page 'custorm_path'/></#if></a>
+        </li>
+    </#list>
+</@cms.categoryList>
+    </ul>
+</div>
+<script>
+$('ul li a',$.pdialog.getCurrent()).click(function(){
+    $.pdialog.closeCurrent();
+});
+</script>
+<div class="formBar">
+    <ul>
+        <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+    </ul>
+</div>

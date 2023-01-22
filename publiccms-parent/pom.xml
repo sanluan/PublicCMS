@@ -23,14 +23,14 @@
         <version.publiccms>V5.202204.d</version.publiccms>
         <!-- https://mvnrepository.com/artifact/jakarta.servlet/jakarta.servlet-api -->
         <version.servlet>6.0.0</version.servlet>
-        <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine -->
-        <version.juint>5.9.1</version.juint>
         <!-- http://mvnrepository.com/artifact/org.springframework/spring-core -->
         <!-- https://spring.io/projects/spring-framework -->
-        <version.spring>6.0.3</version.spring>
+        <version.spring>6.0.4</version.spring>
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
         <!-- https://spring.io/projects/spring-boot -->
-        <version.springBoot>3.0.1</version.springBoot>
+        <version.springBoot>3.0.2</version.springBoot>        
+        <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine -->
+        <version.juint>5.9.1</version.juint>
         <!-- http://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
         <!-- http://hibernate.org/orm/releases/ -->
         <version.hibernate>5.6.11.Final</version.hibernate>
@@ -41,10 +41,6 @@
         <version.hibernateSearch>6.2.0.Alpha1</version.hibernateSearch>
         <!-- https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator -->
         <version.hibernateValidator>8.0.0.Final</version.hibernateValidator>
-        <!-- https://mvnrepository.com/artifact/org.ehcache/ehcache -->
-        <version.ehcache>3.10.8</version.ehcache>
-        <!-- http://mvnrepository.com/artifact/org.freemarker/freemarker -->
-        <version.freemarker>2.3.31</version.freemarker>
         <!-- http://mvnrepository.com/artifact/org.mybatis/mybatis -->
         <version.mybatis>3.5.11</version.mybatis>
         <!-- http://mvnrepository.com/artifact/org.mybatis/mybatis-spring -->
@@ -56,16 +52,13 @@
         <!-- https://mvnrepository.com/artifact/org.mybatis.dynamic-sql/mybatis-dynamic-sql -->
         <version.dynamicSql>1.4.1</version.dynamicSql>
         <!-- https://mvnrepository.com/artifact/org.ehcache/ehcache -->
-        <version.ehcache>3.10.1</version.ehcache>
+        <version.ehcache>3.10.8</version.ehcache>
         <!-- http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
         <version.jackson>2.14.1</version.jackson>
         <!-- http://mvnrepository.com/artifact/org.freemarker/freemarker -->
-        <version.freemarker>2.3.31</version.freemarker>
+        <version.freemarker>2.3.32</version.freemarker>
         <!-- https://mvnrepository.com/artifact/org.apache.lucene/lucene-core -->
         <version.lucene>8.11.2</version.lucene>
-        <!-- http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
-        <!-- http://hc.apache.org/downloads.cgi -->
-        <version.httpclient>4.5.13</version.httpclient>
         <!-- http://mvnrepository.com/artifact/redis.clients/jedis -->
         <version.jedis>4.3.1</version.jedis>
         <!-- http://mvnrepository.com/artifact/org.quartz-scheduler/quartz -->
@@ -73,14 +66,14 @@
         <!-- https://mvnrepository.com/artifact/com.zaxxer/HikariCP -->
         <version.hikariCP>5.0.1</version.hikariCP>
         <!-- https://mvnrepository.com/artifact/com.mysql/mysql-connector-j -->
-        <version.mysql>8.0.31</version.mysql>
+        <version.mysql>8.0.32</version.mysql>
         <!-- http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
         <!-- http://hc.apache.org/downloads.cgi -->
         <version.httpclient>4.5.14</version.httpclient>
-        <!-- https://mvnrepository.com/artifact/fr.opensagres.xdocreport/fr.opensagres.poi.xwpf.converter.xhtml -->
-        <version.xhtmlConverter>2.0.4</version.xhtmlConverter>
         <!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
         <version.poi>5.2.3</version.poi>
+        <!-- https://mvnrepository.com/artifact/fr.opensagres.xdocreport/fr.opensagres.poi.xwpf.converter.xhtml -->
+        <version.xhtmlConverter>2.0.4</version.xhtmlConverter>
         <!-- http://mvnrepository.com/artifact/commons-fileupload/commons-fileupload -->
         <version.fileupload>1.4</version.fileupload>
         <!-- http://mvnrepository.com/artifact/org.apache.commons/commons-collections4 -->
