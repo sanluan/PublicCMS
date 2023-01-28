@@ -39,7 +39,7 @@ import com.publiccms.common.search.CmsContentTextBinder;
 public class CmsContent implements java.io.Serializable {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
     /**
@@ -163,6 +163,7 @@ public class CmsContent implements java.io.Serializable {
      * 静态化
      */
     @GeneratorColumn(title = "有静态化")
+    @GenericField(projectable = Projectable.YES)
     private boolean hasStatic;
     /**
      * url<p>
@@ -176,7 +177,7 @@ public class CmsContent implements java.io.Serializable {
      * 描述
      */
     @GeneratorColumn(title = "描述")
-    @FullTextField(projectable = Projectable.YES)
+    @FullTextField(analyzer = "cms", projectable = Projectable.YES)
     private String description;
     /**
      * tag ids<p>
@@ -240,7 +241,7 @@ public class CmsContent implements java.io.Serializable {
     /**
      * expiry date<p>
      * 过期日期
-     * 
+     *
      */
     @GeneratorColumn(title = "过期日期", condition = true, order = true)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")

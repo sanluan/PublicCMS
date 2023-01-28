@@ -9,7 +9,7 @@
         <@cms.content id=itemId absoluteURL=false>
             <#assign content=object/>
             <#if !content.onlyUrl && !content.hasStatic>
-                <#assing contentUrl=getUrl(site.dynamicPath,content.url)/>
+                <#assign contentUrl=getUrl(site.dynamicPath,content.url)/>
             <#else>
                 <#assign contentUrl=content.url/>
             </#if>

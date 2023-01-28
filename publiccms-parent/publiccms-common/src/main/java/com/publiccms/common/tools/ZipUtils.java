@@ -24,7 +24,7 @@ import com.publiccms.common.constants.Constants;
 
 /**
  * 压缩/解压缩zip包处理类
- * 
+ *
  * ZipUtils
  *
  */
@@ -109,7 +109,7 @@ public class ZipUtils {
      *     }
      * }
      * </pre>
-     * 
+     *
      * @param file
      * @param out
      * @param fullName
@@ -172,7 +172,7 @@ public class ZipUtils {
         }
         while (entryEnum.hasMoreElements()) {
             ZipEntry zipEntry = entryEnum.nextElement();
-            unzip(zipFile, entryEnum.nextElement(), targetPath, zipEntry.getName(), overwrite);
+            unzip(zipFile, zipEntry, targetPath, zipEntry.getName(), overwrite);
         }
         zipFile.close();
     }
