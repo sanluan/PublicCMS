@@ -13,13 +13,13 @@ import com.publiccms.entities.trade.TradeAccount;
 /**
  *
  * TradeAccountDao
- * 
+ *
  */
 @Repository
 public class TradeAccountDao extends BaseDao<TradeAccount> {
 
     /**
-     * 
+     *
      * @param siteId
      * @param orderField
      * @param orderType
@@ -40,7 +40,7 @@ public class TradeAccountDao extends BaseDao<TradeAccount> {
         }
         switch (orderField) {
         case "amount":
-            queryHandler.order("bean.replies").append(orderType);
+            queryHandler.order("bean.amount").append(orderType);
             break;
         case "updateDate":
             queryHandler.order("bean.updateDate").append(orderType);
