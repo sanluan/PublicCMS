@@ -48,6 +48,7 @@ import com.publiccms.logic.component.cache.CacheComponent;
 import com.publiccms.logic.component.exchange.SiteExchangeComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
+import com.publiccms.logic.component.template.ModelComponent;
 import com.publiccms.logic.component.template.TemplateCacheComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsPlaceService;
@@ -78,6 +79,8 @@ public class CmsTemplateAdminController {
     private CacheComponent cacheComponent;
     @Resource
     private MetadataComponent metadataComponent;
+    @Resource
+    private ModelComponent modelComponent;
     @Resource
     private CmsPlaceService cmsPlaceService;
     @Resource
@@ -230,6 +233,7 @@ public class CmsTemplateAdminController {
                         ZipUtils.unzipHere(filepath, encoding, overwrite);
                         CmsFileUtils.delete(filepath);
                         metadataComponent.clear();
+                        modelComponent.clear();
                     } else {
                         String suffix = CmsFileUtils.getSuffix(filepath);
                         if (CmsFileUtils.isSafe(filepath, suffix)) {
