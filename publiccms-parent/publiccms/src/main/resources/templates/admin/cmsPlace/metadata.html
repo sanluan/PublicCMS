@@ -42,7 +42,7 @@
                         <@tools.placeMetadata path=a>
                         <p>
                             <#if (object.metadataExtendList)?has_content>
-                                <a class="button" href="cmsPlace/metadata.html?path=${a?url}" target="ajax" rel="${rel!'placeBox'}">${(object.alias)!a}</a>
+                                <a class="button" href="cmsPlace/metadata.html?path=${a?url}&rel=${rel!'placeBox'}" target="ajax" rel="${rel!'placeBox'}">${(object.alias)!a}</a>
                             </#if>
                             <#if 0 lt ((object.size)!0)>
                                <a class="button" href="cmsPlace/dataList.html?path=${a?url}" target="navTab" rel="cmsPlace/dataList:${a!}"><@t.page 'place_data'/>:${(object.alias)!a}(${object.size})</a>

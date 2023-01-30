@@ -1,5 +1,5 @@
 <@tools.metadata path=path><#assign metadata=object/></@tools.metadata>
-<form method="post" autocomplete="off" action="cmsPage/save?rel=pageBox" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+<form method="post" autocomplete="off" action="cmsPage/save?rel=${rel!'pageBox'}" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <input type="hidden" name="type" value="page"/>
     <div class="formBar card">
@@ -66,8 +66,8 @@
                     <#list list as a>
                         <@tools.placeMetadata path=a>
                         <p>
-                        <#if (object.metadataExtendList)?has_content>
-                            <a href="cmsPlace/metadata.html?path=${a?url}" target="ajax" class="button" rel="pageBox"><i class="bi bi-layout-sidebar"></i>${(object.alias)!a}</a>
+                        <#if (object.metadataExtendList)?has_content || 0 gte ((object.size)!0)>
+                            <a href="cmsPlace/metadata.html?path=${a?url}" target="ajax" class="button" rel="${rel!'pageBox'}"><i class="bi bi-layout-sidebar"></i>${(object.alias)!a}</a>
                         </#if>
                         <#if 0 lt ((object.size)!0)>
                             <a href="cmsPlace/dataList.html?path=${a?url}" target="navTab" class="button" rel="cmsPlace/dataList"><i class="bi bi-layout-text-sidebar-reverse"></i><@t.page 'place_data'/>:${(object.alias)!a}(${object.size})</a>

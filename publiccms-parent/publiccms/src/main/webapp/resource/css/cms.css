@@ -23,7 +23,7 @@ a.btnText i{margin-right:3px;}
 .unit ul li .card h4{font-size:20px;}
 .unit ul li .card h5{font-size:18px;}
 .unit ul li .card h6{font-size:16px;}
-.unit ul li .card .icon{font-size:38px;width:45px;float:left;padding:10px;margin-right:5px;opacity:0.6;}
+.unit ul li .card .icon{font-size:35px;width:45px;float:left;padding:10px;margin-right:5px;opacity:0.6;}
 .unit ul li:nth-child(6n) .card,.unit ul li:nth-child(6n) .card .icon{border-color:#99CC00;color:#99CC00;}
 .unit ul li:nth-child(6n+1) .card,.unit ul li:nth-child(6n+1) .card .icon{border-color:#336699;color:#336699;}
 .unit ul li:nth-child(6n+2) .card,.unit ul li:nth-child(6n+2) .card .icon{border-color:#0099CC;color:#0099CC;}
