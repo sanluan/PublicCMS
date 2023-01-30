@@ -213,11 +213,11 @@ orderChart.setOption({
         type: 'value'
     },
     series: [
-    <#list 0..4 as a>
+    <#list 0..4 as s>
        {
-           name:"<@t.page 'status.order.'+a/>",
+           name:"<@t.page 'status.order.'+s/>",
            type:'line',
-           data:[<#list 7..0 as a><@trade.orderList status=a startCreateDate=(.now?long-a*86400000)?number_to_date?string endCreateDate=(.now?long-(a-1)*86400000)?number_to_date?string pageSize=0>${page.totalCount}</@trade.orderList><#sep>,</#list>],
+           data:[<#list 7..0 as a><@trade.orderList status=s startCreateDate=(.now?long-a*86400000)?number_to_date?string endCreateDate=(.now?long-(a-1)*86400000)?number_to_date?string pageSize=0>${page.totalCount}</@trade.orderList><#sep>,</#list>],
            areaStyle: {}
        }<#sep>,
    </#list>

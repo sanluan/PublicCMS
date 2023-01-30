@@ -6,7 +6,7 @@
         <ul>
         <#if exists>
             <li><a class="button" href="cmsTemplate/deletePlace?path=${(path?url)!}&navTabId=placeTemplate/list&_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.delete_file'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i><@t.page 'button.delete'/></a></li>
-            <li><a class="button" href="cmsPlace/metadata.html?path=${(path?url)!}" target="ajax" rel="cmsTemplatePlace"><@t.page 'place.management'/></a></li>
+            <li><a class="button" href="cmsPlace/metadata.html?path=${(path?url)!}&rel=cmsTemplatePlace" target="ajax" rel="cmsTemplatePlace"><@t.page 'place.management'/></a></li>
             <li><a class="button" href="placeTemplate/content.html?path=${(path?url)!}" target="ajax" rel="cmsTemplatePlace"><@t.page 'template.content'/></a></li>
         </#if>
             <li><button type="submit" class="buttonActive" title="ctrl+s"<#if path?has_content> lock-url="common/lock?itemType=placeTemplate&itemId=${(path?url)!}" close-url="common/unlock?itemType=placeTemplate&itemId=${(path?url)!}"</#if>><@t.page 'button.save'/></button></li>
