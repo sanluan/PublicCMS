@@ -73,7 +73,9 @@ public class ModelComponent implements SiteCache {
      */
     public List<CmsCategoryType> getCategoryTypeList(short siteId) {
         Map<String, CmsCategoryType> map = getCategoryTypeMap(siteId);
-        return new ArrayList<>(map.values());
+        List<CmsCategoryType> list = new ArrayList<>(map.values());
+        list.sort((e1, e2) -> e1.getSort() - e2.getSort());
+        return list;
     }
 
     /**
