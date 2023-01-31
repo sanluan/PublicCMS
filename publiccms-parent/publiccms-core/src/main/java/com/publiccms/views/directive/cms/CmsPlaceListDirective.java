@@ -100,8 +100,7 @@ public class CmsPlaceListDirective extends AbstractTemplateDirective {
                     e.setClicks(e.getClicks() + clicks);
                 }
                 if (absoluteURL) {
-                    templateComponent.initPlaceCover(site, e);
-                    e.setUrl(TemplateComponent.getUrl(site, site.isUseStatic(), e.getUrl()));
+                    templateComponent.initPlaceUrl(site, e);
                 }
             });
         }

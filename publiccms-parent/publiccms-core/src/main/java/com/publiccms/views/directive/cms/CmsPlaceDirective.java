@@ -60,7 +60,7 @@ public class CmsPlaceDirective extends AbstractTemplateDirective {
             CmsPlace entity = service.getEntity(id);
             if (null != entity && site.getId() == entity.getSiteId()) {
                 if (absoluteURL) {
-                    templateComponent.initPlaceCover(site, entity);
+                    templateComponent.initPlaceUrl(site, entity);
                 }
                 handler.put("object", entity);
                 if (handler.getBoolean("containsAttribute", false)) {
@@ -82,7 +82,7 @@ public class CmsPlaceDirective extends AbstractTemplateDirective {
                         if (null != clicks) {
                             e.setClicks(e.getClicks() + clicks);
                         }
-                        templateComponent.initPlaceCover(site, e);
+                        templateComponent.initPlaceUrl(site, e);
                     };
                 } else {
                     consumer = e -> {
