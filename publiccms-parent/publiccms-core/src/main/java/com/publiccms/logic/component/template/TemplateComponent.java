@@ -521,8 +521,9 @@ public class TemplateComponent implements Cache {
      * @param site
      * @param entity
      */
-    public void initPlaceCover(SysSite site, CmsPlace entity) {
+    public void initPlaceUrl(SysSite site, CmsPlace entity) {
         entity.setCover(getUrl(site, true, entity.getCover()));
+        entity.setUrl(getUrl(site, site.isUseStatic(), entity.getUrl()));
     }
 
     /**
@@ -592,7 +593,7 @@ public class TemplateComponent implements Cache {
                     if (null != clicks) {
                         e.setClicks(e.getClicks() + clicks);
                     }
-                    initPlaceCover(site, e);
+                    initPlaceUrl(site, e);
                 });
             }
             model.put("page", page);

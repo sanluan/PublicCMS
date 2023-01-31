@@ -44,11 +44,6 @@ public class CmsCategoryType implements java.io.Serializable {
      */
     private String path;
     /**
-     * content path<p>
-     * 内容访问路径
-     */
-    private String contentPath;
-    /**
      * contain child category's content<p>
      * 包含子分类内容
      */
@@ -149,21 +144,6 @@ public class CmsCategoryType implements java.io.Serializable {
      */
     public void setPath(String path) {
         this.path = path;
-    }
-
-    /**
-     * @return the contentPath
-     */
-    public String getContentPath() {
-        return contentPath;
-    }
-
-    /**
-     * @param contentPath
-     *            the contentPath to set
-     */
-    public void setContentPath(String contentPath) {
-        this.contentPath = contentPath;
     }
 
     /**
