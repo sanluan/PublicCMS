@@ -44,6 +44,7 @@ registerChart.setOption({
     {
            name:"<@t.page 'register'/>",
            type:"line",
+           smooth: true,
            data:[<#list 30..0 as a><@sys.userList startRegisteredDate=(.now?long-a*86400000)?number_to_date?string endRegisteredDate=(.now?long-(a-1)*86400000)?number_to_date?string>${page.totalCount}</@sys.userList><#sep>,</#list>],
            areaStyle: {}
        }]
@@ -80,6 +81,7 @@ loginChart.setOption({
     {
         name:"<@t.page 'login'/>",
         type:"line",
+        smooth: true,
         data:[<#list 30..0 as a><@log.loginList startCreateDate=(.now?long-a*86400000)?number_to_date?string endCreateDate=(.now?long-(a-1)*86400000)?number_to_date?string>${page.totalCount}</@log.loginList><#sep>,</#list>],
         areaStyle: {}
     }]
@@ -116,6 +118,7 @@ operateChart.setOption({
     {
         name:"<@t.page 'operate'/>",
         type:"line",
+        smooth: true,
         data:[<#list 30..0 as a><@log.operateList channel='web_manager' startCreateDate=(.now?long-a*86400000)?number_to_date?string endCreateDate=(.now?long-(a-1)*86400000)?number_to_date?string>${page.totalCount}</@log.operateList><#sep>,</#list>],
         areaStyle: {}
     }]
@@ -153,6 +156,7 @@ userCommentChart.setOption({
     {
         name:"<@t.page 'operate'/>",
         type:"line",
+        smooth: true,
         data:[<#list 30..0 as a><@log.operateList operate='save.cmsComment' startCreateDate=(.now?long-a*86400000)?number_to_date?string endCreateDate=(.now?long-(a-1)*86400000)?number_to_date?string>${page.totalCount}</@log.operateList><#sep>,</#list>],
         areaStyle: {}
     }]

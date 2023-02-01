@@ -49,18 +49,21 @@ todayVisitChart.setOption({
     {
         name:'PV',
         type:'line',
+        smooth: true,
         data:[<#list page.list?reverse as a>${a.pv!}<#sep>,</#list>],
         areaStyle: {}
     },
     {
        name:'UV',
        type:'line',
+       smooth: true,
        data:[<#list page.list?reverse as a>${a.uv!}<#sep>,</#list>],
        areaStyle: {}
     },
     {
        name:'IP Views',
        type:'line',
+       smooth: true,
        data:[<#list page.list?reverse as a>${a.ipviews!}<#sep>,</#list>],
        areaStyle: {}
     }]
@@ -103,18 +106,21 @@ yestodayVisitChart.setOption({
     {
        name:'PV',
        type:'line',
+       smooth: true,
        data:[<#list page.list?reverse as a>${a.pv!}<#sep>,</#list>],
        areaStyle: {}
    },
    {
        name:'UV',
        type:'line',
+       smooth: true,
        data:[<#list page.list?reverse as a>${a.uv!}<#sep>,</#list>],
        areaStyle: {}
    },
    {
        name:'IP Views',
        type:'line',
+       smooth: true,
        data:[<#list page.list?reverse as a>${a.ipviews!}<#sep>,</#list>],
        areaStyle: {}
    }]
@@ -157,18 +163,21 @@ allVisitChart.setOption({
     {
        name:'PV',
        type:'line',
+       smooth: true,
        data:[<#list page.list?reverse as a>${a.pv!}<#sep>,</#list>],
        areaStyle: {}
     },
     {
        name:'UV',
        type:'line',
+       smooth: true,
        data:[<#list page.list?reverse as a>${a.uv!}<#sep>,</#list>],
        areaStyle: {}
     },
     {
        name:'IP Views',
        type:'line',
+       smooth: true,
        data:[<#list page.list?reverse as a>${a.ipviews!}<#sep>,</#list>],
        areaStyle: {}
     }]

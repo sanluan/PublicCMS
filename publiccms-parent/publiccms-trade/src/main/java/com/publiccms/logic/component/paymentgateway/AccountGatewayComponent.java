@@ -39,7 +39,7 @@ public class AccountGatewayComponent extends AbstractPaymentGateway {
                     payment.getDescription());
             if (null != history) {
                 if (service.paid(site.getId(), payment.getId(), history.getId().toString())) {
-                    if (confirmPay(site.getId(), payment, response)) {
+                    if (confirmPay(site.getId(), payment)) {
                         try {
                             response.sendRedirect(callbackUrl);
                         } catch (IOException e) {
@@ -59,7 +59,7 @@ public class AccountGatewayComponent extends AbstractPaymentGateway {
     public boolean refund(short siteId, TradePayment payment, TradeRefund refund) {
         if (null != payment && service.refunded(siteId, payment.getId())) {
             TradeAccountHistory history = accountService.change(siteId, payment.getSerialNumber(), payment.getUserId(),
-                    payment.getUserId(), TradeAccountHistoryService.STATUS_REFUND, payment.getAmount().negate(),
+                    payment.getUserId(), TradeAccountHistoryService.STATUS_REFUND, payment.getAmount(),
                     payment.getDescription());
             if (null == history) {
                 service.pendingRefund(siteId, payment.getId());

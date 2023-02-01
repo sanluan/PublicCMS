@@ -59,6 +59,7 @@ memoryChart.chart.setOption({
         {
             name:"<@t.page 'report.used'/>",
             type:"line",
+            smooth: true,
             stack: "temp",
             areaStyle: {normal: {}},
             data:memoryChart.data.usedMemory
@@ -66,6 +67,7 @@ memoryChart.chart.setOption({
        {
            name:"<@t.page 'report.unused'/>",
            type:"line",
+           smooth: true,
            stack: "temp",
            areaStyle: {normal: {}},
            data:memoryChart.data.unUsedMemory
@@ -73,6 +75,7 @@ memoryChart.chart.setOption({
        {
            name:"<@t.page 'report.memory.free'/>",
            type:"line",
+           smooth: true,
            stack: "temp",
            areaStyle: {normal: {}},
            data:memoryChart.data.freeMemory
@@ -182,6 +185,7 @@ function refreshMemory(){
                          {
                             name:"<@t.page 'report.used'/>",
                             type:"line",
+                            smooth: true,
                             stack: "temp",
                             areaStyle: {normal: {}},
                             data:memoryChart.data.usedMemory
@@ -189,6 +193,7 @@ function refreshMemory(){
                         {
                             name:"<@t.page 'report.unused'/>",
                             type:"line",
+                            smooth: true,
                             stack: "temp",
                             areaStyle: {normal: {}},
                             data:memoryChart.data.unUsedMemory
@@ -196,6 +201,7 @@ function refreshMemory(){
                         {
                             name:"<@t.page 'report.memory.free'/>",
                             type:"line",
+                            smooth: true,
                             stack: "temp",
                             areaStyle: {normal: {}},
                             data:memoryChart.data.freeMemory

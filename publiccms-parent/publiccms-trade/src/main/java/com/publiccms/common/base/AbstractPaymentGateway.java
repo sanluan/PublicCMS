@@ -1,7 +1,5 @@
 package com.publiccms.common.base;
 
-import javax.servlet.http.HttpServletResponse;
-
 import javax.annotation.Resource;
 
 import com.publiccms.common.api.PaymentGateway;
@@ -22,7 +20,7 @@ public abstract class AbstractPaymentGateway implements PaymentGateway {
     private PaymentProcessorComponent paymentProcessorComponent;
 
     @Override
-    public boolean confirmPay(short siteId, TradePayment payment, HttpServletResponse response) {
+    public boolean confirmPay(short siteId, TradePayment payment) {
         TradePaymentProcessor paymentProcessor = paymentProcessorComponent.get(payment.getTradeType());
         if (null != paymentProcessor && paymentProcessor.paid(siteId, payment)) {
             service.processed(siteId, payment.getId(), payment.getUserId());
