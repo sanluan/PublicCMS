@@ -6,4 +6,5 @@
     $.setMessage('sessionTimout','Session timeout, please login again!');
     $.setMessage('alertSelectMsg','Please select a item!');
     $.setMessage('forwardConfirmMsg','Go on next!');
+    $.setMessage('errorSupportVersion','Incorrect version of cms.support, please update!');
 })(jQuery);

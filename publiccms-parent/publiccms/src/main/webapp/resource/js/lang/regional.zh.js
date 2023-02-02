@@ -45,4 +45,5 @@
     $.setMessage('sessionTimout','会话超时，请重新登录!');
     $.setMessage('alertSelectMsg','请选择一条数据!');
     $.setMessage('forwardConfirmMsg','继续下一步!');
+    $.setMessage('errorSupportVersion','错误的cms.support版本，请更新!');
 })(jQuery);

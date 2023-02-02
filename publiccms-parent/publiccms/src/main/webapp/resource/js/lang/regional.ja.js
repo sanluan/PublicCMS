@@ -44,4 +44,5 @@
     $.setMessage('sessionTimout','タイムアウトしました、再度ログインしてください！');
     $.setMessage('alertSelectMsg','一つのデータを選択してください!');
     $.setMessage('forwardConfirmMsg','次へ!');
+    $.setMessage('errorSupportVersion','誤ったバージョンのcms.supportを更新します!');
 })(jQuery);

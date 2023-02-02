@@ -22,7 +22,7 @@ ol.vote>li:nth-child(3n) .progress-bar {background-color:blue;}
         <a href="${site.dynamicPath}">Home</a>
 <@cms.categoryList>
     <#list page.list as a>
-        <a href="${a.url!}" target="_blank">${a.name}</a>
+        <a href="${a.url!}" target="_blank" data-diy-item="${a.id}">${a.name}</a>
     </#list>
 </@cms.categoryList>
     </nav>

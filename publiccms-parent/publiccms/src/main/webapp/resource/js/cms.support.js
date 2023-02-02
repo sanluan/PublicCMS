@@ -130,13 +130,12 @@ if(window.parent!=window && "string" === typeof templatePath ){
         }
         var forms=document.getElementsByTagName("form");
         for (var i=0; i<forms.length; i++) {
-            if("post" == forms[i].method||"POST" == forms[i].method){
-                forms[i].method="get";
+            if("get" == forms[i].method||"GET" == forms[i].method){
+                var input = document.createElement("input");
+                input.type="hidden";
+                input.name="diy";
+                forms[i].appendChild(input);
             }
-            var input = document.createElement("input");
-            input.type="hidden";
-            input.name="diy";
-            forms[i].appendChild(input);
         }
         var itemType,itemId;
         if("string" === typeof itemString ) {
@@ -157,7 +156,7 @@ if(window.parent!=window && "string" === typeof templatePath ){
                 window.parent.postMessage({diyevent:'scroll',x:offset.x,y:offset.y,width:offset.width,height:offset.height},"*");
             }
         }
-        window.parent.postMessage({url:location.href,diyevent:'load',templatePath:templatePath,itemType:itemType,itemId:itemId},"*");
+        window.parent.postMessage({url:location.href,diyevent:'load',templatePath:templatePath,itemType:itemType,itemId:itemId,version:"1.0"},"*");
         var diyElements = document.querySelectorAll('[data-diy]');
         for (var i=0; i < diyElements.length; i++) {
             diyElements[i].onmouseenter = function(){
@@ -171,6 +170,16 @@ if(window.parent!=window && "string" === typeof templatePath ){
                 window.parent.postMessage({url:location.href,diyevent:'leave'},"*");
                 window.removeEventListener("scroll", scroll);
             };
+            var items = diyElements[i].querySelectorAll('[data-diy-item]');
+            for (var j=0; j < items.length; j++) {
+                items[j].onmouseenter = function(){
+                    var offset = this.getBoundingClientRect();
+                    window.parent.postMessage({diyevent:'hoverItem',itemId:this.getAttribute("data-diy-item"),x:offset.x,y:offset.y,width:offset.width,height:offset.height},"*");
+                };
+                items[j].onmouseleave = function(){
+                    window.parent.postMessage({diyevent:'leaveItem'},"*");
+                };
+            }
         }
     }
 }

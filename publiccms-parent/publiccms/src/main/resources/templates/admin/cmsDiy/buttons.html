@@ -15,7 +15,7 @@
     </#if>
 </#if>
 <@tools.metadata path=templatePath><#assign metadata=object/></@tools.metadata>
-<@sys.authorized roleIds=admin.roles urls='cmsContent/list,cmsContent/addMore,cmsContent/publish,cmsModel/add,cmsCategory/list,cmsCategory/add,cmsCategory/addMore,cmsCategory/publishParameters,cmsTemplate/content,cmsPlace/metadata,cmsPlace/dataList,cmsPage/list,cmsPage/diy,cmsTemplate/publish,sysConfigData/list,sysTask/list,sysUser/list'><#assign authorizedMap=map/></@sys.authorized>
+<@sys.authorized roleIds=admin.roles urls='cmsContent/list,cmsContent/addMore,cmsContent/add,cmsContent/publish,cmsComment/list,cmsComment/edit,cmsComment/reply,cmsModel/add,cmsCategory/list,cmsCategory/add,cmsCategory/addMore,cmsCategory/publishParameters,cmsTemplate/content,cmsPlace/metadata,cmsPlace/dataList,cmsPlace/add,cmsPage/list,cmsPage/diy,cmsTemplate/publish,sysConfigData/list,sysTask/list,sysUser/list'><#assign authorizedMap=map/></@sys.authorized>
 <ul class="toolBar">
     <li>
         <a href="javascript:diyIframeRefresh();"><i class="icon-refresh"></i><@t.page 'button.refresh'/></a>
@@ -23,33 +23,55 @@
     <#if url?has_content>
         <li><a href="${url?keep_before('?diy')?keep_before('&diy')}" target="_blank"><i class="icon-external-link"></i><@t.page 'button.view'/></a></li>
     </#if>
-    <#if authorizedMap['cmsContent/list'] && (content?has_content || category?has_content)>
-    <li>
-        <a href="cmsContent/list?categoryId=${(category.id)!}" target="navTab" rel="cmsContent/list" class="addMore" data-diy="content"><@t.page 'content.management'/></a>
-        <ul>
-            <#if content?has_content>
-                <#if model?has_content && model.hasChild>
-                    <li><a href="cmsContent/list.html?parentId=${content.id}&categoryId=${content.categoryId!}" target="navTab" rel="cmsContent/list" data-diy="content"><@t.page 'content.child_management'/></a></li>
+    <#if authorizedMap['cmsContent/list']>
+        <#if (content?has_content || category?has_content)>
+        <li>
+            <a href="cmsContent/list?categoryId=${(category.id)!}" target="navTab" rel="cmsContent/list" class="addMore" data-diy="content"><@t.page 'content.management'/></a>
+            <ul>
+                <#if content?has_content>
+                    <#if model?has_content && model.hasChild>
+                        <li><a href="cmsContent/list.html?parentId=${content.id}&categoryId=${content.categoryId!}" target="navTab" rel="cmsContent/list" data-diy="content"><@t.page 'content.child_management'/></a></li>
+                    </#if>
+                    <#if authorizedMap['cmsContent/add']>
+                        <li><a href="cmsContent/add.html?id=${content.id}" target="navTab" rel="cmsContent/edit" data-diy="content" data-diy-id="${content.id}"><i class="icon-edit"></i><@t.page 'content.edit'/></a></li>
+                        <#if model?has_content>
+                            <li><a href="cmsContent/add.html?categoryId=${(content.categoryId)!}&modelId=${model.id}&parentId=${(content.parentId)!}" target="navTab" rel="cmsContent/add" data-diy="content" data-diy-id="${content.id}"><i class="icon-plus icon-large"></i><@t.page 'content.add'/></a></li>
+                            
+                        </#if>
+                    </#if>
+                    <#if authorizedMap['cmsContent/publish']&&site.useStatic&&!content.onlyUrl>
+                        <li><a href="cmsContent/publish?_csrf=<@tools.csrfToken admin=true/>&ids=${content.id}" target="ajaxTodo" data-diy="content" data-diy-id="${content.id}"><i class="icon-file-text-alt icon-large"></i><@t.page 'button.publish'/></a></li>
+                    </#if>
+                    <#if model?has_content && authorizedMap['cmsModel/add']>
+                        <li><a href="cmsModel/add.html?id=${model.id?url}" target="navTab" rel="cmsModel/edit"><i class="icon-edit"></i><@t.page 'model.edit'/></a></li>
+                    </#if>
+                    <#if authorizedMap['cmsComment/list']>
+                        <#if authorizedMap['cmsComment/edit']>
+                            <li><a href="cmsComment/edit.html?id={itemId}" class="hide" target="dialog" mask="true" data-diy="content" data-diy-item="itemId"><i class="icon-edit"></i><@t.page 'button.edit'/></a></li>
+                        </#if>
+                        <#if authorizedMap['cmsComment/reply']>
+                            <li><a href="cmsComment/reply.html?replyId={itemId}" class="hide" target="dialog" mask="true" data-diy="content" data-diy-item="itemId"><i class="icon-reply"></i><@t.page 'reply'/></a></li>
+                        </#if>
+                        <li><a href="cmsComment/list.html?contentId=${content.id}" target="navTab" rel="cmsComment/list" data-diy="comment"><i class='icon-comment icon-large'></i><@t.page 'comment.management'/></a></li>
+                    </#if>
+                <#elseif authorizedMap['cmsContent/addMore']  && 'category'=itemType>
+                    <li><a href="cmsContent/addMore.html?categoryId=${(category.id)!}" target="dialog" mask="true" data-diy="content"><i class="icon-plus icon-large"></i><@t.page 'content.add'/></a></li>
                 </#if>
-                <li><a href="cmsContent/add.html?id=${content.id}" target="navTab" rel="cmsContent/edit" data-diy="content" data-diy-id="${content.id}"><i class="icon-edit"></i><@t.page 'content.edit'/></a></li>
-                <#if model?has_content>
-                    <li><a href="cmsContent/add.html?categoryId=${(content.categoryId)!}&modelId=${model.id}&parentId=${(content.parentId)!}" target="navTab" rel="cmsContent/add" data-diy="content" data-diy-id="${content.id}"><i class="icon-plus icon-large"></i><@t.page 'content.add'/></a></li>
+            </ul>
+        </li>
+        <#else>
+            <li>
+                <a href="cmsContent/list.html" target="navTab" rel="cmsContent/list" class="addMore" data-diy="content"><@t.page 'content.management'/></a>
+                <ul>
+                <#if authorizedMap['cmsContent/add']>
+                    <li><a href="cmsContent/add.html?id={itemId}" target="navTab" rel="cmsContent/edit" data-diy="content" data-diy-item="itemId"><i class="icon-edit"></i><@t.page 'content.edit'/></a></li>
                 </#if>
-                <#if authorizedMap['cmsContent/publish']&&site.useStatic&&!content.onlyUrl>
-                    <li><a href="cmsContent/publish?_csrf=<@tools.csrfToken admin=true/>&ids=${content.id}" target="ajaxTodo" data-diy="content" data-diy-id="${content.id}"><i class="icon-file-text-alt icon-large"></i><@t.page 'button.publish'/></a></li>
-                </#if>
-                <#if model?has_content && authorizedMap['cmsModel/add']>
-                    <li><a href="cmsModel/add.html?id=${model.id?url}" target="navTab" rel="cmsModel/edit"><i class="icon-edit"></i><@t.page 'model.edit'/></a></li>
-                </#if>
-                <li><a href="cmsComment/list.html?contentId=${content.id}" target="navTab" rel="cmsComment/list" data-diy="comment"><i class='icon-comment icon-large'></i><@t.page 'comment.management'/></a></li>
-            <#elseif authorizedMap['cmsContent/addMore']  && 'category'=itemType>
-                <li><a href="cmsContent/addMore.html?categoryId=${(category.id)!}" target="dialog" mask="true" data-diy="content"><i class="icon-plus icon-large"></i><@t.page 'content.add'/></a></li>
-            </#if>
-        </ul>
-    </li>
+                </ul>
+            </li>
+        </#if>
     </#if>
-    <#if category?has_content>
-        <#if authorizedMap['cmsCategory/list']>
+    <#if authorizedMap['cmsCategory/list']>
+        <#if category?has_content>
             <li>
                 <a href="cmsCategory/list?categoryId=${category.parentId!}" target="navTab" rel="cmsCategory/list" class="addMore" data-diy="category"><@t.page 'category.management'/></a>
                 <ul>
@@ -67,16 +89,27 @@
                     </#if>
                 </ul>
             </li>
-        </#if>
-     <#else>
-        <#if authorizedMap['cmsCategory/addMore']>
-            <li><a href="cmsCategory/addMore.html" target="dialog" mask="true" data-diy="category"><i class="icon-plus icon-large"></i><@t.page 'category.add'/></a></li>
-        </#if>
+        <#else>
+            <li>
+                <a href="cmsCategory/list.html" target="navTab" rel="cmsCategory/list" class="addMore" data-diy="category"><@t.page 'category.management'/></a>
+                <ul>
+                <#if authorizedMap['cmsCategory/add']>
+                    <li><a href="cmsCategory/add.html?id={itemId}" target="navTab" rel="cmsCategory/edit" class="hide" data-diy="category" data-diy-item="itemId"><i class="icon-edit"></i><@t.page 'category.edit'/></a></li>
+                </#if>
+                <#if authorizedMap['cmsCategory/addMore']>
+                    <li><a href="cmsCategory/addMore.html" target="dialog" mask="true" data-diy="category"><i class="icon-plus icon-large"></i><@t.page 'category.add'/></a></li>
+                </#if>
+                </ul>
+             </li>
+         </#if>
     </#if>
     <#if metadata?has_content && authorizedMap['cmsPage/list']>
         <li>
             <a href="cmsPage/list.html?path=${(templatePath)?url}" class="addMore" target="navTab" rel="sysConfigData/list" data-diy="page"><i class="icon-file-text-alt icon-large"></i><@t.page 'page.management'/></a>
             <ul>
+            <#if authorizedMap['cmsPlace/add']>
+                <li><a href="cmsPlace/add.html?id={itemId}" class="hide" target="navTab" rel="cmsPlace/edit" data-diy="place" data-diy-item="itemId"><i class="icon-edit"></i><@t.page 'button.edit'/></a></li>
+            </#if>
             <#if site.useStatic&&(metadata.publishPath)?has_content>
                 <li><a href="cmsTemplate/publish?path=${(templatePath?url)!}&_csrf=<@tools.csrfToken admin=true/>" target="ajaxTodo" data-diy="page"><i class="icon-file-text-alt icon-large"></i><@t.page 'publish_page'/></a></li>
             </#if>
@@ -123,6 +156,10 @@
                 <li><a href="sysUser/add.html?id=${itemId}" target="navTab" rel="sysUser/edit" data-diy="user" data-diy-id="${itemId}"><i class="icon-edit"></i><@t.page 'user.edit'/></a></li>
                 <li><a href="sysUser/enable?_csrf=<@tools.csrfToken admin=true/>&ids=${itemId}" title="<@t.page 'confirm.enable'/>" target="ajaxTodo" data-diy="user" data-diy-id="${itemId}"><i class="icon-circle icon-large"></i><@t.page 'button.enable'/></a></li>
                 <li><a href="sysUser/disable?_csrf=<@tools.csrfToken admin=true/>&ids=${itemId}" title="<@t.page 'confirm.disable'/>" target="ajaxTodo" data-diy="user" data-diy-id="${itemId}"><i class="icon-ban-circle icon-large"></i><@t.page 'button.disable'/></a></li>
+            </ul>
+            <#else>
+            <ul>
+                <li><a href="sysUser/add.html?id={itemId}" target="navTab" rel="sysUser/edit" class="hide" data-diy="user" data-diy-item="itemId"><i class="icon-edit"></i><@t.page 'user.edit'/></a></li>
             </ul>
             </#if>
         </li>

@@ -17,7 +17,7 @@
         <a href="${site.dynamicPath}">Home</a>
 <@cms.categoryList>
     <#list page.list as a>
-        <a href="${a.url!}" target="_blank">${a.name}</a>
+        <a href="${a.url!}" target="_blank" data-diy-item="${a.id}">${a.name}</a>
     </#list>
 </@cms.categoryList>
     </nav>
@@ -30,15 +30,17 @@
         <@merge 'categoryIds' a.categoryId!/>
     </#list>
     <@cms.category ids=categoryIds><#assign categoryMap=map/></@cms.category>
+        <div>
     <#list page.list as a>
-        <article>
-            <h3>[<a href="${(categoryMap[a.categoryId?string].url)!}" target="_blank">${(categoryMap[a.categoryId?string].name)!}</a>]<a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect?id=${a.id}<#else>${a.url!}</#if>" target="_blank">${a.title?no_esc}</a></h3>
-            <p>
-                <#if a.cover?has_content><img src="${a.cover}" alt="${a.title}"/></#if>
-                ${(a.description?no_esc)!}
-            </p>
-        </article>
+            <article data-diy-item="${a.id}">
+                <h3>[<a href="${(categoryMap[a.categoryId?string].url)!}" target="_blank">${(categoryMap[a.categoryId?string].name)!}</a>]<a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect?id=${a.id}<#else>${a.url!}</#if>" target="_blank">${a.title?no_esc}</a></h3>
+                <p>
+                    <#if a.cover?has_content><img src="${a.cover}" alt="${a.title}"/></#if>
+                    ${(a.description?no_esc)!}
+                </p>
+            </article>
     </#list>
+        </div>
         <div>
             <#if !page.firstPage>
                 <a href="?word=${word!}&tagId=${tagId!}&pageIndex=${page.prePage}">Previous page</a>
@@ -78,10 +80,10 @@
 </@cms.search>
         <aside>
             <h3>Popular content</h3>
-            <ul>
+            <ul data-diy="content">
 <@cms.contentList orderField='clicks' pageSize=10>
     <#list page.list as a>
-                <li><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect?id=${a.id}<#else>${a.url!}</#if>" target="_blank">${a.title}</a><span>${a.clicks}</span></li>
+                <li data-diy-item="${a.id}"><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect?id=${a.id}<#else>${a.url!}</#if>" target="_blank">${a.title}</a><span>${a.clicks}</span></li>
     </#list>
 </@cms.contentList>
             </ul>

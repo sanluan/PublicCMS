@@ -52,8 +52,9 @@ ol.vote>li:nth-child(3n) .progress-bar {background-color:blue;}
 .diy-border-top,.diy-border-bottom{border-top-width:1px;height:1px;}
 .diy-border-right,.diy-border-left{border-left-width:1px;width:1px;}
 .diy-border.noborder .diy-border-top,.diy-border.noborder .diy-border-right,.diy-border.noborder .diy-border-bottom,.diy-border.noborder .diy-border-left{border-top-width:0px;border-left-width:0px;}
-.diy-menu{position:absolute;top:0px;height:32px;left:50%;margin-top:-32px;white-space:nowrap;}
+.diy-menu,.diy-button{position:absolute;top:0px;height:32px;left:50%;margin-top:-32px;white-space:nowrap;}
 .diy-border-bottom .diy-menu{bottom:-32px;top:auto;}
+.diy-button{z-index:10;margin-top:0px;}
 
 .searchResult b{color:#f00;}
 @media screen and (max-width:728px) {
