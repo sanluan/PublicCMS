@@ -60,9 +60,14 @@
             </p>
         </form>
         <p>
-            <#list langs as k,v>
-                <a<#if springMacroRequestContext.getMessage('page.lang')=k> class="current-lang"</#if> href="${base+adminContextPath}/changeLocale?lang=${k}&returnUrl=${(adminContextPath+'/')?url}">${v}</a>
-            </#list>
+            <@sys.configData code="site">
+                <#assign excludeLangs=(object.site_exclude_lang!'')?split(',')/>
+                <#list langs as k,v>
+                    <#if !(excludeLangs?has_content && excludeLangs?seq_contains(k))>
+                <a<#if t.pageMessage("lang")=k> class="current-lang"</#if> href="${base+adminContextPath}/changeLocale?lang=${k}&returnUrl=${(adminContextPath+'/')?url}">${v}</a>
+                    </#if>
+                </#list>
+            </@sys.configData>
         </p>
     </div>
 </div>

@@ -33,6 +33,10 @@ public class SiteConfigComponent implements Config {
      */
     public static final String CONFIG_SITE_EXCLUDE_MODULE = "site_exclude_module";
     /**
+     * site exclude lang
+     */
+    public static final String CONFIG_SITE_EXCLUDE_LANG = "site_exclude_lang";
+    /**
      * category template path
      */
     public static final String CONFIG_CATEGORY_TEMPLATE_PATH = "category_template_path";
@@ -75,6 +79,8 @@ public class SiteConfigComponent implements Config {
         List<SysExtendField> extendFieldList = new ArrayList<>();
         extendFieldList.add(new SysExtendField(CONFIG_SITE_EXCLUDE_MODULE, INPUTTYPE_MODULE,
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_SITE_EXCLUDE_MODULE), null));
+        extendFieldList.add(new SysExtendField(CONFIG_SITE_EXCLUDE_LANG, INPUTTYPE_LANG,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_SITE_EXCLUDE_LANG), null));
 
         extendFieldList.add(new SysExtendField(CONFIG_REGISTER_URL, INPUTTYPE_TEXT,
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_REGISTER_URL), null));

@@ -133,15 +133,19 @@ public interface Config {
     /**
      * 
      */
-     public static final String INPUTTYPE_MODULE = "module";
-     /**
-      * 
-      */
-     public static final String INPUTTYPE_CATEGORY_PATH = "categoryPath";
-     /**
-      * 
-      */
-     public static final String INPUTTYPE_CONTENT_STATUS= "contentStatus";
+    public static final String INPUTTYPE_MODULE = "module";
+    /**
+     * 
+     */
+    public static final String INPUTTYPE_LANG = "lang";
+    /**
+     * 
+     */
+    public static final String INPUTTYPE_CATEGORY_PATH = "categoryPath";
+    /**
+     * 
+     */
+    public static final String INPUTTYPE_CONTENT_STATUS = "contentStatus";
     /**
      * 
      */
@@ -187,7 +191,7 @@ public interface Config {
      * @return exportable
      */
     boolean exportable();
-    
+
     /**
      * @param locale
      * @return
