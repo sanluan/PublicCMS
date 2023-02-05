@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Transparency;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -84,7 +85,7 @@ public class ImageUtils {
      *     try {
      *         String captcha = VerificationUtils.getRandomString("ABCDEFGHJKMNPQRSTUVWXYZ23456789", 4);
      *         session.setAttribute("captcha", captcha);
-     *         ImageUtils.drawImage(100, 20, captcha, response.getOutputStream());
+     *         ImageUtils.drawImage(120, 30, captcha, response.getOutputStream());
      *     } catch (IOException e) {
      *     }
      * }
@@ -111,19 +112,24 @@ public class ImageUtils {
      */
     public static void drawImage(int width, int height, String text, OutputStream outputStream) throws IOException {
         BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-        Graphics g = bufferedImage.getGraphics();
+        Graphics2D g = bufferedImage.createGraphics();
         g.setColor(getRandColor(210, 255));
         g.fillRect(0, 0, width, height);
         if (CommonUtils.notEmpty(text)) {
             int fontWidth = width / text.length();
-            int fontSize = fontWidth >= height ? height - 1 : fontWidth;
+            int fontSize = fontWidth >= height ? height - height / 6 : fontWidth;
             Font font1 = getFont(fontSize);
-            Font font2 = getFont(fontSize / 2);
+            Font font2 = getFont(fontSize / 3);
             for (int i = 0; i < text.length(); i++) {
+                AffineTransform saveAT = g.getTransform();
+                AffineTransform affine = new AffineTransform();
+                affine.setToRotation(Math.PI / 4 * Constants.random.nextDouble() * (Constants.random.nextBoolean() ? 1 : -1),
+                        i * fontWidth + 3, height / 2);
+                g.setTransform(affine);
                 g.setFont(font1);
                 g.setColor(getRandColor(0, 200));
-                g.drawString(String.valueOf(text.charAt(i)), i * fontWidth + 3,
-                        height - Constants.random.nextInt(height - fontSize));
+                g.drawString(String.valueOf(text.charAt(i)), i * fontWidth + 3, height / 2 + fontSize / 2);
+                g.setTransform(saveAT);
                 g.setFont(font2);
                 for (int j = 0; j < 4; j++) {
                     g.setColor(getRandColor(100, 250));
@@ -131,8 +137,31 @@ public class ImageUtils {
                             Constants.random.nextInt(height));
                 }
             }
+            g.setColor(getRandColor(160, 250));
+            for (int i = 0; i < 10; i++) {
+                g.drawLine(Constants.random.nextInt(width), Constants.random.nextInt(height), Constants.random.nextInt(width),
+                        Constants.random.nextInt(height));
+            }
+            shearX(g, width, height, Color.white);
         }
         ImageIO.write(bufferedImage, FORMAT_NAME_PNG, outputStream);
+    }
+
+    private static void shearX(Graphics g, int w1, int h1, Color color) {
+        int period = Constants.random.nextInt(2);
+        boolean borderGap = true;
+        int frames = 1;
+        int phase = Constants.random.nextInt(2);
+        for (int i = 0; i < h1; i++) {
+            double d = (double) (period >> 1)
+                    * Math.sin((double) i / (double) period + (6.2831853071795862D * (double) phase) / (double) frames);
+            g.copyArea(0, i, w1, 1, (int) d, 0);
+            if (borderGap) {
+                g.setColor(color);
+                g.drawLine((int) d, i, 0, i);
+                g.drawLine((int) d + w1, i, w1, i);
+            }
+        }
     }
 
     private static Color getRandColor(int fc, int bc) {
