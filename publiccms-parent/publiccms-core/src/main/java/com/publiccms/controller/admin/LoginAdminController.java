@@ -106,6 +106,10 @@ public class LoginAdminController {
             request.getSession().removeAttribute("captcha");
             if (ControllerUtils.errorCustom("captcha.error", null == sessionCaptcha || !sessionCaptcha.equalsIgnoreCase(captcha),
                     model)) {
+                lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null, true);
+                lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, null, true);
+                logLoginService.save(new LogLogin(site.getId(), username, null == user ? null : user.getId(), ip,
+                        LogLoginService.CHANNEL_WEB_MANAGER, false, CommonUtils.getDate(), password));
                 return "login";
             }
         }
@@ -257,7 +261,7 @@ public class LoginAdminController {
         try {
             String captcha = VerificationUtils.getRandomString("ABCDEFGHJKMNPQRSTUVWXYZ23456789", 4);
             session.setAttribute("captcha", captcha);
-            ImageUtils.drawImage(100, 20, captcha, response.getOutputStream());
+            ImageUtils.drawImage(120, 30, captcha, response.getOutputStream());
         } catch (IOException e) {
         }
     }

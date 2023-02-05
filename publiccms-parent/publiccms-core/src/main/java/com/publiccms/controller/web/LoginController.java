@@ -295,7 +295,7 @@ public class LoginController {
         try {
             String captcha = VerificationUtils.getRandomString("ABCDEFGHJKMNPQRSTUVWXYZ23456789", 4);
             session.setAttribute("captcha", captcha);
-            ImageUtils.drawImage(100, 20, captcha, response.getOutputStream());
+            ImageUtils.drawImage(120, 30, captcha, response.getOutputStream());
         } catch (IOException e) {
         }
     }
