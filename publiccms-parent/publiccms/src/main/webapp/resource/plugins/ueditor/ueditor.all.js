@@ -1,7 +1,7 @@
 /*!
  * UEditor
  * version: ueditor
- * build: Sun Feb 05 2023 19:41:35 GMT+0800 (中国标准时间)
+ * build: Sun Feb 05 2023 19:50:23 GMT+0800 (中国标准时间)
  */
 
 (function(){
@@ -17342,8 +17342,6 @@ UE.plugins['fiximgclick'] = (function () {
                     if (imageScale && imageScale.resizer.style.display != 'none') {
                         imageScale.hide();
                     }
-                    var range = new dom.Range(me.document);
-                    range.selectNode(e.target);
                 }
             });
         }
