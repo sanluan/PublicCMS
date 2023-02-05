@@ -1,3 +1,4 @@
+var cmsSupportVersion = "1.0";
 function addTagType(id,name){
     if(name){
         name=name.trim();
@@ -139,15 +140,19 @@ function commandParameter(command,parametersName){
         }
     }
 }
-var diytimer,diyButtontimer;
+var diyMenuTimer,diyButtonTimer,diyTimer;
 window.addEventListener("message", function(event) {
     var op = event.data;
     if (op.diyevent) {
         if(op.url) {
             if("load" === op.diyevent) {
-                if("1.0"!=op.version){
-                    alertMsg.error(JUI.msg(errorSupportVersion));
+                if(cmsSupportVersion!=op.version){
+                    alertMsg.error(JUI.msg("errorSupportVersion"));
                 } else if (op.templatePath) {
+                    if(diyTimer){
+                        clearTimeout(diyTimer);
+                        diyTimer=null;
+                    }
                     $("input[name=url]",navTab.getCurrentPanel()).val(op.url);
                     $("input[name=templatePath]",navTab.getCurrentPanel()).val(op.templatePath);
                     $("input[name=itemType]",navTab.getCurrentPanel()).val(op.itemType);
@@ -160,7 +165,7 @@ window.addEventListener("message", function(event) {
                     moveMenu(op.x, op.y, op.width, op.height);
                 }
             } else if("leave" === op.diyevent) {
-                diytimer = setTimeout("diyHideMenu();diyHideButton();",100);
+                diyMenuTimer = setTimeout("diyHideMenu()",100);
             }
         }
         if("hoverItem" === op.diyevent) {
@@ -168,7 +173,7 @@ window.addEventListener("message", function(event) {
                 moveButton(op.x, op.y, op.width, op.height);
             }
         } else if("leaveItem" === op.diyevent) {
-            diyButtontimer = setTimeout("diyHideButton()",100);
+            diyButtonTimer = setTimeout("diyHideButton()",100);
         }
         if("scroll" === op.diyevent) {
             moveMenu(op.x, op.y, op.width, op.height);
@@ -176,15 +181,16 @@ window.addEventListener("message", function(event) {
     }
 });
 function diyHideMenu(){
-    if(!$(".diy-menu",navTab.getCurrentPanel()).is(":hover")){
+    if(!$(".diy-menu",navTab.getCurrentPanel()).is(":hover")&&!$(".diy-button",navTab.getCurrentPanel()).is(":hover")){
         $(".diy-border",navTab.getCurrentPanel()).css("visibility", "hidden");
-        diytimer=null;
+        diyMenuTimer=null;
     }
+    diyHideButton();
 }
 function diyHideButton(){
     if(!$(".diy-button",navTab.getCurrentPanel()).is(":hover")){
         $(".diy-button",navTab.getCurrentPanel()).hide();
-        diyButtontimer=null;
+        diyButtonTimer=null;
     }
 }
 function moveMenu(x,y,width,height){
@@ -236,9 +242,9 @@ function diyShowButton(itemType,itemId){
     if(itemType) {
         var buttons=$("#buttonBox a[data-diy="+escapeJquery(itemType)+"][data-diy-item]");
         if(buttons.length) {
-          if(diyButtontimer){
-              clearTimeout(diyButtontimer);
-              diyButtontimer=null;
+          if(diyButtonTimer){
+              clearTimeout(diyButtonTimer);
+              diyButtonTimer=null;
           }
           buttons.each(function(i,button){
               var value={},$button=$(button);
@@ -263,9 +269,9 @@ function diyShowMenu(itemType,itemId,noborder){
         buttons=$("#buttonBox a[data-diy="+escapeJquery(itemType)+"]:not([data-diy-id],[data-diy-item])");
     }
     if(buttons.length) {
-      if(diytimer){
-          clearTimeout(diytimer);
-          diytimer=null;
+      if(diyMenuTimer){
+          clearTimeout(diyMenuTimer);
+          diyMenuTimer=null;
       }
       if(noborder){
           $(".diy-border",navTab.getCurrentPanel()).addClass("noborder");
@@ -284,13 +290,13 @@ function diyShowMenu(itemType,itemId,noborder){
 JUI.regPlugins.push(function($p){
     $(".diy-menu",$p).each(function (){
         $(this).hover(function(){
-            if(diytimer){
-                clearTimeout(diytimer);
-                diytimer=null;
+            if(diyMenuTimer){
+                clearTimeout(diyMenuTimer);
+                diyMenuTimer=null;
             }
         },function(){
             $(".diy-border",navTab.getCurrentPanel()).css("visibility", "hidden");
-            diytimer=null;
+            diyMenuTimer=null;
         });
     });
 });
@@ -298,4 +304,5 @@ function diyIframeRefresh(){
     $("iframe",navTab.getCurrentPanel()).attr("src",$("input[name=url]",navTab.getCurrentPanel()).val());
     $("#audioPopPlay")[0].volume = 0.1;
     $("#audioLoadPlay")[0].volume = 0.5;
+    diyTimer = setTimeout("alertMsg.error(JUI.msg(\"errorSupport\"))",5000);
 }

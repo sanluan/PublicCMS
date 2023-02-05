@@ -1,3 +1,4 @@
+var cmsSupportVersion = "1.0";
 // cms analytics
 if (typeof window.cmsAnalytics !== 'object') {
     if (!String.prototype.endsWith) {
@@ -156,7 +157,7 @@ if(window.parent!=window && "string" === typeof templatePath ){
                 window.parent.postMessage({diyevent:'scroll',x:offset.x,y:offset.y,width:offset.width,height:offset.height},"*");
             }
         }
-        window.parent.postMessage({url:location.href,diyevent:'load',templatePath:templatePath,itemType:itemType,itemId:itemId,version:"1.0"},"*");
+        window.parent.postMessage({url:location.href,diyevent:'load',templatePath:templatePath,itemType:itemType,itemId:itemId,version:cmsSupportVersion},"*");
         var diyElements = document.querySelectorAll('[data-diy]');
         for (var i=0; i < diyElements.length; i++) {
             diyElements[i].onmouseenter = function(){

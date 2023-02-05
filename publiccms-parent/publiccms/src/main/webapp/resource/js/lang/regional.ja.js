@@ -30,8 +30,8 @@
 
     // JUI regional
     $.setRegional("datepicker", {
-        dayNames: ['日', '月', '火', '水', '木', '金', '土'],
-        monthNames: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
+        dayNames: ["日", "月", "火", "水", "木", "金", "土"],
+        monthNames: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"]
     });
     $.setRegional("alertMsg", {
         title:{error:"エラー", info:"プロンプト", warn:"アラート", correct:"成功", confirm:"確認プロンプト"},
@@ -39,10 +39,11 @@
     });
 
 
-    $.setMessage('statusCode_503','サーバーは現在過負荷状態になるか、ただいまメンテナンス中です!');
-    $.setMessage('validateFormError','提出データが不完全、{0}フィールドにエラーがあります。修正してから提出してください！');    
-    $.setMessage('sessionTimout','タイムアウトしました、再度ログインしてください！');
-    $.setMessage('alertSelectMsg','一つのデータを選択してください!');
-    $.setMessage('forwardConfirmMsg','次へ!');
-    $.setMessage('errorSupportVersion','誤ったバージョンのcms.supportを更新します!');
+    $.setMessage("statusCode_503","サーバーは現在過負荷状態になるか、ただいまメンテナンス中です!");
+    $.setMessage("validateFormError","提出データが不完全、{0}フィールドにエラーがあります。修正してから提出してください！");    
+    $.setMessage("sessionTimout","タイムアウトしました、再度ログインしてください！");
+    $.setMessage("alertSelectMsg","一つのデータを選択してください!");
+    $.setMessage("forwardConfirmMsg","次へ!");
+    $.setMessage("errorSupport","ページにms.supportを導入していないで、サイトの配置を修正して、簡便なメンテナンス机能をシールドすることができます!");
+    $.setMessage("errorSupportVersion","誤ったバージョンのcms.supportを更新します!");
 })(jQuery);
