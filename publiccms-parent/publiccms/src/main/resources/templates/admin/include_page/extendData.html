@@ -273,6 +273,20 @@
                 </#list>
             </#if>
             <#break>
+        <#case 'lang'>
+            <#if value?has_content>
+                <#local values=value?split(',')/>
+            </#if>
+            <#if 'view'=type>
+                <#if values?has_content>
+                    <#list values as a>${langs[a]}<#sep>,</#list>
+                </#if>
+            <#else>
+                <#list langs as k,v>
+                    <label><input name="${inputName}" type="checkbox" value="${k}"${(values?has_content&&values?seq_contains(k))?then(' checked="true"','')?no_esc}/>${v}</label>
+                </#list>
+            </#if>
+            <#break>
         <#case 'captcha'>
             <#if value?has_content>
                 <#local values=value?split(',')/>

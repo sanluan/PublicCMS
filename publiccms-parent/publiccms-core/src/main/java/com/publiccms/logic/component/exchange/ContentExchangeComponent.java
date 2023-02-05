@@ -371,6 +371,7 @@ public class ContentExchangeComponent extends AbstractExchange<CmsContent, Conte
             CmsContentAttribute attribute;
             DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.FULL_DATE_FORMAT_STRING);
             for (CmsContent entity : entityList) {
+                row = sheet.createRow(i++);
                 j = 0;
                 row.createCell(j++).setCellValue(entity.getId().toString());
                 row.createCell(j++).setCellValue(entity.getTitle());

@@ -105,7 +105,7 @@ $('input[name=\'categoryName\']',navTab.getCurrentPanel()).on('change',function(
                     </dd>
                 </dl>
                 <dl class="nowrap">
-                    <dt>${(model.fieldTextMap['title'])!t.pageMessage('title')}:</dt>
+                    <dt>${(model.fieldTextMap['title'])!}:</dt>
                     <dd>
                         <input class="required" name="title" type="text" maxlength="250" size="60" value="${(a.title)!}"/>
                 <#if fieldList?seq_contains('copied')>
@@ -170,14 +170,13 @@ $('input[name=\'categoryName\']',navTab.getCurrentPanel()).on('change',function(
                         <a class="inputDateButton" href="javascript:void(0);"></a>
                     </dd>
                 </dl>
-             <#if fieldList?seq_contains('description')>
-                <dl class="nowrap">
-                    <dt>${(model.fieldTextMap['description'])!}:</dt>
-                    <dd>
-                        <textarea name="description"<#if requiredFieldList?seq_contains('description')> class="required"</#if> maxlength="300" cols="80" rows="4">${(a.description)!}</textarea>
-                    </dd>
-                </dl>
+            <#include "../include_page/extendData.html"/>
+            <#if category?has_content&&category.extendId?has_content>
+                 <@sys.extendFieldList extendId=category.extendId>
+                    <@extendData name='categoryExtendDataList' extendList=list extendValues=attribute historyItemType='contentExtend' historyItemId=id/>
+                 </@sys.extendFieldList>
             </#if>
+            <@extendData name='modelExtendDataList' extendList=model.extendList extendValues=attribute historyItemType='contentExtend' historyItemId=id/>
             <#if fieldList?seq_contains('cover')>
                 <dl class="nowrap">
                     <dt>${(model.fieldTextMap['cover'])!}:</dt>
@@ -191,13 +190,14 @@ $('input[name=\'categoryName\']',navTab.getCurrentPanel()).on('change',function(
                     </dd>
                 </dl>
             </#if>
-            <#include "../include_page/extendData.html"/>
-            <#if category?has_content&&category.extendId?has_content>
-                 <@sys.extendFieldList extendId=category.extendId>
-                    <@extendData name='categoryExtendDataList' extendList=list extendValues=attribute historyItemType='contentExtend' historyItemId=id/>
-                 </@sys.extendFieldList>
+            <#if fieldList?seq_contains('description')>
+                <dl class="nowrap">
+                    <dt>${(model.fieldTextMap['description'])!}:</dt>
+                    <dd>
+                        <textarea name="description"<#if requiredFieldList?seq_contains('description')> class="required"</#if> maxlength="300" cols="80" rows="4">${(a.description)!}</textarea>
+                    </dd>
+                </dl>
             </#if>
-            <@extendData name='modelExtendDataList' extendList=model.extendList extendValues=attribute historyItemType='contentExtend' historyItemId=id/>
             <#if fieldList?seq_contains('content')>
                 <dl class="nowrap">
                     <dt>${(model.fieldTextMap['content'])!}:</dt>
@@ -207,6 +207,7 @@ $('input[name=\'categoryName\']',navTab.getCurrentPanel()).on('change',function(
                         <#if a?has_content>
                             <a class="button" href="cmsEditorHistory/lookup.html?itemType=content&itemId=${a.id}&fieldName=text" lookupGroup=""><@t.page 'history'/></a>
                         </#if>
+                            <#if fieldList?seq_contains('cover')><a class="button" href="javascript:void(0);" onclick="useContentImage('${site.sitePath}');"><@t.page 'button.fillcover' model.fieldTextMap['content'] model.fieldTextMap['cover']/></a></#if>
                         </div>
                         <textarea name="text" class="editor<#if requiredFieldList?seq_contains('content')> required</#if>" escape="true" editorType="${model.editorType!}">${(attribute.text)!}</textarea>
                     </dd>
