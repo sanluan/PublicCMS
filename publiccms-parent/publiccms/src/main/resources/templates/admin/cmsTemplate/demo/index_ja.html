@@ -15,12 +15,13 @@
         <a href="${site.useStatic?then(site.sitePath,site.dynamicPath)}" data-id="home">ホームページ</a>
 <@cms.categoryList>
     <#list page.list as a>
-        <a href="${a.url!}" data-id="${a.id}" target="_blank">${a.name}</a>
+        <a href="${a.url!}" target="_blank" data-id="${a.id}" data-diy-item="${a.id}">${a.name}</a>
     </#list>
 </@cms.categoryList>
     </nav>
     <main>
         <h2>最新のコンテンツ</h2>
+        <div class="content">
 <@cms.contentList onlyUrl=false pageSize=10>
     <#list page.list as a>
         <article>
@@ -32,12 +33,13 @@
         </article>
     </#list>
 </@cms.contentList>
-        <aside>
+        </div>
+        <aside data-diy="content">
             <h3>人気のコンテンツ</h3>
             <ul>
 <@cms.contentList orderField='clicks' pageSize=10>
     <#list page.list as a>
-                <li><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect?id=${a.id}<#else>${a.url!}</#if>" target="_blank">${a.title}</a><span>${a.clicks}</span></li>
+                <li data-diy-item="${a.id}"><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect?id=${a.id}<#else>${a.url!}</#if>" target="_blank">${a.title}</a><span>${a.clicks}</span></li>
     </#list>
 </@cms.contentList>
             </ul>

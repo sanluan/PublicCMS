@@ -127,6 +127,7 @@ commentChart.setOption({
     {
         name:'<@t.page 'operate'/>',
         type:'line',
+        smooth: true,
         data:[<#list 7..0 as a><@log.operateList operate='save.cmsComment' startCreateDate=(.now?long-a*86400000)?number_to_date?string endCreateDate=(.now?long-(a-1)*86400000)?number_to_date?string pageSize=0>${page.totalCount}</@log.operateList><#sep>,</#list>],
         areaStyle: {}
     }]
@@ -217,6 +218,7 @@ orderChart.setOption({
        {
            name:"<@t.page 'status.order.'+s/>",
            type:'line',
+           smooth: true,
            data:[<#list 7..0 as a><@trade.orderList status=s startCreateDate=(.now?long-a*86400000)?number_to_date?string endCreateDate=(.now?long-(a-1)*86400000)?number_to_date?string pageSize=0>${page.totalCount}</@trade.orderList><#sep>,</#list>],
            areaStyle: {}
        }<#sep>,
@@ -315,18 +317,21 @@ visitChart.setOption({
        {
            name:'PV',
            type:'line',
+           smooth: true,
            data:[<#list page.list?reverse as a>${a.pv!}<#sep>,</#list>],
            areaStyle: {}
        },
        {
            name:'UV',
            type:'line',
+           smooth: true,
            data:[<#list page.list?reverse as a>${a.uv!}<#sep>,</#list>],
            areaStyle: {}
        },
        {
            name:'IP Views',
            type:'line',
+           smooth: true,
            data:[<#list page.list?reverse as a>${a.ipviews!}<#sep>,</#list>],
            areaStyle: {}
        }]

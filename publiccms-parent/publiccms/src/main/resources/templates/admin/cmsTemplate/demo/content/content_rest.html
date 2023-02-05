@@ -29,7 +29,7 @@
         <a href="${site.dynamicPath}" data-id="home">Home</a>
 <@cms.categoryList>
     <#list page.list as a>
-        <a href="${a.url!}" target="_blank" data-id="${category.id}">${a.name}</a>
+        <a href="${a.url!}" target="_blank" data-id="${a.id}" data-diy-item="${a.id}">${a.name}</a>
     </#list>
 </@cms.categoryList>
     </nav>
@@ -129,7 +129,7 @@
                 <@cms.contentList categoryId=category.id endPublishDate=content.publishDate orderField='publishDate' pageIndex=2 pageSize=1><#if 2=page.pageIndex><#list page.list as a><a href="${a.url!}">Previous:${a.title}</a></#list></#if></@cms.contentList>
                 <@cms.contentList categoryId=category.id startPublishDate=content.publishDate orderField='publishDate' orderType='asc' pageIndex=1 pageSize=1><#list page.list as a><a href="${a.url!}">Next:${a.title}</a></#list></@cms.contentList>
             </div>
-            <div>
+            <div data-diy="comment">
          <#macro merge name value><#if !.vars[name]??><@"<#assign ${name}=''>"?interpret /></#if><#if value?has_content><@"<#assign ${name}=${name}+'${value},'>"?interpret /></#if></#macro>
          <@cms.commentList contentId=content.id pageSize=10>
             <#list page.list as a>
@@ -138,7 +138,7 @@
             </#list>
             <@sys.user ids=userIds!><#assign userMap=map!/></@sys.user>
             <#list page.list as a>
-                <dl>
+                <dl data-diy-item="${a.id}">
                     <dt>${(userMap[a.userId?string].nickname)!}<#if a.replyUserId?has_content> reply ${(userMap[a.replyUserId?string].nickname)!}</#if>:</dt>
                     <dd>
                         <div>${a.text!}</div>
@@ -150,10 +150,10 @@
         </article>
         <aside>
             <h3>Popular content</h3>
-            <ul>
+            <ul data-diy="content">
 <@cms.contentList categoryId=category.id containChild=true orderField='clicks' pageSize=10>
     <#list page.list as a>
-                <li><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect?id=${a.id}<#else>${a.url!}</#if>" target="_blank">${a.title}</a><span>${a.clicks}</span></li>
+                <li data-diy-item="${a.id}"><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect?id=${a.id}<#else>${a.url!}</#if>" target="_blank">${a.title}</a><span>${a.clicks}</span></li>
     </#list>
 </@cms.contentList>
             </ul>

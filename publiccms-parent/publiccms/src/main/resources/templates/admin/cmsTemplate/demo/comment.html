@@ -20,7 +20,7 @@
         <a href="${site.useStatic?then(site.sitePath,site.dynamicPath)}">Home</a>
 <@cms.categoryList>
     <#list page.list as a>
-        <a href="${a.url!}" target="_blank">${a.name}</a>
+        <a href="${a.url!}" target="_blank" data-diy-item="${a.id}">${a.name}</a>
     </#list>
 </@cms.categoryList>
     </nav>
@@ -31,9 +31,9 @@
     <@cms.commentList advanced=true userId=user.id contentId=content.id status=2>
         <#if page.totalCount gt 0>
             <h3>My Comments</h3>
-            <ul>
+            <ul data-diy="comment">
             <#list page.list as a>
-                <li class="underline">
+                <li class="underline" data-diy-item="${a.id}">
                     <p>${user.nickname} <span class="gray">under review</span><span class="right">${a.createDate}</span></p>
                     <p>${a.text!}<span class="right"><a href="comment.html?contentId=${content.id}&id=${a.id}">Edit</a></span></p>
                 </li>

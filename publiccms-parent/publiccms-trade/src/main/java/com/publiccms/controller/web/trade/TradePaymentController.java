@@ -109,14 +109,13 @@ public class TradePaymentController {
      * @param total_amount
      * @param trade_no
      * @param request
-     * @param response
      * @return
      * @throws Exception
      */
     @RequestMapping(value = "notify/alipay")
     @ResponseBody
     public String notifyAlipay(@RequestAttribute SysSite site, long out_trade_no, String total_amount, String trade_no,
-            HttpServletRequest request, HttpServletResponse response) throws Exception {
+            HttpServletRequest request) throws Exception {
         log.info(new StringBuilder("alipay notify out_trade_no:").append(out_trade_no).append(",total_amount:")
                 .append(total_amount).append(",trade_no:").append(trade_no).toString());
         Map<String, String> config = configComponent.getConfigData(site.getId(), AlipayGatewayComponent.CONFIG_CODE);
@@ -134,7 +133,7 @@ public class TradePaymentController {
                                 && payment.getAmount().toString().equals(total_amount)) {
                             if (service.paid(site.getId(), payment.getId(), trade_no)) {
                                 payment = service.getEntity(payment.getId());
-                                alipayGatewayComponent.confirmPay(site.getId(), payment, response);
+                                alipayGatewayComponent.confirmPay(site.getId(), payment);
                             }
                         }
                         return "success";
@@ -159,8 +158,7 @@ public class TradePaymentController {
      * @param nonce
      * @param serial
      * @param body
-     * @param response
-     * @return
+     * @return result
      * @throws Exception
      */
     @RequestMapping(value = "notify/wechat")
@@ -169,7 +167,7 @@ public class TradePaymentController {
             @RequestHeader(value = "Wechatpay-Signature") String signature,
             @RequestHeader(value = "Wechatpay-Timestamp") String timestamp,
             @RequestHeader(value = "Wechatpay-Nonce") String nonce, @RequestHeader(value = "Wechatpay-Serial") String serial,
-            @RequestBody String body, HttpServletResponse response) throws Exception {
+            @RequestBody String body) throws Exception {
         log.info(new StringBuilder("wechat notify signature:").append(signature).append(",serial:").append(serial)
                 .append(",timestamp:").append(timestamp).append(",nonce:").append(nonce).append(",body:").append(body)
                 .toString());
@@ -243,7 +241,7 @@ public class TradePaymentController {
                                                 .intValue() == (int) amount.get("payer_total")) {
                                     payment = service.getEntity(paymentId);
                                     if (service.paid(site.getId(), payment.getId(), (String) result.get("transaction_id"))) {
-                                        if (wechatGatewayComponent.confirmPay(site.getId(), payment, response)) {
+                                        if (wechatGatewayComponent.confirmPay(site.getId(), payment)) {
                                             resultMap.put("code", "SUCCESS");
                                             resultMap.put("message", "OK");
                                             log.info("OK");
