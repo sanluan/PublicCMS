@@ -169,8 +169,10 @@
 
             domUtils.on($G("width"), 'keyup', function(){
                 if(locker.checked) {
-                    var proportion =locker.getAttribute('data-proportion');
-                    $G('height').value = Math.round(this.value / proportion);
+                    if(this.value && 0 < this.value){
+                        var proportion =locker.getAttribute('data-proportion');
+                        $G('height').value = Math.round(this.value / proportion);
+                    }
                 } else {
                     _this.updateLocker();
                 }
@@ -178,8 +180,10 @@
             });
             domUtils.on($G("height"), 'keyup', function(){
                 if(locker.checked) {
-                    var proportion =locker.getAttribute('data-proportion');
-                    $G('width').value = Math.round(this.value * proportion);
+                    if(this.value && 0 < this.value){
+                        var proportion =locker.getAttribute('data-proportion');
+                        $G('width').value = Math.round(this.value * proportion);
+                    }
                 } else {
                     _this.updateLocker();
                 }
@@ -220,10 +224,15 @@
             if(src) {
                 /* 设置表单内容 */
                 $G("width").value = img.width || '';
+                $G("width").title = img.naturalWidth || '';
                 $G("height").value = img.height || '';
+                $G("height").title = img.naturalHeight || '';
                 $G("border").value = img.getAttribute("border") || '0';
                 $G("vhSpace").value = img.getAttribute("vspace") || '0';
                 $G("title").value = img.title || img.alt || '';
+                $G("lock").checked = true;
+                var proportion = parseInt($G("width").value) /parseInt($G("height").value);
+                $G("lock").setAttribute('data-proportion', proportion);
                 setAlign(align);
                 this.setPreview();
                 this.updateLocker();

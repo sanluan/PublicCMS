@@ -159,13 +159,13 @@ window.addEventListener("message", function(event) {
     if (op.diyevent) {
         if(op.url) {
             if("load" === op.diyevent) {
+                if(diyTimer){
+                    clearTimeout(diyTimer);
+                    diyTimer=null;
+                }
                 if(cmsSupportVersion!=op.version){
                     alertMsg.error(JUI.msg("errorSupportVersion"));
                 } else if (op.templatePath) {
-                    if(diyTimer){
-                        clearTimeout(diyTimer);
-                        diyTimer=null;
-                    }
                     $("input[name=url]",navTab.getCurrentPanel()).val(op.url);
                     $("input[name=templatePath]",navTab.getCurrentPanel()).val(op.templatePath);
                     $("input[name=itemType]",navTab.getCurrentPanel()).val(op.itemType);
@@ -216,7 +216,7 @@ function moveMenu(x,y,width,height){
     var bottom = boxHeight < (y + height) ? boxHeight : (y + height);
     var right = boxWidth < (x + width) ? boxWidth : (x + width);
     height = 0 > y ? (boxHeight  < y + height) ? boxHeight  : (y + height) : height;
-    width = 0 > x ? (width + x) : width; 
+    width = 0 > x ? (width + x) : width;
 
     $(".diy-border-top",navTab.getCurrentPanel()).css({
         top: 0 > y ? 0 : y, left: 0 > x ? 0 : x, width: width
@@ -239,7 +239,7 @@ function moveMenu(x,y,width,height){
 function moveButton(x,y,width,height){
     var boxHeight = $("iframe", navTab.getCurrentPanel()).height();
     var buttonHeight = $(".diy-button",navTab.getCurrentPanel()).height();
-    
+
     if (buttonHeight > y && boxHeight - buttonHeight < y + height) {
         boxHeight -= buttonHeight;
     }

@@ -407,7 +407,7 @@
 			header: [],
 			hr:     ['class', 'noshade', 'size', 'style'],
 			i:      ['class', 'style'],
-			img:    ['src', 'alt', 'poster', 'title', 'width', 'height', 'id', '_src', '_url', 'loadingclass', 'class', 'data-latex' ,'word_img', 'style'],
+			img:    ['src', 'alt', 'poster', 'title', 'width', 'height', 'id', '_src', '_url', 'loadingclass', 'class', 'data-latex', 'vspace', 'border' ,'word_img', 'style'],
 			ins:    ['datetime'],
 			li:     ['class', 'style' , '_src'],
 			mark:   [],
@@ -434,7 +434,7 @@
 			ul:     ['class', 'style'],
 			video:  ['poster', 'autoplay', 'controls', 'loop', 'preload', 'src', 'height', 'width', 'class', 'style'],
 			embed:  ['type', 'class', 'width', 'height', 'allowscriptaccess', 'loop', 'play', 'menu', 'wmode', 'src', 'pluginspage', 'allowfullscreen'],
-			iframe: ['frameborder', 'border', 'style', 'marginwidth', 'marginheight', 'width', 'height', 'src', 'id']
+			iframe: ['frameborder','border','style', 'marginwidth','marginheight','width','height','src','id']
 		}
     };
 
