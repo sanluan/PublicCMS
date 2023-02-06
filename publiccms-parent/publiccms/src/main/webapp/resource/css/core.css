@@ -13,7 +13,7 @@ input[type="number"]{width:80px;}
 ::-webkit-scrollbar{width:10px;height:10px;}
 ::-webkit-scrollbar-button:vertical{display:none;}
 ::-webkit-scrollbar-corner,::-webkit-scrollbar-track{border-radius:10px;}
-.hide,a.btnLook.hide{display:none;}
+.hide,a.btnLook.hide,.panelBar .toolBar li a.hide,.button.hide{display:none;}
 
 ul, ol{list-style:none;}
 /* Tables still need 'cellspacing="0"' in the markup. */
