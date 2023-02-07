@@ -82,7 +82,7 @@ public class ContentCreateDirective extends AbstractAppDirective {
         handler.put("result", "failed");
         if (null != categoryModel) {
             CmsCategory category = categoryService.getEntity(entity.getCategoryId());
-            CmsModel cmsModel = modelComponent.getModelMap(site.getId()).get(entity.getModelId());
+            CmsModel cmsModel = modelComponent.getModel(site, entity.getModelId());
             if (null != category && null != cmsModel && site.getId() == category.getSiteId() && category.isAllowContribute()) {
                 entity.setId(handler.getLong("id"));
                 entity.setOnlyUrl(cmsModel.isOnlyUrl());

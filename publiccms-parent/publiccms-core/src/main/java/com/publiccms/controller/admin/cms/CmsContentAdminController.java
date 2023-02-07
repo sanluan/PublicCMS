@@ -153,7 +153,7 @@ public class CmsContentAdminController {
             category = null;
         }
 
-        CmsModel cmsModel = modelComponent.getModelMap(site.getId()).get(entity.getModelId());
+        CmsModel cmsModel = modelComponent.getModel(site, entity.getModelId());
         CmsCategoryModel categoryModel = categoryModelService
                 .getEntity(new CmsCategoryModelId(entity.getCategoryId(), entity.getModelId()));
 

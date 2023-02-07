@@ -8,9 +8,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.api.SiteCache;
@@ -18,6 +19,7 @@ import com.publiccms.common.cache.CacheEntity;
 import com.publiccms.common.cache.CacheEntityFactory;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.views.pojo.entities.CmsCategoryType;
 import com.publiccms.views.pojo.entities.CmsModel;
@@ -41,7 +43,7 @@ public class ModelComponent implements SiteCache {
     private SiteComponent siteComponent;
 
     /**
-     * @param siteId
+     * @param site
      * @param parentId
      * @param queryAll
      * @param hasChild
@@ -50,10 +52,10 @@ public class ModelComponent implements SiteCache {
      * @param hasFiles
      * @return models list
      */
-    public List<CmsModel> getModelList(short siteId, String parentId, boolean queryAll, Boolean hasChild, Boolean onlyUrl,
+    public List<CmsModel> getModelList(SysSite site, String parentId, boolean queryAll, Boolean hasChild, Boolean onlyUrl,
             Boolean hasImages, Boolean hasFiles) {
         List<CmsModel> modelList = new ArrayList<>();
-        Map<String, CmsModel> map = getModelMap(siteId);
+        Map<String, CmsModel> map = getModelMap(site);
         for (CmsModel model : map.values()) {
             if ((CommonUtils.empty(parentId) && (queryAll || CommonUtils.empty(model.getParentId()))
                     || CommonUtils.notEmpty(parentId) && parentId.equals(model.getParentId()))
@@ -68,21 +70,31 @@ public class ModelComponent implements SiteCache {
     }
 
     /**
-     * @param siteId
+     * @param site
      * @return category types list
      */
-    public List<CmsCategoryType> getCategoryTypeList(short siteId) {
-        Map<String, CmsCategoryType> map = getCategoryTypeMap(siteId);
+    public List<CmsCategoryType> getCategoryTypeList(SysSite site) {
+        Map<String, CmsCategoryType> map = getCategoryTypeMap(site);
         List<CmsCategoryType> list = new ArrayList<>(map.values());
         list.sort((e1, e2) -> e1.getSort() - e2.getSort());
         return list;
     }
 
     /**
-     * @param siteId
+     * @param site
+     * @param modelId
+     * @return model
+     */
+    public CmsModel getModel(SysSite site, String modelId) {
+        return getModel(site, modelId);
+    }
+
+    /**
+     * @param site
      * @return model map
      */
-    public Map<String, CmsModel> getModelMap(short siteId) {
+    public Map<String, CmsModel> getModelMap(SysSite site) {
+        short siteId = getSiteId(site);
         Map<String, CmsModel> modelMap = modelCache.get(siteId);
         if (null == modelMap) {
             File file = new File(siteComponent.getModelFilePath(siteId));
@@ -102,10 +114,20 @@ public class ModelComponent implements SiteCache {
     }
 
     /**
-     * @param siteId
+     * @param site
+     * @param typeId
+     * @return category type
+     */
+    public CmsCategoryType getCategoryType(SysSite site, String typeId) {
+        return getCategoryTypeMap(site).get(typeId);
+    }
+
+    /**
+     * @param site
      * @return model map
      */
-    public Map<String, CmsCategoryType> getCategoryTypeMap(short siteId) {
+    public Map<String, CmsCategoryType> getCategoryTypeMap(SysSite site) {
+        short siteId = getSiteId(site);
         Map<String, CmsCategoryType> typeMap = typeCache.get(siteId);
         if (null == typeMap) {
             File file = new File(siteComponent.getCategoryTypeFilePath(siteId));
@@ -148,7 +170,7 @@ public class ModelComponent implements SiteCache {
 
     /**
      * 保存模型
-     *
+     * 
      * @param siteId
      * @param typeMap
      * @return whether the save is successful
@@ -166,6 +188,10 @@ public class ModelComponent implements SiteCache {
         }
         typeCache.remove(siteId);
         return true;
+    }
+
+    private short getSiteId(SysSite site) {
+        return null == site.getParentId() ? site.getId() : site.getParentId();
     }
 
     @Override
