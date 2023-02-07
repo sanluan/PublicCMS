@@ -113,10 +113,10 @@ public class CmsModelAdminController {
             }
         }
         if (CommonUtils.notEmpty(modelId)) {
-            Map<String, CmsModel> modelMap = modelComponent.getModelMap(site.getId());
+            Map<String, CmsModel> modelMap = modelComponent.getModelMap(site);
             CmsModel oldModel = modelMap.remove(modelId);
             modelMap.put(entity.getId(), entity);
-            List<CmsModel> modelList = modelComponent.getModelList(site.getId(), modelId, false, null, null, null, null);
+            List<CmsModel> modelList = modelComponent.getModelList(site, modelId, false, null, null, null, null);
             for (CmsModel m : modelList) {
                 m.setParentId(entity.getId());
                 modelMap.put(m.getId(), m);
@@ -135,7 +135,7 @@ public class CmsModelAdminController {
                     LogLoginService.CHANNEL_WEB_MANAGER, "update.model", RequestUtils.getIpAddress(request),
                     CommonUtils.getDate(), JsonUtils.getString(entity)));
         } else {
-            Map<String, CmsModel> modelMap = modelComponent.getModelMap(site.getId());
+            Map<String, CmsModel> modelMap = modelComponent.getModelMap(site);
             modelMap.put(entity.getId(), entity);
             modelComponent.saveModel(site.getId(), modelMap);
             if (CommonUtils.notEmpty(entity.getParentId())) {
@@ -168,10 +168,10 @@ public class CmsModelAdminController {
         if (ControllerUtils.errorCustom("noright", null != site.getParentId(), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        Map<String, CmsModel> modelMap = modelComponent.getModelMap(site.getId());
+        Map<String, CmsModel> modelMap = modelComponent.getModelMap(site);
         CmsModel entity = modelMap.remove(id);
         if (null != entity) {
-            List<CmsModel> modelList = modelComponent.getModelList(site.getId(), entity.getId(), false, null, null, null, null);
+            List<CmsModel> modelList = modelComponent.getModelList(site, entity.getId(), false, null, null, null, null);
             for (CmsModel m : modelList) {
                 m.setParentId(null);
                 modelMap.put(m.getId(), m);
@@ -193,8 +193,7 @@ public class CmsModelAdminController {
     @RequestMapping("batchPublish")
     @Csrf
     public String batchPublish(@RequestAttribute SysSite site, String id) {
-        Map<String, CmsModel> modelMap = modelComponent.getModelMap(site.getId());
-        CmsModel entity = modelMap.get(id);
+        CmsModel entity = modelComponent.getModel(site, id);
         if (null != entity) {
             log.info("begin batch publish");
             List<CmsCategoryModel> categoryModelList = categoryModelService.getList(site.getId(), id, null);
@@ -221,8 +220,7 @@ public class CmsModelAdminController {
     @RequestMapping("rebuildSearchText")
     @Csrf
     public String rebuildSearchText(@RequestAttribute SysSite site, String id) {
-        Map<String, CmsModel> modelMap = modelComponent.getModelMap(site.getId());
-        CmsModel entity = modelMap.get(id);
+        CmsModel entity = modelComponent.getModel(site, id);
         if (null != entity) {
             CmsCategoryQuery query = new CmsCategoryQuery();
             query.setSiteId(site.getId());

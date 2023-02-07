@@ -23,7 +23,9 @@
                 <li><a href="cmsModel/list.html?parentId=${(parent.parentId?url)!}" target="navTab" rel="cmsModel/list"><i class="icon-circle-arrow-up icon-large"></i><@t.page 'button.return'/></a></li>
                 <li class="line">line</li>
             </#if>
-            <li><a href="cmsModel/add.html?parentId=${(parent.id?url)!}" target="navTab" rel="cmsModel/add"><i class="icon-plus-sign-alt icon-large"></i><@t.page 'model.add'/></a></li>
+            <#if !site.parentId?has_content>
+                <li><a href="cmsModel/add.html?parentId=${(parent.id?url)!}" target="navTab" rel="cmsModel/add"><i class="icon-plus-sign-alt icon-large"></i><@t.page 'model.add'/></a></li>
+            </#if>
         </ul>
     </div>
 <@cms.modelList parentId=parentId hasChild=hasChild>

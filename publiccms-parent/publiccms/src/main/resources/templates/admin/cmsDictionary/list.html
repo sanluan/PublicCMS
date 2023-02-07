@@ -17,7 +17,7 @@
                     <li>
                         <button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
                     </li>
-                    <#if authorizedMap['cmsDictionary/export']>
+                    <#if !site.parentId?has_content && authorizedMap['cmsDictionary/export']>
                         <li>
                             <a class="button" href="cmsDictionary/export?_csrf=<@tools.csrfToken admin=true/>" target="dwzExport" targetType="navTab"><i class="icon-download-alt icon-large"></i><@t.page 'button.export'/></a>
                         </li>
@@ -30,13 +30,13 @@
 <div class="card">
     <div class="panelBar">
         <ul class="toolBar">
-        <#if authorizedMap['cmsDictionary/add']>
+        <#if !site.parentId?has_content && authorizedMap['cmsDictionary/add']>
             <li><a href="cmsDictionary/add.html" target="navTab" rel="cmsDictionary/add"><i class="icon-plus-sign-alt icon-large"></i><@t.page 'button.add'/></a></li>
         </#if>
-        <#if authorizedMap['cmsDictionary/delete']>
+        <#if !site.parentId?has_content && authorizedMap['cmsDictionary/delete']>
             <li><a href="cmsDictionary/delete?_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i><@t.page 'button.batch_delete'/></a></li>
         </#if>
-        <#if authorizedMap['cmsDictionary/import']>
+        <#if !site.parentId?has_content && authorizedMap['cmsDictionary/import']>
             <li><a href="cmsDictionary/import.html" target="dialog" mask="true" width="500" height="250"><i class="icon-upload-alt icon-large"></i><@t.page 'import'/></a></li>
         </#if>
         </ul>
@@ -64,11 +64,11 @@
                 <#else>
                     <a href="cmsDictionary/add.html?id=${a.id.id}" class="edit btnText blue" target="navTab" rel="cmsDictionary/edit"><i class="icon-edit"></i><@t.page 'button.edit'/></a>
                 </#if>
-                <#if authorizedMap['cmsDictionary/export']>
+                <#if !site.parentId?has_content && authorizedMap['cmsDictionary/export']>
                     <a href="cmsDictionary/export?id=${a.id.id}&_csrf=<@tools.csrfToken admin=true/>" class="edit btnText" target="_blank"><i class="icon-download-alt icon-large"></i><@t.page 'button.export'/></a>
                 </#if>
                 <a href="cmsDictionary/excludeTree.html?id=${a.id.id}" class="btnText blue" target="navTab" rel="cmsDictionary/excludeTree" title="${a.name!}" icon="<i class='bi bi-exclude'></i>"><i class="bi bi-exclude"></i><@t.page 'dictionary.exclude'/></a>
-                <#if authorizedMap['cmsDictionary/delete']>
+                <#if !site.parentId?has_content && authorizedMap['cmsDictionary/delete']>
                     <a href="cmsDictionary/delete?ids=${a.id.id}&_csrf=<@tools.csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i><@t.page 'button.delete'/></a>
                 </#if>
                 </td>

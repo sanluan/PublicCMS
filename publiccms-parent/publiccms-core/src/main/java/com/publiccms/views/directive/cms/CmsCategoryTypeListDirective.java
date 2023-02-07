@@ -43,7 +43,7 @@ public class CmsCategoryTypeListDirective extends AbstractTemplateDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
         PageHandler page = new PageHandler(null, null);
-        page.setList(modelComponent.getCategoryTypeList(getSite(handler).getId()));
+        page.setList(modelComponent.getCategoryTypeList(getSite(handler)));
         handler.put("page", page).render();
     }
 

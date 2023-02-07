@@ -55,9 +55,10 @@ public class CmsDictionaryExcludeValueDirective extends AbstractTemplateDirectiv
         String value = handler.getString("value");
         if (CommonUtils.notEmpty(dictionaryId) && CommonUtils.notEmpty(excludeDictionaryId)) {
             SysSite site = getSite(handler);
+            short siteId = null == site.getParentId() ? site.getId() : site.getParentId();
             if (CommonUtils.notEmpty(value)) {
                 CmsDictionaryExcludeValue entity = service
-                        .getEntity(new CmsDictionaryExcludeValueId(dictionaryId, site.getId(), excludeDictionaryId, value));
+                        .getEntity(new CmsDictionaryExcludeValueId(dictionaryId, siteId, excludeDictionaryId, value));
                 if (null != entity) {
                     handler.put("object", entity).render();
                 }
@@ -66,7 +67,7 @@ public class CmsDictionaryExcludeValueDirective extends AbstractTemplateDirectiv
                 if (CommonUtils.notEmpty(values)) {
                     CmsDictionaryExcludeValueId[] ids = new CmsDictionaryExcludeValueId[values.length];
                     for (int i = 0; i < values.length; i++) {
-                        ids[i] = new CmsDictionaryExcludeValueId(dictionaryId, site.getId(), excludeDictionaryId, values[i]);
+                        ids[i] = new CmsDictionaryExcludeValueId(dictionaryId, siteId, excludeDictionaryId, values[i]);
                     }
                     List<CmsDictionaryExcludeValue> entityList = service.getEntitys(ids);
                     Map<String, CmsDictionaryExcludeValue> map = CommonUtils.listToMap(entityList, k -> k.getId().getValue(),

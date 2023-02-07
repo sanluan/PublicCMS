@@ -57,6 +57,7 @@ public class CmsDictionaryDataService extends BaseService<CmsDictionaryData> {
                         entity.setParentValue(parentValue);
                         save(entity);
                     } else {
+                        oldEntity.setSort(entity.getSort());
                         oldEntity.setText(entity.getText());
                     }
                     idSet.add(entity.getId());
@@ -83,7 +84,7 @@ public class CmsDictionaryDataService extends BaseService<CmsDictionaryData> {
     public List<CmsDictionaryData> getList(short siteId, String dictionaryId, String parentValue) {
         return dao.getList(siteId, dictionaryId, parentValue);
     }
-    
+
     /**
      * @param siteId
      * @param dictionaryId
@@ -102,7 +103,7 @@ public class CmsDictionaryDataService extends BaseService<CmsDictionaryData> {
     public int delete(short siteId, String[] dictionaryIds) {
         return dao.delete(siteId, dictionaryIds);
     }
-    
+
     @Resource
     private CmsDictionaryDataDao dao;
     @Resource

@@ -1,9 +1,5 @@
 package com.publiccms.common.base;
 
-import jakarta.servlet.http.HttpServletResponse;
-
-import jakarta.annotation.Resource;
-
 import com.publiccms.common.api.PaymentGateway;
 import com.publiccms.common.api.TradePaymentProcessor;
 import com.publiccms.common.tools.CommonUtils;
@@ -12,6 +8,8 @@ import com.publiccms.entities.trade.TradePaymentHistory;
 import com.publiccms.logic.component.trade.PaymentProcessorComponent;
 import com.publiccms.logic.service.trade.TradePaymentHistoryService;
 import com.publiccms.logic.service.trade.TradePaymentService;
+
+import jakarta.annotation.Resource;
 
 public abstract class AbstractPaymentGateway implements PaymentGateway {
     @Resource

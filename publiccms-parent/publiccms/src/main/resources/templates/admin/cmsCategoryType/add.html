@@ -5,7 +5,7 @@
         <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
         <div class="formBar card">
             <ul>
-               <#if site.parentId?has_content>
+            <#if site.parentId?has_content>
                 <li><button type="button" class="buttonDisabled"><@t.page 'site.parent_maintain'/></button></li>
             <#else>
             <@sys.authorized roleIds=admin.roles url='cmsCategoryType/save'>

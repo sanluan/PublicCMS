@@ -40,7 +40,7 @@
                     <thead>
                         <tr>
                             <th type="text" name="itemList[#index#].title" size="50" fieldClass="required" fieldAttrs="{maxlength:100}"><@t.page 'title'/></th>
-                            <th type="text" name="itemList[#index#].sort" fieldClass="required digits" defaultval="#index#" size="5"><@t.page 'sort'/></th>
+                            <th type="number" name="itemList[#index#].sort" fieldClass="required digits" defaultval="#index#" size="5"><@t.page 'sort'/></th>
                             <th type="del" width="60"><@t.page 'operate'/></th>
                         </tr>
                     </thead>
@@ -54,7 +54,7 @@
                                 <input class="required" type="text" name="itemList[${v?index}].title" value="${v.title}" size="50" maxlength="100"/>
                             </td>
                             <td>
-                                <input class="required digits" type="text" name="itemList[${v?index}].sort" value="${v.sort!}" size="5" maxlength="5"/>
+                                <input class="required digits" type="number" name="itemList[${v?index}].sort" value="${v.sort!}" size="5" maxlength="5"/>
                             </td>
                             <td>
                                 <a href="javascript:;" class="btnDel"><@t.page 'button.delete'/></a>

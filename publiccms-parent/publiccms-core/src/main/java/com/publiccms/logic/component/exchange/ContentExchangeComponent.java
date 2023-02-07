@@ -33,6 +33,7 @@ import com.publiccms.entities.cms.CmsContentProduct;
 import com.publiccms.entities.cms.CmsContentRelated;
 import com.publiccms.entities.sys.SysDept;
 import com.publiccms.entities.sys.SysExtendField;
+import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.ModelComponent;
@@ -256,7 +257,8 @@ public class ContentExchangeComponent extends AbstractExchange<CmsContent, Conte
                 categoryMap.put(entity.getId(), entity);
             }
         }
-        Map<String, CmsModel> modelMap = modelComponent.getModelMap(siteId);
+        SysSite site = siteComponent.getSiteById(siteId);
+        Map<String, CmsModel> modelMap = modelComponent.getModelMap(site);
         Map<Long, CmsContentAttribute> contentAttributeMap = new HashMap<>();
         if (null != pksMap.get("contentIds")) {
             List<Serializable> contentIds = pksMap.get("contentIds");
@@ -278,7 +280,7 @@ public class ContentExchangeComponent extends AbstractExchange<CmsContent, Conte
             Map<String, String> fieldTextMap = null;
             List<String> fieldList = null;
             if (CommonUtils.notEmpty(queryEntity.getModelIds()) && 1 == queryEntity.getModelIds().length) {
-                CmsModel cmsModel = modelComponent.getModelMap(siteId).get(queryEntity.getModelIds()[0]);
+                CmsModel cmsModel = modelComponent.getModel(site, queryEntity.getModelIds()[0]);
                 if (null != cmsModel) {
                     modelExtendList = cmsModel.getExtendList();
                     fieldTextMap = cmsModel.getFieldTextMap();
@@ -324,6 +326,8 @@ public class ContentExchangeComponent extends AbstractExchange<CmsContent, Conte
             row.createCell(j++)
                     .setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.category"));
             row.createCell(j++).setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.model"));
+            row.createCell(j++)
+                    .setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.word_count"));
             row.createCell(j++)
                     .setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content.score"));
             row.createCell(j++)
@@ -393,6 +397,8 @@ public class ContentExchangeComponent extends AbstractExchange<CmsContent, Conte
                 row.createCell(j++).setCellValue(null == category ? null : category.getName());
                 cmsModel = modelMap.get(entity.getModelId());
                 row.createCell(j++).setCellValue(null == cmsModel ? null : cmsModel.getName());
+                attribute = contentAttributeMap.get(entity.getId());
+                row.createCell(j++).setCellValue(null == attribute ? null : String.valueOf(attribute.getWordCount()));
                 row.createCell(j++).setCellValue(String.valueOf(entity.getScores()));
                 row.createCell(j++).setCellValue(String.valueOf(entity.getComments()));
                 row.createCell(j++).setCellValue(String.valueOf(entity.getClicks()));
@@ -405,8 +411,6 @@ public class ContentExchangeComponent extends AbstractExchange<CmsContent, Conte
                         "page.status.content." + entity.getStatus()));
                 user = userMap.get(entity.getCheckUserId());
                 row.createCell(j++).setCellValue(null == user ? null : user.getNickname());
-
-                attribute = contentAttributeMap.get(entity.getId());
                 row.createCell(j++).setCellValue(null == attribute ? null : attribute.getSource());
                 row.createCell(j++).setCellValue(null == attribute ? null : attribute.getSourceUrl());
 
@@ -449,8 +453,8 @@ public class ContentExchangeComponent extends AbstractExchange<CmsContent, Conte
         CmsCategory category = categoryService.getEntity(entity.getCategoryId());
         if (null != category) {
             Content data = exportEntity(siteId, category.getCode(), entity);
-
-            CmsModel model = modelComponent.getModelMap(siteId).get(entity.getModelId());
+            SysSite site = siteComponent.getSiteById(siteId);
+            CmsModel model = modelComponent.getModel(site, entity.getModelId());
             if (null != model && model.isHasChild()) {
                 List<CmsContent> list = service.getListByTopId(siteId, entity.getId());
                 if (null != list) {

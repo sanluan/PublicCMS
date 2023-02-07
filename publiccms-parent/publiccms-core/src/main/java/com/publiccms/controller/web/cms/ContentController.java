@@ -96,10 +96,12 @@ public class ContentController {
             lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_CONTRIBUTE, String.valueOf(user.getId()), null, true);
             return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
         }
-        if (CommonUtils.notEmpty(captcha) || safeConfigComponent.enableCaptcha(site.getId(),SafeConfigComponent.CAPTCHA_MODULE_CONTRIBUTE)) {
+        if (CommonUtils.notEmpty(captcha)
+                || safeConfigComponent.enableCaptcha(site.getId(), SafeConfigComponent.CAPTCHA_MODULE_CONTRIBUTE)) {
             String sessionCaptcha = (String) request.getSession().getAttribute("captcha");
             request.getSession().removeAttribute("captcha");
-            if (ControllerUtils.errorCustom("captcha.error", null == sessionCaptcha || !sessionCaptcha.equalsIgnoreCase(captcha), model)) {
+            if (ControllerUtils.errorCustom("captcha.error", null == sessionCaptcha || !sessionCaptcha.equalsIgnoreCase(captcha),
+                    model)) {
                 return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
             }
         }
@@ -113,7 +115,7 @@ public class ContentController {
         if (null != category && (site.getId() != category.getSiteId() || !category.isAllowContribute())) {
             category = null;
         }
-        CmsModel cmsModel = modelComponent.getModelMap(site.getId()).get(entity.getModelId());
+        CmsModel cmsModel = modelComponent.getModel(site, entity.getModelId());
         if (ControllerUtils.errorNotEmpty("category", category, model)
                 || ControllerUtils.errorNotEmpty("model", cmsModel, model)) {
             return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();

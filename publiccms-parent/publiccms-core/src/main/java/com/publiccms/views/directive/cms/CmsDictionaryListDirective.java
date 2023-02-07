@@ -4,13 +4,15 @@ package com.publiccms.views.directive.cms;
 
 import java.io.IOException;
 
-import com.publiccms.common.base.AbstractTemplateDirective;
-import com.publiccms.logic.service.cms.CmsDictionaryService;
-import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
+import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.service.cms.CmsDictionaryService;
+
+import jakarta.annotation.Resource;
 
 /**
  *
@@ -47,8 +49,10 @@ public class CmsDictionaryListDirective extends AbstractTemplateDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
-        PageHandler page = service.getPage(getSite(handler).getId(), handler.getString("name"),
-                handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", handler.getInteger("count", 30)));
+        SysSite site = getSite(handler);
+        short siteId = null == site.getParentId() ? site.getId() : site.getParentId();
+        PageHandler page = service.getPage(siteId, handler.getString("name"), handler.getInteger("pageIndex", 1),
+                handler.getInteger("pageSize", handler.getInteger("count", 30)));
         handler.put("page", page).render();
     }
 

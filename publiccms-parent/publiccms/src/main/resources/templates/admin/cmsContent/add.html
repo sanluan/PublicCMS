@@ -247,7 +247,7 @@ $('input[name=\'categoryName\']',navTab.getCurrentPanel()).on('change',function(
                                     </#if>
                                     <th type="text" name="contentRelateds[${a?index}][#index#].url" size="40" fieldClass="required" fieldAttrs="{'maxlength':2048}"><@t.page 'address'/></th>
                                     <th type="textarea" name="contentRelateds[${a?index}][#index#].description" fieldAttrs="{maxlength:150,rows:2,cols:60}"><@t.page 'description'/></th>
-                                    <th type="text" name="contentRelateds[${a?index}][#index#].sort" fieldClass="required digits" defaultval="#index#" size="5"><@t.page 'sort'/></th>
+                                    <th type="number" name="contentRelateds[${a?index}][#index#].sort" fieldClass="required digits" defaultval="#index#" size="5"><@t.page 'sort'/></th>
                                     <th type="del" width="100"><@t.page 'operate'/></th>
                                 </tr>
                             </thead>
@@ -282,7 +282,7 @@ $('input[name=\'categoryName\']',navTab.getCurrentPanel()).on('change',function(
                                         <textarea name="contentRelateds[${a?index}][${related?index}].description" rows="2" cols="60" maxlength="150">${(related.description)!}</textarea>
                                     </td>
                                     <td>
-                                        <input class="required digits" type="text" name="contentRelateds[${a?index}][${related?index}].sort" value="${related.sort!}" size="5" maxlength="5"/>
+                                        <input class="required digits" type="number" name="contentRelateds[${a?index}][${related?index}].sort" value="${related.sort!}" size="5" maxlength="5"/>
                                     </td>
                                     <td>
                                         <a href="javascript:;" class="btnDel"><@t.page 'button.delete'/></a>
