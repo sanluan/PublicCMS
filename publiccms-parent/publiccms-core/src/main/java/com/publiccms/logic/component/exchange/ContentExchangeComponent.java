@@ -327,6 +327,8 @@ public class ContentExchangeComponent extends AbstractExchange<CmsContent, Conte
                     .setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.category"));
             row.createCell(j++).setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.model"));
             row.createCell(j++)
+                    .setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.word_count"));
+            row.createCell(j++)
                     .setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content.score"));
             row.createCell(j++)
                     .setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content.comments"));
@@ -395,6 +397,8 @@ public class ContentExchangeComponent extends AbstractExchange<CmsContent, Conte
                 row.createCell(j++).setCellValue(null == category ? null : category.getName());
                 cmsModel = modelMap.get(entity.getModelId());
                 row.createCell(j++).setCellValue(null == cmsModel ? null : cmsModel.getName());
+                attribute = contentAttributeMap.get(entity.getId());
+                row.createCell(j++).setCellValue(null == attribute ? null : String.valueOf(attribute.getWordCount()));
                 row.createCell(j++).setCellValue(String.valueOf(entity.getScores()));
                 row.createCell(j++).setCellValue(String.valueOf(entity.getComments()));
                 row.createCell(j++).setCellValue(String.valueOf(entity.getClicks()));
@@ -407,8 +411,6 @@ public class ContentExchangeComponent extends AbstractExchange<CmsContent, Conte
                         "page.status.content." + entity.getStatus()));
                 user = userMap.get(entity.getCheckUserId());
                 row.createCell(j++).setCellValue(null == user ? null : user.getNickname());
-
-                attribute = contentAttributeMap.get(entity.getId());
                 row.createCell(j++).setCellValue(null == attribute ? null : attribute.getSource());
                 row.createCell(j++).setCellValue(null == attribute ? null : attribute.getSourceUrl());
 

@@ -130,30 +130,12 @@
             </dl>
 </#if>
         </#if>
-        <#if fieldList?seq_contains('description')>
-            <dl class="nowrap">
-                <dt>${(model.fieldTextMap['description'])!}:</dt>
-                <dd class="exclude-translate">
-                    <#list (a.description!'')?split('\n') as line>${line}<#sep><br/></#list>
-                </dd>
-            </dl>
-        </#if>
             <dl>
                 <dt><@t.page 'publish_date'/>:</dt>
                 <dd>
                     ${(a.publishDate)!}<#if a.expiryDate?has_content> - ${(a.expiryDate)!}</#if>
                 </dd>
             </dl>
-        <#if fieldList?seq_contains('cover')&&a.cover?has_content>
-            <dl class="nowrap">
-                <dt>${(model.fieldTextMap['cover'])!}:</dt>
-                <dd>
-                    <div class="thumbnail">
-                        <img src="${(a.cover)!}"/>
-                    </div>
-                </dd>
-            </dl>
-        </#if>
         <#include "../include_page/extendData.html"/>
         <#if category?has_content&&category.extendId?has_content>
             <@sys.extendFieldList extendId=category.extendId>
@@ -214,9 +196,27 @@
                 </dd>
             </dl>
         </#if>
+        <#if fieldList?seq_contains('cover')&&a.cover?has_content>
+            <dl class="nowrap">
+                <dt>${(model.fieldTextMap['cover'])!}:</dt>
+                <dd>
+                    <div class="thumbnail">
+                        <img src="${(a.cover)!}"/>
+                    </div>
+                </dd>
+            </dl>
+        </#if>
+        <#if fieldList?seq_contains('description')>
+            <dl class="nowrap">
+                <dt>${(model.fieldTextMap['description'])!}:</dt>
+                <dd class="exclude-translate">
+                    <#list (a.description!'')?split('\n') as line>${line}<#sep><br/></#list>
+                </dd>
+            </dl>
+        </#if>
         <#if fieldList?seq_contains('content')>
             <dl class="nowrap">
-                <dt>${(model.fieldTextMap['content'])!}:</dt>
+                <dt>${(model.fieldTextMap['content'])!}(${(attribute.wordCount)!}):</dt>
                 <dd id="content" class="exclude-translate">
                     <#if safe>${(attribute.text?no_esc)!}<#else>${(attribute.text)!}</#if>
                 </dd>
