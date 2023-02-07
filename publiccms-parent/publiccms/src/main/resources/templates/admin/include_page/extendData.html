@@ -194,7 +194,6 @@
             <#break>
         <#case 'dictionary'>
             <@cms.dictionary id=extend.dictionaryId><#local dictionary=object/></@cms.dictionary>
-            <#if site.parentId?has_content&&!dictionary?has_content><@cms.dictionary id=extend.dictionaryId siteId=site.parentId><#local dictionary=object/></@cms.dictionary></#if>
             <#if dictionary?has_content>
                 <#if 'view'=type>
                     <@cms.dictionaryData dictionaryId=extend.dictionaryId values=value><#list map as k,data>${data.text}<#sep>,</#list></@cms.dictionaryData>

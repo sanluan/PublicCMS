@@ -28,6 +28,7 @@ import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.DateFormatUtils;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
@@ -73,12 +74,17 @@ public class CmsDictionaryAdminController {
      * @param parentValue
      * @param dictionaryParameters
      * @param request
+     * @param model
      * @return view name
      */
     @RequestMapping("save")
     @Csrf
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, CmsDictionary entity, String oldId,
-            String parentValue, @ModelAttribute CmsDictionaryParameters dictionaryParameters, HttpServletRequest request) {
+            String parentValue, @ModelAttribute CmsDictionaryParameters dictionaryParameters, HttpServletRequest request,
+            ModelMap model) {
+        if (ControllerUtils.errorCustom("noright", null != site.getParentId(), model)) {
+            return CommonConstants.TEMPLATE_ERROR;
+        }
         if (null != entity && null != entity.getId()) {
             entity.getId().setSiteId(site.getId());
             if (CommonUtils.notEmpty(parentValue)) {
@@ -140,12 +146,16 @@ public class CmsDictionaryAdminController {
     @Csrf
     public String doImport(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile file, boolean overwrite,
             HttpServletRequest request, ModelMap model) {
+        if (ControllerUtils.errorCustom("noright", null != site.getParentId(), model)) {
+            return CommonConstants.TEMPLATE_ERROR;
+        }
         if (null != file) {
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "import.cmsDictionary", RequestUtils.getIpAddress(request),
                     CommonUtils.getDate(), file.getOriginalFilename()));
         }
-        return SiteExchangeComponent.importData(site.getId(), admin.getId(), overwrite, "-dictionary.zip", exchangeComponent, file, model);
+        return SiteExchangeComponent.importData(site.getId(), admin.getId(), overwrite, "-dictionary.zip", exchangeComponent,
+                file, model);
     }
 
     /**
@@ -181,12 +191,16 @@ public class CmsDictionaryAdminController {
      * @param admin
      * @param ids
      * @param request
+     * @param model 
      * @return view name
      */
     @RequestMapping("delete")
     @Csrf
     public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String[] ids,
-            HttpServletRequest request) {
+            HttpServletRequest request, ModelMap model) {
+        if (ControllerUtils.errorCustom("noright", null != site.getParentId(), model)) {
+            return CommonConstants.TEMPLATE_ERROR;
+        }
         if (CommonUtils.notEmpty(ids)) {
             CmsDictionaryId[] entityIds = new CmsDictionaryId[ids.length];
             for (int i = 0; i < ids.length; i++) {

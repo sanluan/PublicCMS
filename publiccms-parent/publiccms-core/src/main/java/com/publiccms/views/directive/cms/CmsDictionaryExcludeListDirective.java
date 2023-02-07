@@ -52,7 +52,8 @@ public class CmsDictionaryExcludeListDirective extends AbstractTemplateDirective
         String excludeDictionaryId = handler.getString("excludeDictionaryId");
         if (CommonUtils.notEmpty(dictionaryId) || CommonUtils.notEmpty(excludeDictionaryId)) {
             SysSite site = getSite(handler);
-            list = service.getList(site.getId(), dictionaryId, excludeDictionaryId);
+            short siteId = null == site.getParentId() ? site.getId() : site.getParentId();
+            list = service.getList(siteId, dictionaryId, excludeDictionaryId);
         } else {
             list = new ArrayList<>();
         }

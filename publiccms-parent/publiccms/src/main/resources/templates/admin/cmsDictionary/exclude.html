@@ -32,7 +32,6 @@
                             <tr>
                                 <td>
                                     <@cms.dictionary id=d.id.excludeDictionaryId><#assign dictionary=object/></@cms.dictionary>
-                                    <#if site.parentId?has_content&&!dictionary?has_content><@cms.dictionary id=d.id.excludeDictionaryId siteId=site.parentId><#assign dictionary=object/></@cms.dictionary></#if>
                                     <input type="hidden" name="excludeList[${d?index}].id.excludeDictionaryId" value="${(d.id.excludeDictionaryId)!}"/>
                                     <input type="text" name="excludeList[${d?index}].id.dictionaryName" readonly="readonly" size="10" value="${(dictionary.name)!}"/>
                                     <a class="btnLook" href="cmsDictionary/lookup.html?field=excludeDictionaryId" lookupGroup="excludeList[${d?index}].id" width="1000" height="500"><@t.page 'dictionary.select'/></a>

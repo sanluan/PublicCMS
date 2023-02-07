@@ -52,7 +52,8 @@ public class CmsDictionaryDataListDirective extends AbstractTemplateDirective {
         String parentValue = handler.getString("parentValue");
         if (CommonUtils.notEmpty(dictionaryId)) {
             SysSite site = getSite(handler);
-            list = service.getList(site.getId(), dictionaryId, parentValue);
+            short siteId = null == site.getParentId() ? site.getId() : site.getParentId();
+            list = service.getList(siteId, dictionaryId, parentValue);
         } else {
             list = new ArrayList<>();
         }
