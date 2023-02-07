@@ -52,7 +52,7 @@
             </dl>
             <dl class="nowrap">
                 <dt><@t.page 'sort'/></dt>
-                <dd><input class="required digits" name="sort" type="text" size="5" value="<@cms.surveyQuestionList surveyId=(q.surveyId)!surveyId pageSize=0>${(q.sort)!page.totalCount+1}</@cms.surveyQuestionList>"/></dd>
+                <dd><input class="required digits" name="sort" type="number" size="5" value="<@cms.surveyQuestionList surveyId=(q.surveyId)!surveyId pageSize=0>${(q.sort)!page.totalCount+1}</@cms.surveyQuestionList>"/></dd>
             </dl>
             <fieldset class="itemList">
                 <legend><@t.page 'question.item'/></legend>
@@ -77,7 +77,7 @@
                                 <input class="required" type="text" name="itemList[${a?index}].title" value="${a.title}" size="50" maxlength="100"/>
                             </td>
                             <td>
-                                <input class="required digits" type="text" name="itemList[${a?index}].sort" value="${a.sort!}" size="5" maxlength="5"/>
+                                <input class="required digits" type="number" name="itemList[${a?index}].sort" value="${a.sort!}" size="5" maxlength="5"/>
                             </td>
                         <#if 'exam'=object.surveyType>
                             <td>
