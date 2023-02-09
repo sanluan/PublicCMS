@@ -69,16 +69,15 @@ span.view{display: inline-block;width: 30px;float: right;cursor: pointer;color: 
 
 /* upload video */
 .tabbody .upload.panel {
-    width: 0;
+    width: 100%;
     height: 0;
     overflow: hidden;
     position: absolute !important;
     clip: rect(1px, 1px, 1px, 1px);
     background: #fff;
-    display: block;
+    display: none;
 }
 .tabbody .upload.panel.focus {
-    width: 100%;
     height: 365px;
     display: block;
     clip: auto;
@@ -146,7 +145,7 @@ span.view{display: inline-block;width: 30px;float: right;cursor: pointer;color: 
 }
 
 
-#filePickerContainer,#imagePickerContainer {
+.filePickerContainer,.imagePickerContainer {
     text-align: center;
 }
 

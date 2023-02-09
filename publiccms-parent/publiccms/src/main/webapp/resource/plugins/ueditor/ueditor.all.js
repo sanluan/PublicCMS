@@ -1,7 +1,7 @@
 /*!
  * UEditor
  * version: ueditor
- * build: Mon Feb 06 2023 09:28:37 GMT+0800 (中国标准时间)
+ * build: Thu Feb 09 2023 15:24:04 GMT+0800 (中国标准时间)
  */
 
 (function(){

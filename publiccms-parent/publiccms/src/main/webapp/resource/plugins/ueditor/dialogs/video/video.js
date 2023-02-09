@@ -20,6 +20,10 @@
         $focus($G("videoUrl"));
         initTabs();
         initVideo();
+        initUpload();
+        onlineVideo = new OnlineVideo('videoList');
+        uploadImage = new UploadImage('imageQueueList');
+        onlineImage = new OnlineImage('imageList');
     };
 
     /* 初始化tab标签 */
@@ -37,22 +41,6 @@
                         domUtils.removeClasses(tabs[j], 'focus');
                         domUtils.removeClasses($G(bodyId), 'focus');
                     }
-                    switch (bodyId) {
-                      case 'upload':
-                          initUpload();
-                          break;
-                      case 'onlineVideo':
-                          onlineVideo = onlineVideo || new OnlineVideo('videoList');
-                          onlineVideo.reset();
-                          break;
-                      case 'uploadImage':
-                          uploadImage = uploadImage || new UploadImage('imageQueueList');
-                          break;
-                      case 'onlineImage':
-                          onlineImage = onlineImage || new OnlineImage('imageList');
-                          onlineImage.reset();
-                          break;
-                    }
                 }
             });
         }
@@ -66,18 +54,18 @@
     /* 初始化视频标签 */
     function initVideo(){
         createAlignButton( ["videoFloat", "upload_alignment"] );
-        addUrlChangeListener($G("videoUrl"),$G("posterUrl"));
+        addUrlChangeListener($G("videoUrl"), $G("posterUrl"));
         addOkListener();
 
         //编辑视频时初始化相关信息
         (function(){
-            var img = editor.selection.getRange().getClosedNode(),url;
+            var img = editor.selection.getRange().getClosedNode(),url,poster;
             if(img && img.className){
                 var hasFakedClass = (img.className == "edui-faked-video"),
                     hasUploadClass = img.className.indexOf("edui-upload-video")!=-1;
                 if(hasFakedClass || hasUploadClass) {
                     $G("videoUrl").value = url = img.getAttribute("_url");
-                    $G("posterUrl").value = url = img.getAttribute("poster");
+                    $G("posterUrl").value = poster = img.getAttribute("poster");
                     $G("videoWidth").value = img.width;
                     $G("videoHeight").value = img.height;
                     var align = domUtils.getComputedStyle(img,"float"),
@@ -88,7 +76,7 @@
                     isModifyUploadVideo = false;
                 }
             }
-            createPreviewVideo(url);
+            createPreviewVideo(url,poster);
         })();
     }
 
@@ -101,7 +89,7 @@
             var currentTab =  findFocus("tabHeads","tabSrc");
             switch(currentTab){
                 case "video":
-                    return insertSingle();
+                    return insertVideoList();
                     break;
                 case "upload":
                     return insertVideoList(uploadVideoList);
@@ -174,32 +162,29 @@
         var imageList=[];
         if(!insertList ) {
           if(url ) {
-            if(!poster ) {
               if(uploadImageList.length ) {
                 $G('posterUrl').value = uploadImageList[0].src;
               }else if(onlineImageList.length ) {
                 $G('posterUrl').value = onlineImageList[0].src;
               }
-            }
-            return insertSingle();
+              return insertSingle();
           } else {
             if(uploadVideoList.length){
-              insertList=uploadVideoList;
+                insertList=uploadVideoList;
             }else{
-              insertList=onlineVideo.getInsertList();
+                insertList=onlineVideo.getInsertList();
             }
             if(uploadImageList.length ) {
                 imageList = uploadImageList;
-              }else if(onlineImageList.length ) {
+            }else if(onlineImageList.length ) {
                 imageList = onlineImageList;
-              }
+            }
           }
         }
         for(var key in insertList) {
             var file = insertList[key];
-            var poster;
-            if( key < imageList.length ) {
-              poster = imageList[key].src;
+            if( imageList[key] ) {
+                poster = imageList[key].src;
             }
             videoObjs.push({
                 url: file.url,
@@ -354,7 +339,7 @@
         '</video>';
     }
 
-    /* 上传附件 */
+        /* 上传附件 */
     function UploadFile(target) {
         this.$wrap = target.constructor == String ? $('#' + target) : $(target);
         this.init();
@@ -417,7 +402,7 @@
                 actionUrl = editor.getActionUrl(editor.getOpt('videoActionName')),
                 videoUrlPrefix = editor.getOpt('videoUrlPrefix'),
                 fileMaxSize = editor.getOpt('videoMaxSize'),
-                acceptExtensions = (editor.getOpt('videoAllowFiles') || []).join('').replace(/\./g, ',').replace(/^[,]/, '');;
+                acceptExtensions = (editor.getOpt('videoAllowFiles') || []).join('').replace(/\./g, ',').replace(/^[,]/, '');
 
             if (!WebUploader.Uploader.support()) {
                 $('#filePickerReady').after($('<div>').html(lang.errorNotSupport)).hide();
@@ -431,6 +416,11 @@
                 pick: {
                     id: '#filePickerReady',
                     label: lang.uploadSelectFile
+                },
+                accept: {
+                    title: 'Videos',
+                    extensions: acceptExtensions,
+                    mimeTypes: 'video/*'
                 },
                 swf: '../../third-party/webuploader/Uploader.swf',
                 server: actionUrl,
@@ -490,25 +480,20 @@
                     showError(file.statusText);
                 } else {
                     $wrap.text(lang.uploadPreview);
-                    if ('|png|jpg|jpeg|bmp|gif|'.indexOf('|'+file.ext.toLowerCase()+'|') == -1) {
-                        $wrap.empty().addClass('notimage').append('<i class="file-preview file-type-' + file.ext.toLowerCase() + '"></i>' +
-                            '<span class="file-title">' + file.name + '</span>');
+                    if (browser.ie && browser.version <= 7) {
+                        $wrap.text(lang.uploadNoPreview);
                     } else {
-                        if (browser.ie && browser.version <= 7) {
-                            $wrap.text(lang.uploadNoPreview);
-                        } else {
-                            uploader.makeThumb(file, function (error, src) {
-                                if (error || !src || (/^data:/.test(src) && browser.ie && browser.version <= 7)) {
+                        uploader.makeThumb(file, function (error, src) {
+                            if (error || !src || (/^data:/.test(src) && browser.ie && browser.version <= 7)) {
+                                $wrap.text(lang.uploadNoPreview);
+                            } else {
+                                var $img = $('<img src="' + src + '">');
+                                $wrap.empty().append($img);
+                                $img.on('error', function () {
                                     $wrap.text(lang.uploadNoPreview);
-                                } else {
-                                    var $img = $('<img src="' + src + '">');
-                                    $wrap.empty().append($img);
-                                    $img.on('error', function () {
-                                        $wrap.text(lang.uploadNoPreview);
-                                    });
-                                }
-                            }, thumbnailWidth, thumbnailHeight);
-                        }
+                                });
+                            }
+                        }, thumbnailWidth, thumbnailHeight);
                     }
                     percentages[ file.id ] = [ file.size, 0 ];
                     file.rotation = 0;
@@ -723,8 +708,10 @@
             });
 
             uploader.on('fileDequeued', function (file) {
-                fileCount--;
-                fileSize -= file.size;
+                if (file.ext && acceptExtensions.indexOf(file.ext.toLowerCase()) != -1 && file.size <= fileMaxSize) {
+                    fileCount--;
+                    fileSize -= file.size;
+                }
 
                 removeFile(file);
                 updateTotalProgress();
@@ -757,7 +744,7 @@
 
             uploader.on('uploadBeforeSend', function (file, data, header) {
                 //这里可以通过data对象添加POST参数
-                header['X_Requested_With'] = 'XMLHttpRequest';
+                header['X-Requested-With'] = 'XMLHttpRequest';
             });
 
             uploader.on('uploadProgress', function (file, percentage) {
@@ -826,7 +813,10 @@
         },
         refresh: function(){
             this.uploader.refresh();
-        }
+        },
+        destroy: function () {
+            this.$wrap.remove();
+        },
     };
 
     /* 上传图片 */
@@ -905,8 +895,7 @@
             uploader = _this.uploader = WebUploader.create({
                 pick: {
                     id: '#imagePickerReady',
-                    label: lang.uploadSelectFile,
-                    multiple: false
+                    label: lang.uploadSelectFile
                 },
                 accept: {
                     title: 'Images',
@@ -918,7 +907,6 @@
                 fileVal: editor.getOpt('imageFieldName'),
                 duplicate: true,
                 fileSingleSizeLimit: imageMaxSize,    // 默认 2 M
-                fileNumLimit: 1,
                 compress: editor.getOpt('imageCompressEnable') ? {
                     width: imageCompressBorder,
                     height: imageCompressBorder,
@@ -934,6 +922,10 @@
             });
             uploader.addButton({
                 id: '#imagePickerBlock'
+            });
+	        uploader.addButton({
+                id: '#imagePickerBtn',
+                label: lang.uploadAddFile
             });
 
             setState('pedding');
@@ -1066,7 +1058,6 @@
                 });
 
                 $li.insertBefore($filePickerBlock);
-                $filePickerBlock.hide();
             }
 
             // 负责view的销毁
@@ -1075,7 +1066,6 @@
                 delete percentages[ file.id ];
                 updateTotalProgress();
                 $li.off().find('.file-panel').off().end().remove();
-                $filePickerBlock.show();
             }
 
             function updateTotalProgress() {
@@ -1309,6 +1299,9 @@
             }
             return readyFile;
         },
+        refresh: function(){
+            this.uploader.refresh();
+        },
         destroy: function () {
             this.$wrap.remove();
         },
@@ -1362,7 +1355,6 @@
             domUtils.on(this.container, 'click', function (e) {
                 var target = e.target || e.srcElement,
                     li = target.parentNode;
-                $G('posterUrl').value='';
                 if (li.tagName.toLowerCase() == 'li') {
                     if (domUtils.hasClass(li, 'selected')) {
                         domUtils.removeClasses(li, 'selected');
@@ -1389,7 +1381,7 @@
             this.initContainer();
             this.initData();
         },
-        /* 向后台拉取图片列表数据 */
+        /* 向后台拉取视频列表数据 */
         getVideoData: function () {
             var _this = this;
 
@@ -1503,16 +1495,12 @@
             /* 选中图片 */
             domUtils.on(this.container, 'click', function (e) {
                 var target = e.target || e.srcElement,
-                    li = target.parentNode,
-                    nodes = $G('imageListUl').childNodes;
+                    li = target.parentNode;
                 if (li.tagName.toLowerCase() == 'li') {
-                    for (var i = 0, node; node = nodes[i++];) {
-                        if (node == li && !domUtils.hasClass(node, 'selected')) {
-                            domUtils.addClass(node, 'selected');
-                            $G('posterUrl').value=li.firstChild.getAttribute("_src");
-                        } else {
-                            domUtils.removeClasses(node, 'selected');
-                        }
+                    if (domUtils.hasClass(li, 'selected')) {
+                        domUtils.removeClasses(li, 'selected');
+                    } else {
+                        domUtils.addClass(li, 'selected');
                     }
                 }
             });
@@ -1637,7 +1625,7 @@
                     var img = lis[i].firstChild,
                         src = img.getAttribute('_src');
                     list.push({
-                        url: src
+                        src: src
                     });
                 }
             }
