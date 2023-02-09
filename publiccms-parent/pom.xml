@@ -83,7 +83,7 @@
         <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
         <version.log4j>2.17.2</version.log4j>
         <!-- https://mvnrepository.com/artifact/com.drewnoakes/metadata-extractor -->
-        <version.extractor>2.17.0</version.extractor>
+        <version.extractor>2.18.0</version.extractor>
         <!-- https://mvnrepository.com/artifact/org.sejda.imageio/webp-imageio -->
         <version.webp>0.1.6</version.webp>
         <!-- http://mvnrepository.com/artifact/eu.bitwalker/UserAgentUtils -->
