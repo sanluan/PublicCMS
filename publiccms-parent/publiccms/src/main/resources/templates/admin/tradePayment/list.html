@@ -1,8 +1,8 @@
-<@trade.paymentList userId=userId tradeType=tradeType serialNumber=serialNumber accountType=accountType 
-            accountSerialNumber=accountSerialNumber status=status startCreateDate=startCreateDate endCreateDate=endCreateDate 
+<@trade.paymentList userId=userId tradeType=tradeType serialNumber=serialNumber accountType=accountType
+            accountSerialNumber=accountSerialNumber status=status startCreateDate=startCreateDate endCreateDate=endCreateDate
             orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader card">
-    <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
+    <form class="pagerForm" autocomplete="off" action="tradePayment/list.html" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
         <div class="searchBar">
             <ul class="searchContent">
