@@ -86,7 +86,7 @@ public class ModelComponent implements SiteCache {
      * @return model
      */
     public CmsModel getModel(SysSite site, String modelId) {
-        return getModel(site, modelId);
+        return getModelMap(site).get(modelId);
     }
 
     /**

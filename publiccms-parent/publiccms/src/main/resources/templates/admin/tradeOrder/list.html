@@ -25,7 +25,7 @@
                 </li>
                 <li>
                     <select class="combox" name="processed">
-                        <option value><@t.page 'order.all'/></option>
+                        <option value><@t.page 'order.process'/></option>
                         <option value="false"${(processed?has_content&&"false"=processed)?then(' selected="true"','')?no_esc}><@t.page 'no'/></option>
                         <option value="true"${(processed?has_content&&"true"=processed)?then(' selected="true"','')?no_esc}><@t.page 'yes'/></option>
                     </select>
@@ -105,7 +105,7 @@
                 </td>
                 <td>
                     <div class="box">
-                        <p><#if a.paymentId?has_content><label><@t.page 'payment.id'/>:</label></#if>${a.paymentId!}</p>
+                        <p><#if a.paymentId?has_content><@trade.payment id=a.paymentId><a href="tradePayment/list.html?tradeType=product&serialNumber=${a.id}" target="navTab" rel="tradePayment/list"><@t.page 'status.payment.'+object.status/></a></@trade.payment></#if></p>
                         <p>${a.paymentDate!}</p>
                     </div>
                 </td>
