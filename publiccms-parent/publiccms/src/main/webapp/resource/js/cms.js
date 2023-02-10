@@ -317,5 +317,5 @@ function diyIframeRefresh(){
     $("iframe",navTab.getCurrentPanel()).attr("src",$("input[name=url]",navTab.getCurrentPanel()).val());
     $("#audioPopPlay")[0].volume = 0.1;
     $("#audioLoadPlay")[0].volume = 0.5;
-    diyTimer = setTimeout("alertMsg.error(JUI.msg(\"errorSupport\"))",5000);
+    diyTimer = setTimeout("alertMsg.error(JUI.msg(\"errorSupport\"))",10000);
 }
