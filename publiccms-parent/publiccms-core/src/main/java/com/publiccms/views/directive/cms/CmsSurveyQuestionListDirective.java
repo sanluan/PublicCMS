@@ -26,7 +26,7 @@ import com.publiccms.logic.service.cms.CmsSurveyQuestionService;
  * 多个问题类型,【radio:单选,select:下拉选择,checkbox:复选框,text:文字,file:文件,picture:图片】
  * <li><code>absoluteURL</code> 封面图处理为绝对路径 默认为<code>true</code>
  * <li><code>advanced</code> 开启高级选项, 默认为<code>false</code>
- * <li><code>orderType</code> 排序类型,【asc:正序,desc:倒叙】,默认为排序顺序
+ * <li><code>orderType</code> 排序类型,【asc:正序,desc:倒序】,默认为排序顺序
  * <li><code>pageIndex</code> 页码
  * <li><code>pageSize</code> 每页条数
  * </ul>

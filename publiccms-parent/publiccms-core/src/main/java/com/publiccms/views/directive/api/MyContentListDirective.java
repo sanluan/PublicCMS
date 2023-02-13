@@ -42,8 +42,8 @@ import com.publiccms.views.pojo.query.CmsContentQuery;
  * <li><code>status</code> 内容状态,【0:操作,1:已发布,2:待审核,3:驳回】
  * <li><code>emptyParent</code> 高级选项:父内容id是否为空,【true,false】,当parentId为空时有效
  * <li><code>orderField</code>
- * 排序字段,【score:评分,comments:评论数,clicks:点击数,publishDate:发布日期,updateDate:更新日期,checkDate:审核日期】,默认置顶级别倒叙、发布日期按orderType排序
- * <li><code>orderType</code> 排序类型,【asc:正序,desc:倒叙】,默认为倒叙
+ * 排序字段,【score:评分,comments:评论数,clicks:点击数,publishDate:发布日期,updateDate:更新日期,checkDate:审核日期】,默认置顶级别倒序、发布日期按orderType排序
+ * <li><code>orderType</code> 排序类型,【asc:正序,desc:倒序】,默认为倒序
  * <li><code>pageIndex</code> 页码
  * <li><code>pageSize</code> 每页条数
  * </ul>

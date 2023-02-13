@@ -22,7 +22,7 @@ import com.publiccms.common.handler.PageHandler;
  * <li><code>itemId</code> 项目id
  * <li><code>fieldName</code> 字段名
  * <li><code>userId</code> 用户id
- * <li><code>orderType</code> 排序类型,【asc:正序,desc:倒叙】,默认为发布日期倒叙
+ * <li><code>orderType</code> 排序类型,【asc:正序,desc:倒序】,默认为发布日期倒序
  * <li><code>pageIndex</code> 页码
  * <li><code>pageSize</code> 每页条数
  * </ul>

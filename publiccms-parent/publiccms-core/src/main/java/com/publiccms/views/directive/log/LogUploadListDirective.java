@@ -26,8 +26,8 @@ import com.publiccms.logic.service.log.LogUploadService;
  * <li><code>channel</code> 渠道
  * <li><code>originalName</code> 原文件名
  * <li><code>filePath</code> 文件路径
- * <li><code>orderField</code> 排序字段,[createDate:创建日期,fileSize:文件大小],默认ID倒叙
- * <li><code>orderType</code> 排序类型,【asc:正序,desc:倒叙】,默认为倒叙
+ * <li><code>orderField</code> 排序字段,[createDate:创建日期,fileSize:文件大小],默认ID倒序
+ * <li><code>orderType</code> 排序类型,【asc:正序,desc:倒序】,默认为倒序
  * <li><code>pageIndex</code> 页码
  * <li><code>pageSize</code> 每页条数
  * </ul>

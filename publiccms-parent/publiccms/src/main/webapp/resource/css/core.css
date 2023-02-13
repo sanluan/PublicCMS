@@ -221,7 +221,7 @@ a.button,button.button{border-width:1px;border-style:solid;-moz-box-shadow:0px 0
 /* Layout */
 #leftside{position:absolute;top:0;left:0;height:100%;}
 #sidebar{position:absolute;left:0px;z-index:20;display:block;top:0;bottom:0;width:185px;}
-#sidebar #menu{overflow:auto;}
+#sidebar #menu{overflow:auto;height:100%;}
 #sidebar_s{display:none;width:35px;line-height:35px;position:absolute;cursor:pointer;top:0;left:0;z-index:21;text-align:center;}
 #splitBar{display:block;overflow:hidden;width:2px;cursor:col-resize;position:absolute;top:60px;left:183px;z-index:20;}
 #splitBarProxy{display:none;overflow:hidden;width:2px;border-style:solid;border-width:1px;cursor:col-resize;position:absolute;left:183px;z-index:20;}

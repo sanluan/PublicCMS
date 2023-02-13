@@ -29,7 +29,7 @@ import com.publiccms.logic.service.cms.CmsContentProductService;
 * <li><code>absoluteURL</code> 封面图处理为绝对路径 默认为<code>true</code>
 * <li><code>orderField</code>
 * 排序字段,【price:价格,inventory:库存,sales:销量】,默认置顶id按orderType排序
-* <li><code>orderType</code> 排序类型,【asc:正序,desc:倒叙】,默认为倒叙
+* <li><code>orderType</code> 排序类型,【asc:正序,desc:倒序】,默认为倒序
 * <li><code>pageIndex</code> 页码
 * <li><code>pageSize</code> 每页条数
 * </ul>

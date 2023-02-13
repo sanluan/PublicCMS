@@ -27,7 +27,7 @@ import com.publiccms.common.handler.PageHandler;
  * <li><code>disabled</code> 已禁用,默认为<code>false</code>
  * <li><code>orderField</code>
  * 排序字段,【votes:参与人数,startDate:开始日期,endDate:结束日期,createTime:创建日期】,默认id按orderType排序
- * <li><code>orderType</code> 排序类型,【asc:正序,desc:倒叙】,默认为倒叙
+ * <li><code>orderType</code> 排序类型,【asc:正序,desc:倒序】,默认为倒序
  * <li><code>pageIndex</code> 页码
  * <li><code>pageSize</code> 每页条数
  * </ul>

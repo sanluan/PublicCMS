@@ -20,7 +20,7 @@ import com.publiccms.common.handler.PageHandler;
  * <li><code>sessionId</code> 会话id
  * <li><code>startVisitDate</code> 起始访问日期,【2020-01-01 23:59:59】,【2020-01-01】
  * <li><code>endVisitDate</code> 终止访问日期,【2020-01-01 23:59:59】,【2020-01-01】
- * <li><code>orderType</code> <code>orderType</code> 排序类型,【asc:正序,desc:倒叙】,默认为创建日期倒叙
+ * <li><code>orderType</code> <code>orderType</code> 排序类型,【asc:正序,desc:倒序】,默认为创建日期倒序
  * <li><code>pageIndex</code> 页码
  * <li><code>pageSize</code> 每页条数
  * </ul>

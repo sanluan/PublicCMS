@@ -21,8 +21,8 @@ import com.publiccms.common.handler.RenderHandler;
 * <li><code>startHeartbeatDate</code> 起始心跳日期,【2020-01-01 23:59:59】,【2020-01-01】
 * <li><code>endHeartbeatDate</code> 终止心跳日期,【2020-01-01 23:59:59】,【2020-01-01】
 * <li><code>master</code> 是否主节点,【true,false】,默认false
-* <li><code>orderField</code> 排序字段,[createDate:上次登录日期,heartbeatDate:创建日期,id],默认id倒叙
-* <li><code>orderType</code> 排序类型,【asc:正序,desc:倒叙】,默认为倒叙
+* <li><code>orderField</code> 排序字段,[createDate:上次登录日期,heartbeatDate:创建日期,id],默认id倒序
+* <li><code>orderType</code> 排序类型,【asc:正序,desc:倒序】,默认为倒序
 * <li><code>pageIndex</code> 页码
 * <li><code>pageSize</code> 每页条数
 * </ul>

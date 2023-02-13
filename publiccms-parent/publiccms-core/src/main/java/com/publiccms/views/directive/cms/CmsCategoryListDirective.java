@@ -37,7 +37,7 @@ import com.publiccms.views.pojo.query.CmsCategoryQuery;
  * 返回结果
  * <ul>
  * <li><code>page</code> {@link com.publiccms.common.handler.PageHandler}
- * <li><code>page.list</code> List类型 查询结果实体列表,顺序排序正序,id倒叙
+ * <li><code>page.list</code> List类型 查询结果实体列表,顺序排序正序,id倒序
  * {@link com.publiccms.entities.cms.CmsCategory}
  * </ul>
  * 使用示例
