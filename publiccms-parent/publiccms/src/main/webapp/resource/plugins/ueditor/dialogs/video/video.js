@@ -20,10 +20,6 @@
         $focus($G("videoUrl"));
         initTabs();
         initVideo();
-        initUpload();
-        onlineVideo = new OnlineVideo('videoList');
-        uploadImage = new UploadImage('imageQueueList');
-        onlineImage = new OnlineImage('imageList');
     };
 
     /* 初始化tab标签 */
@@ -37,6 +33,20 @@
                     if(tabs[j] == target){
                         domUtils.addClass(tabs[j], 'focus');
                         domUtils.addClass($G(bodyId), 'focus');
+                        switch (bodyId) {
+                            case 'upload':
+                                uploadFile = uploadFile || new UploadFile('queueList')
+                                break;
+                            case 'onlineVideo':
+                                onlineVideo = onlineVideo || new OnlineVideo('videoList');
+                                break;
+                            case 'uploadImage':
+                                uploadImage = uploadImage || new UploadImage('imageQueueList');
+                                break;
+                            case 'onlineImage':
+                                onlineImage = onlineImage || new OnlineImage('imageList');
+                                break;
+                        }
                     }else {
                         domUtils.removeClasses(tabs[j], 'focus');
                         domUtils.removeClasses($G(bodyId), 'focus');
@@ -44,11 +54,6 @@
                 }
             });
         }
-    }
-
-    /*初始化上传标签*/
-    function initUpload(){
-        uploadFile = new UploadFile('queueList');
     }
 
     /* 初始化视频标签 */
@@ -157,27 +162,25 @@
             height = parseInt($G('upload_height').value, 10) || 280,
             align = findFocus("upload_alignment","name") || 'none',
             poster = $G('posterUrl').value;
-        var uploadImageList=uploadImage.getInsertList();
-        var onlineImageList=onlineImage.getInsertList();
         var imageList=[];
         if(!insertList ) {
           if(url ) {
-              if(uploadImageList.length ) {
-                $G('posterUrl').value = uploadImageList[0].src;
-              }else if(onlineImageList.length ) {
-                $G('posterUrl').value = onlineImageList[0].src;
+              if(uploadImage && uploadImage.getInsertList().length ) {
+                $G('posterUrl').value = uploadImage.getInsertList()[0].src;
+              }else if(onlineImage && onlineImage.getInsertList().length ) {
+                $G('posterUrl').value = onlineImage.getInsertList()[0].src;
               }
               return insertSingle();
           } else {
-            if(uploadVideoList.length){
+            if(uploadVideoList.length) {
                 insertList=uploadVideoList;
-            }else{
+            } else if (onlineVideo) {
                 insertList=onlineVideo.getInsertList();
             }
-            if(uploadImageList.length ) {
-                imageList = uploadImageList;
-            }else if(onlineImageList.length ) {
-                imageList = onlineImageList;
+            if(uploadImage && uploadImage.getInsertList().length  ) {
+                imageList = uploadImage.getInsertList();
+            }else if(onlineImage && onlineImage.getInsertList().length ) {
+                imageList = onlineImage.getInsertList();
             }
           }
         }
@@ -195,10 +198,8 @@
             });
         }
 
-        var count = uploadFile.getQueueCount();
-        var count2 = uploadImage.getQueueCount();
-        if (count) {
-            $('.info', '#queueList').html('<span style="color:red;">' + '还有2个未上传文件'.replace(/[\d]/, count) + '</span>');
+        if (uploadFile && uploadFile.getQueueCount()) {
+            $('.info', '#queueList').html('<span style="color:red;">' + '还有2个未上传文件'.replace(/[\d]/, uploadFile.getQueueCount()) + '</span>');
             return false;
         } else {
             editor.execCommand('insertvideo', videoObjs, 'upload');
