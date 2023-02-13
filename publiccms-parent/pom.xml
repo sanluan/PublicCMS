@@ -312,12 +312,7 @@
             </dependency>
             <dependency>
                 <groupId>org.apache.httpcomponents</groupId>
-                <artifactId>httpmime</artifactId>
-                <version>${version.httpclient}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.httpcomponents</groupId>
-                <artifactId>httpclient-cache</artifactId>
+                <artifactId>httpclient</artifactId>
                 <version>${version.httpclient}</version>
             </dependency>
             <dependency>

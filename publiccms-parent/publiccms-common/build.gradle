@@ -43,8 +43,7 @@ dependencies {
     implementation "commons-io:commons-io:${ioVersion}"
     implementation "org.apache.commons:commons-text:${textVersion}"
     implementation "commons-codec:commons-codec:${codecVersion}"
-    implementation "org.apache.httpcomponents:httpmime:${httpclientVersion}"
-    implementation "org.apache.httpcomponents:httpclient-cache:${httpclientVersion}"
+    implementation "org.apache.httpcomponents:httpclient:${httpclientVersion}"
 
     implementation "org.sejda.imageio:webp-imageio:${webpVersion}"
     implementation "net.ifok.image:image4j:${image4jVersion}"
