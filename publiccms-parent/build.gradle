@@ -8,7 +8,7 @@ buildscript {
     }
     dependencies {
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-gradle-plugin
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:3.0.2")
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:3.0.2"
     }
 }
 
@@ -73,7 +73,7 @@ subprojects {
         // https://mvnrepository.com/artifact/com.zaxxer/HikariCP
         hikariCPVersion = "5.0.1"
         // https://mvnrepository.com/artifact/com.mysql/mysql-connector-j
-        mysqlVersion = "8.0.31"
+        mysqlVersion = "8.0.32"
         // http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
         // http://hc.apache.org/downloads.cgi
         httpclientVersion = "4.5.14"
