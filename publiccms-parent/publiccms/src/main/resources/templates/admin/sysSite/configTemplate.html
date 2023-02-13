@@ -22,6 +22,13 @@
         <dt><@t.page 'server_config.nginx'/>:</dt>
         <dd>
             <textarea class="code" mode="nginx">
+#<@t.page 'server_config.nginx_common_description'/>
+upstream cms {
+    #<@t.page 'server_config.upstream'/>
+    ip_hash;
+    server localhost:8080  weight=1;
+}
+
 <@sys.domainList advanced=true siteId=siteId>
 #${a.name} <@t.page 'server_config.site'/>
 server {
@@ -36,7 +43,7 @@ server {
     ssi on;
     ssi_silent_errors on;
         </#if>
-    location ${dynamicLocation?has_content?then('/'+dynamicLocation,'/')} {
+    location <#if dynamicPath=sitePath&&dynamicPort=sitePort&&dynamicLocation=siteLocation>@cmsproxy<#else>${dynamicLocation?has_content?then('/'+dynamicLocation,'/')}</#if> {
         client_max_body_size 100m;
         proxy_redirect off;
         proxy_set_header Host $http_host;
@@ -54,11 +61,14 @@ server {
         alias ${realRootPath}/web/site_${siteId}/include/;
     }
         </#if>
-        <#if dynamicPath=sitePath&&dynamicLocation!=siteLocation>
+        <#if dynamicPath=sitePath&&dynamicPort=sitePort>
     #${a.name} <@t.page 'server_config.static'/>
     location ${siteLocation?has_content?then('/'+siteLocation,'/')} {
         alias   ${realRootPath}/web/site_${siteId}/;
-        index  index.html;
+        index   index.html;
+        <#if dynamicLocation=siteLocation>
+        try_files  $uri  $uri/  @cmsproxy; 
+        </#if>
     }
             <#if multipleDomain?has_content>
                 <@sys.siteList parentId=multipleDomain.siteId pageSize=100>
@@ -68,6 +78,9 @@ server {
     location ${siteLocation?has_content?then('/'+siteLocation,'/')}${a.directory}/ {
         alias   ${realRootPath}/web/site_${a.id}/;
         index  index.html;
+        <#if dynamicLocation=siteLocation>
+        try_files  $uri  $uri/  @cmsproxy; 
+        </#if>
     }
                         </#if>
                     </#list>
@@ -97,7 +110,7 @@ server {
     error_page 500 502 503 504 /error/500.html;
 }
 </@sys.domainList>
-<#if dynamicPath!=sitePath||dynamicPort!=sitePort||!(dynamicPath=sitePath&&dynamicLocation!=siteLocation)>
+<#if dynamicPath!=sitePath||dynamicPort!=sitePort>
 #${a.name} <@t.page 'server_config.static'/>
 server {
     listen       ${sitePort?has_content?then(sitePort,80)}; #<@t.page 'server_config.port'/>
@@ -141,20 +154,17 @@ server {
         </dd>
     </dl>
     <dl class="nowrap">
-        <dt><@t.page 'server_config.nginx_common'/>:</dt>
-        <dd><textarea class="code" mode="nginx">
-upstream cms {
-    #<@t.page 'server_config.upstream'/>
-    ip_hash;
-    server localhost:8080  weight=1;
-}</textarea>
-            <span class="info"><@t.page 'server_config.nginx_common_description'/></span>
-        </dd>
-    </dl>
-    <dl class="nowrap">
         <dt><@t.page 'server_config.apache'/>:</dt>
         <dd>
             <textarea class="code" mode="xml">
+#<@t.page 'server_config.apache_common_description'/>
+ProxyRequests off
+ProxyPreserveHost On
+<Proxy "balancer://cmsproxy">
+    BalancerMember "http://localhost:8080" loadfactor=1
+    ProxySet stickysession=JSESSIONID
+</Proxy>
+
 #${a.name} <@t.page 'server_config.site'/>
 <Directory "${realRootPath}/web/site_${siteId}/">
     AllowOverride None
@@ -163,48 +173,64 @@ upstream cms {
 </Directory>
 
 <VirtualHost *:${dynamicPort?has_content?then(dynamicPort,80)}>
-   ServerName ${dynamicPath}
+    ServerName ${dynamicPath}
 <@sys.domainList advanced=true siteId=siteId>
   <#if page.totalCount gt 0>
-   ServerAlias <#list page.list as d><#if d.name!=dynamicPath&&d.name!=sitePath>${d.name}</#if><#if d.wild> *.${d.name}</#if><#sep> </#list>
+    ServerAlias <#list page.list as d><#if d.name!=dynamicPath&&d.name!=sitePath>${d.name}</#if><#if d.wild> *.${d.name}</#if><#sep> </#list>
   </#if>
 </@sys.domainList>
   <#if a.useSsi>
-   alias /include/ "${realRootPath}/web/site_${siteId}/include/"
-   AddType text/html .html .shtml
-   AddOutputFilter INCLUDES .html .shtml
+    alias /include/ "${realRootPath}/web/site_${siteId}/include/"
+    AddType text/html .html .shtml
+    AddOutputFilter INCLUDES .html .shtml
   </#if>
-   ProxyRequests off
-   ProxyPreserveHost On
-   ProxyPass ${dynamicLocation?has_content?then('/'+dynamicLocation,'/')} http://localhost:8080${dynamicLocation?has_content?then('/'+dynamicLocation,'/')}
-   ProxyPassReverse ${dynamicLocation?has_content?then('/'+dynamicLocation,'/')} http://localhost:8080${dynamicLocation?has_content?then('/'+dynamicLocation,'/')}
-   
-   <#if multipleDomain?has_content>
+    ProxyPass ${dynamicLocation?has_content?then('/'+dynamicLocation,'/')} balancer://cmsproxy${dynamicLocation?has_content?then('/'+dynamicLocation,'/')}
+    ProxyPassReverse ${dynamicLocation?has_content?then('/'+dynamicLocation,'/')} balancer://cmsproxy${dynamicLocation?has_content?then('/'+dynamicLocation,'/')}
+    
+    <#if multipleDomain?has_content>
         <@sys.siteList parentId=multipleDomain.siteId pageSize=100>
             <#list page.list as a>
                 <#if a.directory?has_content>
     Alias ${siteLocation?has_content?then('/'+siteLocation,'/')}${a.directory}/ "${realRootPath}/web/site_${a.id}/webfile/"
+                    <#if dynamicLocation=siteLocation>
+    RewriteEngine On
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^/(.*)$ balancer://cmsproxy/%{REQUEST_URI} [P,L]
+                    </#if>
                 </#if>
             </#list>
         </@sys.siteList>
     </#if>
-   <#if dynamicPath=sitePath&&dynamicLocation!=siteLocation>
-   #${a.name} <@t.page 'server_config.static'/>
-   Alias "/${siteLocation}" "${realRootPath}/web/site_${siteId}/"
-   <#else>
-   Alias "${dynamicLocation?has_content?then('/'+dynamicLocation,'/')}webfile/" "${realRootPath}/web/site_${siteId}/webfile/"
-   </#if>
+    <#if dynamicPath=sitePath&&dynamicPort=sitePort>
+    #${a.name} <@t.page 'server_config.static'/>
+    Alias "/${siteLocation}" "${realRootPath}/web/site_${siteId}/"
+         <#if dynamicLocation=siteLocation>
+    RewriteEngine On
+    RewriteCond %{DOCUMENT_ROOT} %{REQUEST_FILENAME} !-d
+    RewriteCond %{DOCUMENT_ROOT} %{REQUEST_FILENAME} !-f
+    RewriteRule ^/(.*)$ balancer://cmsproxy/%{REQUEST_URI} [P,L]
+        </#if>
+    <#else>
+    Alias "${dynamicLocation?has_content?then('/'+dynamicLocation,'/')}webfile/" "${realRootPath}/web/site_${siteId}/webfile/"
+    </#if>
+    ErrorDocument 403 /error/403.html
+    ErrorDocument 404 /error/403.html
+    ErrorDocument 500 /error/500.html
+    ErrorDocument 502 /error/500.html
+    ErrorDocument 503 /error/500.html
+    ErrorDocument 504 /error/500.html
 </VirtualHost>
 
-<#if dynamicPath!=sitePath||dynamicPort!=sitePort||!(dynamicPath=sitePath&&dynamicLocation!=siteLocation)>
+<#if dynamicPath!=sitePath||dynamicPort!=sitePort>
 #${a.name} <@t.page 'server_config.static'/>
 <VirtualHost *:${sitePort?has_content?then(sitePort,80)}>
-    ServerName ${sitePath}    
+    ServerName ${sitePath}
     <#if a.useSsi>
         <#if siteLocation?has_content>
-   alias /include/ "${realRootPath}/web/site_${siteId}/include/"
-   AddType text/html .html .shtml
-   AddOutputFilter INCLUDES .html .shtml
+    alias /include/ "${realRootPath}/web/site_${siteId}/include/"
+    AddType text/html .html .shtml
+    AddOutputFilter INCLUDES .html .shtml
         </#if>
     </#if>
     <#if multipleDomain?has_content>
@@ -225,6 +251,12 @@ upstream cms {
     <IfModule headers_module>
         Header set Access-Control-Allow-Origin "*"
     </IfModule>
+    ErrorDocument 403 /error/403.html
+    ErrorDocument 404 /error/403.html
+    ErrorDocument 500 /error/500.html
+    ErrorDocument 502 /error/500.html
+    ErrorDocument 503 /error/500.html
+    ErrorDocument 504 /error/500.html
 </VirtualHost>
 </#if>
 </textarea>
