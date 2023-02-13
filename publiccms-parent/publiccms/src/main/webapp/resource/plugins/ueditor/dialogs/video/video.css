@@ -31,7 +31,7 @@
 
 #preview{position: relative;width: 420px;padding:0;overflow: hidden; margin-left: 10px; _margin-left:5px; height: 280px;background-color: #ddd;float: left}
 #preview .previewMsg {position:absolute;top:0;margin:0;padding:0;height:280px;width:100%;background-color: #666;}
-#preview .previewMsg span{display:block;margin: 125px auto 0 auto;text-align:center;font-size:18px;color:#fff;}
+#preview .previewMsg span{display:block;margin: 125px auto 0 auto;width:40%;text-align:center;font-size:18px;color:#fff;}
 #preview .previewVideo {position:absolute;top:0;margin:0;padding:0;height:280px;width:100%;}
 .edui-video-wrapper fieldset{
     border: 1px solid #ddd;
@@ -70,15 +70,14 @@ span.view{display: inline-block;width: 30px;float: right;cursor: pointer;color: 
 /* upload video */
 .tabbody .upload.panel {
     width: 100%;
-    height: 0;
+    height: 365px;
     overflow: hidden;
     position: absolute !important;
     clip: rect(1px, 1px, 1px, 1px);
     background: #fff;
-    display: none;
+    display:none;
 }
 .tabbody .upload.panel.focus {
-    height: 365px;
     display: block;
     clip: auto;
 }

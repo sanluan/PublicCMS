@@ -29,7 +29,7 @@ import com.publiccms.logic.service.cms.CmsCommentService;
  * <li><code>disabled</code> 高级选项:评论已删除,【true,false】
  * <li><code>orderField</code>
  * 排序字段,【replies:回复数,scores:评分,checkDate:审核日期,updateDate:更新日期,createDate:创建日期】,默认置顶id按orderType排序
- * <li><code>orderType</code> 排序类型,【asc:正序,desc:倒叙】,默认为倒叙
+ * <li><code>orderType</code> 排序类型,【asc:正序,desc:倒序】,默认为倒序
  * <li><code>pageIndex</code> 页码
  * <li><code>pageSize</code> 每页条数
  * </ul>

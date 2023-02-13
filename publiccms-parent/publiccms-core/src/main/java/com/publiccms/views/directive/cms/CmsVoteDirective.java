@@ -17,31 +17,31 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.service.cms.CmsVoteService;
 
 /**
-*
-* vote 投票查询指令
-* <p>
-* 参数列表
-* <ul>
-* <li><code>id</code> 投票id,结果返回<code>object</code>
-* {@link com.publiccms.entities.cms.CmsVote}
-* <li><code>ids</code>
-* 多个投票id,逗号或空格间隔,当id为空时生效,结果返回<code>map</code>(id,<code>object</code>)
-* </ul>
-* 使用示例
-* <p>
-* &lt;@cms.vote id=1&gt;${object.title}&lt;/@cms.vote&gt;
-* <p>
-* &lt;@cms.vote ids='1,2,3'&gt;&lt;#list map as
-* k,v&gt;${k}:${v.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.vote&gt;
-* 
-* <pre>
+ *
+ * vote 投票查询指令
+ * <p>
+ * 参数列表
+ * <ul>
+ * <li><code>id</code> 投票id,结果返回<code>object</code>
+ * {@link com.publiccms.entities.cms.CmsVote}
+ * <li><code>ids</code>
+ * 多个投票id,逗号或空格间隔,当id为空时生效,结果返回<code>map</code>(id,<code>object</code>)
+ * </ul>
+ * 使用示例
+ * <p>
+ * &lt;@cms.vote id=1&gt;${object.title}&lt;/@cms.vote&gt;
+ * <p>
+ * &lt;@cms.vote ids='1,2,3'&gt;&lt;#list map as
+ * k,v&gt;${k}:${v.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.vote&gt;
+ * 
+ * <pre>
 &lt;script&gt;
 $.getJSON('${site.dynamicPath}api/directive/cms/vote?id=1', function(data){    
   console.log(data.title);
 });
 &lt;/script&gt;
-* </pre>
-*/
+ * </pre>
+ */
 @Component
 public class CmsVoteDirective extends AbstractTemplateDirective {
 

@@ -25,7 +25,7 @@ import com.publiccms.common.handler.RenderHandler;
 * <li><code>result</code> 登录结果,【true,false】
 * <li><code>name</code> 用户名
 * <li><code>ip</code> IP
-* <li><code>orderType</code> 排序类型,【asc:正序,desc:倒叙】,默认为倒叙
+* <li><code>orderType</code> 排序类型,【asc:正序,desc:倒序】,默认为倒序
 * <li><code>pageIndex</code> 页码
 * <li><code>pageSize</code> 每页条数
 * </ul>

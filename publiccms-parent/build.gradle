@@ -37,15 +37,15 @@ subprojects {
         // https://spring.io/projects/spring-boot
         springBootVersion = "3.0.2"
         // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine
-        junitVersion = "5.9.1"
+        junitVersion = "5.9.2"
         // http://mvnrepository.com/artifact/org.hibernate/hibernate-core
         // http://hibernate.org/orm/downloads/
-        hibernateVersion = "5.6.11.Final"
+        hibernateVersion = "5.6.12.Final"
         // http://mvnrepository.com/artifact/org.hibernate/hibernate-tools
-        hibernateToolsVersion = "5.6.11.Final"
+        hibernateToolsVersion = "5.6.12.Final"
         // https://mvnrepository.com/artifact/org.hibernate.search/hibernate-search-mapper-orm
         // http://hibernate.org/search/downloads/
-        hibernateSearchVersion = "6.2.0.Alpha1"
+        hibernateSearchVersion = "6.1.8.Final"
         // https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator
         hibernateValidatorVersion = "8.0.0.Final"
         // https://mvnrepository.com/artifact/org.ehcache/ehcache
@@ -61,7 +61,7 @@ subprojects {
         // https://mvnrepository.com/artifact/org.mybatis.dynamic-sql/mybatis-dynamic-sql
         dynamicSqlVersion = "1.4.1"
         // http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
-        jacksonVersion = "2.14.1"
+        jacksonVersion = "2.14.2"
         // http://mvnrepository.com/artifact/org.freemarker/freemarker
         freemarkerVersion = "2.3.32"
         // https://mvnrepository.com/artifact/org.apache.lucene/lucene-analyzers-smartcn
@@ -116,7 +116,7 @@ subprojects {
         // https://mvnrepository.com/artifact/com.sun.mail/jakarta.mail
         mailVersion = "2.0.1"
         // http://mvnrepository.com/artifact/org.apache.ant/ant
-        antVersion = "1.10.12"
+        antVersion = "1.10.13"
     }
     sourceCompatibility = 17
     targetCompatibility = 17

@@ -32,7 +32,7 @@ import com.publiccms.logic.service.sys.SysUserService;
  * <li><code>name</code> 昵称、用户名、邮箱
  * <li><code>orderField</code>
  * 排序字段,【expiryDate:,createDate:,】,默认创建日期按orderType排序
- * <li><code>orderType</code> 排序类型,【asc:正序,desc:倒叙】,默认为倒叙
+ * <li><code>orderType</code> 排序类型,【asc:正序,desc:倒序】,默认为倒序
  * <li><code>pageIndex</code> 页码
  * <li><code>pageSize</code> 每页条数
  * </ul>

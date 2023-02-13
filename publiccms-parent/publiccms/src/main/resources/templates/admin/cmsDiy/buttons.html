@@ -82,6 +82,9 @@
                 <#if authorizedMap['cmsCategory/addMore']>
                     <li><a href="cmsCategory/addMore.html?parentId=${category.id}" target="dialog" mask="true" data-diy="child-category"><i class="icon-plus"></i><@t.page 'category.add_child'/></a></li>
                 </#if>
+                <#if authorizedMap['cmsCategory/add']>
+                    <li><a href="cmsCategory/add.html?id={itemId}" target="navTab" rel="cmsCategory/edit" class="hide" data-diy="child-category" data-diy-item="itemId"><i class="icon-edit"></i><@t.page 'category.edit'/></a></li>
+                </#if>
                 <#if authorizedMap['cmsCategory/publishParameters']&&site.useStatic&&!category.onlyUrl>
                     <li><a href="cmsCategory/publishParameters.html?id=${category.id}&pageSize=${category.pageSize}&containChild=${category.containChild?then('true','false')}" target="dialog" width="450" height="180" mask="true"  data-diy="category" data-diy-id="${category.id}"><i class="icon-file-text-alt icon-large"></i><@t.page 'button.publish'/></a></li>
                 </#if>
