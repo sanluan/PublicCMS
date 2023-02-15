@@ -33,14 +33,14 @@ import freemarker.template.TemplateModelException;
  * <p>
  * 参数列表
  * <ol>
- * <li><code>url</code>
+ * <li><code>url</code>:
  * <li>参数,<code>map</code>类型或<code>string</code>类型,为空时以get方式请求,不为空时以post方式请求
  * <li>请求头,<code>map</code>类型
  * </ol>
  * <p>
  * 返回结果
  * <ul>
- * <li><code>html</code> 页面文本
+ * <li><code>html</code>:页面文本
  * </ul>
  * 使用示例
  * <p>

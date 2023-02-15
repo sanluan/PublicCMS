@@ -28,7 +28,7 @@ import freemarker.template.TemplateModelException;
 * <p>
 * 返回结果
 * <ul>
-* <li><code>map</code>(id,<code>attribute</code>推荐位数据扩展数据(字段编码,<code>value</code>))
+* <li><code>map</code>(id,<code>attribute</code>:推荐位数据扩展数据(字段编码,<code>value</code>))
 * </ul>
 * 使用示例
 * <p>

@@ -16,8 +16,8 @@
                     <a class="inputDateButton" href="javascript:void(0);"></a>
                 </li>
                 <li>
-                    <label><@t.page 'analytics.type'/>:</label>
                     <select class="combox" name="hourAnalytics">
+                        <option value><@t.page 'analytics.type'/></option>
                         <option value="false"${(!(hourAnalytics?has_content)||"false"=hourAnalytics)?then(' selected="true"','')?no_esc}><@t.page 'visit.hour_analytics.day'/></option>
                         <option value="true"${(hourAnalytics?has_content&&"true"=hourAnalytics)?then(' selected="true"','')?no_esc}><@t.page 'visit.hour_analytics.hour'/></option>
                     </select>

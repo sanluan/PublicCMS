@@ -14,9 +14,9 @@ import com.publiccms.common.handler.RenderHandler;
  * <p>
  * 返回结果
  * <ul>
- * <li><code>freeMemory</code> 空闲内存
- * <li><code>totalMemory</code> 总内存
- * <li><code>maxMemory</code> 最大内存
+ * <li><code>freeMemory</code>:空闲内存
+ * <li><code>totalMemory</code>:总内存
+ * <li><code>maxMemory</code>:最大内存
  * </ul>
  * 使用示例
  * <p>

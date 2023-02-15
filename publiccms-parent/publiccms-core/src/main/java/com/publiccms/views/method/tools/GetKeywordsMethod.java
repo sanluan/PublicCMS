@@ -22,7 +22,7 @@ import freemarker.template.TemplateModelException;
 * <p>
 * 返回结果
 * <ul>
-* <li><code>list</code>(string) 分词结果set
+* <li><code>list</code>(<code>string</code>):分词结果set
 * </ul>
 * 使用示例
 * <p>

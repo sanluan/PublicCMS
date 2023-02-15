@@ -20,9 +20,9 @@ import com.publiccms.logic.service.sys.SysModuleLangService;
 * <p>
 * 参数列表
 * <ul>
-* <li><code>moduleId</code> 模块id,结果返回<code>object</code>
+* <li><code>moduleId</code>:模块id,结果返回<code>object</code>
 * {@link com.publiccms.entities.sys.SysModule}
-* <li><code>lang</code> 语言【zh:中文,en:英语,ja:日语】
+* <li><code>lang</code>:语言【zh:中文,en:英语,ja:日语】
 * </ul>
 * 使用示例
 * <p>

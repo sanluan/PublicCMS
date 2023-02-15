@@ -17,9 +17,9 @@ import com.publiccms.entities.sys.SysSite;
  * <p>
  * 参数列表
  * <ul>
- * <li><code>path</code> 文件路径
- * <li><code>width</code> 宽度
- * <li><code>height</code> 高度
+ * <li><code>path</code>:文件路径
+ * <li><code>width</code>:宽度
+ * <li><code>height</code>:高度
  * </ul>
  * <p>
  * 打印结果文件路径

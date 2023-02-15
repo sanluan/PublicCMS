@@ -17,7 +17,7 @@ import freemarker.template.TemplateModelException;
 * <p>
 * 返回结果
 * <ul>
-* <li><code>string</code> 随机uuid
+* <li><code>string</code>:随机uuid
 * </ul>
 * 使用示例
 * <p>

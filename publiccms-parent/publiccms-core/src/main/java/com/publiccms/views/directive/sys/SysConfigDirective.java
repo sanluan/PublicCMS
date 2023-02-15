@@ -17,7 +17,7 @@ import com.publiccms.views.pojo.entities.ConfigInfo;
  * <p>
  * 参数列表
  * <ul>
- * <li><code>code</code> 配置编码,结果返回<code>object</code>
+ * <li><code>code</code>:配置编码,结果返回<code>object</code>
  * {@link com.publiccms.views.pojo.entities.ConfigInfo}
  * </ul>
  * 使用示例

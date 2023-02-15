@@ -22,9 +22,9 @@ import com.publiccms.logic.service.sys.SysConfigDataService;
 * <p>
 * 参数列表
 * <ul>
-* <li><code>code</code> 配置编码,结果返回<code>object</code>
+* <li><code>code</code>:配置编码,结果返回<code>object</code>
 * {@link com.publiccms.entities.sys.SysConfigData}
-* <li><code>codes</code> 多个配置编码,结果返回<code>map</code>(id,<code>object</code>)
+* <li><code>codes</code>:多个配置编码,结果返回<code>map</code>(id,<code>object</code>)
 * </ul>
 * 使用示例
 * <p>

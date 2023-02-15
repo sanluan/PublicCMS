@@ -16,26 +16,26 @@ import com.publiccms.logic.service.log.LogUploadService;
 
 /**
  *
- * logUploadList 登录日志列表查询指令
+ * logUploadList 文件上传日志列表查询指令
  * <p>
  * 参数列表
  * <ul>
- * <li><code>fileTypes</code> 文件类型,【image,video,audio,document,other】
- * <li><code>image</code> 是否图片,【true,false】
- * <li><code>userId</code> 用户ID
- * <li><code>channel</code> 渠道
- * <li><code>originalName</code> 原文件名
- * <li><code>filePath</code> 文件路径
- * <li><code>orderField</code> 排序字段,[createDate:创建日期,fileSize:文件大小],默认ID倒序
- * <li><code>orderType</code> 排序类型,【asc:正序,desc:倒序】,默认为倒序
- * <li><code>pageIndex</code> 页码
- * <li><code>pageSize</code> 每页条数
+ * <li><code>fileTypes</code>:文件类型,【image,video,audio,document,other】
+ * <li><code>image</code>:是否图片,【true,false】
+ * <li><code>userId</code>:用户ID
+ * <li><code>channel</code>:渠道
+ * <li><code>originalName</code>:原文件名
+ * <li><code>filePath</code>:文件路径
+ * <li><code>orderField</code>:排序字段,[createDate:创建日期,fileSize:文件大小],默认ID倒序
+ * <li><code>orderType</code>:排序类型,【asc:正序,desc:倒序】,默认为倒序
+ * <li><code>pageIndex</code>:页码
+ * <li><code>pageSize</code>:每页条数
  * </ul>
  * <p>
  * 返回结果
  * <ul>
- * <li><code>page</code> {@link com.publiccms.common.handler.PageHandler}
- * <li><code>page.list</code> List类型 查询结果实体列表
+ * <li><code>page</code>:{@link com.publiccms.common.handler.PageHandler}
+ * <li><code>page.list</code>:List类型 查询结果实体列表
  * {@link com.publiccms.entities.log.LogUpload}
  * </ul>
  * 使用示例

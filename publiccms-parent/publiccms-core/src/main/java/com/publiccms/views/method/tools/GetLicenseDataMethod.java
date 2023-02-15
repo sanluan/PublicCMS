@@ -18,7 +18,7 @@ import freemarker.template.TemplateModelException;
 * <p>
 * 返回结果
 * <ul>
-* <li><code>string</code> base64编码的授权数据
+* <li><code>string</code>:base64编码的授权数据
 * </ul>
 * 使用示例
 * <p>

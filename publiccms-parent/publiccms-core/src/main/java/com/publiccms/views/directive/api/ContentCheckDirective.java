@@ -40,8 +40,8 @@ import freemarker.template.TemplateException;
 * <p>
 * 参数列表
 * <ul>
-* <li><code>ids</code> 多个内容id
-* <li><code>uncheck</code> 取消审核, 【true,false】,默认为<code>false</code>
+ * <li><code>ids</code>:多个内容id
+ * <li><code>uncheck</code>:取消审核, 【true,false】,默认为<code>false</code>
 * </ul>
 * <p>
 * 返回结果
@@ -49,6 +49,7 @@ import freemarker.template.TemplateException;
 * </ul>
 * 使用示例
 * <p>
+ * 
 * <pre>
 &lt;script&gt;
 $.getJSON('${site.dynamicPath!}api/contentCheck?ids=1,2&amp;authToken=用户登录授权&amp;authUserId=1&amp;appToken=接口访问授权Token', function(data){
@@ -81,7 +82,7 @@ public class ContentCheckDirective extends AbstractAppDirective {
         } else {
             entityList = service.check(site.getId(), user, ids);
         }
-        Set<Integer> categoryIdSet = new HashSet<>();
+        Set<Serializable> categoryIdSet = new HashSet<>();
         for (CmsContent entity : entityList) {
             if (null != entity && site.getId() == entity.getSiteId()) {
                 if (CommonUtils.notEmpty(entity.getParentId())) {

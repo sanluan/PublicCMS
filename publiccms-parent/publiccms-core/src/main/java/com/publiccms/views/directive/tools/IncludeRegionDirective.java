@@ -30,7 +30,7 @@ import jakarta.annotation.Resource;
  * <p>
  * 参数列表
  * <ul>
- * <li><code>id</code> 布局id
+ * <li><code>id</code>:布局id
  * </ul>
  * <p>
  * 打印包含结果

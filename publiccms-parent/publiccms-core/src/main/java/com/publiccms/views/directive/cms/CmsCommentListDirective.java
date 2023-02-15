@@ -18,26 +18,26 @@ import com.publiccms.logic.service.cms.CmsCommentService;
  * <p>
  * 参数列表
  * <ul>
- * <li><code>userId</code> 发布评论用户id
- * <li><code>replyId</code> 被回复评论id
- * <li><code>contentId</code> 内容id
- * <li><code>emptyReply</code> 回复id是否为空, replyId为空时有效,默认为<code>false</code>
- * <li><code>replyUserId</code> 被回复用户id
- * <li><code>advanced</code> 开启高级选项, 默认为<code>false</code>
- * <li><code>status</code> 高级选项:评论状态,【1:已发布,2:待审核】
- * <li><code>checkUserId</code> 高级选项:审核用户id
- * <li><code>disabled</code> 高级选项:评论已删除,【true,false】
+ * <li><code>userId</code>:发布评论用户id
+ * <li><code>replyId</code>:被回复评论id
+ * <li><code>contentId</code>:内容id
+ * <li><code>emptyReply</code>:回复id是否为空, replyId为空时有效,默认为<code>false</code>
+ * <li><code>replyUserId</code>:被回复用户id
+ * <li><code>advanced</code>:开启高级选项, 默认为<code>false</code>
+ * <li><code>status</code>:高级选项:评论状态,【1:已发布,2:待审核】
+ * <li><code>checkUserId</code>:高级选项:审核用户id
+ * <li><code>disabled</code>:高级选项:评论已删除,【true,false】
  * <li><code>orderField</code>
  * 排序字段,【replies:回复数,scores:评分,checkDate:审核日期,updateDate:更新日期,createDate:创建日期】,默认置顶id按orderType排序
- * <li><code>orderType</code> 排序类型,【asc:正序,desc:倒序】,默认为倒序
- * <li><code>pageIndex</code> 页码
- * <li><code>pageSize</code> 每页条数
+ * <li><code>orderType</code>:排序类型,【asc:正序,desc:倒序】,默认为倒序
+ * <li><code>pageIndex</code>:页码
+ * <li><code>pageSize</code>:每页条数
  * </ul>
  * <p>
  * 返回结果
  * <ul>
- * <li><code>page</code> {@link com.publiccms.common.handler.PageHandler}
- * <li><code>page.list</code> List类型 查询结果实体列表
+ * <li><code>page</code>:{@link com.publiccms.common.handler.PageHandler}
+ * <li><code>page.list</code>:List类型 查询结果实体列表
  * {@link com.publiccms.entities.cms.CmsComment}
  * </ul>
  * 使用示例

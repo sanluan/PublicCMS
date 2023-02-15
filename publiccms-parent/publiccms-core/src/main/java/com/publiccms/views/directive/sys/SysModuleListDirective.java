@@ -19,17 +19,17 @@ import com.publiccms.common.handler.RenderHandler;
 * <p>
 * 参数列表
 * <ul>
-* <li><code>advanced</code> 开启高级选项, 默认为<code>false</code>
-* <li><code>menu</code> 高级选项:是否菜单,【true,false】
-* <li><code>parentId</code> 父模块id
-* <li><code>pageIndex</code> 页码
-* <li><code>pageSize</code> 每页条数
+* <li><code>advanced</code>:开启高级选项, 默认为<code>false</code>
+* <li><code>menu</code>:高级选项:是否菜单,【true,false】
+* <li><code>parentId</code>:父模块id
+* <li><code>pageIndex</code>:页码
+* <li><code>pageSize</code>:每页条数
 * </ul>
 * <p>
 * 返回结果
 * <ul>
-* <li><code>page</code> {@link com.publiccms.common.handler.PageHandler}
-* <li><code>page.list</code> List类型 查询结果实体列表
+* <li><code>page</code>:{@link com.publiccms.common.handler.PageHandler}
+* <li><code>page.list</code>:List类型 查询结果实体列表
 * {@link com.publiccms.entities.sys.SysModule}
 * </ul>
 * 使用示例

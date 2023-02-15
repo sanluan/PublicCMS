@@ -21,10 +21,12 @@
         <label>${(a.fieldTextMap['title'])!}:</label>
         <input name="title" type="text" size="60" required="true" maxlength="255"/>
     </p>
+<#if fieldList?seq_contains('description')>
     <p>
         <label>${(a.fieldTextMap['description'])!}:</label>
         <textarea name="description" maxlength="300"></textarea>
     </p>
+</#if>
 <#if fieldList?seq_contains('url')>
     <p>
         <label>${(a.fieldTextMap['url'])!}:</label>

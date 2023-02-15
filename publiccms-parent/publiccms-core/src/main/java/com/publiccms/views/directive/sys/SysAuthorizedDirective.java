@@ -33,7 +33,7 @@ import com.publiccms.logic.service.sys.SysRoleService;
  * <p>
  * 参数列表
  * <ul>
- * <li><code>roleIds</code> 多个角色id
+ * <li><code>roleIds</code>:多个角色id
  * <li><code>url</code>
  * url,roleIds、url都存在时,结果返回<code>true</code>或<code>false</code>,表示这些角色是否拥有该url的权限
  * <li><code>urls</code>

@@ -124,7 +124,7 @@ public class CmsCategoryAdminController {
                     CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
         service.saveTagAndAttribute(site.getId(), entity.getId(), admin.getId(), attribute,
-                modelComponent.getCategoryType(site, entity.getTypeId()), categoryParameters);
+                modelComponent.getCategoryType(site.getId(), entity.getTypeId()), categoryParameters);
         try {
             publish(site, entity.getId(), null);
         } catch (IOException | TemplateException e) {

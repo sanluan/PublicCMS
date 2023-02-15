@@ -27,8 +27,8 @@ import freemarker.template.TemplateModelException;
 * <p>
 * 返回结果
 * <ul>
-* <li><code>page</code> {@link com.publiccms.common.handler.PageHandler}
-* <li><code>text</code>文章正文
+* <li><code>page</code>:{@link com.publiccms.common.handler.PageHandler}
+* <li><code>text</code>:文章正文
 * </ul>
 * 使用示例
 * <p>

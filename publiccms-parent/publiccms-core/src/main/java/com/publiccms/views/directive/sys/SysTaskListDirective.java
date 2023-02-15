@@ -18,16 +18,16 @@ import com.publiccms.common.handler.RenderHandler;
 * <p>
 * 参数列表
 * <ul>
-* <li><code>status</code> 状态【0:就绪,1:执行中,2:暂停,3:错误】
-* <li><code>startUpdateDate</code> 起始更新日期,【2020-01-01 23:59:59】,【2020-01-01】
-* <li><code>pageIndex</code> 页码
-* <li><code>pageSize</code> 每页条数
+* <li><code>status</code>:状态【0:就绪,1:执行中,2:暂停,3:错误】
+* <li><code>startUpdateDate</code>:起始更新日期,【2020-01-01 23:59:59】,【2020-01-01】
+* <li><code>pageIndex</code>:页码
+* <li><code>pageSize</code>:每页条数
 * </ul>
 * <p>
 * 返回结果
 * <ul>
-* <li><code>page</code> {@link com.publiccms.common.handler.PageHandler}
-* <li><code>page.list</code> List类型 查询结果实体列表
+* <li><code>page</code>:{@link com.publiccms.common.handler.PageHandler}
+* <li><code>page.list</code>:List类型 查询结果实体列表
 * {@link com.publiccms.entities.sys.SysTask}
 * </ul>
 * 使用示例

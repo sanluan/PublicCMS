@@ -23,15 +23,15 @@ import freemarker.template.TemplateException;
  * <p>
  * 参数列表
  * <ul>
- * <li><code>id</code> 内容id
- * <li><code>templatePath</code> 模板路径
- * <li><code>filePath</code> 静态文件路径
- * <li><code>pageIndex</code> 当前页码,默认为1
+ * <li><code>id</code>:内容id
+ * <li><code>templatePath</code>:模板路径
+ * <li><code>filePath</code>:静态文件路径
+ * <li><code>pageIndex</code>:当前页码,默认为1
  * </ul>
  * <p>
  * 返回结果
  * <ul>
- * <li><code>url</code>静态文件路径
+ * <li><code>url</code>:静态文件路径
  * </ul>
  * 使用示例
  * <p>

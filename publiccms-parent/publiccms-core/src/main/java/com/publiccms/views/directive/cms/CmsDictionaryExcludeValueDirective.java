@@ -21,8 +21,8 @@ import com.publiccms.logic.service.cms.CmsDictionaryExcludeValueService;
  * <p>
  * 参数列表
  * <ul>
- * <li><code>dictionaryId</code> 数据字典id
- * <li><code>excludeDictionaryId</code> 排除的字典
+ * <li><code>dictionaryId</code>:数据字典id
+ * <li><code>excludeDictionaryId</code>:排除的字典
  * <li><code>value</code>
  * 字典值,结果返回<code>object</code>{@link com.publiccms.entities.cms.CmsDictionaryExcludeValue}
  * <li><code>values</code>

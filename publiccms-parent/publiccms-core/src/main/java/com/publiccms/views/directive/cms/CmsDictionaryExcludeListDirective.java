@@ -20,13 +20,13 @@ import com.publiccms.logic.service.cms.CmsDictionaryExcludeService;
 * <p>
 * 参数列表
 * <ul>
-* <li><code>dictionaryId</code> 字典id
-* <li><code>excludeDictionaryId</code> 排除数据字典id
+* <li><code>dictionaryId</code>:字典id
+* <li><code>excludeDictionaryId</code>:排除数据字典id
 * </ul>
 * <p>
 * 返回结果
 * <ul>
-* <li><code>list</code> List类型 查询结果实体列表
+* <li><code>list</code>:List类型 查询结果实体列表
 * {@link com.publiccms.entities.cms.CmsDictionaryExclude}
 * </ul>
 * 使用示例

@@ -21,7 +21,7 @@ import com.publiccms.logic.service.cms.CmsDictionaryDataService;
  * <p>
  * 参数列表
  * <ul>
- * <li><code>dictionaryId</code> 数据字典id
+ * <li><code>dictionaryId</code>:数据字典id
  * <li><code>value</code>
  * 值,结果返回<code>object</code>{@link com.publiccms.entities.cms.CmsDictionaryData}
  * <li><code>values</code>

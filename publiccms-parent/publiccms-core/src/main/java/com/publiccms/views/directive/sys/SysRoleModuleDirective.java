@@ -28,7 +28,7 @@ import com.publiccms.logic.service.sys.SysRoleService;
  * <p>
  * 参数列表
  * <ul>
- * <li><code>roleIds</code> 多个角色id
+ * <li><code>roleIds</code>:多个角色id
  * <li><code>moduleId</code>
  * 模块id,roleIds、moduleId都存在时,结果返回<code>true</code>或<code>false</code>,表示这些角色是否拥有该模块的数据权限
  * <li><code>moduleIds</code>

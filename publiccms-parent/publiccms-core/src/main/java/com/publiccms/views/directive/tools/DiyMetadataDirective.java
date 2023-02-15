@@ -17,13 +17,13 @@ import jakarta.annotation.Resource;
  * <p>
  * 参数列表
  * <ul>
- * <li><code>itemType</code> 元数据类型,【region,layout,module】
- * <li><code>itemId</code> 元数据id
+ * <li><code>itemType</code>:元数据类型,【region,layout,module】
+ * <li><code>itemId</code>:元数据id
  * </ul>
  * <p>
  * 返回结果
  * <ul>
- * <li><code>object</code> diy元数据<code>region</code>{@link com.publiccms.views.pojo.diy.CmsRegion},<code>layout</code>{@link com.publiccms.views.pojo.diy.CmsLayout},<code>module</code>{@link com.publiccms.views.pojo.diy.CmsModule}
+ * <li><code>object</code>:diy元数据<code>region</code>:{@link com.publiccms.views.pojo.diy.CmsRegion},<code>layout</code>:{@link com.publiccms.views.pojo.diy.CmsLayout},<code>module</code>:{@link com.publiccms.views.pojo.diy.CmsModule}
  * </ul>
  * 使用示例
  * <p>

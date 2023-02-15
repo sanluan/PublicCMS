@@ -20,12 +20,12 @@ import com.publiccms.logic.service.cms.CmsContentService;
  * <p>
  * 参数列表
  * <ul>
- * <li><code>quoteId</code> 引用内容id
+ * <li><code>quoteId</code>:引用内容id
  * </ul>
  * <p>
  * 返回结果:
  * <ul>
- * <li><code>list</code> List类型 查询结果实体列表
+ * <li><code>list</code>:List类型 查询结果实体列表
  * {@link com.publiccms.entities.cms.CmsContent}
  * </ul>
  * 使用示例

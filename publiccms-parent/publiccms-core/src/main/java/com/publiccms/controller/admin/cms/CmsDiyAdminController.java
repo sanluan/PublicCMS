@@ -1,7 +1,6 @@
 package com.publiccms.controller.admin.cms;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
-import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.common.tools.VerificationUtils;
@@ -53,16 +51,12 @@ public class CmsDiyAdminController {
      * @param categoryId
      * @param diydata
      * @param request
-     * @param model
      * @return view name
      */
     @RequestMapping("save")
     @Csrf
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Integer categoryId, String diydata,
-            HttpServletRequest request, ModelMap model) {
-        if (ControllerUtils.errorCustom("noright", null != site.getParentId(), model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
+            HttpServletRequest request) {
         CmsRegionData entity = diyComponent.getRegionData(site, categoryService.getEntity(categoryId), diydata);
         if (null != entity) {
             diyComponent.updateRegionData(site, entity);
@@ -78,16 +72,12 @@ public class CmsDiyAdminController {
      * @param admin
      * @param entity
      * @param request
-     * @param model
      * @return view name
      */
     @RequestMapping("saveRegion")
     @Csrf
     public String saveRegion(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, @ModelAttribute CmsRegion entity,
-            HttpServletRequest request, ModelMap model) {
-        if (ControllerUtils.errorCustom("noright", null != site.getParentId(), model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
+            HttpServletRequest request) {
         diyComponent.updateRegion(site, entity);
         logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                 "save.region", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
@@ -99,16 +89,12 @@ public class CmsDiyAdminController {
      * @param admin
      * @param entity
      * @param request
-     * @param model
      * @return view name
      */
     @RequestMapping("saveLayout")
     @Csrf
     public String saveLayout(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, @ModelAttribute CmsLayout entity,
-            HttpServletRequest request, ModelMap model) {
-        if (ControllerUtils.errorCustom("noright", null != site.getParentId(), model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
+            HttpServletRequest request) {
         entity.setTemplate(new String(VerificationUtils.base64Decode(entity.getTemplate()), CommonConstants.DEFAULT_CHARSET));
         diyComponent.updateLayout(site, entity);
         logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
@@ -121,16 +107,12 @@ public class CmsDiyAdminController {
      * @param admin
      * @param entity
      * @param request
-     * @param model
      * @return view name
      */
     @RequestMapping("saveModule")
     @Csrf
     public String saveModule(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, @ModelAttribute CmsModule entity,
-            HttpServletRequest request, ModelMap model) {
-        if (ControllerUtils.errorCustom("noright", null != site.getParentId(), model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
+            HttpServletRequest request) {
         diyComponent.updateModule(site, entity);
         logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                 "save.module", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
@@ -143,16 +125,12 @@ public class CmsDiyAdminController {
      * @param itemType
      * @param id
      * @param request
-     * @param model
      * @return view name
      */
     @RequestMapping("delete")
     @Csrf
     public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String itemType, String id,
-            HttpServletRequest request, ModelMap model) {
-        if (ControllerUtils.errorCustom("noright", null != site.getParentId(), model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
+            HttpServletRequest request) {
         if ("region".equalsIgnoreCase(itemType)) {
             CmsRegion entity = diyComponent.deleteRegion(site, id);
             if (null != entity) {

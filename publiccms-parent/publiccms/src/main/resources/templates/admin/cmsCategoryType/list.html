@@ -4,9 +4,7 @@
 <div class="card">
     <div class="panelBar">
         <ul class="toolBar">
-            <#if !site.parentId?has_content> 
-                <li><a href="cmsCategoryType/add.html" target="navTab" rel="cmsCategoryType/add"><i class="icon-plus-sign-alt icon-large"></i><@t.page 'category_type.add'/></a></li>
-            </#if>
+            <li><a href="cmsCategoryType/add.html" target="navTab" rel="cmsCategoryType/add"><i class="icon-plus-sign-alt icon-large"></i><@t.page 'category_type.add'/></a></li>
         </ul>
     </div>
     <table class="table" width="100%" layoutH>
@@ -27,9 +25,7 @@
                 <td class="wrap">
                     <a href="cmsCategoryType/add.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="cmsCategoryType/edit"><i class="icon-edit"></i><@t.page 'category_type.edit'/></a>
                     <a href="cmsCategoryType/categoryList.html?id=${a.id?url}" class="btnText" target="dialog" rel="categoryList"><i class="icon-folder-open"></i><@t.page 'category'/></a>
-                    <#if !site.parentId?has_content> 
-                        <a href="cmsCategoryType/delete?id=${a.id}&_csrf=<@tools.csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i><@t.page 'button.delete'/></a>
-                    </#if>
+                    <a href="cmsCategoryType/delete?id=${a.id}&_csrf=<@tools.csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i><@t.page 'button.delete'/></a>
                 </td>
             </tr>
             </#list>

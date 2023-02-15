@@ -23,8 +23,8 @@ import com.publiccms.logic.service.cms.CmsUserSurveyService;
 * <p>
 * 参数列表
 * <ul>
-* <li><code>userId</code> 用户id
-* <li><code>surveyId</code> 问卷id,结果返回<code>object</code>
+* <li><code>userId</code>:用户id
+* <li><code>surveyId</code>:问卷id,结果返回<code>object</code>
 * {@link com.publiccms.entities.cms.CmsUserSurvey}
 * <li><code>surveyIds</code>
 * 多个问卷id,逗号或空格间隔,当surveyId为空且userId不为空时生效,结果返回<code>map</code>(surveyId,<code>object</code>)

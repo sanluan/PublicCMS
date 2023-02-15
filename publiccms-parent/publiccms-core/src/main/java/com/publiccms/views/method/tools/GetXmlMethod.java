@@ -24,12 +24,12 @@ import freemarker.template.TemplateModelException;
 * <p>
 * 参数列表
 * <ol>
-* <li><code>string</code> xml文本
+* <li><code>string</code>:xml文本
 * </ol>
 * <p>
 * 返回结果
 * <ul>
-* <li><code>xml</code> xml模型
+* <li><code>xml</code>:xml模型
 * </ul>
 * 使用示例
 * <p>

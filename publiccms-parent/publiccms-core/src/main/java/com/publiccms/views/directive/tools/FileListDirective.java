@@ -18,15 +18,15 @@ import com.publiccms.entities.sys.SysSite;
  * <p>
  * 参数列表
  * <ul>
- * <li><code>type</code> 文件类型【file,task,template】,默认template
- * <li><code>path</code> 文件路径
- * <li><code>orderField</code>
+ * <li><code>type</code>:文件类型【file,task,template】,默认template
+ * <li><code>path</code>:文件路径
+ * <li><code>orderField</code>:
  * 排序类型【fileName,fileSize,modifiedDate,createDate】,默认fileName
  * </ul>
  * <p>
  * 返回结果
  * <ul>
- * <li><code>list</code>文件列表
+ * <li><code>list</code>:文件列表
  * {@link com.publiccms.common.tools.CmsFileUtils.FileInfo}
  * </ul>
  * 使用示例

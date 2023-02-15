@@ -23,15 +23,15 @@ import com.publiccms.logic.service.log.LogTaskService;
  * <p>
  * 参数列表
  * <ul>
- * <li><code>clearDate</code> 起始发布日期,【2020-01-01 23:59:59】,【2020-01-01】,默认3个月前
+ * <li><code>clearDate</code>:起始发布日期,【2020-01-01 23:59:59】,【2020-01-01】,默认3个月前
  * </ul>
  * <p>
  * 返回结果
  * <ul>
  * <li><code>result</code>map类型
- * <li><code>result.loginLog</code> 登录日志删除数量
- * <li><code>result.operateLog</code> 操作日志删除数量
- * <li><code>result.taskLog</code> 任务计划日志删除数量
+ * <li><code>result.loginLog</code>:登录日志删除数量
+ * <li><code>result.operateLog</code>:操作日志删除数量
+ * <li><code>result.taskLog</code>:任务计划日志删除数量
  * </ul>
  * 使用示例
  * <p>

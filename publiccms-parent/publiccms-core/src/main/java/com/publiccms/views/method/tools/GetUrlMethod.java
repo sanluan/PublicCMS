@@ -28,7 +28,7 @@ import jakarta.servlet.http.HttpServletRequest;
  * <p>
  * 返回结果
  * <ul>
- * <li><code>url</code> 绝对路径的url
+ * <li><code>url</code>:绝对路径的url
  * </ul>
  * 使用示例
  * <p>

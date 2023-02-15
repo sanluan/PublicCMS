@@ -20,8 +20,8 @@ import freemarker.template.TemplateException;
  * <p>
  * 参数列表
  * <ul>
- * <li><code>parameters</code> 参数map
- * <li><code>templateContent</code> 模板内容
+ * <li><code>parameters</code>:参数map
+ * <li><code>templateContent</code>:模板内容
  * </ul>
  * 打印渲染结果
  * <p>

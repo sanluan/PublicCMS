@@ -29,40 +29,40 @@ import com.publiccms.views.pojo.query.CmsContentSearchQuery;
  * <p>
  * 参数列表
  * <ul>
- * <li><code>word</code> 搜索词,多个搜索词时取并集结果
- * <li><code>exclude</code> 排除词汇
- * <li><code>tagId</code> 多个标签id,多个标签时取并集结果
- * <li><code>categoryId</code> 分类id
- * <li><code>containChild</code> 包含子分类,当categoryId不为空时有效
- * <li><code>categoryIds</code> 多个分类id,当categoryId为空时有效
+ * <li><code>word</code>:搜索词,多个搜索词时取并集结果
+ * <li><code>exclude</code>:排除词汇
+ * <li><code>tagId</code>:多个标签id,多个标签时取并集结果
+ * <li><code>categoryId</code>:分类id
+ * <li><code>containChild</code>:包含子分类,当categoryId不为空时有效
+ * <li><code>categoryIds</code>:多个分类id,当categoryId为空时有效
  * <li><code>extendsValues</code>
  * 多个扩展字段值,格式：[字段编码]:字段值],例如:extendsValues='isbn:value1,unicode:value2'
  * <li><code>dictionaryValues</code>
  * 多个数据字典值,只有父级值时包含所有子级结果,格式：[字段编码]_[字段值],例如:dictionaryValues='extend1_value1,extend1_value2'
  * <li><code>dictionaryUnion</code>
  * 取数据字典并集结果,dictionaryUnion不为空时有效,【true,false】,默认为交集结果
- * <li><code>highlight</code> 高亮关键词,【true,false】,默认为false,启用高亮后台
+ * <li><code>highlight</code>:高亮关键词,【true,false】,默认为false,启用高亮后,
  * 标题、作者、编辑、描述字段应该加?no_esc以使高亮html生效,cms会自动对原值有进行html安全转义
- * <li><code>preTag</code> 高亮前缀,启用高亮时有效,默认为"&lt;B&gt;"
- * <li><code>postTag</code> 高亮后缀,启用高亮时有效,默认为"&lt;/B&gt;"
- * <li><code>projection</code> 投影结果,【true,false】,默认为false
- * <li><code>phrase</code> 精确搜索,【true,false】,默认为false
- * <li><code>fields</code> 搜索字段,【title:标题, author:作者, editor:编辑, description:描述,
+ * <li><code>preTag</code>:高亮前缀,启用高亮时有效,默认为"&lt;B&gt;"
+ * <li><code>postTag</code>:高亮后缀,启用高亮时有效,默认为"&lt;/B&gt;"
+ * <li><code>projection</code>:投影结果,【true,false】,默认为false
+ * <li><code>phrase</code>:精确搜索,【true,false】,默认为false
+ * <li><code>fields</code>:搜索字段,【title:标题, author:作者, editor:编辑, description:描述,
  * text:正文,files:附件,extends:扩展数据全文索引】
- * <li><code>modelIds</code> 多个模型id
- * <li><code>startPublishDate</code> 起始发布日期,【2000-01-01 23:59:59】,【2000-01-01】
- * <li><code>endPublishDate</code> 终止发布日期,【2000-01-01 23:59:59】,【2000-01-01】
+ * <li><code>modelIds</code>:多个模型id
+ * <li><code>startPublishDate</code>:起始发布日期,【2000-01-01 23:59:59】,【2000-01-01】
+ * <li><code>endPublishDate</code>:终止发布日期,【2000-01-01 23:59:59】,【2000-01-01】
  * <li><code>orderField</code>
  * 排序字段,【clicks:点击数倒序,score:分数倒序,publishDate:发布日期倒序】,默认相关度倒序
- * <li><code>pageIndex</code> 页码
- * <li><code>pageSize</code> 每页条数
- * <li><code>maxResults</code> 最大结果数
+ * <li><code>pageIndex</code>:页码
+ * <li><code>pageSize</code>:每页条数
+ * <li><code>maxResults</code>:最大结果数
  * </ul>
  * <p>
  * 返回结果
  * <ul>
- * <li><code>page</code> {@link com.publiccms.common.handler.PageHandler}
- * <li><code>page.list</code> List类型 查询结果实体列表
+ * <li><code>page</code>:{@link com.publiccms.common.handler.PageHandler}
+ * <li><code>page.list</code>:List类型 查询结果实体列表
  * {@link com.publiccms.entities.cms.CmsContent}
  * </ul>
  * 使用示例

@@ -17,12 +17,12 @@ import com.publiccms.common.tools.VerificationUtils;
 * <p>
 * 参数列表
 * <ul>
-* <li><code>licenseData</code> 授权文件数据
+* <li><code>licenseData</code>:授权文件数据
 * </ul>
 * <p>
 * 返回结果
 * <ul>
-* <li><code>result</code> 验证结果,【true:验证成功,false:验证失败】
+* <li><code>result</code>:验证结果,【true:验证成功,false:验证失败】
 * </ul>
 * 使用示例
 * <p>

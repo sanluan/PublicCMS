@@ -20,14 +20,14 @@ import com.publiccms.logic.service.sys.SysAppTokenService;
 * <p>
 * 参数列表
 * <ul>
-* <li><code>appToken</code> 设备唯一id
+* <li><code>appToken</code>:设备唯一id
 * </ul>
 * <p>
 * 返回结果
 * <ul>
-* <li><code>authToken</code> 用户登录授权
-* <li><code>expiryDate</code> 过期日期
-* <li><code>error</code> 错误信息【needNotRefresh】
+* <li><code>authToken</code>:用户登录授权
+* <li><code>expiryDate</code>:过期日期
+* <li><code>error</code>:错误信息【needNotRefresh】
 * </ul>
 * 使用示例
 * <p>

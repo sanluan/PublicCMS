@@ -17,7 +17,7 @@ import freemarker.template.TemplateModelException;
  * <p>
  * 返回结果
  * <ul>
- * <li><code>font list</code> 字体名称列表
+ * <li><code>font list</code>:字体名称列表
  * </ul>
  * 使用示例
  * <p>

@@ -12,7 +12,7 @@ import com.publiccms.common.handler.RenderHandler;
  * <p>
  * 返回结果
  * <ul>
- * <li><code>object</code>异常字符串
+ * <li><code>object</code>:异常字符串
  * </ul>
  * 使用示例
  * <p>
