@@ -17,12 +17,12 @@ import freemarker.template.TemplateModelException;
  * <p>
  * 参数列表
  * <ol>
- * <li><code>number</code>最大数字,可以为空
+ * <li><code>number</code>:最大数字,可以为空
  * </ol>
  * <p>
  * 返回结果
  * <ul>
- * <li><code>number</code> 随机数字
+ * <li><code>number</code>:随机数字
  * </ul>
  * 使用示例
  * <p>

@@ -21,7 +21,7 @@ import com.publiccms.views.pojo.entities.ConfigInfo;
  * <p>
  * 返回结果
  * <ul>
- * <li><code>list</code> List类型 查询结果实体列表
+ * <li><code>list</code>:List类型 查询结果实体列表
  * {@link com.publiccms.views.pojo.entities.ConfigInfo}
  * </ul>
  * 使用示例

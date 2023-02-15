@@ -70,11 +70,11 @@ public class ModelComponent implements SiteCache {
     }
 
     /**
-     * @param site
+     * @param siteId
      * @return category types list
      */
-    public List<CmsCategoryType> getCategoryTypeList(SysSite site) {
-        Map<String, CmsCategoryType> map = getCategoryTypeMap(site);
+    public List<CmsCategoryType> getCategoryTypeList(short siteId) {
+        Map<String, CmsCategoryType> map = getCategoryTypeMap(siteId);
         List<CmsCategoryType> list = new ArrayList<>(map.values());
         list.sort((e1, e2) -> e1.getSort() - e2.getSort());
         return list;
@@ -114,20 +114,19 @@ public class ModelComponent implements SiteCache {
     }
 
     /**
-     * @param site
+     * @param siteId
      * @param typeId
      * @return category type
      */
-    public CmsCategoryType getCategoryType(SysSite site, String typeId) {
-        return getCategoryTypeMap(site).get(typeId);
+    public CmsCategoryType getCategoryType(short siteId, String typeId) {
+        return getCategoryTypeMap(siteId).get(typeId);
     }
 
     /**
-     * @param site
+     * @param siteId
      * @return model map
      */
-    public Map<String, CmsCategoryType> getCategoryTypeMap(SysSite site) {
-        short siteId = getSiteId(site);
+    public Map<String, CmsCategoryType> getCategoryTypeMap(short siteId) {
         Map<String, CmsCategoryType> typeMap = typeCache.get(siteId);
         if (null == typeMap) {
             File file = new File(siteComponent.getCategoryTypeFilePath(siteId));

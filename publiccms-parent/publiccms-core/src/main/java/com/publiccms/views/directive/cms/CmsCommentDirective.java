@@ -22,9 +22,9 @@ import com.publiccms.logic.service.cms.CmsCommentService;
 * <p>
 * 参数列表
 * <ul>
-* <li><code>id</code> 评论id,结果返回<code>object</code>
+* <li><code>id</code>:评论id,结果返回<code>object</code>
 * {@link com.publiccms.entities.cms.CmsComment}
-* <li><code>ids</code>
+* <li><code>ids</code>:
 * 多个评论id,逗号或空格间隔,当id为空时生效,结果返回<code>map</code>(id,<code>object</code>)
 * </ul>
 * 使用示例

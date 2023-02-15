@@ -22,7 +22,7 @@ import com.publiccms.logic.service.sys.SysDeptService;
  * <p>
  * 参数列表
  * <ul>
- * <li><code>deptId</code> 部门id
+ * <li><code>deptId</code>:部门id
  * <li><code>ItemId</code>
  * 分类id,deptId、ItemId都存在时,结果返回<code>true</code>或<code>false</code>,表示该部门是否拥有该分类下内容的数据权限
  * <li><code>ItemIds</code>

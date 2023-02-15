@@ -62,7 +62,7 @@ public class CmsCategoryTypeAdminController {
             entity.getExtendList().sort((e1, e2) -> e1.getSort() - e2.getSort());
         }
         if (CommonUtils.notEmpty(categoryTypeId)) {
-            Map<String, CmsCategoryType> categoryTypeMap = modelComponent.getCategoryTypeMap(site);
+            Map<String, CmsCategoryType> categoryTypeMap = modelComponent.getCategoryTypeMap(site.getId());
             categoryTypeMap.remove(categoryTypeId);
             categoryTypeMap.put(entity.getId(), entity);
             modelComponent.saveCategoryType(site.getId(), categoryTypeMap);
@@ -70,7 +70,7 @@ public class CmsCategoryTypeAdminController {
                     LogLoginService.CHANNEL_WEB_MANAGER, "update.categoryType", RequestUtils.getIpAddress(request),
                     CommonUtils.getDate(), JsonUtils.getString(entity)));
         } else {
-            Map<String, CmsCategoryType> categoryTypeMap = modelComponent.getCategoryTypeMap(site);
+            Map<String, CmsCategoryType> categoryTypeMap = modelComponent.getCategoryTypeMap(site.getId());
             categoryTypeMap.put(entity.getId(), entity);
             modelComponent.saveCategoryType(site.getId(), categoryTypeMap);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
@@ -95,7 +95,7 @@ public class CmsCategoryTypeAdminController {
         if (ControllerUtils.errorCustom("noright", null != site.getParentId(), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        Map<String, CmsCategoryType> categoryTypeMap = modelComponent.getCategoryTypeMap(site);
+        Map<String, CmsCategoryType> categoryTypeMap = modelComponent.getCategoryTypeMap(site.getId());
         CmsCategoryType entity = categoryTypeMap.remove(id);
         if (null != entity) {
             modelComponent.saveCategoryType(site.getId(), categoryTypeMap);

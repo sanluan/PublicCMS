@@ -19,13 +19,13 @@ import com.publiccms.logic.service.cms.CmsCategoryModelService;
  * <p>
  * 参数列表
  * <ul>
- * <li><code>modelId</code> 内容模型id
- * <li><code>categoryId</code> 分类id
+ * <li><code>modelId</code>:内容模型id
+ * <li><code>categoryId</code>:分类id
  * </ul>
  * <p>
  * 返回结果
  * <ul>
- * <li><code>list</code> List类型 查询结果实体列表
+ * <li><code>list</code>:List类型 查询结果实体列表
  * {@link com.publiccms.entities.cms.CmsCategoryModel}
  * </ul>
  * 使用示例

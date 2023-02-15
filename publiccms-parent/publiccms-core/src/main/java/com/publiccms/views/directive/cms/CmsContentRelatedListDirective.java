@@ -18,20 +18,20 @@ import com.publiccms.logic.service.cms.CmsContentRelatedService;
  * <p>
  * 参数列表
  * <ul>
- * <li><code>contentId</code> 内容id
- * <li><code>relatedContentId</code> 被推荐内容id
- * <li><code>relationType</code> 关系类型
- * <li><code>relation</code> 关系
- * <li><code>orderField</code> 排序字段,【clicks:点击数】,默认排序正序、id正序
- * <li><code>orderType</code> 排序类型,【asc:正序,desc:倒序】,默认为倒序
- * <li><code>pageIndex</code> 页码
- * <li><code>pageSize</code> 每页条数
+ * <li><code>contentId</code>:内容id
+ * <li><code>relatedContentId</code>:被推荐内容id
+ * <li><code>relationType</code>:关系类型
+ * <li><code>relation</code>:关系
+ * <li><code>orderField</code>:排序字段,【clicks:点击数】,默认排序正序、id正序
+ * <li><code>orderType</code>:排序类型,【asc:正序,desc:倒序】,默认为倒序
+ * <li><code>pageIndex</code>:页码
+ * <li><code>pageSize</code>:每页条数
  * </ul>
  * <p>
  * 返回结果
  * <ul>
- * <li><code>page</code> {@link com.publiccms.common.handler.PageHandler}
- * <li><code>page.list</code> List类型 查询结果实体列表
+ * <li><code>page</code>:{@link com.publiccms.common.handler.PageHandler}
+ * <li><code>page.list</code>:List类型 查询结果实体列表
  * {@link com.publiccms.entities.cms.CmsContentRelated}
  * </ul>
  * 使用示例

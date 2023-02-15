@@ -33,3 +33,7 @@ springboot包 ： bootWar
 配置eclipse工程 ：eclipse (在eclipse中运行时，请保持publiccms-parent的子工程关闭)
 清空idea配置 ：cleanIdea
 配置idea工程 ：idea
+
+更新wrapper
+mvnw -N io.takari:maven:wrapper
+gradlew wrapper

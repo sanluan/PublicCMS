@@ -22,7 +22,7 @@ import freemarker.template.TemplateModelException;
  * <p>
  * 返回结果
  * <ul>
- * <li><code>number</code> 数字
+ * <li><code>number</code>:数字
  * </ul>
  * 使用示例
  * <p>

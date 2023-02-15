@@ -19,12 +19,12 @@ import com.publiccms.views.pojo.entities.CmsPageMetadata;
  * <p>
  * 参数列表
  * <ul>
- * <li><code>path</code> 模板路径
+ * <li><code>path</code>:模板路径
  * </ul>
  * <p>
  * 返回结果
  * <ul>
- * <li><code>object</code>
+ * <li><code>object</code>:
  * 元数据{@link com.publiccms.views.pojo.entities.CmsPageMetadata}
  * </ul>
  * 使用示例

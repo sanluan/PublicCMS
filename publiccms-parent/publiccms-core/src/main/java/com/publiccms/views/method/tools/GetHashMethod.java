@@ -21,7 +21,7 @@ import freemarker.template.TemplateModelException;
  * <p>
  * 返回结果
  * <ul>
- * <li><code>string</code> 哈希值
+ * <li><code>string</code>:哈希值
  * </ul>
  * 使用示例
  * <p>

@@ -20,12 +20,12 @@ import com.publiccms.logic.component.template.TemplateComponent;
  * <p>
  * 参数列表
  * <ul>
- * <li><code>path</code> 文件路径
+ * <li><code>path</code>:文件路径
  * </ul>
  * <p>
  * 返回结果
  * <ul>
- * <li><code>list</code> 可视化区域id列表
+ * <li><code>list</code>:可视化区域id列表
  * </ul>
  * 使用示例
  * <p>

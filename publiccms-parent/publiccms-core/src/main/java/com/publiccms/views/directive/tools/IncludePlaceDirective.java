@@ -21,7 +21,7 @@ import com.publiccms.views.pojo.entities.CmsPlaceMetadata;
  * <p>
  * 参数列表
  * <ul>
- * <li><code>path</code> 路径
+ * <li><code>path</code>:路径
  * </ul>
  * <p>
  * 打印包含结果

@@ -20,13 +20,13 @@ import com.publiccms.logic.service.cms.CmsDictionaryDataService;
  * <p>
  * 参数列表
  * <ul>
- * <li><code>dictionaryId</code> 字典id,为空时返回空结果
- * <li><code>parentValue</code> 父节点值
+ * <li><code>dictionaryId</code>:字典id,为空时返回空结果
+ * <li><code>parentValue</code>:父节点值
  * </ul>
  * <p>
  * 返回结果
  * <ul>
- * <li><code>list</code> List类型 查询结果实体列表
+ * <li><code>list</code>:List类型 查询结果实体列表
  * {@link com.publiccms.entities.cms.CmsDictionaryData}
  * </ul>
  * 使用示例

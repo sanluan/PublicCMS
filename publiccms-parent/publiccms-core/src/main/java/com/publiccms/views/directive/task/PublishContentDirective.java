@@ -24,8 +24,8 @@ import freemarker.template.TemplateException;
  * <p>
  * 参数列表
  * <ul>
- * <li><code>id</code> 内容id
- * <li><code>ids</code> 多个内容id,id为空时有效
+ * <li><code>id</code>:内容id
+ * <li><code>ids</code>:多个内容id,id为空时有效
  * </ul>
  * <p>
  * 返回结果

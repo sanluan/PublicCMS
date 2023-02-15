@@ -19,19 +19,19 @@ import com.publiccms.logic.service.cms.CmsContentService;
  * <p>
  * 参数列表
  * <ul>
- * <li><code>status</code> 多个内容状态,【0:草稿,1:已发布,2:待审核,3:驳回】
- * <li><code>startCreateDate</code> 起始创建日期,【2020-01-01 23:59:59】,【2020-01-01】
- * <li><code>endCreateDate</code> 终止创建日期,【2020-01-01 23:59:59】,【2020-01-01】
- * <li><code>workloadType</code> 工作量类型【dept:部门,user:用户】,默认部门
- * <li><code>dateField</code> 日期字段【createDate:创建日期,publishDate:发布日期】,默认创建日期
- * <li><code>pageIndex</code> 页码
- * <li><code>pageSize</code> 每页条数
+ * <li><code>status</code>:多个内容状态,【0:草稿,1:已发布,2:待审核,3:驳回】
+ * <li><code>startCreateDate</code>:起始创建日期,【2020-01-01 23:59:59】,【2020-01-01】
+ * <li><code>endCreateDate</code>:终止创建日期,【2020-01-01 23:59:59】,【2020-01-01】
+ * <li><code>workloadType</code>:工作量类型【dept:部门,user:用户】,默认部门
+ * <li><code>dateField</code>:日期字段【createDate:创建日期,publishDate:发布日期】,默认创建日期
+ * <li><code>pageIndex</code>:页码
+ * <li><code>pageSize</code>:每页条数
  * </ul>
  * <p>
  * 返回结果
  * <ul>
- * <li><code>page</code> {@link com.publiccms.common.handler.PageHandler}
- * <li><code>page.list</code> List类型 查询结果实体列表
+ * <li><code>page</code>:{@link com.publiccms.common.handler.PageHandler}
+ * <li><code>page.list</code>:List类型 查询结果实体列表
  * {@link com.publiccms.views.pojo.entities.Workload}
  * </ul>
  * 使用示例

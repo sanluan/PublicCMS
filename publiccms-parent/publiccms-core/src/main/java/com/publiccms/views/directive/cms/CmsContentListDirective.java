@@ -27,40 +27,40 @@ import com.publiccms.views.pojo.query.CmsContentQuery;
  * <p>
  * 参数列表
  * <ul>
- * <li><code>categoryId</code> 分类id,当parentId为空时有效
- * <li><code>containChild</code> 是否包含子分类,【true,false】
- * <li><code>categoryIds</code> 多个分类id,当categoryId为空时有效
- * <li><code>modelId</code> 多个模型id
- * <li><code>parentId</code> 父内容id
- * <li><code>onlyUrl</code> 外链,【true,false】
- * <li><code>hasImages</code> 拥有图片列表,【true,false】
- * <li><code>hasFiles</code> 拥有附件列表,【true,false】
- * <li><code>hasProducts</code> 拥有产品列表,【true,false】
- * <li><code>hasCover</code> 拥有封面图,【true,false】
- * <li><code>userId</code> 发布用户id
- * <li><code>startPublishDate</code> 起始发布日期,【2020-01-01 23:59:59】,【2020-01-01】
- * <li><code>endPublishDate</code> 终止发布日期,高级选项禁用时不能超过现在,【2020-01-01
+ * <li><code>categoryId</code>:分类id,当parentId为空时有效
+ * <li><code>containChild</code>:是否包含子分类,【true,false】
+ * <li><code>categoryIds</code>:多个分类id,当categoryId为空时有效
+ * <li><code>modelId</code>:多个模型id
+ * <li><code>parentId</code>:父内容id
+ * <li><code>onlyUrl</code>:外链,【true,false】
+ * <li><code>hasImages</code>:拥有图片列表,【true,false】
+ * <li><code>hasFiles</code>:拥有附件列表,【true,false】
+ * <li><code>hasProducts</code>:拥有产品列表,【true,false】
+ * <li><code>hasCover</code>:拥有封面图,【true,false】
+ * <li><code>userId</code>:发布用户id
+ * <li><code>startPublishDate</code>:起始发布日期,【2020-01-01 23:59:59】,【2020-01-01】
+ * <li><code>endPublishDate</code>:终止发布日期,高级选项禁用时不能超过现在,【2020-01-01
  * 23:59:59】,【2020-01-01】
- * <li><code>advanced</code> 开启高级选项, 默认为<code>false</code>
- * <li><code>status</code> 高级选项:内容状态,【0:操作,1:已发布,2:待审核,3:驳回】
- * <li><code>disabled</code> 高级选项:禁用状态,默认为<code>false</code>
- * <li><code>emptyParent</code> 高级选项:父内容id是否为空,【true,false】,当parentId为空时有效
- * <li><code>title</code> 高级选项:标题
- * <li><code>absoluteURL</code> url处理为绝对路径 默认为<code>true</code>
- * <li><code>absoluteId</code> id处理为引用内容的ID 默认为<code>true</code>
+ * <li><code>advanced</code>:开启高级选项, 默认为<code>false</code>
+ * <li><code>status</code>:高级选项:内容状态,【0:操作,1:已发布,2:待审核,3:驳回】
+ * <li><code>disabled</code>:高级选项:禁用状态,默认为<code>false</code>
+ * <li><code>emptyParent</code>:高级选项:父内容id是否为空,【true,false】,当parentId为空时有效
+ * <li><code>title</code>:高级选项:标题
+ * <li><code>absoluteURL</code>:url处理为绝对路径 默认为<code>true</code>
+ * <li><code>absoluteId</code>:id处理为引用内容的ID 默认为<code>true</code>
  * <li><code>orderField</code>
  * 排序字段,【score:评分,comments:评论数,clicks:点击数,publishDate:发布日期,updateDate:更新日期,checkDate:审核日期】,默认置顶级别倒序、发布日期按orderType排序
- * <li><code>orderType</code> 排序类型,【asc:正序,desc:倒序】,默认为倒序
- * <li><code>firstResult</code> 开始位置,从1开始
- * <li><code>pageIndex</code> 页码,firstResult不存在时有效
- * <li><code>pageSize</code> 每页条数
- * <li><code>maxResults</code> 最大结果数
+ * <li><code>orderType</code>:排序类型,【asc:正序,desc:倒序】,默认为倒序
+ * <li><code>firstResult</code>:开始位置,从1开始
+ * <li><code>pageIndex</code>:页码,firstResult不存在时有效
+ * <li><code>pageSize</code>:每页条数
+ * <li><code>maxResults</code>:最大结果数
  * </ul>
  * <p>
  * 返回结果
  * <ul>
- * <li><code>page</code> {@link com.publiccms.common.handler.PageHandler}
- * <li><code>page.list</code> List类型 查询结果实体列表
+ * <li><code>page</code>:{@link com.publiccms.common.handler.PageHandler}
+ * <li><code>page.list</code>:List类型 查询结果实体列表
  * {@link com.publiccms.entities.cms.CmsContent}
  * </ul>
  * 使用示例

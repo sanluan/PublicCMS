@@ -17,17 +17,17 @@ import com.publiccms.common.handler.PageHandler;
  * <p>
  * 参数列表
  * <ul>
- * <li><code>questionId</code> 问题id
- * <li><code>orderField</code> 排序字段,【votes:得票数量】,默认sort按顺序
- * <li><code>orderType</code> 排序类型,【asc:正序,desc:倒序】,默认为倒序
- * <li><code>pageIndex</code> 页码
- * <li><code>pageSize</code> 每页条数
+ * <li><code>questionId</code>:问题id
+ * <li><code>orderField</code>:排序字段,【votes:得票数量】,默认sort按顺序
+ * <li><code>orderType</code>:排序类型,【asc:正序,desc:倒序】,默认为倒序
+ * <li><code>pageIndex</code>:页码
+ * <li><code>pageSize</code>:每页条数
  * </ul>
  * <p>
  * 返回结果
  * <ul>
- * <li><code>page</code> {@link com.publiccms.common.handler.PageHandler}
- * <li><code>page.list</code> List类型 查询结果实体列表
+ * <li><code>page</code>:{@link com.publiccms.common.handler.PageHandler}
+ * <li><code>page.list</code>:List类型 查询结果实体列表
  * {@link com.publiccms.entities.cms.CmsSurveyQuestionItem}
  * </ul>
  * 使用示例

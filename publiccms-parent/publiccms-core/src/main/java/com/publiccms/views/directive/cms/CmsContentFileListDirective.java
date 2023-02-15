@@ -24,21 +24,21 @@ import com.publiccms.logic.service.cms.CmsContentFileService;
  * <p>
  * 参数列表
  * <ul>
- * <li><code>fileTypes</code> 文件类型,【image:图片,video:视频,audio:音频,other:其他】
- * <li><code>image</code> 是否图片,当fileTypes为空时有效,【true,false】
- * <li><code>contentId</code> 内容id
- * <li><code>userId</code> 用户id
- * <li><code>absoluteURL</code> url处理为绝对路径 默认为<code>true</code>
- * <li><code>orderField</code> 排序字段,【size:文件大小,clicks:点击数】,默认排序正序、id正序
- * <li><code>orderType</code> 排序类型,【asc:正序,desc:倒序】,默认为倒序
- * <li><code>pageIndex</code> 页码
- * <li><code>pageSize</code> 每页条数
+ * <li><code>fileTypes</code>:文件类型,【image:图片,video:视频,audio:音频,other:其他】
+ * <li><code>image</code>:是否图片,当fileTypes为空时有效,【true,false】
+ * <li><code>contentId</code>:内容id
+ * <li><code>userId</code>:用户id
+ * <li><code>absoluteURL</code>:url处理为绝对路径 默认为<code>true</code>
+ * <li><code>orderField</code>:排序字段,【size:文件大小,clicks:点击数】,默认排序正序、id正序
+ * <li><code>orderType</code>:排序类型,【asc:正序,desc:倒序】,默认为倒序
+ * <li><code>pageIndex</code>:页码
+ * <li><code>pageSize</code>:每页条数
  * </ul>
  * <p>
  * 返回结果
  * <ul>
- * <li><code>page</code> {@link com.publiccms.common.handler.PageHandler}
- * <li><code>page.list</code> List类型 查询结果实体列表
+ * <li><code>page</code>:{@link com.publiccms.common.handler.PageHandler}
+ * <li><code>page.list</code>:List类型 查询结果实体列表
  * {@link com.publiccms.entities.cms.CmsContentFile}
  * </ul>
  * 使用示例

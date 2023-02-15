@@ -16,15 +16,15 @@ import com.publiccms.logic.component.site.LockComponent;
  * <p>
  * 参数列表
  * <ul>
- * <li><code>itemType</code> 锁定项目类型
- * <li><code>itemId</code> 锁定项目id
- * <li><code>userId</code> 锁定用户id
- * <li><code>counter</code> 使用计数器,默认值<code>false</code>
+ * <li><code>itemType</code>:锁定项目类型
+ * <li><code>itemId</code>:锁定项目id
+ * <li><code>userId</code>:锁定用户id
+ * <li><code>counter</code>:使用计数器,默认值<code>false</code>:
  * </ul>
  * <p>
  * 返回结果
  * <ul>
- * <li><code>object</code>{@link com.publiccms.entities.sys.SysLock}
+ * <li><code>object</code>:{@link com.publiccms.entities.sys.SysLock}
  * </ul>
  * 使用示例
  * <p>

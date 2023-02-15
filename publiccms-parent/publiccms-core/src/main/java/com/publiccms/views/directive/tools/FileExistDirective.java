@@ -17,13 +17,13 @@ import com.publiccms.entities.sys.SysSite;
  * <p>
  * 参数列表
  * <ul>
- * <li><code>type</code> 文件类型【file,task,template】,默认template
- * <li><code>path</code> 文件路径
+ * <li><code>type</code>:文件类型【file,task,template】,默认template
+ * <li><code>path</code>:文件路径
  * </ul>
  * <p>
  * 返回结果
  * <ul>
- * <li><code>object</code> boolean类型文件是否存在
+ * <li><code>object</code>:boolean类型文件是否存在
  * </ul>
  * 使用示例
  * <p>

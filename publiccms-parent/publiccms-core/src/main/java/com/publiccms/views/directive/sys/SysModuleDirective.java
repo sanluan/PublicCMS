@@ -18,9 +18,9 @@ import com.publiccms.logic.service.sys.SysModuleService;
  * <p>
  * 参数列表
  * <ul>
- * <li><code>id</code> 模块id,结果返回<code>object</code>
+ * <li><code>id</code>:模块id,结果返回<code>object</code>
  * {@link com.publiccms.entities.sys.SysModule}
- * <li><code>ids</code>
+ * <li><code>ids</code>:
  * 多个模块id,逗号或空格间隔,当id为空时生效,结果返回<code>map</code>(id,<code>object</code>)
  * </ul>
  * 使用示例

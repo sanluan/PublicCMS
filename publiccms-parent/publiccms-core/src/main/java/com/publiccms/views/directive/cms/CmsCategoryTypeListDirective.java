@@ -20,8 +20,8 @@ import com.publiccms.logic.component.template.ModelComponent;
  * <p>
  * 返回结果
  * <ul>
- * <li><code>page</code> {@link com.publiccms.common.handler.PageHandler}
- * <li><code>page.list</code> List类型 查询结果实体列表
+ * <li><code>page</code>:{@link com.publiccms.common.handler.PageHandler}
+ * <li><code>page.list</code>:List类型 查询结果实体列表
  * {@link com.publiccms.views.pojo.entities.CmsCategoryType}
  * </ul>
  * 使用示例
@@ -43,7 +43,7 @@ public class CmsCategoryTypeListDirective extends AbstractTemplateDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
         PageHandler page = new PageHandler(null, null);
-        page.setList(modelComponent.getCategoryTypeList(getSite(handler)));
+        page.setList(modelComponent.getCategoryTypeList(getSite(handler).getId()));
         handler.put("page", page).render();
     }
 

@@ -23,15 +23,15 @@ import com.publiccms.logic.service.sys.SysAppTokenService;
 * <p>
 * 参数列表
 * <ul>
-* <li><code>appKey</code> 应用key
-* <li><code>appSecret</code> 应用密钥
+* <li><code>appKey</code>:应用key
+* <li><code>appSecret</code>:应用密钥
 * </ul>
 * <p>
 * 返回结果
 * <ul>
-* <li><code>appToken</code> 接口访问授权Token
-* <li><code>expiryDate</code> 过期日期
-* <li><code>error</code> 错误信息,当appKey、appSecret为空或错误时返回【secretError】
+* <li><code>appToken</code>:接口访问授权Token
+* <li><code>expiryDate</code>:过期日期
+* <li><code>error</code>:错误信息,当appKey、appSecret为空或错误时返回【secretError】
 * </ul>
 * 使用示例
 * <p>

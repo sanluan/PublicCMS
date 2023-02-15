@@ -29,7 +29,7 @@ import freemarker.template.TemplateModelException;
  * <p>
  * 返回结果
  * <ul>
- * <li><code>string</code> 解析结果
+ * <li><code>string</code>:解析结果
  * </ul>
  * 使用示例
  * <p>

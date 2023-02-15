@@ -32,7 +32,7 @@ import freemarker.template.TemplateModelException;
  * <p>
  * 返回结果
  * <ul>
- * <li><code>sitefile</code> {@link com.publiccms.views.pojo.entities.Sitefile}
+ * <li><code>sitefile</code>:{@link com.publiccms.views.pojo.entities.Sitefile}
  * </ul>
  * 使用示例
  * <p>

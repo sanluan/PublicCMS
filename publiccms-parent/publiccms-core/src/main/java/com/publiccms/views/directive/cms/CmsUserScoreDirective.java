@@ -22,9 +22,9 @@ import com.publiccms.logic.service.cms.CmsUserScoreService;
 * <p>
 * 参数列表
 * <ul>
-* <li><code>userId</code> 用户id
-* <li><code>itemType</code> 项目类型
-* <li><code>itemId</code> 项目id,结果返回<code>object</code>
+* <li><code>userId</code>:用户id
+* <li><code>itemType</code>:项目类型
+* <li><code>itemId</code>:项目id,结果返回<code>object</code>
 * {@link com.publiccms.entities.cms.CmsUserScore}
 * <li><code>itemIds</code>
 * 多个项目id,逗号或空格间隔,当itemId为空时生效,结果返回<code>map</code>(itemId,<code>object</code>)

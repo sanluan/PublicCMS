@@ -22,10 +22,10 @@ import com.publiccms.logic.service.sys.SysRecordService;
  * <p>
  * 参数列表
  * <ul>
- * <li><code>code</code> 记录编码,结果返回<code>object</code>
- * <li><code>data</code> 记录数据,不为空时记录该数据
+ * <li><code>code</code>:记录编码,结果返回<code>object</code>
+ * <li><code>data</code>:记录数据,不为空时记录该数据
  * {@link com.publiccms.entities.sys.SysRecord}
- * <li><code>codes</code> 多个记录编码,结果返回<code>map</code>(id,<code>object</code>)
+ * <li><code>codes</code>:多个记录编码,结果返回<code>map</code>(id,<code>object</code>)
  * </ul>
  * 使用示例
  * <p>

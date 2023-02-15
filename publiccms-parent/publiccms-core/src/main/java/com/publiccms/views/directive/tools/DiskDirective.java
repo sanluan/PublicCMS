@@ -14,10 +14,10 @@ import com.publiccms.common.handler.RenderHandler;
 * <p>
 * 返回结果
 * <ul>
-* <li><code>freeSpace</code>空白空间
-* <li><code>totalSpace</code>总空间
-* <li><code>usableSpace</code>可用空间
-* <li><code>rootPath</code>绝对路径
+* <li><code>freeSpace</code>:空白空间
+* <li><code>totalSpace</code>:总空间
+* <li><code>usableSpace</code>:可用空间
+* <li><code>rootPath</code>:绝对路径
 * </ul>
 * 使用示例
 * <p>

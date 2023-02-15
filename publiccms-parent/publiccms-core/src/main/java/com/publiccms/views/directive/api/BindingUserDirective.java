@@ -20,13 +20,13 @@ import com.publiccms.logic.service.sys.SysAppClientService;
 * <p>
 * 参数列表
 * <ul>
-* <li><code>uuid</code> 设备唯一id
-* <li><code>channel</code> 客户端版本
+* <li><code>uuid</code>:设备唯一id
+* <li><code>channel</code>:客户端版本
 * </ul>
 * <p>
 * 返回结果
 * <ul>
-* <li><code>result</code> 绑定结果
+* <li><code>result</code>:绑定结果
 * </ul>
 * 使用示例
 * <p>

@@ -20,12 +20,12 @@ import com.publiccms.views.pojo.entities.ClickStatistics;
 * <p>
 * 参数列表
 * <ul>
-* <li><code>id</code> 内容id
+* <li><code>id</code>:内容id
 * </ul>
 * <p>
 * 返回结果
 * <ul>
-* <li><code>clicks</code> 内容点击数
+* <li><code>clicks</code>:内容点击数
 * </ul>
 * 使用示例
 * <p>

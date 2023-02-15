@@ -8,7 +8,7 @@
             <ul class="searchContent">
                 <li>
                     <select class="combox" name="allowContribute">
-                        <option value=""><@t.page 'contribute'/></option>
+                        <option value><@t.page 'contribute'/></option>
                         <option value="true"${(allowContribute?has_content&&"true"==allowContribute)?then(' selected="true"','')?no_esc}><@t.page 'allow_contribute'/></option>
                         <option value="false"${(allowContribute?has_content&&"false"==allowContribute)?then(' selected="true"','')?no_esc}><@t.page 'forbid_contribute'/></option>
                     </select>

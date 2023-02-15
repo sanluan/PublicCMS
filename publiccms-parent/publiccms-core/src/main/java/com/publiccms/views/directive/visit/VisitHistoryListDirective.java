@@ -17,19 +17,19 @@ import com.publiccms.common.handler.PageHandler;
  * <p>
  * 参数列表
  * <ul>
- * <li><code>sessionId</code> 会话id
- * <li><code>url</code> url
- * <li><code>startCreateDate</code> 起始创建日期,【2020-01-01 23:59:59】,【2020-01-01】
- * <li><code>endCreateDate</code> 终止创建日期,【2020-01-01 23:59:59】,【2020-01-01】
- * <li><code>orderType</code> <code>orderType</code> 排序类型,【asc:正序,desc:倒序】,默认为创建日期倒序
- * <li><code>pageIndex</code> 页码
- * <li><code>pageSize</code> 每页条数
+ * <li><code>sessionId</code>:会话id
+ * <li><code>url</code>:url
+ * <li><code>startCreateDate</code>:起始创建日期,【2020-01-01 23:59:59】,【2020-01-01】
+ * <li><code>endCreateDate</code>:终止创建日期,【2020-01-01 23:59:59】,【2020-01-01】
+ * <li><code>orderType</code>:排序类型,【asc:正序,desc:倒序】,默认为创建日期倒序
+ * <li><code>pageIndex</code>:页码
+ * <li><code>pageSize</code>:每页条数
  * </ul>
  * <p>
  * 返回结果
  * <ul>
- * <li><code>page</code> {@link com.publiccms.common.handler.PageHandler}
- * <li><code>page.list</code> List类型 查询结果实体列表
+ * <li><code>page</code>:{@link com.publiccms.common.handler.PageHandler}
+ * <li><code>page.list</code>:List类型 查询结果实体列表
  * {@link com.publiccms.entities.visit.VisitHistory}
  * </ul>
  * 使用示例

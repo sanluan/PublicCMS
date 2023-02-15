@@ -17,13 +17,13 @@ import com.publiccms.common.tools.CmsFileUtils;
  * <p>
  * 参数列表
  * <ul>
- * <li><code>path</code> 文件路径
- * <li><code>word</code> 搜索词
+ * <li><code>path</code>:文件路径
+ * <li><code>word</code>:搜索词
  * </ul>
  * <p>
  * 返回结果
  * <ul>
- * <li><code>list</code>文件列表
+ * <li><code>list</code>:文件列表
  * {@link com.publiccms.common.tools.CmsFileUtils.FileSearchResult}
  * </ul>
  * 使用示例

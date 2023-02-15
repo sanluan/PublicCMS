@@ -331,7 +331,7 @@ public class TemplateComponent implements Cache {
                 Map<String, String> config = BeanComponent.getConfigComponent().getConfigData(site.getId(),
                         Config.CONFIG_CODE_SITE);
                 if (CommonUtils.notEmpty(entity.getTypeId())) {
-                    CmsCategoryType categoryType = modelComponent.getCategoryType(site, entity.getTypeId());
+                    CmsCategoryType categoryType = modelComponent.getCategoryType(site.getId(), entity.getTypeId());
                     if (null != categoryType) {
                         templatePath = categoryType.getTemplatePath();
                         categoryPath = categoryType.getPath();

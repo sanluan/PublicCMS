@@ -16,8 +16,8 @@ import com.publiccms.logic.service.cms.CmsContentService;
  * <p>
  * 参数列表
  * <ul>
- * <li><code>id</code> 内容id,ids为空时有效
- * <li><code>ids</code> 多个内容id
+ * <li><code>id</code>:内容id,ids为空时有效
+ * <li><code>ids</code>:多个内容id
  * </ul>
  * <p>
  * 使用示例

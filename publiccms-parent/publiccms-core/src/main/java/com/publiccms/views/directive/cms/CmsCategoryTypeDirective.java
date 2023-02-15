@@ -20,9 +20,9 @@ import com.publiccms.views.pojo.entities.CmsCategoryType;
  * <p>
  * 参数列表
  * <ul>
- * <li><code>id</code> 分类id,结果返回<code>object</code>
+ * <li><code>id</code>:分类id,结果返回<code>object</code>
  * {@link com.publiccms.views.pojo.entities.CmsCategoryType}
- * <li><code>ids</code>
+ * <li><code>ids</code>:
  * 多个分类id,逗号或空格间隔,当id或code为空时生效,结果返回<code>map</code>(id,<code>object</code>)
  * </ul>
  * 使用示例
@@ -48,14 +48,14 @@ public class CmsCategoryTypeDirective extends AbstractTemplateDirective {
         String id = handler.getString("id");
         SysSite site = getSite(handler);
         if (CommonUtils.notEmpty(id)) {
-            CmsCategoryType entity = modelComponent.getCategoryType(site, id);
+            CmsCategoryType entity = modelComponent.getCategoryType(site.getId(), id);
             if (null != entity) {
                 handler.put("object", entity).render();
             }
         } else {
             String[] ids = handler.getStringArray("ids");
             if (CommonUtils.notEmpty(ids)) {
-                Map<String, CmsCategoryType> typeMap = modelComponent.getCategoryTypeMap(site);
+                Map<String, CmsCategoryType> typeMap = modelComponent.getCategoryTypeMap(site.getId());
                 Map<String, CmsCategoryType> map = new LinkedHashMap<>();
                 for (String typeId : ids) {
                     map.put(typeId, typeMap.get(typeId));

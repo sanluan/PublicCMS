@@ -20,9 +20,9 @@ import com.publiccms.views.pojo.entities.CmsModel;
  * <p>
  * 参数列表
  * <ul>
- * <li><code>id</code> 内容模型id,结果返回<code>object</code>
+ * <li><code>id</code>:内容模型id,结果返回<code>object</code>
  * {@link com.publiccms.views.pojo.entities.CmsModel}
- * <li><code>ids</code>
+ * <li><code>ids</code>:
  * 多个内容模型id,逗号或空格间隔,当id为空时生效,结果返回<code>map</code>(id,<code>object</code>)
  * </ul>
  * 使用示例

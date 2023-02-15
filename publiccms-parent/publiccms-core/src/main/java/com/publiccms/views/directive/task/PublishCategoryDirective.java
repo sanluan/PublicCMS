@@ -24,10 +24,10 @@ import freemarker.template.TemplateException;
  * <p>
  * 参数列表
  * <ul>
- * <li><code>id</code> 分类id
- * <li><code>ids</code> 多个分类id
- * <li><code>pageIndex</code> 当前页码,默认值1
- * <li><code>totalPage</code> 最大页码,为空时则只生成当前页
+ * <li><code>id</code>:分类id
+ * <li><code>ids</code>:多个分类id
+ * <li><code>pageIndex</code>:当前页码,默认值1
+ * <li><code>totalPage</code>:最大页码,为空时则只生成当前页
  * </ul>
  * <p>
  * 返回结果

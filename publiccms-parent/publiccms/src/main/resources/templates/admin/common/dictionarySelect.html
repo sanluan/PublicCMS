@@ -1,5 +1,5 @@
 <select class="combox" name="${inputName!'dictionary'}">
-    <option></option>
+    <option value><@t.page 'all'/></option>
 <@cms.dictionaryDataList dictionaryId=dictionaryId parentValue=parentValue>
     <#list list as a>
         <option value="${a.id.value}">${a.text}</option>

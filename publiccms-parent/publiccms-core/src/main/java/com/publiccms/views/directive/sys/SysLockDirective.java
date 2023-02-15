@@ -24,8 +24,8 @@ import com.publiccms.logic.service.sys.SysLockService;
  * <p>
  * 参数列表
  * <ul>
- * <li><code>itemType</code> 项目类型
- * <li><code>itemId</code> 项目id,结果返回<code>object</code>
+ * <li><code>itemType</code>:项目类型
+ * <li><code>itemId</code>:项目id,结果返回<code>object</code>
  * {@link com.publiccms.entities.sys.SysLock}
  * <li><code>itemIds</code>
  * 多个项目id,逗号或空格间隔,当id为空时生效,结果返回<code>map</code>(id,<code>object</code>)

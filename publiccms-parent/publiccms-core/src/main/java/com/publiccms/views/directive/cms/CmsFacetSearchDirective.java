@@ -33,7 +33,7 @@ import com.publiccms.views.pojo.query.CmsContentSearchQuery;
  * <ul>
  * <li><code>page</code>
  * 分面搜索结果{@link com.publiccms.common.handler.FacetPageHandler}
- * <li><code>page.list</code> List类型 查询结果实体列表
+ * <li><code>page.list</code>:List类型 查询结果实体列表
  * {@link com.publiccms.entities.cms.CmsContent}
  * </ul>
  * 使用示例

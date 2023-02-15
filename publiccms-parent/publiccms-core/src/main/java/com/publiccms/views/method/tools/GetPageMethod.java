@@ -21,13 +21,13 @@ import freemarker.template.TemplateModelException;
  * 参数列表
  * <ol>
  * <li><code>url</code>
- * <li><code>pageIndex</code>页码数字
- * <li><code>string</code>分页参数,动态url分页参数名,为空时返回静态化url分页结果
+ * <li><code>pageIndex</code>:页码数字
+ * <li><code>string</code>:分页参数,动态url分页参数名,为空时返回静态化url分页结果
  * </ol>
  * <p>
  * 返回结果
  * <ul>
- * <li><code>url</code> 带分页的url
+ * <li><code>url</code>:带分页的url
  * </ul>
  * 使用示例
  * <p>

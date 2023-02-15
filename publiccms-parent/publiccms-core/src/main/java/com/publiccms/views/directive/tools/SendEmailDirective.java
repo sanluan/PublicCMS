@@ -25,20 +25,20 @@ import com.publiccms.views.pojo.entities.CmsPageMetadata;
  * <p>
  * 参数列表
  * <ul>
- * <li><code>email</code> 多个邮件地址
- * <li><code>cc</code> 多个抄送地址
- * <li><code>bcc</code> 多个密送地址
- * <li><code>title</code> 标题
- * <li><code>templatePath</code> 内容模板路径
- * <li><code>content</code> 邮件内容,templatePath为空时有效
- * <li><code>fileNames</code> 多个附件名称
- * <li><code>filePaths</code> 多个文件路径
- * <li><code>parameters</code> 参数map
+ * <li><code>email</code>:多个邮件地址
+ * <li><code>cc</code>:多个抄送地址
+ * <li><code>bcc</code>:多个密送地址
+ * <li><code>title</code>:标题
+ * <li><code>templatePath</code>:内容模板路径
+ * <li><code>content</code>:邮件内容,templatePath为空时有效
+ * <li><code>fileNames</code>:多个附件名称
+ * <li><code>filePaths</code>:多个文件路径
+ * <li><code>parameters</code>:参数map
  * </ul>
  * <p>
  * 返回结果
  * <ul>
- * <li><code>result</code> 是否允许发送,【true,false】
+ * <li><code>result</code>:是否允许发送,【true,false】
  * </ul>
  * 使用示例
  * <p>

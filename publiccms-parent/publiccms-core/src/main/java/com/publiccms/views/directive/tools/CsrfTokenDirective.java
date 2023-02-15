@@ -19,7 +19,7 @@ import com.publiccms.common.tools.RequestUtils;
 * <p>
 * 参数列表
 * <ul>
-* <li><code>admin</code> 是否后台,默认值<code>false</code>
+* <li><code>admin</code>:是否后台,默认值<code>false</code>:
 * </ul>
 * <p>
 * 返回结果

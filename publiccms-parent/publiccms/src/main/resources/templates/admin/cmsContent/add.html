@@ -266,7 +266,7 @@ $('input[name=\'categoryName\']',navTab.getCurrentPanel()).on('change',function(
                                     <td>
                                         <input type="hidden" name="contentRelateds[${a?index}][${related?index}].relationType" value="${a.dictionaryId}"/>
                                         <select class="combox" name="contentRelateds[${a?index}][${related?index}].relation">
-                                            <option></option>
+                                            <option value><@t.page 'all'/></option>
                                             <@cms.dictionaryDataList dictionaryId=a.dictionaryId>
                                                 <#list list as a>
                                                     <option value="${a.id.value}"<#if related.relation?has_content && a.id.value = related.relation> selected="selected"</#if>>${a.text}</option>

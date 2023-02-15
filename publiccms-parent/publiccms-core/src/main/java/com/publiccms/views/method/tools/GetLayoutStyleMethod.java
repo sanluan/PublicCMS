@@ -25,7 +25,7 @@ import freemarker.template.TemplateModelException;
 * <p>
 * 返回结果
 * <ul>
-* <li><code>style</code> 替换后的样式表
+* <li><code>style</code>:替换后的样式表
 * </ul>
 * 使用示例
 * <p>

@@ -28,12 +28,12 @@ import com.publiccms.views.pojo.diy.CmsRegionData;
  * <p>
  * 参数列表
  * <ul>
- * <li><code>path</code> 文件路径
+ * <li><code>path</code>:文件路径
  * </ul>
  * <p>
  * 返回结果
  * <ul>
- * <li><code>list</code> 文件路径列表
+ * <li><code>list</code>:文件路径列表
  * </ul>
  * 使用示例
  * <p>

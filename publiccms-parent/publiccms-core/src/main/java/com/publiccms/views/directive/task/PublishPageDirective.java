@@ -29,7 +29,7 @@ import freemarker.template.TemplateException;
  * <p>
  * 参数列表
  * <ul>
- * <li><code>path</code> 页面路径,默认值"/"
+ * <li><code>path</code>:页面路径,默认值"/"
  * </ul>
  * <p>
  * 返回结果

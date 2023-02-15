@@ -26,7 +26,7 @@ import freemarker.template.TemplateModelException;
  * <p>
  * 返回结果
  * <ul>
- * <li><code>date</code> 日期
+ * <li><code>date</code>:日期
  * </ul>
  * 使用示例
  * <p>

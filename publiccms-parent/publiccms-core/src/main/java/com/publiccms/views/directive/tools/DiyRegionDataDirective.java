@@ -16,13 +16,13 @@ import com.publiccms.views.pojo.diy.CmsRegionData;
  * <p>
  * 参数列表
  * <ul>
- * <li><code>id</code> 区域id
- * <li><code>categoryId</code> 分类id
+ * <li><code>id</code>:区域id
+ * <li><code>categoryId</code>:分类id
  * </ul>
  * <p>
  * 返回结果
  * <ul>
- * <li><code>object</code>{@link com.publiccms.views.pojo.diy.CmsRegionData}
+ * <li><code>object</code>:{@link com.publiccms.views.pojo.diy.CmsRegionData}
  * </ul>
  * 使用示例
  * <p>

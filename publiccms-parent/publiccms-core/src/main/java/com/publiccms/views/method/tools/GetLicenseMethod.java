@@ -16,7 +16,7 @@ import freemarker.template.TemplateModelException;
 * <p>
 * 返回结果
 * <ul>
-* <li><code>license</code> 授权数据{@link com.publiccms.common.copyright.License}
+* <li><code>license</code>:授权数据{@link com.publiccms.common.copyright.License}
 * </ul>
 * 使用示例
 * <p>

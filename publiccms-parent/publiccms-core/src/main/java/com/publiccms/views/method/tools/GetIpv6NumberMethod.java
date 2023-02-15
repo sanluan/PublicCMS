@@ -23,7 +23,7 @@ import freemarker.template.TemplateModelException;
  * <p>
  * 返回结果
  * <ul>
- * <li><code>number string</code> 字符格式数字
+ * <li><code>number string</code>:字符格式数字
  * </ul>
  * 使用示例
  * <p>

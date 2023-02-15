@@ -21,8 +21,8 @@ import com.publiccms.logic.service.sys.SysAppClientService;
 * <p>
 * 参数列表
 * <ul>
-* <li><code>uuid</code> 设备唯一id
-* <li><code>clientVersion</code> 客户端版本
+* <li><code>uuid</code>:设备唯一id
+* <li><code>clientVersion</code>:客户端版本
 * </ul>
 * <p>
 * 使用示例
