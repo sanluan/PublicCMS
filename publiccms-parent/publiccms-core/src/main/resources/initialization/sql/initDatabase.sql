@@ -85,8 +85,8 @@ CREATE TABLE `cms_comment` (
   `text` text COMMENT '内容',
   PRIMARY KEY (`id`),
   KEY `cms_comment_site_id` (`site_id`, `content_id`, `status`, `disabled`),
-  KEY `cms_comment_update_date` (`update_date`, `create_date`, `replies`, `scores`),
-  KEY `cms_comment_reply_id` (`site_id`, `reply_user_id`, `reply_id`)
+  KEY `cms_comment_reply_id` (`site_id`, `reply_user_id`, `reply_id`),
+  KEY `cms_comment_user_id` (`site_id`, `user_id`, `status`, `disabled`)
 ) COMMENT='评论';
 -- ----------------------------
 -- Table structure for cms_content
@@ -124,8 +124,8 @@ CREATE TABLE `cms_content` (
   `clicks` int(11) NOT NULL COMMENT '点击数',
   `publish_date` datetime NOT NULL COMMENT '发布日期',
   `expiry_date` datetime default NULL COMMENT '过期日期',
-  `update_user_id` bigint(20) DEFAULT NULL COMMENT '更新用户',
   `check_date` datetime default NULL COMMENT '审核日期',
+  `update_user_id` bigint(20) DEFAULT NULL COMMENT '更新用户',
   `update_date` datetime default NULL COMMENT '更新日期',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   `sort` int(11) NOT NULL default '0' COMMENT '顺序',
@@ -288,7 +288,7 @@ CREATE TABLE `cms_editor_history` (
   `user_id` bigint(20) NOT NULL COMMENT '修改用户',
   `text` longtext NOT NULL COMMENT '文本',
   PRIMARY KEY (`id`),
-  KEY `cms_editor_content_id` (`site_id`, `item_type`, `item_id`, `field_name`, `create_date`)
+  KEY `cms_editor_history_item_id` (`site_id`, `item_type`, `item_id`, `field_name`, `create_date`)
 ) COMMENT='内容扩展';
 -- ----------------------------
 -- Table structure for cms_place
@@ -441,7 +441,7 @@ CREATE TABLE `cms_user_survey` (
   `ip` varchar(130) NOT NULL COMMENT 'IP',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   PRIMARY KEY (`user_id`, `survey_id`),
-  KEY `cms_user_survey_site_id` (`site_id`, `create_date`)
+  KEY `cms_user_survey_site_id` (`site_id`, `score`, `create_date`)
 ) COMMENT='用户问卷';
 
 -- ----------------------------
@@ -457,7 +457,7 @@ CREATE TABLE `cms_user_survey_question` (
   `score` int(11) DEFAULT NULL COMMENT '分数',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   PRIMARY KEY (`user_id`, `question_id`),
-  KEY `cms_user_survey_site_id` (`site_id`, `survey_id`, `create_date`)
+  KEY `cms_user_survey_question_site_id` (`site_id`, `survey_id`, `create_date`)
 ) COMMENT='用户问卷答案';
 
 -- ----------------------------
@@ -538,11 +538,10 @@ CREATE TABLE `log_login` (
   `create_date` datetime NOT NULL COMMENT '创建日期',
   `error_password` varchar(255) default NULL COMMENT '错误密码',
   PRIMARY KEY  (`id`),
-  KEY `log_login_result` (`site_id`, `result`),
-  KEY `log_login_user_id` (`site_id`, `user_id`),
-  KEY `log_login_create_date` (`site_id`, `create_date`),
-  KEY `log_login_ip` (`site_id`, `ip`),
-  KEY `log_login_channel` (`site_id`, `channel`)
+  KEY `log_login_result` (`site_id`, `result`, `create_date`),
+  KEY `log_login_user_id` (`site_id`, `user_id`, `create_date`),
+  KEY `log_login_ip` (`site_id`, `ip`, `create_date`),
+  KEY `log_login_channel` (`site_id`, `channel`, `create_date`)
 ) COMMENT='登录日志';
 
 -- ----------------------------
@@ -560,7 +559,7 @@ CREATE TABLE `log_operate` (
   `create_date` datetime NOT NULL COMMENT '创建日期',
   `content` text default NULL COMMENT '内容',
   PRIMARY KEY  (`id`),
-  KEY `log_operate_user_id` (`site_id`, `user_id`, `dept_id`, `create_date`),
+  KEY `log_operate_user_id` (`site_id`, `user_id`, `dept_id`),
   KEY `log_operate_operate` (`site_id`, `operate`, `create_date`),
   KEY `log_operate_ip` (`site_id`, `ip`, `create_date`),
   KEY `log_operate_channel` (`site_id`, `channel`, `create_date`)
@@ -579,9 +578,8 @@ CREATE TABLE `log_task` (
   `success` tinyint(1) NOT NULL COMMENT '执行成功',
   `result` longtext COMMENT '执行结果',
   PRIMARY KEY  (`id`),
-  KEY `log_task_task_id` (`site_id`, `task_id`),
-  KEY `log_task_success` (`site_id`, `success`),
-  KEY `log_task_begintime` (`site_id`, `begintime`)
+  KEY `log_task_task_id` (`site_id`, `task_id`, `begintime`),
+  KEY `log_task_success` (`site_id`, `success`, `begintime`)
 ) COMMENT='任务计划日志';
 
 -- ----------------------------
@@ -602,10 +600,9 @@ CREATE TABLE `log_upload` (
   `create_date` datetime NOT NULL COMMENT '创建日期',
   `file_path` varchar(500) NOT NULL COMMENT '文件路径',
   PRIMARY KEY  (`id`),
-  KEY `log_upload_user_id` (`site_id`, `user_id`),
-  KEY `log_upload_create_date` (`site_id`, `create_date`),
-  KEY `log_upload_ip` (`site_id`, `ip`),
-  KEY `log_upload_channel` (`site_id`, `channel`),
+  KEY `log_upload_user_id` (`site_id`, `user_id`, `create_date`),
+  KEY `log_upload_ip` (`site_id`, `ip`, `create_date`),
+  KEY `log_upload_channel` (`site_id`, `channel`, `create_date`),
   KEY `log_upload_file_type` (`site_id`, `file_type`, `file_size`)
 ) COMMENT='上传日志';
 -- ----------------------------
@@ -947,7 +944,7 @@ INSERT INTO `sys_module` VALUES ('order_list', 'tradeOrder/list', NULL, 'icon-ba
 INSERT INTO `sys_module` VALUES ('order_process', 'tradeOrder/processParameters', 'tradeOrder/process,tradeOrder/invalid,tradeOrder/close,tradeOrder/export', NULL, 'order_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('order_view', 'tradeOrder/view', NULL, NULL, 'order_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('page', NULL, NULL, 'icon-tablet', NULL, 1, 3);
-INSERT INTO `sys_module` VALUES ('page_diy', 'cmsPage/diy', 'cmsPage/region,cmsPage/style,cmsDiy/save', 'bi bi-palette', 'page_menu', 1, 3);
+INSERT INTO `sys_module` VALUES ('page_diy', 'cmsPage/diy', 'cmsPage/region,cmsDiy/save', 'bi bi-palette', 'page_menu', 1, 3);
 INSERT INTO `sys_module` VALUES ('page_diy_buttons', 'cmsDiy/buttons', NULL, NULL, 'page_diy', 0, 3);
 INSERT INTO `sys_module` VALUES ('page_diy_preview', 'cmsDiy/preview', NULL, NULL, 'page_diy', 0, 2);
 INSERT INTO `sys_module` VALUES ('page_diy_region', 'cmsPage/region', NULL, NULL, 'page_diy', 0, 1);
@@ -1044,7 +1041,7 @@ INSERT INTO `sys_module` VALUES ('user_enable', NULL, 'sysUser/enable', NULL, 'u
 INSERT INTO `sys_module` VALUES ('user_list', 'sysUser/list', NULL, 'icon-user', 'user_menu', 1, 1);
 INSERT INTO `sys_module` VALUES ('user_menu', NULL, NULL, 'icon-user', 'maintenance', 1, 1);
 INSERT INTO `sys_module` VALUES ('visit_day', 'visit/day', NULL, 'icon-calendar', 'visit_menu', 1, 3);
-INSERT INTO `sys_module` VALUES ('visit_history', 'visit/view', 'visit/history', 'icon-bolt', 'visit_menu', 1, 1);
+INSERT INTO `sys_module` VALUES ('visit_history', 'visit/history', 'visit/view', 'icon-bolt', 'visit_menu', 1, 1);
 INSERT INTO `sys_module` VALUES ('visit_item', 'visit/item', NULL, 'icon-flag-checkered', 'visit_menu', 1, 5);
 INSERT INTO `sys_module` VALUES ('visit_menu', NULL, NULL, 'icon-bolt', 'page', 1, 2);
 INSERT INTO `sys_module` VALUES ('visit_session', 'visit/session', NULL, 'icon-comment-alt', 'visit_menu', 1, 2);
@@ -1059,7 +1056,7 @@ INSERT INTO `sys_module` VALUES ('webfile_list', 'cmsWebFile/list', NULL, 'icon-
 INSERT INTO `sys_module` VALUES ('webfile_unzip', 'cmsWebFile/unzipParameters', 'cmsWebFile/unzip', NULL, 'webfile_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('webfile_upload', 'cmsWebFile/upload', 'cmsWebFile/doUpload,cmsWebFile/uploadIco,cmsWebFile/doUpload,cmsWebFile/doUploadIco,cmsWebFile/check', NULL, 'webfile_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('webfile_zip', NULL, 'cmsWebFile/zip', NULL, 'webfile_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('word_list', 'cmsWord/list', 'cmsWord/hidden,cmsWord/delete,cmsWord/show,cmsWord/add,cmsWord/save', 'icon-search', 'content_menu', 1, 10);
+INSERT INTO `sys_module` VALUES ('word_list', 'cmsWord/list', 'cmsWord/hidden,cmsWord/delete,cmsWord/show,cmsWord/add,cmsWord/save', 'bi bi-search-heart', 'content_menu', 1, 10);
 
 -- ----------------------------
 -- Table structure for sys_module_lang
@@ -1154,9 +1151,9 @@ INSERT INTO `sys_module_lang` VALUES ('category_type_list', 'zh', '分类类型�
 INSERT INTO `sys_module_lang` VALUES ('clearcache', 'en', 'Clear cache');
 INSERT INTO `sys_module_lang` VALUES ('clearcache', 'ja', 'キャッシュをリフレッシュする');
 INSERT INTO `sys_module_lang` VALUES ('clearcache', 'zh', '刷新缓存');
-INSERT INTO `sys_module_lang` VALUES ('comment_check', 'en', 'Content check');
-INSERT INTO `sys_module_lang` VALUES ('comment_check', 'ja', '内容の審査');
-INSERT INTO `sys_module_lang` VALUES ('comment_check', 'zh', '内容审核');
+INSERT INTO `sys_module_lang` VALUES ('comment_check', 'en', 'check');
+INSERT INTO `sys_module_lang` VALUES ('comment_check', 'ja', '審査');
+INSERT INTO `sys_module_lang` VALUES ('comment_check', 'zh', '审核');
 INSERT INTO `sys_module_lang` VALUES ('comment_delete', 'en', 'Delete');
 INSERT INTO `sys_module_lang` VALUES ('comment_delete', 'ja', '削除');
 INSERT INTO `sys_module_lang` VALUES ('comment_delete', 'zh', '删除');

@@ -43,15 +43,19 @@ public class GetIpRegionMethod extends BaseMethod {
     private final Searcher searcher;
 
     public GetIpRegionMethod() throws IOException {
-        try(InputStream inputStream = getClass().getResourceAsStream("/ip2region.xdb")){
-            searcher = Searcher.newWithBuffer(IOUtils.toByteArray(inputStream));
+        try (InputStream inputStream = getClass().getResourceAsStream("/ip2region.xdb")) {
+            if (null != inputStream) {
+                searcher = Searcher.newWithBuffer(IOUtils.toByteArray(inputStream));
+            } else {
+                searcher = null;
+            }
         }
     }
 
     @Override
     public Object execute(List<TemplateModel> arguments) throws TemplateModelException {
         String ip = getString(0, arguments);
-        if (CommonUtils.notEmpty(ip)) {
+        if (CommonUtils.notEmpty(ip) && null != searcher) {
             try {
                 return getIpRegion(searcher.search(ip));
             } catch (Exception e) {
