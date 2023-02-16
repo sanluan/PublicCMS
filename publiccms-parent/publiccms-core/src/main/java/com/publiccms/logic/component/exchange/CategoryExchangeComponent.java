@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.tools.zip.ZipFile;
 import org.apache.tools.zip.ZipOutputStream;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
@@ -125,6 +126,12 @@ public class CategoryExchangeComponent extends AbstractExchange<CmsCategory, Cat
         }
     }
 
+    @Override
+    public void importData(short siteId, long userId, String directory, boolean overwrite, ZipFile zipFile) {
+        super.importData(siteId, userId, directory, overwrite, zipFile);
+        service.generateChildIds(siteId, null);
+    }
+
     public void save(short siteId, long userId, boolean overwrite, Category data) {
         save(siteId, userId, overwrite, null, data);
     }
@@ -204,6 +211,11 @@ public class CategoryExchangeComponent extends AbstractExchange<CmsCategory, Cat
             } catch (IOException | TemplateException e) {
             }
         }
+    }
+
+    @Override
+    public int importOrder() {
+        return 1;
     }
 
     @Override

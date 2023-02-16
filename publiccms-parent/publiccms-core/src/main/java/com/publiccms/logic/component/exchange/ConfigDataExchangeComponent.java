@@ -56,6 +56,11 @@ public class ConfigDataExchangeComponent extends AbstractExchange<SysConfigData,
     }
 
     @Override
+    public int importOrder() {
+        return 1;
+    }
+
+    @Override
     public String getDirectory() {
         return "config";
     }

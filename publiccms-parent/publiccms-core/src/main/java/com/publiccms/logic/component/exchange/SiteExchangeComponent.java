@@ -141,6 +141,7 @@ public class SiteExchangeComponent {
                 String filepath = siteComponent.getTaskTemplateFilePath(siteId, CommonConstants.SEPARATOR);
                 ZipUtils.unzip(zipFile, "tasktemplate", filepath, overwrite);
             }
+            exchangeList.sort((a, b) -> b.importOrder() - a.importOrder());
             for (AbstractExchange<?, ?> exchange : exchangeList) {
                 exchange.importData(siteId, userId, exchange.getDirectory(), overwrite, zipFile);
             }

@@ -109,6 +109,11 @@ public abstract class AbstractExchange<E, D> implements Exchange<E, D> {
         }
     }
 
+    @Override
+    public int importOrder() {
+        return 0;
+    }
+
     @SuppressWarnings("unchecked")
     protected Class<D> getDataClass() {
         return null == clazz
