@@ -18,8 +18,21 @@
 
     window.onload = function(){
         $focus($G("videoUrl"));
+
         initTabs();
         initVideo();
+
+        var img = editor.selection.getRange().getClosedNode(),url,poster;
+        if(img && img.className){
+            var hasFakedClass = (img.className == "edui-faked-video"),
+                hasUploadClass = img.className.indexOf("edui-upload-video")!=-1;
+            if(hasFakedClass || hasUploadClass) {
+            }else{
+                switchTabs("upload");
+            }
+        }else{
+            switchTabs("upload");
+        }
     };
 
     /* 初始化tab标签 */
@@ -53,6 +66,20 @@
                     }
                 }
             });
+        }
+    }
+
+    function switchTabs(selectedTab){
+        var tabs = $G('tabHeads').children;
+        for (var i = 0; i < tabs.length; i++) {
+            var bodyId = tabs[i].getAttribute('data-content-id');
+            if(bodyId==selectedTab){
+                domUtils.addClass(tabs[i], 'focus');
+                domUtils.addClass($G(selectedTab), 'focus');
+            }else{
+                domUtils.removeClasses(tabs[i], 'focus');
+                domUtils.removeClasses($G(bodyId), 'focus');
+            }
         }
     }
 
@@ -158,11 +185,18 @@
     function insertVideoList(insertList){
         var videoObjs=[],
             url = $G('videoUrl').value,
-            width = parseInt($G('upload_width').value, 10) || 420,
-            height = parseInt($G('upload_height').value, 10) || 280,
-            align = findFocus("upload_alignment","name") || 'none',
+            width = parseInt($G('upload_width').value, 10) || 600,
+            height = parseInt($G('upload_height').value, 10) || 480,
+            align = findFocus("upload_alignment","name") || 'center',
             poster = $G('posterUrl').value;
         var imageList=[];
+
+        if (uploadImage && uploadImage.getQueueCount()) {
+            switchTabs("uploadImage");
+            $('.info', '#imageQueueList').html('<span style="color:red;">' + '还有2个未上传文件'.replace(/[\d]/, uploadImage.getQueueCount()) + '</span>');
+            return false;
+        }
+
         if(!insertList ) {
           if(url ) {
               if(uploadImage && uploadImage.getInsertList().length ) {
@@ -199,6 +233,7 @@
         }
 
         if (uploadFile && uploadFile.getQueueCount()) {
+            switchTabs("upload");
             $('.info', '#queueList').html('<span style="color:red;">' + '还有2个未上传文件'.replace(/[\d]/, uploadFile.getQueueCount()) + '</span>');
             return false;
         } else {
@@ -268,7 +303,7 @@
              for ( var j in nameMaps ) {
                  var div = document.createElement( "div" );
                  div.setAttribute( "name", j );
-                 if ( j == "none" ) div.className="focus";
+                 if ( j == "center" ) div.className="focus";
                  div.style.cssText = "background:url(images/" + j + "_focus.jpg);";
                  div.setAttribute( "title", nameMaps[j] );
                  floatContainer.appendChild( div );

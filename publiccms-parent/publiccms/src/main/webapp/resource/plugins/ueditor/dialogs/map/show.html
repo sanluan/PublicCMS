@@ -14,7 +14,7 @@
             overflow: hidden;
         }
     </style>
-    <script type="text/javascript" src="https://api.map.baidu.com/api?key=&v=1.1&services=true"></script>
+    <script type="text/javascript" src="https://api.map.baidu.com/api?v=1.3&services=true&s=1"></script>
 </head>
 
 <body onload="initMap();">
@@ -73,6 +73,14 @@
         map.enableScrollWheelZoom();//启用地图滚轮放大缩小
         map.enableDoubleClickZoom();//启用鼠标双击放大，默认启用(可不写)
         map.enableKeyboard();//启用键盘上下左右键移动地图
+        map.addEventListener('tilesloaded', function () {
+            var spans = document.getElementById("dituContent").getElementsByTagName("span");
+            for(var i=0;i<spans.length;i++){
+                if(spans[i].innerText == "关闭"){
+                    spans[i].click();
+                }
+            }
+        });
     }
 
     //地图控件添加函数：
@@ -106,7 +114,7 @@
         function mapListenerHandler() {
             var zoom = map.getZoom(),
                 center = map.getCenter(),
-                marker = window.marker.getPoint();
+                marker = window.marker.getPosition();
             containerIframe.src = containerIframe.src.
                 replace(new RegExp('([?#&])center=([^?#&]+)', 'i'), '$1center=' + center.lng + ',' + center.lat).
                 replace(new RegExp('([?#&])markers=([^?#&]+)', 'i'), '$1markers=' + marker.lng + ',' + marker.lat).
