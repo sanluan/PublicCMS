@@ -18,5 +18,5 @@ then
   exit 1
 fi
 
-mysqldump --add-drop-table --single-transaction -u${USERNAME} -p${PASSWORD} ${DATABASE} |gzip > ../backup/publiccms-${backup_date}.sql.gz
+mysqldump --add-drop-table --single-transaction -u${USERNAME} -p${PASSWORD} ${DATABASE} |gzip > ../backup/sql/publiccms-${backup_date}.sql.gz
 echo "complete!"

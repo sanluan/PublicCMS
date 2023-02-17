@@ -20,5 +20,5 @@ if "%USERNAME%"=="" (
 )
 
 :exec
-mysqldump --add-drop-table --single-transaction -u%USERNAME% -p%PASSWORD% %DATABASE%>../backup/"publiccms-%backup_date%.sql"
+mysqldump --add-drop-table --single-transaction -u%USERNAME% -p%PASSWORD% %DATABASE%>../backup/sql/"publiccms-%backup_date%.sql"
 echo complete!
