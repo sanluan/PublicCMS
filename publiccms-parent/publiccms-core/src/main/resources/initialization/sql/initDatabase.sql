@@ -985,7 +985,7 @@ INSERT INTO `sys_module` VALUES ('role_delete', NULL, 'sysRole/delete', NULL, 'r
 INSERT INTO `sys_module` VALUES ('role_list', 'sysRole/list', NULL, 'icon-user-md', 'user_menu', 1, 3);
 INSERT INTO `sys_module` VALUES ('select_category', 'cmsCategory/lookup', 'cmsCategory/lookupByModelId', NULL, 'common', 0, 0);
 INSERT INTO `sys_module` VALUES ('select_category_type', 'cmsCategoryType/lookup', NULL, NULL, 'common', 0, 0);
-INSERT INTO `sys_module` VALUES ('select_content', 'cmsContent/lookup', 'cmsContent/lookup_list', NULL, 'common', 0, 0);
+INSERT INTO `sys_module` VALUES ('select_content', 'cmsContent/lookup', 'cmsContent/lookup_list,cmsContent/contentImage', NULL, 'common', 0, 0);
 INSERT INTO `sys_module` VALUES ('select_dept', 'sysDept/lookup', NULL, NULL, 'common', 0, 0);
 INSERT INTO `sys_module` VALUES ('select_dictionary', 'cmsDictionary/lookup', NULL, NULL, 'common', 0, 0);
 INSERT INTO `sys_module` VALUES ('select_fragment', 'cmsTemplate/ftlLookup', NULL, NULL, 'common', 0, 0);
