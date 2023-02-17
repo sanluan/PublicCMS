@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.annotation.Resource;
 
+import org.apache.tools.zip.ZipFile;
 import org.apache.tools.zip.ZipOutputStream;
 import org.springframework.stereotype.Component;
 
@@ -37,6 +38,12 @@ public class ConfigDataExchangeComponent extends AbstractExchange<SysConfigData,
                 exportEntity(siteId, directory, entity, outputStream, zipOutputStream);
             }
         }
+    }
+
+    @Override
+    public void importData(short siteId, long userId, String directory, boolean overwrite, ZipFile zipFile) {
+        super.importData(siteId, userId, directory, overwrite, zipFile);
+        configComponent.clear(siteId);
     }
 
     @Override

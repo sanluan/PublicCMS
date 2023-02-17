@@ -20,6 +20,7 @@ import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ZipUtils;
 import com.publiccms.logic.component.site.SiteComponent;
+import com.publiccms.logic.component.template.TemplateComponent;
 
 /**
  * SiteExchangeComponent 站点导入导出组件
@@ -32,7 +33,9 @@ public class SiteExchangeComponent {
     @Resource
     private List<AbstractExchange<?, ?>> exchangeList;
     @Resource
-    protected SiteComponent siteComponent;
+    private SiteComponent siteComponent;
+    @Resource
+    private TemplateComponent templateComponent;
 
     /**
      * @param <E>
@@ -132,6 +135,7 @@ public class SiteExchangeComponent {
             {
                 String filepath = siteComponent.getTemplateFilePath(siteId, CommonConstants.SEPARATOR);
                 ZipUtils.unzip(zipFile, "template", filepath, overwrite);
+                templateComponent.clearTemplateCache();
             }
             {
                 String filepath = siteComponent.getWebFilePath(siteId, CommonConstants.SEPARATOR);
@@ -140,6 +144,7 @@ public class SiteExchangeComponent {
             {
                 String filepath = siteComponent.getTaskTemplateFilePath(siteId, CommonConstants.SEPARATOR);
                 ZipUtils.unzip(zipFile, "tasktemplate", filepath, overwrite);
+                templateComponent.clearTaskTemplateCache();
             }
             exchangeList.sort((a, b) -> b.importOrder() - a.importOrder());
             for (AbstractExchange<?, ?> exchange : exchangeList) {
