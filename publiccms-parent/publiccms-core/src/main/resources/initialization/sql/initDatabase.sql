@@ -715,7 +715,7 @@ INSERT INTO `sys_dept` VALUES ('1', '1', 'Technical department', '1', null, '', 
 DROP TABLE IF EXISTS `sys_dept_item`;
 CREATE TABLE `sys_dept_item` (
   `dept_id` int(11) NOT NULL COMMENT '部门',
-  `item_type` varchar(50) NOT NULL COMMENT '项目类型',
+  `item_type` varchar(50) NOT NULL DEFAULT 'page' COMMENT '项目类型' ,
   `item_id` varchar(100) NOT NULL COMMENT '项目',
   PRIMARY KEY  (`dept_id`, `item_type`, `item_id`),
   KEY `sys_dept_item_item_id` (`item_type`, `item_id`)
@@ -1151,7 +1151,7 @@ INSERT INTO `sys_module_lang` VALUES ('category_type_list', 'zh', '分类类型�
 INSERT INTO `sys_module_lang` VALUES ('clearcache', 'en', 'Clear cache');
 INSERT INTO `sys_module_lang` VALUES ('clearcache', 'ja', 'キャッシュをリフレッシュする');
 INSERT INTO `sys_module_lang` VALUES ('clearcache', 'zh', '刷新缓存');
-INSERT INTO `sys_module_lang` VALUES ('comment_check', 'en', 'check');
+INSERT INTO `sys_module_lang` VALUES ('comment_check', 'en', 'Check');
 INSERT INTO `sys_module_lang` VALUES ('comment_check', 'ja', '審査');
 INSERT INTO `sys_module_lang` VALUES ('comment_check', 'zh', '审核');
 INSERT INTO `sys_module_lang` VALUES ('comment_delete', 'en', 'Delete');

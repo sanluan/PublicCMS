@@ -4,7 +4,7 @@
 html, body, *{padding:0;margin:0;font-size:14px;font-family:microsoft yahei,Arial, sans-serif;}
 body{width:100%;height:100%;overflow:hidden;}
 iframe{width:100%;height:100%;border:0px;}
-input[type="checkbox"]{margin:3px 3px 3px 4px;}
+input[type="checkbox"]{vertical-align:middle;margin-right:4px;margin-left:4px;}
 input[type="number"]{width:80px;}
 .clearfix{*zoom:1;}
 .clearfix:after{display:block;content:".";height:0;clear:both;visibility:hidden;}
@@ -301,7 +301,7 @@ fieldset:first-child .unit:first-of-type p:last-child{padding:0;}
 .formBar li{float:left;line-height:30px;font-size:13px;height:30px;margin-left:10px;}
 .divider{clear:both;display:block;overflow:hidden;width:auto;height:1px;padding:4px 0 0 0;margin-bottom:5px;border-style:dashed;border-width:0 0 1px 0;}
 
-.tagsBox{line-height:25px;float:left;}
+.tagsBox{line-height:30px;float:left;}
 .tagsBox span,.parametersBox span{margin-right:8px;border:none;padding:5px 8px;}
 .tagsBox span>a,.parametersBox span{margin-left:5px;}
 .parametersBox{line-height:25px;}
