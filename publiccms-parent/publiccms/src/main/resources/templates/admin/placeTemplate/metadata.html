@@ -180,7 +180,7 @@
 <#list page.list>
     <ul data-diy="place" data-diy-id="${path}">
     <#items as a>
-        <li>
+        <li data-diy-item="${a.id}">
             <figure>
                 <!-- ${a.itemType!} : ${a.itemId!} ,place/redirect:count and 301 jump to a.url,place/click:count and 302 jump to a.url-->
                 <a href="${site.dynamicPath}place/redirect?id=${a.id!}" target="_blank"><img src="${a.cover!}"></a>

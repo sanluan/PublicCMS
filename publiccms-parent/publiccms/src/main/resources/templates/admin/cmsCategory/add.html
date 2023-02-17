@@ -271,9 +271,9 @@ $('input[name=customPath]',navTab.getCurrentPanel()).click(function(){
 });
 $('input[name=customContentPath]',navTab.getCurrentPanel()).click(function(){
     if($(this).is(':checked')){
-        $('.customContentPath',navTab.getCurrentPanel()).show();
+        $('.customContentPath',navTab.getCurrentPanel()).show().find("input[name=contentPath]").addClass("required");;
     } else {
-        $('.customContentPath',navTab.getCurrentPanel()).hide();
+        $('.customContentPath',navTab.getCurrentPanel()).hide().find("input[name=contentPath]").removeClass("required");;
     }
 });
 $('input[name$=\\.categoryModel\\.customContentPath]',navTab.getCurrentPanel()).click(function(){

@@ -1,7 +1,7 @@
 /*!
  * UEditor
  * version: ueditor
- * build: Thu Feb 09 2023 18:12:07 GMT+0800 (中国标准时间)
+ * build: Fri Feb 17 2023 13:41:59 GMT+0800 (中国标准时间)
  */
 
 (function(){
@@ -17162,10 +17162,6 @@ UE.plugins['fiximgclick'] = (function () {
             },
             updateTargetElement: function () {
                 var me = this;
-                domUtils.setStyles(me.target, {
-                    'width': me.resizer.style.width,
-                    'height': me.resizer.style.height
-                });
                 me.target.width = parseInt(me.resizer.style.width);
                 me.target.height = parseInt(me.resizer.style.height);
                 me.attachTo(me.target);

@@ -49,14 +49,14 @@
                     </#if>
                     <#if authorizedMap['cmsComment/list']>
                         <#if authorizedMap['cmsComment/edit']>
-                            <li><a href="cmsComment/edit.html?id={itemId}" class="hide" target="dialog" mask="true" data-diy="content" data-diy-item="itemId"><i class="icon-edit"></i><@t.page 'button.edit'/></a></li>
+                            <li><a href="cmsComment/edit.html?id={itemId}" class="hide" target="dialog" mask="true" data-diy="comment" data-diy-item="itemId"><i class="icon-edit"></i><@t.page 'button.edit'/></a></li>
                         </#if>
                         <#if authorizedMap['cmsComment/reply']>
-                            <li><a href="cmsComment/reply.html?replyId={itemId}" class="hide" target="dialog" mask="true" data-diy="content" data-diy-item="itemId"><i class="icon-reply"></i><@t.page 'reply'/></a></li>
+                            <li><a href="cmsComment/reply.html?replyId={itemId}" class="hide" target="dialog" mask="true" data-diy="comment" data-diy-item="itemId"><i class="icon-reply"></i><@t.page 'reply'/></a></li>
                         </#if>
                         <li><a href="cmsComment/list.html?contentId=${content.id}" target="navTab" rel="cmsComment/list" data-diy="comment"><i class='icon-comment icon-large'></i><@t.page 'comment.management'/></a></li>
                     </#if>
-                <#elseif authorizedMap['cmsContent/addMore']  && 'category'=itemType>
+                <#elseif authorizedMap['cmsContent/addMore'] && itemType?has_content && 'category'=itemType>
                     <li><a href="cmsContent/addMore.html?categoryId=${(category.id)!}" target="dialog" mask="true" data-diy="content"><i class="icon-plus icon-large"></i><@t.page 'content.add'/></a></li>
                 </#if>
             </ul>
