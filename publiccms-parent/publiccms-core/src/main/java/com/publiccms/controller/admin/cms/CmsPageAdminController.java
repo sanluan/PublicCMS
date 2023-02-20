@@ -1,12 +1,15 @@
 package com.publiccms.controller.admin.cms;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.ArrayUtils;
-import javax.annotation.Resource;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.api.Config;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.RequestUtils;
@@ -31,6 +35,7 @@ import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.DiyComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateCacheComponent;
+import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsEditorHistoryService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
@@ -41,14 +46,17 @@ import com.publiccms.views.pojo.entities.CmsPageMetadata;
 import com.publiccms.views.pojo.entities.CmsPlaceMetadata;
 import com.publiccms.views.pojo.model.ExtendDataParameters;
 
+import freemarker.template.TemplateException;
+
 /**
- * 
+ *
  * CmsPageController
  *
  */
 @Controller
 @RequestMapping("cmsPage")
 public class CmsPageAdminController {
+    protected final Log log = LogFactory.getLog(getClass());
     @Resource
     private MetadataComponent metadataComponent;
     @Resource
@@ -64,13 +72,15 @@ public class CmsPageAdminController {
     @Resource
     protected DiyComponent diyComponent;
     @Resource
+    protected TemplateComponent templateComponent;
+    @Resource
     private CmsEditorHistoryService editorHistoryService;
 
     /**
      * @param site
      * @param admin
      * @param path
-     * @param type 
+     * @param type
      * @param extendDataParameters
      * @param request
      * @param model
@@ -115,12 +125,23 @@ public class CmsPageAdminController {
                             if (CommonUtils.notEmpty(oldMap) && CommonUtils.notEmpty(oldMap.get(extendField.getId().getCode()))
                                     && (CommonUtils.notEmpty(map) || !oldMap.get(extendField.getId().getCode())
                                             .equals(map.get(extendField.getId().getCode())))) {
-                                CmsEditorHistory history = new CmsEditorHistory(site.getId(),CmsEditorHistoryService.ITEM_TYPE_METADATA_EXTEND,
-                                        path, extendField.getId().getCode(), CommonUtils.getDate(), admin.getId(),
-                                        map.get(extendField.getId().getCode()));
+                                CmsEditorHistory history = new CmsEditorHistory(site.getId(),
+                                        CmsEditorHistoryService.ITEM_TYPE_METADATA_EXTEND, path, extendField.getId().getCode(),
+                                        CommonUtils.getDate(), admin.getId(), map.get(extendField.getId().getCode()));
                                 editorHistoryService.save(history);
                             }
                         }
+                    }
+                }
+                if ("place".equalsIgnoreCase(type) && path.startsWith(TemplateComponent.INCLUDE_DIRECTORY)
+                        && (site.isUseSsi() || CmsFileUtils.exists(siteComponent.getWebFilePath(site.getId(), path)))) {
+                    CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);
+                    CmsPageData data = metadataComponent.getTemplateData(filepath);
+                    try {
+                        templateComponent.staticPlace(site, path.substring(TemplateComponent.INCLUDE_DIRECTORY.length()),
+                                metadata, data);
+                    } catch (IOException | TemplateException e) {
+                        log.error(e.getMessage(), e);
                     }
                 }
             }

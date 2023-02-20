@@ -14,7 +14,7 @@ import com.publiccms.entities.cms.CmsPlace;
 /**
  *
  * CmsPlaceDao
- * 
+ *
  */
 @Repository
 public class CmsPlaceDao extends BaseDao<CmsPlace> {
@@ -112,6 +112,9 @@ public class CmsPlaceDao extends BaseDao<CmsPlace> {
         }
         if (null == entity.getPublishDate()) {
             entity.setPublishDate(CommonUtils.getDate());
+        }
+        if (CommonUtils.empty(entity.getCover())) {
+            entity.setCover(null);
         }
         return entity;
     }
