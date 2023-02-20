@@ -269,7 +269,7 @@ a.button,button.button{border-width:1px;border-style:solid;-moz-box-shadow:0px 0
 .pageFormContent p{float:left;display:block;min-width:325px;min-height:16px;margin:0;padding:3px 0;position:relative;}
 .pageFormContent p.nowrap{width:100%;}
 .pageFormContent .radioGroup{float:left;display:block;overflow:hidden;}
-.pageFormContent label{float:left;min-width:80px;padding:0 10px;line-height:26px;}
+.pageFormContent label{float:left;min-width:80px;padding:0 10px;}
 .pageFormContent label.radioButton{float:left;width:auto;padding:0 10px 0 0;}
 .pageFormContent .textInput,.pageFormContent select{float:left;}
 .pageFormContent .inputInfo{padding:0 5px;line-height:26px;}
@@ -279,7 +279,6 @@ a.button,button.button{border-width:1px;border-style:solid;-moz-box-shadow:0px 0
 .pageFormContent dl{float:left;line-height:22px;width:50%;margin:0;padding:4px 0;position:relative;}
 .pageFormContent dt{float:left;min-width:120px;width:120px;padding:0 5px;word-break:break-all;}
 .pageFormContent dd{margin-left:130px;}
-.pageFormContent dl dd label{text-align:right;}
 .pageFormContent dl.nowrap, .nowrap dl{width:100%;height:auto;clear:both;}
 .pageFormContent .thumbnail img{max-width:200px;max-height:200px;}
 .pageFormContent .upload-wrap .thumbnail img{max-width:300px;max-height:200px;}

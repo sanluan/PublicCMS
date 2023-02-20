@@ -19,7 +19,6 @@ function validateCallback(form, callback, confirmMsg) {
         return false;
     }
     $("textarea.editor[escape=true],textarea.code[escape=true]", $form).each(function() {
-        $(this).attr("escape",false);
         $(this).val(html2Escape($(this).val()));
     });
     $("input[escape=true]", $form).each(function() {

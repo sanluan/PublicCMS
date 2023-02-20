@@ -12,6 +12,9 @@
                     <dd>
                         <input type="hidden" name="path" value="${path!}"/>
                         <input type="text" name="word" value="${word!}"/>
+                        <#if navTabId?has_content><input name="navTabId" type="hidden" value="${navTabId}"/></#if>
+                        <#if rel?has_content><input name="rel" type="hidden" value="${rel}"/></#if>
+                        <#if returnUrl?has_content><input name="returnUrl" type="hidden" value="${returnUrl}"/></#if>
                         <button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
                     </dd>
                 </dl>
