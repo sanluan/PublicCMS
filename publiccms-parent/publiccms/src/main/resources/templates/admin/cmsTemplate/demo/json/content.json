@@ -4,7 +4,7 @@
         <#assign category=object/>
     </@cms.category>
     "id":${content.id?cn},
-    "cover":${content.cover?cn}
+    "cover":${content.cover?cn},
     "title":${content.title?cn},
     "url":${content.url?cn},
     "description":${(content.description)?cn},

@@ -1,60 +1,54 @@
 <div class="pageForm">
     <div class="formBar card">
         <ul>
-            <li>
-                <form action="cmsTemplate/search.html" autocomplete="off" onsubmit="return divSearch(this,'${rel!'cmsTemplateBox'}');" method="post">
-                    <input type="hidden" name="path" value="${path!}"/>
-                    <label><@t.page 'template.content'/>:</label>
-                    <input type="text" name="word" value="${word!}"/>
-                    <button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
-                </form>
-            </li>
             <li><a class="button" href="${returnUrl!'cmsTemplate/directory.html?path='+((path?url)!)}" target="ajax" rel="${rel!'cmsTemplateBox'}"><@t.page 'button.return'/></a></li>
         </ul>
     </div>
     <div class="card">
-    <form method="post" autocomplete="off" action="cmsTemplate/replace?navTabId=${navTabId!'cmsTemplate/list'}" onsubmit="return validateCallback(this, navTabAjaxDone);">
-        <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
-        <#if word?has_content>
         <div class="pageFormContent" layoutH>
-            <dl class="nowrap">
-                <dt><@t.page 'search'/>:</dt>
-                <dd>
-                    <input name="word" type="text" class="readonly" readonly="readonly" value="${word!}"/>
-                </dd>
-            </dl>
-        <@tools.templateSearchList path=path word=word>
-        <#if list?has_content>
-            <dl class="nowrap">
-                <dt><@t.page 'replace'/>:</dt>
-                <dd>
-                    <input name="replace" type="text" value="${word!}"/>
-                    <button type="submit" class="buttonActive" title="ctrl+s"><@t.page 'replace'/></button>
-                </dd>
-            </dl>
-        </#if>
-            <dl class="nowrap">
-                <dt><@t.page 'result'/>:</dt>
-                <dd>
-                    <ul class="tree treeFolder treeCheck expand">
-                        <#list list as a>
-                        <li>
-                            <a tname="replaceList[${a?index}].path" tvalue="${a.path}" href="javascript:;" checked="true" onclick="return false;">${a.path}</a>
-                            <ul>
-                            <#list a.matchList as m>
+            <form action="cmsTemplate/search.html" autocomplete="off" onsubmit="return divSearch(this,'${rel!'cmsTemplateBox'}');" method="post">
+                <dl class="nowrap">
+                    <dt><@t.page 'search'/>:</dt>
+                    <dd>
+                        <input type="hidden" name="path" value="${path!}"/>
+                        <input type="text" name="word" value="${word!}"/>
+                        <button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
+                    </dd>
+                </dl>
+            </form>
+            <form method="post" autocomplete="off" action="cmsTemplate/replace?navTabId=${navTabId!'cmsTemplate/list'}" onsubmit="return validateCallback(this, navTabAjaxDone);">
+                <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
+                <input name="word" type="hidden" value="${word!}"/>
+            <@tools.templateSearchList path=path word=word>
+                <dl class="nowrap">
+                    <dt><@t.page 'result'/>:</dt>
+                    <dd>
+                        <#if list?has_content>
+                            <input name="replace" type="text" value="${word!}"/>
+                            <button type="submit" class="buttonActive" title="ctrl+s"><@t.page 'replace'/></button>
+                            <ul class="tree treeFolder treeCheck expand">
                                 <li>
-                                    <a tname="replaceList[${a?index}].indexs" tvalue="${m?index}" checked="true">${m}</a>
-                                </li>
-                            </#list>
+                                    <a href="javascript:;" checked="true" onclick="return false;"><@t.page 'all'/> (${list?size})</a>
+                                    <ul class="searchResult">
+                                    <#list list as a>
+                                    <li>
+                                        <a tname="replaceList[${a?index}].path" tvalue="${a.path}" href="javascript:;" checked="true" onclick="return false;">${a.path}<#if a.matchList?size gt 1> (${a.matchList?size})</#if></a>
+                                        <ul>
+                                        <#list a.matchList as m>
+                                            <li>
+                                                <a tname="replaceList[${a?index}].indexs" tvalue="${m?index}" checked="true">${m?no_esc}</a>
+                                            </li>
+                                        </#list>
+                                        </ul>
+                                    </li>
+                                    </#list>
+                                </ul>
                             </ul>
-                        </li>
-                        </#list>
-                    </ul>
-                </dd>
-            </dl>
+                        </#if>
+                    </dd>
+                </dl>
+            </@tools.templateSearchList>
+            </form>
         </div>
-        </@tools.templateSearchList>
-        </#if>
-        </form>
     </div>
 </div>
