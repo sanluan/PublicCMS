@@ -9,14 +9,14 @@
 <body>
 <@tools.includePlace path="/23e95a91-0063-4498-99ef-aa3fc4a79c4c.html"/> <#-- 导航 -->
 <main>
-	<nav class="container">
+	<nav class="container" data-diy="category">
 		<@cms.categoryList parentId=category.parentId>
 			<#list page.list as a>
-				<a href="${a.url!}"<#if category.id=a.id> class="selected"</#if>>${a.name}</a>
+				<a href="${a.url!}"<#if category.id=a.id> class="selected"</#if> data-diy-item="${a.id}">${a.name}</a>
 			</#list>
 		</@cms.categoryList>
 	</nav>
-	<div class="container bread">
+	<div class="container bread" data-diy="category" data-diy-id="${category.id}">
 		<@include path="/ftl/echoBread.ftl"/>
 		<@echoBread category.id/>
 	</div>
@@ -24,7 +24,7 @@
 		<div class="data-list left-content">
 <@cms.contentList categoryId=category.id containChild=category.containChild pageIndex=pageIndex count=category.pageSize>
 	<@import path="/ftl/tools.ftl" namespace="t"/>
-			<ul>
+			<ul data-diy="content">
 	<#list page.list as a>
 		<@include path="/ftl/data-list.ftl"/>
 	</#list>
@@ -46,10 +46,10 @@
 			<@tools.includePlace path="/4fff54e5-7763-4fc2-a0d1-fb96427c2c0a.html"/> <#-- 右侧推荐 -->
 			<div>
 				<h3>热门排行</h3>
-				<ul class="rank">
+				<ul class="rank" data-diy="content">
 <@cms.contentList categoryId=category.id containChild=true orderField='clicks' count=10>
 	<#list page.list as a>
-					<li><span>${a.clicks}</span><a href="${a.url!}" target="_blank">${a.title}</a></li>
+					<li data-diy-item="${a.id}"><span>${a.clicks}</span><a href="${a.url!}" target="_blank">${a.title}</a></li>
 	</#list>
 </@cms.contentList>
 				</ul>
@@ -58,6 +58,7 @@
 	</div>
 </main>
 	<script>
+		var templatePath='${.current_template_name?keep_after('/')}';
 		var itemString="itemType=category&itemId=${category.id}";
 	</script>
 <@tools.includePlace path="/cc29e896-332a-46d8-9bcb-d48e92144e9c.html"/> <#-- 尾部Footer -->

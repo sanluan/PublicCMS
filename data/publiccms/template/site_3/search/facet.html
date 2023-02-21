@@ -4,13 +4,13 @@
 	<title>高级搜索 - PublicCMS</title>
 	<meta name="keywords" content="高级搜索,分面搜索,智能搜索"/>
 	<meta name="description" content="高级搜索  ${word!}"/>
-	<@_includePlace path="/76c53ac2-4f88-4ef3-984b-c81d00a48089.html"/> <#-- 头部Header -->
+	<@tools.includePlace path="/76c53ac2-4f88-4ef3-984b-c81d00a48089.html"/> <#-- 头部Header -->
 </head>
 <body>
-<@_includePlace path="/23e95a91-0063-4498-99ef-aa3fc4a79c4c.html"/> <#-- 导航 -->
+<@tools.includePlace path="/23e95a91-0063-4498-99ef-aa3fc4a79c4c.html"/> <#-- 导航 -->
 <main>
 	<div class="container bread">
-		<a href="${site.sitePath!}">首页</a>  &gt; <a href="${siteAttribute.searchPath!}">搜索</a>
+		<a href="${site.sitePath}">首页</a>  &gt; <a href="${site.dynamicPath}search/facet.html">高级搜索</a>
 	</div>
 	<div class="container clearfix-after">
 		<div class="data-list left-content">
@@ -33,33 +33,33 @@
 					</#list>
 				</#if>
 				</form>
-				<@_tagList count=10>
+				<@cms.tagList count=10>
 					<p>
 						热门标签：
 						<#list page.list as a>
 							<a href="?tagId=${a.id}">${a.name}</a>
 						</#list>
 					</p>
-				</@_tagList>
-				<@_wordList count=10>
+				</@cms.tagList>
+				<@cms.wordList count=10>
 					<p>
 						热门搜索词：
 						<#list page.list as a>
 							<a href="?word=${a.name?url}">${a.name}</a>
 						</#list>
 					</p>
-				</@_wordList>
+				</@cms.wordList>
 			</div>
 		<@import path="/ftl/tools.ftl" namespace="t"/>
-		<@_facetSearch word=word tagId=tagId categoryId=categoryId dictionaryValues=dictionaryValues modelId=modelId highlight=true pageIndex=pageIndex pageSize=10>
+		<@cms.facetSearch word=word tagId=tagId categoryId=categoryId dictionaryValues=dictionaryValues modelId=modelId highlight=true pageIndex=pageIndex pageSize=10>
 			<#if (page.facetMap.categoryId)?has_content||categoryId?has_content>
 				<div class="search-condition">
 					<label>分类:</label>
 						<#if categoryId?has_content>
-							<@_category id=categoryId><#assign firstCategory=object/>${object.name} <a href="javascript:search('categoryId','');">X</a></@_category>
+							<@cms.category id=categoryId><#assign firstCategory=object/>${object.name} <a href="javascript:search('categoryId','');">X</a></@cms.category>
 						<#else>
 							<#list page.facetMap.categoryId?keys as k><@t.merge 'categoryIds' k/></#list>
-							<@_category ids=(t.categoryIds)!><#assign categoryMap=map!/></@_category>
+							<@cms.category ids=(t.categoryIds)!><#assign categoryMap=map!/></@cms.category>
 							<#list page.facetMap.categoryId?keys as k>
 								<#if k?is_first><#assign firstCategory=categoryMap[k]/></#if>
 							<a href="javascript:search('categoryId','${k}');" ${(k=categoryId!'')?then('style="font-weight:bold;"','')?no_esc}>${categoryMap[k].name}(${page.facetMap.categoryId[k]})</a>
@@ -71,10 +71,10 @@
 				<div class="search-condition">
 					<label>模型:</label>											
 					<#if modelId?has_content>
-						<@_model id=modelId><#assign firstModel=object/>${object.name} <a href="javascript:search('modelId','');">X</a></@_model>
+						<@cms.model id=modelId><#assign firstModel=object/>${object.name} <a href="javascript:search('modelId','');">X</a></@cms.model>
 					<#else>
 						<#list page.facetMap.modelId?keys as k><@t.merge 'sidemodelIds' k/></#list>
-						<@_model ids=(t.sidemodelIds)!><#assign modelMap=map!/></@_model>	
+						<@cms.model ids=(t.sidemodelIds)!><#assign modelMap=map!/></@cms.model>	
 						<#list page.facetMap.modelId?keys as k>
 							<#if k?is_first><#assign firstModel=modelMap[k]/></#if>
 							<a href="javascript:search('modelId','${k}');">${modelMap[k].name}(${page.facetMap.modelId[k]})</a>
@@ -82,39 +82,39 @@
 					</#if>						
 				</div>
 			</#if>
-	<@_tag ids=tagId>
+	<@cms.tag ids=tagId>
 		<#if map?has_content>
 			<div class="search-condition">
 				<label>标签:</label>
 				<#list map?keys as k>${map[k].name} <a href="javascript:search('tagId','');">X</a></#list>
 			</div>
 		</#if>
-	</@_tag>
+	</@cms.tag>
 		<#macro dictionarySearch extendList>
 			<#list extendList as extend>
 				<div class="search-condition">
-						<@_dictionary id=extend.dictionaryId>
+						<@cms.dictionary id=extend.dictionaryId>
 					<label>${object.name}:</label>
 						<a href="javascript:search('dictionaryValues','');" ${(!dictionaryValues?has_content)?then('style="font-weight:bold;"','')?no_esc}>全部</a>
-						<@_dictionaryDataList dictionaryId=object.id.id>
+						<@cms.dictionaryDataList dictionaryId=object.id.id>
 							<#list list as d>
 						<a href="javascript:search('dictionaryValues','${extend.id.code}_${d.id.value!}');" ${(dictionaryValues?has_content && dictionaryValues?seq_contains(extend.id.code+'_'+d.id.value))?then('style="font-weight:bold;"','')?no_esc}>${d.text}</a>
 							</#list>
-						</@_dictionaryDataList>
-					</@_dictionary>
+						</@cms.dictionaryDataList>
+					</@cms.dictionary>
 				</div>
 			</#list>
 		</#macro>
 		<#if (firstCategory.extendId)?has_content>
-			<@_sysExtendFieldList extendId=firstCategory.extendId inputType='dictionary' searchable=true>
+			<@sys.extendFieldList extendId=firstCategory.extendId inputType='dictionary' searchable=true>
 				<@dictionarySearch list/>
-			</@_sysExtendFieldList>
+			</@sys.extendFieldList>
 		</#if>
 		<#if (firstModel.extendList)?has_content>
 			<@dictionarySearch firstModel.extendList/>
 		</#if>
 		<#if page.totalCount gt 0>
-			<ul>
+			<ul data-diy="content">
 			<#list page.list as a>
 					<@include path="/ftl/search-list.ftl"/><#-- 搜索列表 -->
 			</#list>
@@ -147,15 +147,18 @@
 				</#if>
 			</div>
 		</#if>
-	</@_facetSearch>
+	</@cms.facetSearch>
 		</div>
 		<aside>
-			<@_includePlace path="/49d393ca-f0f1-4723-a9b0-6f9b6d7cc04d.html"/> <#-- 编辑推荐 -->
-			<@_includePlace path="/3435e9a7-565a-4f93-8670-9c272a1d51cc.html"/> <#-- 精彩图集 -->
+			<@tools.includePlace path="/49d393ca-f0f1-4723-a9b0-6f9b6d7cc04d.html"/> <#-- 编辑推荐 -->
+			<@tools.includePlace path="/3435e9a7-565a-4f93-8670-9c272a1d51cc.html"/> <#-- 精彩图集 -->
 		</aside>
 	</div>
 </main>
-<@_includePlace path="/cc29e896-332a-46d8-9bcb-d48e92144e9c.html"/> <#-- 尾部Footer -->
+	<script>
+		var templatePath='${.current_template_name?keep_after('/')}';
+	</script>
+<@tools.includePlace path="/cc29e896-332a-46d8-9bcb-d48e92144e9c.html"/> <#-- 尾部Footer -->
 	<script>
 		function search(name,value){
 			var $form = $('.search form');

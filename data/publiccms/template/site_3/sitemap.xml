@@ -2,12 +2,12 @@
 <urlset  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
   <url>
-    <loc>https:${site.sitePath!}</loc>
+    <loc>https:${site.sitePath}</loc>
     <lastmod>${.now?date}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
-<@_categoryList advanced=true queryAll=true count=100>
+<@cms.categoryList advanced=true queryAll=true count=100>
 	<#list page.list as a>
 		<#if !a.onlyUrl>
   <url>
@@ -18,8 +18,8 @@
   </url>
 		</#if>
 	</#list>
-</@_categoryList>
-<@_contentList advanced=true status=1 pageIndex=1 count=500 orderField='publishDate'>
+</@cms.categoryList>
+<@cms.contentList advanced=true status=1 pageIndex=1 count=500 orderField='publishDate'>
 	<#list page.list as a>
 <#if !a.onlyUrl>
   <url>
@@ -30,5 +30,5 @@
   </url>
 </#if>
 	</#list>
-</@_contentList>
+</@cms.contentList>
 </urlset>

@@ -2,24 +2,24 @@
 <html lang="zh-CN">
 <head>
 	<title>${(metadata.alias)!}</title>
-	<@_includePlace path="/76c53ac2-4f88-4ef3-984b-c81d00a48089.html"/> <#-- 头部Header -->
+	<@tools.includePlace path="/76c53ac2-4f88-4ef3-984b-c81d00a48089.html"/> <#-- 头部Header -->
 </head>
 <body>
-<@_includePlace path="/23e95a91-0063-4498-99ef-aa3fc4a79c4c.html"/> <#-- 导航 -->
+<@tools.includePlace path="/23e95a91-0063-4498-99ef-aa3fc4a79c4c.html"/> <#-- 导航 -->
 <main>
 	<div class="container  clearfix-after">
-		<@_includePlace path="/c936c718-5f19-426f-b3ff-13a5a8d63044.html"/> <#-- 个人中心导航 -->
+		<@tools.includePlace path="/c936c718-5f19-426f-b3ff-13a5a8d63044.html"/> <#-- 个人中心导航 -->
 		<div class="right-content">
 			<div class="box">
 				<@import path="/ftl/tools.ftl" namespace="t"/><#-- 工具 -->
 				<div class="comment-box">
 					<h3>我的内容投稿</h3>
-					<@_contentList advanced=true userId=user.id pageIndex=pageIndex pageSize=10>
+					<@cms.contentList advanced=true userId=user.id pageIndex=pageIndex pageSize=10>
 					<ul>
 						<#list page.list as a>
 							<@t.merge 'categoryIds' a.categoryId!/>
 						</#list>					
-						<@_category ids=t.categoryIds!><#assign categoryMap=map!/></@_category>
+						<@cms.category ids=t.categoryIds!><#assign categoryMap=map!/></@cms.category>
 						<#list page.list as a>
 							<li class="underline">
 								<p><label>投稿栏目:</label>${(categoryMap[a.categoryId?string].name)!} <span class="float-right"><label>投稿日期:</label>${a.createDate?date} [<@t.m 'page.status.content.'+a.status/>]</span></p>
@@ -60,12 +60,15 @@
 						<span>下一页</span>
 						</#if>
 					</div>
-					</@_contentList>
+					</@cms.contentList>
 				</div>				
 			</div>
 		</div>
 	</div>	
 </main>
-<@_includePlace path="/cc29e896-332a-46d8-9bcb-d48e92144e9c.html"/> <#-- 尾部Footer -->
+	<script>
+		var templatePath='${.current_template_name?keep_after('/')}';
+	</script>
+<@tools.includePlace path="/cc29e896-332a-46d8-9bcb-d48e92144e9c.html"/> <#-- 尾部Footer -->
 </body>
 </html>

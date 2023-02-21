@@ -38,4 +38,10 @@ $(function(){
 			$(this).prop('href',$(this).prop('href')+'?returnUrl='+encodeURIComponent(window.location.href));
 		});		
 	}
+	if($('.breadcrumbs a[data-id]').length){
+		$('.navbar-nav .nav-item[data-id='+$('.breadcrumbs a[data-id]:eq(0)').data('id')+']').addClass('selected');
+	}
+	$('[data-bs-target="#searchModal"]').click(function(){
+		$('#searchModal input[name=word]').focus();
+	});
 });

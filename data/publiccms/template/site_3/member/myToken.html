@@ -18,7 +18,7 @@
 						<#list page.list as a>
 							<li class="underline">
 								<p>${a.channel!}<span class="float-right"><label>创建日期:</label>${a.createDate!}</span></p>
-								<p><label>过期日期:</label>${a.expiryDate!}<span class="float-right"><a href="${site.dynamicPath!}user/deleteToken?authToken=${a.authToken}&_csrf=<@tools.csrfToken/>&returnUrl=${site.dynamicPath}myToken.html">删除</a></span></p>
+								<p><label>过期日期:</label>${a.expiryDate!}<span class="float-right"><a href="${site.dynamicPath}user/deleteToken?authToken=${a.authToken}&_csrf=<@tools.csrfToken/>&returnUrl=${site.dynamicPath}member/myToken.html">删除</a></span></p>
 							</li>
 						</#list>
 						</ul>
@@ -59,7 +59,8 @@
 		</div>
     </main>
 	<script>
-    var itemString="itemType=user&itemId=${user.id}";
+		var templatePath='${.current_template_name?keep_after('/')}';
+	    var itemString="itemType=user&itemId=${user.id}";
     </script>
     <@tools.includePlace path="/cc29e896-332a-46d8-9bcb-d48e92144e9c.html"/> <#-- 尾部Footer -->
 </body>

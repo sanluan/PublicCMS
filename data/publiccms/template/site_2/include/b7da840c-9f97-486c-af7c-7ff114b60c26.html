@@ -1,15 +1,15 @@
-<div class="nav">
-	<ul class="nav_ul">
+<div class="nav" data-diy="place" data-diy-id="${path}">
+	<ul class="nav_ul" data-diy="category">
 		<li><a href="${site.dynamicPath!}" data-id="home">首页</a></li>
 		<@cms.categoryList parentId=(siteAttribute.parentId)!''>
 		<#list page.list as a>
-		<li>
+		<li data-diy-item="${a.id}">
 			<a href="${a.url!}" data-id="${a.id}">${a.name}</a>
 			<#if a.childIds?has_content>
 			<@cms.categoryList parentId=a.id>
 			<ul class="subnav">
 				<#list page.list as a>
-				<li><a href="${a.url!}">${a.name}</a></li>
+				<li data-diy-item="${a.id}"><a href="${a.url!}">${a.name}</a></li>
 				</#list>
 			</ul>
 		</@cms.categoryList>

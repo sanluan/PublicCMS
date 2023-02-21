@@ -11,7 +11,7 @@
                     <dt><@t.page 'search'/>:</dt>
                     <dd>
                         <input type="hidden" name="path" value="${path!}"/>
-                        <input type="text" name="word" value="${word!}"/>
+                        <input type="text" name="word" value="${word!}" size="60"/>
                         <#if navTabId?has_content><input name="navTabId" type="hidden" value="${navTabId}"/></#if>
                         <#if rel?has_content><input name="rel" type="hidden" value="${rel}"/></#if>
                         <#if returnUrl?has_content><input name="returnUrl" type="hidden" value="${returnUrl}"/></#if>
@@ -27,7 +27,7 @@
                     <dt><@t.page 'result'/>:</dt>
                     <dd>
                         <#if list?has_content>
-                            <input name="replace" type="text" value="${word!}"/>
+                            <input name="replace" type="text" value="${word!}" size="60"/>
                             <button type="submit" class="buttonActive" title="ctrl+s"><@t.page 'replace'/></button>
                             <ul class="tree treeFolder treeCheck expand">
                                 <li>

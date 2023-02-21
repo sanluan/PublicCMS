@@ -9,11 +9,11 @@
 <body>
 	<@tools.includePlace path="/23e95a91-0063-4498-99ef-aa3fc4a79c4c.html"/> <#-- 导航 -->
 	<main>
-		<div class="container bread">
+		<div class="container bread" data-diy="category">
 			<@include path="/ftl/echoBread.ftl"/>
 			<@echoBread category.id/>
 		</div>
-		<div class="container  clearfix-after">
+		<div class="container  clearfix-after" data-diy="content" data-diy-id="${content.id}">
 			<#if content.hasProducts>
             <div class="product  clearfix-after">
 				<@cms.contentProductList contentId=content.id fileTypes='video,audio,other'>
@@ -47,7 +47,7 @@
 						<p><label>价格</label> <span class="price">${(page.list[0].price)!}</span></p>
 						<p><label>库存</label> <span class="inventory">${(page.list[0].inventory)!}</span></p>
 					</header>
-					<form action="${site.dynamicPath}order.html">
+					<form action="${site.dynamicPath}member/order.html">
 						<p><label>型号</label>
 						<#list page.list as product>
 							<label><input type="radio" name="productId" value="${product.id}"/><#if product.cover?has_content><img src="<@tools.thumb path=product.cover width=30 height=30/>" title="${product.title}" alt="${product.title}" style="max-width:30px;max-height30px;border:1px solid;"/><#else>${product.title}</#if></label>
@@ -114,6 +114,7 @@
 		</div>
 	</main>
 	<script>
+		var templatePath='${.current_template_name?keep_after('/')}';
 		var itemString="itemType=content&itemId=${content.id}";
 	</script>
 	<@tools.includePlace path="/cc29e896-332a-46d8-9bcb-d48e92144e9c.html"/> <#-- 尾部Footer -->
@@ -136,7 +137,7 @@
 		$('input[name=productId]').change(function(){
 			var selectedProductId=this.value;
 			if(selectedProductId){
-				$.getJSON('${site.dynamicPath!}api/directive/contentProduct?id='+selectedProductId, function(data){
+				$.getJSON('${site.dynamicPath}api/directive/contentProduct?id='+selectedProductId, function(data){
 					if($('input[name=productId]:checked').val() == selectedProductId){
 						$('.price').text(data.object.price);
 						$('.inventory').text(data.object.inventory);
@@ -162,8 +163,8 @@
 				}
 			}
 		});
-		uParse('#content',{rootPath: '${site.sitePath!}assets/ueditor'});
-		$.getJSON('${site.dynamicPath!}api/contentClick?id=${content.id}', function(data){});
+		uParse('#content',{rootPath: '${site.sitePath}assets/ueditor'});
+		$.getJSON('${site.dynamicPath}api/contentClick?id=${content.id}', function(data){});
 	</script>
 </body>
 </html>

@@ -13,7 +13,7 @@
         <ul>
     <#list page.list as a>
             <li>
-				<h3><a href="${site.dynamicPath}vote.html?id=${a.id}">${a.title}</a></h3>
+				<h3><a href="${site.dynamicPath}member/vote.html?id=${a.id}">${a.title}</a></h3>
 				<p>${a.description}</p>
 				<#if .now gt a.endDate && a.scores gt 0><#assign show=true/><#else><#assign show=false/></#if>
 				<@cms.voteItemList voteId=a.id pageSize=3>
@@ -23,7 +23,7 @@
 							<div class="progress-box">
 								<div class="progress-bar" style="width:${show?then(v.scores*100/a.scores,100)}%;"></div>
 								<div class="progress-text">
-									<a href="${site.dynamicPath}vote.html?id=${a.id}" title="投票后查看">${v.title}<span class="float-right">${show?then(v.scores*100/a.scores+'%','')}</span></a>
+									<a href="${site.dynamicPath}member/vote.html?id=${a.id}" title="投票后查看">${v.title}<span class="float-right">${show?then(v.scores*100/a.scores+'%','')}</span></a>
 								</div>
 							</div>
 						</li>
@@ -72,6 +72,9 @@
 </@cms.voteList>
     </div>
 </main>
+	<script>
+		var templatePath='${.current_template_name?keep_after('/')}';
+	</script>
 <@tools.includePlace path="/cc29e896-332a-46d8-9bcb-d48e92144e9c.html"/> <#-- 尾部Footer -->
 </body>
 </html>

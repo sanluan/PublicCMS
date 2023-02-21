@@ -9,11 +9,11 @@
 <body>
 	<@tools.includePlace path="/23e95a91-0063-4498-99ef-aa3fc4a79c4c.html"/> <#-- 导航 -->
 	<main>
-		<div class="container bread">
+		<div class="container bread" data-diy="category">
 			<@include path="/ftl/echoBread.ftl"/>
 			<@echoBread category.id/>
 		</div>
-		<div class="container  clearfix-after">
+		<div class="container  clearfix-after" data-diy="content" data-diy-id="${content.id}">
 			<article class="left-content">
 				<header>
 					<h1><a href="${url!}">${content.title}</a></h1>
@@ -57,7 +57,7 @@
 			<aside>
 				<@tools.includePlace path="/4fff54e5-7763-4fc2-a0d1-fb96427c2c0a.html"/> <#-- 右侧推荐 -->
 				<div>
-					<a href="${siteAttribute.searchPath!}?tagId=${content.tagIds!}" target="_blank"><h3>相关推荐</h3></a>
+					<a href="${site.dynamicPath}search/?tagId=${content.tagIds!}" target="_blank"><h3>相关推荐</h3></a>
 					<ul class="hoverShadow">
 	<@cms.contentRelatedList contentId=content.id pageSize=10>
 		<#list page.list as a>
@@ -87,6 +87,7 @@
 		</div>
 	</main>
 	<script>
+    	var templatePath='${.current_template_name?keep_after('/')}';
 		var itemString="itemType=content&itemId=${content.id}";
 	</script>
 	<@tools.includePlace path="/cc29e896-332a-46d8-9bcb-d48e92144e9c.html"/> <#-- 尾部Footer -->
@@ -95,7 +96,7 @@
 		<div class="box"></div>
 	</div>
 	<script>
-		uParse('#content',{rootPath: '${site.sitePath!}assets/ueditor'});
+		uParse('#content',{rootPath: '${site.sitePath}assets/ueditor'});
 		$('article #content img').each(function(){
 			if(!$(this).parent('a').length) {
 				$(this).wrapAll("<a href=\"javascript:preview('" + $(this).attr("src") + "');\" title=\"点击查看图片\"></a>");
@@ -116,7 +117,7 @@
 		$('.image-preview .background').click(function(){
 			$('.image-preview').hide();
 		});
-		$.getJSON('${site.dynamicPath!}api/contentClick?id=${content.id}', function(data){
+		$.getJSON('${site.dynamicPath}api/contentClick?id=${content.id}', function(data){
 			$('article .author em').text(data.clicks);
 		});
 	</script>

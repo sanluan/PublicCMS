@@ -1,0 +1,121 @@
+<footer id="g-footer" class="container-fluid g-0 pt-5 fs-7" data-diy="place" data-diy-id="${path}">
+    <div class="container gx-4 g-lg-0">
+        <div class="row justify-content-between text-white text-opacity-75">
+            <div class="col-md-3 mb-5 mb-md-4">
+                <div class="mb-4 fs-6">
+                    <img src="${site.sitePath}assets/img/logo.png" alt="LOGO" class="w-50 me-2">
+                    与先进同行
+                </div>
+                <p><@tools.metadata path='index.html';metadata>${(metadata.extendData.description)!}</@tools.metadata></p>
+            </div>
+            <div class="col-auto mb-5 mb-md-4">
+                <dl data-diy="region" data-diy-id="0b584103-4d6e-4940-8519-f40cbb056db8">
+                    <dt class="fs-5 mb-4">联系方式</dt>
+					<@tools.includeRegion id="0b584103-4d6e-4940-8519-f40cbb056db8"/> <#-- 页尾联系方式 -->
+                </dl>
+            </div>
+            <div class="col-md-3 mb-5 mb-md-4">
+                <dl>
+                    <dt class="fs-5 mb-4">关于我们</dt>
+                    <dd class="mb-3">
+                        <img src="${site.sitePath}assets/img/logo-heycore.png" alt="company" class="img-fluid">
+                    </dd>
+                    <dd>
+                        <p>我们专注提供专业的软件产品和技术。为合作伙伴提供安全可靠的软件产品与解决方案，共同帮助终端用户实现业务创新、快速发展。</p>
+                        <p>科技型中小企业编号：202112010200008165</p>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+    <footer class="container-fluid g-3 g-lg-0 py-3 text-white text-opacity-50">
+        <div class="container">
+            <div class="row justify-content-between">
+                <div class="col-md-auto">
+                    ${.now?string('yyyy')} PublicCMS.com All Rights Reserved.
+                    <@tools.includePlace path="/footer/9eedb96c-4f47-422e-8020-81a4b362e0a6.html"/> <#-- 备案链接 -->
+					<a href="${site.sitePath!}sitemap.xml" class="text-white ps-1" target="_blank">站点地图</a>
+					<a href="${site.dynamicPath}member/case.html" class="text-white ps-1">案例提交</a> 
+					<a href="${site.dynamicPath}member/friendlink.html" class="text-white ps-1">申请友链</a>
+                </div>
+                <@tools.includePlace path="/cfdc226d-8abc-48ec-810d-f3941b175b20.html"/> <#-- 友情链接 -->
+            </div>
+        </div>
+    </footer>
+</footer>
+<!-- 搜索 -->
+<div class="modal fade" id="searchModal" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content bg-transparent border-0">
+            <form action="${site.dynamicPath}search/" method="get">
+                <div class="input-group mb-3">
+                    <input type="search" name="word" class="form-control fs-3" placeholder="您想搜索什么？">
+                    <button class="btn btn-primary flex-shrink-0 px-2 px-md-5 fs-4" type="submit">立即搜索</button>
+                </div>
+            </form>
+            <div class="text-center mt-3 text-white">
+                <h5>热门搜索</h5>
+                <@cms.wordList count=20>
+                <div class="keywords mt-2">
+                    <#list page.list as a>
+                    <a href="${site.dynamicPath}search/?word=${a.name?url}">${a.name}</a>
+                    </#list>
+                </div>
+                </@cms.wordList>
+				<h5>热门标签</h5>
+                <@cms.tagList orderField='searchCount' count=20>
+                <div class="keywords mt-2">
+                    <#list page.list as a>
+                    <a href="${site.dynamicPath}search/?tagIds=${a.id?url}">${a.name}</a>
+                    </#list>
+                </div>
+                </@cms.tagList>
+            </div>
+            <button type="button" class="btn-close position-absolute" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+<!-- 微信1 -->
+<div class="modal fade  wechat-modal" id="wechatModal1" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="text-center bg-transparent border-0">
+            <img src="${site.sitePath}assets/images/wechat_account_1.jpg" alt="微信">
+            <button type="button" class="btn-close position-absolute" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+<!-- 微信2 -->
+<div class="modal fade wechat-modal" id="wechatModal2" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="text-center bg-transparent border-0">
+            <img src="${site.sitePath}assets/images/wechat_account_2.jpg" alt="微信">
+            <button type="button" class="btn-close position-absolute" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+<!-- 微信3 -->
+<div class="modal fade wechat-modal" id="wechatModal3" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="text-center bg-transparent border-0">
+            <img src="${site.sitePath}assets/images/wechat_account_3.jpg" alt="微信">
+            <button type="button" class="btn-close position-absolute" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+<script src="${site.sitePath}assets/js/bootstrap.bundle.min.js"></script>
+<script src="${site.sitePath}assets/js/jquery.min.js"></script>
+<script src="${site.sitePath}assets/js/cms.support.js"></script>
+<script>var CMS_PATH='${site.dynamicPath}';</script>
+<script src="${site.sitePath}assets/js/main.js"></script>
+<script>    
+    var ca = cmsAnalytics();
+    var url='${site.dynamicPath}api/visit/record';
+    if("string" ==typeof itemString){
+        url=url+"?"+itemString;
+    }
+	ca.setDomain('publiccms.com');//${site.dynamicPath?keep_after('//')?keep_before('/')?keep_before(':')}
+	ca.setPath('/');
+    ca.report(url);
+	
+	${(metadata.extendData.statistics?no_esc)!}
+</script>

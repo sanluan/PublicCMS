@@ -7,17 +7,17 @@ INSERT INTO `cms_category` VALUES (7, 3, '社会', 1, NULL, NULL, '', 'social', 
 INSERT INTO `cms_category` VALUES (8, 3, '美图', 1, NULL, NULL, '', 'picture', 1, '/category/list.html', '${category.code}/index.html', 0, 1, 'picture/index.html', 1, '${category.code}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', 1, 10, 0, 0, 0, 0, NULL);
 INSERT INTO `cms_category` VALUES (9, 3, '系统介绍', 1, NULL, NULL, '', 'introduction', 1, '/category/list.html', '${category.code}/index.html', 0, 1, 'introduction/index.html', 1, '${category.code}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', 1, 10, 0, 0, 0, 0, NULL);
 INSERT INTO `cms_category` VALUES (12, 3, '文章', 1, NULL, NULL, '', 'article', 1, '/category/list.html', '${category.code}/index.html', 0, 1, 'article/index.html', 1, '${category.code}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', 1, 20, 0, 0, 0, 0, NULL);
-INSERT INTO `cms_category` VALUES (15, 3, '小说', 1, NULL, NULL, '', 'novel', 1, '/category/list.html', '${category.code}/index.html', 0, 1, 'novel/index.html', 1, '${category.code}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', 1, 20, 0, 0, 0, 0, NULL);
+INSERT INTO `cms_category` VALUES (15, 3, '小说', 1, NULL, NULL, '', 'novel', 1, '/category/list.html', '${category.code}/index.html', 0, 1, 'novel/index.html', 0, '${category.code}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', 1, 20, 0, 0, 0, 0, NULL);
 INSERT INTO `cms_category` VALUES (17, 3, '科技', 1, NULL, NULL, '', 'science', 1, '/category/list.html', '${category.code}/index.html', 0, 1, 'science/index.html', 1, '${category.code}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', 1, 20, 0, 0, 0, 0, NULL);
 INSERT INTO `cms_category` VALUES (19, 3, '案例', NULL, NULL, NULL, '', 'case', 1, '/category/parent.html', '${category.code}/index.html', 0, 1, 'case/index.html', 1, '${category.code}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', 1, 20, 0, 0, 0, 0, NULL);
-INSERT INTO `cms_category` VALUES (20, 4, '功能演示', NULL, 'banner', '21,22,23,24,25,26,27', '', 'demonstrate', 1, '/category/list.html', '${category.code}/index.html', 0, 1, 'demonstrate/index.html', 1, '${category.code}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', 1, 10, 0, 0, 0, 0, NULL);
+INSERT INTO `cms_category` VALUES (20, 4, '功能演示', NULL, 'banner', '21,22,23,24,25,26', '', 'demonstrate', 1, '/category/list.html', '${category.code}/index.html', 0, 1, 'demonstrate/index.html', 1, '${category.code}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', 1, 10, 0, 0, 0, 0, NULL);
 INSERT INTO `cms_category` VALUES (21, 4, '汽车', 20, NULL, NULL, '', 'car', 1, '/category/list.html', '${category.code}/index.html', 0, 1, 'car/index.html', 1, '${category.code}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', 1, 10, 0, 0, 0, 0, NULL);
 INSERT INTO `cms_category` VALUES (22, 4, '商品', 20, NULL, NULL, '', 'social', 1, '/category/list.html', '${category.code}/index.html', 0, 1, 'social/index.html', 1, '${category.code}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', 1, 10, 0, 0, 0, 0, NULL);
 INSERT INTO `cms_category` VALUES (23, 4, '美图', 20, NULL, NULL, '', 'picture', 1, '/category/list.html', '${category.code}/index.html', 0, 1, 'picture/index.html', 1, '${category.code}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', 1, 10, 0, 0, 0, 0, NULL);
 INSERT INTO `cms_category` VALUES (24, 4, '介绍', 20, NULL, NULL, '', 'introduction', 1, '/category/list.html', '${category.code}/index.html', 0, 1, 'introduction/index.html', 1, '${category.code}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', 1, 10, 0, 0, 0, 0, NULL);
 INSERT INTO `cms_category` VALUES (25, 4, '文章', 20, NULL, NULL, '', 'article', 1, '/category/list.html', '${category.code}/index.html', 0, 1, 'article/index.html', 1, '${category.code}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', 1, 20, 0, 0, 0, 0, NULL);
 INSERT INTO `cms_category` VALUES (26, 4, '小说', 20, NULL, NULL, '', 'novel', 1, '/category/list.html', '${category.code}/index.html', 0, 1, 'novel/index.html', 1, '${category.code}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', 1, 20, 0, 0, 0, 0, NULL);
-INSERT INTO `cms_category` VALUES (27, 4, '手册', 20, NULL, NULL, '', 'science', 1, '', '<@_contentList categoryId=category.id pageSize=1 orderType=\'asc\'><#list page.list as a>${a.url}</#list></@_contentList>', 0, 1, '', 1, '${category.code}/${content.id}.html', 1, 20, 0, 0, 0, 0, NULL);
+INSERT INTO `cms_category` VALUES (27, 4, '手册', NULL, NULL, '174', '', 'science', 1, '', '<@cms.contentList categoryId=category.id pageSize=1 orderType=\'asc\'><#list page.list as a>${a.url}</#list></@cms.contentList>', 0, 0, '', 1, '${category.code}/${content.id}.html', 1, 20, 0, 0, 0, 0, NULL);
 INSERT INTO `cms_category` VALUES (28, 4, '案例', NULL, 'banner', NULL, '', 'case', 1, '/category/case.html', '${category.code}/index.html', 0, 1, 'case/index.html', 1, '${category.code}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', 1, 20, 0, 0, 0, 0, NULL);
 INSERT INTO `cms_category` VALUES (29, 4, '问答', NULL, 'banner', '33', '', 'support', 1, '/category/qa.html', '${category.code}/', 0, 1, 'support/', 1, '${category.code}/${content.publishDate?string(\'yyyy-MM-dd\')}/${content.id}.html', 0, 20, 0, 7, 0, 0, NULL);
 INSERT INTO `cms_category` VALUES (30, 4, '演示', NULL, 'banner', '34', '', 'demo', 1, '/category/demo.html', '${category.code}/', 0, 1, 'demo/', 1, '', 0, 20, 0, 6, 0, 0, NULL);
@@ -29,28 +29,28 @@ INSERT INTO `cms_category` VALUES (71, 2, '中文栏目', NULL, NULL, '73,75,77,
 INSERT INTO `cms_category` VALUES (72, 2, '英文栏目', NULL, NULL, '74,76,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,121', '', 'en', 1, NULL, '#', 1, 0, '#', 1, '', 0, 20, 0, 0, 1, 0, NULL);
 INSERT INTO `cms_category` VALUES (73, 2, '集团简介', 71, NULL, '75,77,78,79,80,81', '', 'about', 1, NULL, '<@_categoryList parentId=category.id><#if page.totalCount gt 0>category/${page.list[0].id}</#if></@_categoryList>', 0, 0, 'category/75', 1, '', 0, 20, 0, 0, 0, 0, NULL);
 INSERT INTO `cms_category` VALUES (74, 2, 'Introduction', 72, NULL, '76,99,100,101,102,103', '', 'introduction', 1, NULL, '<@_categoryList parentId=category.id><#if page.totalCount gt 0>en/category/${page.list[0].id}</#if></@_categoryList>', 0, 0, 'en/category/76', 1, '', 0, 20, 0, 0, 0, 0, NULL);
-INSERT INTO `cms_category` VALUES (75, 2, '集团简介', 73, '1', NULL, '', 'aboutUS', 1, NULL, 'category/${category.id}', 0, 0, 'category/75', 1, 'content/${content.id}', 0, 20, 0, 0, 0, 0, NULL);
-INSERT INTO `cms_category` VALUES (76, 2, 'Introduction', 74, '1', NULL, '', 'introductionUS', 1, NULL, 'en/category/${category.id}', 0, 0, 'en/category/76', 1, 'en/content/${content.id}', 0, 20, 0, 0, 0, 0, NULL);
-INSERT INTO `cms_category` VALUES (77, 2, '核心团队', 73, '1', NULL, '', 'tuandui', 1, NULL, 'category/${category.id}', 0, 0, 'category/77', 1, '', 0, 20, 0, 0, 0, 0, NULL);
-INSERT INTO `cms_category` VALUES (78, 2, '组织架构', 73, '1', NULL, '', 'jiagou', 1, NULL, 'category/${category.id}', 0, 0, 'category/78', 1, '', 0, 20, 0, 0, 0, 0, NULL);
-INSERT INTO `cms_category` VALUES (79, 2, '集团荣誉', 73, '1', NULL, '', 'rongyu', 1, NULL, 'category/${category.id}', 0, 0, 'category/79', 1, '', 0, 20, 0, 0, 0, 0, NULL);
-INSERT INTO `cms_category` VALUES (80, 2, '社会责任', 73, '1', NULL, '', 'zeren', 1, NULL, 'category/${category.id}', 0, 0, 'category/80', 1, '', 0, 20, 0, 0, 0, 0, NULL);
-INSERT INTO `cms_category` VALUES (81, 2, '发展目标', 73, '1', NULL, '', 'mubiao', 1, NULL, 'category/${category.id}', 0, 0, 'category/81', 1, '', 0, 20, 0, 0, 0, 0, NULL);
+INSERT INTO `cms_category` VALUES (75, 2, '集团简介', 73, '1', NULL, '', 'aboutUS', 0, NULL, 'category/${category.id}', 0, 0, 'category/75', 1, 'content/${content.id}', 0, 20, 0, 0, 0, 0, NULL);
+INSERT INTO `cms_category` VALUES (76, 2, 'Introduction', 74, '1', NULL, '', 'introductionUS', 0, NULL, 'en/category/${category.id}', 0, 0, 'category/76', 0, 'en/content/${content.id}', 0, 20, 0, 0, 0, 0, NULL);
+INSERT INTO `cms_category` VALUES (77, 2, '核心团队', 73, '1', NULL, '', 'tuandui', 0, NULL, 'category/${category.id}', 0, 0, 'category/77', 1, '', 0, 20, 0, 0, 0, 0, NULL);
+INSERT INTO `cms_category` VALUES (78, 2, '组织架构', 73, '1', NULL, '', 'jiagou', 0, NULL, 'category/${category.id}', 0, 0, 'category/78', 1, '', 0, 20, 0, 0, 0, 0, NULL);
+INSERT INTO `cms_category` VALUES (79, 2, '集团荣誉', 73, '1', NULL, '', 'rongyu', 0, NULL, 'category/${category.id}', 0, 0, 'category/79', 1, '', 0, 20, 0, 0, 0, 0, NULL);
+INSERT INTO `cms_category` VALUES (80, 2, '社会责任', 73, '1', NULL, '', 'zeren', 0, NULL, 'category/${category.id}', 0, 0, 'category/80', 1, '', 0, 20, 0, 0, 0, 0, NULL);
+INSERT INTO `cms_category` VALUES (81, 2, '发展目标', 73, '1', NULL, '', 'mubiao', 0, NULL, 'category/${category.id}', 0, 0, 'category/81', 1, '', 0, 20, 0, 0, 0, 0, NULL);
 INSERT INTO `cms_category` VALUES (82, 2, '新闻资讯', 71, NULL, '83,84', '', 'news', 1, NULL, '<@_categoryList parentId=category.id><#if page.totalCount gt 0>news/${page.list[0].id}</#if></@_categoryList>', 0, 0, 'news/83', 1, '', 0, 20, 0, 0, 0, 0, NULL);
-INSERT INTO `cms_category` VALUES (83, 2, '行业资讯', 82, NULL, NULL, '', 'hangye', 1, NULL, 'news/${category.id}', 0, 0, 'news/83', 1, 'content/${content.id}', 0, 20, 0, 0, 0, 0, NULL);
-INSERT INTO `cms_category` VALUES (84, 2, '公司新闻', 82, NULL, NULL, '', 'gongsi', 1, NULL, 'news/${category.id}', 0, 0, 'news/84', 1, 'content/${content.id}', 0, 20, 0, 0, 0, 0, NULL);
+INSERT INTO `cms_category` VALUES (83, 2, '行业资讯', 82, NULL, NULL, '', 'hangye', 0, NULL, 'news/${category.id}', 0, 0, 'news/83', 0, 'content/${content.id}', 0, 20, 0, 0, 0, 0, NULL);
+INSERT INTO `cms_category` VALUES (84, 2, '公司新闻', 82, NULL, NULL, '', 'gongsi', 0, NULL, 'news/${category.id}', 0, 0, 'news/84', 0, 'content/${content.id}', 0, 20, 0, 0, 0, 0, NULL);
 INSERT INTO `cms_category` VALUES (85, 2, '集团产业', 71, NULL, '86,87,88,89,90,91', '', 'industry', 1, NULL, '<@_categoryList parentId=category.id><#if page.totalCount gt 0>category/${page.list[0].id}</#if></@_categoryList>', 0, 0, 'category/86', 1, '', 0, 20, 0, 0, 0, 0, NULL);
-INSERT INTO `cms_category` VALUES (86, 2, '投资管理', 85, '1', NULL, '', 'touzi', 1, NULL, 'category/${category.id}', 0, 0, 'category/86', 1, '', 0, 20, 0, 0, 0, 0, NULL);
-INSERT INTO `cms_category` VALUES (87, 2, '置业建设', 85, '1', NULL, '', 'jianshe', 1, NULL, 'category/${category.id}', 0, 0, 'category/87', 1, '', 0, 20, 0, 0, 0, 0, NULL);
-INSERT INTO `cms_category` VALUES (88, 2, '能源光电', 85, '1', NULL, '', 'nengyuan', 1, NULL, 'category/${category.id}', 0, 0, 'category/88', 1, '', 0, 20, 0, 0, 0, 0, NULL);
-INSERT INTO `cms_category` VALUES (89, 2, '现代物流', 85, '1', NULL, '', 'wuliu', 1, NULL, 'category/${category.id}', 0, 0, 'category/89', 1, '', 0, 20, 0, 0, 0, 0, NULL);
-INSERT INTO `cms_category` VALUES (90, 2, '生物制药', 85, '1', NULL, '', 'zhiyao', 1, NULL, 'category/${category.id}', 0, 0, 'category/90', 1, '', 0, 20, 0, 0, 0, 0, NULL);
-INSERT INTO `cms_category` VALUES (91, 2, '现代农业', 85, '1', NULL, '', 'nongye', 1, NULL, 'category/${category.id}', 0, 0, 'category/91', 1, '', 0, 20, 0, 0, 0, 0, NULL);
+INSERT INTO `cms_category` VALUES (86, 2, '投资管理', 85, '1', NULL, '', 'touzi', 0, NULL, 'category/${category.id}', 0, 0, 'category/86', 1, '', 0, 20, 0, 0, 0, 0, NULL);
+INSERT INTO `cms_category` VALUES (87, 2, '置业建设', 85, '1', NULL, '', 'jianshe', 0, NULL, 'category/${category.id}', 0, 0, 'category/87', 1, '', 0, 20, 0, 0, 0, 0, NULL);
+INSERT INTO `cms_category` VALUES (88, 2, '能源光电', 85, '1', NULL, '', 'nengyuan', 0, NULL, 'category/${category.id}', 0, 0, 'category/88', 1, '', 0, 20, 0, 0, 0, 0, NULL);
+INSERT INTO `cms_category` VALUES (89, 2, '现代物流', 85, '1', NULL, '', 'wuliu', 0, NULL, 'category/${category.id}', 0, 0, 'category/89', 1, '', 0, 20, 0, 0, 0, 0, NULL);
+INSERT INTO `cms_category` VALUES (90, 2, '生物制药', 85, '1', NULL, '', 'zhiyao', 0, NULL, 'category/${category.id}', 0, 0, 'category/90', 1, '', 0, 20, 0, 0, 0, 0, NULL);
+INSERT INTO `cms_category` VALUES (91, 2, '现代农业', 85, '1', NULL, '', 'nongye', 0, NULL, 'category/${category.id}', 0, 0, 'category/91', 1, '', 0, 20, 0, 0, 0, 0, NULL);
 INSERT INTO `cms_category` VALUES (92, 2, '人才中心', 71, NULL, '93,94,95,96', '', 'rencai', 1, NULL, '<@_categoryList parentId=category.id><#if page.totalCount gt 0>news/${page.list[0].id}</#if></@_categoryList>', 0, 0, 'news/93', 1, '', 0, 20, 0, 0, 0, 0, NULL);
-INSERT INTO `cms_category` VALUES (93, 2, '人才招聘', 92, NULL, NULL, '', 'zhaopin', 1, NULL, 'news/${category.id}', 0, 0, 'news/93', 1, 'content/${content.id}', 0, 20, 0, 0, 0, 0, NULL);
-INSERT INTO `cms_category` VALUES (94, 2, '人才理念', 92, '1', NULL, '', 'linian', 1, NULL, 'category/${category.id}', 0, 0, 'category/94', 1, '', 0, 20, 0, 0, 0, 0, NULL);
-INSERT INTO `cms_category` VALUES (95, 2, '薪酬福利', 92, '1', NULL, '', 'fuli', 1, NULL, 'category/${category.id}', 0, 0, 'category/95', 1, '', 0, 20, 0, 0, 0, 0, NULL);
-INSERT INTO `cms_category` VALUES (96, 2, '职业发展', 92, '1', NULL, '', 'fazhan', 1, NULL, 'category/${category.id}', 0, 0, 'category/96', 1, '', 0, 20, 0, 0, 0, 0, NULL);
+INSERT INTO `cms_category` VALUES (93, 2, '人才招聘', 92, NULL, NULL, '', 'zhaopin', 0, NULL, 'news/${category.id}', 0, 0, 'news/93', 1, 'content/${content.id}', 0, 20, 0, 0, 0, 0, NULL);
+INSERT INTO `cms_category` VALUES (94, 2, '人才理念', 92, '1', NULL, '', 'linian', 0, NULL, 'category/${category.id}', 0, 0, 'category/94', 1, '', 0, 20, 0, 0, 0, 0, NULL);
+INSERT INTO `cms_category` VALUES (95, 2, '薪酬福利', 92, '1', NULL, '', 'fuli', 0, NULL, 'category/${category.id}', 0, 0, 'category/95', 1, '', 0, 20, 0, 0, 0, 0, NULL);
+INSERT INTO `cms_category` VALUES (96, 2, '职业发展', 92, '1', NULL, '', 'fazhan', 0, NULL, 'category/${category.id}', 0, 0, 'category/96', 1, '', 0, 20, 0, 0, 0, 0, NULL);
 INSERT INTO `cms_category` VALUES (97, 2, '联系我们', 71, NULL, '120', '', 'linaxi', 1, NULL, '<@_categoryList parentId=category.id><#if page.totalCount gt 0>category/${page.list[0].id}</#if></@_categoryList>', 0, 0, 'category/120', 1, '', 0, 20, 0, 0, 0, 0, NULL);
 INSERT INTO `cms_category` VALUES (99, 2, 'Core team', 74, '1', NULL, '', 'team', 1, NULL, 'en/category/${category.id}', 0, 0, 'en/category/99', 1, '', 0, 20, 0, 0, 0, 0, NULL);
 INSERT INTO `cms_category` VALUES (100, 2, 'Organization', 74, '1', NULL, '', 'organization', 1, NULL, 'en/category/${category.id}', 0, 0, 'en/category/100', 1, '', 0, 20, 0, 0, 0, 0, NULL);
@@ -58,8 +58,8 @@ INSERT INTO `cms_category` VALUES (101, 2, 'Group honor', 74, '1', NULL, '', 'ho
 INSERT INTO `cms_category` VALUES (102, 2, 'Social responsibility', 74, '1', NULL, '', 'responsibility', 1, NULL, 'en/category/${category.id}', 0, 0, 'en/category/102', 1, '', 0, 20, 0, 0, 0, 0, NULL);
 INSERT INTO `cms_category` VALUES (103, 2, 'Development goals', 74, '1', NULL, '', 'goals', 1, NULL, 'en/category/${category.id}', 0, 0, 'en/category/103', 1, '', 0, 20, 0, 0, 0, 0, NULL);
 INSERT INTO `cms_category` VALUES (104, 2, 'News', 72, NULL, '105,106', '', 'news_en', 1, NULL, '<@_categoryList parentId=category.id><#if page.totalCount gt 0>en/news/${page.list[0].id}</#if></@_categoryList>', 0, 0, 'en/news/105', 1, '', 0, 20, 0, 0, 0, 0, NULL);
-INSERT INTO `cms_category` VALUES (105, 2, 'Industry News', 104, NULL, NULL, '', 'industry_en', 1, NULL, 'en/news/${category.id}', 0, 0, 'en/news/105', 1, '', 0, 20, 0, 0, 0, 0, NULL);
-INSERT INTO `cms_category` VALUES (106, 2, 'Company news', 104, NULL, NULL, '', 'company', 1, NULL, 'en/news/${category.id}', 0, 0, 'en/news/106', 1, '', 0, 20, 0, 0, 0, 0, NULL);
+INSERT INTO `cms_category` VALUES (105, 2, 'Industry News', 104, NULL, NULL, '', 'industry_en', 1, NULL, 'en/news/${category.id}', 0, 0, 'en/news/105', 0, '', 0, 20, 0, 0, 0, 0, NULL);
+INSERT INTO `cms_category` VALUES (106, 2, 'Company news', 104, NULL, NULL, '', 'company', 1, NULL, 'en/news/${category.id}', 0, 0, 'en/news/106', 0, '', 0, 20, 0, 0, 0, 0, NULL);
 INSERT INTO `cms_category` VALUES (107, 2, 'Industry', 72, NULL, '108,109,110,111,112,113', '', 'group_industry', 1, NULL, '<@_categoryList parentId=category.id><#if page.totalCount gt 0>en/category/${page.list[0].id}</#if></@_categoryList>', 0, 0, 'en/category/108', 1, '', 0, 20, 0, 0, 0, 0, NULL);
 INSERT INTO `cms_category` VALUES (108, 2, 'Investment Management', 107, '1', NULL, '', 'investment', 1, NULL, 'en/category/${category.id}', 0, 0, 'en/category/108', 1, '', 0, 20, 0, 0, 0, 0, NULL);
 INSERT INTO `cms_category` VALUES (109, 2, 'Home ownership', 107, '1', NULL, '', 'ownership', 1, NULL, 'en/category/${category.id}', 0, 0, 'en/category/109', 1, '', 0, 20, 0, 0, 0, 0, NULL);
@@ -68,13 +68,16 @@ INSERT INTO `cms_category` VALUES (111, 2, 'Modern logistics', 107, '1', NULL, '
 INSERT INTO `cms_category` VALUES (112, 2, 'Biopharmaceutical', 107, '1', NULL, '', 'biopharmaceutical', 1, NULL, 'en/category/${category.id}', 0, 0, 'en/category/112', 1, '', 0, 20, 0, 0, 0, 0, NULL);
 INSERT INTO `cms_category` VALUES (113, 2, 'Modern agriculture', 107, '1', NULL, '', 'agriculture', 1, NULL, 'en/category/${category.id}', 0, 0, 'en/category/113', 1, '', 0, 20, 0, 0, 0, 0, NULL);
 INSERT INTO `cms_category` VALUES (114, 2, 'Talent', 72, NULL, '115,116,117,118', '', 'talent', 1, NULL, '<@_categoryList parentId=category.id><#if page.totalCount gt 0>en/news/${page.list[0].id}</#if></@_categoryList>', 0, 0, 'en/news/115', 1, '', 0, 20, 0, 0, 0, 0, NULL);
-INSERT INTO `cms_category` VALUES (115, 2, 'Recruitment', 114, NULL, NULL, '', 'recruitment', 1, NULL, 'en/news/${category.id}', 0, 0, 'en/news/115', 1, '', 0, 20, 0, 0, 0, 0, NULL);
+INSERT INTO `cms_category` VALUES (115, 2, 'Recruitment', 114, NULL, NULL, '', 'recruitment', 1, NULL, 'en/news/${category.id}', 0, 0, 'en/news/115', 0, '', 0, 20, 0, 0, 0, 0, NULL);
 INSERT INTO `cms_category` VALUES (116, 2, 'Talent Concept', 114, '1', NULL, '', 'concept', 1, NULL, 'en/category/${category.id}', 0, 0, 'en/category/116', 1, '', 0, 20, 0, 0, 0, 0, NULL);
 INSERT INTO `cms_category` VALUES (117, 2, 'Remuneration and benefits', 114, '1', NULL, '', 'benefits', 1, NULL, 'en/category/${category.id}', 0, 0, 'en/category/117', 1, '', 0, 20, 0, 0, 0, 0, NULL);
 INSERT INTO `cms_category` VALUES (118, 2, 'Career Development', 114, '1', NULL, '', 'career', 1, NULL, 'en/category/${category.id}', 0, 0, 'en/category/118', 1, '', 0, 20, 0, 0, 0, 0, NULL);
 INSERT INTO `cms_category` VALUES (119, 2, 'Contact', 72, NULL, '121', '', 'contact', 1, NULL, '<@_categoryList parentId=category.id><#if page.totalCount gt 0>en/category/${page.list[0].id}</#if></@_categoryList>', 0, 0, 'en/category/121', 1, '', 0, 20, 0, 0, 0, 0, NULL);
 INSERT INTO `cms_category` VALUES (120, 2, '联系我们', 97, '1', NULL, '', 'contact_us', 1, NULL, 'category/${category.id}', 0, 0, 'category/120', 1, '', 0, 20, 0, 0, 0, 0, NULL);
 INSERT INTO `cms_category` VALUES (121, 2, 'Contact us', 119, '1', NULL, '', 'contact_us_en', 1, NULL, 'en/category/${category.id}', 0, 0, 'en/category/121', 1, '', 0, 20, 0, 0, 0, 0, NULL);
+INSERT INTO `cms_category` VALUES (174, 4, '第一章', 27, 'cover', NULL, '', 'guide1', 1, '', '<@cms.contentList categoryId=category.id pageSize=1 orderType=\'asc\'><#list page.list as a>${a.url}</#list></@cms.contentList>', 0, 0, '//site4.dev.publiccms.com:8080/webfile/guide1/7033375351103295488.html', 1, '${category.code}/${content.id}.html', 1, 20, 0, 0, 0, 0, NULL);
+INSERT INTO `cms_category` VALUES (175, 3, '手册', NULL, '', '176', '', 'guide', 1, '', '<@cms.contentList categoryId=category.id pageSize=1><#list page.list as a>${a.url}</#list></@cms.contentList>', 0, 0, '', 1, '${category.code}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', 1, 20, 0, 0, 0, 0, NULL);
+INSERT INTO `cms_category` VALUES (176, 3, '第一章', 175, '', NULL, '', 'guide1', 1, '', '<@cms.contentList categoryId=category.id pageSize=1><#list page.list as a>${a.url}</#list></@cms.contentList>', 0, 0, '', 0, '', 0, 20, 0, 0, 0, 0, NULL);
 
 -- ----------------------------
 -- Records of cms_category_attribute
@@ -96,7 +99,7 @@ INSERT INTO `cms_category_attribute` VALUES (24, '介绍', 'PublicCMS,系统介�
 INSERT INTO `cms_category_attribute` VALUES (25, '文章', '文章', '文章', NULL);
 INSERT INTO `cms_category_attribute` VALUES (26, '小说', '小说,在线阅读', '小说,在线阅读', NULL);
 INSERT INTO `cms_category_attribute` VALUES (27, '手册', '手册', '手册', NULL);
-INSERT INTO `cms_category_attribute` VALUES (28, '案例', 'PublicCMS案例', 'PublicCMS案例', NULL);
+INSERT INTO `cms_category_attribute` VALUES (28, '案例', 'PublicCMS案例', 'PublicCMS案例', '{\"left_height\":\"69\",\"left_image\":\"assets/img/banner-case-1.svg\",\"right_height\":\"79\",\"right_image\":\"assets/img/banner-case-1.svg\"}');
 INSERT INTO `cms_category_attribute` VALUES (29, '问答', '问答', '更多 PublicCMS 的技术文章，欢迎各平台创作者贡献PublicCMS文章、视频、模版等', '{\"left_height\":\"79\",\"left_image\":\"assets/img/banner-qa-1.svg\",\"right_height\":\"86\",\"right_image\":\"assets/img/banner-qa-2.svg\"}');
 INSERT INTO `cms_category_attribute` VALUES (30, 'PublicCMS 的演示', 'PublicCMS 的演示', 'PublicCMS 的演示', '{\"left_height\":\"52\",\"left_image\":\"assets/img/banner-demo-1.svg\",\"right_height\":\"88\",\"right_image\":\"assets/img/banner-demo-2.svg\"}');
 INSERT INTO `cms_category_attribute` VALUES (31, 'PublicCMS下载', 'PublicCMS下载,PublicCMS价格,PublicCMS购买', 'PublicCMS 的应用程序、源码等', '{\"left_height\":\"77\",\"left_image\":\"assets/img/banner-download-1.svg\",\"right_height\":\"83\",\"right_image\":\"assets/img/banner-download-2.svg\"}');
@@ -108,7 +111,7 @@ INSERT INTO `cms_category_attribute` VALUES (72, '', '', '', NULL);
 INSERT INTO `cms_category_attribute` VALUES (73, '', '', '', NULL);
 INSERT INTO `cms_category_attribute` VALUES (74, '', '', '', NULL);
 INSERT INTO `cms_category_attribute` VALUES (75, '', '', '', '{\"article\":\"<p>阿斯蒂芬阿斯蒂芬阿斯蒂芬阿斯蒂芬阿斯蒂芬阿斯蒂芬阿斯蒂芬阿斯蒂芬阿斯蒂芬阿斯蒂芬阿斯蒂芬阿斯蒂芬阿斯蒂芬阿斯蒂芬阿斯蒂芬阿斯蒂芬阿斯蒂芬阿斯蒂芬阿斯蒂芬阿斯蒂芬阿斯蒂芬阿斯蒂芬阿斯蒂芬阿斯蒂芬阿斯蒂芬阿斯蒂芬阿斯蒂芬阿斯蒂芬阿斯蒂芬阿斯蒂芬阿斯蒂芬阿斯蒂芬阿斯蒂芬阿斯蒂芬阿斯蒂芬阿斯蒂芬阿斯蒂芬</p>\"}');
-INSERT INTO `cms_category_attribute` VALUES (76, '', '', '', NULL);
+INSERT INTO `cms_category_attribute` VALUES (76, '', '', '', '{\"article\":\"\"}');
 INSERT INTO `cms_category_attribute` VALUES (77, '', '', '', '{\"article\":\"<p>核心团队核心团队核心团队核心团队核心团队核心团队核心团队核心团队核心团队核心团队核心团队核心团队核心团队核心团队核心团队核心团队核心团队核心团队核心团队核心团队核心团队核心团队核心团队核心团队核心团队核心团队核心团队核心团队核心团队核心团队核心团队核心团队核心团队</p>\"}');
 INSERT INTO `cms_category_attribute` VALUES (78, '', '', '', '{\"article\":\"<p>组织架构组织架构组织架构组织架构组织架构组织架构组织架构组织架构组织架构组织架构组织架构组织架构组织架构组织架构组织架构组织架构组织架构组织架构组织架构组织架构组织架构组织架构组织架构组织架构组织架构组织架构组织架构组织架构组织架构组织架构组织架构组织架构组织架构组织架构组织架构组织架构组织架构组织架构组织架构</p>\"}');
 INSERT INTO `cms_category_attribute` VALUES (79, '', '', '', '{\"article\":\"<h2 class=\\\"R-h2\\\" style=\\\"padding: 0px 0px 0px 15px; margin: 0px; clear: both; overflow: hidden; height: 21px; line-height: 21px; border-bottom: 1px solid rgb(51, 51, 153); font-family: ΢���ź�; font-size: 14px; background: url(&quot;../images/r_top.gif&quot;) 2px center no-repeat rgb(255, 255, 255); color: rgb(68, 68, 68); white-space: normal;\\\">集团荣誉</h2><p><br/></p>\"}');
@@ -153,6 +156,9 @@ INSERT INTO `cms_category_attribute` VALUES (118, '', '', '', '{\"article\":\"<p
 INSERT INTO `cms_category_attribute` VALUES (119, '', '', '', NULL);
 INSERT INTO `cms_category_attribute` VALUES (120, '', '', '', '{\"article\":\"<p>联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们</p>\"}');
 INSERT INTO `cms_category_attribute` VALUES (121, '', '', '', '{\"article\":\"<p>Contact us&nbsp;Contact us&nbsp;Contact us&nbsp;Contact us&nbsp;Contact us&nbsp;Contact us&nbsp;Contact us&nbsp;Contact us&nbsp;Contact us&nbsp;Contact us&nbsp;Contact us&nbsp;Contact us&nbsp;Contact us&nbsp;Contact us&nbsp;Contact us&nbsp;Contact us&nbsp;Contact us&nbsp;Contact us&nbsp;Contact us&nbsp;</p>\"}');
+INSERT INTO `cms_category_attribute` VALUES (174, '手册', '手册', '手册', '{\"cover\":\"assets/img/icon-guide-1.svg\"}');
+INSERT INTO `cms_category_attribute` VALUES (175, '案例', 'PublicCMS案例', '全球不同规模的企事业单位都在使用 PublicCMS', NULL);
+INSERT INTO `cms_category_attribute` VALUES (176, '', '', '', NULL);
 
 -- ----------------------------
 -- Records of cms_category_model
@@ -168,13 +174,11 @@ INSERT INTO `cms_category_model` VALUES (8, '3', 3, 0, '/system/picture.html', N
 INSERT INTO `cms_category_model` VALUES (9, '1', 3, 0, '/system/article.html', NULL);
 INSERT INTO `cms_category_model` VALUES (9, '2', 3, 0, '', NULL);
 INSERT INTO `cms_category_model` VALUES (9, '3', 3, 0, '/system/picture.html', NULL);
-INSERT INTO `cms_category_model` VALUES (12, '1', 3, 0, '/system/article.html', NULL);
-INSERT INTO `cms_category_model` VALUES (12, '2', 3, 0, '', NULL);
-INSERT INTO `cms_category_model` VALUES (12, '5', 3, 0, '', NULL);
-INSERT INTO `cms_category_model` VALUES (12, '6', 3, 0, '/system/chapter.html', NULL);
-INSERT INTO `cms_category_model` VALUES (15, '4', 3, 0, '/system/book.html', NULL);
-INSERT INTO `cms_category_model` VALUES (15, '5', 3, 0, '', NULL);
-INSERT INTO `cms_category_model` VALUES (15, '6', 3, 0, '/system/chapter.html', NULL);
+INSERT INTO `cms_category_model` VALUES (12, '1', 3, 0, '/system/article.html', '');
+INSERT INTO `cms_category_model` VALUES (12, '2', 3, 0, NULL, NULL);
+INSERT INTO `cms_category_model` VALUES (15, 'book', 3, 0, '/system/book.html', '${category.code}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html');
+INSERT INTO `cms_category_model` VALUES (15, 'chapter', 3, 0, '', '');
+INSERT INTO `cms_category_model` VALUES (15, 'volume', 3, 0, '', '${category.code}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html');
 INSERT INTO `cms_category_model` VALUES (17, '1', 3, 0, '/system/article.html', NULL);
 INSERT INTO `cms_category_model` VALUES (17, '2', 3, 0, '', NULL);
 INSERT INTO `cms_category_model` VALUES (17, '3', 3, 0, '/system/picture.html', NULL);
@@ -193,20 +197,25 @@ INSERT INTO `cms_category_model` VALUES (25, 'link', 4, 0, '', NULL);
 INSERT INTO `cms_category_model` VALUES (26, 'book', 4, 0, '/system/book.html', NULL);
 INSERT INTO `cms_category_model` VALUES (26, 'chapter', 4, 0, '/system/chapter.html', NULL);
 INSERT INTO `cms_category_model` VALUES (26, 'volume', 4, 0, '', NULL);
-INSERT INTO `cms_category_model` VALUES (27, 'guide', 4, 0, '/system/guide.html', NULL);
-INSERT INTO `cms_category_model` VALUES (28, 'article', 4, 0, '/system/article.html', NULL);
-INSERT INTO `cms_category_model` VALUES (28, 'link', 4, 0, '', NULL);
+INSERT INTO `cms_category_model` VALUES (28, 'article', 4, 0, '/system/article.html', '');
+INSERT INTO `cms_category_model` VALUES (28, 'link', 4, 0, NULL, NULL);
 INSERT INTO `cms_category_model` VALUES (31, 'dir', 4, 0, '', NULL);
-INSERT INTO `cms_category_model` VALUES (76, 'article', 2, 0, NULL, NULL);
-INSERT INTO `cms_category_model` VALUES (83, 'article', 2, 0, NULL, NULL);
-INSERT INTO `cms_category_model` VALUES (84, 'article', 2, 0, NULL, NULL);
-INSERT INTO `cms_category_model` VALUES (93, 'article', 2, 0, NULL, NULL);
-
+INSERT INTO `cms_category_model` VALUES (83, 'article', 2, 0, NULL, '');
+INSERT INTO `cms_category_model` VALUES (84, 'article', 2, 0, NULL, '');
+INSERT INTO `cms_category_model` VALUES (93, 'article', 2, 0, NULL, '');
+INSERT INTO `cms_category_model` VALUES (105, 'article', 2, 0, NULL, '');
+INSERT INTO `cms_category_model` VALUES (106, 'article', 2, 0, NULL, '');
+INSERT INTO `cms_category_model` VALUES (115, 'article', 2, 0, NULL, '');
+INSERT INTO `cms_category_model` VALUES (122, 'article', 1, 0, NULL, '');
+INSERT INTO `cms_category_model` VALUES (123, 'article', 1, 0, NULL, '');
+INSERT INTO `cms_category_model` VALUES (174, 'guide', 4, 0, '/system/guide.html', '');
+INSERT INTO `cms_category_model` VALUES (175, '2', 3, 0, NULL, NULL);
+INSERT INTO `cms_category_model` VALUES (176, 'guide', 3, 0, '/system/guide.html', '');
 
 -- ----------------------------
 -- Records of cms_content
 -- ----------------------------
-INSERT INTO `cms_content` VALUES (1, 2, '企业中英文站点模板使用说明', 2, 2, 2, 84, 'article', NULL, NULL, 0, 0, NULL, NULL, 0, 0, 0, 0, 0, 'content/1', '企业中英文站点模板中主要有首页模板index.html,文章模板content.html，分类单页模板category.html，分类内容列表页news.html\n\n分为中英文两套模板\n\n所有模板均为动态模板，文章，分类模板接受参数为id,pageIndex等，既支持rest风格url如 news/1_12,又支持传统参数类型如news.html?id=1&pageIndex=12\n\n在分类中对带有文章的分类可以使用category.html，对内容列表可以使用news.html，填写分类访问路径为 模板名/${category.id} 或 模板名.html?id=${category.id}', '', NULL, 0, 0, 0, 0.00, 0, 0, '2020-01-01 00:00:00', NULL, '2020-01-01 00:00:00', NULL, NULL, '2020-01-01 00:00:00', 0, 1, 0);
+INSERT INTO `cms_content` VALUES (1, 2, '企业中英文站点模板使用说明', 2, 2, 2, 84, 'article', NULL, NULL, 0, 0, NULL, NULL, 0, 0, 0, 0, 0, 'content/1', '企业中英文站点模板中主要有首页模板index.html,文章模板content.html，分类单页模板category.html，分类内容列表页news.html\n\n分为中英文两套模板\n\n所有模板均为动态模板，文章，分类模板接受参数为id,pageIndex等，既支持rest风格url如 news/1_12,又支持传统参数类型如news.html?id=1&pageIndex=12\n\n在分类中对带有文章的分类可以使用category.html，对内容列表可以使用news.html，填写分类访问路径为 模板名/${category.id} 或 模板名.html?id=${category.id}', NULL, NULL, 0, 0, 0, 0.00, 0, 0, '2020-01-01 00:00:00', NULL, '2020-01-01 00:00:00', NULL, NULL, '2020-01-01 00:00:00', 0, 1, 0);
 INSERT INTO `cms_content` VALUES (2, 3, 'PublicCMS官网模板使用说明', 3, 3, 3, 12, '1', NULL, NULL, 0, 0, NULL, '', 0, 0, 0, 0, 1, 'article/2020/01-01/2.html', 'PublicCMS官网模板是一组静态化模板', '', NULL, 0, 0, 0, 0.00, 0, 0, '2020-01-01 00:00:00', NULL, '2020-01-01 00:00:00', NULL, NULL, '2020-01-01 00:00:00', 0, 1, 0);
 INSERT INTO `cms_content` VALUES (3, 4, 'PublicCMS官网模板使用说明', 4, 4, 4, 25, 'article', NULL, NULL, 0, 0, NULL, '', 0, 0, 0, 0, 1, 'article/2020/01-01/3.html', 'PublicCMS官网模板是一组静态化模板', '', NULL, 0, 0, 0, 0.00, 0, 0, '2020-01-01 00:00:00', NULL, '2020-01-01 00:00:00', NULL, NULL, '2020-01-01 00:00:00', 0, 1, 0);
 INSERT INTO `cms_content` VALUES (4, 4, '应用程序', 4, 4, 4, 31, 'dir', NULL, NULL, 0, 0, NULL, NULL, 0, 0, 0, 0, 0, '#', 'PublicCMS 的应用程序', '', 'assets/img/icon-download-program.svg', 0, 0, 0, 0.00, 0, 0, '2022-01-08 18:23:59', NULL, '2022-01-09 11:48:07', NULL, NULL, '2022-01-08 18:23:55', 0, 1, 0);
@@ -296,13 +305,14 @@ INSERT INTO `cms_place_attribute` VALUES (34, '{}');
 -- ----------------------------
 -- Records of sys_config_data
 -- ----------------------------
+INSERT INTO `sys_config_data` VALUES (2, 'site', '{\"register_url\":\"\",\"login_path\":\"\",\"category_path\":\"news/${category.id}\",\"default_content_status\":\"2\",\"default_content_user\":\"\",\"comment_need_check\":\"true\",\"max_scores\":\"5\",\"statistics\":\"\"}');
 INSERT INTO `sys_config_data` VALUES (2, 'siteAttribute', '{\"logo\":\"assets/images/logo.gif\",\"parentId\":\"71\",\"parentId_en\":\"72\"}');
 INSERT INTO `sys_config_data` VALUES (3, 'cors', '{\"allowed_origins\":\"*\",\"allowed_methods\":\"*\",\"allowed_headers\":\"*\",\"exposed_headers\":\"\",\"allow_credentials\":\"true\",\"max_age\":\"\"}');
-INSERT INTO `sys_config_data` VALUES (3, 'site', '{\"return_url\":\"http://search.site3.dev.publiccms.com:8080/\",\"register_url\":\"http://site3.dev.publiccms.com:8080/register.html\",\"login_path\":\"http://site3.dev.publiccms.com:8080/login.html\",\"statistics\":\"\",\"approve\":\"\"}');
+INSERT INTO `sys_config_data` VALUES (3, 'site', '{\"register_url\":\"http://site3.dev.publiccms.com:8080/register.html\",\"login_path\":\"http://site3.dev.publiccms.com:8080/login.html\",\"category_template_path\":\"category.html\",\"category_path\":\"category/${category.code}.html\",\"default_content_status\":\"2\",\"default_content_user\":\"\",\"comment_need_check\":\"true\",\"max_scores\":\"5\",\"static_after_comment\":\"false\",\"static_after_score\":\"false\",\"statistics\":\"\",\"approve\":\"\"}');
 INSERT INTO `sys_config_data` VALUES (3, 'siteAttribute', '{\"logo\":\"\",\"square_logo\":\"\",\"searchPath\":\"//search.site3.dev.publiccms.com:8080/\"}');
 INSERT INTO `sys_config_data` VALUES (4, 'cors', '{\"allowed_origins\":\"*\",\"allowed_methods\":\"*\",\"allowed_headers\":\"*\",\"exposed_headers\":\"\",\"allow_credentials\":\"true\",\"max_age\":\"\"}');
-INSERT INTO `sys_config_data` VALUES (4, 'site', '{\"return_url\":\"http://search.site4.dev.publiccms.com:8080/\",\"register_url\":\"http://site4.dev.publiccms.com:8080/register.html\",\"login_path\":\"http://site4.dev.publiccms.com:8080/login.html\",\"statistics\":\"\",\"approve\":\"\"}');
-INSERT INTO `sys_config_data` VALUES (4, 'siteAttribute', '{\"logo\":\"\",\"square_logo\":\"\",\"searchPath\":\"//search.site4.dev.publiccms.com:8080/\"}');
+INSERT INTO `sys_config_data` VALUES (4, 'site', '{\"register_url\":\"http://site4.dev.publiccms.com:8080/member/register.html\",\"login_path\":\"http://site4.dev.publiccms.com:8080/member/login.html\",\"category_template_path\":\"category.html\",\"category_path\":\"<@cms.category id=category.parentId>${object.code}/</@cms.category>${category.code}/\",\"default_content_status\":\"2\",\"default_content_user\":\"\",\"comment_need_check\":\"true\",\"max_scores\":\"5\",\"static_after_comment\":\"false\",\"static_after_score\":\"false\"}');
+INSERT INTO `sys_config_data` VALUES (4, 'siteAttribute', '{\"logo\":\"\",\"square_logo\":\"\"}');
 
 -- ----------------------------
 -- Records of sys_dept
@@ -314,11 +324,11 @@ INSERT INTO `sys_dept` VALUES (4, 4, '技术部', '4', NULL, '', 4, 1000, 1, 1, 
 -- ----------------------------
 -- Records of sys_domain
 -- ----------------------------
-INSERT INTO `sys_domain` VALUES ('search.site3.dev.publiccms.com', 3, 0, 0, '/search/');
-INSERT INTO `sys_domain` VALUES ('search.site4.dev.publiccms.com', 4, 0, 0, '/search/');
+INSERT INTO `sys_domain` VALUES ('dev.publiccms.com', 1, 1, 0, '');
+INSERT INTO `sys_domain` VALUES ('localhost', 1, 1, 0, '');
 INSERT INTO `sys_domain` VALUES ('site2.dev.publiccms.com', 2, 1, 0, '');
-INSERT INTO `sys_domain` VALUES ('site3.dev.publiccms.com', 3, 0, 0, '/member/');
-INSERT INTO `sys_domain` VALUES ('site4.dev.publiccms.com', 4, 0, 0, '/member/');
+INSERT INTO `sys_domain` VALUES ('site3.dev.publiccms.com', 3, 0, 0, '');
+INSERT INTO `sys_domain` VALUES ('site4.dev.publiccms.com', 4, 0, 0, '');
 
 -- ----------------------------
 -- Records of sys_role

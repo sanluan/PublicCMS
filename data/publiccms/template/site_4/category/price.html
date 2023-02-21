@@ -4,10 +4,10 @@
         <title>${(attribute.title)!category.name}</title>
         <meta name="keywords" content="${(attribute.keywords)!}"/>
         <meta name="description" content="${(attribute.description)!}"/>
-        <@tools.includePlace path="/8ddab9ba-a8aa-4745-86c6-66bf1c2c976c.html"/> <#-- header -->
+        <@tools.includePlace path="/common/8ddab9ba-a8aa-4745-86c6-66bf1c2c976c.html"/> <#-- header -->
     </head>
     <body>
-        <@tools.includePlace path="/c32a4f4a-ff5d-49cf-bb59-5d9784539174.html"/> <#-- 导航 -->
+        <@tools.includePlace path="/common/c32a4f4a-ff5d-49cf-bb59-5d9784539174.html"/> <#-- 导航 -->
 
         <div class="banner-l2 position-relative d-flex align-items-center justify-content-center" data-diy="category" data-diy-id="${category.id}">
             <div class="container text-center position-relative py-3 py-md-4">
@@ -43,7 +43,7 @@
                     <div class="text-center">
                         <img src="${site.sitePath}assets/img/icon-price-product.svg" alt="product">
                         <h2 class="my-2">产品价格</h2>
-                        <p class="text-secondary opacity-50">V4.0(及后续版本)个人免费使用<br/>企事业单位使用需要付费</p>
+                        <p class="text-secondary opacity-50">V4.0(及后续版本)个人免费使用，企事业单位使用需要付费</p>
                     </div>
                     <div class="mt-4">
                         <table class="table price">
@@ -51,7 +51,7 @@
                                 <tr class="text-end">
                                     <th scope="col"></th>
                                     <th scope="col" class="ps-md-4">个人用户</th>
-                                    <th scope="col" class="text-center" colspan="3">企事业单位</th>
+                                    <th scope="col" class="text-center" colspan="3">单个企事业单位</th>
                                 </tr>
                             </thead>
                             <tbody class="fs-7">
@@ -59,7 +59,7 @@
                                     <th scope="row">授权类型</th>
                                     <td>个人授权</td>
                                     <td>单域名商业授权</td>
-                                    <td>3年商业授权</td>
+                                    <td>三年商业授权</td>
                                     <td>不限域名商业授权</td>
                                 </tr>
                                 <tr>
@@ -95,7 +95,7 @@
                         <p class="fs-8 text-secondary text-opacity-50">
                             单域名商业授权为顶级域名比如 publiccms.com 授权，也可以在其二级域名下使用<br/>
                             授权单位为网站主办者,单域名商业授权、不限域名商业授权单位可以将自己购买的授权授予下属不具备法人资格的分支机构如分公司，子部门使用,无权将自己购买的授权授予子公司及其他单位使用<br/>
-                            优惠: 同一单位同类型授权2年内累计采购5套后8折，一次性采购5套及以上8折，10套及以上7折 授权升级更高版本 之前版本金额可以全额抵扣<br/>
+                            优惠: 同一单位同类型授权3年内累计采购4套后8折，一次性采购4套及以上8折，10套及以上7折，三年商业授权续费享受7折价格，授权升级更高版本之前版本金额可以完全抵扣<br/>
                         </p>
                     </div>
                     <div class="text-center mt-4">
@@ -117,7 +117,7 @@
                                 <tr>
                                     <th scope="row">价格(含3%税率)</th>
                                     <td>15000元起(16页面左右)</td>
-                                    <td>4800元/年(不超过两位工程师) ,2000元/年/位工程师</td>
+                                    <td>2000元/年</td>
                                     <td>5000元/次</td>
                                 </tr>
                                 <tr>
@@ -131,7 +131,7 @@
                     </div>
                     <div class="text-center py-3 mb-5">
                         <p class="fs-8 text-secondary text-opacity-50">
-                            为避免与使用本产品的其他技术团队产生直接竞争，我们只提供网站制作过程中的模板制作（可包含切图）部分服务，<br/>
+                            我们只提供网站制作过程中的模板制作（可包含切图）部分服务，<br/>
                             不承接含有二次开发、网站设计的项目，如果您没有设计或技术团队，或以上报价超出您的预算，请选择其他服务商提供网站制作服务。
                         </p>
                     </div>
@@ -139,13 +139,14 @@
             </div>
 			<p class="text-center">
 				<a href="javascript:void(0)" class="download btn btn-primary rounded-pill px-3"><img src="${site.sitePath}assets/img/icon-download.svg" class="me-2"> 保存页面</a>
+				<a class="btn btn-primary rounded-pill px-3" href="${site.sitePath}upload/publiccms_agreement.zip">合同模板下载</a>
 			</p>
         </div>
         <script>
             var itemString="itemType=category&itemId=${category.id}";
 			var templatePath='${.current_template_name?keep_after('/')}';
         </script>
-        <@tools.includePlace path="/7f8bacb5-30ca-4641-b66f-987d447b1a85.html"/> <#-- footer -->
+        <@tools.includePlace path="/footer/7f8bacb5-30ca-4641-b66f-987d447b1a85.html"/> <#-- footer -->
 		<script src="${site.sitePath}assets/js/html2canvas.min.js"></script>
 		<script src="${site.sitePath}assets/js/jspdf.umd.min.js"></script>
 		<script>

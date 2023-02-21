@@ -22,10 +22,10 @@
 	<main class="container">
 		<div class="left">
 			<h2><div><strong>${parent.name!}</strong></div></h2>
-			<ul class="left-nav">
+			<ul class="left-nav" data-diy="category">
 		<@cms.categoryList parentId=category.parentId>
 			<#list page.list as a>
-				<li><a href="${a.url!}">${a.name}</a></li>
+				<li data-diy-item="${a.id}"><a href="${a.url!}">${a.name}</a></li>
 			</#list>
 		</@cms.categoryList>
             </ul>
@@ -40,13 +40,14 @@
 		</div>
 		<div class="breadcrumb">
 			<h3><span>Position：<a href="${base!}">Home</a> > <a href="${(category.url)!}">${category.name}</a></span>${category.name}</h3>
-			<div class="content">
+			<div class="content" data-diy="category" data-diy-id="${category.id}">
 				${(attribute.article?no_esc)!}
 			</div>
 		</div>
 	</main>
 	<script>
-    var itemString="itemType=category&itemId=${category.id}";
+		var templatePath='${.current_template_name?keep_after('/')}';
+	    var itemString="itemType=category&itemId=${category.id}";
     </script>
 	<@tools.includePlace path="/7ee58b3e-ac14-4568-aedd-77e14c97ad48.html"/> <#-- English Footer -->
 	<script>

@@ -5,25 +5,25 @@
         <meta charset="utf-8">
         <title>${survey.title!} - ${metadata.alias!}</title>
         <meta name="description" content="${survey.description!}"/>
-        <@tools.includePlace path="/8ddab9ba-a8aa-4745-86c6-66bf1c2c976c.html"/> <#-- header -->
+        <@tools.includePlace path="/common/8ddab9ba-a8aa-4745-86c6-66bf1c2c976c.html"/> <#-- header -->
     </head>
     <body>
-        <@tools.includePlace path="/c32a4f4a-ff5d-49cf-bb59-5d9784539174.html"/> <#-- 导航 -->
+        <@tools.includePlace path="/common/c32a4f4a-ff5d-49cf-bb59-5d9784539174.html"/> <#-- 导航 -->
 
         <div class="banner-l3 position-relative d-flex align-items-center justify-content-center" style="background:#22407c url(${site.sitePath}assets/img/banner-l3-bg-1.png) 50% 50% no-repeat;">
             <div class="container text-center position-relative py-3 py-md-4 text-white">
                 <div class="breadcrumbs fs-7 text-white d-inline-flex align-items-center text-opacity-50">
                     <a href="${site.sitePath}">首页</a>
-                    &gt; <a href="${site.dynamicPath}surveyList.html" data-id="survey">调查问卷</a>
+                    &gt; <a href="${site.dynamicPath}member/surveyList.html" data-id="survey">调查问卷</a>
                 </div>
             </div>
         </div>
         <div class="container">
             <article>
-                <header>
+                <header class="mt-4">
                     <h1>${survey.title!}</h1>
                     <p>${survey.description!} </p>
-                    <p class="author">
+                    <p class="author text-center">
                         开始日期 ${survey.startDate!},截止日期:${(survey.endDate)!}
                         <#assign available=false/>
                         <#if survey.startDate lt .now && .now lt survey.endDate>
@@ -41,17 +41,17 @@
                     </@cms.userSurvey>
                     <#else>
                     <#assign available=false/>
-                    <p class="user-login">请<a href="${site.dynamicPath}login.html">登录</a></p>
+                    <p class="user-login">请<a href="${site.dynamicPath}member/login.html">登录</a></p>
                     </#if>
-                    <form action="${site.dynamicPath}survey/save" method="POST">
+                    <form action="${site.dynamicPath}member/survey/save" method="POST">
                         <input name="_csrf" type="hidden" value="<@tools.csrfToken/>"/>
                         <input name="surveyId" type="hidden" value="${survey.id}"/>
-                        <input name="returnUrl" type="hidden" value="${site.dynamicPath}survey.html?id=${survey.id}"/>
+                        <input name="returnUrl" type="hidden" value="${site.dynamicPath}member/survey.html?id=${survey.id}"/>
                         <ul>
                             <@cms.surveyQuestionList surveyId=survey.id orderType='asc' pageSize=500>
                             <#list page.list as a>
                             <li>
-                                <h3>${a.title!} <#if 'exam'=survey.surveyType>(${a.score!}分)</#if></h3>
+                                <h3 class="fs-5">${a.title!} <#if 'exam'=survey.surveyType>(${a.score!}分)</#if></h3>
                                 <#if a.cover?has_content>
                                 <p>
                                     <img src="${(a.cover)!}" alt="${a.title!}"/>
@@ -107,7 +107,7 @@
             var itemString="itemType=survey&itemId=${survey.id}";
 			var templatePath='${.current_template_name?keep_after('/')}';
 		</script>
-        <@tools.includePlace path="/7f8bacb5-30ca-4641-b66f-987d447b1a85.html"/> <#-- footer -->
+        <@tools.includePlace path="/footer/7f8bacb5-30ca-4641-b66f-987d447b1a85.html"/> <#-- footer -->
     </body>
 </html>
 </@cms.survey>

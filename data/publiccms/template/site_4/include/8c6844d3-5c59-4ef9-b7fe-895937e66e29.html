@@ -1,15 +1,15 @@
-<div class="container mt-5 pt-5" data-diy="place" data-diy-id="${path}">
-	<div class="mb-5 pb-2 text-center">
+<div class="container mt-5 pt-3" data-diy="place" data-diy-id="${path}">
+	<div class="mb-4 pb-2 text-center">
 		<div class="fs-0 text-black fw-bold">产品动态</div>
 		<p class="text-black-50">了解产品更新和使用问题</p>
 	</div>
-	<div class="row justify-content-between">
+	<div class="row justify-content-between" >
 <#list page.list as a>
 	<@cms.category id=a.itemId;category>
 		<@import path="/ftl/tools.ftl" namespace="t"/><#-- 工具 -->
 		<@cms.contentList categoryId=category.id containChild=true pageSize=3>
 		<div class="col-md-6 mb-5 mb-md-0 px-4">
-			<header class="tab-header fs-5">
+			<header class="tab-header fs-5" data-diy-item="${a.id}">
 				<a href="${category.url}"><b class="pb-2">${category.name}</b></a>
 			</header>
 			<#list page.list as a>
@@ -17,8 +17,8 @@
 			</#list>
 			<@cms.category ids=t.categoryIds!><#assign categoryMap=map!/></@cms.category>
 			<#list page.list as a>
-			<div class="article-list">
-				<a href="${a.url}" class="d-block">
+			<div class="article-list" data-diy="content">
+				<a href="${a.url}" class="d-block" data-diy-item="${a.id}">
 					<div class="card flex-md-row align-items-start">
 						<div class="text-white bg-${['primary','purple','success'][a.categoryId%3]} fs-8 px-2 py-1 flex-shrink-0">
 							${categoryMap[a.categoryId?string].name}
@@ -26,7 +26,7 @@
 						<div class="card-body py-3 py-md-0 px-0 px-md-3">
 							<h5 class="text-body">${a.title}</h5>
 							<p class="fs-7 text-secondary text-break">${a.description!}</p>
-							<footer class="fs-8 text-secondary text-opacity-50 d-flex align-items-center">
+							<footer class="fs-8 text-secondary text-opacity-80 d-flex align-items-center">
 								<span class="me-4 d-inline-flex align-items-center"><img src="${site.sitePath}assets/img/icon-calendar.svg" alt="publish date">${a.publishDate?date}</span>
 								<span class="me-4 d-inline-flex align-items-center"><img src="${site.sitePath}assets/img/icon-view.svg" alt="clicks">${a.clicks}</span>
 								<span class="me-4 d-inline-flex align-items-center"><img src="${site.sitePath}assets/img/icon-comment.svg" alt="comments">${a.comments}</span>

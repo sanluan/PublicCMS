@@ -16,9 +16,9 @@
 		</div>
 		<aside>
 			<div>
-				<a href="${siteAttribute.searchPath!}"><h3>站内搜索</h3></a>
+				<a href="${site.dynamicPath}search/"><h3>站内搜索</h3></a>
 				<div class="search">
-					<form action="${siteAttribute.searchPath!}" method="get">
+					<form action="${site.dynamicPath}search/" method="get">
 						<div class="search-box">
 							<input type="text" name="word" value="${(word)!}"/>
 							<input type="submit" class="button" value="搜索"/>
@@ -28,19 +28,19 @@
 						<div>
 							热门搜索：
 							<#list page.list as a>
-								<a href="${siteAttribute.searchPath!}?word=${a.name?url}">${a.name}</a>
+								<a href="${site.dynamicPath}search/?word=${a.name?url}">${a.name}</a>
 							</#list>
 						</div>
 					</@cms.wordList>
 				</div>
 				<@cms.voteList endStartDate=.now  pageSize=5>
 					<#if page.totalCount gt 0>
-				<a href="${site.dynamicPath}votelist.html"><h3>最新投票</h3></a>
+				<a href="${site.dynamicPath}member/votelist.html"><h3>最新投票</h3></a>
 				<ul class="hoverShadow">
 						<#list page.list as a>
 					<li>
 						<#if .now gt a.endDate && a.scores gt 0><#assign show=true/><#else><#assign show=false/></#if>
-						<span><#if show>已截止<#else>截止:${(a.endDate)?string('MM-dd HH:mm')}</#if></span><a href="${site.dynamicPath}vote.html?id=${a.id}">${a.title}</a>
+						<span><#if show>已截止<#else>截止:${(a.endDate)?string('MM-dd HH:mm')}</#if></span><a href="${site.dynamicPath}member/vote.html?id=${a.id}">${a.title}</a>
 						<@cms.voteItemList voteId=a.id pageSize=3>
 						<ol class="vote">
 							<#list page.list as v>
@@ -86,6 +86,9 @@
 		</aside>
 	</div>
 </main>
+<script>
+	var templatePath='${.current_template_name?keep_after('/')}';
+</script>
 <@tools.includePlace path="/cc29e896-332a-46d8-9bcb-d48e92144e9c.html"/> <#-- footer -->
 <@tools.includePlace path="/ff78be16-6f75-42b3-b115-d9d9cf578f1c.html"/> <#-- 首页置灰控制 -->
 <script>

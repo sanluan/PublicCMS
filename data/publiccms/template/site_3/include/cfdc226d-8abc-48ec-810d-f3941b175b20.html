@@ -1,8 +1,8 @@
-<ul class="friendlink">
+<ul class="friendlink"  data-diy="place" data-diy-id="${path}">
 	<li><label>友情链接</label></li>
 	<#list page.list as a>
-		<li><a href="${site.dynamicPath}place/redirect?id=${a.id!}" target="_blank">${a.title}</a></li>
+		<li data-diy-item="${a.id}"><a href="${site.dynamicPath}place/redirect?id=${a.id!}" target="_blank">${a.title}</a></li>
 	</#list>
-		<li><a href="${site.dynamicPath}friendlink.html">申请友链</a></li>
+		<li><a href="${site.dynamicPath}member/friendlink.html">申请友链</a></li>
 		<li><a href="${site.sitePath!}sitemap.xml" target="_blank">站点地图</a></li>
 </ul>

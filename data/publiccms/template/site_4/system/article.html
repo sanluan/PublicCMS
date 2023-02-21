@@ -5,14 +5,14 @@
         <title>${content.title} - ${category.name}</title>
         <meta name="keywords" content="<#list getKeywords(content.title) as a>${a}<#sep>,</#list>"/>
         <meta name="description" content="${content.description!}"/>
-        <@tools.includePlace path="/8ddab9ba-a8aa-4745-86c6-66bf1c2c976c.html"/> <#-- header -->
+        <@tools.includePlace path="/common/8ddab9ba-a8aa-4745-86c6-66bf1c2c976c.html"/> <#-- header -->
     </head>
     <body>
-        <@tools.includePlace path="/c32a4f4a-ff5d-49cf-bb59-5d9784539174.html"/> <#-- 导航 -->
+        <@tools.includePlace path="/common/c32a4f4a-ff5d-49cf-bb59-5d9784539174.html"/> <#-- 导航 -->
 
         <div class="banner-l3 position-relative d-flex align-items-center justify-content-center" style="background:#22407c url(${site.sitePath}assets/img/banner-l3-bg-1.png) 50% 50% no-repeat;">
             <div class="container text-center position-relative py-3 py-md-4 text-white">
-                <div class="breadcrumbs fs-7 text-white d-inline-flex align-items-center text-opacity-50">
+                <div class="breadcrumbs fs-7 text-white d-inline-flex align-items-center text-opacity-50"  data-diy="category" data-diy-id="${category.id}">
                     <@include path="/ftl/bread.ftl"/><#-- 面包屑导航 -->
                 </div>
                 <h1 class="my-4" data-diy="content" data-diy-id="${content.id}"><a href="${url!}" class="text-white">${content.title}</a></h1>
@@ -49,7 +49,7 @@
                              </#list>
                          </@cms.contentFileList>
                     </#if>
-						<p><@cms.tag ids=content.tagIds><#if map?has_content>标签:</#if><#list map?keys as k><a href="${siteAttribute.searchPath!}?tagIds=${k}" target="_blank">${map[k].name}</a><#sep>,</#list></@cms.tag></p>
+						<p><@cms.tag ids=content.tagIds><#if map?has_content>标签:</#if><#list map?keys as k><a href="${site.dynamicPath}search/?tagIds=${k}" target="_blank">${map[k].name}</a><#sep>,</#list></@cms.tag></p>
                     </article>
                     <#if page?? && page.totalCount gt 1>
                         <ul class="pagination mt-5 overflow-auto pb-3">
@@ -105,7 +105,7 @@
 			</#list>
 		</@cms.contentRelatedList>
 		<#if content.tagIds?has_content>
-			<@cms.search tagId=content.tagIds count=10>
+			<@cms.search tagId=content.tagIds pageSize=10>
 				<#list page.list as a>
 						<#if content.id!=a.id>
 							<a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect?id=${a.id}<#else>${a.url}</#if>" class="list-group-item" title="${a.title}">${a.title}</a>
@@ -122,6 +122,7 @@
 				</@cms.contentList>
 		</#if>
 					</div>
+					<@tools.includePlace path="/54f5253d-d008-4e5c-b3b6-95158bce8dca.html"/> <#-- 最新评论 -->
 					<@tools.includePlace path="/17fbfe62-4fbe-4987-93d5-85383ebc5aa4.html"/> <#-- 最新投票 -->
 					<@tools.includePlace path="/3fefc879-2ef2-448d-909f-dc31849bcf29.html"/> <#-- 最新调查问卷 -->
 				</aside>
@@ -132,10 +133,10 @@
             var itemString="itemType=content&itemId=${content.id}";
 		var templatePath='${.current_template_name?keep_after('/')}';
 		</script>
-        <@tools.includePlace path="/7f8bacb5-30ca-4641-b66f-987d447b1a85.html"/> <#-- footer -->
+        <@tools.includePlace path="/footer/7f8bacb5-30ca-4641-b66f-987d447b1a85.html"/> <#-- footer -->
         <script src="${site.sitePath!}assets/ueditor/ueditor.parse.min.js"></script>
         <script>
-        $.getJSON('${site.dynamicPath!}api/contentClick?id=${content.id}', function(data){
+        $.getJSON('${site.dynamicPath}api/contentClick?id=${content.id}', function(data){
 			if(data.clicks > 100000){
                $('#clicks').text("10万+");
 			} else if(data.clicks <10000){

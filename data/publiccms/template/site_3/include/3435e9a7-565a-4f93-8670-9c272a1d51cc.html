@@ -1,10 +1,10 @@
 <#list page.list>
-<div>
+<div data-diy="place" data-diy-id="${path}">
 	<h3>精彩图集</h3>
 	<div id="right-images" class="swiper-container">
 		<div class="swiper-wrapper">
 			<#items as a>
-			<div class="swiper-slide">
+			<div class="swiper-slide" data-diy-item="${a.id}">
 				<a href="${site.dynamicPath}place/redirect?id=${a.id!}">
 					<img <#if a?is_first>src="${a.cover}"<#else>src="${site.sitePath!}assets/images/logo.png" data-src="${a.cover}" class="swiper-lazy"</#if> alt="${a.title!}"/>
 					<h4>${a.title}</h4>

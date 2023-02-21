@@ -1,4 +1,4 @@
-<footer>
+<footer data-diy="place" data-diy-id="${path}">
 	<div class="container">
 		<div class="column">
 			<h4 class="title">Public CMS内容管理系统<span class="head-line"></span></h4>
@@ -50,7 +50,7 @@
 		<img src="//www.publiccms.com/assets/images/wechat_account_1.jpg" alt="微信">
 	</div>
 </div>
-<script src="${site.sitePath}assets/js/jquery-1.12.4.min.js"></script>
+<script src="${site.sitePath}assets/js/jquery.min.js"></script>
 <script src="${site.sitePath!}assets/js/jquery.cookie.js"></script>
 <script src="${site.sitePath}assets/swiper/swiper.min.js"></script>
 <!-- 百度编辑器 -->
@@ -60,7 +60,7 @@
 <script>
 	<@sys.configData code="site">${(object.statistics?no_esc)!}</@sys.configData>
 </script>
-<script src="${site.sitePath}assets/js/cms.analytics.js"></script>
+<script src="${site.sitePath}assets/js/cms.support.js"></script>
 <script>
 	var ca = cmsAnalytics();
 	var url='${site.dynamicPath}api/visit/record';

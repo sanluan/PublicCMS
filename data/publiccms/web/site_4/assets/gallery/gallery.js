@@ -40,8 +40,7 @@
         return -1;
     });
 
-    var IE6 = !$.support.leadingWhitespace,
-        toString = Object.prototype.toString,
+    var toString = Object.prototype.toString,
         isString = function(val) {
             return toString.call(val) === '[object String]';
         },
@@ -881,8 +880,6 @@
             // 最小高度
             o.minHeight && (photo.css({
                 'min-height': o.minHeight
-            }), IE6 && photo.css({
-                height: o.minHeight
             }));
 
             // 初始化 slider，双向绑定事件

@@ -25,21 +25,22 @@
 	<main class="container">
 		<div class="left">
 			<h2><div><strong>${parent.name!}</strong></div></h2>
-			<ul class="left-nav">
-		<@cms.categoryList parentId=category.parentId>
+			<ul class="left-nav" data-diy="category">
+		<@_categoryList parentId=category.parentId>
 			<#list page.list as a>
-				<li><a href="${a.url!}">${a.name}</a></li>
+				<li data-diy-item="${a.id}"><a href="${a.url!}">${a.name}</a></li>
 			</#list>
-		</@cms.categoryList>
+		</@_categoryList>
 			</ul>
-			<h2><div><strong>相关链接</strong></div></h2>
+			
+			<h2 data-diy="place" data-diy-id="/505ddbed-f6ff-4a53-b5a8-0b2d7479a2ec.html"><div><strong>相关链接</strong></div></h2>
 			<select class="friend-link" onchange="javascript:window.open(this.options[this.selectedIndex].value)">
 				<option value="">友情链接</option>
 				<@tools.includePlace path="/505ddbed-f6ff-4a53-b5a8-0b2d7479a2ec.html"/> <#-- 友情链接 -->
 			</select>
 			<@tools.includePlace path="/e2ef0223-ddd3-4a95-bc65-c7eb796c911a.html"/> <#-- 内部链接 -->
 		</div>
-		<div class="breadcrumb">
+		<div class="breadcrumb" data-diy="content" data-diy-id="${content.id}">
 			<h3><span>当前位置：<a href="${base!}">首页</a> > <a href="${(category.url)!}">${(category.name)!}</a></span>${content.title}</h3>
 			<div class="content">
 				${(arrtibute.text?no_esc)!}
@@ -47,7 +48,8 @@
 		</div>
 	</main>
 	<script>
-    var itemString="itemType=content&itemId=${content.id}";
+		var templatePath='${.current_template_name?keep_after('/')}';
+	    var itemString="itemType=content&itemId=${content.id}";
     </script>
 	<@tools.includePlace path="/df408ca8-9f6d-4c65-b4ca-1eea34955834.html"/> <#-- Footer -->
 
