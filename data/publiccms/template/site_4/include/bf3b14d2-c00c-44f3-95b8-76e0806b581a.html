@@ -1,10 +1,10 @@
-<div id="index-case" class="container-fluid">
+<div id="index-case" class="container-fluid mt-5">
 	<div class="container text-center" data-diy="place" data-diy-id="${path}">
 		<@cms.category code="case">
-		<div class="mb-5 pb-2">
+		<div class="mb-4 pb-2">
 			<div class="fs-0 text-black fw-bold">应用案例</div>
 			<p class="text-black-50">${(getCategoryAttribute(object.id).description)!}</p>
-		</div>
+		</div>                
 		<@cms.contentList categoryId=object.id containChild=true hasCover=true pageSize=20>
 		<div class="row row-cols-2 row-cols-md-5 gx-4 gy-2 case-list">
 			<#list page.list as a>
@@ -17,7 +17,7 @@
 		</div>
 		</@cms.contentList>
 		<div class="py-4">
-			<a href="${object.url}" class="d-inline-flex align-items-center">查看更多案例 <img src="${site.sitePath}assets/img/icon-more.svg" alt="more"></a>
+			<a href="${getPage(object.url,2)}" class="d-inline-flex align-items-center">查看更多案例 <img src="${site.sitePath}assets/img/icon-more.svg" alt="more"></a>
 		</div>
 		</@cms.category>
 	</div>

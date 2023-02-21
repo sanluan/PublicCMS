@@ -5,6 +5,8 @@ import org.apache.tools.zip.ZipOutputStream;
 
 public interface Exchange<E, D> {
     public String getDirectory();
+    
+    public int importOrder();
 
     public void exportAll(short siteId, String directory, ZipOutputStream zipOutputStream);
 

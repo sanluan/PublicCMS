@@ -4,19 +4,19 @@
 	<title>${content.title} - ${category.name}</title>
 	<meta name="keywords" content="<#list getKeywords(content.title) as a>${a}<#sep>,</#list>"/>
 	<meta name="description" content="${content.description}"/>
-	<@_includePlace path="/76c53ac2-4f88-4ef3-984b-c81d00a48089.html"/> <#-- 头部Header -->
-	<link href="${site.sitePath!}assets/gallery/style.css" rel="stylesheet"/>
+	<@tools.includePlace path="/76c53ac2-4f88-4ef3-984b-c81d00a48089.html"/> <#-- 头部Header -->
+	<link href="${site.sitePath}assets/gallery/style.css" rel="stylesheet"/>
 </head>
 <body>
-	<@_includePlace path="/23e95a91-0063-4498-99ef-aa3fc4a79c4c.html"/> <#-- 导航 -->
+	<@tools.includePlace path="/23e95a91-0063-4498-99ef-aa3fc4a79c4c.html"/> <#-- 导航 -->
 	<main>
-		<div class="container bread">
+		<div class="container bread" data-diy="category">
 			<@include path="/ftl/echoBread.ftl"/>
 			<@echoBread category.id/>
 		</div>
 		<div class="container">
 			<article>
-				<div id="content">
+				<div id="content" data-diy="content" data-diy-id="${content.id}">
 					<div class="mod-gallery">
 						<header class="gallery-title">
 							<h2><a href="${url!}">${content.title}</a></h2>
@@ -43,11 +43,11 @@
 							</div>
 							<div class="gallery-photo">
 								<div class="gallery-photo-items" data-gallery="photo-items">
-	<@_contentFileList contentId=content.id image=true pageSize=1>
+	<@cms.contentFileList contentId=content.id image=true pageSize=1>
 	<#list page.list as a>
 				<img src="${a.filePath}" alt="${content.title}"/>
 	</#list>
-	</@_contentFileList>
+	</@cms.contentFileList>
 								</div>
 								<div class="gallery-photo-prev" data-gallery="photo-prev">
 									<a title="点击浏览上一张图片，支持'←'翻页" href="javascript:void(0);" hideFocus="true">上一页</a>
@@ -55,16 +55,16 @@
 								<div class="gallery-photo-next" data-gallery="photo-next">
 									<a title="点击浏览下一张图片，支持'→'翻页" href="javascript:void(0);" hideFocus="true">下一页</a>
 								</div>
-								<div class="gallery-loading" data-gallery="loading"><img src="${site.sitePath!}assets/gallery/images/loading.gif" /></div>
+								<div class="gallery-loading" data-gallery="loading"><img src="${site.sitePath}assets/gallery/images/loading.gif" /></div>
 								<div class="gallery-end" data-gallery="end">
-	<@_contentList modelId=content.modelId startPublishDate=content.publishDate orderType='asc' pageIndex=1 count=1>
+	<@cms.contentList modelId=content.modelId startPublishDate=content.publishDate orderType='asc' pageIndex=1 count=1>
 		<#list page.list as a>
 									<a href="${a.url!}">
-										<@_contentFileList contentId=a.id image=true count=1>
+										<@cms.contentFileList contentId=a.id image=true count=1>
 											<#list page.list as i>
-												<img src="<@_thumb path=i.filePath width=100 height=75/>" style="margin-top:20px;" alt="${a.title!}"/>
+												<img src="<@tools.thumb path=i.filePath width=100 height=75/>" style="margin-top:20px;" alt="${a.title!}"/>
 											</#list>
-										</@_contentFileList>
+										</@cms.contentFileList>
 										<span>下一图集 &gt;</span>
 									</a>
 		<#else>
@@ -72,7 +72,7 @@
 										<span>没有更多图集了，返回首页看看吧！</span>
 									</a>
 		</#list>
-	</@_contentList>
+	</@cms.contentList>
 								</div>
 							</div>
 							<div class="gallery-photo-description">
@@ -81,36 +81,36 @@
 							</div>
 							<div class="gallery-footer">
 								<div class="clearfix">
-	<@_contentList modelId=content.modelId endPublishDate=content.publishDate orderField='publishDate' pageIndex=2 count=1>
+	<@cms.contentList modelId=content.modelId endPublishDate=content.publishDate orderField='publishDate' pageIndex=2 count=1>
 		<#if 2=page.pageIndex>
 			<#list page.list as a>
 									<span class="gallery-prev">
 										<a href="${a.url!}">
-											<@_contentFileList contentId=a.id image=true count=1>
+											<@cms.contentFileList contentId=a.id image=true count=1>
 												<#list page.list as i>
-													<img src="<@_thumb path=i.filePath width=100 height=75/>" alt="${a.title}"/>
+													<img src="<@tools.thumb path=i.filePath width=100 height=75/>" alt="${a.title}"/>
 												</#list>
-											</@_contentFileList>
+											</@cms.contentFileList>
 											<span>&lt; 上一图集</span>
 										</a>
 									</span>
 			</#list>
 		</#if>
-	</@_contentList>
-	<@_contentList modelId=content.modelId startPublishDate=content.publishDate orderField='publishDate' orderType='asc' pageIndex=1 count=1>
+	</@cms.contentList>
+	<@cms.contentList modelId=content.modelId startPublishDate=content.publishDate orderField='publishDate' orderType='asc' pageIndex=1 count=1>
 		<#list page.list as a>
 									<span class="gallery-next">
 										<a href="${a.url!}">
-											<@_contentFileList contentId=a.id image=true count=1>
+											<@cms.contentFileList contentId=a.id image=true count=1>
 												<#list page.list as i>
-													<img src="<@_thumb path=i.filePath width=100 height=75/>" alt="${a.title}"/>
+													<img src="<@tools.thumb path=i.filePath width=100 height=75/>" alt="${a.title}"/>
 												</#list>
-											</@_contentFileList>
+											</@cms.contentFileList>
 											<span>下一图集 &gt;</span>
 										</a>
 									</span>
 		</#list>
-	</@_contentList>
+	</@cms.contentList>
 									<div class="gallery-thumb" data-gallery="slider">
 										<span class="gallery-thumb-prev">
 											<a href="javascript:void(0);" hideFocus="true" data-slider="items-left"></a>
@@ -163,25 +163,26 @@
 		</div>
 	</main>
 	<script>
+		var templatePath='${.current_template_name?keep_after('/')}';
 		var itemString="itemType=content&itemId=${content.id}";
 	</script>
-	<@_includePlace path="/cc29e896-332a-46d8-9bcb-d48e92144e9c.html"/> <#-- 尾部Footer -->
-	<script src="${site.sitePath!}assets/gallery/gallery.js"></script>
+	<@tools.includePlace path="/cc29e896-332a-46d8-9bcb-d48e92144e9c.html"/> <#-- 尾部Footer -->
+	<script src="${site.sitePath}assets/gallery/gallery.js"></script>
 	<script>
 	$(function(){
 		var gallery = new Gallery({
 			element: '#content .mod-gallery',
 			photos: [
-	<@_contentFileList contentId=content.id image=true>
+	<@cms.contentFileList contentId=content.id image=true>
 	<#list page.list as a>
 				{
 					big: '${a.filePath}',
-					small: '<@_thumb path=a.filePath width=100 height=75/>',
-					thumb: '<@_thumb path=a.filePath width=100 height=75/>',
+					small: '<@tools.thumb path=a.filePath width=100 height=75/>',
+					thumb: '<@tools.thumb path=a.filePath width=100 height=75/>',
 					note: '${((a.description!content.description!)?js_string)!}'
 				}<#if a?has_next>,</#if>
 	</#list>
-	</@_contentFileList>
+	</@cms.contentFileList>
 			],
 			preload: 3,
 			minHeight: 100,
@@ -191,7 +192,7 @@
 			templatePhotoThumb: ''
 		});
 	});
-	$.getJSON('${site.dynamicPath!}api/contentClick?id=${content.id}', function(data){
+	$.getJSON('${site.dynamicPath}api/contentClick?id=${content.id}', function(data){
 		$('.gallery-info em').text(data.clicks);
 	});
 	</script>

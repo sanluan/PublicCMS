@@ -3,8 +3,8 @@
 	<@cms.category id=a.itemId>
 		<@cms.contentList categoryId=object.id containChild=true count=4>
 			<#if page.totalCount gt 0>
-				<a href="${object.url}"><h3>${object.name!}</h3></a>
-				<ul>
+				<a href="${object.url}" data-diy="place" data-diy-id="${path}"><h3>${object.name!}</h3></a>
+				<ul data-diy="content">
 				<#list page.list as a>
 					<@include path="/ftl/data-list.ftl"/>
 				</#list>

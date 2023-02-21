@@ -16,27 +16,27 @@
 	<@tools.includePlace path="/b7da840c-9f97-486c-af7c-7ff114b60c26.html"/> <#-- 中文导航 -->
 
 	<main class="container">
-		<div class="introduction-box">
+		<div class="introduction-box" data-diy="page">
 			<h2><div><strong>今日某某</strong></div></h2>
 			<div class="clear"></div>
 			<div class="introduction">
 				<p>${(metadata.extendData.introduction?no_esc)!}</p>
 			</div>
-            <img name="" src="${site.sitePath}assets/images/201209291602208653.jpg" alt="">
+            <img src="${site.sitePath}assets/images/201209291602208653.jpg" alt="">
 		</div>
 	<@cms.category id=(metadata.extendData.category)!>
-		<div class="content-list-box">
+		<div class="content-list-box" data-diy="page">
 			<h2>
 				<div>
 					<span class="on">${object.name!}<a href="${object.url}" title="${object.name!}">More</a></span>
 				</div>
 			</h2>
-			<div class="tab-list">
+			<div class="tab-list" data-diy="content">
 		<@cms.contentList categoryId=object.id containChild=true pageSize=pageSize>
 			<#if page.totalCount gt 0>
 				<ul>
 				<#list page.list as a>
-                    <li><span class="title"><a href="${a.url!}" target="_blank">${a.title!}</a></span>${a.publishDate?string('yyyy-MM-dd')}</li>
+                    <li data-diy-item="${a.id}"><span class="title"><a href="${a.url!}" target="_blank">${a.title!}</a></span>${a.publishDate?string('yyyy-MM-dd')}</li>
 			    </#list>
 				</ul>
 			</#if>
@@ -45,7 +45,7 @@
 		</div>
 	</@cms.category>
 		<div class="aside-box">
-			<h2><div><strong>相关链接</strong></div></h2>
+			<h2 data-diy="place" data-diy-id="/505ddbed-f6ff-4a53-b5a8-0b2d7479a2ec.html"><div><strong>相关链接</strong></div></h2>
 			<select class="friend-link" onchange="javascript:if(this.options[this.selectedIndex].value){window.open(this.options[this.selectedIndex].value)}">
                 <option value="">友情连接</option>
 				<@tools.includePlace path="/505ddbed-f6ff-4a53-b5a8-0b2d7479a2ec.html"/> <#-- 友情链接 -->
@@ -55,7 +55,9 @@
 	</main>
 
     <@tools.includePlace path="/ab53b388-be0e-4674-b631-e1de625c74ac.html"/> <#-- 首页推荐 -->
-
+	<script>
+		var templatePath='${.current_template_name?keep_after('/')}';
+	</script>
 	<@tools.includePlace path="/df408ca8-9f6d-4c65-b4ca-1eea34955834.html"/> <#-- Footer -->
 	<script>
 			$('a[data-id=home]').addClass('selected');

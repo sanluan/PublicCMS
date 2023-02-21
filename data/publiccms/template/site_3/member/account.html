@@ -2,33 +2,33 @@
 <html lang="zh_CN">
 <head>
     <title>${(metadata.alias)!}</title>
-	<@_includePlace path="/76c53ac2-4f88-4ef3-984b-c81d00a48089.html"/> <#-- 头部Header -->
+	<@tools.includePlace path="/76c53ac2-4f88-4ef3-984b-c81d00a48089.html"/> <#-- 头部Header -->
 </head>
 <body>
-	<@_includePlace path="/23e95a91-0063-4498-99ef-aa3fc4a79c4c.html"/> <#-- 导航 -->
+	<@tools.includePlace path="/23e95a91-0063-4498-99ef-aa3fc4a79c4c.html"/> <#-- 导航 -->
     <main>
 		<div class="container  clearfix-after">
-			<@_includePlace path="/c936c718-5f19-426f-b3ff-13a5a8d63044.html"/> <#-- 个人中心导航 -->
+			<@tools.includePlace path="/c936c718-5f19-426f-b3ff-13a5a8d63044.html"/> <#-- 个人中心导航 -->
 			<div class="right-content">
 				<div class="box">
-					<@_tradeAccount id=user.id>
+					<@trade.account id=user.id>
 						<h3>我的账户</h3>
 					<p><label class="input-label">余额:</label><label class="input-label">${object.amount}</label><span class="float-right"><label class="input-label">更新日期:</label>${object.updateDate!}</span></p>
 						<form action="${site.dynamicPath}tradeAccount/recharge/alipay" method="post">
-							<input type="hidden" name="_csrf" value="<@_csrfToken/>"/>
+							<input type="hidden" name="_csrf" value="<@tools.csrfToken/>"/>
 							<input type="hidden" name="returnUrl" value="${site.dynamicPath}account.html"/>
 							<p><label class="input-label">充值:</label><input type="text" name="change" min="0.01" required="required"/> <label class="input-label">付款方式:</label><label><input type="radio" name="accountType" value="alipay"/>Alipay</label><label><input type="radio" name="accountType" value="wechat"/>Wechat</label> <input type="submit" class="button" value="支付"/></p>
 						</form>
-					</@_tradeAccount>
+					</@trade.account>
 					<#macro message code>${springMacroRequestContext.getMessage(code)}</#macro>
 					<#macro merge name value><#if !.vars[name]??><@"<#assign ${name}=''>"?interpret /></#if><#if value??><@"<#assign ${name}=${name}+'${value},'>"?interpret /></#if></#macro>
-					<@_tradeAccountHistoryList accountId=user.id pageIndex=pageIndex pageSize=10>
+					<@trade.accountHistoryList accountId=user.id pageIndex=pageIndex pageSize=10>
 						<h3>我的账户历史</h3>
 						<ul>
 						<#list page.list as a>
 							<@merge 'userIds' a.userId!/>
 						</#list>
-						<@_sysUser ids=userIds!><#assign userMap=map!/></@_sysUser>
+						<@sys.user ids=userIds!><#assign userMap=map!/></@sys.user>
 						<#list page.list as a>
 							<li class="underline">
 								<p><@message 'page.status.accountHistory.'+a.status/><span class="right">${a.createDate!} <label>操作人员:</label>${(userMap[a.userId?string].nickName)!}</span></p>
@@ -68,14 +68,15 @@
 								<span>下一页</span>
 							</#if>
 						</div>
-					</@_tradeAccountHistoryList>
+					</@trade.accountHistoryList>
 				</div>
 			</div>
 		</div>
     </main>
     <script>
-    var itemString="itemType=user&itemId=${user.id}";
+		var templatePath='${.current_template_name?keep_after('/')}';
+    	var itemString="itemType=user&itemId=${user.id}";
     </script>
-    <@_includePlace path="/cc29e896-332a-46d8-9bcb-d48e92144e9c.html"/> <#-- 尾部Footer -->   
+    <@tools.includePlace path="/cc29e896-332a-46d8-9bcb-d48e92144e9c.html"/> <#-- 尾部Footer -->   
 </body>
 </html> 

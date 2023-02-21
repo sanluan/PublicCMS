@@ -43,7 +43,7 @@ public class GetIpRegionMethod extends BaseMethod {
     private final Searcher searcher;
 
     public GetIpRegionMethod() throws IOException {
-        try(InputStream inputStream = getClass().getResourceAsStream("/ip2region.xdb")){
+        try (InputStream inputStream = GetIpRegionMethod.class.getResourceAsStream("/ip2region.xdb")) {
             searcher = Searcher.newWithBuffer(IOUtils.toByteArray(inputStream));
         }
     }

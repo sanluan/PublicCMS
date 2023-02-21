@@ -2,10 +2,10 @@
 <html lang="zh-CN">
     <head>
         <title>${metadata.alias!}</title>
-        <@tools.includePlace path="/8ddab9ba-a8aa-4745-86c6-66bf1c2c976c.html"/> <#-- header -->
+        <@tools.includePlace path="/common/8ddab9ba-a8aa-4745-86c6-66bf1c2c976c.html"/> <#-- header -->
     </head>
     <body>
-        <@tools.includePlace path="/c32a4f4a-ff5d-49cf-bb59-5d9784539174.html"/> <#-- 导航 -->
+        <@tools.includePlace path="/common/c32a4f4a-ff5d-49cf-bb59-5d9784539174.html"/> <#-- 导航 -->
 
         <div class="container">
             <div class="row gx-5 justify-content-between my-5">
@@ -24,9 +24,9 @@
                         <#else>
                             <form method="post" action="${site.dynamicPath}content/save" onsubmit="return check();">
                                 <input type="hidden" name="_csrf" value="<@tools.csrfToken/>"/>
-                                <input name="returnUrl" type="hidden" value="${site.dynamicPath}case.html?result=true" />
+                                <input name="returnUrl" type="hidden" value="${site.dynamicPath}member/case.html?result=true" />
                                 <input name="categoryId" type="hidden" value="19"/>
-                                <input name="modelId" type="hidden" value="1"/>
+                                <input name="modelId" type="hidden" value="article"/>
                                 <input name="author" type="hidden" value="${(user.nickname)!}"/>
                                 <p><label class="input-label">案例名:</label><input name="title" type="text" size="30" maxlength="255"/></p>
                                 <p><label class="input-label">案例介绍:</label><textarea name="text" style="width:60%;height:200px;"></textarea></p>
@@ -62,7 +62,7 @@
 			var itemString="itemType=category&itemId=19";
 			var templatePath='${.current_template_name?keep_after('/')}';
 		</script>
-        <@tools.includePlace path="/7f8bacb5-30ca-4641-b66f-987d447b1a85.html"/> <#-- footer -->
+        <@tools.includePlace path="/footer/7f8bacb5-30ca-4641-b66f-987d447b1a85.html"/> <#-- footer -->
         <script>
             $(function(){$('.login-form input').eq(0).focus();});
             function check(){

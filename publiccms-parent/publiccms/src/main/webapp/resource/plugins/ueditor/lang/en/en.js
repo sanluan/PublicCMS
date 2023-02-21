@@ -347,12 +347,12 @@ UE.I18N['en'] = {
     'insertvideo':{
         'static':{
             'lang_tab_insertV':"Video",
-            'lang_tab_uploadI':"Upload Image",
+            'lang_tab_uploadI':"Upload Cover",
             'lang_tab_uploadV':"Upload",
             'lang_tab_online':"Manager",
-            'lang_tab_onlineImage':"Image manager",
+            'lang_tab_onlineImage':"Cover manager",
             'lang_video_url':" URL ",
-            'lang_image_url':"Image URL",
+            'lang_image_url':"Cover URL",
             'lang_video_size':"Video Size",
             'lang_videoW':"Width",
             'lang_videoH':"Height",

@@ -7,7 +7,7 @@
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
-<@cms.categoryList advanced=true queryAll=true count=100>
+<@cms.categoryList advanced=true queryAll=true pageSize=100>
 	<#list page.list as a>
 		<#if !a.onlyUrl>
   <url>
@@ -19,7 +19,7 @@
 		</#if>
 	</#list>
 </@cms.categoryList>
-<@cms.contentList advanced=true status=1 pageIndex=1 count=500 orderField='publishDate'>
+<@cms.contentList advanced=true status=1 pageIndex=1 pageSize=500 orderField='publishDate'>
 	<#list page.list as a>
 <#if !a.onlyUrl>
   <url>

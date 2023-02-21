@@ -3,7 +3,7 @@
 <head>
     <title>接口列表</title>
     <meta charset="utf-8">
-    <@tools.includePlace path="/8ddab9ba-a8aa-4745-86c6-66bf1c2c976c.html"/> <#-- header -->
+    <@tools.includePlace path="/common/8ddab9ba-a8aa-4745-86c6-66bf1c2c976c.html"/> <#-- header -->
     <link href="${base}/resource/plugins/json-formatter/code-formatter.css" rel="stylesheet"/>
 <style>
 #rawJson{width:100%;height: 50px;}
@@ -14,7 +14,7 @@ p{margin-bottom:5px;}
 </style>
 </head>
 <body>
-    <@tools.includePlace path="/c32a4f4a-ff5d-49cf-bb59-5d9784539174.html"/> <#-- 导航 -->
+    <@tools.includePlace path="/common/c32a4f4a-ff5d-49cf-bb59-5d9784539174.html"/> <#-- 导航 -->
     <main class="container">
         <fieldset>
             <legend>接口测试</legend>
@@ -32,7 +32,7 @@ p{margin-bottom:5px;}
             <p>
                 <label>站点切换
                     <select onchange="$('#sendData').val($('#sendData').val().replace(sitePath,$(this).val()));sitePath=$(this).val();">
-                <@sys.siteList count=500>
+                <@sys.siteList pageSize=500>
                     <#list page.list as a>
                         <option value ="${a.dynamicPath!}" <#if site.id=a.id>selected="selected"</#if>>${a.name!}<#if site.id=a.id>[当前站点]</#if></option>
                     </#list>
@@ -58,12 +58,12 @@ p{margin-bottom:5px;}
 	<script>
 		var templatePath='${.current_template_name?keep_after('/')}';
 	</script>
-    <@tools.includePlace path="/7f8bacb5-30ca-4641-b66f-987d447b1a85.html"/> <#-- footer -->
+    <@tools.includePlace path="/footer/7f8bacb5-30ca-4641-b66f-987d447b1a85.html"/> <#-- footer -->
     <script src="${base}/resource/plugins/json-formatter/code-formatter.js"></script>
     <script src="${base}/resource/plugins/json-formatter/json2.js"></script>
 	<script>
 	var i=0;
-	var sitePath = '${site.dynamicPath}';
+	var sitePath = '${site.dynamicPath}member/';
 	var apiArray=['api/directive/','api/method/','api/']
 	var apisArray=['api/namespaces','api/methods','api/apis'];
 	var supportShowParametersArray=[true,false,true];

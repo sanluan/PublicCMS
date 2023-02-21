@@ -3,11 +3,11 @@
 #content img,#content video{max-width:100%;}
 </style>
 <div class="pageFormContent" layoutH>
-    <#if sitefile?has_content>
         <dl class="nowrap">
             <dt><@t.page 'name'/>:</dt>
-            <dd class="exclude-translate">${sitefile.name!}<#if sitefile.url?has_content><a href="${sitefile.url}" target="_blank"><i class="icon-external-link"></i></a></#if></dd>
+            <dd class="exclude-translate">${(sitefile.name)!name}<#if sitefile.url?has_content><a href="${sitefile.url}" target="_blank"><i class="icon-external-link"></i></a></#if></dd>
         </dl>
+    <#if sitefile?has_content>
         <dl class="nowrap">
             <dt><@t.page 'description'/>:</dt>
             <dd class="exclude-translate">${sitefile.description!}</dd>

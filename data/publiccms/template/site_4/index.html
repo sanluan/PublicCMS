@@ -4,34 +4,35 @@
         <title>${(metadata.extendData.title)!} </title>
         <meta name="keywords" content="${(metadata.extendData.keywords)!}"/>
         <meta name="description" content="${(metadata.extendData.description)!}"/>
-        <@tools.includePlace path="/8ddab9ba-a8aa-4745-86c6-66bf1c2c976c.html"/> <#-- header -->
+        <@tools.includePlace path="/common/8ddab9ba-a8aa-4745-86c6-66bf1c2c976c.html"/> <#-- header -->
+		<@tools.includePlace path="/ff78be16-6f75-42b3-b115-d9d9cf578f1c.html"/> <#-- 首页置灰控制 -->
 		<link href="${site.sitePath}assets/swiper/swiper.min.css" rel="stylesheet">
     </head>
     <body>
-        <@tools.includePlace path="/c32a4f4a-ff5d-49cf-bb59-5d9784539174.html"/> <#-- 导航 -->
+        <@tools.includePlace path="/common/c32a4f4a-ff5d-49cf-bb59-5d9784539174.html"/> <#-- 导航 -->
 
         <div id="index-header" class="position-relative">
             <div class="container text-white">
                 <div class="row position-relative">
                     <div class="col-lg-7 pt-4 pt-md-5 px-4 px-md-0 d-flex flex-column align-items-center align-items-lg-start animate__animated animate__fadeInLeft"  data-diy="page">
                         <div class="col-9 col-md-12">
-                            <img src="${site.sitePath}assets/img/index-publiccms-logo.svg" class="img-fluid">
+                            <img src="${site.sitePath}assets/img/index-publiccms-logo.svg" class="img-fluid" alt="${site.name}">
                         </div>
-                        <div class="fs-64 fw-bolder lh-sm">
+                        <div class="fs-0 fw-bolder lh-sm">
                             更先进的内容管理系统
                         </div>
                         <div class="col-md-9 mt-2 mb-5">
-                            PublicCMS 是采用2022年主流技术开发的开源 Java CMS 产品，为您的网站建设提供强大驱动，也是企业级项目产品原型的良好选择。
+                            PublicCMS 是采用2023年主流技术开发的开源 Java CMS 产品，为您的网站建设提供强大驱动，也是企业级项目产品原型的良好选择。
                         </div>
                         <div>
 							<@cms.category code='admin'>
                             <a href="${object.url}" target="_blank" class="d-inline-flex btn rounded-pill bg-white py-2 px-4 me-3 align-items-center">
-                                <img src="${site.sitePath}assets/img/icon-demo.svg" class="me-2"> 查看演示
+                                <img src="${site.sitePath}assets/img/icon-demo.svg" class="me-2" alt="查看演示"> 查看演示
                             </a>
 							</@cms.category>
 							<@cms.category code="download">
-                            <a href="${object.url}" target="_blank" class="d-inline-flex btn btn-outline-light rounded-pill py-2 px-4 bg-transparent align-items-center">
-                                <img src="${site.sitePath}assets/img/icon-download.svg" class="me-2"> 下载试用
+                            <a href="${object.url}" class="d-inline-flex btn btn-outline-light rounded-pill py-2 px-4 bg-transparent align-items-center">
+                                <img src="${site.sitePath}assets/img/icon-download.svg" class="me-2" alt="下载试用"> 下载试用
                             </a>
 							</@cms.category>
                         </div>
@@ -40,18 +41,20 @@
                         <div class="row justify-content-center">
                             <div class="col-8 col-md-6 col-lg-11">
                                 <div class="position-relative animate__animated animate__fadeInRight">
-                                    <img src="${site.sitePath}assets/img/index-header-img.svg" class="w-100">
-                                    <img src="${site.sitePath}assets/img/index-header-img-gear-1.svg" class="position-absolute animate__animated animate__rotateIn animate__infinite animate__slower animate__delay-1s" style="left:60.6%;top: 12.79%;width: 6.277%;">
-                                    <img src="${site.sitePath}assets/img/index-header-img-cloud.svg" class="position-absolute animate__animated animate__fadeInDown animate__infinite animate__slower" style="left:20.13%;top: 13.94%;width: 9.86%;">
-                                    <img src="${site.sitePath}assets/img/index-header-img-heart.svg" class="position-absolute animate__animated animate__heartBeat animate__infinite animate__slow animate__delay-2s" style="left:35.06%;top: 77.89%;width: 5.3%;">
-                                    <img src="${site.sitePath}assets/img/index-header-img-arm.svg" class="position-absolute animate__arm" style="left:35.86%;top: 44.73%;width: 24.675%;">
+                                    <img src="${site.sitePath}assets/img/index-header-img.svg" class="w-100" alt="img">
+                                    <img src="${site.sitePath}assets/img/index-header-img-gear-1.svg"  alt="gear" class="position-absolute animate__animated animate__rotateIn animate__infinite animate__slower animate__delay-1s" style="left:60.6%;top: 12.79%;width: 6.277%;">
+                                    <img src="${site.sitePath}assets/img/index-header-img-cloud.svg"  alt="cloud" class="position-absolute animate__animated animate__fadeInDown animate__infinite animate__slower" style="left:20.13%;top: 13.94%;width: 9.86%;">
+                                    <img src="${site.sitePath}assets/img/index-header-img-heart.svg"  alt="heart" class="position-absolute animate__animated animate__heartBeat animate__infinite animate__slow animate__delay-2s" style="left:35.06%;top: 77.89%;width: 5.3%;">
+                                    <img src="${site.sitePath}assets/img/index-header-img-arm.svg"  alt="arm" class="position-absolute animate__arm" style="left:35.86%;top: 44.73%;width: 24.675%;">
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div data-diy="region" data-diy-id="34daa502-06d6-4724-ba62-724f230be888"><@tools.includeRegion id="34daa502-06d6-4724-ba62-724f230be888"/> <#-- 首页首屏下方信息区域 --></div>
+            <div data-diy="region" data-diy-id="34daa502-06d6-4724-ba62-724f230be888">
+				<@tools.includeRegion id="34daa502-06d6-4724-ba62-724f230be888"/> <#-- 首页首屏下方信息区域 -->
+			</div>
         </div>
 		
 		<div data-diy="region" data-diy-id="e069718d-c9e7-482f-b00d-58ed75bd0fb3">
@@ -61,8 +64,7 @@
 		<script>
 		var templatePath='${.current_template_name?keep_after('/')}';
 		</script>
-        <@tools.includePlace path="/7f8bacb5-30ca-4641-b66f-987d447b1a85.html"/> <#-- footer -->
-		<@tools.includePlace path="/ff78be16-6f75-42b3-b115-d9d9cf578f1c.html"/> <#-- 首页置灰控制 -->
+        <@tools.includePlace path="/footer/7f8bacb5-30ca-4641-b66f-987d447b1a85.html"/> <#-- footer -->
 		<script src="${site.sitePath}assets/swiper/swiper.min.js"></script>
 		<script>
 			var swiper_index = new Swiper('#index-focus', {

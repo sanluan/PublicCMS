@@ -1,0 +1,25 @@
+<div class="pageFormContent">
+</div>
+<script>
+$("form",navTab.getCurrentPanel()).trigger(JUI.eventType.editorSync);
+var $images = $($("textarea[name=text]",navTab.getCurrentPanel()).val()).find("img");
+var sitepath = "${site.sitePath}";
+if($images.length ) {
+    $images.each(function(i,img){
+        var image = $(img);
+        var imagePath=image.attr("src");
+        if(imagePath ) {
+            var coverPath = imagePath;
+            if(coverPath.startsWith(sitepath)){
+                coverPath=coverPath.substring(sitepath.length);
+            }
+            var imageList = $("<div class=\"image-list\"></div>").appendTo($(".pageFormContent",$.pdialog.getCurrent()));
+            var link = $("<a href=\"javascript:;\" onclick=\"$.bringBack({'cover':'"+escapeJquery(coverPath)+"'});return false;\"></a>").appendTo(imageList);
+            var img = $("<img>").appendTo(link);
+            img.attr("src",imagePath);
+            img.attr("alt",image.attr("alt"));
+            $("<p></p>").appendTo(link).text(image.attr("alt"));
+        }
+    });
+}
+</script>

@@ -85,7 +85,7 @@ public class PlaceExchangeComponent extends AbstractExchange<String, Place> {
     @Override
     public void exportEntity(short siteId, String directory, String path, ByteArrayOutputStream outputStream,
             ZipOutputStream zipOutputStream) {
-        PageHandler page = service.getPage(siteId, null, path, null, null, null, null, null, null, false, null, null, null,
+        PageHandler page = service.getPage(siteId, null, CommonConstants.SEPARATOR + path, null, null, null, null, null, null, false, null, null, null,
                 PageHandler.MAX_PAGE_SIZE);
         @SuppressWarnings("unchecked")
         List<CmsPlace> list = (List<CmsPlace>) page.getList();

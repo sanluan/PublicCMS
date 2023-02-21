@@ -190,6 +190,7 @@
                                 }
                             });
                             if ($lis.length == 0 ) {
+                                $suggest.hide();
                                 var jsonStr = "";
                                 for (var i = 0; i < suggestFields.length; i++) {
                                     if (_util.lookupField(suggestFields[i]) == event.target.name ) {

@@ -560,16 +560,16 @@ public class CmsTemplateAdminController {
      * @param site
      * @param admin
      * @param path
-     * @param fileName
+     * @param name
      * @param request
      * @return view name
      */
     @RequestMapping("createDirectory")
     @Csrf
-    public String createDirectory(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path, String fileName,
+    public String createDirectory(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path, String name,
             HttpServletRequest request) {
-        if (null != path && CommonUtils.notEmpty(fileName)) {
-            path = path + CommonConstants.SEPARATOR + fileName;
+        if (null != path && CommonUtils.notEmpty(name)) {
+            path = path + CommonConstants.SEPARATOR + name;
             String filepath = siteComponent.getTemplateFilePath(site.getId(), path);
             CmsFileUtils.mkdirs(filepath);
             logOperateService

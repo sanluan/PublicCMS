@@ -18,21 +18,19 @@ function validateCallback(form, callback, confirmMsg) {
     if (!$form.valid() ) {
         return false;
     }
-    $("textarea.editor[escape=true]", $form).each(function() {
-         $(this).val(html2Escape($(this).val()));
-    });
-    $("textarea.code[escape=true]", $form).each(function() {
-         $(this).val(html2Escape($(this).val()));
+    $("textarea.editor[escape=true],textarea.code[escape=true]", $form).each(function() {
+        $(this).val(html2Escape($(this).val()));
     });
     $("input[escape=true]", $form).each(function() {
         if($(this).val()){
-          $(this).attr('maxlength',128);
-          $(this).val(sha512($(this).val()));
+            $(this).attr("escape",false);
+            $(this).attr("maxlength",128);
+            $(this).val(sha512($(this).val()));
         }
     });
     var _submitFn = function() {
         $.ajax({
-            type: form.method || 'POST', url: $form.attr("action"), data: $form.serializeArray(), dataType: "json", cache: false, success: callback || JUI.ajaxDone ,
+            type: form.method || "POST", url: $form.attr("action"), data: $form.serializeArray(), dataType: "json", cache: false, success: callback || JUI.ajaxDone ,
             error: JUI.ajaxError
         });
     }
@@ -75,8 +73,8 @@ function _iframeResponse(iframe, callback) {
         $document.trigger("ajaxStop");
 
         if (iframe.src == "javascript:'%3Chtml%3E%3C/html%3E';" || // For
-        // Safari
-        iframe.src == "javascript:'<html></html>';" ) { // For FF, IE
+            // Safari
+            iframe.src == "javascript:'<html></html>';" ) { // For FF, IE
             return;
         }
         var doc = iframe.contentDocument || iframe.document;

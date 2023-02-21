@@ -1,9 +1,9 @@
 <#list page.list>
-    <div class="infinite-carousel">
+    <div class="infinite-carousel" data-diy="place" data-diy-id="${path}">
         <div class="wrapper">
             <ul>
     <#items as a>
-        <li>
+        <li data-diy-item="${a.id}">
 			<div onmouseover="this.className='on-div'" onmouseout="this.className=''">
 				<img src="${a.cover!}" width="217" height="117" alt="${a.title!}"/>
 				<a href="${a.url!}" target="_blank" title="${a.title!}"></a>

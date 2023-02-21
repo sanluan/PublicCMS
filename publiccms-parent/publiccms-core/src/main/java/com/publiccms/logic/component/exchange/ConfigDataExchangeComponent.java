@@ -3,6 +3,7 @@ package com.publiccms.logic.component.exchange;
 import java.io.ByteArrayOutputStream;
 import java.util.Set;
 
+import org.apache.tools.zip.ZipFile;
 import org.apache.tools.zip.ZipOutputStream;
 import org.springframework.stereotype.Component;
 
@@ -40,6 +41,12 @@ public class ConfigDataExchangeComponent extends AbstractExchange<SysConfigData,
     }
 
     @Override
+    public void importData(short siteId, long userId, String directory, boolean overwrite, ZipFile zipFile) {
+        super.importData(siteId, userId, directory, overwrite, zipFile);
+        configComponent.clear(siteId);
+    }
+
+    @Override
     public void exportEntity(short siteId, String directory, SysConfigData entity, ByteArrayOutputStream outputStream,
             ZipOutputStream zipOutputStream) {
         export(directory, outputStream, zipOutputStream, entity, entity.getId().getCode() + ".json");
@@ -53,6 +60,11 @@ public class ConfigDataExchangeComponent extends AbstractExchange<SysConfigData,
                 service.saveOrUpdate(data);
             }
         }
+    }
+
+    @Override
+    public int importOrder() {
+        return 1;
     }
 
     @Override

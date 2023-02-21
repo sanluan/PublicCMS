@@ -2,33 +2,33 @@
 <html lang="zh-CN">
 <head>
 	<title>${(metadata.alias)!}</title>
-	<@_includePlace path="/76c53ac2-4f88-4ef3-984b-c81d00a48089.html"/> <#-- 头部Header -->
+	<@tools.includePlace path="/76c53ac2-4f88-4ef3-984b-c81d00a48089.html"/> <#-- 头部Header -->
 </head>
 <body>
-<@_includePlace path="/23e95a91-0063-4498-99ef-aa3fc4a79c4c.html"/> <#-- 导航 -->
+<@tools.includePlace path="/23e95a91-0063-4498-99ef-aa3fc4a79c4c.html"/> <#-- 导航 -->
 <main>
 	<div class="container  clearfix-after">
-		<@_includePlace path="/c936c718-5f19-426f-b3ff-13a5a8d63044.html"/> <#-- 个人中心导航 -->
+		<@tools.includePlace path="/c936c718-5f19-426f-b3ff-13a5a8d63044.html"/> <#-- 个人中心导航 -->
 		<div class="right-content">
 			<div class="box">
 				<@import path="/ftl/tools.ftl" namespace="t"/><#-- 工具 -->
 				<div class="comment-box column">
-					<h3><a href="${site.dynamicPath}myReply.html">回复我的评论</a></h3>
-					<@_commentList replyUserId=user.id pageSize=3>
+					<h3><a href="${site.dynamicPath}member/myReply.html">回复我的评论</a></h3>
+					<@cms.commentList replyUserId=user.id pageSize=3>
 					<ul>
 						<#list page.list as a>
 							<@t.merge 'userIds' a.userId!/>
 							<@t.merge 'contentIds' a.contentId!/>
 						</#list>
-						<@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
-						<@_content ids=t.contentIds! absoluteURL=true><#assign contentMap=map!/></@_content>
+						<@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
+						<@cms.content ids=t.contentIds! absoluteURL=true><#assign contentMap=map!/></@cms.content>
 						<#list page.list as a>
 							<li class="underline">
-								<p><a href="${site.dynamicPath}user.html?id=${a.userId!}" target="_blank">${userMap[a.userId?string].nickName}</a> ${a.createDate} 评论《<a href="${contentMap[a.contentId?string].url}" target="_blank">${contentMap[a.contentId?string].title}</a>》</p>
+								<p><a href="${site.dynamicPath}member/user.html?id=${a.userId!}" target="_blank">${userMap[a.userId?string].nickName}</a> ${a.createDate} 评论《<a href="${contentMap[a.contentId?string].url}" target="_blank">${contentMap[a.contentId?string].title}</a>》</p>
 								<#if a.replyId?has_content>
-									<@_comment id=a.replyId>
-								<p class="reply"><a href="${site.dynamicPath}user.html?id=${user.id!}" target="_blank">@${user.nickName}</a> : ${object.text!}</p>
-									</@_comment>
+									<@cms.comment id=a.replyId>
+								<p class="reply"><a href="${site.dynamicPath}member/user.html?id=${user.id!}" target="_blank">@${user.nickName}</a> : ${object.text!}</p>
+									</@cms.comment>
 								</#if>
 								<p>${a.text!}</p>
 							</li>
@@ -36,25 +36,25 @@
 						<li class="underline"><p>没有数据</p></li>
 						</#list>
 					</ul>
-					</@_commentList>
+					</@cms.commentList>
 				</div>
 				<div class="comment-box column">
-					<h3><a href="${site.dynamicPath}myComment.html">我的待审核评论</a></h3>
-					<@_commentList advanced=true userId=user.id status=2 pageSize=5>
+					<h3><a href="${site.dynamicPath}member/myComment.html">我的待审核评论</a></h3>
+					<@cms.commentList advanced=true userId=user.id status=2 pageSize=5>
 					<ul>
 						<#list page.list as a>
 							<@t.merge 'userIds' a.replyUserId!/>
 							<@t.merge 'contentIds' a.contentId!/>
 						</#list>
-						<@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
-						<@_content ids=t.contentIds!><#assign contentMap=map!/></@_content>
+						<@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
+						<@cms.content ids=t.contentIds!><#assign contentMap=map!/></@cms.content>
 						<#list page.list as a>
 							<li class="underline">
 								<p>${a.createDate} 评论《<a href="${contentMap[a.contentId?string].url}" target="_blank">${contentMap[a.contentId?string].title}</a>》</p>
 								<#if a.replyId?has_content>
-									<@_comment id=a.replyId>
-								<p class="reply"><a href="${site.dynamicPath}user.html?id=${a.replyUserId!}" target="_blank">@${(userMap[a.replyUserId?string].nickName)!}</a> : ${object.text!}</p>
-									</@_comment>
+									<@cms.comment id=a.replyId>
+								<p class="reply"><a href="${site.dynamicPath}member/user.html?id=${a.replyUserId!}" target="_blank">@${(userMap[a.replyUserId?string].nickName)!}</a> : ${object.text!}</p>
+									</@cms.comment>
 								</#if>
 								<p>${a.text!} <span class="float-right"><a href="comment.html?id=${a.id}&contentId=${a.contentId}">编辑</a></span></p>
 							</li>
@@ -62,17 +62,17 @@
 						<li class="underline"><p>没有数据</p></li>
 						</#list>
 					</ul>
-					</@_commentList>
+					</@cms.commentList>
 				</div>
 				<div class="clearfix-before"></div>
 				<div class="column">
 					<h3>我的内容投稿</h3>
-					<@_contentList advanced=true userId=user.id pageSize=5>
+					<@cms.contentList advanced=true userId=user.id pageSize=5>
 					<ul>
 						<#list page.list as a>
 						<@t.merge 'categoryIds' a.categoryId!/>
 						</#list>					
-						<@_category ids=t.categoryIds!><#assign categoryMap=map!/></@_category>
+						<@cms.category ids=t.categoryIds!><#assign categoryMap=map!/></@cms.category>
 						<#list page.list as a>
 						<li class="underline">
 							<p><label>投稿栏目:</label>${(categoryMap[a.categoryId?string].name)!} <span class="float-right"><label>投稿日期:</label>${a.createDate?date} [<@t.m 'page.status.content.'+a.status/>]</span></p>
@@ -82,27 +82,30 @@
 						<li class="underline"><p>没有数据</p></li>
 						</#list>
 					</ul>
-					</@_contentList>
+					</@cms.contentList>
 				</div>
 				<div class="column">
 					<h3>我的其他投稿</h3>
-					<@_placeList advanced=true userId=user.id pageSize=5>
+					<@cms.placeList advanced=true userId=user.id pageSize=5>
 					<ul>
 						<#list page.list as a>
 						<li class="underline">
-							<p><label>投稿类型:</label><@_placeMetadata path=a.path>${object.alias!}</@_placeMetadata><span class="float-right"><label>投稿日期:</label>${a.createDate?date} [<@t.m 'page.status.place.data.'+a.status/>]</span></p>
+							<p><label>投稿类型:</label><@cms.placeMetadata path=a.path>${object.alias!}</@cms.placeMetadata><span class="float-right"><label>投稿日期:</label>${a.createDate?date} [<@t.m 'page.status.place.data.'+a.status/>]</span></p>
 							<p>《${(a.title)!}》</p>
 						</li>
 						<#else>
 						<li class="underline"><p>没有数据</p></li>
 						</#list>
 					</ul>
-					</@_placeList>
+					</@cms.placeList>
 				</div>
 			</div>
 		</div>
 	</div>
 </main>
-<@_includePlace path="/cc29e896-332a-46d8-9bcb-d48e92144e9c.html"/> <#-- 尾部Footer -->
+	<script>
+		var templatePath='${.current_template_name?keep_after('/')}';
+	</script>
+<@tools.includePlace path="/cc29e896-332a-46d8-9bcb-d48e92144e9c.html"/> <#-- 尾部Footer -->
 </body>
 </html>

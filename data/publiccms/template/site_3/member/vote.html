@@ -1,20 +1,20 @@
-<@_vote id=id;vote>
+<@cms.vote id=id;vote>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 	<title>${vote.title!} - ${metadata.alias!}</title>
-	<@_includePlace path="/76c53ac2-4f88-4ef3-984b-c81d00a48089.html"/> <#-- 头部Header -->
+	<@tools.includePlace path="/76c53ac2-4f88-4ef3-984b-c81d00a48089.html"/> <#-- 头部Header -->
 </head>
 <body>
-<@_includePlace path="/23e95a91-0063-4498-99ef-aa3fc4a79c4c.html"/> <#-- 导航 -->
+<@tools.includePlace path="/23e95a91-0063-4498-99ef-aa3fc4a79c4c.html"/> <#-- 导航 -->
 <main>
     <div class="container">
-		<h3><a href="${site.dynamicPath}votelist.html">投票</a> - ${vote.title!}</h3>
+		<h3><a href="${site.dynamicPath}member/votelist.html">投票</a> - ${vote.title!}</h3>
 		<p>${vote.description}</p>
 		<p>${vote.scores!} 人投票,开始日期:${(vote.startDate)!},截止日期:${(vote.endDate)!}</p>
          <#if vote.startDate lt .now && .now lt vote.endDate><#assign available=true/><#else><#assign available=false/></#if>
-		<#if available && user?has_content><@_userVote userId=user.id voteId=vote.id><#assign myvote=object/></@_userVote></#if>
-		<@_voteItemList voteId=vote.id pageSize=500>
+		<#if available && user?has_content><@cms.userVote userId=user.id voteId=vote.id><#assign myvote=object/></@cms.userVote></#if>
+		<@cms.voteItemList voteId=vote.id pageSize=500>
 		<ol class="vote">
 			<#list page.list as v>
 			<li>
@@ -29,7 +29,7 @@
 									${v.title} (${v.scores!} 票)
 								</#if>
 							<#else>
-								<a href="<#if user?has_content>javascript:vote('${v.id}');<#else>${site.dynamicPath}login.html?returnUrl=${site.dynamicPath}vote.html?id=${vote.id}</#if>" title="投票后查看">${v.title}</a>
+								<a href="<#if user?has_content>javascript:vote('${v.id}');<#else>${site.dynamicPath}member/login.html?returnUrl=${site.dynamicPath}member/vote.html?id=${vote.id}</#if>" title="投票后查看">${v.title}</a>
 							</#if>
 						<#else>
 							${v.title} <span class="float-right">${v.scores*100/vote.scores}%</span>
@@ -39,21 +39,21 @@
 			</li>
 			</#list>
 		</ol>
-		</@_voteItemList>
+		</@cms.voteItemList>
 		<div class="comment-box">
 			<h3>投票记录</h3>
 			<@import path="/ftl/tools.ftl" namespace="t"/><#-- 工具 -->
-			<@_userVoteList voteId=vote.id pageIndex=pageIndex pageSize=10>
+			<@cms.userVoteList voteId=vote.id pageIndex=pageIndex pageSize=10>
 			<ul>
 				<#list page.list as a>
 					<@t.merge 'itemIds' a.itemId!/>
 					<@t.merge 'userIds' a.id.userId!/>
 				</#list>
-				<@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
-				<@_voteItem ids=t.itemIds! ><#assign voteItemMap=map!/></@_voteItem>
+				<@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
+				<@cms.voteItem ids=t.itemIds! ><#assign voteItemMap=map!/></@cms.voteItem>
 				<#list page.list as a>
 					<li class="underline">
-						<p><a href="${site.dynamicPath}userVoteList.html?id=${a.id.userId}" target="_blank">${userMap[a.id.userId?string].nickName}</a> ${a.createDate?date} <label>投给了:</label>《${voteItemMap[a.itemId?string].title}》</p>
+						<p><a href="${site.dynamicPath}member/userVoteList.html?id=${a.id.userId}" target="_blank">${userMap[a.id.userId?string].nickName}</a> ${a.createDate?date} <label>投给了:</label>《${voteItemMap[a.itemId?string].title}》</p>
 					</li>
 				<#else>
 					<li class="underline"><p>没有数据</p></li>
@@ -90,24 +90,25 @@
 				<span>下一页</span>
 				</#if>
 			</div>
-			</@_userVoteList>					
+			</@cms.userVoteList>					
 		</div>
     </div>
 </main>
 	<script>
+		var templatePath='${.current_template_name?keep_after('/')}';
 		var itemString="itemType=vote&itemId=${vote.id}";
 	</script>
-<@_includePlace path="/cc29e896-332a-46d8-9bcb-d48e92144e9c.html"/> <#-- 尾部Footer -->
+<@tools.includePlace path="/cc29e896-332a-46d8-9bcb-d48e92144e9c.html"/> <#-- 尾部Footer -->
 <script>
 	<#if user?has_content>
 function vote(itemId){
-    $.getJSON('${site.dynamicPath!}vote/vote?itemId='+itemId+'&_csrf=<@_csrfToken/>', function(data){
+    $.getJSON('${site.dynamicPath}vote/vote?itemId='+itemId+'&_csrf=<@tools.csrfToken/>', function(data){
         alert("投票成功!");
         location.reload();
     });
 }
 function unvote(itemId){
-    $.getJSON('${site.dynamicPath!}vote/unvote?itemId='+itemId+'&_csrf=<@_csrfToken/>', function(data){
+    $.getJSON('${site.dynamicPath}vote/unvote?itemId='+itemId+'&_csrf=<@tools.csrfToken/>', function(data){
         alert("取消投票成功!");
         location.reload();
     });
@@ -116,4 +117,4 @@ function unvote(itemId){
 </script>	
 </body>
 </html>
-</@_vote>
+</@cms.vote>

@@ -4,10 +4,10 @@
         <title>${content.title} - ${category.name}</title>
         <meta name="keywords" content="<#list getKeywords(content.title) as a>${a}<#sep>,</#list>"/>
         <meta name="description" content="${content.description!}"/>
-        <@tools.includePlace path="/8ddab9ba-a8aa-4745-86c6-66bf1c2c976c.html"/> <#-- header -->
+        <@tools.includePlace path="/common/8ddab9ba-a8aa-4745-86c6-66bf1c2c976c.html"/> <#-- header -->
     </head>
     <body>
-        <@tools.includePlace path="/c32a4f4a-ff5d-49cf-bb59-5d9784539174.html"/> <#-- 导航 -->
+        <@tools.includePlace path="/common/c32a4f4a-ff5d-49cf-bb59-5d9784539174.html"/> <#-- 导航 -->
 
           <div class="banner-l2 position-relative d-flex align-items-center justify-content-center">
             <div class="container text-center position-relative py-3 py-md-4" data-diy="category" data-diy-id="${category.id}">
@@ -93,9 +93,6 @@
                         </div>
 						<p class="text-center">
 							<a href="javascript:void(0)" class="download btn btn-primary rounded-pill mb-4 px-3"><img src="${site.sitePath}assets/img/icon-download.svg" class="me-2"> 保存页面</a>
-							<a href="${site.sitePath}download.html#pills-6885526723618672640" class="btn btn-primary rounded-pill ms-4 mb-4 px-3"><img width="24" src="${site.sitePath}assets/img/icon-book.svg" class="me-2"> 更多文档</a>
-							<a href="${site.sitePath}upload/data-dictionary.html" target="_blank" class="btn btn-primary rounded-pill ms-4 mb-4 px-3"><img width="24" src="${site.sitePath}assets/img/icon-server.svg" class="me-2"> 数据结构</a>
-							<a href="${site.sitePath}upload/api/overview-summary.html" target="_blank" class="btn btn-primary rounded-pill ms-4 mb-4 px-3"><img width="24" src="${site.sitePath}assets/img/icon-server.svg" class="me-2"> JAVA API</a>
 						</p>
                         <@include path="/ftl/comment.ftl"/><#-- 评论 -->
                     </div>
@@ -106,7 +103,7 @@
 			var itemString="itemType=content&itemId=${content.id}";
 			var templatePath='${.current_template_name?keep_after('/')}';
 		</script>
-        <@tools.includePlace path="/7f8bacb5-30ca-4641-b66f-987d447b1a85.html"/> <#-- footer -->
+        <@tools.includePlace path="/footer/7f8bacb5-30ca-4641-b66f-987d447b1a85.html"/> <#-- footer -->
         <script src="${site.sitePath!}assets/ueditor/ueditor.parse.min.js"></script>
 		<script src="${site.sitePath}assets/js/html2canvas.min.js"></script>
 		<script src="${site.sitePath}assets/js/jspdf.umd.min.js"></script>
@@ -146,7 +143,7 @@
 		</script>
         <script>
             $('.list-group a.list-group-item[data-id=${content.id}]').addClass('active');
-            $.getJSON('${site.dynamicPath!}api/contentClick?id=${content.id}', function(data){});
+            $.getJSON('${site.dynamicPath}api/contentClick?id=${content.id}', function(data){});
             uParse('#content',{rootPath: '${site.sitePath!}assets/ueditor/'});
         </script>
     </body>

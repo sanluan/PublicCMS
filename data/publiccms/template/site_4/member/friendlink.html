@@ -2,10 +2,10 @@
 <html lang="zh-CN">
     <head>
         <title>${metadata.alias!}</title>
-        <@tools.includePlace path="/8ddab9ba-a8aa-4745-86c6-66bf1c2c976c.html"/> <#-- header -->
+        <@tools.includePlace path="/common/8ddab9ba-a8aa-4745-86c6-66bf1c2c976c.html"/> <#-- header -->
     </head>
     <body>
-        <@tools.includePlace path="/c32a4f4a-ff5d-49cf-bb59-5d9784539174.html"/> <#-- 导航 -->
+        <@tools.includePlace path="/common/c32a4f4a-ff5d-49cf-bb59-5d9784539174.html"/> <#-- 导航 -->
 
         <div class="container">
             <div class="row gx-5 justify-content-between my-5">
@@ -24,7 +24,7 @@
                             <form method="post" action="${site.dynamicPath}place/save" onsubmit="return check();">
                                 <input name="path" type="hidden" value="${path}" />
 								<input type="hidden" name="_csrf" value="<@tools.csrfToken/>"/>
-                                <input name="returnUrl" type="hidden" value="${site.dynamicPath}friendlink.html?result=true" />
+                                <input name="returnUrl" type="hidden" value="${site.dynamicPath}member/friendlink.html?result=true" />
                                 <p><label class="input-label">友链标题:</label><input name="title" type="text" size="60" maxlength="60" value=""/></p>
                                 <p><label class="input-label">网站地址:</label><input name="url" type="text" size="60"  maxlength="60" value=""/></p>
                                 <p><input class="btn btn-primary" type="submit" value="提交"/></p>
@@ -33,7 +33,7 @@
 
                         <@tools.placeMetadata path=path><#assign a=object/></@tools.placeMetadata>
                         <#if user?has_content&&(a.adminIds)?has_content&&a.adminIds?seq_contains(user.id)>
-                            <@cms.placeList path=path advanced=true pageIndex=pageNum count=numPerPage>
+                            <@cms.placeList path=path advanced=true pageIndex=pageNum pageSize=numPerPage>
                                 <#list page.list as a>
                                     <@t.merge 'userIds' a.userId!/>
                                 </#list>
@@ -42,11 +42,11 @@
                                         <p>
                                             <a href="${a.url}" target="_blank">${a.title}</a> ${a.clicks} [${(userMap[a.userId?string].nickname)!}]
                                     <#if 2=a.status>
-                                        <a href="${site.dynamicPath}place/check?id=${a.id}&returnUrl=${site.dynamicPath}friendlink.html&_csrf=<@tools.csrfToken/>">审核</a>
+                                        <a href="${site.dynamicPath}place/check?id=${a.id}&returnUrl=${site.dynamicPath}member/friendlink.html&_csrf=<@tools.csrfToken/>">审核</a>
                                     <#elseif 1=a.status>
-                                        <a href="${site.dynamicPath}place/uncheck?id=${a.id}&returnUrl=${site.dynamicPath}friendlink.html&_csrf=<@tools.csrfToken/>">取消审核</a>
+                                        <a href="${site.dynamicPath}place/uncheck?id=${a.id}&returnUrl=${site.dynamicPath}member/friendlink.html&_csrf=<@tools.csrfToken/>">取消审核</a>
                                     </#if>
-                                            <a href="${site.dynamicPath}place/delete?id=${a.id}&returnUrl=${site.dynamicPath}friendlink.html&_csrf=<@tools.csrfToken/>">删除</a>
+                                            <a href="${site.dynamicPath}place/delete?id=${a.id}&returnUrl=${site.dynamicPath}member/friendlink.html&_csrf=<@tools.csrfToken/>">删除</a>
                                         </p>
                                 </#list>
                             </@cms.placeList>
@@ -58,7 +58,7 @@
 		<script>
 		var templatePath='${.current_template_name?keep_after('/')}';
 		</script>
-        <@tools.includePlace path="/7f8bacb5-30ca-4641-b66f-987d447b1a85.html"/> <#-- footer -->
+        <@tools.includePlace path="/footer/7f8bacb5-30ca-4641-b66f-987d447b1a85.html"/> <#-- footer -->
         <script type="text/javascript">
             $(function(){$('.login-form input').eq(0).focus();});
             function check(){

@@ -17,6 +17,7 @@ if not exist ".git" (
 ) else (
   git pull origin
 )
+
 git add template/site_%SITEID%
 git add task/site_%SITEID%
 git add web/site_%SITEID%

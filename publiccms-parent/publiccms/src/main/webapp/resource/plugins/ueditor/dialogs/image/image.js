@@ -269,17 +269,6 @@
         getInsertList: function () {
             var data = this.getData();
             if(data['url']) {
-                var style="";
-                if(data['width']){
-                    style+="width:" + data['width'] + "px;";
-                } else {
-                    style+="width:auto;";
-                }
-                if(data['height']){
-                    style+="height:" + data['height'] + "px;";
-                } else {
-                    style+="height:auto;";
-                }
                 return [{
                     src: data['url'],
                     _src: data['url'],
@@ -288,8 +277,7 @@
                     border: data['border'] || '',
                     floatStyle: data['align'] || '',
                     vspace: data['vhSpace'] || '',
-                    alt: data['title'] || '',
-                    style: style
+                    alt: data['title'] || ''
                 }];
             } else {
                 return [];

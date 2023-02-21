@@ -4,25 +4,25 @@
 	<title>搜索 - PublicCMS</title>
 	<meta name="keywords" content="搜索"/>
 	<meta name="description" content="搜索  ${(word)!}"/>
-	<@_includePlace path="/76c53ac2-4f88-4ef3-984b-c81d00a48089.html"/> <#-- 头部Header -->
+	<@tools.includePlace path="/76c53ac2-4f88-4ef3-984b-c81d00a48089.html"/> <#-- 头部Header -->
 </head>
 <body>
-<@_includePlace path="/23e95a91-0063-4498-99ef-aa3fc4a79c4c.html"/> <#-- 导航 -->
+<@tools.includePlace path="/23e95a91-0063-4498-99ef-aa3fc4a79c4c.html"/> <#-- 导航 -->
 <main>
 	<div class="container bread">
-		<a href="${site.sitePath}">首页</a>  &gt; <a href="${siteAttribute.searchPath!}">搜索</a>
+		<a href="${site.sitePath}">首页</a>  &gt; <a href="${site.dynamicPath}search/">搜索</a>
 	</div>
 	<div class="container clearfix-after">
 		<div class="data-list left-content">
 			<div class="search">
-				<@_tag ids=tagId>
+				<@cms.tag ids=tagId>
 				<#if map?has_content>
 				<div class="search-condition">
 					<label>标签:</label>
 					<#list map?keys as k>${map[k].name}<#sep> </#list>
 				</div>
 				</#if>
-				</@_tag>
+				</@cms.tag>
 				<form action="./" method="get">
 					<div class="search-box">
 					<input type="text" name="word" value="${(word)!}"/>						
@@ -33,43 +33,46 @@
 						<input type="button" class="button" onclick="$('.search form').attr('action','facet.html').submit();" value="高级搜索"/>
 					</p>					
 				</form>
-				<@_tagList count=10>
+				<@cms.tagList count=10>
 					<p>
 						热门标签：
 						<#list page.list as a>
 							<a href="?tagId=${a.id}">${a.name}</a>
 						</#list>
 					</p>
-				</@_tagList>
-				<@_wordList count=10>
+				</@cms.tagList>
+				<@cms.wordList count=10>
 					<p>
 						热门搜索：
 						<#list page.list as a>
 							<a href="?word=${a.name?url}">${a.name}</a>
 						</#list>
 					</p>
-				</@_wordList>
+				</@cms.wordList>
 			</div>
 	<#if word?has_content || tagId?has_content>
 		<@import path="/ftl/tools.ftl" namespace="t"/>
-		<@_search word=word tagId=tagId phrase=phrase highlight=true pageIndex=page count=10>
+		<@cms.search word=word tagId=tagId phrase=phrase highlight=true pageIndex=page count=10>
 			<#if page.totalCount gt 0>
-				<ul>
+				<ul data-diy="content">
 				<#list page.list as a>
 					<@include path="/ftl/search-list.ftl"/>
 				</#list>
 				</ul>
 				<@include path="/ftl/search-page.ftl"/>
 			</#if>
-		</@_search>
+		</@cms.search>
 	</#if>
 		</div>
 		<aside>
-			<@_includePlace path="/49d393ca-f0f1-4723-a9b0-6f9b6d7cc04d.html"/> <#-- 编辑推荐 -->
-			<@_includePlace path="/3435e9a7-565a-4f93-8670-9c272a1d51cc.html"/> <#-- 精彩图集 -->
+			<@tools.includePlace path="/49d393ca-f0f1-4723-a9b0-6f9b6d7cc04d.html"/> <#-- 编辑推荐 -->
+			<@tools.includePlace path="/3435e9a7-565a-4f93-8670-9c272a1d51cc.html"/> <#-- 精彩图集 -->
 		</aside>
 	</div>
 </main>
-<@_includePlace path="/cc29e896-332a-46d8-9bcb-d48e92144e9c.html"/> <#-- 尾部Footer -->
+	<script>
+		var templatePath='${.current_template_name?keep_after('/')}';
+	</script>
+<@tools.includePlace path="/cc29e896-332a-46d8-9bcb-d48e92144e9c.html"/> <#-- 尾部Footer -->
 </body>
 </html>

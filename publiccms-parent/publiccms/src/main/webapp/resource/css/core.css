@@ -4,7 +4,7 @@
 html, body, *{padding:0;margin:0;font-size:14px;font-family:microsoft yahei,Arial, sans-serif;}
 body{width:100%;height:100%;overflow:hidden;}
 iframe{width:100%;height:100%;border:0px;}
-input[type="checkbox"]{margin:3px 3px 3px 4px;}
+input[type="checkbox"]{vertical-align:middle;margin-right:4px;margin-left:4px;}
 input[type="number"]{width:80px;}
 .clearfix{*zoom:1;}
 .clearfix:after{display:block;content:".";height:0;clear:both;visibility:hidden;}
@@ -269,7 +269,7 @@ a.button,button.button{border-width:1px;border-style:solid;-moz-box-shadow:0px 0
 .pageFormContent p{float:left;display:block;min-width:325px;min-height:16px;margin:0;padding:3px 0;position:relative;}
 .pageFormContent p.nowrap{width:100%;}
 .pageFormContent .radioGroup{float:left;display:block;overflow:hidden;}
-.pageFormContent label{float:left;min-width:80px;padding:0 10px;line-height:26px;}
+.pageFormContent label{float:left;min-width:80px;padding:0 10px;}
 .pageFormContent label.radioButton{float:left;width:auto;padding:0 10px 0 0;}
 .pageFormContent .textInput,.pageFormContent select{float:left;}
 .pageFormContent .inputInfo{padding:0 5px;line-height:26px;}
@@ -279,7 +279,6 @@ a.button,button.button{border-width:1px;border-style:solid;-moz-box-shadow:0px 0
 .pageFormContent dl{float:left;line-height:22px;width:50%;margin:0;padding:4px 0;position:relative;}
 .pageFormContent dt{float:left;min-width:120px;width:120px;padding:0 5px;word-break:break-all;}
 .pageFormContent dd{margin-left:130px;}
-.pageFormContent dl dd label{text-align:right;}
 .pageFormContent dl.nowrap, .nowrap dl{width:100%;height:auto;clear:both;}
 .pageFormContent .thumbnail img{max-width:200px;max-height:200px;}
 .pageFormContent .upload-wrap .thumbnail img{max-width:300px;max-height:200px;}
@@ -301,7 +300,7 @@ fieldset:first-child .unit:first-of-type p:last-child{padding:0;}
 .formBar li{float:left;line-height:30px;font-size:13px;height:30px;margin-left:10px;}
 .divider{clear:both;display:block;overflow:hidden;width:auto;height:1px;padding:4px 0 0 0;margin-bottom:5px;border-style:dashed;border-width:0 0 1px 0;}
 
-.tagsBox{line-height:25px;float:left;}
+.tagsBox{line-height:30px;float:left;}
 .tagsBox span,.parametersBox span{margin-right:8px;border:none;padding:5px 8px;}
 .tagsBox span>a,.parametersBox span{margin-left:5px;}
 .parametersBox{line-height:25px;}
@@ -449,13 +448,13 @@ a.btnLook:before,a.btnDel:before,a.btnAttach:before,a.view:before{font-size:20px
 #calendar .hh .hh, #calendar .mm .mm, #calendar .ss .ss{display:block;}
 #calendar .tm .hh li, #calendar .tm .mm li, #calendar .tm .ss li{display:block;float:left;cursor:pointer;width:24px;line-height:26px;}
 
-.miscSortDrag dt{width:160px;position:sticky;z-index:999;top:5px;}
+.miscSortDrag dt{width:180px;position:sticky;z-index:999;top:5px;}
 .miscSortDrag dt fieldset .itemBox{max-height:360px;min-height:100px;overflow-y:auto;}
-.miscSortDrag dt .sortDragPlaceholder, .miscSortDrag dt .dragItem .close, .miscSortDrag dt .dragItem .ctl-label,.miscSortDrag dt .dragItem .dragContent{display:none}
+.miscSortDrag dt .sortDragPlaceholder, .miscSortDrag dt .dragItem .close, .miscSortDrag dt .dragItem .ctl-label{display:none}
 .miscSortDrag dt .dragItem{border:1px solid #B8D0D6;height:24px;line-height:24px;overflow:hidden;padding:2px;margin:3px 0px;display:block;cursor:move;user-select:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;}
 .miscSortDrag dt .dragItem.icon-move:before{float:right;color:#ccc;}
 .miscSortDrag dt:after{content:" ";display:block;clear:both;}
-.miscSortDrag dd{margin-left:175px;}
+.miscSortDrag dd{margin-left:195px;}
 .miscSortDrag dd .sortDrag{width:100%;min-height:100px;margin-bottom:10px;color:#ccc;text-align:center;box-sizing:border-box;border:1px dashed #d66;overflow-y:auto;}
 .miscSortDrag dd .sortDrag .dragItem{border:1px solid #B8D0D6;box-sizing:border-box;color:#666;padding:5px;margin:3px;line-height:20px;display:block;position:relative;text-align:left;cursor:move;}
 .miscSortDrag dd .sortDrag .sortDrag{min-height:50px;margin-bottom:0px;border:1px dashed #6d6;}

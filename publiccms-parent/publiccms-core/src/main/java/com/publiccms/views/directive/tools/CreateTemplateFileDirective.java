@@ -21,7 +21,7 @@ import freemarker.template.TemplateException;
 
 /**
  *
- * createTemplateFile 创建分类静态文件指令
+ * createTemplateFile 创建静态文件指令
  * <p>
  * 参数列表
  * <ul>

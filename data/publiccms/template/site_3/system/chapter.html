@@ -10,12 +10,12 @@
 <body>
 	<@tools.includePlace path="/23e95a91-0063-4498-99ef-aa3fc4a79c4c.html"/> <#-- 导航 -->
 	<main>
-		<div class="container bread">
+		<div class="container bread" data-diy="category">
 			<@include path="/ftl/echoBread.ftl"/>
 			<@echoBread category.id/>
 		</div>
-		<div class="container ">
-			<article>
+		<div class="container">
+			<article  data-diy="content" data-diy-id="${content.id}">
 				<header>
 					<h3><@cms.content id=parent.parentId  absoluteURL=true><a href="${object.url}" target="_blank">《${object.title}》</a></@cms.content> ${(parent.title)!} ${content.title}</h3>
 				</header>
@@ -34,14 +34,15 @@
 		</div>
 	</main>
 	<script>
+		var templatePath='${.current_template_name?keep_after('/')}';
 		var itemString="itemType=content&itemId=${content.id}";
 	</script>
 	<@tools.includePlace path="/cc29e896-332a-46d8-9bcb-d48e92144e9c.html"/> <#-- 尾部Footer -->
 	<script>
-		uParse('#content',{rootPath: '${site.sitePath!}assets/ueditor'});
-		$.getJSON('${site.dynamicPath!}api/contentClick?id=${content.id}', function(data){});
+		uParse('#content',{rootPath: '${site.sitePath}assets/ueditor'});
+		$.getJSON('${site.dynamicPath}api/contentClick?id=${content.id}', function(data){});
 		<#if parent?has_content>
-			$.getJSON('${site.dynamicPath!}api/contentClick?id=${parent.parentId!}', function(data){});
+			$.getJSON('${site.dynamicPath}api/contentClick?id=${parent.parentId!}', function(data){});
 		</#if>
 	</script>
 </body>

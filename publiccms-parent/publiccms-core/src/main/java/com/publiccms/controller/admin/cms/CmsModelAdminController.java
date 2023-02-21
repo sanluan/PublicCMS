@@ -76,6 +76,7 @@ public class CmsModelAdminController {
      * @param site
      * @param admin
      * @param entity
+     * @param searchableModel
      * @param modelId
      * @param request
      * @param model
@@ -84,7 +85,7 @@ public class CmsModelAdminController {
     @RequestMapping("save")
     @Csrf
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, @ModelAttribute CmsModel entity,
-            String modelId, HttpServletRequest request, ModelMap model) {
+            boolean searchableModel, String modelId, HttpServletRequest request, ModelMap model) {
         if (ControllerUtils.errorCustom("noright", null != site.getParentId(), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
@@ -95,6 +96,7 @@ public class CmsModelAdminController {
         if (CommonUtils.notEmpty(entity.getExtendList())) {
             entity.getExtendList().sort((e1, e2) -> e1.getSort() - e2.getSort());
         }
+        entity.setSearchableModel(searchableModel);
         if (CommonUtils.notEmpty(entity.getRelatedList())) {
             List<Integer> templist = new ArrayList<>();
             Set<String> dictionarySet = new HashSet<String>();

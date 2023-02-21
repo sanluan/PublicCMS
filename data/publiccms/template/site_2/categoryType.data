@@ -1,0 +1,1 @@
+{"1":{"id":"1","name":"带文章的分类","onlyUrl":false,"sort":0,"templatePath":null,"path":"category/${category.id}","containChild":false,"pageSize":20,"extendList":[{"id":{"code":"article"},"required":false,"searchable":false,"maxlength":null,"width":null,"height":null,"name":"正文","description":"","inputType":"editor","defaultValue":"","dictionaryId":"","multiple":false,"sort":0}]}}

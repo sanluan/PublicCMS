@@ -182,6 +182,9 @@ $('input[name=\'categoryName\']',navTab.getCurrentPanel()).on('change',function(
                     <dt>${(model.fieldTextMap['cover'])!}:</dt>
                     <dd>
                         <input name="cover"<#if requiredFieldList?seq_contains('cover')> class="required"</#if> value="${(a.cover)!}" maxlength="300" size="50" type="text"/>
+                        <#if fieldList?seq_contains('content')>
+                            <label><a class="button" href="cmsContent/contentImage.html" lookupGroup="" width="1000" height="600"><@t.page 'button.fillcover' model.fieldTextMap['content']/></a></label>
+                        </#if>
                         <a class="btnAttach" href="common/upload.html?field=cover&fileTypes=image&width=${(model.coverWidth)!}&height=${(model.coverHeight)!}" lookupGroup="" width="1000" height="600">${(model.fieldTextMap['cover'])!}</a>
                         <a class="view icon-eye-open" ref="cover" data-prefix="${site.sitePath}" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
                         <#if (model.coverWidth)?has_content && (model.coverHeight)?has_content><span class="info">${(model.coverWidth)!}*${(model.coverHeight)!}</span></#if>
@@ -207,7 +210,6 @@ $('input[name=\'categoryName\']',navTab.getCurrentPanel()).on('change',function(
                         <#if a?has_content>
                             <a class="button" href="cmsEditorHistory/lookup.html?itemType=content&itemId=${a.id}&fieldName=text" lookupGroup=""><@t.page 'history'/></a>
                         </#if>
-                            <#if fieldList?seq_contains('cover')><a class="button" href="javascript:void(0);" onclick="useContentImage('${site.sitePath}');"><@t.page 'button.fillcover' model.fieldTextMap['content'] model.fieldTextMap['cover']/></a></#if>
                         </div>
                         <textarea name="text" class="editor<#if requiredFieldList?seq_contains('content')> required</#if>" escape="true" editorType="${model.editorType!}">${(attribute.text)!}</textarea>
                     </dd>

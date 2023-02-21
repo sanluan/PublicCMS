@@ -77,11 +77,11 @@
                                     <@tools.diyMetadata itemType="layout" itemId=layoutdata.id>
                                         <div class="dragItem" data-id="${object.id}" data-type="layout">
                                             ${object.name!}<span class="close">X</span>
-                                            <div class="dragContent" data-parent="${object.id}" >
+                                            <div class="ctl-label">
                                                 <@tools.includeLayout id=object.id>
                                                     <div class="sortDrag" data-over-sort="true" data-accept="module">
                                                         <@t.page 'drag_module_here'/>
-                                                        <#if layoutdata.moduleList[index]?has_content>
+                                                        <#if layoutdata.moduleList?has_content && layoutdata.moduleList[index]?has_content>
                                                             <#list layoutdata.moduleList[index] as moduleData>
                                                                 <div class="dragItem" data-id="${moduleData.id}" data-type="module" >
                                                                     ${moduleData.name}<span class="close">X</span>

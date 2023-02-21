@@ -4,10 +4,10 @@
         <title>${(attribute.title)!category.name}</title>
         <meta name="keywords" content="${(attribute.keywords)!}"/>
         <meta name="description" content="${(attribute.description)!}"/>
-        <@tools.includePlace path="/8ddab9ba-a8aa-4745-86c6-66bf1c2c976c.html"/> <#-- header -->
+        <@tools.includePlace path="/common/8ddab9ba-a8aa-4745-86c6-66bf1c2c976c.html"/> <#-- header -->
     </head>
     <body>
-        <@tools.includePlace path="/c32a4f4a-ff5d-49cf-bb59-5d9784539174.html"/> <#-- 导航 -->
+        <@tools.includePlace path="/common/c32a4f4a-ff5d-49cf-bb59-5d9784539174.html"/> <#-- 导航 -->
 
         <div class="banner-l2 position-relative d-flex align-items-center justify-content-center" data-diy="category" data-diy-id="${category.id}">
             <div class="container text-center position-relative py-3 py-md-4">
@@ -54,7 +54,7 @@
                         </#list>
                         <@cms.category ids=t.categoryIds!><#assign categoryMap=map!/></@cms.category>
                         <#list page.list as a>
-                        <a href="${a.url}" <#if a.onlyUrl> target="_blank"</#if> class="d-block">
+                        <a href="${a.url}" <#if a.onlyUrl> target="_blank"</#if> class="d-block" data-diy-item="${a.id}">
                             <div class="card flex-md-row align-items-start">
                                 <div class="text-white bg-${['primary','purple','success'][a.categoryId%3]} fs-8 px-2 py-1 flex-shrink-0">
                                     ${categoryMap[a.categoryId?string].name}
@@ -114,28 +114,29 @@
                     </ul>
                 </div>
                 </@cms.contentList>
-                <div class="col-md-4">
+                <aside class="col-md-4">
                     <@tools.includePlace path="/49d393ca-f0f1-4723-a9b0-6f9b6d7cc04d.html"/> <#-- 编辑推荐 -->
                     <header class="tab-header fs-5">
                         <b class="pb-2">热门文章</b>
                     </header>
-                    <@cms.contentList categoryId=category.id containChild=true orderField='clicks' pageSize=10>
-                    <div class="list-group list-group-flush article-list-side py-2 fs-7">
+                    <@cms.contentList categoryId=category.id containChild=true orderField='clicks' pageSize=5>
+                    <div class="list-group list-group-flush article-list-side py-2 fs-7" data-diy="content">
                         <#list page.list as a>
-                        <a href="${a.url!}" class="list-group-item">${a.title}</a>
+                        <a href="${a.url!}" class="list-group-item" data-diy-item="${a.id}">${a.title}</a>
                         </#list>
                     </div>
                     </@cms.contentList>
+					<@tools.includePlace path="/54f5253d-d008-4e5c-b3b6-95158bce8dca.html"/> <#-- 最新评论 -->
 					<@tools.includePlace path="/17fbfe62-4fbe-4987-93d5-85383ebc5aa4.html"/> <#-- 最新投票 -->
 					<@tools.includePlace path="/3fefc879-2ef2-448d-909f-dc31849bcf29.html"/> <#-- 最新调查问卷 -->
-                </div>
+                </aside>
             </div>
         </div>
         <script>
             var itemString="itemType=category&itemId=${category.id}";
 			var templatePath='${.current_template_name?keep_after('/')}';
         </script>
-        <@tools.includePlace path="/7f8bacb5-30ca-4641-b66f-987d447b1a85.html"/> <#-- footer -->
+        <@tools.includePlace path="/footer/7f8bacb5-30ca-4641-b66f-987d447b1a85.html"/> <#-- footer -->
 		<script>
             $('.navbar-nav .nav-item[data-id=${category.parentId!category.id}]').addClass('selected');
         </script>

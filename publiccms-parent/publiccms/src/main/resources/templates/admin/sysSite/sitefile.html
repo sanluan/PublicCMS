@@ -1,12 +1,13 @@
-<div class="pageFormContent">
-    <div class="image-list">
-        <a href="sysSite/uploadSitefile" target="dialog" mask="true" width="500" height="250">
-            <i class="thumb icon-upload-alt icon-large"></i>
-        </a>
-        <p>
-            <@t.page 'upload'/>
-        </p>
-    </div>
+<div class="card">
+    <div class="pageFormContent" layoutH>
+        <div class="image-list">
+            <a href="sysSite/uploadSitefile" target="dialog" mask="true" width="500" height="250">
+                <i class="thumb icon-upload-alt icon-large"></i>
+            </a>
+            <p>
+                <@t.page 'upload'/>
+            </p>
+        </div>
 <#list list as a>
     <#if !a.directory>
         <#assign sitefile=getSitefile(a.fileName)/>
@@ -30,4 +31,5 @@
         </div>
     </#if>
 </#list>
+    </div>
 </div>

@@ -16,8 +16,8 @@
 	<@tools.includePlace path="/1478e1a7-2fcc-452e-841b-2eecc067d7c4.html"/> <#-- 英文导航 -->
 
 	<main class="container">
-		<div class="introduction-box">
-			<h2><strong>ABOUT XXXX</strong></h2>
+		<div class="introduction-box" data-diy="page">
+			<h2><div><strong>ABOUT XXXX</strong></div></h2>
 			<div class="clear"></div>
 			<div class="introduction">
 				<p>${(metadata.extendData.introduction_en?no_esc)!}</p>
@@ -25,7 +25,7 @@
             <img name="" src="${site.sitePath}assets/images/201209291602208653.jpg" alt="">
 		</div>
 		<@cms.category id=(metadata.extendData.category_en)!>
-		<div class="content-list-box">
+		<div class="content-list-box" data-diy="page">
 			<h2>
 				<div id="tab1">
 					<span onmouseover="setTab(1,0)" class="on" id="T1">${object.name!}<a href="${object.url}" title="${object.name!}">More</a></span>
@@ -36,7 +36,7 @@
 			<#if page.totalCount gt 0>
 				<ul>
 				<#list page.list as a>
-                    <li><span class="title"><a href="${a.url!}" target="_blank">${a.title!}</a></span>${a.publishDate?string('yyyy-MM-dd')}</li>
+                    <li data-diy-item="${a.id}"><span class="title"><a href="${a.url!}" target="_blank">${a.title!}</a></span>${a.publishDate?string('yyyy-MM-dd')}</li>
 			    </#list>
 				</ul>
 			</#if>
@@ -45,7 +45,7 @@
 		</div>
 	</@cms.category>
 		<div class="aside-box">
-			<h2><strong>Related Links</strong></h2>
+			<h2 data-diy="place" data-diy-id="/505ddbed-f6ff-4a53-b5a8-0b2d7479a2ec.html"><div><strong>Related Links</strong></div></h2>
 			<select class="friend-link" onchange="javascript:if(this.options[this.selectedIndex].value){window.open(this.options[this.selectedIndex].value)}">
                 <option value="">Friend Link</option>
                 <@tools.includePlace path="/505ddbed-f6ff-4a53-b5a8-0b2d7479a2ec.html"/> <#-- 友情链接 -->
@@ -54,6 +54,9 @@
 		</div>
 	</main>
     <@tools.includePlace path="/ab53b388-be0e-4674-b631-e1de625c74ac.html"/> <#-- 首页推荐 -->
+	<script>
+		var templatePath='${.current_template_name?keep_after('/')}';
+	</script>
 	<@tools.includePlace path="/7ee58b3e-ac14-4568-aedd-77e14c97ad48.html"/> <#-- English Footer -->
 </body>
 </html>

@@ -1,19 +1,17 @@
-<header class="header">
+<header class="header" data-diy="place" data-diy-id="${path}">
 	<div class="top-bar">
 		<div class="container clearfix-after">
 			<ul class="fleft user user-login">
-				<li><a href="${site.dynamicPath}login.html">登陆</a></li>
-				<li><a href="${site.dynamicPath}register.html">注册</a></li>
+				<li><a href="${site.dynamicPath}member/login.html">登陆</a></li>
+				<li><a href="${site.dynamicPath}member/register.html">注册</a></li>
 			</ul>
 			<ul class="fleft user user-logout">
-				<li>您好，<a href="${site.dynamicPath}" class="nickname"></a></li>
+				<li>您好，<a href="${site.dynamicPath}member/" class="nickname"></a></li>
 				<li class="master hide"><a target="_blank" href="${site.dynamicPath}admin/">管理后台</a></li>
-				<li><a href="${site.dynamicPath}logout.html">退出登录</a></li>
+				<li><a href="${site.dynamicPath}member/logout.html">退出登录</a></li>
 			</ul>
 			<ul class="fright">
 				<li><a href="${site.dynamicPath}case.html">案例提交</a></li>
-				<li><a href="${site.sitePath}upload/data-dictionary.html" target="_blank">数据结构</a></li>
-				<li><a href="${site.sitePath}upload/api/overview-summary.html" target="_blank">Java API</a></li>
 			</ul>
 		</div>
 	</div>
@@ -26,24 +24,24 @@
 		<span class="slogan">${a.title!}</span>
 		</#list>
 		<nav>
-			<ul>
+			<ul data-diy="category">
 				<li data-id="home"><a href="${site.sitePath}">首页</a></li>
-<@_categoryList>
+<@cms.categoryList>
 	<#list page.list as a>
 				<li data-id="${a.id}">
-					<a href="${a.url!}"<#if a.onlyUrl> target="_blank"</#if>>${a.name}</a>
+					<a href="${a.url!}"<#if a.onlyUrl> target="_blank"</#if> data-diy-id="${a.id}">${a.name}</a>
 		<#if a.childIds?has_content>
 					<ul>
-			<@_categoryList parentId=a.id>
+			<@cms.categoryList parentId=a.id>
 				<#list page.list as a>
-						<li><a href="${a.url!}"<#if a.onlyUrl> target="_blank"</#if>>${a.name}</a></li>
+						<li data-diy-item="${a.id}"><a href="${a.url!}"<#if a.onlyUrl> target="_blank"</#if>>${a.name}</a></li>
 				</#list>
-			</@_categoryList>
+			</@cms.categoryList>
 					</ul>
 		</#if>
 				</li>
 	</#list>
-</@_categoryList>
+</@cms.categoryList>
 			</ul>
 		</nav>
 	</div>

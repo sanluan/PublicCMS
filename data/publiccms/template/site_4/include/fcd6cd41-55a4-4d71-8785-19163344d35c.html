@@ -1,13 +1,13 @@
 <div id="index-pricing" class="container-fluid mt-5">
 	<div class="container text-center" data-diy="place" data-diy-id="${path}">
-		<div class="mb-5">
+		<div class="mb-4">
 			<div class="fs-0 text-black fw-bold">价格与服务</div>
-			<p class="text-black-50">V4.0(及后续版本)个人免费使用，企事业单位使用需要付费。</p>
+			<p class="text-black-80">V2019为完全免费版本，V4.0(及后续版本)个人免费使用，企事业单位使用需要付费。</p>
 		</div>
 
 		<@cms.category code='price'>
 		<div class="row gx-lg-5 mt-4 px-0 px-lg-5 mx-0 mx-lg-4 align-items-center">
-
+			
 			<div class="col-md-4">
 				<div class="card card-pricing border-0 rounded-3 mx-0 mx-md-2 py-4 align-items-center">
 					<div class="fs-1 fw-bold">
@@ -24,7 +24,10 @@
 					<div class="price mb-4">
 						<b><span class="fs-4 me-1">&#165;</span><span>1980</span></b>
 					</div>
-					<a href="${object.url}" class="btn btn-primary w-50">查看详细方案 <img src="${site.sitePath}assets/img/icon-more-white.svg"></a>
+					<a href="${object.url}" class="btn btn-primary w-50">查看详细方案 <img src="${site.sitePath}assets/img/icon-more-white.svg" alt="more"></a>
+					<div class="tag position-absolute">
+						新兴行业偏好
+					</div>
 				</div>
 			</div>
 			<div class="col-md-4">
@@ -66,6 +69,9 @@
 						<b><span class="fs-4 me-1">&#165;</span><span>9800</span></b>
 					</div>
 					<a href="${object.url}" class="btn btn-primary w-50">查看详细方案 <img src="${site.sitePath}assets/img/icon-more-white.svg" alt="more"></a>
+					<div class="tag position-absolute">
+						政府大企业偏好
+					</div>
 				</div>
 			</div>
 		</div>
@@ -75,13 +81,13 @@
 			<input type="radio" class="btn-check" name="btnradio" id="price-basic" value="1980,1980,9800" autocomplete="off" checked>
 			<label class="btn btn-outline-primary btn-price-tab" for="price-basic">
 				<span class="fs-5 text-nowrap">基础价格</span>
-				<div class="fs-8">一次性采购1-4套</div>
+				<div class="fs-8">一次性采购1-3套</div>
 			</label>
 
 			<input type="radio" class="btn-check" name="btnradio" id="price-off-20" value="1584,1584,7840" autocomplete="off">
 			<label class="btn btn-outline-primary btn-price-tab" for="price-off-20">
 				<span class="fs-5 text-nowrap">8折价格</span>
-				<div class="fs-8">一次性采购5-9套<br>/3年内累计采购5套及以上</div>
+				<div class="fs-8">一次性采购4-9套<br>/3年内累计采购4套及以上</div>
 			</label>
 
 			<input type="radio" class="btn-check" name="btnradio" id="price-off-30" value="1386,1386,6860" autocomplete="off">
@@ -93,7 +99,6 @@
 
 		<div class="row justify-content-center my-5">
 			<div class="col-10 col-md-8 fs-8 text-body text-opacity-50">
-				<p class="mb-2">授权升级更高版本，之前版本金额可以全额抵扣。</p>
 				<p class="mb-2">单域名商业授权为顶级域名，如 publiccms.com 授权，也可以在其二级域名下使用。</p>
 				<p class="mb-2">授权单位为网站主办者，单域名商业授权、不限域名商业授权单位可以将自己购买的授权授予下属不具备法人资格的分支机构，如分公司，子部门使用，无权将自己购买的授权授予子公司及其他单位使用。</p>
 				<p class="mb-2">所有用户均可通过社区、QQ交流群等方式获得长期的免费技术支持。</p>
@@ -104,7 +109,7 @@
 			<div class="col-md-4">
 				<div class="card border-0">
 					<div>
-						<img loading="lazy" src="${site.sitePath}assets/img/index-service-1.svg" class="img-fluid">
+						<img loading="lazy" src="${site.sitePath}assets/img/index-service-1.svg" class="img-fluid" alt="service">
 					</div>
 					<div class="card-body px-0">
 						<h3>模板制作(可包含切图)</h3>
@@ -116,11 +121,11 @@
 			<div class="col-md-4">
 				<div class="card border-0">
 					<div>
-						<img loading="lazy" src="${site.sitePath}assets/img/index-service-2.svg" class="img-fluid">
+						<img loading="lazy" src="${site.sitePath}assets/img/index-service-2.svg" class="img-fluid" alt="service">
 					</div>
 					<div class="card-body px-0">
 						<h3>一对一远程技术支持</h3>
-						<div class="text-secondary fs-6 mb-1">4800元/年(不超过两位工程师)<br/>2000元/年/位工程师</div>
+						<div class="text-secondary fs-6 mb-1">2000元/年</div>
 						<p class="text-body text-opacity-25 fs-8">含3%税率<br/>普票、专票、电子发票</p>
 					</div>
 				</div>
@@ -128,7 +133,7 @@
 			<div class="col-md-4">
 				<div class="card border-0">
 					<div>
-						<img loading="lazy" src="${site.sitePath}assets/img/index-service-3.svg" class="img-fluid">
+						<img loading="lazy" src="${site.sitePath}assets/img/index-service-3.svg" class="img-fluid" alt="service">
 					</div>
 					<div class="card-body px-0">
 						<h3>等保(二级、三级)技术支持</h3>
@@ -138,7 +143,7 @@
 				</div>
 			</div>
 			<div class="col-11 col-md-9 mt-3">
-				<p class="fs-8 text-body text-opacity-50">为避免与使用本产品的其他技术团队产生直接竞争，我们只提供网站制作过程中的模板制作（可包含切图）部分服务，不承接含有二次开发、网站设计的项目。如果您没有设计或技术团队，或以上报价超出您的预算，请选择其他服务商提供网站制作服务。</p>
+				<p class="fs-8 text-body text-opacity-50">我们只提供网站制作过程中的模板制作（可包含切图）部分服务，不承接含有二次开发、网站设计的项目。如果您没有设计或技术团队，或以上报价超出您的预算，请选择其他服务商提供网站制作服务。</p>
 			</div>
 		</div>
 
