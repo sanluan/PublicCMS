@@ -33,13 +33,13 @@ public class CmsUpgrader extends AbstractCmsUpgrader {
             VERSION_180707 = "V4.0.180707", VERSION_180825 = "V4.0.180825", VERSION_181024 = "V4.0.181024",
             VERSION_190312 = "V4.0.190312", VERSION_2019 = "V2019", VERSION_202004 = "V4.0.202004",
             VERSION_202011 = "V4.0.202011", VERSION_202107 = "V4.0.202107", VERSION_202204 = "V4.0.202204",
-            VERSION5_202204 = "V5.202204", VERSION_CURRENT = "develop";
+            VERSION_CURRENT = "V4.0.202302";
     /**
      *
      */
     private final static List<String> VERSION_LIST = Arrays.asList(VERSION_20170708, VERSION_20180210, VERSION_180707,
             VERSION_180825, VERSION_181024, VERSION_190312, VERSION_2019, VERSION_202004, VERSION_202011, VERSION_202107,
-            VERSION_202204, VERSION5_202204);
+            VERSION_202204);
 
     /**
      * @throws SQLException
@@ -70,7 +70,6 @@ public class CmsUpgrader extends AbstractCmsUpgrader {
             updateCategoryType(stringWriter, connection);
             runScript(stringWriter, connection, VERSION_202107, VERSION_202204);
         case VERSION_202204:
-        case VERSION5_202204:
             runScript(stringWriter, connection, VERSION_202204, VERSION_CURRENT);
             updateSiteConfig(stringWriter, connection);
         }

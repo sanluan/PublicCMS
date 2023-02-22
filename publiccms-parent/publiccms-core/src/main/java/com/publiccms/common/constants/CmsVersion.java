@@ -22,13 +22,13 @@ public class CmsVersion {
      * @return version
      */
     public static final String getVersion() {
-        return "V4.0.202204";
+        return "V4.0.202302";
     }
     /**
      * @return revision
      */
     public static final String getRevision() {
-        return "d";
+        return "a";
     }
 
     /**

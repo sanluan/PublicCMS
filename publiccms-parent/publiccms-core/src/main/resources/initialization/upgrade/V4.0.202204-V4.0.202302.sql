@@ -11,7 +11,7 @@ INSERT INTO `sys_module_lang` VALUES('diy_list', 'zh', '页面可视化管理');
 ALTER TABLE `sys_user`
     CHANGE COLUMN `nick_name` `nickname` varchar(45) NOT NULL COMMENT '昵称' AFTER `weak_password`;
 -- 2022-05-05 --
-INSERT INTO `sys_module` VALUES('page_diy', 'cmsPage/diy', 'cmsPage/style,cmsDiy/save', 'bi bi-palette', 'page_menu', 1, 3);
+INSERT INTO `sys_module` VALUES('page_diy', 'cmsPage/diy', 'cmsPage/region,cmsDiy/save', 'bi bi-palette', 'page_menu', 1, 3);
 INSERT INTO `sys_module_lang` VALUES('page_diy', 'en', 'Visualized page');
 INSERT INTO `sys_module_lang` VALUES('page_diy', 'ja', '視覚化されたページ');
 INSERT INTO `sys_module_lang` VALUES('page_diy', 'zh', '页面可视化');
@@ -219,12 +219,13 @@ INSERT INTO `sys_module_lang` VALUES('file_recycle', 'zh', '文件回收站');
 -- 2022-10-03 --
 RENAME TABLE `sys_dept_page` TO `sys_dept_item`;
 ALTER TABLE `sys_dept_item`
-    CHANGE COLUMN `page` `item_id` varchar(100) NOT NULL COMMENT '项目id' AFTER `dept_id`,
+    CHANGE COLUMN `page` `item_id` varchar(100) NOT NULL COMMENT '项目' AFTER `dept_id`,
     ADD COLUMN `item_type` varchar(50) NOT NULL DEFAULT 'page' COMMENT '项目类型' AFTER `dept_id`,
     DROP PRIMARY KEY,
     ADD PRIMARY KEY(`dept_id`, `item_type`, `item_id`),
     DROP INDEX `sys_dept_page_page`,
-    ADD INDEX `sys_dept_item_item_id`(`item_type`, `item_id`);
+    ADD INDEX `sys_dept_item_item_id`(`item_type`, `item_id`),
+    COMMENT = '部门数据项';
 INSERT INTO sys_dept_item SELECT dept_id,'config',config FROM sys_dept_config;
 INSERT INTO sys_dept_item SELECT dept_id,'category',category_id FROM sys_dept_category;
 DROP TABLE `sys_dept_category`;
@@ -454,7 +455,7 @@ UPDATE `sys_module` SET `authorized_url`= 'cmsTemplate/savePlaceMetaData,cmsTemp
 UPDATE `sys_module` SET `authorized_url`= 'tradePayment/refund,tradePayment/refuse' WHERE `id` ='payment_list';
 UPDATE `sys_module` SET `authorized_url`= 'sysTask/pause,sysTask/interrupt' WHERE `id` ='task_pause';
 UPDATE `sys_module` SET `authorized_url`= 'cmsWebFile/save,cmsWebFile/delete' WHERE `id` ='webfile_content';
-UPDATE `sys_module` SET `authorized_url`= 'visit/history',`url` = 'visit/view' WHERE `id` ='webfile_content';
+UPDATE `sys_module` SET `authorized_url`= 'visit/view',`url` = 'visit/history' WHERE `id` ='visit_history';
 -- 2023-01-05 --
 ALTER TABLE `cms_dictionary_data`
     ADD COLUMN `sort` int(11) NOT NULL default '0' COMMENT '顺序' AFTER `text`;
@@ -516,3 +517,6 @@ INSERT INTO `sys_module_lang` VALUES ('refund_view', 'ja', '見る');
 INSERT INTO `sys_module_lang` VALUES ('refund_view', 'zh', '查看');
 -- 2023-01-18 --
 UPDATE `sys_module` SET `authorized_url`= 'cmsCategoryType/categoryList' WHERE `id` ='category_type_list';
+-- 2023-02-17 --
+UPDATE `sys_module` SET `attached`= NULL WHERE `attached` ='';
+UPDATE `sys_module` set `authorized_url`= 'cmsContent/lookup_list,cmsContent/contentImage' WHERE `id` ='select_content';
