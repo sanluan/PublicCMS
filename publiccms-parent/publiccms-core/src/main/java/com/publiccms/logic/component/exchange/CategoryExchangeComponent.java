@@ -20,7 +20,7 @@ import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.entities.cms.CmsCategoryModel;
 import com.publiccms.entities.sys.SysExtend;
 import com.publiccms.entities.sys.SysExtendField;
-import com.publiccms.logic.component.site.SiteComponent;
+import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsCategoryAttributeService;
 import com.publiccms.logic.service.cms.CmsCategoryModelService;
@@ -45,8 +45,6 @@ public class CategoryExchangeComponent extends AbstractExchange<CmsCategory, Cat
     @Resource
     private TemplateComponent templateComponent;
     @Resource
-    private SiteComponent siteComponent;
-    @Resource
     private CmsCategoryAttributeService attributeService;
     @Resource
     private CmsCategoryModelService categoryModelService;
@@ -58,35 +56,35 @@ public class CategoryExchangeComponent extends AbstractExchange<CmsCategory, Cat
     private CmsTagTypeService tagTypeService;
 
     @Override
-    public void exportAll(short siteId, String directory, ByteArrayOutputStream outputStream, ZipOutputStream zipOutputStream) {
+    public void exportAll(SysSite site, String directory, ByteArrayOutputStream outputStream, ZipOutputStream zipOutputStream) {
         CmsCategoryQuery query = new CmsCategoryQuery();
-        query.setSiteId(siteId);
+        query.setSiteId(site.getId());
         query.setDisabled(false);
         PageHandler page = service.getPage(query, null, null);
         if (null != page.getList()) {
             @SuppressWarnings("unchecked")
             List<CmsCategory> list = (List<CmsCategory>) page.getList();
             for (CmsCategory category : list) {
-                exportEntity(siteId, directory, category, outputStream, zipOutputStream);
+                exportEntity(site, directory, category, outputStream, zipOutputStream);
             }
         }
     }
 
     @Override
-    public void exportEntity(short siteId, String directory, CmsCategory entity, ByteArrayOutputStream outputStream,
+    public void exportEntity(SysSite site, String directory, CmsCategory entity, ByteArrayOutputStream outputStream,
             ZipOutputStream zipOutputStream) {
-        exportEntity(siteId, directory, null, entity, outputStream, zipOutputStream);
+            exportEntity(site, directory, null, entity, outputStream, zipOutputStream);
     }
 
     /**
-     * @param siteId
+     * @param site
      * @param directory
      * @param parentCode
      * @param entity
      * @param outputStream
      * @param zipOutputStream
      */
-    public void exportEntity(short siteId, String directory, String parentCode, CmsCategory entity,
+    public void exportEntity(SysSite site, String directory, String parentCode, CmsCategory entity,
             ByteArrayOutputStream outputStream, ZipOutputStream zipOutputStream) {
         Integer categoryId = entity.getId();
         Category data = new Category();
@@ -94,7 +92,16 @@ public class CategoryExchangeComponent extends AbstractExchange<CmsCategory, Cat
         entity.setId(null);
         data.setEntity(entity);
         data.setAttribute(attributeService.getEntity(categoryId));
-        data.setModelList(categoryModelService.getList(siteId, null, categoryId));
+        if (null != data.getAttribute()) {
+            if (CommonUtils.notEmpty(data.getAttribute().getData())) {
+                data.getAttribute().setData(StringUtils.replace(data.getAttribute().getData(), site.getSitePath(), "#SITEPATH#"));
+            }
+            if (CommonUtils.notEmpty(data.getAttribute().getData())) {
+                data.getAttribute()
+                        .setData(StringUtils.replace(data.getAttribute().getData(), site.getDynamicPath(), "#DYNAMICPATH#"));
+            }
+        }
+        data.setModelList(categoryModelService.getList(site.getId(), null, categoryId));
         if (null != entity.getExtendId()) {
             data.setExtendList(extendFieldService.getList(entity.getExtendId(), null, null));
         }
@@ -112,7 +119,7 @@ public class CategoryExchangeComponent extends AbstractExchange<CmsCategory, Cat
         export(directory, outputStream, zipOutputStream, data, entity.getCode() + ".json");
         if (CommonUtils.notEmpty(entity.getChildIds())) {
             CmsCategoryQuery query = new CmsCategoryQuery();
-            query.setSiteId(siteId);
+            query.setSiteId(site.getId());
             query.setParentId(categoryId);
             query.setDisabled(false);
             PageHandler page = service.getPage(query, null, null);
@@ -120,31 +127,39 @@ public class CategoryExchangeComponent extends AbstractExchange<CmsCategory, Cat
                 @SuppressWarnings("unchecked")
                 List<CmsCategory> list = (List<CmsCategory>) page.getList();
                 for (CmsCategory category : list) {
-                    exportEntity(siteId, directory, entity.getCode(), category, outputStream, zipOutputStream);
+                    exportEntity(site, directory, entity.getCode(), category, outputStream, zipOutputStream);
                 }
             }
         }
     }
 
     @Override
-    public void importData(short siteId, long userId, String directory, boolean overwrite, ZipFile zipFile) {
-        super.importData(siteId, userId, directory, overwrite, zipFile);
-        service.generateChildIds(siteId, null);
+    public void importData(SysSite site, long userId, String directory, boolean overwrite, ZipFile zipFile) {
+        super.importData(site, userId, directory, overwrite, zipFile);
+        service.generateChildIds(site.getId(), null);
     }
 
-    public void save(short siteId, long userId, boolean overwrite, Category data) {
-        save(siteId, userId, overwrite, null, data);
+    @Override
+    public void save(SysSite site, long userId, boolean overwrite, Category data) {
+        save(site, userId, overwrite, null, data);
     }
 
-    public void save(short siteId, long userId, boolean overwrite, Integer parentId, Category data) {
+    /**
+     * @param site
+     * @param userId
+     * @param overwrite
+     * @param parentId
+     * @param data
+     */
+    public void save(SysSite site, long userId, boolean overwrite, Integer parentId, Category data) {
         CmsCategory entity = data.getEntity();
-        CmsCategory oldentity = service.getEntityByCode(siteId, entity.getCode());
+        CmsCategory oldentity = service.getEntityByCode(site.getId(), entity.getCode());
         if (null == oldentity || overwrite) {
-            entity.setSiteId(siteId);
+            entity.setSiteId(site.getId());
             if (null != parentId) {
                 entity.setParentId(parentId);
             } else if (CommonUtils.notEmpty(data.getParentCode())) {
-                CmsCategory parent = service.getEntityByCode(siteId, data.getParentCode());
+                CmsCategory parent = service.getEntityByCode(site.getId(), data.getParentCode());
                 if (null != parent) {
                     entity.setParentId(parent.getId());
                 }
@@ -153,7 +168,7 @@ public class CategoryExchangeComponent extends AbstractExchange<CmsCategory, Cat
                 service.save(entity);
                 if (null != data.getModelList()) {
                     for (CmsCategoryModel temp : data.getModelList()) {
-                        temp.setSiteId(siteId);
+                        temp.setSiteId(site.getId());
                         temp.getId().setCategoryId(entity.getId());
                     }
                     categoryModelService.save(data.getModelList());
@@ -175,7 +190,7 @@ public class CategoryExchangeComponent extends AbstractExchange<CmsCategory, Cat
                 service.update(oldentity.getId(), entity);
                 if (null != data.getModelList()) {
                     for (CmsCategoryModel temp : data.getModelList()) {
-                        temp.setSiteId(siteId);
+                        temp.setSiteId(site.getId());
                         temp.getId().setCategoryId(entity.getId());
                     }
                     categoryModelService.saveOrUpdate(data.getModelList());
@@ -199,15 +214,23 @@ public class CategoryExchangeComponent extends AbstractExchange<CmsCategory, Cat
             }
             if (null != data.getAttribute()) {
                 data.getAttribute().setCategoryId(entity.getId());
+                if (CommonUtils.notEmpty(data.getAttribute().getData())) {
+                    data.getAttribute()
+                            .setData(StringUtils.replace(data.getAttribute().getData(), "#DYNAMICPATH#", site.getDynamicPath()));
+                }
+                if (CommonUtils.notEmpty(data.getAttribute().getData())) {
+                    data.getAttribute()
+                            .setData(StringUtils.replace(data.getAttribute().getData(), "#SITEPATH#", site.getSitePath()));
+                }
                 attributeService.saveOrUpdate(data.getAttribute());
             }
             if (null != data.getChildList()) {
                 for (Category child : data.getChildList()) {
-                    save(siteId, userId, overwrite, child);
+                    save(site, userId, overwrite, entity.getId(), child);
                 }
             }
             try {
-                templateComponent.createCategoryFile(siteComponent.getSiteById(siteId), entity, null, null);
+                templateComponent.createCategoryFile(site, entity, null, null);
             } catch (IOException | TemplateException e) {
             }
         }

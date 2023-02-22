@@ -154,7 +154,7 @@ public class CmsDictionaryAdminController {
                     LogLoginService.CHANNEL_WEB_MANAGER, "import.cmsDictionary", RequestUtils.getIpAddress(request),
                     CommonUtils.getDate(), file.getOriginalFilename()));
         }
-        return SiteExchangeComponent.importData(site.getId(), admin.getId(), overwrite, "-dictionary.zip", exchangeComponent,
+        return SiteExchangeComponent.importData(site, admin.getId(), overwrite, "-dictionary.zip", exchangeComponent,
                 file, model);
     }
 
@@ -177,9 +177,9 @@ public class CmsDictionaryAdminController {
                 ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream)) {
             zipOutputStream.setEncoding(Constants.DEFAULT_CHARSET_NAME);
             if (CommonUtils.empty(id)) {
-                exchangeComponent.exportAll(site.getId(), zipOutputStream);
+                exchangeComponent.exportAll(site, zipOutputStream);
             } else {
-                exchangeComponent.exportEntity(site.getId(), service.getEntity(new CmsDictionaryId(id, site.getId())),
+                exchangeComponent.exportEntity(site, service.getEntity(new CmsDictionaryId(id, site.getId())),
                         zipOutputStream);
             }
         } catch (IOException e) {

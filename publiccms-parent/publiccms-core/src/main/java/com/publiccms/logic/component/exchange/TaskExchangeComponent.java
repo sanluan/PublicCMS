@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractExchange;
 import com.publiccms.common.handler.PageHandler;
+import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysTask;
-import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.sys.SysTaskService;
 
 import jakarta.annotation.Resource;
@@ -22,32 +22,30 @@ import jakarta.annotation.Resource;
 public class TaskExchangeComponent extends AbstractExchange<SysTask, SysTask> {
     @Resource
     private SysTaskService service;
-    @Resource
-    private SiteComponent siteComponent;
 
     @Override
-    public void exportAll(short siteId, String directory, ByteArrayOutputStream outputStream, ZipOutputStream zipOutputStream) {
-        PageHandler page = service.getPage(siteId, null, null, null, PageHandler.MAX_PAGE_SIZE);
+    public void exportAll(SysSite site, String directory, ByteArrayOutputStream outputStream, ZipOutputStream zipOutputStream) {
+        PageHandler page = service.getPage(site.getId(), null, null, null, PageHandler.MAX_PAGE_SIZE);
         @SuppressWarnings("unchecked")
         List<SysTask> list = (List<SysTask>) page.getList();
         if (0 < page.getTotalCount()) {
             for (SysTask entity : list) {
-                exportEntity(siteId, directory, entity, outputStream, zipOutputStream);
+                exportEntity(site, directory, entity, outputStream, zipOutputStream);
             }
         }
     }
 
     @Override
-    public void exportEntity(short siteId, String directory, SysTask task, ByteArrayOutputStream outputStream,
+    public void exportEntity(SysSite site, String directory, SysTask task, ByteArrayOutputStream outputStream,
             ZipOutputStream zipOutputStream) {
         int id = task.getId();
         task.setId(null);
         export(directory, outputStream, zipOutputStream, task, id + ".json");
     }
 
-    public void save(short siteId, long userId, boolean overwrite, SysTask data) {
+    public void save(SysSite site, long userId, boolean overwrite, SysTask data) {
         if (null != data) {
-            data.setSiteId(siteId);
+            data.setSiteId(site.getId());
             service.save(data);
         }
     }

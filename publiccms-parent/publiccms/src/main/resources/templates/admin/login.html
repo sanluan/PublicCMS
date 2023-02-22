@@ -35,15 +35,14 @@
                 <i class="iconfont iconfont-key"></i>
                 <input type="password" name="password" placeholder="<@t.page 'password'/>" title="<@t.page 'password'/>"/>
             </p>
-            <@sys.configData code="safe">
-                <#if object.captcha?has_content && object.captcha?split(",")?seq_contains("management_system")>
+            <@sys.configData code="safe"><#assign captcahConfig=object.captcha/></@sys.configData>
+                <#if captcahConfig?has_content && captcahConfig?split(",")?seq_contains("management_system")>
             <p>
                 <i class="iconfont iconfont-page"></i>
                 <input type="text" name="captcha" placeholder="<@t.page 'captcha'/>" title="<@t.page 'captcha'/>" autocomplete="off"/>
                 <img src="${base+adminContextPath}/getCaptchaImage?${.now?long}" alt="<@t.page 'captcha'/>" onclick="this.src=this.src+'&'+new Date().getTime()"/>
             </p>
                 </#if>
-            </@sys.configData>
             <p>
                 <label><input type="checkbox" name="secureLogin" checked="checked"/><@t.page 'secure_login'/></label>
                 <input type="submit" value="<@t.page 'login'/>"/>
@@ -60,14 +59,12 @@
             </p>
         </form>
         <p>
-            <@sys.configData code="site">
-                <#assign excludeLangs=(object.site_exclude_lang!'')?split(',')/>
-                <#list langs as k,v>
-                    <#if !(excludeLangs?has_content && excludeLangs?seq_contains(k))>
-                <a<#if t.pageMessage("lang")=k> class="current-lang"</#if> href="${base+adminContextPath}/changeLocale?lang=${k}&returnUrl=${(adminContextPath+'/')?url}">${v}</a>
-                    </#if>
-                </#list>
-            </@sys.configData>
+            <@sys.configData code="site"><#assign excludeLangs=(object.site_exclude_lang!'')?split(',')/></@sys.configData>
+            <#list langs as k,v>
+                <#if !(excludeLangs?has_content && excludeLangs?seq_contains(k))>
+            <a<#if t.pageMessage("lang")=k> class="current-lang"</#if> href="${base+adminContextPath}/changeLocale?lang=${k}&returnUrl=${(adminContextPath+'/')?url}">${v}</a>
+                </#if>
+            </#list>
         </p>
     </div>
 </div>

@@ -32,11 +32,10 @@
 					<input type="submit" class="button" value="登录"/>
 					<input type="hidden" name="clientId" value="${clientId!}"/>
 					<input type="hidden" name="uuid" value="${uuid!}"/>
-					<a href="javascript:$('input[name=username]').val('test');$('input[name=password]').val('test');$('form#login').submit();">登录演示账号</a>
 				</p>
 				<#if false &&  _oauthList??&&_oauthList?is_directive>
 					<@oauth.list>
-						<p><#list list as o><a href="${site.dynamicPath}/oauth/login/${o}">使用${o}登录</a><#sep> </#list></p>
+						<p><#list list as o><a href="${site.dynamicPath}oauth/login/${o}">使用${o}登录</a><#sep> </#list></p>
 					</@oauth.list>
 				</#if>
 				<p class="message">没有账号?请<a href="register.html?returnUrl=${(returnUrl?url)!}">注册</a></p>

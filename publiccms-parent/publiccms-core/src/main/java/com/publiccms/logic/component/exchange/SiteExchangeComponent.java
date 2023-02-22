@@ -17,6 +17,7 @@ import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ZipUtils;
+import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 
@@ -40,7 +41,7 @@ public class SiteExchangeComponent {
     /**
      * @param <E>
      * @param <D>
-     * @param siteId
+     * @param site
      * @param userId
      * @param overwrite
      * @param dataFileSuffix
@@ -49,7 +50,7 @@ public class SiteExchangeComponent {
      * @param model
      * @return
      */
-    public static <E, D> String importData(short siteId, long userId, boolean overwrite, String dataFileSuffix,
+    public static <E, D> String importData(SysSite site, long userId, boolean overwrite, String dataFileSuffix,
             AbstractExchange<E, D> exchangeComponent, MultipartFile file, ModelMap model) {
         if (null != file && !file.isEmpty()) {
             String originalName = file.getOriginalFilename();
@@ -59,7 +60,7 @@ public class SiteExchangeComponent {
                     File dest = File.createTempFile("temp_import_", suffix);
                     file.transferTo(dest);
                     try (ZipFile zipFile = new ZipFile(dest, CommonConstants.DEFAULT_CHARSET_NAME)) {
-                        exchangeComponent.importData(siteId, userId, overwrite, zipFile);
+                        exchangeComponent.importData(site, userId, overwrite, zipFile);
                     }
                     dest.delete();
                     return CommonConstants.TEMPLATE_DONE;
@@ -77,17 +78,17 @@ public class SiteExchangeComponent {
     }
 
     /**
-     * @param siteId
+     * @param site
      * @param zipOutputStream
      */
-    public void exportAll(short siteId, ZipOutputStream zipOutputStream) {
+    public void exportAll(SysSite site, ZipOutputStream zipOutputStream) {
         for (AbstractExchange<?, ?> exchange : exchangeList) {
-            exchange.exportAll(siteId, exchange.getDirectory(), zipOutputStream);
+            exchange.exportAll(site, exchange.getDirectory(), zipOutputStream);
         }
     }
 
     /**
-     * @param siteId
+     * @param site
      * @param userId
      * @param overwrite
      * @param dataFileSuffix
@@ -96,7 +97,7 @@ public class SiteExchangeComponent {
      * @param model
      * @return
      */
-    public String importData(short siteId, long userId, boolean overwrite, String dataFileSuffix, MultipartFile file,
+    public String importData(SysSite site, long userId, boolean overwrite, String dataFileSuffix, MultipartFile file,
             String fileName, ModelMap model) {
         if (null != file && !file.isEmpty()) {
             String originalName = file.getOriginalFilename();
@@ -105,7 +106,7 @@ public class SiteExchangeComponent {
                 try {
                     File dest = File.createTempFile("temp_import_", suffix);
                     file.transferTo(dest);
-                    importDate(siteId, userId, overwrite, dest);
+                    importDate(site, userId, overwrite, dest);
                     dest.delete();
                     return CommonConstants.TEMPLATE_DONE;
                 } catch (IOException e) {
@@ -118,7 +119,7 @@ public class SiteExchangeComponent {
         } else if (CommonUtils.notEmpty(fileName)) {
             File dest = new File(siteComponent.getSiteFilePath(), fileName);
             try {
-                importDate(siteId, userId, overwrite, dest);
+                importDate(site, userId, overwrite, dest);
             } catch (IOException e) {
                 log.error(e.getMessage());
                 model.addAttribute("error", e.getMessage());
@@ -130,25 +131,25 @@ public class SiteExchangeComponent {
         return CommonConstants.TEMPLATE_ERROR;
     }
 
-    private void importDate(short siteId, long userId, boolean overwrite, File file) throws IOException {
+    private void importDate(SysSite site, long userId, boolean overwrite, File file) throws IOException {
         try (ZipFile zipFile = new ZipFile(file, CommonConstants.DEFAULT_CHARSET_NAME)) {
             {
-                String filepath = siteComponent.getTemplateFilePath(siteId, CommonConstants.SEPARATOR);
+                String filepath = siteComponent.getTemplateFilePath(site.getId(), CommonConstants.SEPARATOR);
                 ZipUtils.unzip(zipFile, "template", filepath, overwrite);
                 templateComponent.clearTemplateCache();
             }
             {
-                String filepath = siteComponent.getWebFilePath(siteId, CommonConstants.SEPARATOR);
+                String filepath = siteComponent.getWebFilePath(site.getId(), CommonConstants.SEPARATOR);
                 ZipUtils.unzip(zipFile, "web", filepath, overwrite);
             }
             {
-                String filepath = siteComponent.getTaskTemplateFilePath(siteId, CommonConstants.SEPARATOR);
+                String filepath = siteComponent.getTaskTemplateFilePath(site.getId(), CommonConstants.SEPARATOR);
                 ZipUtils.unzip(zipFile, "tasktemplate", filepath, overwrite);
                 templateComponent.clearTaskTemplateCache();
             }
             exchangeList.sort((a, b) -> b.importOrder() - a.importOrder());
             for (AbstractExchange<?, ?> exchange : exchangeList) {
-                exchange.importData(siteId, userId, exchange.getDirectory(), overwrite, zipFile);
+                exchange.importData(site, userId, exchange.getDirectory(), overwrite, zipFile);
             }
         }
     }

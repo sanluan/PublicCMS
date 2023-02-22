@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.tools.zip.ZipOutputStream;
@@ -29,6 +30,7 @@ import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.entities.cms.CmsPlace;
 import com.publiccms.entities.cms.CmsPlaceAttribute;
 import com.publiccms.entities.sys.SysExtendField;
+import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
@@ -63,30 +65,30 @@ public class PlaceExchangeComponent extends AbstractExchange<String, Place> {
     private SiteComponent siteComponent;
 
     @Override
-    public void exportAll(short siteId, String directory, ByteArrayOutputStream outputStream, ZipOutputStream zipOutputStream) {
-        dealDir(siteId, directory, "", outputStream, zipOutputStream);
+    public void exportAll(SysSite site, String directory, ByteArrayOutputStream outputStream, ZipOutputStream zipOutputStream) {
+        dealDir(site, directory, "", outputStream, zipOutputStream);
     }
 
-    private void dealDir(short siteId, String directory, String path, ByteArrayOutputStream outputStream,
+    private void dealDir(SysSite site, String directory, String path, ByteArrayOutputStream outputStream,
             ZipOutputStream zipOutputStream) {
         path = path.replace("\\", CommonConstants.SEPARATOR).replace("//", CommonConstants.SEPARATOR);
-        String realPath = siteComponent.getTemplateFilePath(siteId, TemplateComponent.INCLUDE_DIRECTORY + path);
+        String realPath = siteComponent.getTemplateFilePath(site.getId(), TemplateComponent.INCLUDE_DIRECTORY + path);
         List<FileInfo> list = CmsFileUtils.getFileList(realPath, null);
         for (FileInfo fileInfo : list) {
             String filepath = path + fileInfo.getFileName();
             if (fileInfo.isDirectory()) {
-                dealDir(siteId, directory, filepath + CommonConstants.SEPARATOR, outputStream, zipOutputStream);
+                dealDir(site, directory, filepath + CommonConstants.SEPARATOR, outputStream, zipOutputStream);
             } else {
-                exportEntity(siteId, directory, filepath, outputStream, zipOutputStream);
+                exportEntity(site, directory, filepath, outputStream, zipOutputStream);
             }
         }
     }
 
     @Override
-    public void exportEntity(short siteId, String directory, String path, ByteArrayOutputStream outputStream,
+    public void exportEntity(SysSite site, String directory, String path, ByteArrayOutputStream outputStream,
             ZipOutputStream zipOutputStream) {
-        PageHandler page = service.getPage(siteId, null, CommonConstants.SEPARATOR + path, null, null, null, null, null, null, false, null, null, null,
-                PageHandler.MAX_PAGE_SIZE);
+        PageHandler page = service.getPage(site.getId(), null, CommonConstants.SEPARATOR + path, null, null, null, null, null,
+                null, false, null, null, null, PageHandler.MAX_PAGE_SIZE);
         @SuppressWarnings("unchecked")
         List<CmsPlace> list = (List<CmsPlace>) page.getList();
         if (0 < page.getTotalCount()) {
@@ -105,6 +107,16 @@ public class PlaceExchangeComponent extends AbstractExchange<String, Place> {
                 }
                 placeData.setEntity(entity);
                 placeData.setAttribute(attributeService.getEntity(placeId));
+                if (null != placeData.getAttribute()) {
+                    if (CommonUtils.notEmpty(placeData.getAttribute().getData())) {
+                        placeData.getAttribute().setData(
+                                StringUtils.replace(placeData.getAttribute().getData(), site.getSitePath(), "#SITEPATH#"));
+                    }
+                    if (CommonUtils.notEmpty(placeData.getAttribute().getData())) {
+                        placeData.getAttribute().setData(
+                                StringUtils.replace(placeData.getAttribute().getData(), site.getDynamicPath(), "#DYNAMICPATH#"));
+                    }
+                }
                 datalist.add(placeData);
             }
             data.setDatalist(datalist);
@@ -113,7 +125,7 @@ public class PlaceExchangeComponent extends AbstractExchange<String, Place> {
     }
 
     /**
-     * @param siteId
+     * @param site
      * @param path
      * @param userId
      * @param status
@@ -126,12 +138,12 @@ public class PlaceExchangeComponent extends AbstractExchange<String, Place> {
      * @param locale
      * @return
      */
-    public ExcelView exportExcelByQuery(short siteId, String path, Long userId, Integer[] status, String itemType, Long itemId,
+    public ExcelView exportExcelByQuery(SysSite site, String path, Long userId, Integer[] status, String itemType, Long itemId,
             Date startPublishDate, Date endPublishDate, String orderField, String orderType, Locale locale) {
-        String filepath = siteComponent.getTemplateFilePath(siteId, TemplateComponent.INCLUDE_DIRECTORY + path);
+        String filepath = siteComponent.getTemplateFilePath(site.getId(), TemplateComponent.INCLUDE_DIRECTORY + path);
         CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);
 
-        PageHandler page = service.getPage(siteId, userId, path, itemType, itemId, startPublishDate, endPublishDate,
+        PageHandler page = service.getPage(site.getId(), userId, path, itemType, itemId, startPublishDate, endPublishDate,
                 CommonUtils.getMinuteDate(), status, false, orderField, orderType, 1, PageHandler.MAX_PAGE_SIZE);
         @SuppressWarnings("unchecked")
         List<CmsPlace> entityList = (List<CmsPlace>) page.getList();
@@ -241,17 +253,18 @@ public class PlaceExchangeComponent extends AbstractExchange<String, Place> {
         return view;
     }
 
-    public void save(short siteId, long userId, boolean overwrite, Place data) {
+    @Override
+    public void save(SysSite site, long userId, boolean overwrite, Place data) {
         if (null != data.getDatalist()) {
-            PageHandler page = service.getPage(siteId, null, data.getPath(), null, null, null, null, null, null, false, null,
-                    null, null, 0);
+            PageHandler page = service.getPage(site.getId(), null, data.getPath(), null, null, null, null, null, null, false,
+                    null, null, null, 0);
             if (0 == page.getTotalCount() || overwrite) {
                 for (PlaceData placeData : data.getDatalist()) {
                     CmsPlace entity = placeData.getEntity();
-                    entity.setSiteId(siteId);
+                    entity.setSiteId(site.getId());
                     if (CmsPlaceService.ITEM_TYPE_CATEGORY.equals(entity.getItemType())) {
                         if (CommonUtils.notEmpty(placeData.getCategoryCode())) {
-                            CmsCategory category = categoryService.getEntityByCode(siteId, placeData.getCategoryCode());
+                            CmsCategory category = categoryService.getEntityByCode(site.getId(), placeData.getCategoryCode());
                             if (null != category) {
                                 entity.setItemId(entity.getId());
                                 service.save(entity);
@@ -262,6 +275,14 @@ public class PlaceExchangeComponent extends AbstractExchange<String, Place> {
                     }
                     if (null != entity.getId() && null != placeData.getAttribute()) {
                         placeData.getAttribute().setPlaceId(entity.getId());
+                        if (CommonUtils.notEmpty(placeData.getAttribute().getData())) {
+                            placeData.getAttribute().setData(StringUtils.replace(placeData.getAttribute().getData(),
+                                    "#DYNAMICPATH#", site.getDynamicPath()));
+                        }
+                        if (CommonUtils.notEmpty(placeData.getAttribute().getData())) {
+                            placeData.getAttribute().setData(
+                                    StringUtils.replace(placeData.getAttribute().getData(), "#SITEPATH#", site.getSitePath()));
+                        }
                         attributeService.saveOrUpdate(placeData.getAttribute());
                     }
                 }

@@ -145,7 +145,7 @@ public class SysSiteAdminController {
                     .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                             "save.site", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
             if (CommonUtils.notEmpty(fileName)) {
-                siteExchangeComponent.importData(user.getSiteId(), user.getId(), true, "-site.zip", null, fileName, model);
+                siteExchangeComponent.importData(entity, user.getId(), true, "-site.zip", null, fileName, model);
             }
         }
         siteComponent.clear();
@@ -215,7 +215,7 @@ public class SysSiteAdminController {
                     String filepath = siteComponent.getTaskTemplateFilePath(site.getId(), CommonConstants.SEPARATOR);
                     ZipUtils.compress(Paths.get(filepath), zipOutputStream, "tasktemplate");
                 }
-                siteExchangeComponent.exportAll(site.getId(), zipOutputStream);
+                siteExchangeComponent.exportAll(site, zipOutputStream);
             } catch (IOException e) {
             }
         }

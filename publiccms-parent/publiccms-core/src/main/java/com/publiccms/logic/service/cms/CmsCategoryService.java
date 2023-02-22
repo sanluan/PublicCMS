@@ -219,12 +219,29 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
      * @param siteId
      * @param parentId
      */
+    @SuppressWarnings("unchecked")
     public void generateChildIds(short siteId, Integer parentId) {
         if (null != parentId) {
+            generateChildIds(siteId, parentId, true);
+        } else {
+            CmsCategoryQuery query = new CmsCategoryQuery();
+            query.setSiteId(siteId);
+            query.setQueryAll(true);
+            PageHandler page = getPage(query, null, null);
+            for (CmsCategory category : (List<CmsCategory>) page.getList()) {
+                generateChildIds(category.getSiteId(), category.getId(), false);
+            }
+        }
+    }
+
+    private void generateChildIds(short siteId, Integer parentId, boolean generateParent) {
+        if (null != parentId) {
             updateChildIds(parentId, getChildIds(siteId, parentId));
-            CmsCategory parent = getEntity(parentId);
-            if (null != parent) {
-                generateChildIds(siteId, parent.getParentId());
+            if (generateParent) {
+                CmsCategory parent = getEntity(parentId);
+                if (null != parent && null != parent.getParentId()) {
+                    generateChildIds(siteId, parent.getParentId(), true);
+                }
             }
         }
     }
