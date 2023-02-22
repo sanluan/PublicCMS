@@ -21,7 +21,7 @@ import freemarker.template.TemplateModelException;
  * </ul>
  * 使用示例
  * <p>
- * <#list getFontList() as font>${font}</#list>
+ * &lt;#list getFontList() as font&gt;${font}&lt;/#list&gt;
  * <p>
  * 
  * <pre>

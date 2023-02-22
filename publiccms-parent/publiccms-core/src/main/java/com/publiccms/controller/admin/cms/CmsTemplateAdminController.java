@@ -300,7 +300,6 @@ public class CmsTemplateAdminController {
      * @param sitefile
      * @param imageFile
      * @param response
-     * @param model
      */
     @RequestMapping("visitSitefileImage")
     public void lookupSiteImage(String sitefile, String imageFile, HttpServletResponse response) {
