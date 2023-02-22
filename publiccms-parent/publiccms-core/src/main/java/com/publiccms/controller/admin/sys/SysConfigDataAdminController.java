@@ -187,7 +187,7 @@ public class SysConfigDataAdminController {
                 try (ServletOutputStream outputStream = response.getOutputStream();
                         ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream)) {
                     zipOutputStream.setEncoding(Constants.DEFAULT_CHARSET_NAME);
-                    exchangeComponent.exportEntity(site.getId(), entity, zipOutputStream);
+                    exchangeComponent.exportEntity(site, entity, zipOutputStream);
                 } catch (IOException e) {
                 }
             }
@@ -212,7 +212,7 @@ public class SysConfigDataAdminController {
                     LogLoginService.CHANNEL_WEB_MANAGER, "import.configData", RequestUtils.getIpAddress(request),
                     CommonUtils.getDate(), file.getOriginalFilename()));
         }
-        return SiteExchangeComponent.importData(site.getId(), admin.getId(), overwrite, "-config.zip", exchangeComponent, file,
+        return SiteExchangeComponent.importData(site, admin.getId(), overwrite, "-config.zip", exchangeComponent, file,
                 model);
     }
 

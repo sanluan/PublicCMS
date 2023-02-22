@@ -641,7 +641,7 @@ public class CmsContentAdminController {
                     LogLoginService.CHANNEL_WEB_MANAGER, "import.content", RequestUtils.getIpAddress(request),
                     CommonUtils.getDate(), file.getOriginalFilename()));
         }
-        return SiteExchangeComponent.importData(site.getId(), admin.getId(), overwrite, "-content.zip", exchangeComponent, file,
+        return SiteExchangeComponent.importData(site, admin.getId(), overwrite, "-content.zip", exchangeComponent, file,
                 model);
     }
 
@@ -661,7 +661,7 @@ public class CmsContentAdminController {
         queryEntity.setDisabled(false);
         queryEntity.setEmptyParent(true);
         Locale locale = RequestContextUtils.getLocale(request);
-        return exchangeComponent.exportExcelByQuery(site.getId(), queryEntity, orderField, orderType, locale);
+        return exchangeComponent.exportExcelByQuery(site, queryEntity, orderField, orderType, locale);
     }
 
     /**
@@ -686,7 +686,7 @@ public class CmsContentAdminController {
         try (ServletOutputStream outputStream = response.getOutputStream();
                 ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream)) {
             zipOutputStream.setEncoding(Constants.DEFAULT_CHARSET_NAME);
-            exchangeComponent.exportDataByQuery(site.getId(), null, queryEntity, zipOutputStream);
+            exchangeComponent.exportDataByQuery(site, null, queryEntity, zipOutputStream);
         } catch (IOException e) {
         }
     }
@@ -708,7 +708,7 @@ public class CmsContentAdminController {
             @DateTimeFormat(pattern = "yyyy-MM-dd") Date endCreateDate, String workloadType, String dateField,
             HttpServletRequest request) {
         Locale locale = RequestContextUtils.getLocale(request);
-        return exchangeComponent.exportWorkload(site.getId(), status, startCreateDate, endCreateDate, workloadType, dateField,
+        return exchangeComponent.exportWorkload(site, status, startCreateDate, endCreateDate, workloadType, dateField,
                 locale);
     }
 

@@ -11,7 +11,7 @@
 				<li><a href="${site.dynamicPath}member/logout.html">退出登录</a></li>
 			</ul>
 			<ul class="fright">
-				<li><a href="${site.dynamicPath}case.html">案例提交</a></li>
+				<li><a href="${site.dynamicPath}member/case.html">案例提交</a></li>
 			</ul>
 		</div>
 	</div>
@@ -29,7 +29,7 @@
 <@cms.categoryList>
 	<#list page.list as a>
 				<li data-id="${a.id}">
-					<a href="${a.url!}"<#if a.onlyUrl> target="_blank"</#if> data-diy-id="${a.id}">${a.name}</a>
+					<a href="${a.url!}"<#if a.onlyUrl> target="_blank"</#if> data-diy-item="${a.id}">${a.name}</a>
 		<#if a.childIds?has_content>
 					<ul>
 			<@cms.categoryList parentId=a.id>

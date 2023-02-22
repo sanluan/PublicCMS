@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.BaseMethod;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.IpUtils;
 import com.publiccms.views.pojo.entities.IpRegion;
 
 import freemarker.template.TemplateModel;
@@ -51,7 +52,7 @@ public class GetIpRegionMethod extends BaseMethod {
     @Override
     public Object execute(List<TemplateModel> arguments) throws TemplateModelException {
         String ip = getString(0, arguments);
-        if (CommonUtils.notEmpty(ip)) {
+        if (CommonUtils.notEmpty(ip) && IpUtils.isIpv4(ip)) {
             try {
                 return getIpRegion(searcher.search(ip));
             } catch (Exception e) {

@@ -342,7 +342,7 @@ public class CmsTemplateAdminController {
                     LogLoginService.CHANNEL_WEB_MANAGER, "import.site", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
                     file.getOriginalFilename()));
         }
-        return siteExchangeComponent.importData(site.getId(), admin.getId(), overwrite, "-site.zip", file, fileName, model);
+        return siteExchangeComponent.importData(site, admin.getId(), overwrite, "-site.zip", file, fileName, model);
     }
 
     /**

@@ -12,6 +12,7 @@ import com.publiccms.entities.cms.CmsDictionary;
 import com.publiccms.entities.cms.CmsDictionaryData;
 import com.publiccms.entities.cms.CmsDictionaryExclude;
 import com.publiccms.entities.cms.CmsDictionaryExcludeValue;
+import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.service.cms.CmsDictionaryDataService;
 import com.publiccms.logic.service.cms.CmsDictionaryExcludeService;
 import com.publiccms.logic.service.cms.CmsDictionaryExcludeValueService;
@@ -33,50 +34,55 @@ public class DictionaryExchangeComponent extends AbstractExchange<CmsDictionary,
     @Resource
     private CmsDictionaryExcludeValueService excludeValueService;
 
-    public void exportAll(short siteId, String directory,ByteArrayOutputStream outputStream, ZipOutputStream zipOutputStream) {
+    public void exportAll(SysSite site, String directory, ByteArrayOutputStream outputStream, ZipOutputStream zipOutputStream) {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        service.batchWork(siteId, (list, i) -> {
+        service.batchWork(site.getId(), (list, i) -> {
             for (CmsDictionary entity : list) {
-                exportEntity(siteId, directory, entity, out, zipOutputStream);
+                exportEntity(site, directory, entity, out, zipOutputStream);
             }
         }, PageHandler.MAX_PAGE_SIZE);
     }
 
-    public void exportEntity(short siteId, String directory, CmsDictionary entity, ByteArrayOutputStream outputStream,
+    public void exportEntity(SysSite site, String directory, CmsDictionary entity, ByteArrayOutputStream outputStream,
             ZipOutputStream zipOutputStream) {
         Dictionary data = new Dictionary();
         data.setEntity(entity);
-        data.setDataList(dataService.getList(siteId, entity.getId().getId()));
-        data.setExcludeList(excludeService.getList(siteId, entity.getId().getId(), null));
-        data.setExcludeValueList(excludeValueService.getList(siteId, entity.getId().getId(), null));
+        data.setDataList(dataService.getList(site.getId(), entity.getId().getId()));
+        data.setExcludeList(excludeService.getList(site.getId(), entity.getId().getId(), null));
+        data.setExcludeValueList(excludeValueService.getList(site.getId(), entity.getId().getId(), null));
         export(directory, outputStream, zipOutputStream, data, entity.getId().getId() + ".json");
     }
 
-    public void save(short siteId, long userId, boolean overwrite, Dictionary data) {
+    public void save(SysSite site, long userId, boolean overwrite, Dictionary data) {
         CmsDictionary entity = data.getEntity();
-        entity.getId().setSiteId(siteId);
+        entity.getId().setSiteId(site.getId());
         CmsDictionary oldentity = service.getEntity(entity.getId());
         if (null == oldentity || overwrite) {
             service.saveOrUpdate(entity);
             if (null != data.getDataList()) {
                 for (CmsDictionaryData temp : data.getDataList()) {
-                    temp.getId().setSiteId(siteId);
+                    temp.getId().setSiteId(site.getId());
                 }
                 dataService.saveOrUpdate(data.getDataList());
             }
             if (null != data.getExcludeList()) {
                 for (CmsDictionaryExclude temp : data.getExcludeList()) {
-                    temp.getId().setSiteId(siteId);
+                    temp.getId().setSiteId(site.getId());
                 }
                 excludeService.saveOrUpdate(data.getExcludeList());
             }
             if (null != data.getExcludeValueList()) {
                 for (CmsDictionaryExcludeValue temp : data.getExcludeValueList()) {
-                    temp.getId().setSiteId(siteId);
+                    temp.getId().setSiteId(site.getId());
                 }
                 excludeValueService.saveOrUpdate(data.getExcludeValueList());
             }
         }
+    }
+
+    @Override
+    public int importOrder() {
+        return 3;
     }
 
     @Override

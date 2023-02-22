@@ -300,7 +300,7 @@ public class CmsPlaceAdminController {
             path = path.replace("//", CommonConstants.SEPARATOR);
         }
         Locale locale = RequestContextUtils.getLocale(request);
-        return exchangeComponent.exportExcelByQuery(site.getId(), path, userId, status, itemType, itemId, startPublishDate,
+        return exchangeComponent.exportExcelByQuery(site, path, userId, status, itemType, itemId, startPublishDate,
                 endPublishDate, orderField, orderType, locale);
     }
 

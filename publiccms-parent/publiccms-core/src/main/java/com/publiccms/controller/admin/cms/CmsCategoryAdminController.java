@@ -327,7 +327,7 @@ public class CmsCategoryAdminController {
                     LogLoginService.CHANNEL_WEB_MANAGER, "import.category", RequestUtils.getIpAddress(request),
                     CommonUtils.getDate(), file.getOriginalFilename()));
         }
-        return SiteExchangeComponent.importData(site.getId(), admin.getId(), overwrite, "-category.zip", exchangeComponent, file,
+        return SiteExchangeComponent.importData(site, admin.getId(), overwrite, "-category.zip", exchangeComponent, file,
                 model);
     }
 
@@ -350,9 +350,9 @@ public class CmsCategoryAdminController {
                 ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream)) {
             zipOutputStream.setEncoding(Constants.DEFAULT_CHARSET_NAME);
             if (null == id) {
-                exchangeComponent.exportAll(site.getId(), zipOutputStream);
+                exchangeComponent.exportAll(site, zipOutputStream);
             } else {
-                exchangeComponent.exportEntity(site.getId(), service.getEntity(id), zipOutputStream);
+                exchangeComponent.exportEntity(site, service.getEntity(id), zipOutputStream);
             }
         } catch (IOException e) {
         }
@@ -392,17 +392,10 @@ public class CmsCategoryAdminController {
      * @param site
      * @return view name
      */
-    @SuppressWarnings("unchecked")
     @RequestMapping("rebuildChildIds")
     @Csrf
     public String rebuildChildIds(@RequestAttribute SysSite site) {
-        CmsCategoryQuery query = new CmsCategoryQuery();
-        query.setSiteId(site.getId());
-        query.setQueryAll(true);
-        PageHandler page = service.getPage(query, null, null);
-        for (CmsCategory category : (List<CmsCategory>) page.getList()) {
-            service.generateChildIds(category.getSiteId(), category.getId());
-        }
+        service.generateChildIds(site.getId(), null);
         return CommonConstants.TEMPLATE_DONE;
     }
 }
