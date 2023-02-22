@@ -82,7 +82,7 @@ subprojects {
         // https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml
         poiVersion = "5.2.3"
         // http://mvnrepository.com/artifact/commons-fileupload/commons-fileupload
-        fileuploadVersion = "1.4"
+        fileuploadVersion = "1.5"
         // http://mvnrepository.com/artifact/org.apache.commons/commons-collections4
         collectionsVersion = "4.4"
         // http://mvnrepository.com/artifact/org.apache.commons/commons-lang3
