@@ -1,4 +1,4 @@
-# PublicCMS V4.0
+# PublicCMS V5 jakarta 版
 
 <p style="align:center">
   <a href="./README.md">English</a> | 简体中文
