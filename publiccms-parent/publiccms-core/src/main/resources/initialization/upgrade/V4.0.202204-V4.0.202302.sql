@@ -22,7 +22,7 @@ ALTER TABLE `cms_content`
 CREATE TABLE `cms_content_text_history`(
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `content_id` bigint(20) NOT NULL COMMENT '内容',
-  `field_name` varchar(100) NOT NULL COMMENT '字段名',
+  `field_name` varchar(50) NOT NULL COMMENT '字段名',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   `user_id` bigint(20) NOT NULL COMMENT '修改用户',
   `text` longtext NOT NULL COMMENT '文本',
@@ -309,7 +309,7 @@ ALTER TABLE `cms_place` ADD COLUMN `description` varchar(300) default NULL COMME
 RENAME TABLE `cms_content_text_history` TO `cms_editor_history`;
 ALTER TABLE `cms_editor_history`
     ADD COLUMN `item_type` varchar(50) DEFAULT NULL COMMENT '数据类型' AFTER `id`,
-    CHANGE COLUMN `content_id` `item_id` varchar(100) NOT NULL COMMENT '数据id',
+    CHANGE COLUMN `content_id` `item_id` varchar(50) NOT NULL COMMENT '数据id',
     DROP INDEX `cms_content_history_content_id`,
     ADD INDEX `cms_editor_history_item_id` (`item_type`,`item_id`, `field_name`, `create_date`);
 UPDATE `cms_editor_history` set item_type = 'content';
