@@ -278,7 +278,7 @@ function diyShowMenu(itemType,itemId,noborder){
       } else {
           $(".diy-border.noborder",navTab.getCurrentPanel()).removeClass("noborder");
       }
-      $(".diy-menu",navTab.getCurrentPanel()).empty().apend(buttons.clone().removeClass("hide").addClass("button"));
+      $(".diy-menu",navTab.getCurrentPanel()).empty().append(buttons.clone().removeClass("hide").addClass("button"));
       $(".diy-menu",navTab.getCurrentPanel()).css({marginLeft:-$(".diy-menu",navTab.getCurrentPanel()).width()/2});
       initLink($(".diy-menu",navTab.getCurrentPanel()));
       $(".diy-border",navTab.getCurrentPanel()).css("visibility", "visible");
