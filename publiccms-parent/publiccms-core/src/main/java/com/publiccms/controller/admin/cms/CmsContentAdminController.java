@@ -178,7 +178,7 @@ public class CmsContentAdminController {
             if (null != entity) {
                 logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, "update.content", RequestUtils.getIpAddress(request), now,
-                        JsonUtils.getString(new Object[] { entity, attribute, contentParameters })));
+                        JsonUtils.getString(new Object[] { entity, contentParameters })));
             }
         } else {
             service.save(site.getId(), admin, entity);
@@ -187,7 +187,7 @@ public class CmsContentAdminController {
             }
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "save.content", RequestUtils.getIpAddress(request), now,
-                    JsonUtils.getString(new Object[] { entity, attribute, contentParameters })));
+                    JsonUtils.getString(new Object[] { entity, contentParameters })));
         }
         entity = service.saveTagAndAttribute(site, admin.getId(), entity.getId(), contentParameters, cmsModel,
                 category.getExtendId(), attribute);
