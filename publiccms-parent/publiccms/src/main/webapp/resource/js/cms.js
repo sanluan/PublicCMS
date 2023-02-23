@@ -246,12 +246,12 @@ function diyShowButton(itemType,itemId){
               clearTimeout(diyButtonTimer);
               diyButtonTimer=null;
           }
-          buttons.each(function(i,button){
+          
+          buttons.clone().appendTo($(".diy-button",navTab.getCurrentPanel()).empty()).removeClass("hide").addClass("button").each(function(i,button){
               var value={},$button=$(button);
               value[$button.data("diy-item")]=itemId;
               $button.attr("href",$button.attr("href").replaceTm(value));
           });
-          $(".diy-button",navTab.getCurrentPanel()).empty().append(buttons.clone().removeClass("hide").addClass("button"));
           $(".diy-button",navTab.getCurrentPanel()).css({marginLeft:-$(".diy-button",navTab.getCurrentPanel()).width()/2});
           initLink($(".diy-button",navTab.getCurrentPanel()));
           return true;
@@ -278,7 +278,7 @@ function diyShowMenu(itemType,itemId,noborder){
       } else {
           $(".diy-border.noborder",navTab.getCurrentPanel()).removeClass("noborder");
       }
-      $(".diy-menu",navTab.getCurrentPanel()).empty().append(buttons.clone().addClass("button"));
+      $(".diy-menu",navTab.getCurrentPanel()).empty().apend(buttons.clone().removeClass("hide").addClass("button"));
       $(".diy-menu",navTab.getCurrentPanel()).css({marginLeft:-$(".diy-menu",navTab.getCurrentPanel()).width()/2});
       initLink($(".diy-menu",navTab.getCurrentPanel()));
       $(".diy-border",navTab.getCurrentPanel()).css("visibility", "visible");

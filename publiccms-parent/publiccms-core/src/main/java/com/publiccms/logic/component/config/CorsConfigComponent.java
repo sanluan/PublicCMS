@@ -21,10 +21,11 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.BeanComponent;
+import com.publiccms.logic.component.site.SiteComponent;
 
 /**
  *
- * ConfigComponent 配置组件
+ * CorsConfigComponent 跨域配置组件
  *
  */
 @Component
@@ -38,15 +39,19 @@ public class CorsConfigComponent implements SiteCache, Config {
      * 
      */
     public static final String CONFIG_CODE_DESCRIPTION = CONFIGPREFIX + CONFIG_CODE;
-    
+
     private static final String CONFIG_ALLOWED_ORIGINS = "allowed_origins";
     private static final String CONFIG_ALLOWED_METHODS = "allowed_methods";
     private static final String CONFIG_ALLOWED_HEADERS = "allowed_headers";
     private static final String CONFIG_EXPOSED_HEADERS = "exposed_headers";
     private static final String CONFIG_ALLOW_CREDENTIALS = "allow_credentials";
     private static final String CONFIG_MAXAGE = "max_age";
+    private static final String CONFIG_EDITOR_BASE_PATH = "editor_base_path";
 
     private CacheEntity<Short, CorsConfiguration> cache;
+
+    @Resource
+    private SiteComponent siteComponent;
 
     @Override
     public void clear(short siteId) {
@@ -170,6 +175,10 @@ public class CorsConfigComponent implements SiteCache, Config {
                         getMessage(locale,
                                 CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_MAXAGE + CONFIG_CODE_DESCRIPTION_SUFFIX),
                         "1800"));
+        extendFieldList.add(new SysExtendField(CONFIG_EDITOR_BASE_PATH, INPUTTYPE_TEXT,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_EDITOR_BASE_PATH),
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_EDITOR_BASE_PATH
+                        + CONFIG_CODE_DESCRIPTION_SUFFIX)));
         return extendFieldList;
     }
 
