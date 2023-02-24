@@ -523,7 +523,7 @@ public class TemplateComponent implements Cache {
      * @param entity
      */
     public void initPlaceUrl(SysSite site, CmsPlace entity) {
-        entity.setCover(getUrl(site, true, entity.getCover()));
+        entity.setCover(getUrl(site.getSitePath(), entity.getCover()));
         entity.setUrl(getUrl(site, site.isUseStatic(), entity.getUrl()));
     }
 
@@ -540,7 +540,7 @@ public class TemplateComponent implements Cache {
      * @param entity
      */
     public static void initContentCover(SysSite site, CmsContent entity) {
-        entity.setCover(getUrl(site, true, entity.getCover()));
+        entity.setCover(getUrl(site.getSitePath(), entity.getCover()));
     }
 
     /**

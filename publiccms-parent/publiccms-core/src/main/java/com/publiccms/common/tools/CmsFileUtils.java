@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -17,10 +18,12 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -34,6 +37,10 @@ import com.publiccms.views.pojo.entities.FileSize;
  *
  */
 public class CmsFileUtils {
+    public static final String UPLOAD_PATH = "upload/";
+    public static final String AVATAR_PATH = "user/";
+    public static final Pattern UPLOAD_FILE_PATTERN = Pattern.compile(
+            ".*(" + UPLOAD_PATH + DateFormatUtils.UPLOAD_FILE_NAME_FORMAT_STRING.replaceAll("\\w", "\\\\d") + "-?\\d+\\.\\w+)");
     public static final String ORDERFIELD_FILENAME = "fileName";
     public static final String ORDERFIELD_FILESIZE = "fileSize";
     public static final String ORDERFIELD_CREATEDATE = "createDate";
@@ -327,6 +334,15 @@ public class CmsFileUtils {
 
     /**
      * @param filepath
+     * @param outputStream
+     * @throws IOException
+     */
+    public static void copyFileToOutputStream(String filepath, OutputStream outputStream) throws IOException {
+        IOUtils.copy(new FileInputStream(filepath), outputStream);
+    }
+
+    /**
+     * @param filepath
      */
     public static void mkdirs(String filepath) {
         File file = new File(filepath);
@@ -497,7 +513,7 @@ public class CmsFileUtils {
      * @return upload file name
      */
     public static String getUploadFileName(String suffix) {
-        StringBuilder sb = new StringBuilder("upload/");
+        StringBuilder sb = new StringBuilder(UPLOAD_PATH);
         sb.append(DateFormatUtils.getDateFormat(DateFormatUtils.UPLOAD_FILE_NAME_FORMAT_STRING).format(CommonUtils.getDate()));
         sb.append(CommonConstants.random.nextInt());
         if (!suffix.contains(CommonConstants.DOT)) {
@@ -505,6 +521,35 @@ public class CmsFileUtils {
         }
         sb.append(suffix);
         return sb.toString();
+    }
+
+    /**
+     * 获取文件名
+     * 
+     * @param userId
+     * @param filepath
+     * @return avatar file name
+     */
+    public static String getAvatarFileName(long userId, String filepath) {
+        StringBuilder sb = new StringBuilder(AVATAR_PATH);
+        sb.append(userId).append(CommonConstants.SEPARATOR).append(filepath);
+        return sb.toString();
+    }
+
+    /**
+     * 获取文件名
+     * 
+     * @param filePath
+     * @return suffix
+     */
+    public static String getFileName(String filePath) {
+        if (null != filePath) {
+            int index = filePath.lastIndexOf(CommonConstants.SEPARATOR);
+            if (-1 < index) {
+                return filePath.substring(filePath.lastIndexOf(CommonConstants.SEPARATOR) + 1, filePath.length());
+            }
+        }
+        return null;
     }
 
     /**
@@ -551,9 +596,31 @@ public class CmsFileUtils {
      * @throws IOException
      */
     public static String upload(byte[] data, String fileName) throws IllegalStateException, IOException {
+        return upload(data, fileName, null, null);
+    }
+
+    /**
+     * 上传文件
+     *
+     * @param data
+     * @param fileName
+     * @param originalName
+     * @param metadataPath
+     * @return file name
+     * @throws IllegalStateException
+     * @throws IOException
+     */
+    public static String upload(byte[] data, String fileName, String originalName, String metadataPath)
+            throws IllegalStateException, IOException {
         File dest = new File(fileName);
         dest.getParentFile().mkdirs();
         FileUtils.writeByteArrayToFile(dest, data);
+        if (CommonUtils.notEmpty(originalName) && CommonUtils.notEmpty(metadataPath)) {
+            try {
+                FileUtils.writeStringToFile(new File(metadataPath), originalName, CommonConstants.DEFAULT_CHARSET_NAME);
+            } catch (IOException e) {
+            }
+        }
         return dest.getName();
     }
 
@@ -567,9 +634,31 @@ public class CmsFileUtils {
      * @throws IOException
      */
     public static String upload(MultipartFile file, String fileName) throws IllegalStateException, IOException {
+        return upload(file, fileName, null, null);
+    }
+
+    /**
+     * 上传文件
+     *
+     * @param file
+     * @param fileName
+     * @param originalName
+     * @param metadataPath
+     * @return file name
+     * @throws IllegalStateException
+     * @throws IOException
+     */
+    public static String upload(MultipartFile file, String fileName, String originalName, String metadataPath)
+            throws IllegalStateException, IOException {
         File dest = new File(fileName);
         dest.getParentFile().mkdirs();
         file.transferTo(dest);
+        if (CommonUtils.notEmpty(originalName) && CommonUtils.notEmpty(metadataPath)) {
+            try {
+                FileUtils.writeStringToFile(new File(metadataPath), originalName, CommonConstants.DEFAULT_CHARSET_NAME);
+            } catch (IOException e) {
+            }
+        }
         return dest.getName();
     }
 

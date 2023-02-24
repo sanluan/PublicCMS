@@ -2,16 +2,22 @@
 <div class="${name}Preview hide"><div style="position:fixed;bottom:62px;right:5px;z-index:1000;"><img style="max-height:400px;max-width:500px;"/></div></div>
 <script>
     var ${name}ImagesSuffix=["png","gif","jpg","jpeg","svg","bmp"];
-    var ${name}ResourcePath = '${site.sitePath}';
     var ${name}box = (!$.pdialog.getCurrent())?navTab.getCurrentPanel(): $.pdialog.getCurrent();
     $('${selector1?no_esc}',${name}box).on("mouseover mouseout",'${selector2?no_esc}',function(event){
         if(event.type == "mouseover"){
-            var filenames=$(this).val().toLowerCase().split('.');
+            var $this=$(this);
+            var filenames=$this.val().toLowerCase().split('.');
             if(-1 != $.inArray(filenames[filenames.length-1], ${name}ImagesSuffix)){
-                if(-1<$(this).val().indexOf("://")||0==$(this).val().indexOf("//")){
-                    $('.${name}Preview',${name}box).show().find('img').attr('src',$(this).val());
-                }else{
-                    $('.${name}Preview',${name}box).show().find('img').attr('src',${name}ResourcePath+$(this).val());
+                if(-1<$this.val().indexOf("://")||0==$this.val().indexOf("//")){
+                    $('.${name}Preview',${name}box).show().find('img').attr('src',$this.val());
+                } else if($this.data("prefix")){
+                    if($this.data("prefix").indexOf("?")){
+                        $('.${name}Preview',${name}box).show().find('img').attr('src',$this.data("prefix")+encodeURIComponent($this.val()));
+                    }else{
+                        $('.${name}Preview',${name}box).show().find('img').attr('src',$this.data("prefix")+$this.val());
+                    }
+                } else {
+                    $('.${name}Preview',${name}box).show().find('img').attr('src','${site.sitePath}'+$this.val());
                 }
             }
         }else if(event.type == "mouseout"){

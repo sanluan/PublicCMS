@@ -47,6 +47,10 @@ public class SiteComponent implements Cache {
     /**
      * 
      */
+    public static final String STATIC_FILE_PATH_PRIVATE = "web/private";
+    /**
+     * 
+     */
     public static final String SITE_FILE_PATH = "site";
 
     /**
@@ -69,6 +73,7 @@ public class SiteComponent implements Cache {
     private CacheEntity<String, SysSite> siteCache;
     private CacheEntity<String, SysDomain> domainCache;
     private String rootPath;
+    private String privateFilePath;
     private String webFilePath;
     private String taskTemplateFilePath;
     private String templateFilePath;
@@ -322,6 +327,15 @@ public class SiteComponent implements Cache {
     public String getWebFilePath(short siteId, String filepath) {
         return webFilePath + getFullFileName(siteId, filepath);
     }
+    
+    /**
+     * @param siteId
+     * @param filepath
+     * @return private file path
+     */
+    public String getPrivateFilePath(short siteId, String filepath) {
+        return privateFilePath + getFullFileName(siteId, filepath);
+    }
 
     /**
      * @param siteId
@@ -482,6 +496,7 @@ public class SiteComponent implements Cache {
         }
         this.rootPath = rootPath;
         this.webFilePath = rootPath + STATIC_FILE_PATH_WEB;
+        this.privateFilePath = rootPath + STATIC_FILE_PATH_PRIVATE;
         this.taskTemplateFilePath = rootPath + TASK_FILE_PATH;
         this.templateFilePath = rootPath + TEMPLATE_PATH;
         this.templateBackupFilePath = rootPath + BACKUP_PATH + CommonConstants.SEPARATOR + TEMPLATE_PATH;

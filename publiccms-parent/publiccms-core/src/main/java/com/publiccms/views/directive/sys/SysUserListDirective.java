@@ -23,9 +23,11 @@ import com.publiccms.logic.service.sys.SysUserService;
  * <li><code>advanced</code>:开启高级选项, 默认为<code>false</code>
  * <li><code>disabled</code>:高级选项:已禁用,【true,false】, 默认为<code>false</code>
  * <li><code>deptId</code>:部门id
- * <li><code>startRegisteredDate</code>:起始注册日期,【2020-01-01 23:59:59】,【2020-01-01】
+ * <li><code>startRegisteredDate</code>:起始注册日期,【2020-01-01
+ * 23:59:59】,【2020-01-01】
  * <li><code>endRegisteredDate</code>:终止注册日期,【2020-01-01 23:59:59】,【2020-01-01】
- * <li><code>startLastLoginDate</code>:起始上次登录日期,【2020-01-01 23:59:59】,【2020-01-01】
+ * <li><code>startLastLoginDate</code>:起始上次登录日期,【2020-01-01
+ * 23:59:59】,【2020-01-01】
  * <li><code>endLastLoginDate</code>:终止上次登录日期,【2020-01-01 23:59:59】,【2020-01-01】
  * <li><code>superuser</code>:管理员,【true,false】
  * <li><code>emailChecked</code>:邮箱已验证,【true,false】
@@ -77,7 +79,8 @@ public class SysUserListDirective extends AbstractTemplateDirective {
             boolean absoluteURL = handler.getBoolean("absoluteURL", true);
             list.forEach(e -> {
                 if (absoluteURL) {
-                    e.setCover(TemplateComponent.getUrl(site.getSitePath(), e.getCover()));
+                    e.setCover(TemplateComponent.getUrl(new StringBuilder(site.getDynamicPath()).append("user/avatar?id=")
+                            .append(e.getId()).append("&filePath=").toString(), e.getCover()));
                 }
             });
         }

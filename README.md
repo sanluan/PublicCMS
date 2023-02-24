@@ -98,7 +98,7 @@ Execute:
 docker compose up -d
 
 ```
-mysql host/port : mysql-cms/3306 ; user/password  : publiccms/password!@#
+mysql host/port: mysql-cms/3306 ; database: publiccms ; user/password: publiccms/password!@#
 
 More parameters, please refer to https://hub.docker.com/r/sanluan/publiccms/
 

@@ -94,7 +94,7 @@ docker run -d -p 8080:8080 mypubliccms
 docker compose up -d
 
 ```
-mysql ip/端口 : mysql-cms/3306 ; 用户名/密码 : publiccms/password!@#
+mysql ip/端口: mysql-cms/3306 ; 数据库: publiccms ; 用户名/密码: publiccms/password!@#
 
 更多参数及含义请参考 https://hub.docker.com/r/sanluan/publiccms/
 

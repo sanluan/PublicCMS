@@ -29,6 +29,7 @@ import com.publiccms.logic.service.cms.CmsContentFileService;
  * <li><code>contentId</code>:内容id
  * <li><code>userId</code>:用户id
  * <li><code>absoluteURL</code>:url处理为绝对路径 默认为<code>true</code>
+ * <li><code>downloadURL</code>:url处理为下载路径 默认为<code>false</code>
  * <li><code>orderField</code>:排序字段,【size:文件大小,clicks:点击数】,默认排序正序、id正序
  * <li><code>orderType</code>:排序类型,【asc:正序,desc:倒序】,默认为倒序
  * <li><code>pageIndex</code>:页码
@@ -71,10 +72,14 @@ public class CmsContentFileListDirective extends AbstractTemplateDirective {
         List<CmsContentFile> list = (List<CmsContentFile>) page.getList();
         if (null != list) {
             boolean absoluteURL = handler.getBoolean("absoluteURL", true);
+            boolean downloadURL = handler.getBoolean("downloadURL", false);
             SysSite site = getSite(handler);
             list.forEach(e -> {
                 if (absoluteURL) {
-                    e.setFilePath(TemplateComponent.getUrl(site, true, e.getFilePath()));
+                    e.setFilePath(TemplateComponent.getUrl(
+                            downloadURL ? new StringBuilder(site.getDynamicPath()).append("file/download?filePath=").toString()
+                                    : site.getSitePath(),
+                            e.getFilePath()));
                 }
             });
         }

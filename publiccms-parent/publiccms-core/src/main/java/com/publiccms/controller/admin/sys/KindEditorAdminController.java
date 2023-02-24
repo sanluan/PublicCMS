@@ -65,8 +65,9 @@ public class KindEditorAdminController {
             if (ArrayUtils.contains(safeConfigComponent.getSafeSuffix(site), suffix)) {
                 String fileName = CmsFileUtils.getUploadFileName(suffix);
                 String filepath = siteComponent.getWebFilePath(site.getId(), fileName);
+                String metadataPath = siteComponent.getPrivateFilePath(site.getId(), fileName);
                 try {
-                    CmsFileUtils.upload(imgFile, filepath);
+                    CmsFileUtils.upload(imgFile, filepath, originalName, metadataPath);
                     if (CmsFileUtils.isSafe(filepath, suffix)) {
                         FileSize fileSize = CmsFileUtils.getFileSize(filepath, suffix);
                         logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,

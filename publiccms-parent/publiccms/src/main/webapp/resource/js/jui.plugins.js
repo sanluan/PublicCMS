@@ -229,7 +229,13 @@ JUI.regPlugins.push(function($p){
         $btn.click(function(){
             var value=$("input[name="+escapeJquery($(this).attr("ref"))+"]",$(this).parents(".unitBox:first")).val();
             if(value){
-                $(this).attr("href",value.isUrl() ? value : $(this).data("prefix")+value);
+                if(value.isUrl() ){
+                    $(this).attr("href",value);
+                } else if($(this).data("prefix").indexOf("?")){
+                    $(this).attr("href",$(this).data("prefix")+encodeURIComponent(value));
+                } else {
+                    $(this).attr("href",$(this).data("prefix")+value);
+                }
             }else{
                 return false;
             }

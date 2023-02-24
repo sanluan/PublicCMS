@@ -70,9 +70,9 @@
             </div>
         </#if>
         <#if content.hasFiles>
-            <@cms.contentFileList contentId=content.id fileTypes='video,audio,other'>
+            <@cms.contentFileList contentId=content.id downloadURL=true fileTypes='video,audio,document,other'>
                 <#list page.list as file>
-                    <p><a href="${(file.filePath)!}" target="_blank">${(file.filePath)!}</a></p>
+                    <p><a href="${(file.filePath)!}" target="_blank">${(file.description)!}</a></p>
                 </#list>
             </@cms.contentFileList>
         </#if>
