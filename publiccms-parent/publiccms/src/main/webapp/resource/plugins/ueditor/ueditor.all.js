@@ -1,7 +1,7 @@
 /*!
  * UEditor
  * version: ueditor
- * build: Fri Feb 17 2023 13:41:59 GMT+0800 (中国标准时间)
+ * build: Sat Feb 25 2023 08:33:56 GMT+0800 (中国标准时间)
  */
 
 (function(){
@@ -24740,7 +24740,7 @@ UE.plugin.register('insertfile', function (){
                         title = item.title || item.url.substr(item.url.lastIndexOf('/') + 1);
                         html += '<p style="line-height: 16px;">' +
                             '<img style="vertical-align: middle; margin-right: 2px;" src="'+ icon + '" _src="' + icon + '" />' +
-                            '<a style="font-size:12px; color:#0066cc;" href="' + item.url +'" title="' + title + '">' + title + '</a>' +
+                            '<a style="font-size:12px; color:#0066cc;" href="' + item.url +'" title="' + title + '" download="' + title + '">' + title + '</a>' +
                             '</p>';
                     }
                     me.execCommand('insertHtml', html);
