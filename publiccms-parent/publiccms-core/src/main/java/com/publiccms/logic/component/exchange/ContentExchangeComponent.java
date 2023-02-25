@@ -484,19 +484,19 @@ public class ContentExchangeComponent extends AbstractExchange<CmsContent, Conte
             entity.setCategoryId(category.getId());
             service.saveOrUpdate(entity);
             if (null != data.getAttribute()) {
-                if (CommonUtils.notEmpty(data.getAttribute().getText())) {
+                if (needReplace(data.getAttribute().getText(), site.getDynamicPath())) {
                     data.getAttribute()
                             .setText(StringUtils.replace(data.getAttribute().getText(), "#DYNAMICPATH#", site.getDynamicPath()));
                 }
-                if (CommonUtils.notEmpty(data.getAttribute().getText())) {
+                if (needReplace(data.getAttribute().getText(), site.getSitePath())) {
                     data.getAttribute()
                             .setText(StringUtils.replace(data.getAttribute().getText(), "#SITEPATH#", site.getSitePath()));
                 }
-                if (CommonUtils.notEmpty(data.getAttribute().getData())) {
+                if (needReplace(data.getAttribute().getData(), site.getDynamicPath())) {
                     data.getAttribute()
                             .setData(StringUtils.replace(data.getAttribute().getData(), "#DYNAMICPATH#", site.getDynamicPath()));
                 }
-                if (CommonUtils.notEmpty(data.getAttribute().getData())) {
+                if (needReplace(data.getAttribute().getData(), site.getSitePath())) {
                     data.getAttribute()
                             .setData(StringUtils.replace(data.getAttribute().getData(), "#SITEPATH#", site.getSitePath()));
                 }

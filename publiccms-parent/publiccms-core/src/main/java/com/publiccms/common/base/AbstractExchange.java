@@ -83,6 +83,11 @@ public abstract class AbstractExchange<E, D> implements Exchange<E, D> {
         }
     }
 
+    protected boolean needReplace(String source, String sitePath) {
+        return CommonUtils.notEmpty(source) && CommonUtils.notEmpty(sitePath)
+                && (sitePath.contains("://") || sitePath.startsWith("//"));
+    }
+
     public void importData(SysSite site, long userId, boolean overwrite, ZipFile zipFile, ZipEntry zipEntry) {
         if (!zipEntry.isDirectory() && zipFile.canReadEntryData(zipEntry)) {
             try (InputStream inputStream = zipFile.getInputStream(zipEntry)) {

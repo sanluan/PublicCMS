@@ -114,6 +114,13 @@ public class CmsWebFileAdminController {
                     String filepath = path + CommonConstants.SEPARATOR + originalName;
                     String fuleFilePath = siteComponent.getWebFilePath(site.getId(), filepath);
                     if (overwrite || !CmsFileUtils.exists(fuleFilePath)) {
+                        if (CmsFileUtils.exists(fuleFilePath)) {
+                            String historyFilePath = siteComponent.getWebHistoryFilePath(site.getId(), filepath, true);
+                            try {
+                                CmsFileUtils.copyFileToFile(historyFilePath, historyFilePath);
+                            } catch (IOException e1) {
+                            }
+                        }
                         CmsFileUtils.upload(file, fuleFilePath);
                         if (CmsFileUtils.isSafe(fuleFilePath, suffix)) {
                             FileSize fileSize = CmsFileUtils.getFileSize(fuleFilePath, suffix);
@@ -279,7 +286,7 @@ public class CmsWebFileAdminController {
      * @param path
      * @param encoding
      * @param here
-     * @param overwrite 
+     * @param overwrite
      * @param request
      * @param model
      * @return view name
@@ -293,9 +300,23 @@ public class CmsWebFileAdminController {
             if (CmsFileUtils.isFile(filepath)) {
                 try {
                     if (here) {
-                        ZipUtils.unzipHere(filepath, encoding, overwrite);
+                        ZipUtils.unzipHere(filepath, encoding, overwrite, (f, e) -> {
+                            String historyFilePath = siteComponent.getTemplateHistoryFilePath(site.getId(), e.getName(), true);
+                            try {
+                                CmsFileUtils.copyInputStreamToFile(f.getInputStream(e), historyFilePath);
+                            } catch (IOException e1) {
+                            }
+                            return true;
+                        });
                     } else {
-                        ZipUtils.unzip(filepath, encoding, overwrite);
+                        ZipUtils.unzip(filepath, encoding, overwrite, (f, e) -> {
+                            String historyFilePath = siteComponent.getWebHistoryFilePath(site.getId(), e.getName(), true);
+                            try {
+                                CmsFileUtils.copyInputStreamToFile(f.getInputStream(e), historyFilePath);
+                            } catch (IOException e1) {
+                            }
+                            return true;
+                        });
                     }
                 } catch (IOException e) {
                     model.addAttribute(CommonConstants.ERROR, e.getMessage());

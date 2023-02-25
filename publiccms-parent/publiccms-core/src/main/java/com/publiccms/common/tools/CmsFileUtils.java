@@ -324,13 +324,21 @@ public class CmsFileUtils {
      * @param source
      * @param destination
      * @param suffix
-     * @return
      * @throws IOException
      */
-    public static FileSize copyInputStreamToFile(InputStream source, String destination, String suffix) throws IOException {
+    public static void copyInputStreamToFile(InputStream source, String destination) throws IOException {
         File dest = new File(destination);
         FileUtils.copyInputStreamToFile(source, dest);
-        return getFileSize(dest, suffix);
+    }
+
+    /**
+     * @param source
+     * @param destination
+     * @param suffix
+     * @throws IOException
+     */
+    public static void copyFileToFile(String source, String destination) throws IOException {
+        FileUtils.copyFile(new File(source), new File(destination));
     }
 
     /**

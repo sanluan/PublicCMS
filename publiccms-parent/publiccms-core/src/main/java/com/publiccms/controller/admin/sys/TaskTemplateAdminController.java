@@ -115,7 +115,15 @@ public class TaskTemplateAdminController {
                         CmsFileUtils.upload(file, destFullFileName);
                     }
                     if (destFullFileName.endsWith(".zip") && CmsFileUtils.isFile(destFullFileName)) {
-                        ZipUtils.unzipHere(destFullFileName, encoding, overwrite);
+                        ZipUtils.unzipHere(destFullFileName, encoding, overwrite, (f, e) -> {
+                            String historyFilePath = siteComponent.getTaskTemplateHistoryFilePath(site.getId(), e.getName(),
+                                    true);
+                            try {
+                                CmsFileUtils.copyInputStreamToFile(f.getInputStream(e), historyFilePath);
+                            } catch (IOException e1) {
+                            }
+                            return true;
+                        });
                         CmsFileUtils.delete(destFullFileName);
                     }
                     templateComponent.clearTaskTemplateCache();

@@ -240,7 +240,8 @@ public class UeditorAdminController {
                             } else {
                                 fileName = CmsFileUtils.getUploadFileName(suffix);
                                 String filepath = siteComponent.getWebFilePath(site.getId(), fileName);
-                                fileSize = CmsFileUtils.copyInputStreamToFile(inputStream, filepath, suffix);
+                                CmsFileUtils.copyInputStreamToFile(inputStream, filepath);
+                                fileSize = CmsFileUtils.getFileSize(filepath, suffix);
                             }
                             logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                                     CommonConstants.BLANK, CmsFileUtils.getFileType(suffix), fileSize.getFileSize(),

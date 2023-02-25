@@ -108,13 +108,13 @@ public class PlaceExchangeComponent extends AbstractExchange<String, Place> {
                 placeData.setEntity(entity);
                 placeData.setAttribute(attributeService.getEntity(placeId));
                 if (null != placeData.getAttribute()) {
-                    if (CommonUtils.notEmpty(placeData.getAttribute().getData())) {
-                        placeData.getAttribute().setData(
-                                StringUtils.replace(placeData.getAttribute().getData(), site.getSitePath(), "#SITEPATH#"));
-                    }
-                    if (CommonUtils.notEmpty(placeData.getAttribute().getData())) {
+                    if (needReplace(placeData.getAttribute().getData(), site.getDynamicPath())) {
                         placeData.getAttribute().setData(
                                 StringUtils.replace(placeData.getAttribute().getData(), site.getDynamicPath(), "#DYNAMICPATH#"));
+                    }
+                    if (needReplace(placeData.getAttribute().getData(), site.getSitePath())) {
+                        placeData.getAttribute().setData(
+                                StringUtils.replace(placeData.getAttribute().getData(), site.getSitePath(), "#SITEPATH#"));
                     }
                 }
                 datalist.add(placeData);
