@@ -20,7 +20,6 @@
      * window.UEDITOR_HOME_URL = "/xxxx/xxxx/";
      */
     var URL = window.UEDITOR_HOME_URL || getUEBasePath();
-    var BASE = getUEBasePath();
 
     /**
      * 配置项主体。注意，此处所有涉及到路径的配置别遗漏URL变量。
@@ -29,9 +28,6 @@
 
         //为编辑器实例添加一个路径，这个不能被注释
         UEDITOR_HOME_URL: URL
-
-        ,//为编辑器实例添加一个资源文件加载路径，这个不能被注释
-        UEDITOR_HOME_BASE: BASE
 
         // 服务器统一请求接口路径
         , serverUrl: base+"/ueditor"
