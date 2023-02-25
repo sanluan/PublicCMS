@@ -100,7 +100,7 @@ public class FileAdminController {
                         }
                     } else {
                         filepath = siteComponent.getWebFilePath(site.getId(), fileName);
-                        String metadataPath = siteComponent.getPrivateFilePath(site.getId(), fileName);
+                        String metadataPath = siteComponent.getPrivateFilePath(site.getId(), CmsFileUtils.getMetadataFileName(fileName));
                         if (CommonUtils.notEmpty(base64File)) {
                             CmsFileUtils.upload(VerificationUtils.base64Decode(base64File), filepath, originalName, metadataPath);
                         } else {
@@ -243,7 +243,7 @@ public class FileAdminController {
                                 }
                                 String fileName = CmsFileUtils.getUploadFileName(imagesuffix);
                                 String filepath = siteComponent.getWebFilePath(site.getId(), fileName);
-                                String metadataPath = siteComponent.getPrivateFilePath(site.getId(), fileName);
+                                String metadataPath = siteComponent.getPrivateFilePath(site.getId(), CmsFileUtils.getMetadataFileName(fileName));
                                 try {
                                     CmsFileUtils.upload(content, filepath, suggestedName, metadataPath);
                                     String fileType = CmsFileUtils.getFileType(imagesuffix);
@@ -264,7 +264,7 @@ public class FileAdminController {
                         if (useIframe) {
                             String fileName = CmsFileUtils.getUploadFileName(suffix);
                             String filepath = siteComponent.getWebFilePath(site.getId(), fileName);
-                            String metadataPath = siteComponent.getPrivateFilePath(site.getId(), fileName);
+                            String metadataPath = siteComponent.getPrivateFilePath(site.getId(), CmsFileUtils.getMetadataFileName(fileName));
                             try {
                                 CmsFileUtils.upload(file, filepath, originalName, metadataPath);
                                 String fileType = CmsFileUtils.getFileType(suffix);
@@ -289,7 +289,7 @@ public class FileAdminController {
                                     }
                                     String fileName = CmsFileUtils.getUploadFileName(imagesuffix);
                                     String filepath = siteComponent.getWebFilePath(site.getId(), fileName);
-                                    String metadataPath = siteComponent.getPrivateFilePath(site.getId(), fileName);
+                                    String metadataPath = siteComponent.getPrivateFilePath(site.getId(), CmsFileUtils.getMetadataFileName(fileName));
                                     try {
                                         CmsFileUtils.upload(resource.getData(), filepath, resource.getName(), metadataPath);
                                         String fileType = CmsFileUtils.getFileType(imagesuffix);
@@ -341,7 +341,7 @@ public class FileAdminController {
                 if (ArrayUtils.contains(safeConfigComponent.getSafeSuffix(site), suffix)) {
                     String fileName = CmsFileUtils.getUploadFileName(suffix);
                     String filepath = siteComponent.getWebFilePath(site.getId(), fileName);
-                    String metadataPath = siteComponent.getPrivateFilePath(site.getId(), fileName);
+                    String metadataPath = siteComponent.getPrivateFilePath(site.getId(), CmsFileUtils.getMetadataFileName(fileName));
                     try {
                         CmsFileUtils.upload(file, filepath, originalName, metadataPath);
                         if (CmsFileUtils.isSafe(filepath, suffix)) {

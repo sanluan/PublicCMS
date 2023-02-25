@@ -167,7 +167,7 @@ public class FileController {
         Matcher matcher = CmsFileUtils.UPLOAD_FILE_PATTERN.matcher(filePath);
         if (matcher.matches()) {
             String absolutePath = matcher.group(1);
-            String metadataPath = siteComponent.getPrivateFilePath(site.getId(), absolutePath);
+            String metadataPath = siteComponent.getPrivateFilePath(site.getId(), CmsFileUtils.getMetadataFileName(absolutePath));
             response.setHeader("content-type", "application/octet-stream");
             if (CmsFileUtils.isFile(metadataPath)) {
                 try {
