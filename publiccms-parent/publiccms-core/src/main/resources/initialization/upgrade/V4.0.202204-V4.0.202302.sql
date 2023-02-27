@@ -520,3 +520,5 @@ UPDATE `sys_module` SET `authorized_url`= 'cmsCategoryType/categoryList' WHERE `
 -- 2023-02-17 --
 UPDATE `sys_module` SET `attached`= NULL WHERE `attached` ='';
 UPDATE `sys_module` set `authorized_url`= 'cmsContent/lookup_list,cmsContent/contentImage' WHERE `id` ='select_content';
+-- 2023-02-27 --
+ALTER TABLE `log_operate` MODIFY COLUMN `content` longtext default NULL COMMENT '内容' AFTER `create_date`;
