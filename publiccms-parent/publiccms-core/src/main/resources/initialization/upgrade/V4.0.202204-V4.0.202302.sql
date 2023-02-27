@@ -367,7 +367,7 @@ INSERT INTO `sys_module_lang` VALUES ('dictionary_import', 'en', 'Import');
 INSERT INTO `sys_module_lang` VALUES ('dictionary_import', 'ja', '導入');
 INSERT INTO `sys_module_lang` VALUES ('dictionary_import', 'zh', '导入');
 -- 2022-12-21 --
-UPDATE `sys_module` SET `authorized_url`= 'cmsTemplate/saveMetadata,cmsTemplate/createDirectory' WHERE `id` ='template_metadata';
+UPDATE `sys_module` SET `authorized_url`= 'cmsTemplate/saveMetaData,cmsTemplate/createDirectory' WHERE `id` ='template_metadata';
 UPDATE `sys_module` SET `authorized_url`= 'placeTemplate/directory' WHERE `id` ='place_template_list';
 -- 2022-12-22 --
 UPDATE `sys_module` SET `authorized_url`= 'tradeAccount/save' WHERE `id` ='account_add';
