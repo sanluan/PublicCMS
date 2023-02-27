@@ -55,7 +55,7 @@ public class CmsContentProductDirective extends AbstractTemplateDirective {
             CmsContentProduct entity = service.getEntity(id);
             if (null != entity && site.getId() == entity.getSiteId()) {
                 if (absoluteURL) {
-                    entity.setCover(TemplateComponent.getUrl(site, true, entity.getCover()));
+                    entity.setCover(TemplateComponent.getUrl(site.getSitePath(), entity.getCover()));
                 }
                 handler.put("object", entity).render();
             }
@@ -65,7 +65,7 @@ public class CmsContentProductDirective extends AbstractTemplateDirective {
                 List<CmsContentProduct> entityList = service.getEntitys(ids);
                 Consumer<CmsContentProduct> consumer = e -> {
                     if (absoluteURL) {
-                        e.setCover(TemplateComponent.getUrl(site, true, e.getCover()));
+                        e.setCover(TemplateComponent.getUrl(site.getSitePath(), e.getCover()));
                     }
                 };
                 Map<String, CmsContentProduct> map = CommonUtils.listToMap(entityList, k -> k.getId().toString(), consumer,

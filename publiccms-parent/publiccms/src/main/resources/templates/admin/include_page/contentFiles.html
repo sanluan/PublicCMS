@@ -36,7 +36,7 @@
                     <input type="text" name="${name}[${file?index}].height" class="digits" readonly="readonly" value="${(file.height)!}" size="10" maxlength="20"/>
                 </td>
                 <td>
-                    <input type="text" name="${name}[${file?index}].sort" class="required digits" value="${file.sort!}" size="5" maxlength="5"/>
+                    <input type="number" name="${name}[${file?index}].sort" class="required digits" value="${file.sort!}" size="5" maxlength="5"/>
                 </td>
                 <td>
                     <a href="javascript:;" class="btnDel"><@t.page 'button.delete'/></a>

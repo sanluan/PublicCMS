@@ -62,7 +62,7 @@ public class CmsSurveyQuestionDirective extends AbstractTemplateDirective {
                     entity.setAnswer(null);
                 }
                 if (absoluteURL) {
-                    entity.setCover(TemplateComponent.getUrl(site, true, entity.getCover()));
+                    entity.setCover(TemplateComponent.getUrl(site.getSitePath(), entity.getCover()));
                 }
                 handler.put("object", entity).render();
             }
@@ -75,7 +75,7 @@ public class CmsSurveyQuestionDirective extends AbstractTemplateDirective {
                         e.setAnswer(null);
                     }
                     if (absoluteURL) {
-                        e.setCover(TemplateComponent.getUrl(site, true, e.getCover()));
+                        e.setCover(TemplateComponent.getUrl(site.getSitePath(), e.getCover()));
                     }
                 };
                 Map<String, CmsSurveyQuestion> map = CommonUtils.listToMap(entityList, k -> k.getId().toString(), consumer, null);

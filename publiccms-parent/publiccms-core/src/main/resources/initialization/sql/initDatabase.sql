@@ -557,7 +557,7 @@ CREATE TABLE `log_operate` (
   `operate` varchar(40) NOT NULL COMMENT '操作',
   `ip` varchar(130) default NULL COMMENT 'IP',
   `create_date` datetime NOT NULL COMMENT '创建日期',
-  `content` text default NULL COMMENT '内容',
+  `content` longtext default NULL COMMENT '内容',
   PRIMARY KEY  (`id`),
   KEY `log_operate_user_id` (`site_id`, `user_id`, `dept_id`),
   KEY `log_operate_operate` (`site_id`, `operate`, `create_date`),

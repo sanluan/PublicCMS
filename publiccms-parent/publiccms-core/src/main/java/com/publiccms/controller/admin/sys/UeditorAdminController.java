@@ -323,7 +323,7 @@ public class UeditorAdminController {
         for (LogUpload logUpload : ((List<LogUpload>) page.getList())) {
             Map<String, Object> tempMap = getResultMap();
             tempMap.put("url", logUpload.getFilePath());
-            tempMap.put("name", logUpload.getOriginalName());
+            tempMap.put("original", logUpload.getOriginalName());
             list.add(tempMap);
         }
         map.put("list", list);
