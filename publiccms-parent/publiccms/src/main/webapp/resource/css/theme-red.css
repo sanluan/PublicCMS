@@ -67,7 +67,7 @@ textarea.readonly,input.readonly{background-color:#eee;}
 .panelBar .toolBar li a:hover>i{color:#fff;}
 .panelBar .toolBar li a:hover{background-color:#D8403D;color:#fff;}
 .panelBar .toolBar li.line{background-color:#e4e9f2;}
-.panelBar .toolBar li a.addMore{background-color:#FF9913}
+.panelBar .toolBar li a.addMore{background-color:#FF9913;color:#fff;}
 .panelBar .toolBar li>ul{border-color:#eceff3;}
 .panelBar.pageBar{background-color:#f4f4f4;}
 

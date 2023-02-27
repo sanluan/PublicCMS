@@ -15,7 +15,7 @@
             <th type="checkbox" name="${name}[#index#].multiple" size="10" fieldAttrs="{'style':'display:none'}"><@t.page 'multiple_select'/></th>
             <th type="textarea" name="${name}[#index#].description" fieldAttrs="{'maxlength':80,'rows':2,'cols':30}"><@t.page 'description'/></th>
             <#if searchable><th type="checkbox" name="${name}[#index#].searchable" size="10" class="searchable" fieldClass="searchable"><@t.page 'searchable'/></th></#if>
-            <th type="number" name="${name}[#index#].sort"  size="10" fieldClass="required digits" defaultVal="0"><@t.page 'sort'/></th>
+            <th type="text" name="${name}[#index#].sort"  size="10" fieldClass="required digits" defaultVal="#index#"><@t.page 'sort'/></th>
             <th type="del" width="60"><@t.page 'operate'/></th>
         </tr>
     </thead>

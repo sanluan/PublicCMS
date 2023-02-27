@@ -69,7 +69,7 @@ public class CmsContentProductListDirective extends AbstractTemplateDirective {
             SysSite site = getSite(handler);
             list.forEach(e -> {
                 if (absoluteURL) {
-                    e.setCover(TemplateComponent.getUrl(site, true, e.getCover()));
+                    e.setCover(TemplateComponent.getUrl(site.getSitePath(), e.getCover()));
                 }
             });
         }

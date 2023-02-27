@@ -166,7 +166,7 @@
                     <dd>
                 <@cms.contentFileList contentId=a.id fileTypes='video,audio,document,other'>
                     <#list page.list as file>
-                        <a href="${(file.filePath)!}" target="_blank">${(file.filePath)!}</a>
+                        <a href="${(file.filePath)!}" target="_blank">${(file.description)!}</a>
                     </#list>
                 </@cms.contentFileList>
                     </dd>
