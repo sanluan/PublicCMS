@@ -6,7 +6,7 @@
             <ul class="searchContent">
                 <li>
                     <label><@t.page 'path'/>:</label>
-                    <label>${path?has_content?then(path+'/','/')}</label>
+                    <label>${path?has_content?then(path+'/','')}</label>
                 </li>
             </ul>
         </div>
@@ -48,7 +48,7 @@
             </tr>
         </#if>
         <#list list as a>
-            <#assign filePath=path?has_content?then(path+'/','/')+a.fileName/>
+            <#assign filePath=path?has_content?then(path+'/','')+a.fileName/>
             <tr>
                 <td><input name="paths" value="${filePath}" type="checkbox"></td>
                 <td class="tree"><div class="${a.directory?then('folder_expandable','file')}" style="width:30px;"></div></td>

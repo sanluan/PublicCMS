@@ -56,12 +56,17 @@ server {
         proxy_read_timeout 10;
         proxy_pass http://cms;
     }
+    location /downloadfile/upload/ {
+        internal;
+        alias ${realRootPath}/web/site_${siteId}/upload/;
+    }
     location /privatefile/ {
         internal;
-        alias ${realRootPath}/web/site_${siteId}/;
+        alias ${realRootPath}/web/private/site_${siteId}/;
     }
         <#if a.useSsi>
     location /include/ {
+        internal;
         alias ${realRootPath}/web/site_${siteId}/include/;
     }
         </#if>
@@ -127,6 +132,7 @@ server {
 
         <#if siteLocation?has_content>
     location /include/ {
+        internal;
         alias ${realRootPath}/web/site_${siteId}/include/;
     }
         </#if>
@@ -235,7 +241,6 @@ ProxyPreserveHost On
     <#if dynamicPath=sitePath&&dynamicPort=sitePort>
     #${a.name} <@t.page 'server_config.static'/>
     Alias "/${siteLocation}" "${realRootPath}/web/site_${siteId}/"
-    Alias "/privatefile/upload/" "${realRootPath}/web/site_${siteId}/upload/"
          <#if dynamicLocation=siteLocation>
     RewriteEngine On
     RewriteCond %{DOCUMENT_ROOT} %{REQUEST_FILENAME} !-d
@@ -244,8 +249,9 @@ ProxyPreserveHost On
         </#if>
     <#else>
     Alias "${dynamicLocation?has_content?then('/'+dynamicLocation,'/')}webfile/" "${realRootPath}/web/site_${siteId}/webfile/"
-    Alias "/privatefile/upload/" "${realRootPath}/web/site_${siteId}/upload/"
     </#if>
+    Alias "/privatefile/" "${realRootPath}/web/private/site_${siteId}/"
+    Alias "/downloadfile/upload/" "${realRootPath}/web/site_${siteId}/upload/"
 
     ErrorDocument 403 /error/403.html
     ErrorDocument 404 /error/403.html

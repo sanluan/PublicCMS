@@ -74,7 +74,7 @@ public class TinymceAdminController {
                     if (CmsFileUtils.isSafe(filepath, suffix)) {
                         FileSize fileSize = CmsFileUtils.getFileSize(filepath, suffix);
                         logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                                originalName, CmsFileUtils.getFileType(suffix), file.getSize(), fileSize.getWidth(),
+                                originalName, false, CmsFileUtils.getFileType(suffix), file.getSize(), fileSize.getWidth(),
                                 fileSize.getHeight(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
                         map.put(RESULT_URL, fileName);
                         return map;
@@ -107,8 +107,8 @@ public class TinymceAdminController {
     @RequestMapping("imageList")
     @ResponseBody
     public List<Map<String, String>> imageList(SysSite site, SysUser admin) {
-        PageHandler page = logUploadService.getPage(site.getId(), admin.getId(), null, CmsFileUtils.IMAGE_FILETYPES, null, null,
-                null, null, 1, 20);
+        PageHandler page = logUploadService.getPage(site.getId(), admin.getId(), null, false, CmsFileUtils.IMAGE_FILETYPES, null,
+                null, null, null, 1, 20);
         List<Map<String, String>> result = new ArrayList<>();
         for (LogUpload logUpload : ((List<LogUpload>) page.getList())) {
             Map<String, String> map = new HashMap<>();

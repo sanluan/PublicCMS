@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.publiccms.common.annotation.Csrf;
+import com.publiccms.common.constants.CmsVersion;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
@@ -34,6 +35,7 @@ import com.publiccms.common.tools.VerificationUtils;
 import com.publiccms.entities.log.LogUpload;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
+import com.publiccms.logic.component.config.ConfigComponent;
 import com.publiccms.logic.component.config.SafeConfigComponent;
 import com.publiccms.logic.component.site.LockComponent;
 import com.publiccms.logic.component.site.SiteComponent;
@@ -51,18 +53,20 @@ import com.publiccms.views.pojo.entities.FileSize;
 public class FileController {
     protected final Log log = LogFactory.getLog(getClass());
     @Resource
-    protected LogUploadService logUploadService;
+    private LogUploadService logUploadService;
     @Resource
-    protected SiteComponent siteComponent;
+    private SiteComponent siteComponent;
     @Resource
     private LockComponent lockComponent;
     @Resource
-    protected SafeConfigComponent safeConfigComponent;
+    private SafeConfigComponent safeConfigComponent;
+    @Resource
+    private ConfigComponent configComponent;
 
     /**
      * @param site
      * @param user
-     * @param avatar
+     * @param privatefile
      * @param captcha
      * @param file
      * @param base64File
@@ -73,7 +77,7 @@ public class FileController {
     @RequestMapping(value = "doUpload", method = RequestMethod.POST)
     @Csrf
     @ResponseBody
-    public Map<String, Object> upload(@RequestAttribute SysSite site, @SessionAttribute SysUser user, boolean avatar,
+    public Map<String, Object> upload(@RequestAttribute SysSite site, @SessionAttribute SysUser user, boolean privatefile,
             String captcha, MultipartFile file, String base64File, String originalFilename, HttpServletRequest request) {
         Map<String, Object> result = new HashMap<>();
         result.put("success", false);
@@ -101,13 +105,14 @@ public class FileController {
                 originalName = originalFilename;
             }
             String suffix = CmsFileUtils.getSuffix(originalName);
-            if (ArrayUtils.contains(avatar ? CmsFileUtils.IMAGE_FILE_SUFFIXS : safeConfigComponent.getSafeSuffix(site), suffix)) {
+            if (ArrayUtils.contains(privatefile ? CmsFileUtils.IMAGE_FILE_SUFFIXS : safeConfigComponent.getSafeSuffix(site),
+                    suffix)) {
                 try {
                     String fileName = CmsFileUtils.getUploadFileName(suffix);
                     String filepath;
-                    if (avatar) {
-                        filepath = siteComponent.getPrivateFilePath(site.getId(),
-                                CmsFileUtils.getAvatarFileName(user.getId(), fileName));
+                    if (privatefile) {
+                        fileName = CmsFileUtils.getUserPrivateFileName(user.getId(), fileName);
+                        filepath = siteComponent.getPrivateFilePath(site.getId(), fileName);
                         if (CommonUtils.notEmpty(base64File)) {
                             CmsFileUtils.upload(VerificationUtils.base64Decode(base64File), filepath);
                         } else {
@@ -130,12 +135,10 @@ public class FileController {
                         String fileType = CmsFileUtils.getFileType(suffix);
                         result.put("fileType", fileType);
                         result.put("fileSize", file.getSize());
-                        if (!avatar) {
-                            FileSize fileSize = CmsFileUtils.getFileSize(filepath, suffix);
-                            logUploadService.save(new LogUpload(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB,
-                                    originalName, fileType, file.getSize(), fileSize.getWidth(), fileSize.getHeight(),
-                                    RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
-                        }
+                        FileSize fileSize = CmsFileUtils.getFileSize(filepath, suffix);
+                        logUploadService.save(new LogUpload(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, originalName,
+                                privatefile, fileType, file.getSize(), fileSize.getWidth(), fileSize.getHeight(),
+                                RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
                     } else {
                         result.put("error", LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
                                 "verify.custom.file.unsafe"));
@@ -171,28 +174,65 @@ public class FileController {
             response.setHeader("content-type", "application/octet-stream");
             if (CmsFileUtils.isFile(metadataPath)) {
                 try {
-                    response.setHeader("content-disposition",
-                            "attachment;fileName=" + URLEncoder.encode(CmsFileUtils.getFileContent(metadataPath), "utf-8"));
+                    response.setHeader("content-disposition", "attachment;fileName="
+                            + URLEncoder.encode(CmsFileUtils.getFileContent(metadataPath), CommonConstants.DEFAULT_CHARSET_NAME));
                 } catch (UnsupportedEncodingException e) {
                 }
             } else {
                 try {
-                    response.setHeader("content-disposition",
-                            "attachment;fileName=" + URLEncoder.encode(CmsFileUtils.getFileName(absolutePath), "utf-8"));
+                    response.setHeader("content-disposition", "attachment;fileName="
+                            + URLEncoder.encode(CmsFileUtils.getFileName(absolutePath), CommonConstants.DEFAULT_CHARSET_NAME));
                 } catch (UnsupportedEncodingException e) {
                 }
             }
             String sendfile = request.getHeader("Sendfile");
             if ("X-Accel-Redirect".equalsIgnoreCase(sendfile)) {
-                response.setHeader("X-Accel-Redirect", "/privatefile/" + absolutePath);
+                response.setHeader("X-Accel-Redirect", "/downloadfile/" + absolutePath);
             } else if ("X-Sendfile".equalsIgnoreCase(sendfile)) {
-                response.setHeader("X-Sendfile", "/privatefile/" + absolutePath);
+                response.setHeader("X-Sendfile", "/downloadfile/" + absolutePath);
             } else {
                 String webfilePath = siteComponent.getWebFilePath(site.getId(), absolutePath);
                 if (CmsFileUtils.isFile(webfilePath)) {
                     try (OutputStream outputStream = response.getOutputStream()) {
                         CmsFileUtils.copyFileToOutputStream(webfilePath, outputStream);
                     } catch (IOException e) {
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * @param site
+     * @param expiry
+     * @param sign
+     * @param filePath
+     * @param request
+     * @param response
+     */
+    @RequestMapping("private")
+    public void privatefile(@RequestAttribute SysSite site, long expiry, String sign, String filePath, HttpServletRequest request,
+            HttpServletResponse response) {
+        if (CommonUtils.notEmpty(sign) && expiry > System.currentTimeMillis()) {
+            Map<String, String> config = configComponent.getConfigData(site.getId(), SafeConfigComponent.CONFIG_CODE);
+            String signKey = config.get(SafeConfigComponent.CONFIG_EXPIRY_MINUTES_SIGN);
+            if (null == signKey) {
+                signKey = CmsVersion.getClusterId();
+            }
+            String string = CmsFileUtils.getPrivateFileSignString(expiry, filePath);
+            if (string.equalsIgnoreCase(VerificationUtils.decryptAES(VerificationUtils.base64Decode(sign), signKey))) {
+                String sendfile = request.getHeader("Sendfile");
+                if ("X-Accel-Redirect".equalsIgnoreCase(sendfile)) {
+                    response.setHeader("X-Accel-Redirect", "/privatefile/" + filePath);
+                } else if ("X-Sendfile".equalsIgnoreCase(sendfile)) {
+                    response.setHeader("X-Sendfile", "/privatefile/" + filePath);
+                } else {
+                    String privatefilePath = siteComponent.getPrivateFilePath(site.getId(), filePath);
+                    if (CmsFileUtils.isFile(privatefilePath)) {
+                        try (OutputStream outputStream = response.getOutputStream()) {
+                            CmsFileUtils.copyFileToOutputStream(privatefilePath, outputStream);
+                        } catch (IOException e) {
+                        }
                     }
                 }
             }

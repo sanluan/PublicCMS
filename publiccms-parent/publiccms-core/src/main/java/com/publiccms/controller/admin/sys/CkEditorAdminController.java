@@ -76,7 +76,7 @@ public class CkEditorAdminController {
                     if (CmsFileUtils.isSafe(filepath, suffix)) {
                         FileSize fileSize = CmsFileUtils.getFileSize(filepath, suffix);
                         logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                                originalName, CmsFileUtils.getFileType(suffix), upload.getSize(), fileSize.getWidth(),
+                                originalName, false, CmsFileUtils.getFileType(suffix), upload.getSize(), fileSize.getWidth(),
                                 fileSize.getHeight(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
                         map.put(RESULT_FILENAME, originalName);
                         map.put(RESULT_URL, site.getSitePath() + fileName);
@@ -95,13 +95,13 @@ public class CkEditorAdminController {
                 }
             } else {
                 Map<String, String> messageMap = new HashMap<>();
-                messageMap.put(CommonConstants.MESSAGE, LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
-                        "verify.custom.fileType"));
+                messageMap.put(CommonConstants.MESSAGE, LanguagesUtils.getMessage(CommonConstants.applicationContext,
+                        request.getLocale(), "verify.custom.fileType"));
                 map.put(CommonConstants.ERROR, messageMap);
             }
         } else {
             Map<String, String> messageMap = new HashMap<>();
-            messageMap.put(CommonConstants.MESSAGE, 
+            messageMap.put(CommonConstants.MESSAGE,
                     LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(), "verify.notEmpty.file"));
             map.put(CommonConstants.ERROR, messageMap);
         }

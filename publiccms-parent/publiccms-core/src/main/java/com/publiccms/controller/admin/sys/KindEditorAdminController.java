@@ -71,7 +71,7 @@ public class KindEditorAdminController {
                     if (CmsFileUtils.isSafe(filepath, suffix)) {
                         FileSize fileSize = CmsFileUtils.getFileSize(filepath, suffix);
                         logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                                originalName, CmsFileUtils.getFileType(suffix), imgFile.getSize(), fileSize.getWidth(),
+                                originalName, false, CmsFileUtils.getFileType(suffix), imgFile.getSize(), fileSize.getWidth(),
                                 fileSize.getHeight(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
                         map.put(RESULT_URL, site.getSitePath() + fileName);
                         return map;
@@ -84,11 +84,11 @@ public class KindEditorAdminController {
                     map.put(CommonConstants.MESSAGE, e.getMessage());
                 }
             } else {
-                map.put(CommonConstants.MESSAGE, LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
-                        "verify.custom.fileType"));
+                map.put(CommonConstants.MESSAGE, LanguagesUtils.getMessage(CommonConstants.applicationContext,
+                        request.getLocale(), "verify.custom.fileType"));
             }
         } else {
-            map.put(CommonConstants.MESSAGE, 
+            map.put(CommonConstants.MESSAGE,
                     LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(), "verify.notEmpty.file"));
         }
         map.put(CommonConstants.ERROR, 1);

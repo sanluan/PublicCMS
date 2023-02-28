@@ -138,7 +138,7 @@ public class UeditorAdminController {
                     if (CmsFileUtils.isSafe(filepath, suffix)) {
                         FileSize fileSize = CmsFileUtils.getFileSize(filepath, suffix);
                         logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                                originalName, CmsFileUtils.getFileType(suffix), file.getSize(), fileSize.getWidth(),
+                                originalName, false, CmsFileUtils.getFileType(suffix), file.getSize(), fileSize.getWidth(),
                                 fileSize.getHeight(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
                         Map<String, Object> map = getResultMap();
                         map.put("size", file.getSize());
@@ -185,7 +185,7 @@ public class UeditorAdminController {
                 CmsFileUtils.writeByteArrayToFile(filepath, data);
                 FileSize fileSize = CmsFileUtils.getFileSize(filepath, SCRAW_TYPE);
                 logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                        CommonConstants.BLANK, CmsFileUtils.FILE_TYPE_IMAGE, data.length, fileSize.getWidth(),
+                        CommonConstants.BLANK, false, CmsFileUtils.FILE_TYPE_IMAGE, data.length, fileSize.getWidth(),
                         fileSize.getHeight(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
                 Map<String, Object> map = getResultMap();
                 map.put("size", data.length);
@@ -244,7 +244,7 @@ public class UeditorAdminController {
                                 fileSize = CmsFileUtils.getFileSize(filepath, suffix);
                             }
                             logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                                    CommonConstants.BLANK, CmsFileUtils.getFileType(suffix), fileSize.getFileSize(),
+                                    CommonConstants.BLANK, false, CmsFileUtils.getFileType(suffix), fileSize.getFileSize(),
                                     fileSize.getWidth(), fileSize.getHeight(), RequestUtils.getIpAddress(request),
                                     CommonUtils.getDate(), fileName));
                             Map<String, Object> map = getResultMap();
@@ -317,7 +317,7 @@ public class UeditorAdminController {
         if (CommonUtils.empty(start)) {
             start = 0;
         }
-        PageHandler page = logUploadService.getPage(site.getId(), admin.getId(), null, fileTyps, null, null, null, null,
+        PageHandler page = logUploadService.getPage(site.getId(), admin.getId(), null, false, fileTyps, null, null, null, null,
                 start / 20 + 1, 20);
 
         Map<String, Object> map = getResultMap();

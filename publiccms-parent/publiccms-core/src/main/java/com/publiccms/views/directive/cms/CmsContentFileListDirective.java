@@ -3,12 +3,15 @@ package com.publiccms.views.directive.cms;
 // Generated 2016-2-18 23:41:56 by com.publiccms.common.generator.SourceGenerator
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.List;
 
 import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CmsFileUtils;
@@ -74,14 +77,16 @@ public class CmsContentFileListDirective extends AbstractTemplateDirective {
             boolean absoluteURL = handler.getBoolean("absoluteURL", true);
             boolean downloadURL = handler.getBoolean("downloadURL", false);
             SysSite site = getSite(handler);
-            list.forEach(e -> {
-                if (absoluteURL) {
-                    e.setFilePath(TemplateComponent.getUrl(
-                            downloadURL ? new StringBuilder(site.getDynamicPath()).append("file/download?filePath=").toString()
-                                    : site.getSitePath(),
-                            e.getFilePath()));
-                }
-            });
+            if (absoluteURL) {
+                list.forEach(e -> {
+                    try {
+                        e.setFilePath(downloadURL &&  e.getFilePath().startsWith(CmsFileUtils.UPLOAD_PATH)? new StringBuilder(site.getDynamicPath()).append("file/download?filePath=")
+                                .append(URLEncoder.encode(e.getFilePath(), CommonConstants.DEFAULT_CHARSET_NAME)).toString()
+                                : TemplateComponent.getUrl(site.getSitePath(), e.getFilePath()));
+                    } catch (UnsupportedEncodingException e1) {
+                    }
+                });
+            }
         }
         handler.put("page", page).render();
     }

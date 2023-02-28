@@ -12,6 +12,8 @@
 <@getAction r'${getUrl('+prefix+extend.id.code+r')!}'/>
 <#elseif editorExtendFieldTypes?seq_contains(extend.inputType)>
 <@getAction r'${('+prefix+extend.id.code+r'?no_esc)!}'/>
+<#elseif 'privatefile'=extend.inputType>
+<@getAction r'${getPrivateUrl('+prefix+extend.id.code+r')!}'/>
 <#elseif 'category'=extend.inputType>
 <@getAction r'<@cms.category id='+prefix+extend.id.code+r'><a href="${object.url}">${object.name}</a></@cms.category>'/>
 <#elseif 'content'=extend.inputType>

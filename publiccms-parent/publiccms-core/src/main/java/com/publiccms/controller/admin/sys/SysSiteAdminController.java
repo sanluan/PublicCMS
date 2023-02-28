@@ -374,7 +374,7 @@ public class SysSiteAdminController {
             try {
                 CmsFileUtils.upload(file, siteComponent.getRootPath() + CommonConstants.LICENSE_FILENAME);
                 logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                        "license.dat", CmsFileUtils.FILE_TYPE_OTHER, file.getSize(), null, null,
+                        "license.dat", true, CmsFileUtils.FILE_TYPE_OTHER, file.getSize(), null, null,
                         RequestUtils.getIpAddress(request), CommonUtils.getDate(), CommonConstants.LICENSE_FILENAME));
                 return CommonConstants.TEMPLATE_DONE;
             } catch (IllegalStateException | IOException e) {

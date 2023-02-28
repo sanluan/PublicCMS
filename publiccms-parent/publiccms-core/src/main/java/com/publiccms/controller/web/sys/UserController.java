@@ -1,7 +1,6 @@
 package com.publiccms.controller.web.sys;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -25,7 +24,6 @@ import org.springframework.web.servlet.view.UrlBasedViewResolver;
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.PageHandler;
-import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.FreeMarkerUtils;
@@ -263,32 +261,5 @@ public class UserController {
             sysUserTokenService.delete(authToken);
         }
         return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
-    }
-
-    /**
-     * @param site
-     * @param id
-     * @param filePath
-     * @param request
-     * @param response
-     */
-    @RequestMapping("avatar")
-    public void avatar(@RequestAttribute SysSite site, long id, String filePath, HttpServletRequest request,
-            HttpServletResponse response) {
-        String absolutePath = CmsFileUtils.getAvatarFileName(id, filePath);
-        String sendfile = request.getHeader("Sendfile");
-        if ("X-Accel-Redirect".equalsIgnoreCase(sendfile)) {
-            response.setHeader("X-Accel-Redirect", "/privatefile/" + absolutePath);
-        } else if ("X-Sendfile".equalsIgnoreCase(sendfile)) {
-            response.setHeader("X-Sendfile", "/privatefile/" + absolutePath);
-        } else {
-            String privatefilePath = siteComponent.getPrivateFilePath(site.getId(), absolutePath);
-            if (CmsFileUtils.isFile(privatefilePath)) {
-                try (OutputStream outputStream = response.getOutputStream()) {
-                    CmsFileUtils.copyFileToOutputStream(privatefilePath, outputStream);
-                } catch (IOException e) {
-                }
-            }
-        }
     }
 }

@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 import javax.annotation.Resource;
+
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
@@ -55,8 +56,7 @@ public class SysUserDirective extends AbstractTemplateDirective {
             SysUser entity = service.getEntity(id);
             if (null != entity && site.getId() == entity.getSiteId()) {
                 if (absoluteURL) {
-                    entity.setCover(TemplateComponent.getUrl(new StringBuilder(site.getDynamicPath()).append("user/avatar?id=")
-                            .append(entity.getId()).append("&filePath=").toString(), entity.getCover()));
+                    entity.setCover(TemplateComponent.getUrl(site.getSitePath(), entity.getCover()));
                 }
                 entity.setPassword(null);
                 handler.put("object", entity).render();
@@ -68,8 +68,7 @@ public class SysUserDirective extends AbstractTemplateDirective {
                 Consumer<SysUser> consumer = null;
                 if (absoluteURL) {
                     consumer = e -> {
-                        e.setCover(TemplateComponent.getUrl(new StringBuilder(site.getDynamicPath()).append("user/avatar?id=")
-                                .append(e.getId()).append("&filePath=").toString(), e.getCover()));
+                        e.setCover(TemplateComponent.getUrl(site.getSitePath(), e.getCover()));
                     };
                 }
                 Map<String, SysUser> map = CommonUtils.listToMap(entityList, k -> k.getId().toString(), consumer,

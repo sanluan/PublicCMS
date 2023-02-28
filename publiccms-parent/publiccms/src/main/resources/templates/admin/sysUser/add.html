@@ -58,18 +58,16 @@
                 <dt><@t.page 'user.nickname'/>:</dt>
                 <dd><input class="required" name="nickname" type="text" size="20" maxlength="30" value="${(a.nickname)!}"/></dd>
             </dl>
-        <#if id?has_content>
             <dl class="nowrap">
                 <dt><@t.page 'cover'/>:</dt>
                 <dd>
-                    <input name="cover" value="${(a.cover)!}" data-prefix="${site.dynamicPath}user/avatar?id=${id}&filePath=" maxlength="300" size="50" type="text"/>
-                    <a class="btnAttach" href="common/upload.html?field=cover&fileTypes=image&avatar=true&userId=${id}" lookupGroup="" width="1000" height="600"><@t.page 'cover'/></a>
-                    <a class="view icon-eye-open" ref="cover" data-prefix="${site.dynamicPath}user/avatar?id=${id}&filePath=" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
+                    <input name="cover" value="${(a.cover)!}" maxlength="300" size="50" type="text"/>
+                    <a class="btnAttach" href="common/upload.html?field=cover&fileTypes=image" lookupGroup="" width="1000" height="600"><@t.page 'cover'/></a>
+                    <a class="view icon-eye-open" ref="cover" data-prefix="${site.sitePath}" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
                     <#include "../include_page/preview.html"/>
                     <@preview 'user' 'input[name=cover]'/>
                 </dd>
             </dl>
-        </#if>
             <dl class="nowrap">
                 <dt><@t.page 'email'/>:</dt>
                 <dd><input name="email" type="text" size="30" maxlength="50" value="${(a.email)!}"/></dd>

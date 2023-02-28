@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.annotation.Resource;
+
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
@@ -77,14 +78,15 @@ public class SysUserListDirective extends AbstractTemplateDirective {
         List<SysUser> list = (List<SysUser>) page.getList();
         if (null != list) {
             boolean absoluteURL = handler.getBoolean("absoluteURL", true);
-            list.forEach(e -> {
-                if (absoluteURL) {
-                    e.setCover(TemplateComponent.getUrl(new StringBuilder(site.getDynamicPath()).append("user/avatar?id=")
-                            .append(e.getId()).append("&filePath=").toString(), e.getCover()));
-                }
-            });
+            if (absoluteURL) {
+                list.forEach(e -> {
+                    e.setCover(TemplateComponent.getUrl(site.getSitePath(), e.getCover()));
+                });
+            }
+
         }
         handler.put("page", page).render();
+
     }
 
     @Override

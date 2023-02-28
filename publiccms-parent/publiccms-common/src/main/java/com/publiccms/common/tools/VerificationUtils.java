@@ -14,9 +14,11 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
 import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESedeKeySpec;
+import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.codec.binary.Base64;
 
@@ -279,6 +281,49 @@ public class VerificationUtils {
      */
     public static String sha256Encode(String input) {
         return encode(input, "SHA-256");
+    }
+
+    /**
+     * AES加密
+     *
+     * @param input
+     * @param key
+     * @return AES encode result
+     */
+
+    public static byte[] encryptAES(String input, String key) {
+        try {
+            KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
+            keyGenerator.init(128, new SecureRandom(key.getBytes()));
+            SecretKeySpec secretKeySpec = new SecretKeySpec(keyGenerator.generateKey().getEncoded(), "AES");
+            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+            cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec);
+            return cipher.doFinal(input.getBytes(Constants.DEFAULT_CHARSET));
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /**
+     *
+     * AES解密
+     *
+     * @param input
+     * @param key
+     * @return 3-DES decode result
+     */
+    public static String decryptAES(byte[] input, String key) {
+        try {
+            KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
+            keyGenerator.init(128, new SecureRandom(key.getBytes()));
+            SecretKeySpec secretKeySpec = new SecretKeySpec(keyGenerator.generateKey().getEncoded(), "AES");
+            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+            cipher.init(Cipher.DECRYPT_MODE, secretKeySpec);
+            byte ciphertext[] = cipher.doFinal(input);
+            return new String(ciphertext, Constants.DEFAULT_CHARSET);
+        } catch (Exception e) {
+            return Constants.BLANK;
+        }
     }
 
     /**

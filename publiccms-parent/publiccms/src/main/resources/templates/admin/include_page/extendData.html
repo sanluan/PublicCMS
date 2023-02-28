@@ -21,6 +21,17 @@
                 </#if>
             </#if>
             <#break>
+        <#case 'privatefile'>
+            <#if 'view'=type>
+                <a href="${getPrivateUrl(value)!}" target="_blank">${(value)!}</a>
+            <#else>
+        <input name="${inputName}" <#if 'customform'!=type>class="<#if extend.required>required</#if>" type="text" maxlength="300" size="50" data-prefix="${site.dynamicPath}file/private?filePath=" <#else>type="file" </#if>value="${(value)!}"/>
+                <#if 'customform'!=type>
+                    <a class="btnAttach" href="common/upload.html?field=value&privatefile=true" lookupGroup="${name}[${index}]" width="1000" height="600"><@t.page 'attach'/></a>
+                    <a class="view icon-eye-open" ref="${inputName}" data-prefix="${site.dynamicPath}file/private?filePath=" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
+                </#if>
+            </#if>
+            <#break>
         <#case 'image'>
             <#if 'view'=type>
                 <img src="${getUrl(value)!}" style="max-width:200px;max-height:200px;"/>

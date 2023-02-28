@@ -38,7 +38,7 @@ import com.publiccms.views.pojo.entities.FileSize;
  */
 public class CmsFileUtils {
     public static final String UPLOAD_PATH = "upload/";
-    public static final String AVATAR_PATH = "user/";
+    public static final String USER_PRIVATE_PATH = "user/";
     public static final String METADATA_PATH = "metadata/";
     public static final Pattern UPLOAD_FILE_PATTERN = Pattern.compile(
             ".*(" + UPLOAD_PATH + DateFormatUtils.UPLOAD_FILE_NAME_FORMAT_STRING.replaceAll("\\w", "\\\\d") + "-?\\d+\\.\\w+)");
@@ -533,14 +533,25 @@ public class CmsFileUtils {
     }
 
     /**
-     * 获取头像文件名
+     * 获取私有文件前面字符串
+     * 
+     * @param expiry
+     * @param filepath
+     * @return avatar file name
+     */
+    public static String getPrivateFileSignString(long expiry, String filepath) {
+        return new StringBuilder("expiry=").append(expiry).append("&filePath=").append(filepath).toString();
+    }
+
+    /**
+     * 获取用户私有文件名
      * 
      * @param userId
      * @param filepath
      * @return avatar file name
      */
-    public static String getAvatarFileName(long userId, String filepath) {
-        StringBuilder sb = new StringBuilder(AVATAR_PATH);
+    public static String getUserPrivateFileName(long userId, String filepath) {
+        StringBuilder sb = new StringBuilder(USER_PRIVATE_PATH);
         sb.append(userId).append(CommonConstants.SEPARATOR).append(filepath);
         return sb.toString();
     }
