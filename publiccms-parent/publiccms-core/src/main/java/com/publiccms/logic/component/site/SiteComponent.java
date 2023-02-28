@@ -124,7 +124,7 @@ public class SiteComponent implements Cache {
      * @param path
      * @return full file name
      */
-    private static String getFullFileName(short siteId, String path) {
+    public static String getFullFileName(short siteId, String path) {
         if (CommonUtils.empty(path)) {
             path = CommonConstants.BLANK;
         }

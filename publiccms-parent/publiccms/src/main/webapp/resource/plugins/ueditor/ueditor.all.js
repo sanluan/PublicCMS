@@ -1,7 +1,7 @@
 /*!
  * UEditor
  * version: ueditor
- * build: Tue Feb 28 2023 17:46:37 GMT+0800 (中国标准时间)
+ * build: Tue Feb 28 2023 19:27:33 GMT+0800 (中国标准时间)
  */
 
 (function(){
@@ -25478,9 +25478,9 @@ UE.ui = baidu.editor.ui = {};
                 top = (sideUp ? rect.bottom - popSize.height : rect.top);
             } else {
                 sideLeft = this.canSideLeft && (rect.left + popSize.width > vpRect.right && rect.right > popSize.width);
-                sideUp = this.canSideUp && (rect.top + popSize.height > vpRect.bottom && rect.bottom > popSize.height);
+                sideUp = this.canSideUp && (rect.top + popSize.height > vpRect.bottom && rect.bottom > popSize.height );
                 left = (sideLeft ? rect.right - popSize.width : rect.left);
-                top = (sideUp ? rect.top - popSize.height : rect.bottom);
+                top = (sideUp ? rect.top - popSize.height : (rect.bottom + popSize.height > vpRect.bottom )? vpRect.bottom - popSize.height : rect.bottom);
             }
 
             var popEl = this.getDom();

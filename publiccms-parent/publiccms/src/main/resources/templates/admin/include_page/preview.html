@@ -11,7 +11,7 @@
                 if(-1<$this.val().indexOf("://")||0==$this.val().indexOf("//")){
                     $('.${name}Preview',${name}box).show().find('img').attr('src',$this.val());
                 } else if($this.data("prefix")){
-                    if($this.data("prefix").indexOf("?")){
+                    if(0 < $this.data("prefix").indexOf("?")){
                         $('.${name}Preview',${name}box).show().find('img').attr('src',$this.data("prefix")+encodeURIComponent($this.val()));
                     }else{
                         $('.${name}Preview',${name}box).show().find('img').attr('src',$this.data("prefix")+$this.val());

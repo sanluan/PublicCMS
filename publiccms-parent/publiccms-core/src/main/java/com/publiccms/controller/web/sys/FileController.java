@@ -189,7 +189,7 @@ public class FileController {
             if ("X-Accel-Redirect".equalsIgnoreCase(sendfile)) {
                 response.setHeader("X-Accel-Redirect", "/downloadfile/" + absolutePath);
             } else if ("X-Sendfile".equalsIgnoreCase(sendfile)) {
-                response.setHeader("X-Sendfile", "/downloadfile/" + absolutePath);
+                response.setHeader("X-Sendfile", SiteComponent.getFullFileName(site.getId(), absolutePath).substring(1));
             } else {
                 String webfilePath = siteComponent.getWebFilePath(site.getId(), absolutePath);
                 if (CmsFileUtils.isFile(webfilePath)) {
@@ -215,7 +215,7 @@ public class FileController {
             HttpServletResponse response) {
         if (CommonUtils.notEmpty(sign) && expiry > System.currentTimeMillis()) {
             Map<String, String> config = configComponent.getConfigData(site.getId(), SafeConfigComponent.CONFIG_CODE);
-            String signKey = config.get(SafeConfigComponent.CONFIG_EXPIRY_MINUTES_SIGN);
+            String signKey = config.get(SafeConfigComponent.CONFIG_PRIVATEFILE_KEY);
             if (null == signKey) {
                 signKey = CmsVersion.getClusterId();
             }
@@ -225,7 +225,7 @@ public class FileController {
                 if ("X-Accel-Redirect".equalsIgnoreCase(sendfile)) {
                     response.setHeader("X-Accel-Redirect", "/privatefile/" + filePath);
                 } else if ("X-Sendfile".equalsIgnoreCase(sendfile)) {
-                    response.setHeader("X-Sendfile", "/privatefile/" + filePath);
+                    response.setHeader("X-Sendfile", "private" + SiteComponent.getFullFileName(site.getId(), filePath));
                 } else {
                     String privatefilePath = siteComponent.getPrivateFilePath(site.getId(), filePath);
                     if (CmsFileUtils.isFile(privatefilePath)) {

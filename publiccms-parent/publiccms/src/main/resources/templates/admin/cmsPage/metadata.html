@@ -6,8 +6,8 @@
         <ul>
             <li>
                 <@sys.authorized roleIds=admin.roles url='cmsTemplate/list'>
-                    <li><a class="button" href="cmsTemplate/list.html?path=${(path?url)!}&editType=metadata" target="navTab" rel="cmsTemplate/list"><@t.page 'metadata'/></a></li>
                     <li><a class="button" href="cmsTemplate/list.html?path=${(path?url)!}" target="navTab" rel="cmsTemplate/list"><@t.page 'template.content'/></a></li>
+                    <li><a class="button" href="cmsTemplate/list.html?path=${(path?url)!}&editType=metadata" target="navTab" rel="cmsTemplate/list"><@t.page 'metadata'/></a></li>
                 </@sys.authorized>
                 <#if (metadata.extendList)?has_content><li><button type="submit" class="buttonActive" title="ctrl+s" lock-url="common/lock?itemType=page&itemId=${path}" close-url="common/unlock?itemType=page&itemId=${path}"><@t.page 'button.save'/></button></li></#if>
             </li>

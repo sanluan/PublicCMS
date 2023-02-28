@@ -31,14 +31,16 @@ public class CsrfInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws ServletException {
         if (handler instanceof HandlerMethod) {
-            CsrfCache cache = methodCache.computeIfAbsent((HandlerMethod) handler, k -> {
-                Csrf csrf = k.getMethodAnnotation(Csrf.class);
+            CsrfCache cache = methodCache.get((HandlerMethod) handler);
+            if (null == cache) {
+                Csrf csrf = ((HandlerMethod) handler).getMethodAnnotation(Csrf.class);
                 if (null == csrf) {
-                    return DEFAULT_CACHE;
+                    cache = DEFAULT_CACHE;
                 } else {
-                    return new CsrfCache(true, csrf.field());
+                    cache = new CsrfCache(true, csrf.field());
                 }
-            });
+            }
+            methodCache.put((HandlerMethod) handler, cache);
             if (cache.isEnable()) {
                 String value = request.getParameter(cache.getParameterName());
                 String token = admin ? ControllerUtils.getAdminToken(request) : ControllerUtils.getWebToken(request);

@@ -184,6 +184,14 @@ LoadModule headers_module modules/mod_headers.so
 LoadModule rewrite_module modules/mod_rewrite.so
 </ifModule>
 </#if>
+# https://tn123.org/mod_xsendfile/
+<ifModule !xsendfile_module>
+LoadModule xsendfile_module modules/mod_xsendfile.so
+</ifModule>
+<ifModule xsendfile_module>
+    XSendFile on
+    XSendFilePath ${realRootPath}/web/
+</ifModule>
 
 ProxyRequests off
 ProxyPreserveHost On
@@ -250,8 +258,6 @@ ProxyPreserveHost On
     <#else>
     Alias "${dynamicLocation?has_content?then('/'+dynamicLocation,'/')}webfile/" "${realRootPath}/web/site_${siteId}/webfile/"
     </#if>
-    Alias "/privatefile/" "${realRootPath}/web/private/site_${siteId}/"
-    Alias "/downloadfile/upload/" "${realRootPath}/web/site_${siteId}/upload/"
 
     ErrorDocument 403 /error/403.html
     ErrorDocument 404 /error/403.html

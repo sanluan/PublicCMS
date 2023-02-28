@@ -41,7 +41,7 @@
                 <#list page.list as a>
                     <div class="image-list">
                         <#if 'image'=t.fileType(a.filePath)>
-                            <img src="${site.sitePath+a.filePath}" alt="${a.originalName!}" title="${a.originalName!}">
+                            <img src="<#if !privatefile?has_content || "true"!=privatefile>${getPrivateUrl(a.filePath)}<#else>${getUrl(a.filePath)}</#if>" alt="${a.originalName!}" title="${a.originalName!}">
                             <a href="javascript:;" class="edit-icon" onclick="$('.tabImageBtn',$.pdialog.getCurrent()).click();$('div.upload-wrap', $.pdialog.getCurrent()).editImg({imgUrl:'${site.sitePath+a.filePath!}',imgName:'${(a.originalName?has_content)?then(a.originalName,a.filePath!)}'});return false;"></a>
                         <#else>
                             <i class="thumb icon-file-alt icon-large"></i>

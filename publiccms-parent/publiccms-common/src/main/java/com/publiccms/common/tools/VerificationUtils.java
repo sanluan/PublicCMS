@@ -12,12 +12,13 @@ import java.security.Signature;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.Arrays;
 
 import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESedeKeySpec;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.codec.binary.Base64;
@@ -283,6 +284,8 @@ public class VerificationUtils {
         return encode(input, "SHA-256");
     }
 
+    private static byte[] iv = "1245656789012334".getBytes(Constants.DEFAULT_CHARSET);
+
     /**
      * AES加密
      *
@@ -290,14 +293,17 @@ public class VerificationUtils {
      * @param key
      * @return AES encode result
      */
-
     public static byte[] encryptAES(String input, String key) {
         try {
-            KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
-            keyGenerator.init(128, new SecureRandom(key.getBytes()));
-            SecretKeySpec secretKeySpec = new SecretKeySpec(keyGenerator.generateKey().getEncoded(), "AES");
+            byte[] keybyte = CommonUtils.keep(key, 16, null).getBytes(Constants.DEFAULT_CHARSET);
+            if (keybyte.length < 16) {
+                int lenght = keybyte.length;
+                keybyte = Arrays.copyOf(keybyte, 16);
+                System.arraycopy(iv, 0, keybyte, lenght , 16 - lenght);
+            }
+            SecretKeySpec secretKeySpec = new SecretKeySpec(keybyte, "AES");
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-            cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec);
+            cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec, new IvParameterSpec(iv));
             return cipher.doFinal(input.getBytes(Constants.DEFAULT_CHARSET));
         } catch (Exception e) {
             return null;
@@ -314,11 +320,15 @@ public class VerificationUtils {
      */
     public static String decryptAES(byte[] input, String key) {
         try {
-            KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
-            keyGenerator.init(128, new SecureRandom(key.getBytes()));
-            SecretKeySpec secretKeySpec = new SecretKeySpec(keyGenerator.generateKey().getEncoded(), "AES");
+            byte[] keybyte = CommonUtils.keep(key, 16, null).getBytes(Constants.DEFAULT_CHARSET);
+            if (keybyte.length < 16) {
+                int lenght = keybyte.length;
+                keybyte = Arrays.copyOf(keybyte, 16);
+                System.arraycopy(iv, 0, keybyte, lenght , 16 - lenght);
+            }
+            SecretKeySpec secretKeySpec = new SecretKeySpec(keybyte, "AES");
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-            cipher.init(Cipher.DECRYPT_MODE, secretKeySpec);
+            cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, new IvParameterSpec(iv));
             byte ciphertext[] = cipher.doFinal(input);
             return new String(ciphertext, Constants.DEFAULT_CHARSET);
         } catch (Exception e) {

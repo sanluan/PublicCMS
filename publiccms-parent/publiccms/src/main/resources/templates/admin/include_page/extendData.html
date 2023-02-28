@@ -25,10 +25,9 @@
             <#if 'view'=type>
                 <a href="${getPrivateUrl(value)!}" target="_blank">${(value)!}</a>
             <#else>
-        <input name="${inputName}" <#if 'customform'!=type>class="<#if extend.required>required</#if>" type="text" maxlength="300" size="50" data-prefix="${site.dynamicPath}file/private?filePath=" <#else>type="file" </#if>value="${(value)!}"/>
+        <input name="${inputName}" <#if 'customform'!=type>class="<#if extend.required>required</#if>" type="text" maxlength="300" size="50" <#else>type="file" </#if>value="${(value)!}"/>
                 <#if 'customform'!=type>
                     <a class="btnAttach" href="common/upload.html?field=value&privatefile=true" lookupGroup="${name}[${index}]" width="1000" height="600"><@t.page 'attach'/></a>
-                    <a class="view icon-eye-open" ref="${inputName}" data-prefix="${site.dynamicPath}file/private?filePath=" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
                 </#if>
             </#if>
             <#break>
@@ -50,6 +49,19 @@
                 </#if>
             </#if>
             <#break>
+        <#case 'privateimage'>
+            <#if 'view'=type>
+                <img src="${getPrivateUrl(value)!}" style="max-width:200px;max-height:200px;"/>
+                <br/>
+                ${(value)!}
+            <#else>
+        <input name="${inputName}" size="50" <#if 'customform'!=type>class="<#if extend.required>required</#if>" type="text" maxlength="300" size="50" <#else>type="file" accept="image/*" </#if>value="${(value)!}"/>
+                <#if 'customform'!=type>
+                    <a class="btnAttach" href="common/upload.html?field=value&fileTypes=image&width=${extend.width!}&height=${extend.height!}&privatefile=true" lookupGroup="${name}[${index}]" width="1000" height="600"><@t.page 'image'/></a>
+                    <#if (extend.width)?has_content && (extend.height)?has_content><span class="info">${extend.width!}*${extend.height!}</span></#if>
+                </#if>
+            </#if>
+            <#break>
         <#case 'video'>
             <#if 'view'=type>
                 <video controls="controls" src="${getUrl(value)!}" style="max-width:500px;max-height:500px;"></video>
@@ -60,6 +72,18 @@
                 <#if 'customform'!=type>
                     <a class="btnAttach" href="common/upload.html?field=value&fileTypes=video" lookupGroup="${name}[${index}]" width="1000" height="600"><@t.page 'video'/></a>
                     <a class="view icon-eye-open" ref="${inputName}" data-prefix="${site.sitePath}" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
+                </#if>
+            </#if>
+            <#break>
+        <#case 'privatevideo'>
+            <#if 'view'=type>
+                <video controls="controls" src="${getPrivateUrl(value)!}" style="max-width:500px;max-height:500px;"></video>
+                <br/>
+                ${(value)!}
+            <#else>
+        <input name="${inputName}" <#if 'customform'!=type>class="<#if extend.required>required</#if>" type="text" maxlength="300" size="50" <#else>type="file" accept="video/*"</#if>value="${(value)!}"/>
+                <#if 'customform'!=type>
+                    <a class="btnAttach" href="common/upload.html?field=value&fileTypes=video&privatefile=true" lookupGroup="${name}[${index}]" width="1000" height="600"><@t.page 'video'/></a>
                 </#if>
             </#if>
             <#break>

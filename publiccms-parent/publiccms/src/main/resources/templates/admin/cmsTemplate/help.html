@@ -6,13 +6,14 @@
     </#if>
 </#if>
 <#assign urlExtendFieldTypes=['file','image','video']>
+<#assign privateUrlExtendFieldTypes=['privatefile','privateimage','privatevideo']>
 <#assign editorExtendFieldTypes=['editor','ckeditor','tinymce','kindeditor']>
 <#macro getExtendDataHelp extend prefix>
 <#if urlExtendFieldTypes?seq_contains(extend.inputType)>
 <@getAction r'${getUrl('+prefix+extend.id.code+r')!}'/>
 <#elseif editorExtendFieldTypes?seq_contains(extend.inputType)>
 <@getAction r'${('+prefix+extend.id.code+r'?no_esc)!}'/>
-<#elseif 'privatefile'=extend.inputType>
+<#elseif privateUrlExtendFieldTypes?seq_contains(extend.inputType)>
 <@getAction r'${getPrivateUrl('+prefix+extend.id.code+r')!}'/>
 <#elseif 'category'=extend.inputType>
 <@getAction r'<@cms.category id='+prefix+extend.id.code+r'><a href="${object.url}">${object.name}</a></@cms.category>'/>

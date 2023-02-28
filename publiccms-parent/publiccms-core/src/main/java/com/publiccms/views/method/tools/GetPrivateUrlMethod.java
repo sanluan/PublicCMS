@@ -76,7 +76,7 @@ public class GetPrivateUrlMethod extends BaseMethod {
         String url = getString(0, arguments);
         if (CommonUtils.notEmpty(url) && null != site) {
             Map<String, String> config = configComponent.getConfigData(site.getId(), SafeConfigComponent.CONFIG_CODE);
-            String signKey = config.get(SafeConfigComponent.CONFIG_EXPIRY_MINUTES_SIGN);
+            String signKey = config.get(SafeConfigComponent.CONFIG_PRIVATEFILE_KEY);
             if (null == signKey) {
                 signKey = CmsVersion.getClusterId();
             }
@@ -87,8 +87,8 @@ public class GetPrivateUrlMethod extends BaseMethod {
             String sign = VerificationUtils.base64Encode(VerificationUtils.encryptAES(string, signKey));
             try {
                 return new StringBuilder(site.getDynamicPath()).append("file/private?expiry=").append(expiry).append("&sign=")
-                        .append(sign).append("&filePath=").append(URLEncoder.encode(url, CommonConstants.DEFAULT_CHARSET_NAME))
-                        .toString();
+                        .append(URLEncoder.encode(sign, CommonConstants.DEFAULT_CHARSET_NAME)).append("&filePath=")
+                        .append(URLEncoder.encode(url, CommonConstants.DEFAULT_CHARSET_NAME)).toString();
             } catch (UnsupportedEncodingException e) {
             }
         }
