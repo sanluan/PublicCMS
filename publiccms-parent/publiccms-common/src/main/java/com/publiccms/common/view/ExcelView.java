@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.web.servlet.view.document.AbstractXlsxStreamingView;
 
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 
 public class ExcelView extends AbstractXlsxStreamingView {
     private Consumer<Workbook> consumer;
@@ -57,7 +57,7 @@ public class ExcelView extends AbstractXlsxStreamingView {
         }
         if (null != filename) {
             try {
-                if (-1 < filename.indexOf(CommonConstants.DOT)) {
+                if (-1 < filename.indexOf(Constants.DOT)) {
                     response.setHeader("content-disposition", "attachment;fileName=" + URLEncoder.encode(filename, "utf-8"));
                 } else {
                     response.setHeader("content-disposition",
