@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-	<title>${user.nickName} 的投票记录</title>
+	<title>${user.nickname} 的投票记录</title>
 	<@tools.includePlace path="/76c53ac2-4f88-4ef3-984b-c81d00a48089.html"/> <#-- 头部Header -->
 </head>
 <body>
@@ -10,7 +10,7 @@
 	<div class="container">
 		<@import path="/ftl/tools.ftl" namespace="t"/><#-- 工具 -->
 		<div class="comment-box">
-			<h3>${user.nickName}的投票记录</h3>
+			<h3>${user.nickname}的投票记录</h3>
 			<@cms.userVoteList userId=user.id pageIndex=pageIndex pageSize=10>
 			<ul>
 				<#list page.list as a>
@@ -60,7 +60,7 @@
 				</#if>
 			</div>
 			</@cms.userVoteList>
-		</div>				
+		</div>
 	</div>
 </main>
 	<script>

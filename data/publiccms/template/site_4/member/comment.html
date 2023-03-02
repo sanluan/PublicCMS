@@ -1,1 +1,242 @@
-�����?r��z{\��(�g��'
+<#if id?has_content>
+<@cms.comment id=id>
+    <#assign text=object.text!/>
+</@cms.comment>
+</#if>
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <title>评论 - ${content.title}</title>
+        <meta name="keywords" content="<#list getKeywords(content.title) as a>${a}<#sep>,</#list>"/>
+        <meta name="description" content="${content.description!}"/>
+        <@tools.includePlace path="/8ddab9ba-a8aa-4745-86c6-66bf1c2c976c.html"/> <#-- header -->
+    </head>
+    <body>
+        <@tools.includePlace path="/c32a4f4a-ff5d-49cf-bb59-5d9784539174.html"/> <#-- 导航 -->
+
+        <div class="banner-l3 position-relative d-flex align-items-center justify-content-center" style="background:#22407c url(${site.sitePath}assets/img/banner-l3-bg-1.png) 50% 50% no-repeat;">
+            <div class="container text-center position-relative py-3 py-md-4 text-white">
+                <div class="breadcrumbs fs-7 text-white d-inline-flex align-items-center text-opacity-50">
+                    <a href="${site.sitePath}">首页</a>
+                    &gt; <a href="${site.dynamicPath}member/comment.html?contentId=${content.id!}" data-id="member">评论</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row gx-5 justify-content-between my-5">
+                <@tools.includePlace path="/c936c718-5f19-426f-b3ff-13a5a8d63044.html"/> <#-- 个人中心导航 -->
+                <div class="col-md-9">
+                    <div class="ps-4">
+                        <h1><a href="${content.url!}">${content.title}</a></h1>
+                        <p class="py-2 text-secondary">${content.description!}</p>
+                        <h6 class="mb-1 pb-2">
+                            ${content.scores!} 赞
+                            <#if user?has_content>
+                                <@cms.userScore userId=user.id itemType='content' itemId=content.id>
+                                    <a href="javascript:unstar('${content.id}');">取消点赞</a>
+                                    <#assign stared=true/>
+                                </@cms.userScore>
+                                <#if !stared?has_content><a href="javascript:star('${content.id}');">点赞</a></#if>
+                            </#if>
+                        </h6>
+                        <@import path="ftl/tools.ftl" namespace="t"/>
+                        <#if error?has_content>
+                        <p style="color:red"><@t.m error/></p>
+                        </#if>
+                        <div id="comments">
+							<#if !pageIndex?has_content || pageIndex=1>
+								<div class="user-login">
+									<div class="form-control text-center" style="line-height:5;"><a href="${site.dynamicPath}member/login.html">登录后发布评论</a></div>
+								</div>
+                            	<#if user?has_content>
+                                    <div class="comment-text-box user-logout">
+                                        <form method="post" action="${site.dynamicPath}comment/save" onsubmit="check">
+                                            <input type="hidden" name="id" value="${id!}"/>
+                                            <#if replyId?has_content>
+												<ul class="child">
+													<li>
+												<@cms.comment id=replyId>
+													<p><span class="text-muted">回复</span> <a class="fw-bold me-2" href="${site.dynamicPath}member/user.html?id=${object.replyUserId!}" target="_blank">@<@sys.user id=object.userId>${object.nickname}</@sys.user></a> : </p>
+													<p class="mt-2">
+														${object.text!}
+													</p>
+												</@cms.comment>
+													</li>
+												</ul>
+												<input type="hidden" name="replyId" value="${replyId!}"/>
+                                            </#if>
+                                            <input type="hidden" name="_csrf" value="<@tools.csrfToken/>"/>
+                                            <input type="hidden" name="contentId" value="${content.id!}"/>
+                                            <input name="returnUrl" type="hidden" value="${site.dynamicPath}member/comment.html?contentId=${content.id!}" />
+											<p class="pt-4"><a href="${site.dynamicPath}member/login.html?returnUrl=${content.url?url}">${(user.nickname)!}</a>:</p>
+                                            <textarea class="form-control" rows="3" name="text" maxlength="1000">${text!}</textarea>
+                                            <input type="submit" class="btn btn-primary mt-3" value="提交"/>
+                                        </form>
+                                    </div>
+                                    <@cms.commentList advanced=true userId=user.id contentId=content.id status=2>
+                                        <#if page.totalCount gt 0>
+                                            <h3 class="pt-4">我的待审核评论</h3>
+                                            <ul class="comments-list px-0 pt-4">
+												<@t.merge 'userIds' user.id/>
+                                                <#list page.list as a>
+													<@t.merge 'userIds' a.replyUserId!/>
+                                                </#list>
+                                                <@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
+                                                <#list page.list as a>
+                                                <li class="comment">
+													<div class="d-flex align-items-center">
+														<figure>
+															<img class="rounded-circle" alt="${user.nickname}" src="${userMap[user.id?string].cover!(site.sitePath+'assets/img/logo-graphic.png')}">
+														</figure>
+														<div>
+															<a href="${site.dynamicPath}member/user.html?id=${a.userId}" class="fw-bold me-2">我</a>
+															<div class="text-secondary text-opacity-50 fs-8">${a.createDate?string('yyyy-MM-dd HH:mm')}</div>
+														</div>
+														<a href="${site.dynamicPath}member/comment.html?id=${a.id}&contentId=${a.contentId}" class="reply d-inline-flex align-items-center ms-auto fs-8 text-muted">编辑</a>
+													</div>
+													<p class="mt-2">
+														${a.text!}
+													</p>
+                                                    <#if a.replyId?has_content>
+														<ul class="child">
+															<@cms.comment id=a.replyId>
+															<li class="comment">
+																<div class="d-flex align-items-center">
+																	<figure>
+																		<img class="rounded-circle" alt="${userMap[a.userId?string].nickname}" src="${userMap[a.replyUserId?string].cover!(site.sitePath+'assets/img/logo-graphic.png')}">
+																	</figure>
+																	<div>
+																		<span class="text-muted">回复</span> <a href="${site.dynamicPath}member/user.html?id=${a.replyUserId!}" class=" fw-bold">${userMap[a.replyUserId?string].nickname}</a>
+																		<div class="text-secondary text-opacity-50 fs-8">${object.createDate?string('yyyy-MM-dd HH:mm')}</div>
+																	</div>
+																	<a href="${site.dynamicPath}member/comment.html?contentId=${content.id!}&replyId=${object.id}" class="reply d-inline-flex align-items-center ms-auto fs-8 text-muted"><img src="${site.sitePath}assets/img/icon-comment-reply.svg" alt="reply"> 回复</a>
+																</div>
+																<p class="mt-2">
+																	${object.text!}
+																</p>
+															</li>
+															</@cms.comment>
+														</ul>
+                                                    </#if>
+                                                </li>
+                                                </#list>
+                                            </ul>
+                                        </#if>
+                                    </@cms.commentList>
+								</#if>
+                            </#if>
+                            <@cms.commentList contentId=content.id emptyReply=true pageIndex=pageIndex pageSize=10>
+                                <#if page.totalCount gt 0>
+                                    <h3 class="pt-4">内容评论</h3>
+                                    <ul class="comments-list px-0 pt-4">
+										<#list page.list as a>
+											<@t.merge 'userIds' a.userId!/>
+											<@t.merge 'userIds' a.replyUserId!/>
+										</#list>
+										<@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
+										<#list page.list as a>
+                                        <li class="comment">
+											<div class="d-flex align-items-center">
+												<figure>
+													<img class="rounded-circle" alt="${userMap[a.userId?string].nickname}" src="${userMap[a.userId?string].cover!(site.sitePath+'assets/img/logo-graphic.png')}">
+												</figure>
+												<div>
+													<a href="${site.dynamicPath}member/user.html?id=${a.userId}" class="fw-bold me-2">${userMap[a.userId?string].nickname}</a><span><#if userMap[a.userId?string].superuser>[管理员]</#if></span>
+													<div class="text-secondary text-opacity-50 fs-8">${a.createDate?string('yyyy-MM-dd HH:mm')}</div>
+												</div>
+												<a href="${site.dynamicPath}member/comment.html?contentId=${content.id!}&replyId=${a.id}" class="reply d-inline-flex align-items-center ms-auto fs-8 text-muted"><img src="${site.sitePath}assets/img/icon-comment-reply.svg" alt="reply"> 回复<#if a.replies gt 0> (${a.replies})</#if></a>
+											</div>
+											<p class="mt-2">
+												${a.text!}
+											</p>
+											<#if a.replies gt 0>
+												<@cms.commentList contentId=content.id replyId=a.id orderType='asc' pageSize=10>
+												<ul class="child">
+													<#list page.list as a>
+													<@t.merge 'userIds' a.userId!/>
+													<@t.merge 'userIds' a.replyUserId!/>
+													</#list>
+													<@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
+													<#list page.list as a>
+													<li class="comment">
+														<div class="d-flex align-items-center">
+															<figure>
+																<img class="rounded-circle" alt="${userMap[a.userId?string].nickname}" src="${userMap[a.userId?string].cover!(site.sitePath+'assets/img/logo-graphic.png')}">
+															</figure>
+															<div>
+																<a href="${site.dynamicPath}member/user.html?id=${a.userId}" class=" fw-bold  me-2">${userMap[a.userId?string].nickname}</a><span class="me-2"><#if userMap[a.userId?string].superuser>[管理员]</#if></span> <span class="text-muted">回复</span><a href="${site.dynamicPath}member/user.html?id=${a.userId}" class=" fw-bold">${userMap[a.replyUserId?string].nickname}</a>
+																<div class="text-secondary text-opacity-50 fs-8">${a.createDate?string('yyyy-MM-dd HH:mm')}</div>
+															</div>
+															<a href="${site.dynamicPath}member/comment.html?contentId=${content.id!}&replyId=${a.id}" class="reply d-inline-flex align-items-center ms-auto fs-8 text-muted"><img src="${site.sitePath}assets/img/icon-comment-reply.svg" alt="reply"> 回复</a>
+														</div>
+														<p class="mt-2">
+															${a.text!}
+														</p>
+													</li>
+													</#list>
+												</ul>
+											</@cms.commentList>
+										</#if>
+										</li>
+										</#list>
+                                    </ul>
+									<#assign url=site.dynamicPath+'comment.html?contentId='+content.id/>
+									<ul class="pagination mt-5 overflow-auto pb-3">
+										<li class="page-item">
+											<a class="page-link" href="${getPage(url,page.prePage,'pageIndex')}" aria-label="Previous">
+												<span aria-hidden="true">«</span>
+											</a>
+										</li>
+										<#assign start=1/>
+										<#if (page.pageIndex-5) gt start>
+										<#assign start=page.pageIndex-4/>
+										</#if>
+										<#assign end=page.totalPage/>
+										<#if (page.pageIndex+5) lt end>
+										<#assign end=page.pageIndex+4/>
+										</#if>
+										<#list start..end as a>
+										<li class="page-item<#if a=page.pageIndex> active</#if>"><a class="page-link" href="${getPage(url,a,'pageIndex')}">${a}</a></li>
+										</#list>
+										<li class="page-item">
+											<a class="page-link" href="${getPage(url,page.nextPage,'pageIndex')}" aria-label="Next">
+												<span aria-hidden="true">»</span>
+											</a>
+										</li>
+									</ul>
+								</#if>
+                            </@cms.commentList>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+		<script>
+			var templatePath='${.current_template_name?keep_after('/')}';
+		</script>
+        <@tools.includePlace path="/7f8bacb5-30ca-4641-b66f-987d447b1a85.html"/> <#-- footer -->
+        <script type="text/javascript">
+            $(function(){$('.login-form input').eq(0).focus();});
+            function check(){
+                if(!$('textarea[name=text]').val()){
+                    alert('评论不能为空');
+                    return false;
+                }
+                return true;
+            }
+        </script>
+         <script>
+    function star(contentId){
+        $.ajax({url:'${site.dynamicPath!}score/score?itemId='+contentId+'&itemType=content&_csrf=<@tools.csrfToken/>', success:function(data){
+            location.reload();
+        }});
+    }
+    function unstar(contentId){
+        $.ajax({url:'${site.dynamicPath!}score/unscore?itemId='+contentId+'&itemType=content&_csrf=<@tools.csrfToken/>', success:function(data){
+            location.reload();
+        }});
+    }
+        </script>
+    </body>
+</html>

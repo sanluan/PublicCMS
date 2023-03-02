@@ -53,7 +53,7 @@
 				<@cms.voteItem ids=t.itemIds! ><#assign voteItemMap=map!/></@cms.voteItem>
 				<#list page.list as a>
 					<li class="underline">
-						<p><a href="${site.dynamicPath}member/userVoteList.html?id=${a.id.userId}" target="_blank">${userMap[a.id.userId?string].nickName}</a> ${a.createDate?date} <label>投给了:</label>《${voteItemMap[a.itemId?string].title}》</p>
+						<p><a href="${site.dynamicPath}member/userVoteList.html?id=${a.id.userId}" target="_blank">${userMap[a.id.userId?string].nickname}</a> ${a.createDate?date} <label>投给了:</label>《${voteItemMap[a.itemId?string].title}》</p>
 					</li>
 				<#else>
 					<li class="underline"><p>没有数据</p></li>
@@ -90,7 +90,7 @@
 				<span>下一页</span>
 				</#if>
 			</div>
-			</@cms.userVoteList>					
+			</@cms.userVoteList>
 		</div>
     </div>
 </main>
@@ -114,7 +114,7 @@ function unvote(itemId){
     });
 }
 	</#if>
-</script>	
+</script>
 </body>
 </html>
 </@cms.vote>
