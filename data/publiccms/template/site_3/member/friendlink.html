@@ -39,11 +39,11 @@
 						<@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
 						<#list page.list as a>
 								<p>
-									<a href="${a.url}" target="_blank">${a.title}</a> ${a.clicks} [${(userMap[a.userId?string].nickName)!}]
+									<a href="${a.url}" target="_blank">${a.title}</a> ${a.clicks} [${(userMap[a.userId?string].nickname)!}]
 							<#if 2=a.status>
-								<a href="${site.dynamicPath}place/check?id=${a.id}&returnUrl=${site.dynamicPath}member/friendlink.html&_csrf=<@tools.csrfToken/>">审核</a> 
+								<a href="${site.dynamicPath}place/check?id=${a.id}&returnUrl=${site.dynamicPath}member/friendlink.html&_csrf=<@tools.csrfToken/>">审核</a>
 							<#elseif 1=a.status>
-								<a href="${site.dynamicPath}place/uncheck?id=${a.id}&returnUrl=${site.dynamicPath}member/friendlink.html&_csrf=<@tools.csrfToken/>">取消审核</a> 
+								<a href="${site.dynamicPath}place/uncheck?id=${a.id}&returnUrl=${site.dynamicPath}member/friendlink.html&_csrf=<@tools.csrfToken/>">取消审核</a>
 							</#if>
 									<a href="${site.dynamicPath}place/delete?id=${a.id}&returnUrl=${site.dynamicPath}member/friendlink.html&_csrf=<@tools.csrfToken/>">删除</a>
 								</p>

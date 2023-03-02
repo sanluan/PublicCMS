@@ -24,10 +24,10 @@
 						<@cms.content ids=t.contentIds! absoluteURL=true><#assign contentMap=map!/></@cms.content>
 						<#list page.list as a>
 							<li class="underline">
-								<p><a href="${site.dynamicPath}member/user.html?id=${a.userId!}" target="_blank">${userMap[a.userId?string].nickName}</a> ${a.createDate} 评论《<a href="${contentMap[a.contentId?string].url}" target="_blank">${contentMap[a.contentId?string].title}</a>》</p>
+								<p><a href="${site.dynamicPath}member/user.html?id=${a.userId!}" target="_blank">${userMap[a.userId?string].nickname}</a> ${a.createDate} 评论《<a href="${contentMap[a.contentId?string].url}" target="_blank">${contentMap[a.contentId?string].title}</a>》</p>
 								<#if a.replyId?has_content>
 									<@cms.comment id=a.replyId>
-								<p class="reply"><a href="${site.dynamicPath}member/user.html?id=${user.id!}" target="_blank">@${user.nickName}</a> : ${object.text!}</p>
+								<p class="reply"><a href="${site.dynamicPath}member/user.html?id=${user.id!}" target="_blank">@${user.nickname}</a> : ${object.text!}</p>
 									</@cms.comment>
 								</#if>
 								<p>${a.text!}</p>
@@ -53,7 +53,7 @@
 								<p>${a.createDate} 评论《<a href="${contentMap[a.contentId?string].url}" target="_blank">${contentMap[a.contentId?string].title}</a>》</p>
 								<#if a.replyId?has_content>
 									<@cms.comment id=a.replyId>
-								<p class="reply"><a href="${site.dynamicPath}member/user.html?id=${a.replyUserId!}" target="_blank">@${(userMap[a.replyUserId?string].nickName)!}</a> : ${object.text!}</p>
+								<p class="reply"><a href="${site.dynamicPath}member/user.html?id=${a.replyUserId!}" target="_blank">@${(userMap[a.replyUserId?string].nickname)!}</a> : ${object.text!}</p>
 									</@cms.comment>
 								</#if>
 								<p>${a.text!} <span class="float-right"><a href="comment.html?id=${a.id}&contentId=${a.contentId}">编辑</a></span></p>
@@ -71,7 +71,7 @@
 					<ul>
 						<#list page.list as a>
 						<@t.merge 'categoryIds' a.categoryId!/>
-						</#list>					
+						</#list>
 						<@cms.category ids=t.categoryIds!><#assign categoryMap=map!/></@cms.category>
 						<#list page.list as a>
 						<li class="underline">

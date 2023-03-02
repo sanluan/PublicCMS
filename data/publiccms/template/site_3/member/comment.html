@@ -37,12 +37,12 @@
 					<div class="comment-box">
 						<#if user?has_content>
 							<#if !pageIndex?has_content || pageIndex=1>
-								<p>发布评论：<span class="float-right"><a href="${site.dynamicPath}member/login.html?returnUrl=${content.url?url}">${(user.nickName)!}</a></span></p>
+								<p>发布评论：<span class="float-right"><a href="${site.dynamicPath}member/login.html?returnUrl=${content.url?url}">${(user.nickname)!}</a></span></p>
 								<div class="comment-text-box user-logout">
 									<form method="post" action="${site.dynamicPath}comment/save">
 										<input type="hidden" name="id" value="${id!}"/>
 										<#if replyId?has_content>
-										<p class="reply"><@cms.comment id=replyId><span class="username">@<@sys.user id=object.userId>${object.nickName}</@sys.user></span> : ${object.text!}</@cms.comment></p>
+										<p class="reply"><@cms.comment id=replyId><span class="username">@<@sys.user id=object.userId>${object.nickname}</@sys.user></span> : ${object.text!}</@cms.comment></p>
 										<input type="hidden" name="replyId" value="${replyId!}"/>
 										</#if>
 										<input type="hidden" name="_csrf" value="<@tools.csrfToken/>"/>
@@ -65,7 +65,7 @@
 												<p>${a.createDate}<span class="float-right"><a href="comment.html?id=${a.id}&contentId=${a.contentId}">编辑</a></span></p>
 												<#if a.replyId?has_content>
 													<@cms.comment id=a.replyId>
-														<p class="reply"><a href="${site.dynamicPath}member/user.html?id=${a.userId}" target="_blank">${userMap[a.userId?string].nickName}</a> : ${object.text!}</p>
+														<p class="reply"><a href="${site.dynamicPath}member/user.html?id=${a.userId}" target="_blank">${userMap[a.userId?string].nickname}</a> : ${object.text!}</p>
 													</@cms.comment>
 												</#if>
 												<p>${a.text!}</p>
@@ -91,10 +91,10 @@
 								<ul>
 									<#list page.list as a>
 									<li class="underline">
-										<p><a href="${site.dynamicPath}member/user.html?id=${a.userId}" target="_blank">${userMap[a.userId?string].nickName}</a> ${a.createDate?string('yyyy-MM-dd HH:mm')}<span class="float-right"><a href="${site.dynamicPath}member/comment.html?contentId=${content.id!}&replyId=${a.id}">回复</a></span></p>
+										<p><a href="${site.dynamicPath}member/user.html?id=${a.userId}" target="_blank">${userMap[a.userId?string].nickname}</a> ${a.createDate?string('yyyy-MM-dd HH:mm')}<span class="float-right"><a href="${site.dynamicPath}member/comment.html?contentId=${content.id!}&replyId=${a.id}">回复</a></span></p>
 										<#if a.replyId?has_content>
 											<@cms.comment id=a.replyId>
-												<p class="reply"><a href="${site.dynamicPath}member/user.html?id=${a.userId}" target="_blank">@${userMap[a.userId?string].nickName}</a> : ${object.text!}</p>
+												<p class="reply"><a href="${site.dynamicPath}member/user.html?id=${a.userId}" target="_blank">@${userMap[a.userId?string].nickname}</a> : ${object.text!}</p>
 											</@cms.comment>
 										</#if>
 										<p>${a.text!}</p>

@@ -2,7 +2,7 @@ var userId;
 function comment(){
 	if (CMS_PATH) {
 		var csrf;
-		$.ajax({url:CMS_PATH+"getcsrf.html?userId="+userId,async:false,success:function(data){
+		$.ajax({url:CMS_PATH+"member/getcsrf.html?userId="+userId,async:false,success:function(data){
 			csrf=data.csrf;
 		}});
 		if(csrf){
@@ -36,7 +36,7 @@ $(function(){
 	if(0>window.location.href.indexOf('returnUrl')){
 		$('a.user-login,.user-login a').each(function(){
 			$(this).prop('href',$(this).prop('href')+'?returnUrl='+encodeURIComponent(window.location.href));
-		});		
+		});
 	}
 	if($('.breadcrumbs a[data-id]').length){
 		$('.navbar-nav .nav-item[data-id='+$('.breadcrumbs a[data-id]:eq(0)').data('id')+']').addClass('selected');
