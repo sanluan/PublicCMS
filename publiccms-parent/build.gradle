@@ -32,10 +32,10 @@ subprojects {
         servletVersion = "6.0.0"
         // http://mvnrepository.com/artifact/org.springframework/spring-core
         // https://spring.io/projects/spring-framework
-        springVersion = "6.0.4"
+        springVersion = "6.0.5"
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
         // https://spring.io/projects/spring-boot
-        springBootVersion = "3.0.2"
+        springBootVersion = "3.0.3"
         // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine
         junitVersion = "5.9.2"
         // http://mvnrepository.com/artifact/org.hibernate/hibernate-core
