@@ -27,7 +27,7 @@
 								<p>${a.createDate} 评论《<a href="${contentMap[a.contentId?string].url}" target="_blank">${contentMap[a.contentId?string].title}</a>》<span class="float-right">[<@t.m 'page.status.content.'+a.status/>]<a href="comment.html?id=${a.id}&contentId=${a.contentId}">编辑</a></span></p>
 								<#if a.replyId?has_content>
 									<@cms.comment id=a.replyId>
-								<p class="reply"><a href="${site.dynamicPath}member/user.html?id=${a.replyUserId!}" target="_blank">@${(userMap[a.replyUserId?string].nickName)!}</a> : ${object.text!}</p>
+								<p class="reply"><a href="${site.dynamicPath}member/user.html?id=${a.replyUserId!}" target="_blank">@${(userMap[a.replyUserId?string].nickname)!}</a> : ${object.text!}</p>
 									</@cms.comment>
 								</#if>
 								<p>${a.text!}</p>
@@ -67,11 +67,11 @@
 						<span>下一页</span>
 						</#if>
 					</div>
-					</@cms.commentList>					
-				</div>				
+					</@cms.commentList>
+				</div>
 			</div>
 		</div>
-	</div>	
+	</div>
 </main>
 	<script>
 		var templatePath='${.current_template_name?keep_after('/')}';

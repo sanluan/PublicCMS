@@ -31,7 +31,7 @@
 						<@sys.user ids=userIds!><#assign userMap=map!/></@sys.user>
 						<#list page.list as a>
 							<li class="underline">
-								<p><@message 'page.status.accountHistory.'+a.status/><span class="right">${a.createDate!} <label>操作人员:</label>${(userMap[a.userId?string].nickName)!}</span></p>
+								<p><@message 'page.status.accountHistory.'+a.status/><span class="right">${a.createDate!} <label>操作人员:</label>${(userMap[a.userId?string].nickname)!}</span></p>
 								<p class="gray"><label>原始金额:</label>${a.amount!} <label>变化:</label>${a.amountChange!} <label>余额:</label>${a.balance!} </p>
 								<p>${a.description!}</p>
 							</li>
@@ -77,6 +77,6 @@
 		var templatePath='${.current_template_name?keep_after('/')}';
     	var itemString="itemType=user&itemId=${user.id}";
     </script>
-    <@tools.includePlace path="/cc29e896-332a-46d8-9bcb-d48e92144e9c.html"/> <#-- 尾部Footer -->   
+    <@tools.includePlace path="/cc29e896-332a-46d8-9bcb-d48e92144e9c.html"/> <#-- 尾部Footer -->
 </body>
-</html> 
+</html>

@@ -2,7 +2,7 @@ var userId;
 function comment(){
 	if (CMS_PATH) {
 		var csrf;
-		$.ajax({url:CMS_PATH+"getcsrf.html?userId="+userId,async:false,success:function(data){
+		$.ajax({url:CMS_PATH+"member/getcsrf.html?userId="+userId,async:false,success:function(data){
 			csrf=data.csrf;
 		}});
 		if(csrf){
@@ -20,9 +20,9 @@ $(function(){
 		$('header nav>ul').removeAttr('style');
 	});
 	//用户中心手机页面导航效果
-	$('.left-aside h3').click(function(){		
+	$('.left-aside h3').click(function(){
 		if($(this).next().is(':visible')){
-			$('.left-aside ul.show').removeClass('show');			
+			$('.left-aside ul.show').removeClass('show');
 		} else {
 			$('.left-aside ul.show').removeClass('show');
 			$(this).next().addClass('show');
@@ -57,7 +57,7 @@ $(function(){
 				$('.user-login').hide();
 				$('.nickname').text(data.nickname);
 				$('.user-logout').show();
-				if(data.superuserAccess&&true==data.superuserAccess){
+				if(data.superuser&&true==data.superuser){
 					$('.user-logout .master').show();
 				}
 			}else{
@@ -69,7 +69,7 @@ $(function(){
 	if(0>window.location.href.indexOf('returnUrl')){
 		$('.user-login a,.user-logout a:eq(2)').each(function(){
 			$(this).prop('href',$(this).prop('href')+'?returnUrl='+encodeURIComponent(window.location.href));
-		});		
+		});
 	}
 	$('.navtab').each(function(){
 		var $box=$(this);

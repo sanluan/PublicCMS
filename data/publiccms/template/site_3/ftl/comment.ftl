@@ -23,10 +23,10 @@
 			<ul>
 				<#list page.list as a>
 				<li class="underline">
-					<p><a href="${site.dynamicPath}member/user.html?id=${a.userId}" target="_blank">${userMap[a.userId?string].nickName}</a><#if userMap[a.userId?string].superuserAccess>[管理员]</#if> ${a.createDate?string('yyyy-MM-dd HH:mm')}<span class="float-right"><a href="${site.dynamicPath}member/comment.html?contentId=${content.id!}&replyId=${a.id}">回复</a></span></p>
+					<p><a href="${site.dynamicPath}member/user.html?id=${a.userId}" target="_blank">${userMap[a.userId?string].nickname}</a><#if userMap[a.userId?string].superuser>[管理员]</#if> ${a.createDate?string('yyyy-MM-dd HH:mm')}<span class="float-right"><a href="${site.dynamicPath}member/comment.html?contentId=${content.id!}&replyId=${a.id}">回复</a></span></p>
 					<#if a.replyId?has_content>
 						<@cms.comment id=a.replyId>
-							<p class="reply"><a href="${site.dynamicPath}member/user.html?id=${a.replyUserId}" target="_blank">@${userMap[a.replyUserId?string].nickName}</a> : ${object.text!}</p>
+							<p class="reply"><a href="${site.dynamicPath}member/user.html?id=${a.replyUserId}" target="_blank">@${userMap[a.replyUserId?string].nickname}</a> : ${object.text!}</p>
 						</@cms.comment>
 					</#if>
 					<p>${a.text!}</p>
