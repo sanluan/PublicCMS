@@ -257,7 +257,9 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         } else {
             optionsStep = selectStep.where(f -> f.bool(clauseContributor));
         }
-
+        if ("sort".equals(orderField)) {
+            optionsStep.sort(f -> f.field("sort").desc());
+        }
         if ("publishDate".equals(orderField)) {
             optionsStep.sort(f -> f.field("publishDate").desc());
         }
