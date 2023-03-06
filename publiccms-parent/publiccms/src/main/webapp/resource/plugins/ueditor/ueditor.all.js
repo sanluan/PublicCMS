@@ -1,7 +1,7 @@
 /*!
  * UEditor
  * version: ueditor
- * build: Tue Feb 28 2023 19:27:33 GMT+0800 (中国标准时间)
+ * build: Mon Mar 06 2023 09:20:15 GMT+0800 (中国标准时间)
  */
 
 (function(){
@@ -10653,7 +10653,7 @@ UE.plugins['autotypeset'] = function(){
                 //图片宽度设定
                 if(opt.imageWidth && !domUtils.getStyle(ci,'width')){
                     var img = ci;
-                    if(img.width > (parseInt(opt.imageWidth) / 4)){
+                    if(img.width > opt.imageWidth){
                         domUtils.setStyle(img,'width',opt.imageWidth+'px');
                         domUtils.setStyle(img,'height','auto');
                     }
@@ -20130,7 +20130,7 @@ UE.plugins['table'] = function () {
         singleClickState = 0,
         userActionStatus = null,
         //双击允许的时间范围
-        dblclickTime = 360,
+        dblclickTime = 200,
         UT = UE.UETable,
         getUETable = function (tdOrTable) {
             return UT.getUETable(tdOrTable);
@@ -25401,13 +25401,9 @@ UE.ui = baidu.editor.ui = {};
                         }
 
                         if( e.wheelDelta ) {
-
                             content.scrollTop -= ( e.wheelDelta / 120 )*60;
-
                         } else {
-
                             content.scrollTop -= ( e.detail / -3 )*60;
-
                         }
 
                     });

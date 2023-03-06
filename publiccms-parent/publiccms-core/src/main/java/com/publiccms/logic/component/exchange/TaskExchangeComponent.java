@@ -12,16 +12,19 @@ import com.publiccms.common.base.AbstractExchange;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysTask;
+import com.publiccms.logic.component.task.ScheduledTask;
 import com.publiccms.logic.service.sys.SysTaskService;
 
 /**
  * TaskExchangeComponent 任务计划导出组件
- * 
+ *
  */
 @Component
 public class TaskExchangeComponent extends AbstractExchange<SysTask, SysTask> {
     @Resource
     private SysTaskService service;
+    @Resource
+    private ScheduledTask scheduledTask;
 
     @Override
     public void exportAll(SysSite site, String directory, ByteArrayOutputStream outputStream, ZipOutputStream zipOutputStream) {
@@ -47,6 +50,7 @@ public class TaskExchangeComponent extends AbstractExchange<SysTask, SysTask> {
         if (null != data) {
             data.setSiteId(site.getId());
             service.save(data);
+            scheduledTask.create(site, data.getId(), data.getCronExpression());
         }
     }
 
