@@ -428,7 +428,7 @@
 			sub:    ['class', 'style'],
 			sup:    ['class', 'style'],
 			strong: ['class', 'style'],
-			table:  ['width', 'border', 'align', 'valign', 'class', 'style'],
+			table:  ['width', 'border', 'align', 'valign', 'data-chart', 'class', 'style'],
 			tbody:  ['align', 'valign', 'class', 'style'],
 			td:     ['width', 'rowspan', 'colspan', 'align', 'valign', 'class', 'style'],
 			tfoot:  ['align', 'valign', 'class', 'style'],
