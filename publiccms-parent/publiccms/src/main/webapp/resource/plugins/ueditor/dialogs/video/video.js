@@ -40,31 +40,8 @@
         var tabs = $G('tabHeads').children;
         for (var i = 0; i < tabs.length; i++) {
             domUtils.on(tabs[i], "click", function (e) {
-                var j, bodyId, target = e.target || e.srcElement;
-                for (j = 0; j < tabs.length; j++) {
-                    bodyId = tabs[j].getAttribute('data-content-id');
-                    if(tabs[j] == target){
-                        domUtils.addClass(tabs[j], 'focus');
-                        domUtils.addClass($G(bodyId), 'focus');
-                        switch (bodyId) {
-                            case 'upload':
-                                uploadFile = uploadFile || new UploadFile('queueList')
-                                break;
-                            case 'onlineVideo':
-                                onlineVideo = onlineVideo || new OnlineVideo('videoList');
-                                break;
-                            case 'uploadImage':
-                                uploadImage = uploadImage || new UploadImage('imageQueueList');
-                                break;
-                            case 'onlineImage':
-                                onlineImage = onlineImage || new OnlineImage('imageList');
-                                break;
-                        }
-                    }else {
-                        domUtils.removeClasses(tabs[j], 'focus');
-                        domUtils.removeClasses($G(bodyId), 'focus');
-                    }
-                }
+                var target = e.target || e.srcElement;
+                switchTabs(target.getAttribute('data-content-id'));
             });
         }
     }
@@ -76,6 +53,20 @@
             if(bodyId==selectedTab){
                 domUtils.addClass(tabs[i], 'focus');
                 domUtils.addClass($G(selectedTab), 'focus');
+                switch (bodyId) {
+                    case 'upload':
+                        uploadFile = uploadFile || new UploadFile('queueList')
+                        break;
+                    case 'onlineVideo':
+                        onlineVideo = onlineVideo || new OnlineVideo('videoList');
+                        break;
+                    case 'uploadImage':
+                        uploadImage = uploadImage || new UploadImage('imageQueueList');
+                        break;
+                    case 'onlineImage':
+                        onlineImage = onlineImage || new OnlineImage('imageList');
+                        break;
+                }
             }else{
                 domUtils.removeClasses(tabs[i], 'focus');
                 domUtils.removeClasses($G(bodyId), 'focus');
