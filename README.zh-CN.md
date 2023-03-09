@@ -1,4 +1,4 @@
-# PublicCMS V4.0
+# PublicCMS
 
 <p style="align:center">
   <a href="./README.md">English</a> | 简体中文
@@ -11,7 +11,7 @@
 
 ## 简介
 
-PublicCMS是采用2022年主流技术开发的开源JAVACMS系统。由天津黑核科技有限公司开发，架构科学，轻松支撑上千万数据、千万PV；支持可视化编辑，多维扩展，全文搜索，全站静态化，SSI，动态页面局部静态化，URL规则完全自定义等为您快速建站，建设大规模站点提供强大驱动，也是企业级项目产品原型的良好选择。
+PublicCMS是采用2023年主流技术开发的开源JAVACMS系统。由天津黑核科技有限公司开发，架构科学，轻松支撑上千万数据、千万PV；支持可视化编辑，多维扩展，全文搜索，全站静态化，SSI，动态页面局部静态化，URL规则完全自定义等为您快速建站，建设大规模站点提供强大驱动，也是企业级项目产品原型的良好选择。
 
 ## 获取源码
 
@@ -20,7 +20,8 @@ https://github.com/sanluan/PublicCMS
 
 ## 参与开发
 
-切换到develop分支,免费版本切换到V2019分支
+切换到develop,V5-develop分支,免费版本切换到V2019分支
+![](doc/images/commits.jpg)
 
 ## 授权协议
 
@@ -29,7 +30,7 @@ https://github.com/sanluan/PublicCMS
 
 ## 环境要求
 
-* jdk或jre 1.8 及以上
+* V4.0 jdk或jre 1.8 及以上,V5 Java17及以上
 * mysql 5.5 及以上
 
 ## 目录说明
@@ -42,7 +43,7 @@ https://github.com/sanluan/PublicCMS
 
 * 编译运行
 
-保证操作系统中有jdk1.8及以上
+保证操作系统中有jdk1.8及以上,V5 Java17及以上
 ```
 cd publiccms-parent
 mvnw clean package
