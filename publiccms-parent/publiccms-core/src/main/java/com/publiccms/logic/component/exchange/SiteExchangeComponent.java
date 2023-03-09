@@ -135,16 +135,42 @@ public class SiteExchangeComponent {
         try (ZipFile zipFile = new ZipFile(file, CommonConstants.DEFAULT_CHARSET_NAME)) {
             {
                 String filepath = siteComponent.getTemplateFilePath(site.getId(), CommonConstants.SEPARATOR);
-                ZipUtils.unzip(zipFile, "template", filepath, overwrite);
+                ZipUtils.unzip(zipFile, "template", filepath, overwrite, (f, e) -> {
+                    if (e.getName().endsWith(".data")) {
+                        // TODO data file merge
+                        return false;
+                    } else {
+                        String historyFilePath = siteComponent.getTemplateHistoryFilePath(site.getId(), e.getName(), true);
+                        try {
+                            CmsFileUtils.copyInputStreamToFile(f.getInputStream(e), historyFilePath);
+                        } catch (IOException e1) {
+                        }
+                        return false;
+                    }
+                });
                 templateComponent.clearTemplateCache();
             }
             {
                 String filepath = siteComponent.getWebFilePath(site.getId(), CommonConstants.SEPARATOR);
-                ZipUtils.unzip(zipFile, "web", filepath, overwrite);
+                ZipUtils.unzip(zipFile, "web", filepath, overwrite, (f, e) -> {
+                    String historyFilePath = siteComponent.getWebHistoryFilePath(site.getId(), e.getName(), true);
+                    try {
+                        CmsFileUtils.copyInputStreamToFile(f.getInputStream(e), historyFilePath);
+                    } catch (IOException e1) {
+                    }
+                    return true;
+                });
             }
             {
                 String filepath = siteComponent.getTaskTemplateFilePath(site.getId(), CommonConstants.SEPARATOR);
-                ZipUtils.unzip(zipFile, "tasktemplate", filepath, overwrite);
+                ZipUtils.unzip(zipFile, "tasktemplate", filepath, overwrite, (f, e) -> {
+                    String historyFilePath = siteComponent.getTaskTemplateHistoryFilePath(site.getId(), e.getName(), true);
+                    try {
+                        CmsFileUtils.copyInputStreamToFile(f.getInputStream(e), historyFilePath);
+                    } catch (IOException e1) {
+                    }
+                    return true;
+                });
                 templateComponent.clearTaskTemplateCache();
             }
             exchangeList.sort((a, b) -> b.importOrder() - a.importOrder());

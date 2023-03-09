@@ -229,7 +229,20 @@ public class CmsTemplateAdminController {
                     String filepath = siteComponent.getTemplateFilePath(site.getId(), shortFilepath);
                     CmsFileUtils.upload(file, filepath);
                     if (shortFilepath.endsWith(".zip") && CmsFileUtils.isFile(filepath)) {
-                        ZipUtils.unzipHere(filepath, encoding, overwrite);
+                        ZipUtils.unzipHere(filepath, encoding, overwrite, (f, e) -> {
+                            if (e.getName().endsWith(".data")) {
+                                // TODO data file merge
+                                return false;
+                            } else {
+                                String historyFilePath = siteComponent.getTemplateHistoryFilePath(site.getId(), e.getName(),
+                                        true);
+                                try {
+                                    CmsFileUtils.copyInputStreamToFile(f.getInputStream(e), historyFilePath);
+                                } catch (IOException e1) {
+                                }
+                                return true;
+                            }
+                        });
                         CmsFileUtils.delete(filepath);
                         metadataComponent.clear();
                         modelComponent.clear();

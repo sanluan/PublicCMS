@@ -43,7 +43,7 @@
         <#if content.hasProducts>
             <div>
                 <form action="${site.dynamicPath}member/order.html">
-                <@cms.contentProductList contentId=content.id fileTypes='video,audio,other'>
+                <@cms.contentProductList contentId=content.id downloadURL=true fileTypes='video,audio,document,other'>
                     <#list page.list as product>
                         <label>
                             <input type="radio" name="productId" value="${product.id}"/>

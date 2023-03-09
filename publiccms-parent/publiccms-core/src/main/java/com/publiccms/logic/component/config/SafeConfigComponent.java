@@ -52,6 +52,7 @@ public class SafeConfigComponent implements Config {
      * allow upload files
      */
     public static final String CONFIG_ALLOW_FILES = "allow_files";
+
     /**
      * allow return urls
      */
@@ -61,10 +62,22 @@ public class SafeConfigComponent implements Config {
      * default expiry minutes
      */
     public static final int DEFAULT_EXPIRY_MINUTES = 30 * 24 * 60;
+    /**
+     * default expiry minutes
+     */
+    public static final int DEFAULT_EXPIRY_MINUTES_SIGN = 10;
+    /**
+     * private file key
+     */
+    public static final String CONFIG_PRIVATEFILE_KEY = "privatefile_key";
+    /**
+     * private file sign expiry time
+     */
+    public static final String CONFIG_EXPIRY_MINUTES_SIGN = "expiry_minutes.sign";
 
     /**
-    * captcha config module login
-    */
+     * captcha config module login
+     */
     public static final String CAPTCHA_MODULE_LOGIN = "login";
     /**
      * captcha config module register
@@ -181,6 +194,12 @@ public class SafeConfigComponent implements Config {
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_EXPIRY_MINUTES_MANAGER), null,
                 String.valueOf(DEFAULT_EXPIRY_MINUTES)));
 
+        extendFieldList.add(new SysExtendField(CONFIG_PRIVATEFILE_KEY, INPUTTYPE_TEXT,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_PRIVATEFILE_KEY), null));
+        extendFieldList.add(new SysExtendField(CONFIG_EXPIRY_MINUTES_SIGN, INPUTTYPE_NUMBER, false,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_EXPIRY_MINUTES_SIGN), null,
+                String.valueOf(DEFAULT_EXPIRY_MINUTES_SIGN)));
+
         extendFieldList
                 .add(new SysExtendField(CONFIG_CAPTCHA, INPUTTYPE_CAPTCHA, false,
                         getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_CAPTCHA),
@@ -196,7 +215,6 @@ public class SafeConfigComponent implements Config {
                 StringUtils.join(CmsFileUtils.ALLOW_FILES, CommonConstants.COMMA)));
         return extendFieldList;
     }
-    
 
     @Override
     public boolean exportable() {

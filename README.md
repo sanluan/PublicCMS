@@ -1,4 +1,4 @@
-# PublicCMS V5 jakarta Verion
+# PublicCMS
 
 <p style="align:center">
   English | <a href="./README.zh-CN.md">简体中文</a>
@@ -11,7 +11,7 @@
 
 ## Introduction
 
-PublicCMS is an open source JAVACMS system developed with mainstream technologies in 2022. Developed by Tianjin Black Core Technology Co., LTD., the structure is scientific, easily support tens of millions of data, tens of millions of PV; Support visual editing, multi-dimensional expansion, full-text search, static site, SSI, dynamic page local static, URL rules completely customized for you to quickly build a site, large-scale site to provide a powerful drive, is also a good choice for enterprise project product prototype.
+PublicCMS is an open source JAVACMS system developed with mainstream technologies in 2023. Developed by Tianjin Black Core Technology Co., LTD., the structure is scientific, easily support tens of millions of data, tens of millions of PV; Support visual editing, multi-dimensional expansion, full-text search, static site, SSI, dynamic page local static, URL rules completely customized for you to quickly build a site, large-scale site to provide a powerful drive, is also a good choice for enterprise project product prototype.
 
 ## Get the source code
 
@@ -20,7 +20,8 @@ https://github.com/sanluan/PublicCMS
 
 ## Participate in development
 
-Switch to the develop branch and the free version to the V2019 branch
+Switch to the develop,V5-develop branch and the free version to the V2019 branch
+![](doc/images/commits.jpg)
 
 ## Licensing agreement
 
@@ -29,7 +30,7 @@ Switch to the develop branch and the free version to the V2019 branch
 
 ## Environmental requirements
 
-* jdk or jre 17 and later
+* V4.0 jdk or jre 1.8 and later,V5 Java17 and later
 * mysql 5.5 and later
 
 ## Directory description
@@ -42,7 +43,7 @@ Switch to the develop branch and the free version to the V2019 branch
 
 * Compile and run
 
-Ensure that the operating system (OS) runs jdk17 or later
+Ensure that the operating system (OS) runs jdk1.8 or later,V5 Java17 and later
 ```
 cd publiccms-parent
 mvnw clean package
@@ -98,7 +99,7 @@ Execute:
 docker compose up -d
 
 ```
-mysql host/port : mysql-cms/3306 ; user/password  : publiccms/password!@#
+mysql host/port: mysql-cms/3306 ; database: publiccms ; user/password: publiccms/password!@#
 
 More parameters, please refer to https://hub.docker.com/r/sanluan/publiccms/
 

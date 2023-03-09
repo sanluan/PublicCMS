@@ -46,7 +46,6 @@ public class CorsConfigComponent implements SiteCache, Config {
     private static final String CONFIG_EXPOSED_HEADERS = "exposed_headers";
     private static final String CONFIG_ALLOW_CREDENTIALS = "allow_credentials";
     private static final String CONFIG_MAXAGE = "max_age";
-    private static final String CONFIG_EDITOR_BASE_PATH = "editor_base_path";
 
     private CacheEntity<Short, CorsConfiguration> cache;
 
@@ -175,10 +174,6 @@ public class CorsConfigComponent implements SiteCache, Config {
                         getMessage(locale,
                                 CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_MAXAGE + CONFIG_CODE_DESCRIPTION_SUFFIX),
                         "1800"));
-        extendFieldList.add(new SysExtendField(CONFIG_EDITOR_BASE_PATH, INPUTTYPE_TEXT,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_EDITOR_BASE_PATH),
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_EDITOR_BASE_PATH
-                        + CONFIG_CODE_DESCRIPTION_SUFFIX)));
         return extendFieldList;
     }
 

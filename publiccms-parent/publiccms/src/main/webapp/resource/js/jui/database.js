@@ -383,13 +383,6 @@
                         attrFrag += key + '="' + attrs[key] + '"';
                     }
                 }
-                if(field.lookupPk){
-                    var value='';
-                    if(field.pkValue){
-                        value = field.pkValue;
-                    }
-                    hiddenHtml = '<input type="hidden" name="' + field.lookupGroup + '.' + field.lookupPk + suffix + '" value="' + value + '"/>';
-                }
                 switch (field.type) {
                     case 'del':
                         html = '<a href="javascript:void(0)" class="btnDel ' + field.fieldClass + '"></a>';
@@ -410,7 +403,9 @@
                     case 'enum':
                         $.ajax({
                             type: "POST", dataType: "html", async: false, url: field.enumUrl, data: {
-                                inputName: field.name
+                                inputName: field.name,
+                                lookupPk: field.lookupPk,
+                                pkValue: field.pkValue
                             }, success: function(response) {
                                 html = response;
                             }
@@ -435,7 +430,7 @@
                                 + attrFrag + '/>';
                         break;
                 }
-                return '<td>' + hiddenHtml + html + '</td>';
+                return '<td>' + html + '</td>';
             }
             function trHtml(fields) {
                 var html = '';

@@ -9,7 +9,7 @@
             </div>
         </#if>
         <#list list as a>
-        <#assign filePath=path?has_content?then(path+'/','/')+a.fileName/>
+        <#assign filePath=path?has_content?then(path+'/','')+a.fileName/>
             <div class="image-list">
                 <#if a.directory>
                     <a href="common/file_list.html?path=${filePath?url}&field=${(field?url)!}&originalField=${(originalField?url)!}&fileTypes=${fileTypes!}" target="ajax" rel="fileBox" title="${filePath}">

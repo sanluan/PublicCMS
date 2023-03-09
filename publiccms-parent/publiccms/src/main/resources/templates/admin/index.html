@@ -127,24 +127,23 @@
         </ul>
     </footer>
     <script>
-        <#assign editorBasePath=(parentSite!site).dynamicPath/>
-        <@sys.configData code="cors"><#if (object.editor_base_path)?has_content><#assign editorBasePath=object.editor_base_path/></#if></@sys.configData>
         var base = "${base+adminContextPath}";
-        window.UEDITOR_HOME_URL = "${editorBasePath}resource/plugins/ueditor/";
+        window.UEDITOR_HOME_URL = "${(parentSite!site).dynamicPath}resource/plugins/ueditor/";
+        window.UEDITOR_BASE_URL = "${base}/resource/plugins/ueditor/";
         window.UEDITOR_LANGUAGE = "<@t.page 'ueditor.lang_js'/>";
-        window.CKEDITOR_BASEPATH = "${editorBasePath}resource/plugins/ckeditor/";
+        window.CKEDITOR_BASEPATH = "${(parentSite!site).dynamicPath}resource/plugins/ckeditor/";
         window.CKEDITOR_LANGUAGE = "<@t.page 'ckeditor.lang'/>";
         window.KINDEDITOR_OPTIONS = {
                 width:"60%",
                 height:"400px",
-                basePath:"${editorBasePath}resource/plugins/kindeditor/",
+                basePath:"${(parentSite!site).dynamicPath}resource/plugins/kindeditor/",
                 uploadJson : base + "/kindeditor/upload",
                 fileManagerJson : base + "/cmsWebFile/fileList.html",
                 allowFileManager : true,
                 formatUploadUrl : false
         };
         window.KINDEDITOR_LANGUAGE = "lang/<@t.page 'kindeditor.lang_js'/>.js";
-        window.TIMYMCE_HOME_URL = "${editorBasePath}resource/plugins/tinymce/";
+        window.TIMYMCE_HOME_URL = "${(parentSite!site).dynamicPath}resource/plugins/tinymce/";
         window.TIMYMCE_LANGUAGE = "<@t.page 'tinymce.lang'/>";
         window.TIMYMCE_RESOURCE_PREFIX = "${site.sitePath}";
         window.TIMYMCE_FILETYPES = "<@sys.configData code='safe'>${object.allow_files!}</@sys.configData>";

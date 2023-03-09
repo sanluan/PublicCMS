@@ -73,7 +73,7 @@ public class CategoryExchangeComponent extends AbstractExchange<CmsCategory, Cat
     @Override
     public void exportEntity(SysSite site, String directory, CmsCategory entity, ByteArrayOutputStream outputStream,
             ZipOutputStream zipOutputStream) {
-            exportEntity(site, directory, null, entity, outputStream, zipOutputStream);
+        exportEntity(site, directory, null, entity, outputStream, zipOutputStream);
     }
 
     /**
@@ -214,11 +214,11 @@ public class CategoryExchangeComponent extends AbstractExchange<CmsCategory, Cat
             }
             if (null != data.getAttribute()) {
                 data.getAttribute().setCategoryId(entity.getId());
-                if (CommonUtils.notEmpty(data.getAttribute().getData())) {
+                if (needReplace(data.getAttribute().getData(), site.getDynamicPath())) {
                     data.getAttribute()
                             .setData(StringUtils.replace(data.getAttribute().getData(), "#DYNAMICPATH#", site.getDynamicPath()));
                 }
-                if (CommonUtils.notEmpty(data.getAttribute().getData())) {
+                if (needReplace(data.getAttribute().getData(), site.getSitePath())) {
                     data.getAttribute()
                             .setData(StringUtils.replace(data.getAttribute().getData(), "#SITEPATH#", site.getSitePath()));
                 }

@@ -276,6 +276,7 @@ public class CmsContent implements java.io.Serializable {
      * 置顶级别
      */
     @GeneratorColumn(title = "排序")
+    @GenericField(sortable = Sortable.YES, projectable = Projectable.YES)
     private int sort;
     /**
      * status(0:Draft,1:Published,2:Pending,3:Rejected)<p>

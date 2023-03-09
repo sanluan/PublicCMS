@@ -592,6 +592,7 @@ CREATE TABLE `log_upload` (
   `user_id` bigint(20) NOT NULL COMMENT '用户',
   `channel` varchar(50) NOT NULL COMMENT '操作渠道',
   `original_name` varchar(255) DEFAULT NULL COMMENT '原文件名',
+  `privatefile` tinyint(1) NOT NULL DEFAULT 0 COMMENT '私有文件',
   `file_type` varchar(20) NOT NULL COMMENT '文件类型',
   `file_size` bigint(20) NULL COMMENT '文件大小',
   `width` int(11) NULL COMMENT '宽度',
@@ -603,7 +604,7 @@ CREATE TABLE `log_upload` (
   KEY `log_upload_user_id` (`site_id`, `user_id`, `create_date`),
   KEY `log_upload_ip` (`site_id`, `ip`, `create_date`),
   KEY `log_upload_channel` (`site_id`, `channel`, `create_date`),
-  KEY `log_upload_file_type` (`site_id`, `file_type`, `file_size`)
+  KEY `log_upload_file_type` (`site_id`, `privatefile`, `file_type`, `file_size`)
 ) COMMENT='上传日志';
 -- ----------------------------
 -- Table structure for sys_app

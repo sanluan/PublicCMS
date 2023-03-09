@@ -12,6 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Enumeration;
+import java.util.function.BiFunction;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
@@ -137,24 +138,32 @@ public class ZipUtils {
      * @param zipFilePath
      * @param encoding
      * @param overwrite
+     *            if true then overwrite the file
+     * @param overwriteFunction
+     *            if overwrite is true and this function return true or this
+     *            function is null then overwrite the file
      * @throws IOException
      */
-    public static void unzipHere(String zipFilePath, String encoding, boolean overwrite) throws IOException {
+    public static void unzipHere(String zipFilePath, String encoding, boolean overwrite,
+            BiFunction<ZipFile, ZipEntry, Boolean> overwriteFunction) throws IOException {
         int index = zipFilePath.lastIndexOf(Constants.SEPARATOR);
         if (0 > index) {
             index = zipFilePath.lastIndexOf('\\');
         }
-        unzip(zipFilePath, zipFilePath.substring(0, index), encoding, overwrite);
+        unzip(zipFilePath, zipFilePath.substring(0, index), encoding, overwrite, overwriteFunction);
     }
 
     /**
      * @param zipFilePath
      * @param encoding
      * @param overwrite
+     * @param overwriteFunction
      * @throws IOException
      */
-    public static void unzip(String zipFilePath, String encoding, boolean overwrite) throws IOException {
-        unzip(zipFilePath, zipFilePath.substring(0, zipFilePath.lastIndexOf(Constants.DOT)), encoding, overwrite);
+    public static void unzip(String zipFilePath, String encoding, boolean overwrite,
+            BiFunction<ZipFile, ZipEntry, Boolean> overwriteFunction) throws IOException {
+        unzip(zipFilePath, zipFilePath.substring(0, zipFilePath.lastIndexOf(Constants.DOT)), encoding, overwrite,
+                overwriteFunction);
     }
 
     /**
@@ -162,9 +171,11 @@ public class ZipUtils {
      * @param targetPath
      * @param encoding
      * @param overwrite
+     * @param overwriteFunction
      * @throws IOException
      */
-    public static void unzip(String zipFilePath, String targetPath, String encoding, boolean overwrite) throws IOException {
+    public static void unzip(String zipFilePath, String targetPath, String encoding, boolean overwrite,
+            BiFunction<ZipFile, ZipEntry, Boolean> overwriteFunction) throws IOException {
         ZipFile zipFile = new ZipFile(zipFilePath, encoding);
         Enumeration<? extends ZipEntry> entryEnum = zipFile.getEntries();
         if (!targetPath.endsWith(Constants.SEPARATOR) && !targetPath.endsWith("\\")) {
@@ -172,12 +183,13 @@ public class ZipUtils {
         }
         while (entryEnum.hasMoreElements()) {
             ZipEntry zipEntry = entryEnum.nextElement();
-            unzip(zipFile, zipEntry, targetPath, zipEntry.getName(), overwrite);
+            unzip(zipFile, zipEntry, targetPath, zipEntry.getName(), overwrite, overwriteFunction);
         }
         zipFile.close();
     }
 
-    private static void unzip(ZipFile zipFile, ZipEntry zipEntry, String targetPath, String filePath, boolean overwrite) {
+    private static void unzip(ZipFile zipFile, ZipEntry zipEntry, String targetPath, String filePath, boolean overwrite,
+            BiFunction<ZipFile, ZipEntry, Boolean> overwriteFunction) {
         if (filePath.contains("..")) {
             filePath = filePath.replace("..", Constants.BLANK);
         }
@@ -188,20 +200,30 @@ public class ZipUtils {
             File targetFile = new File(targetPath + filePath);
             if (!targetFile.exists() || overwrite) {
                 targetFile.getParentFile().mkdirs();
-                try (InputStream inputStream = zipFile.getInputStream(zipEntry);
-                        FileOutputStream outputStream = new FileOutputStream(targetFile);
-                        FileLock fileLock = outputStream.getChannel().tryLock()) {
-                    if (null != fileLock) {
-                        StreamUtils.copy(inputStream, outputStream);
+                if (null == overwriteFunction || overwriteFunction.apply(zipFile, zipEntry)) {
+                    try (InputStream inputStream = zipFile.getInputStream(zipEntry);
+                            FileOutputStream outputStream = new FileOutputStream(targetFile);
+                            FileLock fileLock = outputStream.getChannel().tryLock()) {
+                        if (null != fileLock) {
+                            StreamUtils.copy(inputStream, outputStream);
+                        }
+                    } catch (IOException e) {
+                        log.error(e.getMessage());
                     }
-                } catch (IOException e) {
-                    log.error(e.getMessage());
                 }
             }
         }
     }
 
-    public static void unzip(ZipFile zipFile, String directory, String targetPath, boolean overwrite) {
+    /**
+     * @param zipFile
+     * @param directory
+     * @param targetPath
+     * @param overwrite
+     * @param overwriteFunction
+     */
+    public static void unzip(ZipFile zipFile, String directory, String targetPath, boolean overwrite,
+            BiFunction<ZipFile, ZipEntry, Boolean> overwriteFunction) {
         Enumeration<? extends ZipEntry> entryEnum = zipFile.getEntries();
         if (!targetPath.endsWith(Constants.SEPARATOR) && !targetPath.endsWith("\\")) {
             targetPath += File.separator;
@@ -212,7 +234,8 @@ public class ZipUtils {
         while (entryEnum.hasMoreElements()) {
             ZipEntry zipEntry = entryEnum.nextElement();
             if (null == directory || zipEntry.getName().startsWith(directory)) {
-                unzip(zipFile, zipEntry, targetPath, StringUtils.removeStart(zipEntry.getName(), directory), overwrite);
+                unzip(zipFile, zipEntry, targetPath, StringUtils.removeStart(zipEntry.getName(), directory), overwrite,
+                        overwriteFunction);
             }
         }
     }

@@ -21,6 +21,7 @@ public class LogUploadDao extends BaseDao<LogUpload> {
      * @param siteId
      * @param userId
      * @param channel
+     * @param privatefile
      * @param fileTypes
      * @param originalName
      * @param filepath
@@ -30,8 +31,8 @@ public class LogUploadDao extends BaseDao<LogUpload> {
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(Short siteId, Long userId, String channel, String[] fileTypes, String originalName, String filepath,
-            String orderField, String orderType, Integer pageIndex, Integer pageSize) {
+    public PageHandler getPage(Short siteId, Long userId, String channel, Boolean privatefile, String[] fileTypes,
+            String originalName, String filepath, String orderField, String orderType, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from LogUpload bean");
         if (CommonUtils.notEmpty(siteId)) {
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
@@ -44,6 +45,9 @@ public class LogUploadDao extends BaseDao<LogUpload> {
         }
         if (null != fileTypes) {
             queryHandler.condition("bean.fileType in :fileTypes").setParameter("fileTypes", fileTypes);
+        }
+        if (null != privatefile) {
+            queryHandler.condition("bean.privatefile = :privatefile").setParameter("privatefile", privatefile);
         }
         if (CommonUtils.notEmpty(originalName)) {
             queryHandler.condition("bean.originalName like :originalName").setParameter("originalName", like(originalName));

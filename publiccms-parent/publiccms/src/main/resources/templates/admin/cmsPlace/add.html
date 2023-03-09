@@ -65,7 +65,7 @@
             <dl>
                 <dt><@t.page 'publish_date'/>:</dt>
                 <dd>
-                    <input type="text" name="publishDate" class="date" size="20" autocomplete="off" dateFmt="yyyy-MM-dd HH:mm:ss" value="${(a.publishDate)!(content.publishDate)!.now}"/>
+                    <input type="text" name="publishDate" class="date" size="20" autocomplete="off" dateFmt="yyyy-MM-dd HH:mm:ss" value="<#if a?has_content && id?has_content>${(a.publishDate)!}<#else>${(content.publishDate)!.now}</#if>"/>
                     <a class="inputDateButton" href="javascript:void(0);"></a>
                 </dd>
             </dl>

@@ -87,7 +87,7 @@ public class ContentCoverCatch {
                         && CommonUtils.notEmpty(suffix)) {
                     fileName = CmsFileUtils.getUploadFileName(suffix);
                     String filePath = "D:/aaa/" + fileName;
-                    CmsFileUtils.copyInputStreamToFile(inputStream, filePath, suffix);
+                    CmsFileUtils.copyInputStreamToFile(inputStream, filePath);
                 }
             }
             EntityUtils.consume(entity);

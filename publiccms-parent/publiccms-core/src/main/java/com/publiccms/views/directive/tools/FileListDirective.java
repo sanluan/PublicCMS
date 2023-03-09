@@ -7,7 +7,6 @@ import java.io.IOException;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
-import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
@@ -49,7 +48,7 @@ public class FileListDirective extends AbstractTemplateDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
         String type = handler.getString("type");
-        String path = handler.getString("path", CommonConstants.SEPARATOR);
+        String path = handler.getString("path");
         SysSite site = getSite(handler);
         String realpath;
         if (CommonUtils.notEmpty(type)) {

@@ -41,7 +41,7 @@
             </div>
         </#if>
         <#list list as a>
-        <#assign filePath=path?has_content?then(path+'/','/')+a.fileName/>
+        <#assign filePath=path?has_content?then(path+'/','')+a.fileName/>
             <div class="image-list">
                 <#if a.directory>
                     <a href="cmsWebFile/lookup.html?path=${filePath?url}&fullPath=${(fullPath?url)!}" target="dialog" mask="true" title="${filePath}">

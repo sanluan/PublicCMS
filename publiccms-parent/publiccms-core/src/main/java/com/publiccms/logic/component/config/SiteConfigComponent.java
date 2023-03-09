@@ -88,7 +88,7 @@ public class SiteConfigComponent implements Config {
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOGIN_PATH), null));
 
         if (site.isUseStatic()) {
-            extendFieldList.add(new SysExtendField(CONFIG_CATEGORY_TEMPLATE_PATH, INPUTTYPE_TEMPLATE, true,
+            extendFieldList.add(new SysExtendField(CONFIG_CATEGORY_TEMPLATE_PATH, INPUTTYPE_TEMPLATE, false,
                     getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_CATEGORY_TEMPLATE_PATH), null,
                     "category.html"));
         }

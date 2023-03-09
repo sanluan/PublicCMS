@@ -159,7 +159,7 @@ $('input[name=\'categoryName\']',navTab.getCurrentPanel()).on('change',function(
                 <dl class="publishDate hide">
                     <dt><@t.page 'publish_date'/>:</dt>
                     <dd>
-                        <input type="text" name="publishDate" class="date" size="20" autocomplete="off" dateFmt="yyyy-MM-dd HH:mm:ss" value="${(a.publishDate)!}"/>
+                        <input type="text" name="publishDate" class="date" size="20" autocomplete="off" dateFmt="yyyy-MM-dd HH:mm:ss" value="<#if a?has_content && id?has_content>${(a.publishDate)!}</#if>"/>
                         <a class="inputDateButton" href="javascript:void(0);"></a>
                     </dd>
                 </dl>
@@ -217,7 +217,7 @@ $('input[name=\'categoryName\']',navTab.getCurrentPanel()).on('change',function(
             </#if>
             </div>
             <#assign copy=false/>
-            <#if a?has_content && copyId?has_content && !id?has_content><#assign copy=true/></#if>
+            <#if a?has_content && !id?has_content><#assign copy=true/></#if>
             <#if model.hasImages||model.hasFiles>
                 <#include "../include_page/contentFiles.html"/>
                 <#if model.hasImages>
@@ -245,7 +245,7 @@ $('input[name=\'categoryName\']',navTab.getCurrentPanel()).on('change',function(
                                 <tr>
                                     <th type="lookup" name="contentRelateds[${a?index}][#index#].title" size="30" fieldClass="required" fieldAttrs="{'maxlength':255,'width':1200,'height':580}" lookupGroup="contentRelateds[${a?index}][#index#]" lookupUrl="cmsContent/lookup.html?modelIds=${a.modelIds!}" lookupPk="relatedContentId"><@t.page 'content.select'/></th>
                                     <#if a.dictionaryId?has_content>
-                                        <th type="enum" name="contentRelateds[${a?index}][#index#].relation" fieldClass="required" enumUrl="common/dictionarySelect.html?dictionaryId=${a.dictionaryId}" lookupGroup="contentRelateds[${a?index}][#index#]" lookupPk="relationType" pkValue="${a.dictionaryId}"><@t.page 'relation'/></th>
+                                        <th type="enum" name="contentRelateds[${a?index}][#index#].relation" fieldClass="required" enumUrl="common/dictionarySelect.html?dictionaryId=${a.dictionaryId}" lookupGroup="contentRelateds[${a?index}][#index#]" lookupPk="contentRelateds[${a?index}][#index#].relationType" pkValue="${a.dictionaryId}"><@t.page 'relation'/></th>
                                     </#if>
                                     <th type="text" name="contentRelateds[${a?index}][#index#].url" size="40" fieldClass="required" fieldAttrs="{'maxlength':2048}"><@t.page 'address'/></th>
                                     <th type="textarea" name="contentRelateds[${a?index}][#index#].description" fieldAttrs="{maxlength:150,rows:2,cols:60}"><@t.page 'description'/></th>
@@ -329,14 +329,14 @@ $('input[name=copied]',navTab.getCurrentPanel()).click(function(){
         $('.copied input[data-required=true]',navTab.getCurrentPanel()).removeClass('required').val('');
     }
 });
-    <#if a?has_content&&a.copied>
+    <#if a?has_content && a.copied>
 $('input[name=copied]',navTab.getCurrentPanel()).click();
     </#if>
 </#if>
-<#if a?has_content&&(a.publishDate gt .now || a.expiryDate?has_content)>
+<#if a?has_content && id?has_content && (a.publishDate gt .now || a.expiryDate?has_content)>
 $('input[name=timing]',navTab.getCurrentPanel()).click();
 </#if>
-<#if a?has_content&&1=a.status>
+<#if a?has_content && 1=a.status>
 $('input[name=checked]',navTab.getCurrentPanel()).click();
 </#if>
 </script>

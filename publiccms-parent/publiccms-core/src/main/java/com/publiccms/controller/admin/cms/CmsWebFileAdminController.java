@@ -97,6 +97,7 @@ public class CmsWebFileAdminController {
      * @param admin
      * @param files
      * @param path
+     * @param privatefile 
      * @param overwrite
      * @param request
      * @param model
@@ -105,7 +106,7 @@ public class CmsWebFileAdminController {
     @RequestMapping("doUpload")
     @Csrf
     public String upload(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile[] files, String path,
-            boolean overwrite, HttpServletRequest request, ModelMap model) {
+            boolean privatefile, boolean overwrite, HttpServletRequest request, ModelMap model) {
         if (null != files) {
             try {
                 for (MultipartFile file : files) {
@@ -114,12 +115,19 @@ public class CmsWebFileAdminController {
                     String filepath = path + CommonConstants.SEPARATOR + originalName;
                     String fuleFilePath = siteComponent.getWebFilePath(site.getId(), filepath);
                     if (overwrite || !CmsFileUtils.exists(fuleFilePath)) {
+                        if (CmsFileUtils.exists(fuleFilePath)) {
+                            String historyFilePath = siteComponent.getWebHistoryFilePath(site.getId(), filepath, true);
+                            try {
+                                CmsFileUtils.copyFileToFile(historyFilePath, historyFilePath);
+                            } catch (IOException e1) {
+                            }
+                        }
                         CmsFileUtils.upload(file, fuleFilePath);
                         if (CmsFileUtils.isSafe(fuleFilePath, suffix)) {
                             FileSize fileSize = CmsFileUtils.getFileSize(fuleFilePath, suffix);
                             logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                                    originalName, CmsFileUtils.getFileType(CmsFileUtils.getSuffix(originalName)), file.getSize(),
-                                    fileSize.getWidth(), fileSize.getHeight(), RequestUtils.getIpAddress(request),
+                                    originalName, privatefile, CmsFileUtils.getFileType(CmsFileUtils.getSuffix(originalName)),
+                                    file.getSize(), fileSize.getWidth(), fileSize.getHeight(), RequestUtils.getIpAddress(request),
                                     CommonUtils.getDate(), filepath));
                         } else {
                             CmsFileUtils.delete(fuleFilePath);
@@ -177,8 +185,8 @@ public class CmsWebFileAdminController {
                     }
                     FileSize fileSize = CmsFileUtils.getFileSize(fuleFilePath, suffix);
                     logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                            filename, CmsFileUtils.FILE_TYPE_IMAGE, file.getSize(), fileSize.getWidth(), fileSize.getHeight(),
-                            RequestUtils.getIpAddress(request), CommonUtils.getDate(), filepath));
+                            filename, false, CmsFileUtils.FILE_TYPE_IMAGE, file.getSize(), fileSize.getWidth(),
+                            fileSize.getHeight(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), filepath));
                 }
             } catch (IOException e) {
                 model.addAttribute(CommonConstants.ERROR, e.getMessage());
@@ -279,7 +287,7 @@ public class CmsWebFileAdminController {
      * @param path
      * @param encoding
      * @param here
-     * @param overwrite 
+     * @param overwrite
      * @param request
      * @param model
      * @return view name
@@ -293,9 +301,23 @@ public class CmsWebFileAdminController {
             if (CmsFileUtils.isFile(filepath)) {
                 try {
                     if (here) {
-                        ZipUtils.unzipHere(filepath, encoding, overwrite);
+                        ZipUtils.unzipHere(filepath, encoding, overwrite, (f, e) -> {
+                            String historyFilePath = siteComponent.getTemplateHistoryFilePath(site.getId(), e.getName(), true);
+                            try {
+                                CmsFileUtils.copyInputStreamToFile(f.getInputStream(e), historyFilePath);
+                            } catch (IOException e1) {
+                            }
+                            return true;
+                        });
                     } else {
-                        ZipUtils.unzip(filepath, encoding, overwrite);
+                        ZipUtils.unzip(filepath, encoding, overwrite, (f, e) -> {
+                            String historyFilePath = siteComponent.getWebHistoryFilePath(site.getId(), e.getName(), true);
+                            try {
+                                CmsFileUtils.copyInputStreamToFile(f.getInputStream(e), historyFilePath);
+                            } catch (IOException e1) {
+                            }
+                            return true;
+                        });
                     }
                 } catch (IOException e) {
                     model.addAttribute(CommonConstants.ERROR, e.getMessage());
