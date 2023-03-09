@@ -28,8 +28,6 @@
                                 CKEDITOR.instances[$input.data("id")].setData(args[key]);
                             } else if ("tinymce"==$input.attr("editorType")){
                                 tinymce.get($input.data("id")).setContent(args[key]);
-                            } else if ("kindeditor"==$input.attr("editorType")){
-                                KindEditor.html('#'+$input.data("id"),args[key]);
                             } else {
                                 UE.instants[$input.data("id")].setContent(args[key]);
                             }

@@ -101,28 +101,6 @@ JUI.regPlugins.push(function($p){
                     });
                 }
             }
-        } else if("kindeditor"==$this.attr("editorType")) {
-            if(window.editor.kindeditorInitd){
-                KindEditor.create("#"+dataId,window.KINDEDITOR_OPTIONS);
-            } else {
-                if(window.editor.kindeditorIniting){
-                    window.editor.kindeditorArray.push(dataId);
-                } else {
-                    window.editor.kindeditorIniting=true;
-                    ajaxbg.show();
-                    loadScripts(window.editor.kindeditorResources,function(){
-                        window.editor.kindeditorIniting=false;
-                        window.editor.kindeditorInitd=true;
-                        KindEditor.create("#"+dataId,window.KINDEDITOR_OPTIONS);
-                        ajaxbg.hide();
-                        if(0 < window.editor.kindeditorArray.length){
-                            for(var i=0;i<window.editor.kindeditorArray.length;i++){
-                                KindEditor.create("#"+window.editor.kindeditorArray[i],window.KINDEDITOR_OPTIONS);
-                            }
-                        }
-                    });
-                }
-            }
         } else {
             if(window.editor.ueditorInitd){
                 var editor = new baidu.editor.ui.Editor();

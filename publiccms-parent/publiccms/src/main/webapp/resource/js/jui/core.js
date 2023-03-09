@@ -199,8 +199,6 @@ var JUI = {
                         if(tinymce.get($(this).data("id"))) {
                             tinymce.get($(this).data("id")).save();
                         }
-                    } else if ("kindeditor"==$(this).attr("editorType")){
-                        KindEditor.sync('#'+$(this).data("id"));
                     } else {
                         if(UE.instants[$(this).data("id")]) {
                             UE.instants[$(this).data("id")].sync();
@@ -232,8 +230,6 @@ var JUI = {
                         }
                     } else if("tinymce"==$(this).attr("editorType")) {
                         tinymce.remove('#'+$(this).data("id"));
-                    } else if("kindeditor"==$(this).attr("editorType")) {
-                        KindEditor.remove('#'+$(this).data("id"));
                     } else {
                         if(UE.instants[$(this).data("id")]) {
                             UE.instants[$(this).data("id")].destroy();

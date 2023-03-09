@@ -3,19 +3,15 @@
         ckeditorResources: [window.LOADSCRIPTS_BASE + "/resource/plugins/ckeditor/ckeditor.js"],
         ueditorResources: [window.LOADSCRIPTS_BASE + "/resource/plugins/ueditor/ueditor.config.js",window.LOADSCRIPTS_BASE + "/resource/plugins/ueditor/ueditor.all.min.js",window.LOADSCRIPTS_BASE + "/resource/plugins/ueditor/lang/" + window.UEDITOR_LANGUAGE],
         tinymceResources: [window.LOADSCRIPTS_BASE + "/resource/plugins/tinymce/tinymce.min.js"],
-        kindeditorResources: [window.LOADSCRIPTS_BASE + "/resource/plugins/kindeditor/kindeditor-all-min.js",window.LOADSCRIPTS_BASE + "/resource/plugins/kindeditor/" + window.KINDEDITOR_LANGUAGE],
         ckeditorInitd: false,
         ueditorInitd: false,
         tinymceInitd: false,
-        kindeditorInitd: false,
         ckeditorIniting: false,
         ueditorIniting: false,
         tinymceIniting: false,
-        kindeditorIniting: false,
         ckeditorArray:[],
         ueditorArray:[],
         tinymceArray:[],
-        kindeditorArray:[],
         index: 0
     };
     window.codemirror = {

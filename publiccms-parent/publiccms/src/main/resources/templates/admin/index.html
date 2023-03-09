@@ -133,16 +133,6 @@
         window.UEDITOR_LANGUAGE = "<@t.page 'ueditor.lang_js'/>";
         window.CKEDITOR_BASEPATH = "${(parentSite!site).dynamicPath}resource/plugins/ckeditor/";
         window.CKEDITOR_LANGUAGE = "<@t.page 'ckeditor.lang'/>";
-        window.KINDEDITOR_OPTIONS = {
-                width:"60%",
-                height:"400px",
-                basePath:"${(parentSite!site).dynamicPath}resource/plugins/kindeditor/",
-                uploadJson : base + "/kindeditor/upload",
-                fileManagerJson : base + "/cmsWebFile/fileList.html",
-                allowFileManager : true,
-                formatUploadUrl : false
-        };
-        window.KINDEDITOR_LANGUAGE = "lang/<@t.page 'kindeditor.lang_js'/>.js";
         window.TIMYMCE_HOME_URL = "${(parentSite!site).dynamicPath}resource/plugins/tinymce/";
         window.TIMYMCE_LANGUAGE = "<@t.page 'tinymce.lang'/>";
         window.TIMYMCE_RESOURCE_PREFIX = "${site.sitePath}";

@@ -7,7 +7,7 @@
 </#if>
 <#assign urlExtendFieldTypes=['file','image','video']>
 <#assign privateUrlExtendFieldTypes=['privatefile','privateimage','privatevideo']>
-<#assign editorExtendFieldTypes=['editor','ckeditor','tinymce','kindeditor']>
+<#assign editorExtendFieldTypes=['editor','ckeditor','tinymce']>
 <#macro getExtendDataHelp extend prefix>
 <#if urlExtendFieldTypes?seq_contains(extend.inputType)>
 <@getAction r'${getUrl('+prefix+extend.id.code+r')!}'/>
