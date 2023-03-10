@@ -525,7 +525,7 @@ table.list tbody{background-color:#666;}
     .pageFormContent dl{width:100%;height:auto;clear:both;}
 }
 @media (max-width:1100px){
-    .logo{display:none;}
+    header .logo img{height:25px;margin:0px 5px;}
     #navMenu{left:0px;}
     footer{text-align:left;}
 }
@@ -533,6 +533,6 @@ table.list tbody{background-color:#666;}
 @media (max-width:920px){
     header .nav li{padding:0 5px;}
     header .nav li a{line-height:25px;}
-    #navMenu{top:20px;}
-    #navMenu li a{line-height:40px;}
+    #navMenu{top:25px;}
+    #navMenu li a{line-height:35px;}
 }

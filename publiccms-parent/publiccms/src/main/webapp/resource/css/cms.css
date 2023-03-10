@@ -56,11 +56,14 @@ ol.vote>li:nth-child(3n) .progress-bar {background-color:blue;}
 .diy-border-bottom .diy-menu{bottom:-32px;top:auto;}
 .diy-button{z-index:10;margin-top:0px;}
 
+.avatar{width:35px;height:35px;border-radius:50%;vertical-align:middle;margin-right:5px;}
+
 .searchResult b{color:#f00;}
 @media screen and (max-width:728px) {
 .unit ul li{width:100%;}
 }
 @media screen and (max-width:1024px) {
+.avatar{width:20px;height:20px;}
 .unit ul li{width:50%;}
 .unit .chart{width:100%;}
 }
