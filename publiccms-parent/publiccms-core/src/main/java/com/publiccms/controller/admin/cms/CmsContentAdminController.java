@@ -25,6 +25,7 @@ import org.apache.tools.zip.ZipOutputStream;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -130,6 +131,7 @@ public class CmsContentAdminController {
      * @param contentParameters
      * @param draft
      * @param checked
+     * @param bindingResult 
      * @param request
      * @param model
      * @return view name
@@ -138,7 +140,7 @@ public class CmsContentAdminController {
     @Csrf
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, CmsContent entity,
             CmsContentAttribute attribute, @ModelAttribute CmsContentParameters contentParameters, Boolean draft, Boolean checked,
-            HttpServletRequest request, ModelMap model) {
+            BindingResult bindingResult, HttpServletRequest request, ModelMap model) {
         SysDept dept = sysDeptService.getEntity(admin.getDeptId());
         if (ControllerUtils.errorNotEmpty("deptId", admin.getDeptId(), model)
                 || ControllerUtils.errorNotEmpty("deptId", dept, model)
@@ -641,8 +643,7 @@ public class CmsContentAdminController {
                     LogLoginService.CHANNEL_WEB_MANAGER, "import.content", RequestUtils.getIpAddress(request),
                     CommonUtils.getDate(), file.getOriginalFilename()));
         }
-        return SiteExchangeComponent.importData(site, admin.getId(), overwrite, "-content.zip", exchangeComponent, file,
-                model);
+        return SiteExchangeComponent.importData(site, admin.getId(), overwrite, "-content.zip", exchangeComponent, file, model);
     }
 
     /**
@@ -707,8 +708,7 @@ public class CmsContentAdminController {
             @DateTimeFormat(pattern = "yyyy-MM-dd") Date endCreateDate, String workloadType, String dateField,
             HttpServletRequest request) {
         Locale locale = RequestContextUtils.getLocale(request);
-        return exchangeComponent.exportWorkload(site, status, startCreateDate, endCreateDate, workloadType, dateField,
-                locale);
+        return exchangeComponent.exportWorkload(site, status, startCreateDate, endCreateDate, workloadType, dateField, locale);
     }
 
     /**

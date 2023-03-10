@@ -6,9 +6,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.publiccms.common.database.CmsUpgrader;
@@ -40,6 +42,8 @@ public class CmsCategory implements java.io.Serializable {
      * 名称
      */
     @GeneratorColumn(title = "名称")
+    @NotNull
+    @Length(max = 50)
     private String name;
     /**
      * parent id
@@ -75,6 +79,8 @@ public class CmsCategory implements java.io.Serializable {
      * 编码
      */
     @GeneratorColumn(title = "编码")
+    @NotNull
+    @Length(max = 50)
     private String code;
 
     /**
@@ -107,6 +113,7 @@ public class CmsCategory implements java.io.Serializable {
      * 链接地址
      */
     @GeneratorColumn(title = "地址")
+    @Length(max = 1000)
     private String url;
     /**
      * custom content path

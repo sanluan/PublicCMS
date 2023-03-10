@@ -6,8 +6,11 @@ import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.validator.constraints.Length;
 
 import com.publiccms.common.generator.annotation.GeneratorColumn;
 
@@ -30,12 +33,15 @@ public class CmsDictionary implements java.io.Serializable {
      * 名称
      */
     @GeneratorColumn(title = "名称")
+    @NotNull
+    @Length(max = 100)
     private String name;
     /**
      * child depth<p>
      * 子级深度
      */
     @GeneratorColumn(title = "子级深度")
+    @Max(10)
     private int childDepth;
 
     public CmsDictionary() {

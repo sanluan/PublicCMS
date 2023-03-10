@@ -9,8 +9,10 @@ import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.publiccms.common.generator.annotation.GeneratorColumn;
@@ -67,12 +69,15 @@ public class SysExtendField implements java.io.Serializable {
      * 名称
      */
     @GeneratorColumn(title = "名称")
+    @NotNull
+    @Length(max = 20)
     private String name;
     /**
      * description<p>
      * 描述
      */
     @GeneratorColumn(title = "描述")
+    @Length(max = 300)
     private String description;
     /**
      * input type<p>

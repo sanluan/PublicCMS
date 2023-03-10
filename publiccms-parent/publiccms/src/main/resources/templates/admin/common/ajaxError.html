@@ -1,11 +1,10 @@
-<#ftl auto_esc=false/>
-<#escape x as x?json_string>
+<#ftl output_format="JSON">
 {
     "statusCode":"300",
     "message":"<#if error?has_content><@t.message error?replace('\r','')?replace('\n','')?replace('\\','\\\\')/><#else><@t.message 'message.error'/></#if>",
     "navTabId":"",
+    "fields":"${fields!}",
     "rel":"",
     "callbackType":"",
     "forwardUrl":""
 }
-</#escape>

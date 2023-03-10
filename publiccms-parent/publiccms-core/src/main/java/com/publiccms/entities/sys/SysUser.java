@@ -10,9 +10,11 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.publiccms.common.database.CmsUpgrader;
@@ -42,6 +44,8 @@ public class SysUser implements java.io.Serializable {
      * 用户名
      */
     @GeneratorColumn(title = "用户名", condition = true, like = true, or = true, name = "name")
+    @NotNull
+    @Length(max = 50)
     private String name;
     @GeneratorColumn(title = "密码")
     @JsonIgnore

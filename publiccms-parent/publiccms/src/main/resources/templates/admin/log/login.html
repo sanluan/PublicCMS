@@ -85,7 +85,7 @@
                     </div>
                 </td>
                 <td>
-                    ${a.result?then(t.pageMessage('success'),t.pageMessage('fail'))}
+                    ${t.pageMessage(a.result?then('success','fail'))}
                 </td>
                 <td>${a.createDate!}</td>
                 <td><#if !a.result><@t.secrecy a.errorPassword 2/></#if></td>

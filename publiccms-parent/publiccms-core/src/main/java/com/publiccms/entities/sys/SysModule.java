@@ -6,6 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.validator.constraints.Length;
 
 import com.publiccms.common.generator.annotation.GeneratorColumn;
 
@@ -31,6 +32,7 @@ public class SysModule implements java.io.Serializable {
      * 地址
      */
     @GeneratorColumn(title = "地址")
+    @Length(max = 255)
     private String url;
     /**
      * authorized url<p>

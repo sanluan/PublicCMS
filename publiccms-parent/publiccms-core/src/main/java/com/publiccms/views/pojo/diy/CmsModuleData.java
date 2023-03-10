@@ -1,5 +1,9 @@
 package com.publiccms.views.pojo.diy;
 
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
@@ -22,6 +26,8 @@ public class CmsModuleData implements java.io.Serializable {
      * <p>
      * 名称
      */
+    @NotNull
+    @Length(max = 50)
     private String name;
     /**
      * place path

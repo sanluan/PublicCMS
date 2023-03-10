@@ -8,6 +8,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.validator.constraints.Length;
 
 import com.publiccms.common.database.CmsUpgrader;
 import com.publiccms.common.generator.annotation.GeneratorColumn;
@@ -88,6 +89,7 @@ public class CmsContentFile implements java.io.Serializable {
      * 描述
      */
     @GeneratorColumn(title = "描述")
+    @Length(max = 300)
     private String description;
 
     public CmsContentFile() {

@@ -2,6 +2,10 @@ package com.publiccms.views.pojo.entities;
 
 import java.util.List;
 
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.publiccms.entities.sys.SysExtendField;
 
@@ -17,7 +21,10 @@ public class SysConfig implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
+    @NotNull
+    @Length(max = 50)
     private String code;
+    @Length(max = 300)
     private String description;
     private List<SysExtendField> extendList;
 

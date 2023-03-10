@@ -6,9 +6,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.publiccms.common.database.CmsUpgrader;
@@ -42,12 +44,15 @@ public class SysSite implements java.io.Serializable {
      * 目录
      */
     @GeneratorColumn(title = "目录")
+    @Length(max = 50)
     private String directory;
     /**
      * name<p>
      * 名称
      */
     @GeneratorColumn(title = "名称", condition = true, like = true)
+    @NotNull
+    @Length(max = 50)
     private String name;
     /**
      * use static<p>
@@ -60,6 +65,8 @@ public class SysSite implements java.io.Serializable {
      * 静态站点地址
      */
     @GeneratorColumn(title = "站点地址")
+    @NotNull
+    @Length(max = 255)
     private String sitePath;
     /**
      * use SSI<p>
@@ -72,6 +79,8 @@ public class SysSite implements java.io.Serializable {
      * 动态站点地址
      */
     @GeneratorColumn(title = "动态站点地址")
+    @NotNull
+    @Length(max = 255)
     private String dynamicPath;
     @GeneratorColumn(title = "禁用", condition = true)
     @JsonIgnore

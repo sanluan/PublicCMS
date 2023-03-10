@@ -9,9 +9,11 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotBlank;
 
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -39,87 +41,108 @@ public class CmsPlace implements java.io.Serializable {
     @JsonIgnore
     private short siteId;
     /**
-     * place path<p>
+     * place path
+     * <p>
      * 推荐位路径
      */
     @GeneratorColumn(title = "路径", condition = true)
+    @NotBlank
+    @Length(max = 100)
     private String path;
     /**
-     * user id<p>
+     * user id
+     * <p>
      * 创建用户id
      */
     @GeneratorColumn(title = "推荐用户", condition = true)
     private Long userId;
     /**
-     * check user id<p>
+     * check user id
+     * <p>
      * 审核用户id
      */
     @GeneratorColumn(title = "审核用户", condition = true)
     private Long checkUserId;
     /**
-     * item type<p>
+     * item type
+     * <p>
      * 数据项类型
      */
     @GeneratorColumn(title = "项目类型", condition = true)
     private String itemType;
     /**
-     * item id<p>
+     * item id
+     * <p>
      * 数据项id
      */
     @GeneratorColumn(title = "项目", condition = true)
     private Long itemId;
     /**
-     * title<p>
+     * title
+     * <p>
      * 标题
      */
     @GeneratorColumn(title = "标题")
+    @NotBlank
+    @Length(max = 255)
     private String title;
     /**
-     * url<p>
+     * url
+     * <p>
      * 地址
      */
     @GeneratorColumn(title = "地址")
+    @Length(max = 1000)
     private String url;
     /**
-     * description<p>
+     * description
+     * <p>
      * 描述
      */
     @GeneratorColumn(title = "描述")
+    @Length(max = 300)
     private String description;
     /**
-     * cover<p>
+     * cover
+     * <p>
      * 封面图
      */
     @GeneratorColumn(title = "封面图")
+    @Length(max = 255)
     private String cover;
     /**
-     * create date<p>
+     * create date
+     * <p>
      * 创建日期
      */
     @GeneratorColumn(title = "创建日期", order = true)
     private Date createDate;
     /**
-     * publish date<p>
+     * publish date
+     * <p>
      * 发布日期
      */
     @GeneratorColumn(title = "发布日期", condition = true, order = true)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date publishDate;
     /**
-     * expiry date<p>
+     * expiry date
+     * <p>
      * 过期日期
      */
     @GeneratorColumn(title = "过期日期", condition = true, order = true)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date expiryDate;
     /**
-     * status(0:Draft,1:Published,2:Pending)<p>
+     * status(0:Draft,1:Published,2:Pending)
+     * <p>
      * 状态(0:草稿,1:已发布,2:待审核)
      */
     @GeneratorColumn(title = "状态", condition = true)
     private int status;
     /**
-     * clicks<p>
+     * clicks
+     * <p>
      * 点击数
      */
     @GeneratorColumn(title = "点击数", order = true)

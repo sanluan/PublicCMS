@@ -5,9 +5,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.publiccms.common.database.CmsUpgrader;
@@ -37,6 +39,8 @@ public class SysRole implements java.io.Serializable {
      * 名称
      */
     @GeneratorColumn(title = "名称")
+    @NotNull
+    @Length(max = 50)
     private String name;
     /**
      * owns all right<p>

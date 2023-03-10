@@ -3,6 +3,10 @@ package com.publiccms.views.pojo.diy;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -34,6 +38,8 @@ public class CmsLayout implements java.io.Serializable {
      * <p>
      * 名称
      */
+    @NotNull
+    @Length(max = 50)
     private String name;
     /**
      * template

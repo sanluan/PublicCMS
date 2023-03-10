@@ -124,7 +124,7 @@
                         </#if>
                     </#if>
                 </td>
-                <td>${a.hidden?then(t.pageMessage('hidden'),t.pageMessage('show'))}</td>
+                <td>${t.pageMessage(a.hidden?then('hidden','show'))}</td>
                 <td>${a.sort!}</td>
                 <td class="wrap">
                 <#if authorizedMap['cmsCategory/add']>

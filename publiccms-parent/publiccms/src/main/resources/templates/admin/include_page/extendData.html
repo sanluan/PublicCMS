@@ -128,7 +128,7 @@
             <#break>
         <#case 'boolean'>
             <#if 'view'=type>
-                <#if value?has_content>${('true'=value)?then(t.pageMessage('yes'),t.pageMessage('no'))}</#if>
+                <#if value?has_content>${t.pageMessage(('true'=value)?then('yes','no'))}</#if>
             <#else>
         <select<#if 'customform'!=type> class="combox<#if extend.required> required</#if>"</#if> name="${inputName}">
             <option value><@t.page 'all'/></option>

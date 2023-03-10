@@ -11,9 +11,11 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.publiccms.common.database.CmsUpgrader;
@@ -43,6 +45,8 @@ public class SysTask implements java.io.Serializable {
      * 名称
      */
     @GeneratorColumn(title = "任务名称")
+    @NotNull
+    @Length(max = 50)
     private String name;
     /**
      * status(0:ready,1:running,2:paused,3:error)<p>
@@ -61,6 +65,7 @@ public class SysTask implements java.io.Serializable {
      * 描述
      */
     @GeneratorColumn(title = "描述")
+    @Length(max = 300)
     private String description;
     /**
      * file path<p>

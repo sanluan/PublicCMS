@@ -8,10 +8,12 @@ import java.util.Map;
 import java.util.Properties;
 
 import javax.sql.DataSource;
+import javax.validation.ValidatorFactory;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.analysis.cn.smart.hhmm.DictionaryReloader;
 import org.hibernate.SessionFactory;
+import org.hibernate.validator.HibernateValidator;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.FactoryBean;
@@ -31,6 +33,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
@@ -157,6 +160,19 @@ public class ApplicationConfig implements EnvironmentAware {
         return bean;
     }
 
+    /**
+     * 验证工厂
+     *
+     * @return cache factory
+     * @throws IOException
+     */
+    @Bean
+    public ValidatorFactory validatorFactoryBean() throws IOException {
+        LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
+        bean.setProviderClass(HibernateValidator.class);
+        return bean;
+    }
+    
     /**
      * 缓存工厂
      *

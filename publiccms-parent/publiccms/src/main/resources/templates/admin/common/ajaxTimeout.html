@@ -1,5 +1,4 @@
-<#ftl auto_esc=false/>
-<#escape x as x?json_string>
+<#ftl output_format="JSON">
 {
     "statusCode":"301",
     "message":"<#if message?has_content><@t.message message?replace('\r','')?replace('\n','')?replace('\\','\\\\')/><#else><@t.message 'message.timeout'/></#if>",
@@ -7,4 +6,3 @@
     "callbackType":"",
     "forwardUrl":""
 }
-</#escape>

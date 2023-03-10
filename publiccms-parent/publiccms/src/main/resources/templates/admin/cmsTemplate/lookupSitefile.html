@@ -1,27 +1,31 @@
-<div class="pageFormContent">
+<div class="card">
+    <div class="pageFormContent" layoutH>
+        <div class="image-list">
+            <a href="cmsTemplate/import.html" target="dialog" mask="true" width="500" height="250">
+                <i class="thumb icon-upload-alt icon-large"></i>
+            </a>
+            <p>
+                <@t.page 'import'/>
+            </p>
+        </div>
 <#list list as a>
     <#if !a.directory>
         <#assign sitefile=getSitefile(a.fileName)/>
-        <div class="image-list">
-            <#if sitefile?has_content>
-                <a href="cmsTemplate/viewsitefile.html?name=${a.fileName?url}" target="dialog" rel="sitefile_${a?counter}" width="1000" height="600">
+        <#if !site.useStatic || !(sitefile.useStatic)?has_content || sitefile.useStatic>
+            <div class="image-list">
+                <a href="cmsTemplate/viewsitefile.html?name=${a.fileName?url}&showImport=true" target="dialog" rel="sitefile_${a?counter}" width="1000" height="600">
                     <#if (sitefile.cover)?has_content>
                         <img src="${base+adminContextPath}/visitSitefileImage?sitefile=${a.fileName}&imageFile=${sitefile.cover}" alt="${a.fileName}" title="${a.fileName}">
                     <#else>
                         <i class="thumb icon-file-alt icon-large"></i>
                     </#if>
-                 </a>
-            <#else>
-                <a href="cmsTemplate/viewsitefile.html?name=${a.fileName?url}" target="dialog" rel="sitefile_${a?counter}" width="1000" height="600">
-                     <i class="thumb icon-file-alt icon-large"></i>
                 </a>
-            </#if>
-            <p>
-                <a href="javascript:;" onclick="$.bringBack({'${field!'fileName'}':'${a.fileName}'});return false;">
+                <p>
                     ${(sitefile.name)!a.fileName}<#if a.fileSize?has_content>(${a.fileSize})</#if>
-                </a>
-            </p>
-        </div>
+                </p>
+            </div>
+        </#if>
     </#if>
 </#list>
+    </div>
 </div>

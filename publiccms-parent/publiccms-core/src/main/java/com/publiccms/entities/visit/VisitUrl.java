@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.validator.constraints.Length;
 
 import com.publiccms.common.generator.annotation.GeneratorColumn;
 
@@ -36,6 +37,7 @@ public class VisitUrl implements java.io.Serializable {
      * 网址
      */
     @GeneratorColumn(title = "URL")
+    @Length(max = 2048)
     private String url;
     /**
      * pv

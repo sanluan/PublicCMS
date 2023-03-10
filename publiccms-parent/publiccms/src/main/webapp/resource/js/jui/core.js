@@ -128,6 +128,11 @@ var JUI = {
             if (json[JUI.keys.message] && alertMsg ) {
                 alertMsg.error(json[JUI.keys.message]);
             }
+            if (json["fields"]){
+                $.each(json["fields"].split(","),function(index,field){
+                    $("[name="+escapeJquery(field)+"]", ( !$.pdialog.getCurrent() ) ? navTab.getCurrentPanel(): $.pdialog.getCurrent()).addClass("error");
+                })
+            }
         } else if (json[JUI.keys.statusCode] == JUI.statusCode.timeout ) {
             if (alertMsg ){
                 alertMsg.error(json[JUI.keys.message] || JUI.msg("sessionTimout"), {

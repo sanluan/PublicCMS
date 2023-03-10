@@ -50,7 +50,7 @@ import freemarker.template.TemplateException;
 /**
  *
  * PlaceController
- * 
+ *
  */
 @Controller
 @RequestMapping("place")
@@ -92,7 +92,7 @@ public class PlaceController {
             @ModelAttribute ExtendDataParameters placeParameters, HttpServletRequest request, HttpSession session,
             ModelMap model) {
         returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
-        if (null != entity && CommonUtils.notEmpty(entity.getPath())) {
+        if (null != entity) {
             if (CommonUtils.notEmpty(captcha) || safeConfigComponent.enableCaptcha(site.getId(), SafeConfigComponent.CAPTCHA_MODULE_PLACE_CONTRIBUTE)) {
                 String sessionCaptcha = (String) request.getSession().getAttribute("captcha");
                 request.getSession().removeAttribute("captcha");
