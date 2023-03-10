@@ -14,6 +14,7 @@ input[type="number"]{width:80px;}
 ::-webkit-scrollbar-button:vertical{display:none;}
 ::-webkit-scrollbar-corner,::-webkit-scrollbar-track{border-radius:10px;}
 .hide,a.btnLook.hide,.panelBar .toolBar li a.hide,.button.hide{display:none;}
+.float-right{float:right;}
 
 ul, ol{list-style:none;}
 /* Tables still need 'cellspacing="0"' in the markup. */
@@ -209,15 +210,13 @@ span.error{display:block;overflow:hidden;width:165px;height:21px;padding:0 3px;l
 .nowrap span.error{position:static;}
 
 /* Button */
-.button,.buttonActive,.buttonDisabled{display:inline-block;height:30px;padding:0 8px;border-width:1px;border-style:solid;border-radius:2px;cursor:pointer;text-align:center;line-height:28px;white-space:nowrap;font-size:14px;letter-spacing:.03em;position:relative;overflow:hidden;}
-button.button,button.buttonActive{height:30px;}
+.button,.buttonActive,.buttonDisabled{display:inline-block;height:28px;padding:0 8px;border-width:1px;border-style:solid;border-radius:2px;cursor:pointer;text-align:center;line-height:28px;white-space:nowrap;font-size:14px;letter-spacing:.03em;position:relative;overflow:hidden;}
 button.buttonActive{border-width:1px;border-style:solid;font-weight:400;}
 a.button,button.button{border-width:1px;border-style:solid;-moz-box-shadow:0px 0px 5px 1px #DDE4EF;box-shadow:0px 0px 5px 1px #DDE4EF;-ms-box-shadow:0px 0px 5px 1px #DDE4EF;-o-box-shadow:0px 0px 5px 1px #DDE4EF;-webkit-box-shadow:0px 0px 5px 1px #DDE4EF;}
 .button:hover{text-decoration:none;}
 .buttonActive{font-weight:bold;}
 .button i,.buttonActive i,.buttonDisabled i{margin-right:5px;}
 
-/* ----------------------------------------------------------------- Pages */
 /* Layout */
 #leftside{position:absolute;top:0;left:0;height:100%;}
 #sidebar{position:absolute;left:0px;z-index:20;display:block;top:0;bottom:0;width:185px;}
@@ -259,7 +258,6 @@ a.button,button.button{border-width:1px;border-style:solid;-moz-box-shadow:0px 0
 .searchBar .subBar{height:30px;position:absolute;top:11px;right:40px;}
 .searchBar .subBar ul{float:right;}
 .searchBar .subBar li{float:left;margin-left:5px;}
-
 .pageContent{display:block;overflow:auto;position:relative;}
 
 /* Pages Form */

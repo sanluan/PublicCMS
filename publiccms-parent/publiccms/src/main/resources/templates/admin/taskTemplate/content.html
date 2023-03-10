@@ -15,6 +15,13 @@
              <a class="button" href="cmsTemplate/help.html?type=task" target="dialog" mask="true"><@t.page 'template.help'/></a>
              <a class="button" href="cmsFileHistory/list.html?type=task&path=${(path?url)!}" lookupGroup=""><@t.page 'history'/></a>
              <a class="button" href="<@t.page 'template.manual.url'/>" target="_blank"><@t.page 'template.manual'/></a>
+             <div class="float-right">
+                <select class="combox codeTheme">
+                <#list codeTheme as k,a>
+                    <option value="${k}">${a}</option>
+                </#list>
+                 </select>
+            </div>
         </h2>
         <div class="pageFormContent" layoutH>
             <div class="clearfix">

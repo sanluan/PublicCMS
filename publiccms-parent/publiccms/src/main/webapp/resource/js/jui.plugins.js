@@ -149,39 +149,42 @@ JUI.regPlugins.push(function($p){
         if($(this).attr("mode")){
             mode = $(this).attr("mode");
         }
-        if(!window.codemirror.initd){
-            ajaxbg.show();
-            loadScripts(window.codemirror.resources,function(){
-                window.codemirror.initd=true;
-                JUI.instances[dataId]=CodeMirror.fromTextArea($this[0], {
-                    mode: mode,
-                    lineNumbers: true,
-                    tabSize        : 4,
-                    indentUnit     : 4,
-                    lineWrapping   : true,
-                    indentWithTabs : true,
-                    extraKeys: { "Ctrl": "autocomplete" }
-                });
-                if($this.prop("readonly")){
-                    JUI.instances[dataId].setOption("readOnly",true);
-                }
-                $this.attr("data-id",dataId);
-                ajaxbg.hide();
-            });
-        } else {
+        function initCodeMirror($this,mode,dataId){
             JUI.instances[dataId]=CodeMirror.fromTextArea($this[0], {
                 mode: mode,
-                lineNumbers: true,
                 tabSize        : 4,
                 indentUnit     : 4,
+                lineNumbers    : true,
                 lineWrapping   : true,
                 indentWithTabs : true,
-                extraKeys: { "Ctrl": "autocomplete" }
+                foldGutter     : true,
+                gutters        : ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+                extraKeys      : { "Ctrl": "autocomplete" }
             });
             if($this.prop("readonly")){
                 JUI.instances[dataId].setOption("readOnly",true);
             }
+            if ("function" === typeof $.cookie && $("select.codeTheme",$p).length){
+                $("select.codeTheme",$p).change(function(){
+                    $.cookie("code_theme",$(this).val());
+                    JUI.instances[dataId].setOption("theme", $(this).val());
+                });
+                if ($.cookie("code_theme")) {
+                    $("select.codeTheme",$p).comboxVal($.cookie("code_theme"));
+                    JUI.instances[dataId].setOption("theme", $.cookie("code_theme"));
+                }
+            }
             $this.attr("data-id",dataId);
+        }
+        if(!window.codemirror.initd){
+            ajaxbg.show();
+            loadScripts(window.codemirror.resources,function(){
+                window.codemirror.initd=true;
+                initCodeMirror($this,mode,dataId);
+                ajaxbg.hide();
+            },window.codemirror.base);
+        } else {
+            initCodeMirror($this,mode,dataId);
         }
 
     });
@@ -306,6 +309,19 @@ JUI.regPlugins.push(function($p){
             }
         });
     });
+});
+JUI.regPlugins.push(function($p){
+    if ("function" === typeof $.cookie ){
+        $("select[name=defaultFontFamily]",$p).each(function(){
+            var $this = $(this);
+            if($.cookie("import_font")) {
+                $this.comboxVal($.cookie("import_font"));
+            }
+            $this.change(function(){
+                $.cookie("import_font",$this.val());
+            });
+        });
+    }
 });
 JUI.regPlugins.push(function($p){
     $("input.color", $p).each(function() {
