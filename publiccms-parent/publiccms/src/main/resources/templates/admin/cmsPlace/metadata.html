@@ -62,7 +62,7 @@
                     <#list list as a>
                         <@tools.diyMetadata itemType='region' itemId=a>
                         <p>
-                            <a class="button" href="cmsPage/diy.html?id=${(object.id?url)!}" target="navTab" rel="cmsPage/diy" title="<@t.page 'diy'/>" icon="<i class='bi bi-palette'></i>">${(object.name)!}</a>
+                            <a class="button" href="cmsPage/diy.html?id=${(object.id?url)!}" target="navTab" rel="cmsPage/diy" title="<@t.page 'diy'/>">${(object.name)!}</a>
                         </p>
                         </@tools.diyMetadata>
                     </#list>

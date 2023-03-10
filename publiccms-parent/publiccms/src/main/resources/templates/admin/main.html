@@ -8,7 +8,7 @@
                     <div class="card">
                         <i class="icon-book icon-large icon"></i>
                         <p><@t.page 'myself.my_pending_content'/></p>
-                        <a href="myself/contentList.html?status=2" icon="<i class='icon-book icon-large'></i>" title="<@t.page 'my_content'/>" target="navTab" rel="myself/contentList">
+                        <a href="myself/contentList.html?status=2" title="<@t.page 'my_content'/>" target="navTab" rel="myself/contentList">
                             <@cms.contentList advanced=true status=2 userId=admin.id pageSize=0>
                                 <h3>${page.totalCount}</h3>
                             </@cms.contentList>
@@ -19,7 +19,7 @@
                     <div class="card">
                         <i class="icon-edit icon-large icon"></i>
                         <p><@t.page 'myself.my_draft'/></p>
-                        <a href="myself/contentList.html?status=0" icon="<i class='icon-book icon-large'></i>" title="<@t.page 'my_content'/>" target="navTab" rel="myself/contentList">
+                        <a href="myself/contentList.html?status=0" title="<@t.page 'my_content'/>" target="navTab" rel="myself/contentList">
                             <@cms.contentList advanced=true status=0 userId=admin.id pageSize=0>
                                 <h3>${page.totalCount}</h3>
                             </@cms.contentList>
@@ -30,7 +30,7 @@
                     <div class="card">
                         <i class="icon-signin icon-large icon"></i>
                         <p><@t.page 'user.login_count'/></p>
-                        <a href="myself/logLogin.html" icon="<i class='icon-signin icon-large'></i>" title="<@t.page 'my_login_log'/>" target="navTab" rel="myself/logLogin">
+                        <a href="myself/logLogin.html" title="<@t.page 'my_login_log'/>" target="navTab" rel="myself/logLogin">
                             <h3>${admin.loginCount}</h3>
                         </a>
                     </div>
@@ -39,7 +39,7 @@
                     <div class="card">
                         <i class="icon-unlock-alt icon-large icon"></i>
                         <p><@t.page 'my_login_token'/></p>
-                        <a href="myself/userTokenList.html" icon="<i class='icon-unlock-alt icon-large'></i>" title="<@t.page 'my_login_token'/>" target="navTab" rel="myself/userTokenList">
+                        <a href="myself/userTokenList.html" title="<@t.page 'my_login_token'/>" target="navTab" rel="myself/userTokenList">
                             <h3><@sys.userTokenList userId=admin.id pageSize=0>${page.totalCount}</@sys.userTokenList></h3>
                         </a>
                     </div>
@@ -79,7 +79,7 @@
                     <div class="card">
                         <i class="icon-comment icon-large icon"></i>
                         <p><@t.page 'comment.uncheck'/></p>
-                        <a href="cmsComment/list.html?status=2" icon="<i class='icon-comment icon-large'></i>" title="<@t.page 'comment.management'/>" target="navTab" rel="cmsComment/list">
+                        <a href="cmsComment/list.html?status=2" title="<@t.page 'comment.management'/>" target="navTab" rel="cmsComment/list">
                             <@cms.commentList advanced=true status=2 pageSize=0>
                                 <h3>${page.totalCount}</h3>
                             </@cms.commentList>
@@ -90,7 +90,7 @@
                     <div class="card">
                         <i class="icon-comments icon-large icon"></i>
                         <p><@t.page 'content.comments'/></p>
-                        <a href="cmsComment/list.html" icon="<i class='icon-comment icon-large'></i>" title="<@t.page 'comment.management'/>" target="navTab" rel="cmsComment/list">
+                        <a href="cmsComment/list.html" title="<@t.page 'comment.management'/>" target="navTab" rel="cmsComment/list">
                             <@cms.commentList advanced=true status='1,2' pageSize=0>
                                 <h3>${page.totalCount}</h3>
                             </@cms.commentList>
@@ -147,7 +147,7 @@ commentChart.setOption({
                     <div class="card">
                         <i class="icon-barcode icon-large icon"></i>
                         <p><@t.page 'order.toprocess'/></p>
-                        <a href="tradeOrder/list.html?status=2&processed=false" icon="<i class='icon-barcode icon-large'></i>" title="<@t.page 'order'/>" target="navTab" rel="tradeOrder/list">
+                        <a href="tradeOrder/list.html?status=2&processed=false" title="<@t.page 'order'/>" target="navTab" rel="tradeOrder/list">
                             <@trade.orderList processed=false status=2 pageSize=0>
                                 <h3>${page.totalCount}</h3>
                             </@trade.orderList>
@@ -158,7 +158,7 @@ commentChart.setOption({
                     <div class="card">
                         <i class="icon-money icon-large icon"></i>
                         <p><@t.page 'order.topayment'/></p>
-                        <a href="tradeOrder/list.html?status=0&processed=false" icon="<i class='icon-barcode icon-large'></i>" title="<@t.page 'order'/>" target="navTab" rel="tradeOrder/list">
+                        <a href="tradeOrder/list.html?status=0&processed=false" title="<@t.page 'order'/>" target="navTab" rel="tradeOrder/list">
                             <@trade.orderList processed=false status=0 pageSize=0>
                                 <h3>${page.totalCount}</h3>
                             </@trade.orderList>
@@ -169,7 +169,7 @@ commentChart.setOption({
                     <div class="card">
                         <i class="icon-credit-card icon-large icon"></i>
                         <p><@t.page 'status.accountHistory.2'/></p>
-                        <a href="tradeAccountHistory/list.html?status=2&startCreateDate=${(.now?long-7*86400000)?number_to_date?string}" icon="<i class='icon-credit-card icon-large'></i>" title="<@t.page 'account.history'/>" target="navTab" rel="tradeAccountHistory/list">
+                        <a href="tradeAccountHistory/list.html?status=2&startCreateDate=${(.now?long-7*86400000)?number_to_date?string}" title="<@t.page 'account.history'/>" target="navTab" rel="tradeAccountHistory/list">
                             <@trade.accountHistoryList status=2 startCreateDate=(.now?long-7*86400000)?number_to_date?string pageSize=0>
                                 <h3>${page.totalCount}</h3>
                             </@trade.accountHistoryList>
@@ -180,7 +180,7 @@ commentChart.setOption({
                     <div class="card">
                         <i class="icon-signout icon-large icon"></i>
                         <p><@t.page 'status.refund.0'/></p>
-                        <a href="tradeRefund/list.html?status=0" icon="<i class='icon-signout icon-large'></i>" title="<@t.page 'refund'/>" target="navTab" rel="tradeRefund/list">
+                        <a href="tradeRefund/list.html?status=0" title="<@t.page 'refund'/>" target="navTab" rel="tradeRefund/list">
                             <@trade.refundList status=0 pageSize=0>
                                 <h3>${page.totalCount}</h3>
                             </@trade.refundList>
@@ -241,7 +241,7 @@ orderChart.setOption({
                     <div class="card">
                         <i class="icon-signal icon-large icon"></i>
                         <p><@t.page 'register'/></p>
-                        <a href="report/user.html" icon="<i class='icon-male icon-large'></i>" title="<@t.page 'report.user'/>" target="navTab" rel="report/user">
+                        <a href="report/user.html" title="<@t.page 'report.user'/>" target="navTab" rel="report/user">
                             <@sys.userList startRegisteredDate=.now?long?number_to_date?string>
                                <h3>${page.totalCount}</h3>
                             </@sys.userList>
@@ -252,7 +252,7 @@ orderChart.setOption({
                     <div class="card">
                         <i class="icon-signal icon-large icon"></i>
                         <p><@t.page 'user'/></p>
-                        <a href="report/user.html" icon="<i class='icon-male icon-large'></i>" title="<@t.page 'report.user'/>" target="navTab" rel="report/user">
+                        <a href="report/user.html" title="<@t.page 'report.user'/>" target="navTab" rel="report/user">
                             <@sys.userList pageSize=0>
                                <h3>${page.totalCount}</h3>
                             </@sys.userList>
@@ -263,7 +263,7 @@ orderChart.setOption({
                     <div class="card">
                         <i class="icon-ticket icon-large icon"></i>
                         <p><@t.page 'login'/></p>
-                        <a href="report/user.html" icon="<i class='icon-male icon-large'></i>" title="<@t.page 'report.user'/>" target="navTab" rel="report/user">
+                        <a href="report/user.html" title="<@t.page 'report.user'/>" target="navTab" rel="report/user">
                             <@log.loginList startCreateDate=.now?long?number_to_date?string>
                                <h3>${page.totalCount}</h3>
                             </@log.loginList>
@@ -274,7 +274,7 @@ orderChart.setOption({
                     <div class="card">
                         <i class="icon-list-alt icon-large icon"></i>
                         <p><@t.page 'operate'/></p>
-                        <a href="report/user.html" icon="<i class='icon-male icon-large'></i>" title="<@t.page 'report.user'/>" target="navTab" rel="report/user">
+                        <a href="report/user.html" title="<@t.page 'report.user'/>" target="navTab" rel="report/user">
                             <@log.operateList startCreateDate=.now?long?number_to_date?string>
                                <h3>${page.totalCount}</h3>
                             </@log.operateList>
@@ -348,7 +348,7 @@ visitChart.setOption({
         <div class="unit">
             <p class="cmsVersion">
                 <label><@t.page 'publiccms'/>:</label>
-                <a href="//www.publiccms.com/" target="navTab" rel="publiccms.com" icon="<i class='icon-home icon-large'></i>" title="<@t.page 'publiccms_website'/>">${cms}.${revision}</a> <span class="new hide" style="color:green">[<@t.page 'version.new'/>]</span><span class="old hide" style="color:red">[<@t.page 'version.old'/>]</span>
+                <a href="//www.publiccms.com/" target="navTab" rel="publiccms.com" title="<@t.page 'publiccms_website'/>">${cms}.${revision}</a> <span class="new hide" style="color:green">[<@t.page 'version.new'/>]</span><span class="old hide" style="color:red">[<@t.page 'version.old'/>]</span>
             </p>
     <@tools.systemProperties>
             <p>
@@ -358,12 +358,12 @@ visitChart.setOption({
     <@tools.masterSite>
             <p>
                 <label>${t.pageMessage(master?then('cluster.master','cluster.normal'))}:</label>
-                <a href="sysCluster/list.html" icon="<i class='icon-code-fork icon-large'></i>" title="<@t.menu 'cluster'/>" target="navTab" rel="sysCluster/list">${cluster}</a>
+                <a href="sysCluster/list.html" title="<@t.menu 'cluster'/>" target="navTab" rel="sysCluster/list">${cluster}</a>
             </p>
         <@tools.disk>
             <p>
                 <label><@t.page 'data.directory'/>:</label>
-                <a href="sysSite/monitor.html" icon="<i class='icon-suitcase icon-large'></i>" title="<@t.page 'system_monitor'/>" target="navTab" rel="sysSite/monitor">${(rootPath)!}</a>
+                <a href="sysSite/monitor.html" title="<@t.page 'system_monitor'/>" target="navTab" rel="sysSite/monitor">${(rootPath)!}</a>
             </p>
             <p>
                 <label><@t.page 'disk_space'/>:</label><@t.fileSize totalSpace/>
@@ -376,11 +376,11 @@ visitChart.setOption({
         <div class="unit">
             <p>
                 <label><@t.page 'site.count'/>:</label>
-                <a href="sysSite/list.html" icon="<i class='icon-sitemap icon-large'></i>" title="<@t.menu 'site_list'/>" target="navTab" rel="sysSite/list"><@sys.siteList pageSize=0>${page.totalCount}</@sys.siteList></a>
+                <a href="sysSite/list.html" title="<@t.menu 'site_list'/>" target="navTab" rel="sysSite/list"><@sys.siteList pageSize=0>${page.totalCount}</@sys.siteList></a>
             </p>
             <p>
                 <label><@t.page 'domain.count'/>:</label>
-                <a href="sysDomain/list.html" icon="<i class='icon-qrcode icon-large'></i>" title="<@t.menu 'site_domain_list'/>" target="navTab" rel="sysDomain/list"><@sys.domainList advanced=true pageSize=0>${page.totalCount}</@sys.domainList></a>
+                <a href="sysDomain/list.html" title="<@t.menu 'site_domain_list'/>" target="navTab" rel="sysDomain/list"><@sys.domainList advanced=true pageSize=0>${page.totalCount}</@sys.domainList></a>
             </p>
         </div>
     </@tools.masterSite>

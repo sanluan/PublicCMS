@@ -67,7 +67,7 @@
                 <#if !site.parentId?has_content && authorizedMap['cmsDictionary/export']>
                     <a href="cmsDictionary/export?id=${a.id.id}&_csrf=<@tools.csrfToken admin=true/>" class="edit btnText" target="_blank"><i class="icon-download-alt icon-large"></i><@t.page 'button.export'/></a>
                 </#if>
-                <a href="cmsDictionary/excludeTree.html?id=${a.id.id}" class="btnText blue" target="navTab" rel="cmsDictionary/excludeTree" title="${a.name!}" icon="<i class='bi bi-exclude'></i>"><i class="bi bi-exclude"></i><@t.page 'dictionary.exclude'/></a>
+                <a href="cmsDictionary/excludeTree.html?id=${a.id.id}" class="btnText blue" target="navTab" rel="cmsDictionary/excludeTree" title="${a.name!}"><i class="bi bi-exclude"></i><@t.page 'dictionary.exclude'/></a>
                 <#if !site.parentId?has_content && authorizedMap['cmsDictionary/delete']>
                     <a href="cmsDictionary/delete?ids=${a.id.id}&_csrf=<@tools.csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i><@t.page 'button.delete'/></a>
                 </#if>

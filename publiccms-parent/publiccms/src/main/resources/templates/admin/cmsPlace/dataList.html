@@ -117,7 +117,7 @@
                 </td>
                 <td class="wrap">
                     <a href="cmsPlace/add.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="cmsPlace/edit"><i class="icon-edit"></i><@t.page 'button.edit'/></a>
-                    <a href="cmsPlace/add.html?copyId=${a.id}" class="btnText blue" target="navTab" rel="cmsPlace/add" icon="<i class='icon-plus-sign-alt icon-large'></i>" title="<@t.page 'place_data.add'/>"><@t.page 'button.copy'/></a>
+                    <a href="cmsPlace/add.html?copyId=${a.id}" class="btnText blue" target="navTab" rel="cmsPlace/add" title="<@t.page 'place_data.add'/>"><@t.page 'button.copy'/></a>
                     <#if 2=a.status>
                         <a href="cmsPlace/check?ids=${a.id}&_csrf=<@tools.csrfToken admin=true/>&path=${(path?url)!}" class="btnText green" title="<@t.page 'confirm.check'/>" target="ajaxTodo"><i class="icon-check"></i><@t.page 'button.check'/></a>
                     <#elseif 1=a.status>

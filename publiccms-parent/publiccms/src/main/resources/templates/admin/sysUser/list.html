@@ -11,22 +11,24 @@
 <#else>
 <div class="pageContent">
     <div class="leftPageContent">
-        <ul class="tree treeFolder" layoutH>
-            <li>
-                <a href="common/user_list.html" target="ajax" rel="userBox"><@t.page 'dept.parent'/></a>
-                <ul>
-            <@sys.deptList pageSize=500>
-                <#list page.list as a>
-                    <li _src="sysUser/list.html?parentId=${a.id}">
-                        <a href="common/user_list.html?deptId=${a.id}" class="exclude-translate" target="ajax" rel="userBox">${(a.name)!}</a>
-                    </li>
-                <#else>
-                    <li><a><@t.page 'empty_directory'/></a></li>
-                </#list>
-            </@sys.deptList>
-                </ul>
-            </li>
-        </ul>
+        <div class="card">
+            <ul class="tree treeFolder" layoutH>
+                <li>
+                    <a href="common/user_list.html" target="ajax" rel="userBox"><@t.page 'dept.parent'/></a>
+                    <ul>
+                <@sys.deptList pageSize=500>
+                    <#list page.list as a>
+                        <li _src="sysUser/list.html?parentId=${a.id}">
+                            <a href="common/user_list.html?deptId=${a.id}" class="exclude-translate" target="ajax" rel="userBox">${(a.name)!}</a>
+                        </li>
+                    <#else>
+                        <li><a><@t.page 'empty_directory'/></a></li>
+                    </#list>
+                </@sys.deptList>
+                    </ul>
+                </li>
+            </ul>
+        </div>
     </div>
     <div id="userBox" class="rightPageContent">
         <#include "../common/user_list.html"/>

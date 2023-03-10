@@ -11,7 +11,7 @@
 <@cms.categoryList advanced=true queryAll=true typeId=id pageSize=500>
     <#list page.list as a>
         <li>
-            <a href="cmsCategory/add.html?id=${a.id}" class="exclude-translate" class="edit btnText blue" target="navTab" rel="cmsCategory/edit" icon="<i class='icon-edit'></i>" title="${a.name}"><@bread a/> ${a.name} <#if a.customPath>[<@t.page 'custorm_path'/>]</#if></a>
+            <a href="cmsCategory/add.html?id=${a.id}" class="exclude-translate" class="edit btnText blue" target="navTab" rel="cmsCategory/edit" title="${a.name}"><@bread a/> ${a.name} <#if a.customPath>[<@t.page 'custorm_path'/>]</#if></a>
         </li>
     </#list>
 </@cms.categoryList>

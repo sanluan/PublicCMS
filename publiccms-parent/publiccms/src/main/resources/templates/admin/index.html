@@ -80,7 +80,7 @@
             <div class="tabsPageHeader">
                 <div class="tabsPageHeaderContent">
                     <ul class="navTab-tab">
-                        <li tabid="main" class="main" url="main.html"><a href="javascript:;" onclick="return false;"><i class="icon-home icon-large"></i><@t.page "workgin_table"/></a></li>
+                        <li tabid="main" class="main" url="main.html"><a href="javascript:;" onclick="return false;"><@t.page "workgin_table"/></a></li>
                     </ul>
                 </div>
                 <a href="javascript:;" onclick="return false;" class="tabsLeft"><i class="icon-backward icon-large"></i></a>
@@ -88,7 +88,7 @@
                 <a href="javascript:;" onclick="return false;" class="tabsMore"><i class="icon-th-list icon-large"></i></a>
             </div>
             <ul class="tabsMoreList">
-                <li><a href="javascript:;" onclick="return false;"><i class="icon-home icon-large"></i><@t.page "workgin_table"/></a></li>
+                <li><a href="javascript:;" onclick="return false;"><@t.page "workgin_table"/></a></li>
             </ul>
             <div class="navTab-panel tabsPageContent layoutBox">
                 <div class="page unitBox work-bench">
@@ -117,7 +117,7 @@
             <@t.page "license.no"/>
             <@tools.masterSite>
                 <@sys.authorized roleIds=admin.roles url="sysSite/uploadLicense">
-            <a href="sysSite/uploadLicense.html" target="navTab" rel="sysSite/uploadLicense" icon="<i class='icon-archive icon-large'></i>" title="<@t.menu 'license'/>"><@t.page "license.upgrade"/></a>
+            <a href="sysSite/uploadLicense.html" target="navTab" rel="sysSite/uploadLicense" title="<@t.menu 'license'/>"><@t.page "license.upgrade"/></a>
                 </@sys.authorized>
             </@tools.masterSite>
         </#if>

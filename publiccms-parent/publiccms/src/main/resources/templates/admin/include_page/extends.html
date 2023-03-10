@@ -11,7 +11,7 @@
             <th type="number" name="${name}[#index#].maxlength" size="10" fieldAttrs="{'min':1,'style':'display:none'}"><@t.page 'maxlength'/></th>
             <th type="number" name="${name}[#index#].width" size="10" fieldAttrs="{'min':1,'style':'display:none'}"><@t.page 'width'/></th>
             <th type="number" name="${name}[#index#].height" size="10" fieldAttrs="{'min':1,'style':'display:none'}"><@t.page 'height'/></th>
-            <th type="lookup" name="${name}[#index#].dictionaryName" lookupPk="dictionaryId" lookupUrl="cmsDictionary/lookup.html" lookupGroup="${name}[#index#]" fieldAttrs="{'readonly':'readonly','style':'display:none'}" size="10"><a href="cmsDictionary/list.html" target="navTab" rel="cmsDictionary/list" icon="<i class='icon-book icon-large'></i>"><@t.page 'dictionary'/></a></th>
+            <th type="lookup" name="${name}[#index#].dictionaryName" lookupPk="dictionaryId" lookupUrl="cmsDictionary/lookup.html" lookupGroup="${name}[#index#]" fieldAttrs="{'readonly':'readonly','style':'display:none'}" size="10"><a href="cmsDictionary/list.html" target="navTab" rel="cmsDictionary/list"><@t.page 'dictionary'/></a></th>
             <th type="checkbox" name="${name}[#index#].multiple" size="10" fieldAttrs="{'style':'display:none'}"><@t.page 'multiple_select'/></th>
             <th type="textarea" name="${name}[#index#].description" fieldAttrs="{'maxlength':80,'rows':2,'cols':30}"><@t.page 'description'/></th>
             <#if searchable><th type="checkbox" name="${name}[#index#].searchable" size="10" class="searchable" fieldClass="searchable"><@t.page 'searchable'/></th></#if>

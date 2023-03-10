@@ -16,7 +16,7 @@
     <div class="formBar card">
         <ul>
             <#if a?has_content && model?has_content && model.hasChild>
-                <li><a href="cmsContent/list.html?parentId=${a.id}&categoryId=${a.categoryId!}" class="button" target="navTab" rel="cmsContent/list" icon="<i class='icon-book icon-large'></i>"><@t.page 'content.child_management'/></a></li>
+                <li><a href="cmsContent/list.html?parentId=${a.id}&categoryId=${a.categoryId!}" class="button" target="navTab" rel="cmsContent/list"><@t.page 'content.child_management'/></a></li>
             </#if>
             <li>
                 <label><input type="checkbox" name="draft"/><@t.page 'draft'/></label>
