@@ -6,3 +6,5 @@ ALTER TABLE `log_upload`
     ADD INDEX `log_upload_file_type` (`site_id`, `privatefile`, `file_type`, `file_size`);
 -- 2023-03-09 --
 UPDATE `sys_module` SET `authorized_url`= 'ueditor,tinymce/upload,tinymce/imageList,ckeditor/upload,cmsWebFile/browse,file/doImport' WHERE `id` ='editor';
+-- 2023-03-11 --
+UPDATE `sys_module` SET `authorized_url`= 'cmsTemplate/doUpload,cmsTemplate/import,cmsTemplate/doImport,cmsTemplate/sitefileList,cmsTemplate/viewSitefile,cmsTemplate/visitSitefileImage' WHERE `id` ='template_import';

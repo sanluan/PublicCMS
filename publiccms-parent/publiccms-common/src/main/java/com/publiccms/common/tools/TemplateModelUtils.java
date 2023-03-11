@@ -89,14 +89,14 @@ public class TemplateModelUtils {
     public static Map<String, Object> converMap(TemplateModel model) throws TemplateModelException {
         if (null != model) {
             if (model instanceof TemplateHashModelEx) {
-				HashMap<String, Object> map = new HashMap<>();
-				TemplateModelIterator keys = ((TemplateHashModelEx) model).keys().iterator();
-				while (keys.hasNext()) {
-					String key = converString(keys.next());
-					map.put(key, converBean(((TemplateHashModelEx) model).get(key)));
-				}
-				return map;
-			}
+                HashMap<String, Object> map = new HashMap<>();
+                TemplateModelIterator keys = ((TemplateHashModelEx) model).keys().iterator();
+                while (keys.hasNext()) {
+                    String key = converString(keys.next());
+                    map.put(key, converBean(((TemplateHashModelEx) model).get(key)));
+                }
+                return map;
+            }
         }
         return null;
     }
