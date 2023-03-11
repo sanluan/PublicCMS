@@ -166,7 +166,7 @@ JUI.regPlugins.push(function($p){
             }
             if ("function" === typeof $.cookie && $("select.codeTheme",$p).length){
                 $("select.codeTheme",$p).change(function(){
-                    $.cookie("code_theme",$(this).val());
+                    $.cookie("code_theme",$(this).val(), { expires: 30 });
                     JUI.instances[dataId].setOption("theme", $(this).val());
                 });
                 if ($.cookie("code_theme")) {
@@ -318,7 +318,7 @@ JUI.regPlugins.push(function($p){
                 $this.comboxVal($.cookie("import_font"));
             }
             $this.change(function(){
-                $.cookie("import_font",$this.val());
+                $.cookie("import_font",$this.val(), { expires: 30 });
             });
         });
     }

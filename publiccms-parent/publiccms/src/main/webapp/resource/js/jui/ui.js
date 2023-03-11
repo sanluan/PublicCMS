@@ -297,7 +297,7 @@ function initLink($p) {
                 jThemeLi.find(">div").removeClass("selected");
                 jThemeLi.filter("[theme=" + themeName + "]").find(">div").addClass("selected");
                 if ("function" === typeof $.cookie ) {
-                    $.cookie("dwz_theme", themeName);
+                    $.cookie("dwz_theme", themeName, { expires: 30 });
                 }
             }
             var jThemeLi = $(this).find(">li[theme]");
