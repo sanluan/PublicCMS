@@ -102,7 +102,8 @@
                     </#if>
                     <div class="box">
                         <h3 <#if lockMap[a.id?string]?has_content><#assign lockUser=(userMap[lockMap[a.id?string].userId?string].nickname)!''/>title="<@t.page 'lock.message' lockUser/> ${lockMap[a.id?string].createDate}"</#if>>
-                           <#if lockMap[a.id?string]?has_content><i class="icon-lock icon-large"></i></#if><a href="cmsPlace/view.html?id=${a.id}" target="dialog" rel="viewContent${a.id}">${a.title}</a>
+                           <#if lockMap[a.id?string]?has_content><i class="icon-lock icon-large"></i></#if>
+                           <a href="cmsPlace/view.html?id=${a.id}" target="dialog" width="1000" height="600" rel="viewContent${a.id}">${a.title}</a>
                         </h3>
                     </div>
                 </td>

@@ -102,7 +102,11 @@
                         </div>
                     </#if>
                     <div class="box">
-                        <h3>[<span class="exclude-translate">${(categoryMap[a.categoryId?string].name)!}</span>] ${(a.copied?then('['+t.pageMessage('copied')+']',''))!}<a href="cmsContent/view.html?id=${contentId}" class="exclude-translate" target="dialog" rel="viewContent${contentId}">${(a.title)!}</a></h3>
+                        <h3>
+                            [<span class="exclude-translate">${(categoryMap[a.categoryId?string].name)!}</span>]
+                            ${(a.copied?then('['+t.pageMessage('copied')+']',''))!}
+                            <a href="cmsContent/view.html?id=${contentId}" class="exclude-translate" target="dialog" width="1000" height="600" rel="viewContent${contentId}">${(a.title)!}</a>
+                        </h3>
                         <p>
                             <label><@t.page 'model'/>:</label><span class="exclude-translate">${(modelMap[a.modelId].name)!}</span>
                             <#if modelMap[a.modelId]?has_content&&modelMap[a.modelId].hasChild>
