@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.HttpRequestHandler;
 
+import com.publiccms.common.tools.CommonUtils;
+
 /**
  *
  * InstallHttpRequestHandler 安装跳转处理器
@@ -25,7 +27,7 @@ public class InstallHttpRequestHandler implements HttpRequestHandler {
 
     @Override
     public void handleRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.sendRedirect(new StringBuilder(request.getContextPath()).append(installServletMapping).toString());
+        response.sendRedirect(CommonUtils.joinString(request.getContextPath(),installServletMapping));
     }
 
 }

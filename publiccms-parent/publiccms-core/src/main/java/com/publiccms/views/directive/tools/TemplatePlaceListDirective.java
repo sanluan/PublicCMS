@@ -73,8 +73,8 @@ public class TemplatePlaceListDirective extends AbstractTemplateDirective {
                 }
                 Set<String> placeSet2 = new HashSet<>();
                 for (String place : placeSet) {
-                    String placeContent = CmsFileUtils
-                            .getFileContent(siteComponent.getTemplateFilePath(site.getId(), TemplateComponent.INCLUDE_DIRECTORY + place));
+                    String placeContent = CmsFileUtils.getFileContent(siteComponent.getTemplateFilePath(site.getId(),
+                            CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, place)));
                     if (CommonUtils.notEmpty(placeContent)) {
                         Matcher placeMatcher = PLACE_PATTERN.matcher(placeContent);
                         while (placeMatcher.find()) {

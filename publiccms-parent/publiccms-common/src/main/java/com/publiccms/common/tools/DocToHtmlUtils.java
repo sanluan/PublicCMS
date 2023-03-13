@@ -108,7 +108,6 @@ public class DocToHtmlUtils {
             sb.append("\" style=\"width:").append(width).append(";height:").append(height);
         }
         sb.append("\" frameborder=\"0\"></iframe>");
-
         return sb.toString();
     }
 
@@ -165,7 +164,7 @@ public class DocToHtmlUtils {
                 slide.draw(graphics);
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
                 ImageIO.write(img, ImageUtils.FORMAT_NAME_JPG, out);
-                imageManager.extract(slide.getSlideNumber() + ".jpg", out.toByteArray());
+                imageManager.extract(CommonUtils.joinString(slide.getSlideNumber(), ".jpg"), out.toByteArray());
                 sb.append("<p style=\"text-align:center\"><img src=\"").append(imageManager.resolve(null)).append("\" alt=\"")
                         .append(slide.getSlideNumber()).append("\"/></p>");
             }
@@ -234,7 +233,8 @@ public class DocToHtmlUtils {
         @Override
         public void addStyleClass(Element element, String classNamePrefix, String style) {
             String exising = element.getAttribute("style");
-            String newStyleValue = CommonUtils.empty(exising) ? style : (exising + (exising.endsWith(";") ? style : ";" + style));
+            String newStyleValue = CommonUtils.empty(exising) ? style
+                    : exising.endsWith(";") ? CommonUtils.joinString(exising, style) : CommonUtils.joinString(exising, ";", style);
             element.setAttribute("style", newStyleValue);
         }
     }

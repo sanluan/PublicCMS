@@ -1,9 +1,9 @@
 package com.publiccms.controller.admin;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -42,7 +42,7 @@ public class IndexAdminController {
         String path = UrlPathHelper.defaultInstance.getLookupPathForRequest(request);
         if (CommonUtils.notEmpty(path)) {
             if (CommonConstants.SEPARATOR.equals(path) || path.endsWith(CommonConstants.SEPARATOR)) {
-                path += CommonConstants.getDefaultPage();
+                path = CommonUtils.joinString(path, CommonConstants.getDefaultPage());
             }
             int index = path.lastIndexOf(CommonConstants.DOT);
             path = path.substring(0 < path.indexOf(CommonConstants.SEPARATOR) ? 0 : 1, -1 < index ? index : path.length());
@@ -73,7 +73,7 @@ public class IndexAdminController {
             return CommonConstants.TEMPLATE_DONEANDREFRESH;
         } else {
             returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
-            return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
+            return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
         }
     }
 }

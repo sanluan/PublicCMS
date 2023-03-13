@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.ModelMap;
 
 import com.publiccms.common.constants.CommonConstants;
@@ -39,15 +41,15 @@ public class ControllerUtils {
      * Email Pattern
      */
     public static final Pattern EMAIL_PATTERN = Pattern
-            .compile("(" + VALID_CHARS + "(\\." + VALID_CHARS + ")*@" + VALID_CHARS + "(\\." + VALID_CHARS + ")*)");
+            .compile(CommonUtils.joinString("(", VALID_CHARS, "(\\.", VALID_CHARS, ")*@", VALID_CHARS, "(\\.", VALID_CHARS, ")*)"));
 
     /**
      * @param response
      * @param url
+     * @return
      */
-    public static void redirectPermanently(HttpServletResponse response, String url) {
-        response.setHeader("Location", RequestUtils.removeCRLF(url));
-        response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
+    public static ResponseEntity<?> redirectPermanently(String url) {
+        return ResponseEntity.status(HttpStatus.MOVED_PERMANENTLY).header("Location", RequestUtils.removeCRLF(url)).build();
     }
 
     /**
@@ -58,7 +60,7 @@ public class ControllerUtils {
      */
     public static boolean errorNotEmpty(String field, String value, Map<String, Object> model) {
         if (CommonUtils.empty(value)) {
-            model.put(CommonConstants.ERROR, "verify.notEmpty." + field);
+            model.put(CommonConstants.ERROR, CommonUtils.joinString("verify.notEmpty.", field));
             return true;
         }
         return false;
@@ -72,7 +74,7 @@ public class ControllerUtils {
      */
     public static boolean errorCustom(String field, boolean value, Map<String, Object> model) {
         if (value) {
-            model.put(CommonConstants.ERROR, "verify.custom." + field);
+            model.put(CommonConstants.ERROR, CommonUtils.joinString("verify.custom.", field));
             return true;
         }
         return false;
@@ -86,7 +88,7 @@ public class ControllerUtils {
      */
     public static boolean errorNotEmpty(String field, Object value, Map<String, Object> model) {
         if (null == value) {
-            model.put(CommonConstants.ERROR, "verify.notEmpty." + field);
+            model.put(CommonConstants.ERROR, CommonUtils.joinString("verify.notEmpty.", field));
             return true;
         }
         return false;
@@ -101,10 +103,10 @@ public class ControllerUtils {
      */
     public static boolean errorNotGreaterThen(String field, Integer value, int specific, Map<String, Object> model) {
         if (null == value) {
-            model.put(CommonConstants.ERROR, "verify.notEmpty." + field);
+            model.put(CommonConstants.ERROR, CommonUtils.joinString("verify.notEmpty.", field));
             return true;
         } else if (value >= specific) {
-            model.put(CommonConstants.ERROR, "verify.notGreaterThen." + field);
+            model.put(CommonConstants.ERROR, CommonUtils.joinString("verify.notGreaterThen.", field));
             return true;
         }
         return false;
@@ -119,10 +121,10 @@ public class ControllerUtils {
      */
     public static boolean errorNotGreaterThen(String field, Long value, long specific, Map<String, Object> model) {
         if (null == value) {
-            model.put(CommonConstants.ERROR, "verify.notEmpty." + field);
+            model.put(CommonConstants.ERROR, CommonUtils.joinString("verify.notEmpty.", field));
             return true;
         } else if (value >= specific) {
-            model.put(CommonConstants.ERROR, "verify.notGreaterThen." + field);
+            model.put(CommonConstants.ERROR, CommonUtils.joinString("verify.notGreaterThen.", field));
             return true;
         }
         return false;
@@ -137,10 +139,10 @@ public class ControllerUtils {
      */
     public static boolean errorNotLongThen(String field, String value, int specific, Map<String, Object> model) {
         if (null == value) {
-            model.put(CommonConstants.ERROR, "verify.notEmpty." + field);
+            model.put(CommonConstants.ERROR, CommonUtils.joinString("verify.notEmpty.", field));
             return true;
         } else if (value.length() > specific) {
-            model.put(CommonConstants.ERROR, "verify.notLongThen." + field);
+            model.put(CommonConstants.ERROR, CommonUtils.joinString("verify.notLongThen.", field));
             return true;
         }
         return false;
@@ -155,10 +157,10 @@ public class ControllerUtils {
      */
     public static boolean errorNotLessThen(String field, Integer value, int specific, Map<String, Object> model) {
         if (null == value) {
-            model.put(CommonConstants.ERROR, "verify.notEmpty." + field);
+            model.put(CommonConstants.ERROR, CommonUtils.joinString("verify.notEmpty.", field));
             return true;
         } else if (value < specific) {
-            model.put(CommonConstants.ERROR, "verify.notLessThen." + field);
+            model.put(CommonConstants.ERROR, CommonUtils.joinString("verify.notLessThen.", field));
             return true;
         }
         return false;
@@ -172,7 +174,7 @@ public class ControllerUtils {
      */
     public static boolean errorNotEquals(String field, Object value, Map<String, Object> model) {
         if (null == value) {
-            model.put(CommonConstants.ERROR, "verify.notEquals." + field);
+            model.put(CommonConstants.ERROR, CommonUtils.joinString("verify.notEquals.", field));
             return true;
         }
         return false;
@@ -186,7 +188,7 @@ public class ControllerUtils {
      */
     public static boolean errorNotExist(String field, Object value, Map<String, Object> model) {
         if (null == value) {
-            model.put(CommonConstants.ERROR, "verify.notExist." + field);
+            model.put(CommonConstants.ERROR, CommonUtils.joinString("verify.notExist.", field));
             return true;
         }
         return false;
@@ -200,7 +202,7 @@ public class ControllerUtils {
      */
     public static boolean errorHasExist(String field, Object value, Map<String, Object> model) {
         if (null != value) {
-            model.put(CommonConstants.ERROR, "verify.hasExist." + field);
+            model.put(CommonConstants.ERROR, CommonUtils.joinString("verify.hasExist.", field));
             return true;
         }
         return false;
@@ -215,7 +217,7 @@ public class ControllerUtils {
      */
     public static boolean errorEquals(String field, Long value, Long value2, ModelMap model) {
         if (CommonUtils.notEmpty(value) && value.equals(value2)) {
-            model.addAttribute(CommonConstants.ERROR, "verify.equals." + field);
+            model.addAttribute(CommonConstants.ERROR, CommonUtils.joinString("verify.equals.", field));
             return true;
         }
         return false;
@@ -230,7 +232,7 @@ public class ControllerUtils {
      */
     public static boolean errorNotEquals(String field, String value1, String value2, Map<String, Object> model) {
         if (CommonUtils.notEmpty(value1) && !value1.equals(value2)) {
-            model.put(CommonConstants.ERROR, "verify.notEquals." + field);
+            model.put(CommonConstants.ERROR, CommonUtils.joinString("verify.notEquals.", field));
             return true;
         }
         return false;
@@ -245,7 +247,7 @@ public class ControllerUtils {
      */
     public static boolean errorNotEquals(String field, Integer value1, Integer value2, Map<String, Object> model) {
         if (CommonUtils.notEmpty(value1) && !value1.equals(value2)) {
-            model.put(CommonConstants.ERROR, "verify.notEquals." + field);
+            model.put(CommonConstants.ERROR, CommonUtils.joinString("verify.notEquals.", field));
             return true;
         }
         return false;
@@ -260,7 +262,7 @@ public class ControllerUtils {
      */
     public static boolean errorNotEquals(String field, Long value1, Long value2, Map<String, Object> model) {
         if (CommonUtils.notEmpty(value1) && !value1.equals(value2)) {
-            model.put(CommonConstants.ERROR, "verify.notEquals." + field);
+            model.put(CommonConstants.ERROR, CommonUtils.joinString("verify.notEquals.", field));
             return true;
         }
         return false;
@@ -275,7 +277,7 @@ public class ControllerUtils {
      */
     public static boolean errorNotEquals(String field, Short value1, Short value2, Map<String, Object> model) {
         if (CommonUtils.notEmpty(value1) && !value1.equals(value2)) {
-            model.put(CommonConstants.ERROR, "verify.notEquals." + field);
+            model.put(CommonConstants.ERROR, CommonUtils.joinString("verify.notEquals.", field));
             return true;
         }
         return false;
@@ -438,7 +440,7 @@ public class ControllerUtils {
      */
     public static boolean errorNotEMail(String field, String value, Map<String, Object> model) {
         if (notEMail(value)) {
-            model.put(CommonConstants.ERROR, "verify.notEmail." + field);
+            model.put(CommonConstants.ERROR, CommonUtils.joinString("verify.notEmail.", field));
             return true;
         }
         return false;
@@ -452,7 +454,7 @@ public class ControllerUtils {
      */
     public static boolean errorNotUserName(String field, String value, Map<String, Object> model) {
         if (notValid(value)) {
-            model.put(CommonConstants.ERROR, "verify.notUserName." + field);
+            model.put(CommonConstants.ERROR, CommonUtils.joinString("verify.notUserName.", field));
             return true;
         }
         return false;
@@ -466,7 +468,7 @@ public class ControllerUtils {
      */
     public static boolean errorNotNickname(String field, String value, Map<String, Object> model) {
         if (notValid(value)) {
-            model.put(CommonConstants.ERROR, "verify.notNickname." + field);
+            model.put(CommonConstants.ERROR, CommonUtils.joinString("verify.notNickname.", field));
             return true;
         }
         return false;

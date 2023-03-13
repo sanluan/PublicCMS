@@ -94,7 +94,7 @@ public class ApplicationConfig implements EnvironmentAware {
      */
     @Bean
     public DataSource dataSource() throws PropertyVetoException {
-        CmsDataSource bean = new CmsDataSource(getDirPath(CommonConstants.BLANK) + CmsDataSource.DATABASE_CONFIG_FILENAME);
+        CmsDataSource bean = new CmsDataSource(getDirPath(CmsDataSource.DATABASE_CONFIG_FILENAME));
         CmsDataSource.initDefaultDataSource();
         return bean;
     }
@@ -172,7 +172,7 @@ public class ApplicationConfig implements EnvironmentAware {
         bean.setProviderClass(HibernateValidator.class);
         return bean;
     }
-    
+
     /**
      * 缓存工厂
      *
@@ -195,7 +195,7 @@ public class ApplicationConfig implements EnvironmentAware {
     @Bean
     public MessageSource messageSource(MenuMessageComponent menuMessageComponent) {
         ResourceBundleMessageSource bean = new ResourceBundleMessageSource();
-        bean.setBasenames(StringUtils.split(env.getProperty("cms.language"), CommonConstants.COMMA_DELIMITED));
+        bean.setBasenames(StringUtils.split(env.getProperty("cms.language"), CommonConstants.COMMA));
         bean.setCacheSeconds(300);
         bean.setUseCodeAsDefaultMessage(true);
         bean.setParentMessageSource(menuMessageComponent);
@@ -292,7 +292,7 @@ public class ApplicationConfig implements EnvironmentAware {
     private Map<String, String> getMap(String property) {
         Map<String, String> parametersMap = new HashMap<>();
         if (CommonUtils.notEmpty(property)) {
-            String[] parameters = StringUtils.split(property, CommonConstants.COMMA_DELIMITED);
+            String[] parameters = StringUtils.split(property, CommonConstants.COMMA);
             for (String parameter : parameters) {
                 String[] values = StringUtils.split(parameter, "=", 2);
                 if (values.length == 2) {
@@ -313,7 +313,7 @@ public class ApplicationConfig implements EnvironmentAware {
         if (null == CommonConstants.CMS_FILEPATH) {
             InitializationInitializer.initFilePath(env.getProperty("cms.filePath"), System.getProperty("user.dir"));
         }
-        File dir = new File(CommonConstants.CMS_FILEPATH + path);
+        File dir = new File(CommonUtils.joinString(CommonConstants.CMS_FILEPATH, path));
         dir.mkdirs();
         return dir.getAbsolutePath();
     }

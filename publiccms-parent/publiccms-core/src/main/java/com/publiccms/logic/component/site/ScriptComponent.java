@@ -32,10 +32,10 @@ public class ScriptComponent {
     public String execute(String command, String[] parameters, long timeoutHours)
             throws FileNotFoundException, IOException, InterruptedException {
         if (CommonUtils.notEmpty(command) && ArrayUtils.contains(COMMANDS, command.toLowerCase())) {
-            String dir = CommonConstants.CMS_FILEPATH + "/script";
+            String dir = CommonUtils.joinString(CommonConstants.CMS_FILEPATH, "/script");
             String[] cmdarray;
             if ("backupdb.bat".equalsIgnoreCase(command) || "backupdb.sh".equalsIgnoreCase(command)) {
-                String databaseConfiFile = CommonConstants.CMS_FILEPATH + CmsDataSource.DATABASE_CONFIG_FILENAME;
+                String databaseConfiFile = CommonUtils.joinString(CommonConstants.CMS_FILEPATH, CmsDataSource.DATABASE_CONFIG_FILENAME);
                 Properties dbconfigProperties = CmsDataSource.loadDatabaseConfig(databaseConfiFile);
                 String userName = dbconfigProperties.getProperty("jdbc.username");
                 String database = dbconfigProperties.getProperty("database", "publiccms");
@@ -60,11 +60,10 @@ public class ScriptComponent {
                     }
                 }
             }
-            String filepath = new StringBuilder(dir).append("/").append(command).toString();
+            String filepath = CommonUtils.joinString(dir, "/", command);
             File script = new File(filepath);
             if (!script.exists()) {
-                try (InputStream inputStream = getClass()
-                        .getResourceAsStream(new StringBuilder("/script/").append(command).toString())) {
+                try (InputStream inputStream = getClass().getResourceAsStream(CommonUtils.joinString("/script/", command))) {
                     FileUtils.copyInputStreamToFile(inputStream, script);
                 }
             }
@@ -84,7 +83,7 @@ public class ScriptComponent {
             }
             return sb.toString();
         }
-        return command + " not exits";
+        return CommonUtils.joinString(command, " not exits");
     }
 
 }

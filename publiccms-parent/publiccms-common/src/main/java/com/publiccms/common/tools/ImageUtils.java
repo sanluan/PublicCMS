@@ -72,34 +72,35 @@ public class ImageUtils {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         drawImage(width, height, text, byteArrayOutputStream);
         byteArrayOutputStream.close();
-        StringBuilder sb = new StringBuilder();
-        sb.append("data:image/png;base64,");
-        sb.append(VerificationUtils.base64Encode(byteArrayOutputStream.toByteArray()));
-        return sb.toString();
+        return CommonUtils.joinString("data:image/png;base64,", VerificationUtils.base64Encode(byteArrayOutputStream.toByteArray()));
     }
 
     /**
      * <pre>
      * &#64;RequestMapping(value = "getCaptchaImage")
-     * public void getCaptchaImage(javax.servlet.http.HttpSession session, javax.servlet.http.HttpServletResponse response) {
-     *     try {
-     *         String captcha = VerificationUtils.getRandomString("ABCDEFGHJKMNPQRSTUVWXYZ23456789", 4);
-     *         session.setAttribute("captcha", captcha);
-     *         ImageUtils.drawImage(120, 30, captcha, response.getOutputStream());
-     *     } catch (IOException e) {
-     *     }
+     * public ResponseEntity<StreamingResponseBody> getCaptchaImage(HttpSession session) {
+     *     String captcha = VerificationUtils.getRandomString("ABCDEFGHJKMNPQRSTUVWXYZ23456789", 4);
+     *     session.setAttribute("captcha", captcha);
+     *     StreamingResponseBody body = new StreamingResponseBody() {
+     *         @Override
+     *         public void writeTo(OutputStream outputStream) throws IOException {
+     *             ImageUtils.drawImage(120, 30, captcha, outputStream);
+     *         }
+     *     };
+     *     return ResponseEntity.ok().body(body);
      * }
      * </pre>
      * 
      * <pre>
      * &#64;RequestMapping(value = "doLogin", method = RequestMethod.POST)
-     * public String login(@RequestAttribute SysSite site, javax.servlet.http.HttpSession session, String username,
-     *         String password, String captcha, String returnUrl, Long clientId, String uuid,
-     *         javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response, ModelMap model) {
+     * public String login(@RequestAttribute SysSite site, HttpSession session, String username, String password, String captcha,
+     *         String returnUrl, Long clientId, String uuid, HttpServletRequest request, ModelMap model) {
      *     String sessionCaptcha = (String) session.getAttribute("captcha");
      *     session.removeAttribute("captcha");
      *     if (null != sessionCaptcha &amp;&amp; sessionCaptcha.equalsIgnoreCase(captcha)) {
      *         // login code
+     *     } else {
+     *         return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, "login.html");
      *     }
      * }
      * </pre>

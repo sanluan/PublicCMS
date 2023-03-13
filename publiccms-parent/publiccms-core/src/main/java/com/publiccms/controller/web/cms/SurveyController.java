@@ -87,7 +87,7 @@ public class SurveyController {
             request.getSession().removeAttribute("captcha");
             if (ControllerUtils.errorCustom("captcha.error", null == sessionCaptcha || !sessionCaptcha.equalsIgnoreCase(captcha),
                     model)) {
-                return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
+                return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
             }
         }
         CmsSurvey entity = service.getEntity(surveyId);
@@ -159,7 +159,7 @@ public class SurveyController {
             }
             model.addAttribute("id", entity.getId());
         }
-        return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
+        return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
     }
 
     @Resource

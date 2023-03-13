@@ -16,6 +16,7 @@ import org.springframework.web.util.UrlPathHelper;
 
 import com.publiccms.common.constants.CmsVersion;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.site.SiteComponent;
 
@@ -47,7 +48,7 @@ public class WebFileHttpRequestHandler extends ResourceHttpRequestHandler {
         if (CmsVersion.isInitialized()) {
             String path = getUrlPathHelper().getLookupPathForRequest(request);
             if (path.endsWith(CommonConstants.SEPARATOR)) {
-                path += CommonConstants.getDefaultPage();
+                path = CommonUtils.joinString(path, CommonConstants.getDefaultPage());
             }
             SysSite site = siteComponent.getSite(request.getServerName(), path);
             path = siteComponent.getPath(site, path);

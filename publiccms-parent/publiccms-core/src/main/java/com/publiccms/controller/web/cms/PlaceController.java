@@ -5,12 +5,12 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -93,45 +93,46 @@ public class PlaceController {
             ModelMap model) {
         returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         if (null != entity) {
-            if (CommonUtils.notEmpty(captcha) || safeConfigComponent.enableCaptcha(site.getId(), SafeConfigComponent.CAPTCHA_MODULE_PLACE_CONTRIBUTE)) {
+            if (CommonUtils.notEmpty(captcha)
+                    || safeConfigComponent.enableCaptcha(site.getId(), SafeConfigComponent.CAPTCHA_MODULE_PLACE_CONTRIBUTE)) {
                 String sessionCaptcha = (String) request.getSession().getAttribute("captcha");
                 request.getSession().removeAttribute("captcha");
-                if (ControllerUtils.errorCustom("captcha.error", null == sessionCaptcha || !sessionCaptcha.equalsIgnoreCase(captcha),
-                        model)) {
-                    return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
+                if (ControllerUtils.errorCustom("captcha.error",
+                        null == sessionCaptcha || !sessionCaptcha.equalsIgnoreCase(captcha), model)) {
+                    return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
                 }
             }
             if (!entity.getPath().startsWith(CommonConstants.SEPARATOR)) {
-                entity.setPath(CommonConstants.SEPARATOR + entity.getPath());
+                entity.setPath(CommonUtils.joinString(CommonConstants.SEPARATOR, entity.getPath()));
             }
             entity.setPath(entity.getPath().replace("//", CommonConstants.SEPARATOR));
             entity.setStatus(CmsPlaceService.STATUS_PEND);
             String filepath = siteComponent.getTemplateFilePath(site.getId(),
-                    TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
+                    CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, entity.getPath()));
             CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);
             SysUser user = ControllerUtils.getUserFromSession(session);
             if (ControllerUtils.errorCustom("contribute",
                     null == metadata || !metadata.isAllowContribute() || 0 >= metadata.getSize(), model)
                     || ControllerUtils.errorCustom("anonymousContribute", null == user && !metadata.isAllowAnonymous(), model)) {
-                return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
+                return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
             }
             String ip = RequestUtils.getIpAddress(request);
             if (metadata.isAllowAnonymous()) {
                 boolean locked = lockComponent.isLocked(site.getId(), LockComponent.ITEM_TYPE_CONTRIBUTE, ip, null);
                 if (ControllerUtils.errorCustom("locked.ip", locked, model)) {
                     lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_CONTRIBUTE, ip, null, true);
-                    return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
+                    return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
                 }
             } else {
                 if (ControllerUtils.errorNotEquals("_csrf", ControllerUtils.getWebToken(request), _csrf, model)) {
-                    return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
+                    return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
                 } else {
                     boolean locked = lockComponent.isLocked(site.getId(), LockComponent.ITEM_TYPE_CONTRIBUTE,
                             String.valueOf(user.getId()), null);
                     if (ControllerUtils.errorCustom("locked.user", locked, model)) {
                         lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_CONTRIBUTE, String.valueOf(user.getId()), null,
                                 true);
-                        return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
+                        return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
                     }
                 }
             }
@@ -141,7 +142,7 @@ public class PlaceController {
                 if (null == oldEntity || CommonUtils.empty(oldEntity.getUserId()) || null == user
                         || ControllerUtils.errorNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)
                         || ControllerUtils.errorNotEquals("siteId", user.getId(), oldEntity.getUserId(), model)) {
-                    return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
+                    return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
                 }
                 entity = service.update(entity.getId(), entity, ignoreProperties);
                 logOperateService.save(new LogOperate(site.getId(), user.getId(), null == user ? null : user.getDeptId(),
@@ -166,7 +167,7 @@ public class PlaceController {
             attributeService.updateAttribute(entity.getId(), extentString);
             model.addAttribute("id", entity.getId());
         }
-        return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
+        return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
     }
 
     /**
@@ -185,8 +186,8 @@ public class PlaceController {
         returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         CmsPlace entity = service.getEntity(id);
         if (null != entity) {
-            String filepath = siteComponent.getTemplateFilePath(site.getId(),
-                    TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
+            String placePath = CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, entity.getPath());
+            String filepath = siteComponent.getTemplateFilePath(site.getId(), placePath);
             CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);
             if (ControllerUtils.errorCustom("manage",
                     CommonUtils.empty(metadata.getAdminIds()) || !ArrayUtils.contains(metadata.getAdminIds(), user.getId()),
@@ -195,8 +196,7 @@ public class PlaceController {
                 service.delete(id);
                 logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
                         "delete.place", RequestUtils.getIpAddress(request), CommonUtils.getDate(), id.toString()));
-                if (site.isUseSsi() || CmsFileUtils.exists(
-                        siteComponent.getWebFilePath(site.getId(), TemplateComponent.INCLUDE_DIRECTORY + entity.getPath()))) {
+                if (site.isUseSsi() || CmsFileUtils.exists(siteComponent.getWebFilePath(site.getId(), placePath))) {
                     try {
                         CmsPageData data = metadataComponent.getTemplateData(filepath);
                         templateComponent.staticPlace(site, entity.getPath(), metadata, data);
@@ -207,7 +207,7 @@ public class PlaceController {
                 }
             }
         }
-        return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
+        return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
     }
 
     /**
@@ -226,8 +226,8 @@ public class PlaceController {
         returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         CmsPlace entity = service.getEntity(id);
         if (null != entity) {
-            String filepath = siteComponent.getTemplateFilePath(site.getId(),
-                    TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
+            String placePath = CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, entity.getPath());
+            String filepath = siteComponent.getTemplateFilePath(site.getId(), placePath);
             CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);
             if (ControllerUtils.errorCustom("manage",
                     CommonUtils.empty(metadata.getAdminIds()) || !ArrayUtils.contains(metadata.getAdminIds(), user.getId()),
@@ -236,8 +236,7 @@ public class PlaceController {
                 service.check(id, user.getId());
                 logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
                         "check.place", RequestUtils.getIpAddress(request), CommonUtils.getDate(), id.toString()));
-                if (site.isUseSsi() || CmsFileUtils.exists(
-                        siteComponent.getWebFilePath(site.getId(), TemplateComponent.INCLUDE_DIRECTORY + entity.getPath()))) {
+                if (site.isUseSsi() || CmsFileUtils.exists(siteComponent.getWebFilePath(site.getId(), placePath))) {
                     try {
                         CmsPageData data = metadataComponent.getTemplateData(filepath);
                         templateComponent.staticPlace(site, entity.getPath(), metadata, data);
@@ -248,7 +247,7 @@ public class PlaceController {
                 }
             }
         }
-        return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
+        return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
     }
 
     /**
@@ -267,8 +266,8 @@ public class PlaceController {
         returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         CmsPlace entity = service.getEntity(id);
         if (null != entity) {
-            String filepath = siteComponent.getTemplateFilePath(site.getId(),
-                    TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
+            String placePath = CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, entity.getPath());
+            String filepath = siteComponent.getTemplateFilePath(site.getId(), placePath);
             CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);
             if (ControllerUtils.errorCustom("manage",
                     null == entity || null == user || CommonUtils.empty(metadata.getAdminIds())
@@ -278,8 +277,7 @@ public class PlaceController {
                 service.uncheck(id);
                 logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
                         "check.place", RequestUtils.getIpAddress(request), CommonUtils.getDate(), id.toString()));
-                if (site.isUseSsi() || CmsFileUtils.exists(
-                        siteComponent.getWebFilePath(site.getId(), TemplateComponent.INCLUDE_DIRECTORY + entity.getPath()))) {
+                if (site.isUseSsi() || CmsFileUtils.exists(siteComponent.getWebFilePath(site.getId(), placePath))) {
                     try {
                         CmsPageData data = metadataComponent.getTemplateData(filepath);
                         templateComponent.staticPlace(site, entity.getPath(), metadata, data);
@@ -290,7 +288,7 @@ public class PlaceController {
                 }
             }
         }
-        return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
+        return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
     }
 
     /**
@@ -305,16 +303,16 @@ public class PlaceController {
     /**
      * @param site
      * @param id
-     * @param response
+     * @return
      */
     @RequestMapping("redirect")
-    public void redirect(@RequestAttribute SysSite site, Long id, HttpServletResponse response) {
+    public ResponseEntity<?> redirect(@RequestAttribute SysSite site, Long id) {
         ClickStatistics clickStatistics = statisticsComponent.placeClicks(site.getId(), id);
         if (null != clickStatistics && CommonUtils.notEmpty(clickStatistics.getUrl())
                 && site.getId().equals(clickStatistics.getSiteId())) {
-            ControllerUtils.redirectPermanently(response, clickStatistics.getUrl());
+            return ControllerUtils.redirectPermanently(clickStatistics.getUrl());
         } else {
-            ControllerUtils.redirectPermanently(response, site.getDynamicPath());
+            return ControllerUtils.redirectPermanently(site.getDynamicPath());
         }
     }
 

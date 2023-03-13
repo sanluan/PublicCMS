@@ -3,17 +3,14 @@ package com.publiccms.controller.admin.cms;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
+import java.io.OutputStream;
 import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.util.Comparator;
 import java.util.Date;
 
 import javax.annotation.Resource;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.logging.Log;
@@ -21,6 +18,9 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.tools.zip.ZipEntry;
 import org.apache.tools.zip.ZipFile;
 import org.apache.tools.zip.ZipOutputStream;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
@@ -153,23 +154,22 @@ public class CmsTemplateAdminController {
             HttpServletRequest request, ModelMap model) {
         if (CommonUtils.notEmpty(path)) {
             try {
-                String filepath = siteComponent.getTemplateFilePath(site.getId(), TemplateComponent.INCLUDE_DIRECTORY + path);
+                String placePath = CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, path);
+                String filepath = siteComponent.getTemplateFilePath(site.getId(), placePath);
                 content = new String(VerificationUtils.base64Decode(content), CommonConstants.DEFAULT_CHARSET);
                 if (CmsFileUtils.createFile(filepath, content)) {
                     logOperateService.save(
                             new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                                     "save.place.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
                 } else {
-                    String historyFilePath = siteComponent.getTemplateHistoryFilePath(site.getId(),
-                            TemplateComponent.INCLUDE_DIRECTORY + path, true);
+                    String historyFilePath = siteComponent.getTemplateHistoryFilePath(site.getId(), placePath, true);
                     CmsFileUtils.updateFile(filepath, historyFilePath, content);
                     logOperateService.save(
                             new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                                     "update.place.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
                 }
                 templateComponent.clearTemplateCache();
-                if (site.isUseSsi() || CmsFileUtils
-                        .exists(siteComponent.getWebFilePath(site.getId(), TemplateComponent.INCLUDE_DIRECTORY + path))) {
+                if (site.isUseSsi() || CmsFileUtils.exists(siteComponent.getWebFilePath(site.getId(), placePath))) {
                     CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);
                     CmsPageData data = metadataComponent.getTemplateData(filepath);
                     templateComponent.staticPlace(site, path, metadata, data);
@@ -201,9 +201,10 @@ public class CmsTemplateAdminController {
             String filePath = siteComponent.getTemplateFilePath(site.getId(), CommonConstants.SEPARATOR);
             CmsFileUtils.replaceFileList(filePath, replaceParameters.getReplaceList(), word, replace);
             templateComponent.clearTemplateCache();
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "replace.template", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), word + " to " + replace + " in " + replaceParameters.getReplaceList().toString()));
+            logOperateService
+                    .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                            "replace.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
+                            CommonUtils.joinString(word, " to ", replace, " in ", replaceParameters.getReplaceList().toString())));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -226,7 +227,7 @@ public class CmsTemplateAdminController {
         if (null != files) {
             try {
                 for (MultipartFile file : files) {
-                    String shortFilepath = path + CommonConstants.SEPARATOR + file.getOriginalFilename();
+                    String shortFilepath = CommonUtils.joinString(path, CommonConstants.SEPARATOR, file.getOriginalFilename());
                     String filepath = siteComponent.getTemplateFilePath(site.getId(), shortFilepath);
                     CmsFileUtils.upload(file, filepath);
                     if (shortFilepath.endsWith(".zip") && CmsFileUtils.isFile(filepath)) {
@@ -277,25 +278,26 @@ public class CmsTemplateAdminController {
 
     /**
      * @param site
-     * @param response
+     * @return response entity
      */
     @RequestMapping("export")
     @Csrf
-    public void export(@RequestAttribute SysSite site, HttpServletResponse response) {
+    public ResponseEntity<StreamingResponseBody> export(@RequestAttribute SysSite site) {
         String filepath = siteComponent.getTemplateFilePath(site.getId(), CommonConstants.SEPARATOR);
-        try {
-            DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.DOWNLOAD_FORMAT_STRING);
-            response.setHeader("content-disposition", "attachment;fileName=" + URLEncoder.encode(
-                    new StringBuilder(site.getName()).append(dateFormat.format(new Date())).append("-template.zip").toString(),
-                    "utf-8"));
-        } catch (UnsupportedEncodingException e1) {
-        }
-        try (ServletOutputStream outputStream = response.getOutputStream();
-                ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream)) {
-            zipOutputStream.setEncoding(Constants.DEFAULT_CHARSET_NAME);
-            ZipUtils.compress(Paths.get(filepath), zipOutputStream, Constants.BLANK);
-        } catch (IOException e) {
-        }
+        DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.DOWNLOAD_FORMAT_STRING);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentDisposition(ContentDisposition.attachment()
+                .filename(CommonUtils.joinString(site.getName(), dateFormat.format(new Date()), "-template.zip")).build());
+        StreamingResponseBody body = new StreamingResponseBody() {
+            @Override
+            public void writeTo(OutputStream outputStream) throws IOException {
+                try (ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream)) {
+                    zipOutputStream.setEncoding(Constants.DEFAULT_CHARSET_NAME);
+                    ZipUtils.compress(Paths.get(filepath), zipOutputStream, Constants.BLANK);
+                }
+            }
+        };
+        return ResponseEntity.ok().headers(headers).body(body);
     }
 
     /**
@@ -312,27 +314,31 @@ public class CmsTemplateAdminController {
     /**
      * @param sitefile
      * @param imageFile
-     * @param response
+     * @return response entity
      */
     @RequestMapping("visitSitefileImage")
-    public void lookupSiteImage(String sitefile, String imageFile, HttpServletResponse response) {
+    public ResponseEntity<StreamingResponseBody> lookupSiteImage(String sitefile, String imageFile) {
         if (CommonUtils.notEmpty(imageFile) && CommonUtils.notEmpty(sitefile)) {
             String suffix = CmsFileUtils.getSuffix(imageFile);
             File file = new File(siteComponent.getSiteFilePath(), sitefile);
             if (ArrayUtils.contains(CmsFileUtils.IMAGE_FILE_SUFFIXS, suffix) && file.exists() && file.isFile()) {
-                try (ZipFile zipFile = new ZipFile(file, CommonConstants.DEFAULT_CHARSET_NAME);
-                        ServletOutputStream outputStream = response.getOutputStream();) {
-                    ZipEntry entry = zipFile.getEntry(imageFile);
-                    if (null != entry) {
-                        try (InputStream inputStream = zipFile.getInputStream(entry);) {
-                            StreamUtils.copy(inputStream, outputStream);
+                StreamingResponseBody body = new StreamingResponseBody() {
+                    @Override
+                    public void writeTo(OutputStream outputStream) throws IOException {
+                        try (ZipFile zipFile = new ZipFile(file, CommonConstants.DEFAULT_CHARSET_NAME)) {
+                            ZipEntry entry = zipFile.getEntry(imageFile);
+                            if (null != entry) {
+                                try (InputStream inputStream = zipFile.getInputStream(entry);) {
+                                    StreamUtils.copy(inputStream, outputStream);
+                                }
+                            }
                         }
                     }
-                } catch (IOException e) {
-                }
+                };
+                return ResponseEntity.ok().body(body);
             }
         }
-
+        return ResponseEntity.notFound().build();
     }
 
     /**
@@ -343,7 +349,7 @@ public class CmsTemplateAdminController {
      * @param fileName
      * @param request
      * @param model
-     * @return
+     * @return view name
      */
     @RequestMapping("doImport")
     @Csrf
@@ -404,9 +410,9 @@ public class CmsTemplateAdminController {
     public String deletePlace(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path,
             HttpServletRequest request, ModelMap model) {
         if (CommonUtils.notEmpty(path)) {
-            String filepath = siteComponent.getTemplateFilePath(site.getId(), TemplateComponent.INCLUDE_DIRECTORY + path);
-            String backupFilePath = siteComponent.getTemplateBackupFilePath(site.getId(),
-                    TemplateComponent.INCLUDE_DIRECTORY + path);
+            String placePath = CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, path);
+            String filepath = siteComponent.getTemplateFilePath(site.getId(), placePath);
+            String backupFilePath = siteComponent.getTemplateBackupFilePath(site.getId(), placePath);
             if (ControllerUtils.errorCustom("notExist.template", !CmsFileUtils.moveFile(filepath, backupFilePath), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
@@ -435,7 +441,8 @@ public class CmsTemplateAdminController {
     public String savePlaceMetaData(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path,
             @ModelAttribute CmsPlaceMetadata metadata, String content, HttpServletRequest request, ModelMap model) {
         if (CommonUtils.notEmpty(path)) {
-            String filepath = siteComponent.getTemplateFilePath(site.getId(), TemplateComponent.INCLUDE_DIRECTORY + path);
+            String placePath = CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, path);
+            String filepath = siteComponent.getTemplateFilePath(site.getId(), placePath);
             try {
                 CmsFileUtils.createFile(filepath, content);
                 if (CommonUtils.notEmpty(metadata.getExtendList())) {
@@ -449,8 +456,7 @@ public class CmsTemplateAdminController {
                         .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                                 "update.template.meta", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
                 templateComponent.clearTemplateCache();
-                if (site.isUseSsi() || CmsFileUtils
-                        .exists(siteComponent.getWebFilePath(site.getId(), TemplateComponent.INCLUDE_DIRECTORY + path))) {
+                if (site.isUseSsi() || CmsFileUtils.exists(siteComponent.getWebFilePath(site.getId(), placePath))) {
                     CmsPageData data = metadataComponent.getTemplateData(filepath);
                     templateComponent.staticPlace(site, path, metadata, data);
                 }
@@ -479,7 +485,7 @@ public class CmsTemplateAdminController {
             @ModelAttribute CmsPageMetadata metadata, String content, HttpServletRequest request, ModelMap model) {
         if (CommonUtils.notEmpty(path)) {
             if (path.endsWith(CommonConstants.SEPARATOR) || CommonUtils.empty(path)) {
-                path += CommonConstants.getDefaultPage();
+                path = CommonUtils.joinString(path, CommonConstants.getDefaultPage());
             }
 
             String filepath = siteComponent.getTemplateFilePath(site.getId(), path);
@@ -519,9 +525,10 @@ public class CmsTemplateAdminController {
     public String publishPlace(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path,
             HttpServletRequest request, ModelMap model) {
         try {
-            if (CommonUtils.notEmpty(path) && (site.isUseSsi() || CmsFileUtils
-                    .exists(siteComponent.getWebFilePath(site.getId(), TemplateComponent.INCLUDE_DIRECTORY + path)))) {
-                String filepath = siteComponent.getTemplateFilePath(site.getId(), TemplateComponent.INCLUDE_DIRECTORY + path);
+            String placePath = CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, path);
+            if (CommonUtils.notEmpty(path)
+                    && (site.isUseSsi() || CmsFileUtils.exists(siteComponent.getWebFilePath(site.getId(), placePath)))) {
+                String filepath = siteComponent.getTemplateFilePath(site.getId(), placePath);
                 CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);
                 CmsPageData data = metadataComponent.getTemplateData(filepath);
                 templateComponent.staticPlace(site, path, metadata, data);
@@ -582,7 +589,7 @@ public class CmsTemplateAdminController {
     public String createDirectory(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path, String name,
             HttpServletRequest request) {
         if (null != path && CommonUtils.notEmpty(name)) {
-            path = path + CommonConstants.SEPARATOR + name;
+            path = CommonUtils.joinString(path, CommonConstants.SEPARATOR, name);
             String filepath = siteComponent.getTemplateFilePath(site.getId(), path);
             CmsFileUtils.mkdirs(filepath);
             logOperateService

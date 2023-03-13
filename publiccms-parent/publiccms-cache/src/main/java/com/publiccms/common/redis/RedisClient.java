@@ -58,7 +58,7 @@ public class RedisClient {
     @SuppressWarnings("unchecked")
     public <T> T get(String region, Object key) {
         T cacheItem = (T) createOrGetCache(region).get(key.toString());
-        log.trace("retrieve cache item. region=" + region + ", key=" + key + ", value=" + cacheItem);
+        log.trace(CommonUtils.joinString("retrieve cache item. region=", region, ", key=", key, ", value=", cacheItem));
         return cacheItem;
     }
 
@@ -78,7 +78,8 @@ public class RedisClient {
      * @param expiry
      */
     public void set(String region, Object key, Object value, Long expiry) {
-        log.trace("set cache item. region=" + region + ", key=" + key + ", timeout=" + (CommonUtils.empty(expiry) ? 0 : expiry));
+        log.trace(CommonUtils.joinString("set cache item. region=", region, ", key=", key, ", timeout=",
+                (CommonUtils.empty(expiry) ? 0 : expiry)));
         createOrGetCache(region).put(key.toString(), value, expiry);
     }
 

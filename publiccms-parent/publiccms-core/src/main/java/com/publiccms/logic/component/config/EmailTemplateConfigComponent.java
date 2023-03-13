@@ -41,7 +41,7 @@ public class EmailTemplateConfigComponent implements Config {
     /**
      * 
      */
-    public static final String CONFIG_CODE_DESCRIPTION = CONFIGPREFIX + CONFIG_CODE;
+    public static final String CONFIG_CODE_DESCRIPTION = CommonUtils.joinString(CONFIGPREFIX, CONFIG_CODE);
     /**
      * default expiry minutes
      */
@@ -68,17 +68,18 @@ public class EmailTemplateConfigComponent implements Config {
         if (CommonUtils.notEmpty(config)) {
             List<SysExtendField> extendFieldList = new ArrayList<>();
             extendFieldList.add(new SysExtendField(CONFIG_EMAIL_TITLE, INPUTTYPE_TEXT,
-                    getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_EMAIL_TITLE), null));
+                    getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_EMAIL_TITLE)),
+                    null));
             extendFieldList.add(new SysExtendField(CONFIG_EMAIL_PATH, INPUTTYPE_TEMPLATE,
-                    getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_EMAIL_PATH), null));
+                    getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_EMAIL_PATH)), null));
             extendFieldList.add(new SysExtendField(CONFIG_EXPIRY_MINUTES, INPUTTYPE_NUMBER, false,
-                    getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_EXPIRY_MINUTES), null, "30"));
+                    getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_EXPIRY_MINUTES)),
+                    null, "30"));
             return extendFieldList;
         } else {
             return null;
         }
     }
-    
 
     @Override
     public boolean exportable() {

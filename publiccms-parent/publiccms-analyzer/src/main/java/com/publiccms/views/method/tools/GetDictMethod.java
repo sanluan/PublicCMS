@@ -4,40 +4,42 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
 import javax.annotation.Resource;
+
+import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.BaseMethod;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.AnalyzerDictUtils;
+import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.logic.component.site.SiteComponent;
 
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 
 /**
-*
-* getDict 获取分词词典
-* <p>
-* <p>
-* 返回结果
-* <ul>
-* <li><code>string</code> 自定义分词词典
-* </ul>
-* 使用示例
-* <p>
-* ${getDict()}
-* <p>
-* 
-* <pre>
+ *
+ * getDict 获取分词词典
+ * <p>
+ * <p>
+ * 返回结果
+ * <ul>
+ * <li><code>string</code> 自定义分词词典
+ * </ul>
+ * 使用示例
+ * <p>
+ * ${getDict()}
+ * <p>
+ * 
+ * <pre>
 &lt;script&gt;
 $.getJSON('${site.dynamicPath}api/method/getDict?appToken=接口访问授权Token', function(data){
 console.log(data);
 });
 &lt;/script&gt;
-* </pre>
-*/
+ * </pre>
+ */
 @Component
 public class GetDictMethod extends BaseMethod {
     @Resource
@@ -45,7 +47,8 @@ public class GetDictMethod extends BaseMethod {
 
     @Override
     public Object execute(List<TemplateModel> arguments) throws TemplateModelException {
-        File dictFile = new File(siteComponent.getRootPath() + AnalyzerDictUtils.DIR_DICT + AnalyzerDictUtils.TXT_DICT);
+        File dictFile = new File(
+                CommonUtils.joinString(siteComponent.getRootPath(), AnalyzerDictUtils.DIR_DICT, AnalyzerDictUtils.TXT_DICT));
         try {
             return FileUtils.readFileToString(dictFile, CommonConstants.DEFAULT_CHARSET_NAME);
         } catch (IOException e) {

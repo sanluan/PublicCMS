@@ -4,40 +4,42 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
 import javax.annotation.Resource;
+
+import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.BaseMethod;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.AnalyzerDictUtils;
+import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.logic.component.site.SiteComponent;
 
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 
 /**
-*
-* getSkipWord 获取词典忽略分词
-* <p>
-* <p>
-* 返回结果
-* <ul>
-* <li><code>string</code> 词典忽略分词
-* </ul>
-* 使用示例
-* <p>
-* ${getSkipWord()}
-* <p>
-* 
-* <pre>
+ *
+ * getSkipWord 获取词典忽略分词
+ * <p>
+ * <p>
+ * 返回结果
+ * <ul>
+ * <li><code>string</code> 词典忽略分词
+ * </ul>
+ * 使用示例
+ * <p>
+ * ${getSkipWord()}
+ * <p>
+ * 
+ * <pre>
 &lt;script&gt;
 $.getJSON('${site.dynamicPath}api/method/getRandom?appToken=接口访问授权Token', function(data){
 console.log(data);
 });
 &lt;/script&gt;
-* </pre>
-*/
+ * </pre>
+ */
 @Component
 public class GetSkipWordMethod extends BaseMethod {
     @Resource
@@ -45,7 +47,8 @@ public class GetSkipWordMethod extends BaseMethod {
 
     @Override
     public Object execute(List<TemplateModel> arguments) throws TemplateModelException {
-        File dictFile = new File(siteComponent.getRootPath() + AnalyzerDictUtils.DIR_DICT + AnalyzerDictUtils.TXT_SKIPWORD);
+        File dictFile = new File(
+                CommonUtils.joinString(siteComponent.getRootPath(), AnalyzerDictUtils.DIR_DICT, AnalyzerDictUtils.TXT_SKIPWORD));
         try {
             return FileUtils.readFileToString(dictFile, CommonConstants.DEFAULT_CHARSET_NAME);
         } catch (IOException e) {

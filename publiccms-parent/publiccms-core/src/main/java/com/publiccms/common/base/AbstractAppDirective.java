@@ -42,7 +42,7 @@ public abstract class AbstractAppDirective extends BaseHttpDirective {
         SysApp app = null;
         SysUser user = null;
         if (needAppToken() && (null == (app = getApp(handler)) || CommonUtils.empty(app.getAuthorizedApis()) || !ArrayUtils
-                .contains(StringUtils.split(app.getAuthorizedApis(), CommonConstants.COMMA_DELIMITED), getName()))) {
+                .contains(StringUtils.split(app.getAuthorizedApis(), CommonConstants.COMMA), getName()))) {
             if (null == app) {
                 handler.put("error", ApiController.NEED_APP_TOKEN).render();
             } else {

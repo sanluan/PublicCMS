@@ -21,6 +21,7 @@ import java.util.Properties;
 import org.apache.ibatis.jdbc.ScriptRunner;
 
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.common.tools.UserPasswordUtils;
 import com.publiccms.entities.sys.SysExtendField;
@@ -92,8 +93,8 @@ public abstract class AbstractCmsUpgrader {
 
     public void setSiteUrl(Connection connection, String siteurl) throws SQLException, IOException {
         if (null != siteurl) {
-            String dynamicPath = siteurl.endsWith("/") ? siteurl : (siteurl + "/");
-            String sitePath = dynamicPath + "webfile/";
+            String dynamicPath = siteurl.endsWith("/") ? siteurl : CommonUtils.joinString(siteurl, "/");
+            String sitePath = CommonUtils.joinString(dynamicPath, "webfile/");
             try (PreparedStatement statement = connection
                     .prepareStatement("update sys_site set dynamic_path=?,site_path=? where id = 1")) {
                 statement.setString(1, dynamicPath);
@@ -107,17 +108,18 @@ public abstract class AbstractCmsUpgrader {
         try (Statement statement = connection.createStatement();
                 ResultSet rs = statement.executeQuery("select * from sys_site")) {
             while (rs.next()) {
-                String filepath = CommonConstants.CMS_FILEPATH + CommonConstants.SEPARATOR + SiteComponent.TEMPLATE_PATH
-                        + CommonConstants.SEPARATOR + SiteComponent.SITE_PATH_PREFIX + rs.getString("id")
-                        + CommonConstants.SEPARATOR + MetadataComponent.METADATA_FILE;
+                String filepath = CommonUtils.joinString(CommonConstants.CMS_FILEPATH, CommonConstants.SEPARATOR,
+                        SiteComponent.TEMPLATE_PATH, CommonConstants.SEPARATOR, SiteComponent.SITE_PATH_PREFIX,
+                        rs.getString("id"), CommonConstants.SEPARATOR, MetadataComponent.METADATA_FILE);
                 File file = new File(filepath);
                 try {
                     Map<String, CmsPageData> dataMap = CommonConstants.objectMapper.readValue(file, CommonConstants.objectMapper
                             .getTypeFactory().constructMapLikeType(HashMap.class, String.class, CmsPageData.class));
                     try {
-                        CommonConstants.objectMapper.writeValue(new File(CommonConstants.CMS_FILEPATH + CommonConstants.SEPARATOR
-                                + SiteComponent.TEMPLATE_PATH + CommonConstants.SEPARATOR + SiteComponent.SITE_PATH_PREFIX
-                                + rs.getString("id") + CommonConstants.SEPARATOR + MetadataComponent.DATA_FILE), dataMap);
+                        CommonConstants.objectMapper
+                                .writeValue(new File(CommonUtils.joinString(CommonConstants.CMS_FILEPATH, CommonConstants.SEPARATOR,
+                                        SiteComponent.TEMPLATE_PATH, CommonConstants.SEPARATOR, SiteComponent.SITE_PATH_PREFIX,
+                                        rs.getString("id"), CommonConstants.SEPARATOR, MetadataComponent.DATA_FILE)), dataMap);
                     } catch (IOException e) {
                         stringWriter.write(e.getMessage());
                         stringWriter.write(System.lineSeparator());
@@ -195,9 +197,9 @@ public abstract class AbstractCmsUpgrader {
             while (rs.next()) {
                 try {
                     CmsCategoryType entity = new CmsCategoryType();
-                    String filepath = CommonConstants.CMS_FILEPATH + CommonConstants.SEPARATOR + SiteComponent.TEMPLATE_PATH
-                            + CommonConstants.SEPARATOR + SiteComponent.SITE_PATH_PREFIX + rs.getString("site_id")
-                            + CommonConstants.SEPARATOR + SiteComponent.CATEGORY_TYPE_FILE;
+                    String filepath = CommonUtils.joinString(CommonConstants.CMS_FILEPATH, CommonConstants.SEPARATOR,
+                            SiteComponent.TEMPLATE_PATH, CommonConstants.SEPARATOR, SiteComponent.SITE_PATH_PREFIX,
+                            rs.getString("site_id"), CommonConstants.SEPARATOR, SiteComponent.CATEGORY_TYPE_FILE);
                     File file = new File(filepath);
                     file.getParentFile().mkdirs();
                     Map<String, CmsCategoryType> categoryTypeMap;
@@ -214,8 +216,8 @@ public abstract class AbstractCmsUpgrader {
                     if (null != rs.getString("extend_id")) {
                         List<SysExtendField> extendList = new ArrayList<>();
                         try (Statement extendFieldStatement = connection.createStatement();
-                                ResultSet extendFieldRs = extendFieldStatement.executeQuery(
-                                        "select * from sys_extend_field where extend_id = " + rs.getString("extend_id"))) {
+                                ResultSet extendFieldRs = extendFieldStatement.executeQuery(CommonUtils
+                                        .joinString("select * from sys_extend_field where extend_id = ", rs.getString("extend_id")))) {
                             while (extendFieldRs.next()) {
                                 SysExtendField e = new SysExtendField(extendFieldRs.getString("code"),
                                         extendFieldRs.getString("input_type"), extendFieldRs.getBoolean("required"),
@@ -257,8 +259,8 @@ public abstract class AbstractCmsUpgrader {
         runner.setLogWriter(null);
         runner.setErrorLogWriter(new PrintWriter(stringWriter));
         runner.setAutoCommit(true);
-        try (InputStream inputStream = getClass().getResourceAsStream(new StringBuilder("/initialization/upgrade/")
-                .append(fromVersion).append("-").append(toVersion).append(".sql").toString())) {
+        try (InputStream inputStream = getClass()
+                .getResourceAsStream(CommonUtils.joinString("/initialization/upgrade/", fromVersion, "-", toVersion, ".sql"))) {
             if (null != inputStream) {
                 runner.runScript(new InputStreamReader(inputStream, CommonConstants.DEFAULT_CHARSET));
             }

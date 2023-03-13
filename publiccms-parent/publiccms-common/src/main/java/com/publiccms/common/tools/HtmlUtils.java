@@ -63,7 +63,7 @@ public class HtmlUtils {
     public static String cleanUnsafeHtml(String string, String baseUri) {
         if (CommonUtils.notEmpty(string)) {
             if (CommonUtils.notEmpty(baseUri) && baseUri.startsWith("//")) {
-                baseUri = "http:" + baseUri;
+                baseUri = CommonUtils.joinString("http:", baseUri);
             }
             return Jsoup.clean(string, baseUri, SAFELIST);
         }

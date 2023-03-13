@@ -81,7 +81,7 @@ public abstract class AbstractTemplateDirective extends BaseTemplateDirective {
         HttpParameterHandler handler = new HttpParameterHandler(httpMessageConverter, mediaType, request, response);
         SysApp app = null;
         if (needAppToken() && (null == (app = getApp(handler)) || CommonUtils.empty(app.getAuthorizedApis()) || !ArrayUtils
-                .contains(StringUtils.split(app.getAuthorizedApis(), CommonConstants.COMMA_DELIMITED), getName()))) {
+                .contains(StringUtils.split(app.getAuthorizedApis(), CommonConstants.COMMA), getName()))) {
             if (null == app) {
                 handler.put("error", ApiController.NEED_APP_TOKEN).render();
             } else {

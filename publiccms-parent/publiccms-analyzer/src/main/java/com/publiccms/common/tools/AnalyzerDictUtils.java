@@ -28,15 +28,15 @@ public class AnalyzerDictUtils {
                 deliFreqsMap);
         SmartcnDictUtils.mergeTFsMap(cnTFsMap, wordMap);
         SmartcnDictUtils.skipWord(cnTFsMap, skipWordList);
-        SmartcnDictUtils.create(newCoreDir + DictionaryReloader.DICT_COREDICT, SmartcnDictUtils.TYPE_CORE, cnTFsMap,
-                deliFreqsMap);
-        SmartcnDictUtils.create(newCoreDir + DictionaryReloader.DICT_BIGRAMDICT, SmartcnDictUtils.TYPE_BIGRAM, cnTFsMap,
-                deliFreqsMap);
-        File file = new File(newCoreDir + DictionaryReloader.MEM_COREDICT);
+        SmartcnDictUtils.create(CommonUtils.joinString(newCoreDir, DictionaryReloader.DICT_COREDICT), SmartcnDictUtils.TYPE_CORE,
+                cnTFsMap, deliFreqsMap);
+        SmartcnDictUtils.create(CommonUtils.joinString(newCoreDir, DictionaryReloader.DICT_BIGRAMDICT), SmartcnDictUtils.TYPE_BIGRAM,
+                cnTFsMap, deliFreqsMap);
+        File file = new File(CommonUtils.joinString(newCoreDir, DictionaryReloader.MEM_COREDICT));
         if (file.exists()) {
             Files.delete(file.toPath());
         }
-        File file2 = new File(newCoreDir + DictionaryReloader.MEM_BIGRAMDICT);
+        File file2 = new File(CommonUtils.joinString(newCoreDir, DictionaryReloader.MEM_BIGRAMDICT));
         if (file2.exists()) {
             Files.delete(file2.toPath());
         }

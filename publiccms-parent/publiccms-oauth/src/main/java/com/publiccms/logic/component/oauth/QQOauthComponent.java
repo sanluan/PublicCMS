@@ -72,9 +72,7 @@ public class QQOauthComponent extends AbstractOauth {
     @Override
     public OauthAccess getOpenId(short siteId, OauthAccess oauthInfo) throws ClientProtocolException, IOException {
         if (null != oauthInfo) {
-            StringBuilder sb = new StringBuilder("https://graph.qq.com/oauth2.0/me?");
-            sb.append("access_token=" + oauthInfo.getAccessToken());
-            String html = get(sb.toString());
+            String html = get(CommonUtils.joinString("https://graph.qq.com/oauth2.0/me?access_token=", oauthInfo.getAccessToken()));
             if (CommonUtils.notEmpty(html)) {
                 html = html.substring(html.indexOf('{'), html.indexOf('}') + 1);
                 Map<String, String> map = CommonConstants.objectMapper.readValue(html, CommonConstants.objectMapper

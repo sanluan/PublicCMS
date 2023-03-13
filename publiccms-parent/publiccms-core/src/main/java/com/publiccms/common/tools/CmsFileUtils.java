@@ -40,8 +40,8 @@ public class CmsFileUtils {
     public static final String UPLOAD_PATH = "upload/";
     public static final String USER_PRIVATE_PATH = "user/";
     public static final String METADATA_PATH = "metadata/";
-    public static final Pattern UPLOAD_FILE_PATTERN = Pattern.compile(
-            ".*(" + UPLOAD_PATH + DateFormatUtils.UPLOAD_FILE_NAME_FORMAT_STRING.replaceAll("\\w", "\\\\d") + "-?\\d+\\.\\w+)");
+    public static final Pattern UPLOAD_FILE_PATTERN = Pattern.compile(CommonUtils.joinString(".*(", UPLOAD_PATH,
+            DateFormatUtils.UPLOAD_FILE_NAME_FORMAT_STRING.replaceAll("\\w", "\\\\d"), "-?\\d+\\.\\w+)"));
     public static final String ORDERFIELD_FILENAME = "fileName";
     public static final String ORDERFIELD_FILESIZE = "fileSize";
     public static final String ORDERFIELD_CREATEDATE = "createDate";
@@ -50,6 +50,11 @@ public class CmsFileUtils {
     private static final FileInfoComparator FILESIZE_COMPARATOR = new FileInfoComparator(ORDERFIELD_FILESIZE);
     private static final FileInfoComparator CREATEDATE_COMPARATOR = new FileInfoComparator(ORDERFIELD_CREATEDATE);
     private static final FileInfoComparator MODIFIEDDATE_COMPARATOR = new FileInfoComparator(ORDERFIELD_MODIFIEDDATE);
+    public static final String HEADERS_SEND_CTRL = "Sendfile";
+    public static final String HEADERS_SEND_NGINX = "X-Accel-Redirect";
+    public static final String HEADERS_SEND_APACHE = "X-Sendfile";
+    public static final String NGINX_DOWNLOAD_PREFIX = "/downloadfile/";
+    public static final String NGINX_PRIVATEFILE_PREFIX = "/privatefile/";
     /**
      * 
      */
@@ -204,12 +209,12 @@ public class CmsFileUtils {
                 if (null != fileNamePath) {
                     String fileName = fileNamePath.toString();
                     if (!parentPath.endsWith(CommonConstants.SEPARATOR)) {
-                        parentPath += CommonConstants.SEPARATOR;
+                        parentPath = CommonUtils.joinString(parentPath, CommonConstants.SEPARATOR);
                     }
                     File file = entry.toFile();
                     if (file.isDirectory()) {
                         if (!TemplateComponent.INCLUDE_DIRECTORY.equalsIgnoreCase(fileName)) {
-                            searchFileList(entry, parentPath + fileName, word, fileList);
+                            searchFileList(entry, CommonUtils.joinString(parentPath, fileName), word, fileList);
                         }
                     } else if (!fileName.endsWith(".data")) {
                         List<String> matchList = new ArrayList<>();
@@ -221,7 +226,7 @@ public class CmsFileUtils {
                         }
                         if (!matchList.isEmpty()) {
                             FileSearchResult result = new FileSearchResult();
-                            result.setPath(parentPath + fileName);
+                            result.setPath(CommonUtils.joinString(parentPath, fileName));
                             result.setMatchList(matchList);
                             fileList.add(result);
                         }
@@ -302,7 +307,7 @@ public class CmsFileUtils {
      */
     private static FileSize getFileSize(File file, String suffix) {
         if (null != suffix && !suffix.startsWith(CommonConstants.DOT)) {
-            suffix = CommonConstants.DOT + suffix;
+            suffix = CommonUtils.joinString(CommonConstants.DOT, suffix);
         }
         if (ArrayUtils.contains(IMAGE_FILE_SUFFIXS, suffix)) {
             FileSize fileSize = new FileSize();
@@ -540,7 +545,7 @@ public class CmsFileUtils {
      * @return avatar file name
      */
     public static String getPrivateFileSignString(long expiry, String filepath) {
-        return new StringBuilder("expiry=").append(expiry).append("&filePath=").append(filepath).toString();
+        return CommonUtils.joinString("expiry=", expiry, "&filePath=", filepath);
     }
 
     /**
@@ -548,12 +553,10 @@ public class CmsFileUtils {
      * 
      * @param userId
      * @param filepath
-     * @return avatar file name
+     * @return user private file name
      */
     public static String getUserPrivateFileName(long userId, String filepath) {
-        StringBuilder sb = new StringBuilder(USER_PRIVATE_PATH);
-        sb.append(userId).append(CommonConstants.SEPARATOR).append(filepath);
-        return sb.toString();
+        return CommonUtils.joinString(USER_PRIVATE_PATH, userId, CommonConstants.SEPARATOR, filepath);
     }
 
     /**
@@ -563,9 +566,7 @@ public class CmsFileUtils {
      * @return avatar file name
      */
     public static String getMetadataFileName(String filepath) {
-        StringBuilder sb = new StringBuilder(METADATA_PATH);
-        sb.append(filepath);
-        return sb.toString();
+        return CommonUtils.joinString(METADATA_PATH, filepath);
     }
 
     /**
@@ -603,7 +604,7 @@ public class CmsFileUtils {
 
     public static String getFileType(String suffix) {
         if (null != suffix && !suffix.startsWith(CommonConstants.DOT)) {
-            suffix = CommonConstants.DOT + suffix;
+            suffix = CommonUtils.joinString(CommonConstants.DOT, suffix);
         }
         if (ArrayUtils.contains(IMAGE_FILE_SUFFIXS, suffix)) {
             return FILE_TYPE_IMAGE;
@@ -773,7 +774,7 @@ public class CmsFileUtils {
 
         @Override
         public String toString() {
-            return "FileReplaceResult [path=" + path + ", indexs=" + Arrays.toString(indexs) + "]";
+            return CommonUtils.joinString("FileReplaceResult [path=", path, ", indexs=", Arrays.toString(indexs), "]");
         }
     }
 
@@ -817,7 +818,7 @@ public class CmsFileUtils {
 
         @Override
         public String toString() {
-            return "FileSearchResult [path=" + path + ", matchList=" + matchList + "]";
+            return CommonUtils.joinString("FileSearchResult [path=", path, ", matchList=", matchList, "]");
         }
     }
 

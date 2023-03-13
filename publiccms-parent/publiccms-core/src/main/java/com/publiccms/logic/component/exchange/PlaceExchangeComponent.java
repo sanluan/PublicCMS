@@ -72,12 +72,13 @@ public class PlaceExchangeComponent extends AbstractExchange<String, Place> {
     private void dealDir(SysSite site, String directory, String path, ByteArrayOutputStream outputStream,
             ZipOutputStream zipOutputStream) {
         path = path.replace("\\", CommonConstants.SEPARATOR).replace("//", CommonConstants.SEPARATOR);
-        String realPath = siteComponent.getTemplateFilePath(site.getId(), TemplateComponent.INCLUDE_DIRECTORY + path);
+        String realPath = siteComponent.getTemplateFilePath(site.getId(),
+                CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, path));
         List<FileInfo> list = CmsFileUtils.getFileList(realPath, null);
         for (FileInfo fileInfo : list) {
-            String filepath = path + fileInfo.getFileName();
+            String filepath = CommonUtils.joinString(path, fileInfo.getFileName());
             if (fileInfo.isDirectory()) {
-                dealDir(site, directory, filepath + CommonConstants.SEPARATOR, outputStream, zipOutputStream);
+                dealDir(site, directory, CommonUtils.joinString(filepath, CommonConstants.SEPARATOR), outputStream, zipOutputStream);
             } else {
                 exportEntity(site, directory, filepath, outputStream, zipOutputStream);
             }
@@ -87,8 +88,8 @@ public class PlaceExchangeComponent extends AbstractExchange<String, Place> {
     @Override
     public void exportEntity(SysSite site, String directory, String path, ByteArrayOutputStream outputStream,
             ZipOutputStream zipOutputStream) {
-        PageHandler page = service.getPage(site.getId(), null, CommonConstants.SEPARATOR + path, null, null, null, null, null,
-                null, false, null, null, null, PageHandler.MAX_PAGE_SIZE);
+        PageHandler page = service.getPage(site.getId(), null, CommonUtils.joinString(CommonConstants.SEPARATOR, path), null, null,
+                null, null, null, null, false, null, null, null, PageHandler.MAX_PAGE_SIZE);
         @SuppressWarnings("unchecked")
         List<CmsPlace> list = (List<CmsPlace>) page.getList();
         if (0 < page.getTotalCount()) {
@@ -120,7 +121,7 @@ public class PlaceExchangeComponent extends AbstractExchange<String, Place> {
                 datalist.add(placeData);
             }
             data.setDatalist(datalist);
-            export(directory, outputStream, zipOutputStream, data, data.getPath() + ".json");
+            export(directory, outputStream, zipOutputStream, data, CommonUtils.joinString(data.getPath(), ".json"));
         }
     }
 
@@ -140,7 +141,8 @@ public class PlaceExchangeComponent extends AbstractExchange<String, Place> {
      */
     public ExcelView exportExcelByQuery(SysSite site, String path, Long userId, Integer[] status, String itemType, Long itemId,
             Date startPublishDate, Date endPublishDate, String orderField, String orderType, Locale locale) {
-        String filepath = siteComponent.getTemplateFilePath(site.getId(), TemplateComponent.INCLUDE_DIRECTORY + path);
+        String filepath = siteComponent.getTemplateFilePath(site.getId(),
+                CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, path));
         CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);
 
         PageHandler page = service.getPage(site.getId(), userId, path, itemType, itemId, startPublishDate, endPublishDate,
@@ -234,7 +236,7 @@ public class PlaceExchangeComponent extends AbstractExchange<String, Place> {
                 row.createCell(j++).setCellValue(dateFormat.format(entity.getCreateDate()));
 
                 row.createCell(j++).setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale,
-                        "page.status.place.data." + entity.getStatus()));
+                        CommonUtils.joinString("page.status.place.data.", entity.getStatus())));
 
                 user = userMap.get(entity.getCheckUserId());
                 row.createCell(j++).setCellValue(null == user ? null : user.getNickname());
@@ -249,7 +251,7 @@ public class PlaceExchangeComponent extends AbstractExchange<String, Place> {
             }
         });
         DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.DOWNLOAD_FORMAT_STRING);
-        view.setFilename(new StringBuilder(metadata.getAlias()).append(dateFormat.format(new Date())).toString());
+        view.setFilename(CommonUtils.joinString(metadata.getAlias(), dateFormat.format(new Date())));
         return view;
     }
 

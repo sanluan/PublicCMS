@@ -52,8 +52,8 @@ public class ScanClassUtils {
         Set<Class<?>> classSet = new HashSet<>();
         if (null != packagesToScan) {
             for (String pkg : packagesToScan) {
-                String pattern = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX + ClassUtils.convertClassNameToResourcePath(pkg)
-                        + RESOURCE_PATTERN;
+                String pattern = CommonUtils.joinString(ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX,
+                        ClassUtils.convertClassNameToResourcePath(pkg), RESOURCE_PATTERN);
                 Resource[] resources = resourcePatternResolver.getResources(pattern);
                 MetadataReaderFactory readerFactory = new CachingMetadataReaderFactory(resourcePatternResolver);
                 for (Resource resource : resources) {

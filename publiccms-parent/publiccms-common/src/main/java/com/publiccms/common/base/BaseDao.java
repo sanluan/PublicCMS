@@ -95,7 +95,7 @@ public abstract class BaseDao<E> {
      * @return like query
      */
     public static String like(String var) {
-        return "%" + var + "%";
+        return CommonUtils.joinString("%", var, "%");
     }
 
     /**
@@ -105,7 +105,7 @@ public abstract class BaseDao<E> {
      * @return right like query
      */
     public static String rightLike(String var) {
-        return var + "%";
+        return CommonUtils.joinString(var, "%");
     }
 
     /**

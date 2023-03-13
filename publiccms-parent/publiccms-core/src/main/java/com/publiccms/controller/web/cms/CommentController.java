@@ -107,14 +107,14 @@ public class CommentController {
                 null);
         if (ControllerUtils.errorCustom("locked.user", locked, model)) {
             lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_COMMENT, String.valueOf(user.getId()), null, true);
-            return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
+            return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
         }
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
         if (CommonUtils.notEmpty(captcha) || safeConfigComponent.enableCaptcha(site.getId(), SafeConfigComponent.CAPTCHA_MODULE_COMMENT)) {
             String sessionCaptcha = (String) request.getSession().getAttribute("captcha");
             request.getSession().removeAttribute("captcha");
             if (ControllerUtils.errorCustom("captcha.error", null == sessionCaptcha || !sessionCaptcha.equalsIgnoreCase(captcha), model)) {
-                return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
+                return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
             }
         }
         CmsContent content = null;
@@ -174,7 +174,7 @@ public class CommentController {
             }
             model.addAttribute("id", entity.getId());
         }
-        return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
+        return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
     }
 
     @Resource

@@ -82,9 +82,9 @@ public class ZipUtils {
                 for (Path entry : stream) {
                     BasicFileAttributes attrs = Files.readAttributes(entry, BasicFileAttributes.class);
                     String fullName = Constants.BLANK.equals(basedir) ? entry.toFile().getName()
-                            : basedir + Constants.SEPARATOR + entry.toFile().getName();
+                            : CommonUtils.joinString(basedir, Constants.SEPARATOR, entry.toFile().getName());
                     if (attrs.isDirectory()) {
-                        ZipEntry zipEntry = new ZipEntry(fullName + Constants.SEPARATOR);
+                        ZipEntry zipEntry = new ZipEntry(CommonUtils.joinString(fullName, Constants.SEPARATOR));
                         out.putNextEntry(zipEntry);
                         compress(entry, out, fullName);
                     } else if (!fullName.equalsIgnoreCase("files.zip")) {
@@ -102,12 +102,19 @@ public class ZipUtils {
     /**
      * <pre>
      * &#64;RequestMapping("export")
-     * public void export(javax.servlet.http.HttpServletResponse response) {
-     *     try (ZipOutputStream zipOutputStream = new ZipOutputStream(response.getOutputStream())) {
-     *         response.setHeader("content-disposition", "attachment;fileName=" + URLEncoder.encode("filename.zip", "utf-8"));
-     *         ZipUtils.compressFile(new File("filename.txt"), zipOutputStream, "dir/filename.txt");
-     *     } catch (IOException e) {
-     *     }
+     * public ResponseEntity<StreamingResponseBody> export() {
+     *     HttpHeaders headers = new HttpHeaders();
+     *     headers.setContentDisposition(ContentDisposition.attachment().filename("filename.zip").build());
+     *     StreamingResponseBody body = new StreamingResponseBody() {
+     *         @Override
+     *         public void writeTo(OutputStream outputStream) throws IOException {
+     *             try (ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream)) {
+     *                 zipOutputStream.setEncoding(Constants.DEFAULT_CHARSET_NAME);
+     *                 ZipUtils.compressFile(new File("filename.txt"), zipOutputStream, "dir/filename.txt");
+     *             }
+     *         }
+     *     };
+     *     return ResponseEntity.ok().headers(headers).body(body);
      * }
      * </pre>
      *
@@ -179,7 +186,7 @@ public class ZipUtils {
         ZipFile zipFile = new ZipFile(zipFilePath, encoding);
         Enumeration<? extends ZipEntry> entryEnum = zipFile.getEntries();
         if (!targetPath.endsWith(Constants.SEPARATOR) && !targetPath.endsWith("\\")) {
-            targetPath += File.separator;
+            targetPath = CommonUtils.joinString(targetPath, File.separator);
         }
         while (entryEnum.hasMoreElements()) {
             ZipEntry zipEntry = entryEnum.nextElement();
@@ -194,10 +201,10 @@ public class ZipUtils {
             filePath = filePath.replace("..", Constants.BLANK);
         }
         if (zipEntry.isDirectory()) {
-            File dir = new File(targetPath + filePath);
+            File dir = new File(CommonUtils.joinString(targetPath, filePath));
             dir.mkdirs();
         } else {
-            File targetFile = new File(targetPath + filePath);
+            File targetFile = new File(CommonUtils.joinString(targetPath, filePath));
             if (!targetFile.exists() || overwrite) {
                 targetFile.getParentFile().mkdirs();
                 if (null == overwriteFunction || overwriteFunction.apply(zipFile, zipEntry)) {
@@ -226,10 +233,10 @@ public class ZipUtils {
             BiFunction<ZipFile, ZipEntry, Boolean> overwriteFunction) {
         Enumeration<? extends ZipEntry> entryEnum = zipFile.getEntries();
         if (!targetPath.endsWith(Constants.SEPARATOR) && !targetPath.endsWith("\\")) {
-            targetPath += File.separator;
+            targetPath = CommonUtils.joinString(targetPath, File.separator);
         }
-        if (!directory.endsWith(Constants.SEPARATOR)) {
-            directory += Constants.SEPARATOR;
+        if (null != directory && !directory.endsWith(Constants.SEPARATOR)) {
+            directory = CommonUtils.joinString(directory, Constants.SEPARATOR);
         }
         while (entryEnum.hasMoreElements()) {
             ZipEntry zipEntry = entryEnum.nextElement();

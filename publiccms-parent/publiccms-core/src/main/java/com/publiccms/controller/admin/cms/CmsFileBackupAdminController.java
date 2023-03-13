@@ -1,11 +1,11 @@
 package com.publiccms.controller.admin.cms;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -84,7 +84,7 @@ public class CmsFileBackupAdminController {
             }
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "recycle.backupfile", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), type + ":" + StringUtils.join(paths, CommonConstants.COMMA)));
+                    CommonUtils.getDate(), CommonUtils.joinString(type, ":", StringUtils.join(paths, CommonConstants.COMMA))));
         }
         return CommonConstants.TEMPLATE_DONE;
     }

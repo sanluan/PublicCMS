@@ -58,9 +58,7 @@ public class AdminContextInterceptor extends WebContextInterceptor {
                 try {
                     RequestUtils.addCookie(ctxPath, request.getScheme(), response, CommonConstants.getCookiesSite(),
                             currentSiteId, Integer.MAX_VALUE, null);
-                    StringBuilder sb = new StringBuilder(ctxPath);
-                    sb.append(adminContextPath).append(CommonConstants.SEPARATOR);
-                    response.sendRedirect(sb.toString());
+                    response.sendRedirect(CommonUtils.joinString(ctxPath, adminContextPath, CommonConstants.SEPARATOR));
                     return false;
                 } catch (IOException e) {
                     return true;
@@ -82,9 +80,7 @@ public class AdminContextInterceptor extends WebContextInterceptor {
         String path = urlPathHelper.getLookupPathForRequest(request);
         if (adminContextPath.equals(path)) {
             try {
-                StringBuilder sb = new StringBuilder(ctxPath);
-                sb.append(adminContextPath).append(CommonConstants.SEPARATOR);
-                response.sendRedirect(sb.toString());
+                response.sendRedirect(CommonUtils.joinString(ctxPath, adminContextPath, CommonConstants.SEPARATOR));
                 return false;
             } catch (IOException e) {
                 return true;
@@ -119,9 +115,7 @@ public class AdminContextInterceptor extends WebContextInterceptor {
                             index > -1 ? index : path.length());
                     if (0 == roleAuthorizedService.count(entity.getRoles(), path) && !ownsAllRight(entity.getRoles())) {
                         try {
-                            StringBuilder sb = new StringBuilder(ctxPath);
-                            sb.append(adminContextPath).append(unauthorizedUrl);
-                            response.sendRedirect(sb.toString());
+                            response.sendRedirect(CommonUtils.joinString(ctxPath, adminContextPath, unauthorizedUrl));
                             return false;
                         } catch (IOException e) {
                             return true;
@@ -143,13 +137,13 @@ public class AdminContextInterceptor extends WebContextInterceptor {
             sb.append(loginJsonUrl);
         } else {
             sb.append(loginUrl).append("?returnUrl=");
-            sb.append(RequestUtils.getEncodePath(adminContextPath + path, queryString));
+            sb.append(RequestUtils.getEncodePath(CommonUtils.joinString(adminContextPath, path), queryString));
         }
         response.sendRedirect(sb.toString());
     }
 
     private boolean ownsAllRight(String roles) {
-        String[] roleIdArray = StringUtils.split(roles, CommonConstants.COMMA_DELIMITED);
+        String[] roleIdArray = StringUtils.split(roles, CommonConstants.COMMA);
         if (null != roles && 0 < roleIdArray.length) {
             Integer[] roleIds = new Integer[roleIdArray.length];
             for (int i = 0; i < roleIdArray.length; i++) {

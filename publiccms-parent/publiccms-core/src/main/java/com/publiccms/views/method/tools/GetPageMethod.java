@@ -71,7 +71,7 @@ public class GetPageMethod extends BaseMethod {
                 for (int i = 0; i < parameters.length; i++) {
                     String[] temp = StringUtils.split(parameters[i], "=", 2);
                     if (pageParameter.equalsIgnoreCase(temp[0])) {
-                        parameters[i] = pageParameter + "=" + pageIndex;
+                        parameters[i] = CommonUtils.joinString(pageParameter, "=", pageIndex);
                         flag = false;
                         break;
                     }
@@ -91,7 +91,7 @@ public class GetPageMethod extends BaseMethod {
             }
         } else {
             if (url.endsWith(CommonConstants.SEPARATOR) && 1 != pageIndex) {
-                url += CommonConstants.getDefaultPage();
+                url = CommonUtils.joinString(url, CommonConstants.getDefaultPage());
             }
             int dotIndex = url.lastIndexOf(CommonConstants.DOT);
             int separatorIndex = url.lastIndexOf(CommonConstants.SEPARATOR);
@@ -107,9 +107,9 @@ public class GetPageMethod extends BaseMethod {
                     }
                 }
                 if (1 < pageIndex) {
-                    return prefixFilePath + CommonConstants.UNDERLINE + pageIndex + suffixFilePath;
+                    return CommonUtils.joinString(prefixFilePath, CommonConstants.UNDERLINE, pageIndex, suffixFilePath);
                 } else {
-                    return prefixFilePath + suffixFilePath;
+                    return CommonUtils.joinString(prefixFilePath, suffixFilePath);
                 }
             } else {
                 String prefixFilePath = url;
@@ -117,7 +117,7 @@ public class GetPageMethod extends BaseMethod {
                     prefixFilePath = prefixFilePath.substring(0, underlineIndex);
                 }
                 if (1 < pageIndex) {
-                    return prefixFilePath + CommonConstants.UNDERLINE + pageIndex;
+                    return CommonUtils.joinString(prefixFilePath, CommonConstants.UNDERLINE, pageIndex);
                 } else {
                     return prefixFilePath;
                 }

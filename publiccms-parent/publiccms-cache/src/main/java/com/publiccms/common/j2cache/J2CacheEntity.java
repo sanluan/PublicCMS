@@ -1,12 +1,14 @@
 package com.publiccms.common.j2cache;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.stream.Collectors;
 
 import com.publiccms.common.cache.CacheEntity;
+import com.publiccms.common.tools.CommonUtils;
 
 import net.oschina.j2cache.CacheChannel;
 import net.oschina.j2cache.CacheObject;
@@ -39,18 +41,17 @@ public class J2CacheEntity<K, V> implements CacheEntity<K, V>, java.io.Serializa
             l2_config_section = config.getL2CacheName();
         }
         final String l2_section = l2_config_section;
+        Map<String, Properties> configMap = new HashMap<>();
+        configMap.put(CommonUtils.joinString(config.getBroadcast(), "."), config.getBroadcastProperties());
+        configMap.put(CommonUtils.joinString(config.getL1CacheName(), "."), config.getL1CacheProperties());
+        configMap.put(CommonUtils.joinString(l2_section, "."), config.getL2CacheProperties());
         properties.forEach((k, v) -> {
             String key = (String) k;
-            if (key.startsWith(config.getBroadcast() + ".")) {
-                config.getBroadcastProperties().setProperty(key.substring((config.getBroadcast() + ".").length()), (String) v);
-            }
-            if (key.startsWith(config.getL1CacheName() + ".")) {
-                config.getL1CacheProperties().setProperty(key.substring((config.getL1CacheName() + ".").length()), (String) v);
-            }
-            if (key.startsWith(l2_section + ".")) {
-                config.getL2CacheProperties().setProperty(key.substring((l2_section + ".").length()), (String) v);
-            }
-
+            configMap.forEach((mk, mv) -> {
+                if (key.startsWith(mk)) {
+                    mv.setProperty(key.substring(mk.length()), (String) v);
+                }
+            });
         });
         J2CacheBuilder builder = J2CacheBuilder.init(config);
         channel = builder.getChannel();

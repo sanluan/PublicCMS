@@ -95,7 +95,7 @@ public class TemplateCacheComponent implements Cache {
         requestPath = siteComponent.getPath(site, requestPath);
         SysDomain domain = siteComponent.getDomain(request.getServerName());
         String fullRequestPath = siteComponent.getViewName(site.getId(), domain, requestPath);
-        String templatePath = siteComponent.getTemplateFilePath() + fullRequestPath;
+        String templatePath = CommonUtils.joinString(siteComponent.getTemplateFilePath(), fullRequestPath);
         CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(templatePath);
         if (metadata.isUseDynamic()) {
             if (metadata.isNeedLogin() && null == ControllerUtils.getUserFromSession(request.getSession())) {
@@ -108,9 +108,9 @@ public class TemplateCacheComponent implements Cache {
                         if (0 < index) {
                             requestPath = requestPath.substring(0, index);
                         }
-                        requestPath = requestPath + CommonConstants.SEPARATOR + id;
+                        requestPath = CommonUtils.joinString(requestPath, CommonConstants.SEPARATOR, id);
                         if (null != pageIndex) {
-                            requestPath = requestPath + CommonConstants.UNDERLINE + pageIndex;
+                            requestPath = CommonUtils.joinString(requestPath, CommonConstants.UNDERLINE, pageIndex);
                         }
                     }
                     return sb.append(loginPath).append("?returnUrl=")
@@ -119,7 +119,7 @@ public class TemplateCacheComponent implements Cache {
                     return sb.append(site.getDynamicPath()).toString();
                 }
             }
-            String[] acceptParameters = StringUtils.split(metadata.getAcceptParameters(), CommonConstants.COMMA_DELIMITED);
+            String[] acceptParameters = StringUtils.split(metadata.getAcceptParameters(), CommonConstants.COMMA);
             if (CommonUtils.notEmpty(acceptParameters)) {
                 if (!billingRequestParametersToModel(request, acceptParameters, id, pageIndex, metadata.getParameterTypeMap(),
                         site, model)) {
@@ -388,7 +388,8 @@ public class TemplateCacheComponent implements Cache {
         AbstractFreemarkerView.exposeAttribute(model, request);
         model.addAttribute(CACHE_VAR, true);
         return createCache(requestPath, fullTemplatePath,
-                fullTemplatePath + getRequestParametersString(request, acceptParameters), locale, cacheMillisTime, model);
+                CommonUtils.joinString(fullTemplatePath, getRequestParametersString(request, acceptParameters)), locale,
+                cacheMillisTime, model);
     }
 
     private static String getRequestParametersString(HttpServletRequest request, String[] acceptParameters) {
@@ -427,8 +428,8 @@ public class TemplateCacheComponent implements Cache {
     private String createCache(String requestPath, String fullTemplatePath, String cachePath, Locale locale, int cacheMillisTime,
             ModelMap model) {
         String cachedFilePath = getCachedFilePath(cachePath);
-        String cachedtemplatePath = CACHE_FILE_DIRECTORY + cachePath;
-        String cachedPath = WebDispatcherServlet.GLOBLE_URL_PREFIX + cachedtemplatePath;
+        String cachedtemplatePath = CommonUtils.joinString(CACHE_FILE_DIRECTORY, cachePath);
+        String cachedPath = CommonUtils.joinString(WebDispatcherServlet.GLOBLE_URL_PREFIX, cachedtemplatePath);
         try {
             lock.lock();
             if (checkCacheFile(cachedFilePath, cacheMillisTime)) {
@@ -460,6 +461,6 @@ public class TemplateCacheComponent implements Cache {
     }
 
     private String getCachedFilePath(String path) {
-        return siteComponent.getTemplateFilePath() + CACHE_FILE_DIRECTORY + path;
+        return CommonUtils.joinString(siteComponent.getTemplateFilePath(), CACHE_FILE_DIRECTORY, path);
     }
 }

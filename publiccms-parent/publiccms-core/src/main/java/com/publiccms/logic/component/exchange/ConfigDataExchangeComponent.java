@@ -55,7 +55,7 @@ public class ConfigDataExchangeComponent extends AbstractExchange<SysConfigData,
         if (needReplace(entity.getData(), site.getSitePath())) {
             entity.setData(StringUtils.replace(entity.getData(), site.getSitePath(), "#SITEPATH#"));
         }
-        export(directory, outputStream, zipOutputStream, entity, entity.getId().getCode() + ".json");
+        export(directory, outputStream, zipOutputStream, entity, CommonUtils.joinString(entity.getId().getCode(), ".json"));
     }
 
     @Override

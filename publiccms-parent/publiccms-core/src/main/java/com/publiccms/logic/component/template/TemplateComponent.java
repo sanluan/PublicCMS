@@ -422,7 +422,7 @@ public class TemplateComponent implements Cache {
         if (CommonUtils.notEmpty(templatePath)) {
             Map<String, Object> model = new HashMap<>();
             exposePlace(site, templatePath, metadata, data, model);
-            String placeTemplatePath = INCLUDE_DIRECTORY + templatePath;
+            String placeTemplatePath = CommonUtils.joinString(INCLUDE_DIRECTORY, templatePath);
             String templateFullPath = SiteComponent.getFullTemplatePath(site.getId(), placeTemplatePath);
             FreeMarkerUtils.generateFileByFile(templateFullPath, siteComponent.getWebFilePath(site.getId(), placeTemplatePath),
                     webConfiguration, model);
@@ -463,7 +463,8 @@ public class TemplateComponent implements Cache {
         if (CommonUtils.notEmpty(templatePath)) {
             Map<String, Object> model = new HashMap<>();
             exposePlace(site, templatePath, metadata, data, model);
-            String templateFullPath = SiteComponent.getFullTemplatePath(site.getId(), INCLUDE_DIRECTORY + templatePath);
+            String templateFullPath = SiteComponent.getFullTemplatePath(site.getId(),
+                    CommonUtils.joinString(INCLUDE_DIRECTORY, templatePath));
             FreeMarkerUtils.generateStringByFile(writer, templateFullPath, webConfiguration, model);
         }
     }
@@ -496,21 +497,21 @@ public class TemplateComponent implements Cache {
             if (filepath.startsWith(CommonConstants.SEPARATOR)) {
                 filepath = filepath.substring(1);
             }
-            String fullPath = site.getSitePath() + filepath;
+            String fullPath = CommonUtils.joinString(site.getSitePath(), filepath);
             model.put("url", fullPath);
             if (null != urlConsumer) {
                 urlConsumer.accept(fullPath);
             }
             String staticFilePath;
             if (filepath.endsWith(CommonConstants.SEPARATOR)) {
-                staticFilePath = filepath + CommonConstants.getDefaultPage();
+                staticFilePath = CommonUtils.joinString(filepath, CommonConstants.getDefaultPage());
             } else {
                 staticFilePath = filepath;
             }
             if (CommonUtils.notEmpty(pageIndex) && 1 < pageIndex) {
                 int index = staticFilePath.lastIndexOf(CommonConstants.DOT);
-                staticFilePath = staticFilePath.substring(0, index) + CommonConstants.UNDERLINE + pageIndex
-                        + staticFilePath.substring(index, staticFilePath.length());
+                staticFilePath = CommonUtils.joinString(staticFilePath.substring(0, index), CommonConstants.UNDERLINE, pageIndex,
+                        staticFilePath.substring(index, staticFilePath.length()));
             }
             FreeMarkerUtils.generateFileByFile(fullTemplatePath, siteComponent.getWebFilePath(site.getId(), staticFilePath),
                     webConfiguration, model);
@@ -562,7 +563,7 @@ public class TemplateComponent implements Cache {
         if (CommonUtils.empty(url) || url.contains("://") || url.startsWith("//") || url.startsWith("#")) {
             return url;
         } else {
-            return sitePath + url;
+            return CommonUtils.joinString(sitePath, url);
         }
     }
 

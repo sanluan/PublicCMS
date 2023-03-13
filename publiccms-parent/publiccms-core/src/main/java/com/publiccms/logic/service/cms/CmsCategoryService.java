@@ -168,7 +168,7 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
                 addChildIds(parent.getParentId(), id);
                 String childIds;
                 if (CommonUtils.notEmpty(parent.getChildIds())) {
-                    childIds = parent.getChildIds() + CommonConstants.COMMA_DELIMITED + String.valueOf(id);
+                    childIds = CommonUtils.joinString(parent.getChildIds(), CommonConstants.COMMA, id);
                 } else {
                     childIds = String.valueOf(id);
                 }
@@ -196,11 +196,11 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
         if (0 < list.size()) {
             for (CmsCategory category : list) {
                 childIds.append(category.getId());
-                childIds.append(CommonConstants.COMMA_DELIMITED);
+                childIds.append(CommonConstants.COMMA);
                 String childChildIds = getChildIds(siteId, category.getId());
                 if (CommonUtils.notEmpty(childChildIds)) {
                     childIds.append(childChildIds);
-                    childIds.append(CommonConstants.COMMA_DELIMITED);
+                    childIds.append(CommonConstants.COMMA);
                 }
             }
             if (0 < childIds.length()) {
@@ -260,7 +260,7 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
                 for (CmsCategory child : list) {
                     child.setParentId(entity.getParentId());
                 }
-                entity.setCode(new StringBuilder(entity.getCode()).append("-").append(UUID.randomUUID().toString()).toString());
+                entity.setCode(CommonUtils.joinString(entity.getCode(), "-", UUID.randomUUID().toString()));
                 entity.setDisabled(true);
                 entityList.add(entity);
                 generateChildIds(entity.getSiteId(), entity.getParentId());

@@ -64,8 +64,8 @@ public class DictAdminController {
             return CommonConstants.TEMPLATE_ERROR;
         }
         try {
-            String dictDir = siteComponent.getRootPath() + AnalyzerDictUtils.DIR_DICT;
-            File dictFile = new File(dictDir + AnalyzerDictUtils.TXT_DICT);
+            String dictDir = CommonUtils.joinString(siteComponent.getRootPath(), AnalyzerDictUtils.DIR_DICT);
+            File dictFile = new File(CommonUtils.joinString(dictDir, AnalyzerDictUtils.TXT_DICT));
             FileUtils.writeStringToFile(dictFile, dict, CommonConstants.DEFAULT_CHARSET);
             Map<String, Integer> wordMap = new HashMap<>();
             for (String word : FileUtils.readLines(dictFile, CommonConstants.DEFAULT_CHARSET)) {
@@ -73,7 +73,7 @@ public class DictAdminController {
                     wordMap.put(word, 10);
                 }
             }
-            File skipWordFile = new File(dictDir + AnalyzerDictUtils.TXT_SKIPWORD);
+            File skipWordFile = new File(CommonUtils.joinString(dictDir, AnalyzerDictUtils.TXT_SKIPWORD));
             FileUtils.writeStringToFile(skipWordFile, skipWord, CommonConstants.DEFAULT_CHARSET);
             List<String> skipWordList = new ArrayList<>();
             for (String word : FileUtils.readLines(skipWordFile, CommonConstants.DEFAULT_CHARSET)) {

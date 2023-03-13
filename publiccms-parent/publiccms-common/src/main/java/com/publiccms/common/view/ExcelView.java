@@ -1,7 +1,5 @@
 package com.publiccms.common.view;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -9,13 +7,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.ss.usermodel.Workbook;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.servlet.view.document.AbstractXlsxStreamingView;
 
 import com.publiccms.common.constants.Constants;
+import com.publiccms.common.tools.CommonUtils;
 
 public class ExcelView extends AbstractXlsxStreamingView {
     private Consumer<Workbook> consumer;
     private String filename;
+    public final static String SUFFIX = ".xlsx";
 
     /**
      * <pre>
@@ -56,14 +58,12 @@ public class ExcelView extends AbstractXlsxStreamingView {
             consumer.accept(workbook);
         }
         if (null != filename) {
-            try {
-                if (-1 < filename.indexOf(Constants.DOT)) {
-                    response.setHeader("content-disposition", "attachment;fileName=" + URLEncoder.encode(filename, "utf-8"));
-                } else {
-                    response.setHeader("content-disposition",
-                            "attachment;fileName=" + URLEncoder.encode(filename, "utf-8") + ".xlsx");
-                }
-            } catch (UnsupportedEncodingException e) {
+            if (-1 < filename.indexOf(Constants.DOT)) {
+                response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
+                        ContentDisposition.attachment().filename(filename).build().toString());
+            } else {
+                response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
+                        ContentDisposition.attachment().filename(CommonUtils.joinString(filename, SUFFIX)).build().toString());
             }
         }
     }

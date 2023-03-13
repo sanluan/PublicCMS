@@ -4,12 +4,12 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -97,7 +97,7 @@ public class CmsWebFileAdminController {
      * @param admin
      * @param files
      * @param path
-     * @param privatefile 
+     * @param privatefile
      * @param overwrite
      * @param request
      * @param model
@@ -112,7 +112,7 @@ public class CmsWebFileAdminController {
                 for (MultipartFile file : files) {
                     String originalName = file.getOriginalFilename();
                     String suffix = CmsFileUtils.getSuffix(originalName);
-                    String filepath = path + CommonConstants.SEPARATOR + originalName;
+                    String filepath = CommonUtils.joinString(path, CommonConstants.SEPARATOR, originalName);
                     String fuleFilePath = siteComponent.getWebFilePath(site.getId(), filepath);
                     if (overwrite || !CmsFileUtils.exists(fuleFilePath)) {
                         if (CmsFileUtils.exists(fuleFilePath)) {
@@ -173,7 +173,7 @@ public class CmsWebFileAdminController {
             }
             suffix = CmsFileUtils.getSuffix(originalName);
             try {
-                String filepath = CommonConstants.SEPARATOR + filename;
+                String filepath = CommonUtils.joinString(CommonConstants.SEPARATOR, filename);
                 String fuleFilePath = siteComponent.getWebFilePath(site.getId(), filepath);
                 if (overwrite || !CmsFileUtils.exists(fuleFilePath)) {
                     CmsFileUtils.mkdirsParent(fuleFilePath);
@@ -209,7 +209,7 @@ public class CmsWebFileAdminController {
     public boolean check(@RequestAttribute SysSite site, @RequestParam("fileNames[]") String[] fileNames, String path) {
         if (null != fileNames) {
             for (String fileName : fileNames) {
-                String filepath = path + CommonConstants.SEPARATOR + fileName;
+                String filepath = CommonUtils.joinString(path, CommonConstants.SEPARATOR, fileName);
                 if (CmsFileUtils.exists(siteComponent.getWebFilePath(site.getId(), filepath))) {
                     return true;
                 }
@@ -264,9 +264,9 @@ public class CmsWebFileAdminController {
                 try {
                     String zipFileName = null;
                     if (path.endsWith("/") || path.endsWith("\\")) {
-                        zipFileName = filepath + "files.zip";
+                        zipFileName = CommonUtils.joinString(filepath, "files.zip");
                     } else {
-                        zipFileName = filepath + ".zip";
+                        zipFileName = CommonUtils.joinString(filepath, ".zip");
                     }
                     ZipUtils.zip(filepath, zipFileName);
                 } catch (IOException e) {
@@ -344,7 +344,7 @@ public class CmsWebFileAdminController {
     public String createDirectory(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path, String fileName,
             HttpServletRequest request) {
         if (null != path && CommonUtils.notEmpty(fileName)) {
-            path = path + CommonConstants.SEPARATOR + fileName;
+            path = CommonUtils.joinString(path, CommonConstants.SEPARATOR, fileName);
             String filepath = siteComponent.getWebFilePath(site.getId(), path);
             CmsFileUtils.mkdirs(filepath);
             logOperateService

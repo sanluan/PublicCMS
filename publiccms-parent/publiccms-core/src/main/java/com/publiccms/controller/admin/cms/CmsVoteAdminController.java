@@ -4,7 +4,6 @@ package com.publiccms.controller.admin.cms;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang3.StringUtils;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -88,7 +87,7 @@ public class CmsVoteAdminController {
             }
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.cmsVote", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), StringUtils.join(ids, ',')));
+                    CommonUtils.getDate(), CommonUtils.joinString(ids, ',')));
         }
         return CommonConstants.TEMPLATE_DONE;
     }

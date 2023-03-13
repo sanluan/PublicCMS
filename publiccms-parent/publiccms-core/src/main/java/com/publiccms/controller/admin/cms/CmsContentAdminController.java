@@ -1,9 +1,8 @@
 package com.publiccms.controller.admin.cms;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.HashSet;
@@ -13,9 +12,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Resource;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -23,6 +20,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.tools.zip.ZipOutputStream;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.publiccms.common.annotation.Csrf;
@@ -131,7 +132,7 @@ public class CmsContentAdminController {
      * @param contentParameters
      * @param draft
      * @param checked
-     * @param bindingResult 
+     * @param bindingResult
      * @param request
      * @param model
      * @return view name
@@ -443,7 +444,7 @@ public class CmsContentAdminController {
                             && move(site, entity, categoryId)) {
                         categoryIdSet.add(entity.getCategoryId());
                     } else {
-                        sb.append(entity.getTitle()).append(CommonConstants.COMMA_DELIMITED);
+                        sb.append(entity.getTitle()).append(CommonConstants.COMMA);
                     }
                 }
             } catch (IOException | TemplateException e) {
@@ -592,7 +593,7 @@ public class CmsContentAdminController {
             try {
                 for (CmsContent entity : service.getEntitys(ids)) {
                     if (!publish(site, entity, admin)) {
-                        sb.append(entity.getTitle()).append(CommonConstants.COMMA_DELIMITED);
+                        sb.append(entity.getTitle()).append(CommonConstants.COMMA);
                     }
                 }
             } catch (IOException | TemplateException e) {
@@ -668,27 +669,28 @@ public class CmsContentAdminController {
     /**
      * @param site
      * @param queryEntity
-     * @param response
+     * @return response entity
      */
     @RequestMapping("exportData")
     @Csrf
-    public void exportData(@RequestAttribute SysSite site, CmsContentQuery queryEntity, HttpServletResponse response) {
+    public ResponseEntity<StreamingResponseBody> exportData(@RequestAttribute SysSite site, CmsContentQuery queryEntity) {
         queryEntity.setSiteId(site.getId());
         queryEntity.setDisabled(false);
         queryEntity.setEmptyParent(true);
-        try {
-            DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.DOWNLOAD_FORMAT_STRING);
-            response.setHeader("content-disposition", "attachment;fileName=" + URLEncoder.encode(
-                    new StringBuilder(site.getName()).append(dateFormat.format(new Date())).append("-content.zip").toString(),
-                    "utf-8"));
-        } catch (UnsupportedEncodingException e1) {
-        }
-        try (ServletOutputStream outputStream = response.getOutputStream();
-                ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream)) {
-            zipOutputStream.setEncoding(Constants.DEFAULT_CHARSET_NAME);
-            exchangeComponent.exportDataByQuery(site, null, queryEntity, zipOutputStream);
-        } catch (IOException e) {
-        }
+        DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.DOWNLOAD_FORMAT_STRING);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentDisposition(ContentDisposition.attachment()
+                .filename(CommonUtils.joinString(site.getName(), dateFormat.format(new Date()), "-content.zip")).build());
+        StreamingResponseBody body = new StreamingResponseBody() {
+            @Override
+            public void writeTo(OutputStream outputStream) throws IOException {
+                try (ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream)) {
+                    zipOutputStream.setEncoding(Constants.DEFAULT_CHARSET_NAME);
+                    exchangeComponent.exportDataByQuery(site, null, queryEntity, zipOutputStream);
+                }
+            }
+        };
+        return ResponseEntity.ok().headers(headers).body(body);
     }
 
     /**
@@ -731,7 +733,7 @@ public class CmsContentAdminController {
                         && CommonUtils.notEmpty(entity.getUrl())) {
                     String filepath = siteComponent.getWebFilePath(site.getId(), entity.getUrl());
                     if (entity.getUrl().endsWith(CommonConstants.SEPARATOR)) {
-                        filepath = filepath + CommonConstants.getDefaultPage();
+                        filepath = CommonUtils.joinString(filepath, CommonConstants.getDefaultPage());
                     }
                     if (CmsFileUtils.isFile(filepath)) {
                         String backupFilePath = siteComponent.getWebBackupFilePath(site.getId(), entity.getUrl());

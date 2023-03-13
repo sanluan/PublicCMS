@@ -93,9 +93,9 @@ public class OauthController {
             RequestUtils.addCookie(request.getContextPath(), request.getScheme(), response, STATE_COOKIE_NAME, state, null, null);
             returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
             RequestUtils.addCookie(request.getContextPath(), request.getScheme(), response, RETURN_URL, returnUrl, null, null);
-            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + oauthGateway.getAuthorizeUrl(site.getId(), state);
+            return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, oauthGateway.getAuthorizeUrl(site.getId(), state));
         }
-        return UrlBasedViewResolver.REDIRECT_URL_PREFIX + site.getDynamicPath();
+        return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, site.getDynamicPath());
     }
 
     /**
@@ -152,13 +152,15 @@ public class OauthController {
                                 model.addAttribute("clientId", appClient.getId());
                                 model.addAttribute("uuid", oauthAccess.getOpenId());
                                 model.addAttribute("returnUrl", returnUrl);
-                                return UrlBasedViewResolver.REDIRECT_URL_PREFIX
-                                        + config.get(SiteConfigComponent.CONFIG_REGISTER_URL);
+                                return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX,
+                                        config.get(SiteConfigComponent.CONFIG_REGISTER_URL));
                             }
                         } else if (null != appClient.getUserId() && !appClient.isDisabled()) {// 有授权则登录
                             appClientService.updateLastLogin(appClient.getId(), CmsVersion.getVersion(), ip);
-                            Map<String, String> safeConfig = configComponent.getConfigData(site.getId(), SafeConfigComponent.CONFIG_CODE);
-                            int expiryMinutes = ConfigComponent.getInt(safeConfig.get(SafeConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
+                            Map<String, String> safeConfig = configComponent.getConfigData(site.getId(),
+                                    SafeConfigComponent.CONFIG_CODE);
+                            int expiryMinutes = ConfigComponent.getInt(
+                                    safeConfig.get(SafeConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
                                     SafeConfigComponent.DEFAULT_EXPIRY_MINUTES);
                             user = sysUserService.getEntity(appClient.getUserId());
                             if (null != user && !user.isDisabled()) {
@@ -188,6 +190,6 @@ public class OauthController {
                 log.error(e);
             }
         }
-        return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
+        return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
     }
 }

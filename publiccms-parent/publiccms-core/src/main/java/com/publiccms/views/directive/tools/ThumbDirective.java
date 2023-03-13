@@ -54,17 +54,17 @@ public class ThumbDirective extends AbstractTemplateDirective {
                 filepath = path;
             }
             String suffix = CmsFileUtils.getSuffix(filepath);
-            String thumbPath = filepath.substring(0, filepath.lastIndexOf(CommonConstants.DOT)) + CommonConstants.UNDERLINE
-                    + width + CommonConstants.UNDERLINE + height + suffix;
+            String thumbPath = CommonUtils.joinString(filepath.substring(0, filepath.lastIndexOf(CommonConstants.DOT)),
+                    CommonConstants.UNDERLINE, width, CommonConstants.UNDERLINE, height, suffix);
             String thumbFilePath = siteComponent.getWebFilePath(site.getId(), thumbPath);
             if (CmsFileUtils.exists(thumbFilePath)) {
-                handler.print(site.getSitePath() + thumbPath);
+                handler.print(CommonUtils.joinString(site.getSitePath(), thumbPath));
             } else {
                 String sourceFilePath = siteComponent.getWebFilePath(site.getId(), filepath);
                 if (CmsFileUtils.exists(sourceFilePath)) {
                     try {
                         ImageUtils.thumb(sourceFilePath, thumbFilePath, width, height, suffix);
-                        handler.print(site.getSitePath() + thumbPath);
+                        handler.print(CommonUtils.joinString(site.getSitePath(), thumbPath));
                     } catch (IOException e) {
                         handler.print(path);
                         log.error(e.getMessage());

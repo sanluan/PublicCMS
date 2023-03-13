@@ -3,10 +3,12 @@ package com.publiccms.controller.web.trade;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import javax.annotation.Resource;
+
 // Generated 2021-6-26 20:16:25 by com.publiccms.common.generator.SourceGenerator
 
 import javax.servlet.http.HttpServletRequest;
-import javax.annotation.Resource;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -102,10 +104,10 @@ public class TradeOrderController {
         Long orderId = service.create(site.getId(), user.getId(), entity, RequestUtils.getIpAddress(request),
                 tradeOrderParameters.getTradeOrderProductList());
         if (null != orderId) {
-            return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString()
-                    + (returnUrl.contains("?") ? "&" : "?") + orderIdField + "=" + orderId;
+            return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl, returnUrl.contains("?") ? "&" : "?",
+                    orderIdField, "=", orderId);
         } else {
-            return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
+            return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
         }
     }
 
@@ -123,7 +125,7 @@ public class TradeOrderController {
             HttpServletRequest request) {
         returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         service.close(site.getId(), orderId, user.getId());
-        return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
+        return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
     }
 
     @Resource

@@ -112,24 +112,27 @@ public class TradeOrderAdminController {
                 j = 0;
                 row.createCell(j++).setCellValue(entity.getId().toString());
                 user = userMap.get(entity.getUserId());
-                row.createCell(j++).setCellValue(null == user ? null : user.getNickname() + "\r\n" + entity.getIp());
+                row.createCell(j++).setCellValue(null == user ? null : CommonUtils.joinString(user.getNickname(), entity.getIp()));
                 row.createCell(j++).setCellValue(entity.getTitle());
                 row.createCell(j++)
-                        .setCellValue(entity.getAddressee() + " " + entity.getTelephone() + "\r\n"
-                                + LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.shipping_address")
-                                + ":" + entity.getAddress());
+                        .setCellValue(CommonUtils.joinString(entity.getAddressee(), " ", entity.getTelephone(), "\r\n",
+                                LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.shipping_address"),
+                                ":", entity.getAddress()));
                 row.createCell(j++).setCellValue(entity.getRemark());
                 row.createCell(j++).setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale,
-                        "page.status.order." + entity.getStatus()));
-                row.createCell(j++).setCellValue(null == entity.getProcessDate() ? ""
-                        : (dateFormat.format(entity.getProcessDate()) + "\r\n")
-                                + LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.order.process_info")
-                                + ":" + entity.getProcessInfo());
+                        CommonUtils.joinString("page.status.order.", entity.getStatus())));
                 row.createCell(j++)
-                        .setCellValue(null == entity.getPaymentId() ? ""
-                                : (LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.payment.id") + ":"
-                                        + entity.getPaymentId() + "\r\n")
-                                        + (null == entity.getPaymentDate() ? "" : dateFormat.format(entity.getProcessDate())));
+                        .setCellValue(CommonUtils.joinString(
+                                null == entity.getProcessDate() ? ""
+                                        : CommonUtils.joinString(dateFormat.format(entity.getProcessDate()), "\r\n"),
+                                LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.order.process_info"),
+                                ":", entity.getProcessInfo()));
+                row.createCell(j++)
+                        .setCellValue(CommonUtils.joinString(
+                                null == entity.getPaymentId() ? ""
+                                        : CommonUtils.joinString(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale,
+                                                "page.payment.id"), ":", entity.getPaymentId(), "\r\n"),
+                                (null == entity.getPaymentDate() ? "" : dateFormat.format(entity.getProcessDate()))));
                 row.createCell(j++).setCellValue(dateFormat.format(entity.getCreateDate()));
 
                 List<TradeOrderProduct> productList = traderProductService.getList(site.getId(), entity.getId());
@@ -152,8 +155,8 @@ public class TradeOrderAdminController {
 
         });
         DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.SHORT_DATE_FORMAT_STRING);
-        view.setFilename(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.order") + "_"
-                + dateFormat.format(new Date()));
+        view.setFilename(CommonUtils.joinString(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.order"),
+                CommonConstants.UNDERLINE, dateFormat.format(new Date())));
         return view;
     }
 

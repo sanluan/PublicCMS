@@ -59,6 +59,27 @@ public class CommonUtils {
     }
 
     /**
+     * @param elements
+     * @return 拼接后的文本
+     */
+    @SafeVarargs
+    public static <T> String joinString(T... elements) {
+        if (null == elements || 0 == elements.length) {
+            return null;
+        } else if (1 == elements.length) {
+            return String.valueOf(elements[0]);
+        } else {
+            StringBuilder sb = new StringBuilder();
+            for (T e : elements) {
+                if (null != e) {
+                    sb.append(e);
+                }
+            }
+            return sb.toString();
+        }
+    }
+
+    /**
      * @param var
      * @param length
      * @return 截取后的文本
@@ -76,7 +97,7 @@ public class CommonUtils {
     public static String keep(String var, int length, String append) {
         if (null != append) {
             if (null != var && var.length() > length && length > append.length()) {
-                return var.substring(0, length - append.length()) + append;
+                return joinString(var.substring(0, length - append.length()), append);
             } else {
                 return var;
             }

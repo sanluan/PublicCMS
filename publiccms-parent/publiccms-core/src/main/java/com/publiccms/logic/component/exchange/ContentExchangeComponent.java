@@ -439,8 +439,8 @@ public class ContentExchangeComponent extends AbstractExchange<CmsContent, Conte
             }
         });
         DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.DOWNLOAD_FORMAT_STRING);
-        view.setFilename(new StringBuilder(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content"))
-                .append(dateFormat.format(new Date())).toString());
+        view.setFilename(CommonUtils.joinString(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content"),
+                dateFormat.format(new Date())));
         return view;
     }
 
@@ -461,7 +461,7 @@ public class ContentExchangeComponent extends AbstractExchange<CmsContent, Conte
                     data.setChildList(childList);
                 }
             }
-            export(directory, out, zipOutputStream, data, entity.getId() + ".json");
+            export(directory, out, zipOutputStream, data, CommonUtils.joinString(entity.getId(), ".json"));
         }
     }
 

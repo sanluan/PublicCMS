@@ -39,8 +39,8 @@ import com.publiccms.logic.service.sys.SysRoleService;
  * &lt;@sys.roleModule roleIds='1,2,3'
  * modelId='page'&gt;${object}&lt;/@sys.roleModule&gt;
  * <p>
- * &lt;@sys.roleModule roleIds='1,2,3' modelIds='page,content'&gt;&lt;#list map as
- * k,v&gt;${k}:${v}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.roleModule&gt;
+ * &lt;@sys.roleModule roleIds='1,2,3' modelIds='page,content'&gt;&lt;#list map
+ * as k,v&gt;${k}:${v}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.roleModule&gt;
  *
  * <pre>
 &lt;script&gt;

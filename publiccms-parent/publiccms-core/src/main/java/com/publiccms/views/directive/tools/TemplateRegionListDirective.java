@@ -65,8 +65,8 @@ public class TemplateRegionListDirective extends AbstractTemplateDirective {
                     placeSet.add(matcher.group(1));
                 }
                 for (String place : placeSet) {
-                    String placeContent = CmsFileUtils.getFileContent(
-                            siteComponent.getTemplateFilePath(siteId, TemplateComponent.INCLUDE_DIRECTORY + place));
+                    String placeContent = CmsFileUtils.getFileContent(siteComponent.getTemplateFilePath(siteId,
+                            CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, place)));
                     if (CommonUtils.notEmpty(placeContent)) {
                         matcher = REGION_PATTERN.matcher(placeContent);
                         while (matcher.find()) {

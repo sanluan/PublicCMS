@@ -195,7 +195,7 @@ public class HttpParameterHandler extends BaseHandler {
 
     @Override
     public Map<String, Object> getMap(String name) {
-        String mapNamePrefix = name + Constants.DOT;
+        String mapNamePrefix = CommonUtils.joinString(name, Constants.DOT);
         Enumeration<String> names = request.getParameterNames();
         Map<String, Object> map = new HashMap<>();
         while (names.hasMoreElements()) {

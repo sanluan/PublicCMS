@@ -164,11 +164,11 @@ public class CmsContentService extends BaseService<CmsContent> {
 
     /**
      * @param siteId
-     * @param status 
+     * @param status
      * @param startCreateDate
      * @param endCreateDate
      * @param workloadType
-     * @param dateField 
+     * @param dateField
      * @param pageIndex
      * @param pageSize
      * @return
@@ -424,13 +424,15 @@ public class CmsContentService extends BaseService<CmsContent> {
                             String[] values = StringUtils.split(map.get(extendField.getId().getCode()), CommonConstants.COMMA);
                             if (CommonUtils.notEmpty(values)) {
                                 for (String value : values) {
-                                    dictionaryValueList.add(extendField.getId().getCode() + "_" + value);
+                                    dictionaryValueList.add(CommonUtils.joinString(extendField.getId().getCode(),
+                                            CommonConstants.UNDERLINE, value));
                                 }
                             }
                         } else {
                             String value = map.get(extendField.getId().getCode());
                             if (null != value) {
-                                dictionaryValueList.add(extendField.getId().getCode() + "_" + value);
+                                dictionaryValueList.add(
+                                        CommonUtils.joinString(extendField.getId().getCode(), CommonConstants.UNDERLINE, value));
                             }
                         }
                     } else {
@@ -780,8 +782,7 @@ public class CmsContentService extends BaseService<CmsContent> {
         } else if (null != containChild && containChild) {
             CmsCategory category = categoryService.getEntity(categoryId);
             if (null != category) {
-                String[] categoryStringIds = ArrayUtils.add(
-                        StringUtils.splitByWholeSeparator(category.getChildIds(), CommonConstants.COMMA_DELIMITED),
+                String[] categoryStringIds = ArrayUtils.add(StringUtils.split(category.getChildIds(), CommonConstants.COMMA),
                         String.valueOf(categoryId));
                 categoryIds = new Integer[categoryStringIds.length];
                 for (int i = 0; i < categoryStringIds.length; i++) {

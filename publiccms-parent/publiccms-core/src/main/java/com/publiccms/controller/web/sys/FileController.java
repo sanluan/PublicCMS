@@ -2,19 +2,21 @@ package com.publiccms.controller.web.sys;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CmsVersion;
@@ -162,44 +165,46 @@ public class FileController {
      * @param site
      * @param filePath
      * @param request
-     * @param response
+     * @return response entity
      */
     @RequestMapping("download")
-    public void download(@RequestAttribute SysSite site, String filePath, HttpServletRequest request,
-            HttpServletResponse response) {
+    public ResponseEntity<StreamingResponseBody> download(@RequestAttribute SysSite site, String filePath,
+            HttpServletRequest request) {
         Matcher matcher = CmsFileUtils.UPLOAD_FILE_PATTERN.matcher(filePath);
         if (matcher.matches()) {
             String absolutePath = matcher.group(1);
             String metadataPath = siteComponent.getPrivateFilePath(site.getId(), CmsFileUtils.getMetadataFileName(absolutePath));
-            response.setHeader("content-type", "application/octet-stream");
+
+            HttpHeaders headers = new HttpHeaders();
             if (CmsFileUtils.isFile(metadataPath)) {
-                try {
-                    response.setHeader("content-disposition", "attachment;fileName="
-                            + URLEncoder.encode(CmsFileUtils.getFileContent(metadataPath), CommonConstants.DEFAULT_CHARSET_NAME));
-                } catch (UnsupportedEncodingException e) {
-                }
+                headers.setContentDisposition(
+                        ContentDisposition.attachment().filename(CmsFileUtils.getFileContent(metadataPath)).build());
             } else {
-                try {
-                    response.setHeader("content-disposition", "attachment;fileName="
-                            + URLEncoder.encode(CmsFileUtils.getFileName(absolutePath), CommonConstants.DEFAULT_CHARSET_NAME));
-                } catch (UnsupportedEncodingException e) {
-                }
+                headers.setContentDisposition(
+                        ContentDisposition.attachment().filename(CmsFileUtils.getFileName(absolutePath)).build());
             }
-            String sendfile = request.getHeader("Sendfile");
-            if ("X-Accel-Redirect".equalsIgnoreCase(sendfile)) {
-                response.setHeader("X-Accel-Redirect", "/downloadfile/" + absolutePath);
-            } else if ("X-Sendfile".equalsIgnoreCase(sendfile)) {
-                response.setHeader("X-Sendfile", SiteComponent.getFullFileName(site.getId(), absolutePath).substring(1));
+
+            String sendfile = request.getHeader(CmsFileUtils.HEADERS_SEND_CTRL);
+            if (CmsFileUtils.HEADERS_SEND_NGINX.equalsIgnoreCase(sendfile)) {
+                headers.set(CmsFileUtils.HEADERS_SEND_NGINX, CommonUtils.joinString(CmsFileUtils.NGINX_DOWNLOAD_PREFIX, absolutePath));
+                return ResponseEntity.ok().headers(headers).build();
+            } else if (CmsFileUtils.HEADERS_SEND_APACHE.equalsIgnoreCase(sendfile)) {
+                headers.set(CmsFileUtils.HEADERS_SEND_APACHE,
+                        SiteComponent.getFullFileName(site.getId(), absolutePath).substring(1));
+                return ResponseEntity.ok().headers(headers).build();
             } else {
+                headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
                 String webfilePath = siteComponent.getWebFilePath(site.getId(), absolutePath);
-                if (CmsFileUtils.isFile(webfilePath)) {
-                    try (OutputStream outputStream = response.getOutputStream()) {
+                StreamingResponseBody body = new StreamingResponseBody() {
+                    @Override
+                    public void writeTo(OutputStream outputStream) throws IOException {
                         CmsFileUtils.copyFileToOutputStream(webfilePath, outputStream);
-                    } catch (IOException e) {
                     }
-                }
+                };
+                return ResponseEntity.ok().headers(headers).body(body);
             }
         }
+        return ResponseEntity.notFound().build();
     }
 
     /**
@@ -208,11 +213,11 @@ public class FileController {
      * @param sign
      * @param filePath
      * @param request
-     * @param response
+     * @return response entity
      */
     @RequestMapping("private")
-    public void privatefile(@RequestAttribute SysSite site, long expiry, String sign, String filePath, HttpServletRequest request,
-            HttpServletResponse response) {
+    public ResponseEntity<StreamingResponseBody> privatefile(@RequestAttribute SysSite site, long expiry, String sign,
+            String filePath, HttpServletRequest request) {
         if (CommonUtils.notEmpty(sign) && expiry > System.currentTimeMillis()) {
             Map<String, String> config = configComponent.getConfigData(site.getId(), SafeConfigComponent.CONFIG_CODE);
             String signKey = config.get(SafeConfigComponent.CONFIG_PRIVATEFILE_KEY);
@@ -221,21 +226,30 @@ public class FileController {
             }
             String string = CmsFileUtils.getPrivateFileSignString(expiry, filePath);
             if (string.equalsIgnoreCase(VerificationUtils.decryptAES(VerificationUtils.base64Decode(sign), signKey))) {
-                String sendfile = request.getHeader("Sendfile");
-                if ("X-Accel-Redirect".equalsIgnoreCase(sendfile)) {
-                    response.setHeader("X-Accel-Redirect", "/privatefile/" + filePath);
-                } else if ("X-Sendfile".equalsIgnoreCase(sendfile)) {
-                    response.setHeader("X-Sendfile", "private" + SiteComponent.getFullFileName(site.getId(), filePath));
+                HttpHeaders headers = new HttpHeaders();
+                String sendfile = request.getHeader(CmsFileUtils.HEADERS_SEND_CTRL);
+                if (CmsFileUtils.HEADERS_SEND_NGINX.equalsIgnoreCase(sendfile)) {
+                    headers.set(CmsFileUtils.HEADERS_SEND_NGINX,
+                            CommonUtils.joinString(CmsFileUtils.NGINX_PRIVATEFILE_PREFIX, filePath));
+                } else if (CmsFileUtils.HEADERS_SEND_APACHE.equalsIgnoreCase(sendfile)) {
+                    headers.set(CmsFileUtils.HEADERS_SEND_APACHE,
+                            CommonUtils.joinString("private", SiteComponent.getFullFileName(site.getId(), filePath)));
                 } else {
                     String privatefilePath = siteComponent.getPrivateFilePath(site.getId(), filePath);
                     if (CmsFileUtils.isFile(privatefilePath)) {
-                        try (OutputStream outputStream = response.getOutputStream()) {
-                            CmsFileUtils.copyFileToOutputStream(privatefilePath, outputStream);
-                        } catch (IOException e) {
-                        }
+                        StreamingResponseBody body = new StreamingResponseBody() {
+                            @Override
+                            public void writeTo(OutputStream outputStream) throws IOException {
+                                CmsFileUtils.copyFileToOutputStream(privatefilePath, outputStream);
+                            }
+                        };
+                        return ResponseEntity.ok().headers(headers).body(body);
+                    } else {
+                        return ResponseEntity.notFound().build();
                     }
                 }
             }
         }
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 }

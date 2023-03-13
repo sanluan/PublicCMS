@@ -8,10 +8,10 @@ package com.publiccms.common.copyright;
 public interface Copyright {
 
     /**
-     * @param licenseFilePath
+     * @param license
      * @return whether to pass verify
      */
-    boolean verify(String licenseFilePath);
+    boolean verify(License license);
 
     /**
      * @param licenseFilePath
@@ -20,9 +20,9 @@ public interface Copyright {
     License getLicense(String licenseFilePath);
 
     /**
-     * @param licenseFilePath
+     * @param license
      * @param domain
      * @return whether to pass verify
      */
-    boolean verify(String licenseFilePath, String domain);
+    boolean verify(License license, String domain);
 }
