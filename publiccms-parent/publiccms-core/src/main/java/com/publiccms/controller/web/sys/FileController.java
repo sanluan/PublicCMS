@@ -2,6 +2,7 @@ package com.publiccms.controller.web.sys;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -177,16 +178,17 @@ public class FileController {
 
             HttpHeaders headers = new HttpHeaders();
             if (CmsFileUtils.isFile(metadataPath)) {
-                headers.setContentDisposition(
-                        ContentDisposition.attachment().filename(CmsFileUtils.getFileContent(metadataPath)).build());
+                headers.setContentDisposition(ContentDisposition.attachment()
+                        .filename(CmsFileUtils.getFileContent(metadataPath), StandardCharsets.UTF_8).build());
             } else {
-                headers.setContentDisposition(
-                        ContentDisposition.attachment().filename(CmsFileUtils.getFileName(absolutePath)).build());
+                headers.setContentDisposition(ContentDisposition.attachment()
+                        .filename(CmsFileUtils.getFileName(absolutePath), StandardCharsets.UTF_8).build());
             }
 
             String sendfile = request.getHeader(CmsFileUtils.HEADERS_SEND_CTRL);
             if (CmsFileUtils.HEADERS_SEND_NGINX.equalsIgnoreCase(sendfile)) {
-                headers.set(CmsFileUtils.HEADERS_SEND_NGINX, CommonUtils.joinString(CmsFileUtils.NGINX_DOWNLOAD_PREFIX, absolutePath));
+                headers.set(CmsFileUtils.HEADERS_SEND_NGINX,
+                        CommonUtils.joinString(CmsFileUtils.NGINX_DOWNLOAD_PREFIX, absolutePath));
                 return ResponseEntity.ok().headers(headers).build();
             } else if (CmsFileUtils.HEADERS_SEND_APACHE.equalsIgnoreCase(sendfile)) {
                 headers.set(CmsFileUtils.HEADERS_SEND_APACHE,

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.util.Comparator;
@@ -201,10 +202,10 @@ public class CmsTemplateAdminController {
             String filePath = siteComponent.getTemplateFilePath(site.getId(), CommonConstants.SEPARATOR);
             CmsFileUtils.replaceFileList(filePath, replaceParameters.getReplaceList(), word, replace);
             templateComponent.clearTemplateCache();
-            logOperateService
-                    .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                            "replace.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
-                            CommonUtils.joinString(word, " to ", replace, " in ", replaceParameters.getReplaceList().toString())));
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "replace.template", RequestUtils.getIpAddress(request),
+                    CommonUtils.getDate(),
+                    CommonUtils.joinString(word, " to ", replace, " in ", replaceParameters.getReplaceList().toString())));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -287,7 +288,9 @@ public class CmsTemplateAdminController {
         DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.DOWNLOAD_FORMAT_STRING);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentDisposition(ContentDisposition.attachment()
-                .filename(CommonUtils.joinString(site.getName(), dateFormat.format(new Date()), "-template.zip")).build());
+                .filename(CommonUtils.joinString(site.getName(), dateFormat.format(new Date()), "-template.zip"),
+                        StandardCharsets.UTF_8)
+                .build());
         StreamingResponseBody body = new StreamingResponseBody() {
             @Override
             public void writeTo(OutputStream outputStream) throws IOException {

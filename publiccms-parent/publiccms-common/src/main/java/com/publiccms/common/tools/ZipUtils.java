@@ -104,7 +104,7 @@ public class ZipUtils {
      * &#64;RequestMapping("export")
      * public ResponseEntity<StreamingResponseBody> export() {
      *     HttpHeaders headers = new HttpHeaders();
-     *     headers.setContentDisposition(ContentDisposition.attachment().filename("filename.zip").build());
+     *     headers.setContentDisposition(ContentDisposition.attachment().filename("filename.zip", StandardCharsets.UTF_8).build());
      *     StreamingResponseBody body = new StreamingResponseBody() {
      *         @Override
      *         public void writeTo(OutputStream outputStream) throws IOException {

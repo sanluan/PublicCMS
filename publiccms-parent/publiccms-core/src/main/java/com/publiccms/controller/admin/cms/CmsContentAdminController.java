@@ -3,6 +3,7 @@ package com.publiccms.controller.admin.cms;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.HashSet;
@@ -680,7 +681,9 @@ public class CmsContentAdminController {
         DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.DOWNLOAD_FORMAT_STRING);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentDisposition(ContentDisposition.attachment()
-                .filename(CommonUtils.joinString(site.getName(), dateFormat.format(new Date()), "-content.zip")).build());
+                .filename(CommonUtils.joinString(site.getName(), dateFormat.format(new Date()), "-content.zip"),
+                        StandardCharsets.UTF_8)
+                .build());
         StreamingResponseBody body = new StreamingResponseBody() {
             @Override
             public void writeTo(OutputStream outputStream) throws IOException {

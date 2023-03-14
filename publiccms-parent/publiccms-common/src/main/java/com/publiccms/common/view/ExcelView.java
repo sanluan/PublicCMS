@@ -1,5 +1,6 @@
 package com.publiccms.common.view;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -60,10 +61,10 @@ public class ExcelView extends AbstractXlsxStreamingView {
         if (null != filename) {
             if (-1 < filename.indexOf(Constants.DOT)) {
                 response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
-                        ContentDisposition.attachment().filename(filename).build().toString());
+                        ContentDisposition.attachment().filename(filename, StandardCharsets.UTF_8).build().toString());
             } else {
-                response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
-                        ContentDisposition.attachment().filename(CommonUtils.joinString(filename, SUFFIX)).build().toString());
+                response.setHeader(HttpHeaders.CONTENT_DISPOSITION, ContentDisposition.attachment()
+                        .filename(CommonUtils.joinString(filename, SUFFIX), StandardCharsets.UTF_8).build().toString());
             }
         }
     }

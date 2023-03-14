@@ -2,6 +2,7 @@ package com.publiccms.controller.admin.sys;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.util.Date;
@@ -155,7 +156,9 @@ public class TaskTemplateAdminController {
         DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.DOWNLOAD_FORMAT_STRING);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentDisposition(ContentDisposition.attachment()
-                .filename(CommonUtils.joinString(site.getName(), dateFormat.format(new Date()), "-tasktemplate.zip")).build());
+                .filename(CommonUtils.joinString(site.getName(), dateFormat.format(new Date()), "-tasktemplate.zip"),
+                        StandardCharsets.UTF_8)
+                .build());
         StreamingResponseBody body = new StreamingResponseBody() {
             @Override
             public void writeTo(OutputStream outputStream) throws IOException {
