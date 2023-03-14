@@ -110,17 +110,18 @@ var JUI = {
         }
     } ,
     ajaxError: function(xhr, ajaxOptions, thrownError) {
-        if (alertMsg ) {
-            if('undefined' == typeof thrownError||"" ==thrownError){
-                var exception = $($.parseHTML(xhr.responseText, document, true)).find('#divexception textarea');
-                if(exception.length){
-                    thrownError=exception.val();
-                }
+        if('undefined' == typeof thrownError||"" ==thrownError){
+            var exception = $($.parseHTML(xhr.responseText, document, true)).find('#divexception textarea');
+            if(exception.length){
+                thrownError=exception.val();
+            }else if(0===xhr.status){
+                thrownError = JUI.msg("networkError");
             }
-            alertMsg.error("<div>Http status: " + xhr.status + " " + xhr.statusText + "</div>" + "<div>ajaxOptions: " + ajaxOptions + "</div>" + "<div>thrownError: " + thrownError
-                    + "</div>");
+        }
+        if (alertMsg ) {
+            alertMsg.error("<div>Http status: " + xhr.status + " " + xhr.statusText + "</div>" + "<div>ajaxOptions: " + ajaxOptions + "</div>" + "<div>thrownError: " + thrownError + "</div>");
         } else {
-            alert("Http status: " + xhr.status + " " + xhr.statusText + "\najaxOptions: " + ajaxOptions + "\nthrownError:" + thrownError + "\n" + xhr.responseText);
+            alert("Http status: " + xhr.status + " " + xhr.statusText + "\najaxOptions: " + ajaxOptions + "\nthrownError:" + thrownError);
         }
     },
     ajaxDone: function(json) {
