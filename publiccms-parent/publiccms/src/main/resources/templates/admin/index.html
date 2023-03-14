@@ -17,6 +17,7 @@
     <script src="${base}/resource/js/echarts.proxy.js"></script>
 </head>
 <body>
+    <div id="background"></div><div id="progressBar"><i class="icon-spinner icon-spin"></i></div>
     <header>
         <a class="logo" href="./"><img src="<#if siteAttribute.logo?has_content>${getUrl(siteAttribute.logo)}<#else>${base}/resource/logo.png</#if>" alt="LOGO"/></a>
         <ul class="nav">
@@ -172,6 +173,7 @@
                 loadScripts([window.LOADSCRIPTS_BASE+"/resource/plugins/echarts/echarts.common.min.js"],function(){
                     echartsProxy(echarts);
                 });
+                $("#background,#progressBar").hide();
             }
         });
     </script>
