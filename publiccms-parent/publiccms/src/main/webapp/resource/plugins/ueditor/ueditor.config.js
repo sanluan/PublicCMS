@@ -48,14 +48,14 @@
 //            'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|', 'touppercase', 'tolowercase', '|',
 //            'link', 'unlink', 'anchor', '|', 'imagenone', 'imageleft', 'imageright', 'imagecenter', '|',
 //            'simpleupload', 'insertimage', 'emotion', 'scrawl', 'insertvideo',  'attachment', 'map', 'gmap', 'insertframe', 'insertcode', 'pagebreak', 'template', 'background', '|',
-//            'horizontal', 'date', 'time', 'spechars', 'wordimage', '|',
+//            'horizontal', 'date', 'time', 'spechars', 'wordimage', 'catchremoteimage', '|',
 //            'inserttable', 'deletetable', 'insertparagraphbeforetable', 'insertrow', 'deleterow', 'insertcol', 'deletecol', 'mergecells', 'mergeright', 'mergedown', 'splittocells', 'splittorows', 'splittocols', 'charts', '|',
 //            'print', 'preview', 'searchreplace', 'drafts', 'help'
 //        ]]
     	, toolbars: [[
                   'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'blockquote', 'forecolor', 'backcolor','spechars', 'rowspacingtop', 'rowspacingbottom','lineheight', '|', 'customstyle', 'paragraph', 'fontfamily', 'fontsize', '|',
                   'insertorderedlist', 'insertunorderedlist', 'directionalityltr', 'directionalityrtl', 'indent', 'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', 'touppercase', 'tolowercase', '|',  'link', 'unlink', 'anchor', '|', 'imagenone', 'imageleft', 'imageright', 'imagecenter', '|',
-                  'insertvideo', 'simpleupload', 'insertimage', 'wordimage','emotion', 'scrawl', 'attachment', 'map', 'gmap', 'insertframe', 'insertcode', 'background', 'date', 'time', '|',
+                  'insertvideo', 'simpleupload', 'insertimage', 'wordimage', 'catchremoteimage', 'emotion', 'scrawl', 'attachment', 'map', 'gmap', 'insertframe', 'insertcode', 'background', 'date', 'time', '|',
                   'inserttable', 'deletetable', 'insertparagraphbeforetable', 'insertrow', 'deleterow', 'insertcol', 'deletecol', 'mergecells', 'mergeright', 'mergedown', 'splittocells', 'splittorows', 'splittocols', 'charts'],
               ['fullscreen','pagebreak', 'horizontal', 'searchreplace', 'selectall', '|',
                   'removeformat', 'formatmatch', 'autotypeset', 'pasteplain', 'template', 'preview','cleardoc', 'undo', 'redo', 'drafts','source', 'print', 'help']]

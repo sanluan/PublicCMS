@@ -2,7 +2,7 @@
  */
 UE.I18N['ja-jp'] = {
     'labelMap':{
-        'anchor':'アンカー', 'undo':'アンドゥー', 'redo':'リドゥー', 'bold':'太字', 'indent':'インデント',
+        'anchor':'アンカー', 'catchremoteimage':'リモート・イメージの取得', 'undo':'アンドゥー', 'redo':'リドゥー', 'bold':'太字', 'indent':'インデント',
         'italic':'斜体', 'underline':'下線', 'strikethrough':'取り消し線', 'subscript':'下付き','fontborder':'囲み線',
         'superscript':'上付き', 'formatmatch':'書式のコピー/貼り付け', 'source':'ソースコード', 'blockquote':'参考資料',
         'pasteplain':'テキストのみ保持', 'selectall':'すべて選択','print':'印刷', 'preview':'プレビュー',
