@@ -38,13 +38,14 @@
             <#list list as a>
                 <@t.merge 'categoryIds' a.id.categoryId/>
             </#list>
+            <@sys.deptItem itemType='category' deptId=admin.deptId itemIds=t.categoryIds><#assign deptCategoryMap=map/></@sys.deptItem>
             <@cms.category ids=t.categoryIds><#assign categoryMap=map/></@cms.category>
             <#list list as a>
+                <#if categoryMap[a.id.categoryId?string]?has_content && deptCategoryMap[a.id.categoryId?string]>
                 <li>
-                    <#if categoryMap[a.id.categoryId?string]?has_content>
-                        <a href="cmsContent/add.html?id=${a.id.categoryId}&modelId=${a.id.modelId}" class="exclude-translate" target="navTab" rel="cmsContent/add" title="<@t.page 'button.add_some_things' object.name/>"><@bread categoryMap[a.id.categoryId?string]/> ${categoryMap[a.id.categoryId?string].name}</a>
-                    </#if>
+                    <a href="cmsContent/add.html?id=${a.id.categoryId}&modelId=${a.id.modelId}" class="exclude-translate" target="navTab" rel="cmsContent/add" title="<@t.page 'button.add_some_things' object.name/>"><@bread categoryMap[a.id.categoryId?string]/> ${categoryMap[a.id.categoryId?string].name}</a>
                 </li>
+                </#if>
             </#list>
         </@cms.categoryModelList>
     </@cms.model>

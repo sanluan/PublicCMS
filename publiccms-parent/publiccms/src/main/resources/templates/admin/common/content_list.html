@@ -4,8 +4,8 @@
         containChild=object.ownsAllCategory
     />
 </@sys.dept>
-<@sys.deptItem itemType='category' deptId=admin.deptId!'' itemId=categoryId!''><#assign deptCategory=object!/></@sys.deptItem>
-<#if deptCategory?has_content&&deptCategory || dept?has_content && dept.ownsAllCategory>
+<@sys.deptItem itemType='category' deptId=admin.deptId itemId=categoryId><#assign deptCategory=object/></@sys.deptItem>
+<#if deptCategory?has_content && deptCategory || dept?has_content && dept.ownsAllCategory>
     <#if parentId?has_content>
         <@cms.content id=parentId><#assign parent=object/></@cms.content>
     </#if>

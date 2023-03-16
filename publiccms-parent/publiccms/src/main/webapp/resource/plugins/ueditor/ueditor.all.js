@@ -1,7 +1,7 @@
 /*!
  * UEditor
  * version: ueditor
- * build: Mon Mar 06 2023 09:20:15 GMT+0800 (中国标准时间)
+ * build: Thu Mar 16 2023 12:18:42 GMT+0800 (中国标准时间)
  */
 
 (function(){
@@ -25,7 +25,7 @@ UE.I18N = {};
 
 UE._customizeUI = {};
 
-UE.version = "1.4.3";
+UE.version = "1.4.4";
 
 var dom = UE.dom = {};
 
@@ -806,7 +806,7 @@ var utils = UE.utils = {
      * ```
      */
     html:function (str) {
-        return str ? str.replace(/&((g|l|quo)t|amp|#39|nbsp);/g, function (m) {
+        return str ? str.replace(/&((g|l|quo|ldquo|rdquo)t|amp|#39|nbsp);/g, function (m) {
             return {
                 '&lt;':'<',
                 '&amp;':'&',
@@ -10642,7 +10642,7 @@ UE.plugins['autotypeset'] = function(){
                 }
                 domUtils.removeAttributes(ci,['class']);
             }
-            if(ci.tagName.toLowerCase() == 'img' && !ci.getAttribute('emotion')){
+            if(ci.tagName.toLowerCase() == 'img' && !ci.getAttribute('emotion') && !ci.getAttribute('word_img')){
                 //清理宽度高度
                 if(opt.removeImageSize){
                     domUtils.removeStyle(ci,'width');
@@ -13847,6 +13847,12 @@ UE.plugin.register('anchor', function (){
            utils.each(root.getNodesByTagName('a'),function(a){
                var val;
                if((val = a.getAttr('name')) && !a.getAttr('href')){
+                   //过滤掉word冗余标签
+                   //_Toc\d+有可能勿命中
+                   if(/^\_Toc\d+$/.test(val)){
+                       a.parentNode.removeChild(a);
+                       return;
+                   }
                    a.tagName = 'img';
                    a.setAttr({
                        anchorname :a.getAttr('name'),
