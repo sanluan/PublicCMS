@@ -25,6 +25,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.apache.commons.text.StringEscapeUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.poi.hssf.converter.ExcelToHtmlConverter;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -91,7 +92,7 @@ public class DocToHtmlUtils {
             XHTMLOptions options = XHTMLOptions.create().setImageManager(imageManager).setFragment(true);
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             CustomXHTMLConverter.getInstance().convert(document, out, options);
-            return HtmlUtils.UNESCAPE_HTML4.translate(new String(out.toByteArray()));
+            return StringEscapeUtils.unescapeHtml4(new String(out.toByteArray()));
         }
     }
 
@@ -191,7 +192,7 @@ public class DocToHtmlUtils {
         if (-1 < index1 && -1 < index2) {
             html = html.substring(html.indexOf('>', index1) + 1, index2);
         }
-        return HtmlUtils.UNESCAPE_HTML4.translate(html);
+        return StringEscapeUtils.unescapeHtml4(html);
     }
 
     /**

@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.text.StringEscapeUtils;
 import org.apache.poi.hssf.usermodel.HSSFDataFormat;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -99,7 +100,7 @@ public class XSSFWorkbookUtils {
             }
             sb.append("</table>");
         }
-        return HtmlUtils.UNESCAPE_HTML4.translate(sb.toString());
+        return StringEscapeUtils.unescapeHtml4(sb.toString());
     }
 
     /**
