@@ -4,7 +4,7 @@
             <a class="button" href="cmsTemplate/deletePlace?path=${(path?url)!}&navTabId=placeTemplate/list&_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.delete_directory'/>" target="ajaxTodo"><@t.page 'button.delete_directory'/></a>
             <a class="button" href="placeTemplate/metadata.html?path=${(path?url_path)!}" target="ajax" rel="cmsTemplatePlace"><@t.page 'template.create_here'/></a>
         </#if>
-        <a class="button" href="cmsFileBackup/list.html?path=/include${(path?url_path)!}" target="navTab" rel="cmsFileBackup/list" icon="<i class='bi bi-recycle icon-large'></i>"><@t.page 'recycle_bin'/></a>
+        <a class="button" href="cmsFileBackup/list.html?path=/include${(path?url_path)!}" target="navTab" rel="cmsFileBackup/list"><@t.page 'recycle_bin'/></a>
     </h2>
     <div class="pageFormContent" layoutH>
         <fieldset>

@@ -9,6 +9,7 @@ import com.publiccms.common.cache.CacheEntity;
 import com.publiccms.common.constants.Constants;
 import com.publiccms.common.redis.serializer.BinarySerializer;
 import com.publiccms.common.redis.serializer.StringSerializer;
+import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.RedisUtils;
 
 import redis.clients.jedis.Jedis;
@@ -73,7 +74,7 @@ public class RedisCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Serial
     public List<V> clear() {
         List<V> list = new ArrayList<>();
         Jedis jedis = jedisPool.getResource();
-        Set<String> keyList = jedis.keys(region + Constants.DOT + "*");
+        Set<String> keyList = jedis.keys(CommonUtils.joinString(region, Constants.DOT, "*"));
         for (String key : keyList) {
             byte[] byteKey = stringSerializer.serialize(key);
             V value = valueSerializer.deserialize(jedis.get(byteKey));
@@ -94,7 +95,7 @@ public class RedisCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Serial
     }
 
     private byte[] getKey(K key) {
-        return stringSerializer.serialize(region + Constants.DOT + key);
+        return stringSerializer.serialize(CommonUtils.joinString(region, Constants.DOT, key));
     }
 
     @Override

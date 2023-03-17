@@ -12,6 +12,7 @@ import jakarta.persistence.TemporalType;
 
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.publiccms.common.database.CmsUpgrader;
@@ -41,6 +42,7 @@ public class LogLogin implements java.io.Serializable {
      * 用户名
      */
     @GeneratorColumn(title = "用户名", condition = true, like = true)
+    @Length(max = 50)
     private String name;
     /**
      * user id<p>

@@ -44,10 +44,10 @@
         <tbody>
             <#list page.list as a>
             <tr>
-                <td><a href="visit/history.html?startCreateDate=${a.id.visitDate!}" target="navTab" rel="visit/history" title="<@t.page 'visit.history'/>" icon="<i class='icon-bolt icon-large'></i>">${a.id.visitDate?date}</a></td>
+                <td><a href="visit/history.html?startCreateDate=${a.id.visitDate!}" target="navTab" rel="visit/history" title="<@t.page 'visit.history'/>">${a.id.visitDate?date}</a></td>
                 <td>
                     <div class="box">
-                        <a href="cmsDiy/preview.html?url=${((a.url)?url)!}" target="navTab" rel="cmsDiy/preview"  icon="<i class='bi bi-palette2 icon-large'></i>" title="<@t.page 'diy.preview'/>">${a.url!}</a>
+                        <a href="cmsDiy/preview.html?url=${((a.url)?url)!}" target="navTab" rel="cmsDiy/preview"  title="<@t.page 'diy.preview'/>">${a.url!}</a>
                         <a href="${a.url!}" target="_blank"><i class="icon-external-link"></i></a>
                     </div>
                 </td>

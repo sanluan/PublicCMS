@@ -1,15 +1,8 @@
 package com.publiccms.common.tools;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.regex.Pattern;
 
-import org.apache.commons.text.translate.AggregateTranslator;
-import org.apache.commons.text.translate.CharSequenceTranslator;
-import org.apache.commons.text.translate.EntityArrays;
-import org.apache.commons.text.translate.LookupTranslator;
-import org.apache.commons.text.translate.NumericEntityUnescaper;
+import org.apache.commons.text.StringEscapeUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Safelist;
 
@@ -20,20 +13,6 @@ import com.publiccms.common.constants.Constants;
  * 
  */
 public class HtmlUtils {
-    public static final Map<CharSequence, CharSequence> BASIC_ESCAPE;
-    static {
-        final Map<CharSequence, CharSequence> initialMap = new HashMap<>();
-        initialMap.put("\"", "&quot;"); // " - double-quote
-        initialMap.put("&", "&amp;"); // & - ampersand
-        BASIC_ESCAPE = Collections.unmodifiableMap(initialMap);
-    }
-    public static final Map<CharSequence, CharSequence> BASIC_UNESCAPE;
-    static {
-        BASIC_UNESCAPE = Collections.unmodifiableMap(EntityArrays.invert(BASIC_ESCAPE));
-    }
-    public static final CharSequenceTranslator UNESCAPE_HTML4 = new AggregateTranslator(new LookupTranslator(BASIC_UNESCAPE),
-            new LookupTranslator(EntityArrays.ISO8859_1_UNESCAPE), new LookupTranslator(EntityArrays.HTML40_EXTENDED_UNESCAPE),
-            new NumericEntityUnescaper());
     /**
      * 
      */
@@ -55,7 +34,7 @@ public class HtmlUtils {
      */
     public static String removeHtmlTag(String string) {
         if (CommonUtils.notEmpty(string)) {
-            return UNESCAPE_HTML4.translate(HTML_PATTERN.matcher(string).replaceAll(Constants.BLANK));
+            return StringEscapeUtils.unescapeHtml4(HTML_PATTERN.matcher(string).replaceAll(Constants.BLANK));
         }
         return string;
     }
@@ -63,10 +42,14 @@ public class HtmlUtils {
     public static String cleanUnsafeHtml(String string, String baseUri) {
         if (CommonUtils.notEmpty(string)) {
             if (CommonUtils.notEmpty(baseUri) && baseUri.startsWith("//")) {
-                baseUri = "http:" + baseUri;
+                baseUri = CommonUtils.joinString("http:", baseUri);
             }
             return Jsoup.clean(string, baseUri, SAFELIST);
         }
         return string;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(removeHtmlTag("<body>&quot;\"aaa\"</body>"));
     }
 }

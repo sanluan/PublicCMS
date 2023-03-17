@@ -2,8 +2,8 @@ package com.publiccms.controller.admin.sys;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
+import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -11,16 +11,14 @@ import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.util.Date;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.ServletOutputStream;
-import jakarta.servlet.http.HttpServletResponse;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import jakarta.annotation.Resource;
 import org.apache.tools.zip.ZipOutputStream;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -28,10 +26,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CmsVersion;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -55,6 +55,9 @@ import com.publiccms.logic.service.sys.SysSiteService;
 import com.publiccms.logic.service.sys.SysUserService;
 import com.publiccms.logic.service.tools.HqlService;
 import com.publiccms.logic.service.tools.SqlService;
+
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  *
@@ -119,12 +122,12 @@ public class SysSiteAdminController {
         if (null == entity.getDynamicPath()) {
             entity.setDynamicPath(CommonConstants.SEPARATOR);
         } else if (!entity.getDynamicPath().endsWith(CommonConstants.SEPARATOR)) {
-            entity.setDynamicPath(entity.getDynamicPath() + CommonConstants.SEPARATOR);
+            entity.setDynamicPath(CommonUtils.joinString(entity.getDynamicPath(), CommonConstants.SEPARATOR));
         }
         if (null == entity.getSitePath()) {
             entity.setSitePath(CommonConstants.SEPARATOR);
         } else if (!entity.getSitePath().endsWith(CommonConstants.SEPARATOR)) {
-            entity.setSitePath(entity.getSitePath() + CommonConstants.SEPARATOR);
+            entity.setSitePath(CommonUtils.joinString(entity.getSitePath(), CommonConstants.SEPARATOR));
         }
         if (null != entity.getId()) {
             entity = service.update(entity.getId(), entity, ignoreProperties);
@@ -186,38 +189,43 @@ public class SysSiteAdminController {
 
     /**
      * @param id
-     * @param response
+     * @return response entity
      */
     @RequestMapping("export")
     @Csrf
-    public void export(Short id, HttpServletResponse response) {
+    public ResponseEntity<StreamingResponseBody> export(Short id) {
         SysSite site = service.getEntity(id);
         if (null != site) {
-            try {
-                DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.DOWNLOAD_FORMAT_STRING);
-                response.setHeader("content-disposition", "attachment;fileName=" + URLEncoder.encode(
-                        new StringBuilder(site.getName()).append(dateFormat.format(new Date())).append("-site.zip").toString(),
-                        "utf-8"));
-            } catch (UnsupportedEncodingException e1) {
-            }
-            try (ServletOutputStream outputStream = response.getOutputStream();
-                    ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream)) {
-                zipOutputStream.setEncoding(CommonConstants.DEFAULT_CHARSET_NAME);
-                {
-                    String filepath = siteComponent.getTemplateFilePath(site.getId(), CommonConstants.SEPARATOR);
-                    ZipUtils.compress(Paths.get(filepath), zipOutputStream, "template");
+            DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.DOWNLOAD_FORMAT_STRING);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentDisposition(ContentDisposition.attachment()
+                    .filename(CommonUtils.joinString(site.getName(), dateFormat.format(new Date()), "-site.zip"),
+                            StandardCharsets.UTF_8)
+                    .build());
+            StreamingResponseBody body = new StreamingResponseBody() {
+                @Override
+                public void writeTo(OutputStream outputStream) throws IOException {
+                    try (ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream)) {
+                        zipOutputStream.setEncoding(Constants.DEFAULT_CHARSET_NAME);
+                        {
+                            String filepath = siteComponent.getTemplateFilePath(site.getId(), CommonConstants.SEPARATOR);
+                            ZipUtils.compress(Paths.get(filepath), zipOutputStream, "template");
+                        }
+                        {
+                            String filepath = siteComponent.getWebFilePath(site.getId(), CommonConstants.SEPARATOR);
+                            ZipUtils.compress(Paths.get(filepath), zipOutputStream, "web");
+                        }
+                        {
+                            String filepath = siteComponent.getTaskTemplateFilePath(site.getId(), CommonConstants.SEPARATOR);
+                            ZipUtils.compress(Paths.get(filepath), zipOutputStream, "tasktemplate");
+                        }
+                        siteExchangeComponent.exportAll(site, zipOutputStream);
+                    }
                 }
-                {
-                    String filepath = siteComponent.getWebFilePath(site.getId(), CommonConstants.SEPARATOR);
-                    ZipUtils.compress(Paths.get(filepath), zipOutputStream, "web");
-                }
-                {
-                    String filepath = siteComponent.getTaskTemplateFilePath(site.getId(), CommonConstants.SEPARATOR);
-                    ZipUtils.compress(Paths.get(filepath), zipOutputStream, "tasktemplate");
-                }
-                siteExchangeComponent.exportAll(site, zipOutputStream);
-            } catch (IOException e) {
-            }
+            };
+            return ResponseEntity.ok().headers(headers).body(body);
+        } else {
+            return ResponseEntity.notFound().build();
         }
     }
 
@@ -372,7 +380,7 @@ public class SysSiteAdminController {
         }
         if (null != file && !file.isEmpty()) {
             try {
-                CmsFileUtils.upload(file, siteComponent.getRootPath() + CommonConstants.LICENSE_FILENAME);
+                CmsFileUtils.upload(file, CommonUtils.joinString(siteComponent.getRootPath(), CommonConstants.LICENSE_FILENAME));
                 logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                         "license.dat", true, CmsFileUtils.FILE_TYPE_OTHER, file.getSize(), null, null,
                         RequestUtils.getIpAddress(request), CommonUtils.getDate(), CommonConstants.LICENSE_FILENAME));

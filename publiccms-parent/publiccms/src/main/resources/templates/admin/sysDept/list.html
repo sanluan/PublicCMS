@@ -83,7 +83,7 @@
                     <a href="sysDept/add.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="sysDept/edit"><i class="icon-edit"></i><@t.page 'dept.edit'/></a>
                     <a href="sysDept/list.html?parentId=${a.id}" class="btnText" target="navTab" rel="sysDept/list"><@t.page 'dept.child_management'/></a>
                 <#if a.userId?has_content&&a.userId=admin.id>
-                    <a href="sysDept/userList.html?deptId=${a.id}" class="btnText" target="navTab" rel="sysDept/userList" icon="<i class='icon-user icon-large'></i>"><@t.page 'dept.user_list'/></a>
+                    <a href="sysDept/userList.html?deptId=${a.id}" class="btnText" target="navTab" rel="sysDept/userList"><@t.page 'dept.user_list'/></a>
                 </#if>
                     <a href="sysDept/delete?id=${a.id}&_csrf=<@tools.csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i><@t.page 'button.delete'/></a>
                 </td>

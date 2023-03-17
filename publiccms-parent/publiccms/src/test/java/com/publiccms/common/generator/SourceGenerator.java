@@ -22,6 +22,7 @@ import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.generator.annotation.GeneratorColumn;
 import com.publiccms.common.generator.entity.EntityColumn;
 import com.publiccms.common.generator.entity.EntityCondition;
+import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.FreeMarkerUtils;
 import com.publiccms.common.tools.ScanClassUtils;
 
@@ -99,7 +100,7 @@ public class SourceGenerator {
     /**
      *
      */
-    public static final String TEMPLATE_BASE_PATH = WEB_BASE_PATH + "templates/admin/";
+    public static final String TEMPLATE_BASE_PATH = CommonUtils.joinString(WEB_BASE_PATH, "templates/admin/");
 
     /**
      * 生成所有实体类的代码
@@ -110,7 +111,7 @@ public class SourceGenerator {
      * @throws IOException
      */
     public void generate(String basePackage, boolean overwrite) throws ClassNotFoundException, IOException {
-        String entitiesFullPackage = basePackage + CommonConstants.DOT + ENTITY_BASE_PACKAGE;
+        String entitiesFullPackage = CommonUtils.joinString(basePackage, CommonConstants.DOT, ENTITY_BASE_PACKAGE);
         for (Class<?> c : ScanClassUtils.getClasses(new String[] { entitiesFullPackage })) {
             generate(c, basePackage, overwrite);
         }
@@ -126,8 +127,8 @@ public class SourceGenerator {
      * @throws ClassNotFoundException
      */
     public void generate(String basePackage, String entityPackage, boolean overwrite) throws ClassNotFoundException, IOException {
-        String entitiesFullPackage = basePackage + CommonConstants.DOT + ENTITY_BASE_PACKAGE + CommonConstants.DOT
-                + entityPackage;
+        String entitiesFullPackage = CommonUtils.joinString(basePackage, CommonConstants.DOT, ENTITY_BASE_PACKAGE, CommonConstants.DOT,
+                entityPackage);
         for (Class<?> c : ScanClassUtils.getClasses(new String[] { entitiesFullPackage })) {
             Entity e = c.getAnnotation(Entity.class);
             if (null != e) {
@@ -145,17 +146,17 @@ public class SourceGenerator {
      */
     public void generate(Class<?> c, String basePackage, boolean overwrite) {
         String name = c.getSimpleName();
-        String base = basePackage + CommonConstants.DOT + ENTITY_BASE_PACKAGE + CommonConstants.DOT;
+        String base = CommonUtils.joinString(basePackage, CommonConstants.DOT, ENTITY_BASE_PACKAGE, CommonConstants.DOT);
         String entitiesPackage = c.getPackage().getName().substring((base).length(), c.getPackage().getName().length());
 
-        System.out.println("entity:" + base + entitiesPackage + CommonConstants.DOT + name);
+        System.out.println(CommonUtils.joinString("entity:", base, entitiesPackage, CommonConstants.DOT, name));
         Map<String, Object> model = new HashMap<>();
 
-        String entityPack = ENTITY_BASE_PACKAGE + CommonConstants.DOT + entitiesPackage;
-        String daoPack = DAO_BASE_PACKAGE + CommonConstants.DOT + entitiesPackage;
-        String servicePack = SERVICE_BASE_PACKAGE + CommonConstants.DOT + entitiesPackage;
-        String directivePack = DIRECTIVE_BASE_PACKAGE + CommonConstants.DOT + entitiesPackage;
-        String controllerPack = CONTROLLER_BASE_PACKAGE + CommonConstants.DOT + entitiesPackage;
+        String entityPack = CommonUtils.joinString(ENTITY_BASE_PACKAGE, CommonConstants.DOT, entitiesPackage);
+        String daoPack = CommonUtils.joinString(DAO_BASE_PACKAGE, CommonConstants.DOT, entitiesPackage);
+        String servicePack = CommonUtils.joinString(SERVICE_BASE_PACKAGE, CommonConstants.DOT, entitiesPackage);
+        String directivePack = CommonUtils.joinString(DIRECTIVE_BASE_PACKAGE, CommonConstants.DOT, entitiesPackage);
+        String controllerPack = CommonUtils.joinString(CONTROLLER_BASE_PACKAGE, CommonConstants.DOT, entitiesPackage);
 
         model.put("base", basePackage);
         model.put("entityPack", entityPack);
@@ -229,42 +230,44 @@ public class SourceGenerator {
         model.put("columnList", columnList);
         model.put("conditionList", conditionMap.values());
 
-        String daoPath = JAVA_BASE_PATH + basePackage.replace(CommonConstants.DOT, CommonConstants.SEPARATOR)
-                + CommonConstants.SEPARATOR + daoPack.replace(CommonConstants.DOT, CommonConstants.SEPARATOR)
-                + CommonConstants.SEPARATOR;
-        String servicePath = JAVA_BASE_PATH + basePackage.replace(CommonConstants.DOT, CommonConstants.SEPARATOR)
-                + CommonConstants.SEPARATOR + servicePack.replace(CommonConstants.DOT, CommonConstants.SEPARATOR)
-                + CommonConstants.SEPARATOR;
-        String directivePath = JAVA_BASE_PATH + basePackage.replace(CommonConstants.DOT, CommonConstants.SEPARATOR)
-                + CommonConstants.SEPARATOR + directivePack.replace(CommonConstants.DOT, CommonConstants.SEPARATOR)
-                + CommonConstants.SEPARATOR;
-        String controllerPath = JAVA_BASE_PATH + basePackage.replace(CommonConstants.DOT, CommonConstants.SEPARATOR)
-                + CommonConstants.SEPARATOR + controllerPack.replace(CommonConstants.DOT, CommonConstants.SEPARATOR)
-                + CommonConstants.SEPARATOR;
+        String daoPath = CommonUtils.joinString(JAVA_BASE_PATH, basePackage.replace(CommonConstants.DOT, CommonConstants.SEPARATOR),
+                CommonConstants.SEPARATOR, daoPack.replace(CommonConstants.DOT, CommonConstants.SEPARATOR),
+                CommonConstants.SEPARATOR);
+        String servicePath = CommonUtils.joinString(JAVA_BASE_PATH, basePackage.replace(CommonConstants.DOT, CommonConstants.SEPARATOR),
+                CommonConstants.SEPARATOR, servicePack.replace(CommonConstants.DOT, CommonConstants.SEPARATOR),
+                CommonConstants.SEPARATOR);
+        String directivePath = CommonUtils.joinString(JAVA_BASE_PATH,
+                basePackage.replace(CommonConstants.DOT, CommonConstants.SEPARATOR), CommonConstants.SEPARATOR,
+                directivePack.replace(CommonConstants.DOT, CommonConstants.SEPARATOR), CommonConstants.SEPARATOR);
+        String controllerPath = CommonUtils.joinString(JAVA_BASE_PATH,
+                basePackage.replace(CommonConstants.DOT, CommonConstants.SEPARATOR), CommonConstants.SEPARATOR,
+                controllerPack.replace(CommonConstants.DOT, CommonConstants.SEPARATOR), CommonConstants.SEPARATOR);
 
         try {
-            FreeMarkerUtils.generateFileByFile("java/dao.ftl", daoPath + name + DAO_SUFFIX + ".java", config, model, overwrite);
-            FreeMarkerUtils.generateFileByFile("java/service.ftl", servicePath + name + SERVICE_SUFFIX + ".java", config, model,
-                    overwrite);
-            FreeMarkerUtils.generateFileByFile("java/directive.ftl", directivePath + name + DIRECTIVE_SUFFIX + ".java", config,
+            FreeMarkerUtils.generateFileByFile("java/dao.ftl", CommonUtils.joinString(daoPath, name, DAO_SUFFIX, ".java"), config,
                     model, overwrite);
-            FreeMarkerUtils.generateFileByFile("java/directiveList.ftl",
-                    directivePath + name + "List" + DIRECTIVE_SUFFIX + ".java", config, model, overwrite);
-            FreeMarkerUtils.generateFileByFile("java/controller.ftl", controllerPath + name + CONTROLLER_SUFFIX + ".java", config,
-                    model, overwrite);
-            FreeMarkerUtils.generateFileByFile("html/list.ftl",
-                    TEMPLATE_BASE_PATH + StringUtils.uncapitalize(name) + "/list.html", config, model, overwrite);
-            FreeMarkerUtils.generateFileByFile("html/add.ftl", TEMPLATE_BASE_PATH + StringUtils.uncapitalize(name) + "/add.html",
+            FreeMarkerUtils.generateFileByFile("java/service.ftl", CommonUtils.joinString(servicePath, name, SERVICE_SUFFIX, ".java"),
                     config, model, overwrite);
-            FreeMarkerUtils.generateFileByFile("html/doc.ftl", WEB_BASE_PATH + "doc.txt", config, model, overwrite, true);
-            FreeMarkerUtils.generateFileByFile("html/language.ftl", WEB_BASE_PATH + "language/operate.txt", config, model,
+            FreeMarkerUtils.generateFileByFile("java/directive.ftl",
+                    CommonUtils.joinString(directivePath, name, DIRECTIVE_SUFFIX, ".java"), config, model, overwrite);
+            FreeMarkerUtils.generateFileByFile("java/directiveList.ftl",
+                    CommonUtils.joinString(directivePath, name, "List", DIRECTIVE_SUFFIX, ".java"), config, model, overwrite);
+            FreeMarkerUtils.generateFileByFile("java/controller.ftl",
+                    CommonUtils.joinString(controllerPath, name, CONTROLLER_SUFFIX, ".java"), config, model, overwrite);
+            FreeMarkerUtils.generateFileByFile("html/list.ftl",
+                    CommonUtils.joinString(TEMPLATE_BASE_PATH, StringUtils.uncapitalize(name), "/list.html"), config, model, overwrite);
+            FreeMarkerUtils.generateFileByFile("html/add.ftl",
+                    CommonUtils.joinString(TEMPLATE_BASE_PATH, StringUtils.uncapitalize(name), "/add.html"), config, model, overwrite);
+            FreeMarkerUtils.generateFileByFile("html/doc.ftl", CommonUtils.joinString(WEB_BASE_PATH, "doc.txt"), config, model,
                     overwrite, true);
+            FreeMarkerUtils.generateFileByFile("html/language.ftl", CommonUtils.joinString(WEB_BASE_PATH, "language/operate.txt"),
+                    config, model, overwrite, true);
         } catch (IOException e) {
             System.out.println(e.getMessage());
         } catch (TemplateException e) {
             System.out.println(e.getMessage());
         }
-        System.out.println("file path: " + new File("").getAbsolutePath());
+        System.out.println(CommonUtils.joinString("file path: ", new File("").getAbsolutePath()));
     }
 
     private Configuration config;

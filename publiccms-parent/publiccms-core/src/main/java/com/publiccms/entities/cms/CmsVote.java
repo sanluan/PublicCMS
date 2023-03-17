@@ -13,9 +13,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import jakarta.validation.constraints.NotBlank;
 
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
@@ -63,12 +65,15 @@ public class CmsVote implements java.io.Serializable {
      * 标题
      */
     @GeneratorColumn(title = "标题", condition = true, like = true)
+    @NotBlank
+    @Length(max = 100)
     private String title;
     /**
      * description<p>
      * 描述
      */
     @GeneratorColumn(title = "描述")
+    @Length(max = 300)
     private String description;
     /**
      * create date<p>

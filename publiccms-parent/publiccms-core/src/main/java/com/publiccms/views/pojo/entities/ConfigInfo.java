@@ -1,5 +1,9 @@
 package com.publiccms.views.pojo.entities;
 
+import org.hibernate.validator.constraints.Length;
+
+import jakarta.validation.constraints.NotNull;
+
 public class ConfigInfo implements java.io.Serializable {
 
     /**
@@ -11,12 +15,15 @@ public class ConfigInfo implements java.io.Serializable {
      * <p>
      * 编码
      */
+    @NotNull
+    @Length(max = 50)
     private String code;
     /**
      * description
      * <p>
      * 描述
      */
+    @Length(max = 300)
     private String description;
     /**
      * customed

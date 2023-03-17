@@ -21,14 +21,13 @@ public class CmsCopyright implements Copyright {
     private License license;
 
     @Override
-    public boolean verify(String licenseFilePath) {
-        return LicenseUtils.verifyLicense(CommonConstants.PUBLIC_KEY, getLicense(licenseFilePath));
+    public boolean verify(License license) {
+        return LicenseUtils.verifyLicense(CommonConstants.PUBLIC_KEY, license);
     }
 
     @Override
-    public boolean verify(String licenseFilePath, String domain) {
-        License l = getLicense(licenseFilePath);
-        return LicenseUtils.verifyLicense(CommonConstants.PUBLIC_KEY, l) && verifyDomain(domain, l.getDomain());
+    public boolean verify(License license, String domain) {
+        return LicenseUtils.verifyLicense(CommonConstants.PUBLIC_KEY, license) && verifyDomain(domain, license.getDomain());
     }
 
     @Override
@@ -49,10 +48,11 @@ public class CmsCopyright implements Copyright {
 
     private static boolean verifyDomain(String domain, String licenseDomain) {
         if ("*".equals(licenseDomain) || IpUtils.isIp(domain) || domain.toLowerCase().startsWith("dev.")
-                || domain.toLowerCase().contains(".dev.") || "localhost".equals(domain)) {
+                || domain.toLowerCase().contains(".dev.") || domain.toLowerCase().startsWith("test.")
+                || domain.toLowerCase().contains(".test.") || "localhost".equals(domain)) {
             return true;
         } else {
-            String[] licenseDomains = StringUtils.split(licenseDomain, CommonConstants.COMMA_DELIMITED);
+            String[] licenseDomains = StringUtils.split(licenseDomain, CommonConstants.COMMA);
             int index;
             while (0 < (index = domain.indexOf(CommonConstants.DOT))) {
                 if (ArrayUtils.contains(licenseDomains, domain)) {

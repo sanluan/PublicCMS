@@ -217,7 +217,7 @@ public class FileAdminController {
 
                             @Override
                             public String resolve(String uri) {
-                                return site.getSitePath() + fileName;
+                                return CommonUtils.joinString(site.getSitePath(), fileName);
                             }
                         };
                         if (".docx".equalsIgnoreCase(suffix)) {
@@ -237,7 +237,7 @@ public class FileAdminController {
                                     float widthInches, float heightInches) {
                                 String imagesuffix = pictureType.getExtension();
                                 if (!suffix.contains(CommonConstants.DOT)) {
-                                    imagesuffix = CommonConstants.DOT + imagesuffix;
+                                    imagesuffix = CommonUtils.joinString(CommonConstants.DOT, imagesuffix);
                                 }
                                 String fileName = CmsFileUtils.getUploadFileName(imagesuffix);
                                 String filepath = siteComponent.getWebFilePath(site.getId(), fileName);
@@ -251,7 +251,7 @@ public class FileAdminController {
                                             LogLoginService.CHANNEL_WEB_MANAGER, suggestedName, false, fileType, content.length,
                                             fileSize.getWidth(), fileSize.getHeight(), RequestUtils.getIpAddress(request),
                                             CommonUtils.getDate(), fileName));
-                                    return site.getSitePath() + fileName;
+                                    return CommonUtils.joinString(site.getSitePath(), fileName);
                                 } catch (IllegalStateException | IOException e) {
                                     log.error(e.getMessage());
                                     return null;
@@ -273,7 +273,8 @@ public class FileAdminController {
                                         LogLoginService.CHANNEL_WEB_MANAGER, originalName, false, fileType,
                                         fileSize.getFileSize(), fileSize.getWidth(), fileSize.getHeight(),
                                         RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
-                                result.put(field, DocToHtmlUtils.pdfToHtml(site.getSitePath() + fileName, width, height));
+                                result.put(field,
+                                        DocToHtmlUtils.pdfToHtml(CommonUtils.joinString(site.getSitePath(), fileName), width, height));
                             } catch (IllegalStateException | IOException e) {
                                 log.error(e.getMessage());
                             }
@@ -285,7 +286,7 @@ public class FileAdminController {
                                 public String handleResource(HtmlResource resource) throws IOException {
                                     String imagesuffix = resource.getFileEnding();
                                     if (!suffix.contains(CommonConstants.DOT)) {
-                                        imagesuffix = CommonConstants.DOT + imagesuffix;
+                                        imagesuffix = CommonUtils.joinString(CommonConstants.DOT, imagesuffix);
                                     }
                                     String fileName = CmsFileUtils.getUploadFileName(imagesuffix);
                                     String filepath = siteComponent.getWebFilePath(site.getId(), fileName);
@@ -299,7 +300,7 @@ public class FileAdminController {
                                                 LogLoginService.CHANNEL_WEB_MANAGER, resource.getName(), false, fileType,
                                                 resource.getData().length, fileSize.getWidth(), fileSize.getHeight(),
                                                 RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
-                                        return site.getSitePath() + fileName;
+                                        return CommonUtils.joinString(site.getSitePath(), fileName);
                                     } catch (IllegalStateException | IOException e) {
                                         log.error(e.getMessage());
                                         return null;

@@ -79,7 +79,7 @@ public class CkEditorAdminController {
                                 originalName, false, CmsFileUtils.getFileType(suffix), upload.getSize(), fileSize.getWidth(),
                                 fileSize.getHeight(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
                         map.put(RESULT_FILENAME, originalName);
-                        map.put(RESULT_URL, site.getSitePath() + fileName);
+                        map.put(RESULT_URL, CommonUtils.joinString(site.getSitePath(), fileName));
                         uploaded++;
                     } else {
                         Map<String, String> messageMap = new HashMap<>();

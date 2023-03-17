@@ -9,6 +9,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.core.ConfigurableObjectInputStream;
 
+import com.publiccms.common.tools.CommonUtils;
+
 /**
  *
  * BinarySerializer
@@ -29,7 +31,7 @@ public class BinarySerializer<T> implements Serializer<T> {
             oos.flush();
             return os.toByteArray();
         } catch (Exception e) {
-            log.warn(new StringBuilder("Fail to serializer graph. graph = ").append(graph).toString(), e);
+            log.warn(CommonUtils.joinString("Fail to serializer graph. graph = ",graph), e);
             return EMPTY_BYTES;
         }
     }

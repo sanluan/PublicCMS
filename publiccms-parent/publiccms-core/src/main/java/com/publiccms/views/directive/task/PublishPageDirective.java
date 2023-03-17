@@ -82,9 +82,9 @@ public class PublishPageDirective extends AbstractTaskDirective {
         Map<String, Boolean> map = new LinkedHashMap<>();
         List<FileInfo> list = CmsFileUtils.getFileList(siteComponent.getTemplateFilePath(site.getId(), path), null);
         for (FileInfo fileInfo : list) {
-            String filepath = path + fileInfo.getFileName();
+            String filepath = CommonUtils.joinString(path, fileInfo.getFileName());
             if (fileInfo.isDirectory()) {
-                map.putAll(deal(site, handler, filepath + CommonConstants.SEPARATOR));
+                map.putAll(deal(site, handler, CommonUtils.joinString(filepath, CommonConstants.SEPARATOR)));
             } else {
                 String realTemplatePath = siteComponent.getTemplateFilePath(site.getId(), filepath);
                 CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(realTemplatePath);

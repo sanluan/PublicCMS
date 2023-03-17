@@ -13,6 +13,7 @@ import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.publiccms.common.database.CmsUpgrader;
@@ -55,6 +56,7 @@ public class TradePayment implements java.io.Serializable {
      * 描述
      */
     @GeneratorColumn(title = "描述")
+    @Length(max = 255)
     private String description;
     /**
      * trade type(recharge,product)<p>

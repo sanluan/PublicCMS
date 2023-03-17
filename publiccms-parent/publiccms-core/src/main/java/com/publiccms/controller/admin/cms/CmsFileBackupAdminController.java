@@ -84,7 +84,7 @@ public class CmsFileBackupAdminController {
             }
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "recycle.backupfile", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), type + ":" + StringUtils.join(paths, CommonConstants.COMMA)));
+                    CommonUtils.getDate(), CommonUtils.joinString(type, ":", StringUtils.join(paths, CommonConstants.COMMA))));
         }
         return CommonConstants.TEMPLATE_DONE;
     }

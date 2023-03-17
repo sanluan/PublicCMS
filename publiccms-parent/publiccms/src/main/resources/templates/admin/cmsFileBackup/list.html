@@ -67,7 +67,7 @@
                 <td class="wrap">
                     <a href="cmsFileBackup/recycle?type=${type!}&paths=${filePath?url}&_csrf=<@tools.csrfToken admin=true/>" class="btnText green" title="<@t.page 'confirm.recycle'/>" target="ajaxTodo"><i class="icon-reply icon-large"></i><@t.page 'button.recycle'/></a>
                     <#if editableSubfix?seq_contains(a.fileName?keep_after_last('.')?lower_case)>
-                      <a href="cmsFileBackup/content?type=${type!}&path=${filePath?url}" class="edit btnText blue" target="navTab" rel="cmsWebBackup/content:${filePath}" icon="<i class='icon-edit'></i>" title="${a.fileName}"><i class="icon-eye-open"></i><@t.page 'button.view'/></a>
+                      <a href="cmsFileBackup/content?type=${type!}&path=${filePath?url}" class="edit btnText blue" target="navTab" rel="cmsWebBackup/content:${filePath}" title="${a.fileName}"><i class="icon-eye-open"></i><@t.page 'button.view'/></a>
                     </#if>
                 </td>
             </tr>

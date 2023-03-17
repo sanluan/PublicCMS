@@ -11,6 +11,8 @@ import org.fit.pdfdom.PathSegment;
 import org.fit.pdfdom.resource.ImageResource;
 import org.w3c.dom.Element;
 
+import com.publiccms.common.tools.CommonUtils;
+
 public class CustomPDFDomTree extends PDFDomTree {
 
     public CustomPDFDomTree() throws IOException {
@@ -30,7 +32,7 @@ public class CustomPDFDomTree extends PDFDomTree {
         Element el = super.createPageElement();
         el.removeAttribute("class");
         String style = el.getAttribute("style");
-        el.setAttribute("style", style + "position:relative; border:1px solid blue;margin:0.5em;");
+        el.setAttribute("style", CommonUtils.joinString(style, "position:relative; border:1px solid blue;margin:0.5em;"));
         return el;
     }
 
@@ -38,7 +40,7 @@ public class CustomPDFDomTree extends PDFDomTree {
         Element el = super.createTextElement(width);
         el.removeAttribute("class");
         String style = el.getAttribute("style");
-        el.setAttribute("style", style + "position:absolute;white-space:nowrap;text-shadow:none;");
+        el.setAttribute("style", CommonUtils.joinString(style, "position:absolute;white-space:nowrap;text-shadow:none;"));
         return el;
     }
 
@@ -46,7 +48,7 @@ public class CustomPDFDomTree extends PDFDomTree {
         Element el = super.createRectangleElement(x, y, width, height, stroke, fill);
         el.removeAttribute("class");
         String style = el.getAttribute("style");
-        el.setAttribute("style", style + "position:absolute;");
+        el.setAttribute("style", CommonUtils.joinString(style, "position:absolute;"));
         return el;
     }
 
@@ -54,7 +56,7 @@ public class CustomPDFDomTree extends PDFDomTree {
         Element el = super.createLineElement(x1, y1, x2, y2);
         el.removeAttribute("class");
         String style = el.getAttribute("style");
-        el.setAttribute("style", style + "position:absolute;");
+        el.setAttribute("style", CommonUtils.joinString(style, "position:absolute;"));
         return el;
     }
 

@@ -85,9 +85,9 @@ public class GetPrivateUrlMethod extends BaseMethod {
             String string = CmsFileUtils.getPrivateFileSignString(expiry, url);
             String sign = VerificationUtils.base64Encode(VerificationUtils.encryptAES(string, signKey));
             try {
-                return new StringBuilder(site.getDynamicPath()).append("file/private?expiry=").append(expiry).append("&sign=")
-                        .append(URLEncoder.encode(sign, CommonConstants.DEFAULT_CHARSET_NAME)).append("&filePath=")
-                        .append(URLEncoder.encode(url, CommonConstants.DEFAULT_CHARSET_NAME)).toString();
+                return CommonUtils.joinString(site.getDynamicPath(), "file/private?expiry=", expiry, "&sign=",
+                        URLEncoder.encode(sign, CommonConstants.DEFAULT_CHARSET_NAME), "&filePath=",
+                        URLEncoder.encode(url, CommonConstants.DEFAULT_CHARSET_NAME));
             } catch (UnsupportedEncodingException e) {
             }
         }

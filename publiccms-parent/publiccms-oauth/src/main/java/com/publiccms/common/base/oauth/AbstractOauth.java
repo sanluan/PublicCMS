@@ -58,7 +58,7 @@ public abstract class AbstractOauth implements Config, OauthGateway {
     /**
      * 
      */
-    public static final String CONFIG_CODE_DESCRIPTION = CONFIGPREFIX + CONFIG_CODE;
+    public static final String CONFIG_CODE_DESCRIPTION = CommonUtils.joinString(CONFIGPREFIX, CONFIG_CODE);
 
     protected static final CloseableHttpClient httpclient = HttpClients.custom()
             .setDefaultRequestConfig(CommonConstants.defaultRequestConfig).build();
@@ -71,7 +71,7 @@ public abstract class AbstractOauth implements Config, OauthGateway {
      */
     public AbstractOauth(String channel) {
         this.channel = channel;
-        this.prefix = channel + CommonConstants.UNDERLINE;
+        this.prefix = CommonUtils.joinString(channel, CommonConstants.UNDERLINE);
     }
 
     @Override
@@ -90,8 +90,8 @@ public abstract class AbstractOauth implements Config, OauthGateway {
      */
     protected OauthConfig getConfig(short siteId) {
         Map<String, String> config = BeanComponent.getConfigComponent().getConfigData(siteId, CONFIG_CODE);
-        OauthConfig oauthConfig = new OauthConfig(config.get(prefix + CONFIG_APP_KEY), config.get(prefix + CONFIG_APP_SECRET),
-                config.get(prefix + CONFIG_RETURN_URL));
+        OauthConfig oauthConfig = new OauthConfig(config.get(CommonUtils.joinString(prefix, CONFIG_APP_KEY)),
+                config.get(CommonUtils.joinString(prefix, CONFIG_APP_SECRET)), config.get(CommonUtils.joinString(prefix, CONFIG_RETURN_URL)));
         if (CommonUtils.notEmpty(config) && CommonUtils.notEmpty(oauthConfig.getAppKey())
                 && CommonUtils.notEmpty(oauthConfig.getAppSecret()) && CommonUtils.notEmpty(oauthConfig.getReturnUrl())) {
             return oauthConfig;
@@ -174,19 +174,19 @@ public abstract class AbstractOauth implements Config, OauthGateway {
     @Override
     public List<SysExtendField> getExtendFieldList(SysSite site, Locale locale) {
         List<SysExtendField> extendFieldList = new ArrayList<>();
-        extendFieldList.add(new SysExtendField(prefix + CONFIG_APP_KEY, INPUTTYPE_TEXT,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + prefix + CONFIG_APP_KEY),
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + prefix + CONFIG_APP_KEY
-                        + CONFIG_CODE_DESCRIPTION_SUFFIX)));
-        extendFieldList.add(new SysExtendField(prefix + CONFIG_APP_SECRET, INPUTTYPE_TEXT,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + prefix + CONFIG_APP_SECRET), null));
-        extendFieldList.add(new SysExtendField(prefix + CONFIG_RETURN_URL, INPUTTYPE_TEXT,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + prefix + CONFIG_RETURN_URL),
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + prefix + CONFIG_RETURN_URL
-                        + CONFIG_CODE_DESCRIPTION_SUFFIX, site.getDynamicPath())));
+        extendFieldList.add(new SysExtendField(CommonUtils.joinString(prefix, CONFIG_APP_KEY), INPUTTYPE_TEXT,
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, prefix, CONFIG_APP_KEY)),
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, prefix, CONFIG_APP_KEY,
+                        CONFIG_CODE_DESCRIPTION_SUFFIX))));
+        extendFieldList.add(new SysExtendField(CommonUtils.joinString(prefix, CONFIG_APP_SECRET), INPUTTYPE_TEXT,
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, prefix, CONFIG_APP_SECRET)),
+                null));
+        extendFieldList.add(new SysExtendField(CommonUtils.joinString(prefix, CONFIG_RETURN_URL), INPUTTYPE_TEXT,
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, prefix, CONFIG_RETURN_URL)),
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, prefix, CONFIG_RETURN_URL,
+                        CONFIG_CODE_DESCRIPTION_SUFFIX, site.getDynamicPath()))));
         return extendFieldList;
     }
-    
 
     @Override
     public boolean exportable() {

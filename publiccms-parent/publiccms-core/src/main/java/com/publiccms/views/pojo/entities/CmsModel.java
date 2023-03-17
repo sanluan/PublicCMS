@@ -3,8 +3,12 @@ package com.publiccms.views.pojo.entities;
 import java.util.List;
 import java.util.Map;
 
+import org.hibernate.validator.constraints.Length;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.publiccms.entities.sys.SysExtendField;
+
+import jakarta.validation.constraints.NotNull;
 
 /**
  *
@@ -33,6 +37,8 @@ public class CmsModel implements java.io.Serializable {
      * 名称
      * 
      */
+    @NotNull
+    @Length(max = 50)
     private String name;
     /**
      * searchable model

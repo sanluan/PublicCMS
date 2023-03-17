@@ -16,7 +16,7 @@
     <div class="formBar card">
         <ul>
             <#if a?has_content && model?has_content && model.hasChild>
-                <li><a href="cmsContent/list.html?parentId=${a.id}&categoryId=${a.categoryId!}" class="button" target="navTab" rel="cmsContent/list" icon="<i class='icon-book icon-large'></i>"><@t.page 'content.child_management'/></a></li>
+                <li><a href="cmsContent/list.html?parentId=${a.id}&categoryId=${a.categoryId!}" class="button" target="navTab" rel="cmsContent/list"><@t.page 'content.child_management'/></a></li>
             </#if>
             <li>
                 <label><input type="checkbox" name="draft"/><@t.page 'draft'/></label>
@@ -138,6 +138,20 @@ $('input[name=\'categoryName\']',navTab.getCurrentPanel()).on('change',function(
                  >
                  <@tags tagText tagTypeIds tagIds/>
             </#if>
+                <dl>
+                    <dt><#if a?has_content><@t.page 'publish_date'/><#else><@t.page 'content.timming'/></#if>:</dt>
+                    <dd>
+                        <input type="text" name="publishDate" class="date" size="20" autocomplete="off" dateFmt="yyyy-MM-dd HH:mm:ss" value="<#if a?has_content && id?has_content>${(a.publishDate)!}</#if>"/>
+                        <a class="inputDateButton" href="javascript:void(0);"></a>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt><@t.page 'expiry_date'/>:</dt>
+                    <dd>
+                        <input type="text" name="expiryDate" class="date" size="20" autocomplete="off" dateFmt="yyyy-MM-dd HH:mm:ss" value="${(a.expiryDate)!}"/>
+                        <a class="inputDateButton" href="javascript:void(0);"></a>
+                    </dd>
+                </dl>
             <#if fieldList?seq_contains('author')>
                 <dl>
                     <dt>${(model.fieldTextMap['author'])!}:</dt>
@@ -150,26 +164,6 @@ $('input[name=\'categoryName\']',navTab.getCurrentPanel()).on('change',function(
                     <dd><input name="editor"<#if requiredFieldList?seq_contains('editor')> class="required"</#if> autocomplete="on" type="text" maxlength="50" size="20" value="${(a.editor)!}"/></dd>
                 </dl>
             </#if>
-                <dl>
-                    <dt><@t.page 'content.timming'/>:</dt>
-                    <dd>
-                      <input name="timing" type="checkbox"/>
-                    </dd>
-                </dl>
-                <dl class="publishDate hide">
-                    <dt><@t.page 'publish_date'/>:</dt>
-                    <dd>
-                        <input type="text" name="publishDate" class="date" size="20" autocomplete="off" dateFmt="yyyy-MM-dd HH:mm:ss" value="<#if a?has_content && id?has_content>${(a.publishDate)!}</#if>"/>
-                        <a class="inputDateButton" href="javascript:void(0);"></a>
-                    </dd>
-                </dl>
-                <dl class="publishDate hide">
-                    <dt><@t.page 'expiry_date'/>:</dt>
-                    <dd>
-                        <input type="text" name="expiryDate" class="date" size="20" autocomplete="off" dateFmt="yyyy-MM-dd HH:mm:ss" value="${(a.expiryDate)!}"/>
-                        <a class="inputDateButton" href="javascript:void(0);"></a>
-                    </dd>
-                </dl>
             <#include "../include_page/extendData.html"/>
             <#if category?has_content&&category.extendId?has_content>
                  <@sys.extendFieldList extendId=category.extendId>
@@ -182,9 +176,7 @@ $('input[name=\'categoryName\']',navTab.getCurrentPanel()).on('change',function(
                     <dt>${(model.fieldTextMap['cover'])!}:</dt>
                     <dd>
                         <input name="cover"<#if requiredFieldList?seq_contains('cover')> class="required"</#if> value="${(a.cover)!}" maxlength="300" size="50" type="text"/>
-                        <#if fieldList?seq_contains('content')>
-                            <label><a class="button" href="cmsContent/contentImage.html" lookupGroup="" width="1000" height="600"><@t.page 'button.fillcover' model.fieldTextMap['content']/></a></label>
-                        </#if>
+                        <label><a class="button" href="cmsContent/contentImage.html" lookupGroup="" width="1000" height="600"><@t.page 'button.fillcover' t.pageMessage('editor')/></a></label>
                         <a class="btnAttach" href="common/upload.html?field=cover&fileTypes=image&width=${(model.coverWidth)!}&height=${(model.coverHeight)!}" lookupGroup="" width="1000" height="600">${(model.fieldTextMap['cover'])!}</a>
                         <a class="view icon-eye-open" ref="cover" data-prefix="${site.sitePath}" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
                         <#if (model.coverWidth)?has_content && (model.coverHeight)?has_content><span class="info">${(model.coverWidth)!}*${(model.coverHeight)!}</span></#if>
@@ -302,16 +294,6 @@ $('input[name=\'categoryName\']',navTab.getCurrentPanel()).on('change',function(
         </#if>
     </div>
 <script>
-$('input[name=timing]',navTab.getCurrentPanel()).click(function(){
-    if($(this).is(':checked')) {
-        $('.publishDate',navTab.getCurrentPanel()).show();
-        $('input[name=publishDate]',navTab.getCurrentPanel()).addClass('required').addClass('valid');
-    } else {
-        $('.publishDate',navTab.getCurrentPanel()).hide();
-        $('input[name=publishDate]',navTab.getCurrentPanel()).removeClass('required').removeClass('valid');
-    }
-});
-
 $('input[name=checked]',navTab.getCurrentPanel()).click(function(){
     if($(this).is(':checked')){
         $('input[name=draft]',navTab.getCurrentPanel()).parent().parent().hide();
@@ -332,9 +314,6 @@ $('input[name=copied]',navTab.getCurrentPanel()).click(function(){
     <#if a?has_content && a.copied>
 $('input[name=copied]',navTab.getCurrentPanel()).click();
     </#if>
-</#if>
-<#if a?has_content && id?has_content && (a.publishDate gt .now || a.expiryDate?has_content)>
-$('input[name=timing]',navTab.getCurrentPanel()).click();
 </#if>
 <#if a?has_content && 1=a.status>
 $('input[name=checked]',navTab.getCurrentPanel()).click();

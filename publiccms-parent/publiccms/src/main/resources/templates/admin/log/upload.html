@@ -99,7 +99,7 @@
                         ${(a.filePath)!}
                         <a href="${getUrl(a.filePath)!}" target="_blank"><i class="icon-external-link"></i></a>
                     <#else>
-                        <a href="cmsWebFile/list.html?path=${a.filePath?keep_before_last('/')}" target="navTab" rel="cmsWebFile/list" icon="<i class='icon-globe icon-large'></i>" title="<@t.page 'webfile'/>">
+                        <a href="cmsWebFile/list.html?path=${a.filePath?keep_before_last('/')}" target="navTab" rel="cmsWebFile/list" title="<@t.page 'webfile'/>">
                             ${(a.filePath)!}
                         </a>
                         <a href="${getUrl(a.filePath)!}" target="_blank"><i class="icon-external-link"></i></a>

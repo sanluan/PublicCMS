@@ -102,7 +102,8 @@
                     </#if>
                     <div class="box">
                         <h3 <#if lockMap[a.id?string]?has_content><#assign lockUser=(userMap[lockMap[a.id?string].userId?string].nickname)!''/>title="<@t.page 'lock.message' lockUser/> ${lockMap[a.id?string].createDate}"</#if>>
-                           <#if lockMap[a.id?string]?has_content><i class="icon-lock icon-large"></i></#if><a href="cmsPlace/view.html?id=${a.id}" target="dialog" rel="viewContent${a.id}">${a.title}</a>
+                           <#if lockMap[a.id?string]?has_content><i class="icon-lock icon-large"></i></#if>
+                           <a href="cmsPlace/view.html?id=${a.id}" target="dialog" width="1000" height="600" rel="viewContent${a.id}">${a.title}</a>
                         </h3>
                     </div>
                 </td>
@@ -117,7 +118,7 @@
                 </td>
                 <td class="wrap">
                     <a href="cmsPlace/add.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="cmsPlace/edit"><i class="icon-edit"></i><@t.page 'button.edit'/></a>
-                    <a href="cmsPlace/add.html?copyId=${a.id}" class="btnText blue" target="navTab" rel="cmsPlace/add" icon="<i class='icon-plus-sign-alt icon-large'></i>" title="<@t.page 'place_data.add'/>"><@t.page 'button.copy'/></a>
+                    <a href="cmsPlace/add.html?copyId=${a.id}" class="btnText blue" target="navTab" rel="cmsPlace/add" title="<@t.page 'place_data.add'/>"><@t.page 'button.copy'/></a>
                     <#if 2=a.status>
                         <a href="cmsPlace/check?ids=${a.id}&_csrf=<@tools.csrfToken admin=true/>&path=${(path?url)!}" class="btnText green" title="<@t.page 'confirm.check'/>" target="ajaxTodo"><i class="icon-check"></i><@t.page 'button.check'/></a>
                     <#elseif 1=a.status>

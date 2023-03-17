@@ -26,7 +26,7 @@ import com.publiccms.logic.service.sys.SysModuleLangService;
 @Component
 public class MenuMessageComponent extends AbstractMessageSource implements Cache {
     public static final String CODE = "menu";
-    public static final String PREFIX = CODE + CommonConstants.DOT;
+    public static final String PREFIX = CommonUtils.joinString(CODE, CommonConstants.DOT);
     private MessageSourceControl messageSourceControl = new MessageSourceControl();
 
     private CacheEntity<String, Map<String, String>> messageCache;
@@ -87,7 +87,7 @@ public class MenuMessageComponent extends AbstractMessageSource implements Cache
                     List<SysModuleLang> list = (List<SysModuleLang>) sysModuleLangService.getList(null, lang);
                     if (CommonUtils.notEmpty(list)) {
                         for (SysModuleLang entity : list) {
-                            messageMap.put(PREFIX + entity.getId().getModuleId(), entity.getValue());
+                            messageMap.put(CommonUtils.joinString(PREFIX, entity.getId().getModuleId()), entity.getValue());
                         }
                     }
                 }

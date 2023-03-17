@@ -31,13 +31,15 @@
 </#macro>
 <div class="pageContent">
     <div class="leftPageContent">
-        <h2 class="contentTitle">
-            <a class="button" href="cmsTemplate/metadata.html" target="ajax" rel="cmsTemplateBox"><@t.page 'template.create'/></a>
-            <a class="button" href="cmsTemplate/demo.html" target="dialog" mask="true"><@t.page 'template.example'/></a></li>
-        </h2>
-        <ul class="tree treeFolder" layoutH>
-            <@templateTree ''/>
-        </ul>
+        <div class="card">
+            <h2 class="contentTitle">
+                <a class="button" href="cmsTemplate/metadata.html" target="ajax" rel="cmsTemplateBox"><@t.page 'template.create'/></a>
+                <a class="button" href="cmsTemplate/demo.html" target="dialog" mask="true"><@t.page 'template.example'/></a></li>
+            </h2>
+            <ul class="tree treeFolder" layoutH>
+                <@templateTree ''/>
+            </ul>
+        </div>
     </div>
     <div id="cmsTemplateBox" class="unitBox rightPageContent">
         <#if path?has_content>

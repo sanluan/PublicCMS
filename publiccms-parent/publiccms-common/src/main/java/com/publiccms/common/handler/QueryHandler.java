@@ -9,6 +9,7 @@ import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 
 import com.publiccms.common.constants.Constants;
+import com.publiccms.common.tools.CommonUtils;
 
 /**
  *
@@ -231,7 +232,7 @@ public class QueryHandler {
         if (-1 != orderIndex) {
             sql = sql.substring(0, orderIndex);
         }
-        return COUNT_SQL + sql;
+        return CommonUtils.joinString(COUNT_SQL, sql);
     }
 
 }

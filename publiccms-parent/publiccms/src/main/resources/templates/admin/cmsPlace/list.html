@@ -13,7 +13,7 @@
                         <a href="javascript:;" onclick="return false;">${a.fileName}</a>
                         <ul><@placeTree path/></ul>
                     <#elseif (object.size)?has_content && 0 lt object.size && (!(object.metadataExtendList)?has_content)>
-                        <a href="cmsPlace/dataList.html?path=${path?url}" target="navTab" rel="cmsPlace/dataList" title="<@t.page 'place_data'/>:${(a.alias)!}" icon="<i class='bi bi-layout-text-sidebar-reverse'></i>">${(object.alias)!a.fileName}<#if 0 lt ((object.size)!0)> <@t.page 'place_data'/>(${object.size})</#if></a>
+                        <a href="cmsPlace/dataList.html?path=${path?url}" target="navTab" rel="cmsPlace/dataList" title="<@t.page 'place_data'/>:${(a.alias)!}">${(object.alias)!a.fileName}<#if 0 lt ((object.size)!0)> <@t.page 'place_data'/>(${object.size})</#if></a>
                     <#else>
                         <a href="cmsPlace/metadata.html?path=${path?url}" target="ajax" rel="placeBox">${(object.alias)!a.fileName}<#if 0 lt ((object.size)!0)> (${object.size})</#if></a>
                     </#if>
@@ -27,9 +27,11 @@
 </#macro>
 <div class="pageContent">
     <div class="leftPageContent">
-        <ul class="tree treeFolder" layoutH>
-            <@placeTree/>
-        </ul>
+        <div class="card">
+            <ul class="tree treeFolder" layoutH>
+                <@placeTree/>
+            </ul>
+        </div>
     </div>
     <div id="placeBox" class="unitBox rightPageContent">
         <#if path?has_content>

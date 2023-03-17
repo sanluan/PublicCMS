@@ -20,7 +20,7 @@
                                 <img src="${(productMap[op.productId?string].cover)!(contentMap[op.contentId?string].cover)!}"/>
                             </p>
                         </#if>
-                        <p><label><@t.page 'title'/>:</label><a href="cmsContent/view.html?id=${op.contentId!}" class="exclude-translate" target="dialog" rel="viewContent${op.contentId!}">${(contentMap[op.contentId?string].title)!}</a> - ${(productMap[op.productId?string].title)!}</p>
+                        <p><label><@t.page 'title'/>:</label><a href="cmsContent/view.html?id=${op.contentId!}" class="exclude-translate" target="dialog" width="1000" height="600" rel="viewContent${op.contentId!}">${(contentMap[op.contentId?string].title)!}</a> - ${(productMap[op.productId?string].title)!}</p>
                         <p><label><@t.page 'product.price'/>:</label>${op.price!}</p>
                         <p><label><@t.page 'product.quantity'/>:</label>${op.quantity!}</p>
                         <p><label><@t.page 'remark'/>:</label>${op.remark!}</p>

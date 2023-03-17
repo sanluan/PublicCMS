@@ -1,6 +1,10 @@
 package com.publiccms.views.pojo.diy;
 
+import org.hibernate.validator.constraints.Length;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import jakarta.validation.constraints.NotNull;
 
 /**
  * CmsModule diy组件
@@ -28,6 +32,8 @@ public class CmsModule implements java.io.Serializable {
      * <p>
      * 名称
      */
+    @NotNull
+    @Length(max = 50)
     private String name;
     /**
      * clone

@@ -10,9 +10,11 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.constraints.NotNull;
 
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.publiccms.common.database.CmsUpgrader;
@@ -44,6 +46,8 @@ public class CmsWord implements java.io.Serializable {
      * 名称
      */
     @GeneratorColumn(title = "名称", condition = true, like = true)
+    @NotNull
+    @Length(max = 100)
     private String name;
     /**
      * search count

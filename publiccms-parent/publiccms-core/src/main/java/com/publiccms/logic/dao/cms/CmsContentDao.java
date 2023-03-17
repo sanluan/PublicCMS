@@ -221,8 +221,8 @@ public class CmsContentDao extends BaseDao<CmsContent> {
 							String[] vs = StringUtils.split(value, ":", 2);
 							if (2 == vs.length) {
 								c.should(queryEntity.isPhrase()
-										? t -> t.phrase().field("extend." + vs[0]).matching(vs[1]).boost(2.0f)
-										: t -> t.match().field("extend." + vs[0]).matching(vs[1]).boost(2.0f));
+                                        ? t -> t.phrase().field(CommonUtils.joinString("extend.", vs[0])).matching(vs[1]).boost(2.0f)
+                                        : t -> t.match().field(CommonUtils.joinString("extend.", vs[0])).matching(vs[1]).boost(2.0f));
 							}
 						}
 					}

@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import jakarta.validation.constraints.NotBlank;
 
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.search.engine.backend.analysis.AnalyzerNames;
@@ -21,6 +22,7 @@ import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextFi
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.TypeBinding;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -57,6 +59,8 @@ public class CmsContent implements java.io.Serializable {
      */
     @GeneratorColumn(title = "标题", condition = true, like = true, or = true)
     @FullTextField(analyzer = "cms", projectable = Projectable.YES)
+    @NotBlank
+    @Length(max = 255)
     private String title;
     /**
      * user id<p>
@@ -171,6 +175,7 @@ public class CmsContent implements java.io.Serializable {
      */
     @GeneratorColumn(title = "地址")
     @GenericField(projectable = Projectable.YES)
+    @Length(max = 1000)
     private String url;
     /**
      * description<p>
@@ -178,6 +183,7 @@ public class CmsContent implements java.io.Serializable {
      */
     @GeneratorColumn(title = "描述")
     @FullTextField(analyzer = "cms", projectable = Projectable.YES)
+    @Length(max = 300)
     private String description;
     /**
      * tag ids<p>

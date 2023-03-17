@@ -80,8 +80,9 @@ public class CmsContentFileListDirective extends AbstractTemplateDirective {
             if (absoluteURL) {
                 list.forEach(e -> {
                     try {
-                        e.setFilePath(downloadURL &&  e.getFilePath().startsWith(CmsFileUtils.UPLOAD_PATH)? new StringBuilder(site.getDynamicPath()).append("file/download?filePath=")
-                                .append(URLEncoder.encode(e.getFilePath(), CommonConstants.DEFAULT_CHARSET_NAME)).toString()
+                        e.setFilePath(downloadURL && e.getFilePath().startsWith(CmsFileUtils.UPLOAD_PATH)
+                                ? CommonUtils.joinString(site.getDynamicPath(), "file/download?filePath=",
+                                        URLEncoder.encode(e.getFilePath(), CommonConstants.DEFAULT_CHARSET_NAME))
                                 : TemplateComponent.getUrl(site.getSitePath(), e.getFilePath()));
                     } catch (UnsupportedEncodingException e1) {
                     }

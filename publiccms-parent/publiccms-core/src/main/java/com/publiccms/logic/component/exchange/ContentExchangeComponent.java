@@ -111,7 +111,7 @@ public class ContentExchangeComponent extends AbstractExchange<CmsContent, Conte
      */
     public void exportDataByQuery(SysSite site, String directory, CmsContentQuery queryEntity, ByteArrayOutputStream outputStream,
             ZipOutputStream zipOutputStream) {
-        PageHandler page = service.getPage(queryEntity, null, null, null, null, null, PageHandler.MAX_PAGE_SIZE, null);
+        PageHandler page = service.getPage(queryEntity, true, null, null, null, null, PageHandler.MAX_PAGE_SIZE, null);
         int i = 1;
         do {
             @SuppressWarnings("unchecked")
@@ -213,7 +213,7 @@ public class ContentExchangeComponent extends AbstractExchange<CmsContent, Conte
      */
     public ExcelView exportExcelByQuery(SysSite site, CmsContentQuery queryEntity, String orderField, String orderType,
             Locale locale) {
-        PageHandler page = service.getPage(queryEntity, null, orderField, orderType, null, 1, PageHandler.MAX_PAGE_SIZE, null);
+        PageHandler page = service.getPage(queryEntity, true, orderField, orderType, null, 1, PageHandler.MAX_PAGE_SIZE, null);
         @SuppressWarnings("unchecked")
         List<CmsContent> entityList = (List<CmsContent>) page.getList();
         Map<String, List<Serializable>> pksMap = new HashMap<>();
@@ -438,8 +438,8 @@ public class ContentExchangeComponent extends AbstractExchange<CmsContent, Conte
             }
         });
         DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.DOWNLOAD_FORMAT_STRING);
-        view.setFilename(new StringBuilder(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content"))
-                .append(dateFormat.format(new Date())).toString());
+        view.setFilename(CommonUtils.joinString(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content"),
+                dateFormat.format(new Date())));
         return view;
     }
 
@@ -460,7 +460,7 @@ public class ContentExchangeComponent extends AbstractExchange<CmsContent, Conte
                     data.setChildList(childList);
                 }
             }
-            export(directory, out, zipOutputStream, data, entity.getId() + ".json");
+            export(directory, out, zipOutputStream, data, CommonUtils.joinString(entity.getId(), ".json"));
         }
     }
 

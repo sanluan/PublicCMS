@@ -183,7 +183,7 @@
                         <label><input name="requiredFieldList" type="checkbox" value="content"/><@t.page 'required'/></label>
                         <label class="searchable"><input name="searchable" type="checkbox" ${(!a?has_content||a.searchable)?then(' checked="true"','')?no_esc}/><@t.page 'searchable'/></label>
                         <label><@t.page 'editor_type'/>:</label>
-                        <#assign editorTypes={'ueditor':t.pageMessage('ueditor'),'ckeditor':t.pageMessage('ckeditor'),'tinymce':t.pageMessage('tinymce'),'kindeditor':t.pageMessage('kindeditor')}/>
+                        <#assign editorTypes={'ueditor':t.pageMessage('ueditor'),'ckeditor':t.pageMessage('ckeditor'),'tinymce':t.pageMessage('tinymce')}/>
                         <select class="combox" name="editorType">
                             <#list editorTypes as k,v>
                             <option value="${k}"${(k=(a.editorType)!)?then(' selected="true"','')?no_esc}>${v}</option>
@@ -205,7 +205,7 @@
                 <table class="list nowrap itemDetail" addButton="<@t.page 'button.new_line'/>" width="100%">
                     <thead>
                         <tr>
-                            <th type="lookup" name="relatedList[#index#].dictionaryName" lookupPk="dictionaryId" lookupUrl="cmsDictionary/lookup.html" lookupGroup="relatedList[#index#]" fieldAttrs="{'readonly':'readonly'}" size="10"><a href="cmsDictionary/list.html" target="navTab" rel="cmsDictionary/list" icon="<i class='icon-book icon-large'></i>"><@t.page 'dictionary'/></a></th>
+                            <th type="lookup" name="relatedList[#index#].dictionaryName" lookupPk="dictionaryId" lookupUrl="cmsDictionary/lookup.html" lookupGroup="relatedList[#index#]" fieldAttrs="{'readonly':'readonly'}" size="10"><a href="cmsDictionary/list.html" target="navTab" rel="cmsDictionary/list"><@t.page 'dictionary'/></a></th>
                             <th type="enum" name="relatedList[#index#].modelIds" enumUrl="common/modelId.html?queryAll=true"><@t.page 'model'/></th>
                             <th type="del" width="100"><@t.page 'operate'/></th>
                         </tr>

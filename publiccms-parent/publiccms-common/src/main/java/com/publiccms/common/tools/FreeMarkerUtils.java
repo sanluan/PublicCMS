@@ -87,10 +87,10 @@ public class FreeMarkerUtils {
                     : Files.newOutputStream(Paths.get(destFilePath))) {
                 Writer out = new OutputStreamWriter(outputStream, Constants.DEFAULT_CHARSET);
                 t.process(model, out);
-                log.info(new StringBuilder(destFilePath).append(" saved!").toString());
+                log.info(CommonUtils.joinString(destFilePath," saved!"));
             }
         } else {
-            log.error(new StringBuilder(destFilePath).append(" already exists!").toString());
+            log.error(CommonUtils.joinString(destFilePath," already exists!"));
         }
     }
 

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractExchange;
 import com.publiccms.common.handler.PageHandler;
+import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysTask;
 import com.publiccms.logic.component.task.ScheduledTask;
@@ -43,7 +44,7 @@ public class TaskExchangeComponent extends AbstractExchange<SysTask, SysTask> {
             ZipOutputStream zipOutputStream) {
         int id = task.getId();
         task.setId(null);
-        export(directory, outputStream, zipOutputStream, task, id + ".json");
+        export(directory, outputStream, zipOutputStream, task, CommonUtils.joinString(id, ".json"));
     }
 
     public void save(SysSite site, long userId, boolean overwrite, SysTask data) {

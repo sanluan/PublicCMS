@@ -116,7 +116,7 @@ public class CategoryExchangeComponent extends AbstractExchange<CmsCategory, Cat
             }
             tagTypeService.getEntitys(set);
         }
-        export(directory, outputStream, zipOutputStream, data, entity.getCode() + ".json");
+        export(directory, outputStream, zipOutputStream, data, CommonUtils.joinString(entity.getCode(), ".json"));
         if (CommonUtils.notEmpty(entity.getChildIds())) {
             CmsCategoryQuery query = new CmsCategoryQuery();
             query.setSiteId(site.getId());

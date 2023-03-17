@@ -11,6 +11,7 @@ import com.publiccms.common.base.AbstractTaskDirective;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CmsFileUtils;
+import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.CmsFileUtils.FileInfo;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.template.MetadataComponent;
@@ -54,7 +55,8 @@ public class PublishPlaceDirective extends AbstractTaskDirective {
     public void execute(RenderHandler handler) throws IOException, Exception {
         String path = handler.getString("path", CommonConstants.SEPARATOR);
         SysSite site = getSite(handler);
-        String filepath = siteComponent.getTemplateFilePath(site.getId(), TemplateComponent.INCLUDE_DIRECTORY + path);
+        String filepath = siteComponent.getTemplateFilePath(site.getId(),
+                CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, path));
         if (CmsFileUtils.isFile(filepath)) {
             Map<String, Boolean> map = new LinkedHashMap<>();
             try {
@@ -75,15 +77,17 @@ public class PublishPlaceDirective extends AbstractTaskDirective {
     private Map<String, Boolean> dealDir(SysSite site, RenderHandler handler, String path) throws IOException {
         path = path.replace("\\", CommonConstants.SEPARATOR).replace("//", CommonConstants.SEPARATOR);
         Map<String, Boolean> map = new LinkedHashMap<>();
-        String realPath = siteComponent.getTemplateFilePath(site.getId(), TemplateComponent.INCLUDE_DIRECTORY + path);
+        String realPath = siteComponent.getTemplateFilePath(site.getId(),
+                CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, path));
         List<FileInfo> list = CmsFileUtils.getFileList(realPath, null);
         for (FileInfo fileInfo : list) {
-            String filepath = path + fileInfo.getFileName();
+            String filepath = CommonUtils.joinString(path, fileInfo.getFileName());
             if (fileInfo.isDirectory()) {
-                map.putAll(dealDir(site, handler, filepath + CommonConstants.SEPARATOR));
+                map.putAll(dealDir(site, handler, CommonUtils.joinString(filepath, CommonConstants.SEPARATOR)));
             } else {
                 try {
-                    String realfilepath = siteComponent.getTemplateFilePath(site.getId(), TemplateComponent.INCLUDE_DIRECTORY + filepath);
+                    String realfilepath = siteComponent.getTemplateFilePath(site.getId(),
+                            CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, filepath));
                     CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(realfilepath);
                     CmsPageData data = metadataComponent.getTemplateData(realfilepath);
                     templateComponent.staticPlace(site, filepath, metadata, data);

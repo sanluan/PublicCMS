@@ -11,6 +11,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import org.apache.commons.io.FileUtils;
 
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.tools.CommonUtils;
 
 public class Utf8BomRemover {
     public static void main(String[] args) throws IOException {
@@ -31,7 +32,7 @@ public class Utf8BomRemover {
             byte[] nbs = new byte[bs.length - 3];
             System.arraycopy(bs, 3, nbs, 0, nbs.length);
             FileUtils.writeByteArrayToFile(file, nbs);
-            System.out.println("Remove BOM: " + file);
+            System.out.println(CommonUtils.joinString("Remove BOM: ", file.toString()));
         }
     }
 }

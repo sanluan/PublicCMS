@@ -37,13 +37,12 @@ import config.spring.CmsConfig;
 public class SpringBootApplication {
 
     /**
+     * 在idea中通过main方法启动需要将工作目录改为 publiccms 模块所在的路径，否则静态资源不能加载
+     * https://www.publiccms.com/question/2018/02-13/376.html
+     * 
      * @param args
      */
     public static void main(String[] args) {
-        /*
-         * 在idea中通过main方法启动需要将工作目录改为 publiccms 模块所在的路径，否则静态资源不能加载
-         * https://www.publiccms.com/question/2018/02-13/376.html
-         */
         CommonConstants.applicationContext = SpringApplication.run(SpringBootApplication.class, args);
     }
 

@@ -61,7 +61,7 @@
                     <div class="box">
                         <p>${a.title!}</p>
                         <p>
-                            <a href="cmsDiy/preview.html?url=${((a.url)?url)!}" target="navTab" rel="cmsDiy/preview"  icon="<i class='bi bi-palette2 icon-large'></i>" title="<@t.page 'diy.preview'/>">${a.url!}</a>
+                            <a href="cmsDiy/preview.html?url=${((a.url)?url)!}" target="navTab" rel="cmsDiy/preview"  title="<@t.page 'diy.preview'/>">${a.url!}</a>
                             <a href="${a.url!}" target="_blank"><i class="icon-external-link"></i></a>
                         </p>
                         <#if a.refererUrl?has_content><p><@t.page 'visit.referer'/>:${a.refererUrl!}</p></#if>

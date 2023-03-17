@@ -72,7 +72,7 @@ public class MethodController {
                     }
                     SysApp app = appService.getEntity(token.getAppId());
                     if (null == app || CommonUtils.empty(app.getAuthorizedApis())
-                            || !ArrayUtils.contains(StringUtils.split(app.getAuthorizedApis(), CommonConstants.COMMA_DELIMITED),
+                            || !ArrayUtils.contains(StringUtils.split(app.getAuthorizedApis(), CommonConstants.COMMA),
                                     method.getName())) {
                         return NEED_APP_TOKEN_MAP;
                     }

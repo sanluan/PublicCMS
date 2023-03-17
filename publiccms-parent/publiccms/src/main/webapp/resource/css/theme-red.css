@@ -27,12 +27,11 @@ header a{color:#efefef;}
 .accordionContent .tree div:hover a{background-color:#D8403D;color:#eee;}
 .accordionContent .tree div.selected a{background-color:#FA5151;color:#fff;}
 
-.tabsPage .tabsPageHeader{background-color:#dde2ec;}
-.tabsPage .tabsLeft,.tabsPage .tabsMore,.tabsPage .tabsRight{color:#666666;}
-.tabsPage .tabsPageHeader li a{color:#333333;}
-.tabsPage .tabsPageHeader li.selected{background-color:#fff;}
-.tabsPage .tabsPageHeader li:hover{color:#fff;}
-.tabsPage .tabsPageHeader li.selected a,.tabsPage .tabsPageHeader li:hover a{color:#8f0006;}
+.tabsPage .tabsPageHeader{background-color:#e7ecf0;}
+.tabsPage .tabsLeft,.tabsPage .tabsMore,.tabsPage .tabsRight{color:#333;}
+.tabsPage .tabsPageHeader li a{background-color:#fff;color:#333333;}
+.tabsPage .tabsPageHeader li.selected a,.tabsPage .tabsPageHeader li:hover a{background-color:#FA5151;color:#fff;}
+.tabsPage .tabsPageHeader li.selected a.close,.tabsPage .tabsPageHeader li:hover a.close{background-color:#fff;color:#8f0006;}
 .tabsPage .tabsMoreList{background-color:#fff;border-color:#dde2ec;}
 .tabsPage .tabsMoreList li a{color:#333;}
 .tabsPage .tabsMoreList li a:hover,.tabsPage .tabsMoreList li.selected a{background-color:#D8403D;color:#fff;}
@@ -48,8 +47,6 @@ fieldset legend:before{background-color:#b52e31;}
 .divider{border-color:#d6dce6;}
 .formBar{background-color:#edf1f5;}
 .tagsBox span,.parametersBox span {background-color: #edf2f6;}
-
-.leftPageContent{border-color:#FAE1E1;background-color:#faf9f9;}
 
 button.buttonActive{color:#fff;background-color:#D8403D;border-color:#D8403D;}
 button.buttonActive:hover{background-color:#8f0006;border-color:#8f0006;}

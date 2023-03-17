@@ -55,7 +55,7 @@
                         <i class="thumb icon-file-alt icon-large"></i>
                     </#if>
                     <p title="<@t.page 'modified_date'/>:${a.lastModifiedTime?date},<@t.page 'create_date'/>:${a.creationTime?date}">
-                        <a href="javascript:;" onclick="JUI.instances[$('textarea.code',navTab.getCurrentPanel()).data('id')].replaceSelection('${useFile(filePath?keep_after('/'),a.fileName,fullPath!)}');$.pdialog.closeCurrent();return false;">
+                        <a href="javascript:;" onclick="JUI.instances[$('textarea.code',navTab.getCurrentPanel()).data('id')].replaceSelection('${useFile(filePath,a.fileName,fullPath!)}');$.pdialog.closeCurrent();return false;">
                             ${a.fileName}(<@t.fileSize a.size/>)
                         </a>
                     </p>

@@ -64,7 +64,7 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
     /**
      * 
      */
-    public static final String CONFIG_CODE_DESCRIPTION = new StringBuilder(CONFIGPREFIX).append(CONFIG_CODE).toString();
+    public static final String CONFIG_CODE_DESCRIPTION = CommonUtils.joinString(CONFIGPREFIX, CONFIG_CODE);
     /**
      * 
      */
@@ -187,8 +187,8 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
                         } else {
                             apiType = config.get(CONFIG_APITYPE);
                         }
-                        HttpPost httpPost = new HttpPost(new StringBuilder("https://api.mch.weixin.qq.com/v3/pay/transactions/")
-                                .append(apiType).toString());
+                        HttpPost httpPost = new HttpPost(
+                                CommonUtils.joinString("https://api.mch.weixin.qq.com/v3/pay/transactions/", apiType));
                         httpPost.addHeader("Accept", "application/json");
                         httpPost.addHeader("Content-type", "application/json; charset=utf-8");
                         Map<String, Object> requestMap = new HashMap<>();
@@ -205,14 +205,13 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
                         requestMap.put("scene_info", sceneMap);
                         String requestBody = JsonUtils.getString(requestMap);
                         httpPost.setEntity(new StringEntity(requestBody, CommonConstants.DEFAULT_CHARSET));
-                        log.info(new StringBuilder("pay request: ").append(requestBody).toString());
+                        log.info(CommonUtils.joinString("pay request: ", requestBody));
                         CloseableHttpResponse res = httpClient.execute(httpPost);
                         HttpEntity entity = res.getEntity();
-                        log.info(new StringBuilder("pay response status: ").append(res.getStatusLine().getStatusCode())
-                                .toString());
+                        log.info(CommonUtils.joinString("pay response status: ", res.getStatusLine().getStatusCode()));
                         if (null != entity) {
                             String bodyAsString = EntityUtils.toString(entity, CommonConstants.DEFAULT_CHARSET);
-                            log.info(new StringBuilder("pay response: ").append(bodyAsString).toString());
+                            log.info(CommonUtils.joinString("pay response: ", bodyAsString));
                             if (200 == res.getStatusLine().getStatusCode()) {
                                 Map<String, String> result = CommonConstants.objectMapper.readValue(bodyAsString,
                                         CommonConstants.objectMapper.getTypeFactory().constructMapLikeType(HashMap.class,
@@ -243,7 +242,7 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
     }
 
     private String getOutTradeNo(long paymentId) {
-        return new StringBuilder("00000").append(paymentId).toString();
+        return CommonUtils.joinString("00000", paymentId);
     }
 
     @Override
@@ -277,14 +276,13 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
                     requestMap.put("amount", amountMap);
                     String requestBody = JsonUtils.getString(requestMap);
                     httpPost.setEntity(new StringEntity(requestBody, CommonConstants.DEFAULT_CHARSET));
-                    log.info(new StringBuilder("refund request: ").append(requestBody).toString());
+                    log.info(CommonUtils.joinString("refund request: ", requestBody));
                     CloseableHttpResponse res = httpClient.execute(httpPost);
                     HttpEntity entity = res.getEntity();
-                    log.info(
-                            new StringBuilder("refund response status: ").append(res.getStatusLine().getStatusCode()).toString());
+                    log.info(CommonUtils.joinString("refund response status: ", res.getStatusLine().getStatusCode()));
                     if (null != entity) {
                         String bodyAsString = EntityUtils.toString(entity, CommonConstants.DEFAULT_CHARSET);
-                        log.info(new StringBuilder("refund response: ").append(bodyAsString).toString());
+                        log.info(CommonUtils.joinString("refund response: ", bodyAsString));
                         TradePaymentHistory history = new TradePaymentHistory(siteId, payment.getId(), CommonUtils.getDate(),
                                 TradePaymentHistoryService.OPERATE_REFUND_RESPONSE, bodyAsString);
                         historyService.save(history);
@@ -302,15 +300,15 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
                             } else {
                                 TradePaymentHistory history1 = new TradePaymentHistory(siteId, payment.getId(),
                                         CommonUtils.getDate(), TradePaymentHistoryService.OPERATE_REFUNDERROR,
-                                        new StringBuilder("response result status: ").append(result.get("status")).toString());
+                                        CommonUtils.joinString("response result status: ", result.get("status")));
                                 historyService.save(history1);
                                 service.pendingRefund(siteId, payment.getId());
                             }
                         }
                     } else {
                         TradePaymentHistory history = new TradePaymentHistory(siteId, payment.getId(), CommonUtils.getDate(),
-                                TradePaymentHistoryService.OPERATE_REFUNDERROR, new StringBuilder("response status error: ")
-                                        .append(res.getStatusLine().getStatusCode()).toString());
+                                TradePaymentHistoryService.OPERATE_REFUNDERROR,
+                                CommonUtils.joinString("response status error: ", res.getStatusLine().getStatusCode()));
                         historyService.save(history);
                         service.pendingRefund(siteId, payment.getId());
                     }
@@ -328,40 +326,40 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
     @Override
     public List<SysExtendField> getExtendFieldList(SysSite site, Locale locale) {
         List<SysExtendField> extendFieldList = new ArrayList<>();
-        extendFieldList
-                .add(new SysExtendField(CONFIG_APPID, INPUTTYPE_TEXT, getMessage(locale, getLangCode(CONFIG_APPID).toString()),
-                        getMessage(locale, getLangCode(CONFIG_APPID).append(CONFIG_CODE_DESCRIPTION_SUFFIX).toString())));
-        extendFieldList
-                .add(new SysExtendField(CONFIG_MCHID, INPUTTYPE_TEXT, getMessage(locale, getLangCode(CONFIG_MCHID).toString()),
-                        getMessage(locale, getLangCode(CONFIG_MCHID).append(CONFIG_CODE_DESCRIPTION_SUFFIX).toString())));
-        extendFieldList.add(new SysExtendField(CONFIG_KEY, INPUTTYPE_TEXT, getMessage(locale, getLangCode(CONFIG_KEY).toString()),
-                getMessage(locale, getLangCode(CONFIG_KEY).append(CONFIG_CODE_DESCRIPTION_SUFFIX).toString())));
-        extendFieldList.add(
-                new SysExtendField(CONFIG_SERIALNO, INPUTTYPE_TEXT, getMessage(locale, getLangCode(CONFIG_SERIALNO).toString()),
-                        getMessage(locale, getLangCode(CONFIG_SERIALNO).append(CONFIG_CODE_DESCRIPTION_SUFFIX).toString())));
+        extendFieldList.add(new SysExtendField(CONFIG_APPID, INPUTTYPE_TEXT,
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_APPID)),
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_APPID,
+                        CONFIG_CODE_DESCRIPTION_SUFFIX))));
+        extendFieldList.add(new SysExtendField(CONFIG_MCHID, INPUTTYPE_TEXT,
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_MCHID)),
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_MCHID,
+                        CONFIG_CODE_DESCRIPTION_SUFFIX))));
+        extendFieldList.add(new SysExtendField(CONFIG_KEY, INPUTTYPE_TEXT,
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_KEY)),
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_KEY,
+                        CONFIG_CODE_DESCRIPTION_SUFFIX))));
+        extendFieldList.add(new SysExtendField(CONFIG_SERIALNO, INPUTTYPE_TEXT,
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_SERIALNO)),
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_SERIALNO,
+                        CONFIG_CODE_DESCRIPTION_SUFFIX))));
         extendFieldList.add(new SysExtendField(CONFIG_PRIVATEKEY, INPUTTYPE_TEXTAREA,
-                getMessage(locale, getLangCode(CONFIG_PRIVATEKEY).toString()),
-                getMessage(locale, new StringBuilder(CONFIG_CODE_DESCRIPTION).append(CommonConstants.DOT)
-                        .append(CONFIG_PRIVATEKEY).append(CONFIG_CODE_DESCRIPTION_SUFFIX).toString())));
-        extendFieldList.add(
-                new SysExtendField(CONFIG_NOTIFYURL, INPUTTYPE_TEXT, getMessage(locale, getLangCode(CONFIG_NOTIFYURL).toString()),
-                        getMessage(
-                                locale, new StringBuilder(CONFIG_CODE_DESCRIPTION).append(CommonConstants.DOT)
-                                        .append(CONFIG_NOTIFYURL).append(CONFIG_CODE_DESCRIPTION_SUFFIX).toString(),
-                                site.getDynamicPath())));
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_PRIVATEKEY)),
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_PRIVATEKEY,
+                        CONFIG_CODE_DESCRIPTION_SUFFIX))));
+        extendFieldList.add(new SysExtendField(CONFIG_NOTIFYURL, INPUTTYPE_TEXT,
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_NOTIFYURL)),
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_NOTIFYURL,
+                        CONFIG_CODE_DESCRIPTION_SUFFIX), site.getDynamicPath())));
         extendFieldList.add(new SysExtendField(CONFIG_APITYPE, INPUTTYPE_TEXT, false,
-                getMessage(locale, getLangCode(CONFIG_APITYPE).toString()), getMessage(locale,
-                        getLangCode(CONFIG_APITYPE).append(CONFIG_CODE_DESCRIPTION_SUFFIX).toString(), site.getDynamicPath()),
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_APITYPE)),
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_APITYPE,
+                        CONFIG_CODE_DESCRIPTION_SUFFIX), site.getDynamicPath()),
                 "native"));
         extendFieldList.add(new SysExtendField(CONFIG_RESULTPAGE, INPUTTYPE_TEMPLATE,
-                getMessage(locale, getLangCode(CONFIG_RESULTPAGE).toString()),
-                getMessage(locale, getLangCode(CONFIG_RESULTPAGE).append(CONFIG_CODE_DESCRIPTION_SUFFIX).toString(),
-                        site.getDynamicPath())));
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_RESULTPAGE)),
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_RESULTPAGE,
+                        CONFIG_CODE_DESCRIPTION_SUFFIX), site.getDynamicPath())));
         return extendFieldList;
-    }
-
-    private StringBuilder getLangCode(String code) {
-        return new StringBuilder(CONFIG_CODE_DESCRIPTION).append(CommonConstants.DOT).append(code);
     }
 
     @Override

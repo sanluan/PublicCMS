@@ -230,7 +230,7 @@
                 <dt><@t.page 'recommend_info'/>:</dt>
                 <dd class="exclude-translate">
                     <#list page.list as a>
-                        <a href="cmsContent/view.html?id=${a.id}" class="exclude-translate" target="dialog" rel="viewContent${a.id}">${(a.title)!}</a>
+                        <a href="cmsContent/view.html?id=${a.id}" class="exclude-translate" target="dialog" width="1000" height="600" rel="viewContent${a.id}">${(a.title)!}</a>
                     </#list>
                 </dd>
             </dl>
@@ -249,7 +249,7 @@
                 </dt>
                 <dd class="exclude-translate">
                     <#if authorizedMap['cmsComment/list']>
-                        <a href="cmsComment/list.html?contentId=${a.id}" target="navTab" rel="cmsComment/list" icon="<i class='icon-comment icon-large'></i>" title="<@t.page 'comment.management'/>">${page.totalCount!}</a>
+                        <a href="cmsComment/list.html?contentId=${a.id}" target="navTab" rel="cmsComment/list" title="<@t.page 'comment.management'/>">${page.totalCount!}</a>
                     <#else>
                         ${page.totalCount!}
                     </#if>
@@ -261,7 +261,7 @@
 <div class="formBar">
     <ul>
         <#if model?has_content&&model.hasChild>
-            <li><a href="cmsContent/list.html?parentId=${a.id}&categoryId=${a.categoryId!}" class="button" target="navTab" rel="cmsContent/list" icon="<i class='icon-book icon-large'></i>"><@t.page 'content.child_management'/></a></li>
+            <li><a href="cmsContent/list.html?parentId=${a.id}&categoryId=${a.categoryId!}" class="button" target="navTab" rel="cmsContent/list"><@t.page 'content.child_management'/></a></li>
         </#if>
         <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
     </ul>

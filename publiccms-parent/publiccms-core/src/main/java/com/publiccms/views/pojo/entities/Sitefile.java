@@ -2,6 +2,8 @@ package com.publiccms.views.pojo.entities;
 
 import java.util.List;
 
+import org.hibernate.validator.constraints.Length;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
@@ -17,10 +19,13 @@ public class Sitefile implements java.io.Serializable {
      */
     private static final long serialVersionUID = 1L;
     private List<String> cmsVersionList;
+    private boolean useStatic;
+    @Length(max = 50)
     private String name;
     private String version;
     private String author;
     private String cover;
+    @Length(max = 300)
     private String description;
     private String text;
 
@@ -37,6 +42,21 @@ public class Sitefile implements java.io.Serializable {
      */
     public void setCmsVersionList(List<String> cmsVersionList) {
         this.cmsVersionList = cmsVersionList;
+    }
+
+    /**
+     * @return the useStatic
+     */
+    public boolean isUseStatic() {
+        return useStatic;
+    }
+
+    /**
+     * @param useStatic
+     *            the useStatic to set
+     */
+    public void setUseStatic(boolean useStatic) {
+        this.useStatic = useStatic;
     }
 
     /**

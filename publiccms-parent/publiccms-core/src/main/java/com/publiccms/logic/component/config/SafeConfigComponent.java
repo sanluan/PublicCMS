@@ -33,7 +33,7 @@ public class SafeConfigComponent implements Config {
     /**
      * config description code
      */
-    public static final String CONFIG_CODE_DESCRIPTION = CONFIGPREFIX + CONFIG_CODE;
+    public static final String CONFIG_CODE_DESCRIPTION = CommonUtils.joinString(CONFIGPREFIX, CONFIG_CODE);
     /**
      * web login expiry time
      */
@@ -149,7 +149,7 @@ public class SafeConfigComponent implements Config {
         } else if (url.replace("\\", "/").contains("://") || url.replace("\\", "/").startsWith("//")) {
             if (unSafe(url.replace("\\", "/"), site, contextPath)) {
                 if (CommonUtils.notEmpty(safeReturnUrl)) {
-                    for (String safeUrlPrefix : StringUtils.split(safeReturnUrl, CommonConstants.COMMA_DELIMITED)) {
+                    for (String safeUrlPrefix : StringUtils.split(safeReturnUrl, CommonConstants.COMMA)) {
                         if (url.startsWith(safeUrlPrefix)) {
                             return false;
                         }
@@ -177,7 +177,7 @@ public class SafeConfigComponent implements Config {
         String fixedUrl = url.substring(url.indexOf("://") + 1);
         if (url.startsWith(site.getDynamicPath()) || url.startsWith(site.getSitePath())
                 || fixedUrl.startsWith(site.getDynamicPath()) || fixedUrl.startsWith(site.getSitePath())
-                || url.startsWith(contextPath + "/")) {
+                || url.startsWith(CommonUtils.joinString(contextPath, "/"))) {
             return false;
         } else {
             return true;
@@ -188,31 +188,35 @@ public class SafeConfigComponent implements Config {
     public List<SysExtendField> getExtendFieldList(SysSite site, Locale locale) {
         List<SysExtendField> extendFieldList = new ArrayList<>();
         extendFieldList.add(new SysExtendField(CONFIG_EXPIRY_MINUTES_WEB, INPUTTYPE_NUMBER, false,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_EXPIRY_MINUTES_WEB), null,
-                String.valueOf(DEFAULT_EXPIRY_MINUTES)));
+                getMessage(locale,
+                        CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_EXPIRY_MINUTES_WEB)),
+                null, String.valueOf(DEFAULT_EXPIRY_MINUTES)));
         extendFieldList.add(new SysExtendField(CONFIG_EXPIRY_MINUTES_MANAGER, INPUTTYPE_NUMBER, false,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_EXPIRY_MINUTES_MANAGER), null,
-                String.valueOf(DEFAULT_EXPIRY_MINUTES)));
+                getMessage(locale,
+                        CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_EXPIRY_MINUTES_MANAGER)),
+                null, String.valueOf(DEFAULT_EXPIRY_MINUTES)));
 
         extendFieldList.add(new SysExtendField(CONFIG_PRIVATEFILE_KEY, INPUTTYPE_TEXT,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_PRIVATEFILE_KEY), null));
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_PRIVATEFILE_KEY)),
+                null));
         extendFieldList.add(new SysExtendField(CONFIG_EXPIRY_MINUTES_SIGN, INPUTTYPE_NUMBER, false,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_EXPIRY_MINUTES_SIGN), null,
-                String.valueOf(DEFAULT_EXPIRY_MINUTES_SIGN)));
+                getMessage(locale,
+                        CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_EXPIRY_MINUTES_SIGN)),
+                null, String.valueOf(DEFAULT_EXPIRY_MINUTES_SIGN)));
 
-        extendFieldList
-                .add(new SysExtendField(CONFIG_CAPTCHA, INPUTTYPE_CAPTCHA, false,
-                        getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_CAPTCHA),
-                        getMessage(locale,
-                                CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_CAPTCHA + CONFIG_CODE_DESCRIPTION_SUFFIX),
-                        null));
+        extendFieldList.add(new SysExtendField(CONFIG_CAPTCHA, INPUTTYPE_CAPTCHA, false,
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_CAPTCHA)),
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_CAPTCHA,
+                        CONFIG_CODE_DESCRIPTION_SUFFIX)),
+                null));
 
         extendFieldList.add(new SysExtendField(CONFIG_RETURN_URL, INPUTTYPE_TEXTAREA,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_RETURN_URL), null));
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_RETURN_URL)),
+                null));
 
         extendFieldList.add(new SysExtendField(CONFIG_ALLOW_FILES, INPUTTYPE_TEXTAREA, false,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_ALLOW_FILES), null,
-                StringUtils.join(CmsFileUtils.ALLOW_FILES, CommonConstants.COMMA)));
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_ALLOW_FILES)),
+                null, StringUtils.join(CmsFileUtils.ALLOW_FILES, CommonConstants.COMMA)));
         return extendFieldList;
     }
 

@@ -3,6 +3,8 @@ package org.apache.lucene.analysis.cn.smart.hhmm;
 import java.io.File;
 import java.lang.reflect.Method;
 
+import com.publiccms.common.tools.CommonUtils;
+
 /**
  * https://github.com/Kerwin23/smartcn-dict
  * 
@@ -19,11 +21,13 @@ public class DictionaryReloader {
      * @param dctroot
      */
     public synchronized static void reload(String dctroot) {
-        if (new File(dctroot + DICT_COREDICT).exists() || new File(dctroot + MEM_COREDICT).exists()) {
+        if (new File(CommonUtils.joinString(dctroot, DICT_COREDICT)).exists()
+                || new File(CommonUtils.joinString(dctroot, MEM_COREDICT)).exists()) {
             WordDictionary dict = WordDictionary.getInstance();
             dict.load(dctroot);
         }
-        if (new File(dctroot + DICT_BIGRAMDICT).exists() || new File(dctroot + MEM_BIGRAMDICT).exists()) {
+        if (new File(CommonUtils.joinString(dctroot, DICT_BIGRAMDICT)).exists()
+                || new File(CommonUtils.joinString(dctroot, MEM_BIGRAMDICT)).exists()) {
             BigramDictionary dict = BigramDictionary.getInstance();
             try {
                 Method method = BigramDictionary.class.getDeclaredMethod("load", String.class);

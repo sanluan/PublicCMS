@@ -24,6 +24,7 @@ import com.publiccms.common.database.CmsDataSource;
 import com.publiccms.common.handler.UsernamePasswordAuthenticator;
 import com.publiccms.common.servlet.InstallHttpRequestHandler;
 import com.publiccms.common.servlet.InstallServlet;
+import com.publiccms.common.tools.CommonUtils;
 
 /**
  *
@@ -50,7 +51,7 @@ public class InitializationInitializer implements WebApplicationInitializer {
             if (null == CommonConstants.CMS_FILEPATH) {
                 initFilePath(config.getProperty("cms.filePath"), System.getProperty("user.dir"));
             }
-            File file = new File(CommonConstants.CMS_FILEPATH + CommonConstants.INSTALL_LOCK_FILENAME);
+            File file = new File(CommonUtils.joinString(CommonConstants.CMS_FILEPATH, CommonConstants.INSTALL_LOCK_FILENAME));
             if (file.exists()) {
                 String version = FileUtils.readFileToString(file, CommonConstants.DEFAULT_CHARSET_NAME);
                 if (CmsVersion.getVersion().equals(version)
@@ -63,18 +64,18 @@ public class InitializationInitializer implements WebApplicationInitializer {
                     }
                     CmsVersion.setInitialized(true);
                     CmsDataSource.initDefaultDataSource();
-                    log.info(new StringBuilder("PublicCMS ").append(CmsVersion.getVersion()).append(" will start normally in ")
-                            .append(CommonConstants.CMS_FILEPATH).toString());
+                    log.info(CommonUtils.joinString("PublicCMS ", CmsVersion.getVersion(), " will start normally in ",
+                            CommonConstants.CMS_FILEPATH));
                 } else {
                     createInstallServlet(servletContext, InstallServlet.STEP_CHECKDATABASE, version);
-                    log.warn(new StringBuilder("PublicCMS ").append(CmsVersion.getVersion()).append(" installer will start in ")
-                            .append(CommonConstants.CMS_FILEPATH).append(", please upgrade your database!").toString());
+                    log.warn(CommonUtils.joinString("PublicCMS ", CmsVersion.getVersion(), " installer will start in ",
+                            CommonConstants.CMS_FILEPATH, ", please upgrade your database!"));
                 }
             } else {
                 createInstallServlet(servletContext, null, null);
-                log.warn(new StringBuilder("PublicCMS ").append(CmsVersion.getVersion()).append(" installer will start in ")
-                        .append(CommonConstants.CMS_FILEPATH)
-                        .append(", please configure your database information and initialize the database!").toString());
+                log.warn(CommonUtils.joinString("PublicCMS ", CmsVersion.getVersion(), " installer will start in ",
+                        CommonConstants.CMS_FILEPATH,
+                        ", please configure your database information and initialize the database!"));
             }
         } catch (IOException e) {
             throw new ServletException(e);
@@ -96,8 +97,8 @@ public class InitializationInitializer implements WebApplicationInitializer {
         } catch (Exception e) {
         }
         if (!file.exists()) {
-            log.warn(new StringBuilder("PublicCMS ").append(CmsVersion.getVersion())
-                    .append(" the cms.filePath parameter is invalid , try to use the temporary directory.").toString());
+            log.warn(CommonUtils.joinString("PublicCMS ", CmsVersion.getVersion(),
+                    " the cms.filePath parameter is invalid , try to use the temporary directory."));
             file = new File(defaultPath, "data/publiccms");
         }
         CommonConstants.CMS_FILEPATH = file.getAbsolutePath();

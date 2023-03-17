@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractExchange;
 import com.publiccms.common.handler.PageHandler;
+import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsDictionary;
 import com.publiccms.entities.cms.CmsDictionaryData;
 import com.publiccms.entities.cms.CmsDictionaryExclude;
@@ -51,7 +52,7 @@ public class DictionaryExchangeComponent extends AbstractExchange<CmsDictionary,
         data.setDataList(dataService.getList(site.getId(), entity.getId().getId()));
         data.setExcludeList(excludeService.getList(site.getId(), entity.getId().getId(), null));
         data.setExcludeValueList(excludeValueService.getList(site.getId(), entity.getId().getId(), null));
-        export(directory, outputStream, zipOutputStream, data, entity.getId().getId() + ".json");
+        export(directory, outputStream, zipOutputStream, data, CommonUtils.joinString(entity.getId().getId(), ".json"));
     }
 
     public void save(SysSite site, long userId, boolean overwrite, Dictionary data) {

@@ -50,7 +50,7 @@ public class PermissionChecker {
             getPageUrl(TEMPLATES, URL_PATTERNS, pageUrlSet);
             for (String url : pageUrlSet) {
                 if (!authorizedUrlSet.contains(url)) {
-                    System.out.println(new StringBuilder(url).append(" 没有添加到系统权限中"));
+                    System.out.println(CommonUtils.joinString(url," 没有添加到系统权限中"));
                 }
             }
             System.out.println("检查完毕！");

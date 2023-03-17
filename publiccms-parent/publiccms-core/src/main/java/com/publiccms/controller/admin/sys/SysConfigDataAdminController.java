@@ -1,8 +1,8 @@
 package com.publiccms.controller.admin.sys;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
+import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
@@ -13,6 +13,9 @@ import java.util.Map;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.tools.zip.ZipOutputStream;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -20,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.publiccms.common.annotation.Csrf;
@@ -55,9 +59,7 @@ import com.publiccms.logic.service.sys.SysDeptService;
 import com.publiccms.views.pojo.model.SysConfigParameters;
 
 import jakarta.annotation.Resource;
-import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 /**
  *
@@ -113,10 +115,9 @@ public class SysConfigDataAdminController {
             if (null != oldEntity) {
                 entity = service.update(oldEntity.getId(), entity, ignoreProperties);
                 if (null != entity) {
-                    logOperateService.save(
-                            new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                                    "update.configData", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
-                                    new StringBuilder(entity.getId().getCode()).append(":").append(entity.getData()).toString()));
+                    logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
+                            LogLoginService.CHANNEL_WEB_MANAGER, "update.configData", RequestUtils.getIpAddress(request),
+                            CommonUtils.getDate(), CommonUtils.joinString(entity.getId().getCode(), ":", entity.getData())));
                 }
 
                 if (CommonUtils.notEmpty(oldEntity.getData()) && CommonUtils.notEmpty(fieldList)) {
@@ -139,10 +140,9 @@ public class SysConfigDataAdminController {
             } else {
                 entity.getId().setSiteId(site.getId());
                 service.save(entity);
-                logOperateService
-                        .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                                "save.configData", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
-                                new StringBuilder(entity.getId().getCode()).append(":").append(entity.getData()).toString()));
+                logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
+                        LogLoginService.CHANNEL_WEB_MANAGER, "save.configData", RequestUtils.getIpAddress(request),
+                        CommonUtils.getDate(), CommonUtils.joinString(entity.getId().getCode(), ":", entity.getData())));
             }
 
             configComponent.removeCache(site.getId(), entity.getId().getCode());
@@ -160,13 +160,13 @@ public class SysConfigDataAdminController {
      * @param site
      * @param admin
      * @param code
-     * @param response
      * @param model
+     * @return
      */
     @RequestMapping("export")
     @Csrf
-    public void export(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String code, HttpServletResponse response,
-            ModelMap model) {
+    public ResponseEntity<StreamingResponseBody> export(@RequestAttribute SysSite site, @SessionAttribute SysUser admin,
+            String code, ModelMap model) {
         SysDept dept = sysDeptService.getEntity(admin.getDeptId());
         if (ControllerUtils.errorNotEmpty("deptId", admin.getDeptId(), model)
                 || ControllerUtils.errorNotEmpty("deptId", dept, model)
@@ -177,21 +177,25 @@ public class SysConfigDataAdminController {
         } else {
             SysConfigData entity = service.getEntity(new SysConfigDataId(site.getId(), code));
             if (null != entity) {
-                try {
-                    DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.DOWNLOAD_FORMAT_STRING);
-                    response.setHeader("content-disposition",
-                            "attachment;fileName=" + URLEncoder.encode(new StringBuilder(site.getName())
-                                    .append(dateFormat.format(new Date())).append("-config.zip").toString(), "utf-8"));
-                } catch (UnsupportedEncodingException e1) {
-                }
-                try (ServletOutputStream outputStream = response.getOutputStream();
-                        ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream)) {
-                    zipOutputStream.setEncoding(Constants.DEFAULT_CHARSET_NAME);
-                    exchangeComponent.exportEntity(site, entity, zipOutputStream);
-                } catch (IOException e) {
-                }
+                DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.DOWNLOAD_FORMAT_STRING);
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentDisposition(ContentDisposition.attachment()
+                        .filename(CommonUtils.joinString(site.getName(), dateFormat.format(new Date()), "-config.zip"),
+                                StandardCharsets.UTF_8)
+                        .build());
+                StreamingResponseBody body = new StreamingResponseBody() {
+                    @Override
+                    public void writeTo(OutputStream outputStream) throws IOException {
+                        try (ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream)) {
+                            zipOutputStream.setEncoding(Constants.DEFAULT_CHARSET_NAME);
+                            exchangeComponent.exportEntity(site, entity, zipOutputStream);
+                        }
+                    }
+                };
+                return ResponseEntity.ok().headers(headers).body(body);
             }
         }
+        return ResponseEntity.notFound().build();
     }
 
     /**
@@ -212,8 +216,7 @@ public class SysConfigDataAdminController {
                     LogLoginService.CHANNEL_WEB_MANAGER, "import.configData", RequestUtils.getIpAddress(request),
                     CommonUtils.getDate(), file.getOriginalFilename()));
         }
-        return SiteExchangeComponent.importData(site, admin.getId(), overwrite, "-config.zip", exchangeComponent, file,
-                model);
+        return SiteExchangeComponent.importData(site, admin.getId(), overwrite, "-config.zip", exchangeComponent, file, model);
     }
 
     /**
@@ -241,10 +244,9 @@ public class SysConfigDataAdminController {
         if (null != entity) {
             service.delete(entity.getId());
             sysDeptItemService.delete(null, SysDeptItemService.ITEM_TYPE_CONFIG, code);
-            logOperateService
-                    .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                            "delete.configData", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
-                            new StringBuilder(entity.getId().getCode()).append(":").append(entity.getData()).toString()));
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.configData", RequestUtils.getIpAddress(request),
+                    CommonUtils.getDate(), CommonUtils.joinString(entity.getId().getCode(), ":", entity.getData())));
             configComponent.removeCache(site.getId(), entity.getId().getCode());
         }
         return CommonConstants.TEMPLATE_DONE;

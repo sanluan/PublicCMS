@@ -66,8 +66,8 @@ public class GetDownloadUrlMethod extends BaseMethod {
         String url = getString(0, arguments);
         if (CommonUtils.notEmpty(url) && null != site) {
             try {
-                return new StringBuilder(site.getDynamicPath()).append("file/download?filePath=")
-                        .append(URLEncoder.encode(url, CommonConstants.DEFAULT_CHARSET_NAME)).toString();
+                return CommonUtils.joinString(site.getDynamicPath(), "file/download?filePath=",
+                        URLEncoder.encode(url, CommonConstants.DEFAULT_CHARSET_NAME));
             } catch (UnsupportedEncodingException e) {
             }
         }

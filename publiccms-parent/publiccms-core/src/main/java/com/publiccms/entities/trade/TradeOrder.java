@@ -14,6 +14,7 @@ import jakarta.persistence.TemporalType;
 
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.publiccms.common.database.CmsUpgrader;
@@ -51,6 +52,7 @@ public class TradeOrder implements java.io.Serializable {
      * 标题
      */
     @GeneratorColumn(title = "标题", condition = true, like = true)
+    @Length(max = 255)
     private String title;
     /**
      * amount<p>

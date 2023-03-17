@@ -1,6 +1,10 @@
 package com.publiccms.entities.sys;
 // Generated 2023-01-08 11:15:59 by Hibernate Tools 5.1.0.Beta1
 
+import org.hibernate.validator.constraints.Length;
+
+import jakarta.validation.constraints.NotNull;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.publiccms.common.generator.annotation.GeneratorColumn;
 
@@ -25,6 +29,8 @@ public class SysRecordId implements java.io.Serializable {
      * 编码
      */
     @GeneratorColumn(title = "编码", condition = true)
+    @NotNull
+    @Length(max = 50)
     private String code;
 
     public SysRecordId() {

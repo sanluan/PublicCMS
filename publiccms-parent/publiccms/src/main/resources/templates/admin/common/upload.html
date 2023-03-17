@@ -36,12 +36,14 @@
                         <input type="file" name="file" class="required" size="30"<#if fileTypes?has_content&&'video'=fileTypes> accept="video/*"</#if>/>
                     </#if>
                 </div>
+                <div class="pageFormContent imagelist">
+                </div>
                 <div class="pageContent">
             <@log.uploadList userId=admin.id fileTypes=fileTypes privatefile=privatefile pageIndex=1 pageSize=21>
                 <#list page.list as a>
                     <div class="image-list">
                         <#if 'image'=t.fileType(a.filePath)>
-                            <img src="<#if !privatefile?has_content || "true"!=privatefile>${getPrivateUrl(a.filePath)}<#else>${getUrl(a.filePath)}</#if>" alt="${a.originalName!}" title="${a.originalName!}">
+                            <img src="<#if a.privatefile>${getPrivateUrl(a.filePath)}<#else>${getUrl(a.filePath)}</#if>" alt="${a.originalName!}" title="${a.originalName!}">
                             <a href="javascript:;" class="edit-icon" onclick="$('.tabImageBtn',$.pdialog.getCurrent()).click();$('div.upload-wrap', $.pdialog.getCurrent()).editImg({imgUrl:'${site.sitePath+a.filePath!}',imgName:'${(a.originalName?has_content)?then(a.originalName,a.filePath!)}'});return false;"></a>
                         <#else>
                             <i class="thumb icon-file-alt icon-large"></i>

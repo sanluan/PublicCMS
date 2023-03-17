@@ -72,7 +72,7 @@ public abstract class AbstractExchange<E, D> implements Exchange<E, D> {
         } else {
             Enumeration<? extends ZipEntry> entryEnum = zipFile.getEntries();
             if (!directory.endsWith(Constants.SEPARATOR)) {
-                directory += Constants.SEPARATOR;
+                directory = CommonUtils.joinString(directory + Constants.SEPARATOR);
             }
             while (entryEnum.hasMoreElements()) {
                 ZipEntry zipEntry = entryEnum.nextElement();
@@ -111,7 +111,7 @@ public abstract class AbstractExchange<E, D> implements Exchange<E, D> {
         if (CommonUtils.empty(directory)) {
             return path;
         } else {
-            return directory + CommonConstants.SEPARATOR + path;
+            return CommonUtils.joinString(directory, CommonConstants.SEPARATOR, path);
         }
     }
 

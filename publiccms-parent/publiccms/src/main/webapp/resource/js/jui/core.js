@@ -110,23 +110,29 @@ var JUI = {
         }
     } ,
     ajaxError: function(xhr, ajaxOptions, thrownError) {
-        if (alertMsg ) {
-            if('undefined' == typeof thrownError||"" ==thrownError){
-                var exception = $($.parseHTML(xhr.responseText, document, true)).find('#divexception textarea');
-                if(exception.length){
-                    thrownError=exception.val();
-                }
+        if('undefined' == typeof thrownError||"" ==thrownError){
+            var exception = $($.parseHTML(xhr.responseText, document, true)).find('#divexception textarea');
+            if(exception.length){
+                thrownError=exception.val();
+            }else if(0===xhr.status){
+                thrownError = JUI.msg("networkError");
             }
-            alertMsg.error("<div>Http status: " + xhr.status + " " + xhr.statusText + "</div>" + "<div>ajaxOptions: " + ajaxOptions + "</div>" + "<div>thrownError: " + thrownError
-                    + "</div>");
+        }
+        if (alertMsg ) {
+            alertMsg.error("<div>Http status: " + xhr.status + " " + xhr.statusText + "</div>" + "<div>ajaxOptions: " + ajaxOptions + "</div>" + "<div>thrownError: " + thrownError + "</div>");
         } else {
-            alert("Http status: " + xhr.status + " " + xhr.statusText + "\najaxOptions: " + ajaxOptions + "\nthrownError:" + thrownError + "\n" + xhr.responseText);
+            alert("Http status: " + xhr.status + " " + xhr.statusText + "\najaxOptions: " + ajaxOptions + "\nthrownError:" + thrownError);
         }
     },
     ajaxDone: function(json) {
         if (json[JUI.keys.statusCode] == JUI.statusCode.error ) {
             if (json[JUI.keys.message] && alertMsg ) {
                 alertMsg.error(json[JUI.keys.message]);
+            }
+            if (json["fields"]){
+                $.each(json["fields"].split(","),function(index,field){
+                    $("[name="+escapeJquery(field)+"]", ( !$.pdialog.getCurrent() ) ? navTab.getCurrentPanel(): $.pdialog.getCurrent()).addClass("error");
+                })
             }
         } else if (json[JUI.keys.statusCode] == JUI.statusCode.timeout ) {
             if (alertMsg ){
@@ -199,8 +205,6 @@ var JUI = {
                         if(tinymce.get($(this).data("id"))) {
                             tinymce.get($(this).data("id")).save();
                         }
-                    } else if ("kindeditor"==$(this).attr("editorType")){
-                        KindEditor.sync('#'+$(this).data("id"));
                     } else {
                         if(UE.instants[$(this).data("id")]) {
                             UE.instants[$(this).data("id")].sync();
@@ -232,8 +236,6 @@ var JUI = {
                         }
                     } else if("tinymce"==$(this).attr("editorType")) {
                         tinymce.remove('#'+$(this).data("id"));
-                    } else if("kindeditor"==$(this).attr("editorType")) {
-                        KindEditor.remove('#'+$(this).data("id"));
                     } else {
                         if(UE.instants[$(this).data("id")]) {
                             UE.instants[$(this).data("id")].destroy();

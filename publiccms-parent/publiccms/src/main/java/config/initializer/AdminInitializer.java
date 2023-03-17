@@ -12,6 +12,7 @@ import org.springframework.web.servlet.DispatcherServlet;
 import com.publiccms.common.base.BaseServletInitializer;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.servlet.AdminDispatcherServlet;
+import com.publiccms.common.tools.CommonUtils;
 
 import config.spring.AdminConfig;
 import jakarta.servlet.MultipartConfigElement;
@@ -50,14 +51,14 @@ public class AdminInitializer extends BaseServletInitializer implements WebAppli
     }
 
     private String getDirPath(String path) {
-        File dir = new File(CommonConstants.CMS_FILEPATH + path);
+        File dir = new File(CommonUtils.joinString(CommonConstants.CMS_FILEPATH, path));
         dir.mkdirs();
         return dir.getAbsolutePath();
     }
 
     @Override
     protected String[] getServletMappings() {
-        return new String[] { AdminConfig.ADMIN_CONTEXT_PATH + "/*" };
+        return new String[] { CommonUtils.joinString(AdminConfig.ADMIN_CONTEXT_PATH, "/*") };
     }
 
 }

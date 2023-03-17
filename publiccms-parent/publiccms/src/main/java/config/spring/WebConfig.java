@@ -9,13 +9,18 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.AntPathMatcher;
+import org.springframework.web.context.request.async.CallableProcessingInterceptor;
+import org.springframework.web.context.request.async.TimeoutCallableProcessingInterceptor;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
+import org.springframework.web.servlet.config.annotation.AsyncSupportConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
@@ -120,6 +125,29 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(csrfInterceptor());
         registry.addInterceptor(webInterceptor);
         registry.addInterceptor(siteInterceptor);
+    }
+
+    @Override
+    public void configureAsyncSupport(AsyncSupportConfigurer configurer) {
+        configurer.setDefaultTimeout(10 * 60 * 1000);
+        configurer.registerCallableInterceptors(timeoutInterceptor());
+        configurer.setTaskExecutor(taskExecutor());
+    }
+
+    @Bean
+    public CallableProcessingInterceptor timeoutInterceptor() {
+        TimeoutCallableProcessingInterceptor bean = new TimeoutCallableProcessingInterceptor();
+        return bean;
+    }
+
+    @Bean
+    public AsyncTaskExecutor taskExecutor() {
+        ThreadPoolTaskExecutor bean = new ThreadPoolTaskExecutor();
+        bean.setCorePoolSize(5);
+        bean.setMaxPoolSize(100);
+        bean.setQueueCapacity(20);
+        bean.setThreadNamePrefix("cmsweb-async-");
+        return bean;
     }
 
     @Override

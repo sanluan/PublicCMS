@@ -1,18 +1,21 @@
 package com.publiccms.controller.admin;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import com.publiccms.common.annotation.Csrf;
@@ -158,17 +161,16 @@ public class LoginAdminController {
         if (SafeConfigComponent.isUnSafeUrl(returnUrl, site, safeReturnUrl, request.getContextPath())) {
             returnUrl = CommonConstants.getDefaultPage();
         }
-        return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
+        return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
     }
 
     public static void addLoginStatus(SysUser user, String authToken, HttpServletRequest request, HttpServletResponse response,
             int expiryMinutes) {
         user.setPassword(null);
         ControllerUtils.setAdminToSession(request.getSession(), user);
-        StringBuilder sb = new StringBuilder();
-        sb.append(user.getId()).append(CommonConstants.getCookiesUserSplit()).append(authToken);
-        RequestUtils.addCookie(request.getContextPath(), request.getScheme(), response, CommonConstants.getCookiesAdmin(),
-                sb.toString(), expiryMinutes * 60, null);
+        String cookie = CommonUtils.joinString(user.getId(), CommonConstants.getCookiesUserSplit(), authToken);
+        RequestUtils.addCookie(request.getContextPath(), request.getScheme(), response, CommonConstants.getCookiesAdmin(), cookie,
+                expiryMinutes * 60, null);
     }
 
     /**
@@ -253,17 +255,24 @@ public class LoginAdminController {
             }
             ControllerUtils.clearAdminToSession(request.getContextPath(), request.getScheme(), request.getSession(), response);
         }
-        return UrlBasedViewResolver.REDIRECT_URL_PREFIX + CommonConstants.getDefaultPage();
+        return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, CommonConstants.getDefaultPage());
     }
 
+    /**
+     * @param session
+     * @return response entity
+     */
     @RequestMapping(value = "getCaptchaImage")
-    public void getCaptchaImage(HttpSession session, HttpServletResponse response) {
-        try {
-            String captcha = VerificationUtils.getRandomString("ABCDEFGHJKMNPQRSTUVWXYZ23456789", 4);
-            session.setAttribute("captcha", captcha);
-            ImageUtils.drawImage(120, 30, captcha, response.getOutputStream());
-        } catch (IOException e) {
-        }
+    public ResponseEntity<StreamingResponseBody> getCaptchaImage(HttpSession session) {
+        String captcha = VerificationUtils.getRandomString("ABCDEFGHJKMNPQRSTUVWXYZ23456789", 4);
+        session.setAttribute("captcha", captcha);
+        StreamingResponseBody body = new StreamingResponseBody() {
+            @Override
+            public void writeTo(OutputStream outputStream) throws IOException {
+                ImageUtils.drawImage(120, 30, captcha, outputStream);
+            }
+        };
+        return ResponseEntity.ok().body(body);
     }
 
     /**

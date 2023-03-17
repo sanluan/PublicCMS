@@ -17,7 +17,7 @@
                             <img src="${(productMap[op.productId?string].cover)!(contentMap[op.contentId?string].cover)!}"/>
                         </p>
                     </#if>
-                    <p><label><@t.page 'title'/>:</label><a href="cmsContent/view.html?id=${op.contentId!}" class="exclude-translate" target="dialog" rel="viewContent${op.contentId!}">${(contentMap[op.contentId?string].title)!}</a> - ${(productMap[op.productId?string].title)!}</p>
+                    <p><label><@t.page 'title'/>:</label><a href="cmsContent/view.html?id=${op.contentId!}" class="exclude-translate" target="dialog" width="1000" height="600" rel="viewContent${op.contentId!}">${(contentMap[op.contentId?string].title)!}</a> - ${(productMap[op.productId?string].title)!}</p>
                     <p><label><@t.page 'product.price'/>:</label>${op.price!}</p>
                     <p><label><@t.page 'product.quantity'/>/<@t.page 'product.inventory'/>:</label>${op.quantity!} / ${(productMap[op.productId?string].inventory)!}</p>
                     <p><label><@t.page 'product.quantity_limit'/>:</label>${(productMap[op.productId?string].minQuantity)!} - ${(productMap[op.productId?string].maxQuantity)!}</p>

@@ -25,6 +25,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.apache.commons.text.StringEscapeUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.poi.hssf.converter.ExcelToHtmlConverter;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -91,7 +92,7 @@ public class DocToHtmlUtils {
             XHTMLOptions options = XHTMLOptions.create().setImageManager(imageManager).setFragment(true);
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             CustomXHTMLConverter.getInstance().convert(document, out, options);
-            return HtmlUtils.UNESCAPE_HTML4.translate(new String(out.toByteArray()));
+            return StringEscapeUtils.unescapeHtml4(new String(out.toByteArray()));
         }
     }
 
@@ -108,7 +109,6 @@ public class DocToHtmlUtils {
             sb.append("\" style=\"width:").append(width).append(";height:").append(height);
         }
         sb.append("\" frameborder=\"0\"></iframe>");
-
         return sb.toString();
     }
 
@@ -165,7 +165,7 @@ public class DocToHtmlUtils {
                 slide.draw(graphics);
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
                 ImageIO.write(img, ImageUtils.FORMAT_NAME_JPG, out);
-                imageManager.extract(slide.getSlideNumber() + ".jpg", out.toByteArray());
+                imageManager.extract(CommonUtils.joinString(slide.getSlideNumber(), ".jpg"), out.toByteArray());
                 sb.append("<p style=\"text-align:center\"><img src=\"").append(imageManager.resolve(null)).append("\" alt=\"")
                         .append(slide.getSlideNumber()).append("\"/></p>");
             }
@@ -192,7 +192,7 @@ public class DocToHtmlUtils {
         if (-1 < index1 && -1 < index2) {
             html = html.substring(html.indexOf('>', index1) + 1, index2);
         }
-        return HtmlUtils.UNESCAPE_HTML4.translate(html);
+        return StringEscapeUtils.unescapeHtml4(html);
     }
 
     /**
@@ -234,7 +234,8 @@ public class DocToHtmlUtils {
         @Override
         public void addStyleClass(Element element, String classNamePrefix, String style) {
             String exising = element.getAttribute("style");
-            String newStyleValue = CommonUtils.empty(exising) ? style : (exising + (exising.endsWith(";") ? style : ";" + style));
+            String newStyleValue = CommonUtils.empty(exising) ? style
+                    : exising.endsWith(";") ? CommonUtils.joinString(exising, style) : CommonUtils.joinString(exising, ";", style);
             element.setAttribute("style", newStyleValue);
         }
     }

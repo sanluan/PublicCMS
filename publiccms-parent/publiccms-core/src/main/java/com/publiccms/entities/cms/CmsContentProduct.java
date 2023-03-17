@@ -7,9 +7,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.publiccms.common.database.CmsUpgrader;
@@ -58,6 +60,8 @@ public class CmsContentProduct implements java.io.Serializable {
      * 标题
      */
     @GeneratorColumn(title = "标题")
+    @NotBlank
+    @Length(max = 100)
     private String title;
     /**
      * price<p>

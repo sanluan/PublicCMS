@@ -69,7 +69,7 @@
     function initButtons() {
 
         dialog.onok = function () {
-            var remote = false, list = [], id, tabs = $G('tabhead').children;
+            var list = [], id, tabs = $G('tabhead').children;
             for (var i = 0; i < tabs.length; i++) {
                 if (domUtils.hasClass(tabs[i], 'focus')) {
                     id = tabs[i].getAttribute('data-content-id');
@@ -96,7 +96,6 @@
 
             if(list) {
                 editor.execCommand('insertimage', list);
-                remote && editor.fireEvent("catchRemoteImage");
             }
         };
     }
@@ -762,7 +761,7 @@
             var file, i, status, readyFile = 0, files = this.uploader.getFiles();
             for (i = 0; file = files[i++]; ) {
                 status = file.getStatus();
-                if (status == 'queued' || status == 'uploading' || status == 'progress') readyFile++;
+                if (status == 'inited' || status == 'queued' || status == 'uploading' || status == 'progress') readyFile++;
             }
             return readyFile;
         },

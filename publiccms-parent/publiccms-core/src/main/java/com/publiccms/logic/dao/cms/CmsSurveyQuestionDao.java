@@ -37,7 +37,7 @@ public class CmsSurveyQuestionDao extends BaseDao<CmsSurveyQuestion> {
         if (!ORDERTYPE_DESC.equalsIgnoreCase(orderType)) {
             orderType = ORDERTYPE_ASC;
         }
-        queryHandler.order("bean.sort " + orderType);
+        queryHandler.order("bean.sort").append(orderType);
         return getPage(queryHandler, pageIndex, pageSize);
     }
 

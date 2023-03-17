@@ -5,9 +5,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.validator.constraints.Length;
 
 import com.publiccms.common.database.CmsUpgrader;
 import com.publiccms.common.generator.annotation.GeneratorColumn;
@@ -74,6 +76,7 @@ public class CmsContentRelated implements java.io.Serializable {
      * 链接地址
      */
     @GeneratorColumn(title = "推荐地址")
+    @Length(max = 1000)
     private String url;
     /**
      * title
@@ -81,6 +84,8 @@ public class CmsContentRelated implements java.io.Serializable {
      * 标题
      */
     @GeneratorColumn(title = "推荐标题")
+    @NotBlank
+    @Length(max = 255)
     private String title;
     /**
      * description
@@ -88,6 +93,7 @@ public class CmsContentRelated implements java.io.Serializable {
      * 描述
      */
     @GeneratorColumn(title = "推荐描述")
+    @Length(max = 300)
     private String description;
     /**
      * sort

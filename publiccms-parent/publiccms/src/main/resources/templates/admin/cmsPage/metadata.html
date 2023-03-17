@@ -22,8 +22,8 @@
                     <dd>
                         <p>
                             <a class="button" href="cmsTemplate/publish?path=${path}&_csrf=<@tools.csrfToken admin=true/>" target="ajaxTodo"><@t.page 'publish_page'/></a>
-                            <a class="button" href="cmsDiy/preview.html?url=${(site.sitePath+(metadata.publishPath?starts_with('/'))?then(metadata.publishPath?keep_after('/'),metadata.publishPath))?url}" target="navTab" rel="cmsDiy/preview"  icon="<i class='bi bi-palette2 icon-large'></i>" title="<@t.page 'diy.preview'/>"><@t.page 'button.view_page'/></a>
-                            <a class="button" href="${site.sitePath+(metadata.publishPath?starts_with('/'))?then(metadata.publishPath?keep_after('/'),metadata.publishPath)}" target="_blank"><i class="icon-external-link"></i></a>
+                            <a class="button" href="cmsDiy/preview.html?url=${(site.sitePath+metadata.publishPath)?url}" target="navTab" rel="cmsDiy/preview" title="<@t.page 'diy.preview'/>"><@t.page 'button.view_page'/></a>
+                            <a class="button" href="${site.sitePath+metadata.publishPath}" target="_blank"><i class="icon-external-link"></i></a>
                         </p>
                     </dd>
                 </dl>
@@ -33,8 +33,8 @@
                     <dt><@t.page 'dynamic_page'/>:</dt>
                     <dd>
                         <p>
-                            <a class="button" href="cmsDiy/preview.html?url=${(site.dynamicPath+(path?starts_with('/'))?then(path?keep_after('/'),path))?url}<#if metadata.acceptParameters?has_content>%3F<#list metadata.acceptParameters?split(',') as p>${p}=<#if 'content'=(metadata.parameterTypeMap[p].type)!><@cms.contentList pageSize=1><#list page.list as a>${a.id}</#list></@cms.contentList><#elseif 'category'=(metadata.parameterTypeMap[p].type)!><@cms.categoryList pageSize=1><#list page.list as a>${a.id}</#list></@cms.categoryList></#if><#sep>%26</#list></#if>" target="navTab" rel="cmsDiy/preview"  icon="<i class='bi bi-palette2 icon-large'></i>" title="<@t.page 'diy.preview'/>"><@t.page 'button.view_page'/></a>
-                            <a class="button" href="${site.dynamicPath+(path?starts_with('/'))?then(path?keep_after('/'),path)}<#if metadata.acceptParameters?has_content>?<#list metadata.acceptParameters?split(',') as p>${p}=<#if 'content'=(metadata.parameterTypeMap[p].type)!><@cms.contentList pageSize=1><#list page.list as a>${a.id}</#list></@cms.contentList><#elseif 'category'=(metadata.parameterTypeMap[p].type)!><@cms.categoryList pageSize=1><#list page.list as a>${a.id}</#list></@cms.categoryList></#if><#sep>&</#list></#if>" target="_blank"><i class="icon-external-link"></i></a>
+                            <a class="button" href="cmsDiy/preview.html?url=${(site.dynamicPath+path)?url}<#if metadata.acceptParameters?has_content>%3F<#list metadata.acceptParameters?split(',') as p>${p}=<#if 'content'=(metadata.parameterTypeMap[p].type)!><@cms.contentList pageSize=1><#list page.list as a>${a.id}</#list></@cms.contentList><#elseif 'category'=(metadata.parameterTypeMap[p].type)!><@cms.categoryList pageSize=1><#list page.list as a>${a.id}</#list></@cms.categoryList></#if><#sep>%26</#list></#if>" target="navTab" rel="cmsDiy/preview" title="<@t.page 'diy.preview'/>"><@t.page 'button.view_page'/></a>
+                            <a class="button" href="${site.dynamicPath+path}<#if metadata.acceptParameters?has_content>?<#list metadata.acceptParameters?split(',') as p>${p}=<#if 'content'=(metadata.parameterTypeMap[p].type)!><@cms.contentList pageSize=1><#list page.list as a>${a.id}</#list></@cms.contentList><#elseif 'category'=(metadata.parameterTypeMap[p].type)!><@cms.categoryList pageSize=1><#list page.list as a>${a.id}</#list></@cms.categoryList></#if><#sep>&</#list></#if>" target="_blank"><i class="icon-external-link"></i></a>
                             <#if 0 lte (metadata.cacheTime)!0>
                                 <a class="button" href="cmsPage/clearCache?path=${path}&_csrf=<@tools.csrfToken admin=true/>" target="ajaxTodo"><@t.page 'button.clear_cache'/></a>
                             </#if>
@@ -50,7 +50,7 @@
                     <#list list as a>
                         <@tools.diyMetadata itemType='region' itemId=a>
                         <p>
-                            <a href="cmsPage/diy.html?id=${(object.id?url)!}" target="navTab" class="button" rel="cmsPage/diy" title="<@t.page 'diy'/>" icon="<i class='bi bi-palette'></i>"><i class='bi bi-palette'></i>${(object.name)!}</a>
+                            <a href="cmsPage/diy.html?id=${(object.id?url)!}" target="navTab" class="button" rel="cmsPage/diy" title="<@t.page 'diy'/>"><i class='bi bi-palette'></i>${(object.name)!}</a>
                         </p>
                         </@tools.diyMetadata>
                     </#list>

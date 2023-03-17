@@ -47,7 +47,7 @@ public abstract class AbstractTaskDirective extends BaseTemplateDirective {
         if (null == (app = getApp(handler))) {
             handler.put("error", ApiController.NEED_APP_TOKEN).render();
         } else if (CommonUtils.empty(app.getAuthorizedApis())
-                || !ArrayUtils.contains(StringUtils.split(app.getAuthorizedApis(), CommonConstants.COMMA_DELIMITED), getName())) {
+                || !ArrayUtils.contains(StringUtils.split(app.getAuthorizedApis(), CommonConstants.COMMA), getName())) {
             handler.put("error", ApiController.UN_AUTHORIZED).render();
         } else {
             execute(handler);

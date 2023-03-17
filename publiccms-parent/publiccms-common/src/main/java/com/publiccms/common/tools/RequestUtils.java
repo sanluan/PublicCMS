@@ -41,7 +41,7 @@ public class RequestUtils {
         String url = path;
         try {
             if (CommonUtils.notEmpty(queryString)) {
-                url += "?" + queryString;
+                url = CommonUtils.joinString(url, "?", queryString);
             }
             url = URLEncoder.encode(url, Constants.DEFAULT_CHARSET_NAME);
         } catch (UnsupportedEncodingException e) {

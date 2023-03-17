@@ -1,8 +1,8 @@
 package com.publiccms.controller.admin.cms;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
+import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
@@ -11,6 +11,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.tools.zip.ZipOutputStream;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
@@ -51,9 +55,7 @@ import com.publiccms.views.pojo.query.CmsCategoryQuery;
 
 import freemarker.template.TemplateException;
 import jakarta.annotation.Resource;
-import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * 
@@ -152,10 +154,10 @@ public class CmsCategoryAdminController {
             for (Integer id : ids) {
                 move(site, id, parentId);
             }
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "move.category", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(),
-                    new StringBuilder(StringUtils.join(ids, CommonConstants.COMMA)).append(" to ").append(parentId).toString()));
+            logOperateService
+                    .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                            "move.category", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
+                            CommonUtils.joinString(StringUtils.join(ids, CommonConstants.COMMA), " to ", parentId)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -201,8 +203,8 @@ public class CmsCategoryAdminController {
             }
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "static.category", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), new StringBuilder(StringUtils.join(ids, CommonConstants.COMMA)).append(",pageSize:")
-                            .append((CommonUtils.empty(max) ? 1 : max)).toString()));
+                    CommonUtils.getDate(), CommonUtils.joinString(StringUtils.join(ids, CommonConstants.COMMA), ",pageSize:",
+                            CommonUtils.empty(max) ? 1 : max)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -223,7 +225,7 @@ public class CmsCategoryAdminController {
             service.changeType(id, typeId);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "changeType.category", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), new StringBuilder(id).append(" to ").append(typeId).toString()));
+                    CommonUtils.getDate(), CommonUtils.joinString(id, " to ", typeId)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -292,7 +294,7 @@ public class CmsCategoryAdminController {
                 if (entity.isHasStatic() && CommonUtils.notEmpty(entity.getUrl())) {
                     String filepath = siteComponent.getWebFilePath(site.getId(), entity.getUrl());
                     if (entity.getUrl().endsWith(CommonConstants.SEPARATOR)) {
-                        filepath = filepath + CommonConstants.getDefaultPage();
+                        filepath = CommonUtils.joinString(filepath, CommonConstants.getDefaultPage());
                     }
                     if (CmsFileUtils.isFile(filepath)) {
                         String backupFilePath = siteComponent.getWebBackupFilePath(site.getId(), entity.getUrl());
@@ -326,35 +328,37 @@ public class CmsCategoryAdminController {
                     LogLoginService.CHANNEL_WEB_MANAGER, "import.category", RequestUtils.getIpAddress(request),
                     CommonUtils.getDate(), file.getOriginalFilename()));
         }
-        return SiteExchangeComponent.importData(site, admin.getId(), overwrite, "-category.zip", exchangeComponent, file,
-                model);
+        return SiteExchangeComponent.importData(site, admin.getId(), overwrite, "-category.zip", exchangeComponent, file, model);
     }
 
     /**
      * @param site
      * @param id
-     * @param response
+     * @return response entity
      */
     @RequestMapping("export")
     @Csrf
-    public void export(@RequestAttribute SysSite site, Integer id, HttpServletResponse response) {
-        try {
-            DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.DOWNLOAD_FORMAT_STRING);
-            response.setHeader("content-disposition", "attachment;fileName=" + URLEncoder.encode(
-                    new StringBuilder(site.getName()).append(dateFormat.format(new Date())).append("-category.zip").toString(),
-                    "utf-8"));
-        } catch (UnsupportedEncodingException e1) {
-        }
-        try (ServletOutputStream outputStream = response.getOutputStream();
-                ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream)) {
-            zipOutputStream.setEncoding(Constants.DEFAULT_CHARSET_NAME);
-            if (null == id) {
-                exchangeComponent.exportAll(site, zipOutputStream);
-            } else {
-                exchangeComponent.exportEntity(site, service.getEntity(id), zipOutputStream);
+    public ResponseEntity<StreamingResponseBody> export(@RequestAttribute SysSite site, Integer id) {
+        DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.DOWNLOAD_FORMAT_STRING);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentDisposition(ContentDisposition.attachment()
+                .filename(CommonUtils.joinString(site.getName(), dateFormat.format(new Date()), "-category.zip"),
+                        StandardCharsets.UTF_8)
+                .build());
+        StreamingResponseBody body = new StreamingResponseBody() {
+            @Override
+            public void writeTo(OutputStream outputStream) throws IOException {
+                try (ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream)) {
+                    zipOutputStream.setEncoding(Constants.DEFAULT_CHARSET_NAME);
+                    if (null == id) {
+                        exchangeComponent.exportAll(site, zipOutputStream);
+                    } else {
+                        exchangeComponent.exportEntity(site, service.getEntity(id), zipOutputStream);
+                    }
+                }
             }
-        } catch (IOException e) {
-        }
+        };
+        return ResponseEntity.ok().headers(headers).body(body);
     }
 
     /**
@@ -375,8 +379,8 @@ public class CmsCategoryAdminController {
                         contentService.batchWorkId(site.getId(), category.getId(), categoryModel.getId().getModelId(),
                                 (list, i) -> {
                                     templateComponent.createContentFile(site, list, category, categoryModel);
-                                    log.info("publish for category : " + category.getName() + " batch " + i + " size : "
-                                            + list.size());
+                                    log.info(CommonUtils.joinString("publish for category : ", category.getName(), " batch ", i,
+                                            " size : ", list.size()));
                                 }, PageHandler.MAX_PAGE_SIZE);
                     }
                 }

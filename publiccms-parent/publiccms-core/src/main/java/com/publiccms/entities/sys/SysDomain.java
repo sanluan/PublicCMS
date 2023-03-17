@@ -4,8 +4,10 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.validator.constraints.Length;
 
 import com.publiccms.common.generator.annotation.GeneratorColumn;
 
@@ -26,6 +28,8 @@ public class SysDomain implements java.io.Serializable {
      * 域名
      */
     @GeneratorColumn(title = "域名")
+    @NotNull
+    @Length(max = 100)
     private String name;
     /**
      * site id<p>

@@ -6,9 +6,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.constraints.NotNull;
 
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.publiccms.common.database.CmsUpgrader;
@@ -38,12 +40,16 @@ public class SysDept implements java.io.Serializable {
      * 名称
      */
     @GeneratorColumn(title = "名称", condition = true, like = true, name = "name")
+    @NotNull
+    @Length(max = 50)
     private String name;
     /**
      * code<p>
      * 编码
      */
     @GeneratorColumn(title = "编码", condition = true, like = true, name = "name")
+    @NotNull
+    @Length(max = 50)
     private String code;
     /**
      * parent id<p>
@@ -56,6 +62,7 @@ public class SysDept implements java.io.Serializable {
      * 描述
      */
     @GeneratorColumn(title = "描述")
+    @Length(max = 300)
     private String description;
     /**
      * manage user id<p>

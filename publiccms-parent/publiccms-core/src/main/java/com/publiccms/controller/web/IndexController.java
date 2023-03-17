@@ -1,21 +1,22 @@
 package com.publiccms.controller.web;
 
-import java.io.IOException;
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import jakarta.annotation.Resource;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.util.UrlPathHelper;
 
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
@@ -41,11 +42,8 @@ public class IndexController {
      */
     @RequestMapping({ "/**/" + MetadataComponent.DATA_FILE, "/**/" + MetadataComponent.METADATA_FILE, "/include/*",
             "/**/" + SiteComponent.MODEL_FILE, "/**/" + SiteComponent.CATEGORY_TYPE_FILE, "/**/" + SiteComponent.CONFIG_FILE })
-    public void refuse(HttpServletResponse response) {
-        try {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
-        } catch (IOException e) {
-        }
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public void refuse() {
     }
 
     /**
@@ -96,11 +94,12 @@ public class IndexController {
             HttpServletResponse response, ModelMap model) {
         String requestPath = UrlPathHelper.defaultInstance.getLookupPathForRequest(request);
         if (requestPath.endsWith(CommonConstants.SEPARATOR)) {
-            requestPath = requestPath.substring(0, requestPath.lastIndexOf(CommonConstants.SEPARATOR, requestPath.length() - 2))
-                    + CommonConstants.getDefaultSubfix();
+            requestPath = CommonUtils.joinString(
+                    requestPath.substring(0, requestPath.lastIndexOf(CommonConstants.SEPARATOR, requestPath.length() - 2)),
+                    CommonConstants.getDefaultSubfix());
         } else {
-            requestPath = requestPath.substring(0, requestPath.lastIndexOf(CommonConstants.SEPARATOR))
-                    + CommonConstants.getDefaultSubfix();
+            requestPath = CommonUtils.joinString(requestPath.substring(0, requestPath.lastIndexOf(CommonConstants.SEPARATOR)),
+                    CommonConstants.getDefaultSubfix());
         }
         return templateCacheComponent.getViewName(localeResolver, site, id, pageIndex, requestPath, body, request, response,
                 model);
@@ -126,7 +125,7 @@ public class IndexController {
             HttpServletResponse response, ModelMap model) {
         String requestPath = UrlPathHelper.defaultInstance.getLookupPathForRequest(request);
         if (requestPath.endsWith(CommonConstants.SEPARATOR)) {
-            requestPath += CommonConstants.getDefaultPage();
+            requestPath = CommonUtils.joinString(requestPath, CommonConstants.getDefaultPage());
         }
         return templateCacheComponent.getViewName(localeResolver, site, null, null, requestPath, body, request, response, model);
     }

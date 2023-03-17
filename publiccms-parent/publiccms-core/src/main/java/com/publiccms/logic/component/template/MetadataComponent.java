@@ -214,7 +214,7 @@ public class MetadataComponent implements Cache {
     private Map<String, CmsPlaceMetadata> getPlaceMetadataMap(String dirPath) {
         Map<String, CmsPlaceMetadata> metadataMap = placeCache.get(dirPath);
         if (null == metadataMap) {
-            File file = new File(dirPath + CommonConstants.SEPARATOR + METADATA_FILE);
+            File file = new File(CommonUtils.joinString(dirPath, CommonConstants.SEPARATOR, METADATA_FILE));
             if (CommonUtils.notEmpty(file)) {
                 try {
                     metadataMap = CommonConstants.objectMapper.readValue(file, CommonConstants.objectMapper.getTypeFactory()
@@ -239,7 +239,7 @@ public class MetadataComponent implements Cache {
     private Map<String, CmsPageMetadata> getTemplateMetadataMap(String dirPath) {
         Map<String, CmsPageMetadata> metadataMap = pageCache.get(dirPath);
         if (null == metadataMap) {
-            File file = new File(dirPath + CommonConstants.SEPARATOR + METADATA_FILE);
+            File file = new File(CommonUtils.joinString(dirPath, CommonConstants.SEPARATOR, METADATA_FILE));
             if (CommonUtils.notEmpty(file)) {
                 try {
                     metadataMap = CommonConstants.objectMapper.readValue(file, CommonConstants.objectMapper.getTypeFactory()
@@ -264,7 +264,7 @@ public class MetadataComponent implements Cache {
     private Map<String, CmsPageData> getTemplateDataMap(String dirPath) {
         Map<String, CmsPageData> dataMap = pageDataCache.get(dirPath);
         if (null == dataMap) {
-            File file = new File(dirPath + CommonConstants.SEPARATOR + DATA_FILE);
+            File file = new File(CommonUtils.joinString(dirPath, CommonConstants.SEPARATOR, DATA_FILE));
             if (CommonUtils.notEmpty(file)) {
                 try {
                     dataMap = CommonConstants.objectMapper.readValue(file, CommonConstants.objectMapper.getTypeFactory()
@@ -291,7 +291,7 @@ public class MetadataComponent implements Cache {
      */
     private void saveTemplateData(String dirPath, Map<String, CmsPageData> dataMap)
             throws JsonGenerationException, JsonMappingException, IOException {
-        File file = new File(dirPath + CommonConstants.SEPARATOR + DATA_FILE);
+        File file = new File(CommonUtils.joinString(dirPath, CommonConstants.SEPARATOR, DATA_FILE));
         if (CommonUtils.empty(file)) {
             file.getParentFile().mkdirs();
         }
@@ -312,7 +312,7 @@ public class MetadataComponent implements Cache {
      */
     private void saveTemplateMetadata(String dirPath, Map<String, CmsPageMetadata> metadataMap)
             throws JsonGenerationException, JsonMappingException, IOException {
-        File file = new File(dirPath + CommonConstants.SEPARATOR + METADATA_FILE);
+        File file = new File(CommonUtils.joinString(dirPath, CommonConstants.SEPARATOR, METADATA_FILE));
         if (CommonUtils.empty(file)) {
             file.getParentFile().mkdirs();
         }
@@ -333,7 +333,7 @@ public class MetadataComponent implements Cache {
      */
     private void savePlaceMetadata(String dirPath, Map<String, CmsPlaceMetadata> metadataMap)
             throws JsonGenerationException, JsonMappingException, IOException {
-        File file = new File(dirPath + CommonConstants.SEPARATOR + METADATA_FILE);
+        File file = new File(CommonUtils.joinString(dirPath, CommonConstants.SEPARATOR, METADATA_FILE));
         if (CommonUtils.empty(file)) {
             file.getParentFile().mkdirs();
         }

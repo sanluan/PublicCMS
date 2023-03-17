@@ -11,6 +11,8 @@ import org.apache.lucene.analysis.util.ResourceLoader;
 import org.apache.lucene.analysis.util.ResourceLoaderAware;
 import org.apache.lucene.analysis.util.TokenFilterFactory;
 
+import com.publiccms.common.tools.CommonUtils;
+
 public class MultiTokenFilterFactory extends TokenFilterFactory implements ResourceLoaderAware {
     private static String name;
     private static Map<String, String> args;
@@ -29,8 +31,7 @@ public class MultiTokenFilterFactory extends TokenFilterFactory implements Resou
         }
         args.putAll(MultiTokenFilterFactory.args);
         tokenFilterFactory = forName(currentName, args);
-        log.info(new StringBuilder().append(currentName).append(" token filter factory created,available token filters:")
-                .append(set).toString());
+        log.info(CommonUtils.joinString(currentName, " token filter factory created,available token filters:", set.toString()));
     }
 
     @Override

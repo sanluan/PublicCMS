@@ -32,12 +32,14 @@
 </#macro>
 <div class="pageContent">
     <div class="leftPageContent">
-        <h2 class="contentTitle">
-            <a class="button" href="placeTemplate/metadata.html" target="ajax" rel="cmsTemplatePlace"><@t.page 'place.create'/></a>
-        </h2>
-        <ul class="tree treeFolder" layoutH>
-            <@placeTree/>
-        </ul>
+        <div class="card">
+            <h2 class="contentTitle">
+                <a class="button" href="placeTemplate/metadata.html" target="ajax" rel="cmsTemplatePlace"><@t.page 'place.create'/></a>
+            </h2>
+            <ul class="tree treeFolder" layoutH>
+                <@placeTree/>
+            </ul>
+        </div>
     </div>
     <div id="cmsTemplatePlace" class="unitBox rightPageContent">
         <#if path?has_content>

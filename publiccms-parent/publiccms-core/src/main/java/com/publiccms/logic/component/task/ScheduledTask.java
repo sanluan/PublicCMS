@@ -121,7 +121,7 @@ public class ScheduledTask {
             try {
                 CronTrigger trigger = (CronTrigger) scheduler.getTrigger(triggerKey);
                 CronScheduleBuilder scheduleBuilder = CronScheduleBuilder
-                        .cronSchedule(site.getId() % 60 + CommonConstants.BLANK_SPACE + cronExpression);
+                        .cronSchedule(CommonUtils.joinString(site.getId() % 60, CommonConstants.BLANK_SPACE, cronExpression));
                 if (null == trigger) {
                     JobDetail jobDetail = JobBuilder.newJob(ScheduledJob.class).withIdentity(taskName).build();
                     jobDetail.getJobDataMap().put(ID, id);
@@ -237,7 +237,7 @@ public class ScheduledTask {
      * @return task name
      */
     public String getTaskName(Integer id) {
-        return "task-" + id;
+        return CommonUtils.joinString("task-", id);
     }
 
     @PreDestroy

@@ -201,7 +201,6 @@ function initLink($p) {
             if(title){
                 title = title.replace(/<[^>]*>/gi,"");
             }
-            var icon = $this.attr("icon") || $this.find("i").prop("outerHTML");
             var tabid = $this.attr("rel") || "_blank";
             var fresh = eval($this.attr("fresh") || "true");
             var external = eval($this.attr("external") || "false");
@@ -213,7 +212,7 @@ function initLink($p) {
                 return false;
             }
             navTab.openTab(tabid, url, {
-                title: title, icon: icon, fresh: fresh, external: external, focusNewWindow:newWindow
+                title: title, fresh: fresh, external: external, focusNewWindow:newWindow
             });
             return false;
         });
@@ -298,7 +297,7 @@ function initLink($p) {
                 jThemeLi.find(">div").removeClass("selected");
                 jThemeLi.filter("[theme=" + themeName + "]").find(">div").addClass("selected");
                 if ("function" === typeof $.cookie ) {
-                    $.cookie("dwz_theme", themeName);
+                    $.cookie("dwz_theme", themeName, { expires: 30 });
                 }
             }
             var jThemeLi = $(this).find(">li[theme]");

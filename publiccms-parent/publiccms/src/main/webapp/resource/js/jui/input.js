@@ -194,7 +194,7 @@
         comboxVal: function(val){
           return this.each(function(){
             var $box = $(this).parents('.combox .select:first');
-            $('#op_'+$box.attr('id')).find('>li a[value="'+escapeJquery(val)+'"]').trigger('click');
+            $('#op_'+$box.attr('id')).find('li a[value="'+escapeJquery(val)+'"]').trigger('click');
           });
         }
     });

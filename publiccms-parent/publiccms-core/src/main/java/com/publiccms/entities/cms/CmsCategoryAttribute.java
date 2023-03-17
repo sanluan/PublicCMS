@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.validator.constraints.Length;
 
 import com.publiccms.common.generator.annotation.GeneratorColumn;
 
@@ -26,10 +27,13 @@ public class CmsCategoryAttribute implements java.io.Serializable {
     @GeneratorColumn(title = "分类")
     private int categoryId;
     @GeneratorColumn(title = "标题")
+    @Length(max = 80)
     private String title;
     @GeneratorColumn(title = "关键词")
+    @Length(max = 100)
     private String keywords;
     @GeneratorColumn(title = "描述")
+    @Length(max = 300)
     private String description;
     @GeneratorColumn(title = "扩展数据")
     private String data;

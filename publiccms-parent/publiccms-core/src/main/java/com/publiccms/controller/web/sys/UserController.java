@@ -101,7 +101,7 @@ public class UserController {
                 || ControllerUtils.errorNotEquals("repassword", password, repassword, model)
                 || null != user.getPassword() && ControllerUtils.errorNotEquals("password", user.getPassword(),
                         UserPasswordUtils.passwordEncode(oldpassword, null, user.getPassword(), encoding), model)) {
-            return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
+            return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
         } else {
             Cookie userCookie = RequestUtils.getCookie(request.getCookies(), CommonConstants.getCookiesUser());
             if (null != userCookie && CommonUtils.notEmpty(userCookie.getValue())) {
@@ -122,7 +122,7 @@ public class UserController {
             model.addAttribute(CommonConstants.MESSAGE, CommonConstants.SUCCESS);
             logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
                     "changepassword", RequestUtils.getIpAddress(request), CommonUtils.getDate(), user.getPassword()));
-            return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
+            return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
         }
     }
 
@@ -143,7 +143,7 @@ public class UserController {
         returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         if (ControllerUtils.errorNotEmpty("nickname", nickname, model)
                 || ControllerUtils.errorNotNickname("nickname", nickname, model)) {
-            return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
+            return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
         }
         SysUser entity = service.updateProfile(user.getId(), nickname, cover, null);
         if (null != entity) {
@@ -151,7 +151,7 @@ public class UserController {
             logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
                     "update.user", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
-        return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
+        return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
     }
 
     /**
@@ -178,7 +178,7 @@ public class UserController {
                 || ControllerUtils.errorNotEMail("email", email, model)
                 || ControllerUtils.errorNotGreaterThen("email.token", page.getTotalCount(), 2, model)
                 || ControllerUtils.errorHasExist("email", service.findByEmail(site.getId(), email), model)) {
-            return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
+            return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
         } else {
             int expiryMinutes = ConfigComponent.getInt(config.get(EmailTemplateConfigComponent.CONFIG_EXPIRY_MINUTES),
                     EmailTemplateConfigComponent.DEFAULT_EXPIRY_MINUTES);
@@ -208,7 +208,7 @@ public class UserController {
                 sysEmailTokenService.delete(sysEmailToken.getAuthToken());
                 model.addAttribute(CommonConstants.ERROR, "sendEmail.error");
             }
-            return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
+            return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
         }
     }
 
@@ -230,12 +230,12 @@ public class UserController {
         }
         if (ControllerUtils.errorNotEmpty("verifyEmail.authToken", authToken, model)
                 || ControllerUtils.errorNotExist("verifyEmail.authToken", sysEmailToken, model)) {
-            return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
+            return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
         } else {
             sysEmailTokenService.delete(sysEmailToken.getAuthToken());
             service.checked(sysEmailToken.getUserId(), sysEmailToken.getEmail());
             model.addAttribute(CommonConstants.MESSAGE, "verifyEmail.success");
-            return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
+            return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
         }
     }
 
@@ -256,10 +256,10 @@ public class UserController {
         SysUserToken entity = sysUserTokenService.getEntity(authToken);
         if (null != entity) {
             if (ControllerUtils.errorNotEquals("userId", user.getId(), entity.getUserId(), model)) {
-                return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
+                return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
             }
             sysUserTokenService.delete(authToken);
         }
-        return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
+        return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
     }
 }

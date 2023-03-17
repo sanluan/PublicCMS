@@ -35,9 +35,11 @@
 </#macro>
 <div class="pageContent">
     <div class="leftPageContent">
-        <ul class="tree treeFolder" layoutH>
-            <@pageTree/>
-        </ul>
+        <div class="card">
+            <ul class="tree treeFolder" layoutH>
+                <@pageTree/>
+            </ul>
+        </div>
     </div>
     <div id="pageBox" class="unitBox rightPageContent">
         <#if path?has_content>

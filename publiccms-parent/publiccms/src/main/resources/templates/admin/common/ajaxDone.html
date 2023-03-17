@@ -1,5 +1,4 @@
-<#ftl auto_esc=false/>
-<#escape x as x?json_string>
+<#ftl output_format="JSON">
 {
     "statusCode":"200",
     "message":"<#if message?has_content><@t.message message?replace('\r','')?replace('\n','')?replace('\\','\\\\')/><#else><@t.message 'message.done'/></#if>",
@@ -8,4 +7,3 @@
     "callbackType":"${callbackType!}",
     "forwardUrl":"${forwardUrl!}"
 }
-</#escape>

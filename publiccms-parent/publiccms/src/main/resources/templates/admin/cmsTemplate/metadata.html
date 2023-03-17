@@ -57,7 +57,7 @@
                     <dt><@t.page 'dynamic_config.need_login'/>:</dt>
                     <dd>
                         <label><input name="needLogin" type="checkbox"/></label>
-                        <span class="info"><@t.page 'dynamic_config.need_login.description'/>:<a href="sysConfigData/edit.html?code=site" target="navTab" rel="sysConfigData/edit" icon="<i class='icon-edit icon-large'></i>"><@t.page 'server_config.site'/></a></span>
+                        <span class="info"><@t.page 'dynamic_config.need_login.description'/>:<a href="sysConfigData/edit.html?code=site" target="navTab" rel="sysConfigData/edit"><@t.page 'server_config.site'/></a></span>
                     </dd>
                 </dl>
                 <dl class="nowrap">
@@ -216,13 +216,13 @@
             <#case "index.html">
                 <#if site.useStatic>
                     $('input[name=useStatic]',navTab.getCurrentPanel()).prop('checked',true).trigger('change');
-                    $('input[name=publishPath]',navTab.getCurrentPanel()).val('/index.html');
+                    $('input[name=publishPath]',navTab.getCurrentPanel()).val('index.html');
                 </#if>
                 <#break>
             <#case "sitemap.xml">
                 <#if site.useStatic>
                     $('input[name=useStatic]',navTab.getCurrentPanel()).prop('checked',true).trigger('change');
-                    $('input[name=publishPath]',navTab.getCurrentPanel()).val('/sitemap.xml');
+                    $('input[name=publishPath]',navTab.getCurrentPanel()).val('sitemap.xml');
                 <#else>
                     $('input[name=cacheTime]',navTab.getCurrentPanel()).val(7200);
                 </#if>

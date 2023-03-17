@@ -4,11 +4,6 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.UUID;
 
-// Generated 2019-6-16 9:47:27 by com.publiccms.common.generator.SourceGenerator
-
-import jakarta.servlet.http.HttpServletRequest;
-
-import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +24,12 @@ import com.publiccms.logic.component.paymentprocessor.RechargeProcessorComponent
 import com.publiccms.logic.component.trade.PaymentGatewayComponent;
 import com.publiccms.logic.service.trade.TradeAccountHistoryService;
 import com.publiccms.logic.service.trade.TradePaymentService;
+
+import jakarta.annotation.Resource;
+
+// Generated 2019-6-16 9:47:27 by com.publiccms.common.generator.SourceGenerator
+
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  *
@@ -67,11 +68,11 @@ public class TradeAccountController {
                         user.getId(), change, BigDecimal.ZERO, BigDecimal.ZERO, TradeAccountHistoryService.STATUS_PEND, null,
                         now);
                 historyService.save(history);
-                return UrlBasedViewResolver.REDIRECT_URL_PREFIX + site.getDynamicPath() + "tradePayment/pay?paymentId="
-                        + entity.getId() + "&returnUrl=" + returnUrl;
+                return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, site.getDynamicPath(),
+                        "tradePayment/pay?paymentId=", entity.getId(), "&returnUrl=", returnUrl);
             }
         }
-        return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
+        return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
     }
 
     @Resource

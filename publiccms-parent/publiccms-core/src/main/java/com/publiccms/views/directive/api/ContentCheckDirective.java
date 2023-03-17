@@ -92,7 +92,7 @@ public class ContentCheckDirective extends AbstractAppDirective {
                 categoryIdSet.add(entity.getCategoryId());
             }
         }
-        for (CmsCategory category : categoryService.getEntitys(categoryIdSet.toArray(new Integer[categoryIdSet.size()]))) {
+        for (CmsCategory category : categoryService.getEntitys(categoryIdSet)) {
             templateComponent.createCategoryFile(site, category, null, null);
         }
         logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), app.getChannel(),

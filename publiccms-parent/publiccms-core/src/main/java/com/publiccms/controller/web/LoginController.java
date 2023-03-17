@@ -111,7 +111,7 @@ public class LoginController {
         password = StringUtils.trim(password);
         if (ControllerUtils.errorNotEmpty("username", username, model)
                 || ControllerUtils.errorNotEmpty("password", password, model)) {
-            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + loginPath;
+            return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, loginPath);
         } else {
             SysUser user;
             if (ControllerUtils.notEMail(username)) {
@@ -125,7 +125,7 @@ public class LoginController {
             if (ControllerUtils.errorCustom("locked.ip", locked && ControllerUtils.ipNotEquals(ip, user), model)
                     || ControllerUtils.errorNotEquals("password", user, model)) {
                 lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, null, true);
-                return UrlBasedViewResolver.REDIRECT_URL_PREFIX + loginPath;
+                return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, loginPath);
             }
             locked = lockComponent.isLocked(site.getId(), LockComponent.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null);
             if (CommonUtils.notEmpty(captcha)
@@ -138,7 +138,7 @@ public class LoginController {
                     lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, null, true);
                     logLoginService.save(new LogLogin(site.getId(), username, user.getId(), ip, LogLoginService.CHANNEL_WEB,
                             false, now, password));
-                    return UrlBasedViewResolver.REDIRECT_URL_PREFIX + loginPath;
+                    return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, loginPath);
                 }
             }
             if (ControllerUtils.errorNotEquals("password",
@@ -149,7 +149,7 @@ public class LoginController {
                 lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, null, true);
                 logLoginService.save(
                         new LogLogin(site.getId(), username, userId, ip, LogLoginService.CHANNEL_WEB, false, now, password));
-                return UrlBasedViewResolver.REDIRECT_URL_PREFIX + loginPath;
+                return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, loginPath);
             } else {
                 lockComponent.unLock(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, user.getId());
                 lockComponent.unLock(site.getId(), LockComponent.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null);
@@ -176,7 +176,7 @@ public class LoginController {
                         DateUtils.addMinutes(now, expiryMinutes), ip));
                 logLoginService.save(
                         new LogLogin(site.getId(), username, user.getId(), ip, LogLoginService.CHANNEL_WEB, true, now, null));
-                return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
+                return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
             }
         }
     }
@@ -230,7 +230,7 @@ public class LoginController {
         boolean locked = lockComponent.isLocked(site.getId(), LockComponent.ITEM_TYPE_REGISTER, ip, null);
         if (ControllerUtils.errorCustom("locked.ip", locked, model)) {
             lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_REGISTER, ip, null, true);
-            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + registerPath;
+            return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, registerPath);
         }
         if (CommonUtils.notEmpty(captcha)
                 || safeConfigComponent.enableCaptcha(site.getId(), SafeConfigComponent.CAPTCHA_MODULE_REGISTER)) {
@@ -238,7 +238,7 @@ public class LoginController {
             request.getSession().removeAttribute("captcha");
             if (ControllerUtils.errorCustom("captcha.error", null == sessionCaptcha || !sessionCaptcha.equalsIgnoreCase(captcha),
                     model)) {
-                return UrlBasedViewResolver.REDIRECT_URL_PREFIX + registerPath;
+                return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, registerPath);
             }
         }
         entity.setName(StringUtils.trim(entity.getName()));
@@ -255,7 +255,7 @@ public class LoginController {
                 || ControllerUtils.errorHasExist("username", service.findByName(site.getId(), entity.getName()), model)) {
             model.addAttribute("name", entity.getName());
             model.addAttribute("nickname", entity.getNickname());
-            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + registerPath;
+            return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, registerPath);
         } else {
             String salt = UserPasswordUtils.getSalt();
             entity.setPassword(UserPasswordUtils.passwordEncode(entity.getPassword(), salt, null, encode));
@@ -287,7 +287,7 @@ public class LoginController {
             sysUserTokenService.save(
                     new SysUserToken(authToken, site.getId(), entity.getId(), LogLoginService.CHANNEL_WEB, now, expiryDate, ip));
         }
-        return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
+        return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
     }
 
     @RequestMapping(value = "getCaptchaImage")
@@ -326,17 +326,16 @@ public class LoginController {
             }
             ControllerUtils.clearUserToSession(request.getContextPath(), request.getScheme(), request.getSession(), response);
         }
-        return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
+        return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
     }
 
     public static void addLoginStatus(SysUser user, String authToken, HttpServletRequest request, HttpServletResponse response,
             int expiryMinutes) {
         user.setPassword(null);
         ControllerUtils.setUserToSession(request.getSession(), user);
-        StringBuilder sb = new StringBuilder();
-        sb.append(user.getId()).append(CommonConstants.getCookiesUserSplit()).append(authToken);
-        RequestUtils.addCookie(request.getContextPath(), request.getScheme(), response, CommonConstants.getCookiesUser(),
-                sb.toString(), expiryMinutes * 60, null);
+        String cookie = CommonUtils.joinString(user.getId(), CommonConstants.getCookiesUserSplit(), authToken);
+        RequestUtils.addCookie(request.getContextPath(), request.getScheme(), response, CommonConstants.getCookiesUser(), cookie,
+                expiryMinutes * 60, null);
     }
 
     /**

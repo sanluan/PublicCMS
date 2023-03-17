@@ -17,6 +17,7 @@ import org.springframework.web.context.support.HttpRequestHandlerServlet;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.tools.CommonUtils;
 
 /**
  * 
@@ -49,9 +50,9 @@ public class ResourceInitializer implements WebApplicationInitializer {
             int counter = -1;
             while (-1 == counter || null == registration) {
                 counter++;
-                registration = servletContext.addFilter(filterName + "#" + counter, filter);
-                Assert.isTrue(counter < 100, "Failed to register filter '" + filter + "'."
-                        + "Could the same Filter instance have been registered already?");
+                registration = servletContext.addFilter(CommonUtils.joinString(filterName, "#", counter), filter);
+                Assert.isTrue(counter < 100, CommonUtils.joinString("Failed to register filter '", filter, "'.",
+                        "Could the same Filter instance have been registered already?"));
             }
         }
         registration.addMappingForServletNames(EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.INCLUDE),
