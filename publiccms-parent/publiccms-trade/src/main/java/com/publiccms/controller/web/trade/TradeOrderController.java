@@ -65,7 +65,7 @@ public class TradeOrderController {
                 entity.setDescription(order.getTitle());
                 paymentService.create(site.getId(), entity);
                 service.pay(site.getId(), orderId, entity.getId());
-                sb.append(site.getDynamicPath()).append("tradePayment/pay?paymentId=").append(order.getPaymentId());
+                sb.append(site.getDynamicPath()).append("tradePayment/pay?paymentId=").append(entity.getId());
                 if (CommonUtils.notEmpty(paymentType)) {
                     sb.append("&paymentType=").append(paymentType);
                 }
