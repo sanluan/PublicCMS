@@ -150,13 +150,15 @@ public class CmsPlaceAdminController {
 
             Map<String, String> map = extendDataParameters.getExtendData();
             CmsPlaceAttribute oldAttribute = attributeService.getEntity(entity.getId());
+            attributeService.updateAttribute(entity.getId(),
+                    ExtendUtils.getExtendString(map, site.getSitePath(), metadata.getExtendList()));
+
             if (null != oldAttribute && CommonUtils.notEmpty(oldAttribute.getData())) {
                 Map<String, String> oldMap = ExtendUtils.getExtendMap(oldAttribute.getData());
                 editorHistoryService.saveHistory(site.getId(), admin.getId(), CmsEditorHistoryService.ITEM_TYPE_PLACE_EXTEND,
                         String.valueOf(entity.getId()), oldMap, map, metadata.getExtendList());
             }
 
-            attributeService.updateAttribute(entity.getId(), ExtendUtils.getExtendString(map, metadata.getExtendList()));
             staticPlace(site, entity.getPath());
         }
         return CommonConstants.TEMPLATE_DONE;

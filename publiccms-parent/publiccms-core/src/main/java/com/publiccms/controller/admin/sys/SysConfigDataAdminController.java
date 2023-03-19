@@ -108,7 +108,7 @@ public class SysConfigDataAdminController {
             List<SysExtendField> fieldList = configComponent.getFieldList(site, entity.getId().getCode(), null,
                     RequestContextUtils.getLocale(request));
             Map<String, String> map = extendDataParameters.getExtendData();
-            entity.setData(ExtendUtils.getExtendString(map, fieldList));
+            entity.setData(ExtendUtils.getExtendString(map, site.getSitePath(), fieldList));
             if (null != oldEntity) {
                 entity = service.update(oldEntity.getId(), entity, ignoreProperties);
                 if (null != entity) {

@@ -1,6 +1,7 @@
 package com.publiccms.controller.web.cms;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -35,6 +36,7 @@ import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
+import com.publiccms.logic.service.cms.CmsEditorHistoryService;
 import com.publiccms.logic.service.cms.CmsPlaceAttributeService;
 import com.publiccms.logic.service.cms.CmsPlaceService;
 import com.publiccms.logic.service.log.LogLoginService;
@@ -69,6 +71,8 @@ public class PlaceController {
     protected SafeConfigComponent safeConfigComponent;
     @Resource
     private TemplateComponent templateComponent;
+    @Resource
+    private CmsEditorHistoryService editorHistoryService;
     @Resource
     private LockComponent lockComponent;
 
@@ -162,9 +166,10 @@ public class PlaceController {
             }
             lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_CONTRIBUTE,
                     metadata.isAllowAnonymous() ? ip : String.valueOf(user.getId()), null, true);
-            String extentString = ExtendUtils.getExtendString(placeParameters.getExtendData(),
-                    metadataComponent.getPlaceMetadata(filepath).getExtendList());
-            attributeService.updateAttribute(entity.getId(), extentString);
+
+            Map<String, String> map = placeParameters.getExtendData();
+            attributeService.updateAttribute(entity.getId(),
+                    ExtendUtils.getExtendString(map, site.getSitePath(), metadata.getExtendList()));
             model.addAttribute("id", entity.getId());
         }
         return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);

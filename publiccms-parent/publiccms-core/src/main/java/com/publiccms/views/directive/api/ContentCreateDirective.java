@@ -195,7 +195,8 @@ public class ContentCreateDirective extends AbstractAppDirective {
                     attribute.setSource(handler.getString("source"));
                     attribute.setSourceUrl(handler.getString("sourceUrl"));
                     attribute.setText(handler.getString("text"));
-                    attribute.setData(ExtendUtils.getExtendString(extendData, cmsModel.getExtendList(), categoryExtendList));
+                    attribute.setData(ExtendUtils.getExtendString(extendData, site.getSitePath(), cmsModel.getExtendList(),
+                            categoryExtendList));
                     CmsContentAdminController.initContent(entity, site, cmsModel, handler.getBoolean("draft"), checked, attribute,
                             false, CommonUtils.getDate());
                     String text = HtmlUtils.removeHtmlTag(attribute.getText());
@@ -206,7 +207,7 @@ public class ContentCreateDirective extends AbstractAppDirective {
                     if (cmsModel.isSearchable()) {
                         attribute.setSearchText(text);
                     }
-                    
+
                     Set<ConstraintViolation<CmsContent>> set = validatorFactory.getValidator().validate(entity);
                     if (!set.isEmpty()) {
                         handler.put("error", set.stream().map(cv -> cv.getPropertyPath().toString())

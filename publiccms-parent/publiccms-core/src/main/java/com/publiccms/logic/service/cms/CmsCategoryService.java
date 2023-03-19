@@ -63,13 +63,14 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
 
     /**
      * @param siteId
+     * @param sitePath 
      * @param id
      * @param userId
      * @param attribute
      * @param categoryType
      * @param categoryParameters
      */
-    public void saveTagAndAttribute(short siteId, Integer id, Long userId, CmsCategoryAttribute attribute,
+    public void saveTagAndAttribute(short siteId, String sitePath, Integer id, Long userId, CmsCategoryAttribute attribute,
             CmsCategoryType categoryType, CmsCategoryParameters categoryParameters) {
         if (CommonUtils.notEmpty(id)) {
             if (CommonUtils.notEmpty(categoryParameters.getCategoryModelList())) {
@@ -100,13 +101,13 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
             }
             Map<String, String> map = null;
             if (null != categoryType && CommonUtils.notEmpty(categoryType.getExtendList())) {
-                attribute.setData(ExtendUtils.getExtendString(categoryParameters.getExtendData(), categoryType.getExtendList()));
+                attribute.setData(
+                        ExtendUtils.getExtendString(categoryParameters.getExtendData(), sitePath, categoryType.getExtendList()));
             } else {
                 attribute.setData(null);
             }
 
             saveEditorHistory(attributeService.getEntity(entity.getId()), siteId, entity.getId(), userId, categoryType, map);// 保存编辑器字段历史记录
-
             attributeService.updateAttribute(id, attribute);
         }
     }

@@ -1,7 +1,7 @@
 package com.publiccms.logic.service.cms;
 
-import static org.springframework.util.StringUtils.collectionToDelimitedString;
 import static org.springframework.util.StringUtils.collectionToCommaDelimitedString;
+import static org.springframework.util.StringUtils.collectionToDelimitedString;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -15,10 +15,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.BiConsumer;
 
+import javax.annotation.Resource;
+
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
-import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -321,8 +322,35 @@ public class CmsContentService extends BaseService<CmsContent> {
             Set<String> dictionaryValueList = new HashSet<>();
             Set<String> extendsFieldList = new HashSet<>();
             StringBuilder extendsTextBuilder = new StringBuilder();
-            dealExtend(modelExtendList, dictionaryValueList, extendsFieldList, map, extendsTextBuilder, site);
-            dealExtend(categoryExtendList, dictionaryValueList, extendsFieldList, map, extendsTextBuilder, site);
+            attribute.setData(ExtendUtils.getExtendString(map, site.getSitePath(), (extendField, value) -> {
+                if (ArrayUtils.contains(DICTIONARY_INPUT_TYPES, extendField.getInputType())) {
+                    if (Config.INPUTTYPE_DICTIONARY.equals(extendField.getInputType()) && extendField.isMultiple()) {
+                        String[] values = StringUtils.split(value, CommonConstants.COMMA);
+                        if (CommonUtils.notEmpty(values)) {
+                            for (String v : values) {
+                                dictionaryValueList
+                                        .add(CommonUtils.joinString(extendField.getId().getCode(), CommonConstants.UNDERLINE, v));
+                            }
+                        }
+                    } else {
+                        if (null != value) {
+                            dictionaryValueList
+                                    .add(CommonUtils.joinString(extendField.getId().getCode(), CommonConstants.UNDERLINE, value));
+                        }
+                    }
+                } else {
+                    if (null != value) {
+                        if (ArrayUtils.contains(Config.INPUT_TYPE_EDITORS, extendField.getInputType())) {
+                            map.put(extendField.getId().getCode(), value);
+                            value = HtmlUtils.removeHtmlTag(value);
+                        }
+                        if (CommonUtils.notEmpty(value)) {
+                            extendsFieldList.add(extendField.getId().getCode());
+                            searchTextBuilder.append(value).append(CommonConstants.BLANK_SPACE);
+                        }
+                    }
+                }
+            }, modelExtendList, categoryExtendList));
             if (CommonUtils.notEmpty(dictionaryValueList)) {
                 attribute.setDictionaryValues(collectionToDelimitedString(dictionaryValueList, CommonConstants.BLANK_SPACE));
             } else {
@@ -336,7 +364,6 @@ public class CmsContentService extends BaseService<CmsContent> {
                 attribute.setExtendsFields(null);
                 attribute.setExtendsText(null);
             }
-            attribute.setData(ExtendUtils.getExtendString(map, modelExtendList, categoryExtendList));
         } else {
             attribute.setData(null);
             attribute.setDictionaryValues(null);
@@ -382,45 +409,6 @@ public class CmsContentService extends BaseService<CmsContent> {
         } else {
             attribute.setMinPrice(null);
             attribute.setMaxPrice(null);
-        }
-    }
-
-    private static void dealExtend(List<SysExtendField> extendList, Set<String> dictionaryValueList, Set<String> extendsFieldList,
-            Map<String, String> map, StringBuilder searchTextBuilder, SysSite site) {
-        if (CommonUtils.notEmpty(extendList)) {
-            for (SysExtendField extendField : extendList) {
-                if (extendField.isSearchable()) {
-                    if (ArrayUtils.contains(DICTIONARY_INPUT_TYPES, extendField.getInputType())) {
-                        if (Config.INPUTTYPE_DICTIONARY.equals(extendField.getInputType()) && extendField.isMultiple()) {
-                            String[] values = StringUtils.split(map.get(extendField.getId().getCode()), CommonConstants.COMMA);
-                            if (CommonUtils.notEmpty(values)) {
-                                for (String value : values) {
-                                    dictionaryValueList.add(CommonUtils.joinString(extendField.getId().getCode(),
-                                            CommonConstants.UNDERLINE, value));
-                                }
-                            }
-                        } else {
-                            String value = map.get(extendField.getId().getCode());
-                            if (null != value) {
-                                dictionaryValueList.add(
-                                        CommonUtils.joinString(extendField.getId().getCode(), CommonConstants.UNDERLINE, value));
-                            }
-                        }
-                    } else {
-                        String value = map.get(extendField.getId().getCode());
-                        if (null != value) {
-                            if (ArrayUtils.contains(Config.INPUT_TYPE_EDITORS, extendField.getInputType())) {
-                                map.put(extendField.getId().getCode(), HtmlUtils.cleanUnsafeHtml(value, site.getSitePath()));
-                                value = HtmlUtils.removeHtmlTag(value);
-                            }
-                            if (CommonUtils.notEmpty(value)) {
-                                extendsFieldList.add(extendField.getId().getCode());
-                                searchTextBuilder.append(value).append(CommonConstants.BLANK_SPACE);
-                            }
-                        }
-                    }
-                }
-            }
         }
     }
 

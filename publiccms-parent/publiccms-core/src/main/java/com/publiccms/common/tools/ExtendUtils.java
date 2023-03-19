@@ -4,7 +4,12 @@ import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.function.BiConsumer;
 
+import org.apache.commons.lang3.ArrayUtils;
+
+import com.publiccms.common.api.Config;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.entities.sys.SysExtendField;
 
@@ -34,24 +39,58 @@ public class ExtendUtils {
 
     /**
      * @param map
+     * @param sitePath
      * @param extendFieldListArrays
      * @return extend string
      */
     @SafeVarargs
-    public static String getExtendString(Map<String, String> map, List<SysExtendField>... extendFieldListArrays) {
-        if (null == map) {
-            return null;
-        } else {
-            if (CommonUtils.notEmpty(extendFieldListArrays)) {
-                for (List<SysExtendField> extendFieldList : extendFieldListArrays) {
-                    if (CommonUtils.notEmpty(extendFieldList)) {
-                        for (SysExtendField extend : extendFieldList) {
-                            String value = map.get(extend.getId().getCode());
-                            if (null == value && null != extend.getDefaultValue()) {
+    public static String getExtendString(Map<String, String> map, String sitePath,
+            List<SysExtendField>... extendFieldListArrays) {
+        return getExtendString(map, sitePath, null, extendFieldListArrays);
+    }
+
+    /**
+     * @param map
+     * @param sitePath
+     * @param searchableConsumer
+     * @param extendFieldListArrays
+     * @return extend string
+     */
+    @SafeVarargs
+    public static String getExtendString(Map<String, String> map, String sitePath,
+            BiConsumer<SysExtendField, String> searchableConsumer, List<SysExtendField>... extendFieldListArrays) {
+        if (CommonUtils.notEmpty(extendFieldListArrays) && null != map) {
+            Set<String> notSafeKeys = map.keySet();
+            for (List<SysExtendField> extendFieldList : extendFieldListArrays) {
+                if (CommonUtils.notEmpty(extendFieldList)) {
+                    for (SysExtendField extend : extendFieldList) {
+                        notSafeKeys.remove(extend.getId().getCode());
+                        String value = map.get(extend.getId().getCode());
+                        if (null == value) {
+                            if (null != extend.getDefaultValue()) {
                                 map.put(extend.getId().getCode(), value);
                             }
+                        } else if (null != extend.getMaxlength()) {
+                            if (ArrayUtils.contains(Config.INPUT_TYPE_EDITORS, extend.getInputType())) {
+                                map.put(extend.getId().getCode(),
+                                        HtmlUtils.cleanUnsafeHtml(HtmlUtils.keep(value, extend.getMaxlength()), sitePath));
+                            } else {
+                                map.put(extend.getId().getCode(), CommonUtils.keep(value, extend.getMaxlength(), null));
+                            }
+                        } else {
+                            if (ArrayUtils.contains(Config.INPUT_TYPE_EDITORS, extend.getInputType())) {
+                                map.put(extend.getId().getCode(), HtmlUtils.cleanUnsafeHtml(value, sitePath));
+                            }
+                        }
+                        if (extend.isSearchable()) {
+                            searchableConsumer.accept(extend, value);
                         }
                     }
+                }
+            }
+            if (!notSafeKeys.isEmpty()) {
+                for (String key : notSafeKeys) {
+                    map.remove(key);
                 }
             }
             try {
@@ -60,5 +99,6 @@ public class ExtendUtils {
                 return null;
             }
         }
+        return null;
     }
 }

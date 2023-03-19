@@ -80,29 +80,33 @@ public class CommonUtils {
     }
 
     /**
-     * @param var
+     * @param string
      * @param length
      * @return 截取后的文本
      */
-    public static String keep(String var, int length) {
-        return keep(var, length, "...");
+    public static String keep(String string, int length) {
+        return keep(string, length, "...");
     }
 
     /**
-     * @param var
+     * @param string
      * @param length
      * @param append
      * @return 截取后的文本
      */
-    public static String keep(String var, int length, String append) {
-        if (null != append) {
-            if (null != var && var.length() > length && length > append.length()) {
-                return joinString(var.substring(0, length - append.length()), append);
-            } else {
-                return var;
-            }
+    public static String keep(String string, int length, String append) {
+        if (null == append) {
+            return StringUtils.substring(string, 0, length);
         } else {
-            return StringUtils.substring(var, 0, length);
+            if (null != string && string.length() > length) {
+                if (length > append.length()) {
+                    return joinString(string.substring(0, length - append.length()), append);
+                } else {
+                    return string.substring(0, length);
+                }
+            } else {
+                return string;
+            }
         }
     }
 
