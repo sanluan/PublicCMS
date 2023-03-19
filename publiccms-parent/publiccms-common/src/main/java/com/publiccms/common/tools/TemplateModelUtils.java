@@ -40,11 +40,11 @@ public class TemplateModelUtils {
      */
     public static Object converBean(TemplateModel model) throws TemplateModelException {
         if (null != model) {
-            if (model instanceof TemplateSequenceModel) {
-                converBean(((TemplateSequenceModel) model).get(0));
-            }
             if (model instanceof BeanModel) {
                 return ((BeanModel) model).getWrappedObject();
+            }
+            if (model instanceof TemplateSequenceModel) {
+                return converBean(((TemplateSequenceModel) model).get(0));
             }
             if (model instanceof SimpleScalar) {
                 return ((SimpleScalar) model).toString();
@@ -86,14 +86,14 @@ public class TemplateModelUtils {
      * @return map value
      * @throws TemplateModelException
      */
-    public static Map<String, Object> converMap(TemplateModel model) throws TemplateModelException {
+    public static Map<String, String> converMap(TemplateModel model) throws TemplateModelException {
         if (null != model) {
             if (model instanceof TemplateHashModelEx) {
-                HashMap<String, Object> map = new HashMap<>();
+                HashMap<String, String> map = new HashMap<>();
                 TemplateModelIterator keys = ((TemplateHashModelEx) model).keys().iterator();
                 while (keys.hasNext()) {
                     String key = converString(keys.next());
-                    map.put(key, converBean(((TemplateHashModelEx) model).get(key)));
+                    map.put(key, converString(((TemplateHashModelEx) model).get(key)));
                 }
                 return map;
             }

@@ -228,7 +228,7 @@ public class CmsContentService extends BaseService<CmsContent> {
         return entity;
     }
 
-    private void saveEditorHistory(CmsContentAttribute oldAttribute, CmsContentAttribute attribute, short siteId, long contentId,
+    public void saveEditorHistory(CmsContentAttribute oldAttribute, CmsContentAttribute attribute, short siteId, long contentId,
             long userId, List<SysExtendField> modelExtendList, List<SysExtendField> categoryExtendList, Map<String, String> map) {
         if (null != oldAttribute) {
             if (CommonUtils.notEmpty(oldAttribute.getText()) && !oldAttribute.getText().equals(attribute.getText())) {

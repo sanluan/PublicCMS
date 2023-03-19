@@ -48,7 +48,7 @@ public class TemplateResultDirective extends AbstractTemplateDirective {
             try {
                 content = "<#attempt>" + content + "<#recover>${.error!}</#attempt>";
                 Map<String, Object> model = new HashMap<>();
-                Map<String, Object> parameters = handler.getMap("parameters");
+                Map<String, String> parameters = handler.getMap("parameters");
                 if (null != parameters) {
                     model.putAll(parameters);
                 }

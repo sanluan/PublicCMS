@@ -93,6 +93,8 @@ public class CmsContent implements java.io.Serializable {
      */
     @GeneratorColumn(title = "模型", condition = true)
     @GenericField(aggregable = Aggregable.YES, projectable = Projectable.YES)
+    @NotBlank
+    @Length(max = 20)
     private String modelId;
     /**
      * parent id<p>
