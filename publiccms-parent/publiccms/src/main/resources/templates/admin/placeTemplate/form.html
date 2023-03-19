@@ -36,12 +36,12 @@
 <#if fieldList?seq_contains('cover')>
     <p>
         <label>${(a.fieldTextMap['cover'])!}:</label>
-        <input name="cover" type="text" size="60" maxlength="1000"/>
+        <input name="cover" type="text" size="50" maxlength="1000"/>
     </p>
 </#if>
     <#include "../include_page/extendData.html"/>
     <#assign extendValues=getPlaceAttribute((a.id)!)/>
-    <@extendData name='extendDataList' extendList=a.extendList extendValues=extendValues type='customform'/>
+    <@extendData extendList=a.extendList extendValues=extendValues type='customform'/>
 <#noparse>
     <@sys.configData code="safe">
         <#if object.captcha?has_content && object.captcha?split(",")?seq_contains("contribute")>

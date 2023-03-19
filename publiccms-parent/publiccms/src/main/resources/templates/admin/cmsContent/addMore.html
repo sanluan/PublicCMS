@@ -30,7 +30,7 @@
         </#list>
     </@cms.modelList>
     <#if size=0 && authorizedMap['cmsCategory/add']>
-        <li><a href="cmsCategory/add.html?id=${categoryId!}&showTab=model" target="navTab" rel="cmsCategory/edit" title="<@t.page 'category.edit'/>"><i class="icon-edit icon-large"></i><@t.page 'content.no_model'/></a></li>
+        <li><a href="cmsCategory/add.html?categoryId=${categoryId!}&showTab=model" target="navTab" rel="cmsCategory/edit" title="<@t.page 'category.edit'/>"><i class="icon-edit icon-large"></i><@t.page 'content.no_model'/></a></li>
     </#if>
 <#elseif modelId?has_content>
     <@cms.model id=modelId>
@@ -43,7 +43,7 @@
             <#list list as a>
                 <#if categoryMap[a.id.categoryId?string]?has_content && deptCategoryMap[a.id.categoryId?string]>
                 <li>
-                    <a href="cmsContent/add.html?id=${a.id.categoryId}&modelId=${a.id.modelId}" class="exclude-translate" target="navTab" rel="cmsContent/add" title="<@t.page 'button.add_some_things' object.name/>"><@bread categoryMap[a.id.categoryId?string]/> ${categoryMap[a.id.categoryId?string].name}</a>
+                    <a href="cmsContent/add.html?categoryId=${a.id.categoryId}&modelId=${a.id.modelId}" class="exclude-translate" target="navTab" rel="cmsContent/add" title="<@t.page 'button.add_some_things' object.name/>"><@bread categoryMap[a.id.categoryId?string]/> ${categoryMap[a.id.categoryId?string].name}</a>
                 </li>
                 </#if>
             </#list>

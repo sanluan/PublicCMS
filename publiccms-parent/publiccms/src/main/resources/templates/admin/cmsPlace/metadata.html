@@ -73,7 +73,7 @@
             <#include "../include_page/extendData.html"/>
             <#assign extendList=(a.metadataExtendList)![]/>
             <#assign attribute=(a.extendData)!{}/>
-            <@extendData name='extendDataList' extendList=extendList extendValues=attribute historyItemType='metadataExtend' historyItemId='include'+path/>
+            <@extendData extendList=extendList extendValues=attribute historyItemType='metadataExtend' historyItemId='include'+path/>
         </div>
     </div>
 </form>

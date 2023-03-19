@@ -41,9 +41,9 @@
 </#if>
     <#include "../include_page/extendData.html"/>
     <@sys.extendFieldList extendId=category.extendId>
-        <@extendData name='categoryExtendDataList' extendList=list extendValues=attribute type='customform'/>
+        <@extendData extendList=list extendValues=attribute type='customform'/>
     </@sys.extendFieldList>
-    <@extendData name='modelExtendDataList' extendList=model.extendList extendValues=attribute type='customform'/>
+    <@extendData extendList=model.extendList extendValues=attribute type='customform'/>
 <#noparse>
     <@sys.configData code="safe">
         <#if object.captcha?has_content && object.captcha?split(",")?seq_contains("contribute")>

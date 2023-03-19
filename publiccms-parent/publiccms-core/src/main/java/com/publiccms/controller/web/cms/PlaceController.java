@@ -1,7 +1,6 @@
 package com.publiccms.controller.web.cms;
 
 import java.io.IOException;
-import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -148,6 +147,8 @@ public class PlaceController {
                 logOperateService.save(new LogOperate(site.getId(), user.getId(), null == user ? null : user.getDeptId(),
                         LogLoginService.CHANNEL_WEB, "update.place", ip, CommonUtils.getDate(), entity.getPath()));
             } else {
+                entity.setPublishDate(CommonUtils.getDate());
+                entity.setPublishDate(CommonUtils.getDate());
                 entity.setSiteId(site.getId());
                 Long userId = null;
                 if (null != user) {
@@ -161,9 +162,8 @@ public class PlaceController {
             }
             lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_CONTRIBUTE,
                     metadata.isAllowAnonymous() ? ip : String.valueOf(user.getId()), null, true);
-            Map<String, String> map = ExtendUtils.getExtentDataMap(placeParameters.getExtendDataList(),
+            String extentString = ExtendUtils.getExtendString(placeParameters.getExtendData(),
                     metadataComponent.getPlaceMetadata(filepath).getExtendList());
-            String extentString = ExtendUtils.getExtendString(map);
             attributeService.updateAttribute(entity.getId(), extentString);
             model.addAttribute("id", entity.getId());
         }

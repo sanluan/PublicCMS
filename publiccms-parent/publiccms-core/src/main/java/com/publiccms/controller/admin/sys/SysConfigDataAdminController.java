@@ -14,7 +14,6 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.tools.zip.ZipOutputStream;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
@@ -30,7 +29,6 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.publiccms.common.annotation.Csrf;
-import com.publiccms.common.api.Config;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
@@ -38,7 +36,6 @@ import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.DateFormatUtils;
 import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.common.tools.RequestUtils;
-import com.publiccms.entities.cms.CmsEditorHistory;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysConfigData;
 import com.publiccms.entities.sys.SysConfigDataId;
@@ -59,7 +56,7 @@ import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.sys.SysConfigDataService;
 import com.publiccms.logic.service.sys.SysDeptItemService;
 import com.publiccms.logic.service.sys.SysDeptService;
-import com.publiccms.views.pojo.model.SysConfigParameters;
+import com.publiccms.views.pojo.model.ExtendDataParameters;
 
 /**
  *
@@ -84,7 +81,7 @@ public class SysConfigDataAdminController {
      * @param site
      * @param admin
      * @param entity
-     * @param sysConfigParameters
+     * @param extendDataParameters
      * @param request
      * @param model
      * @return view name
@@ -92,7 +89,7 @@ public class SysConfigDataAdminController {
     @RequestMapping("save")
     @Csrf
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, SysConfigData entity,
-            @ModelAttribute SysConfigParameters sysConfigParameters, HttpServletRequest request, ModelMap model) {
+            @ModelAttribute ExtendDataParameters extendDataParameters, HttpServletRequest request, ModelMap model) {
         if (null != entity.getId()) {
             SysDept dept = sysDeptService.getEntity(admin.getDeptId());
             if (ControllerUtils.errorNotEmpty("deptId", admin.getDeptId(), model)
@@ -110,8 +107,8 @@ public class SysConfigDataAdminController {
             }
             List<SysExtendField> fieldList = configComponent.getFieldList(site, entity.getId().getCode(), null,
                     RequestContextUtils.getLocale(request));
-            Map<String, String> map = ExtendUtils.getExtentDataMap(sysConfigParameters.getExtendDataList(), fieldList);
-            entity.setData(ExtendUtils.getExtendString(map));
+            Map<String, String> map = extendDataParameters.getExtendData();
+            entity.setData(ExtendUtils.getExtendString(map, fieldList));
             if (null != oldEntity) {
                 entity = service.update(oldEntity.getId(), entity, ignoreProperties);
                 if (null != entity) {
@@ -122,19 +119,8 @@ public class SysConfigDataAdminController {
 
                 if (CommonUtils.notEmpty(oldEntity.getData()) && CommonUtils.notEmpty(fieldList)) {
                     Map<String, String> oldMap = ExtendUtils.getExtendMap(oldEntity.getData());
-                    for (SysExtendField extendField : fieldList) {
-                        if (ArrayUtils.contains(Config.INPUT_TYPE_EDITORS, extendField.getInputType())) {
-                            if (CommonUtils.notEmpty(oldMap) && CommonUtils.notEmpty(oldMap.get(extendField.getId().getCode()))
-                                    && (CommonUtils.notEmpty(map) || !oldMap.get(extendField.getId().getCode())
-                                            .equals(map.get(extendField.getId().getCode())))) {
-                                CmsEditorHistory history = new CmsEditorHistory(site.getId(),
-                                        CmsEditorHistoryService.ITEM_TYPE_CONFIG_DATA, entity.getId().getCode(),
-                                        extendField.getId().getCode(), CommonUtils.getDate(), admin.getId(),
-                                        map.get(extendField.getId().getCode()));
-                                editorHistoryService.save(history);
-                            }
-                        }
-                    }
+                    editorHistoryService.saveHistory(site.getId(), admin.getId(), CmsEditorHistoryService.ITEM_TYPE_CONFIG_DATA,
+                            entity.getId().getCode(), oldMap, map, fieldList);
                 }
 
             } else {

@@ -209,16 +209,9 @@ public class CmsContentService extends BaseService<CmsContent> {
 
             List<SysExtendField> modelExtendList = cmsModel.getExtendList();
             List<SysExtendField> categoryExtendList = null;
-            Map<String, String> map = ExtendUtils.getExtentDataMap(contentParameters.getModelExtendDataList(), modelExtendList);
+            Map<String, String> map = contentParameters.getExtendData();
             if (null != extendId && null != extendService.getEntity(extendId)) {
                 categoryExtendList = extendFieldService.getList(extendId, null, null);
-                Map<String, String> categoryMap = ExtendUtils.getSysExtentDataMap(contentParameters.getCategoryExtendDataList(),
-                        categoryExtendList);
-                if (CommonUtils.notEmpty(map)) {
-                    map.putAll(categoryMap);
-                } else {
-                    map = categoryMap;
-                }
             }
 
             dealAttribute(entity, site, modelExtendList, categoryExtendList, map, cmsModel,
@@ -246,34 +239,12 @@ public class CmsContentService extends BaseService<CmsContent> {
             if (CommonUtils.notEmpty(oldAttribute.getData())) {
                 Map<String, String> oldMap = ExtendUtils.getExtendMap(oldAttribute.getData());
                 if (CommonUtils.notEmpty(modelExtendList)) {
-                    for (SysExtendField extendField : modelExtendList) {
-                        if (ArrayUtils.contains(Config.INPUT_TYPE_EDITORS, extendField.getInputType())) {
-                            if (CommonUtils.notEmpty(oldMap) && CommonUtils.notEmpty(oldMap.get(extendField.getId().getCode()))
-                                    && (CommonUtils.notEmpty(map) || !oldMap.get(extendField.getId().getCode())
-                                            .equals(map.get(extendField.getId().getCode())))) {
-                                CmsEditorHistory history = new CmsEditorHistory(siteId,
-                                        CmsEditorHistoryService.ITEM_TYPE_CONTENT_EXTEND, String.valueOf(contentId),
-                                        extendField.getId().getCode(), CommonUtils.getDate(), userId,
-                                        map.get(extendField.getId().getCode()));
-                                editorHistoryService.save(history);
-                            }
-                        }
-                    }
+                    editorHistoryService.saveHistory(siteId, userId, CmsEditorHistoryService.ITEM_TYPE_CONTENT_EXTEND,
+                            String.valueOf(contentId), oldMap, map, modelExtendList);
                 }
                 if (CommonUtils.notEmpty(categoryExtendList)) {
-                    for (SysExtendField extendField : categoryExtendList) {
-                        if (ArrayUtils.contains(Config.INPUT_TYPE_EDITORS, extendField.getInputType())) {
-                            if (CommonUtils.notEmpty(oldMap) && CommonUtils.notEmpty(oldMap.get(extendField.getId().getCode()))
-                                    && (CommonUtils.notEmpty(map) || !oldMap.get(extendField.getId().getCode())
-                                            .equals(map.get(extendField.getId().getCode())))) {
-                                CmsEditorHistory history = new CmsEditorHistory(siteId,
-                                        CmsEditorHistoryService.ITEM_TYPE_CONTENT_EXTEND, String.valueOf(contentId),
-                                        extendField.getId().getCode(), CommonUtils.getDate(), userId,
-                                        map.get(extendField.getId().getCode()));
-                                editorHistoryService.save(history);
-                            }
-                        }
-                    }
+                    editorHistoryService.saveHistory(siteId, userId, CmsEditorHistoryService.ITEM_TYPE_CONTENT_EXTEND,
+                            String.valueOf(contentId), oldMap, map, categoryExtendList);
                 }
             }
         }
@@ -365,7 +336,7 @@ public class CmsContentService extends BaseService<CmsContent> {
                 attribute.setExtendsFields(null);
                 attribute.setExtendsText(null);
             }
-            attribute.setData(ExtendUtils.getExtendString(map));
+            attribute.setData(ExtendUtils.getExtendString(map, modelExtendList, categoryExtendList));
         } else {
             attribute.setData(null);
             attribute.setDictionaryValues(null);

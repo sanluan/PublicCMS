@@ -1,20 +1,20 @@
 package com.publiccms.views.pojo.model;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.publiccms.entities.cms.CmsContentFile;
 import com.publiccms.entities.cms.CmsContentProduct;
 import com.publiccms.entities.cms.CmsContentRelated;
 import com.publiccms.entities.cms.CmsTag;
-import com.publiccms.views.pojo.entities.ExtendData;
 
 /**
  *
  * CmsContentParameters
  * 
  */
-public class CmsContentParameters implements java.io.Serializable {
+public class CmsContentParameters extends ExtendDataParameters implements java.io.Serializable {
 
     /**
      * 
@@ -26,8 +26,7 @@ public class CmsContentParameters implements java.io.Serializable {
     private List<CmsContentFile> files;
     private List<CmsContentFile> images;
     private List<CmsContentProduct> products;
-    private List<ExtendData> modelExtendDataList;
-    private List<ExtendData> categoryExtendDataList;
+    private Map<String, String> extendData;
     private List<CmsTag> tags;
 
     /**
@@ -89,31 +88,17 @@ public class CmsContentParameters implements java.io.Serializable {
     }
 
     /**
-     * @return
+     * @return extend data
      */
-    public List<ExtendData> getModelExtendDataList() {
-        return modelExtendDataList;
+    public Map<String, String> getExtendData() {
+        return extendData;
     }
 
     /**
-     * @param modelExtendDataList
+     * @param extendData
      */
-    public void setModelExtendDataList(List<ExtendData> modelExtendDataList) {
-        this.modelExtendDataList = modelExtendDataList;
-    }
-
-    /**
-     * @return
-     */
-    public List<ExtendData> getCategoryExtendDataList() {
-        return categoryExtendDataList;
-    }
-
-    /**
-     * @param categoryExtendDataList
-     */
-    public void setCategoryExtendDataList(List<ExtendData> categoryExtendDataList) {
-        this.categoryExtendDataList = categoryExtendDataList;
+    public void setExtendData(Map<String, String> extendData) {
+        this.extendData = extendData;
     }
 
     /**
@@ -138,7 +123,8 @@ public class CmsContentParameters implements java.io.Serializable {
     }
 
     /**
-     * @param products the products to set
+     * @param products
+     *            the products to set
      */
     public void setProducts(List<CmsContentProduct> products) {
         this.products = products;

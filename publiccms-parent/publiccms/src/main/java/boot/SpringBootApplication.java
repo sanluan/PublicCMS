@@ -76,6 +76,7 @@ public class SpringBootApplication {
         factory.setDisplayName("PublicCMS");
         factory.setRegisterDefaultServlet(true);
         factory.getSession().setTimeout(Duration.ofMinutes(20));
+        factory.getJsp().setRegistered(false);
         return factory;
     }
 
