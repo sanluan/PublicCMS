@@ -75,7 +75,7 @@ import com.publiccms.views.pojo.entities.CmsModel;
  * <li><code>tagIds</code>:多个标签id
  * <li><code>url</code>:url,当模型为外链时有效
  * <li><code>checked</code>:已审核,【true,false】,默认为<code>false</code>
- * <li><code>extendData</code>:扩展数据map,传值格式extendData.field1=value1&extendData.field2=value2
+ * <li><code>extendData</code>:扩展数据map
  * <li><code>source</code>:来源
  * <li><code>sourceUrl</code>:来源URL
  * <li><code>text</code>:正文html
@@ -100,7 +100,7 @@ import com.publiccms.views.pojo.entities.CmsModel;
  * 
  * <pre>
 &lt;script&gt;
-$.getJSON('${site.dynamicPath!}api/contentCheck?categoryId=1&amp;modelId=article&amp;title=title&amp;description=description&amp;authToken=用户登录授权&amp;authUserId=1&amp;appToken=接口访问授权Token', function(data){
+$.getJSON('${site.dynamicPath!}api/contentCheck?categoryId=1&amp;modelId=article&amp;title=title&amp;text=%3Cdiv%3Econtent%3C/div%3E&amp;extendData.field1=value1&amp;extendData.field2=value2&amp;authToken=用户登录授权&amp;authUserId=1&amp;appToken=接口访问授权Token', function(data){
 console.log(data.result);
 });
 &lt;/script&gt;
