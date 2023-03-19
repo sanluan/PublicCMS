@@ -18,10 +18,14 @@ public class HtmlUtils {
      */
     public static final Pattern HTML_PATTERN = Pattern.compile("<[^>]+>");
 
-    public static final Safelist SAFELIST = Safelist.relaxed().addTags("figure", "iframe", "section")
-            .addAttributes(":all", "class", "style").addAttributes("a", "name", "id", "target")
+    public static final Safelist SAFELIST = Safelist.relaxed()
+            .addTags("abbr", "address", "aside", "article", "bdi", "bdo", "big", "center", "del", "details", "dfn", "figcaption",
+                    "figure", "font", "footer", "header", "hr", "iframe", "ins", "kbd", "label", "main", "mark", "nav",
+                    "progress", "s", "samp", "section", "summary", "time", "var", "wbr")
+            .addAttributes(":all", "class", "dir", "lang", "style").addAttributes("a", "name", "id", "target")
             .addAttributes("audio", "autoplay", "controls", "loop", "muted", "preload", "src")
-            .addAttributes("iframe", "src", "width", "height")
+            .addAttributes("iframe", "src", "width", "height").addAttributes("meter", "max", "min", "value")
+            .addAttributes("progress", "max", "value")
             .addAttributes("video", "autoplay", "controls", "data-setup", "height", "loop", "muted", "preload", "poster", "src",
                     "width")
             .addAttributes("source", "media", "sizes", "src", "srcset", "type")
@@ -47,9 +51,5 @@ public class HtmlUtils {
             return Jsoup.clean(string, baseUri, SAFELIST);
         }
         return string;
-    }
-
-    public static void main(String[] args) {
-        System.out.println(removeHtmlTag("<body>&quot;\"aaa\"</body>"));
     }
 }

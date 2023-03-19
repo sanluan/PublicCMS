@@ -85,8 +85,8 @@ import com.publiccms.views.pojo.entities.CmsModel;
  * <li><code>fileDescriptions</code>:多个文件描述
  * <li><code>imagePaths</code>:多个图片路径
  * <li><code>imageDescriptions</code>:多个图片描述
-
-</code>:标题
+ * 
+ * </code>:标题
  * </ul>
  * <p>
  * 返回结果
@@ -198,6 +198,15 @@ public class ContentCreateDirective extends AbstractAppDirective {
                     attribute.setData(ExtendUtils.getExtendString(extendData, cmsModel.getExtendList(), categoryExtendList));
                     CmsContentAdminController.initContent(entity, site, cmsModel, handler.getBoolean("draft"), checked, attribute,
                             false, CommonUtils.getDate());
+                    String text = HtmlUtils.removeHtmlTag(attribute.getText());
+                    attribute.setWordCount(text.length());
+                    if (CommonUtils.empty(entity.getDescription())) {
+                        entity.setDescription(CommonUtils.keep(text, 300));
+                    }
+                    if (cmsModel.isSearchable()) {
+                        attribute.setSearchText(text);
+                    }
+                    
                     Set<ConstraintViolation<CmsContent>> set = validatorFactory.getValidator().validate(entity);
                     if (!set.isEmpty()) {
                         handler.put("error", set.stream().map(cv -> cv.getPropertyPath().toString())
@@ -229,14 +238,7 @@ public class ContentCreateDirective extends AbstractAppDirective {
                                     "save.content", RequestUtils.getIpAddress(handler.getRequest()), CommonUtils.getDate(),
                                     JsonUtils.getString(entity)));
                         }
-                        String text = HtmlUtils.removeHtmlTag(attribute.getText());
-                        attribute.setWordCount(text.length());
-                        if (CommonUtils.empty(entity.getDescription())) {
-                            entity.setDescription(CommonUtils.keep(text, 300));
-                        }
-                        if (cmsModel.isSearchable()) {
-                            attribute.setSearchText(text);
-                        }
+
                         service.saveEditorHistory(attributeService.getEntity(entity.getId()), attribute, site.getId(),
                                 entity.getId(), user.getId(), cmsModel.getExtendList(), categoryExtendList, extendData);
 

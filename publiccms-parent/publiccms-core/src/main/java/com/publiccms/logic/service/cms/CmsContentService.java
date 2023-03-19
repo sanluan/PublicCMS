@@ -391,7 +391,7 @@ public class CmsContentService extends BaseService<CmsContent> {
             for (SysExtendField extendField : extendList) {
                 if (extendField.isSearchable()) {
                     if (ArrayUtils.contains(DICTIONARY_INPUT_TYPES, extendField.getInputType())) {
-                        if (Config.INPUTTYPE_DICTIONARY.equals(extendField.getInputType())) {
+                        if (Config.INPUTTYPE_DICTIONARY.equals(extendField.getInputType()) && extendField.isMultiple()) {
                             String[] values = StringUtils.split(map.get(extendField.getId().getCode()), CommonConstants.COMMA);
                             if (CommonUtils.notEmpty(values)) {
                                 for (String value : values) {
