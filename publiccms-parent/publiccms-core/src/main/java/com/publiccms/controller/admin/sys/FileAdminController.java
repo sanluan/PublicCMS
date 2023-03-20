@@ -100,12 +100,10 @@ public class FileAdminController {
                         }
                     } else {
                         filepath = siteComponent.getWebFilePath(site.getId(), fileName);
-                        String metadataPath = siteComponent.getPrivateFilePath(site.getId(),
-                                CmsFileUtils.getMetadataFileName(fileName));
                         if (CommonUtils.notEmpty(base64File)) {
-                            CmsFileUtils.upload(VerificationUtils.base64Decode(base64File), filepath, originalName, metadataPath);
+                            CmsFileUtils.upload(VerificationUtils.base64Decode(base64File), filepath);
                         } else {
-                            CmsFileUtils.upload(file, filepath, originalName, metadataPath);
+                            CmsFileUtils.upload(file, filepath);
                         }
                     }
                     if (CmsFileUtils.isSafe(filepath, suffix)) {
@@ -242,10 +240,8 @@ public class FileAdminController {
                                 }
                                 String fileName = CmsFileUtils.getUploadFileName(imagesuffix);
                                 String filepath = siteComponent.getWebFilePath(site.getId(), fileName);
-                                String metadataPath = siteComponent.getPrivateFilePath(site.getId(),
-                                        CmsFileUtils.getMetadataFileName(fileName));
                                 try {
-                                    CmsFileUtils.upload(content, filepath, suggestedName, metadataPath);
+                                    CmsFileUtils.upload(content, filepath);
                                     String fileType = CmsFileUtils.getFileType(imagesuffix);
                                     FileSize fileSize = CmsFileUtils.getFileSize(filepath, imagesuffix);
                                     logUploadService.save(new LogUpload(site.getId(), admin.getId(),
@@ -264,18 +260,16 @@ public class FileAdminController {
                         if (useIframe) {
                             String fileName = CmsFileUtils.getUploadFileName(suffix);
                             String filepath = siteComponent.getWebFilePath(site.getId(), fileName);
-                            String metadataPath = siteComponent.getPrivateFilePath(site.getId(),
-                                    CmsFileUtils.getMetadataFileName(fileName));
                             try {
-                                CmsFileUtils.upload(file, filepath, originalName, metadataPath);
+                                CmsFileUtils.upload(file, filepath);
                                 String fileType = CmsFileUtils.getFileType(suffix);
                                 FileSize fileSize = CmsFileUtils.getFileSize(filepath, suffix);
                                 logUploadService.save(new LogUpload(site.getId(), admin.getId(),
                                         LogLoginService.CHANNEL_WEB_MANAGER, originalName, false, fileType,
                                         fileSize.getFileSize(), fileSize.getWidth(), fileSize.getHeight(),
                                         RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
-                                result.put(field,
-                                        DocToHtmlUtils.pdfToHtml(CommonUtils.joinString(site.getSitePath(), fileName), width, height));
+                                result.put(field, DocToHtmlUtils.pdfToHtml(CommonUtils.joinString(site.getSitePath(), fileName),
+                                        width, height));
                             } catch (IllegalStateException | IOException e) {
                                 log.error(e.getMessage());
                             }
@@ -291,10 +285,8 @@ public class FileAdminController {
                                     }
                                     String fileName = CmsFileUtils.getUploadFileName(imagesuffix);
                                     String filepath = siteComponent.getWebFilePath(site.getId(), fileName);
-                                    String metadataPath = siteComponent.getPrivateFilePath(site.getId(),
-                                            CmsFileUtils.getMetadataFileName(fileName));
                                     try {
-                                        CmsFileUtils.upload(resource.getData(), filepath, resource.getName(), metadataPath);
+                                        CmsFileUtils.upload(resource.getData(), filepath);
                                         String fileType = CmsFileUtils.getFileType(imagesuffix);
                                         FileSize fileSize = CmsFileUtils.getFileSize(filepath, imagesuffix);
                                         logUploadService.save(new LogUpload(site.getId(), admin.getId(),
@@ -344,10 +336,8 @@ public class FileAdminController {
                 if (ArrayUtils.contains(safeConfigComponent.getSafeSuffix(site), suffix)) {
                     String fileName = CmsFileUtils.getUploadFileName(suffix);
                     String filepath = siteComponent.getWebFilePath(site.getId(), fileName);
-                    String metadataPath = siteComponent.getPrivateFilePath(site.getId(),
-                            CmsFileUtils.getMetadataFileName(fileName));
                     try {
-                        CmsFileUtils.upload(file, filepath, originalName, metadataPath);
+                        CmsFileUtils.upload(file, filepath);
                         if (CmsFileUtils.isSafe(filepath, suffix)) {
                             result.put("field", field);
                             result.put(field, fileName);

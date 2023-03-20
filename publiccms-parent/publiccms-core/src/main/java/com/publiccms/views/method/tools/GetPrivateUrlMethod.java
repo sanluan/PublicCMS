@@ -32,6 +32,7 @@ import freemarker.template.TemplateModelException;
  * 参数列表
  * <ol>
  * <li><code>url</code>,文件url
+ * <li><code>string</code>,文件名,可以为空
  * </ol>
  * <p>
  * 返回结果
@@ -74,6 +75,7 @@ public class GetPrivateUrlMethod extends BaseMethod {
 
     public Object execute(SysSite site, List<TemplateModel> arguments) throws TemplateModelException {
         String url = getString(0, arguments);
+        String filename = getString(1, arguments);
         if (CommonUtils.notEmpty(url) && null != site) {
             Map<String, String> config = configComponent.getConfigData(site.getId(), SafeConfigComponent.CONFIG_CODE);
             String signKey = config.get(SafeConfigComponent.CONFIG_PRIVATEFILE_KEY);
@@ -86,9 +88,16 @@ public class GetPrivateUrlMethod extends BaseMethod {
             String string = CmsFileUtils.getPrivateFileSignString(expiry, url);
             String sign = VerificationUtils.base64Encode(VerificationUtils.encryptAES(string, signKey));
             try {
-                return CommonUtils.joinString(site.getDynamicPath(), "file/private?expiry=", expiry, "&sign=",
-                        URLEncoder.encode(sign, CommonConstants.DEFAULT_CHARSET_NAME), "&filePath=",
-                        URLEncoder.encode(url, CommonConstants.DEFAULT_CHARSET_NAME));
+                if (CommonUtils.notEmpty(filename)) {
+                    return CommonUtils.joinString(site.getDynamicPath(), "file/private?expiry=", expiry, "&sign=",
+                            URLEncoder.encode(sign, CommonConstants.DEFAULT_CHARSET_NAME), "&filePath=",
+                            URLEncoder.encode(url, CommonConstants.DEFAULT_CHARSET_NAME), "&filename=",
+                            URLEncoder.encode(filename, CommonConstants.DEFAULT_CHARSET_NAME));
+                } else {
+                    return CommonUtils.joinString(site.getDynamicPath(), "file/private?expiry=", expiry, "&sign=",
+                            URLEncoder.encode(sign, CommonConstants.DEFAULT_CHARSET_NAME), "&filePath=",
+                            URLEncoder.encode(url, CommonConstants.DEFAULT_CHARSET_NAME));
+                }
             } catch (UnsupportedEncodingException e) {
             }
         }

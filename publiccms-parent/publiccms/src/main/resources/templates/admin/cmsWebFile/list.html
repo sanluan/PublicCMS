@@ -43,7 +43,7 @@
                 <td></td>
                 <td class="tree"><div class="folder_expandable"></div></td>
                 <td>
-                    <a href="cmsWebFile/list.html?path=${path?keep_before_last('/')}" target="navTab" rel="cmsWebFile/list" title="<@t.page 'button.return'/>">
+                    <a href="cmsWebFile/list.html?path=${path?contains('/')?then(path?keep_before_last('/'),'')}" target="navTab" rel="cmsWebFile/list">
                         <@t.page 'button.return'/>
                     </a>
                 </td>

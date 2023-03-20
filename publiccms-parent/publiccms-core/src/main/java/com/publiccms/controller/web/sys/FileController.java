@@ -124,11 +124,10 @@ public class FileController {
                         }
                     } else {
                         filepath = siteComponent.getWebFilePath(site.getId(), fileName);
-                        String metadataPath = siteComponent.getPrivateFilePath(site.getId(), fileName);
                         if (CommonUtils.notEmpty(base64File)) {
-                            CmsFileUtils.upload(VerificationUtils.base64Decode(base64File), filepath, originalName, metadataPath);
+                            CmsFileUtils.upload(VerificationUtils.base64Decode(base64File), filepath);
                         } else {
-                            CmsFileUtils.upload(file, filepath, originalName, metadataPath);
+                            CmsFileUtils.upload(file, filepath);
                         }
                     }
                     if (CmsFileUtils.isSafe(filepath, suffix)) {
@@ -165,21 +164,19 @@ public class FileController {
     /**
      * @param site
      * @param filePath
+     * @param filename
      * @param request
      * @return response entity
      */
     @RequestMapping("download")
-    public ResponseEntity<StreamingResponseBody> download(@RequestAttribute SysSite site, String filePath,
+    public ResponseEntity<StreamingResponseBody> download(@RequestAttribute SysSite site, String filePath, String filename,
             HttpServletRequest request) {
         Matcher matcher = CmsFileUtils.UPLOAD_FILE_PATTERN.matcher(filePath);
         if (matcher.matches()) {
             String absolutePath = matcher.group(1);
-            String metadataPath = siteComponent.getPrivateFilePath(site.getId(), CmsFileUtils.getMetadataFileName(absolutePath));
-
             HttpHeaders headers = new HttpHeaders();
-            if (CmsFileUtils.isFile(metadataPath)) {
-                headers.setContentDisposition(ContentDisposition.attachment()
-                        .filename(CmsFileUtils.getFileContent(metadataPath), StandardCharsets.UTF_8).build());
+            if (CommonUtils.notEmpty(filename)) {
+                headers.setContentDisposition(ContentDisposition.attachment().filename(filename, StandardCharsets.UTF_8).build());
             } else {
                 headers.setContentDisposition(ContentDisposition.attachment()
                         .filename(CmsFileUtils.getFileName(absolutePath), StandardCharsets.UTF_8).build());
@@ -214,12 +211,13 @@ public class FileController {
      * @param expiry
      * @param sign
      * @param filePath
+     * @param filename
      * @param request
      * @return response entity
      */
     @RequestMapping("private")
     public ResponseEntity<StreamingResponseBody> privatefile(@RequestAttribute SysSite site, long expiry, String sign,
-            String filePath, HttpServletRequest request) {
+            String filePath, String filename, HttpServletRequest request) {
         if (CommonUtils.notEmpty(sign) && expiry > System.currentTimeMillis()) {
             Map<String, String> config = configComponent.getConfigData(site.getId(), SafeConfigComponent.CONFIG_CODE);
             String signKey = config.get(SafeConfigComponent.CONFIG_PRIVATEFILE_KEY);
@@ -229,6 +227,10 @@ public class FileController {
             String string = CmsFileUtils.getPrivateFileSignString(expiry, filePath);
             if (string.equalsIgnoreCase(VerificationUtils.decryptAES(VerificationUtils.base64Decode(sign), signKey))) {
                 HttpHeaders headers = new HttpHeaders();
+                if (CommonUtils.notEmpty(filename)) {
+                    headers.setContentDisposition(
+                            ContentDisposition.attachment().filename(filename, StandardCharsets.UTF_8).build());
+                }
                 String sendfile = request.getHeader(CmsFileUtils.HEADERS_SEND_CTRL);
                 if (CmsFileUtils.HEADERS_SEND_NGINX.equalsIgnoreCase(sendfile)) {
                     headers.set(CmsFileUtils.HEADERS_SEND_NGINX,

@@ -40,8 +40,7 @@ public class CmsFileUtils {
     public static final String UPLOAD_PATH = "upload/";
     public static final String USER_PRIVATE_PATH = "user/";
     public static final String METADATA_PATH = "metadata/";
-    public static final Pattern UPLOAD_FILE_PATTERN = Pattern.compile(CommonUtils.joinString(".*(", UPLOAD_PATH,
-            DateFormatUtils.UPLOAD_FILE_NAME_FORMAT_STRING.replaceAll("\\w", "\\\\d"), "-?\\d+\\.\\w+)"));
+    public static final Pattern UPLOAD_FILE_PATTERN = Pattern.compile(CommonUtils.joinString(".*(", UPLOAD_PATH, ".*)"));
     public static final String ORDERFIELD_FILENAME = "fileName";
     public static final String ORDERFIELD_FILESIZE = "fileSize";
     public static final String ORDERFIELD_CREATEDATE = "createDate";
@@ -560,16 +559,6 @@ public class CmsFileUtils {
     }
 
     /**
-     * 获取元数据文件名
-     * 
-     * @param filepath
-     * @return avatar file name
-     */
-    public static String getMetadataFileName(String filepath) {
-        return CommonUtils.joinString(METADATA_PATH, filepath);
-    }
-
-    /**
      * 获取文件名
      * 
      * @param filePath
@@ -667,31 +656,9 @@ public class CmsFileUtils {
      * @throws IOException
      */
     public static String upload(MultipartFile file, String fileName) throws IllegalStateException, IOException {
-        return upload(file, fileName, null, null);
-    }
-
-    /**
-     * 上传文件
-     *
-     * @param file
-     * @param fileName
-     * @param originalName
-     * @param metadataPath
-     * @return file name
-     * @throws IllegalStateException
-     * @throws IOException
-     */
-    public static String upload(MultipartFile file, String fileName, String originalName, String metadataPath)
-            throws IllegalStateException, IOException {
         File dest = new File(fileName);
         dest.getParentFile().mkdirs();
         file.transferTo(dest);
-        if (CommonUtils.notEmpty(originalName) && CommonUtils.notEmpty(metadataPath)) {
-            try {
-                FileUtils.writeStringToFile(new File(metadataPath), originalName, CommonConstants.DEFAULT_CHARSET_NAME);
-            } catch (IOException e) {
-            }
-        }
         return dest.getName();
     }
 

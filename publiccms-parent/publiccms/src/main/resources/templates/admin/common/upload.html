@@ -13,7 +13,7 @@
                     <ul>
                         <li><a href="javascript:;" class="tabImageBtn" onclick="$('button[type=submit]',$.pdialog.getCurrent()).show();return false;"><@t.page 'file'/></a></li>
                         <li><a href="javascript:;" onclick="$('button[type=submit]',$.pdialog.getCurrent()).hide();return false;"><@t.page 'upload.log'/></a></li>
-                        <#if !privatefile?has_content || "true"!=privatefile>
+                        <#if !privatefile?has_content || "false"=privatefile>
                             <li><a href="common/file_list.html?field=${(field?url)!}&originalField=${(originalField?url)!}&fileTypes=${fileTypes!}" class="j-ajax" onclick="$('button[type=submit]',$.pdialog.getCurrent()).hide();return false;"><@t.page 'webfile'/></a></li>
                         </#if>
                     </ul>
@@ -36,8 +36,6 @@
                         <input type="file" name="file" class="required" size="30"<#if fileTypes?has_content&&'video'=fileTypes> accept="video/*"</#if>/>
                     </#if>
                 </div>
-                <div class="pageFormContent imagelist">
-                </div>
                 <div class="pageContent">
             <@log.uploadList userId=admin.id fileTypes=fileTypes privatefile=privatefile pageIndex=1 pageSize=21>
                 <#list page.list as a>
@@ -57,7 +55,7 @@
                 </#list>
             </@log.uploadList>
                 </div>
-                <#if !privatefile?has_content || "true"!=privatefile>
+                <#if !privatefile?has_content || "false"=privatefile>
                     <div id="fileBox">
                     </div>
                 </#if>

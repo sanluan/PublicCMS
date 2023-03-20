@@ -1,6 +1,7 @@
 package com.publiccms.common.tools;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,7 +61,8 @@ public class ExtendUtils {
     public static String getExtendString(Map<String, String> map, String sitePath,
             BiConsumer<SysExtendField, String> searchableConsumer, List<SysExtendField>... extendFieldListArrays) {
         if (CommonUtils.notEmpty(extendFieldListArrays) && null != map) {
-            Set<String> notSafeKeys = map.keySet();
+            Set<String> notSafeKeys = new HashSet<>();
+            notSafeKeys.addAll(map.keySet());
             for (List<SysExtendField> extendFieldList : extendFieldListArrays) {
                 if (CommonUtils.notEmpty(extendFieldList)) {
                     for (SysExtendField extend : extendFieldList) {

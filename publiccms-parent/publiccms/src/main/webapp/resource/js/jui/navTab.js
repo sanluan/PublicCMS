@@ -234,7 +234,7 @@ var navTab = {
         var $tab = this._getTabs().removeClass("selected").eq(iTabIndex).addClass("selected");
         this._getPanels().each(function(){
             // 防止iframe被隐藏后iframe滚动到最上面
-            if($('iframe',$(this)).length){
+            if($('.iframe-box',$(this)).length){
                 $(this).css("visibility","hidden").height(0);
             }else{
                 $(this).hide();

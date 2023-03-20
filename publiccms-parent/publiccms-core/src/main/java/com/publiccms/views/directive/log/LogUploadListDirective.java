@@ -24,6 +24,7 @@ import com.publiccms.logic.service.log.LogUploadService;
  * <li><code>image</code>:是否图片,【true,false】
  * <li><code>userId</code>:用户ID
  * <li><code>channel</code>:渠道
+ * <li><code>privatefile</code>:私有文件,【true,false】,默认<code>false</code>
  * <li><code>originalName</code>:原文件名
  * <li><code>filePath</code>:文件路径
  * <li><code>orderField</code>:排序字段,[createDate:创建日期,fileSize:文件大小],默认ID倒序

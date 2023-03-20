@@ -30,7 +30,7 @@ public class HtmlUtils {
             .addTags("abbr", "address", "aside", "article", "bdi", "bdo", "big", "center", "del", "details", "dfn", "figcaption",
                     "figure", "font", "footer", "header", "hr", "iframe", "ins", "kbd", "label", "main", "mark", "nav",
                     "progress", "s", "samp", "section", "summary", "time", "var", "wbr")
-            .addAttributes(":all", "class", "dir", "lang", "style").addAttributes("a", "name", "id", "target")
+            .addAttributes(":all", "class", "dir", "lang", "style").addAttributes("a", "name", "download", "id", "target")
             .addAttributes("audio", "autoplay", "controls", "loop", "muted", "preload", "src")
             .addAttributes("iframe", "src", "width", "height").addAttributes("meter", "max", "min", "value")
             .addAttributes("progress", "max", "value")

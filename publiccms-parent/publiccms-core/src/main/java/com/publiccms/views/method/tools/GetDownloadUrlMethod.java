@@ -25,6 +25,7 @@ import freemarker.template.TemplateModelException;
  * 参数列表
  * <ol>
  * <li><code>url</code>,文件路径
+ * <li><code>string</code>,文件名,可以为空
  * </ol>
  * <p>
  * 返回结果
@@ -38,7 +39,7 @@ import freemarker.template.TemplateModelException;
  * 
  * <pre>
 &lt;script&gt;
-$.getJSON('${site.dynamicPath}api/method/getDownloadUrl?parameters=index.html', function(data){
+$.getJSON('${site.dynamicPath}api/method/getDownloadUrl?parameters=index.html&amp;parameters=index.html', function(data){
 console.log(data);
 });
 &lt;/script&gt;
@@ -65,10 +66,17 @@ public class GetDownloadUrlMethod extends BaseMethod {
 
     public Object execute(SysSite site, List<TemplateModel> arguments) throws TemplateModelException {
         String url = getString(0, arguments);
+        String filename = getString(1, arguments);
         if (CommonUtils.notEmpty(url) && null != site) {
             try {
-                return CommonUtils.joinString(site.getDynamicPath(), "file/download?filePath=",
-                        URLEncoder.encode(url, CommonConstants.DEFAULT_CHARSET_NAME));
+                if (CommonUtils.notEmpty(filename)) {
+                    return CommonUtils.joinString(site.getDynamicPath(), "file/download?filePath=",
+                            URLEncoder.encode(url, CommonConstants.DEFAULT_CHARSET_NAME), "&filename=",
+                            URLEncoder.encode(filename, CommonConstants.DEFAULT_CHARSET_NAME));
+                } else {
+                    return CommonUtils.joinString(site.getDynamicPath(), "file/download?filePath=",
+                            URLEncoder.encode(url, CommonConstants.DEFAULT_CHARSET_NAME));
+                }
             } catch (UnsupportedEncodingException e) {
             }
         }
