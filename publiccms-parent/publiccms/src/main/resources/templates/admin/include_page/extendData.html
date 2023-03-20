@@ -102,8 +102,8 @@
             </#if>
             <#break>
         <#case 'editor'>
-        <#case 'ckeditor'>
         <#case 'tinymce'>
+        <#case 'ckeditor'>
             <#if 'view'=type>
                 <#if safe>${(value?no_esc)!}<#else>${value!}</#if>
             <#else>

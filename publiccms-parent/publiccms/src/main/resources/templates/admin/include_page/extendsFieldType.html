@@ -2,7 +2,7 @@
 <#assign sizeEnableTypes=["image"]/>
 <#assign dictionaryTypes=["number","boolean","user","dept","content","category","dictionary","categoryType","tagType","tag","vote","survey"]/>
 <#macro extendsFieldType inputName value="" searchable=false>
-<#local inputTypes={"text":"input","number":"number","textarea":"textarea","file":"file","image":"image","video":"video","privatefile":"privatefile","privateimage":"privateimage","privatevideo":"privatevideo","editor":"ueditor","ckeditor":"ckeditor","tinymce":"tinymce","datetime":"datetime","date":"date","time":"time","color":"color","alphaColor":"alphaColor","template":"template_path","boolean":"true_or_false","dictionary":"dictionary","user":"user","dept":"dept","content":"content","category":"category","categoryType":"category_type","vote":"vote","survey":"survey","tagType":"tag_type","tag":"tag","password":"password"}/>
+<#local inputTypes={"text":"input","number":"number","textarea":"textarea","file":"file","image":"image","video":"video","privatefile":"privatefile","privateimage":"privateimage","privatevideo":"privatevideo","editor":"ueditor","tinymce":"tinymce","ckeditor":"ckeditor","datetime":"datetime","date":"date","time":"time","color":"color","alphaColor":"alphaColor","template":"template_path","boolean":"true_or_false","dictionary":"dictionary","user":"user","dept":"dept","content":"content","category":"category","categoryType":"category_type","vote":"vote","survey":"survey","tagType":"tag_type","tag":"tag","password":"password"}/>
 <#assign flag=.now?long/>
 <select class="combox combox_${flag}" name="${inputName!}">
     <#list inputTypes as a,inputType>
