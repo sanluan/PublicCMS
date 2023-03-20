@@ -52,7 +52,6 @@ public class CmsFileUtils {
     public static final String HEADERS_SEND_CTRL = "Sendfile";
     public static final String HEADERS_SEND_NGINX = "X-Accel-Redirect";
     public static final String HEADERS_SEND_APACHE = "X-Sendfile";
-    public static final String NGINX_DOWNLOAD_PREFIX = "/downloadfile/";
     public static final String NGINX_PRIVATEFILE_PREFIX = "/privatefile/";
     /**
      * 
