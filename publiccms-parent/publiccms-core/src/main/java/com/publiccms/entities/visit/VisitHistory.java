@@ -61,7 +61,7 @@ public class VisitHistory implements java.io.Serializable {
     /**
      * ip
      */
-    @GeneratorColumn(title = "IP")
+    @GeneratorColumn(title = "IP", condition = true)
     private String ip;
     /**
      * user agent<p>

@@ -1,7 +1,7 @@
-<#if !startCreateDate?has_content>
+<#if !startCreateDate??>
     <#assign startCreateDate=(.now?long-7*24*3600*1000)?number_to_date/>
 </#if>
-<@visit.historyList sessionId=sessionId url=url startCreateDate=startCreateDate endCreateDate=endCreateDate
+<@visit.historyList sessionId=sessionId ip=ip url=url startCreateDate=startCreateDate endCreateDate=endCreateDate
             orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader card">
     <form class="pagerForm" action="visit/history.html" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
@@ -10,11 +10,15 @@
             <ul class="searchContent">
                 <li>
                     <label><@t.page 'visit.session'/>:</label>
-                    <input type="text" name="sessionId" value="${sessionId!}" size="40"/>
+                    <input type="text" name="sessionId" value="${sessionId!}" size="20"/>
                 </li>
                 <li>
                     <label><@t.page 'url'/>:</label>
-                    <input type="text" name="url" value="${url!}" size="40"/>
+                    <input type="text" name="url" value="${url!}" size="30"/>
+                </li>
+                <li>
+                    <label><@t.page 'visit.ip'/>:</label>
+                    <input type="text" name="ip" value="${ip!}" size="20"/>
                 </li>
                 <li>
                     <label><@t.page 'visit.visit_date'/>:</label>
@@ -29,6 +33,9 @@
                 <ul>
                     <li>
                         <button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
+                    </li>
+                    <li>
+                        <a class="button" href="visit/exportHistory?_csrf=<@tools.csrfToken admin=true/>" target="dwzExport" targetType="navTab"><i class="icon-download-alt icon-large"></i><@t.page 'button.export'/></a>
                     </li>
                 </ul>
             </div>

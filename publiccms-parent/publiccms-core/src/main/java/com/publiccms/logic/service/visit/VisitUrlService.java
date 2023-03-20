@@ -3,11 +3,11 @@ package com.publiccms.logic.service.visit;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang3.time.DateUtils;
-
 // Generated 2021-1-14 22:44:12 by com.publiccms.common.generator.SourceGenerator
 
 import javax.annotation.Resource;
+
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +30,7 @@ public class VisitUrlService extends BaseService<VisitUrl> {
 
     /**
      * @param siteId
+     * @param url
      * @param startVisitDate
      * @param endVisitDate
      * @param pageIndex
@@ -38,11 +39,12 @@ public class VisitUrlService extends BaseService<VisitUrl> {
      */
     @SuppressWarnings("unchecked")
     @Transactional(readOnly = true)
-    public PageHandler getPage(short siteId, Date startVisitDate, Date endVisitDate, Integer pageIndex, Integer pageSize) {
-        PageHandler page = dao.getPage(siteId, startVisitDate, endVisitDate, pageIndex, pageSize);
+    public PageHandler getPage(short siteId, String url, Date startVisitDate, Date endVisitDate, Integer pageIndex,
+            Integer pageSize) {
+        PageHandler page = dao.getPage(siteId, url, startVisitDate, endVisitDate, pageIndex, pageSize);
         Date now = CommonUtils.getMinuteDate();
         if ((null == pageIndex || 1 == pageIndex) && (null == endVisitDate || DateUtils.isSameDay(now, endVisitDate))) {
-            ((List<VisitUrl>) page.getList()).addAll(0, visitHistoryService.getUrlList(siteId, now));
+            ((List<VisitUrl>) page.getList()).addAll(0, visitHistoryService.getUrlList(siteId, url, now));
         }
         return page;
     }

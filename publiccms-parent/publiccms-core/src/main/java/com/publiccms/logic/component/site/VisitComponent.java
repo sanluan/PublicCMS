@@ -68,7 +68,7 @@ public class VisitComponent implements Cache {
     public void dealLastDayUrlVisitLog() {
         Calendar now = Calendar.getInstance();
         now.add(Calendar.HOUR_OF_DAY, -1);
-        List<VisitUrl> entityList = visitHistoryService.getUrlList(null, now.getTime());
+        List<VisitUrl> entityList = visitHistoryService.getUrlList(null, null, now.getTime());
         for (VisitUrl entity : entityList) {
             entity.getId().setUrlMd5(VerificationUtils.md5Encode(entity.getUrl()));
             entity.getId().setUrlSha(VerificationUtils.sha1Encode(entity.getUrl()));

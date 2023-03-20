@@ -8,6 +8,10 @@
         <div class="searchBar">
             <ul class="searchContent">
                 <li>
+                    <label><@t.page 'url'/>:</label>
+                    <input type="text" name="url" value="${url!}" size="30"/>
+                </li>
+                <li>
                     <label><@t.page 'visit.visit_date'/>:</label>
                     <input type="text" name="startVisitDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startVisitDate!}"/>
                     <a class="inputDateButton" href="javascript:void(0);"></a>
@@ -20,6 +24,9 @@
                 <ul>
                     <li>
                         <button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
+                    </li>
+                    <li>
+                        <a class="button" href="visit/exportUrl?_csrf=<@tools.csrfToken admin=true/>" target="dwzExport" targetType="navTab"><i class="icon-download-alt icon-large"></i><@t.page 'button.export'/></a>
                     </li>
                 </ul>
             </div>

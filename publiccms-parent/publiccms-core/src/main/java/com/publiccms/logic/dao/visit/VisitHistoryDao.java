@@ -12,8 +12,8 @@ import com.publiccms.common.base.BaseDao;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
 import com.publiccms.common.tools.CommonUtils;
-import com.publiccms.entities.visit.VisitHistory;
 import com.publiccms.entities.visit.VisitDay;
+import com.publiccms.entities.visit.VisitHistory;
 import com.publiccms.entities.visit.VisitItem;
 import com.publiccms.entities.visit.VisitSession;
 import com.publiccms.entities.visit.VisitUrl;
@@ -29,6 +29,7 @@ public class VisitHistoryDao extends BaseDao<VisitHistory> {
     /**
      * @param siteId
      * @param sessionId
+     * @param ip
      * @param url
      * @param startCreateDate
      * @param endCreateDate
@@ -37,7 +38,7 @@ public class VisitHistoryDao extends BaseDao<VisitHistory> {
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(Short siteId, String sessionId, String url, Date startCreateDate, Date endCreateDate,
+    public PageHandler getPage(Short siteId, String sessionId, String ip, String url, Date startCreateDate, Date endCreateDate,
             String orderType, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from VisitHistory bean");
         if (null != siteId) {
@@ -48,6 +49,9 @@ public class VisitHistoryDao extends BaseDao<VisitHistory> {
         }
         if (CommonUtils.notEmpty(url)) {
             queryHandler.condition("bean.url = :url").setParameter("url", url);
+        }
+        if (CommonUtils.notEmpty(ip)) {
+            queryHandler.condition("bean.ip like :ip").setParameter("ip", like(ip));
         }
         if (null != startCreateDate) {
             queryHandler.condition("bean.createDate > :startCreateDate").setParameter("startCreateDate", startCreateDate);
@@ -98,11 +102,12 @@ public class VisitHistoryDao extends BaseDao<VisitHistory> {
 
     /**
      * @param siteId
+     * @param url
      * @param visitDate
      * @return results page
      */
     @SuppressWarnings("unchecked")
-    public List<VisitUrl> getUrlList(Short siteId, Date visitDate) {
+    public List<VisitUrl> getUrlList(Short siteId, String url, Date visitDate) {
         QueryHandler queryHandler = getQueryHandler(
                 "select new VisitUrl(bean.siteId,bean.visitDate,bean.url,count(*),count(distinct bean.sessionId),count(distinct bean.ip)) from VisitHistory bean");
         if (null != siteId) {
@@ -110,6 +115,9 @@ public class VisitHistoryDao extends BaseDao<VisitHistory> {
         }
         queryHandler.condition("bean.visitDate = :visitDate").setParameter("visitDate",
                 DateUtils.truncate(visitDate, Calendar.DAY_OF_MONTH));
+        if (CommonUtils.notEmpty(url)) {
+            queryHandler.condition("bean.url like :url").setParameter("url", like(url));
+        }
         queryHandler.group("bean.siteId");
         queryHandler.group("bean.visitDate");
         queryHandler.group("bean.url");

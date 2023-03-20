@@ -18,6 +18,7 @@ import com.publiccms.common.handler.PageHandler;
  * 参数列表
  * <ul>
  * <li><code>sessionId</code>:会话id
+ * <li><code>ip</code>:ip
  * <li><code>url</code>:url
  * <li><code>startCreateDate</code>:起始创建日期,【2020-01-01 23:59:59】,【2020-01-01】
  * <li><code>endCreateDate</code>:终止创建日期,【2020-01-01 23:59:59】,【2020-01-01】
@@ -50,9 +51,9 @@ public class VisitHistoryListDirective extends AbstractTemplateDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
-        PageHandler page = service.getPage(getSite(handler).getId(), handler.getString("sessionId"), handler.getString("url"),
-                handler.getDate("startCreateDate"), handler.getDate("endCreateDate"), handler.getString("orderType"),
-                handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", 30));
+        PageHandler page = service.getPage(getSite(handler).getId(), handler.getString("sessionId"), handler.getString("ip"),
+                handler.getString("url"), handler.getDate("startCreateDate"), handler.getDate("endCreateDate"),
+                handler.getString("orderType"), handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", 30));
         handler.put("page", page).render();
     }
 

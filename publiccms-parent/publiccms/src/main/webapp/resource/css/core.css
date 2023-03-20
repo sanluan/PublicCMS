@@ -63,7 +63,7 @@ header .nav .selected ul{display:block;}
 .tabs .tabsContent{display:block;overflow:auto;}
 
 .tabsPage{margin-left:185px;position:relative;}
-.tabsPage .tabsPageHeader{display:block;height:35px;position:relative;}
+.tabsPage .tabsPageHeader{display:block;height:37px;position:relative;}
 .tabsPage .tabsPageHeaderContent{display:block;overflow:hidden;height:100%;margin-left:0px;margin-right:30px;position:relative;}
 .tabsPage .tabsPageHeaderMargin{margin:0 60px 0 30px;}
 .tabsPage .tabsPageHeader ul{display:block;width:10000px;z-index:1;position:absolute;}
