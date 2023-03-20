@@ -68,13 +68,17 @@
             <tr>
                 <td><input name="paths" value="${filePath}" type="checkbox"></td>
                 <td class="tree"><div class="${a.directory?then('folder_expandable','file')}" style="width:30px;"></div></td>
-                <td <#if !a.directory&&lockMap[filePath]?has_content><#assign lockUser=(userMap[lockMap[filePath].userId?string].nickname)!''/>title="<@t.page 'lock.message' lockUser/> ${lockMap[filePath].createDate}"</#if>>
+                <td>
                     <#if a.directory>
                         <a href="cmsWebFile/list.html?path=${filePath?url}" target="navTab" rel="cmsWebFile/list">
                             ${a.fileName}
                         </a>
                     <#else>
-                        <#if lockMap[filePath]?has_content><i class="icon-lock icon-large"></i></#if>${a.fileName}
+                        <#if lockMap?has_content && lockMap[filePath]?has_content>
+                            <#assign lockUser=(userMap[lockMap[filePath].userId?string].nickname)!''/>
+                            <i class="icon-lock icon-large" title="<@t.page 'lock.message' lockUser/> ${lockMap[filePath].createDate}"></i>
+                        </#if>
+                        ${a.fileName}
                     </#if>
                 </td>
                 <td>${a.lastModifiedTime?datetime}</td>

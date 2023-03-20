@@ -16,7 +16,13 @@
             <@sys.user ids=t.userIds><#assign userMap=map!/></@sys.user>
             <#list list as a>
                 <li>
-                    <a href="cmsPage/region.html?id=${(a.id?url)!}" target="ajax" rel="diyConfigBox"<#if lockMap?has_content && lockMap[a.id]?has_content><#assign lockUser=(userMap[lockMap[a.id].userId?string].nickname)!''/> title="<@t.page 'lock.message' lockUser/> ${lockMap[a.id].createDate}"</#if>><#if lockMap[a.id]?has_content><i class="icon-lock icon-large"></i></#if>${a.name!}</a>
+                    <a href="cmsPage/region.html?id=${(a.id?url)!}" target="ajax" rel="diyConfigBox">
+                        <#if lockMap?has_content && lockMap[a.id]?has_content>
+                            <#assign lockUser=(userMap[lockMap[a.id].userId?string].nickname)!''/>
+                            <i class="icon-lock icon-large" title="<@t.page 'lock.message' lockUser/> ${lockMap[a.id].createDate}"></i>
+                        </#if>
+                        ${a.name!}
+                    </a>
                     <#if a.categoryType?has_content>
                         <@cms.categoryList queryAll=true typeId=a.categoryType pageSize=100>
                             <#if page.totalCount gt 0 >

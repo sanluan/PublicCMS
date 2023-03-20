@@ -104,8 +104,11 @@
                         </div>
                     </#if>
                     <div class="box">
-                        <h3 <#if lockMap[a.id?string]?has_content><#assign lockUser=(userMap[lockMap[a.id?string].userId?string].nickname)!''/>title="<@t.page 'lock.message' lockUser/> ${lockMap[a.id?string].createDate}"</#if>>
-                            <#if lockMap[a.id?string]?has_content><i class="icon-lock icon-large"></i></#if>
+                        <h3>
+                            <#if lockMap?has_content && lockMap[a.id?string]?has_content>
+                                <#assign lockUser=(userMap[lockMap[a.id?string].userId?string].nickname)!''/>
+                                <i class="icon-lock icon-large" title="<@t.page 'lock.message' lockUser/> ${lockMap[a.id?string].createDate}"></i>
+                            </#if>
                             [<span class="exclude-translate">${(categoryMap[a.categoryId?string].name)!}</span>]
                             ${(a.copied?then('['+t.pageMessage('copied')+']',''))!}
                             <a href="cmsContent/view.html?id=${a.id}" class="exclude-translate" target="dialog" width="1000" height="600" rel="viewContent${a.id}">${(a.title)!}</a>

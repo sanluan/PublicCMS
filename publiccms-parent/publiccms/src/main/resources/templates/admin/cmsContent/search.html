@@ -85,12 +85,6 @@
                 <@t.merge 'modelId' a.modelId!/>
                 <@t.merge 'ids' a.id/>
             </#list>
-            <@sys.lock userId=admin.id itemType='content' itemIds=t.ids><#assign lockMap=map!/></@sys.lock>
-            <#if lockMap?has_content>
-                <#list lockMap as k,lock>
-                    <#if lock.userId?has_content><@t.merge 'userIds' lock.userId/></#if>
-                </#list>
-            </#if>
             <@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
             <@cms.category ids=t.categoryIds!><#assign categoryMap=map!/></@cms.category>
             <@cms.model ids=t.modelId!><#assign modelMap=map!/></@cms.model>
