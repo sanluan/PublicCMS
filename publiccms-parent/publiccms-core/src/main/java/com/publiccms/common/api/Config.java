@@ -152,7 +152,7 @@ public interface Config {
      */
     public static final String INPUTTYPE_CAPTCHA = "captcha";
 
-    public static final String[] INPUT_TYPE_EDITORS = { "kindeditor", "ckeditor", "tinymce", "editor" };
+    public static final String[] INPUT_TYPE_EDITORS = { "ckeditor", "tinymce", "editor" };
 
     /**
      * @param site

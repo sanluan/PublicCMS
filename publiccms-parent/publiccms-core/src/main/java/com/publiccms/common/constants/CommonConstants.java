@@ -165,13 +165,6 @@ public class CommonConstants extends Constants {
     public static final String getCkeditorPageBreakTag() {
         return "<div style=\"page-break-after:always\"><span style=\"display:none\">&nbsp;</span></div>";
     }
-
-    /**
-     * @return kindeditor page break tag
-     */
-    public static final String getKindEditorPageBreakTag() {
-        return "<hr style=\"page-break-after:always;\" class=\"ke-pagebreak\" />";
-    }
     
     /**
      * @return tinymce page break tag
