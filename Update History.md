@@ -7,6 +7,9 @@
 1. 增加代码编辑器主题切换功能
 1. 更新百度编辑器，CKeditor，TinyMCE，移除KindEditor
 1. 增加私有文件上传、下载、扩展字段
+1. 增加访问统计数据导出功能
+1. 增加扩展字段类型时间,默认值支持:now;增加日期时间、日期类型默认值支持:now,thisSunday,thisMonday,lastMonday,lastSunday,nextMonday,nextSunday
+1. 增加正文附件、模板示例附件列表原文件名处理
 
 BUG与缺陷修复
 
