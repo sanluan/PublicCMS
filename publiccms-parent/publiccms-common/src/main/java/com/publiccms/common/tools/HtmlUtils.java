@@ -1,7 +1,9 @@
 package com.publiccms.common.tools;
 
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.text.StringEscapeUtils;
@@ -25,6 +27,8 @@ public class HtmlUtils {
      * 
      */
     public static final Pattern HTML_PATTERN = Pattern.compile("<[^>]+>");
+    public static final Pattern SRC_HREF_PATTERN = Pattern
+            .compile("<(a|A|img|IMG)\\s+[^>]*(href|HREF|src|SRC)=(\"|')([^\"\']*)(\"|\')[^>]*>");
 
     public static final Safelist SAFELIST = Safelist.relaxed()
             .addTags("abbr", "address", "aside", "article", "bdi", "bdo", "big", "center", "del", "details", "dfn", "figcaption",
@@ -49,6 +53,15 @@ public class HtmlUtils {
             return StringEscapeUtils.unescapeHtml4(HTML_PATTERN.matcher(string).replaceAll(Constants.BLANK));
         }
         return string;
+    }
+
+    public static void getFileList(String html, Set<String> set) {
+        if (CommonUtils.notEmpty(html) && null != set) {
+            Matcher matcher = SRC_HREF_PATTERN.matcher(html);
+            while (matcher.find()) {
+                set.add(matcher.group(4));
+            }
+        }
     }
 
     public static String keep(String string, int length) {

@@ -1,13 +1,18 @@
 package com.publiccms.logic.component.exchange;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.tools.zip.ZipEntry;
 import org.apache.tools.zip.ZipFile;
 import org.apache.tools.zip.ZipOutputStream;
 import org.springframework.stereotype.Component;
@@ -21,7 +26,14 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ZipUtils;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.site.SiteComponent;
+import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
+import com.publiccms.views.pojo.entities.CmsCategoryType;
+import com.publiccms.views.pojo.entities.CmsModel;
+import com.publiccms.views.pojo.entities.CmsPageData;
+import com.publiccms.views.pojo.entities.CmsPageMetadata;
+import com.publiccms.views.pojo.entities.CmsPlaceMetadata;
+import com.publiccms.views.pojo.entities.SysConfig;
 
 /**
  * SiteExchangeComponent 站点导入导出组件
@@ -131,21 +143,66 @@ public class SiteExchangeComponent {
         return CommonConstants.TEMPLATE_ERROR;
     }
 
+    public static <T> boolean mergeMap(String filepath, Class<T> clazz, ZipFile zipFile, ZipEntry zipEntry) {
+        File file = new File(filepath);
+        Map<String, T> map = null;
+        try {
+            map = CommonConstants.objectMapper.readValue(file,
+                    CommonConstants.objectMapper.getTypeFactory().constructMapLikeType(HashMap.class, String.class, clazz));
+        } catch (IOException e) {
+            return true;
+        }
+        try {
+            Map<String, T> newMap = CommonConstants.objectMapper.readValue(zipFile.getInputStream(zipEntry),
+                    CommonConstants.objectMapper.getTypeFactory().constructMapLikeType(HashMap.class, String.class, clazz));
+            map.putAll(newMap);
+            try (FileOutputStream outputStream = new FileOutputStream(file)) {
+                CommonConstants.objectMapper.writeValue(outputStream, map);
+            }
+        } catch (IOException e) {
+        }
+        return false;
+    }
+
+    public static boolean mergeDataFile(String filepath, SysSite site, ZipFile zipFile, ZipEntry zipEntry) {
+        String filename = CmsFileUtils.getFileName(zipEntry.getName());
+        if (SiteComponent.MODEL_FILE.equalsIgnoreCase(filename)) {
+            if (null == site.getParentId()) {
+                return mergeMap(filepath, CmsModel.class, zipFile, zipEntry);
+            }
+        } else if (SiteComponent.CATEGORY_TYPE_FILE.equalsIgnoreCase(filename)) {
+            return mergeMap(filepath, CmsCategoryType.class, zipFile, zipEntry);
+        } else if (SiteComponent.CONFIG_FILE.equalsIgnoreCase(filename)) {
+            return mergeMap(filepath, SysConfig.class, zipFile, zipEntry);
+        } else if (MetadataComponent.METADATA_FILE.equalsIgnoreCase(filename)) {
+            if (zipEntry.getName().toLowerCase().contains("include/")) {
+                return mergeMap(filepath, CmsPlaceMetadata.class, zipFile, zipEntry);
+            } else {
+                return mergeMap(filepath, CmsPageMetadata.class, zipFile, zipEntry);
+            }
+        } else if (MetadataComponent.DATA_FILE.equalsIgnoreCase(filename)) {
+            return mergeMap(filepath, CmsPageData.class, zipFile, zipEntry);
+        }
+        return true;
+    }
+
     private void importDate(SysSite site, long userId, boolean overwrite, File file) throws IOException {
         try (ZipFile zipFile = new ZipFile(file, CommonConstants.DEFAULT_CHARSET_NAME)) {
             {
                 String filepath = siteComponent.getTemplateFilePath(site.getId(), CommonConstants.SEPARATOR);
                 ZipUtils.unzip(zipFile, "template", filepath, overwrite, (f, e) -> {
-                    if (e.getName().endsWith(".data")) {
-                        // TODO data file merge
-                        return false;
+                    if (e.getName().toLowerCase().endsWith(".data")) {
+                        String datafile = siteComponent.getTemplateFilePath(site.getId(),
+                                StringUtils.removeStart(e.getName(), "template/"));
+                        return mergeDataFile(datafile, site, f, e);
                     } else {
-                        String historyFilePath = siteComponent.getTemplateHistoryFilePath(site.getId(), e.getName(), true);
+                        String historyFilePath = siteComponent.getTemplateHistoryFilePath(site.getId(),
+                                StringUtils.removeStart(e.getName(), "template/"), true);
                         try {
                             CmsFileUtils.copyInputStreamToFile(f.getInputStream(e), historyFilePath);
                         } catch (IOException e1) {
                         }
-                        return false;
+                        return true;
                     }
                 });
                 templateComponent.clearTemplateCache();
@@ -153,7 +210,8 @@ public class SiteExchangeComponent {
             {
                 String filepath = siteComponent.getWebFilePath(site.getId(), CommonConstants.SEPARATOR);
                 ZipUtils.unzip(zipFile, "web", filepath, overwrite, (f, e) -> {
-                    String historyFilePath = siteComponent.getWebHistoryFilePath(site.getId(), e.getName(), true);
+                    String historyFilePath = siteComponent.getWebHistoryFilePath(site.getId(),
+                            StringUtils.removeStart(e.getName(), "web/"), true);
                     try {
                         CmsFileUtils.copyInputStreamToFile(f.getInputStream(e), historyFilePath);
                     } catch (IOException e1) {
@@ -164,7 +222,8 @@ public class SiteExchangeComponent {
             {
                 String filepath = siteComponent.getTaskTemplateFilePath(site.getId(), CommonConstants.SEPARATOR);
                 ZipUtils.unzip(zipFile, "tasktemplate", filepath, overwrite, (f, e) -> {
-                    String historyFilePath = siteComponent.getTaskTemplateHistoryFilePath(site.getId(), e.getName(), true);
+                    String historyFilePath = siteComponent.getTaskTemplateHistoryFilePath(site.getId(),
+                            StringUtils.removeStart(e.getName(), "tasktemplate/"), true);
                     try {
                         CmsFileUtils.copyInputStreamToFile(f.getInputStream(e), historyFilePath);
                     } catch (IOException e1) {
