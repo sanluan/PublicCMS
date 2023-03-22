@@ -213,7 +213,7 @@
                 ${(value)!}:${(vote.title)!}
             <#else>
                 <input name="${inputName}" value="${(value)!}" type="hidden"/>
-                <input name=".voteName" readonly="readonly" size="30" value="${(vote.title)!}" type="text"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>/>
+                <input name="${extend.id.code}_title" readonly="readonly" size="30" value="${(vote.title)!}" type="text"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>/>
                 <a class="btnLook" href="cmsVote/lookup.html?field=${inputName?url}&titleField=${extend.id.code?url}_title" lookupGroup="" width="1000" height="500"><@t.page 'select'/></a>
             </#if>
             <#break>
@@ -223,7 +223,7 @@
                 ${(value)!}:${(survey.title)!}
             <#else>
                 <input name="${inputName}" value="${(value)!}" type="hidden"/>
-                <input name="${extend.id.code?url}_title" readonly="readonly" size="30" value="${(survey.title)!}" type="text"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>/>
+                <input name="${extend.id.code}_title" readonly="readonly" size="30" value="${(survey.title)!}" type="text"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>/>
                 <a class="btnLook" href="cmsSurvey/lookup.html?field=${inputName?url}&titleField=${extend.id.code?url}_title" lookupGroup="" width="1000" height="500"><@t.page 'select'/></a>
             </#if>
             <#break>
@@ -252,6 +252,55 @@
                         </@sys.authorized>
                     </#if>
                 </#if>
+            </#if>
+            <#break>
+        <#case 'keyvalue'>
+            <#if 'view'=type>
+                <#if value?has_content>
+                    <table border="1">
+                        <thead>
+                            <tr>
+                                <th><@t.page 'key'/></th>
+                                <th><@t.page 'value'/></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <#list value?split(',')?chunk(2) as row>
+                            <tr>
+                                <#list row as a>
+                                <td>${a}</td>
+                                </#list>
+                            </tr>
+                        </#list>
+                        </tbody>
+                    </table>
+                </#if>
+            <#else>
+            <table<#if 'customform'!=type> class="list nowrap itemDetail" addButton="<@t.page 'button.new_line'/>"</#if>>
+                <thead>
+                    <tr>
+                        <th<#if 'customform'!=type> type="text" name="${inputName}" size="30"</#if>><@t.page 'key'/></th>
+                        <th<#if 'customform'!=type> type="text" name="${inputName}" size="30"</#if>><@t.page 'value'/></th>
+                        <th<#if 'customform'!=type> type="del" width="60"</#if>><@t.page 'operate'/></th>
+                    </tr>
+                </thead>
+                <tbody>
+                <#if value?has_content>
+                    <#list value?split(',')?chunk(2) as row>
+                        <tr>
+                            <#list row as a>
+                            <td>
+                                <input name="${inputName}" type="text" size="30" value="${a}"/>
+                            </td>
+                            </#list>
+                            <td>
+                                <a href="javascript:;"<#if 'customform'=type> onclick="this.parentElement.parentElement.remove()"<#else> class="btnDel"</#if>><@t.page 'button.delete'/></a>
+                            </td>
+                        </tr>
+                    </#list>
+                </#if>
+                </tbody>
+            </table>
             </#if>
             <#break>
         <#case 'datetime'>

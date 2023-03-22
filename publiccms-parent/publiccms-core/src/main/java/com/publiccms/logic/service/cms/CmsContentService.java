@@ -324,7 +324,7 @@ public class CmsContentService extends BaseService<CmsContent> {
             StringBuilder extendsTextBuilder = new StringBuilder();
             attribute.setData(ExtendUtils.getExtendString(map, site.getSitePath(), (extendField, value) -> {
                 if (ArrayUtils.contains(DICTIONARY_INPUT_TYPES, extendField.getInputType())) {
-                    if (Config.INPUTTYPE_DICTIONARY.equals(extendField.getInputType()) && extendField.isMultiple()) {
+                    if (Config.INPUTTYPE_DICTIONARY.equalsIgnoreCase(extendField.getInputType()) && extendField.isMultiple()) {
                         String[] values = StringUtils.split(value, CommonConstants.COMMA);
                         if (CommonUtils.notEmpty(values)) {
                             for (String v : values) {
@@ -333,21 +333,28 @@ public class CmsContentService extends BaseService<CmsContent> {
                             }
                         }
                     } else {
-                        if (null != value) {
-                            dictionaryValueList
-                                    .add(CommonUtils.joinString(extendField.getId().getCode(), CommonConstants.UNDERLINE, value));
+                        dictionaryValueList
+                                .add(CommonUtils.joinString(extendField.getId().getCode(), CommonConstants.UNDERLINE, value));
+                    }
+                } else if (Config.INPUTTYPE_KEYVALUE.equalsIgnoreCase(extendField.getInputType())) {
+                    String[] values = StringUtils.splitPreserveAllTokens(value, CommonConstants.COMMA);
+                    if (CommonUtils.notEmpty(values)) {
+                        int i = 0;
+                        extendsFieldList.add(extendField.getId().getCode());
+                        for (String v : values) {
+                            if (i++ % 2 == 1) {
+                                searchTextBuilder.append(v).append(CommonConstants.BLANK_SPACE);
+                            }
                         }
                     }
                 } else {
-                    if (null != value) {
-                        if (ArrayUtils.contains(Config.INPUT_TYPE_EDITORS, extendField.getInputType())) {
-                            map.put(extendField.getId().getCode(), value);
-                            value = HtmlUtils.removeHtmlTag(value);
-                        }
-                        if (CommonUtils.notEmpty(value)) {
-                            extendsFieldList.add(extendField.getId().getCode());
-                            searchTextBuilder.append(value).append(CommonConstants.BLANK_SPACE);
-                        }
+                    if (ArrayUtils.contains(Config.INPUT_TYPE_EDITORS, extendField.getInputType())) {
+                        map.put(extendField.getId().getCode(), value);
+                        value = HtmlUtils.removeHtmlTag(value);
+                    }
+                    if (CommonUtils.notEmpty(value)) {
+                        extendsFieldList.add(extendField.getId().getCode());
+                        searchTextBuilder.append(value).append(CommonConstants.BLANK_SPACE);
                     }
                 }
             }, modelExtendList, categoryExtendList));

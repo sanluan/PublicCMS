@@ -204,7 +204,7 @@
                 if ( ( month < 1 ) || ( month > 12 ) ) {
                     return 0;
                 }
-            } else if (token == "EE" || token == "E" ) {
+        } else if (token == "EEE" || token == "EE" || token == "E" ) {
                 for (var i = 0; i < DAY_NAMES.length; i++) {
                     var day_name = DAY_NAMES[i];
                     if (val.substring(i_val, i_val + day_name.length).toLowerCase() == day_name.toLowerCase() ) {

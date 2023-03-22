@@ -60,7 +60,7 @@
                     }
                 }
                 $tr.click(function(){
-                    $trs.filter(".selected").removeClass("selected");
+                    tbody.find(">tr.selected").removeClass("selected");
                     $tr.addClass("selected");
                     var sTarget = $tr.attr("target");
                     if (sTarget) {
@@ -274,7 +274,7 @@
                 $trs.each(function(index) {
                     var $tr = $(this);
                     $tr.click(function() {
-                        $trs.filter(".selected").removeClass("selected");
+                        $this.find("tbody>tr.selected").removeClass("selected");
                         $tr.addClass("selected");
                         var sTarget = $tr.attr("target");
                         if (sTarget ) {

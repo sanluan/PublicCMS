@@ -84,7 +84,7 @@ public class ExtendUtils {
                                 map.put(extend.getId().getCode(), HtmlUtils.cleanUnsafeHtml(value, sitePath));
                             }
                         }
-                        if (extend.isSearchable()) {
+                        if (extend.isSearchable() && null != value) {
                             searchableConsumer.accept(extend, value);
                         }
                     }

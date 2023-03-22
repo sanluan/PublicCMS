@@ -22,7 +22,7 @@ public class CmsContentTextBinder implements TypeBinder {
         context.dependencies().use("id");
         IndexSchemaElement schemaElement = context.indexSchemaElement();
 
-        IndexFieldType<String> textFieldType = context.typeFactory().asString().projectable(Projectable.YES)
+        IndexFieldType<String> textFieldType = context.typeFactory().asString().projectable(Projectable.NO)
                 .analyzer(ANALYZER_NAME).toIndexFieldType();
         IndexFieldType<String> dictionaryFieldType = context.typeFactory().asString().analyzer(AnalyzerNames.WHITESPACE)
                 .toIndexFieldType();

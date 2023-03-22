@@ -77,7 +77,7 @@
                         <input name="quoteCategoryId" type="hidden"/>
                         <input name="categoryName" type="hidden"/>
                         <div class="tagsBox categoryIds"></div>
-                        <a class="btnLook" href="cmsCategory/lookupByModelId.html?field=quoteCategoryId&modelId=${modelId!}&currentCategoryId=${categoryId!}" width="920" lookupGroup=""><@t.page 'category.select'/></a>
+                        <label><a class="btnLook" href="cmsCategory/lookupByModelId.html?field=quoteCategoryId&modelId=${modelId!}&currentCategoryId=${categoryId!}" width="920" lookupGroup=""><@t.page 'category.select'/></a></label>
                     </#if>
                     </dd>
                 </dl>
@@ -176,9 +176,9 @@ $('input[name=\'categoryName\']',navTab.getCurrentPanel()).on('change',function(
                     <dt>${(model.fieldTextMap['cover'])!}:</dt>
                     <dd>
                         <input name="cover"<#if requiredFieldList?seq_contains('cover')> class="required"</#if> value="${(a.cover)!}" maxlength="300" size="50" type="text"/>
-                        <label><a class="button" href="cmsContent/contentImage.html" lookupGroup="" width="1000" height="600"><@t.page 'button.fillcover' t.pageMessage('editor')/></a></label>
                         <a class="btnAttach" href="common/upload.html?field=cover&fileTypes=image&width=${(model.coverWidth)!}&height=${(model.coverHeight)!}" lookupGroup="" width="1000" height="600">${(model.fieldTextMap['cover'])!}</a>
                         <a class="view icon-eye-open" ref="cover" data-prefix="${site.sitePath}" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
+                        <label><a class="button" href="cmsContent/contentImage.html" lookupGroup="" width="1000" height="600"><@t.page 'button.fillcover' t.pageMessage('editor')/></a></label>
                         <#if (model.coverWidth)?has_content && (model.coverHeight)?has_content><span class="info">${(model.coverWidth)!}*${(model.coverHeight)!}</span></#if>
                         <#include "../include_page/preview.html"/>
                         <@preview 'content' 'input[name=cover]'/>

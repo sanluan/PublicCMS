@@ -41,10 +41,11 @@
                     <input class="required" name="title" type="text" maxlength="255" size="60" value="${(a.title)!(content.title)!(category.name)!}"/>
                     <#if (metadata.acceptItemTypes)?has_content>
                         <input class="required" name="itemType" type="text" readonly="readonly" value="${(a.itemType)!itemType!}"/>
+                        <a class="btnLook" href="cmsPlace/lookup.html?acceptItemTypes=<#list metadata.acceptItemTypes as a>${a}<#sep>,</#list>" lookupGroup="" width="1200" ><@t.page 'select'/></a>
                     <#else>
                         <input name="itemType" type="hidden" value="${(a.itemType)!itemType!}"/>
+                        <label><a class="btnLook" href="cmsPlace/lookup.html" lookupGroup="" width="1200" ><@t.page 'select'/></a></label>
                     </#if>
-                    <a class="btnLook" href="cmsPlace/lookup.html<#if (metadata.acceptItemTypes)?has_content>?acceptItemTypes=<#list metadata.acceptItemTypes as a>${a}<#sep>,</#list></#if>" lookupGroup="" width="1200" ><@t.page 'select'/></a>
                 </dd>
             </dl>
         <#if fieldList?seq_contains('url')>

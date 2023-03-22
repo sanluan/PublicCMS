@@ -298,18 +298,19 @@
                 });
                 var addButTxt = $table.attr('addButton') || "Add New";
                 if (addButTxt ) {
-                    var $addBut = $('<label style="width:auto;"><button type="button" class="button">' + addButTxt + '</button></label>').insertBefore($table).find('button');
+                    var $caption = $('<caption></caption>').appendTo($table);
+                    var $addBut = $('<label style="width:auto;"><button type="button" class="button">' + addButTxt + '</button></label>').appendTo($caption).find('button');
                     var batchButtonTxt = $table.attr('batchButton') || "Batch upload";
                     var batchUploadUrl = $table.attr('batchUploadUrl');
                     if(batchUploadUrl){
-                        var $batchButton = $('<label><a class="button" lookupGroup="" href="'+batchUploadUrl+'" width="1000" height="600" >'+batchButtonTxt+'</a></label>').initUI().insertBefore($table).find('a');
+                        var $batchButton = $('<label><a class="button" lookupGroup="" href="'+batchUploadUrl+'" width="1000" height="600" >'+batchButtonTxt+'</a></label>').initUI().appendTo($caption).find('a');
                         $batchButton.click(function(){
                             _lookup = $.extend(_lookup, {
                                 nextButton : $addBut
                             });
                         });
                     } else {
-                        var $rowNum = $('<label><input type="text" name="dwz_rowNum" class="textInput" value="1" size="2"/></label>').insertBefore($table).find('input');
+                        var $rowNum = $('<label><input type="text" name="dwz_rowNum" class="textInput" value="1" size="2"/></label>').appendTo($caption).find('input');
                     }
 
                     var trTm = "";
@@ -330,10 +331,14 @@
                                 initSuffix($tbody);
                                 return false;
                             });
+                            $tr.click(function(){
+                                $tbody.find(">tr.selected").removeClass("selected");
+                                $tr.addClass("selected");
+                            });
                         }
                         initSuffix($tbody);
                         var $attach = $tr.find('.btnAttach');
-                        if(batchUploadUrl && $attach ){
+                        if( $attach ){
                             _lookup = $.extend(_lookup, {
                                 currentGroup: $attach.attr("lookupGroup") || "", suffix: $attach.attr("suffix") || "", $target: $attach, pk: $attach.attr("lookupPk") || ""
                             });
@@ -367,7 +372,7 @@
                 });
             }
             function tdHtml(field) {
-                var hiddenHtml = '', html = '', suffix = '';
+                var html = "", suffix = "";
                 if (field.name.endsWith("[#index#]") ) {
                     suffix = "[#index#]";
                 } else if (field.name.endsWith("[]") ) {
@@ -431,11 +436,11 @@
                 return '<td>' + html + '</td>';
             }
             function trHtml(fields) {
-                var html = '';
+                var html = "";
                 $(fields).each(function() {
                     html += tdHtml(this);
                 });
-                return '<tr class="unitBox">' + html + '</tr>';
+                return "<tr>" + html + "</tr>";
             }
         },
         selectedTodo: function() {

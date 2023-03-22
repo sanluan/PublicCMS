@@ -87,6 +87,11 @@ public interface Config {
      * 
      */
     String INPUTTYPE_DICTIONARY = "dictionary";
+    
+    /**
+     * 
+     */
+    String INPUTTYPE_KEYVALUE = "keyvalue";
 
     /**
      * 
