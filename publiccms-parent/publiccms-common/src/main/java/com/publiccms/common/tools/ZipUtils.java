@@ -104,7 +104,8 @@ public class ZipUtils {
      * &#64;RequestMapping("export")
      * public ResponseEntity<StreamingResponseBody> export() {
      *     HttpHeaders headers = new HttpHeaders();
-     *     headers.setContentDisposition(ContentDisposition.attachment().filename("filename.zip", StandardCharsets.UTF_8).build());
+     *     headers.setContentDisposition(
+     *             ContentDisposition.attachment().filename("filename.zip", StandardCharsets.UTF_8).build());
      *     StreamingResponseBody body = new StreamingResponseBody() {
      *         @Override
      *         public void writeTo(OutputStream outputStream) throws IOException {
@@ -124,7 +125,7 @@ public class ZipUtils {
      * @throws IOException
      */
     public static void compressFile(File file, ZipOutputStream out, String fullName) throws IOException {
-        if (CommonUtils.notEmpty(file)) {
+        if (CommonUtils.notEmpty(file) && file.isFile()) {
             ZipEntry entry = new ZipEntry(fullName);
             entry.setTime(file.lastModified());
             out.putNextEntry(entry);

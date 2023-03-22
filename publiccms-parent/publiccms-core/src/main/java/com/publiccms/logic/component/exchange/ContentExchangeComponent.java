@@ -480,11 +480,13 @@ public class ContentExchangeComponent extends AbstractExchange<CmsContent, Conte
                 for (String file : webfileList) {
                     if (file.startsWith(site.getSitePath())) {
                         String fullName = StringUtils.removeStart(file, site.getSitePath());
-                        String filepath = siteComponent.getWebFilePath(site.getId(), fullName);
-                        try {
-                            ZipUtils.compressFile(new File(filepath), zipOutputStream,
-                                    CommonUtils.joinString(ATTACHMENT_DIR, fullName));
-                        } catch (IOException e) {
+                        if (fullName.contains(CommonConstants.DOT) && !fullName.contains(".htm")) {
+                            String filepath = siteComponent.getWebFilePath(site.getId(), fullName);
+                            try {
+                                ZipUtils.compressFile(new File(filepath), zipOutputStream,
+                                        CommonUtils.joinString(ATTACHMENT_DIR, fullName));
+                            } catch (IOException e) {
+                            }
                         }
                     }
                 }
