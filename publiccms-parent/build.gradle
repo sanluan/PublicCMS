@@ -35,7 +35,7 @@ subprojects {
         springVersion = "5.3.25"
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
         // https://spring.io/projects/spring-boot
-        springBootVersion = "2.7.8"
+        springBootVersion = "2.7.9"
         // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine
         junitVersion = "5.9.2"
         // http://mvnrepository.com/artifact/org.hibernate/hibernate-core
@@ -51,11 +51,11 @@ subprojects {
         // https://mvnrepository.com/artifact/org.ehcache/ehcache
         ehcacheVersion = "3.9.9"
         // http://mvnrepository.com/artifact/org.mybatis/mybatis
-        mybatisVersion = "3.5.11"
+        mybatisVersion = "3.5.13"
         // http://mvnrepository.com/artifact/org.mybatis/mybatis-spring
-        mybatisSpringVersion = "2.0.7"
+        mybatisSpringVersion = "2.1.0"
         // http://mvnrepository.com/artifact/org.mybatis.generator/mybatis-generator-core
-        mybatisGenerator = "1.4.1"
+        mybatisGenerator = "1.4.2"
         // https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper
         pageHelperVersion = "5.3.2"
         // https://mvnrepository.com/artifact/org.mybatis.dynamic-sql/mybatis-dynamic-sql
@@ -94,7 +94,7 @@ subprojects {
         // http://mvnrepository.com/artifact/commons-codec/commons-codec
         codecVersion = "1.15"
         // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
-        log4jVersion = "2.19.0"
+        log4jVersion = "2.20.0"
         // https://mvnrepository.com/artifact/com.drewnoakes/metadata-extractor
         extractorVersion = "2.18.0"
         // https://mvnrepository.com/artifact/org.sejda.imageio/webp-imageio

@@ -28,7 +28,7 @@
         <version.spring>5.3.25</version.spring>
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
         <!-- https://spring.io/projects/spring-boot -->
-        <version.springBoot>2.7.8</version.springBoot>
+        <version.springBoot>2.7.9</version.springBoot>
         <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine -->
         <version.juint>5.9.2</version.juint>
         <!-- http://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
@@ -42,11 +42,11 @@
         <!-- https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator -->
         <version.hibernateValidator>6.0.23.Final</version.hibernateValidator>
         <!-- http://mvnrepository.com/artifact/org.mybatis/mybatis -->
-        <version.mybatis>3.5.11</version.mybatis>
+        <version.mybatis>3.5.13</version.mybatis>
         <!-- http://mvnrepository.com/artifact/org.mybatis/mybatis-spring -->
-        <version.mybatisSpring>2.0.7</version.mybatisSpring>
+        <version.mybatisSpring>2.1.0</version.mybatisSpring>
         <!-- http://mvnrepository.com/artifact/org.mybatis.generator/mybatis-generator-core -->
-        <version.mybatisGenerator>1.4.1</version.mybatisGenerator>
+        <version.mybatisGenerator>1.4.2</version.mybatisGenerator>
         <!-- https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper -->
         <version.pagehelper>5.3.2</version.pagehelper>
         <!-- https://mvnrepository.com/artifact/org.mybatis.dynamic-sql/mybatis-dynamic-sql -->
@@ -87,7 +87,7 @@
         <!-- http://mvnrepository.com/artifact/commons-codec/commons-codec -->
         <version.codec>1.15</version.codec>
         <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
-        <version.log4j>2.19.0</version.log4j>
+        <version.log4j>2.20.0</version.log4j>
         <!-- https://mvnrepository.com/artifact/com.drewnoakes/metadata-extractor -->
         <version.extractor>2.18.0</version.extractor>
         <!-- https://mvnrepository.com/artifact/org.sejda.imageio/webp-imageio -->
