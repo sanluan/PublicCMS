@@ -4,14 +4,13 @@ import java.util.List;
 
 import com.publiccms.entities.cms.CmsTagType;
 import com.publiccms.entities.sys.SysExtendField;
-import com.publiccms.views.pojo.entities.ExtendData;
 
 /**
  *
  * CmsCategoryParameters
  * 
  */
-public class CmsCategoryParameters implements java.io.Serializable {
+public class CmsCategoryParameters extends ExtendDataParameters implements java.io.Serializable {
 
     /**
      * 
@@ -19,7 +18,6 @@ public class CmsCategoryParameters implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
     private List<CmsTagType> tagTypes;
     private List<SysExtendField> contentExtends;
-    private List<ExtendData> extendDataList;
     private List<CmsCategoryModelParameters> categoryModelList;
 
     /**
@@ -48,20 +46,6 @@ public class CmsCategoryParameters implements java.io.Serializable {
      */
     public void setTagTypes(List<CmsTagType> tagTypes) {
         this.tagTypes = tagTypes;
-    }
-
-    /**
-     * @return
-     */
-    public List<ExtendData> getExtendDataList() {
-        return extendDataList;
-    }
-
-    /**
-     * @param extendDataList
-     */
-    public void setExtendDataList(List<ExtendData> extendDataList) {
-        this.extendDataList = extendDataList;
     }
 
     /**

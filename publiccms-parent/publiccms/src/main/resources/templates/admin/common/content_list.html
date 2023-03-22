@@ -142,7 +142,6 @@
                 <th width="30" orderField="comments"><@t.page 'content.comments'/></th>
                 <th width="30" orderField="clicks"><@t.page 'clicks'/></th>
                 <th width="70" orderField="publishDate"><@t.page 'publish_date'/></th>
-                <th width="50"><@t.page 'status'/>/<@t.page 'inspector'/></th>
                 <th width="100"><@t.page 'operate'/></th>
             </tr>
         </thead>
@@ -174,8 +173,12 @@
                         </div>
                     </#if>
                     <div class="box">
-                        <h3 <#if lockMap[a.id?string]?has_content><#assign lockUser=(userMap[lockMap[a.id?string].userId?string].nickname)!''/>title="<@t.page 'lock.message' lockUser/> ${lockMap[a.id?string].createDate}"</#if>>
-                            <#if lockMap[a.id?string]?has_content><i class="icon-lock icon-large"></i></#if>[<span class="exclude-translate">${(categoryMap[a.categoryId?string].name)!}</span>]
+                        <h3>
+                            <#if lockMap?has_content && lockMap[a.id?string]?has_content>
+                                <#assign lockUser=(userMap[lockMap[a.id?string].userId?string].nickname)!''/>
+                                <i class="icon-lock icon-large" title="<@t.page 'lock.message' lockUser/> ${lockMap[a.id?string].createDate}"></i>
+                            </#if>
+                            [<span class="exclude-translate">${(categoryMap[a.categoryId?string].name)!}</span>]
                             ${(a.copied?then('['+t.pageMessage('copied')+']',''))!}
                             <a href="cmsContent/view.html?id=${a.id}" class="exclude-translate" target="dialog" rel="viewContent${a.id}" width="1000" height="600">${(a.title)!}</a>
                             <#if authorizedMap['cmsDiy/preview'] && !a.onlyUrl && a.url?has_content>
@@ -188,6 +191,7 @@
                                 <label><a href="cmsContent/list.html?parentId=${a.id}&categoryId=${a.categoryId!}" class="btnText" target="navTab" rel="cmsContent/list"><@t.page 'content.child_management'/></a></label>
                             </#if>
                             <label><@t.page 'content.promulgator'/>:</label><span class="exclude-translate">${(userMap[a.userId?string].nickname)!}</span>
+                            <label><@t.page 'inspector'/>:</label><span class="exclude-translate">${(userMap[a.checkUserId?string].nickname)!}</span>
                             <label><@t.page 'model'/>:</label><span class="exclude-translate">${(modelMap[a.modelId].name)!}</span>
                         </p>
                         <#if a.expiryDate?has_content><p><label><@t.page 'expiry_date'/>:</label><span class="exclude-translate">${a.expiryDate!}</span></p></#if>
@@ -202,15 +206,11 @@
                 </td>
                 <td class="center">${a.clicks!}</td>
                 <td class="center" title="<@t.page 'create_date'/>:${a.createDate!}">${a.publishDate!}</td>
-                <td>
-                    <@t.page 'status.content.'+a.status/>
-                    / <span class="exclude-translate">${(userMap[a.checkUserId?string].nickname)!}</span>
-                </td>
                 <td class="wrap">
                     <a href="cmsContent/add.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="cmsContent/edit"><i class="icon-edit"></i><@t.page 'content.edit'/></a>
                     <#if authorizedMap['cmsContent/sortParameters']>
                         <#if dept?has_content>
-                            <a href="cmsContent/sortParameters.html?id=${a.id}&sort=${a.sort}" class="btnText <#if a.sort gt 0>warn<#else>blue</#if>" target="dialog" width="450" height="180" mask="true"><@t.page 'top'/></a>
+                            <a href="cmsContent/sortParameters.html?id=${a.id}&sort=${a.sort}" class="btnText <#if a.sort gt 0>warn<#else>blue</#if>" target="dialog" width="450" height="180" mask="true"><@t.page 'top'/><#if a.sort gt 0>(${a.sort})</#if></a>
                         </#if>
                     </#if>
                     <#if authorizedMap['cmsContent/add']>

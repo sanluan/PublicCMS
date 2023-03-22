@@ -18,6 +18,7 @@ import com.publiccms.common.handler.PageHandler;
  * 参数列表
  * <ul>
  * <li><code>sessionId</code>:会话id
+ * <li><code>ip</code>:ip
  * <li><code>startVisitDate</code>:起始访问日期,【2020-01-01 23:59:59】,【2020-01-01】
  * <li><code>endVisitDate</code>:终止访问日期,【2020-01-01 23:59:59】,【2020-01-01】
  * <li><code>orderType</code>:排序类型,【asc:正序,desc:倒序】,默认为创建日期倒序
@@ -49,7 +50,7 @@ public class VisitSessionListDirective extends AbstractTemplateDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
-        PageHandler page = service.getPage(getSite(handler).getId(), handler.getString("sessionId"),
+        PageHandler page = service.getPage(getSite(handler).getId(), handler.getString("sessionId"), handler.getString("ip"),
                 handler.getDate("startVisitDate"), handler.getDate("endVisitDate"), handler.getString("orderType"),
                 handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", 30));
         handler.put("page", page).render();

@@ -1,4 +1,4 @@
-<@cms.categoryType id=id><#assign a=object/></@cms.categoryType>
+<@cms.categoryType id=id!copyId><#assign a=object/></@cms.categoryType>
 <div class="pageContent">
     <form method="post" autocomplete="off" action="cmsCategoryType/save?callbackType=closeCurrent&navTabId=cmsCategoryType/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
         <input name="categoryTypeId" type="hidden" value="${id!}"/>
@@ -65,8 +65,12 @@
                 <fieldset>
                     <legend><@t.page 'category.extend_field'/></legend>
                     <#include "../include_page/extends.html"/>
-                    <#assign categoryExtendList=(a.extendList)![]>
-                    <@extends 'extendList' categoryExtendList/>
+                    <#assign categoryExtendList=[]/>
+                    <#if a?has_content>
+                        <#assign categoryExtendList=a.extendList>
+                        <#if copyId?has_content && !id?has_content><#assign copy=true/></#if>
+                    </#if>
+                    <@extends 'extendList' categoryExtendList false copy/>
                     <span class="info"><@t.page 'extend_field.use.category'/>;<#noparse>&lt;#assign attribute=getCategoryAttribute(category.id)&gt;</#noparse></span>
                     <span class="info"><@t.page 'extend_field.invalid'/>:title,keywords,description;<@t.page 'metadata.default_value_description'/></span>
                 </fieldset>

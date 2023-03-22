@@ -139,11 +139,11 @@
         <#include "../include_page/extendData.html"/>
         <#if category?has_content&&category.extendId?has_content>
             <@sys.extendFieldList extendId=category.extendId>
-                <@extendData name='categoryExtendDataList' extendList=list extendValues=attribute type='view' htmlSafe=safe/>
+                <@extendData extendList=list extendValues=attribute type='view' htmlSafe=safe/>
             </@sys.extendFieldList>
         </#if>
         <#if model?has_content>
-            <@extendData name='modelExtendDataList' extendList=model.extendList extendValues=attribute type='view' htmlSafe=safe/>
+            <@extendData extendList=model.extendList extendValues=attribute type='view' htmlSafe=safe/>
         </#if>
         <#if a?has_content&&(a.hasImages||a.hasFiles)>
             <#if a.hasImages>
@@ -153,7 +153,7 @@
             <@cms.contentFileList contentId=a.id fileTypes='image'>
                 <#list page.list as file>
                     <div class="thumbnail">
-                        <img src="${(file.filePath)!}"/>
+                        <img src="${(file.filePath)!}" alt="${(file.description)!}"/>
                     </div>
                 </#list>
             </@cms.contentFileList>
@@ -164,9 +164,9 @@
                 <dl class="nowrap">
                     <dt><@t.page 'attach_list'/>:</dt>
                     <dd>
-                <@cms.contentFileList contentId=a.id downloadURL=true fileTypes='video,audio,document,other'>
+                <@cms.contentFileList contentId=a.id fileTypes='video,audio,document,other'>
                     <#list page.list as file>
-                        <a href="${(file.filePath)!}" target="_blank">${(file.description)!}</a>
+                        <a href="${(file.filePath)!}" download="${(file.description)!}">${(file.description)!}</a>
                     </#list>
                 </@cms.contentFileList>
                     </dd>

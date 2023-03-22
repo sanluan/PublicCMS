@@ -17,6 +17,7 @@ import com.publiccms.logic.service.visit.VisitUrlService;
  * <p>
  * 参数列表
  * <ul>
+ * <li><code>url</code>:url
  * <li><code>startVisitDate</code>:起始访问日期,【2020-01-01 23:59:59】,【2020-01-01】
  * <li><code>endVisitDate</code>:终止访问日期,【2020-01-01 23:59:59】,【2020-01-01】
  * <li><code>pageIndex</code>:页码
@@ -47,7 +48,7 @@ public class VisitUrlListDirective extends AbstractTemplateDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
-        PageHandler page = service.getPage(getSite(handler).getId(), handler.getDate("startVisitDate"),
+        PageHandler page = service.getPage(getSite(handler).getId(), handler.getString("url"), handler.getDate("startVisitDate"),
                 handler.getDate("endVisitDate"), handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", 30));
         handler.put("page", page).render();
     }

@@ -1041,11 +1041,11 @@ INSERT INTO `sys_module` VALUES ('user_disable', NULL, 'sysUser/disable', NULL, 
 INSERT INTO `sys_module` VALUES ('user_enable', NULL, 'sysUser/enable', NULL, 'user_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('user_list', 'sysUser/list', NULL, 'icon-user', 'user_menu', 1, 1);
 INSERT INTO `sys_module` VALUES ('user_menu', NULL, NULL, 'icon-user', 'maintenance', 1, 1);
-INSERT INTO `sys_module` VALUES ('visit_day', 'visit/day', NULL, 'icon-calendar', 'visit_menu', 1, 3);
-INSERT INTO `sys_module` VALUES ('visit_history', 'visit/history', 'visit/view', 'icon-bolt', 'visit_menu', 1, 1);
-INSERT INTO `sys_module` VALUES ('visit_item', 'visit/item', NULL, 'icon-flag-checkered', 'visit_menu', 1, 5);
+INSERT INTO `sys_module` VALUES ('visit_day', 'visit/day', 'visit/exportDay', 'icon-calendar', 'visit_menu', 1, 3);
+INSERT INTO `sys_module` VALUES ('visit_history', 'visit/history', 'visit/view,visit/exportHistory', 'icon-bolt', 'visit_menu', 1, 1);
+INSERT INTO `sys_module` VALUES ('visit_item', 'visit/item', 'visit/exportItem', 'icon-flag-checkered', 'visit_menu', 1, 5);
 INSERT INTO `sys_module` VALUES ('visit_menu', NULL, NULL, 'icon-bolt', 'page', 1, 2);
-INSERT INTO `sys_module` VALUES ('visit_session', 'visit/session', NULL, 'icon-comment-alt', 'visit_menu', 1, 2);
+INSERT INTO `sys_module` VALUES ('visit_session', 'visit/session', 'visit/exportSession', 'icon-comment-alt', 'visit_menu', 1, 2);
 INSERT INTO `sys_module` VALUES ('visit_url', 'visit/url', NULL, 'icon-link', 'visit_menu', 1, 4);
 INSERT INTO `sys_module` VALUES ('vote_add', 'cmsVote/add', 'cmsVote/save', NULL, 'content_vote', 0, 0);
 INSERT INTO `sys_module` VALUES ('vote_delete', NULL, 'cmsVote/delete', NULL, 'content_vote', 0, 0);
@@ -2172,7 +2172,7 @@ CREATE TABLE `visit_session` (
   `ip` varchar(130) NOT NULL COMMENT 'IP',
   `pv` bigint(20) NOT NULL COMMENT 'PV',
   PRIMARY KEY (`site_id`, `session_id`, `visit_date`),
-  KEY `visit_session_visit_date` (`site_id`, `visit_date`, `session_id`, `last_visit_date`)
+  KEY `visit_session_visit_date` (`site_id`, `visit_date`, `session_id`, `ip`, `last_visit_date`)
 ) COMMENT = '访问会话';
 
 -- ----------------------------
@@ -2189,6 +2189,6 @@ CREATE TABLE `visit_url` (
   `uv` bigint(20) DEFAULT NULL COMMENT 'User Views',
   `ipviews` bigint(20) DEFAULT NULL COMMENT 'IP数',
   PRIMARY KEY (`site_id`, `visit_date`, `url_md5`, `url_sha`),
-  KEY `visit_url_pv` (`site_id`, `visit_date`, `pv`)
+  KEY `visit_url_pv` (`site_id`, `visit_date`, `url`, `pv`)
 ) COMMENT='页面访问汇总';
 SET FOREIGN_KEY_CHECKS = 1;

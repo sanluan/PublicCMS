@@ -116,10 +116,11 @@ public abstract class AbstractCmsUpgrader {
                     Map<String, CmsPageData> dataMap = CommonConstants.objectMapper.readValue(file, CommonConstants.objectMapper
                             .getTypeFactory().constructMapLikeType(HashMap.class, String.class, CmsPageData.class));
                     try {
-                        CommonConstants.objectMapper
-                                .writeValue(new File(CommonUtils.joinString(CommonConstants.CMS_FILEPATH, CommonConstants.SEPARATOR,
+                        CommonConstants.objectMapper.writeValue(
+                                new File(CommonUtils.joinString(CommonConstants.CMS_FILEPATH, CommonConstants.SEPARATOR,
                                         SiteComponent.TEMPLATE_PATH, CommonConstants.SEPARATOR, SiteComponent.SITE_PATH_PREFIX,
-                                        rs.getString("id"), CommonConstants.SEPARATOR, MetadataComponent.DATA_FILE)), dataMap);
+                                        rs.getString("id"), CommonConstants.SEPARATOR, MetadataComponent.DATA_FILE)),
+                                dataMap);
                     } catch (IOException e) {
                         stringWriter.write(e.getMessage());
                         stringWriter.write(System.lineSeparator());
@@ -174,7 +175,7 @@ public abstract class AbstractCmsUpgrader {
                         if (!safeConfig.isEmpty()) {
                             insertStatement.setShort(1, rs.getShort("site_id"));
                             insertStatement.setString(2, "safe");
-                            insertStatement.setString(3, ExtendUtils.getExtendString(safeConfig));
+                            insertStatement.setString(3, ExtendUtils.getExtendString(safeConfig, ""));
                             insertStatement.executeUpdate();
                         }
                     } catch (ClassCastException e) {
@@ -216,8 +217,8 @@ public abstract class AbstractCmsUpgrader {
                     if (null != rs.getString("extend_id")) {
                         List<SysExtendField> extendList = new ArrayList<>();
                         try (Statement extendFieldStatement = connection.createStatement();
-                                ResultSet extendFieldRs = extendFieldStatement.executeQuery(CommonUtils
-                                        .joinString("select * from sys_extend_field where extend_id = ", rs.getString("extend_id")))) {
+                                ResultSet extendFieldRs = extendFieldStatement.executeQuery(CommonUtils.joinString(
+                                        "select * from sys_extend_field where extend_id = ", rs.getString("extend_id")))) {
                             while (extendFieldRs.next()) {
                                 SysExtendField e = new SysExtendField(extendFieldRs.getString("code"),
                                         extendFieldRs.getString("input_type"), extendFieldRs.getBoolean("required"),

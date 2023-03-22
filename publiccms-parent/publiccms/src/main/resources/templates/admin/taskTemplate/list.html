@@ -13,8 +13,12 @@
         <#list list as a>
             <li>
                 <#local path=filepath+'/'+a.fileName>
-                <a href="taskTemplate/${a.directory?then('directory','content')}.html?path=${(path?url)!}" <#if !a.directory&&lockMap[path]?has_content><#assign lockUser=(userMap[lockMap[path].userId?string].nickname)!''/>title="<@t.page 'lock.message' lockUser/> ${lockMap[path].createDate}"</#if> target="ajax" rel="taskTemplateBox">
-                    <#if !a.directory&&lockMap[path]?has_content><i class="icon-lock icon-large"></i></#if>${a.fileName}
+                <a href="taskTemplate/${a.directory?then('directory','content')}.html?path=${(path?url)!}" target="ajax" rel="taskTemplateBox">
+                    <#if !a.directory && lockMap?has_content && lockMap[path]?has_content>
+                        <#assign lockUser=(userMap[lockMap[path].userId?string].nickname)!''/>
+                        <i class="icon-lock icon-large" title="<@t.page 'lock.message' lockUser/> ${lockMap[path].createDate}"></i>
+                    </#if>
+                    ${a.fileName}
                 </a>
             <#if a.directory>
                 <ul>

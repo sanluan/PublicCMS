@@ -16,36 +16,35 @@ import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 
 /**
-*
-* getContentPage 获取正文分页结果
-* <p>
-* 参数列表
-* <ol>
-* <li>正文
-* <li>页码
-* </ol>
-* <p>
-* 返回结果
-* <ul>
-* <li><code>page</code>:{@link com.publiccms.common.handler.PageHandler}
-* <li><code>text</code>:文章正文
-* </ul>
-* 使用示例
-* <p>
-* &lt;#assign textPage=getContentPage(attribute.text,2)/&lt;
-* <p>
-* ${textPage.text?no_esc!}
-* current page :${textPage.page.pageIndex}
-* <p>
-* 
-* <pre>
+ *
+ * getContentPage 获取正文分页结果
+ * <p>
+ * 参数列表
+ * <ol>
+ * <li>正文
+ * <li>页码
+ * </ol>
+ * <p>
+ * 返回结果
+ * <ul>
+ * <li><code>page</code>:{@link com.publiccms.common.handler.PageHandler}
+ * <li><code>text</code>:文章正文
+ * </ul>
+ * 使用示例
+ * <p>
+ * &lt;#assign textPage=getContentPage(attribute.text,2)/&lt;
+ * <p>
+ * ${textPage.text?no_esc!} current page :${textPage.page.pageIndex}
+ * <p>
+ * 
+ * <pre>
 &lt;script&gt;
 $.getJSON('${site.dynamicPath}api/method/getContentAttributes?parameters=正文内容&amp;parameters=2', function(data){
 console.log(data.text);
 });
 &lt;/script&gt;
-* </pre>
-*/
+ * </pre>
+ */
 @Component
 public class GetContentPageMethod extends BaseMethod {
 
@@ -60,8 +59,6 @@ public class GetContentPageMethod extends BaseMethod {
                 pageBreakTag = CommonConstants.getCkeditorPageBreakTag();
             } else if (text.contains(CommonConstants.getTinyMCEPageBreakTag())) {
                 pageBreakTag = CommonConstants.getTinyMCEPageBreakTag();
-            } else if (text.contains(CommonConstants.getKindEditorPageBreakTag())) {
-                pageBreakTag = CommonConstants.getKindEditorPageBreakTag();
             } else {
                 pageBreakTag = CommonConstants.getUeditorPageBreakTag();
             }

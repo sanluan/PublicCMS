@@ -33,10 +33,11 @@ public class VisitUrl implements java.io.Serializable {
     @GeneratorColumn(title = "ID")
     private VisitUrlId id;
     /**
-     * url<p>
+     * url
+     * <p>
      * 网址
      */
-    @GeneratorColumn(title = "URL")
+    @GeneratorColumn(title = "URL", condition = true)
     @Length(max = 2048)
     private String url;
     /**
@@ -50,7 +51,8 @@ public class VisitUrl implements java.io.Serializable {
     @GeneratorColumn(title = "UV")
     private Long uv;
     /**
-     * ip views<p>
+     * ip views
+     * <p>
      * ip访问数
      */
     @GeneratorColumn(title = "IP Views")

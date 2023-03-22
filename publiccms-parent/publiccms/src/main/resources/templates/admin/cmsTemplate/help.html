@@ -7,7 +7,7 @@
 </#if>
 <#assign urlExtendFieldTypes=['file','image','video']>
 <#assign privateUrlExtendFieldTypes=['privatefile','privateimage','privatevideo']>
-<#assign editorExtendFieldTypes=['editor','ckeditor','tinymce']>
+<#assign editorExtendFieldTypes=['editor','tinymce','ckeditor']>
 <#macro getExtendDataHelp extend prefix>
 <#if urlExtendFieldTypes?seq_contains(extend.inputType)>
 <@getAction r'${getUrl('+prefix+extend.id.code+r')!}'/>
@@ -34,7 +34,7 @@
 <#elseif 'categoryType'=extend.inputType>
 <@getAction r'<@cms.categoryType id='+prefix+extend.id.code+r'>${object.name}</@cms.categoryType>'/>
 <#elseif 'dictionary'=extend.inputType>
-<@getAction r'<select>'+'\n    '+r'<@cms.dictionaryDataList dictionaryId='+prefix+extend.id.code+r'>'+'\n    '+r'<#list list as d><option value="${d.id.value}">${d.text}</option>'+'\n    '+r'</#list>'+'\n    '+r'</@cms.dictionaryDataList>'+'\n    </select>'/>
+<@getAction r'<@cms.dictionaryData dictionaryId='+extend.dictionaryId+r' values='+prefix+extend.id.code+r'>'+'\n    '+r'<#list map as k,d>${k}:${d.text}<#sep>,</#list>'+'\n    '+r'</@cms.dictionaryData>'/>
 <#elseif 'dept'=extend.inputType>
 <@getAction r'<@sys.dept id='+prefix+extend.id.code+r'>${object.name}</@sys.dept>'/>
 <#elseif 'alphaColor'=extend.inputType>

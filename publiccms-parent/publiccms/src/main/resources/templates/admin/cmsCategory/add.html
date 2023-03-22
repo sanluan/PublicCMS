@@ -74,7 +74,7 @@
                     <dd>
                         <input name="parentId" type="hidden" value="${parentId!}"/>
                         <input name="categoryName" readonly="readonly" type="text" size="10" value="${(category.name)!}"/>
-                        <a class="btnLook" href="cmsCategory/lookup.html?currentCategoryId=${(a.id)!}" lookupGroup=""></a>
+                        <a class="btnLook" href="cmsCategory/lookup.html?currentCategoryId=${(a.id)!}&field=parentId" lookupGroup=""></a>
                     </dd>
                 </dl>
                 <dl>
@@ -145,7 +145,7 @@
                 </dl>
                 <#if categoryType?has_content && categoryType.extendList?has_content>
                     <#include "../include_page/extendData.html"/>
-                    <@extendData name='extendDataList' extendList=categoryType.extendList extendValues=(attribute!{}) historyItemType='categoryExtend' historyItemId=id/>
+                    <@extendData extendList=categoryType.extendList extendValues=(attribute!{}) historyItemType='categoryExtend' historyItemId=id/>
                 </#if>
             </div>
             <div class="pageFormContent onlyUrl" layoutH>

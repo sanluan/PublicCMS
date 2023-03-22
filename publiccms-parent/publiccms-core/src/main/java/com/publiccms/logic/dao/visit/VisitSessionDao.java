@@ -28,6 +28,7 @@ public class VisitSessionDao extends BaseDao<VisitSession> {
     /**
      * @param siteId
      * @param sessionId
+     * @param ip 
      * @param startVisitDate
      * @param endVisitDate
      * @param orderType
@@ -35,8 +36,8 @@ public class VisitSessionDao extends BaseDao<VisitSession> {
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(short siteId, String sessionId, Date startVisitDate, Date endVisitDate, String orderType,
-            Integer pageIndex, Integer pageSize) {
+    public PageHandler getPage(short siteId, String sessionId, String ip, Date startVisitDate, Date endVisitDate,
+            String orderType, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from VisitSession bean");
         queryHandler.condition("bean.id.siteId = :siteId").setParameter("siteId", siteId);
         if (null != startVisitDate) {
@@ -47,6 +48,9 @@ public class VisitSessionDao extends BaseDao<VisitSession> {
         }
         if (CommonUtils.notEmpty(sessionId)) {
             queryHandler.condition("bean.id.sessionId = :sessionId").setParameter("sessionId", sessionId);
+        }
+        if (CommonUtils.notEmpty(ip)) {
+            queryHandler.condition("bean.ip like :ip").setParameter("ip", like(ip));
         }
         if (!ORDERTYPE_ASC.equalsIgnoreCase(orderType)) {
             orderType = ORDERTYPE_DESC;

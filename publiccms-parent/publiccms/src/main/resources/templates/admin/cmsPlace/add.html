@@ -22,6 +22,7 @@
 </#if>
 <form method="post" autocomplete="off" action="cmsPlace/save?callbackType=closeCurrent&navTabId=cmsPlace/dataList" class="pageForm required-validate" onsubmit="return validateCallback(this,navTabAjaxDone);">
     <input name="id" type="hidden" value="${id!}"/>
+    <input name="itemId" type="hidden" readonly="readonly" value="${(a.itemId)!itemId!}"/>
     <input name="path" type="hidden" value="${(a.path)!(path)!}"/>
     <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <div class="formBar card">
@@ -34,28 +35,18 @@
         <div class="pageFormContent" layoutH>
             <#assign fieldList=metadata.fieldList![]/>
             <#assign requiredFieldList=metadata.requiredFieldList![]/>
-            <dl>
+            <dl class="nowrap">
                 <dt>${(metadata.fieldTextMap['title'])!t.pageMessage('title')}:</dt>
                 <dd>
                     <input class="required" name="title" type="text" maxlength="255" size="60" value="${(a.title)!(content.title)!(category.name)!}"/>
-                <#if !(metadata.acceptItemTypes)?has_content>
-                    <a class="btnLook" href="cmsPlace/lookup.html" lookupGroup="" width="1200" ><@t.page 'select'/></a>
-                </#if>
-                </dd>
-            </dl>
-        <#if (metadata.acceptItemTypes)?has_content>
-            <dl>
-                <dt><@t.page 'item_type'/>:</dt>
-                <dd>
-                    <input class="required" name="itemType" type="text" readonly="readonly" value="${(a.itemType)!itemType!}"/>
-                    <input name="itemId" type="hidden" readonly="readonly" value="${(a.itemId)!itemId!}"/>
+                    <#if (metadata.acceptItemTypes)?has_content>
+                        <input class="required" name="itemType" type="text" readonly="readonly" value="${(a.itemType)!itemType!}"/>
+                    <#else>
+                        <input name="itemType" type="hidden" value="${(a.itemType)!itemType!}"/>
+                    </#if>
                     <a class="btnLook" href="cmsPlace/lookup.html<#if (metadata.acceptItemTypes)?has_content>?acceptItemTypes=<#list metadata.acceptItemTypes as a>${a}<#sep>,</#list></#if>" lookupGroup="" width="1200" ><@t.page 'select'/></a>
                 </dd>
             </dl>
-        <#else>
-            <input name="itemType" type="hidden" value="${(a.itemType)!itemType!}"/>
-            <input name="itemId" type="hidden" value="${(a.itemId)!itemId!}"/>
-        </#if>
         <#if fieldList?seq_contains('url')>
             <dl class="nowrap">
                 <dt>${(metadata.fieldTextMap['url'])}:</dt>
@@ -65,7 +56,7 @@
             <dl>
                 <dt><@t.page 'publish_date'/>:</dt>
                 <dd>
-                    <input type="text" name="publishDate" class="date" size="20" autocomplete="off" dateFmt="yyyy-MM-dd HH:mm:ss" value="<#if a?has_content && id?has_content>${(a.publishDate)!}<#else>${(content.publishDate)!.now}</#if>"/>
+                    <input type="text" name="publishDate" class="date" size="20" autocomplete="off" dateFmt="yyyy-MM-dd HH:mm:ss" value="<#if a?has_content && id?has_content>${(a.publishDate)!}<#else>${(content.publishDate)!}</#if>"/>
                     <a class="inputDateButton" href="javascript:void(0);"></a>
                 </dd>
             </dl>
@@ -88,7 +79,7 @@
             <dl class="nowrap">
                 <dt>${(metadata.fieldTextMap['cover'])}:</dt>
                 <dd>
-                    <input name="cover" value="${(a.cover)!(content.cover)!}"<#if requiredFieldList?seq_contains('cover')> class="required"</#if> maxlength="300" size="40" type="text"/>
+                    <input name="cover" value="${(a.cover)!(content.cover)!}"<#if requiredFieldList?seq_contains('cover')> class="required"</#if> maxlength="300" size="50" type="text"/>
                     <a class="btnAttach" href="common/upload.html?field=cover&fileTypes=image&width=${(metadata.coverWidth)!}&height=${(metadata.coverHeight)!}" lookupGroup="" width="1000" height="600"><@t.page 'image'/></a>
                     <a class="view icon-eye-open" ref="cover" data-prefix="${site.sitePath}" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
                     <#if (metadata.coverWidth)?has_content && (metadata.coverHeight)?has_content><span class="info">${(metadata.coverWidth)!}*${(metadata.coverHeight)!}</span></#if>
@@ -100,7 +91,7 @@
             <#include "../include_page/extendData.html"/>
             <@tools.placeMetadata path=(a.path)!path!''><#assign metadata=object/></@tools.placeMetadata>
             <#assign attribute=getPlaceAttribute((a.id)!)/>
-            <@extendData name='extendDataList' extendList=metadata.extendList extendValues=attribute historyItemType='placeExtend' historyItemId=id/>
+            <@extendData extendList=metadata.extendList extendValues=attribute historyItemType='placeExtend' historyItemId=id/>
         </div>
     </div>
 </form>

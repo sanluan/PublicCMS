@@ -39,7 +39,7 @@
                     ${a.createDate!}
                 </dd>
             </dl>
-            <#assign content=a.content?eval/>
+            <#assign content=a.content?eval_json/>
             <dl class="nowrap">
                 <dt><@t.page 'log.content'/>:</dt>
                 <dd>

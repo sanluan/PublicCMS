@@ -5,7 +5,6 @@ import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.logging.Log;
@@ -13,7 +12,6 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -124,11 +122,10 @@ public class FileController {
                         }
                     } else {
                         filepath = siteComponent.getWebFilePath(site.getId(), fileName);
-                        String metadataPath = siteComponent.getPrivateFilePath(site.getId(), fileName);
                         if (CommonUtils.notEmpty(base64File)) {
-                            CmsFileUtils.upload(VerificationUtils.base64Decode(base64File), filepath, originalName, metadataPath);
+                            CmsFileUtils.upload(VerificationUtils.base64Decode(base64File), filepath);
                         } else {
-                            CmsFileUtils.upload(file, filepath, originalName, metadataPath);
+                            CmsFileUtils.upload(file, filepath);
                         }
                     }
                     if (CmsFileUtils.isSafe(filepath, suffix)) {
@@ -164,62 +161,16 @@ public class FileController {
 
     /**
      * @param site
-     * @param filePath
-     * @param request
-     * @return response entity
-     */
-    @RequestMapping("download")
-    public ResponseEntity<StreamingResponseBody> download(@RequestAttribute SysSite site, String filePath,
-            HttpServletRequest request) {
-        Matcher matcher = CmsFileUtils.UPLOAD_FILE_PATTERN.matcher(filePath);
-        if (matcher.matches()) {
-            String absolutePath = matcher.group(1);
-            String metadataPath = siteComponent.getPrivateFilePath(site.getId(), CmsFileUtils.getMetadataFileName(absolutePath));
-
-            HttpHeaders headers = new HttpHeaders();
-            if (CmsFileUtils.isFile(metadataPath)) {
-                headers.setContentDisposition(ContentDisposition.attachment()
-                        .filename(CmsFileUtils.getFileContent(metadataPath), StandardCharsets.UTF_8).build());
-            } else {
-                headers.setContentDisposition(ContentDisposition.attachment()
-                        .filename(CmsFileUtils.getFileName(absolutePath), StandardCharsets.UTF_8).build());
-            }
-
-            String sendfile = request.getHeader(CmsFileUtils.HEADERS_SEND_CTRL);
-            if (CmsFileUtils.HEADERS_SEND_NGINX.equalsIgnoreCase(sendfile)) {
-                headers.set(CmsFileUtils.HEADERS_SEND_NGINX,
-                        CommonUtils.joinString(CmsFileUtils.NGINX_DOWNLOAD_PREFIX, absolutePath));
-                return ResponseEntity.ok().headers(headers).build();
-            } else if (CmsFileUtils.HEADERS_SEND_APACHE.equalsIgnoreCase(sendfile)) {
-                headers.set(CmsFileUtils.HEADERS_SEND_APACHE,
-                        SiteComponent.getFullFileName(site.getId(), absolutePath).substring(1));
-                return ResponseEntity.ok().headers(headers).build();
-            } else {
-                headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-                String webfilePath = siteComponent.getWebFilePath(site.getId(), absolutePath);
-                StreamingResponseBody body = new StreamingResponseBody() {
-                    @Override
-                    public void writeTo(OutputStream outputStream) throws IOException {
-                        CmsFileUtils.copyFileToOutputStream(webfilePath, outputStream);
-                    }
-                };
-                return ResponseEntity.ok().headers(headers).body(body);
-            }
-        }
-        return ResponseEntity.notFound().build();
-    }
-
-    /**
-     * @param site
      * @param expiry
      * @param sign
      * @param filePath
+     * @param filename
      * @param request
      * @return response entity
      */
     @RequestMapping("private")
     public ResponseEntity<StreamingResponseBody> privatefile(@RequestAttribute SysSite site, long expiry, String sign,
-            String filePath, HttpServletRequest request) {
+            String filePath, String filename, HttpServletRequest request) {
         if (CommonUtils.notEmpty(sign) && expiry > System.currentTimeMillis()) {
             Map<String, String> config = configComponent.getConfigData(site.getId(), SafeConfigComponent.CONFIG_CODE);
             String signKey = config.get(SafeConfigComponent.CONFIG_PRIVATEFILE_KEY);
@@ -229,13 +180,19 @@ public class FileController {
             String string = CmsFileUtils.getPrivateFileSignString(expiry, filePath);
             if (string.equalsIgnoreCase(VerificationUtils.decryptAES(VerificationUtils.base64Decode(sign), signKey))) {
                 HttpHeaders headers = new HttpHeaders();
+                if (CommonUtils.notEmpty(filename)) {
+                    headers.setContentDisposition(
+                            ContentDisposition.attachment().filename(filename, StandardCharsets.UTF_8).build());
+                }
                 String sendfile = request.getHeader(CmsFileUtils.HEADERS_SEND_CTRL);
                 if (CmsFileUtils.HEADERS_SEND_NGINX.equalsIgnoreCase(sendfile)) {
                     headers.set(CmsFileUtils.HEADERS_SEND_NGINX,
                             CommonUtils.joinString(CmsFileUtils.NGINX_PRIVATEFILE_PREFIX, filePath));
+                    return ResponseEntity.ok().headers(headers).body(null);
                 } else if (CmsFileUtils.HEADERS_SEND_APACHE.equalsIgnoreCase(sendfile)) {
                     headers.set(CmsFileUtils.HEADERS_SEND_APACHE,
-                            CommonUtils.joinString("private", SiteComponent.getFullFileName(site.getId(), filePath)));
+                            SiteComponent.getFullFileName(site.getId(), filePath).substring(1));
+                    return ResponseEntity.ok().headers(headers).body(null);
                 } else {
                     String privatefilePath = siteComponent.getPrivateFilePath(site.getId(), filePath);
                     if (CmsFileUtils.isFile(privatefilePath)) {

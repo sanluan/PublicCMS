@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.Enumeration;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 
@@ -194,10 +194,10 @@ public class HttpParameterHandler extends BaseHandler {
     }
 
     @Override
-    public Map<String, Object> getMap(String name) {
+    public Map<String, String> getMap(String name) {
         String mapNamePrefix = CommonUtils.joinString(name, Constants.DOT);
         Enumeration<String> names = request.getParameterNames();
-        Map<String, Object> map = new HashMap<>();
+        Map<String, String> map = new LinkedHashMap<>();
         while (names.hasMoreElements()) {
             String temp = names.nextElement();
             if (temp.startsWith(mapNamePrefix)) {

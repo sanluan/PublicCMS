@@ -132,9 +132,8 @@ public class UeditorAdminController {
             if (ArrayUtils.contains(safeConfigComponent.getSafeSuffix(site), suffix)) {
                 String fileName = CmsFileUtils.getUploadFileName(suffix);
                 String filepath = siteComponent.getWebFilePath(site.getId(), fileName);
-                String metadataPath = siteComponent.getPrivateFilePath(site.getId(), CmsFileUtils.getMetadataFileName(fileName));
                 try {
-                    CmsFileUtils.upload(file, filepath, originalName, metadataPath);
+                    CmsFileUtils.upload(file, filepath);
                     if (CmsFileUtils.isSafe(filepath, suffix)) {
                         FileSize fileSize = CmsFileUtils.getFileSize(filepath, suffix);
                         logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,

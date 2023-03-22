@@ -46,7 +46,7 @@ function callback(fileUrl){
             [<@t.page 'directory'/>]
         </div>
         <div class="col-md-5">
-            <a href="?path=${path?keep_before_last('/')}&CKEditorFuncNum=${CKEditorFuncNum!}&type=${type!}" target="_self"><@t.page 'button.return'/></a>
+            <a href="?path=${path?contains('/')?then(path?keep_before_last('/'),'')}&CKEditorFuncNum=${CKEditorFuncNum!}&type=${type!}" target="_self"><@t.page 'button.return'/></a>
         </div>
         <div class="col-md-2">
         </div>

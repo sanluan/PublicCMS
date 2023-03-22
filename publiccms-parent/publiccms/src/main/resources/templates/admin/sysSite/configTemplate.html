@@ -56,10 +56,6 @@ server {
         proxy_read_timeout 10;
         proxy_pass http://cms;
     }
-    location /downloadfile/upload/ {
-        internal;
-        alias ${realRootPath}/web/site_${siteId}/upload/;
-    }
     location /privatefile/ {
         internal;
         alias ${realRootPath}/web/private/site_${siteId}/;
@@ -90,24 +86,6 @@ server {
         <#if dynamicLocation=siteLocation>
         try_files  $uri  $uri/  @cmsproxy;
         </#if>
-    }
-                        </#if>
-                    </#list>
-                </@sys.siteList>
-            </#if>
-        <#else>
-    location ${dynamicLocation?has_content?then('/'+dynamicLocation,'/')}webfile/ {
-        alias   ${realRootPath}/web/site_${siteId}/webfile/;
-        index  index.html;
-    }
-
-            <#if multipleDomain?has_content>
-                <@sys.siteList parentId=multipleDomain.siteId pageSize=100>
-                    <#list page.list as a>
-                        <#if a.directory?has_content>
-    location ${dynamicLocation?has_content?then('/'+dynamicLocation,'/')}webfile/${a.directory}/ {
-        alias   ${realRootPath}/web/site_${a.id}/webfile/;
-        index  index.html;
     }
                         </#if>
                     </#list>
@@ -190,7 +168,7 @@ LoadModule xsendfile_module modules/mod_xsendfile.so
 </ifModule>
 <ifModule xsendfile_module>
     XSendFile on
-    XSendFilePath ${realRootPath}/web/
+    XSendFilePath ${realRootPath}/web/private/
 </ifModule>
 
 ProxyRequests off
@@ -255,8 +233,6 @@ ProxyPreserveHost On
     RewriteCond %{DOCUMENT_ROOT} %{REQUEST_FILENAME} !-f
     RewriteRule ^/(.*)$ balancer://cmsproxy/%{REQUEST_URI} [P,L]
         </#if>
-    <#else>
-    Alias "${dynamicLocation?has_content?then('/'+dynamicLocation,'/')}webfile/" "${realRootPath}/web/site_${siteId}/webfile/"
     </#if>
 
     ErrorDocument 403 /error/403.html

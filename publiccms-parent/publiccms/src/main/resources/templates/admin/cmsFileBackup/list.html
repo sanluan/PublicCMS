@@ -37,7 +37,7 @@
                 <td></td>
                 <td class="tree"><div class="folder_expandable"></div></td>
                 <td>
-                    <a href="cmsFileBackup/list.html?type=${type!}&path=${path?keep_before_last('/')}" target="navTab" rel="cmsFileBackup/list" title="<@t.page 'button.return'/>">
+                    <a href="cmsFileBackup/list.html?type=${type!}&path=${path?contains('/')?then(path?keep_before_last('/'),'')}" target="navTab" rel="cmsFileBackup/list">
                         <@t.page 'button.return'/>
                     </a>
                 </td>

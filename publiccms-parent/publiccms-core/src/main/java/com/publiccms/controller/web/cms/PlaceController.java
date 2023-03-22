@@ -36,6 +36,7 @@ import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
+import com.publiccms.logic.service.cms.CmsEditorHistoryService;
 import com.publiccms.logic.service.cms.CmsPlaceAttributeService;
 import com.publiccms.logic.service.cms.CmsPlaceService;
 import com.publiccms.logic.service.log.LogLoginService;
@@ -70,6 +71,8 @@ public class PlaceController {
     protected SafeConfigComponent safeConfigComponent;
     @Resource
     private TemplateComponent templateComponent;
+    @Resource
+    private CmsEditorHistoryService editorHistoryService;
     @Resource
     private LockComponent lockComponent;
 
@@ -148,6 +151,8 @@ public class PlaceController {
                 logOperateService.save(new LogOperate(site.getId(), user.getId(), null == user ? null : user.getDeptId(),
                         LogLoginService.CHANNEL_WEB, "update.place", ip, CommonUtils.getDate(), entity.getPath()));
             } else {
+                entity.setPublishDate(CommonUtils.getDate());
+                entity.setPublishDate(CommonUtils.getDate());
                 entity.setSiteId(site.getId());
                 Long userId = null;
                 if (null != user) {
@@ -161,10 +166,10 @@ public class PlaceController {
             }
             lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_CONTRIBUTE,
                     metadata.isAllowAnonymous() ? ip : String.valueOf(user.getId()), null, true);
-            Map<String, String> map = ExtendUtils.getExtentDataMap(placeParameters.getExtendDataList(),
-                    metadataComponent.getPlaceMetadata(filepath).getExtendList());
-            String extentString = ExtendUtils.getExtendString(map);
-            attributeService.updateAttribute(entity.getId(), extentString);
+
+            Map<String, String> map = placeParameters.getExtendData();
+            attributeService.updateAttribute(entity.getId(),
+                    ExtendUtils.getExtendString(map, site.getSitePath(), metadata.getExtendList()));
             model.addAttribute("id", entity.getId());
         }
         return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);

@@ -1,14 +1,18 @@
 package com.publiccms.common.tools;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.function.BiConsumer;
 
+import org.apache.commons.lang3.ArrayUtils;
+
+import com.publiccms.common.api.Config;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.entities.sys.SysExtendField;
-import com.publiccms.views.pojo.entities.ExtendData;
 
 /**
  *
@@ -16,70 +20,6 @@ import com.publiccms.views.pojo.entities.ExtendData;
  * 
  */
 public class ExtendUtils {
-
-    /**
-     * @param extendDataList
-     * @param sysExtendFieldList
-     * @return extent data map
-     */
-    public static Map<String, String> getSysExtentDataMap(List<ExtendData> extendDataList,
-            List<SysExtendField> sysExtendFieldList) {
-        Map<String, String> map = new LinkedHashMap<>();
-        if (CommonUtils.notEmpty(extendDataList)) {
-            Map<String, String> extendFieldMap = new LinkedHashMap<>();
-            for (ExtendData extend : extendDataList) {
-                extendFieldMap.put(extend.getName(), extend.getValue());
-            }
-            for (SysExtendField extend : sysExtendFieldList) {
-                String value = extendFieldMap.getOrDefault(extend.getId().getCode(), extend.getDefaultValue());
-                if (null != value) {
-                    map.put(extend.getId().getCode(), value);
-                }
-            }
-        }
-        return map;
-    }
-
-    /**
-     * @param extendData
-     * @param extendFieldList
-     * @return extent data map
-     */
-    public static List<ExtendData> getDefaultExtentDataList(Map<String, String> extendData,
-            List<SysExtendField> extendFieldList) {
-        List<ExtendData> extendDataList = new ArrayList<>();
-        if (CommonUtils.notEmpty(extendFieldList)) {
-            for (SysExtendField extend : extendFieldList) {
-                String value = extendData.getOrDefault(extend.getId().getCode(), extend.getDefaultValue());
-                if (null != value) {
-                    extendDataList.add(new ExtendData(extend.getId().getCode(), value));
-                }
-            }
-        }
-        return extendDataList;
-    }
-
-    /**
-     * @param extendDataList
-     * @param extendFieldList
-     * @return extent data map
-     */
-    public static Map<String, String> getExtentDataMap(List<ExtendData> extendDataList, List<SysExtendField> extendFieldList) {
-        Map<String, String> map = new LinkedHashMap<>();
-        if (CommonUtils.notEmpty(extendDataList)) {
-            Map<String, String> extendFieldMap = new LinkedHashMap<>();
-            for (ExtendData extend : extendDataList) {
-                extendFieldMap.put(extend.getName(), extend.getValue());
-            }
-            for (SysExtendField extend : extendFieldList) {
-                String value = extendFieldMap.getOrDefault(extend.getId().getCode(), extend.getDefaultValue());
-                if (null != value) {
-                    map.put(extend.getId().getCode(), value);
-                }
-            }
-        }
-        return map;
-    }
 
     /**
      * @param data
@@ -100,13 +40,67 @@ public class ExtendUtils {
 
     /**
      * @param map
+     * @param sitePath
+     * @param extendFieldListArrays
      * @return extend string
      */
-    public static String getExtendString(Map<String, String> map) {
-        try {
-            return CommonConstants.objectMapper.writeValueAsString(map);
-        } catch (IOException e) {
-            return null;
+    @SafeVarargs
+    public static String getExtendString(Map<String, String> map, String sitePath,
+            List<SysExtendField>... extendFieldListArrays) {
+        return getExtendString(map, sitePath, null, extendFieldListArrays);
+    }
+
+    /**
+     * @param map
+     * @param sitePath
+     * @param searchableConsumer
+     * @param extendFieldListArrays
+     * @return extend string
+     */
+    @SafeVarargs
+    public static String getExtendString(Map<String, String> map, String sitePath,
+            BiConsumer<SysExtendField, String> searchableConsumer, List<SysExtendField>... extendFieldListArrays) {
+        if (CommonUtils.notEmpty(extendFieldListArrays) && null != map) {
+            Set<String> notSafeKeys = new HashSet<>();
+            notSafeKeys.addAll(map.keySet());
+            for (List<SysExtendField> extendFieldList : extendFieldListArrays) {
+                if (CommonUtils.notEmpty(extendFieldList)) {
+                    for (SysExtendField extend : extendFieldList) {
+                        notSafeKeys.remove(extend.getId().getCode());
+                        String value = map.get(extend.getId().getCode());
+                        if (null == value) {
+                            if (null != extend.getDefaultValue()) {
+                                map.put(extend.getId().getCode(), value);
+                            }
+                        } else if (null != extend.getMaxlength()) {
+                            if (ArrayUtils.contains(Config.INPUT_TYPE_EDITORS, extend.getInputType())) {
+                                map.put(extend.getId().getCode(),
+                                        HtmlUtils.cleanUnsafeHtml(HtmlUtils.keep(value, extend.getMaxlength()), sitePath));
+                            } else {
+                                map.put(extend.getId().getCode(), CommonUtils.keep(value, extend.getMaxlength(), null));
+                            }
+                        } else {
+                            if (ArrayUtils.contains(Config.INPUT_TYPE_EDITORS, extend.getInputType())) {
+                                map.put(extend.getId().getCode(), HtmlUtils.cleanUnsafeHtml(value, sitePath));
+                            }
+                        }
+                        if (extend.isSearchable()) {
+                            searchableConsumer.accept(extend, value);
+                        }
+                    }
+                }
+            }
+            if (!notSafeKeys.isEmpty()) {
+                for (String key : notSafeKeys) {
+                    map.remove(key);
+                }
+            }
+            try {
+                return CommonConstants.objectMapper.writeValueAsString(map);
+            } catch (IOException e) {
+                return null;
+            }
         }
+        return null;
     }
 }

@@ -7,7 +7,6 @@ import java.util.Map;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -23,7 +22,6 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.publiccms.common.annotation.Csrf;
-import com.publiccms.common.api.Config;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
@@ -32,13 +30,11 @@ import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.common.view.ExcelView;
-import com.publiccms.entities.cms.CmsEditorHistory;
 import com.publiccms.entities.cms.CmsPlace;
 import com.publiccms.entities.cms.CmsPlaceAttribute;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysDept;
 import com.publiccms.entities.sys.SysDeptItemId;
-import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.exchange.PlaceExchangeComponent;
@@ -151,30 +147,18 @@ public class CmsPlaceAdminController {
             String filepath = siteComponent.getTemplateFilePath(site.getId(),
                     CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, entity.getPath()));
             CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);
-            Map<String, String> map = ExtendUtils.getExtentDataMap(extendDataParameters.getExtendDataList(),
-                    metadata.getExtendList());
 
+            Map<String, String> map = extendDataParameters.getExtendData();
             CmsPlaceAttribute oldAttribute = attributeService.getEntity(entity.getId());
-            if (null != oldAttribute) {
-                if (CommonUtils.notEmpty(oldAttribute.getData()) && CommonUtils.notEmpty(metadata.getExtendList())) {
-                    Map<String, String> oldMap = ExtendUtils.getExtendMap(oldAttribute.getData());
-                    for (SysExtendField extendField : metadata.getExtendList()) {
-                        if (ArrayUtils.contains(Config.INPUT_TYPE_EDITORS, extendField.getInputType())) {
-                            if (CommonUtils.notEmpty(oldMap) && CommonUtils.notEmpty(oldMap.get(extendField.getId().getCode()))
-                                    && (CommonUtils.notEmpty(map) || !oldMap.get(extendField.getId().getCode())
-                                            .equals(map.get(extendField.getId().getCode())))) {
-                                CmsEditorHistory history = new CmsEditorHistory(site.getId(),
-                                        CmsEditorHistoryService.ITEM_TYPE_PLACE_EXTEND, String.valueOf(entity.getId()),
-                                        extendField.getId().getCode(), CommonUtils.getDate(), admin.getId(),
-                                        map.get(extendField.getId().getCode()));
-                                editorHistoryService.save(history);
-                            }
-                        }
-                    }
-                }
+            attributeService.updateAttribute(entity.getId(),
+                    ExtendUtils.getExtendString(map, site.getSitePath(), metadata.getExtendList()));
+
+            if (null != oldAttribute && CommonUtils.notEmpty(oldAttribute.getData())) {
+                Map<String, String> oldMap = ExtendUtils.getExtendMap(oldAttribute.getData());
+                editorHistoryService.saveHistory(site.getId(), admin.getId(), CmsEditorHistoryService.ITEM_TYPE_PLACE_EXTEND,
+                        String.valueOf(entity.getId()), oldMap, map, metadata.getExtendList());
             }
 
-            attributeService.updateAttribute(entity.getId(), ExtendUtils.getExtendString(map));
             staticPlace(site, entity.getPath());
         }
         return CommonConstants.TEMPLATE_DONE;

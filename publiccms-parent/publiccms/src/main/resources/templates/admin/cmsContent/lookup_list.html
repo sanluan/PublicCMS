@@ -5,6 +5,7 @@
     <form class="pagerForm" autocomplete="off" action="cmsContent/lookup_list.html" onsubmit="return divSearch(this, 'content_list');" method="post">
         <#include "../include_page/parameters.html"/>
         <input type="hidden" name="field" value="${field!'relatedContentId'}"/>
+        <input type="hidden" name="titleField" value="${titleField!'title'}"/>
         <input type="hidden" name="categoryId" value="${categoryId!}"/>
         <input type="hidden" name="userId" value="${userId!}"/>
         <input type="hidden" name="parentId" value="${parentId!}"/>
@@ -65,7 +66,7 @@
             <#list page.list as a>
             <tr>
                 <td>
-                    <a href="javascript:;" class="btnText green" onclick="$.bringBack({'${field!'relatedContentId'}':'${a.id}', url:'${a.url!}', title:'${a.title?js_string}', description:'${(a.description!)?js_string}'}); return false;"><i class="icon-ok"></i><@t.page 'select'/></a>
+                    <a href="javascript:;" class="btnText green" onclick="$.bringBack({'${field!'relatedContentId'}':'${a.id}', 'url':'${a.url!}', '${titleField!'title'}':'${a.title?js_string}', 'description':'${(a.description!)?js_string}'}); return false;"><i class="icon-ok"></i><@t.page 'select'/></a>
                 </td>
                 <td>${a.id}</td>
                 <td>
@@ -79,7 +80,7 @@
                             <label><@t.page 'content.promulgator'/>:</label><span class="exclude-translate">${(userMap[a.userId?string].nickname)!}</span>
                             <label><@t.page 'model'/>:</label><span class="exclude-translate">${(modelMap[a.modelId].name)!}</span>
                             <#if modelMap[a.modelId]?has_content&&modelMap[a.modelId].hasChild>
-                                <label><a href="cmsContent/lookup_list.html?parentId=${a.id}&categoryId=${a.categoryId}&field=${field!'relatedContentId'}" target="ajax" rel="content_list"><@t.page 'content.child_management'/></a></label>
+                                <label><a href="cmsContent/lookup_list.html?parentId=${a.id}&categoryId=${a.categoryId}&field=${(field?url)!'relatedContentId'}&titleField=${(titleField?url)!'title'}" target="ajax" rel="content_list"><@t.page 'content.child_management'/></a></label>
                             </#if>
                             <#if a.expiryDate?has_content><label><@t.page 'expiry_date'/>:</label><span class="exclude-translate">${a.expiryDate!}</span></#if>
                         </p>

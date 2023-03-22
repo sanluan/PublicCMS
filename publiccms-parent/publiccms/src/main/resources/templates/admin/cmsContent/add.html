@@ -167,10 +167,10 @@ $('input[name=\'categoryName\']',navTab.getCurrentPanel()).on('change',function(
             <#include "../include_page/extendData.html"/>
             <#if category?has_content&&category.extendId?has_content>
                  <@sys.extendFieldList extendId=category.extendId>
-                    <@extendData name='categoryExtendDataList' extendList=list extendValues=attribute historyItemType='contentExtend' historyItemId=id/>
+                    <@extendData extendList=list extendValues=attribute historyItemType='contentExtend' historyItemId=id/>
                  </@sys.extendFieldList>
             </#if>
-            <@extendData name='modelExtendDataList' extendList=model.extendList extendValues=attribute historyItemType='contentExtend' historyItemId=id/>
+            <@extendData extendList=model.extendList extendValues=attribute historyItemType='contentExtend' historyItemId=id/>
             <#if fieldList?seq_contains('cover')>
                 <dl class="nowrap">
                     <dt>${(model.fieldTextMap['cover'])!}:</dt>
