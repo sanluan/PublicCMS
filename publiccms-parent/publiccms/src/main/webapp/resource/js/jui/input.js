@@ -263,6 +263,9 @@
         $.validator.addMethod("alphanumeric", function(value, element) {
             return this.optional(element) || /^\w+$/i.test(value);
         }, "Letters, numbers or underscores only please");
+        $.validator.addMethod("nocommas", function(value, element) {
+            return this.optional(element) || /^[^,]+$/i.test(value);
+        }, "Cannot contain commas");
         $.validator.addMethod("lettersonly", function(value, element) {
             return this.optional(element) || /^[a-z]+$/i.test(value);
         }, "Letters only please");

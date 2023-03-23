@@ -5,14 +5,14 @@
         <tr>
             <th type="text" name="${name}[#index#].id.code" size="10" fieldClass="required letterstart"><@t.page 'code'/></th>
             <th type="enum" name="${name}[#index#].inputType" enumUrl="common/extendsFieldType.html?searchable=${searchable?c}" fieldClass="required" size="10" width="100"><@t.page 'field_type'/></th>
-            <th type="text" name="${name}[#index#].name" size="10" fieldClass="required" fieldAttrs="{'maxlength':20}"><@t.page 'name'/></th>
+            <th type="text" name="${name}[#index#].name" size="10" fieldAttrs="{'maxlength':20}"><@t.page 'name'/></th>
             <th type="checkbox" name="${name}[#index#].required" size="10"><@t.page 'required'/></th>
             <th type="text" name="${name}[#index#].defaultValue" size="10"><@t.page 'default_value'/></th>
             <th type="number" name="${name}[#index#].maxlength" size="10" fieldAttrs="{'min':1,'style':'display:none'}"><@t.page 'maxlength'/></th>
             <th type="number" name="${name}[#index#].width" size="10" fieldAttrs="{'min':1,'style':'display:none'}"><@t.page 'width'/></th>
             <th type="number" name="${name}[#index#].height" size="10" fieldAttrs="{'min':1,'style':'display:none'}"><@t.page 'height'/></th>
             <th type="lookup" name="${name}[#index#].dictionaryName" lookupPk="dictionaryId" lookupUrl="cmsDictionary/lookup.html" lookupGroup="${name}[#index#]" fieldAttrs="{'readonly':'readonly','style':'display:none'}" size="10"><a href="cmsDictionary/list.html" target="navTab" rel="cmsDictionary/list"><@t.page 'dictionary'/></a></th>
-            <th type="checkbox" name="${name}[#index#].multiple" size="10" fieldAttrs="{'style':'display:none'}"><@t.page 'multiple_select'/></th>
+            <th type="checkbox" name="${name}[#index#].multiple" size="10"><@t.page 'multiple_select'/></th>
             <th type="textarea" name="${name}[#index#].description" fieldAttrs="{'maxlength':80,'rows':2,'cols':30}"><@t.page 'description'/></th>
             <#if searchable><th type="checkbox" name="${name}[#index#].searchable" size="10" class="searchable" fieldClass="searchable"><@t.page 'searchable'/></th></#if>
             <th type="text" name="${name}[#index#].sort"  size="10" fieldClass="required digits" defaultVal="#index#"><@t.page 'sort'/></th>
@@ -32,7 +32,7 @@
                     <@extendsFieldType name+'['+extend?index+'].inputType' extend.inputType searchable/>
                 </td>
                 <td>
-                    <input type="text" name="${name}[${extend?index}].name" value="${extend.name}" size="10" class="required" maxlength="20"/>
+                    <input type="text" name="${name}[${extend?index}].name" value="${extend.name}" size="10" maxlength="20"/>
                 </td>
                 <td>
                     <input type="checkbox" name="${name}[${extend?index}].required" ${extend.required?then(' checked="true"','')?no_esc}/>
@@ -56,7 +56,7 @@
                     <a class="btnLook" href="cmsDictionary/lookup.html" lookupGroup="${name}[${extend?index}]" width="1000" height="500"<#if 'dictionary'!=extend.inputType> style="display:none"</#if>><@t.page 'dictionary.select'/></a>
                 </td>
                 <td>
-                    <input type="checkbox" name="${name}[${extend?index}].multiple" ${extend.multiple?then(' checked="true"','')?no_esc} <#if 'dictionary'!=extend.inputType> style="display:none"</#if>/>
+                    <input type="checkbox" name="${name}[${extend?index}].multiple" ${extend.multiple?then(' checked="true"','')?no_esc}<#if !multipleEnableTypes?seq_contains(extend.inputType)> style="display:none"</#if>/>
                 </td>
                 <td>
                     <textarea type="text" name="${name}[${extend?index}].description" rows="2" cols="30" maxlength="80">${(extend.description)!}</textarea>

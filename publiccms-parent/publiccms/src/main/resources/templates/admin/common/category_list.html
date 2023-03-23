@@ -121,7 +121,7 @@
                 <td>
                     <#if a.allowContribute>
                         <#if authorizedMap['cmsCategory/contributeForm']>
-                    <a href="cmsCategory/contributeForm.html?categoryId=${a.id}" target="dialog" mask="true" title="<@t.page 'help.contribute_form'/>"><@t.page 'allow_contribute'/></a>
+                    <a href="cmsCategory/contributeForm.html?categoryId=${a.id}" target="dialog" mask="true" width="1200" height="580" title="<@t.page 'help.contribute_form'/>"><@t.page 'allow_contribute'/></a>
                         <#else>
                     <@t.page 'allow_contribute'/>
                         </#if>

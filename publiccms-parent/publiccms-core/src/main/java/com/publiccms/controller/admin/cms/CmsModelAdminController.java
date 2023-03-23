@@ -2,6 +2,7 @@ package com.publiccms.controller.admin.cms;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -94,7 +95,12 @@ public class CmsModelAdminController {
             entity.setSearchable(false);
         }
         if (CommonUtils.notEmpty(entity.getExtendList())) {
-            entity.getExtendList().sort((e1, e2) -> e1.getSort() - e2.getSort());
+            entity.getExtendList().sort(Comparator.comparing(e -> e.getSort()));
+            entity.getExtendList().forEach(e -> {
+                if (CommonUtils.empty(e.getName())) {
+                    e.setName(e.getId().getCode());
+                }
+            });
         }
         entity.setSearchableModel(searchableModel);
         if (CommonUtils.notEmpty(entity.getRelatedList())) {

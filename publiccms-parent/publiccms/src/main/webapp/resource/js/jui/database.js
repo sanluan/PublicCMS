@@ -8,21 +8,20 @@
     var _util = {
         _lookupPrefix: function(key) {
             var strDot = _lookup.currentGroup ? ".": "";
-            return _lookup.currentGroup + strDot + key + _lookup.suffix;
+            return _lookup.currentGroup + strDot + key;
         }, lookupPk: function(key) {
             return this._lookupPrefix(key);
-        }, lookupField: function(key) {
-            return this.lookupPk(key);
+        }, lookupSuffix: function(){
+            return _lookup.suffix;
         }
     };
     $.extend({
         bringBackSuggest: function(args) {
             var $box = _lookup['$target'].parents(".unitBox:first");
-            $box.find(":input").each(function() {
-                var $input = $(this), inputName = $input.attr("name");
-                for ( var key in args) {
-                    var name = ( _lookup.pk == key ) ? _util.lookupPk(key): _util.lookupField(key);
-                    if (name == inputName && "" != name ) {
+            for ( var key in args) {
+                $box.find(":input[name="+escapeJquery(_util.lookupPk(key))+"]").each(function() {
+                    var $input = $(this);
+                    if (("" === _util.lookupSuffix() || $input.attr("suffix") === _util.lookupSuffix())) {
                         if($input.hasClass('editor')){
                             if('ckeditor'==$input.attr('editorType')) {
                                 CKEDITOR.instances[$input.data("id")].setData(args[key]);
@@ -36,10 +35,9 @@
                         } else {
                             $input.val(args[key]).trigger('change');
                         }
-                        break;
                     }
-                }
-            });
+                });
+            }
         },
         bringBack: function(json) {
             if (json[JUI.keys.statusCode] == JUI.statusCode.error ) {
@@ -191,7 +189,7 @@
                                 $suggest.hide();
                                 var jsonStr = "";
                                 for (var i = 0; i < suggestFields.length; i++) {
-                                    if (_util.lookupField(suggestFields[i]) == event.target.name ) {
+                                    if (_util.lookupPk(suggestFields[i]) == event.target.name ) {
                                         break;
                                     }
                                     if (jsonStr ) {
@@ -264,7 +262,7 @@
                 $table.find("tr:first th[type]").each(function(i) {
                     var $th = $(this);
                     var field = {
-                        type: $th.attr("type") || "text", patternDate: $th.attr("dateFmt") || "yyyy-MM-dd", name: $th.attr("name") || "" ,
+                        type: $th.attr("type") || "text", patternDate: $th.attr("dateFmt") || "yyyy-MM-dd", name: $th.attr("name") || "" ,suffix: $th.attr("suffix")||"",
                         defaultVal: escapeHtml($th.attr("defaultVal") || ""), size: $th.attr("size") || "12", enumUrl: $th.attr("enumUrl") || "" ,
                         lookupGroup: $th.attr("lookupGroup") || "", lookupUrl: $th.attr("lookupUrl") || "", lookupPk: $th.attr("lookupPk") || "id" ,
                         suggestUrl: $th.attr("suggestUrl"), suggestFields: $th.attr("suggestFields"), postField: $th.attr("postField") || "" ,
@@ -372,13 +370,8 @@
                 });
             }
             function tdHtml(field) {
-                var html = "", suffix = "";
-                if (field.name.endsWith("[#index#]") ) {
-                    suffix = "[#index#]";
-                } else if (field.name.endsWith("[]") ) {
-                    suffix = "[]";
-                }
-                var suffixFrag = suffix ? ' suffix="' + suffix + '" ': '';
+                var html = "";
+                var suffixFrag = field.suffix ? ' suffix="' + field.suffix + '" ': '';
                 var attrFrag = '';
                 if (field.fieldAttrs ) {
                     var attrs = JUI.jsonEval(field.fieldAttrs);
@@ -393,11 +386,15 @@
                     case 'lookup':
                         var suggestFrag = '';
                         if (field.suggestFields ) {
-                            suggestFrag = 'autocomplete="off" lookupGroup="' + field.lookupGroup + '"' + suffixFrag + ' suggestUrl="' + field.suggestUrl + '" suggestFields="'
+                            suggestFrag = 'autocomplete="off" ' + field.lookupGroup + '"' + suffixFrag + ' lookupPk="' + field.lookupPk + '" suggestUrl="' + field.suggestUrl + '" suggestFields="'
                                     + field.suggestFields + '"' + ' postField="' + field.postField + '"';
                         }
-                        html =  '<input type="text" name="' + field.name + '"' + suggestFrag + ' lookupPk="' + field.lookupPk + '" size="' + field.size + '" class="' + field.fieldClass + '" ' + attrFrag + '/>'
-                            + '<a class="btnLook" href="' + field.lookupUrl + '" lookupGroup="' + field.lookupGroup + '" ' + suggestFrag + ' lookupPk="' + field.lookupPk + '" ' + attrFrag + '>'+field.title+'</a>';
+                        if (field.lookupPk) {
+                            var strDot = field.lookupGroup ? ".": "";
+                            html +=  '<input type="hidden" name="'+field.lookupGroup + strDot + field.lookupPk+'" ' + suffixFrag + ' value="' + field.defaultVal + '"/>';
+                        }
+                        html +=  '<input type="text" name="' + field.name + '"' + suggestFrag + suffixFrag + ' size="' + field.size + '" class="' + field.fieldClass + '" ' + attrFrag + '/>'
+                            + '<a class="btnLook" href="' + field.lookupUrl + '" lookupGroup="' + field.lookupGroup + '" ' + suffixFrag + ' lookupPk="' + field.lookupPk + '" ' + attrFrag + '>'+field.title+'</a>';
                         break;
                     case 'attach':
                         html =  '<input type="text" name="' + field.name + '" size="' + field.size + '" class="' + field.fieldClass + '" ' + attrFrag + '/>'

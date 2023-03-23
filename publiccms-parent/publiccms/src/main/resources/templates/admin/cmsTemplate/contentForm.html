@@ -59,14 +59,9 @@
 <#noparse>
 <#else>
 please <a href="${site.dynamicPath}login.html">login</a>
-</#if></#noparse>
-    <#else>
-<@t.message 'verify.custom.contribute'/>
-    </#if>
-</#assign>
+</#if></#noparse><#else><@t.message 'verify.custom.contribute'/></#if></#assign>
     </@cms.model>
 </@cms.category>
-<div class="pageFormContent" layoutH>
     <dl>
         <dt><@t.page 'category'/>:</dt>
         <dd>
@@ -85,9 +80,3 @@ please <a href="${site.dynamicPath}login.html">login</a>
             <textarea  class="code" mode="freemarkermixed"><@html_escape>${(formContent)!}</@html_escape></textarea>
         </dd>
     </dl>
-</div>
-<div class="formBar">
-    <ul>
-        <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
-    </ul>
-</div>

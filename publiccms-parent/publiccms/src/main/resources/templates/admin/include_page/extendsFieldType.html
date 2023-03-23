@@ -1,5 +1,6 @@
 <#assign maxlengthDisableTypes=["user","dept","content","category","categoryType","tag","tagType","vote","survey","date","datetime","file","privatefile","image","video","dictionary","keyvalue"]/>
 <#assign sizeEnableTypes=["image"]/>
+<#assign multipleEnableTypes=["text","number","dictionary","content","category","categoryType","user","dept","tag","tagType","vote","survey"]/>
 <#assign dictionaryTypes=["number","boolean","user","dept","content","category","dictionary","categoryType","tagType","tag","vote","survey"]/>
 <#macro extendsFieldType inputName value="" searchable=false>
 <#local inputTypes={"text":"input","number":"number","textarea":"textarea","file":"file","image":"image","video":"video","privatefile":"privatefile","privateimage":"privateimage","privatevideo":"privatevideo","editor":"ueditor","tinymce":"tinymce","ckeditor":"ckeditor","datetime":"datetime","date":"date","time":"time","boolean":"true_or_false","dictionary":"dictionary","keyvalue":"key-value","user":"user","dept":"dept","content":"content","category":"category","categoryType":"category_type","vote":"vote","survey":"survey","tagType":"tag_type","tag":"tag","color":"color","alphaColor":"alphaColor","template":"template_path","password":"password"}/>
@@ -13,10 +14,8 @@
 $(".combox_${flag}").on("change",function(){
     if($(this).val()=="dictionary") {
         $(this).closest("tr").find("input[name$=dictionaryName]").addClass("required").show().next().show();
-        $(this).closest("tr").find("input[name$=multiple]").show();
     }else{
         $(this).closest("tr").find("input[name$=dictionaryName]").removeClass("required").hide().next().hide();
-        $(this).closest("tr").find("input[name$=multiple]").hide();
     }
     if($(this).val()=="datetime"||$(this).val()=="date") {
         $(this).closest("tr").find("input[name$=defaultValue]").attr("title","<@t.page 'default_value'/>:now,thisSunday,thisMonday,lastMonday,lastSunday,nextMonday,nextSunday");
@@ -38,6 +37,11 @@ $(".combox_${flag}").on("change",function(){
     }else{
         $(this).closest("tr").find("input[name$=height]").hide();
         $(this).closest("tr").find("input[name$=width]").hide();
+    }
+    if(-1<$.inArray($(this).val(), [<#list multipleEnableTypes as t>"${t}"<#sep>,</#list>])){
+        $(this).closest("tr").find("input[name$=multiple]").show();
+    }else{
+        $(this).closest("tr").find("input[name$=multiple]").hide();
     }
 });
 </script>

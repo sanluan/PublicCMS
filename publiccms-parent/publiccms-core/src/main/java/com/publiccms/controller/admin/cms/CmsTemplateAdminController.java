@@ -98,6 +98,54 @@ public class CmsTemplateAdminController {
      * @param site
      * @param admin
      * @param path
+     * @param metadata
+     * @param content
+     * @param request
+     * @param model
+     * @return view name
+     */
+    @RequestMapping("saveMetaData")
+    @Csrf
+    public String saveMetadata(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path,
+            @ModelAttribute CmsPageMetadata metadata, String content, HttpServletRequest request, ModelMap model) {
+        if (CommonUtils.notEmpty(path)) {
+            if (path.endsWith(CommonConstants.SEPARATOR) || CommonUtils.empty(path)) {
+                path = CommonUtils.joinString(path, CommonConstants.getDefaultPage());
+            }
+
+            String filepath = siteComponent.getTemplateFilePath(site.getId(), path);
+            try {
+                CmsFileUtils.createFile(filepath, content);
+                if (CommonUtils.notEmpty(metadata.getExtendList())) {
+                    metadata.getExtendList().sort(Comparator.comparing(e -> e.getSort()));
+                    metadata.getExtendList().forEach(e -> {
+                        if (CommonUtils.empty(e.getName())) {
+                            e.setName(e.getId().getCode());
+                        }
+                    });
+                }
+                metadataComponent.updateTemplateMetadata(filepath, metadata);
+                templateComponent.clearTemplateCache();
+                cacheComponent.clearViewCache();
+                if (CommonUtils.notEmpty(metadata.getPublishPath())) {
+                    publish(site, path);
+                }
+                logOperateService
+                        .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                                "update.template.meta", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
+            } catch (IOException | TemplateException e) {
+                model.addAttribute(CommonConstants.ERROR, e.getMessage());
+                log.error(e.getMessage(), e);
+                return CommonConstants.TEMPLATE_ERROR;
+            }
+        }
+        return CommonConstants.TEMPLATE_DONE;
+    }
+
+    /**
+     * @param site
+     * @param admin
+     * @param path
      * @param content
      * @param request
      * @param model
@@ -144,6 +192,59 @@ public class CmsTemplateAdminController {
      * @param site
      * @param admin
      * @param path
+     * @param metadata
+     * @param content
+     * @param request
+     * @param model
+     * @return view name
+     */
+    @RequestMapping("savePlaceMetaData")
+    @Csrf
+    public String savePlaceMetaData(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path,
+            @ModelAttribute CmsPlaceMetadata metadata, String content, HttpServletRequest request, ModelMap model) {
+        if (CommonUtils.notEmpty(path)) {
+            String placePath = CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, path);
+            String filepath = siteComponent.getTemplateFilePath(site.getId(), placePath);
+            try {
+                CmsFileUtils.createFile(filepath, content);
+                if (CommonUtils.notEmpty(metadata.getExtendList())) {
+                    metadata.getExtendList().sort(Comparator.comparing(e -> e.getSort()));
+                    metadata.getExtendList().forEach(e -> {
+                        if (CommonUtils.empty(e.getName())) {
+                            e.setName(e.getId().getCode());
+                        }
+                    });
+                }
+                if (CommonUtils.notEmpty(metadata.getMetadataExtendList())) {
+                    metadata.getMetadataExtendList().sort(Comparator.comparing(e -> e.getSort()));
+                    metadata.getExtendList().forEach(e -> {
+                        if (CommonUtils.empty(e.getName())) {
+                            e.setName(e.getId().getCode());
+                        }
+                    });
+                }
+                metadataComponent.updatePlaceMetadata(filepath, metadata);
+                logOperateService
+                        .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                                "update.template.meta", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
+                templateComponent.clearTemplateCache();
+                if (site.isUseSsi() || CmsFileUtils.exists(siteComponent.getWebFilePath(site.getId(), placePath))) {
+                    CmsPageData data = metadataComponent.getTemplateData(filepath);
+                    templateComponent.staticPlace(site, path, metadata, data);
+                }
+            } catch (IOException | TemplateException e) {
+                model.addAttribute(CommonConstants.ERROR, e.getMessage());
+                log.error(e.getMessage(), e);
+                return CommonConstants.TEMPLATE_ERROR;
+            }
+        }
+        return CommonConstants.TEMPLATE_DONE;
+    }
+
+    /**
+     * @param site
+     * @param admin
+     * @param path
      * @param content
      * @param request
      * @param model
@@ -175,92 +276,6 @@ public class CmsTemplateAdminController {
                     CmsPageData data = metadataComponent.getTemplateData(filepath);
                     templateComponent.staticPlace(site, path, metadata, data);
                 }
-            } catch (IOException | TemplateException e) {
-                model.addAttribute(CommonConstants.ERROR, e.getMessage());
-                log.error(e.getMessage(), e);
-                return CommonConstants.TEMPLATE_ERROR;
-            }
-        }
-        return CommonConstants.TEMPLATE_DONE;
-    }
-
-    /**
-     * @param site
-     * @param admin
-     * @param path
-     * @param metadata
-     * @param content
-     * @param request
-     * @param model
-     * @return view name
-     */
-    @RequestMapping("savePlaceMetaData")
-    @Csrf
-    public String savePlaceMetaData(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path,
-            @ModelAttribute CmsPlaceMetadata metadata, String content, HttpServletRequest request, ModelMap model) {
-        if (CommonUtils.notEmpty(path)) {
-            String placePath = CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, path);
-            String filepath = siteComponent.getTemplateFilePath(site.getId(), placePath);
-            try {
-                CmsFileUtils.createFile(filepath, content);
-                if (CommonUtils.notEmpty(metadata.getExtendList())) {
-                    metadata.getExtendList().sort(Comparator.comparing(e -> e.getSort()));
-                }
-                if (CommonUtils.notEmpty(metadata.getMetadataExtendList())) {
-                    metadata.getMetadataExtendList().sort(Comparator.comparing(e -> e.getSort()));
-                }
-                metadataComponent.updatePlaceMetadata(filepath, metadata);
-                logOperateService
-                        .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                                "update.template.meta", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
-                templateComponent.clearTemplateCache();
-                if (site.isUseSsi() || CmsFileUtils.exists(siteComponent.getWebFilePath(site.getId(), placePath))) {
-                    CmsPageData data = metadataComponent.getTemplateData(filepath);
-                    templateComponent.staticPlace(site, path, metadata, data);
-                }
-            } catch (IOException | TemplateException e) {
-                model.addAttribute(CommonConstants.ERROR, e.getMessage());
-                log.error(e.getMessage(), e);
-                return CommonConstants.TEMPLATE_ERROR;
-            }
-        }
-        return CommonConstants.TEMPLATE_DONE;
-    }
-
-    /**
-     * @param site
-     * @param admin
-     * @param path
-     * @param metadata
-     * @param content
-     * @param request
-     * @param model
-     * @return view name
-     */
-    @RequestMapping("saveMetaData")
-    @Csrf
-    public String saveMetadata(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path,
-            @ModelAttribute CmsPageMetadata metadata, String content, HttpServletRequest request, ModelMap model) {
-        if (CommonUtils.notEmpty(path)) {
-            if (path.endsWith(CommonConstants.SEPARATOR) || CommonUtils.empty(path)) {
-                path = CommonUtils.joinString(path, CommonConstants.getDefaultPage());
-            }
-
-            String filepath = siteComponent.getTemplateFilePath(site.getId(), path);
-            try {
-                CmsFileUtils.createFile(filepath, content);
-                if (CommonUtils.notEmpty(metadata.getExtendList())) {
-                    metadata.getExtendList().sort(Comparator.comparing(e -> e.getSort()));
-                }
-                metadataComponent.updateTemplateMetadata(filepath, metadata);
-                templateComponent.clearTemplateCache();
-                cacheComponent.clearViewCache();
-                if (CommonUtils.notEmpty(metadata.getPublishPath())) {
-                    publish(site, path);
-                }
-                logOperateService
-                        .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                                "update.template.meta", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
             } catch (IOException | TemplateException e) {
                 model.addAttribute(CommonConstants.ERROR, e.getMessage());
                 log.error(e.getMessage(), e);

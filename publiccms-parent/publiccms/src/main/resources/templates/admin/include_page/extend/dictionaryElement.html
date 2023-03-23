@@ -17,7 +17,7 @@
 <#macro dictionaryElement dictionaryId inputName required childDepth multiple type value=''>
 <#if childDepth gt 0>
     <#if value?has_content>
-        <#local values=value?split(',')/>
+        <#assign values=value?split(',')/>
     </#if>
     <#if multiple>
         <div class="treeForm">
@@ -38,10 +38,10 @@
                 <option value><@t.page 'all'/></option>
             <#if 0=i || parentValue?has_content>
             <@cms.dictionaryDataList dictionaryId=dictionaryId parentValue=parentValue>
-                <#local parentValue=''/>
+                <#assign parentValue=''/>
                 <#list list as d>
                     <#if values?has_content&&values?seq_contains(d.id.value)>
-                        <#local parentValue=d.id.value/>
+                        <#assign parentValue=d.id.value/>
                         <option value="${d.id.value}" selected="true">${d.text}</option>
                     <#else>
                         <option value="${d.id.value}">${d.text}</option>
@@ -55,7 +55,7 @@
 <#else>
     <#if multiple>
         <#if value?has_content>
-            <#local values=value?split(',')/>
+            <#assign values=value?split(',')/>
         </#if>
         <#if 'customform'=type>
         <#noparse><@cms.dictionaryDataList dictionaryId="</#noparse>${dictionaryId}<#noparse>">

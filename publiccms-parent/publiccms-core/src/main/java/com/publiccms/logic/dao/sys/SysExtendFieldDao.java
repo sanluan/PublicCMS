@@ -21,7 +21,7 @@ public class SysExtendFieldDao extends BaseDao<SysExtendField> {
     /**
      * @param extendId
      * @param inputType
-     * @param searchable 
+     * @param searchable
      * @return results page
      */
     @SuppressWarnings("unchecked")
@@ -43,6 +43,9 @@ public class SysExtendFieldDao extends BaseDao<SysExtendField> {
 
     @Override
     protected SysExtendField init(SysExtendField entity) {
+        if (CommonUtils.empty(entity.getName())) {
+            entity.setName(entity.getId().getCode());
+        }
         return entity;
     }
 

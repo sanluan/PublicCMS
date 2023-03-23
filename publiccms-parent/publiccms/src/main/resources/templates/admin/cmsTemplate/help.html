@@ -275,7 +275,7 @@ onclick="JUI.instances[$('textarea.code',navTab.getCurrentPanel()).data('id')].r
                 <@cms.categoryList queryAll=true allowContribute=true pageSize=500>
                     <#list page.list as a>
                         <li>
-                            <a href="cmsCategory/contributeForm.html?categoryId=${a.id}" class="exclude-translate" target="dialog" mask="true">${(a.name)!}</a>
+                            <a href="cmsCategory/contributeForm.html?categoryId=${a.id}" class="exclude-translate" target="dialog" mask="true" width="1200" height="580">${(a.name)!}</a>
                         </li>
                     </#list>
                 </@cms.categoryList>

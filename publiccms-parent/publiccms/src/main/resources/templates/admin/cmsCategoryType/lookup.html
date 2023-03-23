@@ -3,7 +3,7 @@
 <@cms.categoryTypeList pageSize=500>
     <#list page.list as a>
         <li>
-            <a href="javascript:;" class="exclude-translate" onclick="$.bringBack({${field!'categoryTypeId'}:'${a.id}', '${nameField!'categoryTypeName'}':'${a.name}'});return false;">${a.name!}</a>
+            <a href="javascript:;" class="exclude-translate" onclick="$.bringBack({'${field!'categoryTypeId'}':'${a.id}', '${nameField!'categoryTypeName'}':'${a.name}'});return false;">${a.name!}</a>
         </li>
     <#else>
         <li><a><@t.page 'empty_directory'/></a></li>
@@ -13,7 +13,7 @@
 </div>
 <div class="formBar">
     <ul>
-        <li><a class="button" href="javascript:;" onclick="$.bringBack({${field!'categoryTypeId'}:'',${nameField!'categoryTypeName'}:''});return false;"><@t.page 'button.clear_select'/></a></li>
+        <li><a class="button" href="javascript:;" onclick="$.bringBack({'${field!'categoryTypeId'}':'','${nameField!'categoryTypeName'}':''});return false;"><@t.page 'button.clear_select'/></a></li>
         <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
     </ul>
 </div>
