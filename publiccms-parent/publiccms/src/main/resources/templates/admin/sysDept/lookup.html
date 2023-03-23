@@ -2,7 +2,7 @@
 <ul>
     <@sys.deptList parentId=parentId pageSize=500>
         <#list page.list as a>
-            <li _src="sysDept/lookup.html?parentId=${a.id}">
+            <li _src="sysDept/lookup.html?parentId=${a.id}&field=${(field?url)!'deptId'}&deptNameField=${(deptNameField?url)!'deptName'}">
                 <a href="javascript:;" class="exclude-translate" onclick="$.bringBack({parentId:'${a.id}',${field!'deptId'}:'${a.id}',deptName:'${a.name}',parentName:'${a.name}'});return false;">${a.name!}</a>
             </li>
         </#list>
@@ -13,7 +13,7 @@
     <ul class="tree treeFolder">
 <@sys.deptList pageSize=500>
     <#list page.list as a>
-        <li _src="sysDept/lookup.html?parentId=${a.id}">
+        <li _src="sysDept/lookup.html?parentId=${a.id}&field=${(field?url)!'deptId'}&deptNameField=${(deptNameField?url)!'deptName'}">
             <a href="javascript:;" class="exclude-translate" onclick="$.bringBack({parentId:'${a.id}',${field!'deptId'}:'${a.id}',deptName:'${a.name}',parentName:'${a.name}'});return false;">${a.name!}</a>
         </li>
     </#list>
