@@ -10,6 +10,7 @@ import java.util.UUID;
 
 import javax.annotation.Resource;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,6 +38,9 @@ import com.publiccms.views.pojo.query.CmsCategoryQuery;
 @Service
 @Transactional
 public class CmsCategoryService extends BaseService<CmsCategory> {
+
+    private String[] ignoreCopyProperties = new String[] { "id", "childIds", "extendId", "code", "name", "sort" };
+
     @Resource
     private CmsTagTypeService tagTypeService;
     @Resource
@@ -63,7 +67,7 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
 
     /**
      * @param siteId
-     * @param sitePath 
+     * @param sitePath
      * @param id
      * @param userId
      * @param attribute
@@ -109,6 +113,27 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
 
             saveEditorHistory(attributeService.getEntity(entity.getId()), siteId, entity.getId(), userId, categoryType, map);// 保存编辑器字段历史记录
             attributeService.updateAttribute(id, attribute);
+        }
+    }
+
+    public void copy(short siteId, CmsCategory entity, CmsCategory copy) {
+        BeanUtils.copyProperties(copy, entity, ignoreCopyProperties);
+        save(entity);
+        categoryModelService.copy(siteId, entity.getId(), copy.getId());
+
+        CmsCategoryAttribute copyAttribute = attributeService.getEntity(copy.getId());
+        CmsCategoryAttribute attribute = new CmsCategoryAttribute();
+        attribute.setCategoryId(entity.getId());
+        if (null != copyAttribute) {
+            attribute.setData(copyAttribute.getData());
+        }
+        attributeService.save(attribute);
+
+        if (CommonUtils.notEmpty(copy.getExtendId())) {
+            SysExtend extend = new SysExtend("category", entity.getId());
+            extendService.save(extend);
+            entity.setExtendId(extend.getId());
+            extendFieldService.copy(extend.getId(), copy.getExtendId());
         }
     }
 

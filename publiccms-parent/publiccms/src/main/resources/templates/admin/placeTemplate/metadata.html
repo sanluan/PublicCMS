@@ -112,17 +112,17 @@
             <fieldset class="placeExtend">
                 <legend><@t.page 'place_data.extend_field'/></legend>
                 <span class="info"><#noparse>&lt;#assign attribute=getPlaceAttribute(a.id)&gt;</#noparse></span>
+                <span class="info"><@t.page 'extend_field.use.place'/>;<@t.page 'extend_field.use.content'/>;<@t.page 'metadata.default_value_description'/></span>
                 <#include '../include_page/extends.html'/>
                 <#assign extendList=(a.extendList)![]/>
                 <@extends 'extendList' extendList/>
-                <span class="info"><@t.page 'extend_field.use.place'/>;<@t.page 'extend_field.use.content'/>;<@t.page 'metadata.default_value_description'/></span>
+                <span class="info"><@t.page 'extend_field.name.description'/></span>
             </fieldset>
             <fieldset>
                 <legend><@t.page 'metadata.extend_field'/></legend>
-                <#include '../include_page/extends.html'/>
+                <span class="info"><@t.page 'extend_field.use.metadata'/>;<@t.page 'extend_field.use.content'/>;<@t.page 'metadata.default_value_description'/></span>
                 <#assign metadataExtendList=(a.metadataExtendList)![]/>
                 <@extends 'metadataExtendList' metadataExtendList/>
-                <span class="info"><@t.page 'extend_field.use.metadata'/>;<@t.page 'extend_field.use.content'/>;<@t.page 'metadata.default_value_description'/></span>
             </fieldset>
     <script>
     $('input[name=allowContribute]',navTab.getCurrentPanel()).click(function(){

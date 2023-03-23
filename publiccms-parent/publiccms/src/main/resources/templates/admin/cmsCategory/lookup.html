@@ -18,7 +18,7 @@
         <@cms.categoryList advanced=true parentId=parentId pageSize=500>
         <#list page.list as a>
             <li<#if a.childIds?has_content> _src="cmsCategory/lookup.html?currentCategoryId=${currentCategoryId!}&parentId=${a.id}&field=${(field?url)!'categoryId'}&nameField=${(nameField?url)!'categoryName'}"</#if>>
-                <a href="javascript:;"<#if !(currentCategoryId?has_content) || !(a.id?string=currentCategoryId)> class="exclude-translate" onclick="$.bringBack({'${field!'categoryId'}':'${a.id}', '${nameField?url!'categoryName'}':'${a.name}'});return false;"<#else>class="exclude-translate disable"</#if>>${a.name!}</a>
+                <a href="javascript:;"<#if !(currentCategoryId?has_content) || !(a.id?string=currentCategoryId)> class="exclude-translate" onclick="$.bringBack({'${field!'categoryId'}':'${a.id}', '${nameField!'categoryName'}':'${a.name}'});return false;"<#else>class="exclude-translate disable"</#if>>${a.name!}</a>
             </li>
         </#list>
     </@cms.categoryList>

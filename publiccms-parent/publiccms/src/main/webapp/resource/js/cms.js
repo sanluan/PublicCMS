@@ -140,6 +140,24 @@ function commandParameter(command,parametersName){
         }
     }
 }
+function bringBackBatchValue(keys){
+    var value =$("textarea[name=batchValue]",$.pdialog.getCurrent()).val();
+    if(value){
+        var list=[];
+        var values = value.split("\n");
+        $.each(values,function(m,v){
+            var vs = v.split(",");
+            var obj={};
+            $.each(keys,function(n,k){
+                if(n < vs.length){
+                    obj[k]=vs[n].trim();
+                }
+            });
+            list.push(obj);
+        });
+        $.batchBringBack(list);
+    }
+}
 var diyMenuTimer,diyButtonTimer,diyTimer;
 window.addEventListener("message", function(event) {
     var op = event.data;

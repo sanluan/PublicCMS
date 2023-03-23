@@ -1,0 +1,38 @@
+<@cms.category id=id><#assign a=object/></@cms.category>
+<form method="post" autocomplete="off" action="cmsCategory/batchSave?callbackType=closeCurrent&navTabId=cmsCategory/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+    <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
+    <input name="id" type="hidden" value="${id!}"/>
+    <div class="formBar card">
+        <ul>
+            <li><button type="submit" class="buttonActive" title="ctrl+s"><@t.page 'button.save'/></button></li>
+            <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+        </ul>
+    </div>
+    <div class="card">
+        <div class="pageFormContent" layoutH>
+        <#if a?has_content>
+            <dl class="nowrap">
+                <dt><@t.page 'name'/>:</dt>
+                <dd>
+                    ${a.name!}
+                </dd>
+            </dl>
+            <fieldset>
+                <legend><@t.page 'button.copy'/></legend>
+                <table class="list nowrap itemDetail" addButton="<@t.page 'button.new_line'/>" batchButton="<@t.page 'button.batch_create'/>" batchUrl="cmsCategory/batchCreate.html" width="100%">
+                    <thead>
+                        <tr>
+                            <th type="text" name="categoryList[#index#].code" size="50" fieldClass="required" fieldAttrs="{'maxlength':'50','batchGroup':'categoryList[#index#]','remote':'cmsCategory/virify','data-msg-remote':'<@t.message 'verify.hasExist.code'/>'}" lookupPk="code"><@t.page 'category.code'/></th>
+                            <th type="text" name="categoryList[#index#].name" size="50" fieldAttrs="{'maxlength':'50'}"><@t.page 'name'/></th>
+                            <th type="text" name="categoryList[#index#].sort" fieldClass="required digits" defaultval="#index#" size="5"><@t.page 'sort'/></th>
+                            <th type="del" width="100"><@t.page 'operate'/></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <span class="info"><@t.page 'extend_field.name.description'/></span>
+            </fieldset>
+        </#if>
+        </div>
+    </div>
+</form>

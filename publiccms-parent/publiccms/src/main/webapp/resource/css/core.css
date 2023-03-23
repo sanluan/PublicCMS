@@ -172,7 +172,6 @@ table.list th.order,table.list th.asc,table.list th.desc{cursor:pointer;position
 table.list th.asc:before,table.list th.desc:before,table.list th.order:before{font-size:16px;position:absolute;right:3px;top:50%;margin-top:-13px;}
 table.list .right{text-align:right;}
 table.list .center{text-align:center;}
-table.list a:hover{text-decoration:underline;}
 table.list td span.error{z-index:-1;}
 table.nowrap tbody tr{border-bottom-width:1px;border-bottom-style:solid;}
 table.itemDetail{caption-side:bottom;}
@@ -219,7 +218,7 @@ span.error{display:block;overflow:hidden;width:165px;height:24px;padding:0 3px;l
 .button,.buttonActive,.buttonDisabled{display:inline-block;height:28px;padding:0 8px;border-width:1px;border-style:solid;border-radius:2px;cursor:pointer;text-align:center;line-height:28px;white-space:nowrap;font-size:14px;letter-spacing:.03em;position:relative;overflow:hidden;}
 button.buttonActive{border-width:1px;border-style:solid;font-weight:400;}
 a.button,button.button{border-width:1px;border-style:solid;-moz-box-shadow:0px 0px 5px 1px #DDE4EF;box-shadow:0px 0px 5px 1px #DDE4EF;-ms-box-shadow:0px 0px 5px 1px #DDE4EF;-o-box-shadow:0px 0px 5px 1px #DDE4EF;-webkit-box-shadow:0px 0px 5px 1px #DDE4EF;}
-.button:hover{text-decoration:none;}
+a.button:hover{text-decoration:none;}
 .buttonActive{font-weight:bold;}
 .button i,.buttonActive i,.buttonDisabled i{margin-right:5px;}
 

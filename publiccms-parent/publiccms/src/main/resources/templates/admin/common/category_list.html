@@ -1,9 +1,9 @@
-<@cms.categoryList advanced=true parentId=categoryId allowContribute=allowContribute pageIndex=pageNum pageSize=numPerPage>
-<@sys.authorized roleIds=admin.roles urls='cmsCategory/add,cmsCategory/delete,cmsCategory/publish,cmsCategory/rebuildChildIds,cmsCategory/batchPublish,cmsCategory/export,cmsCategory/import,cmsCategory/contributeForm,cmsCategory/static,cmsCategory/moveParameters,cmsCategory/changeTypeParameters,cmsCategory/publishParameters,cmsPlace/push'><#assign authorizedMap=map/></@sys.authorized>
+<@cms.categoryList advanced=true parentId=parentId allowContribute=allowContribute pageIndex=pageNum pageSize=numPerPage>
+<@sys.authorized roleIds=admin.roles urls='cmsCategory/add,cmsCategory/delete,cmsCategory/publish,cmsCategory/rebuildChildIds,cmsCategory/batchPublish,cmsCategory/batchSeo,cmsCategory/batchCopy,cmsCategory/export,cmsCategory/import,cmsCategory/contributeForm,cmsCategory/static,cmsCategory/moveParameters,cmsCategory/changeTypeParameters,cmsCategory/publishParameters,cmsPlace/push'><#assign authorizedMap=map/></@sys.authorized>
 <div class="pageHeader card">
     <form autocomplete="off" class="pagerForm" action="common/category_list.html" onsubmit="return divSearch(this,'categoryBox');" method="post">
         <#include "../include_page/parameters.html"/>
-        <input name="categoryId" type="hidden" value="${categoryId!}"/>
+        <input name="parentId" type="hidden" value="${parentId!}"/>
         <div class="searchBar">
             <ul class="searchContent">
                 <li>
@@ -34,14 +34,14 @@
         <ul class="toolBar">
 <#if authorizedMap['cmsCategory/add']>
             <li>
-                <a href="cmsCategory/add.html?parentId=${categoryId!}" class="addMore" target="navTab" rel="cmsCategory/add"><i class="icon-plus icon-large"></i><@t.page 'category.add'/></a>
+                <a href="cmsCategory/add.html?parentId=${parentId!}" class="addMore" target="navTab" rel="cmsCategory/add"><i class="icon-plus icon-large"></i><#if parentId?has_content><@t.page 'category.add_child'/><#else><@t.page 'category.add'/></#if></a>
                 <ul>
     <@cms.categoryTypeList pageSize=10>
         <#list page.list as a>
-            <li><a href="cmsCategory/add.html?parentId=${categoryId!}&typeId=${a.id}" target="navTab" rel="cmsCategory/add"><i class="icon-plus icon-large"></i><@t.page 'button.add_some_things' a.name/></a></li>
+            <li><a href="cmsCategory/add.html?parentId=${parentId!}&typeId=${a.id}" target="navTab" rel="cmsCategory/add"><i class="icon-plus icon-large"></i><@t.page 'button.add_some_things' a.name/></a></li>
         </#list>
         <#if page.totalCount gt 10>
-            <li><a href="cmsCategory/addMore.html?parentId=${categoryId!}" target="dialog" mask="true"><i class="icon-plus icon-large"></i><@t.page 'category.add_more'/></a></li>
+            <li><a href="cmsCategory/addMore.html?parentId=${parentId!}" target="dialog" mask="true"><i class="icon-plus icon-large"></i><@t.page 'category.add_more'/></a></li>
         </#if>
     </@cms.categoryTypeList>
                 </ul>
@@ -65,6 +65,9 @@
             <li class="line">line</li>
             <li><a href="cmsCategory/rebuildChildIds?_csrf=<@tools.csrfToken admin=true/>&ref=page" title="<@t.page 'confirm.do'/>" target="ajaxTodo"><i class="icon-refresh icon-large"></i><@t.page 'button.rebuild_childs'/></a></li>
         </#if>
+        <#if authorizedMap['cmsCategory/batchSeo']>
+            <li><a href="cmsCategory/batchSeo.html" target="navTab" rel="cmsCategory/batchSeo"><i class="bi bi-search-heart"></i><@t.page 'button.batch_seo'/></a></li>
+        </#if>
         <#if authorizedMap['cmsCategory/import']>
             <li><a href="cmsCategory/import.html" target="dialog" mask="true" width="500" height="250"><i class="icon-upload-alt icon-large"></i><@t.page 'import'/></a></li>
         </#if>
@@ -75,15 +78,15 @@
             <tr>
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
                 <th width="30"><@t.page 'id'/></th>
-                <th><@t.page 'name'/></th>
                 <th><@t.page 'code'/></th>
+                <th width="130"><@t.page 'name'/></th>
                 <th><@t.page 'category_type'/></th>
                 <th><@t.page 'category.parent'/></th>
                 <th><@t.page 'category.page_size'/></th>
                 <th><@t.page 'contribute'/></th>
                 <th><@t.page 'display'/></th>
                 <th><@t.page 'sort'/></th>
-                <th><@t.page 'operate'/></th>
+                <th width="250"><@t.page 'operate'/></th>
             </tr>
         </thead>
         <tbody>
@@ -106,6 +109,13 @@
                 <td><input name="ids" value="${a.id}" type="checkbox"></td>
                 <td>${a.id!}</td>
                 <td>
+                    <span class="exclude-translate">${a.code!}</span>
+                    <#if a.childIds?has_content>
+                        <br/>
+                        <a href="common/category_list.html?parentId=${a.id}" target="ajax" rel="categoryBox"><@t.page 'category.child_management'/></a>
+                    </#if>
+                </td>
+                <td>
                     <#if lockMap?has_content && lockMap[a.id?string]?has_content>
                         <#assign lockUser=(userMap[lockMap[a.id?string].userId?string].nickname)!''/>
                         <i class="icon-lock icon-large" title="<@t.page 'lock.message' lockUser/> ${lockMap[a.id?string].createDate}"></i>
@@ -114,8 +124,13 @@
                     <a href="${a.url!}" target="_blank"><i class="icon-external-link"></i></a>
                     ${(a.onlyUrl?then('['+t.pageMessage('url')+']',''))!}
                 </td>
-                <td class="exclude-translate">${a.code!}</td>
-                <td class="exclude-translate">${(typeMap[a.typeId?string].name)!}</td>
+                <td>
+                    <span class="exclude-translate">${(typeMap[a.typeId?string].name)!}</span>
+                    <#if authorizedMap['cmsCategory/changeTypeParameters']>
+                        <#if a.typeId?has_content><br/></#if>
+                        <a href="cmsCategory/changeTypeParameters.html?id=${a.id}" class="btnText blue" target="dialog" mask="true"><@t.page 'category.change_type'/></a>
+                    </#if>
+                </td>
                 <td class="exclude-translate">${(parentMap[a.parentId?string].name)!}</td>
                 <td><#if !a.onlyUrl>${a.pageSize!}${(a.containChild?then('['+t.pageMessage('category.contain_child')+']',''))!}</#if></td>
                 <td>
@@ -132,20 +147,19 @@
                 <td class="wrap">
                 <#if authorizedMap['cmsCategory/add']>
                     <a href="cmsCategory/add.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="cmsCategory/edit"><i class="icon-edit"></i><@t.page 'category.edit'/></a>
-                    <a href="cmsCategory/addMore.html?parentId=${a.id}" class="btnText blue" target="dialog" mask="true"><i class="icon-plus"></i><@t.page 'category.add_child'/></a>
                     <a href="cmsCategory/add.html?copyId=${a.id}" class="btnText blue" target="navTab" rel="cmsCategory/add" title="<@t.page 'category.add'/>"><i class="icon-copy"></i><@t.page 'button.copy'/></a>
                 </#if>
-                <#if authorizedMap['cmsCategory/changeTypeParameters']>
-                    <a href="cmsCategory/changeTypeParameters.html?id=${a.id}" class="btnText blue" target="dialog" mask="true"><@t.page 'category.change_type'/></a>
+                <#if authorizedMap['cmsCategory/publishParameters']&&site.useStatic&&!a.onlyUrl>
+                    <a href="cmsCategory/publishParameters.html?id=${a.id}&pageSize=${a.pageSize}&containChild=${a.containChild?then('true','false')}" class="btnText blue" target="dialog" width="450" height="180" mask="true"><@t.page 'button.publish'/></a>
+                </#if>
+                <#if authorizedMap['cmsCategory/batchCopy']>
+                    <a href="cmsCategory/batchCopy.html?id=${a.id}" class="btnText blue" target="navTab" rel="cmsCategory/batchCopy"><i class="bi bi-files"></i><@t.page 'button.batch_copy'/></a>
                 </#if>
                 <#if authorizedMap['cmsCategory/export']>
                     <a href="cmsCategory/export?id=${a.id}&_csrf=<@tools.csrfToken admin=true/>" class="btnText" target="_blank"><i class="icon-download-alt icon-large"></i><@t.page 'button.export'/></a>
                 </#if>
                 <#if authorizedMap['cmsPlace/push']>
                     <a href="cmsPlace/push.html?itemType=category&itemId=${a.id}" class="btnText blue" target="dialog" mask="true"><@t.page 'button.push'/></a>
-                </#if>
-                <#if authorizedMap['cmsCategory/publishParameters']&&site.useStatic&&!a.onlyUrl>
-                    <a href="cmsCategory/publishParameters.html?id=${a.id}&pageSize=${a.pageSize}&containChild=${a.containChild?then('true','false')}" class="btnText blue" target="dialog" width="450" height="180" mask="true"><@t.page 'button.publish'/></a>
                 </#if>
                 </td>
             </tr>
