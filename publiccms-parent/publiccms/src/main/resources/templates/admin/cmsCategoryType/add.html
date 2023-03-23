@@ -64,6 +64,7 @@
                 </fieldset>
                 <fieldset>
                     <legend><@t.page 'category.extend_field'/></legend>
+                    <span class="info"><@t.page 'extend_field.use.category'/>;<#noparse>&lt;#assign attribute=getCategoryAttribute(category.id)&gt;</#noparse></span>
                     <#include "../include_page/extends.html"/>
                     <#assign categoryExtendList=[]/>
                     <#if a?has_content>
@@ -71,7 +72,6 @@
                         <#if copyId?has_content && !id?has_content><#assign copy=true/></#if>
                     </#if>
                     <@extends 'extendList' categoryExtendList false copy/>
-                    <span class="info"><@t.page 'extend_field.use.category'/>;<#noparse>&lt;#assign attribute=getCategoryAttribute(category.id)&gt;</#noparse></span>
                     <span class="info"><@t.page 'extend_field.invalid'/>:title,keywords,description;<@t.page 'metadata.default_value_description'/></span>
                 </fieldset>
             </div>
