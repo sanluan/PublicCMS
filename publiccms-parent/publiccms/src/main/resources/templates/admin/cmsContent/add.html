@@ -315,7 +315,7 @@ $('input[name=copied]',navTab.getCurrentPanel()).click(function(){
 $('input[name=copied]',navTab.getCurrentPanel()).click();
     </#if>
 </#if>
-<#if a?has_content && 1=a.status>
+<#if a?has_content && 1=a.status || !a?has_content>
 $('input[name=checked]',navTab.getCurrentPanel()).click();
 </#if>
 </script>
