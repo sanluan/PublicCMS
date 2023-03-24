@@ -32,6 +32,7 @@ import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
+import com.publiccms.logic.service.tools.HqlService;
 
 /**
  *
@@ -42,6 +43,8 @@ import com.publiccms.logic.service.log.LogOperateService;
 @RequestMapping("dict")
 public class DictAdminController {
     protected final Log log = LogFactory.getLog(getClass());
+    @Resource
+    private HqlService hqlService;
     @Resource
     protected SiteComponent siteComponent;
     @Resource
@@ -83,6 +86,7 @@ public class DictAdminController {
             }
             AnalyzerDictUtils.generate(dictDir, wordMap, skipWordList);
             DictionaryReloader.reload(dictDir);
+            hqlService.reCreateIndex();
         } catch (IOException | ClassNotFoundException e1) {
         }
         try {
