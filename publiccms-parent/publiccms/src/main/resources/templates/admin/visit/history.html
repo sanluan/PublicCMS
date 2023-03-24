@@ -1,7 +1,7 @@
 <#if !startCreateDate??>
     <#assign startCreateDate=(.now?long-7*24*3600*1000)?number_to_date/>
 </#if>
-<@visit.historyList sessionId=sessionId ip=ip url=url startCreateDate=startCreateDate endCreateDate=endCreateDate
+<@visit.historyList sessionId=sessionId ip=ip url=url userId=userId startCreateDate=startCreateDate endCreateDate=endCreateDate
             orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader card">
     <form class="pagerForm" action="visit/history.html" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
@@ -9,24 +9,28 @@
         <div class="searchBar">
             <ul class="searchContent">
                 <li>
-                    <label><@t.page 'visit.session'/>:</label>
-                    <input type="text" name="sessionId" value="${sessionId!}" size="20"/>
-                </li>
-                <li>
-                    <label><@t.page 'url'/>:</label>
-                    <input type="text" name="url" value="${url!}" size="30"/>
-                </li>
-                <li>
-                    <label><@t.page 'visit.ip'/>:</label>
-                    <input type="text" name="ip" value="${ip!}" size="20"/>
-                </li>
-                <li>
                     <label><@t.page 'visit.visit_date'/>:</label>
                     <input type="text" name="startCreateDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startCreateDate!}"/>
                     <a class="inputDateButton" href="javascript:void(0);"></a>
                     <span>-</span>
                     <input type="text" name="endCreateDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endCreateDate!}"/>
                     <a class="inputDateButton" href="javascript:void(0);"></a>
+                </li>
+                <li>
+                    <label><@t.page 'visit.ip'/>:</label>
+                    <input type="text" name="ip" value="${ip!}" size="20"/>
+                </li>
+                <li>
+                    <label><@t.page 'user'/>:</label>
+                    <#include "../include_page/userId.html"/>
+                </li>
+                <li>
+                    <label><@t.page 'url'/>:</label>
+                    <input type="text" name="url" value="${url!}" size="30"/>
+                </li>
+                <li>
+                    <label><@t.page 'visit.session'/>:</label>
+                    <input type="text" name="sessionId" value="${sessionId!}" size="20"/>
                 </li>
             </ul>
             <div class="subBar">
@@ -55,11 +59,16 @@
                 <th width="180"><@t.page 'title'/>/<@t.page 'url'/></th>
                 <th width="100"><@t.page 'visit.screen'/></th>
                 <th width="50"><@t.page 'visit.item'/></th>
+                <th width="70"><@t.page 'user'/></th>
                 <th width="70"><@t.page 'visit.ip'/></th>
                 <th width="50" orderField="createDate"><@t.page 'visit.visit_date'/></th>
             </tr>
         </thead>
         <tbody>
+            <#list page.list as a>
+                <@t.merge 'userIds' a.userId!/>
+            </#list>
+            <@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
             <#list page.list as a>
             <tr>
                 <td>${a.id!}</td>
@@ -83,7 +92,16 @@
                     </div>
                 </td>
                 <td>
-                    ${a.itemType!}${a.itemId?has_content?then(':','')}${a.itemId!}
+                    <div class="box">
+                        <p>${a.itemType!}</p>
+                        <p>${a.itemId!}</p>
+                    </div>
+                </td>
+                <td>
+                    <div class="box">
+                        <p>${a.userId!}</p>
+                        <#if a.userId?has_content><p class="exclude-translate">${(userMap[a.userId?string].nickname)!}</p></#if>
+                    </div>
                 </td>
                 <td>
                     <div class="box">

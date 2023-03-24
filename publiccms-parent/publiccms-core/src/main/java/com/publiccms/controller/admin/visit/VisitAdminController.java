@@ -36,6 +36,7 @@ public class VisitAdminController {
      * @param sessionId
      * @param ip
      * @param url
+     * @param userId 
      * @param startCreateDate
      * @param endCreateDate
      * @param orderType
@@ -44,11 +45,12 @@ public class VisitAdminController {
      */
     @RequestMapping("exportHistory")
     @Csrf
-    public ExcelView exportHistory(@RequestAttribute SysSite site, String sessionId, String ip, String url,
+    public ExcelView exportHistory(@RequestAttribute SysSite site, String sessionId, String ip, String url, Long userId,
             @DateTimeFormat(pattern = "yyyy-MM-dd") Date startCreateDate,
             @DateTimeFormat(pattern = "yyyy-MM-dd") Date endCreateDate, String orderType, HttpServletRequest request) {
         Locale locale = RequestContextUtils.getLocale(request);
-        return exchangeComponent.exportHistory(site, sessionId, ip, url, startCreateDate, endCreateDate, orderType, locale);
+        return exchangeComponent.exportHistory(site, sessionId, ip, url, userId, startCreateDate, endCreateDate, orderType,
+                locale);
     }
 
     /**
@@ -75,7 +77,6 @@ public class VisitAdminController {
      * @param ip
      * @param startVisitDate
      * @param endVisitDate
-     * @param orderField
      * @param orderType
      * @param request
      * @return view name
@@ -84,10 +85,9 @@ public class VisitAdminController {
     @Csrf
     public ExcelView exportSession(@RequestAttribute SysSite site, String sessionId, String ip,
             @DateTimeFormat(pattern = "yyyy-MM-dd") Date startVisitDate,
-            @DateTimeFormat(pattern = "yyyy-MM-dd") Date endVisitDate, String orderField, String orderType,
-            HttpServletRequest request) {
+            @DateTimeFormat(pattern = "yyyy-MM-dd") Date endVisitDate, String orderType, HttpServletRequest request) {
         Locale locale = RequestContextUtils.getLocale(request);
-        return exchangeComponent.exportSession(site, sessionId, ip, startVisitDate, endVisitDate, orderField, orderType, locale);
+        return exchangeComponent.exportSession(site, sessionId, ip, startVisitDate, endVisitDate, orderType, locale);
     }
 
     /**

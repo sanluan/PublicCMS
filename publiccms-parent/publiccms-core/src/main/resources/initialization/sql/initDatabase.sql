@@ -2127,6 +2127,7 @@ CREATE TABLE `visit_history` (
   `session_id` varchar(50) NOT NULL COMMENT '会话',
   `visit_date` date NOT NULL COMMENT '访问日期',
   `visit_hour` tinyint(4) NOT NULL COMMENT '访问小时',
+  `user_id` bigint(20) DEFAULT NULL COMMENT '用户',
   `ip` varchar(130) NOT NULL COMMENT 'IP',
   `user_agent` varchar(500) DEFAULT NULL COMMENT 'User Agent',
   `url` varchar(2048) NOT NULL COMMENT '访问路径',
@@ -2138,9 +2139,10 @@ CREATE TABLE `visit_history` (
   `item_id` varchar(50) DEFAULT NULL COMMENT '项目',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   PRIMARY KEY (`id`),
-  KEY `visit_history_create_date` (`create_date`, `site_id`, `session_id`, `visit_date`, `ip`),
+  KEY `visit_history_create_date` (`site_id`, `create_date`, `session_id`, `ip`),
+  KEY `visit_history_user_id` (`site_id`, `create_date`, `user_id`),
   KEY `visit_history_visit_date` (`site_id`, `visit_date`, `visit_hour`),
-  KEY `visit_history_session_id` (`site_id`, `session_id`, `visit_date`, `create_date`)
+  KEY `visit_history_item_type` (`site_id`, `visit_date`, `item_type`)
 ) COMMENT='访问日志';
 
 -- ----------------------------
