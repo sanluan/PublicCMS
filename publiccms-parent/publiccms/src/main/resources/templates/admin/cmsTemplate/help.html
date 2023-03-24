@@ -16,27 +16,69 @@
 <#elseif privateUrlExtendFieldTypes?seq_contains(extend.inputType)>
 <@getAction r'${getPrivateUrl('+prefix+extend.id.code+r')!}'/>
 <#elseif 'category'=extend.inputType>
+    <#if extend.multiple>
+<@getAction r'<@cms.category ids='+prefix+extend.id.code+r'><#list map as k,v><a href="${v.url}">${v.name}</a><#sep>,</#list></@cms.category>'/>
+    <#else>
 <@getAction r'<@cms.category id='+prefix+extend.id.code+r'><a href="${object.url}">${object.name}</a></@cms.category>'/>
+    </#if>
 <#elseif 'content'=extend.inputType>
+    <#if extend.multiple>
+<@getAction r'<@cms.content ids='+prefix+extend.id.code+r'><#list map as k,v><a href="${v.url}">${v.title}</a><#sep>,</#list></@cms.content>'/>
+    <#else>
 <@getAction r'<@cms.content id='+prefix+extend.id.code+r'><a href="${object.url}">${object.title}</a></@cms.content>'/>
+    </#if>
 <#elseif 'user'=extend.inputType>
+    <#if extend.multiple>
+<@getAction r'<@sys.user ids='+prefix+extend.id.code+r'><#list map as k,v><a href="${v.url}">${v.nickname}</a><#sep>,</#list></@sys.user>'/>
+    <#else>
 <@getAction r'<@sys.user id='+prefix+extend.id.code+r'>${object.nickname}</@sys.user>'/>
+    </#if>
 <#elseif 'tag'=extend.inputType>
+    <#if extend.multiple>
+<@getAction r'<@cms.tag ids='+prefix+extend.id.code+r'><#list map as k,v><a href="${v.url}">${v.name}</a><#sep>,</#list></@cms.tag>'/>
+    <#else>
 <@getAction r'<@cms.tag id='+prefix+extend.id.code+r'>${object.name}</@cms.tag>'/>
+    </#if>
 <#elseif 'color'=extend.inputType>
 <@getAction r'<span style="color:${('+prefix+extend.id.code+r')!}">text</span>'/>
 <#elseif 'survey'=extend.inputType>
+    <#if extend.multiple>
+<@getAction r'<@cms.survey ids='+prefix+extend.id.code+r'><#list map as k,v><a href="${v.url}">${v.title}</a><#sep>,</#list></@cms.survey>'/>
+    <#else>
 <@getAction r'<@cms.survey id='+prefix+extend.id.code+r'>${object.title}</@cms.survey>'/>
+    </#if>
 <#elseif 'vote'=extend.inputType>
+    <#if extend.multiple>
+<@getAction r'<@cms.vote ids='+prefix+extend.id.code+r'><#list map as k,v><a href="${v.url}">${v.title}</a><#sep>,</#list></@cms.vote>'/>
+    <#else>
 <@getAction r'<@cms.vote id='+prefix+extend.id.code+r'>${object.title}</@cms.vote>'/>
+    </#if>
 <#elseif 'tagType'=extend.inputType>
+    <#if extend.multiple>
+<@getAction r'<@cms.tagType ids='+prefix+extend.id.code+r'><#list map as k,v><a href="${v.url}">${v.name}</a><#sep>,</#list></@cms.tagType>'/>
+    <#else>
 <@getAction r'<@cms.tagType id='+prefix+extend.id.code+r'>${object.name}</@cms.tagType>'/>
+    </#if>
 <#elseif 'categoryType'=extend.inputType>
+    <#if extend.multiple>
+<@getAction r'<@cms.categoryType ids='+prefix+extend.id.code+r'><#list map as k,v><a href="${v.url}">${v.name}</a><#sep>,</#list></@cms.categoryType>'/>
+    <#else>
 <@getAction r'<@cms.categoryType id='+prefix+extend.id.code+r'>${object.name}</@cms.categoryType>'/>
+    </#if>
 <#elseif 'dictionary'=extend.inputType>
+    <#if extend.multiple>
 <@getAction r'<@cms.dictionaryData dictionaryId='+extend.dictionaryId+r' values='+prefix+extend.id.code+r'>'+'\n    '+r'<#list map as k,d>${k}:${d.text}<#sep>,</#list>'+'\n    '+r'</@cms.dictionaryData>'/>
+    <#else>
+<@getAction r'<@cms.dictionaryData dictionaryId='+extend.dictionaryId+r' value='+prefix+extend.id.code+r'>'+'\n    '+r'${object.id.value}:${object.text}'+'\n    '+r'</@cms.dictionaryData>'/>
+    </#if>
 <#elseif 'dept'=extend.inputType>
+    <#if extend.multiple>
+<@getAction r'<@sys.dept ids='+prefix+extend.id.code+r'><#list map as k,v><a href="${v.url}">${v.name}</a><#sep>,</#list></@sys.dept>'/>
+    <#else>
 <@getAction r'<@sys.dept id='+prefix+extend.id.code+r'>${object.name}</@sys.dept>'/>
+    </#if>
+<#elseif 'keyvalue'=extend.inputType>
+<@getAction r'<table border="1"><thead><tr><th><@t.page 'key'/></th><th><@t.page 'value'/></th></tr></thead><tbody><#list value?split(',')?chunk(2) as row><tr><#list row as a><td>${a}</td></#list></tr></#list></tbody></table>'/>
 <#elseif 'alphaColor'=extend.inputType>
 <@getAction r'<div style="background-color:${('+prefix+extend.id.code+r')!}">text</div>'/>
 <#elseif 'textarea'=extend.inputType>
