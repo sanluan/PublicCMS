@@ -90,11 +90,30 @@
 <#macro getAction code description=''>
 onclick="JUI.instances[$('textarea.code',navTab.getCurrentPanel()).data('id')].replaceSelection('<#if description?has_content>${r'<#--'} ${description} ${r'-->'}\n</#if>${code?js_string}${description?has_content?then('\\n','')}');$.pdialog.closeCurrent();return false;"
 </#macro>
+<#macro childModel parent>
+    <#if parent.hasChild>
+        <@cms.modelList parentId=parent.id>
+            <#if page.list?has_content>
+    <ul>
+            <#list page.list as m>
+        <li>
+            <a href="cmsModel/categoryList.html?modelId=${m.id?url}" target="dialog" rel="categoryList">${m.name!}</a>
+            <@childModel m/>
+        </li>
+            </#list>
+    </ul>
+            </#if>
+        </@cms.modelList>
+    </#if>
+</#macro>
 <div class="tabs">
     <div class="tabsHeader">
         <div class="tabsHeaderContent">
             <ul>
                 <li><a href="javascript:;" onclick="return false;"><@t.page 'help.echo'/></a></li>
+                <#if metadata?has_content>
+                    <li><a href="javascript:;" onclick="return false;"><@t.page 'model'/></a></li>
+                </#if>
                 <li><a href="javascript:;" onclick="return false;"><@t.page 'help.directive_and_method'/></a></li>
                 <li><a href="javascript:;" onclick="return false;"><@t.page 'help.config'/></a></li>
                 <#if path?has_content><li><a href="javascript:;" onclick="return false;"><@t.page 'help.contribute_form'/></a></li></#if>
@@ -200,6 +219,20 @@ onclick="JUI.instances[$('textarea.code',navTab.getCurrentPanel()).data('id')].r
                 <li><a href="javascript:;" <@getAction r'<#list .namespace?keys as k>${k}<#sep>,</#list>' t.pageMessage('help.echo_namespace')/>><@t.page 'help.echo_namespace'/></a></li>
             </ul>
         </div>
+        <#if metadata?has_content>
+            <div class="pageFormContent" layoutH>
+                <@cms.modelList>
+                <ul class="tree treeFolder">
+                    <#list page.list as m>
+                    <li>
+                        <a href="cmsModel/categoryList.html?modelId=${m.id?url}" target="dialog" mask="true">${m.name!}</a>
+                        <@childModel m/>
+                    </li>
+                    </#list>
+                </ul>
+                </@cms.modelList>
+            </div>
+        </#if>
         <div class="pageFormContent" layoutH>
             <ul class="tree treeFolder">
             <#if type?has_content&&'task'=type>
