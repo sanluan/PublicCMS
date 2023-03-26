@@ -1,10 +1,10 @@
 <#if 'view'=type>
         ${(value)!}
 <#elseif extend.multiple>
-        <table<#if 'customform'!=type> class="list nowrap itemDetail" addButton="<@t.page 'button.new_line'/>"</#if>>
+        <table<#if 'customform'!=type> class="list nowrap itemDetail" addButton="<@t.page 'button.new_line'/>" batchButton="<@t.page 'button.batch_create'/>" batchUrl="common/batchCreate.html?field=${inputName?url}"</#if>>
             <thead>
                 <tr>
-                    <th width="250"<#if 'customform'!=type> type="number" name="${inputName}" fieldClass="number<#if extend.required> required</#if>" size="30"<#if extend.maxlength?has_content> fieldAttrs="{'maxlength':'${extend.maxlength}'}</#if></#if>><@t.page 'value'/></th>
+                    <th width="250"<#if 'customform'!=type> type="number" name="${inputName}" fieldClass="number<#if extend.required> required</#if>" size="30" fieldAttrs="{<#if extend.maxlength?has_content>,'maxlength':'${extend.maxlength}'</#if>}"</#if>><@t.page 'value'/></th>
                     <th width="60"<#if 'customform'!=type> type="del"</#if>><@t.page 'operate'/></th>
                 </tr>
             </thead>

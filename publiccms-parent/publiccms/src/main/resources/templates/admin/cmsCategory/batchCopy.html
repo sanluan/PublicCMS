@@ -19,7 +19,7 @@
             </dl>
             <fieldset>
                 <legend><@t.page 'button.copy'/></legend>
-                <table class="list nowrap itemDetail" addButton="<@t.page 'button.new_line'/>" batchButton="<@t.page 'button.batch_create'/>" batchUrl="cmsCategory/batchCreate.html" width="100%">
+                <table class="list nowrap itemDetail" addButton="<@t.page 'button.new_line'/>" batchButton="<@t.page 'button.batch_create'/>" batchUrl="common/batchCreate2.html" width="100%">
                     <thead>
                         <tr>
                             <th type="text" name="categoryList[#index#].code" size="50" fieldClass="required" fieldAttrs="{'maxlength':'50','batchGroup':'categoryList[#index#]','remote':'cmsCategory/virify','data-msg-remote':'<@t.message 'verify.hasExist.code'/>'}" lookupPk="code"><@t.page 'category.code'/></th>

@@ -21,8 +21,7 @@ ALTER TABLE `visit_url`
     DROP INDEX `visit_url_pv`,
     ADD INDEX `visit_url_pv` (`site_id`, `visit_date`, `url`, `pv`);
 -- 2023-03-24 --
-UPDATE `sys_module` SET `authorized_url`= 'cmsCategory/addMore,cmsCategory/virify,cmsCategory/rebuildChildIds,cmsCategory/batchPublish,cmsCategory/batchCopy,cmsCategory/batchCreate,cmsCategory/batchSave,cmsCategory/batchSeo,cmsCategory/batchSeo,cmsCategory/saveSeo,cmsCategory/categoryPath,cmsCategory/contentPath,cmsCategory/save' WHERE `id` ='category_add';
-UPDATE `sys_module` SET `authorized_url`= 'cmsDictionary/addChild,cmsDictionary/batchCreate,cmsDictionary/exclude,cmsDictionary/excludeTree,cmsDictionary/excludeValue,cmsDictionaryExclude/save,cmsDictionaryExcludeValue/save,cmsDictionary/save,cmsDictionary/virify' WHERE `id` ='dictionary_add';
+UPDATE `sys_module` SET `authorized_url`= 'cmsCategory/addMore,cmsCategory/virify,cmsCategory/rebuildChildIds,cmsCategory/batchPublish,cmsCategory/batchCopy,cmsCategory/batchCreate,cmsCategory/batchSave,cmsCategory/seo,cmsCategory/saveSeo,cmsCategory/categoryPath,cmsCategory/contentPath,cmsCategory/save' WHERE `id` ='category_add';
 ALTER TABLE `visit_history`
     ADD COLUMN `user_id` bigint(20) DEFAULT NULL COMMENT '用户' AFTER `visit_hour`,
     DROP INDEX `visit_history_create_date`,
@@ -30,3 +29,5 @@ ALTER TABLE `visit_history`
     ADD INDEX `visit_history_create_date` (`site_id`, `create_date`, `session_id`, `ip`),
     ADD INDEX `visit_history_user_id` (`site_id`, `create_date`, `user_id`),
     ADD INDEX `visit_history_item_type` (`site_id`, `visit_date`, `item_type`);
+-- 2023-03-26 --
+UPDATE `sys_module` SET `attached` =  'bi bi-code-square' WHERE `id` ='template_list';

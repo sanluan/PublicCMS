@@ -1,10 +1,10 @@
 <#if 'view'=type>
         ${(value)!}
 <#elseif extend.multiple>
-        <table<#if 'customform'!=type> class="list nowrap itemDetail" addButton="<@t.page 'button.new_line'/>"</#if>>
+        <table<#if 'customform'!=type> class="list nowrap itemDetail" addButton="<@t.page 'button.new_line'/>" batchButton="<@t.page 'button.batch_create'/>" batchUrl="common/batchCreate.html?field=${inputName?url}"</#if>>
             <thead>
                 <tr>
-                    <th width="400"<#if 'customform'!=type> type="text" name="${inputName}" fieldClass="<#if extend.required> required</#if>" size="50"<#if extend.maxlength?has_content> fieldAttrs="{'maxlength':'${extend.maxlength}'}</#if></#if>><@t.page 'value'/></th>
+                    <th width="400"<#if 'customform'!=type> type="text" name="${inputName}" fieldClass="<#if extend.required> required</#if>" size="50"<#if extend.maxlength?has_content> fieldAttrs="{'maxlength':'${extend.maxlength}'}"</#if></#if>><@t.page 'value'/></th>
                     <th width="60"<#if 'customform'!=type> type="del"</#if>><@t.page 'operate'/></th>
                 </tr>
             </thead>
@@ -13,7 +13,7 @@
                     <#list value?split(',') as a>
                     <tr>
                         <td>
-                            <input name="${inputName}" type="text" size="50"<#if 'customform'=type><#if extend.required||a?is_first> required="required"</#if><#else>class="required"</#if><#if extend.maxlength?has_content> maxlength="${extend.maxlength}"</#if> value="${a}"/>
+                            <input name="${inputName}" type="text" size="50"<#if 'customform'=type><#if extend.required||a?is_first> required="required"</#if><#else> class="nocommas<#if extend.required||a?is_first> required</#if>"</#if><#if extend.maxlength?has_content> maxlength="${extend.maxlength}"</#if> value="${a}"/>
                         </td>
                         <td>
                             <a href="javascript:;"<#if 'customform'=type> onclick="this.parentElement.parentElement.remove()"<#else> class="btnDel"</#if>><@t.page 'button.delete'/></a>

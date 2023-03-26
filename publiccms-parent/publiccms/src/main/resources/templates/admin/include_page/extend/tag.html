@@ -6,18 +6,18 @@
         <table class="list nowrap itemDetail" addButton="<@t.page 'button.new_line'/>">
             <thead>
                 <tr>
-                    <th width="250"<#if 'customform'!=type> type="lookup" name="${extend.id.code}_tagName" fieldClass="<#if extend.required>required</#if>" size="30" fieldAttrs="{'readonly':'readonly','width':'920','height':'500'}" lookupUrl="cmsTag/lookup.html?field=${inputName?url}&nameField=${extend.id.code?url}_tageName" lookupGroup="" lookupPk="${inputName}" suffix="[#index#]"</#if>><@t.page 'tag'/></th>
+                    <th width="250"<#if 'customform'!=type> type="lookup" name="${extend.id.code}_tagName" fieldClass="<#if extend.required>required</#if>" size="30" fieldAttrs="{'readonly':'readonly','width':'920','height':'500'}" lookupUrl="cmsTag/lookup.html?field=${inputName?url}&nameField=${extend.id.code?url}_tageName" lookupGroup="" lookupPk="${inputName}"</#if>><@t.page 'tag'/></th>
                     <th width="60"<#if 'customform'!=type> type="del" </#if>><@t.page 'operate'/></th>
                 </tr>
             </thead>
             <tbody>
                 <#if values?has_content>
                     <#list values as k,v>
-                    <tr>
+                    <tr<#if 'customform'!=type> class="unitBox"</#if>>
                         <td>
                             <input name="${inputName}" value="${k!}" type="hidden"/>
-                            <input name="${extend.id.code}_tagName" readonly="readonly" size="30" value="${(v.title)!}" type="text" class="<#if extend.required>required</#if>" suffix="[${v?index}]"/>
-                            <a class="btnLook" href="cmsTag/lookup.html?field=${inputName?url}&nameField=${extend.id.code?url}_tageName" width="920" height="500" lookupGroup="" suffix="[${v?index}]"><@t.page 'select'/></a>
+                            <input name="${extend.id.code}_tagName" readonly="readonly" size="30" value="${(v.title)!}" type="text" class="<#if extend.required>required</#if>"/>
+                            <a class="btnLook" href="cmsTag/lookup.html?field=${inputName?url}&nameField=${extend.id.code?url}_tageName" width="920" height="500" lookupGroup=""><@t.page 'select'/></a>
                         </td>
                         <td>
                             <a href="javascript:;"<#if 'customform'=type> onclick="this.parentElement.parentElement.remove()"<#else> class="btnDel"</#if>><@t.page 'button.delete'/></a>

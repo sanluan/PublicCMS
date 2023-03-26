@@ -32,6 +32,7 @@ import freemarker.template.TemplateModelException;
  * 参数列表
  * <ol>
  * <li><code>url</code>,文件url
+ * <li><code>expiryMinutes</code>,过期分钟数,可以为空
  * <li><code>string</code>,文件名,可以为空
  * </ol>
  * <p>
@@ -41,7 +42,7 @@ import freemarker.template.TemplateModelException;
  * </ul>
  * 使用示例
  * <p>
- * ${getUrl('index.html')}
+ * ${getPrivateUrl('index.html')}
  * <p>
  * 
  * <pre>
@@ -75,15 +76,18 @@ public class GetPrivateUrlMethod extends BaseMethod {
 
     public Object execute(SysSite site, List<TemplateModel> arguments) throws TemplateModelException {
         String url = getString(0, arguments);
-        String filename = getString(1, arguments);
+        Integer expiryMinutes = getInteger(1, arguments);
+        String filename = getString(2, arguments);
         if (CommonUtils.notEmpty(url) && null != site) {
             Map<String, String> config = configComponent.getConfigData(site.getId(), SafeConfigComponent.CONFIG_CODE);
             String signKey = config.get(SafeConfigComponent.CONFIG_PRIVATEFILE_KEY);
             if (null == signKey) {
                 signKey = CmsVersion.getClusterId();
             }
-            int expiryMinutes = ConfigComponent.getInt(config.get(SafeConfigComponent.CONFIG_EXPIRY_MINUTES_SIGN),
-                    SafeConfigComponent.DEFAULT_EXPIRY_MINUTES_SIGN);
+            if (null == expiryMinutes) {
+                expiryMinutes = ConfigComponent.getInt(config.get(SafeConfigComponent.CONFIG_EXPIRY_MINUTES_SIGN),
+                        SafeConfigComponent.DEFAULT_EXPIRY_MINUTES_SIGN);
+            }
             long expiry = System.currentTimeMillis() + expiryMinutes * 60 * 1000;
             String string = CmsFileUtils.getPrivateFileSignString(expiry, url);
             String sign = VerificationUtils.base64Encode(VerificationUtils.encryptAES(string, signKey));

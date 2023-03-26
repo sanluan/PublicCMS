@@ -19,21 +19,21 @@
         </table>
     </#if>
 <#else>
-        <table<#if 'customform'!=type> class="list nowrap itemDetail" addButton="<@t.page 'button.new_line'/>"</#if>>
+        <table<#if 'customform'!=type> class="list nowrap itemDetail" addButton="<@t.page 'button.new_line'/>" batchButton="<@t.page 'button.batch_create'/>" batchUrl="common/batchCreate2.html?field1=${inputName?url}&fieldName1=key&field2=${inputName?url}&fieldName2=value"</#if>>
             <thead>
                 <tr>
-                    <th width="250"<#if 'customform'!=type> type="text" name="${inputName}" size="30" fieldClass="required"<#if extend.maxlength?has_content> fieldAttrs="{'maxlength':'${extend.maxlength}'}</#if></#if>><@t.page 'key'/></th>
-                    <th width="250"<#if 'customform'!=type> type="text" name="${inputName}" size="30"<#if extend.required> fieldClass="required"</#if><#if extend.maxlength?has_content> fieldAttrs="{'maxlength':'${extend.maxlength}'}</#if></#if>><@t.page 'value'/></th>
+                    <th width="250"<#if 'customform'!=type> type="text" name="${inputName}" size="30" fieldClass="nocommas<#if extend.required> required</#if>" fieldAttrs="{'batchGroup':''<#if extend.maxlength?has_content>,'maxlength':'${extend.maxlength}'</#if>}" suffix="key"</#if>><@t.page 'key'/></th>
+                    <th width="250"<#if 'customform'!=type> type="text" name="${inputName}" size="30" fieldClass="nocommas<#if extend.required> required</#if>"<#if extend.maxlength?has_content> fieldAttrs="{'maxlength':'${extend.maxlength}'}" suffix="value"</#if></#if>><@t.page 'value'/></th>
                     <th width="60"<#if 'customform'!=type> type="del"</#if>><@t.page 'operate'/></th>
                 </tr>
             </thead>
             <tbody>
             <#if value?has_content>
                 <#list value?split(',')?chunk(2) as row>
-                    <tr>
+                    <tr class="unitBox">
                         <#list row as a>
                         <td>
-                            <input name="${inputName}" type="text" size="30"<#if extend.required||a?is_first> required="required"</#if><#if extend.maxlength?has_content> maxlength="${extend.maxlength}"</#if> value="${a}"/>
+                            <input name="${inputName}" type="text" size="30"<#if 'customform'=type><#if extend.required||a?is_first> required="required"</#if><#else> class="nocommas<#if extend.required||a?is_first> required</#if>"</#if><#if extend.maxlength?has_content> maxlength="${extend.maxlength}"</#if> value="${a}"/>
                         </td>
                         </#list>
                         <td>

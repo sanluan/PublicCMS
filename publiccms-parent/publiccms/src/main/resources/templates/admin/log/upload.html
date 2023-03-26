@@ -98,7 +98,7 @@
                     <#if a.privatefile>
                         ${(a.filePath)!}
                         <a href="${getPrivateUrl(a.filePath)!}" target="_blank"><i class="icon-external-link"></i></a>
-                        <a href="${getPrivateUrl(a.filePath,a.originalName)!}"><i class="bi bi-download"></i></a>
+                        <a href="${getPrivateUrl(a.filePath)!}" download="${a.originalName}"><i class="bi bi-download"></i></a>
                     <#else>
                         <a href="cmsWebFile/list.html?path=${a.filePath?keep_before_last('/')}" target="navTab" rel="cmsWebFile/list" title="<@t.page 'webfile'/>">
                             ${(a.filePath)!}

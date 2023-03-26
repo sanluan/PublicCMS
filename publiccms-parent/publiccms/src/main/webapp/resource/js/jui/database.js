@@ -398,7 +398,7 @@
                     case 'lookup':
                         var suggestFrag = '';
                         if (field.suggestFields ) {
-                            suggestFrag = 'autocomplete="off" ' + field.lookupGroup + '"' + suffixFrag + ' lookupPk="' + field.lookupPk + '" suggestUrl="' + field.suggestUrl + '" suggestFields="'
+                            suggestFrag = 'autocomplete="off" ' + field.lookupGroup + ' ' + suffixFrag + ' lookupPk="' + field.lookupPk + '" suggestUrl="' + field.suggestUrl + '" suggestFields="'
                                     + field.suggestFields + '"' + ' postField="' + field.postField + '"';
                         }
                         if (field.lookupPk) {
@@ -406,7 +406,7 @@
                             html +=  '<input type="hidden" name="'+field.lookupGroup + strDot + field.lookupPk+'" ' + suffixFrag + ' value="' + field.defaultVal + '"/>';
                         }
                         html +=  '<input type="text" name="' + field.name + '"' + suggestFrag + suffixFrag + ' size="' + field.size + '" class="' + field.fieldClass + '" ' + attrFrag + '/>'
-                            + '<a class="btnLook" href="' + field.lookupUrl + '" lookupGroup="' + field.lookupGroup + '" ' + suffixFrag + ' lookupPk="' + field.lookupPk + '" ' + attrFrag + '>'+field.title+'</a>';
+                            + '<a class="btnLook" href="' + field.lookupUrl + '" lookupGroup=" ' + field.lookupGroup + '" ' + suffixFrag + ' lookupPk="' + field.lookupPk + '" ' + attrFrag + '>'+field.title+'</a>';
                         break;
                     case 'attach':
                         html =  '<input type="text" name="' + field.name + '" size="' + field.size + '" class="' + field.fieldClass + '" ' + attrFrag + '/>'

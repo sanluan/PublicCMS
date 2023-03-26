@@ -56,10 +56,10 @@
         </#if>
             <fieldset>
                 <legend><@t.page 'value'/></legend>
-                <table class="list nowrap itemDetail" addButton="<@t.page 'button.new_line'/>" batchButton="<@t.page 'button.batch_create'/>" batchUrl="cmsDictionary/batchCreate.html" width="100%">
+                <table class="list nowrap itemDetail" addButton="<@t.page 'button.new_line'/>" batchButton="<@t.page 'button.batch_create'/>" batchUrl="common/batchCreate2.html?field1=id.value&fieldName1=value&field2=text&fieldName2=text" width="100%">
                     <thead>
                         <tr>
-                            <th type="text" name="dataList[#index#].id.value" size="20" fieldClass="required" fieldAttrs="{'maxlength':'50','batchGroup':'dataList[#index#]'}" lookupPk="id.value"><@t.page 'value'/></th>
+                            <th type="text" name="dataList[#index#].id.value" size="20" fieldClass="required" fieldAttrs="{'maxlength':'50','batchGroup':'dataList[#index#]'}"><@t.page 'value'/></th>
                             <th type="text" name="dataList[#index#].text" size="50" fieldAttrs="{'maxlength':'100'}"><@t.page 'text'/></th>
                             <th type="text" name="dataList[#index#].sort" fieldClass="required digits" defaultval="#index#" size="5"><@t.page 'sort'/></th>
                             <th type="del" width="100"><@t.page 'operate'/></th>
