@@ -168,7 +168,7 @@ public class TemplateCacheComponent implements Cache {
             String[] values = request.getParameterValues(parameterName);
             if ("id".equals(parameterName) && null != id) {
                 values = new String[] { id.toString() };
-            } else if ("pageIndex".equals(parameterName) && null != pageIndex) {
+            } else if (CommonConstants.DEFAULT_PAGEINDEX.equals(parameterName) && null != pageIndex) {
                 values = new String[] { pageIndex.toString() };
             }
             if (null == parameterType) {

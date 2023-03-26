@@ -78,7 +78,7 @@
 <@getAction r'<@sys.dept id='+prefix+extend.id.code+r'>${object.name}</@sys.dept>'/>
     </#if>
 <#elseif 'keyvalue'=extend.inputType>
-<@getAction r'<table border="1"><thead><tr><th><@t.page 'key'/></th><th><@t.page 'value'/></th></tr></thead><tbody><#list value?split(',')?chunk(2) as row><tr><#list row as a><td>${a}</td></#list></tr></#list></tbody></table>'/>
+<@getAction r'<table border="1"><thead><tr><th><@t.page 'key'/></th><th><@t.page 'value'/></th></tr></thead><tbody><#list '+prefix+extend.id.code+r'?split(',')?chunk(2) as row><tr><#list row as a><td>${a}</td></#list></tr></#list></tbody></table>'/>
 <#elseif 'alphaColor'=extend.inputType>
 <@getAction r'<div style="background-color:${('+prefix+extend.id.code+r')!}">text</div>'/>
 <#elseif 'textarea'=extend.inputType>

@@ -78,6 +78,11 @@ public class CommonConstants extends Constants {
      * 错误
      */
     public static final String ERROR = "error";
+    
+    /**
+     * 页码
+     */
+    public static final String DEFAULT_PAGEINDEX = "pageIndex";
 
     /**
      * json类型

@@ -90,8 +90,8 @@ public class IndexController {
      */
     @RequestMapping({ "/**/{id:[0-9]+}_{pageIndex:[0-9]+}" })
     public String restPage(@RequestAttribute SysSite site, @PathVariable("id") long id,
-            @PathVariable("pageIndex") Integer pageIndex, @RequestBody(required = false) String body, HttpServletRequest request,
-            HttpServletResponse response, ModelMap model) {
+            @PathVariable(CommonConstants.DEFAULT_PAGEINDEX) Integer pageIndex, @RequestBody(required = false) String body,
+            HttpServletRequest request, HttpServletResponse response, ModelMap model) {
         String requestPath = UrlPathHelper.defaultInstance.getLookupPathForRequest(request);
         if (requestPath.endsWith(CommonConstants.SEPARATOR)) {
             requestPath = CommonUtils.joinString(

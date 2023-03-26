@@ -489,7 +489,7 @@ public class TemplateComponent implements Cache {
                 model = new HashMap<>();
             }
             model.put("metadata", metadataMap);
-            model.put("pageIndex", pageIndex);
+            model.put(CommonConstants.DEFAULT_PAGEINDEX, pageIndex);
             AbstractFreemarkerView.exposeSite(model, site);
             filepath = FreeMarkerUtils.generateStringByString(filepath, webConfiguration, model);
             if (filepath.startsWith(CommonConstants.SEPARATOR)) {

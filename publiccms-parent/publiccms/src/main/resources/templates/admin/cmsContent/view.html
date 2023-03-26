@@ -142,36 +142,34 @@
                 <@extendData extendList=list extendValues=attribute type='view' htmlSafe=safe/>
             </@sys.extendFieldList>
         </#if>
-        <#if model?has_content>
+        <#if model.extendList?has_content>
             <@extendData extendList=model.extendList extendValues=attribute type='view' htmlSafe=safe/>
         </#if>
-        <#if a?has_content&&(a.hasImages||a.hasFiles)>
-            <#if a.hasImages>
+        <#if a.hasImages>
+        <dl class="nowrap">
+            <dt><@t.page 'image_list'/>:</dt>
+            <dd>
+        <@cms.contentFileList contentId=a.id fileTypes='image'>
+            <#list page.list as file>
+                <div class="thumbnail">
+                    <img src="${(file.filePath)!}" alt="${(file.description)!}"/>
+                </div>
+            </#list>
+        </@cms.contentFileList>
+            </dd>
+        </dl>
+        </#if>
+        <#if a.hasFiles>
             <dl class="nowrap">
-                <dt><@t.page 'image_list'/>:</dt>
+                <dt><@t.page 'attach_list'/>:</dt>
                 <dd>
-            <@cms.contentFileList contentId=a.id fileTypes='image'>
+            <@cms.contentFileList contentId=a.id fileTypes='video,audio,document,other'>
                 <#list page.list as file>
-                    <div class="thumbnail">
-                        <img src="${(file.filePath)!}" alt="${(file.description)!}"/>
-                    </div>
+                    <a href="${(file.filePath)!}" download="${(file.description)!}">${(file.description)!}</a>
                 </#list>
             </@cms.contentFileList>
                 </dd>
             </dl>
-            </#if>
-            <#if a.hasFiles>
-                <dl class="nowrap">
-                    <dt><@t.page 'attach_list'/>:</dt>
-                    <dd>
-                <@cms.contentFileList contentId=a.id fileTypes='video,audio,document,other'>
-                    <#list page.list as file>
-                        <a href="${(file.filePath)!}" download="${(file.description)!}">${(file.description)!}</a>
-                    </#list>
-                </@cms.contentFileList>
-                    </dd>
-                </dl>
-            </#if>
         </#if>
         <#if a.hasProducts>
             <dl class="nowrap">
@@ -223,40 +221,38 @@
             </dl>
         </#if>
     </#if>
-    <#if a?has_content>
-        <@cms.contentRelatedList contentId=a.id>
-            <#if page.totalCount gt 0>
-            <dl class="nowrap">
-                <dt><@t.page 'recommend_info'/>:</dt>
-                <dd class="exclude-translate">
-                    <#list page.list as a>
-                        <a href="cmsContent/view.html?id=${a.id}" class="exclude-translate" target="dialog" width="1000" height="600" rel="viewContent${a.id}">${(a.title)!}</a>
-                    </#list>
-                </dd>
-            </dl>
-            </#if>
-        </@cms.contentRelatedList>
-        <@sys.authorized roleIds=admin.roles urls='cmsComment/list,cmsComment/edit'><#assign authorizedMap=map/></@sys.authorized>
-        <@cms.commentList advanced=true contentId=a.id pageSize=0>
-            <dl class="nowrap">
-                <dt>
-                    <#if authorizedMap['cmsComment/edit']>
-                        <a href="cmsComment/edit.html?contentId=${a.id}"  target="dialog" mask="true"><@t.page 'comment'/></a>
-                    <#else>
-                        <@t.page 'comment'/>
-                    </#if>
-                    :
-                </dt>
-                <dd class="exclude-translate">
-                    <#if authorizedMap['cmsComment/list']>
-                        <a href="cmsComment/list.html?contentId=${a.id}" target="navTab" rel="cmsComment/list" title="<@t.page 'comment.management'/>">${page.totalCount!}</a>
-                    <#else>
-                        ${page.totalCount!}
-                    </#if>
-                </dd>
-            </dl>
-        </@cms.commentList>
-    </#if>
+    <@cms.contentRelatedList contentId=a.id>
+        <#if page.totalCount gt 0>
+        <dl class="nowrap">
+            <dt><@t.page 'recommend_info'/>:</dt>
+            <dd class="exclude-translate">
+                <#list page.list as a>
+                    <a href="cmsContent/view.html?id=${a.id}" class="exclude-translate" target="dialog" width="1000" height="600" rel="viewContent${a.id}">${(a.title)!}</a>
+                </#list>
+            </dd>
+        </dl>
+        </#if>
+    </@cms.contentRelatedList>
+    <@sys.authorized roleIds=admin.roles urls='cmsComment/list,cmsComment/edit'><#assign authorizedMap=map/></@sys.authorized>
+    <@cms.commentList advanced=true contentId=a.id pageSize=0>
+        <dl class="nowrap">
+            <dt>
+                <#if authorizedMap['cmsComment/edit']>
+                    <a href="cmsComment/edit.html?contentId=${a.id}"  target="dialog" mask="true"><@t.page 'comment'/></a>
+                <#else>
+                    <@t.page 'comment'/>
+                </#if>
+                :
+            </dt>
+            <dd class="exclude-translate">
+                <#if authorizedMap['cmsComment/list']>
+                    <a href="cmsComment/list.html?contentId=${a.id}" target="navTab" rel="cmsComment/list" title="<@t.page 'comment.management'/>">${page.totalCount!}</a>
+                <#else>
+                    ${page.totalCount!}
+                </#if>
+            </dd>
+        </dl>
+    </@cms.commentList>
 </div>
 <div class="formBar">
     <ul>

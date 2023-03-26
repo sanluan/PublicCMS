@@ -9,7 +9,7 @@
     <div class="formBar card">
         <ul>
         <#if a?has_content>
-            <li><a href="cmsModel/categoryList.html?id=${a.id?url}" class="button" target="dialog" rel="categoryList"><i class="icon-folder-open"></i><@t.page 'category'/></a></li>
+            <li><a href="cmsModel/categoryList.html?id=${a.id?url}" class="button" target="dialog" rel="categoryList"><i class="icon-code"></i><@t.page 'template'/></a></li>
             <#if a.hasChild>
                 <li><a href="cmsModel/list.html?parentId=${a.id?url}" class="button" target="navTab" rel="cmsModel/list"><@t.page 'model.child_management'/></a></li>
             </#if>
