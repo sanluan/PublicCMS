@@ -31,3 +31,4 @@ ALTER TABLE `visit_history`
     ADD INDEX `visit_history_item_type` (`site_id`, `visit_date`, `item_type`);
 -- 2023-03-26 --
 UPDATE `sys_module` SET `attached` =  'bi bi-code-square' WHERE `id` ='template_list';
+UPDATE `sys_module` SET `authorized_url`= 'cmsModel/categoryList,cmsModel/template' WHERE `id` ='model_list';

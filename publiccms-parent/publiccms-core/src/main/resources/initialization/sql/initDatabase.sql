@@ -924,7 +924,7 @@ INSERT INTO `sys_module` VALUES ('log_workload', 'cmsContent/workload', NULL, 'b
 INSERT INTO `sys_module` VALUES ('maintenance', NULL, NULL, 'icon-cogs', NULL, 1, 6);
 INSERT INTO `sys_module` VALUES ('model_add', 'cmsModel/add', 'cmsModel/save,cmsModel/rebuildSearchText,cmsModel/batchPublish', NULL, 'model_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('model_delete', NULL, 'cmsModel/delete', NULL, 'model_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('model_list', 'cmsModel/list', 'cmsModel/categoryList', 'icon-th-large', 'config_menu', 1, 1);
+INSERT INTO `sys_module` VALUES ('model_list', 'cmsModel/list', 'cmsModel/categoryList,cmsModel/template', 'icon-th-large', 'config_menu', 1, 1);
 INSERT INTO `sys_module` VALUES ('myself', NULL, NULL, 'icon-key', NULL, 1, 1);
 INSERT INTO `sys_module` VALUES ('myself_content', 'myself/contentList', NULL, 'icon-book', 'myself_menu', 1, 2);
 INSERT INTO `sys_module` VALUES ('myself_content_add', 'cmsContent/add', 'cmsContent/save', NULL, 'myself_content', 0, 0);
