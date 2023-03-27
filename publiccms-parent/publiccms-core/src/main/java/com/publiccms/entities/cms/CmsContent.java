@@ -54,7 +54,8 @@ public class CmsContent implements java.io.Serializable {
     @JsonIgnore
     private short siteId;
     /**
-     * title<p>
+     * title
+     * <p>
      * 标题
      */
     @GeneratorColumn(title = "标题", condition = true, like = true, or = true)
@@ -63,32 +64,37 @@ public class CmsContent implements java.io.Serializable {
     @Length(max = 255)
     private String title;
     /**
-     * user id<p>
+     * user id
+     * <p>
      * 发布用户ID
      */
     @GeneratorColumn(title = "发布用户", condition = true)
     private long userId;
     /**
-     * dept id<p>
+     * dept id
+     * <p>
      * 发布用户部门ID
      */
     @GeneratorColumn(title = "发布部门", condition = true)
     private Integer deptId;
     /**
-     * check user id<p>
+     * check user id
+     * <p>
      * 审核用户ID
      */
     @GeneratorColumn(title = "审核用户", condition = true)
     private Long checkUserId;
     /**
-     * category id<p>
+     * category id
+     * <p>
      * 分类ID
      */
     @GeneratorColumn(title = "分类", condition = true)
     @GenericField(aggregable = Aggregable.YES, projectable = Projectable.YES)
     private int categoryId;
     /**
-     * model id<p>
+     * model id
+     * <p>
      * 模型ID
      */
     @GeneratorColumn(title = "模型", condition = true)
@@ -97,82 +103,87 @@ public class CmsContent implements java.io.Serializable {
     @Length(max = 20)
     private String modelId;
     /**
-     * parent id<p>
+     * parent id
+     * <p>
      * 父内容ID
      */
     @GeneratorColumn(title = "父内容", condition = true)
     @GenericField(projectable = Projectable.YES)
     private Long parentId;
     /**
-     * quote content id<p>
+     * quote content id
+     * <p>
      * 引用内容ID
      */
     @GeneratorColumn(title = "引用内容", condition = true)
     @GenericField(projectable = Projectable.YES)
     private Long quoteContentId;
     /**
-     * copied<p>
+     * copied
+     * <p>
      * 转载
      */
     @GeneratorColumn(title = "是否转载")
     private boolean copied;
     /**
-     * contribute<p>
-     * 转载
-     */
-    @GeneratorColumn(title = "是否投稿")
-    private boolean contribute;
-    /**
-     * author<p>
+     * author
+     * <p>
      * 作者
      */
     @GeneratorColumn(title = "作者")
     @GenericField(projectable = Projectable.YES)
     private String author;
     /**
-     * editor<p>
+     * editor
+     * <p>
      * 编辑
      */
     @GeneratorColumn(title = "编辑")
     @GenericField(projectable = Projectable.YES)
     private String editor;
     /**
-     * external link<p>
+     * external link
+     * <p>
      * 外链
      */
     @GeneratorColumn(title = "外链")
     @GenericField(projectable = Projectable.YES)
     private boolean onlyUrl;
     /**
-     * has images<p>
+     * has images
+     * <p>
      * 拥有图片列表
      */
     @GeneratorColumn(title = "有图片列表", condition = true)
     @GenericField
     private boolean hasImages;
     /**
-     * has files<p>
+     * has files
+     * <p>
      * 拥有附件列表
      */
     @GeneratorColumn(title = "有附件列表", condition = true)
     @GenericField
     private boolean hasFiles;
     /**
-     * has products<p>
+     * has products
+     * <p>
      * 拥有产品列表
      */
     @GeneratorColumn(title = "有产品列表", condition = true)
     @GenericField
     private boolean hasProducts;
     /**
-     * has static file<p>
+     * has static file
+     * <p>
      * 静态化
      */
     @GeneratorColumn(title = "有静态化")
     @GenericField(projectable = Projectable.YES)
     private boolean hasStatic;
     /**
-     * url<p>
+     * url
+     * <p>
      * 链接地址
      */
     @GeneratorColumn(title = "地址")
@@ -180,7 +191,8 @@ public class CmsContent implements java.io.Serializable {
     @Length(max = 1000)
     private String url;
     /**
-     * description<p>
+     * description
+     * <p>
      * 描述
      */
     @GeneratorColumn(title = "描述")
@@ -188,58 +200,67 @@ public class CmsContent implements java.io.Serializable {
     @Length(max = 300)
     private String description;
     /**
-     * tag ids<p>
+     * tag ids
+     * <p>
      * 多个标签id
      */
     @GeneratorColumn(title = "标签")
     @FullTextField(analyzer = AnalyzerNames.WHITESPACE)
     private String tagIds;
     /**
-     * cover<p>
+     * cover
+     * <p>
      * 封面图
      */
     @GeneratorColumn(title = "封面")
     private String cover;
     /**
-     * childs<p>
+     * childs
+     * <p>
      * 子内容数
      */
     @GeneratorColumn(title = "子内容数")
     private int childs;
     /**
-     * total scores<p>
+     * total scores
+     * <p>
      * 总分数
      */
     @GeneratorColumn(title = "总分数")
     private int scores;
     /**
-     * score users<p>
+     * score users
+     * <p>
      * 评分用户数
      */
     @GeneratorColumn(title = "评分用户数")
     private int scoreUsers;
     /**
-     * score<p>
+     * score
+     * <p>
      * 分数
      */
     @GeneratorColumn(title = "分数", order = true)
     @GenericField(sortable = Sortable.YES, projectable = Projectable.YES)
     private BigDecimal score;
     /**
-     * comments<p>
+     * comments
+     * <p>
      * 评论数
      */
     @GeneratorColumn(title = "评论数", order = true)
     private int comments;
     /**
-     * clicks<p>
+     * clicks
+     * <p>
      * 点击数
      */
     @GeneratorColumn(title = "点击数", order = true)
     @GenericField(sortable = Sortable.YES, projectable = Projectable.YES)
     private int clicks;
     /**
-     * publish date<p>
+     * publish date
+     * <p>
      * 发布日期
      */
     @GeneratorColumn(title = "发布日期", condition = true, order = true)
@@ -247,7 +268,8 @@ public class CmsContent implements java.io.Serializable {
     @GenericField(sortable = Sortable.YES, projectable = Projectable.YES)
     private Date publishDate;
     /**
-     * expiry date<p>
+     * expiry date
+     * <p>
      * 过期日期
      *
      */
@@ -256,38 +278,44 @@ public class CmsContent implements java.io.Serializable {
     @GenericField
     private Date expiryDate;
     /**
-     * check date<p>
+     * check date
+     * <p>
      * 审核日期
      */
     @GeneratorColumn(title = "审核日期", order = true)
     private Date checkDate;
     /**
-     * update user id<p>
+     * update user id
+     * <p>
      * 更新用户id
      */
     @GeneratorColumn(title = "更新用户")
     private Long updateUserId;
     /**
-     * update date<p>
+     * update date
+     * <p>
      * 更新日期
      */
     @GeneratorColumn(title = "更新日期", order = true)
     private Date updateDate;
     /**
-     * create date<p>
+     * create date
+     * <p>
      * 创建日期
      */
     @GeneratorColumn(title = "创建日期")
     private Date createDate;
     /**
-     * top<p>
+     * top
+     * <p>
      * 置顶级别
      */
     @GeneratorColumn(title = "排序")
     @GenericField(sortable = Sortable.YES, projectable = Projectable.YES)
     private int sort;
     /**
-     * status(0:Draft,1:Published,2:Pending,3:Rejected)<p>
+     * status(0:Draft,1:Published,2:Pending,3:Rejected)
+     * <p>
      * 状态(0:草稿,1:已发布,2:待审核,3:驳回)
      */
     @GeneratorColumn(title = "状态", condition = true)
@@ -301,13 +329,13 @@ public class CmsContent implements java.io.Serializable {
 
     public CmsContent(short siteId, String title, long userId, int categoryId, String modelId, boolean onlyUrl, boolean hasImages,
             boolean hasFiles, boolean hasProducts, int childs, Date publishDate, Date createDate, int sort, int status) {
-        this(siteId, title, userId, categoryId, modelId, false, false, onlyUrl, hasImages, hasFiles, hasProducts, false, childs,
+        this(siteId, title, userId, categoryId, modelId, false, onlyUrl, hasImages, hasFiles, hasProducts, false, childs,
                 0, 0, BigDecimal.ZERO, 0, 0, publishDate, createDate, sort, status, false);
     }
 
-    public CmsContent(short siteId, String title, long userId, int categoryId, String modelId, boolean copied, boolean contribute,
-            boolean onlyUrl, boolean hasImages, boolean hasFiles, boolean hasProducts, boolean hasStatic, int childs, int scores,
-            int scoreUsers, BigDecimal score, int comments, int clicks, Date publishDate, Date createDate, int sort, int status,
+    public CmsContent(short siteId, String title, long userId, int categoryId, String modelId, boolean copied, boolean onlyUrl,
+            boolean hasImages, boolean hasFiles, boolean hasProducts, boolean hasStatic, int childs, int scores, int scoreUsers,
+            BigDecimal score, int comments, int clicks, Date publishDate, Date createDate, int sort, int status,
             boolean disabled) {
         this.siteId = siteId;
         this.title = title;
@@ -315,7 +343,6 @@ public class CmsContent implements java.io.Serializable {
         this.categoryId = categoryId;
         this.modelId = modelId;
         this.copied = copied;
-        this.contribute = contribute;
         this.onlyUrl = onlyUrl;
         this.hasImages = hasImages;
         this.hasFiles = hasFiles;
@@ -432,15 +459,6 @@ public class CmsContent implements java.io.Serializable {
 
     public void setCopied(boolean copied) {
         this.copied = copied;
-    }
-
-    @Column(name = "contribute", nullable = false)
-    public boolean isContribute() {
-        return this.contribute;
-    }
-
-    public void setContribute(boolean contribute) {
-        this.contribute = contribute;
     }
 
     @Column(name = "author", length = 50)

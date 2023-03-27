@@ -32,3 +32,5 @@ ALTER TABLE `visit_history`
 -- 2023-03-26 --
 UPDATE `sys_module` SET `attached` =  'bi bi-code-square' WHERE `id` ='template_list';
 UPDATE `sys_module` SET `authorized_url`= 'cmsModel/categoryList,cmsModel/template' WHERE `id` ='model_list';
+-- 2023-03-26 --
+ALTER TABLE `cms_content` DROP COLUMN `contribute`;

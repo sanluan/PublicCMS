@@ -4,10 +4,8 @@
         parentId=a.parentId!''
         categoryId=a.categoryId!''
         modelId=a.modelId!''
-        safe=true
         attribute=getContentAttribute(a.id)
     />
-    <#if a.contribute && a.status != 1><#assign safe=false/></#if>
 </@cms.content>
 <@cms.category id=categoryId!><#assign category=object/></@cms.category>
 <@cms.model id=modelId!><#assign model=object/></@cms.model>
@@ -139,11 +137,11 @@
         <#include "../include_page/extendData.html"/>
         <#if category?has_content&&category.extendId?has_content>
             <@sys.extendFieldList extendId=category.extendId>
-                <@extendData extendList=list extendValues=attribute type='view' htmlSafe=safe/>
+                <@extendData extendList=list extendValues=attribute type='view'/>
             </@sys.extendFieldList>
         </#if>
         <#if model.extendList?has_content>
-            <@extendData extendList=model.extendList extendValues=attribute type='view' htmlSafe=safe/>
+            <@extendData extendList=model.extendList extendValues=attribute type='view'/>
         </#if>
         <#if a.hasImages>
         <dl class="nowrap">
@@ -216,7 +214,7 @@
             <dl class="nowrap">
                 <dt>${(model.fieldTextMap['content'])!}(${(attribute.wordCount)!}):</dt>
                 <dd id="content" class="exclude-translate">
-                    <#if safe>${(attribute.text?no_esc)!}<#else>${(attribute.text)!}</#if>
+                    ${(attribute.text?no_esc)!}
                 </dd>
             </dl>
         </#if>

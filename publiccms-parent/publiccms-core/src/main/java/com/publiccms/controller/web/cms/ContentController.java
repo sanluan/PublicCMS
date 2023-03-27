@@ -133,7 +133,6 @@ public class ContentController {
                 }
             }
         } else {
-            entity.setContribute(true);
             entity.setSiteId(site.getId());
             entity.setUserId(user.getId());
             entity.setDisabled(false);

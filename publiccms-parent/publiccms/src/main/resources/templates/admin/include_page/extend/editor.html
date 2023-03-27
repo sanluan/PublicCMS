@@ -1,5 +1,5 @@
 <#if 'view'=type>
-    <#if safe>${(value?no_esc)!}<#else>${value!}</#if>
+    ${(value?no_esc)!}
 <#else>
     <#if 'customform'!=type>
         <div>

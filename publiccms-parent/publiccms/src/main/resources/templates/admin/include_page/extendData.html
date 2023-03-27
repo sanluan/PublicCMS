@@ -1,5 +1,5 @@
 <#include "extend/dictionaryElement.html"/>
-<#macro input extend index value='' type='form' safe=true itemType='' itemId=''>
+<#macro input extend index value='' type='form' itemType='' itemId=''>
     <#local inputName='extendData['+extend.id.code+']'/>
     <#local datetimes=['now','thisSunday','thisMonday','lastMonday','lastSunday','nextMonday','nextSunday']/>
     <#assign values={}/>
@@ -249,7 +249,7 @@
     <dl<#if !['number','alphaColor','color','date','datetime','boolean','text','password']?seq_contains(e.inputType)||e.multiple> class="nowrap"</#if>>
         <dt>${(e.name)}:</dt>
         <dd<#if 'editor'=e.inputType> style="width:90%;"</#if>>
-            <@input e e?index value type htmlSafe historyItemType historyItemId/>
+            <@input e e?index value type historyItemType historyItemId/>
             <#if e.description?has_content><span class="info">${htmlSafe?then(e.description?no_esc,e.description)}</span></#if>
         </dd>
     </dl>

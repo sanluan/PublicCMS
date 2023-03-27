@@ -104,7 +104,6 @@ CREATE TABLE `cms_content` (
   `parent_id` bigint(20) default NULL COMMENT '父内容',
   `quote_content_id` bigint(20) NULL COMMENT '引用内容(当父内容不为空时为顶级内容)',
   `copied` tinyint(1) NOT NULL COMMENT '是否转载',
-  `contribute` tinyint(1) NOT NULL default 0 COMMENT '是否投稿',
   `author` varchar(50) default NULL COMMENT '作者',
   `editor` varchar(50) default NULL COMMENT '编辑',
   `only_url` tinyint(1) NOT NULL COMMENT '外链',
