@@ -29,5 +29,5 @@
             </tbody>
         </table>
 <#else>
-        <input name="${inputName}"<#if extend.maxlength?has_content> size="${extend.maxlength}" maxlength="${extend.maxlength}"<#else> size="50"</#if> <#if 'customform'!=type>class="<#if extend.required> required</#if>" </#if>type="text" value="${(value)!}"/>
+        <input name="${inputName}"<#if extend.maxlength?has_content> size="${extend.maxlength}" maxlength="${extend.maxlength}"<#else> size="50"</#if><#if 'customform'=type><#if extend.required> required="required"</#if><#else><#if extend.required> class="required"</#if></#if> type="text" value="<#if 'customform'=type>${r'(attribute.'+extend.id.code+r')!}'}<#else>${(value)!}</#if>"/>
 </#if>

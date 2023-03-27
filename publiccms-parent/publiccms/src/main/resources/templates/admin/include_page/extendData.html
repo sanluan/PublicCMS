@@ -1,5 +1,5 @@
 <#include "extend/dictionaryElement.html"/>
-<#macro input extend index value='' type='form' itemType='' itemId=''>
+<#macro input extend value="" type="form" itemType="" itemId="">
     <#local inputName='extendData['+extend.id.code+']'/>
     <#local datetimes=['now','thisSunday','thisMonday','lastMonday','lastSunday','nextMonday','nextSunday']/>
     <#assign values={}/>
@@ -28,7 +28,7 @@
             <#if 'view'=type>
                 <a href="${getUrl(value)!}" target="_blank">${(value)!}</a>
             <#else>
-        <input name="${inputName}" type="text" maxlength="300" size="50"<#if extend.required> <#if 'customform'!=type>class="required"<#else>required="required"</#if></#if> value="${(value)!}"/>
+        <input name="${inputName}" type="text" maxlength="300" size="50"<#if 'customform'=type><#if extend.required> required="required"</#if><#else><#if extend.required> class="required"</#if></#if> value="<#if 'customform'=type>${r'(attribute.'+extend.id.code+r')!}'}<#else>${(value)!}</#if>"/>
                 <#if 'customform'!=type>
                     <a class="btnAttach" href="common/upload.html?field=${inputName?url}" lookupGroup="" width="1000" height="600"><@t.page 'attach'/></a>
                     <a class="view icon-eye-open" ref="${inputName}" data-prefix="${site.sitePath}" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
@@ -39,7 +39,7 @@
             <#if 'view'=type>
                 <a href="${getPrivateUrl(value)!}" target="_blank">${(value)!}</a>
             <#else>
-        <input name="${inputName}" type="text" maxlength="300" size="50"<#if extend.required> <#if 'customform'!=type>class="required"<#else>required="required"</#if></#if> value="${(value)!}"/>
+        <input name="${inputName}" type="text" maxlength="300" size="50"<#if 'customform'=type><#if extend.required> required="required"</#if><#else><#if extend.required> class="required"</#if></#if> value="<#if 'customform'=type>${r'(attribute.'+extend.id.code+r')!}'}<#else>${(value)!}</#if>"/>
                 <#if 'customform'!=type>
                     <a class="btnAttach" href="common/upload.html?field=${inputName?url}&privatefile=true" lookupGroup="" width="1000" height="600"><@t.page 'attach'/></a>
                 </#if>
@@ -51,7 +51,7 @@
                 <br/>
                 ${(value)!}
             <#else>
-        <input name="${inputName}" type="text" maxlength="300" size="50"<#if extend.required> <#if 'customform'!=type>class="required"<#else>required="required"</#if></#if> value="${(value)!}"/>
+        <input name="${inputName}" type="text" maxlength="300" size="50"<#if 'customform'=type><#if extend.required> required="required"</#if><#else><#if extend.required> class="required"</#if></#if> value="<#if 'customform'=type>${r'(attribute.'+extend.id.code+r')!}'}<#else>${(value)!}</#if>"/>
                 <#if 'customform'!=type>
                     <a class="btnAttach" href="common/upload.html?field=${inputName?url}&fileTypes=image&width=${extend.width!}&height=${extend.height!}" lookupGroup="" width="1000" height="600"><@t.page 'image'/></a>
                     <a class="view icon-eye-open" ref="${inputName}" data-prefix="${site.sitePath}" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
@@ -69,7 +69,7 @@
                 <br/>
                 ${(value)!}
             <#else>
-        <input name="${inputName}" type="text" maxlength="300" size="50"<#if extend.required> <#if 'customform'!=type>class="required"<#else>required="required"</#if></#if> value="${(value)!}"/>
+        <input name="${inputName}" type="text" maxlength="300" size="50"<#if 'customform'=type><#if extend.required> required="required"</#if><#else><#if extend.required> class="required"</#if></#if> value="<#if 'customform'=type>${r'(attribute.'+extend.id.code+r')!}'}<#else>${(value)!}</#if>"/>
                 <#if 'customform'!=type>
                     <a class="btnAttach" href="common/upload.html?field=${inputName?url}&fileTypes=image&width=${extend.width!}&height=${extend.height!}&privatefile=true" lookupGroup="" width="1000" height="600"><@t.page 'image'/></a>
                     <#if (extend.width)?has_content && (extend.height)?has_content><span class="info">${extend.width!}*${extend.height!}</span></#if>
@@ -82,7 +82,7 @@
                 <br/>
                 ${(value)!}
             <#else>
-        <input name="${inputName}" type="text" maxlength="300" size="50"<#if extend.required> <#if 'customform'!=type>class="required"<#else>required="required"</#if></#if> value="${(value)!}"/>
+        <input name="${inputName}" type="text" maxlength="300" size="50"<#if 'customform'=type><#if extend.required> required="required"</#if><#else><#if extend.required> class="required"</#if></#if> value="<#if 'customform'=type>${r'(attribute.'+extend.id.code+r')!}'}<#else>${(value)!}</#if>"/>
                 <#if 'customform'!=type>
                     <a class="btnAttach" href="common/upload.html?field=${inputName?url}&fileTypes=video" lookupGroup="" width="1000" height="600"><@t.page 'video'/></a>
                     <a class="view icon-eye-open" ref="${inputName}" data-prefix="${site.sitePath}" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
@@ -95,7 +95,7 @@
                 <br/>
                 ${(value)!}
             <#else>
-        <input name="${inputName}" type="text" maxlength="300" size="50"<#if extend.required> <#if 'customform'!=type>class="required"<#else>required="required"</#if></#if> value="${(value)!}"/>
+        <input name="${inputName}" type="text" maxlength="300" size="50"<#if 'customform'=type><#if extend.required> required="required"</#if><#else><#if extend.required> class="required"</#if></#if> value="<#if 'customform'=type>${r'(attribute.'+extend.id.code+r')!}'}<#else>${(value)!}</#if>"/>
                 <#if 'customform'!=type>
                     <a class="btnAttach" href="common/upload.html?field=${inputName?url}&fileTypes=video&privatefile=true" lookupGroup="" width="1000" height="600"><@t.page 'video'/></a>
                 </#if>
@@ -105,21 +105,21 @@
             <#if 'view'=type>
                 ${(value)!}
             <#else>
-        <input name="${inputName}"<#if extend.maxlength?has_content> size="${extend.maxlength}" maxlength="${extend.maxlength}"<#else> size="30"</#if> <#if 'customform'!=type>class="<#if extend.required> required</#if>" </#if>type="password" value="${(value)!}"/>
+        <input name="${inputName}" type="password"<#if extend.maxlength?has_content> size="${extend.maxlength}" maxlength="${extend.maxlength}"<#else> size="30"</#if><#if 'customform'=type><#if extend.required> required="required"</#if><#else><#if extend.required> class="required"</#if></#if> value="<#if 'customform'=type>${r'(attribute.'+extend.id.code+r')!}'}<#else>${(value)!}</#if>"/>
             </#if>
             <#break>
         <#case 'textarea'>
             <#if 'view'=type>
                 <pre>${(value)!}</pre>
             <#else>
-        <textarea name="${inputName}"<#if extend.maxlength?has_content> maxlength="${extend.maxlength}"</#if> <#if 'customform'!=type>class="<#if extend.required>required</#if>" </#if>cols="80" rows="4">${(value)!}</textarea>
+        <textarea name="${inputName}"<#if extend.maxlength?has_content> maxlength="${extend.maxlength}"</#if><#if 'customform'=type><#if extend.required> required="required"</#if><#else><#if extend.required> class="required"</#if></#if> cols="80" rows="4"><#if 'customform'=type>${r'(attribute.'+extend.id.code+r')!}'}<#else>${(value)!}</#if></textarea>
             </#if>
             <#break>
         <#case 'template'>
             <#if 'view'=type>
                 ${(value)!}
             <#else>
-                <input name="${inputName}"<#if extend.maxlength?has_content> maxlength="${extend.maxlength}"</#if> type="text" maxlength="255" size="50" value="${(value)!}"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>/>
+                <input name="${inputName}"<#if extend.maxlength?has_content> maxlength="${extend.maxlength}"</#if> type="text" maxlength="255" size="50" class="<#if extend.required> required</#if>" value="${(value)!}"/>
                 <a class="btnLook" href="cmsTemplate/lookup.html?field=${inputName?url}" lookupGroup=""><@t.page 'template.select'/></a>
             </#if>
             <#break>
@@ -138,7 +138,7 @@
             <#if 'view'=type>
                 ${(value)!}
             <#else>
-        <input name="${inputName}" <#if 'customform'!=type>class="date<#if extend.required> required</#if>" autocomplete="off" dateFmt="yyyy-MM-dd HH:mm" type="text"<#else> type="datetime-local"</#if> size="20" value="<#if value?has_content && datetimes?seq_contains(value)><#if 'customform'=type><#noparse>${getDate(value)?datetime}</#noparse><#else>${getDate(value)?datetime}</#if><#else>${(value)!}</#if>"/>
+        <input name="${inputName}" <#if 'customform'!=type>class="date<#if extend.required> required</#if>" autocomplete="off" dateFmt="yyyy-MM-dd HH:mm" type="text"<#else> type="datetime-local"</#if> size="20" value="<#if value?has_content && datetimes?seq_contains(value)><#if 'customform'=type>${r'${getDate(attribute.'+extend.id.code+r')?datetime}'}<#else>${getDate(value)?datetime}</#if><#else>${(value)!}</#if>"/>
                 <#if 'customform'!=type><a class="inputDateButton" href="javascript:void(0);"></a></#if>
             </#if>
             <#break>
@@ -146,7 +146,7 @@
             <#if 'view'=type>
                 ${(value)!}
             <#else>
-        <input name="${inputName}" <#if 'customform'!=type>class="date<#if extend.required> required</#if>" autocomplete="off" dateFmt="yyyy-MM-dd" type="text"<#else> type="date"</#if> size="10" value="<#if value?has_content && datetimes?seq_contains(value)><#if 'customform'=type><#noparse>${getDate(value)?date}</#noparse><#else>${getDate(value)?date}</#if><#else>${(value)!}</#if>"/>
+        <input name="${inputName}" <#if 'customform'!=type>class="date<#if extend.required> required</#if>" autocomplete="off" dateFmt="yyyy-MM-dd" type="text"<#else> type="date"</#if> size="10" value="<#if value?has_content && datetimes?seq_contains(value)><#if 'customform'=type>${r'${getDate(attribute.'+extend.id.code+r')?date}'}<#else>${getDate(value)?date}</#if><#else>${(value)!}</#if>"/>
                 <#if 'customform'!=type><a class="inputDateButton" href="javascript:void(0);"></a></#if>
             </#if>
             <#break>
@@ -162,21 +162,21 @@
             <#if 'view'=type>
                 ${(value)!}
             <#else>
-        <input name="${inputName}" <#if 'customform'!=type>class="color<#if extend.required> required</#if>" autocomplete="off" type="text"<#else> type="color"</#if> size="20" value="${(value)!}"/>
+        <input name="${inputName}" <#if 'customform'!=type>class="color<#if extend.required> required</#if>" autocomplete="off" type="text"<#else> type="color"</#if> size="20" value="<#if 'customform'=type>${r'(attribute.'+extend.id.code+r')!}'}<#else>${(value)!}</#if>"/>
             </#if>
             <#break>
         <#case 'alphaColor'>
             <#if 'view'=type>
                 ${(value)!}
             <#else>
-        <input name="${inputName}" <#if 'customform'!=type>class="color<#if extend.required> required</#if>" autocomplete="off" showAlpha="true" </#if>type="text" size="20" value="${(value)!}"/>
+        <input name="${inputName}" <#if 'customform'!=type>class="color<#if extend.required> required</#if>" autocomplete="off" showAlpha="true" </#if>type="text" size="20" value="<#if 'customform'=type>${r'(attribute.'+extend.id.code+r')!}'}<#else>${(value)!}</#if>"/>
             </#if>
             <#break>
         <#case 'categoryPath'>
             <#if 'view'=type>
                 ${(value)!}
             <#else>
-                <input name="${inputName}" type="text" <#if 'customform'!=type><#if extend.required> class="required"</#if></#if> autocomplete="on" maxlength="500" size="100" value="${(value)!}"/>
+                <input name="${inputName}" type="text" <#if extend.required> class="required"</#if> autocomplete="on" maxlength="500" size="100" value="${(value)!}"/>
                 <a class="btnLook" href="cmsCategory/categoryPath.html?field=${inputName?url}" lookupGroup="" width="920"><@t.page 'select_path'/></a>
             </#if>
             <#break>
@@ -243,13 +243,13 @@
         <#if 'customform'=type>
     <div>
         <label>${(e.name)}:</label>
-        <@input e e?index value type/>
+        <@input e value type/>
     </div>
         <#else>
     <dl<#if !['number','alphaColor','color','date','datetime','boolean','text','password']?seq_contains(e.inputType)||e.multiple> class="nowrap"</#if>>
         <dt>${(e.name)}:</dt>
         <dd<#if 'editor'=e.inputType> style="width:90%;"</#if>>
-            <@input e e?index value type historyItemType historyItemId/>
+            <@input e value type historyItemType historyItemId/>
             <#if e.description?has_content><span class="info">${htmlSafe?then(e.description?no_esc,e.description)}</span></#if>
         </dd>
     </dl>

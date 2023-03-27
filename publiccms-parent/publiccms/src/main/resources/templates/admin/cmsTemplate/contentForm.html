@@ -8,10 +8,14 @@
         />
 <#assign formContent>
     <#if category.allowContribute>
-<#noparse><#if user?has_content></#noparse>
-<form name="contribute" method="post" action="<#noparse>${site.dynamicPath}</#noparse>content/save">
-    <input type="hidden" name="_csrf" value="<#noparse><@tools.csrfToken/></#noparse>"/>
-    <input name="returnUrl" type="hidden" value="<#noparse>${site.dynamicPath}</#noparse>"/>
+<#noparse><#if user?has_content>
+<@cms.content id=id>
+    <#assign content=object/>
+    <#assign attribute=getContentAttribute(object.id)/>
+</@cms.content>
+<form name="contribute" method="post" action="${site.dynamicPath}content/save">
+    <input type="hidden" name="_csrf" value="<@tools.csrfToken/>"/>
+    <input name="returnUrl" type="hidden" value="${site.dynamicPath}"/></#noparse>
     <input name="categoryId" type="hidden" value="${category.id!}"/>
     <input name="modelId" type="hidden" value="${model.id!}"/>
 <#if fieldList?seq_contains('author')>
@@ -19,31 +23,31 @@
 </#if>
     <p>
         <label>${(model.fieldTextMap['title'])!}:</label>
-        <input name="title" type="text" size="60" required="true" maxlength="255"/>
+        <input name="title" type="text" size="60" required="true" maxlength="255" value="<#noparse>${(content.title)!}</#noparse>"/>
     </p>
 <#if fieldList?seq_contains('description')>
     <p>
         <label>${(model.fieldTextMap['description'])!}:</label>
-        <textarea name="description" cols="80" rows="20" maxlength="300"></textarea>
+        <textarea name="description" cols="80" rows="20" maxlength="300"><#noparse>${(content.description)!}</#noparse></textarea>
     </p>
 </#if>
 <#if model.onlyUrl>
     <p>
         <label>${(model.fieldTextMap['url'])!}:</label>
-        <input name="url" type="text" size="60" maxlength="1000"/>
+        <input name="url" type="text" size="60" maxlength="1000" value="<#noparse>${(content.url)!}</#noparse>"/>
     </p>
 </#if>
 <#if fieldList?seq_contains('content')>
     <p>
         <label>${(model.fieldTextMap['content'])!}:</label>
-        <textarea name="text" class="editor" cols="80" rows="20"></textarea>
+        <textarea name="text" class="editor" cols="80" rows="20"><#noparse>${(attribute.text)!}</#noparse></textarea>
     </p>
 </#if>
     <#include "../include_page/extendData.html"/>
     <@sys.extendFieldList extendId=category.extendId>
-        <@extendData extendList=list extendValues=attribute type='customform'/>
+        <@extendData extendList=list extendValues=attribute type="customform"/>
     </@sys.extendFieldList>
-    <@extendData extendList=model.extendList extendValues=attribute type='customform'/>
+    <@extendData extendList=model.extendList extendValues=attribute type="customform"/>
 <#noparse>
     <@sys.configData code="safe">
         <#if object.captcha?has_content && object.captcha?split(",")?seq_contains("contribute")>
