@@ -22,6 +22,7 @@ public class UeditorConfig implements java.io.Serializable {
     private String videoManagerActionName;
     private String imageFieldName;
     private String scrawlFieldName;
+    private boolean catchRemoteImageEnable;
     private String catcherFieldName;
     private String videoFieldName;
     private String fileFieldName;
@@ -147,7 +148,8 @@ public class UeditorConfig implements java.io.Serializable {
     }
 
     /**
-     * @param videoManagerUrlPrefix the videoManagerUrlPrefix to set
+     * @param videoManagerUrlPrefix
+     *            the videoManagerUrlPrefix to set
      */
     public void setVideoManagerUrlPrefix(String videoManagerUrlPrefix) {
         this.videoManagerUrlPrefix = videoManagerUrlPrefix;
@@ -175,7 +177,8 @@ public class UeditorConfig implements java.io.Serializable {
     }
 
     /**
-     * @param videoManagerActionName the videoManagerActionName to set
+     * @param videoManagerActionName
+     *            the videoManagerActionName to set
      */
     public void setVideoManagerActionName(String videoManagerActionName) {
         this.videoManagerActionName = videoManagerActionName;
@@ -207,6 +210,21 @@ public class UeditorConfig implements java.io.Serializable {
      */
     public void setScrawlFieldName(String scrawlFieldName) {
         this.scrawlFieldName = scrawlFieldName;
+    }
+
+    /**
+     * @return the catchRemoteImageEnable
+     */
+    public boolean isCatchRemoteImageEnable() {
+        return catchRemoteImageEnable;
+    }
+
+    /**
+     * @param catchRemoteImageEnable
+     *            the catchRemoteImageEnable to set
+     */
+    public void setCatchRemoteImageEnable(boolean catchRemoteImageEnable) {
+        this.catchRemoteImageEnable = catchRemoteImageEnable;
     }
 
     /**
@@ -446,5 +464,5 @@ public class UeditorConfig implements java.io.Serializable {
     public void setFileManagerAllowFiles(String[] fileManagerAllowFiles) {
         this.fileManagerAllowFiles = fileManagerAllowFiles;
     }
-    
+
 }

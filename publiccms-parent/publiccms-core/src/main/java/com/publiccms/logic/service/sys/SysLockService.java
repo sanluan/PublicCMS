@@ -62,13 +62,14 @@ public class SysLockService extends BaseService<SysLock> {
 
     /**
      * @param id
+     * @param counter 
      * @return entity
      */
     @Transactional
-    public SysLock updateCount(Serializable id) {
+    public SysLock updateCount(Serializable id,int counter) {
         SysLock entity = getEntity(id);
         if (null != entity) {
-            entity.setCount(entity.getCount() + 1);
+            entity.setCount(entity.getCount() + counter);
         }
         return entity;
     }

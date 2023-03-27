@@ -123,10 +123,10 @@ public class FileAdminController {
                                 originalName, privatefile, fileType, fileSize.getFileSize(), fileSize.getWidth(),
                                 fileSize.getHeight(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
                     } else {
+                        CmsFileUtils.delete(filepath);
                         result.put("statusCode", 300);
                         result.put("message", LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
                                 "verify.custom.file.unsafe"));
-                        CmsFileUtils.delete(filepath);
                     }
                     return result;
                 } catch (IllegalStateException | IOException e) {

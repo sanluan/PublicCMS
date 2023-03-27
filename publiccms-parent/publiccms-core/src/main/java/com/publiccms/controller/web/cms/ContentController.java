@@ -92,7 +92,7 @@ public class ContentController {
         boolean locked = lockComponent.isLocked(site.getId(), LockComponent.ITEM_TYPE_CONTRIBUTE, String.valueOf(user.getId()),
                 null);
         if (ControllerUtils.errorCustom("locked.user", locked, model)) {
-            lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_CONTRIBUTE, String.valueOf(user.getId()), null, true);
+            lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_CONTRIBUTE, String.valueOf(user.getId()), null, 1);
             return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
         }
         if (CommonUtils.notEmpty(captcha)

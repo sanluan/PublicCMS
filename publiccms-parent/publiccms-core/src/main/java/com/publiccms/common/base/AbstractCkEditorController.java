@@ -1,0 +1,89 @@
+package com.publiccms.common.base;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang3.ArrayUtils;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.tools.CmsFileUtils;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.LanguagesUtils;
+import com.publiccms.common.tools.RequestUtils;
+import com.publiccms.entities.log.LogUpload;
+import com.publiccms.entities.sys.SysSite;
+import com.publiccms.entities.sys.SysUser;
+import com.publiccms.logic.component.config.SafeConfigComponent;
+import com.publiccms.logic.component.site.SiteComponent;
+import com.publiccms.logic.service.log.LogUploadService;
+import com.publiccms.views.pojo.entities.FileSize;
+
+/**
+ * AbstractCkEditorController Ck编辑器基类
+ * 
+ */
+public class AbstractCkEditorController {
+    @Resource
+    protected LogUploadService logUploadService;
+    @Resource
+    protected SiteComponent siteComponent;
+    @Resource
+    protected SafeConfigComponent safeConfigComponent;
+
+    private static final String RESULT_UPLOADED = "uploaded";
+    private static final String RESULT_FILENAME = "fileName";
+    private static final String RESULT_URL = "url";
+
+    protected Map<String, Object> upload(SysSite site, SysUser user, MultipartFile upload, String ckCsrfToken, String channel,
+            String csrfToken, HttpServletRequest request) {
+        Map<String, Object> map = new HashMap<>();
+        int uploaded = 0;
+        if (null != upload && !upload.isEmpty() && csrfToken.equals(ckCsrfToken)) {
+            String originalName = upload.getOriginalFilename();
+            String suffix = CmsFileUtils.getSuffix(originalName);
+            if (ArrayUtils.contains(safeConfigComponent.getSafeSuffix(site), suffix)) {
+                String fileName = CmsFileUtils.getUploadFileName(suffix);
+                String filepath = siteComponent.getWebFilePath(site.getId(), fileName);
+                try {
+                    CmsFileUtils.upload(upload, filepath);
+                    if (CmsFileUtils.isSafe(filepath, suffix)) {
+                        FileSize fileSize = CmsFileUtils.getFileSize(filepath, suffix);
+                        logUploadService.save(new LogUpload(site.getId(), user.getId(), channel, originalName, false,
+                                CmsFileUtils.getFileType(suffix), upload.getSize(), fileSize.getWidth(), fileSize.getHeight(),
+                                RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
+                        map.put(RESULT_FILENAME, originalName);
+                        map.put(RESULT_URL, CommonUtils.joinString(site.getSitePath(), fileName));
+                        uploaded++;
+                    } else {
+                        Map<String, String> messageMap = new HashMap<>();
+                        messageMap.put(CommonConstants.MESSAGE, LanguagesUtils.getMessage(CommonConstants.applicationContext,
+                                request.getLocale(), "verify.custom.file.unsafe"));
+                        map.put(CommonConstants.ERROR, messageMap);
+                        CmsFileUtils.delete(filepath);
+                    }
+                } catch (IllegalStateException | IOException e) {
+                    Map<String, String> messageMap = new HashMap<>();
+                    messageMap.put(CommonConstants.MESSAGE, e.getMessage());
+                    map.put(CommonConstants.ERROR, messageMap);
+                }
+            } else {
+                Map<String, String> messageMap = new HashMap<>();
+                messageMap.put(CommonConstants.MESSAGE, LanguagesUtils.getMessage(CommonConstants.applicationContext,
+                        request.getLocale(), "verify.custom.fileType"));
+                map.put(CommonConstants.ERROR, messageMap);
+            }
+        } else {
+            Map<String, String> messageMap = new HashMap<>();
+            messageMap.put(CommonConstants.MESSAGE,
+                    LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(), "verify.notEmpty.file"));
+            map.put(CommonConstants.ERROR, messageMap);
+        }
+        map.put(RESULT_UPLOADED, uploaded);
+        return map;
+    }
+}

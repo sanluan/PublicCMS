@@ -19,7 +19,7 @@ import com.publiccms.logic.component.site.LockComponent;
  * <li><code>itemType</code>:锁定项目类型
  * <li><code>itemId</code>:锁定项目id
  * <li><code>userId</code>:锁定用户id
- * <li><code>counter</code>:使用计数器,默认值<code>false</code>:
+ * <li><code>counter</code>:计数,默认值<code>0</code>:
  * </ul>
  * <p>
  * 返回结果
@@ -47,7 +47,7 @@ public class CreateLockDirective extends AbstractTemplateDirective {
         String itemType = handler.getString("itemType");
         String itemId = handler.getString("itemId");
         Long userId = handler.getLong("userId");
-        Boolean counter = handler.getBoolean("counter", false);
+        Integer counter = handler.getInteger("counter", 0);
         SysLock entity = lockComponent.lock(getSite(handler).getId(), itemType, itemId, userId, counter);
         handler.put("object", entity).render();
     }
