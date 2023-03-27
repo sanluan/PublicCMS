@@ -348,7 +348,7 @@ h3.contentTitle{font-size:16px;border-bottom:solid 1px #CCC;clear:both;}
 #suggest li.hover{border:1px solid #0a246a;}
 
 /* button */
-a.btnDel, a.btnLook, a.btnAttach, a.view{display:block;width:24px;height:28px;overflow:hidden;float:left;text-indent:-1000px;position:relative;margin-right:3px;}
+a.btnDel, a.btnLook, a.btnAttach, a.view{display:block;width:24px;height:26px;overflow:hidden;float:left;text-indent:-1000px;position:relative;margin-right:3px;}
 a.btnLook, a.btnAttach{margin-top:1px;margin-left:-25px;background-color:rgba(255,255,255,0.8);}
 label a.btnLook{margin-left:0px;}
 .center a.btnDel, .center a.btnLook, .center a.btnAttach,

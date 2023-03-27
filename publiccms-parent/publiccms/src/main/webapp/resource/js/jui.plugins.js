@@ -212,7 +212,7 @@ JUI.regPlugins.push(function($p){
             if(value){
                 if(value.isUrl() ){
                     $(this).attr("href",value);
-                } else if($(this).data("prefix").indexOf("?")){
+                } else if(-1 < $(this).data("prefix").indexOf("?")){
                     $(this).attr("href",$(this).data("prefix")+encodeURIComponent(value));
                 } else {
                     $(this).attr("href",$(this).data("prefix")+value);

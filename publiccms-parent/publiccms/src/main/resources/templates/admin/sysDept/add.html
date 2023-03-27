@@ -19,7 +19,7 @@
                 <dt><@t.page 'dept.parent'/>:</dt>
                 <dd>
                     <input name="parentId" type="hidden" value="${parentId!}"/>
-                    <input name="parentName" readonly="readonly" type="text" size="10" value="${(parentName)!}"/>
+                    <input name="parentName" readonly="readonly" type="text" size="30" value="${(parentName)!}"/>
                     <a class="btnLook" href="sysDept/lookup.html?field=parentId&nameField=parentName" lookupGroup=""><@t.page 'dept.select'/></a>
                 </dd>
             </dl>
