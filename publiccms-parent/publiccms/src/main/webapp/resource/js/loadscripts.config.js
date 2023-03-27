@@ -1,7 +1,7 @@
 (function () {
     window.editor = {
         ckeditorResources: [window.LOADSCRIPTS_BASE + "/resource/plugins/ckeditor/ckeditor.js"],
-        ueditorResources: [window.LOADSCRIPTS_BASE + "/resource/plugins/ueditor/ueditor.cms.config.js",window.LOADSCRIPTS_BASE + "/resource/plugins/ueditor/ueditor.all.min.js",window.LOADSCRIPTS_BASE + "/resource/plugins/ueditor/lang/" + window.UEDITOR_LANGUAGE],
+        ueditorResources: [window.LOADSCRIPTS_BASE + "/resource/plugins/ueditor/ueditor.config.js",window.LOADSCRIPTS_BASE + "/resource/plugins/ueditor/ueditor.all.min.js",window.LOADSCRIPTS_BASE + "/resource/plugins/ueditor/lang/" + window.UEDITOR_LANGUAGE],
         tinymceResources: [window.LOADSCRIPTS_BASE + "/resource/plugins/tinymce/tinymce.min.js"],
         ckeditorInitd: false,
         ueditorInitd: false,

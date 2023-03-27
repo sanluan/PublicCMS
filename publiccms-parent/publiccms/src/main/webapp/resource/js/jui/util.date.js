@@ -1,7 +1,7 @@
 /**
  * @author ZhangHuihua@msn.com
  *         ---------------------------------------------------------- These
- *         functions use the same 'format' strings as the
+ *         functions use the same "format" strings as the
  *         java.text.SimpleDateFormat class, with minor exceptions. The format
  *         string consists of the following abbreviations: Field | Full Form |
  *         Short Form -------------+--------------------+-----------------------
@@ -19,9 +19,9 @@
  *         ----------------------------------------------------------
  */
 ( function() {
-    var MONTH_NAMES = new Array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December', 'Jan', 'Feb', 'Mar',
-        'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec');
-    var DAY_NAMES = new Array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat');
+    var MONTH_NAMES = new Array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December", "Jan", "Feb", "Mar",
+        "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
+    var DAY_NAMES = new Array("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat");
     function LZ(x) {
         return ( x < 0 || x > 9 ? "": "0" ) + x
     }
@@ -325,12 +325,12 @@
      */
     function replaceTmEval(data) {
         return data.replace(RegExp("({[A-Za-z0-9_+-]*})", "g"), function($1) {
-            return eval('(' + $1.replace(/[{}]+/g, "") + ')');
+            return eval("(" + $1.replace(/[{}]+/g, "") + ")");
         });
     }
     /**
-     * dateFmt:%y-%M-%d %y-%M-{%d+1} ex: new Date().formatDateTm('%y-%M-{%d-1}')
-     * new Date().formatDateTm('2012-1')
+     * dateFmt:%y-%M-%d %y-%M-{%d+1} ex: new Date().formatDateTm("%y-%M-{%d-1}")
+     * new Date().formatDateTm("2012-1")
      */
     Date.prototype.formatDateTm = function(dateFmt) {
         var y = this.getFullYear();
@@ -349,6 +349,6 @@
         if (aDate.length > 2 ) {
             _d = aDate[2];
         }
-        return new Date(_y, _m, _d).formatDate('yyyy-MM-dd');
+        return new Date(_y, _m, _d).formatDate("yyyy-MM-dd");
     };
 } )();

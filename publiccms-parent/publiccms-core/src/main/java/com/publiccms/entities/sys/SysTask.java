@@ -155,7 +155,7 @@ public class SysTask implements java.io.Serializable {
         this.status = status;
     }
 
-    @Column(name = "multiNode", nullable = false)
+    @Column(name = "multi_node", nullable = false)
     public boolean isMultiNode() {
         return this.multiNode;
     }

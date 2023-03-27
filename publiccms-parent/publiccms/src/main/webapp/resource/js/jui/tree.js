@@ -64,7 +64,7 @@
                         var $li = $(this).parents("li:first"), sTarget = $li.attr("target");
                         if (sTarget ) {
                             if ($("#" + sTarget, $this).length == 0 ) {
-                                $this.prepend('<input id="' + sTarget + '" type="hidden" />');
+                                $this.prepend("<input id=\"" + sTarget + "\" type=\"hidden\"/>");
                             }
                             $("#" + sTarget, $this).val($li.attr("rel"));
                         }
@@ -98,21 +98,21 @@
                 var node = $(this);
                 var tree = $(">ul", node);
                 var parent = node.parent().prev();
-                var checked = 'unchecked';
+                var checked = "unchecked";
                 if (op.ckbox && 0 > $(">.checked", parent).length ) {
-                    checked = 'checked';
+                    checked = "checked";
                 }
                 if (tree.length > 0 || node.attr(op.options.async)) {
                     node.children(":first").wrap("<div></div>");
-                    $(">div", node).prepend(( op.ckbox ? "<div class='ckbox " + checked + "'></div>": "" )
-                            + ( op.icon ? "<div class='" + ( ( op.showSub  && !node.attr(op.options.async) )  ? op.options.folderColl: op.options.folderExp ) + "'></div>": "<div class='" + ( ( op.showSub && !node.attr(op.options.async) ) ? op.coll: op.exp ) + "'></div>" ));
+                    $(">div", node).prepend(( op.ckbox ? "<div class=\"ckbox " + checked + "\"></div>": "" )
+                            + ( op.icon ? "<div class=\"" + ( ( op.showSub  && !node.attr(op.options.async) )  ? op.options.folderColl: op.options.folderExp ) + "\"></div>": "<div class=\"" + ( ( op.showSub && !node.attr(op.options.async) ) ? op.coll: op.exp ) + "\"></div>" ));
                     if (tree.length > 0 ) {
                         op.showSub ? tree.show(): tree.hide();
                     }
                     $(">div>div."+op.options.folderColl+",>div>div."+op.options.folderExp+",>div>a", node).click(function() {
                         if(node.attr(op.options.async)){
                             $.ajax({
-                                type: 'get', url: node.attr(op.options.async), async: false, data: {}, success: function(response){
+                                type: "get", url: node.attr(op.options.async), async: false, data: {}, success: function(response){
                                     node.append(response);
                                     tree = $(">ul", node).hide();
                                     initLink(tree);
@@ -122,7 +122,7 @@
                                         var $li = $(this).parents("li:first"), sTarget = $li.attr("target");
                                         if (sTarget ) {
                                             if ($("#" + sTarget, op.root).length == 0 ) {
-                                                op.root.prepend('<input id="' + sTarget + '" type="hidden" />');
+                                                op.root.prepend("<input id=\"" + sTarget + "\" type=\"hidden\"/>");
                                             }
                                             $("#" + sTarget, op.root).val($li.attr("rel"));
                                         }
@@ -141,10 +141,10 @@
                             }
                         }
                         var $fnode = $(">li:first", tree);
-                        if ($fnode.children(":first").isTag('a') ) {
+                        if ($fnode.children(":first").isTag("a") ) {
                             tree.subTree(op, op.level + 1);
                         }
-                        var isA = $(this).isTag('a');
+                        var isA = $(this).isTag("a");
                         var $this = $(">div>div."+op.coll+",>div>div."+op.exp, node);
                         if (!isA || tree.is(":hidden") ) {
                             $this.toggleClass(op.exp).toggleClass(op.coll);
@@ -161,8 +161,8 @@
                     }
                 } else {
                     node.children().wrap("<div></div>");
-                    $(">div", node).prepend(( op.ckbox ? "<div class='ckbox " + checked + "'></div>": "" )
-                            + ( op.icon ? "<div class='"+op.options.file+"'></div>": "<div class='node'></div>" ));
+                    $(">div", node).prepend(( op.ckbox ? "<div class=\"ckbox " + checked + "\"></div>": "" )
+                            + ( op.icon ? "<div class=\""+op.options.file+"\"></div>": "<div class=\"node\"></div>" ));
                     if(op.icon ) {
                         $(">div>div."+op.options.file, node).click(function() {
                             $(this).next().click();
@@ -185,12 +185,12 @@
                 if (level > 0 ) {
                     var parent = node.parent().parent();
                     var space = !parent.next()[0] ? "indent": "line";
-                    var plist = "<div class='" + space + "'></div>";
+                    var plist = "<div class=\"" + space + "\"></div>";
                     if (level > 1 ) {
                         var next = $(">div>div", parent).filter(":first");
                         var prev = "";
                         while (level > 1) {
-                            prev = prev + "<div class='" + next.attr("class") + "'></div>";
+                            prev = prev + "<div class=\"" + next.attr("class") + "\"></div>";
                             next = next.next();
                             level--;
                         }
@@ -206,12 +206,12 @@
             var tname = $input.attr("tname"), tvalue = $input.attr("tvalue");
             var attrs = "";
             if (tname ) {
-                attrs += "name='" + tname + "' ";
+                attrs += "name=\"" + tname + "\" ";
             }
             if (tvalue ) {
-                attrs += "value='" + tvalue + "' ";
+                attrs += "value=\"" + tvalue + "\" ";
             }
-            ckbox.append("<input type='checkbox' style='display:none;' " + attrs + "/>").click(function() {
+            ckbox.append("<input type=\"checkbox\" style=\"display:none;\" " + attrs + "/>").click(function() {
                 var cked = ckbox.hasClass("checked");
                 var aClass = cked ? "unchecked": "checked";
                 var rClass = cked ? "checked": "unchecked";

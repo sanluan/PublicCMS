@@ -3,8 +3,8 @@
  */
 ( function($) {
     $.setRegional("datepicker", {
-        dayNames: [ 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat' ] ,
-        monthNames: [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ]
+        dayNames: [ "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" ] ,
+        monthNames: [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ]
     });
     $.fn.datepicker = function(opts) {
         var setting = {
@@ -38,7 +38,7 @@
         }
         function changeTm($input, type) {
             var ivalue = parseInt($input.val()), istart = parseInt($input.attr("start")) || 0, iend = parseInt($input.attr("end"));
-            var istep = parseInt($input.attr('step') || 1);
+            var istep = parseInt($input.attr("step") || 1);
             if (type == 1 ) {
                 if (ivalue <= iend - istep ) {
                     $input.val(ivalue + istep);
@@ -68,26 +68,26 @@
                     var prevDateWrap = dp.getDateWrap(monthStart);
                     for (var t = prevDateWrap.days - startDay + 1; t <= prevDateWrap.days; t++) {
                         var _date = new Date(dw.year, dw.month - 2, t);
-                        var _ctrClass = ( _date >= minDate && _date <= maxDate ) ? '': 'disabled';
-                        dayStr += '<dd class="other ' + _ctrClass + '" chMonth="-1" day="' + t + '">' + t + '</dd>';
+                        var _ctrClass = ( _date >= minDate && _date <= maxDate ) ? "": "disabled";
+                        dayStr += "<dd class=\"other " + _ctrClass + "\" chMonth=\"-1\" day=\"" + t + "\">" + t + "</dd>";
                     }
                 }
                 for (var t = 1; t <= dw.days; t++) {
                     var _date = new Date(dw.year, dw.month - 1, t);
-                    var _ctrClass = ( _date >= minDate && _date <= maxDate ) ? '': 'disabled';
+                    var _ctrClass = ( _date >= minDate && _date <= maxDate ) ? "": "disabled";
                     if (t == dw.day ) {
-                        dayStr += '<dd class="slt ' + _ctrClass + '" day="' + t + '">' + t + '</dd>';
+                        dayStr += "<dd class=\"slt " + _ctrClass + "\" day=\"" + t + "\">" + t + "</dd>";
                     } else {
-                        dayStr += '<dd class="' + _ctrClass + '" day="' + t + '">' + t + '</dd>';
+                        dayStr += "<dd class=\"" + _ctrClass + "\" day=\"" + t + "\">" + t + "</dd>";
                     }
                 }
                 for (var t = 1; t <= 42 - startDay - dw.days; t++) {
                     var _date = new Date(dw.year, dw.month, t);
-                    var _ctrClass = ( _date >= minDate && _date <= maxDate ) ? '': 'disabled';
-                    dayStr += '<dd class="other ' + _ctrClass + '" chMonth="1" day="' + t + '">' + t + '</dd>';
+                    var _ctrClass = ( _date >= minDate && _date <= maxDate ) ? "": "disabled";
+                    dayStr += "<dd class=\"other " + _ctrClass + "\" chMonth=\"1\" day=\"" + t + "\">" + t + "</dd>";
                 }
                 var $days = $(setting.days$).html(dayStr).find("dd");
-                $days.not('.disabled').click(function() {
+                $days.not(".disabled").click(function() {
                     var $day = $(this);
                     if (!dp.hasTime() ) {
                         $this.val(dp.formatDate(dp.changeDay($day.attr("day"), $day.attr("chMonth"))));
@@ -98,7 +98,7 @@
                     }
                 });
                 if (!dp.hasDate() ) {
-                    $(setting.main$).addClass('nodate'); // 仅时间，无日期
+                    $(setting.main$).addClass("nodate"); // 仅时间，无日期
                 }
 
                 if (dp.hasTime() ) {
@@ -107,7 +107,7 @@
                     var iHour = dw.hour, iMinute = dw.minute, iSecond = dw.second;
 
                     if (dp.opts.defaultTime && !$this.val()) {
-                        var timeStr = dp.opts.defaultTime.split(':');
+                        var timeStr = dp.opts.defaultTime.split(":");
                         iHour = parseInt(timeStr[0]);
                         iMinute = parseInt(timeStr[1]);
                         iSecond = parseInt(timeStr[2]);
@@ -118,10 +118,10 @@
                     var $hour = $(setting.hour$).val(iHour).focus(function() {
                         changeTmMenu("hh");
                     });
-                    var $minute = $(setting.minute$).val(iMinute).attr('step', dp.opts.mmStep).focus(function() {
+                    var $minute = $(setting.minute$).val(iMinute).attr("step", dp.opts.mmStep).focus(function() {
                         changeTmMenu("mm");
                     });
-                    var $second = $(setting.second$).val(iSecond).attr('step', dp.opts.ssStep).focus(function() {
+                    var $second = $(setting.second$).val(iSecond).attr("step", dp.opts.ssStep).focus(function() {
                         changeTmMenu("ss");
                     });
                     $hour.add($minute).add($second).click(function() {
@@ -170,8 +170,8 @@
                 var dp = new Datepicker($this.val(), opts);
                 var offset = $this.offset();
                 var iTop = offset.top + this.offsetHeight;
-                $($.parseHTML(JUI.frag['calendarFrag'], document, true)).appendTo("body").css({
-                    left: offset.left + 'px', top: iTop + 'px'
+                $($.parseHTML(JUI.frag["calendarFrag"], document, true)).appendTo("body").css({
+                    left: offset.left + "px", top: iTop + "px"
                 }).show().click(function(event) {
                     event.stopPropagation();
                 });
@@ -185,12 +185,12 @@
                 var yearstart = dp.getMinDate().getFullYear();
                 var yearend = dp.getMaxDate().getFullYear();
                 for (y = yearstart; y <= yearend; y++) {
-                    $year.append('<option value="' + y + '"' + ( dw.year == y ? 'selected="selected"': '' ) + '>' + y + '</option>');
+                    $year.append("<option value=\"" + y + "\"" + ( dw.year == y ? " selected=\"selected\"": "" ) + ">" + y + "</option>");
                 }
                 var $month = $(setting.month$);
                 $.each($.regional.datepicker.monthNames, function(i, v) {
                     var m = i + 1;
-                    $month.append('<option value="' + m + '"' + ( dw.month == m ? 'selected="selected"': '' ) + '>' + v + '</option>');
+                    $month.append("<option value=\"" + m + "\"" + ( dw.month == m ? " selected=\"selected\"": "" ) + ">" + v + "</option>");
                 });
 
                 // generate calendar
@@ -240,7 +240,7 @@
     }
     var Datepicker = function(sDate, opts) {
         this.opts = $.extend({
-            pattern: 'yyyy-MM-dd', minDate: "1970-01-01", maxDate: "2099-12-31", mmStep: 1, ssStep: 1
+            pattern: "yyyy-MM-dd", minDate: "1970-01-01", maxDate: "2099-12-31", mmStep: 1, ssStep: 1
         }, opts);
 
         // 动态minDate、maxDate
@@ -258,12 +258,12 @@
             return m == 2 ? ( y % 4 || ! ( y % 100 ) && y % 400 ? 28: 29 ): ( /4|6|9|11/.test(m) ? 30: 31 );
         },
         _minMaxDate: function(sDate) {
-            var _count = sDate.split('-').length - 1;
-            var _format = 'y-M-d';
+            var _count = sDate.split("-").length - 1;
+            var _format = "y-M-d";
             if (_count == 1 ) {
-                _format = 'y-M';
+                _format = "y-M";
             } else if (_count == 0 ) {
-                _format = 'y';
+                _format = "y";
             }
             return sDate.parseDate(_format);
         },
@@ -272,7 +272,7 @@
         },
         getMaxDate: function() {
             var _sDate = this.opts.maxDate;
-            var _count = _sDate.split('-').length - 1;
+            var _count = _sDate.split("-").length - 1;
             var _date = this._minMaxDate(_sDate);
 
             if (_count < 2 ) { // format:y-M、y

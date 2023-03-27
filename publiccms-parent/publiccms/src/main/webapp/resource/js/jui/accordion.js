@@ -203,7 +203,7 @@
     }
     $.extend($.jui.accordion, {
         defaults: {
-            selectedClass: "collapsable",selectedIconClass: "icon-chevron-down", alwaysOpen: true, animated: 'slide', event: "click", header: ".accordionHeader", autoheight: true, running: 0, clearStyle: true
+            selectedClass: "collapsable",selectedIconClass: "icon-chevron-down", alwaysOpen: true, animated: "slide", event: "click", header: ".accordionHeader", autoheight: true, running: 0, clearStyle: true
         }, animations: {
             slide: function(options, additions) {
                 options = $.extend({
@@ -217,7 +217,7 @@
                 }
                 var hideHeight = options.toHide.height(), showHeight = options.toShow.height(), difference = showHeight / hideHeight;
                 options.toShow.css({
-                    height: '0px'
+                    height: "0px"
                 }).show();
                 options.toHide.filter(":hidden").each(options.complete).end().filter(":visible").animate({
                     height: "hide"
@@ -230,7 +230,7 @@
                         options.toShow.height(current);
                     }, duration: options.duration, easing: options.easing, complete: function() {
                         options.toShow.css({
-                            height: showHeight+'px'
+                            height: showHeight+"px"
                         });
                         options.toShow.css({
                             overflow: "auto"
@@ -289,14 +289,14 @@
                 bindings: {}, ctrSub: null
             }, options);
             if (!menu ) {
-                menu = $('<div id="contextmenu"></div>').appendTo('body').hide();
+                menu = $("<div id=\"contextmenu\"></div>").appendTo("body").hide();
             }
             hash = hash || [ ];
             hash.push({
                 id: id, bindings: op.bindings || {}, ctrSub: op.ctrSub
             });
             var index = hash.length - 1;
-            $(this).on('contextmenu', null, null, function(e) {
+            $(this).on("contextmenu", null, null, function(e) {
                 display(index, this, e, op);
                 return false;
             });
@@ -306,12 +306,12 @@
     function display(index, trigger, e, options) {
         var cur = hash[index];
         var content = $(JUI.frag[cur.id]);
-        content.find('li');
+        content.find("li");
 
         // Send the content to the menu
         menu.html(content);
         $.each(cur.bindings, function(id, func) {
-            $("[rel='" + id + "']", menu).on('click', null, null, function(e) {
+            $("[rel=\"" + id + "\"]", menu).on("click", null, null, function(e) {
                 hide();
                 func($(trigger), $("#" + cur.id));
             });
@@ -325,9 +325,9 @@
             posY -= menu.height();
         }
         menu.css({
-            'left': posX+'px', 'top': posY+'px'
+            "left": posX+"px", "top": posY+"px"
         }).show();
-        $(document).one('click', hide);
+        $(document).one("click", hide);
         if ("function" === typeof cur.ctrSub ) {
             cur.ctrSub($(trigger), $("#" + cur.id));
         }
@@ -355,19 +355,19 @@
             var sbar = $(op.sideBar2, jbar);
             var bar = $(op.sideBar, jbar);
             $(op.toggleBut).click(function() {
-                if($(op.splitBar).is(':visible')){
+                if($(op.splitBar).is(":visible")){
                     JUI.ui.sbar = false;
-                    $('.icon',op.toggleBut).addClass(op.iconClass);
+                    $(".icon",op.toggleBut).addClass(op.iconClass);
                     $(op.splitBar).hide();
                     var barleft = sbar.outerWidth() - bar.outerWidth();
                     var cleft = $(op.container).cssv("margin-left") - bar.outerWidth();
                     var cwidth = bar.outerWidth() + $(op.container).outerWidth();
                     $(op.containerHeader).animate({
-                        'margin-left': sbar.outerWidth()
+                        "margin-left": sbar.outerWidth()
                     },50);
                     sbar.show().css("left", 0);
                     $(op.container).animate({
-                        'margin-left': cleft, width: cwidth
+                        "margin-left": cleft, width: cwidth
                     }, 50, function() {
                         bar.animate({
                             left: barleft,
@@ -406,21 +406,21 @@
                     });
                 }else{
                     JUI.ui.sbar = true;
-                    $('.icon',op.toggleBut).removeClass(op.iconClass);
-                    sbar.css('left', -50);
+                    $(".icon",op.toggleBut).removeClass(op.iconClass);
+                    sbar.css("left", -50);
                     $(op.containerHeader).animate({
-                        'margin-left': 0
+                        "margin-left": 0
                     }, 80);
-                    bar.show().css('bottom',0).css('top',0).animate({
+                    bar.show().css("bottom",0).css("top",0).animate({
                         left: 0
                     }, 80, function() {
                         $(op.splitBar).show();
                         var cleft = bar.outerWidth();
                         var cwidth = $(op.container).outerWidth() - ( cleft - $(op.container).cssv("margin-left") );
                         $(op.container).css({
-                            'margin-left': cleft, width: cwidth
+                            "margin-left": cleft, width: cwidth
                         });
-                        $(sbar).off('click');
+                        $(sbar).off("click");
                         $(window).trigger(JUI.eventType.resizeGrid);
                         $(window).trigger(JUI.eventType.resizeChart);
                     });
@@ -446,7 +446,7 @@
                             bar.css("width", sbarwidth);
                             $(op.splitBar).css("left", $(this).css("left"));
                             $(op.container).css({
-                                'margin-left': cleft, width: cwidth
+                                "margin-left": cleft, width: cwidth
                             });
                         }
                     }));
