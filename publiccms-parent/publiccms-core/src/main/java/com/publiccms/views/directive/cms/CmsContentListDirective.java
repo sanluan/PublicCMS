@@ -112,6 +112,7 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
         queryEntity.setHasProducts(handler.getBoolean("hasProducts"));
         queryEntity.setHasCover(handler.getBoolean("hasCover"));
         queryEntity.setUserId(handler.getLong("userId"));
+        queryEntity.setDeptId(handler.getInteger("deptId"));
         queryEntity.setStartPublishDate(handler.getDate("startPublishDate"));
         PageHandler page = service.getPage(queryEntity, handler.getBoolean("containChild"), handler.getString("orderField"),
                 handler.getString("orderType"),handler.getInteger("firstResult"), handler.getInteger("pageIndex", 1), 

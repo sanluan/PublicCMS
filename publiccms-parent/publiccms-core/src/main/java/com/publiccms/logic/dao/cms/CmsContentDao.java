@@ -403,6 +403,9 @@ public class CmsContentDao extends BaseDao<CmsContent> {
 		if (CommonUtils.notEmpty(queryEntitry.getUserId())) {
 			queryHandler.condition("bean.userId = :userId").setParameter("userId", queryEntitry.getUserId());
 		}
+        if (CommonUtils.notEmpty(queryEntitry.getDeptId())) {
+            queryHandler.condition("bean.deptId = :deptId").setParameter("deptId", queryEntitry.getDeptId());
+        }
 		if (null != queryEntitry.getOnlyUrl()) {
 			queryHandler.condition("bean.onlyUrl = :onlyUrl").setParameter("onlyUrl", queryEntitry.getOnlyUrl());
 		}
