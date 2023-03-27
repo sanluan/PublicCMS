@@ -138,7 +138,7 @@
             <#if 'view'=type>
                 ${(value)!}
             <#else>
-        <input name="${inputName}" <#if 'customform'!=type>class="date<#if extend.required> required</#if>" autocomplete="off" dateFmt="yyyy-MM-dd HH:mm:ss" </#if>type="text" size="20" value="<#if value?has_content && datetimes?seq_contains(value)><#if 'customform'=type><#noparse>${getDate(value)?datetime}</#noparse><#else>${getDate(value)?datetime}</#if><#else>${(value)!}</#if>"/>
+        <input name="${inputName}" <#if 'customform'!=type>class="date<#if extend.required> required</#if>" autocomplete="off" dateFmt="yyyy-MM-dd HH:mm" type="text"<#else> type="datetime-local"</#if> size="20" value="<#if value?has_content && datetimes?seq_contains(value)><#if 'customform'=type><#noparse>${getDate(value)?datetime}</#noparse><#else>${getDate(value)?datetime}</#if><#else>${(value)!}</#if>"/>
                 <#if 'customform'!=type><a class="inputDateButton" href="javascript:void(0);"></a></#if>
             </#if>
             <#break>
@@ -146,7 +146,7 @@
             <#if 'view'=type>
                 ${(value)!}
             <#else>
-        <input name="${inputName}" <#if 'customform'!=type>class="date<#if extend.required> required</#if>" autocomplete="off" dateFmt="yyyy-MM-dd" </#if>type="text" size="10" value="<#if value?has_content && datetimes?seq_contains(value)><#if 'customform'=type><#noparse>${getDate(value)?date}</#noparse><#else>${getDate(value)?date}</#if><#else>${(value)!}</#if>"/>
+        <input name="${inputName}" <#if 'customform'!=type>class="date<#if extend.required> required</#if>" autocomplete="off" dateFmt="yyyy-MM-dd" type="text"<#else> type="date"</#if> size="10" value="<#if value?has_content && datetimes?seq_contains(value)><#if 'customform'=type><#noparse>${getDate(value)?date}</#noparse><#else>${getDate(value)?date}</#if><#else>${(value)!}</#if>"/>
                 <#if 'customform'!=type><a class="inputDateButton" href="javascript:void(0);"></a></#if>
             </#if>
             <#break>
@@ -154,7 +154,7 @@
             <#if 'view'=type>
                 ${(value)!}
             <#else>
-        <input name="${inputName}" <#if 'customform'!=type>class="date<#if extend.required> required</#if>" autocomplete="off" dateFmt="HH:mm:ss" </#if>type="text" size="10" value="<#if value?has_content && 'now'=value><#if 'customform'=type><#noparse>${.now?time}</#noparse><#else>${.now?time}</#if><#else>${(value)!}</#if>"/>
+        <input name="${inputName}" <#if 'customform'!=type>class="date<#if extend.required> required</#if>" autocomplete="off" dateFmt="HH:mm" type="text"<#else> type="time"</#if> size="10" value="<#if value?has_content && 'now'=value><#if 'customform'=type><#noparse>${.now?time}</#noparse><#else>${.now?time}</#if><#else>${(value)!}</#if>"/>
                 <#if 'customform'!=type><a class="inputDateButton" href="javascript:void(0);"></a></#if>
             </#if>
             <#break>
@@ -162,7 +162,7 @@
             <#if 'view'=type>
                 ${(value)!}
             <#else>
-        <input name="${inputName}" <#if 'customform'!=type>class="color<#if extend.required> required</#if>" autocomplete="off" </#if>type="text" size="20" value="${(value)!}"/>
+        <input name="${inputName}" <#if 'customform'!=type>class="color<#if extend.required> required</#if>" autocomplete="off" type="text"<#else> type="color"</#if> size="20" value="${(value)!}"/>
             </#if>
             <#break>
         <#case 'alphaColor'>

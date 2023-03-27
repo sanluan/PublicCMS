@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.publiccms.common.base.AbstractTinymceController;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.ControllerUtils;
+import com.publiccms.common.tools.LanguagesUtils;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.site.LockComponent;
@@ -51,16 +52,22 @@ public class TinymceController extends AbstractTinymceController {
         Map<String, Object> messageMap = new HashMap<>();
         if (ControllerUtils.errorCustom("locked.user", locked, messageMap)) {
             Map<String, Object> result = new HashMap<>();
-            result.put(CommonConstants.MESSAGE, (String) messageMap.get(CommonConstants.ERROR));
+            result.put(CommonConstants.MESSAGE, LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
+                    (String) messageMap.get(CommonConstants.ERROR)));
             result.put(CommonConstants.ERROR, 1);
             return result;
         } else if (ControllerUtils.errorCustom("locked.size",
                 lockComponent.isLocked(site.getId(), LockComponent.ITEM_TYPE_FILEUPLOAD_SIZE, String.valueOf(user.getId()), null),
                 messageMap)) {
             Map<String, Object> result = new HashMap<>();
-            result.put(CommonConstants.MESSAGE, (String) messageMap.get(CommonConstants.ERROR));
+            result.put(CommonConstants.MESSAGE, LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
+                    (String) messageMap.get(CommonConstants.ERROR)));
             result.put(CommonConstants.ERROR, 1);
             return result;
+        }
+        if (null != file) {
+            lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_FILEUPLOAD_SIZE, String.valueOf(user.getId()), null,
+                    (int) file.getSize() / 1024);
         }
         return upload(site, user, file, LogLoginService.CHANNEL_WEB, request);
     }

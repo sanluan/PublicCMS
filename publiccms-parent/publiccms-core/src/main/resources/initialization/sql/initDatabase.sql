@@ -2190,6 +2190,6 @@ CREATE TABLE `visit_url` (
   `uv` bigint(20) DEFAULT NULL COMMENT 'User Views',
   `ipviews` bigint(20) DEFAULT NULL COMMENT 'IP数',
   PRIMARY KEY (`site_id`, `visit_date`, `url_md5`, `url_sha`),
-  KEY `visit_url_pv` (`site_id`, `visit_date`, `url`, `pv`)
+  KEY `visit_url_pv` (`site_id`, `visit_date`, `pv`)
 ) COMMENT='页面访问汇总';
 SET FOREIGN_KEY_CHECKS = 1;

@@ -9,9 +9,9 @@
 <#assign formContent>
     <#if category.allowContribute>
 <#noparse><#if user?has_content></#noparse>
-<form method="post" action="<#noparse>${site.dynamicPath}</#noparse>content/save">
+<form name="contribute" method="post" action="<#noparse>${site.dynamicPath}</#noparse>content/save">
     <input type="hidden" name="_csrf" value="<#noparse><@tools.csrfToken/></#noparse>"/>
-    <input name="returnUrl" type="hidden" value="${site.dynamicPath}"/>
+    <input name="returnUrl" type="hidden" value="<#noparse>${site.dynamicPath}</#noparse>"/>
     <input name="categoryId" type="hidden" value="${category.id!}"/>
     <input name="modelId" type="hidden" value="${model.id!}"/>
 <#if fieldList?seq_contains('author')>
@@ -24,7 +24,7 @@
 <#if fieldList?seq_contains('description')>
     <p>
         <label>${(model.fieldTextMap['description'])!}:</label>
-        <textarea name="text" cols="80" rows="20" maxlength="300"></textarea>
+        <textarea name="description" cols="80" rows="20" maxlength="300"></textarea>
     </p>
 </#if>
 <#if model.onlyUrl>
@@ -36,7 +36,7 @@
 <#if fieldList?seq_contains('content')>
     <p>
         <label>${(model.fieldTextMap['content'])!}:</label>
-        <textarea name="text" cols="80" rows="20"></textarea>
+        <textarea name="text" class="editor" cols="80" rows="20"></textarea>
     </p>
 </#if>
     <#include "../include_page/extendData.html"/>
@@ -57,6 +57,26 @@
     <p><input type="submit" value="<@t.page 'button.save'/>"/></p>
 </form>
 <#noparse>
+<script src="${site.dynamicPath}resource/js/loadscripts.js"></script>
+<script>
+var editors = document.querySelectorAll(".editor");
+if(editors.length){
+    window.UEDITOR_HOME_URL = "${site.dynamicPath}resource/plugins/ueditor/";
+    var base="${site.dynamicPath}";
+    loadScripts(["${site.dynamicPath}resource/plugins/ueditor/ueditor.config.js","${site.dynamicPath}resource/plugins/ueditor/ueditor.all.min.js","${site.dynamicPath}resource/plugins/ueditor/lang/</#noparse><@t.page 'ueditor.lang_js'/><#noparse>"],function(){
+        window.UEDITOR_CONFIG.topOffset=0;
+        for(var i=0;i<editors.length;i++){
+            var editor = new baidu.editor.ui.Editor();
+            editor.render(editors[i]);
+        }
+        document.querySelector("form[name=contribute]").onsubmit=function(){
+            for(var i=0;i<editors.length;i++){
+                UE.getEditor(editors[i]).sync();
+            }
+        }
+    });
+}
+</script>
 <#else>
 please <a href="${site.dynamicPath}login.html">login</a>
 </#if></#noparse><#else><@t.message 'verify.custom.contribute'/></#if></#assign>

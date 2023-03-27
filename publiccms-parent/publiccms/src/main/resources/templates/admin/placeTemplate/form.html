@@ -54,12 +54,36 @@
 </#noparse>
     <p><input type="submit" value="<@t.page 'button.save'/>"/></p>
 </form>
+<#noparse>
+<script src="${site.dynamicPath}resource/js/loadscripts.js"></script>
+<script>
+var editors = document.querySelectorAll(".editor");
+if(editors.length){
+    window.UEDITOR_HOME_URL = "${site.dynamicPath}resource/plugins/ueditor/";
+    var base="${site.dynamicPath}";
+    loadScripts(["${site.dynamicPath}resource/plugins/ueditor/ueditor.config.js","${site.dynamicPath}resource/plugins/ueditor/ueditor.all.min.js","${site.dynamicPath}resource/plugins/ueditor/lang/</#noparse><@t.page 'ueditor.lang_js'/><#noparse>"],function(){
+        window.UEDITOR_CONFIG.topOffset=0;
+        for(var i=0;i<editors.length;i++){
+            var editor = new baidu.editor.ui.Editor();
+            editor.render(editors[i]);
+        }
+        document.querySelector("form[name=contribute]").onsubmit=function(){
+            for(var i=0;i<editors.length;i++){
+                UE.getEditor(editors[i]).sync();
+            }
+        }
+    });
+}
+</script>
+</#noparse>
 <#if a.adminIds?has_content>
     ${'<#assign path=\''?no_esc+path+'\'/>'?no_esc}
 <#noparse>
     <@tools.placeMetadata path=path><#assign a=object/></@tools.placeMetadata>
     <#if user?has_content&&(a.adminIds)?has_content&&a.adminIds?seq_contains(user.id)>
+
         <#macro merge name value><#if !.vars[name]?has_content><@"<#assign ${name}=''>"?interpret /></#if><#if value?has_content><@"<#assign ${name}=${name}+'${value},'>"?interpret /></#if></#macro>
+
         <@cms.placeList path=path advanced=true pageIndex=pageNum pageSize=numPerPage>
             <#list page.list as a>
                 <@merge 'userIds' a.userId!/>

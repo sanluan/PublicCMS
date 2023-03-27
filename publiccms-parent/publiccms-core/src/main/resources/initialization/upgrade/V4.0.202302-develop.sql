@@ -19,7 +19,7 @@ ALTER TABLE `visit_session`
     ADD INDEX `visit_session_visit_date` (`site_id`, `visit_date`, `session_id`, `ip`, `last_visit_date`);
 ALTER TABLE `visit_url`
     DROP INDEX `visit_url_pv`,
-    ADD INDEX `visit_url_pv` (`site_id`, `visit_date`, `url`, `pv`);
+    ADD INDEX `visit_url_pv` (`site_id`, `visit_date`, `pv`);
 -- 2023-03-24 --
 UPDATE `sys_module` SET `authorized_url`= 'cmsCategory/addMore,cmsCategory/virify,cmsCategory/rebuildChildIds,cmsCategory/batchPublish,cmsCategory/batchCopy,cmsCategory/batchCreate,cmsCategory/batchSave,cmsCategory/seo,cmsCategory/saveSeo,cmsCategory/categoryPath,cmsCategory/contentPath,cmsCategory/save' WHERE `id` ='category_add';
 ALTER TABLE `visit_history`

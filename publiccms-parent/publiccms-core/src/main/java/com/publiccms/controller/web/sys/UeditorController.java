@@ -97,11 +97,17 @@ public class UeditorController extends AbstractUeditorController {
 
         Map<String, Object> messageMap = new HashMap<>();
         if (ControllerUtils.errorCustom("locked.user", locked, messageMap)) {
-            return getResultMap(false, (String) messageMap.get(CommonConstants.ERROR));
+            return getResultMap(false, LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
+                    (String) messageMap.get(CommonConstants.ERROR)));
         } else if (ControllerUtils.errorCustom("locked.size",
                 lockComponent.isLocked(site.getId(), LockComponent.ITEM_TYPE_FILEUPLOAD_SIZE, String.valueOf(user.getId()), null),
                 messageMap)) {
-            return getResultMap(false, (String) messageMap.get(CommonConstants.ERROR));
+            return getResultMap(false, LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
+                    (String) messageMap.get(CommonConstants.ERROR)));
+        }
+        if (null != file) {
+            lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_FILEUPLOAD_SIZE, String.valueOf(user.getId()), null,
+                    (int) file.getSize() / 1024);
         }
         return upload(site, user, file, LogLoginService.CHANNEL_WEB, request);
     }
@@ -124,11 +130,13 @@ public class UeditorController extends AbstractUeditorController {
 
         Map<String, Object> messageMap = new HashMap<>();
         if (ControllerUtils.errorCustom("locked.user", locked, messageMap)) {
-            return getResultMap(false, (String) messageMap.get(CommonConstants.ERROR));
+            return getResultMap(false, LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
+                    (String) messageMap.get(CommonConstants.ERROR)));
         } else if (ControllerUtils.errorCustom("locked.size",
                 lockComponent.isLocked(site.getId(), LockComponent.ITEM_TYPE_FILEUPLOAD_SIZE, String.valueOf(user.getId()), null),
                 messageMap)) {
-            return getResultMap(false, (String) messageMap.get(CommonConstants.ERROR));
+            return getResultMap(false, LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
+                    (String) messageMap.get(CommonConstants.ERROR)));
         }
         if (CommonUtils.notEmpty(file)) {
             byte[] data = VerificationUtils.base64Decode(file);
@@ -137,6 +145,8 @@ public class UeditorController extends AbstractUeditorController {
             try {
                 CmsFileUtils.writeByteArrayToFile(filepath, data);
                 FileSize fileSize = CmsFileUtils.getFileSize(filepath, SCRAW_TYPE);
+                lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_FILEUPLOAD_SIZE, String.valueOf(user.getId()), null,
+                        (int) fileSize.getFileSize() / 1024);
                 logUploadService.save(new LogUpload(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB,
                         CommonConstants.BLANK, false, CmsFileUtils.FILE_TYPE_IMAGE, data.length, fileSize.getWidth(),
                         fileSize.getHeight(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));

@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.publiccms.common.base.AbstractCkEditorController;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.ControllerUtils;
+import com.publiccms.common.tools.LanguagesUtils;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.site.LockComponent;
@@ -53,14 +54,22 @@ public class CkEditorController extends AbstractCkEditorController {
         Map<String, Object> messageMap = new HashMap<>();
         if (ControllerUtils.errorCustom("locked.user", locked, messageMap)) {
             Map<String, Object> result = new HashMap<>();
+            result.put(CommonConstants.ERROR, LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
+                    (String) messageMap.get(CommonConstants.ERROR)));
             result.put(CommonConstants.ERROR, messageMap);
             return result;
         } else if (ControllerUtils.errorCustom("locked.size",
                 lockComponent.isLocked(site.getId(), LockComponent.ITEM_TYPE_FILEUPLOAD_SIZE, String.valueOf(user.getId()), null),
                 messageMap)) {
             Map<String, Object> result = new HashMap<>();
+            result.put(CommonConstants.ERROR, LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
+                    (String) messageMap.get(CommonConstants.ERROR)));
             result.put(CommonConstants.ERROR, messageMap);
             return result;
+        }
+        if (null != upload) {
+            lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_FILEUPLOAD_SIZE, String.valueOf(user.getId()), null,
+                    (int) upload.getSize() / 1024);
         }
         return upload(site, user, upload, ckCsrfToken, csrfToken, LogLoginService.CHANNEL_WEB, request);
     }

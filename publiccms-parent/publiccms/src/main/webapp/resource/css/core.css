@@ -282,7 +282,7 @@ a.button:hover{text-decoration:none;}
 .pageFormContent span.info:before{display:block;content:".";height:0;clear:both;visibility:hidden;}
 .pageFormContent dl{float:left;line-height:22px;width:50%;margin:0;padding:4px 0;position:relative;}
 .pageFormContent dl:hover{background-color:#f9f9f9;}
-.pageFormContent dt{float:left;min-width:120px;width:120px;padding:0 5px;word-break:break-all;}
+.pageFormContent dt{float:left;min-width:100px;padding:0 5px;word-break:break-all;}
 .pageFormContent dd{margin-left:130px;}
 .pageFormContent dl.nowrap, .nowrap dl{width:100%;height:auto;clear:both;}
 .pageFormContent .thumbnail img{max-width:200px;max-height:200px;}
