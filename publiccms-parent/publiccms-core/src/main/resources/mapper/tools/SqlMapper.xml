@@ -20,7 +20,7 @@
         update cms_content_attribute a join cms_content b on a.content_id = b.id set a.text=replace(a.text,#{oldurl},#{newurl}),a.data=replace(a.data,#{oldurl},#{newurl}) where b.site_id = #{siteId}
     </update>
     <update id="updateContentRelated" parameterType="map">
-        update cms_content_related a join cms_content b on a.content_id = b.id set a.url=replace(url,#{oldurl},#{newurl}) where b.site_id = #{siteId}
+        update cms_content_related a join cms_content b on a.content_id = b.id set a.url=replace(a.url,#{oldurl},#{newurl}) where b.site_id = #{siteId}
     </update>
     <update id="updatePlaceAttribute" parameterType="map">
         update cms_place_attribute a join cms_place b on a.place_id = b.id set a.data=replace(a.data,#{oldurl},#{newurl}) where b.site_id = #{siteId}
