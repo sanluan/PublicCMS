@@ -516,12 +516,16 @@ public class ContentExchangeComponent extends AbstractExchange<CmsContent, Conte
         CmsContent entity = data.getEntity();
         CmsContent oldentity = service.getEntity(entity.getId());
         if (null != category && (null == oldentity || oldentity.isDisabled() || overwrite)) {
+            if (null != oldentity && oldentity.getSiteId() != site.getId()) {
+                entity.setId(null);
+            }
             entity.setSiteId(site.getId());
             entity.setUserId(userId);
             entity.setDeptId(null != user ? user.getDeptId() : null);
             entity.setCategoryId(category.getId());
             service.saveOrUpdate(entity);
             if (null != data.getAttribute()) {
+                data.getAttribute().setContentId(entity.getId());
                 if (needReplace(data.getAttribute().getText(), site.getDynamicPath())) {
                     data.getAttribute()
                             .setText(StringUtils.replace(data.getAttribute().getText(), "#DYNAMICPATH#", site.getDynamicPath()));
@@ -542,6 +546,7 @@ public class ContentExchangeComponent extends AbstractExchange<CmsContent, Conte
             }
             if (null != data.getChildList()) {
                 for (Content child : data.getChildList()) {
+                    child.getEntity().setParentId(entity.getId());
                     save(site, userId, overwrite, category, user, child);
                 }
             }
