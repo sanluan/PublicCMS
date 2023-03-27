@@ -8,8 +8,10 @@ import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractExchange;
 import com.publiccms.common.handler.PageHandler;
+import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysTask;
+import com.publiccms.logic.component.task.ScheduledTask;
 import com.publiccms.logic.service.sys.SysTaskService;
 
 import jakarta.annotation.Resource;
@@ -22,6 +24,8 @@ import jakarta.annotation.Resource;
 public class TaskExchangeComponent extends AbstractExchange<SysTask, SysTask> {
     @Resource
     private SysTaskService service;
+    @Resource
+    private ScheduledTask scheduledTask;
 
     @Override
     public void exportAll(SysSite site, String directory, ByteArrayOutputStream outputStream, ZipOutputStream zipOutputStream) {
@@ -46,7 +50,9 @@ public class TaskExchangeComponent extends AbstractExchange<SysTask, SysTask> {
     public void save(SysSite site, long userId, boolean overwrite, SysTask data) {
         if (null != data) {
             data.setSiteId(site.getId());
+            data.setUpdateDate(CommonUtils.getDate());
             service.save(data);
+            scheduledTask.create(site, data.getId(), data.getCronExpression());
         }
     }
 
