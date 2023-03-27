@@ -374,7 +374,7 @@
                 //复制到目标容器
                 var $destBox = $placeholder.parents(".sortDrag:first");
                 var html = $helper.html();
-                var $result = $("<div class=\"dragItem\">" + html + "</div>");
+                var $result = $("<div class=\"dragItem icon-move\">" + html + "</div>");
                 $result.attr("data-id", $helper.data("id"));
                 $result.attr("data-type", $helper.data("type"));
                 $result.insertAfter($placeholder).show();

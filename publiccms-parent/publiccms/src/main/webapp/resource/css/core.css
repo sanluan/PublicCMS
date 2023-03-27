@@ -205,6 +205,7 @@ textarea.focus, textarea.required, textarea.error, textarea.readonly,
 textarea.disabled{background:#fff;padding:2px;margin:0;line-height:23px;font-size:14px;border-style:solid;border-width:1px;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box;}
 input.required,textarea.required,.combox .select a.required{background-image:url(../images/input_bg.png);background-position:100% 0;background-repeat:no-repeat;background-attachment:scroll;}
 textarea.error,input.error{border-color:#f00!important;}
+textarea.editor{width:100%;min-height:400px;opacity:0.4;}
 input.gray, textarea.gray{color:gray;}
 select{border:1px solid;border-color:#A2BAC0 #B8D0D6 #B8D0D6 #A2BAC0;}
 textarea.editor{width:80%;}
@@ -468,7 +469,8 @@ a.btnLook:before,a.btnDel:before,a.btnAttach:before,a.view:before{font-size:20px
 .miscSortDrag dd .sortDrag .sortDrag{min-height:50px;margin-bottom:0px;border:1px dashed #6d6;}
 .miscSortDrag dd .sortDrag .sortDrag .dragItem{color:#333;}
 .miscSortDrag dd .sortDrag .dragItem img{max-width:100%;max-height:200px;}
-.miscSortDrag dd .sortDrag .dragItem .close{width:16px;height:16px;line-height:16px;font-size:14px;display:block;cursor:pointer;border:1px solid #CCC;text-align:center;position:absolute;top:2px;right:2px;}
+.miscSortDrag dd .sortDrag .dragItem .close{width:16px;height:16px;line-height:16px;font-size:12px;border-radius:50%;text-align:center;color:#fff;background-color:#ccc;cursor:pointer;position:absolute;top:3px;right:5px;display:none;}
+.miscSortDrag dd .sortDrag .dragItem:hover>.close{display:block;}
 .miscSortDrag dd .sortDrag .dragItem .ctl-label{text-align:center;margin-left:20px;}
 .miscSortDrag dd .sortDrag .dragItem .ctl-label .button{height:24px;line-height:24px;}
 .miscSortDrag dd .sortDrag .dragItem .ctl-label input{float:none;}

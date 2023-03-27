@@ -75,7 +75,7 @@
                             <#if (data.layoutList)?has_content>
                                 <#list data.layoutList as layoutdata>
                                     <@tools.diyMetadata itemType="layout" itemId=layoutdata.id>
-                                        <div class="dragItem" data-id="${object.id}" data-type="layout">
+                                        <div class="dragItem icon-move" data-id="${object.id}" data-type="layout">
                                             ${object.name!}<span class="close">X</span>
                                             <div class="ctl-label">
                                                 <@tools.includeLayout id=object.id>
@@ -83,7 +83,7 @@
                                                         <@t.page 'drag_module_here'/>
                                                         <#if layoutdata.moduleList?has_content && layoutdata.moduleList[index]?has_content>
                                                             <#list layoutdata.moduleList[index] as moduleData>
-                                                                <div class="dragItem" data-id="${moduleData.id}" data-type="module" >
+                                                                <div class="dragItem icon-move" data-id="${moduleData.id}" data-type="module" >
                                                                     ${moduleData.name}<span class="close">X</span>
                                                                     <span class="ctl-label">
                                                                         <@tools.placeMetadata path=moduleData.place>
