@@ -76,7 +76,7 @@ public class MyContentListDirective extends AbstractAppDirective {
                         handler.getIntegerArray("categoryIds"), false, handler.getStringArray("modelIds"),
                         handler.getLong("parentId"), handler.getBoolean("emptyParent"), handler.getBoolean("onlyUrl"),
                         handler.getBoolean("hasImages"), handler.getBoolean("hasCover"), handler.getBoolean("hasFiles"), null,
-                        user.getId(), handler.getDate("startPublishDate"), handler.getDate("endPublishDate"), null),
+                        user.getId(), null, handler.getDate("startPublishDate"), handler.getDate("endPublishDate"), null),
                 handler.getBoolean("containChild"), null, null, handler.getInteger("offset"), handler.getInteger("pageIndex", 1),
                 handler.getInteger("pageSize", handler.getInteger("count", 30)), null);
         @SuppressWarnings("unchecked")

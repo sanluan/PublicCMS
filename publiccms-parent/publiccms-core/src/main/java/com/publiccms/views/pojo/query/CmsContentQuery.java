@@ -27,6 +27,7 @@ public class CmsContentQuery implements java.io.Serializable {
     @Length(max = 255)
     private String title;
     private Long userId;
+    private Integer deptId;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date startPublishDate;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -39,7 +40,8 @@ public class CmsContentQuery implements java.io.Serializable {
 
     public CmsContentQuery(Short siteId, Integer[] status, Integer categoryId, Integer[] categoryIds, Boolean disabled,
             String[] modelIds, Long parentId, Boolean emptyParent, Boolean onlyUrl, Boolean hasImages, Boolean hasFiles,
-            Boolean hasCover, String title, Long userId, Date startPublishDate, Date endPublishDate, Date expiryDate) {
+            Boolean hasCover, String title, Long userId, Integer deptId, Date startPublishDate, Date endPublishDate,
+            Date expiryDate) {
         super();
         this.siteId = siteId;
         this.status = status;
@@ -55,6 +57,7 @@ public class CmsContentQuery implements java.io.Serializable {
         this.hasCover = hasCover;
         this.title = title;
         this.userId = userId;
+        this.deptId = deptId;
         this.startPublishDate = startPublishDate;
         this.endPublishDate = endPublishDate;
         this.expiryDate = expiryDate;
@@ -297,6 +300,21 @@ public class CmsContentQuery implements java.io.Serializable {
      */
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    /**
+     * @return the deptId
+     */
+    public Integer getDeptId() {
+        return deptId;
+    }
+
+    /**
+     * @param deptId
+     *            the deptId to set
+     */
+    public void setDeptId(Integer deptId) {
+        this.deptId = deptId;
     }
 
     /**
