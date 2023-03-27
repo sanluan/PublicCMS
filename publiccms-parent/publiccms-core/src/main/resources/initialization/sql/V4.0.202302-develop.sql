@@ -32,5 +32,6 @@ ALTER TABLE `visit_history`
 -- 2023-03-26 --
 UPDATE `sys_module` SET `attached` =  'bi bi-code-square' WHERE `id` ='template_list';
 UPDATE `sys_module` SET `authorized_url`= 'cmsModel/categoryList,cmsModel/template' WHERE `id` ='model_list';
--- 2023-03-26 --
+-- 2023-03-27 --
 ALTER TABLE `cms_content` DROP COLUMN `contribute`;
+ALTER TABLE `sys_task` ADD COLUMN `multi_node` tinyint(1) NOT NULL COMMENT '多节点执行' AFTER `status`;

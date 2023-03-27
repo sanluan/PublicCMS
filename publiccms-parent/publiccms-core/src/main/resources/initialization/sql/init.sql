@@ -1875,6 +1875,7 @@ CREATE TABLE `sys_task` (
   `site_id` smallint(6) NOT NULL COMMENT '站点',
   `name` varchar(50) NOT NULL COMMENT '名称',
   `status` int(11) NOT NULL COMMENT '状态',
+  `multi_node` tinyint(1) NOT NULL COMMENT '多节点执行',
   `cron_expression` varchar(50) NOT NULL COMMENT '表达式',
   `description` varchar(300) default NULL COMMENT '描述',
   `file_path` varchar(255) default NULL COMMENT '文件路径',

@@ -257,7 +257,7 @@ public class InstallServlet extends HttpServlet {
         runner.setLogWriter(null);
         runner.setErrorLogWriter(new PrintWriter(stringWriter));
         runner.setAutoCommit(true);
-        try (InputStream inputStream = InstallServlet.class.getResourceAsStream("/initialization/sql/initDatabase.sql")) {
+        try (InputStream inputStream = InstallServlet.class.getResourceAsStream("/initialization/sql/init.sql")) {
             runner.runScript(new InputStreamReader(inputStream, CommonConstants.DEFAULT_CHARSET));
         }
         cmsUpgrader.setPassword(connection, username, password);

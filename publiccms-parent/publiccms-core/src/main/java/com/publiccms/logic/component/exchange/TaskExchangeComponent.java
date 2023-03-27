@@ -50,6 +50,7 @@ public class TaskExchangeComponent extends AbstractExchange<SysTask, SysTask> {
     public void save(SysSite site, long userId, boolean overwrite, SysTask data) {
         if (null != data) {
             data.setSiteId(site.getId());
+            data.setUpdateDate(CommonUtils.getDate());
             service.save(data);
             scheduledTask.create(site, data.getId(), data.getCronExpression());
         }

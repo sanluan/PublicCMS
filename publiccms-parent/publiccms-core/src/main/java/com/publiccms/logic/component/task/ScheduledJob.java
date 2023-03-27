@@ -38,7 +38,8 @@ public class ScheduledJob extends QuartzJobBean implements InterruptableJob {
         if (null != task) {
             thread = Thread.currentThread();
             Object flag = context.getMergedJobDataMap().get(ScheduledTask.RUNONCE);
-            if (ScheduledTask.TASK_STATUS_READY == task.getStatus() && CmsVersion.isMaster() || null != flag) {
+            if (ScheduledTask.TASK_STATUS_READY == task.getStatus() && CmsVersion.isMaster() || task.isMultiNode()
+                    || null != flag) {
                 if (null != flag) {
                     context.getMergedJobDataMap().remove(ScheduledTask.RUNONCE);
                 }

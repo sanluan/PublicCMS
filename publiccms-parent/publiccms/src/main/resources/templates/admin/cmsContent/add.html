@@ -108,9 +108,9 @@ $('input[name=\'categoryName\']',navTab.getCurrentPanel()).on('change',function(
                     <dt>${(model.fieldTextMap['title'])!}:</dt>
                     <dd>
                         <input class="required" name="title" type="text" maxlength="250" size="60" value="${(a.title)!}"/>
-                <#if fieldList?seq_contains('copied')>
+                    <#if fieldList?seq_contains('copied')>
                         <label><input name="copied" type="checkbox"/>${(model.fieldTextMap['copied'])!}</label>
-                </#if>
+                    </#if>
                     </dd>
                 </dl>
                 <dl class="copied hide">

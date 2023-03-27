@@ -41,7 +41,8 @@ public class SysTask implements java.io.Serializable {
     @JsonIgnore
     private short siteId;
     /**
-     * name<p>
+     * name
+     * <p>
      * 名称
      */
     @GeneratorColumn(title = "任务名称")
@@ -49,32 +50,44 @@ public class SysTask implements java.io.Serializable {
     @Length(max = 50)
     private String name;
     /**
-     * status(0:ready,1:running,2:paused,3:error)<p>
+     * status(0:ready,1:running,2:paused,3:error)
+     * <p>
      * 状态(0:就绪,1:执行中,2:暂停,3:错误)
      */
     @GeneratorColumn(title = "状态", condition = true)
     private int status;
     /**
-     * cron expression<p>
+     * multi-node execution
+     * <p>
+     * 多节点运行
+     */
+    @GeneratorColumn(title = "多节点运行")
+    private boolean multiNode;
+    /**
+     * cron expression
+     * <p>
      * 计划表达式
      */
     @GeneratorColumn(title = "表达式")
     private String cronExpression;
     /**
-     * description<p>
+     * description
+     * <p>
      * 描述
      */
     @GeneratorColumn(title = "描述")
     @Length(max = 300)
     private String description;
     /**
-     * file path<p>
+     * file path
+     * <p>
      * 文件路径
      */
     @GeneratorColumn(title = "文件路径")
     private String filepath;
     /**
-     * update date<p>
+     * update date
+     * <p>
      * 更新日期
      */
     @GeneratorColumn(title = "更新日期", condition = true)
@@ -83,18 +96,20 @@ public class SysTask implements java.io.Serializable {
     public SysTask() {
     }
 
-    public SysTask(short siteId, String name, int status, String cronExpression) {
+    public SysTask(short siteId, String name, int status, boolean multiNode, String cronExpression) {
         this.siteId = siteId;
         this.name = name;
         this.status = status;
+        this.multiNode = multiNode;
         this.cronExpression = cronExpression;
     }
 
-    public SysTask(short siteId, String name, int status, String cronExpression, String description, String filepath,
-            Date updateDate) {
+    public SysTask(short siteId, String name, int status, boolean multiNode, String cronExpression, String description,
+            String filepath, Date updateDate) {
         this.siteId = siteId;
         this.name = name;
         this.status = status;
+        this.multiNode = multiNode;
         this.cronExpression = cronExpression;
         this.description = description;
         this.filepath = filepath;
@@ -138,6 +153,15 @@ public class SysTask implements java.io.Serializable {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    @Column(name = "multiNode", nullable = false)
+    public boolean isMultiNode() {
+        return this.multiNode;
+    }
+
+    public void setMultiNode(boolean multiNode) {
+        this.multiNode = multiNode;
     }
 
     @Column(name = "cron_expression", nullable = false, length = 50)

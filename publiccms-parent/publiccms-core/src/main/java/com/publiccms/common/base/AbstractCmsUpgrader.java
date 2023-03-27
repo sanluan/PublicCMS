@@ -261,7 +261,7 @@ public abstract class AbstractCmsUpgrader {
         runner.setErrorLogWriter(new PrintWriter(stringWriter));
         runner.setAutoCommit(true);
         try (InputStream inputStream = getClass()
-                .getResourceAsStream(CommonUtils.joinString("/initialization/upgrade/", fromVersion, "-", toVersion, ".sql"))) {
+                .getResourceAsStream(CommonUtils.joinString("/initialization/sql/", fromVersion, "-", toVersion, ".sql"))) {
             if (null != inputStream) {
                 runner.runScript(new InputStreamReader(inputStream, CommonConstants.DEFAULT_CHARSET));
             }

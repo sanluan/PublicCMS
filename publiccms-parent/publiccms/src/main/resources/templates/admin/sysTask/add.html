@@ -14,6 +14,7 @@
                 <dt><@t.page 'name'/>:</dt>
                 <dd>
                     <input class="required" name="name" type="text" maxlength="50" size="30" value="${(a.name)!}"/>
+                    <label><input name="multiNode" type="checkbox"<#if (a.multiNode)?has_content> checked="checked"</#if>/><@t.page 'multiple_node'/></label>
                 </dd>
             </dl>
             <dl class="nowrap">
