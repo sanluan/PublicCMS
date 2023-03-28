@@ -7,6 +7,7 @@ import java.util.Date;
 
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
@@ -55,6 +56,7 @@ public class CmsSurveyService extends BaseService<CmsSurvey> {
      * @param votes
      * @return entity
      */
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public CmsSurvey updateVotes(short siteId, Serializable id, int votes) {
         CmsSurvey entity = getEntity(id);
         if (null != entity && siteId == entity.getSiteId()) {

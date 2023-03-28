@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
@@ -57,6 +58,7 @@ public class CmsTagService extends BaseService<CmsTag> {
     /**
      * @param entitys
      */
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public void updateStatistics(Collection<ClickStatistics> entitys) {
         for (ClickStatistics entityStatistics : entitys) {
             CmsTag entity = getEntity(entityStatistics.getId());

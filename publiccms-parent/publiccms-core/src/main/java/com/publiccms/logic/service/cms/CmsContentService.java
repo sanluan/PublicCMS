@@ -21,6 +21,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.api.Config;
@@ -596,6 +597,7 @@ public class CmsContentService extends BaseService<CmsContent> {
     /**
      * @param entitys
      */
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public void updateStatistics(Collection<ClickStatistics> entitys) {
         for (ClickStatistics entityStatistics : entitys) {
             CmsContent entity = getEntity(entityStatistics.getId());
@@ -611,7 +613,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param comments
      * @return
      */
-    @Transactional
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public CmsContent updateComments(short siteId, Serializable id, int comments) {
         CmsContent entity = getEntity(id);
         if (null != entity && siteId == entity.getSiteId()) {
@@ -627,7 +629,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param scores
      * @return
      */
-    @Transactional
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public CmsContent updateScores(short siteId, Serializable id, int scoreUsers, int scores) {
         CmsContent entity = getEntity(id);
         if (null != entity && siteId == entity.getSiteId()) {
@@ -662,6 +664,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param num
      * @return result
      */
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public CmsContent updateChilds(Serializable id, int num) {
         CmsContent entity = getEntity(id);
         if (null != entity) {

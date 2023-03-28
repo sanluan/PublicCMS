@@ -6,6 +6,7 @@ import java.util.Date;
 
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
@@ -81,6 +82,7 @@ public class CmsPlaceService extends BaseService<CmsPlace> {
     /**
      * @param entitys
      */
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public void updateStatistics(Collection<ClickStatistics> entitys) {
         for (ClickStatistics entityStatistics : entitys) {
             CmsPlace entity = getEntity(entityStatistics.getId());
@@ -94,6 +96,7 @@ public class CmsPlaceService extends BaseService<CmsPlace> {
      * @param id
      * @param userId
      */
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public void check(Serializable id, Long userId) {
         CmsPlace entity = getEntity(id);
         if (null != entity && STATUS_PEND == entity.getStatus()) {

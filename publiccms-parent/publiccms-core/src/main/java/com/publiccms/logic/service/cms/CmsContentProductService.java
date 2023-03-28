@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
@@ -91,7 +92,7 @@ public class CmsContentProductService extends BaseService<CmsContentProduct> {
      * @param siteId
      * @param tradeOrderProductList
      */
-    @Transactional
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public void deduction(short siteId, List<TradeOrderProduct> tradeOrderProductList) {
         if (null != tradeOrderProductList) {
             for (TradeOrderProduct orderProduct : tradeOrderProductList) {

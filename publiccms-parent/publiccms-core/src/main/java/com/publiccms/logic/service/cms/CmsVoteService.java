@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
@@ -51,6 +52,7 @@ public class CmsVoteService extends BaseService<CmsVote> {
      * @param votes
      * @return entity
      */
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public CmsVote updateVotes(short siteId, Serializable id, int votes) {
         CmsVote entity = getEntity(id);
         if (null != entity && siteId == entity.getSiteId()) {
