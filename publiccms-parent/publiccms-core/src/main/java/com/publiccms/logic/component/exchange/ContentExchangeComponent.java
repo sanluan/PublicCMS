@@ -477,7 +477,8 @@ public class ContentExchangeComponent extends AbstractExchange<CmsContent, Conte
     public void save(SysSite site, long userId, boolean overwrite, CmsCategory category, SysUser user, Content data) {
         CmsContent entity = data.getEntity();
         CmsContent oldentity = service.getEntity(entity.getId());
-        if (null != category && (null == oldentity || oldentity.isDisabled() || overwrite)) {
+        if (null != category
+                && (null == oldentity || oldentity.isDisabled() || oldentity.getSiteId() != site.getId() || overwrite)) {
             if (null != oldentity && oldentity.getSiteId() != site.getId()) {
                 entity.setId(null);
             }
