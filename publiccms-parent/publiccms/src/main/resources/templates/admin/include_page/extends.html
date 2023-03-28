@@ -8,7 +8,7 @@
             <th type="text" name="${name}[#index#].name" size="10" fieldAttrs="{'maxlength':20}"><@t.page 'name'/></th>
             <th type="checkbox" name="${name}[#index#].required" size="10"><@t.page 'required'/></th>
             <th type="text" name="${name}[#index#].defaultValue" size="10"><@t.page 'default_value'/></th>
-            <th type="number" name="${name}[#index#].maxlength" size="10" fieldAttrs="{'min':1,'style':'display:none'}"><@t.page 'maxlength'/></th>
+            <th type="number" name="${name}[#index#].maxlength" size="10" fieldAttrs="{'min':1}"><@t.page 'maxlength'/></th>
             <th type="number" name="${name}[#index#].width" size="10" fieldAttrs="{'min':1,'style':'display:none'}"><@t.page 'width'/></th>
             <th type="number" name="${name}[#index#].height" size="10" fieldAttrs="{'min':1,'style':'display:none'}"><@t.page 'height'/></th>
             <th type="lookup" name="${name}[#index#].dictionaryName" lookupPk="dictionaryId" lookupUrl="cmsDictionary/lookup.html" lookupGroup="${name}[#index#]" fieldAttrs="{'readonly':'readonly','style':'display:none'}" size="10"><a href="cmsDictionary/list.html" target="navTab" rel="cmsDictionary/list"><@t.page 'dictionary'/></a></th>

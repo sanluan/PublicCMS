@@ -104,7 +104,6 @@
                             ${(a.filePath)!}
                         </a>
                         <a href="${getUrl(a.filePath)!}" target="_blank"><i class="icon-external-link"></i></a>
-                        <#if a.filePath?starts_with('upload/')><a href="${getDownloadUrl(a.filePath,a.originalName)!}"><i class="bi bi-download"></i></a></#if>
                     </#if>
                 </td>
             </tr>

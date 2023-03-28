@@ -20,6 +20,6 @@ fi
 git add template/site_${SITEID}
 git add task/site_${SITEID}
 git add web/site_${SITEID}
-git commit -m "sync"
+git commit -m "sync from cms"
 git push origin
-echo "complete!"
+echo "sync complete!"
