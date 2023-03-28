@@ -20,7 +20,7 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
-        <version.publiccms>V4.0.202302.a</version.publiccms>
+        <version.publiccms>V4.0.202302.b</version.publiccms>
         <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
         <version.servlet>4.0.1</version.servlet>
         <!-- http://mvnrepository.com/artifact/org.springframework/spring-core -->
