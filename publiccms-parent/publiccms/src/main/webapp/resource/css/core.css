@@ -307,8 +307,9 @@ fieldset:first-child .unit:first-of-type p:last-child{padding:0;}
 .divider{clear:both;display:block;overflow:hidden;width:auto;height:1px;padding:4px 0 0 0;margin-bottom:5px;border-style:dashed;border-width:0 0 1px 0;}
 
 .tagsBox{line-height:30px;float:left;}
-.tagsBox span,.parametersBox span{margin-right:8px;border:none;padding:5px 8px;}
-.tagsBox span>a,.parametersBox span{margin-left:5px;}
+.tagsBox span,.parametersBox span{position:relative;margin-right:8px;border:none;padding:5px 8px;}
+.tagsBox span>a,.parametersBox span>a{display:none;position:absolute;top:0;right:0;width:14px;height:14px;margin-top:-6px;margin-right:-6px;border-radius:50%;line-height:14px;background-color:#ccc;text-align:center;color:#fff;text-decoration:none;}
+.tagsBox span:hover>a,.parametersBox span:hover>a{display:block;}
 .parametersBox{line-height:25px;}
 .parametersBox span>em{color:#f00;}
 .parametersOperateBox label{width:auto;}
@@ -469,7 +470,7 @@ a.btnLook:before,a.btnDel:before,a.btnAttach:before,a.view:before{font-size:20px
 .miscSortDrag dd .sortDrag .sortDrag{min-height:50px;margin-bottom:0px;border:1px dashed #6d6;}
 .miscSortDrag dd .sortDrag .sortDrag .dragItem{color:#333;}
 .miscSortDrag dd .sortDrag .dragItem img{max-width:100%;max-height:200px;}
-.miscSortDrag dd .sortDrag .dragItem .close{width:16px;height:16px;line-height:16px;font-size:12px;border-radius:50%;text-align:center;color:#fff;background-color:#ccc;cursor:pointer;position:absolute;top:3px;right:5px;display:none;}
+.miscSortDrag dd .sortDrag .dragItem .close{width:14px;height:14px;line-height:14px;font-size:12px;border-radius:50%;text-align:center;color:#fff;background-color:#ccc;cursor:pointer;position:absolute;top:3px;right:5px;display:none;}
 .miscSortDrag dd .sortDrag .dragItem:hover>.close{display:block;}
 .miscSortDrag dd .sortDrag .dragItem .ctl-label{text-align:center;margin-left:20px;}
 .miscSortDrag dd .sortDrag .dragItem .ctl-label .button{height:24px;line-height:24px;}
