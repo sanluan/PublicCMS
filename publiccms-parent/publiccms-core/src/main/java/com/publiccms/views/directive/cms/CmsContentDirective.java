@@ -6,17 +6,18 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 import javax.annotation.Resource;
+
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.cms.CmsContentAttribute;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.site.StatisticsComponent;
-import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsContentAttributeService;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.views.pojo.entities.ClickStatistics;
@@ -71,8 +72,8 @@ public class CmsContentDirective extends AbstractTemplateDirective {
                     entity.setId(entity.getQuoteContentId());
                 }
                 if (absoluteURL) {
-                    TemplateComponent.initContentUrl(site, entity);
-                    TemplateComponent.initContentCover(site, entity);
+                    CmsUrlUtils.initContentUrl(site, entity);
+                    CmsUrlUtils.initContentCover(site, entity);
                 }
                 handler.put("object", entity);
                 if (handler.getBoolean("containsAttribute", false)) {
@@ -104,8 +105,8 @@ public class CmsContentDirective extends AbstractTemplateDirective {
                         if (absoluteId && null == e.getParentId() && null != e.getQuoteContentId()) {
                             e.setId(e.getQuoteContentId());
                         }
-                        TemplateComponent.initContentUrl(site, e);
-                        TemplateComponent.initContentCover(site, e);
+                        CmsUrlUtils.initContentUrl(site, e);
+                        CmsUrlUtils.initContentCover(site, e);
                     };
                 } else {
                     consumer = e -> {

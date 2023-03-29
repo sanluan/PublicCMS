@@ -8,14 +8,15 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 import javax.annotation.Resource;
+
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsContentProduct;
 import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsContentProductService;
 
 /**
@@ -55,7 +56,7 @@ public class CmsContentProductDirective extends AbstractTemplateDirective {
             CmsContentProduct entity = service.getEntity(id);
             if (null != entity && site.getId() == entity.getSiteId()) {
                 if (absoluteURL) {
-                    entity.setCover(TemplateComponent.getUrl(site.getSitePath(), entity.getCover()));
+                    entity.setCover(CmsUrlUtils.getUrl(site.getSitePath(), entity.getCover()));
                 }
                 handler.put("object", entity).render();
             }
@@ -65,7 +66,7 @@ public class CmsContentProductDirective extends AbstractTemplateDirective {
                 List<CmsContentProduct> entityList = service.getEntitys(ids);
                 Consumer<CmsContentProduct> consumer = e -> {
                     if (absoluteURL) {
-                        e.setCover(TemplateComponent.getUrl(site.getSitePath(), e.getCover()));
+                        e.setCover(CmsUrlUtils.getUrl(site.getSitePath(), e.getCover()));
                     }
                 };
                 Map<String, CmsContentProduct> map = CommonUtils.listToMap(entityList, k -> k.getId().toString(), consumer,

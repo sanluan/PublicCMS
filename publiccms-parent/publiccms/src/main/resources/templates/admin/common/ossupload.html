@@ -1,0 +1,99 @@
+<form action="${bucketUrl}" method="post" autocomplete="off" enctype="multipart/form-data" class="pageForm required-validate" onsubmit="return iframeCallback(this, $.bringBack)">
+    <input type="hidden" name="key" value=""/>
+    <input type="hidden" name="acl" value=""/>
+    <input type="hidden" name="success_action_redirect" value=""/>
+    <input type="hidden" name="X-Amz-Credential" value=""/>
+    <input type="hidden" name="X-Amz-Algorithm" value=""/>
+    <input type="hidden" name="X-Amz-Date" value=""/>
+    <input type="hidden" name="Policy" value=""/>
+    <input type="hidden" name="X-Amz-Signature" value=""/>
+    <div class="pageFormContent layoutBox" layoutH>
+        <div class="tabs">
+            <div class="tabsHeader">
+                <div class="tabsHeaderContent">
+                    <ul>
+                        <li><a href="javascript:;" class="tabImageBtn" onclick="$('button[type=submit]',$.pdialog.getCurrent()).show();return false;"><@t.page 'file'/></a></li>
+                        <li><a href="javascript:;" onclick="$('button[type=submit]',$.pdialog.getCurrent()).hide();return false;"><@t.page 'upload.log'/></a></li>
+                        <#if !privatefile?has_content || "false"=privatefile>
+                            <li><a href="common/file_list.html?field=${(field?url)!}&originalField=${(originalField?url)!}&fileTypes=${fileTypes!}" class="j-ajax" onclick="$('button[type=submit]',$.pdialog.getCurrent()).hide();return false;"><@t.page 'webfile'/></a></li>
+                        </#if>
+                    </ul>
+                </div>
+            </div>
+            <div class="tabsContent unitBox">
+                <div class="pageContent">
+                    <#if fileTypes?has_content&&'image'=fileTypes>
+                        <div class="upload-wrap">
+                            <input type="file" name="file" accept="image/*" class="valid" style="left: 0px;">
+                        </div>
+                    <#else>
+                        <input type="file" name="file" class="required" size="30"<#if fileTypes?has_content&&'video'=fileTypes> accept="video/*"</#if>/>
+                    </#if>
+                </div>
+                <div class="pageContent">
+            <@log.uploadList userId=admin.id fileTypes=fileTypes privatefile=privatefile pageIndex=1 pageSize=21>
+                <#list page.list as a>
+                    <div class="image-list">
+                        <#if 'image'=t.fileType(a.filePath)>
+                            <img src="<#if a.privatefile>${getPrivateUrl(a.filePath)}<#else>${getUrl(a.filePath)}</#if>" alt="${a.originalName!}" title="${a.originalName!}">
+                            <a href="javascript:;" class="edit-icon" onclick="$('.tabImageBtn',$.pdialog.getCurrent()).click();$('div.upload-wrap', $.pdialog.getCurrent()).editImg({imgUrl:'${site.sitePath+a.filePath!}',imgName:'${(a.originalName?has_content)?then(a.originalName,a.filePath!)}'});return false;"></a>
+                        <#else>
+                            <i class="thumb icon-file-alt icon-large"></i>
+                        </#if>
+                        <p title="<@t.page 'width'/>:${a.width!},<@t.page 'height'/>:${a.height!}">
+                            <a href="javascript:;" onclick="$.bringBack({'${field!'fileName'}':'${a.filePath!}','fileType':'${a.fileType!}','fileSize':'${a.fileSize!}','width':'${a.width!}','height':'${a.height!}','${originalField!'originalName'}':'${a.originalName!}'});return false;">
+                                ${(a.originalName?has_content)?then(a.originalName,a.filePath!)}<#if a.fileSize?has_content>(${a.fileSize})</#if>
+                            </a>
+                        </p>
+                    </div>
+                </#list>
+            </@log.uploadList>
+                </div>
+                <#if !privatefile?has_content || "false"=privatefile>
+                    <div id="fileBox">
+                    </div>
+                </#if>
+            </div>
+        </div>
+    </div>
+    <div class="formBar">
+        <ul>
+            <li><button type="submit" class="buttonActive disabled" disabled="disabled" title="ctrl+s"><@t.page 'upload'/></button></li>
+            <li><button type="button" class="button" onclick="$.bringBack({'${field}':''});return false;"><@t.page 'button.clear_select'/></button></li>
+            <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+        </ul>
+    </div>
+</form>
+<script>
+$(".pageFormContent",$.pdialog.getCurrent()).on("change","input[type=file]",function(){
+    if($(this).length && $(this)[0].files){
+        $.ajax({
+            url:'common/beforeupload',
+            type: 'POST',
+            dataType: "json",
+            async: false,
+            data: {
+                field : "${field!}",
+                privatefile : ${privatefile!'false'},
+                filename : $(this)[0].files[0].name,
+                _csrf : "<@tools.csrfToken admin=true/>"
+            },
+            success: function (result) {
+                if(result.error){
+                    alertMsg.error(message);
+                } else {
+                    $("input[name=acl]",$.pdialog.getCurrent()).val(result.acl);
+                    $("input[name=Policy]",$.pdialog.getCurrent()).val(result.policy);
+                    $("input[name=key]",$.pdialog.getCurrent()).val(result.filename);
+                    $("input[name=success_action_redirect]",$.pdialog.getCurrent()).val(result.returnUrl);
+                    $("input[name=X-Amz-Date]",$.pdialog.getCurrent()).val(result.date);
+                    $("input[name=X-Amz-Signature]",$.pdialog.getCurrent()).val(result.signature);
+                    $("input[name=X-Amz-Credential]",$.pdialog.getCurrent()).val(result.credential);
+                    $("input[name=X-Amz-Algorithm]",$.pdialog.getCurrent()).val(result.algorithm);
+                    $("button[type=submit]",$.pdialog.getCurrent()).prop("disabled",false).removeClass("disabled");
+                }
+            }
+        });
+    }
+});
+</script>

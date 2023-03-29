@@ -6,17 +6,18 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 import javax.annotation.Resource;
+
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.entities.cms.CmsPlace;
 import com.publiccms.entities.cms.CmsPlaceAttribute;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.site.StatisticsComponent;
-import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsPlaceAttributeService;
 import com.publiccms.logic.service.cms.CmsPlaceService;
 
@@ -60,7 +61,7 @@ public class CmsPlaceDirective extends AbstractTemplateDirective {
             CmsPlace entity = service.getEntity(id);
             if (null != entity && site.getId() == entity.getSiteId()) {
                 if (absoluteURL) {
-                    templateComponent.initPlaceUrl(site, entity);
+                    CmsUrlUtils.initPlaceUrl(site, entity);
                 }
                 handler.put("object", entity);
                 if (handler.getBoolean("containsAttribute", false)) {
@@ -82,7 +83,7 @@ public class CmsPlaceDirective extends AbstractTemplateDirective {
                         if (null != clicks) {
                             e.setClicks(e.getClicks() + clicks);
                         }
-                        templateComponent.initPlaceUrl(site, e);
+                        CmsUrlUtils.initPlaceUrl(site, e);
                     };
                 } else {
                     consumer = e -> {
@@ -108,8 +109,6 @@ public class CmsPlaceDirective extends AbstractTemplateDirective {
     private CmsPlaceService service;
     @Resource
     private CmsPlaceAttributeService attributeService;
-    @Resource
-    private TemplateComponent templateComponent;
     @Resource
     private StatisticsComponent statisticsComponent;
 }

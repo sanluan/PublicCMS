@@ -13,6 +13,7 @@
         <module>publiccms-trade</module>
         <module>publiccms-cache</module>
         <module>publiccms-analyzer</module>
+        <module>publiccms-oss</module>
     </modules>
     <properties>
         <java.version>1.8</java.version>
@@ -141,6 +142,11 @@
             <dependency>
                 <groupId>com.publiccms</groupId>
                 <artifactId>publiccms-trade</artifactId>
+                <version>${version.publiccms}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.publiccms</groupId>
+                <artifactId>publiccms-oss</artifactId>
                 <version>${version.publiccms}</version>
             </dependency>
             <dependency>

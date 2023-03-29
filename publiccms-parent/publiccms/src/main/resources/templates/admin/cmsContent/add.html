@@ -301,7 +301,7 @@ $('input[name=checked]',navTab.getCurrentPanel()).click(function(){
         $('input[name=draft]',navTab.getCurrentPanel()).parent().parent().show();
     }
 });
-<#if fieldList?seq_contains('copied')>
+<#if fieldList?has_content && fieldList?seq_contains('copied')>
 $('input[name=copied]',navTab.getCurrentPanel()).click(function(){
     if($(this).is(':checked')) {
         $('.copied',navTab.getCurrentPanel()).show();

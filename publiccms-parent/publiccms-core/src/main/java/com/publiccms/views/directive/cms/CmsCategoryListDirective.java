@@ -6,14 +6,15 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.annotation.Resource;
+
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsCategoryService;
 import com.publiccms.views.pojo.query.CmsCategoryQuery;
 
@@ -78,7 +79,7 @@ public class CmsCategoryListDirective extends AbstractTemplateDirective {
         List<CmsCategory> list = (List<CmsCategory>) page.getList();
         if (null != list && handler.getBoolean("absoluteURL", true)) {
             list.forEach(e -> {
-                TemplateComponent.initCategoryUrl(site, e);
+                CmsUrlUtils.initCategoryUrl(site, e);
             });
         }
         handler.put("page", page).render();

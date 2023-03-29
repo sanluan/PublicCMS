@@ -38,6 +38,7 @@ import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CmsFileUtils;
+import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.DateFormatUtils;
@@ -792,7 +793,7 @@ public class CmsContentAdminController {
                     }
 
                     if (0 != userId) {
-                        TemplateComponent.initContentUrl(site, entity);
+                        CmsUrlUtils.initContentUrl(site, entity);
                         CmsContent content = service.copy(site, entity, category, status, userId);
                         if (null != content) {
                             try {

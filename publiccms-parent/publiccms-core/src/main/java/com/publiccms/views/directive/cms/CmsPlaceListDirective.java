@@ -5,17 +5,18 @@ import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
+
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsPlace;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.site.StatisticsComponent;
-import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsPlaceService;
 
 /**
@@ -100,7 +101,7 @@ public class CmsPlaceListDirective extends AbstractTemplateDirective {
                     e.setClicks(e.getClicks() + clicks);
                 }
                 if (absoluteURL) {
-                    templateComponent.initPlaceUrl(site, e);
+                    CmsUrlUtils.initPlaceUrl(site, e);
                 }
             });
         }
@@ -119,8 +120,6 @@ public class CmsPlaceListDirective extends AbstractTemplateDirective {
 
     @Resource
     private CmsPlaceService service;
-    @Resource
-    private TemplateComponent templateComponent;
     @Resource
     private StatisticsComponent statisticsComponent;
 

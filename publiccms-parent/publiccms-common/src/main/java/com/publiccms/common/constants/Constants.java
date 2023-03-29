@@ -1,6 +1,7 @@
 package com.publiccms.common.constants;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.util.Random;
 import java.util.function.BinaryOperator;
@@ -20,7 +21,7 @@ public class Constants {
      * Json Mapper
      */
     public static final ObjectMapper objectMapper = JsonMapper.builder().build();
-    
+
     /**
      * Default Request Config
      */
@@ -37,13 +38,13 @@ public class Constants {
      * 
      * Default CharSet Name
      */
-    public static final String DEFAULT_CHARSET_NAME = "UTF-8";
+    public static final String DEFAULT_CHARSET_NAME = StandardCharsets.UTF_8.name();
     /**
      * 默认字符编码
      * 
      * Default CharSet
      */
-    public static final Charset DEFAULT_CHARSET = Charset.forName(DEFAULT_CHARSET_NAME);
+    public static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
     /**
      * 间隔符
      * 

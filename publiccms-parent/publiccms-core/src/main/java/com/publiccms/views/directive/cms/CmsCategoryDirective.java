@@ -6,16 +6,17 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 import javax.annotation.Resource;
+
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.entities.cms.CmsCategoryAttribute;
 import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsCategoryAttributeService;
 import com.publiccms.logic.service.cms.CmsCategoryService;
 
@@ -67,7 +68,7 @@ public class CmsCategoryDirective extends AbstractTemplateDirective {
             }
             if (null != entity && site.getId() == entity.getSiteId()) {
                 if (absoluteURL) {
-                    TemplateComponent.initCategoryUrl(site, entity);
+                    CmsUrlUtils.initCategoryUrl(site, entity);
                 }
                 handler.put("object", entity);
                 if (handler.getBoolean("containsAttribute", false)) {
@@ -89,7 +90,7 @@ public class CmsCategoryDirective extends AbstractTemplateDirective {
                 Consumer<CmsCategory> consumer = null;
                 if (absoluteURL) {
                     consumer = e -> {
-                        TemplateComponent.initCategoryUrl(site, e);
+                        CmsUrlUtils.initCategoryUrl(site, e);
                     };
                 }
                 Map<String, CmsCategory> map = CommonUtils.listToMap(entityList, k -> k.getId().toString(), consumer,

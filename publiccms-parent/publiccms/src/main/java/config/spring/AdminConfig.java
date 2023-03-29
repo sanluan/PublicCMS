@@ -33,6 +33,7 @@ import com.publiccms.common.handler.FullBeanNameGenerator;
 import com.publiccms.common.interceptor.AdminContextInterceptor;
 import com.publiccms.common.interceptor.CsrfInterceptor;
 import com.publiccms.common.view.AdminFreeMarkerView;
+import com.publiccms.logic.component.OSSComponent;
 import com.publiccms.logic.component.cache.CacheComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 
@@ -91,12 +92,14 @@ public class AdminConfig implements WebMvcConfigurer {
      * 拦截器
      * 
      * @param templateComponent
+     * @param ossComponent 
      * 
      * @return admin servlet interceptor
      */
     @Bean
-    public AdminContextInterceptor adminInterceptor(TemplateComponent templateComponent) {
+    public AdminContextInterceptor adminInterceptor(TemplateComponent templateComponent, OSSComponent ossComponent) {
         templateComponent.setAdminContextPath(ADMIN_CONTEXT_PATH);
+        ossComponent.setAdminContextPath(ADMIN_CONTEXT_PATH);
         AdminContextInterceptor bean = new AdminContextInterceptor();
         bean.setAdminContextPath(ADMIN_CONTEXT_PATH);
         bean.setLoginUrl("/login.html");
@@ -124,13 +127,13 @@ public class AdminConfig implements WebMvcConfigurer {
         configurer.registerCallableInterceptors(timeoutInterceptor());
         configurer.setTaskExecutor(taskExecutor());
     }
-    
+
     @Bean
     public CallableProcessingInterceptor timeoutInterceptor() {
         TimeoutCallableProcessingInterceptor bean = new TimeoutCallableProcessingInterceptor();
         return bean;
     }
-    
+
     @Bean
     public AsyncTaskExecutor taskExecutor() {
         ThreadPoolTaskExecutor bean = new ThreadPoolTaskExecutor();

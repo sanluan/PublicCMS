@@ -10,9 +10,9 @@ import org.springframework.stereotype.Component;
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
-import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.sys.SysUserService;
 
 /**
@@ -80,7 +80,7 @@ public class SysUserListDirective extends AbstractTemplateDirective {
             boolean absoluteURL = handler.getBoolean("absoluteURL", true);
             if (absoluteURL) {
                 list.forEach(e -> {
-                    e.setCover(TemplateComponent.getUrl(site.getSitePath(), e.getCover()));
+                    e.setCover(CmsUrlUtils.getUrl(site.getSitePath(), e.getCover()));
                 });
             }
 

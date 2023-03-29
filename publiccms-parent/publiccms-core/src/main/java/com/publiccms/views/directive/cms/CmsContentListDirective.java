@@ -13,11 +13,11 @@ import org.springframework.stereotype.Component;
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.site.StatisticsComponent;
-import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.views.pojo.entities.ClickStatistics;
 import com.publiccms.views.pojo.query.CmsContentQuery;
@@ -131,8 +131,8 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
                     e.setId(e.getQuoteContentId());
                 }
                 if (absoluteURL) {
-                    TemplateComponent.initContentUrl(site, e);
-                    TemplateComponent.initContentCover(site, e);
+                    CmsUrlUtils.initContentUrl(site, e);
+                    CmsUrlUtils.initContentCover(site, e);
                 }
             });
         }

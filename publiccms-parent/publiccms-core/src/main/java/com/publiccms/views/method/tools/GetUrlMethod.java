@@ -8,10 +8,10 @@ import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.BaseMethod;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.TemplateModelUtils;
 import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.component.template.TemplateComponent;
 
 import freemarker.core.Environment;
 import freemarker.template.TemplateModel;
@@ -67,9 +67,9 @@ public class GetUrlMethod extends BaseMethod {
         String sitePath = getString(0, arguments);
         String url = getString(1, arguments);
         if (CommonUtils.notEmpty(sitePath) && CommonUtils.notEmpty(url)) {
-            return TemplateComponent.getUrl(sitePath, url);
+            return CmsUrlUtils.getUrl(sitePath, url);
         } else if (CommonUtils.notEmpty(sitePath) && null != site) {
-            return TemplateComponent.getUrl(site.getSitePath(), sitePath);
+            return CmsUrlUtils.getUrl(site.getSitePath(), sitePath);
         }
         return url;
     }

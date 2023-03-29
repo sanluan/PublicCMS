@@ -13,10 +13,10 @@ import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CmsFileUtils;
+import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsContentFile;
 import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsContentFileService;
 
 /**
@@ -75,7 +75,7 @@ public class CmsContentFileListDirective extends AbstractTemplateDirective {
             SysSite site = getSite(handler);
             if (absoluteURL) {
                 list.forEach(e -> {
-                    e.setFilePath(TemplateComponent.getUrl(site.getSitePath(), e.getFilePath()));
+                    e.setFilePath(CmsUrlUtils.getUrl(site.getSitePath(), e.getFilePath()));
                 });
             }
         }

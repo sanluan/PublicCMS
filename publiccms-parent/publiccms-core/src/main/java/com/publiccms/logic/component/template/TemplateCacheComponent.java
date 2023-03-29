@@ -30,6 +30,7 @@ import com.publiccms.common.api.Config;
 import com.publiccms.common.base.AbstractFreemarkerView;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.servlet.WebDispatcherServlet;
+import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.FreeMarkerUtils;
@@ -253,8 +254,8 @@ public class TemplateCacheComponent implements Cache {
                     if (null != statistics) {
                         e.setClicks(e.getClicks() + statistics.getClicks());
                     }
-                    TemplateComponent.initContentUrl(site, e);
-                    TemplateComponent.initContentCover(site, e);
+                    CmsUrlUtils.initContentUrl(site, e);
+                    CmsUrlUtils.initContentCover(site, e);
                 });
                 if (entityList.isEmpty() && parameterType.isRequired()) {
                     return false;
@@ -273,8 +274,8 @@ public class TemplateCacheComponent implements Cache {
                         if (null != statistics) {
                             entity.setClicks(entity.getClicks() + statistics.getClicks());
                         }
-                        TemplateComponent.initContentUrl(site, entity);
-                        TemplateComponent.initContentCover(site, entity);
+                        CmsUrlUtils.initContentUrl(site, entity);
+                        CmsUrlUtils.initContentCover(site, entity);
                         model.addAttribute(parameterName, entity);
                     }
                 } catch (NumberFormatException e) {
@@ -298,7 +299,7 @@ public class TemplateCacheComponent implements Cache {
                 entityList = entityList.stream().filter(entity -> site.getId() == entity.getSiteId())
                         .collect(Collectors.toList());
                 entityList.forEach(e -> {
-                    TemplateComponent.initCategoryUrl(site, e);
+                    CmsUrlUtils.initCategoryUrl(site, e);
                 });
                 if (entityList.isEmpty() && parameterType.isRequired()) {
                     return false;
@@ -313,7 +314,7 @@ public class TemplateCacheComponent implements Cache {
                             return false;
                         }
                     } else {
-                        TemplateComponent.initCategoryUrl(site, entity);
+                        CmsUrlUtils.initCategoryUrl(site, entity);
                         model.addAttribute(parameterName, entity);
                     }
                 } catch (NumberFormatException e) {

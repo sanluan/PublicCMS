@@ -28,6 +28,7 @@ import com.publiccms.common.api.Config;
 import com.publiccms.common.base.AbstractFreemarkerView;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.PageHandler;
+import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.common.tools.FreeMarkerUtils;
@@ -121,7 +122,7 @@ public class TemplateComponent implements Cache {
         if (CommonUtils.empty(pageIndex)) {
             pageIndex = 1;
         }
-        initCategoryUrl(site, entity);
+        CmsUrlUtils.initCategoryUrl(site, entity);
         model.put("category", entity);
         CmsCategoryAttribute attribute = categoryAttributeService.getEntity(entity.getId());
         if (null != attribute) {
@@ -173,9 +174,9 @@ public class TemplateComponent implements Cache {
             String templatePath, String filepath, Integer pageIndex) throws IOException, TemplateException {
         Map<String, Object> model = new HashMap<>();
 
-        initContentUrl(site, entity);
-        initContentCover(site, entity);
-        initCategoryUrl(site, category);
+        CmsUrlUtils.initContentUrl(site, entity);
+        CmsUrlUtils.initContentCover(site, entity);
+        CmsUrlUtils.initCategoryUrl(site, category);
 
         model.put("content", entity);
         model.put("category", category);
@@ -351,7 +352,7 @@ public class TemplateComponent implements Cache {
                 return true;
             } else if (CommonUtils.notEmpty(categoryPath)) {
                 Map<String, Object> model = new HashMap<>();
-                initCategoryUrl(site, entity);
+                CmsUrlUtils.initCategoryUrl(site, entity);
                 model.put("category", entity);
                 model.put(CommonConstants.getAttributeSite(), site);
                 String filepath = FreeMarkerUtils.generateStringByString(categoryPath, webConfiguration, model);
@@ -517,64 +518,6 @@ public class TemplateComponent implements Cache {
         return filepath;
     }
 
-    /**
-     * @param site
-     * @param entity
-     */
-    public void initPlaceUrl(SysSite site, CmsPlace entity) {
-        entity.setCover(getUrl(site.getSitePath(), entity.getCover()));
-        entity.setUrl(getUrl(site, site.isUseStatic(), entity.getUrl()));
-    }
-
-    /**
-     * @param site
-     * @param entity
-     */
-    public static void initContentUrl(SysSite site, CmsContent entity) {
-        entity.setUrl(getUrl(site, entity.isHasStatic(), entity.getUrl()));
-    }
-
-    /**
-     * @param site
-     * @param entity
-     */
-    public static void initContentCover(SysSite site, CmsContent entity) {
-        entity.setCover(getUrl(site.getSitePath(), entity.getCover()));
-    }
-
-    /**
-     * @param site
-     * @param hasStatic
-     * @param url
-     * @return
-     */
-    public static String getUrl(SysSite site, boolean hasStatic, String url) {
-        return getUrl(hasStatic ? site.getSitePath() : site.getDynamicPath(), url);
-    }
-
-    /**
-     * @param sitePath
-     * @param url
-     * @return
-     */
-    public static String getUrl(String sitePath, String url) {
-        if (CommonUtils.empty(url) || url.contains("://") || url.startsWith("//") || url.startsWith("#")) {
-            return url;
-        } else {
-            return CommonUtils.joinString(sitePath, url);
-        }
-    }
-
-    /**
-     * @param site
-     * @param entity
-     */
-    public static void initCategoryUrl(SysSite site, CmsCategory entity) {
-        if (!entity.isOnlyUrl()) {
-            entity.setUrl(getUrl(site, entity.isHasStatic(), entity.getUrl()));
-        }
-    }
-
     private void exposePlace(SysSite site, String templatePath, CmsPlaceMetadata metadata, CmsPageData data,
             Map<String, Object> model) {
         if (null != metadata.getSize() && 0 < metadata.getSize()) {
@@ -589,7 +532,7 @@ public class TemplateComponent implements Cache {
                     if (null != clicks) {
                         e.setClicks(e.getClicks() + clicks);
                     }
-                    initPlaceUrl(site, e);
+                    CmsUrlUtils.initPlaceUrl(site, e);
                 });
             }
             model.put("page", page);

@@ -46,7 +46,7 @@
                 $uploadWrap.find("input[type=file]").val("");
             });
         }
-        if ($previewElem.find(".edit-icon").length == 0) {
+        if ($previewElem.find(".edit-icon").length == 0 && $uploadWrap.find("input[name=base64File]").length) {
             $("<a class=\"edit-icon\"></a>").appendTo($previewElem).click(function(event){
                 editImg($uploadWrap,file,file.name,function(dataURL){
                     if(dataURL){

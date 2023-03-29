@@ -3,17 +3,18 @@ package com.publiccms.logic.component.site;
 import java.util.List;
 
 import javax.annotation.Resource;
+
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.api.Cache;
 import com.publiccms.common.cache.CacheEntity;
 import com.publiccms.common.cache.CacheEntityFactory;
+import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.cms.CmsPlace;
 import com.publiccms.entities.cms.CmsWord;
 import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.cms.CmsPlaceService;
 import com.publiccms.logic.service.cms.CmsTagService;
@@ -136,7 +137,7 @@ public class StatisticsComponent implements Cache {
                 CmsContent entity = contentService.getEntity(id);
                 if (null != entity && !entity.isDisabled() && CmsContentService.STATUS_NORMAL == entity.getStatus()
                         && site.getId().equals(entity.getSiteId())) {
-                    TemplateComponent.initContentUrl(site, entity);
+                    CmsUrlUtils.initContentUrl(site, entity);
                     clickStatistics = new ClickStatistics(id, entity.getSiteId(), 1, entity.getClicks(), entity.getUrl());
                     List<ClickStatistics> list = contentCache.put(id, clickStatistics);
                     if (CommonUtils.notEmpty(list)) {
