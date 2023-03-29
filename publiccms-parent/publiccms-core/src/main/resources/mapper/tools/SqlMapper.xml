@@ -32,6 +32,6 @@
         update cms_category_attribute a join cms_category b on a.category_id = b.id set a.data=replace(a.data,#{oldurl},#{newurl}) where b.site_id = #{siteId}
     </update>
     <update id="updateConfigData" parameterType="map">
-        update sys_config_data set data=replace(url,#{oldurl},#{newurl}) where site_id = #{siteId}
+        update sys_config_data set data=replace(data,#{oldurl},#{newurl}) where site_id = #{siteId}
     </update>
 </mapper>
