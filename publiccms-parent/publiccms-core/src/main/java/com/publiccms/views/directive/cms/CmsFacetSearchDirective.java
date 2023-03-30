@@ -90,11 +90,11 @@ public class CmsFacetSearchDirective extends AbstractTemplateDirective {
             page = service.facetQuery(
                     new CmsContentSearchQuery(site.getId(), handler.getBoolean("projection", false),
                             handler.getBoolean("phrase", false), highLighterQuery, word, handler.getString("exclude"),
-                            handler.getStringArray("fields"), tagIds, handler.getInteger("categoryId"),
-                            handler.getIntegerArray("categoryIds"), handler.getStringArray("modelIds"),
-                            handler.getStringArray("extendsValues"), handler.getStringArray("dictionaryValues"),
-                            handler.getBoolean("dictionaryUnion"), handler.getDate("startPublishDate"),
-                            handler.getDate("endPublishDate", currentDate), currentDate),
+                            handler.getStringArray("fields"), tagIds, handler.getLong("userId"), handler.getLong("parentId"),
+                            handler.getInteger("categoryId"), handler.getIntegerArray("categoryIds"),
+                            handler.getStringArray("modelIds"), handler.getStringArray("extendsValues"),
+                            handler.getStringArray("dictionaryValues"), handler.getBoolean("dictionaryUnion"),
+                            handler.getDate("startPublishDate"), handler.getDate("endPublishDate", currentDate), currentDate),
                     handler.getBoolean("containChild"), handler.getString("orderField"), pageIndex, pageSize,
                     handler.getInteger("maxPage"));
             @SuppressWarnings("unchecked")

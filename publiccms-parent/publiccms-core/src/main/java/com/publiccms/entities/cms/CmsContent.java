@@ -69,6 +69,7 @@ public class CmsContent implements java.io.Serializable {
      * 发布用户ID
      */
     @GeneratorColumn(title = "发布用户", condition = true)
+    @GenericField(aggregable = Aggregable.YES, projectable = Projectable.YES)
     private long userId;
     /**
      * dept id
@@ -108,7 +109,7 @@ public class CmsContent implements java.io.Serializable {
      * 父内容ID
      */
     @GeneratorColumn(title = "父内容", condition = true)
-    @GenericField(projectable = Projectable.YES)
+    @GenericField(aggregable = Aggregable.YES, projectable = Projectable.YES)
     private Long parentId;
     /**
      * quote content id
@@ -329,8 +330,8 @@ public class CmsContent implements java.io.Serializable {
 
     public CmsContent(short siteId, String title, long userId, int categoryId, String modelId, boolean onlyUrl, boolean hasImages,
             boolean hasFiles, boolean hasProducts, int childs, Date publishDate, Date createDate, int sort, int status) {
-        this(siteId, title, userId, categoryId, modelId, false, onlyUrl, hasImages, hasFiles, hasProducts, false, childs,
-                0, 0, BigDecimal.ZERO, 0, 0, publishDate, createDate, sort, status, false);
+        this(siteId, title, userId, categoryId, modelId, false, onlyUrl, hasImages, hasFiles, hasProducts, false, childs, 0, 0,
+                BigDecimal.ZERO, 0, 0, publishDate, createDate, sort, status, false);
     }
 
     public CmsContent(short siteId, String title, long userId, int categoryId, String modelId, boolean copied, boolean onlyUrl,

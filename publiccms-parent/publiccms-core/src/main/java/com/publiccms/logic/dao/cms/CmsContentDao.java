@@ -53,6 +53,8 @@ import com.publiccms.views.pojo.query.CmsContentSearchQuery;
 public class CmsContentDao extends BaseDao<CmsContent> {
     private static final String titleField = "title";
     private static final String siteIdField = "siteId";
+    private static final String userIdField = "userId";
+    private static final String parentIdField = "parentId";
     private static final String categoryIdField = "categoryId";
     private static final String modelIdField = "modelId";
     private static final String descriptionField = "description";
@@ -158,13 +160,17 @@ public class CmsContentDao extends BaseDao<CmsContent> {
 
         Consumer<? super BooleanPredicateClausesStep<?>> clauseContributor = b -> {
             b.must(t -> t.match().field(siteIdField).matching(queryEntity.getSiteId()));
-            if (CommonUtils.notEmpty(queryEntity.getCategoryIds())) {
-                Consumer<? super BooleanPredicateClausesStep<?>> categoryContributor = c -> {
-                    for (Integer categoryId : queryEntity.getCategoryIds()) {
-                        c.should(t -> t.match().field(categoryIdField).matching(categoryId));
-                    }
-                };
-                b.must(f -> f.bool(categoryContributor));
+            if (CommonUtils.notEmpty(queryEntity.getParentId())) {
+                b.must(t -> t.match().field(parentIdField).matching(queryEntity.getParentId()));
+            } else {
+                if (CommonUtils.notEmpty(queryEntity.getCategoryIds())) {
+                    Consumer<? super BooleanPredicateClausesStep<?>> categoryContributor = c -> {
+                        for (Integer categoryId : queryEntity.getCategoryIds()) {
+                            c.should(t -> t.match().field(categoryIdField).matching(categoryId));
+                        }
+                    };
+                    b.must(f -> f.bool(categoryContributor));
+                }
             }
             if (CommonUtils.notEmpty(queryEntity.getModelIds())) {
                 Consumer<? super BooleanPredicateClausesStep<?>> modelContributor = c -> {
@@ -173,6 +179,9 @@ public class CmsContentDao extends BaseDao<CmsContent> {
                     }
                 };
                 b.must(f -> f.bool(modelContributor));
+            }
+            if (CommonUtils.notEmpty(queryEntity.getUserId())) {
+                b.must(t -> t.match().field(userIdField).matching(queryEntity.getUserId()));
             }
             if (CommonUtils.notEmpty(queryEntity.getText())) {
                 Consumer<? super BooleanPredicateClausesStep<?>> keywordFiledsContributor = c -> {
@@ -216,8 +225,10 @@ public class CmsContentDao extends BaseDao<CmsContent> {
                             String[] vs = StringUtils.split(value, ":", 2);
                             if (2 == vs.length) {
                                 c.should(queryEntity.isPhrase()
-                                        ? t -> t.phrase().field(CommonUtils.joinString("extend.", vs[0])).matching(vs[1]).boost(2.0f)
-                                        : t -> t.match().field(CommonUtils.joinString("extend.", vs[0])).matching(vs[1]).boost(2.0f));
+                                        ? t -> t.phrase().field(CommonUtils.joinString("extend.", vs[0])).matching(vs[1])
+                                                .boost(2.0f)
+                                        : t -> t.match().field(CommonUtils.joinString("extend.", vs[0])).matching(vs[1])
+                                                .boost(2.0f));
                             }
                         }
                     }

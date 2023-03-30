@@ -33,6 +33,8 @@ import com.publiccms.views.pojo.query.CmsContentSearchQuery;
  * <li><code>word</code>:搜索词,多个搜索词时取并集结果
  * <li><code>exclude</code>:排除词汇
  * <li><code>tagId</code>:多个标签id,多个标签时取并集结果
+ * <li><code>userId</code>:用户id
+ * <li><code>parentId</code>:父内容id
  * <li><code>categoryId</code>:分类id
  * <li><code>containChild</code>:包含子分类,当categoryId不为空时有效
  * <li><code>categoryIds</code>:多个分类id,当categoryId为空时有效
@@ -114,11 +116,11 @@ public class CmsSearchDirective extends AbstractTemplateDirective {
             page = service.query(
                     new CmsContentSearchQuery(site.getId(), handler.getBoolean("projection", false),
                             handler.getBoolean("phrase", false), highLighterQuery, word, handler.getString("exclude"),
-                            handler.getStringArray("fields"), tagIds, handler.getInteger("categoryId"),
-                            handler.getIntegerArray("categoryIds"), handler.getStringArray("modelIds"),
-                            handler.getStringArray("extendsValues"), handler.getStringArray("dictionaryValues"),
-                            handler.getBoolean("dictionaryUnion"), handler.getDate("startPublishDate"),
-                            handler.getDate("endPublishDate", currentDate), currentDate),
+                            handler.getStringArray("fields"), tagIds, handler.getLong("userId"),handler.getLong("parentId"),
+                            handler.getInteger("categoryId"), handler.getIntegerArray("categoryIds"),
+                            handler.getStringArray("modelIds"), handler.getStringArray("extendsValues"),
+                            handler.getStringArray("dictionaryValues"), handler.getBoolean("dictionaryUnion"),
+                            handler.getDate("startPublishDate"), handler.getDate("endPublishDate", currentDate), currentDate),
                     handler.getBoolean("containChild"), handler.getString("orderField"), pageIndex, pageSize,
                     handler.getInteger("maxPage"));
             @SuppressWarnings("unchecked")
