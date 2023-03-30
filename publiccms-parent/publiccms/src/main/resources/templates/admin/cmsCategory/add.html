@@ -19,22 +19,24 @@
                 <#assign modelIndex++/>
         <li style="clear:both;margin-left:${index*50}px;padding: 5px 0;">
             <div>
-                <label title="${m.id}">
-                    ${m.name!}
-                    <input name="categoryModelList[${modelIndex}].use" type="hidden" value="false"/>
-                    <input name="categoryModelList[${modelIndex}].categoryModel.id.modelId" type="hidden" value="${m.id}"/>
-                </label>
-                <div class="clearfix">
-                    <label><input name="categoryModelList[${modelIndex}].categoryModel.customContentPath" type="checkbox"/><@t.page 'custorm_path'/></label>
-                    <#if site.useStatic>
-                        <label class="categoryModelCustomContentPath hide"><@t.page 'category.content_template_path'/>:</label><input class="categoryModelCustomContentPath hide" name="categoryModelList[${modelIndex}].categoryModel.templatePath" data-model="${m.id}" type="text" maxlength="200" size="30" value="${(m.templatePath)!}"/>
-                        <a class="btnLook categoryModelCustomContentPath hide" href="cmsTemplate/lookup.html?field=templatePath" lookupGroup="categoryModelList[${modelIndex}].categoryModel"><@t.page 'template.select'/></a>
-                    </#if>
-                </div>
-                <div class="clearfix categoryModelCustomContentPath hide">
-                    <label><@t.page 'content_path'/>:</label>
-                    <input name="categoryModelList[${modelIndex}].categoryModel.contentPath" type="text" autocomplete="on" maxlength="500" size="100" value="${(a.contentPath)!(categoryType.contentPath)!}"/>
-                    <a class="btnLook" href="cmsCategory/contentPath.html?childContent=true" width="920" lookupGroup="categoryModelList[${modelIndex}].categoryModel"><@t.page 'select_path'/></a>
+                <div>
+                    <label title="${m.id}">
+                        ${m.name!}
+                        <input name="categoryModelList[${modelIndex}].use" type="hidden" value="false"/>
+                        <input name="categoryModelList[${modelIndex}].categoryModel.id.modelId" type="hidden" value="${m.id}"/>
+                    </label>
+                    <div class="clearfix">
+                        <label><input name="categoryModelList[${modelIndex}].categoryModel.customContentPath" type="checkbox"/><@t.page 'custorm_path'/></label>
+                        <#if site.useStatic>
+                            <label class="categoryModelCustomContentPath hide"><@t.page 'category.content_template_path'/>:</label><input class="categoryModelCustomContentPath hide" name="categoryModelList[${modelIndex}].categoryModel.templatePath" data-model="${m.id}" type="text" maxlength="200" size="30" value="${(m.templatePath)!}"/>
+                            <a class="btnLook categoryModelCustomContentPath hide" href="cmsTemplate/lookup.html?field=templatePath" lookupGroup="categoryModelList[${modelIndex}].categoryModel"><@t.page 'template.select'/></a>
+                        </#if>
+                    </div>
+                    <div class="clearfix categoryModelCustomContentPath hide">
+                        <label><@t.page 'content_path'/>:</label>
+                        <input name="categoryModelList[${modelIndex}].categoryModel.contentPath" type="text" autocomplete="on" maxlength="500" size="100" value="${(a.contentPath)!(categoryType.contentPath)!}"/>
+                        <a class="btnLook" href="cmsCategory/contentPath.html?childContent=true" width="920" lookupGroup="categoryModelList[${modelIndex}].categoryModel"><@t.page 'select_path'/></a>
+                    </div>
                 </div>
             </div>
             <@childModel m index+1/>
