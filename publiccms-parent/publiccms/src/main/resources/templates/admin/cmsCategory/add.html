@@ -18,26 +18,26 @@
             <#list page.list as m>
                 <#assign modelIndex++/>
         <li style="clear:both;margin-left:${index*50}px;padding: 5px 0;" class="unitBox">
-            <div>
-                <div>
-                    <label title="${m.id}">
-                        ${m.name!}
-                        <input name="categoryModelList[${modelIndex}].use" type="hidden" value="false"/>
-                        <input name="categoryModelList[${modelIndex}].categoryModel.id.modelId" type="hidden" value="${m.id}"/>
-                    </label>
-                    <div class="clearfix">
-                        <label><input name="categoryModelList[${modelIndex}].categoryModel.customContentPath" type="checkbox"/><@t.page 'custorm_path'/></label>
-                        <#if site.useStatic>
-                            <label class="categoryModelCustomContentPath hide"><@t.page 'category.content_template_path'/>:</label><input class="categoryModelCustomContentPath hide" name="categoryModelList[${modelIndex}].categoryModel.templatePath" data-model="${m.id}" type="text" maxlength="200" size="30" value="${(m.templatePath)!}"/>
-                            <a class="btnLook categoryModelCustomContentPath hide" href="cmsTemplate/lookup.html?field=templatePath" lookupGroup="categoryModelList[${modelIndex}].categoryModel"><@t.page 'template.select'/></a>
-                        </#if>
-                    </div>
-                    <div class="clearfix categoryModelCustomContentPath hide">
-                        <label><@t.page 'content_path'/>:</label>
-                        <input name="categoryModelList[${modelIndex}].categoryModel.contentPath" type="text" autocomplete="on" maxlength="500" size="100" value="${(a.contentPath)!(categoryType.contentPath)!}"/>
-                        <a class="btnLook" href="cmsCategory/contentPath.html?childContent=true" width="920" lookupGroup="categoryModelList[${modelIndex}].categoryModel"><@t.page 'select_path'/></a>
-                    </div>
+            <div class="clearfix">
+                <label title="${m.id}">
+                    ${m.name!}
+                    <input name="categoryModelList[${modelIndex}].use" type="hidden" value="false"/>
+                    <input name="categoryModelList[${modelIndex}].categoryModel.id.modelId" type="hidden" value="${m.id}"/>
+                </label>
+            <#if !m.onlyUrl>
+                <div class="clearfix">
+                    <label><input name="categoryModelList[${modelIndex}].categoryModel.customContentPath" type="checkbox"/><@t.page 'custorm_path'/></label>
+                    <#if site.useStatic>
+                        <label class="categoryModelCustomContentPath hide"><@t.page 'category.content_template_path'/>:</label><input class="categoryModelCustomContentPath hide" name="categoryModelList[${modelIndex}].categoryModel.templatePath" data-model="${m.id}" type="text" maxlength="200" size="30" value="${(m.templatePath)!}"/>
+                        <a class="btnLook categoryModelCustomContentPath hide" href="cmsTemplate/lookup.html?field=templatePath" lookupGroup="categoryModelList[${modelIndex}].categoryModel"><@t.page 'template.select'/></a>
+                    </#if>
                 </div>
+                <div class="clearfix categoryModelCustomContentPath hide">
+                    <label>&nbsp;</label><label>&nbsp;</label><label><@t.page 'content_path'/>:</label>
+                    <input name="categoryModelList[${modelIndex}].categoryModel.contentPath" type="text" autocomplete="on" maxlength="500" size="100" value="${(a.contentPath)!(categoryType.contentPath)!}"/>
+                    <a class="btnLook" href="cmsCategory/contentPath.html?childContent=true" width="920" lookupGroup="categoryModelList[${modelIndex}].categoryModel"><@t.page 'select_path'/></a>
+                </div>
+            </#if>
             </div>
             <@childModel m index+1/>
         </li>
@@ -170,7 +170,7 @@
                     </dd>
                 </dl>
             </div>
-            <div class="pageFormContent categoryModel" layoutH>
+            <div class="pageFormContent" layoutH>
                 <@sys.authorized roleIds=admin.roles url='cmsModel/list'>
                 <dl class="nowrap">
                     <dt><@t.page 'model.management'/></dt>
@@ -182,38 +182,36 @@
                 <div class="divider"></div>
                 <#if id?has_content><div><span class="info"><@t.page 'content_path.description'/></span></div></#if>
         <@cms.modelList>
+                <ul class="categoryModel">
             <#list page.list as m>
                 <#assign modelIndex++/>
-                <dl class="nowrap">
-                    <dt>
-                        <label title="${m.id}">
-                            <input name="categoryModelList[${modelIndex}].use" type="checkbox" onclick="checkCategoryModel();"/>
-                            <input name="categoryModelList[${modelIndex}].categoryModel.id.modelId" type="hidden" value="${m.id}"/>
-                            ${m.name!}
-                        </label>
-                    </dt>
-                    <dd>
+                    <li style="padding: 5px 0;">
+                        <div class="clearfix">
+                            <label title="${m.id}">
+                                <input name="categoryModelList[${modelIndex}].use" type="checkbox" onclick="checkCategoryModel();"/>
+                                <input name="categoryModelList[${modelIndex}].categoryModel.id.modelId" type="hidden" value="${m.id}"/>
+                                ${m.name!}
+                            </label>
                         <#if !m.onlyUrl>
-                            <div>
-                                <div class="clearfix">
-                                    <label><input name="categoryModelList[${modelIndex}].categoryModel.customContentPath" type="checkbox"/><@t.page 'custorm_path'/></label>
+                            <div class="clearfix">
+                                <label><input name="categoryModelList[${modelIndex}].categoryModel.customContentPath" type="checkbox"/><@t.page 'custorm_path'/></label>
                             <#if site.useStatic>
-                                    <label class="categoryModelCustomContentPath hide"><@t.page 'category.content_template_path'/>:</label>
-                                    <input class="categoryModelCustomContentPath hide" name="categoryModelList[${modelIndex}].categoryModel.templatePath" data-model="${m.id}" type="text" autocomplete="on" maxlength="200" size="30" value="${(m.templatePath)!}"/>
-                                    <a class="btnLook categoryModelCustomContentPath hide" href="cmsTemplate/lookup.html?field=templatePath" lookupGroup="categoryModelList[${modelIndex}].categoryModel"><@t.page 'template.select'/></a>
+                                <label class="categoryModelCustomContentPath hide"><@t.page 'category.content_template_path'/>:</label>
+                                <input class="categoryModelCustomContentPath hide" name="categoryModelList[${modelIndex}].categoryModel.templatePath" data-model="${m.id}" type="text" autocomplete="on" maxlength="200" size="30" value="${(m.templatePath)!}"/>
+                                <a class="btnLook categoryModelCustomContentPath hide" href="cmsTemplate/lookup.html?field=templatePath" lookupGroup="categoryModelList[${modelIndex}].categoryModel"><@t.page 'template.select'/></a>
                             </#if>
-                                </div>
-                                <div class="clearfix categoryModelCustomContentPath hide">
-                                    <label><@t.page 'content_path'/>:</label>
-                                    <input name="categoryModelList[${modelIndex}].categoryModel.contentPath" type="text" autocomplete="on" maxlength="500" size="100" value="${(a.contentPath)!(categoryType.contentPath)!}"/>
-                                    <a class="btnLook" href="cmsCategory/contentPath.html" width="920" lookupGroup="categoryModelList[${modelIndex}].categoryModel"><@t.page 'select_path'/></a>
-                                </div>
+                            </div>
+                            <div class="clearfix categoryModelCustomContentPath hide">
+                                <label>&nbsp;</label><label>&nbsp;</label><label><@t.page 'content_path'/>:</label>
+                                <input name="categoryModelList[${modelIndex}].categoryModel.contentPath" type="text" autocomplete="on" maxlength="500" size="100" value="${(a.contentPath)!(categoryType.contentPath)!}"/>
+                                <a class="btnLook" href="cmsCategory/contentPath.html" width="920" lookupGroup="categoryModelList[${modelIndex}].categoryModel"><@t.page 'select_path'/></a>
                             </div>
                         </#if>
+                        </div>
                         <@childModel m/>
-                    </dd>
-                </dl>
+                    </li>
             </#list>
+                </ul>
         </@cms.modelList>
                 <dl class="nowrap categoryModelContentPath">
                     <dt><@t.page 'content_path'/>:</dt>
@@ -290,11 +288,11 @@ $('input[name$=\\.categoryModel\\.customContentPath]',navTab.getCurrentPanel()).
 <#if a?has_content>
     <@cms.categoryModelList categoryId=id!copyId>
         <#list list as a>
-            $('input[name$=\\.categoryModel\\.id\\.modelId][value=${a.id.modelId}]',navTab.getCurrentPanel()).parent().parent().parent().find('input[type=checkbox][name$=\\.use]').click();
+            $('input[name$=\\.categoryModel\\.id\\.modelId][value=${a.id.modelId}]',navTab.getCurrentPanel()).parent().parent().find('input[type=checkbox][name$=\\.use]').click();
             <#if a.customContentPath>
-            $('input[name$=\\.categoryModel\\.id\\.modelId][value=${a.id.modelId}]',navTab.getCurrentPanel()).parent().parent().parent().find('input[type=checkbox][name$=\\.categoryModel\\.customContentPath]').click();
+            $('input[name$=\\.categoryModel\\.id\\.modelId][value=${a.id.modelId}]',navTab.getCurrentPanel()).parent().parent().find('input[type=checkbox][name$=\\.categoryModel\\.customContentPath]').click();
             </#if>
-            $('input[name$=\\.categoryModel\\.id\\.modelId][value=${a.id.modelId}]',navTab.getCurrentPanel()).parent().parent().parent().find('input[name$=\\.categoryModel\\.contentPath]').val("${(a.contentPath?js_string?no_esc)!}");
+            $('input[name$=\\.categoryModel\\.id\\.modelId][value=${a.id.modelId}]',navTab.getCurrentPanel()).parent().parent().find('input[name$=\\.categoryModel\\.contentPath]').val("${(a.contentPath?js_string?no_esc)!}");
             $('input[data-model=${a.id.modelId}]',navTab.getCurrentPanel()).val('${(a.templatePath)!}');
         </#list>
     </@cms.categoryModelList>
