@@ -71,9 +71,9 @@ function checkCategoryModel(){
     $(".categoryModelContent",navTab.getCurrentPanel()).hide();
     $(".categoryModelContentPath",navTab.getCurrentPanel()).hide().find("input[name=contentPath]").removeClass("required");
     $(".categoryModel",navTab.getCurrentPanel()).show();
-    $(".categoryModel dl",navTab.getCurrentPanel()).each(function(){
+    $(".categoryModel li",navTab.getCurrentPanel()).each(function(){
         if($(this).find("input[type=checkbox][name$=\\.use]").is(":checked")){
-            $(this).find("dd ul li input[name$=\\.use]").val("true");
+            $(this).find("ul li input[name$=\\.use]").val("true");
             $(".categoryModelContent",navTab.getCurrentPanel()).show();
             if(0 != $(this).find("[name$=categoryModel\\.customContentPath]").not(":checked").length){
                 $(".categoryModelContentPath",navTab.getCurrentPanel()).show();
