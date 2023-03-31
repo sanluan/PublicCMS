@@ -175,7 +175,7 @@
                                     if (liAttr ) {
                                         liAttr += ",";
                                     }
-                                    liAttr += key + ":\"" + this[key] + "\"";
+                                    liAttr += "'" + key + "':'" + this[key] + "'";
                                 }
                                 html += "<li lookupAttrs=\"" + liAttr + "\">" + liLabel + "</li>";
                             });
@@ -196,9 +196,9 @@
                                     if (jsonStr ) {
                                         jsonStr += ",";
                                     }
-                                    jsonStr += suggestFields[i] + ":\"\"";
+                                    jsonStr += "'" + suggestFields[i] + "':''";
                                 }
-                                jsonStr = "{" + _lookup.pk + ":\"\"," + jsonStr + "}";
+                                jsonStr = "{'" + _lookup.pk + "':''," + jsonStr + "}";
                                 $.bringBackSuggest(JUI.jsonEval(jsonStr));
                             }
                         }, error: function() {
