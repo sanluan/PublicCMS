@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import com.publiccms.common.annotation.Csrf;
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -122,7 +122,7 @@ public class SurveyController {
                                     answer.setCreateDate(null);
                                     if (ArrayUtils.contains(CmsSurveyQuestionService.QUESTION_TYPES_DICT,
                                             question.getQuestionType())) {
-                                        String[] itemIds = StringUtils.split(answer.getAnswer(), CommonConstants.COMMA);
+                                        String[] itemIds = StringUtils.split(answer.getAnswer(), Constants.COMMA);
                                         if (CommonUtils.notEmpty(itemIds)) {
                                             for (String s : itemIds) {
                                                 try {
@@ -132,7 +132,7 @@ public class SurveyController {
                                             }
                                         }
                                         if (CmsSurveyService.SURVEY_TYPE_EXAM.equalsIgnoreCase(entity.getSurveyType())) {
-                                            String[] corrects = StringUtils.split(question.getAnswer(), CommonConstants.COMMA);
+                                            String[] corrects = StringUtils.split(question.getAnswer(), Constants.COMMA);
                                             answer.setScore(0);
                                             if (null != itemIds && ArrayUtils.isSameLength(itemIds, corrects)) {
                                                 boolean flag = true;

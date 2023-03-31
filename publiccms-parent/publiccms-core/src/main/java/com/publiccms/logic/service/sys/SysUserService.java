@@ -6,15 +6,16 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
-import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysUser;
@@ -143,7 +144,7 @@ public class SysUserService extends BaseService<SysUser> {
         SysUser entity = getEntity(userId);
         if (null != entity) {
             String roles = entity.getRoles();
-            String[] roleArray = StringUtils.split(roles, CommonConstants.COMMA);
+            String[] roleArray = StringUtils.split(roles, Constants.COMMA);
             ArrayUtils.removeElement(roleArray, roleId.toString());
             entity.setRoles(arrayToCommaDelimitedString(roleArray));
         }

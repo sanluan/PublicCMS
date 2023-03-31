@@ -19,7 +19,7 @@ import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESedeKeySpec;
-import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.codec.binary.Base64;
@@ -33,6 +33,9 @@ import com.publiccms.common.constants.Constants;
  *
  */
 public class VerificationUtils {
+
+    private VerificationUtils() {
+    }
 
     /**
      * @param text
@@ -303,8 +306,8 @@ public class VerificationUtils {
                 System.arraycopy(iv, 0, keybyte, lenght, 16 - lenght);
             }
             SecretKeySpec secretKeySpec = new SecretKeySpec(keybyte, "AES");
-            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-            cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec, new IvParameterSpec(iv));
+            Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding");
+            cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec, new GCMParameterSpec(128, iv));
             return cipher.doFinal(input.getBytes(Constants.DEFAULT_CHARSET));
         } catch (GeneralSecurityException e) {
             return new byte[0];
@@ -328,8 +331,8 @@ public class VerificationUtils {
                 System.arraycopy(iv, 0, keybyte, lenght, 16 - lenght);
             }
             SecretKeySpec secretKeySpec = new SecretKeySpec(keybyte, "AES");
-            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-            cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, new IvParameterSpec(iv));
+            Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding");
+            cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, new GCMParameterSpec(128, iv));
             byte[] ciphertext = cipher.doFinal(input);
             return new String(ciphertext, Constants.DEFAULT_CHARSET);
         } catch (GeneralSecurityException e) {

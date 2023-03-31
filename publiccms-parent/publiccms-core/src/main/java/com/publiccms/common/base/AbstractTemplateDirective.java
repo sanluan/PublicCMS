@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.directive.BaseTemplateDirective;
 import com.publiccms.common.handler.HttpParameterHandler;
 import com.publiccms.common.handler.RenderHandler;
@@ -84,7 +85,7 @@ public abstract class AbstractTemplateDirective extends BaseTemplateDirective {
         HttpParameterHandler handler = new HttpParameterHandler(httpMessageConverter, mediaType, request, response);
         SysApp app = null;
         if (needAppToken() && (null == (app = getApp(handler)) || CommonUtils.empty(app.getAuthorizedApis())
-                || !ArrayUtils.contains(StringUtils.split(app.getAuthorizedApis(), CommonConstants.COMMA), getName()))) {
+                || !ArrayUtils.contains(StringUtils.split(app.getAuthorizedApis(), Constants.COMMA), getName()))) {
             if (null == app) {
                 handler.put(CommonConstants.ERROR, ApiController.NEED_APP_TOKEN).render();
             } else {

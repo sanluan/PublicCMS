@@ -26,7 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.api.Config;
 import com.publiccms.common.base.BaseService;
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.FacetPageHandler;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CmsFileUtils;
@@ -200,7 +200,7 @@ public class CmsContentService extends BaseService<CmsContent> {
         CmsContent entity = getEntity(id);
         if (null != entity) {
             Set<Serializable> tagIds = tagService.update(site.getId(), contentParameters.getTags());
-            entity.setTagIds(collectionToDelimitedString(tagIds, CommonConstants.BLANK_SPACE));
+            entity.setTagIds(collectionToDelimitedString(tagIds, Constants.BLANK_SPACE));
             if (entity.isHasImages() || entity.isHasFiles()) {
                 contentFileService.update(entity.getId(), userId, entity.isHasFiles() ? contentParameters.getFiles() : null,
                         entity.isHasImages() ? contentParameters.getImages() : null);// 更新保存图集，附件
@@ -310,7 +310,7 @@ public class CmsContentService extends BaseService<CmsContent> {
         if (null != text) {
             attribute.setWordCount(text.length());
             if (cmsModel.isSearchable()) {
-                searchTextBuilder.append(text).append(CommonConstants.BLANK_SPACE);
+                searchTextBuilder.append(text).append(Constants.BLANK_SPACE);
             }
             if (CommonUtils.empty(entity.getDescription())) {
                 entity.setDescription(CommonUtils.keep(text, 300));
@@ -325,25 +325,25 @@ public class CmsContentService extends BaseService<CmsContent> {
             attribute.setData(ExtendUtils.getExtendString(map, site.getSitePath(), (extendField, value) -> {
                 if (ArrayUtils.contains(DICTIONARY_INPUT_TYPES, extendField.getInputType())) {
                     if (Config.INPUTTYPE_DICTIONARY.equalsIgnoreCase(extendField.getInputType()) && extendField.isMultiple()) {
-                        String[] values = StringUtils.split(value, CommonConstants.COMMA);
+                        String[] values = StringUtils.split(value, Constants.COMMA);
                         if (CommonUtils.notEmpty(values)) {
                             for (String v : values) {
                                 dictionaryValueList
-                                        .add(CommonUtils.joinString(extendField.getId().getCode(), CommonConstants.UNDERLINE, v));
+                                        .add(CommonUtils.joinString(extendField.getId().getCode(), Constants.UNDERLINE, v));
                             }
                         }
                     } else {
                         dictionaryValueList
-                                .add(CommonUtils.joinString(extendField.getId().getCode(), CommonConstants.UNDERLINE, value));
+                                .add(CommonUtils.joinString(extendField.getId().getCode(), Constants.UNDERLINE, value));
                     }
                 } else if (Config.INPUTTYPE_KEYVALUE.equalsIgnoreCase(extendField.getInputType())) {
-                    String[] values = StringUtils.splitPreserveAllTokens(value, CommonConstants.COMMA);
+                    String[] values = StringUtils.splitPreserveAllTokens(value, Constants.COMMA);
                     if (CommonUtils.notEmpty(values)) {
                         int i = 0;
                         extendsFieldList.add(extendField.getId().getCode());
                         for (String v : values) {
                             if (i++ % 2 == 1) {
-                                searchTextBuilder.append(v).append(CommonConstants.BLANK_SPACE);
+                                searchTextBuilder.append(v).append(Constants.BLANK_SPACE);
                             }
                         }
                     }
@@ -354,12 +354,12 @@ public class CmsContentService extends BaseService<CmsContent> {
                     }
                     if (CommonUtils.notEmpty(value)) {
                         extendsFieldList.add(extendField.getId().getCode());
-                        searchTextBuilder.append(value).append(CommonConstants.BLANK_SPACE);
+                        searchTextBuilder.append(value).append(Constants.BLANK_SPACE);
                     }
                 }
             }, modelExtendList, categoryExtendList));
             if (CommonUtils.notEmpty(dictionaryValueList)) {
-                attribute.setDictionaryValues(collectionToDelimitedString(dictionaryValueList, CommonConstants.BLANK_SPACE));
+                attribute.setDictionaryValues(collectionToDelimitedString(dictionaryValueList, Constants.BLANK_SPACE));
             } else {
                 attribute.setDictionaryValues(null);
             }
@@ -387,12 +387,12 @@ public class CmsContentService extends BaseService<CmsContent> {
         StringBuilder filesTextBuilder = new StringBuilder();
         if (CommonUtils.notEmpty(files)) {
             for (CmsContentFile file : files) {
-                filesTextBuilder.append(file.getDescription()).append(CommonConstants.BLANK_SPACE);
+                filesTextBuilder.append(file.getDescription()).append(Constants.BLANK_SPACE);
             }
         }
         if (CommonUtils.notEmpty(images)) {
             for (CmsContentFile file : images) {
-                filesTextBuilder.append(file.getDescription()).append(CommonConstants.BLANK_SPACE);
+                filesTextBuilder.append(file.getDescription()).append(Constants.BLANK_SPACE);
             }
         }
         attribute.setFilesText(filesTextBuilder.toString());
@@ -746,7 +746,7 @@ public class CmsContentService extends BaseService<CmsContent> {
         } else if (null != containChild && containChild) {
             CmsCategory category = categoryService.getEntity(categoryId);
             if (null != category) {
-                String[] categoryStringIds = ArrayUtils.add(StringUtils.split(category.getChildIds(), CommonConstants.COMMA),
+                String[] categoryStringIds = ArrayUtils.add(StringUtils.split(category.getChildIds(), Constants.COMMA),
                         String.valueOf(categoryId));
                 categoryIds = new Integer[categoryStringIds.length];
                 for (int i = 0; i < categoryStringIds.length; i++) {

@@ -70,9 +70,7 @@ public class SysUserDirective extends AbstractTemplateDirective {
                 List<SysUser> entityList = service.getEntitys(ids);
                 Consumer<SysUser> consumer = null;
                 if (absoluteURL) {
-                    consumer = e -> {
-                        e.setCover(CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site, false), e.getCover()));
-                    };
+                    consumer = e -> e.setCover(CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site, false), e.getCover()));
                 }
                 Map<String, SysUser> map = CommonUtils.listToMap(entityList, k -> k.getId().toString(), consumer,
                         entity -> site.getId() == entity.getSiteId());

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.publiccms.common.annotation.Csrf;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
@@ -80,7 +81,7 @@ public class ${entityName}${controllerSuffix} {
         if (CommonUtils.notEmpty(ids)) {
             service.delete(ids);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER, "delete.${entityName?uncap_first}",
-                            RequestUtils.getIpAddress(request), CommonUtils.getDate(), StringUtils.join(ids, CommonConstants.COMMA)));
+                            RequestUtils.getIpAddress(request), CommonUtils.getDate(), StringUtils.join(ids, Constants.COMMA)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }

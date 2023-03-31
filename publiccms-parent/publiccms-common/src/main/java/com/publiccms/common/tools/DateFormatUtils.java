@@ -11,6 +11,9 @@ import java.util.Map;
  *
  */
 public class DateFormatUtils {
+    private DateFormatUtils() {
+    }
+
     private static ThreadLocal<Map<String, DateFormat>> threadLocal = new ThreadLocal<>();
     /**
      * full date format

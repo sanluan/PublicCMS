@@ -119,14 +119,14 @@ public class SysSiteAdminController {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (null == entity.getDynamicPath()) {
-            entity.setDynamicPath(CommonConstants.SEPARATOR);
-        } else if (!entity.getDynamicPath().endsWith(CommonConstants.SEPARATOR)) {
-            entity.setDynamicPath(CommonUtils.joinString(entity.getDynamicPath(), CommonConstants.SEPARATOR));
+            entity.setDynamicPath(Constants.SEPARATOR);
+        } else if (!entity.getDynamicPath().endsWith(Constants.SEPARATOR)) {
+            entity.setDynamicPath(CommonUtils.joinString(entity.getDynamicPath(), Constants.SEPARATOR));
         }
         if (null == entity.getSitePath()) {
-            entity.setSitePath(CommonConstants.SEPARATOR);
-        } else if (!entity.getSitePath().endsWith(CommonConstants.SEPARATOR)) {
-            entity.setSitePath(CommonUtils.joinString(entity.getSitePath(), CommonConstants.SEPARATOR));
+            entity.setSitePath(Constants.SEPARATOR);
+        } else if (!entity.getSitePath().endsWith(Constants.SEPARATOR)) {
+            entity.setSitePath(CommonUtils.joinString(entity.getSitePath(), Constants.SEPARATOR));
         }
         if (null != entity.getId()) {
             entity = service.update(entity.getId(), entity, ignoreProperties);
@@ -199,7 +199,7 @@ public class SysSiteAdminController {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentDisposition(ContentDisposition.attachment()
                     .filename(CommonUtils.joinString(site.getName(), dateFormat.format(new Date()), "-site.zip"),
-                            CommonConstants.DEFAULT_CHARSET)
+                            Constants.DEFAULT_CHARSET)
                     .build());
             StreamingResponseBody body = new StreamingResponseBody() {
                 @Override
@@ -207,15 +207,15 @@ public class SysSiteAdminController {
                     try (ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream)) {
                         zipOutputStream.setEncoding(Constants.DEFAULT_CHARSET_NAME);
                         {
-                            String filepath = siteComponent.getTemplateFilePath(site.getId(), CommonConstants.SEPARATOR);
+                            String filepath = siteComponent.getTemplateFilePath(site.getId(), Constants.SEPARATOR);
                             ZipUtils.compress(Paths.get(filepath), zipOutputStream, "template");
                         }
                         {
-                            String filepath = siteComponent.getWebFilePath(site.getId(), CommonConstants.SEPARATOR);
+                            String filepath = siteComponent.getWebFilePath(site.getId(), Constants.SEPARATOR);
                             ZipUtils.compress(Paths.get(filepath), zipOutputStream, "web");
                         }
                         {
-                            String filepath = siteComponent.getTaskTemplateFilePath(site.getId(), CommonConstants.SEPARATOR);
+                            String filepath = siteComponent.getTaskTemplateFilePath(site.getId(), Constants.SEPARATOR);
                             ZipUtils.compress(Paths.get(filepath), zipOutputStream, "tasktemplate");
                         }
                         siteExchangeComponent.exportAll(site, zipOutputStream);
@@ -295,14 +295,14 @@ public class SysSiteAdminController {
                     i += sqlService.updatePlaceAttribute(siteId, oldurl, newurl);
                     i += sqlService.updateCategoryAttribute(siteId, oldurl, newurl);
                     i += sqlService.updateConfigData(siteId, oldurl, newurl);
-                    String filepath = siteComponent.getTemplateFilePath(site.getId(), CommonConstants.SEPARATOR);
+                    String filepath = siteComponent.getTemplateFilePath(site.getId(), Constants.SEPARATOR);
                     try (DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get(filepath))) {
                         for (Path entry : stream) {
                             File file = entry.toFile();
                             if (file.isFile() && MetadataComponent.DATA_FILE.equalsIgnoreCase(file.getName())) {
                                 String content = StringUtils.replace(
-                                        FileUtils.readFileToString(file, CommonConstants.DEFAULT_CHARSET), oldurl, newurl);
-                                FileUtils.write(file, content, CommonConstants.DEFAULT_CHARSET);
+                                        FileUtils.readFileToString(file, Constants.DEFAULT_CHARSET), oldurl, newurl);
+                                FileUtils.write(file, content, Constants.DEFAULT_CHARSET);
                                 i += 1;
                             }
                         }
@@ -402,7 +402,7 @@ public class SysSiteAdminController {
     public String reCreateIndex(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, HttpServletRequest request) {
         hqlService.reCreateIndex();
         logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                "reCreateIndex", RequestUtils.getIpAddress(request), CommonUtils.getDate(), CommonConstants.BLANK));
+                "reCreateIndex", RequestUtils.getIpAddress(request), CommonUtils.getDate(), Constants.BLANK));
         return CommonConstants.TEMPLATE_DONE;
     }
 }

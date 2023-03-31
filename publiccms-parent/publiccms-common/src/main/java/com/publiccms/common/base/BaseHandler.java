@@ -239,7 +239,7 @@ public abstract class BaseHandler implements RenderHandler {
     }
 
     @Override
-    public Integer getInteger(String name, Integer defaultValue) {
+    public int getInteger(String name, int defaultValue) {
         try {
             regristerParameter(PARAMETER_TYPE_INTEGER, name, defaultValue);
             Integer result = getIntegerWithoutRegister(name);
@@ -250,7 +250,7 @@ public abstract class BaseHandler implements RenderHandler {
     }
 
     @Override
-    public Long getLong(String name, Long defaultValue) throws TemplateModelException {
+    public long getLong(String name, long defaultValue) throws TemplateModelException {
         try {
             Long result = getLong(name);
             return null == result ? defaultValue : result;
@@ -266,7 +266,7 @@ public abstract class BaseHandler implements RenderHandler {
     }
 
     @Override
-    public Byte getByte(String name, Byte defaultValue) {
+    public byte getByte(String name, byte defaultValue) {
         try {
             regristerParameter(PARAMETER_TYPE_BYTE, name, defaultValue);
             Byte result = getByteWithoutRegister(name);
@@ -348,7 +348,7 @@ public abstract class BaseHandler implements RenderHandler {
     }
 
     @Override
-    public Boolean getBoolean(String name, Boolean defaultValue) throws TemplateModelException {
+    public boolean getBoolean(String name, boolean defaultValue) throws TemplateModelException {
         regristerParameter(PARAMETER_TYPE_BOOLEAN, name, defaultValue);
         return getBooleanWithoutRegister(name, defaultValue);
     }

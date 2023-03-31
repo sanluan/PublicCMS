@@ -16,9 +16,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,6 +27,7 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CmsVersion;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -78,7 +79,7 @@ public class FileController {
      * @param request
      * @return view name
      */
-    @RequestMapping(value = "doUpload", method = RequestMethod.POST)
+    @PostMapping( "doUpload")
     @Csrf
     @ResponseBody
     public Map<String, Object> upload(@RequestAttribute SysSite site, @SessionAttribute SysUser user, boolean privatefile,
@@ -132,7 +133,7 @@ public class FileController {
                     result.put("fileName", uploadResult.getFilename());
                     String fileType = CmsFileUtils.getFileType(suffix);
                     result.put("fileType", fileType);
-                    result.put("fileSize", file.getSize());
+                    result.put("fileSize", uploadResult.getFileSize());
                     logUploadService.save(new LogUpload(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, originalName,
                             privatefile, fileType, uploadResult.getFileSize(), uploadResult.getWidth(), uploadResult.getHeight(),
                             RequestUtils.getIpAddress(request), CommonUtils.getDate(), uploadResult.getFilename()));
@@ -141,8 +142,8 @@ public class FileController {
                     result.put(CommonConstants.ERROR, e.getMessage());
                 }
             } else {
-                result.put(CommonConstants.ERROR, LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
-                        "verify.custom.fileType"));
+                result.put(CommonConstants.ERROR, LanguagesUtils.getMessage(CommonConstants.applicationContext,
+                        request.getLocale(), "verify.custom.fileType"));
             }
         } else {
             result.put(CommonConstants.ERROR,
@@ -174,7 +175,7 @@ public class FileController {
                 HttpHeaders headers = new HttpHeaders();
                 if (CommonUtils.notEmpty(filename)) {
                     headers.setContentDisposition(
-                            ContentDisposition.attachment().filename(filename, CommonConstants.DEFAULT_CHARSET).build());
+                            ContentDisposition.attachment().filename(filename, Constants.DEFAULT_CHARSET).build());
                 }
                 String sendfile = request.getHeader(CmsFileUtils.HEADERS_SEND_CTRL);
                 if (CmsFileUtils.HEADERS_SEND_NGINX.equalsIgnoreCase(sendfile)) {

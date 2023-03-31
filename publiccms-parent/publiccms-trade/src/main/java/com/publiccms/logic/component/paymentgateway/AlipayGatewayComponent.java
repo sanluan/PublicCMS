@@ -19,7 +19,7 @@ import com.publiccms.common.api.TradePaymentProcessor;
 import com.publiccms.common.base.AbstractPaymentGateway;
 import com.publiccms.common.cache.CacheEntity;
 import com.publiccms.common.cache.CacheEntityFactory;
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
@@ -173,8 +173,7 @@ public class AlipayGatewayComponent extends AbstractPaymentGateway implements co
                                     .getBody();
                         }
 
-                        response.setContentType(
-                                CommonUtils.joinString("text/html;charset=", CommonConstants.DEFAULT_CHARSET_NAME));
+                        response.setContentType(CommonUtils.joinString("text/html;charset=", Constants.DEFAULT_CHARSET_NAME));
                         response.getWriter().write(
                                 "<html><head><meta http-equiv='Content-Type' content='text/html;charset=UTF-8'></head><body>");
                         response.getWriter().write(form);
@@ -220,38 +219,37 @@ public class AlipayGatewayComponent extends AbstractPaymentGateway implements co
     public List<SysExtendField> getExtendFieldList(SysSite site, Locale locale) {
         List<SysExtendField> extendFieldList = new ArrayList<>();
         extendFieldList.add(new SysExtendField(CONFIG_GATEWAY, INPUTTYPE_TEXT,
-                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_GATEWAY)),
-                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_GATEWAY,
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_GATEWAY)),
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_GATEWAY,
                         CONFIG_CODE_DESCRIPTION_SUFFIX))));
         extendFieldList.add(new SysExtendField(CONFIG_APPID, INPUTTYPE_TEXT,
-                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_APPID)),
-                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_APPID,
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_APPID)),
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_APPID,
                         CONFIG_CODE_DESCRIPTION_SUFFIX))));
         extendFieldList.add(new SysExtendField(CONFIG_PRIVATE_KEY, INPUTTYPE_TEXTAREA,
-                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_PRIVATE_KEY)),
-                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_PRIVATE_KEY,
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_PRIVATE_KEY)),
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_PRIVATE_KEY,
                         CONFIG_CODE_DESCRIPTION_SUFFIX))));
         extendFieldList.add(new SysExtendField(CONFIG_TIMEOUT_EXPRESS, INPUTTYPE_TEXT, false,
-                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_TIMEOUT_EXPRESS)),
-                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_TIMEOUT_EXPRESS,
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_TIMEOUT_EXPRESS)),
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_TIMEOUT_EXPRESS,
                         CONFIG_CODE_DESCRIPTION_SUFFIX)),
                 "30m"));
         extendFieldList.add(new SysExtendField(CONFIG_ALIPAY_PUBLIC_KEY, INPUTTYPE_TEXTAREA,
-                getMessage(locale,
-                        CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_ALIPAY_PUBLIC_KEY)),
-                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_ALIPAY_PUBLIC_KEY,
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_ALIPAY_PUBLIC_KEY)),
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_ALIPAY_PUBLIC_KEY,
                         CONFIG_CODE_DESCRIPTION_SUFFIX))));
         extendFieldList.add(new SysExtendField(CONFIG_PRODUCT_CODE, INPUTTYPE_TEXT,
-                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_PRODUCT_CODE)),
-                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_PRODUCT_CODE,
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_PRODUCT_CODE)),
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_PRODUCT_CODE,
                         CONFIG_CODE_DESCRIPTION_SUFFIX))));
         extendFieldList.add(new SysExtendField(CONFIG_ENCRYPTKEY, INPUTTYPE_TEXT,
-                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_ENCRYPTKEY)),
-                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_ENCRYPTKEY,
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_ENCRYPTKEY)),
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_ENCRYPTKEY,
                         CONFIG_CODE_DESCRIPTION_SUFFIX))));
         extendFieldList.add(new SysExtendField(CONFIG_NOTIFYURL, INPUTTYPE_TEXT,
-                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_NOTIFYURL)),
-                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_NOTIFYURL,
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_NOTIFYURL)),
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_NOTIFYURL,
                         CONFIG_CODE_DESCRIPTION_SUFFIX, site.getDynamicPath()))));
         return extendFieldList;
     }
@@ -271,10 +269,7 @@ public class AlipayGatewayComponent extends AbstractPaymentGateway implements co
     @Override
     public boolean enable(short siteId) {
         Map<String, String> config = configDataComponent.getConfigData(siteId, CONFIG_CODE);
-        if (CommonUtils.notEmpty(config) && CommonUtils.notEmpty(config.get(CONFIG_GATEWAY))) {
-            return true;
-        }
-        return false;
+        return CommonUtils.notEmpty(config) && CommonUtils.notEmpty(config.get(CONFIG_GATEWAY));
     }
 
     @Override

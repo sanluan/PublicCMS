@@ -1,6 +1,8 @@
 package com.publiccms.logic.component.site;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
@@ -73,8 +75,8 @@ public class FileUploadComponent {
     public String getPrefix(SysSite site, Boolean privatefile) {
         if (CommonUtils.notEmpty(uploaderList)) {
             for (FileUploader fileUploader : uploaderList) {
-                if (fileUploader.enable(site.getId(), null == privatefile ? false : privatefile)) {
-                    return fileUploader.getPrefix(site.getId(), null == privatefile ? false : privatefile);
+                if (fileUploader.enable(site.getId(), null != privatefile && privatefile)) {
+                    return fileUploader.getPrefix(site.getId(), null != privatefile && privatefile);
                 }
             }
         }
@@ -93,10 +95,11 @@ public class FileUploadComponent {
         }
         String filepath = privatefile ? siteComponent.getPrivateFilePath(siteId, fileName)
                 : siteComponent.getWebFilePath(siteId, fileName);
-        CmsFileUtils.upload(file, filepath);
+        Path path = CmsFileUtils.upload(file, filepath);
         if (CmsFileUtils.isSafe(filepath, suffix)) {
             return CmsFileUtils.getFileSize(filepath, suffix);
         } else {
+            Files.delete(path);
             throw new IOException(
                     LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "verify.custom.file.unsafe"));
         }

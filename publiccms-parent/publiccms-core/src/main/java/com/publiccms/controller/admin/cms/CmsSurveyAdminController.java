@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
@@ -78,7 +79,7 @@ public class CmsSurveyAdminController {
             service.delete(ids);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.cmsSurvey", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), StringUtils.join(ids, CommonConstants.COMMA)));
+                    CommonUtils.getDate(), StringUtils.join(ids, Constants.COMMA)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }

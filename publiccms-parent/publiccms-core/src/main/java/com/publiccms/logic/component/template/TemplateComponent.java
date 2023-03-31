@@ -27,6 +27,7 @@ import com.publiccms.common.api.Cache;
 import com.publiccms.common.api.Config;
 import com.publiccms.common.base.AbstractFreemarkerView;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.common.tools.CommonUtils;
@@ -388,6 +389,7 @@ public class TemplateComponent implements Cache {
             try {
                 future.get();
             } catch (InterruptedException | ExecutionException e) {
+                Thread.currentThread().interrupt();
             }
         }
     }
@@ -498,7 +500,7 @@ public class TemplateComponent implements Cache {
             model.put(CommonConstants.DEFAULT_PAGEINDEX, pageIndex);
             AbstractFreemarkerView.exposeSite(model, site);
             filepath = FreeMarkerUtils.generateStringByString(filepath, webConfiguration, model);
-            if (filepath.startsWith(CommonConstants.SEPARATOR)) {
+            if (filepath.startsWith(Constants.SEPARATOR)) {
                 filepath = filepath.substring(1);
             }
             String fullPath = CommonUtils.joinString(site.getSitePath(), filepath);
@@ -507,14 +509,14 @@ public class TemplateComponent implements Cache {
                 urlConsumer.accept(fullPath);
             }
             String staticFilePath;
-            if (filepath.endsWith(CommonConstants.SEPARATOR)) {
+            if (filepath.endsWith(Constants.SEPARATOR)) {
                 staticFilePath = CommonUtils.joinString(filepath, CommonConstants.getDefaultPage());
             } else {
                 staticFilePath = filepath;
             }
             if (CommonUtils.notEmpty(pageIndex) && 1 < pageIndex) {
-                int index = staticFilePath.lastIndexOf(CommonConstants.DOT);
-                staticFilePath = CommonUtils.joinString(staticFilePath.substring(0, index), CommonConstants.UNDERLINE, pageIndex,
+                int index = staticFilePath.lastIndexOf(Constants.DOT);
+                staticFilePath = CommonUtils.joinString(staticFilePath.substring(0, index), Constants.UNDERLINE, pageIndex,
                         staticFilePath.substring(index, staticFilePath.length()));
             }
             FreeMarkerUtils.generateFileByFile(fullTemplatePath, siteComponent.getWebFilePath(site.getId(), staticFilePath),

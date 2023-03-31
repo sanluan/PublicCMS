@@ -3,10 +3,11 @@ package com.publiccms.views.directive.tools;
 import java.io.IOException;
 
 import javax.annotation.Resource;
+
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
@@ -55,7 +56,7 @@ public class IncludePlaceDirective extends AbstractTemplateDirective {
             if (site.isUseSsi()) {
                 StringBuilder sb = new StringBuilder("<!--#include virtual=\"/");
                 if (null != site.getParentId() && CommonUtils.notEmpty(site.getDirectory())) {
-                    sb.append(site.getDirectory()).append(CommonConstants.SEPARATOR);
+                    sb.append(site.getDirectory()).append(Constants.SEPARATOR);
                 }
                 sb.append(TemplateComponent.INCLUDE_DIRECTORY).append(path).append("\"-->");
                 handler.print(sb.toString());

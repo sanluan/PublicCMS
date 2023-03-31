@@ -16,7 +16,9 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
  * Constants
  * 
  */
-public class Constants {
+public abstract class Constants {
+    private Constants() {
+    }
 
     /**
      * Json Mapper

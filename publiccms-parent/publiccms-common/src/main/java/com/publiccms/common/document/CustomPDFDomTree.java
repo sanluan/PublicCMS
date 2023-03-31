@@ -3,8 +3,6 @@ package com.publiccms.common.document;
 import java.io.IOException;
 import java.util.List;
 
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.fit.pdfdom.PDFDomTree;
 import org.fit.pdfdom.PDFDomTreeConfig;
 import org.fit.pdfdom.PathSegment;
@@ -15,17 +13,8 @@ import com.publiccms.common.tools.CommonUtils;
 
 public class CustomPDFDomTree extends PDFDomTree {
 
-    public CustomPDFDomTree() throws IOException {
-        super();
-    }
-
     public CustomPDFDomTree(PDFDomTreeConfig config) throws IOException {
         super(config);
-    }
-
-    @Override
-    protected void createDocument() throws ParserConfigurationException {
-        super.createDocument();
     }
 
     @Override

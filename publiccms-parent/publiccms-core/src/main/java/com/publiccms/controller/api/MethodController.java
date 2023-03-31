@@ -6,19 +6,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import javax.annotation.Resource;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.publiccms.common.base.BaseMethod;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysApp;
 import com.publiccms.entities.sys.SysAppToken;
@@ -72,7 +73,7 @@ public class MethodController {
                     }
                     SysApp app = appService.getEntity(token.getAppId());
                     if (null == app || CommonUtils.empty(app.getAuthorizedApis()) || !ArrayUtils
-                            .contains(StringUtils.split(app.getAuthorizedApis(), CommonConstants.COMMA), method.getName())) {
+                            .contains(StringUtils.split(app.getAuthorizedApis(), Constants.COMMA), method.getName())) {
                         return NEED_APP_TOKEN_MAP;
                     }
                 }

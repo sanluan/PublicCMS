@@ -6,10 +6,11 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTaskDirective;
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CmsFileUtils.FileInfo;
@@ -54,7 +55,7 @@ public class PublishPageDirective extends AbstractTaskDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, TemplateException {
-        String path = handler.getString("path", CommonConstants.SEPARATOR);
+        String path = handler.getString("path", Constants.SEPARATOR);
         SysSite site = getSite(handler);
         String filepath = siteComponent.getTemplateFilePath(site.getId(), path);
         if (CmsFileUtils.isFile(filepath)) {
@@ -78,13 +79,13 @@ public class PublishPageDirective extends AbstractTaskDirective {
     }
 
     private Map<String, Boolean> deal(SysSite site, RenderHandler handler, String path) throws IOException {
-        path = path.replace("\\", CommonConstants.SEPARATOR).replace("//", CommonConstants.SEPARATOR);
+        path = path.replace("\\", Constants.SEPARATOR).replace("//", Constants.SEPARATOR);
         Map<String, Boolean> map = new LinkedHashMap<>();
         List<FileInfo> list = CmsFileUtils.getFileList(siteComponent.getTemplateFilePath(site.getId(), path), null);
         for (FileInfo fileInfo : list) {
             String filepath = CommonUtils.joinString(path, fileInfo.getFileName());
             if (fileInfo.isDirectory()) {
-                map.putAll(deal(site, handler, CommonUtils.joinString(filepath, CommonConstants.SEPARATOR)));
+                map.putAll(deal(site, handler, CommonUtils.joinString(filepath, Constants.SEPARATOR)));
             } else {
                 String realTemplatePath = siteComponent.getTemplateFilePath(site.getId(), filepath);
                 CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(realTemplatePath);

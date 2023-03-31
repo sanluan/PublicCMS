@@ -5,13 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import javax.annotation.Resource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Controller;
@@ -21,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.publiccms.common.base.AbstractAppDirective;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.HttpParameterHandler;
 import com.publiccms.logic.component.site.DirectiveComponent;
 
@@ -59,7 +59,7 @@ public class ApiController {
     /**
      *
      */
-    public static final Map<String, String> NOT_FOUND_MAP = new HashMap<String, String>() {
+    protected static final Map<String, String> NOT_FOUND_MAP = new HashMap<String, String>() {
         private static final long serialVersionUID = 1L;
         {
             put(CommonConstants.ERROR, INTERFACE_NOT_FOUND);
@@ -71,7 +71,7 @@ public class ApiController {
      *
      * @return result
      */
-    @RequestMapping({ CommonConstants.SEPARATOR, "/**" })
+    @RequestMapping({ Constants.SEPARATOR, "/**" })
     @ResponseBody
     public Map<String, String> api() {
         return NOT_FOUND_MAP;

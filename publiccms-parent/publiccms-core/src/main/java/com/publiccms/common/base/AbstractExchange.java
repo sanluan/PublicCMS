@@ -14,7 +14,6 @@ import org.apache.tools.zip.ZipFile;
 import org.apache.tools.zip.ZipOutputStream;
 
 import com.publiccms.common.api.Exchange;
-import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ZipUtils;
@@ -113,7 +112,7 @@ public abstract class AbstractExchange<E, D> implements Exchange<E, D> {
         if (CommonUtils.empty(directory)) {
             return path;
         } else {
-            return CommonUtils.joinString(directory, CommonConstants.SEPARATOR, path);
+            return CommonUtils.joinString(directory, Constants.SEPARATOR, path);
         }
     }
 

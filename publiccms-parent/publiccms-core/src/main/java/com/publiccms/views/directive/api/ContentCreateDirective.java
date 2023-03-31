@@ -21,6 +21,7 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.publiccms.common.base.AbstractAppDirective;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ExtendUtils;
@@ -178,7 +179,7 @@ public class ContentCreateDirective extends AbstractAppDirective {
                             }
                         }
                         Set<Serializable> tagIdSet = tagService.update(site.getId(), tagList);
-                        entity.setTagIds(collectionToDelimitedString(tagIdSet, CommonConstants.BLANK_SPACE));
+                        entity.setTagIds(collectionToDelimitedString(tagIdSet, Constants.BLANK_SPACE));
                     } else {
                         entity.setTagIds(null);
                     }
@@ -213,7 +214,7 @@ public class ContentCreateDirective extends AbstractAppDirective {
                     Set<ConstraintViolation<CmsContent>> set = validatorFactory.getValidator().validate(entity);
                     if (!set.isEmpty()) {
                         handler.put(CommonConstants.ERROR, set.stream().map(cv -> cv.getPropertyPath().toString())
-                                .collect(Collectors.joining(CommonConstants.COMMA_DELIMITED)));
+                                .collect(Collectors.joining(Constants.COMMA_DELIMITED)));
                     } else {
                         if (null != entity.getId()) {
                             CmsContent oldEntity = service.getEntity(entity.getId());

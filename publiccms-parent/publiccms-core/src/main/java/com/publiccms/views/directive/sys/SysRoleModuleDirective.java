@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 import com.publiccms.common.api.Config;
 import com.publiccms.common.base.AbstractTemplateDirective;
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysRoleModule;
@@ -67,7 +67,7 @@ public class SysRoleModuleDirective extends AbstractTemplateDirective {
             SysSite site = getSite(handler);
             Map<String, String> config = configDataComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
             String[] excludeModules = StringUtils.split(config.get(SiteConfigComponent.CONFIG_SITE_EXCLUDE_MODULE),
-                    CommonConstants.COMMA);
+                    Constants.COMMA);
             if (CommonUtils.notEmpty(moduleId)) {
                 handler.put("object",
                         (CommonUtils.empty(excludeModules) || !ArrayUtils.contains(excludeModules, moduleId))

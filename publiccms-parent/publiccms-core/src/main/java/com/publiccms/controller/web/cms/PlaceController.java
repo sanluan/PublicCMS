@@ -21,6 +21,7 @@ import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -105,17 +106,16 @@ public class PlaceController {
                     return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
                 }
             }
-            if (!entity.getPath().startsWith(CommonConstants.SEPARATOR)) {
-                entity.setPath(CommonUtils.joinString(CommonConstants.SEPARATOR, entity.getPath()));
+            if (!entity.getPath().startsWith(Constants.SEPARATOR)) {
+                entity.setPath(CommonUtils.joinString(Constants.SEPARATOR, entity.getPath()));
             }
-            entity.setPath(entity.getPath().replace("//", CommonConstants.SEPARATOR));
+            entity.setPath(entity.getPath().replace("//", Constants.SEPARATOR));
             entity.setStatus(CmsPlaceService.STATUS_PEND);
             String filepath = siteComponent.getTemplateFilePath(site.getId(),
                     CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, entity.getPath()));
             CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);
             SysUser user = ControllerUtils.getUserFromSession(session);
-            if (ControllerUtils.errorCustom("contribute",
-                    null == metadata || !metadata.isAllowContribute() || 0 >= metadata.getSize(), model)
+            if (ControllerUtils.errorCustom("contribute", !metadata.isAllowContribute() || 0 >= metadata.getSize(), model)
                     || ControllerUtils.errorCustom("anonymousContribute", null == user && !metadata.isAllowAnonymous(), model)) {
                 return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
             }
@@ -275,8 +275,7 @@ public class PlaceController {
             String filepath = siteComponent.getTemplateFilePath(site.getId(), placePath);
             CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);
             if (ControllerUtils.errorCustom("manage",
-                    null == entity || null == user || CommonUtils.empty(metadata.getAdminIds())
-                            || !ArrayUtils.contains(metadata.getAdminIds(), user.getId()),
+                    CommonUtils.empty(metadata.getAdminIds()) || !ArrayUtils.contains(metadata.getAdminIds(), user.getId()),
                     model) || ControllerUtils.errorNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
             } else {
                 service.uncheck(id);

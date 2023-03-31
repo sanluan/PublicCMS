@@ -5,7 +5,7 @@ import java.io.IOException;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
@@ -56,8 +56,8 @@ public class ThumbDirective extends AbstractTemplateDirective {
                 filepath = path;
             }
             String suffix = CmsFileUtils.getSuffix(filepath);
-            String thumbPath = CommonUtils.joinString(filepath.substring(0, filepath.lastIndexOf(CommonConstants.DOT)),
-                    CommonConstants.UNDERLINE, width, CommonConstants.UNDERLINE, height, suffix);
+            String thumbPath = CommonUtils.joinString(filepath.substring(0, filepath.lastIndexOf(Constants.DOT)),
+                    Constants.UNDERLINE, width, Constants.UNDERLINE, height, suffix);
             String thumbFilePath = siteComponent.getWebFilePath(site.getId(), thumbPath);
             if (CmsFileUtils.exists(thumbFilePath)) {
                 handler.print(CommonUtils.joinString(site.getSitePath(), thumbPath));

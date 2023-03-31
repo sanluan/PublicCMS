@@ -1,6 +1,7 @@
 package com.publiccms.views.directive.sys;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -14,7 +15,7 @@ import org.springframework.stereotype.Component;
 
 import com.publiccms.common.api.Config;
 import com.publiccms.common.base.AbstractTemplateDirective;
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysModule;
@@ -79,15 +80,13 @@ public class SysAuthorizedDirective extends AbstractTemplateDirective {
             Set<String> excludeUrls = null;
             if (CommonUtils.notEmpty(excludeModules)) {
                 excludeUrls = new HashSet<>();
-                for (SysModule module : moduleService.getEntitys(StringUtils.split(excludeModules, CommonConstants.COMMA))) {
+                for (SysModule module : moduleService.getEntitys(StringUtils.split(excludeModules, Constants.COMMA))) {
                     if (CommonUtils.notEmpty(module.getUrl())) {
                         int index = module.getUrl().indexOf("?");
                         excludeUrls.add(module.getUrl().substring(0, 0 < index ? index : module.getUrl().length()));
                     }
                     if (CommonUtils.notEmpty(module.getAuthorizedUrl())) {
-                        for (String tempUrl : StringUtils.split(module.getAuthorizedUrl(), CommonConstants.COMMA)) {
-                            excludeUrls.add(tempUrl);
-                        }
+                        excludeUrls.addAll(Arrays.asList(StringUtils.split(module.getAuthorizedUrl(), Constants.COMMA)));
                     }
                 }
             }

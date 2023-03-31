@@ -9,11 +9,11 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
-import javax.annotation.Resource;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -23,6 +23,7 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.DateFormatUtils;
@@ -87,7 +88,8 @@ public class TradeOrderAdminController {
         ExcelView view = new ExcelView(workbook -> {
             Sheet sheet = workbook
                     .createSheet(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.order"));
-            int i = 0, j = 0;
+            int i = 0;
+            int j = 0;
             Row row = sheet.createRow(i++);
             row.createCell(j++).setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.id"));
             row.createCell(j++).setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.user"));
@@ -112,7 +114,8 @@ public class TradeOrderAdminController {
                 j = 0;
                 row.createCell(j++).setCellValue(entity.getId().toString());
                 user = userMap.get(entity.getUserId());
-                row.createCell(j++).setCellValue(null == user ? null : CommonUtils.joinString(user.getNickname(), entity.getIp()));
+                row.createCell(j++)
+                        .setCellValue(null == user ? null : CommonUtils.joinString(user.getNickname(), entity.getIp()));
                 row.createCell(j++).setCellValue(entity.getTitle());
                 row.createCell(j++)
                         .setCellValue(CommonUtils.joinString(entity.getAddressee(), " ", entity.getTelephone(), "\r\n",
@@ -130,8 +133,8 @@ public class TradeOrderAdminController {
                 row.createCell(j++)
                         .setCellValue(CommonUtils.joinString(
                                 null == entity.getPaymentId() ? ""
-                                        : CommonUtils.joinString(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale,
-                                                "page.payment.id"), ":", entity.getPaymentId(), "\r\n"),
+                                        : CommonUtils.joinString(LanguagesUtils.getMessage(CommonConstants.applicationContext,
+                                                locale, "page.payment.id"), ":", entity.getPaymentId(), "\r\n"),
                                 (null == entity.getPaymentDate() ? "" : dateFormat.format(entity.getProcessDate()))));
                 row.createCell(j++).setCellValue(dateFormat.format(entity.getCreateDate()));
 
@@ -155,8 +158,9 @@ public class TradeOrderAdminController {
 
         });
         DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.SHORT_DATE_FORMAT_STRING);
-        view.setFilename(CommonUtils.joinString(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.order"),
-                CommonConstants.UNDERLINE, dateFormat.format(new Date())));
+        view.setFilename(
+                CommonUtils.joinString(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.order"),
+                        Constants.UNDERLINE, dateFormat.format(new Date())));
         return view;
     }
 

@@ -179,7 +179,7 @@ public class SysConfigDataAdminController {
                 HttpHeaders headers = new HttpHeaders();
                 headers.setContentDisposition(ContentDisposition.attachment()
                         .filename(CommonUtils.joinString(site.getName(), dateFormat.format(new Date()), "-config.zip"),
-                                CommonConstants.DEFAULT_CHARSET)
+                                Constants.DEFAULT_CHARSET)
                         .build());
                 StreamingResponseBody body = new StreamingResponseBody() {
                     @Override

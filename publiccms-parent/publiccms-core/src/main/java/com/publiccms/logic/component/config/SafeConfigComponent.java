@@ -12,7 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.api.Config;
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysExtendField;
@@ -111,6 +111,7 @@ public class SafeConfigComponent implements Config {
 
     @Resource
     protected ConfigDataComponent configDataComponent;
+
     /**
      * @param siteId
      * @param showAll
@@ -125,6 +126,7 @@ public class SafeConfigComponent implements Config {
      * @param locale
      * @return
      */
+    @Override
     public String getCodeDescription(Locale locale) {
         return getMessage(locale, CONFIG_CODE_DESCRIPTION);
     }
@@ -133,7 +135,7 @@ public class SafeConfigComponent implements Config {
         Map<String, String> config = configDataComponent.getConfigData(siteId, CONFIG_CODE);
         String enableCaptcha = config.get(SafeConfigComponent.CONFIG_CAPTCHA);
         return CommonUtils.notEmpty(enableCaptcha)
-                && ArrayUtils.contains(StringUtils.split(enableCaptcha, CommonConstants.COMMA), module);
+                && ArrayUtils.contains(StringUtils.split(enableCaptcha, Constants.COMMA), module);
     }
 
     public String getSafeUrl(String returnUrl, SysSite site, String contextPath) {
@@ -152,7 +154,7 @@ public class SafeConfigComponent implements Config {
         } else if (url.replace("\\", "/").contains("://") || url.replace("\\", "/").startsWith("//")) {
             if (unSafe(url.replace("\\", "/"), site, contextPath)) {
                 if (CommonUtils.notEmpty(safeReturnUrl)) {
-                    for (String safeUrlPrefix : StringUtils.split(safeReturnUrl, CommonConstants.COMMA)) {
+                    for (String safeUrlPrefix : StringUtils.split(safeReturnUrl, Constants.COMMA)) {
                         if (url.startsWith(safeUrlPrefix)) {
                             return false;
                         }
@@ -173,53 +175,45 @@ public class SafeConfigComponent implements Config {
         if (CommonUtils.empty(value)) {
             return CmsFileUtils.ALLOW_FILES;
         }
-        return StringUtils.split(value, CommonConstants.COMMA);
+        return StringUtils.split(value, Constants.COMMA);
     }
 
     private static boolean unSafe(String url, SysSite site, String contextPath) {
         String fixedUrl = url.substring(url.indexOf("://") + 1);
-        if (url.startsWith(site.getDynamicPath()) || url.startsWith(site.getSitePath())
+        return !(url.startsWith(site.getDynamicPath()) || url.startsWith(site.getSitePath())
                 || fixedUrl.startsWith(site.getDynamicPath()) || fixedUrl.startsWith(site.getSitePath())
-                || url.startsWith(CommonUtils.joinString(contextPath, "/"))) {
-            return false;
-        } else {
-            return true;
-        }
+                || url.startsWith(CommonUtils.joinString(contextPath, "/")));
     }
 
     @Override
     public List<SysExtendField> getExtendFieldList(SysSite site, Locale locale) {
         List<SysExtendField> extendFieldList = new ArrayList<>();
         extendFieldList.add(new SysExtendField(CONFIG_EXPIRY_MINUTES_WEB, INPUTTYPE_NUMBER, false,
-                getMessage(locale,
-                        CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_EXPIRY_MINUTES_WEB)),
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_EXPIRY_MINUTES_WEB)),
                 null, String.valueOf(DEFAULT_EXPIRY_MINUTES)));
         extendFieldList.add(new SysExtendField(CONFIG_EXPIRY_MINUTES_MANAGER, INPUTTYPE_NUMBER, false,
-                getMessage(locale,
-                        CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_EXPIRY_MINUTES_MANAGER)),
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_EXPIRY_MINUTES_MANAGER)),
                 null, String.valueOf(DEFAULT_EXPIRY_MINUTES)));
 
         extendFieldList.add(new SysExtendField(CONFIG_PRIVATEFILE_KEY, INPUTTYPE_TEXT,
-                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_PRIVATEFILE_KEY)),
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_PRIVATEFILE_KEY)),
                 null));
         extendFieldList.add(new SysExtendField(CONFIG_EXPIRY_MINUTES_SIGN, INPUTTYPE_NUMBER, false,
-                getMessage(locale,
-                        CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_EXPIRY_MINUTES_SIGN)),
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_EXPIRY_MINUTES_SIGN)),
                 null, String.valueOf(DEFAULT_EXPIRY_MINUTES_SIGN)));
 
         extendFieldList.add(new SysExtendField(CONFIG_CAPTCHA, INPUTTYPE_CAPTCHA, false,
-                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_CAPTCHA)),
-                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_CAPTCHA,
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_CAPTCHA)),
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_CAPTCHA,
                         CONFIG_CODE_DESCRIPTION_SUFFIX)),
                 null));
 
         extendFieldList.add(new SysExtendField(CONFIG_RETURN_URL, INPUTTYPE_TEXTAREA,
-                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_RETURN_URL)),
-                null));
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_RETURN_URL)), null));
 
         extendFieldList.add(new SysExtendField(CONFIG_ALLOW_FILES, INPUTTYPE_TEXTAREA, false,
-                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_ALLOW_FILES)),
-                null, StringUtils.join(CmsFileUtils.ALLOW_FILES, CommonConstants.COMMA)));
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_ALLOW_FILES)), null,
+                StringUtils.join(CmsFileUtils.ALLOW_FILES, Constants.COMMA)));
         return extendFieldList;
     }
 

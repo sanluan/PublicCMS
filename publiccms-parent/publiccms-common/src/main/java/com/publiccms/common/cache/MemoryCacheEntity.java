@@ -35,7 +35,7 @@ public class MemoryCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Seria
     public List<V> put(K key, V value) {
         lock.writeLock().lock();
         try {
-            cachedMap.put(key, new CacheValue<V>(value));
+            cachedMap.put(key, new CacheValue<>(value));
             return clearCache();
         } finally {
             lock.writeLock().unlock();
@@ -46,7 +46,7 @@ public class MemoryCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Seria
     public void put(K key, V value, Long expiryInSeconds) {
         lock.writeLock().lock();
         try {
-            CacheValue<V> cacheValue = new CacheValue<V>(value);
+            CacheValue<V> cacheValue = new CacheValue<>(value);
             if (null != expiryInSeconds) {
                 cacheValue.setExpiryDate(System.currentTimeMillis() + (expiryInSeconds * 1000));
             }

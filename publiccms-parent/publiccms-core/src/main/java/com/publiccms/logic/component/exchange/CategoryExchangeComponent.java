@@ -18,7 +18,7 @@ import org.apache.tools.zip.ZipOutputStream;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractExchange;
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ExtendUtils;
@@ -112,11 +112,11 @@ public class CategoryExchangeComponent extends AbstractExchange<CmsCategory, Cat
                             HtmlUtils.getFileList(value, filelist);
                         }
                     }
-                    if (0 < filelist.size()) {
+                    if (!filelist.isEmpty()) {
                         for (String file : filelist) {
                             if (file.startsWith(site.getSitePath())) {
                                 String fullName = StringUtils.removeStart(file, site.getSitePath());
-                                if (fullName.contains(CommonConstants.DOT) && !fullName.contains(".htm")) {
+                                if (fullName.contains(Constants.DOT) && !fullName.contains(".htm")) {
                                     String filepath = siteComponent.getWebFilePath(site.getId(), fullName);
                                     try {
                                         ZipUtils.compressFile(new File(filepath), zipOutputStream,
@@ -138,7 +138,7 @@ public class CategoryExchangeComponent extends AbstractExchange<CmsCategory, Cat
             data.setExtendList(extendFieldService.getList(entity.getExtendId(), null, null));
         }
         if (CommonUtils.notEmpty(entity.getTagTypeIds())) {
-            String[] tagIds = StringUtils.split(entity.getTagTypeIds(), CommonConstants.COMMA);
+            String[] tagIds = StringUtils.split(entity.getTagTypeIds(), Constants.COMMA);
             Set<Serializable> set = new TreeSet<>();
             for (String s : tagIds) {
                 try {
@@ -169,7 +169,7 @@ public class CategoryExchangeComponent extends AbstractExchange<CmsCategory, Cat
     public void importData(SysSite site, long userId, String directory, boolean overwrite, ZipFile zipFile) {
         super.importData(site, userId, directory, overwrite, zipFile);
         if (null == directory) {
-            String filepath = siteComponent.getWebFilePath(site.getId(), CommonConstants.SEPARATOR);
+            String filepath = siteComponent.getWebFilePath(site.getId(), Constants.SEPARATOR);
             ZipUtils.unzip(zipFile, ATTACHMENT_DIR, filepath, overwrite, null);
         }
         service.generateChildIds(site.getId(), null);

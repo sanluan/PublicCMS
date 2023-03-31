@@ -21,7 +21,7 @@ import org.apache.http.util.EntityUtils;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.BaseMethod;
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
 
 import freemarker.template.TemplateModel;
@@ -71,7 +71,7 @@ public class GetHtmlMethod extends BaseMethod {
         String html = null;
         if (CommonUtils.notEmpty(url)) {
             try (CloseableHttpClient httpclient = HttpClients.custom()
-                    .setDefaultRequestConfig(CommonConstants.defaultRequestConfig).build()) {
+                    .setDefaultRequestConfig(Constants.defaultRequestConfig).build()) {
                 HttpUriRequest request;
                 if (null != parameters || CommonUtils.notEmpty(body)) {
                     HttpPost httppost = new HttpPost(url);
@@ -83,9 +83,9 @@ public class GetHtmlMethod extends BaseMethod {
                             Object value = parameters.get(key);
                             nvps.add(new BasicNameValuePair(key, null == value ? null : value.toString()));
                         }
-                        httppost.setEntity(new UrlEncodedFormEntity(nvps, CommonConstants.DEFAULT_CHARSET));
+                        httppost.setEntity(new UrlEncodedFormEntity(nvps, Constants.DEFAULT_CHARSET));
                     } else {
-                        httppost.setEntity(new StringEntity(body, CommonConstants.DEFAULT_CHARSET));
+                        httppost.setEntity(new StringEntity(body, Constants.DEFAULT_CHARSET));
                     }
                     request = httppost;
                 } else {
@@ -99,7 +99,7 @@ public class GetHtmlMethod extends BaseMethod {
                 try (CloseableHttpResponse response = httpclient.execute(request)) {
                     HttpEntity entity = response.getEntity();
                     if (null != entity) {
-                        html = EntityUtils.toString(entity, CommonConstants.DEFAULT_CHARSET);
+                        html = EntityUtils.toString(entity, Constants.DEFAULT_CHARSET);
                         EntityUtils.consume(entity);
                     }
                 }

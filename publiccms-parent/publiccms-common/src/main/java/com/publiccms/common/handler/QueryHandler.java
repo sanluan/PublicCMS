@@ -218,7 +218,7 @@ public class QueryHandler {
                 query.setMaxResults(maxResults);
             }
         }
-        query.setCacheable(null == cacheable ? true : cacheable);
+        query.setCacheable(null == cacheable || cacheable);
         return query;
     }
 

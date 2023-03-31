@@ -36,7 +36,7 @@ import org.springframework.stereotype.Repository;
 
 import com.publiccms.common.base.BaseDao;
 import com.publiccms.common.base.HighLighterQuery;
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.FacetPageHandler;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
@@ -398,7 +398,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
                         queryEntitry.getCategoryIds());
             }
             if (null != queryEntitry.getEmptyParent()) {
-                if (queryEntitry.getEmptyParent()) {
+                if (Boolean.TRUE.equals(queryEntitry.getEmptyParent())) {
                     queryHandler.condition("bean.parentId is null");
                 } else {
                     queryHandler.condition("bean.parentId is not null");
@@ -430,7 +430,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
             queryHandler.condition("bean.hasProducts = :hasProducts").setParameter("hasProducts", queryEntitry.getHasProducts());
         }
         if (null != queryEntitry.getHasCover()) {
-            if (queryEntitry.getHasCover()) {
+            if (Boolean.TRUE.equals(queryEntitry.getHasCover())) {
                 queryHandler.condition("bean.cover is not null");
             } else {
                 queryHandler.condition("bean.cover is null");
@@ -455,7 +455,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
             orderType = ORDERTYPE_DESC;
         }
         if (null == orderField) {
-            orderField = CommonConstants.BLANK;
+            orderField = Constants.BLANK;
         }
         switch (orderField) {
         case "scores":

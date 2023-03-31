@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.publiccms.common.base.AbstractUeditorController;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -148,7 +149,7 @@ public class UeditorController extends AbstractUeditorController {
                 lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_FILEUPLOAD_SIZE, String.valueOf(user.getId()), null,
                         (int) uploadResult.getFileSize() / 1024);
                 logUploadService.save(new LogUpload(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB,
-                        CommonConstants.BLANK, false, CmsFileUtils.FILE_TYPE_IMAGE, data.length, uploadResult.getWidth(),
+                        Constants.BLANK, false, CmsFileUtils.FILE_TYPE_IMAGE, data.length, uploadResult.getWidth(),
                         uploadResult.getHeight(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
                 Map<String, Object> map = getResultMap();
                 map.put("size", data.length);

@@ -1,6 +1,5 @@
 package com.publiccms.logic.component.config;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -17,7 +16,7 @@ import com.publiccms.common.api.Config;
 import com.publiccms.common.api.SiteCache;
 import com.publiccms.common.cache.CacheEntity;
 import com.publiccms.common.cache.CacheEntityFactory;
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
@@ -75,7 +74,7 @@ public class CorsConfigComponent implements SiteCache, Config {
                 config.setAllowCredentials(ConfigDataComponent.getBoolean(configData.get(CONFIG_ALLOW_CREDENTIALS), true));
 
                 if (CommonUtils.notEmpty(configData.get(CONFIG_ALLOWED_ORIGINS))) {
-                    String[] array = StringUtils.split(configData.get(CONFIG_ALLOWED_ORIGINS), CommonConstants.COMMA);
+                    String[] array = StringUtils.split(configData.get(CONFIG_ALLOWED_ORIGINS), Constants.COMMA);
                     for (String p : array) {
                         if (p.contains(CorsConfiguration.ALL)) {
                             config.addAllowedOriginPattern(p);
@@ -86,15 +85,15 @@ public class CorsConfigComponent implements SiteCache, Config {
                 }
                 if (CommonUtils.notEmpty(configData.get(CONFIG_ALLOWED_METHODS))) {
                     config.setAllowedMethods(
-                            Arrays.asList(StringUtils.split(configData.get(CONFIG_ALLOWED_METHODS), CommonConstants.COMMA)));
+                            Arrays.asList(StringUtils.split(configData.get(CONFIG_ALLOWED_METHODS), Constants.COMMA)));
                 }
                 if (CommonUtils.notEmpty(configData.get(CONFIG_ALLOWED_HEADERS))) {
                     config.setAllowedHeaders(
-                            Arrays.asList(StringUtils.split(configData.get(CONFIG_ALLOWED_HEADERS), CommonConstants.COMMA)));
+                            Arrays.asList(StringUtils.split(configData.get(CONFIG_ALLOWED_HEADERS), Constants.COMMA)));
                 }
                 if (CommonUtils.notEmpty(configData.get(CONFIG_EXPOSED_HEADERS))) {
                     config.setExposedHeaders(
-                            Arrays.asList(StringUtils.split(configData.get(CONFIG_EXPOSED_HEADERS), CommonConstants.COMMA)));
+                            Arrays.asList(StringUtils.split(configData.get(CONFIG_EXPOSED_HEADERS), Constants.COMMA)));
                 }
                 if (CommonUtils.notEmpty(configData.get(CONFIG_ALLOW_CREDENTIALS))) {
                     try {
@@ -115,14 +114,11 @@ public class CorsConfigComponent implements SiteCache, Config {
      * @throws InstantiationException
      * @throws ClassNotFoundException
      * @throws SecurityException
-     * @throws NoSuchMethodException
-     * @throws InvocationTargetException
      * @throws IllegalArgumentException
      */
     @Resource
-    public void initCache(CacheEntityFactory cacheEntityFactory)
-            throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+    public void initCache(CacheEntityFactory cacheEntityFactory) throws ClassNotFoundException, InstantiationException,
+            IllegalAccessException, IllegalArgumentException, SecurityException {
         cache = cacheEntityFactory.createCacheEntity("cors", CacheEntityFactory.MEMORY_CACHE_ENTITY);
     }
 
@@ -149,31 +145,30 @@ public class CorsConfigComponent implements SiteCache, Config {
     public List<SysExtendField> getExtendFieldList(SysSite site, Locale locale) {
         List<SysExtendField> extendFieldList = new ArrayList<>();
         extendFieldList.add(new SysExtendField(CONFIG_ALLOWED_ORIGINS, INPUTTYPE_TEXT, false,
-                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_ALLOWED_ORIGINS)),
-                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_ALLOWED_ORIGINS,
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_ALLOWED_ORIGINS)),
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_ALLOWED_ORIGINS,
                         CONFIG_CODE_DESCRIPTION_SUFFIX)),
                 "*"));
         extendFieldList.add(new SysExtendField(CONFIG_ALLOWED_METHODS, INPUTTYPE_TEXT,
-                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_ALLOWED_METHODS)),
-                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_ALLOWED_METHODS,
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_ALLOWED_METHODS)),
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_ALLOWED_METHODS,
                         CONFIG_CODE_DESCRIPTION_SUFFIX))));
         extendFieldList.add(new SysExtendField(CONFIG_ALLOWED_HEADERS, INPUTTYPE_TEXT,
-                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_ALLOWED_HEADERS)),
-                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_ALLOWED_HEADERS,
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_ALLOWED_HEADERS)),
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_ALLOWED_HEADERS,
                         CONFIG_CODE_DESCRIPTION_SUFFIX))));
         extendFieldList.add(new SysExtendField(CONFIG_EXPOSED_HEADERS, INPUTTYPE_TEXT,
-                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_EXPOSED_HEADERS)),
-                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_EXPOSED_HEADERS,
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_EXPOSED_HEADERS)),
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_EXPOSED_HEADERS,
                         CONFIG_CODE_DESCRIPTION_SUFFIX))));
         extendFieldList.add(new SysExtendField(CONFIG_ALLOW_CREDENTIALS, INPUTTYPE_BOOLEAN, false,
-                getMessage(locale,
-                        CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_ALLOW_CREDENTIALS)),
-                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_ALLOW_CREDENTIALS,
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_ALLOW_CREDENTIALS)),
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_ALLOW_CREDENTIALS,
                         CONFIG_CODE_DESCRIPTION_SUFFIX)),
                 "true"));
         extendFieldList.add(new SysExtendField(CONFIG_MAXAGE, INPUTTYPE_TEXT, false,
-                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_MAXAGE)),
-                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_MAXAGE,
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_MAXAGE)),
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_MAXAGE,
                         CONFIG_CODE_DESCRIPTION_SUFFIX)),
                 "1800"));
         return extendFieldList;

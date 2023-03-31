@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PreDestroy;
+import javax.annotation.Resource;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -17,12 +18,10 @@ import org.quartz.SchedulerException;
 import org.quartz.TriggerBuilder;
 import org.quartz.TriggerKey;
 import org.quartz.UnableToInterruptJobException;
-import javax.annotation.Resource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.log.LogTask;
 import com.publiccms.entities.sys.SysSite;
@@ -95,7 +94,7 @@ public class ScheduledTask {
 
     // 结束一天以前执行但是没有结果的任务，可以误杀,误杀任务后续会被修复
     public void dealNotEndTask(Date startDate) {
-        List<LogTask> runingTaskList = (List<LogTask>) logTaskService.getNotEndList(null, startDate);
+        List<LogTask> runingTaskList = logTaskService.getNotEndList(null, startDate);
         for (LogTask logTask : runingTaskList) {
             SysTask task = sysTaskService.getEntity(logTask.getTaskId());
             if (null != task && TASK_STATUS_RUNNING == task.getStatus()) {
@@ -122,7 +121,7 @@ public class ScheduledTask {
             try {
                 CronTrigger trigger = (CronTrigger) scheduler.getTrigger(triggerKey);
                 CronScheduleBuilder scheduleBuilder = CronScheduleBuilder
-                        .cronSchedule(CommonUtils.joinString(site.getId() % 60, CommonConstants.BLANK_SPACE, cronExpression));
+                        .cronSchedule(CommonUtils.joinString(site.getId() % 60, Constants.BLANK_SPACE, cronExpression));
                 if (null == trigger) {
                     JobDetail jobDetail = JobBuilder.newJob(ScheduledJob.class).withIdentity(taskName).build();
                     jobDetail.getJobDataMap().put(ID, id);

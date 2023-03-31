@@ -6,7 +6,7 @@ import java.util.Date;
 import org.springframework.stereotype.Repository;
 
 import com.publiccms.common.base.BaseDao;
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
 import com.publiccms.common.tools.CommonUtils;
@@ -62,7 +62,7 @@ public class CmsVoteDao extends BaseDao<CmsVote> {
             orderType = ORDERTYPE_DESC;
         }
         if (null == orderField) {
-            orderField = CommonConstants.BLANK;
+            orderField = Constants.BLANK;
         }
         switch (orderField) {
         case "startDate":

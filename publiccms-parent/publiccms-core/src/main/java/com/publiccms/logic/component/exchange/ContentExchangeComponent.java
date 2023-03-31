@@ -25,6 +25,7 @@ import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractExchange;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.DateFormatUtils;
@@ -185,7 +186,8 @@ public class ContentExchangeComponent extends AbstractExchange<CmsContent, Conte
         ExcelView view = new ExcelView(workbook -> {
             Sheet sheet = workbook
                     .createSheet(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.workload"));
-            int i = 0, j = 0;
+            int i = 0;
+            int j = 0;
             Row row = sheet.createRow(i++);
             row.createCell(j++)
                     .setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.category"));
@@ -297,7 +299,8 @@ public class ContentExchangeComponent extends AbstractExchange<CmsContent, Conte
             Sheet sheet = workbook
                     .createSheet(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content"));
             sheet.setDefaultColumnWidth(20);
-            int i = 0, j = 0;
+            int i = 0;
+            int j = 0;
             Row row = sheet.createRow(i++);
             row.createCell(j++).setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.id"));
             row.createCell(j++)
@@ -476,11 +479,11 @@ public class ContentExchangeComponent extends AbstractExchange<CmsContent, Conte
                 }
             }
             export(directory, out, zipOutputStream, data, CommonUtils.joinString(entity.getId(), ".json"));
-            if (null != webfileList && 0 < webfileList.size()) {
+            if (null != webfileList && !webfileList.isEmpty()) {
                 for (String file : webfileList) {
                     if (file.startsWith(site.getSitePath())) {
                         String fullName = StringUtils.removeStart(file, site.getSitePath());
-                        if (fullName.contains(CommonConstants.DOT) && !fullName.contains(".htm")) {
+                        if (fullName.contains(Constants.DOT) && !fullName.contains(".htm")) {
                             String filepath = siteComponent.getWebFilePath(site.getId(), fullName);
                             try {
                                 ZipUtils.compressFile(new File(filepath), zipOutputStream,
@@ -498,7 +501,7 @@ public class ContentExchangeComponent extends AbstractExchange<CmsContent, Conte
     public void importData(SysSite site, long userId, String directory, boolean overwrite, ZipFile zipFile) {
         super.importData(site, userId, directory, overwrite, zipFile);
         if (null == directory) {
-            String filepath = siteComponent.getWebFilePath(site.getId(), CommonConstants.SEPARATOR);
+            String filepath = siteComponent.getWebFilePath(site.getId(), Constants.SEPARATOR);
             ZipUtils.unzip(zipFile, ATTACHMENT_DIR, filepath, overwrite, null);
         }
     }

@@ -16,7 +16,7 @@ import com.publiccms.common.api.FileUploader;
 import com.publiccms.common.api.SiteCache;
 import com.publiccms.common.cache.CacheEntity;
 import com.publiccms.common.cache.CacheEntityFactory;
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.logic.component.config.ConfigDataComponent;
 import com.publiccms.views.pojo.entities.FileUploadResult;
@@ -27,7 +27,6 @@ import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.S3Configuration;
-import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest;
@@ -107,10 +106,9 @@ public class OSSFileUploaderComponent implements FileUploader, SiteCache {
     @Override
     public String getPrivateFileUrl(short siteId, int expiryMinutes, String filepath) {
         Map<String, String> config = configDataComponent.getConfigData(siteId, OSSComponent.CONFIG_CODE);
-        GetObjectRequest objectRequest = GetObjectRequest.builder().bucket(config.get(OSSComponent.CONFIG_PRIVATE_BUCKET))
-                .key(filepath).build();
         GetObjectPresignRequest presignRequest = GetObjectPresignRequest.builder()
-                .signatureDuration(Duration.ofMinutes(expiryMinutes)).getObjectRequest(objectRequest).build();
+                .signatureDuration(Duration.ofMinutes(expiryMinutes))
+                .getObjectRequest(t -> t.bucket(config.get(OSSComponent.CONFIG_PRIVATE_BUCKET)).key(filepath)).build();
         S3Presigner presigner = getPresigner(siteId, config);
         PresignedGetObjectRequest presignedRequest = presigner.presignGetObject(presignRequest);
         return presignedRequest.url().toString();
@@ -120,10 +118,10 @@ public class OSSFileUploaderComponent implements FileUploader, SiteCache {
     public String getPrefix(short siteId, boolean privatefile) {
         Map<String, String> config = configDataComponent.getConfigData(siteId, OSSComponent.CONFIG_CODE);
         String bucketUrl = config.get(privatefile ? OSSComponent.CONFIG_PRIVATE_BUCKET_URL : OSSComponent.CONFIG_BUCKET_URL);
-        if (bucketUrl.endsWith(CommonConstants.SEPARATOR)) {
+        if (bucketUrl.endsWith(Constants.SEPARATOR)) {
             return bucketUrl;
         } else {
-            return CommonUtils.joinString(bucketUrl, CommonConstants.SEPARATOR);
+            return CommonUtils.joinString(bucketUrl, Constants.SEPARATOR);
         }
     }
 

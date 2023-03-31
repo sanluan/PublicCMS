@@ -245,7 +245,7 @@ public class TemplateModelUtils {
                 converBigDecimal(((TemplateSequenceModel) model).get(0));
             }
             if (model instanceof TemplateNumberModel) {
-                return new BigDecimal(((TemplateNumberModel) model).getAsNumber().doubleValue());
+                return BigDecimal.valueOf(((TemplateNumberModel) model).getAsNumber().doubleValue());
             } else if (model instanceof TemplateScalarModel) {
                 String s = ((TemplateScalarModel) model).getAsString();
                 if (CommonUtils.notEmpty(s)) {
@@ -282,7 +282,7 @@ public class TemplateModelUtils {
                 return StringUtils.split(str, Constants.BLANK_SPACE);
             }
         }
-        return null;
+        return new String[0];
     }
 
     /**

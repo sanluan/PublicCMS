@@ -9,7 +9,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CmsUrlUtils;
@@ -88,7 +88,7 @@ public class CmsPlaceListDirective extends AbstractTemplateDirective {
             expiryDate = now;
         }
         if (CommonUtils.notEmpty(path)) {
-            path = path.replace("//", CommonConstants.SEPARATOR);
+            path = path.replace("//", Constants.SEPARATOR);
         }
         PageHandler page = service.getPage(site.getId(), handler.getLong("userId"), path, handler.getString("itemType"),
                 handler.getLong("itemId"), handler.getDate("startPublishDate"), endPublishDate, expiryDate, status, disabled,

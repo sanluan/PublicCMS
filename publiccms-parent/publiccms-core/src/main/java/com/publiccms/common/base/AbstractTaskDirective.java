@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.directive.BaseTemplateDirective;
 import com.publiccms.common.handler.HttpParameterHandler;
 import com.publiccms.common.handler.RenderHandler;
@@ -49,7 +50,7 @@ public abstract class AbstractTaskDirective extends BaseTemplateDirective {
         if (null == (app = getApp(handler))) {
             handler.put(CommonConstants.ERROR, ApiController.NEED_APP_TOKEN).render();
         } else if (CommonUtils.empty(app.getAuthorizedApis())
-                || !ArrayUtils.contains(StringUtils.split(app.getAuthorizedApis(), CommonConstants.COMMA), getName())) {
+                || !ArrayUtils.contains(StringUtils.split(app.getAuthorizedApis(), Constants.COMMA), getName())) {
             handler.put(CommonConstants.ERROR, ApiController.UN_AUTHORIZED).render();
         } else {
             execute(handler);

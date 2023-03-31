@@ -8,6 +8,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.directive.BaseHttpDirective;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
@@ -47,7 +48,7 @@ public abstract class AbstractAppDirective extends BaseHttpDirective {
         SysApp app = null;
         SysUser user = null;
         if (needAppToken() && (null == (app = getApp(handler)) || CommonUtils.empty(app.getAuthorizedApis())
-                || !ArrayUtils.contains(StringUtils.split(app.getAuthorizedApis(), CommonConstants.COMMA), getName()))) {
+                || !ArrayUtils.contains(StringUtils.split(app.getAuthorizedApis(), Constants.COMMA), getName()))) {
             if (null == app) {
                 handler.put(CommonConstants.ERROR, ApiController.NEED_APP_TOKEN).render();
             } else {

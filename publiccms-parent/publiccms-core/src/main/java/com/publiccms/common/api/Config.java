@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Locale;
 
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.LanguagesUtils;
 import com.publiccms.entities.sys.SysExtendField;
@@ -32,7 +33,7 @@ public interface Config {
     /**
      * 
      */
-    String CONFIG_CODE_DESCRIPTION_SUFFIX = CommonUtils.joinString(CommonConstants.DOT, "description");
+    String CONFIG_CODE_DESCRIPTION_SUFFIX = CommonUtils.joinString(Constants.DOT, "description");
     /**
      * 
      */

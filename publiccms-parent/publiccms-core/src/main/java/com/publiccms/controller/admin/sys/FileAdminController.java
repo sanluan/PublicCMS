@@ -2,6 +2,7 @@ package com.publiccms.controller.admin.sys;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,15 +19,16 @@ import org.apache.poi.hwpf.usermodel.PictureType;
 import org.fit.pdfdom.resource.HtmlResource;
 import org.fit.pdfdom.resource.HtmlResourceHandler;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.DocToHtmlUtils;
@@ -74,7 +76,7 @@ public class FileAdminController {
      * @param request
      * @return view name
      */
-    @RequestMapping(value = "doUpload", method = RequestMethod.POST)
+    @PostMapping("doUpload")
     @Csrf
     @ResponseBody
     public Map<String, Object> upload(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, boolean privatefile,
@@ -158,7 +160,7 @@ public class FileAdminController {
      * @param request
      * @return view name
      */
-    @RequestMapping(value = "doImport", method = RequestMethod.POST)
+    @PostMapping("doImport")
     @Csrf
     @ResponseBody
     public Map<String, Object> doImport(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile file,
@@ -172,7 +174,7 @@ public class FileAdminController {
                 try {
 
                     if (overrideTitle) {
-                        int index = originalName.lastIndexOf(CommonConstants.DOT);
+                        int index = originalName.lastIndexOf(Constants.DOT);
                         if (0 < index) {
                             originalName = originalName.substring(0, index);
                         }
@@ -215,7 +217,7 @@ public class FileAdminController {
                         } else {
                             result.put(field, DocToHtmlUtils.excelToHtml(dest, imageManager));
                         }
-                        dest.delete();
+                        Files.delete(dest.toPath());
                     } else if (".doc".equalsIgnoreCase(suffix)) {
                         File dest = File.createTempFile("temp_", suffix);
                         file.transferTo(dest);
@@ -224,8 +226,8 @@ public class FileAdminController {
                             public String savePicture(byte[] content, PictureType pictureType, String suggestedName,
                                     float widthInches, float heightInches) {
                                 String imagesuffix = pictureType.getExtension();
-                                if (!suffix.contains(CommonConstants.DOT)) {
-                                    imagesuffix = CommonUtils.joinString(CommonConstants.DOT, imagesuffix);
+                                if (!suffix.contains(Constants.DOT)) {
+                                    imagesuffix = CommonUtils.joinString(Constants.DOT, imagesuffix);
                                 }
                                 String fileName = CmsFileUtils.getUploadFileName(imagesuffix);
                                 String filepath = siteComponent.getWebFilePath(site.getId(), fileName);
@@ -244,7 +246,7 @@ public class FileAdminController {
                                 }
                             }
                         }));
-                        dest.delete();
+                        Files.delete(dest.toPath());
                     } else if (".pdf".equalsIgnoreCase(suffix)) {
                         if (useIframe) {
                             String fileName = CmsFileUtils.getUploadFileName(suffix);
@@ -269,8 +271,8 @@ public class FileAdminController {
                                 @Override
                                 public String handleResource(HtmlResource resource) throws IOException {
                                     String imagesuffix = resource.getFileEnding();
-                                    if (!suffix.contains(CommonConstants.DOT)) {
-                                        imagesuffix = CommonUtils.joinString(CommonConstants.DOT, imagesuffix);
+                                    if (!suffix.contains(Constants.DOT)) {
+                                        imagesuffix = CommonUtils.joinString(Constants.DOT, imagesuffix);
                                     }
                                     String fileName = CmsFileUtils.getUploadFileName(imagesuffix);
                                     String filepath = siteComponent.getWebFilePath(site.getId(), fileName);
@@ -290,7 +292,7 @@ public class FileAdminController {
                                 }
 
                             }));
-                            dest.delete();
+                            Files.delete(dest.toPath());
                         }
                     }
                 } catch (Exception e) {
@@ -311,7 +313,7 @@ public class FileAdminController {
      * @param request
      * @return view name
      */
-    @RequestMapping(value = "doBatchUpload", method = RequestMethod.POST)
+    @PostMapping("doBatchUpload")
     @Csrf
     @ResponseBody
     public List<Map<String, Object>> batchUpload(@RequestAttribute SysSite site, @SessionAttribute SysUser admin,

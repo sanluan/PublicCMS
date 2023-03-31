@@ -17,6 +17,7 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.RenderHandler;
 
+import freemarker.template.TemplateException;
 /**
  *
  * ${entityName}${directiveSuffix}
@@ -26,7 +27,7 @@ import com.publiccms.common.handler.RenderHandler;
 public class ${entityName}${directiveSuffix} extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         ${idType!'Long'} id = handler.get${idType!'Long'}("id");
         if (CommonUtils.notEmpty(id)) {
             ${entityName} entity = service.getEntity(id);

@@ -7,7 +7,7 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import com.publiccms.common.base.BaseDao;
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
 import com.publiccms.common.tools.CommonUtils;
@@ -59,7 +59,7 @@ public class CmsContentProductDao extends BaseDao<CmsContentProduct> {
             orderType = ORDERTYPE_ASC;
         }
         if (null == orderField) {
-            orderField = CommonConstants.BLANK;
+            orderField = Constants.BLANK;
         }
         switch (orderField) {
         case "price":

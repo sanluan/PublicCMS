@@ -76,10 +76,10 @@ public class SysLockDirective extends AbstractTemplateDirective {
                     List<SysLock> entityList = service.getEntitys(entityIds);
                     int expriy = lockComponent.getExpriy(siteId, itemType);
                     Map<String, SysLock> map = CommonUtils.listToMap(entityList, k -> String.valueOf(k.getId().getItemId()), null,
-                            expriy > 0 ? f -> {
-                                return f.getCreateDate().after(DateUtils.addMinutes(CommonUtils.getDate(), -expriy))
-                                        && (null == f.getUserId() || null == userId || !f.getUserId().equals(userId));
-                            } : null);
+                            expriy > 0
+                                    ? f -> f.getCreateDate().after(DateUtils.addMinutes(CommonUtils.getDate(), -expriy))
+                                            && (null == f.getUserId() || null == userId || !f.getUserId().equals(userId))
+                                    : null);
                     handler.put("map", map).render();
                 }
             }

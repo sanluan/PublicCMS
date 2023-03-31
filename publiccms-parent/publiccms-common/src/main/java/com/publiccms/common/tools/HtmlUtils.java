@@ -23,6 +23,9 @@ import com.publiccms.common.constants.Constants;
  * 
  */
 public class HtmlUtils {
+    private HtmlUtils() {
+    }
+
     /**
      * 
      */

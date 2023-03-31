@@ -29,6 +29,7 @@ import com.publiccms.common.api.Cache;
 import com.publiccms.common.api.Config;
 import com.publiccms.common.base.AbstractFreemarkerView;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.servlet.WebDispatcherServlet;
 import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.common.tools.CommonUtils;
@@ -120,13 +121,13 @@ public class TemplateCacheComponent implements Cache {
                 StringBuilder sb = new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX);
                 if (CommonUtils.notEmpty(loginPath)) {
                     if (null != id) {
-                        int index = requestPath.lastIndexOf(CommonConstants.DOT);
+                        int index = requestPath.lastIndexOf(Constants.DOT);
                         if (0 < index) {
                             requestPath = requestPath.substring(0, index);
                         }
-                        requestPath = CommonUtils.joinString(requestPath, CommonConstants.SEPARATOR, id);
+                        requestPath = CommonUtils.joinString(requestPath, Constants.SEPARATOR, id);
                         if (null != pageIndex) {
-                            requestPath = CommonUtils.joinString(requestPath, CommonConstants.UNDERLINE, pageIndex);
+                            requestPath = CommonUtils.joinString(requestPath, Constants.UNDERLINE, pageIndex);
                         }
                     }
                     return sb.append(loginPath).append("?returnUrl=")
@@ -135,16 +136,15 @@ public class TemplateCacheComponent implements Cache {
                     return sb.append(site.getDynamicPath()).toString();
                 }
             }
-            String[] acceptParameters = StringUtils.split(metadata.getAcceptParameters(), CommonConstants.COMMA);
-            if (CommonUtils.notEmpty(acceptParameters)) {
-                if (!billingRequestParametersToModel(request, acceptParameters, id, pageIndex, metadata.getParameterTypeMap(),
-                        site, model)) {
-                    try {
-                        response.sendError(HttpServletResponse.SC_NOT_FOUND);
-                    } catch (IOException e) {
-                    }
-                    return requestPath;
+            String[] acceptParameters = StringUtils.split(metadata.getAcceptParameters(), Constants.COMMA);
+            if (CommonUtils.notEmpty(acceptParameters) && !billingRequestParametersToModel(request, acceptParameters, id,
+                    pageIndex, metadata.getParameterTypeMap(), site, model)) {
+                try {
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                } catch (IOException e) {
                 }
+                return requestPath;
+
             }
             CmsPageData data = metadataComponent.getTemplateData(templatePath);
             model.addAttribute("metadata", metadata.getAsMap(data));
@@ -305,9 +305,7 @@ public class TemplateCacheComponent implements Cache {
                 List<CmsCategory> entityList = categoryService.getEntitysByCodes(site.getId(), values);
                 entityList = entityList.stream().filter(entity -> site.getId() == entity.getSiteId())
                         .collect(Collectors.toList());
-                entityList.forEach(e -> {
-                    CmsUrlUtils.initCategoryUrl(site, e);
-                });
+                entityList.forEach(e -> CmsUrlUtils.initCategoryUrl(site, e));
                 if (entityList.isEmpty() && parameterType.isRequired()) {
                     return false;
                 } else {
@@ -344,9 +342,7 @@ public class TemplateCacheComponent implements Cache {
                 List<CmsCategory> entityList = categoryService.getEntitys(set);
                 entityList = entityList.stream().filter(entity -> site.getId() == entity.getSiteId())
                         .collect(Collectors.toList());
-                entityList.forEach(e -> {
-                    CmsUrlUtils.initCategoryUrl(site, e);
-                });
+                entityList.forEach(e -> CmsUrlUtils.initCategoryUrl(site, e));
                 if (entityList.isEmpty() && parameterType.isRequired()) {
                     return false;
                 } else {
@@ -552,7 +548,7 @@ public class TemplateCacheComponent implements Cache {
                 String[] values = request.getParameterValues(parameterName);
                 if (CommonUtils.notEmpty(values)) {
                     for (int i = 0; i < values.length; i++) {
-                        sb.append(CommonConstants.UNDERLINE);
+                        sb.append(Constants.UNDERLINE);
                         sb.append(parameterName);
                         sb.append("=");
                         sb.append(values[i]);
@@ -574,7 +570,7 @@ public class TemplateCacheComponent implements Cache {
 
     @Override
     public void clear() {
-        deleteCachedFile(getCachedFilePath(CommonConstants.BLANK));
+        deleteCachedFile(getCachedFilePath(Constants.BLANK));
     }
 
     private String createCache(String requestPath, String fullTemplatePath, String cachePath, Locale locale, int cacheMillisTime,

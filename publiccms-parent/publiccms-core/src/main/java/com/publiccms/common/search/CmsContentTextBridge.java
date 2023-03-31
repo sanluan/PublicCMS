@@ -10,7 +10,7 @@ import org.hibernate.search.engine.backend.document.IndexObjectFieldReference;
 import org.hibernate.search.mapper.pojo.bridge.TypeBridge;
 import org.hibernate.search.mapper.pojo.bridge.runtime.TypeBridgeWriteContext;
 
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.entities.cms.CmsContent;
@@ -41,7 +41,7 @@ public class CmsContentTextBridge implements TypeBridge<CmsContent> {
         CmsContentAttribute attribute = BeanComponent.getContentAttributeService().getEntity(bridgedElement.getId());
         if (null != attribute) {
             if (CommonUtils.notEmpty(attribute.getExtendsFields()) && CommonUtils.notEmpty(attribute.getData())) {
-                String[] fields = StringUtils.split(attribute.getExtendsFields(), CommonConstants.COMMA);
+                String[] fields = StringUtils.split(attribute.getExtendsFields(), Constants.COMMA);
                 Map<String, String> map = ExtendUtils.getExtendMap(attribute.getData());
                 if (CommonUtils.notEmpty(fields) && CommonUtils.notEmpty(map)) {
                     DocumentElement extend = target.addObject(extendField);

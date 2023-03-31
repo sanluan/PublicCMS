@@ -18,7 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.api.Config;
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
@@ -148,7 +148,7 @@ public class ConfigComponent {
         File file = new File(siteComponent.getConfigFilePath(siteId));
         if (CommonUtils.notEmpty(file)) {
             try {
-                modelMap = CommonConstants.objectMapper.readValue(file, CommonConstants.objectMapper.getTypeFactory()
+                modelMap = Constants.objectMapper.readValue(file, Constants.objectMapper.getTypeFactory()
                         .constructMapLikeType(HashMap.class, String.class, SysConfig.class));
             } catch (IOException | ClassCastException e) {
                 modelMap = new HashMap<>();
@@ -172,7 +172,7 @@ public class ConfigComponent {
             file.getParentFile().mkdirs();
         }
         try (FileOutputStream outputStream = new FileOutputStream(file)) {
-            CommonConstants.objectMapper.writeValue(outputStream, modelMap);
+            Constants.objectMapper.writeValue(outputStream, modelMap);
         } catch (IOException e) {
             return false;
         }

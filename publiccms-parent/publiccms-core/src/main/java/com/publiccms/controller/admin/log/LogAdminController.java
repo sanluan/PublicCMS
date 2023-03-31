@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.log.LogOperate;
@@ -62,7 +63,7 @@ public class LogAdminController {
             logLoginService.delete(site.getId(), ids);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.logLogin", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), StringUtils.join(ids, CommonConstants.COMMA)));
+                    CommonUtils.getDate(), StringUtils.join(ids, Constants.COMMA)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -82,7 +83,7 @@ public class LogAdminController {
             logTaskService.delete(site.getId(), ids);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.logTask", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), StringUtils.join(ids, CommonConstants.COMMA)));
+                    CommonUtils.getDate(), StringUtils.join(ids, Constants.COMMA)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -102,7 +103,7 @@ public class LogAdminController {
             logUploadService.delete(site.getId(), ids);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.logUpload", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), StringUtils.join(ids, CommonConstants.COMMA)));
+                    CommonUtils.getDate(), StringUtils.join(ids, Constants.COMMA)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }

@@ -205,10 +205,9 @@ public class CmsCategoryAdminController {
             for (Integer id : ids) {
                 move(site, id, parentId);
             }
-            logOperateService
-                    .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                            "move.category", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
-                            CommonUtils.joinString(StringUtils.join(ids, CommonConstants.COMMA), " to ", parentId)));
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "move.category", RequestUtils.getIpAddress(request),
+                    CommonUtils.getDate(), CommonUtils.joinString(StringUtils.join(ids, Constants.COMMA), " to ", parentId)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -252,10 +251,10 @@ public class CmsCategoryAdminController {
                 model.put(CommonConstants.ERROR, e.getMessage());
                 return CommonConstants.TEMPLATE_ERROR;
             }
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "static.category", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), CommonUtils.joinString(StringUtils.join(ids, CommonConstants.COMMA), ",pageSize:",
-                            CommonUtils.empty(max) ? 1 : max)));
+            logOperateService
+                    .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                            "static.category", RequestUtils.getIpAddress(request), CommonUtils.getDate(), CommonUtils.joinString(
+                                    StringUtils.join(ids, Constants.COMMA), ",pageSize:", CommonUtils.empty(max) ? 1 : max)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -344,7 +343,7 @@ public class CmsCategoryAdminController {
             for (CmsCategory entity : service.delete(site.getId(), ids)) {
                 if (entity.isHasStatic() && CommonUtils.notEmpty(entity.getUrl())) {
                     String filepath = siteComponent.getWebFilePath(site.getId(), entity.getUrl());
-                    if (entity.getUrl().endsWith(CommonConstants.SEPARATOR)) {
+                    if (entity.getUrl().endsWith(Constants.SEPARATOR)) {
                         filepath = CommonUtils.joinString(filepath, CommonConstants.getDefaultPage());
                     }
                     if (CmsFileUtils.isFile(filepath)) {
@@ -356,7 +355,7 @@ public class CmsCategoryAdminController {
             contentService.deleteByCategoryIds(site.getId(), ids);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.category", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), StringUtils.join(ids, CommonConstants.COMMA)));
+                    CommonUtils.getDate(), StringUtils.join(ids, Constants.COMMA)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -392,9 +391,9 @@ public class CmsCategoryAdminController {
     public ResponseEntity<StreamingResponseBody> export(@RequestAttribute SysSite site, Integer id) {
         DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.DOWNLOAD_FORMAT_STRING);
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentDisposition(ContentDisposition.attachment().filename(CommonUtils.joinString(site.getName(),
-                dateFormat.format(new Date()), "-category.zip"),
-                        CommonConstants.DEFAULT_CHARSET)
+        headers.setContentDisposition(ContentDisposition.attachment()
+                .filename(CommonUtils.joinString(site.getName(), dateFormat.format(new Date()), "-category.zip"),
+                        Constants.DEFAULT_CHARSET)
                 .build());
         StreamingResponseBody body = new StreamingResponseBody() {
             @Override

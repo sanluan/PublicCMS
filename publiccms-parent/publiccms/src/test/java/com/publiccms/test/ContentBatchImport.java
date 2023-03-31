@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Resource;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -33,14 +35,13 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import javax.annotation.Resource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.drew.imaging.FileType;
 import com.drew.imaging.FileTypeDetector;
 import com.publiccms.common.constants.CmsVersion;
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsContent;
@@ -75,10 +76,10 @@ public class ContentBatchImport {
      */
     @Test
     @DisplayName("insert test case")
-    public void insertTest() {
+    void insertTest() {
         try {
-            List<Company> list = CommonConstants.objectMapper.readValue(new File("D://a.txt"),
-                    CommonConstants.objectMapper.getTypeFactory().constructCollectionLikeType(List.class, Company.class));
+            List<Company> list = Constants.objectMapper.readValue(new File("D://a.txt"),
+                    Constants.objectMapper.getTypeFactory().constructCollectionLikeType(List.class, Company.class));
             for (Company c : list) {
                 CmsContent entity = new CmsContent((short) 1, c.getName(), 1, 18, "company", false, true, false, false, 0,
                         new Date(), new Date(), 0, 1);
@@ -117,7 +118,7 @@ public class ContentBatchImport {
                             data.put("address", p.getBaseAddress());
                         }
                         if (!data.isEmpty()) {
-                            pattribute.setData(CommonConstants.objectMapper.writeValueAsString(data));
+                            pattribute.setData(Constants.objectMapper.writeValueAsString(data));
                         }
                         contentAttributeService.save(pattribute);
                         if (CommonUtils.notEmpty(p.getBaseImages())) {
@@ -136,7 +137,7 @@ public class ContentBatchImport {
 
     public static String getUrl(String url) {
         String fileName = null;
-        try (CloseableHttpClient httpclient = HttpClients.custom().setDefaultRequestConfig(CommonConstants.defaultRequestConfig)
+        try (CloseableHttpClient httpclient = HttpClients.custom().setDefaultRequestConfig(Constants.defaultRequestConfig)
                 .build()) {
             HttpGet httpget = new HttpGet(url);
             CloseableHttpResponse response = httpclient.execute(httpget);
@@ -262,7 +263,7 @@ public class ContentBatchImport {
                 if (null != c) {
                     list.add(c);
                 }
-                CommonConstants.objectMapper.writeValue(new File("D://a.txt"), list);
+                Constants.objectMapper.writeValue(new File("D://a.txt"), list);
             }
         } catch (EncryptedDocumentException | IOException e) {
             e.printStackTrace();

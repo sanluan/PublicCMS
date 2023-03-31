@@ -8,6 +8,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.IpUtils;
 import com.publiccms.common.tools.LicenseUtils;
 
@@ -36,7 +37,7 @@ public class CmsCopyright implements Copyright {
             File licenseFile = new File(licenseFilePath);
             if (null == license || lastModify != licenseFile.lastModified()) {
                 try {
-                    String licenseText = FileUtils.readFileToString(licenseFile, CommonConstants.DEFAULT_CHARSET_NAME);
+                    String licenseText = FileUtils.readFileToString(licenseFile, Constants.DEFAULT_CHARSET_NAME);
                     license = LicenseUtils.readLicense(licenseText);
                     lastModify = licenseFile.lastModified();
                 } catch (IOException e) {
@@ -52,9 +53,9 @@ public class CmsCopyright implements Copyright {
                 || domain.toLowerCase().contains(".test.") || "localhost".equals(domain)) {
             return true;
         } else {
-            String[] licenseDomains = StringUtils.split(licenseDomain, CommonConstants.COMMA);
+            String[] licenseDomains = StringUtils.split(licenseDomain, Constants.COMMA);
             int index;
-            while (0 < (index = domain.indexOf(CommonConstants.DOT))) {
+            while (0 < (index = domain.indexOf(Constants.DOT))) {
                 if (ArrayUtils.contains(licenseDomains, domain)) {
                     return true;
                 } else {

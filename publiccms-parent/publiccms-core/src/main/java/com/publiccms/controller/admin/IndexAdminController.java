@@ -14,6 +14,7 @@ import org.springframework.web.servlet.view.UrlBasedViewResolver;
 import org.springframework.web.util.UrlPathHelper;
 
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.config.SafeConfigComponent;
@@ -41,11 +42,11 @@ public class IndexAdminController {
     public String page(HttpServletRequest request) {
         String path = UrlPathHelper.defaultInstance.getLookupPathForRequest(request);
         if (CommonUtils.notEmpty(path)) {
-            if (CommonConstants.SEPARATOR.equals(path) || path.endsWith(CommonConstants.SEPARATOR)) {
+            if (Constants.SEPARATOR.equals(path) || path.endsWith(Constants.SEPARATOR)) {
                 path = CommonUtils.joinString(path, CommonConstants.getDefaultPage());
             }
-            int index = path.lastIndexOf(CommonConstants.DOT);
-            path = path.substring(0 < path.indexOf(CommonConstants.SEPARATOR) ? 0 : 1, -1 < index ? index : path.length());
+            int index = path.lastIndexOf(Constants.DOT);
+            path = path.substring(path.startsWith(Constants.SEPARATOR) ? 1 : 0, -1 < index ? index : path.length());
         }
         return path;
     }

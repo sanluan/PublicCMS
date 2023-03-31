@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ExtendUtils;
@@ -170,6 +170,7 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
     /**
      * @param entity
      */
+    @Override
     public void save(CmsCategory entity) {
         if (entity.isOnlyUrl()) {
             entity.setUrl(entity.getPath());
@@ -189,7 +190,7 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
                 addChildIds(parent.getParentId(), id);
                 String childIds;
                 if (CommonUtils.notEmpty(parent.getChildIds())) {
-                    childIds = CommonUtils.joinString(parent.getChildIds(), CommonConstants.COMMA, id);
+                    childIds = CommonUtils.joinString(parent.getChildIds(), Constants.COMMA, id);
                 } else {
                     childIds = String.valueOf(id);
                 }
@@ -214,14 +215,14 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
         @SuppressWarnings("unchecked")
         List<CmsCategory> list = (List<CmsCategory>) getPage(
                 new CmsCategoryQuery(siteId, parentId, false, null, null, null, false), null, null).getList();
-        if (0 < list.size()) {
+        if (!list.isEmpty()) {
             for (CmsCategory category : list) {
                 childIds.append(category.getId());
-                childIds.append(CommonConstants.COMMA);
+                childIds.append(Constants.COMMA);
                 String childChildIds = getChildIds(siteId, category.getId());
                 if (CommonUtils.notEmpty(childChildIds)) {
                     childIds.append(childChildIds);
-                    childIds.append(CommonConstants.COMMA);
+                    childIds.append(Constants.COMMA);
                 }
             }
             if (0 < childIds.length()) {

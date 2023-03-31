@@ -5,21 +5,18 @@ package com.publiccms.views.directive.tools;
 import java.io.IOException;
 import java.util.List;
 
-import com.publiccms.common.base.AbstractTemplateDirective;
-import com.publiccms.common.constants.CommonConstants;
-import com.publiccms.common.constants.Constants;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.HtmlUtils;
 
+import com.publiccms.common.base.AbstractTemplateDirective;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CmsFileUtils;
+import com.publiccms.common.tools.CmsFileUtils.FileSearchResult;
 import com.publiccms.common.tools.CommonUtils;
 
 import freemarker.template.TemplateException;
-
-import com.publiccms.common.tools.CmsFileUtils.FileSearchResult;
 
 /**
  * templateSearchList 模板文件搜索列表指令
@@ -54,7 +51,7 @@ public class TemplateSearchListDirective extends AbstractTemplateDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, TemplateException {
-        String path = handler.getString("path", CommonConstants.SEPARATOR);
+        String path = handler.getString("path", Constants.SEPARATOR);
         String word = handler.getString("word");
         if (CommonUtils.notEmpty(word) ) {
             List<FileSearchResult> list = CmsFileUtils

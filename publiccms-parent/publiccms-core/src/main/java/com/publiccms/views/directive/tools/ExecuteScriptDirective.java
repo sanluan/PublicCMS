@@ -49,6 +49,7 @@ public class ExecuteScriptDirective extends AbstractTemplateDirective {
                 handler.print(scriptComponent.execute(command, parameters, handler.getLong("timeout", 1l)));
             } catch (IOException | InterruptedException e) {
                 handler.print(e.getMessage());
+                Thread.currentThread().interrupt();
             }
         } else {
             handler.print(

@@ -81,7 +81,7 @@ public interface RenderHandler {
      * @return int value
      * @throws TemplateModelException
      */
-    Integer getInteger(String name, Integer defaultValue) throws TemplateModelException;
+    int getInteger(String name, int defaultValue) throws TemplateModelException;
 
     /**
      * @param name
@@ -105,7 +105,7 @@ public interface RenderHandler {
      * @return byte value
      * @throws TemplateModelException
      */
-    Byte getByte(String name, Byte defaultValue) throws TemplateModelException;
+    byte getByte(String name, byte defaultValue) throws TemplateModelException;
 
     /**
      * @param name
@@ -129,7 +129,7 @@ public interface RenderHandler {
      * @return long value
      * @throws TemplateModelException
      */
-    Long getLong(String name, Long defaultValue) throws TemplateModelException;
+    long getLong(String name, long defaultValue) throws TemplateModelException;
 
     /**
      * @param name
@@ -194,7 +194,7 @@ public interface RenderHandler {
      * @return bool value
      * @throws TemplateModelException
      */
-    Boolean getBoolean(String name, Boolean defaultValue) throws TemplateModelException;
+    boolean getBoolean(String name, boolean defaultValue) throws TemplateModelException;
 
     /**
      * @param name

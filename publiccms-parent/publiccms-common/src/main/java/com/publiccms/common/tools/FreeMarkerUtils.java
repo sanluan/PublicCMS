@@ -28,6 +28,9 @@ import freemarker.template.TemplateException;
  * 
  */
 public class FreeMarkerUtils {
+    private FreeMarkerUtils() {
+    }
+
     private static final Log log = LogFactory.getLog(FreeMarkerUtils.class);
 
     /**

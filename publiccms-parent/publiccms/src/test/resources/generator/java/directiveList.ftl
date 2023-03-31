@@ -13,6 +13,7 @@ import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.handler.PageHandler;
 
+import freemarker.template.TemplateException;
 /**
  *
  * ${entityName}List${directiveSuffix}
@@ -22,7 +23,7 @@ import com.publiccms.common.handler.PageHandler;
 public class ${entityName}List${directiveSuffix} extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         PageHandler page = service.getPage(<#include "../include_condition/directive.ftl">);
         handler.put("page", page).render();
     }

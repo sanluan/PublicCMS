@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -84,7 +85,7 @@ public class CmsFileBackupAdminController {
             }
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "recycle.backupfile", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), CommonUtils.joinString(type, ":", StringUtils.join(paths, CommonConstants.COMMA))));
+                    CommonUtils.getDate(), CommonUtils.joinString(type, ":", StringUtils.join(paths, Constants.COMMA))));
         }
         return CommonConstants.TEMPLATE_DONE;
     }

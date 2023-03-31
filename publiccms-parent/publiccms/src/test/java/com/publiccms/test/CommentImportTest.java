@@ -7,16 +7,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
+
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import javax.annotation.Resource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.publiccms.common.constants.CmsVersion;
-import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.DateFormatUtils;
 import com.publiccms.entities.cms.CmsComment;
@@ -39,9 +39,9 @@ public class CommentImportTest {
 
     // 搜狐畅言评论导入
     @Test
-    public void importTest() throws IOException, ParseException {
+    void importTest() throws IOException, ParseException {
         File file = new File("D:\\Users\\kerneler\\Desktop\\b28141a5-8e9c-4f4f-aacc-9864c6bce235_16.json");
-        String content = FileUtils.readFileToString(file, CommonConstants.DEFAULT_CHARSET);
+        String content = FileUtils.readFileToString(file, Constants.DEFAULT_CHARSET);
         Map<String, Object> a = Constants.objectMapper.readValue(content,
                 Constants.objectMapper.getTypeFactory().constructMapLikeType(HashMap.class, String.class, Object.class));
         @SuppressWarnings("unchecked")

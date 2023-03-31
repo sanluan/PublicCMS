@@ -91,9 +91,7 @@ public class CmsCategoryDirective extends AbstractTemplateDirective {
                 List<CmsCategory> entityList = service.getEntitys(ids);
                 Consumer<CmsCategory> consumer = null;
                 if (absoluteURL) {
-                    consumer = e -> {
-                        CmsUrlUtils.initCategoryUrl(site, e);
-                    };
+                    consumer = e -> CmsUrlUtils.initCategoryUrl(site, e);
                 }
                 Map<String, CmsCategory> map = CommonUtils.listToMap(entityList, k -> k.getId().toString(), consumer,
                         entity -> site.getId() == entity.getSiteId());

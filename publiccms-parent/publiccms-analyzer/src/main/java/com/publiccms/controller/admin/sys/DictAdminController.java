@@ -7,13 +7,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.analysis.cn.smart.hhmm.DictionaryReloader;
-import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.AnalyzerDictUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -69,17 +70,17 @@ public class DictAdminController {
         try {
             String dictDir = CommonUtils.joinString(siteComponent.getRootPath(), AnalyzerDictUtils.DIR_DICT);
             File dictFile = new File(CommonUtils.joinString(dictDir, AnalyzerDictUtils.TXT_DICT));
-            FileUtils.writeStringToFile(dictFile, dict, CommonConstants.DEFAULT_CHARSET);
+            FileUtils.writeStringToFile(dictFile, dict, Constants.DEFAULT_CHARSET);
             Map<String, Integer> wordMap = new HashMap<>();
-            for (String word : FileUtils.readLines(dictFile, CommonConstants.DEFAULT_CHARSET)) {
+            for (String word : FileUtils.readLines(dictFile, Constants.DEFAULT_CHARSET)) {
                 if (!word.startsWith("#")) {
                     wordMap.put(word, 10);
                 }
             }
             File skipWordFile = new File(CommonUtils.joinString(dictDir, AnalyzerDictUtils.TXT_SKIPWORD));
-            FileUtils.writeStringToFile(skipWordFile, skipWord, CommonConstants.DEFAULT_CHARSET);
+            FileUtils.writeStringToFile(skipWordFile, skipWord, Constants.DEFAULT_CHARSET);
             List<String> skipWordList = new ArrayList<>();
-            for (String word : FileUtils.readLines(skipWordFile, CommonConstants.DEFAULT_CHARSET)) {
+            for (String word : FileUtils.readLines(skipWordFile, Constants.DEFAULT_CHARSET)) {
                 if (!word.startsWith("#")) {
                     skipWordList.add(word);
                 }

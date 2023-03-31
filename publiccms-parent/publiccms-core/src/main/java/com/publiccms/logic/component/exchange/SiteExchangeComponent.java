@@ -3,6 +3,7 @@ package com.publiccms.logic.component.exchange;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.publiccms.common.base.AbstractExchange;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ZipUtils;
@@ -66,15 +68,15 @@ public class SiteExchangeComponent {
             AbstractExchange<E, D> exchangeComponent, MultipartFile file, ModelMap model) {
         if (null != file && !file.isEmpty()) {
             String originalName = file.getOriginalFilename();
-            if (originalName.endsWith(dataFileSuffix)) {
+            if (null != originalName && originalName.endsWith(dataFileSuffix)) {
                 String suffix = CmsFileUtils.getSuffix(originalName);
                 try {
                     File dest = File.createTempFile("temp_import_", suffix);
                     file.transferTo(dest);
-                    try (ZipFile zipFile = new ZipFile(dest, CommonConstants.DEFAULT_CHARSET_NAME)) {
+                    try (ZipFile zipFile = new ZipFile(dest, Constants.DEFAULT_CHARSET_NAME)) {
                         exchangeComponent.importData(site, userId, overwrite, zipFile);
                     }
-                    dest.delete();
+                    Files.delete(dest.toPath());
                     return CommonConstants.TEMPLATE_DONE;
                 } catch (IOException e) {
                     log.error(e.getMessage());
@@ -113,13 +115,13 @@ public class SiteExchangeComponent {
             String fileName, ModelMap model) {
         if (null != file && !file.isEmpty()) {
             String originalName = file.getOriginalFilename();
-            if (originalName.endsWith(dataFileSuffix)) {
+            if (null != originalName && originalName.endsWith(dataFileSuffix)) {
                 String suffix = CmsFileUtils.getSuffix(originalName);
                 try {
                     File dest = File.createTempFile("temp_import_", suffix);
                     file.transferTo(dest);
                     importDate(site, userId, overwrite, dest);
-                    dest.delete();
+                    Files.delete(dest.toPath());
                     return CommonConstants.TEMPLATE_DONE;
                 } catch (IOException e) {
                     log.error(e.getMessage());
@@ -147,17 +149,17 @@ public class SiteExchangeComponent {
         File file = new File(filepath);
         Map<String, T> map = null;
         try {
-            map = CommonConstants.objectMapper.readValue(file,
-                    CommonConstants.objectMapper.getTypeFactory().constructMapLikeType(HashMap.class, String.class, clazz));
+            map = Constants.objectMapper.readValue(file,
+                    Constants.objectMapper.getTypeFactory().constructMapLikeType(HashMap.class, String.class, clazz));
         } catch (IOException e) {
             return true;
         }
         try {
-            Map<String, T> newMap = CommonConstants.objectMapper.readValue(zipFile.getInputStream(zipEntry),
-                    CommonConstants.objectMapper.getTypeFactory().constructMapLikeType(HashMap.class, String.class, clazz));
+            Map<String, T> newMap = Constants.objectMapper.readValue(zipFile.getInputStream(zipEntry),
+                    Constants.objectMapper.getTypeFactory().constructMapLikeType(HashMap.class, String.class, clazz));
             map.putAll(newMap);
             try (FileOutputStream outputStream = new FileOutputStream(file)) {
-                CommonConstants.objectMapper.writeValue(outputStream, map);
+                Constants.objectMapper.writeValue(outputStream, map);
             }
         } catch (IOException e) {
         }
@@ -187,9 +189,9 @@ public class SiteExchangeComponent {
     }
 
     private void importDate(SysSite site, long userId, boolean overwrite, File file) throws IOException {
-        try (ZipFile zipFile = new ZipFile(file, CommonConstants.DEFAULT_CHARSET_NAME)) {
+        try (ZipFile zipFile = new ZipFile(file, Constants.DEFAULT_CHARSET_NAME)) {
             {
-                String filepath = siteComponent.getTemplateFilePath(site.getId(), CommonConstants.SEPARATOR);
+                String filepath = siteComponent.getTemplateFilePath(site.getId(), Constants.SEPARATOR);
                 ZipUtils.unzip(zipFile, "template", filepath, overwrite, (f, e) -> {
                     if (e.getName().toLowerCase().endsWith(".data")) {
                         String datafile = siteComponent.getTemplateFilePath(site.getId(),
@@ -208,7 +210,7 @@ public class SiteExchangeComponent {
                 templateComponent.clearTemplateCache();
             }
             {
-                String filepath = siteComponent.getWebFilePath(site.getId(), CommonConstants.SEPARATOR);
+                String filepath = siteComponent.getWebFilePath(site.getId(), Constants.SEPARATOR);
                 ZipUtils.unzip(zipFile, "web", filepath, overwrite, (f, e) -> {
                     String historyFilePath = siteComponent.getWebHistoryFilePath(site.getId(),
                             StringUtils.removeStart(e.getName(), "web/"), true);
@@ -220,7 +222,7 @@ public class SiteExchangeComponent {
                 });
             }
             {
-                String filepath = siteComponent.getTaskTemplateFilePath(site.getId(), CommonConstants.SEPARATOR);
+                String filepath = siteComponent.getTaskTemplateFilePath(site.getId(), Constants.SEPARATOR);
                 ZipUtils.unzip(zipFile, "tasktemplate", filepath, overwrite, (f, e) -> {
                     String historyFilePath = siteComponent.getTaskTemplateHistoryFilePath(site.getId(),
                             StringUtils.removeStart(e.getName(), "tasktemplate/"), true);

@@ -30,6 +30,9 @@ import com.publiccms.common.constants.Constants;
  *
  */
 public class ZipUtils {
+    private ZipUtils() {
+    }
+
     protected static final Log log = LogFactory.getLog(ZipUtils.class);
 
     /**
@@ -105,7 +108,7 @@ public class ZipUtils {
      * public ResponseEntity<StreamingResponseBody> export() {
      *     HttpHeaders headers = new HttpHeaders();
      *     headers.setContentDisposition(
-     *             ContentDisposition.attachment().filename("filename.zip", CommonConstants.DEFAULT_CHARSET).build());
+     *             ContentDisposition.attachment().filename("filename.zip", Constants.DEFAULT_CHARSET).build());
      *     StreamingResponseBody body = new StreamingResponseBody() {
      *         @Override
      *         public void writeTo(OutputStream outputStream) throws IOException {

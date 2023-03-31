@@ -4,6 +4,8 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -14,14 +16,13 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import javax.annotation.Resource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.drew.imaging.FileType;
 import com.drew.imaging.FileTypeDetector;
 import com.publiccms.common.constants.CmsVersion;
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
@@ -51,7 +52,7 @@ public class ContentCoverCatch {
     @SuppressWarnings("unchecked")
     @Test
     @DisplayName("insert test case")
-    public void insertTest() {
+    void insertTest() {
         CmsContentQuery query = new CmsContentQuery();
         query.setHasCover(true);
         PageHandler page = contentService.getPage(query, null, null, null, null, null, 500, null);
@@ -74,7 +75,7 @@ public class ContentCoverCatch {
 
     public static String getUrl(String url) {
         String fileName = null;
-        try (CloseableHttpClient httpclient = HttpClients.custom().setDefaultRequestConfig(CommonConstants.defaultRequestConfig)
+        try (CloseableHttpClient httpclient = HttpClients.custom().setDefaultRequestConfig(Constants.defaultRequestConfig)
                 .build()) {
             HttpGet httpget = new HttpGet(url);
             CloseableHttpResponse response = httpclient.execute(httpget);

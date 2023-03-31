@@ -8,7 +8,9 @@ import org.springframework.http.MediaType;
  * CommonConstants
  * 
  */
-public class CommonConstants extends Constants {
+public class CommonConstants {
+    private CommonConstants() {
+    }
 
     /**
      * CMS文件路径
@@ -78,7 +80,7 @@ public class CommonConstants extends Constants {
      * 错误
      */
     public static final String ERROR = "error";
-    
+
     /**
      * 页码
      */
@@ -87,7 +89,7 @@ public class CommonConstants extends Constants {
     /**
      * json类型
      */
-    public static final MediaType jsonMediaType = new MediaType("application", "json", CommonConstants.DEFAULT_CHARSET);
+    public static final MediaType jsonMediaType = new MediaType("application", "json", Constants.DEFAULT_CHARSET);
 
     /**
      * @return default page
@@ -102,12 +104,14 @@ public class CommonConstants extends Constants {
     public static final String getDefaultSubfix() {
         return ".html";
     }
+
     /**
      * @return attribute user key
      */
     public static final String getAttributeSite() {
         return "site";
     }
+
     /**
      * @return session user key
      */
@@ -170,7 +174,7 @@ public class CommonConstants extends Constants {
     public static final String getCkeditorPageBreakTag() {
         return "<div style=\"page-break-after:always\"><span style=\"display:none\">&nbsp;</span></div>";
     }
-    
+
     /**
      * @return tinymce page break tag
      */

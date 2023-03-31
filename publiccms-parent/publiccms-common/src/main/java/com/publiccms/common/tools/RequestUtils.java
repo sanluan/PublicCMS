@@ -15,6 +15,9 @@ import com.publiccms.common.constants.Constants;
  * 
  */
 public class RequestUtils {
+    private RequestUtils() {
+    }
+
     /**
      * @param parameterMap
      * @param key

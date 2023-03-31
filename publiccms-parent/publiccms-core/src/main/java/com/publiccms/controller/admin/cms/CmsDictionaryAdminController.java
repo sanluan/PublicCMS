@@ -171,7 +171,7 @@ public class CmsDictionaryAdminController {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentDisposition(ContentDisposition.attachment()
                 .filename(CommonUtils.joinString(site.getName(), dateFormat.format(new Date()), "-dictionary.zip"),
-                        CommonConstants.DEFAULT_CHARSET)
+                        Constants.DEFAULT_CHARSET)
                 .build());
         StreamingResponseBody body = new StreamingResponseBody() {
             @Override
@@ -216,7 +216,7 @@ public class CmsDictionaryAdminController {
             excludeValueService.delete(site.getId(), ids);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.cmsDictionary", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), StringUtils.join(ids, CommonConstants.COMMA)));
+                    CommonUtils.getDate(), StringUtils.join(ids, Constants.COMMA)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }

@@ -21,7 +21,7 @@ import freemarker.template.TemplateModelException;
  *
  * getFileUploadPrefix 获取
  * <p>
-  * 参数列表
+ * 参数列表
  * <ol>
  * </ol>
  * <p>
@@ -64,8 +64,7 @@ public class GetFileUploadPrefixMethod extends BaseMethod {
     }
 
     public Object execute(SysSite site, List<TemplateModel> arguments) throws TemplateModelException {
-        return fileUploadComponent.getPrefix(site,
-                arguments.size() > 0 ? TemplateModelUtils.converBoolean(arguments.get(0)) : false);
+        return fileUploadComponent.getPrefix(site, !arguments.isEmpty() && TemplateModelUtils.converBoolean(arguments.get(0)));
     }
 
     @Override

@@ -26,6 +26,7 @@ import com.drew.imaging.FileType;
 import com.drew.imaging.FileTypeDetector;
 import com.publiccms.common.base.AbstractUeditorController;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ImageUtils;
@@ -123,7 +124,7 @@ public class UeditorAdminController extends AbstractUeditorController {
                 CmsFileUtils.writeByteArrayToFile(filepath, data);
                 FileUploadResult uploadResult = CmsFileUtils.getFileSize(filepath, SCRAW_TYPE);
                 logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                        CommonConstants.BLANK, false, CmsFileUtils.FILE_TYPE_IMAGE, data.length, uploadResult.getWidth(),
+                        Constants.BLANK, false, CmsFileUtils.FILE_TYPE_IMAGE, data.length, uploadResult.getWidth(),
                         uploadResult.getHeight(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
                 Map<String, Object> map = getResultMap();
                 map.put("size", data.length);
@@ -153,7 +154,7 @@ public class UeditorAdminController extends AbstractUeditorController {
     @ResponseBody
     public Map<String, Object> catchimage(@RequestAttribute SysSite site, @SessionAttribute SysUser admin,
             HttpServletRequest request) {
-        try (CloseableHttpClient httpclient = HttpClients.custom().setDefaultRequestConfig(CommonConstants.defaultRequestConfig)
+        try (CloseableHttpClient httpclient = HttpClients.custom().setDefaultRequestConfig(Constants.defaultRequestConfig)
                 .build()) {
             String[] files = request.getParameterValues(FIELD_NAME + "[]");
             if (CommonUtils.notEmpty(files)) {
@@ -182,7 +183,7 @@ public class UeditorAdminController extends AbstractUeditorController {
                                 uploadResult = CmsFileUtils.getFileSize(filepath, suffix);
                             }
                             logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                                    CommonConstants.BLANK, false, CmsFileUtils.getFileType(suffix), uploadResult.getFileSize(),
+                                    Constants.BLANK, false, CmsFileUtils.getFileType(suffix), uploadResult.getFileSize(),
                                     uploadResult.getWidth(), uploadResult.getHeight(), RequestUtils.getIpAddress(request),
                                     CommonUtils.getDate(), fileName));
                             Map<String, Object> map = getResultMap();

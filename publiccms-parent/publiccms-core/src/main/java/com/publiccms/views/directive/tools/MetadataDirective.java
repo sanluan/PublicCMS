@@ -3,10 +3,11 @@ package com.publiccms.views.directive.tools;
 import java.io.IOException;
 
 import javax.annotation.Resource;
+
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysSite;
@@ -49,7 +50,7 @@ public class MetadataDirective extends AbstractTemplateDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, TemplateException {
         String path = handler.getString("path");
-        if (CommonUtils.notEmpty(path) && !path.endsWith(CommonConstants.SEPARATOR)) {
+        if (CommonUtils.notEmpty(path) && !path.endsWith(Constants.SEPARATOR)) {
             SysSite site = getSite(handler);
             String filepath = siteComponent.getTemplateFilePath(site.getId(), path);
             CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(filepath);
