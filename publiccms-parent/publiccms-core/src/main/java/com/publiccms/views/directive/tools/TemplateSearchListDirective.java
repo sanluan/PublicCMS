@@ -16,6 +16,9 @@ import org.springframework.web.util.HtmlUtils;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
+
+import freemarker.template.TemplateException;
+
 import com.publiccms.common.tools.CmsFileUtils.FileSearchResult;
 
 /**
@@ -50,7 +53,7 @@ import com.publiccms.common.tools.CmsFileUtils.FileSearchResult;
 public class TemplateSearchListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         String path = handler.getString("path", CommonConstants.SEPARATOR);
         String word = handler.getString("word");
         if (CommonUtils.notEmpty(word) ) {

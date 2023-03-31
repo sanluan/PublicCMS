@@ -73,7 +73,7 @@ public class ContentCheckDirective extends AbstractAppDirective {
     private TemplateComponent templateComponent;
 
     @Override
-    public void execute(RenderHandler handler, SysApp app, SysUser user) throws IOException, Exception {
+    public void execute(RenderHandler handler, SysApp app, SysUser user) throws IOException, TemplateException {
         SysSite site = getSite(handler);
         Serializable[] ids = handler.getLongArray("ids");
         boolean uncheck = handler.getBoolean("uncheck", false);

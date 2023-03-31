@@ -23,6 +23,8 @@ import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.views.pojo.entities.ClickStatistics;
 import com.publiccms.views.pojo.query.CmsContentQuery;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * myContentList 我的内容接口
@@ -71,7 +73,7 @@ $.getJSON('${site.dynamicPath!}api/myContentList?pageSize=10&amp;authToken=用�
 public class MyContentListDirective extends AbstractAppDirective {
 
     @Override
-    public void execute(RenderHandler handler, SysApp app, SysUser user) throws IOException, Exception {
+    public void execute(RenderHandler handler, SysApp app, SysUser user) throws IOException, TemplateException {
         SysSite site = getSite(handler);
         PageHandler page = service.getPage(
                 new CmsContentQuery(site.getId(), handler.getIntegerArray("status"), handler.getInteger("categoryId"),

@@ -15,6 +15,8 @@ import com.publiccms.entities.cms.CmsDictionaryExcludeId;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.service.cms.CmsDictionaryExcludeService;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * dictionaryExclude 数据字典排除规则查询指令
@@ -48,7 +50,7 @@ import com.publiccms.logic.service.cms.CmsDictionaryExcludeService;
 public class CmsDictionaryExcludeDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         String dictionaryId = handler.getString("dictionaryId");
         String excludeDictionaryId = handler.getString("excludeDictionaryId");
         if (CommonUtils.notEmpty(dictionaryId)) {

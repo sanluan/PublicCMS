@@ -18,6 +18,8 @@ import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.service.sys.SysUserService;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * sysUser 用户查询指令
@@ -49,7 +51,7 @@ $.getJSON('//sys.publicsys.com/api/directive/sys/user?id=1&amp;appToken=接口�
 public class SysUserDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Long id = handler.getLong("id");
         boolean absoluteURL = handler.getBoolean("absoluteURL", true);
         SysSite site = getSite(handler);

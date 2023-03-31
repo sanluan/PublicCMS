@@ -16,6 +16,8 @@ import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.views.pojo.entities.CmsPageData;
 import com.publiccms.views.pojo.entities.CmsPlaceMetadata;
 
+import freemarker.template.TemplateException;
+
 /**
  * includePlace 包含页面片段指令
  * <p>
@@ -43,7 +45,7 @@ import com.publiccms.views.pojo.entities.CmsPlaceMetadata;
 public class IncludePlaceDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         String path = handler.getString("path");
         if (CommonUtils.notEmpty(path)) {
             SysSite site = getSite(handler);

@@ -12,6 +12,8 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysModule;
 import com.publiccms.logic.service.sys.SysModuleService;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * sysModule 模块查询指令
@@ -42,7 +44,7 @@ $.getJSON('//sys.publicsys.com/api/directive/sys/module?id=page&amp;appToken=接
 public class SysModuleDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         String id = handler.getString("id");
         if (CommonUtils.notEmpty(id)) {
             SysModule entity = service.getEntity(id);

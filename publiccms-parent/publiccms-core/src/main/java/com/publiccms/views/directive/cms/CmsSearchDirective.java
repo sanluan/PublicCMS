@@ -25,6 +25,8 @@ import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.views.pojo.entities.ClickStatistics;
 import com.publiccms.views.pojo.query.CmsContentSearchQuery;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * search 内容列表查询指令
@@ -87,7 +89,7 @@ import com.publiccms.views.pojo.query.CmsContentSearchQuery;
 public class CmsSearchDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         String word = handler.getString("word");
         Long[] tagIds = handler.getLongArray("tagIds");
         if (null == tagIds) {

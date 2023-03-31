@@ -53,7 +53,7 @@ import freemarker.template.TemplateException;
 public class PublishPageDirective extends AbstractTaskDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         String path = handler.getString("path", CommonConstants.SEPARATOR);
         SysSite site = getSite(handler);
         String filepath = siteComponent.getTemplateFilePath(site.getId(), path);

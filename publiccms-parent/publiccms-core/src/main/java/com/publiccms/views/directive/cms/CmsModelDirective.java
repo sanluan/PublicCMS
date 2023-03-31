@@ -14,6 +14,8 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.template.ModelComponent;
 import com.publiccms.views.pojo.entities.CmsModel;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * model 页面片段数据查询指令
@@ -44,7 +46,7 @@ import com.publiccms.views.pojo.entities.CmsModel;
 public class CmsModelDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         String id = handler.getString("id");
         SysSite site = getSite(handler);
         if (CommonUtils.notEmpty(id)) {

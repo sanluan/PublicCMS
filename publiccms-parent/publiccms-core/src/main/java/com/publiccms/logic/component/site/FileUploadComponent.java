@@ -73,7 +73,7 @@ public class FileUploadComponent {
     public String getPrefix(SysSite site, Boolean privatefile) {
         if (CommonUtils.notEmpty(uploaderList)) {
             for (FileUploader fileUploader : uploaderList) {
-                if (fileUploader.enable(site.getId(), privatefile)) {
+                if (fileUploader.enable(site.getId(), null == privatefile ? false : privatefile)) {
                     return fileUploader.getPrefix(site.getId(), null == privatefile ? false : privatefile);
                 }
             }

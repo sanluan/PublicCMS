@@ -17,6 +17,8 @@ import com.publiccms.entities.cms.CmsUserSurveyId;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.service.cms.CmsUserSurveyService;
 
+import freemarker.template.TemplateException;
+
 /**
 *
 * userSurvey 用户问卷回答查询指令
@@ -50,7 +52,7 @@ $.getJSON('${site.dynamicPath}api/directive/cms/userSurvey?id=1&amp;appToken=接
 public class CmsUserSurveyDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Long userId = handler.getLong("userId");
         Long surveyId = handler.getLong("surveyId");
         SysSite site = getSite(handler);

@@ -17,6 +17,8 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.service.cms.CmsContentProductService;
 
+import freemarker.template.TemplateException;
+
 /**
 *
 * contentProductList 产品列表查询指令
@@ -59,7 +61,7 @@ import com.publiccms.logic.service.cms.CmsContentProductService;
 public class CmsContentProductListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         PageHandler page = service.getPage(getSite(handler).getId(), handler.getLong("contentId"), handler.getLong("userId"),
                 handler.getString("title"), handler.getBigDecimal("startPrice"), handler.getBigDecimal("endPrice"),
                 handler.getString("orderField"), handler.getString("orderType"), handler.getInteger("pageIndex", 1),

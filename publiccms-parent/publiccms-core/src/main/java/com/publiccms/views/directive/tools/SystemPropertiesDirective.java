@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 
 import com.publiccms.common.handler.RenderHandler;
 
+import freemarker.template.TemplateException;
+
 /**
  * systemProperties 服务器参数指令
  * <p>
@@ -48,7 +50,7 @@ public class SystemPropertiesDirective extends AbstractTemplateDirective {
     Properties props = System.getProperties();
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Iterator<Object> keysIterator = props.keySet().iterator();
         while (keysIterator.hasNext()) {
             Object key = keysIterator.next();

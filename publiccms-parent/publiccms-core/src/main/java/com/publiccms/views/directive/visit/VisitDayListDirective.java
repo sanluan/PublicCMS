@@ -11,6 +11,8 @@ import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.logic.service.visit.VisitDayService;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * visitDayList 访问日报表列表查询指令
@@ -47,7 +49,7 @@ import com.publiccms.logic.service.visit.VisitDayService;
 public class VisitDayListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         PageHandler page = service.getPage(getSite(handler).getId(), handler.getDate("startVisitDate"),
                 handler.getDate("endVisitDate"), handler.getBoolean("hourAnalytics", false), handler.getInteger("pageIndex", 1),
                 handler.getInteger("pageSize", 30));

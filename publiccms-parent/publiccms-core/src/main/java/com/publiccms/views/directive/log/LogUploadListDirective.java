@@ -14,6 +14,8 @@ import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.logic.service.log.LogUploadService;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * logUploadList 文件上传日志列表查询指令
@@ -56,7 +58,7 @@ import com.publiccms.logic.service.log.LogUploadService;
 public class LogUploadListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         String[] fileTypes = handler.getStringArray("fileTypes");
         if (CommonUtils.empty(fileTypes) && handler.getBoolean("image", false)) {
             fileTypes = new String[] { CmsFileUtils.FILE_TYPE_IMAGE };

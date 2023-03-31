@@ -8,14 +8,14 @@ public class License extends LinkedHashMap<String, String> {
      * 
      */
     private static final long serialVersionUID = 1L;
-    public final static String KEY_VERSION = "version";
-    public final static String KEY_AUTHORIZATION = "authorization";
-    public final static String KEY_ORGANIZATION = "organization";
-    public final static String KEY_ISSUE = "issue";
-    public final static String KEY_DOMAIN = "domain";
-    public final static String KEY_START_DATE = "startDate";
-    public final static String KEY_END_DATE = "endDate";
-    public final static String KEY_SIGNATURER = "signaturer";
+    public static final String KEY_VERSION = "version";
+    public static final String KEY_AUTHORIZATION = "authorization";
+    public static final String KEY_ORGANIZATION = "organization";
+    public static final String KEY_ISSUE = "issue";
+    public static final String KEY_DOMAIN = "domain";
+    public static final String KEY_START_DATE = "startDate";
+    public static final String KEY_END_DATE = "endDate";
+    public static final String KEY_SIGNATURER = "signaturer";
 
     public String getVersion() {
         return get(KEY_VERSION);

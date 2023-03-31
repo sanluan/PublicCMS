@@ -15,6 +15,8 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsSurvey;
 import com.publiccms.logic.service.cms.CmsSurveyService;
 
+import freemarker.template.TemplateException;
+
 /**
 *
 * survey 调查问卷查询指令
@@ -45,7 +47,7 @@ import com.publiccms.logic.service.cms.CmsSurveyService;
 public class CmsSurveyDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Long id = handler.getLong("id");
         if (CommonUtils.notEmpty(id)) {
             CmsSurvey entity = service.getEntity(id);

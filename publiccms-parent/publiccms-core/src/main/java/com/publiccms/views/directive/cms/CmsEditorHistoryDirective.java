@@ -11,6 +11,9 @@ import org.springframework.stereotype.Component;
 
 import com.publiccms.entities.cms.CmsEditorHistory;
 import com.publiccms.logic.service.cms.CmsEditorHistoryService;
+
+import freemarker.template.TemplateException;
+
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.RenderHandler;
@@ -45,7 +48,7 @@ import com.publiccms.common.handler.RenderHandler;
 public class CmsEditorHistoryDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Long id = handler.getLong("id");
         if (CommonUtils.notEmpty(id)) {
             CmsEditorHistory entity = service.getEntity(id);

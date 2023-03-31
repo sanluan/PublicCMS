@@ -6,6 +6,9 @@ import java.io.IOException;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.logic.service.sys.SysAppClientService;
+
+import freemarker.template.TemplateException;
+
 import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
@@ -57,7 +60,7 @@ import com.publiccms.common.handler.RenderHandler;
 public class SysAppClientListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Boolean disabled = false;
         if (getAdvanced(handler)) {
             disabled = handler.getBoolean("disabled", false);

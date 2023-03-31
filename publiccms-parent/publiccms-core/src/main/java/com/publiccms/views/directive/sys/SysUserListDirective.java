@@ -16,6 +16,8 @@ import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.service.sys.SysUserService;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * sysUserList 用户列表查询指令
@@ -64,7 +66,7 @@ import com.publiccms.logic.service.sys.SysUserService;
 public class SysUserListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Boolean disabled = false;
         if (getAdvanced(handler)) {
             disabled = handler.getBoolean("disabled", false);

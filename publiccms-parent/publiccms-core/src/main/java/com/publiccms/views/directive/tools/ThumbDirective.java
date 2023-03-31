@@ -12,6 +12,8 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ImageUtils;
 import com.publiccms.entities.sys.SysSite;
 
+import freemarker.template.TemplateException;
+
 /**
  * thumb 缩略图指令
  * <p>
@@ -40,7 +42,7 @@ import com.publiccms.entities.sys.SysSite;
 public class ThumbDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         String path = handler.getString("path");
         Integer width = handler.getInteger("width");
         Integer height = handler.getInteger("height");

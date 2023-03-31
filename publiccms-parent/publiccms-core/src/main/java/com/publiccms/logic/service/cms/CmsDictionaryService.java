@@ -1,11 +1,12 @@
 package com.publiccms.logic.service.cms;
 
 import java.util.List;
-import java.util.function.BiConsumer;
+import java.util.function.ObjIntConsumer;
 
 // Generated 2016-11-20 14:50:37 by com.publiccms.common.generator.SourceGenerator
 
 import javax.annotation.Resource;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +28,7 @@ public class CmsDictionaryService extends BaseService<CmsDictionary> {
      * @param worker
      * @param batchSize
      */
-    public void batchWork(short siteId, BiConsumer<List<CmsDictionary>, Integer> worker, int batchSize) {
+    public void batchWork(short siteId, ObjIntConsumer<List<CmsDictionary>> worker, int batchSize) {
         dao.batchWork(siteId, worker, batchSize);
     }
 

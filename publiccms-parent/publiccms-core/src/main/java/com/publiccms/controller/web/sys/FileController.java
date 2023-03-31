@@ -138,14 +138,14 @@ public class FileController {
                             RequestUtils.getIpAddress(request), CommonUtils.getDate(), uploadResult.getFilename()));
                 } catch (IOException e) {
                     log.error(e.getMessage(), e);
-                    result.put("error", e.getMessage());
+                    result.put(CommonConstants.ERROR, e.getMessage());
                 }
             } else {
-                result.put("error", LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
+                result.put(CommonConstants.ERROR, LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
                         "verify.custom.fileType"));
             }
         } else {
-            result.put("error",
+            result.put(CommonConstants.ERROR,
                     LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(), "verify.notEmpty.file"));
         }
         return result;

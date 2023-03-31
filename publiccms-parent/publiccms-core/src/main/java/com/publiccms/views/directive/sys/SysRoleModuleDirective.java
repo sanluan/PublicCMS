@@ -22,6 +22,8 @@ import com.publiccms.logic.component.config.SiteConfigComponent;
 import com.publiccms.logic.service.sys.SysRoleModuleService;
 import com.publiccms.logic.service.sys.SysRoleService;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * sysRoleModule 角色模块授权查询指令
@@ -58,7 +60,7 @@ public class SysRoleModuleDirective extends AbstractTemplateDirective {
     protected ConfigDataComponent configDataComponent;
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Integer[] roleIds = handler.getIntegerArray("roleIds");
         String moduleId = handler.getString("moduleId");
         if (CommonUtils.notEmpty(roleIds)) {

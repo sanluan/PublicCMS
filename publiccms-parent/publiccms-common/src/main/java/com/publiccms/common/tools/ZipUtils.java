@@ -12,7 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Enumeration;
-import java.util.function.BiFunction;
+import java.util.function.BiPredicate;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
@@ -30,7 +30,7 @@ import com.publiccms.common.constants.Constants;
  *
  */
 public class ZipUtils {
-    protected final static Log log = LogFactory.getLog(ZipUtils.class);
+    protected static final Log log = LogFactory.getLog(ZipUtils.class);
 
     /**
      * @param sourceFilePath
@@ -153,7 +153,7 @@ public class ZipUtils {
      * @throws IOException
      */
     public static void unzipHere(String zipFilePath, String encoding, boolean overwrite,
-            BiFunction<ZipFile, ZipEntry, Boolean> overwriteFunction) throws IOException {
+            BiPredicate<ZipFile, ZipEntry> overwriteFunction) throws IOException {
         int index = zipFilePath.lastIndexOf(Constants.SEPARATOR);
         if (0 > index) {
             index = zipFilePath.lastIndexOf('\\');
@@ -169,7 +169,7 @@ public class ZipUtils {
      * @throws IOException
      */
     public static void unzip(String zipFilePath, String encoding, boolean overwrite,
-            BiFunction<ZipFile, ZipEntry, Boolean> overwriteFunction) throws IOException {
+            BiPredicate<ZipFile, ZipEntry> overwriteFunction) throws IOException {
         unzip(zipFilePath, zipFilePath.substring(0, zipFilePath.lastIndexOf(Constants.DOT)), encoding, overwrite,
                 overwriteFunction);
     }
@@ -183,7 +183,7 @@ public class ZipUtils {
      * @throws IOException
      */
     public static void unzip(String zipFilePath, String targetPath, String encoding, boolean overwrite,
-            BiFunction<ZipFile, ZipEntry, Boolean> overwriteFunction) throws IOException {
+            BiPredicate<ZipFile, ZipEntry> overwriteFunction) throws IOException {
         ZipFile zipFile = new ZipFile(zipFilePath, encoding);
         Enumeration<? extends ZipEntry> entryEnum = zipFile.getEntries();
         if (!targetPath.endsWith(Constants.SEPARATOR) && !targetPath.endsWith("\\")) {
@@ -197,7 +197,7 @@ public class ZipUtils {
     }
 
     private static void unzip(ZipFile zipFile, ZipEntry zipEntry, String targetPath, String filePath, boolean overwrite,
-            BiFunction<ZipFile, ZipEntry, Boolean> overwriteFunction) {
+            BiPredicate<ZipFile, ZipEntry> overwriteFunction) {
         if (filePath.contains("..")) {
             filePath = filePath.replace("..", Constants.BLANK);
         }
@@ -208,7 +208,7 @@ public class ZipUtils {
             File targetFile = new File(CommonUtils.joinString(targetPath, filePath));
             if (!targetFile.exists() || overwrite) {
                 targetFile.getParentFile().mkdirs();
-                if (null == overwriteFunction || overwriteFunction.apply(zipFile, zipEntry)) {
+                if (null == overwriteFunction || overwriteFunction.test(zipFile, zipEntry)) {
                     try (InputStream inputStream = zipFile.getInputStream(zipEntry);
                             FileOutputStream outputStream = new FileOutputStream(targetFile);
                             FileLock fileLock = outputStream.getChannel().tryLock()) {
@@ -231,7 +231,7 @@ public class ZipUtils {
      * @param overwriteFunction
      */
     public static void unzip(ZipFile zipFile, String directory, String targetPath, boolean overwrite,
-            BiFunction<ZipFile, ZipEntry, Boolean> overwriteFunction) {
+            BiPredicate<ZipFile, ZipEntry> overwriteFunction) {
         Enumeration<? extends ZipEntry> entryEnum = zipFile.getEntries();
         if (!targetPath.endsWith(Constants.SEPARATOR) && !targetPath.endsWith("\\")) {
             targetPath = CommonUtils.joinString(targetPath, File.separator);

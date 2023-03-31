@@ -16,6 +16,8 @@ import com.publiccms.entities.sys.SysRecordId;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.service.sys.SysRecordService;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * sysRecord 自定义记录查询写入指令
@@ -43,7 +45,7 @@ $.getJSON('${site.dynamicPath}api/directive/sys/record?code=site&amp;data=data&a
 public class SysRecordDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         String code = handler.getString("code");
         String[] codes = handler.getStringArray("codes");
         SysSite site = getSite(handler);

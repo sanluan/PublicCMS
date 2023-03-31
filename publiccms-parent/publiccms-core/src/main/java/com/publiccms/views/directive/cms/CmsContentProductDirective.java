@@ -20,6 +20,8 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.service.cms.CmsContentProductService;
 
+import freemarker.template.TemplateException;
+
 /**
 *
 * contentProduct 产品查询指令
@@ -49,7 +51,7 @@ import com.publiccms.logic.service.cms.CmsContentProductService;
 public class CmsContentProductDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Long id = handler.getLong("id");
         boolean absoluteURL = handler.getBoolean("absoluteURL", true);
         SysSite site = getSite(handler);

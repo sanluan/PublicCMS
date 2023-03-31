@@ -10,6 +10,8 @@ import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.logic.service.cms.CmsContentService;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * indexContent 重建内容索引指令
@@ -36,7 +38,7 @@ import com.publiccms.logic.service.cms.CmsContentService;
 public class IndexContentDirective extends AbstractTaskDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Long id = handler.getLong("id");
         Long[] ids = handler.getLongArray("ids");
         if (CommonUtils.notEmpty(ids)) {

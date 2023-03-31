@@ -12,6 +12,8 @@ import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.logic.service.sys.SysDeptItemService;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * sysDeptItemList 部门数据授权列表查询指令
@@ -48,7 +50,7 @@ import com.publiccms.logic.service.sys.SysDeptItemService;
 public class SysDeptItemListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         PageHandler page = service.getPage(handler.getInteger("deptId"), handler.getString("itemType"),
                 handler.getString("itemId"), handler.getInteger("pageIndex", 1), handler.getInteger("pageSize"));
         handler.put("page", page).render();

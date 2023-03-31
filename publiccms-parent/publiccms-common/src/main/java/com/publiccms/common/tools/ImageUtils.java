@@ -10,7 +10,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -72,7 +71,8 @@ public class ImageUtils {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         drawImage(width, height, text, byteArrayOutputStream);
         byteArrayOutputStream.close();
-        return CommonUtils.joinString("data:image/png;base64,", VerificationUtils.base64Encode(byteArrayOutputStream.toByteArray()));
+        return CommonUtils.joinString("data:image/png;base64,",
+                VerificationUtils.base64Encode(byteArrayOutputStream.toByteArray()));
     }
 
     /**
@@ -174,7 +174,7 @@ public class ImageUtils {
     }
 
     private static Font getFont(int size) {
-        Font font[] = new Font[4];
+        Font[] font = new Font[4];
         font[0] = new Font(null, Font.PLAIN, size);
         font[1] = new Font("Antique Olive Compact", Font.PLAIN, size);
         font[2] = new Font("Fixedsys", Font.PLAIN, size);
@@ -182,8 +182,7 @@ public class ImageUtils {
         return font[Constants.random.nextInt(4)];
     }
 
-    public static void webp2Image(InputStream webpInputStream, boolean png, File imageFile)
-            throws FileNotFoundException, IOException {
+    public static void webp2Image(InputStream webpInputStream, boolean png, File imageFile) throws IOException {
         ImageReader reader = ImageIO.getImageReadersByMIMEType("image/webp").next();
         WebPReadParam readParam = new WebPReadParam();
         readParam.setBypassFiltering(true);
@@ -192,7 +191,7 @@ public class ImageUtils {
         ImageIO.write(image, png ? FORMAT_NAME_PNG : FORMAT_NAME_JPG, imageFile);
     }
 
-    public static void webp2Image(File webpFile, boolean png, File imageFile) throws FileNotFoundException, IOException {
+    public static void webp2Image(File webpFile, boolean png, File imageFile) throws IOException {
         ImageReader reader = ImageIO.getImageReadersByMIMEType("image/webp").next();
         WebPReadParam readParam = new WebPReadParam();
         readParam.setBypassFiltering(true);
@@ -233,7 +232,7 @@ public class ImageUtils {
         return true;
     }
 
-    public static BufferedImage thumb(BufferedImage sourceImage, int width, int height, boolean png) throws IOException {
+    public static BufferedImage thumb(BufferedImage sourceImage, int width, int height, boolean png) {
         BufferedImage resultImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Image scaledImage = sourceImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
         Graphics2D g = resultImage.createGraphics();

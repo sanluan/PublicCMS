@@ -256,13 +256,13 @@ public class SysSiteAdminController {
                     return CommonConstants.TEMPLATE_DONE;
                 } catch (IOException e) {
                     log.error(e.getMessage());
-                    model.addAttribute("error", e.getMessage());
+                    model.addAttribute(CommonConstants.ERROR, e.getMessage());
                 }
             } else {
-                model.addAttribute("error", "verify.custom.fileType");
+                model.addAttribute(CommonConstants.ERROR, "verify.custom.fileType");
             }
         } else {
-            model.addAttribute("error", "verify.notEmpty.file");
+            model.addAttribute(CommonConstants.ERROR, "verify.notEmpty.file");
         }
         return CommonConstants.TEMPLATE_ERROR;
     }
@@ -310,7 +310,7 @@ public class SysSiteAdminController {
                     }
                     model.addAttribute("result", i);
                 } catch (NumberFormatException e) {
-                    model.addAttribute("error", e.getMessage());
+                    model.addAttribute(CommonConstants.ERROR, e.getMessage());
                 }
             }
         }

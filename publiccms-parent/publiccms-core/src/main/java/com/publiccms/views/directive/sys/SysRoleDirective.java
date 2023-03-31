@@ -13,6 +13,8 @@ import com.publiccms.entities.sys.SysRole;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.service.sys.SysRoleService;
 
+import freemarker.template.TemplateException;
+
 /**
 *
 * sysRole 角色查询指令
@@ -43,7 +45,7 @@ $.getJSON('//sys.publicsys.com/api/directive/sys/role?id=1&amp;appToken=接口�
 public class SysRoleDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Integer id = handler.getInteger("id");
         SysSite site = getSite(handler);
         if (CommonUtils.notEmpty(id)) {

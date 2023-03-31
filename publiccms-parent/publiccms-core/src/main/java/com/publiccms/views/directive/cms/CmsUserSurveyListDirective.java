@@ -11,6 +11,8 @@ import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.logic.service.cms.CmsUserSurveyService;
 
+import freemarker.template.TemplateException;
+
 /**
 *
 * userSurveyList 用户问卷回答列表查询指令
@@ -48,7 +50,7 @@ $.getJSON('${site.dynamicPath}api/directive/cms/userSurveyList?userId=1&amp;page
 public class CmsUserSurveyListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         PageHandler page = service.getPage(getSite(handler).getId(), handler.getLong("userId"), handler.getLong("surveyId"),
                 handler.getString("orderField"), handler.getString("orderType"), handler.getInteger("pageIndex", 1),
                 handler.getInteger("pageSize", 30));

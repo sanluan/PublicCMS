@@ -134,7 +134,7 @@ public class InstallServlet extends HttpServlet {
                                 request.getParameter("password"), request.getParameter("siteurl"), map);
                         startCMS(map);
                     } catch (Exception e) {
-                        map.put("error", e.getMessage());
+                        map.put(CommonConstants.ERROR, e.getMessage());
                     }
                     break;
                 case STEP_UPDATE:
@@ -143,7 +143,7 @@ public class InstallServlet extends HttpServlet {
                         startCMS(map);
                     } catch (Exception e) {
                         map.put("message", "failed");
-                        map.put("error", e.getMessage());
+                        map.put(CommonConstants.ERROR, e.getMessage());
                     }
                     break;
                 case STEP_START:
@@ -152,7 +152,7 @@ public class InstallServlet extends HttpServlet {
                         step = "startSuccess";
                     } catch (IOException e) {
                         map.put("message", "failed");
-                        map.put("error", e.getMessage());
+                        map.put(CommonConstants.ERROR, e.getMessage());
                     }
                     break;
                 default:
@@ -199,7 +199,7 @@ public class InstallServlet extends HttpServlet {
             }
         } catch (Exception e) {
             startStep = null;
-            map.put("error", e.getMessage());
+            map.put(CommonConstants.ERROR, e.getMessage());
         }
     }
 
@@ -216,7 +216,7 @@ public class InstallServlet extends HttpServlet {
             map.put("siteurl", getSiteUrl(request));
             map.put("usersql", new File(CommonUtils.joinString(CommonConstants.CMS_FILEPATH, "/publiccms.sql")).exists());
         } catch (Exception e) {
-            map.put("error", e.getMessage());
+            map.put(CommonConstants.ERROR, e.getMessage());
         }
     }
 
@@ -245,7 +245,7 @@ public class InstallServlet extends HttpServlet {
             } catch (Exception e) {
                 e.printStackTrace();
                 map.put("message", "failed");
-                map.put("error", e.getMessage());
+                map.put(CommonConstants.ERROR, e.getMessage());
             }
         }
     }
@@ -303,7 +303,7 @@ public class InstallServlet extends HttpServlet {
         } catch (Exception e) {
             CmsVersion.setInitialized(false);
             e.printStackTrace();
-            map.put("error", e.getMessage());
+            map.put(CommonConstants.ERROR, e.getMessage());
         }
     }
 

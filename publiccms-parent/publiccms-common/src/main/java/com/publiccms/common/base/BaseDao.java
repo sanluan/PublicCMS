@@ -1,7 +1,7 @@
 package com.publiccms.common.base;
 
+import java.beans.PropertyDescriptor;
 import java.io.Serializable;
-import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -9,8 +9,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletionStage;
-import java.util.function.BiConsumer;
 import java.util.function.Function;
+import java.util.function.ObjIntConsumer;
+import java.util.function.UnaryOperator;
 
 import javax.annotation.Resource;
 import javax.persistence.EntityNotFoundException;
@@ -60,13 +61,13 @@ public abstract class BaseDao<E> {
      *
      * order type desc
      */
-    public final static String ORDERTYPE_DESC = "desc";
+    public static final String ORDERTYPE_DESC = "desc";
     /**
      * 顺序
      *
      * order type desc
      */
-    public final static String ORDERTYPE_ASC = "asc";
+    public static final String ORDERTYPE_ASC = "asc";
     private Class<E> clazz;
 
     /**
@@ -91,21 +92,21 @@ public abstract class BaseDao<E> {
     /**
      * Like查询
      *
-     * @param var
+     * @param text
      * @return like query
      */
-    public static String like(String var) {
-        return CommonUtils.joinString("%", var, "%");
+    public static String like(String text) {
+        return CommonUtils.joinString("%", text, "%");
     }
 
     /**
      * 右Like查询
      *
-     * @param var
+     * @param text
      * @return right like query
      */
-    public static String rightLike(String var) {
-        return CommonUtils.joinString(var, "%");
+    public static String rightLike(String text) {
+        return CommonUtils.joinString(text, "%");
     }
 
     /**
@@ -302,7 +303,7 @@ public abstract class BaseDao<E> {
      * @param worker
      * @param batchSize
      */
-    protected void batchWork(QueryHandler queryHandler, BiConsumer<List<E>, Integer> worker, int batchSize) {
+    protected void batchWork(QueryHandler queryHandler, ObjIntConsumer<List<E>> worker, int batchSize) {
         batchWork(queryHandler, worker, batchSize, getEntityClass());
     }
 
@@ -315,8 +316,7 @@ public abstract class BaseDao<E> {
      * @param batchSize
      */
     @SuppressWarnings("unchecked")
-    protected <T> void batchWork(QueryHandler queryHandler, BiConsumer<List<T>, Integer> worker, int batchSize,
-            Class<T> resultType) {
+    protected <T> void batchWork(QueryHandler queryHandler, ObjIntConsumer<List<T>> worker, int batchSize, Class<T> resultType) {
         Query<T> query = getSession().createQuery(queryHandler.getSql(), resultType);
         queryHandler.initQuery(query);
         try (ScrollableResults results = query.setReadOnly(true).setCacheable(false).scroll(ScrollMode.FORWARD_ONLY)) {
@@ -329,7 +329,7 @@ public abstract class BaseDao<E> {
                     resultList.clear();
                 }
             }
-            if (resultList.size() > 0) {
+            if (!resultList.isEmpty()) {
                 worker.accept(resultList, i++);
             }
         }
@@ -491,7 +491,7 @@ public abstract class BaseDao<E> {
      * @return page
      */
     protected FacetPageHandler getFacetPage(SearchQueryOptionsStep<?, E, ?, ?, ?> optionsStep,
-            Function<SearchQueryOptionsStep<?, E, ?, ?, ?>, SearchQueryOptionsStep<?, E, ?, ?, ?>> facetFieldKeys,
+            UnaryOperator<SearchQueryOptionsStep<?, E, ?, ?, ?>> facetFieldKeys,
             Function<SearchResult<E>, Map<String, Map<String, Long>>> facetFieldResult, HighLighterQuery highLighterQuery,
             Integer pageIndex, Integer pageSize) {
         return getFacetPage(optionsStep, facetFieldKeys, facetFieldResult, highLighterQuery, pageIndex, pageSize,
@@ -509,7 +509,7 @@ public abstract class BaseDao<E> {
      * @return results page
      */
     protected FacetPageHandler getFacetPage(SearchQueryOptionsStep<?, E, ?, ?, ?> optionsStep,
-            Function<SearchQueryOptionsStep<?, E, ?, ?, ?>, SearchQueryOptionsStep<?, E, ?, ?, ?>> facetFieldKeys,
+            UnaryOperator<SearchQueryOptionsStep<?, E, ?, ?, ?>> facetFieldKeys,
             Function<SearchResult<E>, Map<String, Map<String, Long>>> facetFieldResult, HighLighterQuery highLighterQuery,
             Integer pageIndex, Integer pageSize, Integer maxResults) {
         FacetPageHandler page = new FacetPageHandler(pageIndex, pageSize);
@@ -546,12 +546,12 @@ public abstract class BaseDao<E> {
                 for (E e : resultList) {
                     for (String fieldName : highLighterQuery.getFields()) {
                         try {
-                            Method method = BeanUtils.getPropertyDescriptor(getEntityClass(), fieldName).getReadMethod();
-                            if (null != method) {
-                                Object fieldValue = ReflectionUtils.invokeMethod(method, e);
+                            PropertyDescriptor propertyDescriptor = BeanUtils.getPropertyDescriptor(getEntityClass(), fieldName);
+                            if (null != propertyDescriptor && null != propertyDescriptor.getReadMethod()
+                                    && null != propertyDescriptor.getWriteMethod()) {
+                                Object fieldValue = ReflectionUtils.invokeMethod(propertyDescriptor.getReadMethod(), e);
                                 if (fieldValue instanceof String && CommonUtils.notEmpty(String.valueOf(fieldValue))) {
-                                    ReflectionUtils.invokeMethod(
-                                            BeanUtils.getPropertyDescriptor(getEntityClass(), fieldName).getWriteMethod(), e,
+                                    ReflectionUtils.invokeMethod(propertyDescriptor.getWriteMethod(), e,
                                             HtmlUtils.htmlEscape(String.valueOf(fieldValue), Constants.DEFAULT_CHARSET_NAME));
                                 }
                             }
@@ -578,22 +578,19 @@ public abstract class BaseDao<E> {
                 for (E e : resultList) {
                     for (String fieldName : highLighterQuery.getFields()) {
                         try {
-                            Method method = BeanUtils.getPropertyDescriptor(getEntityClass(), fieldName).getReadMethod();
-                            if (null != method) {
-                                Object fieldValue = ReflectionUtils.invokeMethod(method, e);
-                                String hightLightFieldValue = null;
+                            PropertyDescriptor propertyDescriptor = BeanUtils.getPropertyDescriptor(getEntityClass(), fieldName);
+                            if (null != propertyDescriptor && null != propertyDescriptor.getReadMethod()
+                                    && null != propertyDescriptor.getWriteMethod()) {
+                                Object fieldValue = ReflectionUtils.invokeMethod(propertyDescriptor.getReadMethod(), e);
                                 if (fieldValue instanceof String && CommonUtils.notEmpty(String.valueOf(fieldValue))) {
                                     String safeValue = HtmlUtils.htmlEscape(String.valueOf(fieldValue),
                                             Constants.DEFAULT_CHARSET_NAME);
-                                    hightLightFieldValue = highlighter.getBestFragment(analyzer, fieldName, safeValue);
+                                    String hightLightFieldValue = highlighter.getBestFragment(analyzer, fieldName, safeValue);
                                     if (CommonUtils.notEmpty(hightLightFieldValue)) {
-                                        ReflectionUtils.invokeMethod(
-                                                BeanUtils.getPropertyDescriptor(getEntityClass(), fieldName).getWriteMethod(), e,
+                                        ReflectionUtils.invokeMethod(propertyDescriptor.getWriteMethod(), e,
                                                 hightLightFieldValue);
                                     } else {
-                                        ReflectionUtils.invokeMethod(
-                                                BeanUtils.getPropertyDescriptor(getEntityClass(), fieldName).getWriteMethod(), e,
-                                                safeValue);
+                                        ReflectionUtils.invokeMethod(propertyDescriptor.getWriteMethod(), e, safeValue);
                                     }
                                 }
                             }
@@ -692,9 +689,10 @@ public abstract class BaseDao<E> {
 
     @SuppressWarnings("unchecked")
     protected Class<E> getEntityClass() {
-        return null == clazz
-                ? this.clazz = (Class<E>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]
-                : clazz;
+        if (null == clazz) {
+            this.clazz = (Class<E>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+        }
+        return clazz;
     }
 
     protected abstract E init(E entity);

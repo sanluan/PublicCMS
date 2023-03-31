@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Collectors;
@@ -26,8 +27,8 @@ public class MemoryCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Seria
      */
     private static final long serialVersionUID = 1L;
     private int size = 300;
-    protected final Log log = LogFactory.getLog(getClass());
-    private LinkedHashMap<K, CacheValue<V>> cachedMap = new LinkedHashMap<>(16, 0.75f, true);
+    protected final transient Log log = LogFactory.getLog(getClass());
+    private Map<K, CacheValue<V>> cachedMap = new LinkedHashMap<>(16, 0.75f, true);
     private ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
 
     @Override

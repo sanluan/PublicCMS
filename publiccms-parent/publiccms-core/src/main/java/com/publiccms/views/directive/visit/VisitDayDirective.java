@@ -14,6 +14,8 @@ import com.publiccms.entities.visit.VisitDay;
 import com.publiccms.entities.visit.VisitDayId;
 import com.publiccms.logic.service.visit.VisitDayService;
 
+import freemarker.template.TemplateException;
+
 /**
 *
 * visitDay 访问日报表查询指令
@@ -39,7 +41,7 @@ import com.publiccms.logic.service.visit.VisitDayService;
 public class VisitDayDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Date visitDate = handler.getDate("visitDate");
         Byte visitHour = handler.getByte("visitHour");
         if (null != visitDate && null != visitHour) {

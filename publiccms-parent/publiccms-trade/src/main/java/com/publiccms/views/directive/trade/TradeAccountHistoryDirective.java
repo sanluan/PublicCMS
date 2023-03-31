@@ -16,6 +16,8 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.trade.TradeAccountHistory;
 import com.publiccms.logic.service.trade.TradeAccountHistoryService;
 
+import freemarker.template.TemplateException;
+
 /**
 *
 * tradeAccountHistory 账户历史查询指令
@@ -45,7 +47,7 @@ import com.publiccms.logic.service.trade.TradeAccountHistoryService;
 public class TradeAccountHistoryDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException  {
         Long id = handler.getLong("id");
         SysSite site = getSite(handler);
         if (CommonUtils.notEmpty(id)) {

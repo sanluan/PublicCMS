@@ -14,6 +14,8 @@ import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.logic.component.config.ConfigComponent;
 import com.publiccms.views.pojo.entities.ConfigInfo;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * sysConfigList 配置列表查询指令
@@ -41,7 +43,7 @@ import com.publiccms.views.pojo.entities.ConfigInfo;
 public class SysConfigListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Collection<ConfigInfo> list = configComponent.getConfigList(getSite(handler).getId(), handler.getLocale(),
                 getAdvanced(handler));
         handler.put("list", list).render();

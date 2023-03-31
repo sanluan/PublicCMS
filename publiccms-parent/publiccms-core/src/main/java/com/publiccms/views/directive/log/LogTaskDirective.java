@@ -13,6 +13,8 @@ import com.publiccms.entities.log.LogTask;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.service.log.LogTaskService;
 
+import freemarker.template.TemplateException;
+
 /**
 *
 * logTask 任务计划日志查询指令
@@ -43,7 +45,7 @@ $.getJSON('${site.dynamicPath}api/directive/log/task?id=1&amp;appToken=接口访
 public class LogTaskDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Long id = handler.getLong("id");
         SysSite site = getSite(handler);
         if (CommonUtils.notEmpty(id)) {

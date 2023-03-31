@@ -27,6 +27,8 @@ import com.publiccms.logic.service.sys.SysModuleService;
 import com.publiccms.logic.service.sys.SysRoleAuthorizedService;
 import com.publiccms.logic.service.sys.SysRoleService;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * sysAuthorized 角色url授权查询指令
@@ -66,7 +68,7 @@ public class SysAuthorizedDirective extends AbstractTemplateDirective {
     private SysModuleService moduleService;
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Integer[] roleIds = handler.getIntegerArray("roleIds");
         String url = handler.getString("url");
         String[] urls = handler.getStringArray("urls");

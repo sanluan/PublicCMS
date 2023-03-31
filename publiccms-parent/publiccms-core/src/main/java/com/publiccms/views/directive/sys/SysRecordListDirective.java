@@ -13,6 +13,8 @@ import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.logic.service.sys.SysRecordService;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * sysRecordList 自定义记录列表查询指令
@@ -52,7 +54,7 @@ import com.publiccms.logic.service.sys.SysRecordService;
 public class SysRecordListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         PageHandler page = service.getPage(getSite(handler).getId(), handler.getString("code"),
                 handler.getDate("startCreateDate"), handler.getDate("endCreateDate"), handler.getString("orderField"),
                 handler.getString("orderType"), handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", 30));

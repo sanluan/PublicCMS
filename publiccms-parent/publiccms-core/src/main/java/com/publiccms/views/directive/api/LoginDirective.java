@@ -29,6 +29,8 @@ import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.sys.SysUserService;
 import com.publiccms.logic.service.sys.SysUserTokenService;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * login 登录接口
@@ -72,7 +74,7 @@ public class LoginDirective extends AbstractAppDirective {
     private LockComponent lockComponent;
 
     @Override
-    public void execute(RenderHandler handler, SysApp app, SysUser user) throws IOException, Exception {
+    public void execute(RenderHandler handler, SysApp app, SysUser user) throws IOException, TemplateException {
         String username = StringUtils.trim(handler.getString("username"));
         String password = StringUtils.trim(handler.getString("password"));
         String encoding = StringUtils.trim(handler.getString("encoding"));

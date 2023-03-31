@@ -13,7 +13,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.BiConsumer;
+import java.util.function.ObjIntConsumer;
 
 import javax.annotation.Resource;
 
@@ -64,7 +64,7 @@ public class CmsContentService extends BaseService<CmsContent> {
             Config.INPUTTYPE_DEPT, Config.INPUTTYPE_CONTENT, Config.INPUTTYPE_CATEGORY, Config.INPUTTYPE_DICTIONARY,
             Config.INPUTTYPE_CATEGORYTYPE, Config.INPUTTYPE_TAGTYPE };
 
-    public static final String[] ignoreProperties = new String[] { "id", "siteId" };
+    protected static final String[] ignoreProperties = new String[] { "id", "siteId" };
     /**
      * 
      */
@@ -259,7 +259,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param worker
      * @param batchSize
      */
-    public void batchWorkId(short siteId, Integer categoryId, String modelId, BiConsumer<List<Serializable>, Integer> worker,
+    public void batchWorkId(short siteId, Integer categoryId, String modelId, ObjIntConsumer<List<Serializable>> worker,
             int batchSize) {
         dao.batchWorkId(siteId, categoryId, modelId, worker, batchSize);
     }
@@ -271,7 +271,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param worker
      * @param batchSize
      */
-    public void batchWorkContent(short siteId, Integer categoryId, String modelId, BiConsumer<List<CmsContent>, Integer> worker,
+    public void batchWorkContent(short siteId, Integer categoryId, String modelId, ObjIntConsumer<List<CmsContent>> worker,
             int batchSize) {
         dao.batchWorkContent(siteId, categoryId, modelId, worker, batchSize);
     }

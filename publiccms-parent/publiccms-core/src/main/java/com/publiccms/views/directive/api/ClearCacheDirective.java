@@ -11,6 +11,8 @@ import com.publiccms.entities.sys.SysApp;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.cache.CacheComponent;
 
+import freemarker.template.TemplateException;
+
 /**
 *
 * clearCache 缓存清理接口
@@ -29,7 +31,7 @@ import com.publiccms.logic.component.cache.CacheComponent;
 public class ClearCacheDirective extends AbstractAppDirective {
 
     @Override
-    public void execute(RenderHandler handler, SysApp app, SysUser user) throws IOException, Exception {
+    public void execute(RenderHandler handler, SysApp app, SysUser user) throws IOException, TemplateException {
         cacheComponent.clear();
         handler.render();
     }

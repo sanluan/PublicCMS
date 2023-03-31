@@ -22,6 +22,8 @@ import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.service.cms.CmsPlaceAttributeService;
 import com.publiccms.logic.service.cms.CmsPlaceService;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * place 推荐位查询指令
@@ -54,7 +56,7 @@ import com.publiccms.logic.service.cms.CmsPlaceService;
 public class CmsPlaceDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Long id = handler.getLong("id");
         boolean absoluteURL = handler.getBoolean("absoluteURL", true);
         SysSite site = getSite(handler);

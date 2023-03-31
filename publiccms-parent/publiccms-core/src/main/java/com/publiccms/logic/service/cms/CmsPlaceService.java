@@ -151,10 +151,9 @@ public class CmsPlaceService extends BaseService<CmsPlace> {
     public void refresh(short siteId, Serializable[] ids, String path) {
         Date now = CommonUtils.getDate();
         for (CmsPlace entity : getEntitys(ids)) {
-            if (null != entity && siteId == entity.getSiteId() && path.equals(entity.getPath())) {
-                if (now.after(entity.getPublishDate())) {
-                    entity.setPublishDate(now);
-                }
+            if (null != entity && siteId == entity.getSiteId() && path.equals(entity.getPath())
+                    && now.after(entity.getPublishDate())) {
+                entity.setPublishDate(now);
             }
         }
     }

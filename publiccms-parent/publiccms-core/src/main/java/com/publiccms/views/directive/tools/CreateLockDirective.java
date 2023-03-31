@@ -10,6 +10,8 @@ import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.entities.sys.SysLock;
 import com.publiccms.logic.component.site.LockComponent;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * createLock 创建锁指令
@@ -43,7 +45,7 @@ $.getJSON('${site.dynamicPath}api/directive/tools/createLock?itemType=content&am
 public class CreateLockDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         String itemType = handler.getString("itemType");
         String itemId = handler.getString("itemId");
         Long userId = handler.getLong("userId");

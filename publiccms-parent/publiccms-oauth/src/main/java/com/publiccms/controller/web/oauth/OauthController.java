@@ -53,11 +53,11 @@ public class OauthController {
     /**
      * 
      */
-    public final static String STATE_COOKIE_NAME = "oauth_state";
+    public static final String STATE_COOKIE_NAME = "oauth_state";
     /**
      * 
      */
-    public final static String RETURN_URL = "oauth_return_url";
+    public static final String RETURN_URL = "oauth_return_url";
 
     @Resource
     private OauthComponent oauthComponent;

@@ -51,7 +51,7 @@ import freemarker.template.TemplateException;
 public class PublishCategoryDirective extends AbstractTaskDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Integer id = handler.getInteger("id");
         Integer pageIndex = handler.getInteger("pageIndex");
         Integer totalPage = handler.getInteger("totalPage");

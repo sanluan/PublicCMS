@@ -11,6 +11,8 @@ import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.logic.service.trade.TradeRefundService;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * tradeRefundList 退款列表查询指令
@@ -51,7 +53,7 @@ $.getJSON('${site.dynamicPath}api/directive/trade/refundList?pageSize=10&amp;aut
 public class TradeRefundListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException{
         PageHandler page = service.getPage(getSite(handler).getId(), getUserId(handler, "userId"), handler.getLong("paymentId"),
                 handler.getLong("refundUserId"), handler.getInteger("status"), handler.getString("orderType"),
                 handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", 30));

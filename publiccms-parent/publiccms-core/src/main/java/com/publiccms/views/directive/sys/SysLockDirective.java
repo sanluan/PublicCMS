@@ -18,6 +18,8 @@ import com.publiccms.entities.sys.SysLockId;
 import com.publiccms.logic.component.site.LockComponent;
 import com.publiccms.logic.service.sys.SysLockService;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * lock 锁查询指令
@@ -49,7 +51,7 @@ $.getJSON('${site.dynamicPath}api/directive/sys/lock?id=1', function(data){
 public class SysLockDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         String itemType = handler.getString("itemType");
         String itemId = handler.getString("itemId");
         if (CommonUtils.notEmpty(itemType)) {

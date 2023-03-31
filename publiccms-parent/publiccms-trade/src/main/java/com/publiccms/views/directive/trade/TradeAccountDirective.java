@@ -1,12 +1,11 @@
 package com.publiccms.views.directive.trade;
 
-// Generated 2019-6-16 9:47:27 by com.publiccms.common.generator.SourceGenerator
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
@@ -16,6 +15,8 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.trade.TradeAccount;
 import com.publiccms.logic.service.trade.TradeAccountService;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * tradeAccount 账户查询指令
@@ -24,7 +25,8 @@ import com.publiccms.logic.service.trade.TradeAccountService;
  * <ul>
  * <li><code>id</code> 账户id，结果返回<code>object</code>
  * {@link com.publiccms.entities.trade.TradeAccount}
- * <li><code>ids</code> 多个账户id，逗号或空格间隔，当id为空时生效，结果返回<code>map</code>(id,<code>object</code>)
+ * <li><code>ids</code>
+ * 多个账户id，逗号或空格间隔，当id为空时生效，结果返回<code>map</code>(id,<code>object</code>)
  * </ul>
  * 使用示例
  * <p>
@@ -45,7 +47,7 @@ import com.publiccms.logic.service.trade.TradeAccountService;
 public class TradeAccountDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Long id = handler.getLong("id");
         SysSite site = getSite(handler);
         if (CommonUtils.notEmpty(id)) {

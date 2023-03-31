@@ -54,6 +54,8 @@ import com.publiccms.logic.service.sys.SysExtendFieldService;
 import com.publiccms.logic.service.sys.SysExtendService;
 import com.publiccms.views.pojo.entities.CmsModel;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * contentCreate 内容创建接口
@@ -134,7 +136,7 @@ public class ContentCreateDirective extends AbstractAppDirective {
     private TemplateComponent templateComponent;
 
     @Override
-    public void execute(RenderHandler handler, SysApp app, SysUser user) throws IOException, Exception {
+    public void execute(RenderHandler handler, SysApp app, SysUser user) throws IOException, TemplateException {
         SysSite site = getSite(handler);
         CmsContent entity = new CmsContent();
         entity.setCategoryId(handler.getInteger("categoryId"));
@@ -210,7 +212,7 @@ public class ContentCreateDirective extends AbstractAppDirective {
 
                     Set<ConstraintViolation<CmsContent>> set = validatorFactory.getValidator().validate(entity);
                     if (!set.isEmpty()) {
-                        handler.put("error", set.stream().map(cv -> cv.getPropertyPath().toString())
+                        handler.put(CommonConstants.ERROR, set.stream().map(cv -> cv.getPropertyPath().toString())
                                 .collect(Collectors.joining(CommonConstants.COMMA_DELIMITED)));
                     } else {
                         if (null != entity.getId()) {
@@ -292,15 +294,15 @@ public class ContentCreateDirective extends AbstractAppDirective {
                         handler.put("result", "success");
                     }
                 } else {
-                    handler.put("error", LanguagesUtils.getMessage(CommonConstants.applicationContext,
+                    handler.put(CommonConstants.ERROR, LanguagesUtils.getMessage(CommonConstants.applicationContext,
                             RequestContextUtils.getLocale(handler.getRequest()), "verify.custom.contribute"));
                 }
             } else {
-                handler.put("error", LanguagesUtils.getMessage(CommonConstants.applicationContext,
+                handler.put(CommonConstants.ERROR, LanguagesUtils.getMessage(CommonConstants.applicationContext,
                         RequestContextUtils.getLocale(handler.getRequest()), "verify.notEmpty.category"));
             }
         } else {
-            handler.put("error", LanguagesUtils.getMessage(CommonConstants.applicationContext,
+            handler.put(CommonConstants.ERROR, LanguagesUtils.getMessage(CommonConstants.applicationContext,
                     RequestContextUtils.getLocale(handler.getRequest()), "verify.notEmpty.categoryModel"));
         }
         handler.render();

@@ -3,6 +3,7 @@ package com.publiccms.views.directive.api;
 import java.io.IOException;
 
 import javax.annotation.Resource;
+
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractAppDirective;
@@ -13,6 +14,8 @@ import com.publiccms.entities.sys.SysAppClient;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.sys.SysAppClientService;
+
+import freemarker.template.TemplateException;
 
 /**
 *
@@ -42,7 +45,7 @@ console.log(data.result);
 public class BindingUserDirective extends AbstractAppDirective {
 
     @Override
-    public void execute(RenderHandler handler, SysApp app, SysUser user) throws IOException, Exception {
+    public void execute(RenderHandler handler, SysApp app, SysUser user) throws IOException, TemplateException {
         String uuid = handler.getString("uuid");
         String channel = handler.getString("channel", LogLoginService.CHANNEL_WEB);
         boolean result = false;

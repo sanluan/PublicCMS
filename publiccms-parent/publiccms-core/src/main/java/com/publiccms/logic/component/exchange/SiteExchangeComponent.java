@@ -41,7 +41,7 @@ import com.publiccms.views.pojo.entities.SysConfig;
  */
 @Component
 public class SiteExchangeComponent {
-    protected final static Log log = LogFactory.getLog(SiteExchangeComponent.class);
+    protected static final Log log = LogFactory.getLog(SiteExchangeComponent.class);
 
     @Resource
     private List<AbstractExchange<?, ?>> exchangeList;
@@ -78,13 +78,13 @@ public class SiteExchangeComponent {
                     return CommonConstants.TEMPLATE_DONE;
                 } catch (IOException e) {
                     log.error(e.getMessage());
-                    model.addAttribute("error", e.getMessage());
+                    model.addAttribute(CommonConstants.ERROR, e.getMessage());
                 }
             } else {
-                model.addAttribute("error", "verify.custom.fileType");
+                model.addAttribute(CommonConstants.ERROR, "verify.custom.fileType");
             }
         } else {
-            model.addAttribute("error", "verify.notEmpty.file");
+            model.addAttribute(CommonConstants.ERROR, "verify.notEmpty.file");
         }
         return CommonConstants.TEMPLATE_ERROR;
     }
@@ -123,10 +123,10 @@ public class SiteExchangeComponent {
                     return CommonConstants.TEMPLATE_DONE;
                 } catch (IOException e) {
                     log.error(e.getMessage());
-                    model.addAttribute("error", e.getMessage());
+                    model.addAttribute(CommonConstants.ERROR, e.getMessage());
                 }
             } else {
-                model.addAttribute("error", "verify.custom.fileType");
+                model.addAttribute(CommonConstants.ERROR, "verify.custom.fileType");
             }
         } else if (CommonUtils.notEmpty(fileName)) {
             File dest = new File(siteComponent.getSiteFilePath(), fileName);
@@ -134,11 +134,11 @@ public class SiteExchangeComponent {
                 importDate(site, userId, overwrite, dest);
             } catch (IOException e) {
                 log.error(e.getMessage());
-                model.addAttribute("error", e.getMessage());
+                model.addAttribute(CommonConstants.ERROR, e.getMessage());
             }
             return CommonConstants.TEMPLATE_DONE;
         } else {
-            model.addAttribute("error", "verify.notEmpty.file");
+            model.addAttribute(CommonConstants.ERROR, "verify.notEmpty.file");
         }
         return CommonConstants.TEMPLATE_ERROR;
     }

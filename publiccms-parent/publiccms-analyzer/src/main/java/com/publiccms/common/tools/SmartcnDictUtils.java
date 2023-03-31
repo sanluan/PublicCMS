@@ -24,9 +24,9 @@ public class SmartcnDictUtils {
     public static final int GB2312_FIRST_CHAR = 1410;
     public static final int GB2312_CHAR_NUM = 87 * 94;
     public static final int CHAR_NUM_IN_FILE = 6768;
-    public final static String TYPE_CORE = "core";
-    public final static String TYPE_BIGRAM = "bigram";
-    public final static Map<String, Integer> defaultDelimiterFreqsMap = new HashMap<>();
+    public static final String TYPE_CORE = "core";
+    public static final String TYPE_BIGRAM = "bigram";
+    public static final Map<String, Integer> defaultDelimiterFreqsMap = new HashMap<>();
 
     static {
         defaultDelimiterFreqsMap.put("，", 20);

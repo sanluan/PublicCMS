@@ -6,6 +6,9 @@ import java.io.IOException;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.logic.service.cms.CmsWordService;
+
+import freemarker.template.TemplateException;
+
 import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
@@ -53,7 +56,7 @@ console.log(data.totalCount);
 public class CmsWordListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Boolean hidden = false;
         String orderField = "searchCount";
         String name = null;

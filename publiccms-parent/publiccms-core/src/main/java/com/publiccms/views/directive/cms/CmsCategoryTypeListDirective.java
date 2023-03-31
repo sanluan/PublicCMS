@@ -12,6 +12,8 @@ import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.logic.component.template.ModelComponent;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * categoryTypeList 分类类型列表查询指令
@@ -41,7 +43,7 @@ import com.publiccms.logic.component.template.ModelComponent;
 public class CmsCategoryTypeListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         PageHandler page = new PageHandler(null, null);
         page.setList(modelComponent.getCategoryTypeList(getSite(handler).getId()));
         handler.put("page", page).render();

@@ -11,6 +11,8 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.logic.component.template.DiyComponent;
 import com.publiccms.views.pojo.diy.CmsRegionData;
 
+import freemarker.template.TemplateException;
+
 /**
  * regionData diy区域数据获取指令
  * <p>
@@ -42,7 +44,7 @@ import com.publiccms.views.pojo.diy.CmsRegionData;
 public class DiyRegionDataDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         String id = handler.getString("id");
         Integer categoryId = handler.getInteger("categoryId");
         if (CommonUtils.notEmpty(id)) {

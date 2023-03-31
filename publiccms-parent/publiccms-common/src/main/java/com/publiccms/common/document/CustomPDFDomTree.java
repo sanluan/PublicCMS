@@ -28,6 +28,7 @@ public class CustomPDFDomTree extends PDFDomTree {
         super.createDocument();
     }
 
+    @Override
     protected Element createPageElement() {
         Element el = super.createPageElement();
         el.removeAttribute("class");
@@ -36,6 +37,7 @@ public class CustomPDFDomTree extends PDFDomTree {
         return el;
     }
 
+    @Override
     protected Element createTextElement(float width) {
         Element el = super.createTextElement(width);
         el.removeAttribute("class");
@@ -44,6 +46,7 @@ public class CustomPDFDomTree extends PDFDomTree {
         return el;
     }
 
+    @Override
     protected Element createRectangleElement(float x, float y, float width, float height, boolean stroke, boolean fill) {
         Element el = super.createRectangleElement(x, y, width, height, stroke, fill);
         el.removeAttribute("class");
@@ -52,6 +55,7 @@ public class CustomPDFDomTree extends PDFDomTree {
         return el;
     }
 
+    @Override
     protected Element createLineElement(float x1, float y1, float x2, float y2) {
         Element el = super.createLineElement(x1, y1, x2, y2);
         el.removeAttribute("class");
@@ -60,6 +64,7 @@ public class CustomPDFDomTree extends PDFDomTree {
         return el;
     }
 
+    @Override
     protected Element createPathImage(List<PathSegment> path) throws IOException {
         CustomPathDrawer drawer = new CustomPathDrawer(getGraphicsState());
         ImageResource renderedPath = drawer.drawPath(path);

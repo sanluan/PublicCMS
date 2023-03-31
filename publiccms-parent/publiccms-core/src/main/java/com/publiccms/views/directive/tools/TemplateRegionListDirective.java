@@ -15,6 +15,8 @@ import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.logic.component.template.TemplateComponent;
 
+import freemarker.template.TemplateException;
+
 /**
  * templateRegionList 模板文件页面可视化区域列表指令
  * <p>
@@ -46,7 +48,7 @@ public class TemplateRegionListDirective extends AbstractTemplateDirective {
     public static final Pattern REGION_PATTERN = Pattern.compile("<@[_a-z\\.]*includeRegion[ ]+.*id=[\"|\']([^\"\']*)[\"|\'].*>");
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         String path = handler.getString("path");
         Set<String> regionList = new LinkedHashSet<>();
         if (CommonUtils.notEmpty(path)) {

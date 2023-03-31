@@ -36,11 +36,11 @@ public class InitializationInitializer implements WebApplicationInitializer {
     /**
      * 安装Servlet映射路径
      */
-    public final static String INSTALL_SERVLET_MAPPING = "/install/";
+    public static final String INSTALL_SERVLET_MAPPING = "/install/";
     /**
      * 安装跳转处理器
      */
-    public final static HttpRequestHandler INSTALL_HTTPREQUEST_HANDLER = new InstallHttpRequestHandler(INSTALL_SERVLET_MAPPING);
+    public static final HttpRequestHandler INSTALL_HTTPREQUEST_HANDLER = new InstallHttpRequestHandler(INSTALL_SERVLET_MAPPING);
 
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {

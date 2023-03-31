@@ -13,6 +13,8 @@ import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysSite;
 
+import freemarker.template.TemplateException;
+
 /**
  * fileHistoryList 文件修改历史列表获取指令
  * <p>
@@ -47,7 +49,7 @@ import com.publiccms.entities.sys.SysSite;
 public class FileHistoryListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         String type = handler.getString("type");
         String path = handler.getString("path", CommonConstants.SEPARATOR);
         SysSite site = getSite(handler);

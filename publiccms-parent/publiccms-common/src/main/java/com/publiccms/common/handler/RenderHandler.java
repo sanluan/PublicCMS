@@ -9,6 +9,9 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import freemarker.template.TemplateException;
+import freemarker.template.TemplateModelException;
+
 /**
  *
  * RenderHandler
@@ -20,9 +23,10 @@ public interface RenderHandler {
      * 渲染
      * 
      * @throws IOException
-     * @throws Exception
+     * @throws TemplateModelException
+     * @throws TemplateException 
      */
-    void render() throws Exception;
+    void render() throws TemplateException, IOException;
 
     /**
      * 打印
@@ -51,199 +55,196 @@ public interface RenderHandler {
      * @param name
      * @param defaultValue
      * @return string value
-     * @throws Exception
+     * @throws TemplateModelException
      */
-    String getString(String name, String defaultValue) throws Exception;
+    String getString(String name, String defaultValue) throws TemplateModelException;
 
     /**
      * @param name
      * 
      * @return string value
-     * @throws Exception
+     * @throws TemplateModelException
      */
-    String getString(String name) throws Exception;
+    String getString(String name) throws TemplateModelException;
 
     /**
      * @param name
      * 
      * @return character value
-     * @throws Exception
+     * @throws TemplateModelException
      */
-    Character getCharacter(String name) throws Exception;
+    Character getCharacter(String name) throws TemplateModelException;
 
     /**
      * @param name
      * @param defaultValue
      * @return int value
-     * @throws Exception
+     * @throws TemplateModelException
      */
-    Integer getInteger(String name, Integer defaultValue) throws Exception;
+    Integer getInteger(String name, Integer defaultValue) throws TemplateModelException;
 
     /**
      * @param name
      * 
      * @return int value
-     * @throws Exception
+     * @throws TemplateModelException
      */
-    Integer getInteger(String name) throws Exception;
+    Integer getInteger(String name) throws TemplateModelException;
 
     /**
      * @param name
      * 
      * @return byte value
-     * @throws Exception
+     * @throws TemplateModelException
      */
-    Byte getByte(String name) throws Exception;
+    Byte getByte(String name) throws TemplateModelException;
 
     /**
      * @param name
      * @param defaultValue
      * @return byte value
-     * @throws Exception
+     * @throws TemplateModelException
      */
-    Byte getByte(String name, Byte defaultValue) throws Exception;
+    Byte getByte(String name, Byte defaultValue) throws TemplateModelException;
 
     /**
      * @param name
      * 
      * @return short value
-     * @throws Exception
+     * @throws TemplateModelException
      */
-    Short getShort(String name) throws Exception;
+    Short getShort(String name) throws TemplateModelException;
 
     /**
      * @param name
      * 
      * @return long value
-     * @throws Exception
+     * @throws TemplateModelException
      */
-    Long getLong(String name) throws Exception;
+    Long getLong(String name) throws TemplateModelException;
 
     /**
      * @param name
      * @param defaultValue
      * @return long value
-     * @throws Exception
+     * @throws TemplateModelException
      */
-    Long getLong(String name, Long defaultValue) throws Exception;
+    Long getLong(String name, Long defaultValue) throws TemplateModelException;
 
     /**
      * @param name
      * 
      * @return double value
-     * @throws Exception
+     * @throws TemplateModelException
      */
-    Double getDouble(String name) throws Exception;
+    Double getDouble(String name) throws TemplateModelException;
 
     /**
      * @param name
      * 
      * @return bigDecimal value
-     * @throws Exception
+     * @throws TemplateModelException
      */
-    BigDecimal getBigDecimal(String name) throws Exception;
+    BigDecimal getBigDecimal(String name) throws TemplateModelException;
 
     /**
      * @param name
      * 
      * @return int array value
-     * @throws Exception
+     * @throws TemplateModelException
      */
-    Integer[] getIntegerArray(String name) throws Exception;
+    Integer[] getIntegerArray(String name) throws TemplateModelException;
 
     /**
      * @param name
      * 
      * @return long array value
-     * @throws Exception
+     * @throws TemplateModelException
      */
-    Long[] getLongArray(String name) throws Exception;
+    Long[] getLongArray(String name) throws TemplateModelException;
 
     /**
      * @param name
      * 
      * @return long array value
-     * @throws Exception
+     * @throws TemplateModelException
      */
-    Short[] getShortArray(String name) throws Exception;
+    Short[] getShortArray(String name) throws TemplateModelException;
 
     /**
      * @param name
      * 
      * @return string array value
-     * @throws Exception
+     * @throws TemplateModelException
      */
-    String[] getStringArray(String name) throws Exception;
+    String[] getStringArray(String name) throws TemplateModelException;
 
     /**
      * @param name
      * @param defaultValue
      * 
      * @return string array value
-     * @throws Exception
+     * @throws TemplateModelException
      */
-    String[] getStringArray(String name, String[] defaultValue) throws Exception;
+    String[] getStringArray(String name, String[] defaultValue) throws TemplateModelException;
 
     /**
      * @param name
      * @param defaultValue
      * @return bool value
-     * @throws Exception
+     * @throws TemplateModelException
      */
-    Boolean getBoolean(String name, Boolean defaultValue) throws Exception;
+    Boolean getBoolean(String name, Boolean defaultValue) throws TemplateModelException;
 
     /**
      * @param name
      * 
      * @return bool value
-     * @throws Exception
+     * @throws TemplateModelException
      */
-    Boolean getBoolean(String name) throws Exception;
+    Boolean getBoolean(String name) throws TemplateModelException;
 
     /**
      * @param name
      * 
      * @return date value
-     * @throws Exception
+     * @throws TemplateModelException
      */
-    Date getDate(String name) throws Exception;
+    Date getDate(String name) throws TemplateModelException;
 
     /**
      * @param name
      * @param defaultValue
      * 
      * @return date value
-     * @throws Exception
+     * @throws TemplateModelException
      */
-    Date getDate(String name, Date defaultValue) throws Exception;
+    Date getDate(String name, Date defaultValue) throws TemplateModelException;
 
     /**
      * @return locale
-     * @throws Exception
      */
-    Locale getLocale() throws Exception;
+    Locale getLocale();
 
     /**
      * @param name
      * @return map value
-     * @throws Exception
+     * @throws TemplateModelException
      */
-    public Map<String, String> getMap(String name) throws Exception;
+    public Map<String, String> getMap(String name) throws TemplateModelException;
 
     /**
      * @return request
-     * @throws IOException
-     * @throws Exception
+     * @throws TemplateModelException
      */
-    HttpServletRequest getRequest() throws IOException, Exception;
+    HttpServletRequest getRequest() throws TemplateModelException;
 
     /**
      * @param name
      * @return attribute
-     * @throws IOException
-     * @throws Exception
+     * @throws TemplateModelException
      */
-    Object getAttribute(String name) throws IOException, Exception;
+    Object getAttribute(String name) throws TemplateModelException;
 
     /**
      * @return if renderd

@@ -15,6 +15,8 @@ import com.publiccms.entities.visit.VisitUrl;
 import com.publiccms.entities.visit.VisitUrlId;
 import com.publiccms.logic.service.visit.VisitUrlService;
 
+import freemarker.template.TemplateException;
+
 /**
 *
 * visitUrl 访问网址报表查询指令
@@ -41,7 +43,7 @@ import com.publiccms.logic.service.visit.VisitUrlService;
 public class VisitUrlDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Date visitDate = handler.getDate("visitDate");
         String urlMd5 = handler.getString("urlMd5");
         String urlSha = handler.getString("urlSha");

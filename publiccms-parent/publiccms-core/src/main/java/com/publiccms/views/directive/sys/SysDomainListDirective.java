@@ -6,6 +6,9 @@ import java.io.IOException;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.logic.service.sys.SysDomainService;
+
+import freemarker.template.TemplateException;
+
 import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
@@ -48,7 +51,7 @@ import com.publiccms.common.handler.RenderHandler;
 public class SysDomainListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Short siteId = null;
         if (getAdvanced(handler)) {
             siteId = handler.getShort("siteId");

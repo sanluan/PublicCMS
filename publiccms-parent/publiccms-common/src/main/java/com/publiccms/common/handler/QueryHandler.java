@@ -3,6 +3,7 @@ package com.publiccms.common.handler;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.hibernate.query.Query;
 
@@ -195,18 +196,18 @@ public class QueryHandler {
 
     public <T> Query<T> initQuery(Query<T> query, boolean pageable) {
         if (null != map) {
-            for (String key : map.keySet()) {
-                query.setParameter(key, map.get(key));
+            for (Entry<String, Object> entry : map.entrySet()) {
+                query.setParameter(entry.getKey(), entry.getValue());
             }
         }
         if (null != arrayMap) {
-            for (String key : arrayMap.keySet()) {
-                query.setParameterList(key, arrayMap.get(key));
+            for (Entry<String, Object[]> entry : arrayMap.entrySet()) {
+                query.setParameterList(entry.getKey(), entry.getValue());
             }
         }
         if (null != collectionMap) {
-            for (String key : collectionMap.keySet()) {
-                query.setParameterList(key, collectionMap.get(key));
+            for (Entry<String, Collection<?>> entrySet : collectionMap.entrySet()) {
+                query.setParameterList(entrySet.getKey(), entrySet.getValue());
             }
         }
         if (pageable) {
@@ -217,11 +218,7 @@ public class QueryHandler {
                 query.setMaxResults(maxResults);
             }
         }
-        if (null != cacheable) {
-            query.setCacheable(cacheable);
-        } else {
-            query.setCacheable(true);
-        }
+        query.setCacheable(null == cacheable ? true : cacheable);
         return query;
     }
 

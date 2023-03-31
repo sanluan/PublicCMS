@@ -11,6 +11,8 @@ import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.LanguagesUtils;
 import com.publiccms.logic.component.site.ScriptComponent;
 
+import freemarker.template.TemplateException;
+
 /**
  * executeScript 脚本执行指令
  * <p>
@@ -39,7 +41,7 @@ import com.publiccms.logic.component.site.ScriptComponent;
 public class ExecuteScriptDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         String command = handler.getString("command");
         String[] parameters = handler.getStringArray("parameters");
         if (siteComponent.isMaster(getSite(handler).getId())) {

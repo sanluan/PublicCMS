@@ -20,6 +20,8 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.service.cms.CmsSurveyQuestionService;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * surveyQuestion 调查问卷问题查询指令
@@ -52,7 +54,7 @@ import com.publiccms.logic.service.cms.CmsSurveyQuestionService;
 public class CmsSurveyQuestionDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Long id = handler.getLong("id");
         boolean absoluteURL = handler.getBoolean("absoluteURL", true);
         boolean advanced = getAdvanced(handler);

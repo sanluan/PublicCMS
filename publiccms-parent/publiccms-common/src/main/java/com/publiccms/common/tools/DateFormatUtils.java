@@ -55,7 +55,7 @@ public class DateFormatUtils {
             map.put(pattern, format);
             threadLocal.set(map);
         } else {
-            format = map.computeIfAbsent(pattern, k -> new SimpleDateFormat(k));
+            format = map.computeIfAbsent(pattern, SimpleDateFormat::new);
         }
         return format;
     }

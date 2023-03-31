@@ -48,7 +48,7 @@ import freemarker.template.TemplateException;
 public class CreateCategoryFileDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Integer id = handler.getInteger("id");
         String templatePath = handler.getString("templatePath");
         String filepath = handler.getString("filePath");

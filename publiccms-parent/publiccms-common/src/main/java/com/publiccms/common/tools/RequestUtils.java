@@ -58,7 +58,7 @@ public class RequestUtils {
     /**
      * @param values
      */
-    public static void removeCRLF(String values[]) {
+    public static void removeCRLF(String[] values) {
         if (null != values) {
             for (int i = 0; i < values.length; i++) {
                 values[i] = removeCRLF(values[i]);

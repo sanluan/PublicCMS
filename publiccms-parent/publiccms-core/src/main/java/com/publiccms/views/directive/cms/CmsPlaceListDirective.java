@@ -20,6 +20,8 @@ import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.service.cms.CmsPlaceService;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * placeList 推荐位列表查询指令
@@ -67,7 +69,7 @@ import com.publiccms.logic.service.cms.CmsPlaceService;
 public class CmsPlaceListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         SysSite site = getSite(handler);
         Date endPublishDate = handler.getDate("endPublishDate");
         Date expiryDate = null;

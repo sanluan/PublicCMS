@@ -42,7 +42,7 @@ import freemarker.template.TemplateException;
 public class TemplateResultDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         String content = handler.getString("templateContent");
         if (CommonUtils.notEmpty(content)) {
             try {

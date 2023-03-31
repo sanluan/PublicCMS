@@ -17,6 +17,8 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.service.cms.CmsSurveyQuestionService;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * surveyQuestionList 问卷调查问题列表查询指令
@@ -56,7 +58,7 @@ $.getJSON('${site.dynamicPath}api/directive/cms/surveyQuestionList?surveyId=1&am
 public class CmsSurveyQuestionListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         boolean absoluteURL = handler.getBoolean("absoluteURL", true);
         boolean advanced = getAdvanced(handler);
         PageHandler page = service.getPage(handler.getLong("surveyId"), handler.getStringArray("questionTypes"),

@@ -27,6 +27,8 @@ import com.publiccms.logic.service.sys.SysAppClientService;
 import com.publiccms.logic.service.sys.SysUserService;
 import com.publiccms.logic.service.sys.SysUserTokenService;
 
+import freemarker.template.TemplateException;
+
 /**
 *
 * autoLogin 自动登录接口
@@ -59,7 +61,7 @@ $.getJSON('${site.dynamicPath}api/autoLogin?uuid=1&amp;username=admin&amp;channe
 public class AutoLoginDirective extends AbstractAppDirective {
 
     @Override
-    public void execute(RenderHandler handler, SysApp app, SysUser user) throws IOException, Exception {
+    public void execute(RenderHandler handler, SysApp app, SysUser user) throws IOException, TemplateException {
         String uuid = handler.getString("uuid");
         String username = handler.getString("username");
         String channel = handler.getString("channel", LogLoginService.CHANNEL_WEB);

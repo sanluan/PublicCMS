@@ -9,6 +9,9 @@ import org.springframework.stereotype.Component;
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.logic.service.visit.VisitHistoryService;
+
+import freemarker.template.TemplateException;
+
 import com.publiccms.common.handler.PageHandler;
 
 /**
@@ -50,7 +53,7 @@ $.getJSON('${site.dynamicPath}api/directive/visit/historyList?hourAnalytics=fals
 public class VisitHistoryListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         PageHandler page = service.getPage(getSite(handler).getId(), handler.getString("sessionId"), handler.getString("ip"),
                 handler.getString("url"), handler.getLong("userId"), handler.getDate("startCreateDate"),
                 handler.getDate("endCreateDate"), handler.getString("orderType"), handler.getInteger("pageIndex", 1),

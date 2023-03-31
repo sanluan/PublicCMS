@@ -14,6 +14,8 @@ import com.publiccms.entities.cms.CmsDictionaryData;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.service.cms.CmsDictionaryDataService;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * dictionaryDataList 数据字典数据列表
@@ -46,7 +48,7 @@ import com.publiccms.logic.service.cms.CmsDictionaryDataService;
 public class CmsDictionaryDataListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         List<CmsDictionaryData> list = null;
         String dictionaryId = handler.getString("dictionaryId");
         String parentValue = handler.getString("parentValue");

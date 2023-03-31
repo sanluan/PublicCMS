@@ -10,6 +10,8 @@ import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.logic.component.config.ConfigComponent;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * sysConfigFieldList 配置数据字段列表查询指令
@@ -41,7 +43,7 @@ import com.publiccms.logic.component.config.ConfigComponent;
 public class SysConfigFieldListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         String code = handler.getString("code");
         if (CommonUtils.notEmpty(code)) {
             handler.put("list",

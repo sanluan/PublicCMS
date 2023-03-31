@@ -17,7 +17,7 @@ import com.publiccms.common.tools.CommonUtils;
 public class ExcelView extends AbstractXlsxStreamingView {
     private Consumer<Workbook> consumer;
     private String filename;
-    public final static String SUFFIX = ".xlsx";
+    public static final String SUFFIX = ".xlsx";
 
     /**
      * <pre>

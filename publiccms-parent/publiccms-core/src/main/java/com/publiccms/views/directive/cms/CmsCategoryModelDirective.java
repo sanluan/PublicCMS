@@ -16,6 +16,8 @@ import com.publiccms.entities.cms.CmsCategoryModel;
 import com.publiccms.entities.cms.CmsCategoryModelId;
 import com.publiccms.logic.service.cms.CmsCategoryModelService;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * categoryModel 分类内容模型映射查询指令
@@ -50,7 +52,7 @@ import com.publiccms.logic.service.cms.CmsCategoryModelService;
 public class CmsCategoryModelDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Integer categoryId = handler.getInteger("categoryId");
         String modelId = handler.getString("modelId");
         if (null != categoryId) {

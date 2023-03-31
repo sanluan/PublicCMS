@@ -11,6 +11,8 @@ import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.logic.service.visit.VisitItemService;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * visitItemList 访问项目列表查询指令
@@ -48,7 +50,7 @@ $.getJSON('${site.dynamicPath}api/directive/visit/itemList?itemType=content&amp;
 public class VisitItemListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         PageHandler page = service.getPage(getSite(handler).getId(), handler.getDate("startVisitDate"),
                 handler.getDate("endVisitDate"), handler.getString("itemType"), handler.getString("itemId"),
                 handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", 30));

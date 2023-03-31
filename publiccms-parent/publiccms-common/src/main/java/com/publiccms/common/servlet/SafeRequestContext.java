@@ -89,8 +89,7 @@ public class SafeRequestContext {
         if (wac == null) {
             wac = RequestContextUtils.findWebApplicationContext(request, servletContext);
             if (wac == null) {
-                throw new IllegalStateException(CommonUtils.joinString("No WebApplicationContext found: not in a DispatcherServlet ",
-                        "request and no ContextLoaderListener registered?"));
+                throw new IllegalStateException("No WebApplicationContext found: not in a DispatcherServlet request and no ContextLoaderListener registered?");
             }
         }
         this.webApplicationContext = wac;
@@ -668,10 +667,10 @@ public class SafeRequestContext {
      */
     @Nullable
     public Errors getErrors(String name, boolean htmlEscape) {
-        if (this.errorsMap == null) {
-            this.errorsMap = new HashMap<>();
+        if (errorsMap == null) {
+            errorsMap = new HashMap<>();
         }
-        Errors errors = this.errorsMap.get(name);
+        Errors errors = errorsMap.get(name);
         boolean put = false;
         if (errors == null) {
             errors = (Errors) getModelObject(CommonUtils.joinString(BindingResult.MODEL_KEY_PREFIX, name));
@@ -691,7 +690,7 @@ public class SafeRequestContext {
             put = true;
         }
         if (put) {
-            this.errorsMap.put(name, errors);
+            errorsMap.put(name, errors);
         }
         return errors;
     }

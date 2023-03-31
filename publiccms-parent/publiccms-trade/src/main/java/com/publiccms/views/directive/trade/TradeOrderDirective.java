@@ -12,6 +12,9 @@ import org.springframework.stereotype.Component;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.trade.TradeOrder;
 import com.publiccms.logic.service.trade.TradeOrderService;
+
+import freemarker.template.TemplateException;
+
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.RenderHandler;
@@ -45,7 +48,7 @@ import com.publiccms.common.handler.RenderHandler;
 public class TradeOrderDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Long id = handler.getLong("id");
         SysSite site = getSite(handler);
         if (CommonUtils.notEmpty(id)) {

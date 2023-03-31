@@ -14,6 +14,8 @@ import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.service.cms.CmsContentService;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * contentQuoteList 内容引用列表查询指令
@@ -45,7 +47,7 @@ import com.publiccms.logic.service.cms.CmsContentService;
 public class CmsContentQuoteListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         SysSite site = getSite(handler);
         Long quoteId = handler.getLong("quoteId");
         if (null != quoteId) {

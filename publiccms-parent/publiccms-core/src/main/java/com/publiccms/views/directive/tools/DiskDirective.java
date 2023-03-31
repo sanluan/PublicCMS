@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 
 import com.publiccms.common.handler.RenderHandler;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * disk 磁盘空间与路径指令
@@ -35,7 +37,7 @@ $.getJSON('${site.dynamicPath}api/directive/tools/disk?appToken=接口访问授�
 public class DiskDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         File root = new File(siteComponent.getRootPath());
         handler.put("freeSpace", root.getFreeSpace());
         handler.put("totalSpace", root.getTotalSpace());

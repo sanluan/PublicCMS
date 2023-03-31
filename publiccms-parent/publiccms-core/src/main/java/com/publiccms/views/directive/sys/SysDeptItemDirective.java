@@ -16,6 +16,8 @@ import com.publiccms.entities.sys.SysDeptItemId;
 import com.publiccms.logic.service.sys.SysDeptItemService;
 import com.publiccms.logic.service.sys.SysDeptService;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * sysDeptItem 数据授权查询指令
@@ -47,7 +49,7 @@ import com.publiccms.logic.service.sys.SysDeptService;
 public class SysDeptItemDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Integer deptId = handler.getInteger("deptId");
         String itemType = handler.getString("itemType");
         String itemId = handler.getString("itemId");

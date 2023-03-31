@@ -10,9 +10,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.function.BiConsumer;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.ObjIntConsumer;
+import java.util.function.UnaryOperator;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -114,7 +116,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         AggregationKey<Map<Integer, Long>> categoryIdKey = AggregationKey.of("categoryIdKey");
         AggregationKey<Map<String, Long>> modelIdKey = AggregationKey.of("modelIdKey");
 
-        Function<SearchQueryOptionsStep<?, CmsContent, ?, ?, ?>, SearchQueryOptionsStep<?, CmsContent, ?, ?, ?>> facetFieldKeys = o -> {
+        UnaryOperator<SearchQueryOptionsStep<?, CmsContent, ?, ?, ?>> facetFieldKeys = o -> {
             o.aggregation(categoryIdKey, f -> f.terms().field(categoryIdField, Integer.class).orderByCountDescending()
                     .minDocumentCount(1).maxTermCount(10));
             o.aggregation(modelIdKey, f -> f.terms().field(modelIdField, String.class).orderByCountDescending()
@@ -141,16 +143,18 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         if (highLighterQuery.isHighlight() && CommonUtils.notEmpty(text)) {
             highLighterQuery.setFields(highLighterTextFields);
             Backend backend = getSearchBackend();
-            Analyzer analyzer;
+            Optional<? extends Analyzer> analyzer;
             if (backend instanceof LuceneBackend) {
-                analyzer = backend.unwrap(LuceneBackend.class).analyzer(CmsContentTextBinder.ANALYZER_NAME).get();
+                analyzer = backend.unwrap(LuceneBackend.class).analyzer(CmsContentTextBinder.ANALYZER_NAME);
             } else {
-                analyzer = new StandardAnalyzer();
+                analyzer = Optional.of(new StandardAnalyzer());
             }
-            MultiFieldQueryParser queryParser = new MultiFieldQueryParser(highLighterTextFields, analyzer);
-            try {
-                highLighterQuery.setQuery(queryParser.parse(text));
-            } catch (ParseException e) {
+            if (analyzer.isPresent()) {
+                MultiFieldQueryParser queryParser = new MultiFieldQueryParser(highLighterTextFields, analyzer.get());
+                try {
+                    highLighterQuery.setQuery(queryParser.parse(text));
+                } catch (ParseException e) {
+                }
             }
         }
     }
@@ -339,7 +343,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         }
     }
 
-    public void batchWorkContent(short siteId, Integer categoryId, String modelId, BiConsumer<List<CmsContent>, Integer> worker,
+    public void batchWorkContent(short siteId, Integer categoryId, String modelId, ObjIntConsumer<List<CmsContent>> worker,
             int batchSize) {
         QueryHandler queryHandler = getQueryHandler("from CmsContent bean");
         queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
@@ -353,7 +357,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         batchWork(queryHandler, worker, batchSize);
     }
 
-    public void batchWorkId(short siteId, Integer categoryId, String modelId, BiConsumer<List<Serializable>, Integer> worker,
+    public void batchWorkId(short siteId, Integer categoryId, String modelId, ObjIntConsumer<List<Serializable>> worker,
             int batchSize) {
         QueryHandler queryHandler = getQueryHandler("select bean.id from CmsContent bean");
         queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);

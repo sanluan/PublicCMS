@@ -179,7 +179,6 @@ public class CustomXHTMLMapper extends XHTMLMapper {
             startElement(SPAN_ELEMENT, null);
             characters(TAB_CHAR_SEQUENCE);
             endElement(SPAN_ELEMENT);
-            return;
         }
     }
 

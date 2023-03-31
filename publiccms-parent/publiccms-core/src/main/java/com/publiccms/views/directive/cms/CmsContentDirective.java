@@ -23,6 +23,8 @@ import com.publiccms.logic.service.cms.CmsContentAttributeService;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.views.pojo.entities.ClickStatistics;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * content 内容查询指令
@@ -57,7 +59,7 @@ import com.publiccms.views.pojo.entities.ClickStatistics;
 public class CmsContentDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Long id = handler.getLong("id");
         boolean absoluteURL = handler.getBoolean("absoluteURL", true);
         boolean absoluteId = handler.getBoolean("absoluteId", true);

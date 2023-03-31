@@ -17,12 +17,9 @@ import org.apache.commons.logging.LogFactory;
 
 import com.publiccms.common.constants.Constants;
 
-import freemarker.core.ParseException;
 import freemarker.template.Configuration;
-import freemarker.template.MalformedTemplateNameException;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
-import freemarker.template.TemplateNotFoundException;
 
 /**
  * FreeMarker工具类
@@ -31,7 +28,7 @@ import freemarker.template.TemplateNotFoundException;
  * 
  */
 public class FreeMarkerUtils {
-    private final static Log log = LogFactory.getLog(FreeMarkerUtils.class);
+    private static final Log log = LogFactory.getLog(FreeMarkerUtils.class);
 
     /**
      * @param templateFilePath
@@ -67,14 +64,11 @@ public class FreeMarkerUtils {
      * @param model
      * @param override
      * @param append
-     * @throws ParseException
-     * @throws MalformedTemplateNameException
      * @throws IOException
      * @throws TemplateException
      */
     public static void generateFileByFile(String templateFilePath, String destFilePath, Configuration configuration,
-            Map<String, Object> model, boolean override, boolean append)
-            throws MalformedTemplateNameException, ParseException, IOException, TemplateException {
+            Map<String, Object> model, boolean override, boolean append) throws IOException, TemplateException {
         Template t = configuration.getTemplate(templateFilePath);
         Path destPath = Paths.get(destFilePath);
         if (override || append || !Files.exists(destPath)) {
@@ -87,10 +81,10 @@ public class FreeMarkerUtils {
                     : Files.newOutputStream(Paths.get(destFilePath))) {
                 Writer out = new OutputStreamWriter(outputStream, Constants.DEFAULT_CHARSET);
                 t.process(model, out);
-                log.info(CommonUtils.joinString(destFilePath," saved!"));
+                log.info(CommonUtils.joinString(destFilePath, " saved!"));
             }
         } else {
-            log.error(CommonUtils.joinString(destFilePath," already exists!"));
+            log.error(CommonUtils.joinString(destFilePath, " already exists!"));
         }
     }
 
@@ -127,15 +121,11 @@ public class FreeMarkerUtils {
      * @param template
      * @param configuration
      * @param model
-     * @throws TemplateNotFoundException
-     * @throws MalformedTemplateNameException
-     * @throws ParseException
      * @throws IOException
      * @throws TemplateException
      */
     public static void generateStringByFile(Writer writer, String template, Configuration configuration,
-            Map<String, Object> model)
-            throws TemplateNotFoundException, MalformedTemplateNameException, ParseException, IOException, TemplateException {
+            Map<String, Object> model) throws IOException, TemplateException {
         Template tpl = configuration.getTemplate(template);
         tpl.process(model, writer);
     }

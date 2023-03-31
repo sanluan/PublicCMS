@@ -49,7 +49,7 @@ import freemarker.template.TemplateException;
 public class PublishContentDirective extends AbstractTaskDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Long id = handler.getLong("id");
         SysSite site = getSite(handler);
         Map<String, Boolean> map = new LinkedHashMap<>();

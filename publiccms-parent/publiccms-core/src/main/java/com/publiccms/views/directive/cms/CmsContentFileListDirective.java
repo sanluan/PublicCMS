@@ -20,6 +20,8 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.service.cms.CmsContentFileService;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * categoryFileList 内容附件列表查询指令
@@ -61,7 +63,7 @@ import com.publiccms.logic.service.cms.CmsContentFileService;
 public class CmsContentFileListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         String[] fileTypes = handler.getStringArray("fileTypes");
         if (CommonUtils.empty(fileTypes) && handler.getBoolean("image", false)) {
             fileTypes = new String[] { CmsFileUtils.FILE_TYPE_IMAGE };

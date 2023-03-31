@@ -13,6 +13,8 @@ import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.logic.service.cms.CmsContentService;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * wordload 工作量查询指令
@@ -51,7 +53,7 @@ import com.publiccms.logic.service.cms.CmsContentService;
 public class WorkloadDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         PageHandler page = service.getWorkLoadPage(getSite(handler).getId(), handler.getIntegerArray("status"),
                 handler.getDate("startCreateDate"), handler.getDate("endCreateDate"), handler.getString("workloadType"),
                 handler.getString("dateField"), handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", 30));

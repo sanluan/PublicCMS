@@ -13,6 +13,7 @@ import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.RequestUtils;
 
 import eu.bitwalker.useragentutils.UserAgent;
+import freemarker.template.TemplateException;
 
 /**
  * userAgent user agent分析指令
@@ -51,7 +52,7 @@ import eu.bitwalker.useragentutils.UserAgent;
 public class UserAgentDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         String userAgent = handler.getString("userAgent");
         HttpServletRequest request = null;
         if (null == userAgent) {

@@ -21,10 +21,10 @@ import com.publiccms.common.tools.ZipUtils;
 import com.publiccms.entities.sys.SysSite;
 
 public abstract class AbstractExchange<E, D> implements Exchange<E, D> {
-    protected final static Log log = LogFactory.getLog(AbstractExchange.class);
+    protected static final Log log = LogFactory.getLog(AbstractExchange.class);
     private Class<D> clazz;
 
-    public final static String ATTACHMENT_DIR = "attachment/";
+    public static final String ATTACHMENT_DIR = "attachment/";
 
     @Override
     public void exportAll(SysSite site, String directory, ZipOutputStream zipOutputStream) {

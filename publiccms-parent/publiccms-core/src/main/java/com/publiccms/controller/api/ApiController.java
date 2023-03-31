@@ -39,23 +39,23 @@ public class ApiController {
     /**
      *
      */
-    public final static String INTERFACE_NOT_FOUND = "interfaceNotFound";
+    public static final String INTERFACE_NOT_FOUND = "interfaceNotFound";
     /**
      *
      */
-    public final static String NEED_APP_TOKEN = "needAppToken";
+    public static final String NEED_APP_TOKEN = "needAppToken";
     /**
      *
      */
-    public final static String UN_AUTHORIZED = "unAuthorized";
+    public static final String UN_AUTHORIZED = "unAuthorized";
     /**
      *
      */
-    public final static String NEED_LOGIN = "needLogin";
+    public static final String NEED_LOGIN = "needLogin";
     /**
      *
      */
-    public final static String EXCEPTION = "exception";
+    public static final String EXCEPTION = "exception";
     /**
      *
      */

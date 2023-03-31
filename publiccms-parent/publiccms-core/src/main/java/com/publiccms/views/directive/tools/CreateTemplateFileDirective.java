@@ -53,7 +53,7 @@ $.getJSON('${site.dynamicPath}api/directive/tools/createTemplateFile?id=1&amp;te
 public class CreateTemplateFileDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         String templatePath = handler.getString("templatePath");
         String filepath = handler.getString("filePath");
         Integer pageIndex = handler.getInteger("pageIndex");

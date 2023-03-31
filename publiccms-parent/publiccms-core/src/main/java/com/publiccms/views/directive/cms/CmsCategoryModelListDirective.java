@@ -13,6 +13,8 @@ import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.entities.cms.CmsCategoryModel;
 import com.publiccms.logic.service.cms.CmsCategoryModelService;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * categoryModelList 分类模型映射列表查询指令
@@ -45,7 +47,7 @@ import com.publiccms.logic.service.cms.CmsCategoryModelService;
 public class CmsCategoryModelListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         List<CmsCategoryModel> list = service.getList(getSite(handler).getId(), handler.getString("modelId"),
                 handler.getInteger("categoryId"));
         handler.put("list", list).render();

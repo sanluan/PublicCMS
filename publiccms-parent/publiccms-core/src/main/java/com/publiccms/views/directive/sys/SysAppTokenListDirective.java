@@ -6,6 +6,9 @@ import java.io.IOException;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.logic.service.sys.SysAppTokenService;
+
+import freemarker.template.TemplateException;
+
 import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
@@ -39,7 +42,7 @@ import com.publiccms.common.handler.RenderHandler;
 public class SysAppTokenListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         PageHandler page = service.getPage(handler.getInteger("appId"), handler.getInteger("pageIndex", 1),
                 handler.getInteger("pageSize", 30));
         handler.put("page", page).render();

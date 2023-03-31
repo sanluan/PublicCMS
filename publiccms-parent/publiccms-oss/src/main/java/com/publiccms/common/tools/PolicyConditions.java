@@ -142,22 +142,22 @@ class ConditionItem {
  * Policy Conditions. This is to specify the conditions in a post request.
  */
 public class PolicyConditions {
-    public final static String COND_CONTENT_LENGTH_RANGE = "content-length-range";
-    public final static String COND_CACHE_CONTROL = "Cache-Control";
-    public final static String COND_CONTENT_TYPE = "Content-Type";
-    public final static String COND_CONTENT_DISPOSITION = "Content-Disposition";
-    public final static String COND_CONTENT_ENCODING = "Content-Encoding";
-    public final static String COND_EXPIRES = "Expires";
-    public final static String COND_KEY = "key";
-    public final static String COND_ACL = "acl";
-    public final static String COND_BUCKET = "bucket";
-    public final static String COND_SUCCESS_ACTION_REDIRECT = "success_action_redirect";
-    public final static String COND_SUCCESS_ACTION_STATUS = "success_action_status";
-    public final static String COND_X_OSS_META_PREFIX = "x-amz-meta-uuid";
-    public final static String COND_X_OSS_DATE = "x-amz-date";
-    public final static String COND_X_OSS_ALGORITHM = "x-amz-algorithm";
-    public final static String COND_X_OSS_CREDENTIAL = "x-amz-credential";
-    public final static String COND_X_OSS_SERVER_SIDE_PREFIX = "x-amz-server-side-";
+    public static final String COND_CONTENT_LENGTH_RANGE = "content-length-range";
+    public static final String COND_CACHE_CONTROL = "Cache-Control";
+    public static final String COND_CONTENT_TYPE = "Content-Type";
+    public static final String COND_CONTENT_DISPOSITION = "Content-Disposition";
+    public static final String COND_CONTENT_ENCODING = "Content-Encoding";
+    public static final String COND_EXPIRES = "Expires";
+    public static final String COND_KEY = "key";
+    public static final String COND_ACL = "acl";
+    public static final String COND_BUCKET = "bucket";
+    public static final String COND_SUCCESS_ACTION_REDIRECT = "success_action_redirect";
+    public static final String COND_SUCCESS_ACTION_STATUS = "success_action_status";
+    public static final String COND_X_OSS_META_PREFIX = "x-amz-meta-uuid";
+    public static final String COND_X_OSS_DATE = "x-amz-date";
+    public static final String COND_X_OSS_ALGORITHM = "x-amz-algorithm";
+    public static final String COND_X_OSS_CREDENTIAL = "x-amz-credential";
+    public static final String COND_X_OSS_SERVER_SIDE_PREFIX = "x-amz-server-side-";
 
     private static Map<String, List<MatchMode>> _supportedMatchRules = new HashMap<String, List<MatchMode>>();
     private List<ConditionItem> _conds = new ArrayList<ConditionItem>();

@@ -121,7 +121,7 @@ public class AbstractUeditorController {
             if (CommonUtils.notEmpty(message)) {
                 map.put("state", message);
             } else {
-                map.put("state", "error");
+                map.put("state", CommonConstants.ERROR);
             }
         }
         return map;

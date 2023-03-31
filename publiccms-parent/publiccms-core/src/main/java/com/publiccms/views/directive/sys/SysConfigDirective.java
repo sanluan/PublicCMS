@@ -12,6 +12,8 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.logic.component.config.ConfigComponent;
 import com.publiccms.views.pojo.entities.ConfigInfo;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * sysConfig 配置查询指令
@@ -37,7 +39,7 @@ $.getJSON('${site.dynamicPath}api/directive/sys/config?code=site&amp;appToken=�
 public class SysConfigDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         String code = handler.getString("code");
         if (CommonUtils.notEmpty(code)) {
             ConfigInfo entity = configComponent.getConfig(getSite(handler).getId(), code, handler.getLocale());

@@ -20,6 +20,8 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.service.cms.CmsCategoryAttributeService;
 import com.publiccms.logic.service.cms.CmsCategoryService;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * category 分类查询指令
@@ -54,7 +56,7 @@ import com.publiccms.logic.service.cms.CmsCategoryService;
 public class CmsCategoryDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Integer id = handler.getInteger("id");
         String code = handler.getString("code");
         boolean absoluteURL = handler.getBoolean("absoluteURL", true);

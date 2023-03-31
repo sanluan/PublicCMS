@@ -45,7 +45,7 @@ public class MethodController {
     /**
      *
      */
-    public static final Map<String, String> NEED_APP_TOKEN_MAP = new HashMap<String, String>() {
+    protected static final Map<String, String> NEED_APP_TOKEN_MAP = new HashMap<String, String>() {
         private static final long serialVersionUID = 1L;
         {
             put(CommonConstants.ERROR, ApiController.NEED_APP_TOKEN);
@@ -71,9 +71,8 @@ public class MethodController {
                         return NEED_APP_TOKEN_MAP;
                     }
                     SysApp app = appService.getEntity(token.getAppId());
-                    if (null == app || CommonUtils.empty(app.getAuthorizedApis())
-                            || !ArrayUtils.contains(StringUtils.split(app.getAuthorizedApis(), CommonConstants.COMMA),
-                                    method.getName())) {
+                    if (null == app || CommonUtils.empty(app.getAuthorizedApis()) || !ArrayUtils
+                            .contains(StringUtils.split(app.getAuthorizedApis(), CommonConstants.COMMA), method.getName())) {
                         return NEED_APP_TOKEN_MAP;
                     }
                 }

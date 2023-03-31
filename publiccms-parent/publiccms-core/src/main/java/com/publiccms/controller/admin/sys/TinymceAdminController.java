@@ -47,6 +47,6 @@ public class TinymceAdminController extends AbstractTinymceController {
     @RequestMapping("imageList")
     @ResponseBody
     public List<Map<String, String>> imageList(SysSite site, @SessionAttribute SysUser admin) {
-        return imageList(site, admin);
+        return super.imageList(site, admin);
     }
 }

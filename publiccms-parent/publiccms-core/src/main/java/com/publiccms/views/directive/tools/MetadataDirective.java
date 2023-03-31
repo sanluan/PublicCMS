@@ -14,6 +14,8 @@ import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.views.pojo.entities.CmsPageData;
 import com.publiccms.views.pojo.entities.CmsPageMetadata;
 
+import freemarker.template.TemplateException;
+
 /**
  * metadata 模板元数据获取指令
  * <p>
@@ -45,7 +47,7 @@ import com.publiccms.views.pojo.entities.CmsPageMetadata;
 public class MetadataDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         String path = handler.getString("path");
         if (CommonUtils.notEmpty(path) && !path.endsWith(CommonConstants.SEPARATOR)) {
             SysSite site = getSite(handler);

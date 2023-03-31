@@ -16,6 +16,8 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.trade.TradeRefund;
 import com.publiccms.logic.service.trade.TradeRefundService;
 
+import freemarker.template.TemplateException;
+
 /**
 *
 * tradeRefund 退款查询指令
@@ -45,7 +47,7 @@ import com.publiccms.logic.service.trade.TradeRefundService;
 public class TradeRefundDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException{
         Long id = handler.getLong("id");
         SysSite site = getSite(handler);
         if (CommonUtils.notEmpty(id)) {

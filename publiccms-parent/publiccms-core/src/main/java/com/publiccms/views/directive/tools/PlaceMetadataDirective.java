@@ -14,6 +14,8 @@ import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.views.pojo.entities.CmsPageData;
 import com.publiccms.views.pojo.entities.CmsPlaceMetadata;
 
+import freemarker.template.TemplateException;
+
 /**
  * placeMetadata 页面片段元数据获取指令
  * <p>
@@ -45,7 +47,7 @@ import com.publiccms.views.pojo.entities.CmsPlaceMetadata;
 public class PlaceMetadataDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         String path = handler.getString("path");
         if (CommonUtils.notEmpty(path) && !path.endsWith(CommonConstants.SEPARATOR)) {
             String filepath = siteComponent.getTemplateFilePath(getSite(handler).getId(),

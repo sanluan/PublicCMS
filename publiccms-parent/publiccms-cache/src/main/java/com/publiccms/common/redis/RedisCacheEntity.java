@@ -30,7 +30,7 @@ public class RedisCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Serial
     private static final long serialVersionUID = 1L;
     private JedisPool jedisPool;
     private String region;
-    private final static StringSerializer stringSerializer = new StringSerializer();
+    private static final StringSerializer stringSerializer = new StringSerializer();
     private final BinarySerializer<V> valueSerializer = new BinarySerializer<>();
 
     @Override
