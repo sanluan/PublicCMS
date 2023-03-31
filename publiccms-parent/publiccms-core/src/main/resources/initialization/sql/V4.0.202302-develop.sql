@@ -35,3 +35,11 @@ UPDATE `sys_module` SET `authorized_url`= 'cmsModel/categoryList,cmsModel/templa
 -- 2023-03-27 --
 ALTER TABLE `cms_content` DROP COLUMN `contribute`;
 ALTER TABLE `sys_task` ADD COLUMN `multi_node` tinyint(1) NOT NULL COMMENT '多节点执行' AFTER `status`;
+-- 2023-03-31 --
+UPDATE `sys_module_lang` SET `value` =  'Export' WHERE `lang` ='en' and module_id = 'dictionary_export';
+UPDATE `sys_module_lang` SET `value` =  '輸出' WHERE `lang` ='ja' and module_id = 'dictionary_export';
+UPDATE `sys_module_lang` SET `value` =  '导出' WHERE `lang` ='zh' and module_id = 'dictionary_export';
+DELETE FROM `sys_module_lang` WHERE `module_id` ='refund_view';
+INSERT INTO `sys_module_lang` VALUES ('record_view', 'en', 'View');
+INSERT INTO `sys_module_lang` VALUES ('record_view', 'ja', '見る');
+INSERT INTO `sys_module_lang` VALUES ('record_view', 'zh', '查看');
