@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.util.Comparator;
@@ -390,7 +389,7 @@ public class CmsTemplateAdminController {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentDisposition(ContentDisposition.attachment()
                 .filename(CommonUtils.joinString(site.getName(), dateFormat.format(new Date()), "-template.zip"),
-                        StandardCharsets.UTF_8)
+                        CommonConstants.DEFAULT_CHARSET)
                 .build());
         StreamingResponseBody body = new StreamingResponseBody() {
             @Override

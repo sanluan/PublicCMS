@@ -17,6 +17,7 @@ import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsContentProduct;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.service.cms.CmsContentProductService;
 
 /**
@@ -56,7 +57,7 @@ public class CmsContentProductDirective extends AbstractTemplateDirective {
             CmsContentProduct entity = service.getEntity(id);
             if (null != entity && site.getId() == entity.getSiteId()) {
                 if (absoluteURL) {
-                    entity.setCover(CmsUrlUtils.getUrl(site.getSitePath(), entity.getCover()));
+                    entity.setCover(CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site, false), entity.getCover()));
                 }
                 handler.put("object", entity).render();
             }
@@ -66,7 +67,7 @@ public class CmsContentProductDirective extends AbstractTemplateDirective {
                 List<CmsContentProduct> entityList = service.getEntitys(ids);
                 Consumer<CmsContentProduct> consumer = e -> {
                     if (absoluteURL) {
-                        e.setCover(CmsUrlUtils.getUrl(site.getSitePath(), e.getCover()));
+                        e.setCover(CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site, false), e.getCover()));
                     }
                 };
                 Map<String, CmsContentProduct> map = CommonUtils.listToMap(entityList, k -> k.getId().toString(), consumer,
@@ -78,4 +79,6 @@ public class CmsContentProductDirective extends AbstractTemplateDirective {
 
     @Resource
     private CmsContentProductService service;
+    @Resource
+    protected FileUploadComponent fileUploadComponent;
 }

@@ -2,9 +2,7 @@ package com.publiccms.common.database;
 
 import java.io.IOException;
 import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
-import java.net.URLEncoder;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -12,7 +10,6 @@ import java.util.List;
 import java.util.Properties;
 
 import com.publiccms.common.base.AbstractCmsUpgrader;
-import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
 
 /**
@@ -91,12 +88,9 @@ public class CmsUpgrader extends AbstractCmsUpgrader {
         sb.append(database);
         sb.append("?characterEncoding=UTF-8&useSSL=false&allowPublicKeyRetrieval=true&useAffectedRows=true");
         if (CommonUtils.notEmpty(timeZone)) {
-            try {
-                sb.append("&serverTimezone=GMT");
-                if (!"Z".equalsIgnoreCase(timeZone)) {
-                    sb.append(URLEncoder.encode(timeZone, Constants.DEFAULT_CHARSET_NAME));
-                }
-            } catch (UnsupportedEncodingException e) {
+            sb.append("&serverTimezone=GMT");
+            if (!"Z".equalsIgnoreCase(timeZone)) {
+                sb.append(CommonUtils.encodeURI(timeZone));
             }
         }
         dbconfig.setProperty("jdbc.url", sb.toString());

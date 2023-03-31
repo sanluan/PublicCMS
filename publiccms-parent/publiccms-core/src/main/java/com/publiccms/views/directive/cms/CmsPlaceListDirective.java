@@ -16,6 +16,7 @@ import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsPlace;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.service.cms.CmsPlaceService;
 
@@ -102,6 +103,7 @@ public class CmsPlaceListDirective extends AbstractTemplateDirective {
                 }
                 if (absoluteURL) {
                     CmsUrlUtils.initPlaceUrl(site, e);
+                    fileUploadComponent.initPlaceCover(site, e);
                 }
             });
         }
@@ -120,6 +122,8 @@ public class CmsPlaceListDirective extends AbstractTemplateDirective {
 
     @Resource
     private CmsPlaceService service;
+    @Resource
+    protected FileUploadComponent fileUploadComponent;
     @Resource
     private StatisticsComponent statisticsComponent;
 

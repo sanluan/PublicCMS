@@ -2,7 +2,6 @@ package com.publiccms.controller.admin.cms;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
@@ -393,9 +392,9 @@ public class CmsCategoryAdminController {
     public ResponseEntity<StreamingResponseBody> export(@RequestAttribute SysSite site, Integer id) {
         DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.DOWNLOAD_FORMAT_STRING);
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentDisposition(ContentDisposition.attachment()
-                .filename(CommonUtils.joinString(site.getName(), dateFormat.format(new Date()), "-category.zip"),
-                        StandardCharsets.UTF_8)
+        headers.setContentDisposition(ContentDisposition.attachment().filename(CommonUtils.joinString(site.getName(),
+                dateFormat.format(new Date()), "-category.zip"),
+                        CommonConstants.DEFAULT_CHARSET)
                 .build());
         StreamingResponseBody body = new StreamingResponseBody() {
             @Override

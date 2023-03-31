@@ -20,8 +20,7 @@ import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysLock;
 import com.publiccms.entities.sys.SysLockId;
 import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.component.BeanComponent;
-import com.publiccms.logic.component.config.ConfigComponent;
+import com.publiccms.logic.component.config.ConfigDataComponent;
 import com.publiccms.logic.service.sys.SysLockService;
 
 /**
@@ -144,6 +143,8 @@ public class LockComponent implements Config, SiteCache {
     public static final int DEFAULT_REGISTER_EXPIRY_MINUTES = 6 * 60;
     @Resource
     private SysLockService service;
+    @Resource
+    private ConfigDataComponent configDataComponent;
 
     /**
      * @param siteId
@@ -151,24 +152,24 @@ public class LockComponent implements Config, SiteCache {
      * @return
      */
     public int getExpriy(short siteId, String itemType) {
-        Map<String, String> config = BeanComponent.getConfigComponent().getConfigData(siteId, CONFIG_CODE);
+        Map<String, String> config = configDataComponent.getConfigData(siteId, CONFIG_CODE);
         int expriy = 0;
         if (ITEM_TYPE_LOGIN.equalsIgnoreCase(itemType) || ITEM_TYPE_IP_LOGIN.equalsIgnoreCase(itemType)) {
-            expriy = ConfigComponent.getInt(config.get(CONFIG_LOCK_EXPIRY_LOGIN), DEFAULT_LOGIN_EXPIRY_MINUTES);
+            expriy = ConfigDataComponent.getInt(config.get(CONFIG_LOCK_EXPIRY_LOGIN), DEFAULT_LOGIN_EXPIRY_MINUTES);
         } else if (ITEM_TYPE_REGISTER.equalsIgnoreCase(itemType)) {
-            expriy = ConfigComponent.getInt(config.get(CONFIG_LOCK_EXPIRY_REGISTER), DEFAULT_REGISTER_EXPIRY_MINUTES);
+            expriy = ConfigDataComponent.getInt(config.get(CONFIG_LOCK_EXPIRY_REGISTER), DEFAULT_REGISTER_EXPIRY_MINUTES);
         } else if (ITEM_TYPE_FILEUPLOAD.equalsIgnoreCase(itemType)) {
-            expriy = ConfigComponent.getInt(config.get(CONFIG_LOCK_EXPIRY_FILEUPLOAD), DEFAULT_REGISTER_EXPIRY_MINUTES);
+            expriy = ConfigDataComponent.getInt(config.get(CONFIG_LOCK_EXPIRY_FILEUPLOAD), DEFAULT_REGISTER_EXPIRY_MINUTES);
         } else if (ITEM_TYPE_FILEUPLOAD_SIZE.equalsIgnoreCase(itemType)) {
-            expriy = ConfigComponent.getInt(config.get(CONFIG_LOCK_EXPIRY_FILEUPLOAD_SIZE), DEFAULT_REGISTER_EXPIRY_MINUTES);
+            expriy = ConfigDataComponent.getInt(config.get(CONFIG_LOCK_EXPIRY_FILEUPLOAD_SIZE), DEFAULT_REGISTER_EXPIRY_MINUTES);
         } else if (ITEM_TYPE_FILEUPLOAD_PRIVATE_SIZE.equalsIgnoreCase(itemType)) {
-            expriy = ConfigComponent.getInt(config.get(CONFIG_LOCK_EXPIRY_FILEUPLOAD_PRIVATE), DEFAULT_REGISTER_EXPIRY_MINUTES);
+            expriy = ConfigDataComponent.getInt(config.get(CONFIG_LOCK_EXPIRY_FILEUPLOAD_PRIVATE), DEFAULT_REGISTER_EXPIRY_MINUTES);
         } else if (ITEM_TYPE_CONTRIBUTE.equalsIgnoreCase(itemType)) {
-            expriy = ConfigComponent.getInt(config.get(CONFIG_LOCK_EXPIRY_CONTRIBUTE), DEFAULT_OPERATE_EXPIRY_MINUTES);
+            expriy = ConfigDataComponent.getInt(config.get(CONFIG_LOCK_EXPIRY_CONTRIBUTE), DEFAULT_OPERATE_EXPIRY_MINUTES);
         } else if (ITEM_TYPE_COMMENT.equalsIgnoreCase(itemType)) {
-            expriy = ConfigComponent.getInt(config.get(CONFIG_LOCK_EXPIRY_COMMENT), DEFAULT_OPERATE_EXPIRY_MINUTES);
+            expriy = ConfigDataComponent.getInt(config.get(CONFIG_LOCK_EXPIRY_COMMENT), DEFAULT_OPERATE_EXPIRY_MINUTES);
         } else {
-            expriy = ConfigComponent.getInt(config.get(CONFIG_LOCK_EXPIRY_MINUTES), DEFAULT_EXPIRY_MINUTES);
+            expriy = ConfigDataComponent.getInt(config.get(CONFIG_LOCK_EXPIRY_MINUTES), DEFAULT_EXPIRY_MINUTES);
         }
         return expriy;
     }
@@ -182,24 +183,24 @@ public class LockComponent implements Config, SiteCache {
      */
     public boolean isLocked(short siteId, String itemType, String itemId, Long userId) {
         if (CommonUtils.notEmpty(itemType) && CommonUtils.notEmpty(itemId)) {
-            Map<String, String> config = BeanComponent.getConfigComponent().getConfigData(siteId, CONFIG_CODE);
+            Map<String, String> config = configDataComponent.getConfigData(siteId, CONFIG_CODE);
             int expriy = getExpriy(siteId, itemType), maxCount = -1;
             if (ITEM_TYPE_LOGIN.equalsIgnoreCase(itemType)) {
-                maxCount = ConfigComponent.getInt(config.get(CONFIG_LOCK_LOGIN_MAX_COUNT), DEFAULT_OPERATE_MAX_COUNT);
+                maxCount = ConfigDataComponent.getInt(config.get(CONFIG_LOCK_LOGIN_MAX_COUNT), DEFAULT_OPERATE_MAX_COUNT);
             } else if (ITEM_TYPE_IP_LOGIN.equalsIgnoreCase(itemType)) {
-                maxCount = ConfigComponent.getInt(config.get(CONFIG_LOCK_IP_LOGIN_MAX_COUNT), DEFAULT_IP_LOGIN_MAX_COUNT);
+                maxCount = ConfigDataComponent.getInt(config.get(CONFIG_LOCK_IP_LOGIN_MAX_COUNT), DEFAULT_IP_LOGIN_MAX_COUNT);
             } else if (ITEM_TYPE_REGISTER.equalsIgnoreCase(itemType)) {
-                maxCount = ConfigComponent.getInt(config.get(CONFIG_LOCK_REGISTER_MAX_COUNT), DEFAULT_OPERATE_MAX_COUNT);
+                maxCount = ConfigDataComponent.getInt(config.get(CONFIG_LOCK_REGISTER_MAX_COUNT), DEFAULT_OPERATE_MAX_COUNT);
             } else if (ITEM_TYPE_FILEUPLOAD.equalsIgnoreCase(itemType)) {
-                maxCount = ConfigComponent.getInt(config.get(CONFIG_LOCK_FILEUPLOAD_MAX_COUNT), DEFAULT_OPERATE_MAX_COUNT);
+                maxCount = ConfigDataComponent.getInt(config.get(CONFIG_LOCK_FILEUPLOAD_MAX_COUNT), DEFAULT_OPERATE_MAX_COUNT);
             } else if (ITEM_TYPE_FILEUPLOAD_SIZE.equalsIgnoreCase(itemType)) {
-                maxCount = ConfigComponent.getInt(config.get(CONFIG_LOCK_FILEUPLOAD_MAX_SIZE), DEFAULT_OPERATE_MAX_SIZE);
+                maxCount = ConfigDataComponent.getInt(config.get(CONFIG_LOCK_FILEUPLOAD_MAX_SIZE), DEFAULT_OPERATE_MAX_SIZE);
             } else if (ITEM_TYPE_FILEUPLOAD_PRIVATE_SIZE.equalsIgnoreCase(itemType)) {
-                maxCount = ConfigComponent.getInt(config.get(CONFIG_LOCK_FILEUPLOAD_PRIVATE_MAX_SIZE), DEFAULT_OPERATE_MAX_SIZE);
+                maxCount = ConfigDataComponent.getInt(config.get(CONFIG_LOCK_FILEUPLOAD_PRIVATE_MAX_SIZE), DEFAULT_OPERATE_MAX_SIZE);
             } else if (ITEM_TYPE_CONTRIBUTE.equalsIgnoreCase(itemType)) {
-                maxCount = ConfigComponent.getInt(config.get(CONFIG_LOCK_CONTRIBUTE_MAX_COUNT), DEFAULT_OPERATE_MAX_COUNT);
+                maxCount = ConfigDataComponent.getInt(config.get(CONFIG_LOCK_CONTRIBUTE_MAX_COUNT), DEFAULT_OPERATE_MAX_COUNT);
             } else if (ITEM_TYPE_COMMENT.equalsIgnoreCase(itemType)) {
-                maxCount = ConfigComponent.getInt(config.get(CONFIG_LOCK_COMMENT_MAX_COUNT), DEFAULT_OPERATE_MAX_COUNT);
+                maxCount = ConfigDataComponent.getInt(config.get(CONFIG_LOCK_COMMENT_MAX_COUNT), DEFAULT_OPERATE_MAX_COUNT);
             }
             if (0 < expriy && (0 < maxCount || -1 == maxCount)) {
                 SysLockId id = new SysLockId(siteId, itemType, itemId);

@@ -40,8 +40,9 @@ import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.sys.SysDomain;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
-import com.publiccms.logic.component.config.ConfigComponent;
+import com.publiccms.logic.component.config.ConfigDataComponent;
 import com.publiccms.logic.component.config.SiteConfigComponent;
+import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.service.cms.CmsCategoryService;
@@ -81,11 +82,13 @@ public class TemplateCacheComponent implements Cache {
     @Resource
     private MetadataComponent metadataComponent;
     @Resource
-    private ConfigComponent configComponent;
+    private ConfigDataComponent configDataComponent;
     @Resource
     private CmsContentService contentService;
     @Resource
     private CmsCategoryService categoryService;
+    @Resource
+    protected FileUploadComponent fileUploadComponent;
     @Resource
     private SysUserService userService;
     @Resource
@@ -100,7 +103,7 @@ public class TemplateCacheComponent implements Cache {
         CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(templatePath);
         if (metadata.isUseDynamic()) {
             if (metadata.isNeedLogin() && null == ControllerUtils.getUserFromSession(request.getSession())) {
-                Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+                Map<String, String> config = configDataComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
                 String loginPath = config.get(SiteConfigComponent.CONFIG_LOGIN_PATH);
                 StringBuilder sb = new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX);
                 if (CommonUtils.notEmpty(loginPath)) {
@@ -255,7 +258,7 @@ public class TemplateCacheComponent implements Cache {
                         e.setClicks(e.getClicks() + statistics.getClicks());
                     }
                     CmsUrlUtils.initContentUrl(site, e);
-                    CmsUrlUtils.initContentCover(site, e);
+                    fileUploadComponent.initContentCover(site, e);
                 });
                 if (entityList.isEmpty() && parameterType.isRequired()) {
                     return false;
@@ -275,7 +278,7 @@ public class TemplateCacheComponent implements Cache {
                             entity.setClicks(entity.getClicks() + statistics.getClicks());
                         }
                         CmsUrlUtils.initContentUrl(site, entity);
-                        CmsUrlUtils.initContentCover(site, entity);
+                        fileUploadComponent.initContentCover(site, entity);
                         model.addAttribute(parameterName, entity);
                     }
                 } catch (NumberFormatException e) {

@@ -14,9 +14,6 @@
                     <ul>
                         <li><a href="javascript:;" class="tabImageBtn" onclick="$('button[type=submit]',$.pdialog.getCurrent()).show();return false;"><@t.page 'file'/></a></li>
                         <li><a href="javascript:;" onclick="$('button[type=submit]',$.pdialog.getCurrent()).hide();return false;"><@t.page 'upload.log'/></a></li>
-                        <#if !privatefile?has_content || "false"=privatefile>
-                            <li><a href="common/file_list.html?field=${(field?url)!}&originalField=${(originalField?url)!}&fileTypes=${fileTypes!}" class="j-ajax" onclick="$('button[type=submit]',$.pdialog.getCurrent()).hide();return false;"><@t.page 'webfile'/></a></li>
-                        </#if>
                     </ul>
                 </div>
             </div>
@@ -36,7 +33,7 @@
                     <div class="image-list">
                         <#if 'image'=t.fileType(a.filePath)>
                             <img src="<#if a.privatefile>${getPrivateUrl(a.filePath)}<#else>${getUrl(a.filePath)}</#if>" alt="${a.originalName!}" title="${a.originalName!}">
-                            <a href="javascript:;" class="edit-icon" onclick="$('.tabImageBtn',$.pdialog.getCurrent()).click();$('div.upload-wrap', $.pdialog.getCurrent()).editImg({imgUrl:'${site.sitePath+a.filePath!}',imgName:'${(a.originalName?has_content)?then(a.originalName,a.filePath!)}'});return false;"></a>
+                            <a href="javascript:;" class="edit-icon" onclick="$('.tabImageBtn',$.pdialog.getCurrent()).click();$('div.upload-wrap', $.pdialog.getCurrent()).editImg({imgUrl:'${getFileUploadPrefix()+a.filePath!}',imgName:'${(a.originalName?has_content)?then(a.originalName,a.filePath!)}'});return false;"></a>
                         <#else>
                             <i class="thumb icon-file-alt icon-large"></i>
                         </#if>
@@ -49,10 +46,6 @@
                 </#list>
             </@log.uploadList>
                 </div>
-                <#if !privatefile?has_content || "false"=privatefile>
-                    <div id="fileBox">
-                    </div>
-                </#if>
             </div>
         </div>
     </div>

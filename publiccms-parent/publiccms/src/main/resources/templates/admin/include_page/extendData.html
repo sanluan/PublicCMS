@@ -31,7 +31,7 @@
         <input name="${inputName}" type="text" maxlength="300" size="50"<#if 'customform'=type><#if extend.required> required="required"</#if><#else><#if extend.required> class="required"</#if></#if> value="<#if 'customform'=type>${r'(attribute.'+extend.id.code+r')!}'}<#else>${(value)!}</#if>"/>
                 <#if 'customform'!=type>
                     <a class="btnAttach" href="common/upload.html?field=${inputName?url}" lookupGroup="" width="1000" height="600"><@t.page 'attach'/></a>
-                    <a class="view icon-eye-open" ref="${inputName}" data-prefix="${site.sitePath}" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
+                    <a class="view icon-eye-open" ref="${inputName}" data-prefix="${getFileUploadPrefix()}" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
                 </#if>
             </#if>
             <#break>
@@ -54,7 +54,7 @@
         <input name="${inputName}" type="text" maxlength="300" size="50"<#if 'customform'=type><#if extend.required> required="required"</#if><#else><#if extend.required> class="required"</#if></#if> value="<#if 'customform'=type>${r'(attribute.'+extend.id.code+r')!}'}<#else>${(value)!}</#if>"/>
                 <#if 'customform'!=type>
                     <a class="btnAttach" href="common/upload.html?field=${inputName?url}&fileTypes=image&width=${extend.width!}&height=${extend.height!}" lookupGroup="" width="1000" height="600"><@t.page 'image'/></a>
-                    <a class="view icon-eye-open" ref="${inputName}" data-prefix="${site.sitePath}" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
+                    <a class="view icon-eye-open" ref="${inputName}" data-prefix="${getFileUploadPrefix()}" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
                     <#if (extend.width)?has_content && (extend.height)?has_content><span class="info">${extend.width!}*${extend.height!}</span></#if>
                     <#if !preview?has_content>
                         <#include "../include_page/preview.html"/>
@@ -85,7 +85,7 @@
         <input name="${inputName}" type="text" maxlength="300" size="50"<#if 'customform'=type><#if extend.required> required="required"</#if><#else><#if extend.required> class="required"</#if></#if> value="<#if 'customform'=type>${r'(attribute.'+extend.id.code+r')!}'}<#else>${(value)!}</#if>"/>
                 <#if 'customform'!=type>
                     <a class="btnAttach" href="common/upload.html?field=${inputName?url}&fileTypes=video" lookupGroup="" width="1000" height="600"><@t.page 'video'/></a>
-                    <a class="view icon-eye-open" ref="${inputName}" data-prefix="${site.sitePath}" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
+                    <a class="view icon-eye-open" ref="${inputName}" data-prefix="${getFileUploadPrefix()}" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
                 </#if>
             </#if>
             <#break>
@@ -138,7 +138,7 @@
             <#if 'view'=type>
                 ${(value)!}
             <#else>
-        <input name="${inputName}" <#if 'customform'!=type>class="date<#if extend.required> required</#if>" autocomplete="off" dateFmt="yyyy-MM-dd HH:mm" type="text"<#else> type="datetime-local"</#if> size="20" value="<#if value?has_content && datetimes?seq_contains(value)><#if 'customform'=type>${r'${getDate(attribute.'+extend.id.code+r')?datetime}'}<#else>${getDate(value)?datetime}</#if><#else>${(value)!}</#if>"/>
+        <input name="${inputName}" <#if 'customform'!=type>class="date<#if extend.required> required</#if>" autocomplete="off" dateFmt="yyyy-MM-dd HH:mm:ss" type="text"<#else> type="datetime-local"</#if> size="20" value="<#if value?has_content && datetimes?seq_contains(value)><#if 'customform'=type>${r'${getDate(attribute.'+extend.id.code+r')?datetime}'}<#else>${getDate(value)?datetime}</#if><#else>${(value)!}</#if>"/>
                 <#if 'customform'!=type><a class="inputDateButton" href="javascript:void(0);"></a></#if>
             </#if>
             <#break>
@@ -154,7 +154,7 @@
             <#if 'view'=type>
                 ${(value)!}
             <#else>
-        <input name="${inputName}" <#if 'customform'!=type>class="date<#if extend.required> required</#if>" autocomplete="off" dateFmt="HH:mm" type="text"<#else> type="time"</#if> size="10" value="<#if value?has_content && 'now'=value><#if 'customform'=type><#noparse>${.now?time}</#noparse><#else>${.now?time}</#if><#else>${(value)!}</#if>"/>
+        <input name="${inputName}" <#if 'customform'!=type>class="date<#if extend.required> required</#if>" autocomplete="off" dateFmt="HH:mm:ss" type="text"<#else> type="time"</#if> size="10" value="<#if value?has_content && 'now'=value><#if 'customform'=type><#noparse>${.now?time}</#noparse><#else>${.now?time}</#if><#else>${(value)!}</#if>"/>
                 <#if 'customform'!=type><a class="inputDateButton" href="javascript:void(0);"></a></#if>
             </#if>
             <#break>

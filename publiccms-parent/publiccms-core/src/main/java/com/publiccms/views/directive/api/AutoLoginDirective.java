@@ -20,7 +20,7 @@ import com.publiccms.entities.sys.SysAppClient;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.entities.sys.SysUserToken;
-import com.publiccms.logic.component.config.ConfigComponent;
+import com.publiccms.logic.component.config.ConfigDataComponent;
 import com.publiccms.logic.component.config.SafeConfigComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.sys.SysAppClientService;
@@ -73,8 +73,8 @@ public class AutoLoginDirective extends AbstractAppDirective {
                     String authToken = UUID.randomUUID().toString();
                     String ip = RequestUtils.getIpAddress(handler.getRequest());
                     Date now = CommonUtils.getDate();
-                    Map<String, String> config = configComponent.getConfigData(site.getId(), SafeConfigComponent.CONFIG_CODE);
-                    int expiryMinutes = ConfigComponent.getInt(config.get(SafeConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
+                    Map<String, String> config = configDataComponent.getConfigData(site.getId(), SafeConfigComponent.CONFIG_CODE);
+                    int expiryMinutes = ConfigDataComponent.getInt(config.get(SafeConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
                             SafeConfigComponent.DEFAULT_EXPIRY_MINUTES);
                     Date expiryDate = DateUtils.addMinutes(now, expiryMinutes);
                     sysUserTokenService
@@ -99,7 +99,7 @@ public class AutoLoginDirective extends AbstractAppDirective {
     @Resource
     private LogLoginService logLoginService;
     @Resource
-    private ConfigComponent configComponent;
+    private ConfigDataComponent configDataComponent;
 
     @Override
     public boolean needUserToken() {

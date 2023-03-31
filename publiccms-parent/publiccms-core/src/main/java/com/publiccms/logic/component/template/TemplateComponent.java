@@ -40,8 +40,9 @@ import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.cms.CmsContentAttribute;
 import com.publiccms.entities.cms.CmsPlace;
 import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.component.BeanComponent;
+import com.publiccms.logic.component.config.ConfigDataComponent;
 import com.publiccms.logic.component.config.SiteConfigComponent;
+import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.service.cms.CmsCategoryAttributeService;
@@ -98,6 +99,10 @@ public class TemplateComponent implements Cache {
     private ModelComponent modelComponent;
     @Resource
     private CmsPlaceService placeService;
+    @Resource
+    protected FileUploadComponent fileUploadComponent;
+    @Resource
+    protected ConfigDataComponent configDataComponent;
     @Resource
     private StatisticsComponent statisticsComponent;
 
@@ -175,7 +180,7 @@ public class TemplateComponent implements Cache {
         Map<String, Object> model = new HashMap<>();
 
         CmsUrlUtils.initContentUrl(site, entity);
-        CmsUrlUtils.initContentCover(site, entity);
+        fileUploadComponent.initContentCover(site, entity);
         CmsUrlUtils.initCategoryUrl(site, category);
 
         model.put("content", entity);
@@ -327,7 +332,7 @@ public class TemplateComponent implements Cache {
                 templatePath = entity.getTemplatePath();
                 categoryPath = entity.getPath();
             } else {
-                Map<String, String> config = BeanComponent.getConfigComponent().getConfigData(site.getId(),
+                Map<String, String> config = configDataComponent.getConfigData(site.getId(),
                         Config.CONFIG_CODE_SITE);
                 if (CommonUtils.notEmpty(entity.getTypeId())) {
                     CmsCategoryType categoryType = modelComponent.getCategoryType(site.getId(), entity.getTypeId());
@@ -533,6 +538,7 @@ public class TemplateComponent implements Cache {
                         e.setClicks(e.getClicks() + clicks);
                     }
                     CmsUrlUtils.initPlaceUrl(site, e);
+                    fileUploadComponent.initPlaceCover(site, e);
                 });
             }
             model.put("page", page);

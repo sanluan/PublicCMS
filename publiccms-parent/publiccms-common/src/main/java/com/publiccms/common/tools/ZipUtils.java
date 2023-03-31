@@ -105,7 +105,7 @@ public class ZipUtils {
      * public ResponseEntity<StreamingResponseBody> export() {
      *     HttpHeaders headers = new HttpHeaders();
      *     headers.setContentDisposition(
-     *             ContentDisposition.attachment().filename("filename.zip", StandardCharsets.UTF_8).build());
+     *             ContentDisposition.attachment().filename("filename.zip", CommonConstants.DEFAULT_CHARSET).build());
      *     StreamingResponseBody body = new StreamingResponseBody() {
      *         @Override
      *         public void writeTo(OutputStream outputStream) throws IOException {

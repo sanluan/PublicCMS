@@ -19,6 +19,7 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.views.pojo.entities.ClickStatistics;
@@ -132,7 +133,7 @@ public class CmsSearchDirective extends AbstractTemplateDirective {
                         e.setClicks(e.getClicks() + statistics.getClicks());
                     }
                     CmsUrlUtils.initContentUrl(site, e);
-                    CmsUrlUtils.initContentCover(site, e);
+                    fileUploadComponent.initContentCover(site, e);
                 });
             }
         } catch (Exception e) {
@@ -144,6 +145,8 @@ public class CmsSearchDirective extends AbstractTemplateDirective {
 
     @Resource
     private StatisticsComponent statisticsComponent;
+    @Resource
+    protected FileUploadComponent fileUploadComponent;
     @Resource
     private CmsContentService service;
 

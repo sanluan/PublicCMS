@@ -27,7 +27,7 @@ import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
-import com.publiccms.logic.component.config.ConfigComponent;
+import com.publiccms.logic.component.config.ConfigDataComponent;
 import com.publiccms.logic.component.config.SafeConfigComponent;
 import com.publiccms.logic.component.config.SiteConfigComponent;
 import com.publiccms.logic.component.site.LockComponent;
@@ -56,7 +56,7 @@ public class CommentController {
     @Resource
     protected SafeConfigComponent safeConfigComponent;
     @Resource
-    protected ConfigComponent configComponent;
+    protected ConfigDataComponent configDataComponent;
     @Resource
     private CmsContentService contentService;
     @Resource
@@ -109,7 +109,7 @@ public class CommentController {
             lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_COMMENT, String.valueOf(user.getId()), null, true);
             return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
         }
-        Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+        Map<String, String> config = configDataComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
         if (CommonUtils.notEmpty(captcha) || safeConfigComponent.enableCaptcha(site.getId(), SafeConfigComponent.CAPTCHA_MODULE_COMMENT)) {
             String sessionCaptcha = (String) request.getSession().getAttribute("captcha");
             request.getSession().removeAttribute("captcha");
@@ -119,8 +119,8 @@ public class CommentController {
         }
         CmsContent content = null;
         if (CommonUtils.notEmpty(entity.getText())) {
-            boolean needCheck = ConfigComponent.getBoolean(config.get(SiteConfigComponent.CONFIG_COMMENT_NEED_CHECK), true);
-            boolean needStatic = ConfigComponent.getBoolean(config.get(SiteConfigComponent.CONFIG_STATIC_AFTER_COMMENT), false);
+            boolean needCheck = ConfigDataComponent.getBoolean(config.get(SiteConfigComponent.CONFIG_COMMENT_NEED_CHECK), true);
+            boolean needStatic = ConfigDataComponent.getBoolean(config.get(SiteConfigComponent.CONFIG_STATIC_AFTER_COMMENT), false);
             entity.setStatus(CmsCommentService.STATUS_PEND);
             String ip = RequestUtils.getIpAddress(request);
             entity.setIp(ip);

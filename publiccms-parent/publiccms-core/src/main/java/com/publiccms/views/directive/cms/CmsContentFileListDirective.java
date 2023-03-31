@@ -17,6 +17,7 @@ import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsContentFile;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.service.cms.CmsContentFileService;
 
 /**
@@ -75,7 +76,7 @@ public class CmsContentFileListDirective extends AbstractTemplateDirective {
             SysSite site = getSite(handler);
             if (absoluteURL) {
                 list.forEach(e -> {
-                    e.setFilePath(CmsUrlUtils.getUrl(site.getSitePath(), e.getFilePath()));
+                    e.setFilePath(CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site, false), e.getFilePath()));
                 });
             }
         }
@@ -84,4 +85,6 @@ public class CmsContentFileListDirective extends AbstractTemplateDirective {
 
     @Resource
     private CmsContentFileService service;
+    @Resource
+    protected FileUploadComponent fileUploadComponent;
 }

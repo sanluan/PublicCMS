@@ -5,9 +5,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletResponse;
-
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.stereotype.Component;
@@ -27,7 +26,7 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.trade.TradePayment;
 import com.publiccms.entities.trade.TradePaymentHistory;
 import com.publiccms.entities.trade.TradeRefund;
-import com.publiccms.logic.component.BeanComponent;
+import com.publiccms.logic.component.config.ConfigDataComponent;
 import com.publiccms.logic.component.trade.PaymentProcessorComponent;
 import com.publiccms.logic.service.trade.TradePaymentHistoryService;
 import com.publiccms.logic.service.trade.TradePaymentService;
@@ -80,6 +79,8 @@ public class AlipayGatewayComponent extends AbstractPaymentGateway implements co
     private TradePaymentService service;
     @Resource
     private TradePaymentHistoryService historyService;
+    @Resource
+    protected ConfigDataComponent configDataComponent;
     @Resource
     private PaymentProcessorComponent tradePaymentProcessorComponent;
 
@@ -141,7 +142,7 @@ public class AlipayGatewayComponent extends AbstractPaymentGateway implements co
     @Override
     public boolean pay(SysSite site, TradePayment payment, String paymentType, String callbackUrl, HttpServletResponse response) {
         if (null != payment) {
-            Map<String, String> config = BeanComponent.getConfigComponent().getConfigData(site.getId(), CONFIG_CODE);
+            Map<String, String> config = configDataComponent.getConfigData(site.getId(), CONFIG_CODE);
             if (CommonUtils.notEmpty(config) && CommonUtils.notEmpty(config.get(CONFIG_GATEWAY))) {
                 MultipleFactory factory = getFactory(site.getId(), config);
                 try {
@@ -172,7 +173,8 @@ public class AlipayGatewayComponent extends AbstractPaymentGateway implements co
                                     .getBody();
                         }
 
-                        response.setContentType(CommonUtils.joinString("text/html;charset=", CommonConstants.DEFAULT_CHARSET_NAME));
+                        response.setContentType(
+                                CommonUtils.joinString("text/html;charset=", CommonConstants.DEFAULT_CHARSET_NAME));
                         response.getWriter().write(
                                 "<html><head><meta http-equiv='Content-Type' content='text/html;charset=UTF-8'></head><body>");
                         response.getWriter().write(form);
@@ -190,7 +192,7 @@ public class AlipayGatewayComponent extends AbstractPaymentGateway implements co
 
     @Override
     public boolean refund(short siteId, TradePayment payment, TradeRefund refund) {
-        Map<String, String> config = BeanComponent.getConfigComponent().getConfigData(siteId, CONFIG_CODE);
+        Map<String, String> config = configDataComponent.getConfigData(siteId, CONFIG_CODE);
         if (null != payment && CommonUtils.notEmpty(config) && CommonUtils.notEmpty(config.get(CONFIG_GATEWAY))
                 && service.refunded(siteId, payment.getId())) {
             MultipleFactory factory = getFactory(siteId, config);
@@ -235,7 +237,8 @@ public class AlipayGatewayComponent extends AbstractPaymentGateway implements co
                         CONFIG_CODE_DESCRIPTION_SUFFIX)),
                 "30m"));
         extendFieldList.add(new SysExtendField(CONFIG_ALIPAY_PUBLIC_KEY, INPUTTYPE_TEXTAREA,
-                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_ALIPAY_PUBLIC_KEY)),
+                getMessage(locale,
+                        CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_ALIPAY_PUBLIC_KEY)),
                 getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_ALIPAY_PUBLIC_KEY,
                         CONFIG_CODE_DESCRIPTION_SUFFIX))));
         extendFieldList.add(new SysExtendField(CONFIG_PRODUCT_CODE, INPUTTYPE_TEXT,
@@ -267,7 +270,7 @@ public class AlipayGatewayComponent extends AbstractPaymentGateway implements co
 
     @Override
     public boolean enable(short siteId) {
-        Map<String, String> config = BeanComponent.getConfigComponent().getConfigData(siteId, CONFIG_CODE);
+        Map<String, String> config = configDataComponent.getConfigData(siteId, CONFIG_CODE);
         if (CommonUtils.notEmpty(config) && CommonUtils.notEmpty(config.get(CONFIG_GATEWAY))) {
             return true;
         }
@@ -281,6 +284,6 @@ public class AlipayGatewayComponent extends AbstractPaymentGateway implements co
 
     @Override
     public void clear() {
-        cache.clear();
+        cache.clear(false);
     }
 }

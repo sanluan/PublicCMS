@@ -21,7 +21,7 @@ import com.publiccms.entities.sys.SysModule;
 import com.publiccms.entities.sys.SysRoleAuthorized;
 import com.publiccms.entities.sys.SysRoleAuthorizedId;
 import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.component.config.ConfigComponent;
+import com.publiccms.logic.component.config.ConfigDataComponent;
 import com.publiccms.logic.component.config.SiteConfigComponent;
 import com.publiccms.logic.service.sys.SysModuleService;
 import com.publiccms.logic.service.sys.SysRoleAuthorizedService;
@@ -61,7 +61,7 @@ public class SysAuthorizedDirective extends AbstractTemplateDirective {
     @Resource
     private SysRoleService sysRoleService;
     @Resource
-    protected ConfigComponent configComponent;
+    protected ConfigDataComponent configDataComponent;
     @Resource
     private SysModuleService moduleService;
 
@@ -72,7 +72,7 @@ public class SysAuthorizedDirective extends AbstractTemplateDirective {
         String[] urls = handler.getStringArray("urls");
         if (CommonUtils.notEmpty(roleIds)) {
             SysSite site = getSite(handler);
-            Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+            Map<String, String> config = configDataComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
             String excludeModules = config.get(SiteConfigComponent.CONFIG_SITE_EXCLUDE_MODULE);
             Set<String> excludeUrls = null;
             if (CommonUtils.notEmpty(excludeModules)) {

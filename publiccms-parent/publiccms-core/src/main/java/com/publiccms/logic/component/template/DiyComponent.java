@@ -663,10 +663,10 @@ public class DiyComponent implements SiteCache {
 
     @Override
     public void clear() {
-        regionDataCache.clear();
-        regionCache.clear();
-        layoutCache.clear();
-        moduleCache.clear();
+        regionDataCache.clear(false);
+        regionCache.clear(false);
+        layoutCache.clear(false);
+        moduleCache.clear(false);
     }
 
     /**

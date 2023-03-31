@@ -1,7 +1,8 @@
 package com.publiccms.views.pojo.entities;
 
-public class FileSize {
+public class FileUploadResult {
     private long fileSize;
+    private String filename;
     private Integer width;
     private Integer height;
 
@@ -13,10 +14,26 @@ public class FileSize {
     }
 
     /**
-     * @param fileSize the fileSize to set
+     * @param fileSize
+     *            the fileSize to set
      */
     public void setFileSize(long fileSize) {
         this.fileSize = fileSize;
+    }
+
+    /**
+     * @return the filename
+     */
+    public String getFilename() {
+        return filename;
+    }
+
+    /**
+     * @param filename
+     *            the filename to set
+     */
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 
     /**

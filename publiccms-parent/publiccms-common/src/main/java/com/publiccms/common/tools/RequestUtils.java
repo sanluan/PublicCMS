@@ -1,7 +1,5 @@
 package com.publiccms.common.tools;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
@@ -39,14 +37,10 @@ public class RequestUtils {
      */
     public static String getEncodePath(String path, String queryString) {
         String url = path;
-        try {
-            if (CommonUtils.notEmpty(queryString)) {
-                url = CommonUtils.joinString(url, "?", queryString);
-            }
-            url = URLEncoder.encode(url, Constants.DEFAULT_CHARSET_NAME);
-        } catch (UnsupportedEncodingException e) {
-            url = Constants.BLANK;
+        if (CommonUtils.notEmpty(queryString)) {
+            url = CommonUtils.joinString(url, "?", queryString);
         }
+        url = CommonUtils.encodeURI(url);
         return url;
     }
 

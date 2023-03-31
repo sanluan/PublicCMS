@@ -5,11 +5,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -33,7 +34,7 @@ import com.publiccms.entities.sys.SysUser;
 import com.publiccms.entities.trade.TradePayment;
 import com.publiccms.entities.trade.TradePaymentHistory;
 import com.publiccms.entities.trade.TradeRefund;
-import com.publiccms.logic.component.config.ConfigComponent;
+import com.publiccms.logic.component.config.ConfigDataComponent;
 import com.publiccms.logic.component.config.SafeConfigComponent;
 import com.publiccms.logic.component.paymentgateway.AlipayGatewayComponent;
 import com.publiccms.logic.component.paymentgateway.WechatGatewayComponent;
@@ -49,6 +50,25 @@ import com.wechat.pay.contrib.apache.httpclient.util.AesUtil;
 @RequestMapping("tradePayment")
 public class TradePaymentController {
     protected final Log log = LogFactory.getLog(getClass());
+
+    @Resource
+    private PaymentProcessorComponent tradePaymentProcessorComponent;
+    @Resource
+    private PaymentProcessorComponent paymentProcessorComponent;
+    @Resource
+    private PaymentGatewayComponent gatewayComponent;
+    @Resource
+    private WechatGatewayComponent wechatGatewayComponent;
+    @Resource
+    private AlipayGatewayComponent alipayGatewayComponent;
+    @Resource
+    protected ConfigDataComponent configDataComponent;
+    @Resource
+    protected SafeConfigComponent safeConfigComponent;
+    @Resource
+    private TradeRefundService refundService;
+    @Resource
+    private TradePaymentHistoryService historyService;
 
     /**
      * @param site
@@ -116,7 +136,7 @@ public class TradePaymentController {
             HttpServletRequest request) throws Exception {
         log.info(CommonUtils.joinString("alipay notify out_trade_no:", out_trade_no, ",total_amount:", total_amount, ",trade_no:",
                 trade_no));
-        Map<String, String> config = configComponent.getConfigData(site.getId(), AlipayGatewayComponent.CONFIG_CODE);
+        Map<String, String> config = configDataComponent.getConfigData(site.getId(), AlipayGatewayComponent.CONFIG_CODE);
         if (CommonUtils.notEmpty(config)) {
             Map<String, String> params = request.getParameterMap().entrySet().stream()
                     .collect(Collectors.toMap(e -> e.getKey(), e -> CommonUtils.joinString(e.getValue(), ",")));
@@ -166,9 +186,9 @@ public class TradePaymentController {
             @RequestHeader(value = "Wechatpay-Timestamp") String timestamp,
             @RequestHeader(value = "Wechatpay-Nonce") String nonce, @RequestHeader(value = "Wechatpay-Serial") String serial,
             @RequestBody String body) throws Exception {
-        log.info(CommonUtils.joinString("wechat notify signature:", signature, ",serial:", serial, ",timestamp:", timestamp, ",nonce:",
-                nonce, ",body:", body));
-        Map<String, String> config = configComponent.getConfigData(site.getId(), WechatGatewayComponent.CONFIG_CODE);
+        log.info(CommonUtils.joinString("wechat notify signature:", signature, ",serial:", serial, ",timestamp:", timestamp,
+                ",nonce:", nonce, ",body:", body));
+        Map<String, String> config = configDataComponent.getConfigData(site.getId(), WechatGatewayComponent.CONFIG_CODE);
         Map<String, String> resultMap = new HashMap<>();
         resultMap.put("code", "FAIL");
         resultMap.put("message", "error");
@@ -332,24 +352,6 @@ public class TradePaymentController {
     }
 
     @Resource
-    private PaymentProcessorComponent tradePaymentProcessorComponent;
-    @Resource
-    private PaymentProcessorComponent paymentProcessorComponent;
-    @Resource
-    private PaymentGatewayComponent gatewayComponent;
-    @Resource
-    private WechatGatewayComponent wechatGatewayComponent;
-    @Resource
-    private AlipayGatewayComponent alipayGatewayComponent;
-    @Resource
-    protected ConfigComponent configComponent;
-    @Resource
-    protected SafeConfigComponent safeConfigComponent;
-    @Resource
     private TradePaymentService service;
-    @Resource
-    private TradeRefundService refundService;
-    @Resource
-    private TradePaymentHistoryService historyService;
 
 }

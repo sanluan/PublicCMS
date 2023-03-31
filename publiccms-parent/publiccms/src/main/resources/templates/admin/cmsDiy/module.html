@@ -41,7 +41,7 @@
                 <dd>
                     <input name="cover" value="${(a.cover)!}" maxlength="300" size="50" type="text"/>
                     <a class="btnAttach" href="common/upload.html?field=cover&fileTypes=image" lookupGroup="" width="1000" height="600"><@t.page 'cover'/></a>
-                    <a class="view icon-eye-open" ref="cover" data-prefix="${site.sitePath}" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
+                    <a class="view icon-eye-open" ref="cover" data-prefix="${getFileUploadPrefix()}" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
                     <#include "../include_page/preview.html"/>
                     <@preview 'module' 'input[name=cover]'/>
                 </dd>

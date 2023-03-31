@@ -298,7 +298,7 @@ public class MetadataComponent implements Cache {
         try (FileOutputStream outputStream = new FileOutputStream(file)) {
             CommonConstants.objectMapper.writeValue(file, dataMap);
         }
-        pageCache.clear();
+        pageCache.clear(false);
     }
 
     /**
@@ -319,7 +319,7 @@ public class MetadataComponent implements Cache {
         try (FileOutputStream outputStream = new FileOutputStream(file)) {
             CommonConstants.objectMapper.writeValue(file, metadataMap);
         }
-        pageCache.clear();
+        pageCache.clear(false);
     }
 
     /**
@@ -338,14 +338,14 @@ public class MetadataComponent implements Cache {
             file.getParentFile().mkdirs();
         }
         CommonConstants.objectMapper.writeValue(file, metadataMap);
-        placeCache.clear();
+        placeCache.clear(false);
     }
 
     @Override
     public void clear() {
-        placeCache.clear();
-        pageCache.clear();
-        pageDataCache.clear();
+        placeCache.clear(false);
+        pageCache.clear(false);
+        pageDataCache.clear(false);
     }
 
     /**

@@ -16,6 +16,7 @@ import com.publiccms.entities.sys.SysConfigData;
 import com.publiccms.entities.sys.SysConfigDataId;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.config.ConfigComponent;
+import com.publiccms.logic.component.config.ConfigDataComponent;
 import com.publiccms.logic.service.sys.SysConfigDataService;
 
 /**
@@ -26,6 +27,8 @@ import com.publiccms.logic.service.sys.SysConfigDataService;
 public class ConfigDataExchangeComponent extends AbstractExchange<SysConfigData, SysConfigData> {
     @Resource
     private ConfigComponent configComponent;
+    @Resource
+    private ConfigDataComponent configDataComponent;
     @Resource
     private SysConfigDataService service;
 
@@ -43,7 +46,7 @@ public class ConfigDataExchangeComponent extends AbstractExchange<SysConfigData,
     @Override
     public void importData(SysSite site, long userId, String directory, boolean overwrite, ZipFile zipFile) {
         super.importData(site, userId, directory, overwrite, zipFile);
-        configComponent.clear(site.getId());
+        configDataComponent.clear(site.getId());
     }
 
     @Override

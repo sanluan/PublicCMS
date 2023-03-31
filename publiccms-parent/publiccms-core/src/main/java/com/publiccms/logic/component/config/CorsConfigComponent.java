@@ -21,7 +21,6 @@ import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.component.BeanComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 
 /**
@@ -52,6 +51,8 @@ public class CorsConfigComponent implements SiteCache, Config {
 
     @Resource
     private SiteComponent siteComponent;
+    @Resource
+    private ConfigDataComponent configDataComponent;
 
     @Override
     public void clear(short siteId) {
@@ -60,18 +61,18 @@ public class CorsConfigComponent implements SiteCache, Config {
 
     @Override
     public void clear() {
-        cache.clear();
+        cache.clear(false);
     }
 
     public CorsConfiguration getConfig(SysSite site) {
         CorsConfiguration config = cache.get(site.getId());
         if (null == config) {
-            Map<String, String> configData = BeanComponent.getConfigComponent().getConfigData(site.getId(), CONFIG_CODE);
+            Map<String, String> configData = configDataComponent.getConfigData(site.getId(), CONFIG_CODE);
             config = new CorsConfiguration();
             config.applyPermitDefaultValues();
             if (null != configData) {
                 config = new CorsConfiguration();
-                config.setAllowCredentials(ConfigComponent.getBoolean(configData.get(CONFIG_ALLOW_CREDENTIALS), true));
+                config.setAllowCredentials(ConfigDataComponent.getBoolean(configData.get(CONFIG_ALLOW_CREDENTIALS), true));
 
                 if (CommonUtils.notEmpty(configData.get(CONFIG_ALLOWED_ORIGINS))) {
                     String[] array = StringUtils.split(configData.get(CONFIG_ALLOWED_ORIGINS), CommonConstants.COMMA);
@@ -84,16 +85,16 @@ public class CorsConfigComponent implements SiteCache, Config {
                     }
                 }
                 if (CommonUtils.notEmpty(configData.get(CONFIG_ALLOWED_METHODS))) {
-                    config.setAllowedMethods(Arrays
-                            .asList(StringUtils.split(configData.get(CONFIG_ALLOWED_METHODS), CommonConstants.COMMA)));
+                    config.setAllowedMethods(
+                            Arrays.asList(StringUtils.split(configData.get(CONFIG_ALLOWED_METHODS), CommonConstants.COMMA)));
                 }
                 if (CommonUtils.notEmpty(configData.get(CONFIG_ALLOWED_HEADERS))) {
-                    config.setAllowedHeaders(Arrays
-                            .asList(StringUtils.split(configData.get(CONFIG_ALLOWED_HEADERS), CommonConstants.COMMA)));
+                    config.setAllowedHeaders(
+                            Arrays.asList(StringUtils.split(configData.get(CONFIG_ALLOWED_HEADERS), CommonConstants.COMMA)));
                 }
                 if (CommonUtils.notEmpty(configData.get(CONFIG_EXPOSED_HEADERS))) {
-                    config.setExposedHeaders(Arrays
-                            .asList(StringUtils.split(configData.get(CONFIG_EXPOSED_HEADERS), CommonConstants.COMMA)));
+                    config.setExposedHeaders(
+                            Arrays.asList(StringUtils.split(configData.get(CONFIG_EXPOSED_HEADERS), CommonConstants.COMMA)));
                 }
                 if (CommonUtils.notEmpty(configData.get(CONFIG_ALLOW_CREDENTIALS))) {
                     try {
@@ -165,7 +166,8 @@ public class CorsConfigComponent implements SiteCache, Config {
                 getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_EXPOSED_HEADERS,
                         CONFIG_CODE_DESCRIPTION_SUFFIX))));
         extendFieldList.add(new SysExtendField(CONFIG_ALLOW_CREDENTIALS, INPUTTYPE_BOOLEAN, false,
-                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_ALLOW_CREDENTIALS)),
+                getMessage(locale,
+                        CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_ALLOW_CREDENTIALS)),
                 getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_ALLOW_CREDENTIALS,
                         CONFIG_CODE_DESCRIPTION_SUFFIX)),
                 "true"));

@@ -17,6 +17,7 @@ import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.views.pojo.entities.ClickStatistics;
@@ -132,7 +133,7 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
                 }
                 if (absoluteURL) {
                     CmsUrlUtils.initContentUrl(site, e);
-                    CmsUrlUtils.initContentCover(site, e);
+                    fileUploadComponent.initContentCover(site, e);
                 }
             });
         }
@@ -146,6 +147,8 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
 
     @Resource
     private CmsContentService service;
+    @Resource
+    protected FileUploadComponent fileUploadComponent;
     @Resource
     private StatisticsComponent statisticsComponent;
 }

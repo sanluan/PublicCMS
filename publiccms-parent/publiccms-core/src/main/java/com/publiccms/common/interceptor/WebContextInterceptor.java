@@ -29,7 +29,7 @@ import com.publiccms.entities.sys.SysDomain;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.entities.sys.SysUserToken;
-import com.publiccms.logic.component.config.ConfigComponent;
+import com.publiccms.logic.component.config.ConfigDataComponent;
 import com.publiccms.logic.component.config.SafeConfigComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
@@ -52,7 +52,8 @@ public class WebContextInterceptor implements HandlerInterceptor {
     @Resource
     private LogLoginService logLoginService;
     @Resource
-    private ConfigComponent configComponent;
+    private ConfigDataComponent configDataComponent;
+
     protected LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
 
     @Override
@@ -129,13 +130,15 @@ public class WebContextInterceptor implements HandlerInterceptor {
                         String ip = RequestUtils.getIpAddress(request);
                         logLoginService
                                 .save(new LogLogin(site.getId(), user.getName(), user.getId(), ip, channel, true, now, null));
-                        Map<String, String> config = configComponent.getConfigData(site.getId(), SafeConfigComponent.CONFIG_CODE);
+                        Map<String, String> config = configDataComponent.getConfigData(site.getId(),
+                                SafeConfigComponent.CONFIG_CODE);
                         int expiryMinutes;
                         if (LogLoginService.CHANNEL_WEB.equalsIgnoreCase(channel)) {
-                            expiryMinutes = ConfigComponent.getInt(config.get(SafeConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
+                            expiryMinutes = ConfigDataComponent.getInt(config.get(SafeConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
                                     SafeConfigComponent.DEFAULT_EXPIRY_MINUTES);
                         } else {
-                            expiryMinutes = ConfigComponent.getInt(config.get(SafeConfigComponent.CONFIG_EXPIRY_MINUTES_MANAGER),
+                            expiryMinutes = ConfigDataComponent.getInt(
+                                    config.get(SafeConfigComponent.CONFIG_EXPIRY_MINUTES_MANAGER),
                                     SafeConfigComponent.DEFAULT_EXPIRY_MINUTES);
                         }
                         if (DateUtils.addMinutes(now, expiryMinutes / 3).after(userToken.getExpiryDate())) {

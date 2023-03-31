@@ -2,7 +2,6 @@ package com.publiccms.controller.admin.sys;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
@@ -45,6 +44,7 @@ import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.config.ConfigComponent;
+import com.publiccms.logic.component.config.ConfigDataComponent;
 import com.publiccms.logic.component.config.CorsConfigComponent;
 import com.publiccms.logic.component.exchange.ConfigDataExchangeComponent;
 import com.publiccms.logic.component.exchange.SiteExchangeComponent;
@@ -66,6 +66,18 @@ import com.publiccms.views.pojo.model.ExtendDataParameters;
 @Controller
 @RequestMapping("sysConfigData")
 public class SysConfigDataAdminController {
+    @Resource
+    private SysDeptItemService sysDeptItemService;
+    @Resource
+    private SysDeptService sysDeptService;
+    @Resource
+    private ConfigDataComponent configDataComponent;
+    @Resource
+    private ConfigComponent configComponent;
+    @Resource
+    private CorsConfigComponent corsConfigComponent;
+    @Resource
+    private EmailComponent emailComponent;
     @Resource
     protected LogOperateService logOperateService;
     @Resource
@@ -131,7 +143,7 @@ public class SysConfigDataAdminController {
                         CommonUtils.getDate(), CommonUtils.joinString(entity.getId().getCode(), ":", entity.getData())));
             }
 
-            configComponent.removeCache(site.getId(), entity.getId().getCode());
+            configDataComponent.removeCache(site.getId(), entity.getId().getCode());
             if (emailComponent.getCode(site.getId()).equals(entity.getId().getCode())) {
                 emailComponent.clear(site.getId());
             } else if (corsConfigComponent.getCode(site.getId()).equals(entity.getId().getCode())) {
@@ -167,7 +179,7 @@ public class SysConfigDataAdminController {
                 HttpHeaders headers = new HttpHeaders();
                 headers.setContentDisposition(ContentDisposition.attachment()
                         .filename(CommonUtils.joinString(site.getName(), dateFormat.format(new Date()), "-config.zip"),
-                                StandardCharsets.UTF_8)
+                                CommonConstants.DEFAULT_CHARSET)
                         .build());
                 StreamingResponseBody body = new StreamingResponseBody() {
                     @Override
@@ -233,21 +245,11 @@ public class SysConfigDataAdminController {
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.configData", RequestUtils.getIpAddress(request),
                     CommonUtils.getDate(), CommonUtils.joinString(entity.getId().getCode(), ":", entity.getData())));
-            configComponent.removeCache(site.getId(), entity.getId().getCode());
+            configDataComponent.removeCache(site.getId(), entity.getId().getCode());
         }
         return CommonConstants.TEMPLATE_DONE;
     }
 
-    @Resource
-    private SysDeptItemService sysDeptItemService;
-    @Resource
-    private SysDeptService sysDeptService;
-    @Resource
-    private ConfigComponent configComponent;
-    @Resource
-    private CorsConfigComponent corsConfigComponent;
-    @Resource
-    private EmailComponent emailComponent;
     @Resource
     private SysConfigDataService service;
 }

@@ -111,7 +111,7 @@ public class MenuMessageComponent extends AbstractMessageSource implements Cache
 
     @Override
     public void clear() {
-        messageCache.clear();
+        messageCache.clear(false);
         messageFormatCaches.clear();
     }
 

@@ -7,6 +7,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.annotation.Resource;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpEntity;
@@ -29,7 +31,7 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.LanguagesUtils;
 import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.component.BeanComponent;
+import com.publiccms.logic.component.config.ConfigDataComponent;
 import com.publiccms.views.pojo.oauth.OauthAccess;
 import com.publiccms.views.pojo.oauth.OauthConfig;
 
@@ -60,6 +62,9 @@ public abstract class AbstractOauth implements Config, OauthGateway {
      */
     public static final String CONFIG_CODE_DESCRIPTION = CommonUtils.joinString(CONFIGPREFIX, CONFIG_CODE);
 
+    @Resource
+    protected ConfigDataComponent configDataConponent;
+    
     protected static final CloseableHttpClient httpclient = HttpClients.custom()
             .setDefaultRequestConfig(CommonConstants.defaultRequestConfig).build();
     protected final Log log = LogFactory.getLog(getClass());
@@ -89,7 +94,7 @@ public abstract class AbstractOauth implements Config, OauthGateway {
      * @return
      */
     protected OauthConfig getConfig(short siteId) {
-        Map<String, String> config = BeanComponent.getConfigComponent().getConfigData(siteId, CONFIG_CODE);
+        Map<String, String> config = configDataConponent.getConfigData(siteId, CONFIG_CODE);
         OauthConfig oauthConfig = new OauthConfig(config.get(CommonUtils.joinString(prefix, CONFIG_APP_KEY)),
                 config.get(CommonUtils.joinString(prefix, CONFIG_APP_SECRET)), config.get(CommonUtils.joinString(prefix, CONFIG_RETURN_URL)));
         if (CommonUtils.notEmpty(config) && CommonUtils.notEmpty(oauthConfig.getAppKey())

@@ -17,6 +17,7 @@ import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.entities.cms.CmsPlace;
 import com.publiccms.entities.cms.CmsPlaceAttribute;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.service.cms.CmsPlaceAttributeService;
 import com.publiccms.logic.service.cms.CmsPlaceService;
@@ -62,6 +63,7 @@ public class CmsPlaceDirective extends AbstractTemplateDirective {
             if (null != entity && site.getId() == entity.getSiteId()) {
                 if (absoluteURL) {
                     CmsUrlUtils.initPlaceUrl(site, entity);
+                    fileUploadComponent.initPlaceCover(site, entity);
                 }
                 handler.put("object", entity);
                 if (handler.getBoolean("containsAttribute", false)) {
@@ -84,6 +86,7 @@ public class CmsPlaceDirective extends AbstractTemplateDirective {
                             e.setClicks(e.getClicks() + clicks);
                         }
                         CmsUrlUtils.initPlaceUrl(site, e);
+                        fileUploadComponent.initPlaceCover(site, e);
                     };
                 } else {
                     consumer = e -> {
@@ -109,6 +112,8 @@ public class CmsPlaceDirective extends AbstractTemplateDirective {
     private CmsPlaceService service;
     @Resource
     private CmsPlaceAttributeService attributeService;
+    @Resource
+    protected FileUploadComponent fileUploadComponent;
     @Resource
     private StatisticsComponent statisticsComponent;
 }

@@ -17,7 +17,6 @@ public class CmsUrlUtils {
      * @param entity
      */
     public static void initPlaceUrl(SysSite site, CmsPlace entity) {
-        entity.setCover(getUrl(site.getSitePath(), entity.getCover()));
         entity.setUrl(getUrl(site, site.isUseStatic(), entity.getUrl()));
     }
 
@@ -27,14 +26,6 @@ public class CmsUrlUtils {
      */
     public static void initContentUrl(SysSite site, CmsContent entity) {
         entity.setUrl(getUrl(site, entity.isHasStatic(), entity.getUrl()));
-    }
-
-    /**
-     * @param site
-     * @param entity
-     */
-    public static void initContentCover(SysSite site, CmsContent entity) {
-        entity.setCover(getUrl(site.getSitePath(), entity.getCover()));
     }
 
     /**

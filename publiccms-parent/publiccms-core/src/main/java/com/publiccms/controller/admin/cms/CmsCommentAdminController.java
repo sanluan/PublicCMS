@@ -32,7 +32,7 @@ import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
-import com.publiccms.logic.component.config.ConfigComponent;
+import com.publiccms.logic.component.config.ConfigDataComponent;
 import com.publiccms.logic.component.config.SiteConfigComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
@@ -61,7 +61,7 @@ public class CmsCommentAdminController {
     @Resource
     private CmsContentService contentService;
     @Resource
-    protected ConfigComponent configComponent;
+    protected ConfigDataComponent configDataComponent;
 
     private String[] ignoreProperties = new String[] { "siteId", "userId", "createDate", "checkUserId", "checkDate", "contentId",
             "ip", "status", "replyId", "replyUserId", "replies", "scores", "disabled" };
@@ -117,8 +117,8 @@ public class CmsCommentAdminController {
                     .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                             "save.cmsComment", RequestUtils.getIpAddress(request), now, JsonUtils.getString(entity)));
         }
-        Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
-        boolean needStatic = ConfigComponent.getBoolean(config.get(SiteConfigComponent.CONFIG_STATIC_AFTER_COMMENT), false);
+        Map<String, String> config = configDataComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+        boolean needStatic = ConfigDataComponent.getBoolean(config.get(SiteConfigComponent.CONFIG_STATIC_AFTER_COMMENT), false);
         if (needStatic && CmsCommentService.STATUS_NORMAL == entity.getStatus()) {
             CmsContent content = contentService.getEntity(entity.getContentId());
             if (null != content && !content.isDisabled()) {
@@ -148,8 +148,8 @@ public class CmsCommentAdminController {
             ModelMap model) {
         if (CommonUtils.notEmpty(ids)) {
             Set<CmsContent> contentSet = service.check(site.getId(), ids, admin.getId());
-            Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
-            boolean needStatic = ConfigComponent.getBoolean(config.get(SiteConfigComponent.CONFIG_STATIC_AFTER_COMMENT), false);
+            Map<String, String> config = configDataComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+            boolean needStatic = ConfigDataComponent.getBoolean(config.get(SiteConfigComponent.CONFIG_STATIC_AFTER_COMMENT), false);
             if (needStatic) {
                 try {
                     for (CmsContent content : contentSet) {
@@ -182,8 +182,8 @@ public class CmsCommentAdminController {
             ModelMap model) {
         if (CommonUtils.notEmpty(ids)) {
             Set<CmsContent> contentSet = service.uncheck(site.getId(), ids);
-            Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
-            boolean needStatic = ConfigComponent.getBoolean(config.get(SiteConfigComponent.CONFIG_STATIC_AFTER_COMMENT), false);
+            Map<String, String> config = configDataComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+            boolean needStatic = ConfigDataComponent.getBoolean(config.get(SiteConfigComponent.CONFIG_STATIC_AFTER_COMMENT), false);
             if (needStatic) {
                 try {
                     for (CmsContent content : contentSet) {
@@ -216,8 +216,8 @@ public class CmsCommentAdminController {
             ModelMap model) {
         if (CommonUtils.notEmpty(ids)) {
             Set<CmsContent> contentSet = service.delete(site.getId(), ids);
-            Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
-            boolean needStatic = ConfigComponent.getBoolean(config.get(SiteConfigComponent.CONFIG_STATIC_AFTER_COMMENT), false);
+            Map<String, String> config = configDataComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+            boolean needStatic = ConfigDataComponent.getBoolean(config.get(SiteConfigComponent.CONFIG_STATIC_AFTER_COMMENT), false);
             if (needStatic) {
                 try {
                     for (CmsContent content : contentSet) {

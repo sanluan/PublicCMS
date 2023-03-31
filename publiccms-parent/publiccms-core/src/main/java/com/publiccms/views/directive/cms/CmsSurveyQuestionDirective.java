@@ -17,6 +17,7 @@ import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsSurveyQuestion;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.service.cms.CmsSurveyQuestionService;
 
 /**
@@ -76,7 +77,7 @@ public class CmsSurveyQuestionDirective extends AbstractTemplateDirective {
                         e.setAnswer(null);
                     }
                     if (absoluteURL) {
-                        e.setCover(CmsUrlUtils.getUrl(site.getSitePath(), e.getCover()));
+                        e.setCover(CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site, false), e.getCover()));
                     }
                 };
                 Map<String, CmsSurveyQuestion> map = CommonUtils.listToMap(entityList, k -> k.getId().toString(), consumer, null);
@@ -92,4 +93,6 @@ public class CmsSurveyQuestionDirective extends AbstractTemplateDirective {
 
     @Resource
     private CmsSurveyQuestionService service;
+    @Resource
+    protected FileUploadComponent fileUploadComponent;
 }

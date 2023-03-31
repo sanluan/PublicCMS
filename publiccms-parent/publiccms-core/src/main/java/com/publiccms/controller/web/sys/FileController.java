@@ -2,7 +2,6 @@ package com.publiccms.controller.web.sys;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,13 +36,14 @@ import com.publiccms.common.tools.VerificationUtils;
 import com.publiccms.entities.log.LogUpload;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
-import com.publiccms.logic.component.config.ConfigComponent;
+import com.publiccms.logic.component.config.ConfigDataComponent;
 import com.publiccms.logic.component.config.SafeConfigComponent;
+import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.component.site.LockComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogUploadService;
-import com.publiccms.views.pojo.entities.FileSize;
+import com.publiccms.views.pojo.entities.FileUploadResult;
 
 /**
  *
@@ -63,7 +63,9 @@ public class FileController {
     @Resource
     private SafeConfigComponent safeConfigComponent;
     @Resource
-    private ConfigComponent configComponent;
+    private ConfigDataComponent configDataComponent;
+    @Resource
+    protected FileUploadComponent fileUploadComponent;
 
     /**
      * @param site
@@ -115,44 +117,26 @@ public class FileController {
             if (ArrayUtils.contains(privatefile ? CmsFileUtils.IMAGE_FILE_SUFFIXS : safeConfigComponent.getSafeSuffix(site),
                     suffix)) {
                 try {
-                    String fileName = CmsFileUtils.getUploadFileName(suffix);
-                    String filepath;
-                    if (privatefile) {
-                        fileName = CmsFileUtils.getUserPrivateFileName(user.getId(), fileName);
-                        filepath = siteComponent.getPrivateFilePath(site.getId(), fileName);
-                        if (CommonUtils.notEmpty(base64File)) {
-                            CmsFileUtils.upload(VerificationUtils.base64Decode(base64File), filepath);
-                        } else {
-                            CmsFileUtils.upload(file, filepath);
-                        }
+                    FileUploadResult uploadResult = null;
+                    if (CommonUtils.notEmpty(base64File)) {
+                        uploadResult = fileUploadComponent.upload(site.getId(), VerificationUtils.base64Decode(base64File),
+                                privatefile, suffix, request.getLocale());
                     } else {
-                        filepath = siteComponent.getWebFilePath(site.getId(), fileName);
-                        if (CommonUtils.notEmpty(base64File)) {
-                            CmsFileUtils.upload(VerificationUtils.base64Decode(base64File), filepath);
-                        } else {
-                            CmsFileUtils.upload(file, filepath);
-                        }
+                        uploadResult = fileUploadComponent.upload(site.getId(), file, privatefile, suffix, request.getLocale());
                     }
-                    if (CmsFileUtils.isSafe(filepath, suffix)) {
-                        FileSize fileSize = CmsFileUtils.getFileSize(filepath, suffix);
-                        lockComponent.lock(site.getId(),
-                                privatefile ? LockComponent.ITEM_TYPE_FILEUPLOAD_PRIVATE_SIZE
-                                        : LockComponent.ITEM_TYPE_FILEUPLOAD_SIZE,
-                                String.valueOf(user.getId()), null, (int) fileSize.getFileSize() / 1024);
-                        result.put("success", true);
-                        result.put("fileName", fileName);
-                        String fileType = CmsFileUtils.getFileType(suffix);
-                        result.put("fileType", fileType);
-                        result.put("fileSize", file.getSize());
-                        logUploadService.save(new LogUpload(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, originalName,
-                                privatefile, fileType, fileSize.getFileSize(), fileSize.getWidth(), fileSize.getHeight(),
-                                RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
-                    } else {
-                        CmsFileUtils.delete(filepath);
-                        result.put("error", LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
-                                "verify.custom.file.unsafe"));
-                    }
-                } catch (IllegalStateException | IOException e) {
+                    lockComponent.lock(site.getId(),
+                            privatefile ? LockComponent.ITEM_TYPE_FILEUPLOAD_PRIVATE_SIZE
+                                    : LockComponent.ITEM_TYPE_FILEUPLOAD_SIZE,
+                            String.valueOf(user.getId()), null, (int) uploadResult.getFileSize() / 1024);
+                    result.put("success", true);
+                    result.put("fileName", uploadResult.getFilename());
+                    String fileType = CmsFileUtils.getFileType(suffix);
+                    result.put("fileType", fileType);
+                    result.put("fileSize", file.getSize());
+                    logUploadService.save(new LogUpload(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, originalName,
+                            privatefile, fileType, uploadResult.getFileSize(), uploadResult.getWidth(), uploadResult.getHeight(),
+                            RequestUtils.getIpAddress(request), CommonUtils.getDate(), uploadResult.getFilename()));
+                } catch (IOException e) {
                     log.error(e.getMessage(), e);
                     result.put("error", e.getMessage());
                 }
@@ -180,7 +164,7 @@ public class FileController {
     public ResponseEntity<StreamingResponseBody> privatefile(@RequestAttribute SysSite site, long expiry, String sign,
             String filePath, String filename, HttpServletRequest request) {
         if (CommonUtils.notEmpty(sign) && expiry > System.currentTimeMillis()) {
-            Map<String, String> config = configComponent.getConfigData(site.getId(), SafeConfigComponent.CONFIG_CODE);
+            Map<String, String> config = configDataComponent.getConfigData(site.getId(), SafeConfigComponent.CONFIG_CODE);
             String signKey = config.get(SafeConfigComponent.CONFIG_PRIVATEFILE_KEY);
             if (null == signKey) {
                 signKey = CmsVersion.getClusterId();
@@ -190,7 +174,7 @@ public class FileController {
                 HttpHeaders headers = new HttpHeaders();
                 if (CommonUtils.notEmpty(filename)) {
                     headers.setContentDisposition(
-                            ContentDisposition.attachment().filename(filename, StandardCharsets.UTF_8).build());
+                            ContentDisposition.attachment().filename(filename, CommonConstants.DEFAULT_CHARSET).build());
                 }
                 String sendfile = request.getHeader(CmsFileUtils.HEADERS_SEND_CTRL);
                 if (CmsFileUtils.HEADERS_SEND_NGINX.equalsIgnoreCase(sendfile)) {

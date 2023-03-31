@@ -24,9 +24,10 @@ import com.publiccms.entities.log.LogUpload;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.config.SafeConfigComponent;
+import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogUploadService;
-import com.publiccms.views.pojo.entities.FileSize;
+import com.publiccms.views.pojo.entities.FileUploadResult;
 
 /**
  * AbstractUeditorController 百度编辑器基类
@@ -40,6 +41,8 @@ public class AbstractUeditorController {
     protected SiteComponent siteComponent;
     @Resource
     protected SafeConfigComponent safeConfigComponent;
+    @Resource
+    protected FileUploadComponent fileUploadComponent;
 
     protected static final String ACTION_CONFIG = "config";
     protected static final String ACTION_UPLOAD = "upload";
@@ -58,28 +61,19 @@ public class AbstractUeditorController {
             String originalName = file.getOriginalFilename();
             String suffix = CmsFileUtils.getSuffix(originalName);
             if (ArrayUtils.contains(safeConfigComponent.getSafeSuffix(site), suffix)) {
-                String fileName = CmsFileUtils.getUploadFileName(suffix);
-                String filepath = siteComponent.getWebFilePath(site.getId(), fileName);
                 try {
-                    CmsFileUtils.upload(file, filepath);
-                    if (CmsFileUtils.isSafe(filepath, suffix)) {
-                        FileSize fileSize = CmsFileUtils.getFileSize(filepath, suffix);
-                        logUploadService.save(new LogUpload(site.getId(), user.getId(), channel, originalName, false,
-                                CmsFileUtils.getFileType(suffix), file.getSize(), fileSize.getWidth(), fileSize.getHeight(),
-                                RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
-                        Map<String, Object> map = getResultMap();
-                        map.put("size", file.getSize());
-                        map.put("title", originalName);
-                        map.put("url", fileName);
-                        map.put("type", suffix);
-                        map.put("original", originalName);
-                        return map;
-                    } else {
-                        CmsFileUtils.delete(filepath);
-                        return getResultMap(false, LanguagesUtils.getMessage(CommonConstants.applicationContext,
-                                request.getLocale(), "verify.custom.file.unsafe"));
-                    }
-                } catch (IllegalStateException | IOException e) {
+                    FileUploadResult uploadResult = fileUploadComponent.upload(site.getId(), file, false, suffix, request.getLocale());
+                    logUploadService.save(new LogUpload(site.getId(), user.getId(), channel, originalName, false,
+                            CmsFileUtils.getFileType(suffix), file.getSize(), uploadResult.getWidth(), uploadResult.getHeight(),
+                            RequestUtils.getIpAddress(request), CommonUtils.getDate(), uploadResult.getFilename()));
+                    Map<String, Object> map = getResultMap();
+                    map.put("size", file.getSize());
+                    map.put("title", originalName);
+                    map.put("url", uploadResult.getFilename());
+                    map.put("type", suffix);
+                    map.put("original", originalName);
+                    return map;
+                } catch (IOException e) {
                     log.error(e.getMessage(), e);
                     return getResultMap(false, e.getMessage());
                 }

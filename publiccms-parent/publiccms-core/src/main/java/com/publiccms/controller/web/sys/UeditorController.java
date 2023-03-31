@@ -27,7 +27,7 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.site.LockComponent;
 import com.publiccms.logic.service.log.LogLoginService;
-import com.publiccms.views.pojo.entities.FileSize;
+import com.publiccms.views.pojo.entities.FileUploadResult;
 import com.publiccms.views.pojo.entities.UeditorConfig;
 
 /**
@@ -49,7 +49,7 @@ public class UeditorController extends AbstractUeditorController {
     @RequestMapping(params = "action=" + ACTION_CONFIG)
     @ResponseBody
     public UeditorConfig config(@RequestAttribute SysSite site) {
-        String urlPrefix = site.getSitePath();
+        String urlPrefix = fileUploadComponent.getPrefix(site, false);
         UeditorConfig config = new UeditorConfig();
         config.setImageActionName(ACTION_UPLOAD);
         config.setSnapscreenActionName(ACTION_UPLOAD);
@@ -144,12 +144,12 @@ public class UeditorController extends AbstractUeditorController {
             String filepath = siteComponent.getWebFilePath(site.getId(), fileName);
             try {
                 CmsFileUtils.writeByteArrayToFile(filepath, data);
-                FileSize fileSize = CmsFileUtils.getFileSize(filepath, SCRAW_TYPE);
+                FileUploadResult uploadResult = CmsFileUtils.getFileSize(filepath, SCRAW_TYPE);
                 lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_FILEUPLOAD_SIZE, String.valueOf(user.getId()), null,
-                        (int) fileSize.getFileSize() / 1024);
+                        (int) uploadResult.getFileSize() / 1024);
                 logUploadService.save(new LogUpload(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB,
-                        CommonConstants.BLANK, false, CmsFileUtils.FILE_TYPE_IMAGE, data.length, fileSize.getWidth(),
-                        fileSize.getHeight(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
+                        CommonConstants.BLANK, false, CmsFileUtils.FILE_TYPE_IMAGE, data.length, uploadResult.getWidth(),
+                        uploadResult.getHeight(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
                 Map<String, Object> map = getResultMap();
                 map.put("size", data.length);
                 map.put("title", fileName);

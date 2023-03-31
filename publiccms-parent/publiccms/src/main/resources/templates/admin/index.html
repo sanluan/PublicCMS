@@ -136,7 +136,7 @@
         window.UEDITOR_LANGUAGE = "<@t.page 'ueditor.lang_js'/>";
         window.TIMYMCE_HOME_URL = "${(parentSite!site).dynamicPath}resource/plugins/tinymce/";
         window.TIMYMCE_LANGUAGE = "<@t.page 'tinymce.lang'/>";
-        window.TIMYMCE_RESOURCE_PREFIX = "${site.sitePath}";
+        window.TIMYMCE_RESOURCE_PREFIX = "${getFileUploadPrefix()}";
         window.TIMYMCE_FILETYPES = "<@sys.configData code='safe'>${object.allow_files!}</@sys.configData>";
         window.CKEDITOR_BASEPATH = "${(parentSite!site).dynamicPath}resource/plugins/ckeditor/";
         window.CKEDITOR_LANGUAGE = "<@t.page 'ckeditor.lang'/>";

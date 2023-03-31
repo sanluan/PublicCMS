@@ -26,14 +26,15 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.DateFormatUtils;
 import com.publiccms.common.tools.OSSUtils;
 import com.publiccms.common.tools.PolicyConditions;
-import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.common.tools.PolicyConditions.MatchMode;
+import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.common.tools.VerificationUtils;
 import com.publiccms.entities.log.LogUpload;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.OSSComponent;
-import com.publiccms.logic.component.config.ConfigComponent;
+import com.publiccms.logic.component.OSSFileUploaderComponent;
+import com.publiccms.logic.component.config.ConfigDataComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogUploadService;
 
@@ -43,7 +44,7 @@ import software.amazon.awssdk.utils.BinaryUtils;
 @RequestMapping("common")
 public class OSSFileAdminController {
     @Resource
-    private ConfigComponent configComponent;
+    private ConfigDataComponent configDataComponent;
     @Resource
     private OSSComponent ossComponent;
     @Resource
@@ -51,17 +52,11 @@ public class OSSFileAdminController {
 
     @RequestMapping(value = { "uploadresult.html" })
     public String uploadresult(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, boolean privatefile,
-            String filepath, HttpServletRequest request, ModelMap model) {
-        Map<String, String> config = configComponent.getConfigData(site.getId(), OSSComponent.CONFIG_CODE);
+            String originalName, String filepath, HttpServletRequest request) {
         String suffix = CmsFileUtils.getSuffix(filepath);
         String fileType = CmsFileUtils.getFileType(suffix);
-        model.addAttribute("bucketUrl",
-                config.get(privatefile ? OSSComponent.CONFIG_PRIVATEBUCKET_URL : OSSComponent.CONFIG_BUCKET_URL));
-        logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER, filepath,
-                privatefile, fileType, 0, 0, 0, RequestUtils.getIpAddress(request), CommonUtils.getDate(),
-                CommonUtils.joinString(
-                        config.get(privatefile ? OSSComponent.CONFIG_PRIVATEBUCKET_URL : OSSComponent.CONFIG_BUCKET_URL), "/",
-                        filepath)));
+        logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER, originalName,
+                privatefile, fileType, 0, 0, 0, RequestUtils.getIpAddress(request), CommonUtils.getDate(), filepath));
         return "common/uploadresult";
     }
 
@@ -71,24 +66,26 @@ public class OSSFileAdminController {
     public Map<String, String> beforeupload(@RequestAttribute SysSite site, boolean privatefile, String field, String filename,
             HttpServletRequest request) {
         Map<String, String> result = new HashMap<>();
-        Map<String, String> config = configComponent.getConfigData(site.getId(), OSSComponent.CONFIG_CODE);
+        Map<String, String> config = configDataComponent.getConfigData(site.getId(), OSSComponent.CONFIG_CODE);
         String suffix = CmsFileUtils.getSuffix(filename);
         String newfilename = CmsFileUtils.getUploadFileName(suffix);
 
         PolicyConditions policyConds = new PolicyConditions();
         policyConds.addConditionItem(PolicyConditions.COND_BUCKET,
-                config.get(privatefile ? OSSComponent.CONFIG_PRIVATEBUCKET : OSSComponent.CONFIG_BUCKET));
+                config.get(privatefile ? OSSComponent.CONFIG_PRIVATE_BUCKET : OSSComponent.CONFIG_BUCKET));
         policyConds.addConditionItem(MatchMode.StartWith, PolicyConditions.COND_KEY, CmsFileUtils.UPLOAD_PATH);
         String acl = privatefile ? "authenticated-read" : "public-read";
         policyConds.addConditionItem(PolicyConditions.COND_ACL, acl);
         String returnUrl;
         if (site.getDynamicPath().startsWith("//")) {
             returnUrl = CommonUtils.joinString(request.getScheme(), ":", site.getDynamicPath(),
-                    ossComponent.getAdminContextPath().substring(1), "common/uploadresult.html?field=", field, "&privatefile=",
-                    privatefile, "&filepath=", newfilename);
+                    ossComponent.getAdminContextPath().substring(1), "/common/uploadresult.html?field=",
+                    CommonUtils.encodeURI(field), "&privatefile=", privatefile, "&originalName=", CommonUtils.encodeURI(filename),
+                    "&filepath=", CommonUtils.encodeURI(newfilename));
         } else {
             returnUrl = CommonUtils.joinString(site.getDynamicPath(), ossComponent.getAdminContextPath().substring(1),
-                    "common/uploadresult.html?field=", field, "&filepath=", newfilename);
+                    "/common/uploadresult.html?field=", CommonUtils.encodeURI(field), "&privatefile=", privatefile,
+                    "&originalName=", CommonUtils.encodeURI(filename), "&filepath=", CommonUtils.encodeURI(newfilename));
         }
 
         policyConds.addConditionItem(PolicyConditions.COND_SUCCESS_ACTION_REDIRECT, returnUrl);
@@ -98,7 +95,7 @@ public class OSSFileAdminController {
         String date = dateformat.format(now);
         String dateStamp = CommonUtils.joinString(date, "T000000Z");
         String credential = CommonUtils.joinString(config.get(OSSComponent.CONFIG_ACCESSKEYID), "/", date, "/",
-                config.get(OSSComponent.CONFIG_REGION), "/s3/aws4_request");
+                config.get(privatefile ? OSSComponent.CONFIG_PRIVATE_REGION : OSSComponent.CONFIG_REGION), "/s3/aws4_request");
         policyConds.addConditionItem(PolicyConditions.COND_X_OSS_CREDENTIAL, credential);
         String algorithm = "AWS4-HMAC-SHA256";
         policyConds.addConditionItem(PolicyConditions.COND_X_OSS_ALGORITHM, algorithm);
@@ -107,7 +104,7 @@ public class OSSFileAdminController {
         String encodedPolicy = VerificationUtils.base64Encode(policy.getBytes(CommonConstants.DEFAULT_CHARSET));
         try {
             byte[] signkey = OSSUtils.newSigningKey(config.get(OSSComponent.CONFIG_ACCESSKEYSECRET), date,
-                    config.get(OSSComponent.CONFIG_REGION));
+                    config.get(privatefile ? OSSComponent.CONFIG_PRIVATE_REGION : OSSComponent.CONFIG_REGION));
             String signature = BinaryUtils.toHex(OSSUtils.computeSignature(encodedPolicy, signkey));
             result.put(PolicyConditions.COND_ACL, acl);
             result.put("returnUrl", returnUrl);
@@ -125,11 +122,10 @@ public class OSSFileAdminController {
 
     @RequestMapping(value = { "upload.html" })
     public String upload(@RequestAttribute SysSite site, boolean privatefile, ModelMap model) {
-        Map<String, String> config = configComponent.getConfigData(site.getId(), OSSComponent.CONFIG_CODE);
-        if (CommonUtils.notEmpty(config) && CommonUtils
-                .notEmpty(config.get(privatefile ? OSSComponent.CONFIG_PRIVATEBUCKET_URL : OSSComponent.CONFIG_BUCKET_URL))) {
+        Map<String, String> config = configDataComponent.getConfigData(site.getId(), OSSComponent.CONFIG_CODE);
+        if (OSSFileUploaderComponent.enable(config, privatefile)) {
             model.addAttribute("bucketUrl",
-                    config.get(privatefile ? OSSComponent.CONFIG_PRIVATEBUCKET_URL : OSSComponent.CONFIG_BUCKET_URL));
+                    config.get(privatefile ? OSSComponent.CONFIG_PRIVATE_BUCKET_URL : OSSComponent.CONFIG_BUCKET_URL));
             return "common/ossupload";
         } else {
             return "common/upload";

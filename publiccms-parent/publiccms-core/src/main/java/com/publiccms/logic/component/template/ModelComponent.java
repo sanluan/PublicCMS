@@ -195,8 +195,8 @@ public class ModelComponent implements SiteCache {
 
     @Override
     public void clear() {
-        modelCache.clear();
-        typeCache.clear();
+        modelCache.clear(false);
+        typeCache.clear(false);
     }
 
     @Override

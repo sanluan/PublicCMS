@@ -15,6 +15,7 @@ import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
+import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.service.sys.SysUserService;
 
 /**
@@ -56,7 +57,7 @@ public class SysUserDirective extends AbstractTemplateDirective {
             SysUser entity = service.getEntity(id);
             if (null != entity && site.getId() == entity.getSiteId()) {
                 if (absoluteURL) {
-                    entity.setCover(CmsUrlUtils.getUrl(site.getSitePath(), entity.getCover()));
+                    entity.setCover(CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site, false), entity.getCover()));
                 }
                 entity.setPassword(null);
                 handler.put("object", entity).render();
@@ -68,7 +69,7 @@ public class SysUserDirective extends AbstractTemplateDirective {
                 Consumer<SysUser> consumer = null;
                 if (absoluteURL) {
                     consumer = e -> {
-                        e.setCover(CmsUrlUtils.getUrl(site.getSitePath(), e.getCover()));
+                        e.setCover(CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site, false), e.getCover()));
                     };
                 }
                 Map<String, SysUser> map = CommonUtils.listToMap(entityList, k -> k.getId().toString(), consumer,
@@ -85,5 +86,7 @@ public class SysUserDirective extends AbstractTemplateDirective {
 
     @Resource
     private SysUserService service;
+    @Resource
+    protected FileUploadComponent fileUploadComponent;
 
 }

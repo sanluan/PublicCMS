@@ -37,7 +37,7 @@ import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.log.LogUploadService;
-import com.publiccms.views.pojo.entities.FileSize;
+import com.publiccms.views.pojo.entities.FileUploadResult;
 
 /**
  * 
@@ -124,10 +124,10 @@ public class CmsWebFileAdminController {
                         }
                         CmsFileUtils.upload(file, fuleFilePath);
                         if (CmsFileUtils.isSafe(fuleFilePath, suffix)) {
-                            FileSize fileSize = CmsFileUtils.getFileSize(fuleFilePath, suffix);
+                            FileUploadResult uploadResult = CmsFileUtils.getFileSize(fuleFilePath, suffix);
                             logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                                     originalName, privatefile, CmsFileUtils.getFileType(CmsFileUtils.getSuffix(originalName)),
-                                    file.getSize(), fileSize.getWidth(), fileSize.getHeight(), RequestUtils.getIpAddress(request),
+                                    file.getSize(), uploadResult.getWidth(), uploadResult.getHeight(), RequestUtils.getIpAddress(request),
                                     CommonUtils.getDate(), filepath));
                         } else {
                             CmsFileUtils.delete(fuleFilePath);
@@ -183,10 +183,10 @@ public class CmsWebFileAdminController {
                     } else {
                         ImageUtils.image2Ico(file.getInputStream(), suffix, size, new File(fuleFilePath));
                     }
-                    FileSize fileSize = CmsFileUtils.getFileSize(fuleFilePath, suffix);
+                    FileUploadResult uploadResult = CmsFileUtils.getFileSize(fuleFilePath, suffix);
                     logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                            filename, false, CmsFileUtils.FILE_TYPE_IMAGE, file.getSize(), fileSize.getWidth(),
-                            fileSize.getHeight(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), filepath));
+                            filename, false, CmsFileUtils.FILE_TYPE_IMAGE, file.getSize(), uploadResult.getWidth(),
+                            uploadResult.getHeight(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), filepath));
                 }
             } catch (IOException e) {
                 model.addAttribute(CommonConstants.ERROR, e.getMessage());

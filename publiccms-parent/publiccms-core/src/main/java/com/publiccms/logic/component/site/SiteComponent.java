@@ -509,8 +509,8 @@ public class SiteComponent implements Cache {
 
     @Override
     public void clear() {
-        siteCache.clear();
-        domainCache.clear();
+        siteCache.clear(false);
+        domainCache.clear(false);
     }
 
     /**

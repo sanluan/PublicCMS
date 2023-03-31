@@ -13,6 +13,7 @@ import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
+import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.service.sys.SysUserService;
 
 /**
@@ -80,7 +81,7 @@ public class SysUserListDirective extends AbstractTemplateDirective {
             boolean absoluteURL = handler.getBoolean("absoluteURL", true);
             if (absoluteURL) {
                 list.forEach(e -> {
-                    e.setCover(CmsUrlUtils.getUrl(site.getSitePath(), e.getCover()));
+                    e.setCover(CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site, false), e.getCover()));
                 });
             }
 
@@ -101,5 +102,7 @@ public class SysUserListDirective extends AbstractTemplateDirective {
 
     @Resource
     private SysUserService service;
+    @Resource
+    protected FileUploadComponent fileUploadComponent;
 
 }

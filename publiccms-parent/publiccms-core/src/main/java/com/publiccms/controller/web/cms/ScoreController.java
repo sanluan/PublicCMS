@@ -3,11 +3,11 @@ package com.publiccms.controller.web.cms;
 import java.io.IOException;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +24,7 @@ import com.publiccms.entities.cms.CmsUserScore;
 import com.publiccms.entities.cms.CmsUserScoreId;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
-import com.publiccms.logic.component.config.ConfigComponent;
+import com.publiccms.logic.component.config.ConfigDataComponent;
 import com.publiccms.logic.component.config.SiteConfigComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsCommentService;
@@ -43,7 +43,7 @@ import freemarker.template.TemplateException;
 public class ScoreController {
     protected final Log log = LogFactory.getLog(getClass());
     @Resource
-    protected ConfigComponent configComponent;
+    protected ConfigDataComponent configDataComponent;
 
     /**
      * @param site
@@ -84,11 +84,11 @@ public class ScoreController {
             CmsUserScoreId id = new CmsUserScoreId(userId, itemType, itemId);
             CmsUserScore entity = service.getEntity(id);
             if (score && null == entity || !score && null != entity) {
-                Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
-                boolean needStatic = ConfigComponent.getBoolean(config.get(SiteConfigComponent.CONFIG_STATIC_AFTER_SCORE), false);
+                Map<String, String> config = configDataComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+                boolean needStatic = ConfigDataComponent.getBoolean(config.get(SiteConfigComponent.CONFIG_STATIC_AFTER_SCORE), false);
                 String ip = RequestUtils.getIpAddress(request);
                 if ("content".equals(itemType)) {
-                    int maxScores = ConfigComponent.getInt(config.get(SiteConfigComponent.CONFIG_MAX_SCORES),
+                    int maxScores = ConfigDataComponent.getInt(config.get(SiteConfigComponent.CONFIG_MAX_SCORES),
                             SiteConfigComponent.DEFAULT_MAX_SCORES);
                     if (scores > maxScores) {
                         scores = maxScores;

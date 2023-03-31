@@ -67,7 +67,7 @@ public class StatisticsComponent implements Cache {
     /**
      * @param siteId
      * @param word
-     * @param ip 
+     * @param ip
      * @return word statistics
      */
     public ClickStatistics search(short siteId, String word, String ip) {
@@ -180,10 +180,10 @@ public class StatisticsComponent implements Cache {
 
     @Override
     public void clear() {
-        placeService.updateStatistics(placeCache.clear());
-        wordService.updateStatistics(wordCache.clear());
-        tagService.updateStatistics(tagCache.clear());
-        contentService.updateStatistics(contentCache.clear());
+        placeService.updateStatistics(placeCache.clear(true));
+        wordService.updateStatistics(wordCache.clear(true));
+        tagService.updateStatistics(tagCache.clear(true));
+        contentService.updateStatistics(contentCache.clear(true));
     }
 
     /**

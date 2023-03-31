@@ -14,6 +14,7 @@ import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.entities.cms.CmsSurveyQuestion;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.service.cms.CmsSurveyQuestionService;
 
 /**
@@ -69,7 +70,7 @@ public class CmsSurveyQuestionListDirective extends AbstractTemplateDirective {
                     e.setAnswer(null);
                 }
                 if (absoluteURL) {
-                    e.setCover(CmsUrlUtils.getUrl(site.getSitePath(), e.getCover()));
+                    e.setCover(CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site, false), e.getCover()));
                 }
             });
         }
@@ -83,5 +84,7 @@ public class CmsSurveyQuestionListDirective extends AbstractTemplateDirective {
 
     @Resource
     private CmsSurveyQuestionService service;
+    @Resource
+    protected FileUploadComponent fileUploadComponent;
 
 }

@@ -29,7 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.logic.component.template.TemplateComponent;
-import com.publiccms.views.pojo.entities.FileSize;
+import com.publiccms.views.pojo.entities.FileUploadResult;
 
 /**
  *
@@ -129,7 +129,7 @@ public class CmsFileUtils {
     /**
      * 
      */
-    public static final FileSize EMPTY = new FileSize();
+    public static final FileUploadResult EMPTY = new FileUploadResult();
 
     /**
      * 获取目录下文件列表
@@ -292,33 +292,33 @@ public class CmsFileUtils {
     /**
      * @param filepath
      * @param suffix
-     * @return fileSize
+     * @return uploadResult
      */
-    public static FileSize getFileSize(String filepath, String suffix) {
+    public static FileUploadResult getFileSize(String filepath, String suffix) {
         return getFileSize(new File(filepath), suffix);
     }
 
     /**
      * @param file
      * @param suffix
-     * @return fileSize
+     * @return uploadResult
      */
-    private static FileSize getFileSize(File file, String suffix) {
+    private static FileUploadResult getFileSize(File file, String suffix) {
         if (null != suffix && !suffix.startsWith(CommonConstants.DOT)) {
             suffix = CommonUtils.joinString(CommonConstants.DOT, suffix);
         }
         if (ArrayUtils.contains(IMAGE_FILE_SUFFIXS, suffix)) {
-            FileSize fileSize = new FileSize();
-            fileSize.setFileSize(file.length());
+            FileUploadResult uploadResult = new FileUploadResult();
+            uploadResult.setFileSize(file.length());
             try (FileInputStream fis = new FileInputStream(file)) {
                 BufferedImage bufferedImg = ImageIO.read(fis);
                 if (null != bufferedImg) {
-                    fileSize.setWidth(bufferedImg.getWidth());
-                    fileSize.setHeight(bufferedImg.getHeight());
+                    uploadResult.setWidth(bufferedImg.getWidth());
+                    uploadResult.setHeight(bufferedImg.getHeight());
                 }
             } catch (Exception e) {
             }
-            return fileSize;
+            return uploadResult;
         }
         return EMPTY;
     }
@@ -654,7 +654,7 @@ public class CmsFileUtils {
      * @throws IllegalStateException
      * @throws IOException
      */
-    public static String upload(MultipartFile file, String fileName) throws IllegalStateException, IOException {
+    public static String upload(MultipartFile file, String fileName) throws IOException {
         File dest = new File(fileName);
         dest.getParentFile().mkdirs();
         file.transferTo(dest);

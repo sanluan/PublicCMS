@@ -32,10 +32,13 @@ public class OSSComponent implements Config {
     public static final String CONFIG_ACCESSKEYID = "accessKeyId";
     public static final String CONFIG_ACCESSKEYSECRET = "accessKeySecret";
     public static final String CONFIG_BUCKET = "bucket";
-    public static final String CONFIG_PRIVATEBUCKET = "privateBucket";
     public static final String CONFIG_BUCKET_URL = "bucketUrl";
-    public static final String CONFIG_PRIVATEBUCKET_URL = "privateBucketUrl";
     public static final String CONFIG_REGION = "region";
+    public static final String CONFIG_ENDPOINT = "endpoint";
+    public static final String CONFIG_PRIVATE_BUCKET = "privateBucket";
+    public static final String CONFIG_PRIVATE_BUCKET_URL = "privateBucketUrl";
+    public static final String CONFIG_PRIVATE_REGION = "privateRegion";
+    public static final String CONFIG_PRIVATE_ENDPOINT = "privateEndpoint";
 
     /**
      * @param adminContextPath
@@ -80,25 +83,38 @@ public class OSSComponent implements Config {
                         CONFIG_CODE_DESCRIPTION_SUFFIX))));
         extendFieldList.add(new SysExtendField(CONFIG_ACCESSKEYSECRET, INPUTTYPE_TEXT,
                 getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_ACCESSKEYSECRET)),
-                null));
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_ACCESSKEYSECRET,
+                        CONFIG_CODE_DESCRIPTION_SUFFIX))));
         extendFieldList.add(new SysExtendField(CONFIG_BUCKET, INPUTTYPE_TEXT,
                 getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_BUCKET)), null));
 
         extendFieldList.add(new SysExtendField(CONFIG_BUCKET_URL, INPUTTYPE_TEXT,
                 getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_BUCKET_URL)),
                 null));
-        extendFieldList.add(new SysExtendField(CONFIG_PRIVATEBUCKET, INPUTTYPE_TEXT,
-                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_PRIVATEBUCKET)),
-                null));
-        extendFieldList
-                .add(new SysExtendField(CONFIG_PRIVATEBUCKET_URL, INPUTTYPE_TEXT,
-                        getMessage(locale,
-                                CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_PRIVATEBUCKET_URL)),
-                        null));
+        
+       
         extendFieldList.add(new SysExtendField(CONFIG_REGION, INPUTTYPE_TEXT,
                 getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_REGION)),
                 getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_REGION,
                         CONFIG_CODE_DESCRIPTION_SUFFIX))));
+        extendFieldList.add(new SysExtendField(CONFIG_ENDPOINT, INPUTTYPE_TEXT,
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_ENDPOINT)), null));
+        
+        extendFieldList
+        .add(new SysExtendField(CONFIG_PRIVATE_BUCKET_URL, INPUTTYPE_TEXT,
+                getMessage(locale,
+                        CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_PRIVATE_BUCKET_URL)),
+                null));
+        extendFieldList.add(new SysExtendField(CONFIG_PRIVATE_BUCKET, INPUTTYPE_TEXT,
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_PRIVATE_BUCKET)),
+                null));
+        extendFieldList.add(new SysExtendField(CONFIG_PRIVATE_REGION, INPUTTYPE_TEXT,
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_PRIVATE_REGION)),
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_REGION,
+                        CONFIG_CODE_DESCRIPTION_SUFFIX))));
+        extendFieldList.add(new SysExtendField(CONFIG_PRIVATE_ENDPOINT, INPUTTYPE_TEXT,
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_PRIVATE_ENDPOINT)),
+                null));
         return extendFieldList;
     }
 

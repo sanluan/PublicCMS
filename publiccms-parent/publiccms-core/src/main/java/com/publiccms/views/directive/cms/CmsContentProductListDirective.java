@@ -14,6 +14,7 @@ import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.entities.cms.CmsContentProduct;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.service.cms.CmsContentProductService;
 
 /**
@@ -70,7 +71,7 @@ public class CmsContentProductListDirective extends AbstractTemplateDirective {
             SysSite site = getSite(handler);
             list.forEach(e -> {
                 if (absoluteURL) {
-                    e.setCover(CmsUrlUtils.getUrl(site.getSitePath(), e.getCover()));
+                    e.setCover(CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site, false), e.getCover()));
                 }
             });
         }
@@ -79,5 +80,7 @@ public class CmsContentProductListDirective extends AbstractTemplateDirective {
 
     @Resource
     private CmsContentProductService service;
+    @Resource
+    protected FileUploadComponent fileUploadComponent;
 
 }

@@ -83,10 +83,10 @@ public class MemoryCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Seria
     }
 
     @Override
-    public List<V> clear() {
+    public List<V> clear(boolean recycling) {
         lock.writeLock().lock();
         try {
-            List<V> list = cachedMap.values().stream().map(m -> m.getValue()).collect(Collectors.toList());
+            List<V> list = recycling ? cachedMap.values().stream().map(m -> m.getValue()).collect(Collectors.toList()) : null;
             cachedMap.clear();
             return list;
         } finally {

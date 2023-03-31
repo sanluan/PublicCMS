@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.annotation.Resource;
+
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
@@ -15,7 +17,6 @@ import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.component.BeanComponent;
 
 /**
  *
@@ -108,6 +109,8 @@ public class SafeConfigComponent implements Config {
      */
     public static final String CAPTCHA_MODULE_SURVEY = "survey";
 
+    @Resource
+    protected ConfigDataComponent configDataComponent;
     /**
      * @param siteId
      * @param showAll
@@ -127,14 +130,14 @@ public class SafeConfigComponent implements Config {
     }
 
     public boolean enableCaptcha(short siteId, String module) {
-        Map<String, String> config = BeanComponent.getConfigComponent().getConfigData(siteId, CONFIG_CODE);
+        Map<String, String> config = configDataComponent.getConfigData(siteId, CONFIG_CODE);
         String enableCaptcha = config.get(SafeConfigComponent.CONFIG_CAPTCHA);
         return CommonUtils.notEmpty(enableCaptcha)
                 && ArrayUtils.contains(StringUtils.split(enableCaptcha, CommonConstants.COMMA), module);
     }
 
     public String getSafeUrl(String returnUrl, SysSite site, String contextPath) {
-        Map<String, String> config = BeanComponent.getConfigComponent().getConfigData(site.getId(), CONFIG_CODE);
+        Map<String, String> config = configDataComponent.getConfigData(site.getId(), CONFIG_CODE);
         if (isUnSafeUrl(returnUrl, site, config.get(CONFIG_RETURN_URL), contextPath)) {
             return site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
         }
@@ -165,7 +168,7 @@ public class SafeConfigComponent implements Config {
     }
 
     public String[] getSafeSuffix(SysSite site) {
-        Map<String, String> config = BeanComponent.getConfigComponent().getConfigData(site.getId(), CONFIG_CODE_SITE);
+        Map<String, String> config = configDataComponent.getConfigData(site.getId(), CONFIG_CODE_SITE);
         String value = config.get(CONFIG_ALLOW_FILES);
         if (CommonUtils.empty(value)) {
             return CmsFileUtils.ALLOW_FILES;

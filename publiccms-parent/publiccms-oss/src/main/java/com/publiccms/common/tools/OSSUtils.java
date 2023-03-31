@@ -1,12 +1,12 @@
 package com.publiccms.common.tools;
 
-import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.time.Instant;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.constants.Constants;
 
 import software.amazon.awssdk.auth.signer.internal.SignerConstant;
@@ -23,7 +23,7 @@ public class OSSUtils {
     }
 
     public static byte[] computeSignature(String stringToSign, byte[] signingKey) throws InvalidKeyException {
-        return sign(stringToSign.getBytes(StandardCharsets.UTF_8), signingKey, SigningAlgorithm.HmacSHA256);
+        return sign(stringToSign.getBytes(CommonConstants.DEFAULT_CHARSET), signingKey, SigningAlgorithm.HmacSHA256);
     }
 
     public static byte[] newSigningKey(String secretAccessKey, String dateStamp, String regionName) throws InvalidKeyException {
@@ -35,7 +35,7 @@ public class OSSUtils {
     }
 
     private static byte[] sign(String stringData, byte[] key, SigningAlgorithm algorithm) throws InvalidKeyException {
-        byte[] data = stringData.getBytes(StandardCharsets.UTF_8);
+        byte[] data = stringData.getBytes(CommonConstants.DEFAULT_CHARSET);
         return sign(data, key, algorithm);
     }
 

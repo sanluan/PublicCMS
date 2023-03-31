@@ -39,7 +39,7 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.entities.sys.SysUserToken;
 import com.publiccms.logic.component.cache.CacheComponent;
-import com.publiccms.logic.component.config.ConfigComponent;
+import com.publiccms.logic.component.config.ConfigDataComponent;
 import com.publiccms.logic.component.config.SafeConfigComponent;
 import com.publiccms.logic.component.site.LockComponent;
 import com.publiccms.logic.component.site.SiteComponent;
@@ -66,7 +66,7 @@ public class LoginAdminController {
     @Resource
     private CacheComponent cacheComponent;
     @Resource
-    private ConfigComponent configComponent;
+    private ConfigDataComponent configDataComponent;
     @Resource
     private LockComponent lockComponent;
     @Resource
@@ -148,8 +148,8 @@ public class LoginAdminController {
         service.updateLoginStatus(user.getId(), ip);
         String authToken = UUID.randomUUID().toString();
         Date now = CommonUtils.getDate();
-        Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
-        int expiryMinutes = ConfigComponent.getInt(config.get(SafeConfigComponent.CONFIG_EXPIRY_MINUTES_MANAGER),
+        Map<String, String> config = configDataComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+        int expiryMinutes = ConfigDataComponent.getInt(config.get(SafeConfigComponent.CONFIG_EXPIRY_MINUTES_MANAGER),
                 SafeConfigComponent.DEFAULT_EXPIRY_MINUTES);
         addLoginStatus(user, authToken, request, response, expiryMinutes);
 

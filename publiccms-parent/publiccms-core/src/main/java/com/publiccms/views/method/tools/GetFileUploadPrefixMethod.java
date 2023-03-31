@@ -9,8 +9,6 @@ import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.BaseMethod;
 import com.publiccms.common.constants.CommonConstants;
-import com.publiccms.common.tools.CmsUrlUtils;
-import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.TemplateModelUtils;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.site.FileUploadComponent;
@@ -21,33 +19,31 @@ import freemarker.template.TemplateModelException;
 
 /**
  *
- * getUrl 获取url绝对路径
+ * getFileUploadPrefix 获取
  * <p>
- * 参数列表
+  * 参数列表
  * <ol>
- * <li>url前缀
- * <li><code>url</code>,当第二个为空时,将第一个参数当作url
  * </ol>
  * <p>
  * 返回结果
  * <ul>
- * <li><code>url</code>:绝对路径的url
+ * <li><code>url</code>:文件上传前缀
  * </ul>
  * 使用示例
  * <p>
- * ${getUrl(site.sitePath,'index.html')} ${getUrl('index.html')}
+ * ${getFileUploadPrefix()}
  * <p>
  * 
  * <pre>
 &lt;script&gt;
-$.getJSON('${site.dynamicPath}api/method/getUrl?parameters=index.html', function(data){
+$.getJSON('${site.dynamicPath}api/method/getFileUploadPrefix?parameters=index.html', function(data){
 console.log(data);
 });
 &lt;/script&gt;
  * </pre>
  */
 @Component
-public class GetUrlMethod extends BaseMethod {
+public class GetFileUploadPrefixMethod extends BaseMethod {
     @Resource
     protected FileUploadComponent fileUploadComponent;
 
@@ -68,14 +64,8 @@ public class GetUrlMethod extends BaseMethod {
     }
 
     public Object execute(SysSite site, List<TemplateModel> arguments) throws TemplateModelException {
-        String sitePath = getString(0, arguments);
-        String url = getString(1, arguments);
-        if (CommonUtils.notEmpty(sitePath) && CommonUtils.notEmpty(url)) {
-            return CmsUrlUtils.getUrl(sitePath, url);
-        } else if (CommonUtils.notEmpty(sitePath) && null != site) {
-            return CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site, false), sitePath);
-        }
-        return url;
+        return fileUploadComponent.getPrefix(site,
+                arguments.size() > 0 ? TemplateModelUtils.converBoolean(arguments.get(0)) : false);
     }
 
     @Override
@@ -85,6 +75,6 @@ public class GetUrlMethod extends BaseMethod {
 
     @Override
     public int minParametersNumber() {
-        return 1;
+        return 0;
     }
 }

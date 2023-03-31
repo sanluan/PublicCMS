@@ -3,7 +3,6 @@ package com.publiccms.controller.admin.cms;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Serializable;
-import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.HashSet;
@@ -59,7 +58,7 @@ import com.publiccms.entities.sys.SysDept;
 import com.publiccms.entities.sys.SysDeptItemId;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
-import com.publiccms.logic.component.config.ConfigComponent;
+import com.publiccms.logic.component.config.ConfigDataComponent;
 import com.publiccms.logic.component.config.SiteConfigComponent;
 import com.publiccms.logic.component.exchange.ContentExchangeComponent;
 import com.publiccms.logic.component.exchange.SiteExchangeComponent;
@@ -111,7 +110,7 @@ public class CmsContentAdminController {
     @Resource
     protected SiteComponent siteComponent;
     @Resource
-    protected ConfigComponent configComponent;
+    protected ConfigDataComponent configDataComponent;
     @Resource
     private SysSiteService siteService;
     @Resource
@@ -682,7 +681,7 @@ public class CmsContentAdminController {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentDisposition(ContentDisposition.attachment()
                 .filename(CommonUtils.joinString(site.getName(), dateFormat.format(new Date()), "-content.zip"),
-                        StandardCharsets.UTF_8)
+                        CommonConstants.DEFAULT_CHARSET)
                 .build());
         StreamingResponseBody body = new StreamingResponseBody() {
             @Override
@@ -780,16 +779,15 @@ public class CmsContentAdminController {
             List<CmsCategory> categoryList = categoryService.getEntitys(categoryIds);
             if (null != categoryList) {
                 for (CmsCategory category : categoryList) {
-
-                    Map<String, String> config = configComponent.getConfigData(category.getSiteId(),
+                    Map<String, String> config = configDataComponent.getConfigData(category.getSiteId(),
                             SiteConfigComponent.CONFIG_CODE_SITE);
-                    int status = ConfigComponent.getInt(config.get(SiteConfigComponent.CONFIG_DEFAULT_CONTENT_STATUS),
+                    int status = ConfigDataComponent.getInt(config.get(SiteConfigComponent.CONFIG_DEFAULT_CONTENT_STATUS),
                             CmsContentService.STATUS_PEND);
                     long userId;
                     if (category.getSiteId() == site.getId()) {
                         userId = entity.getUserId();
                     } else {
-                        userId = ConfigComponent.getLong(config.get(SiteConfigComponent.CONFIG_DEFAULT_CONTENT_USER), 0);
+                        userId = ConfigDataComponent.getLong(config.get(SiteConfigComponent.CONFIG_DEFAULT_CONTENT_USER), 0);
                     }
 
                     if (0 != userId) {

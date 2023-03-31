@@ -17,6 +17,7 @@ import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.sys.SysApp;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
+import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.views.pojo.entities.ClickStatistics;
@@ -88,13 +89,15 @@ public class MyContentListDirective extends AbstractAppDirective {
                 e.setClicks(e.getClicks() + statistics.getClicks());
             }
             CmsUrlUtils.initContentUrl(site, e);
-            CmsUrlUtils.initContentCover(site, e);
+            fileUploadComponent.initContentCover(site, e);
         });
         handler.put("page", page).render();
     }
 
     @Resource
     private CmsContentService service;
+    @Resource
+    protected FileUploadComponent fileUploadComponent;
     @Resource
     private StatisticsComponent statisticsComponent;
 

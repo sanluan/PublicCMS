@@ -11,7 +11,7 @@ $("textarea.editor",navTab.getCurrentPanel()).each(function(){
         });
     }
 });
-var sitepath = "${site.sitePath}";
+var sitepath = "${getFileUploadPrefix()}";
 if(images.length ) {
     $(images).each(function(i,img){
         var image = $(img);
