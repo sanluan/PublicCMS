@@ -41,59 +41,57 @@
                         </#list>
                     </#if>
                     </form>
-
-<#if word?has_content || tagIds?has_content || dictionaryValues?has_content>
-    <@cms.facetSearch word=word tagId=tagIds categoryId=categoryId dictionaryValues=dictionaryValues modelIds=modelId phrase=phrase highlight=true  pageIndex=pageIndex pageSize=10>
-            <#if page.totalCount gt 0>
-                         <@import path="/ftl/tools.ftl" namespace="t"/>
-
-                        <div class="my-4">
-                            <#if (page.facetMap.categoryId)?has_content>
-                            <div class="d-flex align-items-center my-3">
-                                <b class="flex-shrink-0">分类：</b>
-                                    <#list page.facetMap.categoryId?keys as k><@t.merge 'categoryIds' k/></#list>
-                                    <@cms.category ids=(t.categoryIds)!><#assign categoryMap=map/></@cms.category>
-                                <ul class="nav nav-pills nav-facet">
-                                     <#list page.facetMap.categoryId?keys as k>
-                                        <#if k?is_first && categoryMap[k]?has_content><#assign firstCategory=categoryMap[k]/></#if>
-                                        <li class="nav-item">
-                                            <a <#if (k=categoryId!'')>class="nav-link active" href="javascript:search('categoryId','');"<#else>class="nav-link" href="javascript:search('categoryId','${k}');"</#if>>${(categoryMap[k].name)!}(${(page.facetMap.categoryId[k])!})</a>
-                                        </li>
-                                    </#list>
-                                </ul>
-                            </div>
-                            </#if>
-
-                            <#if (page.facetMap.modelId)?has_content>
-                            <div class="d-flex align-items-center my-3">
-                                <b class="flex-shrink-0">模型：</b>
-                                    <#list page.facetMap.modelId?keys as k><@t.merge 'modelIds' k/></#list>
-                                    <@cms.model ids=(t.modelIds)!><#assign modelMap=map!/></@cms.model>
-                                <ul class="nav nav-pills nav-facet">
-                                    <#list page.facetMap.modelId?keys as k>
-                                        <#if k?is_first><#assign firstModel=modelMap[k]/></#if>
+        <#if word?has_content || tagIds?has_content || dictionaryValues?has_content>
+            <@cms.facetSearch word=word tagId=tagIds categoryId=categoryId dictionaryValues=dictionaryValues modelIds=modelId phrase=phrase highlight=true  pageIndex=pageIndex pageSize=10>
+                <#if page.totalCount gt 0>
+                    <@import path="/ftl/tools.ftl" namespace="t"/>
+                    <div class="my-4">
+                        <#if (page.facetMap.categoryId)?has_content>
+                        <div class="d-flex align-items-center my-3">
+                            <b class="flex-shrink-0">分类：</b>
+                                <#list page.facetMap.categoryId?keys as k><@t.merge 'categoryIds' k/></#list>
+                                <@cms.category ids=(t.categoryIds)!><#assign categoryMap=map/></@cms.category>
+                            <ul class="nav nav-pills nav-facet">
+                                 <#list page.facetMap.categoryId?keys as k>
+                                    <#if k?is_first && categoryMap[k]?has_content><#assign firstCategory=categoryMap[k]/></#if>
                                     <li class="nav-item">
-                                        <a <#if (k=modelId!'')>class="nav-link active" href="javascript:search('modelId','');"<#else>class="nav-link" href="javascript:search('modelId','${k}');"</#if>>${(modelMap[k].name)!}(${(page.facetMap.modelId[k])!})</a>
+                                        <a <#if (k=categoryId!'')>class="nav-link active" href="javascript:search('categoryId','');"<#else>class="nav-link" href="javascript:search('categoryId','${k}');"</#if>>${(categoryMap[k].name)!}(${(page.facetMap.categoryId[k])!})</a>
                                     </li>
-                                    </#list>
-                                </ul>
-                            </div>
-                            </#if>
+                                </#list>
+                            </ul>
+                        </div>
+                        </#if>
 
-                            <@cms.tag ids=tagIds>
-                                <#if map?has_content>
-                                    <div class="d-flex align-items-center my-3">
-                                        <b class="flex-shrink-0">标签：</b>
-                                        <ul class="nav nav-pills nav-facet">
-                                            <#list map?keys as k>
-                                            <li class="nav-item">
-                                                <a class="nav-link active" href="javascript:search('tagIds','');">${map[k].name}</a>
-                                            </li>
-                                            </#list>
-                                        </ul>
-                                    </div>
-                                </#if>
-                            </@cms.tag>
+                        <#if (page.facetMap.modelId)?has_content>
+                        <div class="d-flex align-items-center my-3">
+                            <b class="flex-shrink-0">模型：</b>
+                                <#list page.facetMap.modelId?keys as k><@t.merge 'modelIds' k/></#list>
+                                <@cms.model ids=(t.modelIds)!><#assign modelMap=map!/></@cms.model>
+                            <ul class="nav nav-pills nav-facet">
+                                <#list page.facetMap.modelId?keys as k>
+                                    <#if k?is_first><#assign firstModel=modelMap[k]/></#if>
+                                <li class="nav-item">
+                                    <a <#if (k=modelId!'')>class="nav-link active" href="javascript:search('modelId','');"<#else>class="nav-link" href="javascript:search('modelId','${k}');"</#if>>${(modelMap[k].name)!}(${(page.facetMap.modelId[k])!})</a>
+                                </li>
+                                </#list>
+                            </ul>
+                        </div>
+                        </#if>
+
+                        <@cms.tag ids=tagIds>
+                            <#if map?has_content>
+                                <div class="d-flex align-items-center my-3">
+                                    <b class="flex-shrink-0">标签：</b>
+                                    <ul class="nav nav-pills nav-facet">
+                                        <#list map?keys as k>
+                                        <li class="nav-item">
+                                            <a class="nav-link active" href="javascript:search('tagIds','');">${map[k].name}</a>
+                                        </li>
+                                        </#list>
+                                    </ul>
+                                </div>
+                            </#if>
+                        </@cms.tag>
 
                         <#macro dictionarySearch extendList>
                             <#list extendList as extend>
@@ -123,7 +121,7 @@
                             </@sys.extendFieldList>
                         </#if>
                         <#if (firstModel.extendList)?has_content>
-                            <@dictionarySearch firstModel.extendList/>
+                            <@dictionarySearch firstModel.extendList?filter(extend -> extend.inputType = 'dictionary' && extend.searchable)/>
                         </#if>
                     </div>
 
@@ -190,9 +188,9 @@
                             </a>
                         </li>
                     </ul>
+                </#if>
+             </@cms.facetSearch>
         </#if>
-     </@cms.facetSearch>
-</#if>
                 </div>
             </div>
         </div>

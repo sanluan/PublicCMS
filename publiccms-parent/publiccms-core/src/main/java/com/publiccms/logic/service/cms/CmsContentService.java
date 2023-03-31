@@ -322,7 +322,6 @@ public class CmsContentService extends BaseService<CmsContent> {
         if (CommonUtils.notEmpty(map)) {
             Set<String> dictionaryValueList = new HashSet<>();
             Set<String> extendsFieldList = new HashSet<>();
-            StringBuilder extendsTextBuilder = new StringBuilder();
             attribute.setData(ExtendUtils.getExtendString(map, site.getSitePath(), (extendField, value) -> {
                 if (ArrayUtils.contains(DICTIONARY_INPUT_TYPES, extendField.getInputType())) {
                     if (Config.INPUTTYPE_DICTIONARY.equalsIgnoreCase(extendField.getInputType()) && extendField.isMultiple()) {
@@ -366,17 +365,13 @@ public class CmsContentService extends BaseService<CmsContent> {
             }
             if (CommonUtils.notEmpty(extendsFieldList)) {
                 attribute.setExtendsFields(collectionToCommaDelimitedString(extendsFieldList));
-                attribute.setExtendsText(extendsTextBuilder.toString());
-                searchTextBuilder.append(attribute.getExtendsText());
             } else {
                 attribute.setExtendsFields(null);
-                attribute.setExtendsText(null);
             }
         } else {
             attribute.setData(null);
             attribute.setDictionaryValues(null);
             attribute.setExtendsFields(null);
-            attribute.setExtendsText(null);
         }
         dealFiles(files, images, products, attribute);
 

@@ -43,3 +43,4 @@ DELETE FROM `sys_module_lang` WHERE `module_id` ='refund_view';
 INSERT INTO `sys_module_lang` VALUES ('record_view', 'en', 'View');
 INSERT INTO `sys_module_lang` VALUES ('record_view', 'ja', '見る');
 INSERT INTO `sys_module_lang` VALUES ('record_view', 'zh', '查看');
+ALTER TABLE `cms_content` DROP COLUMN `extends_text`;

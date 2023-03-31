@@ -58,8 +58,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
     private static final String categoryIdField = "categoryId";
     private static final String modelIdField = "modelId";
     private static final String descriptionField = "description";
-    private static final String[] textFields = new String[] { titleField, "author", "editor", descriptionField, "text", "files",
-            "extends" };
+    private static final String[] textFields = new String[] { titleField, "author", "editor", descriptionField, "text", "files" };
     private static final String[] highLighterTextFields = new String[] { titleField, "author", "editor", descriptionField };
     private static final String[] tagFields = new String[] { "tagIds" };
     private static final String dictionaryField = "dictionaryValues";

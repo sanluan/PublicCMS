@@ -148,7 +148,6 @@ CREATE TABLE `cms_content_attribute` (
   `data` longtext COMMENT '数据JSON',
   `search_text` longtext NULL COMMENT '全文索引文本',
   `dictionary_values` text NULL COMMENT '数据字典值',
-  `extends_text` text NULL COMMENT '扩展文本',
   `extends_fields` text NULL COMMENT '扩展文本字段',
   `files_text` text NULL COMMENT '附件文本',
   `min_price` decimal(10, 2) NULL COMMENT '最低价格',
