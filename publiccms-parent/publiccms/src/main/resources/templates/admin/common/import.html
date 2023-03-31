@@ -7,6 +7,7 @@
             <dt><@t.page 'file'/>:</dt>
             <dd>
                 <input type="file" name="file" class="required" size="30" accept="application/pdf,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/msword,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"/>
+                <label><input type="checkbox" name="overrideTitle"<#if !field?has_content> checked="checked"</#if>><@t.page 'title.override'/></label>
                 <span class="info"><@t.page 'import_doc.support_type'/></span>
             </dd>
         </dl>

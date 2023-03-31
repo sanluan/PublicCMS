@@ -68,7 +68,7 @@
                         <span class="info"><@t.page 'dynamic_config.accept_parameter.description'/></span>
                         <div class="parametersOperateBox">
                             <select class="combox" name="parameterType">
-                                <#list ['text','number','textarea','content','category','user'] as o>
+                                <#list ['text','number','textarea','content','category','category.code','user','vote','survey'] as o>
                                 <option value="${o}"><@t.page o/></option>
                                 </#list>
                             </select>
@@ -129,9 +129,13 @@
         }
     });
     $('select[name=parameterType]').on('change',function() {
-        if($(this).val()=='content' || $(this).val()=='category' || $(this).val()=='user') {
+        if($(this).val()=='content' || $(this).val()=='category' || $(this).val()=='vote'|| $(this).val()=='survey' || $(this).val()=='user') {
             if(!$('input[name=\'parameterAlias\']',navTab.getCurrentPanel()).val()){
                 $('input[name=\'parameterAlias\']',navTab.getCurrentPanel()).val($(this).val());
+            }
+        } else if ('category.code'==$(this).val()){
+            if(!$('input[name=\'parameterAlias\']',navTab.getCurrentPanel()).val()){
+                $('input[name=\'parameterAlias\']',navTab.getCurrentPanel()).val('category');
             }
         }
     });
@@ -246,18 +250,9 @@
         <#if acceptParameters?has_content>
             <#list acceptParameters?split(",") as p>
             <#if p?contains(';')>
-            addParameter("${p?split(";")[0]}",false,${['user','content','category']?seq_contains(p?split(";")[1])?c},"${p?split(";")[1]}","${t.pageMessage(p?split(";")[1])}","${['user','content','category']?seq_contains(p?split(";")[1])?then(p?split(";")[1],'')}");
+            addParameter("${p?split(";")[0]}",false,${['user','content','category','category.code','vote','survey']?seq_contains(p?split(";")[1])?c},"${p?split(";")[1]}","${t.pageMessage(p?split(";")[1])}","${['user','content','category','category.code','vote','survey']?seq_contains(p?split(";")[1])?then(('category.code'=p?split(";")[1])?then('category',p?split(";")[1]),'')}");
             <#else>
             addParameter("${p}",false,false,"text","${t.pageMessage('text')}","");
-            </#if>
-            </#list>
-        </#if>
-        <#if acceptArrayParameters?has_content>
-            <#list acceptArrayParameters?split(",") as p>
-            <#if p?contains(';')>
-            addParameter("${p?split(";")[0]}",true,${['user','content','category']?seq_contains(p?split(";")[1])?c},"${p?split(";")[1]}","${t.pageMessage(p?split(";")[1])}","${['user','content','category']?seq_contains(p?split(";")[1])?then(p?split(";")[1],'')}");
-            <#else>
-            addParameter("${p}",true,false,"text","${t.pageMessage('text')}","");
             </#if>
             </#list>
         </#if>

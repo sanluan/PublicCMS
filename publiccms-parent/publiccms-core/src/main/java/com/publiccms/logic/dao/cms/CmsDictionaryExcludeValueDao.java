@@ -25,7 +25,6 @@ public class CmsDictionaryExcludeValueDao extends BaseDao<CmsDictionaryExcludeVa
      * @param excludeDictionaryId
      * @return results page
      */
-    @SuppressWarnings("unchecked")
     public List<CmsDictionaryExcludeValue> getList(short siteId, String dictionaryId, String excludeDictionaryId) {
         QueryHandler queryHandler = getQueryHandler("from CmsDictionaryExcludeValue bean");
         queryHandler.condition("bean.id.siteId = :siteId").setParameter("siteId", siteId);
@@ -36,7 +35,7 @@ public class CmsDictionaryExcludeValueDao extends BaseDao<CmsDictionaryExcludeVa
             queryHandler.condition("bean.id.excludeDictionaryId = :excludeDictionaryId").setParameter("excludeDictionaryId",
                     excludeDictionaryId);
         }
-        return (List<CmsDictionaryExcludeValue>) getList(queryHandler);
+        return getEntityList(queryHandler);
     }
 
     /**

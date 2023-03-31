@@ -57,13 +57,12 @@ public class SysRoleModuleDao extends BaseDao<SysRoleModule> {
      * @param moduleIds
      * @return entitys list
      */
-    @SuppressWarnings("unchecked")
     public List<SysRoleModule> getEntitys(Integer[] roleIds, String[] moduleIds) {
         if (CommonUtils.notEmpty(roleIds) && CommonUtils.notEmpty(moduleIds)) {
             QueryHandler queryHandler = getQueryHandler("from SysRoleModule bean");
             queryHandler.condition("bean.id.roleId in (:roleIds)").setParameter("roleIds", roleIds);
             queryHandler.condition("bean.id.moduleId in (:moduleIds)").setParameter("moduleIds", moduleIds);
-            return (List<SysRoleModule>) getList(queryHandler);
+            return getEntityList(queryHandler);
         }
         return Collections.emptyList();
     }

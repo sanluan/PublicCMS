@@ -37,6 +37,9 @@ import com.publiccms.common.tools.FreeMarkerUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.entities.cms.CmsContent;
+import com.publiccms.entities.cms.CmsSurvey;
+import com.publiccms.entities.cms.CmsTag;
+import com.publiccms.entities.cms.CmsVote;
 import com.publiccms.entities.sys.SysDomain;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
@@ -47,6 +50,9 @@ import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.service.cms.CmsCategoryService;
 import com.publiccms.logic.service.cms.CmsContentService;
+import com.publiccms.logic.service.cms.CmsSurveyService;
+import com.publiccms.logic.service.cms.CmsTagService;
+import com.publiccms.logic.service.cms.CmsVoteService;
 import com.publiccms.logic.service.sys.SysUserService;
 import com.publiccms.views.pojo.entities.ClickStatistics;
 import com.publiccms.views.pojo.entities.CmsPageData;
@@ -87,6 +93,12 @@ public class TemplateCacheComponent implements Cache {
     private CmsContentService contentService;
     @Resource
     private CmsCategoryService categoryService;
+    @Resource
+    private CmsVoteService voteService;
+    @Resource
+    private CmsTagService tagService;
+    @Resource
+    private CmsSurveyService surveyService;
     @Resource
     protected FileUploadComponent fileUploadComponent;
     @Resource
@@ -288,6 +300,37 @@ public class TemplateCacheComponent implements Cache {
                 return false;
             }
             break;
+        case Config.INPUTTYPE_CATEGORYCODE:
+            if (parameterType.isArray() && CommonUtils.notEmpty(values)) {
+                List<CmsCategory> entityList = categoryService.getEntitysByCodes(site.getId(), values);
+                entityList = entityList.stream().filter(entity -> site.getId() == entity.getSiteId())
+                        .collect(Collectors.toList());
+                entityList.forEach(e -> {
+                    CmsUrlUtils.initCategoryUrl(site, e);
+                });
+                if (entityList.isEmpty() && parameterType.isRequired()) {
+                    return false;
+                } else {
+                    model.addAttribute(parameterName, entityList);
+                }
+            } else if (CommonUtils.notEmpty(values)) {
+                try {
+                    CmsCategory entity = categoryService.getEntityByCode(site.getId(), values[0]);
+                    if (null == entity || entity.isDisabled() || entity.getSiteId() != site.getId()) {
+                        if (parameterType.isRequired()) {
+                            return false;
+                        }
+                    } else {
+                        CmsUrlUtils.initCategoryUrl(site, entity);
+                        model.addAttribute(parameterName, entity);
+                    }
+                } catch (NumberFormatException e) {
+                    return false;
+                }
+            } else if (parameterType.isRequired()) {
+                return false;
+            }
+            break;
         case Config.INPUTTYPE_CATEGORY:
             if (parameterType.isArray() && CommonUtils.notEmpty(values)) {
                 Set<Serializable> set = new TreeSet<>();
@@ -318,6 +361,111 @@ public class TemplateCacheComponent implements Cache {
                         }
                     } else {
                         CmsUrlUtils.initCategoryUrl(site, entity);
+                        model.addAttribute(parameterName, entity);
+                    }
+                } catch (NumberFormatException e) {
+                    return false;
+                }
+            } else if (parameterType.isRequired()) {
+                return false;
+            }
+            break;
+        case Config.INPUTTYPE_VOTE:
+            if (parameterType.isArray() && CommonUtils.notEmpty(values)) {
+                Set<Serializable> set = new TreeSet<>();
+                for (String s : values) {
+                    try {
+                        set.add(Long.valueOf(s));
+                    } catch (NumberFormatException e) {
+                        return false;
+                    }
+                }
+                List<CmsVote> entityList = voteService.getEntitys(set);
+                entityList = entityList.stream().filter(entity -> site.getId() == entity.getSiteId())
+                        .collect(Collectors.toList());
+                if (entityList.isEmpty() && parameterType.isRequired()) {
+                    return false;
+                } else {
+                    model.addAttribute(parameterName, entityList);
+                }
+            } else if (CommonUtils.notEmpty(values)) {
+                try {
+                    CmsVote entity = voteService.getEntity(Long.valueOf(values[0]));
+                    if (null == entity || entity.isDisabled() || entity.getSiteId() != site.getId()) {
+                        if (parameterType.isRequired()) {
+                            return false;
+                        }
+                    } else {
+                        model.addAttribute(parameterName, entity);
+                    }
+                } catch (NumberFormatException e) {
+                    return false;
+                }
+            } else if (parameterType.isRequired()) {
+                return false;
+            }
+            break;
+        case Config.INPUTTYPE_SURVEY:
+            if (parameterType.isArray() && CommonUtils.notEmpty(values)) {
+                Set<Serializable> set = new TreeSet<>();
+                for (String s : values) {
+                    try {
+                        set.add(Long.valueOf(s));
+                    } catch (NumberFormatException e) {
+                        return false;
+                    }
+                }
+                List<CmsSurvey> entityList = surveyService.getEntitys(set);
+                entityList = entityList.stream().filter(entity -> site.getId() == entity.getSiteId())
+                        .collect(Collectors.toList());
+                if (entityList.isEmpty() && parameterType.isRequired()) {
+                    return false;
+                } else {
+                    model.addAttribute(parameterName, entityList);
+                }
+            } else if (CommonUtils.notEmpty(values)) {
+                try {
+                    CmsSurvey entity = surveyService.getEntity(Integer.valueOf(values[0]));
+                    if (null == entity || entity.isDisabled() || entity.getSiteId() != site.getId()) {
+                        if (parameterType.isRequired()) {
+                            return false;
+                        }
+                    } else {
+                        model.addAttribute(parameterName, entity);
+                    }
+                } catch (NumberFormatException e) {
+                    return false;
+                }
+            } else if (parameterType.isRequired()) {
+                return false;
+            }
+            break;
+        case Config.INPUTTYPE_TAG:
+            if (parameterType.isArray() && CommonUtils.notEmpty(values)) {
+                Set<Serializable> set = new TreeSet<>();
+                for (String s : values) {
+                    try {
+                        set.add(Long.valueOf(s));
+                    } catch (NumberFormatException e) {
+                        return false;
+                    }
+                }
+                List<CmsTag> entityList = tagService.getEntitys(set);
+                entityList = entityList.stream().filter(entity -> site.getId() == entity.getSiteId())
+                        .collect(Collectors.toList());
+                if (entityList.isEmpty() && parameterType.isRequired()) {
+                    return false;
+                } else {
+                    model.addAttribute(parameterName, entityList);
+                }
+            } else if (CommonUtils.notEmpty(values)) {
+                try {
+                    CmsTag entity = tagService.getEntity(Long.valueOf(values[0]));
+                    if (null == entity || entity.getSiteId() != site.getId()) {
+                        if (parameterType.isRequired()) {
+                            return false;
+                        }
+                    } else {
                         model.addAttribute(parameterName, entity);
                     }
                 } catch (NumberFormatException e) {

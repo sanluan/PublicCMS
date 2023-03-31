@@ -541,14 +541,13 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         return getPage(queryHandler, pageIndex, pageSize);
     }
 
-    @SuppressWarnings("unchecked")
     public List<CmsContent> getListByQuoteId(short siteId, long quoteId) {
         QueryHandler queryHandler = getQueryHandler("from CmsContent bean");
         queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
         queryHandler.condition("bean.parentId is null");
         queryHandler.condition("bean.disabled = :disabled").setParameter("disabled", false);
         queryHandler.condition("bean.quoteContentId = :quoteContentId").setParameter("quoteContentId", quoteId);
-        return (List<CmsContent>) getList(queryHandler);
+        return getEntityList(queryHandler);
     }
 
     /**
@@ -556,14 +555,13 @@ public class CmsContentDao extends BaseDao<CmsContent> {
      * @param topId
      * @return number of data deleted
      */
-    @SuppressWarnings("unchecked")
     public List<CmsContent> getListByTopId(short siteId, long topId) {
         QueryHandler queryHandler = getQueryHandler("from CmsContent bean");
         queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
         queryHandler.condition("bean.parentId is not null");
         queryHandler.condition("bean.disabled = :disabled").setParameter("disabled", false);
         queryHandler.condition("bean.quoteContentId = :topId").setParameter("topId", topId);
-        return (List<CmsContent>) getList(queryHandler);
+        return getEntityList(queryHandler);
     }
 
     @Override

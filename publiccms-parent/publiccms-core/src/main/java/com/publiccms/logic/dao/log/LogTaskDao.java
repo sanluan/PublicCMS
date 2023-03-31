@@ -61,7 +61,6 @@ public class LogTaskDao extends BaseDao<LogTask> {
      * @param endBegintime
      * @return results list
      */
-    @SuppressWarnings("unchecked")
     public List<LogTask> getNotEndList(Short siteId, Date endBegintime) {
         QueryHandler queryHandler = getQueryHandler(
                 "select new LogTask(id, siteId, taskId, begintime, endtime, success) from LogTask bean");
@@ -72,7 +71,7 @@ public class LogTaskDao extends BaseDao<LogTask> {
             queryHandler.condition("bean.begintime <= :endBegintime").setParameter("endBegintime", endBegintime);
         }
         queryHandler.condition("bean.endtime is null");
-        return (List<LogTask>) getList(queryHandler);
+        return getEntityList(queryHandler);
     }
 
     /**

@@ -159,6 +159,15 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
     }
 
     /**
+     * @param siteId
+     * @param codes
+     * @return
+     */
+    public List<CmsCategory> getEntitysByCodes(short siteId, String[] codes) {
+        return dao.getEntitysByCodes(siteId, codes);
+    }
+
+    /**
      * @param entity
      */
     public void save(CmsCategory entity) {

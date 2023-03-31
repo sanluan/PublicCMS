@@ -82,7 +82,6 @@ public class CmsContentProductDao extends BaseDao<CmsContentProduct> {
      * @param contentId
      * @return results list
      */
-    @SuppressWarnings("unchecked")
     public List<CmsContentProduct> getList(Short siteId, Long contentId) {
         QueryHandler queryHandler = getQueryHandler("from CmsContentProduct bean");
         if (CommonUtils.notEmpty(siteId)) {
@@ -91,7 +90,7 @@ public class CmsContentProductDao extends BaseDao<CmsContentProduct> {
         if (CommonUtils.notEmpty(contentId)) {
             queryHandler.condition("bean.contentId = :contentId").setParameter("contentId", contentId);
         }
-        return (List<CmsContentProduct>) getList(queryHandler);
+        return getEntityList(queryHandler);
     }
 
     @Override

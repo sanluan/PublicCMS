@@ -2,12 +2,12 @@
 [<@cms.contentList categoryId=categoryId containChild=containChild modelId=modelId parentId=parentId userId=userId orderField=orderField orderType=orderType pageIndex=pageIndex pageSize=pageSize>
     <#list page.list as a>
         {
-            "id":${a.id?cn},
-            "title":${a.title?cn},
-            "url":${a.url?cn},
-            "description":${(a.description)?cn},
-            "publishDate":${a.publishDate?string?cn},
-            "cover":${a.cover?cn}
+            "id":${a.id},
+            "title":"${a.title}",
+            "url":"${a.url}",
+            "description":"${(a.description)!}",
+            "publishDate":"${a.publishDate?string}",
+            "cover":"${a.cover!}"
         }<#sep>,
     </#list>
 </@cms.contentList>]

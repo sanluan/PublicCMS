@@ -65,12 +65,11 @@ public class CmsContentFileDao extends BaseDao<CmsContentFile> {
      * @param fileTypes
      * @return results list
      */
-    @SuppressWarnings("unchecked")
     public List<CmsContentFile> getList(long contentId, String[] fileTypes) {
         QueryHandler queryHandler = getQueryHandler("from CmsContentFile bean");
         queryHandler.condition("bean.contentId = :contentId").setParameter("contentId", contentId);
         queryHandler.condition("bean.fileType in :fileTypes").setParameter("fileTypes", fileTypes);
-        return (List<CmsContentFile>) getList(queryHandler);
+        return getEntityList(queryHandler);
     }
 
     @Override

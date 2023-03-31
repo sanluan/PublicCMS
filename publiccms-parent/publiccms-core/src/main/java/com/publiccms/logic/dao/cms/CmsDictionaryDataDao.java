@@ -25,7 +25,6 @@ public class CmsDictionaryDataDao extends BaseDao<CmsDictionaryData> {
      * @param parentValue
      * @return results page
      */
-    @SuppressWarnings("unchecked")
     public List<CmsDictionaryData> getList(short siteId, String dictionaryId, String parentValue) {
         QueryHandler queryHandler = getQueryHandler("from CmsDictionaryData bean");
         queryHandler.condition("bean.id.siteId = :siteId").setParameter("siteId", siteId);
@@ -37,7 +36,7 @@ public class CmsDictionaryDataDao extends BaseDao<CmsDictionaryData> {
         }
         queryHandler.order("bean.sort asc");
         queryHandler.order("bean.id.value asc");
-        return (List<CmsDictionaryData>) getList(queryHandler);
+        return getEntityList(queryHandler);
     }
 
     /**
@@ -45,14 +44,13 @@ public class CmsDictionaryDataDao extends BaseDao<CmsDictionaryData> {
      * @param dictionaryId
      * @return results page
      */
-    @SuppressWarnings("unchecked")
     public List<CmsDictionaryData> getList(short siteId, String dictionaryId) {
         QueryHandler queryHandler = getQueryHandler("from CmsDictionaryData bean");
         queryHandler.condition("bean.id.siteId = :siteId").setParameter("siteId", siteId);
         queryHandler.condition("bean.id.dictionaryId = :dictionaryId").setParameter("dictionaryId", dictionaryId);
         queryHandler.order("bean.sort asc");
         queryHandler.order("bean.id.value asc");
-        return (List<CmsDictionaryData>) getList(queryHandler);
+        return getEntityList(queryHandler);
     }
 
     /**

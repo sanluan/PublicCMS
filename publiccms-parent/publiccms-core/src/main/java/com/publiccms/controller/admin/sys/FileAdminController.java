@@ -148,6 +148,7 @@ public class FileAdminController {
      * @param site
      * @param admin
      * @param file
+     * @param overrideTitle
      * @param useIframe
      * @param width
      * @param height
@@ -161,19 +162,22 @@ public class FileAdminController {
     @Csrf
     @ResponseBody
     public Map<String, Object> doImport(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile file,
-            boolean useIframe, String width, String height, String defaultFontFamily, String field, String titleField,
-            HttpServletRequest request) {
+            boolean overrideTitle, boolean useIframe, String width, String height, String defaultFontFamily, String field,
+            String titleField, HttpServletRequest request) {
         Map<String, Object> result = new HashMap<>();
         if (null != file && !file.isEmpty()) {
             String originalName = file.getOriginalFilename();
             String suffix = CmsFileUtils.getSuffix(originalName);
             if (ArrayUtils.contains(safeConfigComponent.getSafeSuffix(site), suffix)) {
                 try {
-                    int index = originalName.lastIndexOf(CommonConstants.DOT);
-                    if (0 < index) {
-                        originalName = originalName.substring(0, index);
+
+                    if (overrideTitle) {
+                        int index = originalName.lastIndexOf(CommonConstants.DOT);
+                        if (0 < index) {
+                            originalName = originalName.substring(0, index);
+                        }
+                        result.put(titleField, originalName);
                     }
-                    result.put(titleField, originalName);
                     if (".docx".equalsIgnoreCase(suffix) || ".xlsx".equalsIgnoreCase(suffix) || ".ppt".equalsIgnoreCase(suffix)
                             || ".pptx".equalsIgnoreCase(suffix) || ".xls".equalsIgnoreCase(suffix)) {
                         File dest = File.createTempFile("temp_", suffix);

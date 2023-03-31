@@ -87,7 +87,7 @@ public interface Config {
      * 
      */
     String INPUTTYPE_DICTIONARY = "dictionary";
-    
+
     /**
      * 
      */
@@ -102,11 +102,28 @@ public interface Config {
      * 
      */
     String INPUTTYPE_CATEGORY = "category";
+    /**
+     * 
+     */
+    String INPUTTYPE_VOTE = "vote";
+    /**
+     * 
+     */
+    String INPUTTYPE_SURVEY = "survey";
+    /**
+     * 
+     */
+    String INPUTTYPE_TAG = "tag";
 
     /**
      * 
      */
     String INPUTTYPE_CATEGORYTYPE = "categoryType";
+
+    /**
+     * 
+     */
+    String INPUTTYPE_CATEGORYCODE = "category.code";
 
     /**
      * 
