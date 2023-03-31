@@ -26,7 +26,7 @@ import com.publiccms.common.tools.CommonUtils;
  * 
  */
 public class PermissionChecker {
-    public static final String SQL_FILE = "../publiccms-core/src/main/resources/initialization/sql/initDatabase.sql";
+    public static final String SQL_FILE = "../publiccms-core/src/main/resources/initialization/sql/init.sql";
     public static final String SQL_START = "Records of sys_module";
     public static final String SQL_END = "Table structure for sys_module_lang";
     public static final String TEMPLATES = "src/main/resources/templates/admin";
