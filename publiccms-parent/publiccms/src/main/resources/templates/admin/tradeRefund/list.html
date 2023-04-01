@@ -20,7 +20,7 @@
                     <label><@t.page 'status'/>:</label>
                     <#list 0..4 as s>
                         <label>
-                            <input <@t.compare status!'' s?string 'checked="checked"'/> name="status" value="${s}" type="checkbox"/>
+                            <input name="status" value="${s}" type="checkbox" class="form-check-input"<@t.compare status!'' s?string ' checked="checked"'/>/>
                             <@t.page 'status.refund.'+s/>
                         </label>
                     </#list>

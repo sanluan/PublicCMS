@@ -30,12 +30,12 @@
                     <input name="alias" type="text" maxlength="40" size="20" value="${(a.alias)!}"/>
                     <#if site.useStatic>
                         <label>
-                            <input name="useStatic" type="checkbox"/>
+                            <input name="useStatic" type="checkbox" class="form-check-input"/>
                             <@t.page 'site.enable_static'/>
                         </label>
                     </#if>
                     <label>
-                        <input name="useDynamic" type="checkbox"/>
+                        <input name="useDynamic" type="checkbox" class="form-check-input"/>
                         <@t.page 'allow_dynamic'/>
                     </label>
                 </dd>
@@ -56,7 +56,7 @@
                 <dl class="nowrap">
                     <dt><@t.page 'dynamic_config.need_login'/>:</dt>
                     <dd>
-                        <label><input name="needLogin" type="checkbox"/></label>
+                        <label><input name="needLogin" type="checkbox" class="form-check-input"/></label>
                         <span class="info"><@t.page 'dynamic_config.need_login.description'/>:<a href="sysConfigData/edit.html?code=site" target="navTab" rel="sysConfigData/edit"><@t.page 'server_config.site'/></a></span>
                     </dd>
                 </dl>
@@ -73,9 +73,9 @@
                                 </#list>
                             </select>
                             <label><@t.page 'name'/>:</label><input name="parameterName" type="text" autocomplete="on" size="8"/>
-                            <label><@t.page 'required'/>:<input name="required" type="checkbox"/></label>
+                            <label><@t.page 'required'/>:<input name="required" type="checkbox" class="form-check-input"/></label>
                             <label><@t.page 'alias'/>:</label><input name="parameterAlias" type="text" autocomplete="on" size="8"/>
-                            <label><@t.page 'array'/>:<input name="array" type="checkbox"/></label>
+                            <label><@t.page 'array'/>:<input name="array" type="checkbox" class="form-check-input"/></label>
                             <a href="javascript:;" class="btnText green" onclick="addParameter($('input[name=\'parameterName\']',navTab.getCurrentPanel()).val(),$('input[name=\'array\']',navTab.getCurrentPanel()).prop('checked'),$('input[name=\'required\']',navTab.getCurrentPanel()).prop('checked'),$('select[name=\'parameterType\']',navTab.getCurrentPanel()).val(),$('select[name=\'parameterType\'] option:selected',navTab.getCurrentPanel()).text(),$('input[name=\'parameterAlias\']',navTab.getCurrentPanel()).val());return false;"><i class="icon-ok"></i><@t.page 'button.add'/></a>
                         </div>
                     </dd>
@@ -83,7 +83,7 @@
                 <dl class="nowrap">
                     <dt><@t.page 'dynamic_config.need_body'/>:</dt>
                     <dd>
-                        <label><input name="needBody" type="checkbox"/></label>
+                        <label><input name="needBody" type="checkbox" class="form-check-input"/></label>
                         <span class="info"><@t.page 'dynamic_config.need_body.description'/></span>
                     </dd>
                 </dl>

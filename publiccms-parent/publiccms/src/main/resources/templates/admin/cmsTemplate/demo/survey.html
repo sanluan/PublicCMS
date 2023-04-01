@@ -73,7 +73,7 @@
                         <#case 'checkbox'>
                             <@cms.surveyQuestionItemList questionId=a.id pageSize=500>
                                 <#list page.list as i>
-                                    <label><input name="answerList[${a?index}].answer" type="checkbox" value="${i.id}"<#if !available> disabled="true"</#if>/>${i.title}</label>
+                                    <label><input name="answerList[${a?index}].answer" type="checkbox" class="form-check-input" value="${i.id}"<#if !available> disabled="true"</#if>/>${i.title}</label>
                                 </#list>
                             </@cms.surveyQuestionItemList>
                         <#break>

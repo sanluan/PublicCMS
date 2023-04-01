@@ -190,7 +190,7 @@
                 </#if>
             <#else>
                 <#list ["comment_list","tag_list","product_list","vote_list","survey_list","category_extend","trade_menu","page_diy","page_diy_preview","visit_menu","myself_device","app_client_list"] as a>
-                    <label><input name="${inputName}" type="checkbox" value="${a}"${(values?has_content&&values?seq_contains(a))?then(' checked="true"','')?no_esc}/><@t.menu a/></label>
+                    <label><input name="${inputName}" type="checkbox" value="${a}" class="form-check-input"${(values?has_content&&values?seq_contains(a))?then(' checked="true"','')?no_esc}/><@t.menu a/></label>
                 </#list>
             </#if>
             <#break>
@@ -204,7 +204,7 @@
                 </#if>
             <#else>
                 <#list langs as k,v>
-                    <label><input name="${inputName}" type="checkbox" value="${k}"${(values?has_content&&values?seq_contains(k))?then(' checked="true"','')?no_esc}/>${v}</label>
+                    <label><input name="${inputName}" type="checkbox" class="form-check-input" value="${k}"${(values?has_content&&values?seq_contains(k))?then(' checked="true"','')?no_esc}/>${v}</label>
                 </#list>
             </#if>
             <#break>
@@ -218,7 +218,7 @@
                 </#if>
             <#else>
                 <#list ["register","login","management_system","comment","contribute","upload","survey"] as a>
-                    <label><input name="${inputName}" type="checkbox" value="${a}"${(values?has_content&&values?seq_contains(a))?then(' checked="true"','')?no_esc}/><@t.page a/></label>
+                    <label><input name="${inputName}" type="checkbox" class="form-check-input" value="${a}"${(values?has_content&&values?seq_contains(a))?then(' checked="true"','')?no_esc}/><@t.page a/></label>
                 </#list>
             </#if>
             <#break>

@@ -10,7 +10,7 @@
             <ul class="searchContent">
                 <li>
                     <label><@t.page 'search_word'/>:</label><input type="text" size="20" name="word" value="${word!}"/>
-                    <label><@t.page 'search.phrase'/><input name="phrase" type="checkbox" value="true" <@t.compare phrase!'' 'true' 'checked="checked"'/>/></label>
+                    <label><@t.page 'search.phrase'/><input name="phrase" type="checkbox" class="form-check-input" value="true" <@t.compare phrase!'' 'true' 'checked="checked"'/>/></label>
                 </li>
                 <li>
                     <label><@t.page 'exclude'/>:</label><input type="text" size="20" name="exclude" value="${exclude!}"/>
@@ -25,13 +25,12 @@
                 </li>
                 <li>
                     <label><@t.page 'field'/>:</label>
-                    <label><@t.page 'title'/><input name="fields" type="checkbox" value="title" <@t.compare fields!'' 'title' 'checked="checked"'/>/></label>
-                    <label><@t.page 'content.author'/><input name="fields" type="checkbox" value="author" <@t.compare fields!'' 'author' 'checked="checked"'/>/></label>
-                    <label><@t.page 'editor'/><input name="fields" type="checkbox" value="editor" <@t.compare fields!'' 'editor' 'checked="checked"'/>/></label>
-                    <label><@t.page 'description'/><input name="fields" type="checkbox" value="description" <@t.compare fields!'' 'description' 'checked="checked"'/>/></label>
-                    <label><@t.page 'text'/><input name="fields" type="checkbox" value="text" <@t.compare fields!'' 'text' 'checked="checked"'/>/></label>
-                    <label><@t.page 'content_file'/><input name="fields" type="checkbox" value="files" <@t.compare fields!'' 'files' 'checked="checked"'/>/></label>
-                    <label><@t.page 'extend_field'/><input name="fields" type="checkbox" value="extends" <@t.compare fields!'' 'extends' 'checked="checked"'/>/></label>
+                    <label><@t.page 'title'/><input name="fields" type="checkbox" class="form-check-input" value="title" <@t.compare fields!'' 'title' 'checked="checked"'/>/></label>
+                    <label><@t.page 'content.author'/><input name="fields" type="checkbox" class="form-check-input" value="author" <@t.compare fields!'' 'author' 'checked="checked"'/>/></label>
+                    <label><@t.page 'editor'/><input name="fields" type="checkbox" class="form-check-input" value="editor" <@t.compare fields!'' 'editor' 'checked="checked"'/>/></label>
+                    <label><@t.page 'description'/><input name="fields" type="checkbox" class="form-check-input" value="description" <@t.compare fields!'' 'description' 'checked="checked"'/>/></label>
+                    <label><@t.page 'text'/><input name="fields" type="checkbox" class="form-check-input" value="text" <@t.compare fields!'' 'text' 'checked="checked"'/>/></label>
+                    <label><@t.page 'content_file'/><input name="fields" type="checkbox" class="form-check-input" value="files" <@t.compare fields!'' 'files' 'checked="checked"'/>/></label>
                 </li>
             </ul>
             <div class="subBar">
@@ -95,7 +94,7 @@
                 <td class="wrap">
                     <#if a.cover?has_content>
                         <div class="thumbnail">
-                            <img src="${(a.cover)!}"/>
+                            <img src="${(a.cover)!}" alt="${a.title!}"/>
                         </div>
                     </#if>
                     <div class="box">

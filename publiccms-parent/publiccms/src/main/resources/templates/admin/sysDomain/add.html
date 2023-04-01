@@ -21,8 +21,8 @@
                 <dt><@t.page 'domain'/>:</dt>
                 <dd>
                     <input class="required domain" remote="sysDomain/virify?oldName=${id!}" name="name" data-msg-remote="<@t.message 'verify.hasExist.domain'/>" type="text" size="20" maxlength="255" value="${(a.name)!}"/>
-                    <label><input name="wild" type="checkbox"${(a?has_content&&a.wild)?then(' checked="checked"','')?no_esc}/><@t.page 'domain.wild'/></label>
-                    <label><input name="multiple" type="checkbox"${(a?has_content&&a.multiple)?then(' checked="checked"','')?no_esc}/><@t.page 'domain.multiple'/></label>
+                    <label><input name="wild" type="checkbox" class="form-check-input"${(a?has_content&&a.wild)?then(' checked="checked"','')?no_esc}/><@t.page 'domain.wild'/></label>
+                    <label><input name="multiple" type="checkbox" class="form-check-input"${(a?has_content&&a.multiple)?then(' checked="checked"','')?no_esc}/><@t.page 'domain.multiple'/></label>
                     <span class="info"><@t.page 'domain.description'/></span>
                 </dd>
             </dl>

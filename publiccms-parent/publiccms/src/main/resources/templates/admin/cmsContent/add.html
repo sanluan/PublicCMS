@@ -19,12 +19,12 @@
                 <li><a href="cmsContent/list.html?parentId=${a.id}&categoryId=${a.categoryId!}" class="button" target="navTab" rel="cmsContent/list"><@t.page 'content.child_management'/></a></li>
             </#if>
             <li>
-                <label><input type="checkbox" name="draft"/><@t.page 'draft'/></label>
+                <label><input type="checkbox" name="draft" class="form-check-input"/><@t.page 'draft'/></label>
             </li>
         <@sys.authorized roleIds=admin.roles url='cmsContent/check'>
             <li>
                 <label>
-                    <input type="checkbox" name="checked"/>
+                    <input type="checkbox" name="checked" class="form-check-input"/>
                     <@t.page 'check_passed'/>
                 </label>
             </li>
@@ -109,7 +109,7 @@ $('input[name=\'categoryName\']',navTab.getCurrentPanel()).on('change',function(
                     <dd>
                         <input class="required" name="title" type="text" maxlength="250" size="60" value="${(a.title)!}"/>
                     <#if fieldList?seq_contains('copied')>
-                        <label><input name="copied" type="checkbox"/>${(model.fieldTextMap['copied'])!}</label>
+                        <label><input name="copied" type="checkbox" class="form-check-input"/>${(model.fieldTextMap['copied'])!}</label>
                     </#if>
                     </dd>
                 </dl>

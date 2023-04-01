@@ -1,7 +1,7 @@
 <@cms.modelList parentId=(parent.modelId)!'' queryAll=queryAll>
     <#list page.list as a>
         <label>
-            <input <@t.compare modelIds!'' a.id?string 'checked="checked"'/> name="modelIds" value="${a.id}" type="checkbox"/>
+            <input name="modelIds" value="${a.id}" type="checkbox" class="form-check-input"<@t.compare modelIds!'' a.id?string ' checked="checked"'/>/>
             ${(a.name)!}
         </label>
     </#list>

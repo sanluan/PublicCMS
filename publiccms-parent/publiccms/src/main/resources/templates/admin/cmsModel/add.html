@@ -29,14 +29,14 @@
                     <dt><@t.page 'id'/>:</dt>
                     <dd>
                         <input class="required" name="id" type="text" maxlength="20" size="20" value="${(a.id)!}"/>
-                        <label><input name="onlyUrl" type="checkbox"/><@t.page 'url'/></label>
+                        <label><input name="onlyUrl" type="checkbox" class="form-check-input"/><@t.page 'url'/></label>
                     </dd>
                 </dl>
                 <dl class="nowrap">
                     <dt><@t.page 'name'/>:</dt>
                     <dd>
                         <input class="required" name="name" type="text" maxlength="20" size="20" value="${(a.name)!}"/>
-                        <label><input name="searchableModel" type="checkbox"/><@t.page 'searchableModel'/></label>
+                        <label><input name="searchableModel" type="checkbox" class="form-check-input"/><@t.page 'searchableModel'/></label>
                     </dd>
                 </dl>
             <#if site.useStatic>
@@ -59,10 +59,10 @@
             <fieldset class="systemField">
                 <legend><@t.page 'model.system_field'/></legend>
                 <div class="unit">
-                    <label><input name="hasChild" type="checkbox"/><@t.page 'model.has_child'/></label>
-                    <label><input name="hasImages" type="checkbox"/><@t.page 'model.has_images'/></label>
-                    <label><input name="hasFiles" type="checkbox"/><@t.page 'model.has_attachs'/></label>
-                    <label><input name="hasProducts" type="checkbox"/><@t.page 'model.has_products'/></label>
+                    <label><input name="hasChild" type="checkbox" class="form-check-input"/><@t.page 'model.has_child'/></label>
+                    <label><input name="hasImages" type="checkbox" class="form-check-input"/><@t.page 'model.has_images'/></label>
+                    <label><input name="hasFiles" type="checkbox" class="form-check-input"/><@t.page 'model.has_attachs'/></label>
+                    <label><input name="hasProducts" type="checkbox" class="form-check-input"/><@t.page 'model.has_products'/></label>
                     <span class="info hasChild hide"><@t.page 'content.child'/>:<#noparse>&lt;@cms.contentList parentId=content.id&gt;&lt;#list page.list as a&gt;${a.title!}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.contentList&gt;</#noparse></span>
                     <span class="info hasImages hide"><@t.page 'image_list'/>:<#noparse>&lt;@cms.contentFileList contentId=content.id fileTypes='image'&gt;&lt;#list page.list as a&gt;${a.filePath!}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.contentFileList&gt;</#noparse></span>
                     <span class="info hasFiles hide"><@t.page 'attach_list'/>:<#noparse>&lt;@cms.contentFileList contentId=content.id fileTypes='video,document,audio,other'&gt;&lt;#list page.list as a&gt;${a.filePath!}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.contentFileList&gt;</#noparse></span>
@@ -89,7 +89,7 @@
                 </dl>
                 <dl class="nowrap">
                     <dt>
-                        <label><input name="fieldList" type="checkbox" value="copied"/><@t.page 'copied'/></label>
+                        <label><input name="fieldList" type="checkbox" class="form-check-input" value="copied"/><@t.page 'copied'/></label>
                     </dt>
                     <dd>
                         <label><@t.page 'text'/>:</label>
@@ -99,7 +99,7 @@
                 </dl>
                 <dl class="nowrap">
                     <dt>
-                        <label><input name="fieldList" type="checkbox" value="tag"/><@t.page 'tag'/></label>
+                        <label><input name="fieldList" type="checkbox" class="form-check-input" value="tag"/><@t.page 'tag'/></label>
                     </dt>
                     <dd>
                         <label><@t.page 'text'/>:</label>
@@ -109,45 +109,45 @@
                 </dl>
                 <dl class="nowrap">
                     <dt>
-                        <label><input name="fieldList" type="checkbox" value="author"/><@t.page 'content.author'/></label>
+                        <label><input name="fieldList" type="checkbox" class="form-check-input" value="author"/><@t.page 'content.author'/></label>
                     </dt>
                     <dd>
                         <label><@t.page 'text'/>:</label>
                         <input name="fieldTextMap[author]" type="text" autocomplete="on" maxlength="20" size="10" value="${(a.fieldTextMap['author'])!t.pageMessage('content.author')}"/>
-                        <label><input name="requiredFieldList" type="checkbox" value="author"/><@t.page 'required'/></label>
+                        <label><input name="requiredFieldList" type="checkbox" class="form-check-input" value="author"/><@t.page 'required'/></label>
                         <span class="info"><#noparse>${(content.author)!}</#noparse></span>
                     </dd>
                 </dl>
                 <dl class="nowrap">
                     <dt>
-                        <label><input name="fieldList" type="checkbox" value="editor"/><@t.page 'editor'/></label>
+                        <label><input name="fieldList" type="checkbox" class="form-check-input" value="editor"/><@t.page 'editor'/></label>
                     </dt>
                     <dd>
                         <label><@t.page 'text'/>:</label>
                         <input name="fieldTextMap[editor]" type="text" autocomplete="on" maxlength="20" size="10" value="${(a.fieldTextMap['editor'])!t.pageMessage('editor')}"/>
-                        <label><input name="requiredFieldList" type="checkbox" value="editor"/><@t.page 'required'/></label>
+                        <label><input name="requiredFieldList" type="checkbox" class="form-check-input" value="editor"/><@t.page 'required'/></label>
                         <span class="info"><#noparse>${(content.editor)!}</#noparse></span>
                     </dd>
                 </dl>
                 <dl class="nowrap">
                     <dt>
-                        <label><input name="fieldList" type="checkbox" value="description"/><@t.page 'description'/></label>
+                        <label><input name="fieldList" type="checkbox" class="form-check-input" value="description"/><@t.page 'description'/></label>
                     </dt>
                     <dd>
                         <label><@t.page 'text'/>:</label>
                         <input name="fieldTextMap[description]" type="text" autocomplete="on" maxlength="20" size="10" value="${(a.fieldTextMap['description'])!t.pageMessage('description')}"/>
-                        <label><input name="requiredFieldList" type="checkbox" value="description"/><@t.page 'required'/></label>
+                        <label><input name="requiredFieldList" type="checkbox" class="form-check-input" value="description"/><@t.page 'required'/></label>
                         <span class="info"><#noparse>&lt;#list (content.description!'')?split("\n") as a&gt;${a}&lt;#sep&gt;&lt;br/&gt;&lt;/#list&gt;</#noparse></span>
                     </dd>
                 </dl>
                 <dl class="nowrap">
                     <dt>
-                        <label><input name="fieldList" type="checkbox" value="cover"/><@t.page 'cover'/></label>
+                        <label><input name="fieldList" type="checkbox" class="form-check-input" value="cover"/><@t.page 'cover'/></label>
                     </dt>
                     <dd>
                         <label><@t.page 'text'/>:</label>
                         <input name="fieldTextMap[cover]" type="text" autocomplete="on" maxlength="20" size="10" value="${(a.fieldTextMap['cover'])!t.pageMessage('cover')}"/>
-                        <label><input name="requiredFieldList" type="checkbox" value="cover"/><@t.page 'required'/></label>
+                        <label><input name="requiredFieldList" type="checkbox" class="form-check-input" value="cover"/><@t.page 'required'/></label>
                         <label><@t.page 'width'/></label><input name="coverWidth" type="number" size="5" value="${(a.coverWidth)!}"/>
                         <label><@t.page 'height'/></label><input name="coverHeight" type="number" size="5" value="${(a.coverHeight)!}"/>
                         <span class="info"><#noparse>&lt;img src="${(content.cover)!}" alt="${(content.title)!}"/&gt;</#noparse></span>
@@ -164,21 +164,21 @@
                     <dd>
                         <label><@t.page 'field.source'/>(source):</label>
                         <input name="fieldTextMap[source]" type="text" autocomplete="on" maxlength="20" size="10" value="${(a.fieldTextMap['source'])!t.pageMessage('content.source')}"/>
-                        <label><input name="requiredFieldList" type="checkbox" value="source"/><@t.page 'required'/></label>
+                        <label><input name="requiredFieldList" type="checkbox" class="form-check-input" value="source"/><@t.page 'required'/></label>
                         <label><@t.page 'field.source_url'/>(sourceUrl):</label>
                         <input name="fieldTextMap[sourceUrl]" type="text" maxlength="20" size="10" value="${(a.fieldTextMap['sourceUrl'])!t.pageMessage('content.source_url')}"/>
-                        <label><input name="requiredFieldList" type="checkbox" value="sourceUrl"/><@t.page 'required'/></label>
+                        <label><input name="requiredFieldList" type="checkbox" class="form-check-input" value="sourceUrl"/><@t.page 'required'/></label>
                         <span class="info"><#noparse>&lt;a href="${(attribute.sourceUrl)!}"&gt;${(attribute.source)!}&lt;/a&gt;</#noparse></span>
                     </dd>
                 </dl>
                 <dl class="nowrap">
                     <dt>
-                        <label><input name="fieldList" type="checkbox" value="content"/><@t.page 'content.text'/></label>
+                        <label><input name="fieldList" type="checkbox" class="form-check-input" value="content"/><@t.page 'content.text'/></label>
                     </dt>
                     <dd>
                         <label><@t.page 'text'/>:</label><input name="fieldTextMap[content]" type="text" autocomplete="on" maxlength="20" size="10" value="${(a.fieldTextMap['content'])!t.pageMessage('content.text')}"/>
-                        <label><input name="requiredFieldList" type="checkbox" value="content"/><@t.page 'required'/></label>
-                        <label class="searchable"><input name="searchable" type="checkbox" ${(!a?has_content||a.searchable)?then(' checked="true"','')?no_esc}/><@t.page 'searchable'/></label>
+                        <label><input name="requiredFieldList" type="checkbox" class="form-check-input" value="content"/><@t.page 'required'/></label>
+                        <label class="searchable"><input name="searchable" type="checkbox" class="form-check-input" ${(!a?has_content||a.searchable)?then(' checked="true"','')?no_esc}/><@t.page 'searchable'/></label>
                         <label><@t.page 'editor_type'/>:</label>
                         <#assign editorTypes={'ueditor':t.pageMessage('ueditor'),'tinymce':t.pageMessage('tinymce'),'ckeditor':t.pageMessage('ckeditor')}/>
                         <select class="combox" name="editorType">
@@ -223,7 +223,7 @@
                                 <@cms.modelList queryAll=true>
                                     <#list page.list as m>
                                         <label>
-                                            <input<#if a.modelIds?has_content && a.modelIds?split(',')?seq_contains(m.id)> checked="checked"</#if> name="relatedList[${a?index}].modelIds" value="${m.id}" type="checkbox"/>
+                                            <input<#if a.modelIds?has_content && a.modelIds?split(',')?seq_contains(m.id)> checked="checked"</#if> name="relatedList[${a?index}].modelIds" value="${m.id}" type="checkbox" class="form-check-input"/>
                                             ${(m.name)!}
                                         </label>
                                     </#list>

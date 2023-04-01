@@ -27,11 +27,11 @@
                     <input class="required" name="alias" type="text" maxlength="50" size="20" value="${(a.alias)!}"/>
                     <span class="placeExtend">
                         <label>
-                            <input name="allowContribute" type="checkbox"/>
+                            <input name="allowContribute" type="checkbox"class="form-check-input"/>
                             <@t.page 'allow_contribute'/>
                         </label>
                         <label class="allowContribute hide">
-                            <input name="allowAnonymous" type="checkbox"${((a.allowAnonymous)?has_content&&a.allowAnonymous)?then(' checked="checked"','')?no_esc}/>
+                            <input name="allowAnonymous" type="checkbox"class="form-check-input"${((a.allowAnonymous)?has_content&&a.allowAnonymous)?then(' checked="checked"','')?no_esc}/>
                             <@t.page 'allow_anonymous_contribute'/>
                         </label>
                     </span>
@@ -47,9 +47,9 @@
             <dl class="nowrap placeExtend">
                 <dt><@t.page 'item_type'/>:</dt>
                 <dd>
-                    <label><input name="acceptItemTypes" type="checkbox" value="content"<#if (a.acceptItemTypes)?has_content&&a.acceptItemTypes?seq_contains('content')> checked="checked"</#if>/><@t.page 'content'/></label>
-                    <label><input name="acceptItemTypes" type="checkbox" value="page"<#if (a.acceptItemTypes)?has_content&&a.acceptItemTypes?seq_contains('page')> checked="checked"</#if>/><@t.page 'page'/></label>
-                    <label><input name="acceptItemTypes" type="checkbox" value="category"<#if (a.acceptItemTypes)?has_content&&a.acceptItemTypes?seq_contains('category')> checked="checked"</#if>/><@t.page 'category'/></label>
+                    <label><input name="acceptItemTypes" type="checkbox" class="form-check-input" value="content"<#if (a.acceptItemTypes)?has_content&&a.acceptItemTypes?seq_contains('content')> checked="checked"</#if>/><@t.page 'content'/></label>
+                    <label><input name="acceptItemTypes" type="checkbox" class="form-check-input" value="page"<#if (a.acceptItemTypes)?has_content&&a.acceptItemTypes?seq_contains('page')> checked="checked"</#if>/><@t.page 'page'/></label>
+                    <label><input name="acceptItemTypes" type="checkbox" class="form-check-input" value="category"<#if (a.acceptItemTypes)?has_content&&a.acceptItemTypes?seq_contains('category')> checked="checked"</#if>/><@t.page 'category'/></label>
                     <span class="info"><#noparse>${(a.itemType)!}:${(a.itemId)!}</#noparse></span>
                 </dd>
             </dl>
@@ -75,34 +75,34 @@
                 </dl>
                 <dl class="nowrap">
                     <dt>
-                        <label><input name="fieldList" type="checkbox" value="url"/><@t.page 'field.url'/></label>
+                        <label><input name="fieldList" type="checkbox" class="form-check-input" value="url"/><@t.page 'field.url'/></label>
                     </dt>
                     <dd>
                         <label><@t.page 'text'/>:</label>
                         <input name="fieldTextMap[url]" type="text" maxlength="20" size="10" value="${(a.fieldTextMap['url'])!t.pageMessage('url')}"/>
-                        <label><input name="requiredFieldList" type="checkbox" value="url"/><@t.page 'required'/></label>
+                        <label><input name="requiredFieldList" type="checkbox" class="form-check-input" value="url"/><@t.page 'required'/></label>
                         <span class="info"><#noparse>${(a.url)!}</#noparse></span>
                     </dd>
                 </dl>
                 <dl class="nowrap">
                     <dt>
-                        <label><input name="fieldList" type="checkbox" value="description"/><@t.page 'description'/></label>
+                        <label><input name="fieldList" type="checkbox" class="form-check-input" value="description"/><@t.page 'description'/></label>
                     </dt>
                     <dd>
                         <label><@t.page 'text'/>:</label>
                         <input name="fieldTextMap[description]" type="text" maxlength="20" size="10" value="${(a.fieldTextMap['description'])!t.pageMessage('description')}"/>
-                        <label><input name="requiredFieldList" type="checkbox" value="description"/><@t.page 'required'/></label>
+                        <label><input name="requiredFieldList" type="checkbox" class="form-check-input" value="description"/><@t.page 'required'/></label>
                         <span class="info"><#noparse>&lt;#list (a.description!'')?split("\n") as a&gt;${a}&lt;#sep&gt;&lt;br/&gt;&lt;/#list&gt;</#noparse></span>
                     </dd>
                 </dl>
                 <dl class="nowrap">
                     <dt>
-                        <label><input name="fieldList" type="checkbox" value="cover"/><@t.page 'cover'/></label>
+                        <label><input name="fieldList" type="checkbox" class="form-check-input" value="cover"/><@t.page 'cover'/></label>
                     </dt>
                     <dd>
                         <label><@t.page 'text'/>:</label>
                         <input name="fieldTextMap[cover]" type="text" maxlength="20" size="10" value="${(a.fieldTextMap['cover'])!t.pageMessage('cover')}"/>
-                        <label><input name="requiredFieldList" type="checkbox" value="cover"/><@t.page 'required'/></label>
+                        <label><input name="requiredFieldList" type="checkbox" class="form-check-input" value="cover"/><@t.page 'required'/></label>
                         <label><@t.page 'width'/></label><input name="coverWidth" type="number" size="5" value="${(a.coverWidth)!}"/>
                         <label><@t.page 'height'/></label><input name="coverHeight" type="number" size="5" value="${(a.coverHeight)!}"/>
                         <span class="info"><#noparse>&lt;img src="${(a.cover)!}" alt="${(a.title)!}"/&gt;</#noparse></span>

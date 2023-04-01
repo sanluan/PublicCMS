@@ -61,7 +61,7 @@
         <#noparse><@cms.dictionaryDataList dictionaryId="</#noparse>${dictionaryId}<#noparse>">
             <#list list as d>
                 <label>
-                    <input name="</#noparse>${inputName}<#noparse>" type="checkbox" value="${d.id.value}"/>
+                    <input name="</#noparse>${inputName}<#noparse>" type="checkbox" value="${d.id.value}" class="form-check-input"/>
                     ${d.text}
                 </label>
             </#list>
@@ -71,7 +71,7 @@
         <@cms.dictionaryDataList dictionaryId=dictionaryId>
             <#list list as d>
                 <label>
-                    <input name="${inputName}" type="checkbox" value="${d.id.value}"${(values?has_content&&values?seq_contains(d.id.value))?then(' checked="true"','')?no_esc}/>
+                    <input name="${inputName}" type="checkbox" value="${d.id.value}" class="form-check-input"${(values?has_content&&values?seq_contains(d.id.value))?then(' checked="true"','')?no_esc}/>
                     ${d.text}
                 </label>
             </#list>

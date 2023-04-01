@@ -45,7 +45,7 @@
                 </#if>
             </@sys.configData>
             <p>
-                <label><input type="checkbox" name="secureLogin" checked="checked"/><@t.page 'secure_login'/></label>
+                <label><input type="checkbox" name="secureLogin" class="form-check-input" checked="checked"/><@t.page 'secure_login'/></label>
                 <input type="submit" value="<@t.page 'login'/>"/>
                 <input type="hidden" name="returnUrl" value="${(returnUrl!)}"/>
                 <input type="hidden" name="encoding"/>

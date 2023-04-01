@@ -62,7 +62,7 @@
                             <th type="text" name="itemList[#index#].title" size="50" fieldClass="required" fieldAttrs="{maxlength:100}"><@t.page 'title'/></th>
                             <th type="text" name="itemList[#index#].sort" fieldClass="required digits" defaultval="#index#" size="5"><@t.page 'sort'/></th>
                         <#if 'exam'=object.surveyType>
-                            <th type="checkbox" name="itemList[#index#].answer" size="10"><@t.page 'answer.correct'/></th>
+                            <th type="checkbox" name="itemList[#index#].answer" fieldClass="form-check-input" size="10"><@t.page 'answer.correct'/></th>
                         </#if>
                             <th type="del" width="60"><@t.page 'operate'/></th>
                         </tr>
@@ -81,7 +81,7 @@
                             </td>
                         <#if 'exam'=object.surveyType>
                             <td>
-                                <input type="checkbox" name="itemList[${a?index}].answer" ${(q.answer?has_content&&q.answer?split(',')?seq_contains(a.id?string))?then(' checked="true"','')?no_esc}/>
+                                <input type="checkbox" name="itemList[${a?index}].answer" class="form-check-input"${(q.answer?has_content&&q.answer?split(',')?seq_contains(a.id?string))?then(' checked="true"','')?no_esc}/>
                             </td>
                         </#if>
                             <td>

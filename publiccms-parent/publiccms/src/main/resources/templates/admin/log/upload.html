@@ -22,7 +22,7 @@
                     <label><@t.page 'file_type'/>:</label>
                     <#list ['image','video','audio','other'] as a>
                         <label>
-                            <input <@t.compare fileTypes a 'checked="checked"'/> name="fileTypes" value="${a}" type="checkbox"/>
+                            <input name="fileTypes" value="${a}" type="checkbox" class="form-check-input"<@t.compare fileTypes a ' checked="checked"'/>/>
                             <@t.page 'file_type.'+a/>
                         </label>
                     </#list>
