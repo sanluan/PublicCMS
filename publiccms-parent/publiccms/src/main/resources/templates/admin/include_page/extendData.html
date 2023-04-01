@@ -47,7 +47,7 @@
             <#break>
         <#case 'image'>
             <#if 'view'=type>
-                <img src="${getUrl(value)!}" style="max-width:200px;max-height:200px;"/>
+                <img src="${getUrl(value)!}" alt="image" style="max-width:200px;max-height:200px;"/>
                 <br/>
                 ${(value)!}
             <#else>
@@ -65,7 +65,7 @@
             <#break>
         <#case 'privateimage'>
             <#if 'view'=type>
-                <img src="${getPrivateUrl(value)!}" style="max-width:200px;max-height:200px;"/>
+                <img src="${getPrivateUrl(value)!}" alt="image" style="max-width:200px;max-height:200px;"/>
                 <br/>
                 ${(value)!}
             <#else>

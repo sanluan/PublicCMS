@@ -54,7 +54,7 @@ $(".pageFormContent",$.pdialog.getCurrent()).on("change","input[type=file]",func
                 _csrf : $("input[name=_csrf]",$.pdialog.getCurrent()).val()
             },
             success: function (result) {
-                if(true==result){
+                if(result){
                     $('.overwrite').show();
                 } else {
                     $('.overwrite').hide();

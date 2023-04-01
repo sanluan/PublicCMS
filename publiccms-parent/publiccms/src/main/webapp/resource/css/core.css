@@ -141,7 +141,7 @@ header .nav .selected ul{display:block;}
 .pagination li .next{margin-right:5px;}
 .pagination li.disabled a{color:#666;}
 .pagination li.jumpto .textInput{float:left;width:35px;padding:1px;font-size:14px;border-color:#acaeaf;}
-.pagination li.jumpto .goto{width:10px;line-height:26px;text-align:center;border-top-left-radius:0px;border-bottom-left-radius:0px;border-left:0px;text-align:center;}
+.pagination li.jumpto .goto{width:10px;line-height:26px;border-top-left-radius:0px;border-bottom-left-radius:0px;border-left:0px;text-align:center;}
 
 /* Grid */
 .grid {display:block;overflow:hidden;width:100%;border-width:0 1px;position:relative;}
@@ -187,14 +187,13 @@ table.itemDetail caption label{padding-left:0px;}
 #taskbar .taskbarMargin{margin:0 20px;}
 #taskbar ul{position:absolute;width:10000px;}
 #taskbar li{float:left;height:30px;max-width:220px;margin-left:2px;padding-right:30px;padding-left:10px;position:relative;cursor:pointer;}
-#taskbar li .taskbutton{float:left;display:block;height:100%;width:100%;display:block;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;line-height:30px;}
-#taskbar .taskbarLeft, #taskbar .taskbarRight{display:block;overflow:hidden;display:none;width:18px;height:100%;position:absolute;top:0;color:#fff;font-size:18px;line-height:30px;text-align:center;}
-#taskbar .taskbarLeft, #taskbar .taskbarRight{left:2px;cursor:pointer;}
+#taskbar li .taskbutton{float:left;display:block;height:100%;width:100%;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;line-height:30px;}
+#taskbar .taskbarLeft, #taskbar .taskbarRight{overflow:hidden;display:none;width:18px;height:100%;position:absolute;top:0;left:2px;cursor:pointer;color:#fff;font-size:18px;line-height:30px;text-align:center;}
 #taskbar .taskbarLeftDisabled, #taskbar .taskbarRightDisabled{cursor:not-allowed;color:#666;}
 #taskbar .taskbarRight{left:auto;right:0px;}
 #taskbar .taskbarLeft:before{content:"\e6ea";font-family:iconfont;}
 #taskbar .taskbarRight:before{content:"\e616";font-family:iconfont;}
-#taskbar .close{display:block;overflow:hidden;padding:0;position:absolute;top:5px;width:auto;height:auto;top:50%;margin-top:-8px;right:8px;text-indent:0;}
+#taskbar .close{display:block;overflow:hidden;padding:0;position:absolute;width:auto;height:auto;top:50%;margin-top:-8px;right:8px;text-indent:0;}
 
 /* ProgressBar */
 #progressBar{display:block;width:28px;height:28px;font-size:28px;position:absolute;top:50%;left:50%;margin-left:-14px;margin-top:-14px;z-index:2001;}
@@ -240,10 +239,9 @@ a.button:hover{text-decoration:none;}
 .langList a,.langList a:hover,.langList li.current-lang a{text-decoration:none;}
 .langList a img{height:18px;position:relative;top:5px;border-radius:50%;margin-right:5px;}
 
-.themeList li div{background:url(../images/themeButton.png) no-repeat;}
+.themeList li div{display:block;overflow:hidden;width:13px;height:11px;cursor:pointer;background:url(../images/themeButton.png) no-repeat;}
 .themeList{float:left;padding:10px 12px 15px;}
 .themeList li{float:left;padding:0px 3px;}
-.themeList li div{display:block;overflow:hidden;width:13px;height:11px;cursor:pointer;}
 .themeList li.toptry div{background-position:-60px 0;}
 .themeList li.toptry .selected{background-position:-60px -20px;}
 .themeList li.red div{background-position:-20px 0;}
@@ -321,10 +319,10 @@ fieldset:first-child .unit:first-of-type p:last-child{padding:0;}
 .combox{float:left;margin-right:3px;}
 .combox select{display:none;}
 .combox .select{float:left;}
-.combox .select a{float:left;display:block;overflow:hidden;height:26px;padding:0 25px 0 6px;line-height:26px;text-decoration:none;font-size:14px;border-width:1px;border-style:solid;position:relative;padding:0 28px 0 10px;}
+.combox .select a{float:left;display:block;overflow:hidden;height:26px;line-height:26px;text-decoration:none;font-size:14px;border-width:1px;border-style:solid;position:relative;padding:0 28px 0 10px;}
 .combox .select a:before{content:"\e668";font-family:iconfont;position:absolute;right:8px;}
 .combox .select a.expand:before{content:"\e654";}
-.comboxop{position:absolute;z-index:1001;display:none;padding:4px;border-style:solid;border-width:1px 2px 2px 1px;position:absolute;top:22px;left:1px;border-width:1px;border-style:solid;}
+.comboxop{position:absolute;z-index:1001;display:none;padding:4px;top:22px;left:1px;border-width:1px;border-style:solid;}
 .comboxop .search{width:100%;}
 .comboxop .search input{width:100%;}
 .comboxop a{width:100%;height:28px;box-sizing:border-box;padding:0 10px;line-height:28px;text-align:left;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
@@ -368,7 +366,7 @@ a.btnLook:before,a.btnDel:before,a.btnAttach:before,a.view:before{font-size:20px
 .alert .alertContent{display:block;overflow:hidden;padding-bottom:20px;}
 .alert .alertInner{display:block;text-align:left;}
 .alert .alertInner .msg{font-size:14px;margin:20px 10px 20px 25px;max-height:200px;overflow:auto;line-height:1.3em;}
-.alert h1{display:block;font-weight:400;font-size:16px;;overflow:hidden;margin-bottom:10px;padding:0 0 0 25px;line-height:40px;line-height:40px;}
+.alert h1{display:block;font-weight:400;font-size:16px;overflow:hidden;margin-bottom:10px;padding:0 0 0 25px;line-height:40px;}
 
 .alert .error h1{font-weight:400;border:none;height:auto;line-height:40px;font-size:16px;}
 .alert p{margin:10px;}
@@ -434,7 +432,7 @@ a.btnLook:before,a.btnDel:before,a.btnAttach:before,a.view:before{font-size:20px
 .image-list p{float:none;position:absolute;bottom:0px;margin:0px;overflow:hidden;width:100%;min-width:100%;height:30px;line-height:15px;padding:unset;word-break:break-all;}
 
 /* calendar */
-#calendar{margin:0;width:230px;z-index:1001;position:absolute;display:block;border-width:1px;border-style:solid;display:none;}
+#calendar{margin:0;width:230px;z-index:1001;position:absolute;border-width:1px;border-style:solid;display:none;}
 #calendar *{margin:0;padding:0;font-size:14px;line-height:18px;}
 #calendar .main{margin:auto;text-align:center;zoom:1;position:relative;}
 #calendar .head{padding:6px 0;}
@@ -452,7 +450,7 @@ a.btnLook:before,a.btnDel:before,a.btnAttach:before,a.view:before{font-size:20px
 #calendar .clearBut, #calendar .okBut{border-width:1px;border-style:solid;border-radius:2px;width:52px;line-height:24px;cursor:pointer;margin-right:7px;}
 #calendar .clearBut{margin-right:2px;}
 #calendar .time{border-collapse:collapse;float:left;display:none;margin-left:6px;}
-#calendar .time td{line-height:16px;vertical-align:center;line-height:26px;}
+#calendar .time td{vertical-align:center;line-height:26px;}
 #calendar .time .hh, #calendar .time .mm, #calendar .time .ss{width:20px;height:auto;text-align:center;border:none;}
 #calendar .time ul{list-style:none;}
 #calendar .time .up, #calendar .time .down{font-size:8px;line-height:100%;cursor:pointer;width:12px;text-align:center;height:13px;}
@@ -527,8 +525,8 @@ a.inputDateButton:before{content:"\e60b";font-family:iconfont;}
 a.inputDateButton:hover{text-decoration:none;}
 
 /* basic color */
-body{color:#ccc;}
-a{color:#fff;}
+body{color:#fff;}
+a{color:#333;}
 header,main,#sidebar,footer{background-color:#333;}
 table.list tbody{background-color:#666;}
 .page{background-color:#fff;color:#333;}
