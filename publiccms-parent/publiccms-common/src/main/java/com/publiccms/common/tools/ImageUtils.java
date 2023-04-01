@@ -95,7 +95,7 @@ public class ImageUtils {
      * </pre>
      * 
      * <pre>
-     * &#64;RequestMapping(value = "doLogin", method = RequestMethod.POST)
+     * &#64;PostMapping("doLogin")
      * public String login(@RequestAttribute SysSite site, HttpSession session, String username, String password, String captcha,
      *         String returnUrl, Long clientId, String uuid, HttpServletRequest request, ModelMap model) {
      *     String sessionCaptcha = (String) session.getAttribute("captcha");

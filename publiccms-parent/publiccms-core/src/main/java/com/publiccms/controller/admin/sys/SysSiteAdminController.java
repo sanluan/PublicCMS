@@ -23,9 +23,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
@@ -243,7 +243,7 @@ public class SysSiteAdminController {
             boolean overwrite, HttpServletRequest request, ModelMap model) {
         if (null != file && !file.isEmpty()) {
             String originalName = file.getOriginalFilename();
-            if (originalName.endsWith("-site.zip")) {
+            if (null != originalName && originalName.endsWith("-site.zip")) {
                 try {
                     File dest = new File(siteComponent.getSiteFilePath(), originalName);
                     if (overwrite || !dest.exists()) {
@@ -300,8 +300,8 @@ public class SysSiteAdminController {
                         for (Path entry : stream) {
                             File file = entry.toFile();
                             if (file.isFile() && MetadataComponent.DATA_FILE.equalsIgnoreCase(file.getName())) {
-                                String content = StringUtils.replace(
-                                        FileUtils.readFileToString(file, Constants.DEFAULT_CHARSET), oldurl, newurl);
+                                String content = StringUtils.replace(FileUtils.readFileToString(file, Constants.DEFAULT_CHARSET),
+                                        oldurl, newurl);
                                 FileUtils.write(file, content, Constants.DEFAULT_CHARSET);
                                 i += 1;
                             }
@@ -370,7 +370,7 @@ public class SysSiteAdminController {
      * @param model
      * @return view name
      */
-    @RequestMapping(value = "doUploadLicense", method = RequestMethod.POST)
+    @PostMapping("doUploadLicense")
     @Csrf
     public String upload(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile file,
             HttpServletRequest request, ModelMap model) {

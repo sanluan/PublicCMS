@@ -15,9 +15,9 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
@@ -90,7 +90,7 @@ public class UserController {
      * @param model
      * @return view name
      */
-    @RequestMapping(value = "changePassword", method = RequestMethod.POST)
+    @PostMapping("changePassword")
     @Csrf
     public String changePassword(@RequestAttribute SysSite site, @SessionAttribute SysUser user, String oldpassword,
             String password, String repassword, String encoding, String returnUrl, HttpServletRequest request,
@@ -163,7 +163,7 @@ public class UserController {
      * @param model
      * @return view name
      */
-    @RequestMapping(value = "saveEmail", method = RequestMethod.POST)
+    @PostMapping("saveEmail")
     @Csrf
     public String saveEmail(@RequestAttribute SysSite site, @SessionAttribute SysUser user, String email, String returnUrl,
             HttpServletRequest request, ModelMap model) {

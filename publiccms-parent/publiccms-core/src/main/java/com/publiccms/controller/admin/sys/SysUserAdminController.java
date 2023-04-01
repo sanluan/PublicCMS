@@ -2,14 +2,15 @@ package com.publiccms.controller.admin.sys;
 
 import static org.springframework.util.StringUtils.arrayToCommaDelimitedString;
 
-import javax.servlet.http.HttpServletRequest;
-import org.apache.commons.lang3.StringUtils;
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.publiccms.common.annotation.Csrf;
@@ -162,7 +163,7 @@ public class SysUserAdminController {
      * @param request
      * @return view name
      */
-    @RequestMapping(value = "enable", method = RequestMethod.POST)
+    @PostMapping("enable")
     @Csrf
     public String enable(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids,
             HttpServletRequest request) {
@@ -182,7 +183,7 @@ public class SysUserAdminController {
      * @param request
      * @return view name
      */
-    @RequestMapping(value = "disable", method = RequestMethod.POST)
+    @PostMapping("disable")
     @Csrf
     public String disable(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids,
             HttpServletRequest request) {

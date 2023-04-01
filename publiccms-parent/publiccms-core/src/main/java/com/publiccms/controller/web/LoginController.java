@@ -18,9 +18,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
@@ -97,7 +97,7 @@ public class LoginController {
      *            模型
      * @return view name 视图名
      */
-    @RequestMapping(value = "doLogin", method = RequestMethod.POST)
+    @PostMapping("doLogin")
     public String login(@RequestAttribute SysSite site, String username, String password, String returnUrl, String encoding,
             String captcha, Long clientId, String uuid, HttpServletRequest request, HttpServletResponse response,
             ModelMap model) {
@@ -217,7 +217,7 @@ public class LoginController {
      * @param model
      * @return view name
      */
-    @RequestMapping(value = "doRegister", method = RequestMethod.POST)
+    @PostMapping("doRegister")
     public String register(@RequestAttribute SysSite site, SysUser entity, String repassword, String returnUrl, String encode,
             String captcha, Long clientId, String uuid, HttpServletRequest request, HttpServletResponse response,
             ModelMap model) {
@@ -308,7 +308,7 @@ public class LoginController {
      * @param response
      * @return view name
      */
-    @RequestMapping(value = "doLogout", method = RequestMethod.POST)
+    @PostMapping("doLogout")
     public String logout(@RequestAttribute SysSite site, Long userId, String returnUrl, HttpServletRequest request,
             HttpServletResponse response) {
         returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());

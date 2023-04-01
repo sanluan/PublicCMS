@@ -2,15 +2,15 @@ package com.publiccms.controller.admin.sys;
 
 import static org.springframework.util.StringUtils.arrayToCommaDelimitedString;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
-import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
@@ -152,7 +152,8 @@ public class SysDeptAdminController {
                 if (ControllerUtils.errorNotEquals("repassword", entity.getPassword(), repassword, model)) {
                     return CommonConstants.TEMPLATE_ERROR;
                 }
-                entity.setPassword(UserPasswordUtils.passwordEncode(entity.getPassword(), UserPasswordUtils.getSalt(), null, encoding));
+                entity.setPassword(
+                        UserPasswordUtils.passwordEncode(entity.getPassword(), UserPasswordUtils.getSalt(), null, encoding));
             } else {
                 entity.setPassword(user.getPassword());
                 if (CommonUtils.empty(entity.getEmail()) || !entity.getEmail().equals(user.getEmail())) {
@@ -178,7 +179,8 @@ public class SysDeptAdminController {
             }
             entity.setDeptId(dept.getId());
             entity.setSiteId(site.getId());
-            entity.setPassword(UserPasswordUtils.passwordEncode(entity.getPassword(), UserPasswordUtils.getSalt(), null, encoding));
+            entity.setPassword(
+                    UserPasswordUtils.passwordEncode(entity.getPassword(), UserPasswordUtils.getSalt(), null, encoding));
             userService.save(entity);
             if (CommonUtils.notEmpty(roleIds)) {
                 for (Integer roleId : roleIds) {
@@ -239,7 +241,7 @@ public class SysDeptAdminController {
      * @param model
      * @return view name
      */
-    @RequestMapping(value = "enableUser", method = RequestMethod.POST)
+    @PostMapping("enableUser")
     @Csrf
     public String enable(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long id, HttpServletRequest request,
             ModelMap model) {
@@ -270,7 +272,7 @@ public class SysDeptAdminController {
      * @param model
      * @return view name
      */
-    @RequestMapping(value = "disableUser", method = RequestMethod.POST)
+    @PostMapping("disableUser")
     @Csrf
     public String disable(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long id, HttpServletRequest request,
             ModelMap model) {

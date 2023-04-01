@@ -17,6 +17,7 @@ import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -87,7 +88,7 @@ public class LoginAdminController {
      * @param model
      * @return view name
      */
-    @RequestMapping(value = "login", method = RequestMethod.POST)
+    @PostMapping("login")
     public String login(@RequestAttribute SysSite site, String username, String password, String returnUrl, String encoding,
             String captcha, HttpServletRequest request, HttpServletResponse response, ModelMap model) {
         username = StringUtils.trim(username);
@@ -186,7 +187,7 @@ public class LoginAdminController {
      * @param model
      * @return view name
      */
-    @RequestMapping(value = "loginDialog", method = RequestMethod.POST)
+    @PostMapping("loginDialog")
     public String loginDialog(@RequestAttribute SysSite site, String username, String password, String encoding, String captcha,
             HttpServletRequest request, HttpServletResponse response, ModelMap model) {
         if ("login".equals(login(site, username, password, null, encoding, captcha, request, response, model))) {
@@ -207,7 +208,7 @@ public class LoginAdminController {
      * @param model
      * @return view name
      */
-    @RequestMapping(value = "changePassword", method = RequestMethod.POST)
+    @PostMapping("changePassword")
     @Csrf
     public String changeMyselfPassword(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String oldpassword,
             String password, String repassword, String encoding, HttpServletRequest request, HttpServletResponse response,
