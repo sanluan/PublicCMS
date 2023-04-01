@@ -21,7 +21,7 @@ public interface OauthGateway extends Container<String> {
     String getChannel();
 
     default Supplier<String> keyFunction() {
-        return () -> getChannel();
+        return this::getChannel;
     }
 
     /**
@@ -52,7 +52,17 @@ public interface OauthGateway extends Container<String> {
      * @throws ClientProtocolException
      * @throws IOException
      */
-    OauthAccess getOpenId(short siteId, String code) throws ClientProtocolException, IOException;
+    OauthAccess getOpenId(short siteId, String code) throws IOException;
+
+    /**
+     * @param siteId
+     * @param oauthInfo
+     * @return
+     * @throws IOException
+     */
+    default OauthAccess getOpenId(@SuppressWarnings("unused") short siteId, OauthAccess oauthInfo) throws IOException {
+        return oauthInfo;
+    }
 
     /**
      * @param siteId
@@ -61,5 +71,5 @@ public interface OauthGateway extends Container<String> {
      * @throws ClientProtocolException
      * @throws IOException
      */
-    OauthUser getUserInfo(short siteId, OauthAccess oauthAccess) throws ClientProtocolException, IOException;
+    OauthUser getUserInfo(short siteId, OauthAccess oauthAccess) throws IOException;
 }

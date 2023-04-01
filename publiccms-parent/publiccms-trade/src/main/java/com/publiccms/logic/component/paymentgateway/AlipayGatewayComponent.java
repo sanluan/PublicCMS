@@ -250,7 +250,7 @@ public class AlipayGatewayComponent extends AbstractPaymentGateway implements co
         extendFieldList.add(new SysExtendField(CONFIG_NOTIFYURL, INPUTTYPE_TEXT,
                 getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_NOTIFYURL)),
                 getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_NOTIFYURL,
-                        CONFIG_CODE_DESCRIPTION_SUFFIX, site.getDynamicPath()))));
+                        CONFIG_CODE_DESCRIPTION_SUFFIX), site.getDynamicPath())));
         return extendFieldList;
     }
 

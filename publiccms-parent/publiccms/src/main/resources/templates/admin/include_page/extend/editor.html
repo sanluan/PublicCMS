@@ -9,5 +9,5 @@
             </#if>
         </div>
     </#if>
-        <textarea name="${inputName}"<#if extend.maxlength?has_content> maxlength="${extend.maxlength}"</#if> class="editor<#if 'customform'!=type><#if extend.required> required</#if>"<#if 'customform'!=type> editorType="${extend.inputType}"</#if> cols="80" rows="20">${(value)!}</textarea>
+        <textarea name="${inputName}"<#if extend.maxlength?has_content> maxlength="${extend.maxlength}"</#if> class="editor<#if 'customform'!=type><#if extend.required> required</#if></#if>"<#if 'customform'!=type> editorType="${extend.inputType}"</#if> cols="80" rows="20">${(value)!}</textarea>
 </#if>

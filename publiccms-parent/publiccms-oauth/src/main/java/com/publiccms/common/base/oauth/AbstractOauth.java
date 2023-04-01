@@ -141,16 +141,6 @@ public abstract class AbstractOauth implements Config, OauthGateway {
         return getAuthorizeUrl(siteId, state, false);
     }
 
-    /**
-     * @param siteId
-     * @param oauthInfo
-     * @return
-     * @throws IOException 
-     */
-    public OauthAccess getOpenId(short siteId, OauthAccess oauthInfo) throws IOException {
-        return oauthInfo;
-    }
-
     @Override
     public OauthAccess getOpenId(short siteId, String code) throws IOException {
         return getOpenId(siteId, getAccessToken(siteId, code));
@@ -187,7 +177,7 @@ public abstract class AbstractOauth implements Config, OauthGateway {
         extendFieldList.add(new SysExtendField(CommonUtils.joinString(prefix, CONFIG_RETURN_URL), INPUTTYPE_TEXT,
                 getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, prefix, CONFIG_RETURN_URL)),
                 getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, prefix, CONFIG_RETURN_URL,
-                        CONFIG_CODE_DESCRIPTION_SUFFIX, site.getDynamicPath()))));
+                        CONFIG_CODE_DESCRIPTION_SUFFIX), site.getDynamicPath())));
         return extendFieldList;
     }
 
