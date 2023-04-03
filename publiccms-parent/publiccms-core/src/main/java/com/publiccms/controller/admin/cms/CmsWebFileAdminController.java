@@ -3,6 +3,7 @@ package com.publiccms.controller.admin.cms;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -125,7 +126,7 @@ public class CmsWebFileAdminController {
                         }
                         CmsFileUtils.upload(file, fuleFilePath);
                         if (CmsFileUtils.isSafe(fuleFilePath, suffix)) {
-                            FileUploadResult uploadResult = CmsFileUtils.getFileSize(fuleFilePath, suffix);
+                            FileUploadResult uploadResult = CmsFileUtils.getFileSize(fuleFilePath, originalName, suffix);
                             logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                                     originalName, privatefile, CmsFileUtils.getFileType(CmsFileUtils.getSuffix(originalName)),
                                     file.getSize(), uploadResult.getWidth(), uploadResult.getHeight(),
@@ -178,18 +179,17 @@ public class CmsWebFileAdminController {
                 String fuleFilePath = siteComponent.getWebFilePath(site.getId(), filepath);
                 if (overwrite || !CmsFileUtils.exists(fuleFilePath)) {
                     CmsFileUtils.mkdirsParent(fuleFilePath);
-                    long filesize = 0;
                     if (CommonUtils.notEmpty(base64File)) {
                         byte[] data = VerificationUtils.base64Decode(base64File);
-                        filesize = data.length;
                         ImageUtils.image2Ico(new ByteArrayInputStream(data), suffix, size, new File(fuleFilePath));
                     } else {
-                        filesize = file.getSize();
-                        ImageUtils.image2Ico(file.getInputStream(), suffix, size, new File(fuleFilePath));
+                        try (InputStream inputStream = file.getInputStream()) {
+                            ImageUtils.image2Ico(inputStream, suffix, size, new File(fuleFilePath));
+                        }
                     }
-                    FileUploadResult uploadResult = CmsFileUtils.getFileSize(fuleFilePath, suffix);
+                    FileUploadResult uploadResult = CmsFileUtils.getFileSize(fuleFilePath, originalName, suffix);
                     logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                            filename, false, CmsFileUtils.FILE_TYPE_IMAGE, filesize, uploadResult.getWidth(),
+                            filename, false, CmsFileUtils.FILE_TYPE_IMAGE, uploadResult.getFileSize(), uploadResult.getWidth(),
                             uploadResult.getHeight(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), filepath));
                 }
             } catch (IOException e) {

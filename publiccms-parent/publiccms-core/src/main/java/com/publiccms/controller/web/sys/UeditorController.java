@@ -145,12 +145,12 @@ public class UeditorController extends AbstractUeditorController {
             String filepath = siteComponent.getWebFilePath(site.getId(), fileName);
             try {
                 CmsFileUtils.writeByteArrayToFile(filepath, data);
-                FileUploadResult uploadResult = CmsFileUtils.getFileSize(filepath, SCRAW_TYPE);
+                FileUploadResult uploadResult = CmsFileUtils.getFileSize(filepath, fileName, SCRAW_TYPE);
                 lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_FILEUPLOAD_SIZE, String.valueOf(user.getId()), null,
                         (int) uploadResult.getFileSize() / 1024);
-                logUploadService.save(new LogUpload(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB,
-                        Constants.BLANK, false, CmsFileUtils.FILE_TYPE_IMAGE, data.length, uploadResult.getWidth(),
-                        uploadResult.getHeight(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
+                logUploadService.save(new LogUpload(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, Constants.BLANK,
+                        false, CmsFileUtils.FILE_TYPE_IMAGE, data.length, uploadResult.getWidth(), uploadResult.getHeight(),
+                        RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
                 Map<String, Object> map = getResultMap();
                 map.put("size", data.length);
                 map.put("title", fileName);

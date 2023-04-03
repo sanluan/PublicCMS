@@ -1,25 +1,24 @@
-<@cms.dictionary id=extend.dictionaryId><#assign values=object/></@cms.dictionary>
-<#if values?has_content>
+<@cms.dictionary id=extend.dictionaryId;dictionary>
     <#if 'view'=type>
         <@cms.dictionaryData dictionaryId=extend.dictionaryId values=value><#list map as k,vata>${data.text}<#sep>,</#list></@cms.dictionaryData>
     <#else>
         <#assign dictionaryId='dictionary_'+.now?long/>
         <#if 'customform'=type>
-<@dictionaryElement extend.dictionaryId inputName extend.required values.childDepth extend.multiple type value/>
+<@dictionaryElement extend.dictionaryId inputName extend.required dictionary.childDepth extend.multiple type value/>
         <#else>
-            <div class="dictionary" data-id="${values.id.id}" data-ref="<@cms.dictionaryExcludeList dictionaryId=values.id.id><#list list as a>${a.id.excludeDictionaryId}<#sep>,</#list></@cms.dictionaryExcludeList>" data-url="common/dictionaryExclude.html" id="${dictionaryId}">
-               <@dictionaryElement extend.dictionaryId inputName extend.required values.childDepth extend.multiple type value/>
+            <div class="dictionary" data-id="${dictionary.id.id}" data-ref="<@cms.dictionaryExcludeList dictionaryId=dictionary.id.id><#list list as a>${a.id.excludeDictionaryId}<#sep>,</#list></@cms.dictionaryExcludeList>" data-url="common/dictionaryExclude.html" id="${dictionaryId}">
+               <@dictionaryElement extend.dictionaryId inputName extend.required dictionary.childDepth extend.multiple type value/>
             </div>
         </#if>
         <#if 'customform'!=type>
             <@sys.authorized roleIds=admin.roles url='cmsDictionary/add'>
-                <a href="common/dictionary.html?id=${values.id.id}&inputName=${inputName?url}&required=${extend.required!}&multiple=${extend.multiple!}&value=${value!}" target="ajax" rel="${dictionaryId}"><i class="icon-refresh"></i><@t.page 'button.refresh'/></a>
-                <#if values.childDepth gt 0>
-                    <a href="cmsDictionary/addChild.html?id=${values.id.id}" target="dialog" mask="true"><@t.page 'dictionary.edit'/></a>
+                <a href="common/dictionary.html?id=${dictionary.id.id}&inputName=${inputName?url}&required=${extend.required!}&multiple=${extend.multiple!}&value=${value!}" target="ajax" rel="${dictionaryId}"><i class="icon-refresh"></i><@t.page 'button.refresh'/></a>
+                <#if dictionary.childDepth gt 0>
+                    <a href="cmsDictionary/addChild.html?id=${dictionary.id.id}" target="dialog" mask="true"><@t.page 'dictionary.edit'/></a>
                 <#else>
-                    <a href="cmsDictionary/add.html?id=${values.id.id}" target="navTab" rel="cmsDictionary/edit"><@t.page 'dictionary.edit'/></a>
+                    <a href="cmsDictionary/add.html?id=${dictionary.id.id}" target="navTab" rel="cmsDictionary/edit"><@t.page 'dictionary.edit'/></a>
                 </#if>
             </@sys.authorized>
         </#if>
     </#if>
-</#if>
+</@cms.dictionary>

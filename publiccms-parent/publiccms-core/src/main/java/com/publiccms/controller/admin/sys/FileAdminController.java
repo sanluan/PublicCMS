@@ -195,7 +195,7 @@ public class FileAdminController {
                                 try {
                                     CmsFileUtils.upload(imageData, filepath);
                                     String fileType = CmsFileUtils.getFileType(imagesuffix);
-                                    FileUploadResult uploadResult = CmsFileUtils.getFileSize(filepath, imagesuffix);
+                                    FileUploadResult uploadResult = CmsFileUtils.getFileSize(filepath, fileName, imagesuffix);
                                     logUploadService.save(new LogUpload(site.getId(), admin.getId(),
                                             LogLoginService.CHANNEL_WEB_MANAGER, CmsFileUtils.getFileName(filepath), false,
                                             fileType, imageData.length, uploadResult.getWidth(), uploadResult.getHeight(),
@@ -234,7 +234,7 @@ public class FileAdminController {
                                 try {
                                     CmsFileUtils.upload(content, filepath);
                                     String fileType = CmsFileUtils.getFileType(imagesuffix);
-                                    FileUploadResult uploadResult = CmsFileUtils.getFileSize(filepath, imagesuffix);
+                                    FileUploadResult uploadResult = CmsFileUtils.getFileSize(filepath, fileName, imagesuffix);
                                     logUploadService.save(new LogUpload(site.getId(), admin.getId(),
                                             LogLoginService.CHANNEL_WEB_MANAGER, suggestedName, false, fileType, content.length,
                                             uploadResult.getWidth(), uploadResult.getHeight(), RequestUtils.getIpAddress(request),
@@ -254,7 +254,7 @@ public class FileAdminController {
                             try {
                                 CmsFileUtils.upload(file, filepath);
                                 String fileType = CmsFileUtils.getFileType(suffix);
-                                FileUploadResult uploadResult = CmsFileUtils.getFileSize(filepath, suffix);
+                                FileUploadResult uploadResult = CmsFileUtils.getFileSize(filepath, fileName, suffix);
                                 logUploadService.save(new LogUpload(site.getId(), admin.getId(),
                                         LogLoginService.CHANNEL_WEB_MANAGER, originalName, false, fileType,
                                         uploadResult.getFileSize(), uploadResult.getWidth(), uploadResult.getHeight(),
@@ -279,7 +279,7 @@ public class FileAdminController {
                                     try {
                                         CmsFileUtils.upload(resource.getData(), filepath);
                                         String fileType = CmsFileUtils.getFileType(imagesuffix);
-                                        FileUploadResult uploadResult = CmsFileUtils.getFileSize(filepath, imagesuffix);
+                                        FileUploadResult uploadResult = CmsFileUtils.getFileSize(filepath, fileName, imagesuffix);
                                         logUploadService.save(new LogUpload(site.getId(), admin.getId(),
                                                 LogLoginService.CHANNEL_WEB_MANAGER, resource.getName(), false, fileType,
                                                 resource.getData().length, uploadResult.getWidth(), uploadResult.getHeight(),

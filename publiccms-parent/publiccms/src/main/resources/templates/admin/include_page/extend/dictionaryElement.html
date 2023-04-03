@@ -15,10 +15,8 @@
 </#if>
 </#macro>
 <#macro dictionaryElement dictionaryId inputName required childDepth multiple type value=''>
+<#assign values=(value?split(','))![]/>
 <#if childDepth gt 0>
-    <#if value?has_content>
-        <#assign values=value?split(',')/>
-    </#if>
     <#if multiple>
         <div class="treeForm">
             <ul class="tree treeFolder treeCheck expand">
@@ -54,9 +52,6 @@
     </#if>
 <#else>
     <#if multiple>
-        <#if value?has_content>
-            <#assign values=value?split(',')/>
-        </#if>
         <#if 'customform'=type>
         <#noparse><@cms.dictionaryDataList dictionaryId="</#noparse>${dictionaryId}<#noparse>">
             <#list list as d>

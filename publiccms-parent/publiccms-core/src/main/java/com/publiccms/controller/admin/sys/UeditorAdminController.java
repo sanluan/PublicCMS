@@ -122,7 +122,7 @@ public class UeditorAdminController extends AbstractUeditorController {
             String filepath = siteComponent.getWebFilePath(site.getId(), fileName);
             try {
                 CmsFileUtils.writeByteArrayToFile(filepath, data);
-                FileUploadResult uploadResult = CmsFileUtils.getFileSize(filepath, SCRAW_TYPE);
+                FileUploadResult uploadResult = CmsFileUtils.getFileSize(filepath, fileName, SCRAW_TYPE);
                 logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                         Constants.BLANK, false, CmsFileUtils.FILE_TYPE_IMAGE, data.length, uploadResult.getWidth(),
                         uploadResult.getHeight(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
@@ -175,12 +175,12 @@ public class UeditorAdminController extends AbstractUeditorController {
                                 fileName = CmsFileUtils.getUploadFileName("jpg");
                                 String filepath = siteComponent.getWebFilePath(site.getId(), fileName);
                                 ImageUtils.webp2Image(inputStream, false, new File(filepath));
-                                uploadResult = CmsFileUtils.getFileSize(filepath, suffix);
+                                uploadResult = CmsFileUtils.getFileSize(filepath, fileName, suffix);
                             } else {
                                 fileName = CmsFileUtils.getUploadFileName(suffix);
                                 String filepath = siteComponent.getWebFilePath(site.getId(), fileName);
                                 CmsFileUtils.copyInputStreamToFile(inputStream, filepath);
-                                uploadResult = CmsFileUtils.getFileSize(filepath, suffix);
+                                uploadResult = CmsFileUtils.getFileSize(filepath, fileName, suffix);
                             }
                             logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                                     Constants.BLANK, false, CmsFileUtils.getFileType(suffix), uploadResult.getFileSize(),

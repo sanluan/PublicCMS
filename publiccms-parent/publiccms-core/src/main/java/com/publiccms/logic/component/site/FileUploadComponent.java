@@ -97,7 +97,7 @@ public class FileUploadComponent {
                 : siteComponent.getWebFilePath(siteId, fileName);
         Path path = CmsFileUtils.upload(file, filepath);
         if (CmsFileUtils.isSafe(filepath, suffix)) {
-            return CmsFileUtils.getFileSize(filepath, suffix);
+            return CmsFileUtils.getFileSize(filepath, fileName, suffix);
         } else {
             Files.delete(path);
             throw new IOException(
@@ -119,7 +119,7 @@ public class FileUploadComponent {
                 : siteComponent.getWebFilePath(siteId, fileName);
         CmsFileUtils.upload(file, filepath);
         if (CmsFileUtils.isSafe(filepath, suffix)) {
-            return CmsFileUtils.getFileSize(filepath, suffix);
+            return CmsFileUtils.getFileSize(filepath, fileName, suffix);
         } else {
             throw new IOException(
                     LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "verify.custom.file.unsafe"));
