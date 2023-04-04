@@ -88,7 +88,7 @@ public class SendEmailDirective extends AbstractTemplateDirective {
                 CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(filepath);
                 CmsPageData data = metadataComponent.getTemplateData(filepath);
                 Map<String, String> parameters = handler.getMap("parameters");
-                if (null != parameters) {
+                if (!parameters.isEmpty()) {
                     model.putAll(parameters);
                 }
                 model.put("metadata", metadata.getAsMap(data));

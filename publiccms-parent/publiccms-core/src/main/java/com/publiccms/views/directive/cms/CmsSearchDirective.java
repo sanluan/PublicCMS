@@ -35,7 +35,7 @@ import freemarker.template.TemplateException;
  * <ul>
  * <li><code>word</code>:搜索词,多个搜索词时取并集结果
  * <li><code>exclude</code>:排除词汇
- * <li><code>tagId</code>:多个标签id,多个标签时取并集结果
+ * <li><code>tagIds</code>:多个标签id,多个标签时取并集结果
  * <li><code>userId</code>:用户id
  * <li><code>parentId</code>:父内容id
  * <li><code>categoryId</code>:分类id

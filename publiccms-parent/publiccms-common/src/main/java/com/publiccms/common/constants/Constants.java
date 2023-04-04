@@ -90,6 +90,12 @@ public abstract class Constants {
      * comma delimited
      */
     public static final char COMMA = ',';
+    /**
+     * 逗号分隔符
+     * 
+     * comma delimited
+     */
+    public static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
 
     /**
      * @return deafult meger function

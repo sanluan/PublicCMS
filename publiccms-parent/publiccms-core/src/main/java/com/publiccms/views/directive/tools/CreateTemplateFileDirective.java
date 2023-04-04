@@ -63,7 +63,7 @@ public class CreateTemplateFileDirective extends AbstractTemplateDirective {
             try {
                 Map<String, Object> model = new HashMap<>();
                 Map<String, String> parameters = handler.getMap("parameters");
-                if (null != parameters) {
+                if (!parameters.isEmpty()) {
                     model.putAll(parameters);
                 }
                 String realTemplatePath = siteComponent.getTemplateFilePath(site.getId(), templatePath);

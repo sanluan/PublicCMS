@@ -73,9 +73,9 @@ public class GetHtmlMethod extends BaseMethod {
             try (CloseableHttpClient httpclient = HttpClients.custom()
                     .setDefaultRequestConfig(Constants.defaultRequestConfig).build()) {
                 HttpUriRequest request;
-                if (null != parameters || CommonUtils.notEmpty(body)) {
+                if (!parameters.isEmpty() || CommonUtils.notEmpty(body)) {
                     HttpPost httppost = new HttpPost(url);
-                    if (null != parameters) {
+                    if (!parameters.isEmpty()) {
                         List<NameValuePair> nvps = new ArrayList<>();
                         Iterator<?> it = parameters.keySet().iterator();
                         while (it.hasNext()) {
@@ -91,7 +91,7 @@ public class GetHtmlMethod extends BaseMethod {
                 } else {
                     request = new HttpGet(url);
                 }
-                if (null != headers) {
+                if (!headers.isEmpty()) {
                     for (Entry<?, ?> entry : headers.entrySet()) {
                         request.addHeader((String) entry.getKey(), (String) entry.getValue());
                     }

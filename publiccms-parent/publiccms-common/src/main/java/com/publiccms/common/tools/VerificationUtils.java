@@ -146,7 +146,7 @@ public class VerificationUtils {
             signature.update(data);
             return signature.sign();
         } catch (GeneralSecurityException e) {
-            return new byte[0];
+            return Constants.EMPTY_BYTE_ARRAY;
         }
     }
 
@@ -310,7 +310,7 @@ public class VerificationUtils {
             cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec, new GCMParameterSpec(128, iv));
             return cipher.doFinal(input.getBytes(Constants.DEFAULT_CHARSET));
         } catch (GeneralSecurityException e) {
-            return new byte[0];
+            return Constants.EMPTY_BYTE_ARRAY;
         }
     }
 
@@ -357,7 +357,7 @@ public class VerificationUtils {
             cipher.init(Cipher.ENCRYPT_MODE, keyFactory.generateSecret(dks));
             return cipher.doFinal(input.getBytes(Constants.DEFAULT_CHARSET));
         } catch (GeneralSecurityException e) {
-            return new byte[0];
+            return Constants.EMPTY_BYTE_ARRAY;
         }
     }
 
