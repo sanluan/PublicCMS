@@ -106,7 +106,7 @@
             </div>
         <#if page?has_content>
             <div>
-            	<#if content.url?contains('?')><#assign pageParameter="pageIndex"/></#if>
+                <#if content.url?contains('?')><#assign pageParameter="pageIndex"/></#if>
                 <#if !page.firstPage>
                     <a href="${getPage(content.url,page.prePage,pageParameter)}">Previous page</a>
                 <#else>

@@ -105,8 +105,8 @@ public class DirectiveComponent {
             taskDirectiveMap.put(directive.getName(), directive);
         }
         for (Entry<String, Map<String, BaseTemplateDirective>> entry : namespaceMap.entrySet()) {
-            log.info(CommonUtils.joinString("namespace ", entry.getKey(), " has ", entry.getValue().keySet().size(), " directives : ",
-                    entry.getValue().keySet().toString()));
+            log.info(CommonUtils.joinString("namespace ", entry.getKey(), " has ", entry.getValue().keySet().size(),
+                    " directives : ", entry.getValue().keySet().toString()));
         }
         for (BaseMethod method : methodList) {
             if (null == method.getName()) {
