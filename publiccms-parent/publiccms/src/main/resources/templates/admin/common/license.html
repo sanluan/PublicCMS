@@ -39,10 +39,11 @@
             global: false,
             dataType: "json",
             success: function(data){
-            if(data.result){
-                $('.licenseVerify').append('<@t.page 'verified'/>');
-            }else{
-                $('.licenseVerify').append('<em style="color:red"><@t.page 'unverified'/></em>');
+                if(data.result){
+                    $('.licenseVerify').append('<@t.page 'verified'/>');
+                }else{
+                    $('.licenseVerify').append('<em style="color:red"><@t.page 'unverified'/></em>');
+                }
             }
         });
     </script>

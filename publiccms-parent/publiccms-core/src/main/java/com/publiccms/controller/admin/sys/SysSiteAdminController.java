@@ -42,7 +42,6 @@ import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.common.tools.ZipUtils;
 import com.publiccms.entities.log.LogOperate;
-import com.publiccms.entities.log.LogUpload;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.exchange.SiteExchangeComponent;
@@ -51,7 +50,6 @@ import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
-import com.publiccms.logic.service.log.LogUploadService;
 import com.publiccms.logic.service.sys.SysDomainService;
 import com.publiccms.logic.service.sys.SysSiteService;
 import com.publiccms.logic.service.sys.SysUserService;
@@ -77,8 +75,6 @@ public class SysSiteAdminController {
     private SqlService sqlService;
     @Resource
     private HqlService hqlService;
-    @Resource
-    protected LogUploadService logUploadService;
     @Resource
     protected LogOperateService logOperateService;
     @Resource
@@ -380,9 +376,6 @@ public class SysSiteAdminController {
         if (null != file && !file.isEmpty()) {
             try {
                 CmsFileUtils.upload(file, CommonUtils.joinString(siteComponent.getRootPath(), CommonConstants.LICENSE_FILENAME));
-                logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                        "license.dat", true, CmsFileUtils.FILE_TYPE_OTHER, file.getSize(), null, null,
-                        RequestUtils.getIpAddress(request), CommonUtils.getDate(), CommonConstants.LICENSE_FILENAME));
                 return CommonConstants.TEMPLATE_DONE;
             } catch (IllegalStateException | IOException e) {
                 log.error(e.getMessage(), e);
