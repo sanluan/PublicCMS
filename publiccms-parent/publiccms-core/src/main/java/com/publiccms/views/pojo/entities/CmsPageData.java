@@ -2,21 +2,18 @@ package com.publiccms.views.pojo.entities;
 
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-
-import org.springframework.util.StringUtils;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.views.pojo.model.ExtendDataParameters;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CmsPageData implements java.io.Serializable {
+public class CmsPageData extends ExtendDataParameters implements java.io.Serializable {
 
     /**
      * 
      */
     private static final long serialVersionUID = 1L;
-    private Map<String, String> extendData;
 
     /**
      * 
@@ -25,28 +22,13 @@ public class CmsPageData implements java.io.Serializable {
     }
 
     /**
-     * @return
-     */
-    public Map<String, String> getExtendData() {
-        return extendData;
-    }
-
-    /**
-     * @param extendData
-     *            the extendData to set
-     */
-    public void setExtendData(Map<String, String> extendData) {
-        this.extendData = extendData;
-    }
-
-    /**
      * @param extendDataList
      */
     public void setExtendDataList(List<ExtendData> extendDataList) {
         if (CommonUtils.notEmpty(extendDataList)) {
-            extendData = new LinkedHashMap<>();
+            setExtendData(new LinkedHashMap<>());
             for (ExtendData data : extendDataList) {
-                extendData.put(data.getName(), data.getValue());
+                getExtendData().put(data.getName(), data.getValue());
             }
         }
     }
@@ -101,12 +83,5 @@ class ExtendData implements java.io.Serializable {
      */
     public void setValue(String value) {
         this.value = value;
-    }
-
-    /**
-     * @param values
-     */
-    public void setValues(String[] values) {
-        this.value = StringUtils.arrayToCommaDelimitedString(values);
     }
 }

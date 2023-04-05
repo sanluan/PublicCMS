@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
@@ -138,7 +138,7 @@ public class TradePaymentController {
         Map<String, String> config = configDataComponent.getConfigData(site.getId(), AlipayGatewayComponent.CONFIG_CODE);
         if (CommonUtils.notEmpty(config)) {
             Map<String, String> params = request.getParameterMap().entrySet().stream()
-                    .collect(Collectors.toMap(Entry::getKey, e -> CommonUtils.joinString(e.getValue(), ",")));
+                    .collect(Collectors.toMap(Entry::getKey, e -> StringUtils.join(e.getValue(), ",")));
             if (Signer.verifyParams(params, config.get(AlipayGatewayComponent.CONFIG_ALIPAY_PUBLIC_KEY))) {
                 try {
                     TradePaymentHistory history = new TradePaymentHistory(site.getId(), out_trade_no, CommonUtils.getDate(),
