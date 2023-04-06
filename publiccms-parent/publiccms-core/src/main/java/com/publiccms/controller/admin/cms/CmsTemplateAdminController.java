@@ -216,7 +216,7 @@ public class CmsTemplateAdminController {
                 }
                 if (CommonUtils.notEmpty(metadata.getMetadataExtendList())) {
                     metadata.getMetadataExtendList().sort(Comparator.comparing(e -> e.getSort()));
-                    metadata.getExtendList().forEach(e -> {
+                    metadata.getMetadataExtendList().forEach(e -> {
                         if (CommonUtils.empty(e.getName())) {
                             e.setName(e.getId().getCode());
                         }
