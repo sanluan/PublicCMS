@@ -2,9 +2,10 @@ package ${base}.${servicePack};
 
 // Generated ${.now?date} by com.publiccms.common.generator.SourceGenerator
 
+import javax.annotation.Resource;
+
 <#include "../include_imports/field_type.ftl">
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,7 +31,7 @@ public class ${entityName}${serviceSuffix} extends BaseService<${entityName}> {
         return dao.getPage(<#include "../include_condition/invoke.ftl">);
     }
     
-    @Autowired
+    @Resource
     private ${entityName}Dao dao;
     
 }

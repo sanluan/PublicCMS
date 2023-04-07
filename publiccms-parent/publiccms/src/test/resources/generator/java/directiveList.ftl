@@ -3,8 +3,8 @@ package ${base}.${directivePack};
 // Generated ${.now?date} by com.publiccms.common.generator.SourceGenerator
 
 import java.io.IOException;
+import javax.annotation.Resource;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 <#include "../include_imports/service.ftl">
@@ -28,7 +28,7 @@ public class ${entityName}List${directiveSuffix} extends AbstractTemplateDirecti
         handler.put("page", page).render();
     }
 
-    @Autowired
+    @Resource
     private ${entityName}Service service;
 
 }

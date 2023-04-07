@@ -5,8 +5,8 @@ package ${base}.${directivePack};
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Resource;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 <#include "../include_imports/entity.ftl">
@@ -44,7 +44,7 @@ public class ${entityName}${directiveSuffix} extends AbstractTemplateDirective {
         }
     }
 
-    @Autowired
+    @Resource
     private ${entityName}Service service;
 
 }

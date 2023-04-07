@@ -2,10 +2,10 @@ package ${base}.${controllerPack};
 
 // Generated ${.now?date} by com.publiccms.common.generator.SourceGenerator
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -86,8 +86,8 @@ public class ${entityName}${controllerSuffix} {
         return CommonConstants.TEMPLATE_DONE;
     }
 
-    @Autowired
+    @Resource
     private ${entityName}Service service;
-    @Autowired
+    @Resource
     protected LogOperateService logOperateService;
 }
