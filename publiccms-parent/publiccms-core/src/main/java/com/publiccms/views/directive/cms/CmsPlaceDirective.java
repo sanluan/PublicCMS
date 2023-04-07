@@ -6,19 +6,23 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 import jakarta.annotation.Resource;
+
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.entities.cms.CmsPlace;
 import com.publiccms.entities.cms.CmsPlaceAttribute;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
-import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsPlaceAttributeService;
 import com.publiccms.logic.service.cms.CmsPlaceService;
+
+import freemarker.template.TemplateException;
 
 /**
  *
@@ -52,7 +56,7 @@ import com.publiccms.logic.service.cms.CmsPlaceService;
 public class CmsPlaceDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Long id = handler.getLong("id");
         boolean absoluteURL = handler.getBoolean("absoluteURL", true);
         SysSite site = getSite(handler);
@@ -60,7 +64,8 @@ public class CmsPlaceDirective extends AbstractTemplateDirective {
             CmsPlace entity = service.getEntity(id);
             if (null != entity && site.getId() == entity.getSiteId()) {
                 if (absoluteURL) {
-                    templateComponent.initPlaceUrl(site, entity);
+                    CmsUrlUtils.initPlaceUrl(site, entity);
+                    fileUploadComponent.initPlaceCover(site, entity);
                 }
                 handler.put("object", entity);
                 if (handler.getBoolean("containsAttribute", false)) {
@@ -82,7 +87,8 @@ public class CmsPlaceDirective extends AbstractTemplateDirective {
                         if (null != clicks) {
                             e.setClicks(e.getClicks() + clicks);
                         }
-                        templateComponent.initPlaceUrl(site, e);
+                        CmsUrlUtils.initPlaceUrl(site, e);
+                        fileUploadComponent.initPlaceCover(site, e);
                     };
                 } else {
                     consumer = e -> {
@@ -109,7 +115,7 @@ public class CmsPlaceDirective extends AbstractTemplateDirective {
     @Resource
     private CmsPlaceAttributeService attributeService;
     @Resource
-    private TemplateComponent templateComponent;
+    protected FileUploadComponent fileUploadComponent;
     @Resource
     private StatisticsComponent statisticsComponent;
 }

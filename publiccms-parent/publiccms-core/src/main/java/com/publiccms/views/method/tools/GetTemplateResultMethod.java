@@ -7,7 +7,7 @@ import java.util.Map;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.BaseMethod;
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.FreeMarkerUtils;
 
@@ -53,8 +53,8 @@ public class GetTemplateResultMethod extends BaseMethod {
      */
     public GetTemplateResultMethod() {
         configuration = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
-        configuration.setDefaultEncoding(CommonConstants.DEFAULT_CHARSET_NAME);
-        configuration.setURLEscapingCharset(CommonConstants.DEFAULT_CHARSET_NAME);
+        configuration.setDefaultEncoding(Constants.DEFAULT_CHARSET_NAME);
+        configuration.setURLEscapingCharset(Constants.DEFAULT_CHARSET_NAME);
         configuration.setTemplateUpdateDelayMilliseconds(0);
         configuration.setAPIBuiltinEnabled(false);
         configuration.setNewBuiltinClassResolver(TemplateClassResolver.ALLOWS_NOTHING_RESOLVER);
@@ -62,7 +62,6 @@ public class GetTemplateResultMethod extends BaseMethod {
         configuration.setBooleanFormat("c");
         configuration.setTemplateLoader(new StringTemplateLoader());
         Map<String, Object> freemarkerVariables = new HashMap<>();
-        freemarkerVariables.put("null", CommonConstants.BLANK);
         try {
             configuration.setAllSharedVariables(new SimpleHash(freemarkerVariables, configuration.getObjectWrapper()));
         } catch (TemplateModelException e) {

@@ -1,0 +1,385 @@
+<@cms.model id=modelId!>
+    <#assign
+        model=object
+        fieldList=model.fieldList![]
+        requiredFieldList=model.requiredFfieldList![]
+    />
+    <@cms.category id=categoryId!><#assign category=object/></@cms.category>
+<#assign urlExtendFieldTypes=['file','image','video']>
+<#assign privateUrlExtendFieldTypes=['privatefile','privateimage','privatevideo']>
+<#assign editorExtendFieldTypes=['editor','tinymce','ckeditor']>
+<#macro getExtendData extend>
+<#if urlExtendFieldTypes?seq_contains(extend.inputType)>
+        ${r'${(attribute.'+extend.id.code+r')!}'}
+<#elseif editorExtendFieldTypes?seq_contains(extend.inputType)>
+        ${r'${(attribute.'+extend.id.code+r'?no_esc)!}'}
+<#elseif privateUrlExtendFieldTypes?seq_contains(extend.inputType)>
+        ${r'${getPrivateUrl(attribute.'+extend.id.code+r')!}'}
+<#elseif 'category'=extend.inputType>
+    <#if extend.multiple>
+        <#noparse><@cms.category ids=attribute.</#noparse>{$extend.id.code}<#noparse>>
+            <#list map as k,v>
+                <a href="${v.url}">${v.name}</a><#sep>,
+            </#list>
+        </@cms.category></#noparse>
+    <#else>
+        <#noparse><@cms.category id=attribute.</#noparse>{$extend.id.code}<#noparse>><a href="${object.url}">${object.name}</a></@cms.category></#noparse>
+    </#if>
+<#elseif 'content'=extend.inputType>
+    <#if extend.multiple>
+        <#noparse><@cms.content ids=attribute.</#noparse>{$extend.id.code}<#noparse>>
+            <#list map as k,v>
+                <a href="${v.url}">${v.title}</a><#sep>,
+            </#list>
+        </@cms.content></#noparse>
+    <#else>
+        <#noparse><@cms.content id=attribute.</#noparse>{$extend.id.code}<#noparse>><a href="${object.url}">${object.title}</a></@cms.content></#noparse>
+    </#if>
+<#elseif 'user'=extend.inputType>
+    <#if extend.multiple>
+        <#noparse><@sys.user ids=attribute.</#noparse>{$extend.id.code}<#noparse>>
+            <#list map as k,v>
+                <a href="${v.url}">${v.nickname}</a><#sep>,
+            </#list>
+        </@sys.user></#noparse>
+    <#else>
+        <#noparse><@sys.user id=attribute.</#noparse>{$extend.id.code}<#noparse>>${object.nickname}</@sys.user></#noparse>
+    </#if>
+<#elseif 'tag'=extend.inputType>
+    <#if extend.multiple>
+        <#noparse><@cms.tag ids=attribute.</#noparse>{$extend.id.code}<#noparse>>
+            <#list map as k,v>
+                <a href="${v.url}">${v.name}</a><#sep>,
+            </#list>
+        </@cms.tag></#noparse>
+    <#else>
+        <#noparse><@cms.tag id=attribute.</#noparse>{$extend.id.code}<#noparse>>${object.name}</@cms.tag></#noparse>
+    </#if>
+<#elseif 'color'=extend.inputType>
+        <#noparse><span style="color:${(attribute.'+extend.id.code+r')!}">text</span></#noparse>
+<#elseif 'survey'=extend.inputType>
+    <#if extend.multiple>
+        <#noparse><@cms.survey ids=attribute.</#noparse>{$extend.id.code}<#noparse>>
+            <#list map as k,v>
+                <a href="${v.url}">${v.title}</a><#sep>,
+            </#list>
+        </@cms.survey></#noparse>
+    <#else>
+        <#noparse><@cms.survey id=attribute.</#noparse>{$extend.id.code}<#noparse>>${object.title}</@cms.survey></#noparse>
+    </#if>
+<#elseif 'vote'=extend.inputType>
+    <#if extend.multiple>
+        <#noparse><@cms.vote ids=attribute.</#noparse>{$extend.id.code}<#noparse>>
+            <#list map as k,v>
+                <a href="${v.url}">${v.title}</a><#sep>,
+            </#list>
+        </@cms.vote></#noparse>
+    <#else>
+        <#noparse><@cms.vote id=attribute.</#noparse>{$extend.id.code}<#noparse>>${object.title}</@cms.vote></#noparse>
+    </#if>
+<#elseif 'tagType'=extend.inputType>
+    <#if extend.multiple>
+        <#noparse><@cms.tagType ids=attribute.</#noparse>{$extend.id.code}<#noparse>>
+            <#list map as k,v>
+                <a href="${v.url}">${v.name}</a><#sep>,
+            </#list>
+        </@cms.tagType></#noparse>
+    <#else>
+        <#noparse><@cms.tagType id=attribute.</#noparse>{$extend.id.code}<#noparse>>${object.name}</@cms.tagType></#noparse>
+    </#if>
+<#elseif 'categoryType'=extend.inputType>
+    <#if extend.multiple>
+        <#noparse><@cms.categoryType ids=attribute.</#noparse>{$extend.id.code}<#noparse>>
+            <#list map as k,v>
+                <a href="${v.url}">${v.name}</a><#sep>,
+            </#list>
+        </@cms.categoryType></#noparse>
+    <#else>
+        <#noparse><@cms.categoryType id=attribute.</#noparse>{$extend.id.code}<#noparse>>${object.name}</@cms.categoryType></#noparse>
+    </#if>
+<#elseif 'dictionary'=extend.inputType>
+    <#if extend.multiple>
+        <#noparse><@cms.dictionaryData dictionaryId='</#noparse>{$extend.dictionaryId}<#noparse>' values=attribute.</#noparse>{$extend.id.code}<#noparse>>
+            <#list map as k,d>${k}:${d.text}<#sep>,</#list>
+        </@cms.dictionaryData></#noparse>
+    <#else>
+        <#noparse><@cms.dictionaryData dictionaryId='</#noparse>{$extend.dictionaryId}<#noparse>' value=attribute.</#noparse>{$extend.id.code}<#noparse>>${object.id.value}:${object.text}</@cms.dictionaryData></#noparse>
+    </#if>
+<#elseif 'dept'=extend.inputType>
+    <#if extend.multiple>
+        <#noparse><@sys.dept ids=attribute.</#noparse>{$extend.id.code}<#noparse>>
+            <#list map as k,v>
+                <a href="${v.url}">${v.name}</a><#sep>,
+            </#list>
+        </@sys.dept></#noparse>
+    <#else>
+        <#noparse><@sys.dept id=attribute.</#noparse>{$extend.id.code}<#noparse>>${object.name}</@sys.dept></#noparse>
+    </#if>
+<#elseif 'keyvalue'=extend.inputType>
+        <#noparse><table border="1">
+            <thead>
+                <tr>
+                    <th><@t.page "key"/></th>
+                    <th><@t.page "value"/></th>
+                </tr>
+            </thead>
+            <tbody>
+                <#list attribute.</#noparse>{$extend.id.code}<#noparse>?split(",")?chunk(2) as row>
+                    <tr>
+                        <#list row as a><td>${a}</td></#list>
+                    </tr>
+                </#list>
+            </tbody>
+        </table></#noparse>
+<#elseif 'alphaColor'=extend.inputType>
+        <#noparse><div style="background-color:${(attribute.</#noparse>${extend.id.code}<#noparse>">text</div></#noparse>
+<#elseif 'textarea'=extend.inputType>
+        <#noparse><#list (attribute.</#noparse>${extend.id.code}<#noparse>!"")?split("\n") as a>${a}<#sep><br/></#list></#noparse>
+<#else>
+        ${r'${(attribute.'+extend.id.code+r')!}'}
+</#if>
+</#macro>
+<#assign formContent>
+<#noparse>
+<@cms.model id=content.modelId><#assign model=object/></@cms.model>
+<#if !category?has_content><@cms.category id=content.categoryId><#assign category=object/></@cms.category></#if>
+<#macro bread category>
+    <#if category.parentId?has_content>
+        <@cms.category id=category.parentId>
+            <@bread object/>
+            <a href="${object.url!}" target="_blank">${object.name}</a> &gt;
+        </@cms.category>
+    </#if>
+</#macro>
+    <div>
+        <label></#noparse><@t.page 'category'/><#noparse>:</label>
+        <@bread category/> <a href="${(category.url)!}" target="_blank">${(category.name)!}</a>
+    </div>
+    <div>
+        <label></#noparse><@t.page 'model'/><#noparse>:</label>
+        ${(model.name)!}
+    </div>
+    <div>
+        <label></#noparse>${(model.fieldTextMap['title'])!}<#noparse>:</label>
+        ${(content.copied?then('['+t.pageMessage('copied')+']',''))!} ${(content.title)!}
+    </div>
+    <div>
+        <label></#noparse><@t.page 'status'/><#noparse>:</label>
+        <@t.page 'status.content.'+(content.status)!/>
+    </div>
+    <div>
+        <label></#noparse><@t.page 'content.score'/><#noparse>:</label>
+        ${content.score!}
+    </div>
+<#if 1=content.status>
+    <div>
+        <label></#noparse><@t.page 'inspector'/><#noparse>:</label>
+        <@sys.user id=content.checkUserId;user>${(user.nickname)!}</@sys.user>
+    </div>
+</#if>
+    <div>
+        <label></#noparse><#if model.onlyUrl>${(model.fieldTextMap['url'])!}<#else><@t.page 'url'/></#if><#noparse>:</label>
+        <a href="${(content.url)!}" target="_blank">${(content.url)!}</a>
+    </div>
+<#if content.copied>
+    <div>
+        <label></#noparse>${(model.fieldTextMap['source'])!}<#noparse>:</label>
+        ${(attribute.source)!}
+    </div>
+    <div>
+        <label></#noparse>${(model.fieldTextMap['sourceUrl'])!}<#noparse>:</label>
+        <a href="${(attribute.sourceUrl)!}" target="_blank">${(attribute.sourceUrl)!}</a>
+    </div>
+</#if>
+</#noparse><#if fieldList?seq_contains('author')><#noparse>
+    <div>
+        <label></#noparse>${(model.fieldTextMap['author'])!}<#noparse>:</label>
+        ${(content.author)!}
+    </div>
+</#noparse></#if><#noparse>
+</#noparse><#if fieldList?seq_contains('editor')><#noparse>
+    <div>
+        <label></#noparse>${(model.fieldTextMap['editor'])!}<#noparse>:</label>
+        ${(content.editor)!}
+    </div>
+</#noparse></#if><#noparse>
+<#if (content.tagIds)?has_content>
+    <div>
+        <label></#noparse>${(model.fieldTextMap['tag'])!}<#noparse>:</label>
+        <@cms.tag ids=content.tagIds>
+            <#list map as k,tag>
+                ${k}:${tag.name}<#sep>,
+            </#list>
+        </@cms.tag>
+    </div>
+</#if>
+    <div>
+        <label></#noparse><@t.page 'publish_date'/><#noparse>:</label>
+        ${(content.publishDate)!}<#if content.expiryDate?has_content> - ${(content.expiryDate)!}</#if>
+    </div>
+</#noparse>
+<#if category?has_content&&category.extendId?has_content>
+    <@sys.extendFieldList extendId=category.extendId>
+        <#list list as extend>
+<#noparse>
+    <div>
+        <label></#noparse>${extend.name}<#noparse>:</label>
+        </#noparse><@getExtendData extend/><#noparse>
+    </div>
+</#noparse>
+        </#list>
+    </@sys.extendFieldList>
+</#if>
+<#if model.extendList?has_content>
+    <#list model.extendList as extend>
+<#noparse>
+    <div>
+        <label></#noparse>${extend.name}<#noparse>:</label>
+        </#noparse><@getExtendData extend/><#noparse>
+    </div>
+</#noparse>
+    </#list>
+</#if>
+<#noparse>
+    <#if content.hasImages>
+        <div>
+            <label></#noparse><@t.page 'image_list'/><#noparse>:</label>
+    <@cms.contentFileList contentId=content.id fileTypes='image'>
+        <#list page.list as file>
+            <figure>
+              <img loading="lazy" src="${(file.filePath)!}" alt="${(file.description)!}">
+              <figcaption>${(file.description)!}</figcaption>
+            </figure>
+        </#list>
+    </@cms.contentFileList>
+        </div>
+    </#if>
+    <#if content.hasFiles>
+        <div>
+            <label></#noparse><@t.page 'attach_list'/><#noparse>:</label>
+        <@cms.contentFileList contentId=content.id fileTypes='video,audio,document,other'>
+            <#list page.list as file>
+                <a href="${(file.filePath)!}" download="${(file.description)!}">${(file.description)!}</a>
+            </#list>
+        </@cms.contentFileList>
+        </div>
+    </#if>
+    <#if content.hasProducts>
+        <div>
+            <label></#noparse><@t.page 'product_list'/><#noparse>:</label>
+        <@cms.contentProductList contentId=content.id>
+            <#list page.list as product>
+                <#if product.cover?has_content>
+                    <figure>
+                      <img loading="lazy" src="${(product.cover)!}" alt="${product.title}">
+                      <figcaption>${product.title}</figcaption>
+                    </figure>
+                </#if>
+                <p><label></#noparse><@t.page 'title'/><#noparse>:</label>${product.title}</p>
+                <p><label></#noparse><@t.page 'product.price'/><#noparse>:</label>${product.price}</p>
+                <p><label></#noparse><@t.page 'product.inventory'/><#noparse>:</label>${product.inventory}</p>
+                <p><label></#noparse><@t.page 'product.sales'/><#noparse>:</label>${product.sales}</p>
+            </#list>
+        </@cms.contentProductList>
+        </div>
+    </#if>
+    <#if content.cover?has_content>
+        <div>
+            <label></#noparse>${(model.fieldTextMap['cover'])!}<#noparse>:</label>
+            <img src="${(content.cover)!}" alt="${content.title}"/>
+        </div>
+    </#if>
+    <#if fieldList?seq_contains('description')>
+        <div>
+            <label></#noparse>${(model.fieldTextMap['description'])!}<#noparse>:</label>
+            <#list (content.description!'')?split('\n') as line>${line}<#sep><br/></#list>
+        </div>
+    </#if>
+    <#if fieldList?seq_contains('content')>
+        <div>
+            <label></#noparse>${(model.fieldTextMap['content'])!}<#noparse>(${(attribute.wordCount)!}):</label>
+            ${(attribute.text?no_esc)!}
+        </div>
+    </#if>
+    <#if page?has_content>
+        <div>
+            <#if content.url?contains('?')><#assign pageParameter="pageIndex"/></#if>
+            <#if !page.firstPage>
+                <a href="${getPage(content.url,page.prePage,pageParameter)}">Previous page</a>
+            <#else>
+                <span>Previous page</span>
+            </#if>
+            <#list 1..page.totalCount as n>
+                <#if n=page.pageIndex>
+                    ${n}
+                <#else>
+                    <a href="${getPage(content.url,n,pageParameter)}">${n}</a>
+                </#if>
+            </#list>
+            <#if !page.lastPage>
+                <a href="${getPage(content.url,page.nextPage,pageParameter)}">Next page</a>
+            <#else>
+                <span>Next page</span>
+            </#if>
+        </div>
+    </#if>
+    <div>
+        <@cms.contentList categoryId=category.id endPublishDate=content.publishDate orderField='publishDate' pageIndex=2 pageSize=1><#if 2=page.pageIndex><#list page.list as a><a href="${a.url!}">Previous:${a.title}</a></#list></#if></@cms.contentList>
+        <@cms.contentList categoryId=category.id startPublishDate=content.publishDate orderField='publishDate' orderType='asc' pageIndex=1 pageSize=1><#list page.list as a><a href="${a.url!}">Next:${a.title}</a></#list></@cms.contentList>
+    </div>
+<@cms.contentRelatedList contentId=content.id>
+    <#if page.totalCount gt 0>
+    <div>
+        <label></#noparse><@t.page 'recommend_info'/><#noparse>:</label>
+    <#list page.list as a>
+        <a href="${a.url}">${(a.title)!}</a>
+    </#list>
+    </div>
+    </#if>
+</@cms.contentRelatedList>
+<#macro merge name value><#if !.vars[name]??><@"<#assign ${name}=''>"?interpret /></#if><#if value?has_content><@"<#assign ${name}=${name}+'${value},'>"?interpret /></#if></#macro>
+<@cms.commentList contentId=content.id pageSize=10>
+    <#list page.list as a>
+        <@merge 'userIds' a.userId!/>
+        <@merge 'userIds' a.replyUserId!/>
+    </#list>
+    <@sys.user ids=userIds!><#assign userMap=map!/></@sys.user>
+    <#list page.list as a>
+        <dl data-diy-item="${a.id}">
+            <dt>${(userMap[a.userId?string].nickname)!}<#if a.replyUserId?has_content> reply ${(userMap[a.replyUserId?string].nickname)!}</#if>:</dt>
+            <dd>
+                <div>${a.text!}</div>
+            </dd>
+        </dl>
+    </#list>
+</@cms.commentList>
+</#noparse>
+</#assign>
+</@cms.model>
+<div class="pageFormContent" layoutH>
+    <dl>
+        <dt><@t.page 'model'/>:</dt>
+        <dd>
+            ${(model.name)!}
+        </dd>
+    </dl>
+<#if category?has_content>
+    <dl>
+        <dt><@t.page 'category'/>:</dt>
+        <dd>
+            ${(category.name)!}
+        </dd>
+    </dl>
+</#if>
+    <dl class="nowrap">
+        <dt><@t.page 'source_code'/>:</dt>
+        <dd>
+            <textarea  class="code" mode="freemarkermixed"><@html_escape>${(formContent)!}</@html_escape></textarea>
+        </dd>
+    </dl>
+</div>
+<div class="formBar">
+    <ul>
+        <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+    </ul>
+</div>

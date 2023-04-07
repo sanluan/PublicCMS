@@ -13,6 +13,8 @@ import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.service.log.LogOperateService;
 
+import freemarker.template.TemplateException;
+
 /**
 *
 * logOperate 操作日志查询指令
@@ -43,7 +45,7 @@ $.getJSON('${site.dynamicPath}api/directive/log/operate?id=1&amp;appToken=接口
 public class LogOperateDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Long id = handler.getLong("id");
         SysSite site = getSite(handler);
         if (CommonUtils.notEmpty(id)) {

@@ -2,7 +2,6 @@ package com.publiccms.controller.admin.sys;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.util.Date;
@@ -75,7 +74,7 @@ public class TaskTemplateAdminController {
         if (CommonUtils.notEmpty(path)) {
             try {
                 String filepath = siteComponent.getTaskTemplateFilePath(site.getId(), path);
-                content = new String(VerificationUtils.base64Decode(content), CommonConstants.DEFAULT_CHARSET);
+                content = new String(VerificationUtils.base64Decode(content), Constants.DEFAULT_CHARSET);
                 if (CmsFileUtils.createFile(filepath, content)) {
                     logOperateService.save(
                             new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
@@ -115,7 +114,7 @@ public class TaskTemplateAdminController {
         if (null != files) {
             try {
                 for (MultipartFile file : files) {
-                    String filepath = CommonUtils.joinString(path, CommonConstants.SEPARATOR, file.getOriginalFilename());
+                    String filepath = CommonUtils.joinString(path, Constants.SEPARATOR, file.getOriginalFilename());
                     String destFullFileName = siteComponent.getTaskTemplateFilePath(site.getId(), filepath);
                     if (!CmsFileUtils.exists(destFullFileName) || overwrite || destFullFileName.endsWith(".zip")) {
                         CmsFileUtils.upload(file, destFullFileName);
@@ -153,12 +152,12 @@ public class TaskTemplateAdminController {
     @RequestMapping("export")
     @Csrf
     public ResponseEntity<StreamingResponseBody> export(@RequestAttribute SysSite site) {
-        String filepath = siteComponent.getTaskTemplateFilePath(site.getId(), CommonConstants.SEPARATOR);
+        String filepath = siteComponent.getTaskTemplateFilePath(site.getId(), Constants.SEPARATOR);
         DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.DOWNLOAD_FORMAT_STRING);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentDisposition(ContentDisposition.attachment()
                 .filename(CommonUtils.joinString(site.getName(), dateFormat.format(new Date()), "-tasktemplate.zip"),
-                        StandardCharsets.UTF_8)
+                        Constants.DEFAULT_CHARSET)
                 .build());
         StreamingResponseBody body = new StreamingResponseBody() {
             @Override

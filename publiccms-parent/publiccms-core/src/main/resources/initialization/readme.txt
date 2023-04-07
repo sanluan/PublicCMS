@@ -1,10 +1,10 @@
 表结构变更与数据调整
-1. 修改全量脚本(sql/initDatabase.sql)
-2. 增加增量脚本(upgrade/{fromVersion}-{toVersion}.sql)
+1. 修改全量脚本(sql/init.sql)
+2. 增加增量脚本(sql/{fromVersion}-{toVersion}.sql)
 增量脚本
 1. 增加时间轴记录(-- {修改日期} --)
 2. 增加修改内容(DML,DDL)[DML尽量占用一行,DDL每项一行]
 手动初始化与升级数据库
-1. 初始化数据库仅需执行sql目录下脚本
+1. 初始化数据库仅需执行sql目录下init.sql脚本
 2. 稳定版升级数据库仅需执行({旧版本号}-{新版本号}.sql)
-3. 预览版升级数据库需要按照时间轴执行({旧版本号}-V4.0.develop.sql)中下载源码日期之后的升级脚本
+3. 预览版升级数据库需要按照时间轴执行({最新版本号}-V4.0.develop.sql)中下载源码日期之后的升级脚本

@@ -42,14 +42,14 @@ import freemarker.template.TemplateException;
 public class TemplateResultDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         String content = handler.getString("templateContent");
         if (CommonUtils.notEmpty(content)) {
             try {
                 content = "<#attempt>" + content + "<#recover>${.error!}</#attempt>";
                 Map<String, Object> model = new HashMap<>();
                 Map<String, String> parameters = handler.getMap("parameters");
-                if (null != parameters) {
+                if (!parameters.isEmpty()) {
                     model.putAll(parameters);
                 }
                 handler.print(FreeMarkerUtils.generateStringByString(content, templateComponent.getWebConfiguration(), model));

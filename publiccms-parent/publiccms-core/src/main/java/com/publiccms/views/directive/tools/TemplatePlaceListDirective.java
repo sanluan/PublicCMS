@@ -22,6 +22,7 @@ import com.publiccms.views.pojo.diy.CmsLayoutData;
 import com.publiccms.views.pojo.diy.CmsModuleData;
 import com.publiccms.views.pojo.diy.CmsRegionData;
 
+import freemarker.template.TemplateException;
 import jakarta.annotation.Resource;
 
 /**
@@ -56,7 +57,7 @@ public class TemplatePlaceListDirective extends AbstractTemplateDirective {
             .compile("<@[_a-z\\.]*includePlace[ ]+path=[\"|\']([^\"\']*)[\"|\'][ ]*/>");
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         String path = handler.getString("path");
         Set<String> placeSet = new LinkedHashSet<>();
         Set<String> regionList = new LinkedHashSet<>();

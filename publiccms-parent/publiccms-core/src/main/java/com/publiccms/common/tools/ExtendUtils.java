@@ -11,7 +11,7 @@ import java.util.function.BiConsumer;
 import org.apache.commons.lang3.ArrayUtils;
 
 import com.publiccms.common.api.Config;
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.entities.sys.SysExtendField;
 
 /**
@@ -21,6 +21,9 @@ import com.publiccms.entities.sys.SysExtendField;
  */
 public class ExtendUtils {
 
+    private ExtendUtils() {
+    }
+
     /**
      * @param data
      * @return extent map
@@ -28,7 +31,7 @@ public class ExtendUtils {
     public static Map<String, String> getExtendMap(String data) {
         if (CommonUtils.notEmpty(data)) {
             try {
-                return CommonConstants.objectMapper.readValue(data, CommonConstants.objectMapper.getTypeFactory()
+                return Constants.objectMapper.readValue(data, Constants.objectMapper.getTypeFactory()
                         .constructMapLikeType(LinkedHashMap.class, String.class, String.class));
             } catch (IOException | ClassCastException e) {
                 return new LinkedHashMap<>();
@@ -84,7 +87,7 @@ public class ExtendUtils {
                                 map.put(extend.getId().getCode(), HtmlUtils.cleanUnsafeHtml(value, sitePath));
                             }
                         }
-                        if (extend.isSearchable()) {
+                        if (extend.isSearchable() && null != value) {
                             searchableConsumer.accept(extend, value);
                         }
                     }
@@ -96,7 +99,7 @@ public class ExtendUtils {
                 }
             }
             try {
-                return CommonConstants.objectMapper.writeValueAsString(map);
+                return Constants.objectMapper.writeValueAsString(map);
             } catch (IOException e) {
                 return null;
             }

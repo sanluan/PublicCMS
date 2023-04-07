@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 
 import com.publiccms.common.handler.RenderHandler;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * masterSite 管理站点判断指令
@@ -19,7 +21,7 @@ import com.publiccms.common.handler.RenderHandler;
 public class MasterSiteDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         if (siteComponent.isMaster(getSite(handler).getId())) {
             handler.render();
         }

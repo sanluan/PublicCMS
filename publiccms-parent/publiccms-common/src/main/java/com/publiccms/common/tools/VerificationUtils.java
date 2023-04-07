@@ -1,5 +1,6 @@
 package com.publiccms.common.tools;
 
+import java.security.GeneralSecurityException;
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -18,7 +19,7 @@ import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESedeKeySpec;
-import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.codec.binary.Base64;
@@ -32,6 +33,9 @@ import com.publiccms.common.constants.Constants;
  *
  */
 public class VerificationUtils {
+
+    private VerificationUtils() {
+    }
 
     /**
      * @param text
@@ -123,7 +127,7 @@ public class VerificationUtils {
             signature.initVerify(getPublicKey(publicKey));
             signature.update(data);
             return signature.verify(sign);
-        } catch (Throwable e) {
+        } catch (GeneralSecurityException e) {
             return false;
         }
     }
@@ -141,8 +145,8 @@ public class VerificationUtils {
             signature.initSign(getPrivateKey(privateKey));
             signature.update(data);
             return signature.sign();
-        } catch (Exception e) {
-            return null;
+        } catch (GeneralSecurityException e) {
+            return Constants.EMPTY_BYTE_ARRAY;
         }
     }
 
@@ -158,7 +162,7 @@ public class VerificationUtils {
             Cipher cipher = Cipher.getInstance("RSA");
             cipher.init(Cipher.ENCRYPT_MODE, getPublicKey(publicKey));
             return cipher.doFinal(input);
-        } catch (Exception e) {
+        } catch (GeneralSecurityException e) {
             return input;
         }
     }
@@ -175,7 +179,7 @@ public class VerificationUtils {
             Cipher cipher = Cipher.getInstance("RSA");
             cipher.init(Cipher.DECRYPT_MODE, getPublicKey(publicKey));
             return cipher.doFinal(input);
-        } catch (Exception e) {
+        } catch (GeneralSecurityException e) {
             return input;
         }
     }
@@ -192,7 +196,7 @@ public class VerificationUtils {
             Cipher cipher = Cipher.getInstance("RSA");
             cipher.init(Cipher.ENCRYPT_MODE, getPrivateKey(privateKey));
             return cipher.doFinal(input);
-        } catch (Exception e) {
+        } catch (GeneralSecurityException e) {
             return input;
         }
     }
@@ -209,7 +213,7 @@ public class VerificationUtils {
             Cipher cipher = Cipher.getInstance("RSA");
             cipher.init(Cipher.DECRYPT_MODE, getPrivateKey(privateKey));
             return cipher.doFinal(input);
-        } catch (Exception e) {
+        } catch (GeneralSecurityException e) {
             return input;
         }
     }
@@ -299,14 +303,14 @@ public class VerificationUtils {
             if (keybyte.length < 16) {
                 int lenght = keybyte.length;
                 keybyte = Arrays.copyOf(keybyte, 16);
-                System.arraycopy(iv, 0, keybyte, lenght , 16 - lenght);
+                System.arraycopy(iv, 0, keybyte, lenght, 16 - lenght);
             }
             SecretKeySpec secretKeySpec = new SecretKeySpec(keybyte, "AES");
-            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-            cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec, new IvParameterSpec(iv));
+            Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding");
+            cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec, new GCMParameterSpec(128, iv));
             return cipher.doFinal(input.getBytes(Constants.DEFAULT_CHARSET));
-        } catch (Exception e) {
-            return null;
+        } catch (GeneralSecurityException e) {
+            return Constants.EMPTY_BYTE_ARRAY;
         }
     }
 
@@ -324,14 +328,14 @@ public class VerificationUtils {
             if (keybyte.length < 16) {
                 int lenght = keybyte.length;
                 keybyte = Arrays.copyOf(keybyte, 16);
-                System.arraycopy(iv, 0, keybyte, lenght , 16 - lenght);
+                System.arraycopy(iv, 0, keybyte, lenght, 16 - lenght);
             }
             SecretKeySpec secretKeySpec = new SecretKeySpec(keybyte, "AES");
-            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-            cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, new IvParameterSpec(iv));
-            byte ciphertext[] = cipher.doFinal(input);
+            Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding");
+            cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, new GCMParameterSpec(128, iv));
+            byte[] ciphertext = cipher.doFinal(input);
             return new String(ciphertext, Constants.DEFAULT_CHARSET);
-        } catch (Exception e) {
+        } catch (GeneralSecurityException e) {
             return Constants.BLANK;
         }
     }
@@ -352,8 +356,8 @@ public class VerificationUtils {
             Cipher cipher = Cipher.getInstance("DESede");
             cipher.init(Cipher.ENCRYPT_MODE, keyFactory.generateSecret(dks));
             return cipher.doFinal(input.getBytes(Constants.DEFAULT_CHARSET));
-        } catch (Exception e) {
-            return null;
+        } catch (GeneralSecurityException e) {
+            return Constants.EMPTY_BYTE_ARRAY;
         }
     }
 
@@ -373,9 +377,9 @@ public class VerificationUtils {
             SecretKey sKey = keyFactory.generateSecret(dks);
             Cipher cipher = Cipher.getInstance("DESede");
             cipher.init(Cipher.DECRYPT_MODE, sKey);
-            byte ciphertext[] = cipher.doFinal(input);
+            byte[] ciphertext = cipher.doFinal(input);
             return new String(ciphertext, Constants.DEFAULT_CHARSET);
-        } catch (Exception e) {
+        } catch (GeneralSecurityException e) {
             return Constants.BLANK;
         }
     }
@@ -396,7 +400,7 @@ public class VerificationUtils {
      * @param buffer
      * @return hex
      */
-    public static String byteToHex(byte buffer[]) {
+    public static String byteToHex(byte[] buffer) {
         StringBuilder sb = new StringBuilder(buffer.length * 2);
         for (int i = 0; i < buffer.length; i++) {
             sb.append(Character.forDigit((buffer[i] & 240) >> 4, 16));

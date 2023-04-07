@@ -6,6 +6,9 @@ import java.io.IOException;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.logic.service.sys.SysUserTokenService;
+
+import freemarker.template.TemplateException;
+
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
@@ -49,7 +52,7 @@ import com.publiccms.common.handler.RenderHandler;
 public class SysUserTokenListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         PageHandler page = service.getPage(getSite(handler).getId(), getUserId(handler, "userId"), handler.getString("channel"),
                 handler.getString("orderField"), handler.getString("orderType"), handler.getInteger("pageIndex", 1),
                 handler.getInteger("pageSize", 30));

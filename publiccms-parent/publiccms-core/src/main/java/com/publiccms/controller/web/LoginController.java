@@ -18,9 +18,9 @@ import org.apache.commons.logging.LogFactory;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
@@ -37,7 +37,7 @@ import com.publiccms.entities.sys.SysAppClient;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.entities.sys.SysUserToken;
-import com.publiccms.logic.component.config.ConfigComponent;
+import com.publiccms.logic.component.config.ConfigDataComponent;
 import com.publiccms.logic.component.config.SafeConfigComponent;
 import com.publiccms.logic.component.config.SiteConfigComponent;
 import com.publiccms.logic.component.site.LockComponent;
@@ -68,7 +68,7 @@ public class LoginController {
     @Resource
     protected SiteComponent siteComponent;
     @Resource
-    protected ConfigComponent configComponent;
+    protected ConfigDataComponent configDataComponent;
     @Resource
     protected SafeConfigComponent safeConfigComponent;
 
@@ -97,11 +97,11 @@ public class LoginController {
      *            模型
      * @return view name 视图名
      */
-    @RequestMapping(value = "doLogin", method = RequestMethod.POST)
+    @PostMapping("doLogin")
     public String login(@RequestAttribute SysSite site, String username, String password, String returnUrl, String encoding,
             String captcha, Long clientId, String uuid, HttpServletRequest request, HttpServletResponse response,
             ModelMap model) {
-        Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+        Map<String, String> config = configDataComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
         String loginPath = config.get(SiteConfigComponent.CONFIG_LOGIN_PATH);
         if (CommonUtils.empty(loginPath)) {
             loginPath = site.getDynamicPath();
@@ -168,8 +168,8 @@ public class LoginController {
                 }
 
                 String authToken = UUID.randomUUID().toString();
-                Map<String, String> safeConfig = configComponent.getConfigData(site.getId(), SafeConfigComponent.CONFIG_CODE);
-                int expiryMinutes = ConfigComponent.getInt(safeConfig.get(SafeConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
+                Map<String, String> safeConfig = configDataComponent.getConfigData(site.getId(), SafeConfigComponent.CONFIG_CODE);
+                int expiryMinutes = ConfigDataComponent.getInt(safeConfig.get(SafeConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
                         SafeConfigComponent.DEFAULT_EXPIRY_MINUTES);
                 addLoginStatus(user, authToken, request, response, expiryMinutes);
                 sysUserTokenService.save(new SysUserToken(authToken, site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, now,
@@ -217,11 +217,11 @@ public class LoginController {
      * @param model
      * @return view name
      */
-    @RequestMapping(value = "doRegister", method = RequestMethod.POST)
+    @PostMapping("doRegister")
     public String register(@RequestAttribute SysSite site, SysUser entity, String repassword, String returnUrl, String encode,
             String captcha, Long clientId, String uuid, HttpServletRequest request, HttpServletResponse response,
             ModelMap model) {
-        Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+        Map<String, String> config = configDataComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
         String registerPath = config.get(SiteConfigComponent.CONFIG_REGISTER_URL);
         if (CommonUtils.empty(registerPath)) {
             registerPath = site.getDynamicPath();
@@ -276,8 +276,8 @@ public class LoginController {
                     appClientService.updateUser(appClient.getId(), entity.getId());
                 }
             }
-            Map<String, String> safeconfig = configComponent.getConfigData(site.getId(), SafeConfigComponent.CONFIG_CODE);
-            int expiryMinutes = ConfigComponent.getInt(safeconfig.get(SafeConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
+            Map<String, String> safeconfig = configDataComponent.getConfigData(site.getId(), SafeConfigComponent.CONFIG_CODE);
+            int expiryMinutes = ConfigDataComponent.getInt(safeconfig.get(SafeConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
                     SafeConfigComponent.DEFAULT_EXPIRY_MINUTES);
 
             Date now = CommonUtils.getDate();
@@ -308,7 +308,7 @@ public class LoginController {
      * @param response
      * @return view name
      */
-    @RequestMapping(value = "doLogout", method = RequestMethod.POST)
+    @PostMapping("doLogout")
     public String logout(@RequestAttribute SysSite site, Long userId, String returnUrl, HttpServletRequest request,
             HttpServletResponse response) {
         returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());

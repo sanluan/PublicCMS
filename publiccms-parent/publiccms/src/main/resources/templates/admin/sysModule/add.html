@@ -19,7 +19,7 @@
                 <dt><@t.page 'id'/>:</dt>
                 <dd>
                     <input class="required" remote="sysModule/virify?oldId=${id!}" data-msg-remote="<@t.message 'verify.hasExist.module'/>" name="id" type="text" size="20" maxlength="30" value="${id!(parentId?has_content)?then(parentId+'_','')}"/>
-                    <label><input name="menu" type="checkbox"<#if (!a?has_content||a.menu)&&deep lte 2> checked="checked"</#if>/><@t.page 'module.menu'/></label>
+                    <label><input name="menu" type="checkbox" class="form-check-input"<#if (!a?has_content||a.menu)&&deep lte 2> checked="checked"</#if>/><@t.page 'module.menu'/></label>
                 </dd>
             </dl>
             <dl>

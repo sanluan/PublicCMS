@@ -21,7 +21,7 @@ import com.publiccms.entities.cms.CmsUserScore;
 import com.publiccms.entities.cms.CmsUserScoreId;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
-import com.publiccms.logic.component.config.ConfigComponent;
+import com.publiccms.logic.component.config.ConfigDataComponent;
 import com.publiccms.logic.component.config.SiteConfigComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsCommentService;
@@ -42,7 +42,7 @@ import jakarta.servlet.http.HttpServletRequest;
 public class ScoreController {
     protected final Log log = LogFactory.getLog(getClass());
     @Resource
-    protected ConfigComponent configComponent;
+    protected ConfigDataComponent configDataComponent;
 
     /**
      * @param site
@@ -83,11 +83,11 @@ public class ScoreController {
             CmsUserScoreId id = new CmsUserScoreId(userId, itemType, itemId);
             CmsUserScore entity = service.getEntity(id);
             if (score && null == entity || !score && null != entity) {
-                Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
-                boolean needStatic = ConfigComponent.getBoolean(config.get(SiteConfigComponent.CONFIG_STATIC_AFTER_SCORE), false);
+                Map<String, String> config = configDataComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+                boolean needStatic = ConfigDataComponent.getBoolean(config.get(SiteConfigComponent.CONFIG_STATIC_AFTER_SCORE), false);
                 String ip = RequestUtils.getIpAddress(request);
                 if ("content".equals(itemType)) {
-                    int maxScores = ConfigComponent.getInt(config.get(SiteConfigComponent.CONFIG_MAX_SCORES),
+                    int maxScores = ConfigDataComponent.getInt(config.get(SiteConfigComponent.CONFIG_MAX_SCORES),
                             SiteConfigComponent.DEFAULT_MAX_SCORES);
                     if (scores > maxScores) {
                         scores = maxScores;

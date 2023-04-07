@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import jakarta.annotation.Resource;
+
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
@@ -14,6 +15,8 @@ import com.publiccms.entities.cms.CmsDictionaryExclude;
 import com.publiccms.entities.cms.CmsDictionaryExcludeId;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.service.cms.CmsDictionaryExcludeService;
+
+import freemarker.template.TemplateException;
 
 /**
  *
@@ -48,7 +51,7 @@ import com.publiccms.logic.service.cms.CmsDictionaryExcludeService;
 public class CmsDictionaryExcludeDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         String dictionaryId = handler.getString("dictionaryId");
         String excludeDictionaryId = handler.getString("excludeDictionaryId");
         if (CommonUtils.notEmpty(dictionaryId)) {

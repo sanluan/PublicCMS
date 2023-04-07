@@ -8,13 +8,14 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 import jakarta.annotation.Resource;
+
 import org.springframework.context.support.AbstractMessageSource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.api.Cache;
 import com.publiccms.common.cache.CacheEntity;
 import com.publiccms.common.cache.CacheEntityFactory;
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysModuleLang;
 import com.publiccms.logic.service.sys.SysModuleLangService;
@@ -26,7 +27,7 @@ import com.publiccms.logic.service.sys.SysModuleLangService;
 @Component
 public class MenuMessageComponent extends AbstractMessageSource implements Cache {
     public static final String CODE = "menu";
-    public static final String PREFIX = CommonUtils.joinString(CODE, CommonConstants.DOT);
+    public static final String PREFIX = CommonUtils.joinString(CODE, Constants.DOT);
     private MessageSourceControl messageSourceControl = new MessageSourceControl();
 
     private CacheEntity<String, Map<String, String>> messageCache;
@@ -37,11 +38,7 @@ public class MenuMessageComponent extends AbstractMessageSource implements Cache
 
     @Override
     protected MessageFormat resolveCode(String code, Locale locale) {
-        Map<Locale, MessageFormat> messageFormatMap = messageFormatCaches.get(code);
-        if (null == messageFormatMap) {
-            messageFormatMap = new HashMap<>();
-            messageFormatCaches.put(code, messageFormatMap);
-        }
+        Map<Locale, MessageFormat> messageFormatMap = messageFormatCaches.computeIfAbsent(code, k -> new HashMap<>());
         MessageFormat messageFormat = messageFormatMap.get(locale);
         if (null == messageFormat) {
             String message = resolveCodeWithoutArguments(code, locale);
@@ -62,11 +59,9 @@ public class MenuMessageComponent extends AbstractMessageSource implements Cache
         List<Locale> candidateLocales = messageSourceControl.getCandidateLocales(CODE, locale);
         for (Locale l : candidateLocales) {
             Map<String, String> messageMap = getMessageMap(l);
-            if (null != messageMap) {
-                String message = messageMap.get(code);
-                if (null != message) {
-                    return message;
-                }
+            String message = messageMap.get(code);
+            if (null != message) {
+                return message;
             }
             if (Locale.ROOT.equals(l) && !Locale.getDefault().equals(locale)) {
                 return resolveCodeWithoutArguments(code, Locale.getDefault());
@@ -111,7 +106,7 @@ public class MenuMessageComponent extends AbstractMessageSource implements Cache
 
     @Override
     public void clear() {
-        messageCache.clear();
+        messageCache.clear(false);
         messageFormatCaches.clear();
     }
 

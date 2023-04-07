@@ -14,6 +14,8 @@ import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.views.pojo.entities.ClickStatistics;
 
+import freemarker.template.TemplateException;
+
 /**
 *
 * contentClick 内容点击接口
@@ -44,7 +46,7 @@ public class ContentClickDirective extends AbstractAppDirective {
     private StatisticsComponent statisticsComponent;
 
     @Override
-    public void execute(RenderHandler handler, SysApp app, SysUser user) throws IOException, Exception {
+    public void execute(RenderHandler handler, SysApp app, SysUser user) throws IOException, TemplateException {
         Long id = handler.getLong("id");
         ClickStatistics contentStatistics = statisticsComponent.contentClicks(getSite(handler), id);
         if (null != contentStatistics) {

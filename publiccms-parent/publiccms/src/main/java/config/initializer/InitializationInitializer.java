@@ -20,6 +20,7 @@ import org.springframework.web.util.IntrospectorCleanupListener;
 
 import com.publiccms.common.constants.CmsVersion;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.database.CmsDataSource;
 import com.publiccms.common.handler.UsernamePasswordAuthenticator;
 import com.publiccms.common.servlet.InstallHttpRequestHandler;
@@ -36,11 +37,11 @@ public class InitializationInitializer implements WebApplicationInitializer {
     /**
      * 安装Servlet映射路径
      */
-    public final static String INSTALL_SERVLET_MAPPING = "/install/";
+    public static final String INSTALL_SERVLET_MAPPING = "/install/";
     /**
      * 安装跳转处理器
      */
-    public final static HttpRequestHandler INSTALL_HTTPREQUEST_HANDLER = new InstallHttpRequestHandler(INSTALL_SERVLET_MAPPING);
+    public static final HttpRequestHandler INSTALL_HTTPREQUEST_HANDLER = new InstallHttpRequestHandler(INSTALL_SERVLET_MAPPING);
 
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
@@ -53,13 +54,13 @@ public class InitializationInitializer implements WebApplicationInitializer {
             }
             File file = new File(CommonUtils.joinString(CommonConstants.CMS_FILEPATH, CommonConstants.INSTALL_LOCK_FILENAME));
             if (file.exists()) {
-                String version = FileUtils.readFileToString(file, CommonConstants.DEFAULT_CHARSET_NAME);
+                String version = FileUtils.readFileToString(file, Constants.DEFAULT_CHARSET_NAME);
                 if (CmsVersion.getVersion().equals(version)
                         || CmsVersion.getVersion().substring(CmsVersion.getVersion().lastIndexOf("."))
                                 .equals(version.substring(version.lastIndexOf(".")))) {
                     if (!CmsVersion.getVersion().equals(version)) {
                         try (FileOutputStream outputStream = new FileOutputStream(file)) {
-                            outputStream.write(CmsVersion.getVersion().getBytes(CommonConstants.DEFAULT_CHARSET));
+                            outputStream.write(CmsVersion.getVersion().getBytes(Constants.DEFAULT_CHARSET));
                         }
                     }
                     CmsVersion.setInitialized(true);
@@ -107,7 +108,7 @@ public class InitializationInitializer implements WebApplicationInitializer {
     private static void createInstallServlet(ServletContext servletcontext, String startStep, String version) {
         Dynamic registration = servletcontext.addServlet("install", new InstallServlet(startStep, version));
         registration.setLoadOnStartup(1);
-        registration.addMapping(new String[] { INSTALL_SERVLET_MAPPING });
+        registration.addMapping(INSTALL_SERVLET_MAPPING);
     }
 
     /**

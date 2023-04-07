@@ -47,6 +47,7 @@
     </#list>
         </ul>
         <div>
+            <#if category.url?contains('?')><#assign pageParameter="pageIndex"/></#if>
             <#assign
                 start=1
                 end=page.totalPage
@@ -58,7 +59,7 @@
                 <#assign end=page.pageIndex+4/>
             </#if>
             <#if !page.firstPage>
-                <a href="${getPage(category.url,page.prePage,'pageIndex')}">Previous page</a>
+                <a href="${getPage(category.url,page.prePage,pageParameter)}">Previous page</a>
             <#else>
                 <span>Previous page</span>
             </#if>
@@ -69,14 +70,14 @@
                 <#if n=page.pageIndex>
                     ${n}
                 <#else>
-                    <a href="${getPage(category.url,n,'pageIndex')}">${n}</a>
+                    <a href="${getPage(category.url,n,pageParameter)}">${n}</a>
                 </#if>
             </#list>
             <#if end lt page.totalPage>
-                ... <a href="${getPage(category.url,page.totalPage,'pageIndex')}">${page.totalPage}</a>
+                ... <a href="${getPage(category.url,page.totalPage,pageParameter)}">${page.totalPage}</a>
             </#if>
             <#if !page.lastPage>
-                <a href="${getPage(category.url,page.nextPage,'pageIndex')}">Next page</a>
+                <a href="${getPage(category.url,page.nextPage,pageParameter)}">Next page</a>
             <#else>
                 <span>Next page</span>
             </#if>
@@ -116,7 +117,7 @@
         if("string" ==typeof itemString){
             url=url+"?"+itemString;
         }
-        ca.setDomain('${site.sitePath?keep_after('//')?keep_before('/')?keep_before(':')}');
+        ca.setDomain("${site.sitePath?keep_after('//')?keep_before('/')?keep_before(':')}");
         ca.setPath('/');
         ca.report(url);
     </script>

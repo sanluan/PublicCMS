@@ -61,7 +61,7 @@
             this._contextmenu(this._taskBox); // taskBar右键菜单
         },
         _contextmenu: function(obj) {
-            $(obj).contextMenu('dialogCM', {
+            $(obj).contextMenu("dialogCM", {
                 bindings: {
                     closeCurrent: function(t, m) {
                         var obj = t.isTag("li") ? t: $.taskBar._getCurrent();
@@ -79,8 +79,8 @@
                         });
                     }
                 }, ctrSub: function(t, m) {
-                    var mCur = m.find("[rel='closeCurrent']");
-                    var mOther = m.find("[rel='closeOther']");
+                    var mCur = m.find("[rel=\"closeCurrent\"]");
+                    var mOther = m.find("[rel=\"closeOther\"]");
                     if (!$.taskBar._getCurrent()[0] ) {
                         mCur.addClass("disabled");
                         mOther.addClass("disabled");
@@ -99,7 +99,7 @@
                 var lTask = $(">li:last-child", this._taskList);
                 var left = this._getTaskBarW() - lTask.position().left - lTask.outerWidth(true);
                 this._taskList.animate({
-                    left: left + 'px'
+                    left: left + "px"
                 }, 200, function() {
                     $this._ctrlScrollBut();
                 });
@@ -115,14 +115,14 @@
             if (task.position().left + this._getLeft() + task.outerWidth() > this._getBarWidth() ) {
                 var left = this._getTaskBarW() - task.position().left - task.outerWidth(true) - 2;
                 this._taskList.animate({
-                    left: left + 'px'
+                    left: left + "px"
                 }, 200, function() {
                     $this._ctrlScrollBut();
                 });
             } else if (task.position().left + this._getLeft() < 0 ) {
                 var left = this._getLeft() - ( task.position().left + this._getLeft() );
                 this._taskList.animate({
-                    left: left + 'px'
+                    left: left + "px"
                 }, 200, function() {
                     $this._ctrlScrollBut();
                 });
@@ -215,7 +215,7 @@
             this.show();
             var task = $("#" + id, this._taskList);
             if (!task[0] ) {
-                var taskFrag = '<li id="#taskid#"><div class="taskbutton">#title#</div><div class="close"><i class="icon-remove"></i></div></li>';
+                var taskFrag = "<li id=\"#taskid#\"><div class=\"taskbutton\">#title#</div><div class=\"close\"><i class=\"icon-remove\"></i></div></li>";
                 this._taskList.append(taskFrag.replace("#taskid#", id).replace("#title#", title));
                 task = $("#" + id, this._taskList);
                 task.jTask();
@@ -233,7 +233,7 @@
          *            id
          */
         closeDialog: function(obj) {
-            var task = ( typeof obj == 'string' ) ? $("#" + obj, this._taskList): obj;
+            var task = ( typeof obj == "string" ) ? $("#" + obj, this._taskList): obj;
             task.remove();
             if (this._getTasks().length == 0 ) {
                 this.hide();
@@ -245,8 +245,8 @@
          *            id or dialog
          */
         restoreDialog: function(obj) {
-            var dialog = ( typeof obj == 'string' ) ? $("body").data(obj): obj;
-            var id = ( typeof obj == 'string' ) ? obj: dialog.data("id");
+            var dialog = ( typeof obj == "string" ) ? $("body").data(obj): obj;
+            var id = ( typeof obj == "string" ) ? obj: dialog.data("id");
             var task = $.taskBar.getTask(id);
             $(".resizable").css({
                 top: $(window).height() - 60, left: $(task).position().left, height: $(task).outerHeight(), width: $(task).outerWidth()
@@ -343,14 +343,14 @@
             _callback: undefined,
             init: function(callback){
                 $.History._callback = callback;
-                var current_hash = location.hash.replace(/\?.*$/, '');
+                var current_hash = location.hash.replace(/\?.*$/, "");
                 $.History._currentHash = current_hash;
 
                 if (!$.support.leadingWhitespace) {
-                    if ($.History._currentHash == '') {
-                        $.History._currentHash = '#';
+                    if ($.History._currentHash == "") {
+                        $.History._currentHash = "#";
                     }
-                    $("body").append('<iframe id="jQuery_history" style="display: none;" src="about:blank"></iframe>');
+                    $("body").append("<iframe id=\"jQuery_history\" style=\"display: none;\" src=\"about:blank\"></iframe>");
                     var ihistory = $("#jQuery_history")[0];
                     var iframe = ihistory.contentDocument || ihistory.contentWindow.document;
                     iframe.open();
@@ -366,9 +366,9 @@
                 if (!$.support.leadingWhitespace) {
                     var ihistory = $("#jQuery_history")[0];
                     var iframe = ihistory.contentWindow;
-                    current_hash = iframe.location.hash.skipChar("#").replace(/\?.*$/, '');
+                    current_hash = iframe.location.hash.skipChar("#").replace(/\?.*$/, "");
                 } else {
-                    current_hash = location.hash.skipChar('#').replace(/\?.*$/, '');
+                    current_hash = location.hash.skipChar("#").replace(/\?.*$/, "");
                 }
                 if (current_hash != $.History._currentHash) {
                     $.History._currentHash = current_hash;
@@ -385,10 +385,10 @@
                     var iframe = ihistory.contentDocument || ihistory.contentWindow.document;
                     iframe.open();
                     iframe.close();
-                    iframe.location.hash = hash.replace(/\?.*$/, '');
-                    location.hash = hash.replace(/\?.*$/, '');
+                    iframe.location.hash = hash.replace(/\?.*$/, "");
+                    location.hash = hash.replace(/\?.*$/, "");
                 } else {
-                    location.hash = hash.replace(/\?.*$/, '');
+                    location.hash = hash.replace(/\?.*$/, "");
                 }
             },
             loadHistory: function(hash){

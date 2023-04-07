@@ -23,7 +23,7 @@
         }
     <#if orderSize gt 1>
         if(null == orderField){
-            orderField = CommonConstants.BLANK;
+            orderField = Constants.BLANK;
         }
         switch(orderField) {
         <#list columnList as a><#if a.order>

@@ -1,23 +1,34 @@
-<div class="pageFormContent" layoutH>
-    <ul class="tree treeFolder">
-    <@cms.categoryModelList categoryId=categoryId>
-        <#list list as a>
-            <@t.merge 'modelIds' a.id.modelId!/>
-        </#list>
-        <@cms.model ids=t.modelIds!><#assign modelMap=map!/></@cms.model>
-        <#list list as a>
-            <li><a href="cmsTemplate/contentForm.html?categoryId=${a.id.categoryId}&modelId=${a.id.modelId}" class="exclude-translate" target="dialog" mask="true">${(modelMap[a.id.modelId].name)!}</a></li>
-        </#list>
-    </@cms.categoryModelList>
-    </ul>
+<div class="pageContent">
+    <div class="tabs">
+        <@cms.categoryModelList categoryId=categoryId>
+        <div class="tabsHeader">
+            <div class="tabsHeaderContent">
+                <#list list as a>
+                    <@t.merge 'modelIds' a.id.modelId!/>
+                </#list>
+                <@cms.model ids=t.modelIds!><#assign modelMap=map!/></@cms.model>
+                <ul>
+                <#list list as a>
+                    <li><a href="cmsTemplate/contentForm.html?categoryId=${a.id.categoryId}&modelId=${a.id.modelId}" class="j-ajax" onclick="return false;">${(modelMap[a.id.modelId].name)!}</a></li>
+                </#list>
+                </ul>
+            </div>
+        </div>
+        <div class="tabsContent unitBox">
+            <#list list as a>
+                <div class="pageFormContent" layoutH>
+                    <#if a?is_first>
+                        <#assign categoryId=a.id.categoryId modelId=a.id.modelId/>
+                        <#include "../cmsTemplate/contentForm.html"/>
+                    </#if>
+                </div>
+            </#list>
+        </div>
+        </@cms.categoryModelList>
+    </div>
 </div>
 <div class="formBar">
     <ul>
         <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
     </ul>
 </div>
-<script>
-$('ul li a',$.pdialog.getCurrent()).click(function(){
-    $.pdialog.closeCurrent();
-});
-</script>

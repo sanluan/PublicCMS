@@ -12,11 +12,13 @@ import org.springframework.stereotype.Component;
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsCategoryService;
 import com.publiccms.views.pojo.query.CmsCategoryQuery;
+
+import freemarker.template.TemplateException;
 
 /**
  *
@@ -58,7 +60,7 @@ import com.publiccms.views.pojo.query.CmsCategoryQuery;
 public class CmsCategoryListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         SysSite site = getSite(handler);
         CmsCategoryQuery queryEntity = new CmsCategoryQuery();
         queryEntity.setQueryAll(handler.getBoolean("queryAll"));
@@ -74,13 +76,12 @@ public class CmsCategoryListDirective extends AbstractTemplateDirective {
         queryEntity.setTypeId(handler.getString("typeId"));
         queryEntity.setAllowContribute(handler.getBoolean("allowContribute"));
 
-        PageHandler page = service.getPage(queryEntity, handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", handler.getInteger("count", 30)));
+        PageHandler page = service.getPage(queryEntity, handler.getInteger("pageIndex", 1),
+                handler.getInteger("pageSize", handler.getInteger("count", 30)));
         @SuppressWarnings("unchecked")
         List<CmsCategory> list = (List<CmsCategory>) page.getList();
         if (null != list && handler.getBoolean("absoluteURL", true)) {
-            list.forEach(e -> {
-                TemplateComponent.initCategoryUrl(site, e);
-            });
+            list.forEach(e -> CmsUrlUtils.initCategoryUrl(site, e));
         }
         handler.put("page", page).render();
     }

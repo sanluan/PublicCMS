@@ -14,15 +14,16 @@ import org.apache.tools.zip.ZipFile;
 import org.apache.tools.zip.ZipOutputStream;
 
 import com.publiccms.common.api.Exchange;
-import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ZipUtils;
 import com.publiccms.entities.sys.SysSite;
 
 public abstract class AbstractExchange<E, D> implements Exchange<E, D> {
-    protected final static Log log = LogFactory.getLog(AbstractExchange.class);
+    protected static final Log log = LogFactory.getLog(AbstractExchange.class);
     private Class<D> clazz;
+
+    public static final String ATTACHMENT_DIR = "attachment/";
 
     @Override
     public void exportAll(SysSite site, String directory, ZipOutputStream zipOutputStream) {
@@ -46,14 +47,15 @@ public abstract class AbstractExchange<E, D> implements Exchange<E, D> {
             exportEntity(site, null, entity, new ByteArrayOutputStream(), zipOutputStream);
         }
     }
-
+    
     protected void export(String directory, ByteArrayOutputStream outputStream, ZipOutputStream zipOutputStream, D value,
             String path) {
         try {
             outputStream.reset();
             Constants.objectMapper.writeValue(outputStream, value);
-            ZipUtils.compressFile(new ByteArrayInputStream(outputStream.toByteArray()), zipOutputStream,
-                    getPath(directory, path));
+            try (InputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray())) {
+                ZipUtils.compressFile(inputStream, zipOutputStream, getPath(directory, path));
+            }
         } catch (IOException e) {
         }
     }
@@ -111,7 +113,7 @@ public abstract class AbstractExchange<E, D> implements Exchange<E, D> {
         if (CommonUtils.empty(directory)) {
             return path;
         } else {
-            return CommonUtils.joinString(directory, CommonConstants.SEPARATOR, path);
+            return CommonUtils.joinString(directory, Constants.SEPARATOR, path);
         }
     }
 

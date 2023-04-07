@@ -3,7 +3,6 @@ package com.publiccms.common.handler;
 import java.io.IOException;
 import java.io.Writer;
 import java.math.BigDecimal;
-import java.text.ParseException;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -44,7 +43,7 @@ public class TemplateDirectiveHandler extends BaseHandler {
      * @throws Exception
      */
     public TemplateDirectiveHandler(Map<String, TemplateModel> parameters, TemplateModel[] loopVars, Environment environment,
-            TemplateDirectiveBody templateDirectiveBody) throws Exception {
+            TemplateDirectiveBody templateDirectiveBody) {
         this.parameters = parameters;
         this.loopVars = loopVars;
         this.templateDirectiveBody = templateDirectiveBody;
@@ -151,17 +150,17 @@ public class TemplateDirectiveHandler extends BaseHandler {
     }
 
     @Override
-    public Date getDateWithoutRegister(String name) throws TemplateModelException, ParseException {
+    public Date getDateWithoutRegister(String name) throws TemplateModelException {
         return TemplateModelUtils.converDate(parameters.get(name));
     }
 
     @Override
-    public Locale getLocale() throws Exception {
+    public Locale getLocale() {
         return environment.getLocale();
     }
 
     @Override
-    public HttpServletRequest getRequest() throws IOException, Exception {
+    public HttpServletRequest getRequest() throws TemplateModelException {
         HttpRequestHashModel httpRequestHashModel = (HttpRequestHashModel) environment.getGlobalVariable("Request");
         if (null != httpRequestHashModel) {
             return httpRequestHashModel.getRequest();
@@ -170,7 +169,7 @@ public class TemplateDirectiveHandler extends BaseHandler {
     }
 
     @Override
-    public Object getAttribute(String name) throws IOException, Exception {
+    public Object getAttribute(String name) throws TemplateModelException {
         TemplateModel model = environment.getGlobalVariable(name);
         if (null != model) {
             return TemplateModelUtils.converBean(model);

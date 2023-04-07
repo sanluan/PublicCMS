@@ -1,7 +1,6 @@
 package com.publiccms.views.pojo.model;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import com.publiccms.entities.cms.CmsContentFile;
@@ -26,7 +25,6 @@ public class CmsContentParameters extends ExtendDataParameters implements java.i
     private List<CmsContentFile> files;
     private List<CmsContentFile> images;
     private List<CmsContentProduct> products;
-    private Map<String, String> extendData;
     private List<CmsTag> tags;
 
     /**
@@ -85,20 +83,6 @@ public class CmsContentParameters extends ExtendDataParameters implements java.i
      */
     public void setFiles(List<CmsContentFile> files) {
         this.files = files;
-    }
-
-    /**
-     * @return extend data
-     */
-    public Map<String, String> getExtendData() {
-        return extendData;
-    }
-
-    /**
-     * @param extendData
-     */
-    public void setExtendData(Map<String, String> extendData) {
-        this.extendData = extendData;
     }
 
     /**

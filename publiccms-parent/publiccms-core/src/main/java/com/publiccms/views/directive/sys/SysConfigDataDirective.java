@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import jakarta.annotation.Resource;
+
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
@@ -15,6 +16,8 @@ import com.publiccms.entities.sys.SysConfigData;
 import com.publiccms.entities.sys.SysConfigDataId;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.service.sys.SysConfigDataService;
+
+import freemarker.template.TemplateException;
 
 /**
 *
@@ -42,7 +45,7 @@ $.getJSON('${site.dynamicPath}api/directive/sys/configData?code=site&amp;appToke
 public class SysConfigDataDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         String code = handler.getString("code");
         String[] codes = handler.getStringArray("codes");
         SysSite site = getSite(handler);

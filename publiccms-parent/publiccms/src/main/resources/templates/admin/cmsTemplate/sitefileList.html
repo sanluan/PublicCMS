@@ -11,7 +11,7 @@
 <#list list as a>
     <#if !a.directory>
         <#assign sitefile=getSitefile(a.fileName)/>
-        <#if !site.useStatic || !(sitefile.useStatic)?has_content || sitefile.useStatic>
+        <#if !(sitefile.useStatic)?has_content || !sitefile.useStatic || (sitefile.useStatic && site.useStatic)>
             <div class="image-list">
                 <a href="cmsTemplate/viewsitefile.html?name=${a.fileName?url}&showImport=true" target="dialog" rel="sitefile_${a?counter}" width="1000" height="600">
                     <#if (sitefile.cover)?has_content>

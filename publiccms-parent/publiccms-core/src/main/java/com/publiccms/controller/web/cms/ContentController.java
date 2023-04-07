@@ -9,9 +9,9 @@ import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
@@ -84,7 +84,7 @@ public class ContentController {
      * @param model
      * @return view name
      */
-    @RequestMapping(value = "save", method = RequestMethod.POST)
+    @PostMapping("save")
     @Csrf
     public String save(@RequestAttribute SysSite site, CmsContent entity, @SessionAttribute SysUser user, Boolean draft,
             String captcha, CmsContentAttribute attribute, @ModelAttribute CmsContentParameters contentParameters,
@@ -93,7 +93,7 @@ public class ContentController {
         boolean locked = lockComponent.isLocked(site.getId(), LockComponent.ITEM_TYPE_CONTRIBUTE, String.valueOf(user.getId()),
                 null);
         if (ControllerUtils.errorCustom("locked.user", locked, model)) {
-            lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_CONTRIBUTE, String.valueOf(user.getId()), null, true);
+            lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_CONTRIBUTE, String.valueOf(user.getId()), null, 1);
             return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
         }
         if (CommonUtils.notEmpty(captcha)
@@ -134,7 +134,6 @@ public class ContentController {
                 }
             }
         } else {
-            entity.setContribute(true);
             entity.setSiteId(site.getId());
             entity.setUserId(user.getId());
             entity.setDisabled(false);

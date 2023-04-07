@@ -9,7 +9,7 @@ import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.BaseMethod;
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.AnalyzerDictUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.logic.component.site.SiteComponent;
@@ -49,7 +49,7 @@ public class GetDictMethod extends BaseMethod {
         File dictFile = new File(
                 CommonUtils.joinString(siteComponent.getRootPath(), AnalyzerDictUtils.DIR_DICT, AnalyzerDictUtils.TXT_DICT));
         try {
-            return FileUtils.readFileToString(dictFile, CommonConstants.DEFAULT_CHARSET_NAME);
+            return FileUtils.readFileToString(dictFile, Constants.DEFAULT_CHARSET);
         } catch (IOException e) {
         }
         return null;

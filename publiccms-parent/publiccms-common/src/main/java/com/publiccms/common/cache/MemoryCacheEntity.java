@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Collectors;
@@ -26,15 +27,15 @@ public class MemoryCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Seria
      */
     private static final long serialVersionUID = 1L;
     private int size = 300;
-    protected final Log log = LogFactory.getLog(getClass());
-    private LinkedHashMap<K, CacheValue<V>> cachedMap = new LinkedHashMap<>(16, 0.75f, true);
+    protected final transient Log log = LogFactory.getLog(getClass());
+    private Map<K, CacheValue<V>> cachedMap = new LinkedHashMap<>(16, 0.75f, true);
     private ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
 
     @Override
     public List<V> put(K key, V value) {
         lock.writeLock().lock();
         try {
-            cachedMap.put(key, new CacheValue<V>(value));
+            cachedMap.put(key, new CacheValue<>(value));
             return clearCache();
         } finally {
             lock.writeLock().unlock();
@@ -45,7 +46,7 @@ public class MemoryCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Seria
     public void put(K key, V value, Long expiryInSeconds) {
         lock.writeLock().lock();
         try {
-            CacheValue<V> cacheValue = new CacheValue<V>(value);
+            CacheValue<V> cacheValue = new CacheValue<>(value);
             if (null != expiryInSeconds) {
                 cacheValue.setExpiryDate(System.currentTimeMillis() + (expiryInSeconds * 1000));
             }
@@ -83,10 +84,10 @@ public class MemoryCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Seria
     }
 
     @Override
-    public List<V> clear() {
+    public List<V> clear(boolean recycling) {
         lock.writeLock().lock();
         try {
-            List<V> list = cachedMap.values().stream().map(m -> m.getValue()).collect(Collectors.toList());
+            List<V> list = recycling ? cachedMap.values().stream().map(m -> m.getValue()).collect(Collectors.toList()) : null;
             cachedMap.clear();
             return list;
         } finally {

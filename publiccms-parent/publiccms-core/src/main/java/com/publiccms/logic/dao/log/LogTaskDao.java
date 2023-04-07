@@ -71,7 +71,7 @@ public class LogTaskDao extends BaseDao<LogTask> {
             queryHandler.condition("bean.begintime <= :endBegintime").setParameter("endBegintime", endBegintime);
         }
         queryHandler.condition("bean.endtime is null");
-        return (List<LogTask>) getList(queryHandler);
+        return getEntityList(queryHandler);
     }
 
     /**

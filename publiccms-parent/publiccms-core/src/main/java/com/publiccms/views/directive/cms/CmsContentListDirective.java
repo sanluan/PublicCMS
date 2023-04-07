@@ -13,14 +13,17 @@ import org.springframework.stereotype.Component;
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
-import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.views.pojo.entities.ClickStatistics;
 import com.publiccms.views.pojo.query.CmsContentQuery;
+
+import freemarker.template.TemplateException;
 
 /**
  *
@@ -82,7 +85,7 @@ import com.publiccms.views.pojo.query.CmsContentQuery;
 public class CmsContentListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         CmsContentQuery queryEntity = new CmsContentQuery();
         SysSite site = getSite(handler);
         queryEntity.setSiteId(site.getId());
@@ -112,6 +115,7 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
         queryEntity.setHasProducts(handler.getBoolean("hasProducts"));
         queryEntity.setHasCover(handler.getBoolean("hasCover"));
         queryEntity.setUserId(handler.getLong("userId"));
+        queryEntity.setDeptId(handler.getInteger("deptId"));
         queryEntity.setStartPublishDate(handler.getDate("startPublishDate"));
         PageHandler page = service.getPage(queryEntity, handler.getBoolean("containChild"), handler.getString("orderField"),
                 handler.getString("orderType"),handler.getInteger("firstResult"), handler.getInteger("pageIndex", 1), 
@@ -130,8 +134,8 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
                     e.setId(e.getQuoteContentId());
                 }
                 if (absoluteURL) {
-                    TemplateComponent.initContentUrl(site, e);
-                    TemplateComponent.initContentCover(site, e);
+                    CmsUrlUtils.initContentUrl(site, e);
+                    fileUploadComponent.initContentCover(site, e);
                 }
             });
         }
@@ -145,6 +149,8 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
 
     @Resource
     private CmsContentService service;
+    @Resource
+    protected FileUploadComponent fileUploadComponent;
     @Resource
     private StatisticsComponent statisticsComponent;
 }

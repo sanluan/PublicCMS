@@ -32,6 +32,7 @@ public class VisitHistoryService extends BaseService<VisitHistory> {
      * @param sessionId
      * @param ip
      * @param url
+     * @param userId
      * @param startCreateDate
      * @param endCreateDate
      * @param orderType
@@ -40,9 +41,9 @@ public class VisitHistoryService extends BaseService<VisitHistory> {
      * @return results page
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(Short siteId, String sessionId, String ip, String url, Date startCreateDate, Date endCreateDate,
-            String orderType, Integer pageIndex, Integer pageSize) {
-        return dao.getPage(siteId, sessionId, ip, url, startCreateDate, endCreateDate, orderType, pageIndex, pageSize);
+    public PageHandler getPage(Short siteId, String sessionId, String ip, String url, Long userId, Date startCreateDate,
+            Date endCreateDate, String orderType, Integer pageIndex, Integer pageSize) {
+        return dao.getPage(siteId, sessionId, ip, url, userId, startCreateDate, endCreateDate, orderType, pageIndex, pageSize);
     }
 
     /**
@@ -81,7 +82,7 @@ public class VisitHistoryService extends BaseService<VisitHistory> {
 
     /**
      * @param siteId
-     * @param url 
+     * @param url
      * @param visitDate
      * @return results page
      */

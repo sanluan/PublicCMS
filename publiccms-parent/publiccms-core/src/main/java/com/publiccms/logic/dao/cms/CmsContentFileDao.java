@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import com.publiccms.common.base.BaseDao;
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
 import com.publiccms.common.tools.CommonUtils;
@@ -45,7 +45,7 @@ public class CmsContentFileDao extends BaseDao<CmsContentFile> {
             orderType = ORDERTYPE_DESC;
         }
         if (null == orderField) {
-            orderField = CommonConstants.BLANK;
+            orderField = Constants.BLANK;
         }
         switch (orderField) {
         case "size":
@@ -69,7 +69,7 @@ public class CmsContentFileDao extends BaseDao<CmsContentFile> {
         QueryHandler queryHandler = getQueryHandler("from CmsContentFile bean");
         queryHandler.condition("bean.contentId = :contentId").setParameter("contentId", contentId);
         queryHandler.condition("bean.fileType in :fileTypes").setParameter("fileTypes", fileTypes);
-        return (List<CmsContentFile>) getList(queryHandler);
+        return getEntityList(queryHandler);
     }
 
     @Override

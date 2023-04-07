@@ -8,38 +8,36 @@
     var _util = {
         _lookupPrefix: function(key) {
             var strDot = _lookup.currentGroup ? ".": "";
-            return _lookup.currentGroup + strDot + key + _lookup.suffix;
+            return _lookup.currentGroup + strDot + key;
         }, lookupPk: function(key) {
             return this._lookupPrefix(key);
-        }, lookupField: function(key) {
-            return this.lookupPk(key);
+        }, lookupSuffix: function(){
+            return _lookup.suffix;
         }
     };
     $.extend({
         bringBackSuggest: function(args) {
-            var $box = _lookup['$target'].parents(".unitBox:first");
-            $box.find(":input").each(function() {
-                var $input = $(this), inputName = $input.attr("name");
-                for ( var key in args) {
-                    var name = ( _lookup.pk == key ) ? _util.lookupPk(key): _util.lookupField(key);
-                    if (name == inputName && "" != name ) {
-                        if($input.hasClass('editor')){
-                            if('ckeditor'==$input.attr('editorType')) {
+            var $box = _lookup["$target"].parents(".unitBox:first");
+            for ( var key in args) {
+                $box.find(":input[name="+escapeJquery(_util.lookupPk(key))+"]").each(function() {
+                    var $input = $(this);
+                    if (("" === _util.lookupSuffix() || $input.attr("suffix") === _util.lookupSuffix())) {
+                        if($input.hasClass("editor")){
+                            if("ckeditor"==$input.attr("editorType")) {
                                 CKEDITOR.instances[$input.data("id")].setData(args[key]);
                             } else if ("tinymce"==$input.attr("editorType")){
                                 tinymce.get($input.data("id")).setContent(args[key]);
                             } else {
                                 UE.instants[$input.data("id")].setContent(args[key]);
                             }
-                        } else if($input.hasClass('code')) {
+                        } else if($input.hasClass("code")) {
                             JUI.instances[$(this).data("id")].setValue(args[key]);
                         } else {
-                            $input.val(args[key]).trigger('change');
+                            $input.val(args[key]).trigger("change");
                         }
-                        break;
                     }
-                }
-            });
+                });
+            }
         },
         bringBack: function(json) {
             if (json[JUI.keys.statusCode] == JUI.statusCode.error ) {
@@ -77,6 +75,7 @@
                         $.bringBackSuggest(args[row]);
                     }
                 }
+                _lookup.nextButton = null;
             }
             $.pdialog.closeCurrent();
         }
@@ -85,7 +84,7 @@
         lookup: function() {
             return this.each(function() {
                 var $this = $(this), options = {
-                    mask: true, width: $this.attr('width') || 820, height: $this.attr('height') || 500, maxable: eval($this.attr("maxable") || "true") ,
+                    mask: true, width: $this.attr("width") || 820, height: $this.attr("height") || 500, maxable: eval($this.attr("maxable") || "true") ,
                     resizable: eval($this.attr("resizable") || "true")
                 };
                 $this.click(function(event) {
@@ -107,7 +106,7 @@
                 var $this = $(this), args = {};
                 $this.click(function(event) {
                     var $unitBox = $this.parents(".unitBox:first");
-                    $unitBox.find("[name='" + $this.attr("multLookup") + "']").filter(":checked").each(function() {
+                    $unitBox.find("[name=\"" + $this.attr("multLookup") + "\"]").filter(":checked").each(function() {
                         var _args = JUI.jsonEval($(this).val());
                         for ( var key in _args) {
                             var value = args[key] ? args[key] + ",": "";
@@ -129,21 +128,21 @@
             };
             var selectedIndex = -1;
             return this.each(function() {
-                var $input = $(this).attr('autocomplete', 'off').keydown(function(event) {
-                    if (event.keyCode == JUI.keyCode.ENTER && $(op.suggest$).is(':visible') ) {
+                var $input = $(this).attr("autocomplete", "off").keydown(function(event) {
+                    if (event.keyCode == JUI.keyCode.ENTER && $(op.suggest$).is(":visible") ) {
                         return false; // 屏蔽回车提交
                     }
                 });
-                var suggestFields = $input.attr('suggestFields').split(",");
+                var suggestFields = $input.attr("suggestFields").split(",");
                 function _show(event) {
                     var offset = $input.offset();
                     var iTop = offset.top + this.offsetHeight;
                     var $suggest = $(op.suggest$);
                     if ($suggest.length == 0 ) {
-                        $suggest = $('<div id="suggest"></div>').appendTo($('body'));
+                        $suggest = $("<div id=\"suggest\"></div>").appendTo($("body"));
                     }
                     $suggest.css({
-                        left: offset.left + 'px', top: iTop + 'px'
+                        left: offset.left + "px", top: iTop + "px"
                     }).show();
                     _lookup = $.extend(_lookup, {
                         currentGroup: $input.attr("lookupGroup") || "", suffix: $input.attr("suffix") || "", $target: $input, pk: $input.attr("lookupPk") || ""
@@ -156,34 +155,34 @@
                     var postData = {};
                     postData[$input.attr("postField") || "inputValue"] = $input.val();
                     $.ajax({
-                        global: false, type: 'POST', dataType: "json", url: url, cache: false, data: postData, success: function(response) {
+                        global: false, type: "POST", dataType: "json", url: url, cache: false, data: postData, success: function(response) {
                             if (!response ) {
                                 return;
                             }
-                            var html = '';
+                            var html = "";
                             $.each(response, function(i) {
-                                var liAttr = '', liLabel = '';
+                                var liAttr = "", liLabel = "";
                                 for (var i = 0; i < suggestFields.length; i++) {
                                     var str = this[suggestFields[i]];
                                     if (str ) {
                                         if (liLabel ) {
-                                            liLabel += '-';
+                                            liLabel += "-";
                                         }
                                         liLabel += str;
                                     }
                                 }
                                 for ( var key in this) {
                                     if (liAttr ) {
-                                        liAttr += ',';
+                                        liAttr += ",";
                                     }
-                                    liAttr += key + ":'" + this[key] + "'";
+                                    liAttr += "'" + key + "':'" + this[key] + "'";
                                 }
-                                html += '<li lookupAttrs="' + liAttr + '">' + liLabel + '</li>';
+                                html += "<li lookupAttrs=\"" + liAttr + "\">" + liLabel + "</li>";
                             });
-                            var $lis = $suggest.html('<ul>' + html + '</ul>').find("li");
+                            var $lis = $suggest.html("<ul>" + html + "</ul>").find("li");
                             $lis.click(function() {
                                 _select($(this));
-                                if($input.next().hasClass('suggestButton')){
+                                if($input.next().hasClass("suggestButton")){
                                     $input.next().click();
                                 }
                             });
@@ -191,30 +190,30 @@
                                 $suggest.hide();
                                 var jsonStr = "";
                                 for (var i = 0; i < suggestFields.length; i++) {
-                                    if (_util.lookupField(suggestFields[i]) == event.target.name ) {
+                                    if (_util.lookupPk(suggestFields[i]) == event.target.name ) {
                                         break;
                                     }
                                     if (jsonStr ) {
-                                        jsonStr += ',';
+                                        jsonStr += ",";
                                     }
-                                    jsonStr += suggestFields[i] + ":''";
+                                    jsonStr += "'" + suggestFields[i] + "':''";
                                 }
-                                jsonStr = "{" + _lookup.pk + ":''," + jsonStr + "}";
+                                jsonStr = "{'" + _lookup.pk + "':''," + jsonStr + "}";
                                 $.bringBackSuggest(JUI.jsonEval(jsonStr));
                             }
                         }, error: function() {
-                            $suggest.html('');
+                            $suggest.html("");
                         }
                     });
                     $(document).on("click", null, null , _close);
                     return false;
                 }
                 function _select($item) {
-                    var jsonStr = "{" + $item.attr('lookupAttrs') + "}";
+                    var jsonStr = "{" + $item.attr("lookupAttrs") + "}";
                     $.bringBackSuggest(JUI.jsonEval(jsonStr));
                 }
                 function _close() {
-                    $(op.suggest$).html('').hide();
+                    $(op.suggest$).html("").hide();
                     selectedIndex = -1;
                     $(document).off("click", null, _close);
                 }
@@ -264,7 +263,7 @@
                 $table.find("tr:first th[type]").each(function(i) {
                     var $th = $(this);
                     var field = {
-                        type: $th.attr("type") || "text", patternDate: $th.attr("dateFmt") || "yyyy-MM-dd", name: $th.attr("name") || "" ,
+                        type: $th.attr("type") || "text", patternDate: $th.attr("dateFmt") || "yyyy-MM-dd", name: $th.attr("name") || "" ,suffix: $th.attr("suffix")||"",
                         defaultVal: escapeHtml($th.attr("defaultVal") || ""), size: $th.attr("size") || "12", enumUrl: $th.attr("enumUrl") || "" ,
                         lookupGroup: $th.attr("lookupGroup") || "", lookupUrl: $th.attr("lookupUrl") || "", lookupPk: $th.attr("lookupPk") || "id" ,
                         suggestUrl: $th.attr("suggestUrl"), suggestFields: $th.attr("suggestFields"), postField: $th.attr("postField") || "" ,
@@ -281,7 +280,7 @@
                     }
                     function delDbData() {
                         $.ajax({
-                            type: 'POST', dataType: "json", url: $btnDel.attr('href'), cache: false, success: function() {
+                            type: "POST", dataType: "json", url: $btnDel.attr("href"), cache: false, success: function() {
                                 $btnDel.parents("tr:first").remove();
                                 initSuffix($tbody);
                             }, error: JUI.ajaxError
@@ -296,20 +295,21 @@
                     }
                     return false;
                 });
-                var addButTxt = $table.attr('addButton') || "Add New";
+                var addButTxt = $table.attr("addButton") || "Add New";
                 if (addButTxt ) {
-                    var $addBut = $('<label style="width:auto;"><button type="button" class="button">' + addButTxt + '</button></label>').insertBefore($table).find('button');
-                    var batchButtonTxt = $table.attr('batchButton') || "Batch upload";
-                    var batchUploadUrl = $table.attr('batchUploadUrl');
-                    if(batchUploadUrl){
-                        var $batchButton = $('<label><a class="button" lookupGroup="" href="'+batchUploadUrl+'" width="1000" height="600" >'+batchButtonTxt+'</a></label>').initUI().insertBefore($table).find('a');
+                    var $caption = $("<caption></caption>").appendTo($table);
+                    var $addBut = $("<label style=\"width:auto;\"><button type=\"button\" class=\"button\">" + addButTxt + "</button></label>").appendTo($caption).find("button");
+                    var batchButtonTxt = $table.attr("batchButton") || "Batch upload";
+                    var batchUrl = $table.attr("batchUrl");
+                    if(batchUrl){
+                        var $batchButton = $("<label><a class=\"button\" lookupGroup=\"\" href=\""+batchUrl+"\" width=\"1000\" height=\"600\" >"+batchButtonTxt+"</a></label>").initUI().appendTo($caption).find("a");
                         $batchButton.click(function(){
                             _lookup = $.extend(_lookup, {
                                 nextButton : $addBut
                             });
                         });
                     } else {
-                        var $rowNum = $('<label><input type="text" name="dwz_rowNum" class="textInput" value="1" size="2"/></label>').insertBefore($table).find('input');
+                        var $rowNum = $("<label><input type=\"text\" name=\"dwz_rowNum\" class=\"textInput\" value=\"1\" size=\"2\"/></label>").appendTo($caption).find("input");
                     }
 
                     var trTm = "";
@@ -318,7 +318,7 @@
                             trTm = trHtml(fields);
                         }
                         var rowNum = 1;
-                        if(!batchUploadUrl ){
+                        if(!batchUrl ){
                             try {
                                 rowNum = parseInt($rowNum.val());
                             } catch (e) {}
@@ -330,13 +330,24 @@
                                 initSuffix($tbody);
                                 return false;
                             });
+                            $tr.click(function(){
+                                $tbody.find(">tr.selected").removeClass("selected");
+                                $tr.addClass("selected");
+                            });
                         }
                         initSuffix($tbody);
-                        var $attach = $tr.find('.btnAttach');
-                        if(batchUploadUrl && $attach ){
+                        var $attach = $tr.find(".btnAttach");
+                        if( $attach.length ){
                             _lookup = $.extend(_lookup, {
                                 currentGroup: $attach.attr("lookupGroup") || "", suffix: $attach.attr("suffix") || "", $target: $attach, pk: $attach.attr("lookupPk") || ""
                             });
+                        } else if(_lookup.nextButton){
+                            var $batch = $tr.find("[batchGroup]");
+                            if($batch.length){
+                                 _lookup = $.extend(_lookup, {
+                                    currentGroup: $batch.attr("batchGroup") || "", suffix: $batch.attr("suffix") || "", $target: $batch, pk: $batch.attr("lookupPk") || ""
+                                });
+                            }
                         }
                     });
                 }
@@ -346,59 +357,62 @@
              * 删除时重新初始化下标
              */
             function initSuffix($tbody) {
-                $tbody.find('>tr').each(function(i) {
-                    $(':input, a.btnLook, a.btnAttach', this).each(function() {
-                        var $this = $(this), name = $this.attr('name'), val = $this.val();
+                $tbody.find(">tr").each(function(i) {
+                    $(":input, a.btnLook, a.btnAttach", this).each(function() {
+                        var $this = $(this), name = $this.attr("name"), val = $this.val();
                         if (name ) {
-                            $this.attr('name', name.replaceSuffix(i));
+                            $this.attr("name", name.replaceSuffix(i));
                         }
-                        var lookupGroup = $this.attr('lookupGroup');
+                        var lookupGroup = $this.attr("lookupGroup");
                         if (lookupGroup ) {
-                            $this.attr('lookupGroup', lookupGroup.replaceSuffix(i));
+                            $this.attr("lookupGroup", lookupGroup.replaceSuffix(i));
+                        }
+                        var batchGroup = $this.attr("batchGroup");
+                        if (batchGroup ) {
+                            $this.attr("batchGroup", batchGroup.replaceSuffix(i));
                         }
                         var suffix = $this.attr("suffix");
                         if (suffix ) {
-                            $this.attr('suffix', suffix.replaceSuffix(i));
+                            $this.attr("suffix", suffix.replaceSuffix(i));
                         }
                         if (val && val.indexOf("#index#") >= 0 ) {
-                            $this.val(val.replace('#index#', i + 1));
+                            $this.val(val.replace("#index#", i + 1));
                         }
                     });
                 });
             }
             function tdHtml(field) {
-                var hiddenHtml = '', html = '', suffix = '';
-                if (field.name.endsWith("[#index#]") ) {
-                    suffix = "[#index#]";
-                } else if (field.name.endsWith("[]") ) {
-                    suffix = "[]";
-                }
-                var suffixFrag = suffix ? ' suffix="' + suffix + '" ': '';
-                var attrFrag = '';
+                var html = "";
+                var suffixFrag = field.suffix ? " suffix=\"" + field.suffix + "\"": "";
+                var attrFrag = "";
                 if (field.fieldAttrs ) {
                     var attrs = JUI.jsonEval(field.fieldAttrs);
                     for ( var key in attrs) {
-                        attrFrag += key + '="' + attrs[key] + '"';
+                        attrFrag += key + "=\"" + attrs[key] + "\" ";
                     }
                 }
                 switch (field.type) {
-                    case 'del':
-                        html = '<a href="javascript:void(0)" class="btnDel ' + field.fieldClass + '"></a>';
+                    case "del":
+                        html = "<a href=\"javascript:void(0)\" class=\"btnDel " + field.fieldClass + "\"></a>";
                         break;
-                    case 'lookup':
-                        var suggestFrag = '';
+                    case "lookup":
+                        var suggestFrag = "";
                         if (field.suggestFields ) {
-                            suggestFrag = 'autocomplete="off" lookupGroup="' + field.lookupGroup + '"' + suffixFrag + ' suggestUrl="' + field.suggestUrl + '" suggestFields="'
-                                    + field.suggestFields + '"' + ' postField="' + field.postField + '"';
+                            suggestFrag = "autocomplete=\"off\" lookupGroup=\"" + field.lookupGroup + "\"" + suffixFrag + " lookupPk=\"" + field.lookupPk + "\" suggestUrl=\"" + field.suggestUrl + "\" suggestFields=\""
+                                    + field.suggestFields + "\"" + " postField=\"" + field.postField + "\"";
                         }
-                        html =  '<input type="text" name="' + field.name + '"' + suggestFrag + ' lookupPk="' + field.lookupPk + '" size="' + field.size + '" class="' + field.fieldClass + '" ' + attrFrag + '/>'
-                            + '<a class="btnLook" href="' + field.lookupUrl + '" lookupGroup="' + field.lookupGroup + '" ' + suggestFrag + ' lookupPk="' + field.lookupPk + '" ' + attrFrag + '>'+field.title+'</a>';
+                        if (field.lookupPk) {
+                            var strDot = field.lookupGroup ? ".": "";
+                            html +=  "<input type=\"hidden\" name=\""+field.lookupGroup + strDot + field.lookupPk+"\"" + suffixFrag + " value=\"" + field.defaultVal + "\"/>";
+                        }
+                        html +=  "<input type=\"text\" name=\"" + field.name + "\" " + suggestFrag + suffixFrag + " size=\"" + field.size + "\" class=\"" + field.fieldClass + "\" " + attrFrag + "/>"
+                            + "<a class=\"btnLook\" href=\"" + field.lookupUrl + "\" lookupGroup=\"" + field.lookupGroup + "\"" + suffixFrag + " lookupPk=\"" + field.lookupPk + "\" " + attrFrag + ">"+field.title+"</a>";
                         break;
-                    case 'attach':
-                        html =  '<input type="text" name="' + field.name + '" size="' + field.size + '" class="' + field.fieldClass + '" ' + attrFrag + '/>'
-                                 + '<a class="btnAttach" href="' + field.lookupUrl + '" lookupGroup="' + field.lookupGroup + '" ' + suffixFrag + ' lookupPk="' + field.lookupPk + '" width="1000" height="600" ' + attrFrag + '>'+field.title+'</a>';
+                    case "attach":
+                        html =  "<input type=\"text\" name=\"" + field.name + "\" size=\"" + field.size + "\" class=\"" + field.fieldClass + "\" " + attrFrag + "/>"
+                                 + "<a class=\"btnAttach\" href=\"" + field.lookupUrl + "\" lookupGroup=\"" + field.lookupGroup + "\"" + suffixFrag + " lookupPk=\"" + field.lookupPk + "\" width=\"1000\" height=\"600\" " + attrFrag + ">"+field.title+"</a>";
                         break;
-                    case 'enum':
+                    case "enum":
                         $.ajax({
                             type: "POST", dataType: "html", async: false, url: field.enumUrl, data: {
                                 inputName: field.name,
@@ -409,40 +423,40 @@
                             }
                         });
                         break;
-                    case 'date':
-                        html = '<input type="text" name="' + field.name + '" value="' + field.defaultVal + '" class="date ' + field.fieldClass + '" dateFmt="' + field.patternDate
-                                + '" size="' + field.size + '" ' + attrFrag + '/>';
+                    case "date":
+                        html = "<input type=\"text\" name=\"" + field.name + "\" value=\"" + field.defaultVal + "\" class=\"date " + field.fieldClass + "\" dateFmt=\"" + field.patternDate
+                                + "\" size=\"" + field.size + "\" " + attrFrag + "/>";
                         break;
-                    case 'checkbox':
-                        html = '<input type="checkbox" name="' + field.name + '" class="' + field.fieldClass + '" ' + attrFrag + '/>';
+                    case "checkbox":
+                        html = "<input type=\"checkbox\" name=\"" + field.name + "\" class=\"" + field.fieldClass + "\" " + attrFrag + "/>";
                         break;
-                    case 'textarea':
-                        html = '<textarea name="' + field.name + '" class="' + field.fieldClass + '" ' + attrFrag + '>' + field.defaultVal + '</textarea>';
+                    case "textarea":
+                        html = "<textarea name=\"" + field.name + "\" class=\"" + field.fieldClass + "\" " + attrFrag + ">" + field.defaultVal + "</textarea>";
                         break;
-                    case 'number':
-                        html = '<input type="number" name="' + field.name + '" value="' + field.defaultVal + '" size="' + field.size + '" class="' + field.fieldClass + '" '
-                        + attrFrag + '/>';
+                    case "number":
+                        html = "<input type=\"number\" name=\"" + field.name + "\" value=\"" + field.defaultVal + "\" size=\"" + field.size + "\" class=\"" + field.fieldClass + "\" "
+                        + attrFrag + "/>";
                         break;
                     default :
-                        html = '<input type="text" name="' + field.name + '" value="' + field.defaultVal + '" size="' + field.size + '" class="' + field.fieldClass + '" '
-                                + attrFrag + '/>';
+                        html = "<input type=\"text\" name=\"" + field.name + "\" value=\"" + field.defaultVal + "\" size=\"" + field.size + "\" class=\"" + field.fieldClass + "\" "
+                                + attrFrag + "/>";
                         break;
                 }
-                return '<td>' + html + '</td>';
+                return "<td>" + html + "</td>";
             }
             function trHtml(fields) {
-                var html = '';
+                var html = "";
                 $(fields).each(function() {
                     html += tdHtml(this);
                 });
-                return '<tr class="unitBox">' + html + '</tr>';
+                return "<tr class=\"unitBox\">" + html + "</tr>";
             }
         },
         selectedTodo: function() {
             function _getIds(selectedIds, targetType) {
                 var ids = "";
                 var $box = targetType == "dialog" ? $.pdialog.getCurrent(): navTab.getCurrentPanel();
-                $box.find("input:checked").filter("[name='" + selectedIds + "']").each(function(i) {
+                $box.find("input:checked").filter("[name=\"" + selectedIds + "\"]").each(function(i) {
                     var val = $(this).val();
                     ids += i == 0 ? val: "," + val;
                 });
@@ -461,13 +475,13 @@
                     }
                     var _callback = $this.attr("callback") || ( targetType == "dialog" ? dialogAjaxDone: navTabAjaxDone );
                     if ("function" !== typeof _callback ) {
-                        _callback = eval('(' + _callback + ')');
+                        _callback = eval("(" + _callback + ")");
                     }
                     function _doPost() {
                         $.ajax({
-                            type: 'POST', url: $this.attr('href'), dataType: 'json', cache: false, data: function() {
-                                if (postType == 'map' ) {
-                                    return $.map(ids.split(','), function(val, i) {
+                            type: "POST", url: $this.attr("href"), dataType: "json", cache: false, data: function() {
+                                if (postType == "map" ) {
+                                    return $.map(ids.split(","), function(val, i) {
                                         return {
                                             name: selectedIds, value: val
                                         };

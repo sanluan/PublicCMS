@@ -18,15 +18,15 @@ import com.publiccms.common.base.BaseService;
 @Service
 @Transactional
 public class CmsContentAttributeService extends BaseService<CmsContentAttribute> {
-    
-    public static final String[] ignoreProperties = new String[] { "contentId" };
+
+    protected static final String[] ignoreProperties = new String[] { "contentId" };
 
     /**
      * @param ids
      * @return results page
      */
     public List<CmsContentAttribute> getEntitysWithoutText(Serializable[] ids) {
-        return dao.getEntitys(ids);
+        return basedao.getEntitys(ids);
     }
 
     /**
@@ -48,5 +48,4 @@ public class CmsContentAttributeService extends BaseService<CmsContentAttribute>
             }
         }
     }
-    
 }

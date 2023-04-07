@@ -100,8 +100,8 @@ var JUI = {
     } ,
     jsonEval: function(data) {
         try {
-            if (typeof data == 'string' ) {
-                return eval('(' + data + ')');
+            if (typeof data == "string" ) {
+                return eval("(" + data + ")");
             } else {
                 return data;
             }
@@ -110,8 +110,8 @@ var JUI = {
         }
     } ,
     ajaxError: function(xhr, ajaxOptions, thrownError) {
-        if('undefined' == typeof thrownError||"" ==thrownError){
-            var exception = $($.parseHTML(xhr.responseText, document, true)).find('#divexception textarea');
+        if("undefined" == typeof thrownError||"" ==thrownError){
+            var exception = $($.parseHTML(xhr.responseText, document, true)).find("#divexception textarea");
             if(exception.length){
                 thrownError=exception.val();
             }else if(0===xhr.status){
@@ -167,7 +167,7 @@ var JUI = {
         $.extend(JUI.keys, op.keys);
         $.extend(JUI.pageInfo, op.pageInfo);
         $.ajax({
-            type: 'GET', url: pageFrag, dataType: 'html', cache: false, error: function(xhr) {
+            type: "GET", url: pageFrag, dataType: "html", cache: false, error: function(xhr) {
                 alert(xhr.statusText);
             }, success: function(html) {
                 $($.parseHTML(html, document, true)).each(function() {
@@ -197,7 +197,7 @@ var JUI = {
                 var box = event.target;
                 var $box = $(box);
                 $("textarea.editor", $box).each(function() {
-                    if('ckeditor'==$(this).attr('editorType')) {
+                    if("ckeditor"==$(this).attr("editorType")) {
                         if(CKEDITOR.instances[$(this).data("id")]) {
                             CKEDITOR.instances[$(this).data("id")].updateElement();
                         }
@@ -230,12 +230,12 @@ var JUI = {
                 var box = event.target;
                 var $box = $(box);
                 $("textarea.editor", $box).each(function() {
-                    if('ckeditor'==$(this).attr('editorType')) {
+                    if("ckeditor"==$(this).attr("editorType")) {
                         if(CKEDITOR.instances[$(this).data("id")]) {
                             CKEDITOR.instances[$(this).data("id")].destroy();
                         }
                     } else if("tinymce"==$(this).attr("editorType")) {
-                        tinymce.remove('#'+$(this).data("id"));
+                        tinymce.remove("#"+$(this).data("id"));
                     } else {
                         if(UE.instants[$(this).data("id")]) {
                             UE.instants[$(this).data("id")].destroy();
@@ -254,7 +254,7 @@ var JUI = {
                         delete JUI.instances[$(this).data("id")];
                     }
                 });
-                $('[close-url]',$box).each(function (){
+                $("[close-url]",$box).each(function (){
                     $.getJSON($(this).attr("close-url"), function(data) {});
                 });
             });
@@ -286,7 +286,7 @@ var JUI = {
             var $this = $(this);
             $this.trigger(JUI.eventType.pageClear);
             $.ajax({
-                type: op.type || 'GET', url: op.url, data: op.data, cache: false, success: function(response) {
+                type: op.type || "GET", url: op.url, data: op.data, cache: false, success: function(response) {
                     var json = JUI.jsonEval(response);
                     if (json[JUI.keys.statusCode] == JUI.statusCode.error ) {
                         if (json[JUI.keys.message] ) {
@@ -346,21 +346,21 @@ var JUI = {
                 var iRefH = $refBox.height();
 
                 var iLayoutH = 0;
-                if ($this.parents('.rightPageContent').length != 0){
-                    iLayoutH = $this.getSiblingsElemsH($this.parents('.rightPageContent'));
-                }else if ($this.parents('.leftPageContent').length != 0){
-                    iLayoutH = $this.getSiblingsElemsH($this.parents('.leftPageContent'));
-                }else if ($this.parents('.pageFormContent').length != 0){
-                    iLayoutH = $this.getSiblingsElemsH($this.parents('.pageFormContent')) + 30;
-                }else if ($this.parents('.page').length != 0 ) {
-                    iLayoutH = $this.getSiblingsElemsH($this.parents('.page'));
-                }else if ($this.parents('.dialogContent').length != 0){
-                    iLayoutH = $this.getSiblingsElemsH($this.parents('.dialogContent'));
+                if ($this.parents(".rightPageContent").length != 0){
+                    iLayoutH = $this.getSiblingsElemsH($this.parents(".rightPageContent"));
+                }else if ($this.parents(".leftPageContent").length != 0){
+                    iLayoutH = $this.getSiblingsElemsH($this.parents(".leftPageContent"));
+                }else if ($this.parents(".pageFormContent").length != 0){
+                    iLayoutH = $this.getSiblingsElemsH($this.parents(".pageFormContent")) + 30;
+                }else if ($this.parents(".page").length != 0 ) {
+                    iLayoutH = $this.getSiblingsElemsH($this.parents(".page"));
+                }else if ($this.parents(".dialogContent").length != 0){
+                    iLayoutH = $this.getSiblingsElemsH($this.parents(".dialogContent"));
                 }
 
                 var iH = iRefH - iLayoutH > 50 ? iRefH - iLayoutH: 50;
                 if ($this.isTag("table") ) {
-                    $this.removeAttr("layoutH").wrap('<div layoutH="' + iLayoutH + '" style="overflow:auto;height:' + iH + 'px"></div>');
+                    $this.removeAttr("layoutH").wrap("<div layoutH=\"" + iLayoutH + "\" style=\"overflow:auto;height:" + iH + "px\"></div>");
                 } else {
                     $this.outerHeight(iH).css("overflow", "auto");
                 }
@@ -371,13 +371,13 @@ var JUI = {
          */
         getSiblingsElemsH: function($container) {
             var $page = $container;
-            var headerH = this.getElemsH($page, '.pageHeader');
-            var formBarH = this.getElemsH($page, '.formBar');
-            var contentTitleH = this.getElemsH($page, '.contentTitle');
-            var gridHeaderH = this.getElemsH($page, '.gridHeader');
-            var tabsHeaderH = this.getElemsH($page, '.tabsHeader');
-            var pageBarH = this.getElemsH($page, '.pageBar.panelBar');
-            var panelBarH = this.getElemsH($page, '.panelBar:not(.pageBar)');
+            var headerH = this.getElemsH($page, ".pageHeader");
+            var formBarH = this.getElemsH($page, ".formBar");
+            var contentTitleH = this.getElemsH($page, ".contentTitle");
+            var gridHeaderH = this.getElemsH($page, ".gridHeader");
+            var tabsHeaderH = this.getElemsH($page, ".tabsHeader");
+            var pageBarH = this.getElemsH($page, ".pageBar.panelBar");
+            var panelBarH = this.getElemsH($page, ".panelBar:not(.pageBar)");
             return headerH + pageBarH + gridHeaderH + panelBarH + formBarH + tabsHeaderH + contentTitleH;
         },
         /**
@@ -414,14 +414,14 @@ var JUI = {
                 function altBoxCss(opacity) {
                     var position = $this.position();
                     return {
-                        width: $this.width(), top: position.top + 'px', left: position.left + 'px', opacity: opacity || 1
+                        width: $this.width(), top: position.top + "px", left: position.left + "px", opacity: opacity || 1
                     };
                 }
                 if (getAltBox().length < 1 ) {
                     if (!$this.attr("id") ) {
                         $this.attr("id", $this.attr("name") + "_" + Math.round(Math.random() * 10000));
                     }
-                    var $label = $('<label class="alt" for="' + $this.attr("id") + '">' + $this.attr("alt") + '</label>').appendTo($this.parent());
+                    var $label = $("<label class=\"alt\" for=\"" + $this.attr("id") + "\">" + $this.attr("alt") + "</label>").appendTo($this.parent());
                     $label.css(altBoxCss(0.6));
                     if ($this.val() ) {
                         $label.hide();
@@ -480,7 +480,7 @@ var JUI = {
             return d >= 0 && this.lastIndexOf(pattern) === d;
         },
         replaceSuffix: function(index) {
-            var i = this.lastIndexOf('[');
+            var i = this.lastIndexOf("[");
             return this.substring(0,i)+this.substring(i).replace(/\[[0-9]+\]/, "[" + index + "]").replace("#index#", index);
         },
         encodeTXT: function() {

@@ -4,11 +4,10 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.http.client.ClientProtocolException;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.oauth.AbstractOauth;
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.views.pojo.oauth.OauthAccess;
 import com.publiccms.views.pojo.oauth.OauthConfig;
@@ -48,7 +47,7 @@ public class WeiboOauthComponent extends AbstractOauth {
      * http://open.weibo.com/wiki/Oauth2/access_token
      */
     @Override
-    public OauthAccess getAccessToken(short siteId, String code) throws ClientProtocolException, IOException {
+    public OauthAccess getAccessToken(short siteId, String code) throws IOException {
         OauthConfig config = getConfig(siteId);
         if (CommonUtils.notEmpty(code) && null != config) {
             Map<String, String> parameters = new HashMap<>();
@@ -59,7 +58,7 @@ public class WeiboOauthComponent extends AbstractOauth {
             parameters.put("code", code);
             String html = post("https://api.weibo.com/oauth2/access_token", parameters);
             if (CommonUtils.notEmpty(html)) {
-                Map<String, Object> map = CommonConstants.objectMapper.readValue(html, CommonConstants.objectMapper
+                Map<String, Object> map = Constants.objectMapper.readValue(html, Constants.objectMapper
                         .getTypeFactory().constructMapLikeType(HashMap.class, String.class, Object.class));
                 return new OauthAccess(code, (String) map.get("access_token"), String.valueOf(map.get("uid")));
             }
@@ -71,12 +70,12 @@ public class WeiboOauthComponent extends AbstractOauth {
      * http://open.weibo.com/wiki/2/users/show
      */
     @Override
-    public OauthUser getUserInfo(short siteId, OauthAccess oauthInfo) throws ClientProtocolException, IOException {
+    public OauthUser getUserInfo(short siteId, OauthAccess oauthInfo) throws IOException {
         if (null != oauthInfo) {
             StringBuilder sb = new StringBuilder("https://api.weibo.com/2/users/show.json?access_token=");
             sb.append(oauthInfo.getAccessToken()).append("&uid=").append(oauthInfo.getOpenId());
             String html = get(sb.toString());
-            Map<String, Object> map = CommonConstants.objectMapper.readValue(html, CommonConstants.objectMapper.getTypeFactory()
+            Map<String, Object> map = Constants.objectMapper.readValue(html, Constants.objectMapper.getTypeFactory()
                     .constructMapLikeType(HashMap.class, String.class, Object.class));
             if (null != map.get("id")) {
                 return new OauthUser(oauthInfo.getOpenId(), (String) map.get("screen_name"));

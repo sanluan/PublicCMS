@@ -14,21 +14,21 @@
                         height: "", width: ""
                     }).hide();
                 }
-                $('#'+ allSelectBox[i]).children('a').removeClass('expand');
+                $("#"+ allSelectBox[i]).children("a").removeClass("expand");
                 $(document).off("click", null, killAllBox);
             }
         });
     };
     var _onchange = function(event) {
-        var $ref = $("select[name=" + escapeJquery(event.data.$this.attr('ref'))+"]");
+        var $ref = $("select[name=" + escapeJquery(event.data.$this.attr("ref"))+"]");
         if ($ref.length == 0 ) {
             return false;
         }
-        if(event.data.$this.attr('index')){
-            $ref=$ref.eq(event.data.$this.attr('index'));
+        if(event.data.$this.attr("index")){
+            $ref=$ref.eq(event.data.$this.attr("index"));
         }
         $.ajax({
-            type: 'POST', dataType: "json", url: event.data.$this.attr('refUrl').replace("{value}", encodeURIComponent(event.data.$this.val())), cache: false, data: {} ,
+            type: "POST", dataType: "json", url: event.data.$this.attr("refUrl").replace("{value}", encodeURIComponent(event.data.$this.val())), cache: false, data: {} ,
             success: function(json) {
                 if (!json ) {
                     return;
@@ -36,7 +36,7 @@
                 $ref.empty();
                 $.each(json, function(i) {
                     if (json[i] && json[i].length > 1 ) {
-                        $('<option></option>').attr('value',json[i][0]).text(json[i][1]).appendTo($ref);
+                        $("<option></option>").attr("value",json[i][0]).text(json[i][1]).appendTo($ref);
                     }
                 });
                 var $refCombox = $ref.parents("div.combox:first");
@@ -57,11 +57,11 @@
                 allSelectBox.push(box.attr("id"));
                 $(op.selector, box).click(function() {
                     var options = $("#op_" + box.attr("id"));
-                    var optionlist=$('ul',options);
+                    var optionlist=$("ul",options);
                     if (options.is(":hidden") ) {
-                        box.children('a').addClass('expand');
+                        box.children("a").addClass("expand");
                         if (options.height() > 600 ) {
-                            options.addClass('lot');
+                            options.addClass("lot");
                         }
                         if (options.height() > 300 ) {
                             optionlist.css({
@@ -79,28 +79,28 @@
                         options.css({
                             top: top, left: left
                         }).show();
-                        if($('a.selected',options).length && 0 == optionlist.scrollTop()){
-                            optionlist.stop().animate({scrollTop:$('a.selected',optionlist).offset().top + 60 - options.height() -optionlist.offset().top},500);
+                        if($("a.selected",options).length && 0 == optionlist.scrollTop()){
+                            optionlist.stop().animate({scrollTop:$("a.selected",optionlist).offset().top + 60 - options.height() -optionlist.offset().top},500);
                         }
-                        $('.search input',options).focus().keyup(function(){
+                        $(".search input",options).focus().keyup(function(){
                             var val = $(this).val();
                             if(val){
-                                $('li',optionlist).hide();
-                                $('li a:contains('+escapeJquery(val)+')',optionlist).parent().show();
-                                $('li a',optionlist).each(function(){
-                                    if(-1 < $(this).attr('value').indexOf(val)){
+                                $("li",optionlist).hide();
+                                $("li a:contains("+escapeJquery(val)+")",optionlist).parent().show();
+                                $("li a",optionlist).each(function(){
+                                    if(-1 < $(this).attr("value").indexOf(val)){
                                         $(this).parent().show();
                                     }
                                 });
                             }else{
-                                $('li',optionlist).show();
+                                $("li",optionlist).show();
                             }
-                            $('li.disabled',optionlist).hide();
+                            $("li.disabled",optionlist).hide();
                         }).click(function(){
                             return false;
-                        }).val('');
-                        $('li',optionlist).show();
-                        $('li.disabled',optionlist).hide();
+                        }).val("");
+                        $("li",optionlist).show();
+                        $("li.disabled",optionlist).hide();
                         killAllBox(box.attr("id"));
                         $(document).click(killAllBox);
                     } else {
@@ -153,18 +153,18 @@
                 }
                 var name = $this.attr("name");
                 var value = $this.val();
-                var label = '';
+                var label = "";
                 if( "undefined" !== typeof value  && value){
                     label = $("option[value=" + escapeJquery(value) + "]", $this).text();
                 }else if("" == value){
-                    label = $("option[value='']", $this).text();
+                    label = $("option[value=\"\"]", $this).text();
                 }
                 var ref = $this.attr("ref");
                 var refUrl = $this.attr("refUrl") || "";
                 var cid = $this.attr("id") || Math.round(Math.random() * 10000000);
-                var select = '<div class="combox"><div id="combox_' + cid + '" class="select"' + ( ref ? ' ref="' + escapeHtml(ref) + '"': '' ) + '>';
-                select += '<a href="javascript:" class="' + $this.attr("class") + '" name="' + name + '" value="' + escapeHtml(value) + '">' + label + '</a></div></div>';
-                var options = '<div class="comboxop" id="op_combox_' + cid + '"><div class="search"><input type="text" class="textInput"/></div><ul>';
+                var select = "<div class=\"combox\"><div id=\"combox_" + cid + "\" class=\"select\"" + ( ref ? " ref=\"" + escapeHtml(ref) + "\"": "" ) + ">";
+                select += "<a href=\"javascript:\" class=\"" + $this.attr("class") + "\" name=\"" + name + "\" value=\"" + escapeHtml(value) + "\">" + label + "</a></div></div>";
+                var options = "<div class=\"comboxop\" id=\"op_combox_" + cid + "\"><div class=\"search\"><input type=\"text\" class=\"textInput\"/></div><ul>";
                 $("option", $this).each(function() {
                     var option = $(this);
                     options += "<li><a class=\"" + ( value == option[0].value ? "selected": "" ) + "\" href=\"#\" title=\"" + escapeHtml(option[0].text) + "\" value=\"" + escapeHtml(option[0].value) + "\">" + escapeHtml(option[0].text)
@@ -183,18 +183,18 @@
         },
         comboxDisable: function(){
           return this.each(function(){
-            $(this).parents('.combox .select:first').addClass('disabled');
+            $(this).parents(".combox .select:first").addClass("disabled");
           });
         },
         comboxEnable: function(){
           return this.each(function(){
-            $(this).parents('.combox .select:first').removeClass('disabled');
+            $(this).parents(".combox .select:first").removeClass("disabled");
           });
         },
         comboxVal: function(val){
           return this.each(function(){
-            var $box = $(this).parents('.combox .select:first');
-            $('#op_'+$box.attr('id')).find('li a[value="'+escapeJquery(val)+'"]').trigger('click');
+            var $box = $(this).parents(".combox .select:first");
+            $("#op_"+$box.attr("id")).find("li a[value=\""+escapeJquery(val)+"\"]").trigger("click");
           });
         }
     });
@@ -235,19 +235,19 @@
         },
         select: function(_name, _type, _parent) {
             $parent = $(_parent || document);
-            $checkboxLi = $parent.find(":checkbox[name='" + _name + "']");
+            $checkboxLi = $parent.find(":checkbox[name=\"" + _name + "\"]");
             switch (_type) {
                 case "invert":
                     $checkboxLi.each(function() {
                         $checkbox = $(this);
-                        $checkbox.prop('checked', !$checkbox.is(":checked"));
+                        $checkbox.prop("checked", !$checkbox.is(":checked"));
                     });
                     break;
                 case "none":
-                    $checkboxLi.prop('checked', false);
+                    $checkboxLi.prop("checked", false);
                     break;
                 default :
-                    $checkboxLi.prop('checked', true);
+                    $checkboxLi.prop("checked", true);
                     break;
             }
         }
@@ -263,6 +263,9 @@
         $.validator.addMethod("alphanumeric", function(value, element) {
             return this.optional(element) || /^\w+$/i.test(value);
         }, "Letters, numbers or underscores only please");
+        $.validator.addMethod("nocommas", function(value, element) {
+            return this.optional(element) || /^[^,]+$/i.test(value);
+        }, "Cannot contain commas");
         $.validator.addMethod("lettersonly", function(value, element) {
             return this.optional(element) || /^[a-z]+$/i.test(value);
         }, "Letters only please");
@@ -282,7 +285,7 @@
             value = value.replace(/\s+/g, "");
             if (String.prototype.parseDate ) {
                 var $input = $(element);
-                var pattern = $input.attr('dateFmt') || 'yyyy-MM-dd';
+                var pattern = $input.attr("dateFmt") || "yyyy-MM-dd";
                 return !$input.val() || $input.val().parseDate(pattern);
             } else {
                 return this.optional(element) || value.match(/^\d{4}[\/-]\d{1,2}[\/-]\d{1,2}$/);
@@ -295,7 +298,7 @@
          */
         $.validator.addMethod("customvalid", function(value, element, params) {
             try {
-                return eval('(' + params + ')');
+                return eval("(" + params + ")");
             } catch (e) {
                 return false;
             }

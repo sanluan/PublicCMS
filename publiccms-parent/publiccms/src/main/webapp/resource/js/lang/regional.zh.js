@@ -23,6 +23,7 @@
         min: $.validator.format("请输入一个最小为 {0} 的值"),
 
         alphanumeric: "必须是字母、数字、下划线",
+        nocommas:"不能包含逗号",
         lettersonly: "必须是字母",
         letterstart: "必须是字母、数字、下划线,首字符必须是字母",
         phone: "请输入合法的电话号码",

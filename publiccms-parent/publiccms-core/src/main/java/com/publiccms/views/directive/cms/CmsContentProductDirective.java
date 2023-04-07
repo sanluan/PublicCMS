@@ -8,15 +8,19 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 import jakarta.annotation.Resource;
+
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsContentProduct;
 import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.component.template.TemplateComponent;
+import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.service.cms.CmsContentProductService;
+
+import freemarker.template.TemplateException;
 
 /**
 *
@@ -47,7 +51,7 @@ import com.publiccms.logic.service.cms.CmsContentProductService;
 public class CmsContentProductDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Long id = handler.getLong("id");
         boolean absoluteURL = handler.getBoolean("absoluteURL", true);
         SysSite site = getSite(handler);
@@ -55,7 +59,7 @@ public class CmsContentProductDirective extends AbstractTemplateDirective {
             CmsContentProduct entity = service.getEntity(id);
             if (null != entity && site.getId() == entity.getSiteId()) {
                 if (absoluteURL) {
-                    entity.setCover(TemplateComponent.getUrl(site.getSitePath(), entity.getCover()));
+                    entity.setCover(CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site, false), entity.getCover()));
                 }
                 handler.put("object", entity).render();
             }
@@ -65,7 +69,7 @@ public class CmsContentProductDirective extends AbstractTemplateDirective {
                 List<CmsContentProduct> entityList = service.getEntitys(ids);
                 Consumer<CmsContentProduct> consumer = e -> {
                     if (absoluteURL) {
-                        e.setCover(TemplateComponent.getUrl(site.getSitePath(), e.getCover()));
+                        e.setCover(CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site, false), e.getCover()));
                     }
                 };
                 Map<String, CmsContentProduct> map = CommonUtils.listToMap(entityList, k -> k.getId().toString(), consumer,
@@ -77,4 +81,6 @@ public class CmsContentProductDirective extends AbstractTemplateDirective {
 
     @Resource
     private CmsContentProductService service;
+    @Resource
+    protected FileUploadComponent fileUploadComponent;
 }

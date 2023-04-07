@@ -15,6 +15,8 @@ import com.publiccms.entities.cms.CmsDictionaryExcludeValueId;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.service.cms.CmsDictionaryExcludeValueService;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * dictionaryExcludeValue 数据字典排除值查询指令
@@ -49,7 +51,7 @@ import com.publiccms.logic.service.cms.CmsDictionaryExcludeValueService;
 public class CmsDictionaryExcludeValueDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         String dictionaryId = handler.getString("dictionaryId");
         String excludeDictionaryId = handler.getString("excludeDictionaryId");
         String value = handler.getString("value");

@@ -18,6 +18,8 @@ import com.publiccms.entities.sys.SysLockId;
 import com.publiccms.logic.component.site.LockComponent;
 import com.publiccms.logic.service.sys.SysLockService;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * lock 锁查询指令
@@ -49,7 +51,7 @@ $.getJSON('${site.dynamicPath}api/directive/sys/lock?id=1', function(data){
 public class SysLockDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         String itemType = handler.getString("itemType");
         String itemId = handler.getString("itemId");
         if (CommonUtils.notEmpty(itemType)) {
@@ -74,10 +76,10 @@ public class SysLockDirective extends AbstractTemplateDirective {
                     List<SysLock> entityList = service.getEntitys(entityIds);
                     int expriy = lockComponent.getExpriy(siteId, itemType);
                     Map<String, SysLock> map = CommonUtils.listToMap(entityList, k -> String.valueOf(k.getId().getItemId()), null,
-                            expriy > 0 ? f -> {
-                                return f.getCreateDate().after(DateUtils.addMinutes(CommonUtils.getDate(), -expriy))
-                                        && (null == f.getUserId() || null == userId || !f.getUserId().equals(userId));
-                            } : null);
+                            expriy > 0
+                                    ? f -> f.getCreateDate().after(DateUtils.addMinutes(CommonUtils.getDate(), -expriy))
+                                            && (null == f.getUserId() || null == userId || !f.getUserId().equals(userId))
+                                    : null);
                     handler.put("map", map).render();
                 }
             }

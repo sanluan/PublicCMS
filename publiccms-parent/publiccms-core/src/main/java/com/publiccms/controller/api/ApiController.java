@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.publiccms.common.base.AbstractAppDirective;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.HttpParameterHandler;
 import com.publiccms.logic.component.site.DirectiveComponent;
 
@@ -38,27 +39,27 @@ public class ApiController {
     /**
      *
      */
-    public final static String INTERFACE_NOT_FOUND = "interfaceNotFound";
+    public static final String INTERFACE_NOT_FOUND = "interfaceNotFound";
     /**
      *
      */
-    public final static String NEED_APP_TOKEN = "needAppToken";
+    public static final String NEED_APP_TOKEN = "needAppToken";
     /**
      *
      */
-    public final static String UN_AUTHORIZED = "unAuthorized";
+    public static final String UN_AUTHORIZED = "unAuthorized";
     /**
      *
      */
-    public final static String NEED_LOGIN = "needLogin";
+    public static final String NEED_LOGIN = "needLogin";
     /**
      *
      */
-    public final static String EXCEPTION = "exception";
+    public static final String EXCEPTION = "exception";
     /**
      *
      */
-    public static final Map<String, String> NOT_FOUND_MAP = new HashMap<String, String>() {
+    protected static final Map<String, String> NOT_FOUND_MAP = new HashMap<String, String>() {
         private static final long serialVersionUID = 1L;
         {
             put(CommonConstants.ERROR, INTERFACE_NOT_FOUND);
@@ -70,7 +71,7 @@ public class ApiController {
      *
      * @return result
      */
-    @RequestMapping({ CommonConstants.SEPARATOR, "/**" })
+    @RequestMapping({ Constants.SEPARATOR, "/**" })
     @ResponseBody
     public Map<String, String> api() {
         return NOT_FOUND_MAP;

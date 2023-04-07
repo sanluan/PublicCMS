@@ -9,6 +9,7 @@ import org.springframework.beans.BeanUtils;
 
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
@@ -65,6 +66,7 @@ public class VisitSessionService extends BaseService<VisitSession> {
     /**
      * @param entityList
      */
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public void save(List<VisitSession> entityList) {
         for (VisitSession entity : entityList) {
             VisitSession oldEntity = getEntity(entity.getId());

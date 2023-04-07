@@ -1,50 +1,50 @@
 package com.publiccms.views.method.tools;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.BaseMethod;
 import com.publiccms.common.constants.CommonConstants;
-import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.TemplateModelUtils;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.site.FileUploadComponent;
 
 import freemarker.core.Environment;
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
+import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**
  *
- * getDownloadUrl 获取下载url绝对路径
+ * getFileUploadPrefix 获取
  * <p>
  * 参数列表
  * <ol>
- * <li><code>url</code>,文件路径
  * </ol>
  * <p>
  * 返回结果
  * <ul>
- * <li><code>url</code>:绝对路径的url
+ * <li><code>url</code>:文件上传前缀
  * </ul>
  * 使用示例
  * <p>
- * ${getUrl('index.html')}
+ * ${getFileUploadPrefix()}
  * <p>
  * 
  * <pre>
 &lt;script&gt;
-$.getJSON('${site.dynamicPath}api/method/getDownloadUrl?parameters=index.html', function(data){
+$.getJSON('${site.dynamicPath}api/method/getFileUploadPrefix?parameters=index.html', function(data){
 console.log(data);
 });
 &lt;/script&gt;
  * </pre>
  */
 @Component
-public class GetDownloadUrlMethod extends BaseMethod {
+public class GetFileUploadPrefixMethod extends BaseMethod {
+    @Resource
+    protected FileUploadComponent fileUploadComponent;
 
     @Override
     public Object execute(HttpServletRequest request, List<TemplateModel> arguments) throws TemplateModelException {
@@ -63,15 +63,7 @@ public class GetDownloadUrlMethod extends BaseMethod {
     }
 
     public Object execute(SysSite site, List<TemplateModel> arguments) throws TemplateModelException {
-        String url = getString(0, arguments);
-        if (CommonUtils.notEmpty(url) && null != site) {
-            try {
-                return CommonUtils.joinString(site.getDynamicPath(), "file/download?filePath=",
-                        URLEncoder.encode(url, CommonConstants.DEFAULT_CHARSET_NAME));
-            } catch (UnsupportedEncodingException e) {
-            }
-        }
-        return url;
+        return fileUploadComponent.getPrefix(site, !arguments.isEmpty() && TemplateModelUtils.converBoolean(arguments.get(0)));
     }
 
     @Override
@@ -81,6 +73,6 @@ public class GetDownloadUrlMethod extends BaseMethod {
 
     @Override
     public int minParametersNumber() {
-        return 1;
+        return 0;
     }
 }

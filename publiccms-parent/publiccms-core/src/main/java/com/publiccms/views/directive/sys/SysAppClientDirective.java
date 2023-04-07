@@ -15,6 +15,8 @@ import com.publiccms.entities.sys.SysAppClient;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.service.sys.SysAppClientService;
 
+import freemarker.template.TemplateException;
+
 /**
 *
 * sysAppClient 应用客户端查询指令
@@ -45,7 +47,7 @@ $.getJSON('${site.dynamicPath}api/directive/sys/appClient?id=1&amp;appToken=接�
 public class SysAppClientDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Long id = handler.getLong("id");
         SysSite site = getSite(handler);
         if (CommonUtils.notEmpty(id)) {

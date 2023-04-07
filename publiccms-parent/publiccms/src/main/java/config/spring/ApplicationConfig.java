@@ -39,6 +39,7 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import com.github.pagehelper.PageInterceptor;
 import com.publiccms.common.cache.CacheEntityFactory;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.database.CmsDataSource;
 import com.publiccms.common.search.MultiTokenFilterFactory;
 import com.publiccms.common.search.MultiTokenizerFactory;
@@ -81,19 +82,17 @@ public class ApplicationConfig implements EnvironmentAware{
      * @throws PropertyVetoException
      */
     @Bean
-    public IdWorker idWorker() throws PropertyVetoException {
-        IdWorker bean = new IdWorker(Long.valueOf(env.getProperty("cms.workerId")));
-        return bean;
+    public IdWorker idWorker() {
+        return new IdWorker(Long.valueOf(env.getProperty("cms.workerId")));
     }
 
     /**
      * 数据源
      *
      * @return datasource
-     * @throws PropertyVetoException
      */
     @Bean
-    public DataSource dataSource() throws PropertyVetoException {
+    public DataSource dataSource() {
         CmsDataSource bean = new CmsDataSource(getDirPath(CmsDataSource.DATABASE_CONFIG_FILENAME));
         CmsDataSource.initDefaultDataSource();
         return bean;
@@ -107,8 +106,7 @@ public class ApplicationConfig implements EnvironmentAware{
      */
     @Bean
     public HibernateTransactionManager hibernateTransactionManager(SessionFactory sessionFactory) {
-        HibernateTransactionManager bean = new HibernateTransactionManager(sessionFactory);
-        return bean;
+        return new HibernateTransactionManager(sessionFactory);
     }
 
     /**
@@ -137,11 +135,10 @@ public class ApplicationConfig implements EnvironmentAware{
      *
      * @param dataSource
      * @return hibernate session factory
-     * @throws PropertyVetoException
      * @throws IOException
      */
     @Bean
-    public FactoryBean<SessionFactory> hibernateSessionFactory(DataSource dataSource) throws PropertyVetoException, IOException {
+    public FactoryBean<SessionFactory> hibernateSessionFactory(DataSource dataSource) throws IOException {
         LocalSessionFactoryBean bean = new LocalSessionFactoryBean();
         bean.setDataSource(dataSource);
         bean.setPackagesToScan("com.publiccms.entities");
@@ -164,10 +161,9 @@ public class ApplicationConfig implements EnvironmentAware{
      * 验证工厂
      *
      * @return cache factory
-     * @throws IOException
      */
     @Bean
-    public ValidatorFactory validatorFactoryBean() throws IOException {
+    public ValidatorFactory validatorFactoryBean() {
         LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
         bean.setProviderClass(HibernateValidator.class);
         return bean;
@@ -181,8 +177,7 @@ public class ApplicationConfig implements EnvironmentAware{
      */
     @Bean
     public CacheEntityFactory cacheEntityFactory() throws IOException {
-        CacheEntityFactory bean = new CacheEntityFactory(env.getProperty("cms.cache.configFilePath"));
-        return bean;
+        return new CacheEntityFactory(env.getProperty("cms.cache.configFilePath"));
     }
 
     /**
@@ -195,7 +190,7 @@ public class ApplicationConfig implements EnvironmentAware{
     @Bean
     public MessageSource messageSource(MenuMessageComponent menuMessageComponent) {
         ResourceBundleMessageSource bean = new ResourceBundleMessageSource();
-        bean.setBasenames(StringUtils.split(env.getProperty("cms.language"), CommonConstants.COMMA));
+        bean.setBasenames(StringUtils.split(env.getProperty("cms.language"), Constants.COMMA));
         bean.setCacheSeconds(300);
         bean.setUseCodeAsDefaultMessage(true);
         bean.setParentMessageSource(menuMessageComponent);
@@ -224,7 +219,7 @@ public class ApplicationConfig implements EnvironmentAware{
     @Bean
     public SiteComponent siteComponent() {
         SiteComponent bean = new SiteComponent();
-        bean.setRootPath(getDirPath(CommonConstants.BLANK));
+        bean.setRootPath(getDirPath(Constants.BLANK));
         bean.setMasterSiteIds(env.getProperty("cms.masterSiteIds"));
         bean.setDefaultSiteId(Short.parseShort(env.getProperty("cms.defaultSiteId")));
         if ("hmmChinese".equalsIgnoreCase(env.getProperty("cms.tokenizerFactory"))) {
@@ -277,12 +272,10 @@ public class ApplicationConfig implements EnvironmentAware{
      * 文件上传解决方案
      *
      * @return file upload resolver
-     * @throws IOException
      */
     @Bean
-    public StandardServletMultipartResolver multipartResolver() throws IOException {
-        StandardServletMultipartResolver bean = new StandardServletMultipartResolver();
-        return bean;
+    public StandardServletMultipartResolver multipartResolver() {
+        return new StandardServletMultipartResolver();
     }
 
     /**
@@ -292,7 +285,7 @@ public class ApplicationConfig implements EnvironmentAware{
     private Map<String, String> getMap(String property) {
         Map<String, String> parametersMap = new HashMap<>();
         if (CommonUtils.notEmpty(property)) {
-            String[] parameters = StringUtils.split(property, CommonConstants.COMMA);
+            String[] parameters = StringUtils.split(property, Constants.COMMA);
             for (String parameter : parameters) {
                 String[] values = StringUtils.split(parameter, "=", 2);
                 if (values.length == 2) {

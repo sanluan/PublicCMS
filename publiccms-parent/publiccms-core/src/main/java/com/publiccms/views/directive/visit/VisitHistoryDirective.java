@@ -15,6 +15,8 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.visit.VisitHistory;
 import com.publiccms.logic.service.visit.VisitHistoryService;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * visitHistory 访问记录查询指令
@@ -45,7 +47,7 @@ import com.publiccms.logic.service.visit.VisitHistoryService;
 public class VisitHistoryDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Long id = handler.getLong("id");
         if (CommonUtils.notEmpty(id)) {
             VisitHistory entity = service.getEntity(id);

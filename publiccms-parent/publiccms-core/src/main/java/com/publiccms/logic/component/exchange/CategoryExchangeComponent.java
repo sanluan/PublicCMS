@@ -1,9 +1,12 @@
 package com.publiccms.logic.component.exchange;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -13,14 +16,18 @@ import org.apache.tools.zip.ZipOutputStream;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractExchange;
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.ExtendUtils;
+import com.publiccms.common.tools.HtmlUtils;
+import com.publiccms.common.tools.ZipUtils;
 import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.entities.cms.CmsCategoryModel;
 import com.publiccms.entities.sys.SysExtend;
 import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsCategoryAttributeService;
 import com.publiccms.logic.service.cms.CmsCategoryModelService;
@@ -44,6 +51,8 @@ public class CategoryExchangeComponent extends AbstractExchange<CmsCategory, Cat
     private CmsCategoryService service;
     @Resource
     private TemplateComponent templateComponent;
+    @Resource
+    private SiteComponent siteComponent;
     @Resource
     private CmsCategoryAttributeService attributeService;
     @Resource
@@ -94,9 +103,31 @@ public class CategoryExchangeComponent extends AbstractExchange<CmsCategory, Cat
         data.setAttribute(attributeService.getEntity(categoryId));
         if (null != data.getAttribute()) {
             if (CommonUtils.notEmpty(data.getAttribute().getData())) {
+                if (null == directory) {
+                    Map<String, String> map = ExtendUtils.getExtendMap(data.getAttribute().getData());
+                    Set<String> filelist = new HashSet<>();
+                    for (String value : map.values()) {
+                        if (null != value && value.contains("<")) {
+                            HtmlUtils.getFileList(value, filelist);
+                        }
+                    }
+                    if (!filelist.isEmpty()) {
+                        for (String file : filelist) {
+                            if (file.startsWith(site.getSitePath())) {
+                                String fullName = StringUtils.removeStart(file, site.getSitePath());
+                                if (fullName.contains(Constants.DOT) && !fullName.contains(".htm")) {
+                                    String filepath = siteComponent.getWebFilePath(site.getId(), fullName);
+                                    try {
+                                        ZipUtils.compressFile(new File(filepath), zipOutputStream,
+                                                CommonUtils.joinString(ATTACHMENT_DIR, fullName));
+                                    } catch (IOException e) {
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
                 data.getAttribute().setData(StringUtils.replace(data.getAttribute().getData(), site.getSitePath(), "#SITEPATH#"));
-            }
-            if (CommonUtils.notEmpty(data.getAttribute().getData())) {
                 data.getAttribute()
                         .setData(StringUtils.replace(data.getAttribute().getData(), site.getDynamicPath(), "#DYNAMICPATH#"));
             }
@@ -106,7 +137,7 @@ public class CategoryExchangeComponent extends AbstractExchange<CmsCategory, Cat
             data.setExtendList(extendFieldService.getList(entity.getExtendId(), null, null));
         }
         if (CommonUtils.notEmpty(entity.getTagTypeIds())) {
-            String[] tagIds = StringUtils.split(entity.getTagTypeIds(), CommonConstants.COMMA);
+            String[] tagIds = StringUtils.split(entity.getTagTypeIds(), Constants.COMMA);
             Set<Serializable> set = new TreeSet<>();
             for (String s : tagIds) {
                 try {
@@ -136,6 +167,10 @@ public class CategoryExchangeComponent extends AbstractExchange<CmsCategory, Cat
     @Override
     public void importData(SysSite site, long userId, String directory, boolean overwrite, ZipFile zipFile) {
         super.importData(site, userId, directory, overwrite, zipFile);
+        if (null == directory) {
+            String filepath = siteComponent.getWebFilePath(site.getId(), Constants.SEPARATOR);
+            ZipUtils.unzip(zipFile, ATTACHMENT_DIR, filepath, overwrite, null);
+        }
         service.generateChildIds(site.getId(), null);
     }
 

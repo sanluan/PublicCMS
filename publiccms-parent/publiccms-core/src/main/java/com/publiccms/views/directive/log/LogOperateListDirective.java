@@ -6,6 +6,9 @@ import java.io.IOException;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.logic.service.log.LogOperateService;
+
+import freemarker.template.TemplateException;
+
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
@@ -54,7 +57,7 @@ import com.publiccms.common.handler.RenderHandler;
 public class LogOperateListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         PageHandler page = service.getPage(getSite(handler).getId(), handler.getString("channel"), handler.getString("operate"),
                 handler.getLong("userId"), handler.getDate("startCreateDate"), handler.getDate("endCreateDate"),
                 handler.getString("content"), handler.getString("ip"), handler.getString("orderType"),

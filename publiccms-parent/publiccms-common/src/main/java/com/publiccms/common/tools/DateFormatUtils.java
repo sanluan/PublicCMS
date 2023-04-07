@@ -11,6 +11,9 @@ import java.util.Map;
  *
  */
 public class DateFormatUtils {
+    private DateFormatUtils() {
+    }
+
     private static ThreadLocal<Map<String, DateFormat>> threadLocal = new ThreadLocal<>();
     /**
      * full date format
@@ -55,7 +58,7 @@ public class DateFormatUtils {
             map.put(pattern, format);
             threadLocal.set(map);
         } else {
-            format = map.computeIfAbsent(pattern, k -> new SimpleDateFormat(k));
+            format = map.computeIfAbsent(pattern, SimpleDateFormat::new);
         }
         return format;
     }

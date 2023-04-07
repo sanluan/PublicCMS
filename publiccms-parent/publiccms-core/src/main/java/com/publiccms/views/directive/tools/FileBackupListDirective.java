@@ -7,11 +7,13 @@ import java.io.IOException;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysSite;
+
+import freemarker.template.TemplateException;
 
 /**
  * fileBackupList 文件回收站列表获取指令
@@ -47,9 +49,9 @@ import com.publiccms.entities.sys.SysSite;
 public class FileBackupListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         String type = handler.getString("type");
-        String path = handler.getString("path", CommonConstants.SEPARATOR);
+        String path = handler.getString("path", Constants.SEPARATOR);
         SysSite site = getSite(handler);
         String realpath;
         if (CommonUtils.notEmpty(type)) {

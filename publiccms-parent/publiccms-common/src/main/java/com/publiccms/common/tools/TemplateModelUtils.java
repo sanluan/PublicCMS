@@ -2,6 +2,7 @@ package com.publiccms.common.tools;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,6 +33,9 @@ import freemarker.template.TemplateSequenceModel;
  *
  */
 public class TemplateModelUtils {
+
+    private TemplateModelUtils() {
+    }
 
     /**
      * @param model
@@ -87,18 +91,17 @@ public class TemplateModelUtils {
      * @throws TemplateModelException
      */
     public static Map<String, String> converMap(TemplateModel model) throws TemplateModelException {
-        if (null != model) {
-            if (model instanceof TemplateHashModelEx) {
-                HashMap<String, String> map = new HashMap<>();
-                TemplateModelIterator keys = ((TemplateHashModelEx) model).keys().iterator();
-                while (keys.hasNext()) {
-                    String key = converString(keys.next());
-                    map.put(key, converString(((TemplateHashModelEx) model).get(key)));
-                }
-                return map;
+        if (model instanceof TemplateHashModelEx) {
+            HashMap<String, String> map = new HashMap<>();
+            TemplateModelIterator keys = ((TemplateHashModelEx) model).keys().iterator();
+            while (keys.hasNext()) {
+                String key = converString(keys.next());
+                map.put(key, converString(((TemplateHashModelEx) model).get(key)));
             }
+            return map;
+
         }
-        return null;
+        return Collections.emptyMap();
     }
 
     /**
@@ -242,7 +245,7 @@ public class TemplateModelUtils {
                 converBigDecimal(((TemplateSequenceModel) model).get(0));
             }
             if (model instanceof TemplateNumberModel) {
-                return new BigDecimal(((TemplateNumberModel) model).getAsNumber().doubleValue());
+                return BigDecimal.valueOf(((TemplateNumberModel) model).getAsNumber().doubleValue());
             } else if (model instanceof TemplateScalarModel) {
                 String s = ((TemplateScalarModel) model).getAsString();
                 if (CommonUtils.notEmpty(s)) {
@@ -279,7 +282,7 @@ public class TemplateModelUtils {
                 return StringUtils.split(str, Constants.BLANK_SPACE);
             }
         }
-        return null;
+        return new String[0];
     }
 
     /**
@@ -295,7 +298,7 @@ public class TemplateModelUtils {
             if (model instanceof TemplateBooleanModel) {
                 return ((TemplateBooleanModel) model).getAsBoolean();
             } else if (model instanceof TemplateNumberModel) {
-                return !(0 == ((TemplateNumberModel) model).getAsNumber().intValue());
+                return (0 != ((TemplateNumberModel) model).getAsNumber().intValue());
             } else if (model instanceof TemplateScalarModel) {
                 String temp = ((TemplateScalarModel) model).getAsString();
                 if (CommonUtils.notEmpty(temp)) {

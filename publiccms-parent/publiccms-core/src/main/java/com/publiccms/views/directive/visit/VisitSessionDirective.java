@@ -15,6 +15,8 @@ import com.publiccms.entities.visit.VisitSession;
 import com.publiccms.entities.visit.VisitSessionId;
 import com.publiccms.logic.service.visit.VisitSessionService;
 
+import freemarker.template.TemplateException;
+
 /**
 *
 * visitSession 访问会话报表查询指令
@@ -40,7 +42,7 @@ import com.publiccms.logic.service.visit.VisitSessionService;
 public class VisitSessionDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         String sessionId = handler.getString("sessionId");
         Date visitDate = handler.getDate("visitDate");
         if (CommonUtils.notEmpty(sessionId) && null != visitDate) {

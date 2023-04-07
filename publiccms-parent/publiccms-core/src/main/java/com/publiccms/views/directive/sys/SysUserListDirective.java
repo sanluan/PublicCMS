@@ -9,10 +9,13 @@ import org.springframework.stereotype.Component;
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
-import com.publiccms.logic.component.template.TemplateComponent;
+import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.service.sys.SysUserService;
+
+import freemarker.template.TemplateException;
 
 /**
  *
@@ -62,7 +65,7 @@ import com.publiccms.logic.service.sys.SysUserService;
 public class SysUserListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Boolean disabled = false;
         if (getAdvanced(handler)) {
             disabled = handler.getBoolean("disabled", false);
@@ -78,9 +81,7 @@ public class SysUserListDirective extends AbstractTemplateDirective {
         if (null != list) {
             boolean absoluteURL = handler.getBoolean("absoluteURL", true);
             if (absoluteURL) {
-                list.forEach(e -> {
-                    e.setCover(TemplateComponent.getUrl(site.getSitePath(), e.getCover()));
-                });
+                list.forEach(e -> e.setCover(CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site, false), e.getCover())));
             }
 
         }
@@ -100,5 +101,7 @@ public class SysUserListDirective extends AbstractTemplateDirective {
 
     @Resource
     private SysUserService service;
+    @Resource
+    protected FileUploadComponent fileUploadComponent;
 
 }

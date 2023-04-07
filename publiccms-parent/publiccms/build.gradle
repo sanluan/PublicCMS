@@ -14,6 +14,8 @@ dependencies {
     implementation project(':publiccms-analyzer')
     implementation project(path:':publiccms-trade', configuration: 'instrumentedJars')
     implementation project(':publiccms-trade')
+    implementation project(path:':publiccms-oss', configuration: 'instrumentedJars')
+    implementation project(':publiccms-oss')
 
     implementation "mysql:mysql-connector-java:${mysqlVersion}"
     implementation "org.apache.logging.log4j:log4j-core:${log4jVersion}"

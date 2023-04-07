@@ -17,6 +17,7 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.publiccms.common.base.AbstractAppDirective;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ExtendUtils;
@@ -50,6 +51,7 @@ import com.publiccms.logic.service.sys.SysExtendFieldService;
 import com.publiccms.logic.service.sys.SysExtendService;
 import com.publiccms.views.pojo.entities.CmsModel;
 
+import freemarker.template.TemplateException;
 import jakarta.annotation.Resource;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ValidatorFactory;
@@ -134,7 +136,7 @@ public class ContentCreateDirective extends AbstractAppDirective {
     private TemplateComponent templateComponent;
 
     @Override
-    public void execute(RenderHandler handler, SysApp app, SysUser user) throws IOException, Exception {
+    public void execute(RenderHandler handler, SysApp app, SysUser user) throws IOException, TemplateException {
         SysSite site = getSite(handler);
         CmsContent entity = new CmsContent();
         entity.setCategoryId(handler.getInteger("categoryId"));
@@ -176,7 +178,7 @@ public class ContentCreateDirective extends AbstractAppDirective {
                             }
                         }
                         Set<Serializable> tagIdSet = tagService.update(site.getId(), tagList);
-                        entity.setTagIds(collectionToDelimitedString(tagIdSet, CommonConstants.BLANK_SPACE));
+                        entity.setTagIds(collectionToDelimitedString(tagIdSet, Constants.BLANK_SPACE));
                     } else {
                         entity.setTagIds(null);
                     }
@@ -210,8 +212,8 @@ public class ContentCreateDirective extends AbstractAppDirective {
 
                     Set<ConstraintViolation<CmsContent>> set = validatorFactory.getValidator().validate(entity);
                     if (!set.isEmpty()) {
-                        handler.put("error", set.stream().map(cv -> cv.getPropertyPath().toString())
-                                .collect(Collectors.joining(CommonConstants.COMMA_DELIMITED)));
+                        handler.put(CommonConstants.ERROR, set.stream().map(cv -> cv.getPropertyPath().toString())
+                                .collect(Collectors.joining(Constants.COMMA_DELIMITED)));
                     } else {
                         if (null != entity.getId()) {
                             CmsContent oldEntity = service.getEntity(entity.getId());
@@ -292,15 +294,15 @@ public class ContentCreateDirective extends AbstractAppDirective {
                         handler.put("result", "success");
                     }
                 } else {
-                    handler.put("error", LanguagesUtils.getMessage(CommonConstants.applicationContext,
+                    handler.put(CommonConstants.ERROR, LanguagesUtils.getMessage(CommonConstants.applicationContext,
                             RequestContextUtils.getLocale(handler.getRequest()), "verify.custom.contribute"));
                 }
             } else {
-                handler.put("error", LanguagesUtils.getMessage(CommonConstants.applicationContext,
+                handler.put(CommonConstants.ERROR, LanguagesUtils.getMessage(CommonConstants.applicationContext,
                         RequestContextUtils.getLocale(handler.getRequest()), "verify.notEmpty.category"));
             }
         } else {
-            handler.put("error", LanguagesUtils.getMessage(CommonConstants.applicationContext,
+            handler.put(CommonConstants.ERROR, LanguagesUtils.getMessage(CommonConstants.applicationContext,
                     RequestContextUtils.getLocale(handler.getRequest()), "verify.notEmpty.categoryModel"));
         }
         handler.render();

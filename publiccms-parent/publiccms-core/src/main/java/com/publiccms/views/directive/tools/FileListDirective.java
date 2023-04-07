@@ -12,6 +12,8 @@ import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysSite;
 
+import freemarker.template.TemplateException;
+
 /**
  * fileList 文件列表获取指令
  * <p>
@@ -46,7 +48,7 @@ import com.publiccms.entities.sys.SysSite;
 public class FileListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         String type = handler.getString("type");
         String path = handler.getString("path");
         SysSite site = getSite(handler);

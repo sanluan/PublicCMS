@@ -71,9 +71,9 @@ function checkCategoryModel(){
     $(".categoryModelContent",navTab.getCurrentPanel()).hide();
     $(".categoryModelContentPath",navTab.getCurrentPanel()).hide().find("input[name=contentPath]").removeClass("required");
     $(".categoryModel",navTab.getCurrentPanel()).show();
-    $(".categoryModel dl",navTab.getCurrentPanel()).each(function(){
+    $(".categoryModel li",navTab.getCurrentPanel()).each(function(){
         if($(this).find("input[type=checkbox][name$=\\.use]").is(":checked")){
-            $(this).find("dd ul li input[name$=\\.use]").val("true");
+            $(this).find("ul li input[name$=\\.use]").val("true");
             $(".categoryModelContent",navTab.getCurrentPanel()).show();
             if(0 != $(this).find("[name$=categoryModel\\.customContentPath]").not(":checked").length){
                 $(".categoryModelContentPath",navTab.getCurrentPanel()).show();
@@ -138,6 +138,24 @@ function commandParameter(command,parametersName){
         for(i=0; i<parameters.length; i++){
             $(".commandBox",navTab.getCurrentPanel()).append("<label>"+parameters[i]+":</label><input name=\"parameters\" type=\"text\" class=\"required\"/>").initUI();
         }
+    }
+}
+function bringBackBatchValue(keys){
+    var value =$("textarea[name=batchValue]",$.pdialog.getCurrent()).val();
+    if(value){
+        var list=[];
+        var values = value.split("\n");
+        $.each(values,function(m,v){
+            var vs = v.split(",");
+            var obj={};
+            $.each(keys,function(n,k){
+                if(n < vs.length){
+                    obj[k]=vs[n].trim();
+                }
+            });
+            list.push(obj);
+        });
+        $.batchBringBack(list);
     }
 }
 var diyMenuTimer,diyButtonTimer,diyTimer;

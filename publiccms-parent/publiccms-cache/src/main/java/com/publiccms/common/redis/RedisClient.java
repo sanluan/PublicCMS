@@ -96,7 +96,7 @@ public class RedisClient {
      * @param region
      */
     public void clearRegion(String region) {
-        createOrGetCache(region).clear();
+        createOrGetCache(region).clear(false);
     }
 
     /**

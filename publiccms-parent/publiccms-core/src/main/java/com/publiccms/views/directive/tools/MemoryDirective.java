@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 
 import com.publiccms.common.handler.RenderHandler;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * memory 内存监控指令
@@ -34,7 +36,7 @@ $.getJSON('${site.dynamicPath}api/directive/tools/memory?appToken=接口访问�
 public class MemoryDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Runtime runtime = Runtime.getRuntime();
         handler.put("freeMemory", runtime.freeMemory());
         handler.put("totalMemory", runtime.totalMemory());

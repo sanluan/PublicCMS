@@ -14,6 +14,8 @@ import com.publiccms.entities.cms.CmsDictionaryId;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.service.cms.CmsDictionaryService;
 
+import freemarker.template.TemplateException;
+
 /**
 *
 * dictionary 数据字典查询指令
@@ -42,7 +44,7 @@ import com.publiccms.logic.service.cms.CmsDictionaryService;
 public class CmsDictionaryDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         SysSite site = getSite(handler);
         short siteId = null == site.getParentId() ? site.getId() : site.getParentId();
         String id = handler.getString("id");

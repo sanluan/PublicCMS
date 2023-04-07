@@ -17,6 +17,8 @@ import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.log.LogTaskService;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * clearLog 日志清理指令
@@ -49,7 +51,7 @@ import com.publiccms.logic.service.log.LogTaskService;
 @Component
 public class ClearLogDirective extends AbstractTaskDirective {
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Date date = handler.getDate("clearDate");
         if (null == date) {
             date = DateUtils.addMonths(CommonUtils.getDate(), -3);

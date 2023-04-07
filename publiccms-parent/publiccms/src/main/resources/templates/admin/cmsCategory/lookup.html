@@ -4,7 +4,7 @@
         <#list page.list as a>
             <li<#if a.childIds?has_content> _src="cmsCategory/lookup.html?currentCategoryId=${currentCategoryId!}&parentId=${a.id}&field=${(field?url)!'categoryId'}&nameField=${(nameField?url)!'categoryName'}"</#if>>
                 <#if !(currentCategoryId?has_content) || !(a.id?string=currentCategoryId)>
-                <a href="javascript:;" class="exclude-translate" onclick="$.bringBack({${field!'categoryId'}:'${a.id}', '${(nameField?url)!'categoryName'}':'${a.name}'});return false;">${a.name!}</a>
+                <a href="javascript:;" class="exclude-translate" onclick="$.bringBack({'${field!'categoryId'}':'${a.id}', '${(nameField?url)!'categoryName'}':'${a.name}'});return false;">${a.name!}</a>
                 <#else>
                 <a>${a.name!}</a>
                 </#if>
@@ -17,8 +17,8 @@
     <ul class="tree treeFolder">
         <@cms.categoryList advanced=true parentId=parentId pageSize=500>
         <#list page.list as a>
-            <li<#if a.childIds?has_content> _src="cmsCategory/lookup.html?currentCategoryId=${currentCategoryId!}&parentId=${a.id}&field=${field!'categoryId'}&nameField=${(nameField?url)!'categoryName'}"</#if>>
-                <a href="javascript:;"<#if !(currentCategoryId?has_content) || !(a.id?string=currentCategoryId)> class="exclude-translate" onclick="$.bringBack({'${field!'categoryId'}':'${a.id}', '${nameField?url!'categoryName'}':'${a.name}'});return false;"<#else>class="exclude-translate disable"</#if>>${a.name!}</a>
+            <li<#if a.childIds?has_content> _src="cmsCategory/lookup.html?currentCategoryId=${currentCategoryId!}&parentId=${a.id}&field=${(field?url)!'categoryId'}&nameField=${(nameField?url)!'categoryName'}"</#if>>
+                <a href="javascript:;"<#if !(currentCategoryId?has_content) || !(a.id?string=currentCategoryId)> class="exclude-translate" onclick="$.bringBack({'${field!'categoryId'}':'${a.id}', '${nameField!'categoryName'}':'${a.name}'});return false;"<#else>class="exclude-translate disable"</#if>>${a.name!}</a>
             </li>
         </#list>
     </@cms.categoryList>
@@ -26,7 +26,7 @@
 </div>
 <div class="formBar">
     <ul>
-        <li><a class="button" href="javascript:;" onclick="$.bringBack({${field!'categoryId'}:'',${nameField!'categoryName'}:''});return false;"><@t.page 'button.clear_select'/></a>
+        <li><a class="button" href="javascript:;" onclick="$.bringBack({'${field!'categoryId'}':'','${nameField!'categoryName'}':''});return false;"><@t.page 'button.clear_select'/></a>
         <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
     </ul>
 </div>

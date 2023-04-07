@@ -3,11 +3,13 @@ package com.publiccms.controller.web.trade;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import jakarta.annotation.Resource;
@@ -25,7 +27,7 @@ import com.alipay.easysdk.kernel.util.Signer;
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.api.PaymentGateway;
 import com.publiccms.common.api.TradePaymentProcessor;
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.JsonUtils;
@@ -34,7 +36,7 @@ import com.publiccms.entities.sys.SysUser;
 import com.publiccms.entities.trade.TradePayment;
 import com.publiccms.entities.trade.TradePaymentHistory;
 import com.publiccms.entities.trade.TradeRefund;
-import com.publiccms.logic.component.config.ConfigComponent;
+import com.publiccms.logic.component.config.ConfigDataComponent;
 import com.publiccms.logic.component.config.SafeConfigComponent;
 import com.publiccms.logic.component.paymentgateway.AlipayGatewayComponent;
 import com.publiccms.logic.component.paymentgateway.WechatGatewayComponent;
@@ -51,6 +53,25 @@ import com.wechat.pay.contrib.apache.httpclient.util.AesUtil;
 public class TradePaymentController {
     protected final Log log = LogFactory.getLog(getClass());
 
+    @Resource
+    private PaymentProcessorComponent tradePaymentProcessorComponent;
+    @Resource
+    private PaymentProcessorComponent paymentProcessorComponent;
+    @Resource
+    private PaymentGatewayComponent gatewayComponent;
+    @Resource
+    private WechatGatewayComponent wechatGatewayComponent;
+    @Resource
+    private AlipayGatewayComponent alipayGatewayComponent;
+    @Resource
+    protected ConfigDataComponent configDataComponent;
+    @Resource
+    protected SafeConfigComponent safeConfigComponent;
+    @Resource
+    private TradeRefundService refundService;
+    @Resource
+    private TradePaymentHistoryService historyService;
+
     /**
      * @param site
      * @param paymentId
@@ -60,19 +81,19 @@ public class TradePaymentController {
      * @param response
      * @param model
      * @return view name
-     * @throws Exception
      */
     @RequestMapping(value = "pay")
     public String pay(@RequestAttribute SysSite site, Long paymentId, String paymentType, String returnUrl,
-            HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
+            HttpServletRequest request, HttpServletResponse response, ModelMap model) {
         returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         TradePayment entity = service.getEntity(paymentId);
-        PaymentGateway paymentGateway = gatewayComponent.get(entity.getAccountType());
-        if (null == paymentGateway || null == entity
-                || ControllerUtils.errorNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
-            log.info("pay parameter error");
-        } else if (!paymentGateway.pay(site, entity, paymentType, returnUrl, response)) {
-            log.info("pay error");
+        if (null != entity) {
+            PaymentGateway paymentGateway = gatewayComponent.get(entity.getAccountType());
+            if (null == paymentGateway || ControllerUtils.errorNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
+                log.info("pay parameter error");
+            } else if (!paymentGateway.pay(site, entity, paymentType, returnUrl, response)) {
+                log.info("pay error");
+            }
         }
         return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
     }
@@ -84,12 +105,11 @@ public class TradePaymentController {
      * @param request
      * @param model
      * @return view name
-     * @throws Exception
      */
     @RequestMapping(value = "cancel")
     @Csrf
     public String cancel(@RequestAttribute SysSite site, Long paymentId, String returnUrl, HttpServletRequest request,
-            ModelMap model) throws Exception {
+            ModelMap model) {
         returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         TradePayment entity = service.getEntity(paymentId);
         if (null == entity || ControllerUtils.errorNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
@@ -109,41 +129,36 @@ public class TradePaymentController {
      * @param trade_no
      * @param request
      * @return
-     * @throws Exception
      */
     @RequestMapping(value = "notify/alipay")
     @ResponseBody
     public String notifyAlipay(@RequestAttribute SysSite site, long out_trade_no, String total_amount, String trade_no,
-            HttpServletRequest request) throws Exception {
+            HttpServletRequest request) {
         log.info(CommonUtils.joinString("alipay notify out_trade_no:", out_trade_no, ",total_amount:", total_amount, ",trade_no:",
                 trade_no));
-        Map<String, String> config = configComponent.getConfigData(site.getId(), AlipayGatewayComponent.CONFIG_CODE);
+        Map<String, String> config = configDataComponent.getConfigData(site.getId(), AlipayGatewayComponent.CONFIG_CODE);
         if (CommonUtils.notEmpty(config)) {
             Map<String, String> params = request.getParameterMap().entrySet().stream()
-                    .collect(Collectors.toMap(e -> e.getKey(), e -> CommonUtils.joinString(e.getValue(), ",")));
-            try {
-                if (Signer.verifyParams(params, config.get(AlipayGatewayComponent.CONFIG_ALIPAY_PUBLIC_KEY))) {
-                    try {
-                        TradePaymentHistory history = new TradePaymentHistory(site.getId(), out_trade_no, CommonUtils.getDate(),
-                                TradePaymentHistoryService.OPERATE_NOTIFY, JsonUtils.getString(params));
-                        historyService.save(history);
-                        TradePayment payment = service.getEntity(out_trade_no);
-                        if (null != payment && payment.getStatus() == TradePaymentService.STATUS_PENDING_PAY
-                                && payment.getAmount().toString().equals(total_amount)) {
-                            if (service.paid(site.getId(), payment.getId(), trade_no)) {
-                                payment = service.getEntity(payment.getId());
-                                alipayGatewayComponent.confirmPay(site.getId(), payment);
-                            }
-                        }
-                        return "success";
-                    } catch (NumberFormatException e) {
-                        log.info(e.getMessage());
+                    .collect(Collectors.toMap(Entry::getKey, e -> StringUtils.join(e.getValue(), ",")));
+            if (Signer.verifyParams(params, config.get(AlipayGatewayComponent.CONFIG_ALIPAY_PUBLIC_KEY))) {
+                try {
+                    TradePaymentHistory history = new TradePaymentHistory(site.getId(), out_trade_no, CommonUtils.getDate(),
+                            TradePaymentHistoryService.OPERATE_NOTIFY, JsonUtils.getString(params));
+                    historyService.save(history);
+                    TradePayment payment = service.getEntity(out_trade_no);
+                    if (null != payment && payment.getStatus() == TradePaymentService.STATUS_PENDING_PAY
+                            && payment.getAmount().toString().equals(total_amount)
+                            && service.paid(site.getId(), payment.getId(), trade_no)) {
+                        payment = service.getEntity(payment.getId());
+                        alipayGatewayComponent.confirmPay(site.getId(), payment);
+
                     }
-                } else {
-                    log.info("response verify error");
+                    return "success";
+                } catch (NumberFormatException e) {
+                    log.info(e.getMessage());
                 }
-            } catch (Exception e) {
-                log.info(e.getMessage());
+            } else {
+                log.info("response verify error");
             }
         }
         return "fail";
@@ -158,7 +173,6 @@ public class TradePaymentController {
      * @param serial
      * @param body
      * @return result
-     * @throws Exception
      */
     @RequestMapping(value = "notify/wechat")
     @ResponseBody
@@ -166,32 +180,31 @@ public class TradePaymentController {
             @RequestHeader(value = "Wechatpay-Signature") String signature,
             @RequestHeader(value = "Wechatpay-Timestamp") String timestamp,
             @RequestHeader(value = "Wechatpay-Nonce") String nonce, @RequestHeader(value = "Wechatpay-Serial") String serial,
-            @RequestBody String body) throws Exception {
-        log.info(CommonUtils.joinString("wechat notify signature:", signature, ",serial:", serial, ",timestamp:", timestamp, ",nonce:",
-                nonce, ",body:", body));
-        Map<String, String> config = configComponent.getConfigData(site.getId(), WechatGatewayComponent.CONFIG_CODE);
+            @RequestBody String body) {
+        log.info(CommonUtils.joinString("wechat notify signature:", signature, ",serial:", serial, ",timestamp:", timestamp,
+                ",nonce:", nonce, ",body:", body));
+        Map<String, String> config = configDataComponent.getConfigData(site.getId(), WechatGatewayComponent.CONFIG_CODE);
         Map<String, String> resultMap = new HashMap<>();
         resultMap.put("code", "FAIL");
         resultMap.put("message", "error");
         if (CommonUtils.notEmpty(config) && CommonUtils.notEmpty(config.get(WechatGatewayComponent.CONFIG_KEY))) {
-            byte[] apiV3Key = config.get(WechatGatewayComponent.CONFIG_KEY).getBytes(CommonConstants.DEFAULT_CHARSET);
+            byte[] apiV3Key = config.get(WechatGatewayComponent.CONFIG_KEY).getBytes(Constants.DEFAULT_CHARSET);
             Verifier verifier = wechatGatewayComponent.getVerifier(config, apiV3Key);
             try {
                 String joinString = CommonUtils.joinString(timestamp, "\n", nonce, "\n", body, "\n");
-                if (verifier.verify(serial, joinString.getBytes(CommonConstants.DEFAULT_CHARSET), signature)) {
-                    Map<String, Object> result = CommonConstants.objectMapper.readValue(body, CommonConstants.objectMapper
-                            .getTypeFactory().constructMapLikeType(HashMap.class, String.class, Object.class));
+                if (verifier.verify(serial, joinString.getBytes(Constants.DEFAULT_CHARSET), signature)) {
+                    Map<String, Object> result = Constants.objectMapper.readValue(body, Constants.objectMapper.getTypeFactory()
+                            .constructMapLikeType(HashMap.class, String.class, Object.class));
                     @SuppressWarnings("unchecked")
                     Map<String, String> resource = (Map<String, String>) result.get("resource");
                     if (null != resource) {
                         AesUtil decryptor = new AesUtil(apiV3Key);
                         String decodeResult = decryptor.decryptToString(
-                                resource.get("associated_data").replaceAll("\"", "").getBytes(CommonConstants.DEFAULT_CHARSET),
-                                resource.get("nonce").replaceAll("\"", "").getBytes(CommonConstants.DEFAULT_CHARSET),
+                                resource.get("associated_data").replace("\"", "").getBytes(Constants.DEFAULT_CHARSET),
+                                resource.get("nonce").replace("\"", "").getBytes(Constants.DEFAULT_CHARSET),
                                 resource.get("ciphertext"));
-                        Map<String, Object> data = CommonConstants.objectMapper.readValue(decodeResult,
-                                CommonConstants.objectMapper.getTypeFactory().constructMapLikeType(HashMap.class, String.class,
-                                        Object.class));
+                        Map<String, Object> data = Constants.objectMapper.readValue(decodeResult, Constants.objectMapper
+                                .getTypeFactory().constructMapLikeType(HashMap.class, String.class, Object.class));
                         long paymentId = Long.parseLong((String) data.get("out_trade_no"));
                         TradePaymentHistory history = new TradePaymentHistory(site.getId(), paymentId, CommonUtils.getDate(),
                                 TradePaymentHistoryService.OPERATE_NOTIFY, decodeResult);
@@ -292,8 +305,8 @@ public class TradePaymentController {
     public String refund(@RequestAttribute SysSite site, @SessionAttribute SysUser user, TradeRefund entity, String returnUrl,
             HttpServletRequest request, ModelMap model) {
         returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
-        if (null != user && ControllerUtils.errorCustom("tradePaymentStatus",
-                !service.pendingRefund(site.getId(), entity.getPaymentId()), model)) {
+        if (ControllerUtils.errorCustom("tradePaymentStatus", !service.pendingRefund(site.getId(), entity.getPaymentId()),
+                model)) {
             return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
         }
         if (null == entity.getId()) {
@@ -333,24 +346,6 @@ public class TradePaymentController {
     }
 
     @Resource
-    private PaymentProcessorComponent tradePaymentProcessorComponent;
-    @Resource
-    private PaymentProcessorComponent paymentProcessorComponent;
-    @Resource
-    private PaymentGatewayComponent gatewayComponent;
-    @Resource
-    private WechatGatewayComponent wechatGatewayComponent;
-    @Resource
-    private AlipayGatewayComponent alipayGatewayComponent;
-    @Resource
-    protected ConfigComponent configComponent;
-    @Resource
-    protected SafeConfigComponent safeConfigComponent;
-    @Resource
     private TradePaymentService service;
-    @Resource
-    private TradeRefundService refundService;
-    @Resource
-    private TradePaymentHistoryService historyService;
 
 }

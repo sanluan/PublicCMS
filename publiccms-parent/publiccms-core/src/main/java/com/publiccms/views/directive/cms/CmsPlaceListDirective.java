@@ -5,18 +5,22 @@ import java.util.Date;
 import java.util.List;
 
 import jakarta.annotation.Resource;
+
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsPlace;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
-import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsPlaceService;
+
+import freemarker.template.TemplateException;
 
 /**
  *
@@ -65,7 +69,7 @@ import com.publiccms.logic.service.cms.CmsPlaceService;
 public class CmsPlaceListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         SysSite site = getSite(handler);
         Date endPublishDate = handler.getDate("endPublishDate");
         Date expiryDate = null;
@@ -84,7 +88,7 @@ public class CmsPlaceListDirective extends AbstractTemplateDirective {
             expiryDate = now;
         }
         if (CommonUtils.notEmpty(path)) {
-            path = path.replace("//", CommonConstants.SEPARATOR);
+            path = path.replace("//", Constants.SEPARATOR);
         }
         PageHandler page = service.getPage(site.getId(), handler.getLong("userId"), path, handler.getString("itemType"),
                 handler.getLong("itemId"), handler.getDate("startPublishDate"), endPublishDate, expiryDate, status, disabled,
@@ -100,7 +104,8 @@ public class CmsPlaceListDirective extends AbstractTemplateDirective {
                     e.setClicks(e.getClicks() + clicks);
                 }
                 if (absoluteURL) {
-                    templateComponent.initPlaceUrl(site, e);
+                    CmsUrlUtils.initPlaceUrl(site, e);
+                    fileUploadComponent.initPlaceCover(site, e);
                 }
             });
         }
@@ -120,7 +125,7 @@ public class CmsPlaceListDirective extends AbstractTemplateDirective {
     @Resource
     private CmsPlaceService service;
     @Resource
-    private TemplateComponent templateComponent;
+    protected FileUploadComponent fileUploadComponent;
     @Resource
     private StatisticsComponent statisticsComponent;
 

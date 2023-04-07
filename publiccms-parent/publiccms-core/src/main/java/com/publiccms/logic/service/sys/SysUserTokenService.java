@@ -6,6 +6,7 @@ import java.util.Date;
 
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
@@ -42,6 +43,7 @@ public class SysUserTokenService extends BaseService<SysUserToken> {
      * @param authToken
      * @param expiryDate
      */
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public void updateExpiryDate(String authToken, Date expiryDate) {
         SysUserToken entity = getEntity(authToken);
         if (null != entity) {

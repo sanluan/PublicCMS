@@ -22,7 +22,7 @@ public class CmsContentTextBinder implements TypeBinder {
         context.dependencies().use("id");
         IndexSchemaElement schemaElement = context.indexSchemaElement();
 
-        IndexFieldType<String> textFieldType = context.typeFactory().asString().projectable(Projectable.YES)
+        IndexFieldType<String> textFieldType = context.typeFactory().asString().projectable(Projectable.NO)
                 .analyzer(ANALYZER_NAME).toIndexFieldType();
         IndexFieldType<String> dictionaryFieldType = context.typeFactory().asString().analyzer(AnalyzerNames.WHITESPACE)
                 .toIndexFieldType();
@@ -30,7 +30,6 @@ public class CmsContentTextBinder implements TypeBinder {
 
         IndexFieldReference<String> textField = schemaElement.field("text", textFieldType).toReference();
         IndexFieldReference<String> filesField = schemaElement.field("files", textFieldType).toReference();
-        IndexFieldReference<String> extendsField = schemaElement.field("extends", textFieldType).toReference();
         IndexFieldReference<String> dictionaryValuesField = schemaElement.field("dictionaryValues", dictionaryFieldType)
                 .toReference();
 
@@ -40,8 +39,8 @@ public class CmsContentTextBinder implements TypeBinder {
         IndexSchemaObjectField extendField = schemaElement.objectField(EXTEND_OBJECT_NAME);
         extendField.fieldTemplate("template", textFieldType);
 
-        context.bridge(CmsContent.class, new CmsContentTextBridge(textField, dictionaryValuesField, filesField, extendsField,
-                minPriceField, maxPriceField, extendField.toReference()));
+        context.bridge(CmsContent.class, new CmsContentTextBridge(textField, dictionaryValuesField, filesField, minPriceField,
+                maxPriceField, extendField.toReference()));
     }
 
 }

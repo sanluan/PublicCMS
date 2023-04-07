@@ -10,7 +10,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,6 +38,9 @@ import net.ifok.image.image4j.codec.ico.ICOEncoder;
  * 
  */
 public class ImageUtils {
+    private ImageUtils() {
+    }
+
     private static final Log log = LogFactory.getLog(ImageUtils.class);
     /**
      * 
@@ -72,7 +74,8 @@ public class ImageUtils {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         drawImage(width, height, text, byteArrayOutputStream);
         byteArrayOutputStream.close();
-        return CommonUtils.joinString("data:image/png;base64,", VerificationUtils.base64Encode(byteArrayOutputStream.toByteArray()));
+        return CommonUtils.joinString("data:image/png;base64,",
+                VerificationUtils.base64Encode(byteArrayOutputStream.toByteArray()));
     }
 
     /**
@@ -92,7 +95,7 @@ public class ImageUtils {
      * </pre>
      * 
      * <pre>
-     * &#64;RequestMapping(value = "doLogin", method = RequestMethod.POST)
+     * &#64;PostMapping("doLogin")
      * public String login(@RequestAttribute SysSite site, HttpSession session, String username, String password, String captcha,
      *         String returnUrl, Long clientId, String uuid, HttpServletRequest request, ModelMap model) {
      *     String sessionCaptcha = (String) session.getAttribute("captcha");
@@ -150,18 +153,14 @@ public class ImageUtils {
 
     private static void shearX(Graphics g, int w1, int h1, Color color) {
         int period = Constants.random.nextInt(2);
-        boolean borderGap = true;
         int frames = 1;
         int phase = Constants.random.nextInt(2);
         for (int i = 0; i < h1; i++) {
-            double d = (double) (period >> 1)
-                    * Math.sin((double) i / (double) period + (6.2831853071795862D * (double) phase) / (double) frames);
+            double d = (period >> 1) * Math.sin((double) i / (double) period + (6.2831853071795862D * phase) / frames);
             g.copyArea(0, i, w1, 1, (int) d, 0);
-            if (borderGap) {
-                g.setColor(color);
-                g.drawLine((int) d, i, 0, i);
-                g.drawLine((int) d + w1, i, w1, i);
-            }
+            g.setColor(color);
+            g.drawLine((int) d, i, 0, i);
+            g.drawLine((int) d + w1, i, w1, i);
         }
     }
 
@@ -174,7 +173,7 @@ public class ImageUtils {
     }
 
     private static Font getFont(int size) {
-        Font font[] = new Font[4];
+        Font[] font = new Font[4];
         font[0] = new Font(null, Font.PLAIN, size);
         font[1] = new Font("Antique Olive Compact", Font.PLAIN, size);
         font[2] = new Font("Fixedsys", Font.PLAIN, size);
@@ -182,34 +181,33 @@ public class ImageUtils {
         return font[Constants.random.nextInt(4)];
     }
 
-    public static void webp2Image(InputStream webpInputStream, boolean png, File imageFile)
-            throws FileNotFoundException, IOException {
+    public static void webp2Image(InputStream webpInputStream, boolean png, String imageFilepath) throws IOException {
         ImageReader reader = ImageIO.getImageReadersByMIMEType("image/webp").next();
         WebPReadParam readParam = new WebPReadParam();
         readParam.setBypassFiltering(true);
         reader.setInput(webpInputStream);
         BufferedImage image = reader.read(0, readParam);
-        ImageIO.write(image, png ? FORMAT_NAME_PNG : FORMAT_NAME_JPG, imageFile);
+        ImageIO.write(image, png ? FORMAT_NAME_PNG : FORMAT_NAME_JPG, new File(imageFilepath));
     }
 
-    public static void webp2Image(File webpFile, boolean png, File imageFile) throws FileNotFoundException, IOException {
+    public static void webp2Image(String webpFilepath, boolean png, String imageFilepath) throws IOException {
         ImageReader reader = ImageIO.getImageReadersByMIMEType("image/webp").next();
         WebPReadParam readParam = new WebPReadParam();
         readParam.setBypassFiltering(true);
-        reader.setInput(new FileImageInputStream(webpFile));
+        reader.setInput(new FileImageInputStream(new File(webpFilepath)));
         BufferedImage image = reader.read(0, readParam);
-        ImageIO.write(image, png ? FORMAT_NAME_PNG : FORMAT_NAME_JPG, imageFile);
+        ImageIO.write(image, png ? FORMAT_NAME_PNG : FORMAT_NAME_JPG, new File(imageFilepath));
     }
 
-    public static void image2Webp(File imageFile, File webpFile) throws IOException {
-        BufferedImage image = ImageIO.read(imageFile);
-        ImageIO.write(image, FORMAT_NAME_WEBP, webpFile);
+    public static void image2Webp(String imageFilepath, String webpFilepath) throws IOException {
+        BufferedImage image = ImageIO.read(new File(imageFilepath));
+        ImageIO.write(image, FORMAT_NAME_WEBP, new File(webpFilepath));
     }
 
-    public static void image2Ico(InputStream input, String suffix, int size, File icoFile) throws IOException {
+    public static void image2Ico(InputStream input, String suffix, int size, String icoFilepath) throws IOException {
         BufferedImage sourceImage = ImageIO.read(input);
         BufferedImage resultImage = thumb(sourceImage, size, size, ".png".equalsIgnoreCase(suffix));
-        try (FileOutputStream outputStream = new FileOutputStream(icoFile)) {
+        try (FileOutputStream outputStream = new FileOutputStream(icoFilepath)) {
             ICOEncoder.write(resultImage, outputStream);
         }
     }
@@ -233,7 +231,7 @@ public class ImageUtils {
         return true;
     }
 
-    public static BufferedImage thumb(BufferedImage sourceImage, int width, int height, boolean png) throws IOException {
+    public static BufferedImage thumb(BufferedImage sourceImage, int width, int height, boolean png) {
         BufferedImage resultImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Image scaledImage = sourceImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
         Graphics2D g = resultImage.createGraphics();

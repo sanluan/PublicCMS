@@ -13,6 +13,7 @@
         <module>publiccms-trade</module>
         <module>publiccms-cache</module>
         <module>publiccms-analyzer</module>
+        <module>publiccms-oss</module>
     </modules>
     <properties>
         <java.version>17</java.version>
@@ -20,15 +21,15 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
-        <version.publiccms>V5.202302.a</version.publiccms>
+        <version.publiccms>V5.202302.c</version.publiccms>
         <!-- https://mvnrepository.com/artifact/jakarta.servlet/jakarta.servlet-api -->
         <version.servlet>6.0.0</version.servlet>
         <!-- http://mvnrepository.com/artifact/org.springframework/spring-core -->
         <!-- https://spring.io/projects/spring-framework -->
-        <version.spring>6.0.6</version.spring>
+        <version.spring>6.0.7</version.spring>
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
         <!-- https://spring.io/projects/spring-boot -->
-        <version.springBoot>3.0.4</version.springBoot>
+        <version.springBoot>3.0.5</version.springBoot>
         <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine -->
         <version.juint>5.9.2</version.juint>
         <!-- http://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
@@ -141,6 +142,11 @@
             <dependency>
                 <groupId>com.publiccms</groupId>
                 <artifactId>publiccms-trade</artifactId>
+                <version>${version.publiccms}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.publiccms</groupId>
+                <artifactId>publiccms-oss</artifactId>
                 <version>${version.publiccms}</version>
             </dependency>
             <dependency>

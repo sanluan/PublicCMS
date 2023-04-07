@@ -21,7 +21,7 @@ public class SysExtendFieldDao extends BaseDao<SysExtendField> {
     /**
      * @param extendId
      * @param inputType
-     * @param searchable 
+     * @param searchable
      * @return results page
      */
     public List<SysExtendField> getList(Integer extendId, String[] inputType, Boolean searchable) {
@@ -35,13 +35,16 @@ public class SysExtendFieldDao extends BaseDao<SysExtendField> {
                 queryHandler.condition("bean.searchable = :searchable").setParameter("searchable", searchable);
             }
             queryHandler.order("bean.sort asc");
-            return (List<SysExtendField>) getList(queryHandler);
+            return getEntityList(queryHandler);
         }
         return Collections.emptyList();
     }
 
     @Override
     protected SysExtendField init(SysExtendField entity) {
+        if (CommonUtils.empty(entity.getName())) {
+            entity.setName(entity.getId().getCode());
+        }
         return entity;
     }
 

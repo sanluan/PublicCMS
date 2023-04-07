@@ -1,29 +1,36 @@
 package com.publiccms.logic.component.exchange;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.tools.zip.ZipFile;
 import org.apache.tools.zip.ZipOutputStream;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractExchange;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.DateFormatUtils;
 import com.publiccms.common.tools.ExtendUtils;
+import com.publiccms.common.tools.HtmlUtils;
 import com.publiccms.common.tools.LanguagesUtils;
+import com.publiccms.common.tools.ZipUtils;
 import com.publiccms.common.view.ExcelView;
 import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.entities.cms.CmsContent;
@@ -35,6 +42,7 @@ import com.publiccms.entities.sys.SysDept;
 import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
+import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.ModelComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsCategoryService;
@@ -64,6 +72,8 @@ public class ContentExchangeComponent extends AbstractExchange<CmsContent, Conte
     private CmsContentService service;
     @Resource
     private TemplateComponent templateComponent;
+    @Resource
+    private SiteComponent siteComponent;
     @Resource
     private ModelComponent modelComponent;
     @Resource
@@ -175,7 +185,8 @@ public class ContentExchangeComponent extends AbstractExchange<CmsContent, Conte
         ExcelView view = new ExcelView(workbook -> {
             Sheet sheet = workbook
                     .createSheet(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.workload"));
-            int i = 0, j = 0;
+            int i = 0;
+            int j = 0;
             Row row = sheet.createRow(i++);
             row.createCell(j++)
                     .setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.category"));
@@ -287,7 +298,8 @@ public class ContentExchangeComponent extends AbstractExchange<CmsContent, Conte
             Sheet sheet = workbook
                     .createSheet(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content"));
             sheet.setDefaultColumnWidth(20);
-            int i = 0, j = 0;
+            int i = 0;
+            int j = 0;
             Row row = sheet.createRow(i++);
             row.createCell(j++).setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.id"));
             row.createCell(j++)
@@ -438,8 +450,9 @@ public class ContentExchangeComponent extends AbstractExchange<CmsContent, Conte
             }
         });
         DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.DOWNLOAD_FORMAT_STRING);
-        view.setFilename(CommonUtils.joinString(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content"),
-                dateFormat.format(new Date())));
+        view.setFilename(
+                CommonUtils.joinString(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content"),
+                        dateFormat.format(new Date())));
         return view;
     }
 
@@ -448,19 +461,47 @@ public class ContentExchangeComponent extends AbstractExchange<CmsContent, Conte
             ZipOutputStream zipOutputStream) {
         CmsCategory category = categoryService.getEntity(entity.getCategoryId());
         if (null != category) {
-            Content data = exportEntity(site, category.getCode(), entity);
+            Set<String> webfileList = null;
+            if (null == directory) {
+                webfileList = new HashSet<>();
+            }
+            Content data = exportEntity(site, category.getCode(), entity, webfileList);
             CmsModel model = modelComponent.getModel(site, entity.getModelId());
             if (null != model && model.isHasChild()) {
                 List<CmsContent> list = service.getListByTopId(site.getId(), entity.getId());
                 if (null != list) {
                     List<Content> childList = new ArrayList<>();
                     for (CmsContent content : list) {
-                        childList.add(exportEntity(site, category.getCode(), content));
+                        childList.add(exportEntity(site, category.getCode(), content, webfileList));
                     }
                     data.setChildList(childList);
                 }
             }
             export(directory, out, zipOutputStream, data, CommonUtils.joinString(entity.getId(), ".json"));
+            if (null != webfileList && !webfileList.isEmpty()) {
+                for (String file : webfileList) {
+                    if (file.startsWith(site.getSitePath())) {
+                        String fullName = StringUtils.removeStart(file, site.getSitePath());
+                        if (fullName.contains(Constants.DOT) && !fullName.contains(".htm")) {
+                            String filepath = siteComponent.getWebFilePath(site.getId(), fullName);
+                            try {
+                                ZipUtils.compressFile(new File(filepath), zipOutputStream,
+                                        CommonUtils.joinString(ATTACHMENT_DIR, fullName));
+                            } catch (IOException e) {
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    public void importData(SysSite site, long userId, String directory, boolean overwrite, ZipFile zipFile) {
+        super.importData(site, userId, directory, overwrite, zipFile);
+        if (null == directory) {
+            String filepath = siteComponent.getWebFilePath(site.getId(), Constants.SEPARATOR);
+            ZipUtils.unzip(zipFile, ATTACHMENT_DIR, filepath, overwrite, null);
         }
     }
 
@@ -476,13 +517,18 @@ public class ContentExchangeComponent extends AbstractExchange<CmsContent, Conte
     public void save(SysSite site, long userId, boolean overwrite, CmsCategory category, SysUser user, Content data) {
         CmsContent entity = data.getEntity();
         CmsContent oldentity = service.getEntity(entity.getId());
-        if (null != category && (null == oldentity || oldentity.isDisabled() || overwrite)) {
+        if (null != category
+                && (null == oldentity || oldentity.isDisabled() || oldentity.getSiteId() != site.getId() || overwrite)) {
+            if (null != oldentity && oldentity.getSiteId() != site.getId()) {
+                entity.setId(null);
+            }
             entity.setSiteId(site.getId());
             entity.setUserId(userId);
             entity.setDeptId(null != user ? user.getDeptId() : null);
             entity.setCategoryId(category.getId());
             service.saveOrUpdate(entity);
             if (null != data.getAttribute()) {
+                data.getAttribute().setContentId(entity.getId());
                 if (needReplace(data.getAttribute().getText(), site.getDynamicPath())) {
                     data.getAttribute()
                             .setText(StringUtils.replace(data.getAttribute().getText(), "#DYNAMICPATH#", site.getDynamicPath()));
@@ -503,6 +549,7 @@ public class ContentExchangeComponent extends AbstractExchange<CmsContent, Conte
             }
             if (null != data.getChildList()) {
                 for (Content child : data.getChildList()) {
+                    child.getEntity().setParentId(entity.getId());
                     save(site, userId, overwrite, category, user, child);
                 }
             }
@@ -513,23 +560,34 @@ public class ContentExchangeComponent extends AbstractExchange<CmsContent, Conte
         }
     }
 
-    private Content exportEntity(SysSite site, String categoryCode, CmsContent entity) {
+    private Content exportEntity(SysSite site, String categoryCode, CmsContent entity, Set<String> webfileList) {
         Content data = new Content();
         data.setCategoryCode(categoryCode);
         data.setEntity(entity);
+        if (null != webfileList && CommonUtils.notEmpty(entity.getCover()) && !entity.getCover().contains("://")
+                && entity.getCover().startsWith("//")) {
+            webfileList.add(entity.getCover());
+        }
         data.setAttribute(attributeService.getEntity(entity.getId()));
         if (null != data.getAttribute()) {
             if (CommonUtils.notEmpty(data.getAttribute().getText())) {
+                if (null != webfileList) {
+                    HtmlUtils.getFileList(data.getAttribute().getText(), webfileList);
+                }
                 data.getAttribute().setText(StringUtils.replace(data.getAttribute().getText(), site.getSitePath(), "#SITEPATH#"));
-            }
-            if (CommonUtils.notEmpty(data.getAttribute().getText())) {
                 data.getAttribute()
                         .setText(StringUtils.replace(data.getAttribute().getText(), site.getDynamicPath(), "#DYNAMICPATH#"));
             }
             if (CommonUtils.notEmpty(data.getAttribute().getData())) {
+                if (null != webfileList) {
+                    Map<String, String> map = ExtendUtils.getExtendMap(data.getAttribute().getData());
+                    for (String value : map.values()) {
+                        if (null != value && value.contains("<")) {
+                            HtmlUtils.getFileList(value, webfileList);
+                        }
+                    }
+                }
                 data.getAttribute().setData(StringUtils.replace(data.getAttribute().getData(), site.getSitePath(), "#SITEPATH#"));
-            }
-            if (CommonUtils.notEmpty(data.getAttribute().getData())) {
                 data.getAttribute()
                         .setData(StringUtils.replace(data.getAttribute().getData(), site.getDynamicPath(), "#DYNAMICPATH#"));
             }
@@ -539,10 +597,25 @@ public class ContentExchangeComponent extends AbstractExchange<CmsContent, Conte
             List<CmsContentFile> fileList = (List<CmsContentFile>) fileService
                     .getPage(entity.getId(), null, null, null, null, null, null).getList();
             data.setFileList(fileList);
+            if (null != webfileList) {
+                for (CmsContentFile file : fileList) {
+                    if (!file.getFilePath().contains("://") && file.getFilePath().startsWith("//")) {
+                        webfileList.add(file.getFilePath());
+                    }
+                }
+            }
         }
         if (entity.isHasProducts()) {
             List<CmsContentProduct> productList = productService.getList(site.getId(), entity.getId());
             data.setProductList(productList);
+            if (null != webfileList) {
+                for (CmsContentProduct file : productList) {
+                    if (CommonUtils.notEmpty(file.getCover()) && !file.getCover().contains("://")
+                            && file.getCover().startsWith("//")) {
+                        webfileList.add(file.getCover());
+                    }
+                }
+            }
         }
         @SuppressWarnings("unchecked")
         List<CmsContentRelated> relatedList = (List<CmsContentRelated>) relatedService

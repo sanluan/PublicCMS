@@ -118,7 +118,7 @@ public class IncludeRegionDirective extends AbstractTemplateDirective {
     private DiyComponent diyComponent;
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         // nouse
     }
 }

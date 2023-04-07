@@ -8,7 +8,7 @@ buildscript {
     }
     dependencies {
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-gradle-plugin
-        classpath "org.springframework.boot:spring-boot-gradle-plugin:3.0.2"
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:3.0.5"
     }
 }
 
@@ -23,7 +23,7 @@ subprojects {
     apply plugin: "eclipse-wtp"
 
     group = "com.publiccms"
-    version = "V5.202302.a"
+    version = "V5.202302.c"
 
     test.enabled = false
 
@@ -32,10 +32,10 @@ subprojects {
         servletVersion = "6.0.0"
         // http://mvnrepository.com/artifact/org.springframework/spring-core
         // https://spring.io/projects/spring-framework
-        springVersion = "6.0.6"
+        springVersion = "6.0.7"
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
         // https://spring.io/projects/spring-boot
-        springBootVersion = "3.0.4"
+        springBootVersion = "3.0.5"
         // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine
         junitVersion = "5.9.2"
         // http://mvnrepository.com/artifact/org.hibernate/hibernate-core

@@ -4,18 +4,19 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
-import jakarta.annotation.Resource;
 
 import com.publiccms.common.api.Cache;
 import com.publiccms.common.cache.CacheEntity;
 import com.publiccms.common.cache.CacheEntityFactory;
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.DateFormatUtils;
 import com.publiccms.entities.sys.SysDomain;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.service.sys.SysDomainService;
 import com.publiccms.logic.service.sys.SysSiteService;
+
+import jakarta.annotation.Resource;
 
 /**
  *
@@ -126,15 +127,15 @@ public class SiteComponent implements Cache {
      */
     public static String getFullFileName(short siteId, String path) {
         if (CommonUtils.empty(path)) {
-            path = CommonConstants.BLANK;
+            path = Constants.BLANK;
         }
         if (path.contains("..")) {
-            path = path.replace("..", CommonConstants.BLANK);
+            path = path.replace("..", Constants.BLANK);
         }
-        if (path.startsWith(CommonConstants.SEPARATOR) || path.startsWith("\\")) {
+        if (path.startsWith(Constants.SEPARATOR) || path.startsWith("\\")) {
             return CommonUtils.joinString(SITE_PATH_PREFIX, siteId, path);
         }
-        return CommonUtils.joinString(SITE_PATH_PREFIX, siteId, CommonConstants.SEPARATOR, path);
+        return CommonUtils.joinString(SITE_PATH_PREFIX, siteId, Constants.SEPARATOR, path);
     }
 
     /**
@@ -155,14 +156,14 @@ public class SiteComponent implements Cache {
      */
     public String getViewName(short siteId, SysDomain sysDomain, String path) {
         if (CommonUtils.notEmpty(sysDomain.getPath())) {
-            if (path.startsWith(CommonConstants.SEPARATOR) || sysDomain.getPath().endsWith(CommonConstants.SEPARATOR)) {
-                if (path.startsWith(CommonConstants.SEPARATOR) && sysDomain.getPath().endsWith(CommonConstants.SEPARATOR)) {
+            if (path.startsWith(Constants.SEPARATOR) || sysDomain.getPath().endsWith(Constants.SEPARATOR)) {
+                if (path.startsWith(Constants.SEPARATOR) && sysDomain.getPath().endsWith(Constants.SEPARATOR)) {
                     path = CommonUtils.joinString(sysDomain.getPath(), path.substring(1));
                 } else {
                     path = CommonUtils.joinString(sysDomain.getPath(), path);
                 }
             } else {
-                path = CommonUtils.joinString(sysDomain.getPath(), CommonConstants.SEPARATOR, path);
+                path = CommonUtils.joinString(sysDomain.getPath(), Constants.SEPARATOR, path);
             }
         }
         return getFullTemplatePath(siteId, path);
@@ -178,7 +179,7 @@ public class SiteComponent implements Cache {
             sysDomain = sysDomainService.getEntity(serverName);
             if (null == sysDomain) {
                 int index;
-                if (null != serverName && 0 < (index = serverName.indexOf(CommonConstants.DOT))) {
+                if (null != serverName && 0 < (index = serverName.indexOf(Constants.DOT))) {
                     String subname = serverName.substring(index + 1);
                     sysDomain = domainCache.get(subname);
                     if (null == sysDomain) {
@@ -207,10 +208,10 @@ public class SiteComponent implements Cache {
     public String getPath(SysSite site, String path) {
         if (null != site.getParentId() && CommonUtils.notEmpty(site.getDirectory())) {
             int index = 0;
-            if (path.startsWith(CommonUtils.joinString(CommonConstants.SEPARATOR, site.getDirectory()))) {
-                index = path.indexOf(CommonConstants.SEPARATOR, 1);
+            if (path.startsWith(CommonUtils.joinString(Constants.SEPARATOR, site.getDirectory()))) {
+                index = path.indexOf(Constants.SEPARATOR, 1);
             } else if (path.startsWith(site.getDirectory())) {
-                index = path.indexOf(CommonConstants.SEPARATOR);
+                index = path.indexOf(Constants.SEPARATOR);
             }
             if (0 < index) {
                 return path.substring(index, path.length());
@@ -273,18 +274,18 @@ public class SiteComponent implements Cache {
         String directory = null;
         if (domain.isMultiple() && CommonUtils.notEmpty(path)) {
             int index = 0;
-            if (path.startsWith(CommonConstants.SEPARATOR)) {
-                index = path.indexOf(CommonConstants.SEPARATOR, 1);
+            if (path.startsWith(Constants.SEPARATOR)) {
+                index = path.indexOf(Constants.SEPARATOR, 1);
                 if (0 < index) {
                     directory = path.substring(1, index);
                 }
             } else {
-                index = path.indexOf(CommonConstants.SEPARATOR);
+                index = path.indexOf(Constants.SEPARATOR);
                 if (0 < index) {
                     directory = path.substring(0, index);
                 }
             }
-            cacheKey = null == directory ? serverName : (CommonUtils.joinString(serverName, CommonConstants.SEPARATOR, directory));
+            cacheKey = null == directory ? serverName : (CommonUtils.joinString(serverName, Constants.SEPARATOR, directory));
         } else {
             cacheKey = serverName;
         }
@@ -347,7 +348,7 @@ public class SiteComponent implements Cache {
     public String getWebHistoryFilePath(short siteId, String filepath, boolean newfile) {
         StringBuilder sb = new StringBuilder(webHistoryFilePath);
         sb.append(getFullFileName(siteId, filepath));
-        sb.append(CommonConstants.SEPARATOR);
+        sb.append(Constants.SEPARATOR);
         if (newfile) {
             sb.append(DateFormatUtils.getDateFormat(DateFormatUtils.FILE_NAME_FORMAT_STRING).format(CommonUtils.getDate()));
         }
@@ -367,7 +368,7 @@ public class SiteComponent implements Cache {
      * @return site file path
      */
     public String getSiteFilePath() {
-        return CommonUtils.joinString(rootPath, BACKUP_PATH, CommonConstants.SEPARATOR, SITE_FILE_PATH);
+        return CommonUtils.joinString(rootPath, BACKUP_PATH, Constants.SEPARATOR, SITE_FILE_PATH);
     }
 
     /**
@@ -389,7 +390,7 @@ public class SiteComponent implements Cache {
     public String getTaskTemplateHistoryFilePath(short siteId, String templatePath, boolean newfile) {
         StringBuilder sb = new StringBuilder(taskTemplateHistoryFilePath);
         sb.append(getFullFileName(siteId, templatePath));
-        sb.append(CommonConstants.SEPARATOR);
+        sb.append(Constants.SEPARATOR);
         if (newfile) {
             sb.append(DateFormatUtils.getDateFormat(DateFormatUtils.FILE_NAME_FORMAT_STRING).format(CommonUtils.getDate()));
         }
@@ -424,7 +425,7 @@ public class SiteComponent implements Cache {
     public String getTemplateHistoryFilePath(short siteId, String templatePath, boolean newfile) {
         StringBuilder sb = new StringBuilder(templateHistoryFilePath);
         sb.append(getFullFileName(siteId, templatePath));
-        sb.append(CommonConstants.SEPARATOR);
+        sb.append(Constants.SEPARATOR);
         if (newfile) {
             sb.append(DateFormatUtils.getDateFormat(DateFormatUtils.FILE_NAME_FORMAT_STRING).format(CommonUtils.getDate()));
         }
@@ -475,7 +476,7 @@ public class SiteComponent implements Cache {
      * @param masterSiteIds
      */
     public void setMasterSiteIds(String masterSiteIds) {
-        String[] masters = StringUtils.split(masterSiteIds, CommonConstants.COMMA);
+        String[] masters = StringUtils.split(masterSiteIds, Constants.COMMA);
         for (String master : masters) {
             try {
                 Short id = Short.parseShort(master);
@@ -490,8 +491,8 @@ public class SiteComponent implements Cache {
      */
     public void setRootPath(String rootPath) {
         if (CommonUtils.notEmpty(rootPath)) {
-            if (!(rootPath.endsWith(CommonConstants.SEPARATOR) || rootPath.endsWith("\\"))) {
-                rootPath = CommonUtils.joinString(rootPath, CommonConstants.SEPARATOR);
+            if (!(rootPath.endsWith(Constants.SEPARATOR) || rootPath.endsWith("\\"))) {
+                rootPath = CommonUtils.joinString(rootPath, Constants.SEPARATOR);
             }
         }
         this.rootPath = rootPath;
@@ -499,18 +500,18 @@ public class SiteComponent implements Cache {
         this.privateFilePath = CommonUtils.joinString(rootPath, STATIC_FILE_PATH_PRIVATE);
         this.taskTemplateFilePath = CommonUtils.joinString(rootPath, TASK_FILE_PATH);
         this.templateFilePath = CommonUtils.joinString(rootPath, TEMPLATE_PATH);
-        this.templateBackupFilePath = CommonUtils.joinString(rootPath, BACKUP_PATH, CommonConstants.SEPARATOR, TEMPLATE_PATH);
-        this.taskTemplateBackupFilePath = CommonUtils.joinString(rootPath, BACKUP_PATH, CommonConstants.SEPARATOR, TASK_FILE_PATH);
-        this.webBackupFilePath = CommonUtils.joinString(rootPath, BACKUP_PATH, CommonConstants.SEPARATOR, STATIC_FILE_PATH_WEB);
-        this.templateHistoryFilePath = CommonUtils.joinString(rootPath, HISTORY_PATH, CommonConstants.SEPARATOR, TEMPLATE_PATH);
-        this.taskTemplateHistoryFilePath = CommonUtils.joinString(rootPath, HISTORY_PATH, CommonConstants.SEPARATOR, TASK_FILE_PATH);
-        this.webHistoryFilePath = CommonUtils.joinString(rootPath, HISTORY_PATH, CommonConstants.SEPARATOR, STATIC_FILE_PATH_WEB);
+        this.templateBackupFilePath = CommonUtils.joinString(rootPath, BACKUP_PATH, Constants.SEPARATOR, TEMPLATE_PATH);
+        this.taskTemplateBackupFilePath = CommonUtils.joinString(rootPath, BACKUP_PATH, Constants.SEPARATOR, TASK_FILE_PATH);
+        this.webBackupFilePath = CommonUtils.joinString(rootPath, BACKUP_PATH, Constants.SEPARATOR, STATIC_FILE_PATH_WEB);
+        this.templateHistoryFilePath = CommonUtils.joinString(rootPath, HISTORY_PATH, Constants.SEPARATOR, TEMPLATE_PATH);
+        this.taskTemplateHistoryFilePath = CommonUtils.joinString(rootPath, HISTORY_PATH, Constants.SEPARATOR, TASK_FILE_PATH);
+        this.webHistoryFilePath = CommonUtils.joinString(rootPath, HISTORY_PATH, Constants.SEPARATOR, STATIC_FILE_PATH_WEB);
     }
 
     @Override
     public void clear() {
-        siteCache.clear();
-        domainCache.clear();
+        siteCache.clear(false);
+        domainCache.clear(false);
     }
 
     /**

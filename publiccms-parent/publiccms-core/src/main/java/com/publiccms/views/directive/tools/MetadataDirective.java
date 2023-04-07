@@ -3,16 +3,19 @@ package com.publiccms.views.directive.tools;
 import java.io.IOException;
 
 import jakarta.annotation.Resource;
+
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.views.pojo.entities.CmsPageData;
 import com.publiccms.views.pojo.entities.CmsPageMetadata;
+
+import freemarker.template.TemplateException;
 
 /**
  * metadata 模板元数据获取指令
@@ -45,9 +48,9 @@ import com.publiccms.views.pojo.entities.CmsPageMetadata;
 public class MetadataDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         String path = handler.getString("path");
-        if (CommonUtils.notEmpty(path) && !path.endsWith(CommonConstants.SEPARATOR)) {
+        if (CommonUtils.notEmpty(path) && !path.endsWith(Constants.SEPARATOR)) {
             SysSite site = getSite(handler);
             String filepath = siteComponent.getTemplateFilePath(site.getId(), path);
             CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(filepath);

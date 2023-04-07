@@ -104,7 +104,6 @@ CREATE TABLE `cms_content` (
   `parent_id` bigint(20) default NULL COMMENT '父内容',
   `quote_content_id` bigint(20) NULL COMMENT '引用内容(当父内容不为空时为顶级内容)',
   `copied` tinyint(1) NOT NULL COMMENT '是否转载',
-  `contribute` tinyint(1) NOT NULL default 0 COMMENT '是否投稿',
   `author` varchar(50) default NULL COMMENT '作者',
   `editor` varchar(50) default NULL COMMENT '编辑',
   `only_url` tinyint(1) NOT NULL COMMENT '外链',
@@ -149,7 +148,6 @@ CREATE TABLE `cms_content_attribute` (
   `data` longtext COMMENT '数据JSON',
   `search_text` longtext NULL COMMENT '全文索引文本',
   `dictionary_values` text NULL COMMENT '数据字典值',
-  `extends_text` text NULL COMMENT '扩展文本',
   `extends_fields` text NULL COMMENT '扩展文本字段',
   `files_text` text NULL COMMENT '附件文本',
   `min_price` decimal(10, 2) NULL COMMENT '最低价格',
@@ -839,7 +837,7 @@ INSERT INTO `sys_module` VALUES ('app_delete', NULL, 'sysApp/delete', NULL, 'app
 INSERT INTO `sys_module` VALUES ('app_issue', 'sysApp/issueParameters', 'sysAppToken/issue,sysAppToken/delete,sysAppToken/list', NULL, 'app_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('app_list', 'sysApp/list', NULL, 'icon-linux', 'system_menu', 1, 5);
 INSERT INTO `sys_module` VALUES ('app_view', 'sysApp/view', NULL, NULL, 'app_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('category_add', 'cmsCategory/add', 'cmsCategory/addMore,cmsCategory/virify,cmsCategory/rebuildChildIds,cmsCategory/batchPublish,cmsCategory/categoryPath,cmsCategory/contentPath,cmsCategory/save', NULL, 'category_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('category_add', 'cmsCategory/add', 'cmsCategory/addMore,cmsCategory/virify,cmsCategory/rebuildChildIds,cmsCategory/batchPublish,cmsCategory/batchCopy,cmsCategory/batchSave,cmsCategory/seo,cmsCategory/saveSeo,cmsCategory/categoryPath,cmsCategory/contentPath,cmsCategory/save', NULL, 'category_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('category_delete', NULL, 'cmsCategory/delete', NULL, 'category_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('category_export', NULL, 'cmsCategory/export', NULL, 'category_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('category_extend', NULL, NULL, 'icon-road', 'content', 1, 1);
@@ -924,7 +922,7 @@ INSERT INTO `sys_module` VALUES ('log_workload', 'cmsContent/workload', NULL, 'b
 INSERT INTO `sys_module` VALUES ('maintenance', NULL, NULL, 'icon-cogs', NULL, 1, 6);
 INSERT INTO `sys_module` VALUES ('model_add', 'cmsModel/add', 'cmsModel/save,cmsModel/rebuildSearchText,cmsModel/batchPublish', NULL, 'model_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('model_delete', NULL, 'cmsModel/delete', NULL, 'model_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('model_list', 'cmsModel/list', 'cmsModel/categoryList', 'icon-th-large', 'config_menu', 1, 1);
+INSERT INTO `sys_module` VALUES ('model_list', 'cmsModel/list', 'cmsModel/categoryList,cmsModel/template', 'icon-th-large', 'config_menu', 1, 1);
 INSERT INTO `sys_module` VALUES ('myself', NULL, NULL, 'icon-key', NULL, 1, 1);
 INSERT INTO `sys_module` VALUES ('myself_content', 'myself/contentList', NULL, 'icon-book', 'myself_menu', 1, 2);
 INSERT INTO `sys_module` VALUES ('myself_content_add', 'cmsContent/add', 'cmsContent/save', NULL, 'myself_content', 0, 0);
@@ -1030,7 +1028,7 @@ INSERT INTO `sys_module` VALUES ('template_demo', 'cmsTemplate/demo', NULL, NULL
 INSERT INTO `sys_module` VALUES ('template_fragment', 'cmsTemplate/ftlLookup', NULL, NULL, 'template_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('template_help', 'cmsTemplate/help', NULL, NULL, 'template_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('template_import', 'cmsTemplate/upload', 'cmsTemplate/doUpload,cmsTemplate/import,cmsTemplate/doImport,cmsTemplate/sitefileList,cmsTemplate/viewSitefile,cmsTemplate/visitSitefileImage', NULL, 'template_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('template_list', 'cmsTemplate/list', 'cmsTemplate/directory', 'icon-code', 'file_menu', 1, 1);
+INSERT INTO `sys_module` VALUES ('template_list', 'cmsTemplate/list', 'cmsTemplate/directory', 'bi bi-code-square', 'file_menu', 1, 1);
 INSERT INTO `sys_module` VALUES ('template_metadata', 'cmsTemplate/metadata', 'cmsTemplate/saveMetaData,cmsTemplate/createDirectory', NULL, 'template_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('template_search', 'cmsTemplate/search', 'cmsTemplate/replace', NULL, 'template_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('template_upload', 'cmsTemplate/upload', 'cmsTemplate/doUpload', NULL, 'template_list', 0, 0);
@@ -1287,9 +1285,9 @@ INSERT INTO `sys_module_lang` VALUES ('dictionary_add', 'zh', '添加/修改');
 INSERT INTO `sys_module_lang` VALUES ('dictionary_delete', 'en', 'Delete');
 INSERT INTO `sys_module_lang` VALUES ('dictionary_delete', 'ja', '削除');
 INSERT INTO `sys_module_lang` VALUES ('dictionary_delete', 'zh', '删除');
-INSERT INTO `sys_module_lang` VALUES ('dictionary_export', 'en', 'Import');
-INSERT INTO `sys_module_lang` VALUES ('dictionary_export', 'ja', '導入');
-INSERT INTO `sys_module_lang` VALUES ('dictionary_export', 'zh', '导入');
+INSERT INTO `sys_module_lang` VALUES ('dictionary_export', 'en', 'Export');
+INSERT INTO `sys_module_lang` VALUES ('dictionary_export', 'ja', '輸出');
+INSERT INTO `sys_module_lang` VALUES ('dictionary_export', 'zh', '导出');
 INSERT INTO `sys_module_lang` VALUES ('dictionary_import', 'en', 'Import');
 INSERT INTO `sys_module_lang` VALUES ('dictionary_import', 'ja', '導入');
 INSERT INTO `sys_module_lang` VALUES ('dictionary_import', 'zh', '导入');
@@ -1518,10 +1516,10 @@ INSERT INTO `sys_module_lang` VALUES ('record_delete', 'zh', '删除');
 INSERT INTO `sys_module_lang` VALUES ('record_list', 'en', 'Custom record management');
 INSERT INTO `sys_module_lang` VALUES ('record_list', 'ja', 'カスタムレコード管理');
 INSERT INTO `sys_module_lang` VALUES ('record_list', 'zh', '自定义记录管理');
+INSERT INTO `sys_module_lang` VALUES ('record_view', 'en', 'View');
+INSERT INTO `sys_module_lang` VALUES ('record_view', 'ja', '見る');
+INSERT INTO `sys_module_lang` VALUES ('record_view', 'zh', '查看');
 INSERT INTO `sys_module_lang` VALUES ('refund_list', 'en', 'Refund management');
-INSERT INTO `sys_module_lang` VALUES ('refund_view', 'en', 'View');
-INSERT INTO `sys_module_lang` VALUES ('refund_view', 'ja', '見る');
-INSERT INTO `sys_module_lang` VALUES ('refund_view', 'zh', '查看');
 INSERT INTO `sys_module_lang` VALUES ('refund_list', 'ja', '払い戻し管理');
 INSERT INTO `sys_module_lang` VALUES ('refund_list', 'zh', '退款管理');
 INSERT INTO `sys_module_lang` VALUES ('refund_refund', 'en', 'Refund');
@@ -1876,6 +1874,7 @@ CREATE TABLE `sys_task` (
   `site_id` smallint(6) NOT NULL COMMENT '站点',
   `name` varchar(50) NOT NULL COMMENT '名称',
   `status` int(11) NOT NULL COMMENT '状态',
+  `multi_node` tinyint(1) NOT NULL COMMENT '多节点执行',
   `cron_expression` varchar(50) NOT NULL COMMENT '表达式',
   `description` varchar(300) default NULL COMMENT '描述',
   `file_path` varchar(255) default NULL COMMENT '文件路径',
@@ -2127,6 +2126,7 @@ CREATE TABLE `visit_history` (
   `session_id` varchar(50) NOT NULL COMMENT '会话',
   `visit_date` date NOT NULL COMMENT '访问日期',
   `visit_hour` tinyint(4) NOT NULL COMMENT '访问小时',
+  `user_id` bigint(20) DEFAULT NULL COMMENT '用户',
   `ip` varchar(130) NOT NULL COMMENT 'IP',
   `user_agent` varchar(500) DEFAULT NULL COMMENT 'User Agent',
   `url` varchar(2048) NOT NULL COMMENT '访问路径',
@@ -2138,9 +2138,10 @@ CREATE TABLE `visit_history` (
   `item_id` varchar(50) DEFAULT NULL COMMENT '项目',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   PRIMARY KEY (`id`),
-  KEY `visit_history_create_date` (`create_date`, `site_id`, `session_id`, `visit_date`, `ip`),
+  KEY `visit_history_create_date` (`site_id`, `create_date`, `session_id`, `ip`),
+  KEY `visit_history_user_id` (`site_id`, `create_date`, `user_id`),
   KEY `visit_history_visit_date` (`site_id`, `visit_date`, `visit_hour`),
-  KEY `visit_history_session_id` (`site_id`, `session_id`, `visit_date`, `create_date`)
+  KEY `visit_history_item_type` (`site_id`, `visit_date`, `item_type`)
 ) COMMENT='访问日志';
 
 -- ----------------------------
@@ -2189,6 +2190,6 @@ CREATE TABLE `visit_url` (
   `uv` bigint(20) DEFAULT NULL COMMENT 'User Views',
   `ipviews` bigint(20) DEFAULT NULL COMMENT 'IP数',
   PRIMARY KEY (`site_id`, `visit_date`, `url_md5`, `url_sha`),
-  KEY `visit_url_pv` (`site_id`, `visit_date`, `url`, `pv`)
+  KEY `visit_url_pv` (`site_id`, `visit_date`, `pv`)
 ) COMMENT='页面访问汇总';
 SET FOREIGN_KEY_CHECKS = 1;

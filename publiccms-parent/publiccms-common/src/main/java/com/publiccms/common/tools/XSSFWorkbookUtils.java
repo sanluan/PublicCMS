@@ -24,14 +24,17 @@ import org.apache.poi.xssf.usermodel.XSSFFont;
 import com.publiccms.common.constants.Constants;
 
 public class XSSFWorkbookUtils {
+    private XSSFWorkbookUtils() {
+    }
+
     public static String workbookToHtml(Workbook wb) {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         int sheetCounts = wb.getNumberOfSheets();
         for (int i = 0; i < sheetCounts; i++) {
             Sheet sheet = wb.getSheetAt(i);
             int lastRowNum = sheet.getLastRowNum();
-            Map<String, String> map0 = new HashMap<String, String>();
-            Map<String, String> map1 = new HashMap<String, String>();
+            Map<String, String> map0 = new HashMap<>();
+            Map<String, String> map1 = new HashMap<>();
             int mergedNum = sheet.getNumMergedRegions();
             CellRangeAddress range = null;
             for (int j = 0; j < mergedNum; j++) {
@@ -76,8 +79,8 @@ public class XSSFWorkbookUtils {
                     if (map0.containsKey(key)) {
                         String pointString = map0.get(key);
                         map0.remove(key);
-                        int bottomeRow = Integer.valueOf(pointString.split(",")[0]);
-                        int bottomeCol = Integer.valueOf(pointString.split(",")[1]);
+                        int bottomeRow = Integer.parseInt(pointString.split(",")[0]);
+                        int bottomeCol = Integer.parseInt(pointString.split(",")[1]);
                         int rowSpan = bottomeRow - rowNum + 1;
                         int colSpan = bottomeCol - colNum + 1;
                         sb.append("<td rowspan= '").append(rowSpan).append("' colspan= '").append(colSpan).append("' ");
@@ -107,7 +110,7 @@ public class XSSFWorkbookUtils {
      * 获取表格单元格Cell内容
      */
     private static String getCellValue(Cell cell) {
-        String result = new String();
+        String result;
         switch (cell.getCellType()) {
         case NUMERIC:// 数字类型
             if (DateUtil.isCellDateFormatted(cell)) {// 处理日期格式、时间格式
@@ -150,7 +153,7 @@ public class XSSFWorkbookUtils {
     /**
      * 处理表格样式
      */
-    private static void dealExcelStyle(Sheet sheet, Cell cell, StringBuffer sb) {
+    private static void dealExcelStyle(Sheet sheet, Cell cell, StringBuilder sb) {
         XSSFCellStyle cellStyle = (XSSFCellStyle) cell.getCellStyle();
         if (cellStyle != null) {
             HorizontalAlignment alignment = cellStyle.getAlignment();
@@ -172,7 +175,7 @@ public class XSSFWorkbookUtils {
             if (xc != null && xc.isRGB()) {
                 sb.append("color:#").append(xc.getARGBHex().substring(2)).append(";");
             }
-            XSSFColor bgColor = (XSSFColor) cellStyle.getFillForegroundColorColor();
+            XSSFColor bgColor = cellStyle.getFillForegroundColorColor();
             if (bgColor != null && bgColor.isAuto()) {
                 sb.append("background-color:#").append(bgColor.getARGBHex().substring(2)).append(";");
             }

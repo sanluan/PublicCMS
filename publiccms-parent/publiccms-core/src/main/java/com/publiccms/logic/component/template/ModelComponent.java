@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 import com.publiccms.common.api.SiteCache;
 import com.publiccms.common.cache.CacheEntity;
 import com.publiccms.common.cache.CacheEntityFactory;
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.site.SiteComponent;
@@ -100,7 +100,7 @@ public class ModelComponent implements SiteCache {
             File file = new File(siteComponent.getModelFilePath(siteId));
             if (CommonUtils.notEmpty(file)) {
                 try {
-                    modelMap = CommonConstants.objectMapper.readValue(file, CommonConstants.objectMapper.getTypeFactory()
+                    modelMap = Constants.objectMapper.readValue(file, Constants.objectMapper.getTypeFactory()
                             .constructMapLikeType(HashMap.class, String.class, CmsModel.class));
                 } catch (IOException | ClassCastException e) {
                     modelMap = new HashMap<>();
@@ -132,7 +132,7 @@ public class ModelComponent implements SiteCache {
             File file = new File(siteComponent.getCategoryTypeFilePath(siteId));
             if (CommonUtils.notEmpty(file)) {
                 try {
-                    typeMap = CommonConstants.objectMapper.readValue(file, CommonConstants.objectMapper.getTypeFactory()
+                    typeMap = Constants.objectMapper.readValue(file, Constants.objectMapper.getTypeFactory()
                             .constructMapLikeType(HashMap.class, String.class, CmsCategoryType.class));
                 } catch (IOException | ClassCastException e) {
                     typeMap = new HashMap<>();
@@ -158,7 +158,7 @@ public class ModelComponent implements SiteCache {
             file.getParentFile().mkdirs();
         }
         try (FileOutputStream outputStream = new FileOutputStream(file)) {
-            CommonConstants.objectMapper.writeValue(file, modelMap);
+            Constants.objectMapper.writeValue(file, modelMap);
         } catch (IOException e) {
             log.error(e.getMessage());
             return false;
@@ -180,7 +180,7 @@ public class ModelComponent implements SiteCache {
             file.getParentFile().mkdirs();
         }
         try (FileOutputStream outputStream = new FileOutputStream(file)) {
-            CommonConstants.objectMapper.writeValue(file, typeMap);
+            Constants.objectMapper.writeValue(file, typeMap);
         } catch (IOException e) {
             log.error(e.getMessage());
             return false;
@@ -195,8 +195,8 @@ public class ModelComponent implements SiteCache {
 
     @Override
     public void clear() {
-        modelCache.clear();
-        typeCache.clear();
+        modelCache.clear(false);
+        typeCache.clear(false);
     }
 
     @Override

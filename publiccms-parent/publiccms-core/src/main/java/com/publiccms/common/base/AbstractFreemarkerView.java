@@ -100,7 +100,7 @@ public abstract class AbstractFreemarkerView extends FreeMarkerView {
             model.put(CONTEXT_PARENT_SITE, BeanComponent.getSiteComponent().getSiteById(site.getParentId()));
         }
         model.put(CONTEXT_SITE_ATTRIBUTE,
-                BeanComponent.getConfigComponent().getConfigData(site.getId(), Config.CONFIG_CODE_SITEA_TTRIBUTE));
+                BeanComponent.getConfigDataComponent().getConfigData(site.getId(), Config.CONFIG_CODE_SITEA_TTRIBUTE));
         model.put(CONTEXT_INCLUDE, new MultiSiteIncludeDirective(site));
         model.put(CONTEXT_IMPORT, new MultiSiteImportDirective(site));
     }

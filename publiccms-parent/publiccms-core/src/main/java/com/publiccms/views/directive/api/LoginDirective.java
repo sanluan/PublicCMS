@@ -20,13 +20,14 @@ import com.publiccms.entities.sys.SysApp;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.entities.sys.SysUserToken;
-import com.publiccms.logic.component.config.ConfigComponent;
+import com.publiccms.logic.component.config.ConfigDataComponent;
 import com.publiccms.logic.component.config.SafeConfigComponent;
 import com.publiccms.logic.component.site.LockComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.sys.SysUserService;
 import com.publiccms.logic.service.sys.SysUserTokenService;
 
+import freemarker.template.TemplateException;
 import jakarta.annotation.Resource;
 
 /**
@@ -62,8 +63,17 @@ $.getJSON('${site.dynamicPath}api/login?username=admin&amp;password=sha512encodi
 @Component
 public class LoginDirective extends AbstractAppDirective {
 
+    @Resource
+    private SysUserTokenService sysUserTokenService;
+    @Resource
+    private LogLoginService logLoginService;
+    @Resource
+    private ConfigDataComponent configDataComponent;
+    @Resource
+    private LockComponent lockComponent;
+
     @Override
-    public void execute(RenderHandler handler, SysApp app, SysUser user) throws IOException, Exception {
+    public void execute(RenderHandler handler, SysApp app, SysUser user) throws IOException, TemplateException {
         String username = StringUtils.trim(handler.getString("username"));
         String password = StringUtils.trim(handler.getString("password"));
         String encoding = StringUtils.trim(handler.getString("encoding"));
@@ -83,13 +93,14 @@ public class LoginDirective extends AbstractAppDirective {
                 lockComponent.unLock(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, user.getId());
                 lockComponent.unLock(site.getId(), LockComponent.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null);
                 if (UserPasswordUtils.needUpdate(user.getPassword())) {
-                    service.updatePassword(user.getId(), UserPasswordUtils.passwordEncode(password, UserPasswordUtils.getSalt(), null, encoding));
+                    service.updatePassword(user.getId(),
+                            UserPasswordUtils.passwordEncode(password, UserPasswordUtils.getSalt(), null, encoding));
                 }
                 service.updateLoginStatus(user.getId(), ip);
                 String authToken = UUID.randomUUID().toString();
                 Date now = CommonUtils.getDate();
-                Map<String, String> config = configComponent.getConfigData(site.getId(), SafeConfigComponent.CONFIG_CODE);
-                int expiryMinutes = ConfigComponent.getInt(config.get(SafeConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
+                Map<String, String> config = configDataComponent.getConfigData(site.getId(), SafeConfigComponent.CONFIG_CODE);
+                int expiryMinutes = ConfigDataComponent.getInt(config.get(SafeConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
                         SafeConfigComponent.DEFAULT_EXPIRY_MINUTES);
                 Date expiryDate = DateUtils.addMinutes(now, expiryMinutes);
                 sysUserTokenService.save(new SysUserToken(authToken, site.getId(), user.getId(), channel, now, expiryDate, ip));
@@ -117,14 +128,6 @@ public class LoginDirective extends AbstractAppDirective {
 
     @Resource
     private SysUserService service;
-    @Resource
-    private SysUserTokenService sysUserTokenService;
-    @Resource
-    private LogLoginService logLoginService;
-    @Resource
-    private ConfigComponent configComponent;
-    @Resource
-    private LockComponent lockComponent;
 
     @Override
     public boolean needUserToken() {

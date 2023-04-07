@@ -6,6 +6,7 @@ import java.util.Date;
 
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
@@ -39,6 +40,7 @@ public class SysTaskService extends BaseService<SysTask> {
      * @param id
      * @param status
      */
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public void updateStatus(Integer id, int status) {
         SysTask entity = getEntity(id);
         if (null != entity) {

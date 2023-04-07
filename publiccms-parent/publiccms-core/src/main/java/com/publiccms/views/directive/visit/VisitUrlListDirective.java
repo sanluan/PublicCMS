@@ -11,6 +11,8 @@ import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.logic.service.visit.VisitUrlService;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * visitUrlList 访问网址报表列表查询指令
@@ -47,7 +49,7 @@ $.getJSON('${site.dynamicPath}api/directive/visit/urlList?appToken=接口访问�
 public class VisitUrlListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         PageHandler page = service.getPage(getSite(handler).getId(), handler.getString("url"), handler.getDate("startVisitDate"),
                 handler.getDate("endVisitDate"), handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", 30));
         handler.put("page", page).render();

@@ -22,7 +22,7 @@
                     <label><@t.page 'file_type'/>:</label>
                     <#list ['image','video','audio','other'] as a>
                         <label>
-                            <input <@t.compare fileTypes a 'checked="checked"'/> name="fileTypes" value="${a}" type="checkbox"/>
+                            <input name="fileTypes" value="${a}" type="checkbox" class="form-check-input"<@t.compare fileTypes a ' checked="checked"'/>/>
                             <@t.page 'file_type.'+a/>
                         </label>
                     </#list>
@@ -98,13 +98,12 @@
                     <#if a.privatefile>
                         ${(a.filePath)!}
                         <a href="${getPrivateUrl(a.filePath)!}" target="_blank"><i class="icon-external-link"></i></a>
-                        <a href="${getPrivateUrl(a.filePath,a.originalName)!}"><i class="bi bi-download"></i></a>
+                        <a href="${getPrivateUrl(a.filePath)!}" download="${a.originalName}"><i class="bi bi-download"></i></a>
                     <#else>
                         <a href="cmsWebFile/list.html?path=${a.filePath?keep_before_last('/')}" target="navTab" rel="cmsWebFile/list" title="<@t.page 'webfile'/>">
                             ${(a.filePath)!}
                         </a>
                         <a href="${getUrl(a.filePath)!}" target="_blank"><i class="icon-external-link"></i></a>
-                        <#if a.filePath?starts_with('upload/')><a href="${getDownloadUrl(a.filePath,a.originalName)!}"><i class="bi bi-download"></i></a></#if>
                     </#if>
                 </td>
             </tr>

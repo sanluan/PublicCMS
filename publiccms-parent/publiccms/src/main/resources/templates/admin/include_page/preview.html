@@ -17,7 +17,7 @@
                         $('.${name}Preview',${name}box).show().find('img').attr('src',$this.data("prefix")+$this.val());
                     }
                 } else {
-                    $('.${name}Preview',${name}box).show().find('img').attr('src','${site.sitePath}'+$this.val());
+                    $('.${name}Preview',${name}box).show().find('img').attr('src','${getFileUploadPrefix()}'+$this.val());
                 }
             }
         }else if(event.type == "mouseout"){

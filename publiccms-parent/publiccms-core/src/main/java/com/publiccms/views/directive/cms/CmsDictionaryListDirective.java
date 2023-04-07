@@ -13,6 +13,7 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.service.cms.CmsDictionaryService;
 
 import jakarta.annotation.Resource;
+import freemarker.template.TemplateException;
 
 /**
  *
@@ -48,7 +49,7 @@ import jakarta.annotation.Resource;
 public class CmsDictionaryListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         SysSite site = getSite(handler);
         short siteId = null == site.getParentId() ? site.getId() : site.getParentId();
         PageHandler page = service.getPage(siteId, handler.getString("name"), handler.getInteger("pageIndex", 1),

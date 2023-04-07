@@ -174,20 +174,20 @@ public class HttpParameterHandler extends BaseHandler {
     }
 
     @Override
-    public Date getDateWithoutRegister(String name) throws ParseException {
+    public Date getDateWithoutRegister(String name) {
         String result = getStringWithoutRegister(name);
         if (CommonUtils.notEmpty(result)) {
             String temp = StringUtils.trimToEmpty(result);
-            if (DateFormatUtils.FULL_DATE_LENGTH == temp.length()) {
-                return DateFormatUtils.getDateFormat(DateFormatUtils.FULL_DATE_FORMAT_STRING).parse(temp);
-            } else if (DateFormatUtils.SHORT_DATE_LENGTH == temp.length()) {
-                return DateFormatUtils.getDateFormat(DateFormatUtils.SHORT_DATE_FORMAT_STRING).parse(temp);
-            } else {
-                try {
+            try {
+                if (DateFormatUtils.FULL_DATE_LENGTH == temp.length()) {
+                    return DateFormatUtils.getDateFormat(DateFormatUtils.FULL_DATE_FORMAT_STRING).parse(temp);
+                } else if (DateFormatUtils.SHORT_DATE_LENGTH == temp.length()) {
+                    return DateFormatUtils.getDateFormat(DateFormatUtils.SHORT_DATE_FORMAT_STRING).parse(temp);
+                } else {
                     return new Date(Long.parseLong(temp));
-                } catch (NumberFormatException e) {
-                    return null;
                 }
+            } catch (ParseException | NumberFormatException e) {
+                return null;
             }
         }
         return null;
@@ -208,18 +208,17 @@ public class HttpParameterHandler extends BaseHandler {
     }
 
     @Override
-    public HttpServletRequest getRequest() throws IOException, Exception {
+    public Locale getLocale() {
+        return RequestContextUtils.getLocale(request);
+    }
+
+    @Override
+    public HttpServletRequest getRequest() {
         return request;
     }
 
     @Override
-    public Object getAttribute(String name) throws IOException, Exception {
+    public Object getAttribute(String name) {
         return request.getAttribute(name);
     }
-
-    @Override
-    public Locale getLocale() throws Exception {
-        return RequestContextUtils.getLocale(request);
-    }
-
 }

@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.AnalyzerDictUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -32,6 +33,7 @@ import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
+import com.publiccms.logic.service.tools.HqlService;
 
 /**
  *
@@ -42,6 +44,8 @@ import com.publiccms.logic.service.log.LogOperateService;
 @RequestMapping("dict")
 public class DictAdminController {
     protected final Log log = LogFactory.getLog(getClass());
+    @Resource
+    private HqlService hqlService;
     @Resource
     protected SiteComponent siteComponent;
     @Resource
@@ -66,23 +70,24 @@ public class DictAdminController {
         try {
             String dictDir = CommonUtils.joinString(siteComponent.getRootPath(), AnalyzerDictUtils.DIR_DICT);
             File dictFile = new File(CommonUtils.joinString(dictDir, AnalyzerDictUtils.TXT_DICT));
-            FileUtils.writeStringToFile(dictFile, dict, CommonConstants.DEFAULT_CHARSET);
+            FileUtils.writeStringToFile(dictFile, dict, Constants.DEFAULT_CHARSET);
             Map<String, Integer> wordMap = new HashMap<>();
-            for (String word : FileUtils.readLines(dictFile, CommonConstants.DEFAULT_CHARSET)) {
+            for (String word : FileUtils.readLines(dictFile, Constants.DEFAULT_CHARSET)) {
                 if (!word.startsWith("#")) {
                     wordMap.put(word, 10);
                 }
             }
             File skipWordFile = new File(CommonUtils.joinString(dictDir, AnalyzerDictUtils.TXT_SKIPWORD));
-            FileUtils.writeStringToFile(skipWordFile, skipWord, CommonConstants.DEFAULT_CHARSET);
+            FileUtils.writeStringToFile(skipWordFile, skipWord, Constants.DEFAULT_CHARSET);
             List<String> skipWordList = new ArrayList<>();
-            for (String word : FileUtils.readLines(skipWordFile, CommonConstants.DEFAULT_CHARSET)) {
+            for (String word : FileUtils.readLines(skipWordFile, Constants.DEFAULT_CHARSET)) {
                 if (!word.startsWith("#")) {
                     skipWordList.add(word);
                 }
             }
             AnalyzerDictUtils.generate(dictDir, wordMap, skipWordList);
             DictionaryReloader.reload(dictDir);
+            hqlService.reCreateIndex();
         } catch (IOException | ClassNotFoundException e1) {
         }
         try {

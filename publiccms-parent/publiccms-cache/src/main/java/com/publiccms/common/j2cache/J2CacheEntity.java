@@ -1,6 +1,5 @@
 package com.publiccms.common.j2cache;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +10,6 @@ import com.publiccms.common.cache.CacheEntity;
 import com.publiccms.common.tools.CommonUtils;
 
 import net.oschina.j2cache.CacheChannel;
-import net.oschina.j2cache.CacheObject;
 import net.oschina.j2cache.J2CacheBuilder;
 import net.oschina.j2cache.J2CacheConfig;
 
@@ -94,12 +92,13 @@ public class J2CacheEntity<K, V> implements CacheEntity<K, V>, java.io.Serializa
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<V> clear() {
+    public List<V> clear(boolean recycling) {
         synchronized (this) {
-            Collection<String> keys = channel.keys(region);
-            Map<String, CacheObject> valueMap = channel.get(region, keys);
             channel.clear(region);
-            return (List<V>) valueMap.values().stream().map(v -> v.getValue()).collect(Collectors.toList());
+            return recycling
+                    ? (List<V>) channel.get(region, channel.keys(region)).values().stream().map(v -> v.getValue())
+                            .collect(Collectors.toList())
+                    : null;
         }
     }
 

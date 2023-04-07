@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
 
 /**
@@ -26,7 +26,7 @@ import com.publiccms.common.tools.CommonUtils;
  * 
  */
 public class PermissionChecker {
-    public static final String SQL_FILE = "../publiccms-core/src/main/resources/initialization/sql/initDatabase.sql";
+    public static final String SQL_FILE = "../publiccms-core/src/main/resources/initialization/sql/init.sql";
     public static final String SQL_START = "Records of sys_module";
     public static final String SQL_END = "Table structure for sys_module_lang";
     public static final String TEMPLATES = "src/main/resources/templates/admin";
@@ -72,7 +72,7 @@ public class PermissionChecker {
 
     private static void scanPageFile(Path parentPath, Path filePath, Pattern[] patterns, Set<String> pageUrlSet)
             throws IOException {
-        String pageFile = FileUtils.readFileToString(filePath.toFile(), CommonConstants.DEFAULT_CHARSET);
+        String pageFile = FileUtils.readFileToString(filePath.toFile(), Constants.DEFAULT_CHARSET);
         String url = parentPath.relativize(filePath).toString();
         addPageUrl(url, pageUrlSet);
         addUrlInPage(pageFile, patterns, pageUrlSet);
@@ -101,7 +101,7 @@ public class PermissionChecker {
 
     private static void getAuthorizedUrl(String filePath, String start, String end, Set<String> authorizedUrlSet)
             throws IOException {
-        String sql = FileUtils.readFileToString(new File(filePath), CommonConstants.DEFAULT_CHARSET);
+        String sql = FileUtils.readFileToString(new File(filePath), Constants.DEFAULT_CHARSET);
         if (null != sql) {
             int index = sql.indexOf(start);
             int endindex = sql.indexOf(end);

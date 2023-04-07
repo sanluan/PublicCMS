@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractExchange;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CmsFileUtils.FileInfo;
@@ -71,14 +72,14 @@ public class PlaceExchangeComponent extends AbstractExchange<String, Place> {
 
     private void dealDir(SysSite site, String directory, String path, ByteArrayOutputStream outputStream,
             ZipOutputStream zipOutputStream) {
-        path = path.replace("\\", CommonConstants.SEPARATOR).replace("//", CommonConstants.SEPARATOR);
+        path = path.replace("\\", Constants.SEPARATOR).replace("//", Constants.SEPARATOR);
         String realPath = siteComponent.getTemplateFilePath(site.getId(),
                 CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, path));
         List<FileInfo> list = CmsFileUtils.getFileList(realPath, null);
         for (FileInfo fileInfo : list) {
             String filepath = CommonUtils.joinString(path, fileInfo.getFileName());
             if (fileInfo.isDirectory()) {
-                dealDir(site, directory, CommonUtils.joinString(filepath, CommonConstants.SEPARATOR), outputStream, zipOutputStream);
+                dealDir(site, directory, CommonUtils.joinString(filepath, Constants.SEPARATOR), outputStream, zipOutputStream);
             } else {
                 exportEntity(site, directory, filepath, outputStream, zipOutputStream);
             }
@@ -88,7 +89,7 @@ public class PlaceExchangeComponent extends AbstractExchange<String, Place> {
     @Override
     public void exportEntity(SysSite site, String directory, String path, ByteArrayOutputStream outputStream,
             ZipOutputStream zipOutputStream) {
-        PageHandler page = service.getPage(site.getId(), null, CommonUtils.joinString(CommonConstants.SEPARATOR, path), null, null,
+        PageHandler page = service.getPage(site.getId(), null, CommonUtils.joinString(Constants.SEPARATOR, path), null, null,
                 null, null, null, null, false, null, null, null, PageHandler.MAX_PAGE_SIZE);
         @SuppressWarnings("unchecked")
         List<CmsPlace> list = (List<CmsPlace>) page.getList();
@@ -177,7 +178,8 @@ public class PlaceExchangeComponent extends AbstractExchange<String, Place> {
             Sheet sheet = workbook
                     .createSheet(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content"));
             sheet.setDefaultColumnWidth(20);
-            int i = 0, j = 0;
+            int i = 0;
+            int j = 0;
             Row row = sheet.createRow(i++);
             row.createCell(j++).setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.id"));
             row.createCell(j++)

@@ -5,14 +5,15 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTaskDirective;
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CmsFileUtils;
-import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.CmsFileUtils.FileInfo;
+import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
@@ -52,8 +53,8 @@ import jakarta.annotation.Resource;
 public class PublishPlaceDirective extends AbstractTaskDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
-        String path = handler.getString("path", CommonConstants.SEPARATOR);
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
+        String path = handler.getString("path", Constants.SEPARATOR);
         SysSite site = getSite(handler);
         String filepath = siteComponent.getTemplateFilePath(site.getId(),
                 CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, path));
@@ -75,7 +76,7 @@ public class PublishPlaceDirective extends AbstractTaskDirective {
     }
 
     private Map<String, Boolean> dealDir(SysSite site, RenderHandler handler, String path) throws IOException {
-        path = path.replace("\\", CommonConstants.SEPARATOR).replace("//", CommonConstants.SEPARATOR);
+        path = path.replace("\\", Constants.SEPARATOR).replace("//", Constants.SEPARATOR);
         Map<String, Boolean> map = new LinkedHashMap<>();
         String realPath = siteComponent.getTemplateFilePath(site.getId(),
                 CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, path));
@@ -83,7 +84,7 @@ public class PublishPlaceDirective extends AbstractTaskDirective {
         for (FileInfo fileInfo : list) {
             String filepath = CommonUtils.joinString(path, fileInfo.getFileName());
             if (fileInfo.isDirectory()) {
-                map.putAll(dealDir(site, handler, CommonUtils.joinString(filepath, CommonConstants.SEPARATOR)));
+                map.putAll(dealDir(site, handler, CommonUtils.joinString(filepath, Constants.SEPARATOR)));
             } else {
                 try {
                     String realfilepath = siteComponent.getTemplateFilePath(site.getId(),

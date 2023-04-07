@@ -13,6 +13,8 @@ import com.publiccms.entities.cms.CmsWord;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.service.cms.CmsWordService;
 
+import freemarker.template.TemplateException;
+
 /**
 *
 * word 搜索词查询指令
@@ -43,7 +45,7 @@ $.getJSON('${site.dynamicPath}api/directive/cms/word?id=1&amp;appToken=接口访
 public class CmsWordDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Long id = handler.getLong("id");
         SysSite site = getSite(handler);
         if (CommonUtils.notEmpty(id)) {

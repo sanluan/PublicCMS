@@ -11,6 +11,7 @@ import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -33,7 +34,7 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.entities.sys.SysUserToken;
 import com.publiccms.logic.component.cache.CacheComponent;
-import com.publiccms.logic.component.config.ConfigComponent;
+import com.publiccms.logic.component.config.ConfigDataComponent;
 import com.publiccms.logic.component.config.SafeConfigComponent;
 import com.publiccms.logic.component.site.LockComponent;
 import com.publiccms.logic.component.site.SiteComponent;
@@ -66,7 +67,7 @@ public class LoginAdminController {
     @Resource
     private CacheComponent cacheComponent;
     @Resource
-    private ConfigComponent configComponent;
+    private ConfigDataComponent configDataComponent;
     @Resource
     private LockComponent lockComponent;
     @Resource
@@ -87,7 +88,7 @@ public class LoginAdminController {
      * @param model
      * @return view name
      */
-    @RequestMapping(value = "login", method = RequestMethod.POST)
+    @PostMapping("login")
     public String login(@RequestAttribute SysSite site, String username, String password, String returnUrl, String encoding,
             String captcha, HttpServletRequest request, HttpServletResponse response, ModelMap model) {
         username = StringUtils.trim(username);
@@ -109,7 +110,9 @@ public class LoginAdminController {
             request.getSession().removeAttribute("captcha");
             if (ControllerUtils.errorCustom("captcha.error", null == sessionCaptcha || !sessionCaptcha.equalsIgnoreCase(captcha),
                     model)) {
-                lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null, true);
+                if (null != user) {
+                    lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null, true);
+                }
                 lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, null, true);
                 logLoginService.save(new LogLogin(site.getId(), username, null == user ? null : user.getId(), ip,
                         LogLoginService.CHANNEL_WEB_MANAGER, false, CommonUtils.getDate(), password));
@@ -148,8 +151,8 @@ public class LoginAdminController {
         service.updateLoginStatus(user.getId(), ip);
         String authToken = UUID.randomUUID().toString();
         Date now = CommonUtils.getDate();
-        Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
-        int expiryMinutes = ConfigComponent.getInt(config.get(SafeConfigComponent.CONFIG_EXPIRY_MINUTES_MANAGER),
+        Map<String, String> config = configDataComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+        int expiryMinutes = ConfigDataComponent.getInt(config.get(SafeConfigComponent.CONFIG_EXPIRY_MINUTES_MANAGER),
                 SafeConfigComponent.DEFAULT_EXPIRY_MINUTES);
         addLoginStatus(user, authToken, request, response, expiryMinutes);
 
@@ -184,7 +187,7 @@ public class LoginAdminController {
      * @param model
      * @return view name
      */
-    @RequestMapping(value = "loginDialog", method = RequestMethod.POST)
+    @PostMapping("loginDialog")
     public String loginDialog(@RequestAttribute SysSite site, String username, String password, String encoding, String captcha,
             HttpServletRequest request, HttpServletResponse response, ModelMap model) {
         if ("login".equals(login(site, username, password, null, encoding, captcha, request, response, model))) {
@@ -205,7 +208,7 @@ public class LoginAdminController {
      * @param model
      * @return view name
      */
-    @RequestMapping(value = "changePassword", method = RequestMethod.POST)
+    @PostMapping("changePassword")
     @Csrf
     public String changeMyselfPassword(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String oldpassword,
             String password, String repassword, String encoding, HttpServletRequest request, HttpServletResponse response,

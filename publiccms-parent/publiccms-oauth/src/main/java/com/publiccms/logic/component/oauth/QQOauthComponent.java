@@ -4,11 +4,10 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.http.client.ClientProtocolException;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.oauth.AbstractOauth;
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.views.pojo.oauth.OauthAccess;
 import com.publiccms.views.pojo.oauth.OauthConfig;
@@ -46,7 +45,7 @@ public class QQOauthComponent extends AbstractOauth {
     }
 
     @Override
-    public OauthAccess getAccessToken(short siteId, String code) throws ClientProtocolException, IOException {
+    public OauthAccess getAccessToken(short siteId, String code) throws IOException {
         OauthConfig config = getConfig(siteId);
         if (CommonUtils.notEmpty(code) && null != config) {
             StringBuilder sb = new StringBuilder("https://graph.qq.com/oauth2.0/token?grant_type=authorization_code&code=");
@@ -70,13 +69,14 @@ public class QQOauthComponent extends AbstractOauth {
      * side
      */
     @Override
-    public OauthAccess getOpenId(short siteId, OauthAccess oauthInfo) throws ClientProtocolException, IOException {
+    public OauthAccess getOpenId(short siteId, OauthAccess oauthInfo) throws IOException {
         if (null != oauthInfo) {
-            String html = get(CommonUtils.joinString("https://graph.qq.com/oauth2.0/me?access_token=", oauthInfo.getAccessToken()));
+            String html = get(
+                    CommonUtils.joinString("https://graph.qq.com/oauth2.0/me?access_token=", oauthInfo.getAccessToken()));
             if (CommonUtils.notEmpty(html)) {
                 html = html.substring(html.indexOf('{'), html.indexOf('}') + 1);
-                Map<String, String> map = CommonConstants.objectMapper.readValue(html, CommonConstants.objectMapper
-                        .getTypeFactory().constructMapLikeType(HashMap.class, String.class, String.class));
+                Map<String, String> map = Constants.objectMapper.readValue(html,
+                        Constants.objectMapper.getTypeFactory().constructMapLikeType(HashMap.class, String.class, String.class));
                 oauthInfo.setOpenId(map.get("openid"));
                 return oauthInfo;
             }
@@ -88,7 +88,7 @@ public class QQOauthComponent extends AbstractOauth {
      * http://wiki.connect.qq.com/get_user_info
      */
     @Override
-    public OauthUser getUserInfo(short siteId, OauthAccess oauthAccess) throws ClientProtocolException, IOException {
+    public OauthUser getUserInfo(short siteId, OauthAccess oauthAccess) throws IOException {
         OauthConfig config = getConfig(siteId);
         if (null != oauthAccess && null != config) {
             StringBuilder sb = new StringBuilder("https://graph.qq.com/user/get_user_info?access_token=");
@@ -96,8 +96,8 @@ public class QQOauthComponent extends AbstractOauth {
                     .append(oauthAccess.getOpenId()).append("&format=format");
             String html = get(sb.toString());
             if (CommonUtils.notEmpty(html)) {
-                Map<String, Object> map = CommonConstants.objectMapper.readValue(html, CommonConstants.objectMapper
-                        .getTypeFactory().constructMapLikeType(HashMap.class, String.class, Object.class));
+                Map<String, Object> map = Constants.objectMapper.readValue(html,
+                        Constants.objectMapper.getTypeFactory().constructMapLikeType(HashMap.class, String.class, Object.class));
                 if (0 == (Integer) map.get("ret")) {
                     return new OauthUser(oauthAccess.getOpenId(), (String) map.get("nickname"));
                 }

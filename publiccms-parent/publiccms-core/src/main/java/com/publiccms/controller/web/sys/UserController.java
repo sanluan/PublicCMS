@@ -15,9 +15,9 @@ import org.apache.commons.lang3.time.DateUtils;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
@@ -35,7 +35,7 @@ import com.publiccms.entities.sys.SysEmailToken;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.entities.sys.SysUserToken;
-import com.publiccms.logic.component.config.ConfigComponent;
+import com.publiccms.logic.component.config.ConfigDataComponent;
 import com.publiccms.logic.component.config.EmailTemplateConfigComponent;
 import com.publiccms.logic.component.config.SafeConfigComponent;
 import com.publiccms.logic.component.site.EmailComponent;
@@ -68,7 +68,7 @@ public class UserController {
     @Resource
     private SysEmailTokenService sysEmailTokenService;
     @Resource
-    private ConfigComponent configComponent;
+    private ConfigDataComponent configDataComponent;
     @Resource
     protected SafeConfigComponent safeConfigComponent;
     @Resource
@@ -90,7 +90,7 @@ public class UserController {
      * @param model
      * @return view name
      */
-    @RequestMapping(value = "changePassword", method = RequestMethod.POST)
+    @PostMapping("changePassword")
     @Csrf
     public String changePassword(@RequestAttribute SysSite site, @SessionAttribute SysUser user, String oldpassword,
             String password, String repassword, String encoding, String returnUrl, HttpServletRequest request,
@@ -163,12 +163,12 @@ public class UserController {
      * @param model
      * @return view name
      */
-    @RequestMapping(value = "saveEmail", method = RequestMethod.POST)
+    @PostMapping("saveEmail")
     @Csrf
     public String saveEmail(@RequestAttribute SysSite site, @SessionAttribute SysUser user, String email, String returnUrl,
             HttpServletRequest request, ModelMap model) {
         returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
-        Map<String, String> config = configComponent.getConfigData(site.getId(), EmailTemplateConfigComponent.CONFIG_CODE);
+        Map<String, String> config = configDataComponent.getConfigData(site.getId(), EmailTemplateConfigComponent.CONFIG_CODE);
         String emailTitle = config.get(EmailTemplateConfigComponent.CONFIG_EMAIL_TITLE);
         String emailPath = config.get(EmailTemplateConfigComponent.CONFIG_EMAIL_PATH);
         PageHandler page = sysEmailTokenService.getPage(user.getId(), null, 0);
@@ -180,7 +180,7 @@ public class UserController {
                 || ControllerUtils.errorHasExist("email", service.findByEmail(site.getId(), email), model)) {
             return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
         } else {
-            int expiryMinutes = ConfigComponent.getInt(config.get(EmailTemplateConfigComponent.CONFIG_EXPIRY_MINUTES),
+            int expiryMinutes = ConfigDataComponent.getInt(config.get(EmailTemplateConfigComponent.CONFIG_EXPIRY_MINUTES),
                     EmailTemplateConfigComponent.DEFAULT_EXPIRY_MINUTES);
             SysEmailToken sysEmailToken = new SysEmailToken();
             sysEmailToken.setUserId(user.getId());

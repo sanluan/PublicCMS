@@ -16,7 +16,7 @@ import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.HttpRequestHandlerServlet;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
 
 /**
@@ -30,10 +30,10 @@ public class ResourceInitializer implements WebApplicationInitializer {
     public void onStartup(ServletContext servletContext) throws ServletException {
         Dynamic registration = servletContext.addServlet("defaultServlet", new HttpRequestHandlerServlet());
         registration.setLoadOnStartup(1);
-        registration.addMapping(new String[] { "/resource/*" });
+        registration.addMapping( "/resource/*" );
         Dynamic webfileRegistration = servletContext.addServlet("webfileServlet", new HttpRequestHandlerServlet());
         webfileRegistration.setLoadOnStartup(0);
-        webfileRegistration.addMapping(new String[] { "/webfile/*", "/favicon.ico" });
+        webfileRegistration.addMapping( "/webfile/*", "/favicon.ico" );
         Filter[] filters = getServletFilters();
         if (!ObjectUtils.isEmpty(filters)) {
             for (Filter filter : filters) {
@@ -62,7 +62,7 @@ public class ResourceInitializer implements WebApplicationInitializer {
 
     protected Filter[] getServletFilters() {
         CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
-        characterEncodingFilter.setEncoding(CommonConstants.DEFAULT_CHARSET_NAME);
+        characterEncodingFilter.setEncoding(Constants.DEFAULT_CHARSET_NAME);
         characterEncodingFilter.setForceEncoding(true);
         return new Filter[] { characterEncodingFilter };
     }

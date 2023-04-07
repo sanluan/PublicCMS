@@ -8,11 +8,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ExtendUtils;
@@ -37,6 +38,9 @@ import jakarta.annotation.Resource;
 @Service
 @Transactional
 public class CmsCategoryService extends BaseService<CmsCategory> {
+
+    private String[] ignoreCopyProperties = new String[] { "id", "childIds", "extendId", "code", "name", "sort" };
+
     @Resource
     private CmsTagTypeService tagTypeService;
     @Resource
@@ -63,7 +67,7 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
 
     /**
      * @param siteId
-     * @param sitePath 
+     * @param sitePath
      * @param id
      * @param userId
      * @param attribute
@@ -112,6 +116,27 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
         }
     }
 
+    public void copy(short siteId, CmsCategory entity, CmsCategory copy) {
+        BeanUtils.copyProperties(copy, entity, ignoreCopyProperties);
+        save(entity);
+        categoryModelService.copy(siteId, entity.getId(), copy.getId());
+
+        CmsCategoryAttribute copyAttribute = attributeService.getEntity(copy.getId());
+        CmsCategoryAttribute attribute = new CmsCategoryAttribute();
+        attribute.setCategoryId(entity.getId());
+        if (null != copyAttribute) {
+            attribute.setData(copyAttribute.getData());
+        }
+        attributeService.save(attribute);
+
+        if (CommonUtils.notEmpty(copy.getExtendId())) {
+            SysExtend extend = new SysExtend("category", entity.getId());
+            extendService.save(extend);
+            entity.setExtendId(extend.getId());
+            extendFieldService.copy(extend.getId(), copy.getExtendId());
+        }
+    }
+
     private void saveEditorHistory(CmsCategoryAttribute oldAttribute, short siteId, int entityId, long userId,
             CmsCategoryType categoryType, Map<String, String> map) {
         if (null != oldAttribute) {
@@ -134,8 +159,18 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
     }
 
     /**
+     * @param siteId
+     * @param codes
+     * @return
+     */
+    public List<CmsCategory> getEntitysByCodes(short siteId, String[] codes) {
+        return dao.getEntitysByCodes(siteId, codes);
+    }
+
+    /**
      * @param entity
      */
+    @Override
     public void save(CmsCategory entity) {
         if (entity.isOnlyUrl()) {
             entity.setUrl(entity.getPath());
@@ -155,7 +190,7 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
                 addChildIds(parent.getParentId(), id);
                 String childIds;
                 if (CommonUtils.notEmpty(parent.getChildIds())) {
-                    childIds = CommonUtils.joinString(parent.getChildIds(), CommonConstants.COMMA, id);
+                    childIds = CommonUtils.joinString(parent.getChildIds(), Constants.COMMA, id);
                 } else {
                     childIds = String.valueOf(id);
                 }
@@ -180,14 +215,14 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
         @SuppressWarnings("unchecked")
         List<CmsCategory> list = (List<CmsCategory>) getPage(
                 new CmsCategoryQuery(siteId, parentId, false, null, null, null, false), null, null).getList();
-        if (0 < list.size()) {
+        if (!list.isEmpty()) {
             for (CmsCategory category : list) {
                 childIds.append(category.getId());
-                childIds.append(CommonConstants.COMMA);
+                childIds.append(Constants.COMMA);
                 String childChildIds = getChildIds(siteId, category.getId());
                 if (CommonUtils.notEmpty(childChildIds)) {
                     childIds.append(childChildIds);
-                    childIds.append(CommonConstants.COMMA);
+                    childIds.append(Constants.COMMA);
                 }
             }
             if (0 < childIds.length()) {

@@ -13,7 +13,7 @@ import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractAppDirective;
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -72,7 +72,7 @@ public class ContentCheckDirective extends AbstractAppDirective {
     private TemplateComponent templateComponent;
 
     @Override
-    public void execute(RenderHandler handler, SysApp app, SysUser user) throws IOException, Exception {
+    public void execute(RenderHandler handler, SysApp app, SysUser user) throws IOException, TemplateException {
         SysSite site = getSite(handler);
         Serializable[] ids = handler.getLongArray("ids");
         boolean uncheck = handler.getBoolean("uncheck", false);
@@ -97,7 +97,7 @@ public class ContentCheckDirective extends AbstractAppDirective {
         }
         logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), app.getChannel(),
                 uncheck ? "uncheck.content" : "check.content", RequestUtils.getIpAddress(handler.getRequest()),
-                CommonUtils.getDate(), StringUtils.join(ids, CommonConstants.COMMA)));
+                CommonUtils.getDate(), StringUtils.join(ids, Constants.COMMA)));
         handler.render();
     }
 

@@ -1,7 +1,5 @@
 package com.publiccms.common.tools;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.Map;
 
 import jakarta.servlet.http.Cookie;
@@ -17,6 +15,9 @@ import com.publiccms.common.constants.Constants;
  * 
  */
 public class RequestUtils {
+    private RequestUtils() {
+    }
+
     /**
      * @param parameterMap
      * @param key
@@ -39,14 +40,10 @@ public class RequestUtils {
      */
     public static String getEncodePath(String path, String queryString) {
         String url = path;
-        try {
-            if (CommonUtils.notEmpty(queryString)) {
-                url = CommonUtils.joinString(url, "?", queryString);
-            }
-            url = URLEncoder.encode(url, Constants.DEFAULT_CHARSET_NAME);
-        } catch (UnsupportedEncodingException e) {
-            url = Constants.BLANK;
+        if (CommonUtils.notEmpty(queryString)) {
+            url = CommonUtils.joinString(url, "?", queryString);
         }
+        url = CommonUtils.encodeURI(url);
         return url;
     }
 
@@ -64,7 +61,7 @@ public class RequestUtils {
     /**
      * @param values
      */
-    public static void removeCRLF(String values[]) {
+    public static void removeCRLF(String[] values) {
         if (null != values) {
             for (int i = 0; i < values.length; i++) {
                 values[i] = removeCRLF(values[i]);

@@ -10,6 +10,7 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.template.DiyComponent;
 
+import freemarker.template.TemplateException;
 import jakarta.annotation.Resource;
 
 /**
@@ -42,7 +43,7 @@ import jakarta.annotation.Resource;
 public class DiyMetadataDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         SysSite site = getSite(handler);
         String itemType = handler.getString("itemType");
         String itemId = handler.getString("itemId");

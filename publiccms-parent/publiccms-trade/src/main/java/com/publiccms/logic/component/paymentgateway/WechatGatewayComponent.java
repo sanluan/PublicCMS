@@ -27,7 +27,7 @@ import com.publiccms.common.api.Config;
 import com.publiccms.common.api.TradePaymentProcessor;
 import com.publiccms.common.base.AbstractFreemarkerView;
 import com.publiccms.common.base.AbstractPaymentGateway;
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.entities.sys.SysExtendField;
@@ -35,7 +35,7 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.trade.TradePayment;
 import com.publiccms.entities.trade.TradePaymentHistory;
 import com.publiccms.entities.trade.TradeRefund;
-import com.publiccms.logic.component.BeanComponent;
+import com.publiccms.logic.component.config.ConfigDataComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.component.trade.PaymentProcessorComponent;
@@ -107,6 +107,8 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
     private TradePaymentHistoryService historyService;
     @Resource
     private PaymentProcessorComponent tradePaymentProcessorComponent;
+    @Resource
+    private ConfigDataComponent configDataComponent;
 
     private CertificatesManager certificatesManager = CertificatesManager.getInstance();
     protected final Log log = LogFactory.getLog(getClass());
@@ -132,7 +134,7 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
             verifier = certificatesManager.getVerifier(config.get(CONFIG_MCHID));
         } catch (NotFoundException e) {
             if (null == merchantPrivateKey) {
-                byte[] privateKey = config.get(CONFIG_PRIVATEKEY).getBytes(CommonConstants.DEFAULT_CHARSET);
+                byte[] privateKey = config.get(CONFIG_PRIVATEKEY).getBytes(Constants.DEFAULT_CHARSET);
                 merchantPrivateKey = PemUtil.loadPrivateKey(new ByteArrayInputStream(privateKey));
             }
             try {
@@ -168,11 +170,11 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
     @Override
     public boolean pay(SysSite site, TradePayment payment, String paymentType, String callbackUrl, HttpServletResponse response) {
         if (null != payment) {
-            Map<String, String> config = BeanComponent.getConfigComponent().getConfigData(site.getId(), CONFIG_CODE);
+            Map<String, String> config = configDataComponent.getConfigData(site.getId(), CONFIG_CODE);
             if (CommonUtils.notEmpty(config) && CommonUtils.notEmpty(config.get(CONFIG_KEY))) {
                 try {
-                    byte[] apiV3Key = config.get(CONFIG_KEY).getBytes(CommonConstants.DEFAULT_CHARSET);
-                    byte[] privateKey = config.get(CONFIG_PRIVATEKEY).getBytes(CommonConstants.DEFAULT_CHARSET);
+                    byte[] apiV3Key = config.get(CONFIG_KEY).getBytes(Constants.DEFAULT_CHARSET);
+                    byte[] privateKey = config.get(CONFIG_PRIVATEKEY).getBytes(Constants.DEFAULT_CHARSET);
                     PrivateKey merchantPrivateKey = PemUtil.loadPrivateKey(new ByteArrayInputStream(privateKey));
 
                     Verifier verifier = getVerifier(config, apiV3Key, merchantPrivateKey);
@@ -204,18 +206,17 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
                         sceneMap.put("payer_client_ip", payment.getIp());
                         requestMap.put("scene_info", sceneMap);
                         String requestBody = JsonUtils.getString(requestMap);
-                        httpPost.setEntity(new StringEntity(requestBody, CommonConstants.DEFAULT_CHARSET));
+                        httpPost.setEntity(new StringEntity(requestBody, Constants.DEFAULT_CHARSET));
                         log.info(CommonUtils.joinString("pay request: ", requestBody));
                         CloseableHttpResponse res = httpClient.execute(httpPost);
                         HttpEntity entity = res.getEntity();
                         log.info(CommonUtils.joinString("pay response status: ", res.getStatusLine().getStatusCode()));
                         if (null != entity) {
-                            String bodyAsString = EntityUtils.toString(entity, CommonConstants.DEFAULT_CHARSET);
+                            String bodyAsString = EntityUtils.toString(entity, Constants.DEFAULT_CHARSET);
                             log.info(CommonUtils.joinString("pay response: ", bodyAsString));
                             if (200 == res.getStatusLine().getStatusCode()) {
-                                Map<String, String> result = CommonConstants.objectMapper.readValue(bodyAsString,
-                                        CommonConstants.objectMapper.getTypeFactory().constructMapLikeType(HashMap.class,
-                                                String.class, String.class));
+                                Map<String, String> result = Constants.objectMapper.readValue(bodyAsString, Constants.objectMapper
+                                        .getTypeFactory().constructMapLikeType(HashMap.class, String.class, String.class));
                                 if ("h5".equalsIgnoreCase(config.get(CONFIG_APITYPE))) {
                                     response.sendRedirect(result.get("h5_url"));
                                 } else {
@@ -247,12 +248,12 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
 
     @Override
     public boolean refund(short siteId, TradePayment payment, TradeRefund refund) {
-        Map<String, String> config = BeanComponent.getConfigComponent().getConfigData(siteId, CONFIG_CODE);
+        Map<String, String> config = configDataComponent.getConfigData(siteId, CONFIG_CODE);
         if (null != payment && CommonUtils.notEmpty(config) && CommonUtils.notEmpty(config.get(CONFIG_KEY))
                 && service.refunded(siteId, payment.getId())) {
             try {
-                byte[] apiV3Key = config.get(CONFIG_KEY).getBytes(CommonConstants.DEFAULT_CHARSET);
-                byte[] privateKey = config.get(CONFIG_PRIVATEKEY).getBytes(CommonConstants.DEFAULT_CHARSET);
+                byte[] apiV3Key = config.get(CONFIG_KEY).getBytes(Constants.DEFAULT_CHARSET);
+                byte[] privateKey = config.get(CONFIG_PRIVATEKEY).getBytes(Constants.DEFAULT_CHARSET);
                 PrivateKey merchantPrivateKey = PemUtil.loadPrivateKey(new ByteArrayInputStream(privateKey));
 
                 Verifier verifier = getVerifier(config, apiV3Key, merchantPrivateKey);
@@ -275,21 +276,20 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
                     amountMap.put("currency", "CNY");
                     requestMap.put("amount", amountMap);
                     String requestBody = JsonUtils.getString(requestMap);
-                    httpPost.setEntity(new StringEntity(requestBody, CommonConstants.DEFAULT_CHARSET));
+                    httpPost.setEntity(new StringEntity(requestBody, Constants.DEFAULT_CHARSET));
                     log.info(CommonUtils.joinString("refund request: ", requestBody));
                     CloseableHttpResponse res = httpClient.execute(httpPost);
                     HttpEntity entity = res.getEntity();
                     log.info(CommonUtils.joinString("refund response status: ", res.getStatusLine().getStatusCode()));
                     if (null != entity) {
-                        String bodyAsString = EntityUtils.toString(entity, CommonConstants.DEFAULT_CHARSET);
+                        String bodyAsString = EntityUtils.toString(entity, Constants.DEFAULT_CHARSET);
                         log.info(CommonUtils.joinString("refund response: ", bodyAsString));
                         TradePaymentHistory history = new TradePaymentHistory(siteId, payment.getId(), CommonUtils.getDate(),
                                 TradePaymentHistoryService.OPERATE_REFUND_RESPONSE, bodyAsString);
                         historyService.save(history);
                         if (200 == res.getStatusLine().getStatusCode()) {
-                            Map<String, Object> result = CommonConstants.objectMapper.readValue(bodyAsString,
-                                    CommonConstants.objectMapper.getTypeFactory().constructMapLikeType(HashMap.class,
-                                            String.class, Object.class));
+                            Map<String, Object> result = Constants.objectMapper.readValue(bodyAsString, Constants.objectMapper
+                                    .getTypeFactory().constructMapLikeType(HashMap.class, String.class, Object.class));
                             if ("SUCCESS".equalsIgnoreCase((String) result.get("status"))) {
                                 TradePaymentProcessor tradePaymentProcessor = tradePaymentProcessorComponent
                                         .get(payment.getTradeType());
@@ -327,48 +327,45 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
     public List<SysExtendField> getExtendFieldList(SysSite site, Locale locale) {
         List<SysExtendField> extendFieldList = new ArrayList<>();
         extendFieldList.add(new SysExtendField(CONFIG_APPID, INPUTTYPE_TEXT,
-                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_APPID)),
-                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_APPID,
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_APPID)),
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_APPID,
                         CONFIG_CODE_DESCRIPTION_SUFFIX))));
         extendFieldList.add(new SysExtendField(CONFIG_MCHID, INPUTTYPE_TEXT,
-                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_MCHID)),
-                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_MCHID,
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_MCHID)),
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_MCHID,
                         CONFIG_CODE_DESCRIPTION_SUFFIX))));
         extendFieldList.add(new SysExtendField(CONFIG_KEY, INPUTTYPE_TEXT,
-                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_KEY)),
-                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_KEY,
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_KEY)),
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_KEY,
                         CONFIG_CODE_DESCRIPTION_SUFFIX))));
         extendFieldList.add(new SysExtendField(CONFIG_SERIALNO, INPUTTYPE_TEXT,
-                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_SERIALNO)),
-                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_SERIALNO,
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_SERIALNO)),
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_SERIALNO,
                         CONFIG_CODE_DESCRIPTION_SUFFIX))));
         extendFieldList.add(new SysExtendField(CONFIG_PRIVATEKEY, INPUTTYPE_TEXTAREA,
-                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_PRIVATEKEY)),
-                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_PRIVATEKEY,
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_PRIVATEKEY)),
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_PRIVATEKEY,
                         CONFIG_CODE_DESCRIPTION_SUFFIX))));
         extendFieldList.add(new SysExtendField(CONFIG_NOTIFYURL, INPUTTYPE_TEXT,
-                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_NOTIFYURL)),
-                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_NOTIFYURL,
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_NOTIFYURL)),
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_NOTIFYURL,
                         CONFIG_CODE_DESCRIPTION_SUFFIX), site.getDynamicPath())));
         extendFieldList.add(new SysExtendField(CONFIG_APITYPE, INPUTTYPE_TEXT, false,
-                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_APITYPE)),
-                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_APITYPE,
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_APITYPE)),
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_APITYPE,
                         CONFIG_CODE_DESCRIPTION_SUFFIX), site.getDynamicPath()),
                 "native"));
         extendFieldList.add(new SysExtendField(CONFIG_RESULTPAGE, INPUTTYPE_TEMPLATE,
-                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_RESULTPAGE)),
-                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, CommonConstants.DOT, CONFIG_RESULTPAGE,
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_RESULTPAGE)),
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_RESULTPAGE,
                         CONFIG_CODE_DESCRIPTION_SUFFIX), site.getDynamicPath())));
         return extendFieldList;
     }
 
     @Override
     public boolean enable(short siteId) {
-        Map<String, String> config = BeanComponent.getConfigComponent().getConfigData(siteId, CONFIG_CODE);
-        if (CommonUtils.notEmpty(config) && CommonUtils.notEmpty(config.get(CONFIG_APPID))) {
-            return true;
-        }
-        return false;
+        Map<String, String> config = configDataComponent.getConfigData(siteId, CONFIG_CODE);
+        return CommonUtils.notEmpty(config) && CommonUtils.notEmpty(config.get(CONFIG_APPID));
     }
 
     @PreDestroy

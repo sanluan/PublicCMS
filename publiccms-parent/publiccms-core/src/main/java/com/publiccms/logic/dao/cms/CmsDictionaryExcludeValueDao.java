@@ -35,7 +35,7 @@ public class CmsDictionaryExcludeValueDao extends BaseDao<CmsDictionaryExcludeVa
             queryHandler.condition("bean.id.excludeDictionaryId = :excludeDictionaryId").setParameter("excludeDictionaryId",
                     excludeDictionaryId);
         }
-        return (List<CmsDictionaryExcludeValue>) getList(queryHandler);
+        return getEntityList(queryHandler);
     }
 
     /**

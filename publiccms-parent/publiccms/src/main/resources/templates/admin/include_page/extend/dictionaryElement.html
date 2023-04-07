@@ -15,10 +15,8 @@
 </#if>
 </#macro>
 <#macro dictionaryElement dictionaryId inputName required childDepth multiple type value=''>
+<#assign values=(value?split(','))![]/>
 <#if childDepth gt 0>
-    <#if value?has_content>
-        <#local values=value?split(',')/>
-    </#if>
     <#if multiple>
         <div class="treeForm">
             <ul class="tree treeFolder treeCheck expand">
@@ -38,10 +36,10 @@
                 <option value><@t.page 'all'/></option>
             <#if 0=i || parentValue?has_content>
             <@cms.dictionaryDataList dictionaryId=dictionaryId parentValue=parentValue>
-                <#local parentValue=''/>
+                <#assign parentValue=''/>
                 <#list list as d>
                     <#if values?has_content&&values?seq_contains(d.id.value)>
-                        <#local parentValue=d.id.value/>
+                        <#assign parentValue=d.id.value/>
                         <option value="${d.id.value}" selected="true">${d.text}</option>
                     <#else>
                         <option value="${d.id.value}">${d.text}</option>
@@ -54,14 +52,11 @@
     </#if>
 <#else>
     <#if multiple>
-        <#if value?has_content>
-            <#local values=value?split(',')/>
-        </#if>
         <#if 'customform'=type>
         <#noparse><@cms.dictionaryDataList dictionaryId="</#noparse>${dictionaryId}<#noparse>">
             <#list list as d>
                 <label>
-                    <input name="</#noparse>${inputName}<#noparse>" type="checkbox" value="${d.id.value}"/>
+                    <input name="</#noparse>${inputName}<#noparse>" type="checkbox" value="${d.id.value}" class="form-check-input"/>
                     ${d.text}
                 </label>
             </#list>
@@ -71,7 +66,7 @@
         <@cms.dictionaryDataList dictionaryId=dictionaryId>
             <#list list as d>
                 <label>
-                    <input name="${inputName}" type="checkbox" value="${d.id.value}"${(values?has_content&&values?seq_contains(d.id.value))?then(' checked="true"','')?no_esc}/>
+                    <input name="${inputName}" type="checkbox" value="${d.id.value}" class="form-check-input"${(values?has_content&&values?seq_contains(d.id.value))?then(' checked="true"','')?no_esc}/>
                     ${d.text}
                 </label>
             </#list>

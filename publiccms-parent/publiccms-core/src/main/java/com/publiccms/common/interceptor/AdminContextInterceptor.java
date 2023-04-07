@@ -12,6 +12,7 @@ import jakarta.annotation.Resource;
 import org.springframework.web.util.UrlPathHelper;
 
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.RequestUtils;
@@ -58,7 +59,7 @@ public class AdminContextInterceptor extends WebContextInterceptor {
                 try {
                     RequestUtils.addCookie(ctxPath, request.getScheme(), response, CommonConstants.getCookiesSite(),
                             currentSiteId, Integer.MAX_VALUE, null);
-                    response.sendRedirect(CommonUtils.joinString(ctxPath, adminContextPath, CommonConstants.SEPARATOR));
+                    response.sendRedirect(CommonUtils.joinString(ctxPath, adminContextPath, Constants.SEPARATOR));
                     return false;
                 } catch (IOException e) {
                     return true;
@@ -80,7 +81,7 @@ public class AdminContextInterceptor extends WebContextInterceptor {
         String path = urlPathHelper.getLookupPathForRequest(request);
         if (adminContextPath.equals(path)) {
             try {
-                response.sendRedirect(CommonUtils.joinString(ctxPath, adminContextPath, CommonConstants.SEPARATOR));
+                response.sendRedirect(CommonUtils.joinString(ctxPath, adminContextPath, Constants.SEPARATOR));
                 return false;
             } catch (IOException e) {
                 return true;
@@ -108,20 +109,18 @@ public class AdminContextInterceptor extends WebContextInterceptor {
                 } catch (IllegalStateException | IOException e) {
                     return true;
                 }
-            } else if (verifyNeedAuthorized(path)) {
-                if (!CommonConstants.SEPARATOR.equals(path)) {
-                    int index = path.lastIndexOf(CommonConstants.DOT);
-                    path = path.substring(0 < path.indexOf(CommonConstants.SEPARATOR) ? 0 : 1,
-                            index > -1 ? index : path.length());
-                    if (0 == roleAuthorizedService.count(entity.getRoles(), path) && !ownsAllRight(entity.getRoles())) {
-                        try {
-                            response.sendRedirect(CommonUtils.joinString(ctxPath, adminContextPath, unauthorizedUrl));
-                            return false;
-                        } catch (IOException e) {
-                            return true;
-                        }
+            } else if (verifyNeedAuthorized(path) && (!Constants.SEPARATOR.equals(path))) {
+                int index = path.lastIndexOf(Constants.DOT);
+                path = path.substring(path.startsWith(Constants.SEPARATOR) ? 1 : 0, index > -1 ? index : path.length());
+                if (0 == roleAuthorizedService.count(entity.getRoles(), path) && !ownsAllRight(entity.getRoles())) {
+                    try {
+                        response.sendRedirect(CommonUtils.joinString(ctxPath, adminContextPath, unauthorizedUrl));
+                        return false;
+                    } catch (IOException e) {
+                        return true;
                     }
                 }
+
             }
             entity.setPassword(null);
             ControllerUtils.setAdminToSession(session, entity);
@@ -143,7 +142,7 @@ public class AdminContextInterceptor extends WebContextInterceptor {
     }
 
     private boolean ownsAllRight(String roles) {
-        String[] roleIdArray = StringUtils.split(roles, CommonConstants.COMMA);
+        String[] roleIdArray = StringUtils.split(roles, Constants.COMMA);
         if (null != roles && 0 < roleIdArray.length) {
             Integer[] roleIds = new Integer[roleIdArray.length];
             for (int i = 0; i < roleIdArray.length; i++) {

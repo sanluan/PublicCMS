@@ -14,14 +14,13 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import jakarta.annotation.Resource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.drew.imaging.FileType;
 import com.drew.imaging.FileTypeDetector;
 import com.publiccms.common.constants.CmsVersion;
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
@@ -30,6 +29,7 @@ import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.views.pojo.query.CmsContentQuery;
 
 import config.spring.ApplicationConfig;
+import jakarta.annotation.Resource;
 
 @DisplayName("Content batch import")
 @ExtendWith(SpringExtension.class)
@@ -51,7 +51,7 @@ public class ContentCoverCatch {
     @SuppressWarnings("unchecked")
     @Test
     @DisplayName("insert test case")
-    public void insertTest() {
+    void insertTest() {
         CmsContentQuery query = new CmsContentQuery();
         query.setHasCover(true);
         PageHandler page = contentService.getPage(query, null, null, null, null, null, 500, null);
@@ -74,7 +74,7 @@ public class ContentCoverCatch {
 
     public static String getUrl(String url) {
         String fileName = null;
-        try (CloseableHttpClient httpclient = HttpClients.custom().setDefaultRequestConfig(CommonConstants.defaultRequestConfig)
+        try (CloseableHttpClient httpclient = HttpClients.custom().setDefaultRequestConfig(Constants.defaultRequestConfig)
                 .build()) {
             HttpGet httpget = new HttpGet(url);
             CloseableHttpResponse response = httpclient.execute(httpget);

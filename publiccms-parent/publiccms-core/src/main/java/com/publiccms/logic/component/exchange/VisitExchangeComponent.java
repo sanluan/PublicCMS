@@ -46,10 +46,10 @@ public class VisitExchangeComponent {
     @Resource
     private VisitItemService itemService;
 
-    public ExcelView exportHistory(SysSite site, String sessionId, String ip, String url, Date startCreateDate,
+    public ExcelView exportHistory(SysSite site, String sessionId, String ip, String url, Long userId, Date startCreateDate,
             Date endCreateDate, String orderType, Locale locale) {
-        PageHandler page = historyService.getPage(site.getId(), sessionId, ip, url, startCreateDate, endCreateDate, orderType,
-                null, PageHandler.MAX_PAGE_SIZE);
+        PageHandler page = historyService.getPage(site.getId(), sessionId, ip, url, userId, startCreateDate, endCreateDate,
+                orderType, null, PageHandler.MAX_PAGE_SIZE);
         @SuppressWarnings("unchecked")
         List<VisitHistory> entityList = (List<VisitHistory>) page.getList();
         ExcelView view = new ExcelView(workbook -> {
@@ -99,7 +99,7 @@ public class VisitExchangeComponent {
     }
 
     public ExcelView exportSession(SysSite site, String sessionId, String ip, Date startVisitDate, Date endVisitDate,
-            String orderField, String orderType, Locale locale) {
+            String orderType, Locale locale) {
         PageHandler page = sessionService.getPage(site.getId(), sessionId, ip, startVisitDate, endVisitDate, orderType, null,
                 PageHandler.MAX_PAGE_SIZE);
         @SuppressWarnings("unchecked")

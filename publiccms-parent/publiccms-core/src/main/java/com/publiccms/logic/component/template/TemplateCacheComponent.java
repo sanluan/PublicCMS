@@ -25,22 +25,31 @@ import com.publiccms.common.api.Cache;
 import com.publiccms.common.api.Config;
 import com.publiccms.common.base.AbstractFreemarkerView;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.servlet.WebDispatcherServlet;
+import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.FreeMarkerUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.entities.cms.CmsContent;
+import com.publiccms.entities.cms.CmsSurvey;
+import com.publiccms.entities.cms.CmsTag;
+import com.publiccms.entities.cms.CmsVote;
 import com.publiccms.entities.sys.SysDomain;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
-import com.publiccms.logic.component.config.ConfigComponent;
+import com.publiccms.logic.component.config.ConfigDataComponent;
 import com.publiccms.logic.component.config.SiteConfigComponent;
+import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.service.cms.CmsCategoryService;
 import com.publiccms.logic.service.cms.CmsContentService;
+import com.publiccms.logic.service.cms.CmsSurveyService;
+import com.publiccms.logic.service.cms.CmsTagService;
+import com.publiccms.logic.service.cms.CmsVoteService;
 import com.publiccms.logic.service.sys.SysUserService;
 import com.publiccms.views.pojo.entities.ClickStatistics;
 import com.publiccms.views.pojo.entities.CmsPageData;
@@ -80,11 +89,19 @@ public class TemplateCacheComponent implements Cache {
     @Resource
     private MetadataComponent metadataComponent;
     @Resource
-    private ConfigComponent configComponent;
+    private ConfigDataComponent configDataComponent;
     @Resource
     private CmsContentService contentService;
     @Resource
     private CmsCategoryService categoryService;
+    @Resource
+    private CmsVoteService voteService;
+    @Resource
+    private CmsTagService tagService;
+    @Resource
+    private CmsSurveyService surveyService;
+    @Resource
+    protected FileUploadComponent fileUploadComponent;
     @Resource
     private SysUserService userService;
     @Resource
@@ -99,18 +116,18 @@ public class TemplateCacheComponent implements Cache {
         CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(templatePath);
         if (metadata.isUseDynamic()) {
             if (metadata.isNeedLogin() && null == ControllerUtils.getUserFromSession(request.getSession())) {
-                Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+                Map<String, String> config = configDataComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
                 String loginPath = config.get(SiteConfigComponent.CONFIG_LOGIN_PATH);
                 StringBuilder sb = new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX);
                 if (CommonUtils.notEmpty(loginPath)) {
                     if (null != id) {
-                        int index = requestPath.lastIndexOf(CommonConstants.DOT);
+                        int index = requestPath.lastIndexOf(Constants.DOT);
                         if (0 < index) {
                             requestPath = requestPath.substring(0, index);
                         }
-                        requestPath = CommonUtils.joinString(requestPath, CommonConstants.SEPARATOR, id);
+                        requestPath = CommonUtils.joinString(requestPath, Constants.SEPARATOR, id);
                         if (null != pageIndex) {
-                            requestPath = CommonUtils.joinString(requestPath, CommonConstants.UNDERLINE, pageIndex);
+                            requestPath = CommonUtils.joinString(requestPath, Constants.UNDERLINE, pageIndex);
                         }
                     }
                     return sb.append(loginPath).append("?returnUrl=")
@@ -119,16 +136,15 @@ public class TemplateCacheComponent implements Cache {
                     return sb.append(site.getDynamicPath()).toString();
                 }
             }
-            String[] acceptParameters = StringUtils.split(metadata.getAcceptParameters(), CommonConstants.COMMA);
-            if (CommonUtils.notEmpty(acceptParameters)) {
-                if (!billingRequestParametersToModel(request, acceptParameters, id, pageIndex, metadata.getParameterTypeMap(),
-                        site, model)) {
-                    try {
-                        response.sendError(HttpServletResponse.SC_NOT_FOUND);
-                    } catch (IOException e) {
-                    }
-                    return requestPath;
+            String[] acceptParameters = StringUtils.split(metadata.getAcceptParameters(), Constants.COMMA);
+            if (CommonUtils.notEmpty(acceptParameters) && !billingRequestParametersToModel(request, acceptParameters, id,
+                    pageIndex, metadata.getParameterTypeMap(), site, model)) {
+                try {
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                } catch (IOException e) {
                 }
+                return requestPath;
+
             }
             CmsPageData data = metadataComponent.getTemplateData(templatePath);
             model.addAttribute("metadata", metadata.getAsMap(data));
@@ -168,7 +184,7 @@ public class TemplateCacheComponent implements Cache {
             String[] values = request.getParameterValues(parameterName);
             if ("id".equals(parameterName) && null != id) {
                 values = new String[] { id.toString() };
-            } else if ("pageIndex".equals(parameterName) && null != pageIndex) {
+            } else if (CommonConstants.DEFAULT_PAGEINDEX.equals(parameterName) && null != pageIndex) {
                 values = new String[] { pageIndex.toString() };
             }
             if (null == parameterType) {
@@ -253,8 +269,8 @@ public class TemplateCacheComponent implements Cache {
                     if (null != statistics) {
                         e.setClicks(e.getClicks() + statistics.getClicks());
                     }
-                    TemplateComponent.initContentUrl(site, e);
-                    TemplateComponent.initContentCover(site, e);
+                    CmsUrlUtils.initContentUrl(site, e);
+                    fileUploadComponent.initContentCover(site, e);
                 });
                 if (entityList.isEmpty() && parameterType.isRequired()) {
                     return false;
@@ -273,8 +289,37 @@ public class TemplateCacheComponent implements Cache {
                         if (null != statistics) {
                             entity.setClicks(entity.getClicks() + statistics.getClicks());
                         }
-                        TemplateComponent.initContentUrl(site, entity);
-                        TemplateComponent.initContentCover(site, entity);
+                        CmsUrlUtils.initContentUrl(site, entity);
+                        fileUploadComponent.initContentCover(site, entity);
+                        model.addAttribute(parameterName, entity);
+                    }
+                } catch (NumberFormatException e) {
+                    return false;
+                }
+            } else if (parameterType.isRequired()) {
+                return false;
+            }
+            break;
+        case Config.INPUTTYPE_CATEGORYCODE:
+            if (parameterType.isArray() && CommonUtils.notEmpty(values)) {
+                List<CmsCategory> entityList = categoryService.getEntitysByCodes(site.getId(), values);
+                entityList = entityList.stream().filter(entity -> site.getId() == entity.getSiteId())
+                        .collect(Collectors.toList());
+                entityList.forEach(e -> CmsUrlUtils.initCategoryUrl(site, e));
+                if (entityList.isEmpty() && parameterType.isRequired()) {
+                    return false;
+                } else {
+                    model.addAttribute(parameterName, entityList);
+                }
+            } else if (CommonUtils.notEmpty(values)) {
+                try {
+                    CmsCategory entity = categoryService.getEntityByCode(site.getId(), values[0]);
+                    if (null == entity || entity.isDisabled() || entity.getSiteId() != site.getId()) {
+                        if (parameterType.isRequired()) {
+                            return false;
+                        }
+                    } else {
+                        CmsUrlUtils.initCategoryUrl(site, entity);
                         model.addAttribute(parameterName, entity);
                     }
                 } catch (NumberFormatException e) {
@@ -297,9 +342,7 @@ public class TemplateCacheComponent implements Cache {
                 List<CmsCategory> entityList = categoryService.getEntitys(set);
                 entityList = entityList.stream().filter(entity -> site.getId() == entity.getSiteId())
                         .collect(Collectors.toList());
-                entityList.forEach(e -> {
-                    TemplateComponent.initCategoryUrl(site, e);
-                });
+                entityList.forEach(e -> CmsUrlUtils.initCategoryUrl(site, e));
                 if (entityList.isEmpty() && parameterType.isRequired()) {
                     return false;
                 } else {
@@ -313,7 +356,112 @@ public class TemplateCacheComponent implements Cache {
                             return false;
                         }
                     } else {
-                        TemplateComponent.initCategoryUrl(site, entity);
+                        CmsUrlUtils.initCategoryUrl(site, entity);
+                        model.addAttribute(parameterName, entity);
+                    }
+                } catch (NumberFormatException e) {
+                    return false;
+                }
+            } else if (parameterType.isRequired()) {
+                return false;
+            }
+            break;
+        case Config.INPUTTYPE_VOTE:
+            if (parameterType.isArray() && CommonUtils.notEmpty(values)) {
+                Set<Serializable> set = new TreeSet<>();
+                for (String s : values) {
+                    try {
+                        set.add(Long.valueOf(s));
+                    } catch (NumberFormatException e) {
+                        return false;
+                    }
+                }
+                List<CmsVote> entityList = voteService.getEntitys(set);
+                entityList = entityList.stream().filter(entity -> site.getId() == entity.getSiteId())
+                        .collect(Collectors.toList());
+                if (entityList.isEmpty() && parameterType.isRequired()) {
+                    return false;
+                } else {
+                    model.addAttribute(parameterName, entityList);
+                }
+            } else if (CommonUtils.notEmpty(values)) {
+                try {
+                    CmsVote entity = voteService.getEntity(Long.valueOf(values[0]));
+                    if (null == entity || entity.isDisabled() || entity.getSiteId() != site.getId()) {
+                        if (parameterType.isRequired()) {
+                            return false;
+                        }
+                    } else {
+                        model.addAttribute(parameterName, entity);
+                    }
+                } catch (NumberFormatException e) {
+                    return false;
+                }
+            } else if (parameterType.isRequired()) {
+                return false;
+            }
+            break;
+        case Config.INPUTTYPE_SURVEY:
+            if (parameterType.isArray() && CommonUtils.notEmpty(values)) {
+                Set<Serializable> set = new TreeSet<>();
+                for (String s : values) {
+                    try {
+                        set.add(Long.valueOf(s));
+                    } catch (NumberFormatException e) {
+                        return false;
+                    }
+                }
+                List<CmsSurvey> entityList = surveyService.getEntitys(set);
+                entityList = entityList.stream().filter(entity -> site.getId() == entity.getSiteId())
+                        .collect(Collectors.toList());
+                if (entityList.isEmpty() && parameterType.isRequired()) {
+                    return false;
+                } else {
+                    model.addAttribute(parameterName, entityList);
+                }
+            } else if (CommonUtils.notEmpty(values)) {
+                try {
+                    CmsSurvey entity = surveyService.getEntity(Integer.valueOf(values[0]));
+                    if (null == entity || entity.isDisabled() || entity.getSiteId() != site.getId()) {
+                        if (parameterType.isRequired()) {
+                            return false;
+                        }
+                    } else {
+                        model.addAttribute(parameterName, entity);
+                    }
+                } catch (NumberFormatException e) {
+                    return false;
+                }
+            } else if (parameterType.isRequired()) {
+                return false;
+            }
+            break;
+        case Config.INPUTTYPE_TAG:
+            if (parameterType.isArray() && CommonUtils.notEmpty(values)) {
+                Set<Serializable> set = new TreeSet<>();
+                for (String s : values) {
+                    try {
+                        set.add(Long.valueOf(s));
+                    } catch (NumberFormatException e) {
+                        return false;
+                    }
+                }
+                List<CmsTag> entityList = tagService.getEntitys(set);
+                entityList = entityList.stream().filter(entity -> site.getId() == entity.getSiteId())
+                        .collect(Collectors.toList());
+                if (entityList.isEmpty() && parameterType.isRequired()) {
+                    return false;
+                } else {
+                    model.addAttribute(parameterName, entityList);
+                }
+            } else if (CommonUtils.notEmpty(values)) {
+                try {
+                    CmsTag entity = tagService.getEntity(Long.valueOf(values[0]));
+                    if (null == entity || entity.getSiteId() != site.getId()) {
+                        if (parameterType.isRequired()) {
+                            return false;
+                        }
+                    } else {
                         model.addAttribute(parameterName, entity);
                     }
                 } catch (NumberFormatException e) {
@@ -400,7 +548,7 @@ public class TemplateCacheComponent implements Cache {
                 String[] values = request.getParameterValues(parameterName);
                 if (CommonUtils.notEmpty(values)) {
                     for (int i = 0; i < values.length; i++) {
-                        sb.append(CommonConstants.UNDERLINE);
+                        sb.append(Constants.UNDERLINE);
                         sb.append(parameterName);
                         sb.append("=");
                         sb.append(values[i]);
@@ -422,7 +570,7 @@ public class TemplateCacheComponent implements Cache {
 
     @Override
     public void clear() {
-        deleteCachedFile(getCachedFilePath(CommonConstants.BLANK));
+        deleteCachedFile(getCachedFilePath(Constants.BLANK));
     }
 
     private String createCache(String requestPath, String fullTemplatePath, String cachePath, Locale locale, int cacheMillisTime,

@@ -13,7 +13,7 @@
                 <li class="width:auto">
                     <#list 0..2 as s>
                         <label>
-                            <input <@t.compare status!'' s?string 'checked="checked"'/> name="status" value="${s}" type="checkbox"/>
+                            <input <@t.compare status!'' s?string 'checked="checked"'/> name="status" value="${s}" type="checkbox" class="form-check-input"/>
                             <@t.page 'status.place.data.'+s/>
                         </label>
                     </#list>
@@ -97,7 +97,7 @@
                 <td class="wrap">
                     <#if a.cover?has_content>
                         <div class="thumbnail">
-                            <img src="${(a.cover)!}"/>
+                            <img src="${(a.cover)!}" alt="${a.title}"/>
                         </div>
                     </#if>
                     <div class="box">

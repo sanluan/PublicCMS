@@ -12,6 +12,8 @@ import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.service.cms.CmsCommentService;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * commentList 评论列表查询指令
@@ -57,7 +59,7 @@ import com.publiccms.logic.service.cms.CmsCommentService;
 public class CmsCommentListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Integer status;
         Long checkUserId = null;
         Boolean disabled;

@@ -109,7 +109,7 @@ select {
                     break;
                 case 2:
                     $(".buttons button").removeClass("active");
-                    $form = $(document.forms[0]);
+                    var $form = $(document.forms[0]);
                     $.post($form.attr("action"), $form.serialize() ,function(result){
                         $(".content-box").html(result);
                         $(".buttons a").hide();

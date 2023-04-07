@@ -6,6 +6,9 @@ import java.io.IOException;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.logic.service.sys.SysExtendFieldService;
+
+import freemarker.template.TemplateException;
+
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
@@ -44,7 +47,7 @@ import com.publiccms.common.handler.RenderHandler;
 public class SysExtendFieldListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Integer extendId = handler.getInteger("extendId");
         String[] inputType = handler.getStringArray("inputType");
         Boolean searchable = handler.getBoolean("searchable");

@@ -12,7 +12,7 @@ import org.apache.tools.zip.ZipFile;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.BaseMethod;
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.views.pojo.entities.Sitefile;
 
@@ -53,23 +53,22 @@ public class GetSitefileMethod extends BaseMethod {
 
     @Override
     public Object execute(List<TemplateModel> arguments) throws TemplateModelException {
-        if (arguments.size() >= 1) {
+        if (!arguments.isEmpty()) {
             String filepath = getString(0, arguments);
             File dest = new File(siteComponent.getSiteFilePath(), filepath);
-            try (ZipFile zipFile = new ZipFile(dest, CommonConstants.DEFAULT_CHARSET_NAME);) {
+            try (ZipFile zipFile = new ZipFile(dest, Constants.DEFAULT_CHARSET_NAME);) {
                 ZipEntry entry = zipFile.getEntry("description.json");
                 if (null != entry) {
                     try (InputStream inputStream = zipFile.getInputStream(entry);) {
-                        String content = IOUtils.toString(inputStream, CommonConstants.DEFAULT_CHARSET);
-                        Sitefile sitefile = CommonConstants.objectMapper.readValue(content,
-                                CommonConstants.objectMapper.getTypeFactory().constructType(Sitefile.class));
-                        return sitefile;
+                        String content = IOUtils.toString(inputStream, Constants.DEFAULT_CHARSET);
+                        return Constants.objectMapper.readValue(content,
+                                Constants.objectMapper.getTypeFactory().constructType(Sitefile.class));
                     }
                 }
             } catch (IOException e) {
             }
         }
-        return Collections.EMPTY_MAP;
+        return Collections.emptyMap();
     }
 
     @Override

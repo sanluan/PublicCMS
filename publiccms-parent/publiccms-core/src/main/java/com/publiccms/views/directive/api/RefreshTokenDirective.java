@@ -8,11 +8,14 @@ import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractAppDirective;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysApp;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.service.sys.SysAppTokenService;
+
+import freemarker.template.TemplateException;
 
 /**
 *
@@ -41,10 +44,10 @@ $.getJSON('${site.dynamicPath}api/login?appToken=接口访问授权Token', funct
 */
 @Component
 public class RefreshTokenDirective extends AbstractAppDirective {
-    private final static String NEED_NOT_REFRESH = "needNotRefresh";
+    private static final String NEED_NOT_REFRESH = "needNotRefresh";
 
     @Override
-    public void execute(RenderHandler handler, SysApp app, SysUser user) throws IOException, Exception {
+    public void execute(RenderHandler handler, SysApp app, SysUser user) throws IOException, TemplateException {
         String appToken = handler.getString("appToken");
         if (null != app.getExpiryMinutes()) {
             Date now = CommonUtils.getDate();
@@ -53,7 +56,7 @@ public class RefreshTokenDirective extends AbstractAppDirective {
             handler.put("appToken", appToken);
             handler.put("expiryDate", expiryDate);
         } else {
-            handler.put("error", NEED_NOT_REFRESH);
+            handler.put(CommonConstants.ERROR, NEED_NOT_REFRESH);
         }
         handler.render();
     }

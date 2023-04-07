@@ -8,6 +8,9 @@ import jakarta.annotation.Resource;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.logic.service.cms.CmsTagService;
+
+import freemarker.template.TemplateException;
+
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.handler.PageHandler;
@@ -51,7 +54,7 @@ $.getJSON('${site.dynamicPath}api/directive/cms/tagList?pageSize=10', function(d
 public class CmsTagListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         String orderField = "searchCount";
         if (getAdvanced(handler)) {
             orderField = handler.getString("orderField");

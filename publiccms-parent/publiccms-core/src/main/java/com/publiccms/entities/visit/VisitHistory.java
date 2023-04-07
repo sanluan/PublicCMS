@@ -40,36 +40,48 @@ public class VisitHistory implements java.io.Serializable {
     @GeneratorColumn(title = "站点", condition = true)
     private short siteId;
     /**
-     * session id<p>
+     * session id
+     * <p>
      * 会话id
      */
     @GeneratorColumn(title = "会话", condition = true)
     private String sessionId;
     /**
-     * visit date<p>
+     * visit date
+     * <p>
      * 访问日期
      */
     @GeneratorColumn(title = "访问日期", condition = true)
     private Date visitDate;
     /**
-     * visit hour<p>
+     * visit hour
+     * <p>
      * 访问小时
      */
     @GeneratorColumn(title = "访问小时", condition = true)
     private byte visitHour;
+    /**
+     * visit user
+     * <p>
+     * 访问用户
+     */
+    @GeneratorColumn(title = "访问用户", condition = true)
+    private Long userId;
     /**
      * ip
      */
     @GeneratorColumn(title = "IP", condition = true)
     private String ip;
     /**
-     * user agent<p>
+     * user agent
+     * <p>
      * 浏览器用户标识
      */
     @GeneratorColumn(title = "UserAgent")
     private String userAgent;
     /**
-     * title<p>
+     * title
+     * <p>
      * 标题
      */
     @GeneratorColumn(title = "url")
@@ -82,37 +94,43 @@ public class VisitHistory implements java.io.Serializable {
     @Length(max = 255)
     private String title;
     /**
-     * screen width<p>
+     * screen width
+     * <p>
      * 屏幕宽度
      */
     @GeneratorColumn(title = "屏幕宽度")
     private Integer screenWidth;
     /**
-     * screen height<p>
+     * screen height
+     * <p>
      * 屏幕高度
      */
     @GeneratorColumn(title = "屏幕高度")
     private Integer screenHeight;
     /**
-     * referer url<p>
+     * referer url
+     * <p>
      * 来源地址
      */
     @GeneratorColumn(title = "refererUrl")
     private String refererUrl;
     /**
-     * item type<p>
+     * item type
+     * <p>
      * 项目类型
      */
     @GeneratorColumn(title = "项目类型")
     private String itemType;
     /**
-     * item id<p>
+     * item id
+     * <p>
      * 项目id
      */
     @GeneratorColumn(title = "项目ID")
     private String itemId;
     /**
-     * create date<p>
+     * create date
+     * <p>
      * 创建日期
      */
     @GeneratorColumn(title = "创建日期", condition = true, order = true)
@@ -130,21 +148,25 @@ public class VisitHistory implements java.io.Serializable {
         this.url = url;
         this.createDate = createDate;
     }
-    public VisitHistory(short siteId, String sessionId, Date visitDate, byte visitHour, String ip, String userAgent, String url, String title, Integer screenWidth, Integer screenHeight, String refererUrl, String itemType, String itemId, Date createDate) {
-       this.siteId = siteId;
-       this.sessionId = sessionId;
-       this.visitDate = visitDate;
-       this.visitHour = visitHour;
-       this.ip = ip;
-       this.userAgent = userAgent;
-       this.url = url;
-       this.title = title;
-       this.screenWidth = screenWidth;
-       this.screenHeight = screenHeight;
-       this.refererUrl = refererUrl;
-       this.itemType = itemType;
-       this.itemId = itemId;
-       this.createDate = createDate;
+
+    public VisitHistory(short siteId, String sessionId, Date visitDate, byte visitHour, Long userId, String ip, String userAgent,
+            String url, String title, Integer screenWidth, Integer screenHeight, String refererUrl, String itemType,
+            String itemId, Date createDate) {
+        this.siteId = siteId;
+        this.sessionId = sessionId;
+        this.visitDate = visitDate;
+        this.visitHour = visitHour;
+        this.userId = userId;
+        this.ip = ip;
+        this.userAgent = userAgent;
+        this.url = url;
+        this.title = title;
+        this.screenWidth = screenWidth;
+        this.screenHeight = screenHeight;
+        this.refererUrl = refererUrl;
+        this.itemType = itemType;
+        this.itemId = itemId;
+        this.createDate = createDate;
     }
 
     @Id
@@ -197,6 +219,15 @@ public class VisitHistory implements java.io.Serializable {
         this.visitHour = visitHour;
     }
 
+    @Column(name = "user_id")
+    public Long getUserId() {
+        return this.userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
     @Column(name = "ip", nullable = false, length = 130)
     public String getIp() {
         return this.ip;
@@ -223,35 +254,35 @@ public class VisitHistory implements java.io.Serializable {
     public void setUrl(String url) {
         this.url = url;
     }
-    
-    @Column(name="title")
+
+    @Column(name = "title")
     public String getTitle() {
         return this.title;
     }
-    
+
     public void setTitle(String title) {
         this.title = title;
     }
-    
-    @Column(name="screen_width")
+
+    @Column(name = "screen_width")
     public Integer getScreenWidth() {
         return this.screenWidth;
     }
-    
+
     public void setScreenWidth(Integer screenWidth) {
         this.screenWidth = screenWidth;
     }
-    
-    @Column(name="screen_height")
+
+    @Column(name = "screen_height")
     public Integer getScreenHeight() {
         return this.screenHeight;
     }
-    
+
     public void setScreenHeight(Integer screenHeight) {
         this.screenHeight = screenHeight;
     }
-    
-    @Column(name="referer_url", length=2048)
+
+    @Column(name = "referer_url", length = 2048)
     public String getRefererUrl() {
         return this.refererUrl;
     }

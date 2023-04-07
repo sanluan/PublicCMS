@@ -2,6 +2,6 @@
 <#assign required=(required?has_content&&'true'=required)/>
 <#assign multiple=(multiple?has_content&&'true'=multiple)/>
 <#if dictionary?has_content>
-    <#include "../include_page/dictionary.html"/>
+    <#include "../include_page/extend/dictionaryElement.html"/>
     <@dictionaryElement dictionary.id.id inputName required dictionary.childDepth multiple 'form' value/>
 </#if>

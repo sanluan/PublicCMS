@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 
 import com.publiccms.common.handler.RenderHandler;
 
+import freemarker.template.TemplateException;
+
 /**
  * version 版本指令
  * <p>
@@ -38,7 +40,7 @@ import com.publiccms.common.handler.RenderHandler;
 public class VersionDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         handler.put("cms", CmsVersion.getVersion());
         handler.put("revision", CmsVersion.getRevision());
         boolean authorizationEdition = CmsVersion.isAuthorizationEdition();

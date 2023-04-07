@@ -1,6 +1,9 @@
 package com.publiccms.common.tools;
 
+import java.io.CharArrayWriter;
 import java.io.File;
+import java.nio.charset.Charset;
+import java.util.BitSet;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -18,10 +21,36 @@ import org.apache.commons.lang3.time.DateUtils;
 import com.publiccms.common.constants.Constants;
 
 /**
- * 基类 Base
+ * CommonUtils 通用Utils
  * 
  */
 public class CommonUtils {
+
+    private CommonUtils() {
+    }
+
+    private static BitSet dontNeedEncoding;
+    private static final int caseDiff = ('a' - 'A');
+
+    static {
+        dontNeedEncoding = new BitSet(256);
+        int i;
+        for (i = 'a'; i <= 'z'; i++) {
+            dontNeedEncoding.set(i);
+        }
+        for (i = 'A'; i <= 'Z'; i++) {
+            dontNeedEncoding.set(i);
+        }
+        for (i = '0'; i <= '9'; i++) {
+            dontNeedEncoding.set(i);
+        }
+        dontNeedEncoding.set(' ');
+        dontNeedEncoding.set('-');
+        dontNeedEncoding.set('_');
+        dontNeedEncoding.set('.');
+        dontNeedEncoding.set('*');
+    }
+
     /**
      * @param <T>
      * @param <F>
@@ -56,6 +85,57 @@ public class CommonUtils {
         }
 
         return map;
+    }
+
+    public static String encodeURI(String s) {
+        Charset charset = Constants.DEFAULT_CHARSET;
+        boolean needToChange = false;
+        StringBuilder out = new StringBuilder(s.length());
+        CharArrayWriter charArrayWriter = new CharArrayWriter();
+        for (int i = 0; i < s.length();) {
+            int c = s.charAt(i);
+            if (dontNeedEncoding.get(c)) {
+                if (c == ' ') {
+                    c = '+';
+                    needToChange = true;
+                }
+                out.append((char) c);
+                i++;
+            } else {
+                do {
+                    charArrayWriter.write(c);
+                    if (c >= 0xD800 && c <= 0xDBFF && (i + 1) < s.length()) {
+                        int d = s.charAt(i + 1);
+                        if (d >= 0xDC00 && d <= 0xDFFF) {
+                            charArrayWriter.write(d);
+                            i++;
+                        }
+
+                    }
+                    i++;
+                } while (i < s.length() && !dontNeedEncoding.get((c = s.charAt(i))));
+
+                charArrayWriter.flush();
+                String str = new String(charArrayWriter.toCharArray());
+                byte[] ba = str.getBytes(charset);
+                for (int j = 0; j < ba.length; j++) {
+                    out.append('%');
+                    char ch = Character.forDigit((ba[j] >> 4) & 0xF, 16);
+                    if (Character.isLetter(ch)) {
+                        ch -= caseDiff;
+                    }
+                    out.append(ch);
+                    ch = Character.forDigit(ba[j] & 0xF, 16);
+                    if (Character.isLetter(ch)) {
+                        ch -= caseDiff;
+                    }
+                    out.append(ch);
+                }
+                charArrayWriter.reset();
+                needToChange = true;
+            }
+        }
+        return (needToChange ? out.toString() : s);
     }
 
     /**
@@ -125,51 +205,51 @@ public class CommonUtils {
     }
 
     /**
-     * @param var
+     * @param value
      * @return 是否为非空
      */
-    public static boolean notEmpty(String var) {
-        return StringUtils.isNotBlank(var);
+    public static boolean notEmpty(String value) {
+        return StringUtils.isNotBlank(value);
     }
 
     /**
-     * @param var
+     * @param value
      * @return 是否为空
      */
-    public static boolean empty(String var) {
-        return StringUtils.isBlank(var);
+    public static boolean empty(String value) {
+        return StringUtils.isBlank(value);
     }
 
     /**
-     * @param var
+     * @param value
      * @return 是否非空
      */
-    public static boolean notEmpty(Number var) {
-        return null != var;
+    public static boolean notEmpty(Number value) {
+        return null != value;
     }
 
     /**
-     * @param var
+     * @param value
      * @return 是否为空
      */
-    public static boolean empty(Number var) {
-        return null == var;
+    public static boolean empty(Number value) {
+        return null == value;
     }
 
     /**
-     * @param var
+     * @param value
      * @return 是否非空
      */
-    public static boolean notEmpty(Collection<?> var) {
-        return null != var && !var.isEmpty();
+    public static boolean notEmpty(Collection<?> value) {
+        return null != value && !value.isEmpty();
     }
 
     /**
-     * @param var
+     * @param value
      * @return 是否非空
      */
-    public static boolean notEmpty(Map<?, ?> var) {
-        return null != var && !var.isEmpty();
+    public static boolean notEmpty(Map<?, ?> value) {
+        return null != value && !value.isEmpty();
     }
 
     /**
@@ -189,12 +269,12 @@ public class CommonUtils {
     }
 
     /**
-     * @param var
+     * @param value
      * @return 是否非空
      */
-    public static boolean notEmpty(String[] var) {
-        if (null != var && 0 < var.length) {
-            for (String t : var) {
+    public static boolean notEmpty(String[] value) {
+        if (null != value && 0 < value.length) {
+            for (String t : value) {
                 if (notEmpty(t)) {
                     return true;
                 }
@@ -204,19 +284,19 @@ public class CommonUtils {
     }
 
     /**
-     * @param var
+     * @param value
      * @return 是否非空
      */
-    public static boolean notEmpty(Object[] var) {
-        return null != var && 0 < var.length;
+    public static boolean notEmpty(Object[] value) {
+        return null != value && 0 < value.length;
     }
 
     /**
-     * @param var
+     * @param value
      * @return 是否为空
      */
-    public static boolean empty(Object[] var) {
-        return null == var || 0 == var.length;
+    public static boolean empty(Object[] value) {
+        return null == value || 0 == value.length;
     }
 
 }

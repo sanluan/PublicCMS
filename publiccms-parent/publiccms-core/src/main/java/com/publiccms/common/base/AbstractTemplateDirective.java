@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.directive.BaseTemplateDirective;
 import com.publiccms.common.handler.HttpParameterHandler;
 import com.publiccms.common.handler.RenderHandler;
@@ -29,6 +30,9 @@ import com.publiccms.logic.service.sys.SysAppTokenService;
 import com.publiccms.logic.service.sys.SysUserService;
 import com.publiccms.logic.service.sys.SysUserTokenService;
 
+import freemarker.template.TemplateException;
+import freemarker.template.TemplateModelException;
+
 /**
  * 
  * AbstractTemplateDirective 自定义模板指令基类
@@ -42,9 +46,9 @@ public abstract class AbstractTemplateDirective extends BaseTemplateDirective {
     /**
      * @param handler
      * @return site
-     * @throws Exception
+     * @throws TemplateModelException
      */
-    protected SysSite getSite(RenderHandler handler) throws Exception {
+    protected SysSite getSite(RenderHandler handler) throws TemplateModelException {
         return (SysSite) handler.getAttribute(CommonConstants.getAttributeSite());
     }
 
@@ -54,15 +58,15 @@ public abstract class AbstractTemplateDirective extends BaseTemplateDirective {
      * @throws IOException
      * @throws Exception
      */
-    protected void expose(RenderHandler handler, Map<String, Object> model) throws IOException, Exception {
+    protected void expose(RenderHandler handler, Map<String, Object> model) throws TemplateModelException {
         AbstractFreemarkerView.exposeSite(model, getSite(handler));
     }
 
-    protected boolean getAdvanced(RenderHandler handler) throws Exception {
+    protected boolean getAdvanced(RenderHandler handler) throws TemplateModelException {
         return handler.getBoolean(ADVANCED, false);
     }
 
-    protected Long getUserId(RenderHandler handler, String name) throws Exception {
+    protected Long getUserId(RenderHandler handler, String name) throws TemplateModelException {
         if (needUserToken()) {
             Long authUserId = handler.getLong(AUTH_USER_ID);
             if (null != authUserId) {
@@ -77,20 +81,20 @@ public abstract class AbstractTemplateDirective extends BaseTemplateDirective {
 
     @Override
     public void execute(HttpMessageConverter<Object> httpMessageConverter, MediaType mediaType, HttpServletRequest request,
-            HttpServletResponse response) throws IOException, Exception {
+            HttpServletResponse response) throws TemplateException, IOException {
         HttpParameterHandler handler = new HttpParameterHandler(httpMessageConverter, mediaType, request, response);
         SysApp app = null;
-        if (needAppToken() && (null == (app = getApp(handler)) || CommonUtils.empty(app.getAuthorizedApis()) || !ArrayUtils
-                .contains(StringUtils.split(app.getAuthorizedApis(), CommonConstants.COMMA), getName()))) {
+        if (needAppToken() && (null == (app = getApp(handler)) || CommonUtils.empty(app.getAuthorizedApis())
+                || !ArrayUtils.contains(StringUtils.split(app.getAuthorizedApis(), Constants.COMMA), getName()))) {
             if (null == app) {
-                handler.put("error", ApiController.NEED_APP_TOKEN).render();
+                handler.put(CommonConstants.ERROR, ApiController.NEED_APP_TOKEN).render();
             } else {
-                handler.put("error", ApiController.UN_AUTHORIZED).render();
+                handler.put(CommonConstants.ERROR, ApiController.UN_AUTHORIZED).render();
             }
         } else if (needUserToken() && null == getUser(handler)) {
-            handler.put("error", ApiController.NEED_LOGIN).render();
+            handler.put(CommonConstants.ERROR, ApiController.NEED_LOGIN).render();
         } else if (null != handler.getBoolean(ADVANCED) && (!supportAdvanced() || null == getApp(handler))) {
-            handler.put("error", ApiController.NEED_APP_TOKEN).render();
+            handler.put(CommonConstants.ERROR, ApiController.NEED_APP_TOKEN).render();
         } else {
             execute(handler);
             if (!handler.renderd) {
@@ -104,7 +108,7 @@ public abstract class AbstractTemplateDirective extends BaseTemplateDirective {
      * @return user
      * @throws Exception
      */
-    private SysUser getUser(RenderHandler handler) throws Exception {
+    private SysUser getUser(RenderHandler handler) throws TemplateModelException {
         String authToken = handler.getString(AUTH_TOKEN);
         Long authUserId = handler.getLong(AUTH_USER_ID);
         if (CommonUtils.notEmpty(authToken) && null != authUserId) {
@@ -144,7 +148,7 @@ public abstract class AbstractTemplateDirective extends BaseTemplateDirective {
      * @return
      * @throws Exception
      */
-    protected SysApp getApp(RenderHandler handler) throws Exception {
+    protected SysApp getApp(RenderHandler handler) throws TemplateModelException {
         SysAppToken appToken = appTokenService.getEntity(handler.getString("appToken"));
         if (null != appToken && (null == appToken.getExpiryDate() || CommonUtils.getDate().before(appToken.getExpiryDate()))) {
             SysApp app = appService.getEntity(appToken.getAppId());

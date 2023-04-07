@@ -10,6 +10,7 @@ import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.LanguagesUtils;
 import com.publiccms.logic.component.site.ScriptComponent;
 
+import freemarker.template.TemplateException;
 import jakarta.annotation.Resource;
 
 /**
@@ -40,7 +41,7 @@ import jakarta.annotation.Resource;
 public class ExecuteScriptDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         String command = handler.getString("command");
         String[] parameters = handler.getStringArray("parameters");
         if (siteComponent.isMaster(getSite(handler).getId())) {
@@ -48,6 +49,7 @@ public class ExecuteScriptDirective extends AbstractTemplateDirective {
                 handler.print(scriptComponent.execute(command, parameters, handler.getLong("timeout", 1l)));
             } catch (IOException | InterruptedException e) {
                 handler.print(e.getMessage());
+                Thread.currentThread().interrupt();
             }
         } else {
             handler.print(

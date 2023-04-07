@@ -88,8 +88,7 @@ public class CmsDataSource extends MultiDataSource {
         config.setMaximumPoolSize(Integer.parseInt(properties.getProperty("hikariCP.maxPoolSize")));
         config.setIdleTimeout(Long.parseLong(properties.getProperty("hikariCP.idleTimeout")));
         config.setMaxLifetime(Long.parseLong(properties.getProperty("hikariCP.maxLifetime")));
-        HikariDataSource dataSource = new HikariDataSource(config);
-        return dataSource;
+        return new HikariDataSource(config);
     }
 
     /**

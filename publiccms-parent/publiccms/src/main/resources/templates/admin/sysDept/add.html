@@ -19,7 +19,7 @@
                 <dt><@t.page 'dept.parent'/>:</dt>
                 <dd>
                     <input name="parentId" type="hidden" value="${parentId!}"/>
-                    <input name="parentName" readonly="readonly" type="text" size="10" value="${(parentName)!}"/>
+                    <input name="parentName" readonly="readonly" type="text" size="30" value="${(parentName)!}"/>
                     <a class="btnLook" href="sysDept/lookup.html?field=parentId&nameField=parentName" lookupGroup=""><@t.page 'dept.select'/></a>
                 </dd>
             </dl>
@@ -45,7 +45,7 @@
             </dl>
             <dl>
                 <dt><@t.page 'dept.own_all_category'/>:</dt>
-                <dd><input name="ownsAllCategory" type="checkbox"/></dd>
+                <dd><input name="ownsAllCategory" type="checkbox" class="form-check-input"/></dd>
             </dl>
             <dl>
                 <dt><@t.page 'content.max_top_level'/>:</dt>
@@ -53,11 +53,11 @@
             </dl>
             <dl class="nowrap">
                 <dt><@t.page 'dept.own_all_page'/>:</dt>
-                <dd><input name="ownsAllPage" type="checkbox"/></dd>
+                <dd><input name="ownsAllPage" type="checkbox" class="form-check-input"/></dd>
             </dl>
             <dl class="nowrap">
                 <dt><@t.page 'dept.own_all_config'/>:</dt>
-                <dd><input name="ownsAllConfig" type="checkbox"/></dd>
+                <dd><input name="ownsAllConfig" type="checkbox" class="form-check-input"/></dd>
             </dl>
     <#macro categoryTree parentId=''>
         <@cms.categoryList parentId=parentId advanced=true pageSize=500>

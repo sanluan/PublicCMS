@@ -15,6 +15,8 @@ import com.publiccms.entities.visit.VisitItem;
 import com.publiccms.entities.visit.VisitItemId;
 import com.publiccms.logic.service.visit.VisitItemService;
 
+import freemarker.template.TemplateException;
+
 /**
 *
 * visitItem 访问项目报表查询指令
@@ -41,7 +43,7 @@ import com.publiccms.logic.service.visit.VisitItemService;
 public class VisitItemDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Date visitDate = handler.getDate("visitDate");
         String itemType = handler.getString("itemType");
         String itemId = handler.getString("itemId");

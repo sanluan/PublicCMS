@@ -30,7 +30,7 @@ public class RedisCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Serial
     private static final long serialVersionUID = 1L;
     private JedisPool jedisPool;
     private String region;
-    private final static StringSerializer stringSerializer = new StringSerializer();
+    private static final StringSerializer stringSerializer = new StringSerializer();
     private final BinarySerializer<V> valueSerializer = new BinarySerializer<>();
 
     @Override
@@ -71,19 +71,29 @@ public class RedisCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Serial
     }
 
     @Override
-    public List<V> clear() {
-        List<V> list = new ArrayList<>();
-        Jedis jedis = jedisPool.getResource();
-        Set<String> keyList = jedis.keys(CommonUtils.joinString(region, Constants.DOT, "*"));
-        for (String key : keyList) {
-            byte[] byteKey = stringSerializer.serialize(key);
-            V value = valueSerializer.deserialize(jedis.get(byteKey));
-            if (0 < jedis.del(key)) {
-                list.add(value);
-            }
+    public List<V> clear(boolean recycling) {
+        if (recycling) {
+            List<V> list = new ArrayList<>();
+            Jedis jedis = jedisPool.getResource();
+            Set<String> keyList = jedis.keys(CommonUtils.joinString(region, Constants.DOT, "*"));
+            keyList.forEach(k -> {
+                byte[] byteKey = stringSerializer.serialize(k);
+                V value = valueSerializer.deserialize(jedis.get(byteKey));
+                if (0 < jedis.del(k)) {
+                    list.add(value);
+                }
+            });
+            jedis.close();
+            return list;
+        } else {
+            Jedis jedis = jedisPool.getResource();
+            Set<String> keyList = jedis.keys(CommonUtils.joinString(region, Constants.DOT, "*"));
+            keyList.forEach(k -> {
+                jedis.del(k);
+            });
+            jedis.close();
+            return null;
         }
-        jedis.close();
-        return list;
     }
 
     @Override

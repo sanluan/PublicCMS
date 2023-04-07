@@ -57,25 +57,25 @@
                 <#assign end=page.pageIndex+4/>
             </#if>
             <#if !page.firstPage>
-                <a href="${getPage(url,page.prePage)}">Previous page</a>
+                <a href="${getPage(category.url,page.prePage)}">Previous page</a>
             <#else>
                 <span>Previous page</span>
             </#if>
             <#if start gt 1>
-                <a href="${url}">1</a> ...
+                <a href="${category.url}">1</a> ...
             </#if>
             <#list start..end as n>
                 <#if n=page.pageIndex>
                     ${n}
                 <#else>
-                    <a href="${getPage(url,n)}">${n}</a>
+                    <a href="${getPage(category.url,n)}">${n}</a>
                 </#if>
             </#list>
             <#if end lt page.totalPage>
-                ... <a href="${getPage(url,page.totalPage)}">${page.totalPage}</a>
+                ... <a href="${getPage(category.url,page.totalPage)}">${page.totalPage}</a>
             </#if>
             <#if !page.lastPage>
-                <a href="${getPage(url,page.nextPage)}">Next page</a>
+                <a href="${getPage(category.url,page.nextPage)}">Next page</a>
             <#else>
                 <span>Next page</span>
             </#if>

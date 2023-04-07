@@ -14,6 +14,8 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.template.ModelComponent;
 import com.publiccms.views.pojo.entities.CmsCategoryType;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * categoryType 分类类型查询指令
@@ -44,7 +46,7 @@ import com.publiccms.views.pojo.entities.CmsCategoryType;
 public class CmsCategoryTypeDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         String id = handler.getString("id");
         SysSite site = getSite(handler);
         if (CommonUtils.notEmpty(id)) {

@@ -36,25 +36,25 @@ function initEnv() {
         }
         initUI();
         if ($.fn.navMenu ){
-            var hash = location.hash.skipChar('#').replace(/\?.*$/, '');
+            var hash = location.hash.skipChar("#").replace(/\?.*$/, "");
             var callback;
             var parentId;
             if(hash ) {
-                parentId = hash.substring(0, hash.indexOf('_'));
-                var tabid = hash.substring(hash.indexOf('_') + 1);
+                parentId = hash.substring(0, hash.indexOf("_"));
+                var tabid = hash.substring(hash.indexOf("_") + 1);
                 if(tabid ) {
                     callback = function(){
-                        var $box = $('#menu a[rel='+escapeJquery(tabid)+']').closest('.accordionContent');
+                        var $box = $("#menu a[rel="+escapeJquery(tabid)+"]").closest(".accordionContent");
                         if(!$box.is(":visible")){
                             $box.prev().click();
                         }
-                        $('#menu a[rel='+escapeJquery(tabid)+']').click();
+                        $("#menu a[rel="+escapeJquery(tabid)+"]").click();
                     }
                 }
             }
             $("#navMenu").navMenu(callback);
             if(parentId ) {
-                $('#navMenu a[parentid='+parentId+']').click();
+                $("#navMenu a[parentid="+parentId+"]").click();
             }
         }
         $(document).trigger(JUI.eventType.initEnvAfter);
@@ -65,14 +65,14 @@ function initEnv() {
  */
 function initLayout() {
     var iContentW = $(window).width() - (JUI.ui.sbar ? $("#sidebar").width() : 0);
-    var iContentH = $(window).height() - $('header').outerHeight(true) - $('footer').outerHeight(true);
-    $("#navTab").css({"width":iContentW+'px'});
-    $("main .tabsPageContent").height(iContentH - $('.tabsPageHeader').outerHeight(true)).find("[layoutH]").layoutH();
+    var iContentH = $(window).height() - $("header").outerHeight(true) - $("footer").outerHeight(true);
+    $("#navTab").css({"width":iContentW+"px"});
+    $("main .tabsPageContent").height(iContentH - $(".tabsPageHeader").outerHeight(true)).find("[layoutH]").layoutH();
     $("#splitBar, #splitBarProxy").height(iContentH - 2);
     $("#taskbar").css({
-        top: (iContentH + $("header").height())+'px', width: $(window).width()+'px'
+        top: (iContentH + $("header").height())+"px", width: $(window).width()+"px"
     });
-    $("#menu").css({'max-height':(iContentH-$("#sidebar .collapse").height())+'px'});
+    $("#menu").css({"max-height":(iContentH-$("#sidebar .collapse").height())+"px"});
 }
 /**
  * 为容器初始化UI
@@ -81,9 +81,9 @@ function initLayout() {
 function initUI(_box) {
     var $p = $(_box || document);
     // css tables
-    $('table.list', $p).cssTable();
+    $("table.list", $p).cssTable();
     // jTables
-    $('table.table', $p).jTable();
+    $("table.table", $p).jTable();
 
     // auto bind tabs
     $("div.tabs", $p).each(function() {
@@ -94,7 +94,7 @@ function initUI(_box) {
         $this.tabs(options);
     });
     $("ul.tree", $p).jTree();
-    $('div.accordion', $p).each(function() {
+    $("div.accordion", $p).each(function() {
         var $this = $(this);
         $this.accordion({
             alwaysOpen: false, active: 0, autoheight:false
@@ -137,7 +137,7 @@ function initUI(_box) {
         });
     });
     if ($.fn.datepicker ) {
-        $('input.date', $p).each(function() {
+        $("input.date", $p).each(function() {
             var $this = $(this);
             var opts = {};
             if ($this.attr("dateFmt") ) {

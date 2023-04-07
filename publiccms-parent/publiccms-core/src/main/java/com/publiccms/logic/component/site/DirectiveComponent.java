@@ -16,7 +16,7 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import com.publiccms.common.base.AbstractTaskDirective;
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.base.BaseMethod;
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.directive.BaseTemplateDirective;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.logic.component.template.NoCacheDirective;
@@ -50,17 +50,13 @@ public class DirectiveComponent {
     private SiteComponent siteComponent;
 
     public String getDirectiveName(String className) {
-        return StringUtils.uncapitalize(className.replaceAll(directiveRemoveRegex, CommonConstants.BLANK));
-    }
-
-    public static void main(String[] args) {
-
+        return StringUtils.uncapitalize(className.replaceAll(directiveRemoveRegex, Constants.BLANK));
     }
 
     private String getDirectiveNamespace(Class<? extends BaseTemplateDirective> clazz) {
         String packagename = clazz.getPackage().getName();
-        if (packagename.contains(CommonConstants.DOT)) {
-            return packagename.substring(packagename.lastIndexOf(CommonConstants.DOT) + 1);
+        if (packagename.contains(Constants.DOT)) {
+            return packagename.substring(packagename.lastIndexOf(Constants.DOT) + 1);
         }
         return DEFAULT_NAMESPACE;
     }
@@ -68,9 +64,9 @@ public class DirectiveComponent {
     private String getDirectiveShortName(String namespace, String className) {
         if (className.toLowerCase().startsWith(namespace)) {
             return StringUtils.uncapitalize(className.substring(namespace.length(), className.length())
-                    .replaceAll(directiveRemoveRegex, CommonConstants.BLANK));
+                    .replaceAll(directiveRemoveRegex, Constants.BLANK));
         }
-        return StringUtils.uncapitalize(className.replaceAll(directiveRemoveRegex, CommonConstants.BLANK));
+        return StringUtils.uncapitalize(className.replaceAll(directiveRemoveRegex, Constants.BLANK));
     }
 
     @Autowired
@@ -108,13 +104,13 @@ public class DirectiveComponent {
             taskDirectiveMap.put(directive.getName(), directive);
         }
         for (Entry<String, Map<String, BaseTemplateDirective>> entry : namespaceMap.entrySet()) {
-            log.info(CommonUtils.joinString("namespace ", entry.getKey(), " has ", entry.getValue().keySet().size(), " directives : ",
-                    entry.getValue().keySet().toString()));
+            log.info(CommonUtils.joinString("namespace ", entry.getKey(), " has ", entry.getValue().keySet().size(),
+                    " directives : ", entry.getValue().keySet().toString()));
         }
         for (BaseMethod method : methodList) {
             if (null == method.getName()) {
                 method.setName(StringUtils
-                        .uncapitalize(method.getClass().getSimpleName().replaceAll(methodRemoveRegex, CommonConstants.BLANK)));
+                        .uncapitalize(method.getClass().getSimpleName().replaceAll(methodRemoveRegex, Constants.BLANK)));
             }
             methodMap.put(method.getName(), method);
         }

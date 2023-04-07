@@ -16,6 +16,8 @@ import com.publiccms.entities.cms.CmsUserScore;
 import com.publiccms.entities.cms.CmsUserScoreId;
 import com.publiccms.logic.service.cms.CmsUserScoreService;
 
+import freemarker.template.TemplateException;
+
 /**
 *
 * userScore 用户评分查询指令
@@ -48,7 +50,7 @@ $.getJSON('${site.dynamicPath}api/directive/cms/userScore?id=1', function(data){
 public class CmsUserScoreDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Long userId = handler.getLong("userId");
         String itemType = handler.getString("itemType");
         Long itemId = handler.getLong("itemId");

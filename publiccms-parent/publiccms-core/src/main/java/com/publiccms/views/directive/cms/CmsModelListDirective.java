@@ -12,6 +12,8 @@ import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.logic.component.template.ModelComponent;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * modelList 内容模型列表查询指令
@@ -49,7 +51,7 @@ import com.publiccms.logic.component.template.ModelComponent;
 public class CmsModelListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         PageHandler page = new PageHandler(null, null);
         page.setList(modelComponent.getModelList(getSite(handler), handler.getString("parentId"),
                 handler.getBoolean("queryAll", false), handler.getBoolean("hasChild"), handler.getBoolean("onlyUrl"),

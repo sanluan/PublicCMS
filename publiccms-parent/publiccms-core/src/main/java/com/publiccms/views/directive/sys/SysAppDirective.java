@@ -13,6 +13,8 @@ import com.publiccms.entities.sys.SysApp;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.service.sys.SysAppService;
 
+import freemarker.template.TemplateException;
+
 /**
 *
 * sysApp 应用查询指令
@@ -43,7 +45,7 @@ $.getJSON('${site.dynamicPath}api/directive/sys/app?id=1&amp;appToken=接口访�
 public class SysAppDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Integer id = handler.getInteger("id");
         SysSite site = getSite(handler);
         if (CommonUtils.notEmpty(id)) {

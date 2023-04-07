@@ -1,0 +1,13 @@
+<#if 'view'=type>
+    ${(value?no_esc)!}
+<#else>
+    <#if 'customform'!=type>
+        <div>
+            <a class="button" href="common/import.html?field=${inputName?url}" lookupGroup="" width="500" height="300"><@t.page 'import_doc'/></a>
+            <#if itemType?has_content && itemId?has_content>
+                <a class="button" href="cmsEditorHistory/lookup.html?itemType=${itemType?url}&itemId=${itemId?url}&fieldName=${extend.id.code?url}" lookupGroup=""><@t.page 'history'/></a>
+            </#if>
+        </div>
+    </#if>
+        <textarea name="${inputName}"<#if extend.maxlength?has_content> maxlength="${extend.maxlength}"</#if> class="editor<#if 'customform'!=type><#if extend.required> required</#if></#if>"<#if 'customform'!=type> editorType="${extend.inputType}"</#if> cols="80" rows="20">${(value)!}</textarea>
+</#if>

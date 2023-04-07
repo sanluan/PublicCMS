@@ -1,12 +1,10 @@
 <#assign attribute=getContentAttribute(content.id)/>
-<@cms.category id=content.categoryId>
-    <#assign category=object/>
-</@cms.category>
-<#assign
-    temp=getContentPage(attribute.text!'',pageIndex)
-    page=temp.page
-    text=temp.text
-/>
+<@cms.category id=content.categoryId;category>
+    <#assign
+        temp=getContentPage(attribute.text!'',pageIndex)
+        page=temp.page
+        text=temp.text
+    />
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -108,8 +106,9 @@
             </div>
         <#if page?has_content>
             <div>
+                <#if content.url?contains('?')><#assign pageParameter="pageIndex"/></#if>
                 <#if !page.firstPage>
-                    <a href="${getPage(content.url,page.prePage,'pageIndex')}">Previous page</a>
+                    <a href="${getPage(content.url,page.prePage,pageParameter)}">Previous page</a>
                 <#else>
                     <span>Previous page</span>
                 </#if>
@@ -117,11 +116,11 @@
                     <#if n=page.pageIndex>
                         ${n}
                     <#else>
-                        <a href="${getPage(content.url,n,'pageIndex')}">${n}</a>
+                        <a href="${getPage(content.url,n,pageParameter)}">${n}</a>
                     </#if>
                 </#list>
                 <#if !page.lastPage>
-                    <a href="${getPage(content.url,page.nextPage,'pageIndex')}">Next page</a>
+                    <a href="${getPage(content.url,page.nextPage,pageParameter)}">Next page</a>
                 <#else>
                     <span>Next page</span>
                 </#if>
@@ -221,9 +220,10 @@ function unscore(contentId){
         if("string" ==typeof itemString){
             url=url+"?"+itemString;
         }
-        ca.setDomain('${site.sitePath?keep_after('//')?keep_before('/')?keep_before(':')}');
+        ca.setDomain("${site.sitePath?keep_after('//')?keep_before('/')?keep_before(':')}");
         ca.setPath('/');
         ca.report(url);
     </script>
 </body>
 </html>
+</@cms.category>

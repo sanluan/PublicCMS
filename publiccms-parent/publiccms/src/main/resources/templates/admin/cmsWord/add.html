@@ -7,7 +7,7 @@
             <dt><@t.page 'name'/>:</dt>
             <dd>
                 <input class="required" name="name" type="text" size="30" value="${(a.name)!}"/>
-                <label><input name="hidden" type="checkbox"${(a?has_content&&a.hidden)?then(' checked="checked"','')?no_esc}/><@t.page 'hidden'/></label>
+                <label><input name="hidden" type="checkbox" class="form-check-input"${(a?has_content&&a.hidden)?then(' checked="checked"','')?no_esc}/><@t.page 'hidden'/></label>
             </dd>
         </dl>
         <dl>

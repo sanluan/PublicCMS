@@ -7,21 +7,25 @@ import java.util.Date;
 import java.util.List;
 
 import jakarta.annotation.Resource;
+
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.base.HighLighterQuery;
 import com.publiccms.common.handler.FacetPageHandler;
 import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
-import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.views.pojo.entities.ClickStatistics;
 import com.publiccms.views.pojo.query.CmsContentSearchQuery;
+
+import freemarker.template.TemplateException;
 
 /**
  *
@@ -59,7 +63,7 @@ import com.publiccms.views.pojo.query.CmsContentSearchQuery;
 public class CmsFacetSearchDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         String word = handler.getString("word");
         Long[] tagIds = handler.getLongArray("tagIds");
         if (null == tagIds) {
@@ -89,11 +93,11 @@ public class CmsFacetSearchDirective extends AbstractTemplateDirective {
             page = service.facetQuery(
                     new CmsContentSearchQuery(site.getId(), handler.getBoolean("projection", false),
                             handler.getBoolean("phrase", false), highLighterQuery, word, handler.getString("exclude"),
-                            handler.getStringArray("fields"), tagIds, handler.getInteger("categoryId"),
-                            handler.getIntegerArray("categoryIds"), handler.getStringArray("modelIds"),
-                            handler.getStringArray("extendsValues"), handler.getStringArray("dictionaryValues"),
-                            handler.getBoolean("dictionaryUnion"), handler.getDate("startPublishDate"),
-                            handler.getDate("endPublishDate", currentDate), currentDate),
+                            handler.getStringArray("fields"), tagIds, handler.getLong("userId"), handler.getLong("parentId"),
+                            handler.getInteger("categoryId"), handler.getIntegerArray("categoryIds"),
+                            handler.getStringArray("modelIds"), handler.getStringArray("extendsValues"),
+                            handler.getStringArray("dictionaryValues"), handler.getBoolean("dictionaryUnion"),
+                            handler.getDate("startPublishDate"), handler.getDate("endPublishDate", currentDate), currentDate),
                     handler.getBoolean("containChild"), handler.getString("orderField"), pageIndex, pageSize,
                     handler.getInteger("maxPage"));
             @SuppressWarnings("unchecked")
@@ -104,8 +108,8 @@ public class CmsFacetSearchDirective extends AbstractTemplateDirective {
                     if (null != statistics) {
                         e.setClicks(e.getClicks() + statistics.getClicks());
                     }
-                    TemplateComponent.initContentUrl(site, e);
-                    TemplateComponent.initContentCover(site, e);
+                    CmsUrlUtils.initContentUrl(site, e);
+                    fileUploadComponent.initContentCover(site, e);
                 });
             }
         } catch (Exception e) {
@@ -117,6 +121,8 @@ public class CmsFacetSearchDirective extends AbstractTemplateDirective {
 
     @Resource
     private StatisticsComponent statisticsComponent;
+    @Resource
+    protected FileUploadComponent fileUploadComponent;
     @Resource
     private CmsContentService service;
 
