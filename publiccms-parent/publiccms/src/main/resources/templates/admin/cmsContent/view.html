@@ -106,7 +106,7 @@
                 <dd class="exclude-translate">
                     <@cms.tag ids=a.tagIds>
                         <#list map as j,tag>
-                            <#if tag.typeId?string=k>
+                            <#if tag.typeId?has_content && tag.typeId=tagType.id>
                                 ${tag.name},
                             </#if>
                         </#list>
