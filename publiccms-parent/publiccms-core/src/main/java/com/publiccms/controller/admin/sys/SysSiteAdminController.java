@@ -241,10 +241,9 @@ public class SysSiteAdminController {
             String originalName = file.getOriginalFilename();
             if (null != originalName && originalName.endsWith("-site.zip")) {
                 try {
-                    File dest = new File(siteComponent.getSiteFilePath(), originalName);
-                    if (overwrite || !dest.exists()) {
-                        dest.mkdirs();
-                        file.transferTo(dest);
+                    String filepath = CommonUtils.joinString(siteComponent.getSiteFilePath(), Constants.SEPARATOR, originalName);
+                    if (overwrite || !CmsFileUtils.exists(filepath)) {
+                        CmsFileUtils.upload(file, originalName);
                         logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                                 LogLoginService.CHANNEL_WEB_MANAGER, "upload.sitefile", RequestUtils.getIpAddress(request),
                                 CommonUtils.getDate(), originalName));

@@ -1,7 +1,6 @@
 package com.publiccms.controller.admin.sys;
 
 import java.io.BufferedInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -174,7 +173,7 @@ public class UeditorAdminController extends AbstractUeditorController {
                             if (fileType.equals(FileType.WebP)) {
                                 fileName = CmsFileUtils.getUploadFileName("jpg");
                                 String filepath = siteComponent.getWebFilePath(site.getId(), fileName);
-                                ImageUtils.webp2Image(inputStream, false, new File(filepath));
+                                ImageUtils.webp2Image(inputStream, false, filepath);
                                 uploadResult = CmsFileUtils.getFileSize(filepath, fileName, suffix);
                             } else {
                                 fileName = CmsFileUtils.getUploadFileName(suffix);

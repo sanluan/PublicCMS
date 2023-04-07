@@ -181,33 +181,33 @@ public class ImageUtils {
         return font[Constants.random.nextInt(4)];
     }
 
-    public static void webp2Image(InputStream webpInputStream, boolean png, File imageFile) throws IOException {
+    public static void webp2Image(InputStream webpInputStream, boolean png, String imageFilepath) throws IOException {
         ImageReader reader = ImageIO.getImageReadersByMIMEType("image/webp").next();
         WebPReadParam readParam = new WebPReadParam();
         readParam.setBypassFiltering(true);
         reader.setInput(webpInputStream);
         BufferedImage image = reader.read(0, readParam);
-        ImageIO.write(image, png ? FORMAT_NAME_PNG : FORMAT_NAME_JPG, imageFile);
+        ImageIO.write(image, png ? FORMAT_NAME_PNG : FORMAT_NAME_JPG, new File(imageFilepath));
     }
 
-    public static void webp2Image(File webpFile, boolean png, File imageFile) throws IOException {
+    public static void webp2Image(String webpFilepath, boolean png, String imageFilepath) throws IOException {
         ImageReader reader = ImageIO.getImageReadersByMIMEType("image/webp").next();
         WebPReadParam readParam = new WebPReadParam();
         readParam.setBypassFiltering(true);
-        reader.setInput(new FileImageInputStream(webpFile));
+        reader.setInput(new FileImageInputStream(new File(webpFilepath)));
         BufferedImage image = reader.read(0, readParam);
-        ImageIO.write(image, png ? FORMAT_NAME_PNG : FORMAT_NAME_JPG, imageFile);
+        ImageIO.write(image, png ? FORMAT_NAME_PNG : FORMAT_NAME_JPG, new File(imageFilepath));
     }
 
-    public static void image2Webp(File imageFile, File webpFile) throws IOException {
-        BufferedImage image = ImageIO.read(imageFile);
-        ImageIO.write(image, FORMAT_NAME_WEBP, webpFile);
+    public static void image2Webp(String imageFilepath, String webpFilepath) throws IOException {
+        BufferedImage image = ImageIO.read(new File(imageFilepath));
+        ImageIO.write(image, FORMAT_NAME_WEBP, new File(webpFilepath));
     }
 
-    public static void image2Ico(InputStream input, String suffix, int size, File icoFile) throws IOException {
+    public static void image2Ico(InputStream input, String suffix, int size, String icoFilepath) throws IOException {
         BufferedImage sourceImage = ImageIO.read(input);
         BufferedImage resultImage = thumb(sourceImage, size, size, ".png".equalsIgnoreCase(suffix));
-        try (FileOutputStream outputStream = new FileOutputStream(icoFile)) {
+        try (FileOutputStream outputStream = new FileOutputStream(icoFilepath)) {
             ICOEncoder.write(resultImage, outputStream);
         }
     }

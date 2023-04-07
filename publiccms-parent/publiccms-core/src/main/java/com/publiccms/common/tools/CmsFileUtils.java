@@ -25,6 +25,8 @@ import javax.imageio.ImageIO;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.pdfbox.cos.COSName;
+import org.apache.pdfbox.pdmodel.PDDocument;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.publiccms.common.constants.Constants;
@@ -129,6 +131,10 @@ public class CmsFileUtils {
      * 
      */
     public static final String FILE_TYPE_OTHER = "other";
+    /**
+     * 
+     */
+    public static final String FILE_TYPE_PDF = "pdf";
     /**
      * 
      */
@@ -296,7 +302,7 @@ public class CmsFileUtils {
 
     /**
      * @param filepath
-     * @param filename 
+     * @param filename
      * @param suffix
      * @return uploadResult
      */
@@ -496,14 +502,22 @@ public class CmsFileUtils {
      * @return is safe
      */
     public static boolean isSafe(String filepath, String suffix) {
-        if (CommonUtils.notEmpty(suffix) && suffix.endsWith(ImageUtils.FORMAT_NAME_SVG)) {
-            File file = new File(filepath);
-            try {
-                if (file.isFile()) {
+        File file = new File(filepath);
+        if (CommonUtils.notEmpty(suffix) && file.isFile()) {
+            if (suffix.endsWith(ImageUtils.FORMAT_NAME_SVG)) {
+                try {
                     return ImageUtils.svgSafe(file);
+                } catch (IOException e) {
+                    return false;
                 }
-            } catch (IOException e) {
-                return false;
+            } else if (suffix.endsWith(FILE_TYPE_PDF)) {
+                try {
+                    PDDocument document = PDDocument.load(file);
+                    return document.getDocument().getObjects().stream()
+                            .noneMatch(obj -> COSName.JS.equals(obj) || COSName.JAVA_SCRIPT.equals(obj));
+                } catch (IOException e) {
+                    return false;
+                }
             }
         }
         return true;

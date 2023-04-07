@@ -1,7 +1,6 @@
 package com.publiccms.controller.admin.cms;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -180,11 +179,12 @@ public class CmsWebFileAdminController {
                 if (overwrite || !CmsFileUtils.exists(fuleFilePath)) {
                     CmsFileUtils.mkdirsParent(fuleFilePath);
                     if (CommonUtils.notEmpty(base64File)) {
-                        byte[] data = VerificationUtils.base64Decode(base64File);
-                        ImageUtils.image2Ico(new ByteArrayInputStream(data), suffix, size, new File(fuleFilePath));
+                        try (InputStream inputStream = new ByteArrayInputStream(VerificationUtils.base64Decode(base64File))) {
+                            ImageUtils.image2Ico(inputStream, suffix, size, fuleFilePath);
+                        }
                     } else {
                         try (InputStream inputStream = file.getInputStream()) {
-                            ImageUtils.image2Ico(inputStream, suffix, size, new File(fuleFilePath));
+                            ImageUtils.image2Ico(inputStream, suffix, size, fuleFilePath);
                         }
                     }
                     FileUploadResult uploadResult = CmsFileUtils.getFileSize(fuleFilePath, originalName, suffix);
