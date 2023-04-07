@@ -3,6 +3,7 @@ package com.publiccms.controller.admin.cms;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
@@ -170,10 +171,13 @@ public class CmsWebFileAdminController {
                 if (overwrite || !CmsFileUtils.exists(fuleFilePath)) {
                     CmsFileUtils.mkdirsParent(fuleFilePath);
                     if (CommonUtils.notEmpty(base64File)) {
-                        ImageUtils.image2Ico(new ByteArrayInputStream(VerificationUtils.base64Decode(base64File)), suffix, size,
-                                new File(fuleFilePath));
+                        try (InputStream inputStream = new ByteArrayInputStream(VerificationUtils.base64Decode(base64File))) {
+                            ImageUtils.image2Ico(inputStream, suffix, size, new File(fuleFilePath));
+                        }
                     } else {
-                        ImageUtils.image2Ico(file.getInputStream(), suffix, size, new File(fuleFilePath));
+                        try (InputStream inputStream = file.getInputStream()) {
+                            ImageUtils.image2Ico(inputStream, suffix, size, new File(fuleFilePath));
+                        }
                     }
                     FileSize fileSize = CmsFileUtils.getFileSize(fuleFilePath, suffix);
                     logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
@@ -279,7 +283,7 @@ public class CmsWebFileAdminController {
      * @param path
      * @param encoding
      * @param here
-     * @param overwrite 
+     * @param overwrite
      * @param request
      * @param model
      * @return view name

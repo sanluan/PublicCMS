@@ -52,8 +52,9 @@ public abstract class AbstractExchange<E, D> implements Exchange<E, D> {
         try {
             outputStream.reset();
             Constants.objectMapper.writeValue(outputStream, value);
-            ZipUtils.compressFile(new ByteArrayInputStream(outputStream.toByteArray()), zipOutputStream,
-                    getPath(directory, path));
+            try (InputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray())) {
+                ZipUtils.compressFile(inputStream, zipOutputStream, getPath(directory, path));
+            }
         } catch (IOException e) {
         }
     }
