@@ -17,103 +17,103 @@
         ${r'${getPrivateUrl(attribute.'+extend.id.code+r')!}'}
 <#elseif 'category'=extend.inputType>
     <#if extend.multiple>
-        <#noparse><@cms.category ids=attribute.</#noparse>{$extend.id.code}<#noparse>>
+        <#noparse><@cms.category ids=attribute.</#noparse>${extend.id.code}<#noparse>>
             <#list map as k,v>
                 <a href="${v.url}">${v.name}</a><#sep>,
             </#list>
         </@cms.category></#noparse>
     <#else>
-        <#noparse><@cms.category id=attribute.</#noparse>{$extend.id.code}<#noparse>><a href="${object.url}">${object.name}</a></@cms.category></#noparse>
+        <#noparse><@cms.category id=attribute.</#noparse>${extend.id.code}<#noparse>><a href="${object.url}">${object.name}</a></@cms.category></#noparse>
     </#if>
 <#elseif 'content'=extend.inputType>
     <#if extend.multiple>
-        <#noparse><@cms.content ids=attribute.</#noparse>{$extend.id.code}<#noparse>>
+        <#noparse><@cms.content ids=attribute.</#noparse>${extend.id.code}<#noparse>>
             <#list map as k,v>
                 <a href="${v.url}">${v.title}</a><#sep>,
             </#list>
         </@cms.content></#noparse>
     <#else>
-        <#noparse><@cms.content id=attribute.</#noparse>{$extend.id.code}<#noparse>><a href="${object.url}">${object.title}</a></@cms.content></#noparse>
+        <#noparse><@cms.content id=attribute.</#noparse>${extend.id.code}<#noparse>><a href="${object.url}">${object.title}</a></@cms.content></#noparse>
     </#if>
 <#elseif 'user'=extend.inputType>
     <#if extend.multiple>
-        <#noparse><@sys.user ids=attribute.</#noparse>{$extend.id.code}<#noparse>>
+        <#noparse><@sys.user ids=attribute.</#noparse>${extend.id.code}<#noparse>>
             <#list map as k,v>
                 <a href="${v.url}">${v.nickname}</a><#sep>,
             </#list>
         </@sys.user></#noparse>
     <#else>
-        <#noparse><@sys.user id=attribute.</#noparse>{$extend.id.code}<#noparse>>${object.nickname}</@sys.user></#noparse>
+        <#noparse><@sys.user id=attribute.</#noparse>${extend.id.code}<#noparse>>${object.nickname}</@sys.user></#noparse>
     </#if>
 <#elseif 'tag'=extend.inputType>
     <#if extend.multiple>
-        <#noparse><@cms.tag ids=attribute.</#noparse>{$extend.id.code}<#noparse>>
+        <#noparse><@cms.tag ids=attribute.</#noparse>${extend.id.code}<#noparse>>
             <#list map as k,v>
                 <a href="${v.url}">${v.name}</a><#sep>,
             </#list>
         </@cms.tag></#noparse>
     <#else>
-        <#noparse><@cms.tag id=attribute.</#noparse>{$extend.id.code}<#noparse>>${object.name}</@cms.tag></#noparse>
+        <#noparse><@cms.tag id=attribute.</#noparse>${extend.id.code}<#noparse>>${object.name}</@cms.tag></#noparse>
     </#if>
 <#elseif 'color'=extend.inputType>
         <#noparse><span style="color:${(attribute.'+extend.id.code+r')!}">text</span></#noparse>
 <#elseif 'survey'=extend.inputType>
     <#if extend.multiple>
-        <#noparse><@cms.survey ids=attribute.</#noparse>{$extend.id.code}<#noparse>>
+        <#noparse><@cms.survey ids=attribute.</#noparse>${extend.id.code}<#noparse>>
             <#list map as k,v>
                 <a href="${v.url}">${v.title}</a><#sep>,
             </#list>
         </@cms.survey></#noparse>
     <#else>
-        <#noparse><@cms.survey id=attribute.</#noparse>{$extend.id.code}<#noparse>>${object.title}</@cms.survey></#noparse>
+        <#noparse><@cms.survey id=attribute.</#noparse>${extend.id.code}<#noparse>>${object.title}</@cms.survey></#noparse>
     </#if>
 <#elseif 'vote'=extend.inputType>
     <#if extend.multiple>
-        <#noparse><@cms.vote ids=attribute.</#noparse>{$extend.id.code}<#noparse>>
+        <#noparse><@cms.vote ids=attribute.</#noparse>${extend.id.code}<#noparse>>
             <#list map as k,v>
                 <a href="${v.url}">${v.title}</a><#sep>,
             </#list>
         </@cms.vote></#noparse>
     <#else>
-        <#noparse><@cms.vote id=attribute.</#noparse>{$extend.id.code}<#noparse>>${object.title}</@cms.vote></#noparse>
+        <#noparse><@cms.vote id=attribute.</#noparse>${extend.id.code}<#noparse>>${object.title}</@cms.vote></#noparse>
     </#if>
 <#elseif 'tagType'=extend.inputType>
     <#if extend.multiple>
-        <#noparse><@cms.tagType ids=attribute.</#noparse>{$extend.id.code}<#noparse>>
+        <#noparse><@cms.tagType ids=attribute.</#noparse>${extend.id.code}<#noparse>>
             <#list map as k,v>
                 <a href="${v.url}">${v.name}</a><#sep>,
             </#list>
         </@cms.tagType></#noparse>
     <#else>
-        <#noparse><@cms.tagType id=attribute.</#noparse>{$extend.id.code}<#noparse>>${object.name}</@cms.tagType></#noparse>
+        <#noparse><@cms.tagType id=attribute.</#noparse>${extend.id.code}<#noparse>>${object.name}</@cms.tagType></#noparse>
     </#if>
 <#elseif 'categoryType'=extend.inputType>
     <#if extend.multiple>
-        <#noparse><@cms.categoryType ids=attribute.</#noparse>{$extend.id.code}<#noparse>>
+        <#noparse><@cms.categoryType ids=attribute.</#noparse>${extend.id.code}<#noparse>>
             <#list map as k,v>
                 <a href="${v.url}">${v.name}</a><#sep>,
             </#list>
         </@cms.categoryType></#noparse>
     <#else>
-        <#noparse><@cms.categoryType id=attribute.</#noparse>{$extend.id.code}<#noparse>>${object.name}</@cms.categoryType></#noparse>
+        <#noparse><@cms.categoryType id=attribute.</#noparse>${extend.id.code}<#noparse>>${object.name}</@cms.categoryType></#noparse>
     </#if>
 <#elseif 'dictionary'=extend.inputType>
     <#if extend.multiple>
-        <#noparse><@cms.dictionaryData dictionaryId='</#noparse>{$extend.dictionaryId}<#noparse>' values=attribute.</#noparse>{$extend.id.code}<#noparse>>
+        <#noparse><@cms.dictionaryData dictionaryId='</#noparse>${extend.dictionaryId}<#noparse>' values=attribute.</#noparse>${extend.id.code}<#noparse>>
             <#list map as k,d>${k}:${d.text}<#sep>,</#list>
         </@cms.dictionaryData></#noparse>
     <#else>
-        <#noparse><@cms.dictionaryData dictionaryId='</#noparse>{$extend.dictionaryId}<#noparse>' value=attribute.</#noparse>{$extend.id.code}<#noparse>>${object.id.value}:${object.text}</@cms.dictionaryData></#noparse>
+        <#noparse><@cms.dictionaryData dictionaryId='</#noparse>${extend.dictionaryId}<#noparse>' value=attribute.</#noparse>${extend.id.code}<#noparse>>${object.id.value}:${object.text}</@cms.dictionaryData></#noparse>
     </#if>
 <#elseif 'dept'=extend.inputType>
     <#if extend.multiple>
-        <#noparse><@sys.dept ids=attribute.</#noparse>{$extend.id.code}<#noparse>>
+        <#noparse><@sys.dept ids=attribute.</#noparse>${extend.id.code}<#noparse>>
             <#list map as k,v>
                 <a href="${v.url}">${v.name}</a><#sep>,
             </#list>
         </@sys.dept></#noparse>
     <#else>
-        <#noparse><@sys.dept id=attribute.</#noparse>{$extend.id.code}<#noparse>>${object.name}</@sys.dept></#noparse>
+        <#noparse><@sys.dept id=attribute.</#noparse>${extend.id.code}<#noparse>>${object.name}</@sys.dept></#noparse>
     </#if>
 <#elseif 'keyvalue'=extend.inputType>
         <#noparse><table border="1">
@@ -124,7 +124,7 @@
                 </tr>
             </thead>
             <tbody>
-                <#list attribute.</#noparse>{$extend.id.code}<#noparse>?split(",")?chunk(2) as row>
+                <#list attribute.</#noparse>${extend.id.code}<#noparse>?split(",")?chunk(2) as row>
                     <tr>
                         <#list row as a><td>${a}</td></#list>
                     </tr>
