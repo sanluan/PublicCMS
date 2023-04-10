@@ -118,7 +118,7 @@ subprojects {
         // http://mvnrepository.com/artifact/org.apache.ant/ant
         antVersion = "1.10.13"
         // https://mvnrepository.com/artifact/org.glassfish.jaxb/jaxb-runtime
-        jaxbVersion = "3.0.2"
+        jaxbVersion = "2.3.1"
     }
     sourceCompatibility = 17
     targetCompatibility = 17
