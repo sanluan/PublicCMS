@@ -112,7 +112,7 @@
         <!-- http://mvnrepository.com/artifact/org.apache.ant/ant -->
         <version.ant>1.10.13</version.ant>
         <!-- https://mvnrepository.com/artifact/org.glassfish.jaxb/jaxb-runtime -->
-        <version.jaxb>3.0.2</version.jaxb>
+        <version.jaxb>2.3.1</version.jaxb>
     </properties>
     <dependencyManagement>
         <dependencies>
