@@ -35,11 +35,11 @@ import freemarker.template.TemplateException;
  * <p>
  * 使用示例
  * <p>
- * &lt;@tools.systemProperties&gt;${.vars['java.version']}&lt;/@tools.placeMetadata&gt;
- * 
+ * &lt;@tools.systemProperties&gt;${.vars['java.version']}&lt;/@tools.systemProperties&gt;
+ *
  * <pre>
 &lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/tools/systemProperties?appToken=接口访问授权Token', function(data){    
+ $.getJSON('${site.dynamicPath}api/directive/tools/systemProperties?appToken=接口访问授权Token', function(data){
    console.log(data['java.version']);
  });
  &lt;/script&gt;
