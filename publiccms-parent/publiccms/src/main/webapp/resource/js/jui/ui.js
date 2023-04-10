@@ -186,7 +186,6 @@ function initUI(_box) {
     $("input[type=text], input[type=number], input[type=password], textarea", $p).not("textarea.editor", $p).addClass("textInput");
     $("input[readonly], textarea[readonly]", $p).addClass("readonly");
     $("input[disabled=true], textarea[disabled=true]", $p).addClass("disabled");
-    $("input[type=text]", $p).not("div.tabs input[type=text]", $p).filter("[alt]").inputAlert();
 }
 /**
  * 为容器初始化链接

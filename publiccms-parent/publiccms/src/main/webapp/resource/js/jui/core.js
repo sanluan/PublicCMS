@@ -405,39 +405,6 @@ var JUI = {
             }
             return h;
         },
-        inputAlert: function() {
-            return this.each(function() {
-                var $this = $(this);
-                function getAltBox() {
-                    return $this.parent().find("label.alt");
-                }
-                function altBoxCss(opacity) {
-                    var position = $this.position();
-                    return {
-                        width: $this.width(), top: position.top + "px", left: position.left + "px", opacity: opacity || 1
-                    };
-                }
-                if (getAltBox().length < 1 ) {
-                    if (!$this.attr("id") ) {
-                        $this.attr("id", $this.attr("name") + "_" + Math.round(Math.random() * 10000));
-                    }
-                    var $label = $("<label class=\"alt\" for=\"" + $this.attr("id") + "\">" + $this.attr("alt") + "</label>").appendTo($this.parent());
-                    $label.css(altBoxCss(0.6));
-                    if ($this.val() ) {
-                        $label.hide();
-                    }
-                }
-                $this.focus(function() {
-                    getAltBox().css(altBoxCss(0.3));
-                }).blur(function() {
-                    if (!$(this).val() ) {
-                        getAltBox().show().css("opacity", 1);
-                    }
-                }).keydown(function() {
-                    getAltBox().hide();
-                });
-            });
-        },
         isTag: function(tn) {
             if (!tn || undefined == $(this)[0] ) {
                 return false;

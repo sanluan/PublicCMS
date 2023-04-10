@@ -3,6 +3,7 @@ package ${base}.${directivePack};
 // Generated ${.now?date} by com.publiccms.common.generator.SourceGenerator
 
 import java.io.IOException;
+import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
 

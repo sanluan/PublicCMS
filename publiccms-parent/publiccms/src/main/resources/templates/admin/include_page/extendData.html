@@ -246,7 +246,7 @@
         <@input e value type/>
     </div>
         <#else>
-    <dl <#if !['number','alphaColor','color','date','datetime','boolean','text','password']?seq_contains(e.inputType)||e.description?has_content||e.multiple>class="nowrap"</#if>>
+    <dl <#if !['number','alphaColor','color','date','datetime','boolean','text','password']?seq_contains(e.inputType)||e.description?has_content||e.multiple||e?is_first>class="nowrap"</#if>>
         <dt>${(e.name)}:</dt>
         <dd<#if 'editor'=e.inputType> style="width:90%;"</#if>>
             <@input e value type historyItemType historyItemId/>
