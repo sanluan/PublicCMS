@@ -110,6 +110,8 @@
         <version.mail>2.0.1</version.mail>
         <!-- http://mvnrepository.com/artifact/org.apache.ant/ant -->
         <version.ant>1.10.13</version.ant>
+        <!-- https://mvnrepository.com/artifact/org.glassfish.jaxb/jaxb-runtime -->
+        <version.jaxb>3.0.2</version.jaxb>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -269,6 +271,12 @@
                 <groupId>org.ehcache</groupId>
                 <artifactId>ehcache</artifactId>
                 <version>${version.ehcache}</version>
+                <exclusions>
+                    <exclusion>
+		                <groupId>org.glassfish.jaxb</groupId>
+					    <artifactId>jaxb-runtime</artifactId>
+                    </exclusion>
+                 </exclusions>
             </dependency>
             <dependency>
                 <groupId>org.freemarker</groupId>
@@ -450,6 +458,11 @@
                 <artifactId>ant</artifactId>
                 <version>${version.ant}</version>
             </dependency>
+            <dependency>
+			    <groupId>org.glassfish.jaxb</groupId>
+			    <artifactId>jaxb-runtime</artifactId>
+			    <version>${version.jaxb}</version>
+			</dependency>
         </dependencies>
     </dependencyManagement>
     <repositories>
