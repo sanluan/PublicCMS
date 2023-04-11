@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import javax.annotation.Priority;
 import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
@@ -47,6 +48,7 @@ import freemarker.template.TemplateException;
  * 
  */
 @Component
+@Priority(3)
 public class CategoryExchangeComponent extends AbstractDataExchange<CmsCategory, Category> {
     @Resource
     private CmsCategoryService service;
@@ -102,36 +104,35 @@ public class CategoryExchangeComponent extends AbstractDataExchange<CmsCategory,
         entity.setId(null);
         data.setEntity(entity);
         data.setAttribute(attributeService.getEntity(categoryId));
-        if (null != data.getAttribute()) {
-            if (CommonUtils.notEmpty(data.getAttribute().getData())) {
-                if (null == directory) {
-                    Map<String, String> map = ExtendUtils.getExtendMap(data.getAttribute().getData());
-                    Set<String> filelist = new HashSet<>();
-                    for (String value : map.values()) {
-                        if (null != value && value.contains("<")) {
-                            HtmlUtils.getFileList(value, filelist);
-                        }
+        if (null != data.getAttribute() && (CommonUtils.notEmpty(data.getAttribute().getData()))) {
+            if (null == directory) {
+                Map<String, String> map = ExtendUtils.getExtendMap(data.getAttribute().getData());
+                Set<String> filelist = new HashSet<>();
+                for (String value : map.values()) {
+                    if (null != value && value.contains("<")) {
+                        HtmlUtils.getFileList(value, filelist);
                     }
-                    if (!filelist.isEmpty()) {
-                        for (String file : filelist) {
-                            if (file.startsWith(site.getSitePath())) {
-                                String fullName = StringUtils.removeStart(file, site.getSitePath());
-                                if (fullName.contains(Constants.DOT) && !fullName.contains(".htm")) {
-                                    String filepath = siteComponent.getWebFilePath(site.getId(), fullName);
-                                    try {
-                                        ZipUtils.compressFile(new File(filepath), zipOutputStream,
-                                                CommonUtils.joinString(ATTACHMENT_DIR, fullName));
-                                    } catch (IOException e) {
-                                    }
+                }
+                if (!filelist.isEmpty()) {
+                    for (String file : filelist) {
+                        if (file.startsWith(site.getSitePath())) {
+                            String fullName = StringUtils.removeStart(file, site.getSitePath());
+                            if (fullName.contains(Constants.DOT) && !fullName.contains(".htm")) {
+                                String filepath = siteComponent.getWebFilePath(site.getId(), fullName);
+                                try {
+                                    ZipUtils.compressFile(new File(filepath), zipOutputStream,
+                                            CommonUtils.joinString(ATTACHMENT_DIR, fullName));
+                                } catch (IOException e) {
                                 }
                             }
                         }
                     }
                 }
-                data.getAttribute().setData(StringUtils.replace(data.getAttribute().getData(), site.getSitePath(), "#SITEPATH#"));
-                data.getAttribute()
-                        .setData(StringUtils.replace(data.getAttribute().getData(), site.getDynamicPath(), "#DYNAMICPATH#"));
             }
+            data.getAttribute().setData(StringUtils.replace(data.getAttribute().getData(), site.getSitePath(), "#SITEPATH#"));
+            data.getAttribute()
+                    .setData(StringUtils.replace(data.getAttribute().getData(), site.getDynamicPath(), "#DYNAMICPATH#"));
+
         }
         data.setModelList(categoryModelService.getList(site.getId(), null, categoryId));
         if (null != entity.getExtendId()) {
@@ -270,11 +271,6 @@ public class CategoryExchangeComponent extends AbstractDataExchange<CmsCategory,
             } catch (IOException | TemplateException e) {
             }
         }
-    }
-
-    @Override
-    public int importOrder() {
-        return 1;
     }
 
     @Override

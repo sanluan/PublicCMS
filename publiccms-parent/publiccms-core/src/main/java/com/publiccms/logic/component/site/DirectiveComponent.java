@@ -12,6 +12,7 @@ import javax.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
 import com.publiccms.common.base.AbstractTaskDirective;
@@ -69,7 +70,7 @@ public class DirectiveComponent {
         return StringUtils.uncapitalize(className.replaceAll(directiveRemoveRegex, Constants.BLANK));
     }
 
-    @Resource
+    @Autowired
     private void init(FreeMarkerConfigurer freeMarkerConfigurer, List<AbstractTemplateDirective> templateDirectiveList,
             List<AbstractTaskDirective> taskDirectiveList, List<BaseMethod> methodList)
             throws TemplateModelException, IOException {

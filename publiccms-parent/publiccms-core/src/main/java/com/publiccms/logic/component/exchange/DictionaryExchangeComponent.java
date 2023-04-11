@@ -3,6 +3,8 @@ package com.publiccms.logic.component.exchange;
 import java.io.ByteArrayOutputStream;
 
 import org.apache.tools.zip.ZipOutputStream;
+
+import javax.annotation.Priority;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
@@ -25,6 +27,7 @@ import com.publiccms.views.pojo.exchange.Dictionary;
  * 
  */
 @Component
+@Priority(3)
 public class DictionaryExchangeComponent extends AbstractDataExchange<CmsDictionary, Dictionary> {
     @Resource
     private CmsDictionaryService service;
@@ -79,11 +82,6 @@ public class DictionaryExchangeComponent extends AbstractDataExchange<CmsDiction
                 excludeValueService.saveOrUpdate(data.getExcludeValueList());
             }
         }
-    }
-
-    @Override
-    public int importOrder() {
-        return 3;
     }
 
     @Override

@@ -689,10 +689,9 @@ public abstract class BaseDao<E> {
 
     @SuppressWarnings("unchecked")
     protected Class<E> getEntityClass() {
-        if (null == clazz) {
-            this.clazz = (Class<E>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-        }
-        return clazz;
+        return null == clazz
+                ? this.clazz = (Class<E>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]
+                : clazz;
     }
 
     protected abstract E init(E entity);

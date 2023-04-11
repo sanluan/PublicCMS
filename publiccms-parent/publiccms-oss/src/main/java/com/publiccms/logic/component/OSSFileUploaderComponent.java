@@ -182,9 +182,4 @@ public class OSSFileUploaderComponent implements FileUploader, SiteCache {
         presignerCache = cacheEntityFactory.createCacheEntity(OSSComponent.CONFIG_CODE + "Presigner",
                 CacheEntityFactory.MEMORY_CACHE_ENTITY);
     }
-
-    @Override
-    public int getOrder() {
-        return 1;
-    }
 }

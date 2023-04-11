@@ -3,7 +3,6 @@ package com.publiccms.logic.component.site;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
@@ -39,7 +38,6 @@ public class FileUploadComponent {
 
     @Autowired(required = false)
     public void initUploaderList(List<FileUploader> uploaderList) {
-        uploaderList.sort(Comparator.comparing(FileUploader::getOrder).reversed());
         this.uploaderList = uploaderList;
     }
 

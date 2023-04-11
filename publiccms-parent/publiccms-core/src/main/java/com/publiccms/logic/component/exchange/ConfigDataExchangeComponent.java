@@ -3,6 +3,7 @@ package com.publiccms.logic.component.exchange;
 import java.io.ByteArrayOutputStream;
 import java.util.Set;
 
+import javax.annotation.Priority;
 import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
@@ -24,6 +25,7 @@ import com.publiccms.logic.service.sys.SysConfigDataService;
  * 
  */
 @Component
+@Priority(2)
 public class ConfigDataExchangeComponent extends AbstractDataExchange<SysConfigData, SysConfigData> {
     @Resource
     private ConfigComponent configComponent;
@@ -76,11 +78,6 @@ public class ConfigDataExchangeComponent extends AbstractDataExchange<SysConfigD
                 service.saveOrUpdate(data);
             }
         }
-    }
-
-    @Override
-    public int importOrder() {
-        return 2;
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.publiccms.logic.component.parameter;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.annotation.Priority;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
@@ -17,6 +18,7 @@ import com.publiccms.logic.service.cms.CmsTagService;
  * TagParameterComponent 标签参数处理组件
  */
 @Component
+@Priority(6)
 public class TagParameterComponent extends AbstractLongParameterHandler<CmsTag> {
     @Resource
     private CmsTagService service;

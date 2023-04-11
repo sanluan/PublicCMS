@@ -44,7 +44,7 @@ import freemarker.template.TemplateModelException;
  * 
  * <pre>
 &lt;script&gt;
-$.getJSON('${site.dynamicPath}api/method/getPrivateUrl?parameters=index.html', function(data){
+$.getJSON('${site.dynamicPath}api/method/getPrivateUrl?appToken=接口访问授权Token&amp;parameters=index.html', function(data){
 console.log(data);
 });
 &lt;/script&gt;

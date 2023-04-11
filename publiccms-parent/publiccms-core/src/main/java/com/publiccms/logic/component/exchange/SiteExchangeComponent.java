@@ -234,7 +234,6 @@ public class SiteExchangeComponent {
                 });
                 templateComponent.clearTaskTemplateCache();
             }
-            exchangeList.sort((a, b) -> b.importOrder() - a.importOrder());
             for (AbstractDataExchange<?, ?> exchange : exchangeList) {
                 exchange.importData(site, userId, exchange.getDirectory(), overwrite, zipFile);
             }

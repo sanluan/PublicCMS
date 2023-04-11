@@ -3,9 +3,9 @@ package com.publiccms.controller.admin.sys;
 import java.util.Comparator;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
-import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -18,6 +18,7 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.log.LogOperate;
+import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.config.ConfigComponent;
@@ -53,7 +54,7 @@ public class SysConfigAdminController {
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, @ModelAttribute SysConfig entity,
             String configCode, HttpServletRequest request) {
         if (CommonUtils.notEmpty(entity.getExtendList())) {
-            entity.getExtendList().sort(Comparator.comparing(e -> e.getSort()));
+            entity.getExtendList().sort(Comparator.comparing(SysExtendField::getSort));
             entity.getExtendList().forEach(e -> {
                 if (CommonUtils.empty(e.getName())) {
                     e.setName(e.getId().getCode());

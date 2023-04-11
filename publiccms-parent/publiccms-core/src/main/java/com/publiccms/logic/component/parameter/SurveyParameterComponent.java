@@ -3,6 +3,7 @@ package com.publiccms.logic.component.parameter;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.annotation.Priority;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
@@ -17,6 +18,7 @@ import com.publiccms.logic.service.cms.CmsSurveyService;
  * SurveyParameterComponent 问卷参数处理组件
  */
 @Component
+@Priority(10)
 public class SurveyParameterComponent extends AbstractLongParameterHandler<CmsSurvey> {
     @Resource
     private CmsSurveyService service;

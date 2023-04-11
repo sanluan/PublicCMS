@@ -3,6 +3,7 @@ package com.publiccms.logic.component.parameter;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.annotation.Priority;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
@@ -17,6 +18,7 @@ import com.publiccms.logic.service.cms.CmsVoteService;
  * VoteParameterComponent 投票参数处理组件
  */
 @Component
+@Priority(9)
 public class VoteParameterComponent extends AbstractLongParameterHandler<CmsVote> {
     @Resource
     private CmsVoteService service;

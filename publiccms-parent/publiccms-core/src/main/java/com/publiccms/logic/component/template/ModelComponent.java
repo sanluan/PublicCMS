@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -76,7 +77,7 @@ public class ModelComponent implements SiteCache {
     public List<CmsCategoryType> getCategoryTypeList(short siteId) {
         Map<String, CmsCategoryType> map = getCategoryTypeMap(siteId);
         List<CmsCategoryType> list = new ArrayList<>(map.values());
-        list.sort((e1, e2) -> e1.getSort() - e2.getSort());
+        list.sort(Comparator.comparing(CmsCategoryType::getSort));
         return list;
     }
 

@@ -7,8 +7,6 @@ import com.publiccms.entities.sys.SysSite;
 
 public interface DataExchange<E, D> {
     public String getDirectory();
-    
-    public int importOrder();
 
     public void exportAll(SysSite site, String directory, ZipOutputStream zipOutputStream);
 

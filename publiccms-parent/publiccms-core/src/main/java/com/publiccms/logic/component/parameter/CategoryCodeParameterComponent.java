@@ -3,6 +3,7 @@ package com.publiccms.logic.component.parameter;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.annotation.Priority;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
@@ -17,6 +18,7 @@ import com.publiccms.logic.service.cms.CmsCategoryService;
  * CategoryCodeParameterComponent 分类编码参数处理组件
  */
 @Component
+@Priority(5)
 public class CategoryCodeParameterComponent extends AbstractStringParameterHandler<CmsCategory> {
     /**
      * 

@@ -3,6 +3,8 @@ package com.publiccms.logic.component.parameter;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Priority;
+
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.api.Config;
@@ -13,6 +15,7 @@ import com.publiccms.entities.sys.SysSite;
  * NumberParameterComponent 数字参数处理组件
  */
 @Component
+@Priority(2)
 public class NumberParameterComponent extends AbstractLongParameterHandler<Long> {
 
     @Override

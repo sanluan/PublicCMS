@@ -315,7 +315,7 @@ public class CmsFileUtils {
         FileUploadResult uploadResult = new FileUploadResult();
         uploadResult.setFileSize(file.length());
         uploadResult.setFilename(filename);
-        
+
         if (null != suffix && !suffix.startsWith(Constants.DOT)) {
             suffix = CommonUtils.joinString(Constants.DOT, suffix);
         }

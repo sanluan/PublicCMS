@@ -2,7 +2,7 @@ package com.publiccms.logic.component.template;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -17,6 +17,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.LocaleResolver;
@@ -37,15 +38,7 @@ import com.publiccms.entities.sys.SysDomain;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.config.ConfigDataComponent;
 import com.publiccms.logic.component.config.SiteConfigComponent;
-import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.component.site.SiteComponent;
-import com.publiccms.logic.component.site.StatisticsComponent;
-import com.publiccms.logic.service.cms.CmsCategoryService;
-import com.publiccms.logic.service.cms.CmsContentService;
-import com.publiccms.logic.service.cms.CmsSurveyService;
-import com.publiccms.logic.service.cms.CmsTagService;
-import com.publiccms.logic.service.cms.CmsVoteService;
-import com.publiccms.logic.service.sys.SysUserService;
 import com.publiccms.views.pojo.entities.CmsPageData;
 import com.publiccms.views.pojo.entities.CmsPageMetadata;
 import com.publiccms.views.pojo.entities.ParameterType;
@@ -80,22 +73,6 @@ public class TemplateCacheComponent implements Cache {
     private MetadataComponent metadataComponent;
     @Resource
     private ConfigDataComponent configDataComponent;
-    @Resource
-    private CmsContentService contentService;
-    @Resource
-    private CmsCategoryService categoryService;
-    @Resource
-    private CmsVoteService voteService;
-    @Resource
-    private CmsTagService tagService;
-    @Resource
-    private CmsSurveyService surveyService;
-    @Resource
-    protected FileUploadComponent fileUploadComponent;
-    @Resource
-    private SysUserService userService;
-    @Resource
-    private StatisticsComponent statisticsComponent;
     private Map<String, ParameterTypeHandler<?, ?>> parameterTypeHandlerMap;
 
     public String getViewName(LocaleResolver localeResolver, SysSite site, Long id, Integer pageIndex, String requestPath,
@@ -187,8 +164,14 @@ public class TemplateCacheComponent implements Cache {
                     }
                 }
             } else if (!parameterType.isRequired() || CommonUtils.notEmpty(values)) {
-                return billingValue(CommonUtils.notEmpty(parameterType.getAlias()) ? parameterType.getAlias() : parameterName,
-                        values, parameterType, site, model);
+                try {
+                    if (!billingValue(CommonUtils.notEmpty(parameterType.getAlias()) ? parameterType.getAlias() : parameterName,
+                            values, parameterType, site, model)) {
+                        return false;
+                    }
+                } catch (IllegalArgumentException e) {
+                    return false;
+                }
             } else {
                 return false;
             }
@@ -335,13 +318,20 @@ public class TemplateCacheComponent implements Cache {
     }
 
     /**
+     * @return the parameterTypeHandlerMap
+     */
+    public Map<String, ParameterTypeHandler<?, ?>> getParameterTypeHandlerMap() {
+        return parameterTypeHandlerMap;
+    }
+
+    /**
      * @param parameterTypeHandlerList
      * @param parameterTypeHandlerMap
      *            the parameterTypeHandlerMap to set
      */
-    @Resource
+    @Autowired
     public <E, P> void setParameterTypeHandlerMap(List<ParameterTypeHandler<E, P>> parameterTypeHandlerList) {
-        this.parameterTypeHandlerMap = new HashMap<>();
+        this.parameterTypeHandlerMap = new LinkedHashMap<>();
         for (ParameterTypeHandler<E, P> parameterTypeHandler : parameterTypeHandlerList) {
             this.parameterTypeHandlerMap.put(parameterTypeHandler.getType(), parameterTypeHandler);
         }

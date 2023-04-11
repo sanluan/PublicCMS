@@ -12,15 +12,15 @@ import com.publiccms.common.base.AbstractStringParameterHandler;
 import com.publiccms.entities.sys.SysSite;
 
 /**
- * TextareaParameterComponent 多行文本参数处理组件
+ * TextParameterComponent 多行文本参数处理组件
  */
 @Component
-@Priority(8)
-public class TextareaParameterComponent extends AbstractStringParameterHandler<String> {
+@Priority(1)
+public class TextParameterComponent extends AbstractStringParameterHandler<String> {
 
     @Override
     public String getType() {
-        return Config.INPUTTYPE_TEXTAREA;
+        return Config.INPUTTYPE_TEXT;
     }
 
     @Override
