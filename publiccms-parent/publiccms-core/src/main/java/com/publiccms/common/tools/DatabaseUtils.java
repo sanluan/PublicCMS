@@ -17,6 +17,9 @@ import com.publiccms.common.database.CmsDataSource;
  */
 public class DatabaseUtils {
 
+    private DatabaseUtils() {
+    }
+
     /**
      * @param databaseConfigFile
      * @return connection
@@ -25,18 +28,26 @@ public class DatabaseUtils {
      * @throws PropertyVetoException
      * @throws ClassNotFoundException
      */
-    public static Connection getConnection(String databaseConfigFile)
-            throws SQLException, IOException, PropertyVetoException, ClassNotFoundException {
+    public static Connection getConnection(String databaseConfigFile) throws SQLException, IOException, ClassNotFoundException {
         Properties dbconfigProperties = CmsDataSource.loadDatabaseConfig(databaseConfigFile);
         String driverClassName = dbconfigProperties.getProperty("jdbc.driverClassName");
         String url = dbconfigProperties.getProperty("jdbc.url");
         String userName = dbconfigProperties.getProperty("jdbc.username");
-        String password = dbconfigProperties.getProperty("jdbc.password");
-        String encryptPassword = dbconfigProperties.getProperty("jdbc.encryptPassword");
-        if (null != encryptPassword) {
-            password = VerificationUtils.decrypt(VerificationUtils.base64Decode(encryptPassword), CommonConstants.ENCRYPT_KEY);
-        }
+        String password = getPassword(dbconfigProperties);
         return getConnection(driverClassName, url, userName, password);
+    }
+
+    public static String getPassword(Properties properties) {
+        String password = properties.getProperty("jdbc.password");
+        String encryptPassword = properties.getProperty("jdbc.encryptPassword");
+        if (null != encryptPassword) {
+            password = VerificationUtils.decryptAES(VerificationUtils.base64Decode(encryptPassword), CommonConstants.ENCRYPT_KEY);
+            if (CommonUtils.empty(password)) {
+                password = VerificationUtils.decrypt3DES(VerificationUtils.base64Decode(encryptPassword),
+                        CommonConstants.ENCRYPT_KEY);
+            }
+        }
+        return password;
     }
 
     /**

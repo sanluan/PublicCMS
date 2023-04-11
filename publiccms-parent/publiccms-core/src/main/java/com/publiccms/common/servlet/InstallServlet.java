@@ -191,7 +191,7 @@ public class InstallServlet extends HttpServlet {
             cmsUpgrader.setDataBaseUrl(dbconfig, host, port, database, timeZone);
             dbconfig.setProperty("jdbc.username", request.getParameter("username"));
             dbconfig.setProperty("jdbc.encryptPassword", VerificationUtils
-                    .base64Encode(VerificationUtils.encrypt(request.getParameter("password"), CommonConstants.ENCRYPT_KEY)));
+                    .base64Encode(VerificationUtils.encryptAES(request.getParameter("password"), CommonConstants.ENCRYPT_KEY)));
             String databaseConfiFile = CommonUtils.joinString(CommonConstants.CMS_FILEPATH,
                     CmsDataSource.DATABASE_CONFIG_FILENAME);
             File file = new File(databaseConfiFile);

@@ -91,7 +91,7 @@ public abstract class Constants {
      */
     public static final char COMMA = ',';
     /**
-     * 逗号分隔符
+     * 空字节数组
      * 
      * comma delimited
      */
