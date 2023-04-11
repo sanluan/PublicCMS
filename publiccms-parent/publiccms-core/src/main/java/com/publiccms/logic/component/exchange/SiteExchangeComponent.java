@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.publiccms.common.base.AbstractExchange;
+import com.publiccms.common.base.AbstractDataExchange;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CmsFileUtils;
@@ -46,7 +46,7 @@ public class SiteExchangeComponent {
     protected static final Log log = LogFactory.getLog(SiteExchangeComponent.class);
 
     @Resource
-    private List<AbstractExchange<?, ?>> exchangeList;
+    private List<AbstractDataExchange<?, ?>> exchangeList;
     @Resource
     private SiteComponent siteComponent;
     @Resource
@@ -65,7 +65,7 @@ public class SiteExchangeComponent {
      * @return
      */
     public static <E, D> String importData(SysSite site, long userId, boolean overwrite, String dataFileSuffix,
-            AbstractExchange<E, D> exchangeComponent, MultipartFile file, ModelMap model) {
+            AbstractDataExchange<E, D> exchangeComponent, MultipartFile file, ModelMap model) {
         if (null != file && !file.isEmpty()) {
             String originalName = file.getOriginalFilename();
             if (null != originalName && originalName.endsWith(dataFileSuffix)) {
@@ -96,7 +96,7 @@ public class SiteExchangeComponent {
      * @param zipOutputStream
      */
     public void exportAll(SysSite site, ZipOutputStream zipOutputStream) {
-        for (AbstractExchange<?, ?> exchange : exchangeList) {
+        for (AbstractDataExchange<?, ?> exchange : exchangeList) {
             exchange.exportAll(site, exchange.getDirectory(), zipOutputStream);
         }
     }
@@ -235,7 +235,7 @@ public class SiteExchangeComponent {
                 templateComponent.clearTaskTemplateCache();
             }
             exchangeList.sort((a, b) -> b.importOrder() - a.importOrder());
-            for (AbstractExchange<?, ?> exchange : exchangeList) {
+            for (AbstractDataExchange<?, ?> exchange : exchangeList) {
                 exchange.importData(site, userId, exchange.getDirectory(), overwrite, zipFile);
             }
         }

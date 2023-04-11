@@ -5,7 +5,7 @@ import org.apache.tools.zip.ZipOutputStream;
 
 import com.publiccms.entities.sys.SysSite;
 
-public interface Exchange<E, D> {
+public interface DataExchange<E, D> {
     public String getDirectory();
     
     public int importOrder();

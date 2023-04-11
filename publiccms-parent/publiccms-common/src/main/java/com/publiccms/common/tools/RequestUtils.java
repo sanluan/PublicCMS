@@ -18,6 +18,8 @@ public class RequestUtils {
     private RequestUtils() {
     }
 
+    public static final String CRLF = "\r|\n";
+
     /**
      * @param parameterMap
      * @param key
@@ -53,7 +55,7 @@ public class RequestUtils {
      */
     public static String removeCRLF(String string) {
         if (null != string) {
-            return string.replaceAll("\r|\n", Constants.BLANK);
+            return string.replaceAll(CRLF, Constants.BLANK);
         }
         return string;
     }
@@ -116,10 +118,10 @@ public class RequestUtils {
     public static Cookie addCookie(String contextPath, String schema, HttpServletResponse response, String name, String value,
             Integer expiry, String domain) {
         if (null != name) {
-            name = name.replaceAll("\r|\n", Constants.BLANK);
+            name = name.replaceAll(CRLF, Constants.BLANK);
         }
         if (null != value) {
-            value = value.replaceAll("\r|\n", Constants.BLANK);
+            value = value.replaceAll(CRLF, Constants.BLANK);
         }
         Cookie cookie = new Cookie(name, value);
         if (CommonUtils.notEmpty(expiry)) {

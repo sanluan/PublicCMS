@@ -13,14 +13,14 @@ import org.apache.tools.zip.ZipEntry;
 import org.apache.tools.zip.ZipFile;
 import org.apache.tools.zip.ZipOutputStream;
 
-import com.publiccms.common.api.Exchange;
+import com.publiccms.common.api.DataExchange;
 import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ZipUtils;
 import com.publiccms.entities.sys.SysSite;
 
-public abstract class AbstractExchange<E, D> implements Exchange<E, D> {
-    protected static final Log log = LogFactory.getLog(AbstractExchange.class);
+public abstract class AbstractDataExchange<E, D> implements DataExchange<E, D> {
+    protected static final Log log = LogFactory.getLog(AbstractDataExchange.class);
     private Class<D> clazz;
 
     public static final String ATTACHMENT_DIR = "attachment/";

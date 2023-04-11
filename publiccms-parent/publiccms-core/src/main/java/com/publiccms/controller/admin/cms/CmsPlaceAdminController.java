@@ -39,6 +39,7 @@ import com.publiccms.entities.sys.SysDeptItemId;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.exchange.PlaceExchangeComponent;
+import com.publiccms.logic.component.exchange.PlaceExportComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
@@ -84,6 +85,8 @@ public class CmsPlaceAdminController {
     private CmsEditorHistoryService editorHistoryService;
     @Resource
     private PlaceExchangeComponent exchangeComponent;
+    @Resource
+    private PlaceExportComponent exportComponent;
 
     private String[] ignoreProperties = new String[] { "id", "siteId", "status", "userId", "type", "clicks", "path", "createDate",
             "disabled" };
@@ -291,7 +294,7 @@ public class CmsPlaceAdminController {
             path = path.replace("//", Constants.SEPARATOR);
         }
         Locale locale = RequestContextUtils.getLocale(request);
-        return exchangeComponent.exportExcelByQuery(site, path, userId, status, itemType, itemId, startPublishDate,
+        return exportComponent.exportExcelByQuery(site, path, userId, status, itemType, itemId, startPublishDate,
                 endPublishDate, orderField, orderType, locale);
     }
 

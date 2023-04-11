@@ -6,7 +6,7 @@ import org.apache.tools.zip.ZipOutputStream;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
-import com.publiccms.common.base.AbstractExchange;
+import com.publiccms.common.base.AbstractDataExchange;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsDictionary;
@@ -25,7 +25,7 @@ import com.publiccms.views.pojo.exchange.Dictionary;
  * 
  */
 @Component
-public class DictionaryExchangeComponent extends AbstractExchange<CmsDictionary, Dictionary> {
+public class DictionaryExchangeComponent extends AbstractDataExchange<CmsDictionary, Dictionary> {
     @Resource
     private CmsDictionaryService service;
     @Resource

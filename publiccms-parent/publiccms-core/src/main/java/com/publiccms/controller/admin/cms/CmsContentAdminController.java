@@ -61,6 +61,7 @@ import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.config.ConfigDataComponent;
 import com.publiccms.logic.component.config.SiteConfigComponent;
 import com.publiccms.logic.component.exchange.ContentExchangeComponent;
+import com.publiccms.logic.component.exchange.ContentExportComponent;
 import com.publiccms.logic.component.exchange.SiteExchangeComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.ModelComponent;
@@ -115,12 +116,14 @@ public class CmsContentAdminController {
     private SysSiteService siteService;
     @Resource
     private ContentExchangeComponent exchangeComponent;
+    @Resource
+    private ContentExportComponent exportComponent;
 
     public static final String[] ignoreProperties = new String[] { "siteId", "userId", "deptId", "categoryId", "tagIds", "sort",
             "createDate", "updateDate", "clicks", "comments", "scores", "scoreUsers", "score", "childs", "checkUserId",
             "disabled" };
 
-    public static final String[] ignorePropertiesWithUrl = ArrayUtils.addAll(ignoreProperties, new String[] { "url" });
+    public static final String[] ignorePropertiesWithUrl = ArrayUtils.addAll(ignoreProperties, "url");
 
     /**
      * 保存内容
@@ -608,8 +611,8 @@ public class CmsContentAdminController {
                         RequestContextUtils.getLocale(request), "message.content_static_fail", fail));
                 logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, "static.content", RequestUtils.getIpAddress(request),
-                        CommonUtils.getDate(), new StringBuilder(StringUtils.join(ids, Constants.COMMA))
-                                .append("; failed : ").append(fail).toString()));
+                        CommonUtils.getDate(),
+                        new StringBuilder(StringUtils.join(ids, Constants.COMMA)).append("; failed : ").append(fail).toString()));
             } else {
                 logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, "static.content", RequestUtils.getIpAddress(request),
@@ -663,7 +666,7 @@ public class CmsContentAdminController {
         queryEntity.setDisabled(false);
         queryEntity.setEmptyParent(true);
         Locale locale = RequestContextUtils.getLocale(request);
-        return exchangeComponent.exportExcelByQuery(site, queryEntity, orderField, orderType, locale);
+        return exportComponent.exportExcelByQuery(site, queryEntity, orderField, orderType, locale);
     }
 
     /**
@@ -712,7 +715,7 @@ public class CmsContentAdminController {
             @DateTimeFormat(pattern = "yyyy-MM-dd") Date endCreateDate, String workloadType, String dateField,
             HttpServletRequest request) {
         Locale locale = RequestContextUtils.getLocale(request);
-        return exchangeComponent.exportWorkload(site, status, startCreateDate, endCreateDate, workloadType, dateField, locale);
+        return exportComponent.exportWorkload(site, status, startCreateDate, endCreateDate, workloadType, dateField, locale);
     }
 
     /**

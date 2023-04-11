@@ -17,7 +17,7 @@ import org.apache.tools.zip.ZipFile;
 import org.apache.tools.zip.ZipOutputStream;
 import org.springframework.stereotype.Component;
 
-import com.publiccms.common.base.AbstractExchange;
+import com.publiccms.common.base.AbstractDataExchange;
 import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
@@ -47,7 +47,7 @@ import freemarker.template.TemplateException;
  * 
  */
 @Component
-public class CategoryExchangeComponent extends AbstractExchange<CmsCategory, Category> {
+public class CategoryExchangeComponent extends AbstractDataExchange<CmsCategory, Category> {
     @Resource
     private CmsCategoryService service;
     @Resource

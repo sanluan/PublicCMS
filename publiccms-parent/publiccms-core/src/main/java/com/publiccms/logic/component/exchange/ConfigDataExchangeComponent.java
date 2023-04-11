@@ -10,7 +10,7 @@ import org.apache.tools.zip.ZipFile;
 import org.apache.tools.zip.ZipOutputStream;
 import org.springframework.stereotype.Component;
 
-import com.publiccms.common.base.AbstractExchange;
+import com.publiccms.common.base.AbstractDataExchange;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysConfigData;
 import com.publiccms.entities.sys.SysConfigDataId;
@@ -24,7 +24,7 @@ import com.publiccms.logic.service.sys.SysConfigDataService;
  * 
  */
 @Component
-public class ConfigDataExchangeComponent extends AbstractExchange<SysConfigData, SysConfigData> {
+public class ConfigDataExchangeComponent extends AbstractDataExchange<SysConfigData, SysConfigData> {
     @Resource
     private ConfigComponent configComponent;
     @Resource
