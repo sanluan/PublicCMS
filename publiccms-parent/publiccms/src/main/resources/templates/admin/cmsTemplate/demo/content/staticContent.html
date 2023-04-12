@@ -60,22 +60,22 @@
                 </form>
             </div>
         </#if>
+        <#if content.hasImages>
+             <@cms.contentFileList contentId=content.id fileTypes='image'>
+                 <#list page.list as file>
+                     <figure class="text-center">
+                         <img loading="lazy" src="${(file.filePath)!}" alt="${(file.description)!}"/>
+                         <figcaption>${file?counter} ${(file.description)!}</figcaption>
+                     </figure>
+                 </#list>
+             </@cms.contentFileList>
+        </#if>
         <#if content.hasFiles>
             <@cms.contentFileList contentId=content.id fileTypes='video,audio,document,other'>
                 <#list page.list as file>
                     <p><a href="${(file.filePath)!}" download="${(file.description)!}">${(file.description)!}</a></p>
                 </#list>
             </@cms.contentFileList>
-        </#if>
-        <#if content.hasImages>
-            <figure class="text-center">
-             <@cms.contentFileList contentId=content.id fileTypes='image'>
-                 <#list page.list as file>
-                     <img src="${(file.filePath)!}" alt="${(file.description)!}"/>
-                     <p>${file?counter} ${(file.description)!}</p>
-                 </#list>
-             </@cms.contentFileList>
-            </figure>
         </#if>
         <#if content.tagIds?has_content>
             <p>
@@ -175,7 +175,7 @@
             $('article p em').text(data.clicks);
         });
 
-        uParse('#content',{rootPath: '${site.dynamicPath}resource/ueditor/'});
+        uParse('#content',{rootPath: '${site.dynamicPath}resource/plugins/ueditor/'});
     </script>
     <script>
     var itemString="itemType=content&itemId=${content.id}";

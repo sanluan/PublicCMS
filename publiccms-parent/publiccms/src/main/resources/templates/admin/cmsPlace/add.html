@@ -6,17 +6,10 @@
 <#if !a?has_content&&itemType?has_content>
 <#switch itemType>
     <#case 'content'>
-        <@cms.content id=itemId absoluteURL=false>
-            <#assign content=object/>
-            <#if !content.onlyUrl && !content.hasStatic>
-                <#assign contentUrl=getUrl(site.dynamicPath,content.url)/>
-            <#else>
-                <#assign contentUrl=content.url/>
-            </#if>
-        </@cms.content>
+        <@cms.content id=itemId><#assign content=object/></@cms.content>
     <#break>
     <#case 'category'>
-        <@cms.category id=itemId absoluteURL=false><#assign category=object/><#assign categoryDescription=getCategoryAttribute(category.id).description!/></@cms.category>
+        <@cms.category id=itemId><#assign category=object/><#assign categoryDescription=getCategoryAttribute(category.id).description!/></@cms.category>
     <#break>
 </#switch>
 </#if>

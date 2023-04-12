@@ -198,6 +198,7 @@ public class LoginController {
             result.put("email", user.getEmail());
             result.put("emailChecked", user.isEmailChecked());
             result.put("superuserAccess", user.isSuperuser());
+            result.put("superuser", user.isSuperuser());
         }
         return result;
     }

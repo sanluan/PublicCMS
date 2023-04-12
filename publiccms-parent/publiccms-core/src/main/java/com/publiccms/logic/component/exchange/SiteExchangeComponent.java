@@ -51,6 +51,8 @@ public class SiteExchangeComponent {
     private SiteComponent siteComponent;
     @Resource
     private TemplateComponent templateComponent;
+    @Resource
+    private MetadataComponent metadataComponent;
 
     /**
      * @param <E>
@@ -208,6 +210,7 @@ public class SiteExchangeComponent {
                     }
                 });
                 templateComponent.clearTemplateCache();
+                metadataComponent.clear();
             }
             {
                 String filepath = siteComponent.getWebFilePath(site.getId(), Constants.SEPARATOR);
