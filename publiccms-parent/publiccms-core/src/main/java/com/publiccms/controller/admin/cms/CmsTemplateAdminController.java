@@ -292,7 +292,7 @@ public class CmsTemplateAdminController {
     @RequestMapping({ "lookupSitefile.html", "lookupSitefile" })
     public String lookupSiteImage(ModelMap model) {
         model.addAttribute("list",
-                CmsFileUtils.getFileList(siteComponent.getSiteFilePath(), CmsFileUtils.ORDERFIELD_MODIFIEDDATE));
+                CmsFileUtils.getFileList(siteComponent.getSiteFilePath(Constants.BLANK), CmsFileUtils.ORDERFIELD_MODIFIEDDATE));
         return "cmsTemplate/lookupSitefile";
     }
 
@@ -305,7 +305,7 @@ public class CmsTemplateAdminController {
     public void lookupSiteImage(String sitefile, String imageFile, HttpServletResponse response) {
         if (CommonUtils.notEmpty(imageFile) && CommonUtils.notEmpty(sitefile)) {
             String suffix = CmsFileUtils.getSuffix(imageFile);
-            File file = new File(siteComponent.getSiteFilePath(), sitefile);
+            File file = new File(siteComponent.getSiteFilePath(sitefile));
             if (ArrayUtils.contains(CmsFileUtils.IMAGE_FILE_SUFFIXS, suffix) && file.exists() && file.isFile()) {
                 try (ZipFile zipFile = new ZipFile(file, CommonConstants.DEFAULT_CHARSET_NAME);
                         ServletOutputStream outputStream = response.getOutputStream();) {
