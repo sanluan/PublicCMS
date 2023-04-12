@@ -95,7 +95,7 @@ public class CmsModelAdminController {
             entity.setSearchable(false);
         }
         if (CommonUtils.notEmpty(entity.getExtendList())) {
-            entity.getExtendList().sort(Comparator.comparing(e -> e.getSort()));
+            entity.getExtendList().sort(Comparator.comparing(SysExtendField::getSort));
             entity.getExtendList().forEach(e -> {
                 if (CommonUtils.empty(e.getName())) {
                     e.setName(e.getId().getCode());
@@ -105,7 +105,7 @@ public class CmsModelAdminController {
         entity.setSearchableModel(searchableModel);
         if (CommonUtils.notEmpty(entity.getRelatedList())) {
             List<Integer> templist = new ArrayList<>();
-            Set<String> dictionarySet = new HashSet<String>();
+            Set<String> dictionarySet = new HashSet<>();
             int i = 0;
             for (ContentRelated related : entity.getRelatedList()) {
                 if (!dictionarySet.add(related.getDictionaryId())) {

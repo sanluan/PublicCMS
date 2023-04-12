@@ -12,9 +12,8 @@ import java.util.Properties;
 import javax.sql.DataSource;
 
 import com.publiccms.common.constants.CmsVersion;
-import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.datasource.MultiDataSource;
-import com.publiccms.common.tools.VerificationUtils;
+import com.publiccms.common.tools.DatabaseUtils;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
@@ -76,12 +75,7 @@ public class CmsDataSource extends MultiDataSource {
         config.setDriverClassName(properties.getProperty("jdbc.driverClassName"));
         config.setJdbcUrl(properties.getProperty("jdbc.url"));
         config.setUsername(properties.getProperty("jdbc.username"));
-        String password = properties.getProperty("jdbc.password");
-        String encryptPassword = properties.getProperty("jdbc.encryptPassword");
-        if (null != encryptPassword) {
-            password = VerificationUtils.decrypt(VerificationUtils.base64Decode(encryptPassword), CommonConstants.ENCRYPT_KEY);
-        }
-        config.setPassword(password);
+        config.setPassword(DatabaseUtils.getPassword(properties));
         config.setAutoCommit(Boolean.parseBoolean(properties.getProperty("hikariCP.autoCommit")));
         config.setConnectionTimeout(Long.parseLong(properties.getProperty("hikariCP.connectionTimeout")));
         config.setMinimumIdle(Integer.parseInt(properties.getProperty("hikariCP.minPoolSize")));

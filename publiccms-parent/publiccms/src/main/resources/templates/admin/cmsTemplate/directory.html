@@ -32,28 +32,29 @@
         <fieldset>
             <legend><@t.page 'server_config.site'/></legend>
             <div><a href="sysConfigData/edit.html?code=site" class="edit btnText blue" target="navTab" rel="sysConfigData/edit"><i class="icon-edit"></i><@t.page 'config_data.edit'/></a></div>
-        <@sys.configData code="site">
+        <@sys.configData code="site"><#assign siteConfig=object/></@sys.configData>
             <dl class="nowrap">
                 <dt><@t.message 'config.site.site_exclude_module'/>:</dt>
-                <dd><#if (object.site_exclude_module)?has_content><#list object.site_exclude_module?split(',') as a><@t.menu a/><#sep>,</#list></#if></dd>
+                <dd><#if (siteConfig.site_exclude_module)?has_content><#list siteConfig.site_exclude_module?split(',') as a><@t.menu a/><#sep>,</#list></#if></dd>
             </dl>
             <dl>
                 <dt><@t.message 'config.site.login_path'/>:</dt>
-                <dd>${(object.login_path)!}</dd>
+                <dd>${(siteConfig.login_path)!}</dd>
             </dl>
             <dl>
                 <dt><@t.message 'config.site.register_url'/>:</dt>
-                <dd>${(object.register_url)!}</dd>
+                <dd>${(siteConfig.register_url)!}</dd>
             </dl>
+            <#if site.useStatic>
             <dl class="nowrap">
                 <dt><@t.message 'config.site.category_template_path'/>:</dt>
-                <dd>${(object.category_template_path)!}</dd>
+                <dd>${(siteConfig.category_template_path)!}</dd>
             </dl>
+            </#if>
             <dl class="nowrap">
                 <dt><@t.message 'config.site.category_path'/>:</dt>
-                <dd>${(object.category_path)!}</dd>
+                <dd>${(siteConfig.category_path)!}</dd>
             </dl>
-        </@sys.configData>
         </fieldset>
         <div class="divider"></div>
         <div class="unit">

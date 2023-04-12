@@ -68,7 +68,7 @@
                         <span class="info"><@t.page 'dynamic_config.accept_parameter.description'/></span>
                         <div class="parametersOperateBox">
                             <select class="combox" name="parameterType">
-                                <#list ['text','number','textarea','content','category','category.code','user','vote','survey'] as o>
+                                <#list getParameterTypeList() as o>
                                 <option value="${o}"><@t.page o/></option>
                                 </#list>
                             </select>

@@ -40,6 +40,7 @@ import com.publiccms.common.tools.StreamUtils;
 import com.publiccms.common.tools.VerificationUtils;
 import com.publiccms.common.tools.ZipUtils;
 import com.publiccms.entities.log.LogOperate;
+import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.cache.CacheComponent;
@@ -115,7 +116,7 @@ public class CmsTemplateAdminController {
             try {
                 CmsFileUtils.createFile(filepath, content);
                 if (CommonUtils.notEmpty(metadata.getExtendList())) {
-                    metadata.getExtendList().sort(Comparator.comparing(e -> e.getSort()));
+                    metadata.getExtendList().sort(Comparator.comparing(SysExtendField::getSort));
                     metadata.getExtendList().forEach(e -> {
                         if (CommonUtils.empty(e.getName())) {
                             e.setName(e.getId().getCode());
@@ -206,7 +207,7 @@ public class CmsTemplateAdminController {
             try {
                 CmsFileUtils.createFile(filepath, content);
                 if (CommonUtils.notEmpty(metadata.getExtendList())) {
-                    metadata.getExtendList().sort(Comparator.comparing(e -> e.getSort()));
+                    metadata.getExtendList().sort(Comparator.comparing(SysExtendField::getSort));
                     metadata.getExtendList().forEach(e -> {
                         if (CommonUtils.empty(e.getName())) {
                             e.setName(e.getId().getCode());
@@ -214,7 +215,7 @@ public class CmsTemplateAdminController {
                     });
                 }
                 if (CommonUtils.notEmpty(metadata.getMetadataExtendList())) {
-                    metadata.getMetadataExtendList().sort(Comparator.comparing(e -> e.getSort()));
+                    metadata.getMetadataExtendList().sort(Comparator.comparing(SysExtendField::getSort));
                     metadata.getMetadataExtendList().forEach(e -> {
                         if (CommonUtils.empty(e.getName())) {
                             e.setName(e.getId().getCode());
@@ -409,7 +410,7 @@ public class CmsTemplateAdminController {
     @RequestMapping({ "sitefileList.html", "sitefileList" })
     public String lookupSiteImage(ModelMap model) {
         model.addAttribute("list",
-                CmsFileUtils.getFileList(siteComponent.getSiteFilePath(), CmsFileUtils.ORDERFIELD_MODIFIEDDATE));
+                CmsFileUtils.getFileList(siteComponent.getSiteFilePath(Constants.BLANK), CmsFileUtils.ORDERFIELD_MODIFIEDDATE));
         return "cmsTemplate/sitefileList";
     }
 
@@ -422,7 +423,7 @@ public class CmsTemplateAdminController {
     public ResponseEntity<StreamingResponseBody> lookupSiteImage(String sitefile, String imageFile) {
         if (CommonUtils.notEmpty(imageFile) && CommonUtils.notEmpty(sitefile)) {
             String suffix = CmsFileUtils.getSuffix(imageFile);
-            File file = new File(siteComponent.getSiteFilePath(), sitefile);
+            File file = new File(siteComponent.getSiteFilePath(sitefile));
             if (ArrayUtils.contains(CmsFileUtils.IMAGE_FILE_SUFFIXS, suffix) && file.exists() && file.isFile()) {
                 StreamingResponseBody body = new StreamingResponseBody() {
                     @Override

@@ -8,6 +8,9 @@
         .gray{color:gray;}
         .border{border:1px solid gray;}
         .underline{border-bottom:1px dashed gray;}
+        .pagination .page-item{padding:0 0.3rem;}
+        .pagination .page-item .page-link{margin-left:0;border-radius:0.2rem;padding:0.375rem 0.875rem;color:#999;border-color:#eee;}
+        .page-item.active .page-link{background-color:#4C81E7;border-color:#eee;color:#FFF;}
     </style>
 </head>
 <body>
@@ -46,7 +49,7 @@
             </li>
         </#list>
         </ul>
-        <div>
+        <ul class="pagination">
             <#assign
                 start=1
                 end=page.totalPage
@@ -57,29 +60,19 @@
             <#if (page.pageIndex+5) lt end>
                 <#assign end=page.pageIndex+4/>
             </#if>
-            <#if !page.firstPage>
-                <a href="${getPage('refund.html',page.prePage,'pageIndex')}">Previous page</a>
-            <#else>
-                <span>Previous page</span>
-            </#if>
+            <li class="page-item"><a class="page-link" href="${getPage('refund.html',page.prePage,'pageIndex')}">Previous page</a></li>
             <#if start gt 1>
-                <a href="${'refund.html'}">1</a> ...
+                <li class="page-item"><a class="page-link" href="${'refund.html'}">1</a></li>
+                <li class="page-item"><span class="page-link">...</span></li>
             </#if>
             <#list start..end as n>
-                <#if n=page.pageIndex>
-                    ${n}
-                <#else>
-                    <a href="${getPage('refund.html',n,'pageIndex')}">${n}</a>
-                </#if>
+                <li class="page-item<#if n=page.pageIndex> active</#if>"><a class="page-link" href="${getPage('refund.html',n,'pageIndex')}">${n}</a></li>
             </#list>
             <#if end lt page.totalPage>
-                ... <a href="${getPage('refund.html',page.totalPage,'pageIndex')}">${page.totalPage}</a>
+                <li class="page-item"><span class="page-link">...</span></li>
+                <li class="page-item"><a class="page-link" href="${getPage('refund.html',page.totalPage,'pageIndex')}">${page.totalPage}</a></li>
             </#if>
-            <#if !page.lastPage>
-                <a href="${getPage('refund.html',page.nextPage,'pageIndex')}">Next page</a>
-            <#else>
-                <span>Next page</span>
-            </#if>
+            <li class="page-item"><a class="page-link" href="${getPage('refund.html',page.nextPage,'pageIndex')}">Next page</a></li>
         </div>
     </@trade.refundList>
     </main>

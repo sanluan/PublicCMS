@@ -15,7 +15,7 @@ import org.apache.tools.zip.ZipFile;
 import org.apache.tools.zip.ZipOutputStream;
 import org.springframework.stereotype.Component;
 
-import com.publiccms.common.base.AbstractExchange;
+import com.publiccms.common.base.AbstractDataExchange;
 import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
@@ -40,13 +40,15 @@ import com.publiccms.views.pojo.query.CmsCategoryQuery;
 
 import freemarker.template.TemplateException;
 import jakarta.annotation.Resource;
+import jakarta.annotation.Priority;
 
 /**
  * CategoryExchangeComponent 分类数据导入导出组件
  * 
  */
 @Component
-public class CategoryExchangeComponent extends AbstractExchange<CmsCategory, Category> {
+@Priority(3)
+public class CategoryExchangeComponent extends AbstractDataExchange<CmsCategory, Category> {
     @Resource
     private CmsCategoryService service;
     @Resource
@@ -101,36 +103,35 @@ public class CategoryExchangeComponent extends AbstractExchange<CmsCategory, Cat
         entity.setId(null);
         data.setEntity(entity);
         data.setAttribute(attributeService.getEntity(categoryId));
-        if (null != data.getAttribute()) {
-            if (CommonUtils.notEmpty(data.getAttribute().getData())) {
-                if (null == directory) {
-                    Map<String, String> map = ExtendUtils.getExtendMap(data.getAttribute().getData());
-                    Set<String> filelist = new HashSet<>();
-                    for (String value : map.values()) {
-                        if (null != value && value.contains("<")) {
-                            HtmlUtils.getFileList(value, filelist);
-                        }
+        if (null != data.getAttribute() && (CommonUtils.notEmpty(data.getAttribute().getData()))) {
+            if (null == directory) {
+                Map<String, String> map = ExtendUtils.getExtendMap(data.getAttribute().getData());
+                Set<String> filelist = new HashSet<>();
+                for (String value : map.values()) {
+                    if (null != value && value.contains("<")) {
+                        HtmlUtils.getFileList(value, filelist);
                     }
-                    if (!filelist.isEmpty()) {
-                        for (String file : filelist) {
-                            if (file.startsWith(site.getSitePath())) {
-                                String fullName = StringUtils.removeStart(file, site.getSitePath());
-                                if (fullName.contains(Constants.DOT) && !fullName.contains(".htm")) {
-                                    String filepath = siteComponent.getWebFilePath(site.getId(), fullName);
-                                    try {
-                                        ZipUtils.compressFile(new File(filepath), zipOutputStream,
-                                                CommonUtils.joinString(ATTACHMENT_DIR, fullName));
-                                    } catch (IOException e) {
-                                    }
+                }
+                if (!filelist.isEmpty()) {
+                    for (String file : filelist) {
+                        if (file.startsWith(site.getSitePath())) {
+                            String fullName = StringUtils.removeStart(file, site.getSitePath());
+                            if (fullName.contains(Constants.DOT) && !fullName.contains(".htm")) {
+                                String filepath = siteComponent.getWebFilePath(site.getId(), fullName);
+                                try {
+                                    ZipUtils.compressFile(new File(filepath), zipOutputStream,
+                                            CommonUtils.joinString(ATTACHMENT_DIR, fullName));
+                                } catch (IOException e) {
                                 }
                             }
                         }
                     }
                 }
-                data.getAttribute().setData(StringUtils.replace(data.getAttribute().getData(), site.getSitePath(), "#SITEPATH#"));
-                data.getAttribute()
-                        .setData(StringUtils.replace(data.getAttribute().getData(), site.getDynamicPath(), "#DYNAMICPATH#"));
             }
+            data.getAttribute().setData(StringUtils.replace(data.getAttribute().getData(), site.getSitePath(), "#SITEPATH#"));
+            data.getAttribute()
+                    .setData(StringUtils.replace(data.getAttribute().getData(), site.getDynamicPath(), "#DYNAMICPATH#"));
+
         }
         data.setModelList(categoryModelService.getList(site.getId(), null, categoryId));
         if (null != entity.getExtendId()) {
@@ -269,11 +270,6 @@ public class CategoryExchangeComponent extends AbstractExchange<CmsCategory, Cat
             } catch (IOException | TemplateException e) {
             }
         }
-    }
-
-    @Override
-    public int importOrder() {
-        return 1;
     }
 
     @Override

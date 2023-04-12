@@ -30,11 +30,11 @@ import com.publiccms.logic.service.visit.VisitUrlService;
 import jakarta.annotation.Resource;
 
 /**
- * VisitExchangeComponent 统计数据导出组件
+ * VisitExportComponent 统计数据导出组件
  * 
  */
 @Component
-public class VisitExchangeComponent {
+public class VisitExportComponent {
     @Resource
     private VisitHistoryService historyService;
     @Resource

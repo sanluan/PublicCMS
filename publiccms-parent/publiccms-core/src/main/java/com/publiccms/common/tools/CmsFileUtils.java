@@ -315,7 +315,7 @@ public class CmsFileUtils {
         FileUploadResult uploadResult = new FileUploadResult();
         uploadResult.setFileSize(file.length());
         uploadResult.setFilename(filename);
-        
+
         if (null != suffix && !suffix.startsWith(Constants.DOT)) {
             suffix = CommonUtils.joinString(Constants.DOT, suffix);
         }
@@ -449,6 +449,18 @@ public class CmsFileUtils {
             }
         }
         return false;
+    }
+
+    /**
+     * @param path
+     * @return safe file path
+     */
+    public static String getSafeFileName(String path) {
+        if (CommonUtils.notEmpty(path) && path.contains("..")) {
+            return path.replace("..", Constants.BLANK);
+        } else {
+            return path;
+        }
     }
 
     /**

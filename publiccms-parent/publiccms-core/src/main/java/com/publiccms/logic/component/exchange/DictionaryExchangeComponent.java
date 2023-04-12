@@ -5,7 +5,7 @@ import java.io.ByteArrayOutputStream;
 import org.apache.tools.zip.ZipOutputStream;
 import org.springframework.stereotype.Component;
 
-import com.publiccms.common.base.AbstractExchange;
+import com.publiccms.common.base.AbstractDataExchange;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsDictionary;
@@ -20,13 +20,15 @@ import com.publiccms.logic.service.cms.CmsDictionaryService;
 import com.publiccms.views.pojo.exchange.Dictionary;
 
 import jakarta.annotation.Resource;
+import jakarta.annotation.Priority;
 
 /**
  * DictionaryExchangeComponent 数据字典导入导出组件
  * 
  */
 @Component
-public class DictionaryExchangeComponent extends AbstractExchange<CmsDictionary, Dictionary> {
+@Priority(3)
+public class DictionaryExchangeComponent extends AbstractDataExchange<CmsDictionary, Dictionary> {
     @Resource
     private CmsDictionaryService service;
     @Resource
@@ -80,11 +82,6 @@ public class DictionaryExchangeComponent extends AbstractExchange<CmsDictionary,
                 excludeValueService.saveOrUpdate(data.getExcludeValueList());
             }
         }
-    }
-
-    @Override
-    public int importOrder() {
-        return 3;
     }
 
     @Override

@@ -14,7 +14,7 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.view.ExcelView;
 import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.component.exchange.VisitExchangeComponent;
+import com.publiccms.logic.component.exchange.VisitExportComponent;
 
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,7 +29,7 @@ import jakarta.servlet.http.HttpServletRequest;
 public class VisitAdminController {
     protected final Log log = LogFactory.getLog(getClass());
     @Resource
-    private VisitExchangeComponent exchangeComponent;
+    private VisitExportComponent exchangeComponent;
 
     /**
      * @param site

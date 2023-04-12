@@ -35,7 +35,7 @@ import jakarta.servlet.http.HttpServletRequest;
  * 
  * <pre>
 &lt;script&gt;
-$.getJSON('${site.dynamicPath}api/method/getFileUploadPrefix?parameters=index.html', function(data){
+$.getJSON('${site.dynamicPath}api/method/getFileUploadPrefix', function(data){
 console.log(data);
 });
 &lt;/script&gt;

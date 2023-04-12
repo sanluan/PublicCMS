@@ -110,17 +110,20 @@ public class CommentController {
             return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
         }
         Map<String, String> config = configDataComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
-        if (CommonUtils.notEmpty(captcha) || safeConfigComponent.enableCaptcha(site.getId(), SafeConfigComponent.CAPTCHA_MODULE_COMMENT)) {
+        if (CommonUtils.notEmpty(captcha)
+                || safeConfigComponent.enableCaptcha(site.getId(), SafeConfigComponent.CAPTCHA_MODULE_COMMENT)) {
             String sessionCaptcha = (String) request.getSession().getAttribute("captcha");
             request.getSession().removeAttribute("captcha");
-            if (ControllerUtils.errorCustom("captcha.error", null == sessionCaptcha || !sessionCaptcha.equalsIgnoreCase(captcha), model)) {
+            if (ControllerUtils.errorCustom("captcha.error", null == sessionCaptcha || !sessionCaptcha.equalsIgnoreCase(captcha),
+                    model)) {
                 return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
             }
         }
         CmsContent content = null;
         if (CommonUtils.notEmpty(entity.getText())) {
             boolean needCheck = ConfigDataComponent.getBoolean(config.get(SiteConfigComponent.CONFIG_COMMENT_NEED_CHECK), true);
-            boolean needStatic = ConfigDataComponent.getBoolean(config.get(SiteConfigComponent.CONFIG_STATIC_AFTER_COMMENT), false);
+            boolean needStatic = ConfigDataComponent.getBoolean(config.get(SiteConfigComponent.CONFIG_STATIC_AFTER_COMMENT),
+                    false);
             entity.setStatus(CmsCommentService.STATUS_PEND);
             String ip = RequestUtils.getIpAddress(request);
             entity.setIp(ip);
@@ -150,6 +153,9 @@ public class CommentController {
                         entity.setReplyId(null);
                     } else {
                         entity.setContentId(reply.getContentId());
+                        if (null == entity.getReplyId()) {
+                            entity.setReplyId(reply.getReplyId());
+                        }
                         if (null == entity.getReplyUserId()) {
                             entity.setReplyUserId(reply.getUserId());
                         }

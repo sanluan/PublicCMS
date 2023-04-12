@@ -10,8 +10,6 @@ import com.publiccms.views.pojo.entities.FileUploadResult;
 public interface FileUploader {
     public boolean enable(short siteId, boolean privatefile);
 
-    public int getOrder();
-
     public String getPrefix(short siteId, boolean privatefile);
 
     public String getPrivateFileUrl(short siteId, int expiryMinutes, String filepath);

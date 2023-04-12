@@ -19,6 +19,9 @@ import com.publiccms.common.constants.Constants;
 import com.publiccms.common.copyright.License;
 
 public class LicenseUtils {
+    private LicenseUtils() {
+    }
+
     public static final String DATE_FORMAT_STRING = "yyyy-MM-dd";
 
     public static String writeLicense(License license) {

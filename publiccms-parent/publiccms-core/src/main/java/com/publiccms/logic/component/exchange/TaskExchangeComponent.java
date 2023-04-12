@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.tools.zip.ZipOutputStream;
 import org.springframework.stereotype.Component;
 
-import com.publiccms.common.base.AbstractExchange;
+import com.publiccms.common.base.AbstractDataExchange;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysSite;
@@ -21,7 +21,7 @@ import jakarta.annotation.Resource;
  *
  */
 @Component
-public class TaskExchangeComponent extends AbstractExchange<SysTask, SysTask> {
+public class TaskExchangeComponent extends AbstractDataExchange<SysTask, SysTask> {
     @Resource
     private SysTaskService service;
     @Resource

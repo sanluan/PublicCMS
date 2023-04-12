@@ -8,7 +8,7 @@ import org.apache.tools.zip.ZipFile;
 import org.apache.tools.zip.ZipOutputStream;
 import org.springframework.stereotype.Component;
 
-import com.publiccms.common.base.AbstractExchange;
+import com.publiccms.common.base.AbstractDataExchange;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysConfigData;
 import com.publiccms.entities.sys.SysConfigDataId;
@@ -18,13 +18,15 @@ import com.publiccms.logic.component.config.ConfigDataComponent;
 import com.publiccms.logic.service.sys.SysConfigDataService;
 
 import jakarta.annotation.Resource;
+import jakarta.annotation.Priority;
 
 /**
  * ConfigDataExchangeComponent 站点配置导出组件
  * 
  */
 @Component
-public class ConfigDataExchangeComponent extends AbstractExchange<SysConfigData, SysConfigData> {
+@Priority(2)
+public class ConfigDataExchangeComponent extends AbstractDataExchange<SysConfigData, SysConfigData> {
     @Resource
     private ConfigComponent configComponent;
     @Resource
@@ -76,11 +78,6 @@ public class ConfigDataExchangeComponent extends AbstractExchange<SysConfigData,
                 service.saveOrUpdate(data);
             }
         }
-    }
-
-    @Override
-    public int importOrder() {
-        return 2;
     }
 
     @Override

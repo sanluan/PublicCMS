@@ -54,12 +54,9 @@ public class WebFileHttpRequestHandler extends ResourceHttpRequestHandler {
             SysSite site = siteComponent.getSite(request.getServerName(), path);
             path = siteComponent.getPath(site, path);
             Resource resource = new FileSystemResource(siteComponent.getWebFilePath(site.getId(), path));
-            if (resource.exists()) {
-                if (resource.isReadable()) {
-                    return resource;
-                }
-            }
-            if ("/favicon.ico".equals(path)) {
+            if (resource.exists() && (resource.isReadable())) {
+                return resource;
+            } else if ("/favicon.ico".equals(path) && favicon.exists()) {
                 return favicon;
             }
         }

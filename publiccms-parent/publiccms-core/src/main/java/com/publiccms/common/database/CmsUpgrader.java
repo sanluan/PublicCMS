@@ -31,6 +31,9 @@ public class CmsUpgrader extends AbstractCmsUpgrader {
             VERSION_190312 = "V4.0.190312", VERSION_2019 = "V2019", VERSION_202004 = "V4.0.202004",
             VERSION_202011 = "V4.0.202011", VERSION_202107 = "V4.0.202107", VERSION_202204 = "V4.0.202204",
             VERSION_CURRENT = "V4.0.202302";
+
+    private final static List<String> OLD_DATABASE_CONFIG_VERSION_LIST = Arrays.asList(VERSION_20170708, VERSION_20180210,
+            VERSION_180707, VERSION_180825, VERSION_181024);
     /**
      *
      */
@@ -94,7 +97,6 @@ public class CmsUpgrader extends AbstractCmsUpgrader {
             }
         }
         dbconfig.setProperty("jdbc.url", sb.toString());
-        dbconfig.setProperty("database", database);
         dbconfig.setProperty("jdbc.driverClassName", "com.mysql.cj.jdbc.Driver");
     }
 
@@ -106,6 +108,11 @@ public class CmsUpgrader extends AbstractCmsUpgrader {
     @Override
     public int getDefaultPort() {
         return 3306;
+    }
+
+    @Override
+    public List<String> getOldDatabaseConfigVersionList() {
+        return OLD_DATABASE_CONFIG_VERSION_LIST;
     }
 
 }

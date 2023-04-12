@@ -124,11 +124,6 @@ public interface Config {
     /**
      * 
      */
-    String INPUTTYPE_CATEGORYCODE = "category.code";
-
-    /**
-     * 
-     */
     String INPUTTYPE_TAGTYPE = "tagType";
 
     /**

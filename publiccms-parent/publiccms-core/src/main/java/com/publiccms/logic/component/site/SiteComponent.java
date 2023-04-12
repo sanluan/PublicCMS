@@ -9,6 +9,7 @@ import com.publiccms.common.api.Cache;
 import com.publiccms.common.cache.CacheEntity;
 import com.publiccms.common.cache.CacheEntityFactory;
 import com.publiccms.common.constants.Constants;
+import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.DateFormatUtils;
 import com.publiccms.entities.sys.SysDomain;
@@ -126,16 +127,10 @@ public class SiteComponent implements Cache {
      * @return full file name
      */
     public static String getFullFileName(short siteId, String path) {
-        if (CommonUtils.empty(path)) {
-            path = Constants.BLANK;
-        }
-        if (path.contains("..")) {
-            path = path.replace("..", Constants.BLANK);
-        }
         if (path.startsWith(Constants.SEPARATOR) || path.startsWith("\\")) {
-            return CommonUtils.joinString(SITE_PATH_PREFIX, siteId, path);
+            return CommonUtils.joinString(SITE_PATH_PREFIX, siteId, CmsFileUtils.getSafeFileName(path));
         }
-        return CommonUtils.joinString(SITE_PATH_PREFIX, siteId, Constants.SEPARATOR, path);
+        return CommonUtils.joinString(SITE_PATH_PREFIX, siteId, Constants.SEPARATOR, CmsFileUtils.getSafeFileName(path));
     }
 
     /**
@@ -365,10 +360,11 @@ public class SiteComponent implements Cache {
     }
 
     /**
+     * @param path
      * @return site file path
      */
-    public String getSiteFilePath() {
-        return CommonUtils.joinString(rootPath, BACKUP_PATH, Constants.SEPARATOR, SITE_FILE_PATH);
+    public String getSiteFilePath(String path) {
+        return CommonUtils.joinString(rootPath, BACKUP_PATH, Constants.SEPARATOR, SITE_FILE_PATH, Constants.SEPARATOR, path);
     }
 
     /**
