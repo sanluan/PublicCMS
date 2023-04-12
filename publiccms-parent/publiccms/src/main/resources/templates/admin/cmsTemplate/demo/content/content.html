@@ -19,6 +19,9 @@
         #content{width:100%;overflow: auto;}
         nav a.selected{border-bottom:1px solid #f099f0;}
         .bread{border-bottom:1px solid #eee;}
+        .pagination .page-item{padding:0 0.3rem;}
+        .pagination .page-item .page-link{margin-left:0;border-radius:0.2rem;padding:0.375rem 0.875rem;color:#999;border-color:#eee;}
+        .page-item.active .page-link{background-color:#4C81E7;border-color:#eee;color:#FFF;}
     </style>
 </head>
 <body>
@@ -48,55 +51,56 @@
             <p><#if content.copied>Source:<a href="${(attribute.sourceUrl)!}" target="_blank">${(attribute.source)!}</a></#if> ${content.author!} ${content.editor!} ${content.publishDate?datetime} Views:<em>loading...</em></p>
             <div id="content" class="clearfix">
                 ${(text?no_esc)!}
+                
+                <#if content.hasImages>
+                     <@cms.contentFileList contentId=content.id fileTypes='image'>
+                         <#list page.list as file>
+                             <figure class="text-center">
+                                 <img loading="lazy" src="${(file.filePath)!}" alt="${(file.description)!}"/>
+                                 <figcaption>${file?counter}. ${(file.description)!}</figcaption>
+                             </figure>
+                         </#list>
+                     </@cms.contentFileList>
+                </#if>
+                <#if content.hasFiles>
+                    <@cms.contentFileList contentId=content.id fileTypes='video,audio,document,other'>
+                        <#list page.list as file>
+                            <p><a href="${(file.filePath)!}" download="${(file.description)!}">${file?counter}. ${(file.description)!}</a></p>
+                        </#list>
+                    </@cms.contentFileList>
+                </#if>
+                <#if content.tagIds?has_content>
+                    <p>
+                        Tags:
+                        <@cms.tag ids=content.tagIds>
+                            <#list map as key,tag>
+                                <em>${tag.name}</em>
+                            </#list>
+                        </@cms.tag>
+                    </p>
+                </#if>
             </div>
-        <#if content.hasProducts>
-            <div>
-                <form action="${site.dynamicPath}member/order.html">
-                <@cms.contentProductList contentId=content.id>
-                    <#list page.list as product>
-                        <label>
-                            <input type="radio" name="productId" value="${product.id}"/>
-                            <#if product.cover?has_content>
-                                <img src="<@tools.thumb path=product.cover width=30 height=30/>" title="${product.title}" alt="${product.title}" style="max-width:30px;max-height30px;border:1px solid;"/>
-                            </#if>
-                            ${product.title}
-                        </label>
-                    </#list>
-                </@cms.contentProductList>
-                    <label>Price:</label><span class="price">0</span>
-                    <input type="number" name="quantity" value="1"/>
-                    <input type="submit" value="Buy"/>
-                </form>
-            </div>
-        </#if>
-        <#if content.hasImages>
-             <@cms.contentFileList contentId=content.id fileTypes='image'>
-                 <#list page.list as file>
-                     <figure class="text-center">
-                         <img loading="lazy" src="${(file.filePath)!}" alt="${(file.description)!}"/>
-                         <figcaption>${file?counter} ${(file.description)!}</figcaption>
-                     </figure>
-                 </#list>
-             </@cms.contentFileList>
-        </#if>
-        <#if content.hasFiles>
-            <@cms.contentFileList contentId=content.id fileTypes='video,audio,document,other'>
-                <#list page.list as file>
-                    <p><a href="${(file.filePath)!}" download="${(file.description)!}">${(file.description)!}</a></p>
-                </#list>
-            </@cms.contentFileList>
-        </#if>
-        <#if content.tagIds?has_content>
-            <p>
-                Tags:
-                <@cms.tag ids=content.tagIds>
-                    <#list map as key,tag>
-                        <em>${tag.name}</em>
-                    </#list>
-                </@cms.tag>
-            </p>
-        </#if>
-            <div>
+            <#if content.hasProducts>
+                <div>
+                    <form action="${site.dynamicPath}member/order.html">
+                    <@cms.contentProductList contentId=content.id>
+                        <#list page.list as product>
+                            <label>
+                                <input type="radio" name="productId" value="${product.id}"/>
+                                <#if product.cover?has_content>
+                                    <img src="<@tools.thumb path=product.cover width=30 height=30/>" title="${product.title}" alt="${product.title}" style="max-width:30px;max-height30px;border:1px solid;"/>
+                                </#if>
+                                ${product.title}
+                            </label>
+                        </#list>
+                    </@cms.contentProductList>
+                        <label>Price:</label><span class="price">0</span>
+                        <input type="number" name="quantity" value="1"/>
+                        <input type="submit" value="Buy"/>
+                    </form>
+                </div>
+            </#if>
+            <div class="text-center">
                 ${content.scores!} scores
                 <#if user?has_content>
                     <@cms.userScore userId=user.id itemType='content' itemId=content.id>
@@ -106,49 +110,37 @@
                     <#if !stared?has_content><a href="javascript:score('${content.id}');">Score</a></#if>
                 </#if>
             </div>
-        <#if page?has_content>
-            <div>
-                <#if content.url?contains('?')><#assign pageParameter="pageIndex"/></#if>
-                <#if !page.firstPage>
-                    <a href="${getPage(content.url,page.prePage,pageParameter)}">Previous page</a>
-                <#else>
-                    <span>Previous page</span>
-                </#if>
-                <#list 1..page.totalCount as n>
-                    <#if n=page.pageIndex>
-                        ${n}
-                    <#else>
-                        <a href="${getPage(content.url,n,pageParameter)}">${n}</a>
-                    </#if>
-                </#list>
-                <#if !page.lastPage>
-                    <a href="${getPage(content.url,page.nextPage,pageParameter)}">Next page</a>
-                <#else>
-                    <span>Next page</span>
-                </#if>
-            </div>
-        </#if>
+            <#if page?has_content && page.totalPage gt 1>
+                <ul class="pagination">
+                    <#if content.url?contains('?')><#assign pageParameter="pageIndex"/></#if>
+                    <li class="page-item"><a class="page-link" href="${getPage(content.url,page.prePage,pageParameter)}">Previous page</a></li>
+                    <#list 1..page.totalPage as n>
+                        <li class="page-item<#if n=page.pageIndex> active</#if>"><a class="page-link" href="${getPage(content.url,n,pageParameter)}">${n}</a></li>
+                    </#list>
+                    <li class="page-item"><a class="page-link" href="${getPage(content.url,page.nextPage,pageParameter)}">Next page</a></li>
+                </ul>
+            </#if>
             <div>
                 <@cms.contentList categoryId=category.id endPublishDate=content.publishDate orderField='publishDate' pageIndex=2 pageSize=1><#if 2=page.pageIndex><#list page.list as a><a href="${a.url!}">Previous:${a.title}</a></#list></#if></@cms.contentList>
                 <@cms.contentList categoryId=category.id startPublishDate=content.publishDate orderField='publishDate' orderType='asc' pageIndex=1 pageSize=1><#list page.list as a><a href="${a.url!}">Next:${a.title}</a></#list></@cms.contentList>
             </div>
             <div data-diy="comment">
-         <#macro merge name value><#if !.vars[name]??><@"<#assign ${name}=''>"?interpret /></#if><#if value?has_content><@"<#assign ${name}=${name}+'${value},'>"?interpret /></#if></#macro>
-         <@cms.commentList contentId=content.id pageSize=10>
-            <#list page.list as a>
-                <@merge 'userIds' a.userId!/>
-                <@merge 'userIds' a.replyUserId!/>
-            </#list>
-            <@sys.user ids=userIds!><#assign userMap=map!/></@sys.user>
-            <#list page.list as a>
-                <dl data-diy-item="${a.id}">
-                    <dt>${(userMap[a.userId?string].nickname)!}<#if a.replyUserId?has_content> reply ${(userMap[a.replyUserId?string].nickname)!}</#if>:</dt>
-                    <dd>
-                        <div>${a.text!}</div>
-                    </dd>
-                </dl>
-            </#list>
-        </@cms.commentList>
+                <#macro merge name value><#if !.vars[name]??><@"<#assign ${name}=''>"?interpret /></#if><#if value?has_content><@"<#assign ${name}=${name}+'${value},'>"?interpret /></#if></#macro>
+                <@cms.commentList contentId=content.id pageSize=10>
+                    <#list page.list as a>
+                        <@merge 'userIds' a.userId!/>
+                        <@merge 'userIds' a.replyUserId!/>
+                    </#list>
+                    <@sys.user ids=userIds!><#assign userMap=map!/></@sys.user>
+                    <#list page.list as a>
+                        <dl data-diy-item="${a.id}">
+                            <dt>${(userMap[a.userId?string].nickname)!}<#if a.replyUserId?has_content> reply ${(userMap[a.replyUserId?string].nickname)!}</#if>:</dt>
+                            <dd>
+                                <div>${a.text!}</div>
+                            </dd>
+                        </dl>
+                    </#list>
+                </@cms.commentList>
             </div>
         </article>
         <aside>
