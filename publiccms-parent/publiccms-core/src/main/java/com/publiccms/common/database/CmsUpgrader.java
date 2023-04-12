@@ -26,13 +26,20 @@ public class CmsUpgrader extends AbstractCmsUpgrader {
     /**
      *
      */
-    private static final String VERSION_20170708 = "V2017.0708", VERSION_20180210 = "V4.0.20180210",
-            VERSION_180707 = "V4.0.180707", VERSION_180825 = "V4.0.180825", VERSION_181024 = "V4.0.181024",
-            VERSION_190312 = "V4.0.190312", VERSION_2019 = "V2019", VERSION_202004 = "V4.0.202004",
-            VERSION_202011 = "V4.0.202011", VERSION_202107 = "V4.0.202107", VERSION_202204 = "V4.0.202204",
-            VERSION_CURRENT = "V4.0.202302";
+    private static final String VERSION_20170708 = "V2017.0708";
+    private static final String VERSION_20180210 = "V4.0.20180210";
+    private static final String VERSION_180707 = "V4.0.180707";
+    private static final String VERSION_180825 = "V4.0.180825";
+    private static final String VERSION_181024 = "V4.0.181024";
+    private static final String VERSION_190312 = "V4.0.190312";
+    private static final String VERSION_2019 = "V2019";
+    private static final String VERSION_202004 = "V4.0.202004";
+    private static final String VERSION_202011 = "V4.0.202011";
+    private static final String VERSION_202107 = "V4.0.202107";
+    private static final String VERSION_202204 = "V4.0.202204";
+    private static final String VERSION_CURRENT = "V4.0.202302";
 
-    private final static List<String> OLD_DATABASE_CONFIG_VERSION_LIST = Arrays.asList(VERSION_20170708, VERSION_20180210,
+    private static final List<String> OLD_DATABASE_CONFIG_VERSION_LIST = Arrays.asList(VERSION_20170708, VERSION_20180210,
             VERSION_180707, VERSION_180825, VERSION_181024);
     /**
      *

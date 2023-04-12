@@ -89,7 +89,8 @@ public class AdminConfig implements WebMvcConfigurer {
 
     /**
      * 拦截器
-     * @param adminContextPathList 
+     * 
+     * @param adminContextPathList
      * @return admin servlet interceptor
      */
     @Bean
@@ -122,15 +123,14 @@ public class AdminConfig implements WebMvcConfigurer {
 
     @Override
     public void configureAsyncSupport(AsyncSupportConfigurer configurer) {
-        configurer.setDefaultTimeout(10 * 60 * 1000);
+        configurer.setDefaultTimeout((long) 10 * 60 * 1000);
         configurer.registerCallableInterceptors(timeoutInterceptor());
         configurer.setTaskExecutor(taskExecutor());
     }
 
     @Bean
     public CallableProcessingInterceptor timeoutInterceptor() {
-        TimeoutCallableProcessingInterceptor bean = new TimeoutCallableProcessingInterceptor();
-        return bean;
+        return new TimeoutCallableProcessingInterceptor();
     }
 
     @Bean

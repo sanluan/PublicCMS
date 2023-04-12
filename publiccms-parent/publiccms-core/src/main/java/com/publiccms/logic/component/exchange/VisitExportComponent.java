@@ -56,7 +56,8 @@ public class VisitExportComponent {
             Sheet sheet = workbook
                     .createSheet(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.visit.history"));
             sheet.setDefaultColumnWidth(20);
-            int i = 0, j = 0;
+            int i = 0;
+            int j = 0;
             Row row = sheet.createRow(i++);
             row.createCell(j++).setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.id"));
             row.createCell(j++)
@@ -108,7 +109,8 @@ public class VisitExportComponent {
             Sheet sheet = workbook
                     .createSheet(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.visit.session"));
             sheet.setDefaultColumnWidth(20);
-            int i = 0, j = 0;
+            int i = 0;
+            int j = 0;
             Row row = sheet.createRow(i++);
             row.createCell(j++)
                     .setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.visit.session"));
@@ -146,7 +148,8 @@ public class VisitExportComponent {
             Sheet sheet = workbook
                     .createSheet(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.visit.visit_date"));
             sheet.setDefaultColumnWidth(20);
-            int i = 0, j = 0;
+            int i = 0;
+            int j = 0;
             Row row = sheet.createRow(i++);
             row.createCell(j++)
                     .setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.visit.visit_date"));
@@ -181,7 +184,8 @@ public class VisitExportComponent {
         ExcelView view = new ExcelView(workbook -> {
             Sheet sheet = workbook.createSheet(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "url"));
             sheet.setDefaultColumnWidth(20);
-            int i = 0, j = 0;
+            int i = 0;
+            int j = 0;
             Row row = sheet.createRow(i++);
             row.createCell(j++)
                     .setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.visit.visit_date"));
@@ -215,7 +219,8 @@ public class VisitExportComponent {
             Sheet sheet = workbook
                     .createSheet(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.visit.item"));
             sheet.setDefaultColumnWidth(20);
-            int i = 0, j = 0;
+            int i = 0;
+            int j = 0;
             Row row = sheet.createRow(i++);
             row.createCell(j++)
                     .setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.visit.visit_date"));

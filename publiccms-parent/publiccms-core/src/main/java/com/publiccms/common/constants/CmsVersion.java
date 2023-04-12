@@ -13,6 +13,9 @@ import com.publiccms.common.tools.CommonUtils;
  *
  */
 public class CmsVersion {
+    private CmsVersion() {
+    }
+
     private static final String clusterId = UUID.randomUUID().toString();
     private static boolean master = false;
     private static boolean initialized = false;

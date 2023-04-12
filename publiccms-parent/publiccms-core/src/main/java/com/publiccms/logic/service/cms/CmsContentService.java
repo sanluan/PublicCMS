@@ -60,7 +60,7 @@ import com.publiccms.views.pojo.query.CmsContentSearchQuery;
 @Service
 @Transactional
 public class CmsContentService extends BaseService<CmsContent> {
-    private static String[] DICTIONARY_INPUT_TYPES = { Config.INPUTTYPE_NUMBER, Config.INPUTTYPE_BOOLEAN, Config.INPUTTYPE_USER,
+    private static final String[] DICTIONARY_INPUT_TYPES = { Config.INPUTTYPE_NUMBER, Config.INPUTTYPE_BOOLEAN, Config.INPUTTYPE_USER,
             Config.INPUTTYPE_DEPT, Config.INPUTTYPE_CONTENT, Config.INPUTTYPE_CATEGORY, Config.INPUTTYPE_DICTIONARY,
             Config.INPUTTYPE_CATEGORYTYPE, Config.INPUTTYPE_TAGTYPE };
 
