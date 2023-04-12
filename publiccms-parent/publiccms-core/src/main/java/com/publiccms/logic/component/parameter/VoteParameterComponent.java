@@ -37,9 +37,9 @@ public class VoteParameterComponent extends AbstractLongParameterHandler<CmsVote
 	@Override
 	public CmsVote getParameterValue(SysSite site, Long id) {
 		CmsVote entity = service.getEntity(id);
-		if (null == entity || entity.isDisabled() || entity.getSiteId() != site.getId()) {
-			return null;
-		}
-		return entity;
+        if (null != entity && !entity.isDisabled() && entity.getSiteId() == site.getId()) {
+            return entity;
+        }
+		return null;
 	}
 }
