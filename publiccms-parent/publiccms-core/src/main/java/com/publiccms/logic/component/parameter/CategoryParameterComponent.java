@@ -41,9 +41,10 @@ public class CategoryParameterComponent extends AbstractIntegerParameterHandler<
     @Override
     public CmsCategory getParameterValue(SysSite site, Integer id) {
         CmsCategory entity = service.getEntity(id);
-        if (null == entity || entity.isDisabled() || entity.getSiteId() != site.getId()) {
-            return null;
+        if (null != entity && !entity.isDisabled() && entity.getSiteId() == site.getId()) {
+            CmsUrlUtils.initCategoryUrl(site, entity);
+            return entity;
         }
-        return entity;
+        return null;
     }
 }

@@ -38,9 +38,9 @@ public class SurveyParameterComponent extends AbstractLongParameterHandler<CmsSu
     @Override
     public CmsSurvey getParameterValue(SysSite site, Long id) {
         CmsSurvey entity = service.getEntity(id);
-        if (null == entity || entity.isDisabled() || entity.getSiteId() != site.getId()) {
-            return null;
+        if (null != entity && !entity.isDisabled() && entity.getSiteId() == site.getId()) {
+            return entity;
         }
-        return entity;
+        return null;
     }
 }

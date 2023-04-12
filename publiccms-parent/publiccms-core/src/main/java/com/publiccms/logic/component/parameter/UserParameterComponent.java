@@ -10,8 +10,10 @@ import org.springframework.stereotype.Component;
 
 import com.publiccms.common.api.Config;
 import com.publiccms.common.base.AbstractLongParameterHandler;
+import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
+import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.service.sys.SysUserService;
 
 /**
@@ -22,6 +24,8 @@ import com.publiccms.logic.service.sys.SysUserService;
 public class UserParameterComponent extends AbstractLongParameterHandler<SysUser> {
     @Resource
     private SysUserService service;
+    @Resource
+    protected FileUploadComponent fileUploadComponent;
 
     @Override
     public String getType() {
@@ -31,16 +35,19 @@ public class UserParameterComponent extends AbstractLongParameterHandler<SysUser
     @Override
     public List<SysUser> getParameterValueList(SysSite site, Long[] ids) {
         List<SysUser> entityList = service.getEntitys(ids);
-        return entityList.stream().filter(entity -> site.getId() == entity.getSiteId() && !entity.isDisabled())
+        entityList = entityList.stream().filter(entity -> site.getId() == entity.getSiteId() && !entity.isDisabled())
                 .collect(Collectors.toList());
+        entityList.forEach(e -> e.setCover(CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site, false), e.getCover())));
+        return entityList;
     }
 
     @Override
     public SysUser getParameterValue(SysSite site, Long id) {
         SysUser entity = service.getEntity(id);
-        if (null == entity || entity.isDisabled() || entity.getSiteId() != site.getId()) {
-            return null;
+        if (null != entity && !entity.isDisabled() && entity.getSiteId() == site.getId()) {
+            entity.setCover(CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site, false), entity.getCover()));
+            return entity;
         }
-        return entity;
+        return null;
     }
 }
