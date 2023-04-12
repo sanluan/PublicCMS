@@ -55,7 +55,7 @@ public class GetSitefileMethod extends BaseMethod {
     public Object execute(List<TemplateModel> arguments) throws TemplateModelException {
         if (arguments.size() >= 1) {
             String filepath = getString(0, arguments);
-            File dest = new File(siteComponent.getSiteFilePath(), filepath);
+            File dest = new File(siteComponent.getSiteFilePath(filepath));
             try (ZipFile zipFile = new ZipFile(dest, CommonConstants.DEFAULT_CHARSET_NAME);) {
                 ZipEntry entry = zipFile.getEntry("description.json");
                 if (null != entry) {

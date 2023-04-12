@@ -32,6 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CmsVersion;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -238,7 +239,7 @@ public class SysSiteAdminController {
             String originalName = file.getOriginalFilename();
             if (originalName.endsWith("-site.zip")) {
                 try {
-                    File dest = new File(siteComponent.getSiteFilePath(), originalName);
+                    File dest = new File(siteComponent.getSiteFilePath(originalName));
                     if (overwrite || !dest.exists()) {
                         dest.mkdirs();
                         file.transferTo(dest);
@@ -351,7 +352,7 @@ public class SysSiteAdminController {
     @RequestMapping({ "sitefile.html", "sitefile" })
     public String lookupSiteImage(ModelMap model) {
         model.addAttribute("list",
-                CmsFileUtils.getFileList(siteComponent.getSiteFilePath(), CmsFileUtils.ORDERFIELD_MODIFIEDDATE));
+                CmsFileUtils.getFileList(siteComponent.getSiteFilePath(Constants.BLANK), CmsFileUtils.ORDERFIELD_MODIFIEDDATE));
         return "sysSite/sitefile";
     }
 

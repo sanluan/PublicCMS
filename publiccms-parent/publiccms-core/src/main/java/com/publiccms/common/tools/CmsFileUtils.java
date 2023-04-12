@@ -418,6 +418,18 @@ public class CmsFileUtils {
     }
 
     /**
+     * @param path
+     * @return safe file path
+     */
+    public static String getSafeFileName(String path) {
+        if (CommonUtils.notEmpty(path) && path.contains("..")) {
+            return path.replace("..", CommonConstants.BLANK);
+        } else {
+            return path;
+        }
+    }
+
+    /**
      * 移动文件或目录
      *
      * @param filepath

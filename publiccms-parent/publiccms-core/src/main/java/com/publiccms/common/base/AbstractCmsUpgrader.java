@@ -59,7 +59,11 @@ public abstract class AbstractCmsUpgrader {
      */
     public abstract void update(StringWriter stringWriter, Connection connection, String fromVersion)
             throws SQLException, IOException;
-
+    /**
+     * @return old database config version list
+     */
+    public abstract List<String> getOldDatabaseConfigVersionList();
+    
     /**
      * @return version list
      */
