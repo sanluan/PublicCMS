@@ -328,7 +328,6 @@ public class CmsFileUtils {
                 }
             } catch (Exception e) {
             }
-
         }
         return uploadResult;
     }

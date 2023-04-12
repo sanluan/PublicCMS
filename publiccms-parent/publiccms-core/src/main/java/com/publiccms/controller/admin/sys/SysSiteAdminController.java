@@ -338,6 +338,7 @@ public class SysSiteAdminController {
             message = scriptComponent.execute(command, parameters, 1);
         } catch (IOException | InterruptedException e) {
             message = e.getMessage();
+            Thread.currentThread().interrupt();
         }
         logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                 "execscript.site", RequestUtils.getIpAddress(request), CommonUtils.getDate(), message));

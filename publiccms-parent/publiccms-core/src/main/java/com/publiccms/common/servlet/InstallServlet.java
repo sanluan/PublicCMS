@@ -160,7 +160,6 @@ public class InstallServlet extends HttpServlet {
                     try {
                         response.sendError(HttpServletResponse.SC_NOT_FOUND);
                     } catch (IOException e) {
-
                     }
                 }
             }
@@ -248,7 +247,7 @@ public class InstallServlet extends HttpServlet {
      * @throws IOException
      */
     private void initDatabase(String useSimple, String username, String password, String siteurl, Map<String, Object> map)
-            throws ClassNotFoundException, SQLException, IOException, PropertyVetoException {
+            throws ClassNotFoundException, SQLException, IOException {
         String databaseConfiFile = CommonUtils.joinString(CommonConstants.CMS_FILEPATH, CmsDataSource.DATABASE_CONFIG_FILENAME);
         try (Connection connection = DatabaseUtils.getConnection(databaseConfiFile)) {
             try {
@@ -294,7 +293,7 @@ public class InstallServlet extends HttpServlet {
      * @throws ClassNotFoundException
      */
     private void upgradeDatabase(String version, Map<String, Object> map)
-            throws ClassNotFoundException, SQLException, IOException, PropertyVetoException {
+            throws ClassNotFoundException, SQLException, IOException {
         if (cmsUpgrader.getVersionList().contains(version)) {
             String databaseConfiFile = CommonUtils.joinString(CommonConstants.CMS_FILEPATH,
                     CmsDataSource.DATABASE_CONFIG_FILENAME);
