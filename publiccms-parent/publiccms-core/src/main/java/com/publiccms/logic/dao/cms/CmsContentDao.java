@@ -228,7 +228,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
                 Consumer<? super BooleanPredicateClausesStep<?>> dictionaryFiledsContributor = c -> {
                     for (String value : queryEntity.getDictionaryValues()) {
                         if (CommonUtils.notEmpty(value)) {
-                            if (null == queryEntity.getDictionaryUnion() || queryEntity.getDictionaryUnion()) {
+                            if (null != queryEntity.getDictionaryUnion() && queryEntity.getDictionaryUnion()) {
                                 c.should(t -> t.match().fields(dictionaryField).matching(value));
                             } else {
                                 c.must(t -> t.match().fields(dictionaryField).matching(value));

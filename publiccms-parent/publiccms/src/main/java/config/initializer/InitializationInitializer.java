@@ -54,7 +54,7 @@ public class InitializationInitializer implements WebApplicationInitializer {
             if (file.exists()) {
                 String version = FileUtils.readFileToString(file, CommonConstants.DEFAULT_CHARSET_NAME);
                 if (CmsVersion.getVersion().equals(version)
-                        || CmsVersion.getVersion().substring(CmsVersion.getVersion().lastIndexOf("."))
+                        || version.contains(".") && CmsVersion.getVersion().substring(CmsVersion.getVersion().lastIndexOf("."))
                                 .equals(version.substring(version.lastIndexOf(".")))) {
                     if (!CmsVersion.getVersion().equals(version)) {
                         try (FileOutputStream outputStream = new FileOutputStream(file)) {
