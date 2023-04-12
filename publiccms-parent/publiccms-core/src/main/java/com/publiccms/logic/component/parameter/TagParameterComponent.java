@@ -1,7 +1,6 @@
 package com.publiccms.logic.component.parameter;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
@@ -31,7 +30,7 @@ public class TagParameterComponent extends AbstractLongParameterHandler<CmsTag> 
     @Override
     public List<CmsTag> getParameterValueList(SysSite site, Long[] ids) {
         List<CmsTag> entityList = service.getEntitys(ids);
-        return entityList.stream().filter(entity -> site.getId() == entity.getSiteId()).collect(Collectors.toList());
+        return entityList.stream().filter(entity -> site.getId() == entity.getSiteId()).toList();
     }
 
     @Override

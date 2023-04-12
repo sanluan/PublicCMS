@@ -1,7 +1,6 @@
 package com.publiccms.logic.component.parameter;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
@@ -39,7 +38,7 @@ public class ContentParameterComponent extends AbstractLongParameterHandler<CmsC
     @Override
     public List<CmsContent> getParameterValueList(SysSite site, Long[] ids) {
         List<CmsContent> entityList = service.getEntitys(ids);
-        entityList = entityList.stream().filter(entity -> site.getId() == entity.getSiteId()).collect(Collectors.toList());
+        entityList = entityList.stream().filter(entity -> site.getId() == entity.getSiteId()).toList();
         entityList.forEach(e -> {
             ClickStatistics statistics = statisticsComponent.getContentStatistics(e.getId());
             if (null != statistics) {

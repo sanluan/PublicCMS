@@ -1,7 +1,6 @@
 package com.publiccms.logic.component.parameter;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
@@ -20,27 +19,27 @@ import jakarta.annotation.Resource;
 @Component
 @Priority(9)
 public class VoteParameterComponent extends AbstractLongParameterHandler<CmsVote> {
-    @Resource
-    private CmsVoteService service;
+	@Resource
+	private CmsVoteService service;
 
-    @Override
-    public String getType() {
-        return Config.INPUTTYPE_VOTE;
-    }
+	@Override
+	public String getType() {
+		return Config.INPUTTYPE_VOTE;
+	}
 
-    @Override
-    public List<CmsVote> getParameterValueList(SysSite site, Long[] ids) {
-        List<CmsVote> entityList = service.getEntitys(ids);
-        return entityList.stream().filter(entity -> site.getId() == entity.getSiteId() && !entity.isDisabled())
-                .collect(Collectors.toList());
-    }
+	@Override
+	public List<CmsVote> getParameterValueList(SysSite site, Long[] ids) {
+		List<CmsVote> entityList = service.getEntitys(ids);
+		return entityList.stream().filter(entity -> site.getId() == entity.getSiteId() && !entity.isDisabled())
+				.toList();
+	}
 
-    @Override
-    public CmsVote getParameterValue(SysSite site, Long id) {
-        CmsVote entity = service.getEntity(id);
-        if (null == entity || entity.isDisabled() || entity.getSiteId() != site.getId()) {
-            return null;
-        }
-        return entity;
-    }
+	@Override
+	public CmsVote getParameterValue(SysSite site, Long id) {
+		CmsVote entity = service.getEntity(id);
+		if (null == entity || entity.isDisabled() || entity.getSiteId() != site.getId()) {
+			return null;
+		}
+		return entity;
+	}
 }

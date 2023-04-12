@@ -1,7 +1,6 @@
 package com.publiccms.logic.component.parameter;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
@@ -35,7 +34,7 @@ public class CategoryCodeParameterComponent extends AbstractStringParameterHandl
     @Override
     public List<CmsCategory> getParameterValueList(SysSite site, String[] ids) {
         List<CmsCategory> entityList = service.getEntitysByCodes(site.getId(), ids);
-        entityList = entityList.stream().filter(entity -> !entity.isDisabled()).collect(Collectors.toList());
+        entityList = entityList.stream().filter(entity -> !entity.isDisabled()).toList();
         entityList.forEach(e -> CmsUrlUtils.initCategoryUrl(site, e));
         return entityList;
     }

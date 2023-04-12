@@ -1,7 +1,6 @@
 package com.publiccms.logic.component.parameter;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
@@ -32,7 +31,7 @@ public class UserParameterComponent extends AbstractLongParameterHandler<SysUser
     public List<SysUser> getParameterValueList(SysSite site, Long[] ids) {
         List<SysUser> entityList = service.getEntitys(ids);
         return entityList.stream().filter(entity -> site.getId() == entity.getSiteId() && !entity.isDisabled())
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
