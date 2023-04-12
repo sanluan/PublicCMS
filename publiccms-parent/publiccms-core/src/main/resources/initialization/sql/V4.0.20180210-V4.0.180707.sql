@@ -564,7 +564,7 @@ DROP TABLE IF EXISTS `cms_vote_user`;
 ALTER TABLE `cms_dictionary`
     ADD COLUMN `site_id` smallint(6) NOT NULL DEFAULT 1 COMMENT '站点ID' AFTER `id`,
     DROP INDEX `multiple`,
-    ADD INDEX `siteId`(`site_id`, `multiple`);
+    ADD INDEX `site_id`(`site_id`, `multiple`);
 -- 20180706 --
 ALTER TABLE `sys_extend_field` MODIFY COLUMN `dictionary_id` bigint(20) NULL DEFAULT NULL COMMENT '数据字典ID' AFTER `default_value`;
 ALTER TABLE `sys_extend_field` DROP COLUMN `dictionary_type`;

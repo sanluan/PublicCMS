@@ -133,7 +133,7 @@ public class SiteExchangeComponent {
                 model.addAttribute(CommonConstants.ERROR, "verify.custom.fileType");
             }
         } else if (CommonUtils.notEmpty(fileName)) {
-            File dest = new File(siteComponent.getSiteFilePath(), fileName);
+            File dest = new File(siteComponent.getSiteFilePath(fileName));
             try {
                 importDate(site, userId, overwrite, dest);
             } catch (IOException e) {

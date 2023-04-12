@@ -6,6 +6,7 @@ import java.util.Locale;
 
 import org.springframework.stereotype.Component;
 
+import com.publiccms.common.api.AdminContextPath;
 import com.publiccms.common.api.Config;
 import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
@@ -17,7 +18,7 @@ import com.publiccms.entities.sys.SysSite;
  * 
  */
 @Component
-public class OSSComponent implements Config {
+public class OSSComponent implements Config, AdminContextPath {
     private String adminContextPath;
     /**
      * 
@@ -44,6 +45,7 @@ public class OSSComponent implements Config {
      * @param adminContextPath
      *            the adminContextPath to set
      */
+    @Override
     public void setAdminContextPath(String adminContextPath) {
         this.adminContextPath = adminContextPath;
     }
@@ -95,7 +97,7 @@ public class OSSComponent implements Config {
                 getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_BUCKET_URL)), null));
         extendFieldList.add(new SysExtendField(CONFIG_ENDPOINT, INPUTTYPE_TEXT,
                 getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_ENDPOINT)), null));
-        
+
         extendFieldList.add(new SysExtendField(CONFIG_PRIVATE_REGION, INPUTTYPE_TEXT,
                 getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_PRIVATE_REGION)),
                 getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_REGION,

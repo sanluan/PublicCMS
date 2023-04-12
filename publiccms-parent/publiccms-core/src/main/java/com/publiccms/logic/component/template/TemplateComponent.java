@@ -21,8 +21,10 @@ import javax.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.publiccms.common.api.AdminContextPath;
 import com.publiccms.common.api.Cache;
 import com.publiccms.common.api.Config;
 import com.publiccms.common.base.AbstractFreemarkerView;
@@ -67,7 +69,7 @@ import freemarker.template.TemplateModelException;
  *
  */
 @Component
-public class TemplateComponent implements Cache {
+public class TemplateComponent implements Cache, AdminContextPath {
     protected final Log log = LogFactory.getLog(getClass());
     /**
      * 包含目录 include directory
@@ -333,8 +335,7 @@ public class TemplateComponent implements Cache {
                 templatePath = entity.getTemplatePath();
                 categoryPath = entity.getPath();
             } else {
-                Map<String, String> config = configDataComponent.getConfigData(site.getId(),
-                        Config.CONFIG_CODE_SITE);
+                Map<String, String> config = configDataComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
                 if (CommonUtils.notEmpty(entity.getTypeId())) {
                     CmsCategoryType categoryType = modelComponent.getCategoryType(site.getId(), entity.getTypeId());
                     if (null != categoryType) {
@@ -550,6 +551,7 @@ public class TemplateComponent implements Cache {
         AbstractFreemarkerView.exposeSite(model, site);
     }
 
+    @Autowired
     public void setAdminContextPath(String adminContextPath) {
         try {
             adminConfiguration.setSharedVariable(CONTEXT_ADMIN_CONTEXT_PATH, adminContextPath);

@@ -411,7 +411,7 @@ public class CmsTemplateAdminController {
     @RequestMapping({ "sitefileList.html", "sitefileList" })
     public String lookupSiteImage(ModelMap model) {
         model.addAttribute("list",
-                CmsFileUtils.getFileList(siteComponent.getSiteFilePath(), CmsFileUtils.ORDERFIELD_MODIFIEDDATE));
+                CmsFileUtils.getFileList(siteComponent.getSiteFilePath(Constants.BLANK), CmsFileUtils.ORDERFIELD_MODIFIEDDATE));
         return "cmsTemplate/sitefileList";
     }
 
@@ -424,7 +424,7 @@ public class CmsTemplateAdminController {
     public ResponseEntity<StreamingResponseBody> lookupSiteImage(String sitefile, String imageFile) {
         if (CommonUtils.notEmpty(imageFile) && CommonUtils.notEmpty(sitefile)) {
             String suffix = CmsFileUtils.getSuffix(imageFile);
-            File file = new File(siteComponent.getSiteFilePath(), sitefile);
+            File file = new File(siteComponent.getSiteFilePath(sitefile));
             if (ArrayUtils.contains(CmsFileUtils.IMAGE_FILE_SUFFIXS, suffix) && file.exists() && file.isFile()) {
                 StreamingResponseBody body = new StreamingResponseBody() {
                     @Override

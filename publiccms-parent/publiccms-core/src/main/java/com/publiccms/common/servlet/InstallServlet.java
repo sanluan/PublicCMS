@@ -216,13 +216,16 @@ public class InstallServlet extends HttpServlet {
      */
     private void checkDatabse(HttpServletRequest request, Map<String, Object> map) {
         String databaseConfiFile = CommonUtils.joinString(CommonConstants.CMS_FILEPATH, CmsDataSource.DATABASE_CONFIG_FILENAME);
-        startStep = null;
-        try (Connection connection = DatabaseUtils.getConnection(databaseConfiFile)) {
-            map.put("message", "success");
-            map.put("siteurl", getSiteUrl(request));
-            map.put("usersql", new File(CommonUtils.joinString(CommonConstants.CMS_FILEPATH, "/publiccms.sql")).exists());
-        } catch (Exception e) {
-            map.put(CommonConstants.ERROR, e.getMessage());
+        if (null != fromVersion && cmsUpgrader.getOldDatabaseConfigVersionList().contains(fromVersion)) {
+            startStep = null;
+        } else {
+            try (Connection connection = DatabaseUtils.getConnection(databaseConfiFile)) {
+                map.put("message", "success");
+                map.put("siteurl", getSiteUrl(request));
+                map.put("usersql", new File(CommonUtils.joinString(CommonConstants.CMS_FILEPATH, "/publiccms.sql")).exists());
+            } catch (Exception e) {
+                map.put(CommonConstants.ERROR, e.getMessage());
+            }
         }
     }
 

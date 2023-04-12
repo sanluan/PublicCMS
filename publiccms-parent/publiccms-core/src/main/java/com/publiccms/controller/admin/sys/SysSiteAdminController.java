@@ -241,7 +241,7 @@ public class SysSiteAdminController {
             String originalName = file.getOriginalFilename();
             if (null != originalName && originalName.endsWith("-site.zip")) {
                 try {
-                    String filepath = CommonUtils.joinString(siteComponent.getSiteFilePath(), Constants.SEPARATOR, originalName);
+                    String filepath = siteComponent.getSiteFilePath(originalName);
                     if (overwrite || !CmsFileUtils.exists(filepath)) {
                         CmsFileUtils.upload(file, originalName);
                         logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
@@ -351,7 +351,7 @@ public class SysSiteAdminController {
     @RequestMapping({ "sitefile.html", "sitefile" })
     public String sitefile(ModelMap model) {
         model.addAttribute("list",
-                CmsFileUtils.getFileList(siteComponent.getSiteFilePath(), CmsFileUtils.ORDERFIELD_MODIFIEDDATE));
+                CmsFileUtils.getFileList(siteComponent.getSiteFilePath(Constants.BLANK), CmsFileUtils.ORDERFIELD_MODIFIEDDATE));
         return "sysSite/sitefile";
     }
 
@@ -362,7 +362,7 @@ public class SysSiteAdminController {
     @RequestMapping({ "lookupSitefile.html", "lookupSitefile" })
     public String lookupSitefile(ModelMap model) {
         model.addAttribute("list",
-                CmsFileUtils.getFileList(siteComponent.getSiteFilePath(), CmsFileUtils.ORDERFIELD_MODIFIEDDATE));
+                CmsFileUtils.getFileList(siteComponent.getSiteFilePath(Constants.BLANK), CmsFileUtils.ORDERFIELD_MODIFIEDDATE));
         return "sysSite/lookupSitefile";
     }
 

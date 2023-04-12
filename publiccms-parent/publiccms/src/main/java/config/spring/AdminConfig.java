@@ -29,13 +29,12 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.publiccms.common.api.AdminContextPath;
 import com.publiccms.common.handler.FullBeanNameGenerator;
 import com.publiccms.common.interceptor.AdminContextInterceptor;
 import com.publiccms.common.interceptor.CsrfInterceptor;
 import com.publiccms.common.view.AdminFreeMarkerView;
-import com.publiccms.logic.component.OSSComponent;
 import com.publiccms.logic.component.cache.CacheComponent;
-import com.publiccms.logic.component.template.TemplateComponent;
 
 /**
  * AdminServlet配置类
@@ -90,16 +89,16 @@ public class AdminConfig implements WebMvcConfigurer {
 
     /**
      * 拦截器
-     * 
-     * @param templateComponent
-     * @param ossComponent 
-     * 
+     * @param adminContextPathList 
      * @return admin servlet interceptor
      */
     @Bean
-    public AdminContextInterceptor adminInterceptor(TemplateComponent templateComponent, OSSComponent ossComponent) {
-        templateComponent.setAdminContextPath(ADMIN_CONTEXT_PATH);
-        ossComponent.setAdminContextPath(ADMIN_CONTEXT_PATH);
+    public AdminContextInterceptor adminInterceptor(List<AdminContextPath> adminContextPathList) {
+        if (null != adminContextPathList) {
+            for (AdminContextPath adminContextPath : adminContextPathList) {
+                adminContextPath.setAdminContextPath(ADMIN_CONTEXT_PATH);
+            }
+        }
         AdminContextInterceptor bean = new AdminContextInterceptor();
         bean.setAdminContextPath(ADMIN_CONTEXT_PATH);
         bean.setLoginUrl("/login.html");
