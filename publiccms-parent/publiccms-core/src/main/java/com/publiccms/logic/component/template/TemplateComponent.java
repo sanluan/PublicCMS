@@ -18,7 +18,6 @@ import java.util.function.Consumer;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.api.AdminContextPath;
@@ -550,7 +549,7 @@ public class TemplateComponent implements Cache, AdminContextPath {
         AbstractFreemarkerView.exposeSite(model, site);
     }
 
-    @Autowired
+    @Override
     public void setAdminContextPath(String adminContextPath) {
         try {
             adminConfiguration.setSharedVariable(CONTEXT_ADMIN_CONTEXT_PATH, adminContextPath);
