@@ -44,13 +44,13 @@ public class PlaceExchangeComponent extends AbstractDataExchange<String, Place> 
 
     @Override
     public void exportAll(SysSite site, String directory, ByteArrayOutputStream outputStream, ZipOutputStream zipOutputStream) {
-        dealDir(site, directory, Constants.SEPARATOR, outputStream, zipOutputStream);
+        dealDir(site, directory, "", outputStream, zipOutputStream);
     }
 
     private void dealDir(SysSite site, String directory, String path, ByteArrayOutputStream outputStream,
             ZipOutputStream zipOutputStream) {
         String realPath = siteComponent.getTemplateFilePath(site.getId(),
-                CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, path));
+                CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, Constants.SEPARATOR, path));
         List<FileInfo> list = CmsFileUtils.getFileList(realPath, null);
         for (FileInfo fileInfo : list) {
             String filepath = CommonUtils.joinString(path, fileInfo.getFileName());
