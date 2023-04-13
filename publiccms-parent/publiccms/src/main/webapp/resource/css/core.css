@@ -280,7 +280,7 @@ a.button:hover{text-decoration:none;}
 .pageFormContent span.unit, .pageFormContent a.unit{padding:0 5px;line-height:26px;}
 .pageFormContent span.info{color:#7F7F7F;line-height:26px;font-size:12px;}
 .pageFormContent span.info:before{display:block;content:".";height:0;clear:both;visibility:hidden;}
-.pageFormContent dl{float:left;line-height:22px;width:50%;margin:0;padding:4px 0;position:relative;}
+.pageFormContent dl{float:left;line-height:22px;width:50%;margin:0;padding:6px 0;position:relative;}
 .pageFormContent dl:hover{background-color:#f9f9ff;}
 .pageFormContent dt{float:left;min-width:100px;padding:0 5px;word-break:break-all;}
 .pageFormContent dd{margin-left:130px;}
