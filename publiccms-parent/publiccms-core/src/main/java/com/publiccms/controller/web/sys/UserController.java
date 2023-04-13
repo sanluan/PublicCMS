@@ -14,11 +14,11 @@ import jakarta.servlet.http.HttpSession;
 import org.apache.commons.lang3.time.DateUtils;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import com.publiccms.common.annotation.Csrf;
@@ -94,7 +94,7 @@ public class UserController {
     @Csrf
     public String changePassword(@RequestAttribute SysSite site, @SessionAttribute SysUser user, String oldpassword,
             String password, String repassword, String encoding, String returnUrl, HttpServletRequest request,
-            HttpSession session, HttpServletResponse response, ModelMap model) {
+            HttpSession session, HttpServletResponse response, RedirectAttributes model) {
         returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         user = service.getEntity(user.getId());
         if (ControllerUtils.errorNotEmpty("user", user, model) || ControllerUtils.errorNotEmpty("password", password, model)
@@ -139,7 +139,7 @@ public class UserController {
     @RequestMapping("update")
     @Csrf
     public String update(@RequestAttribute SysSite site, @SessionAttribute SysUser user, String nickname, String cover,
-            String returnUrl, HttpServletRequest request, ModelMap model) {
+            String returnUrl, HttpServletRequest request, RedirectAttributes model) {
         returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         if (ControllerUtils.errorNotEmpty("nickname", nickname, model)
                 || ControllerUtils.errorNotNickname("nickname", nickname, model)) {
@@ -166,7 +166,7 @@ public class UserController {
     @PostMapping("saveEmail")
     @Csrf
     public String saveEmail(@RequestAttribute SysSite site, @SessionAttribute SysUser user, String email, String returnUrl,
-            HttpServletRequest request, ModelMap model) {
+            HttpServletRequest request, RedirectAttributes model) {
         returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         Map<String, String> config = configDataComponent.getConfigData(site.getId(), EmailTemplateConfigComponent.CONFIG_CODE);
         String emailTitle = config.get(EmailTemplateConfigComponent.CONFIG_EMAIL_TITLE);
@@ -222,7 +222,7 @@ public class UserController {
      */
     @RequestMapping(value = "verifyEmail")
     public String verifyEmail(@RequestAttribute SysSite site, String authToken, String returnUrl, HttpServletRequest request,
-            ModelMap model) {
+            RedirectAttributes model) {
         returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         SysEmailToken sysEmailToken = sysEmailTokenService.getEntity(authToken);
         if (null != sysEmailToken && CommonUtils.getDate().after(sysEmailToken.getExpiryDate())) {
@@ -251,7 +251,7 @@ public class UserController {
     @RequestMapping(value = "deleteToken")
     @Csrf
     public String deleteToken(@RequestAttribute SysSite site, @SessionAttribute SysUser user, String authToken, String returnUrl,
-            HttpServletRequest request, ModelMap model) {
+            HttpServletRequest request, RedirectAttributes model) {
         returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         SysUserToken entity = sysUserTokenService.getEntity(authToken);
         if (null != entity) {

@@ -15,10 +15,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import com.publiccms.common.api.Config;
@@ -111,7 +111,7 @@ public class OauthController {
      */
     @RequestMapping(value = "callback/{channel}")
     public String callback(@PathVariable("channel") String channel, @RequestAttribute SysSite site, String state, String code,
-            HttpServletRequest request, HttpSession session, HttpServletResponse response, ModelMap model) {
+            HttpServletRequest request, HttpSession session, HttpServletResponse response, RedirectAttributes model) {
         OauthGateway oauthGateway = oauthComponent.get(channel);
         Cookie cookie = RequestUtils.getCookie(request.getCookies(), RETURN_URL);
         RequestUtils.cancleCookie(request.getContextPath(), request.getScheme(), response, RETURN_URL, null);

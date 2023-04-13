@@ -20,30 +20,30 @@ import jakarta.annotation.Resource;
 @Component
 @Priority(4)
 public class CategoryParameterComponent extends AbstractIntegerParameterHandler<CmsCategory> {
-	@Resource
-	private CmsCategoryService service;
+    @Resource
+    private CmsCategoryService service;
 
-	@Override
-	public String getType() {
-		return Config.INPUTTYPE_CATEGORY;
-	}
+    @Override
+    public String getType() {
+        return Config.INPUTTYPE_CATEGORY;
+    }
 
-	@Override
-	public List<CmsCategory> getParameterValueList(SysSite site, Integer[] ids) {
-		List<CmsCategory> entityList = service.getEntitys(ids);
-		entityList = entityList.stream().filter(entity -> site.getId() == entity.getSiteId() && !entity.isDisabled())
-				.toList();
-		entityList.forEach(e -> CmsUrlUtils.initCategoryUrl(site, e));
-		return entityList;
-	}
+    @Override
+    public List<CmsCategory> getParameterValueList(SysSite site, Integer[] ids) {
+        List<CmsCategory> entityList = service.getEntitys(ids);
+        entityList = entityList.stream().filter(entity -> site.getId() == entity.getSiteId() && !entity.isDisabled())
+                .toList();
+        entityList.forEach(e -> CmsUrlUtils.initCategoryUrl(site, e));
+        return entityList;
+    }
 
-	@Override
-	public CmsCategory getParameterValue(SysSite site, Integer id) {
-		CmsCategory entity = service.getEntity(id);
+    @Override
+    public CmsCategory getParameterValue(SysSite site, Integer id) {
+        CmsCategory entity = service.getEntity(id);
         if (null != entity && !entity.isDisabled() && entity.getSiteId() == site.getId()) {
             CmsUrlUtils.initCategoryUrl(site, entity);
             return entity;
         }
         return null;
-	}
+    }
 }

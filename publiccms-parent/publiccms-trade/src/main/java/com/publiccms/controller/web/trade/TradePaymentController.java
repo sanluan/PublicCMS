@@ -14,13 +14,13 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import com.alipay.easysdk.kernel.util.Signer;
@@ -84,7 +84,7 @@ public class TradePaymentController {
      */
     @RequestMapping(value = "pay")
     public String pay(@RequestAttribute SysSite site, Long paymentId, String paymentType, String returnUrl,
-            HttpServletRequest request, HttpServletResponse response, ModelMap model) {
+            HttpServletRequest request, HttpServletResponse response, RedirectAttributes model) {
         returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         TradePayment entity = service.getEntity(paymentId);
         if (null != entity) {
@@ -109,7 +109,7 @@ public class TradePaymentController {
     @RequestMapping(value = "cancel")
     @Csrf
     public String cancel(@RequestAttribute SysSite site, Long paymentId, String returnUrl, HttpServletRequest request,
-            ModelMap model) {
+            RedirectAttributes model) {
         returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         TradePayment entity = service.getEntity(paymentId);
         if (null == entity || ControllerUtils.errorNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
@@ -303,7 +303,7 @@ public class TradePaymentController {
     @RequestMapping(value = "refund")
     @Csrf
     public String refund(@RequestAttribute SysSite site, @SessionAttribute SysUser user, TradeRefund entity, String returnUrl,
-            HttpServletRequest request, ModelMap model) {
+            HttpServletRequest request, RedirectAttributes model) {
         returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         if (ControllerUtils.errorCustom("tradePaymentStatus", !service.pendingRefund(site.getId(), entity.getPaymentId()),
                 model)) {

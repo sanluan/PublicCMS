@@ -207,7 +207,7 @@ public class QueryHandler {
 
     public Query initQuery(Query query, boolean pageable) {
         if (null != map) {
-        	for (Entry<String, Object> entry : map.entrySet()) {
+            for (Entry<String, Object> entry : map.entrySet()) {
                 query.setParameter(entry.getKey(), entry.getValue());
             }
         }

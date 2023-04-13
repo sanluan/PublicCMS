@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,46 +32,40 @@ import jakarta.servlet.http.HttpServletRequest;
 @Controller
 @RequestMapping("ckeditor")
 public class CkEditorController extends AbstractCkEditorController {
-	@Resource
-	private LockComponent lockComponent;
+    @Resource
+    private LockComponent lockComponent;
 
-	/**
-	 * @param site
-	 * @param user
-	 * @param upload
-	 * @param ckCsrfToken
-	 * @param csrfToken
-	 * @param request
-	 * @return view name
-	 */
-	@RequestMapping("upload")
-	@ResponseBody
-	public Map<String, Object> upload(@RequestAttribute SysSite site, @SessionAttribute SysUser user,
-			MultipartFile upload, String ckCsrfToken, @CookieValue("ckCsrfToken") String csrfToken,
-			HttpServletRequest request) {
-		boolean locked = lockComponent.isLocked(site.getId(), LockComponent.ITEM_TYPE_FILEUPLOAD,
-				String.valueOf(user.getId()), null);
-		lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_FILEUPLOAD, String.valueOf(user.getId()), null, true);
+    /**
+     * @param site
+     * @param user
+     * @param upload
+     * @param ckCsrfToken
+     * @param csrfToken
+     * @param request
+     * @return view name
+     */
+    @RequestMapping("upload")
+    @ResponseBody
+    public Map<String, Object> upload(@RequestAttribute SysSite site, @SessionAttribute SysUser user,
+            MultipartFile upload, String ckCsrfToken, @CookieValue("ckCsrfToken") String csrfToken,
+            HttpServletRequest request) {
+        boolean locked = lockComponent.isLocked(site.getId(), LockComponent.ITEM_TYPE_FILEUPLOAD,
+                String.valueOf(user.getId()), null);
+        lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_FILEUPLOAD, String.valueOf(user.getId()), null, true);
 
-		Map<String, Object> messageMap = new HashMap<>();
-		if (ControllerUtils.errorCustom("locked.user", locked, messageMap)) {
-			Map<String, Object> result = new HashMap<>();
-			result.put(CommonConstants.ERROR, LanguagesUtils.getMessage(CommonConstants.applicationContext,
-					request.getLocale(), (String) messageMap.get(CommonConstants.ERROR)));
-			result.put(CommonConstants.ERROR, messageMap);
-			return result;
-		} else if (ControllerUtils.errorCustom("locked.size", lockComponent.isLocked(site.getId(),
-				LockComponent.ITEM_TYPE_FILEUPLOAD_SIZE, String.valueOf(user.getId()), null), messageMap)) {
-			Map<String, Object> result = new HashMap<>();
-			result.put(CommonConstants.ERROR, LanguagesUtils.getMessage(CommonConstants.applicationContext,
-					request.getLocale(), (String) messageMap.get(CommonConstants.ERROR)));
-			result.put(CommonConstants.ERROR, messageMap);
-			return result;
-		}
-		if (null != upload) {
-			lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_FILEUPLOAD_SIZE, String.valueOf(user.getId()),
-					null, (int) upload.getSize() / 1024);
-		}
-		return upload(site, user, upload, ckCsrfToken, csrfToken, LogLoginService.CHANNEL_WEB, request);
-	}
+        ModelMap messageMap = new ModelMap();
+        if (ControllerUtils.errorCustom("locked.user", locked, messageMap) || ControllerUtils.errorCustom("locked.size", lockComponent.isLocked(site.getId(),
+                LockComponent.ITEM_TYPE_FILEUPLOAD_SIZE, String.valueOf(user.getId()), null), messageMap)) {
+            Map<String, Object> result = new HashMap<>();
+            result.put(CommonConstants.ERROR, LanguagesUtils.getMessage(CommonConstants.applicationContext,
+                    request.getLocale(), (String) messageMap.get(CommonConstants.ERROR)));
+            result.put(CommonConstants.ERROR, messageMap);
+            return result;
+        }
+        if (null != upload) {
+            lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_FILEUPLOAD_SIZE, String.valueOf(user.getId()),
+                    null, (int) upload.getSize() / 1024);
+        }
+        return upload(site, user, upload, ckCsrfToken, csrfToken, LogLoginService.CHANNEL_WEB, request);
+    }
 }
