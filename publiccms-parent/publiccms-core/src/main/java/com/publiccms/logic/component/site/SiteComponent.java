@@ -127,10 +127,13 @@ public class SiteComponent implements Cache {
      * @return full file name
      */
     public static String getFullFileName(short siteId, String path) {
-        if (path.startsWith(Constants.SEPARATOR) || path.startsWith("\\")) {
+        if (CommonUtils.empty(path)) {
+            return CommonUtils.joinString(SITE_PATH_PREFIX, siteId);
+        } else if (path.startsWith(Constants.SEPARATOR) || path.startsWith("\\")) {
             return CommonUtils.joinString(SITE_PATH_PREFIX, siteId, CmsFileUtils.getSafeFileName(path));
+        } else {
+            return CommonUtils.joinString(SITE_PATH_PREFIX, siteId, Constants.SEPARATOR, CmsFileUtils.getSafeFileName(path));
         }
-        return CommonUtils.joinString(SITE_PATH_PREFIX, siteId, Constants.SEPARATOR, CmsFileUtils.getSafeFileName(path));
     }
 
     /**
