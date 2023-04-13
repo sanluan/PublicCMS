@@ -49,9 +49,8 @@ public class PlaceExchangeComponent extends AbstractDataExchange<String, Place> 
 
     private void dealDir(SysSite site, String directory, String path, ByteArrayOutputStream outputStream,
             ZipOutputStream zipOutputStream) {
-        path = path.replace("\\", Constants.SEPARATOR).replace("//", Constants.SEPARATOR);
         String realPath = siteComponent.getTemplateFilePath(site.getId(),
-                CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, path));
+                CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, Constants.SEPARATOR, path));
         List<FileInfo> list = CmsFileUtils.getFileList(realPath, null);
         for (FileInfo fileInfo : list) {
             String filepath = CommonUtils.joinString(path, fileInfo.getFileName());
