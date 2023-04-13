@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -49,14 +50,8 @@ public class TinymceController extends AbstractTinymceController {
                 null);
         lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_FILEUPLOAD, String.valueOf(user.getId()), null, true);
 
-        Map<String, Object> messageMap = new HashMap<>();
-        if (ControllerUtils.errorCustom("locked.user", locked, messageMap)) {
-            Map<String, Object> result = new HashMap<>();
-            result.put(CommonConstants.MESSAGE, LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
-                    (String) messageMap.get(CommonConstants.ERROR)));
-            result.put(CommonConstants.ERROR, 1);
-            return result;
-        } else if (ControllerUtils.errorCustom("locked.size",
+        ModelMap messageMap = new ModelMap();
+        if (ControllerUtils.errorCustom("locked.user", locked, messageMap) || ControllerUtils.errorCustom("locked.size",
                 lockComponent.isLocked(site.getId(), LockComponent.ITEM_TYPE_FILEUPLOAD_SIZE, String.valueOf(user.getId()), null),
                 messageMap)) {
             Map<String, Object> result = new HashMap<>();
@@ -77,6 +72,7 @@ public class TinymceController extends AbstractTinymceController {
      * @param user
      * @return view name
      */
+    @Override
     @RequestMapping("imageList")
     @ResponseBody
     public List<Map<String, String>> imageList(SysSite site, @SessionAttribute SysUser user) {

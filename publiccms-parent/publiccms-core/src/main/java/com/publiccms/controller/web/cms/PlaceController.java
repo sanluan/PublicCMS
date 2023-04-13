@@ -12,11 +12,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import com.publiccms.common.annotation.Csrf;
@@ -94,7 +94,7 @@ public class PlaceController {
     @RequestMapping(value = "save")
     public String save(@RequestAttribute SysSite site, CmsPlace entity, String returnUrl, String _csrf, String captcha,
             @ModelAttribute ExtendDataParameters placeParameters, HttpServletRequest request, HttpSession session,
-            ModelMap model) {
+            RedirectAttributes model) {
         returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         if (null != entity) {
             if (CommonUtils.notEmpty(captcha)
@@ -187,7 +187,7 @@ public class PlaceController {
     @RequestMapping("delete")
     @Csrf
     public String delete(@RequestAttribute SysSite site, Long id, @SessionAttribute SysUser user, String returnUrl,
-            HttpServletRequest request, ModelMap model) {
+            HttpServletRequest request, RedirectAttributes model) {
         returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         CmsPlace entity = service.getEntity(id);
         if (null != entity) {
@@ -227,7 +227,7 @@ public class PlaceController {
     @RequestMapping("check")
     @Csrf
     public String check(@RequestAttribute SysSite site, Long id, @SessionAttribute SysUser user, String returnUrl,
-            HttpServletRequest request, ModelMap model) {
+            HttpServletRequest request, RedirectAttributes model) {
         returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         CmsPlace entity = service.getEntity(id);
         if (null != entity) {
@@ -267,7 +267,7 @@ public class PlaceController {
     @RequestMapping("uncheck")
     @Csrf
     public String uncheck(@RequestAttribute SysSite site, Long id, @SessionAttribute SysUser user, String returnUrl,
-            HttpServletRequest request, ModelMap model) {
+            HttpServletRequest request, RedirectAttributes model) {
         returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         CmsPlace entity = service.getEntity(id);
         if (null != entity) {
