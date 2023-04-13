@@ -29,7 +29,7 @@ public class UserParameterComponent extends AbstractLongParameterHandler<SysUser
 
     @Override
     public String getType() {
-        return Config.INPUTTYPE_TAG;
+        return Config.INPUTTYPE_USER;
     }
 
     @Override
