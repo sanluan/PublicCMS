@@ -8,17 +8,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import jakarta.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
-import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import com.publiccms.common.annotation.Csrf;
@@ -42,6 +39,9 @@ import com.publiccms.logic.service.cms.CmsSurveyService;
 import com.publiccms.logic.service.cms.CmsUserSurveyQuestionService;
 import com.publiccms.logic.service.cms.CmsUserSurveyService;
 import com.publiccms.views.pojo.model.CmsUserSurveyQuestionParameters;
+
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * 
@@ -79,7 +79,7 @@ public class SurveyController {
     @Csrf
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser user, long surveyId, String captcha,
             @ModelAttribute CmsUserSurveyQuestionParameters userQuestionParameters, String returnUrl, HttpServletRequest request,
-            ModelMap model) {
+            RedirectAttributes model) {
         returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         if (CommonUtils.notEmpty(captcha)
                 || safeConfigComponent.enableCaptcha(site.getId(), SafeConfigComponent.CAPTCHA_MODULE_SURVEY)) {

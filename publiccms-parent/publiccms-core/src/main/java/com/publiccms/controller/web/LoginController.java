@@ -6,22 +6,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import com.publiccms.common.api.Config;
@@ -46,6 +40,12 @@ import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.sys.SysAppClientService;
 import com.publiccms.logic.service.sys.SysUserService;
 import com.publiccms.logic.service.sys.SysUserTokenService;
+
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 /**
  *
@@ -100,7 +100,7 @@ public class LoginController {
     @RequestMapping(value = "doLogin", method = RequestMethod.POST)
     public String login(@RequestAttribute SysSite site, String username, String password, String returnUrl, String encoding,
             String captcha, Long clientId, String uuid, HttpServletRequest request, HttpServletResponse response,
-            ModelMap model) {
+            RedirectAttributes model) {
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
         String loginPath = config.get(SiteConfigComponent.CONFIG_LOGIN_PATH);
         if (CommonUtils.empty(loginPath)) {
@@ -220,7 +220,7 @@ public class LoginController {
     @RequestMapping(value = "doRegister", method = RequestMethod.POST)
     public String register(@RequestAttribute SysSite site, SysUser entity, String repassword, String returnUrl, String encode,
             String captcha, Long clientId, String uuid, HttpServletRequest request, HttpServletResponse response,
-            ModelMap model) {
+            RedirectAttributes model) {
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
         String registerPath = config.get(SiteConfigComponent.CONFIG_REGISTER_URL);
         if (CommonUtils.empty(registerPath)) {
@@ -344,7 +344,7 @@ public class LoginController {
      * @param model
      * @return 用户是否禁用
      */
-    public boolean verifyNotEnablie(SysUser user, ModelMap model) {
+    public boolean verifyNotEnablie(SysUser user, RedirectAttributes model) {
         if (user.isDisabled()) {
             model.addAttribute(CommonConstants.ERROR, "verify.user.notEnablie");
             return true;
