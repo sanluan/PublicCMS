@@ -12,11 +12,11 @@
         </#if>
         <#if 'customform'!=type>
             <@sys.authorized roleIds=admin.roles url='cmsDictionary/add'>
-                <a href="common/dictionary.html?id=${dictionary.id.id}&inputName=${inputName?url}&required=${extend.required!}&multiple=${extend.multiple!}&value=${value!}" target="ajax" rel="${dictionaryId}"><i class="icon-refresh"></i><@t.page 'button.refresh'/></a>
+                <a class="button" href="common/dictionary.html?id=${dictionary.id.id}&inputName=${inputName?url}&required=${extend.required!}&multiple=${extend.multiple!}&value=${value!}" target="ajax" rel="${dictionaryId}"><i class="icon-refresh"></i><@t.page 'button.refresh'/></a>
                 <#if dictionary.childDepth gt 0>
-                    <a href="cmsDictionary/addChild.html?id=${dictionary.id.id}" target="dialog" mask="true"><@t.page 'dictionary.edit'/></a>
+                    <a class="button" href="cmsDictionary/addChild.html?id=${dictionary.id.id}" target="dialog" mask="true"><@t.page 'dictionary.edit'/></a>
                 <#else>
-                    <a href="cmsDictionary/add.html?id=${dictionary.id.id}" target="navTab" rel="cmsDictionary/edit"><@t.page 'dictionary.edit'/></a>
+                    <a class="button" href="cmsDictionary/add.html?id=${dictionary.id.id}" target="navTab" rel="cmsDictionary/edit"><@t.page 'dictionary.edit'/></a>
                 </#if>
             </@sys.authorized>
         </#if>
