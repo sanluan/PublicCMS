@@ -274,7 +274,7 @@ a.button:hover{text-decoration:none;}
 .pageFormContent p.nowrap{width:100%;}
 .pageFormContent .radioGroup{float:left;display:block;overflow:hidden;}
 .pageFormContent label{float:left;min-width:80px;padding:0 10px;}
-.pageFormContent label.radioButton{float:left;width:auto;padding:0 10px 0 0;}
+.pageFormContent .image-editor label{float:none;min-width:auto;padding:unset;}
 .pageFormContent .textInput,.pageFormContent select{float:left;}
 .pageFormContent .inputInfo{padding:0 5px;line-height:26px;}
 .pageFormContent span.unit, .pageFormContent a.unit{padding:0 5px;line-height:26px;}

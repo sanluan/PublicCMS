@@ -3,14 +3,16 @@
  */
 
 ( function($) {
-    var jmenus = new Map();
+    var jmenus = {};
     // If the JUI scope is not available, add it
     $.jui = $.jui || {};
     $.fn.extend({
         accordion: function(options, data) {
             var args = Array.prototype.slice.call(arguments, 1);
             return this.each(function() {
-                if (options.fillSpace) jmenus.put(options.fillSpace, this);
+                if (options.fillSpace) {
+                    jmenus[options.fillSpace] = this;
+                };
                 if (typeof options == "string" ) {
                     var accordion = $.data(this, "jui-accordion");
                     accordion[options].apply(accordion, args);
@@ -99,7 +101,7 @@
         $(this).triggerHandler("change.jui-accordion", [ options.data ], options.change);
     }
     function fillSpace(key){
-        var obj = jmenus.get(key);
+        var obj = jmenus[key];
         if (!obj) return;
 
         var parent = $(obj).parent();

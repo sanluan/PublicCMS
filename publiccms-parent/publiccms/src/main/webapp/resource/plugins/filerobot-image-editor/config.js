@@ -1,13 +1,13 @@
-filerobotImageEditorConfig = {
-  source: "https://scaleflex.airstore.io/demo/stephen-walker-unsplash.jpg",
+var filerobotImageEditorConfig = {
   closeAfterSave: true,
+  avoidChangesNotSavedAlertOnLeave:true,
   annotationsCommon: {
     fill: "#ff0000",
   },
-  language:"zh",
+  useBackendTranslations:false,
   Text: { text: "..." },
   Rotate: { angle: 90, componentType: "slider" },
-  tabsIds: ["Adjust","Annotate","Filters","Finetune","Watermark","Resize"],
+  tabsIds: ["Adjust","Annotate","Filters","Finetune","Watermark"],//,"Resize"
   defaultTabId: "Adjust",
   defaultToolId: "Crop"
 };
