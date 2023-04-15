@@ -250,7 +250,7 @@ var JUI = {
                 });
                 $(".image-editor", $box).each(function() {
                     if(JUI.instances[$(this).data("id")]) {
-                        JUI.instances[$(this).data("id")].destroy();
+                        JUI.instances[$(this).data("id")].terminate();
                         delete JUI.instances[$(this).data("id")];
                     }
                 });

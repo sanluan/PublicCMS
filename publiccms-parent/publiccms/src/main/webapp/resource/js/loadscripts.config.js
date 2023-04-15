@@ -25,8 +25,8 @@
         array: false,
         index: 0
     };
-    window.photoclip = {
-        resources: [window.LOADSCRIPTS_BASE + "/resource/plugins/photoclip/hammer.min.js",window.LOADSCRIPTS_BASE + "/resource/plugins/photoclip/iscroll-zoom-min.js",window.LOADSCRIPTS_BASE + "/resource/plugins/photoclip/lrz.all.bundle.js",window.LOADSCRIPTS_BASE + "/resource/plugins/photoclip/PhotoClip.min.js"],
+    window.imageEditor = {
+        resources: [window.LOADSCRIPTS_BASE + "/resource/plugins/filerobot-image-editor/filerobot-image-editor.min.js"],
         initd: false,
         index: 0
     };
