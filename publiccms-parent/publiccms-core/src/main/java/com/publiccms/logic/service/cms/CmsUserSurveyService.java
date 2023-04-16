@@ -26,6 +26,8 @@ public class CmsUserSurveyService extends BaseService<CmsUserSurvey> {
      * @param siteId
      * @param userId
      * @param surveyId
+     * @param anonymous
+     * @param ip
      * @param orderField
      * @param orderType
      * @param pageIndex
@@ -33,9 +35,9 @@ public class CmsUserSurveyService extends BaseService<CmsUserSurvey> {
      * @return results page
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(Short siteId, Long userId, Long surveyId, String orderField, String orderType, Integer pageIndex,
-            Integer pageSize) {
-        return dao.getPage(siteId, userId, surveyId, orderField, orderType, pageIndex, pageSize);
+    public PageHandler getPage(Short siteId, Long userId, Long surveyId, Boolean anonymous, String ip, String orderField,
+            String orderType, Integer pageIndex, Integer pageSize) {
+        return dao.getPage(siteId, userId, surveyId, anonymous, ip, orderField, orderType, pageIndex, pageSize);
     }
 
     /**

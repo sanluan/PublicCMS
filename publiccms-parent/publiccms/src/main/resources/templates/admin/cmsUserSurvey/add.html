@@ -21,7 +21,7 @@
             <dl class="nowrap">
                 <dt><@t.page 'user'/>:</dt>
                 <dd class="exclude-translate">
-                    <@sys.user id=object.id.userId>${object.nickname!}</@sys.user>
+                    <#if object.anonymous><b><@t.page 'anonymous'/></b><#else><@sys.user id=object.id.userId>${object.nickname!}</@sys.user></#if>
                 </dd>
             </dl>
         <#if 'exam'=survey.surveyType>
@@ -53,7 +53,7 @@
                         <p class="nowrap"><label><@t.page 'question'/>:</label>[<@t.page 'question.type.'+q.questionType/>] ${q.title}</p>
                         <#if q.cover?has_content>
                             <p class="thumbnail">
-                                <img src="${(q.cover)!}"/>
+                                <img src="${(q.cover)!}" alt="${a.title}"/>
                             </p>
                         </#if>
                         <#if ['radio','select','checkbox']?seq_contains(q.questionType)>

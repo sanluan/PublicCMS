@@ -144,6 +144,10 @@ public abstract class BaseService<E> {
         basedao.save(entity);
     }
 
+    public long getId() {
+        return basedao.getId();
+    }
+
     /**
      * @param entityList
      */

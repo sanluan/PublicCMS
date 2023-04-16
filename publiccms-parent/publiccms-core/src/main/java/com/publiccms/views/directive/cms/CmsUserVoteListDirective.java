@@ -51,8 +51,8 @@ public class CmsUserVoteListDirective extends AbstractTemplateDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, TemplateException {
-        PageHandler page = service.getPage(handler.getLong("userId"), handler.getLong("voteId"), handler.getString("orderType"),
-                handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", 30));
+        PageHandler page = service.getPage(handler.getLong("userId"), handler.getLong("voteId"), handler.getBoolean("anonymous"),
+                handler.getString("orderType"), handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", 30));
         handler.put("page", page).render();
     }
 

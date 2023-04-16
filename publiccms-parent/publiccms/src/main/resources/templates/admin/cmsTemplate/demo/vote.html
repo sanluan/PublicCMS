@@ -59,7 +59,7 @@
                                                 ${v.title} (${v.votes!} votes)
                                             </#if>
                                         <#else>
-                                            <a href="<#if user?has_content>javascript:vote('${v.id}');<#else>${site.dynamicPath}login.html?returnUrl=${site.dynamicPath}vote.html?id=${a.id}</#if>" title="Vote and view">${v.title}</a>
+                                            <a href="<#if a.allowAnonymous||user?has_content>javascript:vote('${v.id}');<#else>${site.dynamicPath}login.html?returnUrl=${site.dynamicPath}vote.html?id=${a.id}</#if>" title="Vote and view">${v.title}</a>
                                         </#if>
                                     <#else>
                                         (${v.votes!} votes)

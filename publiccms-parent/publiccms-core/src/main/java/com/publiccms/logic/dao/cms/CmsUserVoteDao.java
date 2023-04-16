@@ -21,12 +21,13 @@ public class CmsUserVoteDao extends BaseDao<CmsUserVote> {
     /**
      * @param userId
      * @param voteId
+     * @param anonymous
      * @param orderType
      * @param pageIndex
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(Long userId, Long voteId, String orderType, Integer pageIndex,
+    public PageHandler getPage(Long userId, Long voteId, Boolean anonymous, String orderType, Integer pageIndex,
             Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from CmsUserVote bean");
         if (null != userId) {
@@ -34,6 +35,9 @@ public class CmsUserVoteDao extends BaseDao<CmsUserVote> {
         }
         if (null != voteId) {
             queryHandler.condition("bean.id.voteId = :voteId").setParameter("voteId", voteId);
+        }
+        if (null != anonymous) {
+            queryHandler.condition("bean.anonymous = :anonymous").setParameter("anonymous", anonymous);
         }
         if (!ORDERTYPE_ASC.equalsIgnoreCase(orderType)) {
             orderType = ORDERTYPE_DESC;
