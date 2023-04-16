@@ -296,27 +296,20 @@ public class PlaceController {
     }
 
     /**
+     * @param <T>
      * @param site
-     * @param id
-     */
-    @RequestMapping("click")
-    public void click(@RequestAttribute SysSite site, Long id) {
-        statisticsComponent.placeClicks(site.getId(), id);
-    }
-
-    /**
-     * @param site
+     * @param found
      * @param id
      * @return
      */
     @RequestMapping("redirect")
-    public ResponseEntity<?> redirect(@RequestAttribute SysSite site, Long id) {
+    public <T> ResponseEntity<T> redirect(@RequestAttribute SysSite site, boolean found, Long id) {
         ClickStatistics clickStatistics = statisticsComponent.placeClicks(site.getId(), id);
         if (null != clickStatistics && CommonUtils.notEmpty(clickStatistics.getUrl())
                 && site.getId().equals(clickStatistics.getSiteId())) {
-            return ControllerUtils.redirectPermanently(clickStatistics.getUrl());
+            return ControllerUtils.redirect(found, clickStatistics.getUrl());
         } else {
-            return ControllerUtils.redirectPermanently(site.getDynamicPath());
+            return ControllerUtils.redirect(true, site.getDynamicPath());
         }
     }
 

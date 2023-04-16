@@ -47,12 +47,14 @@ public class ControllerUtils {
             CommonUtils.joinString("(", VALID_CHARS, "(\\.", VALID_CHARS, ")*@", VALID_CHARS, "(\\.", VALID_CHARS, ")*)"));
 
     /**
-     * @param response
+     * @param found
      * @param url
-     * @return
+     * @param <T>
+     * @return response entity
      */
-    public static ResponseEntity<?> redirectPermanently(String url) {
-        return ResponseEntity.status(HttpStatus.MOVED_PERMANENTLY).header("Location", RequestUtils.removeCRLF(url)).build();
+    public static <T> ResponseEntity<T> redirect(boolean found, String url) {
+        return ResponseEntity.status(found ? HttpStatus.FOUND : HttpStatus.MOVED_PERMANENTLY)
+                .header("Location", RequestUtils.removeCRLF(url)).build();
     }
 
     /**

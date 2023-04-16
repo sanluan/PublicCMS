@@ -58,7 +58,7 @@
                 <#if content.hasFiles>
                     <@cms.contentFileList contentId=content.id fileTypes='video,audio,document,other'>
                         <#list page.list as file>
-                            <p><a href="${(file.filePath)!}" download="${(file.description)!}">${file?counter}. ${(file.description)!}</a></p>
+                            <p><a href="${site.dynamicPath}content/fileRedirect?id=${file.id}" download="${(file.description)!}">${file?counter}. ${(file.description)!}</a></p>
                         </#list>
                     </@cms.contentFileList>
                 </#if>
