@@ -97,7 +97,7 @@ function initUI(_box) {
     $("div.accordion", $p).each(function() {
         var $this = $(this);
         $this.accordion({
-            alwaysOpen: false, active: 0, autoheight:false
+            alwaysOpen: false, active: 0, fillSpace:$(this).attr("fillSpace")
         });
     });
     $(":button.checkboxCtrl, :checkbox.checkboxCtrl", $p).checkboxCtrl($p);

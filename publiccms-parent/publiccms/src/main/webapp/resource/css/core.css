@@ -114,7 +114,7 @@ header .nav .selected ul{display:block;}
 .accordion .accordionHeader h2{display:block;overflow:hidden;padding:0 10px 0 10px;height:36px;line-height:36px;font-weight:400;}
 .accordion .accordionHeader h2>i{margin-right:5px;}
 .accordion .accordionHeader h2 .icon{float:right;line-height:36px;}
-.accordion .accordionContent{display:block;overflow:auto;}
+.accordion .accordionContent{display:block;overflow:auto;box-sizing: border-box;}
 .accordion .accordionContent .tree a{line-height:34px;height:auto;}
 .accordion .accordionContent .tree div{height:auto;}
 .accordion .accordionContent .tree div div{background:0 0;width:25px;height:34px;}
