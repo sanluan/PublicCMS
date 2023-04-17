@@ -77,7 +77,7 @@ public class CmsContentFileListDirective extends AbstractTemplateDirective {
             boolean absoluteURL = handler.getBoolean("absoluteURL", true);
             SysSite site = getSite(handler);
             if (absoluteURL) {
-                list.forEach(e -> e.setFilePath(CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site, false), e.getFilePath())));
+                list.forEach(e -> e.setFilePath(CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site), e.getFilePath())));
             }
         }
         handler.put("page", page).render();

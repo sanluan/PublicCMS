@@ -87,12 +87,19 @@ public class OSSFileUploaderComponent implements FileUploader, SiteCache {
     }
 
     @Override
-    public boolean enable(short siteId, boolean privatefile) {
+    public boolean enableUpload(short siteId, boolean privatefile) {
         Map<String, String> config = configDataComponent.getConfigData(siteId, OSSComponent.CONFIG_CODE);
-        return enable(config, privatefile);
+        return enableUpload(config, privatefile);
     }
 
-    public static boolean enable(Map<String, String> config, boolean privatefile) {
+    @Override
+    public boolean enablePrefix(short siteId, boolean privatefile) {
+        Map<String, String> config = configDataComponent.getConfigData(siteId, OSSComponent.CONFIG_CODE);
+        return CommonUtils
+                .notEmpty(config.get(privatefile ? OSSComponent.CONFIG_PRIVATE_BUCKET_URL : OSSComponent.CONFIG_BUCKET_URL));
+    }
+
+    public static boolean enableUpload(Map<String, String> config, boolean privatefile) {
         return CommonUtils.notEmpty(config) && CommonUtils.notEmpty(config.get(OSSComponent.CONFIG_ACCESSKEYID))
                 && CommonUtils.notEmpty(config.get(OSSComponent.CONFIG_ACCESSKEYSECRET))
                 && CommonUtils.notEmpty(config.get(privatefile ? OSSComponent.CONFIG_PRIVATE_REGION : OSSComponent.CONFIG_REGION))

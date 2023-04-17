@@ -73,7 +73,7 @@ public class CmsContentProductListDirective extends AbstractTemplateDirective {
             SysSite site = getSite(handler);
             list.forEach(e -> {
                 if (absoluteURL) {
-                    e.setCover(CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site, false), e.getCover()));
+                    e.setCover(CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site), e.getCover()));
                 }
             });
         }

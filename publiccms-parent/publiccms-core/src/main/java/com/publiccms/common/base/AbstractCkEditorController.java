@@ -58,7 +58,7 @@ public class AbstractCkEditorController {
                             RequestUtils.getIpAddress(request), CommonUtils.getDate(), uploadResult.getFilename()));
                     map.put(RESULT_FILENAME, originalName);
                     map.put(RESULT_URL,
-                            CommonUtils.joinString(fileUploadComponent.getPrefix(site, false), uploadResult.getFilename()));
+                            CommonUtils.joinString(fileUploadComponent.getPrefix(site), uploadResult.getFilename()));
                     uploaded++;
                 } catch (IOException e) {
                     Map<String, String> messageMap = new HashMap<>();

@@ -50,7 +50,7 @@ public class UeditorController extends AbstractUeditorController {
     @RequestMapping(params = "action=" + ACTION_CONFIG)
     @ResponseBody
     public UeditorConfig config(@RequestAttribute SysSite site) {
-        String urlPrefix = fileUploadComponent.getPrefix(site, false);
+        String urlPrefix = fileUploadComponent.getPrefix(site);
         UeditorConfig config = new UeditorConfig();
         config.setImageActionName(ACTION_UPLOAD);
         config.setSnapscreenActionName(ACTION_UPLOAD);

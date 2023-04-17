@@ -44,7 +44,7 @@ public class FileUploadComponent {
     public String getPrivateFileUrl(SysSite site, int expiryMinutes, String filepath, String privatekey, String filename) {
         if (CommonUtils.notEmpty(uploaderList)) {
             for (FileUploader fileUploader : uploaderList) {
-                if (fileUploader.enable(site.getId(), true)) {
+                if (fileUploader.enablePrefix(site.getId(), true)) {
                     return fileUploader.getPrivateFileUrl(site.getId(), expiryMinutes, filepath);
                 }
             }
@@ -63,17 +63,21 @@ public class FileUploadComponent {
     }
 
     public void initContentCover(SysSite site, CmsContent entity) {
-        entity.setCover(CmsUrlUtils.getUrl(getPrefix(site, false), entity.getCover()));
+        entity.setCover(CmsUrlUtils.getUrl(getPrefix(site), entity.getCover()));
     }
 
     public void initPlaceCover(SysSite site, CmsPlace entity) {
-        entity.setCover(CmsUrlUtils.getUrl(getPrefix(site, false), entity.getCover()));
+        entity.setCover(CmsUrlUtils.getUrl(getPrefix(site), entity.getCover()));
+    }
+
+    public String getPrefix(SysSite site) {
+        return getPrefix(site, false);
     }
 
     public String getPrefix(SysSite site, Boolean privatefile) {
         if (CommonUtils.notEmpty(uploaderList)) {
             for (FileUploader fileUploader : uploaderList) {
-                if (fileUploader.enable(site.getId(), null != privatefile && privatefile)) {
+                if (fileUploader.enablePrefix(site.getId(), null != privatefile && privatefile)) {
                     return fileUploader.getPrefix(site.getId(), null != privatefile && privatefile);
                 }
             }
@@ -86,7 +90,7 @@ public class FileUploadComponent {
         String fileName = CmsFileUtils.getUploadFileName(suffix);
         if (CommonUtils.notEmpty(uploaderList)) {
             for (FileUploader fileUploader : uploaderList) {
-                if (fileUploader.enable(siteId, privatefile)) {
+                if (fileUploader.enableUpload(siteId, privatefile)) {
                     return fileUploader.upload(siteId, file, privatefile, fileName, locale);
                 }
             }
@@ -108,7 +112,7 @@ public class FileUploadComponent {
         String fileName = CmsFileUtils.getUploadFileName(suffix);
         if (CommonUtils.notEmpty(uploaderList)) {
             for (FileUploader fileUploader : uploaderList) {
-                if (fileUploader.enable(siteId, privatefile)) {
+                if (fileUploader.enableUpload(siteId, privatefile)) {
                     return fileUploader.upload(siteId, file, privatefile, fileName, locale);
                 }
             }

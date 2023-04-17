@@ -37,7 +37,7 @@ public class UserParameterComponent extends AbstractLongParameterHandler<SysUser
         List<SysUser> entityList = service.getEntitys(ids);
         entityList = entityList.stream().filter(entity -> site.getId() == entity.getSiteId() && !entity.isDisabled())
                 .collect(Collectors.toList());
-        entityList.forEach(e -> e.setCover(CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site, false), e.getCover())));
+        entityList.forEach(e -> e.setCover(CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site), e.getCover())));
         return entityList;
     }
 
@@ -45,7 +45,7 @@ public class UserParameterComponent extends AbstractLongParameterHandler<SysUser
     public SysUser getParameterValue(SysSite site, Long id) {
         SysUser entity = service.getEntity(id);
         if (null != entity && !entity.isDisabled() && entity.getSiteId() == site.getId()) {
-            entity.setCover(CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site, false), entity.getCover()));
+            entity.setCover(CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site), entity.getCover()));
             return entity;
         }
         return null;

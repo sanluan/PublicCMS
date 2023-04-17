@@ -124,7 +124,7 @@ public class OSSFileAdminController {
     @RequestMapping(value = { "upload.html" })
     public String upload(@RequestAttribute SysSite site, boolean privatefile, ModelMap model) {
         Map<String, String> config = configDataComponent.getConfigData(site.getId(), OSSComponent.CONFIG_CODE);
-        if (OSSFileUploaderComponent.enable(config, privatefile)) {
+        if (OSSFileUploaderComponent.enableUpload(config, privatefile)) {
             model.addAttribute("bucketUrl",
                     config.get(privatefile ? OSSComponent.CONFIG_PRIVATE_BUCKET_URL : OSSComponent.CONFIG_BUCKET_URL));
             return "common/ossupload";

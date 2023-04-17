@@ -174,7 +174,7 @@ public class StatisticsComponent implements Cache {
                 if (null != entity && content.getId() == entity.getContentId() && !content.isDisabled()
                         && CmsContentService.STATUS_NORMAL == content.getStatus() && site.getId().equals(content.getSiteId())) {
                     clickStatistics = new ClickStatistics(id, site.getId(), 1, entity.getClicks(),
-                            CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site, false), entity.getFilePath()));
+                            CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site), entity.getFilePath()));
                     List<ClickStatistics> list = contentCache.put(id, clickStatistics);
                     if (CommonUtils.notEmpty(list)) {
                         contentService.updateStatistics(list);

@@ -72,7 +72,7 @@ public class CmsSurveyQuestionListDirective extends AbstractTemplateDirective {
                     e.setAnswer(null);
                 }
                 if (absoluteURL) {
-                    e.setCover(CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site, false), e.getCover()));
+                    e.setCover(CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site), e.getCover()));
                 }
             });
         }
