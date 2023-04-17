@@ -14,7 +14,7 @@
                 </li>
                 <li>
                     <label>
-                        <input name="privatefile"<#if privatefile?has_content && "true"=privatefile> checked="checked"</#if> value="true" type="radio"/>
+                        <input name="privatefile" type="checkbox" class="form-check-input"<#if privatefile?has_content && "true"=privatefile> checked="checked"</#if> value="true"/>
                         <@t.page 'privatefile'/>
                     </label>
                 </li>
