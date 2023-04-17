@@ -57,7 +57,7 @@ ol.vote>li:nth-child(3n) .progress-bar {background-color:blue;}
 .diy-button{z-index:10;margin-top:0px;}
 
 .avatar{width:35px;height:35px;border-radius:50%;vertical-align:middle;margin-right:5px;}
-
+.FIE_topbar-reset-button{display:none!important;}
 .searchResult b{color:#f00;}
 @media screen and (max-width:728px) {
 .unit ul li{width:100%;}

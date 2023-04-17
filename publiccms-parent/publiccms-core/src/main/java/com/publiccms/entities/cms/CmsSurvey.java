@@ -42,19 +42,22 @@ public class CmsSurvey implements java.io.Serializable {
     @JsonIgnore
     private short siteId;
     /**
-     * user id<p>
+     * user id
+     * <p>
      * 发布用户id
      */
     @GeneratorColumn(title = "发布用户", condition = true)
     private long userId;
     /**
-     * survey type(survey,exam)<p>
+     * survey type(survey,exam)
+     * <p>
      * 问卷类型(survey:问卷,exam:考试)
      */
     @GeneratorColumn(title = "问卷类型", condition = true)
     private String surveyType;
     /**
-     * title<p>
+     * title
+     * <p>
      * 标题
      */
     @GeneratorColumn(title = "标题", condition = true, like = true)
@@ -62,34 +65,46 @@ public class CmsSurvey implements java.io.Serializable {
     @Length(max = 100)
     private String title;
     /**
-     * description<p>
+     * description
+     * <p>
      * 描述
      */
     @GeneratorColumn(title = "描述")
     @Length(max = 300)
     private String description;
     /**
-     * votes<p>
+     * votes
+     * <p>
      * 投票次数
      */
     @GeneratorColumn(title = "投票次数", order = true)
     private int votes;
     /**
-     * start date<p>
+     * start date
+     * <p>
      * 开始日期
      */
     @GeneratorColumn(title = "开始日期", condition = true, order = true)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startDate;
     /**
-     * end date<p>
+     * end date
+     * <p>
      * 结束日期
      */
     @GeneratorColumn(title = "结束日期", condition = true, order = true)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endDate;
     /**
-     * create date<p>
+     * allow anonymous
+     * <p>
+     * 允许匿名
+     */
+    @GeneratorColumn(title = "允许匿名", condition = true)
+    private boolean allowAnonymous;
+    /**
+     * create date
+     * <p>
      * 创建日期
      */
     @GeneratorColumn(title = "创建日期", order = true)
@@ -102,7 +117,7 @@ public class CmsSurvey implements java.io.Serializable {
     }
 
     public CmsSurvey(short siteId, long userId, String surveyType, String title, int votes, Date startDate, Date endDate,
-            Date createDate, boolean disabled) {
+            boolean allowAnonymous, Date createDate, boolean disabled) {
         this.siteId = siteId;
         this.userId = userId;
         this.surveyType = surveyType;
@@ -110,12 +125,13 @@ public class CmsSurvey implements java.io.Serializable {
         this.votes = votes;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.allowAnonymous = allowAnonymous;
         this.createDate = createDate;
         this.disabled = disabled;
     }
 
     public CmsSurvey(short siteId, long userId, String surveyType, String title, String description, int votes, Date startDate,
-            Date endDate, Date createDate, boolean disabled) {
+            Date endDate, boolean allowAnonymous, Date createDate, boolean disabled) {
         this.siteId = siteId;
         this.userId = userId;
         this.surveyType = surveyType;
@@ -124,6 +140,7 @@ public class CmsSurvey implements java.io.Serializable {
         this.votes = votes;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.allowAnonymous = allowAnonymous;
         this.createDate = createDate;
         this.disabled = disabled;
     }
@@ -212,6 +229,15 @@ public class CmsSurvey implements java.io.Serializable {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    @Column(name = "allow_anonymous", nullable = false)
+    public boolean isAllowAnonymous() {
+        return this.allowAnonymous;
+    }
+
+    public void setAllowAnonymous(boolean allowAnonymous) {
+        this.allowAnonymous = allowAnonymous;
     }
 
     @Temporal(TemporalType.TIMESTAMP)

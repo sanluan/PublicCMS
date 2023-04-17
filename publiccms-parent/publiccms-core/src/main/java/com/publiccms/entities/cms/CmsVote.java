@@ -41,27 +41,31 @@ public class CmsVote implements java.io.Serializable {
     @GeneratorColumn(title = "站点", condition = true)
     private short siteId;
     /**
-     * start date<p>
+     * start date
+     * <p>
      * 开始日期
      */
     @GeneratorColumn(title = "开始日期", condition = true, order = true)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startDate;
     /**
-     * end date<p>
+     * end date
+     * <p>
      * 结束日期
      */
     @GeneratorColumn(title = "结束日期", condition = true, order = true)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endDate;
     /**
-     * votes<p>
+     * votes
+     * <p>
      * 投票次数
      */
     @GeneratorColumn(title = "投票次数", order = true)
     private int votes;
     /**
-     * title<p>
+     * title
+     * <p>
      * 标题
      */
     @GeneratorColumn(title = "标题", condition = true, like = true)
@@ -69,14 +73,24 @@ public class CmsVote implements java.io.Serializable {
     @Length(max = 100)
     private String title;
     /**
-     * description<p>
+     * description
+     * <p>
      * 描述
      */
     @GeneratorColumn(title = "描述")
     @Length(max = 300)
     private String description;
+
     /**
-     * create date<p>
+     * allow anonymous
+     * <p>
+     * 允许匿名
+     */
+    @GeneratorColumn(title = "允许匿名", condition = true)
+    private boolean allowAnonymous;
+    /**
+     * create date
+     * <p>
      * 创建日期
      */
     @GeneratorColumn(title = "创建日期", order = true)
@@ -88,23 +102,27 @@ public class CmsVote implements java.io.Serializable {
     public CmsVote() {
     }
 
-    public CmsVote(short siteId, Date startDate, Date endDate, int votes, String title, Date createDate, boolean disabled) {
+    public CmsVote(short siteId, Date startDate, Date endDate, int votes, String title, boolean allowAnonymous, Date createDate,
+            boolean disabled) {
         this.siteId = siteId;
         this.startDate = startDate;
         this.endDate = endDate;
         this.votes = votes;
         this.title = title;
+        this.allowAnonymous = allowAnonymous;
         this.createDate = createDate;
         this.disabled = disabled;
     }
 
-    public CmsVote(short siteId, Date startDate, Date endDate, int votes, String title, String description, Date createDate, boolean disabled) {
+    public CmsVote(short siteId, Date startDate, Date endDate, int votes, String title, String description,
+            boolean allowAnonymous, Date createDate, boolean disabled) {
         this.siteId = siteId;
         this.startDate = startDate;
         this.endDate = endDate;
         this.votes = votes;
         this.title = title;
         this.description = description;
+        this.allowAnonymous = allowAnonymous;
         this.createDate = createDate;
         this.disabled = disabled;
     }
@@ -177,7 +195,16 @@ public class CmsVote implements java.io.Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
-    
+
+    @Column(name = "allow_anonymous", nullable = false)
+    public boolean isAllowAnonymous() {
+        return this.allowAnonymous;
+    }
+
+    public void setAllowAnonymous(boolean allowAnonymous) {
+        this.allowAnonymous = allowAnonymous;
+    }
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_date", nullable = false, length = 19)
     public Date getCreateDate() {

@@ -48,11 +48,11 @@
         }
         if ($previewElem.find(".edit-icon").length == 0 && $uploadWrap.find("input[name=base64File]").length) {
             $("<a class=\"edit-icon\"></a>").appendTo($previewElem).click(function(event){
-                editImg($uploadWrap,file,file.name,function(dataURL){
+                editImg($uploadWrap,img,file.name,function(dataURL,fileName){
                     if(dataURL){
                         img.src=dataURL;
                         $uploadWrap.find("input[name=base64File]").val(dataURL.substring(dataURL.indexOf("base64,")+7));
-                        $uploadWrap.find("input[name=originalFilename]").val(file.name);
+                        $uploadWrap.find("input[name=originalFilename]").val(fileName);
                         $uploadWrap.find("input[type=file]").val("");
                     }
                 });
@@ -62,57 +62,69 @@
     }
 
     function editImg($uploadWrap,img,fileName,callback){
-        if(0 == $uploadWrap.parent().find(".image-editor").length ) {
-            $uploadWrap.after("<div class=\"image-editor\"><div class=\"unit\"><p class=\"nowrap\"><a href=\"javascript:;\" class=\"button\"><i class=\"icon-ok\"></i></a></p><p class=\"image-box\"></p></div></div>");
-        }
         var $this = $uploadWrap.parent().find(".image-editor");
-        if($this.attr("data-id")){
-            JUI.instances[$this.attr("data-id")].destroy();
+        if($this.length) {
+            if($this.data("id")){
+                delete JUI.instances[$this.data("id")];
+            }
+        } else {
+            $uploadWrap.after("<div class=\"image-editor\"></div>");
+            $this = $uploadWrap.parent().find(".image-editor");
         }
-        var index = window.photoclip.index++;
-        var dataId = "photoclip_"+index;
+        var index = window.imageEditor.index++;
+        var dataId = "imageEditor_"+index;
         var widthInput=$uploadWrap.find("input[name=width]");
         var heightInput=$uploadWrap.find("input[name=height]");
+        function initSize(imageEditor,width,height){
+            if(width && height && imageEditor){
+                imageEditor.render({
+                    Crop:{
+                        autoResize: true,
+                        presetsItems:[
+                            {
+                                titleKey: 'custom',
+                                descriptionKey: width+'*'+height,
+                                width: width,
+                                height: height,
+                                disableManualResize:true
+                            }
+                        ]
+                    }
+                });
+            }
+        }
         widthInput.change(function(){
-            if(JUI.instances[$uploadWrap.parent().find(".image-editor").data("id")]){
-                JUI.instances[$uploadWrap.parent().find(".image-editor").data("id")].size(parseInt(widthInput.val()),parseInt(heightInput.val()));
+            if(JUI.instances[$this.data("id")]){
+                initSize(JUI.instances[$this.data("id")],parseInt(widthInput.val()),parseInt(heightInput.val()));
             }
         });
         heightInput.change(function(){
-            if(JUI.instances[$uploadWrap.parent().find(".image-editor").data("id")]){
-                JUI.instances[$uploadWrap.parent().find(".image-editor").data("id")].size(parseInt(widthInput.val()),parseInt(heightInput.val()));
+            if(JUI.instances[$this.data("id")]){
+                initSize(JUI.instances[$this.data("id")],parseInt(widthInput.val()),parseInt(heightInput.val()));
             }
         });
-        var options= {
-            size: [parseInt(widthInput.val()), parseInt(heightInput.val())],
-            ok: $this.find(".button"),
-            done: function(dataURL){
-                if ($.isFunction(callback) ) {
-                    callback(dataURL);
+        function init(editor,dataId,img,fileName){
+            filerobotImageEditorConfig.source=img;
+            filerobotImageEditorConfig.defaultSavedImageName=fileName;
+            JUI.instances[dataId] = new FilerobotImageEditor(editor[0], filerobotImageEditorConfig);
+            JUI.instances[dataId].render({
+                onSave:function(imageData, imageDesignState){
+                    if ($.isFunction(callback) ) {
+                        callback(imageData.imageBase64,imageData.fullName);
+                    }
+                },
+                onClose: function(closingReason, haveNotSavedChanges){
+                  delete JUI.instances[dataId];
                 }
-                JUI.instances[dataId].destroy();
-                delete JUI.instances[dataId];
-                $this.remove();
-            },
-            fail: function(msg) {
-                alertMsg.error(msg);
-            }
-        };
-        var filenames=fileName.split(".");
-        if("png"==filenames[filenames.length-1]){
-            options.outputType="png";
+            });
+            initSize(JUI.instances[dataId],parseInt(widthInput.val()),parseInt(heightInput.val()));
         }
-        function init(dataId,img){
-            var photoClip = new PhotoClip($this.find(".image-box")[0], options);
-            photoClip.load(img);
-            JUI.instances[dataId] = photoClip;
-        }
-        if(window.photoclip.initd){
-            init(dataId,img);
+        if(window.imageEditor.initd){
+            init($this,dataId,img,fileName);
         } else {
-            loadScripts(window.photoclip.resources,function(){
-                window.photoclip.initd=true;
-                init(dataId,img);
+            loadScripts(window.imageEditor.resources,function(){
+                window.imageEditor.initd=true;
+                init($this,dataId,img,fileName);
             });
         }
         $this.attr("data-id",dataId);
@@ -149,14 +161,20 @@
             img.src = options.imgUrl;
             $previewElem.empty().append(img);
 
-            editImg($(this),options.imgUrl,options.imgName,function(dataURL){
+            if ($previewElem.find(".del-icon").length == 0) {
+                $("<a class=\"del-icon\"></a>").appendTo($previewElem).click(function(event){
+                    $previewElem.remove();
+                    $uploadWrap.find("input[type=file]").val("");
+                });
+            }
+            editImg($(this),options.imgUrl,options.imgName,function(dataURL,fileName){
                 if(dataURL){
                     img.src=dataURL;
                     $uploadWrap.find("input[name=base64File]").val(dataURL.substring(dataURL.indexOf("base64,")+7));
-                    $uploadWrap.find("input[name=originalFilename]").val(options.imgName);
+                    $uploadWrap.find("input[name=originalFilename]").val(fileName);
                     $uploadWrap.find("input[type=file]").val("");
-                    if ($previewElem.find(".del-icon").length == 0) {
-                        $("<a class=\"del-icon\"></a>").appendTo($previewElem).click(function(event){
+                    if ($previewElem.find(".del-icon").length != 0) {
+                        $previewElem.find(".del-icon").click(function(event){
                             $previewElem.remove();
                             $uploadWrap.find("input[name=base64File]").val("");
                             $uploadWrap.find("input[name=originalFilename]").val("");

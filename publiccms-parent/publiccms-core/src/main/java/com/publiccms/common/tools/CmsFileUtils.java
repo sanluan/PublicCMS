@@ -519,8 +519,7 @@ public class CmsFileUtils {
                     return false;
                 }
             } else if (suffix.endsWith(FILE_TYPE_PDF)) {
-                try {
-                    PDDocument document = PDDocument.load(file);
+                try (PDDocument document = PDDocument.load(file)) {
                     return document.getDocument().getObjects().stream()
                             .noneMatch(obj -> COSName.JS.equals(obj) || COSName.JAVA_SCRIPT.equals(obj));
                 } catch (IOException e) {

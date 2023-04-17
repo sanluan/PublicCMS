@@ -23,15 +23,16 @@ public class CmsUserVoteService extends BaseService<CmsUserVote> {
     /**
      * @param userId
      * @param voteId
+     * @param anonymous
      * @param orderType
      * @param pageIndex
      * @param pageSize
      * @return results page
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(Long userId, Long voteId, String orderType, Integer pageIndex,
+    public PageHandler getPage(Long userId, Long voteId, Boolean anonymous, String orderType, Integer pageIndex,
             Integer pageSize) {
-        return dao.getPage(userId, voteId, orderType, pageIndex, pageSize);
+        return dao.getPage(userId, voteId, anonymous, orderType, pageIndex, pageSize);
     }
 
     @Resource

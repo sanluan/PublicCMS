@@ -43,7 +43,7 @@ public class LogUploadDao extends BaseDao<LogUpload> {
         if (CommonUtils.notEmpty(channel)) {
             queryHandler.condition("bean.channel = :channel").setParameter("channel", channel);
         }
-        if (null != fileTypes) {
+        if (CommonUtils.notEmpty(fileTypes)) {
             queryHandler.condition("bean.fileType in :fileTypes").setParameter("fileTypes", fileTypes);
         }
         if (null != privatefile) {

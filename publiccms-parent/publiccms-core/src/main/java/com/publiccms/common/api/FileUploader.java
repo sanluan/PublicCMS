@@ -8,7 +8,9 @@ import org.springframework.web.multipart.MultipartFile;
 import com.publiccms.views.pojo.entities.FileUploadResult;
 
 public interface FileUploader {
-    public boolean enable(short siteId, boolean privatefile);
+    public boolean enableUpload(short siteId, boolean privatefile);
+    
+    public boolean enablePrefix(short siteId, boolean privatefile);
 
     public String getPrefix(short siteId, boolean privatefile);
 

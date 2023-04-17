@@ -33,7 +33,7 @@
                 <#assign available=false/>
                 <p>You have already participated!</p>
             </@cms.userSurvey>
-        <#else>
+        <#elseif !survey.allowAnonymous>
             <#assign available=false/>
             <p>Please <a href="${site.dynamicPath}login.html?returnUrl=${(site.dynamicPath+'survey.html?id='+survey.id)?url}">login</a></p>
         </#if>

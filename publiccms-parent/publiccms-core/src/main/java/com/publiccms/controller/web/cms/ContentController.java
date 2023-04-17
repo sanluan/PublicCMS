@@ -175,6 +175,26 @@ public class ContentController {
         }
     }
 
+    /**
+     * 内容附件链接重定向并计数
+     * 
+     * @param site
+     * @param contentId
+     * @param id
+     * @return view name
+     */
+    @RequestMapping("fileRedirect")
+    public String contentFileRedirect(@RequestAttribute SysSite site, Long contentId, Long id) {
+        CmsContent content = service.getEntity(contentId);
+        ClickStatistics contentStatistics = statisticsComponent.contentFileClicks(site, content, id);
+        if (null != contentStatistics && null != contentStatistics.getUrl()
+                && site.getId().equals(contentStatistics.getSiteId())) {
+            return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, contentStatistics.getUrl());
+        } else {
+            return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, site.getDynamicPath());
+        }
+    }
+
     @Resource
     private CmsContentService service;
 }

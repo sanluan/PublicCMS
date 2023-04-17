@@ -41,6 +41,7 @@ import freemarker.template.TemplateException;
  * <li><code>categoryId</code>:分类id
  * <li><code>containChild</code>:包含子分类,当categoryId不为空时有效
  * <li><code>categoryIds</code>:多个分类id,当categoryId为空时有效
+ * <li><code>modelIds</code>:多个模型id
  * <li><code>extendsValues</code>
  * 多个全文搜索字段值,格式：[字段编码]:字段值],例如:extendsValues='isbn:value1,unicode:value2'
  * <li><code>dictionaryValues</code>
@@ -55,7 +56,6 @@ import freemarker.template.TemplateException;
  * <li><code>phrase</code>:精确搜索,【true,false】,默认为false
  * <li><code>fields</code>:搜索字段,【title:标题, author:作者, editor:编辑, description:描述,
  * text:正文,files:附件】
- * <li><code>modelIds</code>:多个模型id
  * <li><code>startPublishDate</code>:起始发布日期,【2000-01-01 23:59:59】,【2000-01-01】
  * <li><code>endPublishDate</code>:终止发布日期,【2000-01-01 23:59:59】,【2000-01-01】
  * <li><code>orderField</code>
@@ -75,15 +75,15 @@ import freemarker.template.TemplateException;
  * <p>
  * &lt;@cms.search word='cms' pageSize=10&gt;&lt;#list page.list as
  * a&gt;${a.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.search&gt;
- * 
+ *
  * <pre>
 *  &lt;script&gt;
-  $.getJSON('${site.dynamicPath}api/directive/cms/search?word=cms&amp;pageSize=10', function(data){    
+  $.getJSON('${site.dynamicPath}api/directive/cms/search?word=cms&amp;pageSize=10', function(data){
     console.log(data.totalCount);
   });
   &lt;/script&gt;
  * </pre>
- * 
+ *
  */
 @Component
 public class CmsSearchDirective extends AbstractTemplateDirective {

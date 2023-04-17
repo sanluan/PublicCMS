@@ -3,14 +3,16 @@
  */
 
 ( function($) {
-    var jmenus = new Map();
+    var jmenus = {};
     // If the JUI scope is not available, add it
     $.jui = $.jui || {};
     $.fn.extend({
         accordion: function(options, data) {
             var args = Array.prototype.slice.call(arguments, 1);
             return this.each(function() {
-                if (options.fillSpace) jmenus.put(options.fillSpace, this);
+                if (options.fillSpace) {
+                    jmenus[options.fillSpace] = this;
+                };
                 if (typeof options == "string" ) {
                     var accordion = $.data(this, "jui-accordion");
                     accordion[options].apply(accordion, args);
@@ -41,6 +43,7 @@
         options.active = findActive(options.headers, options.active);
         if ( options.fillSpace ) {
             fillSpace(options.fillSpace);
+            options.autoheight=true;
         } else if ( options.autoheight ) {
             var maxHeight = 0;
             options.headers.next().each(function() {
@@ -99,11 +102,11 @@
         $(this).triggerHandler("change.jui-accordion", [ options.data ], options.change);
     }
     function fillSpace(key){
-        var obj = jmenus.get(key);
+        var obj = jmenus[key];
         if (!obj) return;
 
         var parent = $(obj).parent();
-        var height = parent.height() - (($(".accordionHeader", obj).length) * ($(".accordionHeader:first-child", obj).outerHeight())) -2;
+        var height = parent.height() - (($(".accordionHeader", obj).length) * ($(".accordionHeader:first-child", obj).outerHeight()));
 
         var os = parent.children().not(obj);
         $.each(os, function(i){
@@ -203,25 +206,19 @@
     }
     $.extend($.jui.accordion, {
         defaults: {
-            selectedClass: "collapsable",selectedIconClass: "icon-chevron-down", alwaysOpen: true, animated: "slide", event: "click", header: ".accordionHeader", autoheight: true, running: 0, clearStyle: true
+            selectedClass: "collapsable",selectedIconClass: "icon-chevron-down", alwaysOpen: true, animated: "slide", event: "click", header: ".accordionHeader", autoheight: false, running: 0
         }, animations: {
             slide: function(options, additions) {
                 options = $.extend({
                     easing: "swing", duration: 100
                 }, options, additions);
                 if (!options.toHide.length ) {
-                    options.toShow.animate({
-                        height: "show"
-                    }, options);
+                    options.toShow.animate({height: "show"}, options);
                     return;
                 }
                 var hideHeight = options.toHide.height(), showHeight = options.toShow.height(), difference = showHeight / hideHeight;
-                options.toShow.css({
-                    height: "0px"
-                }).show();
-                options.toHide.filter(":hidden").each(options.complete).end().filter(":visible").animate({
-                    height: "hide"
-                }, {
+                options.toShow.css({height: "0px"}).show();
+                options.toHide.filter(":hidden").each(options.complete).end().filter(":visible").animate({height: "hide"}, {
                     step: function(now) {
                         var current = ( hideHeight - now ) * difference;
                         if (!$.support.leadingWhitespace ) {
@@ -229,12 +226,10 @@
                         }
                         options.toShow.height(current);
                     }, duration: options.duration, easing: options.easing, complete: function() {
-                        options.toShow.css({
-                            height: showHeight+"px"
-                        });
-                        options.toShow.css({
-                            overflow: "auto"
-                        });
+                        if ( !options.autoheight ) {
+                            options.toShow.css({height: "auto" });
+                        }
+                        options.toShow.css({overflow: "auto"});
                         options.complete();
                     }
                 });

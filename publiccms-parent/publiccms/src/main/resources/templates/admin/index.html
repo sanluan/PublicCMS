@@ -11,9 +11,9 @@
     <link href="${base}/resource/fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
     <link href="${base}/resource/fonts/bootstrap-icons/bootstrap-icons.css" rel="stylesheet"/>
     <link href="${base}/resource/plugins/spectrum/spectrum.min.css" rel="stylesheet"/>
-    <link href="${base}/resource/css/core.css?version=202303" rel="stylesheet" media="screen"/>
+    <link href="${base}/resource/css/core.css?version=202304" rel="stylesheet" media="screen"/>
     <link href="${base}/resource/css/print.css" rel="stylesheet" media="print"/>
-    <link href="${base}/resource/css/cms.css?version=202303" rel="stylesheet" media="screen"/>
+    <link href="${base}/resource/css/cms.css?version=202304" rel="stylesheet" media="screen"/>
     <script src="${base}/resource/js/echarts.proxy.js"></script>
 </head>
 <body>
@@ -144,18 +144,20 @@
     </script>
     <script src="${base}/resource/plugins/jquery/jquery.min.js"></script>
     <script src="${base}/resource/plugins/jquery/jquery.cookie.js"></script>
-    <script src="${base}/resource/plugins/jquery/jquery.validate.js"></script>
+    <script src="${base}/resource/plugins/jquery/jquery.validate.min.js"></script>
     <script src="${base}/resource/plugins/encrypt/base64.js"></script>
     <script src="${base}/resource/plugins/encrypt/sha512.min.js"></script>
     <script src="${base}/resource/plugins/spectrum/spectrum.min.js"></script>
-    <script src="${base}/resource/plugins/spectrum/<@t.page 'spectrum.lang_js'/>"></script>
+    <script src="${base}/resource/plugins/spectrum/i18n/jquery.spectrum-<@t.page 'spectrum.lang'/>.js"></script>
+    <script src="${base}/resource/plugins/filerobot-image-editor/config.js"></script>
+    <script src="${base}/resource/plugins/filerobot-image-editor/lang/<@t.page 'lang'/>.js"></script>
     <script src="${base}/resource/js/loadscripts.js"></script>
     <script src="${base}/resource/js/loadscripts.config.js"></script>
     <script src="${base}/resource/js/tinymce.config.js"></script>
-    <script src="${base}/resource/js/jui.min.js?version=202303"></script>
-    <script src="${base}/resource/js/jui.plugins.js?version=202303"></script>
+    <script src="${base}/resource/js/jui.min.js?version=202304"></script>
+    <script src="${base}/resource/js/jui.plugins.js?version=202304"></script>
     <script src="${base}/resource/js/lang/regional.<@t.page 'lang'/>.js"></script>
-    <script src="${base}/resource/js/cms.js?version=202303"></script>
+    <script src="${base}/resource/js/cms.js?version=202304"></script>
     <script>
         JUI.init(base + "/common/jui.frag.html", {
             loginUrl:"login_dialog.html", loginTitle:"<@t.page 'login'/>",

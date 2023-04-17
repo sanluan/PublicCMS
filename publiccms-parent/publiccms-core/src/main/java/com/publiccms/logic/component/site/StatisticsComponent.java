@@ -12,9 +12,11 @@ import com.publiccms.common.cache.CacheEntityFactory;
 import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsContent;
+import com.publiccms.entities.cms.CmsContentFile;
 import com.publiccms.entities.cms.CmsPlace;
 import com.publiccms.entities.cms.CmsWord;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.service.cms.CmsContentFileService;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.cms.CmsPlaceService;
 import com.publiccms.logic.service.cms.CmsTagService;
@@ -30,11 +32,16 @@ import com.publiccms.views.pojo.entities.ClickStatistics;
 public class StatisticsComponent implements Cache {
 
     private CacheEntity<Long, ClickStatistics> contentCache;
+    private CacheEntity<Long, ClickStatistics> contentFileCache;
     private CacheEntity<Long, ClickStatistics> placeCache;
     private CacheEntity<Long, ClickStatistics> wordCache;
     private CacheEntity<Long, ClickStatistics> tagCache;
     @Resource
     private CmsContentService contentService;
+    @Resource
+    private CmsContentFileService contentFileService;
+    @Resource
+    protected FileUploadComponent fileUploadComponent;
     @Resource
     private CmsPlaceService placeService;
     @Resource
@@ -154,6 +161,35 @@ public class StatisticsComponent implements Cache {
     }
 
     /**
+     * @param site
+     * @param content
+     * @param id
+     * @return content file statistics
+     */
+    public ClickStatistics contentFileClicks(SysSite site, CmsContent content, Long id) {
+        if (CommonUtils.notEmpty(id) && null != content) {
+            ClickStatistics clickStatistics = contentFileCache.get(id);
+            if (null == clickStatistics) {
+                CmsContentFile entity = contentFileService.getEntity(id);
+                if (null != entity && content.getId() == entity.getContentId() && !content.isDisabled()
+                        && CmsContentService.STATUS_NORMAL == content.getStatus() && site.getId().equals(content.getSiteId())) {
+                    clickStatistics = new ClickStatistics(id, site.getId(), 1, entity.getClicks(),
+                            CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site), entity.getFilePath()));
+                    List<ClickStatistics> list = contentCache.put(id, clickStatistics);
+                    if (CommonUtils.notEmpty(list)) {
+                        contentService.updateStatistics(list);
+                    }
+                }
+            } else {
+                clickStatistics.addClicks();
+            }
+            return clickStatistics;
+        } else {
+            return null;
+        }
+    }
+
+    /**
      * @param id
      * @return content statistics
      */
@@ -184,6 +220,7 @@ public class StatisticsComponent implements Cache {
         wordService.updateStatistics(wordCache.clear(true));
         tagService.updateStatistics(tagCache.clear(true));
         contentService.updateStatistics(contentCache.clear(true));
+        contentFileService.updateStatistics(contentFileCache.clear(true));
     }
 
     /**
@@ -196,6 +233,7 @@ public class StatisticsComponent implements Cache {
     public void initCache(CacheEntityFactory cacheEntityFactory)
             throws ClassNotFoundException, InstantiationException, IllegalAccessException {
         contentCache = cacheEntityFactory.createCacheEntity("content");
+        contentFileCache = cacheEntityFactory.createCacheEntity("contentFile");
         placeCache = cacheEntityFactory.createCacheEntity("place");
         wordCache = cacheEntityFactory.createCacheEntity("word");
         tagCache = cacheEntityFactory.createCacheEntity("tag");

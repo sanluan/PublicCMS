@@ -250,7 +250,6 @@ var JUI = {
                 });
                 $(".image-editor", $box).each(function() {
                     if(JUI.instances[$(this).data("id")]) {
-                        JUI.instances[$(this).data("id")].destroy();
                         delete JUI.instances[$(this).data("id")];
                     }
                 });
@@ -436,7 +435,7 @@ var JUI = {
         isNumber: function(value, element) {
             return (new RegExp(/^-?(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d+)?$/).test(this));
         },
-        trim: function() {
+        trimstr: function() {
             return this.replace(/(^\s*)|(\s*$)|\r|\n/g, "");
         },
         startsWith: function(pattern) {
@@ -487,7 +486,7 @@ var JUI = {
             return (new RegExp(/^([_]|[a-zA-Z0-9]){6,32}$/).test(this));
         },
         isValidMail: function() {
-            return (new RegExp(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/).test(this.trim()));
+            return (new RegExp(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/).test(this.trimstr()));
         },
         isUrl: function() {
             return ( new RegExp(/^([a-zA-z]+:)?\/\/([a-zA-Z0-9\-\.]+)([-\w .\/?%&=:]*)$/).test(this) );
@@ -537,83 +536,5 @@ function escapeHtml(str) {
         return str.encodeTXT();
     } else {
         return str;
-    }
-}
-/**
- * You can use this map like this: var myMap = new Map();
- * myMap.put("key","value"); var key = myMap.get("key"); myMap.remove("key");
- */
-function Map() {
-    this.elements = new Array();
-    this.size = function() {
-        return this.elements.length;
-    }
-    this.isEmpty = function() {
-        return ( this.elements.length < 1 );
-    }
-    this.clear = function() {
-        this.elements = new Array();
-    }
-    this.put = function(_key, _value) {
-        this.remove(_key);
-        this.elements.push({
-            key: _key, value: _value
-        });
-    }
-    this.remove = function(_key) {
-        try {
-            for (i = 0; i < this.elements.length; i++) {
-                if (this.elements[i].key == _key ) {
-                    this.elements.splice(i, 1);
-                    return true;
-                }
-            }
-        } catch (e) {
-            return false;
-        }
-        return false;
-    }
-    this.get = function(_key) {
-        try {
-            for (i = 0; i < this.elements.length; i++) {
-                if (this.elements[i].key == _key ) {
-                    return this.elements[i].value;
-                }
-            }
-        } catch (e) {
-            return null;
-        }
-    }
-    this.element = function(_index) {
-        if (_index < 0 || _index >= this.elements.length ) {
-            return null;
-        }
-        return this.elements[_index];
-    }
-    this.containsKey = function(_key) {
-        try {
-            for (i = 0; i < this.elements.length; i++) {
-                if (this.elements[i].key == _key ) {
-                    return true;
-                }
-            }
-        } catch (e) {
-            return false;
-        }
-        return false;
-    }
-    this.values = function() {
-        var arr = new Array();
-        for (i = 0; i < this.elements.length; i++) {
-            arr.push(this.elements[i].value);
-        }
-        return arr;
-    }
-    this.keys = function() {
-        var arr = new Array();
-        for (i = 0; i < this.elements.length; i++) {
-            arr.push(this.elements[i].key);
-        }
-        return arr;
     }
 }

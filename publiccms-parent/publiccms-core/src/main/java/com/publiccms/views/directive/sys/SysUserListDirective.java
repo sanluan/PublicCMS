@@ -81,7 +81,7 @@ public class SysUserListDirective extends AbstractTemplateDirective {
         if (null != list) {
             boolean absoluteURL = handler.getBoolean("absoluteURL", true);
             if (absoluteURL) {
-                list.forEach(e -> e.setCover(CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site, false), e.getCover())));
+                list.forEach(e -> e.setCover(CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site), e.getCover())));
             }
 
         }

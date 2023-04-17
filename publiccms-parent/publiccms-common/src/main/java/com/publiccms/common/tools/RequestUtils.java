@@ -18,7 +18,7 @@ public class RequestUtils {
     private RequestUtils() {
     }
 
-    public static final String CRLF = "\r|\n";
+    public static final String CRLF = "[\r\n]";
 
     /**
      * @param parameterMap
@@ -117,13 +117,7 @@ public class RequestUtils {
      */
     public static Cookie addCookie(String contextPath, String schema, HttpServletResponse response, String name, String value,
             Integer expiry, String domain) {
-        if (null != name) {
-            name = name.replaceAll(CRLF, Constants.BLANK);
-        }
-        if (null != value) {
-            value = value.replaceAll(CRLF, Constants.BLANK);
-        }
-        Cookie cookie = new Cookie(name, value);
+        Cookie cookie = new Cookie(removeCRLF(name), removeCRLF(value));
         if (CommonUtils.notEmpty(expiry)) {
             cookie.setMaxAge(expiry);
         }
@@ -166,5 +160,4 @@ public class RequestUtils {
         }
         return null;
     }
-
 }

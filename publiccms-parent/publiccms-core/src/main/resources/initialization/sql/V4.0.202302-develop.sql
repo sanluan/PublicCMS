@@ -44,3 +44,8 @@ INSERT INTO `sys_module_lang` VALUES ('record_view', 'en', 'View');
 INSERT INTO `sys_module_lang` VALUES ('record_view', 'ja', '見る');
 INSERT INTO `sys_module_lang` VALUES ('record_view', 'zh', '查看');
 ALTER TABLE `cms_content_attribute` DROP COLUMN `extends_text`;
+-- 2023-04-16 --
+ALTER TABLE `cms_survey` ADD COLUMN  `allow_anonymous` tinyint(1) NOT NULL COMMENT '允许匿名' AFTER `end_date`;
+ALTER TABLE `cms_vote` ADD COLUMN  `allow_anonymous` tinyint(1) NOT NULL COMMENT '允许匿名' AFTER `description`;
+ALTER TABLE `cms_user_survey` ADD COLUMN  `anonymous` tinyint(1) NOT NULL COMMENT '匿名' AFTER `site_id`;
+ALTER TABLE `cms_user_vote` ADD COLUMN  `anonymous` tinyint(1) NOT NULL COMMENT '匿名' AFTER `user_id`;

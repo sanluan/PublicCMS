@@ -52,7 +52,7 @@
     <fieldset>
         <legend><@t.page 'vote'/></legend>
         <#list page.list as u>
-            <@t.merge 'userIds' u.id.userId!/>
+            <#if !u.anonymous><@t.merge 'userIds' u.id.userId!/></#if>
             <@t.merge 'itemIds' u.itemId!/>
         </#list>
         <@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
@@ -63,7 +63,7 @@
                 ${(itemMap[u.itemId?string].title)!}
             </dt>
             <dd>
-                ${(userMap[u.id.userId?string].nickname)!}
+                <#if u.anonymous><b><@t.page 'anonymous'/></b><#else><span class="exclude-translate">${(userMap[u.id.userId?string].nickname)!}</span></#if>
                 <p>${(u.ip)!} ${(getIpRegion(u.ip).address)!}</p>
             </dd>
         </dl>

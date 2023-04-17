@@ -163,7 +163,7 @@
                 <dd>
             <@cms.contentFileList contentId=a.id fileTypes='video,audio,document,other'>
                 <#list page.list as file>
-                    <a href="${(file.filePath)!}" download="${(file.description)!}">${(file.description)!}</a>
+                    <p><a href="${(file.filePath)!}" download="${(file.description)!}">${(file.description)!}</a> <@t.page 'clicks'/>:${a.clicks!}</p>
                 </#list>
             </@cms.contentFileList>
                 </dd>
@@ -178,7 +178,7 @@
                     <div class="unit">
                         <#if product.cover?has_content>
                             <p class="thumbnail">
-                                <img src="${(product.cover)!}"/>
+                                <img src="${(product.cover)!}" alt="${product.title}"/>
                             </p>
                         </#if>
                         <p><label><@t.page 'title'/>:</label>${product.title}</p>
@@ -197,7 +197,7 @@
                 <dt>${(model.fieldTextMap['cover'])!}:</dt>
                 <dd>
                     <div class="thumbnail">
-                        <img src="${(a.cover)!}"/>
+                        <img src="${(a.cover)!}" alt="${a.title}"/>
                     </div>
                 </dd>
             </dl>

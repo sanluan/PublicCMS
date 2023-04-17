@@ -247,7 +247,7 @@
         var now = new Date();
         this.opts.minDate = now.formatDateTm(this.opts.minDate);
         this.opts.maxDate = now.formatDateTm(this.opts.maxDate);
-        this.sDate = sDate.trim();
+        this.sDate = sDate.trimstr();
     }
     $.extend(Datepicker.prototype, {
         get: function(name) {

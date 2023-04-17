@@ -72,7 +72,7 @@ public class GetUrlMethod extends BaseMethod {
         if (CommonUtils.notEmpty(sitePath) && CommonUtils.notEmpty(url)) {
             return CmsUrlUtils.getUrl(sitePath, url);
         } else if (CommonUtils.notEmpty(sitePath) && null != site) {
-            return CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site, false), sitePath);
+            return CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site), sitePath);
         }
         return url;
     }

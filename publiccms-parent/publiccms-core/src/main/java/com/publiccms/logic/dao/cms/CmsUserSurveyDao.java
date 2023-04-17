@@ -23,14 +23,16 @@ public class CmsUserSurveyDao extends BaseDao<CmsUserSurvey> {
      * @param siteId
      * @param userId
      * @param surveyId
+     * @param anonymous 
+     * @param ip 
      * @param orderField
      * @param orderType
      * @param pageIndex
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(Short siteId, Long userId, Long surveyId, String orderField, String orderType, Integer pageIndex,
-            Integer pageSize) {
+    public PageHandler getPage(Short siteId, Long userId, Long surveyId, Boolean anonymous, String ip, String orderField,
+            String orderType, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from CmsUserSurvey bean");
         if (null != userId) {
             queryHandler.condition("bean.id.userId = :userId").setParameter("userId", userId);
@@ -40,6 +42,12 @@ public class CmsUserSurveyDao extends BaseDao<CmsUserSurvey> {
         }
         if (null != siteId) {
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
+        }
+        if (null != anonymous) {
+            queryHandler.condition("bean.anonymous = :anonymous").setParameter("anonymous", anonymous);
+        }
+        if (CommonUtils.notEmpty(ip)) {
+            queryHandler.condition("bean.ip like :ip").setParameter("ip", like(ip));
         }
         if (!ORDERTYPE_ASC.equalsIgnoreCase(orderType)) {
             orderType = ORDERTYPE_DESC;

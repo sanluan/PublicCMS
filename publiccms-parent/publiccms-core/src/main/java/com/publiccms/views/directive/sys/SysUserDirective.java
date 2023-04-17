@@ -58,7 +58,7 @@ public class SysUserDirective extends AbstractTemplateDirective {
             SysUser entity = service.getEntity(id);
             if (null != entity && site.getId() == entity.getSiteId()) {
                 if (absoluteURL) {
-                    entity.setCover(CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site, false), entity.getCover()));
+                    entity.setCover(CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site), entity.getCover()));
                 }
                 entity.setPassword(null);
                 handler.put("object", entity).render();
@@ -69,7 +69,7 @@ public class SysUserDirective extends AbstractTemplateDirective {
                 List<SysUser> entityList = service.getEntitys(ids);
                 Consumer<SysUser> consumer = null;
                 if (absoluteURL) {
-                    consumer = e -> e.setCover(CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site, false), e.getCover()));
+                    consumer = e -> e.setCover(CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site), e.getCover()));
                 }
                 Map<String, SysUser> map = CommonUtils.listToMap(entityList, k -> k.getId().toString(), consumer,
                         entity -> site.getId() == entity.getSiteId());

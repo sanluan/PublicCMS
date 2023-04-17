@@ -342,6 +342,7 @@ CREATE TABLE `cms_survey` (
   `votes` int(11) NOT NULL COMMENT '投票数',
   `start_date` datetime NOT NULL COMMENT '开始日期',
   `end_date` datetime DEFAULT NULL COMMENT '结束日期',
+  `allow_anonymous` tinyint(1) NOT NULL COMMENT '允许匿名',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   `disabled` tinyint(1) NOT NULL COMMENT '是否禁用',
   PRIMARY KEY (`id`),
@@ -435,6 +436,7 @@ CREATE TABLE `cms_user_survey` (
   `user_id` bigint(20) NOT NULL COMMENT '用户',
   `survey_id` bigint(20) NOT NULL COMMENT '问卷',
   `site_id` smallint(6) NOT NULL COMMENT '站点',
+  `anonymous` tinyint(1) NOT NULL COMMENT '匿名',
   `score` int(11) DEFAULT NULL COMMENT '分数',
   `ip` varchar(130) NOT NULL COMMENT 'IP',
   `create_date` datetime NOT NULL COMMENT '创建日期',
@@ -463,8 +465,9 @@ CREATE TABLE `cms_user_survey_question` (
 -- ----------------------------
 DROP TABLE IF EXISTS `cms_user_vote`;
 CREATE TABLE `cms_user_vote`  (
-`vote_id` bigint(20) NOT NULL COMMENT '投票',
+  `vote_id` bigint(20) NOT NULL COMMENT '投票',
   `user_id` bigint(20) NOT NULL COMMENT '用户',
+  `anonymous` tinyint(1) NOT NULL COMMENT '匿名',
   `item_id` bigint(20) NOT NULL COMMENT '投票选项',
   `ip` varchar(130) NOT NULL COMMENT 'IP',
   `create_date` datetime NOT NULL COMMENT '创建日期',
@@ -484,6 +487,7 @@ CREATE TABLE `cms_vote`  (
   `votes` int(11) NOT NULL COMMENT '总票数',
   `title` varchar(100) NOT NULL COMMENT '标题',
   `description` varchar(300) NULL DEFAULT NULL COMMENT '描述',
+  `allow_anonymous` tinyint(1) NOT NULL COMMENT '允许匿名',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   `disabled` tinyint(1) NOT NULL COMMENT '已禁用',
   PRIMARY KEY (`id`),

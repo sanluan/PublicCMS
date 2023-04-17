@@ -32,14 +32,16 @@ import com.publiccms.logic.service.sys.SysLockService;
 public class LockComponent implements Config, SiteCache {
     public static final String ITEM_TYPE_LOGIN = "userLogin";
     public static final String ITEM_TYPE_IP_LOGIN = "ipLogin";
+    public static final String ITEM_TYPE_IP_VOTE = "ipVote";
+    public static final String ITEM_TYPE_IP_SURVEY = "ipSurvey";
     public static final String ITEM_TYPE_REGISTER = "register";
     public static final String ITEM_TYPE_FILEUPLOAD = "fileUpload";
     public static final String ITEM_TYPE_FILEUPLOAD_SIZE = "fileUploadSize";
     public static final String ITEM_TYPE_FILEUPLOAD_PRIVATE_SIZE = "fileUploadPrivateSize";
     public static final String ITEM_TYPE_CONTRIBUTE = "contribute";
     public static final String ITEM_TYPE_COMMENT = "comment";
-    public static final String[] SYSTEM_ITEM_TYPES = { ITEM_TYPE_LOGIN, ITEM_TYPE_IP_LOGIN, ITEM_TYPE_REGISTER,
-            ITEM_TYPE_FILEUPLOAD, ITEM_TYPE_CONTRIBUTE, ITEM_TYPE_COMMENT };
+    public static final String[] SYSTEM_ITEM_TYPES = { ITEM_TYPE_LOGIN, ITEM_TYPE_IP_LOGIN, ITEM_TYPE_IP_VOTE,
+            ITEM_TYPE_IP_SURVEY, ITEM_TYPE_REGISTER, ITEM_TYPE_FILEUPLOAD, ITEM_TYPE_CONTRIBUTE, ITEM_TYPE_COMMENT };
     private static final String[] ITEM_TYPE_LOGINS = new String[] { ITEM_TYPE_LOGIN, ITEM_TYPE_IP_LOGIN };
     /**
      * 
@@ -114,6 +116,22 @@ public class LockComponent implements Config, SiteCache {
     */
     public static final String CONFIG_LOCK_COMMENT_MAX_COUNT = "comment.max_count";
     /**
+    *
+    */
+    public static final String CONFIG_LOCK_EXPIRY_VOTE = "expiry_minutes.vote";
+    /**
+    *
+    */
+    public static final String CONFIG_LOCK_IP_VOTE_MAX_COUNT = "anonymous.vote.max_count";
+    /**
+     *
+     */
+    public static final String CONFIG_LOCK_EXPIRY_SURVEY = "expiry_minutes.survey";
+    /**
+     *
+     */
+    public static final String CONFIG_LOCK_IP_SURVEY_MAX_COUNT = "anonymous.survey.max_count";
+    /**
      * default expiry minutes
      */
     public static final int DEFAULT_EXPIRY_MINUTES = 10;
@@ -169,6 +187,10 @@ public class LockComponent implements Config, SiteCache {
             expriy = ConfigDataComponent.getInt(config.get(CONFIG_LOCK_EXPIRY_CONTRIBUTE), DEFAULT_OPERATE_EXPIRY_MINUTES);
         } else if (ITEM_TYPE_COMMENT.equalsIgnoreCase(itemType)) {
             expriy = ConfigDataComponent.getInt(config.get(CONFIG_LOCK_EXPIRY_COMMENT), DEFAULT_OPERATE_EXPIRY_MINUTES);
+        } else if (ITEM_TYPE_IP_VOTE.equalsIgnoreCase(itemType)) {
+            expriy = ConfigDataComponent.getInt(config.get(CONFIG_LOCK_EXPIRY_VOTE), DEFAULT_OPERATE_EXPIRY_MINUTES);
+        } else if (ITEM_TYPE_IP_SURVEY.equalsIgnoreCase(itemType)) {
+            expriy = ConfigDataComponent.getInt(config.get(CONFIG_LOCK_EXPIRY_SURVEY), DEFAULT_OPERATE_EXPIRY_MINUTES);
         } else {
             expriy = ConfigDataComponent.getInt(config.get(CONFIG_LOCK_EXPIRY_MINUTES), DEFAULT_EXPIRY_MINUTES);
         }
@@ -204,6 +226,10 @@ public class LockComponent implements Config, SiteCache {
                 maxCount = ConfigDataComponent.getInt(config.get(CONFIG_LOCK_CONTRIBUTE_MAX_COUNT), DEFAULT_OPERATE_MAX_COUNT);
             } else if (ITEM_TYPE_COMMENT.equalsIgnoreCase(itemType)) {
                 maxCount = ConfigDataComponent.getInt(config.get(CONFIG_LOCK_COMMENT_MAX_COUNT), DEFAULT_OPERATE_MAX_COUNT);
+            } else if (ITEM_TYPE_IP_VOTE.equalsIgnoreCase(itemType)) {
+                maxCount = ConfigDataComponent.getInt(config.get(CONFIG_LOCK_IP_VOTE_MAX_COUNT), DEFAULT_OPERATE_MAX_COUNT);
+            } else if (ITEM_TYPE_IP_SURVEY.equalsIgnoreCase(itemType)) {
+                maxCount = ConfigDataComponent.getInt(config.get(CONFIG_LOCK_IP_SURVEY_MAX_COUNT), DEFAULT_OPERATE_MAX_COUNT);
             }
             if (0 < expriy && (0 < maxCount || -1 == maxCount)) {
                 SysLockId id = new SysLockId(siteId, itemType, itemId);
@@ -386,6 +412,19 @@ public class LockComponent implements Config, SiteCache {
                 null, String.valueOf(DEFAULT_OPERATE_EXPIRY_MINUTES)));
         extendFieldList.add(new SysExtendField(CONFIG_LOCK_COMMENT_MAX_COUNT, INPUTTYPE_NUMBER, false,
                 getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_LOCK_COMMENT_MAX_COUNT)),
+                null, String.valueOf(DEFAULT_OPERATE_MAX_COUNT)));
+        extendFieldList.add(new SysExtendField(CONFIG_LOCK_EXPIRY_VOTE, INPUTTYPE_NUMBER, false,
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_LOCK_EXPIRY_VOTE)), null,
+                String.valueOf(DEFAULT_OPERATE_EXPIRY_MINUTES)));
+        extendFieldList.add(new SysExtendField(CONFIG_LOCK_IP_VOTE_MAX_COUNT, INPUTTYPE_NUMBER, false,
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_LOCK_IP_VOTE_MAX_COUNT)),
+                null, String.valueOf(DEFAULT_OPERATE_MAX_COUNT)));
+        extendFieldList.add(new SysExtendField(CONFIG_LOCK_EXPIRY_SURVEY, INPUTTYPE_NUMBER, false,
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_LOCK_EXPIRY_SURVEY)),
+                null, String.valueOf(DEFAULT_OPERATE_EXPIRY_MINUTES)));
+        extendFieldList.add(new SysExtendField(CONFIG_LOCK_IP_SURVEY_MAX_COUNT, INPUTTYPE_NUMBER, false,
+                getMessage(locale,
+                        CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_LOCK_IP_SURVEY_MAX_COUNT)),
                 null, String.valueOf(DEFAULT_OPERATE_MAX_COUNT)));
         return extendFieldList;
     }
