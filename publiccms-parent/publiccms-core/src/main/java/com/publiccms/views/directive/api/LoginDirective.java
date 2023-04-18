@@ -69,7 +69,7 @@ public class LoginDirective extends AbstractAppDirective {
         String encoding = StringUtils.trim(handler.getString("encoding"));
         String channel = handler.getString("channel", LogLoginService.CHANNEL_WEB);
         boolean result = false;
-        if (CommonUtils.notEmpty(username) && CommonUtils.notEmpty(password)) {
+        if (CommonUtils.notEmpty(username) && CommonUtils.notEmpty(password) && password.length() <= 100) {
             SysSite site = getSite(handler);
             if (ControllerUtils.notEMail(username)) {
                 user = service.findByName(site.getId(), username);
@@ -83,7 +83,8 @@ public class LoginDirective extends AbstractAppDirective {
                 lockComponent.unLock(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, user.getId());
                 lockComponent.unLock(site.getId(), LockComponent.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null);
                 if (UserPasswordUtils.needUpdate(user.getPassword())) {
-                    service.updatePassword(user.getId(), UserPasswordUtils.passwordEncode(password, UserPasswordUtils.getSalt(), null, encoding));
+                    service.updatePassword(user.getId(),
+                            UserPasswordUtils.passwordEncode(password, UserPasswordUtils.getSalt(), null, encoding));
                 }
                 service.updateLoginStatus(user.getId(), ip);
                 String authToken = UUID.randomUUID().toString();
