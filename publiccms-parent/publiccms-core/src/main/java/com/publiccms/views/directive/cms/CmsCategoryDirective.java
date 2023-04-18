@@ -33,7 +33,7 @@ import freemarker.template.TemplateException;
  * <li><code>code</code>:分类编码,当id为空时生效,结果返回<code>object</code>
  * <li><code>absoluteURL</code>:url处理为绝对路径 默认为<code>true</code>
  * <li><code>containsAttribute</code>
- * id不为空时有效,默认为<code>false</code>,结果返回<code>attribute</code>分类扩展数据<code>map</code>(字段编码,<code>value</code>)
+ * 默认为<code>true</code>,http请求时为高级参数,为true时<code>object.attribute</code>为分类扩展数据<code>map</code>(字段编码,<code>value</code>)
  * <li><code>ids</code>:
  * 多个分类id,逗号或空格间隔,当id或code为空时生效,结果返回<code>map</code>(id,<code>object</code>)
  * </ul>
@@ -61,6 +61,7 @@ public class CmsCategoryDirective extends AbstractTemplateDirective {
         String code = handler.getString("code");
         boolean absoluteURL = handler.getBoolean("absoluteURL", true);
         boolean containsAttribute = handler.getBoolean("containsAttribute", true);
+        containsAttribute = handler.inHttp() ? getAdvanced(handler) && containsAttribute : containsAttribute;
         SysSite site = getSite(handler);
         if (CommonUtils.notEmpty(id) || CommonUtils.notEmpty(code)) {
             CmsCategory entity;
@@ -106,6 +107,11 @@ public class CmsCategoryDirective extends AbstractTemplateDirective {
                 handler.put("map", map).render();
             }
         }
+    }
+
+    @Override
+    public boolean supportAdvanced() {
+        return true;
     }
 
     @Resource

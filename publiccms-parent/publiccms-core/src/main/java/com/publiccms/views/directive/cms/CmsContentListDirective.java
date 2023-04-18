@@ -95,14 +95,14 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
         SysSite site = getSite(handler);
         queryEntity.setSiteId(site.getId());
         queryEntity.setEndPublishDate(handler.getDate("endPublishDate"));
-        boolean containsAttribute = false;
+        boolean containsAttribute = handler.getBoolean("containsAttribute", false);
         if (getAdvanced(handler)) {
             queryEntity.setStatus(handler.getIntegerArray("status"));
             queryEntity.setDisabled(handler.getBoolean("disabled", false));
             queryEntity.setEmptyParent(handler.getBoolean("emptyParent"));
             queryEntity.setTitle(handler.getString("title"));
-            containsAttribute = handler.getBoolean("containsAttribute", false);
         } else {
+            containsAttribute = !handler.inHttp();
             queryEntity.setStatus(CmsContentService.STATUS_NORMAL_ARRAY);
             queryEntity.setDisabled(false);
             queryEntity.setEmptyParent(true);

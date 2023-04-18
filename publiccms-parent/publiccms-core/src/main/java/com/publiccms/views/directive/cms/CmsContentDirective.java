@@ -36,7 +36,7 @@ import freemarker.template.TemplateException;
  * <li><code>absoluteURL</code>:url处理为绝对路径 默认为<code> true</code>
  * <li><code>absoluteId</code>:id处理为引用内容的ID 默认为<code> true</code>
  * <li><code>containsAttribute</code>
- * id不为空时有效,默认为<code>false</code>,结果返回<code>attribute</code>内容扩展数据<code>map</code>(字段编码,<code>value</code>)
+ * 默认为<code>true</code>,http请求时为高级参数,为true时<code>object.attribute</code>为内容扩展数据<code>map</code>(字段编码,<code>value</code>)
  * <li><code>ids</code>:
  * 多个内容id,逗号或空格间隔,当id为空时生效,结果返回<code>map</code>(id,<code>object</code>)
  * </ul>
@@ -64,6 +64,7 @@ public class CmsContentDirective extends AbstractTemplateDirective {
         boolean absoluteURL = handler.getBoolean("absoluteURL", true);
         boolean absoluteId = handler.getBoolean("absoluteId", true);
         boolean containsAttribute = handler.getBoolean("containsAttribute", true);
+        containsAttribute = handler.inHttp() ? getAdvanced(handler) && containsAttribute : containsAttribute;
         SysSite site = getSite(handler);
         if (CommonUtils.notEmpty(id)) {
             CmsContent entity = service.getEntity(id);
@@ -130,7 +131,7 @@ public class CmsContentDirective extends AbstractTemplateDirective {
     }
 
     @Override
-    public boolean needAppToken() {
+    public boolean supportAdvanced() {
         return true;
     }
 

@@ -221,4 +221,9 @@ public class HttpParameterHandler extends BaseHandler {
     public Object getAttribute(String name) {
         return request.getAttribute(name);
     }
+
+    @Override
+    public boolean inHttp() {
+        return true;
+    }
 }

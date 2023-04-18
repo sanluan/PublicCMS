@@ -250,5 +250,9 @@ public interface RenderHandler {
      * @return if renderd
      */
     boolean getRenderd();
-
+    
+    /**
+     * @return if in http
+     */
+    boolean inHttp();
 }

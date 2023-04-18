@@ -80,13 +80,15 @@ public class CmsPlaceListDirective extends AbstractTemplateDirective {
         Date expiryDate = null;
         String path = handler.getString("path");
         Boolean disabled = false;
-        boolean containsAttribute = false;
+        boolean containsAttribute = handler.getBoolean("containsAttribute", false);
         Integer[] status;
         if (getAdvanced(handler)) {
             status = handler.getIntegerArray("status");
             disabled = handler.getBoolean("disabled", false);
-            containsAttribute = handler.getBoolean("containsAttribute", false);
         } else {
+            if (handler.inHttp()) {
+                containsAttribute = false;
+            }
             status = CmsPlaceService.STATUS_NORMAL_ARRAY;
             Date now = CommonUtils.getMinuteDate();
             if (null == endPublishDate || endPublishDate.after(now)) {

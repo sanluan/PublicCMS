@@ -70,12 +70,12 @@ public class CmsCategoryListDirective extends AbstractTemplateDirective {
         SysSite site = getSite(handler);
         CmsCategoryQuery queryEntity = new CmsCategoryQuery();
         queryEntity.setQueryAll(handler.getBoolean("queryAll"));
-        boolean containsAttribute = false;
+        boolean containsAttribute = handler.getBoolean("containsAttribute", false);
         if (getAdvanced(handler)) {
             queryEntity.setDisabled(handler.getBoolean("disabled", false));
             queryEntity.setHidden(handler.getBoolean("hidden"));
-            containsAttribute = handler.getBoolean("containsAttribute", false);
         } else {
+            containsAttribute = !handler.inHttp();
             queryEntity.setDisabled(false);
             queryEntity.setHidden(false);
         }

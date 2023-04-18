@@ -177,4 +177,9 @@ public class TemplateDirectiveHandler extends BaseHandler {
         }
         return null;
     }
+
+    @Override
+    public boolean inHttp() {
+        return false;
+    }
 }
