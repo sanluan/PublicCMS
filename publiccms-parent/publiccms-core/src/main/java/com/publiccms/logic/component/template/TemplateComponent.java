@@ -35,7 +35,6 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.common.tools.FreeMarkerUtils;
 import com.publiccms.entities.cms.CmsCategory;
-import com.publiccms.entities.cms.CmsCategoryAttribute;
 import com.publiccms.entities.cms.CmsCategoryModel;
 import com.publiccms.entities.cms.CmsCategoryModelId;
 import com.publiccms.entities.cms.CmsContent;
@@ -134,8 +133,7 @@ public class TemplateComponent implements Cache, AdminContextPath {
             pageIndex = 1;
         }
         CmsUrlUtils.initCategoryUrl(site, entity);
-        CmsCategoryAttribute attribute = categoryAttributeService.getEntity(entity.getId());
-        entity.setAttribute(ExtendUtils.getAttributeMap(attribute));
+        entity.setAttribute(ExtendUtils.getAttributeMap(categoryAttributeService.getEntity(entity.getId())));
         model.put("category", entity);
         model.put("attribute", entity.getAttribute());
 
@@ -187,7 +185,6 @@ public class TemplateComponent implements Cache, AdminContextPath {
         entity.setAttribute(ExtendUtils.getAttributeMap(attribute));
         model.put("content", entity);
         model.put("attribute", entity.getAttribute());
-        category.setAttribute(ExtendUtils.getAttributeMap(categoryAttributeService.getEntity(entity.getId())));
         model.put("category", category);
 
         String realTemplatePath = siteComponent.getTemplateFilePath(site.getId(), templatePath);
@@ -284,7 +281,6 @@ public class TemplateComponent implements Cache, AdminContextPath {
                     } else if (CommonUtils.notEmpty(contentPath)) {
                         Map<String, Object> modelMap = new HashMap<>();
                         entity.setAttribute(ExtendUtils.getAttributeMap(contentAttributeService.getEntity(entity.getId())));
-                        category.setAttribute(ExtendUtils.getAttributeMap(categoryAttributeService.getEntity(entity.getId())));
                         modelMap.put("content", entity);
                         modelMap.put("category", category);
                         modelMap.put(CommonConstants.getAttributeSite(), site);
@@ -536,7 +532,6 @@ public class TemplateComponent implements Cache, AdminContextPath {
                     }
                     CmsUrlUtils.initPlaceUrl(site, e);
                     fileUploadComponent.initPlaceCover(site, e);
-
                     e.setAttribute(ExtendUtils.getAttributeMap(attributeMap.get(e.getId())));
                 });
             }

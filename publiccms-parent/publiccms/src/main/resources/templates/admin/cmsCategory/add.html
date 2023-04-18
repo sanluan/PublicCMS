@@ -3,6 +3,7 @@
         a=object
         parentId=object.parentId!""
         typeId=object.typeId!""
+        attribute=getCategoryAttribute(a.id)
     />
 </@cms.category>
 <@cms.category id=parentId><#assign category=object/></@cms.category>
@@ -146,25 +147,25 @@
                 </dl>
                 <#if categoryType?has_content && categoryType.extendList?has_content>
                     <#include "../include_page/extendData.html"/>
-                    <@extendData extendList=categoryType.extendList extendValues=((a.attribute)!{}) historyItemType='categoryExtend' historyItemId=id/>
+                    <@extendData extendList=categoryType.extendList extendValues=(attribute!{}) historyItemType='categoryExtend' historyItemId=id/>
                 </#if>
             </div>
             <div class="pageFormContent onlyUrl" layoutH>
                 <dl class="nowrap">
                     <dt><@t.page 'title'/>:</dt>
-                    <dd><input name="title" type="text" maxlength="80" size="50" value="${(a.attribute.title)!}"/></dd>
+                    <dd><input name="title" type="text" maxlength="80" size="50" value="${(attribute.title)!}"/></dd>
                 </dl>
                 <dl class="nowrap">
                     <dt><@t.page 'keywords'/>:</dt>
                     <dd>
-                        <textarea name="keywords" maxlength="100" cols="80" rows="2">${(a.attribute.keywords)!}</textarea>
+                        <textarea name="keywords" maxlength="100" cols="80" rows="2">${(attribute.keywords)!}</textarea>
                         <span class="info"><@t.page 'category.keywords.description'/></span>
                     </dd>
                 </dl>
                 <dl class="nowrap">
                     <dt><@t.page 'description'/>:</dt>
                     <dd>
-                        <textarea name="description" maxlength="150" cols="80" rows="2">${(a.attribute.description)!}</textarea>
+                        <textarea name="description" maxlength="150" cols="80" rows="2">${(attribute.description)!}</textarea>
                         <span class="info"><@t.page 'category.description.description'/></span>
                     </dd>
                 </dl>

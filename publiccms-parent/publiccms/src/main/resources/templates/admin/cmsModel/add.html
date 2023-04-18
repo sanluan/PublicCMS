@@ -168,7 +168,7 @@
                         <label><@t.page 'field.source_url'/>(sourceUrl):</label>
                         <input name="fieldTextMap[sourceUrl]" type="text" maxlength="20" size="10" value="${(a.fieldTextMap['sourceUrl'])!t.pageMessage('content.source_url')}"/>
                         <label><input name="requiredFieldList" type="checkbox" class="form-check-input" value="sourceUrl"/><@t.page 'required'/></label>
-                        <span class="info"><#noparse>&lt;a href="${(content.attribute.sourceUrl)!}"&gt;${(content.attribute.source)!}&lt;/a&gt;</#noparse></span>
+                        <span class="info"><#noparse>&lt;a href="${(attribute.sourceUrl)!}"&gt;${(attribute.source)!}&lt;/a&gt;</#noparse></span>
                     </dd>
                 </dl>
                 <dl class="nowrap">
@@ -186,7 +186,7 @@
                             <option value="${k}"${(k=(a.editorType)!)?then(' selected="true"','')?no_esc}>${v}</option>
                             </#list>
                         </select>
-                        <span class="info"><#noparse>${(content.attribute.text?no_esc)!}</#noparse></span>
+                        <span class="info"><#noparse>${(attribute.text?no_esc)!}</#noparse></span>
                     </dd>
                 </dl>
             </fieldset>

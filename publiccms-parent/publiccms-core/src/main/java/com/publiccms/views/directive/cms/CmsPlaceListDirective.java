@@ -44,6 +44,7 @@ import freemarker.template.TemplateException;
  * <li><code>itemType</code>:数据项类型,【content:内容,category:分类,custom:自定义】
  * <li><code>itemId</code>:数据项id
  * <li><code>absoluteURL</code>:url、封面图处理为绝对路径 默认为<code>true</code>
+ * <li><code>containsAttribute</code>:默认为<code>false</code>,http请求时为高级选项,为true时<code>place.attribute</code>为推荐位扩展数据<code>map</code>(字段编码,<code>value</code>)
  * <li><code>orderField</code>
  * 排序字段,【createDate:创建日期,clicks:点击数】,默认发布日期按orderType排序
  * <li><code>orderType</code>:排序类型,【asc:正序,desc:倒序】,默认为倒序
@@ -86,9 +87,7 @@ public class CmsPlaceListDirective extends AbstractTemplateDirective {
             status = handler.getIntegerArray("status");
             disabled = handler.getBoolean("disabled", false);
         } else {
-            if (handler.inHttp()) {
-                containsAttribute = false;
-            }
+            containsAttribute = !handler.inHttp();
             status = CmsPlaceService.STATUS_NORMAL_ARRAY;
             Date now = CommonUtils.getMinuteDate();
             if (null == endPublishDate || endPublishDate.after(now)) {

@@ -7,12 +7,12 @@ import java.util.List;
  * PageHandler
  * <p>
  * 分页结果处理器
- * 
+ *
  */
 public class PageHandler implements java.io.Serializable {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
 
@@ -85,10 +85,10 @@ public class PageHandler implements java.io.Serializable {
 
     /**
      * 总页数
-     * 
+     *
      * @param totalCount
      * @param pageSize
-     * 
+     *
      * @return total page
      */
     public static int getTotalPage(int totalCount, int pageSize) {
@@ -98,7 +98,7 @@ public class PageHandler implements java.io.Serializable {
 
     /**
      * 第一条结果
-     * 
+     *
      * @return first result
      */
     public int getFirstResult() {
@@ -111,7 +111,7 @@ public class PageHandler implements java.io.Serializable {
 
     /**
      * 总数据条数
-     * 
+     *
      * @return the totalCount
      */
     public int getTotalCount() {
@@ -138,7 +138,7 @@ public class PageHandler implements java.io.Serializable {
 
     /**
      * 每页数据条数
-     * 
+     *
      * @return the pageSize
      */
     public int getPageSize() {
@@ -147,7 +147,7 @@ public class PageHandler implements java.io.Serializable {
 
     /**
      * 当前页码
-     * 
+     *
      * @return the pageIndex
      */
     public int getPageIndex() {
@@ -156,7 +156,7 @@ public class PageHandler implements java.io.Serializable {
 
     /**
      * 结果数据
-     * 
+     *
      * @return the list
      */
     public List<?> getList() {
@@ -173,7 +173,7 @@ public class PageHandler implements java.io.Serializable {
 
     /**
      * 是否第一页
-     * 
+     *
      * @return whether the first page
      */
     public boolean isFirstPage() {
@@ -189,7 +189,7 @@ public class PageHandler implements java.io.Serializable {
 
     /**
      * 是否最后一页
-     * 
+     *
      * @return whether the last page
      */
     public boolean isLastPage() {
@@ -198,7 +198,7 @@ public class PageHandler implements java.io.Serializable {
 
     /**
      * 下一页
-     * 
+     *
      * @return next page
      */
     public int getNextPage() {
@@ -210,7 +210,7 @@ public class PageHandler implements java.io.Serializable {
 
     /**
      * 上一页
-     * 
+     *
      * @return previous page
      */
     public int getPrePage() {
@@ -219,5 +219,12 @@ public class PageHandler implements java.io.Serializable {
         }
         return pageIndex - 1;
     }
-
+    /**
+     * 上一页
+     *
+     * @return previous page
+     */
+    public int getPrevPage() {
+        return getPrePage();
+    }
 }

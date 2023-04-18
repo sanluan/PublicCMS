@@ -1,10 +1,11 @@
+<#assign attribute=category.attribute/>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>${(category.attribute.title)?has_content?then(category.attribute.title,category.name)!}</title>
-    <meta name="keywords" content="${(category.attribute.keywords)!}"/>
-    <meta name="description" content="${(category.attribute.description)!}"/>
+    <title>${(attribute.title)?has_content?then(attribute.title,category.name)!}</title>
+    <meta name="keywords" content="${(attribute.keywords)!}"/>
+    <meta name="description" content="${(attribute.description)!}"/>
     <style>
         nav a.selected{border-bottom:1px solid #f099f0;}
         .bread{border-bottom:1px solid #eee;}
@@ -36,9 +37,9 @@
 </#macro>
         <p class="bread"><@bread category/> <a href="${category.url}" data-id="${category.id}">${category.name}</a></p>
         <h1 data-diy="category" data-diy-id="${(category.id)!}">${(category.name)!}</h1>
-<@cms.contentList categoryId=category.id containChild=category.containChild pageIndex=pageIndex pageSize=category.pageSize>
+    <@cms.contentList categoryId=category.id containChild=category.containChild pageIndex=pageIndex pageSize=category.pageSize>
         <ul data-diy="content">
-    <#list page.list as content>
+        <#list page.list as content>
             <li data-diy-item="${content.id}">
                 <h3><a href="<#if content.onlyUrl>${site.dynamicPath}content/redirect?id=${content.id}<#else>${content.url!}</#if>" target="_blank">${content.title}</a></h3>
                 <p>
@@ -46,7 +47,7 @@
                     ${content.description!}
                 </p>
             </li>
-    </#list>
+        </#list>
         </ul>
         <ul class="pagination">
             <#if category.url?contains('?')><#assign pageParameter="pageIndex"/></#if>
@@ -74,15 +75,15 @@
             </#if>
             <li class="page-item"><a class="page-link" href="${getPage(category.url,page.nextPage,pageParameter)}">Next page</a></li>
         </ul>
-</@cms.contentList>
+    </@cms.contentList>
         <aside>
             <h3>Popular content</h3>
             <ul data-diy="content">
-<@cms.contentList categoryId=category.id containChild=true orderField='clicks' pageSize=10>
-    <#list page.list as content>
+        <@cms.contentList categoryId=category.id containChild=true orderField='clicks' pageSize=10>
+            <#list page.list as content>
                 <li data-diy-item="${content.id}"><a href="<#if content.onlyUrl>${site.dynamicPath}content/redirect?id=${content.id}<#else>${content.url!}</#if>" target="_blank">${content.title}</a><span>${content.clicks}</span></li>
-    </#list>
-</@cms.contentList>
+            </#list>
+        </@cms.contentList>
             </ul>
         </aside>
     </main>

@@ -3,27 +3,10 @@ package com.publiccms.views.directive.cms;
 // Generated 2015-5-10 17:54:56 by com.publiccms.common.generator.SourceGenerator
 
 import java.io.IOException;
-import java.util.Date;
-import java.util.List;
-
-import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
 
-import com.publiccms.common.base.AbstractTemplateDirective;
-import com.publiccms.common.base.HighLighterQuery;
-import com.publiccms.common.handler.FacetPageHandler;
 import com.publiccms.common.handler.RenderHandler;
-import com.publiccms.common.tools.CmsUrlUtils;
-import com.publiccms.common.tools.CommonUtils;
-import com.publiccms.common.tools.RequestUtils;
-import com.publiccms.entities.cms.CmsContent;
-import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.component.site.FileUploadComponent;
-import com.publiccms.logic.component.site.StatisticsComponent;
-import com.publiccms.logic.service.cms.CmsContentService;
-import com.publiccms.views.pojo.entities.ClickStatistics;
-import com.publiccms.views.pojo.query.CmsContentSearchQuery;
 
 import freemarker.template.TemplateException;
 
@@ -60,70 +43,11 @@ import freemarker.template.TemplateException;
  * 
  */
 @Component
-public class CmsFacetSearchDirective extends AbstractTemplateDirective {
+public class CmsFacetSearchDirective extends CmsSearchDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, TemplateException {
-        String word = handler.getString("word");
-        Long[] tagIds = handler.getLongArray("tagIds");
-        if (null == tagIds) {
-            tagIds = handler.getLongArray("tagId");
-        }
-        SysSite site = getSite(handler);
-        if (CommonUtils.notEmpty(word)) {
-            word = CommonUtils.keep(word, 100, null);
-            String ip = RequestUtils.getIpAddress(handler.getRequest());
-            statisticsComponent.search(site.getId(), word, ip);
-        }
-        if (CommonUtils.notEmpty(tagIds)) {
-            for (Long tagId : tagIds) {
-                statisticsComponent.searchTag(tagId);
-            }
-        }
-        FacetPageHandler page;
-        Integer pageIndex = handler.getInteger("pageIndex", 1);
-        Integer pageSize = handler.getInteger("pageSize", handler.getInteger("count", 30));
-        Date currentDate = CommonUtils.getMinuteDate();
-        HighLighterQuery highLighterQuery = new HighLighterQuery(handler.getBoolean("highlight", false));
-        if (highLighterQuery.isHighlight()) {
-            highLighterQuery.setPreTag(handler.getString("preTag"));
-            highLighterQuery.setPostTag(handler.getString("postTag"));
-        }
-        try {
-            page = service.facetQuery(
-                    new CmsContentSearchQuery(site.getId(), handler.getBoolean("projection", false),
-                            handler.getBoolean("phrase", false), highLighterQuery, word, handler.getString("exclude"),
-                            handler.getStringArray("fields"), tagIds, handler.getLong("userId"), handler.getLong("parentId"),
-                            handler.getInteger("categoryId"), handler.getIntegerArray("categoryIds"),
-                            handler.getStringArray("modelIds"), handler.getStringArray("extendsValues"),
-                            handler.getStringArray("dictionaryValues"), handler.getBoolean("dictionaryUnion"),
-                            handler.getDate("startPublishDate"), handler.getDate("endPublishDate", currentDate), currentDate),
-                    handler.getBoolean("containChild"), handler.getString("orderField"), pageIndex, pageSize,
-                    handler.getInteger("maxPage"));
-            @SuppressWarnings("unchecked")
-            List<CmsContent> list = (List<CmsContent>) page.getList();
-            if (null != list) {
-                list.forEach(e -> {
-                    ClickStatistics statistics = statisticsComponent.getContentStatistics(e.getId());
-                    if (null != statistics) {
-                        e.setClicks(e.getClicks() + statistics.getClicks());
-                    }
-                    CmsUrlUtils.initContentUrl(site, e);
-                    fileUploadComponent.initContentCover(site, e);
-                });
-            }
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            page = new FacetPageHandler(pageIndex, pageSize);
-        }
-        handler.put("page", page).render();
+        handler.put("page", query(handler, true)).render();
     }
-
-    @Resource
-    private StatisticsComponent statisticsComponent;
-    @Resource
-    protected FileUploadComponent fileUploadComponent;
-    @Resource
-    private CmsContentService service;
 
 }

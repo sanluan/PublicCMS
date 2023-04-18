@@ -9,7 +9,7 @@
         <@cms.content id=itemId><#assign content=object/></@cms.content>
     <#break>
     <#case 'category'>
-        <@cms.category id=itemId><#assign category=object/><#assign categoryDescription=object.attribute.description!/></@cms.category>
+        <@cms.category id=itemId><#assign category=object/><#assign categoryDescription=getCategoryAttribute(category.id).description!/></@cms.category>
     <#break>
 </#switch>
 </#if>
@@ -84,7 +84,8 @@
         </#if>
             <#include "../include_page/extendData.html"/>
             <@tools.placeMetadata path=(a.path)!path!''><#assign metadata=object/></@tools.placeMetadata>
-            <@extendData extendList=metadata.extendList extendValues=((a.attribute)!{}) historyItemType='placeExtend' historyItemId=id/>
+            <#assign attribute=getPlaceAttribute((a.id)!)/>
+            <@extendData extendList=metadata.extendList extendValues=attribute historyItemType='placeExtend' historyItemId=id/>
         </div>
     </div>
 </form>

@@ -1,5 +1,5 @@
 <#ftl output_format="JSON">
-{
+{<#assign attribute=content.attribute/>
     <@cms.category id=content.categoryId>
         <#assign category=object/>
     </@cms.category>
@@ -13,9 +13,9 @@
     "categoryUrl":"${category.url!}",
     "editor":"${content.editor!}",
     "publishDate":"${content.publishDate?string}",
-    "text":"${(content.attribute.text?html)!}",
-    "sourceUrl":"${(content.attribute.sourceUrl)!}",
-    "source":"${(content.attribute.source)!}"<#if content.hasFiles>
+    "text":"${(attribute.text?html)!}",
+    "sourceUrl":"${(attribute.sourceUrl)!}",
+    "source":"${(attribute.source)!}"<#if content.hasFiles>
     ,"files:[<@cms.contentFileList contentId=content.id fileTypes='video,audio,other'><#list page.list as file>
         {"filePath":"${(file.filePath)!}}"<#sep>,</#list></@cms.contentFileList>
     ]</#if><#if content.hasImages>

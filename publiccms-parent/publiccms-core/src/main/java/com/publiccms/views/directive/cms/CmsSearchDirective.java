@@ -5,6 +5,8 @@ package com.publiccms.views.directive.cms;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
 
 import javax.annotation.Resource;
 
@@ -16,16 +18,20 @@ import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.cms.CmsContent;
+import com.publiccms.entities.cms.CmsContentAttribute;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
+import com.publiccms.logic.service.cms.CmsContentAttributeService;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.views.pojo.entities.ClickStatistics;
 import com.publiccms.views.pojo.query.CmsContentSearchQuery;
 
 import freemarker.template.TemplateException;
+import freemarker.template.TemplateModelException;
 
 /**
  *
@@ -56,6 +62,7 @@ import freemarker.template.TemplateException;
  * <li><code>phrase</code>:精确搜索,【true,false】,默认为false
  * <li><code>fields</code>:搜索字段,【title:标题, author:作者, editor:编辑, description:描述,
  * text:正文,files:附件】
+ * <li><code>containsAttribute</code>默认为<code>false</code>,http请求时为高级选项,为true时<code>content.attribute</code>为内容扩展数据<code>map</code>(字段编码,<code>value</code>)
  * <li><code>startPublishDate</code>:起始发布日期,【2000-01-01 23:59:59】,【2000-01-01】
  * <li><code>endPublishDate</code>:终止发布日期,【2000-01-01 23:59:59】,【2000-01-01】
  * <li><code>orderField</code>
@@ -87,9 +94,19 @@ import freemarker.template.TemplateException;
  */
 @Component
 public class CmsSearchDirective extends AbstractTemplateDirective {
+    @Resource
+    private CmsContentAttributeService attributeService;
+    @Resource
+    private StatisticsComponent statisticsComponent;
+    @Resource
+    protected FileUploadComponent fileUploadComponent;
 
     @Override
     public void execute(RenderHandler handler) throws IOException, TemplateException {
+        handler.put("page", query(handler, handler.getBoolean("factSearch", false))).render();
+    }
+
+    public PageHandler query(RenderHandler handler, boolean factSearch) throws TemplateModelException {
         String word = handler.getString("word");
         Long[] tagIds = handler.getLongArray("tagIds");
         if (null == tagIds) {
@@ -106,7 +123,6 @@ public class CmsSearchDirective extends AbstractTemplateDirective {
                 statisticsComponent.searchTag(tagId);
             }
         }
-        PageHandler page;
         Integer pageIndex = handler.getInteger("pageIndex", 1);
         Integer pageSize = handler.getInteger("pageSize", handler.getInteger("count", 30));
         Date currentDate = CommonUtils.getMinuteDate();
@@ -115,41 +131,61 @@ public class CmsSearchDirective extends AbstractTemplateDirective {
             highLighterQuery.setPreTag(handler.getString("preTag"));
             highLighterQuery.setPostTag(handler.getString("postTag"));
         }
+        boolean containsAttribute = handler.getBoolean("containsAttribute", false);
+        containsAttribute = handler.inHttp() ? getAdvanced(handler) && containsAttribute : containsAttribute;
         try {
-            page = service.query(
-                    new CmsContentSearchQuery(site.getId(), handler.getBoolean("projection", false),
-                            handler.getBoolean("phrase", false), highLighterQuery, word, handler.getString("exclude"),
-                            handler.getStringArray("fields"), tagIds, handler.getLong("userId"), handler.getLong("parentId"),
-                            handler.getInteger("categoryId"), handler.getIntegerArray("categoryIds"),
-                            handler.getStringArray("modelIds"), handler.getStringArray("extendsValues"),
-                            handler.getStringArray("dictionaryValues"), handler.getBoolean("dictionaryUnion"),
-                            handler.getDate("startPublishDate"), handler.getDate("endPublishDate", currentDate), currentDate),
-                    handler.getBoolean("containChild"), handler.getString("orderField"), pageIndex, pageSize,
-                    handler.getInteger("maxPage"));
+            CmsContentSearchQuery query = new CmsContentSearchQuery(site.getId(), handler.getBoolean("projection", false),
+                    handler.getBoolean("phrase", false), highLighterQuery, word, handler.getString("exclude"),
+                    handler.getStringArray("fields"), tagIds, handler.getLong("userId"), handler.getLong("parentId"),
+                    handler.getInteger("categoryId"), handler.getIntegerArray("categoryIds"), handler.getStringArray("modelIds"),
+                    handler.getStringArray("extendsValues"), handler.getStringArray("dictionaryValues"),
+                    handler.getBoolean("dictionaryUnion"), handler.getDate("startPublishDate"),
+                    handler.getDate("endPublishDate", currentDate), currentDate);
+            PageHandler page = null;
+            if (factSearch) {
+                page = service.facetQuery(query, handler.getBoolean("containChild"), handler.getString("orderField"), pageIndex,
+                        pageSize, handler.getInteger("maxPage"));
+            } else {
+                page = service.query(query, handler.getBoolean("containChild"), handler.getString("orderField"), pageIndex,
+                        pageSize, handler.getInteger("maxPage"));
+            }
+
             @SuppressWarnings("unchecked")
             List<CmsContent> list = (List<CmsContent>) page.getList();
             if (null != list) {
-                list.forEach(e -> {
-                    ClickStatistics statistics = statisticsComponent.getContentStatistics(e.getId());
-                    if (null != statistics) {
-                        e.setClicks(e.getClicks() + statistics.getClicks());
-                    }
-                    CmsUrlUtils.initContentUrl(site, e);
-                    fileUploadComponent.initContentCover(site, e);
-                });
+                Consumer<CmsContent> consumer = null;
+                if (containsAttribute) {
+                    Long[] ids = list.stream().map(CmsContent::getId).toArray(Long[]::new);
+                    List<CmsContentAttribute> attributeList = attributeService.getEntitys(ids);
+                    Map<Object, CmsContentAttribute> attributeMap = CommonUtils.listToMap(attributeList, k -> k.getContentId());
+                    consumer = e -> {
+                        ClickStatistics statistics = statisticsComponent.getContentStatistics(e.getId());
+                        if (null != statistics) {
+                            e.setClicks(e.getClicks() + statistics.getClicks());
+                        }
+                        CmsUrlUtils.initContentUrl(site, e);
+                        fileUploadComponent.initContentCover(site, e);
+                        e.setAttribute(ExtendUtils.getAttributeMap(attributeMap.get(e.getId())));
+                    };
+                } else {
+                    consumer = e -> {
+                        ClickStatistics statistics = statisticsComponent.getContentStatistics(e.getId());
+                        if (null != statistics) {
+                            e.setClicks(e.getClicks() + statistics.getClicks());
+                        }
+                        CmsUrlUtils.initContentUrl(site, e);
+                        fileUploadComponent.initContentCover(site, e);
+                    };
+                }
+                list.forEach(consumer);
             }
+            return page;
         } catch (Exception e) {
             log.error(e.getMessage());
-            page = new PageHandler(pageIndex, pageSize);
+            return new PageHandler(pageIndex, pageSize);
         }
-        handler.put("page", page).render();
     }
 
     @Resource
-    private StatisticsComponent statisticsComponent;
-    @Resource
-    protected FileUploadComponent fileUploadComponent;
-    @Resource
     private CmsContentService service;
-
 }

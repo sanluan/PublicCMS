@@ -11,6 +11,7 @@
 <#noparse><#if user?has_content>
 <@cms.content id=id>
     <#assign content=object/>
+    <#assign attribute=getContentAttribute(object.id)/>
 </@cms.content>
 <form name="contribute" method="post" action="${site.dynamicPath}content/save">
     <input type="hidden" name="_csrf" value="<@tools.csrfToken/>"/>
@@ -39,14 +40,14 @@
 <#if fieldList?seq_contains('content')>
     <p>
         <label>${(model.fieldTextMap['content'])!}:</label>
-        <textarea name="text" class="editor" cols="80" rows="20"><#noparse>${(content.attribute.text)!}</#noparse></textarea>
+        <textarea name="text" class="editor" cols="80" rows="20"><#noparse>${(attribute.text)!}</#noparse></textarea>
     </p>
 </#if>
     <#include "../include_page/extendData.html"/>
     <@sys.extendFieldList extendId=category.extendId>
-        <@extendData extendList=list extendValues=((content.attribute)!{}) type="customform"/>
+        <@extendData extendList=list extendValues=attribute type="customform"/>
     </@sys.extendFieldList>
-    <@extendData extendList=model.extendList extendValues=((content.attribute)!{}) type="customform"/>
+    <@extendData extendList=model.extendList extendValues=attribute type="customform"/>
 <#noparse>
     <@sys.configData code="safe">
         <#if object.captcha?has_content && object.captcha?split(",")?seq_contains("contribute")>

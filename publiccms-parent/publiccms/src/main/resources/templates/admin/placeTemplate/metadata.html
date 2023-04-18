@@ -181,10 +181,11 @@
     <#items as place>
         <li data-diy-item="${place.id}">
             <figure>
-                <#-- data type: ${place.itemType!},data id: ${place.itemId!},place/redirect:count and jump to place.url,found[true:302,false:301,default:false] -->
-                <a href="${site.dynamicPath}place/redirect?id=${place.id!}&found=false" target="_blank"><img src="${place.cover!}"></a>
-                <figcaption><a href="${place.url!}" target="_blank">${place.title!}</a>(${place.clicks!})</figcaption>
-                <p><#list (place.description!'')?split('\n') as line>${line}<#sep><br/></#list></p>
+                <#-- data type: ${a.itemType!},data id: ${a.itemId!},place/redirect:count and jump to a.url,found[true:302,false:301,default:false] -->
+                <a href="${site.dynamicPath}place/redirect?id=${a.id!}&found=false" target="_blank"><img src="${a.cover!}"></a>
+                <figcaption><a href="${a.url!}" target="_blank">${a.title!}</a>(${a.clicks!})</figcaption>
+                <p><#list (a.description!'')?split('\n') as line>${line}<#sep><br/></#list></p>
+                </#noparse><@t.page 'extend_field'/>:${(place.attribute.your_extend_code)!}<#noparse>
             </figure>
         </li>
     </#items>

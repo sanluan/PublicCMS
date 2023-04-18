@@ -169,10 +169,10 @@ onclick="JUI.instances[$('textarea.code',navTab.getCurrentPanel()).data('id')].r
                             <li><a href="javascript:;" <@getAction r'${(content.cover)!}'/>><@t.page 'cover'/></a></li>
                             <li><a href="javascript:;" <@getAction r'${(content.publishDate)!}'/>><@t.page 'publish_date'/></a></li>
                             <li><a href="javascript:;" <@getAction r'<@cms.tag ids=content.tagIds><#list map?keys as k>${map[k].name}</a><#sep>,</#list></@cms.tag>'/>><@t.page 'tag'/></a></li>
-                            <li><a href="javascript:;" <@getAction r'${(content.attribute.source)!}'/>><@t.page 'content.source'/></a></li>
-                            <li><a href="javascript:;" <@getAction r'${(content.attribute.sourceUrl)!}'/>><@t.page 'content.source_url'/></a></li>
+                            <li><a href="javascript:;" <@getAction r'${(attribute.source)!}'/>><@t.page 'content.source'/></a></li>
+                            <li><a href="javascript:;" <@getAction r'${(attribute.sourceUrl)!}'/>><@t.page 'content.source_url'/></a></li>
                             <li><a href="javascript:;" <@getAction r'${text?no_esc!}'/>><@t.page 'content.text'/></a></li>
-                            <li><a href="javascript:;" <@getAction r'${(content.attribute.your_extend_field_code)!}'/>><@t.page 'extend_field'/></a></li>
+                            <li><a href="javascript:;" <@getAction r'${(attribute.your_extend_field_code)!}'/>><@t.page 'extend_field'/></a></li>
                         </ul>
                     </li>
                     <li>
@@ -180,10 +180,10 @@ onclick="JUI.instances[$('textarea.code',navTab.getCurrentPanel()).data('id')].r
                         <ul>
                             <li><a href="javascript:;" <@getAction r'${(category.title)!}'/>><@t.page 'name'/></a></li>
                             <li><a href="javascript:;" <@getAction r'${(category.url)!}'/>><@t.page 'url'/></a></li>
-                            <li><a href="javascript:;" <@getAction r'${(category.attribute.title)!}'/>><@t.page 'title'/>(<@t.page 'static_category_page'/>)</a></li>
-                            <li><a href="javascript:;" <@getAction r'${(category.attribute.keywords)!}'/>><@t.page 'keywords'/>(<@t.page 'static_category_page'/>)</a></li>
-                            <li><a href="javascript:;" <@getAction r'${(category.attribute.description)!}'/>><@t.page 'description'/>(<@t.page 'static_category_page'/>)</a></li>
-                            <li><a href="javascript:;" <@getAction r'${(category.attribute.your_extend_field_code)!}'/>><@t.page 'extend_field'/>(<@t.page 'static_category_page'/>)</a></li>
+                            <li><a href="javascript:;" <@getAction r'${(attribute.title)!}'/>><@t.page 'title'/>(<@t.page 'static_category_page'/>)</a></li>
+                            <li><a href="javascript:;" <@getAction r'${(attribute.keywords)!}'/>><@t.page 'keywords'/>(<@t.page 'static_category_page'/>)</a></li>
+                            <li><a href="javascript:;" <@getAction r'${(attribute.description)!}'/>><@t.page 'description'/>(<@t.page 'static_category_page'/>)</a></li>
+                            <li><a href="javascript:;" <@getAction r'${(attribute.your_extend_field_code)!}'/>><@t.page 'extend_field'/>(<@t.page 'static_category_page'/>)</a></li>
                         </ul>
                     </li>
                 </#if>
@@ -254,14 +254,14 @@ onclick="JUI.instances[$('textarea.code',navTab.getCurrentPanel()).data('id')].r
                 <li>
                     <a href="javascript:;" onclick="return false;"><@t.page 'help.list_directive'/></a>
                     <ul>
-                        <li><a href="javascript:;" <@getAction r'<@cms.contentList categoryId=categoryId containChild=containChild modelId=modelId parentId=parentId onlyUrl=onlyUrl hasImages=hasImages hasFiles=hasFiles hasCover=hasCover orderField=orderField orderType=orderType pageIndex=pageIndex pageSize=pageSize>'+'\n    '+r'<#list page.list as a>'+'\n        '+r'<a href="${a.url!}">${a.title}</a>'+'\n    '+r'</#list>'+'\n'+r'</@cms.contentList>' t.pageMessage('help.directive.content_list.description')/>><@t.page 'content'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'<@cms.contentList categoryId=categoryId containChild=containChild modelId=modelId parentId=parentId containsAttribute=containsAttribute onlyUrl=onlyUrl hasImages=hasImages hasFiles=hasFiles hasCover=hasCover orderField=orderField orderType=orderType pageIndex=pageIndex pageSize=pageSize>'+'\n    '+r'<#list page.list as a>'+'\n        '+r'<a href="${a.url!}">${a.title}</a>'+'\n    '+r'</#list>'+'\n'+r'</@cms.contentList>' t.pageMessage('help.directive.content_list.description')/>><@t.page 'content'/></a></li>
                         <li><a href="javascript:;" <@getAction r'<@cms.contentFileList contentId=contentId fileTypes=fileTypes orderField=orderField orderType=orderType pageIndex=pageIndex pageSize=pageSize>'+'\n    '+r'<#list page.list as a>${a.filePath}</#list>'+'\n'+r'</@cms.contentFileList>' t.pageMessage('help.directive.content_file_list.description')/>><@t.page 'content_file'/></a></li>
                         <li><a href="javascript:;" <@getAction r'<@cms.commentList contentId=contentId orderField=orderField orderType=orderType pageIndex=pageIndex pageSize=pageSize>'+'\n    '+r'<#list page.list as a>'+'\n        '+r'${a.createDate} <@sys.user id=a.userId>${object.nickname} : </@sys.user>'+'\n        '+r'${a.text!}</#list>'+'\n'+r'</@cms.commentList>' t.pageMessage('help.directive.comment_list.description')/>><@t.page 'comment'/></a></li>
-                        <li><a href="javascript:;" <@getAction r'<@cms.categoryList parentId=parentId typeId=typeId allowContribute=allowContribute pageIndex=pageIndex pageSize=pageSize>'+'\n    '+r'<#list page.list as a>'+'\n        '+r'<a href="${a.url!}">${a.name}</a>'+'\n    '+r'</#list>'+'\n'+r'</@cms.categoryList>' t.pageMessage('help.directive.category_list.description')/>><@t.page 'category'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'<@cms.categoryList parentId=parentId typeId=typeId containsAttribute=containsAttribute allowContribute=allowContribute pageIndex=pageIndex pageSize=pageSize>'+'\n    '+r'<#list page.list as a>'+'\n        '+r'<a href="${a.url!}">${a.name}</a>'+'\n    '+r'</#list>'+'\n'+r'</@cms.categoryList>' t.pageMessage('help.directive.category_list.description')/>><@t.page 'category'/></a></li>
                         <li><a href="javascript:;" <@getAction r'<@cms.categoryTypeList pageIndex=pageIndex pageSize=pageSize>'+'\n    '+r'<#list page.list as a>'+'\n        '+r'<a href="${a.url!}">${a.name}</a>'+'\n    '+r'</#list>'+'\n'+r'</@cms.categoryTypeList>' t.pageMessage('help.directive.category_type_list.description')/>><@t.page 'category_type'/></a></li>
-                        <li><a href="javascript:;" <@getAction r'<@cms.placeList path=path orderField=orderField orderType=orderType pageIndex=pageIndex pageSize=pageSize>'+'\n    '+r'<#list page.list as a>'+'\n        '+r'<a href="${a.url!}">${a.title}</a>'+'\n    '+r'</#list>'+'\n'+r'</@cms.placeList>' t.pageMessage('help.directive.place_list.description')/>><@t.page 'place_data'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'<@cms.placeList path=path containsAttribute=containsAttribute orderField=orderField orderType=orderType pageIndex=pageIndex pageSize=pageSize>'+'\n    '+r'<#list page.list as a>'+'\n        '+r'<a href="${a.url!}">${a.title}</a>'+'\n    '+r'</#list>'+'\n'+r'</@cms.placeList>' t.pageMessage('help.directive.place_list.description')/>><@t.page 'place_data'/></a></li>
                         <li><a href="javascript:;" <@getAction r'<@cms.search word=word tagId=tagId highlight=true dictionaryValues=dictionaryValues categoryId=categoryId containChild=containChild categoryIds=categoryIds modelIds=modelIds startPublishDate=startPublishDate pageIndex=pageIndex pageSize=pageSize>'+'\n    '+r'<#list page.list as a>'+'\n        '+r'<a href="${a.url!}">${a.title?no_esc}</a>'+'\n    '+r'</#list>'+'\n'+r'</@cms.search>' t.pageMessage('help.directive.search.description')/>><@t.page 'search'/></a></li>
-                        <li><a href="javascript:;" <@getAction r'<@cms.facetSearch word=word tagId=tagId highlight=true categoryId=categoryId modelId=modelId pageIndex=pageIndex pageSize=pageSize>'+'\n    '+r'<#list page.list as a>'+'\n        '+r'<a href="${a.url!}">${a.title?no_esc}</a>'+'\n    '+r'</#list>'+'\n'+r'</@cms.facetSearch>' t.pageMessage('help.directive.search.description')/>><@t.page 'facet_search'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'<@cms.facetSearch word=word tagId=tagId highlight=true dictionaryValues=dictionaryValues categoryId=categoryId containChild=containChild categoryIds=categoryIds modelIds=modelIds startPublishDate=startPublishDate pageIndex=pageIndex pageSize=pageSize>'+'\n    '+r'<#list page.list as a>'+'\n        '+r'<a href="${a.url!}">${a.title?no_esc}</a>'+'\n    '+r'</#list>'+'\n'+r'</@cms.facetSearch>' t.pageMessage('help.directive.search.description')/>><@t.page 'facet_search'/></a></li>
                         <li><a href="javascript:;" <@getAction r'<@cms.wordList startCreateDate=startCreateDate endCreateDate=endCreateDate orderField=orderField orderType=orderType pageIndex=pageIndex pageSize=pageSize>'+'\n    '+r'<#list page.list as a>${a.name!}:${a.searchCount}</#list>'+'\n'+r'</@cms.wordList>' t.pageMessage('help.directive.word_list.description')/>><@t.page 'search_word'/></a></li>
                         <li><a href="javascript:;" <@getAction r'<@cms.modelList parentId=parentId hasChild=hasChild onlyUrl=onlyUrl hasImages=hasImages hasFiles=hasFiles>'+'\n    '+r'<#list page.list as a>${a.id}:${a.name}<#sep>,</#list>'+'\n'+r'</@cms.modelList>' t.pageMessage('help.directive.model_list.description')/>><@t.page 'model'/></a></li>
                     </ul>
@@ -269,10 +269,10 @@ onclick="JUI.instances[$('textarea.code',navTab.getCurrentPanel()).data('id')].r
                 <li>
                     <a href="javascript:;" onclick="return false;"><@t.page 'help.entity_directive'/></a>
                     <ul>
-                        <li><a href="javascript:;" <@getAction r'<@cms.content id=id>'+'\n    '+r'<a href="${object.url!}">${object.title}</a>'+'\n'+r'</@cms.content>' 'id:'+t.pageMessage('content.id')/>><@t.page 'content'/></a></li>
-                        <li><a href="javascript:;" <@getAction r'<@cms.content ids=ids>'+'\n    '+r'<#list map as k,content><a href="${content.url!}">${content.title}</a><#sep>,</#list>'+'\n'+r'</@cms.content>' 'ids:'+t.pageMessage('content.multiple_id')/>><@t.page 'content.multiple'/></a></li>
-                        <li><a href="javascript:;" <@getAction r'<@cms.category id=id code=code>'+'\n    '+r'<a href="${object.url!}">${object.name}</a>'+'\n'+r'</@cms.category>' 'id:'+t.pageMessage('category.id')+',code:'+t.pageMessage('category.code')/>><@t.page 'category'/></a></li>
-                        <li><a href="javascript:;" <@getAction r'<@cms.category ids=ids>'+'\n    '+r'<#list map as k,category><a href="${category.url!}">${category.name}</a><#sep>,</#list>'+'\n'+r'</@cms.category>' 'ids:'+t.pageMessage('category.multiple_id')/>><@t.page 'category.multiple'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'<@cms.content id=id containsAttribute=containsAttribute>'+'\n    '+r'<a href="${object.url!}">${object.title}</a>'+'\n'+r'</@cms.content>' 'id:'+t.pageMessage('content.id')+'containsAttribute:'+t.pageMessage('contains_attribute')/>><@t.page 'content'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'<@cms.content ids=ids containsAttribute=containsAttribute>'+'\n    '+r'<#list map as k,content><a href="${content.url!}">${content.title}</a><#sep>,</#list>'+'\n'+r'</@cms.content>' 'ids:'+t.pageMessage('content.multiple_id')+'containsAttribute:'+t.pageMessage('contains_attribute')/>><@t.page 'content.multiple'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'<@cms.category id=id code=code containsAttribute=containsAttribute>'+'\n    '+r'<a href="${object.url!}">${object.name}</a>'+'\n'+r'</@cms.category>' 'id:'+t.pageMessage('category.id')+',code:'+t.pageMessage('category.code')+'containsAttribute:'+t.pageMessage('contains_attribute')/>><@t.page 'category'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'<@cms.category ids=ids containsAttribute=containsAttribute>'+'\n    '+r'<#list map as k,category><a href="${category.url!}">${category.name}</a><#sep>,</#list>'+'\n'+r'</@cms.category>' 'ids:'+t.pageMessage('category.multiple_id')+'containsAttribute:'+t.pageMessage('contains_attribute')/>><@t.page 'category.multiple'/></a></li>
                         <li><a href="javascript:;" <@getAction r'<@cms.tag id=id>${object.name}</@cms.tag>' 'id:'+t.pageMessage('tag.id')/>><@t.page 'tag'/></a></li>
                         <li><a href="javascript:;" <@getAction r'<@cms.tag ids=ids>'+'\n    '+r'<#list map as k,tag>${tag.name}<#sep>,</#list>'+'\n'+r'</@cms.tag>' 'ids'+t.pageMessage('tag.multiple_id')/>><@t.page 'tag.multiple'/></a></li>
                         <li><a href="javascript:;" <@getAction r'<@cms.tagType id=id>${object.name}</@cms.tagType>' 'id:'+t.pageMessage('tagType.id')/>><@t.page 'tag_type'/></a></li>
@@ -289,6 +289,18 @@ onclick="JUI.instances[$('textarea.code',navTab.getCurrentPanel()).data('id')].r
                         <li><a href="javascript:;" <@getAction r'<@tools.createTemplateFile templatePath=templatePath filePath=filePath pageIndex=pageIndex>${url}</@tools.createTemplateFile>'/>><@t.page 'help.directive.publish_page'/></a></li>
                         <li><a href="javascript:;" <@getAction r'<@tools.userAgent>${object.deviceType}</@tools.userAgent>' t.pageMessage('help.directive.useragent.description')/>><@t.page 'help.directive.useragent'/></a></li>
                         <li><a href="javascript:;" <@getAction r'<@tools.sendEmail email=email cc=cc bcc=bcc title=title templatePath=templatePath content=content><#if result>success</#if></@tools.sendEmail>' t.pageMessage('help.directive.email.description')/>><@t.page 'help.directive.email'/></a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="javascript:;" onclick="return false;"><@t.page 'help.attribute_method'/></a>
+                    <ul>
+                        <li><a href="javascript:;" <@getAction r'<#assign attribute=getContentAttribute(contentId)/>' t.pageMessage('help.method.content.description')/>><@t.page 'help.method.content'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'<#assign attributeMap=getContentAttributes(contentIds)/>' t.pageMessage('help.method.contents.description')/>><@t.page 'help.method.contents'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'<#assign contentPage=getContentPage(text,pageIndex)/>' t.pageMessage('help.method.content_text.description')/>><@t.page 'help.method.content_text'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'<#assign attribute=getCategoryAttribute(categoryId)/>' t.pageMessage('help.method.category.description')/>><@t.page 'help.method.category'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'<#assign attributeMap=getCategoryAttributes(categoryIds)/>' t.pageMessage('help.method.categorys.description')/>><@t.page 'help.method.categorys'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'<#assign attribute=getPlaceAttribute(placeId)/>' t.pageMessage('help.method.place_data.description')/>><@t.page 'help.method.place_data'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'<#assign attributeMap=getPlaceAttributes(placeIds)/>' t.pageMessage('method.place_datas.description')/>><@t.page 'help.method.place_datas'/></a></li>
                     </ul>
                 </li>
                 <li>
