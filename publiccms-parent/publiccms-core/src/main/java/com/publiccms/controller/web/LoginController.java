@@ -110,7 +110,7 @@ public class LoginController {
         username = StringUtils.trim(username);
         password = StringUtils.trim(password);
         if (ControllerUtils.errorNotEmpty("username", username, model)
-                || ControllerUtils.errorNotEmpty("password", password, model)) {
+                || ControllerUtils.errorNotLongThen("password", password, 100, model)) {
             return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, loginPath);
         } else {
             SysUser user;
