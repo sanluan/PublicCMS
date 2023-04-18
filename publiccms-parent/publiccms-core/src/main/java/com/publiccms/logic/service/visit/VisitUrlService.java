@@ -43,7 +43,7 @@ public class VisitUrlService extends BaseService<VisitUrl> {
             Integer pageSize) {
         PageHandler page = dao.getPage(siteId, url, startVisitDate, endVisitDate, pageIndex, pageSize);
         Date now = CommonUtils.getMinuteDate();
-        if ((null == pageIndex || 1 == pageIndex) && (null == endVisitDate || DateUtils.isSameDay(now, endVisitDate))) {
+        if (null!= page.getList() && (null == pageIndex || 1 == pageIndex) && (null == endVisitDate || DateUtils.isSameDay(now, endVisitDate))) {
             ((List<VisitUrl>) page.getList()).addAll(0, visitHistoryService.getUrlList(siteId, url, now));
         }
         return page;
