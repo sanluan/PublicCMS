@@ -22,8 +22,8 @@
     <nav data-diy="category">
         <a href="${site.useStatic?then(site.sitePath,site.dynamicPath)}">Home</a>
 <@cms.categoryList>
-    <#list page.list as a>
-        <a href="${a.url!}" target="_blank" data-diy-item="${a.id}">${a.name}</a>
+    <#list page.list as category>
+        <a href="${category.url!}" target="_blank" data-diy-item="${category.id}">${category.name}</a>
     </#list>
 </@cms.categoryList>
     </nav>

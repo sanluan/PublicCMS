@@ -19,6 +19,7 @@ import org.springframework.web.util.UrlPathHelper;
 
 import com.publiccms.common.constants.CmsVersion;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.RequestUtils;
@@ -31,6 +32,7 @@ import com.publiccms.entities.sys.SysUser;
 import com.publiccms.entities.sys.SysUserToken;
 import com.publiccms.logic.component.config.ConfigDataComponent;
 import com.publiccms.logic.component.config.SafeConfigComponent;
+import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.sys.SysUserService;
@@ -44,15 +46,17 @@ import com.publiccms.logic.service.sys.SysUserTokenService;
 public class WebContextInterceptor implements HandlerInterceptor {
     protected final Log log = LogFactory.getLog(getClass());
     @Resource
-    private SysUserService sysUserService;
+    protected SysUserService sysUserService;
     @Resource
     private SysUserTokenService sysUserTokenService;
     @Resource
-    private SiteComponent siteComponent;
+    protected SiteComponent siteComponent;
     @Resource
     private LogLoginService logLoginService;
     @Resource
     private ConfigDataComponent configDataComponent;
+    @Resource
+    protected FileUploadComponent fileUploadComponent;
 
     protected LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
 
@@ -87,6 +91,7 @@ public class WebContextInterceptor implements HandlerInterceptor {
                     if (null != entity && !entity.isDisabled() && null != site && !site.isDisabled()
                             && site.getId() == entity.getSiteId()) {
                         entity.setPassword(null);
+                        entity.setCover(CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site), entity.getCover()));
                         ControllerUtils.setUserToSession(session, entity);
                     } else {
                         Cookie userCookie = RequestUtils.getCookie(request.getCookies(), CommonConstants.getCookiesUser());

@@ -170,7 +170,7 @@ public class PlaceController {
             Map<String, String> map = placeParameters.getExtendData();
             attributeService.updateAttribute(entity.getId(),
                     ExtendUtils.getExtendString(map, site.getSitePath(), metadata.getExtendList()));
-            model.addAttribute("id", entity.getId());
+            model.addAttribute("dataId", entity.getId());
         }
         return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
     }

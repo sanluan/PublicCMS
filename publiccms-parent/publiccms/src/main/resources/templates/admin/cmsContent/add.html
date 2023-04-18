@@ -4,7 +4,6 @@
         parentId=a.parentId!''
         categoryId=a.categoryId!''
         modelId=a.modelId!''
-        attribute=getContentAttribute(a.id)
     />
 </@cms.content>
 <@cms.category id=categoryId!><#assign category=object/></@cms.category>
@@ -115,11 +114,11 @@ $('input[name=\'categoryName\']',navTab.getCurrentPanel()).on('change',function(
                 </dl>
                 <dl class="copied hide">
                     <dt>${(model.fieldTextMap['source'])!}:</dt>
-                    <dd><input name="source" autocomplete="on" type="text"<#if requiredFieldList?seq_contains('source')> data-required="true"</#if> maxlength="50" size="20" value="${(attribute.source)!}"/></dd>
+                    <dd><input name="source" autocomplete="on" type="text"<#if requiredFieldList?seq_contains('source')> data-required="true"</#if> maxlength="50" size="20" value="${(a.attribute.source)!}"/></dd>
                 </dl>
                 <dl class="copied hide">
                     <dt>${(model.fieldTextMap['sourceUrl'])!}:</dt>
-                    <dd><input name="sourceUrl" autocomplete="on" type="text"<#if requiredFieldList?seq_contains('sourceUrl')> data-required="true"</#if> maxlength="250" size="20" value="${(attribute.sourceUrl)!}"/></dd>
+                    <dd><input name="sourceUrl" autocomplete="on" type="text"<#if requiredFieldList?seq_contains('sourceUrl')> data-required="true"</#if> maxlength="250" size="20" value="${(a.attribute.sourceUrl)!}"/></dd>
                 </dl>
             <#if model.onlyUrl>
                 <dl class="nowrap">
@@ -167,10 +166,10 @@ $('input[name=\'categoryName\']',navTab.getCurrentPanel()).on('change',function(
             <#include "../include_page/extendData.html"/>
             <#if category?has_content&&category.extendId?has_content>
                  <@sys.extendFieldList extendId=category.extendId>
-                    <@extendData extendList=list extendValues=attribute historyItemType='contentExtend' historyItemId=id/>
+                    <@extendData extendList=list extendValues=((a.attribute)!{}) historyItemType='contentExtend' historyItemId=id/>
                  </@sys.extendFieldList>
             </#if>
-            <@extendData extendList=model.extendList extendValues=attribute historyItemType='contentExtend' historyItemId=id/>
+            <@extendData extendList=model.extendList extendValues=((a.attribute)!{}) historyItemType='contentExtend' historyItemId=id/>
             <#if fieldList?seq_contains('cover')>
                 <dl class="nowrap">
                     <dt>${(model.fieldTextMap['cover'])!}:</dt>
@@ -203,7 +202,7 @@ $('input[name=\'categoryName\']',navTab.getCurrentPanel()).on('change',function(
                             <a class="button" href="cmsEditorHistory/lookup.html?itemType=content&itemId=${a.id}&fieldName=text" lookupGroup=""><@t.page 'history'/></a>
                         </#if>
                         </div>
-                        <textarea name="text" class="editor<#if requiredFieldList?seq_contains('content')> required</#if>" escape="true" editorType="${model.editorType!}">${(attribute.text)!}</textarea>
+                        <textarea name="text" class="editor<#if requiredFieldList?seq_contains('content')> required</#if>" escape="true" editorType="${model.editorType!}">${(a.attribute.text)!}</textarea>
                     </dd>
                 </dl>
             </#if>

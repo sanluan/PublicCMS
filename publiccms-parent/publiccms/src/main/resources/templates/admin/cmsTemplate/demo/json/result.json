@@ -1,2 +1,2 @@
 <#ftl output_format="JSON">
-{"result":"<#if id?has_content>success<#else>error</#if>","message":"<#if error?has_content>${springMacroRequestContext.getMessage(error)}</#if>"}
+{"result":"<#if dataId?has_content>success<#else>error</#if>","message":"<#if error?has_content>${springMacroRequestContext.getMessage(error)}</#if>"}

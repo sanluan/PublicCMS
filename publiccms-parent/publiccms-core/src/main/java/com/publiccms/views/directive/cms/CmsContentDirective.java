@@ -63,6 +63,7 @@ public class CmsContentDirective extends AbstractTemplateDirective {
         Long id = handler.getLong("id");
         boolean absoluteURL = handler.getBoolean("absoluteURL", true);
         boolean absoluteId = handler.getBoolean("absoluteId", true);
+        boolean containsAttribute = handler.getBoolean("containsAttribute", true);
         SysSite site = getSite(handler);
         if (CommonUtils.notEmpty(id)) {
             CmsContent entity = service.getEntity(id);
@@ -78,20 +79,10 @@ public class CmsContentDirective extends AbstractTemplateDirective {
                     CmsUrlUtils.initContentUrl(site, entity);
                     fileUploadComponent.initContentCover(site, entity);
                 }
-                handler.put("object", entity);
-                if (handler.getBoolean("containsAttribute", false)) {
-                    CmsContentAttribute attribute = attributeService.getEntity(id);
-                    if (null != attribute) {
-                        Map<String, String> map = ExtendUtils.getExtendMap(attribute.getData());
-                        map.put("text", attribute.getText());
-                        map.put("source", attribute.getSource());
-                        map.put("sourceUrl", attribute.getSourceUrl());
-                        map.put("wordCount", String.valueOf(attribute.getWordCount()));
-                        map.put("minPrice", String.valueOf(attribute.getMinPrice()));
-                        map.put("maxPrice", String.valueOf(attribute.getMaxPrice()));
-                        handler.put("attribute", map);
-                    }
+                if (containsAttribute) {
+                    entity.setAttribute(ExtendUtils.getAttributeMap(attributeService.getEntity(id)));
                 }
+                handler.put("object", entity);
                 handler.render();
             }
         } else {
@@ -99,7 +90,9 @@ public class CmsContentDirective extends AbstractTemplateDirective {
             if (CommonUtils.notEmpty(ids)) {
                 List<CmsContent> entityList = service.getEntitys(ids);
                 Consumer<CmsContent> consumer;
-                if (absoluteURL) {
+                if (containsAttribute) {
+                    List<CmsContentAttribute> attributeList = attributeService.getEntitys(ids);
+                    Map<Long, CmsContentAttribute> attributeMap = CommonUtils.listToMap(attributeList, k -> k.getContentId());
                     consumer = e -> {
                         ClickStatistics statistics = statisticsComponent.getContentStatistics(e.getId());
                         if (null != statistics) {
@@ -108,17 +101,24 @@ public class CmsContentDirective extends AbstractTemplateDirective {
                         if (absoluteId && null == e.getParentId() && null != e.getQuoteContentId()) {
                             e.setId(e.getQuoteContentId());
                         }
-                        CmsUrlUtils.initContentUrl(site, e);
-                        fileUploadComponent.initContentCover(site, e);
+                        if (absoluteURL) {
+                            CmsUrlUtils.initContentUrl(site, e);
+                            fileUploadComponent.initContentCover(site, e);
+                        }
+                        e.setAttribute(ExtendUtils.getAttributeMap(attributeMap.get(e.getId())));
                     };
                 } else {
                     consumer = e -> {
                         ClickStatistics statistics = statisticsComponent.getContentStatistics(e.getId());
+                        if (null != statistics) {
+                            e.setClicks(e.getClicks() + statistics.getClicks());
+                        }
                         if (absoluteId && null == e.getParentId() && null != e.getQuoteContentId()) {
                             e.setId(e.getQuoteContentId());
                         }
-                        if (null != statistics) {
-                            e.setClicks(e.getClicks() + statistics.getClicks());
+                        if (absoluteURL) {
+                            CmsUrlUtils.initContentUrl(site, e);
+                            fileUploadComponent.initContentCover(site, e);
                         }
                     };
                 }
@@ -127,6 +127,11 @@ public class CmsContentDirective extends AbstractTemplateDirective {
                 handler.put("map", map).render();
             }
         }
+    }
+
+    @Override
+    public boolean needAppToken() {
+        return true;
     }
 
     @Resource

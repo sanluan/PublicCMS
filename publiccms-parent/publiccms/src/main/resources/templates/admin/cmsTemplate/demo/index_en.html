@@ -14,8 +14,8 @@
     <nav data-diy="category">
         <a href="${site.useStatic?then(site.sitePath,site.dynamicPath)}" data-id="home">Home</a>
 <@cms.categoryList>
-    <#list page.list as a>
-        <a href="${a.url!}" target="_blank" data-id="${a.id}" data-diy-item="${a.id}">${a.name}</a>
+    <#list page.list as category>
+        <a href="${category.url!}" target="_blank" data-id="${category.id}" data-diy-item="${category.id}">${category.name}</a>
     </#list>
 </@cms.categoryList>
     </nav>
@@ -23,12 +23,12 @@
         <h2>Latest content</h2>
         <div class="content">
 <@cms.contentList onlyUrl=false pageSize=10>
-    <#list page.list as a>
-        <article data-diy-item="${a.id}">
-            <h3><a href="${a.url!}" target="_blank">${a.title}</a></h3>
+    <#list page.list as content>
+        <article data-diy-item="${content.id}">
+            <h3><a href="${content.url!}" target="_blank">${content.title}</a></h3>
             <p>
-                <#if a.cover?has_content><img src="${a.cover}" alt="${a.title}"/></#if>
-                ${a.description!}
+                <#if content.cover?has_content><img src="${content.cover}" alt="${content.title}"/></#if>
+                ${content.description!}
             </p>
         </article>
     </#list>
@@ -37,11 +37,11 @@
         <aside data-diy="content">
             <h3>Popular content</h3>
             <ul>
-<@cms.contentList orderField='clicks' pageSize=10>
-    <#list page.list as a>
-                <li data-diy-item="${a.id}"><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect?id=${a.id}<#else>${a.url!}</#if>" target="_blank">${a.title}</a><span>${a.clicks}</span></li>
-    </#list>
-</@cms.contentList>
+        <@cms.contentList orderField='clicks' pageSize=10>
+            <#list page.list as content>
+                <li data-diy-item="${content.id}"><a href="<#if content.onlyUrl>${site.dynamicPath}content/redirect?id=${content.id}<#else>${content.url!}</#if>" target="_blank">${content.title}</a><span>${content.clicks}</span></li>
+            </#list>
+        </@cms.contentList>
             </ul>
         </aside>
     </main>

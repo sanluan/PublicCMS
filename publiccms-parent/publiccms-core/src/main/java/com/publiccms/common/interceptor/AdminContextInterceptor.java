@@ -13,17 +13,16 @@ import org.springframework.web.util.UrlPathHelper;
 
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.constants.Constants;
+import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.sys.SysDomain;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
-import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.sys.SysRoleAuthorizedService;
 import com.publiccms.logic.service.sys.SysRoleService;
-import com.publiccms.logic.service.sys.SysUserService;
 
 /**
  *
@@ -43,10 +42,6 @@ public class AdminContextInterceptor extends WebContextInterceptor {
     private SysRoleAuthorizedService roleAuthorizedService;
     @Resource
     private SysRoleService sysRoleService;
-    @Resource
-    private SysUserService sysUserService;
-    @Resource
-    private SiteComponent siteComponent;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
@@ -122,6 +117,7 @@ public class AdminContextInterceptor extends WebContextInterceptor {
                 }
 
             }
+            entity.setCover(CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site), entity.getCover()));
             entity.setPassword(null);
             ControllerUtils.setAdminToSession(session, entity);
         }

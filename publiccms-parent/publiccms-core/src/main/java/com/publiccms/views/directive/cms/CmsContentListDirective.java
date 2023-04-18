@@ -5,6 +5,8 @@ package com.publiccms.views.directive.cms;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
 
 import javax.annotation.Resource;
 
@@ -15,10 +17,13 @@ import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.entities.cms.CmsContent;
+import com.publiccms.entities.cms.CmsContentAttribute;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
+import com.publiccms.logic.service.cms.CmsContentAttributeService;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.views.pojo.entities.ClickStatistics;
 import com.publiccms.views.pojo.query.CmsContentQuery;
@@ -90,11 +95,13 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
         SysSite site = getSite(handler);
         queryEntity.setSiteId(site.getId());
         queryEntity.setEndPublishDate(handler.getDate("endPublishDate"));
+        boolean containsAttribute = false;
         if (getAdvanced(handler)) {
             queryEntity.setStatus(handler.getIntegerArray("status"));
             queryEntity.setDisabled(handler.getBoolean("disabled", false));
             queryEntity.setEmptyParent(handler.getBoolean("emptyParent"));
             queryEntity.setTitle(handler.getString("title"));
+            containsAttribute = handler.getBoolean("containsAttribute", false);
         } else {
             queryEntity.setStatus(CmsContentService.STATUS_NORMAL_ARRAY);
             queryEntity.setDisabled(false);
@@ -118,26 +125,48 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
         queryEntity.setDeptId(handler.getInteger("deptId"));
         queryEntity.setStartPublishDate(handler.getDate("startPublishDate"));
         PageHandler page = service.getPage(queryEntity, handler.getBoolean("containChild"), handler.getString("orderField"),
-                handler.getString("orderType"),handler.getInteger("firstResult"), handler.getInteger("pageIndex", 1), 
+                handler.getString("orderType"), handler.getInteger("firstResult"), handler.getInteger("pageIndex", 1),
                 handler.getInteger("pageSize", handler.getInteger("count", 30)), handler.getInteger("maxResults"));
         @SuppressWarnings("unchecked")
         List<CmsContent> list = (List<CmsContent>) page.getList();
         if (null != list) {
             boolean absoluteURL = handler.getBoolean("absoluteURL", true);
             boolean absoluteId = handler.getBoolean("absoluteId", true);
-            list.forEach(e -> {
-                ClickStatistics statistics = statisticsComponent.getContentStatistics(e.getId());
-                if (null != statistics) {
-                    e.setClicks(e.getClicks() + statistics.getClicks());
-                }
-                if (absoluteId && null==e.getParentId() && null != e.getQuoteContentId()) {
-                    e.setId(e.getQuoteContentId());
-                }
-                if (absoluteURL) {
-                    CmsUrlUtils.initContentUrl(site, e);
-                    fileUploadComponent.initContentCover(site, e);
-                }
-            });
+            Consumer<CmsContent> consumer = null;
+            if (containsAttribute) {
+                Long[] ids = list.stream().map(CmsContent::getId).toArray(Long[]::new);
+                List<CmsContentAttribute> attributeList = attributeService.getEntitys(ids);
+                Map<Object, CmsContentAttribute> attributeMap = CommonUtils.listToMap(attributeList, k -> k.getContentId());
+                consumer = e -> {
+                    ClickStatistics statistics = statisticsComponent.getContentStatistics(e.getId());
+                    if (null != statistics) {
+                        e.setClicks(e.getClicks() + statistics.getClicks());
+                    }
+                    if (absoluteId && null == e.getParentId() && null != e.getQuoteContentId()) {
+                        e.setId(e.getQuoteContentId());
+                    }
+                    if (absoluteURL) {
+                        CmsUrlUtils.initContentUrl(site, e);
+                        fileUploadComponent.initContentCover(site, e);
+                    }
+                    e.setAttribute(ExtendUtils.getAttributeMap(attributeMap.get(e.getId())));
+                };
+            } else {
+                consumer = e -> {
+                    ClickStatistics statistics = statisticsComponent.getContentStatistics(e.getId());
+                    if (null != statistics) {
+                        e.setClicks(e.getClicks() + statistics.getClicks());
+                    }
+                    if (absoluteId && null == e.getParentId() && null != e.getQuoteContentId()) {
+                        e.setId(e.getQuoteContentId());
+                    }
+                    if (absoluteURL) {
+                        CmsUrlUtils.initContentUrl(site, e);
+                        fileUploadComponent.initContentCover(site, e);
+                    }
+                };
+            }
+            list.forEach(consumer);
         }
         handler.put("page", page).render();
     }
@@ -149,6 +178,8 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
 
     @Resource
     private CmsContentService service;
+    @Resource
+    private CmsContentAttributeService attributeService;
     @Resource
     protected FileUploadComponent fileUploadComponent;
     @Resource

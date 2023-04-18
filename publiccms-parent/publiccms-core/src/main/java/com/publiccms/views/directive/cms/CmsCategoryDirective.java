@@ -60,6 +60,7 @@ public class CmsCategoryDirective extends AbstractTemplateDirective {
         Integer id = handler.getInteger("id");
         String code = handler.getString("code");
         boolean absoluteURL = handler.getBoolean("absoluteURL", true);
+        boolean containsAttribute = handler.getBoolean("containsAttribute", true);
         SysSite site = getSite(handler);
         if (CommonUtils.notEmpty(id) || CommonUtils.notEmpty(code)) {
             CmsCategory entity;
@@ -72,17 +73,10 @@ public class CmsCategoryDirective extends AbstractTemplateDirective {
                 if (absoluteURL) {
                     CmsUrlUtils.initCategoryUrl(site, entity);
                 }
-                handler.put("object", entity);
-                if (handler.getBoolean("containsAttribute", false)) {
-                    CmsCategoryAttribute attribute = attributeService.getEntity(id);
-                    if (null != attribute) {
-                        Map<String, String> map = ExtendUtils.getExtendMap(attribute.getData());
-                        map.put("title", attribute.getTitle());
-                        map.put("keywords", attribute.getKeywords());
-                        map.put("description", attribute.getDescription());
-                        handler.put("attribute", map);
-                    }
+                if (containsAttribute) {
+                    entity.setAttribute(ExtendUtils.getAttributeMap(attributeService.getEntity(id)));
                 }
+                handler.put("object", entity);
                 handler.render();
             }
         } else {
@@ -90,8 +84,22 @@ public class CmsCategoryDirective extends AbstractTemplateDirective {
             if (CommonUtils.notEmpty(ids)) {
                 List<CmsCategory> entityList = service.getEntitys(ids);
                 Consumer<CmsCategory> consumer = null;
-                if (absoluteURL) {
-                    consumer = e -> CmsUrlUtils.initCategoryUrl(site, e);
+                if (containsAttribute) {
+                    List<CmsCategoryAttribute> attributeList = attributeService.getEntitys(ids);
+                    Map<Integer, CmsCategoryAttribute> attributeMap = CommonUtils.listToMap(attributeList,
+                            k -> k.getCategoryId());
+                    consumer = e -> {
+                        if (absoluteURL) {
+                            CmsUrlUtils.initCategoryUrl(site, e);
+                        }
+                        e.setAttribute(ExtendUtils.getAttributeMap(attributeMap.get(e.getId())));
+                    };
+                } else {
+                    if (absoluteURL) {
+                        consumer = e -> {
+                            CmsUrlUtils.initCategoryUrl(site, e);
+                        };
+                    }
                 }
                 Map<String, CmsCategory> map = CommonUtils.listToMap(entityList, k -> k.getId().toString(), consumer,
                         entity -> site.getId() == entity.getSiteId());

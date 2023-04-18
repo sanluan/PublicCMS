@@ -1,11 +1,11 @@
 <#ftl output_format="JSON">
 [<@cms.categoryList parentId=parentId allowContribute=allowContribute pageIndex=pageIndex pageSize=pageSize>
-    <#list page.list as a>
+    <#list page.list as category>
         {
-            "name":"${a.name}",
-            "url":"${a.url}",
-            "code":"${a.code}",
-            "pageSize":"${a.pageSize}"
+            "name":"${category.name}",
+            "url":"${category.url}",
+            "code":"${category.code}",
+            "pageSize":"${category.pageSize}"
         }<#sep>,
     </#list>
 </@cms.categoryList>]

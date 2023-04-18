@@ -11,8 +11,8 @@
     <nav data-diy="category">
         <a href="${site.useStatic?then(site.sitePath,site.dynamicPath)}">Home</a>
 <@cms.categoryList>
-    <#list page.list as a>
-        <a href="${a.url!}" target="_blank" data-diy-item="${a.id}">${a.name}</a>
+    <#list page.list as category>
+        <a href="${category.url!}" target="_blank" data-diy-item="${category.id}">${category.name}</a>
     </#list>
 </@cms.categoryList>
     </nav>
@@ -20,12 +20,12 @@
 <@cms.contentList pageSize=10>
     <@cms.contentList pageIndex=getRandom(page.totalPage) pageSize=10>
         <ul data-diy="content">
-        <#list page.list as a>
-            <li data-diy-item="${a.id}">
-                <h3><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect?id=${a.id}<#else>${a.url!}</#if>" target="_blank">${a.title}</a></h3>
+        <#list page.list as content>
+            <li data-diy-item="${content.id}">
+                <h3><a href="<#if content.onlyUrl>${site.dynamicPath}content/redirect?id=${content.id}<#else>${content.url!}</#if>" target="_blank">${content.title}</a></h3>
                 <p>
-                    <#if a.cover?has_content><img src="${a.cover}" alt="${a.title}"/></#if>
-                    ${a.description!}
+                    <#if content.cover?has_content><img src="${content.cover}" alt="${content.title}"/></#if>
+                    ${content.description!}
                 </p>
             </li>
         </#list>

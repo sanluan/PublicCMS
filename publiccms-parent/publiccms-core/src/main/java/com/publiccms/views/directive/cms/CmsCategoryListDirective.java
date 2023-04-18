@@ -4,6 +4,8 @@ package com.publiccms.views.directive.cms;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
 
 import javax.annotation.Resource;
 
@@ -13,8 +15,12 @@ import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CmsUrlUtils;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.entities.cms.CmsCategory;
+import com.publiccms.entities.cms.CmsCategoryAttribute;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.service.cms.CmsCategoryAttributeService;
 import com.publiccms.logic.service.cms.CmsCategoryService;
 import com.publiccms.views.pojo.query.CmsCategoryQuery;
 
@@ -64,9 +70,11 @@ public class CmsCategoryListDirective extends AbstractTemplateDirective {
         SysSite site = getSite(handler);
         CmsCategoryQuery queryEntity = new CmsCategoryQuery();
         queryEntity.setQueryAll(handler.getBoolean("queryAll"));
+        boolean containsAttribute = false;
         if (getAdvanced(handler)) {
             queryEntity.setDisabled(handler.getBoolean("disabled", false));
             queryEntity.setHidden(handler.getBoolean("hidden"));
+            containsAttribute = handler.getBoolean("containsAttribute", false);
         } else {
             queryEntity.setDisabled(false);
             queryEntity.setHidden(false);
@@ -81,7 +89,21 @@ public class CmsCategoryListDirective extends AbstractTemplateDirective {
         @SuppressWarnings("unchecked")
         List<CmsCategory> list = (List<CmsCategory>) page.getList();
         if (null != list && handler.getBoolean("absoluteURL", true)) {
-            list.forEach(e -> CmsUrlUtils.initCategoryUrl(site, e));
+            Consumer<CmsCategory> consumer = null;
+            if (containsAttribute) {
+                Integer[] ids = list.stream().map(CmsCategory::getId).toArray(Integer[]::new);
+                List<CmsCategoryAttribute> attributeList = attributeService.getEntitys(ids);
+                Map<Integer, CmsCategoryAttribute> attributeMap = CommonUtils.listToMap(attributeList, k -> k.getCategoryId());
+                consumer = e -> {
+                    CmsUrlUtils.initCategoryUrl(site, e);
+                    e.setAttribute(ExtendUtils.getAttributeMap(attributeMap.get(e.getId())));
+                };
+            } else {
+                consumer = e -> {
+                    CmsUrlUtils.initCategoryUrl(site, e);
+                };
+            }
+            list.forEach(consumer);
         }
         handler.put("page", page).render();
     }
@@ -93,5 +115,6 @@ public class CmsCategoryListDirective extends AbstractTemplateDirective {
 
     @Resource
     private CmsCategoryService service;
-
+    @Resource
+    private CmsCategoryAttributeService attributeService;
 }
