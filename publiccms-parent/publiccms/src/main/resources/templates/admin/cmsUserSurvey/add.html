@@ -38,16 +38,14 @@
                     ${(object.createDate)!}
                 </dd>
             </dl>
-            <@cms.surveyQuestionList surveyId=object.id.surveyId pageSize=500>
+            <@cms.surveyQuestionList advanced=true surveyId=object.id.surveyId pageSize=500>
                 <#if page.totalCount gt 0>
             <fieldset>
                 <legend><@t.page 'question'/></legend>
                 <#list page.list as a>
                     <@t.merge 'questionIds' a.id!/>
                 </#list>
-        
                 <@cms.userSurveyQuestion userId=object.id.userId questionIds=t.questionIds!><#assign userQuestionMap=map!/></@cms.userSurveyQuestion>
-        
                 <#list page.list as q>
                     <div class="unit">
                         <p class="nowrap"><label><@t.page 'question'/>:</label>[<@t.page 'question.type.'+q.questionType/>] ${q.title}</p>
@@ -57,7 +55,7 @@
                             </p>
                         </#if>
                         <#if ['radio','select','checkbox']?seq_contains(q.questionType)>
-                            <@cms.surveyQuestionItemList userId=userId questionId=q.id pageSize=500>
+                            <@cms.surveyQuestionItemList questionId=q.id pageSize=500>
                                 <#list page.list as a>
                             <p><label><@t.page 'question.item'/>:</label>${a.sort}. ${a.title} <#if (q.answer)?has_content&&q.answer?split(',')?seq_contains(a.id?string)>[<@t.page 'answer.correct'/>]</#if> <#if (userQuestionMap[q.id?string].answer)?has_content&&userQuestionMap[q.id?string].answer?split(',')?seq_contains(a.id?string)>(<@t.page 'answer.user'/>)</#if></p>
                                 </#list>
