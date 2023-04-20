@@ -95,8 +95,9 @@ public class OSSFileUploaderComponent implements FileUploader, SiteCache {
     @Override
     public boolean enablePrefix(short siteId, boolean privatefile) {
         Map<String, String> config = configDataComponent.getConfigData(siteId, OSSComponent.CONFIG_CODE);
-        return CommonUtils
-                .notEmpty(config.get(privatefile ? OSSComponent.CONFIG_PRIVATE_BUCKET_URL : OSSComponent.CONFIG_BUCKET_URL));
+        return CommonUtils.notEmpty(config.get(privatefile ? OSSComponent.CONFIG_PRIVATE_CDN_URL : OSSComponent.CONFIG_CDN_URL))
+                || CommonUtils.notEmpty(
+                        config.get(privatefile ? OSSComponent.CONFIG_PRIVATE_BUCKET_URL : OSSComponent.CONFIG_BUCKET_URL));
     }
 
     public static boolean enableUpload(Map<String, String> config, boolean privatefile) {
@@ -124,11 +125,14 @@ public class OSSFileUploaderComponent implements FileUploader, SiteCache {
     @Override
     public String getPrefix(short siteId, boolean privatefile) {
         Map<String, String> config = configDataComponent.getConfigData(siteId, OSSComponent.CONFIG_CODE);
-        String bucketUrl = config.get(privatefile ? OSSComponent.CONFIG_PRIVATE_BUCKET_URL : OSSComponent.CONFIG_BUCKET_URL);
-        if (bucketUrl.endsWith(Constants.SEPARATOR)) {
-            return bucketUrl;
+        String prefix = config.get(privatefile ? OSSComponent.CONFIG_PRIVATE_CDN_URL : OSSComponent.CONFIG_CDN_URL);
+        if (CommonUtils.empty(prefix)) {
+            prefix = config.get(privatefile ? OSSComponent.CONFIG_PRIVATE_BUCKET_URL : OSSComponent.CONFIG_BUCKET_URL);
+        }
+        if (prefix.endsWith(Constants.SEPARATOR)) {
+            return prefix;
         } else {
-            return CommonUtils.joinString(bucketUrl, Constants.SEPARATOR);
+            return CommonUtils.joinString(prefix, Constants.SEPARATOR);
         }
     }
 
