@@ -250,7 +250,7 @@ function moveButton(x,y,width,height){
     }
     var bottom = boxHeight < (y + height) ? boxHeight : (y + height);
 
-    if(buttonHeight > y) {
+    if(buttonHeight > y + height) {
         $(".diy-button",navTab.getCurrentPanel()).css({top: buttonHeight > y ? 0 : y - buttonHeight,left: 0 > x ? width /2 : (width / 2 + x) }).show();
     } else {
         $(".diy-button",navTab.getCurrentPanel()).css({top: bottom , left: 0 > x ? width /2 : (width / 2 + x)}).show();

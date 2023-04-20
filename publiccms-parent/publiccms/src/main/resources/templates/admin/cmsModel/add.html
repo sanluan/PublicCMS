@@ -200,7 +200,7 @@
             </fieldset>
             <fieldset>
                 <legend><@t.page 'recommend_info'/></legend>
-                <span class="info"><@t.page 'recommend_info'/>:<#noparse>&lt;@cms.contentRelatedList contentId=content.id relationType=dictionaryId&gt;&lt;#list page.list as a&gt;${a.title!}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.contentRelatedList&gt;</#noparse></span>
+                <span class="info"><@t.page 'recommend_info'/>:<#noparse>&lt;@cms.contentRelatedList contentId=content.id relationType=dictionaryId relation=dictionaryDataValue&gt;&lt;#list page.list as a&gt;${a.title!}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.contentRelatedList&gt;</#noparse></span>
                 <table class="list nowrap itemDetail" addButton="<@t.page 'button.new_line'/>" width="100%">
                     <thead>
                         <tr>
