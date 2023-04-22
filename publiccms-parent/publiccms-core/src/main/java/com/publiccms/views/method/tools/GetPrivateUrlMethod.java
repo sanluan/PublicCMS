@@ -1,7 +1,6 @@
 package com.publiccms.views.method.tools;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -9,13 +8,10 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.BaseMethod;
-import com.publiccms.common.constants.CmsVersion;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.TemplateModelUtils;
 import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.component.config.ConfigDataComponent;
-import com.publiccms.logic.component.config.SafeConfigComponent;
 import com.publiccms.logic.component.site.FileUploadComponent;
 
 import freemarker.core.Environment;
@@ -53,8 +49,6 @@ console.log(data);
 @Component
 public class GetPrivateUrlMethod extends BaseMethod {
     @Resource
-    private ConfigDataComponent configDataComponent;
-    @Resource
     private FileUploadComponent fileUploadComponent;
 
     @Override
@@ -78,16 +72,7 @@ public class GetPrivateUrlMethod extends BaseMethod {
         Integer expiryMinutes = getInteger(1, arguments);
         String filename = getString(2, arguments);
         if (CommonUtils.notEmpty(url) && null != site) {
-            Map<String, String> config = configDataComponent.getConfigData(site.getId(), SafeConfigComponent.CONFIG_CODE);
-            String signKey = config.get(SafeConfigComponent.CONFIG_PRIVATEFILE_KEY);
-            if (null == signKey) {
-                signKey = CmsVersion.getClusterId();
-            }
-            if (null == expiryMinutes) {
-                expiryMinutes = ConfigDataComponent.getInt(config.get(SafeConfigComponent.CONFIG_EXPIRY_MINUTES_SIGN),
-                        SafeConfigComponent.DEFAULT_EXPIRY_MINUTES_SIGN);
-            }
-            return fileUploadComponent.getPrivateFileUrl(site, expiryMinutes, url, signKey, filename);
+            return fileUploadComponent.getPrivateFileUrl(site, expiryMinutes, url, filename);
         }
         return url;
     }

@@ -5,13 +5,13 @@
     <div class="formBar card">
         <ul>
             <li>
+                <#if site.useSsi>
+                    <li><a class="button" href="cmsTemplate/publishPlace?path=${(path?url)!}&_csrf=<@tools.csrfToken admin=true/>" target="ajaxTodo"><@t.page 'button.publish'/></a></li>
+                </#if>
                 <@sys.authorized roleIds=admin.roles url='placeTemplate/list'>
                     <li><a class="button" href="placeTemplate/list.html?path=${(path?url)!}&editType=metadata" target="navTab" rel="placeTemplate/list"><@t.page 'metadata'/></a></li>
                     <li><a class="button" href="placeTemplate/list.html?path=${(path?url)!}" target="navTab" rel="placeTemplate/list"><@t.page 'template.content'/></a></li>
                 </@sys.authorized>
-                <#if site.useSsi>
-                    <li><a class="button" href="cmsTemplate/publishPlace?path=${(path?url)!}&_csrf=<@tools.csrfToken admin=true/>" target="ajaxTodo"><@t.page 'button.publish'/></a></li>
-                </#if>
                 <#if (a.metadataExtendList)?has_content><li><button type="submit" class="buttonActive" title="ctrl+s"><@t.page 'button.save'/></button></li></#if>
             </li>
         </ul>

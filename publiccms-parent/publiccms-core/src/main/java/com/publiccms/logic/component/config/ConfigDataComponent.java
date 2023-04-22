@@ -1,6 +1,5 @@
 package com.publiccms.logic.component.config;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -111,14 +110,11 @@ public class ConfigDataComponent implements SiteCache {
      * @throws InstantiationException
      * @throws ClassNotFoundException
      * @throws SecurityException
-     * @throws NoSuchMethodException
-     * @throws InvocationTargetException
      * @throws IllegalArgumentException
      */
     @Resource
-    public void initCache(CacheEntityFactory cacheEntityFactory)
-            throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+    public void initCache(CacheEntityFactory cacheEntityFactory) throws ClassNotFoundException, InstantiationException,
+            IllegalAccessException, IllegalArgumentException, SecurityException {
         cache = cacheEntityFactory.createCacheEntity("config");
     }
 

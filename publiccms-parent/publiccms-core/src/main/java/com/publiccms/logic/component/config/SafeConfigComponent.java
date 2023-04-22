@@ -12,6 +12,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.api.Config;
+import com.publiccms.common.constants.CmsVersion;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
@@ -133,9 +135,18 @@ public class SafeConfigComponent implements Config {
 
     public boolean enableCaptcha(short siteId, String module) {
         Map<String, String> config = configDataComponent.getConfigData(siteId, CONFIG_CODE);
-        String enableCaptcha = config.get(SafeConfigComponent.CONFIG_CAPTCHA);
+        String enableCaptcha = config.get(CONFIG_CAPTCHA);
         return CommonUtils.notEmpty(enableCaptcha)
                 && ArrayUtils.contains(StringUtils.split(enableCaptcha, Constants.COMMA), module);
+    }
+
+    public String getSignKey(short siteId) {
+        Map<String, String> config = configDataComponent.getConfigData(siteId, CONFIG_CODE);
+        String signKey = config.get(CONFIG_PRIVATEFILE_KEY);
+        if (CommonUtils.empty(signKey)) {
+            signKey = CommonUtils.joinString(siteId, CommonConstants.CMS_FILEPATH.hashCode(), CmsVersion.getClusterId());
+        }
+        return signKey;
     }
 
     public String getSafeUrl(String returnUrl, SysSite site, String contextPath) {
