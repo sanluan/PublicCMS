@@ -135,6 +135,16 @@ onclick="JUI.instances[$('textarea.code',navTab.getCurrentPanel()).data('id')].r
                 </#if>
                     </ul>
                 </li>
+                <#if placeMetadata.size gt 0 && placeMetadata.extendList?has_content>
+                <li>
+                    <a href="javascript:;" onclick="return false;"><@t.page 'place_data.extend_field'/></a>
+                    <ul>
+                    <#list placeMetadata.extendList as extend>
+                        <li><a href="javascript:;" <@getExtendDataHelp extend 'place.attribute.'/>><@t.page 'extend_field'/>:${extend.name}</a></li>
+                    </#list>
+                    </ul>
+                </li>
+                </#if>
             </#if>
             <#if metadata?has_content>
                 <li>

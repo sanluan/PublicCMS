@@ -143,7 +143,7 @@ public class VisitComponent implements Cache {
         visitHistoryService.save(blockingQueue);
     }
 
-    class Visit {
+    public static class Visit {
         long uv;
         long pv;
         long ipviews;
