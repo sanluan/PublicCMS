@@ -69,7 +69,7 @@ public class LoginDirective extends AbstractAppDirective {
         String encoding = StringUtils.trim(handler.getString("encoding"));
         String channel = handler.getString("channel", LogLoginService.CHANNEL_WEB);
         boolean result = false;
-        if (CommonUtils.notEmpty(username) && CommonUtils.notEmpty(password) && password.length() <= 100) {
+        if (CommonUtils.notEmpty(username) && CommonUtils.notEmpty(password) && password.length() <= UserPasswordUtils.PASSWORD_MAX_LENGTH) {
             SysSite site = getSite(handler);
             if (ControllerUtils.notEMail(username)) {
                 user = service.findByName(site.getId(), username);
