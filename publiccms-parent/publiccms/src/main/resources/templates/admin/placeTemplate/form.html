@@ -14,7 +14,6 @@
 <#noparse>
 <@cms.place id=id>
     <#assign place=object/>
-    <#assign attribute=getPlaceAttribute(object.id)/>
 </@cms.place>
 <form name="contribute" method="post" action="${site.dynamicPath}place/save"></#noparse>
 <#if !a.allowAnonymous>
@@ -45,8 +44,7 @@
     </p>
 </#if>
     <#include "../include_page/extendData.html"/>
-    <#assign extendValues=getPlaceAttribute((a.id)!)/>
-    <@extendData extendList=a.extendList extendValues=extendValues type="customform"/>
+    <@extendData extendList=a.extendList extendValues=((place.attribute)!{}) type="customform"/>
 <#noparse>
     <@sys.configData code="safe">
         <#if object.captcha?has_content && object.captcha?split(",")?seq_contains("contribute")>
@@ -68,13 +66,13 @@ if(editors.length){
     var base="${site.dynamicPath}";
     loadScripts(["${site.dynamicPath}resource/plugins/ueditor/ueditor.config.js","${site.dynamicPath}resource/plugins/ueditor/ueditor.all.min.js","${site.dynamicPath}resource/plugins/ueditor/lang/</#noparse><@t.page 'ueditor.lang_js'/><#noparse>"],function(){
         window.UEDITOR_CONFIG.topOffset=0;
-        for(var i=0;i<editors.length;i++){
+        for(var key in editors){
             var editor = new baidu.editor.ui.Editor();
-            editor.render(editors[i]);
+            editor.render(key);
         }
         document.querySelector("form[name=contribute]").onsubmit=function(){
-            for(var i=0;i<editors.length;i++){
-                UE.getEditor(editors[i]).sync();
+            for(var key in editors){
+                UE.getEditor(key).sync();
             }
         }
     });
@@ -86,9 +84,7 @@ if(editors.length){
 <#noparse>
     <@tools.placeMetadata path=path><#assign a=object/></@tools.placeMetadata>
     <#if user?has_content&&(a.adminIds)?has_content&&a.adminIds?seq_contains(user.id)>
-
         <#macro merge name value><#if !.vars[name]?has_content><@"<#assign ${name}=''>"?interpret /></#if><#if value?has_content><@"<#assign ${name}=${name}+'${value},'>"?interpret /></#if></#macro>
-
         <@cms.placeList path=path advanced=true pageIndex=pageNum pageSize=numPerPage>
             <#list page.list as a>
                 <@merge 'userIds' a.userId!/>

@@ -156,7 +156,7 @@
             </fieldset>
             <fieldset class="systemField">
                 <legend><@t.page 'content.extend_field'/></legend>
-                <span class="info"><@t.page 'extend_field.use.content'/>;<#noparse>&lt;#assign attribute=getContentAttribute(content.id)&gt;</#noparse></span>
+                <span class="info"><@t.page 'extend_field.use.content'/></span>
                 <dl class="nowrap copied">
                     <dt>
                         <label><@t.page 'content.source'/></label>
@@ -192,7 +192,7 @@
             </fieldset>
             <fieldset>
                 <legend><@t.page 'extend_field'/></legend>
-                <span class="info"><@t.page 'extend_field.use.content'/>;<@t.page 'extend_field.use.content'/>;<@t.page 'extend_field.invalid'/>:source,sourceUrl,wordCount,minPrice,maxPrice,text;<@t.page 'metadata.default_value_description'/></span>
+                <span class="info"><@t.page 'extend_field.use.content'/>;<@t.page 'extend_field.invalid'/>:source,sourceUrl,wordCount,minPrice,maxPrice,text;<@t.page 'metadata.default_value_description'/></span>
                 <#include "../include_page/extends.html"/>
                 <#assign contentExtendList=(a.extendList)![]>
                 <@extends 'extendList' contentExtendList true/>
@@ -200,7 +200,7 @@
             </fieldset>
             <fieldset>
                 <legend><@t.page 'recommend_info'/></legend>
-                <span class="info"><@t.page 'recommend_info'/>:<#noparse>&lt;@cms.contentRelatedList contentId=content.id relationType=dictionaryId&gt;&lt;#list page.list as a&gt;${a.title!}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.contentRelatedList&gt;</#noparse></span>
+                <span class="info"><@t.page 'recommend_info'/>:<#noparse>&lt;@cms.contentRelatedList contentId=content.id relationType=dictionaryId relation=dictionaryDataValue&gt;&lt;#list page.list as a&gt;${a.title!}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.contentRelatedList&gt;</#noparse></span>
                 <table class="list nowrap itemDetail" addButton="<@t.page 'button.new_line'/>" width="100%">
                     <thead>
                         <tr>

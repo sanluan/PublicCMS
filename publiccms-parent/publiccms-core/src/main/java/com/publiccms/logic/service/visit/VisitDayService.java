@@ -46,7 +46,7 @@ public class VisitDayService extends BaseService<VisitDay> {
             Integer pageSize) {
         PageHandler page = dao.getPage(siteId, startVisitDate, endVisitDate, hourAnalytics, pageIndex, pageSize);
         Date now = CommonUtils.getMinuteDate();
-        if ((null == pageIndex || 1 == pageIndex) && (null == endVisitDate || DateUtils.isSameDay(now, endVisitDate))) {
+        if (null!= page.getList() && (null == pageIndex || 1 == pageIndex) && (null == endVisitDate || DateUtils.isSameDay(now, endVisitDate))) {
             if (hourAnalytics) {
                 Calendar c = Calendar.getInstance();
                 ((List<VisitDay>) page.getList()).addAll(0,

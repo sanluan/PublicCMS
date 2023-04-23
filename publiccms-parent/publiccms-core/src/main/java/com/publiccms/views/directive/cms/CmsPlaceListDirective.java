@@ -3,6 +3,8 @@ package com.publiccms.views.directive.cms;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
 
 import jakarta.annotation.Resource;
 
@@ -14,10 +16,13 @@ import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.entities.cms.CmsPlace;
+import com.publiccms.entities.cms.CmsPlaceAttribute;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
+import com.publiccms.logic.service.cms.CmsPlaceAttributeService;
 import com.publiccms.logic.service.cms.CmsPlaceService;
 
 import freemarker.template.TemplateException;
@@ -39,6 +44,7 @@ import freemarker.template.TemplateException;
  * <li><code>itemType</code>:数据项类型,【content:内容,category:分类,custom:自定义】
  * <li><code>itemId</code>:数据项id
  * <li><code>absoluteURL</code>:url、封面图处理为绝对路径 默认为<code>true</code>
+ * <li><code>containsAttribute</code>:默认为<code>false</code>,http请求时为高级选项,为true时<code>place.attribute</code>为推荐位扩展数据<code>map</code>(字段编码,<code>value</code>)
  * <li><code>orderField</code>
  * 排序字段,【createDate:创建日期,clicks:点击数】,默认发布日期按orderType排序
  * <li><code>orderType</code>:排序类型,【asc:正序,desc:倒序】,默认为倒序
@@ -75,11 +81,13 @@ public class CmsPlaceListDirective extends AbstractTemplateDirective {
         Date expiryDate = null;
         String path = handler.getString("path");
         Boolean disabled = false;
+        boolean containsAttribute = handler.getBoolean("containsAttribute", false);
         Integer[] status;
         if (getAdvanced(handler)) {
             status = handler.getIntegerArray("status");
             disabled = handler.getBoolean("disabled", false);
         } else {
+            containsAttribute = !handler.inHttp();
             status = CmsPlaceService.STATUS_NORMAL_ARRAY;
             Date now = CommonUtils.getMinuteDate();
             if (null == endPublishDate || endPublishDate.after(now)) {
@@ -98,20 +106,39 @@ public class CmsPlaceListDirective extends AbstractTemplateDirective {
         List<CmsPlace> list = (List<CmsPlace>) page.getList();
         if (null != list) {
             boolean absoluteURL = handler.getBoolean("absoluteURL", true);
-            list.forEach(e -> {
-                Integer clicks = statisticsComponent.getPlaceClicks(e.getId());
-                if (null != clicks) {
-                    e.setClicks(e.getClicks() + clicks);
-                }
-                if (absoluteURL) {
-                    CmsUrlUtils.initPlaceUrl(site, e);
-                    fileUploadComponent.initPlaceCover(site, e);
-                }
-            });
+            Consumer<CmsPlace> consumer = null;
+            if (containsAttribute) {
+                Long[] ids = list.stream().map(CmsPlace::getId).toArray(Long[]::new);
+                List<CmsPlaceAttribute> attributeList = attributeService.getEntitys(ids);
+                Map<Long, CmsPlaceAttribute> attributeMap = CommonUtils.listToMap(attributeList, k -> k.getPlaceId());
+                consumer = e -> {
+                    Integer clicks = statisticsComponent.getPlaceClicks(e.getId());
+                    if (null != clicks) {
+                        e.setClicks(e.getClicks() + clicks);
+                    }
+                    if (absoluteURL) {
+                        CmsUrlUtils.initPlaceUrl(site, e);
+                        fileUploadComponent.initPlaceCover(site, e);
+                    }
+                    e.setAttribute(ExtendUtils.getAttributeMap(attributeMap.get(e.getId())));
+                };
+            } else {
+                consumer = e -> {
+                    Integer clicks = statisticsComponent.getPlaceClicks(e.getId());
+                    if (null != clicks) {
+                        e.setClicks(e.getClicks() + clicks);
+                    }
+                    if (absoluteURL) {
+                        CmsUrlUtils.initPlaceUrl(site, e);
+                        fileUploadComponent.initPlaceCover(site, e);
+                    }
+                };
+            }
+            list.forEach(consumer);
         }
         handler.put("page", page).render();
     }
-    
+
     @Override
     public boolean supportAdvanced() {
         return true;
@@ -124,6 +151,8 @@ public class CmsPlaceListDirective extends AbstractTemplateDirective {
 
     @Resource
     private CmsPlaceService service;
+    @Resource
+    private CmsPlaceAttributeService attributeService;
     @Resource
     protected FileUploadComponent fileUploadComponent;
     @Resource

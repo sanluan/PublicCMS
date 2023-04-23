@@ -178,7 +178,7 @@ public class CommentController {
                     }
                 }
             }
-            model.addAttribute("id", entity.getId());
+            model.addAttribute("dataId", entity.getId());
         }
         return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
     }

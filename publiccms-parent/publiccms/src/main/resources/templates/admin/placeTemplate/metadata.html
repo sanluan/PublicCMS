@@ -111,8 +111,7 @@
             </fieldset>
             <fieldset class="placeExtend">
                 <legend><@t.page 'place_data.extend_field'/></legend>
-                <span class="info"><#noparse>&lt;#assign attribute=getPlaceAttribute(a.id)&gt;</#noparse></span>
-                <span class="info"><@t.page 'extend_field.use.place'/>;<@t.page 'extend_field.use.content'/>;<@t.page 'metadata.default_value_description'/></span>
+                <span class="info"><@t.page 'extend_field.use.place'/>;<@t.page 'metadata.default_value_description'/></span>
                 <#include '../include_page/extends.html'/>
                 <#assign extendList=(a.extendList)![]/>
                 <@extends 'extendList' extendList/>
@@ -120,7 +119,7 @@
             </fieldset>
             <fieldset>
                 <legend><@t.page 'metadata.extend_field'/></legend>
-                <span class="info"><@t.page 'extend_field.use.metadata'/>;<@t.page 'extend_field.use.content'/>;<@t.page 'metadata.default_value_description'/></span>
+                <span class="info"><@t.page 'extend_field.use.metadata'/>;<@t.page 'metadata.default_value_description'/></span>
                 <#assign metadataExtendList=(a.metadataExtendList)![]/>
                 <@extends 'metadataExtendList' metadataExtendList/>
             </fieldset>
@@ -179,14 +178,14 @@
             <textarea class="placeContent hide"><#if exists && ((a.size)!0) gt 0><@tools.fileContent path='/include'+path>${(object)!}</@tools.fileContent><#else><#noparse>
 <#list page.list>
     <ul data-diy="place" data-diy-id="${path}">
-    <#items as a>
-        <li data-diy-item="${a.id}">
+    <#items as place>
+        <li data-diy-item="${place.id}">
             <figure>
                 <#-- data type: ${a.itemType!},data id: ${a.itemId!},place/redirect:count and jump to a.url,found[true:302,false:301,default:false] -->
                 <a href="${site.dynamicPath}place/redirect?id=${a.id!}&found=false" target="_blank"><img src="${a.cover!}"></a>
                 <figcaption><a href="${a.url!}" target="_blank">${a.title!}</a>(${a.clicks!})</figcaption>
                 <p><#list (a.description!'')?split('\n') as line>${line}<#sep><br/></#list></p>
-                </#noparse><@t.page 'extend_field'/>:<#noparse><#assign attribute=getPlaceAttribute(a.id)/>
+                </#noparse><@t.page 'extend_field'/>:${(place.attribute.your_extend_code)!}<#noparse>
             </figure>
         </li>
     </#items>

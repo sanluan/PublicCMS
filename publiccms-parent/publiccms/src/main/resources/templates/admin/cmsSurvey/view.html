@@ -36,7 +36,7 @@
             ${(object.createDate)!}
         </dd>
     </dl>
-    <@cms.surveyQuestionList surveyId=object.id pageSize=500>
+    <@cms.surveyQuestionList advanced=true surveyId=object.id pageSize=500>
         <#if page.totalCount gt 0>
     <fieldset>
         <legend><@t.page 'question'/></legend>

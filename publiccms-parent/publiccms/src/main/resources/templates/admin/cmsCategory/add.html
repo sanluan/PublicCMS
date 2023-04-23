@@ -243,7 +243,6 @@
                 <#include "../include_page/extends.html"/>
                 <fieldset>
                     <legend><@t.page 'content.extend_field'/></legend>
-                    <span class="info"><#noparse>&lt;#assign attribute=getContentAttribute(content.id)&gt;</#noparse></span>
                     <span class="info"><@t.page 'extend_field.use.content'/>;<@t.page 'extend_field.invalid'/>:source,sourceUrl,wordCount,minPrice,maxPrice,text;<@t.page 'metadata.default_value_description'/></span>
                     <@extends 'contentExtends' contentExtendList true copy/>
                     <span class="info"><@t.page 'extend_field.name.description'/></span>

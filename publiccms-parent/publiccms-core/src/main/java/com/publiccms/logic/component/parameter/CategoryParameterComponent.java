@@ -7,8 +7,10 @@ import org.springframework.stereotype.Component;
 import com.publiccms.common.api.Config;
 import com.publiccms.common.base.AbstractIntegerParameterHandler;
 import com.publiccms.common.tools.CmsUrlUtils;
+import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.service.cms.CmsCategoryAttributeService;
 import com.publiccms.logic.service.cms.CmsCategoryService;
 
 import jakarta.annotation.Priority;
@@ -22,6 +24,8 @@ import jakarta.annotation.Resource;
 public class CategoryParameterComponent extends AbstractIntegerParameterHandler<CmsCategory> {
     @Resource
     private CmsCategoryService service;
+    @Resource
+    private CmsCategoryAttributeService attributeService;
 
     @Override
     public String getType() {
@@ -42,6 +46,7 @@ public class CategoryParameterComponent extends AbstractIntegerParameterHandler<
         CmsCategory entity = service.getEntity(id);
         if (null != entity && !entity.isDisabled() && entity.getSiteId() == site.getId()) {
             CmsUrlUtils.initCategoryUrl(site, entity);
+            entity.setAttribute(ExtendUtils.getAttributeMap(attributeService.getEntity(entity.getId())));
             return entity;
         }
         return null;

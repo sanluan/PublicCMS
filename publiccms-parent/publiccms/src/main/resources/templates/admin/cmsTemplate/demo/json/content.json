@@ -1,5 +1,5 @@
 <#ftl output_format="JSON">
-{<#assign attribute=getContentAttribute(content.id)/>
+{<#assign attribute=content.attribute/>
     <@cms.category id=content.categoryId>
         <#assign category=object/>
     </@cms.category>

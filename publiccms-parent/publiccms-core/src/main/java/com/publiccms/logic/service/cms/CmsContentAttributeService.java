@@ -1,14 +1,10 @@
 package com.publiccms.logic.service.cms;
 
-import java.io.Serializable;
-import java.util.List;
-
-import com.publiccms.entities.cms.CmsContentAttribute;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
+import com.publiccms.entities.cms.CmsContentAttribute;
 
 /**
  *
@@ -20,14 +16,6 @@ import com.publiccms.common.base.BaseService;
 public class CmsContentAttributeService extends BaseService<CmsContentAttribute> {
 
     protected static final String[] ignoreProperties = new String[] { "contentId" };
-
-    /**
-     * @param ids
-     * @return results page
-     */
-    public List<CmsContentAttribute> getEntitysWithoutText(Serializable[] ids) {
-        return basedao.getEntitys(ids);
-    }
 
     /**
      * @param contentId

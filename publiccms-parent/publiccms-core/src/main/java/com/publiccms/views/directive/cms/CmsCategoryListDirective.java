@@ -4,6 +4,8 @@ package com.publiccms.views.directive.cms;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
 
 import jakarta.annotation.Resource;
 
@@ -13,8 +15,12 @@ import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CmsUrlUtils;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.entities.cms.CmsCategory;
+import com.publiccms.entities.cms.CmsCategoryAttribute;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.service.cms.CmsCategoryAttributeService;
 import com.publiccms.logic.service.cms.CmsCategoryService;
 import com.publiccms.views.pojo.query.CmsCategoryQuery;
 
@@ -31,6 +37,7 @@ import freemarker.template.TemplateException;
  * <li><code>absoluteURL</code>:url处理为绝对路径, 默认为<code> true</code>
  * <li><code>queryAll</code>:查询全部,【true,false】,parentId为空时有效
  * <li><code>advanced</code>:开启高级选项, 默认为<code>false</code>
+ * <li><code>containsAttribute</code>默认为<code>true</code>,http请求时为高级选项,为true时<code>category.attribute</code>为分类扩展数据<code>map</code>(字段编码,<code>value</code>)
  * <li><code>disabled</code>:高级选项:禁用状态, 默认为<code>false</code>
  * <li><code>hidden</code>:高级选项:隐藏,【true,false】
  * <li><code>pageIndex</code>:页码
@@ -64,10 +71,12 @@ public class CmsCategoryListDirective extends AbstractTemplateDirective {
         SysSite site = getSite(handler);
         CmsCategoryQuery queryEntity = new CmsCategoryQuery();
         queryEntity.setQueryAll(handler.getBoolean("queryAll"));
+        boolean containsAttribute = handler.getBoolean("containsAttribute", false);
         if (getAdvanced(handler)) {
             queryEntity.setDisabled(handler.getBoolean("disabled", false));
             queryEntity.setHidden(handler.getBoolean("hidden"));
         } else {
+            containsAttribute = !handler.inHttp();
             queryEntity.setDisabled(false);
             queryEntity.setHidden(false);
         }
@@ -81,7 +90,21 @@ public class CmsCategoryListDirective extends AbstractTemplateDirective {
         @SuppressWarnings("unchecked")
         List<CmsCategory> list = (List<CmsCategory>) page.getList();
         if (null != list && handler.getBoolean("absoluteURL", true)) {
-            list.forEach(e -> CmsUrlUtils.initCategoryUrl(site, e));
+            Consumer<CmsCategory> consumer = null;
+            if (containsAttribute) {
+                Integer[] ids = list.stream().map(CmsCategory::getId).toArray(Integer[]::new);
+                List<CmsCategoryAttribute> attributeList = attributeService.getEntitys(ids);
+                Map<Integer, CmsCategoryAttribute> attributeMap = CommonUtils.listToMap(attributeList, k -> k.getCategoryId());
+                consumer = e -> {
+                    CmsUrlUtils.initCategoryUrl(site, e);
+                    e.setAttribute(ExtendUtils.getAttributeMap(attributeMap.get(e.getId())));
+                };
+            } else {
+                consumer = e -> {
+                    CmsUrlUtils.initCategoryUrl(site, e);
+                };
+            }
+            list.forEach(consumer);
         }
         handler.put("page", page).render();
     }
@@ -93,5 +116,6 @@ public class CmsCategoryListDirective extends AbstractTemplateDirective {
 
     @Resource
     private CmsCategoryService service;
-
+    @Resource
+    private CmsCategoryAttributeService attributeService;
 }

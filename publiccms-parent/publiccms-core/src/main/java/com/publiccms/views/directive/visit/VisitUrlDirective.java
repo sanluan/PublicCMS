@@ -3,9 +3,12 @@ package com.publiccms.views.directive.visit;
 // Generated 2021-1-14 22:44:12 by com.publiccms.common.generator.SourceGenerator
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Date;
 
 import jakarta.annotation.Resource;
+
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
@@ -48,6 +51,7 @@ public class VisitUrlDirective extends AbstractTemplateDirective {
         String urlMd5 = handler.getString("urlMd5");
         String urlSha = handler.getString("urlSha");
         if (null != visitDate && CommonUtils.notEmpty(urlMd5) && CommonUtils.notEmpty(urlSha)) {
+            visitDate = DateUtils.truncate(visitDate, Calendar.DATE);
             VisitUrl entity = service.getEntity(new VisitUrlId(getSite(handler).getId(), visitDate, urlMd5, urlSha));
             if (null != entity) {
                 handler.put("object", entity).render();

@@ -512,9 +512,9 @@ UPDATE `sys_module` SET `url`='cmsContent/workload',`attached`='bi bi-calendar-h
 UPDATE `sys_module` SET `authorized_url`= 'cmsTemplate/doUpload,cmsTemplate/import,cmsTemplate/doImport,cmsTemplate/lookupSiteFile,cmsTemplate/viewsitefile,cmsTemplate/visitSitefileImage' WHERE `id` ='template_import';
 -- 2023-01-15 --
 INSERT INTO `sys_module` VALUES ('record_view', 'sysRecord/view', NULL, NULL, 'record_list', 0, 0);
-INSERT INTO `sys_module_lang` VALUES ('refund_view', 'en', 'View');
-INSERT INTO `sys_module_lang` VALUES ('refund_view', 'ja', '見る');
-INSERT INTO `sys_module_lang` VALUES ('refund_view', 'zh', '查看');
+INSERT INTO `sys_module_lang` VALUES ('record_view', 'en', 'View');
+INSERT INTO `sys_module_lang` VALUES ('record_view', 'ja', '見る');
+INSERT INTO `sys_module_lang` VALUES ('record_view', 'zh', '查看');
 -- 2023-01-18 --
 UPDATE `sys_module` SET `authorized_url`= 'cmsCategoryType/categoryList' WHERE `id` ='category_type_list';
 -- 2023-02-17 --

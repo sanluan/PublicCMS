@@ -28,7 +28,7 @@ public class VisitSessionDao extends BaseDao<VisitSession> {
     /**
      * @param siteId
      * @param sessionId
-     * @param ip 
+     * @param ip
      * @param startVisitDate
      * @param endVisitDate
      * @param orderType
@@ -84,9 +84,7 @@ public class VisitSessionDao extends BaseDao<VisitSession> {
     public int delete(Date begintime) {
         if (null != begintime) {
             QueryHandler queryHandler = getQueryHandler("delete from VisitSession bean");
-            if (null != begintime) {
-                queryHandler.condition("bean.id.visitDate <= :visitDate").setParameter("visitDate", begintime);
-            }
+            queryHandler.condition("bean.id.visitDate <= :visitDate").setParameter("visitDate", begintime);
             return delete(queryHandler);
         }
         return 0;

@@ -33,7 +33,7 @@ import freemarker.template.TemplateException;
  * <li><code>id</code>:推荐位id,结果返回<code>object</code>
  * {@link com.publiccms.entities.cms.CmsPlace}
  * <li><code>absoluteURL</code>:url处理为绝对路径 默认为<code> true</code>
- * <li><code>containsAttribute</code>:id不为空时有效,默认为<code>false</code>,结果返回<code>attribute</code>
+ * <li><code>containsAttribute</code>:默认为<code>false</code>,为true时<code>object.attribute</code>为推荐位扩展数据<code>map</code>(字段编码,<code>value</code>)
  * <li><code>ids</code>:
  * 多个推荐位id,逗号或空格间隔,当id为空时生效,结果返回<code>map</code>(id,<code>object</code>)
  * </ul>
@@ -59,6 +59,7 @@ public class CmsPlaceDirective extends AbstractTemplateDirective {
     public void execute(RenderHandler handler) throws IOException, TemplateException {
         Long id = handler.getLong("id");
         boolean absoluteURL = handler.getBoolean("absoluteURL", true);
+        boolean containsAttribute = handler.getBoolean("containsAttribute", false);
         SysSite site = getSite(handler);
         if (CommonUtils.notEmpty(id)) {
             CmsPlace entity = service.getEntity(id);
@@ -67,34 +68,39 @@ public class CmsPlaceDirective extends AbstractTemplateDirective {
                     CmsUrlUtils.initPlaceUrl(site, entity);
                     fileUploadComponent.initPlaceCover(site, entity);
                 }
-                handler.put("object", entity);
-                if (handler.getBoolean("containsAttribute", false)) {
-                    CmsPlaceAttribute attribute = attributeService.getEntity(id);
-                    if (null != attribute) {
-                        handler.put("attribute", ExtendUtils.getExtendMap(attribute.getData()));
-                    }
+                if (containsAttribute) {
+                    entity.setAttribute(ExtendUtils.getAttributeMap(attributeService.getEntity(id)));
                 }
-                handler.render();
+                handler.put("object", entity).render();
             }
         } else {
             Long[] ids = handler.getLongArray("ids");
             if (CommonUtils.notEmpty(ids)) {
                 List<CmsPlace> entityList = service.getEntitys(ids);
                 Consumer<CmsPlace> consumer;
-                if (absoluteURL) {
+                if (containsAttribute) {
+                    List<CmsPlaceAttribute> attributeList = attributeService.getEntitys(ids);
+                    Map<Long, CmsPlaceAttribute> attributeMap = CommonUtils.listToMap(attributeList, k -> k.getPlaceId());
                     consumer = e -> {
                         Integer clicks = statisticsComponent.getPlaceClicks(e.getId());
                         if (null != clicks) {
                             e.setClicks(e.getClicks() + clicks);
                         }
-                        CmsUrlUtils.initPlaceUrl(site, e);
-                        fileUploadComponent.initPlaceCover(site, e);
+                        if (absoluteURL) {
+                            CmsUrlUtils.initPlaceUrl(site, e);
+                            fileUploadComponent.initPlaceCover(site, e);
+                        }
+                        e.setAttribute(ExtendUtils.getAttributeMap(attributeMap.get(e.getId())));
                     };
                 } else {
                     consumer = e -> {
                         Integer clicks = statisticsComponent.getPlaceClicks(e.getId());
                         if (null != clicks) {
                             e.setClicks(e.getClicks() + clicks);
+                        }
+                        if (absoluteURL) {
+                            CmsUrlUtils.initPlaceUrl(site, e);
+                            fileUploadComponent.initPlaceCover(site, e);
                         }
                     };
                 }
@@ -103,6 +109,7 @@ public class CmsPlaceDirective extends AbstractTemplateDirective {
                 handler.put("map", map).render();
             }
         }
+
     }
 
     @Override

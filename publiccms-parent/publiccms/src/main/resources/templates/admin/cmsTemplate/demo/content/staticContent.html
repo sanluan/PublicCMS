@@ -127,11 +127,11 @@
         <aside>
             <h3>Popular content</h3>
             <ul data-diy="content">
-<@cms.contentList categoryId=category.id containChild=true orderField='clicks' pageSize=10>
-    <#list page.list as a>
+        <@cms.contentList categoryId=category.id containChild=true orderField='clicks' pageSize=10>
+            <#list page.list as a>
                 <li data-diy-item="${a.id}"><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect?id=${a.id}<#else>${a.url!}</#if>" target="_blank">${a.title}</a><span>${a.clicks}</span></li>
-    </#list>
-</@cms.contentList>
+            </#list>
+        </@cms.contentList>
             </ul>
         </aside>
     </main>

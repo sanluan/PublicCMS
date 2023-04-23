@@ -32,12 +32,12 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.common.tools.FreeMarkerUtils;
 import com.publiccms.entities.cms.CmsCategory;
-import com.publiccms.entities.cms.CmsCategoryAttribute;
 import com.publiccms.entities.cms.CmsCategoryModel;
 import com.publiccms.entities.cms.CmsCategoryModelId;
 import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.cms.CmsContentAttribute;
 import com.publiccms.entities.cms.CmsPlace;
+import com.publiccms.entities.cms.CmsPlaceAttribute;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.config.ConfigDataComponent;
 import com.publiccms.logic.component.config.SiteConfigComponent;
@@ -49,6 +49,7 @@ import com.publiccms.logic.service.cms.CmsCategoryModelService;
 import com.publiccms.logic.service.cms.CmsCategoryService;
 import com.publiccms.logic.service.cms.CmsContentAttributeService;
 import com.publiccms.logic.service.cms.CmsContentService;
+import com.publiccms.logic.service.cms.CmsPlaceAttributeService;
 import com.publiccms.logic.service.cms.CmsPlaceService;
 import com.publiccms.views.pojo.entities.CmsCategoryType;
 import com.publiccms.views.pojo.entities.CmsModel;
@@ -100,6 +101,8 @@ public class TemplateComponent implements Cache, AdminContextPath {
     private ModelComponent modelComponent;
     @Resource
     private CmsPlaceService placeService;
+    @Resource   
+    private CmsPlaceAttributeService placeAttributeService;
     @Resource
     protected FileUploadComponent fileUploadComponent;
     @Resource
@@ -129,17 +132,10 @@ public class TemplateComponent implements Cache, AdminContextPath {
             pageIndex = 1;
         }
         CmsUrlUtils.initCategoryUrl(site, entity);
+        entity.setAttribute(ExtendUtils.getAttributeMap(categoryAttributeService.getEntity(entity.getId())));
         model.put("category", entity);
-        CmsCategoryAttribute attribute = categoryAttributeService.getEntity(entity.getId());
-        if (null != attribute) {
-            Map<String, String> map = ExtendUtils.getExtendMap(attribute.getData());
-            map.put("title", attribute.getTitle());
-            map.put("keywords", attribute.getKeywords());
-            map.put("description", attribute.getDescription());
-            model.put("attribute", map);
-        } else {
-            model.put("attribute", attribute);
-        }
+        model.put("attribute", entity.getAttribute());
+
         String realTemplatePath = siteComponent.getTemplateFilePath(site.getId(), templatePath);
         CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(realTemplatePath);
         CmsPageData data = metadataComponent.getTemplateData(realTemplatePath);
@@ -184,22 +180,12 @@ public class TemplateComponent implements Cache, AdminContextPath {
         fileUploadComponent.initContentCover(site, entity);
         CmsUrlUtils.initCategoryUrl(site, category);
 
+        CmsContentAttribute attribute = contentAttributeService.getEntity(entity.getId());
+        entity.setAttribute(ExtendUtils.getAttributeMap(attribute));
         model.put("content", entity);
+        model.put("attribute", entity.getAttribute());
         model.put("category", category);
 
-        CmsContentAttribute attribute = contentAttributeService.getEntity(entity.getId());
-        if (null != attribute) {
-            Map<String, String> map = ExtendUtils.getExtendMap(attribute.getData());
-            map.put("text", attribute.getText());
-            map.put("source", attribute.getSource());
-            map.put("sourceUrl", attribute.getSourceUrl());
-            map.put("wordCount", String.valueOf(attribute.getWordCount()));
-            map.put("minPrice", String.valueOf(attribute.getMinPrice()));
-            map.put("maxPrice", String.valueOf(attribute.getMaxPrice()));
-            model.put("attribute", map);
-        } else {
-            model.put("attribute", attribute);
-        }
         String realTemplatePath = siteComponent.getTemplateFilePath(site.getId(), templatePath);
         CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(realTemplatePath);
         CmsPageData data = metadataComponent.getTemplateData(realTemplatePath);
@@ -293,6 +279,7 @@ public class TemplateComponent implements Cache, AdminContextPath {
                         }
                     } else if (CommonUtils.notEmpty(contentPath)) {
                         Map<String, Object> modelMap = new HashMap<>();
+                        entity.setAttribute(ExtendUtils.getAttributeMap(contentAttributeService.getEntity(entity.getId())));
                         modelMap.put("content", entity);
                         modelMap.put("category", category);
                         modelMap.put(CommonConstants.getAttributeSite(), site);
@@ -358,6 +345,7 @@ public class TemplateComponent implements Cache, AdminContextPath {
             } else if (CommonUtils.notEmpty(categoryPath)) {
                 Map<String, Object> model = new HashMap<>();
                 CmsUrlUtils.initCategoryUrl(site, entity);
+                entity.setAttribute(ExtendUtils.getAttributeMap(categoryAttributeService.getEntity(entity.getId())));
                 model.put("category", entity);
                 model.put(CommonConstants.getAttributeSite(), site);
                 String filepath = FreeMarkerUtils.generateStringByString(categoryPath, webConfiguration, model);
@@ -533,6 +521,9 @@ public class TemplateComponent implements Cache, AdminContextPath {
             @SuppressWarnings("unchecked")
             List<CmsPlace> list = (List<CmsPlace>) page.getList();
             if (null != list) {
+                Long[] ids = list.stream().map(CmsPlace::getId).toArray(Long[]::new);
+                List<CmsPlaceAttribute> attributeList = placeAttributeService.getEntitys(ids);
+                Map<Long, CmsPlaceAttribute> attributeMap = CommonUtils.listToMap(attributeList, k -> k.getPlaceId());
                 list.forEach(e -> {
                     Integer clicks = statisticsComponent.getPlaceClicks(e.getId());
                     if (null != clicks) {
@@ -540,6 +531,7 @@ public class TemplateComponent implements Cache, AdminContextPath {
                     }
                     CmsUrlUtils.initPlaceUrl(site, e);
                     fileUploadComponent.initPlaceCover(site, e);
+                    e.setAttribute(ExtendUtils.getAttributeMap(attributeMap.get(e.getId())));
                 });
             }
             model.put("page", page);

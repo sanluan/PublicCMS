@@ -94,7 +94,7 @@ public class LoginAdminController {
         username = StringUtils.trim(username);
         password = StringUtils.trim(password);
         if (ControllerUtils.errorNotEmpty("username", username, model)
-                || ControllerUtils.errorNotEmpty("password", password, model)) {
+                || ControllerUtils.errorNotLongThen("password", password, UserPasswordUtils.PASSWORD_MAX_LENGTH, model)) {
             model.addAttribute("username", username);
             model.addAttribute("returnUrl", returnUrl);
             return "login";

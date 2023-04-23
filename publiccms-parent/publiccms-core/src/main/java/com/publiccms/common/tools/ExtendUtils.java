@@ -1,6 +1,7 @@
 package com.publiccms.common.tools;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -12,6 +13,9 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import com.publiccms.common.api.Config;
 import com.publiccms.common.constants.Constants;
+import com.publiccms.entities.cms.CmsCategoryAttribute;
+import com.publiccms.entities.cms.CmsContentAttribute;
+import com.publiccms.entities.cms.CmsPlaceAttribute;
 import com.publiccms.entities.sys.SysExtendField;
 
 /**
@@ -22,6 +26,53 @@ import com.publiccms.entities.sys.SysExtendField;
 public class ExtendUtils {
 
     private ExtendUtils() {
+    }
+
+    /**
+     * @param attribute
+     * @return extent map
+     */
+    public static Map<String, String> getAttributeMap(CmsCategoryAttribute attribute) {
+        if (null == attribute) {
+            return Collections.emptyMap();
+        } else {
+            Map<String, String> map = getExtendMap(attribute.getData());
+            map.put("title", attribute.getTitle());
+            map.put("keywords", attribute.getKeywords());
+            map.put("description", attribute.getDescription());
+            return map;
+        }
+    }
+
+    /**
+     * @param attribute
+     * @return extent map
+     */
+    public static Map<String, String> getAttributeMap(CmsContentAttribute attribute) {
+        if (null == attribute) {
+            return Collections.emptyMap();
+        } else {
+            Map<String, String> map = getExtendMap(attribute.getData());
+            map.put("text", attribute.getText());
+            map.put("source", attribute.getSource());
+            map.put("sourceUrl", attribute.getSourceUrl());
+            map.put("wordCount", String.valueOf(attribute.getWordCount()));
+            map.put("minPrice", String.valueOf(attribute.getMinPrice()));
+            map.put("maxPrice", String.valueOf(attribute.getMaxPrice()));
+            return map;
+        }
+    }
+
+    /**
+     * @param attribute
+     * @return extent map
+     */
+    public static Map<String, String> getAttributeMap(CmsPlaceAttribute attribute) {
+        if (null == attribute) {
+            return Collections.emptyMap();
+        } else {
+            return getExtendMap(attribute.getData());
+        }
     }
 
     /**
@@ -38,7 +89,6 @@ public class ExtendUtils {
             }
         }
         return new LinkedHashMap<>();
-
     }
 
     /**

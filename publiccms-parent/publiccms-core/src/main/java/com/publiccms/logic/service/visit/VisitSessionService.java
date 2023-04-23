@@ -66,6 +66,7 @@ public class VisitSessionService extends BaseService<VisitSession> {
     /**
      * @param entityList
      */
+    @Override
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public void save(List<VisitSession> entityList) {
         for (VisitSession entity : entityList) {

@@ -32,8 +32,7 @@ import freemarker.template.TemplateException;
  * {@link com.publiccms.entities.cms.CmsCategory}
  * <li><code>code</code>:分类编码,当id为空时生效,结果返回<code>object</code>
  * <li><code>absoluteURL</code>:url处理为绝对路径 默认为<code>true</code>
- * <li><code>containsAttribute</code>
- * id不为空时有效,默认为<code>false</code>,结果返回<code>attribute</code>分类扩展数据<code>map</code>(字段编码,<code>value</code>)
+ * <li><code>containsAttribute</code>默认为<code>false</code>,http请求时为高级选项,为true时<code>object.attribute</code>为分类扩展数据<code>map</code>(字段编码,<code>value</code>)
  * <li><code>ids</code>:
  * 多个分类id,逗号或空格间隔,当id或code为空时生效,结果返回<code>map</code>(id,<code>object</code>)
  * </ul>
@@ -60,6 +59,8 @@ public class CmsCategoryDirective extends AbstractTemplateDirective {
         Integer id = handler.getInteger("id");
         String code = handler.getString("code");
         boolean absoluteURL = handler.getBoolean("absoluteURL", true);
+        boolean containsAttribute = handler.getBoolean("containsAttribute", false);
+        containsAttribute = handler.inHttp() ? getAdvanced(handler) && containsAttribute : containsAttribute;
         SysSite site = getSite(handler);
         if (CommonUtils.notEmpty(id) || CommonUtils.notEmpty(code)) {
             CmsCategory entity;
@@ -72,17 +73,10 @@ public class CmsCategoryDirective extends AbstractTemplateDirective {
                 if (absoluteURL) {
                     CmsUrlUtils.initCategoryUrl(site, entity);
                 }
-                handler.put("object", entity);
-                if (handler.getBoolean("containsAttribute", false)) {
-                    CmsCategoryAttribute attribute = attributeService.getEntity(id);
-                    if (null != attribute) {
-                        Map<String, String> map = ExtendUtils.getExtendMap(attribute.getData());
-                        map.put("title", attribute.getTitle());
-                        map.put("keywords", attribute.getKeywords());
-                        map.put("description", attribute.getDescription());
-                        handler.put("attribute", map);
-                    }
+                if (containsAttribute) {
+                    entity.setAttribute(ExtendUtils.getAttributeMap(attributeService.getEntity(id)));
                 }
+                handler.put("object", entity);
                 handler.render();
             }
         } else {
@@ -90,14 +84,33 @@ public class CmsCategoryDirective extends AbstractTemplateDirective {
             if (CommonUtils.notEmpty(ids)) {
                 List<CmsCategory> entityList = service.getEntitys(ids);
                 Consumer<CmsCategory> consumer = null;
-                if (absoluteURL) {
-                    consumer = e -> CmsUrlUtils.initCategoryUrl(site, e);
+                if (containsAttribute) {
+                    List<CmsCategoryAttribute> attributeList = attributeService.getEntitys(ids);
+                    Map<Integer, CmsCategoryAttribute> attributeMap = CommonUtils.listToMap(attributeList,
+                            k -> k.getCategoryId());
+                    consumer = e -> {
+                        if (absoluteURL) {
+                            CmsUrlUtils.initCategoryUrl(site, e);
+                        }
+                        e.setAttribute(ExtendUtils.getAttributeMap(attributeMap.get(e.getId())));
+                    };
+                } else {
+                    if (absoluteURL) {
+                        consumer = e -> {
+                            CmsUrlUtils.initCategoryUrl(site, e);
+                        };
+                    }
                 }
                 Map<String, CmsCategory> map = CommonUtils.listToMap(entityList, k -> k.getId().toString(), consumer,
                         entity -> site.getId() == entity.getSiteId());
                 handler.put("map", map).render();
             }
         }
+    }
+
+    @Override
+    public boolean supportAdvanced() {
+        return true;
     }
 
     @Resource

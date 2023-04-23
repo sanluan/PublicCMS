@@ -94,11 +94,11 @@ public class SiteConfigComponent implements Config {
             extendFieldList.add(new SysExtendField(CONFIG_CATEGORY_TEMPLATE_PATH, INPUTTYPE_TEMPLATE, false,
                     getMessage(locale,
                             CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_CATEGORY_TEMPLATE_PATH)),
-                    null, "category.html"));
+                    null, "category/staticCategory.html"));
         }
         extendFieldList.add(new SysExtendField(CONFIG_CATEGORY_PATH, INPUTTYPE_CATEGORY_PATH, true,
                 getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_CATEGORY_PATH)), null,
-                site.isUseStatic() ? "category/${category.code}.html" : "category.html?id=${category.id}"));
+                site.isUseStatic() ? "category/${category.code}.html" : "content/category.html?id=${category.id}"));
 
         extendFieldList.add(new SysExtendField(CONFIG_DEFAULT_CONTENT_STATUS, INPUTTYPE_CONTENT_STATUS, true,
                 getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_DEFAULT_CONTENT_STATUS)),

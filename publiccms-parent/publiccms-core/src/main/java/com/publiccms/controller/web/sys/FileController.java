@@ -22,7 +22,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 import com.publiccms.common.annotation.Csrf;
-import com.publiccms.common.constants.CmsVersion;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CmsFileUtils;
@@ -79,7 +78,7 @@ public class FileController {
      * @param request
      * @return view name
      */
-    @PostMapping( "doUpload")
+    @PostMapping("doUpload")
     @Csrf
     @ResponseBody
     public Map<String, Object> upload(@RequestAttribute SysSite site, @SessionAttribute SysUser user, boolean privatefile,
@@ -165,11 +164,7 @@ public class FileController {
     public ResponseEntity<StreamingResponseBody> privatefile(@RequestAttribute SysSite site, long expiry, String sign,
             String filePath, String filename, HttpServletRequest request) {
         if (CommonUtils.notEmpty(sign) && expiry > System.currentTimeMillis()) {
-            Map<String, String> config = configDataComponent.getConfigData(site.getId(), SafeConfigComponent.CONFIG_CODE);
-            String signKey = config.get(SafeConfigComponent.CONFIG_PRIVATEFILE_KEY);
-            if (null == signKey) {
-                signKey = CmsVersion.getClusterId();
-            }
+            String signKey = safeConfigComponent.getSignKey(site.getId());
             String string = CmsFileUtils.getPrivateFileSignString(expiry, filePath);
             if (string.equalsIgnoreCase(VerificationUtils.decryptAES(VerificationUtils.base64Decode(sign), signKey))) {
                 HttpHeaders headers = new HttpHeaders();
