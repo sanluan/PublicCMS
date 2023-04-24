@@ -44,11 +44,12 @@ public class SysRecordService extends BaseService<SysRecord> {
             if (null == entity) {
                 entity = new SysRecord();
                 entity.setId(id);
+                entity.setData(data);
+                save(entity);
             } else {
+                entity.setData(data);
                 entity.setUpdateDate(CommonUtils.getDate());
             }
-            entity.setData(data);
-            saveOrUpdate(entity);
         }
         return entity;
     }

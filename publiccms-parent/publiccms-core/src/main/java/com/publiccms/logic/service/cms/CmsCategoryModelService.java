@@ -23,6 +23,7 @@ import com.publiccms.logic.dao.cms.CmsCategoryModelDao;
 @Service
 @Transactional
 public class CmsCategoryModelService extends BaseService<CmsCategoryModel> {
+    private String[] ignoreProperties = new String[] { "id", "siteId" };
 
     /**
      * @param siteId
@@ -49,6 +50,20 @@ public class CmsCategoryModelService extends BaseService<CmsCategoryModel> {
                 newlist.add(e);
             }
             save(newlist);
+        }
+    }
+
+    /**
+     * @param siteId
+     * @param entity
+     */
+    public void updateCategoryModel(short siteId, CmsCategoryModel entity) {
+        CmsCategoryModel oldEntity = getEntity(entity.getId());
+        if (null == oldEntity) {
+            entity.setSiteId(siteId);
+            save(entity);
+        } else {
+            update(oldEntity.getId(), entity, ignoreProperties);
         }
     }
 

@@ -36,7 +36,7 @@ public class CmsCategoryAttributeService extends BaseService<CmsCategoryAttribut
                 }
             }
             if (null != unsaveList) {
-                saveOrUpdate(unsaveList);
+                save(unsaveList);
             }
         }
     }

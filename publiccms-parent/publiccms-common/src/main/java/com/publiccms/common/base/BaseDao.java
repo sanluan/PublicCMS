@@ -196,14 +196,6 @@ public abstract class BaseDao<E> {
     }
 
     /**
-     * 保存或更新
-     *
-     * @param entity
-     */
-    public void saveOrUpdate(E entity) {
-        getSession().saveOrUpdate(init(entity));
-    }
-    /**
      * 保存
      *
      * @param entity

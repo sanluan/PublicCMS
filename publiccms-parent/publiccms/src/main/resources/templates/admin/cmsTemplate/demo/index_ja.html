@@ -51,6 +51,7 @@
             <a href="?locale=en">English</a>
         </#if>
         Copyright &copy; ${.now?string('yyyy')}
+        <@sys.record code="visit"><#assign history=object.data?eval_json/><p><@visit.dayList pageSize=1><#list page.list as a><#if a?is_first>今日の${.now?string('HH:mm')}までに${a.uv}回の訪問<#else>昨日の訪問は${a.uv}回</#if>、</#list></@visit.dayList>累積${history.uv}、${history.maxUvDate?number_to_date}には最大${history.maxUv}人でした</p></@sys.record>
     </footer>
     <script>
     var templatePath='${.current_template_name?keep_after('/')}';

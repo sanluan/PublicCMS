@@ -75,7 +75,11 @@ public class ConfigDataExchangeComponent extends AbstractDataExchange<SysConfigD
                 if (CommonUtils.notEmpty(data.getData())) {
                     data.setData(StringUtils.replace(data.getData(), "#SITEPATH#", site.getSitePath()));
                 }
-                service.saveOrUpdate(data);
+                if (null == oldEntity) {
+                    service.save(data);
+                } else {
+                    service.update(data.getId(), data);
+                }
             }
         }
     }

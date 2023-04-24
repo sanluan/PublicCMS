@@ -82,8 +82,7 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
                     if (null != cmsCategoryModelParameters.getCategoryModel()) {
                         cmsCategoryModelParameters.getCategoryModel().getId().setCategoryId(id);
                         if (cmsCategoryModelParameters.isUse()) {
-                            cmsCategoryModelParameters.getCategoryModel().setSiteId(siteId);
-                            categoryModelService.saveOrUpdate(cmsCategoryModelParameters.getCategoryModel());
+                            categoryModelService.updateCategoryModel(siteId, cmsCategoryModelParameters.getCategoryModel());
                         } else {
                             categoryModelService.delete(cmsCategoryModelParameters.getCategoryModel().getId());
                         }
@@ -94,25 +93,25 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
             CmsCategory entity = getEntity(id);
             if (null != entity) {
                 entity.setTagTypeIds(arrayToCommaDelimitedString(tagTypeIds));
-            }
-            if (CommonUtils.notEmpty(categoryParameters.getContentExtends()) || CommonUtils.notEmpty(entity.getExtendId())) {
-                if (null == extendService.getEntity(entity.getExtendId())) {
-                    SysExtend extend = new SysExtend("category", id);
-                    extendService.save(extend);
-                    entity.setExtendId(extend.getId());
+                if (CommonUtils.notEmpty(categoryParameters.getContentExtends()) || null != entity.getExtendId()) {
+                    if (null == extendService.getEntity(entity.getExtendId())) {
+                        SysExtend extend = new SysExtend("category", id);
+                        extendService.save(extend);
+                        entity.setExtendId(extend.getId());
+                    }
+                    extendFieldService.update(entity.getExtendId(), categoryParameters.getContentExtends());// 修改或增加内容扩展字段
                 }
-                extendFieldService.update(entity.getExtendId(), categoryParameters.getContentExtends());// 修改或增加内容扩展字段
-            }
-            Map<String, String> map = null;
-            if (null != categoryType && CommonUtils.notEmpty(categoryType.getExtendList())) {
-                attribute.setData(
-                        ExtendUtils.getExtendString(categoryParameters.getExtendData(), sitePath, categoryType.getExtendList()));
-            } else {
-                attribute.setData(null);
-            }
+                Map<String, String> map = null;
+                if (null != categoryType && CommonUtils.notEmpty(categoryType.getExtendList())) {
+                    attribute.setData(ExtendUtils.getExtendString(categoryParameters.getExtendData(), sitePath,
+                            categoryType.getExtendList()));
+                } else {
+                    attribute.setData(null);
+                }
 
-            saveEditorHistory(attributeService.getEntity(entity.getId()), siteId, entity.getId(), userId, categoryType, map);// 保存编辑器字段历史记录
-            attributeService.updateAttribute(id, attribute);
+                saveEditorHistory(attributeService.getEntity(entity.getId()), siteId, entity.getId(), userId, categoryType, map);// 保存编辑器字段历史记录
+                attributeService.updateAttribute(id, attribute);
+            }
         }
     }
 

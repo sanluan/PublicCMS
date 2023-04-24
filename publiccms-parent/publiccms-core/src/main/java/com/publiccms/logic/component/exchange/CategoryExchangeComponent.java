@@ -211,11 +211,9 @@ public class CategoryExchangeComponent extends AbstractDataExchange<CmsCategory,
                 }
                 if (null != data.getExtendList()) {
                     SysExtend extend = new SysExtend("category", entity.getId());
-                    extendService.saveOrUpdate(extend);
-
+                    extendService.save(extend);
                     entity.setExtendId(extend.getId());
                     service.update(entity, entity);
-
                     for (SysExtendField temp : data.getExtendList()) {
                         temp.getId().setExtendId(extend.getId());
                     }
@@ -228,14 +226,16 @@ public class CategoryExchangeComponent extends AbstractDataExchange<CmsCategory,
                     for (CmsCategoryModel temp : data.getModelList()) {
                         temp.setSiteId(site.getId());
                         temp.getId().setCategoryId(entity.getId());
+                        if (null == categoryModelService.update(temp.getId(), temp)) {
+                            categoryModelService.save(temp);
+                        }
                     }
-                    categoryModelService.saveOrUpdate(data.getModelList());
                 }
                 if (null != data.getExtendList()) {
                     Integer extendId;
                     if (null == oldentity.getExtendId()) {
                         SysExtend extend = new SysExtend("category", entity.getId());
-                        extendService.saveOrUpdate(extend);
+                        extendService.save(extend);
                         extendId = extend.getId();
                     } else {
                         extendId = oldentity.getExtendId();
@@ -258,7 +258,9 @@ public class CategoryExchangeComponent extends AbstractDataExchange<CmsCategory,
                     data.getAttribute()
                             .setData(StringUtils.replace(data.getAttribute().getData(), "#SITEPATH#", site.getSitePath()));
                 }
-                attributeService.saveOrUpdate(data.getAttribute());
+                if (null == attributeService.update(data.getAttribute().getCategoryId(), data.getAttribute())) {
+                    attributeService.save(data.getAttribute());
+                }
             }
             if (null != data.getChildList()) {
                 for (Category child : data.getChildList()) {
