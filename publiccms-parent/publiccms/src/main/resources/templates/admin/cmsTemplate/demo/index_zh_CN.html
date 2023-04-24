@@ -51,6 +51,7 @@
             <a href="?locale=ja">日本語</a>
         </#if>
         Copyright &copy; ${.now?string('yyyy')}
+        <@sys.record code="visit"><#assign history=object.data?eval_json/><p><@visit.dayList pageSize=1><#list page.list as a><#if a?is_first>今天${.now?string('HH:mm')}前有<#else>昨天</#if>${a.uv}人访问，</#list></@visit.dayList>累计${history.uv}人，${history.maxUvDate?number_to_date}最高${history.maxUv}人</p></@sys.record>
     </footer>
     <script>
     var templatePath='${.current_template_name?keep_after('/')}';

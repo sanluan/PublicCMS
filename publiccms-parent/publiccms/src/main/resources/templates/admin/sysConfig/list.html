@@ -11,7 +11,7 @@
             <tr>
                 <th width="200"><@t.page 'code'/></th>
                 <th><@t.page 'description'/></th>
-                <th width="200"><@t.page 'operate'/></th>
+                <th width="300"><@t.page 'operate'/></th>
             </tr>
         </thead>
         <tbody>
@@ -21,7 +21,7 @@
                 <td>${(a.description)!}</td>
                 <td class="wrap">
                     <a href="sysConfig/add.html?code=${a.code}" class="edit btnText blue" target="navTab" rel="sysConfig/edit"><i class="icon-edit"></i><@t.page 'config.edit'/></a>
-                    <a class="button" href="sysConfigData/edit.html?code=${code!}" target="navTab" rel="sysConfigData/edit"><i class="icon-edit icon-large"></i><@t.page 'config_data.edit'/></a>
+                    <a href="sysConfigData/edit.html?code=${a.code}" class="edit btnText" target="navTab" rel="sysConfigData/edit"><@t.page 'config_data.edit'/></a>
                 <#if a.customed>
                     <a href="sysConfig/delete?code=${a.code}&navTabId=sysConfig/list&_csrf=<@tools.csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><@t.page 'config.delete'/></a>
                 </#if>
