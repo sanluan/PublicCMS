@@ -120,7 +120,7 @@ public class PlaceExchangeComponent extends AbstractDataExchange<String, Place> 
                             }
                         }
                     } else {
-                        service.saveOrUpdate(entity);
+                        service.save(entity);
                     }
                     if (null != entity.getId() && null != placeData.getAttribute()) {
                         placeData.getAttribute().setPlaceId(entity.getId());
@@ -132,7 +132,7 @@ public class PlaceExchangeComponent extends AbstractDataExchange<String, Place> 
                             placeData.getAttribute().setData(
                                     StringUtils.replace(placeData.getAttribute().getData(), "#SITEPATH#", site.getSitePath()));
                         }
-                        attributeService.saveOrUpdate(placeData.getAttribute());
+                        attributeService.save(placeData.getAttribute());
                     }
                 }
             }

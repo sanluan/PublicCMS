@@ -189,7 +189,11 @@ public class ContentExchangeComponent extends AbstractDataExchange<CmsContent, C
             entity.setUserId(userId);
             entity.setDeptId(null != user ? user.getDeptId() : null);
             entity.setCategoryId(category.getId());
-            service.saveOrUpdate(entity);
+            if (null == oldentity) {
+                service.save(entity);
+            } else {
+                service.update(entity.getId(), entity);
+            }
             if (null != data.getAttribute()) {
                 data.getAttribute().setContentId(entity.getId());
                 if (needReplace(data.getAttribute().getText(), site.getDynamicPath())) {
@@ -208,7 +212,9 @@ public class ContentExchangeComponent extends AbstractDataExchange<CmsContent, C
                     data.getAttribute()
                             .setData(StringUtils.replace(data.getAttribute().getData(), "#SITEPATH#", site.getSitePath()));
                 }
-                attributeService.saveOrUpdate(data.getAttribute());
+                if (null == attributeService.update(data.getAttribute().getContentId(), data.getAttribute())) {
+                    attributeService.save(data.getAttribute());
+                }
             }
             if (null != data.getChildList()) {
                 for (Content child : data.getChildList()) {

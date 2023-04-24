@@ -62,24 +62,34 @@ public class DictionaryExchangeComponent extends AbstractDataExchange<CmsDiction
         entity.getId().setSiteId(site.getId());
         CmsDictionary oldentity = service.getEntity(entity.getId());
         if (null == oldentity || overwrite) {
-            service.saveOrUpdate(entity);
+            if (null == oldentity) {
+                service.save(entity);
+            } else {
+                service.update(entity.getId(), entity);
+            }
             if (null != data.getDataList()) {
                 for (CmsDictionaryData temp : data.getDataList()) {
                     temp.getId().setSiteId(site.getId());
+                    if (null == dataService.update(temp.getId(), temp)) {
+                        dataService.save(temp);
+                    }
                 }
-                dataService.saveOrUpdate(data.getDataList());
             }
             if (null != data.getExcludeList()) {
                 for (CmsDictionaryExclude temp : data.getExcludeList()) {
                     temp.getId().setSiteId(site.getId());
+                    if (null == excludeService.update(temp.getId(), temp)) {
+                        excludeService.save(temp);
+                    }
                 }
-                excludeService.saveOrUpdate(data.getExcludeList());
             }
             if (null != data.getExcludeValueList()) {
                 for (CmsDictionaryExcludeValue temp : data.getExcludeValueList()) {
                     temp.getId().setSiteId(site.getId());
+                    if (null == excludeValueService.update(temp.getId(), temp)) {
+                        excludeValueService.save(temp);
+                    }
                 }
-                excludeValueService.saveOrUpdate(data.getExcludeValueList());
             }
         }
     }

@@ -195,22 +195,12 @@ public abstract class BaseDao<E> {
     }
 
     /**
-     * 保存或更新
-     *
-     * @param entity
-     */
-    public void saveOrUpdate(E entity) {
-        getSession().saveOrUpdate(init(entity));
-    }
-
-    /**
      * 保存
      *
      * @param entity
-     * @return id
      */
-    public Serializable save(E entity) {
-        return getSession().save(init(entity));
+    public void save(E entity) {
+        getSession().persist(init(entity));
     }
 
     /**
@@ -223,7 +213,7 @@ public abstract class BaseDao<E> {
      */
     public void delete(E entity) {
         if (null != entity) {
-            getSession().delete(entity);
+            getSession().remove(entity);
         }
     }
 
@@ -237,7 +227,7 @@ public abstract class BaseDao<E> {
     public void delete(Serializable id) {
         E entity = getEntity(id);
         if (null != entity) {
-            getSession().delete(entity);
+            getSession().remove(entity);
         }
     }
 

@@ -8,7 +8,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.tools.CommonUtils;
@@ -132,32 +131,12 @@ public abstract class BaseService<E> {
     /**
      * @param entity
      */
-    @Transactional(isolation = Isolation.READ_COMMITTED)
-    public void saveOrUpdate(E entity) {
-        basedao.saveOrUpdate(entity);
-    }
-
-    /**
-     * @param entity
-     */
     public void save(E entity) {
         basedao.save(entity);
     }
 
     public long getId() {
         return basedao.getId();
-    }
-
-    /**
-     * @param entityList
-     */
-    @Transactional(isolation = Isolation.READ_COMMITTED)
-    public void saveOrUpdate(List<E> entityList) {
-        if (CommonUtils.notEmpty(entityList)) {
-            for (E entity : entityList) {
-                saveOrUpdate(entity);
-            }
-        }
     }
 
     /**
