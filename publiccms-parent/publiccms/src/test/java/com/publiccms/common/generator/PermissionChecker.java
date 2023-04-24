@@ -17,6 +17,8 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
@@ -26,6 +28,7 @@ import com.publiccms.common.tools.CommonUtils;
  * 
  */
 public class PermissionChecker {
+    protected static final Log log = LogFactory.getLog(PermissionChecker.class);
     public static final String SQL_FILE = "../publiccms-core/src/main/resources/initialization/sql/init.sql";
     public static final String SQL_START = "Records of sys_module";
     public static final String SQL_END = "Table structure for sys_module_lang";
@@ -50,10 +53,10 @@ public class PermissionChecker {
             getPageUrl(TEMPLATES, URL_PATTERNS, pageUrlSet);
             for (String url : pageUrlSet) {
                 if (!authorizedUrlSet.contains(url)) {
-                    System.out.println(CommonUtils.joinString(url," 没有添加到系统权限中"));
+                    log.info(CommonUtils.joinString(url," 没有添加到系统权限中"));
                 }
             }
-            System.out.println("检查完毕！");
+            log.info("检查完毕！");
         } catch (IOException e) {
             e.printStackTrace();
         }

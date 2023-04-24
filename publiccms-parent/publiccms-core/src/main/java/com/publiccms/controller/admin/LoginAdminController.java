@@ -17,10 +17,10 @@ import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
@@ -242,7 +242,7 @@ public class LoginAdminController {
      * @param response
      * @return view name
      */
-    @RequestMapping(value = "logout", method = RequestMethod.GET)
+    @GetMapping(value = "logout")
     public String logout(Long userId, HttpServletRequest request, HttpServletResponse response) {
         SysUser admin = ControllerUtils.getAdminFromSession(request.getSession());
         if (null != userId && null != admin && userId.equals(admin.getId())) {

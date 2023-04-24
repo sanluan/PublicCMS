@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
@@ -14,6 +16,7 @@ import org.hibernate.tool.hbm2x.POJOExporter;
 import org.hibernate.tool.internal.metadata.JdbcMetadataDescriptor;
 
 public class EntitysGenerator {
+    protected static final Log log = LogFactory.getLog(EntitysGenerator.class);
 
     public static void main(String[] args) {
         String packageName = "com.publiccms.entities";
@@ -35,7 +38,7 @@ public class EntitysGenerator {
         pojoExporter.getProperties().setProperty("ejb3", String.valueOf(true));
         pojoExporter.getProperties().setProperty("jdk5", String.valueOf(true));
         pojoExporter.start();
-        System.out.println("Generated successfully, please refresh the project!");
+        log.info("Generated successfully, please refresh the project!");
         System.exit(0);
     }
 

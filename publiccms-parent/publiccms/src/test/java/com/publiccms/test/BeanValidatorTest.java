@@ -8,6 +8,8 @@ import javax.validation.Validator;
 import javax.validation.constraints.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.validator.HibernateValidator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -16,101 +18,102 @@ import org.junit.jupiter.api.Test;
 import com.publiccms.entities.cms.CmsPlace;
 
 @DisplayName("css test case")
-public class BeanValidatorTest {
+class BeanValidatorTest {
+    protected final Log log = LogFactory.getLog(getClass());
     private static Validator validator = Validation.byProvider(HibernateValidator.class).configure().failFast(false)
             .buildValidatorFactory().getValidator();
 
     @Test
     @DisplayName("null test case")
-    public void nullTest() {
+    void nullTest() {
         CmsPlace bean = new CmsPlace();
         bean.setTitle(null);
         Set<ConstraintViolation<CmsPlace>> set = validator.validate(bean);
-        System.out.println(set);
+        log.info(set);
         Assertions.assertFalse(set.isEmpty(), set.toString());
     }
 
     @Test
     @DisplayName("px test case")
-    public void widthPx() {
+    void widthPx() {
         testValue("100px");
     }
 
     @Test
     @DisplayName("percent test case")
-    public void widthPercent() {
+    void widthPercent() {
         testValue("100%");
     }
 
     @Test
     @DisplayName("rem test case")
-    public void widthRem() {
+    void widthRem() {
         testValue("100rem");
     }
 
     @Test
     @DisplayName("hex color test case")
-    public void colorHex1() {
+    void colorHex1() {
         testValue("#FFF");
     }
 
     @Test
     @DisplayName("script test case")
-    public void script() {
+    void script() {
         testValue("<script>", false);
     }
 
     @Test
     @DisplayName("- test case")
-    public void split1() {
+    void split1() {
         testValue("-", false);
     }
 
     @Test
     @DisplayName(", test case")
-    public void split2() {
+    void split2() {
         testValue(",", false);
     }
 
     @Test
     @DisplayName("empty string test case")
-    public void split3() {
+    void split3() {
         testValue(" ", false);
     }
 
     @Test
     @DisplayName("named color test case")
-    public void colorName() {
+    void colorName() {
         testValue("gray");
     }
 
     @Test
     @DisplayName("hex color test case")
-    public void colorHex2() {
+    void colorHex2() {
         testValue("#FF0000");
     }
 
     @Test
     @DisplayName("hex color test case")
-    public void colorHex3() {
+    void colorHex3() {
         testValue("#FF000000");
     }
 
     @Test
     @DisplayName("hex color test case")
-    public void colorRgb1() {
+    void colorRgb1() {
         testValue("rgb (255 , 255 , 255)");
     }
 
     @Test
     @DisplayName("hex color test case")
-    public void colorRgba() {
+    void colorRgba() {
         testValue("rgba(250, 250, 250, 0.4)");
     }
 
     @Test
     @DisplayName("hex color test case")
-    public void width() {
+    void width() {
         testValue(new CssBoxProperties("10px", "auto"));
     }
 

@@ -16,6 +16,8 @@ import java.util.Set;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -56,7 +58,8 @@ import config.spring.ApplicationConfig;
 @DisplayName("Content batch import")
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = ApplicationConfig.class)
-public class ContentBatchImport {
+class ContentBatchImportTest {
+    protected static final Log log = LogFactory.getLog(ContentBatchImportTest.class);
     @Resource
     private CmsContentService contentService;
     @Resource
@@ -155,7 +158,7 @@ public class ContentBatchImport {
             }
             EntityUtils.consume(entity);
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            log.info(e.getMessage());
             return getUrl(url);
         }
         return fileName;
@@ -244,7 +247,7 @@ public class ContentBatchImport {
                     }
                     String images = getCellValue(row.getCell(9));
                     if (p.getName().equals("西林红茶")) {
-                        System.out.println(images);
+                        log.info(images);
                     }
                     if (CommonUtils.notEmpty(images)) {
                         for (String temp : images.split(",")) {

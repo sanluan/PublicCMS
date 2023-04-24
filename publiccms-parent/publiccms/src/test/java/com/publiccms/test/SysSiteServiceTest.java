@@ -3,6 +3,8 @@ package com.publiccms.test;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,7 +29,9 @@ import config.spring.ApplicationConfig;
 @DisplayName("SysSite test case")
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = ApplicationConfig.class)
-public class SysSiteServiceTest {
+class SysSiteServiceTest {
+    protected final Log log = LogFactory.getLog(getClass());
+    
     @BeforeAll
     public static void init() {
         // 不进入安装程序 数据目录有 database.properties才能进行测试
@@ -45,7 +49,7 @@ public class SysSiteServiceTest {
      */
     @Test
     @DisplayName("site insert test case")
-    public void insertTest() {
+    void insertTest() {
         SysSite entity = new SysSite("test", false, "/webfile/", false, "/", false);
         siteService.save(entity);
     }
@@ -56,10 +60,10 @@ public class SysSiteServiceTest {
     @SuppressWarnings("unchecked")
     @Test
     @DisplayName("site query test case")
-    public void queryTest() {
+    void queryTest() {
         PageHandler page = siteService.getPage(null, null, null, null, null);
         for (SysSite site : (List<SysSite>) page.getList()) {
-            System.out.println(site.getName());
+            log.info(site.getName());
         }
     }
 
@@ -68,10 +72,10 @@ public class SysSiteServiceTest {
      */
     @Test
     @DisplayName("mybatis query test case")
-    public void mybatisTest() {
+    void mybatisTest() {
         List<Map<String, Object>> list = sqlService.select("select * from sys_site");
         for (Map<String, Object> map : list) {
-            System.out.println(map.get("name"));
+            log.info(map.get("name"));
         }
     }
 }

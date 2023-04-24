@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -35,7 +37,8 @@ import config.spring.ApplicationConfig;
 @DisplayName("Content batch import")
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = ApplicationConfig.class)
-public class ContentCoverCatch {
+class ContentCoverCatchTest {
+    protected final Log log = LogFactory.getLog(getClass());
     @Resource
     private CmsContentService contentService;
 
@@ -73,7 +76,7 @@ public class ContentCoverCatch {
         }
     }
 
-    public static String getUrl(String url) {
+    public String getUrl(String url) {
         String fileName = null;
         try (CloseableHttpClient httpclient = HttpClients.custom().setDefaultRequestConfig(Constants.defaultRequestConfig)
                 .build()) {
@@ -93,7 +96,7 @@ public class ContentCoverCatch {
             }
             EntityUtils.consume(entity);
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            log.info(e.getMessage());
             return getUrl(url);
         }
         return fileName;
