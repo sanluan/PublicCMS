@@ -40,7 +40,7 @@ import freemarker.template.TemplateException;
  * <pre>
 &lt;script&gt;
  $.getJSON('${site.dynamicPath}api/directive/visit/dayList?hourAnalytics=false&amp;appToken=接口访问授权Token', function(data){    
-   console.log(data.totalCount);
+   console.log(data.page.totalCount);
  });
  &lt;/script&gt;
  * </pre>

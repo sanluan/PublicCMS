@@ -29,7 +29,7 @@ import freemarker.template.TemplateException;
  * <pre>
 &lt;script&gt;
  $.getJSON('${site.dynamicPath}api/directive/task/indexContent?id=1&amp;appToken=接口访问授权Token', function(data){    
-   console.log(data.totalCount);
+   console.log(data.page.totalCount);
  });
  &lt;/script&gt;
  * </pre>
