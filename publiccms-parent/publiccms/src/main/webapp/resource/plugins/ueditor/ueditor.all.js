@@ -1,7 +1,7 @@
 /*!
  * UEditor
  * version: ueditor
- * build: Thu Mar 16 2023 17:07:21 GMT+0800 (中国标准时间)
+ * version: 1.4.5
  */
 
 (function(){
@@ -25,7 +25,7 @@ UE.I18N = {};
 
 UE._customizeUI = {};
 
-UE.version = "1.4.4";
+UE.version = "1.4.5";
 
 var dom = UE.dom = {};
 
@@ -14789,12 +14789,34 @@ UE.plugins['paste'] = function () {
     function extractFromRtf( rtfContent ) {
         var ret = [],
             rePictureHeader = /\{\\pict[\s\S]+?\\bliptag\-?\d+(\\blipupi\-?\d+)?(\{\\\*\\blipuid\s?[\da-fA-F]+)?[\s\}]*?/,
+            wpsPictureHeader = /\{\\pict[\s\S]+?(gblip|metafile\d+)\s+(\{\\\*\\blipuid\s+[\da-fA-F]+)?\}+?/,
             rePicture = new RegExp( '(?:(' + rePictureHeader.source + '))([\\da-fA-F\\s]+)\\}', 'g' ),
+            wpsPicture = new RegExp( '(?:(' + wpsPictureHeader.source + '))([\\da-fA-F]+)\\}', 'g' ),
             wholeImages,
             imageType;
 
         wholeImages = rtfContent.match( rePicture );
         if ( !wholeImages ) {
+            wholeImages = rtfContent.match( wpsPicture );
+            if(!wholeImages){
+                return ret;
+            }
+            for ( var i = 0; i < wholeImages.length; i++ ) {
+                if ( wpsPictureHeader.test( wholeImages[ i ] ) ) {
+                    if ( wholeImages[ i ].indexOf( '\\pngblip' ) !== -1 ) {
+                        imageType = 'image/png';
+                    } else if ( wholeImages[ i ].indexOf( '\\jpegblip' ) !== -1 ) {
+                        imageType = 'image/jpeg';
+                    } else {
+                        continue;
+                    }
+
+                    ret.push( {
+                        hex: imageType ? wholeImages[ i ].replace( wpsPictureHeader, '' ).replace( /[^\da-fA-F]/g, '' ) : null,
+                        type: imageType
+                    } );
+                }
+            }
             return ret;
         }
 
