@@ -37,7 +37,7 @@ import freemarker.template.TemplateException;
  * <pre>
   &lt;script&gt;
    $.getJSON('${site.dynamicPath}api/directive/cms/facetSearch?word=cms&amp;pageSize=10', function(data){    
-     console.log(data.totalCount);
+     console.log(data.page.totalCount);
    });
    &lt;/script&gt;
  * </pre>

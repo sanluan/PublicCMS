@@ -64,7 +64,7 @@ import freemarker.template.TemplateException;
  * <pre>
 &lt;script&gt;
 $.getJSON('${site.dynamicPath!}api/myContentList?pageSize=10&amp;authToken=用户登录授权&amp;authUserId=1', function(data){
-    console.log(data.totalCount);
+    console.log(data.page.totalCount);
 });
 &lt;/script&gt;
  * </pre>

@@ -5,7 +5,7 @@
         <textarea name="content">${(a.text)!}</textarea>
     </dl>
     <script>
-    $.bringBack({"<#if 'content'=a.itemType>${(a.fieldName)!'text'}<#else>value</#if>":$('textarea[name=content]',$.pdialog.getCurrent()).val()});
+    $.bringBack({"<#if 'content'=a.itemType>${(a.fieldName)!'text'}<#else>extendData\[${(a.fieldName)!'text'}\]</#if>":$('textarea[name=content]',$.pdialog.getCurrent()).val()});
     </script>
 </div>
 <div class="formBar">

@@ -44,7 +44,7 @@ import freemarker.template.TemplateException;
  * <pre>
 &lt;script&gt;
 $.getJSON('${site.dynamicPath}api/directive/trade/refundList?pageSize=10&amp;authToken=用户登录Token&amp;authUserId=用户id', function(data){    
- console.log(data.totalCount);
+ console.log(data.page.totalCount);
 });
 &lt;/script&gt;
  * </pre>

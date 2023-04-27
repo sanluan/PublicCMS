@@ -101,7 +101,6 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
                     }
                     extendFieldService.update(entity.getExtendId(), categoryParameters.getContentExtends());// 修改或增加内容扩展字段
                 }
-                Map<String, String> map = null;
                 if (null != categoryType && CommonUtils.notEmpty(categoryType.getExtendList())) {
                     attribute.setData(ExtendUtils.getExtendString(categoryParameters.getExtendData(), sitePath,
                             categoryType.getExtendList()));
@@ -109,7 +108,8 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
                     attribute.setData(null);
                 }
 
-                saveEditorHistory(attributeService.getEntity(entity.getId()), siteId, entity.getId(), userId, categoryType, map);// 保存编辑器字段历史记录
+                saveEditorHistory(attributeService.getEntity(entity.getId()), siteId, entity.getId(), userId, categoryType,
+                        categoryParameters.getExtendData());// 保存编辑器字段历史记录
                 attributeService.updateAttribute(id, attribute);
             }
         }
@@ -138,13 +138,11 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
 
     private void saveEditorHistory(CmsCategoryAttribute oldAttribute, short siteId, int entityId, long userId,
             CmsCategoryType categoryType, Map<String, String> map) {
-        if (null != oldAttribute) {
-            if (CommonUtils.notEmpty(oldAttribute.getData()) && null != categoryType
-                    && CommonUtils.notEmpty(categoryType.getExtendList())) {
-                Map<String, String> oldMap = ExtendUtils.getExtendMap(oldAttribute.getData());
-                editorHistoryService.saveHistory(siteId, userId, CmsEditorHistoryService.ITEM_TYPE_CATEGORY_EXTEND,
-                        String.valueOf(entityId), oldMap, map, categoryType.getExtendList());
-            }
+        if (null != oldAttribute && (CommonUtils.notEmpty(oldAttribute.getData()) && null != categoryType
+                && CommonUtils.notEmpty(categoryType.getExtendList()))) {
+            Map<String, String> oldMap = ExtendUtils.getExtendMap(oldAttribute.getData());
+            editorHistoryService.saveHistory(siteId, userId, CmsEditorHistoryService.ITEM_TYPE_CATEGORY_EXTEND,
+                    String.valueOf(entityId), oldMap, map, categoryType.getExtendList());
         }
     }
 

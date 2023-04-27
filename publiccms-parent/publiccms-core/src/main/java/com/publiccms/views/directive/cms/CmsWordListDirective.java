@@ -1,6 +1,6 @@
 package com.publiccms.views.directive.cms;
 
-// Generated 2016-3-22 11:21:35 by com.publiccms.common.source.SourceGenerator
+// Generated 2016-3-22 11:21:35 by com.publiccms.common.generator.SourceGenerator
 
 import java.io.IOException;
 
@@ -48,7 +48,7 @@ import com.publiccms.common.handler.RenderHandler;
  * <pre>
 &lt;script&gt;
 $.getJSON('${site.dynamicPath}api/directive/cms/wordList?userId=1&amp;pageSize=10', function(data){    
-console.log(data.totalCount);
+console.log(data.page.totalCount);
 });
 &lt;/script&gt;
  * </pre>

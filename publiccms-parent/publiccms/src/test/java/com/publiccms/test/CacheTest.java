@@ -9,6 +9,8 @@ import java.util.concurrent.TimeUnit;
 
 import jakarta.annotation.PreDestroy;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -16,12 +18,13 @@ import com.publiccms.common.cache.CacheEntity;
 import com.publiccms.common.cache.CacheEntityFactory;
 
 @DisplayName("cache test case")
-public class CacheTest {
+class CacheTest {
+    protected final Log log = LogFactory.getLog(getClass());
     private static ExecutorService pool = Executors.newFixedThreadPool(10);
 
     @Test
-    @DisplayName("generate category childIds test case")
-    public void main() {
+    @DisplayName("cache test case")
+    void cache() {
         try {
             CacheEntityFactory bean = new CacheEntityFactory("config/cache.properties");
             CacheEntity<String, String> wordCache = bean.createCacheEntity("word");
@@ -44,6 +47,8 @@ public class CacheTest {
 }
 
 class TestTask implements Runnable {
+
+    protected final Log log = LogFactory.getLog(getClass());
     CacheEntity<String, String> wordCache;
 
     public TestTask(CacheEntity<String, String> wordCache) {
@@ -66,7 +71,7 @@ class TestTask implements Runnable {
         for (int i = 0; i <= 100000; i++) {
             List<String> aa = wordCache.put(getRandomString(20), getRandomString(20));
             if (null != aa) {
-                System.out.println(aa.size());
+                log.info(aa.size());
             }
         }
     }

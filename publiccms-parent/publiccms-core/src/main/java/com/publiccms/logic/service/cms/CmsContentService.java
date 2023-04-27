@@ -211,18 +211,17 @@ public class CmsContentService extends BaseService<CmsContent> {
 
             List<SysExtendField> modelExtendList = cmsModel.getExtendList();
             List<SysExtendField> categoryExtendList = null;
-            Map<String, String> map = contentParameters.getExtendData();
             if (null != extendId && null != extendService.getEntity(extendId)) {
                 categoryExtendList = extendFieldService.getList(extendId, null, null);
             }
 
-            dealAttribute(entity, site, modelExtendList, categoryExtendList, map, cmsModel,
+            dealAttribute(entity, site, modelExtendList, categoryExtendList, contentParameters.getExtendData(), cmsModel,
                     entity.isHasFiles() ? contentParameters.getFiles() : null,
                     entity.isHasImages() ? contentParameters.getImages() : null,
                     entity.isHasProducts() ? contentParameters.getProducts() : null, attribute);
 
             saveEditorHistory(attributeService.getEntity(entity.getId()), attribute, site.getId(), entity.getId(), userId,
-                    modelExtendList, categoryExtendList, map);// 保存编辑器字段历史记录
+                    modelExtendList, categoryExtendList, contentParameters.getExtendData());// 保存编辑器字段历史记录
 
             attributeService.updateAttribute(entity.getId(), attribute);// 更新保存扩展字段，文本字段
             cmsContentRelatedService.update(entity.getId(), userId, contentParameters.getContentRelateds());// 更新保存推荐内容
@@ -524,9 +523,9 @@ public class CmsContentService extends BaseService<CmsContent> {
             for (CmsCategory c : categoryList) {
                 if (null != c && !category.getId().equals(c.getId())) {
                     CmsContent quote = new CmsContent(entity.getSiteId(), entity.getTitle(), entity.getUserId(), c.getId(),
-                            entity.getModelId(), entity.isCopied(), true, entity.isHasImages(),
-                            entity.isHasFiles(), entity.isHasProducts(), entity.isHasStatic(), 0, 0, 0, BigDecimal.ZERO, 0, 0,
-                            entity.getPublishDate(), entity.getCreateDate(), 0, entity.getStatus(), false);
+                            entity.getModelId(), entity.isCopied(), true, entity.isHasImages(), entity.isHasFiles(),
+                            entity.isHasProducts(), entity.isHasStatic(), 0, 0, 0, BigDecimal.ZERO, 0, 0, entity.getPublishDate(),
+                            entity.getCreateDate(), 0, entity.getStatus(), false);
                     quote.setUrl(entity.getUrl());
                     quote.setDescription(entity.getDescription());
                     quote.setAuthor(entity.getAuthor());

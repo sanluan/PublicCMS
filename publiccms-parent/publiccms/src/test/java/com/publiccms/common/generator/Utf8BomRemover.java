@@ -9,11 +9,14 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
 
 public class Utf8BomRemover {
+    protected static final Log log = LogFactory.getLog(Utf8BomRemover.class);
     public static void main(String[] args) throws IOException {
         Files.walkFileTree(new File(new File(Constants.BLANK).getAbsolutePath()).getParentFile().toPath(),
                 new SimpleFileVisitor<Path>() {
@@ -32,7 +35,7 @@ public class Utf8BomRemover {
             byte[] nbs = new byte[bs.length - 3];
             System.arraycopy(bs, 3, nbs, 0, nbs.length);
             FileUtils.writeByteArrayToFile(file, nbs);
-            System.out.println(CommonUtils.joinString("Remove BOM: ", file.toString()));
+            log.info(CommonUtils.joinString("Remove BOM: ", file.toString()));
         }
     }
 }

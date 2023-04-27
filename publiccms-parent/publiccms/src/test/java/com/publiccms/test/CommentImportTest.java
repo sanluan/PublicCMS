@@ -25,7 +25,7 @@ import jakarta.annotation.Resource;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = ApplicationConfig.class)
-public class CommentImportTest {
+class CommentImportTest {
     @BeforeAll
     public static void init() {
         // 不进入安装程序 数据目录有 database.properties才能进行测试

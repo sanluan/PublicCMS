@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,6 +29,8 @@ import config.spring.ApplicationConfig;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = ApplicationConfig.class)
 public class HqlTest {
+    protected final Log log = LogFactory.getLog(getClass());
+    
     @BeforeAll
     public static void init() {
         // 不进入安装程序 数据目录有 database.properties才能进行测试
@@ -42,13 +46,13 @@ public class HqlTest {
      */
     @Test
     @DisplayName("custom bean hql query test case")
-    public void beanTest() {
+    void beanTest() {
         Map<String, Object> parameters = new HashMap<>();
         String hql = "select new com.publiccms.test.Bean(content.id,content.title,category.name) from CmsContent content,CmsCategory category where content.categoryId=category.id";
         PageHandler page = hqlService.getPage(hql, parameters, 1, 5);
         for (Object o : page.getList()) {
             Bean bean = (Bean) o;
-            System.out.println(bean);
+            log.info(bean);
         }
     }
 
@@ -57,14 +61,14 @@ public class HqlTest {
      */
     @Test
     @DisplayName("map hql query test case")
-    public void mapTest() {
+    void mapTest() {
         Map<String, Object> parameters = new HashMap<>();
         String hql = "select new map(content.id as id,content.title as title,category.name as name) from CmsContent content,CmsCategory category where content.categoryId=category.id";
         PageHandler page = hqlService.getPage(hql, parameters, 1, 5);
         for (Object o : page.getList()) {
             @SuppressWarnings("unchecked")
             Map<String, Object> map = (Map<String, Object>) o;
-            System.out.println(map);
+            log.info(map);
         }
     }
 
@@ -73,17 +77,17 @@ public class HqlTest {
      */
     @Test
     @DisplayName("array hql query test case")
-    public void arrayTest() {
+    void arrayTest() {
         Map<String, Object> parameters = new HashMap<>();
         String hql = "select content.id ,content.title,category.name from CmsContent content,CmsCategory category where content.categoryId=category.id";
         PageHandler page = hqlService.getPage(hql, parameters, 1, 5);
         for (Object o : page.getList()) {
             Object[] array = (Object[]) o;
             for (Object t : array) {
-                System.out.print(t);
-                System.out.print(",");
+                log.info(t);
+                log.info(",");
             }
-            System.out.println();
+            log.info(";");
         }
     }
 
@@ -92,14 +96,14 @@ public class HqlTest {
      */
     @Test
     @DisplayName("list hql query test case")
-    public void listTest() {
+    void listTest() {
         Map<String, Object> parameters = new HashMap<>();
         String hql = "select new list(content.id ,content.title,category.name) from CmsContent content,CmsCategory category where content.categoryId=category.id";
         PageHandler page = hqlService.getPage(hql, parameters, 1, 5);
         for (Object o : page.getList()) {
             @SuppressWarnings("unchecked")
             List<Object> list = (List<Object>) o;
-            System.out.println(list);
+            log.info(list);
         }
     }
 }

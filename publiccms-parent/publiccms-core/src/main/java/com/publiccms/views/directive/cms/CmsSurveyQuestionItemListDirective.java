@@ -42,7 +42,7 @@ import com.publiccms.common.handler.PageHandler;
  * <pre>
 &lt;script&gt;
 $.getJSON('${site.dynamicPath}api/directive/cms/surveyQuestionItemList?questionId=1&amp;pageSize=10', function(data){    
-  console.log(data.totalCount);
+  console.log(data.page.totalCount);
 });
 &lt;/script&gt;
  * </pre>

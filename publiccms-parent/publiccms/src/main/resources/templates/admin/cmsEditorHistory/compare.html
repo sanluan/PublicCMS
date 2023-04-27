@@ -31,7 +31,7 @@
     </div>
     <script>
     $('form',navTab.getCurrentPanel()).trigger(JUI.eventType.editorSync);
-    var fieldName = <#if 'content'=a.itemType>"${(a.fieldName)!'text'}";<#else>$('[value=${(a.fieldName)!"text"}]',navTab.getCurrentPanel()).attr('name').replace('.name','.value');</#if>
+    var fieldName = "<#if 'content'=a.itemType>${(a.fieldName)!'text'}<#else>extendData[${(a.fieldName)!'text'}]</#if>";
     $('textarea[name=new]',$.pdialog.getCurrent()).val($('[name='+escapeJquery(fieldName)+']',navTab.getCurrentPanel()).val());
     </script>
 </div>

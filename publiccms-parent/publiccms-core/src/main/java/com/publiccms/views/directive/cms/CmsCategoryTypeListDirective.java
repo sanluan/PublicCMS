@@ -34,7 +34,7 @@ import freemarker.template.TemplateException;
  * <pre>
   &lt;script&gt;
    $.getJSON('${site.dynamicPath}api/directive/cms/categoryTypeList', function(data){    
-     console.log(data.totalCount);
+     console.log(data.page.totalCount);
    });
    &lt;/script&gt;
  * </pre>

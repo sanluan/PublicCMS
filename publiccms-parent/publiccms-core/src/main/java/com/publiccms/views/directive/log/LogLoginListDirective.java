@@ -47,7 +47,7 @@ import com.publiccms.common.handler.RenderHandler;
 * <pre>
   &lt;script&gt;
    $.getJSON('${site.dynamicPath}api/directive/log/loginList?pageSize=10&amp;appToken=接口访问授权Token', function(data){    
-     console.log(data.totalCount);
+     console.log(data.page.totalCount);
    });
    &lt;/script&gt;
 * </pre>

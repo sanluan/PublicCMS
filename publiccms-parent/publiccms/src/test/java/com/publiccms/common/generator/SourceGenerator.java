@@ -17,6 +17,8 @@ import java.util.Set;
 import jakarta.persistence.Entity;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import com.publiccms.common.constants.Constants;
 import com.publiccms.common.generator.annotation.GeneratorColumn;
@@ -35,6 +37,7 @@ import freemarker.template.TemplateException;
  *
  */
 public class SourceGenerator {
+    protected static final Log log = LogFactory.getLog(SourceGenerator.class);
 
     /**
      * @param arg
@@ -149,7 +152,7 @@ public class SourceGenerator {
         String base = CommonUtils.joinString(basePackage, Constants.DOT, ENTITY_BASE_PACKAGE, Constants.DOT);
         String entitiesPackage = c.getPackage().getName().substring((base).length(), c.getPackage().getName().length());
 
-        System.out.println(CommonUtils.joinString("entity:", base, entitiesPackage, Constants.DOT, name));
+        log.info(CommonUtils.joinString("entity:", base, entitiesPackage, Constants.DOT, name));
         Map<String, Object> model = new HashMap<>();
 
         String entityPack = CommonUtils.joinString(ENTITY_BASE_PACKAGE, Constants.DOT, entitiesPackage);
@@ -263,11 +266,11 @@ public class SourceGenerator {
             FreeMarkerUtils.generateFileByFile("html/language.ftl", CommonUtils.joinString(WEB_BASE_PATH, "language/operate.txt"),
                     config, model, overwrite, true);
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            log.info(e.getMessage());
         } catch (TemplateException e) {
-            System.out.println(e.getMessage());
+            log.info(e.getMessage());
         }
-        System.out.println(CommonUtils.joinString("file path: ", new File("").getAbsolutePath()));
+        log.info(CommonUtils.joinString("file path: ", new File("").getAbsolutePath()));
     }
 
     private Configuration config;
