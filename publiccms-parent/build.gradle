@@ -32,12 +32,12 @@ subprojects {
         servletVersion = "4.0.1"
         // http://mvnrepository.com/artifact/org.springframework/spring-core
         // https://spring.io/projects/spring-framework
-        springVersion = "5.3.26"
+        springVersion = "5.3.27"
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
         // https://spring.io/projects/spring-boot
-        springBootVersion = "2.7.10"
+        springBootVersion = "2.7.11"
         // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine
-        junitVersion = "5.9.2"
+        junitVersion = "5.9.3"
         // http://mvnrepository.com/artifact/org.hibernate/hibernate-core
         // http://hibernate.org/orm/downloads/
         hibernateVersion = "5.6.12.Final"
@@ -61,7 +61,7 @@ subprojects {
         // https://mvnrepository.com/artifact/org.mybatis.dynamic-sql/mybatis-dynamic-sql
         dynamicSqlVersion = "1.4.1"
         // http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
-        jacksonVersion = "2.14.2"
+        jacksonVersion = "2.15.0"
         // http://mvnrepository.com/artifact/org.freemarker/freemarker
         freemarkerVersion = "2.3.32"
         // https://mvnrepository.com/artifact/org.apache.lucene/lucene-analyzers-smartcn
@@ -71,9 +71,10 @@ subprojects {
         // http://mvnrepository.com/artifact/org.quartz-scheduler/quartz
         quartzVersion = "2.3.2"
         // https://mvnrepository.com/artifact/com.zaxxer/HikariCP
+        // https://github.com/brettwooldridge/HikariCP
         hikariCPVersion = "4.0.3"
         // https://mvnrepository.com/artifact/com.mysql/mysql-connector-j
-        mysqlVersion = "8.0.32"
+        mysqlVersion = "8.0.33"
         // http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
         // http://hc.apache.org/downloads.cgi
         httpclientVersion = "4.5.14"
