@@ -305,7 +305,7 @@
                         var $batchButton = $("<label><a class=\"button\" lookupGroup=\"\" href=\""+batchUrl+"\" width=\"1000\" height=\"600\" >"+batchButtonTxt+"</a></label>").initUI().appendTo($caption).find("a");
                         $batchButton.click(function(){
                             _lookup = $.extend(_lookup, {
-                                nextButton : $addBut
+                                nextButton : $addBut, suffix: $table.attr("batchSuffix") || ""
                             });
                         });
                     } else {
