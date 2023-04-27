@@ -235,6 +235,14 @@ public class CommonUtils {
     public static boolean empty(Number value) {
         return null == value;
     }
+    
+    /**
+     * @param value
+     * @return 是否为空
+     */
+    public static boolean empty(Map<?, ?> value) {
+        return null == value || value.isEmpty();
+    }
 
     /**
      * @param value

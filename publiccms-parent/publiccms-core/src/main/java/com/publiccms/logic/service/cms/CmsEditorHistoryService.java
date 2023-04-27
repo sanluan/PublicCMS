@@ -50,18 +50,29 @@ public class CmsEditorHistoryService extends BaseService<CmsEditorHistory> {
         return dao.getPage(itemType, itemId, fieldName, userId, orderType, pageIndex, pageSize);
     }
 
+    /**
+     * save editor history
+     * 
+     * @param siteId
+     * @param userId
+     * @param itemType
+     * @param itemId
+     * @param oldMap
+     * @param extendData
+     * @param getExtendFieldList
+     */
     public void saveHistory(short siteId, long userId, String itemType, String itemId, Map<String, String> oldMap,
             Map<String, String> extendData, List<SysExtendField> getExtendFieldList) {
         if (CommonUtils.notEmpty(oldMap) && CommonUtils.notEmpty(getExtendFieldList)) {
             for (SysExtendField extendField : getExtendFieldList) {
-                if (ArrayUtils.contains(Config.INPUT_TYPE_EDITORS, extendField.getInputType())) {
-                    if (CommonUtils.notEmpty(oldMap.get(extendField.getId().getCode()))
-                            && (CommonUtils.notEmpty(extendData) || !oldMap.get(extendField.getId().getCode())
-                                    .equals(extendData.get(extendField.getId().getCode())))) {
-                        CmsEditorHistory history = new CmsEditorHistory(siteId, itemType, itemId, extendField.getId().getCode(),
-                                CommonUtils.getDate(), userId, extendData.get(extendField.getId().getCode()));
-                        save(history);
-                    }
+                if (ArrayUtils.contains(Config.INPUT_TYPE_EDITORS, extendField.getInputType())
+                        && (CommonUtils.notEmpty(oldMap.get(extendField.getId().getCode()))
+                                && (CommonUtils.empty(extendData) || !oldMap.get(extendField.getId().getCode())
+                                        .equals(extendData.get(extendField.getId().getCode()))))) {
+                    CmsEditorHistory history = new CmsEditorHistory(siteId, itemType, itemId, extendField.getId().getCode(),
+                            CommonUtils.getDate(), userId, extendData.get(extendField.getId().getCode()));
+                    save(history);
+
                 }
             }
         }
