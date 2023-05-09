@@ -121,6 +121,7 @@ CREATE TABLE `cms_content` (
   `score` decimal(10, 2) NOT NULL COMMENT '分数',
   `comments` int(11) NOT NULL COMMENT '评论数',
   `clicks` int(11) NOT NULL COMMENT '点击数',
+  `collections` int(11) NOT NULL COMMENT '收藏数',
   `publish_date` datetime NOT NULL COMMENT '发布日期',
   `expiry_date` datetime default NULL COMMENT '过期日期',
   `check_date` datetime default NULL COMMENT '审核日期',
@@ -411,6 +412,17 @@ CREATE TABLE `cms_tag_type` (
   KEY `cms_tag_type_site_id` (`site_id`, `name`)
 ) COMMENT='标签类型';
 
+-- ----------------------------
+-- Table structure for cms_user_collection
+-- ----------------------------
+DROP TABLE IF EXISTS `cms_user_collection`;
+CREATE TABLE `cms_user_collection`  (
+  `user_id` bigint(20) NOT NULL COMMENT '用户',
+  `content_id` bigint(20) NOT NULL COMMENT '内容',
+  `create_date` datetime NOT NULL COMMENT '创建日期',
+  PRIMARY KEY (`user_id`, `content_id`),
+  KEY `cms_user_collection_user_id`(`user_id`, `create_date`)
+) COMMENT = '用户收藏表';
 
 -- ----------------------------
 -- Table structure for cms_user_score

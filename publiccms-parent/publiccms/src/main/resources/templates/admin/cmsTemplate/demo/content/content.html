@@ -101,13 +101,18 @@
                 </div>
             </#if>
             <div class="text-center">
-                ${content.scores!} scores
+                ${content.scores!} scores ${content.collections!} collections
                 <#if user?has_content>
                     <@cms.userScore userId=user.id itemType='content' itemId=content.id>
                         <a href="javascript:unscore('${content.id}');">Cancel rating</a>
                         <#assign stared=true/>
                     </@cms.userScore>
                     <#if !stared?has_content><a href="javascript:score('${content.id}');">Score</a></#if>
+                    <@cms.userCollection userId=user.id contentId=content.id>
+                        <a href="javascript:uncollect('${content.id}');">Cancel collection</a>
+                        <#assign collected=true/>
+                    </@cms.userCollection>
+                    <#if !collected?has_content><a href="javascript:collect('${content.id}');">Collection</a></#if>
                 </#if>
             </div>
             <#if page?has_content && page.totalPage gt 1>
@@ -198,6 +203,18 @@ function score(contentId){
 }
 function unscore(contentId){
     $.getJSON('${site.dynamicPath!}score/unscore?itemId='+contentId+'&itemType=content&_csrf=<@tools.csrfToken/>', function(data){
+        alert("Cancel ok!");
+        location.reload();
+    });
+}
+function collect(contentId){
+    $.getJSON('${site.dynamicPath!}collection/collect?contentId='+contentId+'&_csrf=<@tools.csrfToken/>', function(data){
+        alert("Score ok!");
+        location.reload();
+    });
+}
+function uncollect(contentId){
+    $.getJSON('${site.dynamicPath!}collection/uncollect?contentId='+contentId+'&_csrf=<@tools.csrfToken/>', function(data){
         alert("Cancel ok!");
         location.reload();
     });

@@ -59,7 +59,7 @@ import freemarker.template.TemplateException;
  * <li><code>absoluteId</code>:id处理为引用内容的ID 默认为<code>true</code>
  * <li><code>containsAttribute</code>默认为<code>false</code>,http请求时为高级选项,为true时<code>content.attribute</code>为内容扩展数据<code>map</code>(字段编码,<code>value</code>)
  * <li><code>orderField</code>
- * 排序字段,【score:评分,comments:评论数,clicks:点击数,publishDate:发布日期,updateDate:更新日期,checkDate:审核日期】,默认置顶级别倒序、发布日期按orderType排序
+ * 排序字段,【score:评分,comments:评论数,clicks:点击数,collections收藏数,publishDate:发布日期,updateDate:更新日期,checkDate:审核日期】,默认置顶级别倒序、发布日期按orderType排序
  * <li><code>orderType</code>:排序类型,【asc:正序,desc:倒序】,默认为倒序
  * <li><code>firstResult</code>:开始位置,从1开始
  * <li><code>pageIndex</code>:页码,firstResult不存在时有效

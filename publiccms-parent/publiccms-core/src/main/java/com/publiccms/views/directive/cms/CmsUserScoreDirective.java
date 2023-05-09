@@ -33,9 +33,9 @@ import freemarker.template.TemplateException;
 * </ul>
 * 使用示例
 * <p>
-* &lt;@cms.userScore id=1&gt;${object.scores}&lt;/@cms.userScore&gt;
+* &lt;@cms.userScore userId=1 itemType="content" itemId=1&gt;${object.scores}&lt;/@cms.userScore&gt;
 * <p>
-* &lt;@cms.userScore ids='1,2,3'&gt;&lt;#list map as
+* &lt;@cms.userScore userId=1 itemType="content" itemIds='1,2,3'&gt;&lt;#list map as
 * k,v&gt;${k}:${v.scores}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.userScore&gt;
 * 
 * <pre>

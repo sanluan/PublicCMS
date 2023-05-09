@@ -49,3 +49,12 @@ ALTER TABLE `cms_survey` ADD COLUMN  `allow_anonymous` tinyint(1) NOT NULL COMME
 ALTER TABLE `cms_vote` ADD COLUMN  `allow_anonymous` tinyint(1) NOT NULL COMMENT '允许匿名' AFTER `description`;
 ALTER TABLE `cms_user_survey` ADD COLUMN  `anonymous` tinyint(1) NOT NULL COMMENT '匿名' AFTER `site_id`;
 ALTER TABLE `cms_user_vote` ADD COLUMN  `anonymous` tinyint(1) NOT NULL COMMENT '匿名' AFTER `user_id`;
+-- 05-09 --
+CREATE TABLE `cms_user_collection`  (
+  `user_id` bigint(20) NOT NULL COMMENT '用户',
+  `content_id` bigint(20) NOT NULL COMMENT '内容',
+  `create_date` datetime NOT NULL COMMENT '创建日期',
+  PRIMARY KEY (`user_id`, `content_id`),
+  KEY `cms_user_collection_user_id`(`user_id`, `create_date`)
+) COMMENT = '用户收藏表';
+ALTER TABLE `cms_content` ADD COLUMN `collections` int(11) NOT NULL COMMENT '收藏数' AFTER `clicks`;

@@ -184,7 +184,7 @@ public interface Config {
      * @param showAll
      * @return config code or null
      */
-    default String getCode(@SuppressWarnings("unused") short siteId, @SuppressWarnings("unused") boolean showAll) {
+    default String getCode(short siteId, boolean showAll) {
         return CONFIG_CODE_SITE;
     }
 
