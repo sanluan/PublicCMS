@@ -265,7 +265,9 @@
             this._current = null;
         },
         closeCurrent: function() {
-            this.close($.pdialog._current);
+            if($.pdialog._current){
+                this.close($.pdialog._current);
+            }
         },
         checkTimeout: function() {
             var $conetnt = $(".dialogContent", $.pdialog._current);
