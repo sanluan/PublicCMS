@@ -31,7 +31,7 @@ public class ExtendUtils {
     private ExtendUtils() {
     }
 
-    public static final Pattern HTML_PATTERN = Pattern.compile(">([^<]+)</[^a]");
+    public static final Pattern HTML_PATTERN = Pattern.compile(">([^<]+)</[^a|A]");
 
     /**
      * @param attribute

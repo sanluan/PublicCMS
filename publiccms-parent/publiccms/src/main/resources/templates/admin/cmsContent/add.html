@@ -4,7 +4,7 @@
         parentId=a.parentId!''
         categoryId=a.categoryId!''
         modelId=a.modelId!''
-        attribute=getContentAttribute(a.id)
+        attribute=getContentAttribute(a.id,false)
     />
 </@cms.content>
 <@cms.category id=categoryId!><#assign category=object/></@cms.category>
