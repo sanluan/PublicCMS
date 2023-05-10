@@ -22,7 +22,7 @@
         <table<#if 'customform'!=type> class="list nowrap itemDetail" addButton="<@t.page 'button.new_line'/>" batchButton="<@t.page 'button.batch_create'/>" batchUrl="common/batchCreate2.html?field1=${inputName?url}&fieldName1=key&field2=${inputName?url}&fieldName2=value&suffix1=key&suffix2=value"</#if>>
             <thead>
                 <tr>
-                    <th width="250"<#if 'customform'!=type> type="text" name="${inputName}" size="30" fieldClass="nocommas<#if extend.required> required</#if>"<#if extend.maxlength?has_content> fieldAttrs="{'maxlength':'${extend.maxlength}'}"</#if> suffix="key"</#if>><@t.page 'key'/></th>
+                    <th width="250"<#if 'customform'!=type> type="text" name="${inputName}" size="30" fieldClass="nocommas<#if extend.required> required</#if>" fieldAttrs="{'batchGroup':''<#if extend.maxlength?has_content>,'maxlength':'${extend.maxlength}'</#if>}" suffix="key"</#if>><@t.page 'key'/></th>
                     <th width="250"<#if 'customform'!=type> type="text" name="${inputName}" size="30" fieldClass="nocommas<#if extend.required> required</#if>"<#if extend.maxlength?has_content> fieldAttrs="{'maxlength':'${extend.maxlength}'}"</#if> suffix="value"</#if>><@t.page 'value'/></th>
                     <th width="60"<#if 'customform'!=type> type="del"</#if>><@t.page 'operate'/></th>
                 </tr>

@@ -20,19 +20,19 @@ import com.publiccms.common.handler.PageHandler;
 @Transactional
 public class CmsUserCollectionService extends BaseService<CmsUserCollection> {
 
-	/**
-	 * @param userId
-	 * @param contentId
-	 * @param pageIndex
-	 * @param pageSize
-	 * @return results page
-	 */
-	@Transactional(readOnly = true)
-	public PageHandler getPage(Long userId, Long contentId, Integer pageIndex, Integer pageSize) {
-		return dao.getPage(userId, contentId, pageIndex, pageSize);
-	}
+    /**
+     * @param userId
+     * @param contentId
+     * @param pageIndex
+     * @param pageSize
+     * @return results page
+     */
+    @Transactional(readOnly = true)
+    public PageHandler getPage(Long userId, Long contentId, Integer pageIndex, Integer pageSize) {
+        return dao.getPage(userId, contentId, pageIndex, pageSize);
+    }
 
-	@Resource
-	private CmsUserCollectionDao dao;
+    @Resource
+    private CmsUserCollectionDao dao;
 
 }

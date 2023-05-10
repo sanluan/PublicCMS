@@ -120,10 +120,4 @@ public class OSSComponent implements Config, AdminContextPath {
                 null));
         return extendFieldList;
     }
-
-    @Override
-    public boolean exportable() {
-        return false;
-    }
-
 }

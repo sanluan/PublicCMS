@@ -45,6 +45,7 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.config.ConfigComponent;
 import com.publiccms.logic.component.config.ConfigDataComponent;
+import com.publiccms.logic.component.config.ContentConfigComponent;
 import com.publiccms.logic.component.config.CorsConfigComponent;
 import com.publiccms.logic.component.exchange.ConfigDataExchangeComponent;
 import com.publiccms.logic.component.exchange.SiteExchangeComponent;
@@ -74,6 +75,8 @@ public class SysConfigDataAdminController {
     private ConfigDataComponent configDataComponent;
     @Resource
     private ConfigComponent configComponent;
+    @Resource
+    private ContentConfigComponent contentConfigComponent;
     @Resource
     private CorsConfigComponent corsConfigComponent;
     @Resource
@@ -148,6 +151,8 @@ public class SysConfigDataAdminController {
                 emailComponent.clear(site.getId());
             } else if (corsConfigComponent.getCode(site.getId()).equals(entity.getId().getCode())) {
                 corsConfigComponent.clear(site.getId());
+            } else if (contentConfigComponent.getCode(site.getId()).equals(entity.getId().getCode())) {
+                contentConfigComponent.clear(site.getId());
             }
 
         }

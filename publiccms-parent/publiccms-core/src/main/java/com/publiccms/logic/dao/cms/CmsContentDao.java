@@ -472,8 +472,8 @@ public class CmsContentDao extends BaseDao<CmsContent> {
             queryHandler.order("bean.clicks").append(orderType);
             break;
         case "collections":
-        	queryHandler.order("bean.collections").append(orderType);
-        	break;
+            queryHandler.order("bean.collections").append(orderType);
+            break;
         case "publishDate":
             queryHandler.order("bean.publishDate").append(orderType);
             break;

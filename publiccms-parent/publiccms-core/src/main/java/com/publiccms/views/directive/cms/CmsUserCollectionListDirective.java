@@ -48,14 +48,14 @@ $.getJSON('${site.dynamicPath}api/directive/cms/userCollectionList?userId=1&amp;
 @Component
 public class CmsUserCollectionListDirective extends AbstractTemplateDirective {
 
-	@Override
-	public void execute(RenderHandler handler) throws IOException, TemplateException {
-		PageHandler page = service.getPage(handler.getLong("userId"), handler.getLong("contentId"),
-				handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", 30));
-		handler.put("page", page).render();
-	}
+    @Override
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
+        PageHandler page = service.getPage(handler.getLong("userId"), handler.getLong("contentId"),
+                handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", 30));
+        handler.put("page", page).render();
+    }
 
-	@Resource
-	private CmsUserCollectionService service;
+    @Resource
+    private CmsUserCollectionService service;
 
 }

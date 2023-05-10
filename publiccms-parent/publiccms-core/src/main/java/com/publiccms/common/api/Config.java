@@ -168,6 +168,10 @@ public interface Config {
     /**
      * 
      */
+    public static final String INPUTTYPE_KEYWORDS = "keywords";
+    /**
+     * 
+     */
     public static final String INPUTTYPE_CAPTCHA = "captcha";
 
     public static final String[] INPUT_TYPE_EDITORS = { "ckeditor", "tinymce", "editor" };
@@ -209,7 +213,9 @@ public interface Config {
     /**
      * @return exportable
      */
-    boolean exportable();
+    default boolean exportable() {
+        return false;
+    }
 
     /**
      * @param locale

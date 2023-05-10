@@ -49,33 +49,33 @@ $.getJSON('${site.dynamicPath}api/directive/cms/userCollection?id=1', function(d
 @Component
 public class CmsUserCollectionDirective extends AbstractTemplateDirective {
 
-	@Override
-	public void execute(RenderHandler handler) throws IOException, TemplateException {
-		Long userId = handler.getLong("userId");
-		Long contentId = handler.getLong("contentId");
-		if (null != userId) {
-			if (null != contentId) {
-				CmsUserCollection entity = service.getEntity(new CmsUserCollectionId(userId, contentId));
-				if (null != entity) {
-					handler.put("object", entity).render();
-				}
-			} else {
-				Long[] contentIds = handler.getLongArray("contentIds");
-				if (CommonUtils.notEmpty(contentIds)) {
-					CmsUserCollectionId[] entityIds = new CmsUserCollectionId[contentIds.length];
-					for (int i = 0; i < contentIds.length; i++) {
-						entityIds[i] = new CmsUserCollectionId(userId, contentIds[i]);
-					}
-					List<CmsUserCollection> entityList = service.getEntitys(entityIds);
-					Map<String, CmsUserCollection> map = CommonUtils.listToMap(entityList,
-							k -> String.valueOf(k.getId().getContentId()), null, null);
-					handler.put("map", map).render();
-				}
-			}
-		}
-	}
+    @Override
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
+        Long userId = handler.getLong("userId");
+        Long contentId = handler.getLong("contentId");
+        if (null != userId) {
+            if (null != contentId) {
+                CmsUserCollection entity = service.getEntity(new CmsUserCollectionId(userId, contentId));
+                if (null != entity) {
+                    handler.put("object", entity).render();
+                }
+            } else {
+                Long[] contentIds = handler.getLongArray("contentIds");
+                if (CommonUtils.notEmpty(contentIds)) {
+                    CmsUserCollectionId[] entityIds = new CmsUserCollectionId[contentIds.length];
+                    for (int i = 0; i < contentIds.length; i++) {
+                        entityIds[i] = new CmsUserCollectionId(userId, contentIds[i]);
+                    }
+                    List<CmsUserCollection> entityList = service.getEntitys(entityIds);
+                    Map<String, CmsUserCollection> map = CommonUtils.listToMap(entityList,
+                            k -> String.valueOf(k.getId().getContentId()), null, null);
+                    handler.put("map", map).render();
+                }
+            }
+        }
+    }
 
-	@Resource
-	private CmsUserCollectionService service;
+    @Resource
+    private CmsUserCollectionService service;
 
 }

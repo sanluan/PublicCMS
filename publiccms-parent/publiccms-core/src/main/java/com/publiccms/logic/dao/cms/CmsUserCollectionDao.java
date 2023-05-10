@@ -18,31 +18,31 @@ import com.publiccms.entities.cms.CmsUserCollection;
 @Repository
 public class CmsUserCollectionDao extends BaseDao<CmsUserCollection> {
 
-	/**
-	 * @param userId
-	 * @param contentId
-	 * @param pageIndex
-	 * @param pageSize
-	 * @return results page
-	 */
-	public PageHandler getPage(Long userId, Long contentId, Integer pageIndex, Integer pageSize) {
-		QueryHandler queryHandler = getQueryHandler("from CmsUserCollection bean");
-		if (null != userId) {
-			queryHandler.condition("bean.id.userId = :userId").setParameter("userId", userId);
-		}
-		if (null != contentId) {
-			queryHandler.condition("bean.id.contentId = :contentId").setParameter("contentId", contentId);
-		}
-		queryHandler.order("bean.createDate desc");
-		return getPage(queryHandler, pageIndex, pageSize);
-	}
+    /**
+     * @param userId
+     * @param contentId
+     * @param pageIndex
+     * @param pageSize
+     * @return results page
+     */
+    public PageHandler getPage(Long userId, Long contentId, Integer pageIndex, Integer pageSize) {
+        QueryHandler queryHandler = getQueryHandler("from CmsUserCollection bean");
+        if (null != userId) {
+            queryHandler.condition("bean.id.userId = :userId").setParameter("userId", userId);
+        }
+        if (null != contentId) {
+            queryHandler.condition("bean.id.contentId = :contentId").setParameter("contentId", contentId);
+        }
+        queryHandler.order("bean.createDate desc");
+        return getPage(queryHandler, pageIndex, pageSize);
+    }
 
-	@Override
-	protected CmsUserCollection init(CmsUserCollection entity) {
-		if (null == entity.getCreateDate()) {
-			entity.setCreateDate(CommonUtils.getDate());
-		}
-		return entity;
-	}
+    @Override
+    protected CmsUserCollection init(CmsUserCollection entity) {
+        if (null == entity.getCreateDate()) {
+            entity.setCreateDate(CommonUtils.getDate());
+        }
+        return entity;
+    }
 
 }

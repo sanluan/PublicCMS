@@ -21,6 +21,8 @@ import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.cms.CmsContentAttribute;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.config.ContentConfigComponent;
+import com.publiccms.logic.component.config.ContentConfigComponent.KeywordsConfig;
 import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.service.cms.CmsContentAttributeService;
@@ -89,7 +91,15 @@ import freemarker.template.TemplateException;
  */
 @Component
 public class CmsContentListDirective extends AbstractTemplateDirective {
-
+    @Resource
+    protected ContentConfigComponent contentConfigComponent;
+    @Resource
+    private CmsContentAttributeService attributeService;
+    @Resource
+    protected FileUploadComponent fileUploadComponent;
+    @Resource
+    private StatisticsComponent statisticsComponent;
+    
     @Override
     public void execute(RenderHandler handler) throws IOException, TemplateException {
         CmsContentQuery queryEntity = new CmsContentQuery();
@@ -137,6 +147,7 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
             if (containsAttribute) {
                 Long[] ids = list.stream().map(CmsContent::getId).toArray(Long[]::new);
                 List<CmsContentAttribute> attributeList = attributeService.getEntitys(ids);
+                KeywordsConfig config = contentConfigComponent.getKeywordsConfig(site.getId());
                 Map<Object, CmsContentAttribute> attributeMap = CommonUtils.listToMap(attributeList, k -> k.getContentId());
                 consumer = e -> {
                     ClickStatistics statistics = statisticsComponent.getContentStatistics(e.getId());
@@ -150,7 +161,8 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
                         CmsUrlUtils.initContentUrl(site, e);
                         fileUploadComponent.initContentCover(site, e);
                     }
-                    e.setAttribute(ExtendUtils.getAttributeMap(attributeMap.get(e.getId())));
+                    e.setAttribute(ExtendUtils.getAttributeMap(attributeMap.get(e.getId()),
+                            config));
                 };
             } else {
                 consumer = e -> {
@@ -179,10 +191,4 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
 
     @Resource
     private CmsContentService service;
-    @Resource
-    private CmsContentAttributeService attributeService;
-    @Resource
-    protected FileUploadComponent fileUploadComponent;
-    @Resource
-    private StatisticsComponent statisticsComponent;
 }

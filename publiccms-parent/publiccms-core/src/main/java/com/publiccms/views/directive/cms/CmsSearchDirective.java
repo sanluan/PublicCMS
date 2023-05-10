@@ -23,6 +23,8 @@ import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.cms.CmsContentAttribute;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.config.ContentConfigComponent;
+import com.publiccms.logic.component.config.ContentConfigComponent.KeywordsConfig;
 import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.service.cms.CmsContentAttributeService;
@@ -99,6 +101,8 @@ public class CmsSearchDirective extends AbstractTemplateDirective {
     @Resource
     private StatisticsComponent statisticsComponent;
     @Resource
+    protected ContentConfigComponent contentConfigComponent;
+    @Resource
     protected FileUploadComponent fileUploadComponent;
 
     @Override
@@ -157,6 +161,7 @@ public class CmsSearchDirective extends AbstractTemplateDirective {
                 if (containsAttribute) {
                     Long[] ids = list.stream().map(CmsContent::getId).toArray(Long[]::new);
                     List<CmsContentAttribute> attributeList = attributeService.getEntitys(ids);
+                    KeywordsConfig config = contentConfigComponent.getKeywordsConfig(site.getId());
                     Map<Object, CmsContentAttribute> attributeMap = CommonUtils.listToMap(attributeList, k -> k.getContentId());
                     consumer = e -> {
                         ClickStatistics statistics = statisticsComponent.getContentStatistics(e.getId());
@@ -165,7 +170,8 @@ public class CmsSearchDirective extends AbstractTemplateDirective {
                         }
                         CmsUrlUtils.initContentUrl(site, e);
                         fileUploadComponent.initContentCover(site, e);
-                        e.setAttribute(ExtendUtils.getAttributeMap(attributeMap.get(e.getId())));
+                        e.setAttribute(ExtendUtils.getAttributeMap(attributeMap.get(e.getId()),
+                                config));
                     };
                 } else {
                     consumer = e -> {

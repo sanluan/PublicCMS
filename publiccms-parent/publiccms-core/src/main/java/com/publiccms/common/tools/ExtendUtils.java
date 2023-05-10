@@ -8,8 +8,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.BiConsumer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.publiccms.common.api.Config;
 import com.publiccms.common.constants.Constants;
@@ -17,6 +20,7 @@ import com.publiccms.entities.cms.CmsCategoryAttribute;
 import com.publiccms.entities.cms.CmsContentAttribute;
 import com.publiccms.entities.cms.CmsPlaceAttribute;
 import com.publiccms.entities.sys.SysExtendField;
+import com.publiccms.logic.component.config.ContentConfigComponent.KeywordsConfig;
 
 /**
  *
@@ -24,9 +28,10 @@ import com.publiccms.entities.sys.SysExtendField;
  * 
  */
 public class ExtendUtils {
-
     private ExtendUtils() {
     }
+
+    public static final Pattern HTML_PATTERN = Pattern.compile(">([^<]+)</[^a]");
 
     /**
      * @param attribute
@@ -46,20 +51,42 @@ public class ExtendUtils {
 
     /**
      * @param attribute
+     * @param keywordsConfig
      * @return extent map
      */
-    public static Map<String, String> getAttributeMap(CmsContentAttribute attribute) {
+    public static Map<String, String> getAttributeMap(CmsContentAttribute attribute, KeywordsConfig keywordsConfig) {
         if (null == attribute) {
             return Collections.emptyMap();
         } else {
             Map<String, String> map = getExtendMap(attribute.getData());
-            map.put("text", attribute.getText());
+            map.put("text", replaceText(attribute.getText(), keywordsConfig));
             map.put("source", attribute.getSource());
             map.put("sourceUrl", attribute.getSourceUrl());
             map.put("wordCount", String.valueOf(attribute.getWordCount()));
             map.put("minPrice", String.valueOf(attribute.getMinPrice()));
             map.put("maxPrice", String.valueOf(attribute.getMaxPrice()));
             return map;
+        }
+    }
+
+    private static String replaceText(String html, KeywordsConfig keywordsConfig) {
+        if (null != keywordsConfig && CommonUtils.notEmpty(html) && CommonUtils.notEmpty(keywordsConfig.getWords())) {
+            Matcher matcher = HTML_PATTERN.matcher(html);
+            StringBuilder sb = new StringBuilder();
+            int end = 0;
+            while (matcher.find()) {
+                String temp = matcher.group();
+                sb.append(html.substring(end, matcher.start())).append(">");
+                sb.append(StringUtils.replaceEach(matcher.group(1), keywordsConfig.getWords(), keywordsConfig.getWordWithUrls()));
+                sb.append(temp.substring(temp.length() - 3, temp.length()));
+                end = matcher.end();
+            }
+            if (end < html.length()) {
+                sb.append(html.substring(end, html.length()));
+            }
+            return sb.toString();
+        } else {
+            return html;
         }
     }
 
