@@ -37,6 +37,10 @@ public class ContentConfigComponent implements SiteCache, Config {
      * keywords
      */
     public static final String CONFIG_KEYWORDS = "keywords";
+    /**
+     * keywords
+     */
+    public static final String CONFIG_NEWWINDOW = "inwindow";
 
     private CacheEntity<Short, KeywordsConfig> cache;
 
@@ -57,6 +61,7 @@ public class ContentConfigComponent implements SiteCache, Config {
                     keywordsConfig = new KeywordsConfig();
                     Map<String, String> config = configDataComponent.getConfigData(siteId, CONFIG_CODE);
                     String value = config.get(CONFIG_KEYWORDS);
+                    boolean blank = ConfigDataComponent.getBoolean(config.get(CONFIG_NEWWINDOW), false);
                     if (CommonUtils.notEmpty(value)) {
                         String[] values = StringUtils.splitPreserveAllTokens(value, Constants.COMMA);
                         if (CommonUtils.notEmpty(values) && 0 == values.length % 2) {
@@ -70,8 +75,13 @@ public class ContentConfigComponent implements SiteCache, Config {
                                 } else {
                                     try {
                                         URI url = new URI(v);
-                                        wordWithUrls[j] = CommonUtils.joinString("<a href=\"", url.toString(),
-                                                "\" target=\"_blank\">", words[j], "</a>");
+                                        if (blank) {
+                                            wordWithUrls[j] = CommonUtils.joinString("<a href=\"", url.toString(),
+                                                    "\" target=\"_blank\">", words[j], "</a>");
+                                        } else {
+                                            wordWithUrls[j] = CommonUtils.joinString("<a href=\"", url.toString(), "\">",
+                                                    words[j], "</a>");
+                                        }
                                     } catch (URISyntaxException e) {
                                         words[j] = null;
                                     }
@@ -113,6 +123,8 @@ public class ContentConfigComponent implements SiteCache, Config {
         List<SysExtendField> extendFieldList = new ArrayList<>();
         extendFieldList.add(
                 new SysExtendField(CONFIG_KEYWORDS, INPUTTYPE_KEYWORDS, true, getMessage(locale, "page.keywords"), null, null));
+        extendFieldList.add(new SysExtendField(CONFIG_NEWWINDOW, INPUTTYPE_BOOLEAN, true,
+                getMessage(locale, "page.open_in_new_window"), null, null));
         return extendFieldList;
     }
 
@@ -176,5 +188,6 @@ public class ContentConfigComponent implements SiteCache, Config {
         public void setWordWithUrls(String[] wordWithUrls) {
             this.wordWithUrls = wordWithUrls;
         }
+
     }
 }

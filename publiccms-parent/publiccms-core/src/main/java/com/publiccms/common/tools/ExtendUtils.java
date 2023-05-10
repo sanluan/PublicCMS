@@ -69,7 +69,7 @@ public class ExtendUtils {
         }
     }
 
-    private static String replaceText(String html, KeywordsConfig keywordsConfig) {
+    public static String replaceText(String html, KeywordsConfig keywordsConfig) {
         if (null != keywordsConfig && CommonUtils.notEmpty(html) && CommonUtils.notEmpty(keywordsConfig.getWords())) {
             Matcher matcher = HTML_PATTERN.matcher(html);
             StringBuilder sb = new StringBuilder();

@@ -44,6 +44,7 @@ import com.publiccms.entities.cms.CmsPlaceAttribute;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.config.ConfigDataComponent;
 import com.publiccms.logic.component.config.ContentConfigComponent;
+import com.publiccms.logic.component.config.ContentConfigComponent.KeywordsConfig;
 import com.publiccms.logic.component.config.SiteConfigComponent;
 import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.component.site.SiteComponent;
@@ -185,7 +186,8 @@ public class TemplateComponent implements Cache, AdminContextPath {
         CmsUrlUtils.initCategoryUrl(site, category);
 
         CmsContentAttribute attribute = contentAttributeService.getEntity(entity.getId());
-        entity.setAttribute(ExtendUtils.getAttributeMap(attribute, contentConfigComponent.getKeywordsConfig(site.getId())));
+        KeywordsConfig config = contentConfigComponent.getKeywordsConfig(site.getId());
+        entity.setAttribute(ExtendUtils.getAttributeMap(attribute, config));
         model.put("content", entity);
         model.put("attribute", entity.getAttribute());
         model.put("category", category);
@@ -209,7 +211,7 @@ public class TemplateComponent implements Cache, AdminContextPath {
                 for (int i = 1; i < texts.length; i++) {
                     PageHandler page = new PageHandler(i + 1, 1);
                     page.setTotalCount(texts.length);
-                    model.put("text", texts[i]);
+                    model.put("text", ExtendUtils.replaceText(texts[i], config));
                     model.put("page", page);
                     createStaticFile(site, fullTemplatePath, filepath, i + 1, metadataMap, model, url -> {
                         if (null == entity.getUrl()) {
@@ -222,7 +224,7 @@ public class TemplateComponent implements Cache, AdminContextPath {
             PageHandler page = new PageHandler(pageIndex, 1);
             page.setTotalCount(texts.length);
             model.put("page", page);
-            model.put("text", texts[page.getPageIndex() - 1]);
+            model.put("text", ExtendUtils.replaceText(texts[page.getPageIndex() - 1], config));
         }
         return createStaticFile(site, fullTemplatePath, filepath, pageIndex, metadataMap, model, url -> {
             if (null == entity.getUrl()) {
