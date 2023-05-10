@@ -195,6 +195,23 @@ public class ControllerUtils {
 	 * @param model
 	 * @return value是否为空或长度大于specific
 	 */
+	public static boolean errorNotLongThen(String field, String value, int specific, Model model) {
+		if (null == value) {
+			model.addAttribute(CommonConstants.ERROR, "verify.notEmpty." + field);
+			return true;
+		} else if (value.length() > specific) {
+			model.addAttribute(CommonConstants.ERROR, "verify.notLongThen." + field);
+			return true;
+		}
+		return false;
+	}
+	/**
+	 * @param field
+	 * @param value
+	 * @param specific
+	 * @param model
+	 * @return value是否为空或长度大于specific
+	 */
 	public static boolean errorNotLongThen(String field, String value, int specific, Map<String, Object> model) {
 		if (null == value) {
 			model.put(CommonConstants.ERROR, "verify.notEmpty." + field);
