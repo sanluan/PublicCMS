@@ -51,7 +51,7 @@ public class CmsUserCollectionId implements java.io.Serializable {
         return this.contentId;
     }
 
-    public void setItemId(long contentId) {
+    public void setContentId(long contentId) {
         this.contentId = contentId;
     }
 
