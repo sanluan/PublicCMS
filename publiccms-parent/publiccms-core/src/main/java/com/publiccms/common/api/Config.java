@@ -168,6 +168,10 @@ public interface Config {
     /**
      * 
      */
+    public static final String INPUTTYPE_KEYWORDS = "keywords";
+    /**
+     * 
+     */
     public static final String INPUTTYPE_CAPTCHA = "captcha";
 
     public static final String[] INPUT_TYPE_EDITORS = { "ckeditor", "tinymce", "editor" };
@@ -184,7 +188,7 @@ public interface Config {
      * @param showAll
      * @return config code or null
      */
-    default String getCode(@SuppressWarnings("unused") short siteId, @SuppressWarnings("unused") boolean showAll) {
+    default String getCode(short siteId, boolean showAll) {
         return CONFIG_CODE_SITE;
     }
 
@@ -209,7 +213,9 @@ public interface Config {
     /**
      * @return exportable
      */
-    boolean exportable();
+    default boolean exportable() {
+        return false;
+    }
 
     /**
      * @param locale

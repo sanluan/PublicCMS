@@ -70,9 +70,10 @@ public class IncludeRegionDirective extends AbstractTemplateDirective {
                             if (null != layout) {
                                 String template = layout.getTemplate();
                                 Matcher matcher = CmsLayout.PLACE_PATTERN.matcher(template);
-                                StringBuffer sb = new StringBuffer();
+                                StringBuilder sb = new StringBuilder();
                                 List<List<CmsModuleData>> moduleListList = layoutData.getModuleList();
-                                int end = 0, i = 0;
+                                int end = 0;
+                                int i = 0;
                                 while (matcher.find()) {
                                     sb.append(template.substring(end, matcher.start()));
                                     if (null != moduleListList && moduleListList.size() > i) {

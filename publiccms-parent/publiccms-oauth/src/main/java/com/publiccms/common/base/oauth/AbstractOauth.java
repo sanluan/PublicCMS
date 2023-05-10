@@ -180,9 +180,4 @@ public abstract class AbstractOauth implements Config, OauthGateway {
                         CONFIG_CODE_DESCRIPTION_SUFFIX), site.getDynamicPath())));
         return extendFieldList;
     }
-
-    @Override
-    public boolean exportable() {
-        return false;
-    }
 }

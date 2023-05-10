@@ -141,6 +141,7 @@
                 <th width="200"><@t.page 'content'/></th>
                 <th width="30" orderField="comments"><@t.page 'content.comments'/></th>
                 <th width="30" orderField="clicks"><@t.page 'clicks'/></th>
+                <th width="30" orderField="collections"><@t.page 'collections'/></th>
                 <th width="70" orderField="publishDate"><@t.page 'publish_date'/></th>
                 <th width="100"><@t.page 'operate'/></th>
             </tr>
@@ -202,6 +203,7 @@
                     </#if>
                 </td>
                 <td class="center">${a.clicks!}</td>
+                <td class="center">${a.collections!}</td>
                 <td class="center" title="<@t.page 'create_date'/>:${a.createDate!}">${a.publishDate!}</td>
                 <td class="wrap">
                     <a href="cmsContent/add.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="cmsContent/edit"><i class="icon-edit"></i><@t.page 'content.edit'/></a>

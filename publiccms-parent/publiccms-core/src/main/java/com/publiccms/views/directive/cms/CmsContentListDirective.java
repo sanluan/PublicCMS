@@ -21,6 +21,8 @@ import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.cms.CmsContentAttribute;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.config.ContentConfigComponent;
+import com.publiccms.logic.component.config.ContentConfigComponent.KeywordsConfig;
 import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.service.cms.CmsContentAttributeService;
@@ -59,7 +61,7 @@ import freemarker.template.TemplateException;
  * <li><code>absoluteId</code>:id处理为引用内容的ID 默认为<code>true</code>
  * <li><code>containsAttribute</code>默认为<code>false</code>,http请求时为高级选项,为true时<code>content.attribute</code>为内容扩展数据<code>map</code>(字段编码,<code>value</code>)
  * <li><code>orderField</code>
- * 排序字段,【score:评分,comments:评论数,clicks:点击数,publishDate:发布日期,updateDate:更新日期,checkDate:审核日期】,默认置顶级别倒序、发布日期按orderType排序
+ * 排序字段,【score:评分,comments:评论数,clicks:点击数,collections收藏数,publishDate:发布日期,updateDate:更新日期,checkDate:审核日期】,默认置顶级别倒序、发布日期按orderType排序
  * <li><code>orderType</code>:排序类型,【asc:正序,desc:倒序】,默认为倒序
  * <li><code>firstResult</code>:开始位置,从1开始
  * <li><code>pageIndex</code>:页码,firstResult不存在时有效
@@ -89,7 +91,15 @@ import freemarker.template.TemplateException;
  */
 @Component
 public class CmsContentListDirective extends AbstractTemplateDirective {
-
+    @Resource
+    protected ContentConfigComponent contentConfigComponent;
+    @Resource
+    private CmsContentAttributeService attributeService;
+    @Resource
+    protected FileUploadComponent fileUploadComponent;
+    @Resource
+    private StatisticsComponent statisticsComponent;
+    
     @Override
     public void execute(RenderHandler handler) throws IOException, TemplateException {
         CmsContentQuery queryEntity = new CmsContentQuery();
@@ -137,6 +147,7 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
             if (containsAttribute) {
                 Long[] ids = list.stream().map(CmsContent::getId).toArray(Long[]::new);
                 List<CmsContentAttribute> attributeList = attributeService.getEntitys(ids);
+                KeywordsConfig config = contentConfigComponent.getKeywordsConfig(site.getId());
                 Map<Object, CmsContentAttribute> attributeMap = CommonUtils.listToMap(attributeList, k -> k.getContentId());
                 consumer = e -> {
                     ClickStatistics statistics = statisticsComponent.getContentStatistics(e.getId());
@@ -150,7 +161,8 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
                         CmsUrlUtils.initContentUrl(site, e);
                         fileUploadComponent.initContentCover(site, e);
                     }
-                    e.setAttribute(ExtendUtils.getAttributeMap(attributeMap.get(e.getId())));
+                    e.setAttribute(ExtendUtils.getAttributeMap(attributeMap.get(e.getId()),
+                            config));
                 };
             } else {
                 consumer = e -> {
@@ -179,10 +191,4 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
 
     @Resource
     private CmsContentService service;
-    @Resource
-    private CmsContentAttributeService attributeService;
-    @Resource
-    protected FileUploadComponent fileUploadComponent;
-    @Resource
-    private StatisticsComponent statisticsComponent;
 }

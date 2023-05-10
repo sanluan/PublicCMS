@@ -261,6 +261,14 @@ public class CmsContent extends Attribute implements java.io.Serializable {
     @GenericField(sortable = Sortable.YES, projectable = Projectable.YES)
     private int clicks;
     /**
+     * collections
+     * <p>
+     * 收藏数
+     */
+    @GeneratorColumn(title = "收藏数", order = true)
+    @GenericField(sortable = Sortable.YES, projectable = Projectable.YES)
+    private int collections;
+    /**
      * publish date
      * <p>
      * 发布日期
@@ -329,16 +337,17 @@ public class CmsContent extends Attribute implements java.io.Serializable {
     public CmsContent() {
     }
 
-    public CmsContent(short siteId, String title, long userId, int categoryId, String modelId, boolean onlyUrl, boolean hasImages,
-            boolean hasFiles, boolean hasProducts, int childs, Date publishDate, Date createDate, int sort, int status) {
-        this(siteId, title, userId, categoryId, modelId, false, onlyUrl, hasImages, hasFiles, hasProducts, false, childs, 0, 0,
-                BigDecimal.ZERO, 0, 0, publishDate, createDate, sort, status, false);
+    public CmsContent(short siteId, String title, long userId, int categoryId, String modelId, boolean onlyUrl,
+            boolean hasImages, boolean hasFiles, boolean hasProducts, int childs, Date publishDate, Date createDate,
+            int sort, int status) {
+        this(siteId, title, userId, categoryId, modelId, false, onlyUrl, hasImages, hasFiles, hasProducts, false,
+                childs, 0, 0, BigDecimal.ZERO, 0, 0, 0, publishDate, createDate, sort, status, false);
     }
 
-    public CmsContent(short siteId, String title, long userId, int categoryId, String modelId, boolean copied, boolean onlyUrl,
-            boolean hasImages, boolean hasFiles, boolean hasProducts, boolean hasStatic, int childs, int scores, int scoreUsers,
-            BigDecimal score, int comments, int clicks, Date publishDate, Date createDate, int sort, int status,
-            boolean disabled) {
+    public CmsContent(short siteId, String title, long userId, int categoryId, String modelId, boolean copied,
+            boolean onlyUrl, boolean hasImages, boolean hasFiles, boolean hasProducts, boolean hasStatic, int childs,
+            int scores, int scoreUsers, BigDecimal score, int comments, int clicks, int collections, Date publishDate,
+            Date createDate, int sort, int status, boolean disabled) {
         this.siteId = siteId;
         this.title = title;
         this.userId = userId;
@@ -356,6 +365,7 @@ public class CmsContent extends Attribute implements java.io.Serializable {
         this.score = score;
         this.comments = comments;
         this.clicks = clicks;
+        this.collections = collections;
         this.publishDate = publishDate;
         this.createDate = createDate;
         this.sort = sort;
@@ -614,6 +624,15 @@ public class CmsContent extends Attribute implements java.io.Serializable {
 
     public void setClicks(int clicks) {
         this.clicks = clicks;
+    }
+
+    @Column(name = "collections", nullable = false)
+    public int getCollections() {
+        return this.collections;
+    }
+
+    public void setCollections(int collections) {
+        this.collections = collections;
     }
 
     @Temporal(TemporalType.TIMESTAMP)

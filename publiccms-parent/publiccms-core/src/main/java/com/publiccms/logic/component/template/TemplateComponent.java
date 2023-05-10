@@ -40,6 +40,8 @@ import com.publiccms.entities.cms.CmsPlace;
 import com.publiccms.entities.cms.CmsPlaceAttribute;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.config.ConfigDataComponent;
+import com.publiccms.logic.component.config.ContentConfigComponent;
+import com.publiccms.logic.component.config.ContentConfigComponent.KeywordsConfig;
 import com.publiccms.logic.component.config.SiteConfigComponent;
 import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.component.site.SiteComponent;
@@ -101,12 +103,14 @@ public class TemplateComponent implements Cache, AdminContextPath {
     private ModelComponent modelComponent;
     @Resource
     private CmsPlaceService placeService;
-    @Resource   
+    @Resource
     private CmsPlaceAttributeService placeAttributeService;
     @Resource
     protected FileUploadComponent fileUploadComponent;
     @Resource
     protected ConfigDataComponent configDataComponent;
+    @Resource
+    protected ContentConfigComponent contentConfigComponent;
     @Resource
     private StatisticsComponent statisticsComponent;
 
@@ -181,7 +185,8 @@ public class TemplateComponent implements Cache, AdminContextPath {
         CmsUrlUtils.initCategoryUrl(site, category);
 
         CmsContentAttribute attribute = contentAttributeService.getEntity(entity.getId());
-        entity.setAttribute(ExtendUtils.getAttributeMap(attribute));
+        KeywordsConfig config = contentConfigComponent.getKeywordsConfig(site.getId());
+        entity.setAttribute(ExtendUtils.getAttributeMap(attribute, config));
         model.put("content", entity);
         model.put("attribute", entity.getAttribute());
         model.put("category", category);
@@ -205,7 +210,7 @@ public class TemplateComponent implements Cache, AdminContextPath {
                 for (int i = 1; i < texts.length; i++) {
                     PageHandler page = new PageHandler(i + 1, 1);
                     page.setTotalCount(texts.length);
-                    model.put("text", texts[i]);
+                    model.put("text", ExtendUtils.replaceText(texts[i], config));
                     model.put("page", page);
                     createStaticFile(site, fullTemplatePath, filepath, i + 1, metadataMap, model, url -> {
                         if (null == entity.getUrl()) {
@@ -218,7 +223,7 @@ public class TemplateComponent implements Cache, AdminContextPath {
             PageHandler page = new PageHandler(pageIndex, 1);
             page.setTotalCount(texts.length);
             model.put("page", page);
-            model.put("text", texts[page.getPageIndex() - 1]);
+            model.put("text", ExtendUtils.replaceText(texts[page.getPageIndex() - 1], config));
         }
         return createStaticFile(site, fullTemplatePath, filepath, pageIndex, metadataMap, model, url -> {
             if (null == entity.getUrl()) {
@@ -279,7 +284,7 @@ public class TemplateComponent implements Cache, AdminContextPath {
                         }
                     } else if (CommonUtils.notEmpty(contentPath)) {
                         Map<String, Object> modelMap = new HashMap<>();
-                        entity.setAttribute(ExtendUtils.getAttributeMap(contentAttributeService.getEntity(entity.getId())));
+                        entity.setAttribute(ExtendUtils.getAttributeMap(contentAttributeService.getEntity(entity.getId()), null));
                         modelMap.put("content", entity);
                         modelMap.put("category", category);
                         modelMap.put(CommonConstants.getAttributeSite(), site);

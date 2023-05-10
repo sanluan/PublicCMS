@@ -119,8 +119,8 @@
         <#noparse><table border="1">
             <thead>
                 <tr>
-                    <th><@t.page "key"/></th>
-                    <th><@t.page "value"/></th>
+                    <th></#noparse><@t.page "key"/><#noparse></th>
+                    <th></#noparse><@t.page "value"/><#noparse></th>
                 </tr>
             </thead>
             <tbody>
@@ -161,11 +161,7 @@
     </div>
     <div>
         <label></#noparse>${(model.fieldTextMap['title'])!}<#noparse>:</label>
-        ${(content.copied?then('['+t.pageMessage('copied')+']',''))!} ${(content.title)!}
-    </div>
-    <div>
-        <label></#noparse><@t.page 'status'/><#noparse>:</label>
-        <@t.page 'status.content.'+(content.status)!/>
+        ${(content.copied?then('[</#noparse><@t.page 'copied'/><#noparse>]',''))!} ${(content.title)!}
     </div>
     <div>
         <label></#noparse><@t.page 'content.score'/><#noparse>:</label>

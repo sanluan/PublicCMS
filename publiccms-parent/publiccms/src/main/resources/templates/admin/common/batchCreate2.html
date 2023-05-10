@@ -9,7 +9,7 @@
 </div>
 <div class="formBar">
     <ul>
-        <li><button type="submit" onclick="bringBackBatchValue(['${field1!'code'}','${field2!'name'}']);" class="buttonActive" title="ctrl+s"><@t.page 'use'/></button></li>
+        <li><button type="submit" onclick="bringBackBatchValue(['${field1!'code'}','${field2!'name'}']<#if suffix1?has_content&&suffix2?has_content>,['${suffix1}','${suffix2}']</#if>);" class="buttonActive" title="ctrl+s"><@t.page 'use'/></button></li>
         <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
     </ul>
 </div>

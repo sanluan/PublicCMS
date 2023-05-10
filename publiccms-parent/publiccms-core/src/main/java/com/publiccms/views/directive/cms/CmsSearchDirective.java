@@ -23,6 +23,8 @@ import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.cms.CmsContentAttribute;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.config.ContentConfigComponent;
+import com.publiccms.logic.component.config.ContentConfigComponent.KeywordsConfig;
 import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.service.cms.CmsContentAttributeService;
@@ -66,7 +68,7 @@ import freemarker.template.TemplateModelException;
  * <li><code>startPublishDate</code>:起始发布日期,【2000-01-01 23:59:59】,【2000-01-01】
  * <li><code>endPublishDate</code>:终止发布日期,【2000-01-01 23:59:59】,【2000-01-01】
  * <li><code>orderField</code>
- * 排序字段,【clicks:点击数倒序,score:分数倒序,publishDate:发布日期倒序】,默认相关度倒序
+ * 排序字段,【clicks:点击数倒序,score:分数倒序,publishDate:发布日期倒序,collections:收藏数倒叙】,默认相关度倒序
  * <li><code>pageIndex</code>:页码
  * <li><code>pageSize</code>:每页条数
  * <li><code>maxResults</code>:最大结果数
@@ -98,6 +100,8 @@ public class CmsSearchDirective extends AbstractTemplateDirective {
     private CmsContentAttributeService attributeService;
     @Resource
     private StatisticsComponent statisticsComponent;
+    @Resource
+    protected ContentConfigComponent contentConfigComponent;
     @Resource
     protected FileUploadComponent fileUploadComponent;
 
@@ -157,6 +161,7 @@ public class CmsSearchDirective extends AbstractTemplateDirective {
                 if (containsAttribute) {
                     Long[] ids = list.stream().map(CmsContent::getId).toArray(Long[]::new);
                     List<CmsContentAttribute> attributeList = attributeService.getEntitys(ids);
+                    KeywordsConfig config = contentConfigComponent.getKeywordsConfig(site.getId());
                     Map<Object, CmsContentAttribute> attributeMap = CommonUtils.listToMap(attributeList, k -> k.getContentId());
                     consumer = e -> {
                         ClickStatistics statistics = statisticsComponent.getContentStatistics(e.getId());
@@ -165,7 +170,8 @@ public class CmsSearchDirective extends AbstractTemplateDirective {
                         }
                         CmsUrlUtils.initContentUrl(site, e);
                         fileUploadComponent.initContentCover(site, e);
-                        e.setAttribute(ExtendUtils.getAttributeMap(attributeMap.get(e.getId())));
+                        e.setAttribute(ExtendUtils.getAttributeMap(attributeMap.get(e.getId()),
+                                config));
                     };
                 } else {
                     consumer = e -> {

@@ -431,7 +431,7 @@ public class LockComponent implements Config, SiteCache {
 
     @Override
     public boolean exportable() {
-        return false;
+        return true;
     }
 
     @Override

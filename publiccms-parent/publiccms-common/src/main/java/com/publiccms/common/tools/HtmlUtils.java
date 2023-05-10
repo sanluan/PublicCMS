@@ -31,7 +31,7 @@ public class HtmlUtils {
      */
     public static final Pattern HTML_PATTERN = Pattern.compile("<[^>]+>");
     public static final Pattern SRC_HREF_PATTERN = Pattern
-            .compile("<(a|A|img|IMG)\\s+[^>]*(href|HREF|src|SRC)=(\"|')([^\"\']*)(\"|\')[^>]*>");
+            .compile("<(a|A|img|IMG)\\s+[^>]*(href|HREF|src|SRC)=(\"|\')([^\"\']*)(\"|\')[^>]*>");
 
     public static final Safelist SAFELIST = Safelist.relaxed()
             .addTags("abbr", "address", "aside", "article", "bdi", "bdo", "big", "center", "del", "details", "dfn", "figcaption",

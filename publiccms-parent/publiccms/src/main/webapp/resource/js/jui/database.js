@@ -15,28 +15,41 @@
             return _lookup.suffix;
         }
     };
+    function suggest(args,key,$input){
+        if ("" === _util.lookupSuffix() || $input.attr("suffix") === _util.lookupSuffix()) {
+            if($input.hasClass("editor")){
+                if("ckeditor"==$input.attr("editorType")) {
+                    CKEDITOR.instances[$input.data("id")].setData(args[key]);
+                } else if ("tinymce"==$input.attr("editorType")){
+                    tinymce.get($input.data("id")).setContent(args[key]);
+                } else {
+                    UE.instants[$input.data("id")].setContent(args[key]);
+                }
+            } else if($input.hasClass("code")) {
+                JUI.instances[$(this).data("id")].setValue(args[key]);
+            } else {
+                $input.val(args[key]).trigger("change");
+            }
+        }
+    }
     $.extend({
-        bringBackSuggest: function(args) {
+        bringBackSuggest: function(args,keys) {
             var $box = _lookup["$target"].parents(".unitBox:first");
-            for ( var key in args) {
-                $box.find(":input[name="+escapeJquery(_util.lookupPk(key))+"]").each(function() {
-                    var $input = $(this);
-                    if (("" === _util.lookupSuffix() || $input.attr("suffix") === _util.lookupSuffix())) {
-                        if($input.hasClass("editor")){
-                            if("ckeditor"==$input.attr("editorType")) {
-                                CKEDITOR.instances[$input.data("id")].setData(args[key]);
-                            } else if ("tinymce"==$input.attr("editorType")){
-                                tinymce.get($input.data("id")).setContent(args[key]);
-                            } else {
-                                UE.instants[$input.data("id")].setContent(args[key]);
-                            }
-                        } else if($input.hasClass("code")) {
-                            JUI.instances[$(this).data("id")].setValue(args[key]);
-                        } else {
-                            $input.val(args[key]).trigger("change");
+            if(keys){
+                $.each(keys,function(n,key){
+                    $box.find(":input[name="+escapeJquery(_util.lookupPk(key))+"]").each(function() {
+                        for ( var k in args) {
+                            _lookup.suffix=k;
+                            suggest(args,k,$(this));
                         }
-                    }
+                    });
                 });
+            } else {
+                for ( var key in args) {
+                    $box.find(":input[name="+escapeJquery(_util.lookupPk(key))+"]").each(function() {
+                        suggest(args,key,$(this))
+                    });
+                }
             }
         },
         bringBack: function(json) {
@@ -55,24 +68,25 @@
                 $.pdialog.closeCurrent();
             }
         },
-        batchBringBack: function(args) {
+        batchBringBack: function(args,keys) {
             if(_lookup.nextButton ) {
-                for ( var row in args) {
-                    _lookup.nextButton.click();
-                    if (args[row][JUI.keys.statusCode] == JUI.statusCode.error ) {
-                        if (args[row][JUI.keys.message] ) {
-                            alertMsg.error(args[row][JUI.keys.message]);
+                if (args[JUI.keys.statusCode] == JUI.statusCode.timeout ) {
+                    alertMsg.error(args[JUI.keys.message] || JUI.msg("sessionTimout"), {
+                        okCall: function() {
+                            JUI.loadLogin();
                         }
-                        break;
-                    } else if (args[row][JUI.keys.statusCode] == JUI.statusCode.timeout ) {
-                        alertMsg.error(args[row][JUI.keys.message] || JUI.msg("sessionTimout"), {
-                            okCall: function() {
-                                JUI.loadLogin();
+                    });
+                } else {
+                    for ( var row in args) {
+                        _lookup.nextButton.click();
+                        if (args[row][JUI.keys.statusCode] == JUI.statusCode.error ) {
+                            if (args[row][JUI.keys.message] ) {
+                                alertMsg.error(args[row][JUI.keys.message]);
                             }
-                        });
-                        break;
-                    } else {
-                        $.bringBackSuggest(args[row]);
+                            break;
+                        } else {
+                            $.bringBackSuggest(args[row],keys);
+                        }
                     }
                 }
                 _lookup.nextButton = null;
@@ -434,11 +448,11 @@
                         html = "<textarea name=\"" + field.name + "\" class=\"" + field.fieldClass + "\" " + attrFrag + ">" + field.defaultVal + "</textarea>";
                         break;
                     case "number":
-                        html = "<input type=\"number\" name=\"" + field.name + "\" value=\"" + field.defaultVal + "\" size=\"" + field.size + "\" class=\"" + field.fieldClass + "\" "
+                        html = "<input type=\"number\" name=\"" + field.name + "\" value=\"" + field.defaultVal + "\"" + suffixFrag + " size=\"" + field.size + "\" class=\"" + field.fieldClass + "\" "
                         + attrFrag + "/>";
                         break;
                     default :
-                        html = "<input type=\"text\" name=\"" + field.name + "\" value=\"" + field.defaultVal + "\" size=\"" + field.size + "\" class=\"" + field.fieldClass + "\" "
+                        html = "<input type=\"text\" name=\"" + field.name + "\" value=\"" + field.defaultVal + "\"" + suffixFrag + " size=\"" + field.size + "\" class=\"" + field.fieldClass + "\" "
                                 + attrFrag + "/>";
                         break;
                 }

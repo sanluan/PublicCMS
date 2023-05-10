@@ -312,11 +312,6 @@ public class EmailComponent implements SiteCache, Config {
     }
 
     @Override
-    public boolean exportable() {
-        return false;
-    }
-
-    @Override
     public void clear(short siteId) {
         cache.remove(siteId);
     }

@@ -140,7 +140,7 @@ function commandParameter(command,parametersName){
         }
     }
 }
-function bringBackBatchValue(keys){
+function bringBackBatchValue(keys,suffixs){
     var value =$("textarea[name=batchValue]",$.pdialog.getCurrent()).val();
     if(value){
         var list=[];
@@ -148,14 +148,22 @@ function bringBackBatchValue(keys){
         $.each(values,function(m,v){
             var vs = v.split(",");
             var obj={};
-            $.each(keys,function(n,k){
-                if(n < vs.length){
-                    obj[k]=vs[n].trim();
-                }
-            });
+            if(suffixs){
+                $.each(suffixs,function(n,k){
+                    if(n < vs.length){
+                        obj[k]=vs[n].trim();
+                    }
+                });
+            }else{
+                $.each(keys,function(n,k){
+                    if(n < vs.length){
+                        obj[k]=vs[n].trim();
+                    }
+                });
+            }
             list.push(obj);
         });
-        $.batchBringBack(list);
+        $.batchBringBack(list,keys);
     }
 }
 var diyMenuTimer,diyButtonTimer,diyTimer;

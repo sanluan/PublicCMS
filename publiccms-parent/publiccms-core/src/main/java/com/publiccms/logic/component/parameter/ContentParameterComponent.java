@@ -10,6 +10,7 @@ import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.config.ContentConfigComponent;
 import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.service.cms.CmsContentAttributeService;
@@ -31,6 +32,8 @@ public class ContentParameterComponent extends AbstractLongParameterHandler<CmsC
     private CmsContentAttributeService attributeService;
     @Resource
     protected FileUploadComponent fileUploadComponent;
+    @Resource
+    protected ContentConfigComponent contentConfigComponent;
     @Resource
     private StatisticsComponent statisticsComponent;
 
@@ -64,7 +67,8 @@ public class ContentParameterComponent extends AbstractLongParameterHandler<CmsC
             }
             CmsUrlUtils.initContentUrl(site, entity);
             fileUploadComponent.initContentCover(site, entity);
-            entity.setAttribute(ExtendUtils.getAttributeMap(attributeService.getEntity(entity.getId())));
+            entity.setAttribute(ExtendUtils.getAttributeMap(attributeService.getEntity(entity.getId()),
+                    contentConfigComponent.getKeywordsConfig(site.getId())));
             return entity;
         }
         return null;

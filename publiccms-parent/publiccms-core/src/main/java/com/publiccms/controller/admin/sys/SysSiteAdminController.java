@@ -243,7 +243,7 @@ public class SysSiteAdminController {
                 try {
                     String filepath = siteComponent.getSiteFilePath(originalName);
                     if (overwrite || !CmsFileUtils.exists(filepath)) {
-                        CmsFileUtils.upload(file, originalName);
+                        CmsFileUtils.upload(file, filepath);
                         logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                                 LogLoginService.CHANNEL_WEB_MANAGER, "upload.sitefile", RequestUtils.getIpAddress(request),
                                 CommonUtils.getDate(), originalName));

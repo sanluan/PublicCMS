@@ -283,6 +283,9 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         if ("clicks".equals(orderField)) {
             optionsStep.sort(f -> f.field("clicks").desc());
         }
+        if ("collections".equals(orderField)) {
+            optionsStep.sort(f -> f.field("collections").desc());
+        }
         if ("score".equals(orderField)) {
             optionsStep.sort(f -> f.field("score").desc());
         }
@@ -470,6 +473,9 @@ public class CmsContentDao extends BaseDao<CmsContent> {
             break;
         case "clicks":
             queryHandler.order("bean.clicks").append(orderType);
+            break;
+        case "collections":
+            queryHandler.order("bean.collections").append(orderType);
             break;
         case "publishDate":
             queryHandler.order("bean.publishDate").append(orderType);
