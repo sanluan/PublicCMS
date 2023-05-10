@@ -121,10 +121,6 @@ public class CmsFileUtils {
      * 
      */
     public static final String FILE_TYPE_PDF = "pdf";
-    /**
-     * 
-     */
-    public static final FileSize EMPTY = new FileSize();
 
     /**
      * 获取目录下文件列表
@@ -299,12 +295,12 @@ public class CmsFileUtils {
      * @return fileSize
      */
     private static FileSize getFileSize(File file, String suffix) {
+        FileSize fileSize = new FileSize();
+        fileSize.setFileSize(file.length());
         if (null != suffix && !suffix.startsWith(CommonConstants.DOT)) {
             suffix = CommonConstants.DOT + suffix;
         }
         if (ArrayUtils.contains(IMAGE_FILE_SUFFIXS, suffix)) {
-            FileSize fileSize = new FileSize();
-            fileSize.setFileSize(file.length());
             try (FileInputStream fis = new FileInputStream(file)) {
                 BufferedImage bufferedImg = ImageIO.read(fis);
                 if (null != bufferedImg) {
@@ -313,9 +309,8 @@ public class CmsFileUtils {
                 }
             } catch (Exception e) {
             }
-            return fileSize;
         }
-        return EMPTY;
+        return fileSize;
     }
 
     /**
