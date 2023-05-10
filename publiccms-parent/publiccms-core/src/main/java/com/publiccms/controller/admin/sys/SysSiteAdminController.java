@@ -241,7 +241,7 @@ public class SysSiteAdminController {
                 try {
                     File dest = new File(siteComponent.getSiteFilePath(originalName));
                     if (overwrite || !dest.exists()) {
-                        dest.mkdirs();
+                        dest.getParentFile().mkdirs();
                         file.transferTo(dest);
                         logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                                 LogLoginService.CHANNEL_WEB_MANAGER, "upload.sitefile", RequestUtils.getIpAddress(request),
