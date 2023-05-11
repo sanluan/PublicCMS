@@ -103,7 +103,7 @@
         <!-- http://mvnrepository.com/artifact/eu.bitwalker/UserAgentUtils -->
         <version.userAgentUtils>1.21</version.userAgentUtils>
         <!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
-        <version.jsoup>1.15.4</version.jsoup>
+        <version.jsoup>1.16.1</version.jsoup>
         <!-- https://mvnrepository.com/artifact/jakarta.annotation/jakarta.annotation-api -->
         <version.annotation>2.1.1</version.annotation>
         <!-- https://mvnrepository.com/artifact/jakarta.mail/jakarta.mail-api -->
