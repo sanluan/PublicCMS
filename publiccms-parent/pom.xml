@@ -98,6 +98,8 @@
         <version.image4j>0.7.2</version.image4j>
         <!-- https://mvnrepository.com/artifact/net.sf.cssbox/pdf2dom -->
         <version.pdf2dom>2.0.3</version.pdf2dom>
+        <!-- https://mvnrepository.com/artifact/org.apache.pdfbox/jbig2-imageio -->
+        <version.jbig2>3.0.4</version.jbig2>
         <!-- https://mvnrepository.com/artifact/com.github.bgalek.security.svg/safe-svg -->
         <version.safeSvg>1.1.7</version.safeSvg>
         <!-- http://mvnrepository.com/artifact/eu.bitwalker/UserAgentUtils -->
@@ -429,6 +431,11 @@
                 <groupId>net.sf.cssbox</groupId>
                 <artifactId>pdf2dom</artifactId>
                 <version>${version.pdf2dom}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.pdfbox</groupId>
+                <artifactId>jbig2-imageio</artifactId>
+                <version>${version.jbig2}</version>
             </dependency>
             <dependency>
                 <groupId>com.github.bgalek.security.svg</groupId>

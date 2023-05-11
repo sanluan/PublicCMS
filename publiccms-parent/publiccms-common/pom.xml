@@ -141,6 +141,10 @@
             <artifactId>pdf2dom</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>jbig2-imageio</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.github.bgalek.security.svg</groupId>
             <artifactId>safe-svg</artifactId>
         </dependency>
