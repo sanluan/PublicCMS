@@ -149,7 +149,7 @@ public class CommentController {
                 }
                 if (null != entity.getReplyId()) {
                     CmsComment reply = service.getEntity(entity.getReplyId());
-                    if (null == reply) {
+                    if (null == reply || reply.isDisabled()) {
                         entity.setReplyId(null);
                     } else {
                         entity.setContentId(reply.getContentId());

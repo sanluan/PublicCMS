@@ -104,6 +104,8 @@ subprojects {
         image4jVersion = "0.7.2"
         // https://mvnrepository.com/artifact/net.sf.cssbox/pdf2dom -->
         pdf2domVersion = "2.0.3"
+        // https://mvnrepository.com/artifact/org.apache.pdfbox/jbig2-imageio
+        jbig2Version = "3.0.4"
         // https://mvnrepository.com/artifact/com.github.bgalek.security.svg/safe-svg
         safeSvgVersion = "1.1.7"
         // http://mvnrepository.com/artifact/eu.bitwalker/UserAgentUtils

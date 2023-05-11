@@ -48,6 +48,7 @@ dependencies {
     implementation "org.sejda.imageio:webp-imageio:${webpVersion}"
     implementation "net.ifok.image:image4j:${image4jVersion}"
     implementation "net.sf.cssbox:pdf2dom:${pdf2domVersion}"
+    implementation "org.apache.pdfbox:jbig2-imageio:${jbig2Version}"
     implementation "com.github.bgalek.security.svg:safe-svg:${safeSvgVersion}"
     implementation "org.jsoup:jsoup:${jsoupVersion}"
 
