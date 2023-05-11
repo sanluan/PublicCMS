@@ -131,11 +131,11 @@ public class CustomXHTMLMapper extends XHTMLMapper {
 
     @Override
     protected void visitStyleText(XWPFRun run, String text, Object parent, boolean pageNumber) throws Exception {
-        if (run.getFontFamily() == null) {
+        if (null == run.getFontFamily()) {
             run.setFontFamily(getStylesDocument().getFontFamilyAscii(run));
         }
 
-        if (run.getFontSizeAsDouble() <= 0) {
+        if (null == run.getFontSizeAsDouble() && null != getStylesDocument().getFontSize(run)) {
             run.setFontSize(getStylesDocument().getFontSize(run).doubleValue());
         }
 
