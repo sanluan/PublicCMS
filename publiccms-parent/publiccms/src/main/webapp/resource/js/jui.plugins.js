@@ -154,8 +154,14 @@ JUI.regPlugins.push(function($p){
                         if(0 < window.editor.ueditorArray.length){
                             for(var i=0;i<window.editor.ueditorArray.length;i++){
                                 var editor = new baidu.editor.ui.Editor();
-                                editor.render($("#"+window.editor.ueditorArray[i])[0]);
-                                $("#"+window.editor.ueditorArray[i]).attr("data-id","ueditorInstant"+editor.uid);
+                                var $textarea=$("#"+window.editor.ueditorArray[i]);
+                                $textarea.attr("data-id","ueditorInstant"+editor.uid);
+                                if ($textarea.attr("maxlength") ){
+                                    editor.setOpt({
+                                        maximumWords: $textarea.attr("maxlength")
+                                    });
+                                }
+                                editor.render($textarea[0]);
                             }
                         }
                     });
