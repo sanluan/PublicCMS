@@ -69,7 +69,7 @@ public class ContentConfigComponent implements SiteCache, Config {
                     keywordsConfig = new KeywordsConfig();
                     Map<String, String> config = configDataComponent.getConfigData(siteId, CONFIG_CODE);
                     String value = config.get(CONFIG_KEYWORDS);
-                    boolean blank = ConfigDataComponent.getBoolean(config.get(CONFIG_NEWWINDOW), false);
+                    boolean blank = ConfigDataComponent.getBoolean(config.get(CONFIG_NEWWINDOW), true);
                     int max = ConfigDataComponent.getInt(config.get(CONFIG_MAX_COUNT), DEFAULT_MAX_COUNT);
                     if (CommonUtils.notEmpty(value)) {
                         String[] values = StringUtils.splitPreserveAllTokens(value, Constants.COMMA);
@@ -134,7 +134,7 @@ public class ContentConfigComponent implements SiteCache, Config {
         extendFieldList.add(
                 new SysExtendField(CONFIG_KEYWORDS, INPUTTYPE_KEYWORDS, true, getMessage(locale, "page.keywords"), null, null));
         extendFieldList.add(new SysExtendField(CONFIG_NEWWINDOW, INPUTTYPE_BOOLEAN, true,
-                getMessage(locale, "page.open_in_new_window"), null, null));
+                getMessage(locale, "page.open_in_new_window"), null, Boolean.TRUE.toString()));
         extendFieldList.add(new SysExtendField(CONFIG_MAX_COUNT, INPUTTYPE_NUMBER, true, getMessage(locale, "page.total"), null,
                 String.valueOf(DEFAULT_MAX_COUNT)));
         return extendFieldList;
