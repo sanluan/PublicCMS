@@ -41,6 +41,14 @@ public class ContentConfigComponent implements SiteCache, Config {
      * keywords
      */
     public static final String CONFIG_NEWWINDOW = "inwindow";
+    /**
+     * keywords
+     */
+    public static final String CONFIG_MAX_COUNT = "max_count";
+    /**
+     * keywords
+     */
+    public static final int DEFAULT_MAX_COUNT = 10;
 
     private CacheEntity<Short, KeywordsConfig> cache;
 
@@ -62,6 +70,7 @@ public class ContentConfigComponent implements SiteCache, Config {
                     Map<String, String> config = configDataComponent.getConfigData(siteId, CONFIG_CODE);
                     String value = config.get(CONFIG_KEYWORDS);
                     boolean blank = ConfigDataComponent.getBoolean(config.get(CONFIG_NEWWINDOW), false);
+                    int max = ConfigDataComponent.getInt(config.get(CONFIG_MAX_COUNT), DEFAULT_MAX_COUNT);
                     if (CommonUtils.notEmpty(value)) {
                         String[] values = StringUtils.splitPreserveAllTokens(value, Constants.COMMA);
                         if (CommonUtils.notEmpty(values) && 0 == values.length % 2) {
@@ -88,6 +97,7 @@ public class ContentConfigComponent implements SiteCache, Config {
                                     j++;
                                 }
                             }
+                            keywordsConfig.setMax(max);
                             keywordsConfig.setWords(words);
                             keywordsConfig.setWordWithUrls(wordWithUrls);
                         }
@@ -125,6 +135,8 @@ public class ContentConfigComponent implements SiteCache, Config {
                 new SysExtendField(CONFIG_KEYWORDS, INPUTTYPE_KEYWORDS, true, getMessage(locale, "page.keywords"), null, null));
         extendFieldList.add(new SysExtendField(CONFIG_NEWWINDOW, INPUTTYPE_BOOLEAN, true,
                 getMessage(locale, "page.open_in_new_window"), null, null));
+        extendFieldList.add(new SysExtendField(CONFIG_MAX_COUNT, INPUTTYPE_NUMBER, true, getMessage(locale, "page.total"), null,
+                String.valueOf(DEFAULT_MAX_COUNT)));
         return extendFieldList;
     }
 
@@ -156,8 +168,24 @@ public class ContentConfigComponent implements SiteCache, Config {
     }
 
     public static class KeywordsConfig {
+        int max;
         String[] words;
         String[] wordWithUrls;
+
+        /**
+         * @return the max
+         */
+        public int getMax() {
+            return max;
+        }
+
+        /**
+         * @param max
+         *            the max to set
+         */
+        public void setMax(int max) {
+            this.max = max;
+        }
 
         /**
          * @return the words
