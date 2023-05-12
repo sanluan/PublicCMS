@@ -146,7 +146,7 @@ public class TemplateComponent implements Cache, AdminContextPath {
         CmsPageData data = metadataComponent.getTemplateData(realTemplatePath);
         Map<String, Object> metadataMap = metadata.getAsMap(data);
         String fullTemplatePath = SiteComponent.getFullTemplatePath(site.getId(), templatePath);
-        if (CommonUtils.notEmpty(totalPage) && pageIndex + 1 <= totalPage) {
+        if (CommonUtils.notEmpty(totalPage) && pageIndex < totalPage) {
             for (int i = pageIndex + 1; i <= totalPage; i++) {
                 createStaticFile(site, fullTemplatePath, filepath, i, metadataMap, model, url -> {
                     if (null == entity.getUrl()) {

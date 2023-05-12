@@ -149,7 +149,7 @@ public class ContentConfigComponent implements SiteCache, Config {
     @Resource
     public void initCache(CacheEntityFactory cacheEntityFactory)
             throws ClassNotFoundException, InstantiationException, IllegalAccessException {
-        cache = cacheEntityFactory.createCacheEntity(CONFIG_KEYWORDS, CacheEntityFactory.MEMORY_CACHE_ENTITY);
+        cache = cacheEntityFactory.createCacheEntity(CONFIG_KEYWORDS);
     }
 
     @Override

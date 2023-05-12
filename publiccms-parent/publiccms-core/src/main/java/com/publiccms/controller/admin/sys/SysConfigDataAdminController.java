@@ -154,7 +154,6 @@ public class SysConfigDataAdminController {
             } else if (contentConfigComponent.getCode(site.getId()).equals(entity.getId().getCode())) {
                 contentConfigComponent.clear(site.getId());
             }
-
         }
         return CommonConstants.TEMPLATE_DONE;
     }
