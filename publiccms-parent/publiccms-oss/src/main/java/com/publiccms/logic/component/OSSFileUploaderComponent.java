@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.publiccms.common.api.FileUploader;
-import com.publiccms.common.api.SiteCache;
 import com.publiccms.common.cache.CacheEntity;
 import com.publiccms.common.cache.CacheEntityFactory;
 import com.publiccms.common.constants.Constants;
@@ -37,7 +36,7 @@ import software.amazon.awssdk.services.s3.presigner.model.PresignedGetObjectRequ
  * 
  */
 @Component
-public class OSSFileUploaderComponent implements FileUploader, SiteCache {
+public class OSSFileUploaderComponent implements FileUploader {
     @Resource
     private ConfigDataComponent configDataComponent;
     private CacheEntity<Short, S3Client> cache;
@@ -192,5 +191,10 @@ public class OSSFileUploaderComponent implements FileUploader, SiteCache {
         cache = cacheEntityFactory.createCacheEntity(OSSComponent.CONFIG_CODE, CacheEntityFactory.MEMORY_CACHE_ENTITY);
         presignerCache = cacheEntityFactory.createCacheEntity(OSSComponent.CONFIG_CODE + "Presigner",
                 CacheEntityFactory.MEMORY_CACHE_ENTITY);
+    }
+
+    @Override
+    public String getCacheCode() {
+        return OSSComponent.CONFIG_CODE;
     }
 }

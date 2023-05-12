@@ -3,9 +3,11 @@ package com.publiccms.logic.component.site;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -139,5 +141,24 @@ public class FileUploadComponent {
             throw new IOException(
                     LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "verify.custom.file.unsafe"));
         }
+    }
+
+    public void clearCache(short siteId) {
+        if (CommonUtils.notEmpty(uploaderList)) {
+            for (FileUploader fileUploader : uploaderList) {
+                fileUploader.clear(siteId);
+            }
+        }
+    }
+
+    public Set<String> getCacheCodes() {
+        Set<String> result = null;
+        if (CommonUtils.notEmpty(uploaderList)) {
+            result = new HashSet<>();
+            for (FileUploader fileUploader : uploaderList) {
+                result.add(fileUploader.getCacheCode());
+            }
+        }
+        return result;
     }
 }

@@ -50,6 +50,7 @@ import com.publiccms.logic.component.config.CorsConfigComponent;
 import com.publiccms.logic.component.exchange.ConfigDataExchangeComponent;
 import com.publiccms.logic.component.exchange.SiteExchangeComponent;
 import com.publiccms.logic.component.site.EmailComponent;
+import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.cms.CmsEditorHistoryService;
 import com.publiccms.logic.service.log.LogLoginService;
@@ -87,6 +88,8 @@ public class SysConfigDataAdminController {
     protected SiteComponent siteComponent;
     @Resource
     private CmsEditorHistoryService editorHistoryService;
+    @Resource
+    private FileUploadComponent fileUploadComponent;
     @Resource
     private ConfigDataExchangeComponent exchangeComponent;
 
@@ -153,6 +156,9 @@ public class SysConfigDataAdminController {
                 corsConfigComponent.clear(site.getId());
             } else if (contentConfigComponent.getCode(site.getId()).equals(entity.getId().getCode())) {
                 contentConfigComponent.clear(site.getId());
+            } else if (CommonUtils.notEmpty(fileUploadComponent.getCacheCodes())
+                    && fileUploadComponent.getCacheCodes().contains(entity.getId().getCode())) {
+                fileUploadComponent.clearCache(site.getId());
             }
         }
         return CommonConstants.TEMPLATE_DONE;
