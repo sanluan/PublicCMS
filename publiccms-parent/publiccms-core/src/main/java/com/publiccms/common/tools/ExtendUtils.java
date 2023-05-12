@@ -1,6 +1,7 @@
 package com.publiccms.common.tools;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -146,16 +147,17 @@ public class ExtendUtils {
     }
 
     public static String replaceText(String html, KeywordsConfig keywordsConfig) {
-        if (null != keywordsConfig && CommonUtils.notEmpty(html) && CommonUtils.notEmpty(keywordsConfig.getWords())) {
+        if (null != keywordsConfig && CommonUtils.notEmpty(html) && CommonUtils.notEmpty(keywordsConfig.getWords())
+                && CommonUtils.notEmpty(keywordsConfig.getWordWithUrls())) {
             Matcher matcher = HTML_PATTERN.matcher(html);
             StringBuilder sb = new StringBuilder();
             int end = 0;
             AtomicInteger counter = new AtomicInteger(keywordsConfig.getMax());
-            while (matcher.find()) {
+            String[] replacementList = Arrays.copyOf(keywordsConfig.getWordWithUrls(), keywordsConfig.getWordWithUrls().length);
+            while (matcher.find() && counter.get() > 0) {
                 String temp = matcher.group();
                 sb.append(html.substring(end, matcher.start())).append(">");
-                sb.append(
-                        replaceEachOnce(matcher.group(1), keywordsConfig.getWords(), keywordsConfig.getWordWithUrls(), counter));
+                sb.append(replaceEachOnce(matcher.group(1), keywordsConfig.getWords(), replacementList, counter));
                 sb.append(temp.substring(temp.length() - 3, temp.length()));
                 end = matcher.end();
             }

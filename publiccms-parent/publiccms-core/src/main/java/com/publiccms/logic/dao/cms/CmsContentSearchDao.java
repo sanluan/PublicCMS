@@ -31,7 +31,6 @@ import org.hibernate.search.mapper.orm.search.loading.dsl.SearchLoadingOptionsSt
 import org.hibernate.search.util.common.data.Range;
 import org.springframework.stereotype.Repository;
 
-import com.publiccms.common.base.BaseDao;
 import com.publiccms.common.base.HighLighterQuery;
 import com.publiccms.common.handler.FacetPageHandler;
 import com.publiccms.common.handler.PageHandler;
@@ -46,7 +45,7 @@ import com.publiccms.views.pojo.query.CmsContentSearchQuery;
  *
  */
 @Repository
-public class CmsContentSearchDao extends BaseDao<CmsContent> {
+public class CmsContentSearchDao {
     private static final String titleField = "title";
     private static final String siteIdField = "siteId";
     private static final String userIdField = "userId";
@@ -82,7 +81,7 @@ public class CmsContentSearchDao extends BaseDao<CmsContent> {
         }
         initHighLighterQuery(queryEntity.getHighLighterQuery(), queryEntity.getText());
         SearchQueryOptionsStep<?, CmsContent, ?, ?, ?> optionsStep = getOptionsStep(queryEntity, orderField);
-        return getPage(optionsStep, queryEntity.getHighLighterQuery(), pageIndex, pageSize, maxResults);
+        return dao.getPage(optionsStep, queryEntity.getHighLighterQuery(), pageIndex, pageSize, maxResults);
     }
 
     /**
@@ -129,14 +128,14 @@ public class CmsContentSearchDao extends BaseDao<CmsContent> {
             map.put(modelIdField, r.aggregation(modelIdKey));
             return map;
         };
-        return getFacetPage(optionsStep, facetFieldKeys, facetFieldResult, queryEntity.getHighLighterQuery(), pageIndex, pageSize,
-                maxResults);
+        return dao.getFacetPage(optionsStep, facetFieldKeys, facetFieldResult, queryEntity.getHighLighterQuery(), pageIndex,
+                pageSize, maxResults);
     }
 
     private void initHighLighterQuery(HighLighterQuery highLighterQuery, String text) {
         if (highLighterQuery.isHighlight() && CommonUtils.notEmpty(text)) {
             highLighterQuery.setFields(highLighterTextFields);
-            Backend backend = getSearchBackend();
+            Backend backend = dao.getSearchBackend();
             Optional<? extends Analyzer> analyzer;
             if (backend instanceof LuceneBackend) {
                 analyzer = backend.unwrap(LuceneBackend.class).analyzer(CmsContentTextBinder.ANALYZER_NAME);
@@ -257,8 +256,8 @@ public class CmsContentSearchDao extends BaseDao<CmsContent> {
                         .mustNot(t.range().field("expiryDate").range(Range.canonical(startDate, queryEntity.getExpiryDate()))));
             }
         };
-        SearchQuerySelectStep<?, EntityReference, CmsContent, SearchLoadingOptionsStep, ?, ?> selectStep = getSearchSession()
-                .search(getEntityClass());
+        SearchQuerySelectStep<?, EntityReference, CmsContent, SearchLoadingOptionsStep, ?, ?> selectStep = dao.getSearchSession()
+                .search(dao.getEntityClass());
         SearchQueryOptionsStep<?, CmsContent, ?, ?, ?> optionsStep;
         if (queryEntity.isProjection()) {
             optionsStep = selectStep.select(f -> f.entity()).where(f -> f.bool(clauseContributor));
@@ -281,11 +280,6 @@ public class CmsContentSearchDao extends BaseDao<CmsContent> {
             optionsStep.sort(f -> f.field("score").desc());
         }
         return optionsStep;
-    }
-
-    @Override
-    protected CmsContent init(CmsContent entity) {
-        return dao.init(entity);
     }
 
     @Resource
