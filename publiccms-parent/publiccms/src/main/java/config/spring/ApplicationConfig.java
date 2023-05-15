@@ -93,7 +93,8 @@ public class ApplicationConfig implements EnvironmentAware {
      */
     @Bean
     public DataSource dataSource() {
-        CmsDataSource bean = new CmsDataSource(getDirPath(CmsDataSource.DATABASE_CONFIG_FILENAME));
+        CmsDataSource bean = new CmsDataSource(
+                CommonUtils.joinString(getDirPath(Constants.BLANK), CmsDataSource.DATABASE_CONFIG_FILENAME));
         CmsDataSource.initDefaultDataSource();
         return bean;
     }

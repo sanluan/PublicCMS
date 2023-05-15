@@ -18,7 +18,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
 
@@ -44,20 +43,21 @@ public class CmsFileUtils {
 
     public static final String UPLOAD_PATH = "upload/";
     public static final String USER_PRIVATE_PATH = "user/";
-    public static final String METADATA_PATH = "metadata/";
-    public static final Pattern UPLOAD_FILE_PATTERN = Pattern.compile(CommonUtils.joinString(".*(", UPLOAD_PATH, ".*)"));
-    public static final String ORDERFIELD_FILENAME = "fileName";
-    public static final String ORDERFIELD_FILESIZE = "fileSize";
-    public static final String ORDERFIELD_CREATEDATE = "createDate";
-    public static final String ORDERFIELD_MODIFIEDDATE = "modifiedDate";
-    private static final FileInfoComparator FILENAME_COMPARATOR = new FileInfoComparator();
-    private static final FileInfoComparator FILESIZE_COMPARATOR = new FileInfoComparator(ORDERFIELD_FILESIZE);
-    private static final FileInfoComparator CREATEDATE_COMPARATOR = new FileInfoComparator(ORDERFIELD_CREATEDATE);
-    private static final FileInfoComparator MODIFIEDDATE_COMPARATOR = new FileInfoComparator(ORDERFIELD_MODIFIEDDATE);
+
     public static final String HEADERS_SEND_CTRL = "Sendfile";
     public static final String HEADERS_SEND_NGINX = "X-Accel-Redirect";
     public static final String HEADERS_SEND_APACHE = "X-Sendfile";
     public static final String NGINX_PRIVATEFILE_PREFIX = "/privatefile/";
+
+    public static final String ORDERFIELD_FILENAME = "fileName";
+    public static final String ORDERFIELD_FILESIZE = "fileSize";
+    public static final String ORDERFIELD_CREATEDATE = "createDate";
+    public static final String ORDERFIELD_MODIFIEDDATE = "modifiedDate";
+
+    private static final FileInfoComparator FILENAME_COMPARATOR = new FileInfoComparator();
+    private static final FileInfoComparator FILESIZE_COMPARATOR = new FileInfoComparator(ORDERFIELD_FILESIZE);
+    private static final FileInfoComparator CREATEDATE_COMPARATOR = new FileInfoComparator(ORDERFIELD_CREATEDATE);
+    private static final FileInfoComparator MODIFIEDDATE_COMPARATOR = new FileInfoComparator(ORDERFIELD_MODIFIEDDATE);
     /**
      * 
      */
