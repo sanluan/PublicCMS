@@ -66,7 +66,6 @@ public class FileAdminController {
     /**
      * @param site
      * @param admin
-     * @param userId
      * @param privatefile
      * @param file
      * @param base64File

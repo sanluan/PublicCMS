@@ -217,7 +217,7 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
                             log.info(CommonUtils.joinString("pay response: ", bodyAsString));
                             if (200 == res.getStatusLine().getStatusCode()) {
                                 Map<String, String> result = Constants.objectMapper.readValue(bodyAsString, Constants.objectMapper
-                                        .getTypeFactory().constructMapLikeType(HashMap.class, String.class, String.class));
+                                        .getTypeFactory().constructMapType(HashMap.class, String.class, String.class));
                                 if ("h5".equalsIgnoreCase(config.get(CONFIG_APITYPE))) {
                                     response.sendRedirect(result.get("h5_url"));
                                 } else {
@@ -290,7 +290,7 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
                         historyService.save(history);
                         if (200 == res.getStatusLine().getStatusCode()) {
                             Map<String, Object> result = Constants.objectMapper.readValue(bodyAsString, Constants.objectMapper
-                                    .getTypeFactory().constructMapLikeType(HashMap.class, String.class, Object.class));
+                                    .getTypeFactory().constructMapType(HashMap.class, String.class, Object.class));
                             if ("SUCCESS".equalsIgnoreCase((String) result.get("status"))) {
                                 TradePaymentProcessor tradePaymentProcessor = tradePaymentProcessorComponent
                                         .get(payment.getTradeType());

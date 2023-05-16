@@ -76,7 +76,7 @@ public class QQOauthComponent extends AbstractOauth {
             if (CommonUtils.notEmpty(html)) {
                 html = html.substring(html.indexOf('{'), html.indexOf('}') + 1);
                 Map<String, String> map = Constants.objectMapper.readValue(html,
-                        Constants.objectMapper.getTypeFactory().constructMapLikeType(HashMap.class, String.class, String.class));
+                        Constants.objectMapper.getTypeFactory().constructMapType(HashMap.class, String.class, String.class));
                 oauthInfo.setOpenId(map.get("openid"));
                 return oauthInfo;
             }
@@ -97,7 +97,7 @@ public class QQOauthComponent extends AbstractOauth {
             String html = get(sb.toString());
             if (CommonUtils.notEmpty(html)) {
                 Map<String, Object> map = Constants.objectMapper.readValue(html,
-                        Constants.objectMapper.getTypeFactory().constructMapLikeType(HashMap.class, String.class, Object.class));
+                        Constants.objectMapper.getTypeFactory().constructMapType(HashMap.class, String.class, Object.class));
                 if (0 == (Integer) map.get("ret")) {
                     return new OauthUser(oauthAccess.getOpenId(), (String) map.get("nickname"));
                 }

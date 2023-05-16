@@ -149,7 +149,7 @@ public class ConfigComponent {
         if (CommonUtils.notEmpty(file)) {
             try {
                 modelMap = Constants.objectMapper.readValue(file, Constants.objectMapper.getTypeFactory()
-                        .constructMapLikeType(HashMap.class, String.class, SysConfig.class));
+                        .constructMapType(HashMap.class, String.class, SysConfig.class));
             } catch (IOException | ClassCastException e) {
                 modelMap = new HashMap<>();
             }

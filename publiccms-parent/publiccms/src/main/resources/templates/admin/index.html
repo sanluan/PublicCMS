@@ -19,7 +19,7 @@
 <body>
     <div id="background"></div><div id="progressBar"><i class="icon-spinner icon-spin"></i></div>
     <header>
-        <a class="logo" href="./"><img src="<#if siteAttribute.logo?has_content>${getUrl(siteAttribute.logo)}<#else>${base}/resource/logo.png</#if>" alt="LOGO"/></a>
+        <div class="logo"><img src="<#if siteAttribute.logo?has_content>${getUrl(siteAttribute.logo)}<#else>${base}/resource/logo.png</#if>" alt="LOGO"/></div>
         <ul class="nav">
             <@sys.authorized roleIds=admin.roles url="cmsDiy/preview">
             <li><a href="cmsDiy/preview.html" target="navTab" rel="cmsDiy/preview"><i class="bi bi-palette2"></i> <@t.page "diy.preview"/></a></li>

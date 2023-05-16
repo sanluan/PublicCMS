@@ -102,7 +102,7 @@ public class ModelComponent implements SiteCache {
             if (CommonUtils.notEmpty(file)) {
                 try {
                     modelMap = Constants.objectMapper.readValue(file, Constants.objectMapper.getTypeFactory()
-                            .constructMapLikeType(HashMap.class, String.class, CmsModel.class));
+                            .constructMapType(HashMap.class, String.class, CmsModel.class));
                 } catch (IOException | ClassCastException e) {
                     modelMap = new HashMap<>();
                 }
@@ -134,7 +134,7 @@ public class ModelComponent implements SiteCache {
             if (CommonUtils.notEmpty(file)) {
                 try {
                     typeMap = Constants.objectMapper.readValue(file, Constants.objectMapper.getTypeFactory()
-                            .constructMapLikeType(HashMap.class, String.class, CmsCategoryType.class));
+                            .constructMapType(HashMap.class, String.class, CmsCategoryType.class));
                 } catch (IOException | ClassCastException e) {
                     typeMap = new HashMap<>();
                 }

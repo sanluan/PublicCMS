@@ -119,7 +119,7 @@ public abstract class AbstractCmsUpgrader {
                 File file = new File(filepath);
                 try {
                     Map<String, CmsPageData> dataMap = Constants.objectMapper.readValue(file, Constants.objectMapper
-                            .getTypeFactory().constructMapLikeType(HashMap.class, String.class, CmsPageData.class));
+                            .getTypeFactory().constructMapType(HashMap.class, String.class, CmsPageData.class));
                     Constants.objectMapper.writeValue(new File(CommonUtils.joinString(CommonConstants.CMS_FILEPATH,
                             Constants.SEPARATOR, SiteComponent.TEMPLATE_PATH, Constants.SEPARATOR, SiteComponent.SITE_PATH_PREFIX,
                             rs.getString("id"), Constants.SEPARATOR, MetadataComponent.DATA_FILE)), dataMap);
@@ -204,7 +204,7 @@ public abstract class AbstractCmsUpgrader {
                     Map<String, CmsCategoryType> categoryTypeMap;
                     try {
                         categoryTypeMap = Constants.objectMapper.readValue(file, Constants.objectMapper.getTypeFactory()
-                                .constructMapLikeType(HashMap.class, String.class, CmsCategoryType.class));
+                                .constructMapType(HashMap.class, String.class, CmsCategoryType.class));
                     } catch (IOException | ClassCastException e) {
                         categoryTypeMap = new HashMap<>();
                     }

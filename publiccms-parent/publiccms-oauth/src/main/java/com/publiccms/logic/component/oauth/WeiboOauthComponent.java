@@ -59,7 +59,7 @@ public class WeiboOauthComponent extends AbstractOauth {
             String html = post("https://api.weibo.com/oauth2/access_token", parameters);
             if (CommonUtils.notEmpty(html)) {
                 Map<String, Object> map = Constants.objectMapper.readValue(html, Constants.objectMapper
-                        .getTypeFactory().constructMapLikeType(HashMap.class, String.class, Object.class));
+                        .getTypeFactory().constructMapType(HashMap.class, String.class, Object.class));
                 return new OauthAccess(code, (String) map.get("access_token"), String.valueOf(map.get("uid")));
             }
         }
@@ -76,7 +76,7 @@ public class WeiboOauthComponent extends AbstractOauth {
             sb.append(oauthInfo.getAccessToken()).append("&uid=").append(oauthInfo.getOpenId());
             String html = get(sb.toString());
             Map<String, Object> map = Constants.objectMapper.readValue(html, Constants.objectMapper.getTypeFactory()
-                    .constructMapLikeType(HashMap.class, String.class, Object.class));
+                    .constructMapType(HashMap.class, String.class, Object.class));
             if (null != map.get("id")) {
                 return new OauthUser(oauthInfo.getOpenId(), (String) map.get("screen_name"));
             }

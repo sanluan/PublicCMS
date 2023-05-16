@@ -353,7 +353,7 @@ public class DiyComponent implements SiteCache {
             if (CommonUtils.notEmpty(file)) {
                 try {
                     metadataMap = Constants.objectMapper.readValue(file, Constants.objectMapper.getTypeFactory()
-                            .constructMapLikeType(CaseInsensitiveMap.class, String.class, CmsRegion.class));
+                            .constructMapType(CaseInsensitiveMap.class, String.class, CmsRegion.class));
                 } catch (IOException | ClassCastException e) {
                     metadataMap = new CaseInsensitiveMap<>();
                 }
@@ -379,7 +379,7 @@ public class DiyComponent implements SiteCache {
             if (CommonUtils.notEmpty(file)) {
                 try {
                     metadataMap = Constants.objectMapper.readValue(file, Constants.objectMapper.getTypeFactory()
-                            .constructMapLikeType(CaseInsensitiveMap.class, String.class, CmsLayout.class));
+                            .constructMapType(CaseInsensitiveMap.class, String.class, CmsLayout.class));
                 } catch (IOException | ClassCastException e) {
                     metadataMap = new CaseInsensitiveMap<>();
                 }
@@ -405,7 +405,7 @@ public class DiyComponent implements SiteCache {
             if (CommonUtils.notEmpty(file)) {
                 try {
                     metadataMap = Constants.objectMapper.readValue(file, Constants.objectMapper.getTypeFactory()
-                            .constructMapLikeType(CaseInsensitiveMap.class, String.class, CmsModule.class));
+                            .constructMapType(CaseInsensitiveMap.class, String.class, CmsModule.class));
                 } catch (IOException | ClassCastException e) {
                     metadataMap = new CaseInsensitiveMap<>();
                 }
@@ -548,7 +548,7 @@ public class DiyComponent implements SiteCache {
             if (CommonUtils.notEmpty(file)) {
                 try {
                     dataMap = Constants.objectMapper.readValue(file, Constants.objectMapper.getTypeFactory()
-                            .constructMapLikeType(CaseInsensitiveMap.class, String.class, CmsRegionData.class));
+                            .constructMapType(CaseInsensitiveMap.class, String.class, CmsRegionData.class));
                 } catch (IOException | ClassCastException e) {
                     dataMap = new CaseInsensitiveMap<>();
                 }

@@ -190,7 +190,7 @@ public class ExtendUtils {
         if (CommonUtils.notEmpty(data)) {
             try {
                 return Constants.objectMapper.readValue(data, Constants.objectMapper.getTypeFactory()
-                        .constructMapLikeType(LinkedHashMap.class, String.class, String.class));
+                        .constructMapType(LinkedHashMap.class, String.class, String.class));
             } catch (IOException | ClassCastException e) {
                 return new LinkedHashMap<>();
             }
