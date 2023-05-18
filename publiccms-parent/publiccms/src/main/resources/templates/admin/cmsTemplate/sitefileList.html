@@ -3,26 +3,26 @@
         <div class="image-list">
             <a href="cmsTemplate/import.html" target="dialog" mask="true" width="500" height="250">
                 <i class="thumb icon-upload-alt icon-large"></i>
+                <p>
+                    <@t.page 'import'/>
+                </p>
             </a>
-            <p>
-                <@t.page 'import'/>
-            </p>
         </div>
 <#list list as a>
     <#if !a.directory>
         <#assign sitefile=getSitefile(a.fileName)/>
         <#if !(sitefile.useStatic)?has_content || !sitefile.useStatic || (sitefile.useStatic && site.useStatic)>
             <div class="image-list">
-                <a href="cmsTemplate/viewsitefile.html?name=${a.fileName?url}&showImport=true" target="dialog" rel="sitefile_${a?counter}" width="1000" height="600">
+                <a href="cmsTemplate/viewSitefile.html?name=${a.fileName?url}&showImport=true" target="dialog" rel="sitefile_${a?counter}" width="1000" height="600">
                     <#if (sitefile.cover)?has_content>
                         <img src="${base+adminContextPath}/visitSitefileImage?sitefile=${a.fileName}&imageFile=${sitefile.cover}" alt="${a.fileName}" title="${a.fileName}">
                     <#else>
                         <i class="thumb icon-file-alt icon-large"></i>
                     </#if>
+                    <p>
+                        ${(sitefile.name)!a.fileName}<#if a.fileSize?has_content>(${a.fileSize})</#if>
+                    </p>
                 </a>
-                <p>
-                    ${(sitefile.name)!a.fileName}<#if a.fileSize?has_content>(${a.fileSize})</#if>
-                </p>
             </div>
         </#if>
     </#if>
