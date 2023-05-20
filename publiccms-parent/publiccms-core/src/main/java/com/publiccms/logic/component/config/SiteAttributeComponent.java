@@ -19,16 +19,28 @@ import com.publiccms.entities.sys.SysSite;
  */
 @Component
 public class SiteAttributeComponent implements Config {
-    public static final String CONFIG_LOGO = "logo";
-    public static final String CONFIG_SQUARE_LOGO = "square_logo";
+
     /**
      * 
      */
-    public static final String CONFIG_CODE_DESCRIPTION = CommonUtils.joinString(CONFIGPREFIX, CONFIG_CODE_SITEA_TTRIBUTE);
+    public static final String CONFIG_CODE = "siteAttribute";
+
+    /**
+     * 
+     */
+    public static final String CONFIG_CODE_DESCRIPTION = CommonUtils.joinString(CONFIGPREFIX, CONFIG_CODE);
+    /**
+     * 
+     */
+    public static final String CONFIG_LOGO = "logo";
+    /**
+     * 
+     */
+    public static final String CONFIG_SQUARE_LOGO = "square_logo";
 
     @Override
     public String getCode(short siteId, boolean showAll) {
-        return CONFIG_CODE_SITEA_TTRIBUTE;
+        return CONFIG_CODE;
     }
 
     @Override

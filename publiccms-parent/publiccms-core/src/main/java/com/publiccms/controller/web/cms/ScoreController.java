@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.publiccms.common.annotation.Csrf;
-import com.publiccms.common.api.Config;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.cms.CmsComment;
@@ -84,7 +83,7 @@ public class ScoreController {
             CmsUserScoreId id = new CmsUserScoreId(userId, itemType, itemId);
             CmsUserScore entity = service.getEntity(id);
             if (score && null == entity || !score && null != entity) {
-                Map<String, String> config = configDataComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+                Map<String, String> config = configDataComponent.getConfigData(site.getId(), SiteConfigComponent.CONFIG_CODE);
                 boolean needStatic = ConfigDataComponent.getBoolean(config.get(SiteConfigComponent.CONFIG_STATIC_AFTER_SCORE), false);
                 String ip = RequestUtils.getIpAddress(request);
                 if ("content".equals(itemType)) {

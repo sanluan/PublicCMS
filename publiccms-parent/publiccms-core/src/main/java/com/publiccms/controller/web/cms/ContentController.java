@@ -43,7 +43,7 @@ import com.publiccms.views.pojo.entities.CmsModel;
 import com.publiccms.views.pojo.model.CmsContentParameters;
 
 /**
- * 
+ *
  * ContentController 内容
  *
  */
@@ -69,9 +69,9 @@ public class ContentController {
 
     /**
      * 保存内容
-     * 
+     *
      * @param site
-     * 
+     *
      * @param entity
      * @param user
      * @param draft
@@ -140,6 +140,7 @@ public class ContentController {
             entity.setComments(0);
             entity.setChilds(0);
             entity.setScores(0);
+            entity.setCollections(0);
             entity.setScoreUsers(0);
             entity.setScore(BigDecimal.ZERO);
             service.save(entity);
@@ -158,7 +159,7 @@ public class ContentController {
 
     /**
      * 内容链接重定向并计数
-     * 
+     *
      * @param site
      * @param id
      * @return view name
@@ -176,7 +177,7 @@ public class ContentController {
 
     /**
      * 内容附件链接重定向并计数
-     * 
+     *
      * @param site
      * @param contentId
      * @param id

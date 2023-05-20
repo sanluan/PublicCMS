@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
-import com.publiccms.common.api.Config;
 import com.publiccms.common.api.oauth.OauthGateway;
 import com.publiccms.common.base.oauth.AbstractOauth;
 import com.publiccms.common.constants.CmsVersion;
@@ -116,7 +115,7 @@ public class OauthController {
         Cookie cookie = RequestUtils.getCookie(request.getCookies(), RETURN_URL);
         RequestUtils.cancleCookie(request.getContextPath(), request.getScheme(), response, RETURN_URL, null);
         String returnUrl;
-        Map<String, String> config = configDataComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+        Map<String, String> config = configDataComponent.getConfigData(site.getId(), SiteConfigComponent.CONFIG_CODE);
         String safeReturnUrl = config.get(SafeConfigComponent.CONFIG_RETURN_URL);
         if (null != cookie && CommonUtils.notEmpty(cookie.getValue())
                 && !SafeConfigComponent.isUnSafeUrl(cookie.getValue(), site, safeReturnUrl, request.getContextPath())) {

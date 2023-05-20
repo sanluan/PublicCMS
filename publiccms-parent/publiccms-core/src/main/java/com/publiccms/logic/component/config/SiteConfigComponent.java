@@ -7,8 +7,10 @@ import java.util.Locale;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.api.Config;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.LanguagesUtils;
 import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.service.cms.CmsContentService;
@@ -20,6 +22,16 @@ import com.publiccms.logic.service.cms.CmsContentService;
  */
 @Component
 public class SiteConfigComponent implements Config {
+
+    /**
+     * 
+     */
+    public static final String CONFIG_CODE = "site";
+
+    /**
+     * 
+     */
+    public static final String CONFIG_CODE_DESCRIPTION = CommonUtils.joinString(CONFIGPREFIX, CONFIG_CODE);
 
     /**
      * login url
@@ -45,6 +57,10 @@ public class SiteConfigComponent implements Config {
      * category path
      */
     public static final String CONFIG_CATEGORY_PATH = "category_path";
+    /**
+     * max image width
+     */
+    public static final String CONFIG_MAX_IMAGE_WIDTH = "max_image_width";
     /**
      * comment need check
      */
@@ -76,6 +92,20 @@ public class SiteConfigComponent implements Config {
     public static final int DEFAULT_MAX_SCORES = 5;
 
     @Override
+    public String getCode(short siteId, boolean showAll) {
+        return CONFIG_CODE;
+    }
+
+    /**
+     * @param locale
+     * @return
+     */
+    @Override
+    public String getCodeDescription(Locale locale) {
+        return LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, CONFIG_CODE_DESCRIPTION);
+    }
+
+    @Override
     public List<SysExtendField> getExtendFieldList(SysSite site, Locale locale) {
         List<SysExtendField> extendFieldList = new ArrayList<>();
         extendFieldList.add(new SysExtendField(CONFIG_SITE_EXCLUDE_MODULE, INPUTTYPE_MODULE,
@@ -99,6 +129,10 @@ public class SiteConfigComponent implements Config {
         extendFieldList.add(new SysExtendField(CONFIG_CATEGORY_PATH, INPUTTYPE_CATEGORY_PATH, true,
                 getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_CATEGORY_PATH)), null,
                 site.isUseStatic() ? "category/${category.code}.html" : "content/category.html?id=${category.id}"));
+
+        extendFieldList.add(new SysExtendField(CONFIG_MAX_IMAGE_WIDTH, INPUTTYPE_NUMBER,
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_MAX_IMAGE_WIDTH)),
+                null));
 
         extendFieldList.add(new SysExtendField(CONFIG_DEFAULT_CONTENT_STATUS, INPUTTYPE_CONTENT_STATUS, true,
                 getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_DEFAULT_CONTENT_STATUS)),

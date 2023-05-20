@@ -323,6 +323,7 @@ public class CmsFileUtils {
             try (FileInputStream fis = new FileInputStream(file)) {
                 BufferedImage bufferedImg = ImageIO.read(fis);
                 if (null != bufferedImg) {
+                    uploadResult.setImage(true);
                     uploadResult.setWidth(bufferedImg.getWidth());
                     uploadResult.setHeight(bufferedImg.getHeight());
                 }

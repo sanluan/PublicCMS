@@ -38,7 +38,7 @@ public class ContentConfigComponent implements SiteCache, Config {
      */
     public static final String CONFIG_KEYWORDS = "keywords";
     /**
-     * keywords
+     * open in window
      */
     public static final String CONFIG_NEWWINDOW = "inwindow";
     /**
