@@ -4,32 +4,19 @@
  * http://www.w3.org/TR/html-markup/input.file.html
  */
 (function($){
-    function readAsDataURL(img, file, maxW, maxH){
+    function readAsDataURL(img, file){
         // Using FileReader to display the image content
         var reader = new FileReader();
         reader.onload = (function(aImg) {
             return function(e) {
                 aImg.src = e.target.result;
-                var width = aImg.naturalWidth,
-                    height = aImg.naturalHeight;
-                aImg.setAttribute("data-width", width);
-                aImg.setAttribute("data-height", height);
-                if (maxW && maxH) {
-                    if (width>maxW){
-                        aImg.setAttribute("width", maxW);
-                    }
-                    if( height > maxH) {
-                        aImg.setAttribute("height", maxH);
-                    }
-                }
-
             };
         })(img);
 
         reader.readAsDataURL(file);
     }
 
-    function previewUploadImg($uploadWrap, files, maxW, maxH) {
+    function previewUploadImg($uploadWrap, files) {
         var $previewElem = $("<div class=\"thumbnail\"></div>").appendTo($uploadWrap);
         var file = files[0];
         if (!file) {return false;}
@@ -41,13 +28,13 @@
         $previewElem.empty().append(img);
 
         if ($previewElem.find(".del-icon").length == 0) {
-            $("<a class=\"del-icon\"></a>").appendTo($previewElem).click(function(event){
+            $("<a class=\"del-icon\"></a>").appendTo($previewElem).click(function(){
                 $previewElem.remove();
                 $uploadWrap.find("input[type=file]").val("");
             });
         }
         if ($previewElem.find(".edit-icon").length == 0 && $uploadWrap.find("input[name=base64File]").length) {
-            $("<a class=\"edit-icon\"></a>").appendTo($previewElem).click(function(event){
+            $("<a class=\"edit-icon\"></a>").appendTo($previewElem).click(function(){
                 editImg($uploadWrap,img,file.name,function(dataURL,fileName){
                     if(dataURL){
                         img.src=dataURL;
@@ -58,7 +45,7 @@
                 });
             });
         }
-        readAsDataURL(img, file, maxW, maxH);
+        readAsDataURL(img, file);
     }
 
     function editImg($uploadWrap,img,fileName,callback){
@@ -131,7 +118,7 @@
     }
 
     // multiple
-    function previewUploadImg2($uploadWrap, files, maxW, maxH) {
+    function previewUploadImg2($uploadWrap, files) {
         var rel = $uploadWrap.attr("rel");
         var $previewElem = $(rel);
         $previewElem.empty();
@@ -142,7 +129,7 @@
             img.file = file;
             $thumb.append(img);
             $previewElem.append($thumb);
-            readAsDataURL(img, file, maxW, maxH);
+            readAsDataURL(img, file);
         }
     }
 
@@ -162,7 +149,7 @@
             $previewElem.empty().append(img);
 
             if ($previewElem.find(".del-icon").length == 0) {
-                $("<a class=\"del-icon\"></a>").appendTo($previewElem).click(function(event){
+                $("<a class=\"del-icon\"></a>").appendTo($previewElem).click(function(){
                     $previewElem.remove();
                     $uploadWrap.find("input[type=file]").val("");
                 });
@@ -174,7 +161,7 @@
                     $uploadWrap.find("input[name=originalFilename]").val(fileName);
                     $uploadWrap.find("input[type=file]").val("");
                     if ($previewElem.find(".del-icon").length != 0) {
-                        $previewElem.find(".del-icon").click(function(event){
+                        $previewElem.find(".del-icon").click(function(){
                             $previewElem.remove();
                             $uploadWrap.find("input[name=base64File]").val("");
                             $uploadWrap.find("input[name=originalFilename]").val("");
@@ -191,7 +178,7 @@
          * @param options
          */
         previewUploadImg: function(options){
-            var op = $.extend({maxW:80, maxH:80}, options);
+            var op = $.extend({maxW:80}, options);
             return this.each(function(){
                 var $uploadWrap = $(this);
 
@@ -200,18 +187,17 @@
                     var $inputFile = $(this).css({left:(op.maxW*index)+"px"});
                     $inputFile.on("change", function () {
                         var files = this.files;
-
                         if (this.multiple) {
-                            previewUploadImg2($uploadWrap, files, op.maxW, op.maxH);
+                            previewUploadImg2($uploadWrap, files);
                         } else {
-                            previewUploadImg($uploadWrap, files, op.maxW, op.maxH);
+                            previewUploadImg($uploadWrap, files);
                         }
                     });
                 });
 
                 var $delIcon = $uploadWrap.find(".del-icon");
                 if ($delIcon) { // 删除服务器上的图片
-                    $delIcon.click(function(event){
+                    $delIcon.click(function(){
                         $.ajax({
                             type: "GET",
                             url:$delIcon.attr("href"),
@@ -219,7 +205,6 @@
                             cache: false,
                             success: function(json){
                                 JUI.ajaxDone(json);
-
                                 if (json[JUI.keys.statusCode] == JUI.statusCode.ok){
                                     $uploadWrap.find("div.thumbnail").remove();
                                     $uploadWrap.find("input[type=file]").val("");
@@ -238,7 +223,7 @@
 
 
     JUI.regPlugins.push(function($p){
-        $("div.upload-wrap", $p).previewUploadImg({maxW:300,maxH:200});
+        $("div.upload-wrap", $p).previewUploadImg({maxW:300});
     });
 
 })(jQuery);

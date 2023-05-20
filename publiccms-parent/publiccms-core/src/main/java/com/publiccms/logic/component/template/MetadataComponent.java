@@ -216,7 +216,7 @@ public class MetadataComponent implements Cache {
             if (CommonUtils.notEmpty(file)) {
                 try {
                     metadataMap = Constants.objectMapper.readValue(file, Constants.objectMapper.getTypeFactory()
-                            .constructMapLikeType(CaseInsensitiveMap.class, String.class, CmsPlaceMetadata.class));
+                            .constructMapType(CaseInsensitiveMap.class, String.class, CmsPlaceMetadata.class));
                 } catch (IOException | ClassCastException e) {
                     metadataMap = new CaseInsensitiveMap<>();
                 }
@@ -241,7 +241,7 @@ public class MetadataComponent implements Cache {
             if (CommonUtils.notEmpty(file)) {
                 try {
                     metadataMap = Constants.objectMapper.readValue(file, Constants.objectMapper.getTypeFactory()
-                            .constructMapLikeType(CaseInsensitiveMap.class, String.class, CmsPageMetadata.class));
+                            .constructMapType(CaseInsensitiveMap.class, String.class, CmsPageMetadata.class));
                 } catch (IOException | ClassCastException e) {
                     metadataMap = new CaseInsensitiveMap<>();
                 }

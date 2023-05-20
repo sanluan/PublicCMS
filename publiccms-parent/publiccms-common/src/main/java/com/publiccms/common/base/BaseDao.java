@@ -236,7 +236,6 @@ public abstract class BaseDao<E> {
      * 获取实体
      *
      * @param queryHandler
-     * @param readonly
      * @return entity
      */
     protected E getEntity(QueryHandler queryHandler) {
@@ -469,9 +468,10 @@ public abstract class BaseDao<E> {
      * @param highLighterQuery
      * @param pageIndex
      * @param pageSize
+     * @param maxResults 
      * @return page
      */
-    protected PageHandler getPage(SearchQueryOptionsStep<?, E, ?, ?, ?> optionsStep, HighLighterQuery highLighterQuery,
+    public PageHandler getPage(SearchQueryOptionsStep<?, E, ?, ?, ?> optionsStep, HighLighterQuery highLighterQuery,
             Integer pageIndex, Integer pageSize, Integer maxResults) {
         return getPage(optionsStep, highLighterQuery, null, pageIndex, pageSize, maxResults);
     }
@@ -483,7 +483,7 @@ public abstract class BaseDao<E> {
      * @param pageSize
      * @return page
      */
-    protected PageHandler getPage(SearchQueryOptionsStep<?, E, ?, ?, ?> optionsStep, HighLighterQuery highLighterQuery,
+    public PageHandler getPage(SearchQueryOptionsStep<?, E, ?, ?, ?> optionsStep, HighLighterQuery highLighterQuery,
             Integer pageIndex, Integer pageSize) {
         return getPage(optionsStep, highLighterQuery, null, pageIndex, pageSize, Integer.MAX_VALUE);
     }
@@ -497,7 +497,7 @@ public abstract class BaseDao<E> {
      * @param maxResults
      * @return results page
      */
-    protected PageHandler getPage(SearchQueryOptionsStep<?, E, ?, ?, ?> optionsStep, HighLighterQuery highLighterQuery,
+    public PageHandler getPage(SearchQueryOptionsStep<?, E, ?, ?, ?> optionsStep, HighLighterQuery highLighterQuery,
             Integer firstResult, Integer pageIndex, Integer pageSize, Integer maxResults) {
         PageHandler page = new PageHandler(firstResult, pageIndex, pageSize);
         SearchResult<E> result;
@@ -532,7 +532,7 @@ public abstract class BaseDao<E> {
      * @param pageSize
      * @return page
      */
-    protected FacetPageHandler getFacetPage(SearchQueryOptionsStep<?, E, ?, ?, ?> optionsStep,
+    public FacetPageHandler getFacetPage(SearchQueryOptionsStep<?, E, ?, ?, ?> optionsStep,
             UnaryOperator<SearchQueryOptionsStep<?, E, ?, ?, ?>> facetFieldKeys,
             Function<SearchResult<E>, Map<String, Map<String, Long>>> facetFieldResult, HighLighterQuery highLighterQuery,
             Integer pageIndex, Integer pageSize) {
@@ -550,7 +550,7 @@ public abstract class BaseDao<E> {
      * @param maxResults
      * @return results page
      */
-    protected FacetPageHandler getFacetPage(SearchQueryOptionsStep<?, E, ?, ?, ?> optionsStep,
+    public FacetPageHandler getFacetPage(SearchQueryOptionsStep<?, E, ?, ?, ?> optionsStep,
             UnaryOperator<SearchQueryOptionsStep<?, E, ?, ?, ?>> facetFieldKeys,
             Function<SearchResult<E>, Map<String, Map<String, Long>>> facetFieldResult, HighLighterQuery highLighterQuery,
             Integer pageIndex, Integer pageSize, Integer maxResults) {
@@ -649,7 +649,7 @@ public abstract class BaseDao<E> {
      * @param countHql
      * @return number of results
      */
-    protected long countResult(QueryHandler queryHandler, String countHql) {
+    public long countResult(QueryHandler queryHandler, String countHql) {
         if (CommonUtils.empty(countHql)) {
             countHql = queryHandler.getCountSql();
         }
@@ -718,7 +718,7 @@ public abstract class BaseDao<E> {
     /**
      * @return fulltext session
      */
-    protected SearchSession getSearchSession() {
+    public SearchSession getSearchSession() {
         return Search.session(sessionFactory.getCurrentSession());
     }
 
@@ -730,7 +730,7 @@ public abstract class BaseDao<E> {
     }
 
     @SuppressWarnings("unchecked")
-    protected Class<E> getEntityClass() {
+    public Class<E> getEntityClass() {
         return null == clazz
                 ? this.clazz = (Class<E>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]
                 : clazz;

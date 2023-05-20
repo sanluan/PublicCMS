@@ -181,7 +181,7 @@ public class SafeConfigComponent implements Config {
     }
 
     public String[] getSafeSuffix(SysSite site) {
-        Map<String, String> config = configDataComponent.getConfigData(site.getId(), CONFIG_CODE_SITE);
+        Map<String, String> config = configDataComponent.getConfigData(site.getId(), CONFIG_CODE);
         String value = config.get(CONFIG_ALLOW_FILES);
         if (CommonUtils.empty(value)) {
             return CmsFileUtils.ALLOW_FILES;

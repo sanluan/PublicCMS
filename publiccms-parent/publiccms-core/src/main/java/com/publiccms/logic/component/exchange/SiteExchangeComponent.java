@@ -152,13 +152,13 @@ public class SiteExchangeComponent {
         Map<String, T> map = null;
         try {
             map = Constants.objectMapper.readValue(file,
-                    Constants.objectMapper.getTypeFactory().constructMapLikeType(HashMap.class, String.class, clazz));
+                    Constants.objectMapper.getTypeFactory().constructMapType(HashMap.class, String.class, clazz));
         } catch (IOException e) {
             return true;
         }
         try {
             Map<String, T> newMap = Constants.objectMapper.readValue(zipFile.getInputStream(zipEntry),
-                    Constants.objectMapper.getTypeFactory().constructMapLikeType(HashMap.class, String.class, clazz));
+                    Constants.objectMapper.getTypeFactory().constructMapType(HashMap.class, String.class, clazz));
             map.putAll(newMap);
             try (FileOutputStream outputStream = new FileOutputStream(file)) {
                 Constants.objectMapper.writeValue(outputStream, map);

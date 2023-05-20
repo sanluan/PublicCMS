@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
-import com.publiccms.common.api.Config;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -101,7 +100,7 @@ public class LoginController {
     public String login(@RequestAttribute SysSite site, String username, String password, String returnUrl, String encoding,
             String captcha, Long clientId, String uuid, HttpServletRequest request, HttpServletResponse response,
             RedirectAttributes model) {
-        Map<String, String> config = configDataComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+        Map<String, String> config = configDataComponent.getConfigData(site.getId(), SiteConfigComponent.CONFIG_CODE);
         String loginPath = config.get(SiteConfigComponent.CONFIG_LOGIN_PATH);
         if (CommonUtils.empty(loginPath)) {
             loginPath = site.getDynamicPath();
@@ -222,7 +221,7 @@ public class LoginController {
     public String register(@RequestAttribute SysSite site, SysUser entity, String repassword, String returnUrl, String encode,
             String captcha, Long clientId, String uuid, HttpServletRequest request, HttpServletResponse response,
             RedirectAttributes model) {
-        Map<String, String> config = configDataComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+        Map<String, String> config = configDataComponent.getConfigData(site.getId(), SiteConfigComponent.CONFIG_CODE);
         String registerPath = config.get(SiteConfigComponent.CONFIG_REGISTER_URL);
         if (CommonUtils.empty(registerPath)) {
             registerPath = site.getDynamicPath();

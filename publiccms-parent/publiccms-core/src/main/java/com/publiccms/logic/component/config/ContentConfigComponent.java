@@ -38,9 +38,17 @@ public class ContentConfigComponent implements SiteCache, Config {
      */
     public static final String CONFIG_KEYWORDS = "keywords";
     /**
-     * keywords
+     * open in window
      */
     public static final String CONFIG_NEWWINDOW = "inwindow";
+    /**
+     * keywords
+     */
+    public static final String CONFIG_MAX_COUNT = "max_count";
+    /**
+     * keywords
+     */
+    public static final int DEFAULT_MAX_COUNT = 10;
 
     private CacheEntity<Short, KeywordsConfig> cache;
 
@@ -61,7 +69,8 @@ public class ContentConfigComponent implements SiteCache, Config {
                     keywordsConfig = new KeywordsConfig();
                     Map<String, String> config = configDataComponent.getConfigData(siteId, CONFIG_CODE);
                     String value = config.get(CONFIG_KEYWORDS);
-                    boolean blank = ConfigDataComponent.getBoolean(config.get(CONFIG_NEWWINDOW), false);
+                    boolean blank = ConfigDataComponent.getBoolean(config.get(CONFIG_NEWWINDOW), true);
+                    int max = ConfigDataComponent.getInt(config.get(CONFIG_MAX_COUNT), DEFAULT_MAX_COUNT);
                     if (CommonUtils.notEmpty(value)) {
                         String[] values = StringUtils.splitPreserveAllTokens(value, Constants.COMMA);
                         if (CommonUtils.notEmpty(values) && 0 == values.length % 2) {
@@ -88,6 +97,7 @@ public class ContentConfigComponent implements SiteCache, Config {
                                     j++;
                                 }
                             }
+                            keywordsConfig.setMax(max);
                             keywordsConfig.setWords(words);
                             keywordsConfig.setWordWithUrls(wordWithUrls);
                         }
@@ -124,7 +134,9 @@ public class ContentConfigComponent implements SiteCache, Config {
         extendFieldList.add(
                 new SysExtendField(CONFIG_KEYWORDS, INPUTTYPE_KEYWORDS, true, getMessage(locale, "page.keywords"), null, null));
         extendFieldList.add(new SysExtendField(CONFIG_NEWWINDOW, INPUTTYPE_BOOLEAN, true,
-                getMessage(locale, "page.open_in_new_window"), null, null));
+                getMessage(locale, "page.open_in_new_window"), null, Boolean.TRUE.toString()));
+        extendFieldList.add(new SysExtendField(CONFIG_MAX_COUNT, INPUTTYPE_NUMBER, true, getMessage(locale, "page.total"), null,
+                String.valueOf(DEFAULT_MAX_COUNT)));
         return extendFieldList;
     }
 
@@ -137,7 +149,7 @@ public class ContentConfigComponent implements SiteCache, Config {
     @Resource
     public void initCache(CacheEntityFactory cacheEntityFactory)
             throws ClassNotFoundException, InstantiationException, IllegalAccessException {
-        cache = cacheEntityFactory.createCacheEntity(CONFIG_KEYWORDS, CacheEntityFactory.MEMORY_CACHE_ENTITY);
+        cache = cacheEntityFactory.createCacheEntity(CONFIG_KEYWORDS);
     }
 
     @Override
@@ -156,8 +168,24 @@ public class ContentConfigComponent implements SiteCache, Config {
     }
 
     public static class KeywordsConfig {
+        int max;
         String[] words;
         String[] wordWithUrls;
+
+        /**
+         * @return the max
+         */
+        public int getMax() {
+            return max;
+        }
+
+        /**
+         * @param max
+         *            the max to set
+         */
+        public void setMax(int max) {
+            this.max = max;
+        }
 
         /**
          * @return the words

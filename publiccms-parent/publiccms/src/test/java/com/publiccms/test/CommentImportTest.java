@@ -42,7 +42,7 @@ class CommentImportTest {
         File file = new File("D:\\Users\\kerneler\\Desktop\\b28141a5-8e9c-4f4f-aacc-9864c6bce235_16.json");
         String content = FileUtils.readFileToString(file, Constants.DEFAULT_CHARSET);
         Map<String, Object> a = Constants.objectMapper.readValue(content,
-                Constants.objectMapper.getTypeFactory().constructMapLikeType(HashMap.class, String.class, Object.class));
+                Constants.objectMapper.getTypeFactory().constructMapType(HashMap.class, String.class, Object.class));
         @SuppressWarnings("unchecked")
         List<Map<String, Object>> list = (List<Map<String, Object>>) a.get("comments");
         for (Map<String, Object> map : list) {

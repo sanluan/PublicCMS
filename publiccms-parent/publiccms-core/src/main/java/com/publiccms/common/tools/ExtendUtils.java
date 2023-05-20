@@ -1,12 +1,14 @@
 package com.publiccms.common.tools;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiConsumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -69,15 +71,93 @@ public class ExtendUtils {
         }
     }
 
+    private static String replaceEachOnce(final String text, final String[] searchList, final String[] replacementList,
+            AtomicInteger counter) {
+        if (StringUtils.isEmpty(text) || ArrayUtils.isEmpty(searchList) || ArrayUtils.isEmpty(replacementList)
+                || counter.get() <= 0) {
+            return text;
+        }
+
+        final int searchLength = searchList.length;
+        final int replacementLength = replacementList.length;
+        if (searchLength != replacementLength) {
+            return text;
+        }
+
+        final boolean[] noMoreMatchesForReplIndex = new boolean[searchLength];
+        int textIndex = -1;
+        int replaceIndex = -1;
+        int tempIndex = -1;
+        for (int i = 0; i < searchLength; i++) {
+            if (noMoreMatchesForReplIndex[i] || searchList[i] == null || searchList[i].isEmpty() || replacementList[i] == null) {
+                continue;
+            }
+            tempIndex = text.indexOf(searchList[i]);
+            if (tempIndex == -1) {
+                noMoreMatchesForReplIndex[i] = true;
+            } else if (textIndex == -1 || tempIndex < textIndex) {
+                textIndex = tempIndex;
+                replaceIndex = i;
+            }
+        }
+        if (textIndex == -1) {
+            return text;
+        }
+        int start = 0;
+        int increase = 0;
+        for (int i = 0; i < searchList.length; i++) {
+            if (searchList[i] == null || searchList[i].isEmpty() || replacementList[i] == null) {
+                continue;
+            }
+            final int greater = replacementList[i].length() - searchList[i].length();
+            if (greater > 0) {
+                increase += greater;
+            }
+        }
+        increase = Math.min(increase, text.length() / 5);
+        final StringBuilder buf = new StringBuilder(text.length() + increase);
+        while (textIndex != -1 && counter.getAndDecrement() > 0) {
+            for (int i = start; i < textIndex; i++) {
+                buf.append(text.charAt(i));
+            }
+            buf.append(replacementList[replaceIndex]);
+            replacementList[replaceIndex] = null;
+            start = textIndex + searchList[replaceIndex].length();
+            textIndex = -1;
+            replaceIndex = -1;
+            for (int i = 0; i < searchLength; i++) {
+                if (noMoreMatchesForReplIndex[i] || searchList[i] == null || searchList[i].isEmpty()
+                        || replacementList[i] == null) {
+                    continue;
+                }
+                tempIndex = text.indexOf(searchList[i], start);
+                if (tempIndex == -1) {
+                    noMoreMatchesForReplIndex[i] = true;
+                } else if (textIndex == -1 || tempIndex < textIndex) {
+                    textIndex = tempIndex;
+                    replaceIndex = i;
+                }
+            }
+        }
+        final int textLength = text.length();
+        for (int i = start; i < textLength; i++) {
+            buf.append(text.charAt(i));
+        }
+        return buf.toString();
+    }
+
     public static String replaceText(String html, KeywordsConfig keywordsConfig) {
-        if (null != keywordsConfig && CommonUtils.notEmpty(html) && CommonUtils.notEmpty(keywordsConfig.getWords())) {
+        if (null != keywordsConfig && CommonUtils.notEmpty(html) && CommonUtils.notEmpty(keywordsConfig.getWords())
+                && CommonUtils.notEmpty(keywordsConfig.getWordWithUrls())) {
             Matcher matcher = HTML_PATTERN.matcher(html);
             StringBuilder sb = new StringBuilder();
             int end = 0;
-            while (matcher.find()) {
+            AtomicInteger counter = new AtomicInteger(keywordsConfig.getMax());
+            String[] replacementList = Arrays.copyOf(keywordsConfig.getWordWithUrls(), keywordsConfig.getWordWithUrls().length);
+            while (matcher.find() && counter.get() > 0) {
                 String temp = matcher.group();
                 sb.append(html.substring(end, matcher.start())).append(">");
-                sb.append(StringUtils.replaceEach(matcher.group(1), keywordsConfig.getWords(), keywordsConfig.getWordWithUrls()));
+                sb.append(replaceEachOnce(matcher.group(1), keywordsConfig.getWords(), replacementList, counter));
                 sb.append(temp.substring(temp.length() - 3, temp.length()));
                 end = matcher.end();
             }
@@ -110,7 +190,7 @@ public class ExtendUtils {
         if (CommonUtils.notEmpty(data)) {
             try {
                 return Constants.objectMapper.readValue(data, Constants.objectMapper.getTypeFactory()
-                        .constructMapLikeType(LinkedHashMap.class, String.class, String.class));
+                        .constructMapType(LinkedHashMap.class, String.class, String.class));
             } catch (IOException | ClassCastException e) {
                 return new LinkedHashMap<>();
             }

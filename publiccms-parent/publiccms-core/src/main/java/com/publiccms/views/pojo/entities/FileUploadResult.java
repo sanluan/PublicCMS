@@ -2,6 +2,7 @@ package com.publiccms.views.pojo.entities;
 
 public class FileUploadResult {
     private long fileSize;
+    private boolean image;
     private String filename;
     private Integer width;
     private Integer height;
@@ -19,6 +20,21 @@ public class FileUploadResult {
      */
     public void setFileSize(long fileSize) {
         this.fileSize = fileSize;
+    }
+
+    /**
+     * @return the image
+     */
+    public boolean isImage() {
+        return image;
+    }
+
+    /**
+     * @param image
+     *            the image to set
+     */
+    public void setImage(boolean image) {
+        this.image = image;
     }
 
     /**

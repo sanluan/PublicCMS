@@ -13,7 +13,6 @@ import jakarta.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
-import com.publiccms.common.api.Config;
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.RenderHandler;
@@ -75,7 +74,7 @@ public class SysAuthorizedDirective extends AbstractTemplateDirective {
         String[] urls = handler.getStringArray("urls");
         if (CommonUtils.notEmpty(roleIds)) {
             SysSite site = getSite(handler);
-            Map<String, String> config = configDataComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+            Map<String, String> config = configDataComponent.getConfigData(site.getId(), SiteConfigComponent.CONFIG_CODE);
             String excludeModules = config.get(SiteConfigComponent.CONFIG_SITE_EXCLUDE_MODULE);
             Set<String> excludeUrls = null;
             if (CommonUtils.notEmpty(excludeModules)) {

@@ -119,7 +119,7 @@ public class CmsContentAdminController {
     private ContentExportComponent exportComponent;
 
     public static final String[] ignoreProperties = new String[] { "siteId", "userId", "deptId", "categoryId", "tagIds", "sort",
-            "createDate", "updateDate", "clicks", "comments", "scores", "scoreUsers", "score", "childs", "checkUserId",
+            "createDate", "updateDate", "clicks", "comments", "scores", "scoreUsers", "collections", "score", "childs", "checkUserId",
             "disabled" };
 
     public static final String[] ignorePropertiesWithUrl = ArrayUtils.addAll(ignoreProperties, "url");
@@ -782,7 +782,7 @@ public class CmsContentAdminController {
             if (null != categoryList) {
                 for (CmsCategory category : categoryList) {
                     Map<String, String> config = configDataComponent.getConfigData(category.getSiteId(),
-                            SiteConfigComponent.CONFIG_CODE_SITE);
+                            SiteConfigComponent.CONFIG_CODE);
                     int status = ConfigDataComponent.getInt(config.get(SiteConfigComponent.CONFIG_DEFAULT_CONTENT_STATUS),
                             CmsContentService.STATUS_PEND);
                     long userId;

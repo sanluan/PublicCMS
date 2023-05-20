@@ -22,7 +22,7 @@ public class CustomPDFDomTree extends PDFDomTree {
         Element el = super.createPageElement();
         el.removeAttribute("class");
         String style = el.getAttribute("style");
-        el.setAttribute("style", CommonUtils.joinString(style, "position:relative; border:1px solid blue;margin:0.5em;"));
+        el.setAttribute("style", CommonUtils.joinString(style, "position:relative; border-bottom:1px solid black;margin:0.5em;"));
         return el;
     }
 

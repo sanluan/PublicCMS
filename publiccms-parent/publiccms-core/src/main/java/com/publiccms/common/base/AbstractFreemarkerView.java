@@ -6,7 +6,6 @@ import java.util.Map;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerView;
 import org.springframework.web.util.UrlPathHelper;
 
-import com.publiccms.common.api.Config;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.servlet.HttpRequestHashModel;
 import com.publiccms.common.servlet.SafeRequestContext;
@@ -18,6 +17,7 @@ import com.publiccms.common.view.MultiSiteIncludeDirective;
 import com.publiccms.entities.sys.SysDomain;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.BeanComponent;
+import com.publiccms.logic.component.config.SiteAttributeComponent;
 
 import freemarker.ext.servlet.FreemarkerServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -100,7 +100,7 @@ public abstract class AbstractFreemarkerView extends FreeMarkerView {
             model.put(CONTEXT_PARENT_SITE, BeanComponent.getSiteComponent().getSiteById(site.getParentId()));
         }
         model.put(CONTEXT_SITE_ATTRIBUTE,
-                BeanComponent.getConfigDataComponent().getConfigData(site.getId(), Config.CONFIG_CODE_SITEA_TTRIBUTE));
+                BeanComponent.getConfigDataComponent().getConfigData(site.getId(), SiteAttributeComponent.CONFIG_CODE));
         model.put(CONTEXT_INCLUDE, new MultiSiteIncludeDirective(site));
         model.put(CONTEXT_IMPORT, new MultiSiteImportDirective(site));
     }

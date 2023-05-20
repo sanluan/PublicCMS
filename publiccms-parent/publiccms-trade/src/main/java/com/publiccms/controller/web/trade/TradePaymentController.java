@@ -194,7 +194,7 @@ public class TradePaymentController {
                 String joinString = CommonUtils.joinString(timestamp, "\n", nonce, "\n", body, "\n");
                 if (verifier.verify(serial, joinString.getBytes(Constants.DEFAULT_CHARSET), signature)) {
                     Map<String, Object> result = Constants.objectMapper.readValue(body, Constants.objectMapper.getTypeFactory()
-                            .constructMapLikeType(HashMap.class, String.class, Object.class));
+                            .constructMapType(HashMap.class, String.class, Object.class));
                     @SuppressWarnings("unchecked")
                     Map<String, String> resource = (Map<String, String>) result.get("resource");
                     if (null != resource) {
@@ -204,7 +204,7 @@ public class TradePaymentController {
                                 resource.get("nonce").replace("\"", "").getBytes(Constants.DEFAULT_CHARSET),
                                 resource.get("ciphertext"));
                         Map<String, Object> data = Constants.objectMapper.readValue(decodeResult, Constants.objectMapper
-                                .getTypeFactory().constructMapLikeType(HashMap.class, String.class, Object.class));
+                                .getTypeFactory().constructMapType(HashMap.class, String.class, Object.class));
                         long paymentId = Long.parseLong((String) data.get("out_trade_no"));
                         TradePaymentHistory history = new TradePaymentHistory(site.getId(), paymentId, CommonUtils.getDate(),
                                 TradePaymentHistoryService.OPERATE_NOTIFY, decodeResult);

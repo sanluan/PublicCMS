@@ -56,7 +56,7 @@ public class WechatOauthComponent extends AbstractOauth {
                     .append("&grant_type=authorization_code");
             String html = get(sb.toString());
             Map<String, Object> map = Constants.objectMapper.readValue(html, Constants.objectMapper.getTypeFactory()
-                    .constructMapLikeType(HashMap.class, String.class, Object.class));
+                    .constructMapType(HashMap.class, String.class, Object.class));
             if (null != map.get("access_token")) {
                 return new OauthAccess(code, (String) map.get("access_token"), (String) map.get("openid"));
             }
@@ -76,7 +76,7 @@ public class WechatOauthComponent extends AbstractOauth {
             String html = get(sb.toString());
             if (CommonUtils.notEmpty(html)) {
                 Map<String, Object> map = Constants.objectMapper.readValue(html, Constants.objectMapper
-                        .getTypeFactory().constructMapLikeType(HashMap.class, String.class, Object.class));
+                        .getTypeFactory().constructMapType(HashMap.class, String.class, Object.class));
                 return new OauthUser(oauthInfo.getOpenId(), (String) map.get("nickname"));
             }
         }

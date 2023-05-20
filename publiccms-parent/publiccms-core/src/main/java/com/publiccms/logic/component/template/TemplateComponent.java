@@ -22,7 +22,6 @@ import org.springframework.stereotype.Component;
 
 import com.publiccms.common.api.AdminContextPath;
 import com.publiccms.common.api.Cache;
-import com.publiccms.common.api.Config;
 import com.publiccms.common.base.AbstractFreemarkerView;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.constants.Constants;
@@ -145,7 +144,7 @@ public class TemplateComponent implements Cache, AdminContextPath {
         CmsPageData data = metadataComponent.getTemplateData(realTemplatePath);
         Map<String, Object> metadataMap = metadata.getAsMap(data);
         String fullTemplatePath = SiteComponent.getFullTemplatePath(site.getId(), templatePath);
-        if (CommonUtils.notEmpty(totalPage) && pageIndex + 1 <= totalPage) {
+        if (CommonUtils.notEmpty(totalPage) && pageIndex < totalPage) {
             for (int i = pageIndex + 1; i <= totalPage; i++) {
                 createStaticFile(site, fullTemplatePath, filepath, i, metadataMap, model, url -> {
                     if (null == entity.getUrl()) {
@@ -325,7 +324,7 @@ public class TemplateComponent implements Cache, AdminContextPath {
                 templatePath = entity.getTemplatePath();
                 categoryPath = entity.getPath();
             } else {
-                Map<String, String> config = configDataComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+                Map<String, String> config = configDataComponent.getConfigData(site.getId(), SiteConfigComponent.CONFIG_CODE);
                 if (CommonUtils.notEmpty(entity.getTypeId())) {
                     CmsCategoryType categoryType = modelComponent.getCategoryType(site.getId(), entity.getTypeId());
                     if (null != categoryType) {

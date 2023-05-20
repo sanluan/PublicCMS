@@ -3,9 +3,11 @@ package com.publiccms.logic.component.site;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,6 +18,7 @@ import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.ImageUtils;
 import com.publiccms.common.tools.LanguagesUtils;
 import com.publiccms.common.tools.VerificationUtils;
 import com.publiccms.entities.cms.CmsContent;
@@ -23,6 +26,7 @@ import com.publiccms.entities.cms.CmsPlace;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.config.ConfigDataComponent;
 import com.publiccms.logic.component.config.SafeConfigComponent;
+import com.publiccms.logic.component.config.SiteConfigComponent;
 import com.publiccms.views.pojo.entities.FileUploadResult;
 
 import jakarta.annotation.Resource;
@@ -98,6 +102,24 @@ public class FileUploadComponent {
         return site.getSitePath();
     }
 
+    private FileUploadResult thumb(short siteId, FileUploadResult fileSize, String filepath, String suffix) {
+        if (fileSize.isImage() && null != fileSize.getWidth() && null != fileSize.getHeight()) {
+            Map<String, String> config = configDataComponent.getConfigData(siteId, SiteConfigComponent.CONFIG_CODE);
+            Integer maxImageWidth = ConfigDataComponent.getInt(config.get(SafeConfigComponent.CONFIG_EXPIRY_MINUTES_SIGN),
+                    SafeConfigComponent.DEFAULT_EXPIRY_MINUTES_SIGN);
+            if (null != maxImageWidth && maxImageWidth > fileSize.getWidth()) {
+                int height = fileSize.getHeight() * maxImageWidth / fileSize.getWidth();
+                try {
+                    ImageUtils.thumb(filepath, filepath, maxImageWidth, height, suffix);
+                    fileSize.setWidth(maxImageWidth);
+                    fileSize.setHeight(height);
+                } catch (IOException e) {
+                }
+            }
+        }
+        return fileSize;
+    }
+
     public FileUploadResult upload(short siteId, MultipartFile file, boolean privatefile, String suffix, Locale locale)
             throws IOException {
         String fileName = CmsFileUtils.getUploadFileName(suffix);
@@ -112,7 +134,8 @@ public class FileUploadComponent {
                 : siteComponent.getWebFilePath(siteId, fileName);
         Path path = CmsFileUtils.upload(file, filepath);
         if (CmsFileUtils.isSafe(filepath, suffix)) {
-            return CmsFileUtils.getFileSize(filepath, fileName, suffix);
+            FileUploadResult fileSize = CmsFileUtils.getFileSize(filepath, fileName, suffix);
+            return thumb(siteId, fileSize, filepath, suffix);
         } else {
             Files.delete(path);
             throw new IOException(
@@ -134,10 +157,30 @@ public class FileUploadComponent {
                 : siteComponent.getWebFilePath(siteId, fileName);
         CmsFileUtils.upload(file, filepath);
         if (CmsFileUtils.isSafe(filepath, suffix)) {
-            return CmsFileUtils.getFileSize(filepath, fileName, suffix);
+            FileUploadResult fileSize = CmsFileUtils.getFileSize(filepath, fileName, suffix);
+            return thumb(siteId, fileSize, filepath, suffix);
         } else {
             throw new IOException(
                     LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "verify.custom.file.unsafe"));
         }
+    }
+
+    public void clearCache(short siteId) {
+        if (CommonUtils.notEmpty(uploaderList)) {
+            for (FileUploader fileUploader : uploaderList) {
+                fileUploader.clear(siteId);
+            }
+        }
+    }
+
+    public Set<String> getCacheCodes() {
+        Set<String> result = null;
+        if (CommonUtils.notEmpty(uploaderList)) {
+            result = new HashSet<>();
+            for (FileUploader fileUploader : uploaderList) {
+                result.add(fileUploader.getCacheCode());
+            }
+        }
+        return result;
     }
 }

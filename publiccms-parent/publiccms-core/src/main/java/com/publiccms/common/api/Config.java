@@ -20,24 +20,10 @@ public interface Config {
      * 
      */
     String CONFIGPREFIX = "config.";
-
-    /**
-     * 
-     */
-    String CONFIG_CODE_SITE = "site";
-
-    /**
-     * 
-     */
-    String CONFIG_CODE_DESCRIPTION = CommonUtils.joinString(CONFIGPREFIX, CONFIG_CODE_SITE);
     /**
      * 
      */
     String CONFIG_CODE_DESCRIPTION_SUFFIX = CommonUtils.joinString(Constants.DOT, "description");
-    /**
-     * 
-     */
-    String CONFIG_CODE_SITEA_TTRIBUTE = "siteAttribute";
 
     /**
      * 
@@ -188,9 +174,7 @@ public interface Config {
      * @param showAll
      * @return config code or null
      */
-    default String getCode(short siteId, boolean showAll) {
-        return CONFIG_CODE_SITE;
-    }
+    String getCode(short siteId, boolean showAll);
 
     /**
      * @param locale
@@ -221,7 +205,5 @@ public interface Config {
      * @param locale
      * @return
      */
-    default String getCodeDescription(Locale locale) {
-        return LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, CONFIG_CODE_DESCRIPTION);
-    }
+    String getCodeDescription(Locale locale);
 }

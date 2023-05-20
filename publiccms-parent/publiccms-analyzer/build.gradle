@@ -10,6 +10,6 @@ dependencies {
 
     implementation "org.apache.lucene:lucene-analyzers-smartcn:${luceneVersion}"
     // https://mvnrepository.com/artifact/org.lionsoul/ip2region
-    implementation 'org.lionsoul:ip2region:2.6.6'
+    implementation 'org.lionsoul:ip2region:2.7.0'
     implementation "jakarta.servlet:jakarta.servlet-api:${servletVersion}"
 }
