@@ -5,7 +5,9 @@
     <title>${metadata.alias!}</title>
     <style type="text/css">
         .right{float:right;}
-        .pagination .page-item{padding:0 0.3rem;}
+        .pagination{list-style:none;}
+		.pagination:after{content:"";display:block;clear:both;}
+        .pagination .page-item{padding:0 0.3rem;float:left;}
         .pagination .page-item .page-link{margin-left:0;border-radius:0.2rem;padding:0.375rem 0.875rem;color:#999;border-color:#eee;}
         .page-item.active .page-link{background-color:#4C81E7;border-color:#eee;color:#FFF;}
     </style>
