@@ -12,7 +12,9 @@
         #content{width:100%;overflow: auto;}
         nav a.selected{border-bottom:1px solid #f099f0;}
         .bread{border-bottom:1px solid #eee;}
-        .pagination .page-item{padding:0 0.3rem;}
+        .pagination{list-style:none;}
+		.pagination:after{content:"";display:block;clear:both;}
+        .pagination .page-item{padding:0 0.3rem;float:left;}
         .pagination .page-item .page-link{margin-left:0;border-radius:0.2rem;padding:0.375rem 0.875rem;color:#999;border-color:#eee;}
         .page-item.active .page-link{background-color:#4C81E7;border-color:#eee;color:#FFF;}
     </style>
@@ -38,7 +40,7 @@
     </#if>
     <a href="${category.url}" data-id="${category.id}">${category.name}</a> &gt;
 </#macro>
-        <p class="bread"><@bread category/> <a href="${category.url}" data-id="${category.id}">${category.name}</a></p>
+        <p class="bread"><@bread category/></p>
         <article>
             <h1 data-diy="content" data-diy-id="${(content.id)!}"><a href="${content.url!}">${content.title}</a></h1>
             <p><#if content.copied>Source:<a href="${(attribute.sourceUrl)!}" target="_blank">${(attribute.source)!}</a></#if> ${content.author!} ${content.editor!} ${content.publishDate?datetime} Views:<em>loading...</em></p>
