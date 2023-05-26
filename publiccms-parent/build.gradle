@@ -61,7 +61,7 @@ subprojects {
         // https://mvnrepository.com/artifact/org.mybatis.dynamic-sql/mybatis-dynamic-sql
         dynamicSqlVersion = "1.4.1"
         // http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
-        jacksonVersion = "2.15.0"
+        jacksonVersion = "2.15.1"
         // http://mvnrepository.com/artifact/org.freemarker/freemarker
         freemarkerVersion = "2.3.32"
         // https://mvnrepository.com/artifact/org.apache.lucene/lucene-analyzers-smartcn

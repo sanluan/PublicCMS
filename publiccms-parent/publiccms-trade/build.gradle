@@ -8,7 +8,7 @@ dependencies {
     implementation project(':publiccms-core')
 
     // https://mvnrepository.com/artifact/com.alipay.sdk/alipay-easysdk
-    implementation "com.alipay.sdk:alipay-easysdk:2.7.0"
+    implementation "com.alipay.sdk:alipay-easysdk:2.2.3"
     // https://mvnrepository.com/artifact/com.github.wechatpay-apiv3/wechatpay-apache-httpclient
     implementation "com.github.wechatpay-apiv3:wechatpay-apache-httpclient:0.4.9"
     runtimeOnly "javax.servlet:javax.servlet-api:${servletVersion}"
