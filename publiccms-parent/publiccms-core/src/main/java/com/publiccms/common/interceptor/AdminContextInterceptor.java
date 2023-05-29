@@ -12,6 +12,7 @@ import javax.annotation.Resource;
 import org.springframework.web.util.UrlPathHelper;
 
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.RequestUtils;
@@ -79,7 +80,7 @@ public class AdminContextInterceptor extends WebContextInterceptor {
             site = siteComponent.getSite(domain, request.getServerName(), null);
         }
         request.setAttribute(CommonConstants.getAttributeSite(), site);
-        String path = urlPathHelper.getLookupPathForRequest(request);
+        String path = CmsFileUtils.getSafeFileName(urlPathHelper.getLookupPathForRequest(request));
         if (adminContextPath.equals(path)) {
             try {
                 StringBuilder sb = new StringBuilder(ctxPath);
