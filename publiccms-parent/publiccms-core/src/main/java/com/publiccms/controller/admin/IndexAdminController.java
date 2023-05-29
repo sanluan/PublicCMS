@@ -15,6 +15,7 @@ import org.springframework.web.util.UrlPathHelper;
 
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.constants.Constants;
+import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.config.SafeConfigComponent;
@@ -40,7 +41,7 @@ public class IndexAdminController {
      */
     @RequestMapping("/**")
     public String page(HttpServletRequest request) {
-        String path = UrlPathHelper.defaultInstance.getLookupPathForRequest(request);
+        String path = CmsFileUtils.getSafeFileName(UrlPathHelper.defaultInstance.getLookupPathForRequest(request));
         if (CommonUtils.notEmpty(path)) {
             if (Constants.SEPARATOR.equals(path) || path.endsWith(Constants.SEPARATOR)) {
                 path = CommonUtils.joinString(path, CommonConstants.getDefaultPage());
