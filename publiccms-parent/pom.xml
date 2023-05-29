@@ -20,7 +20,7 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
-        <version.publiccms>V5.202302.d</version.publiccms>
+        <version.publiccms>V5.202302.e</version.publiccms>
         <!-- https://mvnrepository.com/artifact/jakarta.servlet/jakarta.servlet-api -->
         <version.servlet>6.0.0</version.servlet>
         <!-- http://mvnrepository.com/artifact/org.springframework/spring-core -->
