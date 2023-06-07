@@ -75,6 +75,20 @@ public class SysUserService extends BaseService<SysUser> {
     public SysUser findByEmail(short siteId, String email) {
         return dao.findByEmail(siteId, email);
     }
+    
+    /**
+     * @param id
+     * @param cover
+     * @return entity
+     */
+    @Transactional(isolation = Isolation.READ_COMMITTED)
+    public SysUser updateCover(Serializable id, String cover) {
+        SysUser entity = getEntity(id);
+        if (null != entity) {
+            entity.setCover(cover);
+        }
+        return entity;
+    }
 
     /**
      * @param id
