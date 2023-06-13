@@ -163,7 +163,11 @@ function bringBackBatchValue(keys,suffixs){
             }
             list.push(obj);
         });
-        $.batchBringBack(list,keys);
+        if(suffixs){
+            $.batchBringBack(list,keys);
+        }else{
+            $.batchBringBack(list);
+        }
     }
 }
 var diyMenuTimer,diyButtonTimer,diyTimer;

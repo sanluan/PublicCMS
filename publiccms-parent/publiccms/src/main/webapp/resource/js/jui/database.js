@@ -47,7 +47,7 @@
             } else {
                 for ( var key in args) {
                     $box.find(":input[name="+escapeJquery(_util.lookupPk(key))+"]").each(function() {
-                        suggest(args,key,$(this))
+                        suggest(args,key,$(this));
                     });
                 }
             }
