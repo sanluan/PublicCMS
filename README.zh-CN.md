@@ -48,7 +48,7 @@ https://github.com/sanluan/PublicCMS
 cd publiccms-parent
 mvnw clean package
 cd publiccms/target
-java -jar publiccms.war
+java -jar -Dfile.encoding="UTF-8" -Dcms.filePath="../../../data/publiccms" publiccms.war
 ```
 访问程序页面http://localhost:8080/ ,根据页面提示配置并初始化数据库
 

@@ -96,11 +96,11 @@ public class CmsPageAdminController {
         }
         if (CommonUtils.notEmpty(path)) {
             String filepath = siteComponent.getTemplateFilePath(site.getId(), path);
-            CmsPageData olddata = metadataComponent.getTemplateData(filepath);
             metadataComponent.updateTemplateData(filepath, pageDate);
             logOperateService
                     .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                             "update.template.data", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
+            CmsPageData olddata = metadataComponent.getTemplateData(filepath);
             if (null != olddata && null != olddata.getExtendData()) {
                 List<SysExtendField> extendList = null;
                 if ("place".equalsIgnoreCase(type)) {
@@ -115,13 +115,27 @@ public class CmsPageAdminController {
                             CmsEditorHistoryService.ITEM_TYPE_METADATA_EXTEND, path, olddata.getExtendData(),
                             pageDate.getExtendData(), extendList);
                 }
-                if ("place".equalsIgnoreCase(type) && path.startsWith(TemplateComponent.INCLUDE_DIRECTORY)
+            }
+            if ("place".equalsIgnoreCase(type)) {
+                if (path.startsWith(TemplateComponent.INCLUDE_DIRECTORY)
                         && (site.isUseSsi() || CmsFileUtils.exists(siteComponent.getWebFilePath(site.getId(), path)))) {
                     CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);
                     CmsPageData data = metadataComponent.getTemplateData(filepath);
                     try {
                         templateComponent.staticPlace(site, path.substring(TemplateComponent.INCLUDE_DIRECTORY.length()),
                                 metadata, data);
+                    } catch (IOException | TemplateException e) {
+                        log.error(e.getMessage(), e);
+                    }
+                }
+            } else {
+                CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(filepath);
+                if (site.isUseStatic() && CommonUtils.notEmpty(metadata.getPublishPath())) {
+                    String templatePath = SiteComponent.getFullTemplatePath(site.getId(), path);
+                    CmsPageData data = metadataComponent.getTemplateData(filepath);
+                    try {
+                        templateComponent.createStaticFile(site, templatePath, metadata.getPublishPath(), null,
+                                metadata.getAsMap(data), null, null);
                     } catch (IOException | TemplateException e) {
                         log.error(e.getMessage(), e);
                     }

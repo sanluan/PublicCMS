@@ -48,7 +48,7 @@ Ensure that the operating system (OS) runs jdk1.8 or later,V5 Java17 and later
 cd publiccms-parent
 mvnw clean package
 cd publiccms/target
-java -jar publiccms.war
+java -jar -Dfile.encoding="UTF-8" -Dcms.filePath="../../../data/publiccms" publiccms.war
 ```
 Visit the program page http://localhost:8080/ and follow the prompts to configure and initialize the database
 

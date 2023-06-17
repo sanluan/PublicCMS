@@ -180,9 +180,7 @@ public class VisitHistoryDao extends BaseDao<VisitHistory> {
     public int delete(Date begintime) {
         if (null != begintime) {
             QueryHandler queryHandler = getQueryHandler("delete from VisitHistory bean");
-            if (null != begintime) {
-                queryHandler.condition("bean.createDate <= :createDate").setParameter("createDate", begintime);
-            }
+            queryHandler.condition("bean.createDate <= :createDate").setParameter("createDate", begintime);
             return delete(queryHandler);
         }
         return 0;

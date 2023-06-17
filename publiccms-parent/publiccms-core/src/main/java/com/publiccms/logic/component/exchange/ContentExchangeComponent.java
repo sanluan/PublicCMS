@@ -188,7 +188,7 @@ public class ContentExchangeComponent extends AbstractDataExchange<CmsContent, C
             entity.setUserId(userId);
             entity.setDeptId(null != user ? user.getDeptId() : null);
             entity.setCategoryId(category.getId());
-            if (null == oldentity) {
+            if (null == entity.getId()) {
                 service.save(entity);
             } else {
                 service.update(entity.getId(), entity);

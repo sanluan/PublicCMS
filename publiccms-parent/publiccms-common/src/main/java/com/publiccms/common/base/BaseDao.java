@@ -20,6 +20,7 @@ import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.search.highlight.Highlighter;
 import org.apache.lucene.search.highlight.QueryScorer;
 import org.apache.lucene.search.highlight.SimpleHTMLFormatter;
+import org.hibernate.ObjectNotFoundException;
 import org.hibernate.ScrollMode;
 import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
@@ -297,7 +298,7 @@ public abstract class BaseDao<E> {
         queryHandler.initQuery(query);
         try {
             return query.list();
-        } catch (EntityNotFoundException e) {
+        } catch (ObjectNotFoundException | EntityNotFoundException e) {
             return query.setCacheable(false).list();
         }
     }
