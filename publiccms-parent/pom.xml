@@ -34,8 +34,10 @@
         <version.juint>5.9.3</version.juint>
         <!-- http://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
         <!-- http://hibernate.org/orm/releases/ -->
+        <!-- 6 for jakarta -->
         <version.hibernate>5.6.12.Final</version.hibernate>
         <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-tools -->
+        <!-- 6 for jakarta -->
         <version.hibernateTools>5.6.12.Final</version.hibernateTools>
         <!-- https://mvnrepository.com/artifact/org.hibernate.search/hibernate-search-mapper-orm/ -->
         <!-- http://hibernate.org/search/releases/ -->
@@ -49,13 +51,13 @@
         <!-- http://mvnrepository.com/artifact/org.mybatis.generator/mybatis-generator-core -->
         <version.mybatisGenerator>1.4.2</version.mybatisGenerator>
         <!-- https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper -->
-        <version.pagehelper>5.3.2</version.pagehelper>
+        <version.pagehelper>5.3.3</version.pagehelper>
         <!-- https://mvnrepository.com/artifact/org.mybatis.dynamic-sql/mybatis-dynamic-sql -->
         <version.dynamicSql>1.5.0</version.dynamicSql>
         <!-- https://mvnrepository.com/artifact/org.ehcache/ehcache -->
         <version.ehcache>3.10.8</version.ehcache>
         <!-- http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
-        <version.jackson>2.15.1</version.jackson>
+        <version.jackson>2.15.2</version.jackson>
         <!-- http://mvnrepository.com/artifact/org.freemarker/freemarker -->
         <version.freemarker>2.3.32</version.freemarker>
         <!-- https://mvnrepository.com/artifact/org.apache.lucene/lucene-core -->
@@ -282,8 +284,8 @@
                 <version>${version.ehcache}</version>
                 <exclusions>
                     <exclusion>
-		                <groupId>org.glassfish.jaxb</groupId>
-					    <artifactId>jaxb-runtime</artifactId>
+                        <groupId>org.glassfish.jaxb</groupId>
+                        <artifactId>jaxb-runtime</artifactId>
                     </exclusion>
                  </exclusions>
             </dependency>
@@ -478,10 +480,10 @@
                 <version>${version.ant}</version>
             </dependency>
             <dependency>
-			    <groupId>org.glassfish.jaxb</groupId>
-			    <artifactId>jaxb-runtime</artifactId>
-			    <version>${version.jaxb}</version>
-			</dependency>
+                <groupId>org.glassfish.jaxb</groupId>
+                <artifactId>jaxb-runtime</artifactId>
+                <version>${version.jaxb}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <repositories>

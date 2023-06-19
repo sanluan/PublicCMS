@@ -28,20 +28,20 @@ dependencies {
     
     implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
     implementation "org.freemarker:freemarker:${freemarkerVersion}"
-    
+
     implementation "org.apache.lucene:lucene-analyzers-smartcn:${luceneVersion}"
     implementation "org.apache.lucene:lucene-backward-codecs:${luceneVersion}"
     implementation "org.apache.lucene:lucene-highlighter:${luceneVersion}"
-    
+
     implementation ("org.quartz-scheduler:quartz:${quartzVersion}") {
         exclude group:"com.mchange"
         exclude group:"com.zaxxer"
     }
-    
+
     implementation "fr.opensagres.xdocreport:fr.opensagres.poi.xwpf.converter.xhtml:${xhtmlConverterVersion}"
     implementation "org.apache.poi:poi-ooxml:${poiVersion}"
     implementation "org.apache.poi:poi-scratchpad:${poiVersion}"
-    
+
     implementation "commons-fileupload:commons-fileupload:${fileuploadVersion}"
     implementation "org.apache.commons:commons-collections4:${collectionsVersion}"
     implementation "org.apache.commons:commons-lang3:${langVersion}"

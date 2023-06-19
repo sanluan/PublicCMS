@@ -23,10 +23,15 @@ public class CmsVersion {
     private static Copyright copyright = new CmsCopyright();
 
     /**
+     * base version
+     */
+    public static final String BASE_VERSION = "V5";
+
+    /**
      * @return version
      */
     public static final String getVersion() {
-        return "V5.202302";
+        return BASE_VERSION + ".202302";
     }
 
     /**

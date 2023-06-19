@@ -40,8 +40,10 @@ subprojects {
         junitVersion = "5.9.3"
         // http://mvnrepository.com/artifact/org.hibernate/hibernate-core
         // http://hibernate.org/orm/downloads/
+        // 6 for jakarta
         hibernateVersion = "5.6.12.Final"
         // http://mvnrepository.com/artifact/org.hibernate/hibernate-tools
+        // 6 for jakarta
         hibernateToolsVersion = "5.6.12.Final"
         // https://mvnrepository.com/artifact/org.hibernate.search/hibernate-search-mapper-orm
         // http://hibernate.org/search/downloads/
@@ -57,11 +59,11 @@ subprojects {
         // http://mvnrepository.com/artifact/org.mybatis.generator/mybatis-generator-core
         mybatisGenerator = "1.4.2"
         // https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper
-        pageHelperVersion = "5.3.2"
+        pageHelperVersion = "5.3.3"
         // https://mvnrepository.com/artifact/org.mybatis.dynamic-sql/mybatis-dynamic-sql
         dynamicSqlVersion = "1.5.0"
         // http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
-        jacksonVersion = "2.15.1"
+        jacksonVersion = "2.15.2"
         // http://mvnrepository.com/artifact/org.freemarker/freemarker
         freemarkerVersion = "2.3.32"
         // https://mvnrepository.com/artifact/org.apache.lucene/lucene-analyzers-smartcn
