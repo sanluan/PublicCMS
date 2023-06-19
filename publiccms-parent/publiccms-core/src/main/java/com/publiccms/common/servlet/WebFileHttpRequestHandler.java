@@ -39,7 +39,7 @@ public class WebFileHttpRequestHandler extends ResourceHttpRequestHandler {
 
     @Override
     public void handleRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setHeader(CommonConstants.getXPowered(), CmsVersion.getVersion());
+        response.setHeader(CommonConstants.getXPowered(), CmsVersion.BASE_VERSION);
         super.handleRequest(request, response);
 
     }

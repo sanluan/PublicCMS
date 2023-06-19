@@ -19,7 +19,9 @@ dependencies {
     implementation "org.mybatis:mybatis:${mybatisVersion}"
     
     implementation "org.hibernate:hibernate-jcache:${hibernateVersion}"
-    implementation "org.ehcache:ehcache:${ehcacheVersion}"
+    implementation ("org.ehcache:ehcache:${ehcacheVersion}") {
+        exclude group:"org.glassfish.jaxb", module:"jaxb-runtime"
+    }
     
     implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
     implementation "org.freemarker:freemarker:${freemarkerVersion}"
@@ -54,6 +56,7 @@ dependencies {
 
     implementation "com.sun.mail:jakarta.mail:${mailVersion}"
     implementation "org.apache.ant:ant:${antVersion}"
+    implementation "org.glassfish.jaxb:jaxb-runtime:${jaxbVersion}"
     implementation "jakarta.annotation:jakarta.annotation-api:${annotationVersion}"
     implementation "javax.transaction:jta:${jtaVersion}"
 }

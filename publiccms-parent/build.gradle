@@ -29,39 +29,46 @@ subprojects {
 
     ext {
         // https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api
+        // 5,6 for jakarta
         servletVersion = "4.0.1"
         // http://mvnrepository.com/artifact/org.springframework/spring-core
         // https://spring.io/projects/spring-framework
-        springVersion = "5.3.27"
+        // 6.0,6.1 for Java 17
+        springVersion = "5.3.28"
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
         // https://spring.io/projects/spring-boot
+        // 3.0,3.1 for Java 17
         springBootVersion = "2.7.12"
         // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine
         junitVersion = "5.9.3"
         // http://mvnrepository.com/artifact/org.hibernate/hibernate-core
         // http://hibernate.org/orm/downloads/
+        // 6 for jakarta
         hibernateVersion = "5.6.12.Final"
         // http://mvnrepository.com/artifact/org.hibernate/hibernate-tools
+        // 6 for jakarta
         hibernateToolsVersion = "5.6.12.Final"
         // https://mvnrepository.com/artifact/org.hibernate.search/hibernate-search-mapper-orm
         // http://hibernate.org/search/downloads/
         hibernateSearchVersion = "6.1.8.Final"
         // https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator
+        // 6.1,7,8 for jakarta
         hibernateValidatorVersion = "6.0.23.Final"
         // https://mvnrepository.com/artifact/org.ehcache/ehcache
-        ehcacheVersion = "3.9.9"
+        ehcacheVersion = "3.10.8"
         // http://mvnrepository.com/artifact/org.mybatis/mybatis
         mybatisVersion = "3.5.13"
         // http://mvnrepository.com/artifact/org.mybatis/mybatis-spring
-        mybatisSpringVersion = "2.1.0"
+        // 3.0 for Java 17+
+        mybatisSpringVersion = "2.1.1"
         // http://mvnrepository.com/artifact/org.mybatis.generator/mybatis-generator-core
         mybatisGenerator = "1.4.2"
         // https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper
-        pageHelperVersion = "5.3.2"
+        pageHelperVersion = "5.3.3"
         // https://mvnrepository.com/artifact/org.mybatis.dynamic-sql/mybatis-dynamic-sql
-        dynamicSqlVersion = "1.4.1"
+        dynamicSqlVersion = "1.5.0"
         // http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
-        jacksonVersion = "2.15.1"
+        jacksonVersion = "2.15.2"
         // http://mvnrepository.com/artifact/org.freemarker/freemarker
         freemarkerVersion = "2.3.32"
         // https://mvnrepository.com/artifact/org.apache.lucene/lucene-analyzers-smartcn
@@ -72,6 +79,7 @@ subprojects {
         quartzVersion = "2.3.2"
         // https://mvnrepository.com/artifact/com.zaxxer/HikariCP
         // https://github.com/brettwooldridge/HikariCP
+        // Java 11+ maven artifact: 5.0.1
         hikariCPVersion = "4.0.3"
         // https://mvnrepository.com/artifact/com.mysql/mysql-connector-j
         mysqlVersion = "8.0.33"
@@ -120,6 +128,8 @@ subprojects {
         antVersion = "1.10.13"
         // http://mvnrepository.com/artifact/javax.transaction/jta
         jtaVersion = "1.1"
+        // https://mvnrepository.com/artifact/org.glassfish.jaxb/jaxb-runtime
+        jaxbVersion = "2.3.1"
     }
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
