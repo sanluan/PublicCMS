@@ -1,5 +1,5 @@
-/**
- * @license Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+﻿/**
+ * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license/
  */
 
@@ -13,10 +13,10 @@
  * (1) https://ckeditor.com/cke4/builder
  *     Visit online builder to build CKEditor from scratch.
  *
- * (2) https://ckeditor.com/cke4/builder/b5a3ca506f77e5173be58b8d680b2c9f
+ * (2) https://ckeditor.com/cke4/builder/d960fc7a1e377306bfbfaf7f84c7c7b4
  *     Visit online builder to build CKEditor, starting with the same setup as before.
  *
- * (3) https://ckeditor.com/cke4/builder/download/b5a3ca506f77e5173be58b8d680b2c9f
+ * (3) https://ckeditor.com/cke4/builder/download/d960fc7a1e377306bfbfaf7f84c7c7b4
  *     Straight download link to the latest version of CKEditor (Optimized) with the same setup as before.
  *
  * NOTE:
