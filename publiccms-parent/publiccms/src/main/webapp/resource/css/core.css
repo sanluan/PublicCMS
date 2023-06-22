@@ -519,9 +519,10 @@ a.btnLook:before{content:"\e66a";font-family:iconfont;}
 .panelBar .toolBar li:hover .addMore .icon-double-angle-down:before{content:"\f102";}
 
 input.date{border-right-width:0px;height:29px;}
-a.inputDateButton{float:left;display:block;background-color:#fff;color:#000;width:20px;font-size:16px;height:29px;line-height:27px;overflow:hidden;border-style:solid;border-width:1px;box-sizing:border-box;border-left:0px;}
+a.inputDateButton,a.inputClearButton{float:left;display:block;background-color:#fff;color:#000;width:20px;font-size:16px;height:29px;line-height:27px;overflow:hidden;border-style:solid;border-width:1px;box-sizing:border-box;border-left:0px;}
 a.inputDateButton:before{content:"\e60b";font-family:iconfont;}
-a.inputDateButton:hover{text-decoration:none;}
+a.inputDateButton:hover,a.inputClearButton:hover{text-decoration:none;}
+a.inputClearButton:before{content:"\e606";font-family:iconfont;}
 
 /* basic color */
 body{color:#fff;}

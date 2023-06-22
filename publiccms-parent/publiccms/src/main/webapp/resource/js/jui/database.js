@@ -199,7 +199,7 @@
                             });
                             var $lis = $suggest.html("<ul>" + html + "</ul>").find("li");
                             $lis.click(function() {
-                                _select($(this));
+                                _select($(this),callbackFields);
                                 if($input.next().hasClass("suggestButton")){
                                     $input.next().click();
                                 }
@@ -226,9 +226,9 @@
                     $(document).on("click", null, null , _close);
                     return false;
                 }
-                function _select($item) {
+                function _select($item,callbackFields) {
                     var jsonStr = "{" + $item.attr("lookupAttrs") + "}";
-                    $.bringBackSuggest(JUI.jsonEval(jsonStr));
+                    $.bringBackSuggest(JUI.jsonEval(jsonStr),callbackFields);
                 }
                 function _close() {
                     $(op.suggest$).html("").hide();
@@ -269,7 +269,7 @@
                     $items.removeClass("selected");
                     if (selectedIndex >= 0 ) {
                         var $item = $items.eq(selectedIndex).addClass("selected");
-                        _select($item);
+                        _select($item,callbackFields);
                     }
                 });
             });

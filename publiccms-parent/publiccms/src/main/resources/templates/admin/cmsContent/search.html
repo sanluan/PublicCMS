@@ -25,8 +25,9 @@
                 </li>
                 <li>
                 	<label><@t.page 'tag'/>:</label>
-                	<input name="tagId" type="hidden" value="${tagId!}"/>
-        			<input name="tagName" type="text" size="20" postField="tagName" suggestfields="id,name" callbackFields="tagId,tagName" lookupgroup="" suggestUrl="common/tagSuggest.html" vale="<@cms.tag id=tagId>${object.name}</@cms.tag>"/>
+                	<input name="tagId" type="hidden" value="${tagId!}" suffix="id"/>
+        			<input name="tagName" type="text" size="10" suffix="name" postField="tagName" suggestfields="id,name" callbackFields="tagId,tagName" lookupgroup="" suggestUrl="common/tagSuggest.html" value="<@cms.tag id=tagId>${object.name}</@cms.tag>"/>
+                    <a class="inputClearButton" href="javascript:$('input[name=tagId],input[name=tagName]',navTab.getCurrentPanel()).val('');"></a>
         		</li>
                 <li>
                     <label><@t.page 'field'/>:</label>
