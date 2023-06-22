@@ -2,10 +2,10 @@ package com.publiccms.logic.component.exchange;
 
 import java.io.ByteArrayOutputStream;
 
-import org.apache.tools.zip.ZipOutputStream;
-
 import javax.annotation.Priority;
 import javax.annotation.Resource;
+
+import org.apache.commons.compress.archivers.ArchiveOutputStream;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractDataExchange;
@@ -38,23 +38,23 @@ public class DictionaryExchangeComponent extends AbstractDataExchange<CmsDiction
     @Resource
     private CmsDictionaryExcludeValueService excludeValueService;
 
-    public void exportAll(SysSite site, String directory, ByteArrayOutputStream outputStream, ZipOutputStream zipOutputStream) {
+    public void exportAll(SysSite site, String directory, ByteArrayOutputStream outputStream, ArchiveOutputStream archiveOutputStream) {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         service.batchWork(site.getId(), (list, i) -> {
             for (CmsDictionary entity : list) {
-                exportEntity(site, directory, entity, out, zipOutputStream);
+                exportEntity(site, directory, entity, out, archiveOutputStream);
             }
         }, PageHandler.MAX_PAGE_SIZE);
     }
 
     public void exportEntity(SysSite site, String directory, CmsDictionary entity, ByteArrayOutputStream outputStream,
-            ZipOutputStream zipOutputStream) {
+            ArchiveOutputStream archiveOutputStream) {
         Dictionary data = new Dictionary();
         data.setEntity(entity);
         data.setDataList(dataService.getList(site.getId(), entity.getId().getId()));
         data.setExcludeList(excludeService.getList(site.getId(), entity.getId().getId(), null));
         data.setExcludeValueList(excludeValueService.getList(site.getId(), entity.getId().getId(), null));
-        export(directory, outputStream, zipOutputStream, data, CommonUtils.joinString(entity.getId().getId(), ".json"));
+        export(directory, outputStream, archiveOutputStream, data, CommonUtils.joinString(entity.getId().getId(), ".json"));
     }
 
     public void save(SysSite site, long userId, boolean overwrite, Dictionary data) {

@@ -94,6 +94,8 @@
         <version.io>2.11.0</version.io>
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-text -->
         <version.text>1.10.0</version.text>
+        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-compress -->
+        <version.compress>1.23.0</version.compress>
         <!-- http://mvnrepository.com/artifact/commons-codec/commons-codec -->
         <version.codec>1.15</version.codec>
         <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
@@ -118,8 +120,6 @@
         <version.annotation>1.3.5</version.annotation>
         <!-- https://mvnrepository.com/artifact/jakarta.mail/jakarta.mail-api -->
         <version.mail>1.6.7</version.mail>
-        <!-- http://mvnrepository.com/artifact/org.apache.ant/ant -->
-        <version.ant>1.10.13</version.ant>
         <!-- http://mvnrepository.com/artifact/javax.transaction/jta -->
         <version.jta>1.1</version.jta>
         <!-- https://mvnrepository.com/artifact/org.glassfish.jaxb/jaxb-runtime -->
@@ -400,6 +400,11 @@
                 <version>${version.text}</version>
             </dependency>
             <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-compress</artifactId>
+                <version>${version.compress}</version>
+            </dependency>
+            <dependency>
                 <groupId>commons-codec</groupId>
                 <artifactId>commons-codec</artifactId>
                 <version>${version.codec}</version>
@@ -468,11 +473,6 @@
                 <groupId>com.sun.mail</groupId>
                 <artifactId>jakarta.mail</artifactId>
                 <version>${version.mail}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.ant</groupId>
-                <artifactId>ant</artifactId>
-                <version>${version.ant}</version>
             </dependency>
             <dependency>
                 <groupId>javax.transaction</groupId>

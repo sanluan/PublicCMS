@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.apache.tools.zip.ZipOutputStream;
+import org.apache.commons.compress.archivers.ArchiveOutputStream;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractDataExchange;
@@ -28,23 +28,23 @@ public class TaskExchangeComponent extends AbstractDataExchange<SysTask, SysTask
     private ScheduledTask scheduledTask;
 
     @Override
-    public void exportAll(SysSite site, String directory, ByteArrayOutputStream outputStream, ZipOutputStream zipOutputStream) {
+    public void exportAll(SysSite site, String directory, ByteArrayOutputStream outputStream, ArchiveOutputStream archiveOutputStream) {
         PageHandler page = service.getPage(site.getId(), null, null, null, PageHandler.MAX_PAGE_SIZE);
         @SuppressWarnings("unchecked")
         List<SysTask> list = (List<SysTask>) page.getList();
         if (0 < page.getTotalCount()) {
             for (SysTask entity : list) {
-                exportEntity(site, directory, entity, outputStream, zipOutputStream);
+                exportEntity(site, directory, entity, outputStream, archiveOutputStream);
             }
         }
     }
 
     @Override
     public void exportEntity(SysSite site, String directory, SysTask task, ByteArrayOutputStream outputStream,
-            ZipOutputStream zipOutputStream) {
+            ArchiveOutputStream archiveOutputStream) {
         int id = task.getId();
         task.setId(null);
-        export(directory, outputStream, zipOutputStream, task, CommonUtils.joinString(id, ".json"));
+        export(directory, outputStream, archiveOutputStream, task, CommonUtils.joinString(id, ".json"));
     }
 
     public void save(SysSite site, long userId, boolean overwrite, SysTask data) {

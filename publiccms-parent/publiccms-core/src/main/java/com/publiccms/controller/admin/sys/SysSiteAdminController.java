@@ -13,11 +13,12 @@ import java.util.Date;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.compress.archivers.ArchiveOutputStream;
+import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.tools.zip.ZipOutputStream;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -200,21 +201,20 @@ public class SysSiteAdminController {
             StreamingResponseBody body = new StreamingResponseBody() {
                 @Override
                 public void writeTo(OutputStream outputStream) throws IOException {
-                    try (ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream)) {
-                        zipOutputStream.setEncoding(Constants.DEFAULT_CHARSET_NAME);
+                    try (ArchiveOutputStream archiveOutputStream = new ZipArchiveOutputStream(outputStream)) {
                         {
                             String filepath = siteComponent.getTemplateFilePath(site.getId(), Constants.SEPARATOR);
-                            ZipUtils.compress(Paths.get(filepath), zipOutputStream, "template");
+                            ZipUtils.compress(Paths.get(filepath), archiveOutputStream, "template");
                         }
                         {
                             String filepath = siteComponent.getWebFilePath(site.getId(), Constants.SEPARATOR);
-                            ZipUtils.compress(Paths.get(filepath), zipOutputStream, "web");
+                            ZipUtils.compress(Paths.get(filepath), archiveOutputStream, "web");
                         }
                         {
                             String filepath = siteComponent.getTaskTemplateFilePath(site.getId(), Constants.SEPARATOR);
-                            ZipUtils.compress(Paths.get(filepath), zipOutputStream, "tasktemplate");
+                            ZipUtils.compress(Paths.get(filepath), archiveOutputStream, "tasktemplate");
                         }
-                        siteExchangeComponent.exportAll(site, zipOutputStream);
+                        siteExchangeComponent.exportAll(site, archiveOutputStream);
                     }
                 }
             };

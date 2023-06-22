@@ -12,12 +12,13 @@ import java.util.Date;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.compress.archivers.ArchiveOutputStream;
+import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
+import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
+import org.apache.commons.compress.archivers.zip.ZipFile;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.tools.zip.ZipEntry;
-import org.apache.tools.zip.ZipFile;
-import org.apache.tools.zip.ZipOutputStream;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -395,9 +396,8 @@ public class CmsTemplateAdminController {
         StreamingResponseBody body = new StreamingResponseBody() {
             @Override
             public void writeTo(OutputStream outputStream) throws IOException {
-                try (ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream)) {
-                    zipOutputStream.setEncoding(Constants.DEFAULT_CHARSET_NAME);
-                    ZipUtils.compress(Paths.get(filepath), zipOutputStream, Constants.BLANK);
+                try (ArchiveOutputStream archiveOutputStream = new ZipArchiveOutputStream(outputStream)) {
+                    ZipUtils.compress(Paths.get(filepath), archiveOutputStream, Constants.BLANK);
                 }
             }
         };
@@ -430,7 +430,7 @@ public class CmsTemplateAdminController {
                     @Override
                     public void writeTo(OutputStream outputStream) throws IOException {
                         try (ZipFile zipFile = new ZipFile(file, Constants.DEFAULT_CHARSET_NAME)) {
-                            ZipEntry entry = zipFile.getEntry(imageFile);
+                            ZipArchiveEntry entry = zipFile.getEntry(imageFile);
                             if (null != entry) {
                                 try (InputStream inputStream = zipFile.getInputStream(entry);) {
                                     StreamUtils.copy(inputStream, outputStream);

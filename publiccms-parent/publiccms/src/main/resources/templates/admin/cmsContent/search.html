@@ -24,6 +24,11 @@
                     <a class="inputDateButton" href="javascript:void(0);"></a>
                 </li>
                 <li>
+                	<label><@t.page 'tag'/>:</label>
+                	<input name="tagId" type="hidden" value="${tagId!}"/>
+        			<input name="tagName" type="text" size="20" postField="tagName" suggestfields="id,name" callbackFields="tagId,tagName" lookupgroup="" suggestUrl="common/tagSuggest.html" vale="<@cms.tag id=tagId>${object.name}</@cms.tag>"/>
+        		</li>
+                <li>
                     <label><@t.page 'field'/>:</label>
                     <label><input name="fields" type="checkbox" class="form-check-input" value="title" <@t.compare fields!'' 'title' 'checked="checked"'/>/><@t.page 'title'/></label>
                     <label><input name="fields" type="checkbox" class="form-check-input" value="author" <@t.compare fields!'' 'author' 'checked="checked"'/>/><@t.page 'content.author'/></label>

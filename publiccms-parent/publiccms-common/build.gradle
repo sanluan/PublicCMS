@@ -44,6 +44,7 @@ dependencies {
     implementation "org.apache.commons:commons-lang3:${langVersion}"
     implementation "commons-io:commons-io:${ioVersion}"
     implementation "org.apache.commons:commons-text:${textVersion}"
+    implementation "org.apache.commons:commons-compress:${compressVersion}"
     implementation "commons-codec:commons-codec:${codecVersion}"
     implementation "org.apache.httpcomponents:httpclient:${httpclientVersion}"
 

@@ -10,12 +10,12 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.compress.archivers.ArchiveOutputStream;
+import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
+import org.apache.commons.compress.archivers.zip.ZipFile;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.tools.zip.ZipEntry;
-import org.apache.tools.zip.ZipFile;
-import org.apache.tools.zip.ZipOutputStream;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.multipart.MultipartFile;
@@ -95,11 +95,11 @@ public class SiteExchangeComponent {
 
     /**
      * @param site
-     * @param zipOutputStream
+     * @param archiveOutputStream
      */
-    public void exportAll(SysSite site, ZipOutputStream zipOutputStream) {
+    public void exportAll(SysSite site, ArchiveOutputStream archiveOutputStream) {
         for (AbstractDataExchange<?, ?> exchange : exchangeList) {
-            exchange.exportAll(site, exchange.getDirectory(), zipOutputStream);
+            exchange.exportAll(site, exchange.getDirectory(), archiveOutputStream);
         }
     }
 
@@ -147,7 +147,7 @@ public class SiteExchangeComponent {
         return CommonConstants.TEMPLATE_ERROR;
     }
 
-    public static <T> boolean mergeMap(String filepath, Class<T> clazz, ZipFile zipFile, ZipEntry zipEntry) {
+    public static <T> boolean mergeMap(String filepath, Class<T> clazz, ZipFile zipFile, ZipArchiveEntry zipEntry) {
         File file = new File(filepath);
         Map<String, T> map = null;
         try {
@@ -168,7 +168,7 @@ public class SiteExchangeComponent {
         return false;
     }
 
-    public static boolean mergeDataFile(String filepath, SysSite site, ZipFile zipFile, ZipEntry zipEntry) {
+    public static boolean mergeDataFile(String filepath, SysSite site, ZipFile zipFile, ZipArchiveEntry zipEntry) {
         String filename = CmsFileUtils.getFileName(zipEntry.getName());
         if (SiteComponent.MODEL_FILE.equalsIgnoreCase(filename)) {
             if (null == site.getParentId()) {

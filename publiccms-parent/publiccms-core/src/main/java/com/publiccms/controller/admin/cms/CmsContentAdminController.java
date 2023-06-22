@@ -14,11 +14,12 @@ import java.util.Set;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.compress.archivers.ArchiveOutputStream;
+import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.tools.zip.ZipOutputStream;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
@@ -689,9 +690,8 @@ public class CmsContentAdminController {
         StreamingResponseBody body = new StreamingResponseBody() {
             @Override
             public void writeTo(OutputStream outputStream) throws IOException {
-                try (ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream)) {
-                    zipOutputStream.setEncoding(Constants.DEFAULT_CHARSET_NAME);
-                    exchangeComponent.exportDataByQuery(site, null, queryEntity, zipOutputStream);
+                try (ArchiveOutputStream archiveOutputStream = new ZipArchiveOutputStream(outputStream)) {
+                    exchangeComponent.exportDataByQuery(site, null, queryEntity, archiveOutputStream);
                 }
             }
         };

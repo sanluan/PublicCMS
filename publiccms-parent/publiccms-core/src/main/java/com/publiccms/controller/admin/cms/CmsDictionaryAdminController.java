@@ -8,10 +8,11 @@ import java.util.Date;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.compress.archivers.ArchiveOutputStream;
+import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.tools.zip.ZipOutputStream;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -176,13 +177,12 @@ public class CmsDictionaryAdminController {
         StreamingResponseBody body = new StreamingResponseBody() {
             @Override
             public void writeTo(OutputStream outputStream) throws IOException {
-                try (ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream)) {
-                    zipOutputStream.setEncoding(Constants.DEFAULT_CHARSET_NAME);
+                try (ArchiveOutputStream archiveOutputStream = new ZipArchiveOutputStream(outputStream)) {
                     if (CommonUtils.empty(id)) {
-                        exchangeComponent.exportAll(site, zipOutputStream);
+                        exchangeComponent.exportAll(site, archiveOutputStream);
                     } else {
                         exchangeComponent.exportEntity(site, service.getEntity(new CmsDictionaryId(id, site.getId())),
-                                zipOutputStream);
+                                archiveOutputStream);
                     }
                 }
             }

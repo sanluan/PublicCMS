@@ -148,6 +148,10 @@
                     }
                 });
                 var suggestFields = $input.attr("suggestFields").split(",");
+                var callbackFields;
+                if($input.attr("callbackFields")){
+                    callbackFields = $input.attr("callbackFields").split(",");
+                }
                 function _show(event) {
                     var offset = $input.offset();
                     var iTop = offset.top + this.offsetHeight;
@@ -213,7 +217,7 @@
                                     jsonStr += "'" + suggestFields[i] + "':''";
                                 }
                                 jsonStr = "{'" + _lookup.pk + "':''," + jsonStr + "}";
-                                $.bringBackSuggest(JUI.jsonEval(jsonStr));
+                                $.bringBackSuggest(JUI.jsonEval(jsonStr),callbackFields);
                             }
                         }, error: function() {
                             $suggest.html("");
