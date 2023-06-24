@@ -113,7 +113,6 @@ public class ZipUtils {
      *         @Override
      *         public void writeTo(OutputStream outputStream) throws IOException {
      *             try (ArchiveOutputStream zipOutputStream = new ZipArchiveOutputStream(outputStream)) {
-     *                 zipOutputStream.setEncoding(Constants.DEFAULT_CHARSET_NAME);
      *                 ZipUtils.compressFile(new File("filename.txt"), zipOutputStream, "dir/filename.txt");
      *             }
      *         }

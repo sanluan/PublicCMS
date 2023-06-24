@@ -151,7 +151,6 @@
                     extensions: acceptExtensions,
                     mimeTypes: 'image/*'
                 },
-                swf: '../../third-party/webuploader/Uploader.swf',
                 server: actionUrl,
                 fileVal: editor.getOpt('imageFieldName'),
                 duplicate: true,
@@ -512,7 +511,7 @@
 
             uploader.on('uploadError', function (file, code) {
             });
-            uploader.on('error', function (code, file) {
+            uploader.on('error', function (code, size, file) {
                 if (code == 'Q_TYPE_DENIED' || code == 'F_EXCEED_SIZE') {
                     addFile(file);
                 }

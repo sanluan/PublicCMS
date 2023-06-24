@@ -58,7 +58,7 @@
             <#list page.list as a>
             <tr>
                 <td><input name="ids" value="${a.id}" type="checkbox"></td>
-                <td class="exclude-translate">${(a.name)!}</td>
+                <td class="exclude-translate"><a href="cmsContent/search.html?word=${a.name}" class="btnText" target="navTab" rel="cmsContent/search" title="<@t.page 'content.search'/>">${(a.name)!}</a></td>
                 <td>${a.searchCount!}</td>
                 <td>${t.pageMessage(a.hidden?then('hidden','show'))}</td>
                 <td>${a.createDate!}</td>
@@ -70,7 +70,6 @@
                 </td>
                 <td class="wrap">
                     <a href="cmsWord/add.html?id=${a.id}" class="edit btnText blue" target="dialog" rel="cmsWord_edit" title="<@t.page 'search_word.edit'/>"><i class="icon-edit"></i><@t.page 'button.edit'/></a>
-                    <a href="cmsContent/search.html?word=${a.name}" class="btnText" target="navTab" rel="cmsContent/search" title="<@t.page 'content.search'/>"><i class="icon-search"></i><@t.page 'button.search'/></a>
                     <#if a.hidden>
                         <a href="cmsWord/show?id=${a.id}&_csrf=<@tools.csrfToken admin=true/>" class="btnText green" title="<@t.page 'confirm.show'/>" target="ajaxTodo"><i class="icon-eye-open"></i><@t.page 'button.show'/></a>
                     <#else>
