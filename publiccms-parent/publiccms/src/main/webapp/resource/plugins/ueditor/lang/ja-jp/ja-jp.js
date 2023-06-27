@@ -215,7 +215,7 @@ UE.I18N['ja-jp'] = {
         'removeFormat':"書式をクリア",
         'indent':"字下げ",
         'alignment':"配置",
-        'ignoreCaption':"キャプションを無視する",
+        'captionCenter':"画像のキャプション",
         'imageFloat':"画像フロート",
         'removeImageSize':"画像サイズを削除",
         'imageWidth':"イメージの最大幅",

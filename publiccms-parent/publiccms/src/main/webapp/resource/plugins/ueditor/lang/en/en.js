@@ -221,7 +221,7 @@ UE.I18N['en'] = {
         'removeFormat':"Remove format",
         'indent':"Indent",
         'alignment':"Alignment",
-        'ignoreCaption':"Ignore caption",
+        'captionCenter':"Image caption",
         'imageFloat':"Image float",
         'removeImageSize':"Remove image size",
         'imageWidth':"Max image width",

@@ -220,7 +220,7 @@ UE.I18N['zh-cn'] = {
         'removeFormat':"清除格式",
         'indent':"首行缩进",
         'alignment':"对齐方式",
-        'ignoreCaption':"忽略图片标题",
+        'captionCenter':"图片标题",
         'imageFloat':"图片浮动",
         'removeImageSize':"清除图片尺寸",
         'imageWidth':"图片最大宽度",
