@@ -304,7 +304,7 @@ public class PlaceController {
      */
     @RequestMapping("redirect")
     public <T> ResponseEntity<T> redirect(@RequestAttribute SysSite site, boolean found, Long id) {
-        ClickStatistics clickStatistics = statisticsComponent.placeClicks(site.getId(), id);
+        ClickStatistics clickStatistics = statisticsComponent.placeClicks(site, id);
         if (null != clickStatistics && CommonUtils.notEmpty(clickStatistics.getUrl())
                 && site.getId().equals(clickStatistics.getSiteId())) {
             return ControllerUtils.redirect(found, clickStatistics.getUrl());

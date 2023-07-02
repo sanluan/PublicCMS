@@ -15,6 +15,7 @@ import freemarker.cache.StringTemplateLoader;
 import freemarker.core.TemplateClassResolver;
 import freemarker.template.Configuration;
 import freemarker.template.SimpleHash;
+import freemarker.template.TemplateExceptionHandler;
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 
@@ -58,6 +59,7 @@ public class GetTemplateResultMethod extends BaseMethod {
         configuration.setTemplateUpdateDelayMilliseconds(0);
         configuration.setAPIBuiltinEnabled(false);
         configuration.setNewBuiltinClassResolver(TemplateClassResolver.ALLOWS_NOTHING_RESOLVER);
+        configuration.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
         configuration.setLogTemplateExceptions(false);
         configuration.setBooleanFormat("c");
         configuration.setTemplateLoader(new StringTemplateLoader());

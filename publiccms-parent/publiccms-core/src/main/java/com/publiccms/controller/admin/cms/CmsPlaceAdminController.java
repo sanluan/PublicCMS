@@ -367,7 +367,7 @@ public class CmsPlaceAdminController {
 
     private void staticPlace(SysSite site, String path) {
         String placePath = CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, path);
-        if (CmsFileUtils.exists(siteComponent.getWebFilePath(site.getId(), placePath))) {
+        if (site.isUseSsi() || CmsFileUtils.exists(siteComponent.getWebFilePath(site.getId(), placePath))) {
             try {
                 String filepath = siteComponent.getTemplateFilePath(site.getId(), placePath);
                 CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);

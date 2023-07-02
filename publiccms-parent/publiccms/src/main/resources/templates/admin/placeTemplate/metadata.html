@@ -86,6 +86,16 @@
                 </dl>
                 <dl class="nowrap">
                     <dt>
+                        <label><input name="fieldList" type="checkbox" class="form-check-input" value="maxClicks"/><@t.page 'max_clicks'/></label>
+                    </dt>
+                    <dd>
+                        <label><@t.page 'max_clicks'/>:</label>
+                        <input name="fieldTextMap[maxClicks]" type="text" maxlength="20" size="10" value="${(a.fieldTextMap['maxClicks'])!t.pageMessage('max_clicks')}"/>
+                        <span class="info"><#noparse>${(a.maxClicks)!}</#noparse></span>
+                    </dd>
+                </dl>
+                <dl class="nowrap">
+                    <dt>
                         <label><input name="fieldList" type="checkbox" class="form-check-input" value="description"/><@t.page 'description'/></label>
                     </dt>
                     <dd>
