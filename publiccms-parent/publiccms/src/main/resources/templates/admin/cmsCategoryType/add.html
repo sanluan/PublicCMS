@@ -87,5 +87,8 @@
             $('.onlyUrl',navTab.getCurrentPanel()).show();
         }
     });
+    <#if a?has_content && a.onlyUrl>
+        $('input[name=onlyUrl]',navTab.getCurrentPanel()).click();
+    </#if>
 </script>
 </div>

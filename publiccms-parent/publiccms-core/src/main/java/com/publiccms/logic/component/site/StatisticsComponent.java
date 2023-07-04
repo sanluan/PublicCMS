@@ -20,6 +20,7 @@ import com.publiccms.entities.cms.CmsContentFile;
 import com.publiccms.entities.cms.CmsPlace;
 import com.publiccms.entities.cms.CmsWord;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.BeanComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsContentFileService;
@@ -65,8 +66,6 @@ public class StatisticsComponent implements Cache {
     private MetadataComponent metadataComponent;
     @Resource
     protected SiteComponent siteComponent;
-    @Resource
-    private TemplateComponent templateComponent;
 
     /**
      * @param id
@@ -157,7 +156,7 @@ public class StatisticsComponent implements Cache {
                                 String filepath = siteComponent.getTemplateFilePath(site.getId(), placePath);
                                 CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);
                                 CmsPageData data = metadataComponent.getTemplateData(filepath);
-                                templateComponent.staticPlace(site, entity.getPath(), metadata, data);
+                                BeanComponent.getTemplateComponent().staticPlace(site, entity.getPath(), metadata, data);
                             } catch (IOException | TemplateException e) {
                                 log.error(e.getMessage(), e);
                             }
