@@ -69,7 +69,7 @@
                     <span class="info hasProducts hide"><@t.page 'product_list'/>:<#noparse>&lt;@cms.contentProductList contentId=content.id&gt;&lt;#list page.list as a&gt;${a.title!}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.contentProductList&gt;</#noparse></span>
                 </div>
                 <div class="divider"></div>
-                <dl class="nowrap">
+                <dl>
                     <dt>
                         <label><@t.page 'field.title'/>:</label>
                     </dt>
@@ -78,16 +78,16 @@
                         <span class="info"><#noparse>${(content.title)!}</#noparse></span>
                     </dd>
                 </dl>
-                <dl class="nowrap urlText hide">
+                <dl>
                     <dt>
-                        <label><@t.page 'field.url_text'/>:</label>
+                        <label><@t.page 'top'/>:</label>
                     </dt>
                     <dd>
-                        <input name="fieldTextMap[url]" type="text" autocomplete="on" maxlength="20" size="10" value="${(a.fieldTextMap['url'])!t.pageMessage('url')}"/>
-                        <span class="info"><#noparse>${(content.url)!}</#noparse></span>
+                        <input name="fieldTextMap[sort]" type="text" autocomplete="on" maxlength="20" size="10" value="${(a.fieldTextMap['sort'])!t.pageMessage('content.top_level')}"/>
+                        <span class="info"><#noparse>${(content.sort)!}</#noparse></span>
                     </dd>
                 </dl>
-                <dl class="nowrap">
+                <dl>
                     <dt>
                         <label><input name="fieldList" type="checkbox" class="form-check-input" value="copied"/><@t.page 'copied'/></label>
                     </dt>
@@ -97,7 +97,7 @@
                         <span class="info"><#noparse>${(content.copied)!}</#noparse></span>
                     </dd>
                 </dl>
-                <dl class="nowrap">
+                <dl>
                     <dt>
                         <label><input name="fieldList" type="checkbox" class="form-check-input" value="tag"/><@t.page 'tag'/></label>
                     </dt>
@@ -107,7 +107,7 @@
                         <span class="info"><#noparse>&lt;@cms.tag ids=content.tagIds&gt;&lt;#list map as k,v&gt;${v.name!}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.tag&gt;</#noparse></span>
                     </dd>
                 </dl>
-                <dl class="nowrap">
+                <dl>
                     <dt>
                         <label><input name="fieldList" type="checkbox" class="form-check-input" value="author"/><@t.page 'content.author'/></label>
                     </dt>
@@ -118,7 +118,7 @@
                         <span class="info"><#noparse>${(content.author)!}</#noparse></span>
                     </dd>
                 </dl>
-                <dl class="nowrap">
+                <dl>
                     <dt>
                         <label><input name="fieldList" type="checkbox" class="form-check-input" value="editor"/><@t.page 'editor'/></label>
                     </dt>
@@ -129,7 +129,16 @@
                         <span class="info"><#noparse>${(content.editor)!}</#noparse></span>
                     </dd>
                 </dl>
-                <dl class="nowrap">
+                <dl class="urlText hide">
+                    <dt>
+                        <label><@t.page 'field.url_text'/>:</label>
+                    </dt>
+                    <dd>
+                        <input name="fieldTextMap[url]" type="text" autocomplete="on" maxlength="20" size="10" value="${(a.fieldTextMap['url'])!t.pageMessage('url')}"/>
+                        <span class="info"><#noparse>${(content.url)!}</#noparse></span>
+                    </dd>
+                </dl>
+                <dl>
                     <dt>
                         <label><input name="fieldList" type="checkbox" class="form-check-input" value="description"/><@t.page 'description'/></label>
                     </dt>

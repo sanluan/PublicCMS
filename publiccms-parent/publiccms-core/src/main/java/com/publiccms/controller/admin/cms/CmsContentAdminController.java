@@ -120,7 +120,7 @@ public class CmsContentAdminController {
     @Resource
     private ContentExportComponent exportComponent;
 
-    public static final String[] ignoreProperties = new String[] { "siteId", "userId", "deptId", "categoryId", "tagIds", "sort",
+    public static final String[] ignoreProperties = new String[] { "siteId", "userId", "deptId", "categoryId", "tagIds",
             "createDate", "updateDate", "clicks", "comments", "scores", "scoreUsers", "collections", "score", "childs",
             "checkUserId", "disabled" };
 
@@ -443,9 +443,8 @@ public class CmsContentAdminController {
             Set<Serializable> categoryIdSet = new HashSet<>();
             try {
                 for (CmsContent entity : service.getEntitys(ids)) {
-                    if (entity.getCategoryId() != categoryId && site.getId() == entity.getSiteId()
-                            && null == entity.getParentId() && ControllerUtils.hasContentPermissions(admin, entity)
-                            && move(site, entity, categoryId)) {
+                    if (entity.getCategoryId() != categoryId && site.getId() == entity.getSiteId() && null == entity.getParentId()
+                            && ControllerUtils.hasContentPermissions(admin, entity) && move(site, entity, categoryId)) {
                         categoryIdSet.add(entity.getCategoryId());
                     } else {
                         sb.append(entity.getTitle()).append(Constants.COMMA);
