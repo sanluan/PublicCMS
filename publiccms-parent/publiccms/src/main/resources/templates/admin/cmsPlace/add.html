@@ -61,13 +61,15 @@
                     <a class="inputDateButton" href="javascript:void(0);"></a>
                 </dd>
             </dl>
+        <#if fieldList?seq_contains('maxClicks')>
             <dl>
-                <dt><@t.page 'max_clicks'/>:</dt>
+                <dt>${(metadata.fieldTextMap['maxClicks'])!}:</dt>
                 <dd>
                     <input type="number" name="maxClicks" class="required digits" size="20" value="${(a.maxClicks)!0}"/>
-                    <span class="info"><@t.page 'max_clicks.description'/></span>
+                    <span class="info"><@t.page 'max_clicks.description'/><#if a?has_content>,<@t.page 'clicks'/>:${a.clicks!}</#if></span>
                 </dd>
             </dl>
+        </#if>
         <#if fieldList?seq_contains('description')>
             <dl class="nowrap">
                 <dt>${(metadata.fieldTextMap['description'])!}:</dt>

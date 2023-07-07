@@ -64,7 +64,7 @@
             </dl>
             <fieldset class="placeExtend systemField">
                 <legend><@t.page 'place.system_field'/></legend>
-                <dl class="nowrap">
+                <dl>
                     <dt>
                         <label><@t.page 'field.title'/>:</label>
                     </dt>
@@ -73,7 +73,7 @@
                         <span class="info"><#noparse>${(a.title)!}</#noparse></span>
                     </dd>
                 </dl>
-                <dl class="nowrap">
+                <dl>
                     <dt>
                         <label><input name="fieldList" type="checkbox" class="form-check-input" value="url"/><@t.page 'field.url'/></label>
                     </dt>
@@ -84,17 +84,7 @@
                         <span class="info"><#noparse>${(a.url)!}</#noparse></span>
                     </dd>
                 </dl>
-                <dl class="nowrap">
-                    <dt>
-                        <label><input name="fieldList" type="checkbox" class="form-check-input" value="maxClicks"/><@t.page 'max_clicks'/></label>
-                    </dt>
-                    <dd>
-                        <label><@t.page 'max_clicks'/>:</label>
-                        <input name="fieldTextMap[maxClicks]" type="text" maxlength="20" size="10" value="${(a.fieldTextMap['maxClicks'])!t.pageMessage('max_clicks')}"/>
-                        <span class="info"><#noparse>${(a.maxClicks)!}</#noparse></span>
-                    </dd>
-                </dl>
-                <dl class="nowrap">
+                <dl>
                     <dt>
                         <label><input name="fieldList" type="checkbox" class="form-check-input" value="description"/><@t.page 'description'/></label>
                     </dt>
@@ -103,6 +93,16 @@
                         <input name="fieldTextMap[description]" type="text" maxlength="20" size="10" value="${(a.fieldTextMap['description'])!t.pageMessage('description')}"/>
                         <label><input name="requiredFieldList" type="checkbox" class="form-check-input" value="description"/><@t.page 'required'/></label>
                         <span class="info"><#noparse>&lt;#list (a.description!'')?split("\n") as a&gt;${a}&lt;#sep&gt;&lt;br/&gt;&lt;/#list&gt;</#noparse></span>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>
+                        <label><input name="fieldList" type="checkbox" class="form-check-input" value="maxClicks"/><@t.page 'max_clicks'/></label>
+                    </dt>
+                    <dd>
+                        <label><@t.page 'max_clicks'/>:</label>
+                        <input name="fieldTextMap[maxClicks]" type="text" maxlength="20" size="10" value="${(a.fieldTextMap['maxClicks'])!t.pageMessage('max_clicks')}"/>
+                        <span class="info"><#noparse>${(a.maxClicks)!}</#noparse></span>
                     </dd>
                 </dl>
                 <dl class="nowrap">

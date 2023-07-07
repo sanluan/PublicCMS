@@ -135,7 +135,7 @@ public class StatisticsComponent implements Cache {
                 CmsPlace entity = placeService.getEntity(id);
                 if (null != entity && !entity.isDisabled() && CmsPlaceService.STATUS_NORMAL == entity.getStatus()
                         && site.getId() == entity.getSiteId()
-                        && (entity.getMaxClicks() <= 0 || entity.getMaxClicks() < entity.getClicks())) {
+                        && (0 <= entity.getMaxClicks() || entity.getMaxClicks() > entity.getClicks())) {
                     clickStatistics = new PlaceClickStatistics(id, entity.getSiteId(), 1, entity.getClicks(), entity.getUrl(),
                             entity.getMaxClicks());
                     List<PlaceClickStatistics> list = placeCache.put(id, clickStatistics);
@@ -145,8 +145,8 @@ public class StatisticsComponent implements Cache {
                 }
             } else {
                 clickStatistics.addClicks();
-                if (clickStatistics.getMaxClicks() < clickStatistics.getClicks()) {
-                    placeService.offshelf(id);
+                if (clickStatistics.getMaxClicks() < clickStatistics.getClicks() + clickStatistics.getOldClicks()) {
+                    placeService.shelf(id, false);
                     placeCache.remove(id);
                     CmsPlace entity = placeService.getEntity(id);
                     if (null != entity) {

@@ -9,6 +9,7 @@
 </@cms.content>
 <@cms.category id=categoryId!><#assign category=object/></@cms.category>
 <@cms.model id=modelId!><#assign model=object/></@cms.model>
+<@sys.dept id=admin.deptId!><#assign dept=object/></@sys.dept>
 <form method="post" autocomplete="off" action="cmsContent/save?callbackType=closeCurrent&navTabId=cmsContent/list" class="pageForm required-validate" onsubmit="clickAddTag(); return validateCallback(this,navTabAjaxDone);">
     <input name="id" type="hidden" value="${id!}"/>
     <input name="parentId" type="hidden" value="${parentId!}"/>
@@ -112,7 +113,10 @@ $('input[name=\'categoryName\']',navTab.getCurrentPanel()).on('change',function(
                         <label><input name="copied" type="checkbox" class="form-check-input"/>${(model.fieldTextMap['copied'])!}</label>
                     </#if>
                     <#if fieldList?seq_contains('sort')>
-                        <label><input class="required digits"name="sort" type="number" max="${(dept.maxSort)!0}" min="0" value="${sort!0}"/>${(model.fieldTextMap['sort'])!}</label>
+                        <label>${(model.fieldTextMap['sort'])!}:</label>
+                        <input class="required digits" name="sort" type="number" max="${(dept.maxSort)!0}" min="0" value="${(a.sort)!0}"/>
+                    <#else>
+                        <input name="sort" type="hidden" value="${(a.sort)!0}"/>
                     </#if>
                     </dd>
                 </dl>

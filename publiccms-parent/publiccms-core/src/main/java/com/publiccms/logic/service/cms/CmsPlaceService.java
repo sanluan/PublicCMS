@@ -120,14 +120,19 @@ public class CmsPlaceService extends BaseService<CmsPlace> {
             entity.setStatus(STATUS_PEND);
         }
     }
-    
+
     /**
      * @param id
+     * @param on 
      */
-    public void offshelf(Serializable id) {
+    public void shelf(Serializable id, boolean on) {
         CmsPlace entity = getEntity(id);
-        if (null != entity && STATUS_NORMAL == entity.getStatus()) {
-            entity.setStatus(STATUS_OFFSHELF);
+        if (null != entity) {
+            if (on && STATUS_OFFSHELF == entity.getStatus()) {
+                entity.setStatus(STATUS_NORMAL);
+            } else if (!on && STATUS_NORMAL == entity.getStatus()) {
+                entity.setStatus(STATUS_OFFSHELF);
+            }
         }
     }
 
