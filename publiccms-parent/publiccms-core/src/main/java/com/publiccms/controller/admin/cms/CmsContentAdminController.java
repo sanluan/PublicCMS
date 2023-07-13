@@ -76,6 +76,7 @@ import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.sys.SysDeptItemService;
 import com.publiccms.logic.service.sys.SysDeptService;
 import com.publiccms.logic.service.sys.SysSiteService;
+import com.publiccms.logic.service.sys.SysUserService;
 import com.publiccms.views.pojo.entities.CmsModel;
 import com.publiccms.views.pojo.model.CmsContentParameters;
 import com.publiccms.views.pojo.query.CmsContentQuery;
@@ -652,6 +653,7 @@ public class CmsContentAdminController {
 
     /**
      * @param site
+     * @param admin
      * @param queryEntity
      * @param orderField
      * @param orderType
@@ -660,26 +662,38 @@ public class CmsContentAdminController {
      */
     @RequestMapping("exportExcel")
     @Csrf
-    public ExcelView exportExcel(@RequestAttribute SysSite site, CmsContentQuery queryEntity, String orderField, String orderType,
-            HttpServletRequest request) {
+    public ExcelView exportExcel(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, CmsContentQuery queryEntity,
+            String orderField, String orderType, HttpServletRequest request) {
         queryEntity.setSiteId(site.getId());
         queryEntity.setDisabled(false);
         queryEntity.setEmptyParent(true);
+        if (SysUserService.CONTENT_PERMISSIONS_SELF == admin.getContentPermissions()) {
+            queryEntity.setUserId(admin.getId());
+        } else if (SysUserService.CONTENT_PERMISSIONS_DEPT == admin.getContentPermissions()) {
+            queryEntity.setDeptId(admin.getDeptId());
+        }
         Locale locale = RequestContextUtils.getLocale(request);
         return exportComponent.exportExcelByQuery(site, queryEntity, orderField, orderType, locale);
     }
 
     /**
      * @param site
+     * @param admin
      * @param queryEntity
      * @return response entity
      */
     @RequestMapping("exportData")
     @Csrf
-    public ResponseEntity<StreamingResponseBody> exportData(@RequestAttribute SysSite site, CmsContentQuery queryEntity) {
+    public ResponseEntity<StreamingResponseBody> exportData(@RequestAttribute SysSite site, @SessionAttribute SysUser admin,
+            CmsContentQuery queryEntity) {
         queryEntity.setSiteId(site.getId());
         queryEntity.setDisabled(false);
         queryEntity.setEmptyParent(true);
+        if (SysUserService.CONTENT_PERMISSIONS_SELF == admin.getContentPermissions()) {
+            queryEntity.setUserId(admin.getId());
+        } else if (SysUserService.CONTENT_PERMISSIONS_DEPT == admin.getContentPermissions()) {
+            queryEntity.setDeptId(admin.getDeptId());
+        }
         DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.DOWNLOAD_FORMAT_STRING);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentDisposition(ContentDisposition.attachment()
