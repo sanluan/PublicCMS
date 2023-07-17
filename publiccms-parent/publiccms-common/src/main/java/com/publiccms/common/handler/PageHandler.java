@@ -181,6 +181,7 @@ public class PageHandler implements java.io.Serializable {
     }
 
     /**
+     * 总页数
      * @return the totalPage
      */
     public int getTotalPage() {

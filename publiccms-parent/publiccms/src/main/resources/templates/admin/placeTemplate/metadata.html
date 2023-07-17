@@ -184,7 +184,7 @@
         </@sys.user>
     </#if>
     </script>
-            <textarea name="content" class="hide"></textarea>
+            <textarea name="content" class="hide" escape="true"></textarea>
             <textarea class="placeContent hide"><#if exists && ((a.size)!0) gt 0><@tools.fileContent path='/include'+path>${(object)!}</@tools.fileContent><#else><#noparse>
 <#list page.list>
     <ul data-diy="place" data-diy-id="${path}">

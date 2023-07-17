@@ -116,7 +116,7 @@ public class CmsTemplateAdminController {
 
             String filepath = siteComponent.getTemplateFilePath(site.getId(), path);
             try {
-                CmsFileUtils.createFile(filepath, content);
+                CmsFileUtils.createFile(filepath, new String(VerificationUtils.base64Decode(content), Constants.DEFAULT_CHARSET));
                 if (CommonUtils.notEmpty(metadata.getExtendList())) {
                     metadata.getExtendList().sort(Comparator.comparing(SysExtendField::getSort));
                     metadata.getExtendList().forEach(e -> {
@@ -207,7 +207,7 @@ public class CmsTemplateAdminController {
             String placePath = CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, path);
             String filepath = siteComponent.getTemplateFilePath(site.getId(), placePath);
             try {
-                CmsFileUtils.createFile(filepath, content);
+                CmsFileUtils.createFile(filepath, new String(VerificationUtils.base64Decode(content), Constants.DEFAULT_CHARSET));
                 if (CommonUtils.notEmpty(metadata.getExtendList())) {
                     metadata.getExtendList().sort(Comparator.comparing(SysExtendField::getSort));
                     metadata.getExtendList().forEach(e -> {
