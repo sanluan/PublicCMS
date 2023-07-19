@@ -68,7 +68,7 @@
         <!-- https://mvnrepository.com/artifact/org.apache.lucene/lucene-core -->
         <version.lucene>8.11.2</version.lucene>
         <!-- http://mvnrepository.com/artifact/redis.clients/jedis -->
-        <version.jedis>4.3.1</version.jedis>
+        <version.jedis>4.4.3</version.jedis>
         <!-- http://mvnrepository.com/artifact/org.quartz-scheduler/quartz -->
         <version.quartz>2.3.2</version.quartz>
         <!-- https://mvnrepository.com/artifact/com.zaxxer/HikariCP -->
