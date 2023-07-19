@@ -11,7 +11,7 @@
                     <label>${(a.size)!} ${(a.allowContribute?then('['+t.pageMessage('allow_contribute')+']',''))!}</label>
                 </li>
                 <li class="width:auto">
-                    <#list 0..2 as s>
+                    <#list 0..3 as s>
                         <label>
                             <input <@t.compare status!'' s?string 'checked="checked"'/> name="status" value="${s}" type="checkbox" class="form-check-input"/>
                             <@t.page 'status.place.data.'+s/>

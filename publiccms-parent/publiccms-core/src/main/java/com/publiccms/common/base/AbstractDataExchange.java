@@ -7,11 +7,11 @@ import java.io.InputStream;
 import java.lang.reflect.ParameterizedType;
 import java.util.Enumeration;
 
+import org.apache.commons.compress.archivers.ArchiveOutputStream;
+import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
+import org.apache.commons.compress.archivers.zip.ZipFile;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.tools.zip.ZipEntry;
-import org.apache.tools.zip.ZipFile;
-import org.apache.tools.zip.ZipOutputStream;
 
 import com.publiccms.common.api.DataExchange;
 import com.publiccms.common.constants.Constants;
@@ -26,35 +26,35 @@ public abstract class AbstractDataExchange<E, D> implements DataExchange<E, D> {
     public static final String ATTACHMENT_DIR = "attachment/";
 
     @Override
-    public void exportAll(SysSite site, String directory, ZipOutputStream zipOutputStream) {
+    public void exportAll(SysSite site, String directory, ArchiveOutputStream archiveOutputStream) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        exportAll(site, directory, outputStream, zipOutputStream);
+        exportAll(site, directory, outputStream, archiveOutputStream);
     }
 
     public abstract void exportAll(SysSite site, String directory, ByteArrayOutputStream outputStream,
-            ZipOutputStream zipOutputStream);
+            ArchiveOutputStream archiveOutputStream);
 
-    public void exportAll(SysSite site, ZipOutputStream zipOutputStream) {
-        exportAll(site, null, zipOutputStream);
+    public void exportAll(SysSite site, ArchiveOutputStream archiveOutputStream) {
+        exportAll(site, null, archiveOutputStream);
     }
 
     public abstract void exportEntity(SysSite site, String directory, E entity, ByteArrayOutputStream outputStream,
-            ZipOutputStream zipOutputStream);
+            ArchiveOutputStream archiveOutputStream);
 
     @Override
-    public void exportEntity(SysSite site, E entity, ZipOutputStream zipOutputStream) {
+    public void exportEntity(SysSite site, E entity, ArchiveOutputStream archiveOutputStream) {
         if (null != entity) {
-            exportEntity(site, null, entity, new ByteArrayOutputStream(), zipOutputStream);
+            exportEntity(site, null, entity, new ByteArrayOutputStream(), archiveOutputStream);
         }
     }
     
-    protected void export(String directory, ByteArrayOutputStream outputStream, ZipOutputStream zipOutputStream, D value,
+    protected void export(String directory, ByteArrayOutputStream outputStream, ArchiveOutputStream archiveOutputStream, D value,
             String path) {
         try {
             outputStream.reset();
             Constants.objectMapper.writeValue(outputStream, value);
             try (InputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray())) {
-                ZipUtils.compressFile(inputStream, zipOutputStream, getPath(directory, path));
+                ZipUtils.compressFile(inputStream, archiveOutputStream, getPath(directory, path));
             }
         } catch (IOException e) {
         }
@@ -67,17 +67,17 @@ public abstract class AbstractDataExchange<E, D> implements DataExchange<E, D> {
     @Override
     public void importData(SysSite site, long userId, String directory, boolean overwrite, ZipFile zipFile) {
         if (CommonUtils.empty(directory)) {
-            Enumeration<ZipEntry> entryEnum = zipFile.getEntries();
+            Enumeration<ZipArchiveEntry> entryEnum = zipFile.getEntries();
             while (entryEnum.hasMoreElements()) {
                 importData(site, userId, overwrite, zipFile, entryEnum.nextElement());
             }
         } else {
-            Enumeration<? extends ZipEntry> entryEnum = zipFile.getEntries();
+            Enumeration<ZipArchiveEntry> entryEnum = zipFile.getEntries();
             if (!directory.endsWith(Constants.SEPARATOR)) {
                 directory = CommonUtils.joinString(directory + Constants.SEPARATOR);
             }
             while (entryEnum.hasMoreElements()) {
-                ZipEntry zipEntry = entryEnum.nextElement();
+                ZipArchiveEntry zipEntry = entryEnum.nextElement();
                 if (zipEntry.getName().startsWith(directory)) {
                     importData(site, userId, overwrite, zipFile, zipEntry);
                 }
@@ -90,7 +90,7 @@ public abstract class AbstractDataExchange<E, D> implements DataExchange<E, D> {
                 && (sitePath.contains("://") || sitePath.startsWith("//"));
     }
 
-    public void importData(SysSite site, long userId, boolean overwrite, ZipFile zipFile, ZipEntry zipEntry) {
+    public void importData(SysSite site, long userId, boolean overwrite, ZipFile zipFile, ZipArchiveEntry zipEntry) {
         if (!zipEntry.isDirectory() && zipFile.canReadEntryData(zipEntry)) {
             try (InputStream inputStream = zipFile.getInputStream(zipEntry)) {
                 importData(site, userId, overwrite, inputStream);

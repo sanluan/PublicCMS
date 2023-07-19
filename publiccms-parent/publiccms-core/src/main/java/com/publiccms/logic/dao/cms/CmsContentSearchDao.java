@@ -20,7 +20,7 @@ import org.apache.lucene.queryparser.classic.ParseException;
 import org.hibernate.search.backend.lucene.LuceneBackend;
 import org.hibernate.search.engine.backend.Backend;
 import org.hibernate.search.engine.search.aggregation.AggregationKey;
-import org.hibernate.search.engine.search.predicate.dsl.BooleanPredicateClausesStep;
+import org.hibernate.search.engine.search.predicate.dsl.BooleanPredicateOptionsCollector;
 import org.hibernate.search.engine.search.query.SearchResult;
 import org.hibernate.search.engine.search.query.dsl.SearchQueryOptionsStep;
 import org.hibernate.search.engine.search.query.dsl.SearchQuerySelectStep;
@@ -44,6 +44,7 @@ import jakarta.annotation.Resource;
  * CmsContentDao
  *
  */
+@SuppressWarnings("deprecation")
 @Repository
 public class CmsContentSearchDao {
     private static final String titleField = "title";
@@ -154,33 +155,33 @@ public class CmsContentSearchDao {
 
     private SearchQueryOptionsStep<?, CmsContent, ?, ?, ?> getOptionsStep(CmsContentSearchQuery queryEntity, String orderField) {
 
-        Consumer<? super BooleanPredicateClausesStep<?>> clauseContributor = b -> {
+        Consumer<? super BooleanPredicateOptionsCollector<?>> clauseContributor = b -> {
             b.must(t -> t.match().field(siteIdField).matching(queryEntity.getSiteId()));
             if (CommonUtils.notEmpty(queryEntity.getParentId())) {
                 b.must(t -> t.match().field(parentIdField).matching(queryEntity.getParentId()));
             } else {
                 if (CommonUtils.notEmpty(queryEntity.getCategoryIds())) {
-                    Consumer<? super BooleanPredicateClausesStep<?>> categoryContributor = c -> {
+                    Consumer<? super BooleanPredicateOptionsCollector<?>> categoryContributor = c -> {
                         for (Integer categoryId : queryEntity.getCategoryIds()) {
                             c.should(t -> t.match().field(categoryIdField).matching(categoryId));
                         }
                     };
-                    b.must(f -> f.bool(categoryContributor));
+                    b.must(f -> f.bool().with(categoryContributor));
                 }
             }
             if (CommonUtils.notEmpty(queryEntity.getModelIds())) {
-                Consumer<? super BooleanPredicateClausesStep<?>> modelContributor = c -> {
+                Consumer<? super BooleanPredicateOptionsCollector<?>> modelContributor = c -> {
                     for (String modelId : queryEntity.getModelIds()) {
                         c.should(t -> t.match().field(modelIdField).matching(modelId));
                     }
                 };
-                b.must(f -> f.bool(modelContributor));
+                b.must(f -> f.bool().with(modelContributor));
             }
             if (CommonUtils.notEmpty(queryEntity.getUserId())) {
                 b.must(t -> t.match().field(userIdField).matching(queryEntity.getUserId()));
             }
             if (CommonUtils.notEmpty(queryEntity.getText())) {
-                Consumer<? super BooleanPredicateClausesStep<?>> keywordFiledsContributor = c -> {
+                Consumer<? super BooleanPredicateOptionsCollector<?>> keywordFiledsContributor = c -> {
                     if (ArrayUtils.contains(queryEntity.getFields(), titleField)) {
                         c.should(queryEntity.isPhrase()
                                 ? t -> t.phrase().field(titleField).matching(queryEntity.getText()).boost(2.0f)
@@ -197,7 +198,7 @@ public class CmsContentSearchDao {
                                 : t -> t.match().fields(tempFields).matching(queryEntity.getText()));
                     }
                 };
-                b.must(f -> f.bool(keywordFiledsContributor));
+                b.must(f -> f.bool().with(keywordFiledsContributor));
             }
             if (CommonUtils.notEmpty(queryEntity.getExclude())) {
                 b.mustNot(queryEntity.isPhrase()
@@ -205,17 +206,17 @@ public class CmsContentSearchDao {
                         : t -> t.match().fields(queryEntity.getFields()).matching(queryEntity.getExclude()));
             }
             if (CommonUtils.notEmpty(queryEntity.getTagIds())) {
-                Consumer<? super BooleanPredicateClausesStep<?>> tagIdsFiledsContributor = c -> {
+                Consumer<? super BooleanPredicateOptionsCollector<?>> tagIdsFiledsContributor = c -> {
                     for (Long tagId : queryEntity.getTagIds()) {
                         if (CommonUtils.notEmpty(tagId)) {
                             c.should(t -> t.match().fields(tagFields).matching(tagId.toString()));
                         }
                     }
                 };
-                b.must(f -> f.bool(tagIdsFiledsContributor));
+                b.must(f -> f.bool().with(tagIdsFiledsContributor));
             }
             if (CommonUtils.notEmpty(queryEntity.getExtendsValues())) {
-                Consumer<? super BooleanPredicateClausesStep<?>> extendsFiledsContributor = c -> {
+                Consumer<? super BooleanPredicateOptionsCollector<?>> extendsFiledsContributor = c -> {
                     for (String value : queryEntity.getExtendsValues()) {
                         if (CommonUtils.notEmpty(value)) {
                             String[] vs = StringUtils.split(value, ":", 2);
@@ -229,10 +230,10 @@ public class CmsContentSearchDao {
                         }
                     }
                 };
-                b.must(f -> f.bool(extendsFiledsContributor));
+                b.must(f -> f.bool().with(extendsFiledsContributor));
             }
             if (CommonUtils.notEmpty(queryEntity.getDictionaryValues())) {
-                Consumer<? super BooleanPredicateClausesStep<?>> dictionaryFiledsContributor = c -> {
+                Consumer<? super BooleanPredicateOptionsCollector<?>> dictionaryFiledsContributor = c -> {
                     for (String value : queryEntity.getDictionaryValues()) {
                         if (CommonUtils.notEmpty(value)) {
                             if (null != queryEntity.getDictionaryUnion() && queryEntity.getDictionaryUnion()) {
@@ -243,7 +244,7 @@ public class CmsContentSearchDao {
                         }
                     }
                 };
-                b.must(f -> f.bool(dictionaryFiledsContributor));
+                b.must(f -> f.bool().with(dictionaryFiledsContributor));
             }
             if (null != queryEntity.getStartPublishDate()) {
                 b.must(t -> t.range().field("publishDate").greaterThan(queryEntity.getStartPublishDate()));
@@ -256,13 +257,12 @@ public class CmsContentSearchDao {
                         .mustNot(t.range().field("expiryDate").range(Range.canonical(startDate, queryEntity.getExpiryDate()))));
             }
         };
-        SearchQuerySelectStep<?, EntityReference, CmsContent, SearchLoadingOptionsStep, ?, ?> selectStep = dao.getSearchSession()
-                .search(dao.getEntityClass());
+        SearchQuerySelectStep<?, EntityReference, CmsContent, SearchLoadingOptionsStep, ?, ?> selectStep = dao.getSearchSession().search(dao.getEntityClass());
         SearchQueryOptionsStep<?, CmsContent, ?, ?, ?> optionsStep;
         if (queryEntity.isProjection()) {
-            optionsStep = selectStep.select(f -> f.entity()).where(f -> f.bool(clauseContributor));
+            optionsStep = selectStep.select(f -> f.entity()).where(f -> f.bool().with(clauseContributor));
         } else {
-            optionsStep = selectStep.where(f -> f.bool(clauseContributor));
+            optionsStep = selectStep.where(f -> f.bool().with(clauseContributor));
         }
         if ("sort".equals(orderField)) {
             optionsStep.sort(f -> f.field("sort").desc());

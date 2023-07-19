@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Date;
 
 import jakarta.annotation.Resource;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +16,7 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsPlace;
 import com.publiccms.logic.dao.cms.CmsPlaceDao;
 import com.publiccms.views.pojo.entities.ClickStatistics;
+import com.publiccms.views.pojo.entities.PlaceClickStatistics;
 
 /**
  *
@@ -41,6 +43,10 @@ public class CmsPlaceService extends BaseService<CmsPlace> {
      * 
      */
     public static final int STATUS_PEND = 2;
+    /**
+     * 
+     */
+    public static final int STATUS_OFFSHELF = 3;
     /**
      * 
      */
@@ -83,7 +89,7 @@ public class CmsPlaceService extends BaseService<CmsPlace> {
      * @param entitys
      */
     @Transactional(isolation = Isolation.READ_COMMITTED)
-    public void updateStatistics(Collection<ClickStatistics> entitys) {
+    public void updateStatistics(Collection<PlaceClickStatistics> entitys) {
         for (ClickStatistics entityStatistics : entitys) {
             CmsPlace entity = getEntity(entityStatistics.getId());
             if (null != entity) {
@@ -112,6 +118,21 @@ public class CmsPlaceService extends BaseService<CmsPlace> {
         CmsPlace entity = getEntity(id);
         if (null != entity && STATUS_NORMAL == entity.getStatus()) {
             entity.setStatus(STATUS_PEND);
+        }
+    }
+
+    /**
+     * @param id
+     * @param on 
+     */
+    public void shelf(Serializable id, boolean on) {
+        CmsPlace entity = getEntity(id);
+        if (null != entity) {
+            if (on && STATUS_OFFSHELF == entity.getStatus()) {
+                entity.setStatus(STATUS_NORMAL);
+            } else if (!on && STATUS_NORMAL == entity.getStatus()) {
+                entity.setStatus(STATUS_OFFSHELF);
+            }
         }
     }
 

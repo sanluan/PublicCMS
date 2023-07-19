@@ -114,7 +114,7 @@
 
     /* 设置对齐方式 */
     function setAlign(align){
-        align = align || 'none';
+        align = align || 'center';
         var aligns = $G("alignIcon").children;
         for(i = 0; i < aligns.length; i++){
             if(aligns[i].getAttribute('data-align') == align) {
@@ -127,7 +127,7 @@
     }
     /* 获取对齐方式 */
     function getAlign(){
-        var align = $G("align").value || 'none';
+        var align = $G("align").value || 'center';
         return align == 'none' ? '':align;
     }
 
@@ -369,7 +369,6 @@
                     extensions: acceptExtensions,
                     mimeTypes: 'image/*'
                 },
-                swf: '../../third-party/webuploader/Uploader.swf',
                 server: actionUrl,
                 fileVal: editor.getOpt('imageFieldName'),
                 duplicate: true,
@@ -732,7 +731,7 @@
 
             uploader.on('uploadError', function (file, code) {
             });
-            uploader.on('error', function (code, file) {
+            uploader.on('error', function (code, size, file) {
                 if (code == 'Q_TYPE_DENIED' || code == 'F_EXCEED_SIZE') {
                     addFile(file);
                 }

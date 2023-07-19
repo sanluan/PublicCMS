@@ -34,17 +34,17 @@ import com.publiccms.common.tools.RedisUtils;
  * 
  */
 public class RedisRegionFactory extends RegionFactoryTemplate {
-    protected final Log log = LogFactory.getLog(getClass());
+    protected final transient Log log = LogFactory.getLog(getClass());
     /**
      * 
      */
     private static final long serialVersionUID = 1L;
 
-    private final CacheKeysFactory cacheKeysFactory;
+    private final transient CacheKeysFactory cacheKeysFactory;
     /**
      * {@link RedisClient} instance.
      */
-    protected volatile RedisClient redisClient;
+    protected transient RedisClient redisClient;
 
     public RedisRegionFactory() {
         this(DefaultCacheKeysFactory.INSTANCE);
@@ -93,7 +93,7 @@ public class RedisRegionFactory extends RegionFactoryTemplate {
 
             for (String legacyDefaultRegionName : legacyDefaultRegionNames) {
                 if (cacheExists(legacyDefaultRegionName, sessionFactory)) {
-                    SecondLevelCacheLogger.INSTANCE.usingLegacyCacheName(defaultRegionName, legacyDefaultRegionName);
+                    SecondLevelCacheLogger.L2CACHE_LOGGER.usingLegacyCacheName(defaultRegionName, legacyDefaultRegionName);
                     return legacyDefaultRegionName;
                 }
             }
@@ -118,6 +118,7 @@ public class RedisRegionFactory extends RegionFactoryTemplate {
         return null != redisClient.createOrGetCache(qualifiedRegionName);
     }
 
+    @Override
     protected boolean isStarted() {
         return super.isStarted() && null != redisClient;
     }

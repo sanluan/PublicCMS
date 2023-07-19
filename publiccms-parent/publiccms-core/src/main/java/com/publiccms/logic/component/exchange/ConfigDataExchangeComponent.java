@@ -3,9 +3,9 @@ package com.publiccms.logic.component.exchange;
 import java.io.ByteArrayOutputStream;
 import java.util.Set;
 
+import org.apache.commons.compress.archivers.ArchiveOutputStream;
+import org.apache.commons.compress.archivers.zip.ZipFile;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.tools.zip.ZipFile;
-import org.apache.tools.zip.ZipOutputStream;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractDataExchange;
@@ -35,12 +35,12 @@ public class ConfigDataExchangeComponent extends AbstractDataExchange<SysConfigD
     private SysConfigDataService service;
 
     @Override
-    public void exportAll(SysSite site, String directory, ByteArrayOutputStream outputStream, ZipOutputStream zipOutputStream) {
+    public void exportAll(SysSite site, String directory, ByteArrayOutputStream outputStream, ArchiveOutputStream archiveOutputStream) {
         Set<String> configCodeSet = configComponent.getExportableConfigCodeList(site.getId());
         for (String code : configCodeSet) {
             SysConfigData entity = service.getEntity(new SysConfigDataId(site.getId(), code));
             if (null != entity) {
-                exportEntity(site, directory, entity, outputStream, zipOutputStream);
+                exportEntity(site, directory, entity, outputStream, archiveOutputStream);
             }
         }
     }
@@ -53,14 +53,14 @@ public class ConfigDataExchangeComponent extends AbstractDataExchange<SysConfigD
 
     @Override
     public void exportEntity(SysSite site, String directory, SysConfigData entity, ByteArrayOutputStream outputStream,
-            ZipOutputStream zipOutputStream) {
+            ArchiveOutputStream archiveOutputStream) {
         if (needReplace(entity.getData(), site.getDynamicPath())) {
             entity.setData(StringUtils.replace(entity.getData(), site.getDynamicPath(), "#DYNAMICPATH#"));
         }
         if (needReplace(entity.getData(), site.getSitePath())) {
             entity.setData(StringUtils.replace(entity.getData(), site.getSitePath(), "#SITEPATH#"));
         }
-        export(directory, outputStream, zipOutputStream, entity, CommonUtils.joinString(entity.getId().getCode(), ".json"));
+        export(directory, outputStream, archiveOutputStream, entity, CommonUtils.joinString(entity.getId().getCode(), ".json"));
     }
 
     @Override

@@ -58,3 +58,7 @@ CREATE TABLE `cms_user_collection`  (
   KEY `cms_user_collection_user_id`(`user_id`, `create_date`)
 ) COMMENT = '用户收藏表';
 ALTER TABLE `cms_content` ADD COLUMN `collections` int(11) NOT NULL COMMENT '收藏数' AFTER `clicks`;
+-- 07-02 --
+ALTER TABLE `cms_place`
+    ADD COLUMN `max_clicks` int(11) NOT NULL COMMENT '最大点击数' AFTER `clicks`,
+    MODIFY COLUMN `status` int(11) NOT NULL COMMENT '状态：0、草稿 1、已发布 2、待审核 3、已下架' after `expiry_date`;

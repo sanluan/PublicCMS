@@ -58,7 +58,7 @@
             <#list page.list as a>
             <tr>
                 <td><input name="ids" value="${a.id}" type="checkbox"></td>
-                <td class="exclude-translate">${(a.name)!}</td>
+                <td class="exclude-translate"><a href="cmsContent/search.html?word=${a.name}" class="btnText" target="navTab" rel="cmsContent/search" title="<@t.page 'content.search'/>">${(a.name)!}</a></td>
                 <td>${a.searchCount!}</td>
                 <td>${t.pageMessage(a.hidden?then('hidden','show'))}</td>
                 <td>${a.createDate!}</td>

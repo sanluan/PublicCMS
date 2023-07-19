@@ -8,9 +8,10 @@ import java.util.Date;
 
 import jakarta.servlet.http.HttpServletRequest;
 
+import org.apache.commons.compress.archivers.ArchiveOutputStream;
+import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.tools.zip.ZipOutputStream;
 import jakarta.annotation.Resource;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
@@ -162,9 +163,8 @@ public class TaskTemplateAdminController {
         StreamingResponseBody body = new StreamingResponseBody() {
             @Override
             public void writeTo(OutputStream outputStream) throws IOException {
-                try (ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream)) {
-                    zipOutputStream.setEncoding(Constants.DEFAULT_CHARSET_NAME);
-                    ZipUtils.compress(Paths.get(filepath), zipOutputStream, Constants.BLANK);
+                try (ArchiveOutputStream archiveOutputStream = new ZipArchiveOutputStream(outputStream)) {
+                    ZipUtils.compress(Paths.get(filepath), archiveOutputStream, Constants.BLANK);
                 }
             }
         };

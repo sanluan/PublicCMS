@@ -134,6 +134,9 @@ public class CmsPlaceAdminController {
                 }
                 entity = service.update(entity.getId(), entity, ignoreProperties);
                 if (null != entity) {
+                    if (CmsPlaceService.STATUS_OFFSHELF == entity.getStatus() && entity.getClicks() < entity.getMaxClicks()) {
+                        service.shelf(entity.getId(), true);
+                    }
                     logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                             LogLoginService.CHANNEL_WEB_MANAGER, "update.place", RequestUtils.getIpAddress(request),
                             CommonUtils.getDate(), JsonUtils.getString(entity)));
@@ -294,8 +297,8 @@ public class CmsPlaceAdminController {
             path = path.replace("//", Constants.SEPARATOR);
         }
         Locale locale = RequestContextUtils.getLocale(request);
-        return exportComponent.exportExcelByQuery(site, path, userId, status, itemType, itemId, startPublishDate,
-                endPublishDate, orderField, orderType, locale);
+        return exportComponent.exportExcelByQuery(site, path, userId, status, itemType, itemId, startPublishDate, endPublishDate,
+                orderField, orderType, locale);
     }
 
     /**
@@ -367,7 +370,7 @@ public class CmsPlaceAdminController {
 
     private void staticPlace(SysSite site, String path) {
         String placePath = CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, path);
-        if (CmsFileUtils.exists(siteComponent.getWebFilePath(site.getId(), placePath))) {
+        if (site.isUseSsi() || CmsFileUtils.exists(siteComponent.getWebFilePath(site.getId(), placePath))) {
             try {
                 String filepath = siteComponent.getTemplateFilePath(site.getId(), placePath);
                 CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);

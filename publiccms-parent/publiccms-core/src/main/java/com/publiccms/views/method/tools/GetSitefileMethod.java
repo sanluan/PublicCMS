@@ -6,9 +6,9 @@ import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
+import org.apache.commons.compress.archivers.zip.ZipFile;
 import org.apache.commons.io.IOUtils;
-import org.apache.tools.zip.ZipEntry;
-import org.apache.tools.zip.ZipFile;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.BaseMethod;
@@ -57,7 +57,7 @@ public class GetSitefileMethod extends BaseMethod {
             String filepath = getString(0, arguments);
             File dest = new File(siteComponent.getSiteFilePath(filepath));
             try (ZipFile zipFile = new ZipFile(dest, Constants.DEFAULT_CHARSET_NAME);) {
-                ZipEntry entry = zipFile.getEntry("description.json");
+                ZipArchiveEntry entry = zipFile.getEntry("description.json");
                 if (null != entry) {
                     try (InputStream inputStream = zipFile.getInputStream(entry);) {
                         String content = IOUtils.toString(inputStream, Constants.DEFAULT_CHARSET);

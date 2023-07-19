@@ -137,7 +137,7 @@ public class CmsPlace extends Attribute implements java.io.Serializable {
     /**
      * status(0:Draft,1:Published,2:Pending)
      * <p>
-     * 状态(0:草稿,1:已发布,2:待审核)
+     * 状态(0:草稿,1:已发布,2:待审核,3:已下架)
      */
     @GeneratorColumn(title = "状态", condition = true)
     private int status;
@@ -148,6 +148,13 @@ public class CmsPlace extends Attribute implements java.io.Serializable {
      */
     @GeneratorColumn(title = "点击数", order = true)
     private int clicks;
+    /**
+     * max clicks
+     * <p>
+     * 最大点击数
+     */
+    @GeneratorColumn(title = "最大点击数")
+    private int maxClicks;
     @GeneratorColumn(title = "已删除", condition = true)
     @JsonIgnore
     private boolean disabled;
@@ -156,7 +163,7 @@ public class CmsPlace extends Attribute implements java.io.Serializable {
     }
 
     public CmsPlace(short siteId, String path, String title, Date createDate, Date publishDate, int status, int clicks,
-            boolean disabled) {
+            int maxClicks, boolean disabled) {
         this.siteId = siteId;
         this.path = path;
         this.title = title;
@@ -164,11 +171,12 @@ public class CmsPlace extends Attribute implements java.io.Serializable {
         this.publishDate = publishDate;
         this.status = status;
         this.clicks = clicks;
+        this.maxClicks = maxClicks;
         this.disabled = disabled;
     }
 
     public CmsPlace(short siteId, String path, Long userId, Long checkUserId, String itemType, Long itemId, String title,
-            String url, String cover, Date createDate, Date publishDate, Date expiryDate, int status, int clicks,
+            String url, String cover, Date createDate, Date publishDate, Date expiryDate, int status, int clicks, int maxClicks,
             boolean disabled) {
         this.siteId = siteId;
         this.path = path;
@@ -184,6 +192,7 @@ public class CmsPlace extends Attribute implements java.io.Serializable {
         this.expiryDate = expiryDate;
         this.status = status;
         this.clicks = clicks;
+        this.maxClicks = maxClicks;
         this.disabled = disabled;
     }
 
@@ -337,6 +346,14 @@ public class CmsPlace extends Attribute implements java.io.Serializable {
         this.clicks = clicks;
     }
 
+    @Column(name = "max_clicks", nullable = false)
+    public int getMaxClicks() {
+        return this.maxClicks;
+    }
+
+    public void setMaxClicks(int maxClicks) {
+        this.maxClicks = maxClicks;
+    }
     @Column(name = "disabled", nullable = false)
     public boolean isDisabled() {
         return this.disabled;

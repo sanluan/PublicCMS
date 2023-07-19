@@ -50,17 +50,26 @@
             <dl>
                 <dt><@t.page 'publish_date'/>:</dt>
                 <dd>
-                    <input type="text" name="publishDate" class="date" size="20" autocomplete="off" dateFmt="yyyy-MM-dd HH:mm:ss" value="<#if a?has_content && id?has_content>${(a.publishDate)!}<#else>${(content.publishDate)!}</#if>"/>
+                    <input type="text" name="publishDate" class="date" size="20" dateFmt="yyyy-MM-dd HH:mm:ss" value="<#if a?has_content && id?has_content>${(a.publishDate)!}<#else>${(content.publishDate)!}</#if>"/>
                     <a class="inputDateButton" href="javascript:void(0);"></a>
                 </dd>
             </dl>
             <dl>
                 <dt><@t.page 'expiry_date'/>:</dt>
                 <dd>
-                    <input type="text" name="expiryDate" class="date" size="20" autocomplete="off" dateFmt="yyyy-MM-dd HH:mm:ss" value="${(a.expiryDate)!(content.expiryDate)!}"/>
+                    <input type="text" name="expiryDate" class="date" size="20" dateFmt="yyyy-MM-dd HH:mm:ss" value="${(a.expiryDate)!(content.expiryDate)!}"/>
                     <a class="inputDateButton" href="javascript:void(0);"></a>
                 </dd>
             </dl>
+        <#if fieldList?seq_contains('maxClicks')>
+            <dl>
+                <dt>${(metadata.fieldTextMap['maxClicks'])!}:</dt>
+                <dd>
+                    <input type="number" name="maxClicks" class="required digits" size="20" value="${(a.maxClicks)!0}"/>
+                    <span class="info"><@t.page 'max_clicks.description'/><#if a?has_content>,<@t.page 'clicks'/>:${a.clicks!}</#if></span>
+                </dd>
+            </dl>
+        </#if>
         <#if fieldList?seq_contains('description')>
             <dl class="nowrap">
                 <dt>${(metadata.fieldTextMap['description'])!}:</dt>

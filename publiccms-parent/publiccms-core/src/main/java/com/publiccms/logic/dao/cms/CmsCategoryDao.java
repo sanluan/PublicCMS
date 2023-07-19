@@ -93,5 +93,4 @@ public class CmsCategoryDao extends BaseDao<CmsCategory> {
         }
         return entity;
     }
-
 }

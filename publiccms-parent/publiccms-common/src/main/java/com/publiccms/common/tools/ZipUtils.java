@@ -14,12 +14,13 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Enumeration;
 import java.util.function.BiPredicate;
 
+import org.apache.commons.compress.archivers.ArchiveOutputStream;
+import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
+import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
+import org.apache.commons.compress.archivers.zip.ZipFile;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.tools.zip.ZipEntry;
-import org.apache.tools.zip.ZipFile;
-import org.apache.tools.zip.ZipOutputStream;
 
 import com.publiccms.common.constants.Constants;
 
@@ -60,10 +61,9 @@ public class ZipUtils {
             } else {
                 zipFile.getParentFile().mkdirs();
                 try (FileOutputStream outputStream = new FileOutputStream(zipFile);
-                        ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream);
+                        ArchiveOutputStream zipOutputStream = new ZipArchiveOutputStream(outputStream);
                         FileLock fileLock = outputStream.getChannel().tryLock()) {
                     if (null != fileLock) {
-                        zipOutputStream.setEncoding(Constants.DEFAULT_CHARSET_NAME);
                         compress(Paths.get(sourceFilePath), zipOutputStream, Constants.BLANK);
                         return true;
                     }
@@ -79,7 +79,7 @@ public class ZipUtils {
      * @param basedir
      * @throws IOException
      */
-    public static void compress(Path sourceFilePath, ZipOutputStream out, String basedir) throws IOException {
+    public static void compress(Path sourceFilePath, ArchiveOutputStream out, String basedir) throws IOException {
         if (Files.isDirectory(sourceFilePath)) {
             try (DirectoryStream<Path> stream = Files.newDirectoryStream(sourceFilePath)) {
                 for (Path entry : stream) {
@@ -87,8 +87,8 @@ public class ZipUtils {
                     String fullName = Constants.BLANK.equals(basedir) ? entry.toFile().getName()
                             : CommonUtils.joinString(basedir, Constants.SEPARATOR, entry.toFile().getName());
                     if (attrs.isDirectory()) {
-                        ZipEntry zipEntry = new ZipEntry(CommonUtils.joinString(fullName, Constants.SEPARATOR));
-                        out.putNextEntry(zipEntry);
+                        ZipArchiveEntry zipEntry = new ZipArchiveEntry(CommonUtils.joinString(fullName, Constants.SEPARATOR));
+                        out.putArchiveEntry(zipEntry);
                         compress(entry, out, fullName);
                     } else if (!fullName.equalsIgnoreCase("files.zip")) {
                         compressFile(entry.toFile(), out, fullName);
@@ -112,8 +112,7 @@ public class ZipUtils {
      *     StreamingResponseBody body = new StreamingResponseBody() {
      *         @Override
      *         public void writeTo(OutputStream outputStream) throws IOException {
-     *             try (ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream)) {
-     *                 zipOutputStream.setEncoding(Constants.DEFAULT_CHARSET_NAME);
+     *             try (ArchiveOutputStream zipOutputStream = new ZipArchiveOutputStream(outputStream)) {
      *                 ZipUtils.compressFile(new File("filename.txt"), zipOutputStream, "dir/filename.txt");
      *             }
      *         }
@@ -127,22 +126,24 @@ public class ZipUtils {
      * @param fullName
      * @throws IOException
      */
-    public static void compressFile(File file, ZipOutputStream out, String fullName) throws IOException {
+    public static void compressFile(File file, ArchiveOutputStream out, String fullName) throws IOException {
         if (CommonUtils.notEmpty(file) && file.isFile()) {
-            ZipEntry entry = new ZipEntry(fullName);
+            ZipArchiveEntry entry = new ZipArchiveEntry(fullName);
             entry.setTime(file.lastModified());
-            out.putNextEntry(entry);
+            out.putArchiveEntry(entry);
             try (FileInputStream fis = new FileInputStream(file)) {
                 StreamUtils.copy(fis, out);
             }
+            out.closeArchiveEntry();
         }
     }
 
-    public static void compressFile(InputStream inputStream, ZipOutputStream out, String fullName) throws IOException {
-        ZipEntry entry = new ZipEntry(fullName);
+    public static void compressFile(InputStream inputStream, ArchiveOutputStream out, String fullName) throws IOException {
+        ZipArchiveEntry entry = new ZipArchiveEntry(fullName);
         entry.setTime(System.currentTimeMillis());
-        out.putNextEntry(entry);
+        out.putArchiveEntry(entry);
         StreamUtils.copy(inputStream, out);
+        out.closeArchiveEntry();
     }
 
     /**
@@ -156,7 +157,7 @@ public class ZipUtils {
      * @throws IOException
      */
     public static void unzipHere(String zipFilePath, String encoding, boolean overwrite,
-            BiPredicate<ZipFile, ZipEntry> overwriteFunction) throws IOException {
+            BiPredicate<ZipFile, ZipArchiveEntry> overwriteFunction) throws IOException {
         int index = zipFilePath.lastIndexOf(Constants.SEPARATOR);
         if (0 > index) {
             index = zipFilePath.lastIndexOf('\\');
@@ -172,7 +173,7 @@ public class ZipUtils {
      * @throws IOException
      */
     public static void unzip(String zipFilePath, String encoding, boolean overwrite,
-            BiPredicate<ZipFile, ZipEntry> overwriteFunction) throws IOException {
+            BiPredicate<ZipFile, ZipArchiveEntry> overwriteFunction) throws IOException {
         unzip(zipFilePath, zipFilePath.substring(0, zipFilePath.lastIndexOf(Constants.DOT)), encoding, overwrite,
                 overwriteFunction);
     }
@@ -186,21 +187,21 @@ public class ZipUtils {
      * @throws IOException
      */
     public static void unzip(String zipFilePath, String targetPath, String encoding, boolean overwrite,
-            BiPredicate<ZipFile, ZipEntry> overwriteFunction) throws IOException {
+            BiPredicate<ZipFile, ZipArchiveEntry> overwriteFunction) throws IOException {
         ZipFile zipFile = new ZipFile(zipFilePath, encoding);
-        Enumeration<? extends ZipEntry> entryEnum = zipFile.getEntries();
+        Enumeration<ZipArchiveEntry> entryEnum = zipFile.getEntries();
         if (!targetPath.endsWith(Constants.SEPARATOR) && !targetPath.endsWith("\\")) {
             targetPath = CommonUtils.joinString(targetPath, File.separator);
         }
         while (entryEnum.hasMoreElements()) {
-            ZipEntry zipEntry = entryEnum.nextElement();
+            ZipArchiveEntry zipEntry = entryEnum.nextElement();
             unzip(zipFile, zipEntry, targetPath, zipEntry.getName(), overwrite, overwriteFunction);
         }
         zipFile.close();
     }
 
-    private static void unzip(ZipFile zipFile, ZipEntry zipEntry, String targetPath, String filePath, boolean overwrite,
-            BiPredicate<ZipFile, ZipEntry> overwriteFunction) {
+    private static void unzip(ZipFile zipFile, ZipArchiveEntry zipEntry, String targetPath, String filePath, boolean overwrite,
+            BiPredicate<ZipFile, ZipArchiveEntry> overwriteFunction) {
         if (filePath.contains("..")) {
             filePath = filePath.replace("..", Constants.BLANK);
         }
@@ -234,8 +235,8 @@ public class ZipUtils {
      * @param overwriteFunction
      */
     public static void unzip(ZipFile zipFile, String directory, String targetPath, boolean overwrite,
-            BiPredicate<ZipFile, ZipEntry> overwriteFunction) {
-        Enumeration<? extends ZipEntry> entryEnum = zipFile.getEntries();
+            BiPredicate<ZipFile, ZipArchiveEntry> overwriteFunction) {
+        Enumeration<ZipArchiveEntry> entryEnum = zipFile.getEntries();
         if (!targetPath.endsWith(Constants.SEPARATOR) && !targetPath.endsWith("\\")) {
             targetPath = CommonUtils.joinString(targetPath, File.separator);
         }
@@ -243,7 +244,7 @@ public class ZipUtils {
             directory = CommonUtils.joinString(directory, Constants.SEPARATOR);
         }
         while (entryEnum.hasMoreElements()) {
-            ZipEntry zipEntry = entryEnum.nextElement();
+            ZipArchiveEntry zipEntry = entryEnum.nextElement();
             if (null == directory || zipEntry.getName().startsWith(directory)) {
                 unzip(zipFile, zipEntry, targetPath, StringUtils.removeStart(zipEntry.getName(), directory), overwrite,
                         overwriteFunction);

@@ -11,11 +11,12 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.compress.archivers.ArchiveOutputStream;
+import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.tools.zip.ZipOutputStream;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
@@ -72,6 +73,7 @@ import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.sys.SysDeptItemService;
 import com.publiccms.logic.service.sys.SysDeptService;
 import com.publiccms.logic.service.sys.SysSiteService;
+import com.publiccms.logic.service.sys.SysUserService;
 import com.publiccms.views.pojo.entities.CmsModel;
 import com.publiccms.views.pojo.model.CmsContentParameters;
 import com.publiccms.views.pojo.query.CmsContentQuery;
@@ -118,7 +120,7 @@ public class CmsContentAdminController {
     @Resource
     private ContentExportComponent exportComponent;
 
-    public static final String[] ignoreProperties = new String[] { "siteId", "userId", "deptId", "categoryId", "tagIds", "sort",
+    public static final String[] ignoreProperties = new String[] { "siteId", "userId", "deptId", "categoryId", "tagIds",
             "createDate", "updateDate", "clicks", "comments", "scores", "scoreUsers", "collections", "score", "childs",
             "checkUserId", "disabled" };
 
@@ -441,9 +443,8 @@ public class CmsContentAdminController {
             Set<Serializable> categoryIdSet = new HashSet<>();
             try {
                 for (CmsContent entity : service.getEntitys(ids)) {
-                    if (entity.getCategoryId() != categoryId && site.getId() == entity.getSiteId()
-                            && null == entity.getParentId() && ControllerUtils.hasContentPermissions(admin, entity)
-                            && move(site, entity, categoryId)) {
+                    if (entity.getCategoryId() != categoryId && site.getId() == entity.getSiteId() && null == entity.getParentId()
+                            && ControllerUtils.hasContentPermissions(admin, entity) && move(site, entity, categoryId)) {
                         categoryIdSet.add(entity.getCategoryId());
                     } else {
                         sb.append(entity.getTitle()).append(Constants.COMMA);
@@ -651,6 +652,7 @@ public class CmsContentAdminController {
 
     /**
      * @param site
+     * @param admin
      * @param queryEntity
      * @param orderField
      * @param orderType
@@ -659,26 +661,38 @@ public class CmsContentAdminController {
      */
     @RequestMapping("exportExcel")
     @Csrf
-    public ExcelView exportExcel(@RequestAttribute SysSite site, CmsContentQuery queryEntity, String orderField, String orderType,
-            HttpServletRequest request) {
+    public ExcelView exportExcel(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, CmsContentQuery queryEntity,
+            String orderField, String orderType, HttpServletRequest request) {
         queryEntity.setSiteId(site.getId());
         queryEntity.setDisabled(false);
         queryEntity.setEmptyParent(true);
+        if (SysUserService.CONTENT_PERMISSIONS_SELF == admin.getContentPermissions()) {
+            queryEntity.setUserId(admin.getId());
+        } else if (SysUserService.CONTENT_PERMISSIONS_DEPT == admin.getContentPermissions()) {
+            queryEntity.setDeptId(admin.getDeptId());
+        }
         Locale locale = RequestContextUtils.getLocale(request);
         return exportComponent.exportExcelByQuery(site, queryEntity, orderField, orderType, locale);
     }
 
     /**
      * @param site
+     * @param admin
      * @param queryEntity
      * @return response entity
      */
     @RequestMapping("exportData")
     @Csrf
-    public ResponseEntity<StreamingResponseBody> exportData(@RequestAttribute SysSite site, CmsContentQuery queryEntity) {
+    public ResponseEntity<StreamingResponseBody> exportData(@RequestAttribute SysSite site, @SessionAttribute SysUser admin,
+            CmsContentQuery queryEntity) {
         queryEntity.setSiteId(site.getId());
         queryEntity.setDisabled(false);
         queryEntity.setEmptyParent(true);
+        if (SysUserService.CONTENT_PERMISSIONS_SELF == admin.getContentPermissions()) {
+            queryEntity.setUserId(admin.getId());
+        } else if (SysUserService.CONTENT_PERMISSIONS_DEPT == admin.getContentPermissions()) {
+            queryEntity.setDeptId(admin.getDeptId());
+        }
         DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.DOWNLOAD_FORMAT_STRING);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentDisposition(ContentDisposition.attachment()
@@ -688,9 +702,8 @@ public class CmsContentAdminController {
         StreamingResponseBody body = new StreamingResponseBody() {
             @Override
             public void writeTo(OutputStream outputStream) throws IOException {
-                try (ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream)) {
-                    zipOutputStream.setEncoding(Constants.DEFAULT_CHARSET_NAME);
-                    exchangeComponent.exportDataByQuery(site, null, queryEntity, zipOutputStream);
+                try (ArchiveOutputStream archiveOutputStream = new ZipArchiveOutputStream(outputStream)) {
+                    exchangeComponent.exportDataByQuery(site, null, queryEntity, archiveOutputStream);
                 }
             }
         };

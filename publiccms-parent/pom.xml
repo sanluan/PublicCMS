@@ -26,24 +26,22 @@
         <version.servlet>6.0.0</version.servlet>
         <!-- http://mvnrepository.com/artifact/org.springframework/spring-core -->
         <!-- https://spring.io/projects/spring-framework -->
-        <version.spring>6.0.9</version.spring>
+        <version.spring>6.0.11</version.spring>
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
         <!-- https://spring.io/projects/spring-boot -->
-        <version.springBoot>3.1.0</version.springBoot>
+        <version.springBoot>3.1.1</version.springBoot>
         <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine -->
         <version.juint>5.9.3</version.juint>
-        <!-- http://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
+        <!-- http://mvnrepository.com/artifact/org.hibernate.orm/hibernate-core -->
         <!-- http://hibernate.org/orm/releases/ -->
-        <!-- 6 for jakarta -->
-        <version.hibernate>5.6.12.Final</version.hibernate>
+        <version.hibernate>6.2.6.Final</version.hibernate>
         <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-tools -->
-        <!-- 6 for jakarta -->
-        <version.hibernateTools>5.6.12.Final</version.hibernateTools>
+        <version.hibernateTools>5.6.15.Final</version.hibernateTools>
         <!-- https://mvnrepository.com/artifact/org.hibernate.search/hibernate-search-mapper-orm/ -->
         <!-- http://hibernate.org/search/releases/ -->
-        <version.hibernateSearch>6.1.8.Final</version.hibernateSearch>
+        <version.hibernateSearch>6.2.0.Final</version.hibernateSearch>
         <!-- https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator -->
-        <version.hibernateValidator>8.0.0.Final</version.hibernateValidator>
+        <version.hibernateValidator>8.0.1.Final</version.hibernateValidator>
         <!-- http://mvnrepository.com/artifact/org.mybatis/mybatis -->
         <version.mybatis>3.5.13</version.mybatis>
         <!-- http://mvnrepository.com/artifact/org.mybatis/mybatis-spring -->
@@ -63,7 +61,7 @@
         <!-- https://mvnrepository.com/artifact/org.apache.lucene/lucene-core -->
         <version.lucene>8.11.2</version.lucene>
         <!-- http://mvnrepository.com/artifact/redis.clients/jedis -->
-        <version.jedis>4.3.1</version.jedis>
+        <version.jedis>4.4.3</version.jedis>
         <!-- http://mvnrepository.com/artifact/org.quartz-scheduler/quartz -->
         <version.quartz>2.3.2</version.quartz>
         <!-- https://mvnrepository.com/artifact/com.zaxxer/HikariCP -->
@@ -88,6 +86,8 @@
         <version.io>2.11.0</version.io>
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-text -->
         <version.text>1.10.0</version.text>
+        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-compress -->
+        <version.compress>1.23.0</version.compress>
         <!-- http://mvnrepository.com/artifact/commons-codec/commons-codec -->
         <version.codec>1.15</version.codec>
         <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
@@ -111,11 +111,9 @@
         <!-- https://mvnrepository.com/artifact/jakarta.annotation/jakarta.annotation-api -->
         <version.annotation>2.1.1</version.annotation>
         <!-- https://mvnrepository.com/artifact/jakarta.mail/jakarta.mail-api -->
-        <version.mailApi>2.1.1</version.mailApi>
+        <version.mailApi>2.1.2</version.mailApi>
         <!-- https://mvnrepository.com/artifact/com.sun.mail/jakarta.mail -->
         <version.mail>2.0.1</version.mail>
-        <!-- http://mvnrepository.com/artifact/org.apache.ant/ant -->
-        <version.ant>1.10.13</version.ant>
         <!-- https://mvnrepository.com/artifact/org.glassfish.jaxb/jaxb-runtime -->
         <version.jaxb>2.3.1</version.jaxb>
     </properties>
@@ -213,8 +211,8 @@
                 <version>${version.spring}</version>
             </dependency>
             <dependency>
-                <groupId>org.hibernate</groupId>
-                <artifactId>hibernate-core-jakarta</artifactId>
+                <groupId>org.hibernate.orm</groupId>
+                <artifactId>hibernate-core</artifactId>
                 <version>${version.hibernate}</version>
             </dependency>
             <dependency>
@@ -224,7 +222,7 @@
             </dependency>
             <dependency>
                 <groupId>org.hibernate.search</groupId>
-                <artifactId>hibernate-search-mapper-orm-jakarta</artifactId>
+                <artifactId>hibernate-search-mapper-orm-orm6</artifactId>
                 <version>${version.hibernateSearch}</version>
             </dependency>
             <dependency>
@@ -400,6 +398,11 @@
                 <version>${version.text}</version>
             </dependency>
             <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-compress</artifactId>
+                <version>${version.compress}</version>
+            </dependency>
+            <dependency>
                 <groupId>commons-codec</groupId>
                 <artifactId>commons-codec</artifactId>
                 <version>${version.codec}</version>
@@ -473,11 +476,6 @@
                 <groupId>jakarta.annotation</groupId>
                 <artifactId>jakarta.annotation-api</artifactId>
                 <version>${version.annotation}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.ant</groupId>
-                <artifactId>ant</artifactId>
-                <version>${version.ant}</version>
             </dependency>
             <dependency>
                 <groupId>org.glassfish.jaxb</groupId>

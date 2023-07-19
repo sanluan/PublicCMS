@@ -10,7 +10,8 @@ import java.util.List;
 
 import java.util.Map;
 
-import org.apache.tools.zip.ZipOutputStream;
+import org.apache.commons.compress.archivers.ArchiveOutputStream;
+import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -194,9 +195,8 @@ public class SysConfigDataAdminController {
                 StreamingResponseBody body = new StreamingResponseBody() {
                     @Override
                     public void writeTo(OutputStream outputStream) throws IOException {
-                        try (ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream)) {
-                            zipOutputStream.setEncoding(Constants.DEFAULT_CHARSET_NAME);
-                            exchangeComponent.exportEntity(site, entity, zipOutputStream);
+                        try (ArchiveOutputStream archiveOutputStream = new ZipArchiveOutputStream(outputStream)) {
+                            exchangeComponent.exportEntity(site, entity, archiveOutputStream);
                         }
                     }
                 };

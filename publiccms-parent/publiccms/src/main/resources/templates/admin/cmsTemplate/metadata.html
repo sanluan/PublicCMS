@@ -258,7 +258,7 @@
         </#if>
             </script>
     <#else>
-            <textarea name="content" class="hide"><@html_escape><#include "demo/default.html" parse=false/></@html_escape></textarea>
+            <textarea name="content" class="hide" escape="true"><@html_escape><#include "demo/default.html" parse=false/></@html_escape></textarea>
             <script>
                 $('input[name=useDynamic]',navTab.getCurrentPanel()).click();
             </script>

@@ -32,24 +32,22 @@ subprojects {
         servletVersion = "6.0.0"
         // http://mvnrepository.com/artifact/org.springframework/spring-core
         // https://spring.io/projects/spring-framework
-        springVersion = "6.0.9"
+        springVersion = "6.0.11"
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
         // https://spring.io/projects/spring-boot
-        springBootVersion = "3.1.0"
+        springBootVersion = "3.1.1"
         // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine
         junitVersion = "5.9.3"
-        // http://mvnrepository.com/artifact/org.hibernate/hibernate-core
+        // http://mvnrepository.com/artifact/org.hibernate.orm/hibernate-core
         // http://hibernate.org/orm/downloads/
-        // 6 for jakarta
-        hibernateVersion = "5.6.12.Final"
+        hibernateVersion = "6.2.6.Final"
         // http://mvnrepository.com/artifact/org.hibernate/hibernate-tools
-        // 6 for jakarta
-        hibernateToolsVersion = "5.6.12.Final"
+        hibernateToolsVersion = "5.6.15.Final"
         // https://mvnrepository.com/artifact/org.hibernate.search/hibernate-search-mapper-orm
         // http://hibernate.org/search/downloads/
-        hibernateSearchVersion = "6.1.8.Final"
+        hibernateSearchVersion = "6.2.0.Final"
         // https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator
-        hibernateValidatorVersion = "8.0.0.Final"
+        hibernateValidatorVersion = "8.0.1.Final"
         // https://mvnrepository.com/artifact/org.ehcache/ehcache
         ehcacheVersion = "3.10.8"
         // http://mvnrepository.com/artifact/org.mybatis/mybatis
@@ -69,7 +67,7 @@ subprojects {
         // https://mvnrepository.com/artifact/org.apache.lucene/lucene-analyzers-smartcn
         luceneVersion = "8.11.2"
         // http://mvnrepository.com/artifact/redis.clients/jedis
-        jedisVersion = "4.3.1"
+        jedisVersion = "4.4.3"
         // http://mvnrepository.com/artifact/org.quartz-scheduler/quartz
         quartzVersion = "2.3.2"
         // https://mvnrepository.com/artifact/com.zaxxer/HikariCP
@@ -94,6 +92,8 @@ subprojects {
         ioVersion = "2.11.0"
         // https://mvnrepository.com/artifact/org.apache.commons/commons-text
         textVersion = "1.10.0"
+        // https://mvnrepository.com/artifact/org.apache.commons/commons-compress
+        compressVersion = "1.23.0"
         // http://mvnrepository.com/artifact/commons-codec/commons-codec
         codecVersion = "1.15"
         // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
@@ -117,11 +117,9 @@ subprojects {
         // https://mvnrepository.com/artifact/jakarta.annotation/jakarta.annotation-api
         annotationVersion = "2.1.1"
         // https://mvnrepository.com/artifact/jakarta.mail/jakarta.mail-api
-        mailApiVersion = "2.1.1"
+        mailApiVersion = "2.1.2"
         // https://mvnrepository.com/artifact/com.sun.mail/jakarta.mail
         mailVersion = "2.0.1"
-        // http://mvnrepository.com/artifact/org.apache.ant/ant
-        antVersion = "1.10.13"
         // https://mvnrepository.com/artifact/org.glassfish.jaxb/jaxb-runtime
         jaxbVersion = "2.3.1"
     }

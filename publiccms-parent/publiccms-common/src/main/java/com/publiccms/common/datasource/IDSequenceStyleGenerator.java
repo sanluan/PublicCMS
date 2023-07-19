@@ -22,6 +22,10 @@ public class IDSequenceStyleGenerator extends SequenceStyleGenerator {
     /**
      * 
      */
+    private static final long serialVersionUID = 1L;
+    /**
+     * 
+     */
     public static final String CONFIG_TARGET_TABLE = "target_table";
     /**
      * 

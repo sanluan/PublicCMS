@@ -143,6 +143,7 @@ public abstract class BaseDao<E> {
             return getEntity(queryHandler);
         }
     }
+
     /**
      * 获取实体集合
      *
@@ -169,6 +170,7 @@ public abstract class BaseDao<E> {
         }
         return Collections.emptyList();
     }
+
     /**
      * 获取实体集合
      *
@@ -258,7 +260,7 @@ public abstract class BaseDao<E> {
      * @return number of data affected
      */
     protected int update(QueryHandler queryHandler) {
-        jakarta.persistence.Query query = getSession().createQuery(queryHandler.getSql());
+        jakarta.persistence.Query query = getSession().createQuery(queryHandler.getSql(), Integer.class);
         queryHandler.initQuery(query);
         return query.executeUpdate();
     }
@@ -322,15 +324,14 @@ public abstract class BaseDao<E> {
      * @param worker
      * @param batchSize
      */
-    @SuppressWarnings("unchecked")
     protected <T> void batchWork(QueryHandler queryHandler, ObjIntConsumer<List<T>> worker, int batchSize, Class<T> resultType) {
         Query<T> query = getSession().createQuery(queryHandler.getSql(), resultType);
         queryHandler.initQuery(query);
-        try (ScrollableResults results = query.setReadOnly(true).setCacheable(false).scroll(ScrollMode.FORWARD_ONLY)) {
+        try (ScrollableResults<T> results = query.setReadOnly(true).setCacheable(false).scroll(ScrollMode.FORWARD_ONLY)) {
             List<T> resultList = new ArrayList<>(batchSize);
             int i = 0;
             while (results.next()) {
-                resultList.add((T) results.get(0));
+                resultList.add(results.get());
                 if (resultList.size() >= batchSize) {
                     worker.accept(resultList, i++);
                     resultList.clear();
@@ -350,8 +351,7 @@ public abstract class BaseDao<E> {
      * @return results list
      */
     protected List<E> getEntityList(QueryHandler queryHandler) {
-        TypedQuery<E> query = getSession().createQuery(queryHandler.getSql(), getEntityClass());
-        return getList(query, queryHandler);
+        return getList(queryHandler);
     }
 
     /**
@@ -364,7 +364,7 @@ public abstract class BaseDao<E> {
         TypedQuery<R> query = getSession().createQuery(queryHandler.getSql(), resultClass);
         return getList(query, queryHandler);
     }
-    
+
     /**
      * 获取列表
      *
@@ -469,7 +469,7 @@ public abstract class BaseDao<E> {
      * @param highLighterQuery
      * @param pageIndex
      * @param pageSize
-     * @param maxResults 
+     * @param maxResults
      * @return page
      */
     public PageHandler getPage(SearchQueryOptionsStep<?, E, ?, ?, ?> optionsStep, HighLighterQuery highLighterQuery,
@@ -654,7 +654,7 @@ public abstract class BaseDao<E> {
         if (CommonUtils.empty(countHql)) {
             countHql = queryHandler.getCountSql();
         }
-        Query<?> query = getSession().createQuery(countHql);
+        Query<?> query = getSession().createQuery(countHql, Long.TYPE);
         List<?> list = queryHandler.initQuery(query, false).getResultList();
         if (list.isEmpty()) {
             return 0;
@@ -673,16 +673,16 @@ public abstract class BaseDao<E> {
      * @return number of data
      */
     protected long count(QueryHandler queryHandler) {
-        TypedQuery<Long> query = getSession().createQuery(queryHandler.getSql(), Long.class);
+        TypedQuery<Long> query = getSession().createQuery(queryHandler.getSql(), Long.TYPE);
         List<Long> list = queryHandler.initQuery(query, false).getResultList();
         if (list.isEmpty()) {
             return 0;
         } else {
-            Number result = (Number) list.iterator().next();
+            Long result = list.iterator().next();
             if (null == result) {
                 return 0;
             } else {
-                return result.longValue();
+                return result;
             }
         }
     }

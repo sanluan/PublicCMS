@@ -4,8 +4,8 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.compress.archivers.ArchiveOutputStream;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.tools.zip.ZipOutputStream;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractDataExchange;
@@ -43,28 +43,28 @@ public class PlaceExchangeComponent extends AbstractDataExchange<String, Place> 
     private SiteComponent siteComponent;
 
     @Override
-    public void exportAll(SysSite site, String directory, ByteArrayOutputStream outputStream, ZipOutputStream zipOutputStream) {
-        dealDir(site, directory, "", outputStream, zipOutputStream);
+    public void exportAll(SysSite site, String directory, ByteArrayOutputStream outputStream, ArchiveOutputStream archiveOutputStream) {
+        dealDir(site, directory, "", outputStream, archiveOutputStream);
     }
 
     private void dealDir(SysSite site, String directory, String path, ByteArrayOutputStream outputStream,
-            ZipOutputStream zipOutputStream) {
+            ArchiveOutputStream archiveOutputStream) {
         String realPath = siteComponent.getTemplateFilePath(site.getId(),
                 CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, Constants.SEPARATOR, path));
         List<FileInfo> list = CmsFileUtils.getFileList(realPath, null);
         for (FileInfo fileInfo : list) {
             String filepath = CommonUtils.joinString(path, fileInfo.getFileName());
             if (fileInfo.isDirectory()) {
-                dealDir(site, directory, CommonUtils.joinString(filepath, Constants.SEPARATOR), outputStream, zipOutputStream);
+                dealDir(site, directory, CommonUtils.joinString(filepath, Constants.SEPARATOR), outputStream, archiveOutputStream);
             } else {
-                exportEntity(site, directory, filepath, outputStream, zipOutputStream);
+                exportEntity(site, directory, filepath, outputStream, archiveOutputStream);
             }
         }
     }
 
     @Override
     public void exportEntity(SysSite site, String directory, String path, ByteArrayOutputStream outputStream,
-            ZipOutputStream zipOutputStream) {
+            ArchiveOutputStream archiveOutputStream) {
         PageHandler page = service.getPage(site.getId(), null, CommonUtils.joinString(Constants.SEPARATOR, path), null, null,
                 null, null, null, null, false, null, null, null, PageHandler.MAX_PAGE_SIZE);
         @SuppressWarnings("unchecked")
@@ -98,7 +98,7 @@ public class PlaceExchangeComponent extends AbstractDataExchange<String, Place> 
                 datalist.add(placeData);
             }
             data.setDatalist(datalist);
-            export(directory, outputStream, zipOutputStream, data, CommonUtils.joinString(data.getPath(), ".json"));
+            export(directory, outputStream, archiveOutputStream, data, CommonUtils.joinString(data.getPath(), ".json"));
         }
     }
 

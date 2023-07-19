@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.compress.archivers.ArchiveOutputStream;
+import org.apache.commons.compress.archivers.zip.ZipFile;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.tools.zip.ZipFile;
-import org.apache.tools.zip.ZipOutputStream;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractDataExchange;
@@ -79,22 +79,22 @@ public class ContentExchangeComponent extends AbstractDataExchange<CmsContent, C
     private SysExtendFieldService extendFieldService;
 
     @Override
-    public void exportAll(SysSite site, String directory, ByteArrayOutputStream outputStream, ZipOutputStream zipOutputStream) {
+    public void exportAll(SysSite site, String directory, ByteArrayOutputStream outputStream, ArchiveOutputStream archiveOutputStream) {
         CmsContentQuery queryEntity = new CmsContentQuery();
         queryEntity.setSiteId(site.getId());
         queryEntity.setDisabled(false);
         queryEntity.setEmptyParent(true);
-        exportDataByQuery(site, directory, queryEntity, outputStream, zipOutputStream);
+        exportDataByQuery(site, directory, queryEntity, outputStream, archiveOutputStream);
     }
 
     /**
      * @param site
      * @param directory
      * @param queryEntity
-     * @param zipOutputStream
+     * @param archiveOutputStream
      */
-    public void exportDataByQuery(SysSite site, String directory, CmsContentQuery queryEntity, ZipOutputStream zipOutputStream) {
-        exportDataByQuery(site, directory, queryEntity, new ByteArrayOutputStream(), zipOutputStream);
+    public void exportDataByQuery(SysSite site, String directory, CmsContentQuery queryEntity, ArchiveOutputStream archiveOutputStream) {
+        exportDataByQuery(site, directory, queryEntity, new ByteArrayOutputStream(), archiveOutputStream);
     }
 
     /**
@@ -102,17 +102,17 @@ public class ContentExchangeComponent extends AbstractDataExchange<CmsContent, C
      * @param directory
      * @param queryEntity
      * @param outputStream
-     * @param zipOutputStream
+     * @param archiveOutputStream
      */
     public void exportDataByQuery(SysSite site, String directory, CmsContentQuery queryEntity, ByteArrayOutputStream outputStream,
-            ZipOutputStream zipOutputStream) {
+            ArchiveOutputStream archiveOutputStream) {
         PageHandler page = service.getPage(queryEntity, true, null, null, null, null, PageHandler.MAX_PAGE_SIZE, null);
         int i = 1;
         do {
             @SuppressWarnings("unchecked")
             List<CmsContent> list = (List<CmsContent>) page.getList();
             for (CmsContent entity : list) {
-                exportEntity(site, directory, entity, outputStream, zipOutputStream);
+                exportEntity(site, directory, entity, outputStream, archiveOutputStream);
             }
             page = service.getPage(queryEntity, null, null, null, null, i++, PageHandler.MAX_PAGE_SIZE, null);
         } while (!page.isLastPage());
@@ -120,7 +120,7 @@ public class ContentExchangeComponent extends AbstractDataExchange<CmsContent, C
 
     @Override
     public void exportEntity(SysSite site, String directory, CmsContent entity, ByteArrayOutputStream out,
-            ZipOutputStream zipOutputStream) {
+            ArchiveOutputStream archiveOutputStream) {
         CmsCategory category = categoryService.getEntity(entity.getCategoryId());
         if (null != category) {
             Set<String> webfileList = null;
@@ -139,7 +139,7 @@ public class ContentExchangeComponent extends AbstractDataExchange<CmsContent, C
                     data.setChildList(childList);
                 }
             }
-            export(directory, out, zipOutputStream, data, CommonUtils.joinString(entity.getId(), ".json"));
+            export(directory, out, archiveOutputStream, data, CommonUtils.joinString(entity.getId(), ".json"));
             if (null != webfileList && !webfileList.isEmpty()) {
                 for (String file : webfileList) {
                     if (file.startsWith(site.getSitePath())) {
@@ -147,7 +147,7 @@ public class ContentExchangeComponent extends AbstractDataExchange<CmsContent, C
                         if (fullName.contains(Constants.DOT) && !fullName.contains(".htm")) {
                             String filepath = siteComponent.getWebFilePath(site.getId(), fullName);
                             try {
-                                ZipUtils.compressFile(new File(filepath), zipOutputStream,
+                                ZipUtils.compressFile(new File(filepath), archiveOutputStream,
                                         CommonUtils.joinString(ATTACHMENT_DIR, fullName));
                             } catch (IOException e) {
                             }

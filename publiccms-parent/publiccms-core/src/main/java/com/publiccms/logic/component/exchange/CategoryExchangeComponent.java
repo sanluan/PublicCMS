@@ -10,9 +10,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.apache.commons.compress.archivers.ArchiveOutputStream;
+import org.apache.commons.compress.archivers.zip.ZipFile;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.tools.zip.ZipFile;
-import org.apache.tools.zip.ZipOutputStream;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractDataExchange;
@@ -67,7 +67,7 @@ public class CategoryExchangeComponent extends AbstractDataExchange<CmsCategory,
     private CmsTagTypeService tagTypeService;
 
     @Override
-    public void exportAll(SysSite site, String directory, ByteArrayOutputStream outputStream, ZipOutputStream zipOutputStream) {
+    public void exportAll(SysSite site, String directory, ByteArrayOutputStream outputStream, ArchiveOutputStream archiveOutputStream) {
         CmsCategoryQuery query = new CmsCategoryQuery();
         query.setSiteId(site.getId());
         query.setDisabled(false);
@@ -76,15 +76,15 @@ public class CategoryExchangeComponent extends AbstractDataExchange<CmsCategory,
             @SuppressWarnings("unchecked")
             List<CmsCategory> list = (List<CmsCategory>) page.getList();
             for (CmsCategory category : list) {
-                exportEntity(site, directory, category, outputStream, zipOutputStream);
+                exportEntity(site, directory, category, outputStream, archiveOutputStream);
             }
         }
     }
 
     @Override
     public void exportEntity(SysSite site, String directory, CmsCategory entity, ByteArrayOutputStream outputStream,
-            ZipOutputStream zipOutputStream) {
-        exportEntity(site, directory, null, entity, outputStream, zipOutputStream);
+            ArchiveOutputStream archiveOutputStream) {
+        exportEntity(site, directory, null, entity, outputStream, archiveOutputStream);
     }
 
     /**
@@ -93,10 +93,10 @@ public class CategoryExchangeComponent extends AbstractDataExchange<CmsCategory,
      * @param parentCode
      * @param entity
      * @param outputStream
-     * @param zipOutputStream
+     * @param archiveOutputStream
      */
     public void exportEntity(SysSite site, String directory, String parentCode, CmsCategory entity,
-            ByteArrayOutputStream outputStream, ZipOutputStream zipOutputStream) {
+            ByteArrayOutputStream outputStream, ArchiveOutputStream archiveOutputStream) {
         Integer categoryId = entity.getId();
         Category data = new Category();
         data.setParentCode(parentCode);
@@ -119,7 +119,7 @@ public class CategoryExchangeComponent extends AbstractDataExchange<CmsCategory,
                             if (fullName.contains(Constants.DOT) && !fullName.contains(".htm")) {
                                 String filepath = siteComponent.getWebFilePath(site.getId(), fullName);
                                 try {
-                                    ZipUtils.compressFile(new File(filepath), zipOutputStream,
+                                    ZipUtils.compressFile(new File(filepath), archiveOutputStream,
                                             CommonUtils.joinString(ATTACHMENT_DIR, fullName));
                                 } catch (IOException e) {
                                 }
@@ -148,7 +148,7 @@ public class CategoryExchangeComponent extends AbstractDataExchange<CmsCategory,
             }
             tagTypeService.getEntitys(set);
         }
-        export(directory, outputStream, zipOutputStream, data, CommonUtils.joinString(entity.getCode(), ".json"));
+        export(directory, outputStream, archiveOutputStream, data, CommonUtils.joinString(entity.getCode(), ".json"));
         if (CommonUtils.notEmpty(entity.getChildIds())) {
             CmsCategoryQuery query = new CmsCategoryQuery();
             query.setSiteId(site.getId());
@@ -159,7 +159,7 @@ public class CategoryExchangeComponent extends AbstractDataExchange<CmsCategory,
                 @SuppressWarnings("unchecked")
                 List<CmsCategory> list = (List<CmsCategory>) page.getList();
                 for (CmsCategory category : list) {
-                    exportEntity(site, directory, entity.getCode(), category, outputStream, zipOutputStream);
+                    exportEntity(site, directory, entity.getCode(), category, outputStream, archiveOutputStream);
                 }
             }
         }
