@@ -260,7 +260,7 @@ public abstract class BaseDao<E> {
      * @return number of data affected
      */
     protected int update(QueryHandler queryHandler) {
-        jakarta.persistence.Query query = getSession().createQuery(queryHandler.getSql(), Integer.class);
+        jakarta.persistence.Query query = getSession().createQuery(queryHandler.getSql(), null);
         queryHandler.initQuery(query);
         return query.executeUpdate();
     }

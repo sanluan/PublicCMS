@@ -219,6 +219,16 @@
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-tools</artifactId>
                 <version>${version.hibernateTools}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.hibernate</groupId>
+                        <artifactId>hibernate-core</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.hibernate.common</groupId>
+                        <artifactId>hibernate-commons-annotations</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>org.hibernate.search</groupId>
