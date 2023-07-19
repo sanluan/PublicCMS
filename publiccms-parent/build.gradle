@@ -38,19 +38,19 @@ subprojects {
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
         // https://spring.io/projects/spring-boot
         // 3.0,3.1 for Java 17
-        springBootVersion = "2.7.12"
+        springBootVersion = "2.7.13"
         // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine
         junitVersion = "5.9.3"
         // http://mvnrepository.com/artifact/org.hibernate/hibernate-core
         // http://hibernate.org/orm/downloads/
         // 6 for jakarta
-        hibernateVersion = "5.6.12.Final"
+        hibernateVersion = "5.6.15.Final"
         // http://mvnrepository.com/artifact/org.hibernate/hibernate-tools
         // 6 for jakarta
-        hibernateToolsVersion = "5.6.12.Final"
+        hibernateToolsVersion = "5.6.15.Final"
         // https://mvnrepository.com/artifact/org.hibernate.search/hibernate-search-mapper-orm
         // http://hibernate.org/search/downloads/
-        hibernateSearchVersion = "6.1.8.Final"
+        hibernateSearchVersion = "6.2.0.Final"
         // https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator
         // 6.1,7,8 for jakarta
         hibernateValidatorVersion = "6.0.23.Final"
