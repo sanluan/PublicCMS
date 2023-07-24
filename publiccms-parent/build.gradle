@@ -8,7 +8,7 @@ buildscript {
     }
     dependencies {
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-gradle-plugin
-        classpath "org.springframework.boot:spring-boot-gradle-plugin:2.7.11"
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:2.7.13"
     }
 }
 
@@ -34,11 +34,11 @@ subprojects {
         // http://mvnrepository.com/artifact/org.springframework/spring-core
         // https://spring.io/projects/spring-framework
         // 6.0,6.1 for Java 17
-        springVersion = "5.3.28"
+        springVersion = "5.3.29"
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
         // https://spring.io/projects/spring-boot
         // 3.0,3.1 for Java 17
-        springBootVersion = "2.7.13"
+        springBootVersion = "2.7.14"
         // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine
         junitVersion = "5.9.3"
         // http://mvnrepository.com/artifact/org.hibernate/hibernate-core
