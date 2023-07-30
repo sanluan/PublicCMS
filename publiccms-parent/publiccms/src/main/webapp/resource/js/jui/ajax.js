@@ -19,14 +19,18 @@ function validateCallback(form, callback, confirmMsg) {
         return false;
     }
     $("textarea[escape=true]", $form).each(function() {
-        $(this).attr("escape",false);
+        if($(this).hasClass("hide")){
+            $(this).attr("escape",false);
+        }
         $(this).val(html2Escape($(this).val()));
     });
     $("input[escape=true]", $form).each(function() {
         if($(this).val()){
-            $(this).attr("escape",false);
-            $(this).attr("maxlength",128);
-            $(this).val(sha512($(this).val()));
+            if(!$(this).attr("oldvalue") || $(this).val() != $(this).attr("oldvalue")){
+                $(this).attr("maxlength",128);
+                $(this).val(sha512($(this).val()));
+                $(this).attr("oldvalue",$(this).val());
+            }
         }
     });
     var _submitFn = function() {

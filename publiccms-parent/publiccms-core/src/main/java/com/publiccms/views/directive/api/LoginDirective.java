@@ -2,6 +2,7 @@ package com.publiccms.views.directive.api;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.Map;
 import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
@@ -20,6 +21,7 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.entities.sys.SysUserToken;
 import com.publiccms.logic.component.config.ConfigDataComponent;
+import com.publiccms.logic.component.config.SafeConfigComponent;
 import com.publiccms.logic.component.site.LockComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.sys.SysUserService;
@@ -97,11 +99,12 @@ public class LoginDirective extends AbstractAppDirective {
                 }
                 service.updateLoginStatus(user.getId(), ip);
                 Date now = CommonUtils.getDate();
+                Map<String, String> config = configDataComponent.getConfigData(site.getId(), SafeConfigComponent.CONFIG_CODE);
+                int expiryMinutes = ConfigDataComponent.getInt(config.get(SafeConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
+                        SafeConfigComponent.DEFAULT_EXPIRY_MINUTES);
+                Date expiryDate = DateUtils.addMinutes(now, expiryMinutes);
                 SysUserToken userToken = new SysUserToken(UUID.randomUUID().toString(), site.getId(), user.getId(), channel, now,
-                        ip);
-                if (null != app.getExpiryMinutes()) {
-                    userToken.setExpiryDate(DateUtils.addMinutes(now, app.getExpiryMinutes()));
-                }
+                        expiryDate, ip);
                 sysUserTokenService.save(userToken);
                 logLoginService
                         .save(new LogLogin(site.getId(), username, user.getId(), ip, channel, true, CommonUtils.getDate(), null));
