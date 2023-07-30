@@ -3,7 +3,7 @@
 <@cms.contentList advanced=true status=2 modelId=modelIds title=title userId=userId deptId=deptId
             startPublishDate=startPublishDate endPublishDate=endPublishDate absoluteId=false
             orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
-<@sys.authorized roleIds=admin.roles urls='cmsContent/delete,cmsContent/check,cmsContent/reject,cmsContent/moveParameters,cmsComment/list'><#assign authorizedMap=map/></@sys.authorized>
+<@sys.authorized roleIds=admin.roles urls='cmsContent/delete,cmsContent/add,cmsContent/check,cmsContent/reject,cmsComment/list'><#assign authorizedMap=map/></@sys.authorized>
 <div class="pageHeader card">
     <form class="pagerForm" action="cmsContent/uncheck_list.html" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
@@ -136,6 +136,9 @@
                     <@t.page 'status.content.'+a.status/>
                 </td>
                 <td class="wrap">
+                    <#if authorizedMap['cmsContent/add']>
+                        <a href="cmsContent/add.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="cmsContent/edit"><i class="icon-edit"></i><@t.page 'content.edit'/></a>
+                    </#if>
                     <#if authorizedMap['cmsContent/check']>
                         <a href="cmsContent/check?ids=${a.id}&_csrf=<@tools.csrfToken admin=true/>" class="btnText green" title="<@t.page 'confirm.check'/>" target="ajaxTodo"><i class="icon-check"></i><@t.page 'button.check'/></a>
                     </#if>
