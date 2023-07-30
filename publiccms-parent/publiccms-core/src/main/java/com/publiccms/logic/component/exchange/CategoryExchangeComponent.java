@@ -202,7 +202,7 @@ public class CategoryExchangeComponent extends AbstractExchange<CmsCategory, Cat
                     for (SysExtendField temp : data.getExtendList()) {
                         temp.getId().setExtendId(extend.getId());
                     }
-                    extendFieldService.update(parentId, data.getExtendList());
+                    extendFieldService.update(extend.getId(), data.getExtendList());
                 }
                 service.update(entity.getId(), entity);
             }
