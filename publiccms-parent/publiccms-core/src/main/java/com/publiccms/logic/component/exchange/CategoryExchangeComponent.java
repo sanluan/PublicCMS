@@ -214,7 +214,8 @@ public class CategoryExchangeComponent extends AbstractDataExchange<CmsCategory,
                     SysExtend extend = new SysExtend("category", entity.getId());
                     extendService.save(extend);
                     entity.setExtendId(extend.getId());
-                    service.update(entity, entity);
+                    service.update(entity.getId(), entity);
+
                     for (SysExtendField temp : data.getExtendList()) {
                         temp.getId().setExtendId(extend.getId());
                     }
@@ -222,7 +223,6 @@ public class CategoryExchangeComponent extends AbstractDataExchange<CmsCategory,
                 }
             } else {
                 entity.setId(oldentity.getId());
-                service.update(oldentity.getId(), entity);
                 if (null != data.getModelList()) {
                     for (CmsCategoryModel temp : data.getModelList()) {
                         temp.setSiteId(site.getId());
@@ -233,21 +233,15 @@ public class CategoryExchangeComponent extends AbstractDataExchange<CmsCategory,
                     }
                 }
                 if (null != data.getExtendList()) {
-                    Integer extendId;
-                    if (null == oldentity.getExtendId()) {
-                        SysExtend extend = new SysExtend("category", entity.getId());
-                        extendService.save(extend);
-                        extendId = extend.getId();
-                    } else {
-                        extendId = oldentity.getExtendId();
-                    }
-                    entity.setExtendId(extendId);
-                    service.update(entity, entity);
+                    SysExtend extend = new SysExtend("category", entity.getId());
+                    extendService.save(extend);
+                    entity.setExtendId(extend.getId());
                     for (SysExtendField temp : data.getExtendList()) {
-                        temp.getId().setExtendId(extendId);
+                        temp.getId().setExtendId(extend.getId());
                     }
-                    extendFieldService.update(parentId, data.getExtendList());
+                    extendFieldService.update(extend.getId(), data.getExtendList());
                 }
+                service.update(entity.getId(), entity);
             }
             if (null != data.getAttribute()) {
                 data.getAttribute().setCategoryId(entity.getId());
