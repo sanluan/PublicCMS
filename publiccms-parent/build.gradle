@@ -8,7 +8,7 @@ buildscript {
     }
     dependencies {
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-gradle-plugin
-        classpath "org.springframework.boot:spring-boot-gradle-plugin:2.7.13"
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:2.7.14"
     }
 }
 
@@ -40,7 +40,7 @@ subprojects {
         // 3.0,3.1 for Java 17
         springBootVersion = "2.7.14"
         // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine
-        junitVersion = "5.9.3"
+        junitVersion = "5.10.0"
         // http://mvnrepository.com/artifact/org.hibernate/hibernate-core
         // http://hibernate.org/orm/downloads/
         // 6 for jakarta
@@ -82,7 +82,7 @@ subprojects {
         // Java 11+ maven artifact: 5.0.1
         hikariCPVersion = "4.0.3"
         // https://mvnrepository.com/artifact/com.mysql/mysql-connector-j
-        mysqlVersion = "8.0.33"
+        mysqlVersion = "8.1.0"
         // http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
         // http://hc.apache.org/downloads.cgi
         httpclientVersion = "4.5.14"
@@ -95,7 +95,7 @@ subprojects {
         // http://mvnrepository.com/artifact/org.apache.commons/commons-collections4
         collectionsVersion = "4.4"
         // http://mvnrepository.com/artifact/org.apache.commons/commons-lang3
-        langVersion = "3.12.0"
+        langVersion = "3.13.0"
         // http://mvnrepository.com/artifact/commons-io/commons-io
         ioVersion = "2.11.0"
         // https://mvnrepository.com/artifact/org.apache.commons/commons-text
