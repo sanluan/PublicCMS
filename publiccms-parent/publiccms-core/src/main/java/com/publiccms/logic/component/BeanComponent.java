@@ -13,6 +13,7 @@ import com.publiccms.logic.service.cms.CmsContentAttributeService;
 import com.publiccms.logic.service.log.LogTaskService;
 import com.publiccms.logic.service.sys.SysSiteService;
 import com.publiccms.logic.service.sys.SysTaskService;
+import com.publiccms.logic.service.sys.SysUserAttributeService;
 
 /**
  * 
@@ -28,6 +29,7 @@ public class BeanComponent {
     private static SysSiteService siteService;
     private static ScheduledTask scheduledTask;
     private static CmsContentAttributeService contentAttributeService;
+    private static SysUserAttributeService userAttributeService;
     private static TemplateComponent templateComponent;
     private static ModelComponent modelComponent;
 
@@ -85,6 +87,12 @@ public class BeanComponent {
      */
     public static CmsContentAttributeService getContentAttributeService() {
         return contentAttributeService;
+    }
+    /**
+     * @return the userAttributeService
+     */
+    public static SysUserAttributeService getUserAttributeService() {
+        return userAttributeService;
     }
     /**
      * @param siteComponent
@@ -147,6 +155,15 @@ public class BeanComponent {
     @Resource
     public void setContentAttributeService(CmsContentAttributeService contentAttributeService) {
         BeanComponent.contentAttributeService = contentAttributeService;
+    }
+    
+    /**
+     * @param userAttributeService
+     *            the userAttributeService to set
+     */
+    @Resource
+    public void setSysUserAttributeService(SysUserAttributeService userAttributeService) {
+        BeanComponent.userAttributeService = userAttributeService;
     }
 
     /**

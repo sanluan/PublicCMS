@@ -62,3 +62,18 @@ ALTER TABLE `cms_content` ADD COLUMN `collections` int(11) NOT NULL COMMENT '收
 ALTER TABLE `cms_place`
     ADD COLUMN `max_clicks` int(11) NOT NULL COMMENT '最大点击数' AFTER `clicks`,
     MODIFY COLUMN `status` int(11) NOT NULL COMMENT '状态：0、草稿 1、已发布 2、待审核 3、已下架' after `expiry_date`;
+-- 08-04 --
+DROP TABLE IF EXISTS `sys_user_attribute`;
+CREATE TABLE `sys_user_attribute` (
+  `user_id` bigint(20) NOT NULL,
+  `certification_ids` longtext NULL COMMENT '认证',
+  `follow_user_ids` longtext NULL COMMENT '关注用户',
+  `search_text` longtext NULL COMMENT '全文索引文本',
+  `dictionary_values` text NULL COMMENT '数据字典值',
+  `extends_fields` text NULL COMMENT '扩展文本字段',
+  `data` longtext COMMENT '数据JSON',
+  PRIMARY KEY  (`user_id`)
+) COMMENT='用户扩展';
+ALTER TABLE `sys_user`
+    ADD COLUMN `followers` int(11) NOT NULL COMMENT '粉丝数' AFTER `dept_id`,
+    ADD COLUMN `follows` int(11) NOT NULL COMMENT '关注数' AFTER `followers`;

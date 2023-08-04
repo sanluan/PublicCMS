@@ -522,7 +522,9 @@ public abstract class BaseDao<E> {
             }
         }
         List<E> resultList = result.hits();
-        higtLighter(resultList, highLighterQuery);
+        if (null != highLighterQuery) {
+            higtLighter(resultList, highLighterQuery);
+        }
         page.setList(resultList);
         page.setFacetMap(facetFieldResult.apply(result));
         return page;

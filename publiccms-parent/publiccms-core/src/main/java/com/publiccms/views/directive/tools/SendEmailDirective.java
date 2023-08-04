@@ -51,7 +51,7 @@ import freemarker.template.TemplateException;
  * 
  * <pre>
 &lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/tools/placeMetadata?email=master@puliccms.com&amp;title=title&amp;content=content&amp;parameters.parameter1=value1&amp;appToken=接口访问授权Token', function(data){    
+ $.getJSON('${site.dynamicPath}api/directive/tools/sendEmail?email=master@puliccms.com&amp;title=title&amp;content=content&amp;parameters.parameter1=value1&amp;appToken=接口访问授权Token', function(data){    
    console.log(data.alias);
  });
  &lt;/script&gt;

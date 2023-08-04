@@ -148,10 +148,10 @@ public class CmsSearchDirective extends AbstractTemplateDirective {
             PageHandler page = null;
             if (factSearch) {
                 page = service.facetQuery(query, handler.getBoolean("containChild"), handler.getString("orderField"), pageIndex,
-                        pageSize, handler.getInteger("maxPage"));
+                        pageSize, handler.getInteger("maxResults"));
             } else {
                 page = service.query(query, handler.getBoolean("containChild"), handler.getString("orderField"), pageIndex,
-                        pageSize, handler.getInteger("maxPage"));
+                        pageSize, handler.getInteger("maxResults"));
             }
 
             @SuppressWarnings("unchecked")

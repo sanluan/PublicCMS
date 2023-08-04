@@ -1,7 +1,5 @@
 package com.publiccms.common.search;
 
-import java.math.BigDecimal;
-
 import org.hibernate.search.engine.backend.analysis.AnalyzerNames;
 import org.hibernate.search.engine.backend.document.IndexFieldReference;
 import org.hibernate.search.engine.backend.document.model.dsl.IndexSchemaElement;
@@ -11,9 +9,9 @@ import org.hibernate.search.engine.backend.types.Projectable;
 import org.hibernate.search.mapper.pojo.bridge.binding.TypeBindingContext;
 import org.hibernate.search.mapper.pojo.bridge.mapping.programmatic.TypeBinder;
 
-import com.publiccms.entities.cms.CmsContent;
+import com.publiccms.entities.sys.SysUser;
 
-public class CmsContentTextBinder implements TypeBinder {
+public class SysUserAttributeBinder implements TypeBinder {
     public static final String EXTEND_OBJECT_NAME = "extend";
     public static final String ANALYZER_NAME = "cms";
 
@@ -26,21 +24,17 @@ public class CmsContentTextBinder implements TypeBinder {
                 .analyzer(ANALYZER_NAME).toIndexFieldType();
         IndexFieldType<String> dictionaryFieldType = context.typeFactory().asString().analyzer(AnalyzerNames.WHITESPACE)
                 .toIndexFieldType();
-        IndexFieldType<BigDecimal> bigDecimalFieldType = context.typeFactory().asBigDecimal().decimalScale(2).toIndexFieldType();
 
         IndexFieldReference<String> textField = schemaElement.field("text", textFieldType).toReference();
-        IndexFieldReference<String> filesField = schemaElement.field("files", textFieldType).toReference();
         IndexFieldReference<String> dictionaryValuesField = schemaElement.field("dictionaryValues", dictionaryFieldType)
                 .toReference();
-
-        IndexFieldReference<BigDecimal> minPriceField = schemaElement.field("minPrice", bigDecimalFieldType).toReference();
-        IndexFieldReference<BigDecimal> maxPriceField = schemaElement.field("maxPrice", bigDecimalFieldType).toReference();
+        IndexFieldReference<String> certificationIdsField = schemaElement.field("certificationIds", dictionaryFieldType).toReference();
 
         IndexSchemaObjectField extendField = schemaElement.objectField(EXTEND_OBJECT_NAME);
         extendField.fieldTemplate("template", textFieldType);
 
-        context.bridge(CmsContent.class, new CmsContentTextBridge(textField, dictionaryValuesField, filesField, minPriceField,
-                maxPriceField, extendField.toReference()));
+        context.bridge(SysUser.class,
+                new SysUserAttributeBridge(textField, dictionaryValuesField, certificationIdsField, extendField.toReference()));
     }
 
 }

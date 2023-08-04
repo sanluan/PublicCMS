@@ -1915,6 +1915,8 @@ CREATE TABLE `sys_user` (
   `nickname` varchar(45) NOT NULL COMMENT '昵称',
   `cover` varchar(255) default NULL COMMENT '封面',
   `dept_id` int(11) default NULL COMMENT '部门',
+  `followers` int(11) NOT NULL COMMENT '粉丝数',
+  `follows` int(11) NOT NULL COMMENT '关注数',
   `content_permissions` int(11) NOT NULL COMMENT '内容权限(0仅自己,1所有人,2本部门)',
   `roles` text COMMENT '角色',
   `email` varchar(100) default NULL COMMENT '邮箱地址',
@@ -1935,8 +1937,22 @@ CREATE TABLE `sys_user` (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES ('1', '1', 'admin', '0123456789.2134b56595c73a647716b0a8e33f9d50243fb1c1a088597ba5aa6d9ccadacbd8fc8307bda2adfc8362abe611420bd48263bdcfd91c1c26566ad3a29d79cffd9c', 1, 'admin', NULL, '1', '1', '1', 'master@sanluan.com', '0', '1', '0', '2019-01-01 00:00:00', '127.0.0.1', '0', '2019-01-01 00:00:00');
+INSERT INTO `sys_user` VALUES ('1', '1', 'admin', '0123456789.2134b56595c73a647716b0a8e33f9d50243fb1c1a088597ba5aa6d9ccadacbd8fc8307bda2adfc8362abe611420bd48263bdcfd91c1c26566ad3a29d79cffd9c', 1, 'admin', NULL, '1', '0', '0', '1', '1', 'master@sanluan.com', '0', '1', '0', '2019-01-01 00:00:00', '127.0.0.1', '0', '2019-01-01 00:00:00');
 
+-- ----------------------------
+-- Table structure for sys_user_attribute
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_user_attribute`;
+CREATE TABLE `sys_user_attribute` (
+  `user_id` bigint(20) NOT NULL,
+  `certification_ids` longtext NULL COMMENT '认证',
+  `follow_user_ids` longtext NULL COMMENT '关注用户',
+  `search_text` longtext NULL COMMENT '全文索引文本',
+  `dictionary_values` text NULL COMMENT '数据字典值',
+  `extends_fields` text NULL COMMENT '扩展文本字段',
+  `data` longtext COMMENT '数据JSON',
+  PRIMARY KEY  (`user_id`)
+) COMMENT='用户扩展';
 
 -- ----------------------------
 -- Table structure for sys_user_token
