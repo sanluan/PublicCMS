@@ -672,7 +672,22 @@ CREATE TABLE `sys_app_token` (
   KEY `sys_app_token_app_id`(`app_id`, `create_date`),
   KEY `sys_app_token_expiry_date`(`expiry_date`)
 ) COMMENT='应用授权';
-
+-- ----------------------------
+-- Table structure for sys_certification
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_certification`;
+CREATE TABLE `sys_certification` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `site_id` tinyint(4) NOT NULL COMMENT '站点',
+  `name` varchar(100) NOT NULL COMMENT '名称',
+  `cover` varchar(255) DEFAULT NULL COMMENT '封面图',
+  `description` varchar(300) DEFAULT NULL COMMENT '描述',
+  `allow_apply` tinyint(1) NOT NULL COMMENT '可申请',
+  `create_date` datetime NOT NULL COMMENT '创建日期',
+  `disabled` tinyint(1) NOT NULL COMMENT '已禁用',
+  `extend_id` int(11) DEFAULT NULL COMMENT '用户扩展',
+  PRIMARY KEY (`id`)
+) COMMENT='认证';
 -- ----------------------------
 -- Table structure for sys_cluster
 -- ----------------------------
@@ -1915,8 +1930,6 @@ CREATE TABLE `sys_user` (
   `nickname` varchar(45) NOT NULL COMMENT '昵称',
   `cover` varchar(255) default NULL COMMENT '封面',
   `dept_id` int(11) default NULL COMMENT '部门',
-  `followers` int(11) NOT NULL COMMENT '粉丝数',
-  `follows` int(11) NOT NULL COMMENT '关注数',
   `content_permissions` int(11) NOT NULL COMMENT '内容权限(0仅自己,1所有人,2本部门)',
   `roles` text COMMENT '角色',
   `email` varchar(100) default NULL COMMENT '邮箱地址',
@@ -1937,7 +1950,7 @@ CREATE TABLE `sys_user` (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES ('1', '1', 'admin', '0123456789.2134b56595c73a647716b0a8e33f9d50243fb1c1a088597ba5aa6d9ccadacbd8fc8307bda2adfc8362abe611420bd48263bdcfd91c1c26566ad3a29d79cffd9c', 1, 'admin', NULL, '1', '0', '0', '1', '1', 'master@sanluan.com', '0', '1', '0', '2019-01-01 00:00:00', '127.0.0.1', '0', '2019-01-01 00:00:00');
+INSERT INTO `sys_user` VALUES ('1', '1', 'admin', '0123456789.2134b56595c73a647716b0a8e33f9d50243fb1c1a088597ba5aa6d9ccadacbd8fc8307bda2adfc8362abe611420bd48263bdcfd91c1c26566ad3a29d79cffd9c', 1, 'admin', NULL, '1', '1', '1', 'master@sanluan.com', '0', '1', '0', '2019-01-01 00:00:00', '127.0.0.1', '0', '2019-01-01 00:00:00');
 
 -- ----------------------------
 -- Table structure for sys_user_attribute
@@ -1953,6 +1966,31 @@ CREATE TABLE `sys_user_attribute` (
   `data` longtext COMMENT '数据JSON',
   PRIMARY KEY  (`user_id`)
 ) COMMENT='用户扩展';
+-- ----------------------------
+-- Table structure for sys_user_certification
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_user_certification`;
+CREATE TABLE `sys_user_certification` (
+  `user_id` bigint(20) NOT NULL COMMENT '用户',
+  `certification_id` int(11) NOT NULL COMMENT '认证',
+  `status` int(11) NOT NULL COMMENT '状态：0、操作 1、已审核 2、待审核',
+  `create_date` datetime NOT NULL COMMENT '创建日期',
+  `expiry_date` datetime DEFAULT NULL COMMENT '过期日期',
+  PRIMARY KEY (`user_id`,`certification_id`)
+) COMMENT='用户认证';
+
+-- ----------------------------
+-- Table structure for sys_user_collection
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_user_collection`;
+CREATE TABLE `sys_user_collection` (
+  `user_id` bigint(20) NOT NULL COMMENT '用户',
+  `item_type` varchar(50) NOT NULL COMMENT '项目类型(module:模块,page:页面,place:页面片段)',
+  `item_id` varchar(100) NOT NULL COMMENT '项目',
+  `create_date` datetime NOT NULL COMMENT '创建日期',
+  PRIMARY KEY (`user_id`,`item_type`,`item_id`) USING BTREE,
+  KEY `sys_user_collection_user_id` (`user_id`,`create_date`)
+) COMMENT='用户收藏';
 
 -- ----------------------------
 -- Table structure for sys_user_token
@@ -1971,6 +2009,54 @@ CREATE TABLE `sys_user_token` (
   KEY `sys_user_token_expiry_date`(`expiry_date`),
   KEY `sys_user_token_user_id`(`user_id`)
 ) COMMENT='用户令牌';
+
+-- ----------------------------
+-- Table structure for sys_workflow
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_workflow`;
+CREATE TABLE `sys_workflow` (
+  `id` int(11) NOT NULL,
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
+  `name` varchar(100) NOT NULL COMMENT '名称',
+  `description` varchar(300) DEFAULT NULL COMMENT '描述',
+  `steps` int(11) NOT NULL COMMENT '步骤数',
+  `user_id` bigint(20) NOT NULL COMMENT '创建用户',
+  `update_date` datetime DEFAULT NULL COMMENT '更新日期',
+  `create_date` datetime NOT NULL COMMENT '创建日期',
+  `disabled` tinyint(1) NOT NULL COMMENT '已禁用',
+  PRIMARY KEY (`id`),
+  KEY `sys_workflow_create_date` (`site_id`,`create_date`,`disabled`) USING BTREE
+) COMMENT='工作流';
+-- ----------------------------
+-- Table structure for sys_workflow_process
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_workflow_process`;
+CREATE TABLE `sys_workflow_process` (
+  `id` bigint(20) NOT NULL,
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
+  `item_type` varchar(50) NOT NULL COMMENT '项目类型',
+  `item_id` varchar(100) NOT NULL COMMENT '项目',
+  `step_id` bigint(20) NOT NULL COMMENT '步骤',
+  `operate` varchar(20) NOT NULL COMMENT '操作(check:审核,reject:驳回,delete:删除)',
+  `reason` varchar(255) DEFAULT NULL COMMENT '理由',
+  `create_date` datetime NOT NULL COMMENT '创建日期',
+  PRIMARY KEY (`id`),
+  KEY `sys_workflow_process_content_id` (`site_id`,`item_type`,`operate`,`create_date`) USING BTREE
+) COMMENT='工作流流程';
+-- ----------------------------
+-- Table structure for sys_workflow_step
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_workflow_step`;
+CREATE TABLE `sys_workflow_step` (
+  `id` bigint(20) NOT NULL,
+  `workflow_id` int(11) NOT NULL COMMENT '工作流',
+  `role_ids` text COMMENT '角色',
+  `dept_ids` text COMMENT '部门',
+  `user_ids` text COMMENT '用户',
+  `sort` int(11) NOT NULL COMMENT '排序',
+  PRIMARY KEY (`id`),
+  KEY `sys_workflow_step_workflow_id` (`workflow_id`,`sort`) USING BTREE
+) COMMENT='工作流步骤';
 
 -- ----------------------------
 -- Table structure for trade_account
@@ -2005,6 +2091,95 @@ CREATE TABLE `trade_account_history` (
   KEY `trade_account_history_site_id` (`site_id`, `account_id`, `status`),
   KEY `trade_account_history_create_date` (`site_id`, `create_date`)
 ) COMMENT='账户流水';
+
+-- ----------------------------
+-- Table structure for trade_address
+-- ----------------------------
+DROP TABLE IF EXISTS `trade_address`;
+CREATE TABLE `trade_address` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
+  `user_id` bigint(20) NOT NULL COMMENT '用户',
+  `address` varchar(255) DEFAULT NULL COMMENT '地址',
+  `addressee` varchar(50) DEFAULT NULL COMMENT '收件人',
+  `telephone` varchar(50) DEFAULT NULL COMMENT '电话',
+  `create_date` datetime NOT NULL COMMENT '创建日期',
+  PRIMARY KEY (`id`)
+) COMMENT='用户地址';
+
+-- ----------------------------
+-- Table structure for trade_cart
+-- ----------------------------
+DROP TABLE IF EXISTS `trade_cart`;
+CREATE TABLE `trade_cart` (
+  `id` bigint(100) NOT NULL AUTO_INCREMENT,
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
+  `user_id` bigint(20) DEFAULT NULL COMMENT '用户',
+  `session_id` varchar(50) DEFAULT NULL COMMENT '会话',
+  `content_id` bigint(20) NOT NULL COMMENT '内容',
+  `product_id` bigint(20) NOT NULL COMMENT '商品',
+  `counts` int(11) NOT NULL COMMENT '数量',
+  `create_date` datetime NOT NULL COMMENT '创建日期',
+  PRIMARY KEY (`id`),
+  KEY `trade_cart_user_id` (`site_id`,`user_id`,`create_date`),
+  KEY `trade_cart_session_id` (`site_id`,`session_id`,`create_date`)
+) COMMENT='购物车';
+
+-- ----------------------------
+-- Table structure for trade_coupon
+-- ----------------------------
+DROP TABLE IF EXISTS `trade_coupon`;
+CREATE TABLE `trade_coupon` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
+  `name` varchar(255) NOT NULL COMMENT '名称',
+  `category_id` int(11) DEFAULT NULL COMMENT '分类',
+  `content_id` bigint(20) DEFAULT NULL COMMENT '内容',
+  `start_date` datetime NOT NULL COMMENT '开始时间',
+  `expiry_date` datetime DEFAULT NULL COMMENT '结束时间',
+  `starting_amount` decimal(10,2) DEFAULT NULL COMMENT '起始金额',
+  `discount` decimal(10,1) DEFAULT NULL COMMENT '折扣优惠',
+  `price` decimal(10,2) DEFAULT NULL COMMENT '优惠券价格',
+  `type` int(11) NOT NULL COMMENT '类型(1折扣,2免运费,3满减)',
+  `redeem_code` varchar(255) DEFAULT NULL COMMENT '兑换码',
+  `count` int(11) NOT NULL COMMENT '优惠券数量',
+  `create_date` varchar(255) DEFAULT NULL COMMENT '开始时间',
+  `disabled` tinyint(1) NOT NULL COMMENT '已禁用',
+  PRIMARY KEY (`id`),
+  KEY `trade_coupon_category_id` (`site_id`,`category_id`,`start_date`,`expiry_date`,`disabled`)
+  KEY `trade_coupon_content_id` (`site_id`,`content_id`,`start_date`,`expiry_date`,`disabled`)
+) COMMENT='优惠券';
+
+-- ----------------------------
+-- Table structure for trade_express
+-- ----------------------------
+DROP TABLE IF EXISTS `trade_express`;
+CREATE TABLE `trade_express` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
+  `code` varchar(50) NOT NULL COMMENT '编码',
+  `name` varchar(100) NOT NULL COMMENT '名称',
+  `sort` int(11) NOT NULL COMMENT '排序',
+  PRIMARY KEY (`id`),
+  KEY `trade_express_sort` (`site_id`,`sort`)
+) COMMENT='物流';
+
+-- ----------------------------
+-- Table structure for trade_freight
+-- ----------------------------
+DROP TABLE IF EXISTS `trade_freight`;
+CREATE TABLE `trade_freight` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
+  `country` varchar(40) DEFAULT NULL COMMENT '国家',
+  `province` varchar(40) DEFAULT NULL COMMENT '省份',
+  `city` varchar(40) DEFAULT NULL COMMENT '所在城市',
+  `price` decimal(10,2) DEFAULT NULL COMMENT '运费价格',
+  `free_price` decimal(10,2) DEFAULT NULL COMMENT '免邮价格',
+  PRIMARY KEY (`id`),
+  KEY `trade_freight_site_id` (`site_id`,`country`,`province`,`city`)
+) COMMENT='运费';
+
 -- ----------------------------
 -- Table structure for trade_payment
 -- ----------------------------
@@ -2133,6 +2308,22 @@ CREATE TABLE `trade_refund` (
   KEY `trade_refund_create_date` (`site_id`, `create_date`),
   KEY `trade_refund_user_id` (`site_id`, `user_id`, `status`)
 ) COMMENT='退款申请';
+
+-- ----------------------------
+-- Table structure for trade_user_coupon
+-- ----------------------------
+DROP TABLE IF EXISTS `trade_user_coupon`;
+CREATE TABLE `trade_user_coupon` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `user_id` varchar(255) NOT NULL COMMENT '用户',
+  `coupon_id` varchar(255) NOT NULL COMMENT '优惠券',
+  `status` int(11) NOT NULL COMMENT '状态(1有效,2已使用)',
+  `create_date` datetime NOT NULL COMMENT '创建日期',
+  `start_date` varchar(255) NOT NULL COMMENT '开始时间',
+  `expiry_date` varchar(255) DEFAULT NULL COMMENT '结束时间',
+  PRIMARY KEY (`id`),
+  KEY `trade_user_coupon_status` (`site_id`,`user_id`, `status`, `start_date`, `expiry_date`, `price`)
+) COMMENT='用户优惠券';
 
 -- ----------------------------
 -- Table structure for visit_day

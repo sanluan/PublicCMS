@@ -1,5 +1,8 @@
 package com.publiccms.logic.service.sys;
 
+import java.io.Serializable;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +19,11 @@ import com.publiccms.entities.sys.SysUserAttribute;
 public class SysUserAttributeService extends BaseService<SysUserAttribute> {
 
     protected static final String[] ignoreProperties = new String[] { "userId" };
+
+    @Override
+    public List<SysUserAttribute> getEntitys(Serializable[] ids) {
+        return basedao.getEntitys(ids);
+    }
 
     /**
      * @param userId

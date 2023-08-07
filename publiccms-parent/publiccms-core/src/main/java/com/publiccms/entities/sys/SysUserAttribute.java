@@ -28,8 +28,6 @@ public class SysUserAttribute implements java.io.Serializable {
     private long userId;
     @GeneratorColumn(title = "认证")
     private String certificationIds;
-    @GeneratorColumn(title = "关注用户")
-    private String followUserIds;
     @GeneratorColumn(title = "全文索引文本")
     @JsonIgnore
     private String searchText;
@@ -48,7 +46,7 @@ public class SysUserAttribute implements java.io.Serializable {
         this.userId = userId;
     }
 
-    public SysUserAttribute(int userId, String certificationIds, String data) {
+    public SysUserAttribute(long userId, String certificationIds, String data) {
         this.userId = userId;
         this.certificationIds = certificationIds;
         this.data = data;
@@ -71,15 +69,6 @@ public class SysUserAttribute implements java.io.Serializable {
 
     public void setCertificationIds(String certificationIds) {
         this.certificationIds = certificationIds;
-    }
-
-    @Column(name = "follow_user_ids", length = 65535)
-    public String getFollowUserIds() {
-        return this.followUserIds;
-    }
-
-    public void setFollowUserIds(String followUserIds) {
-        this.followUserIds = followUserIds;
     }
 
     @Column(name = "search_text")

@@ -99,21 +99,6 @@ public class SysUser extends Attribute implements java.io.Serializable {
     @GenericField(aggregable = Aggregable.YES, projectable = Projectable.YES)
     private Integer deptId;
     /**
-     * followers
-     * <p>
-     * 粉丝数
-     */
-    @GeneratorColumn(title = "粉丝数", order = true)
-    @GenericField(sortable = Sortable.YES, projectable = Projectable.YES)
-    private int followers;
-    /**
-     * follows
-     * <p>
-     * 关注数
-     */
-    @GeneratorColumn(title = "关注数")
-    private int follows;
-    /**
      * content permissions(0:self,1:all,2:dept)
      * <p>
      * 内容权限(0:自己的,1:全部,2:本部门)
@@ -187,15 +172,13 @@ public class SysUser extends Attribute implements java.io.Serializable {
     public SysUser() {
     }
 
-    public SysUser(short siteId, String name, String password, boolean weakPassword, String nickname, int followers, int follows,
+    public SysUser(short siteId, String name, String password, boolean weakPassword, String nickname, 
             int contentPermissions, boolean emailChecked, boolean superuser, boolean disabled, int loginCount) {
         this.siteId = siteId;
         this.name = name;
         this.password = password;
         this.weakPassword = weakPassword;
         this.nickname = nickname;
-        this.followers = followers;
-        this.follows = follows;
         this.contentPermissions = contentPermissions;
         this.emailChecked = emailChecked;
         this.superuser = superuser;
@@ -206,12 +189,12 @@ public class SysUser extends Attribute implements java.io.Serializable {
     public SysUser(short siteId, String name, String password, boolean weakPassword, String nickname, String cover,
             Integer deptId, int contentPermissions, String roles, String email, boolean emailChecked, boolean superuser,
             Date registeredDate) {
-        this(siteId, name, password, weakPassword, nickname, cover, deptId, 0, 0, contentPermissions, roles, email, emailChecked,
+        this(siteId, name, password, weakPassword, nickname, cover, deptId,contentPermissions, roles, email, emailChecked,
                 superuser, false, null, null, 0, registeredDate);
     }
 
     public SysUser(short siteId, String name, String password, boolean weakPassword, String nickname, String cover,
-            Integer deptId, int followers, int follows, int contentPermissions, String roles, String email, boolean emailChecked,
+            Integer deptId, int contentPermissions, String roles, String email, boolean emailChecked,
             boolean superuser, boolean disabled, Date lastLoginDate, String lastLoginIp, int loginCount, Date registeredDate) {
         this.siteId = siteId;
         this.name = name;
@@ -220,8 +203,6 @@ public class SysUser extends Attribute implements java.io.Serializable {
         this.nickname = nickname;
         this.cover = cover;
         this.deptId = deptId;
-        this.followers = followers;
-        this.follows = follows;
         this.contentPermissions = contentPermissions;
         this.roles = roles;
         this.email = email;
@@ -307,24 +288,6 @@ public class SysUser extends Attribute implements java.io.Serializable {
 
     public void setDeptId(Integer deptId) {
         this.deptId = deptId;
-    }
-
-    @Column(name = "followers", nullable = false)
-    public Integer getFollowers() {
-        return this.followers;
-    }
-
-    public void setFollowers(int followers) {
-        this.followers = followers;
-    }
-
-    @Column(name = "follows", nullable = false)
-    public Integer getFollows() {
-        return this.follows;
-    }
-
-    public void setFollows(int follows) {
-        this.follows = follows;
     }
 
     @Column(name = "content_permissions", nullable = false)

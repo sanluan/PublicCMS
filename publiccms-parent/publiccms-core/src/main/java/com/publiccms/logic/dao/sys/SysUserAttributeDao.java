@@ -25,7 +25,8 @@ public class SysUserAttributeDao extends BaseDao<SysUserAttribute> {
      * @param ids
      * @return results list
      */
-    public List<SysUserAttribute> getEntitysWithoutText(Serializable[] ids) {
+    @Override
+    public List<SysUserAttribute> getEntitys(Serializable[] ids) {
         if (CommonUtils.notEmpty(ids)) {
             QueryHandler queryHandler = getQueryHandler(
                     "select new SysUserAttribute(userId, certificationIds, data) from SysUserAttribute bean");
@@ -39,9 +40,6 @@ public class SysUserAttributeDao extends BaseDao<SysUserAttribute> {
     protected SysUserAttribute init(SysUserAttribute entity) {
         if (CommonUtils.empty(entity.getCertificationIds())) {
             entity.setCertificationIds(null);
-        }
-        if (CommonUtils.empty(entity.getFollowUserIds())) {
-            entity.setFollowUserIds(null);
         }
         return entity;
     }
