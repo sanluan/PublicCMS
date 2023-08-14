@@ -28,8 +28,7 @@ public class SysUserAttributeDao extends BaseDao<SysUserAttribute> {
     @Override
     public List<SysUserAttribute> getEntitys(Serializable[] ids) {
         if (CommonUtils.notEmpty(ids)) {
-            QueryHandler queryHandler = getQueryHandler(
-                    "select new SysUserAttribute(userId, certificationIds, data) from SysUserAttribute bean");
+            QueryHandler queryHandler = getQueryHandler("select new SysUserAttribute(userId, data) from SysUserAttribute bean");
             queryHandler.condition("bean.userId in (:ids)").setParameter("ids", ids);
             return getEntityList(queryHandler);
         }
@@ -38,9 +37,6 @@ public class SysUserAttributeDao extends BaseDao<SysUserAttribute> {
 
     @Override
     protected SysUserAttribute init(SysUserAttribute entity) {
-        if (CommonUtils.empty(entity.getCertificationIds())) {
-            entity.setCertificationIds(null);
-        }
         return entity;
     }
 

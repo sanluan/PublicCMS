@@ -672,22 +672,7 @@ CREATE TABLE `sys_app_token` (
   KEY `sys_app_token_app_id`(`app_id`, `create_date`),
   KEY `sys_app_token_expiry_date`(`expiry_date`)
 ) COMMENT='应用授权';
--- ----------------------------
--- Table structure for sys_certification
--- ----------------------------
-DROP TABLE IF EXISTS `sys_certification`;
-CREATE TABLE `sys_certification` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `site_id` tinyint(4) NOT NULL COMMENT '站点',
-  `name` varchar(100) NOT NULL COMMENT '名称',
-  `cover` varchar(255) DEFAULT NULL COMMENT '封面图',
-  `description` varchar(300) DEFAULT NULL COMMENT '描述',
-  `allow_apply` tinyint(1) NOT NULL COMMENT '可申请',
-  `create_date` datetime NOT NULL COMMENT '创建日期',
-  `disabled` tinyint(1) NOT NULL COMMENT '已禁用',
-  `extend_id` int(11) DEFAULT NULL COMMENT '用户扩展',
-  PRIMARY KEY (`id`)
-) COMMENT='认证';
+
 -- ----------------------------
 -- Table structure for sys_cluster
 -- ----------------------------
@@ -1958,7 +1943,6 @@ INSERT INTO `sys_user` VALUES ('1', '1', 'admin', '0123456789.2134b56595c73a6477
 DROP TABLE IF EXISTS `sys_user_attribute`;
 CREATE TABLE `sys_user_attribute` (
   `user_id` bigint(20) NOT NULL,
-  `certification_ids` longtext NULL COMMENT '认证',
   `follow_user_ids` longtext NULL COMMENT '关注用户',
   `search_text` longtext NULL COMMENT '全文索引文本',
   `dictionary_values` text NULL COMMENT '数据字典值',
@@ -1966,31 +1950,6 @@ CREATE TABLE `sys_user_attribute` (
   `data` longtext COMMENT '数据JSON',
   PRIMARY KEY  (`user_id`)
 ) COMMENT='用户扩展';
--- ----------------------------
--- Table structure for sys_user_certification
--- ----------------------------
-DROP TABLE IF EXISTS `sys_user_certification`;
-CREATE TABLE `sys_user_certification` (
-  `user_id` bigint(20) NOT NULL COMMENT '用户',
-  `certification_id` int(11) NOT NULL COMMENT '认证',
-  `status` int(11) NOT NULL COMMENT '状态：0、操作 1、已审核 2、待审核',
-  `create_date` datetime NOT NULL COMMENT '创建日期',
-  `expiry_date` datetime DEFAULT NULL COMMENT '过期日期',
-  PRIMARY KEY (`user_id`,`certification_id`)
-) COMMENT='用户认证';
-
--- ----------------------------
--- Table structure for sys_user_collection
--- ----------------------------
-DROP TABLE IF EXISTS `sys_user_collection`;
-CREATE TABLE `sys_user_collection` (
-  `user_id` bigint(20) NOT NULL COMMENT '用户',
-  `item_type` varchar(50) NOT NULL COMMENT '项目类型(module:模块,page:页面,place:页面片段)',
-  `item_id` varchar(100) NOT NULL COMMENT '项目',
-  `create_date` datetime NOT NULL COMMENT '创建日期',
-  PRIMARY KEY (`user_id`,`item_type`,`item_id`) USING BTREE,
-  KEY `sys_user_collection_user_id` (`user_id`,`create_date`)
-) COMMENT='用户收藏';
 
 -- ----------------------------
 -- Table structure for sys_user_token

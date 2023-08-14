@@ -31,7 +31,6 @@ public class SysUserSearchDao {
     private static final String siteIdField = "siteId";
     private static final String deptIdField = "deptId";
     private static final String[] textFields = new String[] { nameField, "text" };
-    private static final String[] certificationFields = new String[] { "certificationIds" };
     private static final String dictionaryField = "dictionaryValues";
 
     /**
@@ -83,16 +82,6 @@ public class SysUserSearchDao {
                 b.mustNot(queryEntity.isPhrase()
                         ? t -> t.phrase().fields(queryEntity.getFields()).matching(queryEntity.getExclude())
                         : t -> t.match().fields(queryEntity.getFields()).matching(queryEntity.getExclude()));
-            }
-            if (CommonUtils.notEmpty(queryEntity.getCertificationIds())) {
-                Consumer<? super BooleanPredicateOptionsCollector<?>> tagIdsFiledsContributor = c -> {
-                    for (Long tagId : queryEntity.getCertificationIds()) {
-                        if (CommonUtils.notEmpty(tagId)) {
-                            c.should(t -> t.match().fields(certificationFields).matching(tagId.toString()));
-                        }
-                    }
-                };
-                b.must(f -> f.bool().with(tagIdsFiledsContributor));
             }
             if (CommonUtils.notEmpty(queryEntity.getExtendsValues())) {
                 Consumer<? super BooleanPredicateOptionsCollector<?>> extendsFiledsContributor = c -> {

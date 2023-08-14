@@ -60,7 +60,6 @@ public class ExtendUtils {
             return Collections.emptyMap();
         } else {
             Map<String, String> map = getExtendMap(attribute.getData());
-            map.put("certificationIds", attribute.getCertificationIds());
             return map;
         }
     }

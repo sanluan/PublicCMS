@@ -12,7 +12,6 @@ public class SysUserSearchQuery implements java.io.Serializable {
     private String text;
     private String exclude;
     private String[] fields;
-    private Long[] certificationIds;
     private Integer deptId;
     private String[] extendsValues;
     private String[] dictionaryValues;
@@ -23,7 +22,7 @@ public class SysUserSearchQuery implements java.io.Serializable {
     }
 
     public SysUserSearchQuery(Short siteId, boolean projection, boolean phrase, String text,
-            String exclude, String[] fields, Long[] certificationIds, Integer deptId, String[] extendsValues, String[] dictionaryValues,
+            String exclude, String[] fields, Integer deptId, String[] extendsValues, String[] dictionaryValues,
             Boolean dictionaryUnion) {
         super();
         this.siteId = siteId;
@@ -32,7 +31,6 @@ public class SysUserSearchQuery implements java.io.Serializable {
         this.text = text;
         this.exclude = exclude;
         this.fields = fields;
-        this.certificationIds = certificationIds;
         this.deptId = deptId;
         this.extendsValues = extendsValues;
         this.dictionaryValues = dictionaryValues;
@@ -127,21 +125,6 @@ public class SysUserSearchQuery implements java.io.Serializable {
      */
     public void setFields(String[] fields) {
         this.fields = fields;
-    }
-
-    /**
-     * @return the certificationIds
-     */
-    public Long[] getCertificationIds() {
-        return certificationIds;
-    }
-
-    /**
-     * @param certificationIds
-     *            the certificationIds to set
-     */
-    public void setCertificationIds(Long[] certificationIds) {
-        this.certificationIds = certificationIds;
     }
 
     /**

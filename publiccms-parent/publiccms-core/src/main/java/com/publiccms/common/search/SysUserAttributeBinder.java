@@ -28,13 +28,11 @@ public class SysUserAttributeBinder implements TypeBinder {
         IndexFieldReference<String> textField = schemaElement.field("text", textFieldType).toReference();
         IndexFieldReference<String> dictionaryValuesField = schemaElement.field("dictionaryValues", dictionaryFieldType)
                 .toReference();
-        IndexFieldReference<String> certificationIdsField = schemaElement.field("certificationIds", dictionaryFieldType).toReference();
 
         IndexSchemaObjectField extendField = schemaElement.objectField(EXTEND_OBJECT_NAME);
         extendField.fieldTemplate("template", textFieldType);
 
-        context.bridge(SysUser.class,
-                new SysUserAttributeBridge(textField, dictionaryValuesField, certificationIdsField, extendField.toReference()));
+        context.bridge(SysUser.class, new SysUserAttributeBridge(textField, dictionaryValuesField, extendField.toReference()));
     }
 
 }

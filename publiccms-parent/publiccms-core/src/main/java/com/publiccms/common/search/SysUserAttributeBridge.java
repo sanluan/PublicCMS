@@ -19,14 +19,12 @@ import com.publiccms.logic.component.BeanComponent;
 public class SysUserAttributeBridge implements TypeBridge<SysUser> {
     private final IndexFieldReference<String> textField;
     private final IndexFieldReference<String> dictionaryValuesField;
-    private final IndexFieldReference<String> certificationIdsField;
     private final IndexObjectFieldReference extendField;
 
     public SysUserAttributeBridge(IndexFieldReference<String> textField, IndexFieldReference<String> dictionaryValuesField,
-            IndexFieldReference<String> certificationIdsField, IndexObjectFieldReference extendField) {
+            IndexObjectFieldReference extendField) {
         this.textField = textField;
         this.dictionaryValuesField = dictionaryValuesField;
-        this.certificationIdsField = certificationIdsField;
         this.extendField = extendField;
     }
 
@@ -46,7 +44,6 @@ public class SysUserAttributeBridge implements TypeBridge<SysUser> {
             }
             target.addValue(this.textField, attribute.getSearchText());
             target.addValue(this.dictionaryValuesField, attribute.getDictionaryValues());
-            target.addValue(this.certificationIdsField, attribute.getCertificationIds());
         }
     }
 }

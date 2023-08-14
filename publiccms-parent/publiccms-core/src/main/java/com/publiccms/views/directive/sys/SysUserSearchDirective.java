@@ -89,9 +89,8 @@ public class SysUserSearchDirective extends AbstractTemplateDirective {
 
             SysUserSearchQuery query = new SysUserSearchQuery(site.getId(), handler.getBoolean("projection", false),
                     handler.getBoolean("phrase", false), handler.getString("word"), handler.getString("exclude"),
-                    handler.getStringArray("fields"), handler.getLongArray("certificationIds"), handler.getInteger("deptId"),
-                    handler.getStringArray("extendsValues"), handler.getStringArray("dictionaryValues"),
-                    handler.getBoolean("dictionaryUnion"));
+                    handler.getStringArray("fields"), handler.getInteger("deptId"), handler.getStringArray("extendsValues"),
+                    handler.getStringArray("dictionaryValues"), handler.getBoolean("dictionaryUnion"));
 
             page = service.query(query, handler.getString("orderField"), handler.getInteger("pageIndex", 1),
                     handler.getInteger("pageSize", 30), handler.getInteger("maxResults"));
