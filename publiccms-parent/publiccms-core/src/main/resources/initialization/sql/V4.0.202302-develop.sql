@@ -181,3 +181,5 @@ CREATE TABLE `trade_user_coupon` (
   PRIMARY KEY (`id`),
   KEY `trade_user_coupon_status` (`site_id`,`user_id`, `status`, `start_date`, `expiry_date`, `price`)
 ) COMMENT='用户优惠券';
+-- 08-14 --
+ALTER TABLE `cms_category` ADD COLUMN `workflow_id` int(11) default NULL COMMENT '审核流程' AFTER `disabled`;

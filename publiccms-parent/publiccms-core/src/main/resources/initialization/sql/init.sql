@@ -27,6 +27,7 @@ CREATE TABLE `cms_category` (
   `sort` int(11) NOT NULL default '0' COMMENT '顺序',
   `hidden` tinyint(1) NOT NULL COMMENT '隐藏',
   `disabled` tinyint(1) NOT NULL COMMENT '是否删除',
+  `workflow_id` int(11) default NULL COMMENT '审核流程',
   `extend_id` int(11) default NULL COMMENT '扩展',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `cms_category_code` (`site_id`, `code`),
@@ -2114,7 +2115,7 @@ CREATE TABLE `trade_coupon` (
 -- ----------------------------
 DROP TABLE IF EXISTS `trade_express`;
 CREATE TABLE `trade_express` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `site_id` smallint(6) NOT NULL COMMENT '站点',
   `code` varchar(50) NOT NULL COMMENT '编码',
   `name` varchar(100) NOT NULL COMMENT '名称',
@@ -2128,7 +2129,7 @@ CREATE TABLE `trade_express` (
 -- ----------------------------
 DROP TABLE IF EXISTS `trade_freight`;
 CREATE TABLE `trade_freight` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `site_id` smallint(6) NOT NULL COMMENT '站点',
   `country` varchar(40) DEFAULT NULL COMMENT '国家',
   `province` varchar(40) DEFAULT NULL COMMENT '省份',
@@ -2273,14 +2274,13 @@ CREATE TABLE `trade_refund` (
 -- ----------------------------
 DROP TABLE IF EXISTS `trade_user_coupon`;
 CREATE TABLE `trade_user_coupon` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `user_id` varchar(255) NOT NULL COMMENT '用户',
-  `coupon_id` varchar(255) NOT NULL COMMENT '优惠券',
+  `user_id` bigint(20) NOT NULL COMMENT '用户',
+  `coupon_id` bigint(20) NOT NULL COMMENT '优惠券',
   `status` int(11) NOT NULL COMMENT '状态(1有效,2已使用)',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   `start_date` varchar(255) NOT NULL COMMENT '开始时间',
   `expiry_date` varchar(255) DEFAULT NULL COMMENT '结束时间',
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`user_id`,`coupon_id`),
   KEY `trade_user_coupon_status` (`site_id`,`user_id`, `status`, `start_date`, `expiry_date`, `price`)
 ) COMMENT='用户优惠券';
 
