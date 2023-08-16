@@ -2,14 +2,19 @@ package com.publiccms.entities.trade;
 // Generated 2023-8-7 21:42:23 by Hibernate Tools 5.6.15.Final
 
 import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.publiccms.common.database.CmsUpgrader;
 import com.publiccms.common.generator.annotation.GeneratorColumn;
 
 /**
@@ -28,8 +33,28 @@ public class TradeCoupon implements java.io.Serializable {
     @GeneratorColumn(title = "站点", condition = true)
     @JsonIgnore
     private short siteId;
+    /**
+     * name
+     * <p>
+     * 名称
+     */
+    @GeneratorColumn(title = "名称")
+    @NotNull
+    @Length(max = 100)
     private String name;
+    /**
+     * category
+     * <p>
+     * 分类
+     */
+    @GeneratorColumn(title = "分类", condition = true)
     private Integer categoryId;
+    /**
+     * content
+     * <p>
+     * 内容
+     */
+    @GeneratorColumn(title = "内容", condition = true)
     private Long contentId;
     private String startDate;
     private String expiryDate;
@@ -38,25 +63,27 @@ public class TradeCoupon implements java.io.Serializable {
     private BigDecimal price;
     private int type;
     private String redeemCode;
-    private int count;
+    private int duration;
+    private int quantity;
     private String createDate;
     private boolean disabled;
 
     public TradeCoupon() {
     }
 
-    public TradeCoupon(short siteId, String name, String startDate, int type, int count, boolean disabled) {
+    public TradeCoupon(short siteId, String name, String startDate, int type, int duration, int quantity, boolean disabled) {
         this.siteId = siteId;
         this.name = name;
         this.startDate = startDate;
         this.type = type;
-        this.count = count;
+        this.duration = duration;
+        this.quantity = quantity;
         this.disabled = disabled;
     }
 
     public TradeCoupon(short siteId, String name, Integer categoryId, Long contentId, String startDate, String expiryDate,
-            BigDecimal startingAmount, BigDecimal discount, BigDecimal price, int type, String redeemCode, int count,
-            String createDate, boolean disabled) {
+            BigDecimal startingAmount, BigDecimal discount, BigDecimal price, int type, String redeemCode, int duration,
+            int quantity, String createDate, boolean disabled) {
         this.siteId = siteId;
         this.name = name;
         this.categoryId = categoryId;
@@ -68,14 +95,15 @@ public class TradeCoupon implements java.io.Serializable {
         this.price = price;
         this.type = type;
         this.redeemCode = redeemCode;
-        this.count = count;
+        this.duration = duration;
+        this.quantity = quantity;
         this.createDate = createDate;
         this.disabled = disabled;
     }
 
     @Id
-    @GeneratedValue(strategy = IDENTITY)
-
+    @GeneratedValue(generator = "cmsGenerator")
+    @GenericGenerator(name = "cmsGenerator", strategy = CmsUpgrader.IDENTIFIER_GENERATOR)
     @Column(name = "id", unique = true, nullable = false)
     public Long getId() {
         return this.id;
@@ -184,13 +212,22 @@ public class TradeCoupon implements java.io.Serializable {
         this.redeemCode = redeemCode;
     }
 
-    @Column(name = "count", nullable = false)
-    public int getCount() {
-        return this.count;
+    @Column(name = "duration", nullable = false)
+    public int getDuration() {
+        return this.duration;
     }
 
-    public void setCount(int count) {
-        this.count = count;
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+    @Column(name = "quantity", nullable = false)
+    public int getQuantity() {
+        return this.quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     @Column(name = "create_date")

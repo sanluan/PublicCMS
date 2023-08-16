@@ -3,9 +3,13 @@ package com.publiccms.entities.sys;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
+
+import com.publiccms.common.database.CmsUpgrader;
 import com.publiccms.common.generator.annotation.GeneratorColumn;
 
 /**
@@ -20,7 +24,7 @@ public class SysWorkflowStep implements java.io.Serializable {
      * id
      */
     @GeneratorColumn(title = "ID")
-    private long id;
+    private Long id;
     /**
      * workflow
      * <p>
@@ -29,33 +33,40 @@ public class SysWorkflowStep implements java.io.Serializable {
     @GeneratorColumn(title = "流程", condition = true)
     private int workflowId;
     /**
-     * role dept union
+     * role
      * <p>
-     * 角色部门并集
-     */
-    @GeneratorColumn(title = "角色部门并集")
-    private boolean roleDeptUnion;
-    /**
-     * roles
-     * <p>
-     * 多个角色
+     * 角色
      */
     @GeneratorColumn(title = "角色")
-    private String roleIds;
+    private Integer roleId;
     /**
-     * depts
+     * dept
      * <p>
-     * 多个部门
+     * 部门
      */
     @GeneratorColumn(title = "部门")
-    private String deptIds;
+    private Integer deptId;
     /**
-     * users
+     * user
      * <p>
-     * 多个用户
+     * 用户
      */
     @GeneratorColumn(title = "人员")
-    private String userIds;
+    private Long userId;
+    /**
+     * prev step
+     * <p>
+     * 上一步
+     */
+    @GeneratorColumn(title = "上一步")
+    private Long prevStepId;
+    /**
+     * next step
+     * <p>
+     * 下一步
+     */
+    @GeneratorColumn(title = "下一步")
+    private Long nextStepId;
     /**
      * sort
      * <p>
@@ -67,29 +78,31 @@ public class SysWorkflowStep implements java.io.Serializable {
     public SysWorkflowStep() {
     }
 
-    public SysWorkflowStep(long id, int workflowId, int sort) {
-        this.id = id;
+    public SysWorkflowStep(int workflowId, int sort) {
         this.workflowId = workflowId;
         this.sort = sort;
     }
 
-    public SysWorkflowStep(long id, int workflowId, String roleIds, String deptIds, String userIds, int sort) {
-        this.id = id;
+    public SysWorkflowStep(int workflowId, Integer roleId, Integer deptId, Long userId, Long prevStepId, Long nextStepId,
+            int sort) {
         this.workflowId = workflowId;
-        this.roleIds = roleIds;
-        this.deptIds = deptIds;
-        this.userIds = userIds;
+        this.roleId = roleId;
+        this.deptId = deptId;
+        this.userId = userId;
+        this.prevStepId = prevStepId;
+        this.nextStepId = nextStepId;
         this.sort = sort;
     }
 
     @Id
-
+    @GeneratedValue(generator = "cmsGenerator")
+    @GenericGenerator(name = "cmsGenerator", strategy = CmsUpgrader.IDENTIFIER_GENERATOR)
     @Column(name = "id", unique = true, nullable = false)
-    public long getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -102,31 +115,49 @@ public class SysWorkflowStep implements java.io.Serializable {
         this.workflowId = workflowId;
     }
 
-    @Column(name = "role_ids", length = 65535)
-    public String getRoleIds() {
-        return this.roleIds;
+    @Column(name = "role_id")
+    public Integer getRoleId() {
+        return this.roleId;
     }
 
-    public void setRoleIds(String roleIds) {
-        this.roleIds = roleIds;
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
     }
 
-    @Column(name = "dept_ids", length = 65535)
-    public String getDeptIds() {
-        return this.deptIds;
+    @Column(name = "dept_id")
+    public Integer getDeptId() {
+        return this.deptId;
     }
 
-    public void setDeptIds(String deptIds) {
-        this.deptIds = deptIds;
+    public void setDeptId(Integer deptId) {
+        this.deptId = deptId;
     }
 
-    @Column(name = "user_ids", length = 65535)
-    public String getUserIds() {
-        return this.userIds;
+    @Column(name = "user_id")
+    public Long getUserId() {
+        return this.userId;
     }
 
-    public void setUserIds(String userIds) {
-        this.userIds = userIds;
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+    
+    @Column(name = "prev_step_id")
+    public Long getPrevStepId() {
+        return this.prevStepId;
+    }
+    
+    public void setPrevStepId(Long prevStepId) {
+        this.prevStepId = prevStepId;
+    }
+    
+    @Column(name = "next_step_id")
+    public Long getNextStepId() {
+        return this.nextStepId;
+    }
+    
+    public void setNextStepId(Long nextStepId) {
+        this.nextStepId = nextStepId;
     }
 
     @Column(name = "sort", nullable = false)

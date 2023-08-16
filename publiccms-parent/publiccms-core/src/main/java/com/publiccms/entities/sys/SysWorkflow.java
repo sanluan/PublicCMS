@@ -3,13 +3,16 @@ package com.publiccms.entities.sys;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.publiccms.common.database.CmsUpgrader;
 import com.publiccms.common.generator.annotation.GeneratorColumn;
 
 /**
@@ -24,7 +27,7 @@ public class SysWorkflow implements java.io.Serializable {
      * id
      */
     @GeneratorColumn(title = "ID")
-    private int id;
+    private Integer id;
     @GeneratorColumn(title = "站点", condition = true)
     @JsonIgnore
     private short siteId;
@@ -46,6 +49,13 @@ public class SysWorkflow implements java.io.Serializable {
     @GeneratorColumn(title = "描述", condition = true, like = true, or = true, name = "name")
     private String description;
     /**
+     * start step
+     * <p>
+     * 开始步骤
+     */
+    @GeneratorColumn(title = "开始步骤")
+    private Long startStepId;
+    /**
      * steps
      * <p>
      * 步骤数
@@ -59,31 +69,31 @@ public class SysWorkflow implements java.io.Serializable {
     public SysWorkflow() {
     }
 
-    public SysWorkflow(int id, short siteId, String name, int steps, boolean disabled) {
-        this.id = id;
+    public SysWorkflow(short siteId, String name, int steps, boolean disabled) {
         this.siteId = siteId;
         this.name = name;
         this.steps = steps;
         this.disabled = disabled;
     }
 
-    public SysWorkflow(int id, short siteId, String name, String description, int steps, boolean disabled) {
-        this.id = id;
+    public SysWorkflow(short siteId, String name, String description, Long startStepId, int steps, boolean disabled) {
         this.siteId = siteId;
         this.name = name;
         this.description = description;
+        this.startStepId = startStepId;
         this.steps = steps;
         this.disabled = disabled;
     }
 
     @Id
-
+    @GeneratedValue(generator = "cmsGenerator")
+    @GenericGenerator(name = "cmsGenerator", strategy = CmsUpgrader.IDENTIFIER_GENERATOR)
     @Column(name = "id", unique = true, nullable = false)
-    public int getId() {
+    public Integer getId() {
         return this.id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -112,6 +122,15 @@ public class SysWorkflow implements java.io.Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Column(name = "start_step_id")
+    public Long getStartStepId() {
+        return this.startStepId;
+    }
+
+    public void setStartStepId(Long startStepId) {
+        this.startStepId = startStepId;
     }
 
     @Column(name = "steps", nullable = false)

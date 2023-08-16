@@ -74,20 +74,18 @@ CREATE TABLE `sys_user_attribute` (
 ) COMMENT='用户扩展';
 -- 08-07 --
 CREATE TABLE `sys_workflow` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `site_id` smallint(6) NOT NULL COMMENT '站点',
   `name` varchar(100) NOT NULL COMMENT '名称',
   `description` varchar(300) DEFAULT NULL COMMENT '描述',
+  `start_step_id` bigint(20) DEFAULT NULL COMMENT '开始步骤',
   `steps` int(11) NOT NULL COMMENT '步骤数',
-  `user_id` bigint(20) NOT NULL COMMENT '创建用户',
-  `update_date` datetime DEFAULT NULL COMMENT '更新日期',
-  `create_date` datetime NOT NULL COMMENT '创建日期',
   `disabled` tinyint(1) NOT NULL COMMENT '已禁用',
   PRIMARY KEY (`id`),
-  KEY `sys_workflow_create_date` (`site_id`,`create_date`,`disabled`) USING BTREE
+  KEY `sys_workflow_disabled` (`site_id`, `disabled`)
 ) COMMENT='工作流';
 CREATE TABLE `sys_workflow_process` (
-  `id` bigint(20) NOT NULL,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `site_id` smallint(6) NOT NULL COMMENT '站点',
   `item_type` varchar(50) NOT NULL COMMENT '项目类型',
   `item_id` varchar(100) NOT NULL COMMENT '项目',
@@ -96,17 +94,19 @@ CREATE TABLE `sys_workflow_process` (
   `reason` varchar(255) DEFAULT NULL COMMENT '理由',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   PRIMARY KEY (`id`),
-  KEY `sys_workflow_process_content_id` (`site_id`,`item_type`,`operate`,`create_date`) USING BTREE
+  KEY `sys_workflow_process_content_id` (`site_id`,`item_type`,`operate`,`create_date`) 
 ) COMMENT='工作流流程';
 CREATE TABLE `sys_workflow_step` (
-  `id` bigint(20) NOT NULL,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `workflow_id` int(11) NOT NULL COMMENT '工作流',
-  `role_ids` text COMMENT '角色',
-  `dept_ids` text COMMENT '部门',
-  `user_ids` text COMMENT '用户',
+  `role_id` int(11) DEFAULT NULL COMMENT '角色',
+  `dept_id` int(11) DEFAULT NULL COMMENT '部门',
+  `user_id` bigint(20) DEFAULT NULL COMMENT '用户',
+  `prev_step_id` bigint(20) DEFAULT NULL COMMENT '上一步',
+  `next_step_id` bigint(20) DEFAULT NULL COMMENT '下一步',
   `sort` int(11) NOT NULL COMMENT '排序',
   PRIMARY KEY (`id`),
-  KEY `sys_workflow_step_workflow_id` (`workflow_id`,`sort`) USING BTREE
+  KEY `sys_workflow_step_workflow_id` (`workflow_id`,`sort`) 
 ) COMMENT='工作流步骤';
 CREATE TABLE `trade_address` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -134,7 +134,7 @@ CREATE TABLE `trade_cart` (
 CREATE TABLE `trade_coupon` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `site_id` smallint(6) NOT NULL COMMENT '站点',
-  `name` varchar(255) NOT NULL COMMENT '名称',
+  `name` varchar(100) NOT NULL COMMENT '名称',
   `category_id` int(11) DEFAULT NULL COMMENT '分类',
   `content_id` bigint(20) DEFAULT NULL COMMENT '内容',
   `start_date` datetime NOT NULL COMMENT '开始时间',
@@ -144,7 +144,8 @@ CREATE TABLE `trade_coupon` (
   `price` decimal(10,2) DEFAULT NULL COMMENT '优惠券价格',
   `type` int(11) NOT NULL COMMENT '类型(1折扣,2免运费,3满减)',
   `redeem_code` varchar(255) DEFAULT NULL COMMENT '兑换码',
-  `count` int(11) NOT NULL COMMENT '优惠券数量',
+  `duration` int(11) NOT NULL COMMENT '有效天数',
+  `quantity` int(11) NOT NULL COMMENT '优惠券数量',
   `create_date` varchar(255) DEFAULT NULL COMMENT '开始时间',
   `disabled` tinyint(1) NOT NULL COMMENT '已禁用',
   PRIMARY KEY (`id`),
@@ -168,7 +169,8 @@ CREATE TABLE `trade_freight` (
   `city` varchar(40) DEFAULT NULL COMMENT '所在城市',
   `price` decimal(10,2) DEFAULT NULL COMMENT '运费价格',
   `free_price` decimal(10,2) DEFAULT NULL COMMENT '免邮价格',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `trade_freight_site_id` (`site_id`,`country`,`province`,`city`)
 ) COMMENT='运费';
 CREATE TABLE `trade_user_coupon` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,

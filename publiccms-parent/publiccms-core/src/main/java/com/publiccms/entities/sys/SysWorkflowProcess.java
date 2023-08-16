@@ -4,12 +4,16 @@ package com.publiccms.entities.sys;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.publiccms.common.database.CmsUpgrader;
 import com.publiccms.common.generator.annotation.GeneratorColumn;
 
 /**
@@ -24,7 +28,7 @@ public class SysWorkflowProcess implements java.io.Serializable {
      * id
      */
     @GeneratorColumn(title = "ID")
-    private long id;
+    private Long id;
     @GeneratorColumn(title = "站点", condition = true)
     @JsonIgnore
     private short siteId;
@@ -68,7 +72,7 @@ public class SysWorkflowProcess implements java.io.Serializable {
      * <p>
      * 已关闭
      */
-    @GeneratorColumn(title = "关闭")
+    @GeneratorColumn(title = "关闭", condition = true)
     private boolean closed;
     /**
      * create date
@@ -81,9 +85,8 @@ public class SysWorkflowProcess implements java.io.Serializable {
     public SysWorkflowProcess() {
     }
 
-    public SysWorkflowProcess(long id, short siteId, String itemType, String itemId, long stepId, String operate, boolean closed,
+    public SysWorkflowProcess(short siteId, String itemType, String itemId, long stepId, String operate, boolean closed,
             Date createDate) {
-        this.id = id;
         this.siteId = siteId;
         this.itemType = itemType;
         this.itemId = itemId;
@@ -93,9 +96,8 @@ public class SysWorkflowProcess implements java.io.Serializable {
         this.createDate = createDate;
     }
 
-    public SysWorkflowProcess(long id, short siteId, String itemType, String itemId, long stepId, String operate, String reason,
+    public SysWorkflowProcess(short siteId, String itemType, String itemId, long stepId, String operate, String reason,
             boolean closed, Date createDate) {
-        this.id = id;
         this.siteId = siteId;
         this.itemType = itemType;
         this.itemId = itemId;
@@ -107,13 +109,14 @@ public class SysWorkflowProcess implements java.io.Serializable {
     }
 
     @Id
-
+    @GeneratedValue(generator = "cmsGenerator")
+    @GenericGenerator(name = "cmsGenerator", strategy = CmsUpgrader.IDENTIFIER_GENERATOR)
     @Column(name = "id", unique = true, nullable = false)
-    public long getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
