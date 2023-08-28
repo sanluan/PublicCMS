@@ -39,7 +39,7 @@
                             <li><a href="cmsContent/add.html?id=${content.id}" target="navTab" rel="cmsContent/edit" data-diy="content" data-diy-id="${content.id}"><i class="icon-edit"></i><@t.page 'content.edit'/></a></li>
                             <#if model?has_content>
                                 <li><a href="cmsContent/add.html?categoryId=${(content.categoryId)!}&modelId=${model.id}&parentId=${(content.parentId)!}" target="navTab" rel="cmsContent/add" data-diy="content" data-diy-id="${content.id}"><i class="icon-plus icon-large"></i><@t.page 'content.add'/></a></li>
-    
+
                             </#if>
                         </#if>
                         <#if authorizedMap['cmsContent/publish']&&site.useStatic&&!content.onlyUrl>
@@ -127,9 +127,7 @@
                     <#if list?has_content>
                         <#list list as a>
                             <@tools.placeMetadata path=a>
-                                <#if (object.metadataExtendList)?has_content>
-                                    <li><a href="cmsPlace/list.html?path=${a?url}" target="navTab" rel="cmsPlace/list" title="<@t.page 'place.management'/>" data-diy="place" data-diy-id="${a}"><i class="bi bi-layout-sidebar"></i>${(object.alias)!}</a></li>
-                                </#if>
+                                <li><a href="cmsPlace/list.html?path=${a?url}" target="navTab" rel="cmsPlace/list" title="<@t.page 'place.management'/>" data-diy="place" data-diy-id="${a}"><i class="bi bi-layout-sidebar"></i>${(object.alias)!}</a></li>
                                 <#if object.size gt 0>
                                     <li>
                                         <a href="cmsPlace/dataList.html?path=${a?url}" target="navTab" rel="cmsPlace/dataList" data-diy="place" data-diy-id="${a}"><i class="bi bi-layout-text-sidebar-reverse"></i><@t.page 'place_data'/>:${(object.alias)!}(${object.size})</a>

@@ -42,7 +42,7 @@ public class SysWorkflowDao extends BaseDao<SysWorkflow> {
         if (!ORDERTYPE_ASC.equalsIgnoreCase(orderType)) {
             orderType = ORDERTYPE_DESC;
         }
-        queryHandler.order("bean.steps").append(orderType);
+        queryHandler.order("bean.id").append(orderType);
         return getPage(queryHandler, pageIndex, pageSize);
     }
 

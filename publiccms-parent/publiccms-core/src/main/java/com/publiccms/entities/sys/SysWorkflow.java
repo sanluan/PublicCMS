@@ -55,13 +55,6 @@ public class SysWorkflow implements java.io.Serializable {
      */
     @GeneratorColumn(title = "开始步骤")
     private Long startStepId;
-    /**
-     * steps
-     * <p>
-     * 步骤数
-     */
-    @GeneratorColumn(title = "步骤数", order = true)
-    private int steps;
     @GeneratorColumn(title = "已禁用", condition = true)
     @JsonIgnore
     private boolean disabled;
@@ -69,19 +62,17 @@ public class SysWorkflow implements java.io.Serializable {
     public SysWorkflow() {
     }
 
-    public SysWorkflow(short siteId, String name, int steps, boolean disabled) {
+    public SysWorkflow(short siteId, String name, boolean disabled) {
         this.siteId = siteId;
         this.name = name;
-        this.steps = steps;
         this.disabled = disabled;
     }
 
-    public SysWorkflow(short siteId, String name, String description, Long startStepId, int steps, boolean disabled) {
+    public SysWorkflow(short siteId, String name, String description, Long startStepId, boolean disabled) {
         this.siteId = siteId;
         this.name = name;
         this.description = description;
         this.startStepId = startStepId;
-        this.steps = steps;
         this.disabled = disabled;
     }
 
@@ -131,15 +122,6 @@ public class SysWorkflow implements java.io.Serializable {
 
     public void setStartStepId(Long startStepId) {
         this.startStepId = startStepId;
-    }
-
-    @Column(name = "steps", nullable = false)
-    public int getSteps() {
-        return this.steps;
-    }
-
-    public void setSteps(int steps) {
-        this.steps = steps;
     }
 
     @Column(name = "disabled", nullable = false)

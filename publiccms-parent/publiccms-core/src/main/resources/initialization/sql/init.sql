@@ -1980,7 +1980,6 @@ CREATE TABLE `sys_workflow` (
   `name` varchar(100) NOT NULL COMMENT '名称',
   `description` varchar(300) DEFAULT NULL COMMENT '描述',
   `start_step_id` bigint(20) DEFAULT NULL COMMENT '开始步骤',
-  `steps` int(11) NOT NULL COMMENT '步骤数',
   `disabled` tinyint(1) NOT NULL COMMENT '已禁用',
   PRIMARY KEY (`id`),
   KEY `sys_workflow_disabled` (`site_id`, `disabled`)
