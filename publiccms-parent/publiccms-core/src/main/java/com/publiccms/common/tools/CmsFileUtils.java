@@ -161,7 +161,7 @@ public class CmsFileUtils {
         if (CommonUtils.notEmpty(fileList)) {
             for (FileReplaceResult result : fileList) {
                 if (CommonUtils.notEmpty(result.getPath()) && null != result.getIndexs()) {
-                    File file = Paths.get(dirPath, result.getPath()).toFile();
+                    File file = Paths.get(dirPath, CmsFileUtils.getSafeFileName(result.getPath())).toFile();
                     try {
                         List<String> list = FileUtils.readLines(file, CommonConstants.DEFAULT_CHARSET_NAME);
                         int i = 0, j = 0, n = 0;
