@@ -52,4 +52,9 @@ public class CategoryParameterComponent extends AbstractIntegerParameterHandler<
         }
         return null;
     }
+
+    @Override
+    public boolean supportDefaultValue() {
+        return true;
+    }
 }

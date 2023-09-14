@@ -76,7 +76,14 @@
                             <label><@t.page 'required'/>:<input name="required" type="checkbox" class="form-check-input"/></label>
                             <label><@t.page 'alias'/>:</label><input name="parameterAlias" type="text" autocomplete="on" size="8"/>
                             <label><@t.page 'array'/>:<input name="array" type="checkbox" class="form-check-input"/></label>
-                            <a href="javascript:;" class="btnText green" onclick="addParameter($('input[name=\'parameterName\']',navTab.getCurrentPanel()).val(),$('input[name=\'array\']',navTab.getCurrentPanel()).prop('checked'),$('input[name=\'required\']',navTab.getCurrentPanel()).prop('checked'),$('select[name=\'parameterType\']',navTab.getCurrentPanel()).val(),$('select[name=\'parameterType\'] option:selected',navTab.getCurrentPanel()).text(),$('input[name=\'parameterAlias\']',navTab.getCurrentPanel()).val());return false;"><i class="icon-ok"></i><@t.page 'button.add'/></a>
+                            <label class="hide defaultValue">
+                                <@t.page 'array'/>:
+                                <input name="defaultValue" type="hidden"/>
+                                <input name="categoryName" readonly="readonly" type="text" size="10"/>
+                                <a class="btnLook hide defauleValueId" href="cmsCategory/lookup.html?field=defaultValue" lookupGroup=""></a>
+                                <a class="btnLook hide defauleValueCode" href="cmsCategory/lookup.html?field=defaultValue&useCode=true" lookupGroup=""></a>
+                            </label>
+                            <a href="javascript:;" class="btnText green" onclick="addParameter($('input[name=\'parameterName\']',navTab.getCurrentPanel()).val(),$('input[name=\'array\']',navTab.getCurrentPanel()).prop('checked'),$('input[name=\'required\']',navTab.getCurrentPanel()).prop('checked'),$('select[name=\'parameterType\']',navTab.getCurrentPanel()).val(),$('select[name=\'parameterType\'] option:selected',navTab.getCurrentPanel()).text(),$('input[name=\'parameterAlias\']',navTab.getCurrentPanel()).val(),$('input[name=\'categoryName\']',navTab.getCurrentPanel()).val());return false;"><i class="icon-ok"></i><@t.page 'button.add'/></a>
                         </div>
                     </dd>
                 </dl>
@@ -138,8 +145,20 @@
                 $('input[name=\'parameterAlias\']',navTab.getCurrentPanel()).val('category');
             }
         }
+        if('category' == $(this).val() || 'category.code'==$(this).val()){
+            $('.defaultValueCode',navTab.getCurrentPanel()).hide();
+            $('.defaultValueId',navTab.getCurrentPanel()).hide();
+            if('category' == $(this).val()){
+                $('.defaultValueId',navTab.getCurrentPanel()).show();
+            }else{
+                $('.defaultValueCode',navTab.getCurrentPanel()).show();
+            }
+            $('.defaultValue',navTab.getCurrentPanel()).show();
+        } else {
+            $('.defaultValue',navTab.getCurrentPanel()).hide();
+        }
     });
-    function addParameter(parameterName,array,required,parameterType,parameterTypeText,alias) {
+    function addParameter(parameterName,array,required,parameterType,parameterTypeText,alias,value) {
         if(parameterName) {
             parameterName=parameterName.trim();
         }
@@ -160,6 +179,9 @@
             }
             $box.append($('<input type=\"hidden\"/>').attr("name","parameterTypeMap["+parameterName+"].name").val(parameterName)).append($('<input type=\"hidden\"/>').attr("name","parameterTypeMap["+parameterName+"].alias").val(alias));
             $box.append("<input type=\"hidden\" name=\"parameterTypeMap["+parameterName+"].type\" value=\""+parameterType+"\"/> <input type=\"hidden\" name=\"parameterTypeMap["+parameterName+"].array\" value=\""+array+"\"/> <input type=\"hidden\" name=\"parameterTypeMap["+parameterName+"].required\" value=\""+required+"\"/><a href=\"javascript:;\"><i class=\"icon-remove-sign\"></i></a>");
+            if( 'content' == parameterType || 'category.code' == parameterType && value){
+                $box.append($('<input type=\"hidden\"/>').attr("name","parameterTypeMap["+parameterName+"].defaultValue").val(value)).append(':').append(value);
+            }
             $('.parametersBox',navTab.getCurrentPanel()).append($box);
         }
         $('input[name=\'parameterName\']',navTab.getCurrentPanel()).val('');
@@ -184,7 +206,15 @@
     });
     <#if (a.acceptParameters)?has_content>
         <#list a.acceptParameters?split(",") as p>
-        addParameter("${p}",${(a.parameterTypeMap[p].array?c)!false},${(a.parameterTypeMap[p].required?c)!false},"${(a.parameterTypeMap[p].type)!'text'}","${(t.pageMessage(a.parameterTypeMap[p].type))!t.pageMessage('text')}","${(a.parameterTypeMap[p].alias)!}");
+            <#assign tempDefaultValue=''/>
+            <#if a.parameterTypeMap[p]?has_content && a.parameterTypeMap[p].defaultValue?has_content>
+                <#if 'category'=a.parameterTypeMap[p].type>
+                <@cms.category id=a.parameterTypeMap[p].defaultValue><#assign tempDefaultValue=object.name/></@cms.category>
+                <#elseif 'category.code'=a.parameterTypeMap[p].type>
+                <@cms.category code=a.parameterTypeMap[p].defaultValue><#assign tempDefaultValue=object.name/></@cms.category>
+                </#if>
+            </#if>
+        addParameter("${p}",${(a.parameterTypeMap[p].array?c)!false},${(a.parameterTypeMap[p].required?c)!false},"${(a.parameterTypeMap[p].type)!'text'}","${(t.pageMessage(a.parameterTypeMap[p].type))!t.pageMessage('text')}","${(a.parameterTypeMap[p].alias)!}","${tempDefaultValue!}");
         </#list>
     </#if>
     </script>

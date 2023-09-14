@@ -54,4 +54,9 @@ public class CategoryCodeParameterComponent extends AbstractStringParameterHandl
         }
         return null;
     }
+
+    @Override
+    public boolean supportDefaultValue() {
+        return true;
+    }
 }

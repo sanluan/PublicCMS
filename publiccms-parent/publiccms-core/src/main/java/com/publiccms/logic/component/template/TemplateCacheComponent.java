@@ -203,8 +203,12 @@ public class TemplateCacheComponent implements Cache {
                         model.addAttribute(parameterName, list);
                     }
                 }
-            } else if (CommonUtils.notEmpty(values) && CommonUtils.notEmpty(values[0])) {
-                P id = parameterTypeHandler.dealParameterValue(values[0]);
+            } else if (CommonUtils.notEmpty(values) && CommonUtils.notEmpty(values[0])
+                    || parameterTypeHandler.supportDefaultValue() && CommonUtils.notEmpty(parameterType.getDefaultValue())) {
+                P id = parameterTypeHandler.dealParameterValue(
+                        parameterTypeHandler.supportDefaultValue() && CommonUtils.notEmpty(parameterType.getDefaultValue())
+                                ? parameterType.getDefaultValue()
+                                : values[0]);
                 if (null == id && parameterType.isRequired()) {
                     return false;
                 } else {
