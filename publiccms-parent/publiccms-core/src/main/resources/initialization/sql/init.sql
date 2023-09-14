@@ -2275,6 +2275,7 @@ CREATE TABLE `trade_refund` (
 -- ----------------------------
 DROP TABLE IF EXISTS `trade_user_coupon`;
 CREATE TABLE `trade_user_coupon` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `user_id` bigint(20) NOT NULL COMMENT '用户',
   `coupon_id` bigint(20) NOT NULL COMMENT '优惠券',
   `status` int(11) NOT NULL COMMENT '状态(1有效,2已使用)',
@@ -2282,7 +2283,7 @@ CREATE TABLE `trade_user_coupon` (
   `start_date` varchar(255) NOT NULL COMMENT '开始时间',
   `expiry_date` varchar(255) DEFAULT NULL COMMENT '结束时间',
   PRIMARY KEY (`user_id`,`coupon_id`),
-  KEY `trade_user_coupon_status` (`site_id`,`user_id`, `status`, `start_date`, `expiry_date`, `price`)
+  KEY `trade_user_coupon_status` (`user_id`, `status`, `start_date`, `expiry_date`, `price`)
 ) COMMENT='用户优惠券';
 
 -- ----------------------------
