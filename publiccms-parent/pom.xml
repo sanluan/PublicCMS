@@ -28,11 +28,11 @@
         <!-- http://mvnrepository.com/artifact/org.springframework/spring-core -->
         <!-- https://spring.io/projects/spring-framework -->
         <!-- 6.0,6.1 for Java 17 -->
-        <version.spring>5.3.29</version.spring>
+        <version.spring>5.3.30</version.spring>
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
         <!-- https://spring.io/projects/spring-boot -->
         <!-- 3.0,3.1 for Java 17 -->
-        <version.springBoot>2.7.14</version.springBoot>
+        <version.springBoot>2.7.16</version.springBoot>
         <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine -->
         <version.juint>5.10.0</version.juint>
         <!-- http://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
@@ -44,7 +44,7 @@
         <version.hibernateTools>5.6.15.Final</version.hibernateTools>
         <!-- https://mvnrepository.com/artifact/org.hibernate.search/hibernate-search-mapper-orm/ -->
         <!-- http://hibernate.org/search/releases/ -->
-        <version.hibernateSearch>6.2.0.Final</version.hibernateSearch>
+        <version.hibernateSearch>6.2.1.Final</version.hibernateSearch>
         <!-- https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator -->
         <!-- 6.1,7,8 for jakarta -->
         <version.hibernateValidator>6.0.23.Final</version.hibernateValidator>
@@ -81,7 +81,7 @@
         <!-- http://hc.apache.org/downloads.cgi -->
         <version.httpclient>4.5.14</version.httpclient>
         <!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
-        <version.poi>5.2.3</version.poi>
+        <version.poi>5.2.4</version.poi>
         <!-- https://mvnrepository.com/artifact/fr.opensagres.xdocreport/fr.opensagres.poi.xwpf.converter.xhtml -->
         <version.xhtmlConverter>2.0.4</version.xhtmlConverter>
         <!-- http://mvnrepository.com/artifact/commons-fileupload/commons-fileupload -->
@@ -95,7 +95,7 @@
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-text -->
         <version.text>1.10.0</version.text>
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-compress -->
-        <version.compress>1.23.0</version.compress>
+        <version.compress>1.24.0</version.compress>
         <!-- http://mvnrepository.com/artifact/commons-codec/commons-codec -->
         <version.codec>1.15</version.codec>
         <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
