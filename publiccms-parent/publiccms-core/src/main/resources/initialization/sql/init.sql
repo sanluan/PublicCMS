@@ -282,7 +282,7 @@ CREATE TABLE `cms_editor_history` (
   `id` bigint(20) NOT NULL auto_increment,
   `site_id` smallint(6) NOT NULL COMMENT '站点',
   `item_type` varchar(50) NOT NULL COMMENT '数据类型',
-  `item_id` varchar(50) NOT NULL COMMENT '数据id',
+  `item_id` varchar(100) NOT NULL COMMENT '数据id',
   `field_name` varchar(50) NOT NULL COMMENT '字段名',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   `user_id` bigint(20) NOT NULL COMMENT '修改用户',
@@ -2015,7 +2015,7 @@ CREATE TABLE `sys_workflow_step` (
   `next_step_id` bigint(20) DEFAULT NULL COMMENT '下一步',
   `sort` int(11) NOT NULL COMMENT '排序',
   PRIMARY KEY (`id`),
-  KEY `sys_workflow_step_workflow_id` (`workflow_id`,`sort`) 
+  KEY `sys_workflow_step_workflow_id` (`workflow_id`,`sort`)
 ) COMMENT='工作流步骤';
 
 -- ----------------------------

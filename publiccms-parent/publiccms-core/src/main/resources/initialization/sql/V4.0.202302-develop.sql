@@ -184,3 +184,5 @@ CREATE TABLE `trade_user_coupon` (
 ) COMMENT='用户优惠券';
 -- 08-14 --
 ALTER TABLE `cms_category` ADD COLUMN `workflow_id` int(11) default NULL COMMENT '审核流程' AFTER `disabled`;
+-- 09-29 --
+ALTER TABLE `cms_editor_history` MODIFY COLUMN `item_id` varchar(100) NOT NULL COMMENT '数据id' AFTER `item_type`;

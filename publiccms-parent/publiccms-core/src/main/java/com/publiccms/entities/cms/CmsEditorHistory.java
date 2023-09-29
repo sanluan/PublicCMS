@@ -133,7 +133,7 @@ public class CmsEditorHistory implements java.io.Serializable {
         this.itemType = itemType;
     }
 
-    @Column(name = "item_id", nullable = false, length = 50)
+    @Column(name = "item_id", nullable = false, length = 100)
     public String getItemId() {
         return this.itemId;
     }
