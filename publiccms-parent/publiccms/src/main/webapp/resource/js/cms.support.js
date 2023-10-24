@@ -127,12 +127,12 @@ if(window.parent!=window && "string" === typeof templatePath ){
             }
             if(-1 === links[i].href.indexOf("javascript") && -1 === links[i].href.indexOf("diy") ) {
                 if(-1 === links[i].href.indexOf("#")){
-					links[i].href += (-1 === links[i].href.indexOf("?") )?"?diy":"&diy";
-				} else {
-					var hash = links[i].href.substring(links[i].href.indexOf("#"));
-					var url=links[i].href.substring(0,links[i].href.indexOf("#"));
-					links[i].href = url+((-1 === url.indexOf("?") )?"?diy":"&diy")+hash;
-				}
+               links[i].href += (-1 === links[i].href.indexOf("?") )?"?diy":"&diy";
+            } else {
+               var hash = links[i].href.substring(links[i].href.indexOf("#"));
+               var url=links[i].href.substring(0,links[i].href.indexOf("#"));
+               links[i].href = url+((-1 === url.indexOf("?") )?"?diy":"&diy")+hash;
+            }
             }
         }
         var forms=document.getElementsByTagName("form");
