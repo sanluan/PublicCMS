@@ -148,7 +148,7 @@ CREATE TABLE `trade_coupon` (
   `create_date` varchar(255) DEFAULT NULL COMMENT '开始时间',
   `disabled` tinyint(1) NOT NULL COMMENT '已禁用',
   PRIMARY KEY (`id`),
-  KEY `trade_coupon_category_id` (`site_id`,`category_id`,`start_date`,`expiry_date`,`disabled`)
+  KEY `trade_coupon_category_id` (`site_id`,`category_id`,`start_date`,`expiry_date`,`disabled`),
   KEY `trade_coupon_content_id` (`site_id`,`content_id`,`start_date`,`expiry_date`,`disabled`)
 ) COMMENT='优惠券';
 CREATE TABLE `trade_express` (
@@ -180,7 +180,7 @@ CREATE TABLE `trade_user_coupon` (
   `start_date` varchar(255) NOT NULL COMMENT '开始时间',
   `expiry_date` varchar(255) DEFAULT NULL COMMENT '结束时间',
   PRIMARY KEY (`id`),
-  KEY `trade_user_coupon_status` (`user_id`, `status`, `start_date`, `expiry_date`, `price`)
+  KEY `trade_user_coupon_status` (`user_id`, `status`, `start_date`, `expiry_date`)
 ) COMMENT='用户优惠券';
 -- 08-14 --
 ALTER TABLE `cms_category` ADD COLUMN `workflow_id` int(11) default NULL COMMENT '审核流程' AFTER `disabled`;
