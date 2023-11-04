@@ -145,7 +145,7 @@ public class StatisticsComponent implements Cache {
                 }
             } else {
                 clickStatistics.addClicks();
-                if (0 <= clickStatistics.getMaxClicks() && clickStatistics.getMaxClicks() < clickStatistics.getClicks() + clickStatistics.getOldClicks()) {
+                if (0 < clickStatistics.getMaxClicks() && clickStatistics.getMaxClicks() < clickStatistics.getClicks() + clickStatistics.getOldClicks()) {
                     placeService.shelf(id, false);
                     placeCache.remove(id);
                     CmsPlace entity = placeService.getEntity(id);
