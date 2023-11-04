@@ -10,9 +10,11 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.publiccms.common.database.CmsUpgrader;
@@ -41,6 +43,8 @@ public class CmsEditorHistory implements java.io.Serializable {
      * 项目类型
      */
     @GeneratorColumn(title = "项目类型", condition = true)
+    @NotNull
+    @Length(max = 100)
     private String itemType;
     /**
      * item id
@@ -48,6 +52,8 @@ public class CmsEditorHistory implements java.io.Serializable {
      * 项目id
      */
     @GeneratorColumn(title = "项目id", condition = true)
+    @NotNull
+    @Length(max = 100)
     private String itemId;
     /**
      * field name
