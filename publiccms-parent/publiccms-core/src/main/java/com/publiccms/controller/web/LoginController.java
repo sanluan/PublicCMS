@@ -111,73 +111,76 @@ public class LoginController {
         if (ControllerUtils.errorNotEmpty("username", username, model)
                 || ControllerUtils.errorNotLongThen("password", password, UserPasswordUtils.PASSWORD_MAX_LENGTH, model)) {
             return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, loginPath);
+        }
+        SysUser user;
+        if (ControllerUtils.notEMail(username)) {
+            user = service.findByName(site.getId(), username);
         } else {
-            SysUser user;
-            if (ControllerUtils.notEMail(username)) {
-                user = service.findByName(site.getId(), username);
-            } else {
-                user = service.findByEmail(site.getId(), username);
-            }
-            String ip = RequestUtils.getIpAddress(request);
-            Date now = CommonUtils.getDate();
-            boolean locked = lockComponent.isLocked(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, null);
-            if (ControllerUtils.errorCustom("locked.ip", locked && ControllerUtils.ipNotEquals(ip, user), model)
-                    || ControllerUtils.errorNotEquals("password", user, model)) {
-                lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, null, true);
-                return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, loginPath);
-            }
-            locked = lockComponent.isLocked(site.getId(), LockComponent.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null);
-            if (CommonUtils.notEmpty(captcha)
-                    || safeConfigComponent.enableCaptcha(site.getId(), SafeConfigComponent.CAPTCHA_MODULE_LOGIN)) {
-                String sessionCaptcha = (String) request.getSession().getAttribute("captcha");
-                request.getSession().removeAttribute("captcha");
-                if (ControllerUtils.errorCustom("locked.user", locked, model) || ControllerUtils.errorCustom("captcha.error",
-                        null == sessionCaptcha || !sessionCaptcha.equalsIgnoreCase(captcha), model)) {
+            user = service.findByEmail(site.getId(), username);
+        }
+        String ip = RequestUtils.getIpAddress(request);
+        Date now = CommonUtils.getDate();
+        if (CommonUtils.notEmpty(captcha)
+                || safeConfigComponent.enableCaptcha(site.getId(), SafeConfigComponent.CAPTCHA_MODULE_LOGIN)) {
+            String sessionCaptcha = (String) request.getSession().getAttribute("captcha");
+            request.getSession().removeAttribute("captcha");
+            if (ControllerUtils.errorCustom("captcha.error", null == sessionCaptcha || !sessionCaptcha.equalsIgnoreCase(captcha),
+                    model)) {
+                if (null != user) {
                     lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null, true);
-                    lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, null, true);
-                    logLoginService.save(new LogLogin(site.getId(), username, user.getId(), ip, LogLoginService.CHANNEL_WEB,
-                            false, now, password));
-                    return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, loginPath);
                 }
-            }
-            if (ControllerUtils.errorNotEquals("password",
-                    UserPasswordUtils.passwordEncode(password, null, user.getPassword(), encoding), user.getPassword(), model)
-                    || verifyNotEnablie(user, model)) {
-                Long userId = user.getId();
-                lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null, true);
                 lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, null, true);
-                logLoginService.save(
-                        new LogLogin(site.getId(), username, userId, ip, LogLoginService.CHANNEL_WEB, false, now, password));
+                logLoginService.save(new LogLogin(site.getId(), username, user.getId(), ip, LogLoginService.CHANNEL_WEB, false,
+                        now, password));
                 return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, loginPath);
-            } else {
-                lockComponent.unLock(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, user.getId());
-                lockComponent.unLock(site.getId(), LockComponent.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null);
-                if (UserPasswordUtils.needUpdate(user.getPassword())) {
-                    service.updatePassword(user.getId(),
-                            UserPasswordUtils.passwordEncode(password, UserPasswordUtils.getSalt(), null, encoding));
-                }
-                service.updateLoginStatus(user.getId(), ip);
-
-                if (null != clientId && null != uuid) {
-                    SysAppClient appClient = appClientService.getEntity(clientId);
-                    if (null != appClient && appClient.getSiteId() == site.getId() && appClient.getUuid().equals(uuid)
-                            && null == appClient.getUserId()) {
-                        appClientService.updateUser(appClient.getId(), user.getId());
-                    }
-                }
-
-                String authToken = UUID.randomUUID().toString();
-                Map<String, String> safeConfig = configDataComponent.getConfigData(site.getId(), SafeConfigComponent.CONFIG_CODE);
-                int expiryMinutes = ConfigDataComponent.getInt(safeConfig.get(SafeConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
-                        SafeConfigComponent.DEFAULT_EXPIRY_MINUTES);
-                addLoginStatus(user, authToken, request, response, expiryMinutes);
-                sysUserTokenService.save(new SysUserToken(authToken, site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, now,
-                        DateUtils.addMinutes(now, expiryMinutes), ip));
-                logLoginService.save(
-                        new LogLogin(site.getId(), username, user.getId(), ip, LogLoginService.CHANNEL_WEB, true, now, null));
-                return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
             }
         }
+
+        boolean locked = lockComponent.isLocked(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, null);
+        if (ControllerUtils.errorCustom("locked.ip", locked && ControllerUtils.ipNotEquals(ip, user), model)
+                || ControllerUtils.errorNotEquals("password", user, model)) {
+            lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, null, true);
+            return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, loginPath);
+        }
+        locked = lockComponent.isLocked(site.getId(), LockComponent.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null);
+
+        if (ControllerUtils.errorCustom("locked.user", locked, model)
+                || ControllerUtils.errorNotEquals("password",
+                        UserPasswordUtils.passwordEncode(password, null, user.getPassword(), encoding), user.getPassword(), model)
+                || verifyNotEnablie(user, model)) {
+            Long userId = user.getId();
+            lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null, true);
+            lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, null, true);
+            logLoginService
+                    .save(new LogLogin(site.getId(), username, userId, ip, LogLoginService.CHANNEL_WEB, false, now, password));
+            return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, loginPath);
+        }
+        lockComponent.unLock(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, user.getId());
+        lockComponent.unLock(site.getId(), LockComponent.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null);
+        if (UserPasswordUtils.needUpdate(user.getPassword())) {
+            service.updatePassword(user.getId(),
+                    UserPasswordUtils.passwordEncode(password, UserPasswordUtils.getSalt(), null, encoding));
+        }
+        service.updateLoginStatus(user.getId(), ip);
+
+        if (null != clientId && null != uuid) {
+            SysAppClient appClient = appClientService.getEntity(clientId);
+            if (null != appClient && appClient.getSiteId() == site.getId() && appClient.getUuid().equals(uuid)
+                    && null == appClient.getUserId()) {
+                appClientService.updateUser(appClient.getId(), user.getId());
+            }
+        }
+
+        String authToken = UUID.randomUUID().toString();
+        Map<String, String> safeConfig = configDataComponent.getConfigData(site.getId(), SafeConfigComponent.CONFIG_CODE);
+        int expiryMinutes = ConfigDataComponent.getInt(safeConfig.get(SafeConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
+                SafeConfigComponent.DEFAULT_EXPIRY_MINUTES);
+        addLoginStatus(user, authToken, request, response, expiryMinutes);
+        sysUserTokenService.save(new SysUserToken(authToken, site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, now,
+                DateUtils.addMinutes(now, expiryMinutes), ip));
+        logLoginService
+                .save(new LogLogin(site.getId(), username, user.getId(), ip, LogLoginService.CHANNEL_WEB, true, now, null));
+        return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
     }
 
     /**
