@@ -12,6 +12,7 @@
         <li><a href="javascript:;" onclick="$.bringBack({'${field!'path'}':'<#noparse>${site.useStatic?then(site.sitePath,site.dynamicPath)}#${category.code}</#noparse>','templatePath':''});return false;"><@t.page 'dynamic_path'/>:#<@t.page 'category.code'/></a></li>
         <li><a href="javascript:;" onclick="$.bringBack({'${field!'path'}':'<#noparse><@cms.categoryList parentId=category.id pageSize=1><#list page.list as a>${a.url}</#list></@cms.categoryList></#noparse>','templatePath':''});return false;"><@t.page 'dynamic_path'/>:<@t.page 'category.first_child'/></a></li>
         <li><a href="javascript:;" onclick="$.bringBack({'${field!'path'}':'<#noparse><@cms.contentList categoryId=category.id pageSize=1><#list page.list as a>${a.url}</#list></@cms.contentList></#noparse>','templatePath':''});return false;"><@t.page 'dynamic_path'/>:<@t.page 'category.first_content'/></a></li>
+        <li><a href="javascript:;" onclick="$.bringBack({'${field!'path'}':'<#noparse><@cms.category id=category.parentId>${object.url}</@cms.category></#noparse>','templatePath':''});return false;"><@t.page 'dynamic_path'/>:<@t.page 'category.parent'/></a></li>
     </ul>
 </div>
 <div class="formBar">
