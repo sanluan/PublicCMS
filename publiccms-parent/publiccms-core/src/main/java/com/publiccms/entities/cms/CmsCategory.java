@@ -162,6 +162,13 @@ public class CmsCategory extends Attribute implements java.io.Serializable {
     @GeneratorColumn(title = "是否删除", condition = true)
     @JsonIgnore
     private boolean disabled;
+    /**
+     * workflow
+     * <p>
+     * 工作流
+     */
+    @GeneratorColumn(title = "工作流")
+    private Integer workflowId;
     @GeneratorColumn(title = "扩展")
     @JsonIgnore
     private Integer extendId;
@@ -189,7 +196,7 @@ public class CmsCategory extends Attribute implements java.io.Serializable {
     public CmsCategory(short siteId, String name, Integer parentId, String typeId, String childIds, String tagTypeIds,
             String code, boolean customPath, String templatePath, String path, boolean onlyUrl, boolean hasStatic, String url,
             boolean customContentPath, String contentPath, boolean containChild, Integer pageSize, boolean allowContribute,
-            int sort, boolean hidden, boolean disabled, Integer extendId) {
+            int sort, boolean hidden, boolean disabled,Integer workflowId, Integer extendId) {
         this.siteId = siteId;
         this.name = name;
         this.parentId = parentId;
@@ -211,6 +218,7 @@ public class CmsCategory extends Attribute implements java.io.Serializable {
         this.sort = sort;
         this.hidden = hidden;
         this.disabled = disabled;
+        this.workflowId = workflowId;
         this.extendId = extendId;
     }
 

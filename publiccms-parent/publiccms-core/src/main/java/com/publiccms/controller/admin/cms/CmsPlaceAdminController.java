@@ -134,7 +134,8 @@ public class CmsPlaceAdminController {
                 }
                 entity = service.update(entity.getId(), entity, ignoreProperties);
                 if (null != entity) {
-                    if (CmsPlaceService.STATUS_OFFSHELF == entity.getStatus() && entity.getClicks() < entity.getMaxClicks()) {
+                    if (CmsPlaceService.STATUS_OFFSHELF == entity.getStatus()
+                            && (entity.getClicks() < entity.getMaxClicks() || 0 == entity.getMaxClicks())) {
                         service.shelf(entity.getId(), true);
                     }
                     logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),

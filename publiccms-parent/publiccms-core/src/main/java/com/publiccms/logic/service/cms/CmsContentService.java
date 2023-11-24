@@ -56,7 +56,7 @@ import jakarta.annotation.Resource;
 /**
  *
  * CmsContentService
- * 
+ *
  */
 @Service
 @Transactional
@@ -67,24 +67,24 @@ public class CmsContentService extends BaseService<CmsContent> {
 
     protected static final String[] ignoreProperties = new String[] { "id", "siteId" };
     /**
-     * 
+     *
      */
     public static final int STATUS_DRAFT = 0;
     /**
-     * 
+     *
      */
     public static final int STATUS_NORMAL = 1;
     /**
-     * 
+     *
      */
     public static final int STATUS_PEND = 2;
     /**
-     * 
+     *
      */
     public static final int STATUS_REJECT = 3;
 
     /**
-     * 
+     *
      */
     public static final Integer[] STATUS_NORMAL_ARRAY = new Integer[] { STATUS_NORMAL };
 

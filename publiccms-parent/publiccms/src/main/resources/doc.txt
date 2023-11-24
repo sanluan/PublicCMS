@@ -1,0 +1,133 @@
+-- SysWorkflow ---
+Field list:
+
+    id:ID
+    siteId:站点
+    name:名称
+    description:描述
+    steps:步骤数
+    disabled:已禁用
+
+Module list:
+
+    Name:List
+        ID:sysWorkflow_list
+        URL：sysWorkflow/list
+        Authorized Url：
+
+    Name:Add/Edit
+        ID:sysWorkflow_add
+        URL：sysWorkflow/add
+        Authorized Url：sysWorkflow/save
+    
+    Name:Delete
+        ID:sysWorkflow_delete
+        URL:
+        Authorized Url：sysWorkflow/delete-- SysWorkflow ---
+Field list:
+
+    id:ID
+    siteId:站点
+    name:名称
+    description:描述
+    startStepId:开始步骤
+    steps:步骤数
+    disabled:已禁用
+
+Module list:
+
+    Name:List
+        ID:sysWorkflow_list
+        URL：sysWorkflow/list
+        Authorized Url：
+
+    Name:Add/Edit
+        ID:sysWorkflow_add
+        URL：sysWorkflow/add
+        Authorized Url：sysWorkflow/save
+    
+    Name:Delete
+        ID:sysWorkflow_delete
+        URL:
+        Authorized Url：sysWorkflow/delete-- SysWorkflowStep ---
+Field list:
+
+    id:ID
+    workflowId:流程
+    roleId:角色
+    deptId:部门
+    userId:人员
+    prevStepId:上一步
+    nextStepId:下一步
+    sort:排序
+
+Module list:
+
+    Name:List
+        ID:sysWorkflowStep_list
+        URL：sysWorkflowStep/list
+        Authorized Url：
+
+    Name:Add/Edit
+        ID:sysWorkflowStep_add
+        URL：sysWorkflowStep/add
+        Authorized Url：sysWorkflowStep/save
+    
+    Name:Delete
+        ID:sysWorkflowStep_delete
+        URL:
+        Authorized Url：sysWorkflowStep/delete-- SysWorkflowProcess ---
+Field list:
+
+    id:ID
+    siteId:站点
+    itemType:项目类型
+    itemId:项目
+    stepId:步骤
+    operate:操作
+    reason:原因
+    closed:关闭
+    createDate:创建日期
+
+Module list:
+
+    Name:List
+        ID:sysWorkflowProcess_list
+        URL：sysWorkflowProcess/list
+        Authorized Url：
+
+    Name:Add/Edit
+        ID:sysWorkflowProcess_add
+        URL：sysWorkflowProcess/add
+        Authorized Url：sysWorkflowProcess/save
+    
+    Name:Delete
+        ID:sysWorkflowProcess_delete
+        URL:
+        Authorized Url：sysWorkflowProcess/delete-- TradeAddress ---
+Field list:
+
+    id:ID
+    siteId:站点
+    userId:用户
+    address:地址
+    addressee:收件人
+    telephone:电话
+    createDate:createDate
+
+Module list:
+
+    Name:List
+        ID:tradeAddress_list
+        URL：tradeAddress/list
+        Authorized Url：
+
+    Name:Add/Edit
+        ID:tradeAddress_add
+        URL：tradeAddress/add
+        Authorized Url：tradeAddress/save
+    
+    Name:Delete
+        ID:tradeAddress_delete
+        URL:
+        Authorized Url：tradeAddress/delete

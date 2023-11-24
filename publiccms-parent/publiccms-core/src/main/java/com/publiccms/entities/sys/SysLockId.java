@@ -3,6 +3,9 @@ package com.publiccms.entities.sys;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import jakarta.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.publiccms.common.generator.annotation.GeneratorColumn;
@@ -22,12 +25,16 @@ public class SysLockId implements java.io.Serializable {
      * 项目类型
      */
     @GeneratorColumn(title = "项目类型", condition = true)
+    @NotNull
+    @Length(max = 50)
     private String itemType;
     /**
      * item id<p>
      * 项目id
      */
     @GeneratorColumn(title = "项目")
+    @NotNull
+    @Length(max = 130)
     private String itemId;
 
     public SysLockId() {

@@ -17,7 +17,7 @@ import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.cms.CmsContentAttribute;
 import com.publiccms.logic.component.BeanComponent;
 
-public class CmsContentTextBridge implements TypeBridge<CmsContent> {
+public class CmsContentAttributeBridge implements TypeBridge<CmsContent> {
     private final IndexFieldReference<String> textField;
     private final IndexFieldReference<String> dictionaryValuesField;
     private final IndexFieldReference<String> filesField;
@@ -25,7 +25,7 @@ public class CmsContentTextBridge implements TypeBridge<CmsContent> {
     private final IndexFieldReference<BigDecimal> maxPriceField;
     private final IndexObjectFieldReference extendField;
 
-    public CmsContentTextBridge(IndexFieldReference<String> textField, IndexFieldReference<String> dictionaryValuesField,
+    public CmsContentAttributeBridge(IndexFieldReference<String> textField, IndexFieldReference<String> dictionaryValuesField,
             IndexFieldReference<String> filesField, IndexFieldReference<BigDecimal> minPriceField,
             IndexFieldReference<BigDecimal> maxPriceField, IndexObjectFieldReference extendField) {
         this.textField = textField;

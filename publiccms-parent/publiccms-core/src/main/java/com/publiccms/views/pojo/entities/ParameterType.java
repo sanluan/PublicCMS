@@ -1,7 +1,5 @@
 package com.publiccms.views.pojo.entities;
 
-import com.publiccms.common.api.Config;
-
 /**
  * ParameterType
  * 
@@ -11,12 +9,11 @@ public class ParameterType implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
-    public static final String[] PARAMETER_TYPES = { Config.INPUTTYPE_NUMBER, Config.INPUTTYPE_TEXTAREA, Config.INPUTTYPE_CONTENT,
-            Config.INPUTTYPE_USER, Config.INPUTTYPE_CATEGORY };
     private String type;
     private boolean array;
     private boolean required;
     private String alias;
+    private String defaultValue;
 
     /**
      * @return the type
@@ -76,5 +73,20 @@ public class ParameterType implements java.io.Serializable {
      */
     public void setAlias(String alias) {
         this.alias = alias;
+    }
+
+    /**
+     * @return the defaultValue
+     */
+    public String getDefaultValue() {
+        return defaultValue;
+    }
+
+    /**
+     * @param defaultValue
+     *            the defaultValue to set
+     */
+    public void setDefaultValue(String defaultValue) {
+        this.defaultValue = defaultValue;
     }
 }

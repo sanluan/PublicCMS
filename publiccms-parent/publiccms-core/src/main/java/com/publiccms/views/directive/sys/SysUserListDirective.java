@@ -36,7 +36,7 @@ import freemarker.template.TemplateException;
  * <li><code>emailChecked</code>:邮箱已验证,【true,false】
  * <li><code>name</code>:昵称、用户名、邮箱
  * <li><code>orderField</code>
- * 排序字段,【expiryDate:,createDate:,】,默认创建日期按orderType排序
+ * 排序字段,【lastLoginDate:上次登录日期,loginCount:登录次数,registeredDate:注册日期,followers:粉丝数】,默认创建日期按orderType排序
  * <li><code>orderType</code>:排序类型,【asc:正序,desc:倒序】,默认为倒序
  * <li><code>pageIndex</code>:页码
  * <li><code>pageSize</code>:每页条数

@@ -23,4 +23,8 @@ public interface ParameterTypeHandler<E, P> {
     public P[] dealParameterValues(String[] values) throws IllegalArgumentException;
 
     public P dealParameterValue(String value) throws IllegalArgumentException;
+
+    public default boolean supportDefaultValue() {
+        return false;
+    }
 }

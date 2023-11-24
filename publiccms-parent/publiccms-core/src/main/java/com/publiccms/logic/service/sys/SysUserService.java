@@ -18,6 +18,8 @@ import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.dao.sys.SysUserDao;
+import com.publiccms.logic.dao.sys.SysUserSearchDao;
+import com.publiccms.views.pojo.query.SysUserSearchQuery;
 
 import jakarta.annotation.Resource;
 
@@ -32,6 +34,21 @@ public class SysUserService extends BaseService<SysUser> {
     public static final int CONTENT_PERMISSIONS_SELF = 0;
     public static final int CONTENT_PERMISSIONS_ALL = 1;
     public static final int CONTENT_PERMISSIONS_DEPT = 2;
+
+    /**
+     * @param queryEntity
+     * @param containChild
+     * @param orderField
+     * @param pageIndex
+     * @param pageSize
+     * @param maxResults
+     * @return results page
+     */
+    @Transactional(readOnly = true)
+    public PageHandler query(SysUserSearchQuery queryEntity, String orderField, Integer pageIndex, Integer pageSize,
+            Integer maxResults) {
+        return searchDao.query(queryEntity, orderField, pageIndex, pageSize, maxResults);
+    }
 
     /**
      * @param siteId
@@ -75,7 +92,7 @@ public class SysUserService extends BaseService<SysUser> {
     public SysUser findByEmail(short siteId, String email) {
         return dao.findByEmail(siteId, email);
     }
-    
+
     /**
      * @param id
      * @param cover
@@ -226,5 +243,6 @@ public class SysUserService extends BaseService<SysUser> {
 
     @Resource
     private SysUserDao dao;
-
+    @Resource
+    private SysUserSearchDao searchDao;
 }

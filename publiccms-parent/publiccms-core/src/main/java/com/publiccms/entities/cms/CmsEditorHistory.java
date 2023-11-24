@@ -5,6 +5,7 @@ import java.util.Date;
 
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.publiccms.common.database.CmsUpgrader;
@@ -41,6 +42,8 @@ public class CmsEditorHistory implements java.io.Serializable {
      * 项目类型
      */
     @GeneratorColumn(title = "项目类型", condition = true)
+    @NotNull
+    @Length(max = 100)
     private String itemType;
     /**
      * item id
@@ -48,6 +51,8 @@ public class CmsEditorHistory implements java.io.Serializable {
      * 项目id
      */
     @GeneratorColumn(title = "项目id", condition = true)
+    @NotNull
+    @Length(max = 100)
     private String itemId;
     /**
      * field name
@@ -133,7 +138,7 @@ public class CmsEditorHistory implements java.io.Serializable {
         this.itemType = itemType;
     }
 
-    @Column(name = "item_id", nullable = false, length = 50)
+    @Column(name = "item_id", nullable = false, length = 100)
     public String getItemId() {
         return this.itemId;
     }

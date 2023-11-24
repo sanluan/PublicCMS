@@ -90,6 +90,9 @@ public class SysUserDao extends BaseDao<SysUser> {
         case "registeredDate":
             queryHandler.order("bean.registeredDate").append(orderType);
             break;
+        case "followers":
+            queryHandler.order("bean.followers").append(orderType);
+            break;
         default:
             queryHandler.order("bean.id").append(orderType);
         }

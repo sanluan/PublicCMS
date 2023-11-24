@@ -13,7 +13,7 @@ import org.hibernate.search.mapper.pojo.bridge.mapping.programmatic.TypeBinder;
 
 import com.publiccms.entities.cms.CmsContent;
 
-public class CmsContentTextBinder implements TypeBinder {
+public class CmsContentAttributeBinder implements TypeBinder {
     public static final String EXTEND_OBJECT_NAME = "extend";
     public static final String ANALYZER_NAME = "cms";
 
@@ -39,7 +39,7 @@ public class CmsContentTextBinder implements TypeBinder {
         IndexSchemaObjectField extendField = schemaElement.objectField(EXTEND_OBJECT_NAME);
         extendField.fieldTemplate("template", textFieldType);
 
-        context.bridge(CmsContent.class, new CmsContentTextBridge(textField, dictionaryValuesField, filesField, minPriceField,
+        context.bridge(CmsContent.class, new CmsContentAttributeBridge(textField, dictionaryValuesField, filesField, minPriceField,
                 maxPriceField, extendField.toReference()));
     }
 

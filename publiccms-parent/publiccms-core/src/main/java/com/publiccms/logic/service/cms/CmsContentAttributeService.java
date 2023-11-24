@@ -8,7 +8,7 @@ import com.publiccms.entities.cms.CmsContentAttribute;
 
 /**
  *
- * CmsContentAttributeService
+ * SysUserAttributeService
  * 
  */
 @Service

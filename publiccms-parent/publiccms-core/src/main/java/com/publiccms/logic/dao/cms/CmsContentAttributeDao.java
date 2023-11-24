@@ -15,7 +15,7 @@ import com.publiccms.entities.cms.CmsContentAttribute;
 
 /**
  *
- * CmsContentAttributeDao
+ * SysUserAttributeDao
  * 
  */
 @Repository

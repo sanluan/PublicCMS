@@ -121,7 +121,7 @@ public class CmsContentAdminController {
     private ContentExportComponent exportComponent;
 
     public static final String[] ignoreProperties = new String[] { "siteId", "userId", "deptId", "categoryId", "tagIds",
-            "createDate", "updateDate", "clicks", "comments", "scores", "scoreUsers", "collections", "score", "childs",
+            "createDate", "clicks", "comments", "scores", "scoreUsers", "collections", "score", "childs",
             "checkUserId", "disabled" };
 
     public static final String[] ignorePropertiesWithUrl = ArrayUtils.addAll(ignoreProperties, "url");

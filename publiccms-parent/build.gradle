@@ -32,12 +32,12 @@ subprojects {
         servletVersion = "6.0.0"
         // http://mvnrepository.com/artifact/org.springframework/spring-core
         // https://spring.io/projects/spring-framework
-        springVersion = "6.0.11"
+        springVersion = "6.1.1"
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
         // https://spring.io/projects/spring-boot
-        springBootVersion = "3.1.2"
+        springBootVersion = "3.2.0"
         // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine
-        junitVersion = "5.10.0"
+        junitVersion = "5.10.1"
         // http://mvnrepository.com/artifact/org.hibernate.orm/hibernate-core
         // http://hibernate.org/orm/downloads/
         hibernateVersion = "6.2.6.Final"
@@ -45,15 +45,15 @@ subprojects {
         hibernateToolsVersion = "5.6.15.Final"
         // https://mvnrepository.com/artifact/org.hibernate.search/hibernate-search-mapper-orm
         // http://hibernate.org/search/downloads/
-        hibernateSearchVersion = "6.2.0.Final"
+        hibernateSearchVersion = "6.2.2.Final"
         // https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator
         hibernateValidatorVersion = "8.0.1.Final"
         // https://mvnrepository.com/artifact/org.ehcache/ehcache
         ehcacheVersion = "3.10.8"
         // http://mvnrepository.com/artifact/org.mybatis/mybatis
-        mybatisVersion = "3.5.13"
+        mybatisVersion = "3.5.14"
         // http://mvnrepository.com/artifact/org.mybatis/mybatis-spring
-        mybatisSpringVersion = "3.0.2"
+        mybatisSpringVersion = "3.0.3"
         // http://mvnrepository.com/artifact/org.mybatis.generator/mybatis-generator-core
         mybatisGenerator = "1.4.2"
         // https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper
@@ -61,45 +61,45 @@ subprojects {
         // https://mvnrepository.com/artifact/org.mybatis.dynamic-sql/mybatis-dynamic-sql
         dynamicSqlVersion = "1.5.0"
         // http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
-        jacksonVersion = "2.15.2"
+        jacksonVersion = "2.16.0"
         // http://mvnrepository.com/artifact/org.freemarker/freemarker
         freemarkerVersion = "2.3.32"
         // https://mvnrepository.com/artifact/org.apache.lucene/lucene-analyzers-smartcn
         luceneVersion = "8.11.2"
         // http://mvnrepository.com/artifact/redis.clients/jedis
-        jedisVersion = "4.4.3"
+        jedisVersion = "5.1.0"
         // http://mvnrepository.com/artifact/org.quartz-scheduler/quartz
         quartzVersion = "2.3.2"
         // https://mvnrepository.com/artifact/com.zaxxer/HikariCP
         // https://github.com/brettwooldridge/HikariCP
-        hikariCPVersion = "5.0.1"
+        hikariCPVersion = "5.1.0"
         // https://mvnrepository.com/artifact/com.mysql/mysql-connector-j
-        mysqlVersion = "8.1.0"
+        mysqlVersion = "8.2.0"
         // http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
         // http://hc.apache.org/downloads.cgi
         httpclientVersion = "4.5.14"
         // https://mvnrepository.com/artifact/fr.opensagres.xdocreport/fr.opensagres.poi.xwpf.converter.xhtml
         xhtmlConverterVersion = "2.0.4"
         // https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml
-        poiVersion = "5.2.3"
+        poiVersion = "5.2.4"
         // http://mvnrepository.com/artifact/commons-fileupload/commons-fileupload
         fileuploadVersion = "1.5"
         // http://mvnrepository.com/artifact/org.apache.commons/commons-collections4
         collectionsVersion = "4.4"
         // http://mvnrepository.com/artifact/org.apache.commons/commons-lang3
-        langVersion = "3.13.0"
+        langVersion = "3.14.0"
         // http://mvnrepository.com/artifact/commons-io/commons-io
         ioVersion = "2.11.0"
         // https://mvnrepository.com/artifact/org.apache.commons/commons-text
-        textVersion = "1.10.0"
+        textVersion = "1.11.0"
         // https://mvnrepository.com/artifact/org.apache.commons/commons-compress
-        compressVersion = "1.23.0"
+        compressVersion = "1.25.0"
         // http://mvnrepository.com/artifact/commons-codec/commons-codec
         codecVersion = "1.15"
         // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
         log4jVersion = "2.20.0"
         // https://mvnrepository.com/artifact/com.drewnoakes/metadata-extractor
-        extractorVersion = "2.18.0"
+        extractorVersion = "2.19.0"
         // https://mvnrepository.com/artifact/org.sejda.imageio/webp-imageio
         webpVersion = "0.1.6"
         // https://mvnrepository.com/artifact/net.ifok.image/image4j
@@ -113,7 +113,7 @@ subprojects {
         // http://mvnrepository.com/artifact/eu.bitwalker/UserAgentUtils
         userAgentUtilsVersion = "1.21"
         // https://mvnrepository.com/artifact/org.jsoup/jsoup
-        jsoupVersion = "1.16.1"
+        jsoupVersion = "1.16.2"
         // https://mvnrepository.com/artifact/jakarta.annotation/jakarta.annotation-api
         annotationVersion = "2.1.1"
         // https://mvnrepository.com/artifact/jakarta.mail/jakarta.mail-api

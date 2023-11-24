@@ -378,6 +378,9 @@
                 $result.attr("data-id", $helper.data("id"));
                 $result.attr("data-type", $helper.data("type"));
                 $result.insertAfter($placeholder).show();
+                if("function" === typeof initLink){
+                    initLink($result);
+                }
                 $placeholder.remove();
                 $helper.remove();
                 if ($sortBox.data("duplicate") != 1) {

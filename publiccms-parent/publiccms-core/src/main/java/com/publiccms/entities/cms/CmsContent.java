@@ -28,7 +28,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.publiccms.common.generator.annotation.GeneratorColumn;
 import com.publiccms.common.search.CmsContentStatusRoutingBinder;
-import com.publiccms.common.search.CmsContentTextBinder;
+import com.publiccms.common.search.CmsContentAttributeBinder;
 import com.publiccms.views.pojo.entities.Attribute;
 
 /**
@@ -38,7 +38,7 @@ import com.publiccms.views.pojo.entities.Attribute;
 @Table(name = "cms_content")
 @DynamicUpdate
 @Indexed(routingBinder = @RoutingBinderRef(type = CmsContentStatusRoutingBinder.class))
-@TypeBinding(binder = @TypeBinderRef(type = CmsContentTextBinder.class))
+@TypeBinding(binder = @TypeBinderRef(type = CmsContentAttributeBinder.class))
 public class CmsContent extends Attribute implements java.io.Serializable {
 
     /**

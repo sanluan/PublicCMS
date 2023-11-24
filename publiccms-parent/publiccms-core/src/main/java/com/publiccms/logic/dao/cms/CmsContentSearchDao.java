@@ -32,7 +32,7 @@ import org.springframework.stereotype.Repository;
 import com.publiccms.common.base.HighLighterQuery;
 import com.publiccms.common.handler.FacetPageHandler;
 import com.publiccms.common.handler.PageHandler;
-import com.publiccms.common.search.CmsContentTextBinder;
+import com.publiccms.common.search.CmsContentAttributeBinder;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.views.pojo.query.CmsContentSearchQuery;
@@ -41,7 +41,7 @@ import jakarta.annotation.Resource;
 
 /**
  *
- * CmsContentDao
+ * CmsContentSearchDao
  *
  */
 @SuppressWarnings("deprecation")
@@ -139,7 +139,7 @@ public class CmsContentSearchDao {
             Backend backend = dao.getSearchBackend();
             Optional<? extends Analyzer> analyzer;
             if (backend instanceof LuceneBackend) {
-                analyzer = backend.unwrap(LuceneBackend.class).analyzer(CmsContentTextBinder.ANALYZER_NAME);
+                analyzer = backend.unwrap(LuceneBackend.class).analyzer(CmsContentAttributeBinder.ANALYZER_NAME);
             } else {
                 analyzer = Optional.of(new StandardAnalyzer());
             }

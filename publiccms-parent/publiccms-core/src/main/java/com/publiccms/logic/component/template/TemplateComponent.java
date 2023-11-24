@@ -283,6 +283,9 @@ public class TemplateComponent implements Cache, AdminContextPath {
                         }
                     } else if (CommonUtils.notEmpty(contentPath)) {
                         Map<String, Object> modelMap = new HashMap<>();
+                        CmsUrlUtils.initContentUrl(site, entity);
+                        fileUploadComponent.initContentCover(site, entity);
+                        CmsUrlUtils.initCategoryUrl(site, category);
                         entity.setAttribute(ExtendUtils.getAttributeMap(contentAttributeService.getEntity(entity.getId()), null));
                         modelMap.put("content", entity);
                         modelMap.put("category", category);
