@@ -7,22 +7,20 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.publiccms.common.annotation.Csrf;
-import com.publiccms.common.constants.Constants;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
+import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
-import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
-
 import com.publiccms.entities.sys.SysWorkflow;
-import com.publiccms.entities.log.LogOperate;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.sys.SysWorkflowService;
@@ -47,8 +45,7 @@ public class SysWorkflowAdminController {
      */
     @RequestMapping("save")
     @Csrf
-    public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, SysWorkflow entity, HttpServletRequest request,
-             ModelMap model) {
+    public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, SysWorkflow entity, HttpServletRequest request) {
              entity.setSiteId(site.getId());
         if (null != entity.getId()) {
             entity = service.update(entity.getId(), entity, ignoreProperties);
@@ -72,8 +69,7 @@ public class SysWorkflowAdminController {
      */
     @RequestMapping("delete")
     @Csrf
-    public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Integer[] ids, HttpServletRequest request, 
-            ModelMap model) {
+    public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Integer[] ids, HttpServletRequest request) {
         if (CommonUtils.notEmpty(ids)) {
             service.delete(ids);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER, "delete.sysWorkflow",
