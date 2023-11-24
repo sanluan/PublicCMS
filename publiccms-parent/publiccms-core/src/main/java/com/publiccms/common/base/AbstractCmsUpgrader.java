@@ -38,18 +38,6 @@ import com.publiccms.views.pojo.entities.CmsPageData;
  *
  */
 public abstract class AbstractCmsUpgrader {
-    /**
-     * 表名_ID_SEQ SEQUENCE主键策略
-     */
-    public static final String IDENTIFIER_GENERATOR_SEQUENCE = "com.publiccms.common.datasource.IDSequenceStyleGenerator";
-    /**
-     * ID自增主键策略
-     */
-    public static final String IDENTIFIER_GENERATOR_IDENTITY = "org.hibernate.id.IdentityGenerator";
-    /**
-     * 主键策略
-     */
-    public static final String IDENTIFIER_GENERATOR = IDENTIFIER_GENERATOR_IDENTITY;
     protected String version;
 
     /**

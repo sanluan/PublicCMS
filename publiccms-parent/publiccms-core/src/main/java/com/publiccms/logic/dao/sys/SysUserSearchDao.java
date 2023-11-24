@@ -2,8 +2,6 @@ package com.publiccms.logic.dao.sys;
 
 import java.util.function.Consumer;
 
-import javax.annotation.Resource;
-
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.search.engine.search.predicate.dsl.BooleanPredicateOptionsCollector;
@@ -18,6 +16,8 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.logic.dao.cms.CmsContentDao;
 import com.publiccms.views.pojo.query.SysUserSearchQuery;
+
+import jakarta.annotation.Resource;
 
 /**
  *

@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
-import javax.annotation.Resource;
-
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
@@ -24,6 +22,7 @@ import com.publiccms.logic.service.sys.SysUserService;
 import com.publiccms.views.pojo.query.SysUserSearchQuery;
 
 import freemarker.template.TemplateException;
+import jakarta.annotation.Resource;
 
 /**
  *

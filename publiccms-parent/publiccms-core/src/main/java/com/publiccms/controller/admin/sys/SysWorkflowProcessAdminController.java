@@ -1,10 +1,5 @@
 package com.publiccms.controller.admin.sys;
 
-// Generated 2023-8-16 by com.publiccms.common.generator.SourceGenerator
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -24,6 +19,9 @@ import com.publiccms.entities.sys.SysWorkflowProcess;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.sys.SysWorkflowProcessService;
+
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 /**
  *
  * SysWorkflowProcessAdminController

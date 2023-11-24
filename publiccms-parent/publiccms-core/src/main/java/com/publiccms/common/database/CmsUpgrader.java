@@ -20,10 +20,6 @@ import com.publiccms.common.tools.CommonUtils;
 public class CmsUpgrader extends AbstractCmsUpgrader {
 
     /**
-     * 主键策略
-     */
-    public static final String IDENTIFIER_GENERATOR = IDENTIFIER_GENERATOR_IDENTITY;
-    /**
      *
      */
     private static final String VERSION_20170708 = "V2017.0708";

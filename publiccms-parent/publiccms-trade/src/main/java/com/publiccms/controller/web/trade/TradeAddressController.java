@@ -1,9 +1,6 @@
 package com.publiccms.controller.web.trade;
 
-// Generated 2023-8-16 by com.publiccms.common.generator.SourceGenerator
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
+//Generated 2023-8-16 by com.publiccms.common.generator.SourceGenerator
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -24,6 +21,9 @@ import com.publiccms.entities.trade.TradeAddress;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.trade.TradeAddressService;
+
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  *
