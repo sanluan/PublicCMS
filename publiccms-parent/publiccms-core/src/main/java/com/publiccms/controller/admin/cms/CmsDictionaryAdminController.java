@@ -6,6 +6,7 @@ import java.text.DateFormat;
 import java.util.Date;
 
 import org.apache.commons.compress.archivers.ArchiveOutputStream;
+import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
@@ -177,7 +178,7 @@ public class CmsDictionaryAdminController {
         StreamingResponseBody body = new StreamingResponseBody() {
             @Override
             public void writeTo(OutputStream outputStream) throws IOException {
-                try (ArchiveOutputStream archiveOutputStream = new ZipArchiveOutputStream(outputStream)) {
+                try (ArchiveOutputStream<ZipArchiveEntry> archiveOutputStream = new ZipArchiveOutputStream(outputStream)) {
                     if (CommonUtils.empty(id)) {
                         exchangeComponent.exportAll(site, archiveOutputStream);
                     } else {

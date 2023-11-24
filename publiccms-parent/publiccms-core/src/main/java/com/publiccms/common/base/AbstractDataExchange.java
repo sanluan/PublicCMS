@@ -26,29 +26,29 @@ public abstract class AbstractDataExchange<E, D> implements DataExchange<E, D> {
     public static final String ATTACHMENT_DIR = "attachment/";
 
     @Override
-    public void exportAll(SysSite site, String directory, ArchiveOutputStream archiveOutputStream) {
+    public void exportAll(SysSite site, String directory, ArchiveOutputStream<ZipArchiveEntry> archiveOutputStream) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         exportAll(site, directory, outputStream, archiveOutputStream);
     }
 
     public abstract void exportAll(SysSite site, String directory, ByteArrayOutputStream outputStream,
-            ArchiveOutputStream archiveOutputStream);
+            ArchiveOutputStream<ZipArchiveEntry> archiveOutputStream);
 
-    public void exportAll(SysSite site, ArchiveOutputStream archiveOutputStream) {
+    public void exportAll(SysSite site, ArchiveOutputStream<ZipArchiveEntry> archiveOutputStream) {
         exportAll(site, null, archiveOutputStream);
     }
 
     public abstract void exportEntity(SysSite site, String directory, E entity, ByteArrayOutputStream outputStream,
-            ArchiveOutputStream archiveOutputStream);
+            ArchiveOutputStream<ZipArchiveEntry> archiveOutputStream);
 
     @Override
-    public void exportEntity(SysSite site, E entity, ArchiveOutputStream archiveOutputStream) {
+    public void exportEntity(SysSite site, E entity, ArchiveOutputStream<ZipArchiveEntry> archiveOutputStream) {
         if (null != entity) {
             exportEntity(site, null, entity, new ByteArrayOutputStream(), archiveOutputStream);
         }
     }
     
-    protected void export(String directory, ByteArrayOutputStream outputStream, ArchiveOutputStream archiveOutputStream, D value,
+    protected void export(String directory, ByteArrayOutputStream outputStream, ArchiveOutputStream<ZipArchiveEntry> archiveOutputStream, D value,
             String path) {
         try {
             outputStream.reset();

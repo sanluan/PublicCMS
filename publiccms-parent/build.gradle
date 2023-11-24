@@ -89,13 +89,13 @@ subprojects {
         // http://mvnrepository.com/artifact/org.apache.commons/commons-lang3
         langVersion = "3.14.0"
         // http://mvnrepository.com/artifact/commons-io/commons-io
-        ioVersion = "2.11.0"
+        ioVersion = "2.15.0"
         // https://mvnrepository.com/artifact/org.apache.commons/commons-text
         textVersion = "1.11.0"
         // https://mvnrepository.com/artifact/org.apache.commons/commons-compress
         compressVersion = "1.25.0"
         // http://mvnrepository.com/artifact/commons-codec/commons-codec
-        codecVersion = "1.15"
+        codecVersion = "1.16.0"
         // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
         log4jVersion = "2.20.0"
         // https://mvnrepository.com/artifact/com.drewnoakes/metadata-extractor

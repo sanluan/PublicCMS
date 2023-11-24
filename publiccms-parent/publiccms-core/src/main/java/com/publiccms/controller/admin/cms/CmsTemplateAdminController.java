@@ -395,7 +395,7 @@ public class CmsTemplateAdminController {
         StreamingResponseBody body = new StreamingResponseBody() {
             @Override
             public void writeTo(OutputStream outputStream) throws IOException {
-                try (ArchiveOutputStream archiveOutputStream = new ZipArchiveOutputStream(outputStream)) {
+                try (ArchiveOutputStream<ZipArchiveEntry> archiveOutputStream = new ZipArchiveOutputStream(outputStream)) {
                     ZipUtils.compress(Paths.get(filepath), archiveOutputStream, Constants.BLANK);
                 }
             }

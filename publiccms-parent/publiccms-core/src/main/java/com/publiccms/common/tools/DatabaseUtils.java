@@ -37,6 +37,7 @@ public class DatabaseUtils {
         return getConnection(driverClassName, url, userName, password);
     }
 
+    @SuppressWarnings("deprecation")
     public static String getPassword(Properties properties) {
         String password = properties.getProperty("jdbc.password");
         String encryptPassword = properties.getProperty("jdbc.encryptPassword");

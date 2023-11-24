@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.compress.archivers.ArchiveOutputStream;
+import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipFile;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
@@ -79,7 +80,7 @@ public class ContentExchangeComponent extends AbstractDataExchange<CmsContent, C
     private SysExtendFieldService extendFieldService;
 
     @Override
-    public void exportAll(SysSite site, String directory, ByteArrayOutputStream outputStream, ArchiveOutputStream archiveOutputStream) {
+    public void exportAll(SysSite site, String directory, ByteArrayOutputStream outputStream, ArchiveOutputStream<ZipArchiveEntry> archiveOutputStream) {
         CmsContentQuery queryEntity = new CmsContentQuery();
         queryEntity.setSiteId(site.getId());
         queryEntity.setDisabled(false);
@@ -93,7 +94,7 @@ public class ContentExchangeComponent extends AbstractDataExchange<CmsContent, C
      * @param queryEntity
      * @param archiveOutputStream
      */
-    public void exportDataByQuery(SysSite site, String directory, CmsContentQuery queryEntity, ArchiveOutputStream archiveOutputStream) {
+    public void exportDataByQuery(SysSite site, String directory, CmsContentQuery queryEntity, ArchiveOutputStream<ZipArchiveEntry> archiveOutputStream) {
         exportDataByQuery(site, directory, queryEntity, new ByteArrayOutputStream(), archiveOutputStream);
     }
 
@@ -105,7 +106,7 @@ public class ContentExchangeComponent extends AbstractDataExchange<CmsContent, C
      * @param archiveOutputStream
      */
     public void exportDataByQuery(SysSite site, String directory, CmsContentQuery queryEntity, ByteArrayOutputStream outputStream,
-            ArchiveOutputStream archiveOutputStream) {
+            ArchiveOutputStream<ZipArchiveEntry> archiveOutputStream) {
         PageHandler page = service.getPage(queryEntity, true, null, null, null, null, PageHandler.MAX_PAGE_SIZE, null);
         int i = 1;
         do {
@@ -120,7 +121,7 @@ public class ContentExchangeComponent extends AbstractDataExchange<CmsContent, C
 
     @Override
     public void exportEntity(SysSite site, String directory, CmsContent entity, ByteArrayOutputStream out,
-            ArchiveOutputStream archiveOutputStream) {
+            ArchiveOutputStream<ZipArchiveEntry> archiveOutputStream) {
         CmsCategory category = categoryService.getEntity(entity.getCategoryId());
         if (null != category) {
             Set<String> webfileList = null;

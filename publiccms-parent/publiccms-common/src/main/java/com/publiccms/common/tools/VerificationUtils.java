@@ -276,10 +276,12 @@ public class VerificationUtils {
      *
      * 3-DES解密
      *
+     * @deprecated 
      * @param input
      * @param key
      * @return 3-DES decode result
      */
+    @Deprecated
     public static String decrypt3DES(byte[] input, String key) {
         try {
             byte[] sha1Key = sha1Encode(key).getBytes(Constants.DEFAULT_CHARSET);

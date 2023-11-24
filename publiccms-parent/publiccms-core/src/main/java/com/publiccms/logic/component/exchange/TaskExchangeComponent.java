@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 import org.apache.commons.compress.archivers.ArchiveOutputStream;
+import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractDataExchange;
@@ -28,7 +29,7 @@ public class TaskExchangeComponent extends AbstractDataExchange<SysTask, SysTask
     private ScheduledTask scheduledTask;
 
     @Override
-    public void exportAll(SysSite site, String directory, ByteArrayOutputStream outputStream, ArchiveOutputStream archiveOutputStream) {
+    public void exportAll(SysSite site, String directory, ByteArrayOutputStream outputStream, ArchiveOutputStream<ZipArchiveEntry> archiveOutputStream) {
         PageHandler page = service.getPage(site.getId(), null, null, null, PageHandler.MAX_PAGE_SIZE);
         @SuppressWarnings("unchecked")
         List<SysTask> list = (List<SysTask>) page.getList();
@@ -41,7 +42,7 @@ public class TaskExchangeComponent extends AbstractDataExchange<SysTask, SysTask
 
     @Override
     public void exportEntity(SysSite site, String directory, SysTask task, ByteArrayOutputStream outputStream,
-            ArchiveOutputStream archiveOutputStream) {
+            ArchiveOutputStream<ZipArchiveEntry> archiveOutputStream) {
         int id = task.getId();
         task.setId(null);
         export(directory, outputStream, archiveOutputStream, task, CommonUtils.joinString(id, ".json"));

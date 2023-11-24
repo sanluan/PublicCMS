@@ -12,6 +12,7 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.VerificationUtils;
 
 public class PassowrdGenerator {
+    @SuppressWarnings("deprecation")
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         while (true) {

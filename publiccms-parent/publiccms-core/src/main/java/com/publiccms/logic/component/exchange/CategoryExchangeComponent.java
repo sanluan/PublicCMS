@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.apache.commons.compress.archivers.ArchiveOutputStream;
+import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipFile;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
@@ -67,7 +68,7 @@ public class CategoryExchangeComponent extends AbstractDataExchange<CmsCategory,
     private CmsTagTypeService tagTypeService;
 
     @Override
-    public void exportAll(SysSite site, String directory, ByteArrayOutputStream outputStream, ArchiveOutputStream archiveOutputStream) {
+    public void exportAll(SysSite site, String directory, ByteArrayOutputStream outputStream, ArchiveOutputStream<ZipArchiveEntry> archiveOutputStream) {
         CmsCategoryQuery query = new CmsCategoryQuery();
         query.setSiteId(site.getId());
         query.setDisabled(false);
@@ -83,7 +84,7 @@ public class CategoryExchangeComponent extends AbstractDataExchange<CmsCategory,
 
     @Override
     public void exportEntity(SysSite site, String directory, CmsCategory entity, ByteArrayOutputStream outputStream,
-            ArchiveOutputStream archiveOutputStream) {
+            ArchiveOutputStream<ZipArchiveEntry> archiveOutputStream) {
         exportEntity(site, directory, null, entity, outputStream, archiveOutputStream);
     }
 
@@ -96,7 +97,7 @@ public class CategoryExchangeComponent extends AbstractDataExchange<CmsCategory,
      * @param archiveOutputStream
      */
     public void exportEntity(SysSite site, String directory, String parentCode, CmsCategory entity,
-            ByteArrayOutputStream outputStream, ArchiveOutputStream archiveOutputStream) {
+            ByteArrayOutputStream outputStream, ArchiveOutputStream<ZipArchiveEntry> archiveOutputStream) {
         Integer categoryId = entity.getId();
         Category data = new Category();
         data.setParentCode(parentCode);

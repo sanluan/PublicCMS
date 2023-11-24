@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.compress.archivers.ArchiveOutputStream;
+import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
@@ -43,12 +44,12 @@ public class PlaceExchangeComponent extends AbstractDataExchange<String, Place> 
     private SiteComponent siteComponent;
 
     @Override
-    public void exportAll(SysSite site, String directory, ByteArrayOutputStream outputStream, ArchiveOutputStream archiveOutputStream) {
+    public void exportAll(SysSite site, String directory, ByteArrayOutputStream outputStream, ArchiveOutputStream<ZipArchiveEntry> archiveOutputStream) {
         dealDir(site, directory, "", outputStream, archiveOutputStream);
     }
 
     private void dealDir(SysSite site, String directory, String path, ByteArrayOutputStream outputStream,
-            ArchiveOutputStream archiveOutputStream) {
+            ArchiveOutputStream<ZipArchiveEntry> archiveOutputStream) {
         String realPath = siteComponent.getTemplateFilePath(site.getId(),
                 CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, Constants.SEPARATOR, path));
         List<FileInfo> list = CmsFileUtils.getFileList(realPath, null);
@@ -64,7 +65,7 @@ public class PlaceExchangeComponent extends AbstractDataExchange<String, Place> 
 
     @Override
     public void exportEntity(SysSite site, String directory, String path, ByteArrayOutputStream outputStream,
-            ArchiveOutputStream archiveOutputStream) {
+            ArchiveOutputStream<ZipArchiveEntry> archiveOutputStream) {
         PageHandler page = service.getPage(site.getId(), null, CommonUtils.joinString(Constants.SEPARATOR, path), null, null,
                 null, null, null, null, false, null, null, null, PageHandler.MAX_PAGE_SIZE);
         @SuppressWarnings("unchecked")

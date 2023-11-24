@@ -9,6 +9,7 @@ import java.util.Date;
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.apache.commons.compress.archivers.ArchiveOutputStream;
+import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -163,7 +164,7 @@ public class TaskTemplateAdminController {
         StreamingResponseBody body = new StreamingResponseBody() {
             @Override
             public void writeTo(OutputStream outputStream) throws IOException {
-                try (ArchiveOutputStream archiveOutputStream = new ZipArchiveOutputStream(outputStream)) {
+                try (ArchiveOutputStream<ZipArchiveEntry> archiveOutputStream = new ZipArchiveOutputStream(outputStream)) {
                     ZipUtils.compress(Paths.get(filepath), archiveOutputStream, Constants.BLANK);
                 }
             }
