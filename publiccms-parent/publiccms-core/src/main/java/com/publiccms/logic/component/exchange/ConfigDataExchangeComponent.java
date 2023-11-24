@@ -7,6 +7,7 @@ import javax.annotation.Priority;
 import javax.annotation.Resource;
 
 import org.apache.commons.compress.archivers.ArchiveOutputStream;
+import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipFile;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
@@ -35,7 +36,7 @@ public class ConfigDataExchangeComponent extends AbstractDataExchange<SysConfigD
     private SysConfigDataService service;
 
     @Override
-    public void exportAll(SysSite site, String directory, ByteArrayOutputStream outputStream, ArchiveOutputStream archiveOutputStream) {
+    public void exportAll(SysSite site, String directory, ByteArrayOutputStream outputStream, ArchiveOutputStream<ZipArchiveEntry> archiveOutputStream) {
         Set<String> configCodeSet = configComponent.getExportableConfigCodeList(site.getId());
         for (String code : configCodeSet) {
             SysConfigData entity = service.getEntity(new SysConfigDataId(site.getId(), code));
@@ -53,7 +54,7 @@ public class ConfigDataExchangeComponent extends AbstractDataExchange<SysConfigD
 
     @Override
     public void exportEntity(SysSite site, String directory, SysConfigData entity, ByteArrayOutputStream outputStream,
-            ArchiveOutputStream archiveOutputStream) {
+            ArchiveOutputStream<ZipArchiveEntry> archiveOutputStream) {
         if (needReplace(entity.getData(), site.getDynamicPath())) {
             entity.setData(StringUtils.replace(entity.getData(), site.getDynamicPath(), "#DYNAMICPATH#"));
         }

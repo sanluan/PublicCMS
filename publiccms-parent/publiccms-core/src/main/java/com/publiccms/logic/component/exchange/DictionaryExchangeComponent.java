@@ -6,6 +6,7 @@ import javax.annotation.Priority;
 import javax.annotation.Resource;
 
 import org.apache.commons.compress.archivers.ArchiveOutputStream;
+import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractDataExchange;
@@ -38,7 +39,7 @@ public class DictionaryExchangeComponent extends AbstractDataExchange<CmsDiction
     @Resource
     private CmsDictionaryExcludeValueService excludeValueService;
 
-    public void exportAll(SysSite site, String directory, ByteArrayOutputStream outputStream, ArchiveOutputStream archiveOutputStream) {
+    public void exportAll(SysSite site, String directory, ByteArrayOutputStream outputStream, ArchiveOutputStream<ZipArchiveEntry> archiveOutputStream) {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         service.batchWork(site.getId(), (list, i) -> {
             for (CmsDictionary entity : list) {
@@ -48,7 +49,7 @@ public class DictionaryExchangeComponent extends AbstractDataExchange<CmsDiction
     }
 
     public void exportEntity(SysSite site, String directory, CmsDictionary entity, ByteArrayOutputStream outputStream,
-            ArchiveOutputStream archiveOutputStream) {
+            ArchiveOutputStream<ZipArchiveEntry> archiveOutputStream) {
         Dictionary data = new Dictionary();
         data.setEntity(entity);
         data.setDataList(dataService.getList(site.getId(), entity.getId().getId()));

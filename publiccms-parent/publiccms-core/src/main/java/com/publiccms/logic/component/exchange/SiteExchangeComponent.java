@@ -97,7 +97,7 @@ public class SiteExchangeComponent {
      * @param site
      * @param archiveOutputStream
      */
-    public void exportAll(SysSite site, ArchiveOutputStream archiveOutputStream) {
+    public void exportAll(SysSite site, ArchiveOutputStream<ZipArchiveEntry> archiveOutputStream) {
         for (AbstractDataExchange<?, ?> exchange : exchangeList) {
             exchange.exportAll(site, exchange.getDirectory(), archiveOutputStream);
         }

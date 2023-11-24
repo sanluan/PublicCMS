@@ -61,7 +61,7 @@ public class ZipUtils {
             } else {
                 zipFile.getParentFile().mkdirs();
                 try (FileOutputStream outputStream = new FileOutputStream(zipFile);
-                        ArchiveOutputStream zipOutputStream = new ZipArchiveOutputStream(outputStream);
+                        ArchiveOutputStream<ZipArchiveEntry> zipOutputStream = new ZipArchiveOutputStream(outputStream);
                         FileLock fileLock = outputStream.getChannel().tryLock()) {
                     if (null != fileLock) {
                         compress(Paths.get(sourceFilePath), zipOutputStream, Constants.BLANK);
@@ -79,7 +79,7 @@ public class ZipUtils {
      * @param basedir
      * @throws IOException
      */
-    public static void compress(Path sourceFilePath, ArchiveOutputStream out, String basedir) throws IOException {
+    public static void compress(Path sourceFilePath, ArchiveOutputStream<ZipArchiveEntry> out, String basedir) throws IOException {
         if (Files.isDirectory(sourceFilePath)) {
             try (DirectoryStream<Path> stream = Files.newDirectoryStream(sourceFilePath)) {
                 for (Path entry : stream) {
@@ -126,7 +126,7 @@ public class ZipUtils {
      * @param fullName
      * @throws IOException
      */
-    public static void compressFile(File file, ArchiveOutputStream out, String fullName) throws IOException {
+    public static void compressFile(File file, ArchiveOutputStream<ZipArchiveEntry> out, String fullName) throws IOException {
         if (CommonUtils.notEmpty(file) && file.isFile()) {
             ZipArchiveEntry entry = new ZipArchiveEntry(fullName);
             entry.setTime(file.lastModified());
@@ -138,7 +138,7 @@ public class ZipUtils {
         }
     }
 
-    public static void compressFile(InputStream inputStream, ArchiveOutputStream out, String fullName) throws IOException {
+    public static void compressFile(InputStream inputStream, ArchiveOutputStream<ZipArchiveEntry> out, String fullName) throws IOException {
         ZipArchiveEntry entry = new ZipArchiveEntry(fullName);
         entry.setTime(System.currentTimeMillis());
         out.putArchiveEntry(entry);
