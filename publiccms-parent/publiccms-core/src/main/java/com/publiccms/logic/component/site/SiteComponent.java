@@ -121,10 +121,13 @@ public class SiteComponent implements Cache {
      * @return full file name
      */
     private static String getFullFileName(short siteId, String path) {
-        if (path.startsWith(CommonConstants.SEPARATOR) || path.startsWith("\\")) {
+        if (CommonUtils.empty(path)) {
+            return SITE_PATH_PREFIX + siteId + CommonConstants.SEPARATOR;
+        } else if (path.startsWith(CommonConstants.SEPARATOR) || path.startsWith("\\")) {
             return SITE_PATH_PREFIX + siteId + CmsFileUtils.getSafeFileName(path);
+        } else {
+            return SITE_PATH_PREFIX + siteId + CommonConstants.SEPARATOR + CmsFileUtils.getSafeFileName(path);
         }
-        return SITE_PATH_PREFIX + siteId + CommonConstants.SEPARATOR + CmsFileUtils.getSafeFileName(path);
     }
 
     /**
@@ -345,7 +348,7 @@ public class SiteComponent implements Cache {
     }
 
     /**
-     * @param path 
+     * @param path
      * @return site file path
      */
     public String getSiteFilePath(String path) {
