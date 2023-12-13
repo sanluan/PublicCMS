@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.compress.archivers.ArchiveOutputStream;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -43,11 +42,9 @@ import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.DateFormatUtils;
-import com.publiccms.common.tools.HtmlUtils;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.LanguagesUtils;
 import com.publiccms.common.tools.RequestUtils;
-import com.publiccms.common.tools.VerificationUtils;
 import com.publiccms.common.view.ExcelView;
 import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.entities.cms.CmsCategoryModel;
@@ -122,12 +119,6 @@ public class CmsContentAdminController {
     @Resource
     private ContentExportComponent exportComponent;
 
-    public static final String[] ignoreProperties = new String[] { "siteId", "userId", "deptId", "categoryId", "tagIds",
-            "createDate", "clicks", "comments", "scores", "scoreUsers", "collections", "score", "childs",
-            "checkUserId", "disabled" };
-
-    public static final String[] ignorePropertiesWithUrl = ArrayUtils.addAll(ignoreProperties, "url");
-
     /**
      * 保存内容
      *
@@ -171,36 +162,27 @@ public class CmsContentAdminController {
             return CommonConstants.TEMPLATE_ERROR;
         }
         Date now = CommonUtils.getDate();
-        initContent(entity, site, cmsModel, draft, checked, attribute, true, now);
+        CmsContentService.initContent(entity, site, cmsModel, draft, checked, attribute, true, now);
+
         CmsContent parent = service.getEntity(entity.getParentId());
         if (null != parent) {
             entity.setQuoteContentId(null == parent.getParentId() ? parent.getId() : parent.getQuoteContentId());
         }
+        String operate = null != entity.getId() ? "update.content" : "save.content";
         if (null != entity.getId()) {
             CmsContent oldEntity = service.getEntity(entity.getId());
             if (null == oldEntity || ControllerUtils.errorNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)
                     || ControllerUtils.errorCustom("noright", !ControllerUtils.hasContentPermissions(admin, oldEntity), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
-            entity.setUpdateDate(now);
-            entity.setUpdateUserId(admin.getId());
-            entity = service.update(entity.getId(), entity, entity.isOnlyUrl() ? ignoreProperties : ignorePropertiesWithUrl);
-            if (null != entity) {
-                logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
-                        LogLoginService.CHANNEL_WEB_MANAGER, "update.content", RequestUtils.getIpAddress(request), now,
-                        JsonUtils.getString(new Object[] { entity, contentParameters })));
-            }
-        } else {
-            service.save(site.getId(), admin, entity);
-            if (CommonUtils.notEmpty(entity.getParentId())) {
-                service.updateChilds(entity.getParentId(), 1);
-            }
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "save.content", RequestUtils.getIpAddress(request), now,
-                    JsonUtils.getString(new Object[] { entity, contentParameters })));
         }
-        entity = service.saveTagAndAttribute(site, admin.getId(), entity.getId(), contentParameters, cmsModel,
+
+        entity = service.saveTagAndAttribute(site, admin.getId(), admin.getDeptId(), entity, contentParameters, cmsModel,
                 category.getExtendId(), attribute);
+        logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                operate, RequestUtils.getIpAddress(request), now,
+                JsonUtils.getString(new Object[] { entity, contentParameters })));
+
         if (null != checked && checked) {
             entity = service.check(site.getId(), admin, entity.getId());
         }
@@ -234,27 +216,6 @@ public class CmsContentAdminController {
             return CommonConstants.TEMPLATE_ERROR;
         }
         return CommonConstants.TEMPLATE_DONE;
-    }
-
-    public static void initContent(CmsContent entity, SysSite site, CmsModel cmsModel, Boolean draft, Boolean checked,
-            CmsContentAttribute attribute, boolean base64, Date now) {
-        entity.setHasFiles(cmsModel.isHasFiles());
-        entity.setHasImages(cmsModel.isHasImages());
-        entity.setHasProducts(cmsModel.isHasProducts());
-        entity.setOnlyUrl(cmsModel.isOnlyUrl());
-        if ((null == checked || !checked) && null != draft && draft) {
-            entity.setStatus(CmsContentService.STATUS_DRAFT);
-        } else {
-            entity.setStatus(CmsContentService.STATUS_PEND);
-        }
-        if (null == entity.getPublishDate()) {
-            entity.setPublishDate(now);
-        }
-        if (null != attribute.getText() && base64) {
-            attribute.setText(HtmlUtils.cleanUnsafeHtml(
-                    new String(VerificationUtils.base64Decode(attribute.getText()), Constants.DEFAULT_CHARSET),
-                    site.getSitePath()));
-        }
     }
 
     /**

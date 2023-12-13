@@ -90,9 +90,6 @@ public class CmsCategoryAdminController {
     @Resource
     protected CategoryExchangeComponent exchangeComponent;
 
-    private String[] ignoreProperties = new String[] { "id", "siteId", "childIds", "tagTypeIds", "url", "disabled", "extendId",
-            "hasStatic", "typeId" };
-
     /**
      * @param site
      * @param admin
@@ -108,32 +105,19 @@ public class CmsCategoryAdminController {
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, CmsCategory entity,
             CmsCategoryAttribute attribute, @ModelAttribute CmsCategoryParameters categoryParameters, HttpServletRequest request,
             ModelMap model) {
+        String operate = null != entity.getId() ? "update.category" : "save.category";
+        CmsCategory oldEntity = null;
         if (null != entity.getId()) {
-            CmsCategory oldEntity = service.getEntity(entity.getId());
+            oldEntity = service.getEntity(entity.getId());
             if (null == oldEntity || ControllerUtils.errorNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
-            entity = service.update(entity.getId(), entity, ignoreProperties);
-            if (null != entity) {
-                if (null != oldEntity.getParentId() && !oldEntity.getParentId().equals(entity.getParentId())) {
-                    service.generateChildIds(site.getId(), oldEntity.getParentId());
-                    service.generateChildIds(site.getId(), entity.getParentId());
-                } else if (null != entity.getParentId() && null == oldEntity.getParentId()) {
-                    service.generateChildIds(site.getId(), entity.getParentId());
-                }
-                logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
-                        LogLoginService.CHANNEL_WEB_MANAGER, "update.category", RequestUtils.getIpAddress(request),
-                        CommonUtils.getDate(), JsonUtils.getString(entity)));
-            }
-        } else {
-            entity.setSiteId(site.getId());
-            service.save(entity);
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "save.category", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
-        service.saveTagAndAttribute(site.getId(), site.getSitePath(), entity.getId(), admin.getId(), attribute,
+        service.saveTagAndAttribute(site.getId(), site.getSitePath(), entity, oldEntity, admin.getId(), attribute,
                 modelComponent.getCategoryType(site.getId(), entity.getTypeId()), categoryParameters);
+        logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                operate, RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+
         try {
             publish(site, entity.getId(), null);
         } catch (IOException | TemplateException e) {

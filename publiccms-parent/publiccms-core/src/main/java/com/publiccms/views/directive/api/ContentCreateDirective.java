@@ -29,7 +29,6 @@ import com.publiccms.common.tools.HtmlUtils;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.LanguagesUtils;
 import com.publiccms.common.tools.RequestUtils;
-import com.publiccms.controller.admin.cms.CmsContentAdminController;
 import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.entities.cms.CmsCategoryModel;
 import com.publiccms.entities.cms.CmsCategoryModelId;
@@ -200,8 +199,8 @@ public class ContentCreateDirective extends AbstractAppDirective {
                     attribute.setText(handler.getString("text"));
                     attribute.setData(ExtendUtils.getExtendString(extendData, site.getSitePath(), cmsModel.getExtendList(),
                             categoryExtendList));
-                    CmsContentAdminController.initContent(entity, site, cmsModel, handler.getBoolean("draft"), checked, attribute,
-                            false, CommonUtils.getDate());
+                    CmsContentService.initContent(entity, site, cmsModel, handler.getBoolean("draft"), checked, attribute, false,
+                            CommonUtils.getDate());
                     String text = HtmlUtils.removeHtmlTag(attribute.getText());
                     attribute.setWordCount(text.length());
                     if (CommonUtils.empty(entity.getDescription())) {
@@ -220,8 +219,8 @@ public class ContentCreateDirective extends AbstractAppDirective {
                             CmsContent oldEntity = service.getEntity(entity.getId());
                             if (null != oldEntity && site.getId() == oldEntity.getSiteId()) {
                                 entity = service.update(entity.getId(), entity,
-                                        entity.isOnlyUrl() ? CmsContentAdminController.ignoreProperties
-                                                : CmsContentAdminController.ignorePropertiesWithUrl);
+                                        entity.isOnlyUrl() ? CmsContentService.ignoreProperties
+                                                : CmsContentService.ignorePropertiesWithUrl);
                             }
                             if (null != entity.getId()) {
                                 logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(),
