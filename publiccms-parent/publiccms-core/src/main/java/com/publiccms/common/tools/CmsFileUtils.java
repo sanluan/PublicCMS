@@ -24,7 +24,10 @@ import javax.imageio.ImageIO;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.pdfbox.cos.COSBase;
+import org.apache.pdfbox.cos.COSDictionary;
 import org.apache.pdfbox.cos.COSName;
+import org.apache.pdfbox.cos.COSObject;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -521,14 +524,36 @@ public class CmsFileUtils {
                 }
             } else if (suffix.endsWith(FILE_TYPE_PDF)) {
                 try (PDDocument document = PDDocument.load(file)) {
-                    return document.getDocument().getObjects().stream()
-                            .noneMatch(obj -> COSName.JS.equals(obj) || COSName.JAVA_SCRIPT.equals(obj));
+                    return isSafe(document.getDocument().getObjects());
                 } catch (IOException e) {
                     return false;
                 }
             }
         }
         return true;
+    }
+
+    private static boolean isSafe(List<COSObject> pdfObjects) {
+        for (COSObject object : pdfObjects) {
+            COSBase realObject = object.getObject();
+            if (realObject instanceof COSDictionary) {
+                COSDictionary dic = (COSDictionary) realObject;
+                if (null == dic.getDictionaryObject(COSName.JS) && null == dic.getDictionaryObject(COSName.JAVA_SCRIPT)) {
+                    return false;
+                }
+            } else if (realObject instanceof COSName
+                    && (COSName.JS.equals(realObject) || COSName.JAVA_SCRIPT.equals(realObject))) {
+                return false;
+
+            }
+        }
+        return true;
+    }
+
+    public static void main(String[] args) {
+        String filePath = "D:\\Users\\kerneler\\OneDrive\\桌面\\a.pdf";
+        System.out.println(getSuffix(filePath));
+        System.out.println(isSafe(filePath, getSuffix(filePath)));
     }
 
     /**
