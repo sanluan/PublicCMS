@@ -22,7 +22,6 @@ import com.publiccms.entities.cms.CmsCategoryAttribute;
 import com.publiccms.entities.cms.CmsContentAttribute;
 import com.publiccms.entities.cms.CmsPlaceAttribute;
 import com.publiccms.entities.sys.SysExtendField;
-import com.publiccms.entities.sys.SysUserAttribute;
 import com.publiccms.logic.component.config.ContentConfigComponent.KeywordsConfig;
 
 /**
@@ -48,18 +47,6 @@ public class ExtendUtils {
             map.put("title", attribute.getTitle());
             map.put("keywords", attribute.getKeywords());
             map.put("description", attribute.getDescription());
-            return map;
-        }
-    }
-    /**
-     * @param attribute
-     * @return extent map
-     */
-    public static Map<String, String> getUserAttributeMap(SysUserAttribute attribute) {
-        if (null == attribute) {
-            return Collections.emptyMap();
-        } else {
-            Map<String, String> map = getExtendMap(attribute.getData());
             return map;
         }
     }
