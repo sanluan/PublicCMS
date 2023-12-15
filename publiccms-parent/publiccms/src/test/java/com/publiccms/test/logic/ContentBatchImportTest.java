@@ -1,4 +1,4 @@
-package com.publiccms.test;
+package com.publiccms.test.logic;
 
 import java.io.BufferedInputStream;
 import java.io.File;

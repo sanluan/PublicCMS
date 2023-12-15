@@ -1,4 +1,4 @@
-package com.publiccms.test;
+package com.publiccms.test.tools;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -10,8 +10,8 @@ import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.HtmlUtils;
 
-@DisplayName("tools test case")
-class ToolsTest {
+@DisplayName("html utils test case")
+class HtmlUtilsTest {
     protected final Log log = LogFactory.getLog(getClass());
     
     String html = "<div><p>1234567890<a href=\"http://www.publiccms.com\">123456111111789011223344</a><sCRipt>alert(1);</scRIpt></p><p>1234567890<img src=\"https://www.publiccms.com\"/></p><p>1234567890<a href=\"http://www.publiccms.com\">123456111111789011223344</a></p><p>1234567890<img src=\"https://www.publiccms.com\"/></p></div>";

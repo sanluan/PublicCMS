@@ -550,12 +550,6 @@ public class CmsFileUtils {
         return true;
     }
 
-    public static void main(String[] args) {
-        String filePath = "D:\\Users\\kerneler\\OneDrive\\桌面\\a.pdf";
-        System.out.println(getSuffix(filePath));
-        System.out.println(isSafe(filePath, getSuffix(filePath)));
-    }
-
     /**
      * 获取文件内容
      *

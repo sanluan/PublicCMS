@@ -1,4 +1,4 @@
-package com.publiccms.test;
+package com.publiccms.test.framework.cache;
 
 import java.io.IOException;
 import java.util.List;
