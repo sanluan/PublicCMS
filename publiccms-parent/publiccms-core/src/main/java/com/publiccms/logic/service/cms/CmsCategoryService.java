@@ -260,7 +260,7 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
                 for (CmsCategory child : list) {
                     child.setParentId(entity.getParentId());
                 }
-                entity.setCode(new StringBuilder(entity.getCode()).append("-").append(UUID.randomUUID().toString()).toString());
+                entity.setCode(CommonUtils.keep(new StringBuilder(entity.getCode()).append("-").append(UUID.randomUUID().toString()).toString(), 50));
                 entity.setDisabled(true);
                 entityList.add(entity);
                 generateChildIds(entity.getSiteId(), entity.getParentId());
