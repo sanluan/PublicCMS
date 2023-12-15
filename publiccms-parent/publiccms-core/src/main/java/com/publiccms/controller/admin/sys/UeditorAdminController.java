@@ -192,7 +192,6 @@ public class UeditorAdminController extends AbstractUeditorController {
                             map.put("source", image);
                             list.add(map);
                         }
-
                     }
                     EntityUtils.consume(entity);
                 }
@@ -210,7 +209,8 @@ public class UeditorAdminController extends AbstractUeditorController {
             }
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            return getResultMap(false, e.getMessage());
+            return getResultMap(false,
+                    LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(), "verify.notEmpty.file"));
         }
     }
 

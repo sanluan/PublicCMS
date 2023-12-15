@@ -20,7 +20,6 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
-import com.publiccms.controller.admin.cms.CmsContentAdminController;
 import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.entities.cms.CmsCategoryModel;
 import com.publiccms.entities.cms.CmsCategoryModelId;
@@ -120,22 +119,18 @@ public class ContentController {
                 || ControllerUtils.errorNotEmpty("model", cmsModel, model)) {
             return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
         }
-        CmsContentAdminController.initContent(entity, site, cmsModel, draft, false, attribute, false, CommonUtils.getDate());
+        CmsContentService.initContent(entity, site, cmsModel, draft, false, attribute, false, CommonUtils.getDate());
         if (null != entity.getId()) {
             CmsContent oldEntity = service.getEntity(entity.getId());
             if (null != oldEntity && ControllerUtils.errorNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)
                     && (oldEntity.getUserId() == user.getId() || user.isSuperuser())) {
-                entity = service.update(entity.getId(), entity, entity.isOnlyUrl() ? CmsContentAdminController.ignoreProperties
-                        : CmsContentAdminController.ignorePropertiesWithUrl);
-                if (null != entity.getId()) {
-                    logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(),
-                            LogLoginService.CHANNEL_WEB, "update.content", RequestUtils.getIpAddress(request),
-                            CommonUtils.getDate(), JsonUtils.getString(entity)));
-                }
+                entity = service.saveTagAndAttribute(site, user.getId(), user.getDeptId(), entity, contentParameters, cmsModel,
+                        category.getExtendId(), attribute);
+                logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
+                        "update.content", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
+                        JsonUtils.getString(entity)));
             }
         } else {
-            entity.setSiteId(site.getId());
-            entity.setUserId(user.getId());
             entity.setDisabled(false);
             entity.setClicks(0);
             entity.setComments(0);
@@ -144,16 +139,12 @@ public class ContentController {
             entity.setCollections(0);
             entity.setScoreUsers(0);
             entity.setScore(BigDecimal.ZERO);
-            service.save(entity);
-            if (CommonUtils.notEmpty(entity.getParentId())) {
-                service.updateChilds(entity.getParentId(), 1);
-            }
+            entity = service.saveTagAndAttribute(site, user.getId(), user.getDeptId(), entity, contentParameters, cmsModel,
+                    category.getExtendId(), attribute);
             logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
                     "save.content", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
         lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_CONTRIBUTE, String.valueOf(user.getId()), null, true);
-        service.saveTagAndAttribute(site, user.getId(), entity.getId(), contentParameters, cmsModel, category.getExtendId(),
-                attribute);
         model.addAttribute("dataId", entity.getId());
         return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
     }

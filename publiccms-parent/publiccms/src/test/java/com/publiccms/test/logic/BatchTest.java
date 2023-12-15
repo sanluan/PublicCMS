@@ -1,4 +1,4 @@
-package com.publiccms.test;
+package com.publiccms.test.logic;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

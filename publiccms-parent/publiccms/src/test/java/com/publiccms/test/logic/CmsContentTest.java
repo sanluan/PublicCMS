@@ -1,4 +1,4 @@
-package com.publiccms.test;
+package com.publiccms.test.logic;
 
 import java.util.Date;
 import java.util.List;
@@ -9,7 +9,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import jakarta.annotation.Resource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -22,6 +21,7 @@ import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.views.pojo.query.CmsContentSearchQuery;
 
 import config.spring.ApplicationConfig;
+import jakarta.annotation.Resource;
 
 /**
  * CmsContentTest https://junit.org/junit5/docs/current/user-guide/

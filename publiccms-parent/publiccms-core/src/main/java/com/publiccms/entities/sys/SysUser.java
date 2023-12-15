@@ -4,23 +4,11 @@ import java.util.Date;
 
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.search.engine.backend.types.Aggregable;
-import org.hibernate.search.engine.backend.types.Projectable;
-import org.hibernate.search.engine.backend.types.Sortable;
-import org.hibernate.search.mapper.pojo.bridge.mapping.annotation.RoutingBinderRef;
-import org.hibernate.search.mapper.pojo.bridge.mapping.annotation.TypeBinderRef;
-import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
-import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
-import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
-import org.hibernate.search.mapper.pojo.mapping.definition.annotation.TypeBinding;
 import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.publiccms.common.database.IDStyleGenerator;
 import com.publiccms.common.generator.annotation.GeneratorColumn;
-import com.publiccms.common.search.SysUserAttributeBinder;
-import com.publiccms.common.search.SysUserStatusRoutingBinder;
-import com.publiccms.views.pojo.entities.Attribute;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -39,9 +27,7 @@ import jakarta.validation.constraints.NotNull;
 @Entity
 @Table(name = "sys_user", uniqueConstraints = { @UniqueConstraint(columnNames = { "name", "site_id" }) })
 @DynamicUpdate
-@Indexed(routingBinder = @RoutingBinderRef(type = SysUserStatusRoutingBinder.class))
-@TypeBinding(binder = @TypeBinderRef(type = SysUserAttributeBinder.class))
-public class SysUser extends Attribute implements java.io.Serializable {
+public class SysUser implements java.io.Serializable {
     /**
      * 
      */
@@ -52,7 +38,6 @@ public class SysUser extends Attribute implements java.io.Serializable {
     @GeneratorColumn(title = "ID")
     private Long id;
     @GeneratorColumn(title = "站点", condition = true)
-    @GenericField
     @JsonIgnore
     private short siteId;
     /**
@@ -80,7 +65,6 @@ public class SysUser extends Attribute implements java.io.Serializable {
      * 昵称
      */
     @GeneratorColumn(title = "用户昵称", condition = true, like = true, or = true, name = "name")
-    @FullTextField(analyzer = "cms", projectable = Projectable.YES)
     @NotBlank
     private String nickname;
     /**
@@ -96,7 +80,6 @@ public class SysUser extends Attribute implements java.io.Serializable {
      * 部门id
      */
     @GeneratorColumn(title = "部门", condition = true)
-    @GenericField(aggregable = Aggregable.YES, projectable = Projectable.YES)
     private Integer deptId;
     /**
      * content permissions(0:self,1:all,2:dept)
@@ -132,8 +115,13 @@ public class SysUser extends Attribute implements java.io.Serializable {
      * 管理员
      */
     @GeneratorColumn(title = "是否管理员", condition = true)
-    @GenericField(aggregable = Aggregable.YES, projectable = Projectable.YES)
     private boolean superuser;
+
+    /**
+     * disabled
+     * <p>
+     * 已禁用p
+     */
     @GeneratorColumn(title = "已禁用", condition = true)
     @JsonIgnore
     private boolean disabled;
@@ -143,7 +131,6 @@ public class SysUser extends Attribute implements java.io.Serializable {
      * 上次登录日期
      */
     @GeneratorColumn(title = "上次登录日期", condition = true, order = true)
-    @GenericField(sortable = Sortable.YES, projectable = Projectable.YES)
     private Date lastLoginDate;
     /**
      * last login ip
@@ -158,7 +145,6 @@ public class SysUser extends Attribute implements java.io.Serializable {
      * 登录次数
      */
     @GeneratorColumn(title = "登录次数", order = true)
-    @GenericField(sortable = Sortable.YES, projectable = Projectable.YES)
     private int loginCount;
     /**
      * register date
@@ -166,14 +152,13 @@ public class SysUser extends Attribute implements java.io.Serializable {
      * 注册日期
      */
     @GeneratorColumn(title = "注册日期", condition = true, order = true)
-    @GenericField(sortable = Sortable.YES, projectable = Projectable.YES)
     private Date registeredDate;
 
     public SysUser() {
     }
 
-    public SysUser(short siteId, String name, String password, boolean weakPassword, String nickname, 
-            int contentPermissions, boolean emailChecked, boolean superuser, boolean disabled, int loginCount) {
+    public SysUser(short siteId, String name, String password, boolean weakPassword, String nickname, int contentPermissions,
+            boolean emailChecked, boolean superuser, boolean disabled, int loginCount) {
         this.siteId = siteId;
         this.name = name;
         this.password = password;
@@ -189,13 +174,13 @@ public class SysUser extends Attribute implements java.io.Serializable {
     public SysUser(short siteId, String name, String password, boolean weakPassword, String nickname, String cover,
             Integer deptId, int contentPermissions, String roles, String email, boolean emailChecked, boolean superuser,
             Date registeredDate) {
-        this(siteId, name, password, weakPassword, nickname, cover, deptId,contentPermissions, roles, email, emailChecked,
+        this(siteId, name, password, weakPassword, nickname, cover, deptId, contentPermissions, roles, email, emailChecked,
                 superuser, false, null, null, 0, registeredDate);
     }
 
     public SysUser(short siteId, String name, String password, boolean weakPassword, String nickname, String cover,
-            Integer deptId, int contentPermissions, String roles, String email, boolean emailChecked,
-            boolean superuser, boolean disabled, Date lastLoginDate, String lastLoginIp, int loginCount, Date registeredDate) {
+            Integer deptId, int contentPermissions, String roles, String email, boolean emailChecked, boolean superuser,
+            boolean disabled, Date lastLoginDate, String lastLoginIp, int loginCount, Date registeredDate) {
         this.siteId = siteId;
         this.name = name;
         this.password = password;

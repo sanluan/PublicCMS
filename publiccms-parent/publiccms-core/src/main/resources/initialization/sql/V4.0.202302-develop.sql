@@ -62,16 +62,6 @@ ALTER TABLE `cms_content` ADD COLUMN `collections` int(11) NOT NULL COMMENT '收
 ALTER TABLE `cms_place`
     ADD COLUMN `max_clicks` int(11) NOT NULL COMMENT '最大点击数' AFTER `clicks`,
     MODIFY COLUMN `status` int(11) NOT NULL COMMENT '状态：0、草稿 1、已发布 2、待审核 3、已下架' after `expiry_date`;
--- 08-04 --
-DROP TABLE IF EXISTS `sys_user_attribute`;
-CREATE TABLE `sys_user_attribute` (
-  `user_id` bigint(20) NOT NULL,
-  `search_text` longtext NULL COMMENT '全文索引文本',
-  `dictionary_values` text NULL COMMENT '数据字典值',
-  `extends_fields` text NULL COMMENT '扩展文本字段',
-  `data` longtext COMMENT '数据JSON',
-  PRIMARY KEY  (`user_id`)
-) COMMENT='用户扩展';
 -- 08-07 --
 CREATE TABLE `sys_workflow` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -186,3 +176,5 @@ CREATE TABLE `trade_user_coupon` (
 ALTER TABLE `cms_category` ADD COLUMN `workflow_id` int(11) default NULL COMMENT '审核流程' AFTER `disabled`;
 -- 09-29 --
 ALTER TABLE `cms_editor_history` MODIFY COLUMN `item_id` varchar(100) NOT NULL COMMENT '数据id' AFTER `item_type`;
+-- 12-15 --
+DROP TABLE IF EXISTS `sys_user_attribute`;

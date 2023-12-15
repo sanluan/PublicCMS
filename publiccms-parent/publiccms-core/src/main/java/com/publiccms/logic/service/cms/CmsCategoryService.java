@@ -40,6 +40,8 @@ import jakarta.annotation.Resource;
 public class CmsCategoryService extends BaseService<CmsCategory> {
 
     private String[] ignoreCopyProperties = new String[] { "id", "childIds", "extendId", "code", "name", "sort" };
+    private String[] ignoreProperties = new String[] { "id", "siteId", "childIds", "tagTypeIds", "url", "disabled", "extendId",
+            "hasStatic", "typeId" };
 
     @Resource
     private CmsTagTypeService tagTypeService;
@@ -68,51 +70,59 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
     /**
      * @param siteId
      * @param sitePath
-     * @param id
+     * @param entity
+     * @param oldEntity 
      * @param userId
      * @param attribute
      * @param categoryType
      * @param categoryParameters
      */
-    public void saveTagAndAttribute(short siteId, String sitePath, Integer id, Long userId, CmsCategoryAttribute attribute,
-            CmsCategoryType categoryType, CmsCategoryParameters categoryParameters) {
-        if (CommonUtils.notEmpty(id)) {
-            if (CommonUtils.notEmpty(categoryParameters.getCategoryModelList())) {
-                for (CmsCategoryModelParameters cmsCategoryModelParameters : categoryParameters.getCategoryModelList()) {
-                    if (null != cmsCategoryModelParameters.getCategoryModel()) {
-                        cmsCategoryModelParameters.getCategoryModel().getId().setCategoryId(id);
-                        if (cmsCategoryModelParameters.isUse()) {
-                            categoryModelService.updateCategoryModel(siteId, cmsCategoryModelParameters.getCategoryModel());
-                        } else {
-                            categoryModelService.delete(cmsCategoryModelParameters.getCategoryModel().getId());
-                        }
-                    }
-                }
+    public void saveTagAndAttribute(short siteId, String sitePath, CmsCategory entity, CmsCategory oldEntity, Long userId,
+            CmsCategoryAttribute attribute, CmsCategoryType categoryType, CmsCategoryParameters categoryParameters) {
+        if (null != entity.getId()) {
+            update(entity.getId(), entity, ignoreProperties);
+            if (null != oldEntity.getParentId() && !oldEntity.getParentId().equals(entity.getParentId())) {
+                generateChildIds(siteId, oldEntity.getParentId());
+                generateChildIds(siteId, entity.getParentId());
+            } else if (null != entity.getParentId() && null == oldEntity.getParentId()) {
+                generateChildIds(siteId, entity.getParentId());
             }
-            Integer[] tagTypeIds = tagTypeService.update(siteId, categoryParameters.getTagTypes());
-            CmsCategory entity = getEntity(id);
-            if (null != entity) {
-                entity.setTagTypeIds(arrayToCommaDelimitedString(tagTypeIds));
-                if (CommonUtils.notEmpty(categoryParameters.getContentExtends()) || null != entity.getExtendId()) {
-                    if (null == extendService.getEntity(entity.getExtendId())) {
-                        SysExtend extend = new SysExtend("category", id);
-                        extendService.save(extend);
-                        entity.setExtendId(extend.getId());
+        } else {
+            entity.setSiteId(siteId);
+            save(entity);
+        }
+        if (CommonUtils.notEmpty(categoryParameters.getCategoryModelList())) {
+            for (CmsCategoryModelParameters cmsCategoryModelParameters : categoryParameters.getCategoryModelList()) {
+                if (null != cmsCategoryModelParameters.getCategoryModel()) {
+                    cmsCategoryModelParameters.getCategoryModel().getId().setCategoryId(entity.getId());
+                    if (cmsCategoryModelParameters.isUse()) {
+                        categoryModelService.updateCategoryModel(siteId, cmsCategoryModelParameters.getCategoryModel());
+                    } else {
+                        categoryModelService.delete(cmsCategoryModelParameters.getCategoryModel().getId());
                     }
-                    extendFieldService.update(entity.getExtendId(), categoryParameters.getContentExtends());// 修改或增加内容扩展字段
                 }
-                if (null != categoryType && CommonUtils.notEmpty(categoryType.getExtendList())) {
-                    attribute.setData(ExtendUtils.getExtendString(categoryParameters.getExtendData(), sitePath,
-                            categoryType.getExtendList()));
-                } else {
-                    attribute.setData(null);
-                }
-
-                saveEditorHistory(attributeService.getEntity(entity.getId()), siteId, entity.getId(), userId, categoryType,
-                        categoryParameters.getExtendData());// 保存编辑器字段历史记录
-                attributeService.updateAttribute(id, attribute);
             }
         }
+        Integer[] tagTypeIds = tagTypeService.update(siteId, categoryParameters.getTagTypes());
+        entity.setTagTypeIds(arrayToCommaDelimitedString(tagTypeIds));
+        if (CommonUtils.notEmpty(categoryParameters.getContentExtends()) || null != entity.getExtendId()) {
+            if (null == extendService.getEntity(entity.getExtendId())) {
+                SysExtend extend = new SysExtend("category", entity.getId());
+                extendService.save(extend);
+                entity.setExtendId(extend.getId());
+            }
+            extendFieldService.update(entity.getExtendId(), categoryParameters.getContentExtends());// 修改或增加内容扩展字段
+        }
+        if (null != categoryType && CommonUtils.notEmpty(categoryType.getExtendList())) {
+            attribute.setData(
+                    ExtendUtils.getExtendString(categoryParameters.getExtendData(), sitePath, categoryType.getExtendList()));
+        } else {
+            attribute.setData(null);
+        }
+
+        saveEditorHistory(attributeService.getEntity(entity.getId()), siteId, entity.getId(), userId, categoryType,
+                categoryParameters.getExtendData());// 保存编辑器字段历史记录
+        attributeService.updateAttribute(entity.getId(), attribute);
     }
 
     public void copy(short siteId, CmsCategory entity, CmsCategory copy) {

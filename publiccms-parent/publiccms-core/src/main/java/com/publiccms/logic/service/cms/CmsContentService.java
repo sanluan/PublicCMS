@@ -32,6 +32,7 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.common.tools.HtmlUtils;
+import com.publiccms.common.tools.VerificationUtils;
 import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.cms.CmsContentAttribute;
@@ -65,7 +66,13 @@ public class CmsContentService extends BaseService<CmsContent> {
             Config.INPUTTYPE_USER, Config.INPUTTYPE_DEPT, Config.INPUTTYPE_CONTENT, Config.INPUTTYPE_CATEGORY,
             Config.INPUTTYPE_DICTIONARY, Config.INPUTTYPE_CATEGORYTYPE, Config.INPUTTYPE_TAGTYPE };
 
-    protected static final String[] ignoreProperties = new String[] { "id", "siteId" };
+    protected static final String[] ignoreCopyProperties = new String[] { "id", "siteId" };
+
+    public static final String[] ignoreProperties = new String[] { "siteId", "userId", "deptId", "categoryId", "tagIds",
+            "createDate", "clicks", "comments", "scores", "scoreUsers", "collections", "score", "childs", "checkUserId",
+            "disabled" };
+
+    public static final String[] ignorePropertiesWithUrl = ArrayUtils.addAll(ignoreProperties, "url");
     /**
      *
      */
@@ -196,37 +203,66 @@ public class CmsContentService extends BaseService<CmsContent> {
         return dao.getListByTopId(siteId, topId);
     }
 
-    public CmsContent saveTagAndAttribute(SysSite site, Long userId, Long id, CmsContentParameters contentParameters,
-            CmsModel cmsModel, Integer extendId, CmsContentAttribute attribute) {
-        CmsContent entity = getEntity(id);
-        if (null != entity) {
-            Set<Serializable> tagIds = tagService.update(site.getId(), contentParameters.getTags());
-            entity.setTagIds(collectionToDelimitedString(tagIds, Constants.BLANK_SPACE));
-            if (entity.isHasImages() || entity.isHasFiles()) {
-                contentFileService.update(entity.getId(), userId, entity.isHasFiles() ? contentParameters.getFiles() : null,
-                        entity.isHasImages() ? contentParameters.getImages() : null);// 更新保存图集，附件
-            }
-            if (entity.isHasProducts()) {
-                contentProductService.update(site.getId(), entity.getId(), userId, contentParameters.getProducts());
-            }
-
-            List<SysExtendField> modelExtendList = cmsModel.getExtendList();
-            List<SysExtendField> categoryExtendList = null;
-            if (null != extendId && null != extendService.getEntity(extendId)) {
-                categoryExtendList = extendFieldService.getList(extendId, null, null);
-            }
-
-            dealAttribute(entity, site, modelExtendList, categoryExtendList, contentParameters.getExtendData(), cmsModel,
-                    entity.isHasFiles() ? contentParameters.getFiles() : null,
-                    entity.isHasImages() ? contentParameters.getImages() : null,
-                    entity.isHasProducts() ? contentParameters.getProducts() : null, attribute);
-
-            saveEditorHistory(attributeService.getEntity(entity.getId()), attribute, site.getId(), entity.getId(), userId,
-                    modelExtendList, categoryExtendList, contentParameters.getExtendData());// 保存编辑器字段历史记录
-
-            attributeService.updateAttribute(entity.getId(), attribute);// 更新保存扩展字段，文本字段
-            cmsContentRelatedService.update(entity.getId(), userId, contentParameters.getContentRelateds());// 更新保存推荐内容
+    public static void initContent(CmsContent entity, SysSite site, CmsModel cmsModel, Boolean draft, Boolean checked,
+            CmsContentAttribute attribute, boolean base64, Date now) {
+        entity.setHasFiles(cmsModel.isHasFiles());
+        entity.setHasImages(cmsModel.isHasImages());
+        entity.setHasProducts(cmsModel.isHasProducts());
+        entity.setOnlyUrl(cmsModel.isOnlyUrl());
+        if ((null == checked || !checked) && null != draft && draft) {
+            entity.setStatus(CmsContentService.STATUS_DRAFT);
+        } else {
+            entity.setStatus(CmsContentService.STATUS_PEND);
         }
+        if (null == entity.getPublishDate()) {
+            entity.setPublishDate(now);
+        }
+        if (null != attribute.getText() && base64) {
+            attribute.setText(HtmlUtils.cleanUnsafeHtml(
+                    new String(VerificationUtils.base64Decode(attribute.getText()), Constants.DEFAULT_CHARSET),
+                    site.getSitePath()));
+        }
+    }
+
+    public CmsContent saveTagAndAttribute(SysSite site, Long userId, Integer deptId, CmsContent entity,
+            CmsContentParameters contentParameters, CmsModel cmsModel, Integer extendId, CmsContentAttribute attribute) {
+        if (null != entity.getId()) {
+            Date now = CommonUtils.getDate();
+            entity.setUpdateDate(now);
+            entity.setUpdateUserId(userId);
+            entity = update(entity.getId(), entity, entity.isOnlyUrl() ? ignoreProperties : ignorePropertiesWithUrl);
+        } else {
+            save(site.getId(), userId, deptId, entity);
+            if (CommonUtils.notEmpty(entity.getParentId())) {
+                updateChilds(entity.getParentId(), 1);
+            }
+        }
+        Set<Serializable> tagIds = tagService.update(site.getId(), contentParameters.getTags());
+        entity.setTagIds(collectionToDelimitedString(tagIds, Constants.BLANK_SPACE));
+        if (entity.isHasImages() || entity.isHasFiles()) {
+            contentFileService.update(entity.getId(), userId, entity.isHasFiles() ? contentParameters.getFiles() : null,
+                    entity.isHasImages() ? contentParameters.getImages() : null);// 更新保存图集，附件
+        }
+        if (entity.isHasProducts()) {
+            contentProductService.update(site.getId(), entity.getId(), userId, contentParameters.getProducts());
+        }
+
+        List<SysExtendField> modelExtendList = cmsModel.getExtendList();
+        List<SysExtendField> categoryExtendList = null;
+        if (null != extendId && null != extendService.getEntity(extendId)) {
+            categoryExtendList = extendFieldService.getList(extendId, null, null);
+        }
+
+        dealAttribute(entity, site, modelExtendList, categoryExtendList, contentParameters.getExtendData(), cmsModel,
+                entity.isHasFiles() ? contentParameters.getFiles() : null,
+                entity.isHasImages() ? contentParameters.getImages() : null,
+                entity.isHasProducts() ? contentParameters.getProducts() : null, attribute);
+
+        saveEditorHistory(attributeService.getEntity(entity.getId()), attribute, site.getId(), entity.getId(), userId,
+                modelExtendList, categoryExtendList, contentParameters.getExtendData());// 保存编辑器字段历史记录
+
+        attributeService.updateAttribute(entity.getId(), attribute);// 更新保存扩展字段，文本字段
+        cmsContentRelatedService.update(entity.getId(), userId, contentParameters.getContentRelateds());// 更新保存推荐内容
         return entity;
     }
 
@@ -288,10 +324,10 @@ public class CmsContentService extends BaseService<CmsContent> {
             List<CmsContentFile> images = null;
             List<CmsContentProduct> products = null;
             if (entity.isHasFiles()) {
-                files = contentFileService.getList(site.getId(), CmsFileUtils.OTHER_FILETYPES);
+                files = contentFileService.getList(entity.getId(), CmsFileUtils.OTHER_FILETYPES);
             }
             if (entity.isHasImages()) {
-                images = contentFileService.getList(site.getId(), CmsFileUtils.IMAGE_FILETYPES);
+                images = contentFileService.getList(entity.getId(), CmsFileUtils.IMAGE_FILETYPES);
             }
             if (entity.isHasProducts()) {
                 products = contentProductService.getList(site.getId(), entity.getId());
@@ -579,13 +615,14 @@ public class CmsContentService extends BaseService<CmsContent> {
 
     /**
      * @param siteId
-     * @param user
+     * @param userId
+     * @param deptId
      * @param entity
      */
-    public void save(short siteId, SysUser user, CmsContent entity) {
+    public void save(short siteId, Long userId, Integer deptId, CmsContent entity) {
         entity.setSiteId(siteId);
-        entity.setUserId(user.getId());
-        entity.setDeptId(user.getDeptId());
+        entity.setUserId(userId);
+        entity.setDeptId(deptId);
         save(entity);
     }
 
@@ -780,7 +817,7 @@ public class CmsContentService extends BaseService<CmsContent> {
         if (null != content && null != category) {
             Date now = CommonUtils.getDate();
             CmsContent entity = new CmsContent();
-            BeanUtils.copyProperties(content, entity, ignoreProperties);
+            BeanUtils.copyProperties(content, entity, ignoreCopyProperties);
             entity.setSiteId(category.getSiteId());
             entity.setStatus(status);
             entity.setPublishDate(now);

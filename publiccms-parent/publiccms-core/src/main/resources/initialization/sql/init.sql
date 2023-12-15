@@ -1939,20 +1939,6 @@ CREATE TABLE `sys_user` (
 INSERT INTO `sys_user` VALUES ('1', '1', 'admin', '0123456789.2134b56595c73a647716b0a8e33f9d50243fb1c1a088597ba5aa6d9ccadacbd8fc8307bda2adfc8362abe611420bd48263bdcfd91c1c26566ad3a29d79cffd9c', 1, 'admin', NULL, '1', '1', '1', 'master@sanluan.com', '0', '1', '0', '2019-01-01 00:00:00', '127.0.0.1', '0', '2019-01-01 00:00:00');
 
 -- ----------------------------
--- Table structure for sys_user_attribute
--- ----------------------------
-DROP TABLE IF EXISTS `sys_user_attribute`;
-CREATE TABLE `sys_user_attribute` (
-  `user_id` bigint(20) NOT NULL,
-  `follow_user_ids` longtext NULL COMMENT '关注用户',
-  `search_text` longtext NULL COMMENT '全文索引文本',
-  `dictionary_values` text NULL COMMENT '数据字典值',
-  `extends_fields` text NULL COMMENT '扩展文本字段',
-  `data` longtext COMMENT '数据JSON',
-  PRIMARY KEY  (`user_id`)
-) COMMENT='用户扩展';
-
--- ----------------------------
 -- Table structure for sys_user_token
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_user_token`;

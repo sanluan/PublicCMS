@@ -1,4 +1,4 @@
-package com.publiccms.test;
+package com.publiccms.test.logic;
 
 import java.util.HashMap;
 import java.util.List;
@@ -10,7 +10,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import jakarta.annotation.Resource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -19,6 +18,7 @@ import com.publiccms.common.handler.PageHandler;
 import com.publiccms.logic.service.tools.HqlService;
 
 import config.spring.ApplicationConfig;
+import jakarta.annotation.Resource;
 
 /**
  *

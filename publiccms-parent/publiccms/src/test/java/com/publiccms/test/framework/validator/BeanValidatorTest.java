@@ -1,4 +1,4 @@
-package com.publiccms.test;
+package com.publiccms.test.framework.validator;
 
 import java.util.Set;
 

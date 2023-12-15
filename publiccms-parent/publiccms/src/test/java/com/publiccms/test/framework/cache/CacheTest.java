@@ -1,4 +1,4 @@
-package com.publiccms.test;
+package com.publiccms.test.framework.cache;
 
 import java.io.IOException;
 import java.util.List;
@@ -7,8 +7,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import jakarta.annotation.PreDestroy;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.jupiter.api.DisplayName;
@@ -16,6 +14,8 @@ import org.junit.jupiter.api.Test;
 
 import com.publiccms.common.cache.CacheEntity;
 import com.publiccms.common.cache.CacheEntityFactory;
+
+import jakarta.annotation.PreDestroy;
 
 @DisplayName("cache test case")
 class CacheTest {

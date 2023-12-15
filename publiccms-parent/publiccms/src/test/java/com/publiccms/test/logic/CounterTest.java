@@ -1,16 +1,13 @@
-package com.publiccms.test;
+package com.publiccms.test.logic;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import jakarta.annotation.PreDestroy;
-
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import jakarta.annotation.Resource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -18,6 +15,8 @@ import com.publiccms.common.constants.CmsVersion;
 import com.publiccms.logic.service.cms.CmsContentService;
 
 import config.spring.ApplicationConfig;
+import jakarta.annotation.PreDestroy;
+import jakarta.annotation.Resource;
 
 /**
  * CmsContentTest https://junit.org/junit5/docs/current/user-guide/
