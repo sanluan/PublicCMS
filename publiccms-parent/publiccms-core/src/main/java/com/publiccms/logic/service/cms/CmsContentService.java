@@ -165,11 +165,11 @@ public class CmsContentService extends BaseService<CmsContent> {
 
     /**
      * @param siteId
-     * @param status 
+     * @param status
      * @param startCreateDate
      * @param endCreateDate
      * @param workloadType
-     * @param dateField 
+     * @param dateField
      * @param pageIndex
      * @param pageSize
      * @return
@@ -316,10 +316,10 @@ public class CmsContentService extends BaseService<CmsContent> {
             List<CmsContentFile> images = null;
             List<CmsContentProduct> products = null;
             if (entity.isHasFiles()) {
-                files = contentFileService.getList(site.getId(), CmsFileUtils.OTHER_FILETYPES);
+                files = contentFileService.getList(entity.getId(), CmsFileUtils.OTHER_FILETYPES);
             }
             if (entity.isHasImages()) {
-                images = contentFileService.getList(site.getId(), CmsFileUtils.IMAGE_FILETYPES);
+                images = contentFileService.getList(entity.getId(), CmsFileUtils.IMAGE_FILETYPES);
             }
             if (entity.isHasProducts()) {
                 products = contentProductService.getList(site.getId(), entity.getId());
