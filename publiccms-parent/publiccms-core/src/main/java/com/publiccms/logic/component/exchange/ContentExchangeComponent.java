@@ -81,7 +81,8 @@ public class ContentExchangeComponent extends AbstractDataExchange<CmsContent, C
     private SysExtendFieldService extendFieldService;
 
     @Override
-    public void exportAll(SysSite site, String directory, ByteArrayOutputStream outputStream, ArchiveOutputStream<ZipArchiveEntry> archiveOutputStream) {
+    public void exportAll(SysSite site, String directory, ByteArrayOutputStream outputStream,
+            ArchiveOutputStream<ZipArchiveEntry> archiveOutputStream) {
         CmsContentQuery queryEntity = new CmsContentQuery();
         queryEntity.setSiteId(site.getId());
         queryEntity.setDisabled(false);
@@ -95,7 +96,8 @@ public class ContentExchangeComponent extends AbstractDataExchange<CmsContent, C
      * @param queryEntity
      * @param archiveOutputStream
      */
-    public void exportDataByQuery(SysSite site, String directory, CmsContentQuery queryEntity, ArchiveOutputStream<ZipArchiveEntry> archiveOutputStream) {
+    public void exportDataByQuery(SysSite site, String directory, CmsContentQuery queryEntity,
+            ArchiveOutputStream<ZipArchiveEntry> archiveOutputStream) {
         exportDataByQuery(site, directory, queryEntity, new ByteArrayOutputStream(), archiveOutputStream);
     }
 
@@ -144,15 +146,18 @@ public class ContentExchangeComponent extends AbstractDataExchange<CmsContent, C
             export(directory, out, archiveOutputStream, data, CommonUtils.joinString(entity.getId(), ".json"));
             if (null != webfileList && !webfileList.isEmpty()) {
                 for (String file : webfileList) {
+                    String fullName;
                     if (file.startsWith(site.getSitePath())) {
-                        String fullName = StringUtils.removeStart(file, site.getSitePath());
-                        if (fullName.contains(Constants.DOT) && !fullName.contains(".htm")) {
-                            String filepath = siteComponent.getWebFilePath(site.getId(), fullName);
-                            try {
-                                ZipUtils.compressFile(new File(filepath), archiveOutputStream,
-                                        CommonUtils.joinString(ATTACHMENT_DIR, fullName));
-                            } catch (IOException e) {
-                            }
+                        fullName = StringUtils.removeStart(file, site.getSitePath());
+                    } else {
+                        fullName = file;
+                    }
+                    if (fullName.contains(Constants.DOT) && !fullName.contains(".htm")) {
+                        String filepath = siteComponent.getWebFilePath(site.getId(), fullName);
+                        try {
+                            ZipUtils.compressFile(new File(filepath), archiveOutputStream,
+                                    CommonUtils.joinString(ATTACHMENT_DIR, fullName));
+                        } catch (IOException e) {
                         }
                     }
                 }
