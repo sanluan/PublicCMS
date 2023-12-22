@@ -39,11 +39,27 @@ public interface Config {
      * 
      */
     String INPUTTYPE_FILE = "file";
+    /**
+     * 
+     */
+    String INPUTTYPE_PRIVATEFILE = "privatefile";
 
     /**
      * 
      */
     String INPUTTYPE_IMAGE = "image";
+    /**
+     * 
+     */
+    String INPUTTYPE_PRIVATEIMAGE = "privateimage";
+    /**
+     * 
+     */
+    String INPUTTYPE_VIDEO = "video";
+    /**
+     * 
+     */
+    String INPUTTYPE_PRIVATEVIDEO = "privatevideo";
 
     /**
      * 
@@ -161,6 +177,8 @@ public interface Config {
     public static final String INPUTTYPE_CAPTCHA = "captcha";
 
     public static final String[] INPUT_TYPE_EDITORS = { "ckeditor", "tinymce", "editor" };
+    public static final String[] INPUT_TYPE_FILES = { INPUTTYPE_FILE, INPUTTYPE_IMAGE, INPUTTYPE_VIDEO };
+    public static final String[] INPUT_TYPE_PRIVATE_FILES = { INPUTTYPE_PRIVATEFILE, INPUTTYPE_PRIVATEIMAGE, INPUTTYPE_PRIVATEVIDEO  };
 
     /**
      * @param site

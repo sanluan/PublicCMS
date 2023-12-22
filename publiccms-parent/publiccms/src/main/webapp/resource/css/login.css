@@ -10,7 +10,7 @@ body:before{content:"";height:100%;right:0;left:50%;position:absolute;background
 .login_body_left img{position:relative;top:50%;left:50%;max-width: 90%;height: auto;-webkit-transform:translate(-50%,-50%);-moz-transform:translate(-50%,-50%);-o-transform:translate(-50%,-50%);transform:translate(-50%,-50%);}
 .login_form{margin:0px auto;width:460px;float:left;padding:50px 80px;box-sizing:border-box;background:#fff;height:100%}
 .login_form>form{position:relative;}
-.login_form .logo{margin:0px;color:#667ea7;font-size:32px;margin-bottom:40px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
+.login_form .logo{margin:0px;color:#667ea7;font-size:30px;margin-bottom:40px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
 .login_form .logo select{padding: 8px;font-size: 16px;box-sizing: border-box;border-radius:4px;border:1px solid #ccc;}
 .login_form input{line-height:26px;font-size:14px;color:#333;border-color:#dde2ec;box-sizing:border-box;border-radius:4px;padding:5px; padding-left:40px;border:1px solid #ccc;}
 .login_form input[name=username],.login_form input[name=password],.login_form .logo select{width:100%;height:38px;}
