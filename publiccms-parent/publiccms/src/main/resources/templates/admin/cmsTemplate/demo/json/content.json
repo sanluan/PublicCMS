@@ -16,7 +16,7 @@
     "text":${(attribute.text?html)?cn},
     "sourceUrl":${(attribute.sourceUrl)?cn},
     "source":${(attribute.source)?cn}<#if content.hasFiles>
-    ,"files:[<@cms.contentFileList contentId=content.id fileTypes='video,audio,other'><#list page.list as file>
+    ,"files":[<@cms.contentFileList contentId=content.id fileTypes='video,audio,other'><#list page.list as file>
         {"filePath":${(file.filePath)?cn}}<#sep>,</#list></@cms.contentFileList>
     ]</#if><#if content.hasImages>
     ,"images":[<@cms.contentFileList contentId=content.id fileTypes='image'><#list page.list as file>
