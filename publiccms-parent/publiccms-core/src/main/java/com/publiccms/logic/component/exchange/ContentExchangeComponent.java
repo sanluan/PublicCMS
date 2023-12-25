@@ -12,9 +12,11 @@ import java.util.Set;
 import org.apache.commons.compress.archivers.ArchiveOutputStream;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipFile;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
+import com.publiccms.common.api.Config;
 import com.publiccms.common.base.AbstractDataExchange;
 import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.PageHandler;
@@ -27,6 +29,7 @@ import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.cms.CmsContentFile;
 import com.publiccms.entities.cms.CmsContentProduct;
 import com.publiccms.entities.cms.CmsContentRelated;
+import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.site.SiteComponent;
@@ -80,7 +83,8 @@ public class ContentExchangeComponent extends AbstractDataExchange<CmsContent, C
     private SysExtendFieldService extendFieldService;
 
     @Override
-    public void exportAll(SysSite site, String directory, ByteArrayOutputStream outputStream, ArchiveOutputStream<ZipArchiveEntry> archiveOutputStream) {
+    public void exportAll(SysSite site, String directory, ByteArrayOutputStream outputStream,
+            ArchiveOutputStream<ZipArchiveEntry> archiveOutputStream) {
         CmsContentQuery queryEntity = new CmsContentQuery();
         queryEntity.setSiteId(site.getId());
         queryEntity.setDisabled(false);
@@ -94,7 +98,8 @@ public class ContentExchangeComponent extends AbstractDataExchange<CmsContent, C
      * @param queryEntity
      * @param archiveOutputStream
      */
-    public void exportDataByQuery(SysSite site, String directory, CmsContentQuery queryEntity, ArchiveOutputStream<ZipArchiveEntry> archiveOutputStream) {
+    public void exportDataByQuery(SysSite site, String directory, CmsContentQuery queryEntity,
+            ArchiveOutputStream<ZipArchiveEntry> archiveOutputStream) {
         exportDataByQuery(site, directory, queryEntity, new ByteArrayOutputStream(), archiveOutputStream);
     }
 
@@ -128,14 +133,14 @@ public class ContentExchangeComponent extends AbstractDataExchange<CmsContent, C
             if (null == directory) {
                 webfileList = new HashSet<>();
             }
-            Content data = exportEntity(site, category.getCode(), entity, webfileList);
             CmsModel model = modelComponent.getModel(site, entity.getModelId());
+            Content data = exportEntity(site, category.getCode(), entity, model, webfileList);
             if (null != model && model.isHasChild()) {
                 List<CmsContent> list = service.getListByTopId(site.getId(), entity.getId());
                 if (null != list) {
                     List<Content> childList = new ArrayList<>();
                     for (CmsContent content : list) {
-                        childList.add(exportEntity(site, category.getCode(), content, webfileList));
+                        childList.add(exportEntity(site, category.getCode(), content, model, webfileList));
                     }
                     data.setChildList(childList);
                 }
@@ -143,15 +148,18 @@ public class ContentExchangeComponent extends AbstractDataExchange<CmsContent, C
             export(directory, out, archiveOutputStream, data, CommonUtils.joinString(entity.getId(), ".json"));
             if (null != webfileList && !webfileList.isEmpty()) {
                 for (String file : webfileList) {
+                    String fullName;
                     if (file.startsWith(site.getSitePath())) {
-                        String fullName = StringUtils.removeStart(file, site.getSitePath());
-                        if (fullName.contains(Constants.DOT) && !fullName.contains(".htm")) {
-                            String filepath = siteComponent.getWebFilePath(site.getId(), fullName);
-                            try {
-                                ZipUtils.compressFile(new File(filepath), archiveOutputStream,
-                                        CommonUtils.joinString(ATTACHMENT_DIR, fullName));
-                            } catch (IOException e) {
-                            }
+                        fullName = StringUtils.removeStart(file, site.getSitePath());
+                    } else {
+                        fullName = file;
+                    }
+                    if (fullName.contains(Constants.DOT) && !fullName.contains(".htm")) {
+                        String filepath = siteComponent.getWebFilePath(site.getId(), fullName);
+                        try {
+                            ZipUtils.compressFile(new File(filepath), archiveOutputStream,
+                                    CommonUtils.joinString(ATTACHMENT_DIR, fullName));
+                        } catch (IOException e) {
                         }
                     }
                 }
@@ -229,7 +237,7 @@ public class ContentExchangeComponent extends AbstractDataExchange<CmsContent, C
         }
     }
 
-    private Content exportEntity(SysSite site, String categoryCode, CmsContent entity, Set<String> webfileList) {
+    private Content exportEntity(SysSite site, String categoryCode, CmsContent entity, CmsModel model, Set<String> webfileList) {
         Content data = new Content();
         data.setCategoryCode(categoryCode);
         data.setEntity(entity);
@@ -250,9 +258,17 @@ public class ContentExchangeComponent extends AbstractDataExchange<CmsContent, C
             if (CommonUtils.notEmpty(data.getAttribute().getData())) {
                 if (null != webfileList) {
                     Map<String, String> map = ExtendUtils.getExtendMap(data.getAttribute().getData());
-                    for (String value : map.values()) {
-                        if (null != value && value.contains("<")) {
-                            HtmlUtils.getFileList(value, webfileList);
+                    for (SysExtendField extendField : model.getExtendList()) {
+                        if (ArrayUtils.contains(Config.INPUT_TYPE_EDITORS, extendField.getInputType())) {
+                            String value = map.get(extendField.getId().getCode());
+                            if (CommonUtils.notEmpty(value)) {
+                                HtmlUtils.getFileList(map.get(extendField.getId().getCode()), webfileList);
+                            }
+                        } else if (ArrayUtils.contains(Config.INPUT_TYPE_FILES, extendField.getInputType())) {
+                            String value = map.get(extendField.getId().getCode());
+                            if (CommonUtils.notEmpty(value)) {
+                                webfileList.add(map.get(extendField.getId().getCode()));
+                            }
                         }
                     }
                 }
