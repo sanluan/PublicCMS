@@ -16,7 +16,7 @@
 </ul>
 <#else>
 <script>
-$('.pageContent table tbody tr input[name=ids]',navTab.getCurrentPanel()).each(function(){
+$('table tbody tr input[name=ids]',navTab.getCurrentPanel()).each(function(){
     if($(this).is(":checked")){
         $('<input type="hidden" name="ids" value="'+$(this).val()+'"/>').appendTo($('.idsToMove',$.pdialog.getCurrent()));
     }
