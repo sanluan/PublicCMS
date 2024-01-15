@@ -178,3 +178,31 @@ ALTER TABLE `cms_category` ADD COLUMN `workflow_id` int(11) default NULL COMMENT
 ALTER TABLE `cms_editor_history` MODIFY COLUMN `item_id` varchar(100) NOT NULL COMMENT '数据id' AFTER `item_type`;
 -- 12-15 --
 DROP TABLE IF EXISTS `sys_user_attribute`;
+-- 2024-01-02 --
+ALTER TABLE `cms_content` 
+  MODIFY COLUMN `copied` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否转载' AFTER `quote_content_id`,
+  MODIFY COLUMN `only_url` tinyint(1) NOT NULL DEFAULT 0 COMMENT '外链' AFTER `editor`,
+  MODIFY COLUMN `has_images` tinyint(1) NOT NULL DEFAULT 0 COMMENT '拥有图片列表' AFTER `only_url`,
+  MODIFY COLUMN `has_files` tinyint(1) NOT NULL DEFAULT 0 COMMENT '拥有附件列表' AFTER `has_images`,
+  MODIFY COLUMN `has_products` tinyint(1) NOT NULL DEFAULT 0 COMMENT '拥有产品列表' AFTER `has_files`,
+  MODIFY COLUMN `has_static` tinyint(1) NOT NULL DEFAULT 0 COMMENT '已经静态化' AFTER `has_products`,
+  MODIFY COLUMN `childs` int(11) NOT NULL DEFAULT 0 COMMENT '子内容数' AFTER `cover`,
+  MODIFY COLUMN `scores` int(11) NOT NULL DEFAULT 0 COMMENT '总分数' AFTER `childs`,
+  MODIFY COLUMN `score_users` int(11) NOT NULL DEFAULT 0 COMMENT '评分人数' AFTER `scores`,
+  MODIFY COLUMN `score` decimal(10, 2) NOT NULL DEFAULT 0 COMMENT '分数' AFTER `score_users`,
+  MODIFY COLUMN `comments` int(11) NOT NULL DEFAULT 0 COMMENT '评论数' AFTER `score`,
+  MODIFY COLUMN `clicks` int(11) NOT NULL DEFAULT 0 COMMENT '点击数' AFTER `comments`,
+  MODIFY COLUMN `collections` int(11) NOT NULL default 0 COMMENT '收藏数' AFTER `clicks`,
+  MODIFY COLUMN `status` int(11) NOT NULL DEFAULT 1 COMMENT '状态：0、草稿 1、已发布 2、待审核' AFTER `sort`,
+  MODIFY COLUMN `disabled` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否删除' AFTER `status`;
+ALTER TABLE `cms_category`
+  MODIFY COLUMN `only_url` tinyint(1) NOT NULL DEFAULT 0 COMMENT '外链' AFTER `path`,
+  MODIFY COLUMN `has_static` tinyint(1) NOT NULL DEFAULT 0 COMMENT '已经静态化' AFTER `only_url`,
+  MODIFY COLUMN `page_size` int(11) default NULL DEFAULT 20 COMMENT '每页数据条数' AFTER `contain_child`,
+  MODIFY COLUMN `allow_contribute` tinyint(1) NOT NULL DEFAULT 0 COMMENT '允许投稿' AFTER `page_size`,
+  MODIFY COLUMN `hidden` tinyint(1) NOT NULL DEFAULT 0 COMMENT '隐藏' AFTER `sort`,
+  MODIFY COLUMN `disabled` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否删除' AFTER `hidden`;
+ALTER TABLE `cms_comment`
+  MODIFY COLUMN `scores` int(11) NOT NULL default 0 COMMENT '分数' AFTER `replies`,
+  MODIFY COLUMN `status` int(11) NOT NULL default 1 COMMENT '状态：1、已发布 2、待审核' AFTER `create_date`,
+  MODIFY COLUMN `disabled` tinyint(1) NOT NULL default 0 COMMENT '已禁用', AFTER `status`;
