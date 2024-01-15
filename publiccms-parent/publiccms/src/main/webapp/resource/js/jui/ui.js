@@ -15,9 +15,9 @@ function initEnv() {
     });
     var ajaxbg = $("#background,#progressBar");
     ajaxbg.hide();
-    $(document).on("ajaxStart",(function() {
+    $(document).on("ajaxStart",function() {
         ajaxbg.show();
-    })on("ajaxStop",function() {
+    }).on("ajaxStop",function() {
         ajaxbg.hide();
     });
     $("#progressBar").click(function(){

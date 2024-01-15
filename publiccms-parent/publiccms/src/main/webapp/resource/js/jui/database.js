@@ -34,7 +34,7 @@
     }
     $.extend({
         bringBackSuggest: function(args,keys) {
-            var $box = _lookup["$target"].parents(".unitBox:first");
+            var $box = _lookup["$target"].parents(".unitBox").first();
             if(keys){
                 $.each(keys,function(n,key){
                     $box.find(":input[name="+escapeJquery(_util.lookupPk(key))+"]").each(function() {
@@ -105,7 +105,7 @@
                     _lookup = $.extend(_lookup, {
                         currentGroup: $this.attr("lookupGroup") || "", suffix: $this.attr("suffix") || "", $target: $this, pk: $this.attr("lookupPk") || ""
                     });
-                    var url = $this.attr("href").replaceTmById($(event.target).parents(".unitBox:first"));
+                    var url = $this.attr("href").replaceTmById($(event.target).parents(".unitBox").first());
                     if (!url.isFinishedTm() ) {
                         alertMsg.error($this.attr("warn") || JUI.msg("alertSelectMsg"));
                         return false;
@@ -119,7 +119,7 @@
             return this.each(function() {
                 var $this = $(this), args = {};
                 $this.click(function(event) {
-                    var $unitBox = $this.parents(".unitBox:first");
+                    var $unitBox = $this.parents(".unitBox").first();
                     $unitBox.find("[name=\"" + $this.attr("multLookup") + "\"]").filter(":checked").each(function() {
                         var _args = JUI.jsonEval($(this).val());
                         for ( var key in _args) {
@@ -165,7 +165,7 @@
                     _lookup = $.extend(_lookup, {
                         currentGroup: $input.attr("lookupGroup") || "", suffix: $input.attr("suffix") || "", $target: $input, pk: $input.attr("lookupPk") || ""
                     });
-                    var url = $input.attr("suggestUrl").replaceTmById($(event.target).parents(".unitBox:first"));
+                    var url = $input.attr("suggestUrl").replaceTmById($(event.target).parents(".unitBox").first());
                     if (!url.isFinishedTm() ) {
                         alertMsg.error($input.attr("warn") || JUI.msg("alertSelectMsg"));
                         return false;
@@ -278,7 +278,7 @@
             return this.each(function() {
                 var $table = $(this).css("clear", "both"), $tbody = $table.find("tbody");
                 var fields = [ ];
-                $table.find("tr:first th[type]").each(function(i) {
+                $table.find("thead th[type]").each(function(i) {
                     var $th = $(this);
                     var field = {
                         type: $th.attr("type") || "text", patternDate: $th.attr("dateFmt") || "yyyy-MM-dd", name: $th.attr("name") || "" ,suffix: $th.attr("suffix")||"",
@@ -292,14 +292,14 @@
                 $tbody.find("a.btnDel").click(function() {
                     var $btnDel = $(this);
                     if ($btnDel.is("[href^=javascript]") ) {
-                        $btnDel.parents("tr:first").remove();
+                        $btnDel.parents("tr").first().remove();
                         initSuffix($tbody);
                         return false;
                     }
                     function delDbData() {
                         $.ajax({
                             type: "POST", dataType: "json", url: $btnDel.attr("href"), cache: false, success: function() {
-                                $btnDel.parents("tr:first").remove();
+                                $btnDel.parents("tr").first().remove();
                                 initSuffix($tbody);
                             }, error: JUI.ajaxError
                         });
@@ -344,7 +344,7 @@
                         for (var i = 0; i < rowNum; i++) {
                             var $tr = $($.parseHTML(trTm, document, true));
                             $tr.appendTo($tbody).initUI().find("a.btnDel").click(function() {
-                                $(this).parents("tr:first").remove();
+                                $(this).parents("tr").first().remove();
                                 initSuffix($tbody);
                                 return false;
                             });

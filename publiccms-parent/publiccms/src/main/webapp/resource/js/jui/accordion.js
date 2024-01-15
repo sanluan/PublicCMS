@@ -201,8 +201,7 @@
     }
 
     function findActive(headers, selector) {
-        return selector != undefined ? typeof selector == "number" ? headers.filter(":eq(" + selector + ")"): headers.not(headers.not(selector)): selector === false ? $([ ])
-                : headers.filter(":eq(0)");
+        return selector != undefined ? typeof selector == "number" ? headers.eq(selector): headers.not(headers.not(selector)): selector === false ? $([ ]) : headers.eq(0);
     }
     $.extend($.jui.accordion, {
         defaults: {

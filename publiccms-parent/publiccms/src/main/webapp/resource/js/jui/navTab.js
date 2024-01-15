@@ -281,9 +281,9 @@ var navTab = {
         }
     } ,
     closeAllTab: function() {
-        this._getTabs().filter(":gt(0)").remove();
-        this._getPanels().filter(":gt(0)").trigger(JUI.eventType.pageClear).remove();
-        this._getMoreLi().filter(":gt(0)").remove();
+        this._getTabs().slice(1).remove();
+        this._getPanels().slice(1).trigger(JUI.eventType.pageClear).remove();
+        this._getMoreLi().slice(1).remove();
         this._currentIndex = 0;
         this._init();
         this._scrollCurrent();
@@ -292,9 +292,9 @@ var navTab = {
         index = index || this._currentIndex;
         if (index > 0 ) {
             var str$ = ":eq(" + index + ")";
-            this._getTabs().not(str$).filter(":gt(0)").remove();
-            this._getPanels().not(str$).filter(":gt(0)").trigger(JUI.eventType.pageClear).remove();
-            this._getMoreLi().not(str$).filter(":gt(0)").remove();
+            this._getTabs().not(str$).slice(1).remove();
+            this._getPanels().not(str$).slice(1).trigger(JUI.eventType.pageClear).remove();
+            this._getMoreLi().not(str$).slice(1).remove();
             this._currentIndex = 1;
             this._init();
             this._scrollCurrent();

@@ -340,7 +340,7 @@ var JUI = {
             return this.each(function() {
                 var $this = $(this);
                 if (!$refBox ) {
-                    $refBox = $this.parents("div.layoutBox:first");
+                    $refBox = $this.parents("div.layoutBox").first();
                 }
                 var iRefH = $refBox.height();
 

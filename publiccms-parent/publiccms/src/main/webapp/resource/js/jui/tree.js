@@ -149,7 +149,7 @@
                         if (!isA || tree.is(":hidden") ) {
                             $this.toggleClass(op.exp).toggleClass(op.coll);
                             if (op.icon ) {
-                                $(">div>div:last", node).toggleClass(op.options.folderExp).toggleClass(op.options.folderColl);
+                                $(">div>div", node).last().toggleClass(op.options.folderExp).toggleClass(op.options.folderColl);
                             }
                         }
                         ( tree.is(":hidden") ) ? tree.slideDown(100): ( isA ? "": tree.slideUp(100) );
