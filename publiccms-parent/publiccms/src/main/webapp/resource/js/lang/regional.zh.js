@@ -42,7 +42,7 @@
 
 
     $.setMessage("statusCode_503","服务器当前负载过大或者正在维护!");
-    $.setMessage('networkError','网络错误!');
+    $.setMessage("networkError","网络错误!");
     $.setMessage("validateFormError","提交数据不完整，{0}个字段有错误，请改正后再提交!");
     $.setMessage("sessionTimout","会话超时，请重新登录!");
     $.setMessage("alertSelectMsg","请选择一条数据!");
