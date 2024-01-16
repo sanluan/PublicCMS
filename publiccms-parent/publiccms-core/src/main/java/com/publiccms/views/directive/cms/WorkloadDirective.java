@@ -3,15 +3,16 @@ package com.publiccms.views.directive.cms;
 // Generated 2015-5-12 12:57:43 by com.publiccms.common.generator.SourceGenerator
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
-import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.logic.service.cms.CmsContentService;
+import com.publiccms.views.pojo.entities.Workload;
 
 import freemarker.template.TemplateException;
 
@@ -26,14 +27,11 @@ import freemarker.template.TemplateException;
  * <li><code>endCreateDate</code>:终止创建日期,【2020-01-01 23:59:59】,【2020-01-01】
  * <li><code>workloadType</code>:工作量类型【dept:部门,user:用户】,默认部门
  * <li><code>dateField</code>:日期字段【createDate:创建日期,publishDate:发布日期】,默认创建日期
- * <li><code>pageIndex</code>:页码
- * <li><code>pageSize</code>:每页条数
  * </ul>
  * <p>
  * 返回结果
  * <ul>
- * <li><code>page</code>:{@link com.publiccms.common.handler.PageHandler}
- * <li><code>page.list</code>:List类型 查询结果实体列表
+ * <li><code>list</code>:List类型 查询结果实体列表
  * {@link com.publiccms.views.pojo.entities.Workload}
  * </ul>
  * 使用示例
@@ -54,10 +52,10 @@ public class WorkloadDirective extends AbstractTemplateDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, TemplateException {
-        PageHandler page = service.getWorkLoadPage(getSite(handler).getId(), handler.getIntegerArray("status"),
+        List<Workload> list = service.getWorkLoadList(getSite(handler).getId(), handler.getIntegerArray("status"),
                 handler.getDate("startCreateDate"), handler.getDate("endCreateDate"), handler.getString("workloadType"),
-                handler.getString("dateField"), handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", 30));
-        handler.put("page", page).render();
+                handler.getString("dateField"));
+        handler.put("list", list).render();
     }
 
     @Override

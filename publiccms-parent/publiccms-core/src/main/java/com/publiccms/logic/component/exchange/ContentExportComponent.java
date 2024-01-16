@@ -17,7 +17,6 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.constants.CommonConstants;
-import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.DateFormatUtils;
 import com.publiccms.common.tools.ExtendUtils;
@@ -62,7 +61,6 @@ public class ContentExportComponent {
     @Resource
     private SysExtendFieldService extendFieldService;
 
-
     /**
      * @param site
      * @param status
@@ -75,10 +73,7 @@ public class ContentExportComponent {
      */
     public ExcelView exportWorkload(SysSite site, Integer[] status, Date startCreateDate, Date endCreateDate, String workloadType,
             String dateField, Locale locale) {
-        PageHandler page = service.getWorkLoadPage(site.getId(), status, startCreateDate, endCreateDate, workloadType, dateField,
-                1, PageHandler.MAX_PAGE_SIZE);
-        @SuppressWarnings("unchecked")
-        List<Workload> entityList = (List<Workload>) page.getList();
+        List<Workload> entityList = service.getWorkLoadList(site.getId(), status, startCreateDate, endCreateDate, workloadType, dateField);
         Map<String, List<Serializable>> pksMap = new HashMap<>();
         for (Workload entity : entityList) {
             List<Serializable> categoryIds = pksMap.computeIfAbsent("categoryIds", k -> new ArrayList<>());
@@ -154,9 +149,7 @@ public class ContentExportComponent {
      */
     public ExcelView exportExcelByQuery(SysSite site, CmsContentQuery queryEntity, String orderField, String orderType,
             Locale locale) {
-        PageHandler page = service.getPage(queryEntity, true, orderField, orderType, null, 1, PageHandler.MAX_PAGE_SIZE, null);
-        @SuppressWarnings("unchecked")
-        List<CmsContent> entityList = (List<CmsContent>) page.getList();
+        List<CmsContent> entityList = service.getList(queryEntity, true, orderField, orderType);
         Map<String, List<Serializable>> pksMap = new HashMap<>();
         for (CmsContent entity : entityList) {
             List<Serializable> userIds = pksMap.computeIfAbsent("userIds", k -> new ArrayList<>());

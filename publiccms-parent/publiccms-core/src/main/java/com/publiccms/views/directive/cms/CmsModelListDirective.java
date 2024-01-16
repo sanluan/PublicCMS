@@ -30,8 +30,7 @@ import freemarker.template.TemplateException;
  * <p>
  * 返回结果
  * <ul>
- * <li><code>page</code>:{@link com.publiccms.common.handler.PageHandler}
- * <li><code>page.list</code>:List类型 查询结果实体列表
+ * <li><code>list</code>:List类型 查询结果实体列表
  * {@link com.publiccms.views.pojo.entities.CmsModel}
  * </ul>
  * 使用示例

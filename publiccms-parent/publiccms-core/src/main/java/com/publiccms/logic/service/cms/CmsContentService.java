@@ -50,6 +50,7 @@ import com.publiccms.logic.service.sys.SysExtendFieldService;
 import com.publiccms.logic.service.sys.SysExtendService;
 import com.publiccms.views.pojo.entities.ClickStatistics;
 import com.publiccms.views.pojo.entities.CmsModel;
+import com.publiccms.views.pojo.entities.Workload;
 import com.publiccms.views.pojo.model.CmsContentParameters;
 import com.publiccms.views.pojo.query.CmsContentQuery;
 import com.publiccms.views.pojo.query.CmsContentSearchQuery;
@@ -171,6 +172,19 @@ public class CmsContentService extends BaseService<CmsContent> {
         queryEntity.setCategoryIds(getCategoryIds(containChild, queryEntity.getCategoryId(), queryEntity.getCategoryIds()));
         return dao.getPage(queryEntity, orderField, orderType, firstResult, pageIndex, pageSize, maxResults);
     }
+    
+    /**
+     * @param queryEntity
+     * @param containChild
+     * @param orderField
+     * @param orderType
+     * @return results list
+     */
+    @Transactional(readOnly = true)
+    public List<CmsContent> getList(CmsContentQuery queryEntity, Boolean containChild, String orderField, String orderType) {
+        queryEntity.setCategoryIds(getCategoryIds(containChild, queryEntity.getCategoryId(), queryEntity.getCategoryIds()));
+        return dao.getList(queryEntity, orderField, orderType);
+    }
 
     /**
      * @param siteId
@@ -179,14 +193,12 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param endCreateDate
      * @param workloadType
      * @param dateField
-     * @param pageIndex
-     * @param pageSize
-     * @return
+     * @return results list
      */
     @Transactional(readOnly = true)
-    public PageHandler getWorkLoadPage(short siteId, Integer[] status, Date startCreateDate, Date endCreateDate,
-            String workloadType, String dateField, Integer pageIndex, Integer pageSize) {
-        return dao.getWorkLoadPage(siteId, status, startCreateDate, endCreateDate, workloadType, dateField, pageIndex, pageSize);
+    public List<Workload> getWorkLoadList(short siteId, Integer[] status, Date startCreateDate, Date endCreateDate,
+            String workloadType, String dateField) {
+        return dao.getWorkLoadList(siteId, status, startCreateDate, endCreateDate, workloadType, dateField);
     }
 
     /**
