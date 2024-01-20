@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.Authenticator;
 import java.util.Properties;
 
+import jakarta.annotation.Priority;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRegistration.Dynamic;
@@ -30,6 +31,7 @@ import com.publiccms.common.servlet.InstallServlet;
  * InstallationInitializer
  *
  */
+@Priority(0)
 public class InitializationInitializer implements WebApplicationInitializer {
     protected static final Log log = LogFactory.getLog(InitializationInitializer.class);
     /**
