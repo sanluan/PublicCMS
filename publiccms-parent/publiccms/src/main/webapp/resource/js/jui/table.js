@@ -72,11 +72,11 @@
                 });
                 if ($(".edit", $tr).length) {
                     $tr.dblclick(function() {
-                        $(".edit:eq(0)", $tr).click();
+                        $(".edit", $tr).eq(0).click();
                     });
                 } else if ($(".icon-edit", ( !$.pdialog.getCurrent() ) ? navTab.getCurrentPanel(): $.pdialog.getCurrent()).length ) {
                     $tr.dblclick(function() {
-                        $(".icon-edit:eq(0)", ( !$.pdialog.getCurrent() ) ? navTab.getCurrentPanel(): $.pdialog.getCurrent()).parent().click();
+                        $(".icon-edit", ( !$.pdialog.getCurrent() ) ? navTab.getCurrentPanel(): $.pdialog.getCurrent()).eq(0).parent().click();
                     });
                 }
             });
@@ -286,11 +286,11 @@
                     });
                     if ($(".edit", $tr).length) {
                         $tr.dblclick(function() {
-                            $(".edit:eq(0)", $tr).click();
+                            $(".edit", $tr).eq(0).click();
                         });
                     } else if ($(".panelBar .icon-edit", ( !$.pdialog.getCurrent() ) ? navTab.getCurrentPanel(): $.pdialog.getCurrent()).length ) {
                         $tr.dblclick(function() {
-                            $(".panelBar .icon-edit:eq(0)", ( !$.pdialog.getCurrent() ) ? navTab.getCurrentPanel(): $.pdialog.getCurrent()).parent().click();
+                            $(".panelBar .icon-edit", ( !$.pdialog.getCurrent() ) ? navTab.getCurrentPanel(): $.pdialog.getCurrent()).eq(0).parent().click();
                         });
                     }
                 });

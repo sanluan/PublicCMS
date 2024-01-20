@@ -4,7 +4,7 @@
 <#if !status?has_content>
     <#assign status=['1','2']/>
 </#if>
-<@cms.workload status=status startCreateDate=startCreateDate endCreateDate=endCreateDate workloadType=workloadType dateField=dateField pageIndex=pageNum pageSize=numPerPage>
+<@cms.workload status=status startCreateDate=startCreateDate endCreateDate=endCreateDate workloadType=workloadType dateField=dateField>
 <div class="pageHeader card">
     <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
@@ -69,7 +69,7 @@
             </tr>
         </thead>
         <tbody>
-            <#list page.list as a>
+            <#list list as a>
                 <@t.merge 'categoryIds' a.categoryId!/>
                 <@t.merge 'userIds' a.userId!/>
                 <@t.merge 'deptIds' a.deptId!/>
@@ -79,7 +79,7 @@
             <@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
             <@sys.dept ids=t.deptIds!><#assign deptMap=map!/></@sys.dept>
 
-            <#list page.list as a>
+            <#list list as a>
             <tr>
                 <td class="center exclude-translate">
                     ${(categoryMap[a.categoryId?string].name)!}
@@ -95,6 +95,5 @@
             </#list>
         </tbody>
     </table>
-    <#include "../include_page/page.html"/>
 </div>
 </@cms.workload>

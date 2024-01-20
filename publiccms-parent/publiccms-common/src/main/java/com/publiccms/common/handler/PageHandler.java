@@ -23,7 +23,7 @@ public class PageHandler implements java.io.Serializable {
     /**
      * 最大每页数据条数
      */
-    public static final int MAX_PAGE_SIZE = 500;
+    public static final int MAX_PAGE_SIZE = 1000;
 
     /**
      * total count

@@ -125,6 +125,20 @@ public class CmsContentDao extends BaseDao<CmsContent> {
      */
     public PageHandler getPage(CmsContentQuery queryEntitry, String orderField, String orderType, Integer firstResult,
             Integer pageIndex, Integer pageSize, Integer maxResults) {
+        return getPage(getQueryHandler(queryEntitry, orderField, orderType), firstResult, pageIndex, pageSize, maxResults);
+    }
+
+    /**
+     * @param queryEntitry
+     * @param orderField
+     * @param orderType
+     * @return results list
+     */
+    public List<CmsContent> getList(CmsContentQuery queryEntitry, String orderField, String orderType) {
+        return getList(getQueryHandler(queryEntitry, orderField, orderType));
+    }
+
+    private static QueryHandler getQueryHandler(CmsContentQuery queryEntitry, String orderField, String orderType) {
         QueryHandler queryHandler = getQueryHandler("from CmsContent bean");
         if (CommonUtils.notEmpty(queryEntitry.getSiteId())) {
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", queryEntitry.getSiteId());
@@ -229,7 +243,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
             queryHandler.order("bean.publishDate").append(orderType);
         }
         queryHandler.order("bean.id desc");
-        return getPage(queryHandler, firstResult, pageIndex, pageSize, maxResults);
+        return queryHandler;
     }
 
     /**
@@ -239,12 +253,10 @@ public class CmsContentDao extends BaseDao<CmsContent> {
      * @param endCreateDate
      * @param workloadType
      * @param dateField
-     * @param pageIndex
-     * @param pageSize
-     * @return result page
+     * @return result list
      */
-    public PageHandler getWorkLoadPage(short siteId, Integer[] status, Date startCreateDate, Date endCreateDate,
-            String workloadType, String dateField, Integer pageIndex, Integer pageSize) {
+    public List<Workload> getWorkLoadList(short siteId, Integer[] status, Date startCreateDate, Date endCreateDate,
+            String workloadType, String dateField) {
         QueryHandler queryHandler = getQueryHandler("select new com.publiccms.views.pojo.entities.Workload(");
         if ("dept".equalsIgnoreCase(workloadType)) {
             queryHandler.append("0,bean.deptId");
@@ -286,7 +298,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
             queryHandler.group("bean.categoryId");
         }
         queryHandler.order("count(*) desc");
-        return getPage(queryHandler, pageIndex, pageSize, Workload.class);
+        return getList(queryHandler, Workload.class);
     }
 
     public List<CmsContent> getListByQuoteId(short siteId, long quoteId) {

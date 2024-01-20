@@ -378,7 +378,7 @@ $.fn.extend({
         return this.each(function() {
             var $this = $(this);
             $this.click(function(event) {
-                var url = $this.attr("href").replaceTmById($(event.target).parents(".unitBox:first"));
+                var url = $this.attr("href").replaceTmById($(event.target).parents(".unitBox").first());
                 JUI.debug(url);
                 if (!url.isFinishedTm() ) {
                     alertMsg.error($this.attr("warn") || JUI.msg("alertSelectMsg"));
