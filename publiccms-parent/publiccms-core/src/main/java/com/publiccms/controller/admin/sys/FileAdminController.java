@@ -258,8 +258,13 @@ public class FileAdminController {
                                         LogLoginService.CHANNEL_WEB_MANAGER, originalName, false, fileType,
                                         uploadResult.getFileSize(), uploadResult.getWidth(), uploadResult.getHeight(),
                                         RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
-                                result.put(field, DocToHtmlUtils.pdfToHtml(CommonUtils.joinString(site.getSitePath(), fileName),
-                                        width, height));
+                                result.put(field,
+                                        DocToHtmlUtils.pdfToHtml(
+                                                CommonUtils.joinString(site.getDynamicPath(),
+                                                        "resource/plugins/pdfjs/viewer.html?",
+                                                        CommonUtils
+                                                                .encodeURI(CommonUtils.joinString(site.getSitePath(), fileName))),
+                                                width, height));
                             } catch (IllegalStateException | IOException e) {
                                 log.error(e.getMessage());
                             }
