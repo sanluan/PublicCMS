@@ -66,17 +66,48 @@
             </li>
         </@sys.authorized>
     </@tools.masterSite>
+            <ul class="langList">
+                <@sys.configData code="site"><#assign excludeLangs=(object.site_exclude_lang!'')?split(',')/></@sys.configData>
+                <#list langs as k,v>
+                    <#if !(excludeLangs?has_content && excludeLangs?seq_contains(k))>
+                <li<#if t.pageMessage("lang")=k> class="current-lang"</#if>>
+                    <a href="changeLocale?lang=${k}" target="ajaxTodo">
+                        <img src="${base}/resource/images/${k}.png" alt="${v}"/>${v}
+                    </a>
+                </li>
+                    </#if>
+                </#list>
+            </ul>
+            <ul class="themeList" id="themeList">
+                <li theme="toptry"><div></div></li>
+                <li theme="red"><div></div></li>
+            </ul>
         </ul>
     </header>
     <main>
-        <div id="leftside">
+        <aside id="leftside">
             <div id="sidebar_s"><i class="icon-reorder icon-large"></i></div>
-            <div id="sidebar">
+            <nav id="sidebar">
                 <div id="menu">
                     <#include "menus.html"/>
                 </div>
-            </div>
-        </div>
+                <footer>
+                    <@tools.version>
+                        <#if authorizationEdition>
+                            <a href="common/license.html" target="dialog" mask="true"><@t.page "license"/>: ${getLicense().authorization!}</a>
+                        <#else>
+                            <@t.page "license.no"/>
+                            <@tools.masterSite>
+                                <@sys.authorized roleIds=admin.roles url="sysSite/uploadLicense">
+                            <a href="sysSite/uploadLicense.html" target="navTab" rel="sysSite/uploadLicense" title="<@t.menu 'license'/>"><@t.page "license.upgrade"/></a>
+                                </@sys.authorized>
+                            </@tools.masterSite>
+                        </#if>
+                    </@tools.version>
+                    Copyright &copy; ${.now?string("yyyy")}
+                </footer>
+            </nav>
+        </aside>
         <div id="navTab" class="tabsPage">
             <div class="tabsPageHeader">
                 <div class="tabsPageHeaderContent">
@@ -98,37 +129,6 @@
             </div>
         </div>
     </main>
-    <footer>
-        <ul class="langList">
-            <@sys.configData code="site"><#assign excludeLangs=(object.site_exclude_lang!'')?split(',')/></@sys.configData>
-            <#list langs as k,v>
-                <#if !(excludeLangs?has_content && excludeLangs?seq_contains(k))>
-            <li<#if t.pageMessage("lang")=k> class="current-lang"</#if>>
-                <a href="changeLocale?lang=${k}" target="ajaxTodo">
-                    <img src="${base}/resource/images/${k}.png" alt="${v}"/>${v}
-                </a>
-            </li>
-                </#if>
-            </#list>
-        </ul>
-    <@tools.version>
-        <#if authorizationEdition>
-            <a href="common/license.html" target="dialog" mask="true"><@t.page "license"/>: ${getLicense().authorization!}</a>
-        <#else>
-            <@t.page "license.no"/>
-            <@tools.masterSite>
-                <@sys.authorized roleIds=admin.roles url="sysSite/uploadLicense">
-            <a href="sysSite/uploadLicense.html" target="navTab" rel="sysSite/uploadLicense" title="<@t.menu 'license'/>"><@t.page "license.upgrade"/></a>
-                </@sys.authorized>
-            </@tools.masterSite>
-        </#if>
-    </@tools.version>
-        Copyright &copy; ${.now?string("yyyy")}
-        <ul class="themeList" id="themeList">
-            <li theme="toptry"><div></div></li>
-            <li theme="red"><div></div></li>
-        </ul>
-    </footer>
     <script>
         var base = "${base+adminContextPath}";
         window.UEDITOR_HOME_URL = "${(parentSite!site).dynamicPath}resource/plugins/ueditor/";

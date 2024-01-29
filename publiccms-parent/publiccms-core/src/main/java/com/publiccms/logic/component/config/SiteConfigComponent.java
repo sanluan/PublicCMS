@@ -24,12 +24,12 @@ import com.publiccms.logic.service.cms.CmsContentService;
 public class SiteConfigComponent implements Config {
 
     /**
-     * 
+     *
      */
     public static final String CONFIG_CODE = "site";
 
     /**
-     * 
+     *
      */
     public static final String CONFIG_CODE_DESCRIPTION = CommonUtils.joinString(CONFIGPREFIX, CONFIG_CODE);
 
@@ -41,6 +41,10 @@ public class SiteConfigComponent implements Config {
      * register url
      */
     public static final String CONFIG_REGISTER_URL = "register_url";
+    /**
+     * pdfviewer url
+     */
+    public static final String CONFIG_PDFVIEWER_URL = "pdfviewer_url";
     /**
      * site exclude module
      */
@@ -119,6 +123,8 @@ public class SiteConfigComponent implements Config {
                 getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_REGISTER_URL)), null));
         extendFieldList.add(new SysExtendField(CONFIG_LOGIN_PATH, INPUTTYPE_TEXT,
                 getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_LOGIN_PATH)), null));
+        extendFieldList.add(new SysExtendField(CONFIG_PDFVIEWER_URL, INPUTTYPE_TEXT,
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_PDFVIEWER_URL)), null));
 
         if (site.isUseStatic()) {
             extendFieldList.add(new SysExtendField(CONFIG_CATEGORY_TEMPLATE_PATH, INPUTTYPE_TEMPLATE, false,

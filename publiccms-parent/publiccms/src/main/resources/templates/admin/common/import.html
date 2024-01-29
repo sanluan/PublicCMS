@@ -46,6 +46,7 @@ $(".pageFormContent",$.pdialog.getCurrent()).on("change","input[type=file]",func
         var filenames=$(this)[0].files[0].name.toLowerCase().split('.');
         if('pdf' == filenames[filenames.length-1]){
             $('.iframe',$.pdialog.getCurrent()).show();
+            $('input[name=useIframe]',$.pdialog.getCurrent()).click();
         } else {
             $('.iframe',$.pdialog.getCurrent()).hide();
         }

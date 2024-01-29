@@ -26,6 +26,19 @@ See https://github.com/adobe-type-tools/cmap-resources
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="google" content="notranslate">
     <title>PDF.js viewer</title>
+    <script>
+    function parseQueryString(query) {
+      var  params = new Map();
+      for (var [key, value] of new URLSearchParams(query)) {
+        params.set(key.toLowerCase(), value);
+      }
+      return params;
+    }
+    var queryParams = new URLSearchParams(document.location.search.substring(1));
+    if(queryParams.has("file") && navigator.userAgent.match(/iPhone|iPad|iPod/i) ) {
+        window.open(queryParams.get("file"));
+    }
+    </script>
 
 <!-- This snippet is used in production (included from viewer.html) -->
 <link rel="resource" type="application/l10n" href="locale/locale.json">
