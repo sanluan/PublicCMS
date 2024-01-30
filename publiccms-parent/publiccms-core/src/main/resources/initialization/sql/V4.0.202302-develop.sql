@@ -206,3 +206,5 @@ ALTER TABLE `cms_comment`
   MODIFY COLUMN `scores` int(11) NOT NULL default 0 COMMENT '分数' AFTER `replies`,
   MODIFY COLUMN `status` int(11) NOT NULL default 1 COMMENT '状态：1、已发布 2、待审核' AFTER `create_date`,
   MODIFY COLUMN `disabled` tinyint(1) NOT NULL default 0 COMMENT '已禁用', AFTER `status`;
+-- 2024-01-30 --
+UPDATE `sys_module` SET `authorized_url`= 'sysConfigData/export',url = NULL WHERE `id` ='config_data_export';

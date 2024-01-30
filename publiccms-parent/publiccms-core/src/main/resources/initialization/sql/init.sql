@@ -879,7 +879,7 @@ INSERT INTO `sys_module` VALUES ('common', NULL, NULL, NULL, NULL, 0, 0);
 INSERT INTO `sys_module` VALUES ('config_add', 'sysConfig/add', 'sysConfig/save', NULL, 'config_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('config_data_delete', NULL, 'sysConfigData/delete', NULL, 'config_data_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('config_data_edit', NULL, 'sysConfigData/save,sysConfigData/edit', NULL, 'config_data_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('config_data_export', 'sysConfigData/export', 'cmsCategory/doImport', NULL, 'config_data_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('config_data_export', NULL, 'sysConfigData/export', NULL, 'config_data_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('config_data_list', 'sysConfigData/list', NULL, 'icon-cog', 'system_menu', 1, 1);
 INSERT INTO `sys_module` VALUES ('config_data_import', 'sysConfigData/import', 'sysConfigData/doImport', NULL, 'config_data_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('config_delete', NULL, 'sysConfig/delete', NULL, 'config_list', 0, 0);
