@@ -2,7 +2,7 @@
  * @author ZhangHuihua@msn.com
  */
 var JUI = {
-    version: "1.6.2" ,
+    version: "1.7.0" ,
     regPlugins: [ ], // [function($parent){} ...]
     // sbar: show sidebar
     keyCode: {
@@ -31,9 +31,6 @@ var JUI = {
     } ,
     keys: {
         statusCode: "statusCode", message: "message"
-    } ,
-    ui: {
-        sbar: true
     } ,
     frag: {}, // page fragment
     _msg: {}, // alert message

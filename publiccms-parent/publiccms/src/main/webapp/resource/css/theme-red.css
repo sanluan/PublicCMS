@@ -6,12 +6,12 @@ body,html{color:#31353e;}
 a{color:#8f0006;}
 h2.contentTitle{border-color:#e4e9f2;background-color:#fff;}
 header{background-color:#8f0006;color:#afc5f6;}
+header .navbar-toggler li{background-color:#8f0006;}
+header .navbar-toggler li:hover{background-color:#b52e31;}
+header .navbar-toggler li:hover a,header .nav a:hover{color:#fff;}
 header .nav ul{background-color:#D8403D;}
 header .nav ul li a { color:#000;}
 header a{color:#efefef;}
-#navMenu li{background-color:#8f0006;}
-#navMenu li.selected,#navMenu li:hover{background-color:#b52e31;}
-#navMenu li.selected a,#navMenu li:hover a,header .nav a:hover{color:#fff;}
 /* 主界面 */
 
 #sidebar{background-color:#FAE1E1;}

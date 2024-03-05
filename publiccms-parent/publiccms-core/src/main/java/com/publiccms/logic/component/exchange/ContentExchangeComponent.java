@@ -1,7 +1,6 @@
 package com.publiccms.logic.component.exchange;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -14,11 +13,9 @@ import javax.annotation.Resource;
 import org.apache.commons.compress.archivers.ArchiveOutputStream;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipFile;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
-import com.publiccms.common.api.Config;
 import com.publiccms.common.base.AbstractDataExchange;
 import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.PageHandler;
@@ -31,10 +28,8 @@ import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.cms.CmsContentFile;
 import com.publiccms.entities.cms.CmsContentProduct;
 import com.publiccms.entities.cms.CmsContentRelated;
-import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
-import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.ModelComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsCategoryService;
@@ -62,8 +57,6 @@ public class ContentExchangeComponent extends AbstractDataExchange<CmsContent, C
     private CmsContentService service;
     @Resource
     private TemplateComponent templateComponent;
-    @Resource
-    private SiteComponent siteComponent;
     @Resource
     private ModelComponent modelComponent;
     @Resource
@@ -131,39 +124,26 @@ public class ContentExchangeComponent extends AbstractDataExchange<CmsContent, C
         CmsCategory category = categoryService.getEntity(entity.getCategoryId());
         if (null != category) {
             Set<String> webfileList = null;
+            Set<String> privateFileList = null;
             if (null == directory) {
                 webfileList = new HashSet<>();
+                privateFileList = new HashSet<>();
             }
             CmsModel model = modelComponent.getModel(site, entity.getModelId());
-            Content data = exportEntity(site, category.getCode(), entity, model, webfileList);
+            Content data = exportEntity(site, category.getCode(), entity, model, webfileList, privateFileList);
             if (null != model && model.isHasChild()) {
                 List<CmsContent> list = service.getListByTopId(site.getId(), entity.getId());
                 if (null != list) {
                     List<Content> childList = new ArrayList<>();
                     for (CmsContent content : list) {
-                        childList.add(exportEntity(site, category.getCode(), content, model, webfileList));
+                        childList.add(exportEntity(site, category.getCode(), content, model, webfileList, privateFileList));
                     }
                     data.setChildList(childList);
                 }
             }
             export(directory, out, archiveOutputStream, data, CommonUtils.joinString(entity.getId(), ".json"));
-            if (null != webfileList && !webfileList.isEmpty()) {
-                for (String file : webfileList) {
-                    String fullName;
-                    if (file.startsWith(site.getSitePath())) {
-                        fullName = StringUtils.removeStart(file, site.getSitePath());
-                    } else {
-                        fullName = file;
-                    }
-                    if (fullName.contains(Constants.DOT) && !fullName.contains(".htm")) {
-                        String filepath = siteComponent.getWebFilePath(site.getId(), fullName);
-                        try {
-                            ZipUtils.compressFile(new File(filepath), archiveOutputStream,
-                                    CommonUtils.joinString(ATTACHMENT_DIR, fullName));
-                        } catch (IOException e) {
-                        }
-                    }
-                }
+            if (null == directory) {
+                exportAttachment(site, webfileList, privateFileList, archiveOutputStream);
             }
         }
     }
@@ -174,6 +154,8 @@ public class ContentExchangeComponent extends AbstractDataExchange<CmsContent, C
         if (null == directory) {
             String filepath = siteComponent.getWebFilePath(site.getId(), Constants.SEPARATOR);
             ZipUtils.unzip(zipFile, ATTACHMENT_DIR, filepath, overwrite, null);
+            String privateFilepath = siteComponent.getPrivateFilePath(site.getId(), Constants.SEPARATOR);
+            ZipUtils.unzip(zipFile, PRIVATE_DIR, privateFilepath, overwrite, null);
         }
     }
 
@@ -182,11 +164,11 @@ public class ContentExchangeComponent extends AbstractDataExchange<CmsContent, C
         CmsCategory category = categoryService.getEntityByCode(site.getId(), data.getCategoryCode());
         SysUser user = sysUserService.getEntity(userId);
         if (null != category) {
-            save(site, userId, overwrite, category, user, data);
+            save(site, overwrite, category, user, data);
         }
     }
 
-    public void save(SysSite site, long userId, boolean overwrite, CmsCategory category, SysUser user, Content data) {
+    public void save(SysSite site, boolean overwrite, CmsCategory category, SysUser user, Content data) {
         CmsContent entity = data.getEntity();
         CmsContent oldentity = service.getEntity(entity.getId());
         if (null != category
@@ -195,7 +177,7 @@ public class ContentExchangeComponent extends AbstractDataExchange<CmsContent, C
                 entity.setId(null);
             }
             entity.setSiteId(site.getId());
-            entity.setUserId(userId);
+            entity.setUserId(user.getId());
             entity.setDeptId(null != user ? user.getDeptId() : null);
             entity.setCategoryId(category.getId());
             if (null == entity.getId()) {
@@ -228,8 +210,32 @@ public class ContentExchangeComponent extends AbstractDataExchange<CmsContent, C
             if (null != data.getChildList()) {
                 for (Content child : data.getChildList()) {
                     child.getEntity().setParentId(entity.getId());
-                    save(site, userId, overwrite, category, user, child);
+                    save(site, overwrite, category, user, child);
                 }
+            }
+            if (null != data.getFileList()) {
+                for (CmsContentFile file : data.getFileList()) {
+                    file.setId(null);
+                    file.setUserId(user.getId());
+                    file.setContentId(entity.getId());
+                }
+                fileService.save(data.getFileList());
+            }
+            if (null != data.getProductList()) {
+                for (CmsContentProduct product : data.getProductList()) {
+                    product.setId(null);
+                    product.setSiteId(site.getId());
+                    product.setUserId(user.getId());
+                    product.setContentId(entity.getId());
+                }
+                productService.save(data.getProductList());
+            }
+            if (null != data.getRelatedList()) {
+                for (CmsContentRelated related : data.getRelatedList()) {
+                    related.setContentId(entity.getId());
+                    related.setUserId(user.getId());
+                }
+                // TODO save related list
             }
             try {
                 templateComponent.createContentFile(site, entity, category, null);
@@ -238,7 +244,8 @@ public class ContentExchangeComponent extends AbstractDataExchange<CmsContent, C
         }
     }
 
-    private Content exportEntity(SysSite site, String categoryCode, CmsContent entity, CmsModel model, Set<String> webfileList) {
+    private Content exportEntity(SysSite site, String categoryCode, CmsContent entity, CmsModel model, Set<String> webfileList,
+            Set<String> privateFileList) {
         Content data = new Content();
         data.setCategoryCode(categoryCode);
         data.setEntity(entity);
@@ -257,21 +264,9 @@ public class ContentExchangeComponent extends AbstractDataExchange<CmsContent, C
                         .setText(StringUtils.replace(data.getAttribute().getText(), site.getDynamicPath(), "#DYNAMICPATH#"));
             }
             if (CommonUtils.notEmpty(data.getAttribute().getData())) {
-                if (null != webfileList) {
-                    Map<String, String> map = ExtendUtils.getExtendMap(data.getAttribute().getData());
-                    for (SysExtendField extendField : model.getExtendList()) {
-                        if (ArrayUtils.contains(Config.INPUT_TYPE_EDITORS, extendField.getInputType())) {
-                            String value = map.get(extendField.getId().getCode());
-                            if (CommonUtils.notEmpty(value)) {
-                                HtmlUtils.getFileList(map.get(extendField.getId().getCode()), webfileList);
-                            }
-                        } else if (ArrayUtils.contains(Config.INPUT_TYPE_FILES, extendField.getInputType())) {
-                            String value = map.get(extendField.getId().getCode());
-                            if (CommonUtils.notEmpty(value)) {
-                                webfileList.add(map.get(extendField.getId().getCode()));
-                            }
-                        }
-                    }
+                if (null != webfileList || null != privateFileList) {
+                    Map<String, String> extendMap = ExtendUtils.getExtendMap(data.getAttribute().getData());
+                    exportFileList(extendMap, model.getExtendList(), webfileList, privateFileList);
                 }
                 data.getAttribute().setData(StringUtils.replace(data.getAttribute().getData(), site.getSitePath(), "#SITEPATH#"));
                 data.getAttribute()

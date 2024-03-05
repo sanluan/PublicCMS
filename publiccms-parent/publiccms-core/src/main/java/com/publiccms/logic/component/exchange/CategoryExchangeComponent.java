@@ -1,7 +1,6 @@
 package com.publiccms.logic.component.exchange;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -16,17 +15,14 @@ import javax.annotation.Resource;
 import org.apache.commons.compress.archivers.ArchiveOutputStream;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipFile;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
-import com.publiccms.common.api.Config;
 import com.publiccms.common.base.AbstractDataExchange;
 import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ExtendUtils;
-import com.publiccms.common.tools.HtmlUtils;
 import com.publiccms.common.tools.ZipUtils;
 import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.entities.cms.CmsCategoryModel;
@@ -116,36 +112,11 @@ public class CategoryExchangeComponent extends AbstractDataExchange<CmsCategory,
             if (null == directory) {
                 CmsCategoryType categoryType = modelComponent.getCategoryType(site.getId(), entity.getTypeId());
                 if (null != categoryType) {
-                    Map<String, String> map = ExtendUtils.getExtendMap(data.getAttribute().getData());
-                    Set<String> filelist = new HashSet<>();
-                    for (SysExtendField extendField : categoryType.getExtendList()) {
-                        if (ArrayUtils.contains(Config.INPUT_TYPE_EDITORS, extendField.getInputType())) {
-                            String value = map.get(extendField.getId().getCode());
-                            if (CommonUtils.notEmpty(value)) {
-                                HtmlUtils.getFileList(map.get(extendField.getId().getCode()), filelist);
-                            }
-                        } else if (ArrayUtils.contains(Config.INPUT_TYPE_FILES, extendField.getInputType())) {
-                            String value = map.get(extendField.getId().getCode());
-                            if (CommonUtils.notEmpty(value)) {
-                                filelist.add(map.get(extendField.getId().getCode()));
-                            }
-                        }
-                    }
-                    if (!filelist.isEmpty()) {
-                        for (String file : filelist) {
-                            if (file.startsWith(site.getSitePath())) {
-                                String fullName = StringUtils.removeStart(file, site.getSitePath());
-                                if (fullName.contains(Constants.DOT) && !fullName.contains(".htm")) {
-                                    String filepath = siteComponent.getWebFilePath(site.getId(), fullName);
-                                    try {
-                                        ZipUtils.compressFile(new File(filepath), archiveOutputStream,
-                                                CommonUtils.joinString(ATTACHMENT_DIR, fullName));
-                                    } catch (IOException e) {
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    Map<String, String> extendMap = ExtendUtils.getExtendMap(data.getAttribute().getData());
+                    Set<String> webfileList = new HashSet<>();
+                    Set<String> privateFileList = new HashSet<>();
+                    exportFileList(extendMap, categoryType.getExtendList(), webfileList, privateFileList);
+                    exportAttachment(site, webfileList, privateFileList, archiveOutputStream);
                 }
             }
             data.getAttribute().setData(StringUtils.replace(data.getAttribute().getData(), site.getSitePath(), "#SITEPATH#"));

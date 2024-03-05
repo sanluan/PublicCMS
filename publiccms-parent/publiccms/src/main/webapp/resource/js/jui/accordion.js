@@ -341,80 +341,53 @@
     };
     $.fn.jBar = function(options) {
         var op = $.extend({
-            container: "#navTab",containerHeader: "#navTab .tabsPageHeader", toggleBut: ".toggleCollapse", sideBar: "#sidebar", sideBar2: "#sidebar_s", splitBar: "#splitBar",
-            splitBar2: "#splitBarProxy", iconClass: "icon-chevron-sign-right"
+            container: "#navTab",containerHeader: "#navTab .tabsPageHeader", toggleBut: ".navbar-toggler", sideBar: "#sidebar", splitBar: "#splitBar",
+            splitBar2: "#splitBarProxy", iconClass: "side-right" , toggleClass : "collapse"
         }, options);
         return this.each(function() {
             var jbar = this;
-            var sbar = $(op.sideBar2, jbar);
             var bar = $(op.sideBar, jbar);
             $(op.toggleBut).click(function() {
                 if($(op.splitBar).is(":visible")){
-                    JUI.ui.sbar = false;
-                    $(".icon",op.toggleBut).addClass(op.iconClass);
+                    $(op.toggleBut).addClass(op.iconClass);
                     $(op.splitBar).hide();
-                    var barleft = sbar.outerWidth() - bar.outerWidth();
-                    var cleft = $(op.container).cssv("margin-left") - bar.outerWidth();
-                    var cwidth = bar.outerWidth() + $(op.container).outerWidth();
-                    $(op.containerHeader).animate({
-                        "margin-left": sbar.outerWidth()
-                    },50);
-                    sbar.show().css("left", 0);
+                    var cwidth = bar.outerWidth() + $(op.container).outerWidth() - 50;
                     $(op.container).animate({
-                        "margin-left": cleft, width: cwidth
+                        "margin-left" : 50, width : cwidth
                     }, 50, function() {
                         bar.animate({
-                            left: barleft,
-                            top: sbar.outerHeight()
+                            width: 50
                         }, 50, function() {
-                            bar.hide();
-                            bar.css("bottom","auto");
+                            bar.addClass(op.toggleClass);
                             $(window).trigger(JUI.eventType.resizeGrid);
                             $(window).trigger(JUI.eventType.resizeChart);
                         });
                     });
-                    $(sbar).click(function() {
-                        if (bar.is(":hidden") ) {
-                            bar.show().animate({
-                                left: 0
-                            }, 50);
-                            $(op.container).click(_hideBar);
-                        } else {
+                    $(bar).hover(function() {
+                        if (bar.hasClass(op.toggleClass) ) {
                             bar.animate({
-                                left: barleft
-                            }, 50, function() {
-                                bar.hide();
-                            });
+                                width: $(op.splitBar).cssv("left")
+                            }, 50);
                         }
-                        function _hideBar() {
-                            $(op.container).off("click", null, _hideBar);
-                            if (!JUI.ui.sbar ) {
-                                bar.animate({
-                                    left: barleft
-                                }, 50, function() {
-                                    bar.hide();
-                                });
-                            }
+                    },function(){
+                        if (bar.hasClass(op.toggleClass) ) {
+                            bar.animate({
+                                 width: 50
+                            }, 50);
                         }
-                        return false;
                     });
                 }else{
-                    JUI.ui.sbar = true;
-                    $(".icon",op.toggleBut).removeClass(op.iconClass);
-                    sbar.css("left", -50);
-                    $(op.containerHeader).animate({
-                        "margin-left": 0
-                    }, 80);
-                    bar.show().css("bottom",0).css("top",0).animate({
-                        left: 0
+                    $(op.toggleBut).removeClass(op.iconClass);
+                    bar.animate({
+                        width: $(op.splitBar).cssv("left")
                     }, 80, function() {
                         $(op.splitBar).show();
+                        bar.removeClass(op.toggleClass);
                         var cleft = bar.outerWidth();
                         var cwidth = $(op.container).outerWidth() - ( cleft - $(op.container).cssv("margin-left") );
                         $(op.container).css({
                             "margin-left": cleft, width: cwidth
                         });
-                        $(sbar).off("click");
                         $(window).trigger(JUI.eventType.resizeGrid);
                         $(window).trigger(JUI.eventType.resizeChart);
                     });

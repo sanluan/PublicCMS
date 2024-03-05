@@ -64,8 +64,8 @@ function initEnv() {
  * 初始化布局
  */
 function initLayout() {
-    var iContentW = $(window).width() - (JUI.ui.sbar ? $("#sidebar").width() : 0);
-    var iContentH = $(window).height() - $("header").outerHeight(true) - $("footer").outerHeight(true);
+    var iContentW = $(window).width() - $("#sidebar").width();
+    var iContentH = $(window).height() - $("header").outerHeight(true);
     $("#navTab").css({"width":iContentW+"px"});
     $("main .tabsPageContent").height(iContentH - $(".tabsPageHeader").outerHeight(true)).find("[layoutH]").layoutH();
     $("#splitBar, #splitBarProxy").height(iContentH - 2);
