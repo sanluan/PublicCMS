@@ -363,19 +363,6 @@
                             $(window).trigger(JUI.eventType.resizeChart);
                         });
                     });
-                    $(bar).hover(function() {
-                        if (bar.hasClass(op.toggleClass) ) {
-                            bar.animate({
-                                width: $(op.splitBar).cssv("left")
-                            }, 50);
-                        }
-                    },function(){
-                        if (bar.hasClass(op.toggleClass) ) {
-                            bar.animate({
-                                 width: 50
-                            }, 50);
-                        }
-                    });
                 }else{
                     $(op.toggleBut).removeClass(op.iconClass);
                     bar.animate({

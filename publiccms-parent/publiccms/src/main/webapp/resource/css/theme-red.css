@@ -18,12 +18,12 @@ header a{color:#efefef;}
 #sidebar_s{background-color:#FA5151;}
 .tabsPage{background-color:#edf1f5;}
 .accordion .accordionHeader{background-color:#b52e31;}
-.accordion .accordionHeader h2.collapsable{color:#fff;}
+.accordion .accordionHeader h2.collapsable,.accordion .accordionHeader a h2.collapsable{color:#fff;}
 .accordion .accordionContent{background-color:#FAE1E1;}
 #splitBarProxy{border-color:#c0c0c0;background-color:#CCC;}
 
 #sidebar_s,.accordion .accordionHeader{color:#e3e3e3;}
-.accordion .accordionContent,.accordionContent .tree a,.accordionContent .tree div:hover{color:#333;}
+.accordion .accordionContent,.accordionContent .tree a,.accordionContent .tree div:hover,.accordion .accordionHeader a{color:#333;}
 .accordionContent .tree div:hover a{background-color:#D8403D;color:#eee;}
 .accordionContent .tree div.selected a{background-color:#FA5151;color:#fff;}
 

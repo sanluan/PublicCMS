@@ -17,10 +17,11 @@ header a{color:#afc5f6;}
 .tabsPage{background-color:#edf1f5;}
 .accordion .accordionHeader{background-color:#2A3042;}
 .accordion .accordionHeader h2.collapsable{color:#fff;background-color:#3B445F;}
+.accordion .accordionHeader a h2.collapsable{color:#fff;}
 .accordion .accordionContent{background-color:#2A3042;}
 #splitBarProxy{border-color:#c0c0c0;background-color:#CCC;}
 
-#sidebar_s,.accordion .accordionHeader,.accordion .accordionContent,.accordionContent .tree a,.accordionContent .tree div:hover{color:#9ab;}
+#sidebar_s,.accordion .accordionHeader,.accordion .accordionContent,.accordionContent .tree a,.accordionContent .tree div:hover,.accordion .accordionHeader a{color:#9ab;}
 .accordionContent .tree div:hover a{background-color:#19202f;color:#8d95a7;}
 .accordionContent .tree div.selected a{background-color:#667ea7;color:#fff;}
 

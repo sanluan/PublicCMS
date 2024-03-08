@@ -43,7 +43,7 @@ header .logo img{width:121px;max-height:50px;margin-left:19px;}
 header .nav.left{position:unset;}
 header .nav{display:block;position:absolute;right:0px;z-index:2;}
 header .nav a:hover{text-decoration:none;}
-header .nav li{float:left;padding:0 5px;position:relative;}
+header .nav li{float:left;padding:0 10px;position:relative;}
 header .nav li a{line-height:50px;font-size:12px;}
 header .nav ul{display:none;width:100px;border-style:solid;border-width:1px;border-radius:3px;overflow:hidden;position:absolute;top:45px;right:0;}
 header .nav ul li{margin-top:2px;line-height:26px;padding-left:10px;}
@@ -57,13 +57,9 @@ header .navbar-toggler.side-right{background-image:url(../images/side-right.png)
 #sidebar{position:absolute;left:0px;z-index:20;display:block;top:0;bottom:0;width:185px;}
 #sidebar.collapse{width:50px;}
 #sidebar.collapse .hideWhenIndented{display:none;}
-#sidebar.collapse .accordion .accordionContent{height:0;}
-#sidebar.collapse .accordion .accordionContent ul{display:none;}
 #sidebar.collapse footer{display:none;}
-#sidebar.collapse:hover .hideWhenIndented{display:unset;}
-#sidebar.collapse:hover .accordion .accordionContent{height:auto;}
-#sidebar.collapse:hover .accordion .accordionContent ul{display:unset;}
-#sidebar.collapse:hover footer{display:block;}
+#sidebar.collapse .accordion .accordionContent{position:absolute;left:50px;margin-top:-40px;width:170px;display:none;}
+#sidebar.collapse:hover .accordion .accordionContent{display:block;}
 
 #sidebar #menu{overflow:auto;height:100%;}
 #splitBar{display:block;overflow:hidden;width:2px;cursor:col-resize;position:absolute;top:50px;left:183px;z-index:20;}
@@ -76,7 +72,8 @@ header .navbar-toggler.side-right{background-image:url(../images/side-right.png)
 .accordion .accordionHeader h2{display:block;overflow:hidden;padding:0 10px 0 10px;height:40px;line-height:40px;font-weight:400;}
 .accordion .accordionHeader h2>i{margin-left:5px;margin-right:5px;}
 .accordion .accordionHeader h2 .icon{float:right;line-height:36px;}
-.accordion .accordionContent{display:block;overflow:auto;box-sizing: border-box;max-height:100%;}
+.accordion .accordionHeader a:hover{text-decoration:none;}
+.accordion .accordionContent{display:block;overflow:auto;box-sizing: border-box;}
 .accordion .accordionContent .tree a{line-height:34px;height:auto;}
 .accordion .accordionContent .tree div{height:auto;}
 .accordion .accordionContent .tree div div{background:0 0;width:25px;height:34px;}
@@ -260,7 +257,7 @@ a.button:hover{text-decoration:none;}
 .rightPageContent{margin-left:186px;}
 .thumbnail,.image-list{position:relative;overflow:hidden;margin-top:5px;margin-right:5px;border:1px dashed #cacbcc;display:inline-block;text-align:center;line-height:0px;}
 /* Pages default */
-.page{display:block;overflow:hidden;float:left;width:100%;height:100%;-webkit-overflow-scrolling:touch;}
+.page{display:block;overflow:hidden;width:100%;height:100%;-webkit-overflow-scrolling:touch;}
 .pageHeader{display:block;overflow:hidden;padding:10px;position:relative;}
 .card{margin:10px;border-radius:5px;background-color:#fff;-moz-box-shadow:0px 0px 5px 1px #DDE4EF;box-shadow:0px 0px 5px 1px #DDE4EF;-ms-box-shadow:0px 0px 5px 1px #DDE4EF;-o-box-shadow:0px 0px 5px 1px #DDE4EF;-webkit-box-shadow:0px 0px 5px 1px #DDE4EF;}
 .searchBar .textInput,.searchBar span{float:left;}
