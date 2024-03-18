@@ -295,6 +295,7 @@ function initLink($p) {
                 var themeName = $this.attr("class");
                 if(themeName == op.defaultTheme){
                     $this.addClass("selected");
+                    $(".theme").prop("class","theme "+themeName);
                 }
                 $this.addClass(themeName).click(function() {
                     setTheme(themeName);

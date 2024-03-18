@@ -46,10 +46,9 @@ header .nav{display:block;position:absolute;right:0px;z-index:2;}
 header .nav>li{float:left;padding:0 10px;line-height:48px;position:relative;}
 header .nav>li a{font-size:12px;}
 header .nav>li>ul{display:none;position:absolute;line-height:20px;z-index:99;width:100px;border-style:solid;border-width:1px;border-radius:3px;overflow:hidden;top:45px;right:0;}
-header .nav>li>ul>li{padding:5px;float:right;}
+header .nav>li>ul>li{padding:8px;float:right;}
 header .nav>li:hover>ul{display:block;}
 
-.langList li,.themeList li{padding:10px;}
 .langList img{height:20px;box-sizing:border-box;}
 .langList li.selected img{border:1px solid #fff;}
 .theme{display:inline-block;background-repeat:no-repeat;background-size:contain;}
