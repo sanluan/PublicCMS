@@ -20,11 +20,5 @@
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/io.github.ck-jesse/l2cache-core -->
-        <dependency>
-            <groupId>io.github.ck-jesse</groupId>
-            <artifactId>l2cache-core</artifactId>
-            <version>1.0.38</version>
-        </dependency>
     </dependencies>
 </project>
