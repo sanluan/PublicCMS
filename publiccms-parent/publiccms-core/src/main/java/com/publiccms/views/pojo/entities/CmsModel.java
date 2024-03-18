@@ -7,11 +7,9 @@ import java.util.Set;
 
 import javax.validation.constraints.NotNull;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.publiccms.common.api.Config;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysExtendField;
 

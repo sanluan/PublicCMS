@@ -224,7 +224,7 @@ INSERT INTO `sys_module_lang` VALUES ('operation', 'en', 'Operation');
 INSERT INTO `sys_module_lang` VALUES ('operation', 'ja', '操作');
 INSERT INTO `sys_module_lang` VALUES ('operation', 'zh', '运营');
 UPDATE sys_module SET parent_id='operation' where parent_id in ('visit_menu','log_menu');
-UPDATE sys_module SET parent_id=NULL,id='trade',sort=4 where id = 'trade_menu';
+UPDATE sys_module SET parent_id=NULL,id='trade',sort=4,attached='bi bi-cart4' where id = 'trade_menu';
 UPDATE sys_module_lang SET module_id='trade' where module_id = 'trade_menu';
 UPDATE sys_module SET parent_id='trade' where parent_id = 'trade_menu';
 UPDATE sys_module SET parent_id='trade',sort=1 where id = 'product_list';
@@ -237,3 +237,5 @@ UPDATE sys_module_lang SET value='システム',module_id ='system' where module
 UPDATE sys_module_lang SET value='系统',module_id ='system' where module_id ='maintenance' and lang= 'zh';
 UPDATE sys_module SET sort=8 WHERE id = 'myself';
 UPDATE sys_module SET attached='bi bi-pie-chart' WHERE id = 'report_visit';
+UPDATE sys_module SET sort=0,menu=1,id ='page_preview',parent_id='page',attached='bi bi-palette2' where id = 'page_diy_preview';
+UPDATE sys_module_lang SET module_id='page_preview' where module_id = 'page_diy_preview';

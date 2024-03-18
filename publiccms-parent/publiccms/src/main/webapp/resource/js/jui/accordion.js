@@ -248,10 +248,9 @@
  * @author zhanghuihua@msn.com
  */
 ( function($) {
-    $.fn.navMenu = function(callback) {
+    $.fn.navMenu = function() {
         return this.each(function() {
             var $box = $(this);
-            var $callback = callback;
             $box.find("li>a").click(function() {
                 var $a = $(this);
                 if(!$a.is("[href^=javascript]")){
@@ -259,10 +258,6 @@
                         type: "get", url: $a.attr("href"), callback: function(response) {
                             $box.find("li").removeClass("selected");
                             $a.parent().addClass("selected");
-                            if($callback ) {
-                                $callback();
-                                $callback = null;
-                            }
                         }
                     });
                 }

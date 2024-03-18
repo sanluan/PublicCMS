@@ -447,9 +447,8 @@ var navTab = {
             }
             if ($.History) {
                 setTimeout(function(){
-                    $.History.addHistory($("#navMenu .selected a").attr("parentid") + "_" + tabid, function(hash){
-                        var tabid = hash.substring(hash.indexOf("_")+1);
-                        var i = navTab._indexTabId(tabid);
+                    $.History.addHistory(tabid, function(hash){
+                        var i = navTab._indexTabId(hash);
                         if (i >= 0) {
                             navTab._switchTab(i);
                         }

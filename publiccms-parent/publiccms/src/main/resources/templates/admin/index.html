@@ -22,16 +22,29 @@
         <div class="logo"><img src="<#if siteAttribute.logo?has_content>${getUrl(siteAttribute.logo)}<#else>${base}/resource/logo.png</#if>" alt="LOGO"/></div>
         <ul class="nav">
             <li>
-                <a href="javascript:void()">
-                    <img class="avatar" src="${base}/resource/images/${t.pageMessage("lang")}.png" alt="${langs[t.pageMessage("lang")]}"/>
+                <a href="${site.dynamicPath!}" target="_blank"><i class="icon-home icon-large"></i></a>
+                <#if site.useStatic>
+                    <ul>
+                        <li><a href="${site.sitePath!}" target="_blank"><@t.page "website"/></a></li>
+                    </ul>
+                </#if>
+            </li>
+        <@sys.authorized roleIds=admin.roles url="clearCache">
+            <li>
+                <a href="clearCache" target="ajaxTodo" title="<@t.page 'button.clear_cache'/>"><i class="icon-rubbish icon-large"></i></a>
+            </li>
+        </@sys.authorized>
+            <li>
+                <a href="javascript:void(0)" class="langList">
+                    <img src="${base}/resource/images/${t.pageMessage("lang")}.png" alt="${langs[t.pageMessage("lang")]}" title="${langs[t.pageMessage("lang")]}"/>
                 </a>
                 <ul class="langList">
                     <@sys.configData code="site"><#assign excludeLangs=(object.site_exclude_lang!'')?split(',')/></@sys.configData>
                     <#list langs as k,v>
                         <#if !(excludeLangs?has_content && excludeLangs?seq_contains(k))>
-                    <li<#if t.pageMessage("lang")=k> class="current-lang"</#if>>
+                    <li<#if t.pageMessage("lang")=k> class="selected"</#if>>
                         <a href="changeLocale?lang=${k}" target="ajaxTodo">
-                            <img src="${base}/resource/images/${k}.png" alt="${v}"/>${v}
+                            <img src="${base}/resource/images/${k}.png" alt="${v}" title="${v}"/>
                         </a>
                     </li>
                         </#if>
@@ -39,23 +52,12 @@
                 </ul>
             </li>
             <li>
+                <a href="javascript:void(0)" class="theme"></a>
                 <ul class="themeList" id="themeList">
-                    <li theme="toptry"><div></div></li>
-                    <li theme="red"><div></div></li>
+                    <li class="toptry"><a href="javascript:void(0)"><img src="${base}/resource/images/theme-toptry.png" alt="toptry"/></a></li>
+                    <li class="red"><a href="javascript:void(0)"><img src="${base}/resource/images/theme-red.png" alt="red"/></a></li>
                 </ul>
             </li>
-            <@sys.authorized roleIds=admin.roles url="cmsDiy/preview">
-            <li><a href="cmsDiy/preview.html" target="navTab" rel="cmsDiy/preview"><i class="bi bi-palette2"></i> <@t.page "diy.preview"/></a></li>
-            </@sys.authorized>
-            <li><a href="${site.dynamicPath!}" target="_blank"><i class="icon-home icon-large"></i></a></li>
-        <#if site.useStatic>
-            <li><a href="${site.sitePath!}" target="_blank"><@t.page "website"/></a></li>
-        </#if>
-        <@sys.authorized roleIds=admin.roles url="clearCache">
-            <li>
-                <a href="clearCache" target="ajaxTodo" title="<@t.page 'button.clear_cache'/>"><i class="icon-rubbish icon-large"></i></a>
-            </li>
-        </@sys.authorized>
             <li>
                 <a href="myself/profile.html" target="navTab" rel="myself/profile" title="<@t.page 'my_account'/>"><#if admin.cover?has_content><img class="avatar" src="${admin.cover}" alt="${(admin.nickname)!}"><#else><i class="avatar icon-user icon-large"></i></#if> ${(admin.nickname)!}</a>
             </li>
@@ -67,6 +69,9 @@
             <li>
                 <a href="javascript:;" onclick="return false;" class="navbar-toggler"></a>
             </li>
+            <@sys.authorized roleIds=admin.roles url="cmsDiy/preview">
+            <li><a href="cmsDiy/preview.html" target="navTab" rel="cmsDiy/preview"><i class="bi bi-palette2"></i> <@t.page "diy.preview"/></a></li>
+            </@sys.authorized>
         </ul>
     </header>
     <main>
