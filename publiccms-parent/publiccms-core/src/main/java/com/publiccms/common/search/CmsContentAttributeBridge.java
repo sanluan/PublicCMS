@@ -4,21 +4,28 @@ import java.math.BigDecimal;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.hibernate.search.engine.backend.document.DocumentElement;
 import org.hibernate.search.engine.backend.document.IndexFieldReference;
 import org.hibernate.search.engine.backend.document.IndexObjectFieldReference;
 import org.hibernate.search.mapper.pojo.bridge.TypeBridge;
 import org.hibernate.search.mapper.pojo.bridge.runtime.TypeBridgeWriteContext;
 
+import com.publiccms.common.api.Config;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.cms.CmsContentAttribute;
+import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.BeanComponent;
 import com.publiccms.views.pojo.entities.CmsModel;
 
 public class CmsContentAttributeBridge implements TypeBridge<CmsContent> {
+    private static final String[] SORTABLE_INPUT_TYPES = { Config.INPUTTYPE_NUMBER, Config.INPUTTYPE_BOOLEAN,
+            Config.INPUTTYPE_TEXT, Config.INPUTTYPE_DATE, Config.INPUTTYPE_DATETIME, Config.INPUTTYPE_TIME,
+            Config.INPUTTYPE_DICTIONARY };
+
     private final IndexFieldReference<String> textField;
     private final IndexFieldReference<String> dictionaryValuesField;
     private final IndexFieldReference<String> filesField;
@@ -48,19 +55,19 @@ public class CmsContentAttributeBridge implements TypeBridge<CmsContent> {
                     if (null != model) {
                         Set<String> searchableFields = model.getSearchableFields();
                         if (CommonUtils.notEmpty(searchableFields)) {
-                            Set<String> sortFields = model.getSortableFields();
                             Map<String, String> map = ExtendUtils.getExtendMap(attribute.getData());
                             if (CommonUtils.notEmpty(map)) {
                                 DocumentElement extend = target.addObject(extendFieldReference);
-                                int i = 1;
                                 for (String field : searchableFields) {
-                                    if (sortFields.contains(field) && i <= 10) {
-                                        extend.addValue(CommonUtils.joinString("sort",i), map.get(field));
-                                        i++;
-                                    } else {
-                                        extend.addValue(field, map.get(field));
-                                    }
+                                    extend.addValue(field, map.get(field));
                                 }
+                                if (CommonUtils.notEmpty(model.getExtendList()))
+                                    for (SysExtendField field : model.getExtendList()) {
+                                        if (CommonUtils.notEmpty(field.getSortable())
+                                                && ArrayUtils.contains(SORTABLE_INPUT_TYPES, field.getInputType())) {
+                                            extend.addValue(field.getSortable(), map.get(field.getId().getCode()));
+                                        }
+                                    }
                             }
                         }
                     }

@@ -54,7 +54,7 @@ public class SysExtendField implements java.io.Serializable {
      * 可排序
      */
     @GeneratorColumn(title = "可排序")
-    private boolean sortable;
+    private String sortable;
     /**
      * max length
      * <p>
@@ -148,7 +148,7 @@ public class SysExtendField implements java.io.Serializable {
         this.defaultValue = defaultValue;
     }
 
-    public SysExtendField(SysExtendFieldId id, boolean required, boolean searchable, boolean sortable, Integer maxlength,
+    public SysExtendField(SysExtendFieldId id, boolean required, boolean searchable, String sortable, Integer maxlength,
             Integer width, Integer height, String name, String description, String inputType, String defaultValue,
             String dictionaryId, boolean multiple, int sort) {
         this.id = id;
@@ -196,12 +196,12 @@ public class SysExtendField implements java.io.Serializable {
         this.searchable = searchable;
     }
 
-    @Column(name = "sortable", nullable = false)
-    public boolean isSortable() {
+    @Column(name = "sortable", length = 20)
+    public String getSortable() {
         return this.sortable;
     }
 
-    public void setSortable(boolean sortable) {
+    public void setSortable(String sortable) {
         this.sortable = sortable;
     }
 

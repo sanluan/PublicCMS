@@ -72,7 +72,7 @@
                         <#assign categoryExtendList=a.extendList>
                         <#if copyId?has_content && !id?has_content><#assign copy=true/></#if>
                     </#if>
-                    <@extends 'extendList' categoryExtendList false copy/>
+                    <@extends 'extendList' categoryExtendList false false copy/>
                     <span class="info"><@t.page 'extend_field.name.description'/></span>
                 </fieldset>
             </div>

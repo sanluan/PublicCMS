@@ -26,9 +26,6 @@ public class CmsModel implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
-    private static final String[] SORTABLE_INPUT_TYPES = { Config.INPUTTYPE_NUMBER, Config.INPUTTYPE_BOOLEAN,
-            Config.INPUTTYPE_TEXT, Config.INPUTTYPE_DATE, Config.INPUTTYPE_DATETIME, Config.INPUTTYPE_TIME,
-            Config.INPUTTYPE_DICTIONARY };
     /**
      * id
      */
@@ -383,21 +380,6 @@ public class CmsModel implements java.io.Serializable {
      */
     public void setRequiredFieldList(List<String> requiredFieldList) {
         this.requiredFieldList = requiredFieldList;
-    }
-
-    /**
-     * @return sortableFields
-     */
-    public Set<String> getSortableFields() {
-        Set<String> set = new HashSet<>();
-        if (CommonUtils.notEmpty(extendList)) {
-            for (SysExtendField extend : extendList) {
-                if (extend.isSortable() && ArrayUtils.contains(SORTABLE_INPUT_TYPES, extend.getInputType())) {
-                    set.add(extend.getId().getCode());
-                }
-            }
-        }
-        return set;
     }
 
     /**
