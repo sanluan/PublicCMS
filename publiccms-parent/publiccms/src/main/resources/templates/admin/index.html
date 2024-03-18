@@ -60,9 +60,11 @@
             </li>
             <li>
                 <a href="myself/profile.html" target="navTab" rel="myself/profile" title="<@t.page 'my_account'/>"><#if admin.cover?has_content><img class="avatar" src="${admin.cover}" alt="${(admin.nickname)!}"><#else><i class="avatar icon-user icon-large"></i></#if> ${(admin.nickname)!}</a>
-            </li>
-            <li>
-                <a href="logout?userId=${admin.id}" title="<@t.page 'logout'/>"><i class="icon-signout icon-large"></i></a>
+                <ul>
+                    <li>
+                        <a href="logout?userId=${admin.id}" title="<@t.page 'logout'/>"><i class="icon-signout icon-large"></i> <@t.page 'logout'/></a>
+                    </li>
+                </ul>
             </li>
         </ul>
         <ul class="nav left">
