@@ -68,7 +68,7 @@ import freemarker.template.TemplateModelException;
  * <li><code>startPublishDate</code>:起始发布日期,【2000-01-01 23:59:59】,【2000-01-01】
  * <li><code>endPublishDate</code>:终止发布日期,【2000-01-01 23:59:59】,【2000-01-01】
  * <li><code>orderField</code>
- * 排序字段,【clicks:点击数倒序,score:分数倒序,publishDate:发布日期倒序,collections:收藏数倒叙】,默认相关度倒序
+ * 排序字段,【clicks:点击数倒序,score:分数倒序,publishDate:发布日期倒序,collections:收藏数倒叙,minPrice:最低价格,maxPrice:最高价格,extend.sort1-extend.sort10]:扩展字段排序】,默认相关度倒序
  * <li><code>pageIndex</code>:页码
  * <li><code>pageSize</code>:每页条数
  * <li><code>maxResults</code>:最大结果数
@@ -147,11 +147,11 @@ public class CmsSearchDirective extends AbstractTemplateDirective {
                     handler.getDate("endPublishDate", currentDate), currentDate);
             PageHandler page = null;
             if (factSearch) {
-                page = service.facetQuery(query, handler.getBoolean("containChild"), handler.getString("orderField"), pageIndex,
-                        pageSize, handler.getInteger("maxResults"));
+                page = service.facetQuery(query, handler.getBoolean("containChild"), handler.getString("orderField"),
+                        handler.getString("orderType"), pageIndex, pageSize, handler.getInteger("maxResults"));
             } else {
-                page = service.query(query, handler.getBoolean("containChild"), handler.getString("orderField"), pageIndex,
-                        pageSize, handler.getInteger("maxResults"));
+                page = service.query(query, handler.getBoolean("containChild"), handler.getString("orderField"),
+                        handler.getString("orderType"), pageIndex, pageSize, handler.getInteger("maxResults"));
             }
 
             @SuppressWarnings("unchecked")
@@ -170,8 +170,7 @@ public class CmsSearchDirective extends AbstractTemplateDirective {
                         }
                         CmsUrlUtils.initContentUrl(site, e);
                         fileUploadComponent.initContentCover(site, e);
-                        e.setAttribute(ExtendUtils.getAttributeMap(attributeMap.get(e.getId()),
-                                config));
+                        e.setAttribute(ExtendUtils.getAttributeMap(attributeMap.get(e.getId()), config));
                     };
                 } else {
                     consumer = e -> {

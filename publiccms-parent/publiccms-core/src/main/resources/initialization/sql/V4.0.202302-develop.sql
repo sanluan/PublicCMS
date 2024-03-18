@@ -208,3 +208,32 @@ ALTER TABLE `cms_comment`
   MODIFY COLUMN `disabled` tinyint(1) NOT NULL default 0 COMMENT '已禁用', AFTER `status`;
 -- 2024-01-30 --
 UPDATE `sys_module` SET `authorized_url`= 'sysConfigData/export',url = NULL WHERE `id` ='config_data_export';
+-- 2024-03-15 --
+ALTER TABLE `cms_content_attribute` DROP COLUMN `extends_fields`;
+DELETE FROM sys_module WHERE id IN ('category_extend','content_menu','config_menu','file_menu','log_menu','system_menu','user_menu','myself_menu','page_menu','visit_menu');
+DELETE FROM sys_module_lang WHERE module_id IN ('category_extend','content_menu','config_menu','file_menu','log_menu','system_menu','user_menu','myself_menu','page_menu','visit_menu');
+UPDATE sys_module SET parent_id='content' WHERE parent_id IN ('content_menu','category_extend');
+UPDATE sys_module SET parent_id='myself' WHERE parent_id = 'myself_menu';
+UPDATE sys_module SET sort=sort+10  WHERE parent_id = 'config_menu';
+UPDATE sys_module SET parent_id='develop' WHERE parent_id IN ('config_menu','file_menu');
+UPDATE sys_module SET sort=sort+10  WHERE parent_id = 'system_menu';
+UPDATE sys_module SET parent_id='system' WHERE parent_id IN ('system_menu','user_menu');
+UPDATE sys_module SET parent_id='page' WHERE parent_id = 'page_menu';
+INSERT INTO `sys_module` VALUES ('operation', NULL, NULL, 'bi bi-binoculars-fill', NULL, 1, 6);
+INSERT INTO `sys_module_lang` VALUES ('operation', 'en', 'Operation');
+INSERT INTO `sys_module_lang` VALUES ('operation', 'ja', '操作');
+INSERT INTO `sys_module_lang` VALUES ('operation', 'zh', '运营');
+UPDATE sys_module SET parent_id='operation' where parent_id in ('visit_menu','log_menu');
+UPDATE sys_module SET parent_id=NULL,id='trade',sort=4 where id = 'trade_menu';
+UPDATE sys_module_lang SET module_id='trade' where module_id = 'trade_menu';
+UPDATE sys_module SET parent_id='trade' where parent_id = 'trade_menu';
+UPDATE sys_module SET parent_id='trade',sort=1 where id = 'product_list';
+UPDATE sys_module_lang SET value='Trade' where module_id ='trade' and lang= 'en';  
+UPDATE sys_module_lang SET value='ビジネス' where module_id ='trade' and lang= 'ja';
+UPDATE sys_module_lang SET value='商务' where module_id ='trade' and lang= 'zh';
+UPDATE sys_module SET sort=5,id ='system' where id = 'maintenance';
+UPDATE sys_module_lang SET value='System',module_id ='system' where module_id ='maintenance' and lang= 'en';  
+UPDATE sys_module_lang SET value='システム',module_id ='system' where module_id ='maintenance' and lang= 'ja';
+UPDATE sys_module_lang SET value='系统',module_id ='system' where module_id ='maintenance' and lang= 'zh';
+UPDATE sys_module SET sort=8 WHERE id = 'myself';
+UPDATE sys_module SET attached='bi bi-pie-chart' WHERE id = 'report_visit';

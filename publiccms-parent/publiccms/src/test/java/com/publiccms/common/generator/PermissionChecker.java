@@ -53,7 +53,7 @@ public class PermissionChecker {
             getPageUrl(TEMPLATES, URL_PATTERNS, pageUrlSet);
             for (String url : pageUrlSet) {
                 if (!authorizedUrlSet.contains(url)) {
-                    log.info(CommonUtils.joinString(url," 没有添加到系统权限中"));
+                    log.info(CommonUtils.joinString(url, " 没有添加到系统权限中"));
                 }
             }
             log.info("检查完毕！");
@@ -83,12 +83,12 @@ public class PermissionChecker {
 
     private static void addPageUrl(String url, Set<String> pageUrlSet) throws IOException {
         if (null != url && !url.startsWith("include_page") && !url.startsWith("common") && !url.startsWith("main")
-                && !url.startsWith("login") && !url.startsWith("logout") && !url.startsWith("menus")
-                && !url.startsWith("sysSite\\") && !url.startsWith("sysSite/") && !url.startsWith("cmsTemplate\\demo\\")
-                && !url.startsWith("sysModule\\") && !url.startsWith("sysModule/") && !url.startsWith("sysDomain/save")
-                && !url.startsWith("sysDomain/delete") && !url.startsWith("dict/save") && !url.startsWith("sysDomain\\add")
-                && !url.startsWith("sysDomain\\list") && !url.startsWith("sysCluster\\") && !url.startsWith("changeLocale")
-                && !url.startsWith("index") && !url.startsWith("<") && !url.startsWith("$")) {
+                && !url.startsWith("login") && !url.startsWith("logout") && !url.startsWith("sysSite\\")
+                && !url.startsWith("sysSite/") && !url.startsWith("cmsTemplate\\demo\\") && !url.startsWith("sysModule\\")
+                && !url.startsWith("sysModule/") && !url.startsWith("sysDomain/save") && !url.startsWith("sysDomain/delete")
+                && !url.startsWith("dict/save") && !url.startsWith("sysDomain\\add") && !url.startsWith("sysDomain\\list")
+                && !url.startsWith("sysCluster\\") && !url.startsWith("changeLocale") && !url.startsWith("index")
+                && !url.startsWith("<") && !url.startsWith("$")) {
             addUrl(url, pageUrlSet);
         }
     }

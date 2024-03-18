@@ -1,13 +1,18 @@
 package com.publiccms.views.pojo.entities;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.validation.constraints.NotNull;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.publiccms.common.api.Config;
+import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysExtendField;
 
 /**
@@ -21,6 +26,9 @@ public class CmsModel implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
+    private static final String[] SORTABLE_INPUT_TYPES = { Config.INPUTTYPE_NUMBER, Config.INPUTTYPE_BOOLEAN,
+            Config.INPUTTYPE_TEXT, Config.INPUTTYPE_DATE, Config.INPUTTYPE_DATETIME, Config.INPUTTYPE_TIME,
+            Config.INPUTTYPE_DICTIONARY };
     /**
      * id
      */
@@ -188,6 +196,7 @@ public class CmsModel implements java.io.Serializable {
     public void setSearchableModel(boolean searchableModel) {
         this.searchableModel = searchableModel;
     }
+
     /**
      * @return
      */
@@ -201,13 +210,14 @@ public class CmsModel implements java.io.Serializable {
     public void setTemplatePath(String templatePath) {
         this.templatePath = templatePath;
     }
+
     /**
      * @return
      */
     public String getContentPath() {
         return contentPath;
     }
-    
+
     /**
      * @param contentPath
      */
@@ -376,6 +386,36 @@ public class CmsModel implements java.io.Serializable {
     }
 
     /**
+     * @return sortableFields
+     */
+    public Set<String> getSortableFields() {
+        Set<String> set = new HashSet<>();
+        if (CommonUtils.notEmpty(extendList)) {
+            for (SysExtendField extend : extendList) {
+                if (extend.isSortable() && ArrayUtils.contains(SORTABLE_INPUT_TYPES, extend.getInputType())) {
+                    set.add(extend.getId().getCode());
+                }
+            }
+        }
+        return set;
+    }
+
+    /**
+     * @return searchableFields
+     */
+    public Set<String> getSearchableFields() {
+        Set<String> set = new HashSet<>();
+        if (CommonUtils.notEmpty(extendList)) {
+            for (SysExtendField extend : extendList) {
+                if (extend.isSearchable()) {
+                    set.add(extend.getId().getCode());
+                }
+            }
+        }
+        return set;
+    }
+
+    /**
      * @return the fieldTextMap
      */
     public Map<String, String> getFieldTextMap() {
@@ -426,7 +466,8 @@ public class CmsModel implements java.io.Serializable {
     }
 
     /**
-     * @param relatedList the relatedList to set
+     * @param relatedList
+     *            the relatedList to set
      */
     public void setRelatedList(List<ContentRelated> relatedList) {
         this.relatedList = relatedList;

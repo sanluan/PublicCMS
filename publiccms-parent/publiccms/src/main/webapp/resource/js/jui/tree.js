@@ -104,8 +104,9 @@
                 }
                 if (tree.length > 0 || node.attr(op.options.async)) {
                     node.children(":first").wrap("<div></div>");
+                    var showIcon = op.icon && !tree.hasClass("noFolder");
                     $(">div", node).prepend(( op.ckbox ? "<div class=\"ckbox " + checked + "\"></div>": "" )
-                            + ( op.icon ? "<div class=\"" + ( ( op.showSub  && !node.attr(op.options.async) )  ? op.options.folderColl: op.options.folderExp ) + "\"></div>": "<div class=\"" + ( ( op.showSub && !node.attr(op.options.async) ) ? op.coll: op.exp ) + "\"></div>" ));
+                            + ( showIcon ? "<div class=\"" + ( ( op.showSub  && !node.attr(op.options.async) )  ? op.options.folderColl: op.options.folderExp ) + "\"></div>": "<div class=\"" + ( ( op.showSub && !node.attr(op.options.async) ) ? op.coll: op.exp ) + "\"></div>" ));
                     if (tree.length > 0 ) {
                         op.showSub ? tree.show(): tree.hide();
                     }

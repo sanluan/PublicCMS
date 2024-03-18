@@ -21,6 +21,29 @@
     <header>
         <div class="logo"><img src="<#if siteAttribute.logo?has_content>${getUrl(siteAttribute.logo)}<#else>${base}/resource/logo.png</#if>" alt="LOGO"/></div>
         <ul class="nav">
+            <li>
+                <a href="javascript:void()">
+                    <img class="avatar" src="${base}/resource/images/${t.pageMessage("lang")}.png" alt="${langs[t.pageMessage("lang")]}"/>
+                </a>
+                <ul class="langList">
+                    <@sys.configData code="site"><#assign excludeLangs=(object.site_exclude_lang!'')?split(',')/></@sys.configData>
+                    <#list langs as k,v>
+                        <#if !(excludeLangs?has_content && excludeLangs?seq_contains(k))>
+                    <li<#if t.pageMessage("lang")=k> class="current-lang"</#if>>
+                        <a href="changeLocale?lang=${k}" target="ajaxTodo">
+                            <img src="${base}/resource/images/${k}.png" alt="${v}"/>${v}
+                        </a>
+                    </li>
+                        </#if>
+                    </#list>
+                </ul>
+            </li>
+            <li>
+                <ul class="themeList" id="themeList">
+                    <li theme="toptry"><div></div></li>
+                    <li theme="red"><div></div></li>
+                </ul>
+            </li>
             <@sys.authorized roleIds=admin.roles url="cmsDiy/preview">
             <li><a href="cmsDiy/preview.html" target="navTab" rel="cmsDiy/preview"><i class="bi bi-palette2"></i> <@t.page "diy.preview"/></a></li>
             </@sys.authorized>
@@ -40,56 +63,17 @@
                 <a href="logout?userId=${admin.id}" title="<@t.page 'logout'/>"><i class="icon-signout icon-large"></i></a>
             </li>
         </ul>
-        <ul id="navMenu">
+        <ul class="nav left">
             <li>
-                <a href="javascript:;" onclick="return false;" class="toggleCollapse"><i class="icon icon-chevron-sign-left icon-large"></i></a>
+                <a href="javascript:;" onclick="return false;" class="navbar-toggler"></a>
             </li>
-    <@sys.moduleList>
-        <#list page.list as a>
-            <@t.merge "moduleIds" a.id!/>
-        </#list>
-        <@sys.roleModule roleIds=admin.roles moduleIds=t.moduleIds!><#assign roleModuleMap=map!/></@sys.roleModule>
-
-        <#list page.list as a>
-            <#if (roleModuleMap[a.id?string])?has_content&&roleModuleMap[a.id?string]>
-                <#if !parentId?has_content><#assign parentId=a.id/></#if>
-                <li>
-                    <a href="${a.url?has_content?then(a.url,'menus.html?parentId='+a.id)}" parentId="${a.id}"><#if (a.attached)?has_content><i class="${a.attached} icon-large"></i></#if> <@t.menu a.id/></a>
-                </li>
-            </#if>
-        </#list>
-    </@sys.moduleList>
-    <@tools.masterSite>
-        <@sys.authorized roleIds=admin.roles url="sysSite/menu">
-            <li>
-                <a href="sysSite/menu.html" parentId="site"><i class="icon-sitemap icon-large"></i><@t.menu "site"/></a>
-            </li>
-        </@sys.authorized>
-    </@tools.masterSite>
-            <ul class="langList">
-                <@sys.configData code="site"><#assign excludeLangs=(object.site_exclude_lang!'')?split(',')/></@sys.configData>
-                <#list langs as k,v>
-                    <#if !(excludeLangs?has_content && excludeLangs?seq_contains(k))>
-                <li<#if t.pageMessage("lang")=k> class="current-lang"</#if>>
-                    <a href="changeLocale?lang=${k}" target="ajaxTodo">
-                        <img src="${base}/resource/images/${k}.png" alt="${v}"/>${v}
-                    </a>
-                </li>
-                    </#if>
-                </#list>
-            </ul>
-            <ul class="themeList" id="themeList">
-                <li theme="toptry"><div></div></li>
-                <li theme="red"><div></div></li>
-            </ul>
         </ul>
     </header>
     <main>
         <aside id="leftside">
-            <div id="sidebar_s"><i class="icon-reorder icon-large"></i></div>
             <nav id="sidebar">
                 <div id="menu">
-                    <#include "menus.html"/>
+                    <#include "include_page/menus.html"/>
                 </div>
                 <footer>
                     <@tools.version>
@@ -104,6 +88,7 @@
                             </@tools.masterSite>
                         </#if>
                     </@tools.version>
+                    <br/>
                     Copyright &copy; ${.now?string("yyyy")}
                 </footer>
             </nav>
@@ -171,7 +156,6 @@
                 $.pdialog.open("myself/password.html?target=dialog", "login", "<@t.page 'user.new_password'/>", {mask: true, width: 450, height: 320});
                 </@sys.authorized>
             </#if>
-                $("#navMenu li a[parentId=${parentId!0}]").parent().addClass("selected");
                 loadScripts([window.LOADSCRIPTS_BASE+"/resource/plugins/echarts/echarts.common.min.js"],function(){
                     echartsProxy(echarts);
                 });

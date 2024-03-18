@@ -125,7 +125,7 @@ INSERT INTO `cms_content` VALUES (1, 2, '企业中英文站点模板使用说明
 -- ----------------------------
 -- Records of cms_content_attribute
 -- ----------------------------
-INSERT INTO `cms_content_attribute` VALUES (1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '<p>企业中英文站点模板中主要有首页模板index.html,文章模板content.html，分类单页模板category.html，分类内容列表页news.html</p>\n\n<p>分为中英文两套模板</p>\n\n<p>所有模板均为动态模板，文章，分类模板接受参数为id,pageIndex等，既支持rest风格url如 news/1_12,又支持传统参数类型如news.html?id=1&amp;pageIndex=12</p>\n\n<p>在分类中对带有文章的分类可以使用category.html，对内容列表可以使用news.html，填写分类访问路径为 模板名/${category.id} 或 模板名.html?id=${category.id}</p>\n', 301);
+INSERT INTO `cms_content_attribute` VALUES (1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '<p>企业中英文站点模板中主要有首页模板index.html,文章模板content.html，分类单页模板category.html，分类内容列表页news.html</p>\n\n<p>分为中英文两套模板</p>\n\n<p>所有模板均为动态模板，文章，分类模板接受参数为id,pageIndex等，既支持rest风格url如 news/1_12,又支持传统参数类型如news.html?id=1&amp;pageIndex=12</p>\n\n<p>在分类中对带有文章的分类可以使用category.html，对内容列表可以使用news.html，填写分类访问路径为 模板名/${category.id} 或 模板名.html?id=${category.id}</p>\n', 301);
 
 -- ----------------------------
 -- Records of cms_place

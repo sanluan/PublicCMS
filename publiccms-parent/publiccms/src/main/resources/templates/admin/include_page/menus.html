@@ -1,0 +1,79 @@
+<div class="accordion">
+<@sys.moduleList>
+    <#list page.list as a>
+        <@t.merge 'moduleIds' a.id!/>
+    </#list>
+    <@sys.roleModule roleIds=admin.roles moduleIds=t.moduleIds!><#assign roleModuleMap=map!/></@sys.roleModule>
+    
+    <#list page.list as a>
+        <#if (roleModuleMap[a.id?string])?has_content&&roleModuleMap[a.id?string]>
+    <div class="accordionHeader">
+        <h2><#if (a.attached)?has_content><i class="${a.attached} icon-large"></i></#if> <@t.menu a.id/> <i class="icon icon-chevron-up"></i></h2>
+    </div>
+    <div class="accordionContent">
+        <ul class="tree">
+        <@sys.moduleList parentId=a.id>
+            <#list page.list as a>
+                <@t.merge 'childModuleIds' a.id!/>
+            </#list>
+            <@sys.roleModule roleIds=admin.roles moduleIds=t.childModuleIds!><#assign childRoleModuleMap=map!/></@sys.roleModule>
+            <#list page.list as a>
+                <#if (childRoleModuleMap[a.id?string])?has_content&&childRoleModuleMap[a.id?string]>
+            <li>
+                <a href="${(a.url)!}" target="navTab" rel="${(a.url)!}"><#if (a.attached)?has_content><i class="${a.attached} icon-large"></i></#if> <@t.menu a.id/></a>
+            </li>
+                </#if>
+            </#list>
+        </@sys.moduleList>
+        </ul>
+    </div>
+        </#if>
+    </#list>
+</@sys.moduleList>
+<@tools.masterSite>
+    <@sys.authorized roleIds=admin.roles url="sysSite/menu">
+    <div class="accordionHeader">
+        <h2><i class="icon-sitemap icon-large"></i><@t.menu 'site'/> <i class="icon icon-chevron-up"></i></h2>
+    </div>
+    <div class="accordionContent">
+        <ul class="tree">
+            <li>
+                <a href="sysSite/list.html" target="navTab" rel="sysSite/list"><i class="icon-sitemap icon-large"></i><@t.menu 'site_list'/></a>
+            </li>
+            <li>
+                <a href="sysDomain/list.html" target="navTab" rel="sysDomain/list"><i class="icon-qrcode icon-large"></i><@t.menu 'site_domain_list'/></a>
+            </li>
+            <li>
+                <a href="sysModule/list.html" target="navTab" rel="sysModule/list"><i class="icon-th icon-large"></i><@t.menu 'module_list'/></a>
+            </li>
+            <li>
+                <a href="sysSite/sitefile.html" target="navTab" rel="sysSite/sitefile"><i class="bi bi-pc-display-horizontal"></i><@t.menu 'sitefile'/></a>
+            </li>
+        <#if getDictEnable?? && getDictEnable?is_method && getDictEnable()>
+            <li>
+                <a href="sysSite/dict.html" target="navTab" rel="sysSite/dict"><i class="icon-book icon-large"></i><@t.menu 'dict'/></a>
+            </li>
+        </#if>
+            <li>
+                <a href="sysSite/reCreateIndex?_csrf=<@tools.csrfToken admin=true/>" target="ajaxTodo" title="<@t.page 'confirm.recreate_index'/>"><i class="icon-refresh icon-large"></i><@t.menu 'site_recreate_index'/></a>
+            </li>
+            <li>
+                <a href="sysSite/sql.html" target="navTab" rel="sysSite/sql"><i class="icon-bug icon-large"></i><@t.menu 'site_sql'/></a>
+            </li>
+            <li>
+                <a href="sysSite/script.html" target="navTab" rel="sysSite/script"><i class="icon-terminal icon-large"></i><@t.menu 'site_script'/></a>
+            </li>
+            <li>
+                <a href="sysSite/monitor.html" target="navTab" rel="sysSite/monitor"><i class="icon-suitcase icon-large"></i><@t.menu 'monitor'/></a>
+            </li>
+            <li>
+                <a href="sysCluster/list.html" target="navTab" rel="sysCluster/list"><i class="icon-code-fork icon-large"></i><@t.menu 'cluster'/></a>
+            </li>
+            <li>
+                <a href="sysSite/uploadLicense.html" target="navTab" rel="sysSite/uploadLicense"><i class="icon-archive icon-large"></i><@t.menu 'license'/></a>
+            </li>
+        </ul>
+    </div>
+    </@sys.authorized>
+</@tools.masterSite>
+</div>

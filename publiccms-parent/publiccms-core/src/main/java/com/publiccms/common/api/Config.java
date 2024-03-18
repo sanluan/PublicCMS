@@ -79,6 +79,11 @@ public interface Config {
     /**
      * 
      */
+    String INPUTTYPE_TIME = "time";
+
+    /**
+     * 
+     */
     String INPUTTYPE_USER = "user";
 
     /**

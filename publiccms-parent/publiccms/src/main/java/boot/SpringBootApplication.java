@@ -38,6 +38,8 @@ public class SpringBootApplication {
 
     /**
      * 在idea中通过main方法启动需要将工作目录改为 publiccms 模块所在的路径，否则静态资源不能加载
+     * ideaのmainメソッドから始めるには、作業ディレクトリをpubliccmsモジュールが配置されているパスに変更する必要があり、そうしないと静的リソースをロードできません
+     * To start through the main method in idea, you need to change the working directory to the path where the publiccms module is located, otherwise the static resources cannot be loaded
      * https://www.publiccms.com/question/2018/02-13/376.html
      * 
      * @param args
