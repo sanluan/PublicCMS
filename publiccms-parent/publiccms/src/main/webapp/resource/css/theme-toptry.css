@@ -15,7 +15,7 @@ header a{color:#afc5f6;}
 #sidebar,#sidebar_s{background-color:#2A3042;}
 .tabsPage{background-color:#edf1f5;}
 .accordion .accordionHeader{background-color:#2A3042;}
-.accordion .accordionHeader h2.collapsable{color:#fff;background-color:#3B445F;}
+.accordion .accordionHeader h2.collapsable,.accordion .accordionContent h2{color:#fff;background-color:#3B445F;}
 .accordion .accordionHeader a h2.collapsable{color:#fff;}
 .accordion .accordionContent{background-color:#2A3042;}
 #splitBarProxy{border-color:#c0c0c0;background-color:#CCC;}

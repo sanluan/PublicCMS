@@ -69,7 +69,8 @@ header .navbar-toggler.side-right{background-image:url(../images/side-right.png)
 #sidebar.collapse footer{display:none;}
 #sidebar.collapse .accordion .accordionContent{position:absolute;left:50px;margin-top:-40px;width:170px;display:none;}
 #sidebar.collapse:hover .accordion .accordionContent{display:block;}
-
+#sidebar.collapse .accordion .accordionHeader h2{text-align:center;}
+#sidebar.collapse .accordion .accordionContent h2{display:block;}
 #sidebar #menu{overflow:auto;max-height:100%;}
 #splitBar{display:block;overflow:hidden;width:2px;cursor:col-resize;position:absolute;top:50px;left:183px;z-index:20;}
 #splitBarProxy{display:none;overflow:hidden;width:2px;border-style:solid;border-width:1px;cursor:col-resize;position:absolute;left:183px;z-index:20;}
@@ -83,6 +84,7 @@ header .navbar-toggler.side-right{background-image:url(../images/side-right.png)
 .accordion .accordionHeader h2 .icon{float:right;line-height:36px;}
 .accordion .accordionHeader a:hover{text-decoration:none;}
 .accordion .accordionContent{display:block;overflow:auto;box-sizing: border-box;}
+.accordion .accordionContent h2{text-align:center;line-height:40px;display:none;}
 .accordion .accordionContent .tree a{line-height:34px;height:auto;}
 .accordion .accordionContent .tree div{height:auto;}
 .accordion .accordionContent .tree div div{background:0 0;width:25px;height:34px;}

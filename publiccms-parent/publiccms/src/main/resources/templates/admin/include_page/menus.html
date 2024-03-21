@@ -11,6 +11,7 @@
         <h2><#if (a.attached)?has_content><i class="${a.attached} icon-large"></i></#if> <@t.menu a.id/> <i class="icon icon-chevron-up"></i></h2>
     </div>
     <div class="accordionContent">
+        <h2><@t.menu a.id/></h2>
         <ul class="tree">
         <@sys.moduleList parentId=a.id>
             <#list page.list as a>
@@ -36,6 +37,7 @@
         <h2><i class="icon-sitemap icon-large"></i><@t.menu 'site'/> <i class="icon icon-chevron-up"></i></h2>
     </div>
     <div class="accordionContent">
+        <h2><@t.menu 'site'/></h2>
         <ul class="tree">
             <li>
                 <a href="sysSite/list.html" target="navTab" rel="sysSite/list"><i class="icon-sitemap icon-large"></i><@t.menu 'site_list'/></a>
