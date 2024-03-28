@@ -93,7 +93,8 @@ public class DocToHtmlUtils {
     public static String docxToHtml(File file, ImageManager imageManager) throws IOException {
         ZipSecureFile.setMinInflateRatio(-1.0d);
         try (XWPFDocument document = new XWPFDocument(new FileInputStream(file))) {
-            XHTMLOptions options = XHTMLOptions.create().setImageManager(imageManager).setFragment(true);
+            XHTMLOptions options = XHTMLOptions.create().setImageManager(imageManager).setFragment(true)
+                    .setIgnoreStylesIfUnused(true).setOmitHeaderFooterPages(true);
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             CustomXHTMLConverter.getInstance().convert(document, out, options);
             return StringEscapeUtils.unescapeHtml4(new String(out.toByteArray()));

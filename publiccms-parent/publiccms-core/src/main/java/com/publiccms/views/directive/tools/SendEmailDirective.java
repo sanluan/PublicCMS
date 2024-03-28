@@ -47,7 +47,7 @@ import freemarker.template.TemplateException;
  * 使用示例
  * <p>
  * &lt;@tools.sendEmail email='master@puliccms.com' title='title'
- * content='content' parameters={"parameter1","value1"}/&gt;
+ * content='content' parameters={"parameter1":"value1"}/&gt;
  * 
  * <pre>
 &lt;script&gt;
