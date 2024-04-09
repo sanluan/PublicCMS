@@ -255,6 +255,7 @@ public class ConfigComponent implements SiteCache {
         Map<String, Map<String, String>> map = cache.get(siteId);
         if (CommonUtils.notEmpty(map)) {
             map.remove(code);
+            cache.put(siteId, map);
         }
     }
 
