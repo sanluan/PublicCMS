@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
@@ -115,8 +116,10 @@ public class CmsModelAdminController {
             }
         }
         if (CommonUtils.notEmpty(modelId)) {
+            modelId = StringUtils.trim(modelId);
             Map<String, CmsModel> modelMap = modelComponent.getModelMap(site);
             CmsModel oldModel = modelMap.remove(modelId);
+            entity.setId(StringUtils.trim(entity.getId()));
             modelMap.put(entity.getId(), entity);
             List<CmsModel> modelList = modelComponent.getModelList(site, modelId, false, null, null, null, null);
             for (CmsModel m : modelList) {
