@@ -48,6 +48,7 @@ import fr.opensagres.poi.xwpf.converter.core.styles.run.RunFontStyleStrikeValueP
 import fr.opensagres.poi.xwpf.converter.core.styles.run.RunTextHighlightingValueProvider;
 import fr.opensagres.poi.xwpf.converter.xhtml.XHTMLOptions;
 import fr.opensagres.poi.xwpf.converter.xhtml.internal.XHTMLMapper;
+import fr.opensagres.poi.xwpf.converter.xhtml.internal.XHTMLMasterPage;
 import fr.opensagres.poi.xwpf.converter.xhtml.internal.styles.CSSStyle;
 import fr.opensagres.poi.xwpf.converter.xhtml.internal.styles.CSSStylePropertyConstants;
 import fr.opensagres.poi.xwpf.converter.xhtml.internal.utils.SAXHelper;
@@ -67,6 +68,10 @@ public class CustomXHTMLMapper extends XHTMLMapper {
     @Override
     protected XWPFStylesDocument createStylesDocument(XWPFDocument document) throws XmlException, IOException {
         return new CustomCSSStylesDocument(document, options.getIndent());
+    }
+
+    @Override
+    public void setActiveMasterPage(XHTMLMasterPage masterPage) {
     }
 
     @Override

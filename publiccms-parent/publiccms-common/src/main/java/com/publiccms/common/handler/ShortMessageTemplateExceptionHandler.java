@@ -5,6 +5,7 @@ import java.io.Writer;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.text.StringEscapeUtils;
 
 import freemarker.core.Environment;
 import freemarker.template.TemplateException;
@@ -22,7 +23,7 @@ public class ShortMessageTemplateExceptionHandler implements TemplateExceptionHa
     public void handleTemplateException(TemplateException templateexception, Environment environment, Writer writer)
             throws TemplateException {
         try {
-            writer.write(templateexception.getMessageWithoutStackTop());
+            writer.write(StringEscapeUtils.escapeHtml4(templateexception.getMessageWithoutStackTop()));
         } catch (IOException e) {
             log.error(environment.getCurrentTemplate().getSourceName(), e);
         }
