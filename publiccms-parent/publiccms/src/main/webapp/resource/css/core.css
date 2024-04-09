@@ -204,7 +204,7 @@ select{border:1px solid;border-color:#A2BAC0 #B8D0D6 #B8D0D6 #A2BAC0;}
 textarea.editor{width:80%;}
 textarea{max-width:100%;}
 
-span.error{display:block;overflow:hidden;width:165px;height:21px;padding:0 3px;line-height:21px;background:#F00;color:#FFF;}
+span.error{display:block;float:left;overflow:hidden;width:165px;height:21px;padding:0 3px;line-height:21px;background:#F00;color:#FFF;}
 .pageFormContent label.alt{display:block;overflow:hidden;position:absolute;line-height:26px;padding:0px;}
 .nowrap span.error{position:static;}
 
