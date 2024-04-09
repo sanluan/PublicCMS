@@ -1,7 +1,9 @@
 <@sys.domainList pageIndex=pageNum pageSize=numPerPage>
-<form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
-    <#include "../include_page/parameters.html"/>
-</form>
+<div class="pageHeader card">
+    <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
+        <#include "../include_page/parameters.html"/>
+    </form>
+</div>
 <div class="card">
     <table class="table" width="100%" layoutH>
         <thead>
