@@ -24,8 +24,12 @@
                 </li>
                 <li>
                     <label><@t.page 'model'/>:</label>
-                     <#assign queryAll=true/>
-                    <#include "../include_page/modelId.html"/>
+                    <#if showModel?has_content&&"true"=showModel>
+                        <@cms.model ids=modelIds><#list map as k,m>${m.name}<#sep>,</#list></@cms.model>
+                    <#else>
+                        <#assign queryAll=true/>
+                        <#include "../include_page/modelId.html"/>
+                    </#if>
                 </li>
             </ul>
             <div class="subBar">
