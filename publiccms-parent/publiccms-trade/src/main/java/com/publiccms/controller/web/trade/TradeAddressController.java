@@ -38,24 +38,24 @@ public class TradeAddressController {
 
     /**
      * @param site
-     * @param admin
+     * @param user
      * @param entity
      * @param request
      * @return operate result
      */
     @RequestMapping("save")
     @Csrf
-    public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, TradeAddress entity,
+    public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser user, TradeAddress entity,
             HttpServletRequest request) {
         entity.setSiteId(site.getId());
         if (null != entity.getId()) {
             entity = service.update(entity.getId(), entity, ignoreProperties);
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB,
+            logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
                     "update.tradeAddress", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
                     JsonUtils.getString(entity)));
         } else {
             service.save(entity);
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB,
+            logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
                     "save.tradeAddress", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
         return CommonConstants.TEMPLATE_DONE;
@@ -65,16 +65,15 @@ public class TradeAddressController {
      * @param ids
      * @param request
      * @param site
-     * @param admin
+     * @param user
      * @return operate result
      */
     @RequestMapping("delete")
     @Csrf
-    public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids,
-            HttpServletRequest request) {
+    public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser user, Long[] ids, HttpServletRequest request) {
         if (CommonUtils.notEmpty(ids)) {
             service.delete(ids);
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB,
+            logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
                     "delete.tradeAddress", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
                     StringUtils.join(ids, Constants.COMMA)));
         }
