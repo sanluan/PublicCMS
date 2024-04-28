@@ -225,7 +225,7 @@ table.itemDetail caption label{padding-left:0px;}
 #progressBar{display:block;width:28px;height:28px;font-size:28px;position:absolute;top:50%;left:50%;margin-left:-14px;margin-top:-14px;z-index:2001;}
 #background{display:block;width:100%;height:100%;opacity:0.4;filter:alpha(opacity=40);background:#FFF;position:absolute;top:0;left:0;z-index:2000;}
 .alertBackground{display:none;width:100%;height:100%;opacity:0.4;background:rgba(0,0,0,.3);position:absolute;top:0;left:0;z-index:1010;}
-.dialogBackground{display:none;width:100%;height:100%;opacity:0.4;background:rgba(0,0,0,.3);position:absolute;top:0;left:0;z-index:999;}
+.dialogBackground{display:none;width:100%;height:100%;opacity:0.4;background:rgba(0,0,0,.3);position:absolute;top:0;left:0;z-index:41;}
 /* ----------------------------------------------------------------- Form */
 /* TextInput */
 .textInput, input.focus, input.required, input.error, input.readonly, input.disabled,
