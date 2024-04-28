@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.LocaleResolver;
 
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
@@ -52,6 +53,8 @@ public class FileController {
     private LockComponent lockComponent;
     @Resource
     protected SafeConfigComponent safeConfigComponent;
+    @Resource
+    private LocaleResolver localeResolver;
 
     /**
      * @param site
@@ -105,20 +108,20 @@ public class FileController {
                                 fileType, file.getSize(), fileSize.getWidth(), fileSize.getHeight(),
                                 RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
                     } else {
-                        result.put("error", LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
-                                "verify.custom.file.unsafe"));
+                        result.put("error", LanguagesUtils.getMessage(CommonConstants.applicationContext,
+                                localeResolver.resolveLocale(request), "verify.custom.file.unsafe"));
                     }
                 } catch (IllegalStateException | IOException e) {
                     log.error(e.getMessage(), e);
                     result.put("error", e.getMessage());
                 }
             } else {
-                result.put("error", LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
-                        "verify.custom.fileType"));
+                result.put("error", LanguagesUtils.getMessage(CommonConstants.applicationContext,
+                        localeResolver.resolveLocale(request), "verify.custom.fileType"));
             }
         } else {
-            result.put("error",
-                    LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(), "verify.notEmpty.file"));
+            result.put("error", LanguagesUtils.getMessage(CommonConstants.applicationContext,
+                    localeResolver.resolveLocale(request), "verify.notEmpty.file"));
         }
         return result;
     }

@@ -27,7 +27,6 @@ import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.ImageUtils;
-import com.publiccms.common.tools.LanguagesUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.common.tools.VerificationUtils;
 import com.publiccms.common.tools.ZipUtils;
@@ -91,8 +90,7 @@ public class CmsWebFileAdminController {
                                 CommonUtils.getDate(), path));
                     }
                 } else {
-                    model.addAttribute(CommonConstants.ERROR, LanguagesUtils.getMessage(CommonConstants.applicationContext,
-                            request.getLocale(), "verify.custom.fileType"));
+                    model.addAttribute(CommonConstants.ERROR, "verify.custom.fileType");
                     return CommonConstants.TEMPLATE_ERROR;
                 }
             } catch (IOException e) {
@@ -137,14 +135,12 @@ public class CmsWebFileAdminController {
                                                 RequestUtils.getIpAddress(request), CommonUtils.getDate(), filepath));
                             } else {
                                 CmsFileUtils.delete(fuleFilePath);
-                                model.addAttribute(CommonConstants.ERROR, LanguagesUtils.getMessage(
-                                        CommonConstants.applicationContext, request.getLocale(), "verify.custom.file.unsafe"));
+                                model.addAttribute(CommonConstants.ERROR, "verify.custom.file.unsafe");
                                 return CommonConstants.TEMPLATE_ERROR;
                             }
                         }
                     } else {
-                        model.addAttribute(CommonConstants.ERROR, LanguagesUtils.getMessage(CommonConstants.applicationContext,
-                                request.getLocale(), "verify.custom.fileType"));
+                        model.addAttribute(CommonConstants.ERROR, "verify.custom.fileType");
                         return CommonConstants.TEMPLATE_ERROR;
                     }
                 }

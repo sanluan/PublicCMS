@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.LocaleResolver;
 
 import com.drew.imaging.FileType;
 import com.drew.imaging.FileTypeDetector;
@@ -62,6 +63,8 @@ public class UeditorAdminController {
     protected SiteComponent siteComponent;
     @Resource
     protected SafeConfigComponent safeConfigComponent;
+    @Resource
+    private LocaleResolver localeResolver;
 
     protected static final String ACTION_CONFIG = "config";
     protected static final String ACTION_UPLOAD = "upload";
@@ -149,19 +152,19 @@ public class UeditorAdminController {
                     } else {
                         CmsFileUtils.delete(filepath);
                         return getResultMap(false, LanguagesUtils.getMessage(CommonConstants.applicationContext,
-                                request.getLocale(), "verify.custom.file.unsafe"));
+                                localeResolver.resolveLocale(request), "verify.custom.file.unsafe"));
                     }
                 } catch (IllegalStateException | IOException e) {
                     log.error(e.getMessage(), e);
                     return getResultMap(false, e.getMessage());
                 }
             } else {
-                return getResultMap(false, LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
+                return getResultMap(false, LanguagesUtils.getMessage(CommonConstants.applicationContext, localeResolver.resolveLocale(request),
                         "verify.custom.fileType"));
             }
         } else {
             return getResultMap(false,
-                    LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(), "verify.notEmpty.file"));
+                    LanguagesUtils.getMessage(CommonConstants.applicationContext, localeResolver.resolveLocale(request), "verify.notEmpty.file"));
         }
     }
 
@@ -199,7 +202,7 @@ public class UeditorAdminController {
             }
         } else {
             return getResultMap(false,
-                    LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(), "verify.notEmpty.file"));
+                    LanguagesUtils.getMessage(CommonConstants.applicationContext, localeResolver.resolveLocale(request), "verify.notEmpty.file"));
         }
 
     }
@@ -257,7 +260,7 @@ public class UeditorAdminController {
                     EntityUtils.consume(entity);
                 }
                 if (list.isEmpty()) {
-                    return getResultMap(false, LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
+                    return getResultMap(false, LanguagesUtils.getMessage(CommonConstants.applicationContext, localeResolver.resolveLocale(request),
                             "verify.notEmpty.file"));
                 } else {
                     Map<String, Object> map = getResultMap();
@@ -265,7 +268,7 @@ public class UeditorAdminController {
                     return map;
                 }
             } else {
-                return getResultMap(false, LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
+                return getResultMap(false, LanguagesUtils.getMessage(CommonConstants.applicationContext, localeResolver.resolveLocale(request),
                         "verify.notEmpty.file"));
             }
         } catch (Exception e) {

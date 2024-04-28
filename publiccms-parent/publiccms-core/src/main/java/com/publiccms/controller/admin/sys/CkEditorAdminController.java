@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.LocaleResolver;
 
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CmsFileUtils;
@@ -44,6 +45,8 @@ public class CkEditorAdminController {
     protected SiteComponent siteComponent;
     @Resource
     protected SafeConfigComponent safeConfigComponent;
+    @Resource
+    private LocaleResolver localeResolver;
 
     private static final String RESULT_UPLOADED = "uploaded";
     private static final String RESULT_FILENAME = "fileName";
@@ -83,7 +86,7 @@ public class CkEditorAdminController {
                     } else {
                         Map<String, String> messageMap = new HashMap<>();
                         messageMap.put(CommonConstants.MESSAGE, LanguagesUtils.getMessage(CommonConstants.applicationContext,
-                                request.getLocale(), "verify.custom.file.unsafe"));
+                                localeResolver.resolveLocale(request), "verify.custom.file.unsafe"));
                         map.put(CommonConstants.ERROR, messageMap);
                         CmsFileUtils.delete(filepath);
                     }
@@ -94,14 +97,14 @@ public class CkEditorAdminController {
                 }
             } else {
                 Map<String, String> messageMap = new HashMap<>();
-                messageMap.put(CommonConstants.MESSAGE, LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
+                messageMap.put(CommonConstants.MESSAGE, LanguagesUtils.getMessage(CommonConstants.applicationContext, localeResolver.resolveLocale(request),
                         "verify.custom.fileType"));
                 map.put(CommonConstants.ERROR, messageMap);
             }
         } else {
             Map<String, String> messageMap = new HashMap<>();
             messageMap.put(CommonConstants.MESSAGE, 
-                    LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(), "verify.notEmpty.file"));
+                    LanguagesUtils.getMessage(CommonConstants.applicationContext, localeResolver.resolveLocale(request), "verify.notEmpty.file"));
             map.put(CommonConstants.ERROR, messageMap);
         }
         map.put(RESULT_UPLOADED, uploaded);

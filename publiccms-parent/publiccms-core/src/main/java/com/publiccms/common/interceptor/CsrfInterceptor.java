@@ -4,12 +4,14 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.LocaleResolver;
 
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
@@ -20,6 +22,8 @@ public class CsrfInterceptor implements HandlerInterceptor {
     protected Map<HandlerMethod, CsrfCache> methodCache = new HashMap<>();
     private CsrfCache DEFAULT_CACHE = new CsrfCache(false, null);
     private boolean admin = false;
+    @Resource
+    private LocaleResolver localeResolver;
 
     /**
      * @param admin
@@ -44,7 +48,7 @@ public class CsrfInterceptor implements HandlerInterceptor {
                 String token = admin ? ControllerUtils.getAdminToken(request) : ControllerUtils.getWebToken(request);
                 if (null == value || !value.equals(token)) {
                     try {
-                        String message = LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
+                        String message = LanguagesUtils.getMessage(CommonConstants.applicationContext, localeResolver.resolveLocale(request),
                                 "verify.notEquals._csrf");
                         response.sendError(HttpServletResponse.SC_FORBIDDEN, message);
                     } catch (IOException e) {

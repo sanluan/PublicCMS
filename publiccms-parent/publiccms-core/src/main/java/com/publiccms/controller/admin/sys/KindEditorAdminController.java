@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.LocaleResolver;
 
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CmsFileUtils;
@@ -43,6 +44,8 @@ public class KindEditorAdminController {
     protected SiteComponent siteComponent;
     @Resource
     protected SafeConfigComponent safeConfigComponent;
+    @Resource
+    private LocaleResolver localeResolver;
 
     private static final String RESULT_URL = "url";
 
@@ -76,19 +79,19 @@ public class KindEditorAdminController {
                         return map;
                     } else {
                         map.put(CommonConstants.MESSAGE, LanguagesUtils.getMessage(CommonConstants.applicationContext,
-                                request.getLocale(), "verify.custom.file.unsafe"));
+                                localeResolver.resolveLocale(request), "verify.custom.file.unsafe"));
                         CmsFileUtils.delete(filepath);
                     }
                 } catch (IllegalStateException | IOException e) {
                     map.put(CommonConstants.MESSAGE, e.getMessage());
                 }
             } else {
-                map.put(CommonConstants.MESSAGE, LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
+                map.put(CommonConstants.MESSAGE, LanguagesUtils.getMessage(CommonConstants.applicationContext, localeResolver.resolveLocale(request),
                         "verify.custom.fileType"));
             }
         } else {
             map.put(CommonConstants.MESSAGE, 
-                    LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(), "verify.notEmpty.file"));
+                    LanguagesUtils.getMessage(CommonConstants.applicationContext, localeResolver.resolveLocale(request), "verify.notEmpty.file"));
         }
         map.put(CommonConstants.ERROR, 1);
         return map;

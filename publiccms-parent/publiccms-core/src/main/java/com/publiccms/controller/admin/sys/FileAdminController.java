@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.LocaleResolver;
 
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
@@ -57,6 +58,8 @@ public class FileAdminController {
     protected SiteComponent siteComponent;
     @Resource
     protected SafeConfigComponent safeConfigComponent;
+    @Resource
+    private LocaleResolver localeResolver;
 
     /**
      * @param site
@@ -111,7 +114,7 @@ public class FileAdminController {
                                 RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
                     } else {
                         result.put("statusCode", 300);
-                        result.put("message", LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
+                        result.put("message", LanguagesUtils.getMessage(CommonConstants.applicationContext, localeResolver.resolveLocale(request),
                                 "verify.custom.file.unsafe"));
                         CmsFileUtils.delete(filepath);
                     }
@@ -127,7 +130,7 @@ public class FileAdminController {
                 }
             } else {
                 result.put("statusCode", 300);
-                result.put("message", LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
+                result.put("message", LanguagesUtils.getMessage(CommonConstants.applicationContext, localeResolver.resolveLocale(request),
                         "verify.custom.fileType"));
                 result.put(field, "");
                 if (CommonUtils.notEmpty(originalField)) {
@@ -137,7 +140,7 @@ public class FileAdminController {
         } else {
             result.put("statusCode", 300);
             result.put("message",
-                    LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(), "verify.notEmpty.file"));
+                    LanguagesUtils.getMessage(CommonConstants.applicationContext, localeResolver.resolveLocale(request), "verify.notEmpty.file"));
             result.put(field, "");
             if (CommonUtils.notEmpty(originalField)) {
                 result.put(originalField, null);
@@ -344,7 +347,7 @@ public class FileAdminController {
                         } else {
                             result.put("statusCode", 300);
                             result.put("message", LanguagesUtils.getMessage(CommonConstants.applicationContext,
-                                    request.getLocale(), "verify.custom.file.unsafe"));
+                                    localeResolver.resolveLocale(request), "verify.custom.file.unsafe"));
                             CmsFileUtils.delete(filepath);
                         }
                     } catch (IllegalStateException | IOException e) {
@@ -354,7 +357,7 @@ public class FileAdminController {
                     }
                 } else {
                     result.put("statusCode", 300);
-                    result.put("message", LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
+                    result.put("message", LanguagesUtils.getMessage(CommonConstants.applicationContext, localeResolver.resolveLocale(request),
                             "verify.custom.fileType"));
                     result.put(field, "");
                     if (CommonUtils.notEmpty(originalField)) {
@@ -367,7 +370,7 @@ public class FileAdminController {
             Map<String, Object> result = new HashMap<>();
             result.put("statusCode", 300);
             result.put("message",
-                    LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(), "verify.notEmpty.file"));
+                    LanguagesUtils.getMessage(CommonConstants.applicationContext, localeResolver.resolveLocale(request), "verify.notEmpty.file"));
             result.put(field, "");
             if (CommonUtils.notEmpty(originalField)) {
                 result.put(originalField, null);

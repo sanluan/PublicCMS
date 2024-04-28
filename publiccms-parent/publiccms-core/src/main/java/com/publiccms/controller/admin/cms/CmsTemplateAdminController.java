@@ -36,7 +36,6 @@ import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.DateFormatUtils;
-import com.publiccms.common.tools.LanguagesUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.common.tools.StreamUtils;
 import com.publiccms.common.tools.VerificationUtils;
@@ -242,8 +241,7 @@ public class CmsTemplateAdminController {
                             metadataComponent.updateTemplateMetadata(filepath, metadata);
                         } else {
                             CmsFileUtils.delete(filepath);
-                            model.addAttribute(CommonConstants.ERROR, LanguagesUtils.getMessage(
-                                    CommonConstants.applicationContext, request.getLocale(), "verify.custom.file.unsafe"));
+                            model.addAttribute(CommonConstants.ERROR, "verify.custom.file.unsafe");
                             return CommonConstants.TEMPLATE_ERROR;
                         }
                     }
