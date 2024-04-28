@@ -24,7 +24,7 @@ import com.publiccms.logic.service.log.LogLoginService;
 @Controller
 @RequestMapping("tinymce")
 public class TinymceAdminController extends AbstractTinymceController {
-
+    
     /**
      * @param site
      * @param admin

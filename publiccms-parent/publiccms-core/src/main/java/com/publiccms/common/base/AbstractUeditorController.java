@@ -13,6 +13,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.LocaleResolver;
 
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.PageHandler;
@@ -43,6 +44,8 @@ public class AbstractUeditorController {
     protected SafeConfigComponent safeConfigComponent;
     @Resource
     protected FileUploadComponent fileUploadComponent;
+    @Resource
+    protected LocaleResolver localeResolver;
 
     protected static final String ACTION_CONFIG = "config";
     protected static final String ACTION_UPLOAD = "upload";
@@ -62,7 +65,7 @@ public class AbstractUeditorController {
             String suffix = CmsFileUtils.getSuffix(originalName);
             if (ArrayUtils.contains(safeConfigComponent.getSafeSuffix(site), suffix)) {
                 try {
-                    FileUploadResult uploadResult = fileUploadComponent.upload(site.getId(), file, false, suffix, request.getLocale());
+                    FileUploadResult uploadResult = fileUploadComponent.upload(site.getId(), file, false, suffix, localeResolver.resolveLocale(request));
                     logUploadService.save(new LogUpload(site.getId(), user.getId(), channel, originalName, false,
                             CmsFileUtils.getFileType(suffix), file.getSize(), uploadResult.getWidth(), uploadResult.getHeight(),
                             RequestUtils.getIpAddress(request), CommonUtils.getDate(), uploadResult.getFilename()));
@@ -78,12 +81,12 @@ public class AbstractUeditorController {
                     return getResultMap(false, e.getMessage());
                 }
             } else {
-                return getResultMap(false, LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
+                return getResultMap(false, LanguagesUtils.getMessage(CommonConstants.applicationContext, localeResolver.resolveLocale(request),
                         "verify.custom.fileType"));
             }
         } else {
             return getResultMap(false,
-                    LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(), "verify.notEmpty.file"));
+                    LanguagesUtils.getMessage(CommonConstants.applicationContext, localeResolver.resolveLocale(request), "verify.notEmpty.file"));
         }
     }
 

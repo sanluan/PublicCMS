@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.LocaleResolver;
 
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
@@ -67,6 +68,8 @@ public class FileAdminController {
     private ConfigDataComponent configDataComponent;
     @Resource
     protected SafeConfigComponent safeConfigComponent;
+    @Resource
+    private LocaleResolver localeResolver;
 
     /**
      * @param site
@@ -100,9 +103,9 @@ public class FileAdminController {
                     FileUploadResult uploadResult = null;
                     if (CommonUtils.notEmpty(base64File)) {
                         uploadResult = fileUploadComponent.upload(site.getId(), VerificationUtils.base64Decode(base64File),
-                                privatefile, suffix, request.getLocale());
+                                privatefile, suffix, localeResolver.resolveLocale(request));
                     } else {
-                        uploadResult = fileUploadComponent.upload(site.getId(), file, privatefile, suffix, request.getLocale());
+                        uploadResult = fileUploadComponent.upload(site.getId(), file, privatefile, suffix, localeResolver.resolveLocale(request));
                     }
                     result.put("field", field);
                     result.put(field, uploadResult.getFilename());
@@ -131,7 +134,7 @@ public class FileAdminController {
                 }
             } else {
                 result.put("statusCode", 300);
-                result.put("message", LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
+                result.put("message", LanguagesUtils.getMessage(CommonConstants.applicationContext, localeResolver.resolveLocale(request),
                         "verify.custom.fileType"));
                 result.put(field, "");
                 if (CommonUtils.notEmpty(originalField)) {
@@ -141,7 +144,7 @@ public class FileAdminController {
         } else {
             result.put("statusCode", 300);
             result.put("message",
-                    LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(), "verify.notEmpty.file"));
+                    LanguagesUtils.getMessage(CommonConstants.applicationContext, localeResolver.resolveLocale(request), "verify.notEmpty.file"));
             result.put(field, "");
             if (CommonUtils.notEmpty(originalField)) {
                 result.put(originalField, null);
@@ -343,7 +346,7 @@ public class FileAdminController {
                 if (ArrayUtils.contains(safeConfigComponent.getSafeSuffix(site), suffix)) {
                     try {
                         FileUploadResult uploadResult = fileUploadComponent.upload(site.getId(), file, false, suffix,
-                                request.getLocale());
+                                localeResolver.resolveLocale(request));
                         result.put("field", field);
                         result.put(field, uploadResult.getFilename());
                         String fileType = CmsFileUtils.getFileType(suffix);
@@ -366,7 +369,7 @@ public class FileAdminController {
                     }
                 } else {
                     result.put("statusCode", 300);
-                    result.put("message", LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
+                    result.put("message", LanguagesUtils.getMessage(CommonConstants.applicationContext, localeResolver.resolveLocale(request),
                             "verify.custom.fileType"));
                     result.put(field, "");
                     if (CommonUtils.notEmpty(originalField)) {
@@ -379,7 +382,7 @@ public class FileAdminController {
             Map<String, Object> result = new HashMap<>();
             result.put("statusCode", 300);
             result.put("message",
-                    LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(), "verify.notEmpty.file"));
+                    LanguagesUtils.getMessage(CommonConstants.applicationContext, localeResolver.resolveLocale(request), "verify.notEmpty.file"));
             result.put(field, "");
             if (CommonUtils.notEmpty(originalField)) {
                 result.put(originalField, null);

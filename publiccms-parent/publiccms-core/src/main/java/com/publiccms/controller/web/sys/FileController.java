@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
+import org.springframework.web.servlet.LocaleResolver;
 
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
@@ -66,6 +67,8 @@ public class FileController {
     private ConfigDataComponent configDataComponent;
     @Resource
     protected FileUploadComponent fileUploadComponent;
+    @Resource
+    private LocaleResolver localeResolver;
 
     /**
      * @param site
@@ -120,9 +123,9 @@ public class FileController {
                     FileUploadResult uploadResult = null;
                     if (CommonUtils.notEmpty(base64File)) {
                         uploadResult = fileUploadComponent.upload(site.getId(), VerificationUtils.base64Decode(base64File),
-                                privatefile, suffix, request.getLocale());
+                                privatefile, suffix, localeResolver.resolveLocale(request));
                     } else {
-                        uploadResult = fileUploadComponent.upload(site.getId(), file, privatefile, suffix, request.getLocale());
+                        uploadResult = fileUploadComponent.upload(site.getId(), file, privatefile, suffix, localeResolver.resolveLocale(request));
                     }
                     lockComponent.lock(site.getId(),
                             privatefile ? LockComponent.ITEM_TYPE_FILEUPLOAD_PRIVATE_SIZE
@@ -142,11 +145,11 @@ public class FileController {
                 }
             } else {
                 result.put(CommonConstants.ERROR, LanguagesUtils.getMessage(CommonConstants.applicationContext,
-                        request.getLocale(), "verify.custom.fileType"));
+                        localeResolver.resolveLocale(request), "verify.custom.fileType"));
             }
         } else {
             result.put(CommonConstants.ERROR,
-                    LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(), "verify.notEmpty.file"));
+                    LanguagesUtils.getMessage(CommonConstants.applicationContext, localeResolver.resolveLocale(request), "verify.notEmpty.file"));
         }
         return result;
     }
