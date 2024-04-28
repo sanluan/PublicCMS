@@ -2,8 +2,8 @@
     <ul>
     <@cms.categoryList advanced=true parentId=parentId pageSize=500>
         <#list page.list as a>
-            <li<#if a.childIds?has_content> _src="cmsContent/lookup.html?parentId=${a.id}&modelIds=${modelIds!}&field=${field!'relatedContentId'}"</#if>>
-                <a href="cmsContent/lookup_list.html?categoryId=${a.id}&modelIds=${modelIds!}&field=${field!'relatedContentId'}" class="exclude-translate" target="ajax" rel="content_list">${a.name!}</a>
+            <li<#if a.childIds?has_content> _src="cmsContent/lookup.html?parentId=${a.id}<#if modelIds?has_content>&modelIds=${modelIds!}&showModel=true</#if>&field=${field!'relatedContentId'}"</#if>>
+                <a href="cmsContent/lookup_list.html?categoryId=${a.id}<#if modelIds?has_content>&modelIds=${modelIds!}&showModel=true</#if>&field=${field!'relatedContentId'}" class="exclude-translate" target="ajax" rel="content_list">${a.name!}</a>
             </li>
         </#list>
     </@cms.categoryList>
@@ -17,8 +17,8 @@
                 <ul>
                     <@cms.categoryList advanced=true parentId=parentId pageSize=500>
                         <#list page.list as a>
-                            <li<#if a.childIds?has_content> _src="cmsContent/lookup.html?parentId=${a.id}&modelIds=${modelIds!}&field=${field!'relatedContentId'}"</#if>>
-                                <a href="cmsContent/lookup_list.html?categoryId=${a.id}&modelIds=${modelIds!}&field=${field!'relatedContentId'}" class="exclude-translate" target="ajax" rel="content_list">${a.name!}</a>
+                            <li<#if a.childIds?has_content> _src="cmsContent/lookup.html?parentId=${a.id}<#if modelIds?has_content>&modelIds=${modelIds!}&showModel=true</#if>&field=${field!'relatedContentId'}"</#if>>
+                                <a href="cmsContent/lookup_list.html?categoryId=${a.id}<#if modelIds?has_content>&modelIds=${modelIds!}&showModel=true</#if>&field=${field!'relatedContentId'}" class="exclude-translate" target="ajax" rel="content_list">${a.name!}</a>
                             </li>
                         <#else>
                             <li><a><@t.page 'empty_directory'/></a></li>

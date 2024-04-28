@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -31,6 +32,7 @@ import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.log.LogUpload;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
+import com.publiccms.logic.component.config.SafeConfigComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
@@ -54,6 +56,8 @@ public class CmsWebFileAdminController {
     @Resource
     protected LogOperateService logOperateService;
     @Resource
+    protected SafeConfigComponent safeConfigComponent;
+    @Resource
     protected SiteComponent siteComponent;
 
     /**
@@ -71,18 +75,25 @@ public class CmsWebFileAdminController {
             HttpServletRequest request, ModelMap model) {
         if (CommonUtils.notEmpty(path)) {
             try {
-                String filepath = siteComponent.getWebFilePath(site.getId(), path);
-                content = new String(VerificationUtils.base64Decode(content), CommonConstants.DEFAULT_CHARSET);
-                if (CmsFileUtils.createFile(filepath, content)) {
-                    logOperateService.save(
-                            new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                                    "save.web.webfile", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
+                String suffix = CmsFileUtils.getSuffix(path);
+                if (ArrayUtils.contains(safeConfigComponent.getSafeSuffix(site), suffix)) {
+                    String filepath = siteComponent.getWebFilePath(site.getId(), path);
+                    content = new String(VerificationUtils.base64Decode(content), CommonConstants.DEFAULT_CHARSET);
+                    if (CmsFileUtils.createFile(filepath, content)) {
+                        logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
+                                LogLoginService.CHANNEL_WEB_MANAGER, "save.web.webfile", RequestUtils.getIpAddress(request),
+                                CommonUtils.getDate(), path));
+                    } else {
+                        String historyFilePath = siteComponent.getWebHistoryFilePath(site.getId(), path, true);
+                        CmsFileUtils.updateFile(filepath, historyFilePath, content);
+                        logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
+                                LogLoginService.CHANNEL_WEB_MANAGER, "update.web.webfile", RequestUtils.getIpAddress(request),
+                                CommonUtils.getDate(), path));
+                    }
                 } else {
-                    String historyFilePath = siteComponent.getWebHistoryFilePath(site.getId(), path, true);
-                    CmsFileUtils.updateFile(filepath, historyFilePath, content);
-                    logOperateService.save(
-                            new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                                    "update.web.webfile", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
+                    model.addAttribute(CommonConstants.ERROR, LanguagesUtils.getMessage(CommonConstants.applicationContext,
+                            request.getLocale(), "verify.custom.fileType"));
+                    return CommonConstants.TEMPLATE_ERROR;
                 }
             } catch (IOException e) {
                 model.addAttribute(CommonConstants.ERROR, e.getMessage());
@@ -114,20 +125,27 @@ public class CmsWebFileAdminController {
                     String suffix = CmsFileUtils.getSuffix(originalName);
                     String filepath = path + CommonConstants.SEPARATOR + originalName;
                     String fuleFilePath = siteComponent.getWebFilePath(site.getId(), filepath);
-                    if (overwrite || !CmsFileUtils.exists(fuleFilePath)) {
-                        CmsFileUtils.upload(file, fuleFilePath);
-                        if (CmsFileUtils.isSafe(fuleFilePath, suffix)) {
-                            FileSize fileSize = CmsFileUtils.getFileSize(fuleFilePath, suffix);
-                            logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                                    originalName, CmsFileUtils.getFileType(CmsFileUtils.getSuffix(originalName)), file.getSize(),
-                                    fileSize.getWidth(), fileSize.getHeight(), RequestUtils.getIpAddress(request),
-                                    CommonUtils.getDate(), filepath));
-                        } else {
-                            CmsFileUtils.delete(fuleFilePath);
-                            model.addAttribute(CommonConstants.ERROR, LanguagesUtils.getMessage(
-                                    CommonConstants.applicationContext, request.getLocale(), "verify.custom.file.unsafe"));
-                            return CommonConstants.TEMPLATE_ERROR;
+                    if (ArrayUtils.contains(safeConfigComponent.getSafeSuffix(site), suffix)) {
+                        if (overwrite || !CmsFileUtils.exists(fuleFilePath)) {
+                            CmsFileUtils.upload(file, fuleFilePath);
+                            if (CmsFileUtils.isSafe(fuleFilePath, suffix)) {
+                                FileSize fileSize = CmsFileUtils.getFileSize(fuleFilePath, suffix);
+                                logUploadService
+                                        .save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                                                originalName, CmsFileUtils.getFileType(CmsFileUtils.getSuffix(originalName)),
+                                                file.getSize(), fileSize.getWidth(), fileSize.getHeight(),
+                                                RequestUtils.getIpAddress(request), CommonUtils.getDate(), filepath));
+                            } else {
+                                CmsFileUtils.delete(fuleFilePath);
+                                model.addAttribute(CommonConstants.ERROR, LanguagesUtils.getMessage(
+                                        CommonConstants.applicationContext, request.getLocale(), "verify.custom.file.unsafe"));
+                                return CommonConstants.TEMPLATE_ERROR;
+                            }
                         }
+                    } else {
+                        model.addAttribute(CommonConstants.ERROR, LanguagesUtils.getMessage(CommonConstants.applicationContext,
+                                request.getLocale(), "verify.custom.fileType"));
+                        return CommonConstants.TEMPLATE_ERROR;
                     }
                 }
             } catch (IOException e) {
