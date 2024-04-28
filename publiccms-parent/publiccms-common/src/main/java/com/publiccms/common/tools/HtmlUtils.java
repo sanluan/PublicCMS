@@ -20,14 +20,14 @@ import com.publiccms.common.constants.Constants;
 
 /**
  * HtmlUtils
- * 
+ *
  */
 public class HtmlUtils {
     private HtmlUtils() {
     }
 
     /**
-     * 
+     *
      */
     public static final Pattern HTML_PATTERN = Pattern.compile("<[^>]+>");
     public static final Pattern SRC_HREF_PATTERN = Pattern
@@ -44,6 +44,7 @@ public class HtmlUtils {
             .addAttributes("video", "autoplay", "controls", "data-setup", "height", "loop", "muted", "preload", "poster", "src",
                     "width")
             .addAttributes("source", "media", "sizes", "src", "srcset", "type")
+            .addAttributes("table", "align", "border", "cellspacing", "cellpadding")
             .addAttributes("track", "default", "kind", "label", "src", "srclang").addProtocols("a", "href", "#")
             .addProtocols("img", "src", "data").addProtocols("iframe", "src", "http", "https").preserveRelativeLinks(true);
 

@@ -1,5 +1,6 @@
 <#include "../include_page/extendsFieldType.html"/>
-<#macro extends name extendList=[] searchable=false copy=false>
+<#include "../include_page/sortable.html"/>
+<#macro extends name extendList=[] searchable=false sortable=false copy=false>
 <table class="list nowrap itemDetail" addButton="<@t.page 'button.new_line'/>" width="100%">
     <thead>
         <tr>
@@ -14,7 +15,12 @@
             <th type="lookup" name="${name}[#index#].dictionaryName" lookupPk="dictionaryId" lookupUrl="cmsDictionary/lookup.html" lookupGroup="${name}[#index#]" fieldAttrs="{'readonly':'readonly','style':'display:none'}" size="10"><a href="cmsDictionary/list.html" target="navTab" rel="cmsDictionary/list"><@t.page 'dictionary'/></a></th>
             <th type="checkbox" name="${name}[#index#].multiple" fieldClass="form-check-input" size="10"><@t.page 'multiple_select'/></th>
             <th type="textarea" name="${name}[#index#].description" fieldAttrs="{'maxlength':80,'rows':2,'cols':30}"><@t.page 'description'/></th>
-            <#if searchable><th type="checkbox" name="${name}[#index#].searchable" size="10" class="searchable" fieldClass="form-check-input"><@t.page 'searchable'/></th></#if>
+            <#if searchable>
+                <th type="checkbox" name="${name}[#index#].searchable" size="10" fieldClass="form-check-input"><@t.page 'searchable'/></th>
+            </#if>
+            <#if sortable>
+                <th type="enum" name="${name}[#index#].sortable" enumUrl="common/sortable.html" size="10" fieldAttrs="{'style':'display:none'}" fieldClass="form-check-input"><@t.page 'sortable'/></th>
+            </#if>
             <th type="text" name="${name}[#index#].sort" size="10" fieldClass="required digits" defaultVal="#index#"><@t.page 'sort'/></th>
             <th type="del" width="60"><@t.page 'operate'/></th>
         </tr>
@@ -64,6 +70,11 @@
                 <#if searchable>
                     <td>
                         <input type="checkbox" name="${name}[${extend?index}].searchable" class="form-check-input" ${extend.searchable?then(' checked="true"','')?no_esc}/>
+                    </td>
+                </#if>
+                <#if sortable>
+                    <td>
+                        <@extendsSortable inputName extend.sortable/>
                     </td>
                 </#if>
                 <td>

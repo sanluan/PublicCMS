@@ -259,7 +259,7 @@
     };
 })(jQuery);
 /**
- * Theme Plugins
+ * cssTable Plugins
  *
  * @author ZhangHuihua@msn.com
  */

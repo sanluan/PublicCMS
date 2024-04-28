@@ -1,5 +1,5 @@
 ﻿/**
- * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
+ * @license Copyright (c) 2003-2024, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license/
  */
 
@@ -13,10 +13,10 @@
  * (1) https://ckeditor.com/cke4/builder
  *     Visit online builder to build CKEditor from scratch.
  *
- * (2) https://ckeditor.com/cke4/builder/d960fc7a1e377306bfbfaf7f84c7c7b4
+ * (2) https://ckeditor.com/cke4/builder/d583703afc18cd4854cd6e7239929aa0
  *     Visit online builder to build CKEditor, starting with the same setup as before.
  *
- * (3) https://ckeditor.com/cke4/builder/download/d960fc7a1e377306bfbfaf7f84c7c7b4
+ * (3) https://ckeditor.com/cke4/builder/download/d583703afc18cd4854cd6e7239929aa0
  *     Straight download link to the latest version of CKEditor (Optimized) with the same setup as before.
  *
  * NOTE:
@@ -43,6 +43,7 @@ var CKBUILDER_CONFIG = {
 		'.travis.yml',
 		'bender-err.log',
 		'bender-out.log',
+		'bender-runner.config.json',
 		'bender.ci.js',
 		'bender.js',
 		'dev',
@@ -56,6 +57,7 @@ var CKBUILDER_CONFIG = {
 	plugins : {
 		'a11yhelp' : 1,
 		'about' : 1,
+		'autosave' : 1,
 		'basicstyles' : 1,
 		'bidi' : 1,
 		'blockquote' : 1,
@@ -70,6 +72,7 @@ var CKBUILDER_CONFIG = {
 		'div' : 1,
 		'editorplaceholder' : 1,
 		'elementspath' : 1,
+		'emoji' : 1,
 		'enterkey' : 1,
 		'entities' : 1,
 		'filebrowser' : 1,
@@ -78,6 +81,7 @@ var CKBUILDER_CONFIG = {
 		'font' : 1,
 		'format' : 1,
 		'horizontalrule' : 1,
+		'html5audio' : 1,
 		'html5video' : 1,
 		'htmlwriter' : 1,
 		'iframe' : 1,
@@ -92,8 +96,10 @@ var CKBUILDER_CONFIG = {
 		'list' : 1,
 		'liststyle' : 1,
 		'magicline' : 1,
+		'markdown' : 1,
 		'maximize' : 1,
 		'newpage' : 1,
+		'notification' : 1,
 		'pagebreak' : 1,
 		'pastefromgdocs' : 1,
 		'pastefromlibreoffice' : 1,
@@ -121,6 +127,7 @@ var CKBUILDER_CONFIG = {
 		'undo' : 1,
 		'uploadfile' : 1,
 		'uploadimage' : 1,
+		'wordcount' : 1,
 		'wysiwygarea' : 1
 	},
 	languages : {

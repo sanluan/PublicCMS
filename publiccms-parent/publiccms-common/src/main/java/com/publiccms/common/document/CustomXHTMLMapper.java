@@ -48,6 +48,7 @@ import fr.opensagres.poi.xwpf.converter.core.styles.run.RunFontStyleStrikeValueP
 import fr.opensagres.poi.xwpf.converter.core.styles.run.RunTextHighlightingValueProvider;
 import fr.opensagres.poi.xwpf.converter.xhtml.XHTMLOptions;
 import fr.opensagres.poi.xwpf.converter.xhtml.internal.XHTMLMapper;
+import fr.opensagres.poi.xwpf.converter.xhtml.internal.XHTMLMasterPage;
 import fr.opensagres.poi.xwpf.converter.xhtml.internal.styles.CSSStyle;
 import fr.opensagres.poi.xwpf.converter.xhtml.internal.styles.CSSStylePropertyConstants;
 import fr.opensagres.poi.xwpf.converter.xhtml.internal.utils.SAXHelper;
@@ -70,6 +71,10 @@ public class CustomXHTMLMapper extends XHTMLMapper {
     }
 
     @Override
+    public void setActiveMasterPage(XHTMLMasterPage masterPage) {
+    }
+
+    @Override
     protected Object startVisitParagraph(XWPFParagraph paragraph, ListItemContext itemContext, Object parentContainer)
             throws Exception {
         List<CSSStyle> styleList = createStyleList(paragraph.getStyleID(), true);
@@ -83,8 +88,8 @@ public class CustomXHTMLMapper extends XHTMLMapper {
             startElement(SPAN_ELEMENT, attributes);
             String text = itemContext.getText();
             if (StringUtils.isNotEmpty(text)) {
-                text = CommonUtils.joinString(fr.opensagres.poi.xwpf.converter.core.utils.StringUtils.replaceNonUnicodeChars(text),
-                        "\u0020");
+                text = CommonUtils.joinString(
+                        fr.opensagres.poi.xwpf.converter.core.utils.StringUtils.replaceNonUnicodeChars(text), "\u0020");
                 SAXHelper.characters(contentHandler, StringEscapeUtils.escapeHtml(text));
             }
             endElement(SPAN_ELEMENT);
@@ -228,22 +233,22 @@ public class CustomXHTMLMapper extends XHTMLMapper {
 
             border = getStylesDocument().getTableBorder(table, BorderSide.BOTTOM);
             if (border != null) {
-                String style = CommonUtils.joinString(border.getBorderSize() , "px solid "
-                        , fr.opensagres.poi.xwpf.converter.core.utils.StringUtils.toHexString(border.getBorderColor()));
+                String style = CommonUtils.joinString(border.getBorderSize(), "px solid ",
+                        fr.opensagres.poi.xwpf.converter.core.utils.StringUtils.toHexString(border.getBorderColor()));
                 cssStyle.addProperty(CSSStylePropertyConstants.BORDER_BOTTOM, style);
             }
 
             border = getStylesDocument().getTableBorder(table, BorderSide.LEFT);
             if (border != null) {
-                String style =CommonUtils.joinString( border.getBorderSize() , "px solid "
-                        , fr.opensagres.poi.xwpf.converter.core.utils.StringUtils.toHexString(border.getBorderColor()));
+                String style = CommonUtils.joinString(border.getBorderSize(), "px solid ",
+                        fr.opensagres.poi.xwpf.converter.core.utils.StringUtils.toHexString(border.getBorderColor()));
                 cssStyle.addProperty(CSSStylePropertyConstants.BORDER_LEFT, style);
             }
 
             border = getStylesDocument().getTableBorder(table, BorderSide.RIGHT);
             if (border != null) {
-                String style = CommonUtils.joinString(border.getBorderSize() , "px solid "
-                        , fr.opensagres.poi.xwpf.converter.core.utils.StringUtils.toHexString(border.getBorderColor()));
+                String style = CommonUtils.joinString(border.getBorderSize(), "px solid ",
+                        fr.opensagres.poi.xwpf.converter.core.utils.StringUtils.toHexString(border.getBorderColor()));
                 cssStyle.addProperty(CSSStylePropertyConstants.BORDER_RIGHT, style);
             }
         }

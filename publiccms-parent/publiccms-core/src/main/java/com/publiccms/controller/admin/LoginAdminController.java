@@ -152,8 +152,8 @@ public class LoginAdminController {
         service.updateLoginStatus(user.getId(), ip);
         String authToken = UUID.randomUUID().toString();
         Date now = CommonUtils.getDate();
-        Map<String, String> config = configDataComponent.getConfigData(site.getId(), SiteConfigComponent.CONFIG_CODE);
-        int expiryMinutes = ConfigDataComponent.getInt(config.get(SafeConfigComponent.CONFIG_EXPIRY_MINUTES_MANAGER),
+        Map<String, String> safeConfig = configDataComponent.getConfigData(site.getId(), SafeConfigComponent.CONFIG_CODE);
+        int expiryMinutes = ConfigDataComponent.getInt(safeConfig.get(SafeConfigComponent.CONFIG_EXPIRY_MINUTES_MANAGER),
                 SafeConfigComponent.DEFAULT_EXPIRY_MINUTES);
         addLoginStatus(user, authToken, request, response, expiryMinutes);
 
@@ -161,6 +161,7 @@ public class LoginAdminController {
                 DateUtils.addMinutes(now, expiryMinutes), ip));
         logLoginService.save(new LogLogin(site.getId(), username, user.getId(), ip, LogLoginService.CHANNEL_WEB_MANAGER, true,
                 CommonUtils.getDate(), null));
+        Map<String, String> config = configDataComponent.getConfigData(site.getId(), SiteConfigComponent.CONFIG_CODE);
         String safeReturnUrl = config.get(SafeConfigComponent.CONFIG_RETURN_URL);
         if (SafeConfigComponent.isUnSafeUrl(returnUrl, site, safeReturnUrl, request.getContextPath())) {
             returnUrl = CommonConstants.getDefaultPage();

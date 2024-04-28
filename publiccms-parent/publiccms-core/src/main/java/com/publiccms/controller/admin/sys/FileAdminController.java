@@ -35,7 +35,10 @@ import com.publiccms.common.tools.VerificationUtils;
 import com.publiccms.entities.log.LogUpload;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
+import com.publiccms.logic.component.config.ConfigDataComponent;
 import com.publiccms.logic.component.config.SafeConfigComponent;
+import com.publiccms.logic.component.config.SiteConfigComponent;
+
 import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
@@ -59,6 +62,8 @@ public class FileAdminController {
     protected SiteComponent siteComponent;
     @Resource
     protected FileUploadComponent fileUploadComponent;
+    @Resource
+    private ConfigDataComponent configDataComponent;
     @Resource
     protected SafeConfigComponent safeConfigComponent;
 
@@ -257,8 +262,20 @@ public class FileAdminController {
                                         LogLoginService.CHANNEL_WEB_MANAGER, originalName, false, fileType,
                                         uploadResult.getFileSize(), uploadResult.getWidth(), uploadResult.getHeight(),
                                         RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
-                                result.put(field, DocToHtmlUtils.pdfToHtml(CommonUtils.joinString(site.getSitePath(), fileName),
-                                        width, height));
+
+                                Map<String, String> config = configDataComponent.getConfigData(site.getId(),
+                                        SiteConfigComponent.CONFIG_CODE);
+                                String pdfViewerUrl = config.get(SiteConfigComponent.CONFIG_PDFVIEWER_URL);
+                                if (CommonUtils.empty(pdfViewerUrl)) {
+                                    pdfViewerUrl = CommonUtils.joinString(site.getDynamicPath(),
+                                            "resource/plugins/pdfjs/viewer.html?file=");
+                                }
+                                result.put(field,
+                                        DocToHtmlUtils.pdfToHtml(
+                                                CommonUtils.joinString(pdfViewerUrl,
+                                                        CommonUtils
+                                                                .encodeURI(CommonUtils.joinString(site.getSitePath(), fileName))),
+                                                width, height));
                             } catch (IllegalStateException | IOException e) {
                                 log.error(e.getMessage());
                             }

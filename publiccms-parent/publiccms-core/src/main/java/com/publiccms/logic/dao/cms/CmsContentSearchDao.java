@@ -29,6 +29,7 @@ import org.hibernate.search.mapper.orm.search.loading.dsl.SearchLoadingOptionsSt
 import org.hibernate.search.util.common.data.Range;
 import org.springframework.stereotype.Repository;
 
+import com.publiccms.common.base.BaseDao;
 import com.publiccms.common.base.HighLighterQuery;
 import com.publiccms.common.handler.FacetPageHandler;
 import com.publiccms.common.handler.PageHandler;
@@ -58,19 +59,23 @@ public class CmsContentSearchDao {
     private static final String[] highLighterTextFields = new String[] { titleField, "author", "editor", descriptionField };
     private static final String[] tagFields = new String[] { "tagIds" };
     private static final String dictionaryField = "dictionaryValues";
+    private static final String[] sortableFields = new String[] { "sort", "publishDate", "clicks", "collections", "score",
+            "minPrice", "maxPrice" };
+    private static final String ExtendField = "extend.";
 
     private static final Date startDate = new Date(1);
 
     /**
      * @param queryEntity
      * @param orderField
+     * @param orderType
      * @param pageIndex
      * @param pageSize
      * @param maxResults
      * @return results page
      */
-    public PageHandler query(CmsContentSearchQuery queryEntity, String orderField, Integer pageIndex, Integer pageSize,
-            Integer maxResults) {
+    public PageHandler query(CmsContentSearchQuery queryEntity, String orderField, String orderType, Integer pageIndex,
+            Integer pageSize, Integer maxResults) {
         if (CommonUtils.notEmpty(queryEntity.getFields())) {
             for (String field : queryEntity.getFields()) {
                 if (!ArrayUtils.contains(textFields, field)) {
@@ -81,20 +86,21 @@ public class CmsContentSearchDao {
             queryEntity.setFields(textFields);
         }
         initHighLighterQuery(queryEntity.getHighLighterQuery(), queryEntity.getText());
-        SearchQueryOptionsStep<?, CmsContent, ?, ?, ?> optionsStep = getOptionsStep(queryEntity, orderField);
+        SearchQueryOptionsStep<?, CmsContent, ?, ?, ?> optionsStep = getOptionsStep(queryEntity, orderField, orderType);
         return dao.getPage(optionsStep, queryEntity.getHighLighterQuery(), pageIndex, pageSize, maxResults);
     }
 
     /**
      * @param queryEntity
      * @param orderField
+     * @param orderType
      * @param pageIndex
      * @param pageSize
      * @param maxResults
      * @return results page
      */
-    public FacetPageHandler facetQuery(CmsContentSearchQuery queryEntity, String orderField, Integer pageIndex, Integer pageSize,
-            Integer maxResults) {
+    public FacetPageHandler facetQuery(CmsContentSearchQuery queryEntity, String orderField, String orderType, Integer pageIndex,
+            Integer pageSize, Integer maxResults) {
         if (CommonUtils.notEmpty(queryEntity.getFields())) {
             for (String field : queryEntity.getFields()) {
                 if (!ArrayUtils.contains(textFields, field)) {
@@ -105,7 +111,7 @@ public class CmsContentSearchDao {
             queryEntity.setFields(textFields);
         }
         initHighLighterQuery(queryEntity.getHighLighterQuery(), queryEntity.getText());
-        SearchQueryOptionsStep<?, CmsContent, ?, ?, ?> optionsStep = getOptionsStep(queryEntity, orderField);
+        SearchQueryOptionsStep<?, CmsContent, ?, ?, ?> optionsStep = getOptionsStep(queryEntity, orderField, orderType);
 
         AggregationKey<Map<Integer, Long>> categoryIdKey = AggregationKey.of("categoryIdKey");
         AggregationKey<Map<String, Long>> modelIdKey = AggregationKey.of("modelIdKey");
@@ -153,7 +159,8 @@ public class CmsContentSearchDao {
         }
     }
 
-    private SearchQueryOptionsStep<?, CmsContent, ?, ?, ?> getOptionsStep(CmsContentSearchQuery queryEntity, String orderField) {
+    private SearchQueryOptionsStep<?, CmsContent, ?, ?, ?> getOptionsStep(CmsContentSearchQuery queryEntity, String orderField,
+            String orderType) {
 
         Consumer<? super BooleanPredicateOptionsCollector<?>> clauseContributor = b -> {
             b.must(t -> t.match().field(siteIdField).matching(queryEntity.getSiteId()));
@@ -222,9 +229,9 @@ public class CmsContentSearchDao {
                             String[] vs = StringUtils.split(value, ":", 2);
                             if (2 == vs.length) {
                                 c.should(queryEntity.isPhrase()
-                                        ? t -> t.phrase().field(CommonUtils.joinString("extend.", vs[0])).matching(vs[1])
+                                        ? t -> t.phrase().field(CommonUtils.joinString(ExtendField, vs[0])).matching(vs[1])
                                                 .boost(2.0f)
-                                        : t -> t.match().field(CommonUtils.joinString("extend.", vs[0])).matching(vs[1])
+                                        : t -> t.match().field(CommonUtils.joinString(ExtendField, vs[0])).matching(vs[1])
                                                 .boost(2.0f));
                             }
                         }
@@ -257,27 +264,21 @@ public class CmsContentSearchDao {
                         .mustNot(t.range().field("expiryDate").range(Range.canonical(startDate, queryEntity.getExpiryDate()))));
             }
         };
-        SearchQuerySelectStep<?, EntityReference, CmsContent, SearchLoadingOptionsStep, ?, ?> selectStep = dao.getSearchSession().search(dao.getEntityClass());
+        SearchQuerySelectStep<?, EntityReference, CmsContent, SearchLoadingOptionsStep, ?, ?> selectStep = dao.getSearchSession()
+                .search(dao.getEntityClass());
         SearchQueryOptionsStep<?, CmsContent, ?, ?, ?> optionsStep;
         if (queryEntity.isProjection()) {
             optionsStep = selectStep.select(f -> f.entity()).where(f -> f.bool().with(clauseContributor));
         } else {
             optionsStep = selectStep.where(f -> f.bool().with(clauseContributor));
         }
-        if ("sort".equals(orderField)) {
-            optionsStep.sort(f -> f.field("sort").desc());
-        }
-        if ("publishDate".equals(orderField)) {
-            optionsStep.sort(f -> f.field("publishDate").desc());
-        }
-        if ("clicks".equals(orderField)) {
-            optionsStep.sort(f -> f.field("clicks").desc());
-        }
-        if ("collections".equals(orderField)) {
-            optionsStep.sort(f -> f.field("collections").desc());
-        }
-        if ("score".equals(orderField)) {
-            optionsStep.sort(f -> f.field("score").desc());
+        if (ArrayUtils.contains(sortableFields, orderField)
+                || CommonUtils.notEmpty(orderField) && orderField.startsWith(ExtendField)) {
+            if (BaseDao.ORDERTYPE_ASC.equalsIgnoreCase(orderType)) {
+                optionsStep.sort(f -> f.field(orderField).asc());
+            } else {
+                optionsStep.sort(f -> f.field(orderField).desc());
+            }
         }
         return optionsStep;
     }

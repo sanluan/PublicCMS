@@ -1,6 +1,5 @@
 package com.publiccms.logic.service.cms;
 
-import static org.springframework.util.StringUtils.collectionToCommaDelimitedString;
 import static org.springframework.util.StringUtils.collectionToDelimitedString;
 
 import java.io.Serializable;
@@ -119,22 +118,24 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param queryEntity
      * @param containChild
      * @param orderField
+     * @param orderType
      * @param pageIndex
      * @param pageSize
      * @param maxResults
      * @return results page
      */
     @Transactional(readOnly = true)
-    public PageHandler query(CmsContentSearchQuery queryEntity, Boolean containChild, String orderField, Integer pageIndex,
-            Integer pageSize, Integer maxResults) {
+    public PageHandler query(CmsContentSearchQuery queryEntity, Boolean containChild, String orderField, String orderType,
+            Integer pageIndex, Integer pageSize, Integer maxResults) {
         queryEntity.setCategoryIds(getCategoryIds(containChild, queryEntity.getCategoryId(), queryEntity.getCategoryIds()));
-        return searchDao.query(queryEntity, orderField, pageIndex, pageSize, maxResults);
+        return searchDao.query(queryEntity, orderField, orderType, pageIndex, pageSize, maxResults);
     }
 
     /**
      * @param queryEntity
      * @param containChild
      * @param orderField
+     * @param orderType
      * @param pageIndex
      * @param pageSize
      * @param maxResults
@@ -142,9 +143,9 @@ public class CmsContentService extends BaseService<CmsContent> {
      */
     @Transactional(readOnly = true)
     public FacetPageHandler facetQuery(CmsContentSearchQuery queryEntity, Boolean containChild, String orderField,
-            Integer pageIndex, Integer pageSize, Integer maxResults) {
+            String orderType, Integer pageIndex, Integer pageSize, Integer maxResults) {
         queryEntity.setCategoryIds(getCategoryIds(containChild, queryEntity.getCategoryId(), queryEntity.getCategoryIds()));
-        return searchDao.facetQuery(queryEntity, orderField, pageIndex, pageSize, maxResults);
+        return searchDao.facetQuery(queryEntity, orderField, orderType, pageIndex, pageSize, maxResults);
     }
 
     /**
@@ -172,7 +173,7 @@ public class CmsContentService extends BaseService<CmsContent> {
         queryEntity.setCategoryIds(getCategoryIds(containChild, queryEntity.getCategoryId(), queryEntity.getCategoryIds()));
         return dao.getPage(queryEntity, orderField, orderType, firstResult, pageIndex, pageSize, maxResults);
     }
-    
+
     /**
      * @param queryEntity
      * @param containChild
@@ -369,7 +370,6 @@ public class CmsContentService extends BaseService<CmsContent> {
 
         if (CommonUtils.notEmpty(map)) {
             Set<String> dictionaryValueList = new HashSet<>();
-            Set<String> extendsFieldList = new HashSet<>();
             attribute.setData(ExtendUtils.getExtendString(map, site.getSitePath(), (extendField, value) -> {
                 if (ArrayUtils.contains(DICTIONARY_INPUT_TYPES, extendField.getInputType())) {
                     if (Config.INPUTTYPE_DICTIONARY.equalsIgnoreCase(extendField.getInputType()) && extendField.isMultiple()) {
@@ -388,7 +388,6 @@ public class CmsContentService extends BaseService<CmsContent> {
                     String[] values = StringUtils.splitPreserveAllTokens(value, Constants.COMMA);
                     if (CommonUtils.notEmpty(values)) {
                         int i = 0;
-                        extendsFieldList.add(extendField.getId().getCode());
                         for (String v : values) {
                             if (i++ % 2 == 1) {
                                 searchTextBuilder.append(v).append(Constants.BLANK_SPACE);
@@ -401,7 +400,6 @@ public class CmsContentService extends BaseService<CmsContent> {
                         value = HtmlUtils.removeHtmlTag(value);
                     }
                     if (CommonUtils.notEmpty(value)) {
-                        extendsFieldList.add(extendField.getId().getCode());
                         searchTextBuilder.append(value).append(Constants.BLANK_SPACE);
                     }
                 }
@@ -411,15 +409,9 @@ public class CmsContentService extends BaseService<CmsContent> {
             } else {
                 attribute.setDictionaryValues(null);
             }
-            if (CommonUtils.notEmpty(extendsFieldList)) {
-                attribute.setExtendsFields(collectionToCommaDelimitedString(extendsFieldList));
-            } else {
-                attribute.setExtendsFields(null);
-            }
         } else {
             attribute.setData(null);
             attribute.setDictionaryValues(null);
-            attribute.setExtendsFields(null);
         }
         dealFiles(files, images, products, attribute);
 

@@ -32,6 +32,7 @@ import jakarta.annotation.Resource;
 @ContextConfiguration(classes = ApplicationConfig.class)
 class CmsContentTest {
     protected final Log log = LogFactory.getLog(getClass());
+
     @BeforeAll
     public static void init() {
         // 不进入安装程序 数据目录有 database.properties才能进行测试
@@ -57,7 +58,7 @@ class CmsContentTest {
         highLighterQuery.setPostTag("</em>");
         PageHandler page = contentService.query(new CmsContentSearchQuery((short) 1, false, true, highLighterQuery, "天津黑核科技有限公司",
                 null, new String[] { "title", "description" }, null, null, null, 1, null, new String[] { "1" }, null, null, null,
-                null, null, CommonUtils.getMinuteDate()), false, null, null, null, null);
+                null, null, CommonUtils.getMinuteDate()), false, null, null, null, null, null);
         for (CmsContent content : (List<CmsContent>) page.getList()) {
             log.info(content.getTitle() + "\t" + content.getDescription());
         }

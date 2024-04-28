@@ -39,7 +39,7 @@
         <version.hibernateTools>5.6.15.Final</version.hibernateTools>
         <!-- https://mvnrepository.com/artifact/org.hibernate.search/hibernate-search-mapper-orm/ -->
         <!-- http://hibernate.org/search/releases/ -->
-        <version.hibernateSearch>6.2.2.Final</version.hibernateSearch>
+        <version.hibernateSearch>6.2.3.Final</version.hibernateSearch>
         <!-- https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator -->
         <version.hibernateValidator>8.0.1.Final</version.hibernateValidator>
         <!-- http://mvnrepository.com/artifact/org.mybatis/mybatis -->

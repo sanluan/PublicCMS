@@ -35,37 +35,50 @@ public class SysExtendField implements java.io.Serializable {
      */
     private SysExtendFieldId id;
     /**
-     * required<p>
+     * required
+     * <p>
      * 必填
      */
     @GeneratorColumn(title = "必填")
     private boolean required;
     /**
-     * searchable<p>
+     * searchable
+     * <p>
      * 可搜索
      */
     @GeneratorColumn(title = "可搜索")
     private boolean searchable;
     /**
-     * max length<p>
+     * sortable
+     * <p>
+     * 可排序
+     */
+    @GeneratorColumn(title = "可排序")
+    private String sortable;
+    /**
+     * max length
+     * <p>
      * 最大长度
      */
     @GeneratorColumn(title = "最大长度")
     private Integer maxlength;
     /**
-     * image width<p>
+     * image width
+     * <p>
      * 图片宽度
      */
     @GeneratorColumn(title = "宽度")
     private Integer width;
     /**
-     * image height<p>
+     * image height
+     * <p>
      * 图片高度
      */
     @GeneratorColumn(title = "高度")
     private Integer height;
     /**
-     * name<p>
+     * name
+     * <p>
      * 名称
      */
     @GeneratorColumn(title = "名称")
@@ -73,38 +86,44 @@ public class SysExtendField implements java.io.Serializable {
     @Length(max = 20)
     private String name;
     /**
-     * description<p>
+     * description
+     * <p>
      * 描述
      */
     @GeneratorColumn(title = "描述")
     @Length(max = 300)
     private String description;
     /**
-     * input type<p>
+     * input type
+     * <p>
      * 表单类型
      */
     @GeneratorColumn(title = "表单类型")
     private String inputType;
     /**
-     * default value<p>
+     * default value
+     * <p>
      * 默认值
      */
     @GeneratorColumn(title = "默认值")
     private String defaultValue;
     /**
-     * dictionary id<p>
+     * dictionary id
+     * <p>
      * 数据字典
      */
     @GeneratorColumn(title = "数据字典")
     private String dictionaryId;
     /**
-     * multiple<p>
+     * multiple
+     * <p>
      * 多选
      */
     @GeneratorColumn(title = "多选")
     private boolean multiple;
     /**
-     * sort<p>
+     * sort
+     * <p>
      * 排序
      */
     @GeneratorColumn(title = "顺序", order = true)
@@ -129,21 +148,13 @@ public class SysExtendField implements java.io.Serializable {
         this.defaultValue = defaultValue;
     }
 
-    public SysExtendField(SysExtendFieldId id, boolean required, boolean searchable, String name, String inputType, int sort) {
+    public SysExtendField(SysExtendFieldId id, boolean required, boolean searchable, String sortable, Integer maxlength,
+            Integer width, Integer height, String name, String description, String inputType, String defaultValue,
+            String dictionaryId, boolean multiple, int sort) {
         this.id = id;
         this.required = required;
         this.searchable = searchable;
-        this.name = name;
-        this.inputType = inputType;
-        this.sort = sort;
-    }
-
-    public SysExtendField(SysExtendFieldId id, boolean required, boolean searchable, Integer maxlength, Integer width,
-            Integer height, String name, String description, String inputType, String defaultValue, String dictionaryId,
-            boolean multiple, int sort) {
-        this.id = id;
-        this.required = required;
-        this.searchable = searchable;
+        this.sortable = sortable;
         this.maxlength = maxlength;
         this.width = width;
         this.height = height;
@@ -183,6 +194,15 @@ public class SysExtendField implements java.io.Serializable {
 
     public void setSearchable(boolean searchable) {
         this.searchable = searchable;
+    }
+
+    @Column(name = "sortable", length = 20)
+    public String getSortable() {
+        return this.sortable;
+    }
+
+    public void setSortable(String sortable) {
+        this.sortable = sortable;
     }
 
     @Column(name = "maxlength")

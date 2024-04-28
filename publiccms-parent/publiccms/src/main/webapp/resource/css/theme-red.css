@@ -6,24 +6,23 @@ body,html{color:#31353e;}
 a{color:#8f0006;}
 h2.contentTitle{border-color:#e4e9f2;background-color:#fff;}
 header{background-color:#8f0006;color:#afc5f6;}
-header .nav ul{background-color:#D8403D;}
-header .nav ul li a { color:#000;}
+header .navbar-toggler li{background-color:#8f0006;}
+header .navbar-toggler li:hover{background-color:#b52e31;}
+header .navbar-toggler li:hover a,header .nav a:hover{color:#fff;}
+header .nav>li>ul{background-color:#D8403D;}
 header a{color:#efefef;}
-#navMenu li{background-color:#8f0006;}
-#navMenu li.selected,#navMenu li:hover{background-color:#b52e31;}
-#navMenu li.selected a,#navMenu li:hover a,header .nav a:hover{color:#fff;}
 /* 主界面 */
 
 #sidebar{background-color:#FAE1E1;}
 #sidebar_s{background-color:#FA5151;}
 .tabsPage{background-color:#edf1f5;}
 .accordion .accordionHeader{background-color:#b52e31;}
-.accordion .accordionHeader h2.collapsable{color:#fff;}
+.accordion .accordionHeader h2.collapsable,.accordion .accordionHeader a h2.collapsable,.accordion .accordionContent h2{background-color:#FA5151;color:#fff;}
 .accordion .accordionContent{background-color:#FAE1E1;}
 #splitBarProxy{border-color:#c0c0c0;background-color:#CCC;}
 
 #sidebar_s,.accordion .accordionHeader{color:#e3e3e3;}
-.accordion .accordionContent,.accordionContent .tree a,.accordionContent .tree div:hover{color:#333;}
+.accordion .accordionContent,.accordionContent .tree a,.accordionContent .tree div:hover,.accordion .accordionHeader a{color:#333;}
 .accordionContent .tree div:hover a{background-color:#D8403D;color:#eee;}
 .accordionContent .tree div.selected a{background-color:#FA5151;color:#fff;}
 

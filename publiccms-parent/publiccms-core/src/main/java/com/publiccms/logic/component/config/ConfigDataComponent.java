@@ -51,6 +51,18 @@ public class ConfigDataComponent implements SiteCache {
         return configMap;
     }
 
+    public static Integer getInt(String value) {
+        if (CommonUtils.empty(value)) {
+            return null;
+        } else {
+            try {
+                return Integer.parseInt(value);
+            } catch (NumberFormatException e) {
+                return null;
+            }
+        }
+    }
+    
     public static int getInt(String value, int defaultValue) {
         if (CommonUtils.empty(value)) {
             return defaultValue;
@@ -91,6 +103,7 @@ public class ConfigDataComponent implements SiteCache {
         Map<String, Map<String, String>> map = cache.get(siteId);
         if (CommonUtils.notEmpty(map)) {
             map.remove(code);
+            cache.put(siteId, map);
         }
     }
 

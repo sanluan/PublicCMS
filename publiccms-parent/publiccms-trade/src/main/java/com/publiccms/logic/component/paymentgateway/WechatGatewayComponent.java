@@ -58,43 +58,43 @@ import jakarta.servlet.http.HttpServletResponse;
 @Component
 public class WechatGatewayComponent extends AbstractPaymentGateway implements Config {
     /**
-     * 
+     *
      */
     public static final String CONFIG_CODE = "wechat";
     /**
-     * 
+     *
      */
     public static final String CONFIG_CODE_DESCRIPTION = CommonUtils.joinString(CONFIGPREFIX, CONFIG_CODE);
     /**
-     * 
+     *
      */
     public static final String CONFIG_APPID = "appId";
     /**
-     * 
+     *
      */
     public static final String CONFIG_MCHID = "mchId";
     /**
-     * 
+     *
      */
     public static final String CONFIG_SERIALNO = "serialNo";
     /**
-     * 
+     *
      */
     public static final String CONFIG_KEY = "key";
     /**
-     * 
+     *
      */
     public static final String CONFIG_PRIVATEKEY = "privateKey";
     /**
-     * 
+     *
      */
     public static final String CONFIG_NOTIFYURL = "notifyUrl";
     /**
-     * 
+     *
      */
     public static final String CONFIG_APITYPE = "apiType";
     /**
-     * 
+     *
      */
     public static final String CONFIG_RESULTPAGE = "resultPage";
 
@@ -268,7 +268,7 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
                     Map<String, Object> requestMap = new HashMap<>();
                     requestMap.put("out_trade_no", getOutTradeNo(payment.getId()));
                     requestMap.put("out_refund_no", String.valueOf(refund.getId()));
-                    requestMap.put("reason", null == refund.getReply() ? refund.getReason() : refund.getReply());
+                    requestMap.put("reason", null == refund.getReason() ? refund.getReply() : refund.getReason());
                     requestMap.put("notify_url", config.get(CONFIG_NOTIFYURL));
                     Map<String, Object> amountMap = new HashMap<>();
                     amountMap.put("refund", (refund.getRefundAmount().multiply(new BigDecimal(100))).intValue());

@@ -36,25 +36,14 @@ function initEnv() {
         }
         initUI();
         if ($.fn.navMenu ){
+            $("#navMenu").navMenu();
             var hash = location.hash.skipChar("#").replace(/\?.*$/, "");
-            var callback;
-            var parentId;
             if(hash ) {
-                parentId = hash.substring(0, hash.indexOf("_"));
-                var tabid = hash.substring(hash.indexOf("_") + 1);
-                if(tabid ) {
-                    callback = function(){
-                        var $box = $("#menu a[rel="+escapeJquery(tabid)+"]").closest(".accordionContent");
-                        if(!$box.is(":visible")){
-                            $box.prev().click();
-                        }
-                        $("#menu a[rel="+escapeJquery(tabid)+"]").click();
-                    }
+                var $box = $("#menu a[rel="+escapeJquery(hash)+"]").closest(".accordionContent");
+                if(!$box.is(":visible")){
+                    $box.prev().click();
                 }
-            }
-            $("#navMenu").navMenu(callback);
-            if(parentId ) {
-                $("#navMenu a[parentid="+parentId+"]").click();
+                $("#menu a[rel="+escapeJquery(hash)+"]").click();
             }
         }
         $(document).trigger(JUI.eventType.initEnvAfter);
@@ -64,8 +53,8 @@ function initEnv() {
  * 初始化布局
  */
 function initLayout() {
-    var iContentW = $(window).width() - (JUI.ui.sbar ? $("#sidebar").width() : 0);
-    var iContentH = $(window).height() - $("header").outerHeight(true) - $("footer").outerHeight(true);
+    var iContentW = $(window).width() - $("#sidebar").width();
+    var iContentH = $(window).height() - $("header").outerHeight(true);
     $("#navTab").css({"width":iContentW+"px"});
     $("main .tabsPageContent").height(iContentH - $(".tabsPageHeader").outerHeight(true)).find("[layoutH]").layoutH();
     $("#splitBar, #splitBarProxy").height(iContentH - 2);
@@ -287,24 +276,26 @@ function initLink($p) {
     $.fn.extend({
         theme: function(options) {
             var op = $.extend({
-                themeBase: "themes", defaultTheme: "default"
+                themeBase: "themes", defaultTheme: "toptry"
             }, options);
             var _themeHref = op.themeBase + "#theme#.css";
             var $themeItem = $("<link href=\"" + _themeHref.replace("#theme#", op.defaultTheme) + "\" rel=\"stylesheet\" media=\"screen\"/>");
             var setTheme = function(themeName) {
                 $themeItem.attr("href", _themeHref.replace("#theme#", themeName));
-                jThemeLi.find(">div").removeClass("selected");
-                jThemeLi.filter("[theme=" + themeName + "]").find(">div").addClass("selected");
+                jThemeLi.removeClass("selected");
+                $(".theme").prop("class","theme "+themeName);
+                jThemeLi.filter("." + themeName).addClass("selected");
                 if ("function" === typeof $.cookie ) {
                     $.cookie("dwz_theme", themeName, { expires: 30 });
                 }
             }
-            var jThemeLi = $(this).find(">li[theme]");
+            var jThemeLi = $(this).find(">li");
             jThemeLi.each(function(index) {
                 var $this = $(this);
-                var themeName = $this.attr("theme");
+                var themeName = $this.attr("class");
                 if(themeName == op.defaultTheme){
-                    $this.find(">div").addClass("selected");
+                    $this.addClass("selected");
+                    $(".theme").prop("class","theme "+themeName);
                 }
                 $this.addClass(themeName).click(function() {
                     setTheme(themeName);
