@@ -1,7 +1,7 @@
-<#macro pageTree filepath=''>
+<#macro pageList filepath=''>
     <@tools.fileList path=filepath>
         <#list list as a>
-            <@t.merge 'pages' filepath+'/'+a.fileName/>
+            <@t.merge 'pages' filepath?has_content?then(filepath+'/','')+a.fileName/>
             <#if !a.directory><@t.merge 'paths' filepath+'/'+a.fileName/></#if>
         </#list>
         <@sys.lock userId=admin.id itemType='page' itemIds=t.paths><#assign lockMap=map!/></@sys.lock>
@@ -13,22 +13,19 @@
         <@sys.deptItem itemType='page' deptId=admin.deptId!'' itemIds=t.pages!><#assign deptPageMap=map!/></@sys.deptItem>
         <@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
         <#list list as a>
-            <#local path=filepath+'/'+a.fileName>
+            <#local path=filepath?has_content?then(filepath+'/','')+a.fileName>
             <#if (deptPageMap[path])?has_content&&deptPageMap[path]>
-                <li>
+                <li<#if a.directory> _src="cmsPage/list.html?parent=${path}"</#if>>
                 <#if a.directory>
-                    <a href="javascript:;" onclick="return false;">
-                        <#if lockMap?has_content && lockMap[path]?has_content>
-                            <#assign lockUser=(userMap[lockMap[path].userId?string].nickname)!''/>
-                            <i class="icon-lock icon-large" title="<@t.page 'lock.message' lockUser/> ${lockMap[path].createDate}"></i>
-                        </#if>
-                        ${a.fileName}
-                    </a>
-                    <ul><@pageTree path/></ul>
+                    <a href="javascript:;" onclick="return false;">${a.fileName}</a>
                 <#else>
                     <a href="cmsPage/metadata.html?path=${(path?url)!}" target="ajax" rel="pageBox">
                         <@tools.metadata path=path>
-                            ${(object.alias)?has_content?then(object.alias+' ('+a.fileName+')',a.fileName)}
+                           <#if lockMap?has_content && lockMap[path]?has_content>
+                              <#assign lockUser=(userMap[lockMap[path].userId?string].nickname)!''/>
+                              <i class="icon-lock icon-large" title="<@t.page 'lock.message' lockUser/> ${lockMap[path].createDate}"></i>
+                           </#if>
+                           ${(object.alias)?has_content?then(object.alias+' ('+a.fileName+')',a.fileName)}
                         </@tools.metadata>
                     </a>
                 </#if>
@@ -39,17 +36,23 @@
         </#list>
     </@tools.fileList>
 </#macro>
-<div class="pageContent">
-    <div class="leftPageContent">
-        <div class="card">
-            <ul class="tree treeFolder" layoutH>
-                <@pageTree/>
-            </ul>
+<#if parent?has_content>
+     <ul>
+         <@pageList parent/>
+     </ul>
+<#else>
+    <div class="pageContent">
+        <div class="leftPageContent">
+            <div class="card">
+                <ul class="tree treeFolder" layoutH>
+                    <@pageList/>
+                </ul>
+            </div>
+        </div>
+        <div id="pageBox" class="unitBox rightPageContent">
+            <#if path?has_content>
+                <#include "metadata.html"/>
+            </#if>
         </div>
     </div>
-    <div id="pageBox" class="unitBox rightPageContent">
-        <#if path?has_content>
-            <#include "metadata.html"/>
-        </#if>
-    </div>
-</div>
+</#if>
