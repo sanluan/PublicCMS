@@ -121,14 +121,14 @@ public class ContentController {
         CmsContentService.initContent(entity, site, cmsModel, draft, false, attribute, false, CommonUtils.getDate());
         if (null != entity.getId()) {
             CmsContent oldEntity = service.getEntity(entity.getId());
-            if (null != oldEntity && ControllerUtils.errorNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)
-                    && (oldEntity.getUserId() == user.getId() || user.isSuperuser())) {
-                entity = service.saveTagAndAttribute(site, user.getId(), user.getDeptId(), entity, contentParameters, cmsModel,
-                        category.getExtendId(), attribute);
-                logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
-                        "update.content", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
-                        JsonUtils.getString(entity)));
+            if (null == oldEntity || ControllerUtils.errorNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)
+                    || oldEntity.getUserId() != user.getId() && !user.isSuperuser()) {
+                return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
             }
+            entity = service.saveTagAndAttribute(site, user.getId(), user.getDeptId(), entity, contentParameters, cmsModel,
+                    category.getExtendId(), attribute);
+            logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
+                    "update.content", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         } else {
             entity.setDisabled(false);
             entity.setClicks(0);
