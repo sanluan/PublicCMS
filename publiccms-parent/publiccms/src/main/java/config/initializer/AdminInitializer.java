@@ -46,7 +46,7 @@ public class AdminInitializer extends BaseServletInitializer implements WebAppli
         try {
             Properties config = PropertiesLoaderUtils.loadAllProperties(CommonConstants.CMS_CONFIG_FILE);
             registration.setMultipartConfig(new MultipartConfigElement(getDirPath("/tmp/"),
-                    Long.parseLong(config.getProperty("cms.multipart.maxUploadSize")) * 1024 * 1024, -1L, 0));
+                    Long.parseLong(CommonUtils.getConfig(config, "cms.multipart.maxUploadSize")) * 1024 * 1024, -1L, 0));
         } catch (IOException e) {
         }
     }
