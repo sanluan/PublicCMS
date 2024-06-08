@@ -427,7 +427,7 @@ public class CmsTemplateAdminController {
                 StreamingResponseBody body = new StreamingResponseBody() {
                     @Override
                     public void writeTo(OutputStream outputStream) throws IOException {
-                        try (ZipFile zipFile = new ZipFile(file, Constants.DEFAULT_CHARSET_NAME)) {
+                        try (ZipFile zipFile = ZipFile.builder().setFile(file).setCharset(Constants.DEFAULT_CHARSET).get()) {
                             ZipArchiveEntry entry = zipFile.getEntry(imageFile);
                             if (null != entry) {
                                 try (InputStream inputStream = zipFile.getInputStream(entry);) {

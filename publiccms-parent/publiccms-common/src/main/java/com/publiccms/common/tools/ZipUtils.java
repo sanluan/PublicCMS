@@ -79,7 +79,8 @@ public class ZipUtils {
      * @param basedir
      * @throws IOException
      */
-    public static void compress(Path sourceFilePath, ArchiveOutputStream<ZipArchiveEntry> out, String basedir) throws IOException {
+    public static void compress(Path sourceFilePath, ArchiveOutputStream<ZipArchiveEntry> out, String basedir)
+            throws IOException {
         if (Files.isDirectory(sourceFilePath)) {
             try (DirectoryStream<Path> stream = Files.newDirectoryStream(sourceFilePath)) {
                 for (Path entry : stream) {
@@ -138,7 +139,8 @@ public class ZipUtils {
         }
     }
 
-    public static void compressFile(InputStream inputStream, ArchiveOutputStream<ZipArchiveEntry> out, String fullName) throws IOException {
+    public static void compressFile(InputStream inputStream, ArchiveOutputStream<ZipArchiveEntry> out, String fullName)
+            throws IOException {
         ZipArchiveEntry entry = new ZipArchiveEntry(fullName);
         entry.setTime(System.currentTimeMillis());
         out.putArchiveEntry(entry);
@@ -188,7 +190,7 @@ public class ZipUtils {
      */
     public static void unzip(String zipFilePath, String targetPath, String encoding, boolean overwrite,
             BiPredicate<ZipFile, ZipArchiveEntry> overwriteFunction) throws IOException {
-        ZipFile zipFile = new ZipFile(zipFilePath, encoding);
+        ZipFile zipFile = ZipFile.builder().setFile(zipFilePath).setCharset(encoding).get();
         Enumeration<ZipArchiveEntry> entryEnum = zipFile.getEntries();
         if (!targetPath.endsWith(Constants.SEPARATOR) && !targetPath.endsWith("\\")) {
             targetPath = CommonUtils.joinString(targetPath, File.separator);
