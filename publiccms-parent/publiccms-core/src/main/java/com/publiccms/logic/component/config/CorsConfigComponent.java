@@ -70,7 +70,7 @@ public class CorsConfigComponent implements SiteCache, Config {
             config = new CorsConfiguration();
             config.applyPermitDefaultValues();
             if (null != configData) {
-                config.setAllowCredentials(ConfigDataComponent.getBoolean(configData.get(CONFIG_ALLOW_CREDENTIALS), true));
+                config.setAllowCredentials(ConfigDataComponent.getBoolean(configData.get(CONFIG_ALLOW_CREDENTIALS), false));
 
                 if (CommonUtils.notEmpty(configData.get(CONFIG_ALLOWED_ORIGINS))) {
                     String[] array = StringUtils.split(configData.get(CONFIG_ALLOWED_ORIGINS), Constants.COMMA);
@@ -164,7 +164,7 @@ public class CorsConfigComponent implements SiteCache, Config {
                 getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_ALLOW_CREDENTIALS)),
                 getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_ALLOW_CREDENTIALS,
                         CONFIG_CODE_DESCRIPTION_SUFFIX)),
-                "true"));
+                "false"));
         extendFieldList.add(new SysExtendField(CONFIG_MAXAGE, INPUTTYPE_TEXT, false,
                 getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_MAXAGE)),
                 getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_MAXAGE,

@@ -80,7 +80,7 @@ ALTER TABLE `cms_editor_history` MODIFY COLUMN `item_id` varchar(100) NOT NULL C
 -- 12-15 --
 DROP TABLE IF EXISTS `sys_user_attribute`;
 -- 2024-01-02 --
-ALTER TABLE `cms_content` 
+ALTER TABLE `cms_content`
   MODIFY COLUMN `copied` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否转载' AFTER `quote_content_id`,
   MODIFY COLUMN `only_url` tinyint(1) NOT NULL DEFAULT 0 COMMENT '外链' AFTER `editor`,
   MODIFY COLUMN `has_images` tinyint(1) NOT NULL DEFAULT 0 COMMENT '拥有图片列表' AFTER `only_url`,
@@ -127,11 +127,11 @@ UPDATE sys_module SET parent_id=NULL,id='trade',sort=4,attached='bi bi-cart4' wh
 UPDATE sys_module_lang SET module_id='trade' where module_id = 'trade_menu';
 UPDATE sys_module SET parent_id='trade' where parent_id = 'trade_menu';
 UPDATE sys_module SET parent_id='trade',sort=1 where id = 'product_list';
-UPDATE sys_module_lang SET value='Trade' where module_id ='trade' and lang= 'en';  
+UPDATE sys_module_lang SET value='Trade' where module_id ='trade' and lang= 'en';
 UPDATE sys_module_lang SET value='ビジネス' where module_id ='trade' and lang= 'ja';
 UPDATE sys_module_lang SET value='商务' where module_id ='trade' and lang= 'zh';
 UPDATE sys_module SET sort=5,id ='system' where id = 'maintenance';
-UPDATE sys_module_lang SET value='System',module_id ='system' where module_id ='maintenance' and lang= 'en';  
+UPDATE sys_module_lang SET value='System',module_id ='system' where module_id ='maintenance' and lang= 'en';
 UPDATE sys_module_lang SET value='システム',module_id ='system' where module_id ='maintenance' and lang= 'ja';
 UPDATE sys_module_lang SET value='系统',module_id ='system' where module_id ='maintenance' and lang= 'zh';
 UPDATE sys_module SET sort=8 WHERE id = 'myself';
@@ -139,7 +139,7 @@ UPDATE sys_module SET attached='bi bi-pie-chart' WHERE id = 'report_visit';
 UPDATE sys_module SET sort=0,menu=1,id ='page_preview',parent_id='page',attached='bi bi-palette2' where id = 'page_diy_preview';
 UPDATE sys_module_lang SET module_id='page_preview' where module_id = 'page_diy_preview';
 -- 2024-06-08 --
-INSERT INTO `sys_module` VALUES ('config',NULL,NULL,'bi bi-nut',NULL,1,9);
+INSERT INTO `sys_module` VALUES ('config', NULL, NULL, 'bi bi-nut', NULL, 1, 9);
 INSERT INTO `sys_module_lang` VALUES ('config', 'en', 'Config');
 INSERT INTO `sys_module_lang` VALUES ('config', 'ja', '設定');
 INSERT INTO `sys_module_lang` VALUES ('config', 'zh', '设置');
@@ -147,17 +147,21 @@ UPDATE sys_module SET parent_id='config' WHERE id IN ('model_list','category_typ
 UPDATE sys_module SET parent_id='file',sort=8 WHERE parent_id ='develop';
 UPDATE sys_module SET id='file',attached='bi bi-file-earmark-text' WHERE id ='develop';
 UPDATE sys_module_lang SET module_id='file' WHERE module_id ='develop';
-UPDATE sys_module_lang SET value='File',module_id='file' where module_id ='develop' and lang= 'en';  
+UPDATE sys_module_lang SET value='File',module_id='file' where module_id ='develop' and lang= 'en';
 UPDATE sys_module_lang SET value='ファイル',module_id='file' where module_id ='develop' and lang= 'ja';
 UPDATE sys_module_lang SET value='文件',module_id='file' where module_id ='develop' and lang= 'zh';
-INSERT INTO `sys_module` VALUES ('user','report/user',NULL,'bi bi-person-circle',NULL,1,5);
+INSERT INTO `sys_module` VALUES ('user', NULL, NULL, 'bi bi-person-circle', NULL, 1, 5);
 INSERT INTO `sys_module_lang` VALUES ('user', 'en', 'User');
 INSERT INTO `sys_module_lang` VALUES ('user', 'ja', 'ユーザー');
 INSERT INTO `sys_module_lang` VALUES ('user', 'zh', '用户');
-UPDATE sys_module SET parent_id='user' WHERE id in('user_list','dept_list','role_list','app_client_list');
-DELETE FROM `sys_module` WHERE id = 'report_user';
-DELETE FROM `sys_module_lang` WHERE module_id = 'report_user';
+UPDATE sys_module SET parent_id='user' WHERE id in('user_list','dept_list','role_list','app_client_list','report_user');
 UPDATE sys_module SET sort=6 WHERE id = 'system';
 UPDATE sys_module SET sort=7 WHERE id = 'operation';
 UPDATE sys_module SET sort=10 WHERE id = 'myself';
 UPDATE sys_module SET attached='bi bi-file-post' WHERE id ='content';
+UPDATE sys_module SET sort=1 WHERE id = 'template_list';
+UPDATE sys_module SET sort=2 WHERE id = 'place_template_list';
+UPDATE sys_module SET sort=4 WHERE id = 'task_template_list';
+UPDATE sys_module SET sort=3 WHERE id = 'diy_list';
+UPDATE sys_module SET sort=5 WHERE id = 'webfile_list';
+UPDATE sys_module SET sort=6 WHERE id = 'tag_type_list';
