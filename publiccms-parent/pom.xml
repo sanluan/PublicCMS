@@ -92,13 +92,13 @@
         <!-- http://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
         <version.lang>3.14.0</version.lang>
         <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
-        <version.io>2.15.0</version.io>
+        <version.io>2.16.1</version.io>
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-text -->
         <version.text>1.12.0</version.text>
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-compress -->
         <version.compress>1.26.2</version.compress>
         <!-- http://mvnrepository.com/artifact/commons-codec/commons-codec -->
-        <version.codec>1.16.0</version.codec>
+        <version.codec>1.17.0</version.codec>
         <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
         <version.log4j>2.23.1</version.log4j>
         <!-- https://mvnrepository.com/artifact/com.drewnoakes/metadata-extractor -->
