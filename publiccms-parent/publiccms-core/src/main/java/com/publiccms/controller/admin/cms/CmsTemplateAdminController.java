@@ -35,7 +35,6 @@ import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.DateFormatUtils;
-import com.publiccms.common.tools.LanguagesUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.common.tools.StreamUtils;
 import com.publiccms.common.tools.VerificationUtils;
@@ -358,8 +357,7 @@ public class CmsTemplateAdminController {
                             metadataComponent.updateTemplateMetadata(filepath, metadata);
                         } else {
                             CmsFileUtils.delete(filepath);
-                            model.addAttribute(CommonConstants.ERROR, LanguagesUtils.getMessage(
-                                    CommonConstants.applicationContext, request.getLocale(), "verify.custom.file.unsafe"));
+                            model.addAttribute(CommonConstants.ERROR, "verify.custom.file.unsafe");
                             return CommonConstants.TEMPLATE_ERROR;
                         }
                     }
@@ -428,7 +426,7 @@ public class CmsTemplateAdminController {
                 StreamingResponseBody body = new StreamingResponseBody() {
                     @Override
                     public void writeTo(OutputStream outputStream) throws IOException {
-                        try (ZipFile zipFile = new ZipFile(file, Constants.DEFAULT_CHARSET_NAME)) {
+                        try (ZipFile zipFile = ZipFile.builder().setFile(file).setCharset(Constants.DEFAULT_CHARSET).get()) {
                             ZipArchiveEntry entry = zipFile.getEntry(imageFile);
                             if (null != entry) {
                                 try (InputStream inputStream = zipFile.getInputStream(entry);) {

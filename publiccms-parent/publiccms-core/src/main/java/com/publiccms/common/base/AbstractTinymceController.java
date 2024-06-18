@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.LocaleResolver;
 
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.PageHandler;
@@ -40,6 +41,8 @@ public class AbstractTinymceController {
     protected SafeConfigComponent safeConfigComponent;
     @Resource
     protected FileUploadComponent fileUploadComponent;
+    @Resource
+    protected LocaleResolver localeResolver;
 
     private static final String RESULT_URL = "location";
 
@@ -61,7 +64,7 @@ public class AbstractTinymceController {
             if (ArrayUtils.contains(safeConfigComponent.getSafeSuffix(site), suffix)) {
                 try {
                     FileUploadResult uploadResult = fileUploadComponent.upload(site.getId(), file, false, suffix,
-                            request.getLocale());
+                            localeResolver.resolveLocale(request));
                     logUploadService.save(new LogUpload(site.getId(), user.getId(), channel, originalName, false,
                             CmsFileUtils.getFileType(suffix), file.getSize(), uploadResult.getWidth(), uploadResult.getHeight(),
                             RequestUtils.getIpAddress(request), CommonUtils.getDate(), uploadResult.getFilename()));
@@ -72,11 +75,11 @@ public class AbstractTinymceController {
                 }
             } else {
                 map.put(CommonConstants.MESSAGE, LanguagesUtils.getMessage(CommonConstants.applicationContext,
-                        request.getLocale(), "verify.custom.fileType"));
+                        localeResolver.resolveLocale(request), "verify.custom.fileType"));
             }
         } else {
             map.put(CommonConstants.MESSAGE,
-                    LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(), "verify.notEmpty.file"));
+                    LanguagesUtils.getMessage(CommonConstants.applicationContext, localeResolver.resolveLocale(request), "verify.notEmpty.file"));
         }
         map.put(CommonConstants.ERROR, 1);
         return map;

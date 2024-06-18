@@ -24,7 +24,7 @@ import jakarta.servlet.http.HttpServletRequest;
 @Controller
 @RequestMapping("tinymce")
 public class TinymceAdminController extends AbstractTinymceController {
-
+    
     /**
      * @param site
      * @param admin

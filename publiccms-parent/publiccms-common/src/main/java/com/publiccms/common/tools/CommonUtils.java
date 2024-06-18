@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -307,4 +308,7 @@ public class CommonUtils {
         return null == value || 0 == value.length;
     }
 
+    public static String getConfig(Properties config, String key) {
+        return System.getProperty(key, config.getProperty(key));
+    }
 }

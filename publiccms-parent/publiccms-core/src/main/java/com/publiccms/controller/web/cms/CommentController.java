@@ -128,14 +128,15 @@ public class CommentController {
             entity.setIp(ip);
             if (null != entity.getId()) {
                 CmsComment oldEntity = service.getEntity(entity.getId());
-                if (null != oldEntity && !oldEntity.isDisabled()
-                        && (oldEntity.getUserId() == user.getId() || user.isSuperuser())) {
-                    entity.setUpdateDate(CommonUtils.getDate());
-                    entity = service.update(entity.getId(), entity, ignoreProperties);
-                    logOperateService
-                            .save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
-                                    "update.cmsComment", ip, CommonUtils.getDate(), JsonUtils.getString(entity)));
+                if (null == oldEntity || oldEntity.isDisabled()
+                        || ControllerUtils.errorNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)
+                        || oldEntity.getUserId() != user.getId() && !user.isSuperuser()) {
+                    return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
                 }
+                entity.setUpdateDate(CommonUtils.getDate());
+                entity = service.update(entity.getId(), entity, ignoreProperties);
+                logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
+                        "update.cmsComment", ip, CommonUtils.getDate(), JsonUtils.getString(entity)));
             } else {
                 Date now = CommonUtils.getDate();
                 entity.setSiteId(site.getId());

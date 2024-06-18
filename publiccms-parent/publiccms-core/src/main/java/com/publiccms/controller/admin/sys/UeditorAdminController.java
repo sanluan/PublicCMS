@@ -47,7 +47,7 @@ import jakarta.servlet.http.HttpServletRequest;
 @Controller
 @RequestMapping("ueditor")
 public class UeditorAdminController extends AbstractUeditorController {
-
+    
     /**
      * @param site
      * @return view name
@@ -138,7 +138,7 @@ public class UeditorAdminController extends AbstractUeditorController {
             }
         } else {
             return getResultMap(false,
-                    LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(), "verify.notEmpty.file"));
+                    LanguagesUtils.getMessage(CommonConstants.applicationContext, localeResolver.resolveLocale(request), "verify.notEmpty.file"));
         }
 
     }
@@ -196,7 +196,7 @@ public class UeditorAdminController extends AbstractUeditorController {
                     EntityUtils.consume(entity);
                 }
                 if (list.isEmpty()) {
-                    return getResultMap(false, LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
+                    return getResultMap(false, LanguagesUtils.getMessage(CommonConstants.applicationContext, localeResolver.resolveLocale(request),
                             "verify.notEmpty.file"));
                 } else {
                     Map<String, Object> map = getResultMap();
@@ -204,13 +204,13 @@ public class UeditorAdminController extends AbstractUeditorController {
                     return map;
                 }
             } else {
-                return getResultMap(false, LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
+                return getResultMap(false, LanguagesUtils.getMessage(CommonConstants.applicationContext, localeResolver.resolveLocale(request),
                         "verify.notEmpty.file"));
             }
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             return getResultMap(false,
-                    LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(), "verify.notEmpty.file"));
+                    LanguagesUtils.getMessage(CommonConstants.applicationContext, localeResolver.resolveLocale(request), "verify.notEmpty.file"));
         }
     }
 

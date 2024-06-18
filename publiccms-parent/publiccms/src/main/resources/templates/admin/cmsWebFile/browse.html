@@ -57,8 +57,11 @@ function callback(fileUrl){
     </div>
 </#if>
 <#assign
-    imageSuffix=["png","gif","jpg","jpeg","bmp"]
-    flashSuffix=["swf","fla"]
+fileSuffixs = {
+    "image":["png","gif","jpg","jpeg","bmp"],
+    "video":["ogg","webm","mpeg","mpg","mov","mp4"],
+    "audio":["acc","mid","midi","mp3","ogg","mpga"]
+}
 />
 <@tools.fileList type='file' path=path>
     <#list list as a>
@@ -71,7 +74,7 @@ function callback(fileUrl){
             <#if a.directory>
                 <a href="?path=${filePath}&CKEditorFuncNum=${CKEditorFuncNum!}&type=${type!}" target="_self">${a.fileName}</a>
             <#else>
-                <#if 'image'=type&&imageSuffix?seq_contains(a.fileName?keep_after_last('.'))||'flash'=type&&flashSuffix?seq_contains(a.fileName?keep_after_last('.'))>
+                <#if !type?has_content || fileSuffixs[type]?has_content && fileSuffixs[type]?seq_contains(a.fileName?keep_after_last('.'))>
                     <a href="javascript:callback('${site.sitePath+filePath}');">${a.fileName}</a>
                 <#else>
                     ${a.fileName}

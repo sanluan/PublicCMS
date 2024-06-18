@@ -63,40 +63,6 @@ ALTER TABLE `cms_place`
     ADD COLUMN `max_clicks` int(11) NOT NULL COMMENT '最大点击数' AFTER `clicks`,
     MODIFY COLUMN `status` int(11) NOT NULL COMMENT '状态：0、草稿 1、已发布 2、待审核 3、已下架' after `expiry_date`;
 -- 08-07 --
-CREATE TABLE `sys_workflow` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `site_id` smallint(6) NOT NULL COMMENT '站点',
-  `name` varchar(100) NOT NULL COMMENT '名称',
-  `description` varchar(300) DEFAULT NULL COMMENT '描述',
-  `start_step_id` bigint(20) DEFAULT NULL COMMENT '开始步骤',
-  `disabled` tinyint(1) NOT NULL COMMENT '已禁用',
-  PRIMARY KEY (`id`),
-  KEY `sys_workflow_disabled` (`site_id`, `disabled`)
-) COMMENT='工作流';
-CREATE TABLE `sys_workflow_process` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `site_id` smallint(6) NOT NULL COMMENT '站点',
-  `item_type` varchar(50) NOT NULL COMMENT '项目类型',
-  `item_id` varchar(100) NOT NULL COMMENT '项目',
-  `step_id` bigint(20) NOT NULL COMMENT '步骤',
-  `operate` varchar(20) NOT NULL COMMENT '操作(check:审核,reject:驳回,delete:删除)',
-  `reason` varchar(255) DEFAULT NULL COMMENT '理由',
-  `create_date` datetime NOT NULL COMMENT '创建日期',
-  PRIMARY KEY (`id`),
-  KEY `sys_workflow_process_content_id` (`site_id`,`item_type`,`operate`,`create_date`) 
-) COMMENT='工作流流程';
-CREATE TABLE `sys_workflow_step` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `workflow_id` int(11) NOT NULL COMMENT '工作流',
-  `role_id` int(11) DEFAULT NULL COMMENT '角色',
-  `dept_id` int(11) DEFAULT NULL COMMENT '部门',
-  `user_id` bigint(20) DEFAULT NULL COMMENT '用户',
-  `prev_step_id` bigint(20) DEFAULT NULL COMMENT '上一步',
-  `next_step_id` bigint(20) DEFAULT NULL COMMENT '下一步',
-  `sort` int(11) NOT NULL COMMENT '排序',
-  PRIMARY KEY (`id`),
-  KEY `sys_workflow_step_workflow_id` (`workflow_id`,`sort`) 
-) COMMENT='工作流步骤';
 CREATE TABLE `trade_address` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `site_id` smallint(6) NOT NULL COMMENT '站点',
@@ -107,71 +73,6 @@ CREATE TABLE `trade_address` (
   `create_date` datetime NOT NULL COMMENT '创建日期',
   PRIMARY KEY (`id`)
 ) COMMENT='用户地址';
-CREATE TABLE `trade_cart` (
-  `id` bigint(100) NOT NULL AUTO_INCREMENT,
-  `site_id` smallint(6) NOT NULL COMMENT '站点',
-  `user_id` bigint(20) DEFAULT NULL COMMENT '用户',
-  `session_id` varchar(50) DEFAULT NULL COMMENT '会话',
-  `content_id` bigint(20) NOT NULL COMMENT '内容',
-  `product_id` bigint(20) NOT NULL COMMENT '商品',
-  `counts` int(11) NOT NULL COMMENT '数量',
-  `create_date` datetime NOT NULL COMMENT '创建日期',
-  PRIMARY KEY (`id`),
-  KEY `trade_cart_user_id` (`site_id`,`user_id`,`create_date`),
-  KEY `trade_cart_session_id` (`site_id`,`session_id`,`create_date`)
-) COMMENT='购物车';
-CREATE TABLE `trade_coupon` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `site_id` smallint(6) NOT NULL COMMENT '站点',
-  `name` varchar(100) NOT NULL COMMENT '名称',
-  `category_id` int(11) DEFAULT NULL COMMENT '分类',
-  `content_id` bigint(20) DEFAULT NULL COMMENT '内容',
-  `start_date` datetime NOT NULL COMMENT '开始时间',
-  `expiry_date` datetime DEFAULT NULL COMMENT '结束时间',
-  `starting_amount` decimal(10,2) DEFAULT NULL COMMENT '起始金额',
-  `discount` decimal(10,1) DEFAULT NULL COMMENT '折扣优惠',
-  `price` decimal(10,2) DEFAULT NULL COMMENT '优惠券价格',
-  `type` int(11) NOT NULL COMMENT '类型(1折扣,2免运费,3满减)',
-  `redeem_code` varchar(255) DEFAULT NULL COMMENT '兑换码',
-  `duration` int(11) NOT NULL COMMENT '有效天数',
-  `quantity` int(11) NOT NULL COMMENT '优惠券数量',
-  `create_date` varchar(255) DEFAULT NULL COMMENT '开始时间',
-  `disabled` tinyint(1) NOT NULL COMMENT '已禁用',
-  PRIMARY KEY (`id`),
-  KEY `trade_coupon_category_id` (`site_id`,`category_id`,`start_date`,`expiry_date`,`disabled`),
-  KEY `trade_coupon_content_id` (`site_id`,`content_id`,`start_date`,`expiry_date`,`disabled`)
-) COMMENT='优惠券';
-CREATE TABLE `trade_express` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `site_id` smallint(6) NOT NULL COMMENT '站点',
-  `code` varchar(50) NOT NULL COMMENT '编码',
-  `name` varchar(100) NOT NULL COMMENT '名称',
-  `sort` int(11) NOT NULL COMMENT '排序',
-  PRIMARY KEY (`id`),
-  KEY `trade_express_sort` (`site_id`,`sort`)
-) COMMENT='物流';
-CREATE TABLE `trade_freight` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `site_id` smallint(6) NOT NULL COMMENT '站点',
-  `country` varchar(40) DEFAULT NULL COMMENT '国家',
-  `province` varchar(40) DEFAULT NULL COMMENT '省份',
-  `city` varchar(40) DEFAULT NULL COMMENT '所在城市',
-  `price` decimal(10,2) DEFAULT NULL COMMENT '运费价格',
-  `free_price` decimal(10,2) DEFAULT NULL COMMENT '免邮价格',
-  PRIMARY KEY (`id`),
-  KEY `trade_freight_site_id` (`site_id`,`country`,`province`,`city`)
-) COMMENT='运费';
-CREATE TABLE `trade_user_coupon` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `user_id` varchar(255) NOT NULL COMMENT '用户',
-  `coupon_id` varchar(255) NOT NULL COMMENT '优惠券',
-  `status` int(11) NOT NULL COMMENT '状态(1有效,2已使用)',
-  `create_date` datetime NOT NULL COMMENT '创建日期',
-  `start_date` varchar(255) NOT NULL COMMENT '开始时间',
-  `expiry_date` varchar(255) DEFAULT NULL COMMENT '结束时间',
-  PRIMARY KEY (`id`),
-  KEY `trade_user_coupon_status` (`user_id`, `status`, `start_date`, `expiry_date`)
-) COMMENT='用户优惠券';
 -- 08-14 --
 ALTER TABLE `cms_category` ADD COLUMN `workflow_id` int(11) default NULL COMMENT '审核流程' AFTER `disabled`;
 -- 09-29 --
@@ -179,7 +80,7 @@ ALTER TABLE `cms_editor_history` MODIFY COLUMN `item_id` varchar(100) NOT NULL C
 -- 12-15 --
 DROP TABLE IF EXISTS `sys_user_attribute`;
 -- 2024-01-02 --
-ALTER TABLE `cms_content` 
+ALTER TABLE `cms_content`
   MODIFY COLUMN `copied` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否转载' AFTER `quote_content_id`,
   MODIFY COLUMN `only_url` tinyint(1) NOT NULL DEFAULT 0 COMMENT '外链' AFTER `editor`,
   MODIFY COLUMN `has_images` tinyint(1) NOT NULL DEFAULT 0 COMMENT '拥有图片列表' AFTER `only_url`,
@@ -214,9 +115,7 @@ DELETE FROM sys_module WHERE id IN ('category_extend','content_menu','config_men
 DELETE FROM sys_module_lang WHERE module_id IN ('category_extend','content_menu','config_menu','file_menu','log_menu','system_menu','user_menu','myself_menu','page_menu','visit_menu');
 UPDATE sys_module SET parent_id='content' WHERE parent_id IN ('content_menu','category_extend');
 UPDATE sys_module SET parent_id='myself' WHERE parent_id = 'myself_menu';
-UPDATE sys_module SET sort=sort+10  WHERE parent_id = 'config_menu';
 UPDATE sys_module SET parent_id='develop' WHERE parent_id IN ('config_menu','file_menu');
-UPDATE sys_module SET sort=sort+10  WHERE parent_id = 'system_menu';
 UPDATE sys_module SET parent_id='system' WHERE parent_id IN ('system_menu','user_menu');
 UPDATE sys_module SET parent_id='page' WHERE parent_id = 'page_menu';
 INSERT INTO `sys_module` VALUES ('operation', NULL, NULL, 'bi bi-binoculars-fill', NULL, 1, 6);
@@ -228,14 +127,40 @@ UPDATE sys_module SET parent_id=NULL,id='trade',sort=4,attached='bi bi-cart4' wh
 UPDATE sys_module_lang SET module_id='trade' where module_id = 'trade_menu';
 UPDATE sys_module SET parent_id='trade' where parent_id = 'trade_menu';
 UPDATE sys_module SET parent_id='trade',sort=1 where id = 'product_list';
-UPDATE sys_module_lang SET value='Trade' where module_id ='trade' and lang= 'en';  
+UPDATE sys_module_lang SET value='Trade' where module_id ='trade' and lang= 'en';
 UPDATE sys_module_lang SET value='ビジネス' where module_id ='trade' and lang= 'ja';
 UPDATE sys_module_lang SET value='商务' where module_id ='trade' and lang= 'zh';
 UPDATE sys_module SET sort=5,id ='system' where id = 'maintenance';
-UPDATE sys_module_lang SET value='System',module_id ='system' where module_id ='maintenance' and lang= 'en';  
+UPDATE sys_module_lang SET value='System',module_id ='system' where module_id ='maintenance' and lang= 'en';
 UPDATE sys_module_lang SET value='システム',module_id ='system' where module_id ='maintenance' and lang= 'ja';
 UPDATE sys_module_lang SET value='系统',module_id ='system' where module_id ='maintenance' and lang= 'zh';
 UPDATE sys_module SET sort=8 WHERE id = 'myself';
 UPDATE sys_module SET attached='bi bi-pie-chart' WHERE id = 'report_visit';
 UPDATE sys_module SET sort=0,menu=1,id ='page_preview',parent_id='page',attached='bi bi-palette2' where id = 'page_diy_preview';
 UPDATE sys_module_lang SET module_id='page_preview' where module_id = 'page_diy_preview';
+-- 2024-06-08 --
+INSERT INTO `sys_module` VALUES ('config', NULL, NULL, 'bi bi-nut', NULL, 1, 9);
+INSERT INTO `sys_module_lang` VALUES ('config', 'en', 'Config');
+INSERT INTO `sys_module_lang` VALUES ('config', 'ja', '設定');
+INSERT INTO `sys_module_lang` VALUES ('config', 'zh', '设置');
+UPDATE sys_module SET parent_id='config' WHERE id IN ('model_list','category_type_list','config_list','domain_list');
+UPDATE sys_module SET parent_id='file' WHERE parent_id ='develop';
+UPDATE sys_module SET id='file',attached='bi bi-file-earmark-text',sort=8 WHERE id ='develop';
+UPDATE sys_module_lang SET value='File',module_id='file' where module_id ='develop' and lang= 'en';
+UPDATE sys_module_lang SET value='ファイル',module_id='file' where module_id ='develop' and lang= 'ja';
+UPDATE sys_module_lang SET value='文件',module_id='file' where module_id ='develop' and lang= 'zh';
+INSERT INTO `sys_module` VALUES ('user', NULL, NULL, 'bi bi-person-circle', NULL, 1, 5);
+INSERT INTO `sys_module_lang` VALUES ('user', 'en', 'User');
+INSERT INTO `sys_module_lang` VALUES ('user', 'ja', 'ユーザー');
+INSERT INTO `sys_module_lang` VALUES ('user', 'zh', '用户');
+UPDATE sys_module SET parent_id='user' WHERE id in('user_list','dept_list','role_list','app_client_list','report_user');
+UPDATE sys_module SET sort=6 WHERE id = 'system';
+UPDATE sys_module SET sort=7 WHERE id = 'operation';
+UPDATE sys_module SET sort=10 WHERE id = 'myself';
+UPDATE sys_module SET attached='bi bi-file-post' WHERE id ='content';
+UPDATE sys_module SET sort=1 WHERE id = 'template_list';
+UPDATE sys_module SET sort=2 WHERE id = 'place_template_list';
+UPDATE sys_module SET sort=4 WHERE id = 'task_template_list';
+UPDATE sys_module SET sort=3 WHERE id = 'diy_list';
+UPDATE sys_module SET sort=5 WHERE id = 'webfile_list';
+UPDATE sys_module SET sort=6 WHERE id = 'tag_type_list';

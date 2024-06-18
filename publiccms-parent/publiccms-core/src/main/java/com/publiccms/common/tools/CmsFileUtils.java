@@ -538,7 +538,7 @@ public class CmsFileUtils {
             COSBase realObject = object.getObject();
             if (realObject instanceof COSDictionary) {
                 COSDictionary dic = (COSDictionary) realObject;
-                if (null == dic.getDictionaryObject(COSName.JS) && null == dic.getDictionaryObject(COSName.JAVA_SCRIPT)) {
+                if (null != dic.getDictionaryObject(COSName.JS) || null != dic.getDictionaryObject(COSName.JAVA_SCRIPT)) {
                     return false;
                 }
             } else if (realObject instanceof COSName

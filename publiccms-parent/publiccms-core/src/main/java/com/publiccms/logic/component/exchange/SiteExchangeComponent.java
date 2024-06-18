@@ -75,7 +75,7 @@ public class SiteExchangeComponent {
                 try {
                     File dest = File.createTempFile("temp_import_", suffix);
                     file.transferTo(dest);
-                    try (ZipFile zipFile = new ZipFile(dest, Constants.DEFAULT_CHARSET_NAME)) {
+                    try (ZipFile zipFile = ZipFile.builder().setFile(dest).setCharset(Constants.DEFAULT_CHARSET).get()) {
                         exchangeComponent.importData(site, userId, overwrite, zipFile);
                     }
                     Files.delete(dest.toPath());
@@ -191,7 +191,7 @@ public class SiteExchangeComponent {
     }
 
     private void importDate(SysSite site, long userId, boolean overwrite, File file) throws IOException {
-        try (ZipFile zipFile = new ZipFile(file, Constants.DEFAULT_CHARSET_NAME)) {
+        try (ZipFile zipFile = ZipFile.builder().setFile(file).setCharset(Constants.DEFAULT_CHARSET).get()) {
             {
                 String filepath = siteComponent.getTemplateFilePath(site.getId(), Constants.SEPARATOR);
                 ZipUtils.unzip(zipFile, "template", filepath, overwrite, (f, e) -> {

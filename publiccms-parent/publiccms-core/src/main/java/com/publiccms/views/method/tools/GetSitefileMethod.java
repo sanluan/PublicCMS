@@ -56,7 +56,7 @@ public class GetSitefileMethod extends BaseMethod {
         if (!arguments.isEmpty()) {
             String filepath = getString(0, arguments);
             File dest = new File(siteComponent.getSiteFilePath(filepath));
-            try (ZipFile zipFile = new ZipFile(dest, Constants.DEFAULT_CHARSET_NAME);) {
+            try (ZipFile zipFile = ZipFile.builder().setFile(dest).setCharset(Constants.DEFAULT_CHARSET).get()) {
                 ZipArchiveEntry entry = zipFile.getEntry("description.json");
                 if (null != entry) {
                     try (InputStream inputStream = zipFile.getInputStream(entry);) {

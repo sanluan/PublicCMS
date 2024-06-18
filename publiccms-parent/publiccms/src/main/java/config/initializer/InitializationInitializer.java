@@ -52,7 +52,7 @@ public class InitializationInitializer implements WebApplicationInitializer {
             Properties config = PropertiesLoaderUtils.loadAllProperties(CommonConstants.CMS_CONFIG_FILE);
             initProxy(config);
             if (null == CommonConstants.CMS_FILEPATH) {
-                initFilePath(config.getProperty("cms.filePath"), System.getProperty("user.dir"));
+                initFilePath(CommonUtils.getConfig(config, "cms.filePath"), System.getProperty("user.dir"));
             }
             File file = new File(CommonUtils.joinString(CommonConstants.CMS_FILEPATH, CommonConstants.INSTALL_LOCK_FILENAME));
             if (file.exists()) {
@@ -94,7 +94,7 @@ public class InitializationInitializer implements WebApplicationInitializer {
      *
      */
     public static void initFilePath(String filePath, String defaultPath) {
-        File file = new File(System.getProperty("cms.filePath", filePath));
+        File file = new File(filePath);
         try {
             file.mkdirs();
         } catch (Exception e) {
@@ -127,14 +127,14 @@ public class InitializationInitializer implements WebApplicationInitializer {
      * @throws IOException
      */
     private static void initProxy(Properties config) throws IOException {
-        if ("true".equalsIgnoreCase(System.getProperty("cms.proxy.enable", config.getProperty("cms.proxy.enable", "false")))) {
-            Properties proxyProperties = PropertiesLoaderUtils.loadAllProperties(
-                    System.getProperty("cms.proxy.configFilePath", config.getProperty("cms.proxy.configFilePath")));
+        if ("true".equalsIgnoreCase(CommonUtils.getConfig(config, "cms.proxy.enable"))) {
+            Properties proxyProperties = PropertiesLoaderUtils
+                    .loadAllProperties(CommonUtils.getConfig(config, "cms.proxy.configFilePath"));
             for (String key : proxyProperties.stringPropertyNames()) {
                 System.setProperty(key, proxyProperties.getProperty(key));
             }
-            Authenticator.setDefault(new UsernamePasswordAuthenticator(config.getProperty("cms.proxy.userName"),
-                    config.getProperty("cms.proxy.password")));
+            Authenticator.setDefault(new UsernamePasswordAuthenticator(CommonUtils.getConfig(config, "cms.proxy.userName"),
+                    CommonUtils.getConfig(config, "cms.proxy.password")));
         }
     }
 }

@@ -16,6 +16,7 @@ import com.publiccms.common.tools.CmsFileUtils;
 class PdfXssTest {
     protected final Log log = LogFactory.getLog(getClass());
     String filepath = "src/test/resources/test/tools/xss.pdf";
+    String safePdfpath = "src/test/resources/test/tools/safe.pdf";
 
     @Test
     @DisplayName("get suffix")
@@ -45,6 +46,7 @@ class PdfXssTest {
     @DisplayName("pdf xss test case")
     void pdfxss() {
         Assertions.assertFalse(CmsFileUtils.isSafe(filepath, CmsFileUtils.getSuffix(filepath)));
+        Assertions.assertTrue(CmsFileUtils.isSafe(safePdfpath, CmsFileUtils.getSuffix(safePdfpath)));
     }
 
 }
