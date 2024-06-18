@@ -13,7 +13,7 @@ dependencies {
     implementation "org.springframework:spring-web:${springVersion}"
     implementation "org.springframework:spring-beans:${springVersion}"
 
-    implementation "org.hibernate.search:hibernate-search-mapper-orm-orm6:${hibernateSearchVersion}"
+    implementation "org.hibernate.search:hibernate-search-mapper-orm:${hibernateSearchVersion}"
     implementation "org.hibernate.search:hibernate-search-backend-lucene:${hibernateSearchVersion}"
     implementation "org.hibernate.search:hibernate-search-backend-elasticsearch:${hibernateSearchVersion}"
     implementation "org.hibernate.orm:hibernate-core:${hibernateVersion}"
@@ -30,7 +30,7 @@ dependencies {
     implementation "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
     implementation "org.freemarker:freemarker:${freemarkerVersion}"
 
-    implementation "org.apache.lucene:lucene-analyzers-smartcn:${luceneVersion}"
+    implementation "org.apache.lucene:lucene-analyzers-smartcn:${smartcnVersion}"
     implementation "org.apache.lucene:lucene-backward-codecs:${luceneVersion}"
     implementation "org.apache.lucene:lucene-highlighter:${luceneVersion}"
 
