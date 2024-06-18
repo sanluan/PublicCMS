@@ -15,7 +15,7 @@
         </dependency>
         <dependency>
             <groupId>org.apache.lucene</groupId>
-            <artifactId>lucene-analyzers-smartcn</artifactId>
+            <artifactId>lucene-analysis-smartcn</artifactId>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.lionsoul/ip2region -->
         <dependency>

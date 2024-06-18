@@ -30,7 +30,6 @@ dependencies {
     implementation "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
     implementation "org.freemarker:freemarker:${freemarkerVersion}"
 
-    implementation "org.apache.lucene:lucene-analyzers-smartcn:${smartcnVersion}"
     implementation "org.apache.lucene:lucene-backward-codecs:${luceneVersion}"
     implementation "org.apache.lucene:lucene-highlighter:${luceneVersion}"
 
