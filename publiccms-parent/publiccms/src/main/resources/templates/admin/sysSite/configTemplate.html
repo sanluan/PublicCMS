@@ -95,7 +95,7 @@ server {
         </#if>
 
     error_page 403 /error/403.html;
-    error_page 404 /error/403.html;
+    error_page 404 /error/404.html;
     error_page 500 502 503 504 /error/500.html;
 }
 </@sys.domainList>
@@ -136,7 +136,7 @@ server {
     </#if>
 
     error_page 403 /error/403.html;
-    error_page 404 /error/403.html;
+    error_page 404 /error/404.html;
     error_page 500 502 503 504 /error/500.html;
 }
 </#if></textarea>
@@ -236,7 +236,7 @@ ProxyPreserveHost On
     </#if>
 
     ErrorDocument 403 /error/403.html
-    ErrorDocument 404 /error/403.html
+    ErrorDocument 404 /error/404.html
     ErrorDocument 500 /error/500.html
     ErrorDocument 502 /error/500.html
     ErrorDocument 503 /error/500.html
@@ -273,7 +273,7 @@ ProxyPreserveHost On
         Header set Access-Control-Allow-Origin "*"
     </IfModule>
     ErrorDocument 403 /error/403.html
-    ErrorDocument 404 /error/403.html
+    ErrorDocument 404 /error/404.html
     ErrorDocument 500 /error/500.html
     ErrorDocument 502 /error/500.html
     ErrorDocument 503 /error/500.html
