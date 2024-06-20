@@ -83,9 +83,6 @@ public class ScheduledTask {
             List<SysTask> sysTaskList = (List<SysTask>) service.getPage(null, null, startDate, null, null).getList();
             for (SysTask sysTask : sysTaskList) {
                 SysSite site = siteService.getEntity(sysTask.getSiteId());
-                if (TASK_STATUS_ERROR == sysTask.getStatus()) {
-                    service.updateStatus(sysTask.getId(), TASK_STATUS_READY);
-                }
                 create(site, sysTask.getId(), sysTask.getCronExpression());
                 if (TASK_STATUS_PAUSE == sysTask.getStatus()) {
                     pause(site, sysTask.getId());
@@ -135,9 +132,14 @@ public class ScheduledTask {
                             .build();
                     scheduler.rescheduleJob(triggerKey, trigger);
                 }
+                SysTask sysTask = service.getEntity(id);
+                if (null != sysTask && TASK_STATUS_ERROR == sysTask.getStatus()) {
+                    service.updateStatus(sysTask.getId(), TASK_STATUS_READY);
+                }
             } catch (SchedulerException | ParseException e) {
-                service.updateStatus(id, TASK_STATUS_ERROR);
-                logTaskService.save(new LogTask(site.getId(), id, startTime, CommonUtils.getDate(), false, e.getMessage()));
+                if (service.updateStatus(id, TASK_STATUS_ERROR)) {
+                    logTaskService.save(new LogTask(site.getId(), id, startTime, CommonUtils.getDate(), false, e.getMessage()));
+                }
             }
         }
     }

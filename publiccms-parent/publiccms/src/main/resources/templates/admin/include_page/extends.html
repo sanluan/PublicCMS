@@ -74,7 +74,7 @@
                 </#if>
                 <#if sortable>
                     <td>
-                        <@extendsSortable inputName extend.sortable/>
+                        <@extendsSortable name+"["+extend?index+"].sortable" extend.sortable/>
                     </td>
                 </#if>
                 <td>

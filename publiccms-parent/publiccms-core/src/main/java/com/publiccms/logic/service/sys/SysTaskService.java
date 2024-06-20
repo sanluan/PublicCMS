@@ -39,14 +39,17 @@ public class SysTaskService extends BaseService<SysTask> {
     /**
      * @param id
      * @param status
+     * @return 
      */
     @Transactional(isolation = Isolation.READ_COMMITTED)
-    public void updateStatus(Integer id, int status) {
+    public boolean updateStatus(Integer id, int status) {
         SysTask entity = getEntity(id);
-        if (null != entity) {
+        if (null != entity && status != entity.getStatus()) {
             entity.setStatus(status);
             entity.setUpdateDate(new Date());
+            return true;
         }
+        return false;
     }
 
     @Resource
