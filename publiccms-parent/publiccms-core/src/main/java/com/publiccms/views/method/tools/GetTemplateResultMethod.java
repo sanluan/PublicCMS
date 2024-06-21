@@ -74,7 +74,6 @@ public class GetTemplateResultMethod extends BaseMethod {
     public Object execute(List<TemplateModel> arguments) throws TemplateModelException {
         String template = getString(0, arguments);
         if (CommonUtils.notEmpty(template)) {
-            template = CommonUtils.joinString("<#attempt>", template, "<#recover>${.error!}</#attempt>");
             try {
                 return FreeMarkerUtils.generateStringByString(template, configuration, null);
             } catch (Exception e) {
