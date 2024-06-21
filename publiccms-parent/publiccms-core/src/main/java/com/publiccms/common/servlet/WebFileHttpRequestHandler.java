@@ -11,6 +11,8 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.converter.ResourceHttpMessageConverter;
 import org.springframework.http.converter.ResourceRegionHttpMessageConverter;
+import org.springframework.web.servlet.HandlerMapping;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 import org.springframework.web.servlet.resource.ResourceHttpRequestHandler;
 import org.springframework.web.util.UrlPathHelper;
 
@@ -40,14 +42,17 @@ public class WebFileHttpRequestHandler extends ResourceHttpRequestHandler {
     @Override
     public void handleRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setHeader(CommonConstants.getXPowered(), CmsVersion.BASE_VERSION);
-        super.handleRequest(request, response);
-
+        try {
+            super.handleRequest(request, response);
+        } catch (NoResourceFoundException e) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+        }
     }
 
     @Override
     protected Resource getResource(HttpServletRequest request) throws IOException {
+        String path = getUrlPathHelper().getLookupPathForRequest(request);
         if (CmsVersion.isInitialized()) {
-            String path = getUrlPathHelper().getLookupPathForRequest(request);
             if (path.endsWith(Constants.SEPARATOR)) {
                 path = CommonUtils.joinString(path, CommonConstants.getDefaultPage());
             }
@@ -60,6 +65,7 @@ public class WebFileHttpRequestHandler extends ResourceHttpRequestHandler {
                 return favicon;
             }
         }
+        request.setAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE, path);
         return null;
     }
 
