@@ -238,6 +238,12 @@
                 <groupId>org.hibernate.search</groupId>
                 <artifactId>hibernate-search-backend-elasticsearch</artifactId>
                 <version>${version.hibernateSearch}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>commons-logging</groupId>
+                        <artifactId>commons-logging</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>org.hibernate.search</groupId>
@@ -345,6 +351,12 @@
                 <groupId>org.apache.httpcomponents</groupId>
                 <artifactId>httpclient</artifactId>
                 <version>${version.httpclient}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>commons-logging</groupId>
+                        <artifactId>commons-logging</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>org.quartz-scheduler</groupId>
@@ -449,6 +461,12 @@
                 <groupId>net.sf.cssbox</groupId>
                 <artifactId>pdf2dom</artifactId>
                 <version>${version.pdf2dom}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>commons-logging</groupId>
+                        <artifactId>commons-logging</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>org.apache.pdfbox</groupId>

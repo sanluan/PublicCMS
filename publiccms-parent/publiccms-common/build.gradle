@@ -15,7 +15,9 @@ dependencies {
 
     implementation "org.hibernate.search:hibernate-search-mapper-orm:${hibernateSearchVersion}"
     implementation "org.hibernate.search:hibernate-search-backend-lucene:${hibernateSearchVersion}"
-    implementation "org.hibernate.search:hibernate-search-backend-elasticsearch:${hibernateSearchVersion}"
+    implementation ("org.hibernate.search:hibernate-search-backend-elasticsearch:${hibernateSearchVersion}") {
+        exclude group:"commons-logging", module:"commons-logging"
+    }
     implementation "org.mybatis:mybatis:${mybatisVersion}"
     
     implementation "org.hibernate:hibernate-jcache:${hibernateVersion}"
@@ -47,11 +49,15 @@ dependencies {
     implementation "org.apache.commons:commons-text:${textVersion}"
     implementation "org.apache.commons:commons-compress:${compressVersion}"
     implementation "commons-codec:commons-codec:${codecVersion}"
-    implementation "org.apache.httpcomponents:httpclient:${httpclientVersion}"
+    implementation ("org.apache.httpcomponents:httpclient:${httpclientVersion}") {
+        exclude group:"commons-logging", module:"commons-logging"
+    }
 
     implementation "org.sejda.imageio:webp-imageio:${webpVersion}"
     implementation "net.ifok.image:image4j:${image4jVersion}"
-    implementation "net.sf.cssbox:pdf2dom:${pdf2domVersion}"
+    implementation ("net.sf.cssbox:pdf2dom:${pdf2domVersion}") {
+        exclude group:"commons-logging", module:"commons-logging"
+    }
     implementation "org.apache.pdfbox:jbig2-imageio:${jbig2Version}"
     implementation "com.github.bgalek.security.svg:safe-svg:${safeSvgVersion}"
     implementation "org.jsoup:jsoup:${jsoupVersion}"
