@@ -794,6 +794,7 @@ CREATE TABLE `sys_extend_field` (
   `code` varchar(20) NOT NULL COMMENT '编码',
   `required` tinyint(1) NOT NULL COMMENT '是否必填',
   `searchable` tinyint(1) NOT NULL COMMENT '是否可搜索',
+  `sortable` varchar(20) DEFAULT NULL  COMMENT '排序字段',
   `maxlength` int(11) default NULL COMMENT '最大长度',
   `width` int(11) default NULL COMMENT '高度',
   `height` int(11) default NULL COMMENT '宽度',

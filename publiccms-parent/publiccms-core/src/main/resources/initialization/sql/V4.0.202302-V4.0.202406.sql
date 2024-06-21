@@ -164,3 +164,5 @@ UPDATE sys_module SET sort=4 WHERE id = 'task_template_list';
 UPDATE sys_module SET sort=3 WHERE id = 'diy_list';
 UPDATE sys_module SET sort=5 WHERE id = 'webfile_list';
 UPDATE sys_module SET sort=6 WHERE id = 'tag_type_list';
+-- 2024-06-20 --
+ALTER TABLE `sys_extend_field` ADD COLUMN `sortable` varchar(20) DEFAULT NULL  COMMENT '排序字段' AFTER `searchable`;

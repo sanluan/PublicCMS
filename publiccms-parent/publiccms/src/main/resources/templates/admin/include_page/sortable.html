@@ -2,7 +2,7 @@
 <select class="combox" name="${inputName!}">
     <option value=""><@t.page 'disabled'/></option>
     <#list 1..10 as a>
-    <option value="${a}"${(value?has_content&&a=value?number)?then(' selected="true"','')?no_esc}>sort${a}</option>
+    <option value="sort${a}"${(value?has_content&&a=value?number)?then(' selected="true"','')?no_esc}>sort${a}</option>
     </#list>
 </select>
 </#macro>

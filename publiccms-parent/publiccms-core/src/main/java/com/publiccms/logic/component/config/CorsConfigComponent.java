@@ -67,7 +67,6 @@ public class CorsConfigComponent implements SiteCache, Config {
         if (null == config) {
             Map<String, String> configData = configDataComponent.getConfigData(site.getId(), CONFIG_CODE);
             config = new CorsConfiguration();
-            config.applyPermitDefaultValues();
             if (null != configData) {
                 config.setAllowCredentials(ConfigDataComponent.getBoolean(configData.get(CONFIG_ALLOW_CREDENTIALS), false));
 
@@ -100,6 +99,7 @@ public class CorsConfigComponent implements SiteCache, Config {
 
                     }
                 }
+                config.applyPermitDefaultValues();
             }
             cache.put(site.getId(), config);
         }

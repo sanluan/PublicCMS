@@ -49,9 +49,9 @@ public class SysExtendField implements java.io.Serializable {
     @GeneratorColumn(title = "可搜索")
     private boolean searchable;
     /**
-     * sortable
+     * sortable field
      * <p>
-     * 可排序
+     * 排序字段
      */
     @GeneratorColumn(title = "可排序")
     private String sortable;
