@@ -1,6 +1,5 @@
 package com.publiccms.common.tools;
 
-import java.beans.PropertyVetoException;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -25,7 +24,6 @@ public class DatabaseUtils {
      * @return connection
      * @throws SQLException
      * @throws IOException
-     * @throws PropertyVetoException
      * @throws ClassNotFoundException
      */
     public static Connection getConnection(String databaseConfigFile) throws SQLException, IOException, ClassNotFoundException {

@@ -81,11 +81,11 @@ public class ImageUtils {
     /**
      * <pre>
      * &#64;RequestMapping(value = "getCaptchaImage")
-     * public ResponseEntity<StreamingResponseBody> getCaptchaImage(HttpSession session) {
+     * public ResponseEntity&lt;StreamingResponseBody&gt; getCaptchaImage(HttpSession session) {
      *     String captcha = VerificationUtils.getRandomString("ABCDEFGHJKMNPQRSTUVWXYZ23456789", 4);
      *     session.setAttribute("captcha", captcha);
      *     StreamingResponseBody body = new StreamingResponseBody() {
-     *         @Override
+     *         &#64;Override
      *         public void writeTo(OutputStream outputStream) throws IOException {
      *             ImageUtils.drawImage(120, 30, captcha, outputStream);
      *         }

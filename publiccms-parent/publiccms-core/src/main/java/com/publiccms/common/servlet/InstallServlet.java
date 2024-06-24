@@ -2,7 +2,6 @@ package com.publiccms.common.servlet;
 
 import static com.publiccms.common.constants.Constants.DEFAULT_CHARSET_NAME;
 
-import java.beans.PropertyVetoException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -241,7 +240,6 @@ public class InstallServlet extends HttpServlet {
      * @param username
      * @param password
      * @param map
-     * @throws PropertyVetoException
      * @throws SQLException
      * @throws ClassNotFoundException
      * @throws IOException
@@ -287,7 +285,6 @@ public class InstallServlet extends HttpServlet {
     /**
      * 升级数据库
      * 
-     * @throws PropertyVetoException
      * @throws IOException
      * @throws SQLException
      * @throws ClassNotFoundException

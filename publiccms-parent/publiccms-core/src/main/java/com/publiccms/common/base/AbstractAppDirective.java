@@ -35,9 +35,7 @@ public abstract class AbstractAppDirective extends BaseHttpDirective {
     /**
      * @param handler
      * @return site
-     * @throws IOException
      * @throws TemplateModelException
-     * @throws Exception
      */
     public SysSite getSite(RenderHandler handler) throws TemplateModelException {
         return (SysSite) handler.getAttribute(CommonConstants.getAttributeSite());

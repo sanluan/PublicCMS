@@ -23,7 +23,7 @@ import freemarker.template.TemplateModelException;
  * </ul>
  * 使用示例
  * <p>
- * <#list getParameterTypeList() as a>${a}<#sep>,</#list>
+ * &lt;#list getParameterTypeList() as a&gt;${a}&lt;#sep&gt;,&lt;/#list&gt;
  * <p>
  * 
  * <pre>

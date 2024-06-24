@@ -58,8 +58,7 @@ public class VisitAdminController {
      * @param hourAnalytics
      * @param startVisitDate
      * @param endVisitDate
-     * @param orderField
-     * @param orderType
+     * @param hourAnalytics
      * @param request
      * @return view name
      */

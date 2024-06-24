@@ -41,7 +41,6 @@ public class TemplateDirectiveHandler extends BaseHandler {
      * @param loopVars
      * @param environment
      * @param templateDirectiveBody
-     * @throws Exception
      */
     public TemplateDirectiveHandler(Map<String, TemplateModel> parameters, TemplateModel[] loopVars, Environment environment,
             TemplateDirectiveBody templateDirectiveBody) {

@@ -129,7 +129,6 @@ public class CmsContentAdminController {
      * @param contentParameters
      * @param draft
      * @param checked
-     * @param bindingResult
      * @param request
      * @param model
      * @return view name
