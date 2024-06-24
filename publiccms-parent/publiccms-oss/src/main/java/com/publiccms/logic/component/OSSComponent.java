@@ -60,8 +60,8 @@ public class OSSComponent implements Config, AdminContextPath {
     }
 
     /**
-     * @param siteId
-     * @param showAll
+     * @param siteId site id
+     * @param showAll show all
      * @return config code or null
      */
     @Override
@@ -70,7 +70,7 @@ public class OSSComponent implements Config, AdminContextPath {
     }
 
     /**
-     * @param locale
+     * @param locale locale
      * @return
      */
     @Override

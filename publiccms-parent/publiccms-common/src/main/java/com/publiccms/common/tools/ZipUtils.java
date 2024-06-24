@@ -106,12 +106,12 @@ public class ZipUtils {
     /**
      * <pre>
      * &#64;RequestMapping("export")
-     * public ResponseEntity<StreamingResponseBody> export() {
+     * public ResponseEntity&lt;StreamingResponseBody&gt; export() {
      *     HttpHeaders headers = new HttpHeaders();
      *     headers.setContentDisposition(
      *             ContentDisposition.attachment().filename("filename.zip", Constants.DEFAULT_CHARSET).build());
      *     StreamingResponseBody body = new StreamingResponseBody() {
-     *         @Override
+     *         &#64;Override
      *         public void writeTo(OutputStream outputStream) throws IOException {
      *             try (ArchiveOutputStream zipOutputStream = new ZipArchiveOutputStream(outputStream)) {
      *                 ZipUtils.compressFile(new File("filename.txt"), zipOutputStream, "dir/filename.txt");

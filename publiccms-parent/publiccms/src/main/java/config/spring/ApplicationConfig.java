@@ -1,6 +1,5 @@
 package config.spring;
 
-import java.beans.PropertyVetoException;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -79,7 +78,6 @@ public class ApplicationConfig implements EnvironmentAware{
      * 序列生成器
      *
      * @return idWorker
-     * @throws PropertyVetoException
      */
     @Bean
     public IdWorker idWorker() {

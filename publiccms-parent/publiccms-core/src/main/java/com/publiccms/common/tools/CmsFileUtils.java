@@ -339,7 +339,6 @@ public class CmsFileUtils {
     /**
      * @param source
      * @param destination
-     * @param suffix
      * @throws IOException
      */
     public static void copyInputStreamToFile(InputStream source, String destination) throws IOException {
@@ -350,7 +349,6 @@ public class CmsFileUtils {
     /**
      * @param source
      * @param destination
-     * @param suffix
      * @throws IOException
      */
     public static void copyFileToFile(String source, String destination) throws IOException {

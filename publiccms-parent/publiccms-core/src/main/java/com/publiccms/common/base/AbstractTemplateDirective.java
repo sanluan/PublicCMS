@@ -55,8 +55,7 @@ public abstract class AbstractTemplateDirective extends BaseTemplateDirective {
     /**
      * @param model
      * @param handler
-     * @throws IOException
-     * @throws Exception
+     * @throws TemplateModelException
      */
     protected void expose(RenderHandler handler, Map<String, Object> model) throws TemplateModelException {
         AbstractFreemarkerView.exposeSite(model, getSite(handler));
@@ -106,7 +105,7 @@ public abstract class AbstractTemplateDirective extends BaseTemplateDirective {
     /**
      * @param handler
      * @return user
-     * @throws Exception
+     * @throws TemplateModelException
      */
     private SysUser getUser(RenderHandler handler) throws TemplateModelException {
         String authToken = handler.getString(AUTH_TOKEN);
@@ -145,8 +144,8 @@ public abstract class AbstractTemplateDirective extends BaseTemplateDirective {
 
     /**
      * @param handler
-     * @return
-     * @throws Exception
+     * @return app
+     * @throws TemplateModelException
      */
     protected SysApp getApp(RenderHandler handler) throws TemplateModelException {
         SysAppToken appToken = appTokenService.getEntity(handler.getString("appToken"));

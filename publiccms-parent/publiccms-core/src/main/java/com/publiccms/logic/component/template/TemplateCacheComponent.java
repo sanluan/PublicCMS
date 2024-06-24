@@ -329,8 +329,6 @@ public class TemplateCacheComponent implements Cache {
 
     /**
      * @param parameterTypeHandlerList
-     * @param parameterTypeHandlerMap
-     *            the parameterTypeHandlerMap to set
      */
     @Autowired
     public <E, P> void setParameterTypeHandlerMap(List<ParameterTypeHandler<E, P>> parameterTypeHandlerList) {

@@ -86,8 +86,6 @@ import jakarta.validation.ValidatorFactory;
  * <li><code>fileDescriptions</code>:多个文件描述
  * <li><code>imagePaths</code>:多个图片路径
  * <li><code>imageDescriptions</code>:多个图片描述
- * 
- * </code>:标题
  * </ul>
  * <p>
  * 返回结果

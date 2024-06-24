@@ -57,8 +57,7 @@ public class ContentConfigComponent implements SiteCache, Config {
 
     /**
      * @param siteId
-     * @param config
-     * @return mail sender
+     * @return keywords config
      */
     public KeywordsConfig getKeywordsConfig(short siteId) {
         KeywordsConfig keywordsConfig = cache.get(siteId);

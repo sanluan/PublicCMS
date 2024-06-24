@@ -38,8 +38,6 @@ public class IndexController {
     /**
      * METADATA页面请求统一分发
      *
-     * @param response
-     *            响应
      */
     @RequestMapping({ "/**/" + MetadataComponent.DATA_FILE, "/**/" + MetadataComponent.METADATA_FILE, "/include/*",
             "/**/" + SiteComponent.MODEL_FILE, "/**/" + SiteComponent.CATEGORY_TYPE_FILE, "/**/" + SiteComponent.CONFIG_FILE })
